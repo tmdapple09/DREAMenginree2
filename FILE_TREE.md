@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-18T22:21:05.438Z
+Generated: 2026-06-19T00:27:25.417Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -2494,8 +2494,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── connection  ← next/server
 │   │   │       └── → (default)
 │   │   ├── render
-│   │   │   └── page.tsx
+│   │   │   ├── error.tsx ∅
+│   │   │   │   ├── → (default)
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   ├── loading.tsx ∅
+│   │   │   │   ├── → (default)
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   └── page.tsx ⚠
 │   │   │       ├── ⬡ RenderEnginApp  ← @/components/engines/render/dream.RenderEnginApp
+│   │   │       ├── isDevBypassActive  ← @/engine/dev-bypass
+│   │   │       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
+│   │   │       ├── createServerClient  ⚠ @/supabase/server/serverClient
+│   │   │       ├── redirect  ← next/navigation
+│   │   │       ├── connection  ← next/server
 │   │   │       ├── → (default)
 │   │   │       └── → metadata
 │   │   ├── layout.tsx ∅
@@ -4325,7 +4336,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── render
 │   │   │   ├── dream.RenderEnginApp.tsx ∅
 │   │   │   │   ├── makeEnginApp  ← @/components/engines/shared
+│   │   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
+│   │   │   │   ├── RenderEnginRuleSet  ← @/engins/renderengin
 │   │   │   │   ├── RenderEnginViewport  ← @/engins/renderengin
+│   │   │   │   ├── RenderIntent  ← @/engins/renderengin
+│   │   │   │   ├── useMemo  ← react
 │   │   │   │   ├── → (default)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
@@ -5524,6 +5539,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
 │   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
 │   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
+│   │   │   ├── (dynamic)  ← @/components/engines/render/dream.RenderEnginApp
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.shell.RuntimeShell.tsx ∅
@@ -8410,6 +8426,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → ENGIN_RUNTIME_VERSION
 │   │   │   ├── → EnginRuntime
 │   │   │   └── ∅ unused: ENGIN_RUNTIME_VERSION, ENGIN_RUNTIME_FEATURES
+│   │   ├── EnginRuntimeRegistry.ts ∅
+│   │   │   ├── JsonObject  ← ./EnginBaseState
+│   │   │   ├── EnginAction  ← ./EnginRuleSetContract
+│   │   │   ├── EnginRuleSetContract  ← ./EnginRuleSetContract
+│   │   │   ├── → getRuntimeEnginRegistration
+│   │   │   ├── → listRuntimeEnginRegistrations
+│   │   │   ├── → registerRuntimeEngin
+│   │   │   ├── → resolveRuntimeCapability
+│   │   │   └── ∅ unused: listRuntimeEnginRegistrations
 │   │   ├── EnginSnapshotFingerprint.ts ∅
 │   │   │   ├── EnginBaseState  ← ./EnginBaseState
 │   │   │   ├── JsonValue  ← ./EnginBaseState
@@ -13137,6 +13162,49 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
 │   ├── renderengin
+│   │   ├── animation.ts ∅
+│   │   │   ├── Mat4  ← ./core
+│   │   │   ├── Quat  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── mat4FromQuat  ← ./core
+│   │   │   ├── mat4Mul  ← ./core
+│   │   │   ├── mat4Scale  ← ./core
+│   │   │   ├── mat4Translation  ← ./core
+│   │   │   ├── → evaluateAnimationClip
+│   │   │   ├── → sampleKeyframes
+│   │   │   └── ∅ unused: sampleKeyframes, evaluateAnimationClip
+│   │   ├── assets.ts ∅
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── Vec2  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── createMeshBuffers  ← ./core
+│   │   │   ├── createRenderAsset  ← ./core
+│   │   │   ├── v3cross  ← ./core
+│   │   │   ├── v3normalize  ← ./core
+│   │   │   ├── v3sub  ← ./core
+│   │   │   ├── validateMeshForRenderUpload  ← ./core
+│   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainAuthorizationContext  ← @/engine/engin-runtime/EnginCapabilities
+│   │   │   ├── DomainCapability  ← @/engine/engin-runtime/EnginCapabilities
+│   │   │   ├── authorizeDomainCapability  ← @/engine/engin-runtime/EnginCapabilities
+│   │   │   ├── → authorizeRenderAssetOperation
+│   │   │   ├── → createContentEnginRenderHandoff
+│   │   │   ├── → createGameEnginRenderHandoff
+│   │   │   ├── → createParsedGlbRenderAsset
+│   │   │   ├── → createParsedObjRenderAsset
+│   │   │   ├── → estimateRenderAssetMemory
+│   │   │   ├── → parseGlbHeader
+│   │   │   ├── → parseGlbMesh
+│   │   │   ├── → parseObjMesh
+│   │   │   ├── → renderAssetManifestToJson
+│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
+│   │   ├── benchmarkProof.ts ∅
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createTenMillionPolygonProof
+│   │   │   ├── → evaluateGpuBenchmarkProof
+│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof
 │   │   ├── core.ts ∅
 │   │   │   ├── DomainObject  ← ../../engine/engin-runtime/EnginBaseState
 │   │   │   ├── DomainVisibility  ← ../../engine/engin-runtime/EnginBaseState
@@ -13145,6 +13213,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── JsonValue  ← ../../engine/engin-runtime/EnginBaseState
 │   │   │   ├── EnginAction  ← ../../engine/engin-runtime/EnginRuleSetContract
 │   │   │   ├── EnginRuleSetContract  ← ../../engine/engin-runtime/EnginRuleSetContract
+│   │   │   ├── → RENDER_ENGIN_ID
+│   │   │   ├── → RENDER_ENGIN_NAME
+│   │   │   ├── → RENDER_INTENT_TYPES
 │   │   │   ├── → RenderEnginRuleSet
 │   │   │   ├── → buildClusterDag
 │   │   │   ├── → clamp01
@@ -13181,11 +13252,50 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → v3normalize
 │   │   │   ├── → v3scale
 │   │   │   ├── → v3sub
-│   │   │   └── ∅ unused: v3add, v3sub, v3scale, v3dot, v3cross, v3length, v3normalize, clamp01, mat4Translation, mat4Scale, mat4Mul, mat4Transform, mat4FromQuat, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, createRenderAsset, RenderEnginRuleSet
+│   │   │   ├── → validateMeshForRenderUpload
+│   │   │   └── ∅ unused: v3add, v3scale, v3dot, mat4Transform, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
+│   │   ├── diagnostics.ts ∅
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── RenderEnginFrameStats  ← ./webgpu
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createBenchmarkScene
+│   │   │   ├── → createRenderPerformanceReport
+│   │   │   ├── → evaluateRenderPerformanceGate
+│   │   │   ├── → frameStatsToPerformanceSample
+│   │   │   └── ∅ unused: createRenderPerformanceReport, frameStatsToPerformanceSample, createBenchmarkScene, evaluateRenderPerformanceGate
 │   │   ├── index.ts
 │   │   │   └── → RenderEnginViewport
+│   │   ├── lighting.ts ∅
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── v3normalize  ← ./core
+│   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createRenderEnvironment
+│   │   │   ├── → createRenderLight
+│   │   │   ├── → summarizeRenderLights
+│   │   │   └── ∅ unused: createRenderLight, createRenderEnvironment, summarizeRenderLights
+│   │   ├── materials.ts ∅
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── clamp01  ← ./core
+│   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createRenderMaterial
+│   │   │   ├── → packRenderMaterial
+│   │   │   ├── → updateRenderMaterial
+│   │   │   └── ∅ unused: createRenderMaterial, packRenderMaterial, updateRenderMaterial
+│   │   ├── postProcessing.ts ∅
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createRenderPostProcessGraph
+│   │   │   ├── → executePostProcessPixel
+│   │   │   └── ∅ unused: createRenderPostProcessGraph, executePostProcessPixel
 │   │   ├── RenderEnginViewport.tsx ∅
+│   │   │   ├── createParsedObjRenderAsset  ← ./assets
+│   │   │   ├── estimateRenderAssetMemory  ← ./assets
 │   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── RenderIntent  ← ./core
+│   │   │   ├── Vec3  ← ./core
 │   │   │   ├── composeModelMatrix  ← ./core
 │   │   │   ├── createMeshBuffers  ← ./core
 │   │   │   ├── mat4LookAt  ← ./core
@@ -13193,22 +13303,86 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── RenderEnginFrameStats  ← ./webgpu
 │   │   │   ├── WebGpuRenderEngin  ← ./webgpu
 │   │   │   ├── requestWebGpuDevice  ← ./webgpu
+│   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
 │   │   │   ├── useEffect  ← react
+│   │   │   ├── useMemo  ← react
 │   │   │   ├── useRef  ← react
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
+│   │   ├── renderSettings.ts ∅
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createRenderQualitySettings
+│   │   │   ├── → switchRenderPreviewMode
+│   │   │   └── ∅ unused: createRenderQualitySettings, switchRenderPreviewMode
+│   │   ├── runtimeRegistration.ts
+│   │   │   ├── RENDER_ENGIN_ID  ← ./core
+│   │   │   ├── RENDER_INTENT_TYPES  ← ./core
+│   │   │   ├── RenderEnginRuleSet  ← ./core
+│   │   │   ├── registerRuntimeEngin  ← @/engine/engin-runtime/EnginRuntimeRegistry
+│   │   │   └── → RenderEnginRuntimeRegistration
+│   │   ├── scene.ts ∅
+│   │   │   ├── Mat4  ← ./core
+│   │   │   ├── Quat  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── composeModelMatrix  ← ./core
+│   │   │   ├── mat4Identity  ← ./core
+│   │   │   ├── mat4Mul  ← ./core
+│   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → addObjectToRenderScene
+│   │   │   ├── → computeRenderObjectWorldMatrix
+│   │   │   ├── → createRenderScene
+│   │   │   ├── → createRenderSceneObject
+│   │   │   ├── → defaultRenderTransform
+│   │   │   ├── → deserializeRenderScene
+│   │   │   ├── → redoRenderScene
+│   │   │   ├── → removeRenderSceneObject
+│   │   │   ├── → renderSceneSummary
+│   │   │   ├── → selectRenderSceneObjects
+│   │   │   ├── → serializeRenderScene
+│   │   │   ├── → setRenderSceneEnvironment
+│   │   │   ├── → undoRenderScene
+│   │   │   ├── → updateRenderSceneObject
+│   │   │   └── ∅ unused: defaultRenderTransform, createRenderScene, createRenderSceneObject, addObjectToRenderScene, selectRenderSceneObjects, updateRenderSceneObject, removeRenderSceneObject, setRenderSceneEnvironment, computeRenderObjectWorldMatrix, serializeRenderScene, deserializeRenderScene, undoRenderScene, redoRenderScene, renderSceneSummary
+│   │   ├── textures.ts ∅
+│   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → calculateMipLevelCount
+│   │   │   ├── → createRenderTexture
+│   │   │   ├── → createTextureMemoryReport
+│   │   │   ├── → estimateTextureBytes
+│   │   │   ├── → validateRenderTexture
+│   │   │   └── ∅ unused: calculateMipLevelCount, estimateTextureBytes, validateRenderTexture, createRenderTexture, createTextureMemoryReport
+│   │   ├── virtualization.ts ∅
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── v3length  ← ./core
+│   │   │   ├── v3sub  ← ./core
+│   │   │   ├── RenderScene  ← ./scene
+│   │   │   ├── → buildInstanceBatches
+│   │   │   ├── → computeMeshBounds
+│   │   │   ├── → createTerrainChunks
+│   │   │   ├── → cullRenderScene
+│   │   │   ├── → selectScreenSpaceLod
+│   │   │   ├── → sphereIntersectsFrustum
+│   │   │   └── ∅ unused: computeMeshBounds, sphereIntersectsFrustum, selectScreenSpaceLod, cullRenderScene, buildInstanceBatches, createTerrainChunks
 │   │   └── webgpu.ts ∅
 │   │       ├── Mat4  ← ./core
 │   │       ├── MeshBuffers  ← ./core
 │   │       ├── Vec3  ← ./core
+│   │       ├── Vec4  ← ./core
 │   │       ├── Vertex  ← ./core
 │   │       ├── mat4Identity  ← ./core
+│   │       ├── → SHADER
 │   │       ├── → WebGpuRenderEngin
 │   │       ├── → packAosVertexBuffer
 │   │       ├── → requestWebGpuDevice
 │   │       ├── → toGpuMat4
-│   │       └── ∅ unused: toGpuMat4, packAosVertexBuffer
+│   │       └── ∅ unused: SHADER, toGpuMat4, packAosVertexBuffer
 │   ├── rulesets
 │   │   ├── brand
 │   │   │   ├── brandEnginRuleSet.ts
@@ -17649,6 +17823,24 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
+│   ├── renderengin-assets-scene.test.ts
+│   │   ├── addObjectToRenderScene  ← @/engins/renderengin
+│   │   ├── computeRenderObjectWorldMatrix  ← @/engins/renderengin
+│   │   ├── createParsedObjRenderAsset  ← @/engins/renderengin
+│   │   ├── createRenderScene  ← @/engins/renderengin
+│   │   ├── createRenderSceneObject  ← @/engins/renderengin
+│   │   ├── deserializeRenderScene  ← @/engins/renderengin
+│   │   ├── estimateRenderAssetMemory  ← @/engins/renderengin
+│   │   ├── parseGlbHeader  ← @/engins/renderengin
+│   │   ├── parseObjMesh  ← @/engins/renderengin
+│   │   ├── redoRenderScene  ← @/engins/renderengin
+│   │   ├── selectRenderSceneObjects  ← @/engins/renderengin
+│   │   ├── serializeRenderScene  ← @/engins/renderengin
+│   │   ├── undoRenderScene  ← @/engins/renderengin
+│   │   ├── updateRenderSceneObject  ← @/engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
 │   ├── renderengin-core.test.ts
 │   │   ├── clusterizeMesh  ← ../engins/renderengin
 │   │   ├── composeModelMatrix  ← ../engins/renderengin
@@ -17659,6 +17851,72 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── projectVertex  ← ../engins/renderengin
 │   │   ├── shadeCookTorrance  ← ../engins/renderengin
 │   │   ├── skinVertexLbs  ← ../engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-glb-virtual-animation.test.ts
+│   │   ├── addObjectToRenderScene  ← @/engins/renderengin
+│   │   ├── buildInstanceBatches  ← @/engins/renderengin
+│   │   ├── computeMeshBounds  ← @/engins/renderengin
+│   │   ├── createParsedGlbRenderAsset  ← @/engins/renderengin
+│   │   ├── createRenderScene  ← @/engins/renderengin
+│   │   ├── createRenderSceneObject  ← @/engins/renderengin
+│   │   ├── createTerrainChunks  ← @/engins/renderengin
+│   │   ├── cullRenderScene  ← @/engins/renderengin
+│   │   ├── evaluateAnimationClip  ← @/engins/renderengin
+│   │   ├── parseGlbMesh  ← @/engins/renderengin
+│   │   ├── selectScreenSpaceLod  ← @/engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-gpu-proof-security.test.ts
+│   │   ├── SHADER  ← @/engins/renderengin
+│   │   ├── createRenderPostProcessGraph  ← @/engins/renderengin
+│   │   ├── createTenMillionPolygonProof  ← @/engins/renderengin
+│   │   ├── evaluateGpuBenchmarkProof  ← @/engins/renderengin
+│   │   ├── executePostProcessPixel  ← @/engins/renderengin
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-material-security-performance.test.ts
+│   │   ├── authorizeRenderAssetOperation  ← @/engins/renderengin
+│   │   ├── createBenchmarkScene  ← @/engins/renderengin
+│   │   ├── createContentEnginRenderHandoff  ← @/engins/renderengin
+│   │   ├── createGameEnginRenderHandoff  ← @/engins/renderengin
+│   │   ├── createParsedObjRenderAsset  ← @/engins/renderengin
+│   │   ├── createRenderMaterial  ← @/engins/renderengin
+│   │   ├── createRenderPerformanceReport  ← @/engins/renderengin
+│   │   ├── evaluateRenderPerformanceGate  ← @/engins/renderengin
+│   │   ├── frameStatsToPerformanceSample  ← @/engins/renderengin
+│   │   ├── packRenderMaterial  ← @/engins/renderengin
+│   │   ├── updateRenderMaterial  ← @/engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-runtime-wiring.test.ts
+│   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
+│   │   ├── getRuntimeEnginRegistration  ← @/engine/engin-runtime/EnginRuntimeRegistry
+│   │   ├── resolveRuntimeCapability  ← @/engine/engin-runtime/EnginRuntimeRegistry
+│   │   ├── RENDER_ENGIN_ID  ← @/engins/renderengin
+│   │   ├── RenderEnginRuleSet  ← @/engins/renderengin
+│   │   ├── RenderIntent  ← @/engins/renderengin
+│   │   ├── createMeshBuffers  ← @/engins/renderengin
+│   │   ├── validateMeshForRenderUpload  ← @/engins/renderengin
+│   │   ├── RenderEnginRuntimeRegistration  ← @/engins/renderengin/runtimeRegistration
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-texture-lighting-settings.test.ts
+│   │   ├── calculateMipLevelCount  ← @/engins/renderengin
+│   │   ├── createRenderEnvironment  ← @/engins/renderengin
+│   │   ├── createRenderLight  ← @/engins/renderengin
+│   │   ├── createRenderQualitySettings  ← @/engins/renderengin
+│   │   ├── createRenderTexture  ← @/engins/renderengin
+│   │   ├── createTextureMemoryReport  ← @/engins/renderengin
+│   │   ├── summarizeRenderLights  ← @/engins/renderengin
+│   │   ├── switchRenderPreviewMode  ← @/engins/renderengin
+│   │   ├── validateRenderTexture  ← @/engins/renderengin
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
