@@ -777,9 +777,42 @@ jobs:
             return -1;
           }
 
+          function hasBalancedGrouping(text) {
+            let parenDepth = 0;
+            let bracketDepth = 0;
+            let braceDepth = 0;
+            const state = { quote: "", escape: false, lineComment: false, blockComment: false, skipNext: false };
+
+            for (let index = 0; index < text.length; index += 1) {
+              const char = text[index];
+              const nextChar = text[index + 1] || "";
+
+              state.skipNext = false;
+              stepStringState(state, char, nextChar);
+              if (state.skipNext) {
+                index += 1;
+                continue;
+              }
+              if (state.quote || state.lineComment || state.blockComment) continue;
+
+              if (char === "(") parenDepth += 1;
+              else if (char === ")") parenDepth -= 1;
+              else if (char === "[") bracketDepth += 1;
+              else if (char === "]") bracketDepth -= 1;
+              else if (char === "{") braceDepth += 1;
+              else if (char === "}") braceDepth -= 1;
+
+              if (parenDepth < 0 || bracketDepth < 0 || braceDepth < 0) return false;
+            }
+
+            return parenDepth === 0 && bracketDepth === 0 && braceDepth === 0;
+          }
+
           function looksLikeBlockHead(head) {
-            const clean = String(head ?? "").trim().replace(/^\}\s*/, "").trim();
+            const raw = String(head ?? "").trim();
+            const clean = raw.replace(/^\}\s*/, "").trim();
             if (!clean) return false;
+            if (!hasBalancedGrouping(raw)) return false;
 
             return (
               /^(export\s+)?(default\s+)?(async\s+)?function\b/.test(clean) ||
