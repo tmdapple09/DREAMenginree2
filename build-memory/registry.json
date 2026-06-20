@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-19T23:24:54.095Z",
+  "generatedAt": "2026-06-20T00:18:55.264Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 276,
+    "route-surface": 277,
     "dreamsurface": 15,
     "engin": 256,
     "engine-ruleset": 0,
@@ -16,7 +16,7 @@
     "brain-doc": 0,
     "cartridge": 1,
     "persona": 6,
-    "migration": 57,
+    "migration": 60,
     "memory": 6,
     "dr-eams-tool": 26,
     "hook": 12,
@@ -2067,6 +2067,15 @@
       "exports": [
         "default",
         "metadata"
+      ]
+    },
+    {
+      "id": "app/messages/new/page",
+      "slot": "route-surface",
+      "path": "app/messages/new/page.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
       ]
     },
     {
@@ -10674,6 +10683,27 @@
       "id": "supabase/migrations/20260619000000_renderengin_assets_rls",
       "slot": "migration",
       "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260619034000_connector_feed_items",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034000_connector_feed_items.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260619034100_profile_optional_fields",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034100_profile_optional_fields.sql",
+      "engine": "Universal",
+      "exports": []
+    },
+    {
+      "id": "supabase/migrations/20260619034200_saved_posts",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034200_saved_posts.sql",
       "engine": "Universal",
       "exports": []
     }

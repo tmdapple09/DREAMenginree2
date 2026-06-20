@@ -238,6 +238,7 @@ export const surfaces = {
   "app/messages/boards/[id]/page": () => import("@/app/messages/boards/[id]/page"),
   "app/messages/boards/new/page": () => import("@/app/messages/boards/new/page"),
   "app/messages/boards/page": () => import("@/app/messages/boards/page"),
+  "app/messages/new/page": () => import("@/app/messages/new/page"),
   "app/messages/page": () => import("@/app/messages/page"),
   "app/mission/page": () => import("@/app/mission/page"),
   "app/notes/page": () => import("@/app/notes/page"),

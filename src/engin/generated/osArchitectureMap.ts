@@ -24,7 +24,7 @@ export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
   "surface": 300,
-  "route-surface": 276,
+  "route-surface": 277,
   "dreamsurface": 15,
   "engin": 256,
   "engine-ruleset": 0,
@@ -36,7 +36,7 @@ export const osSlotCounts = {
   "brain-doc": 0,
   "cartridge": 1,
   "persona": 6,
-  "migration": 57,
+  "migration": 60,
   "memory": 6,
   "dr-eams-tool": 26,
   "hook": 12,
@@ -392,7 +392,7 @@ export const osArchitectureGraph = {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 276,
+    "route-surface": 277,
     "dreamsurface": 15,
     "engin": 256,
     "engine-ruleset": 0,
@@ -404,7 +404,7 @@ export const osArchitectureGraph = {
     "brain-doc": 0,
     "cartridge": 1,
     "persona": 6,
-    "migration": 57,
+    "migration": 60,
     "memory": 6,
     "dr-eams-tool": 26,
     "hook": 12,
@@ -1836,6 +1836,12 @@ export const osArchitectureStageEntries = {
       "id": "app/messages/boards/page",
       "slot": "route-surface",
       "path": "app/messages/boards/page.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "app/messages/new/page",
+      "slot": "route-surface",
+      "path": "app/messages/new/page.tsx",
       "engine": "Universal"
     },
     {
@@ -6310,6 +6316,24 @@ export const osArchitectureStageEntries = {
       "slot": "migration",
       "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
       "engine": "Universal"
+    },
+    {
+      "id": "supabase/migrations/20260619034000_connector_feed_items",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034000_connector_feed_items.sql",
+      "engine": "Universal"
+    },
+    {
+      "id": "supabase/migrations/20260619034100_profile_optional_fields",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034100_profile_optional_fields.sql",
+      "engine": "Universal"
+    },
+    {
+      "id": "supabase/migrations/20260619034200_saved_posts",
+      "slot": "migration",
+      "path": "supabase/migrations/20260619034200_saved_posts.sql",
+      "engine": "Universal"
     }
   ],
   "unmapped": []
@@ -6348,7 +6372,7 @@ User Action / Agent / CI
 | core-surface | 4 |
 | daydream | 2 |
 | surface | 300 |
-| route-surface | 276 |
+| route-surface | 277 |
 | dreamsurface | 15 |
 | engin | 256 |
 | engine-ruleset | 0 |
@@ -6360,7 +6384,7 @@ User Action / Agent / CI
 | brain-doc | 0 |
 | cartridge | 1 |
 | persona | 6 |
-| migration | 57 |
+| migration | 60 |
 | memory | 6 |
 | dr-eams-tool | 26 |
 | hook | 12 |
