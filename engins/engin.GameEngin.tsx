@@ -70,6 +70,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArtifactSlot } from '@/engins/forgeengin/enginpipe/index';
 import { toErrorMessage } from '@/utils/index';
+import { dispatchRenderHandoff } from '@/engins/renderengin';
 
 /**
  * GameEngin — Side B control layer for the Games Daydream.
@@ -450,11 +451,13 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     forgeRecord('Committed world: ' + worldName.trim());
     recordForgeTransfer('games', 'create', 'level', 'GameEngin world → ContentEngin');
     // Real bridge event: world level exported — Create/Brand Engins may consume it.
+    const assetId = `world-${Date.now()}`;
     bridge.emit('games', 'games:asset-exported', {
-      assetId:   `world-${Date.now()}`,
+      assetId,
       assetType: 'level',
       url:       '',
     });
+    dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim() });
   }
 
   function handleApplyPhysics( ){

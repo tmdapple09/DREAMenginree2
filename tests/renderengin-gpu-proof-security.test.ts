@@ -4,6 +4,8 @@ import {
   SHADER,
   createRenderPostProcessGraph,
   createTenMillionPolygonProof,
+  isMobileRenderUserAgent,
+  summarizeLiveBenchmark,
   evaluateGpuBenchmarkProof,
   executePostProcessPixel,
 } from '@/engins/renderengin';
@@ -14,6 +16,8 @@ describe('RenderEngin GPU texture/shadow/postprocess/proof surface', () => {
     expect(SHADER).toContain('@group(0) @binding(1) var albedoTexture : texture_2d<f32>');
     expect(SHADER).toContain('@group(0) @binding(2) var albedoSampler : sampler');
     expect(SHADER).toContain('textureSample(albedoTexture, albedoSampler, input.uv)');
+    expect(SHADER).toContain('@group(0) @binding(3) var shadowTexture : texture_depth_2d');
+    expect(SHADER).toContain('textureSampleCompare(shadowTexture, shadowSampler');
   });
 
   it('executes post-processing passes deterministically', () => {
@@ -32,6 +36,12 @@ describe('RenderEngin GPU texture/shadow/postprocess/proof surface', () => {
     expect(proof.totalTriangles).toBe(11_000_000);
     expect(proof.passes10M).toBe(true);
     expect(result).toMatchObject({ passed: true, desktopPass: true });
+  });
+
+  it('summarizes live mobile and desktop benchmark samples', () => {
+    expect(isMobileRenderUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)')).toBe(true);
+    expect(summarizeLiveBenchmark([16, 17, 16], false)).toMatchObject({ passed: true, droppedFrameCount: 1 });
+    expect(summarizeLiveBenchmark([30, 31, 32], true)).toMatchObject({ passed: true, isMobileClassDevice: true });
   });
 
   it('ships server-backed RLS for user-owned render assets', () => {

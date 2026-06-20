@@ -5,6 +5,7 @@ import {
   type Vec3,
   type Vec4,
   type Vertex,
+  validateMeshForRenderUpload,
 } from './core';
 
 export interface PackedVertexBuffer {
@@ -40,6 +41,8 @@ export interface RenderEnginFrameStats {
   readonly estimatedFps: number;
   readonly droppedFrame: boolean;
   readonly measuredAt: string;
+  readonly gpuFrameMs?: number;
+  readonly gpuLatencyMeasured: boolean;
 }
 
 export interface RenderGpuMaterial {
@@ -70,6 +73,8 @@ export interface RenderEnginLifecycleHooks {
   onFrame?(stats: RenderEnginFrameStats): void;
   onError?(error: Error): void;
   onStop?(): void;
+  onDeviceLost?(info: GPUDeviceLostInfo): void;
+  onDeviceRestored?(): void;
 }
 
 export const SHADER = /* wgsl */ `
@@ -77,6 +82,7 @@ struct Uniforms {
   model : mat4x4<f32>,
   view : mat4x4<f32>,
   projection : mat4x4<f32>,
+  lightViewProjection : mat4x4<f32>,
   camera : vec4<f32>,
   light : vec4<f32>,
   albedo : vec4<f32>,
@@ -87,6 +93,8 @@ struct Uniforms {
 @group(0) @binding(0) var<uniform> uniforms : Uniforms;
 @group(0) @binding(1) var albedoTexture : texture_2d<f32>;
 @group(0) @binding(2) var albedoSampler : sampler;
+@group(0) @binding(3) var shadowTexture : texture_depth_2d;
+@group(0) @binding(4) var shadowSampler : sampler_comparison;
 
 struct VertexInput {
   @location(0) position : vec3<f32>,
@@ -99,6 +107,7 @@ struct VertexOutput {
   @builtin(position) clip : vec4<f32>,
   @location(0) worldNormal : vec3<f32>,
   @location(1) uv : vec2<f32>,
+  @location(2) shadowClip : vec4<f32>,
 };
 
 @vertex
@@ -108,6 +117,7 @@ fn vsMain(input : VertexInput) -> VertexOutput {
   out.clip = uniforms.projection * uniforms.view * world;
   out.worldNormal = normalize((uniforms.model * vec4<f32>(input.normal, 0.0)).xyz);
   out.uv = input.uv;
+  out.shadowClip = uniforms.lightViewProjection * world;
   return out;
 }
 
@@ -117,6 +127,12 @@ fn fsMain(input : VertexOutput) -> @location(0) vec4<f32> {
   let l = normalize(-uniforms.light.xyz);
   let ndl = max(dot(n, l), 0.0);
   let textureAlbedo = textureSample(albedoTexture, albedoSampler, input.uv).rgb;
+  let shadowNdc = input.shadowClip.xyz / max(input.shadowClip.w, 0.0001);
+  let shadowUv = shadowNdc.xy * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5, 0.5);
+  var shadowVisibility = 1.0;
+  if (shadowUv.x >= 0.0 && shadowUv.x <= 1.0 && shadowUv.y >= 0.0 && shadowUv.y <= 1.0 && shadowNdc.z >= 0.0 && shadowNdc.z <= 1.0) {
+    shadowVisibility = textureSampleCompare(shadowTexture, shadowSampler, shadowUv, shadowNdc.z - 0.004);
+  }
   let base = uniforms.albedo.rgb * textureAlbedo;
   let roughness = clamp(uniforms.orm.g, 0.04, 1.0);
   let metallic = clamp(uniforms.orm.b, 0.0, 1.0);
@@ -126,7 +142,7 @@ fn fsMain(input : VertexOutput) -> @location(0) vec4<f32> {
   let specPower = mix(64.0, 8.0, roughness);
   let specular = pow(max(dot(n, halfDir), 0.0), specPower) * mix(0.04, 0.8, metallic);
   let ambient = base * 0.12 * ao;
-  let color = ambient + base * ndl * (1.0 - metallic * 0.35) + vec3<f32>(specular) + uniforms.emissive.rgb;
+  let color = ambient + (base * ndl * (1.0 - metallic * 0.35) + vec3<f32>(specular)) * shadowVisibility + uniforms.emissive.rgb;
   return vec4<f32>(color, uniforms.albedo.a);
 }
 `;
@@ -199,6 +215,7 @@ export class WebGpuRenderEngin {
   private readonly shadowPipeline: GPURenderPipeline;
   private readonly bindGroupLayout: GPUBindGroupLayout;
   private readonly defaultAlbedoTexture: RenderEnginGpuTexture;
+  private readonly shadowSampler: GPUSampler;
   private depthTexture: GPUTexture;
   private shadowDepthTexture: GPUTexture;
   private width: number;
@@ -206,6 +223,7 @@ export class WebGpuRenderEngin {
   private frameIndex = 0;
   private animationFrame: number | null = null;
   private stopped = true;
+  private deviceLost = false;
   private scene: RenderEnginScene = {
     viewMatrix: mat4Identity(),
     projectionMatrix: mat4Identity(),
@@ -235,6 +253,7 @@ export class WebGpuRenderEngin {
     });
     this.depthTexture = this.createDepthTexture(this.width, this.height);
     this.shadowDepthTexture = this.createDepthTexture(2048, 2048);
+    this.shadowSampler = this.device.createSampler({ compare: 'less-equal', magFilter: 'linear', minFilter: 'linear' });
     this.defaultAlbedoTexture = this.uploadTexture({ width: 1, height: 1, data: new Uint8Array([255, 255, 255, 255]) });
 
     this.bindGroupLayout = this.device.createBindGroupLayout({
@@ -242,6 +261,8 @@ export class WebGpuRenderEngin {
         { binding: 0, visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT, buffer: {} },
         { binding: 1, visibility: GPUShaderStage.FRAGMENT, texture: {} },
         { binding: 2, visibility: GPUShaderStage.FRAGMENT, sampler: {} },
+        { binding: 3, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: 'depth' } },
+        { binding: 4, visibility: GPUShaderStage.FRAGMENT, sampler: { type: 'comparison' } },
       ],
     });
     this.pipeline = this.device.createRenderPipeline({
@@ -271,6 +292,7 @@ export class WebGpuRenderEngin {
         depthCompare: 'less',
       },
     });
+    void this.device.lost.then(() => { this.deviceLost = true; this.stop(); });
     this.shadowPipeline = this.device.createRenderPipeline({
       layout: this.device.createPipelineLayout({ bindGroupLayouts: [this.bindGroupLayout] }),
       vertex: {
@@ -299,7 +321,7 @@ export class WebGpuRenderEngin {
     return this.device.createTexture({
       size: { width, height },
       format: 'depth24plus',
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
   }
 
@@ -345,6 +367,8 @@ export class WebGpuRenderEngin {
   }
 
   uploadMesh(mesh: MeshBuffers): RenderEnginGpuMesh {
+    const validation = validateMeshForRenderUpload(mesh);
+    if (!validation.valid) throw new Error(validation.reason ?? 'Render asset validation failed before GPU upload.');
     const packed = packAosVertexBuffer(mesh);
     const indices = mesh.indexFormat === 'uint16'
       ? new Uint16Array(mesh.indices)
@@ -362,7 +386,7 @@ export class WebGpuRenderEngin {
 
   createSceneObject(mesh: RenderEnginGpuMesh, modelMatrix: Mat4 = mat4Identity(), material: RenderGpuMaterial = { albedo: [0.58, 0.72, 0.95, 1], orm: [1, 0.55, 0, 0], emissive: [0, 0, 0, 0] }, albedoTexture: RenderEnginGpuTexture = this.defaultAlbedoTexture): RenderEnginSceneObject {
     const uniformBuffer = this.device.createBuffer({
-      size: 16 * 3 * 4 + 4 * 5 * 4,
+      size: 16 * 4 * 4 + 4 * 5 * 4,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     return {
@@ -377,6 +401,8 @@ export class WebGpuRenderEngin {
           { binding: 0, resource: { buffer: uniformBuffer } },
           { binding: 1, resource: albedoTexture.view },
           { binding: 2, resource: albedoTexture.sampler },
+          { binding: 3, resource: this.shadowDepthTexture.createView() },
+          { binding: 4, resource: this.shadowSampler },
         ],
       }),
     };
@@ -384,6 +410,21 @@ export class WebGpuRenderEngin {
 
   setScene(scene: RenderEnginScene): void {
     this.scene = scene;
+  }
+
+
+  private writeObjectUniforms(object: RenderEnginSceneObject): void {
+    const uniforms = new Float32Array(84);
+    writeMat4(uniforms, 0, toGpuMat4(object.modelMatrix ?? mat4Identity()));
+    writeMat4(uniforms, 16, toGpuMat4(this.scene.viewMatrix));
+    writeMat4(uniforms, 32, toGpuMat4(this.scene.projectionMatrix));
+    writeMat4(uniforms, 48, toGpuMat4(this.scene.projectionMatrix));
+    uniforms.set([...this.scene.cameraPosition, 1], 64);
+    uniforms.set([...this.scene.lightDirection, 0], 68);
+    uniforms.set(object.material?.albedo ?? [0.58, 0.72, 0.95, 1], 72);
+    uniforms.set(object.material?.orm ?? [1, 0.55, 0, 0], 76);
+    uniforms.set(object.material?.emissive ?? [0, 0, 0, 0], 80);
+    this.device.queue.writeBuffer(object.uniformBuffer, 0, uniforms);
   }
 
 
@@ -399,6 +440,7 @@ export class WebGpuRenderEngin {
     });
     pass.setPipeline(this.shadowPipeline);
     for (const object of this.scene.objects) {
+      this.writeObjectUniforms(object);
       pass.setBindGroup(0, object.bindGroup);
       pass.setVertexBuffer(0, object.mesh.vertexBuffer);
       pass.setIndexBuffer(object.mesh.indexBuffer, object.mesh.indexFormat);
@@ -408,6 +450,7 @@ export class WebGpuRenderEngin {
   }
 
   renderFrame(): RenderEnginFrameStats {
+    if (this.deviceLost) throw new Error('WebGPU device was lost; rebuild the Render service pipeline before rendering.');
     const started = performance.now();
     const encoder = this.device.createCommandEncoder();
     this.renderShadowPass(encoder);
@@ -430,16 +473,7 @@ export class WebGpuRenderEngin {
     let indexCount = 0;
     let drawCalls = 0;
     for (const object of this.scene.objects) {
-      const uniforms = new Float32Array(68);
-      writeMat4(uniforms, 0, toGpuMat4(object.modelMatrix ?? mat4Identity()));
-      writeMat4(uniforms, 16, toGpuMat4(this.scene.viewMatrix));
-      writeMat4(uniforms, 32, toGpuMat4(this.scene.projectionMatrix));
-      uniforms.set([...this.scene.cameraPosition, 1], 48);
-      uniforms.set([...this.scene.lightDirection, 0], 52);
-      uniforms.set(object.material?.albedo ?? [0.58, 0.72, 0.95, 1], 56);
-      uniforms.set(object.material?.orm ?? [1, 0.55, 0, 0], 60);
-      uniforms.set(object.material?.emissive ?? [0, 0, 0, 0], 64);
-      this.device.queue.writeBuffer(object.uniformBuffer, 0, uniforms);
+      this.writeObjectUniforms(object);
       pass.setBindGroup(0, object.bindGroup);
       pass.setVertexBuffer(0, object.mesh.vertexBuffer);
       pass.setIndexBuffer(object.mesh.indexBuffer, object.mesh.indexFormat);
@@ -459,6 +493,7 @@ export class WebGpuRenderEngin {
       estimatedFps: performance.now() > started ? 1000 / Math.max(0.001, performance.now() - started) : 0,
       droppedFrame: performance.now() - started > 16.7,
       measuredAt: new Date().toISOString(),
+      gpuLatencyMeasured: false,
     };
   }
 
@@ -468,6 +503,7 @@ export class WebGpuRenderEngin {
     const tick = () => {
       if (this.stopped) return;
       try {
+        if (this.deviceLost) { this.stop(); return; }
         hooks.onFrame?.(this.renderFrame());
         this.animationFrame = requestAnimationFrame(tick);
       } catch (error) {
@@ -487,14 +523,22 @@ export class WebGpuRenderEngin {
     hooks.onStop?.();
   }
 
-  dispose(): void {
-    this.stop();
+  isDeviceLost(): boolean {
+    return this.deviceLost;
+  }
+
+  disposeScene(): void {
     for (const object of this.scene.objects) {
       object.uniformBuffer.destroy();
       object.mesh.dispose();
       if (object.albedoTexture !== this.defaultAlbedoTexture) object.albedoTexture.dispose();
     }
     this.scene = { ...this.scene, objects: [] };
+  }
+
+  dispose(): void {
+    this.stop();
+    this.disposeScene();
     this.depthTexture.destroy();
     this.shadowDepthTexture.destroy();
     this.defaultAlbedoTexture.dispose();

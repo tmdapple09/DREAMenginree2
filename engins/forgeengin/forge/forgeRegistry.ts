@@ -139,7 +139,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
 ] as const;
 
-/** Just the 6 creative engines (no Forge self-reference) */
+/** Just creative Engins. Shared services such as Render are intentionally not listed here. */
 export const CREATIVE_ENGINES = ENGIN_REGISTRY.filter((e) => e.id !== 'forge');
 
 export function getEnginById(id: string): EnginEntry | null {

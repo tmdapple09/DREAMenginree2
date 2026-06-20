@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
 export const metadata = {
-  title: 'RenderEngin – DREAMengin',
-  description: 'WebGPU viewport foundation for RenderEngin.',
+  title: 'Render – DREAMengin',
+  description: 'Shared WebGPU rendering surface used by DREAMengin Engins.',
 };
 
 export default async function RenderEnginPage() {

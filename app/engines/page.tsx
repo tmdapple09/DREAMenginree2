@@ -9,7 +9,7 @@ import { connection } from 'next/server';
 
 export const metadata = {
   title: 'Engines – DREAMengin',
-  description: 'All nine DREAMengin creative engine apps.',
+  description: 'Creative Engins plus shared services.',
 };
 
 const ENGINES = [
@@ -70,12 +70,12 @@ const ENGINES = [
 
   {
     id: 'render',
-    name: 'RenderEngin',
+    name: 'Render Service',
     emoji: '🧊',
-    description: 'WebGPU viewport · render pipeline',
+    description: 'Shared WebGPU renderer used by the Engins',
     href: '/engines/render',
     accent: '#38bdf8',
-    subroutes: ['Viewport'],
+    subroutes: ['Service', 'Viewport', 'Snapshots'],
   },
   {
     id: 'forge',
@@ -104,12 +104,12 @@ export default async function EnginesHubPage( ){
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white p-6 md:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-amber-50 text-slate-950 p-6 md:p-10">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-3">
-            <Link href="/homedream" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+            <Link href="/homedream" className="text-xs text-sky-700 hover:text-sky-950 transition-colors">
               ← Daydream
             </Link>
           </div>
@@ -117,10 +117,10 @@ export default async function EnginesHubPage( ){
             <span className="bg-gradient-to-r from-[#c8981a] via-[#a855f7] to-[#22d3ee] bg-clip-text text-transparent">
               DREAM
             </span>
-            <span className="text-white">engines</span>
+            <span className="text-sky-950">engines</span>
           </h1>
-          <p className="text-white/50 mt-2 text-lg">
-            Nine creative engines — each its own app, all connected.
+          <p className="text-slate-600 mt-2 text-lg">
+            Creative Engins connected through shared services — Render is a service, not a separate creative Engin.
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export default async function EnginesHubPage( ){
             <Link
               key={engine.id}
               href={engine.href}
-              className="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-opacity-60 transition-all hover:bg-white/[0.07] overflow-hidden"
+              className="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white/85 border border-sky-100 hover:border-opacity-60 transition-all hover:bg-sky-50/80 shadow-sm overflow-hidden"
               style={{ '--accent': engine.accent } as React.CSSProperties}
             >
               {/* Glow on hover */}
@@ -156,12 +156,12 @@ export default async function EnginesHubPage( ){
                   </span>
                 </div>
                 <h2
-                  className="text-lg font-bold mb-1 group-hover:text-white transition-colors"
+                  className="text-lg font-bold mb-1 transition-colors"
                   style={{ color: engine.accent }}
                 >
                   {engine.name}
                 </h2>
-                <p className="text-sm text-white/50">{engine.description}</p>
+                <p className="text-sm text-slate-600">{engine.description}</p>
               </div>
 
               {/* Sub-routes */}
@@ -181,7 +181,7 @@ export default async function EnginesHubPage( ){
               <div
                 className="relative flex items-center justify-between pt-2 border-t border-white/[0.06]"
               >
-                <span className="text-xs text-white/30">Open engine →</span>
+                <span className="text-xs text-slate-400">Open engine →</span>
                 <span
                   className="text-xs font-medium"
                   style={{ color: engine.accent }}
@@ -194,8 +194,8 @@ export default async function EnginesHubPage( ){
         </div>
 
         {/* Footer note */}
-        <p className="text-center text-white/20 text-xs mt-10">
-          Each engine is a standalone app-within-DREAMengin · independent layout · persistent state · full feature suite
+        <p className="text-center text-slate-400 text-xs mt-10">
+          Creative Engins are production tools; Render is the shared service layer behind visual previews and snapshots.
         </p>
       </div>
     </div>

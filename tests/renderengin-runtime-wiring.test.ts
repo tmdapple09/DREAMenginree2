@@ -4,6 +4,8 @@ import { getRuntimeEnginRegistration, resolveRuntimeCapability } from '@/engine/
 import { RenderEnginRuntimeRegistration } from '@/engins/renderengin/runtimeRegistration';
 import { RenderEnginRuleSet, RENDER_ENGIN_ID, createMeshBuffers, validateMeshForRenderUpload, type RenderIntent } from '@/engins/renderengin';
 
+import { ENGIN_REGISTRY } from '@/engins/forgeengin/forge/forgeRegistry';
+
 describe('RenderEngin runtime wiring', () => {
   it('uses one canonical render id across registry, ruleset, capability, and route', () => {
     expect(RenderEnginRuntimeRegistration.id).toBe(RENDER_ENGIN_ID);
@@ -29,5 +31,13 @@ describe('RenderEngin runtime wiring', () => {
     ], [0, 1, 2]);
     expect(validateMeshForRenderUpload(valid).valid).toBe(true);
     expect(validateMeshForRenderUpload({ ...valid, indices: [0, 1, 9] }).valid).toBe(false);
+  });
+});
+
+describe('Render service identity', () => {
+  it('is not registered as a standalone creative Engin in Forge', () => {
+    expect(ENGIN_REGISTRY.some((entry) => entry.id === 'render' || entry.name === 'RenderEngin')).toBe(false);
+    expect(RenderEnginRuntimeRegistration.name).toBe('Render');
+    expect(RenderEnginRuntimeRegistration.workflowSurfaces).toEqual(expect.arrayContaining(['ContentEngin', 'GameEngin', 'CodeEngin', 'LabEngin']));
   });
 });

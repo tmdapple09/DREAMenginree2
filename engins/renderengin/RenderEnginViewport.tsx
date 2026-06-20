@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { EnginRuntime } from '@/engine/engin-runtime/EnginRuntime';
 import {
   composeModelMatrix,
@@ -64,6 +64,9 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const rendererRef = useRef<WebGpuRenderEngin | null>(null);
+  const sceneObjectRef = useRef<ReturnType<WebGpuRenderEngin['createSceneObject']> | null>(null);
+  const runtimeRef = useRef(runtime);
+  const lastFrameTelemetryAtRef = useRef(0);
   const [status, setStatus] = useState('Checking browser WebGPU support…');
   const [stats, setStats] = useState<RenderEnginFrameStats | null>(null);
   const [camera, setCamera] = useState({ azimuth: 0, elevation: 0, zoom: 2.4 });
@@ -71,8 +74,31 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
   const [assetInfo, setAssetInfo] = useState('Demo triangle loaded');
   const pointerRef = useRef<{ id: number; x: number; y: number; mode: 'orbit' | 'pan' } | null>(null);
   const sceneMeshRef = useRef<MeshBuffers>(createDemoTriangle());
+  const cameraEyeRef = useRef<Vec3>(orbitEye(0, 0, 2.4));
 
-  const cameraEye = useMemo(() => orbitEye(camera.azimuth, camera.elevation, camera.zoom), [camera]);
+  useEffect(() => { runtimeRef.current = runtime; }, [runtime]);
+
+  const applyCurrentScene = useCallback((width?: number, height?: number) => {
+    const renderer = rendererRef.current;
+    const object = sceneObjectRef.current;
+    const canvas = canvasRef.current;
+    if (!renderer || !object || !canvas) return;
+    const nextWidth = Math.max(1, width ?? canvas.width);
+    const nextHeight = Math.max(1, height ?? canvas.height);
+    const cameraEye = cameraEyeRef.current;
+    renderer.setScene({
+      viewMatrix: mat4LookAt(cameraEye, [0, 0, 0], [0, 1, 0]),
+      projectionMatrix: mat4Perspective(Math.PI / 3, nextWidth / nextHeight, 0.1, 100),
+      cameraPosition: cameraEye,
+      lightDirection: [0.25, -0.65, -1],
+      objects: [object],
+    });
+  }, []);
+
+  useEffect(() => {
+    cameraEyeRef.current = orbitEye(camera.azimuth, camera.elevation, camera.zoom);
+    applyCurrentScene();
+  }, [applyCurrentScene, camera]);
 
   useEffect(() => {
     let resizeObserver: ResizeObserver | null = null;
@@ -82,9 +108,9 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
       const canvas = canvasRef.current;
       if (!canvas) return;
       try {
-        runtime?.dispatch({ type: 'render.viewport.resize', payload: { width: canvas.width, height: canvas.height, mobile: matchMedia('(pointer: coarse)').matches } });
+        runtimeRef.current?.dispatch({ type: 'render.viewport.resize', payload: { width: canvas.width, height: canvas.height, mobile: matchMedia('(pointer: coarse)').matches } });
         const { device, adapter } = await requestWebGpuDevice();
-        runtime?.dispatch({ type: 'render.asset.preview', payload: { source: 'demo-triangle', adapter: adapter.info?.description ?? 'WebGPU adapter' } });
+        runtimeRef.current?.dispatch({ type: 'render.asset.preview', payload: { source: 'demo-triangle', adapter: adapter.info?.description ?? 'WebGPU adapter' } });
         if (cancelled) return;
         const pixelRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
         const rect = canvas.getBoundingClientRect();
@@ -94,15 +120,9 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
         rendererRef.current = renderer;
         const mesh = renderer.uploadMesh(sceneMeshRef.current);
         const object = renderer.createSceneObject(mesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
-        runtime?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source: 'demo-triangle', selectedObjectId } } });
-        const applyScene = (width = canvas.width, height = canvas.height) => renderer.setScene({
-          viewMatrix: mat4LookAt(cameraEye, [0, 0, 0], [0, 1, 0]),
-          projectionMatrix: mat4Perspective(Math.PI / 3, width / height, 0.1, 100),
-          cameraPosition: cameraEye,
-          lightDirection: [0.25, -0.65, -1],
-          objects: [object],
-        });
-        applyScene();
+        sceneObjectRef.current = object;
+        runtimeRef.current?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source: 'demo-triangle', selectedObjectId: 'object:demo-triangle' } } });
+        applyCurrentScene();
         resizeObserver = new ResizeObserver(([entry]) => {
           if (!rendererRef.current) return;
           const nextRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
@@ -111,18 +131,25 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
           canvas.width = width;
           canvas.height = height;
           rendererRef.current.resize(width, height);
-          runtime?.dispatch({ type: 'render.viewport.resize', payload: { width, height, mobile: matchMedia('(pointer: coarse)').matches } });
-          applyScene(width, height);
+          runtimeRef.current?.dispatch({ type: 'render.viewport.resize', payload: { width, height, mobile: matchMedia('(pointer: coarse)').matches } });
+          applyCurrentScene(width, height);
         });
         resizeObserver.observe(canvas);
         renderer.start({
           onReady: () => setStatus('RenderEngin WebGPU viewport running'),
-          onFrame: (nextStats) => { setStats(nextStats); runtime?.dispatch({ type: 'render.frame.render', payload: { ...nextStats } }); },
+          onFrame: (nextStats) => {
+            setStats(nextStats);
+            const now = performance.now();
+            if (now - lastFrameTelemetryAtRef.current >= 1000) {
+              lastFrameTelemetryAtRef.current = now;
+              runtimeRef.current?.dispatch({ type: 'render.frame.render', payload: { ...nextStats, telemetry: 'throttled' } });
+            }
+          },
           onError: (error) => setStatus(error.message),
         });
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        runtime?.dispatch({ type: 'render.asset.preview', payload: { status: 'fallback-2d', reason: message } });
+        runtimeRef.current?.dispatch({ type: 'render.asset.preview', payload: { status: 'fallback-2d', reason: message } });
         drawFallbackScene(canvas, '2D fallback renderer active');
         setStatus(`${message} Falling back to safe 2D preview.`);
       }
@@ -134,8 +161,9 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
       resizeObserver?.disconnect();
       rendererRef.current?.dispose();
       rendererRef.current = null;
+      sceneObjectRef.current = null;
     };
-  }, [cameraEye, runtime, selectedObjectId]);
+  }, [applyCurrentScene]);
 
   function updateCamera(next: typeof camera): void {
     setCamera(next);
@@ -148,8 +176,16 @@ export default function RenderEnginViewport({ runtime }: { runtime?: EnginRuntim
     const parsed = createParsedObjRenderAsset({ id: `asset:${file.name}`, ownerId: 'local-user', runtimeId: 'render:surface', name: file.name, source });
     const memory = estimateRenderAssetMemory(parsed.mesh);
     sceneMeshRef.current = parsed.mesh;
+    const renderer = rendererRef.current;
+    if (renderer) {
+      renderer.disposeScene();
+      const gpuMesh = renderer.uploadMesh(parsed.mesh);
+      sceneObjectRef.current = renderer.createSceneObject(gpuMesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
+      applyCurrentScene();
+    }
     runtime?.dispatch({ type: 'render.asset.register', payload: { asset: parsed.asset, manifest: parsed.manifest, memory } });
     runtime?.dispatch({ type: 'render.asset.load', payload: { id: parsed.asset.id, progress: 1, status: 'loaded', memory } });
+    runtime?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source: file.name, selectedObjectId } } });
     setAssetInfo(`${file.name} · ${parsed.validation.vertexCount} vertices · ${parsed.validation.indexCount} indices · ${memory.totalBytes} bytes`);
   }
 

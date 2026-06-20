@@ -44,8 +44,8 @@ describe('RenderEngin materials, authorization, handoffs, and performance diagno
 
   it('summarizes frame performance and evaluates benchmark gates', () => {
     const samples = [
-      frameStatsToPerformanceSample({ frameIndex: 1, cpuFrameMs: 10, drawCalls: 2, indexCount: 6, estimatedFps: 100, droppedFrame: false, measuredAt: new Date().toISOString() }),
-      frameStatsToPerformanceSample({ frameIndex: 2, cpuFrameMs: 20, drawCalls: 2, indexCount: 6, estimatedFps: 50, droppedFrame: true, measuredAt: new Date().toISOString() }),
+      frameStatsToPerformanceSample({ frameIndex: 1, cpuFrameMs: 10, drawCalls: 2, indexCount: 6, estimatedFps: 100, droppedFrame: false, measuredAt: new Date().toISOString(), gpuLatencyMeasured: false }),
+      frameStatsToPerformanceSample({ frameIndex: 2, cpuFrameMs: 20, drawCalls: 2, indexCount: 6, estimatedFps: 50, droppedFrame: true, measuredAt: new Date().toISOString(), gpuLatencyMeasured: false }),
     ];
     const report = createRenderPerformanceReport(samples);
     const mesh = createParsedObjRenderAsset({ id: 'asset:test', ownerId: 'owner:test', runtimeId: 'runtime:test', name: 'triangle.obj', source: OBJ_SOURCE }).mesh;

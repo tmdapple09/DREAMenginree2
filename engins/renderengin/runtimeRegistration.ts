@@ -3,9 +3,9 @@ import { RenderEnginRuleSet, RENDER_ENGIN_ID, RENDER_INTENT_TYPES } from './core
 
 export const RenderEnginRuntimeRegistration = registerRuntimeEngin({
   id: RENDER_ENGIN_ID,
-  name: 'RenderEngin',
+  name: 'Render',
   route: '/engines/render',
-  daydreamHref: '/daydream/render',
+  daydreamHref: '/engines/render',
   ruleSet: RenderEnginRuleSet,
   capabilityId: RENDER_ENGIN_ID,
   workflowSurfaces: ['DreamDMBar', 'HomeDream', 'DreamSpace', 'Daydream', 'ContentEngin', 'GameEngin', 'CodeEngin', 'LabEngin'],
@@ -13,7 +13,7 @@ export const RenderEnginRuntimeRegistration = registerRuntimeEngin({
   handoffs: ['content.export.glb.preview', 'game.cartridge.mesh.preview', 'code.shader.preview', 'lab.simulation.mesh.preview'],
   metadata: {
     canonicalId: RENDER_ENGIN_ID,
-    ownershipBoundary: 'RenderEngin owns render scene interpretation and GPU resources; Core Engine owns state, auth, transport, lifecycle, snapshots, and sync.',
-    browserRequirement: 'Client-only WebGPU surface with compatibility negotiation and non-WebGPU fallback messaging.',
+    ownershipBoundary: 'Render is a shared rendering service used by Engins; Core Engine owns state, auth, transport, lifecycle, snapshots, and sync.',
+    browserRequirement: 'Client-only WebGPU service surface with compatibility negotiation and non-WebGPU fallback messaging.',
   },
 });
