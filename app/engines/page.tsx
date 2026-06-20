@@ -4,6 +4,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
+import { USER_FACING_ENGINES } from '@/engins/forgeengin/forge/forgeRegistry';
 
 // SURFACE: dreamsurface.Engines  (framework-mandated basename: page.tsx)
 
@@ -12,90 +13,15 @@ export const metadata = {
   description: 'Creative Engins plus shared services.',
 };
 
-const ENGINES = [
-  {
-    id: 'games',
-    name: 'GameEngin',
-    emoji: '🎮',
-    description: 'Play, compete, build worlds',
-    href: '/engines/games',
-    accent: '#c8981a',
-    subroutes: ['Library', 'Scores', 'Builder'],
-  },
-  {
-    id: 'music',
-    name: 'StarMakerEngin',
-    emoji: '🎵',
-    description: 'Full DAW · record · arrange',
-    href: '/engines/music',
-    accent: '#a855f7',
-    subroutes: ['Studio', 'Arrange', 'Library'],
-  },
-  {
-    id: 'code',
-    name: 'CodeEngin',
-    emoji: '💻',
-    description: 'IDE · notebook · AI assistant',
-    href: '/engines/code',
-    accent: '#22d3ee',
-    subroutes: ['Notebook', 'Projects', 'AI'],
-  },
-  {
-    id: 'lab',
-    name: 'LabEngin',
-    emoji: '🔬',
-    description: 'Experiments · data viz · quantum',
-    href: '/engines/lab',
-    accent: '#10b981',
-    subroutes: ['Experiments', 'Data Viz', 'Quantum'],
-  },
-  {
-    id: 'brand',
-    name: 'BrandingEngin',
-    emoji: '🎨',
-    description: 'Identity · campaigns',
-    href: '/engines/brand',
-    accent: '#f472b6',
-    subroutes: ['Identity', 'Campaigns'],
-  },
-  {
-    id: 'create',
-    name: 'ContentEngin',
-    emoji: '✨',
-    description: 'Editor · calendar · publish queue',
-    href: '/engines/create',
-    accent: '#fb923c',
-    subroutes: ['Editor', 'Calendar', 'Queue'],
-  },
-
-  {
-    id: 'render',
-    name: 'Render Service',
-    emoji: '🧊',
-    description: 'Shared WebGPU renderer used by the Engins',
-    href: '/engines/render',
-    accent: '#38bdf8',
-    subroutes: ['Service', 'Viewport', 'Snapshots'],
-  },
-  {
-    id: 'forge',
-    name: 'ForgeEngin',
-    emoji: '🔥',
-    description: 'Meta-creation · orchestrate all engines',
-    href: '/daydream/forge',
-    accent: '#ef4444',
-    subroutes: ['Status Matrix', 'Cross-Engine', 'Activity'],
-  },
-  {
-    id: 'portfolio',
-    name: 'PortfolioEngin',
-    emoji: '📈',
-    description: 'Quantum portfolio optimization · QAOA / VQE',
-    href: '/engines/portfolio',
-    accent: '#2a8ab8',
-    subroutes: ['Optimize', 'Assets', 'Quantum'],
-  },
-] as const;
+const ENGINES = USER_FACING_ENGINES.map((engin) => ({
+  id: engin.id,
+  name: engin.name,
+  emoji: engin.emoji,
+  description: engin.desc,
+  href: engin.enginHref || engin.daydreamHref,
+  accent: engin.accent,
+  subroutes: engin.capabilities.slice(0, 3),
+}));
 
 export default async function EnginesHubPage( ){
   await connection();
@@ -114,7 +40,7 @@ export default async function EnginesHubPage( ){
             </Link>
           </div>
           <h1 className="text-4xl font-black tracking-tight">
-            <span className="bg-gradient-to-r from-[#c8981a] via-[#a855f7] to-[#22d3ee] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#38BDF8] via-[#F5B700] to-[#8EDCFF] bg-clip-text text-transparent">
               DREAM
             </span>
             <span className="text-sky-950">engines</span>

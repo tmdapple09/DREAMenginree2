@@ -1,6 +1,6 @@
 'use client';
 
-import { ENGIN_REGISTRY } from '@/engins/forgeengin/forge/forgeRegistry';
+import { USER_FACING_ENGINES } from '@/engins/forgeengin/forge/forgeRegistry';
 import { createClient } from '@/supabase/client/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -76,7 +76,7 @@ const SEARCH_DESTINATIONS: readonly SearchResult[] = [
   { id: 'settings', type: 'destination', label: 'Settings', sublabel: 'Preferences', href: '/settings' },
   { id: 'appearance', type: 'destination', label: 'Appearance', sublabel: 'Settings', href: '/settings/appearance' },
   { id: 'account', type: 'destination', label: 'Account', sublabel: 'Profile settings', href: '/edit-profiledream' },
-  ...ENGIN_REGISTRY.flatMap((engin) => [
+  ...USER_FACING_ENGINES.flatMap((engin) => [
     { id: `engin:${engin.id}`, type: 'engin' as const, label: engin.name, sublabel: 'Engin', href: engin.daydreamHref },
     { id: `engin-route:${engin.id}`, type: 'engin' as const, label: engin.id, sublabel: engin.name, href: engin.daydreamHref },
   ]),

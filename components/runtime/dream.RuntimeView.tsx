@@ -9,7 +9,7 @@ import type { RuntimeRegion } from '@/engine/identity/canonical-names';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import type { RuntimeWorld } from '@/engine/runtime/dualRuntime';
 import dynamic from 'next/dynamic';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import AlgorithmPanel from '@/components/panels/dream.panel.AlgorithmPanel';
 import AppearancePanel from '@/components/panels/dream.panel.AppearancePanel';
 import ConnectorsPanel from '@/components/panels/dream.panel.ConnectorsPanel';
@@ -24,6 +24,7 @@ import SafetyPanel from '@/components/panels/dream.panel.SafetyPanel';
 import SettingsPanel from '@/components/panels/dream.panel.SettingsPanel';
 import WidgetsPanel from '@/components/panels/dream.panel.WidgetsPanel';
 import { getDreamComponent } from '@/engine/dreams/DreamRegistry';
+import { buildApperceptiveContext } from '@/engine/runtime/apperception';
 import type { SystemPanelId } from '@/components/panels/panelTypes';
 
 // Framework directives stay physically first when required.
@@ -43,7 +44,6 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
   BrandingEngin: dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false }),
   ContentEngin: dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false }),
   ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
-  RenderEngin: dynamic(() => import('@/components/engines/render/dream.RenderEnginApp'), { ssr: false }),
 };
 
 // Imports and external modules this runtime file depends on.
@@ -109,7 +109,8 @@ type EnginSurfaceProps = { onBack: () => void; instanceId?: string };
 // Runtime functions, classes, handlers, and state transitions.
 
 function getEnginFallbackRoute(name: string): string {
-  return getEnginByName(name)?.daydreamHref ?? '/dreamdmbar/homedream';
+  const entry = getEnginByName(name);
+  return entry?.userFacing && entry.daydreamHref ? entry.daydreamHref : '/dreamdmbar/homedream';
 }
 
 export default function RuntimeView({
@@ -125,11 +126,31 @@ export default function RuntimeView({
   onOpenEngin,
   onBackFromRegion,
   runtimeId,
+  dominantRegion,
 }: RuntimeViewProps) {
   /* ── In-region iframe state ─────────────────────────────────────────────── */
   const moduleRuntimeRegion: RuntimeRegionKey = runtimeId === 'homedream' ? 'surface' : 'dream';
   const [iframeUrl,   setIframeUrl]   = useState<string | null>(null);
   const [iframeTitle, setIframeTitle] = useState<string>('');
+  const apperception = useMemo(() => buildApperceptiveContext({
+    world,
+    runtimeId,
+    runtimeRegion: moduleRuntimeRegion,
+    dominantRegion,
+    userId,
+    iframeUrl,
+    isActive,
+    canOpenInRegion: Boolean(onOpenInRegion),
+  }), [
+    world,
+    runtimeId,
+    moduleRuntimeRegion,
+    dominantRegion,
+    userId,
+    iframeUrl,
+    isActive,
+    onOpenInRegion,
+  ]);
 
   const openUrl = useCallback((url: string, title?: string) => {
     setIframeUrl(url);
@@ -159,10 +180,22 @@ export default function RuntimeView({
     contain: 'layout paint size',
   };
 
+  const apperceptionProps = {
+    'data-apperceptive-surface': apperception.surface,
+    'data-active-engin': apperception.activeEngin ?? 'none',
+    'data-current-intent': apperception.currentIntent,
+    'data-selected-object': apperception.selectedObject ?? 'none',
+    'data-capabilities': apperception.capabilities.join(','),
+    'data-capability-labels': apperception.capabilityLabels.join(','),
+    'data-next-actions': apperception.nextActions.join(','),
+    'data-render-service': apperception.render.serviceId,
+  };
+
   if (world === 'HomeDream Surface') {
     return (
-      <div style={outerStyle}>
+      <div style={outerStyle} {...apperceptionProps}>
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={iframeUrl}
           onCloseIframe={closeIframe}
           iframeTitle={iframeTitle}
@@ -187,13 +220,15 @@ export default function RuntimeView({
   if (world === 'DreamSpace') {
     return (
       <div
+        {...apperceptionProps}
         style={{
           ...outerStyle,
-          background: 'linear-gradient(180deg, #020818 0%, #08142A 42%, #0A1A30 100%)',
+          background: 'linear-gradient(180deg, var(--de-bg-start, #eff6ff) 0%, var(--de-surface, #ffffff) 48%, rgba(248, 210, 106, 0.18) 100%)',
           overflow: 'hidden',
         }}
       >
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={iframeUrl}
           onCloseIframe={closeIframe}
           iframeTitle={iframeTitle}
@@ -214,8 +249,9 @@ export default function RuntimeView({
   if (world === 'View Profile Surface') {
     if (profile?.id && profile?.handle) {
       return (
-        <div style={outerStyle}>
+        <div style={outerStyle} {...apperceptionProps}>
           <RuntimeShell
+            apperception={apperception}
             iframeUrl={iframeUrl}
             onCloseIframe={closeIframe}
             iframeTitle={iframeTitle}
@@ -232,8 +268,9 @@ export default function RuntimeView({
     }
     // Fallback when profile data is not yet available
     return (
-      <div style={outerStyle}>
+      <div style={outerStyle} {...apperceptionProps}>
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={iframeUrl}
           onCloseIframe={closeIframe}
           iframeTitle={iframeTitle}
@@ -256,8 +293,9 @@ export default function RuntimeView({
   if (typeof world === 'object' && world.type === 'dream') {
     const DreamComponent = getDreamComponent(world.id);
     return (
-      <div style={outerStyle}>
+      <div style={outerStyle} {...apperceptionProps}>
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={iframeUrl}
           onCloseIframe={closeIframe}
           iframeTitle={iframeTitle}
@@ -278,11 +316,26 @@ export default function RuntimeView({
 
   if (typeof world === 'object' && world.type === 'engin') {
     const EnginSurface = ENGIN_SURFACES[world.name];
+    const enginEntry = getEnginByName(world.name);
+    if (enginEntry && !enginEntry.userFacing) {
+      return (
+        <div style={outerStyle} {...apperceptionProps}>
+          <RuntimeShell apperception={apperception} iframeUrl={iframeUrl} onCloseIframe={closeIframe} iframeTitle={iframeTitle}>
+            <div className="de-glass" style={{ borderRadius: 28, margin: 'auto', padding: 32, maxWidth: 640, textAlign: 'center' }}>
+              <div className="de-tag">Internal service</div>
+              <div className="de-label" style={{ fontSize: 24, marginTop: 8 }}>{world.name} is used by active surfaces, not opened as its own app.</div>
+            </div>
+          </RuntimeShell>
+        </div>
+      );
+    }
+
     if (EnginSurface) {
       const instanceId = `${runtimeId}:${world.name}`;
       return (
-        <div style={outerStyle}>
+        <div style={outerStyle} {...apperceptionProps}>
           <RuntimeShell
+            apperception={apperception}
             iframeUrl={iframeUrl}
             onCloseIframe={closeIframe}
             iframeTitle={iframeTitle}
@@ -299,8 +352,8 @@ export default function RuntimeView({
 
     const route = getEnginFallbackRoute(world.name);
     return (
-      <div style={outerStyle}>
-        <RuntimeShell iframeUrl={iframeUrl} onCloseIframe={closeIframe} iframeTitle={iframeTitle}>
+      <div style={outerStyle} {...apperceptionProps}>
+        <RuntimeShell apperception={apperception} iframeUrl={iframeUrl} onCloseIframe={closeIframe} iframeTitle={iframeTitle}>
           <div className="de-glass" style={{ borderRadius: 28, margin: 'auto', padding: 32, maxWidth: 600, textAlign: 'center' }}>
             <div className="de-tag">Unavailable Engin</div>
             <div className="de-label" style={{ fontSize: 24, marginTop: 8 }}>{world.name}</div>
@@ -315,8 +368,9 @@ export default function RuntimeView({
 
   if (typeof world === 'object' && world.type === 'custom') {
     return (
-      <div style={outerStyle}>
+      <div style={outerStyle} {...apperceptionProps}>
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={world.path}
           onCloseIframe={onBackFromRegion ?? closeIframe}
           iframeTitle={world.path}
@@ -346,12 +400,14 @@ export default function RuntimeView({
     };
     return (
       <div
+        {...apperceptionProps}
         style={{
           ...outerStyle,
           background: 'var(--de-surface, #f4f8fd)',
         }}
       >
         <RuntimeShell
+          apperception={apperception}
           iframeUrl={iframeUrl}
           onCloseIframe={closeIframe}
           iframeTitle={iframeTitle}
