@@ -24,7 +24,7 @@ export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
   "surface": 300,
-  "route-surface": 277,
+  "route-surface": 276,
   "dreamsurface": 15,
   "engin": 263,
   "engine-ruleset": 0,
@@ -392,7 +392,7 @@ export const osArchitectureGraph = {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 277,
+    "route-surface": 276,
     "dreamsurface": 15,
     "engin": 263,
     "engine-ruleset": 0,
@@ -1377,6 +1377,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "app/daydream/render/page",
+      "slot": "route-surface",
+      "path": "app/daydream/render/page.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "app/discover/page",
       "slot": "route-surface",
       "path": "app/discover/page.tsx",
@@ -1710,18 +1716,6 @@ export const osArchitectureStageEntries = {
       "id": "app/engines/portfolio/quantum/page",
       "slot": "route-surface",
       "path": "app/engines/portfolio/quantum/page.tsx",
-      "engine": "Universal"
-    },
-    {
-      "id": "app/engines/render/error",
-      "slot": "route-surface",
-      "path": "app/engines/render/error.tsx",
-      "engine": "Universal"
-    },
-    {
-      "id": "app/engines/render/loading",
-      "slot": "route-surface",
-      "path": "app/engines/render/loading.tsx",
       "engine": "Universal"
     },
     {
@@ -6414,7 +6408,7 @@ User Action / Agent / CI
 | core-surface | 4 |
 | daydream | 2 |
 | surface | 300 |
-| route-surface | 277 |
+| route-surface | 276 |
 | dreamsurface | 15 |
 | engin | 263 |
 | engine-ruleset | 0 |

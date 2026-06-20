@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-20T13:02:57.973Z",
+  "generatedAt": "2026-06-20T14:42:33.574Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
-    "route-surface": 277,
+    "route-surface": 276,
     "dreamsurface": 15,
     "engin": 263,
     "engine-ruleset": 0,
@@ -1303,6 +1303,15 @@
       ]
     },
     {
+      "id": "app/daydream/render/page",
+      "slot": "route-surface",
+      "path": "app/daydream/render/page.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
       "id": "app/discover/page",
       "slot": "route-surface",
       "path": "app/discover/page.tsx",
@@ -1865,31 +1874,12 @@
       ]
     },
     {
-      "id": "app/engines/render/error",
-      "slot": "route-surface",
-      "path": "app/engines/render/error.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default"
-      ]
-    },
-    {
-      "id": "app/engines/render/loading",
-      "slot": "route-surface",
-      "path": "app/engines/render/loading.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default"
-      ]
-    },
-    {
       "id": "app/engines/render/page",
       "slot": "route-surface",
       "path": "app/engines/render/page.tsx",
       "engine": "Universal",
       "exports": [
-        "default",
-        "metadata"
+        "default"
       ]
     },
     {
@@ -3967,9 +3957,9 @@
       ]
     },
     {
-      "id": "components/engines/render/dream.RenderEnginApp",
+      "id": "components/engines/render/dream.RenderServiceDiagnostics",
       "slot": "surface",
-      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "engine": "Universal",
       "exports": [
         "default"
@@ -3981,7 +3971,7 @@
       "path": "components/engines/render/index.ts",
       "engine": "Universal",
       "exports": [
-        "RenderEnginApp"
+        "RenderServiceDiagnostics"
       ]
     },
     {
@@ -7769,8 +7759,11 @@
         "getForgeHeat",
         "INFORMATION_DOMAINS",
         "InformationDomain",
+        "INTERNAL_SERVICE_ENGINES",
+        "isUserFacingEnginName",
         "readForgeActivity",
-        "recordForgeActivity"
+        "recordForgeActivity",
+        "USER_FACING_ENGINES"
       ]
     },
     {
