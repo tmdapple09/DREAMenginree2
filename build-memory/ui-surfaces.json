@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-20T00:18:53.894Z",
+  "generated_at": "2026-06-20T14:42:24.045Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 122,
+  "count": 123,
   "surfaces": [
     {
       "type": "page",
@@ -369,6 +369,13 @@
     },
     {
       "type": "page",
+      "path": "/daydream/render",
+      "file": "app/daydream/render/page.tsx",
+      "component": "RenderServiceDaydreamRoute",
+      "imports": []
+    },
+    {
+      "type": "page",
       "path": "/discover",
       "file": "app/discover/page.tsx",
       "component": "DiscoverPage",
@@ -487,7 +494,12 @@
       "path": "/engines",
       "file": "app/engines/page.tsx",
       "component": "EnginesHubPage",
-      "imports": []
+      "imports": [
+        {
+          "name": "USER_FACING_ENGINES",
+          "from": "@/engins/forgeengin/forge/forgeRegistry"
+        }
+      ]
     },
     {
       "type": "layout",
@@ -933,13 +945,8 @@
       "type": "page",
       "path": "/engines/render",
       "file": "app/engines/render/page.tsx",
-      "component": "RenderEnginPage",
-      "imports": [
-        {
-          "name": "RenderEnginApp",
-          "from": "@/components/engines/render/dream.RenderEnginApp"
-        }
-      ]
+      "component": "RenderServiceRoute",
+      "imports": []
     },
     {
       "type": "page",
