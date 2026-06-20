@@ -1,4 +1,4 @@
-name: Export listed repo file types into one massive JSON
+name: Export DREAMengin core files into one massive JSON
 
 on:
   workflow_dispatch:
@@ -7,15 +7,15 @@ permissions:
   contents: read
 
 jobs:
-  export-one-massive-json:
+  export-core-massive-json:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Build one massive JSON export
+      - name: Build DREAMengin core JSON export
         shell: bash
         run: |
           python3 <<'PY'
@@ -29,9 +29,7 @@ jobs:
           from pathlib import Path
 
           ROOT = Path.cwd()
-
-          OUT = ROOT / "repo-massive-json-export"
-          ROOT_DOCS_OUT = OUT / "root-docs"
+          OUT = ROOT / "dreamengin-core-json-export"
 
           FILE_EXTENSIONS = {
               ".ts",
@@ -43,13 +41,6 @@ jobs:
               ".svg",
               ".wasm",
               ".html",
-          }
-
-          # These three are copied separately and are NOT placed inside all-files.json.
-          SEPARATE_ROOT_DOCS = {
-              "README.md",
-              "ARCHITECTURE.md",
-              "FILE_TREE.md",
           }
 
           IGNORE_DIRS = {
@@ -71,6 +62,7 @@ jobs:
               ".pytest_cache",
               ".mypy_cache",
               ".ruff_cache",
+              "dreamengin-core-json-export",
               "repo-massive-json-export",
               "test",
               "tests",
@@ -85,6 +77,185 @@ jobs:
               ".env.production.example",
           }
 
+          # Same core/system folders as the uploaded meaningful cut.
+          # Future files added inside these folders will be included.
+          INCLUDE_PREFIXES = {
+              "app/actions/",
+              "app/api/appeal/",
+              "app/api/auth/providers/",
+              "app/api/blocks/",
+              "app/api/ci/run/",
+              "app/api/codeengin/",
+              "app/api/content/transcribe/",
+              "app/api/drafts/",
+              "app/api/dream-windows/",
+              "app/api/dreamengin/os-status/",
+              "app/api/dreamr/",
+              "app/api/dreams/",
+              "app/api/forge/build/",
+              "app/api/gal/",
+              "app/api/game-scores/",
+              "app/api/gameengin/",
+              "app/api/home-layout/",
+              "app/api/journey/",
+              "app/api/lab/",
+              "app/api/music/",
+              "app/api/projects/",
+              "app/api/setup/google-oauth/",
+              "app/api/shared-dream/",
+              "app/api/shellhub/devices/",
+              "app/api/upload/",
+              "app/api/user/layout/",
+
+              "app/daydream/",
+              "app/discover/",
+              "app/dream-effects/",
+              "app/dreamdmbar/",
+              "app/dreamr/",
+              "app/engines/",
+              "app/homedream/",
+              "app/lab/",
+              "app/notes/",
+
+              "assembly/",
+
+              "components/auth/",
+              "components/branding/",
+              "components/contentengin/",
+              "components/core/",
+              "components/customize/",
+              "components/daydream/",
+              "components/draggable/",
+              "components/dreamengin/",
+              "components/dreamnav/",
+              "components/dreamr/",
+              "components/dreams/",
+              "components/engines/",
+              "components/forge/",
+              "components/gameengin/",
+              "components/games/",
+              "components/home/",
+              "components/icons/",
+              "components/menus/",
+              "components/messaging/",
+              "components/music/",
+              "components/onboarding/",
+              "components/optimizer/",
+              "components/panels/",
+              "components/providers/",
+              "components/runtime/",
+              "components/shaders/",
+              "components/shared-dream/",
+              "components/spatial/",
+              "components/three/",
+              "components/ui/",
+              "components/ui-system/",
+              "components/universal-editor/",
+              "components/universe/",
+              "components/warp/",
+              "components/webgpu/",
+              "components/widgets/",
+
+              "coresurfaces/home/buttons/",
+
+              "daydreams/code/",
+              "daydreams/create/",
+              "daydreams/games/",
+              "daydreams/lab/",
+              "daydreams/music/",
+              "daydreams/shared/",
+
+              "dreamdmbar/",
+              "dreamr/",
+              "dreamr/torridity/",
+
+              "engine/animation/",
+              "engine/api/",
+              "engine/artifacts/",
+              "engine/assets/",
+              "engine/consent/",
+              "engine/dream-window/",
+              "engine/dreamnav/",
+              "engine/dreams/",
+              "engine/editor/",
+              "engine/engin-runtime/",
+              "engine/events/",
+              "engine/feature-build/",
+              "engine/gct/",
+              "engine/gestures/",
+              "engine/identity/",
+              "engine/intelligence/",
+              "engine/journey/",
+              "engine/navigation/",
+              "engine/offline/",
+              "engine/os/",
+              "engine/platform/",
+              "engine/policy/",
+              "engine/reality/",
+              "engine/rendering/",
+              "engine/runtime/",
+              "engine/scene/",
+              "engine/setup/",
+              "engine/sharedDream/",
+              "engine/user-sim/",
+              "engine/vm/",
+              "engine/widgets/",
+
+              "engins/CodeEngin/",
+              "engins/autoopen/",
+              "engins/codeengin/",
+              "engins/contentengin/",
+              "engins/forgeengin/",
+              "engins/gameengin/",
+              "engins/labengin/",
+              "engins/portfolio/",
+              "engins/renderengin/",
+              "engins/rulesets/",
+              "engins/starmakerengin/",
+
+              "hooks/",
+              "optimizer/",
+          }
+
+          # Root-level files from the uploaded meaningful cut.
+          # Future root-level files are NOT automatically included.
+          INCLUDE_EXACT_FILES = {
+              "app/global-error.tsx",
+              "app/layout.tsx",
+
+              "components/dream.AudioVisualizer3D.tsx",
+              "components/dream.CreatePostModal.tsx",
+              "components/dream.DragToAnchorClose.tsx",
+              "components/dream.ForgeDreamCanvas.tsx",
+              "components/dream.IconSelector.tsx",
+              "components/dream.InnerDreamsButton.tsx",
+              "components/dream.OSShellActivator.tsx",
+              "components/dream.PhysicsLab.tsx",
+              "components/dream.ShrunkMode.tsx",
+              "components/dream.universal_asset_registry.tsx",
+              "components/dream.widget.AnchorWidget.tsx",
+              "components/dream.widget.WidgetBubble.tsx",
+
+              "engine/activeModulesStore.ts",
+              "engine/agentOS.ts",
+              "engine/dev-bypass.ts",
+              "engine/generationLaw.ts",
+              "engine/sharedDream.ts",
+              "engine/slog.ts",
+
+              "engins/dream.ForgeEngin.tsx",
+              "engins/dream.QuantumCircuitCanvas.tsx",
+              "engins/engin.BrandingEngin.tsx",
+              "engins/engin.CodeEngin.tsx",
+              "engins/engin.GameEngin.tsx",
+              "engins/engin.LabEngin.tsx",
+              "engins/engin.StarMakerEngin.tsx",
+              "engins/isosurfaceAssetPipeline.ts",
+              "engins/isosurfaceDualContouring.ts",
+
+              "export-force-english-csv-repo.mjs",
+          }
+
           def rel(path: Path) -> str:
               return path.relative_to(ROOT).as_posix()
 
@@ -97,17 +268,21 @@ jobs:
                   return False
               return name == ".env" or name.startswith(".env.")
 
-          def separate_root_doc(path: Path) -> bool:
-              return path.parent == ROOT and path.name in SEPARATE_ROOT_DOCS
+          def in_allowed_scope(source_path: str) -> bool:
+              if source_path in INCLUDE_EXACT_FILES:
+                  return True
+              return any(source_path.startswith(prefix) for prefix in INCLUDE_PREFIXES)
 
           def included(path: Path) -> bool:
-              return (
-                  path.is_file()
-                  and not ignored(path)
-                  and not secret_env(path)
-                  and not separate_root_doc(path)
-                  and path.suffix.lower() in FILE_EXTENSIONS
-              )
+              if not path.is_file():
+                  return False
+              if ignored(path):
+                  return False
+              if secret_env(path):
+                  return False
+              if path.suffix.lower() not in FILE_EXTENSIONS:
+                  return False
+              return in_allowed_scope(rel(path))
 
           def binary_file(data: bytes, suffix: str) -> bool:
               return suffix == ".wasm" or b"\x00" in data[:4096]
@@ -143,26 +318,6 @@ jobs:
                   "content_base64": content_base64,
               }
 
-          def copy_separate_root_docs() -> list[dict]:
-              copied = []
-
-              for doc in sorted(SEPARATE_ROOT_DOCS):
-                  source = ROOT / doc
-
-                  if not source.is_file():
-                      raise FileNotFoundError(f"Required root doc missing: {doc}")
-
-                  target = ROOT_DOCS_OUT / doc
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  shutil.copy2(source, target)
-
-                  copied.append({
-                      "file": doc,
-                      "copied_to": f"root-docs/{doc}",
-                  })
-
-              return copied
-
           if OUT.exists():
               shutil.rmtree(OUT)
 
@@ -174,12 +329,11 @@ jobs:
           )
 
           records = [read_record(path) for path in files]
-          copied_root_docs = copy_separate_root_docs()
 
           export = {
-              "export_kind": "single_massive_json",
+              "export_kind": "dreamengin_core_massive_json",
+              "selection_rule": "Only files inside the uploaded DREAMengin core meaningful scope, plus future files added under the same allowed folders.",
               "included_extensions": sorted(FILE_EXTENSIONS),
-              "excluded_from_all_files_json_and_copied_separately": sorted(SEPARATE_ROOT_DOCS),
               "total_files_in_all_files_json": len(records),
               "files": records,
           }
@@ -190,12 +344,14 @@ jobs:
           )
 
           manifest = {
-              "artifact_name": "repo-files-one-massive-json",
+              "artifact_name": "dreamengin-core-one-massive-json",
               "massive_json": "all-files.json",
-              "root_docs_folder": "root-docs/",
-              "root_docs_copied_separately": copied_root_docs,
               "total_files_in_all_files_json": len(records),
-              "note": "README.md, ARCHITECTURE.md, and FILE_TREE.md are copied as separate files and are not embedded in all-files.json.",
+              "included_extensions": sorted(FILE_EXTENSIONS),
+              "included_prefixes": sorted(INCLUDE_PREFIXES),
+              "included_exact_files": sorted(INCLUDE_EXACT_FILES),
+              "excluded_dirs": sorted(IGNORE_DIRS),
+              "note": "This export is scope-allowlisted. It does not export every matching extension in the repo.",
           }
 
           (OUT / "manifest.json").write_text(
@@ -203,19 +359,16 @@ jobs:
               encoding="utf-8",
           )
 
-          summary = f"""# Massive JSON export complete
+          summary = f"""# DREAMengin core JSON export complete
 
           Created:
 
           - `all-files.json`
           - `manifest.json`
-          - `root-docs/README.md`
-          - `root-docs/ARCHITECTURE.md`
-          - `root-docs/FILE_TREE.md`
 
           Files embedded in `all-files.json`: **{len(records)}**
 
-          The three root markdown docs were copied separately, not embedded.
+          Scope: uploaded DREAMengin core meaningful files and future files added under the same allowed folders.
           """
 
           print(summary)
@@ -225,11 +378,11 @@ jobs:
               Path(step_summary).write_text(summary, encoding="utf-8")
           PY
 
-      - name: Upload massive JSON artifact zip
-        uses: actions/upload-artifact@v4
+      - name: Upload DREAMengin core JSON artifact
+        uses: actions/upload-artifact@v6
         with:
-          name: repo-files-one-massive-json
-          path: repo-massive-json-export
+          name: dreamengin-core-one-massive-json
+          path: dreamengin-core-json-export
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 2
           compression-level: 9
