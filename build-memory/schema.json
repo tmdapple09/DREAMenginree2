@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-19T00:28:09.988Z",
+  "generated_at": "2026-06-20T00:18:53.894Z",
   "generator": "scripts/sync-build-memory.mjs",
   "sources": [
     "types/supabase.ts",
     "supabase/migrations/"
   ],
-  "count": 153,
+  "count": 154,
   "tables": [
     {
       "table": "activity_points",
@@ -1540,6 +1540,40 @@
         }
       ],
       "source": "20260319065444_new-migration.sql"
+    },
+    {
+      "table": "connector_feed_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid primary key default gen_random_uuid()"
+        },
+        {
+          "name": "user_id",
+          "type": "uuid not null references public"
+        },
+        {
+          "name": "provider",
+          "type": "text not null"
+        },
+        {
+          "name": "external_id",
+          "type": "text not null"
+        },
+        {
+          "name": "payload",
+          "type": "jsonb not null default"
+        },
+        {
+          "name": "published_at",
+          "type": "timestamp with time zone not null default now()"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone not null default now()"
+        }
+      ],
+      "source": "20260619034000_connector_feed_items.sql"
     },
     {
       "table": "connectors_tokens",
