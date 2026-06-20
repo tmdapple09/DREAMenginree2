@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-19T00:27:51.496Z
+Generated: 2026-06-20T14:41:46.422Z
 
 ---
 
@@ -864,6 +864,7 @@ _No style files for this feature._
 - `@/engins/gameengin/index`
 - `@/engins/gameengin/post-fx`
 - `@/engins/gameengin/registerCartridges`
+- `@/engins/renderengin`
 - `@/engins/rulesets/game/gameEnginRuleSet`
 - `@/engins/rulesets/game/useGameEnginRuntime`
 - `@/hooks/useMotionTilt`
@@ -1813,6 +1814,7 @@ _No style files for this feature._
 - `app/daydream/music/page.tsx`
 - `app/daydream/music/upload/page.tsx`
 - `app/daydream/play/page.tsx`
+- `app/daydream/render/page.tsx`
 
 <a name="daydream-components"></a>
 
@@ -2403,7 +2405,7 @@ _No style files for this feature._
 
 ## Special Capabilities
 
-**Supabase** (6 files)
+**Supabase** (5 files)
 
 ### Supabase files
 
@@ -2412,7 +2414,6 @@ _No style files for this feature._
 - `components/panels/dream.panel.ProfilePanel.tsx`
 - `components/panels/dream.panel.SafetyPanel.tsx`
 - `components/panels/dream.panel.SettingsPanel.tsx`
-- `components/panels/dream.panel.WidgetsPanel.tsx`
 
 ---
 
@@ -2521,6 +2522,7 @@ _No style files for this feature._
 - `app/messages/boards/[id]/page.tsx`
 - `app/messages/boards/new/page.tsx`
 - `app/messages/boards/page.tsx`
+- `app/messages/new/page.tsx`
 - `app/messages/page.tsx`
 
 <a name="messages-components"></a>
@@ -3872,7 +3874,6 @@ _No style files for this feature._
 
 - `@/app/dreamdmbar/_components/HomeDreamRegion`
 - `@/components/dreams/dreamsurface.dreamspace`
-- `@/components/engines/render/dream.RenderEnginApp`
 - `@/components/panels/dream.panel.AlgorithmPanel`
 - `@/components/panels/dream.panel.AppearancePanel`
 - `@/components/panels/dream.panel.ConnectorsPanel`
@@ -3892,6 +3893,7 @@ _No style files for this feature._
 - `@/components/ui-system/runtimeViewport`
 - `@/engine/dreams/DreamRegistry`
 - `@/engine/identity/canonical-names`
+- `@/engine/runtime/apperception`
 - `@/engine/runtime/dualRuntime`
 - `@/engine/runtime/iEngine`
 - `@/engins/dream.ForgeEngin`
@@ -4062,6 +4064,7 @@ _No style files for this feature._
 | `/daydream/music/engin` | `app/daydream/music/engin/page.tsx` |  |
 | `/daydream/music/upload` | `app/daydream/music/upload/page.tsx` |  |
 | `/daydream/play` | `app/daydream/play/page.tsx` |  |
+| `/daydream/render` | `app/daydream/render/page.tsx` |  |
 
 ## `/discover`
 
@@ -4201,6 +4204,7 @@ _No style files for this feature._
 | `/messages/boards` | `app/messages/boards/page.tsx` |  |
 | `/messages/boards/:id` | `app/messages/boards/[id]/page.tsx` |  |
 | `/messages/boards/new` | `app/messages/boards/new/page.tsx` |  |
+| `/messages/new` | `app/messages/new/page.tsx` |  |
 
 ## `/mission`
 
@@ -5936,6 +5940,12 @@ _No style files for this feature._
 | `next/navigation` | `redirect` |
 | `next/server` | `connection` |
 
+## `app/daydream/render/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `next/navigation` | `redirect` |
+
 ## `app/discover/page.tsx`
 
 | Module | Connected via |
@@ -6460,6 +6470,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engine/dev-bypass` | `isDevBypassActive` |
+| `@/engins/forgeengin/forge/forgeRegistry` | `USER_FACING_ENGINES` |
 | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `@/supabase/server/serverClient` | `createServerClient` |
 | `next/link` | `⬡ Link` |
@@ -6523,12 +6534,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/engines/render/dream.RenderEnginApp` | `⬡ RenderEnginApp` |
-| `@/engine/dev-bypass` | `isDevBypassActive` |
-| `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `@/supabase/server/serverClient` | `createServerClient` |
 | `next/navigation` | `redirect` |
-| `next/server` | `connection` |
 
 ## `app/error.tsx`
 
@@ -6758,6 +6764,16 @@ _No style files for this feature._
 | `@/supabase/server/serverClient` | `createServerClient` |
 | `lucide-react` | `ArrowLeft`, `Layout`, `Plus` |
 | `next/link` | `⬡ Link` |
+| `next/navigation` | `redirect` |
+| `next/server` | `connection` |
+
+## `app/messages/new/page.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `@/supabase/server/serverClient` | `createServerClient` |
+| `@supabase/supabase-js` | `SupabaseClient` |
 | `next/navigation` | `redirect` |
 | `next/server` | `connection` |
 
@@ -8083,7 +8099,7 @@ _No style files for this feature._
 | `@/engine/intelligence/useSessionIntelligence` | `useSessionIntelligence` |
 | `@/engins/forgeengin/forge/forgeIntelligence` | `ForgeHistoryEntry`, `ForgeSuggestion`, `generateSuggestions`, `readForgeHistory` |
 | `@/engins/forgeengin/forge/forgeMomentum` | `MomentumLevel`, `MomentumSnapshot`, `computeMomentum`, `getLevelColor` |
-| `@/engins/forgeengin/forge/forgeRegistry` | `ENGIN_REGISTRY`, `ForgeActivityPulse`, `readForgeActivity` |
+| `@/engins/forgeengin/forge/forgeRegistry` | `ForgeActivityPulse`, `USER_FACING_ENGINES`, `readForgeActivity` |
 | `@/types/dreamArtifact` | `RuntimeRegionKey` |
 | `framer-motion` | `AnimatePresence`, `motion` |
 | `next/navigation` | `useRouter` |
@@ -8296,7 +8312,7 @@ _No style files for this feature._
 | `lucide-react` | `Info`, `Play`, `RotateCcw`, `Zap` |
 | `react` | `useCallback`, `useState` |
 
-## `components/engines/render/dream.RenderEnginApp.tsx`
+## `components/engines/render/dream.RenderServiceDiagnostics.tsx`
 
 | Module | Connected via |
 |--------|---------------|
@@ -8376,7 +8392,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `lucide-react` | `UserCheck`, `UserPlus` |
-| `react` | `useState` |
+| `react` | `useEffect`, `useState` |
 
 ## `components/feed/dream.FollowOnboarding.tsx`
 
@@ -8970,8 +8986,6 @@ _No style files for this feature._
 |--------|---------------|
 | `@/components/ui/dream.DreamWord` | `⬡ DreamWord` |
 | `@/dreamdmbar/runtime/DreamSystemContext` | `useDreamSystem` |
-| `@/supabase/client/client` | `createClient` |
-| `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `lucide-react` | `ArrowLeft`, `Eye`, `EyeOff`, `LayoutGrid`, `Loader2`, `Pin` |
 | `react` | `useEffect`, `useState` |
 
@@ -9069,6 +9083,7 @@ _No style files for this feature._
 | `@/components/spatial/dream.shell.EnhancedSpatialShell` | `⬡ EnhancedSpatialShell` |
 | `@/engine/dreams/DreamRegistry` | `getDreamComponent` |
 | `@/engine/identity/canonical-names` | `RuntimeRegion` |
+| `@/engine/runtime/apperception` | `buildApperceptiveContext` |
 | `@/engine/runtime/dualRuntime` | `RuntimeWorld` |
 | `@/engins/forgeengin/forge/forgeRegistry` | `getEnginByName` |
 | `@/types/dreamArtifact` | `RuntimeRegionKey` |
@@ -9079,13 +9094,13 @@ _No style files for this feature._
 | `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
 | `@/engins/engin.ContentEngin` | _(dynamic import)_ |
 | `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
-| `@/components/engines/render/dream.RenderEnginApp` | _(dynamic import)_ |
 
 ## `components/runtime/dream.shell.RuntimeShell.tsx`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/components/ui-system/runtimeViewport` | `isCompactRuntimeViewport` |
+| `@/engine/runtime/apperception` | `ApperceptiveContext` |
 
 ## `components/shaders/dream.LightningWing.tsx`
 
@@ -9659,7 +9674,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/forgeengin/forge/forgeRegistry` | `ENGIN_REGISTRY` |
+| `@/engins/forgeengin/forge/forgeRegistry` | `USER_FACING_ENGINES` |
 | `@/supabase/client/client` | `createClient` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
 
@@ -11602,6 +11617,16 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./memory` | `BAR_Y_SCALE`, `MAX_WORKERS`, `SAB_BYTES`, `SNAP_THRESHOLD_RATIO`, `Workgroup`, `buildWorkgroups`, `createEnginSAB`, `f64Telemetry`, `int32AxisState`, `int32DreamDMBarX`, `int32DreamDMBarY`, `int32LockedState` |
+| `@/engins/renderengin/core` | `RenderIntentType` |
+
+## `engine/runtime/apperception.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./dualRuntime` | `RuntimeWorld` |
+| `@/engine/identity/canonical-names` | `RuntimeRegion` |
+| `@/engins/forgeengin/forge/forgeRegistry` | `getEnginByName` |
+| `@/types/dreamArtifact` | `RuntimeRegionKey` |
 
 ## `engine/runtime/channelMetrics.ts`
 
@@ -12091,6 +12116,8 @@ _No style files for this feature._
 |--------|---------------|
 | `@/engins/contentengin/AssetViewport` | `⬡ AssetViewport` |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | `useImplicitAssetWorkspace` |
+| `@/engins/renderengin` | `dispatchRenderHandoff` |
+| `next/navigation` | `useRouter` |
 
 ## `engins/contentengin/assetTypes.ts`
 
@@ -12529,6 +12556,7 @@ _No style files for this feature._
 | `@/engins/gameengin/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
 | `@/engins/gameengin/games/useGamepad` | `useGamepad` |
 | `@/engins/gameengin/games/useRemoteChannel` | `useRemoteChannel` |
+| `@/engins/renderengin` | `dispatchRenderHandoff` |
 | `@/engins/rulesets/game/gameEnginRuleSet` | `GameScore`, `GravityPreset`, `PhysicsConfig`, `ScriptLanguage`, `ScriptState`, `TileType` |
 | `@/engins/rulesets/game/useGameEnginRuntime` | `useGameEnginRuntime` |
 | `@/supabase/client/client` | `createClient` |
@@ -13081,7 +13109,14 @@ _No style files for this feature._
 | `./core` | `MeshBuffers`, `RenderIntent`, `Vec3`, `composeModelMatrix`, `createMeshBuffers`, `mat4LookAt`, `mat4Perspective` |
 | `./webgpu` | `RenderEnginFrameStats`, `WebGpuRenderEngin`, `requestWebGpuDevice` |
 | `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
-| `react` | `useEffect`, `useMemo`, `useRef`, `useState` |
+| `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/renderengin/advancedRendering.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `DualQuaternion`, `Mat4`, `MeshBuffers`, `Quat`, `Vec3`, `Vec4`, `Vertex`, `makeDualQuaternion`, `mat4Identity`, `mat4Mul`, `mat4Transform`, `quatMul`, `v3add`, `v3length`, `v3normalize`, `v3scale`, `v3sub` |
+| `./virtualization` | `RenderBounds`, `RenderFrustumPlane` |
 
 ## `engins/renderengin/animation.ts`
 
@@ -13102,6 +13137,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/completionEvidence.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `../../engine/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject`, `JsonValue` |
 
 ## `engins/renderengin/core.ts`
 
@@ -13125,12 +13166,25 @@ _No style files for this feature._
 | `./core` | `Vec3`, `v3normalize` |
 | `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
 
+## `engins/renderengin/liveBenchmark.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./webgpu` | `WebGpuRenderEngin` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
 ## `engins/renderengin/materials.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./core` | `Vec3`, `clamp01` |
 | `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
+
+## `engins/renderengin/performanceIntegrity.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
 
 ## `engins/renderengin/postProcessing.ts`
 
@@ -13158,11 +13212,32 @@ _No style files for this feature._
 | `./core` | `Mat4`, `Quat`, `Vec3`, `composeModelMatrix`, `mat4Identity`, `mat4Mul` |
 | `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject`, `JsonValue` |
 
+## `engins/renderengin/security.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/serviceIntegration.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `RenderIntentType` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+| `@/engine/runtime/EnginDispatcher` | `EnginDispatcher`, `RenderDispatcherIntent` |
+
 ## `engins/renderengin/textures.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `@/engine/engin-runtime/EnginBaseState` | `DomainObject`, `DomainVisibility`, `JsonObject` |
+
+## `engins/renderengin/viewportControls.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `Vec2`, `Vec3`, `v3dot`, `v3length`, `v3normalize`, `v3scale`, `v3sub` |
+| `./virtualization` | `RenderBounds` |
 
 ## `engins/renderengin/virtualization.ts`
 
@@ -13175,7 +13250,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `mat4Identity` |
+| `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `mat4Identity`, `validateMeshForRenderUpload` |
 
 ## `engins/rulesets/brand/brandEnginRuleSet.ts`
 
@@ -14029,9 +14104,28 @@ _No style files for this feature._
 | `@/engins/isosurfaceDualContouring` | _(dynamic import)_ |
 | `@/engins/labengin/implicitSurface` | _(dynamic import)_ |
 | `@/engins/portfolio/dream.PortfolioEngin` | _(dynamic import)_ |
+| `@/engins/renderengin/advancedRendering` | _(dynamic import)_ |
+| `@/engins/renderengin/animation` | _(dynamic import)_ |
+| `@/engins/renderengin/assets` | _(dynamic import)_ |
+| `@/engins/renderengin/benchmarkProof` | _(dynamic import)_ |
+| `@/engins/renderengin/completionEvidence` | _(dynamic import)_ |
 | `@/engins/renderengin/core` | _(dynamic import)_ |
+| `@/engins/renderengin/diagnostics` | _(dynamic import)_ |
 | `@/engins/renderengin/index` | _(dynamic import)_ |
+| `@/engins/renderengin/lighting` | _(dynamic import)_ |
+| `@/engins/renderengin/liveBenchmark` | _(dynamic import)_ |
+| `@/engins/renderengin/materials` | _(dynamic import)_ |
+| `@/engins/renderengin/performanceIntegrity` | _(dynamic import)_ |
+| `@/engins/renderengin/postProcessing` | _(dynamic import)_ |
 | `@/engins/renderengin/RenderEnginViewport` | _(dynamic import)_ |
+| `@/engins/renderengin/renderSettings` | _(dynamic import)_ |
+| `@/engins/renderengin/runtimeRegistration` | _(dynamic import)_ |
+| `@/engins/renderengin/scene` | _(dynamic import)_ |
+| `@/engins/renderengin/security` | _(dynamic import)_ |
+| `@/engins/renderengin/serviceIntegration` | _(dynamic import)_ |
+| `@/engins/renderengin/textures` | _(dynamic import)_ |
+| `@/engins/renderengin/viewportControls` | _(dynamic import)_ |
+| `@/engins/renderengin/virtualization` | _(dynamic import)_ |
 | `@/engins/renderengin/webgpu` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/brandEnginRuleSet` | _(dynamic import)_ |
 | `@/engins/rulesets/brand/useBrandEnginRuntime` | _(dynamic import)_ |
@@ -14330,6 +14424,8 @@ _No style files for this feature._
 | `@/app/engines/portfolio/optimize/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/quantum/page` | _(dynamic import)_ |
+| `@/app/engines/render/error` | _(dynamic import)_ |
+| `@/app/engines/render/loading` | _(dynamic import)_ |
 | `@/app/engines/render/page` | _(dynamic import)_ |
 | `@/app/feed-settings/dream.FeedSettingsClient` | _(dynamic import)_ |
 | `@/app/feed-settings/page` | _(dynamic import)_ |
@@ -14349,6 +14445,7 @@ _No style files for this feature._
 | `@/app/messages/boards/[id]/page` | _(dynamic import)_ |
 | `@/app/messages/boards/new/page` | _(dynamic import)_ |
 | `@/app/messages/boards/page` | _(dynamic import)_ |
+| `@/app/messages/new/page` | _(dynamic import)_ |
 | `@/app/messages/page` | _(dynamic import)_ |
 | `@/app/mission/page` | _(dynamic import)_ |
 | `@/app/notes/page` | _(dynamic import)_ |
@@ -14525,7 +14622,7 @@ _No style files for this feature._
 | `@/components/engines/portfolio/panels/dream.panel.AssetsPanel` | _(dynamic import)_ |
 | `@/components/engines/portfolio/panels/dream.panel.OptimizePanel` | _(dynamic import)_ |
 | `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel` | _(dynamic import)_ |
-| `@/components/engines/render/dream.RenderEnginApp` | _(dynamic import)_ |
+| `@/components/engines/render/dream.RenderServiceDiagnostics` | _(dynamic import)_ |
 | `@/components/engines/render/index` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.bar.EnginNavBar` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.EnginProvider` | _(dynamic import)_ |
@@ -14855,7 +14952,6 @@ _No style files for this feature._
 - `@/engins/engin.BrandingEngin`
 - `@/engins/engin.ContentEngin`
 - `@/engins/dream.ForgeEngin`
-- `@/components/engines/render/dream.RenderEnginApp`
 
 ## `daydreams/games/page.tsx`
 
@@ -16118,9 +16214,28 @@ _No style files for this feature._
 - `@/engins/isosurfaceDualContouring`
 - `@/engins/labengin/implicitSurface`
 - `@/engins/portfolio/dream.PortfolioEngin`
+- `@/engins/renderengin/advancedRendering`
+- `@/engins/renderengin/animation`
+- `@/engins/renderengin/assets`
+- `@/engins/renderengin/benchmarkProof`
+- `@/engins/renderengin/completionEvidence`
 - `@/engins/renderengin/core`
+- `@/engins/renderengin/diagnostics`
 - `@/engins/renderengin/index`
+- `@/engins/renderengin/lighting`
+- `@/engins/renderengin/liveBenchmark`
+- `@/engins/renderengin/materials`
+- `@/engins/renderengin/performanceIntegrity`
+- `@/engins/renderengin/postProcessing`
 - `@/engins/renderengin/RenderEnginViewport`
+- `@/engins/renderengin/renderSettings`
+- `@/engins/renderengin/runtimeRegistration`
+- `@/engins/renderengin/scene`
+- `@/engins/renderengin/security`
+- `@/engins/renderengin/serviceIntegration`
+- `@/engins/renderengin/textures`
+- `@/engins/renderengin/viewportControls`
+- `@/engins/renderengin/virtualization`
 - `@/engins/renderengin/webgpu`
 - `@/engins/rulesets/brand/brandEnginRuleSet`
 - `@/engins/rulesets/brand/useBrandEnginRuntime`
@@ -16395,6 +16510,8 @@ _No style files for this feature._
 - `@/app/engines/portfolio/optimize/page`
 - `@/app/engines/portfolio/page`
 - `@/app/engines/portfolio/quantum/page`
+- `@/app/engines/render/error`
+- `@/app/engines/render/loading`
 - `@/app/engines/render/page`
 - `@/app/feed-settings/dream.FeedSettingsClient`
 - `@/app/feed-settings/page`
@@ -16414,6 +16531,7 @@ _No style files for this feature._
 - `@/app/messages/boards/[id]/page`
 - `@/app/messages/boards/new/page`
 - `@/app/messages/boards/page`
+- `@/app/messages/new/page`
 - `@/app/messages/page`
 - `@/app/mission/page`
 - `@/app/notes/page`
@@ -16590,7 +16708,7 @@ _No style files for this feature._
 - `@/components/engines/portfolio/panels/dream.panel.AssetsPanel`
 - `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
 - `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
-- `@/components/engines/render/dream.RenderEnginApp`
+- `@/components/engines/render/dream.RenderServiceDiagnostics`
 - `@/components/engines/render/index`
 - `@/components/engines/shared/dream.bar.EnginNavBar`
 - `@/components/engines/shared/dream.EnginProvider`
@@ -17273,6 +17391,7 @@ _No style files for this feature._
 - `app/daydream/lab/portfolio/page.tsx`
 - `app/daydream/music/page.tsx`
 - `app/daydream/music/upload/page.tsx`
+- `app/daydream/render/page.tsx`
 
 ## `app/discover/`
 
@@ -17347,8 +17466,6 @@ _No style files for this feature._
 - `app/engines/portfolio/optimize/page.tsx`
 - `app/engines/portfolio/page.tsx`
 - `app/engines/portfolio/quantum/page.tsx`
-- `app/engines/render/error.tsx`
-- `app/engines/render/loading.tsx`
 - `app/engines/render/page.tsx`
 
 ## `app/error.tsx/`
@@ -17779,7 +17896,7 @@ _No style files for this feature._
 - `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx`
 - `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`
 - `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx`
-- `components/engines/render/dream.RenderEnginApp.tsx`
+- `components/engines/render/dream.RenderServiceDiagnostics.tsx`
 - `components/engines/shared/dream.EnginProvider.tsx`
 - `components/engines/shared/dream.bar.EnginNavBar.tsx`
 - `components/engines/shared/dream.makeEnginApp.tsx`
@@ -18556,6 +18673,7 @@ _No style files for this feature._
 - `engine/intelligence/useSessionIntelligence.ts`
 - `engine/os/index.ts`
 - `engine/runtime/EnginDispatcher.ts`
+- `engine/runtime/apperception.ts`
 - `engine/runtime/channelMetrics.ts`
 - `engine/runtime/dreamOSBus.ts`
 - `engine/runtime/dualRuntime.ts`
@@ -18582,6 +18700,7 @@ _No style files for this feature._
 - `engins/gameengin/GameRuntime.tsx`
 - `engins/gameengin/games/DualSenseManager.ts`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
+- `engins/renderengin/serviceIntegration.ts`
 - `engins/rulesets/useEnginWorkflow.ts`
 - `readme-autosync.ts`
 - `scripts/generate-repo-state.mjs`
@@ -18643,7 +18762,6 @@ _No style files for this feature._
 - `app/api/gal/route.ts`
 - `app/api/home-layout/route.ts`
 - `app/api/lab/benchmarks/route.ts`
-- `app/api/likes/route.ts`
 - `app/api/messages/route.ts`
 - `app/api/metrics/platform/route.ts`
 - `app/api/metrics/user/[userId]/route.ts`
@@ -18684,6 +18802,7 @@ _No style files for this feature._
 - `app/login/page.tsx`
 - `app/marketplace/[id]/page.tsx`
 - `app/marketplace/sell/page.tsx`
+- `app/messages/new/page.tsx`
 - `app/profile/[handle]/page.tsx`
 - `app/settings/safety/page.tsx`
 - `app/settings/security/page.tsx`
@@ -18702,7 +18821,6 @@ _No style files for this feature._
 - `components/panels/dream.panel.ProfilePanel.tsx`
 - `components/panels/dream.panel.SafetyPanel.tsx`
 - `components/panels/dream.panel.SettingsPanel.tsx`
-- `components/panels/dream.panel.WidgetsPanel.tsx`
 - `components/profile/dream.ProfileCanvas.tsx`
 - `components/shared-dream/dream.SharedDreamProvider.tsx`
 - `coresurfaces/dreamsurface.EditProfileDream.tsx`
@@ -18867,6 +18985,7 @@ _No style files for this feature._
 - `engine/runtime/useDragSurface.ts`
 - `engins/gameengin/GameEnginCore.ts`
 - `engins/gameengin/registerCartridges.ts`
+- `engins/renderengin/serviceIntegration.ts`
 - `readme-autosync.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/readme-autosync.ts`
@@ -18889,11 +19008,12 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 42 |
+| `engins/engin.GameEngin.tsx` | 43 |
 | `engins/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
-| `components/runtime/dream.RuntimeView.tsx` | 25 |
+| `components/runtime/dream.RuntimeView.tsx` | 26 |
 | `engins/contentengin/pipeline/build.ts` | 25 |
+| `engins/renderengin/index.ts` | 22 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -18908,7 +19028,6 @@ _No circular dependencies detected._
 | `daydreams/games/page.tsx` | 15 |
 | `engins/dream.ForgeEngin.tsx` | 15 |
 | `engins/engin.CodeEngin.tsx` | 15 |
-| `engins/renderengin/index.ts` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `engine/generated/index.ts` | 14 |
@@ -18928,11 +19047,12 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 42 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 43 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `components/runtime/dream.RuntimeView.tsx` | 25 | HIGH_COUPLING, DUAL_RUNTIME |
+| `components/runtime/dream.RuntimeView.tsx` | 26 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
+| `engins/renderengin/index.ts` | 22 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -18947,7 +19067,6 @@ _No circular dependencies detected._
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `engins/renderengin/index.ts` | 15 | HIGH_COUPLING |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `engine/generated/index.ts` | 14 | HIGH_COUPLING |
@@ -19053,6 +19172,7 @@ _No circular dependencies detected._
 | `app/engines/music/arrange/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/music/library/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/music/studio/page.tsx` | 7 | MEDIUM_COUPLING |
+| `app/engines/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/assets/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/optimize/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/engines/portfolio/quantum/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -19115,9 +19235,7 @@ _No circular dependencies detected._
 | `app/engines/create/queue/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/lab/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/music/page.tsx` | 6 | MEDIUM_COUPLING |
-| `app/engines/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/engines/portfolio/page.tsx` | 6 | MEDIUM_COUPLING |
-| `app/engines/render/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/lab/[id]/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/messages/boards/page.tsx` | 6 | MEDIUM_COUPLING |
 | `app/notes/page.tsx` | 6 | MEDIUM_COUPLING |
@@ -19132,7 +19250,6 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.MarketplacePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.ProfilePanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SettingsPanel.tsx` | 6 | MEDIUM_COUPLING |
-| `components/panels/dream.panel.WidgetsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
 | `dreamdmbar/runtime/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
@@ -19143,6 +19260,7 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
+| `tests/renderengin-runtime-wiring.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/shell-cartridge-wiring.test.ts` | 6 | MEDIUM_COUPLING |
 | `components/dream.ForgeDreamCanvas.tsx` | 5 | EVENT_BUS |
 | `tests/engin-dispatcher.test.ts` | 5 | RUNTIME_REGISTRY, DUAL_RUNTIME |
@@ -19184,15 +19302,19 @@ _No circular dependencies detected._
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
+| `engins/renderengin/serviceIntegration.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
 | `tests/module-registry.test.ts` | 3 | EVENT_BUS, ZUSTAND_STATE |
 | `tests/phase8f-daydream-activation.test.ts` | 3 | EVENT_BUS |
 | `tests/phase8g-dual-runtime-persistence.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
+| `tests/render-full-integration.test.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `tests/render-service-integration.test.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/universal-visual-modularity.test.ts` | 3 | EVENT_BUS |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/engin-runtime/HotRuntime.ts` | 2 | RUNTIME_REGISTRY |
+| `engine/runtime/EnginDispatcher.ts` | 2 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/runtime/dropTargetRegistry.ts` | 2 | RUNTIME_REGISTRY |
 | `engine/runtime/useDualRuntime.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/useEnginBridge.ts` | 2 | EVENT_BUS, DUAL_RUNTIME |
@@ -19209,7 +19331,6 @@ _No circular dependencies detected._
 | `tests/runtime-channel.test.ts` | 2 | EVENT_BUS |
 | `engine/collaboration/index.ts` | 1 | EVENT_BUS |
 | `engine/dreams/types.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `engine/runtime/EnginDispatcher.ts` | 1 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/runtime/runtimeChannel.ts` | 1 | EVENT_BUS |
 | `engine/events/event-bus/index.ts` | 0 | EVENT_BUS |
 | `engine/events/eventBus.ts` | 0 | EVENT_BUS, DUAL_RUNTIME |
@@ -19293,8 +19414,8 @@ _No circular dependencies detected._
 | `app/api/connectors/[provider]/connect/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/api/connectors/[provider]/disconnect/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/connectors/[provider]/disconnect/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `app/api/connectors/[provider]/items/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/connectors/[provider]/items/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/api/connectors/[provider]/items/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/connectors/[provider]/sync/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/connectors/[provider]/sync/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/api/connectors/[provider]/verify/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
@@ -19360,8 +19481,8 @@ _No circular dependencies detected._
 | `app/api/marketplace/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/api/messages/boards/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/messages/boards/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `app/api/messages/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/messages/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/api/messages/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/api/metrics/platform/route.ts` | `@/supabase/server/serverClient` | `createServerClient`, `createServiceClient` |
 | `app/api/metrics/platform/route.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/api/metrics/user/[userId]/route.ts` | `@/supabase/server/serverClient` | `createServerClient` |
@@ -19523,8 +19644,6 @@ _No circular dependencies detected._
 | `app/engines/portfolio/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/engines/portfolio/quantum/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `app/engines/render/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `app/engines/render/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/error.tsx` | `@/supabase/client/client` | `createClient` |
 | `app/feed-settings/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/feed-settings/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
@@ -19551,6 +19670,8 @@ _No circular dependencies detected._
 | `app/messages/boards/[id]/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/messages/boards/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/messages/boards/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/messages/new/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `app/messages/new/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/messages/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
 | `app/messages/page.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `app/notes/page.tsx` | `@/supabase/server/serverClient` | `createServerClient` |
@@ -19605,8 +19726,6 @@ _No circular dependencies detected._
 | `components/panels/dream.panel.SafetyPanel.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `components/panels/dream.panel.SettingsPanel.tsx` | `@/supabase/client/client` | `createClient` |
 | `components/panels/dream.panel.SettingsPanel.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `components/panels/dream.panel.WidgetsPanel.tsx` | `@/supabase/client/client` | `createClient` |
-| `components/panels/dream.panel.WidgetsPanel.tsx` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `components/profile/dream.ProfileCanvas.tsx` | `@/supabase/client/client` | `createClient` |
 | `components/shared-dream/dream.SharedDreamProvider.tsx` | `@/supabase/client/client` | `createClient` |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | `@/supabase/client/client` | `createClient` |
@@ -19742,8 +19861,6 @@ _No circular dependencies detected._
 | `app/engines/layout.tsx` | `(default)` |
 | `app/engines/music/layout.tsx` | `metadata`, `(default)` |
 | `app/engines/portfolio/layout.tsx` | `metadata`, `(default)` |
-| `app/engines/render/error.tsx` | `(default)` |
-| `app/engines/render/loading.tsx` | `(default)` |
 | `app/error.tsx` | `(default)` |
 | `app/feed-settings/dream.FeedSettingsClient.tsx` | `(default)` |
 | `app/global-error.tsx` | `(default)` |
@@ -19912,8 +20029,8 @@ _No circular dependencies detected._
 | `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` | `(default)` |
 | `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` | `(default)` |
 | `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` | `(default)` |
-| `components/engines/render/dream.RenderEnginApp.tsx` | `(default)` |
-| `components/engines/render/index.ts` | `RenderEnginApp` |
+| `components/engines/render/dream.RenderServiceDiagnostics.tsx` | `(default)` |
+| `components/engines/render/index.ts` | `RenderServiceDiagnostics` |
 | `components/engines/shared/dream.EnginProvider.tsx` | `EnginProvider`, `useEngin` |
 | `components/engines/shared/dream.bar.EnginNavBar.tsx` | `(default)` |
 | `components/engines/shared/dream.makeEnginApp.tsx` | `makeEnginApp`, `(default)` |
@@ -20315,6 +20432,7 @@ _No circular dependencies detected._
 | `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx` | `ArtifactSlot`, `useArtifactSlot`, `useOptionalArtifactSlot` |
 | `engins/forgeengin/enginpipe/telemetry/events.ts` | `TelemetryEventSchema` |
 | `engins/forgeengin/forge-ngn/assembly.ts` | `MIN_PIECES`, `MAX_PIECES`, `removeConnection`, `isValidAssembly`, `deserializeAssembly` |
+| `engins/forgeengin/forge/forgeRegistry.ts` | `INTERNAL_SERVICE_ENGINES`, `isUserFacingEnginName` |
 | `engins/gameengin/GameEnginCore.ts` | `validateConfig` |
 | `engins/gameengin/GameRuntime.tsx` | `(default)` |
 | `engins/gameengin/brain-reader.ts` | `readMechanic`, `readInspiration`, `readPrinciple`, `logRDSession` |
@@ -20369,17 +20487,24 @@ _No circular dependencies detected._
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
 | `engins/renderengin/RenderEnginViewport.tsx` | `(default)` |
+| `engins/renderengin/advancedRendering.ts` | `applyMorphTargets`, `skinVertexDqs`, `buildDualQuaternionPalette`, `planBoneStorage`, `createTimestampQueryPlan`, `reduceTimestampPairs`, `markDeviceLost`, `markDeviceRebuilding`, `markDeviceRestored`, `buildMeshlets`, `planComputeCulling`, `buildIndirectDrawCommands`, `planStreamingPages`, `compressGeometryQuantized`, `solveTwoBoneIk`, `applySkinMatrixToVertex`, `combinePoseMatrix` |
 | `engins/renderengin/animation.ts` | `sampleKeyframes`, `evaluateAnimationClip` |
 | `engins/renderengin/assets.ts` | `parseObjMesh`, `parseGlbHeader`, `renderAssetManifestToJson`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `parseGlbMesh`, `createParsedGlbRenderAsset` |
-| `engins/renderengin/benchmarkProof.ts` | `createTenMillionPolygonProof`, `evaluateGpuBenchmarkProof` |
-| `engins/renderengin/core.ts` | `v3add`, `v3scale`, `v3dot`, `mat4Transform`, `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `makeDualQuaternion`, `quatMul`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `RENDER_ENGIN_NAME` |
+| `engins/renderengin/benchmarkProof.ts` | `createTenMillionPolygonProof`, `evaluateGpuBenchmarkProof`, `createTenMillionTriangleBenchmarkScene`, `certifyTenMillionScene` |
+| `engins/renderengin/completionEvidence.ts` | `createRenderCompletionEvidence` |
+| `engins/renderengin/core.ts` | `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `RENDER_ENGIN_NAME` |
 | `engins/renderengin/diagnostics.ts` | `createRenderPerformanceReport`, `frameStatsToPerformanceSample`, `createBenchmarkScene`, `evaluateRenderPerformanceGate` |
 | `engins/renderengin/lighting.ts` | `createRenderLight`, `createRenderEnvironment`, `summarizeRenderLights` |
+| `engins/renderengin/liveBenchmark.ts` | `isMobileRenderUserAgent`, `summarizeLiveBenchmark`, `runRenderLiveBenchmark` |
 | `engins/renderengin/materials.ts` | `createRenderMaterial`, `packRenderMaterial`, `updateRenderMaterial` |
+| `engins/renderengin/performanceIntegrity.ts` | `DEFAULT_RENDER_PERFORMANCE_THRESHOLDS`, `evaluateRenderPerformanceIntegrity` |
 | `engins/renderengin/postProcessing.ts` | `createRenderPostProcessGraph`, `executePostProcessPixel` |
 | `engins/renderengin/renderSettings.ts` | `createRenderQualitySettings`, `switchRenderPreviewMode` |
 | `engins/renderengin/scene.ts` | `defaultRenderTransform`, `createRenderScene`, `createRenderSceneObject`, `addObjectToRenderScene`, `selectRenderSceneObjects`, `updateRenderSceneObject`, `removeRenderSceneObject`, `setRenderSceneEnvironment`, `computeRenderObjectWorldMatrix`, `serializeRenderScene`, `deserializeRenderScene`, `undoRenderScene`, `redoRenderScene`, `renderSceneSummary` |
+| `engins/renderengin/security.ts` | `authorizeRenderCapability`, `validateRenderAssetManifestServer` |
+| `engins/renderengin/serviceIntegration.ts` | `RENDER_SERVICE_PIPELINE`, `RENDER_SERVICE_COMMANDS`, `RENDER_SERVICE_HANDOFFS`, `createRenderServiceIntent`, `getRenderHandoffForSource`, `dispatchRenderServiceIntent`, `dispatchRenderHandoff` |
 | `engins/renderengin/textures.ts` | `calculateMipLevelCount`, `estimateTextureBytes`, `validateRenderTexture`, `createRenderTexture`, `createTextureMemoryReport` |
+| `engins/renderengin/viewportControls.ts` | `panRenderCamera`, `orbitRenderCamera`, `zoomRenderCamera`, `pinchZoomRenderCamera`, `resetRenderCamera`, `fitCameraToBounds`, `createViewportRay`, `raycastSphere`, `pickRenderObject`, `createBoundingBoxLines`, `transformGizmoDelta`, `createAxisHelper` |
 | `engins/renderengin/virtualization.ts` | `computeMeshBounds`, `sphereIntersectsFrustum`, `selectScreenSpaceLod`, `cullRenderScene`, `buildInstanceBatches`, `createTerrainChunks` |
 | `engins/renderengin/webgpu.ts` | `SHADER`, `toGpuMat4`, `packAosVertexBuffer` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
@@ -20780,8 +20905,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   │   │   │   ├── items
 │   │   │   │   │   └── route.ts ⚠
-│   │   │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
-│   │   │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │   │   │       ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │   │   │       └── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │   │   ├── sync
 │   │   │   │   │   └── route.ts ⚠
 │   │   │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
@@ -20959,8 +21084,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   │   │   └── route.ts ⚠
-│   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
-│   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │       ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   ├── metrics
 │   │   │   ├── platform
 │   │   │   │   └── route.ts ⚠
@@ -21200,7 +21325,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
-│   │   └── play  [Daydream System]
+│   │   ├── play  [Daydream System]
+│   │   │   └── page.tsx
+│   │   └── render  [Daydream System]
 │   │       └── page.tsx
 │   ├── discover  [Feed & Social]
 │   │   └── page.tsx ⚠
@@ -21385,13 +21512,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   │   ├── render
-│   │   │   ├── error.tsx ∅
-│   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── loading.tsx ∅
-│   │   │   │   └── ∅ unused: (default)
-│   │   │   └── page.tsx ⚠
-│   │   │       ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
-│   │   │       └── ⚠ @/supabase/server/serverClient  (createServerClient)
+│   │   │   └── page.tsx
 │   │   ├── layout.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
@@ -21459,6 +21580,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── page.tsx ⚠
 │   │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   ├── new  [Messages & DMs]
+│   │   │   └── page.tsx ⚠
+│   │   │       ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   │       └── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │   └── page.tsx ⚠
 │   │       ├── ⚠ @/supabase/server/serverClient  (createServerClient)
 │   │       └── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
@@ -21861,10 +21986,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── index.ts ∅
 │   │   │       └── ∅ unused: PortfolioEnginApp, AssetsPanel, OptimizePanel, PortfolioQuantumPanel
 │   │   ├── render
-│   │   │   ├── dream.RenderEnginApp.tsx ∅
+│   │   │   ├── dream.RenderServiceDiagnostics.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
-│   │   │       └── ∅ unused: RenderEnginApp
+│   │   │       └── ∅ unused: RenderServiceDiagnostics
 │   │   ├── shared
 │   │   │   ├── dream.bar.EnginNavBar.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
@@ -22075,9 +22200,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⚠ @/supabase/client/client  (createClient)
 │   │   │   ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.WidgetsPanel.tsx ⚠ ∅
-│   │   │   ├── ⚠ @/supabase/client/client  (createClient)
-│   │   │   ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
+│   │   ├── dream.panel.WidgetsPanel.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   └── panelTypes.ts ∅
 │   │       └── ∅ unused: PANEL_META
@@ -22829,6 +22952,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   └── ∅ unused: computeDelta, mergeDelta
 │   │   │   └── index.ts ∅
 │   │   │       └── ∅ unused: createBridge, computeDelta, mergeDelta
+│   │   ├── apperception.ts
 │   │   ├── channelMetrics.ts ∅
 │   │   │   └── ∅ unused: recordError, getAllChannelMetrics, resetChannelMetrics
 │   │   ├── coercionTable.ts ∅
@@ -23177,7 +23301,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── forgeIntelligence.ts
 │   │   │   ├── forgeMomentum.ts
 │   │   │   ├── forgeNexus.ts
-│   │   │   ├── forgeRegistry.ts
+│   │   │   ├── forgeRegistry.ts ∅
+│   │   │   │   └── ∅ unused: INTERNAL_SERVICE_ENGINES, isUserFacingEnginName
 │   │   │   ├── forgeRituals.ts
 │   │   │   ├── useForgeActivity.ts
 │   │   │   └── useForgeBuild.ts
@@ -23449,21 +23574,29 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── dream.PortfolioEngin.tsx ∅
 │   │       └── ∅ unused: (default)
 │   ├── renderengin
+│   │   ├── advancedRendering.ts ∅
+│   │   │   └── ∅ unused: applyMorphTargets, skinVertexDqs, buildDualQuaternionPalette, planBoneStorage, createTimestampQueryPlan, reduceTimestampPairs, markDeviceLost, markDeviceRebuilding, markDeviceRestored, buildMeshlets, planComputeCulling, buildIndirectDrawCommands, planStreamingPages, compressGeometryQuantized, solveTwoBoneIk, applySkinMatrixToVertex, combinePoseMatrix
 │   │   ├── animation.ts ∅
 │   │   │   └── ∅ unused: sampleKeyframes, evaluateAnimationClip
 │   │   ├── assets.ts ∅
 │   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
 │   │   ├── benchmarkProof.ts ∅
-│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof
+│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof, createTenMillionTriangleBenchmarkScene, certifyTenMillionScene
+│   │   ├── completionEvidence.ts ∅
+│   │   │   └── ∅ unused: createRenderCompletionEvidence
 │   │   ├── core.ts ∅
-│   │   │   └── ∅ unused: v3add, v3scale, v3dot, mat4Transform, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
+│   │   │   └── ∅ unused: projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
 │   │   ├── diagnostics.ts ∅
 │   │   │   └── ∅ unused: createRenderPerformanceReport, frameStatsToPerformanceSample, createBenchmarkScene, evaluateRenderPerformanceGate
 │   │   ├── index.ts
 │   │   ├── lighting.ts ∅
 │   │   │   └── ∅ unused: createRenderLight, createRenderEnvironment, summarizeRenderLights
+│   │   ├── liveBenchmark.ts ∅
+│   │   │   └── ∅ unused: isMobileRenderUserAgent, summarizeLiveBenchmark, runRenderLiveBenchmark
 │   │   ├── materials.ts ∅
 │   │   │   └── ∅ unused: createRenderMaterial, packRenderMaterial, updateRenderMaterial
+│   │   ├── performanceIntegrity.ts ∅
+│   │   │   └── ∅ unused: DEFAULT_RENDER_PERFORMANCE_THRESHOLDS, evaluateRenderPerformanceIntegrity
 │   │   ├── postProcessing.ts ∅
 │   │   │   └── ∅ unused: createRenderPostProcessGraph, executePostProcessPixel
 │   │   ├── RenderEnginViewport.tsx ∅
@@ -23473,8 +23606,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── runtimeRegistration.ts
 │   │   ├── scene.ts ∅
 │   │   │   └── ∅ unused: defaultRenderTransform, createRenderScene, createRenderSceneObject, addObjectToRenderScene, selectRenderSceneObjects, updateRenderSceneObject, removeRenderSceneObject, setRenderSceneEnvironment, computeRenderObjectWorldMatrix, serializeRenderScene, deserializeRenderScene, undoRenderScene, redoRenderScene, renderSceneSummary
+│   │   ├── security.ts ∅
+│   │   │   └── ∅ unused: authorizeRenderCapability, validateRenderAssetManifestServer
+│   │   ├── serviceIntegration.ts ∅
+│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, createRenderServiceIntent, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff
 │   │   ├── textures.ts ∅
 │   │   │   └── ∅ unused: calculateMipLevelCount, estimateTextureBytes, validateRenderTexture, createRenderTexture, createTextureMemoryReport
+│   │   ├── viewportControls.ts ∅
+│   │   │   └── ∅ unused: panRenderCamera, orbitRenderCamera, zoomRenderCamera, pinchZoomRenderCamera, resetRenderCamera, fitCameraToBounds, createViewportRay, raycastSphere, pickRenderObject, createBoundingBoxLines, transformGizmoDelta, createAxisHelper
 │   │   ├── virtualization.ts ∅
 │   │   │   └── ∅ unused: computeMeshBounds, sphereIntersectsFrustum, selectScreenSpaceLod, cullRenderScene, buildInstanceBatches, createTerrainChunks
 │   │   └── webgpu.ts ∅
@@ -24025,6 +24164,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-homedream-system.test.ts
 │   ├── readme-section13-code-codeengin.test.ts
 │   ├── readme-section6-homedream.test.ts
+│   ├── render-completion-evidence.test.ts
+│   ├── render-full-integration.test.ts
+│   ├── render-service-integration.test.ts
+│   ├── render-viewport-lifecycle-source.test.ts
+│   ├── render-viewport-security-performance.test.ts
+│   ├── renderengin-advanced-rendering.test.ts
 │   ├── renderengin-assets-scene.test.ts
 │   ├── renderengin-core.test.ts
 │   ├── renderengin-glb-virtual-animation.test.ts

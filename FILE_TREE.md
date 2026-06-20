@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-19T00:27:51.631Z
+Generated: 2026-06-20T14:41:46.556Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -1908,12 +1908,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── (dynamic)  ← @/engins/engin.StarMakerEngin
 │   │   │       ├── → (default)
 │   │   │       └── → metadata
-│   │   └── play  [Daydream System]
+│   │   ├── play  [Daydream System]
+│   │   │   └── page.tsx
+│   │   │       ├── DEFAULT_GAME_ID  ← @/engins/gameengin/games/navigation
+│   │   │       ├── buildGameLaunchHref  ← @/engins/gameengin/games/navigation
+│   │   │       ├── redirect  ← next/navigation
+│   │   │       ├── connection  ← next/server
+│   │   │       └── → (default)
+│   │   └── render  [Daydream System]
 │   │       └── page.tsx
-│   │           ├── DEFAULT_GAME_ID  ← @/engins/gameengin/games/navigation
-│   │           ├── buildGameLaunchHref  ← @/engins/gameengin/games/navigation
 │   │           ├── redirect  ← next/navigation
-│   │           ├── connection  ← next/server
 │   │           └── → (default)
 │   ├── discover  [Feed & Social]
 │   │   └── page.tsx ⚠
@@ -2494,27 +2498,16 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── connection  ← next/server
 │   │   │       └── → (default)
 │   │   ├── render
-│   │   │   ├── error.tsx ∅
-│   │   │   │   ├── → (default)
-│   │   │   │   └── ∅ unused: (default)
-│   │   │   ├── loading.tsx ∅
-│   │   │   │   ├── → (default)
-│   │   │   │   └── ∅ unused: (default)
-│   │   │   └── page.tsx ⚠
-│   │   │       ├── ⬡ RenderEnginApp  ← @/components/engines/render/dream.RenderEnginApp
-│   │   │       ├── isDevBypassActive  ← @/engine/dev-bypass
-│   │   │       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
-│   │   │       ├── createServerClient  ⚠ @/supabase/server/serverClient
+│   │   │   └── page.tsx
 │   │   │       ├── redirect  ← next/navigation
-│   │   │       ├── connection  ← next/server
-│   │   │       ├── → (default)
-│   │   │       └── → metadata
+│   │   │       └── → (default)
 │   │   ├── layout.tsx ∅
 │   │   │   ├── ReactNode  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── page.tsx ⚠
 │   │       ├── isDevBypassActive  ← @/engine/dev-bypass
+│   │       ├── USER_FACING_ENGINES  ← @/engins/forgeengin/forge/forgeRegistry
 │   │       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
 │   │       ├── createServerClient  ⚠ @/supabase/server/serverClient
 │   │       ├── ⬡ Link  ← next/link
@@ -2736,6 +2729,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── connection  ← next/server
 │   │   │       ├── → (default)
 │   │   │       └── → metadata
+│   │   ├── new  [Messages & DMs]
+│   │   │   └── page.tsx ⚠
+│   │   │       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
+│   │   │       ├── createServerClient  ⚠ @/supabase/server/serverClient
+│   │   │       ├── SupabaseClient  ← @supabase/supabase-js
+│   │   │       ├── redirect  ← next/navigation
+│   │   │       ├── connection  ← next/server
+│   │   │       └── → (default)
 │   │   └── page.tsx ⚠
 │   │       ├── ⬡ MessagesClient  ← @/components/dream.MessagesClient
 │   │       ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
@@ -4012,8 +4013,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── MomentumSnapshot  ← @/engins/forgeengin/forge/forgeMomentum
 │   │   │   ├── computeMomentum  ← @/engins/forgeengin/forge/forgeMomentum
 │   │   │   ├── getLevelColor  ← @/engins/forgeengin/forge/forgeMomentum
-│   │   │   ├── ENGIN_REGISTRY  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   │   ├── ForgeActivityPulse  ← @/engins/forgeengin/forge/forgeRegistry
+│   │   │   ├── USER_FACING_ENGINES  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   │   ├── readForgeActivity  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
 │   │   │   ├── AnimatePresence  ← framer-motion
@@ -4334,7 +4335,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → PortfolioQuantumPanel
 │   │   │       └── ∅ unused: PortfolioEnginApp, AssetsPanel, OptimizePanel, PortfolioQuantumPanel
 │   │   ├── render
-│   │   │   ├── dream.RenderEnginApp.tsx ∅
+│   │   │   ├── dream.RenderServiceDiagnostics.tsx ∅
 │   │   │   │   ├── makeEnginApp  ← @/components/engines/shared
 │   │   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
 │   │   │   │   ├── RenderEnginRuleSet  ← @/engins/renderengin
@@ -4344,8 +4345,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → (default)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
-│   │   │       ├── → RenderEnginApp
-│   │   │       └── ∅ unused: RenderEnginApp
+│   │   │       ├── → RenderServiceDiagnostics
+│   │   │       └── ∅ unused: RenderServiceDiagnostics
 │   │   ├── shared
 │   │   │   ├── dream.bar.EnginNavBar.tsx ∅
 │   │   │   │   ├── ⬡ Link  ← next/link
@@ -4442,6 +4443,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.FollowButton.tsx ∅
 │   │   │   ├── UserCheck  ← lucide-react
 │   │   │   ├── UserPlus  ← lucide-react
+│   │   │   ├── useEffect  ← react
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
@@ -5383,11 +5385,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
-│   │   ├── dream.panel.WidgetsPanel.tsx ⚠ ∅
+│   │   ├── dream.panel.WidgetsPanel.tsx ∅
 │   │   │   ├── ⬡ DreamWord  ← @/components/ui/dream.DreamWord
 │   │   │   ├── useDreamSystem  ← @/dreamdmbar/runtime/DreamSystemContext
-│   │   │   ├── createClient  ⚠ @/supabase/client/client
-│   │   │   ├── safeGetUser  ⚠ @/supabase/client/safeGetUser
 │   │   │   ├── ArrowLeft  ← lucide-react
 │   │   │   ├── Eye  ← lucide-react
 │   │   │   ├── EyeOff  ← lucide-react
@@ -5529,6 +5529,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── ⬡ EnhancedSpatialShell  ← @/components/spatial/dream.shell.EnhancedSpatialShell
 │   │   │   ├── getDreamComponent  ← @/engine/dreams/DreamRegistry
 │   │   │   ├── RuntimeRegion  ← @/engine/identity/canonical-names
+│   │   │   ├── buildApperceptiveContext  ← @/engine/runtime/apperception
 │   │   │   ├── RuntimeWorld  ← @/engine/runtime/dualRuntime
 │   │   │   ├── getEnginByName  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
@@ -5539,11 +5540,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
 │   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
 │   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
-│   │   │   ├── (dynamic)  ← @/components/engines/render/dream.RenderEnginApp
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.shell.RuntimeShell.tsx ∅
 │   │       ├── isCompactRuntimeViewport  ← @/components/ui-system/runtimeViewport
+│   │       ├── ApperceptiveContext  ← @/engine/runtime/apperception
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
 │   ├── shaders
@@ -6975,7 +6976,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── useState  ← react
 │   │   │   └── → useDreamDMMessages
 │   │   ├── useDreamSearch.ts ⚠
-│   │   │   ├── ENGIN_REGISTRY  ← @/engins/forgeengin/forge/forgeRegistry
+│   │   │   ├── USER_FACING_ENGINES  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   │   ├── createClient  ⚠ @/supabase/client/client
 │   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
@@ -10369,6 +10370,12 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │       ├── → createBridge
 │   │   │       ├── → mergeDelta
 │   │   │       └── ∅ unused: createBridge, computeDelta, mergeDelta
+│   │   ├── apperception.ts
+│   │   │   ├── RuntimeWorld  ← ./dualRuntime
+│   │   │   ├── RuntimeRegion  ← @/engine/identity/canonical-names
+│   │   │   ├── getEnginByName  ← @/engins/forgeengin/forge/forgeRegistry
+│   │   │   ├── RuntimeRegionKey  ← @/types/dreamArtifact
+│   │   │   └── → buildApperceptiveContext
 │   │   ├── channelMetrics.ts ∅
 │   │   │   ├── getChannelMetrics  ← @/engine/runtime/channelMetrics
 │   │   │   ├── recordEmission  ← @/engine/runtime/channelMetrics
@@ -10476,6 +10483,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── int32DreamDMBarX  ← ./memory
 │   │   │   ├── int32DreamDMBarY  ← ./memory
 │   │   │   ├── int32LockedState  ← ./memory
+│   │   │   ├── RenderIntentType  ← @/engins/renderengin/core
 │   │   │   ├── → EnginDispatcher
 │   │   │   ├── → initWasmEngine
 │   │   │   └── ∅ unused: initWasmEngine
@@ -11914,6 +11922,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ImplicitAssetWorkspace.tsx ∅
 │   │   │   ├── ⬡ AssetViewport  ← @/engins/contentengin/AssetViewport
 │   │   │   ├── useImplicitAssetWorkspace  ← @/engins/contentengin/useImplicitAssetWorkspace
+│   │   │   ├── dispatchRenderHandoff  ← @/engins/renderengin
+│   │   │   ├── useRouter  ← next/navigation
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── performancePlan.ts
@@ -12092,18 +12102,22 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → computeNodes
 │   │   │   │   ├── → detectClusters
 │   │   │   │   └── → findDominantPipeline
-│   │   │   ├── forgeRegistry.ts
+│   │   │   ├── forgeRegistry.ts ∅
 │   │   │   │   ├── → CREATIVE_ENGINES
 │   │   │   │   ├── → ENGIN_REGISTRY
 │   │   │   │   ├── → FORGE_HISTORY_KEY
 │   │   │   │   ├── → FORGE_WORKFLOWS
 │   │   │   │   ├── → INFORMATION_DOMAINS
+│   │   │   │   ├── → INTERNAL_SERVICE_ENGINES
+│   │   │   │   ├── → USER_FACING_ENGINES
 │   │   │   │   ├── → formatRelativeTime
 │   │   │   │   ├── → getEnginById
 │   │   │   │   ├── → getEnginByName
 │   │   │   │   ├── → getForgeHeat
+│   │   │   │   ├── → isUserFacingEnginName
 │   │   │   │   ├── → readForgeActivity
-│   │   │   │   └── → recordForgeActivity
+│   │   │   │   ├── → recordForgeActivity
+│   │   │   │   └── ∅ unused: INTERNAL_SERVICE_ENGINES, isUserFacingEnginName
 │   │   │   ├── forgeRituals.ts
 │   │   │   │   ├── CREATIVE_ENGINES  ← ./forgeRegistry
 │   │   │   │   ├── ENGIN_REGISTRY  ← ./forgeRegistry
@@ -13162,6 +13176,44 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
 │   ├── renderengin
+│   │   ├── advancedRendering.ts ∅
+│   │   │   ├── DualQuaternion  ← ./core
+│   │   │   ├── Mat4  ← ./core
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── Quat  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── Vec4  ← ./core
+│   │   │   ├── Vertex  ← ./core
+│   │   │   ├── makeDualQuaternion  ← ./core
+│   │   │   ├── mat4Identity  ← ./core
+│   │   │   ├── mat4Mul  ← ./core
+│   │   │   ├── mat4Transform  ← ./core
+│   │   │   ├── quatMul  ← ./core
+│   │   │   ├── v3add  ← ./core
+│   │   │   ├── v3length  ← ./core
+│   │   │   ├── v3normalize  ← ./core
+│   │   │   ├── v3scale  ← ./core
+│   │   │   ├── v3sub  ← ./core
+│   │   │   ├── RenderBounds  ← ./virtualization
+│   │   │   ├── RenderFrustumPlane  ← ./virtualization
+│   │   │   ├── → applyMorphTargets
+│   │   │   ├── → applySkinMatrixToVertex
+│   │   │   ├── → buildDualQuaternionPalette
+│   │   │   ├── → buildIndirectDrawCommands
+│   │   │   ├── → buildMeshlets
+│   │   │   ├── → combinePoseMatrix
+│   │   │   ├── → compressGeometryQuantized
+│   │   │   ├── → createTimestampQueryPlan
+│   │   │   ├── → markDeviceLost
+│   │   │   ├── → markDeviceRebuilding
+│   │   │   ├── → markDeviceRestored
+│   │   │   ├── → planBoneStorage
+│   │   │   ├── → planComputeCulling
+│   │   │   ├── → planStreamingPages
+│   │   │   ├── → reduceTimestampPairs
+│   │   │   ├── → skinVertexDqs
+│   │   │   ├── → solveTwoBoneIk
+│   │   │   └── ∅ unused: applyMorphTargets, skinVertexDqs, buildDualQuaternionPalette, planBoneStorage, createTimestampQueryPlan, reduceTimestampPairs, markDeviceLost, markDeviceRebuilding, markDeviceRestored, buildMeshlets, planComputeCulling, buildIndirectDrawCommands, planStreamingPages, compressGeometryQuantized, solveTwoBoneIk, applySkinMatrixToVertex, combinePoseMatrix
 │   │   ├── animation.ts ∅
 │   │   │   ├── Mat4  ← ./core
 │   │   │   ├── Quat  ← ./core
@@ -13202,9 +13254,17 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
 │   │   ├── benchmarkProof.ts ∅
 │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → certifyTenMillionScene
 │   │   │   ├── → createTenMillionPolygonProof
+│   │   │   ├── → createTenMillionTriangleBenchmarkScene
 │   │   │   ├── → evaluateGpuBenchmarkProof
-│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof
+│   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof, createTenMillionTriangleBenchmarkScene, certifyTenMillionScene
+│   │   ├── completionEvidence.ts ∅
+│   │   │   ├── DomainObject  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonObject  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← ../../engine/engin-runtime/EnginBaseState
+│   │   │   ├── → createRenderCompletionEvidence
+│   │   │   └── ∅ unused: createRenderCompletionEvidence
 │   │   ├── core.ts ∅
 │   │   │   ├── DomainObject  ← ../../engine/engin-runtime/EnginBaseState
 │   │   │   ├── DomainVisibility  ← ../../engine/engin-runtime/EnginBaseState
@@ -13253,7 +13313,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → v3scale
 │   │   │   ├── → v3sub
 │   │   │   ├── → validateMeshForRenderUpload
-│   │   │   └── ∅ unused: v3add, v3scale, v3dot, mat4Transform, projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, makeDualQuaternion, quatMul, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
+│   │   │   └── ∅ unused: projectVertex, computeTangents, ggxDistribution, schlickG1, smithGeometry, fresnelSchlick, shadeCookTorrance, unpackOrm, evaluateJointWorldMatrices, evaluateSkinMatrices, skinVertexLbs, selectLod, clusterizeMesh, buildClusterDag, RENDER_ENGIN_NAME
 │   │   ├── diagnostics.ts ∅
 │   │   │   ├── MeshBuffers  ← ./core
 │   │   │   ├── RenderEnginFrameStats  ← ./webgpu
@@ -13275,6 +13335,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createRenderLight
 │   │   │   ├── → summarizeRenderLights
 │   │   │   └── ∅ unused: createRenderLight, createRenderEnvironment, summarizeRenderLights
+│   │   ├── liveBenchmark.ts ∅
+│   │   │   ├── WebGpuRenderEngin  ← ./webgpu
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → isMobileRenderUserAgent
+│   │   │   ├── → runRenderLiveBenchmark
+│   │   │   ├── → summarizeLiveBenchmark
+│   │   │   └── ∅ unused: isMobileRenderUserAgent, summarizeLiveBenchmark, runRenderLiveBenchmark
 │   │   ├── materials.ts ∅
 │   │   │   ├── Vec3  ← ./core
 │   │   │   ├── clamp01  ← ./core
@@ -13285,6 +13352,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → packRenderMaterial
 │   │   │   ├── → updateRenderMaterial
 │   │   │   └── ∅ unused: createRenderMaterial, packRenderMaterial, updateRenderMaterial
+│   │   ├── performanceIntegrity.ts ∅
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → DEFAULT_RENDER_PERFORMANCE_THRESHOLDS
+│   │   │   ├── → evaluateRenderPerformanceIntegrity
+│   │   │   └── ∅ unused: DEFAULT_RENDER_PERFORMANCE_THRESHOLDS, evaluateRenderPerformanceIntegrity
 │   │   ├── postProcessing.ts ∅
 │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   ├── → createRenderPostProcessGraph
@@ -13304,8 +13376,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── WebGpuRenderEngin  ← ./webgpu
 │   │   │   ├── requestWebGpuDevice  ← ./webgpu
 │   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
+│   │   │   ├── useCallback  ← react
 │   │   │   ├── useEffect  ← react
-│   │   │   ├── useMemo  ← react
 │   │   │   ├── useRef  ← react
 │   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
@@ -13347,6 +13419,24 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → undoRenderScene
 │   │   │   ├── → updateRenderSceneObject
 │   │   │   └── ∅ unused: defaultRenderTransform, createRenderScene, createRenderSceneObject, addObjectToRenderScene, selectRenderSceneObjects, updateRenderSceneObject, removeRenderSceneObject, setRenderSceneEnvironment, computeRenderObjectWorldMatrix, serializeRenderScene, deserializeRenderScene, undoRenderScene, redoRenderScene, renderSceneSummary
+│   │   ├── security.ts ∅
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── → authorizeRenderCapability
+│   │   │   ├── → validateRenderAssetManifestServer
+│   │   │   └── ∅ unused: authorizeRenderCapability, validateRenderAssetManifestServer
+│   │   ├── serviceIntegration.ts ∅
+│   │   │   ├── RenderIntentType  ← ./core
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── EnginDispatcher  ← @/engine/runtime/EnginDispatcher
+│   │   │   ├── RenderDispatcherIntent  ← @/engine/runtime/EnginDispatcher
+│   │   │   ├── → RENDER_SERVICE_COMMANDS
+│   │   │   ├── → RENDER_SERVICE_HANDOFFS
+│   │   │   ├── → RENDER_SERVICE_PIPELINE
+│   │   │   ├── → createRenderServiceIntent
+│   │   │   ├── → dispatchRenderHandoff
+│   │   │   ├── → dispatchRenderServiceIntent
+│   │   │   ├── → getRenderHandoffForSource
+│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, createRenderServiceIntent, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff
 │   │   ├── textures.ts ∅
 │   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
@@ -13357,6 +13447,28 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → estimateTextureBytes
 │   │   │   ├── → validateRenderTexture
 │   │   │   └── ∅ unused: calculateMipLevelCount, estimateTextureBytes, validateRenderTexture, createRenderTexture, createTextureMemoryReport
+│   │   ├── viewportControls.ts ∅
+│   │   │   ├── Vec2  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── v3dot  ← ./core
+│   │   │   ├── v3length  ← ./core
+│   │   │   ├── v3normalize  ← ./core
+│   │   │   ├── v3scale  ← ./core
+│   │   │   ├── v3sub  ← ./core
+│   │   │   ├── RenderBounds  ← ./virtualization
+│   │   │   ├── → createAxisHelper
+│   │   │   ├── → createBoundingBoxLines
+│   │   │   ├── → createViewportRay
+│   │   │   ├── → fitCameraToBounds
+│   │   │   ├── → orbitRenderCamera
+│   │   │   ├── → panRenderCamera
+│   │   │   ├── → pickRenderObject
+│   │   │   ├── → pinchZoomRenderCamera
+│   │   │   ├── → raycastSphere
+│   │   │   ├── → resetRenderCamera
+│   │   │   ├── → transformGizmoDelta
+│   │   │   ├── → zoomRenderCamera
+│   │   │   └── ∅ unused: panRenderCamera, orbitRenderCamera, zoomRenderCamera, pinchZoomRenderCamera, resetRenderCamera, fitCameraToBounds, createViewportRay, raycastSphere, pickRenderObject, createBoundingBoxLines, transformGizmoDelta, createAxisHelper
 │   │   ├── virtualization.ts ∅
 │   │   │   ├── MeshBuffers  ← ./core
 │   │   │   ├── Vec3  ← ./core
@@ -13377,6 +13489,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── Vec4  ← ./core
 │   │       ├── Vertex  ← ./core
 │   │       ├── mat4Identity  ← ./core
+│   │       ├── validateMeshForRenderUpload  ← ./core
 │   │       ├── → SHADER
 │   │       ├── → WebGpuRenderEngin
 │   │       ├── → packAosVertexBuffer
@@ -13960,6 +14073,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useGameInputKeyboardBridge  ← @/engins/gameengin/games/useGameInputKeyboardBridge
 │   │   ├── useGamepad  ← @/engins/gameengin/games/useGamepad
 │   │   ├── useRemoteChannel  ← @/engins/gameengin/games/useRemoteChannel
+│   │   ├── dispatchRenderHandoff  ← @/engins/renderengin
 │   │   ├── GameScore  ← @/engins/rulesets/game/gameEnginRuleSet
 │   │   ├── GravityPreset  ← @/engins/rulesets/game/gameEnginRuleSet
 │   │   ├── PhysicsConfig  ← @/engins/rulesets/game/gameEnginRuleSet
@@ -15016,9 +15130,28 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/isosurfaceDualContouring
 │           │   ├── (dynamic)  ← @/engins/labengin/implicitSurface
 │           │   ├── (dynamic)  ← @/engins/portfolio/dream.PortfolioEngin
+│           │   ├── (dynamic)  ← @/engins/renderengin/advancedRendering
+│           │   ├── (dynamic)  ← @/engins/renderengin/animation
+│           │   ├── (dynamic)  ← @/engins/renderengin/assets
+│           │   ├── (dynamic)  ← @/engins/renderengin/benchmarkProof
+│           │   ├── (dynamic)  ← @/engins/renderengin/completionEvidence
 │           │   ├── (dynamic)  ← @/engins/renderengin/core
+│           │   ├── (dynamic)  ← @/engins/renderengin/diagnostics
 │           │   ├── (dynamic)  ← @/engins/renderengin/index
+│           │   ├── (dynamic)  ← @/engins/renderengin/lighting
+│           │   ├── (dynamic)  ← @/engins/renderengin/liveBenchmark
+│           │   ├── (dynamic)  ← @/engins/renderengin/materials
+│           │   ├── (dynamic)  ← @/engins/renderengin/performanceIntegrity
+│           │   ├── (dynamic)  ← @/engins/renderengin/postProcessing
 │           │   ├── (dynamic)  ← @/engins/renderengin/RenderEnginViewport
+│           │   ├── (dynamic)  ← @/engins/renderengin/renderSettings
+│           │   ├── (dynamic)  ← @/engins/renderengin/runtimeRegistration
+│           │   ├── (dynamic)  ← @/engins/renderengin/scene
+│           │   ├── (dynamic)  ← @/engins/renderengin/security
+│           │   ├── (dynamic)  ← @/engins/renderengin/serviceIntegration
+│           │   ├── (dynamic)  ← @/engins/renderengin/textures
+│           │   ├── (dynamic)  ← @/engins/renderengin/viewportControls
+│           │   ├── (dynamic)  ← @/engins/renderengin/virtualization
 │           │   ├── (dynamic)  ← @/engins/renderengin/webgpu
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/brandEnginRuleSet
 │           │   ├── (dynamic)  ← @/engins/rulesets/brand/useBrandEnginRuntime
@@ -15324,6 +15457,8 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/optimize/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/quantum/page
+│           │   ├── (dynamic)  ← @/app/engines/render/error
+│           │   ├── (dynamic)  ← @/app/engines/render/loading
 │           │   ├── (dynamic)  ← @/app/engines/render/page
 │           │   ├── (dynamic)  ← @/app/feed-settings/dream.FeedSettingsClient
 │           │   ├── (dynamic)  ← @/app/feed-settings/page
@@ -15343,6 +15478,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/app/messages/boards/[id]/page
 │           │   ├── (dynamic)  ← @/app/messages/boards/new/page
 │           │   ├── (dynamic)  ← @/app/messages/boards/page
+│           │   ├── (dynamic)  ← @/app/messages/new/page
 │           │   ├── (dynamic)  ← @/app/messages/page
 │           │   ├── (dynamic)  ← @/app/mission/page
 │           │   ├── (dynamic)  ← @/app/notes/page
@@ -15519,7 +15655,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.AssetsPanel
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
-│           │   ├── (dynamic)  ← @/components/engines/render/dream.RenderEnginApp
+│           │   ├── (dynamic)  ← @/components/engines/render/dream.RenderServiceDiagnostics
 │           │   ├── (dynamic)  ← @/components/engines/render/index
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.bar.EnginNavBar
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginProvider
@@ -17831,6 +17967,76 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
 │   │   └── it  ← vitest
+│   ├── render-completion-evidence.test.ts
+│   │   ├── certifyTenMillionScene  ← ../engins/renderengin
+│   │   ├── createRenderCompletionEvidence  ← ../engins/renderengin
+│   │   ├── createTenMillionTriangleBenchmarkScene  ← ../engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── render-full-integration.test.ts
+│   │   ├── EnginDispatcher  ← ../engine/runtime/EnginDispatcher
+│   │   ├── RENDER_SERVICE_COMMANDS  ← ../engins/renderengin
+│   │   ├── RENDER_SERVICE_HANDOFFS  ← ../engins/renderengin
+│   │   ├── RENDER_SERVICE_PIPELINE  ← ../engins/renderengin
+│   │   ├── dispatchRenderHandoff  ← ../engins/renderengin
+│   │   ├── dispatchRenderServiceIntent  ← ../engins/renderengin
+│   │   ├── beforeEach  ← vitest
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── render-service-integration.test.ts
+│   │   ├── EnginDispatcher  ← @/engine/runtime/EnginDispatcher
+│   │   ├── RENDER_SERVICE_COMMANDS  ← @/engins/renderengin
+│   │   ├── RENDER_SERVICE_HANDOFFS  ← @/engins/renderengin
+│   │   ├── RENDER_SERVICE_PIPELINE  ← @/engins/renderengin
+│   │   ├── createRenderServiceIntent  ← @/engins/renderengin
+│   │   ├── getRenderHandoffForSource  ← @/engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── render-viewport-lifecycle-source.test.ts
+│   │   ├── readFileSync  ← node:fs
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── render-viewport-security-performance.test.ts
+│   │   ├── authorizeRenderCapability  ← @/engins/renderengin
+│   │   ├── createAxisHelper  ← @/engins/renderengin
+│   │   ├── createBoundingBoxLines  ← @/engins/renderengin
+│   │   ├── createViewportRay  ← @/engins/renderengin
+│   │   ├── evaluateRenderPerformanceIntegrity  ← @/engins/renderengin
+│   │   ├── fitCameraToBounds  ← @/engins/renderengin
+│   │   ├── panRenderCamera  ← @/engins/renderengin
+│   │   ├── pickRenderObject  ← @/engins/renderengin
+│   │   ├── pinchZoomRenderCamera  ← @/engins/renderengin
+│   │   ├── raycastSphere  ← @/engins/renderengin
+│   │   ├── resetRenderCamera  ← @/engins/renderengin
+│   │   ├── transformGizmoDelta  ← @/engins/renderengin
+│   │   ├── validateRenderAssetManifestServer  ← @/engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
+│   ├── renderengin-advanced-rendering.test.ts
+│   │   ├── applyMorphTargets  ← ../engins/renderengin
+│   │   ├── buildDualQuaternionPalette  ← ../engins/renderengin
+│   │   ├── buildIndirectDrawCommands  ← ../engins/renderengin
+│   │   ├── buildMeshlets  ← ../engins/renderengin
+│   │   ├── compressGeometryQuantized  ← ../engins/renderengin
+│   │   ├── createMeshBuffers  ← ../engins/renderengin
+│   │   ├── createTimestampQueryPlan  ← ../engins/renderengin
+│   │   ├── markDeviceLost  ← ../engins/renderengin
+│   │   ├── markDeviceRebuilding  ← ../engins/renderengin
+│   │   ├── markDeviceRestored  ← ../engins/renderengin
+│   │   ├── planBoneStorage  ← ../engins/renderengin
+│   │   ├── planComputeCulling  ← ../engins/renderengin
+│   │   ├── planStreamingPages  ← ../engins/renderengin
+│   │   ├── reduceTimestampPairs  ← ../engins/renderengin
+│   │   ├── skinVertexDqs  ← ../engins/renderengin
+│   │   ├── solveTwoBoneIk  ← ../engins/renderengin
+│   │   ├── describe  ← vitest
+│   │   ├── expect  ← vitest
+│   │   └── it  ← vitest
 │   ├── renderengin-assets-scene.test.ts
 │   │   ├── addObjectToRenderScene  ← @/engins/renderengin
 │   │   ├── computeRenderObjectWorldMatrix  ← @/engins/renderengin
@@ -17883,6 +18089,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── createTenMillionPolygonProof  ← @/engins/renderengin
 │   │   ├── evaluateGpuBenchmarkProof  ← @/engins/renderengin
 │   │   ├── executePostProcessPixel  ← @/engins/renderengin
+│   │   ├── isMobileRenderUserAgent  ← @/engins/renderengin
+│   │   ├── summarizeLiveBenchmark  ← @/engins/renderengin
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── describe  ← vitest
 │   │   ├── expect  ← vitest
@@ -17906,6 +18114,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
 │   │   ├── getRuntimeEnginRegistration  ← @/engine/engin-runtime/EnginRuntimeRegistry
 │   │   ├── resolveRuntimeCapability  ← @/engine/engin-runtime/EnginRuntimeRegistry
+│   │   ├── ENGIN_REGISTRY  ← @/engins/forgeengin/forge/forgeRegistry
 │   │   ├── RENDER_ENGIN_ID  ← @/engins/renderengin
 │   │   ├── RenderEnginRuleSet  ← @/engins/renderengin
 │   │   ├── RenderIntent  ← @/engins/renderengin
