@@ -2991,9 +2991,9 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "components/engines/render/dream.RenderEnginApp",
+      "id": "components/engines/render/dream.RenderServiceDiagnostics",
       "slot": "surface",
-      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "engine": "Universal"
     },
     {

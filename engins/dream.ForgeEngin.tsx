@@ -1582,7 +1582,7 @@ const LINKAGES = [
   {
     engines: ['brand', 'create'] as const,
     label: 'Brand → Content',
-    desc: 'BrandingEngin identity feeds directly into ContentEngin publishing templates.',
+    desc: 'BrandingEngin identity feeds directly into ContentEngin asset recipes and export bundles.',
   },
   {
     engines: ['lab', 'code'] as const,
@@ -1592,7 +1592,7 @@ const LINKAGES = [
   {
     engines: ['music', 'create'] as const,
     label: 'Music → Content',
-    desc: 'StarMaker stems and mixes embed directly into ContentEngin posts.',
+    desc: 'StarMaker stems and mixes feed ContentEngin visual asset generation and export bundles.',
   },
 ] as const;
 

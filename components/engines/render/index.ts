@@ -1,1 +1,1 @@
-export { default as RenderEnginApp } from './dream.RenderEnginApp';
+export { default as RenderServiceDiagnostics } from './dream.RenderServiceDiagnostics';

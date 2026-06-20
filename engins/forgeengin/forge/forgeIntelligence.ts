@@ -197,7 +197,7 @@ export function generateSuggestions(
     suggestions.push({
       type: 'transfer',
       title: 'Create a post about it',
-      reason: 'You just published something — draft a promotional post in ContentEngin',
+      reason: 'You just released something — generate launch assets and an export bundle in ContentEngin',
       accent: '#fb923c',
       emoji: '✨',
       href: '/daydream/create',
@@ -277,7 +277,7 @@ export function parseGoalToWorkflow(goal: string): ForgeWorkflow | null {
   if (goalLower.includes('publish') || goalLower.includes('share')) {
     if (!engineIds.includes('create')) {
       engineIds.push('create');
-      steps.push('Open ContentEngin → publish and share your creation');
+      steps.push('Open ContentEngin → create launch assets and export a shareable bundle');
     }
   }
 
@@ -317,9 +317,9 @@ function generateStepDescription(engineId: string, goal: string): string {
       if (goal.includes('logo')) return 'design your brand identity';
       return 'configure brand identity and analytics';
     case 'create':
-      if (goal.includes('video')) return 'produce and edit video content';
-      if (goal.includes('blog') || goal.includes('article')) return 'write and format your article';
-      return 'draft and schedule your content';
+      if (goal.includes('video')) return 'generate video-ready visual assets';
+      if (goal.includes('blog') || goal.includes('article')) return 'create article media and export-ready visuals';
+      return 'generate assets and prepare export bundles';
     default:
       return 'complete this step';
   }

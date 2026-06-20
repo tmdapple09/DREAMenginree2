@@ -1,6 +1,7 @@
 'use client';
 
 import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
+import type { ApperceptiveContext } from '@/engine/runtime/apperception';
 import React, { useCallback, useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.
@@ -53,6 +54,8 @@ interface RuntimeShellProps {
   onCloseIframe?: () => void;
   /** Optional label shown in the iframe chrome bar */
   iframeTitle?: string;
+  /** Runtime-owned apperception context for bus/event consumers; DOM attributes remain debug-only. */
+  apperception?: ApperceptiveContext;
 }
 
 // Runtime functions, classes, handlers, and state transitions.
@@ -62,9 +65,15 @@ export default function RuntimeShell({
   iframeUrl,
   onCloseIframe,
   iframeTitle,
+  apperception,
 }: RuntimeShellProps) {
   const [zoom, setZoom] = useState(1.0);
   const [showZoomControls, setShowZoomControls] = useState(true);
+
+  useEffect(() => {
+    if (!apperception || typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('dreamengin:apperception', { detail: apperception }));
+  }, [apperception]);
 
   useEffect(() => {
     const update = () => setShowZoomControls(!isCompactRuntimeViewport(window.innerWidth));

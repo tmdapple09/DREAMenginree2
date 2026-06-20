@@ -156,17 +156,6 @@ export default function CommandPalette( ){
       action: () => router.push('/daydream/forge'),
       category: 'Daydreams',
     },
-    {
-      id: 'render-service',
-      label: 'Render Service',
-      description: 'Preview assets through the shared WebGPU render service',
-      icon: Zap,
-      iconColor: '#38bdf8',
-      iconBg: 'rgba(56,189,248,0.12)',
-      keywords: ['render', 'webgpu', 'preview', 'asset', 'snapshot'],
-      action: () => router.push('/engines/render'),
-      category: 'Services',
-    },
     // ── Engine Apps (standalone full-screen shells) ─────────────────────────
     {
       id: 'engines-hub',

@@ -41,15 +41,21 @@ export interface EnginEntry {
   domains: readonly InformationDomain[];
   /** Capability tags */
   capabilities: readonly string[];
+  /** User-facing creative/tool surfaces may appear in launchers and search. */
+  userFacing: boolean;
+  /** Registry kind separates creative Engins from shared infrastructure and internal experiments. */
+  kind: 'creative' | 'orchestrator' | 'service' | 'experimental';
 }
 
 /**
- * The canonical registry of all 6 creative engines + ForgeEngin itself.
- * Ordered by creation seniority.
+ * Canonical registry for creative Engins, orchestrators, shared services,
+ * and internal/experimental Engin entries.
  */
 export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   {
     id: 'games',
+    kind: 'creative',
+    userFacing: true,
     name: 'GameEngin',
     emoji: '🎮',
     accent: '#3b82f6', // 2026 updated
@@ -61,9 +67,11 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
   {
     id: 'music',
+    kind: 'creative',
+    userFacing: true,
     name: 'StarMakerEngin',
     emoji: '🎵',
-    accent: '#a855f7',
+    accent: '#1d4ed8',
     desc: 'Full DAW · AI stem separation · spatial audio · live collab.',
     daydreamHref: '/daydream/music',
     enginHref: '/engines/music',
@@ -72,9 +80,11 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
   {
     id: 'code',
+    kind: 'creative',
+    userFacing: true,
     name: 'CodeEngin',
     emoji: '💻',
-    accent: '#22d3ee', // 2026 updated
+    accent: '#38bdf8', // 2026 updated
     desc: 'IDE · AI copilot 2026 · multi-cursor · live preview.',
     daydreamHref: '/daydream/code',
     enginHref: '/engines/code',
@@ -83,9 +93,11 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
   {
     id: 'lab',
+    kind: 'creative',
+    userFacing: true,
     name: 'LabEngin',
     emoji: '🔬',
-    accent: '#10b981',
+    accent: '#93c5fd',
     desc: 'Experiments · quantum circuits 2026 · GPU compute · real-time viz.',
     daydreamHref: '/daydream/lab',
     enginHref: '/engines/lab',
@@ -94,9 +106,11 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
   {
     id: 'brand',
+    kind: 'creative',
+    userFacing: true,
     name: 'BrandingEngin',
     emoji: '🎨',
-    accent: '#f472b6',
+    accent: '#f8d26a',
     desc: 'Identity · AI brand kit · motion graphics · analytics 2.0.',
     daydreamHref: '/daydream/brand',
     enginHref: '/engines/brand',
@@ -105,32 +119,38 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
   {
     id: 'create',
+    kind: 'creative',
+    userFacing: true,
     name: 'ContentEngin',
     emoji: '✨',
-    accent: '#fb923c',
-    desc: 'Editor · multi-platform scheduler · AI optimizer · analytics.',
+    accent: '#c8981a',
+    desc: 'Procedural assets · validation · game-ready export.',
     daydreamHref: '/daydream/create',
     enginHref: '/engines/create',
     domains: ['communication', 'visual', 'memory'],
-    capabilities: ['Rich Text', 'Multi-Platform', 'AI Optimizer', 'Scheduling', 'Analytics'],
+    capabilities: ['Procedural Assets', 'Asset Validation', 'GLB Export', 'Game Handoff', 'Rig Metadata'],
   },
 
   {
     id: 'render',
+    kind: 'service',
+    userFacing: false,
     name: 'RenderEngin',
     emoji: '🧊',
     accent: '#38bdf8',
     desc: 'WebGPU scene viewport for user assets, previews, snapshots, and cross-Engin render handoffs.',
-    daydreamHref: '/daydream/render',
-    enginHref: '/engines/render',
+    daydreamHref: '',
+    enginHref: '',
     domains: ['visual', 'physics', 'logic'],
     capabilities: ['WebGPU', 'Scene Graph', 'Asset Preview', 'Runtime Snapshots', 'Cross-Engin Handoff'],
   },
   {
     id: 'forge',
+    kind: 'orchestrator',
+    userFacing: true,
     name: 'ForgeEngin',
     emoji: '🔥',
-    accent: '#ef4444',
+    accent: '#0f3b66',
     desc: 'Meta-creation engine. Orchestrate all engines. Workflow automation 2.0.',
     daydreamHref: '/daydream/forge',
     enginHref: '/daydream/forge',
@@ -140,7 +160,13 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
 ] as const;
 
 /** Just creative Engins. Shared services such as Render are intentionally not listed here. */
-export const CREATIVE_ENGINES = ENGIN_REGISTRY.filter((e) => e.id !== 'forge');
+export const USER_FACING_ENGINES = ENGIN_REGISTRY.filter((e) => e.userFacing);
+export const CREATIVE_ENGINES = ENGIN_REGISTRY.filter((e) => e.kind === 'creative' && e.userFacing);
+export const INTERNAL_SERVICE_ENGINES = ENGIN_REGISTRY.filter((e) => e.kind === 'service');
+
+export function isUserFacingEnginName(name: string): boolean {
+  return ENGIN_REGISTRY.some((engin) => engin.name === name && engin.userFacing);
+}
 
 export function getEnginById(id: string): EnginEntry | null {
   return ENGIN_REGISTRY.find((engin) => engin.id === id) ?? null;
@@ -278,12 +304,12 @@ export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
     id: 'music-video',
     title: 'Music Video Pipeline',
     emoji: '🎬',
-    accent: '#a855f7',
-    desc: 'Record a track, build visual content, publish everywhere.',
+    accent: '#1d4ed8',
+    desc: 'Record a track, build game-ready visual assets, and package the identity.',
     engines: ['music', 'create', 'brand'],
     steps: [
       'Open StarMakerEngin → compose & mix a track with AI stem separation',
-      'Open ContentEngin → draft a video post with the stem',
+      'Open ContentEngin → build game-ready visual assets from the track identity',
       'Open BrandingEngin → apply brand kit to thumbnails',
     ],
   },
@@ -303,45 +329,45 @@ export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
     id: 'data-story',
     title: 'Data Story',
     emoji: '📊',
-    accent: '#10b981',
-    desc: 'Run an experiment, analyse with code, publish the narrative.',
+    accent: '#93c5fd',
+    desc: 'Run an experiment, analyse with code, and export visual evidence assets.',
     engines: ['lab', 'code', 'create'],
     steps: [
       'Open LabEngin → run a simulation & export data',
       'Open CodeEngin → write an analysis notebook with AI copilot',
-      'Open ContentEngin → publish the write-up with AI optimizer',
+      'Open ContentEngin → generate export-ready research visuals',
     ],
   },
   {
     id: 'brand-campaign',
     title: 'Brand Campaign',
     emoji: '📣',
-    accent: '#f472b6',
-    desc: 'Build brand identity, craft content, schedule the launch.',
+    accent: '#f8d26a',
+    desc: 'Build brand identity, generate campaign assets, and prepare exports.',
     engines: ['brand', 'create'],
     steps: [
       'Open BrandingEngin → generate AI brand kit with motion graphics',
-      'Open ContentEngin → write posts & schedule multi-platform queue',
+      'Open ContentEngin → generate campaign assets and export-ready media',
     ],
   },
   {
     id: 'full-stack-game',
     title: 'Full-Stack Game Dev',
     emoji: '🚀',
-    accent: '#22d3ee',
+    accent: '#38bdf8',
     desc: 'Code the logic, build the world, playtest & share.',
     engines: ['code', 'games', 'create'],
     steps: [
       'Open CodeEngin → write game scripts with multi-cursor editing',
       'Open GameEngin → world-build with ray-traced lighting & playtest',
-      'Open ContentEngin → create a launch post with analytics tracking',
+      'Open ContentEngin → create launch assets and export a shareable bundle',
     ],
   },
   {
     id: 'ai-music-generation',
     title: 'AI Music Generation',
     emoji: '🤖',
-    accent: '#a855f7',
+    accent: '#1d4ed8',
     desc: 'Code generative algorithms, produce music, analyze results.',
     engines: ['code', 'music', 'lab'],
     steps: [
@@ -354,7 +380,7 @@ export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
     id: 'quantum-game',
     title: 'Quantum Physics Game',
     emoji: '⚛️',
-    accent: '#10b981',
+    accent: '#93c5fd',
     desc: 'Simulate quantum mechanics, build game world, export levels.',
     engines: ['lab', 'games', 'forge'],
     steps: [
@@ -367,26 +393,26 @@ export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
     id: 'sonic-branding',
     title: 'Sonic Brand Identity',
     emoji: '🔊',
-    accent: '#f472b6',
-    desc: 'Design brand kit, create sonic identity, launch campaign.',
+    accent: '#f8d26a',
+    desc: 'Design brand kit, create sonic identity, and export campaign assets.',
     engines: ['brand', 'music', 'create'],
     steps: [
       'Open BrandingEngin → design AI-powered brand kit',
       'Open StarMakerEngin → create sonic branding and audio logo',
-      'Open ContentEngin → schedule multi-platform brand campaign',
+      'Open ContentEngin → generate campaign assets and export-ready media',
     ],
   },
   {
     id: 'research-publication',
     title: 'Research Publication Pipeline',
     emoji: '📄',
-    accent: '#10b981',
-    desc: 'Experiment, analyze, publish, and share findings.',
+    accent: '#93c5fd',
+    desc: 'Experiment, analyze, and export shareable findings.',
     engines: ['lab', 'code', 'create', 'brand'],
     steps: [
       'Open LabEngin → conduct experiment with GPU compute',
       'Open CodeEngin → analyze data with AI copilot',
-      'Open ContentEngin → generate research paper with visualizations',
+      'Open ContentEngin → generate research visuals and export a shareable bundle',
       'Open BrandingEngin → create presentation graphics',
     ],
   },
@@ -394,13 +420,13 @@ export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
     id: 'interactive-tutorial',
     title: 'Interactive Tutorial Creation',
     emoji: '📚',
-    accent: '#22d3ee',
-    desc: 'Code examples, build interactive demos, publish content.',
+    accent: '#38bdf8',
+    desc: 'Code examples, build interactive demos, and export tutorial assets.',
     engines: ['code', 'games', 'create'],
     steps: [
       'Open CodeEngin → write tutorial notebook with live preview',
       'Open GameEngin → create interactive demo world',
-      'Open ContentEngin → publish as interactive article',
+      'Open ContentEngin → export tutorial media and shareable asset bundle',
     ],
   },
 ] as const;

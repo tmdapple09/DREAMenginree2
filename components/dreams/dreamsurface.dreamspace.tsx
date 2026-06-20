@@ -18,7 +18,7 @@ import {
     type MomentumSnapshot,
 } from '@/engins/forgeengin/forge/forgeMomentum';
 import {
-    ENGIN_REGISTRY,
+    USER_FACING_ENGINES,
     readForgeActivity,
     type ForgeActivityPulse,
 } from '@/engins/forgeengin/forge/forgeRegistry';
@@ -109,7 +109,7 @@ function formatRelativeTime(iso: string): string {
 }
 
 export function getAppRoute(engineId: string): string | undefined {
-  return ENGIN_REGISTRY.find((engine) => engine.id === engineId)?.daydreamHref;
+  return USER_FACING_ENGINES.find((engine) => engine.id === engineId)?.daydreamHref;
 }
 
 export interface RecentDestination {
@@ -124,7 +124,7 @@ export function buildRecentDestinations(
   activity: readonly ForgeActivityPulse[],
 ): RecentDestination[] {
   const uniqueDestinationHrefs = new Set<string>();
-  return [
+  const destinations = [
     ...recentHistory.map((entry) => ({
       key: `history-${entry.timestamp}-${entry.enginId}`,
       label: entry.label,
@@ -135,18 +135,23 @@ export function buildRecentDestinations(
       .slice()
       .sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime())
       .map((entry) => ({
-        key: `activity-${entry.enginId}`,
+        key: `activity-${entry.lastActive}-${entry.enginId}`,
         label: entry.label,
         timestamp: entry.lastActive,
         href: getAppRoute(entry.enginId),
       })),
-  ]
-    .filter((item): item is RecentDestination => {
-      if (!item.href || uniqueDestinationHrefs.has(item.href)) return false;
-      uniqueDestinationHrefs.add(item.href);
-      return true;
-    })
-    .slice(0, 3);
+  ];
+  return destinations.flatMap((destination) => {
+    if (!destination.href) return [];
+    if (uniqueDestinationHrefs.has(destination.href)) return [];
+    uniqueDestinationHrefs.add(destination.href);
+    return [{
+      key: destination.key,
+      label: destination.label,
+      timestamp: destination.timestamp,
+      href: destination.href,
+    }];
+  });
 }
 
 /**
@@ -721,7 +726,7 @@ export default function DreamsSpacePanel({
                 gap: '12px 4px',
                 justifyItems: 'center',
               }}>
-                {ENGIN_REGISTRY.map((engin) => (
+                {USER_FACING_ENGINES.map((engin) => (
                   <AppIcon
                     key={engin.id}
                     icon={engin.emoji}

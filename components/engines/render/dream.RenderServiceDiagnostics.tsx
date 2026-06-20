@@ -6,7 +6,7 @@ import { EnginRuntime } from '@/engine/engin-runtime/EnginRuntime';
 import { RenderEnginRuleSet, RenderEnginViewport, type RenderIntent } from '@/engins/renderengin';
 import '@/engins/renderengin/runtimeRegistration';
 
-function RenderServiceSurface({ onBack }: { onBack: () => void }): React.JSX.Element {
+function RenderDiagnosticsSurface({ onBack }: { onBack: () => void }): React.JSX.Element {
   const runtime = useMemo(() => new EnginRuntime<RenderIntent>(RenderEnginRuleSet, {
     runtimeId: 'render:surface',
     persistenceKey: 'render-domain-state',
@@ -41,8 +41,6 @@ export default makeEnginApp({
   accentColor: '#38bdf8',
   backHref: '/engines',
   backLabel: 'Engines',
-  nav: [
-    { href: '/engines/render', label: 'Viewport' },
-  ],
-  EnginComponent: RenderServiceSurface,
+  nav: [],
+  EnginComponent: RenderDiagnosticsSurface,
 });
