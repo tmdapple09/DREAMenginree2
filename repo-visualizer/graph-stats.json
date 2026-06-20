@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-20T06:58:37.676Z",
+  "generatedAt": "2026-06-20T07:19:03.080Z",
   "totalFiles": 2250,
   "totalNodes": 7811,
-  "totalEdges": 8317,
+  "totalEdges": 8324,
   "totalFunctionAndClassNodes": 4478,
   "orphanCount": 3918,
   "countsByType": {
@@ -55,7 +55,7 @@
     },
     {
       "id": "file:src/engin/generated/engins.ts",
-      "degree": 257,
+      "degree": 264,
       "label": "engins.ts",
       "type": "ts",
       "path": "src/engin/generated/engins.ts"

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-20T06:58:37.676Z",
+  "generatedAt": "2026-06-20T07:19:03.080Z",
   "root": ".",
   "nodes": [
     {
@@ -100310,6 +100310,11 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/advancedRendering.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/animation.ts",
       "kind": "import"
     },
@@ -100321,6 +100326,11 @@
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/benchmarkProof.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/completionEvidence.ts",
       "kind": "import"
     },
     {
@@ -100345,7 +100355,17 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/liveBenchmark.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/materials.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/performanceIntegrity.ts",
       "kind": "import"
     },
     {
@@ -100375,7 +100395,22 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/security.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/serviceIntegration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/textures.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/viewportControls.ts",
       "kind": "import"
     },
     {

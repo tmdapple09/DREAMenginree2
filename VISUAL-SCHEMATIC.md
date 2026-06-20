@@ -10,7 +10,7 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 
 - **Total files:** 2250
 - **Total function/class nodes:** 4478
-- **Total edges:** 8317
+- **Total edges:** 8324
 - **Orphan nodes:** 3918
 
 #### Top-Level Folder Connectivity (overview)
@@ -22,7 +22,7 @@ graph LR
   app["app"] -->|290| components["components"]
   src["src"] -->|272| app["app"]
   engine["engine"] -->|268| app["app"]
-  src["src"] -->|256| engins["engins"]
+  src["src"] -->|263| engins["engins"]
   app["app"] -->|244| engine["engine"]
   engine["engine"] -->|238| engins["engins"]
   tests["tests"] -->|124| engine["engine"]
@@ -300,15 +300,22 @@ graph LR
 | `engins/gameengin/config/demoGameConfig.ts` | ts | 1 | 2 | `engins/gameengin/launcher.ts`, `src/engin/generated/engins.ts` | `engins/gameengin/GameEnginCore.ts` |
 | `engins/gameengin/games/lucid-avenue-world.ts` | ts | 0 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/gameengin/systems/index.ts` | ts | 10 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/gameengin/systems/ai.ts`, `engins/gameengin/systems/animation.ts`, `engins/gameengin/systems/assets.ts` |
+| `engins/renderengin/advancedRendering.ts` | ts | 2 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engins/renderengin/core.ts`, `engins/renderengin/virtualization.ts` |
 | `engins/renderengin/animation.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engins/renderengin/core.ts` |
 | `engins/renderengin/benchmarkProof.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
+| `engins/renderengin/completionEvidence.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
 | `engins/renderengin/diagnostics.ts` | ts | 3 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/core.ts`, `engins/renderengin/webgpu.ts` |
 | `engins/renderengin/lighting.ts` | ts | 2 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/core.ts` |
+| `engins/renderengin/liveBenchmark.ts` | ts | 2 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/webgpu.ts` |
 | `engins/renderengin/materials.ts` | ts | 2 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/core.ts` |
+| `engins/renderengin/performanceIntegrity.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
 | `engins/renderengin/postProcessing.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
 | `engins/renderengin/RenderEnginViewport.tsx` | tsx | 4 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginRuntime.ts`, `engins/renderengin/core.ts`, `engins/renderengin/assets.ts` |
 | `engins/renderengin/renderSettings.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
+| `engins/renderengin/security.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
+| `engins/renderengin/serviceIntegration.ts` | ts | 3 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engine/runtime/EnginDispatcher.ts`, `engins/renderengin/core.ts` |
 | `engins/renderengin/textures.ts` | ts | 1 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts` |
+| `engins/renderengin/viewportControls.ts` | ts | 2 | 2 | `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engins/renderengin/core.ts`, `engins/renderengin/virtualization.ts` |
 | `engins/rulesets/code/index.ts` | ts | 0 | 2 | `engine/generated/rulesets.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/rulesets/dreams/index.ts` | ts | 0 | 2 | `engine/generated/rulesets.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/rulesets/forge/index.ts` | ts | 0 | 2 | `engine/generated/rulesets.ts`, `src/engin/generated/engins.ts` | — |
@@ -320,13 +327,6 @@ graph LR
 | `engins/starmakerengin/music/wasmAudioBridge.ts` | ts | 0 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/gameengin/launcher.ts` | ts | 3 | 1 | `src/engin/generated/engins.ts` | `engins/gameengin/config/demoGameConfig.ts`, `engins/gameengin/GameEnginCore.ts`, `utils/index.ts` |
 | `engins/labengin/implicitSurface.ts` | ts | 1 | 1 | `src/engin/generated/engins.ts` | `engins/isosurfaceDualContouring.ts` |
-| `engins/renderengin/advancedRendering.ts` | ts | 2 | 1 | `engins/renderengin/index.ts` | `engins/renderengin/core.ts`, `engins/renderengin/virtualization.ts` |
-| `engins/renderengin/completionEvidence.ts` | ts | 1 | 1 | `engins/renderengin/index.ts` | `engine/engin-runtime/EnginBaseState.ts` |
-| `engins/renderengin/liveBenchmark.ts` | ts | 2 | 1 | `engins/renderengin/index.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/webgpu.ts` |
-| `engins/renderengin/performanceIntegrity.ts` | ts | 1 | 1 | `engins/renderengin/index.ts` | `engine/engin-runtime/EnginBaseState.ts` |
-| `engins/renderengin/security.ts` | ts | 1 | 1 | `engins/renderengin/index.ts` | `engine/engin-runtime/EnginBaseState.ts` |
-| `engins/renderengin/serviceIntegration.ts` | ts | 3 | 1 | `engins/renderengin/index.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engine/runtime/EnginDispatcher.ts`, `engins/renderengin/core.ts` |
-| `engins/renderengin/viewportControls.ts` | ts | 2 | 1 | `engins/renderengin/index.ts` | `engins/renderengin/core.ts`, `engins/renderengin/virtualization.ts` |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `engins/contentengin/rigging/templates/bird_basic.json` | config | 0 | 0 | — | — |
 | `engins/contentengin/rigging/templates/fish_basic.json` | config | 0 | 0 | — | — |
@@ -1446,7 +1446,7 @@ graph LR
 | `src/engin/generated/dreamdmbar.ts` | ts | 15 | 1 | `src/engin/generated/index.ts` | `dreamdmbar/dream.GlowingLight.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `dreamdmbar/hooks/useDreamBarContext.ts` |
 | `src/engin/generated/dreamr.ts` | ts | 4 | 1 | `src/engin/generated/index.ts` | `app/dreamr/page.tsx`, `components/dreamr/dream.CloseFriendsSettings.tsx`, `components/dreamr/dream.panel.DreamRChannelPanel.tsx` |
 | `src/engin/generated/dreamsurfaces.ts` | ts | 15 | 1 | `src/engin/generated/index.ts` | `components/dreams/dream.connectorlayer.tsx`, `components/dreams/dream.DraggableDream.tsx`, `components/dreams/dream.featurelayer.tsx` |
-| `src/engin/generated/engins.ts` | ts | 256 | 1 | `src/engin/generated/index.ts` | `engins/autoopen/dream.AutoOpenGameEngin.tsx`, `engins/brandingengin/identity/logos.ts`, `engins/codeengin/ai/drEamsCodeAssist.ts` |
+| `src/engin/generated/engins.ts` | ts | 263 | 1 | `src/engin/generated/index.ts` | `engins/autoopen/dream.AutoOpenGameEngin.tsx`, `engins/brandingengin/identity/logos.ts`, `engins/codeengin/ai/drEamsCodeAssist.ts` |
 | `src/engin/generated/homedream.ts` | ts | 1 | 1 | `src/engin/generated/index.ts` | `app/homedream/page.tsx` |
 | `src/engin/generated/hooks.ts` | ts | 12 | 1 | `src/engin/generated/index.ts` | `hooks/use-spatial.ts`, `hooks/useAccount.ts`, `hooks/useConnectorInstallFlow.ts` |
 | `src/engin/generated/osArchitectureMap.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
@@ -1986,20 +1986,27 @@ graph LR
   f_engins_isosurfaceDualContouring_ts["isosurfaceDualContouring.ts"]
   f_engins_labengin_implicitSurface_ts["implicitSurface.ts"]
   f_engins_portfolio_dream_PortfolioEngin_tsx["dream.PortfolioEngin.tsx"]
+  f_engins_renderengin_advancedRendering_ts["advancedRendering.ts"]
   f_engins_renderengin_animation_ts["animation.ts"]
   f_engins_renderengin_assets_ts["assets.ts"]
   f_engins_renderengin_benchmarkProof_ts["benchmarkProof.ts"]
+  f_engins_renderengin_completionEvidence_ts["completionEvidence.ts"]
   f_engins_renderengin_core_ts["core.ts"]
   f_engins_renderengin_diagnostics_ts["diagnostics.ts"]
   f_engins_renderengin_index_ts["index.ts"]
   f_engins_renderengin_lighting_ts["lighting.ts"]
+  f_engins_renderengin_liveBenchmark_ts["liveBenchmark.ts"]
   f_engins_renderengin_materials_ts["materials.ts"]
+  f_engins_renderengin_performanceIntegrity_ts["performanceIntegrity.ts"]
   f_engins_renderengin_postProcessing_ts["postProcessing.ts"]
   f_engins_renderengin_RenderEnginViewport_tsx["RenderEnginViewport.tsx"]
   f_engins_renderengin_renderSettings_ts["renderSettings.ts"]
   f_engins_renderengin_runtimeRegistration_ts["runtimeRegistration.ts"]
   f_engins_renderengin_scene_ts["scene.ts"]
+  f_engins_renderengin_security_ts["security.ts"]
+  f_engins_renderengin_serviceIntegration_ts["serviceIntegration.ts"]
   f_engins_renderengin_textures_ts["textures.ts"]
+  f_engins_renderengin_viewportControls_ts["viewportControls.ts"]
   f_engins_renderengin_virtualization_ts["virtualization.ts"]
   f_engins_renderengin_webgpu_ts["webgpu.ts"]
   f_engins_rulesets_brand_brandEnginRuleSet_ts["brandEnginRuleSet.ts"]
@@ -2882,20 +2889,27 @@ graph LR
   f_src_engin_generated_engins_ts --> f_engins_isosurfaceDualContouring_ts
   f_src_engin_generated_engins_ts --> f_engins_labengin_implicitSurface_ts
   f_src_engin_generated_engins_ts --> f_engins_portfolio_dream_PortfolioEngin_tsx
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_advancedRendering_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_animation_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_assets_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_benchmarkProof_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_completionEvidence_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_core_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_diagnostics_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_index_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_lighting_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_liveBenchmark_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_materials_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_performanceIntegrity_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_postProcessing_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_RenderEnginViewport_tsx
   f_src_engin_generated_engins_ts --> f_engins_renderengin_renderSettings_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_runtimeRegistration_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_scene_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_security_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_serviceIntegration_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_textures_ts
+  f_src_engin_generated_engins_ts --> f_engins_renderengin_viewportControls_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_virtualization_ts
   f_src_engin_generated_engins_ts --> f_engins_renderengin_webgpu_ts
   f_src_engin_generated_engins_ts --> f_engins_rulesets_brand_brandEnginRuleSet_ts
