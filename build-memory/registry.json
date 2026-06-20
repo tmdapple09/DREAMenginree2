@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-20T00:18:55.264Z",
+  "generatedAt": "2026-06-20T06:58:45.208Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
     "route-surface": 277,
     "dreamsurface": 15,
-    "engin": 256,
+    "engin": 263,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -9315,6 +9315,40 @@
       ]
     },
     {
+      "id": "engins/renderengin/advancedRendering",
+      "slot": "engin",
+      "path": "engins/renderengin/advancedRendering.ts",
+      "engine": "Universal",
+      "exports": [
+        "applyMorphTargets",
+        "applySkinMatrixToVertex",
+        "buildDualQuaternionPalette",
+        "buildIndirectDrawCommands",
+        "buildMeshlets",
+        "combinePoseMatrix",
+        "compressGeometryQuantized",
+        "createTimestampQueryPlan",
+        "markDeviceLost",
+        "markDeviceRebuilding",
+        "markDeviceRestored",
+        "planBoneStorage",
+        "planComputeCulling",
+        "planStreamingPages",
+        "reduceTimestampPairs",
+        "RenderBoneStoragePlan",
+        "RenderCompressedGeometry",
+        "RenderDeviceRecoveryState",
+        "RenderIndirectDrawCommand",
+        "RenderMeshlet",
+        "RenderMorphTarget",
+        "RenderMorphWeight",
+        "RenderStreamingPage",
+        "RenderTimestampQueryPlan",
+        "skinVertexDqs",
+        "solveTwoBoneIk"
+      ]
+    },
+    {
       "id": "engins/renderengin/animation",
       "slot": "engin",
       "path": "engins/renderengin/animation.ts",
@@ -9356,9 +9390,27 @@
       "path": "engins/renderengin/benchmarkProof.ts",
       "engine": "Universal",
       "exports": [
+        "certifyTenMillionScene",
         "createTenMillionPolygonProof",
+        "createTenMillionTriangleBenchmarkScene",
         "evaluateGpuBenchmarkProof",
-        "RenderMillionPolyProof"
+        "RenderDeviceCapture",
+        "RenderMillionPolyProof",
+        "RenderTenMillionBenchmarkObject",
+        "RenderTenMillionBenchmarkScene"
+      ]
+    },
+    {
+      "id": "engins/renderengin/completionEvidence",
+      "slot": "engin",
+      "path": "engins/renderengin/completionEvidence.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderCompletionEvidence",
+        "RenderCompletionEvidence",
+        "RenderEvidenceData",
+        "RenderEvidenceItem",
+        "RenderEvidenceStatus"
       ]
     },
     {
@@ -9466,6 +9518,18 @@
       ]
     },
     {
+      "id": "engins/renderengin/liveBenchmark",
+      "slot": "engin",
+      "path": "engins/renderengin/liveBenchmark.ts",
+      "engine": "Universal",
+      "exports": [
+        "isMobileRenderUserAgent",
+        "RenderLiveBenchmarkResult",
+        "runRenderLiveBenchmark",
+        "summarizeLiveBenchmark"
+      ]
+    },
+    {
       "id": "engins/renderengin/materials",
       "slot": "engin",
       "path": "engins/renderengin/materials.ts",
@@ -9476,6 +9540,17 @@
         "RenderMaterial",
         "RenderMaterialData",
         "updateRenderMaterial"
+      ]
+    },
+    {
+      "id": "engins/renderengin/performanceIntegrity",
+      "slot": "engin",
+      "path": "engins/renderengin/performanceIntegrity.ts",
+      "engine": "Universal",
+      "exports": [
+        "DEFAULT_RENDER_PERFORMANCE_THRESHOLDS",
+        "evaluateRenderPerformanceIntegrity",
+        "RenderPerformanceIntegrityThresholds"
       ]
     },
     {
@@ -9552,6 +9627,38 @@
       ]
     },
     {
+      "id": "engins/renderengin/security",
+      "slot": "engin",
+      "path": "engins/renderengin/security.ts",
+      "engine": "Universal",
+      "exports": [
+        "authorizeRenderCapability",
+        "RenderAuthorizationContext",
+        "RenderAuthorizationDecision",
+        "RenderCapabilityAction",
+        "validateRenderAssetManifestServer"
+      ]
+    },
+    {
+      "id": "engins/renderengin/serviceIntegration",
+      "slot": "engin",
+      "path": "engins/renderengin/serviceIntegration.ts",
+      "engine": "Universal",
+      "exports": [
+        "createRenderServiceIntent",
+        "dispatchRenderHandoff",
+        "dispatchRenderServiceIntent",
+        "getRenderHandoffForSource",
+        "RENDER_SERVICE_COMMANDS",
+        "RENDER_SERVICE_HANDOFFS",
+        "RENDER_SERVICE_PIPELINE",
+        "RenderServiceCommand",
+        "RenderServiceHandoff",
+        "RenderServiceIntegrationResult",
+        "RenderWorkflowSurface"
+      ]
+    },
+    {
       "id": "engins/renderengin/textures",
       "slot": "engin",
       "path": "engins/renderengin/textures.ts",
@@ -9567,6 +9674,30 @@
         "RenderTextureRole",
         "RenderTextureValidation",
         "validateRenderTexture"
+      ]
+    },
+    {
+      "id": "engins/renderengin/viewportControls",
+      "slot": "engin",
+      "path": "engins/renderengin/viewportControls.ts",
+      "engine": "Universal",
+      "exports": [
+        "createAxisHelper",
+        "createBoundingBoxLines",
+        "createViewportRay",
+        "fitCameraToBounds",
+        "orbitRenderCamera",
+        "panRenderCamera",
+        "pickRenderObject",
+        "pinchZoomRenderCamera",
+        "raycastSphere",
+        "RenderCameraState",
+        "RenderPointerSample",
+        "RenderRay",
+        "RenderTransformMode",
+        "resetRenderCamera",
+        "transformGizmoDelta",
+        "zoomRenderCamera"
       ]
     },
     {

@@ -26,7 +26,7 @@ export const osSlotCounts = {
   "surface": 300,
   "route-surface": 277,
   "dreamsurface": 15,
-  "engin": 256,
+  "engin": 263,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -394,7 +394,7 @@ export const osArchitectureGraph = {
     "surface": 300,
     "route-surface": 277,
     "dreamsurface": 15,
-    "engin": 256,
+    "engin": 263,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -5552,6 +5552,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/advancedRendering",
+      "slot": "engin",
+      "path": "engins/renderengin/advancedRendering.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/animation",
       "slot": "engin",
       "path": "engins/renderengin/animation.ts",
@@ -5567,6 +5573,12 @@ export const osArchitectureStageEntries = {
       "id": "engins/renderengin/benchmarkProof",
       "slot": "engin",
       "path": "engins/renderengin/benchmarkProof.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/completionEvidence",
+      "slot": "engin",
+      "path": "engins/renderengin/completionEvidence.ts",
       "engine": "Universal"
     },
     {
@@ -5594,9 +5606,21 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/liveBenchmark",
+      "slot": "engin",
+      "path": "engins/renderengin/liveBenchmark.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/materials",
       "slot": "engin",
       "path": "engins/renderengin/materials.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/performanceIntegrity",
+      "slot": "engin",
+      "path": "engins/renderengin/performanceIntegrity.ts",
       "engine": "Universal"
     },
     {
@@ -5630,9 +5654,27 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/security",
+      "slot": "engin",
+      "path": "engins/renderengin/security.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/serviceIntegration",
+      "slot": "engin",
+      "path": "engins/renderengin/serviceIntegration.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/textures",
       "slot": "engin",
       "path": "engins/renderengin/textures.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/viewportControls",
+      "slot": "engin",
+      "path": "engins/renderengin/viewportControls.ts",
       "engine": "Universal"
     },
     {
@@ -6374,7 +6416,7 @@ User Action / Agent / CI
 | surface | 300 |
 | route-surface | 277 |
 | dreamsurface | 15 |
-| engin | 256 |
+| engin | 263 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
