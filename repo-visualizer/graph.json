@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T17:48:23.340Z",
+  "generatedAt": "2026-06-20T00:18:51.541Z",
   "root": ".",
   "nodes": [
     {
@@ -2732,6 +2732,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/contentengin-test-assets.yml",
+      "label": "contentengin-test-assets.yml",
+      "type": "config",
+      "path": ".github/workflows/contentengin-test-assets.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/copilot-setup-steps.yml",
       "label": "copilot-setup-steps.yml",
       "type": "config",
@@ -3522,6 +3532,16 @@
       "tags": []
     },
     {
+      "id": "file:DREAMengin-src-7-render-applied.zip",
+      "label": "DREAMengin-src-7-render-applied.zip",
+      "type": "file",
+      "path": "DREAMengin-src-7-render-applied.zip",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:FILE_TREE.md",
       "label": "FILE_TREE.md",
       "type": "doc",
@@ -3961,7 +3981,8 @@
       "isOrphan": false,
       "tags": [
         "supabase-create-client",
-        "supabase-table:ad_slots"
+        "supabase-table:ad_slots",
+        "supabase-table:ad_listings"
       ]
     },
     {
@@ -5100,7 +5121,7 @@
       "type": "function",
       "path": "app/api/close-friends/route.ts",
       "parent": "file:app/api/close-friends/route.ts",
-      "loc": 27,
+      "loc": 51,
       "isOrphan": false,
       "exported": true
     },
@@ -5110,7 +5131,7 @@
       "type": "function",
       "path": "app/api/close-friends/route.ts",
       "parent": "file:app/api/close-friends/route.ts",
-      "loc": 51,
+      "loc": 86,
       "isOrphan": false,
       "exported": true
     },
@@ -5125,6 +5146,8 @@
       "tags": [
         "api-handler",
         "supabase-table:close_friends",
+        "supabase-table:profiles",
+        "supabase-table:profiles",
         "supabase-table:close_friends",
         "supabase-table:close_friends"
       ]
@@ -5417,8 +5440,13 @@
         "supabase-table:comments",
         "supabase-table:profiles",
         "supabase-table:comments",
+        "supabase-table:comments",
+        "supabase-table:app_posts",
         "supabase-table:profiles",
-        "supabase-table:comments"
+        "supabase-table:comments",
+        "supabase-table:comments",
+        "supabase-table:comments",
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -5519,7 +5547,7 @@
       "type": "function",
       "path": "app/api/connectors/[provider]/items/route.ts",
       "parent": "file:app/api/connectors/[provider]/items/route.ts",
-      "loc": 16,
+      "loc": 12,
       "isOrphan": false,
       "exported": true
     },
@@ -5533,7 +5561,7 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:feed_items"
+        "supabase-table:connector_feed_items"
       ]
     },
     {
@@ -5836,9 +5864,9 @@
         "api-handler",
         "supabase-create-client",
         "supabase-table:connector_accounts",
-        "supabase-table:feed_items",
+        "supabase-table:connector_feed_items",
         "supabase-table:connector_accounts",
-        "supabase-table:feed_items"
+        "supabase-table:connector_feed_items"
       ]
     },
     {
@@ -6920,8 +6948,9 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:feed_items",
+        "supabase-table:connector_feed_items",
         "supabase-table:follows",
+        "supabase-table:close_friends",
         "supabase-table:app_posts"
       ]
     },
@@ -7290,7 +7319,7 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:physics_experiments"
+        "supabase-table:science_experiments"
       ]
     },
     {
@@ -7348,8 +7377,10 @@
         "supabase-table:likes",
         "supabase-table:likes",
         "supabase-table:likes",
+        "supabase-table:app_posts",
         "supabase-table:likes",
-        "supabase-table:likes"
+        "supabase-table:likes",
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -7457,7 +7488,27 @@
       "type": "function",
       "path": "app/api/messages/route.ts",
       "parent": "file:app/api/messages/route.ts",
-      "loc": 17,
+      "loc": 18,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/messages/route.ts#getConversationForUser",
+      "label": "getConversationForUser",
+      "type": "function",
+      "path": "app/api/messages/route.ts",
+      "parent": "file:app/api/messages/route.ts",
+      "loc": 44,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/messages/route.ts#mirrorConversationParticipants",
+      "label": "mirrorConversationParticipants",
+      "type": "function",
+      "path": "app/api/messages/route.ts",
+      "parent": "file:app/api/messages/route.ts",
+      "loc": 63,
       "isOrphan": false,
       "exported": false
     },
@@ -7472,9 +7523,11 @@
       "tags": [
         "api-handler",
         "supabase-table:profiles",
+        "supabase-table:conversations",
+        "supabase-table:conversation_participants",
         "supabase-table:messages",
         "supabase-table:conversations",
-        "supabase-table:conversations",
+        "supabase-table:profiles",
         "supabase-table:conversations",
         "supabase-table:conversations",
         "supabase-table:messages",
@@ -7637,7 +7690,6 @@
         "api-handler",
         "supabase-table:music_releases",
         "supabase-table:music_releases",
-        "supabase-table:feed_items",
         "supabase-table:music_releases"
       ]
     },
@@ -7894,7 +7946,47 @@
       "type": "function",
       "path": "app/api/posts/route.ts",
       "parent": "file:app/api/posts/route.ts",
-      "loc": 12,
+      "loc": 18,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/posts/route.ts#normalizeVisibility",
+      "label": "normalizeVisibility",
+      "type": "function",
+      "path": "app/api/posts/route.ts",
+      "parent": "file:app/api/posts/route.ts",
+      "loc": 25,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/posts/route.ts#normalizePostVisibility",
+      "label": "normalizePostVisibility",
+      "type": "function",
+      "path": "app/api/posts/route.ts",
+      "parent": "file:app/api/posts/route.ts",
+      "loc": 31,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/posts/route.ts#loadCloseFriendPosterIds",
+      "label": "loadCloseFriendPosterIds",
+      "type": "function",
+      "path": "app/api/posts/route.ts",
+      "parent": "file:app/api/posts/route.ts",
+      "loc": 36,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/api/posts/route.ts#filterVisiblePosts",
+      "label": "filterVisiblePosts",
+      "type": "function",
+      "path": "app/api/posts/route.ts",
+      "parent": "file:app/api/posts/route.ts",
+      "loc": 45,
       "isOrphan": false,
       "exported": false
     },
@@ -7908,13 +8000,12 @@
       "isOrphan": false,
       "tags": [
         "api-handler",
-        "supabase-table:follows",
         "supabase-table:close_friends",
+        "supabase-table:follows",
         "supabase-table:app_posts",
         "supabase-table:app_posts",
         "supabase-table:app_posts",
-        "supabase-table:app_posts",
-        "supabase-table:feed_items"
+        "supabase-table:app_posts"
       ]
     },
     {
@@ -7925,6 +8016,16 @@
       "parent": "folder:app/api",
       "loc": null,
       "isOrphan": false
+    },
+    {
+      "id": "function:app/api/profile/route.ts#normalizeHandle",
+      "label": "normalizeHandle",
+      "type": "function",
+      "path": "app/api/profile/route.ts",
+      "parent": "file:app/api/profile/route.ts",
+      "loc": 21,
+      "isOrphan": false,
+      "exported": false
     },
     {
       "id": "file:app/api/profile/route.ts",
@@ -7940,6 +8041,8 @@
         "supabase-table:follows",
         "supabase-table:follows",
         "supabase-table:follows",
+        "supabase-table:profiles",
+        "supabase-table:profiles",
         "supabase-table:profiles"
       ]
     },
@@ -7964,7 +8067,7 @@
         "api-handler",
         "supabase-table:projects",
         "supabase-table:projects",
-        "supabase-table:feed_items",
+        "supabase-table:projects",
         "supabase-table:projects",
         "supabase-table:projects"
       ]
@@ -8453,7 +8556,6 @@
         "api-handler",
         "supabase-table:merch",
         "supabase-table:merch",
-        "supabase-table:feed_items",
         "supabase-table:merch",
         "supabase-table:merch"
       ]
@@ -10587,7 +10689,7 @@
       "type": "function",
       "path": "app/dreamdmbar/layout.tsx",
       "parent": "file:app/dreamdmbar/layout.tsx",
-      "loc": 54,
+      "loc": 56,
       "isOrphan": false,
       "exported": true
     },
@@ -10604,6 +10706,7 @@
         "supabase-table:user_roles",
         "supabase-table:feed_items",
         "supabase-table:follows",
+        "supabase-table:close_friends",
         "supabase-table:app_posts"
       ]
     },
@@ -11501,7 +11604,7 @@
       "type": "function",
       "path": "app/engines/page.tsx",
       "parent": "file:app/engines/page.tsx",
-      "loc": 89,
+      "loc": 99,
       "isOrphan": false,
       "exported": true
     },
@@ -11637,6 +11740,75 @@
       "type": "route",
       "path": "app/engines/portfolio/quantum/page.tsx",
       "parent": "folder:app/engines/portfolio/quantum",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:app/engines/render",
+      "label": "render",
+      "type": "folder",
+      "path": "app/engines/render",
+      "parent": "folder:app/engines",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/engines/render/error.tsx#RenderEnginError",
+      "label": "RenderEnginError",
+      "type": "function",
+      "path": "app/engines/render/error.tsx",
+      "parent": "file:app/engines/render/error.tsx",
+      "loc": 2,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:app/engines/render/error.tsx",
+      "label": "error.tsx",
+      "type": "tsx",
+      "path": "app/engines/render/error.tsx",
+      "parent": "folder:app/engines/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:app/engines/render/loading.tsx#RenderEnginLoading",
+      "label": "RenderEnginLoading",
+      "type": "function",
+      "path": "app/engines/render/loading.tsx",
+      "parent": "file:app/engines/render/loading.tsx",
+      "loc": 1,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:app/engines/render/loading.tsx",
+      "label": "loading.tsx",
+      "type": "tsx",
+      "path": "app/engines/render/loading.tsx",
+      "parent": "folder:app/engines/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:app/engines/render/page.tsx#RenderEnginPage",
+      "label": "RenderEnginPage",
+      "type": "function",
+      "path": "app/engines/render/page.tsx",
+      "parent": "file:app/engines/render/page.tsx",
+      "loc": 12,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/engines/render/page.tsx",
+      "label": "page.tsx",
+      "type": "route",
+      "path": "app/engines/render/page.tsx",
+      "parent": "folder:app/engines/render",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -11955,7 +12127,7 @@
       "type": "function",
       "path": "app/lab/[id]/page.tsx",
       "parent": "file:app/lab/[id]/page.tsx",
-      "loc": 37,
+      "loc": 30,
       "isOrphan": false,
       "exported": true
     },
@@ -12322,6 +12494,50 @@
       "tags": [
         "supabase-table:boards",
         "supabase-table:boards"
+      ]
+    },
+    {
+      "id": "folder:app/messages/new",
+      "label": "new",
+      "type": "folder",
+      "path": "app/messages/new",
+      "parent": "folder:app/messages",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/messages/new/page.tsx#mirrorConversationParticipants",
+      "label": "mirrorConversationParticipants",
+      "type": "function",
+      "path": "app/messages/new/page.tsx",
+      "parent": "file:app/messages/new/page.tsx",
+      "loc": 10,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:app/messages/new/page.tsx#NewMessagePage",
+      "label": "NewMessagePage",
+      "type": "function",
+      "path": "app/messages/new/page.tsx",
+      "parent": "file:app/messages/new/page.tsx",
+      "loc": 27,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/messages/new/page.tsx",
+      "label": "page.tsx",
+      "type": "route",
+      "path": "app/messages/new/page.tsx",
+      "parent": "folder:app/messages/new",
+      "loc": null,
+      "isOrphan": false,
+      "tags": [
+        "supabase-table:conversation_participants",
+        "supabase-table:profiles",
+        "supabase-table:conversations",
+        "supabase-table:conversations"
       ]
     },
     {
@@ -14213,12 +14429,22 @@
       "tags": []
     },
     {
+      "id": "function:components/contentengin/AssetPreview3D.tsx#disposeObject",
+      "label": "disposeObject",
+      "type": "function",
+      "path": "components/contentengin/AssetPreview3D.tsx",
+      "parent": "file:components/contentengin/AssetPreview3D.tsx",
+      "loc": 6,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/contentengin/AssetPreview3D.tsx#AssetPreview3D",
       "label": "AssetPreview3D",
       "type": "function",
       "path": "components/contentengin/AssetPreview3D.tsx",
       "parent": "file:components/contentengin/AssetPreview3D.tsx",
-      "loc": 6,
+      "loc": 16,
       "isOrphan": true,
       "exported": true
     },
@@ -15341,6 +15567,26 @@
       "tags": []
     },
     {
+      "id": "function:components/dream.CommandPaletteMount.tsx#CommandPaletteMount",
+      "label": "CommandPaletteMount",
+      "type": "function",
+      "path": "components/dream.CommandPaletteMount.tsx",
+      "parent": "file:components/dream.CommandPaletteMount.tsx",
+      "loc": 6,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/dream.CommandPaletteMount.tsx",
+      "label": "dream.CommandPaletteMount.tsx",
+      "type": "tsx",
+      "path": "components/dream.CommandPaletteMount.tsx",
+      "parent": "folder:components",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:components/dream.CreatePostModal.tsx#CreatePostModal",
       "label": "CreatePostModal",
       "type": "function",
@@ -15359,9 +15605,7 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "supabase-create-client",
-        "supabase-table:app_posts",
-        "supabase-table:feed_items"
+        "supabase-create-client"
       ]
     },
     {
@@ -15675,7 +15919,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 44,
+      "loc": 48,
       "isOrphan": true,
       "exported": false
     },
@@ -15685,7 +15929,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 51,
+      "loc": 55,
       "isOrphan": true,
       "exported": false
     },
@@ -15695,7 +15939,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 57,
+      "loc": 61,
       "isOrphan": true,
       "exported": false
     },
@@ -15705,7 +15949,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 72,
+      "loc": 76,
       "isOrphan": true,
       "exported": false
     },
@@ -15715,7 +15959,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 80,
+      "loc": 84,
       "isOrphan": true,
       "exported": true
     },
@@ -17729,7 +17973,7 @@
       "type": "function",
       "path": "components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
       "parent": "file:components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
-      "loc": 33,
+      "loc": 23,
       "isOrphan": true,
       "exported": true
     },
@@ -18338,6 +18582,45 @@
       "tags": []
     },
     {
+      "id": "folder:components/engines/render",
+      "label": "render",
+      "type": "folder",
+      "path": "components/engines/render",
+      "parent": "folder:components/engines",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:components/engines/render/dream.RenderEnginApp.tsx#RenderEnginSurface",
+      "label": "RenderEnginSurface",
+      "type": "function",
+      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "parent": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "loc": 8,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "label": "dream.RenderEnginApp.tsx",
+      "type": "tsx",
+      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "parent": "folder:components/engines/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:components/engines/render/index.ts",
+      "label": "index.ts",
+      "type": "ts",
+      "path": "components/engines/render/index.ts",
+      "parent": "folder:components/engines/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:components/engines/shared",
       "label": "shared",
       "type": "folder",
@@ -18701,7 +18984,7 @@
       "type": "function",
       "path": "components/feed/dream.FollowButton.tsx",
       "parent": "file:components/feed/dream.FollowButton.tsx",
-      "loc": 8,
+      "loc": 13,
       "isOrphan": true,
       "exported": true
     },
@@ -21726,7 +22009,7 @@
       "type": "function",
       "path": "components/panels/dream.panel.WidgetsPanel.tsx",
       "parent": "file:components/panels/dream.panel.WidgetsPanel.tsx",
-      "loc": 25,
+      "loc": 23,
       "isOrphan": true,
       "exported": true
     },
@@ -21738,10 +22021,7 @@
       "parent": "folder:components/panels",
       "loc": null,
       "isOrphan": false,
-      "tags": [
-        "supabase-create-client",
-        "supabase-table:profiles"
-      ]
+      "tags": []
     },
     {
       "id": "file:components/panels/panelTypes.ts",
@@ -22109,7 +22389,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 109,
+      "loc": 110,
       "isOrphan": true,
       "exported": false
     },
@@ -22119,7 +22399,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 113,
+      "loc": 114,
       "isOrphan": true,
       "exported": true
     },
@@ -26629,7 +26909,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 64,
+      "loc": 68,
       "isOrphan": false,
       "exported": true
     },
@@ -26639,7 +26919,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 80,
+      "loc": 84,
       "isOrphan": false,
       "exported": true
     },
@@ -26649,7 +26929,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 101,
+      "loc": 105,
       "isOrphan": false,
       "exported": true
     },
@@ -26659,7 +26939,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 165,
+      "loc": 169,
       "isOrphan": false,
       "exported": true
     },
@@ -26669,7 +26949,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 201,
+      "loc": 205,
       "isOrphan": false,
       "exported": true
     },
@@ -26679,7 +26959,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 222,
+      "loc": 226,
       "isOrphan": false,
       "exported": true
     },
@@ -26689,7 +26969,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 227,
+      "loc": 231,
       "isOrphan": false,
       "exported": true
     },
@@ -26699,7 +26979,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 237,
+      "loc": 241,
       "isOrphan": false,
       "exported": true
     },
@@ -26709,7 +26989,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 247,
+      "loc": 251,
       "isOrphan": false,
       "exported": true
     },
@@ -26719,7 +26999,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/notificationHelpers.ts",
       "parent": "file:dreamdmbar/notifications/notificationHelpers.ts",
-      "loc": 256,
+      "loc": 260,
       "isOrphan": false,
       "exported": true
     },
@@ -31994,7 +32274,7 @@
       "isOrphan": false,
       "tags": [
         "supabase-table:connector_accounts",
-        "supabase-table:feed_items",
+        "supabase-table:connector_feed_items",
         "supabase-table:connector_accounts"
       ]
     },
@@ -32084,7 +32364,7 @@
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 22,
+      "loc": 26,
       "isOrphan": true,
       "exported": false
     },
@@ -32094,7 +32374,7 @@
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 38,
+      "loc": 42,
       "isOrphan": true,
       "exported": false
     },
@@ -32104,7 +32384,7 @@
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 54,
+      "loc": 58,
       "isOrphan": true,
       "exported": true
     },
@@ -32114,7 +32394,7 @@
       "type": "function",
       "path": "engine/connectors/youtube.ts",
       "parent": "file:engine/connectors/youtube.ts",
-      "loc": 86,
+      "loc": 90,
       "isOrphan": true,
       "exported": false
     },
@@ -32127,7 +32407,7 @@
       "loc": null,
       "isOrphan": true,
       "tags": [
-        "supabase-table:feed_items"
+        "supabase-table:connector_feed_items"
       ]
     },
     {
@@ -33576,7 +33856,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 191,
+      "loc": 209,
       "isOrphan": true,
       "exported": false
     },
@@ -33586,7 +33866,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 199,
+      "loc": 217,
       "isOrphan": true,
       "exported": false
     },
@@ -33596,7 +33876,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 209,
+      "loc": 227,
       "isOrphan": true,
       "exported": false
     },
@@ -33606,7 +33886,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 213,
+      "loc": 231,
       "isOrphan": true,
       "exported": true
     },
@@ -33616,7 +33896,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 305,
+      "loc": 323,
       "isOrphan": true,
       "exported": false
     },
@@ -33626,7 +33906,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 485,
+      "loc": 503,
       "isOrphan": false,
       "exported": true
     },
@@ -33636,7 +33916,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 221,
+      "loc": 239,
       "isOrphan": true,
       "exported": true
     },
@@ -33646,7 +33926,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 254,
+      "loc": 272,
       "isOrphan": false,
       "exported": true
     },
@@ -33656,7 +33936,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 287,
+      "loc": 305,
       "isOrphan": false,
       "exported": true
     },
@@ -33666,7 +33946,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 329,
+      "loc": 347,
       "isOrphan": false,
       "exported": true
     },
@@ -33676,7 +33956,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 356,
+      "loc": 374,
       "isOrphan": false,
       "exported": true
     },
@@ -33686,7 +33966,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 393,
+      "loc": 411,
       "isOrphan": true,
       "exported": true
     },
@@ -33696,7 +33976,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 409,
+      "loc": 427,
       "isOrphan": true,
       "exported": true
     },
@@ -33706,7 +33986,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 424,
+      "loc": 442,
       "isOrphan": false,
       "exported": true
     },
@@ -33716,7 +33996,7 @@
       "type": "class",
       "path": "engine/engin-runtime/EnginCapabilityExecution.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityExecution.ts",
-      "loc": 452,
+      "loc": 470,
       "isOrphan": true,
       "exported": true
     },
@@ -33766,7 +34046,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 228,
+      "loc": 246,
       "isOrphan": true,
       "exported": false
     },
@@ -33776,7 +34056,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 244,
+      "loc": 262,
       "isOrphan": true,
       "exported": false
     },
@@ -33786,7 +34066,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 258,
+      "loc": 276,
       "isOrphan": true,
       "exported": false
     },
@@ -33796,7 +34076,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 270,
+      "loc": 288,
       "isOrphan": false,
       "exported": true
     },
@@ -33806,7 +34086,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 278,
+      "loc": 296,
       "isOrphan": false,
       "exported": true
     },
@@ -33816,7 +34096,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 290,
+      "loc": 308,
       "isOrphan": false,
       "exported": true
     },
@@ -33826,7 +34106,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 366,
+      "loc": 384,
       "isOrphan": false,
       "exported": true
     },
@@ -33836,7 +34116,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 370,
+      "loc": 388,
       "isOrphan": true,
       "exported": true
     },
@@ -33846,7 +34126,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 376,
+      "loc": 394,
       "isOrphan": true,
       "exported": true
     },
@@ -33856,7 +34136,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 380,
+      "loc": 398,
       "isOrphan": true,
       "exported": true
     },
@@ -33866,7 +34146,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 389,
+      "loc": 407,
       "isOrphan": false,
       "exported": true
     },
@@ -33876,7 +34156,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 409,
+      "loc": 427,
       "isOrphan": true,
       "exported": false
     },
@@ -33886,7 +34166,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 426,
+      "loc": 444,
       "isOrphan": false,
       "exported": true
     },
@@ -33896,7 +34176,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 437,
+      "loc": 455,
       "isOrphan": false,
       "exported": true
     },
@@ -33906,7 +34186,7 @@
       "type": "function",
       "path": "engine/engin-runtime/EnginCapabilityTargets.ts",
       "parent": "file:engine/engin-runtime/EnginCapabilityTargets.ts",
-      "loc": 443,
+      "loc": 461,
       "isOrphan": false,
       "exported": true
     },
@@ -35125,6 +35405,56 @@
       "label": "EnginRuntime.ts",
       "type": "ts",
       "path": "engine/engin-runtime/EnginRuntime.ts",
+      "parent": "folder:engine/engin-runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#registerRuntimeEngin",
+      "label": "registerRuntimeEngin",
+      "type": "function",
+      "path": "engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "parent": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "loc": 18,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#getRuntimeEnginRegistration",
+      "label": "getRuntimeEnginRegistration",
+      "type": "function",
+      "path": "engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "parent": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "loc": 23,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#listRuntimeEnginRegistrations",
+      "label": "listRuntimeEnginRegistrations",
+      "type": "function",
+      "path": "engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "parent": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "loc": 27,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#resolveRuntimeCapability",
+      "label": "resolveRuntimeCapability",
+      "type": "function",
+      "path": "engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "parent": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "loc": 31,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "label": "EnginRuntimeRegistry.ts",
+      "type": "ts",
+      "path": "engine/engin-runtime/EnginRuntimeRegistry.ts",
       "parent": "folder:engine/engin-runtime",
       "loc": null,
       "isOrphan": false,
@@ -38813,7 +39143,7 @@
       "isOrphan": false,
       "tags": [
         "supabase-create-client",
-        "supabase-table:physics_experiments"
+        "supabase-table:science_experiments"
       ]
     },
     {
@@ -40835,7 +41165,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 73,
+      "loc": 169,
       "isOrphan": false,
       "exported": true
     },
@@ -40845,7 +41175,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 79,
+      "loc": 175,
       "isOrphan": false,
       "exported": true
     },
@@ -40855,7 +41185,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 94,
+      "loc": 190,
       "isOrphan": true,
       "exported": true
     },
@@ -40865,7 +41195,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 106,
+      "loc": 202,
       "isOrphan": false,
       "exported": true
     },
@@ -40875,7 +41205,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 151,
+      "loc": 247,
       "isOrphan": false,
       "exported": true
     },
@@ -40885,7 +41215,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 157,
+      "loc": 253,
       "isOrphan": false,
       "exported": true
     },
@@ -40895,7 +41225,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 219,
+      "loc": 315,
       "isOrphan": true,
       "exported": false
     },
@@ -40905,7 +41235,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 226,
+      "loc": 322,
       "isOrphan": true,
       "exported": false
     },
@@ -40915,7 +41245,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 236,
+      "loc": 332,
       "isOrphan": true,
       "exported": false
     },
@@ -40925,7 +41255,7 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 246,
+      "loc": 342,
       "isOrphan": true,
       "exported": false
     },
@@ -40935,9 +41265,19 @@
       "type": "function",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 256,
+      "loc": 352,
       "isOrphan": true,
       "exported": false
+    },
+    {
+      "id": "class:engine/runtime/iEngine.ts#SpatialRuntimeCore",
+      "label": "SpatialRuntimeCore",
+      "type": "class",
+      "path": "engine/runtime/iEngine.ts",
+      "parent": "file:engine/runtime/iEngine.ts",
+      "loc": 108,
+      "isOrphan": false,
+      "exported": true
     },
     {
       "id": "class:engine/runtime/iEngine.ts#IntentBus",
@@ -40945,7 +41285,7 @@
       "type": "class",
       "path": "engine/runtime/iEngine.ts",
       "parent": "file:engine/runtime/iEngine.ts",
-      "loc": 115,
+      "loc": 211,
       "isOrphan": false,
       "exported": true
     },
@@ -41830,6 +42170,56 @@
       "parent": "folder:engine/runtime",
       "loc": null,
       "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:engine/runtime/superciliousPlatformRuntime.ts#createCapabilityVector",
+      "label": "createCapabilityVector",
+      "type": "function",
+      "path": "engine/runtime/superciliousPlatformRuntime.ts",
+      "parent": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "loc": 150,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/superciliousPlatformRuntime.ts#createSuperciliousPlatformState",
+      "label": "createSuperciliousPlatformState",
+      "type": "function",
+      "path": "engine/runtime/superciliousPlatformRuntime.ts",
+      "parent": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "loc": 154,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/superciliousPlatformRuntime.ts#assertDreamEnginSuperset",
+      "label": "assertDreamEnginSuperset",
+      "type": "function",
+      "path": "engine/runtime/superciliousPlatformRuntime.ts",
+      "parent": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "loc": 179,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/superciliousPlatformRuntime.ts#mergeCapabilities",
+      "label": "mergeCapabilities",
+      "type": "function",
+      "path": "engine/runtime/superciliousPlatformRuntime.ts",
+      "parent": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "loc": 193,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "label": "superciliousPlatformRuntime.ts",
+      "type": "ts",
+      "path": "engine/runtime/superciliousPlatformRuntime.ts",
+      "parent": "folder:engine/runtime",
+      "loc": null,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -44262,7 +44652,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 30,
+      "loc": 31,
       "isOrphan": false,
       "exported": true
     },
@@ -44272,7 +44662,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 141,
+      "loc": 133,
       "isOrphan": true,
       "exported": false
     },
@@ -44282,7 +44672,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 186,
+      "loc": 178,
       "isOrphan": true,
       "exported": false
     },
@@ -44292,7 +44682,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 209,
+      "loc": 201,
       "isOrphan": true,
       "exported": false
     },
@@ -44302,7 +44692,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 233,
+      "loc": 225,
       "isOrphan": true,
       "exported": true
     },
@@ -44312,7 +44702,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 290,
+      "loc": 282,
       "isOrphan": true,
       "exported": true
     },
@@ -44322,7 +44712,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 329,
+      "loc": 321,
       "isOrphan": true,
       "exported": true
     },
@@ -44332,7 +44722,7 @@
       "type": "function",
       "path": "engine/widgets/feed-resolver.ts",
       "parent": "file:engine/widgets/feed-resolver.ts",
-      "loc": 335,
+      "loc": 327,
       "isOrphan": true,
       "exported": true
     },
@@ -44345,7 +44735,8 @@
       "loc": null,
       "isOrphan": false,
       "tags": [
-        "supabase-table:feed_items",
+        "supabase-table:app_posts",
+        "supabase-table:close_friends",
         "supabase-table:follows",
         "supabase-table:app_posts"
       ]
@@ -45424,7 +45815,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 14,
+      "loc": 16,
       "isOrphan": false,
       "exported": true
     },
@@ -45434,7 +45825,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 22,
+      "loc": 24,
       "isOrphan": false,
       "exported": true
     },
@@ -45444,7 +45835,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 27,
+      "loc": 29,
       "isOrphan": false,
       "exported": true
     },
@@ -45454,7 +45845,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 33,
+      "loc": 35,
       "isOrphan": false,
       "exported": true
     },
@@ -45464,7 +45855,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 52,
+      "loc": 54,
       "isOrphan": false,
       "exported": true
     },
@@ -45474,7 +45865,7 @@
       "type": "function",
       "path": "engins/codeengin/pathSafety.ts",
       "parent": "file:engins/codeengin/pathSafety.ts",
-      "loc": 62,
+      "loc": 64,
       "isOrphan": false,
       "exported": true
     },
@@ -45564,19 +45955,9 @@
       "type": "function",
       "path": "engins/codeengin/runner.ts",
       "parent": "file:engins/codeengin/runner.ts",
-      "loc": 15,
+      "loc": 9,
       "isOrphan": true,
       "exported": false
-    },
-    {
-      "id": "function:engins/codeengin/runner.ts#listRunnerCommands",
-      "label": "listRunnerCommands",
-      "type": "function",
-      "path": "engins/codeengin/runner.ts",
-      "parent": "file:engins/codeengin/runner.ts",
-      "loc": 20,
-      "isOrphan": false,
-      "exported": true
     },
     {
       "id": "function:engins/codeengin/runner.ts#runCodeEnginCommand",
@@ -45584,7 +45965,7 @@
       "type": "function",
       "path": "engins/codeengin/runner.ts",
       "parent": "file:engins/codeengin/runner.ts",
-      "loc": 24,
+      "loc": 14,
       "isOrphan": false,
       "exported": true
     },
@@ -45594,7 +45975,7 @@
       "type": "function",
       "path": "engins/codeengin/runner.ts",
       "parent": "file:engins/codeengin/runner.ts",
-      "loc": 48,
+      "loc": 38,
       "isOrphan": false,
       "exported": true
     },
@@ -45603,6 +45984,26 @@
       "label": "runner.ts",
       "type": "ts",
       "path": "engins/codeengin/runner.ts",
+      "parent": "folder:engins/codeengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/codeengin/runnerCommands.ts#listRunnerCommands",
+      "label": "listRunnerCommands",
+      "type": "function",
+      "path": "engins/codeengin/runnerCommands.ts",
+      "parent": "file:engins/codeengin/runnerCommands.ts",
+      "loc": 8,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/codeengin/runnerCommands.ts",
+      "label": "runnerCommands.ts",
+      "type": "ts",
+      "path": "engins/codeengin/runnerCommands.ts",
       "parent": "folder:engins/codeengin",
       "loc": null,
       "isOrphan": false,
@@ -48111,6 +48512,26 @@
       "tags": []
     },
     {
+      "id": "function:engins/contentengin/performancePlan.ts#createContentEnginPerformancePlan",
+      "label": "createContentEnginPerformancePlan",
+      "type": "function",
+      "path": "engins/contentengin/performancePlan.ts",
+      "parent": "file:engins/contentengin/performancePlan.ts",
+      "loc": 13,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/contentengin/performancePlan.ts",
+      "label": "performancePlan.ts",
+      "type": "ts",
+      "path": "engins/contentengin/performancePlan.ts",
+      "parent": "folder:engins/contentengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:engins/contentengin/photo",
       "label": "photo",
       "type": "folder",
@@ -48186,7 +48607,7 @@
       "path": "engins/contentengin/photo/imageAnalyzer.ts",
       "parent": "file:engins/contentengin/photo/imageAnalyzer.ts",
       "loc": 38,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -48375,7 +48796,7 @@
       "path": "engins/contentengin/pipeline/build.ts",
       "parent": "file:engins/contentengin/pipeline/build.ts",
       "loc": 15,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -48475,7 +48896,7 @@
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
       "loc": 39,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -48585,7 +49006,7 @@
       "path": "engins/contentengin/pipeline/validate.ts",
       "parent": "file:engins/contentengin/pipeline/validate.ts",
       "loc": 10,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -48866,6 +49287,26 @@
       "tags": []
     },
     {
+      "id": "function:engins/contentengin/runtimeProfile.ts#createContentEnginRuntimeProfile",
+      "label": "createContentEnginRuntimeProfile",
+      "type": "function",
+      "path": "engins/contentengin/runtimeProfile.ts",
+      "parent": "file:engins/contentengin/runtimeProfile.ts",
+      "loc": 35,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/contentengin/runtimeProfile.ts",
+      "label": "runtimeProfile.ts",
+      "type": "ts",
+      "path": "engins/contentengin/runtimeProfile.ts",
+      "parent": "folder:engins/contentengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:engins/contentengin/shaders",
       "label": "shaders",
       "type": "folder",
@@ -48900,6 +49341,26 @@
       "type": "ts",
       "path": "engins/contentengin/shaders/shaderTypes.ts",
       "parent": "folder:engins/contentengin/shaders",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/contentengin/upgradeMatrix.ts#enabledUpgradeIds",
+      "label": "enabledUpgradeIds",
+      "type": "function",
+      "path": "engins/contentengin/upgradeMatrix.ts",
+      "parent": "file:engins/contentengin/upgradeMatrix.ts",
+      "loc": 36,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/contentengin/upgradeMatrix.ts",
+      "label": "upgradeMatrix.ts",
+      "type": "ts",
+      "path": "engins/contentengin/upgradeMatrix.ts",
+      "parent": "folder:engins/contentengin",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -49654,8 +50115,8 @@
       "isOrphan": false,
       "tags": [
         "supabase-create-client",
-        "supabase-table:physics_experiments",
-        "supabase-table:physics_experiments"
+        "supabase-table:science_experiments",
+        "supabase-table:science_experiments"
       ]
     },
     {
@@ -50961,7 +51422,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 132,
+      "loc": 144,
       "isOrphan": false,
       "exported": true
     },
@@ -50971,7 +51432,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 136,
+      "loc": 148,
       "isOrphan": false,
       "exported": true
     },
@@ -50981,7 +51442,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 161,
+      "loc": 173,
       "isOrphan": false,
       "exported": true
     },
@@ -50991,7 +51452,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 190,
+      "loc": 202,
       "isOrphan": true,
       "exported": false
     },
@@ -51001,7 +51462,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 206,
+      "loc": 218,
       "isOrphan": false,
       "exported": true
     },
@@ -51011,7 +51472,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 227,
+      "loc": 239,
       "isOrphan": false,
       "exported": true
     },
@@ -51021,7 +51482,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 235,
+      "loc": 247,
       "isOrphan": false,
       "exported": true
     },
@@ -57213,6 +57674,1275 @@
       "tags": []
     },
     {
+      "id": "folder:engins/renderengin",
+      "label": "renderengin",
+      "type": "folder",
+      "path": "engins/renderengin",
+      "parent": "folder:engins",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#createDemoTriangle",
+      "label": "createDemoTriangle",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 20,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#orbitEye",
+      "label": "orbitEye",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 28,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#drawFallbackScene",
+      "label": "drawFallbackScene",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#RenderEnginViewport",
+      "label": "RenderEnginViewport",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 62,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "label": "RenderEnginViewport.tsx",
+      "type": "tsx",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#lerp",
+      "label": "lerp",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 36,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#lerpVec3",
+      "label": "lerpVec3",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 38,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#normalizeQuat",
+      "label": "normalizeQuat",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 39,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#lerpQuat",
+      "label": "lerpQuat",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 40,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#sampleKeyframes",
+      "label": "sampleKeyframes",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/animation.ts#evaluateAnimationClip",
+      "label": "evaluateAnimationClip",
+      "type": "function",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "file:engins/renderengin/animation.ts",
+      "loc": 54,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/animation.ts",
+      "label": "animation.ts",
+      "type": "ts",
+      "path": "engins/renderengin/animation.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#parseObjVertexRef",
+      "label": "parseObjVertexRef",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 23,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#parseObjMesh",
+      "label": "parseObjMesh",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 38,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#parseGlbHeader",
+      "label": "parseGlbHeader",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 85,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#createParsedObjRenderAsset",
+      "label": "createParsedObjRenderAsset",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 100,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#renderAssetManifestToJson",
+      "label": "renderAssetManifestToJson",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 118,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#estimateRenderAssetMemory",
+      "label": "estimateRenderAssetMemory",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 122,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#authorizeRenderAssetOperation",
+      "label": "authorizeRenderAssetOperation",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 131,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#createContentEnginRenderHandoff",
+      "label": "createContentEnginRenderHandoff",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 136,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#createGameEnginRenderHandoff",
+      "label": "createGameEnginRenderHandoff",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 147,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#parseGlbChunks",
+      "label": "parseGlbChunks",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 163,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#readAccessorNumber",
+      "label": "readAccessorNumber",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 178,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#readVec3Accessor",
+      "label": "readVec3Accessor",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 190,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#readVec2Accessor",
+      "label": "readVec2Accessor",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 197,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#readIndexAccessor",
+      "label": "readIndexAccessor",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 204,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#parseGlbMesh",
+      "label": "parseGlbMesh",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 211,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/assets.ts#createParsedGlbRenderAsset",
+      "label": "createParsedGlbRenderAsset",
+      "type": "function",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "file:engins/renderengin/assets.ts",
+      "loc": 222,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/assets.ts",
+      "label": "assets.ts",
+      "type": "ts",
+      "path": "engins/renderengin/assets.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/benchmarkProof.ts#createTenMillionPolygonProof",
+      "label": "createTenMillionPolygonProof",
+      "type": "function",
+      "path": "engins/renderengin/benchmarkProof.ts",
+      "parent": "file:engins/renderengin/benchmarkProof.ts",
+      "loc": 13,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/benchmarkProof.ts#evaluateGpuBenchmarkProof",
+      "label": "evaluateGpuBenchmarkProof",
+      "type": "function",
+      "path": "engins/renderengin/benchmarkProof.ts",
+      "parent": "file:engins/renderengin/benchmarkProof.ts",
+      "loc": 27,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/benchmarkProof.ts",
+      "label": "benchmarkProof.ts",
+      "type": "ts",
+      "path": "engins/renderengin/benchmarkProof.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3add",
+      "label": "v3add",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 12,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3sub",
+      "label": "v3sub",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 14,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3scale",
+      "label": "v3scale",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 15,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3dot",
+      "label": "v3dot",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3cross",
+      "label": "v3cross",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 17,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3length",
+      "label": "v3length",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 18,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#v3normalize",
+      "label": "v3normalize",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 19,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#clamp01",
+      "label": "clamp01",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 20,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4Mul",
+      "label": "mat4Mul",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 25,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4Transform",
+      "label": "mat4Transform",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 26,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4Perspective",
+      "label": "mat4Perspective",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 27,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4LookAt",
+      "label": "mat4LookAt",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 28,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4FromQuat",
+      "label": "mat4FromQuat",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 29,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#composeModelMatrix",
+      "label": "composeModelMatrix",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 30,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#projectVertex",
+      "label": "projectVertex",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 31,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#createMeshBuffers",
+      "label": "createMeshBuffers",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 35,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#computeTangents",
+      "label": "computeTangents",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 36,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#ggxDistribution",
+      "label": "ggxDistribution",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#schlickG1",
+      "label": "schlickG1",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 39,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#smithGeometry",
+      "label": "smithGeometry",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 40,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#fresnelSchlick",
+      "label": "fresnelSchlick",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#shadeCookTorrance",
+      "label": "shadeCookTorrance",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 42,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#unpackOrm",
+      "label": "unpackOrm",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 43,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#evaluateJointWorldMatrices",
+      "label": "evaluateJointWorldMatrices",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#evaluateSkinMatrices",
+      "label": "evaluateSkinMatrices",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 47,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#skinVertexLbs",
+      "label": "skinVertexLbs",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 48,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#makeDualQuaternion",
+      "label": "makeDualQuaternion",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 50,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#quatMul",
+      "label": "quatMul",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 51,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#selectLod",
+      "label": "selectLod",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 54,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#clusterizeMesh",
+      "label": "clusterizeMesh",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 56,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#buildClusterDag",
+      "label": "buildClusterDag",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 57,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#validateMeshForRenderUpload",
+      "label": "validateMeshForRenderUpload",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 91,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#createRenderAsset",
+      "label": "createRenderAsset",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 104,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#renderDomain",
+      "label": "renderDomain",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 111,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#bump",
+      "label": "bump",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 121,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:engins/renderengin/core.ts",
+      "label": "core.ts",
+      "type": "ts",
+      "path": "engins/renderengin/core.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/diagnostics.ts#createRenderPerformanceReport",
+      "label": "createRenderPerformanceReport",
+      "type": "function",
+      "path": "engins/renderengin/diagnostics.ts",
+      "parent": "file:engins/renderengin/diagnostics.ts",
+      "loc": 34,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/diagnostics.ts#frameStatsToPerformanceSample",
+      "label": "frameStatsToPerformanceSample",
+      "type": "function",
+      "path": "engins/renderengin/diagnostics.ts",
+      "parent": "file:engins/renderengin/diagnostics.ts",
+      "loc": 50,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/diagnostics.ts#createBenchmarkScene",
+      "label": "createBenchmarkScene",
+      "type": "function",
+      "path": "engins/renderengin/diagnostics.ts",
+      "parent": "file:engins/renderengin/diagnostics.ts",
+      "loc": 54,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/diagnostics.ts#evaluateRenderPerformanceGate",
+      "label": "evaluateRenderPerformanceGate",
+      "type": "function",
+      "path": "engins/renderengin/diagnostics.ts",
+      "parent": "file:engins/renderengin/diagnostics.ts",
+      "loc": 66,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/diagnostics.ts",
+      "label": "diagnostics.ts",
+      "type": "ts",
+      "path": "engins/renderengin/diagnostics.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:engins/renderengin/index.ts",
+      "label": "index.ts",
+      "type": "ts",
+      "path": "engins/renderengin/index.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/lighting.ts#createRenderLight",
+      "label": "createRenderLight",
+      "type": "function",
+      "path": "engins/renderengin/lighting.ts",
+      "parent": "file:engins/renderengin/lighting.ts",
+      "loc": 36,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/lighting.ts#createRenderEnvironment",
+      "label": "createRenderEnvironment",
+      "type": "function",
+      "path": "engins/renderengin/lighting.ts",
+      "parent": "file:engins/renderengin/lighting.ts",
+      "loc": 76,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/lighting.ts#summarizeRenderLights",
+      "label": "summarizeRenderLights",
+      "type": "function",
+      "path": "engins/renderengin/lighting.ts",
+      "parent": "file:engins/renderengin/lighting.ts",
+      "loc": 102,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/lighting.ts",
+      "label": "lighting.ts",
+      "type": "ts",
+      "path": "engins/renderengin/lighting.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/materials.ts#createRenderMaterial",
+      "label": "createRenderMaterial",
+      "type": "function",
+      "path": "engins/renderengin/materials.ts",
+      "parent": "file:engins/renderengin/materials.ts",
+      "loc": 26,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/materials.ts#packRenderMaterial",
+      "label": "packRenderMaterial",
+      "type": "function",
+      "path": "engins/renderengin/materials.ts",
+      "parent": "file:engins/renderengin/materials.ts",
+      "loc": 66,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/materials.ts#updateRenderMaterial",
+      "label": "updateRenderMaterial",
+      "type": "function",
+      "path": "engins/renderengin/materials.ts",
+      "parent": "file:engins/renderengin/materials.ts",
+      "loc": 74,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/materials.ts",
+      "label": "materials.ts",
+      "type": "ts",
+      "path": "engins/renderengin/materials.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/postProcessing.ts#createRenderPostProcessGraph",
+      "label": "createRenderPostProcessGraph",
+      "type": "function",
+      "path": "engins/renderengin/postProcessing.ts",
+      "parent": "file:engins/renderengin/postProcessing.ts",
+      "loc": 12,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/postProcessing.ts#executePostProcessPixel",
+      "label": "executePostProcessPixel",
+      "type": "function",
+      "path": "engins/renderengin/postProcessing.ts",
+      "parent": "file:engins/renderengin/postProcessing.ts",
+      "loc": 22,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/postProcessing.ts",
+      "label": "postProcessing.ts",
+      "type": "ts",
+      "path": "engins/renderengin/postProcessing.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/renderSettings.ts#createRenderQualitySettings",
+      "label": "createRenderQualitySettings",
+      "type": "function",
+      "path": "engins/renderengin/renderSettings.ts",
+      "parent": "file:engins/renderengin/renderSettings.ts",
+      "loc": 19,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/renderSettings.ts#switchRenderPreviewMode",
+      "label": "switchRenderPreviewMode",
+      "type": "function",
+      "path": "engins/renderengin/renderSettings.ts",
+      "parent": "file:engins/renderengin/renderSettings.ts",
+      "loc": 26,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/renderSettings.ts",
+      "label": "renderSettings.ts",
+      "type": "ts",
+      "path": "engins/renderengin/renderSettings.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:engins/renderengin/runtimeRegistration.ts",
+      "label": "runtimeRegistration.ts",
+      "type": "ts",
+      "path": "engins/renderengin/runtimeRegistration.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#nowIso",
+      "label": "nowIso",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 61,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#defaultRenderTransform",
+      "label": "defaultRenderTransform",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 65,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#createRenderScene",
+      "label": "createRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 73,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#createRenderSceneObject",
+      "label": "createRenderSceneObject",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 98,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#rememberUndo",
+      "label": "rememberUndo",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 137,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#addObjectToRenderScene",
+      "label": "addObjectToRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 142,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#selectRenderSceneObjects",
+      "label": "selectRenderSceneObjects",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 156,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#updateRenderSceneObject",
+      "label": "updateRenderSceneObject",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 161,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#removeRenderSceneObject",
+      "label": "removeRenderSceneObject",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 173,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#setRenderSceneEnvironment",
+      "label": "setRenderSceneEnvironment",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 192,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#computeRenderObjectWorldMatrix",
+      "label": "computeRenderObjectWorldMatrix",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 196,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#serializeRenderScene",
+      "label": "serializeRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 204,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#deserializeRenderScene",
+      "label": "deserializeRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 208,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#undoRenderScene",
+      "label": "undoRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 215,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#redoRenderScene",
+      "label": "redoRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 222,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/scene.ts#renderSceneSummary",
+      "label": "renderSceneSummary",
+      "type": "function",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "file:engins/renderengin/scene.ts",
+      "loc": 229,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/scene.ts",
+      "label": "scene.ts",
+      "type": "ts",
+      "path": "engins/renderengin/scene.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/textures.ts#calculateMipLevelCount",
+      "label": "calculateMipLevelCount",
+      "type": "function",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "file:engins/renderengin/textures.ts",
+      "loc": 33,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/textures.ts#estimateTextureBytes",
+      "label": "estimateTextureBytes",
+      "type": "function",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "file:engins/renderengin/textures.ts",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/textures.ts#validateRenderTexture",
+      "label": "validateRenderTexture",
+      "type": "function",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "file:engins/renderengin/textures.ts",
+      "loc": 43,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/textures.ts#createRenderTexture",
+      "label": "createRenderTexture",
+      "type": "function",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "file:engins/renderengin/textures.ts",
+      "loc": 55,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/textures.ts#createTextureMemoryReport",
+      "label": "createTextureMemoryReport",
+      "type": "function",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "file:engins/renderengin/textures.ts",
+      "loc": 96,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/textures.ts",
+      "label": "textures.ts",
+      "type": "ts",
+      "path": "engins/renderengin/textures.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#computeMeshBounds",
+      "label": "computeMeshBounds",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 34,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#sphereIntersectsFrustum",
+      "label": "sphereIntersectsFrustum",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 41,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#selectScreenSpaceLod",
+      "label": "selectScreenSpaceLod",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 45,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#cullRenderScene",
+      "label": "cullRenderScene",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 52,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#buildInstanceBatches",
+      "label": "buildInstanceBatches",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 81,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/virtualization.ts#createTerrainChunks",
+      "label": "createTerrainChunks",
+      "type": "function",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "file:engins/renderengin/virtualization.ts",
+      "loc": 91,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/virtualization.ts",
+      "label": "virtualization.ts",
+      "type": "ts",
+      "path": "engins/renderengin/virtualization.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#toGpuMat4",
+      "label": "toGpuMat4",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 133,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeMat4",
+      "label": "writeMat4",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 142,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#packAosVertexBuffer",
+      "label": "packAosVertexBuffer",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 146,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#createBuffer",
+      "label": "createBuffer",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 163,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
+      "label": "requestWebGpuDevice",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 180,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:engins/renderengin/webgpu.ts#WebGpuRenderEngin",
+      "label": "WebGpuRenderEngin",
+      "type": "class",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 192,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/webgpu.ts",
+      "label": "webgpu.ts",
+      "type": "ts",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:engins/rulesets",
       "label": "rulesets",
       "type": "folder",
@@ -62425,6 +64155,46 @@
       "tags": []
     },
     {
+      "id": "function:scripts/contentengin/generate-test-assets.mjs#runPnpmCe",
+      "label": "runPnpmCe",
+      "type": "function",
+      "path": "scripts/contentengin/generate-test-assets.mjs",
+      "parent": "file:scripts/contentengin/generate-test-assets.mjs",
+      "loc": 12,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/contentengin/generate-test-assets.mjs#assetIdFromRecipeFile",
+      "label": "assetIdFromRecipeFile",
+      "type": "function",
+      "path": "scripts/contentengin/generate-test-assets.mjs",
+      "parent": "file:scripts/contentengin/generate-test-assets.mjs",
+      "loc": 21,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/contentengin/generate-test-assets.mjs#main",
+      "label": "main",
+      "type": "function",
+      "path": "scripts/contentengin/generate-test-assets.mjs",
+      "parent": "file:scripts/contentengin/generate-test-assets.mjs",
+      "loc": 25,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:scripts/contentengin/generate-test-assets.mjs",
+      "label": "generate-test-assets.mjs",
+      "type": "mjs",
+      "path": "scripts/contentengin/generate-test-assets.mjs",
+      "parent": "folder:scripts/contentengin",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:scripts/contentengin/validate-glb.mjs",
       "label": "validate-glb.mjs",
       "type": "mjs",
@@ -66220,7 +67990,7 @@
       "path": "supabase/migrations/20260129000000_upgrade_schema.sql",
       "parent": "file:supabase/migrations/20260129000000_upgrade_schema.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#experiment_runs",
@@ -68996,7 +70766,7 @@
       "path": "supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "parent": "file:supabase/migrations/20260405000001_dreamr_feed_registry.sql",
       "loc": null,
-      "isOrphan": false
+      "isOrphan": true
     },
     {
       "id": "sql-policy:supabase/migrations/20260405000001_dreamr_feed_registry.sql#post_views_insert_own",
@@ -70543,6 +72313,127 @@
       "tags": []
     },
     {
+      "id": "sql-table:supabase/migrations/20260619000000_renderengin_assets_rls.sql#render_assets",
+      "label": "render_assets",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619000000_renderengin_assets_rls.sql#render_assets_select_owned_or_visible",
+      "label": "render_assets_select_owned_or_visible",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619000000_renderengin_assets_rls.sql#render_assets_insert_owned",
+      "label": "render_assets_insert_owned",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619000000_renderengin_assets_rls.sql#render_assets_update_owned",
+      "label": "render_assets_update_owned",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619000000_renderengin_assets_rls.sql#render_assets_delete_owned",
+      "label": "render_assets_delete_owned",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "file:supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "label": "20260619000000_renderengin_assets_rls.sql",
+      "type": "sql",
+      "path": "supabase/migrations/20260619000000_renderengin_assets_rls.sql",
+      "parent": "folder:supabase/migrations",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
+      "label": "connector_feed_items",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260619034000_connector_feed_items.sql",
+      "parent": "file:supabase/migrations/20260619034000_connector_feed_items.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619034000_connector_feed_items.sql#connector",
+      "label": "connector",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619034000_connector_feed_items.sql",
+      "parent": "file:supabase/migrations/20260619034000_connector_feed_items.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "file:supabase/migrations/20260619034000_connector_feed_items.sql",
+      "label": "20260619034000_connector_feed_items.sql",
+      "type": "sql",
+      "path": "supabase/migrations/20260619034000_connector_feed_items.sql",
+      "parent": "folder:supabase/migrations",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:supabase/migrations/20260619034100_profile_optional_fields.sql",
+      "label": "20260619034100_profile_optional_fields.sql",
+      "type": "sql",
+      "path": "supabase/migrations/20260619034100_profile_optional_fields.sql",
+      "parent": "folder:supabase/migrations",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "sql-table:supabase/migrations/20260619034200_saved_posts.sql#saved_posts",
+      "label": "saved_posts",
+      "type": "sql-table",
+      "path": "supabase/migrations/20260619034200_saved_posts.sql",
+      "parent": "file:supabase/migrations/20260619034200_saved_posts.sql",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "sql-policy:supabase/migrations/20260619034200_saved_posts.sql#saved",
+      "label": "saved",
+      "type": "sql-policy",
+      "path": "supabase/migrations/20260619034200_saved_posts.sql",
+      "parent": "file:supabase/migrations/20260619034200_saved_posts.sql",
+      "loc": null,
+      "isOrphan": true
+    },
+    {
+      "id": "file:supabase/migrations/20260619034200_saved_posts.sql",
+      "label": "20260619034200_saved_posts.sql",
+      "type": "sql",
+      "path": "supabase/migrations/20260619034200_saved_posts.sql",
+      "parent": "folder:supabase/migrations",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "function:supabase/realtime.ts#subscribeDreamR",
       "label": "subscribeDreamR",
       "type": "function",
@@ -71514,6 +73405,73 @@
       "tags": []
     },
     {
+      "id": "folder:tests/contentengin/test-assets",
+      "label": "test-assets",
+      "type": "folder",
+      "path": "tests/contentengin/test-assets",
+      "parent": "folder:tests/contentengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:tests/contentengin/test-assets/sandbox",
+      "label": "sandbox",
+      "type": "folder",
+      "path": "tests/contentengin/test-assets/sandbox",
+      "parent": "folder:tests/contentengin/test-assets",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:tests/contentengin/test-assets/sandbox/README.md",
+      "label": "README.md",
+      "type": "doc",
+      "path": "tests/contentengin/test-assets/sandbox/README.md",
+      "parent": "folder:tests/contentengin/test-assets/sandbox",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:tests/contentengin/test-assets/sandbox/recipes",
+      "label": "recipes",
+      "type": "folder",
+      "path": "tests/contentengin/test-assets/sandbox/recipes",
+      "parent": "folder:tests/contentengin/test-assets/sandbox",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:tests/contentengin/test-assets/sandbox/recipes/canyon-racer.recipe.json",
+      "label": "canyon-racer.recipe.json",
+      "type": "config",
+      "path": "tests/contentengin/test-assets/sandbox/recipes/canyon-racer.recipe.json",
+      "parent": "folder:tests/contentengin/test-assets/sandbox/recipes",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/contentengin/test-assets/sandbox/recipes/glass-canopy-tree.recipe.json",
+      "label": "glass-canopy-tree.recipe.json",
+      "type": "config",
+      "path": "tests/contentengin/test-assets/sandbox/recipes/glass-canopy-tree.recipe.json",
+      "parent": "folder:tests/contentengin/test-assets/sandbox/recipes",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/contentengin/test-assets/sandbox/recipes/neon-runner.recipe.json",
+      "label": "neon-runner.recipe.json",
+      "type": "config",
+      "path": "tests/contentengin/test-assets/sandbox/recipes/neon-runner.recipe.json",
+      "parent": "folder:tests/contentengin/test-assets/sandbox/recipes",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:tests/contextual-home.test.ts",
       "label": "contextual-home.test.ts",
       "type": "ts",
@@ -71849,6 +73807,95 @@
       "type": "ts",
       "path": "tests/dreamengin-os.test.ts",
       "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:tests/dreamengin-superiority",
+      "label": "dreamengin-superiority",
+      "type": "folder",
+      "path": "tests/dreamengin-superiority",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#full",
+      "label": "full",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 6,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#exists",
+      "label": "exists",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 10,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#read",
+      "label": "read",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 14,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#readIfExists",
+      "label": "readIfExists",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 18,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#walk",
+      "label": "walk",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 22,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#sourceUnder",
+      "label": "sourceUnder",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 47,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts#expectNoFileContains",
+      "label": "expectNoFileContains",
+      "type": "function",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "loc": 51,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "file:tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "label": "dreamengin-competitive-workflow-gate.test.ts",
+      "type": "ts",
+      "path": "tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts",
+      "parent": "folder:tests/dreamengin-superiority",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -73813,6 +75860,106 @@
       "label": "readme-section6-homedream.test.ts",
       "type": "ts",
       "path": "tests/readme-section6-homedream.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-assets-scene.test.ts",
+      "label": "renderengin-assets-scene.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-assets-scene.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-core.test.ts",
+      "label": "renderengin-core.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-core.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:tests/renderengin-glb-virtual-animation.test.ts#align4",
+      "label": "align4",
+      "type": "function",
+      "path": "tests/renderengin-glb-virtual-animation.test.ts",
+      "parent": "file:tests/renderengin-glb-virtual-animation.test.ts",
+      "loc": 15,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "function:tests/renderengin-glb-virtual-animation.test.ts#makeMinimalTriangleGlb",
+      "label": "makeMinimalTriangleGlb",
+      "type": "function",
+      "path": "tests/renderengin-glb-virtual-animation.test.ts",
+      "parent": "file:tests/renderengin-glb-virtual-animation.test.ts",
+      "loc": 17,
+      "isOrphan": false,
+      "exported": false
+    },
+    {
+      "id": "file:tests/renderengin-glb-virtual-animation.test.ts",
+      "label": "renderengin-glb-virtual-animation.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-glb-virtual-animation.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-gpu-proof-security.test.ts",
+      "label": "renderengin-gpu-proof-security.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-gpu-proof-security.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-material-security-performance.test.ts",
+      "label": "renderengin-material-security-performance.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-material-security-performance.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-runtime-wiring.test.ts",
+      "label": "renderengin-runtime-wiring.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-runtime-wiring.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-texture-lighting-settings.test.ts",
+      "label": "renderengin-texture-lighting-settings.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-texture-lighting-settings.test.ts",
+      "parent": "folder:tests",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:tests/renderengin-webgpu.test.ts",
+      "label": "renderengin-webgpu.test.ts",
+      "type": "ts",
+      "path": "tests/renderengin-webgpu.test.ts",
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
@@ -76763,7 +78910,7 @@
     },
     {
       "source": "file:app/api/codeengin/workspace/route.ts",
-      "target": "file:engins/codeengin/runner.ts",
+      "target": "file:engins/codeengin/runnerCommands.ts",
       "kind": "import"
     },
     {
@@ -76788,7 +78935,7 @@
     },
     {
       "source": "file:app/api/codeengin/workspace/route.ts",
-      "target": "file:engins/codeengin/runner.ts",
+      "target": "file:engins/codeengin/runnerCommands.ts",
       "kind": "route-uses"
     },
     {
@@ -76963,12 +79110,12 @@
     },
     {
       "source": "file:app/api/connectors/[provider]/items/route.ts",
-      "target": "file:supabase/server/serverClient.ts",
+      "target": "file:supabase/client/safeGetUser.ts",
       "kind": "import"
     },
     {
       "source": "file:app/api/connectors/[provider]/items/route.ts",
-      "target": "file:supabase/client/safeGetUser.ts",
+      "target": "file:supabase/server/serverClient.ts",
       "kind": "import"
     },
     {
@@ -76978,12 +79125,12 @@
     },
     {
       "source": "file:app/api/connectors/[provider]/items/route.ts",
-      "target": "file:supabase/server/serverClient.ts",
+      "target": "file:supabase/client/safeGetUser.ts",
       "kind": "route-uses"
     },
     {
       "source": "file:app/api/connectors/[provider]/items/route.ts",
-      "target": "file:supabase/client/safeGetUser.ts",
+      "target": "file:supabase/server/serverClient.ts",
       "kind": "route-uses"
     },
     {
@@ -78228,12 +80375,12 @@
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "file:supabase/server/serverClient.ts",
+      "target": "file:supabase/client/safeGetUser.ts",
       "kind": "import"
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "file:supabase/client/safeGetUser.ts",
+      "target": "file:supabase/server/serverClient.ts",
       "kind": "import"
     },
     {
@@ -78258,12 +80405,12 @@
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "file:supabase/server/serverClient.ts",
+      "target": "file:supabase/client/safeGetUser.ts",
       "kind": "route-uses"
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "file:supabase/client/safeGetUser.ts",
+      "target": "file:supabase/server/serverClient.ts",
       "kind": "route-uses"
     },
     {
@@ -82127,6 +84274,46 @@
       "kind": "route-uses"
     },
     {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:engine/dev-bypass.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:supabase/server/serverClient.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:engine/dev-bypass.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "file:supabase/server/serverClient.ts",
+      "kind": "route-uses"
+    },
+    {
       "source": "file:app/error.tsx",
       "target": "file:components/overlays/dream.RootStatusScreen.tsx",
       "kind": "import"
@@ -82358,7 +84545,7 @@
     },
     {
       "source": "file:app/layout.tsx",
-      "target": "file:components/dream.CommandPalette.tsx",
+      "target": "file:components/dream.CommandPaletteMount.tsx",
       "kind": "import"
     },
     {
@@ -82428,7 +84615,7 @@
     },
     {
       "source": "file:app/layout.tsx",
-      "target": "file:components/dream.CommandPalette.tsx",
+      "target": "file:components/dream.CommandPaletteMount.tsx",
       "kind": "route-uses"
     },
     {
@@ -82709,6 +84896,26 @@
     {
       "source": "file:app/messages/boards/page.tsx",
       "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "file:supabase/server/serverClient.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "file:supabase/server/serverClient.ts",
       "kind": "route-uses"
     },
     {
@@ -83882,6 +86089,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/dream.CommandPaletteMount.tsx",
+      "target": "file:components/dream.CommandPalette.tsx",
+      "kind": "import"
+    },
+    {
       "source": "file:components/dream.CreatePostModal.tsx",
       "target": "file:engins/contentengin/media/ledger.ts",
       "kind": "import"
@@ -84867,6 +87079,31 @@
       "kind": "import"
     },
     {
+      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:components/engines/shared/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:engine/engin-runtime/EnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:engins/renderengin/runtimeRegistration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/engines/render/index.ts",
+      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "kind": "reexport"
+    },
+    {
       "source": "file:components/engines/shared/dream.EnginRuleSet.ts",
       "target": "file:components/engines/shared/dream.EnginProvider.tsx",
       "kind": "import"
@@ -85787,16 +88024,6 @@
       "kind": "import"
     },
     {
-      "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
-      "target": "file:supabase/client/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
-      "target": "file:supabase/client/safeGetUser.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:components/profile/dream.ProfileCanvas.tsx",
       "target": "file:components/ui/dream.PlatformBadge.tsx",
       "kind": "import"
@@ -86049,6 +88276,11 @@
     {
       "source": "file:components/runtime/dream.RuntimeView.tsx",
       "target": "file:engins/dream.ForgeEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/runtime/dream.RuntimeView.tsx",
+      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
       "kind": "import"
     },
     {
@@ -87899,6 +90131,16 @@
     {
       "source": "file:engine/engin-runtime/EnginRuntime.ts",
       "target": "file:engine/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "target": "file:engine/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
       "kind": "import"
     },
     {
@@ -93147,6 +95389,11 @@
       "kind": "import"
     },
     {
+      "source": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "target": "file:engine/runtime/iEngine.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engine/runtime/useDragSurface.ts",
       "target": "file:engine/runtime/coercionTable.ts",
       "kind": "import"
@@ -93588,8 +95835,18 @@
     },
     {
       "source": "file:engins/codeengin/runner.ts",
+      "target": "file:engins/codeengin/runnerCommands.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/codeengin/runner.ts",
       "target": "file:engins/codeengin/types.ts",
       "kind": "import"
+    },
+    {
+      "source": "file:engins/codeengin/runner.ts",
+      "target": "file:engins/codeengin/runnerCommands.ts",
+      "kind": "reexport"
     },
     {
       "source": "file:engins/codeengin/search.ts",
@@ -93629,6 +95886,16 @@
     {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/assetTypes.ts",
+      "target": "file:engins/contentengin/runtimeProfile.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/assetTypes.ts",
+      "target": "file:engins/contentengin/performancePlan.ts",
       "kind": "import"
     },
     {
@@ -93757,6 +96024,11 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/contentengin/performancePlan.ts",
+      "target": "file:engins/contentengin/runtimeProfile.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/contentengin/photo/colorCluster.ts",
       "target": "file:engins/contentengin/materials/paletteExtractor.ts",
       "kind": "reexport"
@@ -93872,7 +96144,22 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/contentengin/runtimeProfile.ts",
+      "target": "file:engins/contentengin/assetTypes.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/runtimeProfile.ts",
+      "target": "file:engins/contentengin/upgradeMatrix.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/contentengin/shaders/shaderRegistry.ts",
+      "target": "file:engins/contentengin/assetTypes.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/upgradeMatrix.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
       "kind": "import"
     },
@@ -95462,6 +97749,221 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "file:engine/engin-runtime/EnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "file:engins/renderengin/assets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/animation.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "file:engine/engin-runtime/EnginCapabilities.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/benchmarkProof.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/core.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/core.ts",
+      "target": "file:engine/engin-runtime/EnginRuleSetContract.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/diagnostics.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/diagnostics.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/diagnostics.ts",
+      "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/runtimeRegistration.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/scene.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/assets.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/materials.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/diagnostics.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/virtualization.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/animation.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/textures.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/lighting.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/renderSettings.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/postProcessing.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/benchmarkProof.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/lighting.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/lighting.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/materials.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/materials.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/postProcessing.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/renderSettings.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/runtimeRegistration.ts",
+      "target": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/runtimeRegistration.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/scene.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/scene.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/textures.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/virtualization.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/virtualization.ts",
+      "target": "file:engins/renderengin/scene.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/webgpu.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/rulesets/brand/brandEnginRuleSet.ts",
       "target": "file:engine/engin-runtime/EnginBaseState.ts",
       "kind": "import"
@@ -96143,6 +98645,11 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin/runnerCommands.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/codeengin/search.ts",
       "kind": "import"
     },
@@ -96363,6 +98870,11 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/performancePlan.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/contentengin/photo/colorCluster.ts",
       "kind": "import"
     },
@@ -96473,12 +98985,22 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/runtimeProfile.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/contentengin/shaders/shaderRegistry.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/contentengin/shaders/shaderTypes.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/upgradeMatrix.ts",
       "kind": "import"
     },
     {
@@ -97064,6 +99586,86 @@
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/portfolio/dream.PortfolioEngin.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/animation.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/assets.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/benchmarkProof.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/diagnostics.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/lighting.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/materials.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/postProcessing.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/renderSettings.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/runtimeRegistration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/scene.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/textures.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/virtualization.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/webgpu.ts",
       "kind": "import"
     },
     {
@@ -98453,6 +101055,21 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/engines/render/error.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/engines/render/loading.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/engines/render/page.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/feed-settings/dream.FeedSettingsClient.tsx",
       "kind": "import"
     },
@@ -98973,6 +101590,11 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/dream.CommandPaletteMount.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/dream.CreatePostModal.tsx",
       "kind": "import"
     },
@@ -99414,6 +102036,16 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/engines/render/index.ts",
       "kind": "import"
     },
     {
@@ -100472,6 +103104,31 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/contentengin/contentengin-api.test.ts",
+      "target": "file:engins/contentengin/photo/imageAnalyzer.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "file:engins/contentengin/pipeline/build.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "file:engins/contentengin/pipeline/exportGlb.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "file:engins/contentengin/pipeline/paths.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "file:engins/contentengin/pipeline/validate.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/contentengin/contentengin-glb-import.test.ts",
       "target": "file:engins/isosurfaceAssetPipeline.ts",
       "kind": "import"
@@ -101092,6 +103749,11 @@
       "kind": "import"
     },
     {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:tests/icons.test.ts",
       "target": "file:components/icons/sheet.ts",
       "kind": "import"
@@ -101419,6 +104081,61 @@
     {
       "source": "file:tests/readme-autosync.test.ts",
       "target": "file:scripts/readme-autosync.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-assets-scene.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-core.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-glb-virtual-animation.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-gpu-proof-security.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-material-security-performance.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "file:engine/engin-runtime/EnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "file:engine/engin-runtime/EnginRuntimeRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "file:engins/renderengin/runtimeRegistration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-texture-lighting-settings.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:tests/renderengin-webgpu.test.ts",
+      "target": "file:engins/renderengin/index.ts",
       "kind": "import"
     },
     {
@@ -102508,7 +105225,7 @@
     },
     {
       "source": "file:app/api/codeengin/run/route.ts",
-      "target": "function:engins/codeengin/runner.ts#listRunnerCommands",
+      "target": "file:engins/codeengin/runner.ts",
       "kind": "call"
     },
     {
@@ -102568,7 +105285,7 @@
     },
     {
       "source": "file:app/api/codeengin/workspace/route.ts",
-      "target": "function:engins/codeengin/runner.ts#listRunnerCommands",
+      "target": "function:engins/codeengin/runnerCommands.ts#listRunnerCommands",
       "kind": "call"
     },
     {
@@ -104857,6 +107574,21 @@
       "kind": "call"
     },
     {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "function:supabase/server/serverClient.ts#createServerClient",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/engines/render/page.tsx",
+      "target": "function:engine/dev-bypass.ts#isDevBypassActive",
+      "kind": "call"
+    },
+    {
       "source": "file:app/error.tsx",
       "target": "function:engine/runtime/isAuthRelatedError.ts#isAuthRelatedError",
       "kind": "call"
@@ -105013,6 +107745,16 @@
     },
     {
       "source": "file:app/messages/boards/page.tsx",
+      "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "function:supabase/server/serverClient.ts#createServerClient",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
       "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
       "kind": "call"
     },
@@ -106172,6 +108914,11 @@
       "kind": "call"
     },
     {
+      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:components/engines/shared/index.ts",
+      "kind": "call"
+    },
+    {
       "source": "file:components/feed/dream.CommentSection.tsx",
       "target": "function:utils/index.ts#formatRelativeTime",
       "kind": "call"
@@ -107079,16 +109826,6 @@
     {
       "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
       "target": "function:dreamdmbar/runtime/DreamSystemContext.tsx#useDreamSystem",
-      "kind": "call"
-    },
-    {
-      "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
-      "target": "function:supabase/client/client.ts#createClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
-      "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
       "kind": "call"
     },
     {
@@ -108877,6 +111614,11 @@
       "kind": "call"
     },
     {
+      "source": "file:engine/runtime/superciliousPlatformRuntime.ts",
+      "target": "function:engine/runtime/iEngine.ts#createRuntimeObject",
+      "kind": "call"
+    },
+    {
       "source": "file:engine/runtime/useDragSurface.ts",
       "target": "function:engine/runtime/coercionTable.ts#coerceDataTransfer",
       "kind": "call"
@@ -109369,6 +112111,11 @@
     {
       "source": "file:engins/contentengin/rigging/landmarks.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/runtimeProfile.ts",
+      "target": "function:engins/contentengin/upgradeMatrix.ts#enabledUpgradeIds",
       "kind": "call"
     },
     {
@@ -110532,6 +113279,141 @@
       "kind": "call"
     },
     {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#createMeshBuffers",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "class:engins/renderengin/webgpu.ts#WebGpuRenderEngin",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#mat4LookAt",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#mat4Perspective",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/assets.ts#createParsedObjRenderAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/assets.ts#estimateRenderAssetMemory",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/animation.ts",
+      "target": "function:engins/renderengin/core.ts#mat4Mul",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/animation.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/animation.ts",
+      "target": "function:engins/renderengin/core.ts#mat4FromQuat",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#v3normalize",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#v3cross",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#v3sub",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#createMeshBuffers",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#validateMeshForRenderUpload",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engins/renderengin/core.ts#createRenderAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/assets.ts",
+      "target": "function:engine/engin-runtime/EnginCapabilities.ts#authorizeDomainCapability",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/lighting.ts",
+      "target": "function:engins/renderengin/core.ts#v3normalize",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/materials.ts",
+      "target": "function:engins/renderengin/core.ts#clamp01",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/runtimeRegistration.ts",
+      "target": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#registerRuntimeEngin",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/scene.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/scene.ts",
+      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/scene.ts",
+      "target": "function:engins/renderengin/core.ts#mat4Mul",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/virtualization.ts",
+      "target": "function:engins/renderengin/core.ts#v3length",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/virtualization.ts",
+      "target": "function:engins/renderengin/core.ts#v3sub",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/webgpu.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "call"
+    },
+    {
       "source": "file:engins/rulesets/brand/brandEnginRuleSet.ts",
       "target": "function:engine/engin-runtime/EnginBaseState.ts#patchBaseState",
       "kind": "call"
@@ -111209,6 +114091,41 @@
     {
       "source": "file:tests/content-publish-intent.test.ts",
       "target": "function:engins/contentengin/content/publishIntent.ts#publishToDreamR",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-api.test.ts",
+      "target": "function:engins/contentengin/photo/imageAnalyzer.ts#analyzeImageBytes",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/build.ts#buildAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/exportGlb.ts#createGlbBuffer",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/exportGlb.ts#inspectGlb",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/validate.ts#validateAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/exportGlb.ts#expectedMaterialIdsForAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/contentengin/contentengin-export.test.ts",
+      "target": "function:engins/contentengin/pipeline/paths.ts#safeSegment",
       "kind": "call"
     },
     {
@@ -112827,6 +115744,26 @@
       "kind": "call"
     },
     {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "class:engine/runtime/iEngine.ts#SpatialRuntimeCore",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:engine/runtime/superciliousPlatformRuntime.ts#createSuperciliousPlatformState",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:engine/runtime/superciliousPlatformRuntime.ts#assertDreamEnginSuperset",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/i-engine-runtime.test.ts",
+      "target": "function:engine/runtime/superciliousPlatformRuntime.ts#createCapabilityVector",
+      "kind": "call"
+    },
+    {
       "source": "file:tests/icons.test.ts",
       "target": "function:components/icons/sheet.ts#getIconPos",
       "kind": "call"
@@ -113554,6 +116491,56 @@
     {
       "source": "file:tests/readme-autosync.test.ts",
       "target": "file:scripts/readme-autosync.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-assets-scene.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-core.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-glb-virtual-animation.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-gpu-proof-security.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-material-security-performance.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#getRuntimeEnginRegistration",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "function:engine/engin-runtime/EnginRuntimeRegistry.ts#resolveRuntimeCapability",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-runtime-wiring.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-texture-lighting-settings.test.ts",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:tests/renderengin-webgpu.test.ts",
+      "target": "file:engins/renderengin/index.ts",
       "kind": "call"
     },
     {
@@ -114312,6 +117299,11 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:app/ads/create/page.tsx",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#ad_listings",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:app/ads/page.tsx",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#ad_slots",
       "kind": "sql-reference"
@@ -114492,6 +117484,11 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:app/api/close-friends/route.ts",
+      "target": "sql-table:supabase/schema-final.sql#profiles",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:app/api/comments/route.ts",
       "target": "sql-table:supabase/migrations/20260305000001_comments.sql#comments",
       "kind": "sql-reference"
@@ -114499,6 +117496,11 @@
     {
       "source": "file:app/api/comments/route.ts",
       "target": "sql-table:supabase/schema-final.sql#profiles",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/comments/route.ts",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
     },
     {
@@ -114513,7 +117515,7 @@
     },
     {
       "source": "file:app/api/connectors/[provider]/items/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
       "kind": "sql-reference"
     },
     {
@@ -114548,7 +117550,7 @@
     },
     {
       "source": "file:app/api/connectors/webhooks/[provider]/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
       "kind": "sql-reference"
     },
     {
@@ -114638,12 +117640,17 @@
     },
     {
       "source": "file:app/api/feed/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
       "kind": "sql-reference"
     },
     {
       "source": "file:app/api/feed/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#follows",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/api/feed/route.ts",
+      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
       "kind": "sql-reference"
     },
     {
@@ -114692,13 +117699,13 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:app/api/lab/benchmarks/route.ts",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
+      "source": "file:app/api/likes/route.ts",
+      "target": "sql-table:supabase/migrations/20260319065444_new-migration.sql#likes",
       "kind": "sql-reference"
     },
     {
       "source": "file:app/api/likes/route.ts",
-      "target": "sql-table:supabase/migrations/20260319065444_new-migration.sql#likes",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
     },
     {
@@ -114733,12 +117740,12 @@
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#messages",
+      "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#conversations",
       "kind": "sql-reference"
     },
     {
       "source": "file:app/api/messages/route.ts",
-      "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#conversations",
+      "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#messages",
       "kind": "sql-reference"
     },
     {
@@ -114759,11 +117766,6 @@
     {
       "source": "file:app/api/music/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#music_releases",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/music/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
       "kind": "sql-reference"
     },
     {
@@ -114788,7 +117790,7 @@
     },
     {
       "source": "file:app/api/posts/[id]/save/route.ts",
-      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
+      "target": "sql-table:supabase/migrations/20260619034200_saved_posts.sql#saved_posts",
       "kind": "sql-reference"
     },
     {
@@ -114803,7 +117805,7 @@
     },
     {
       "source": "file:app/api/posts/profile/[userId]/route.ts",
-      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#saved_posts",
+      "target": "sql-table:supabase/migrations/20260619034200_saved_posts.sql#saved_posts",
       "kind": "sql-reference"
     },
     {
@@ -114813,22 +117815,17 @@
     },
     {
       "source": "file:app/api/posts/route.ts",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#follows",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/posts/route.ts",
       "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
       "kind": "sql-reference"
     },
     {
       "source": "file:app/api/posts/route.ts",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#follows",
       "kind": "sql-reference"
     },
     {
       "source": "file:app/api/posts/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
     },
     {
@@ -114844,11 +117841,6 @@
     {
       "source": "file:app/api/projects/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#projects",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/projects/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
       "kind": "sql-reference"
     },
     {
@@ -114914,11 +117906,6 @@
     {
       "source": "file:app/api/shop/route.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#merch",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:app/api/shop/route.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
       "kind": "sql-reference"
     },
     {
@@ -114998,6 +117985,11 @@
     },
     {
       "source": "file:app/dreamdmbar/layout.tsx",
+      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/dreamdmbar/layout.tsx",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
     },
@@ -115072,6 +118064,16 @@
       "kind": "sql-reference"
     },
     {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "sql-table:supabase/schema-final.sql#profiles",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:app/messages/new/page.tsx",
+      "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#conversations",
+      "kind": "sql-reference"
+    },
+    {
       "source": "file:app/messages/page.tsx",
       "target": "sql-table:supabase/migrations/20260307000001_conversations_messages.sql#conversations",
       "kind": "sql-reference"
@@ -115137,16 +118139,6 @@
       "kind": "sql-reference"
     },
     {
-      "source": "file:components/dream.CreatePostModal.tsx",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:components/dream.CreatePostModal.tsx",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
-      "kind": "sql-reference"
-    },
-    {
       "source": "file:components/dream.ForgeDreamCanvas.tsx",
       "target": "sql-table:supabase/migrations/20260426000200_build_memory_schema_gaps.sql#forge_assemblies",
       "kind": "sql-reference"
@@ -115193,11 +118185,6 @@
     },
     {
       "source": "file:components/panels/dream.panel.SettingsPanel.tsx",
-      "target": "sql-table:supabase/schema-final.sql#profiles",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:components/panels/dream.panel.WidgetsPanel.tsx",
       "target": "sql-table:supabase/schema-final.sql#profiles",
       "kind": "sql-reference"
     },
@@ -115403,12 +118390,12 @@
     },
     {
       "source": "file:engine/connectors/reconcile.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
       "kind": "sql-reference"
     },
     {
       "source": "file:engine/connectors/youtube.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20260619034000_connector_feed_items.sql#connector_feed_items",
       "kind": "sql-reference"
     },
     {
@@ -115424,11 +118411,6 @@
     {
       "source": "file:engine/consent/consentManager.ts",
       "target": "sql-table:supabase/migrations/20260420000001_consent_settings_audit.sql#dream_audit_log",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:engine/platform/lab.ts",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {
@@ -115483,17 +118465,17 @@
     },
     {
       "source": "file:engine/widgets/feed-resolver.ts",
-      "target": "sql-table:supabase/migrations/20260310000004_feed_items.sql#feed_items",
+      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
+      "kind": "sql-reference"
+    },
+    {
+      "source": "file:engine/widgets/feed-resolver.ts",
+      "target": "sql-table:supabase/migrations/20260405000001_dreamr_feed_registry.sql#close_friends",
       "kind": "sql-reference"
     },
     {
       "source": "file:engine/widgets/feed-resolver.ts",
       "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#follows",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:engine/widgets/feed-resolver.ts",
-      "target": "sql-table:supabase/migrations/20240120000000_initial_schema.sql#app_posts",
       "kind": "sql-reference"
     },
     {
@@ -115514,11 +118496,6 @@
     {
       "source": "file:engins/engin.GameEngin.tsx",
       "target": "sql-table:supabase/migrations/20260305000002_leaderboard.sql#game_scores",
-      "kind": "sql-reference"
-    },
-    {
-      "source": "file:engins/engin.LabEngin.tsx",
-      "target": "sql-table:supabase/migrations/20260129000000_upgrade_schema.sql#physics_experiments",
       "kind": "sql-reference"
     },
     {
