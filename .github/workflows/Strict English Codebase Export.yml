@@ -39,11 +39,11 @@ jobs:
           cat > export-force-english-csv-repo.mjs <<'NODE'
           import fs from "node:fs";
           import path from "node:path";
-
+          
           const repoRoot = process.cwd();
           const outRoot = path.join(repoRoot, "build-memory", "force-english-csv-repo");
           const maxFileBytes = Number(process.env.MAX_FILE_BYTES || "10000000");
-
+          
           const ignoredDirectories = new Set([
             ".git",
             ".next",
@@ -59,7 +59,7 @@ jobs:
             "test-output",
             "build-memory",
           ]);
-
+          
           const textExtensions = new Set([
             ".ts",
             ".tsx",
@@ -87,7 +87,7 @@ jobs:
             ".xml",
             ".csv",
           ]);
-
+          
           const assetExtensions = new Set([
             ".png",
             ".jpg",
@@ -113,86 +113,86 @@ jobs:
             ".woff2",
             ".bin",
           ]);
-
+          
           function toPosix(filePath) {
             return filePath.split(path.sep).join("/");
           }
-
+          
           function ensureDir(filePath) {
             fs.mkdirSync(path.dirname(filePath), { recursive: true });
           }
-
+          
           function shouldIgnore(relativePath) {
             const posix = toPosix(relativePath);
-
+          
             for (const ignored of ignoredDirectories) {
               if (posix === ignored || posix.startsWith(`${ignored}/`)) {
                 return true;
               }
             }
-
+          
             return false;
           }
-
+          
           function isAssetFile(filePath) {
             return assetExtensions.has(path.extname(filePath).toLowerCase());
           }
-
+          
           function isProbablyText(filePath, buffer) {
             const base = path.basename(filePath);
             const ext = path.extname(filePath).toLowerCase();
-
+          
             if (textExtensions.has(ext)) return true;
             if (textExtensions.has(base)) return true;
             if (assetExtensions.has(ext)) return false;
             if (buffer.includes(0)) return false;
-
+          
             const sample = buffer.subarray(0, Math.min(buffer.length, 4096));
             let suspicious = 0;
-
+          
             for (const byte of sample) {
               const isTab = byte === 9;
               const isNewline = byte === 10 || byte === 13;
               const isPrintable = byte >= 32 && byte <= 126;
               const isUtf8Likely = byte >= 128;
-
+          
               if (!isTab && !isNewline && !isPrintable && !isUtf8Likely) {
                 suspicious += 1;
               }
             }
-
+          
             return suspicious / Math.max(sample.length, 1) < 0.02;
           }
-
+          
           function splitPhysicalLines(text) {
             const normalized = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-
+          
             if (normalized.length === 0) {
               return { lines: [], endedWithNewline: false };
             }
-
+          
             const endedWithNewline = normalized.endsWith("\n");
             const lines = normalized.split("\n");
-
+          
             if (endedWithNewline) {
               lines.pop();
             }
-
+          
             return { lines, endedWithNewline };
           }
-
+          
           function csvCell(value) {
             const clean = String(value ?? "")
               .replace(/\r?\n|\r/g, " ")
               .replace(/\s+/g, " ")
               .trim();
-
+          
             return `"${clean.replace(/"/g, '""')}"`;
           }
-
+          
           function readableName(name) {
             if (!name) return "";
-
+          
             return String(name)
               .replace(/^use([A-Z])/, "use $1")
               .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -201,7 +201,7 @@ jobs:
               .replace(/\s+/g, " ")
               .trim();
           }
-
+          
           function cleanComment(trimmed) {
             return trimmed
               .replace(/^\/\//, "")
@@ -211,33 +211,45 @@ jobs:
               .replace(/^#/, "")
               .trim();
           }
-
+          
           function force(sentence) {
             const clean = String(sentence ?? "")
               .replace(/\r?\n|\r/g, " ")
               .replace(/\s+/g, " ")
               .trim()
               .replace(/\.$/, "");
-
+          
             if (!clean) return "";
             if (clean === "Starts" || clean === "Ends") return `${clean}.`;
-
+          
             return `Force ${clean}. if True.`;
           }
-
+          
           function nameFrom(pattern, text) {
             return text.match(pattern)?.[1] || null;
           }
-
+          
           function sourceFromImport(trimmed) {
             const fromMatch = trimmed.match(/from\s+["']([^"']+)["']/);
             const bareMatch = trimmed.match(/^import\s+["']([^"']+)["']/);
-
+          
             return fromMatch?.[1] || bareMatch?.[1] || "";
           }
-
+          
+          // A run of "<Identifier>" or "<Identifier<Identifier>>" with no spaces and a
+          // capitalized first letter is a generic type parameter or a tag-shaped
+          // reference (e.g. Array<Item>, <DreamNavProvider>), never a comparison. It
+          // has to be pulled out before the plain "<"/">" rules run below, or it reads
+          // as "is less than ... is greater than".
+          function protectGenericsAndTags(text) {
+            return text.replace(
+              /<([A-Z][A-Za-z0-9_$]*(?:<[A-Z][A-Za-z0-9_$]*>)?)>/g,
+              (_, inner) => ` Of Type ${readableName(inner.replace(/[<>]/g, " "))} `
+            );
+          }
+          
           function translateOperators(text) {
-            return text
+            const withoutCompoundOperators = text
               .replace(/===/g, " is exactly ")
               .replace(/!==/g, " is not ")
               .replace(/>=/g, " is at least ")
@@ -246,17 +258,29 @@ jobs:
               .replace(/\|\|/g, " or ")
               .replace(/=>/g, " gives ")
               .replace(/==/g, " is ")
-              .replace(/!=/g, " is not ")
+              .replace(/!=/g, " is not ");
+          
+            const withProtectedGenerics = protectGenericsAndTags(withoutCompoundOperators);
+          
+            return withProtectedGenerics
               .replace(/>/g, " is greater than ")
               .replace(/</g, " is less than ")
               .replace(/=/g, " to ");
           }
-
+          
+          // Matches a single-level "condition ? whenTrue : whenFalse" once it's already
+          // past the keyword/operator passes. Requires spaces around "?" and ":" (the
+          // project's own formatting convention) so it doesn't collide with optional
+          // chaining ("?.") or nullish coalescing ("??"), which are handled separately.
+          function explainTernaryText(text) {
+            return null;
+          }
+          
           function literalEnglish(line) {
             let text = String(line ?? "").trim();
-
+          
             if (!text) return "";
-
+          
             text = text.replace(/\bconst\b/g, "Set");
             text = text.replace(/\blet\b/g, "Start");
             text = text.replace(/\bvar\b/g, "Start");
@@ -279,9 +303,22 @@ jobs:
             text = text.replace(/\binterface\b/g, "Data Shape");
             text = text.replace(/\bclass\b/g, "Reusable Unit");
             text = text.replace(/\bfunction\b/g, "Action");
-
+          
             text = translateOperators(text);
-
+          
+            // Spread/rest: "..." gets chopped into nothing by the "." splitter below
+            // unless it's called out first.
+            text = text.replace(/\.\.\./g, " Spread Of ");
+          
+            // Nullish coalescing: "??" falls through the lone "?" splitter below twice
+            // ("Optional Optional") unless it's handled before that.
+            text = text.replace(/\?\?/g, " If Empty Use ");
+          
+            // Ternary: "cond ? a : b" turns to noise once "?" and ":" are each split
+            // into their own generic words below, so rewrite it as a sentence first.
+            const ternary = explainTernaryText(text);
+            if (ternary) text = ternary;
+          
             text = text
               .replace(/["'`]/g, "")
               .replace(/[;]+/g, "")
@@ -304,21 +341,21 @@ jobs:
               .join(" ")
               .replace(/\s+/g, " ")
               .trim();
-
+          
             return text;
           }
-
+          
           function explainComment(trimmed) {
             return cleanComment(trimmed);
           }
-
+          
           function explainImport(trimmed) {
             const source = sourceFromImport(trimmed);
             return source
               ? force(`Current File Receive ${source}`)
               : force("Current File Receive Outside Names");
           }
-
+          
           function explainExport(trimmed) {
             if (trimmed.startsWith("export default function ")) {
               const name = nameFrom(/^export\s+default\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
@@ -326,52 +363,94 @@ jobs:
                 ? force(`Current File Share Main Action ${readableName(name)}`)
                 : force("Current File Share Main Action");
             }
-
+          
             if (trimmed.startsWith("export default ")) {
               return force("Current File Share Main Result");
             }
-
+          
             if (trimmed.startsWith("export type ")) {
               const name = nameFrom(/^export\s+type\s+([A-Za-z0-9_$]+)/, trimmed);
               return name
                 ? force(`Current File Share Allowed Rule ${readableName(name)}`)
                 : force("Current File Share Allowed Rule");
             }
-
+          
             if (trimmed.startsWith("export interface ")) {
               const name = nameFrom(/^export\s+interface\s+([A-Za-z0-9_$]+)/, trimmed);
               return name
                 ? force(`Current File Share Data Shape ${readableName(name)}`)
                 : force("Current File Share Data Shape");
             }
-
+          
             if (trimmed.startsWith("export function ")) {
               const name = nameFrom(/^export\s+function\s+([A-Za-z0-9_$]+)/, trimmed);
               return name
                 ? force(`Current File Share Action ${readableName(name)}`)
                 : force("Current File Share Action");
             }
-
+          
             if (trimmed.startsWith("export const ")) {
               const name = nameFrom(/^export\s+const\s+([A-Za-z0-9_$]+)/, trimmed);
               return name
                 ? force(`Current File Share ${readableName(name)}`)
                 : force("Current File Share Value");
             }
-
+          
             if (trimmed.startsWith("export ")) {
               return force(literalEnglish(trimmed));
             }
-
+          
             return null;
           }
-
+          
+          // Pulls the bound local names out of a destructuring pattern's inner text,
+          // e.g. "a, b, c" -> ["a","b","c"], "id: userId, name = 'anon'" -> ["userId","name"].
+          function parseBindingNames(raw) {
+            return raw
+              .split(",")
+              .map((part) => part.trim())
+              .filter(Boolean)
+              .map((part) => {
+                const withoutRest = part.replace(/^\.\.\./, "");
+                const withoutDefault = withoutRest.split("=")[0].trim();
+                const renameParts = withoutDefault.split(":").map((piece) => piece.trim());
+                const localName = renameParts.length > 1 ? renameParts[1] : renameParts[0];
+                return readableName(localName);
+              })
+              .filter(Boolean);
+          }
+          
           function explainDeclaration(trimmed) {
-            const setMatch = trimmed.match(/^const\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+            // Destructuring: "const { a, b } = obj" and "const [x, y] = arr" don't
+            // match a single identifier right after const/let/var, so without this
+            // they fall all the way through to the raw literalEnglish catch-all and
+            // read as one mangled variable name instead of several real bindings.
+            const destructureObjectMatch = trimmed.match(
+              /^(?:const|let|var)\s*\{\s*([^}]+?)\s*\}\s*(?::\s*[^=]+)?=\s*(.+?);?$/
+            );
+            if (destructureObjectMatch) {
+              const names = parseBindingNames(destructureObjectMatch[1]);
+              const source = literalEnglish(destructureObjectMatch[2].trim());
+              return force(`Set ${names.join(" And ")} From ${source}`);
+            }
+          
+            const destructureArrayMatch = trimmed.match(
+              /^(?:const|let|var)\s*\[\s*([^\]]+?)\s*\]\s*(?::\s*[^=]+)?=\s*(.+?);?$/
+            );
+            if (destructureArrayMatch) {
+              const names = parseBindingNames(destructureArrayMatch[1]);
+              const source = literalEnglish(destructureArrayMatch[2].trim());
+              return force(`Set ${names.join(" And ")} From ${source}`);
+            }
+          
+            // The (?:: ...)? piece skips a TypeScript type annotation between the name
+            // and the "=" (e.g. "const items: Array<Item> = [...]") so typed
+            // declarations still reach their value instead of being cut off at the name.
+            const setMatch = trimmed.match(/^const\s+([A-Za-z0-9_$]+)\s*(?::\s*[^=]+)?=\s*(.+?);?$/);
             if (setMatch) {
               const name = readableName(setMatch[1]);
               const value = setMatch[2].trim();
-
+          
               if (value.includes(".every(")) return force(`Set ${name} To Every Named Item Passing Requirement`);
               if (value.includes(".some(")) return force(`Set ${name} To At Least One Named Item Passing Requirement`);
               if (value.includes(".map(")) return force(`Set ${name} To One Result For Every Named Item`);
@@ -384,33 +463,33 @@ jobs:
               if (value === "undefined") return force(`Set ${name} To Unavailable`);
               if (value.startsWith("[")) return force(`Set ${name} To Ordered Group`);
               if (value.startsWith("{")) return force(`Set ${name} To Named Group`);
-
+          
               return force(`Set ${name} To ${literalEnglish(value)}`);
             }
-
+          
             const setNoValue = trimmed.match(/^const\s+([A-Za-z0-9_$]+)/);
             if (setNoValue) {
               return force(`Set ${readableName(setNoValue[1])}`);
             }
-
-            const startMatch = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*=\s*(.+?);?$/);
+          
+            const startMatch = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)\s*(?::\s*[^=]+)?=\s*(.+?);?$/);
             if (startMatch) {
               const name = readableName(startMatch[2]);
               const value = startMatch[3].trim();
-
+          
               if (value === "true") return force(`Start ${name} As Enabled`);
               if (value === "false") return force(`Start ${name} As Disabled`);
               if (value === "null") return force(`Start ${name} As Empty`);
               if (value === "undefined") return force(`Start ${name} As Unavailable`);
-
+          
               return force(`Start ${name} As ${literalEnglish(value)}`);
             }
-
+          
             const startNoValue = trimmed.match(/^(let|var)\s+([A-Za-z0-9_$]+)/);
             if (startNoValue) {
               return force(`Start ${readableName(startNoValue[2])}`);
             }
-
+          
             const action = trimmed.match(/^(async\s+)?function\s+([A-Za-z0-9_$]+)/);
             if (action) {
               const waits = Boolean(action[1]);
@@ -419,66 +498,67 @@ jobs:
                 ? force(`${name} Action Starts And Can Wait`)
                 : force(`${name} Action Starts`);
             }
-
+          
             const shape = trimmed.match(/^interface\s+([A-Za-z0-9_$]+)/);
             if (shape) return force(`${readableName(shape[1])} Data Shape Starts`);
-
+          
             const rule = trimmed.match(/^type\s+([A-Za-z0-9_$]+)/);
             if (rule) return force(`${readableName(rule[1])} Allowed Rule Starts`);
-
+          
             const unit = trimmed.match(/^class\s+([A-Za-z0-9_$]+)/);
             if (unit) return force(`${readableName(unit[1])} Reusable Unit Starts`);
-
+          
             return null;
           }
-
+          
+          
           function explainYaml(trimmed) {
             if (/^[A-Za-z0-9_-]+\s*:/.test(trimmed)) {
               const key = readableName(trimmed.split(":")[0].trim());
               const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim();
-
+          
               if (rest) return force(`${key} Receive ${literalEnglish(rest)}`);
               return force(`${key} Start`);
             }
-
+          
             if (/^-\s+/.test(trimmed)) {
               return force(`Current List Receive ${literalEnglish(trimmed.replace(/^-\s+/, ""))}`);
             }
-
+          
             return null;
           }
-
+          
           function explainJson(trimmed) {
             if (/^"[^"]+"\s*:/.test(trimmed)) {
               const key = readableName(trimmed.match(/^"([^"]+)"/)?.[1]);
               const rest = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
-
+          
               if (rest === "true") return force(`${key} Is Enabled`);
               if (rest === "false") return force(`${key} Is Disabled`);
               if (rest === "null") return force(`${key} Is Empty`);
               if (rest) return force(`${key} Receive ${literalEnglish(rest)}`);
-
+          
               return force(`${key} Start`);
             }
-
+          
             return null;
           }
-
+          
           function explainAssignment(trimmed) {
             const match = trimmed.match(/^([A-Za-z0-9_.$[\]]+)\s*=\s*(.+?);?$/);
             if (!match) return null;
-
+          
             const target = readableName(match[1]);
             const value = match[2].trim();
-
+          
             if (value === "true") return force(`Change ${target} To Enabled`);
             if (value === "false") return force(`Change ${target} To Disabled`);
             if (value === "null") return force(`Change ${target} To Empty`);
             if (value === "undefined") return force(`Change ${target} To Unavailable`);
-
+          
             return force(`Change ${target} To ${literalEnglish(value)}`);
           }
-
+          
           function explainShell(trimmed) {
             if (trimmed.startsWith("#!")) return force("Script Runner Receive Selection");
             if (trimmed.startsWith("cd ")) return force("Command Folder Change");
@@ -491,13 +571,13 @@ jobs:
             if (trimmed.startsWith("rm ")) return force("File Or Folder Remove");
             if (trimmed.startsWith("cp ")) return force("File Or Folder Copy");
             if (trimmed.startsWith("mv ")) return force("File Or Folder Move");
-
+          
             return null;
           }
-
+          
           function explainSql(trimmed) {
             const upper = trimmed.toUpperCase();
-
+          
             if (upper.startsWith("CREATE TABLE")) return force("Database Table Create");
             if (upper.startsWith("ALTER TABLE")) return force("Database Table Change");
             if (upper.startsWith("CREATE INDEX")) return force("Database Lookup Helper Create");
@@ -509,38 +589,22 @@ jobs:
             if (upper.startsWith("ORDER BY")) return force("Database Results Order");
             if (upper.startsWith("GROUP BY")) return force("Database Results Group");
             if (upper.startsWith("RETURNING")) return force("Database Changed Rows Return");
-
+          
             return null;
           }
-
-          function translateLine(line, filePath) {
-            const trimmed = line.trim();
-            const ext = path.extname(filePath).toLowerCase();
-
-            if (!trimmed) return "";
-
-            if (
-              trimmed.startsWith("//") ||
-              trimmed.startsWith("/*") ||
-              trimmed.startsWith("*") ||
-              trimmed.startsWith("#")
-            ) {
-              return explainComment(trimmed);
-            }
-
-            if (trimmed === "{" || trimmed.endsWith("{")) return "Starts.";
-            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "Ends.";
-            if (trimmed === "[" || trimmed.endsWith("[")) return "Starts.";
-            if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "Ends.";
-
+          
+          // The full import/export/declaration/control-flow/etc. classification chain,
+          // run on a statement's content. Pulled out of translateLine so the same
+          // chain can run on a line whether or not it happens to end in "{"/"[".
+          function classifyStatement(trimmed, ext) {
             if (trimmed.startsWith("import ")) return explainImport(trimmed);
-
+          
             const exported = explainExport(trimmed);
             if (exported) return exported;
-
+          
             const declared = explainDeclaration(trimmed);
             if (declared) return declared;
-
+          
             if (/^if\s*\(/.test(trimmed)) return force(`Check ${literalEnglish(trimmed.replace(/^if\s*/, ""))}`);
             if (/^else\s+if\s*\(/.test(trimmed)) return force(`Otherwise Check ${literalEnglish(trimmed.replace(/^else\s+if\s*/, ""))}`);
             if (/^else\b/.test(trimmed)) return force("Otherwise Run Next Group");
@@ -553,135 +617,404 @@ jobs:
             if (/^catch\b/.test(trimmed)) return force("Handle Failed Work");
             if (/^finally\b/.test(trimmed)) return force("Finish Cleanup Work");
             if (/^return\b/.test(trimmed)) return force(literalEnglish(trimmed));
-
+          
             if (ext === ".json") {
               const json = explainJson(trimmed);
               if (json) return json;
             }
-
+          
             if (ext === ".yml" || ext === ".yaml") {
               const yaml = explainYaml(trimmed);
               if (yaml) return yaml;
             }
-
+          
             if (ext === ".sql") {
               const sql = explainSql(trimmed);
               if (sql) return sql;
             }
-
+          
             if (ext === ".sh" || ext === ".bash") {
               const shell = explainShell(trimmed);
               if (shell) return shell;
             }
-
+          
             const jsxOpen = trimmed.match(/^<([A-Za-z0-9_.$-]+)/);
             if (jsxOpen) return force(`${readableName(jsxOpen[1])} Visible Part Starts`);
-
+          
             const jsxClose = trimmed.match(/^<\/([A-Za-z0-9_.$-]+)>/);
             if (jsxClose) return force(`${readableName(jsxClose[1])} Visible Part Ends`);
-
+          
             const assigned = explainAssignment(trimmed);
             if (assigned) return assigned;
-
+          
             if (/^[A-Za-z0-9_$'"]+\s*:/.test(trimmed)) {
               const key = readableName(trimmed.split(":")[0].trim().replace(/^["']|["']$/g, ""));
               const value = trimmed.slice(trimmed.indexOf(":") + 1).trim().replace(/,$/, "");
-
+          
               if (value === "true") return force(`${key} Is Enabled`);
               if (value === "false") return force(`${key} Is Disabled`);
               if (value === "null") return force(`${key} Is Empty`);
               if (value) return force(`${key} Receive ${literalEnglish(value)}`);
-
+          
               return force(`${key} Start`);
             }
+          
+            return null;
+          }
+          
+          // Appends a block-open marker to an already-translated sentence instead of
+          // replacing it, so e.g. "if (x > 2) {" keeps its condition instead of
+          // collapsing to the bare word "Starts."
+          function stepStringState(state, char, nextChar) {
+            if (state.lineComment) return state;
+
+            if (state.blockComment) {
+              if (char === "*" && nextChar === "/") {
+                state.blockComment = false;
+                state.skipNext = true;
+              }
+              return state;
+            }
+
+            if (state.quote) {
+              if (state.escape) {
+                state.escape = false;
+                return state;
+              }
+
+              if (char === "\\") {
+                state.escape = true;
+                return state;
+              }
+
+              if (char === state.quote) {
+                state.quote = "";
+              }
+
+              return state;
+            }
+
+            if (char === "/" && nextChar === "/") {
+              state.lineComment = true;
+              state.skipNext = true;
+              return state;
+            }
+
+            if (char === "/" && nextChar === "*") {
+              state.blockComment = true;
+              state.skipNext = true;
+              return state;
+            }
+
+            if (char === "\"" || char === "'" || char === "`") {
+              state.quote = char;
+            }
+
+            return state;
+          }
+
+          function splitTopLevelStatements(text) {
+            const chunks = [];
+            let start = 0;
+            let parenDepth = 0;
+            let bracketDepth = 0;
+            let braceDepth = 0;
+            const state = { quote: "", escape: false, lineComment: false, blockComment: false, skipNext: false };
+
+            for (let index = 0; index < text.length; index += 1) {
+              const char = text[index];
+              const nextChar = text[index + 1] || "";
+
+              state.skipNext = false;
+              stepStringState(state, char, nextChar);
+              if (state.skipNext) {
+                index += 1;
+                continue;
+              }
+              if (state.quote || state.lineComment || state.blockComment) continue;
+
+              if (char === "(") parenDepth += 1;
+              else if (char === ")") parenDepth = Math.max(parenDepth - 1, 0);
+              else if (char === "[") bracketDepth += 1;
+              else if (char === "]") bracketDepth = Math.max(bracketDepth - 1, 0);
+              else if (char === "{") braceDepth += 1;
+              else if (char === "}") braceDepth = Math.max(braceDepth - 1, 0);
+              else if (char === ";" && parenDepth === 0 && bracketDepth === 0 && braceDepth === 0) {
+                const chunk = text.slice(start, index + 1).trim();
+                if (chunk) chunks.push(chunk);
+                start = index + 1;
+              }
+            }
+
+            const last = text.slice(start).trim();
+            if (last) chunks.push(last);
+            return chunks;
+          }
+
+          function findMatchingBrace(text, openIndex) {
+            let depth = 0;
+            const state = { quote: "", escape: false, lineComment: false, blockComment: false, skipNext: false };
+
+            for (let index = openIndex; index < text.length; index += 1) {
+              const char = text[index];
+              const nextChar = text[index + 1] || "";
+
+              state.skipNext = false;
+              stepStringState(state, char, nextChar);
+              if (state.skipNext) {
+                index += 1;
+                continue;
+              }
+              if (state.quote || state.lineComment || state.blockComment) continue;
+
+              if (char === "{") depth += 1;
+              if (char === "}") {
+                depth -= 1;
+                if (depth === 0) return index;
+              }
+            }
+
+            return -1;
+          }
+
+          function looksLikeBlockHead(head) {
+            const clean = String(head ?? "").trim().replace(/^\}\s*/, "").trim();
+            if (!clean) return false;
+
+            return (
+              /^(export\s+)?(default\s+)?(async\s+)?function\b/.test(clean) ||
+              /^(export\s+)?(default\s+)?class\b/.test(clean) ||
+              /^if\s*\(.+\)\s*$/.test(clean) ||
+              /^else\s+if\s*\(.+\)\s*$/.test(clean) ||
+              /^else\s*$/.test(clean) ||
+              /^for\s*\(.+\)\s*$/.test(clean) ||
+              /^for\s+.+\s*$/.test(clean) ||
+              /^while\s*\(.+\)\s*$/.test(clean) ||
+              /^do\s*$/.test(clean) ||
+              /^switch\s*\(.+\)\s*$/.test(clean) ||
+              /^try\s*$/.test(clean) ||
+              /^catch\s*\(?.*\)?\s*$/.test(clean) ||
+              /^finally\s*$/.test(clean) ||
+              /=>\s*$/.test(clean)
+            );
+          }
+
+          function splitInlineBlock(text) {
+            const state = { quote: "", escape: false, lineComment: false, blockComment: false, skipNext: false };
+
+            for (let index = 0; index < text.length; index += 1) {
+              const char = text[index];
+              const nextChar = text[index + 1] || "";
+
+              state.skipNext = false;
+              stepStringState(state, char, nextChar);
+              if (state.skipNext) {
+                index += 1;
+                continue;
+              }
+              if (state.quote || state.lineComment || state.blockComment) continue;
+              if (char !== "{") continue;
+
+              const head = text.slice(0, index).trim();
+              if (!looksLikeBlockHead(head)) continue;
+
+              const closeIndex = findMatchingBrace(text, index);
+              if (closeIndex === -1) continue;
+
+              return {
+                head,
+                body: text.slice(index + 1, closeIndex).trim(),
+                tail: text.slice(closeIndex + 1).trim(),
+              };
+            }
+
+            return null;
+          }
+
+          function explainMemberAccess(trimmed) {
+            const source = String(trimmed ?? "").trim().replace(/;$/, "");
+            const tokenPattern = /^[A-Za-z_$][A-Za-z0-9_$]*(?:(?:\.[A-Za-z_$][A-Za-z0-9_$]*)|(?:\[\s*["'][^"']+["']\s*\]))+$/;
+            if (!tokenPattern.test(source)) return null;
+
+            const parts = [];
+            const matcher = /(^[A-Za-z_$][A-Za-z0-9_$]*)|(?:\.([A-Za-z_$][A-Za-z0-9_$]*))|(?:\[\s*["']([^"']+)["']\s*\])/g;
+            let match;
+            while ((match = matcher.exec(source))) {
+              if (match[1]) parts.push({ kind: "root", value: match[1] });
+              else if (match[2]) parts.push({ kind: "dot", value: match[2] });
+              else if (match[3]) parts.push({ kind: "string", value: match[3] });
+            }
+
+            if (parts.length < 2) return null;
+
+            const chunks = [force(readableName(parts[0].value))];
+            const pathParts = [readableName(parts[0].value)];
+
+            for (const part of parts.slice(1)) {
+              const accessName = part.kind === "string"
+                ? `String ${readableName(part.value)}`
+                : readableName(part.value);
+              chunks.push(force(`${pathParts.join(" ")} Get ${accessName}`));
+              pathParts.push(accessName);
+            }
+
+            return chunks.join(" ");
+          }
+
+          function translateStatementChunk(trimmed, ext) {
+            if (!trimmed) return "";
+
+            if (
+              trimmed.startsWith("//") ||
+              trimmed.startsWith("/*") ||
+              trimmed.startsWith("*") ||
+              trimmed.startsWith("#")
+            ) {
+              return explainComment(trimmed);
+            }
+
+            if (trimmed === "{" || trimmed === "[") return "Starts.";
+            if (trimmed === "}" || trimmed === "};" || trimmed === "},") return "Ends.";
+            if (trimmed === "]" || trimmed === "];" || trimmed === "],") return "Ends.";
+
+            const inlineBlock = splitInlineBlock(trimmed);
+            if (inlineBlock) {
+              const headSentence = inlineBlock.head
+                ? appendStarts(classifyStatement(inlineBlock.head, ext) || force(literalEnglish(inlineBlock.head)))
+                : "Starts.";
+              const bodySentences = splitTopLevelStatements(inlineBlock.body)
+                .map((chunk) => translateStatementChunk(chunk, ext))
+                .filter(Boolean);
+              const tail = inlineBlock.tail.replace(/^;+\s*/, "").trim();
+              const tailSentence = tail ? translateStatementChunk(tail, ext) : "";
+              return [headSentence, ...bodySentences, "Ends.", tailSentence].filter(Boolean).join(" ");
+            }
+
+            const blockOpen = /[{[]\s*$/.test(trimmed);
+            const body = blockOpen
+              ? trimmed.replace(/[{[]\s*$/, "").replace(/^\}\s*/, "").trim()
+              : trimmed;
+
+            if (blockOpen) {
+              const sentence = body ? classifyStatement(body, ext) || force(literalEnglish(body)) : "";
+              return appendStarts(sentence);
+            }
+
+            const statements = splitTopLevelStatements(trimmed);
+            if (statements.length > 1) {
+              return statements
+                .map((statement) => translateStatementChunk(statement, ext))
+                .filter(Boolean)
+                .join(" ");
+            }
+
+            const memberAccess = explainMemberAccess(trimmed);
+            if (memberAccess) return memberAccess;
+
+            const classified = classifyStatement(trimmed, ext);
+            if (classified) return classified;
 
             return force(literalEnglish(trimmed));
+          }
+
+          function appendStarts(sentence) {
+            const clean = String(sentence ?? "").trim();
+            return clean ? `${clean} Starts.` : "Starts.";
+          }
+          
+          function translateLine(line, filePath) {
+            const trimmed = line.trim();
+            const ext = path.extname(filePath).toLowerCase();
+
+            if (!trimmed) return "";
+
+            return translateStatementChunk(trimmed, ext);
           }
 
           function translateFile(relativePath, buffer) {
             const text = buffer.toString("utf8");
             const { lines, endedWithNewline } = splitPhysicalLines(text);
-
+          
             const outPath = path.join(outRoot, `${relativePath}.csv`);
             ensureDir(outPath);
-
+          
             const rows = lines.map((line, index) => {
               const lineNumber = index + 1;
               const translation = translateLine(line, relativePath);
-
+          
               if (line.trim() === "") return `${lineNumber},`;
-
+          
               return `${lineNumber},${csvCell(translation)}`;
             });
-
+          
             let output = rows.join("\n");
-
+          
             if (endedWithNewline && rows.length > 0) output += "\n";
-
+          
             fs.writeFileSync(outPath, output);
           }
-
+          
           function representAsset(relativePath) {
             const outPath = path.join(outRoot, relativePath);
             ensureDir(outPath);
             fs.writeFileSync(outPath, "");
           }
-
+          
           function walk(directory) {
             const entries = fs.readdirSync(directory, { withFileTypes: true });
             const files = [];
-
+          
             for (const entry of entries) {
               const absolutePath = path.join(directory, entry.name);
               const relativePath = toPosix(path.relative(repoRoot, absolutePath));
-
+          
               if (!relativePath || shouldIgnore(relativePath)) continue;
-
+          
               if (entry.isDirectory()) {
                 files.push(...walk(absolutePath));
                 continue;
               }
-
+          
               if (entry.isFile()) files.push({ absolutePath, relativePath });
             }
-
+          
             return files;
           }
-
+          
           fs.rmSync(outRoot, { recursive: true, force: true });
           fs.mkdirSync(outRoot, { recursive: true });
-
+          
           const files = walk(repoRoot);
-
+          
           let translated = 0;
           let representedAssets = 0;
           let skippedLarge = 0;
           let representedBinary = 0;
-
+          
           for (const file of files) {
             const buffer = fs.readFileSync(file.absolutePath);
-
+          
             if (isAssetFile(file.relativePath)) {
               representAsset(file.relativePath);
               representedAssets += 1;
               continue;
             }
-
+          
             if (buffer.length > maxFileBytes) {
               skippedLarge += 1;
               continue;
             }
-
+          
             if (!isProbablyText(file.relativePath, buffer)) {
               representAsset(file.relativePath);
               representedBinary += 1;
               continue;
             }
-
+          
             translateFile(file.relativePath, buffer);
             translated += 1;
           }
-
+          
           console.log(`translated text files: ${translated}`);
           console.log(`asset filenames represented: ${representedAssets}`);
           console.log(`large files skipped: ${skippedLarge}`);
