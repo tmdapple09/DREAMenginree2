@@ -26,7 +26,7 @@ export const osSlotCounts = {
   "surface": 300,
   "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 263,
+  "engin": 264,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -394,7 +394,7 @@ export const osArchitectureGraph = {
     "surface": 300,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 263,
+    "engin": 264,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -5294,6 +5294,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/gameengin/handlers",
+      "slot": "engin",
+      "path": "engins/gameengin/handlers.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/gameengin/index",
       "slot": "engin",
       "path": "engins/gameengin/index.ts",
@@ -6410,7 +6416,7 @@ User Action / Agent / CI
 | surface | 300 |
 | route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 263 |
+| engin | 264 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |

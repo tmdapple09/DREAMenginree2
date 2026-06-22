@@ -164,6 +164,7 @@ export const engins = {
   "engins/gameengin/games/useImmersiveGameLayout": () => import("@/engins/gameengin/games/useImmersiveGameLayout"),
   "engins/gameengin/games/useRemoteChannel": () => import("@/engins/gameengin/games/useRemoteChannel"),
   "engins/gameengin/generative-audio": () => import("@/engins/gameengin/generative-audio"),
+  "engins/gameengin/handlers": () => import("@/engins/gameengin/handlers"),
   "engins/gameengin/index": () => import("@/engins/gameengin/index"),
   "engins/gameengin/input/index": () => import("@/engins/gameengin/input/index"),
   "engins/gameengin/input/InputRouter": () => import("@/engins/gameengin/input/InputRouter"),

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-20T14:42:33.574Z",
+  "generatedAt": "2026-06-22T03:24:06.853Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 263,
+    "engin": 264,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -8617,6 +8617,22 @@
         "MusicEdge",
         "MusicNode",
         "NeuralFoley"
+      ]
+    },
+    {
+      "id": "engins/gameengin/handlers",
+      "slot": "engin",
+      "path": "engins/gameengin/handlers.ts",
+      "engine": "Universal",
+      "exports": [
+        "dispatchGameControlProfile",
+        "dispatchGamePhysicsApply",
+        "dispatchGameScriptSave",
+        "dispatchGameSelect",
+        "dispatchGameSessionStart",
+        "GameEnginDispatch",
+        "paintWorldTile",
+        "snapshotWorldGrid"
       ]
     },
     {
