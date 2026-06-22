@@ -1290,10 +1290,10 @@ Fonts provides shared infrastructure used across the platform.
 > It excludes tests, docs, scripts, CI, media, public assets, generated files, and config inventory.
 
 ## The Engins
-The Engins is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, IntentBus, UniversalEngine. It depends on app, Backend, System, Core & CoreSurfaces, Dreamr — Human Media.
+The Engins is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, SpatialRuntimeCore, IntentBus. It depends on app, Backend, System, Core & CoreSurfaces, Dreamr — Human Media.
 ### Responsibilities
-- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, DreamDMBar, BAR_H, NAV_H, +115 more
-- Core abstractions: EnginDispatcher, IntentBus, UniversalEngine, RuntimeContainer, H265Encoder
+- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, DreamDMBar, BAR_H, NAV_H, +128 more
+- Core abstractions: EnginDispatcher, SpatialRuntimeCore, IntentBus, UniversalEngine, RuntimeContainer
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - AI provider integration and inference routing
 - Authentication, sessions, authorization, and access control
@@ -1334,7 +1334,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - Depends on Dreams, Widgets, Windows & Surfaces
 ### Public Surfaces
 **Production Components:**
-`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, +108 more
+`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, +121 more
 ### Notable Abstractions
 - `DreamBarSurface` — type in `dreamdmbar/hooks/useDreamBarContext.ts`
 - `DreamBarContext` — interface in `dreamdmbar/hooks/useDreamBarContext.ts`
@@ -1390,6 +1390,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 ├── engine
 │   └── runtime
 │       ├── EnginDispatcher.ts
+│       ├── apperception.ts
 │       ├── channelMetrics.ts
 │       ├── coercionTable.ts
 │       ├── dreamOSBus.ts
@@ -1419,6 +1420,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 │       ├── seamClipboard.ts
 │       ├── sharedResourcePool.ts
 │       ├── snapshotFingerprint.ts
+│       ├── superciliousPlatformRuntime.ts
 │       ├── swapManager.ts
 │       ├── useDragSurface.ts
 │       ├── useDualRuntime.ts
@@ -1454,6 +1456,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
     │   ├── pathSafety.ts
     │   ├── projectGraph.ts
     │   ├── runner.ts
+    │   ├── runnerCommands.ts
     │   ├── search.ts
     │   ├── types.ts
     │   └── workspaceStore.ts
@@ -1480,12 +1483,9 @@ The Engins is a user-facing application surface subsystem composed of React comp
     │   │   └── rotoscope.ts
     │   ├── content
     │   │   ├── generativeFill.ts
-    │   │   ├── publishIntent.ts
-    │   │   ├── seoScorer.ts
-    │   │   ├── transcriptEditor.ts
-… (170 more application source files)
+… (201 more application source files)
 ```
-<details><summary>The Engins application source index (290 files)</summary>
+<details><summary>The Engins application source index (321 files)</summary>
 
 - `components/runtime/dream.DualRuntimeContainer.tsx` — React application module.
 - `components/runtime/dream.RuntimeView.tsx` — React application module.
@@ -1506,6 +1506,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `dreamdmbar/runtime/barInteractions.ts` — TypeScript/JavaScript application module.
 - `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/apperception.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/coercionTable.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript application module.
@@ -1534,6 +1535,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/superciliousPlatformRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/swapManager.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript application module.
@@ -1557,6 +1559,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/codeengin/pathSafety.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/projectGraph.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/runner.ts` — TypeScript/JavaScript application module.
+- `engins/codeengin/runnerCommands.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/search.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/types.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/workspaceStore.ts` — TypeScript/JavaScript application module.
@@ -1601,6 +1604,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/contentengin/media/h265-encoder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/ledger.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/postMedia.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/performancePlan.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/colorCluster.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/edgeDetector.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript/JavaScript application module.
@@ -1623,8 +1627,10 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/contentengin/rigging/landmarks.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigValidator.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/runtimeProfile.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderTypes.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/upgradeMatrix.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript/JavaScript application module.
 - `engins/dream.ForgeEngin.tsx` — React application module.
 - `engins/dream.QuantumCircuitCanvas.tsx` — React application module.
@@ -1700,6 +1706,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/games/useRemoteChannel.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/generative-audio.ts` — TypeScript/JavaScript application module.
+- `engins/gameengin/handlers.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/index.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/InputRouter.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/index.ts` — TypeScript/JavaScript application module.
@@ -1742,6 +1749,30 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/isosurfaceDualContouring.ts` — TypeScript/JavaScript application module.
 - `engins/labengin/implicitSurface.ts` — TypeScript/JavaScript application module.
 - `engins/portfolio/dream.PortfolioEngin.tsx` — React application module.
+- `engins/renderengin/RenderEnginViewport.tsx` — React application module.
+- `engins/renderengin/advancedRendering.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/animation.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/assets.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/benchmarkProof.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/completionEvidence.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/core.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/diagnostics.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/index.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/lighting.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/liveBenchmark.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/materials.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/performanceIntegrity.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/postProcessing.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/renderSettings.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/runtimeRegistration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/scene.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/security.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceIntegration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceRuntime.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/textures.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/viewportControls.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/virtualization.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/webgpu.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript/JavaScript application module.
@@ -1998,7 +2029,7 @@ ContentEngin is a full-stack application subsystem with React surfaces and API t
 ### Custom Engins capability
 Custom Engins capability is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as reusable hooks. Core abstractions are encapsulated in H265Encoder, GameCapture, GameEnginConfigError. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, Dreams, Widgets, Windows & Surfaces.
 #### Responsibilities
-- Renders production surfaces/components: CodeDreamIDE, DiffViewer, JourneyTrail, LabDreamIDE, NGNEngin, StandaloneEnginSurface, +85 more
+- Renders production surfaces/components: CodeDreamIDE, DiffViewer, JourneyTrail, LabDreamIDE, NGNEngin, StandaloneEnginSurface, +96 more
 - Core abstractions: H265Encoder, GameCapture, GameEnginConfigError, GameEnginCore, RealtimeCaptioner
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - AI provider integration and inference routing
@@ -2038,7 +2069,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - Depends on DreamSpace
 #### Public Surfaces
 **Production Components:**
-`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BRAIN_ROOT`, `BRAND_ENGIN_RULE_SET`, `BTN_DOUBLE_TAP_MAX_MS`, `BTN_LONG_PRESS_MS`, +79 more
+`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BRAIN_ROOT`, `BRAND_ENGIN_RULE_SET`, `BTN_DOUBLE_TAP_MAX_MS`, `BTN_LONG_PRESS_MS`, +90 more
 #### Notable Abstractions
 - `StandaloneEnginName` — type in `components/daydream/dream.StandaloneEnginSurface.tsx`
 - `DaydreamWidget` — type in `components/daydream/dream.shell.DaydreamShell.tsx`
@@ -2112,6 +2143,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
     │   ├── pathSafety.ts
     │   ├── projectGraph.ts
     │   ├── runner.ts
+    │   ├── runnerCommands.ts
     │   ├── search.ts
     │   ├── types.ts
     │   └── workspaceStore.ts
@@ -2164,6 +2196,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
     │   │   ├── h265-encoder.ts
     │   │   ├── ledger.ts
     │   │   └── postMedia.ts
+    │   ├── performancePlan.ts
     │   ├── photo
     │   │   ├── colorCluster.ts
     │   │   ├── edgeDetector.ts
@@ -2185,11 +2218,9 @@ Custom Engins capability is a user-facing application surface subsystem composed
     │   │   ├── recipeTypes.ts
     │   │   └── seededRandom.ts
     │   ├── rigging
-    │   │   ├── fitArmature.ts
-    │   │   ├── index.ts
-… (130 more application source files)
+… (159 more application source files)
 ```
-<details><summary>Custom Engins capability application source index (250 files)</summary>
+<details><summary>Custom Engins capability application source index (279 files)</summary>
 
 - `components/daydream/dream.CodeDreamIDE.tsx` — React application module.
 - `components/daydream/dream.DiffViewer.tsx` — React application module.
@@ -2221,6 +2252,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/codeengin/pathSafety.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/projectGraph.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/runner.ts` — TypeScript/JavaScript application module.
+- `engins/codeengin/runnerCommands.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/search.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/types.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/workspaceStore.ts` — TypeScript/JavaScript application module.
@@ -2265,6 +2297,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/contentengin/media/h265-encoder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/ledger.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/postMedia.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/performancePlan.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/colorCluster.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/edgeDetector.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript/JavaScript application module.
@@ -2287,8 +2320,10 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/contentengin/rigging/landmarks.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigValidator.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/runtimeProfile.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderTypes.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/upgradeMatrix.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript/JavaScript application module.
 - `engins/dream.ForgeEngin.tsx` — React application module.
 - `engins/dream.QuantumCircuitCanvas.tsx` — React application module.
@@ -2364,6 +2399,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/games/useRemoteChannel.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/generative-audio.ts` — TypeScript/JavaScript application module.
+- `engins/gameengin/handlers.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/index.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/InputRouter.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/index.ts` — TypeScript/JavaScript application module.
@@ -2406,6 +2442,30 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/isosurfaceDualContouring.ts` — TypeScript/JavaScript application module.
 - `engins/labengin/implicitSurface.ts` — TypeScript/JavaScript application module.
 - `engins/portfolio/dream.PortfolioEngin.tsx` — React application module.
+- `engins/renderengin/RenderEnginViewport.tsx` — React application module.
+- `engins/renderengin/advancedRendering.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/animation.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/assets.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/benchmarkProof.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/completionEvidence.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/core.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/diagnostics.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/index.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/lighting.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/liveBenchmark.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/materials.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/performanceIntegrity.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/postProcessing.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/renderSettings.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/runtimeRegistration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/scene.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/security.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceIntegration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceRuntime.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/textures.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/viewportControls.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/virtualization.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/webgpu.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript/JavaScript application module.
@@ -2449,7 +2509,7 @@ ForgeEngin is a user-facing application surface subsystem composed of React comp
 #### Responsibilities
 - Renders production surfaces/components: ForgeEngin, ArtifactPermissionSchema, EnginArtifactManifestSchema, DEFAULT_TIER_CONFIG, ArtifactSlot
 #### Key Modules
-- engins/forgeengin/forge/forgeRegistry.ts — getEnginById, getEnginByName, EnginEntry (important path; behavior evidence; important exports: getEnginById, getEnginByName, EnginEntry)
+- engins/forgeengin/forge/forgeRegistry.ts — isUserFacingEnginName, getEnginById, getEnginByName (important path; behavior evidence; important exports: isUserFacingEnginName, getEnginById, getEnginByName)
 - engins/forgeengin/forge-ngn/piece-registry.ts — PieceManifest, PIECE_REGISTRY (important path; behavior evidence; important exports: PieceManifest, PIECE_REGISTRY)
 - engins/forgeengin/forge/forgeIntelligence.ts — predictNextEngines, parseGoalToWorkflow, saveCustomWorkflow (behavior evidence; important exports: predictNextEngines, parseGoalToWorkflow, saveCustomWorkflow; large behavior file)
 - engins/forgeengin/enginpipe/artifact/manifest.ts — parseManifest, safeParseManifest, createManifest (behavior evidence; important exports: parseManifest, safeParseManifest, createManifest)
@@ -2810,10 +2870,10 @@ StarMakerEngin is a user-facing application surface subsystem composed of React 
 </details>
 
 ## Runtime Orchestration
-Runtime Orchestration is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, IntentBus, UniversalEngine. It depends on app, Backend, System, Core & CoreSurfaces, Dreams, Widgets, Windows & Surfaces.
+Runtime Orchestration is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, SpatialRuntimeCore, IntentBus. It depends on app, Backend, System, Core & CoreSurfaces, Dreams, Widgets, Windows & Surfaces.
 ### Responsibilities
-- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, CAPABILITY_DESCRIPTORS, INFORMATION_DOMAINS, DEFAULT_DUAL_RUNTIME, +10 more
-- Core abstractions: EnginDispatcher, IntentBus, UniversalEngine, RuntimeContainer, BufferManager
+- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, CAPABILITY_DESCRIPTORS, INFORMATION_DOMAINS, DEFAULT_DUAL_RUNTIME, +12 more
+- Core abstractions: EnginDispatcher, SpatialRuntimeCore, IntentBus, UniversalEngine, RuntimeContainer
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Authentication, sessions, authorization, and access control
 - Messaging, conversations, notifications, realtime channels, or presence
@@ -2847,7 +2907,7 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 - Depends on Dual Runtimes
 ### Public Surfaces
 **Production Components:**
-`CAPABILITY_DESCRIPTORS`, `DEFAULT_DUAL_RUNTIME`, `DEFAULT_VM_CONFIG`, `DEFAULT_VM_QUOTAS`, `DualRuntimeContainer`, `ENGIN_KEYS`, `ErrorCode`, `INFORMATION_DOMAINS`, `RUNTIME_REGIONS`, `RuntimeShell`, +6 more
+`CAPABILITY_DESCRIPTORS`, `COMPETING_PLATFORMS`, `DEFAULT_DUAL_RUNTIME`, `DEFAULT_VM_CONFIG`, `DEFAULT_VM_QUOTAS`, `DualRuntimeContainer`, `ENGIN_KEYS`, `ErrorCode`, `INFORMATION_DOMAINS`, `RUNTIME_REGIONS`, +8 more
 ### Notable Abstractions
 - `WorkerInitMessage` — interface in `engine/runtime/EnginDispatcher.ts`
 - `WorkerStopMessage` — interface in `engine/runtime/EnginDispatcher.ts`
@@ -2859,8 +2919,8 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 - `WorkerOutboundMessage` — type in `engine/runtime/EnginDispatcher.ts`
 - `WorkerInboundMessage` — type in `engine/runtime/EnginDispatcher.ts`
 - `WasmEngineExports` — interface in `engine/runtime/EnginDispatcher.ts`
+- `RenderDispatcherIntent` — interface in `engine/runtime/EnginDispatcher.ts`
 - `DispatcherStats` — interface in `engine/runtime/EnginDispatcher.ts`
-- `EnginDispatcher` — class in `engine/runtime/EnginDispatcher.ts`
 - `useBrandingEnginBridge` — hook
 - `useCodeEnginBridge` — hook
 - `useContentEnginBridge` — hook
@@ -2872,7 +2932,7 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 ### Capabilities
 - Exposes hooks: useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge, useDragSurface, useDualRuntime, useDualRuntimePersistence, +5 more
 - Important contract surface: WorkerInitMessage, WorkerStopMessage, WorkerTickMessage, WorkerBoundsViolationMessage, WorkerWasmBudgetExceededMessage
-- Important shared type vocabulary: DispatcherToWorkerMessage, WorkerToDispatcherMessage, WorkerOutboundMessage, WorkerInboundMessage, DreamDropType
+- Important shared type vocabulary: DispatcherToWorkerMessage, WorkerToDispatcherMessage, WorkerOutboundMessage, WorkerInboundMessage, ApperceptiveSurface
 - Behavior functions: initWasmEngine, getChannelMetrics, getAllChannelMetrics, resetChannelMetrics, isIntentEnvelope, getCapabilityDescriptor
 #### Application Source Structure
 ```text
@@ -2884,6 +2944,7 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 └── engine
     ├── runtime
     │   ├── EnginDispatcher.ts
+    │   ├── apperception.ts
     │   ├── channelMetrics.ts
     │   ├── coercionTable.ts
     │   ├── dreamOSBus.ts
@@ -2913,6 +2974,7 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
     │   ├── seamClipboard.ts
     │   ├── sharedResourcePool.ts
     │   ├── snapshotFingerprint.ts
+    │   ├── superciliousPlatformRuntime.ts
     │   ├── swapManager.ts
     │   ├── useDragSurface.ts
     │   ├── useDualRuntime.ts
@@ -2935,12 +2997,13 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
         ├── wasm-features.ts
         └── wasmGpuVM.ts
 ```
-<details><summary>Runtime Orchestration application source index (52 files)</summary>
+<details><summary>Runtime Orchestration application source index (54 files)</summary>
 
 - `components/runtime/dream.DualRuntimeContainer.tsx` — React application module.
 - `components/runtime/dream.RuntimeView.tsx` — React application module.
 - `components/runtime/dream.shell.RuntimeShell.tsx` — React application module.
 - `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/apperception.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/coercionTable.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript application module.
@@ -2969,6 +3032,7 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 - `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/superciliousPlatformRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/swapManager.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript application module.
@@ -2993,10 +3057,10 @@ Runtime Orchestration is a user-facing application surface subsystem composed of
 </details>
 
 ## Dual Runtimes
-Dual Runtimes is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, IntentBus, UniversalEngine. It depends on app, Backend, System, Core & CoreSurfaces, Dreams, Widgets, Windows & Surfaces.
+Dual Runtimes is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in EnginDispatcher, SpatialRuntimeCore, IntentBus. It depends on app, Backend, System, Core & CoreSurfaces, Dreams, Widgets, Windows & Surfaces.
 ### Responsibilities
-- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, DreamDMBar, BAR_H, NAV_H, +40 more
-- Core abstractions: EnginDispatcher, IntentBus, UniversalEngine, RuntimeContainer, BufferManager
+- Renders production surfaces/components: DualRuntimeContainer, RuntimeView, RuntimeShell, DreamDMBar, BAR_H, NAV_H, +42 more
+- Core abstractions: EnginDispatcher, SpatialRuntimeCore, IntentBus, UniversalEngine, RuntimeContainer
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Authentication, sessions, authorization, and access control
 - Messaging, conversations, notifications, realtime channels, or presence
@@ -3032,7 +3096,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 - Depends on Runtime Orchestration
 ### Public Surfaces
 **Production Components:**
-`BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_H`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `CAPABILITY_DESCRIPTORS`, `DEFAULT_BAR_INTENT`, `DEFAULT_DUAL_RUNTIME`, +36 more
+`BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_H`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `CAPABILITY_DESCRIPTORS`, `COMPETING_PLATFORMS`, `DEFAULT_BAR_INTENT`, +38 more
 ### Notable Abstractions
 - `DreamBarSurface` — type in `dreamdmbar/hooks/useDreamBarContext.ts`
 - `DreamBarContext` — interface in `dreamdmbar/hooks/useDreamBarContext.ts`
@@ -3088,6 +3152,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 ├── engine
 │   ├── runtime
 │   │   ├── EnginDispatcher.ts
+│   │   ├── apperception.ts
 │   │   ├── channelMetrics.ts
 │   │   ├── coercionTable.ts
 │   │   ├── dreamOSBus.ts
@@ -3117,6 +3182,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 │   │   ├── seamClipboard.ts
 │   │   ├── sharedResourcePool.ts
 │   │   ├── snapshotFingerprint.ts
+│   │   ├── superciliousPlatformRuntime.ts
 │   │   ├── swapManager.ts
 │   │   ├── useDragSurface.ts
 │   │   ├── useDualRuntime.ts
@@ -3141,7 +3207,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 └── hooks
     └── useSharedDream.ts
 ```
-<details><summary>Dual Runtimes application source index (68 files)</summary>
+<details><summary>Dual Runtimes application source index (70 files)</summary>
 
 - `components/runtime/dream.DualRuntimeContainer.tsx` — React application module.
 - `components/runtime/dream.RuntimeView.tsx` — React application module.
@@ -3162,6 +3228,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 - `dreamdmbar/runtime/barInteractions.ts` — TypeScript/JavaScript application module.
 - `dreamdmbar/runtime/bridgeSeamFlow.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/apperception.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/coercionTable.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript application module.
@@ -3190,6 +3257,7 @@ Dual Runtimes is a user-facing application surface subsystem composed of React c
 - `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/superciliousPlatformRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/swapManager.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript application module.
@@ -3473,7 +3541,7 @@ Dreamr — Human Media is a full-stack application subsystem with React surfaces
 ## DreamSpace
 DreamSpace is a user-facing application surface subsystem composed of React components and presentation logic. Primary route surfaces: /daydream/brand, /daydream/brand/engin, /daydream/code, …. It exposes useDaydreamPersistence, useDaydreamState as reusable hooks. It depends on app, Backend, System, Core & CoreSurfaces, daydreams.
 ### Responsibilities
-- User-facing surfaces: /daydream/brand, /daydream/brand/engin, /daydream/code, /daydream/code/engin, /daydream/constellation, +14 more
+- User-facing surfaces: /daydream/brand, /daydream/brand/engin, /daydream/code, /daydream/code/engin, /daydream/constellation, +15 more
 - Renders production surfaces/components: BrandDaydreamPage, CodeDaydreamPage, ConstellationClient, ConstellationPage, CreateDaydreamPage, ForgeDaydreamPage, +27 more
 - Authentication, sessions, authorization, and access control
 - Asset storage, upload, export, or CDN-facing pipelines
@@ -3526,6 +3594,7 @@ DreamSpace is a user-facing application surface subsystem composed of React comp
 - `/daydream/music/engin` — `app/daydream/music/engin/page.tsx`
 - `/daydream/music/upload` — `app/daydream/music/upload/page.tsx`
 - `/daydream/play` — `app/daydream/play/page.tsx`
+- `/daydream/render` — `app/daydream/render/page.tsx`
 **Production Components:**
 `BrandDaydream`, `BrandDaydreamPage`, `CodeDaydreamPage`, `CodeDreamIDE`, `CompingPanel`, `ConstellationClient`, `ConstellationPage`, `CreateDaydreamPage`, `DaydreamShell`, `DiffViewer`, +17 more
 ### Notable Abstractions
@@ -3587,7 +3656,9 @@ DreamSpace is a user-facing application surface subsystem composed of React comp
 │       │   ├── page.tsx
 │       │   └── upload
 │       │       └── page.tsx
-│       └── play
+│       ├── play
+│       │   └── page.tsx
+│       └── render
 │           └── page.tsx
 ├── components
 │   └── daydream
@@ -3623,7 +3694,7 @@ DreamSpace is a user-facing application surface subsystem composed of React comp
         ├── useDaydreamPersistence.ts
         └── useDaydreamState.ts
 ```
-<details><summary>DreamSpace application source index (44 files)</summary>
+<details><summary>DreamSpace application source index (45 files)</summary>
 
 - `app/daydream/brand/engin/page.tsx` — route page surface.
 - `app/daydream/brand/page.tsx` — route page surface.
@@ -3647,6 +3718,7 @@ DreamSpace is a user-facing application surface subsystem composed of React comp
 - `app/daydream/music/page.tsx` — route page surface.
 - `app/daydream/music/upload/page.tsx` — route page surface.
 - `app/daydream/play/page.tsx` — route page surface.
+- `app/daydream/render/page.tsx` — route page surface.
 - `components/daydream/dream.CodeDreamIDE.tsx` — React application module.
 - `components/daydream/dream.DiffViewer.tsx` — React application module.
 - `components/daydream/dream.JourneyTrail.tsx` — React application module.
@@ -3783,9 +3855,9 @@ DreamDMBar is a user-facing application surface subsystem composed of React comp
 ## Messaging
 Messaging is a full-stack application subsystem with React surfaces and API transport boundaries. Primary route surfaces: /messages, /messages/boards, /messages/boards/[id], …. It exposes useDreamDMConversations, useDreamDMDraft, useDreamDMMessages as reusable hooks. It depends on Backend, System, Core & CoreSurfaces, Dreams, Widgets, Windows & Surfaces, The Engins.
 ### Responsibilities
-- User-facing surfaces: /messages, /messages/boards, /messages/boards/[id], /messages/boards/new
+- User-facing surfaces: /messages, /messages/boards, /messages/boards/[id], /messages/boards/new, /messages/new
 - API transport boundaries: /api/messages
-- Renders production surfaces/components: POST, GET, POST, BoardDetailPage, NewBoardPage, BoardsPage, +2 more
+- Renders production surfaces/components: POST, GET, POST, BoardDetailPage, NewBoardPage, BoardsPage, +3 more
 - Messaging, conversations, notifications, realtime channels, or presence
 ### Key Modules
 - dreamdmbar/hooks/useDreamDMConversations.ts — useDreamDMConversations, DMConversation (important path; behavior evidence; DreamDMBar layer)
@@ -3794,12 +3866,12 @@ Messaging is a full-stack application subsystem with React surfaces and API tran
 - dreamdmbar/hooks/useNotifications.ts — useNotifications (important path; behavior evidence; DreamDMBar layer)
 - dreamdmbar/hooks/useMessagingCore.ts — SendMessageParams (important path; behavior evidence; DreamDMBar layer)
 - app/api/messages/route.ts (important path; behavior evidence; API boundary)
+- app/messages/new/page.tsx — NewMessagePage (important path; behavior evidence; route surface)
 - app/messages/page.tsx — MessagesPage (important path; behavior evidence; route surface)
 - app/api/messages/boards/route.ts (important path; behavior evidence; API boundary)
 - app/messages/boards/[id]/page.tsx (important path; behavior evidence; route surface)
 - app/messages/boards/new/page.tsx (important path; behavior evidence; route surface)
 - app/messages/boards/page.tsx (important path; behavior evidence; route surface)
-- components/messaging/dream.BoardComposer.tsx (important path; behavior evidence)
 ### Architectural Relationships
 - Depends on **Backend, System, Core & CoreSurfaces**
 - Depends on **Dreams, Widgets, Windows & Surfaces**
@@ -3818,11 +3890,12 @@ Messaging is a full-stack application subsystem with React surfaces and API tran
 - `/messages/boards` — `app/messages/boards/page.tsx`
 - `/messages/boards/[id]` — `app/messages/boards/[id]/page.tsx`
 - `/messages/boards/new` — `app/messages/boards/new/page.tsx`
+- `/messages/new` — `app/messages/new/page.tsx`
 **API Endpoints:**
 - `/api/messages` `[GET, POST]` — `app/api/messages/route.ts`
 - `/api/messages/boards` `[POST]` — `app/api/messages/boards/route.ts`
 **Production Components:**
-`BoardComposer`, `BoardDetailPage`, `BoardsPage`, `GET`, `MessagesPage`, `NewBoardPage`, `POST`
+`BoardComposer`, `BoardDetailPage`, `BoardsPage`, `GET`, `MessagesPage`, `NewBoardPage`, `NewMessagePage`, `POST`
 ### Notable Abstractions
 - `DMConversation` — interface in `dreamdmbar/hooks/useDreamDMConversations.ts`
 - `DMMessage` — interface in `dreamdmbar/hooks/useDreamDMMessages.ts`
@@ -3852,6 +3925,8 @@ Messaging is a full-stack application subsystem with React surfaces and API tran
 │       │   ├── new
 │       │   │   └── page.tsx
 │       │   └── page.tsx
+│       ├── new
+│       │   └── page.tsx
 │       └── page.tsx
 ├── components
 │   └── messaging
@@ -3864,13 +3939,14 @@ Messaging is a full-stack application subsystem with React surfaces and API tran
         ├── useMessagingCore.ts
         └── useNotifications.ts
 ```
-<details><summary>Messaging application source index (12 files)</summary>
+<details><summary>Messaging application source index (13 files)</summary>
 
 - `app/api/messages/boards/route.ts` — API route transport boundary.
 - `app/api/messages/route.ts` — API route transport boundary.
 - `app/messages/boards/[id]/page.tsx` — route page surface.
 - `app/messages/boards/new/page.tsx` — route page surface.
 - `app/messages/boards/page.tsx` — route page surface.
+- `app/messages/new/page.tsx` — route page surface.
 - `app/messages/page.tsx` — route page surface.
 - `components/messaging/dream.BoardComposer.tsx` — React application module.
 - `dreamdmbar/hooks/useDreamDMConversations.ts` — TypeScript/JavaScript application module.
@@ -4031,7 +4107,7 @@ Connectors & Live Feeds is a full-stack application subsystem with React surface
 ## Dreams, Widgets, Windows & Surfaces
 Dreams, Widgets, Windows & Surfaces is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useDreamWindowActions, useDualRuntime, useEditMode as reusable hooks. Core abstractions are encapsulated in CrossWidgetPostingEngine, WidgetEventBus, WidgetLinkGraph. It depends on app, Backend, System, Core & CoreSurfaces, Connectors & Live Feeds.
 ### Responsibilities
-- Renders production surfaces/components: AIAssistant, AudioVisualizer3D, BoogieWarningBanner, BrandLogo, CommandPalette, MobileCmdFab, +55 more
+- Renders production surfaces/components: AIAssistant, AudioVisualizer3D, BoogieWarningBanner, BrandLogo, CommandPalette, MobileCmdFab, +56 more
 - Core abstractions: CrossWidgetPostingEngine, WidgetEventBus, WidgetLinkGraph
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Messaging, conversations, notifications, realtime channels, or presence
@@ -4073,7 +4149,7 @@ Dreams, Widgets, Windows & Surfaces is a user-facing application surface subsyst
 - Depends on Dreamr — Human Media
 ### Public Surfaces
 **Production Components:**
-`AIAssistant`, `AddDreamCTA`, `AnchorWidget`, `AudioVisualizer3D`, `BoogieWarningBanner`, `BrandLogo`, `ChildSafetyPanel`, `CommandPalette`, `ConfigureSheet`, `CreatePostModal`, +51 more
+`AIAssistant`, `AddDreamCTA`, `AnchorWidget`, `AudioVisualizer3D`, `BoogieWarningBanner`, `BrandLogo`, `ChildSafetyPanel`, `CommandPalette`, `CommandPaletteMount`, `ConfigureSheet`, +52 more
 ### Notable Abstractions
 - `RegistryEntry` — interface in `components/dream.universal_asset_registry.tsx`
 - `GameAssetRow` — interface in `components/dream.universal_asset_registry.tsx`
@@ -4105,6 +4181,7 @@ Dreams, Widgets, Windows & Surfaces is a user-facing application surface subsyst
 │   ├── dream.BoogieWarningBanner.tsx
 │   ├── dream.BrandLogo.tsx
 │   ├── dream.CommandPalette.tsx
+│   ├── dream.CommandPaletteMount.tsx
 │   ├── dream.CreatePostModal.tsx
 │   ├── dream.DrEamsModeToggle.tsx
 │   ├── dream.DrEamsVoiceAssistant.tsx
@@ -4191,13 +4268,14 @@ Dreams, Widgets, Windows & Surfaces is a user-facing application surface subsyst
         ├── useWidget.ts
         └── widgetRegistry.ts
 ```
-<details><summary>Dreams, Widgets, Windows & Surfaces application source index (84 files)</summary>
+<details><summary>Dreams, Widgets, Windows & Surfaces application source index (85 files)</summary>
 
 - `components/dream.AIAssistant.tsx` — React application module.
 - `components/dream.AudioVisualizer3D.tsx` — React application module.
 - `components/dream.BoogieWarningBanner.tsx` — React application module.
 - `components/dream.BrandLogo.tsx` — React application module.
 - `components/dream.CommandPalette.tsx` — React application module.
+- `components/dream.CommandPaletteMount.tsx` — React application module.
 - `components/dream.CreatePostModal.tsx` — React application module.
 - `components/dream.DrEamsModeToggle.tsx` — React application module.
 - `components/dream.DrEamsVoiceAssistant.tsx` — React application module.
@@ -4283,7 +4361,7 @@ Dreams, Widgets, Windows & Surfaces is a user-facing application surface subsyst
 ## User-Facing Modularity
 User-Facing Modularity is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useAccount, useAlbums, useBreakpoint as reusable hooks. Core abstractions are encapsulated in CartridgeErrorBoundary, DualSenseManager, ParticlePool. It depends on Ads & User Ads, app, Backend, System, Core & CoreSurfaces.
 ### Responsibilities
-- Renders production surfaces/components: ActivityPostForm, ActivityProfile, AdUnit, SkipCreditBalance, PasswordField, DreamEnginLogo, +290 more
+- Renders production surfaces/components: ActivityPostForm, ActivityProfile, AdUnit, SkipCreditBalance, PasswordField, DreamEnginLogo, +291 more
 - Core abstractions: CartridgeErrorBoundary, DualSenseManager, ParticlePool, ScreenShake, ParallaxLayers
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Authentication, sessions, authorization, and access control
@@ -4332,7 +4410,7 @@ User-Facing Modularity is a user-facing application surface subsystem composed o
 - Depends on components
 ### Public Surfaces
 **Production Components:**
-`AIAssistant`, `AIBuilderPanel`, `AIPanel`, `ASSET_IMPORT_EVENT`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, +261 more
+`AIAssistant`, `AIBuilderPanel`, `AIPanel`, `ASSET_IMPORT_EVENT`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, +262 more
 ### Notable Abstractions
 - `FeedSlice` — interface in `components/connectors/dream.AddSliceSheet.tsx`
 - `PickerConnector` — interface in `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
@@ -4427,6 +4505,7 @@ User-Facing Modularity is a user-facing application surface subsystem composed o
 │   ├── dream.BoogieWarningBanner.tsx
 │   ├── dream.BrandLogo.tsx
 │   ├── dream.CommandPalette.tsx
+│   ├── dream.CommandPaletteMount.tsx
 │   ├── dream.CreatePostModal.tsx
 │   ├── dream.DrEamsModeToggle.tsx
 │   ├── dream.DrEamsVoiceAssistant.tsx
@@ -4480,10 +4559,9 @@ User-Facing Modularity is a user-facing application surface subsystem composed o
 │   │   ├── dreamsurface.dreamengin.tsx
 │   │   └── engine
 │   │       ├── math.ts
-│   │       └── types.ts
-… (214 more application source files)
+… (217 more application source files)
 ```
-<details><summary>User-Facing Modularity application source index (334 files)</summary>
+<details><summary>User-Facing Modularity application source index (337 files)</summary>
 
 - `components/activity/dream.ActivityPostForm.tsx` — React application module.
 - `components/activity/dream.ActivityProfile.tsx` — React application module.
@@ -4538,6 +4616,7 @@ User-Facing Modularity is a user-facing application surface subsystem composed o
 - `components/dream.BoogieWarningBanner.tsx` — React application module.
 - `components/dream.BrandLogo.tsx` — React application module.
 - `components/dream.CommandPalette.tsx` — React application module.
+- `components/dream.CommandPaletteMount.tsx` — React application module.
 - `components/dream.CreatePostModal.tsx` — React application module.
 - `components/dream.DrEamsModeToggle.tsx` — React application module.
 - `components/dream.DrEamsVoiceAssistant.tsx` — React application module.
@@ -4645,6 +4724,8 @@ User-Facing Modularity is a user-facing application surface subsystem composed o
 - `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` — React application module.
 - `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` — React application module.
 - `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` — React application module.
+- `components/engines/render/dream.RenderServiceDiagnostics.tsx` — React application module.
+- `components/engines/render/index.ts` — TypeScript/JavaScript application module.
 - `components/engines/shared/dream.EnginProvider.tsx` — React application module.
 - `components/engines/shared/dream.EnginRuleSet.ts` — TypeScript/JavaScript application module.
 - `components/engines/shared/dream.bar.EnginNavBar.tsx` — React application module.
@@ -5191,7 +5272,7 @@ Settings & Customization is a full-stack application subsystem with React surfac
 Backend, System, Core & CoreSurfaces is a full-stack application subsystem with React surfaces and API transport boundaries. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in WebRTCCollabSession, UnsupportedProviderError, ConsentManager. It depends on app, Connectors & Live Feeds, Dreamr — Human Media.
 ### Responsibilities
 - API transport boundaries: /api/account, /api/activity, /api/admin, /api/ads, …
-- Renders production surfaces/components: POST, POST, GET, POST, POST, POST, +303 more
+- Renders production surfaces/components: POST, POST, GET, POST, POST, POST, +305 more
 - Core abstractions: WebRTCCollabSession, UnsupportedProviderError, ConsentManager, CodeEditRingBuffer, GeometryBatcher
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Database access, persistence, and server-side data coordination
@@ -5362,7 +5443,7 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 - `/api/youtube/discovery` `[GET]` — `app/api/youtube/discovery/route.ts`
 - `/api/youtube/live-feed` `[GET]` — `app/api/youtube/live-feed/route.ts`
 **Production Components:**
-`AI_AGENTS`, `AI_ROUTES`, `AI_TRIAD`, `ALL_CANONICAL_NAMES`, `ALL_CATEGORIES`, `ALL_ENGIN_NAMES`, `AUTH_GET_USER_TIMEOUT_MS`, `AXIOMS`, `BOOGIEMAN_EVENT`, `BOOGIE_POLICY_VERSION`, +125 more
+`AI_AGENTS`, `AI_ROUTES`, `AI_TRIAD`, `ALL_CANONICAL_NAMES`, `ALL_CATEGORIES`, `ALL_ENGIN_NAMES`, `AUTH_GET_USER_TIMEOUT_MS`, `AXIOMS`, `BOOGIEMAN_EVENT`, `BOOGIE_POLICY_VERSION`, +127 more
 ### Notable Abstractions
 - `OAuthProvidersResponse` — interface in `app/api/auth/providers/route.ts`
 - `ConnectorStatusEntry` — interface in `app/api/connectors/status/route.ts`
@@ -5514,9 +5595,9 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 │       ├── contentengin
 │       │   ├── assets
 │       │   │   └── [assetId]
-… (341 more application source files)
+… (348 more application source files)
 ```
-<details><summary>Backend, System, Core & CoreSurfaces application source index (461 files)</summary>
+<details><summary>Backend, System, Core & CoreSurfaces application source index (468 files)</summary>
 
 - `app/api/account/delete-data/route.ts` — API route transport boundary.
 - `app/api/account/delete-dream/route.ts` — API route transport boundary.
@@ -5728,6 +5809,7 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 - `engine/engin-runtime/EnginPerformanceProbe.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginRuleSetContract.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginRuntime.ts` — TypeScript/JavaScript application module.
+- `engine/engin-runtime/EnginRuntimeRegistry.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginSnapshotFingerprint.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/HotRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/InternalMetrics.ts` — TypeScript/JavaScript application module.
@@ -5815,6 +5897,7 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 - `engine/rendering/webgpu/useWebGPUDirector.ts` — TypeScript/JavaScript application module.
 - `engine/routing/surfaces.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/apperception.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/coercionTable.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript application module.
@@ -5843,6 +5926,7 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 - `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/superciliousPlatformRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/swapManager.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript application module.
@@ -5956,6 +6040,10 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 - `supabase/migrations/20260516000100_dreamr_tally.sql` — SQL schema/persistence source.
 - `supabase/migrations/20260516000300_shared_dream_sessions.sql` — SQL schema/persistence source.
 - `supabase/migrations/20260605015234_auto_scaffold.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619000000_renderengin_assets_rls.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034000_connector_feed_items.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034100_profile_optional_fields.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034200_saved_posts.sql` — SQL schema/persistence source.
 - `supabase/realtime.ts` — TypeScript/JavaScript application module.
 - `supabase/schema-final.sql` — SQL schema/persistence source.
 - `supabase/seed.sql` — SQL schema/persistence source.
@@ -5985,9 +6073,9 @@ Backend, System, Core & CoreSurfaces is a full-stack application subsystem with 
 ## App
 App is a full-stack application subsystem with React surfaces and API transport boundaries. Primary route surfaces: /about, /ads, /ads/create, …. It depends on Ads & User Ads, Backend, System, Core & CoreSurfaces, Connectors & Live Feeds.
 ### Responsibilities
-- User-facing surfaces: /about, /ads, /ads/create, /ads/slot/[id], /auth/reset-password, +104 more
+- User-facing surfaces: /about, /ads, /ads/create, /ads/slot/[id], /auth/reset-password, +107 more
 - API transport boundaries: /api/account, /api/activity, /api/admin, /api/ads, …
-- Renders production surfaces/components: AdminPage, PlatformErrorsPage, PlatformHealthPage, AboutPage, CreateAdSlotPage, AdsPage, +282 more
+- Renders production surfaces/components: AdminPage, PlatformErrorsPage, PlatformHealthPage, AboutPage, CreateAdSlotPage, AdsPage, +284 more
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - AI provider integration and inference routing
 - Authentication, sessions, authorization, and access control
@@ -6061,6 +6149,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `/daydream/music/engin` — `app/daydream/music/engin/page.tsx`
 - `/daydream/music/upload` — `app/daydream/music/upload/page.tsx`
 - `/daydream/play` — `app/daydream/play/page.tsx`
+- `/daydream/render` — `app/daydream/render/page.tsx`
 - `/discover` — `app/discover/page.tsx`
 - `/dream-effects` — `app/dream-effects/page.tsx`
 - `/dreamdmbar` — `app/dreamdmbar/page.tsx`
@@ -6097,6 +6186,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `/engines/portfolio/assets` — `app/engines/portfolio/assets/page.tsx`
 - `/engines/portfolio/optimize` — `app/engines/portfolio/optimize/page.tsx`
 - `/engines/portfolio/quantum` — `app/engines/portfolio/quantum/page.tsx`
+- `/engines/render` — `app/engines/render/page.tsx`
 - `/feed-settings` — `app/feed-settings/page.tsx`
 - `/gameengin` — `app/gameengin/page.tsx`
 - `/gameengin/cartridges` — `app/gameengin/cartridges/page.tsx`
@@ -6118,6 +6208,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `/messages/boards` — `app/messages/boards/page.tsx`
 - `/messages/boards/[id]` — `app/messages/boards/[id]/page.tsx`
 - `/messages/boards/new` — `app/messages/boards/new/page.tsx`
+- `/messages/new` — `app/messages/new/page.tsx`
 - `/mission` — `app/mission/page.tsx`
 - `/notes` — `app/notes/page.tsx`
 - `/onboarding` — `app/onboarding/page.tsx`
@@ -6273,7 +6364,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `/auth/callback` `[GET]` — `app/auth/callback/route.ts`
 - `/dreamdmbar/_components/dreamr/api` — `app/dreamdmbar/_components/dreamr/api/route.ts`
 **Production Components:**
-`AboutPage`, `AccountSettingsPage`, `AdSlotPage`, `AdminPage`, `AdsPage`, `AlgorithmPage`, `AppearanceSettingsPage`, `BoardDetailPage`, `BoardsPage`, `BrandCampaignsPage`, +119 more
+`AboutPage`, `AccountSettingsPage`, `AdSlotPage`, `AdminPage`, `AdsPage`, `AlgorithmPage`, `AppearanceSettingsPage`, `BoardDetailPage`, `BoardsPage`, `BrandCampaignsPage`, +121 more
 ### Notable Abstractions
 - `CreateDreamDocInput` — interface in `app/actions/dream-docs.ts`
 - `OAuthProvidersResponse` — interface in `app/api/auth/providers/route.ts`
@@ -6413,9 +6504,9 @@ App is a full-stack application subsystem with React surfaces and API transport 
     │   │   ├── webhooks
     │   │   │   └── [provider]
     │   │   │       └── route.ts
-… (153 more application source files)
+… (156 more application source files)
 ```
-<details><summary>App application source index (273 files)</summary>
+<details><summary>App application source index (276 files)</summary>
 
 - `app/(internal)/idari-console/page.tsx` — route page surface.
 - `app/(internal)/idari-console/platform-errors/page.tsx` — route page surface.
@@ -6577,6 +6668,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `app/daydream/music/page.tsx` — route page surface.
 - `app/daydream/music/upload/page.tsx` — route page surface.
 - `app/daydream/play/page.tsx` — route page surface.
+- `app/daydream/render/page.tsx` — route page surface.
 - `app/discover/page.tsx` — route page surface.
 - `app/dream-effects/page.tsx` — route page surface.
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx` — React application module.
@@ -6633,6 +6725,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `app/engines/portfolio/optimize/page.tsx` — route page surface.
 - `app/engines/portfolio/page.tsx` — route page surface.
 - `app/engines/portfolio/quantum/page.tsx` — route page surface.
+- `app/engines/render/page.tsx` — route page surface.
 - `app/error.tsx` — React application module.
 - `app/feed-settings/dream.FeedSettingsClient.tsx` — React application module.
 - `app/feed-settings/page.tsx` — route page surface.
@@ -6656,6 +6749,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 - `app/messages/boards/[id]/page.tsx` — route page surface.
 - `app/messages/boards/new/page.tsx` — route page surface.
 - `app/messages/boards/page.tsx` — route page surface.
+- `app/messages/new/page.tsx` — route page surface.
 - `app/messages/page.tsx` — route page surface.
 - `app/mission/page.tsx` — route page surface.
 - `app/not-found.tsx` — React application module.
@@ -6696,7 +6790,7 @@ App is a full-stack application subsystem with React surfaces and API transport 
 ## Components
 Components is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useCustomizeMode, useDreamNav, useDualRuntime as reusable hooks. Core abstractions are encapsulated in CartridgeErrorBoundary, DualSenseManager, ParticlePool. It depends on app, Backend, System, Core & CoreSurfaces, Connectors & Live Feeds.
 ### Responsibilities
-- Renders production surfaces/components: ActivityPostForm, ActivityProfile, AdUnit, SkipCreditBalance, PasswordField, DreamEnginLogo, +290 more
+- Renders production surfaces/components: ActivityPostForm, ActivityProfile, AdUnit, SkipCreditBalance, PasswordField, DreamEnginLogo, +291 more
 - Core abstractions: CartridgeErrorBoundary, DualSenseManager, ParticlePool, ScreenShake, ParallaxLayers
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - Authentication, sessions, authorization, and access control
@@ -6742,7 +6836,7 @@ Components is a user-facing application surface subsystem composed of React comp
 - Depends on Dreamr — Human Media
 ### Public Surfaces
 **Production Components:**
-`AIAssistant`, `AIBuilderPanel`, `AIPanel`, `ASSET_IMPORT_EVENT`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, +261 more
+`AIAssistant`, `AIBuilderPanel`, `AIPanel`, `ASSET_IMPORT_EVENT`, `ActiveModuleSurface`, `ActivityPostForm`, `ActivityProfile`, `AdUnit`, `AddDreamCTA`, `AddSliceSheet`, +262 more
 ### Notable Abstractions
 - `FeedSlice` — interface in `components/connectors/dream.AddSliceSheet.tsx`
 - `PickerConnector` — interface in `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
@@ -6837,6 +6931,7 @@ Components is a user-facing application surface subsystem composed of React comp
     ├── dream.BoogieWarningBanner.tsx
     ├── dream.BrandLogo.tsx
     ├── dream.CommandPalette.tsx
+    ├── dream.CommandPaletteMount.tsx
     ├── dream.CreatePostModal.tsx
     ├── dream.DrEamsModeToggle.tsx
     ├── dream.DrEamsVoiceAssistant.tsx
@@ -6890,10 +6985,9 @@ Components is a user-facing application surface subsystem composed of React comp
     │   ├── dreamsurface.dreamengin.tsx
     │   └── engine
     │       ├── math.ts
-    │       └── types.ts
-… (197 more application source files)
+… (200 more application source files)
 ```
-<details><summary>Components application source index (317 files)</summary>
+<details><summary>Components application source index (320 files)</summary>
 
 - `components/activity/dream.ActivityPostForm.tsx` — React application module.
 - `components/activity/dream.ActivityProfile.tsx` — React application module.
@@ -6948,6 +7042,7 @@ Components is a user-facing application surface subsystem composed of React comp
 - `components/dream.BoogieWarningBanner.tsx` — React application module.
 - `components/dream.BrandLogo.tsx` — React application module.
 - `components/dream.CommandPalette.tsx` — React application module.
+- `components/dream.CommandPaletteMount.tsx` — React application module.
 - `components/dream.CreatePostModal.tsx` — React application module.
 - `components/dream.DrEamsModeToggle.tsx` — React application module.
 - `components/dream.DrEamsVoiceAssistant.tsx` — React application module.
@@ -7055,6 +7150,8 @@ Components is a user-facing application surface subsystem composed of React comp
 - `components/engines/portfolio/panels/dream.panel.AssetsPanel.tsx` — React application module.
 - `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` — React application module.
 - `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` — React application module.
+- `components/engines/render/dream.RenderServiceDiagnostics.tsx` — React application module.
+- `components/engines/render/index.ts` — TypeScript/JavaScript application module.
 - `components/engines/shared/dream.EnginProvider.tsx` — React application module.
 - `components/engines/shared/dream.EnginRuleSet.ts` — TypeScript/JavaScript application module.
 - `components/engines/shared/dream.bar.EnginNavBar.tsx` — React application module.
@@ -7434,7 +7531,7 @@ Dreamdmbar is a user-facing application surface subsystem composed of React comp
 ## Engine
 Engine is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useBrandingEnginBridge, useCodeEnginBridge, useContentEnginBridge as reusable hooks. Core abstractions are encapsulated in WebRTCCollabSession, UnsupportedProviderError, ConsentManager. It depends on Backend, System, Core & CoreSurfaces, Connectors & Live Feeds, Dreams, Widgets, Windows & Surfaces.
 ### Responsibilities
-- Renders production surfaces/components: BOOGIEMAN_EVENT, IDENTITY, AXIOMS, VOCABULARY, CORE_SURFACES, DAYDREAM_SURFACES, +134 more
+- Renders production surfaces/components: BOOGIEMAN_EVENT, IDENTITY, AXIOMS, VOCABULARY, CORE_SURFACES, DAYDREAM_SURFACES, +136 more
 - Core abstractions: WebRTCCollabSession, UnsupportedProviderError, ConsentManager, CodeEditRingBuffer, GeometryBatcher
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - AI provider integration and inference routing
@@ -7474,7 +7571,7 @@ Engine is a user-facing application surface subsystem composed of React componen
 - Depends on Runtime Orchestration
 ### Public Surfaces
 **Production Components:**
-`AI_AGENTS`, `AI_ROUTES`, `AI_TRIAD`, `ALL_CANONICAL_NAMES`, `ALL_CATEGORIES`, `ALL_ENGIN_NAMES`, `AXIOMS`, `BOOGIEMAN_EVENT`, `BOOGIE_POLICY_VERSION`, `BUGS_LOG`, +112 more
+`AI_AGENTS`, `AI_ROUTES`, `AI_TRIAD`, `ALL_CANONICAL_NAMES`, `ALL_CATEGORIES`, `ALL_ENGIN_NAMES`, `AXIOMS`, `BOOGIEMAN_EVENT`, `BOOGIE_POLICY_VERSION`, `BUGS_LOG`, +114 more
 ### Notable Abstractions
 - `UpgradeReadinessSnapshot` — interface in `engine/admin/upgrade-readiness.ts`
 - `CodeEnginHostTools` — type in `engine/agentOS/hostTools.ts`
@@ -7602,6 +7699,7 @@ Engine is a user-facing application surface subsystem composed of React componen
     │   ├── EnginPerformanceProbe.ts
     │   ├── EnginRuleSetContract.ts
     │   ├── EnginRuntime.ts
+    │   ├── EnginRuntimeRegistry.ts
     │   ├── EnginSnapshotFingerprint.ts
     │   ├── HotRuntime.ts
     │   ├── InternalMetrics.ts
@@ -7622,10 +7720,9 @@ Engine is a user-facing application surface subsystem composed of React componen
     │   ├── gct-engine.ts
     │   ├── image-search.ts
     │   ├── index.ts
-    │   └── recommendations.ts
-… (129 more application source files)
+… (132 more application source files)
 ```
-<details><summary>Engine application source index (249 files)</summary>
+<details><summary>Engine application source index (252 files)</summary>
 
 - `engine/activeModulesStore.ts` — TypeScript/JavaScript application module.
 - `engine/admin/lockout.ts` — TypeScript/JavaScript application module.
@@ -7708,6 +7805,7 @@ Engine is a user-facing application surface subsystem composed of React componen
 - `engine/engin-runtime/EnginPerformanceProbe.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginRuleSetContract.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginRuntime.ts` — TypeScript/JavaScript application module.
+- `engine/engin-runtime/EnginRuntimeRegistry.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/EnginSnapshotFingerprint.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/HotRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/engin-runtime/InternalMetrics.ts` — TypeScript/JavaScript application module.
@@ -7795,6 +7893,7 @@ Engine is a user-facing application surface subsystem composed of React componen
 - `engine/rendering/webgpu/useWebGPUDirector.ts` — TypeScript/JavaScript application module.
 - `engine/routing/surfaces.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/EnginDispatcher.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/apperception.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/channelMetrics.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/coercionTable.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/dreamOSBus.ts` — TypeScript/JavaScript application module.
@@ -7823,6 +7922,7 @@ Engine is a user-facing application surface subsystem composed of React componen
 - `engine/runtime/seamClipboard.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/sharedResourcePool.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/snapshotFingerprint.ts` — TypeScript/JavaScript application module.
+- `engine/runtime/superciliousPlatformRuntime.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/swapManager.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDragSurface.ts` — TypeScript/JavaScript application module.
 - `engine/runtime/useDualRuntime.ts` — TypeScript/JavaScript application module.
@@ -7882,7 +7982,7 @@ Engine is a user-facing application surface subsystem composed of React componen
 ## Engins
 Engins is a user-facing application surface subsystem composed of React components and presentation logic. It exposes useAIDirector, useAgentSession, useArtifactSlot as reusable hooks. Core abstractions are encapsulated in H265Encoder, GameCapture, GameEnginConfigError. It depends on Backend, System, Core & CoreSurfaces, Dreamr — Human Media, Dreams, Widgets, Windows & Surfaces.
 ### Responsibilities
-- Renders production surfaces/components: AgentPanel, CodeEnginOrchestrator, CODE_VOCABULARY, VOCAB_TERMS, CODEENGIN_PRODUCTION_MODE, SCOPE_ORDER, +72 more
+- Renders production surfaces/components: AgentPanel, CodeEnginOrchestrator, CODE_VOCABULARY, VOCAB_TERMS, CODEENGIN_PRODUCTION_MODE, SCOPE_ORDER, +83 more
 - Core abstractions: H265Encoder, GameCapture, GameEnginConfigError, GameEnginCore, RealtimeCaptioner
 - Runtime orchestration, capability routing, and Engin lifecycle coordination
 - AI provider integration and inference routing
@@ -7922,7 +8022,7 @@ Engins is a user-facing application surface subsystem composed of React componen
 - Depends on DreamSpace
 ### Public Surfaces
 **Production Components:**
-`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BRAIN_ROOT`, `BRAND_ENGIN_RULE_SET`, `BTN_DOUBLE_TAP_MAX_MS`, `BTN_LONG_PRESS_MS`, +66 more
+`AUDIO_QUALITY_PRESETS`, `AUTOMATABLE_PARAMS`, `AgentPanel`, `ArtifactPermissionSchema`, `ArtifactSlot`, `AssetViewport`, `BRAIN_ROOT`, `BRAND_ENGIN_RULE_SET`, `BTN_DOUBLE_TAP_MAX_MS`, `BTN_LONG_PRESS_MS`, +77 more
 ### Notable Abstractions
 - `AgentMessage` — interface in `engins/CodeEngin/modules/ai-co-pilot/index.ts`
 - `UseAgentSessionReturn` — interface in `engins/CodeEngin/modules/ai-co-pilot/index.ts`
@@ -7979,6 +8079,7 @@ Engins is a user-facing application surface subsystem composed of React componen
     │   ├── pathSafety.ts
     │   ├── projectGraph.ts
     │   ├── runner.ts
+    │   ├── runnerCommands.ts
     │   ├── search.ts
     │   ├── types.ts
     │   └── workspaceStore.ts
@@ -8031,6 +8132,7 @@ Engins is a user-facing application surface subsystem composed of React componen
     │   │   ├── h265-encoder.ts
     │   │   ├── ledger.ts
     │   │   └── postMedia.ts
+    │   ├── performancePlan.ts
     │   ├── photo
     │   │   ├── colorCluster.ts
     │   │   ├── edgeDetector.ts
@@ -8057,9 +8159,11 @@ Engins is a user-facing application surface subsystem composed of React componen
     │   │   ├── landmarks.ts
     │   │   ├── rigTypes.ts
     │   │   └── rigValidator.ts
+    │   ├── runtimeProfile.ts
     │   ├── shaders
     │   │   ├── shaderRegistry.ts
     │   │   └── shaderTypes.ts
+    │   ├── upgradeMatrix.ts
     │   └── useImplicitAssetWorkspace.ts
     ├── dream.ForgeEngin.tsx
     ├── dream.QuantumCircuitCanvas.tsx
@@ -8067,13 +8171,9 @@ Engins is a user-facing application surface subsystem composed of React componen
     ├── engin.CodeEngin.tsx
     ├── engin.ContentEngin.tsx
     ├── engin.GameEngin.tsx
-    ├── engin.LabEngin.tsx
-    ├── engin.StarMakerEngin.tsx
-    ├── forgeengin
-    │   ├── componentInventory.ts
-… (116 more application source files)
+… (145 more application source files)
 ```
-<details><summary>Engins application source index (236 files)</summary>
+<details><summary>Engins application source index (265 files)</summary>
 
 - `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript application module.
 - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React application module.
@@ -8091,6 +8191,7 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/codeengin/pathSafety.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/projectGraph.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/runner.ts` — TypeScript/JavaScript application module.
+- `engins/codeengin/runnerCommands.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/search.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/types.ts` — TypeScript/JavaScript application module.
 - `engins/codeengin/workspaceStore.ts` — TypeScript/JavaScript application module.
@@ -8135,6 +8236,7 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/contentengin/media/h265-encoder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/ledger.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/media/postMedia.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/performancePlan.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/colorCluster.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/edgeDetector.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/photo/imageAnalyzer.ts` — TypeScript/JavaScript application module.
@@ -8157,8 +8259,10 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/contentengin/rigging/landmarks.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/rigging/rigValidator.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/runtimeProfile.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderRegistry.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/shaders/shaderTypes.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/upgradeMatrix.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/useImplicitAssetWorkspace.ts` — TypeScript/JavaScript application module.
 - `engins/dream.ForgeEngin.tsx` — React application module.
 - `engins/dream.QuantumCircuitCanvas.tsx` — React application module.
@@ -8234,6 +8338,7 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/gameengin/games/useImmersiveGameLayout.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/games/useRemoteChannel.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/generative-audio.ts` — TypeScript/JavaScript application module.
+- `engins/gameengin/handlers.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/index.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/InputRouter.ts` — TypeScript/JavaScript application module.
 - `engins/gameengin/input/index.ts` — TypeScript/JavaScript application module.
@@ -8276,6 +8381,30 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/isosurfaceDualContouring.ts` — TypeScript/JavaScript application module.
 - `engins/labengin/implicitSurface.ts` — TypeScript/JavaScript application module.
 - `engins/portfolio/dream.PortfolioEngin.tsx` — React application module.
+- `engins/renderengin/RenderEnginViewport.tsx` — React application module.
+- `engins/renderengin/advancedRendering.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/animation.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/assets.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/benchmarkProof.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/completionEvidence.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/core.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/diagnostics.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/index.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/lighting.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/liveBenchmark.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/materials.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/performanceIntegrity.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/postProcessing.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/renderSettings.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/runtimeRegistration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/scene.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/security.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceIntegration.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/serviceRuntime.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/textures.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/viewportControls.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/virtualization.ts` — TypeScript/JavaScript application module.
+- `engins/renderengin/webgpu.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/brandEnginRuleSet.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/brand/useBrandEnginRuntime.ts` — TypeScript/JavaScript application module.
 - `engins/rulesets/code/codeEnginRuleSet.ts` — TypeScript/JavaScript application module.
@@ -8518,7 +8647,11 @@ Supabase is a user-facing application surface subsystem composed of React compon
     │   ├── 20260516000000_agent_sessions_forge_rate_limits.sql
     │   ├── 20260516000100_dreamr_tally.sql
     │   ├── 20260516000300_shared_dream_sessions.sql
-    │   └── 20260605015234_auto_scaffold.sql
+    │   ├── 20260605015234_auto_scaffold.sql
+    │   ├── 20260619000000_renderengin_assets_rls.sql
+    │   ├── 20260619034000_connector_feed_items.sql
+    │   ├── 20260619034100_profile_optional_fields.sql
+    │   └── 20260619034200_saved_posts.sql
     ├── realtime.ts
     ├── schema-final.sql
     ├── seed.sql
@@ -8526,7 +8659,7 @@ Supabase is a user-facing application surface subsystem composed of React compon
     │   └── serverClient.ts
     └── vector.ts
 ```
-<details><summary>Supabase application source index (65 files)</summary>
+<details><summary>Supabase application source index (69 files)</summary>
 
 - `supabase/auth/nextRedirect.ts` — TypeScript/JavaScript application module.
 - `supabase/client/client.ts` — TypeScript/JavaScript application module.
@@ -8588,6 +8721,10 @@ Supabase is a user-facing application surface subsystem composed of React compon
 - `supabase/migrations/20260516000100_dreamr_tally.sql` — SQL schema/persistence source.
 - `supabase/migrations/20260516000300_shared_dream_sessions.sql` — SQL schema/persistence source.
 - `supabase/migrations/20260605015234_auto_scaffold.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619000000_renderengin_assets_rls.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034000_connector_feed_items.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034100_profile_optional_fields.sql` — SQL schema/persistence source.
+- `supabase/migrations/20260619034200_saved_posts.sql` — SQL schema/persistence source.
 - `supabase/realtime.ts` — TypeScript/JavaScript application module.
 - `supabase/schema-final.sql` — SQL schema/persistence source.
 - `supabase/seed.sql` — SQL schema/persistence source.
