@@ -17,13 +17,27 @@ type Profile = {
   avatar_url: string | null;
 };
 
+type Attachment = {
+  id: string;
+  storage_path: string | null;
+  name: string | null;
+};
+
+type Notebook = {
+  id: string;
+  content: string | null;
+  version: number | null;
+};
+
 type Project = {
   id: string;
-  user_id: string;
+  owner_id: string;
   title: string;
   description: string | null;
   visibility: string;
   created_at: string;
+  attachments: Attachment[];
+  notebooks: Notebook[];
 
   profiles: Profile | null;
 };
@@ -41,12 +55,14 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
     .select(
       `
       id,
-      user_id,
+      owner_id,
       title,
       description,
       visibility,
       created_at,
-      profiles(handle, display_name, avatar_url)
+      profiles(handle, display_name, avatar_url),
+      attachments(id, storage_path, name),
+      notebooks(id, content, version)
     `
     )
     .eq('id', id)
@@ -58,7 +74,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
 
   const project = projectRaw as unknown as Project;
 
-  const isOwner = user?.id === project.user_id;
+  const isOwner = user?.id === project.owner_id;
 
   // Simple access rule until members table exists:
   // owner can view anything, others only public projects
@@ -158,10 +174,17 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
                   Notebooks
                 </span>
               </div>
-              <div className="de-widget-body">
-                <p className="text-sm" style={{ color: 'var(--de-text-dim)' }}>
-                  Notebooks aren&apos;t enabled yet. (We&apos;ll wire this up after the Supabase table + policies exist.)
-                </p>
+              <div className="de-widget-body space-y-3">
+                {project.notebooks.length > 0 ? (
+                  project.notebooks.map((notebook) => (
+                    <div key={notebook.id} className="rounded-lg border p-3" style={{ borderColor: 'var(--de-border)', background: 'rgba(255,255,255,0.45)' }}>
+                      <div className="text-xs font-semibold mb-2" style={{ color: 'var(--de-accent)' }}>Notebook v{notebook.version ?? 1}</div>
+                      <pre className="text-xs whitespace-pre-wrap overflow-auto max-h-64" style={{ color: 'var(--de-text)', margin: 0 }}>{notebook.content || 'Empty notebook'}</pre>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm" style={{ color: 'var(--de-text-dim)' }}>No notebooks have been added to this lab project yet.</p>
+                )}
               </div>
             </div>
           </div>
@@ -183,12 +206,12 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
                     {(project.attachments ?? []).map((attachment: Attachment) => (
                       <a
                         key={attachment.id}
-                        href={attachment.storage_path}
+                        href={attachment.storage_path ?? '#'}
                         className="de-row"
                         style={{ textDecoration: 'none' }}
                       >
                         <Download className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--de-text-dim)' }} />
-                        <span className="text-sm truncate" style={{ color: 'var(--de-text)' }}>{attachment.name}</span>
+                        <span className="text-sm truncate" style={{ color: 'var(--de-text)' }}>{attachment.name ?? 'Attachment'}</span>
                       </a>
                     ))}
                   </div>
