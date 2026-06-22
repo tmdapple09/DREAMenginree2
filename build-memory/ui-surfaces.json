@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T14:42:24.045Z",
+  "generated_at": "2026-06-22T10:53:50.267Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 123,
   "surfaces": [
@@ -946,7 +946,12 @@
       "path": "/engines/render",
       "file": "app/engines/render/page.tsx",
       "component": "RenderServiceRoute",
-      "imports": []
+      "imports": [
+        {
+          "name": "RenderServiceDiagnostics",
+          "from": "@/components/engines/render/dream.RenderServiceDiagnostics"
+        }
+      ]
     },
     {
       "type": "page",

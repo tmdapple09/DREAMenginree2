@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-20T14:42:24.045Z",
+  "generated_at": "2026-06-22T10:53:50.267Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 27,
+  "count": 28,
   "events": [
     {
       "event": "beforeunload",
@@ -203,6 +203,13 @@
       "payload_type": null,
       "files": [
         "engins/engin.StarMakerEngin.tsx"
+      ]
+    },
+    {
+      "event": "storage",
+      "payload_type": null,
+      "files": [
+        "engins/renderengin/serviceRuntime.ts"
       ]
     },
     {
