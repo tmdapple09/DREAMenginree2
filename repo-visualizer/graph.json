@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-20T13:02:56.054Z",
+  "generatedAt": "2026-06-22T06:16:57.816Z",
   "root": ".",
   "nodes": [
     {
@@ -3526,6 +3526,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMengin-renderengin-real-service.zip",
+      "label": "DREAMengin-renderengin-real-service.zip",
+      "type": "file",
+      "path": "DREAMengin-renderengin-real-service.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -9985,6 +9995,35 @@
       "tags": []
     },
     {
+      "id": "folder:app/daydream/render",
+      "label": "render",
+      "type": "folder",
+      "path": "app/daydream/render",
+      "parent": "folder:app/daydream",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:app/daydream/render/page.tsx#RenderServiceDaydreamRoute",
+      "label": "RenderServiceDaydreamRoute",
+      "type": "function",
+      "path": "app/daydream/render/page.tsx",
+      "parent": "file:app/daydream/render/page.tsx",
+      "loc": 2,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:app/daydream/render/page.tsx",
+      "label": "page.tsx",
+      "type": "route",
+      "path": "app/daydream/render/page.tsx",
+      "parent": "folder:app/daydream/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "folder:app/discover",
       "label": "discover",
       "type": "folder",
@@ -11594,7 +11633,7 @@
       "type": "function",
       "path": "app/engines/page.tsx",
       "parent": "file:app/engines/page.tsx",
-      "loc": 99,
+      "loc": 25,
       "isOrphan": false,
       "exported": true
     },
@@ -11744,52 +11783,12 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/engines/render/error.tsx#RenderEnginError",
-      "label": "RenderEnginError",
-      "type": "function",
-      "path": "app/engines/render/error.tsx",
-      "parent": "file:app/engines/render/error.tsx",
-      "loc": 2,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:app/engines/render/error.tsx",
-      "label": "error.tsx",
-      "type": "tsx",
-      "path": "app/engines/render/error.tsx",
-      "parent": "folder:app/engines/render",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "function:app/engines/render/loading.tsx#RenderEnginLoading",
-      "label": "RenderEnginLoading",
-      "type": "function",
-      "path": "app/engines/render/loading.tsx",
-      "parent": "file:app/engines/render/loading.tsx",
-      "loc": 1,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:app/engines/render/loading.tsx",
-      "label": "loading.tsx",
-      "type": "tsx",
-      "path": "app/engines/render/loading.tsx",
-      "parent": "folder:app/engines/render",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "function:app/engines/render/page.tsx#RenderEnginPage",
-      "label": "RenderEnginPage",
+      "id": "function:app/engines/render/page.tsx#RenderServiceRoute",
+      "label": "RenderServiceRoute",
       "type": "function",
       "path": "app/engines/render/page.tsx",
       "parent": "file:app/engines/render/page.tsx",
-      "loc": 12,
+      "loc": 2,
       "isOrphan": false,
       "exported": true
     },
@@ -12117,7 +12116,7 @@
       "type": "function",
       "path": "app/lab/[id]/page.tsx",
       "parent": "file:app/lab/[id]/page.tsx",
-      "loc": 30,
+      "loc": 44,
       "isOrphan": false,
       "exported": true
     },
@@ -15130,7 +15129,7 @@
       "type": "function",
       "path": "components/daydream/dream.StandaloneEnginSurface.tsx",
       "parent": "file:components/daydream/dream.StandaloneEnginSurface.tsx",
-      "loc": 28,
+      "loc": 30,
       "isOrphan": true,
       "exported": true
     },
@@ -15542,7 +15541,7 @@
       "type": "function",
       "path": "components/dream.CommandPalette.tsx",
       "parent": "file:components/dream.CommandPalette.tsx",
-      "loc": 479,
+      "loc": 468,
       "isOrphan": true,
       "exported": true
     },
@@ -17678,7 +17677,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 156,
+      "loc": 161,
       "isOrphan": true,
       "exported": false
     },
@@ -17688,7 +17687,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 223,
+      "loc": 228,
       "isOrphan": true,
       "exported": false
     },
@@ -17698,7 +17697,7 @@
       "type": "function",
       "path": "components/dreams/dreamsurface.dreamspace.tsx",
       "parent": "file:components/dreams/dreamsurface.dreamspace.tsx",
-      "loc": 260,
+      "loc": 265,
       "isOrphan": true,
       "exported": true
     },
@@ -17958,12 +17957,22 @@
       "tags": []
     },
     {
+      "id": "function:components/engines/code/panels/dream.panel.ProjectsPanel.tsx#projectAccent",
+      "label": "projectAccent",
+      "type": "function",
+      "path": "components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
+      "parent": "file:components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
+      "loc": 24,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/engines/code/panels/dream.panel.ProjectsPanel.tsx#ProjectsPanel",
       "label": "ProjectsPanel",
       "type": "function",
       "path": "components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
       "parent": "file:components/engines/code/panels/dream.panel.ProjectsPanel.tsx",
-      "loc": 23,
+      "loc": 33,
       "isOrphan": true,
       "exported": true
     },
@@ -18581,20 +18590,20 @@
       "isOrphan": false
     },
     {
-      "id": "function:components/engines/render/dream.RenderEnginApp.tsx#RenderServiceSurface",
-      "label": "RenderServiceSurface",
+      "id": "function:components/engines/render/dream.RenderServiceDiagnostics.tsx#RenderDiagnosticsSurface",
+      "label": "RenderDiagnosticsSurface",
       "type": "function",
-      "path": "components/engines/render/dream.RenderEnginApp.tsx",
-      "parent": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "parent": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "loc": 8,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "file:components/engines/render/dream.RenderEnginApp.tsx",
-      "label": "dream.RenderEnginApp.tsx",
+      "id": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "label": "dream.RenderServiceDiagnostics.tsx",
       "type": "tsx",
-      "path": "components/engines/render/dream.RenderEnginApp.tsx",
+      "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "parent": "folder:components/engines/render",
       "loc": null,
       "isOrphan": false,
@@ -22389,7 +22398,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 114,
+      "loc": 115,
       "isOrphan": true,
       "exported": true
     },
@@ -22409,7 +22418,7 @@
       "type": "function",
       "path": "components/runtime/dream.shell.RuntimeShell.tsx",
       "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 59,
+      "loc": 62,
       "isOrphan": true,
       "exported": true
     },
@@ -40321,6 +40330,46 @@
       "tags": []
     },
     {
+      "id": "function:engine/runtime/apperception.ts#unique",
+      "label": "unique",
+      "type": "function",
+      "path": "engine/runtime/apperception.ts",
+      "parent": "file:engine/runtime/apperception.ts",
+      "loc": 28,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/apperception.ts#nextActionsFor",
+      "label": "nextActionsFor",
+      "type": "function",
+      "path": "engine/runtime/apperception.ts",
+      "parent": "file:engine/runtime/apperception.ts",
+      "loc": 32,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/apperception.ts#buildApperceptiveContext",
+      "label": "buildApperceptiveContext",
+      "type": "function",
+      "path": "engine/runtime/apperception.ts",
+      "parent": "file:engine/runtime/apperception.ts",
+      "loc": 43,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engine/runtime/apperception.ts",
+      "label": "apperception.ts",
+      "type": "ts",
+      "path": "engine/runtime/apperception.ts",
+      "parent": "folder:engine/runtime",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:engine/runtime/channelMetrics.ts#_ensure",
       "label": "_ensure",
       "type": "function",
@@ -50007,7 +50056,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 224,
+      "loc": 233,
       "isOrphan": true,
       "exported": false
     },
@@ -50017,7 +50066,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 237,
+      "loc": 246,
       "isOrphan": true,
       "exported": true
     },
@@ -50027,7 +50076,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 244,
+      "loc": 253,
       "isOrphan": true,
       "exported": false
     },
@@ -50037,7 +50086,7 @@
       "type": "function",
       "path": "engins/engin.GameEngin.tsx",
       "parent": "file:engins/engin.GameEngin.tsx",
-      "loc": 2735,
+      "loc": 2753,
       "isOrphan": true,
       "exported": false
     },
@@ -51407,12 +51456,22 @@
       "tags": []
     },
     {
+      "id": "function:engins/forgeengin/forge/forgeRegistry.ts#isUserFacingEnginName",
+      "label": "isUserFacingEnginName",
+      "type": "function",
+      "path": "engins/forgeengin/forge/forgeRegistry.ts",
+      "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
+      "loc": 166,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
       "id": "function:engins/forgeengin/forge/forgeRegistry.ts#getEnginById",
       "label": "getEnginById",
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 144,
+      "loc": 170,
       "isOrphan": false,
       "exported": true
     },
@@ -51422,7 +51481,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 148,
+      "loc": 174,
       "isOrphan": false,
       "exported": true
     },
@@ -51432,7 +51491,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 173,
+      "loc": 199,
       "isOrphan": false,
       "exported": true
     },
@@ -51442,7 +51501,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 202,
+      "loc": 228,
       "isOrphan": true,
       "exported": false
     },
@@ -51452,7 +51511,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 218,
+      "loc": 244,
       "isOrphan": false,
       "exported": true
     },
@@ -51462,7 +51521,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 239,
+      "loc": 265,
       "isOrphan": false,
       "exported": true
     },
@@ -51472,7 +51531,7 @@
       "type": "function",
       "path": "engins/forgeengin/forge/forgeRegistry.ts",
       "parent": "file:engins/forgeengin/forge/forgeRegistry.ts",
-      "loc": 247,
+      "loc": 273,
       "isOrphan": false,
       "exported": true
     },
@@ -55605,6 +55664,86 @@
       "label": "generative-audio.ts",
       "type": "ts",
       "path": "engins/gameengin/generative-audio.ts",
+      "parent": "folder:engins/gameengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#dispatchGameSelect",
+      "label": "dispatchGameSelect",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 4,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#dispatchGameSessionStart",
+      "label": "dispatchGameSessionStart",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 8,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#dispatchGameControlProfile",
+      "label": "dispatchGameControlProfile",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 12,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#dispatchGamePhysicsApply",
+      "label": "dispatchGamePhysicsApply",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 16,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#dispatchGameScriptSave",
+      "label": "dispatchGameScriptSave",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 20,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#paintWorldTile",
+      "label": "paintWorldTile",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 24,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/gameengin/handlers.ts#snapshotWorldGrid",
+      "label": "snapshotWorldGrid",
+      "type": "function",
+      "path": "engins/gameengin/handlers.ts",
+      "parent": "file:engins/gameengin/handlers.ts",
+      "loc": 32,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/gameengin/handlers.ts",
+      "label": "handlers.ts",
+      "type": "ts",
+      "path": "engins/gameengin/handlers.ts",
       "parent": "folder:engins/gameengin",
       "loc": null,
       "isOrphan": false,
@@ -84680,6 +84819,11 @@
     },
     {
       "source": "file:app/engines/page.tsx",
+      "target": "file:engins/forgeengin/forge/forgeRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/engines/page.tsx",
       "target": "file:engine/dev-bypass.ts",
       "kind": "route-uses"
     },
@@ -84691,6 +84835,11 @@
     {
       "source": "file:app/engines/page.tsx",
       "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/engines/page.tsx",
+      "target": "file:engins/forgeengin/forge/forgeRegistry.ts",
       "kind": "route-uses"
     },
     {
@@ -84881,46 +85030,6 @@
     {
       "source": "file:app/engines/portfolio/quantum/page.tsx",
       "target": "file:supabase/client/safeGetUser.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:engine/dev-bypass.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:supabase/client/safeGetUser.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:supabase/server/serverClient.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:engine/dev-bypass.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:supabase/client/safeGetUser.ts",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "file:supabase/server/serverClient.ts",
       "kind": "route-uses"
     },
     {
@@ -87689,28 +87798,28 @@
       "kind": "import"
     },
     {
-      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:components/engines/shared/index.ts",
       "kind": "import"
     },
     {
-      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:engine/engin-runtime/EnginRuntime.ts",
       "kind": "import"
     },
     {
-      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:engins/renderengin/index.ts",
       "kind": "import"
     },
     {
-      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:engins/renderengin/runtimeRegistration.ts",
       "kind": "import"
     },
     {
       "source": "file:components/engines/render/index.ts",
-      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "kind": "reexport"
     },
     {
@@ -88850,6 +88959,11 @@
     },
     {
       "source": "file:components/runtime/dream.RuntimeView.tsx",
+      "target": "file:engine/runtime/apperception.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/runtime/dream.RuntimeView.tsx",
       "target": "file:components/panels/panelTypes.ts",
       "kind": "import"
     },
@@ -88889,13 +89003,13 @@
       "kind": "import"
     },
     {
-      "source": "file:components/runtime/dream.RuntimeView.tsx",
-      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "file:components/ui-system/runtimeViewport.ts",
       "kind": "import"
     },
     {
       "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "target": "file:components/ui-system/runtimeViewport.ts",
+      "target": "file:engine/runtime/apperception.ts",
       "kind": "import"
     },
     {
@@ -95744,6 +95858,26 @@
       "kind": "import"
     },
     {
+      "source": "file:engine/runtime/apperception.ts",
+      "target": "file:engins/forgeengin/forge/forgeRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/runtime/apperception.ts",
+      "target": "file:engine/runtime/dualRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/runtime/apperception.ts",
+      "target": "file:engine/identity/canonical-names.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/runtime/apperception.ts",
+      "target": "file:types/dreamArtifact.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engine/runtime/dreamOSBus.ts",
       "target": "file:engine/identity/canonical-names.ts",
       "kind": "import"
@@ -97065,6 +97199,11 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "file:engins/gameengin/handlers.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:engins/forgeengin/forge/forgeIntelligence.ts",
       "kind": "import"
     },
@@ -97996,6 +98135,11 @@
     {
       "source": "file:engins/gameengin/games/useGameInputKeyboardBridge.ts",
       "target": "file:components/games/dream.remote.GameRemote.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/gameengin/handlers.ts",
+      "target": "file:engins/rulesets/game/gameEnginRuleSet.ts",
       "kind": "import"
     },
     {
@@ -100100,6 +100244,11 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/gameengin/handlers.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/gameengin/index.ts",
       "kind": "import"
     },
@@ -101530,6 +101679,11 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:app/daydream/render/page.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/discover/page.tsx",
       "kind": "import"
     },
@@ -101806,16 +101960,6 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:app/engines/portfolio/quantum/page.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:app/engines/render/error.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:app/engines/render/loading.tsx",
       "kind": "import"
     },
     {
@@ -102800,7 +102944,7 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "target": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "kind": "import"
     },
     {
@@ -108374,21 +108518,6 @@
       "kind": "call"
     },
     {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "function:supabase/server/serverClient.ts#createServerClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
-      "kind": "call"
-    },
-    {
-      "source": "file:app/engines/render/page.tsx",
-      "target": "function:engine/dev-bypass.ts#isDevBypassActive",
-      "kind": "call"
-    },
-    {
       "source": "file:app/error.tsx",
       "target": "function:engine/runtime/isAuthRelatedError.ts#isAuthRelatedError",
       "kind": "call"
@@ -109714,7 +109843,7 @@
       "kind": "call"
     },
     {
-      "source": "file:components/engines/render/dream.RenderEnginApp.tsx",
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:components/engines/shared/index.ts",
       "kind": "call"
     },
@@ -110711,6 +110840,11 @@
     {
       "source": "file:components/runtime/dream.RuntimeView.tsx",
       "target": "function:engins/forgeengin/forge/forgeRegistry.ts#getEnginByName",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.RuntimeView.tsx",
+      "target": "function:engine/runtime/apperception.ts#buildApperceptiveContext",
       "kind": "call"
     },
     {
@@ -112289,6 +112423,11 @@
       "kind": "call"
     },
     {
+      "source": "file:engine/runtime/apperception.ts",
+      "target": "function:engins/forgeengin/forge/forgeRegistry.ts#getEnginByName",
+      "kind": "call"
+    },
+    {
       "source": "file:engine/runtime/dreamOSBus.ts",
       "target": "function:engine/engin-runtime/EnginBaseState.ts#createCoherenceCapacity",
       "kind": "call"
@@ -113270,6 +113409,16 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#dispatchGameSelect",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#dispatchGameControlProfile",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "function:supabase/client/client.ts#createClient",
       "kind": "call"
     },
@@ -113280,7 +113429,32 @@
     },
     {
       "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#paintWorldTile",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#snapshotWorldGrid",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
       "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#dispatchGamePhysicsApply",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#dispatchGameScriptSave",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/engin.GameEngin.tsx",
+      "target": "function:engins/gameengin/handlers.ts#dispatchGameSessionStart",
       "kind": "call"
     },
     {

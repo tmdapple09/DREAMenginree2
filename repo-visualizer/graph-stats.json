@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-06-20T13:02:56.054Z",
-  "totalFiles": 2250,
-  "totalNodes": 7811,
-  "totalEdges": 8324,
-  "totalFunctionAndClassNodes": 4478,
-  "orphanCount": 3918,
+  "generatedAt": "2026-06-22T06:16:57.816Z",
+  "totalFiles": 2252,
+  "totalNodes": 7825,
+  "totalEdges": 8331,
+  "totalFunctionAndClassNodes": 4489,
+  "orphanCount": 3921,
   "countsByType": {
-    "folder": 630,
-    "file": 113,
+    "folder": 631,
+    "file": 114,
     "doc": 231,
     "config": 240,
-    "function": 4208,
+    "function": 4219,
     "python": 18,
     "class": 270,
     "js": 8,
     "mjs": 31,
-    "route": 248,
-    "ts": 951,
-    "tsx": 335,
+    "route": 249,
+    "ts": 953,
+    "tsx": 333,
     "css": 8,
     "cjs": 4,
     "sql-table": 152,
@@ -27,7 +27,7 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 583,
+      "degree": 582,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
@@ -41,21 +41,21 @@
     },
     {
       "id": "file:supabase/server/serverClient.ts",
-      "degree": 355,
+      "degree": 353,
       "label": "serverClient.ts",
       "type": "ts",
       "path": "supabase/server/serverClient.ts"
     },
     {
       "id": "file:supabase/client/safeGetUser.ts",
-      "degree": 354,
+      "degree": 352,
       "label": "safeGetUser.ts",
       "type": "ts",
       "path": "supabase/client/safeGetUser.ts"
     },
     {
       "id": "file:src/engin/generated/engins.ts",
-      "degree": 264,
+      "degree": 265,
       "label": "engins.ts",
       "type": "ts",
       "path": "src/engin/generated/engins.ts"
@@ -69,14 +69,14 @@
     },
     {
       "id": "function:supabase/client/safeGetUser.ts#safeGetUser",
-      "degree": 192,
+      "degree": 191,
       "label": "safeGetUser",
       "type": "function",
       "path": "supabase/client/safeGetUser.ts"
     },
     {
       "id": "function:supabase/server/serverClient.ts#createServerClient",
-      "degree": 183,
+      "degree": 182,
       "label": "createServerClient",
       "type": "function",
       "path": "supabase/server/serverClient.ts"
