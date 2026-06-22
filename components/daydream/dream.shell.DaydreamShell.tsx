@@ -1,6 +1,7 @@
 'use client';
 
 import BrandLogo from '@/components/dream.BrandLogo';
+import { RenderEnginViewport } from '@/components/renderengin';
 import GameRemote from '@/components/games/dream.remote.GameRemote';
 import { useDaydreamState } from '@/lib/daydream/useDaydreamState';
 import { useForgeActivity } from '@/lib/forge/useForgeActivity';
@@ -238,7 +239,8 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
 /* ── Engin Surface — Side B ── */
 function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { enginName: string; title: string; accentColor: string; widgets: DaydreamWidget[]; onBack: () => void }) {
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(155deg, #050508 0%, #08101e 45%, #0a0f1c 75%, #050508 100%)', position: 'relative', overflow: 'hidden' }}>
+    <RenderEnginViewport label={enginName} layer="daydream" accentColor={accentColor}>
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(155deg, #050508 0%, #08101e 45%, #0a0f1c 75%, #050508 100%)', position: 'relative', overflow: 'hidden' }}>
       {/* Accent glow halo */}
       <div
         aria-hidden="true"
@@ -337,7 +339,8 @@ function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { engi
           {widgets.map((w) => <MarbleWidget key={w.id} w={w} />)}
         </div>
       </div>
-    </div>
+      </div>
+    </RenderEnginViewport>
   );
 }
 

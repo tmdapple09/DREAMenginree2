@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.DaydreamGames  (framework-mandated basename: page.tsx)
 import GamesHub from '@/components/games/dream.GamesHub';
 import { isDevBypassActive } from '@/lib/dev-bypass';

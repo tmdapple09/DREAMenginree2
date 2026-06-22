@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * NotebookPanel — Live interactive notebook for the Code Engine app.
@@ -7,11 +7,18 @@
  * Lives at /engines/code/notebook.
  */
 
-import { Code2, Play, Plus, TerminalSquare, Trash2 } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import {
+  Code2,
+  Download,
+  Play,
+  Plus,
+  TerminalSquare,
+  Trash2,
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-type CellType = 'code' | 'markdown';
-type CellStatus = 'idle' | 'running' | 'done' | 'error';
+type CellType = "code" | "markdown";
+type CellStatus = "idle" | "running" | "done" | "error";
 
 interface Cell {
   id: string;
@@ -24,55 +31,109 @@ interface Cell {
 
 const STARTER_CELLS: Cell[] = [
   {
-    id: '1',
-    type: 'code',
+    id: "1",
+    type: "code",
     source: '# Welcome to DREAMengin Notebook\nprint("Hello, DREAMengin!")',
-    output: '',
-    status: 'idle',
+    output: "",
+    status: "idle",
     executionCount: null,
   },
   {
-    id: '2',
-    type: 'code',
-    source: 'import math\nresult = [math.sqrt(i) for i in range(1, 11)]\nprint(result)',
-    output: '',
-    status: 'idle',
+    id: "2",
+    type: "code",
+    source:
+      "import math\nresult = [math.sqrt(i) for i in range(1, 11)]\nprint(result)",
+    output: "",
+    status: "idle",
     executionCount: null,
   },
 ];
 
 const SIMULATED_OUTPUTS: Record<string, string> = {
-  default: '→ executed successfully',
+  default: "→ executed successfully",
 };
 
+const NOTEBOOK_STORAGE_KEY = "dreamengin.code.notebookCells";
 let execCounter = 0;
 
 function simulateRun(source: string): Promise<string> {
   return new Promise((resolve) => {
     const delay = 400 + Math.random() * 800;
     setTimeout(() => {
-      if (source.includes('print(')) {
+      if (source.includes("print(")) {
         const match = source.match(/print\(["'](.+?)["']\)/);
-        if (match) { resolve(match[1]); return; }
-        if (source.includes('result')) {
-          resolve('[1.0, 1.414, 1.732, 2.0, 2.236, 2.449, 2.646, 2.828, 3.0, 3.162]');
+        if (match) {
+          resolve(match[1]);
+          return;
+        }
+        if (source.includes("result")) {
+          resolve(
+            "[1.0, 1.414, 1.732, 2.0, 2.236, 2.449, 2.646, 2.828, 3.0, 3.162]",
+          );
           return;
         }
       }
-      if (source.includes('import')) { resolve('Module imported.'); return; }
-      if (source.trim().startsWith('#')) { resolve(''); return; }
+      if (source.includes("import")) {
+        resolve("Module imported.");
+        return;
+      }
+      if (source.trim().startsWith("#")) {
+        resolve("");
+        return;
+      }
       resolve(SIMULATED_OUTPUTS.default);
     }, delay);
   });
 }
 
-export default function NotebookPanel( ){
+export default function NotebookPanel() {
   const [cells, setCells] = useState<Cell[]>(STARTER_CELLS);
 
-  const addCell = useCallback((type: CellType = 'code') => {
+  useEffect(() => {
+    const stored = window.localStorage.getItem(NOTEBOOK_STORAGE_KEY);
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as Cell[];
+      if (parsed.length) setCells(parsed);
+    } catch {
+      window.localStorage.removeItem(NOTEBOOK_STORAGE_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(NOTEBOOK_STORAGE_KEY, JSON.stringify(cells));
+  }, [cells]);
+
+  const exportNotebook = useCallback(() => {
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          { cells, exportedAt: new Date().toISOString() },
+          null,
+          2,
+        ),
+      ],
+      { type: "application/json" },
+    );
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "dreamengin-notebook.json";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, [cells]);
+
+  const addCell = useCallback((type: CellType = "code") => {
     setCells((prev) => [
       ...prev,
-      { id: Date.now().toString(), type, source: '', output: '', status: 'idle', executionCount: null },
+      {
+        id: Date.now().toString(),
+        type,
+        source: "",
+        output: "",
+        status: "idle",
+        executionCount: null,
+      },
     ]);
   }, []);
 
@@ -81,25 +142,42 @@ export default function NotebookPanel( ){
   }, []);
 
   const updateSource = useCallback((id: string, source: string) => {
-    setCells((prev) => prev.map((c) => c.id === id ? { ...c, source } : c));
+    setCells((prev) => prev.map((c) => (c.id === id ? { ...c, source } : c)));
   }, []);
 
-  const runCell = useCallback(async (id: string) => {
-    setCells((prev) => prev.map((c) => c.id === id ? { ...c, status: 'running', output: '' } : c));
-    const cell = cells.find((c) => c.id === id);
-    if (!cell) return;
-    try {
-      const output = await simulateRun(cell.source);
-      execCounter++;
-      setCells((prev) => prev.map((c) =>
-        c.id === id ? { ...c, status: 'done', output, executionCount: execCounter } : c
-      ));
-    } catch {
-      setCells((prev) => prev.map((c) => c.id === id ? { ...c, status: 'error', output: 'Error: execution failed' } : c));
-    }
-  }, [cells]);
+  const runCell = useCallback(
+    async (id: string) => {
+      setCells((prev) =>
+        prev.map((c) =>
+          c.id === id ? { ...c, status: "running", output: "" } : c,
+        ),
+      );
+      const cell = cells.find((c) => c.id === id);
+      if (!cell) return;
+      try {
+        const output = await simulateRun(cell.source);
+        execCounter++;
+        setCells((prev) =>
+          prev.map((c) =>
+            c.id === id
+              ? { ...c, status: "done", output, executionCount: execCounter }
+              : c,
+          ),
+        );
+      } catch {
+        setCells((prev) =>
+          prev.map((c) =>
+            c.id === id
+              ? { ...c, status: "error", output: "Error: execution failed" }
+              : c,
+          ),
+        );
+      }
+    },
+    [cells],
+  );
 
-  async function runAll( ){
+  async function runAll() {
     for (const cell of cells) {
       await runCell(cell.id);
     }
@@ -110,10 +188,21 @@ export default function NotebookPanel( ){
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-white mb-1">Live Notebook</h1>
-            <p className="text-sm text-white/50">Cell-by-cell interactive code execution</p>
+            <h1 className="text-2xl font-bold text-white mb-1">
+              Interactive Notebook
+            </h1>
+            <p className="text-sm text-white/50">
+              Cell-by-cell interactive code execution
+            </p>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={exportNotebook}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs transition-all"
+            >
+              <Download size={13} />
+              Export
+            </button>
             <button
               onClick={runAll}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#22d3ee]/20 hover:bg-[#22d3ee]/30 text-[#22d3ee] text-xs font-medium transition-all"
@@ -122,7 +211,7 @@ export default function NotebookPanel( ){
               Run All
             </button>
             <button
-              onClick={() => addCell('code')}
+              onClick={() => addCell("code")}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs transition-all"
             >
               <Plus size={13} />
@@ -137,22 +226,29 @@ export default function NotebookPanel( ){
             <div
               key={cell.id}
               className="rounded-xl overflow-hidden border transition-all"
-              style={{ borderColor: cell.status === 'running' ? '#22d3ee44' : 'rgba(255,255,255,0.08)' }}
+              style={{
+                borderColor:
+                  cell.status === "running"
+                    ? "#22d3ee44"
+                    : "rgba(255,255,255,0.08)",
+              }}
             >
               {/* Cell header */}
               <div className="flex items-center gap-2 px-3 py-2 bg-white/[0.03] border-b border-white/[0.06]">
                 <Code2 size={13} className="text-white/30" />
                 <span className="text-xs text-white/30">
-                  [{cell.executionCount ?? ' '}]
+                  [{cell.executionCount ?? " "}]
                 </span>
-                <span className="flex-1 text-xs text-white/40">Cell {idx + 1}</span>
+                <span className="flex-1 text-xs text-white/40">
+                  Cell {idx + 1}
+                </span>
                 <button
                   onClick={() => runCell(cell.id)}
-                  disabled={cell.status === 'running'}
+                  disabled={cell.status === "running"}
                   className="flex items-center gap-1 px-2 py-1 rounded bg-[#22d3ee]/10 hover:bg-[#22d3ee]/20 text-[#22d3ee] text-xs transition-all disabled:opacity-40"
                 >
                   <Play size={11} />
-                  {cell.status === 'running' ? 'Running…' : 'Run'}
+                  {cell.status === "running" ? "Running…" : "Run"}
                 </button>
                 <button
                   onClick={() => deleteCell(cell.id)}
@@ -166,21 +262,25 @@ export default function NotebookPanel( ){
               <textarea
                 value={cell.source}
                 onChange={(e) => updateSource(cell.id, e.target.value)}
-                rows={Math.max(2, cell.source.split('\n').length)}
+                rows={Math.max(2, cell.source.split("\n").length)}
                 className="w-full px-4 py-3 bg-[#0d1117] text-[#c9d1d9] text-sm font-mono resize-none focus:outline-none focus:ring-1 focus:ring-[#22d3ee]/30"
-                style={{ fontFamily: '"JetBrains Mono", "Fira Code", monospace' }}
+                style={{
+                  fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+                }}
                 spellCheck={false}
               />
 
               {/* Output */}
-              {(cell.output || cell.status === 'running') && (
+              {(cell.output || cell.status === "running") && (
                 <div className="px-4 py-2 bg-black/40 border-t border-white/[0.05]">
                   <div className="flex items-center gap-1.5 mb-1">
                     <TerminalSquare size={11} className="text-white/30" />
-                    <span className="text-[10px] text-white/30 uppercase tracking-wider">Output</span>
+                    <span className="text-[10px] text-white/30 uppercase tracking-wider">
+                      Output
+                    </span>
                   </div>
                   <pre className="text-xs font-mono text-green-400 whitespace-pre-wrap">
-                    {cell.status === 'running' ? '⠋ Running…' : cell.output}
+                    {cell.status === "running" ? "⠋ Running…" : cell.output}
                   </pre>
                 </div>
               )}
@@ -191,14 +291,14 @@ export default function NotebookPanel( ){
         {/* Add cell controls */}
         <div className="flex gap-2 mt-4">
           <button
-            onClick={() => addCell('code')}
+            onClick={() => addCell("code")}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-white/10 hover:border-[#22d3ee]/40 text-white/30 hover:text-[#22d3ee] text-xs transition-all"
           >
             <Plus size={13} />
             Code cell
           </button>
           <button
-            onClick={() => addCell('markdown')}
+            onClick={() => addCell("markdown")}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-white/10 hover:border-[#22d3ee]/40 text-white/30 hover:text-[#22d3ee] text-xs transition-all"
           >
             <Plus size={13} />

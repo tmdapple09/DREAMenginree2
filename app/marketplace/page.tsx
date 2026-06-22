@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.Marketplace  (framework-mandated basename: page.tsx)
 import MarketplaceListingCard from '@/components/marketplace/dream.MarketplaceListingCard';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';

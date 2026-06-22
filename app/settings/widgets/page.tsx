@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.SettingsWidgetsLegacy
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { LayoutGrid } from 'lucide-react';

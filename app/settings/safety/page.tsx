@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.SettingsSafety  (framework-mandated basename: page.tsx)
 // app/settings/safety/page.tsx
 // "Policy & Safety" settings page (req 11, 14, 90–91).

@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.SettingsHelp  (framework-mandated basename: page.tsx)
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
 import { createServerClient } from '@/lib/supabase/server';

@@ -6,6 +6,7 @@ import '@/styles/view-transitions.css';
 import '@/styles/dream-shell.css';
 // HomeDream surface styles: gold-button, dream-widget-card, dream-widget-empty
 import CommandPalette from '@/components/dream.CommandPalette';
+import { RenderEnginViewport } from '@/components/renderengin';
 import GlobalOverlays from '@/components/dream.GlobalOverlays';
 import ThemeApplicator from '@/components/dream.ThemeApplicator';
 import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
@@ -13,6 +14,7 @@ import GodTierProvider from '@/components/providers/dream.GodTierProvider';
 import ThemeProvider from '@/components/providers/dream.ThemeProvider';
 import DualRuntimeContainer from '@/components/runtime/dream.DualRuntimeContainer';
 import { DreamSystemProvider } from '@/lib/dreamdm/DreamSystemContext';
+import { RenderEnginProvider } from '@/lib/renderengin';
 import { OSProvider } from '@/lib/dreamenginOS/OSContext';
 import { CustomizeModeProvider } from '@/lib/ui/CustomizeModeContext';
 import '@/styles/home-dream.css';
@@ -83,12 +85,16 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
           <OSProvider>
             <CustomizeModeProvider>
               <DreamSystemProvider>
-                <CartridgeRegistryBootstrap />
-                <DualRuntimeContainer>
-                  <main role="main" aria-label="Main content">{children}</main>
-                  <GlobalOverlays />
-                  <Suspense><CommandPalette /></Suspense>
-                </DualRuntimeContainer>
+                <RenderEnginProvider>
+                  <CartridgeRegistryBootstrap />
+                  <DualRuntimeContainer>
+                    <RenderEnginViewport label="DREAMengin root" layer="root" accentColor="#38bdf8">
+                      <main role="main" aria-label="Main content">{children}</main>
+                    </RenderEnginViewport>
+                    <GlobalOverlays />
+                    <Suspense><CommandPalette /></Suspense>
+                  </DualRuntimeContainer>
+                </RenderEnginProvider>
               </DreamSystemProvider>
             </CustomizeModeProvider>
           </OSProvider>

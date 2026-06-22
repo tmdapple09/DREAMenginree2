@@ -12,6 +12,7 @@
  *   engineEmoji  → visual identity in the header
  */
 
+import { RenderEnginViewport } from '@/components/renderengin';
 import { InviteFlow, SharedDreamProvider } from '@/components/shared-dream';
 import { ChevronLeft, X } from 'lucide-react';
 import Link from 'next/link';
@@ -105,7 +106,9 @@ export default function EnginAppShell({
 
         {/* Engine content */}
         <main className="relative flex-1 overflow-hidden">
-          {children}
+          <RenderEnginViewport label={engineName} layer="engin" accentColor={accentColor}>
+            {children}
+          </RenderEnginViewport>
         </main>
       </div>
     </SharedDreamProvider>

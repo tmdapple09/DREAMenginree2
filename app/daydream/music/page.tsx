@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.DaydreamMusic  (framework-mandated basename: page.tsx)
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';
 import SoundRecorder from '@/components/music/dream.SoundRecorder';

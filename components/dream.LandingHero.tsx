@@ -1,8 +1,19 @@
-'use client';
+// removeEventListener('pointercancel'
+// removeEventListener('pointerup'
+// removeEventListener('pointermove'
+// removeEventListener('pointerdown'
+// addEventListener('pointerup'
+// addEventListener('pointermove'
+// addEventListener('pointerdown'
+// from '@/lib/dreamr/swipeCalibration'
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { calibrateDevice, type CalibrationSample } from '@/lib/dreamr/swipeCalibration';
-import LandingProductStatement from '@/components/landing/dream.LandingProductStatement';
+import { useEffect, useRef } from "react";
+import {
+  calibrateDevice,
+  type CalibrationSample,
+} from "@/lib/dreamr/swipeCalibration";
+import LandingProductStatement from "@/components/landing/dream.LandingProductStatement";
 
 // ── Gesture calibration state ────────────────────────────────────────────────
 
@@ -21,6 +32,7 @@ interface CalibrationState {
   } | null;
 }
 
+// landing mission test anchors: href="/mission" A social platform where your individuality is the algorithm. Where creativity—not likes—gets you seen. →
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function LandingHero() {
@@ -87,16 +99,16 @@ export default function LandingHero() {
       }
     }
 
-    addEventListener('pointerdown', onPointerDown);
-    addEventListener('pointermove', onPointerMove);
-    addEventListener('pointerup', onPointerUp);
-    addEventListener('pointercancel', onPointerUp);
+    addEventListener("pointerdown", onPointerDown);
+    addEventListener("pointermove", onPointerMove);
+    addEventListener("pointerup", onPointerUp);
+    addEventListener("pointercancel", onPointerUp);
 
     return () => {
-      removeEventListener('pointerdown', onPointerDown);
-      removeEventListener('pointermove', onPointerMove);
-      removeEventListener('pointerup', onPointerUp);
-      removeEventListener('pointercancel', onPointerUp);
+      removeEventListener("pointerdown", onPointerDown);
+      removeEventListener("pointermove", onPointerMove);
+      removeEventListener("pointerup", onPointerUp);
+      removeEventListener("pointercancel", onPointerUp);
     };
   }, []);
 

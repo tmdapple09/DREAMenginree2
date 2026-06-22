@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 'use client';
 // SURFACE: dreamsurface.SettingsNotifications  (framework-mandated basename: page.tsx)
 

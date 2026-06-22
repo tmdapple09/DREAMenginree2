@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.DaydreamCreate  (framework-mandated basename: page.tsx)
 import OpenDaydreamSideBButton from '@/components/daydream/dream.OpenDaydreamSideBButton';
 import DaydreamShell, { type DaydreamWidget } from '@/components/daydream/dream.shell.DaydreamShell';

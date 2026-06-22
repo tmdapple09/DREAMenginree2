@@ -1,3 +1,4 @@
+// import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader'
 // SURFACE: dreamsurface.SettingsAlgorithm  (framework-mandated basename: page.tsx)
 import AlgorithmEngine from '@/components/feed/dream.AlgorithmEngine';
 import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHeader';
