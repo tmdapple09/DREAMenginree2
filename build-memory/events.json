@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-22T10:53:50.267Z",
+  "generated_at": "2026-06-22T21:45:06.792Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 28,
+  "count": 29,
   "events": [
     {
       "event": "beforeunload",
@@ -116,6 +116,13 @@
       ]
     },
     {
+      "event": "dreamengin:contentasset-library-updated",
+      "payload_type": null,
+      "files": [
+        "engins/engin.GameEngin.tsx"
+      ]
+    },
+    {
       "event": "dreamengin:idari",
       "payload_type": null,
       "files": [
@@ -209,6 +216,7 @@
       "event": "storage",
       "payload_type": null,
       "files": [
+        "engins/engin.GameEngin.tsx",
         "engins/renderengin/serviceRuntime.ts"
       ]
     },
