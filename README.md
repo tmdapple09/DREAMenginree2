@@ -1466,7 +1466,8 @@ The Engins is a user-facing application surface subsystem composed of React comp
     │   ├── assetTypes.ts
     │   ├── assets
     │   │   ├── assetOptimizer.ts
-    │   │   └── indexedDBStore.ts
+    │   │   ├── indexedDBStore.ts
+    │   │   └── localAssetLibrary.ts
     │   ├── builders
     │   │   ├── geometryBuilder.ts
     │   │   ├── meshBuilder.ts
@@ -1482,10 +1483,9 @@ The Engins is a user-facing application surface subsystem composed of React comp
     │   │   ├── motionCapture.ts
     │   │   └── rotoscope.ts
     │   ├── content
-    │   │   ├── generativeFill.ts
-… (201 more application source files)
+… (202 more application source files)
 ```
-<details><summary>The Engins application source index (321 files)</summary>
+<details><summary>The Engins application source index (322 files)</summary>
 
 - `components/runtime/dream.DualRuntimeContainer.tsx` — React application module.
 - `components/runtime/dream.RuntimeView.tsx` — React application module.
@@ -1568,6 +1568,7 @@ The Engins is a user-facing application surface subsystem composed of React comp
 - `engins/contentengin/assetTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/assetOptimizer.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/indexedDBStore.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/assets/localAssetLibrary.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/geometryBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/meshBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/modifiers.ts` — TypeScript/JavaScript application module.
@@ -2153,7 +2154,8 @@ Custom Engins capability is a user-facing application surface subsystem composed
     │   ├── assetTypes.ts
     │   ├── assets
     │   │   ├── assetOptimizer.ts
-    │   │   └── indexedDBStore.ts
+    │   │   ├── indexedDBStore.ts
+    │   │   └── localAssetLibrary.ts
     │   ├── builders
     │   │   ├── geometryBuilder.ts
     │   │   ├── meshBuilder.ts
@@ -2217,10 +2219,9 @@ Custom Engins capability is a user-facing application surface subsystem composed
     │   │   ├── recipeResolver.ts
     │   │   ├── recipeTypes.ts
     │   │   └── seededRandom.ts
-    │   ├── rigging
-… (159 more application source files)
+… (160 more application source files)
 ```
-<details><summary>Custom Engins capability application source index (279 files)</summary>
+<details><summary>Custom Engins capability application source index (280 files)</summary>
 
 - `components/daydream/dream.CodeDreamIDE.tsx` — React application module.
 - `components/daydream/dream.DiffViewer.tsx` — React application module.
@@ -2261,6 +2262,7 @@ Custom Engins capability is a user-facing application surface subsystem composed
 - `engins/contentengin/assetTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/assetOptimizer.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/indexedDBStore.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/assets/localAssetLibrary.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/geometryBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/meshBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/modifiers.ts` — TypeScript/JavaScript application module.
@@ -8089,7 +8091,8 @@ Engins is a user-facing application surface subsystem composed of React componen
     │   ├── assetTypes.ts
     │   ├── assets
     │   │   ├── assetOptimizer.ts
-    │   │   └── indexedDBStore.ts
+    │   │   ├── indexedDBStore.ts
+    │   │   └── localAssetLibrary.ts
     │   ├── builders
     │   │   ├── geometryBuilder.ts
     │   │   ├── meshBuilder.ts
@@ -8170,10 +8173,9 @@ Engins is a user-facing application surface subsystem composed of React componen
     ├── engin.BrandingEngin.tsx
     ├── engin.CodeEngin.tsx
     ├── engin.ContentEngin.tsx
-    ├── engin.GameEngin.tsx
-… (145 more application source files)
+… (146 more application source files)
 ```
-<details><summary>Engins application source index (265 files)</summary>
+<details><summary>Engins application source index (266 files)</summary>
 
 - `engins/CodeEngin/core/parser.ts` — TypeScript/JavaScript application module.
 - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — React application module.
@@ -8200,6 +8202,7 @@ Engins is a user-facing application surface subsystem composed of React componen
 - `engins/contentengin/assetTypes.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/assetOptimizer.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/assets/indexedDBStore.ts` — TypeScript/JavaScript application module.
+- `engins/contentengin/assets/localAssetLibrary.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/geometryBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/meshBuilder.ts` — TypeScript/JavaScript application module.
 - `engins/contentengin/builders/modifiers.ts` — TypeScript/JavaScript application module.
@@ -8455,6 +8458,7 @@ Hooks provides application behavior, contracts, or infrastructure used by DREAMe
 - Depends on **Connectors & Live Feeds**
 - Depends on **Dreams, Widgets, Windows & Surfaces**
 - Depends on **Shared Dreams**
+- Depends on **User-Facing Modularity**
 - Participates in the Shared Dreams pub/sub channel system
 - Consumes backend, engine, Supabase, or core system services
 - Depends on Backend, System, Core & CoreSurfaces
