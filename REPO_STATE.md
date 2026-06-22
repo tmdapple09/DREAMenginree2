@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-06T00:16:20.688Z
+Generated: 2026-06-22T09:02:47.298Z
 
 ---
 
@@ -2324,6 +2324,7 @@ _No style files for this feature._
 - `@/components/dream.BrandLogo`
 - `@/components/games/dream.BabylonSideScroller`
 - `@/components/games/dream.remote.GameRemote`
+- `@/components/renderengin`
 - `@/engins/dream.ForgeEngin`
 - `@/engins/engin.BrandingEngin`
 - `@/engins/engin.CodeEngin`
@@ -7544,9 +7545,11 @@ _No style files for this feature._
 | `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
 | `@/components/providers/dream.GodTierProvider` | `⬡ GodTierProvider` |
 | `@/components/providers/dream.ThemeProvider` | `⬡ ThemeProvider` |
+| `@/components/renderengin` | `RenderEnginViewport` |
 | `@/components/runtime/dream.DualRuntimeContainer` | `⬡ DualRuntimeContainer` |
 | `@/lib/dreamdm/DreamSystemContext` | `DreamSystemProvider` |
 | `@/lib/dreamenginOS/OSContext` | `OSProvider` |
+| `@/lib/renderengin` | `RenderEnginProvider` |
 | `@/lib/ui/CustomizeModeContext` | `CustomizeModeProvider` |
 | `next` | `Metadata`, `Viewport` |
 | `react` | `Suspense` |
@@ -8207,6 +8210,7 @@ _No style files for this feature._
 |--------|---------------|
 | `@/components/dream.BrandLogo` | `⬡ BrandLogo` |
 | `@/components/games/dream.remote.GameRemote` | `⬡ GameRemote` |
+| `@/components/renderengin` | `RenderEnginViewport` |
 | `@/lib/daydream/useDaydreamState` | `useDaydreamState` |
 | `@/lib/forge/useForgeActivity` | `useForgeActivity` |
 | `@/lib/gsap/useGsapFlip` | `useGsapFlip` |
@@ -8857,7 +8861,7 @@ _No style files for this feature._
 | `@/hooks/useSharedDream` | `useSharedDream` |
 | `@/lib/sharedDream` | `DreamBroadcastPayload` |
 | `@/lib/utils` | `toErrorMessage` |
-| `lucide-react` | `Mic`, `MicOff`, `Users`, `X` |
+| `lucide-react` | `Mic`, `MicOff`, `X` |
 
 ## `components/dreams/dream.widget.SuperDreamWidget.tsx`
 
@@ -8942,8 +8946,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `lucide-react` | `Code2`, `Play`, `Plus`, `TerminalSquare`, `Trash2` |
-| `react` | `useCallback`, `useState` |
+| `lucide-react` | `Code2`, `Download`, `Play`, `Plus`, `TerminalSquare`, `Trash2` |
+| `react` | `useCallback`, `useEffect`, `useState` |
 
 ## `components/engines/code/panels/dream.panel.ProjectsPanel.tsx`
 
@@ -8974,15 +8978,15 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `lucide-react` | `Bold`, `Hash`, `Italic`, `Link2`, `List`, `Save`, `Sparkles` |
-| `react` | `useRef`, `useState` |
+| `lucide-react` | `Bold`, `Hash`, `Italic`, `Link2`, `List`, `Save`, `Send`, `Sparkles` |
+| `react` | `useEffect`, `useRef`, `useState` |
 
 ## `components/engines/create/panels/dream.panel.QueuePanel.tsx`
 
 | Module | Connected via |
 |--------|---------------|
 | `lucide-react` | `AlertCircle`, `CheckCircle`, `Clock`, `Loader2`, `Plus`, `Send`, `Trash2` |
-| `react` | `useState` |
+| `react` | `useEffect`, `useMemo`, `useState` |
 
 ## `components/engines/games/dream.GameEnginApp.tsx`
 
@@ -9140,6 +9144,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/components/renderengin` | `RenderEnginViewport` |
 | `@/components/shared-dream` | `InviteFlow`, `SharedDreamProvider` |
 | `lucide-react` | `ChevronLeft`, `X` |
 | `next/link` | `⬡ Link` |
@@ -9850,6 +9855,14 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/ui/theme-engine` | `DEFAULT_OVERRIDES`, `UserOverrides`, `applyTheme`, `getPreset`, `loadStoredTheme`, `saveTheme` |
+
+## `components/renderengin/dream.RenderEnginViewport.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/renderengin` | `RenderEnginBackend`, `RenderEnginLayer`, `useRenderEngin` |
+| `@/lib/renderer` | `Canvas2DRenderer` |
+| `react` | `ReactNode`, `useEffect`, `useId`, `useRef` |
 
 ## `components/runtime/dream.DualRuntimeContainer.tsx`
 
@@ -12283,6 +12296,19 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/lib/collaboration` | `CollabMode`, `SessionRole` |
+
+## `lib/renderengin/RenderEnginContext.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./types` | `RenderEnginBackend`, `RenderEnginManifest`, `RenderEnginRegistration`, `RenderEnginRuntimeHooks`, `RenderEnginSurfaceSnapshot` |
+| `react` | `ReactNode`, `createContext`, `useCallback`, `useContext`, `useMemo`, `useRef`, `useState` |
+
+## `lib/renderengin/types.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/lib/engin-runtime/EnginBaseState` | `DomainObject`, `JsonObject` |
 
 ## `lib/renderer/Canvas2DRenderer.ts`
 
@@ -16743,6 +16769,10 @@ _No style files for this feature._
 - `components/providers/dream.GodTierProvider.tsx`
 - `components/providers/dream.ThemeProvider.tsx`
 
+## `components/renderengin/`
+
+- `components/renderengin/dream.RenderEnginViewport.tsx`
+
 ## `components/runtime/`
 
 - `components/runtime/dream.DualRuntimeContainer.tsx`
@@ -16924,6 +16954,10 @@ _No style files for this feature._
 ## `lib/gameengin/`
 
 - `lib/gameengin/GameRuntime.tsx`
+
+## `lib/renderengin/`
+
+- `lib/renderengin/RenderEnginContext.tsx`
 
 ## `lib/ui/`
 
@@ -17231,6 +17265,10 @@ _No style files for this feature._
 ## `lib/offline/useOfflineSync.ts`
 
 - `useOfflineSync`
+
+## `lib/renderengin/RenderEnginContext.tsx`
+
+- `useRenderEngin`
 
 ## `lib/runtime/instanceManager.ts`
 
@@ -17597,6 +17635,7 @@ _No style files for this feature._
 - `lib/dreamenginOS/OSContext.tsx`
 - `lib/enginpipe/shell/ArtifactSlot.tsx`
 - `lib/gameengin/cartridges/reactCartridge.ts`
+- `lib/renderengin/RenderEnginContext.tsx`
 - `lib/ui/CustomizeModeContext.tsx`
 
 ---
@@ -17719,6 +17758,7 @@ _No circular dependencies detected._
 | `app/daydream/games/page.tsx` | 16 |
 | `lib/navigation/index.ts` | 16 |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 |
+| `app/layout.tsx` | 15 |
 | `app/profile/[handle]/page.tsx` | 15 |
 | `daydreams/games/page.tsx` | 15 |
 | `engins/dream.ForgeEngin.tsx` | 15 |
@@ -17726,7 +17766,7 @@ _No circular dependencies detected._
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `lib/gameengin/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
-| `app/layout.tsx` | 13 |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
@@ -17735,7 +17775,6 @@ _No circular dependencies detected._
 | `app/daydream/forge/page.tsx` | 12 |
 | `app/dreamdmbar/layout.tsx` | 12 |
 | `app/view-profile/page.tsx` | 12 |
-| `components/daydream/dream.shell.DaydreamShell.tsx` | 12 |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 |
 
 ---
@@ -17758,6 +17797,7 @@ _No circular dependencies detected._
 | `app/daydream/games/page.tsx` | 16 | HIGH_COUPLING |
 | `lib/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
+| `app/layout.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
 | `daydreams/games/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
@@ -17765,7 +17805,7 @@ _No circular dependencies detected._
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `lib/gameengin/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
-| `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
+| `components/daydream/dream.shell.DaydreamShell.tsx` | 13 | HIGH_COUPLING |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -17774,7 +17814,6 @@ _No circular dependencies detected._
 | `app/daydream/forge/page.tsx` | 12 | HIGH_COUPLING |
 | `app/dreamdmbar/layout.tsx` | 12 | HIGH_COUPLING |
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
-| `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
 | `engins/dream.panel.AnalyticsEngin.tsx` | 12 | HIGH_COUPLING |
 | `lib/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
@@ -18775,6 +18814,7 @@ _No circular dependencies detected._
 | `components/providers/dream.AppSurfaceShell.tsx` | `(default)` |
 | `components/providers/dream.GodTierProvider.tsx` | `(default)` |
 | `components/providers/dream.ThemeProvider.tsx` | `(default)` |
+| `components/renderengin/dream.RenderEnginViewport.tsx` | `(default)` |
 | `components/runtime/dream.DualRuntimeContainer.tsx` | `(default)` |
 | `components/runtime/dream.RuntimeView.tsx` | `(default)` |
 | `components/runtime/dream.shell.RuntimeShell.tsx` | `(default)` |
@@ -19053,6 +19093,7 @@ _No circular dependencies detected._
 | `lib/platform/lab.ts` | `logPhysicsExperiment` |
 | `lib/policy/boogiePolicy.ts` | `CATEGORY_SEVERITY`, `DEFAULT_DURATIONS_SECONDS`, `ENFORCEMENT_ACTIONS`, `ENFORCEMENT_SCOPES`, `RECOVER_STEPS`, `RULE_CODES`, `STRIKE_EXPIRY_DAYS`, `STRIKE_WEIGHTS`, `THRESHOLDS`, `USER_REASON_MESSAGES` |
 | `lib/reality/realityStore.ts` | `getRealityById`, `listMyRealities`, `createReality`, `updateEnginSlots`, `touchReality`, `joinReality`, `touchMembership`, `listMembers`, `saveSnapshot`, `loadLatestSnapshot`, `appendActivity`, `loadActivity`, `buildChannelId` |
+| `lib/renderengin/RenderEnginContext.tsx` | `RenderEnginProvider`, `useRenderEngin` |
 | `lib/renderer/Canvas2DRenderer.ts` | `Canvas2DRenderer` |
 | `lib/renderer/index.ts` | `FrustumCuller` |
 | `lib/routing/surfaces.ts` | `PUBLIC_SURFACE_PREFIXES`, `SAB_ISOLATED_ROUTE_PREFIXES`, `isSabIsolatedPath` |
@@ -20734,6 +20775,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.ThemeProvider.tsx ∅
 │   │       └── ∅ unused: (default)
+│   ├── renderengin
+│   │   ├── dream.RenderEnginViewport.tsx ∅
+│   │   │   └── ∅ unused: (default)
+│   │   └── index.ts
 │   ├── runtime  [Runtime Core]
 │   │   ├── dream.DualRuntimeContainer.tsx ∅
 │   │   │   └── ∅ unused: (default)
@@ -21850,6 +21895,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── reality
 │   │   ├── realityStore.ts ∅
 │   │   │   └── ∅ unused: getRealityById, listMyRealities, createReality, updateEnginSlots, touchReality, joinReality, touchMembership, listMembers, saveSnapshot, loadLatestSnapshot, appendActivity, loadActivity, buildChannelId
+│   │   └── types.ts
+│   ├── renderengin
+│   │   ├── index.ts
+│   │   ├── RenderEnginContext.tsx ∅
+│   │   │   └── ∅ unused: RenderEnginProvider, useRenderEngin
 │   │   └── types.ts
 │   ├── renderer
 │   │   ├── Canvas2DRenderer.ts ∅

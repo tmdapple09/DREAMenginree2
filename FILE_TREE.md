@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-06T00:16:20.815Z
+Generated: 2026-06-22T09:02:47.424Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3014,9 +3014,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ⬡ CartridgeRegistryBootstrap  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
 │   │   ├── ⬡ GodTierProvider  ← @/components/providers/dream.GodTierProvider
 │   │   ├── ⬡ ThemeProvider  ← @/components/providers/dream.ThemeProvider
+│   │   ├── RenderEnginViewport  ← @/components/renderengin
 │   │   ├── ⬡ DualRuntimeContainer  ← @/components/runtime/dream.DualRuntimeContainer
 │   │   ├── DreamSystemProvider  ← @/lib/dreamdm/DreamSystemContext
 │   │   ├── OSProvider  ← @/lib/dreamenginOS/OSContext
+│   │   ├── RenderEnginProvider  ← @/lib/renderengin
 │   │   ├── CustomizeModeProvider  ← @/lib/ui/CustomizeModeContext
 │   │   ├── Metadata  ← next
 │   │   ├── Viewport  ← next
@@ -3441,6 +3443,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── dream.shell.DaydreamShell.tsx ∅
 │   │   │   ├── ⬡ BrandLogo  ← @/components/dream.BrandLogo
 │   │   │   ├── ⬡ GameRemote  ← @/components/games/dream.remote.GameRemote
+│   │   │   ├── RenderEnginViewport  ← @/components/renderengin
 │   │   │   ├── useDaydreamState  ← @/lib/daydream/useDaydreamState
 │   │   │   ├── useForgeActivity  ← @/lib/forge/useForgeActivity
 │   │   │   ├── useGsapFlip  ← @/lib/gsap/useGsapFlip
@@ -3802,7 +3805,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── toErrorMessage  ← @/lib/utils
 │   │   │   ├── Mic  ← lucide-react
 │   │   │   ├── MicOff  ← lucide-react
-│   │   │   ├── Users  ← lucide-react
 │   │   │   ├── X  ← lucide-react
 │   │   │   ├── → (default)
 │   │   │   ├── → SharedDreamShell
@@ -3921,11 +3923,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   └── ∅ unused: processData, (default)
 │   │   │   │   ├── dream.panel.NotebookPanel.tsx ∅
 │   │   │   │   │   ├── Code2  ← lucide-react
+│   │   │   │   │   ├── Download  ← lucide-react
 │   │   │   │   │   ├── Play  ← lucide-react
 │   │   │   │   │   ├── Plus  ← lucide-react
 │   │   │   │   │   ├── TerminalSquare  ← lucide-react
 │   │   │   │   │   ├── Trash2  ← lucide-react
 │   │   │   │   │   ├── useCallback  ← react
+│   │   │   │   │   ├── useEffect  ← react
 │   │   │   │   │   ├── useState  ← react
 │   │   │   │   │   ├── → (default)
 │   │   │   │   │   └── ∅ unused: (default)
@@ -3974,7 +3978,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   │   ├── Link2  ← lucide-react
 │   │   │   │   │   ├── List  ← lucide-react
 │   │   │   │   │   ├── Save  ← lucide-react
+│   │   │   │   │   ├── Send  ← lucide-react
 │   │   │   │   │   ├── Sparkles  ← lucide-react
+│   │   │   │   │   ├── useEffect  ← react
 │   │   │   │   │   ├── useRef  ← react
 │   │   │   │   │   ├── useState  ← react
 │   │   │   │   │   ├── → (default)
@@ -3987,6 +3993,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       ├── Plus  ← lucide-react
 │   │   │   │       ├── Send  ← lucide-react
 │   │   │   │       ├── Trash2  ← lucide-react
+│   │   │   │       ├── useEffect  ← react
+│   │   │   │       ├── useMemo  ← react
 │   │   │   │       ├── useState  ← react
 │   │   │   │       ├── → (default)
 │   │   │   │       └── ∅ unused: (default)
@@ -4198,6 +4206,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → makeEnginApp
 │   │   │   │   └── ∅ unused: makeEnginApp, (default)
 │   │   │   ├── dream.shell.EnginAppShell.tsx ∅
+│   │   │   │   ├── RenderEnginViewport  ← @/components/renderengin
 │   │   │   │   ├── InviteFlow  ← @/components/shared-dream
 │   │   │   │   ├── SharedDreamProvider  ← @/components/shared-dream
 │   │   │   │   ├── ChevronLeft  ← lucide-react
@@ -5302,6 +5311,20 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → (default)
 │   │       ├── → useTheme
 │   │       └── ∅ unused: (default)
+│   ├── renderengin
+│   │   ├── dream.RenderEnginViewport.tsx ∅
+│   │   │   ├── RenderEnginBackend  ← @/lib/renderengin
+│   │   │   ├── RenderEnginLayer  ← @/lib/renderengin
+│   │   │   ├── useRenderEngin  ← @/lib/renderengin
+│   │   │   ├── Canvas2DRenderer  ← @/lib/renderer
+│   │   │   ├── ReactNode  ← react
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useId  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
+│   │   └── index.ts
+│   │       └── → RenderEnginViewport
 │   ├── runtime  [Runtime Core]
 │   │   ├── dream.DualRuntimeContainer.tsx ∅
 │   │   │   ├── DEFAULT_DUAL_RUNTIME  ← @/lib/runtime/dualRuntime
@@ -10913,6 +10936,29 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── types.ts
 │   │       ├── CollabMode  ← @/lib/collaboration
 │   │       └── SessionRole  ← @/lib/collaboration
+│   ├── renderengin
+│   │   ├── index.ts
+│   │   │   ├── → RenderEnginProvider
+│   │   │   └── → useRenderEngin
+│   │   ├── RenderEnginContext.tsx ∅
+│   │   │   ├── RenderEnginBackend  ← ./types
+│   │   │   ├── RenderEnginManifest  ← ./types
+│   │   │   ├── RenderEnginRegistration  ← ./types
+│   │   │   ├── RenderEnginRuntimeHooks  ← ./types
+│   │   │   ├── RenderEnginSurfaceSnapshot  ← ./types
+│   │   │   ├── ReactNode  ← react
+│   │   │   ├── createContext  ← react
+│   │   │   ├── useCallback  ← react
+│   │   │   ├── useContext  ← react
+│   │   │   ├── useMemo  ← react
+│   │   │   ├── useRef  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → RenderEnginProvider
+│   │   │   ├── → useRenderEngin
+│   │   │   └── ∅ unused: RenderEnginProvider, useRenderEngin
+│   │   └── types.ts
+│   │       ├── DomainObject  ← @/lib/engin-runtime/EnginBaseState
+│   │       └── JsonObject  ← @/lib/engin-runtime/EnginBaseState
 │   ├── renderer
 │   │   ├── Canvas2DRenderer.ts ∅
 │   │   │   ├── FrustumCuller  ← ./FrustumCuller
