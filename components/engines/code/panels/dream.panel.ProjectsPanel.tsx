@@ -17,8 +17,18 @@ import { toErrorMessage } from '@/utils/index';
 interface Project {
   id: string;
   title: string;
-  description?: string;
+  description?: string | null;
+  visibility?: string | null;
   created_at: string;
+}
+
+function projectAccent(project: Project): string {
+  const text = `${project.title} ${project.description ?? ''}`.toLowerCase();
+  if (text.includes('game')) return '#f59e0b';
+  if (text.includes('ai') || text.includes('agent')) return '#a855f7';
+  if (text.includes('music') || text.includes('audio')) return '#22d3ee';
+  if (text.includes('lab') || text.includes('sim')) return '#22c55e';
+  return '#6366f1';
 }
 
 export default function ProjectsPanel( ){
@@ -38,8 +48,8 @@ export default function ProjectsPanel( ){
     if (!user) { setLoading(false); return; }
     const { data, error: err } = await supabase
       .from('projects')
-      .select('id, title, description, created_at, visibility, status')
-      .eq('user_id', user.id)
+      .select('id, title, description, created_at, visibility')
+      .eq('owner_id', user.id)
       .order('created_at', { ascending: false })
       .limit(30);
     if (err) setError(toErrorMessage(err));
@@ -59,8 +69,7 @@ export default function ProjectsPanel( ){
       title: newTitle.trim(),
       description: newDesc.trim() || null,
       visibility: 'private',
-      status: 'active',
-      user_id: user.id,
+      owner_id: user.id,
     });
     if (err) setError(toErrorMessage(err));
     else {
@@ -152,6 +161,7 @@ export default function ProjectsPanel( ){
         {!loading && projects.length > 0 && (
           <div className="space-y-2">
             {projects.map((proj) => {
+              const langColor = projectAccent(proj);
               return (
                 <div
                   key={proj.id}
@@ -163,11 +173,13 @@ export default function ProjectsPanel( ){
                   />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-semibold text-white truncate">{proj.title}</div>
+                    {proj.description && <div className="text-xs text-white/35 truncate mt-0.5">{proj.description}</div>}
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-xs text-white/30 flex items-center gap-1">
                         <Clock size={10} />
                         {formatDate(proj.created_at)}
                       </span>
+                      {proj.visibility && <span className="text-[10px] uppercase tracking-wide text-white/25">{proj.visibility}</span>}
                     </div>
                   </div>
                   <Link
