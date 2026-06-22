@@ -26,6 +26,7 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
 
   const canDownloadObj = Boolean(mesh) && strictValid && quality !== 'Export Blocked';
   const canPreviewInRender = Boolean(mesh) && strictValid;
+  const canSendToGame = Boolean(mesh) && strictValid;
 
   const canDownloadGlb = Boolean(mesh) && strictValid && (
     quality === 'Clean' ||
@@ -45,7 +46,7 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
         <button disabled={!canProcess} onClick={ws.process}>{data.processingStatus === 'processing' ? 'Processing…' : 'Process'}</button>
         <button disabled={!canEdit} onClick={ws.startEdit}>{data.processingStatus === 'editing' ? 'Editing' : 'Edit'}</button>
         <button disabled={!canRig} onClick={ws.startRigMetadataMode}>{isRigging ? 'Rig Metadata' : 'Rig Metadata'}</button>
-        <button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>Download OBJ</button><button disabled={!canPreviewInRender} onClick={() => { if (!mesh) return; dispatchRenderHandoff('ContentEngin', 'obj', { assetId: ws.workspace.id, ownerId: ws.workspace.ownerId, runtimeId: ws.workspace.runtimeId, visibility: ws.workspace.visibility, fileName: ws.workspace.id + '.obj', objSource: exportOBJ(mesh), diagnostics: data.mesh?.diagnostics as unknown as Record<string, number> | undefined }); router.push('/engines/render'); }}>Preview in Render</button><button disabled={!data.sourceImage && !mesh} onClick={ws.clearWorkspace}>Remove</button>
+        <button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>Download OBJ</button><button disabled={!canPreviewInRender} onClick={() => { if (!mesh) return; dispatchRenderHandoff('ContentEngin', 'obj', { assetId: ws.workspace.id, ownerId: ws.workspace.ownerId, runtimeId: ws.workspace.runtimeId, visibility: ws.workspace.visibility, fileName: ws.workspace.id + '.obj', objSource: exportOBJ(mesh), diagnostics: data.mesh?.diagnostics as unknown as Record<string, number> | undefined }); router.push('/engines/render'); }}>Preview in Render</button><button disabled={!canSendToGame} onClick={async () => { const record = await ws.exportToGameLibrary(); if (!record) return; router.push(`/engines/game?importedAsset=${encodeURIComponent(record.assetId)}`); }}>Send to GameEngin</button><button disabled={!data.sourceImage && !mesh} onClick={ws.clearWorkspace}>Remove</button>
       </div>
     </section>
     <section className="stage">
@@ -55,7 +56,7 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
       {isRigging && <div className="sculpt"><div className="tools">{(['humanoid','quadruped','vehicle','creature','bird','fish','custom'] as const).map((target) => <button key={target} data-active={data.rigState.target === target} onClick={() => ws.setRigTarget(target)}>{target}</button>)}<button onClick={ws.undoRigBendPoint}>Undo Bend</button><button onClick={ws.clearRigMetadata}>Clear Rig Metadata</button></div><div className="sliders"><label>Bend Points<strong>{data.rigState.bendPoints.length}</strong></label><label>Next Joint<strong>{data.rigState.skeleton.bones[Math.min(data.rigState.bendPoints.length, data.rigState.skeleton.bones.length - 1)]?.name ?? 'done'}</strong></label></div></div>}
       {data.processingStatus === 'editing' && <div className="sculpt"><div className="tools">{(['push','pull','smooth','inflate','carve','flatten'] as const).map((tool) => <button key={tool} data-active={data.activeTool === tool} onClick={() => ws.setTool(tool)}>{tool}</button>)}<button onClick={ws.undo}>Undo</button><button onClick={ws.redo}>Redo</button></div><div className="sliders"><label>Brush Radius<input type="range" min="0.05" max="0.6" step="0.01" value={data.brushState.radius} onChange={(e) => ws.setBrush({ radius: Number(e.currentTarget.value) })} /></label><label>Strength<input type="range" min="0.01" max="0.2" step="0.01" value={data.brushState.strength} onChange={(e) => ws.setBrush({ strength: Number(e.currentTarget.value) })} /></label></div></div>}
       <div className="download"><button disabled={!canDownloadGlb} onClick={() => ws.download('glb')}>.glb</button><button disabled={!canDownloadGlb || data.rigState.bendPoints.length === 0} onClick={() => ws.download('rig-metadata-glb')}>GLB + Rig Metadata</button><button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>.obj</button></div>
-      <p className="hint">MVP supports indexed binary GLB mesh primitives · Edit: drag to sculpt · Rig metadata: tap bend points · two fingers pan/zoom</p>
+      <p className="hint">Edit: drag to sculpt · two fingers pan/zoom · double-tap frame reset · Send to GameEngin to stamp exported assets into a world</p>
     </section>
   </main>;
 }

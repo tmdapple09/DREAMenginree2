@@ -2,7 +2,8 @@
 
 import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
 import type { ApperceptiveContext } from '@/engine/runtime/apperception';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useTouchGestures } from '@/engine/gestures/useTouchGestures';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.
 
@@ -69,6 +70,9 @@ export default function RuntimeShell({
 }: RuntimeShellProps) {
   const [zoom, setZoom] = useState(1.0);
   const [showZoomControls, setShowZoomControls] = useState(true);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const zoomRef = useRef(1.0);
+  const lastTapAtRef = useRef(0);
 
   useEffect(() => {
     if (!apperception || typeof window === 'undefined') return;
@@ -76,7 +80,35 @@ export default function RuntimeShell({
   }, [apperception]);
 
   useEffect(() => {
-    const update = () => setShowZoomControls(!isCompactRuntimeViewport(window.innerWidth));
+    zoomRef.current = zoom;
+  }, [zoom]);
+
+  const applyZoom = useCallback((nextZoom: number, center?: { x: number; y: number }) => {
+    setZoom((current) => {
+      const clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.round(nextZoom * 100) / 100));
+      const container = scrollRef.current;
+      if (container && center) {
+        const rect = container.getBoundingClientRect();
+        const localX = Math.max(0, center.x - rect.left);
+        const localY = Math.max(0, center.y - rect.top);
+        const worldX = (container.scrollLeft + localX) / current;
+        const worldY = (container.scrollTop + localY) / current;
+        requestAnimationFrame(() => {
+          const active = scrollRef.current;
+          if (!active) return;
+          active.scrollLeft = Math.max(0, worldX * clamped - localX);
+          active.scrollTop = Math.max(0, worldY * clamped - localY);
+        });
+      }
+      return clamped;
+    });
+  }, []);
+
+  useEffect(() => {
+    const update = () => {
+      const coarse = matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+      setShowZoomControls(!coarse && !isCompactRuntimeViewport(window.innerWidth));
+    };
     update();
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
@@ -88,12 +120,28 @@ export default function RuntimeShell({
     };
   }, []);
 
-  const zoomIn  = useCallback(() => setZoom((z) => Math.min(Math.round((z + ZOOM_STEP) * 100) / 100, MAX_ZOOM)), []);
-  const zoomOut = useCallback(() => setZoom((z) => Math.max(Math.round((z - ZOOM_STEP) * 100) / 100, MIN_ZOOM)), []);
-  const resetZoom = useCallback(() => setZoom(1.0), []);
+  const zoomIn  = useCallback(() => applyZoom(zoomRef.current + ZOOM_STEP), [applyZoom]);
+  const zoomOut = useCallback(() => applyZoom(zoomRef.current - ZOOM_STEP), [applyZoom]);
+  const resetZoom = useCallback(() => applyZoom(1.0), [applyZoom]);
 
   const pct = Math.round(zoom * 100);
   const isDefault = pct === 100;
+
+  useTouchGestures(scrollRef, {
+    onPinch: (event) => {
+      if (!event.scale) return;
+      applyZoom(zoomRef.current * event.scale, event.center);
+    },
+    onTap: (event) => {
+      const now = event.timestamp;
+      if (now - lastTapAtRef.current < 280) {
+        applyZoom(1.0, event.center);
+        lastTapAtRef.current = 0;
+        return;
+      }
+      lastTapAtRef.current = now;
+    },
+  }, { pinchThreshold: 0.015, tapMaxMovement: 18 });
 
   const ctrlBtn = (disabled: boolean): React.CSSProperties => ({
     width: 30, height: 30, borderRadius: '50%',
@@ -290,6 +338,7 @@ export default function RuntimeShell({
          *   zoom=0.75 → 133% × 133% → scale(0.75) → fills parent exactly
          */
         <div
+          ref={scrollRef}
           data-runtime-scroll-container
           className="de-runtime-premium-scroll"
           style={{
@@ -299,7 +348,7 @@ export default function RuntimeShell({
             overflowX: 'hidden',
             overscrollBehavior: 'contain',
             WebkitOverflowScrolling: 'touch',
-            touchAction: 'manipulation',
+            touchAction: 'pan-x pan-y',
           }}
         >
           <div

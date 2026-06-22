@@ -31,6 +31,7 @@ type VertexInput = { position: Vec3; normal: Vec3; uv: Vec2 };
 type GridPreviewTile = 'empty' | 'ground' | 'wall' | 'water' | 'spawn' | string;
 
 type GridPreview = GridPreviewTile[][];
+type PropPreviewGrid = (string | null)[][];
 
 function createDemoTriangle(): MeshBuffers {
   return createMeshBuffers([
@@ -82,6 +83,10 @@ function isGridPreview(value: unknown): value is GridPreview {
   return Array.isArray(value) && value.every((row) => Array.isArray(row) && row.every((tile) => typeof tile === 'string'));
 }
 
+function isPropPreviewGrid(value: unknown): value is PropPreviewGrid {
+  return Array.isArray(value) && value.every((row) => Array.isArray(row) && row.every((tile) => tile === null || typeof tile === 'string'));
+}
+
 function tileHeight(tile: GridPreviewTile): number {
   if (tile === 'wall') return 0.65;
   if (tile === 'spawn') return 0.32;
@@ -90,7 +95,7 @@ function tileHeight(tile: GridPreviewTile): number {
   return 0.18;
 }
 
-function createGridPreviewMesh(grid: GridPreview): MeshBuffers {
+function createGridPreviewMesh(grid: GridPreview, propPlacements?: PropPreviewGrid): MeshBuffers {
   const vertices: VertexInput[] = [];
   const indices: number[] = [];
   const rows = grid.length;
@@ -124,10 +129,15 @@ function createGridPreviewMesh(grid: GridPreview): MeshBuffers {
   grid.forEach((row, rowIndex) => {
     row.forEach((tile, colIndex) => {
       const height = tileHeight(tile);
-      if (height <= 0) return;
       const x0 = originX + colIndex * tileSize;
       const z0 = originZ + rowIndex * tileSize;
-      pushBox(x0, z0, x0 + tileSize * 0.9, z0 + tileSize * 0.9, height);
+      if (height > 0) pushBox(x0, z0, x0 + tileSize * 0.9, z0 + tileSize * 0.9, height);
+      const propAssetId = propPlacements?.[rowIndex]?.[colIndex] ?? null;
+      if (propAssetId) {
+        const inset = tileSize * 0.24;
+        const baseHeight = Math.max(0.06, height);
+        pushBox(x0 + inset, z0 + inset, x0 + tileSize * 0.9 - inset, z0 + tileSize * 0.9 - inset, baseHeight + 0.22);
+      }
     });
   });
 
@@ -297,8 +307,11 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
       }
       if (isGridPreview(payload.worldGrid)) {
         const name = typeof payload.worldName === 'string' ? payload.worldName : 'GameEngin world';
-        const mesh = createGridPreviewMesh(payload.worldGrid);
+        const propPlacements = isPropPreviewGrid(payload.propPlacements) ? payload.propPlacements : undefined;
+        const propCount = propPlacements ? propPlacements.flat().filter(Boolean).length : 0;
+        const mesh = createGridPreviewMesh(payload.worldGrid, propPlacements);
         loadMeshIntoViewport(mesh, { assetId: String(payload.assetId ?? `game-world:${sanitizeIdPart(name)}`), name, source: incomingIntent.source, ownerId: String(payload.ownerId ?? 'local-user'), runtimeId: 'render:shared-service' });
+        setAssetInfo(`${name} · ${mesh.vertices.length} vertices · ${mesh.indices.length} indices${propCount ? ` · ${propCount} stamped props` : ''}`);
         setStatus(`Render handoff loaded from ${incomingIntent.source}`);
         return;
       }
