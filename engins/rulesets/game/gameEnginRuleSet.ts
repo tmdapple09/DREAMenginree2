@@ -15,7 +15,7 @@ import type {
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
 /**
- * lib/engins/game/gameEnginRuleSet.ts
+ * engins/rulesets/game/gameEnginRuleSet.ts
  *
  * GameEngin Rule-Set — the ONLY place GameEngin domain logic lives.
  *

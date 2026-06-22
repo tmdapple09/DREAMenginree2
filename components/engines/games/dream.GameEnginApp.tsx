@@ -1,7 +1,9 @@
 'use client';
 
 import { makeEnginApp } from '@/components/engines/shared';
-import GameEngin from '@/engins/engin.GameEngin';
+import dynamic from 'next/dynamic';
+
+const GameEngin = dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false });
 
 /**
  * GameEnginApp — Full-screen app shell for the Games Engine.

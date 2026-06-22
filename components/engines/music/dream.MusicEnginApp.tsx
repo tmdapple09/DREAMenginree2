@@ -1,7 +1,9 @@
 'use client';
 
 import { makeEnginApp } from '@/components/engines/shared';
-import StarMakerEngin from '@/engins/engin.StarMakerEngin';
+import dynamic from 'next/dynamic';
+
+const StarMakerEngin = dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false });
 
 /**
  * MusicEnginApp — Full-screen app shell for the Music Engine (StarMakerEngin).

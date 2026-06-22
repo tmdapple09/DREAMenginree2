@@ -26,6 +26,15 @@ import type {
     TileType,
 } from '@/engins/rulesets/game/gameEnginRuleSet';
 import { useGameEnginRuntime } from '@/engins/rulesets/game/useGameEnginRuntime';
+import {
+    dispatchGameControlProfile,
+    dispatchGamePhysicsApply,
+    dispatchGameScriptSave,
+    dispatchGameSelect,
+    dispatchGameSessionStart,
+    paintWorldTile,
+    snapshotWorldGrid,
+} from '@/engins/gameengin/handlers';
 import { recordForgeTransfer } from '@/engins/forgeengin/forge/forgeIntelligence';
 import { useForgeActivity } from '@/engins/forgeengin/forge/useForgeActivity';
 import GameRuntime from '@/engins/gameengin/GameRuntime';
@@ -268,14 +277,14 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   const [dreamGameFile, setDreamGameFile] = useState<{ name: string; size: number } | null>(null);
   const dreamGameInputRef = useRef<HTMLInputElement>(null);
 
-  function handleDreamGamePick(e: React.ChangeEvent<HTMLInputElement> ){
+  const handleDreamGamePick = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setDreamGameFile({ name: file.name, size: file.size });
     osRef.current?.telemetry?.log(`Loaded .dreamgame: ${file.name}`);
     busRef.current.emit('game:dreamgame-loaded', { name: file.name, size: file.size });
     forgeRecord(`Loaded .dreamgame: ${file.name}`);
-  }
+  }, [forgeRecord]);
 
   useRemoteChannel();
   useGameInputKeyboardBridge();
@@ -338,11 +347,11 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       if (evt.type === 'game:state') {
         // Co-op sync is best-effort — log if a dispatch is rejected.
         if (typeof evt.selectedPlayableGame === 'string') {
-          const ok = engineDispatch({ type: 'game:select', payload: { gameId: evt.selectedPlayableGame } });
+          const ok = dispatchGameSelect(engineDispatch, evt.selectedPlayableGame);
           if (!ok && process.env.NODE_ENV !== 'production') console.warn('[GameEngin] co-op select rejected:', evt.selectedPlayableGame);
         }
         if (typeof evt.controlProfile === 'string') {
-          const ok = engineDispatch({ type: 'game:control-profile', payload: { profile: evt.controlProfile } });
+          const ok = dispatchGameControlProfile(engineDispatch, evt.controlProfile);
           if (!ok && process.env.NODE_ENV !== 'production') console.warn('[GameEngin] co-op control-profile rejected:', evt.controlProfile);
         }
       }
@@ -368,7 +377,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (worldFocus.focusKey === 'games.play') {
       const sel = worldFocus.worldSelection as { gameId?: string } | null;
       if (sel?.gameId && sel.gameId !== selectedPlayableGame) {
-        engineDispatch({ type: 'game:select', payload: { gameId: sel.gameId } });
+        dispatchGameSelect(engineDispatch, sel.gameId);
       }
     }
   }, [worldFocus.focusKey, worldFocus.worldSelection, selectedPlayableGame, engineDispatch]);
@@ -408,7 +417,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     return acc;
   }, {});
 
-  async function handleShare(scoreId: string ){
+  const handleShare = useCallback(async (scoreId: string) => {
     setSharing(scoreId);
     forgeRecord('Shared game score');
     const supabase = createClient();
@@ -421,10 +430,10 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       recordForgeTransfer('games', 'brand', 'asset', 'Score published to leaderboard');
     }
     setSharing(null);
-  }
+  }, [engineDispatch, forgeRecord]);
 
-  function handleControlProfileSelect(profileId: string ){
-    engineDispatch({ type: 'game:control-profile', payload: { profile: profileId } });
+  const handleControlProfileSelect = useCallback((profileId: string) => {
+    dispatchGameControlProfile(engineDispatch, profileId);
     void sharedChannel.publish({ type: 'game:control-profile', profileId });
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('de:games:control-profile', profileId);
@@ -434,19 +443,15 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       'game:control-profile',
       { profileId },
     );
-  }
+  }, [engineDispatch, sharedChannel]);
 
   const handleTileClick = useCallback((row: number, col: number) => {
-    setWorldGrid((prev) => {
-      const next = prev.map((r) => [...r]);
-      next[row][col] = selectedTile;
-      return next;
-    });
+    setWorldGrid((prev) => paintWorldTile(prev, row, col, selectedTile));
   }, [selectedTile]);
 
-  function handleCommitWorld( ){
+  const handleCommitWorld = useCallback(() => {
     if (!worldName.trim()) return;
-    const snapshot = worldGrid.map((r) => [...r]);
+    const snapshot = snapshotWorldGrid(worldGrid);
     engineDispatch({ type: 'game:world-save', payload: { world: { name: worldName.trim(), grid: snapshot } } });
     forgeRecord('Committed world: ' + worldName.trim());
     recordForgeTransfer('games', 'create', 'level', 'GameEngin world → ContentEngin');
@@ -458,16 +463,17 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       url:       '',
     });
     dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim() });
-  }
+  }, [engineDispatch, forgeRecord, worldGrid, worldName]);
 
-  function handleApplyPhysics( ){
-    setAppliedPhysics({ ...physicsConfig });
-    engineDispatch({ type: 'game:physics-apply', payload: { config: { ...physicsConfig } } });
-  }
+  const handleApplyPhysics = useCallback(() => {
+    const nextPhysicsConfig = { ...physicsConfig };
+    setAppliedPhysics(nextPhysicsConfig);
+    dispatchGamePhysicsApply(engineDispatch, nextPhysicsConfig);
+  }, [engineDispatch, physicsConfig]);
 
-  function handleSaveScript( ){
+  const handleSaveScript = useCallback(() => {
     setSavedScript(scriptState.code);
-    engineDispatch({ type: 'game:script-save', payload: { code: scriptState.code, language: scriptState.language } });
+    dispatchGameScriptSave(engineDispatch, scriptState.code, scriptState.language);
     forgeRecord('Committed game script');
     // Task requirement: emit 'games:score-shared' on Commit Script.
     // 'games:score-shared' is a planned addition to GamesChannelEvents; cast used
@@ -478,7 +484,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       { scriptSavedAt: Date.now() },
     );
     recordForgeTransfer('games', 'code', 'asset', 'Game script saved → CodeEngin');
-  }
+  }, [engineDispatch, forgeRecord, scriptState.code, scriptState.language]);
 
   const [lobbyActive, setLobbyActive] = useState(false);
   const [lobbyCode, setLobbyCode] = useState('');
@@ -661,7 +667,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (typeof window === 'undefined') return;
     const savedControlProfile = window.localStorage.getItem('de:games:control-profile');
     if (savedControlProfile && GAME_CONTROL_PROFILES.some((profile) => profile.id === savedControlProfile)) {
-      engineDispatch({ type: 'game:control-profile', payload: { profile: savedControlProfile } });
+      dispatchGameControlProfile(engineDispatch, savedControlProfile);
     }
     try {
       const parsed = JSON.parse(window.localStorage.getItem(GAME_LIBRARY_SESSION_STORAGE_KEY) ?? '[]');
@@ -700,8 +706,8 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     window.localStorage.setItem('de:games:last-launch', gameId);
 
     if (options.expand) {
-      engineDispatch({ type: 'game:select', payload: { gameId } });
-      engineDispatch({ type: 'game:session-start', payload: { gameId } });
+      dispatchGameSelect(engineDispatch, gameId);
+      dispatchGameSessionStart(engineDispatch, gameId);
       setShowEnginSplash(true);
       setRuntimeCrash(null);
       setExpandedPlayableGame(gameId);
@@ -720,6 +726,18 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     window.location.assign(buildGameLaunchHref(gameId, { play: true }));
   }, [engineDispatch, queuePlayableGameStart, savePlayableGame]);
 
+  const toggleSessionUtilityBar = useCallback(() => {
+    setSessionUtilityBarRevealed((prev) => !prev);
+  }, []);
+
+  const handleWorldNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setWorldName(e.target.value);
+  }, []);
+
+  const handleSelectedTileChange = useCallback((tile: TileType) => {
+    setSelectedTile(tile);
+  }, []);
+
   useEffect(() => {
     if (initializedPlaySurfaceRef.current) return;
     initializedPlaySurfaceRef.current = true;
@@ -727,9 +745,9 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     const fallbackGame = savedLaunches[0]?.gameId ?? GAME_CATALOG[0]?.id ?? 'platformer';
     const requestedGame = resolveGameLaunchId(searchParams.get('game'), GAME_CATALOG.map((game) => game.id), fallbackGame);
     if (!requestedGame) return;
-    engineDispatch({ type: 'game:select', payload: { gameId: requestedGame } });
+    dispatchGameSelect(engineDispatch, requestedGame);
     if (isLaunchFlagEnabled(searchParams.get('play'))) {
-      engineDispatch({ type: 'game:session-start', payload: { gameId: requestedGame } });
+      dispatchGameSessionStart(engineDispatch, requestedGame);
       if (isLaunchFlagEnabled(searchParams.get('expand'))) {
         setShowEnginSplash(true);
         setExpandedPlayableGame(requestedGame);
@@ -741,7 +759,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       }
       queuePlayableGameStart();
     }
-  }, [queuePlayableGameStart, savedLaunches, searchParams]);
+  }, [engineDispatch, queuePlayableGameStart, savedLaunches, searchParams]);
 
   useEffect(() => {
     if (!expandedPlayableGame || !playOverlayRef.current) return;
@@ -973,7 +991,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
             type="button"
             aria-label={sessionUtilityBarRevealed ? 'Hide game chat bar' : 'Open game chat bar'}
             title={sessionUtilityBarRevealed ? 'Hide game chat bar' : 'Open game chat bar'}
-            onClick={() => setSessionUtilityBarRevealed((prev) => !prev)}
+            onClick={toggleSessionUtilityBar}
             style={{
               width: sessionUtilityBarRevealed ? 58 : 44,
               height: sessionUtilityBarRevealed ? 12 : 8,
@@ -1299,7 +1317,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 <button
                   key={session.gameId}
                   type="button"
-                  onClick={() => engineDispatch({ type: 'game:select', payload: { gameId: session.gameId } })}
+                  onClick={() => dispatchGameSelect(engineDispatch, session.gameId)}
                   style={{
                     padding: '5px 10px',
                     borderRadius: 999,
@@ -1449,7 +1467,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 <button
                   key={game.id}
                   type="button"
-                  onClick={() => engineDispatch({ type: 'game:select', payload: { gameId: game.id } })}
+                  onClick={() => dispatchGameSelect(engineDispatch, game.id)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -1832,7 +1850,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                 id="world-name-input"
                 type="text"
                 value={worldName}
-                onChange={e => setWorldName(e.target.value)}
+                onChange={handleWorldNameChange}
                 placeholder="My Awesome World"
                 style={{
                   width: '100%', padding: '8px 12px', borderRadius: 8, fontSize: 13,
@@ -1853,7 +1871,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                   <button
                     key={t}
                     type="button"
-                    onClick={() => setSelectedTile(t)}
+                    onClick={() => handleSelectedTileChange(t)}
                     aria-pressed={selectedTile === t}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 5,

@@ -9,10 +9,10 @@ import { GAME_ENGIN_RULE_SET } from './gameEnginRuleSet';
 
 // Framework directives stay physically first when required.
 
-// Runtime file: lib/engins/game/useGameEnginRuntime.ts.
+// Runtime file: engins/rulesets/game/useGameEnginRuntime.ts.
 
 /**
- * lib/engins/game/useGameEnginRuntime.ts
+ * engins/rulesets/game/useGameEnginRuntime.ts
  *
  * React hook — wires the universal EnginRuntime + GameEngin rule-set into
  * React's lifecycle so the component can dispatch actions and read derived state.

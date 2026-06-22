@@ -1,13 +1,15 @@
 'use client';
 
-import ForgeEngin from '@/engins/dream.ForgeEngin';
-import BrandingEngin from '@/engins/engin.BrandingEngin';
-import CodeEngin from '@/engins/engin.CodeEngin';
-import ContentEngin from '@/engins/engin.ContentEngin';
-import GameEngin from '@/engins/engin.GameEngin';
-import LabEngin from '@/engins/engin.LabEngin';
-import StarMakerEngin from '@/engins/engin.StarMakerEngin';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+
+const ForgeEngin = dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false });
+const BrandingEngin = dynamic(() => import('@/engins/engin.BrandingEngin'), { ssr: false });
+const CodeEngin = dynamic(() => import('@/engins/engin.CodeEngin'), { ssr: false });
+const ContentEngin = dynamic(() => import('@/engins/engin.ContentEngin'), { ssr: false });
+const GameEngin = dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false });
+const LabEngin = dynamic(() => import('@/engins/engin.LabEngin'), { ssr: false });
+const StarMakerEngin = dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false });
 
 const ENGIN_COMPONENTS = {
   StarMakerEngin,
