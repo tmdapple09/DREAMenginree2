@@ -21,3 +21,5 @@ export * from './security';
 export * from './performanceIntegrity';
 export * from './advancedRendering';
 export * from './completionEvidence';
+
+export * from './serviceRuntime';

@@ -1,6 +1,7 @@
 'use client';
 
 import AssetViewport from '@/engins/contentengin/AssetViewport';
+import { exportOBJ } from '@/engins/isosurfaceAssetPipeline';
 import { dispatchRenderHandoff } from '@/engins/renderengin';
 import { useRouter } from 'next/navigation';
 import { useImplicitAssetWorkspace } from '@/engins/contentengin/useImplicitAssetWorkspace';
@@ -44,7 +45,7 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
         <button disabled={!canProcess} onClick={ws.process}>{data.processingStatus === 'processing' ? 'Processing…' : 'Process'}</button>
         <button disabled={!canEdit} onClick={ws.startEdit}>{data.processingStatus === 'editing' ? 'Editing' : 'Edit'}</button>
         <button disabled={!canRig} onClick={ws.startRigMetadataMode}>{isRigging ? 'Rig Metadata' : 'Rig Metadata'}</button>
-        <button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>Download OBJ</button><button disabled={!canPreviewInRender} onClick={() => { dispatchRenderHandoff('ContentEngin', 'mesh', { assetId: ws.workspace.id, ownerId: ws.workspace.ownerId, runtimeId: ws.workspace.runtimeId, visibility: ws.workspace.visibility, diagnostics: data.mesh?.diagnostics as unknown as Record<string, number> | undefined }); router.push('/engines/render'); }}>Preview in Render</button><button disabled={!data.sourceImage && !mesh} onClick={ws.clearWorkspace}>Remove</button>
+        <button disabled={!canDownloadObj} onClick={() => ws.download('obj')}>Download OBJ</button><button disabled={!canPreviewInRender} onClick={() => { if (!mesh) return; dispatchRenderHandoff('ContentEngin', 'obj', { assetId: ws.workspace.id, ownerId: ws.workspace.ownerId, runtimeId: ws.workspace.runtimeId, visibility: ws.workspace.visibility, fileName: ws.workspace.id + '.obj', objSource: exportOBJ(mesh), diagnostics: data.mesh?.diagnostics as unknown as Record<string, number> | undefined }); router.push('/engines/render'); }}>Preview in Render</button><button disabled={!data.sourceImage && !mesh} onClick={ws.clearWorkspace}>Remove</button>
       </div>
     </section>
     <section className="stage">

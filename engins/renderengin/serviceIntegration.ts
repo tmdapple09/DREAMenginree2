@@ -1,8 +1,15 @@
 import type { JsonObject } from '@/engine/engin-runtime/EnginBaseState';
-import { EnginDispatcher, type RenderDispatcherIntent } from '@/engine/runtime/EnginDispatcher';
 import type { RenderIntentType } from './core';
+import {
+  createRenderServiceIntent,
+  submitRenderServiceIntent,
+  type RenderServiceIntentEnvelope,
+  type RenderServiceSubmitResult,
+  type RenderWorkflowSurface,
+} from './serviceRuntime';
 
-export type RenderWorkflowSurface = 'DreamDMBar' | 'HomeDream' | 'DreamSpace' | 'Daydream' | 'ContentEngin' | 'GameEngin' | 'CodeEngin' | 'LabEngin';
+export type { RenderWorkflowSurface, RenderServiceIntentEnvelope } from './serviceRuntime';
+export type RenderServiceIntegrationResult = RenderServiceSubmitResult;
 
 export interface RenderServiceCommand extends JsonObject {
   id: string;
@@ -16,16 +23,6 @@ export interface RenderServiceHandoff extends JsonObject {
   source: Extract<RenderWorkflowSurface, 'ContentEngin' | 'GameEngin' | 'CodeEngin' | 'LabEngin'>;
   intentType: RenderIntentType;
   acceptedAssetKinds: string[];
-}
-
-export interface RenderServiceIntegrationResult extends JsonObject {
-  accepted: boolean;
-  intentId: string;
-  source: RenderWorkflowSurface;
-  intentType: RenderIntentType;
-  targetCapability: 'render';
-  dispatcherQueued: boolean;
-  route: string;
 }
 
 export const RENDER_SERVICE_PIPELINE: readonly string[] = Object.freeze([
@@ -57,50 +54,27 @@ export const RENDER_SERVICE_HANDOFFS: readonly RenderServiceHandoff[] = Object.f
   { source: 'LabEngin', intentType: 'render.scene.load', acceptedAssetKinds: ['simulation-mesh', 'point-cloud', 'field'] },
 ]);
 
-export function createRenderServiceIntent(source: RenderWorkflowSurface, intentType: RenderIntentType, payload: JsonObject = {}): JsonObject {
-  return {
-    id: `render-intent:${source}:${intentType}:${String(payload.assetId ?? payload.sceneId ?? Date.now())}`,
-    type: 'intent.render',
-    ownerId: String(payload.ownerId ?? 'runtime'),
-    runtimeId: String(payload.runtimeId ?? 'render:shared'),
-    visibility: payload.visibility === 'shared' || payload.visibility === 'global' ? payload.visibility : 'local',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    version: 1,
-    data: { source, intentType, targetCapability: 'render', payload },
-  };
-}
+export { createRenderServiceIntent };
 
 export function getRenderHandoffForSource(source: RenderWorkflowSurface): RenderServiceHandoff | null {
   return RENDER_SERVICE_HANDOFFS.find((handoff) => handoff.source === source) ?? null;
 }
 
 export function dispatchRenderServiceIntent(source: RenderWorkflowSurface, intentType: RenderIntentType, payload: JsonObject = {}): RenderServiceIntegrationResult {
-  const intent = createRenderServiceIntent(source, intentType, payload);
-  const dispatcherIntent: Omit<RenderDispatcherIntent, 'createdAt'> = {
-    type: intentType,
-    source,
-    payload: intent.data as unknown as Record<string, unknown>,
-  };
-  const dispatcherQueued = EnginDispatcher.getInstance().dispatchRenderIntent(dispatcherIntent);
-  return {
-    accepted: dispatcherQueued,
-    intentId: String(intent.id),
-    source,
-    intentType,
-    targetCapability: 'render',
-    dispatcherQueued,
-    route: '/engines/render',
-  };
+  return submitRenderServiceIntent(source, intentType, payload);
 }
 
-export function dispatchRenderHandoff(source: Extract<RenderWorkflowSurface, 'ContentEngin' | 'GameEngin' | 'CodeEngin' | 'LabEngin'>, assetKind: string, payload: JsonObject = {}): RenderServiceIntegrationResult {
+export function dispatchRenderHandoff(
+  source: Extract<RenderWorkflowSurface, 'ContentEngin' | 'GameEngin' | 'CodeEngin' | 'LabEngin'>,
+  assetKind: string,
+  payload: JsonObject = {},
+): RenderServiceIntegrationResult {
   const handoff = getRenderHandoffForSource(source);
   if (!handoff) {
-    return { accepted: false, intentId: '', source, intentType: 'render.asset.preview', targetCapability: 'render', dispatcherQueued: false, route: '/engines/render' };
+    return { accepted: false, intentId: '', source, intentType: 'render.asset.preview', targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: '/engines/render', reason: 'No RenderEngin handoff is registered for this source.' };
   }
   if (!handoff.acceptedAssetKinds.includes(assetKind)) {
-    return { accepted: false, intentId: '', source, intentType: handoff.intentType, targetCapability: 'render', dispatcherQueued: false, route: '/engines/render' };
+    return { accepted: false, intentId: '', source, intentType: handoff.intentType, targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: '/engines/render', reason: `RenderEngin does not accept '${assetKind}' from ${source}.` };
   }
   return dispatchRenderServiceIntent(source, handoff.intentType, { ...payload, assetKind });
 }

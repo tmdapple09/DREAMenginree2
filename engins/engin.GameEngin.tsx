@@ -462,7 +462,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
       assetType: 'level',
       url:       '',
     });
-    dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim() });
+    dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim(), worldGrid: snapshot, tileLegend: TILE_META });
   }, [engineDispatch, forgeRecord, worldGrid, worldName]);
 
   const handleApplyPhysics = useCallback(() => {
