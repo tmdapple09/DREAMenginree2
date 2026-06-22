@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-20T14:42:09.280Z
+Generated: 2026-06-22T03:23:38.267Z
 
 ---
 
@@ -861,6 +861,7 @@ _No style files for this feature._
 - `@/engins/gameengin/games/useGamepad`
 - `@/engins/gameengin/games/useImmersiveGameLayout`
 - `@/engins/gameengin/games/useRemoteChannel`
+- `@/engins/gameengin/handlers`
 - `@/engins/gameengin/index`
 - `@/engins/gameengin/post-fx`
 - `@/engins/gameengin/registerCartridges`
@@ -7399,14 +7400,14 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/engins/dream.ForgeEngin` | `⬡ ForgeEngin` |
-| `@/engins/engin.BrandingEngin` | `⬡ BrandingEngin` |
-| `@/engins/engin.CodeEngin` | `⬡ CodeEngin` |
-| `@/engins/engin.ContentEngin` | `⬡ ContentEngin` |
-| `@/engins/engin.GameEngin` | `⬡ GameEngin` |
-| `@/engins/engin.LabEngin` | `⬡ LabEngin` |
-| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
 | `next/navigation` | `useRouter` |
+| `@/engins/dream.ForgeEngin` | _(dynamic import)_ |
+| `@/engins/engin.BrandingEngin` | _(dynamic import)_ |
+| `@/engins/engin.CodeEngin` | _(dynamic import)_ |
+| `@/engins/engin.ContentEngin` | _(dynamic import)_ |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
+| `@/engins/engin.LabEngin` | _(dynamic import)_ |
+| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
 
 ## `components/daydream/dream.constellationmap.tsx`
 
@@ -8200,7 +8201,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/engines/shared` | `makeEnginApp` |
-| `@/engins/engin.GameEngin` | `⬡ GameEngin` |
+| `@/engins/engin.GameEngin` | _(dynamic import)_ |
 
 ## `components/engines/games/panels/dream.panel.BuilderPanel.tsx`
 
@@ -8260,7 +8261,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/engines/shared` | `makeEnginApp` |
-| `@/engins/engin.StarMakerEngin` | `⬡ StarMakerEngin` |
+| `@/engins/engin.StarMakerEngin` | _(dynamic import)_ |
 
 ## `components/engines/music/panels/dream.panel.ArrangePanel.tsx`
 
@@ -12556,6 +12557,7 @@ _No style files for this feature._
 | `@/engins/gameengin/games/useGameInputKeyboardBridge` | `useGameInputKeyboardBridge` |
 | `@/engins/gameengin/games/useGamepad` | `useGamepad` |
 | `@/engins/gameengin/games/useRemoteChannel` | `useRemoteChannel` |
+| `@/engins/gameengin/handlers` | `dispatchGameControlProfile`, `dispatchGamePhysicsApply`, `dispatchGameScriptSave`, `dispatchGameSelect`, `dispatchGameSessionStart`, `paintWorldTile`, `snapshotWorldGrid` |
 | `@/engins/renderengin` | `dispatchRenderHandoff` |
 | `@/engins/rulesets/game/gameEnginRuleSet` | `GameScore`, `GravityPreset`, `PhysicsConfig`, `ScriptLanguage`, `ScriptState`, `TileType` |
 | `@/engins/rulesets/game/useGameEnginRuntime` | `useGameEnginRuntime` |
@@ -12976,6 +12978,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `react` | `useEffect` |
+
+## `engins/gameengin/handlers.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/rulesets/game/gameEnginRuleSet` | `GameEnginAction`, `PhysicsConfig`, `ScriptLanguage`, `TileType` |
 
 ## `engins/gameengin/index.ts`
 
@@ -14368,6 +14376,7 @@ _No style files for this feature._
 | `@/app/daydream/music/page` | _(dynamic import)_ |
 | `@/app/daydream/music/upload/page` | _(dynamic import)_ |
 | `@/app/daydream/play/page` | _(dynamic import)_ |
+| `@/app/daydream/render/page` | _(dynamic import)_ |
 | `@/app/discover/page` | _(dynamic import)_ |
 | `@/app/dream-effects/page` | _(dynamic import)_ |
 | `@/app/dreamdmbar/_components/DreamBarDataBridge` | _(dynamic import)_ |
@@ -14424,8 +14433,6 @@ _No style files for this feature._
 | `@/app/engines/portfolio/optimize/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/page` | _(dynamic import)_ |
 | `@/app/engines/portfolio/quantum/page` | _(dynamic import)_ |
-| `@/app/engines/render/error` | _(dynamic import)_ |
-| `@/app/engines/render/loading` | _(dynamic import)_ |
 | `@/app/engines/render/page` | _(dynamic import)_ |
 | `@/app/feed-settings/dream.FeedSettingsClient` | _(dynamic import)_ |
 | `@/app/feed-settings/page` | _(dynamic import)_ |
@@ -14882,6 +14889,16 @@ _No style files for this feature._
 
 - `@/engins/codeengin/diff/diffUtils`
 
+## `components/daydream/dream.StandaloneEnginSurface.tsx`
+
+- `@/engins/dream.ForgeEngin`
+- `@/engins/engin.BrandingEngin`
+- `@/engins/engin.CodeEngin`
+- `@/engins/engin.ContentEngin`
+- `@/engins/engin.GameEngin`
+- `@/engins/engin.LabEngin`
+- `@/engins/engin.StarMakerEngin`
+
 ## `components/dream.AudioVisualizer3D.tsx`
 
 - `@babylonjs/core`
@@ -14915,6 +14932,14 @@ _No style files for this feature._
 ## `components/dreamengin/dream.scene.DrEamsScene.tsx`
 
 - `@babylonjs/core`
+
+## `components/engines/games/dream.GameEnginApp.tsx`
+
+- `@/engins/engin.GameEngin`
+
+## `components/engines/music/dream.MusicEnginApp.tsx`
+
+- `@/engins/engin.StarMakerEngin`
 
 ## `components/games/dream.EchoArena.tsx`
 
@@ -16454,6 +16479,7 @@ _No style files for this feature._
 - `@/app/daydream/music/page`
 - `@/app/daydream/music/upload/page`
 - `@/app/daydream/play/page`
+- `@/app/daydream/render/page`
 - `@/app/discover/page`
 - `@/app/dream-effects/page`
 - `@/app/dreamdmbar/_components/DreamBarDataBridge`
@@ -16510,8 +16536,6 @@ _No style files for this feature._
 - `@/app/engines/portfolio/optimize/page`
 - `@/app/engines/portfolio/page`
 - `@/app/engines/portfolio/quantum/page`
-- `@/app/engines/render/error`
-- `@/app/engines/render/loading`
 - `@/app/engines/render/page`
 - `@/app/feed-settings/dream.FeedSettingsClient`
 - `@/app/feed-settings/page`
@@ -19008,7 +19032,7 @@ _No circular dependencies detected._
 
 | File | Import Count |
 |------|--------------|
-| `engins/engin.GameEngin.tsx` | 43 |
+| `engins/engin.GameEngin.tsx` | 44 |
 | `engins/gameengin/executionWiring.ts` | 39 |
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 26 |
@@ -19047,7 +19071,7 @@ _No circular dependencies detected._
 
 | File | Coupling | Flags |
 |------|----------|-------|
-| `engins/engin.GameEngin.tsx` | 43 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
+| `engins/engin.GameEngin.tsx` | 44 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/gameengin/executionWiring.ts` | 39 | HIGH_COUPLING |
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 26 | HIGH_COUPLING, DUAL_RUNTIME |
@@ -19141,7 +19165,6 @@ _No circular dependencies detected._
 | `app/login/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/settings/security/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/shop/sell/page.tsx` | 8 | MEDIUM_COUPLING |
-| `components/daydream/dream.StandaloneEnginSurface.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
@@ -23546,6 +23569,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── GameRuntime.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── generative-audio.ts
+│   │   ├── handlers.ts
 │   │   ├── index.ts ∅
 │   │   │   └── ∅ unused: GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, mapJoystickToAsset, ECSWorld, DreamEngine, activeGameCount, isLoopRunning, registerGame, unregisterGame, useUnifiedLoop, GameEnginPlatform, detectCapabilities, GRAVITY_VALUES, createReactGameCartridge, defineReactCartridgeLoader, GameRuntime, CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, assertCartridgeLoadersReady, getCartridgeIds, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, loadCartridge, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, GPUProfiler, GlobalIllumProbes, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem, createGameEnginExecutionKernel
 │   │   ├── launcher.ts
