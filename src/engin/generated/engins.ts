@@ -226,6 +226,7 @@ export const engins = {
   "engins/renderengin/scene": () => import("@/engins/renderengin/scene"),
   "engins/renderengin/security": () => import("@/engins/renderengin/security"),
   "engins/renderengin/serviceIntegration": () => import("@/engins/renderengin/serviceIntegration"),
+  "engins/renderengin/serviceRuntime": () => import("@/engins/renderengin/serviceRuntime"),
   "engins/renderengin/textures": () => import("@/engins/renderengin/textures"),
   "engins/renderengin/viewportControls": () => import("@/engins/renderengin/viewportControls"),
   "engins/renderengin/virtualization": () => import("@/engins/renderengin/virtualization"),
