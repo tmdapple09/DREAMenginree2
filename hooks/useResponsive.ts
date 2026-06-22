@@ -11,6 +11,7 @@ import {
     pickByBreakpoint,
     readViewportWidth,
 } from '../ui/responsive';
+import { readInteractiveViewportHeight, readInteractiveViewportWidth } from '@/components/ui-system/runtimeViewport';
 
 /**
  * React hooks for DREAMengin's shared responsive system.
@@ -38,11 +39,9 @@ let resizeBound = false;
 
 function readSnapshot(): ViewportSnapshot {
   if (typeof window === 'undefined') return SSR_SNAPSHOT;
-  const w = window.innerWidth;
-  const h = window.innerHeight;
   return {
-    width: Number.isFinite(w) && w > 0 ? w : SSR_SNAPSHOT.width,
-    height: Number.isFinite(h) && h > 0 ? h : SSR_SNAPSHOT.height,
+    width: readInteractiveViewportWidth(SSR_SNAPSHOT.width),
+    height: readInteractiveViewportHeight(SSR_SNAPSHOT.height),
   };
 }
 
@@ -65,6 +64,8 @@ function subscribe(listener: Listener): () => void {
   if (!resizeBound) {
     window.addEventListener('resize', notify, { passive: true });
     window.addEventListener('orientationchange', notify, { passive: true });
+    window.visualViewport?.addEventListener('resize', notify, { passive: true });
+    window.visualViewport?.addEventListener('scroll', notify, { passive: true });
     resizeBound = true;
   }
   return () => {
@@ -72,6 +73,8 @@ function subscribe(listener: Listener): () => void {
     if (listeners.size === 0 && resizeBound) {
       window.removeEventListener('resize', notify);
       window.removeEventListener('orientationchange', notify);
+      window.visualViewport?.removeEventListener('resize', notify);
+      window.visualViewport?.removeEventListener('scroll', notify);
       resizeBound = false;
     }
   };

@@ -136,10 +136,9 @@ html, body {
   color: var(--de-text);
   font-family: var(--font-space-grotesk, 'Space Grotesk', system-ui, sans-serif);
   overscroll-behavior: none;
-  /* `touch-action: manipulation` is intentional: it disables the iOS
-   * double-tap-zoom delay across the app shell. The marketing landing
-   * page does not need that delay either. */
-  touch-action: manipulation;
+  /* Keep native pinch zoom alive across the shell so the app behaves like a
+   * real mobile app instead of trapping the user inside workspace zoom buttons. */
+  touch-action: pan-x pan-y pinch-zoom;
   -webkit-tap-highlight-color: transparent;
   /* iOS text size adjustment */
   -webkit-text-size-adjust: 100%;
@@ -4325,6 +4324,14 @@ main[role="main"] > * {
   .topbar-back-btn {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  [data-runtime-scroll-container],
+  .de-runtime-premium-scroll,
+  .de-auth-content,
+  .de-auth-shell,
+  .dream-shell-page {
+    touch-action: pan-x pan-y pinch-zoom;
   }
 
   .de-tile:hover,

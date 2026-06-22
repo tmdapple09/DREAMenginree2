@@ -2,28 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useContentEnginRuntime } from '@/engins/rulesets/content/useContentEnginRuntime';
-import { useDaydreamPersistence } from '@/daydreams/shared/useDaydreamPersistence';
-import { saveLocalContentAsset, type LocalContentAssetRecord } from '@/engins/contentengin/assets/localAssetLibrary';
 import { analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type RigTargetKind, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
 
 export interface WorkspaceIntentLog { type: string; at: string; }
-
-type PersistedContentWorkspaceState = {
-  workspaceId: string;
-  createdAt: string;
-  sourceGlb: { name: string; size: number } | null;
-  mesh: EditableMeshState | null;
-  previewMesh: ImplicitAssetWorkspaceObject['data']['previewMesh'];
-  editHistory: Mesh[];
-  redoStack: Mesh[];
-  activeTool: SculptTool;
-  cameraState: CameraState;
-  brushState: BrushState;
-  rigState: ImplicitAssetWorkspaceObject['data']['rigState'];
-  processingStatus: ImplicitAssetWorkspaceObject['data']['processingStatus'];
-  visibleMessage: string;
-};
 
 export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'contentengin-runtime') {
   const { dispatch } = useContentEnginRuntime({ useMemoryAdapter: true });
@@ -33,47 +15,9 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
   const lastBrushEmit = useRef(0);
   const processTokenRef = useRef(0);
   const [intents, setIntents] = useState<WorkspaceIntentLog[]>([]);
-  const { savedState, isRestoring, persistState } = useDaydreamPersistence<PersistedContentWorkspaceState>({ daydreamType: 'create' });
-  const restoredRef = useRef(false);
 
   useEffect(() => { workspaceRef.current = workspace; }, [workspace]);
   useEffect(() => () => { if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current); }, []);
-
-  useEffect(() => {
-    if (isRestoring || restoredRef.current || !savedState) return;
-    restoredRef.current = true;
-    setWorkspace((current) => {
-      const restored: ImplicitAssetWorkspaceObject = {
-        ...current,
-        id: savedState.workspaceId || current.id,
-        createdAt: savedState.createdAt || current.createdAt,
-        updatedAt: new Date().toISOString(),
-        version: current.version + 1,
-        data: {
-          ...current.data,
-          sourceImage: null,
-          sourceGlb: savedState.sourceGlb ?? null,
-          mesh: savedState.mesh ?? null,
-          previewMesh: savedState.previewMesh ?? null,
-          editHistory: savedState.editHistory ?? [],
-          redoStack: savedState.redoStack ?? [],
-          activeTool: savedState.activeTool ?? current.data.activeTool,
-          cameraState: savedState.cameraState ?? current.data.cameraState,
-          brushState: savedState.brushState ?? current.data.brushState,
-          rigState: savedState.rigState ?? current.data.rigState,
-          processingStatus: savedState.processingStatus ?? current.data.processingStatus,
-          visibleMessage: savedState.visibleMessage || 'Restored your last ContentEngin session.',
-        },
-      };
-      workspaceRef.current = restored;
-      return restored;
-    });
-  }, [isRestoring, savedState]);
-
-  useEffect(() => {
-    if (isRestoring) return;
-    persistState(makePersistedWorkspaceState(workspaceRef.current));
-  }, [workspace, isRestoring, persistState]);
 
   const emit = useCallback((type: string, payload: Record<string, unknown> = {}) => {
     dispatch({ type: type as never, payload: payload as never });
@@ -387,40 +331,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     emit('contentengin:download-ready', { downloads: { format, fileName, triangles: diagnostics.triangles, vertices: diagnostics.vertices, rigMetadataOnly: isRigMetadata } });
   }, [emit, updateData]);
 
-  const exportToGameLibrary = useCallback(async () => {
-    const current = workspaceRef.current.data.mesh;
-    if (!current) return null;
-
-    const repaired = repairMeshDetailed(current.mesh);
-    const diagnostics = validateMeshStrict(repaired.mesh);
-    const quality = qualityFromDiagnostics(diagnostics);
-
-    if (diagnostics.invalidIndices > 0 || diagnostics.nonFiniteVertices > 0 || diagnostics.triangles === 0 || quality === 'Export Blocked') {
-      updateData({ visibleMessage: 'Game export blocked. Repair the mesh first.' });
-      return null;
-    }
-
-    const assetId = `${workspaceRef.current.id}-${Date.now()}`;
-    const assetName = deriveAssetName(workspaceRef.current);
-    const glbBlob = exportGLB(repaired.mesh, workspaceRef.current.data.rigState.bendPoints.length ? { ...workspaceRef.current.data.rigState, status: 'metadata-ready' } : undefined);
-    const objSource = exportOBJ(repaired.mesh);
-    const record: LocalContentAssetRecord = {
-      assetId,
-      name: assetName,
-      exportedAt: new Date().toISOString(),
-      triangles: diagnostics.triangles,
-      vertices: diagnostics.vertices,
-      quality,
-      hasRigMetadata: workspaceRef.current.data.rigState.bendPoints.length > 0,
-    };
-
-    await saveLocalContentAsset(record, glbBlob, objSource);
-    updateData({ visibleMessage: `${assetName} sent to GameEngin. Open the world builder to stamp it into a world.` });
-    emit('contentengin:download-ready', { downloads: { format: 'game-library', assetId, fileName: `${assetName}.glb`, triangles: diagnostics.triangles, vertices: diagnostics.vertices } });
-    return record;
-  }, [emit, updateData]);
-
-  return useMemo(() => ({ workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download, exportToGameLibrary }), [workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download, exportToGameLibrary]);
+  return useMemo(() => ({ workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download }), [workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download]);
 }
 
 async function fileToImageData(file: File): Promise<ImageData> {
@@ -432,49 +343,6 @@ async function fileToImageData(file: File): Promise<ImageData> {
   if (!ctx) throw new Error('Could not read image.');
   ctx.drawImage(bitmap, 0, 0);
   return ctx.getImageData(0, 0, canvas.width, canvas.height);
-}
-
-function makePersistedWorkspaceState(workspace: ImplicitAssetWorkspaceObject): PersistedContentWorkspaceState {
-  return {
-    workspaceId: workspace.id,
-    createdAt: workspace.createdAt,
-    sourceGlb: workspace.data.sourceGlb,
-    mesh: workspace.data.mesh ? cloneEditableState(workspace.data.mesh) : null,
-    previewMesh: workspace.data.previewMesh ?? null,
-    editHistory: workspace.data.editHistory.map(cloneForHistory),
-    redoStack: workspace.data.redoStack.map(cloneForHistory),
-    activeTool: workspace.data.activeTool,
-    cameraState: { ...workspace.data.cameraState, target: { ...workspace.data.cameraState.target } },
-    brushState: { ...workspace.data.brushState },
-    rigState: {
-      ...workspace.data.rigState,
-      bendPoints: workspace.data.rigState.bendPoints.map((point) => ({ ...point, position: { ...point.position } })),
-      skeleton: {
-        ...workspace.data.rigState.skeleton,
-        bones: workspace.data.rigState.skeleton.bones.map((bone) => ({
-          ...bone,
-          head: { ...bone.head },
-          tail: { ...bone.tail },
-          bend: bone.bend ? { ...bone.bend } : undefined,
-        })),
-      },
-    },
-    processingStatus: workspace.data.processingStatus,
-    visibleMessage: workspace.data.visibleMessage,
-  };
-}
-
-function cloneEditableState(editable: EditableMeshState): EditableMeshState {
-  return {
-    ...editable,
-    mesh: cloneForHistory(editable.mesh),
-    diagnostics: { ...editable.diagnostics, bounds: { ...editable.diagnostics.bounds, min: { ...editable.diagnostics.bounds.min }, max: { ...editable.diagnostics.bounds.max }, center: { ...editable.diagnostics.bounds.center }, size: { ...editable.diagnostics.bounds.size } } },
-    repairReport: editable.repairReport ? { ...editable.repairReport } : undefined,
-  };
-}
-
-function deriveAssetName(workspace: ImplicitAssetWorkspaceObject): string {
-  return workspace.data.sourceGlb?.name?.replace(/\.[^.]+$/, '') || 'contentengin-asset';
 }
 
 function messageForQuality(quality: string): string {

@@ -55,7 +55,6 @@ import { useAIDirector } from '@/engins/gameengin/games/useAIDirector';
 import { useDualSense } from '@/engins/gameengin/games/DualSenseManager';
 import { useRemoteChannel } from '@/engins/gameengin/games/useRemoteChannel';
 import { buildLedgerMediaUrl } from '@/engins/contentengin/media/ledger';
-import { getLocalContentAssetGlb, getLocalContentAssetObjSource, listLocalContentAssets, type LocalContentAssetRecord } from '@/engins/contentengin/assets/localAssetLibrary';
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { createInstance } from '@/engine/runtime/instanceManager';
 import { useGameEnginBridge } from '@/engine/runtime/useEnginBridge';
@@ -238,18 +237,6 @@ function makeEmptyGrid(): TileType[][] {
   );
 }
 
-function makeEmptyPropGrid(): (string | null)[][] {
-  return Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => null));
-}
-
-function stampPropPlacement(grid: (string | null)[][], row: number, col: number, assetId: string | null): (string | null)[][] {
-  return grid.map((gridRow, rowIndex) => (
-    rowIndex === row
-      ? gridRow.map((value, colIndex) => (colIndex === col ? assetId : value))
-      : [...gridRow]
-  ));
-}
-
 /**
  * Default export wraps the inner component in a generic Engin Pipe
  * `<ArtifactSlot>` so future cross-Engin features (telemetry tagging,
@@ -373,11 +360,7 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
 
   const [worldName,     setWorldName]     = useState('');
   const [worldGrid,     setWorldGrid]     = useState<TileType[][]>(makeEmptyGrid);
-  const [worldPropGrid, setWorldPropGrid] = useState<(string | null)[][]>(makeEmptyPropGrid);
   const [selectedTile,  setSelectedTile]  = useState<TileType>('ground');
-  const [builderMode, setBuilderMode] = useState<'terrain' | 'prop'>('terrain');
-  const [importedContentAssets, setImportedContentAssets] = useState<LocalContentAssetRecord[]>([]);
-  const [activeContentAssetId, setActiveContentAssetId] = useState<string | null>(null);
   // savedWorld is now sourced from engineState (set via game:world-save dispatch)
 
   // physicsConfig = editing buffer (local); appliedPhysics = committed version (also dispatched to engine)
@@ -463,70 +446,24 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   }, [engineDispatch, sharedChannel]);
 
   const handleTileClick = useCallback((row: number, col: number) => {
-    if (builderMode === 'prop') {
-      setWorldPropGrid((prev) => stampPropPlacement(prev, row, col, activeContentAssetId));
-      return;
-    }
     setWorldGrid((prev) => paintWorldTile(prev, row, col, selectedTile));
-  }, [activeContentAssetId, builderMode, selectedTile]);
+  }, [selectedTile]);
 
   const handleCommitWorld = useCallback(() => {
     if (!worldName.trim()) return;
     const snapshot = snapshotWorldGrid(worldGrid);
-    const propSnapshot = worldPropGrid.map((row) => [...row]);
-    const attachedAssets = importedContentAssets.filter((asset) => propSnapshot.some((row) => row.includes(asset.assetId)));
     engineDispatch({ type: 'game:world-save', payload: { world: { name: worldName.trim(), grid: snapshot } } });
     forgeRecord('Committed world: ' + worldName.trim());
     recordForgeTransfer('games', 'create', 'level', 'GameEngin world → ContentEngin');
+    // Real bridge event: world level exported — Create/Brand Engins may consume it.
     const assetId = `world-${Date.now()}`;
     bridge.emit('games', 'games:asset-exported', {
       assetId,
       assetType: 'level',
       url:       '',
     });
-    dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim(), worldGrid: snapshot, propPlacements: propSnapshot, propAssets: attachedAssets.map((asset) => ({ assetId: asset.assetId, name: asset.name })) , tileLegend: TILE_META });
-  }, [engineDispatch, forgeRecord, importedContentAssets, worldGrid, worldName, worldPropGrid]);
-
-  const refreshImportedContentAssets = useCallback(() => {
-    const nextAssets = listLocalContentAssets();
-    setImportedContentAssets(nextAssets);
-    setActiveContentAssetId((current) => current && nextAssets.some((asset) => asset.assetId === current) ? current : nextAssets[0]?.assetId ?? null);
-  }, []);
-
-  useEffect(() => {
-    refreshImportedContentAssets();
-    const onStorage = () => refreshImportedContentAssets();
-    window.addEventListener('storage', onStorage);
-    window.addEventListener('dreamengin:contentasset-library-updated', onStorage as EventListener);
-    return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener('dreamengin:contentasset-library-updated', onStorage as EventListener);
-    };
-  }, [refreshImportedContentAssets]);
-
-  useEffect(() => {
-    const requestedAssetId = searchParams.get('importedAsset');
-    if (requestedAssetId) setActiveContentAssetId(requestedAssetId);
-  }, [searchParams]);
-
-  const previewImportedContentAsset = useCallback(async (assetId: string) => {
-    const objSource = await getLocalContentAssetObjSource(assetId);
-    const asset = importedContentAssets.find((entry) => entry.assetId === assetId);
-    if (!objSource) return;
-    dispatchRenderHandoff('ContentEngin', 'obj', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', fileName: `${asset?.name ?? assetId}.obj`, objSource });
-    if (typeof window !== 'undefined') window.location.assign('/engines/render');
-  }, [importedContentAssets]);
-
-  const downloadImportedContentAsset = useCallback(async (assetId: string) => {
-    const stored = await getLocalContentAssetGlb(assetId);
-    if (!stored) return;
-    const url = URL.createObjectURL(stored.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = stored.fileName;
-    a.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
-  }, []);
+    dispatchRenderHandoff('GameEngin', 'level', { assetId, ownerId: 'local-user', runtimeId: 'gameengin-runtime', visibility: 'local', worldName: worldName.trim(), worldGrid: snapshot, tileLegend: TILE_META });
+  }, [engineDispatch, forgeRecord, worldGrid, worldName]);
 
   const handleApplyPhysics = useCallback(() => {
     const nextPhysicsConfig = { ...physicsConfig };
@@ -669,12 +606,9 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
   // Persists and restores the GameEngin workspace state across sessions.
   type GameSavedState = {
     worldGrid?: TileType[][];
-    worldPropGrid?: (string | null)[][];
     worldName?: string;
     physicsConfig?: PhysicsConfig;
     scriptState?: ScriptState;
-    builderMode?: 'terrain' | 'prop';
-    activeContentAssetId?: string | null;
   };
   type MusicSavedState = {
     ledgerAudio?: {
@@ -699,21 +633,18 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
     if (gameRestoring || gameRestoredRef.current || !savedGameState) return;
     gameRestoredRef.current = true;
     if (savedGameState.worldGrid)    setWorldGrid(savedGameState.worldGrid);
-    if (savedGameState.worldPropGrid) setWorldPropGrid(savedGameState.worldPropGrid);
     if (savedGameState.worldName)    setWorldName(savedGameState.worldName);
     if (savedGameState.physicsConfig) setPhysicsConfig(savedGameState.physicsConfig);
     if (savedGameState.scriptState)  setScriptState(savedGameState.scriptState);
-    if (savedGameState.builderMode) setBuilderMode(savedGameState.builderMode);
-    if (savedGameState.activeContentAssetId !== undefined) setActiveContentAssetId(savedGameState.activeContentAssetId);
   }, [gameRestoring, savedGameState]);
 
   // Persist workspace state to DB whenever it changes
   useEffect(() => {
     if (gameRestoring) return;
-    persistGameState({ worldGrid, worldPropGrid, worldName, physicsConfig, scriptState, builderMode, activeContentAssetId });
+    persistGameState({ worldGrid, worldName, physicsConfig, scriptState });
   // persistGameState is stable (useCallback); eslint-disable-next-line
 
-  }, [worldGrid, worldPropGrid, worldName, physicsConfig, scriptState, builderMode, activeContentAssetId, gameRestoring]);
+  }, [worldGrid, worldName, physicsConfig, scriptState, gameRestoring]);
 
   const syncedMusicClip = savedMusicState?.ledgerAudio ?? null;
   const crossEnginChannels = CROSS_ENGIN_CHANNELS.map((engin) => {
@@ -1959,77 +1890,10 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
               </div>
             </div>
 
-            <div style={{ marginBottom: 12, display: 'grid', gap: 8 }}>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                <button
-                  type="button"
-                  onClick={() => setBuilderMode('terrain')}
-                  style={{
-                    padding: '6px 12px', borderRadius: 999, fontSize: 11, fontWeight: 800,
-                    border: builderMode === 'terrain' ? `2px solid ${ACCENT}` : '1px solid rgba(160,195,240,0.22)',
-                    background: builderMode === 'terrain' ? `${ACCENT}18` : 'rgba(255,255,255,0.45)',
-                    color: builderMode === 'terrain' ? ACCENT : 'var(--de-heading)',
-                  }}
-                >
-                  Terrain Paint
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBuilderMode('prop')}
-                  style={{
-                    padding: '6px 12px', borderRadius: 999, fontSize: 11, fontWeight: 800,
-                    border: builderMode === 'prop' ? `2px solid ${ACCENT}` : '1px solid rgba(160,195,240,0.22)',
-                    background: builderMode === 'prop' ? `${ACCENT}18` : 'rgba(255,255,255,0.45)',
-                    color: builderMode === 'prop' ? ACCENT : 'var(--de-heading)',
-                  }}
-                >
-                  Prop Stamp
-                </button>
-              </div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--de-text-dim)' }}>Imported ContentEngin assets</div>
-              {importedContentAssets.length ? (
-                <div style={{ display: 'grid', gap: 8 }}>
-                  {importedContentAssets.slice(0, 4).map((asset) => (
-                    <div key={asset.assetId} style={{ display: 'grid', gap: 6, padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.55)', border: activeContentAssetId === asset.assetId ? `1px solid ${ACCENT}` : '1px solid rgba(160,195,240,0.18)' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                        <div>
-                          <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--de-heading)' }}>{asset.name}</div>
-                          <div style={{ fontSize: 10, color: 'var(--de-text-dim)' }}>{asset.triangles} tris · {asset.vertices} verts · {asset.quality}</div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setActiveContentAssetId(asset.assetId)}
-                          style={{
-                            padding: '6px 10px', borderRadius: 999, fontSize: 10, fontWeight: 800,
-                            border: activeContentAssetId === asset.assetId ? `2px solid ${ACCENT}` : '1px solid rgba(160,195,240,0.22)',
-                            background: activeContentAssetId === asset.assetId ? `${ACCENT}18` : 'rgba(255,255,255,0.45)',
-                            color: activeContentAssetId === asset.assetId ? ACCENT : 'var(--de-heading)',
-                          }}
-                        >
-                          {activeContentAssetId === asset.assetId ? 'Active Prop' : 'Use in World'}
-                        </button>
-                      </div>
-                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        <button type="button" onClick={() => { void previewImportedContentAsset(asset.assetId); }} className="de-btn de-btn-primary text-xs" style={{ gap: 6 }}>Preview in Render</button>
-                        <button type="button" onClick={() => { void downloadImportedContentAsset(asset.assetId); }} className="de-btn de-btn-ghost text-xs" style={{ gap: 6 }}>Download GLB</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ fontSize: 11, color: 'var(--de-text-dim)', padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(160,195,240,0.18)' }}>
-                  Send a mesh from ContentEngin to GameEngin and it will appear here.
-                </div>
-              )}
-              {builderMode === 'prop' && activeContentAssetId ? (
-                <div style={{ fontSize: 10, fontWeight: 700, color: ACCENT }}>Prop stamp active: {importedContentAssets.find((asset) => asset.assetId === activeContentAssetId)?.name ?? activeContentAssetId}</div>
-              ) : null}
-            </div>
-
             {/* 5×5 Grid */}
             <div style={{ marginBottom: 12 }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--de-text-dim)', marginBottom: 7 }}>
-                {builderMode === 'prop' ? 'Grid — tap a cell to stamp the active imported ContentEngin asset' : 'Grid — tap a cell to paint with the selected tile'}
+                Grid — tap a cell to paint with the selected tile
               </div>
               <div
                 style={{
@@ -2055,16 +1919,10 @@ function GameEnginInner({ onBack, instanceId: instanceIdProp }: Props) {
                         cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 18,
-                        position: 'relative',
                         transition: 'transform 0.07s, background 0.1s',
                       }}
                     >
-                      <span style={{ fontSize: 18, lineHeight: 1 }}>{TILE_META[tile].emoji}</span>
-                      {worldPropGrid[ri]?.[ci] ? (
-                        <span style={{ position: 'absolute', right: 4, bottom: 4, padding: '1px 4px', borderRadius: 999, fontSize: 8, fontWeight: 900, background: 'rgba(245,158,11,0.92)', color: '#111827', boxShadow: '0 2px 6px rgba(15,23,42,0.2)' }}>
-                          {importedContentAssets.find((asset) => asset.assetId === worldPropGrid[ri][ci])?.name.slice(0, 2).toUpperCase() ?? '3D'}
-                        </span>
-                      ) : null}
+                      {TILE_META[tile].emoji}
                     </button>
                   ))
                 )}

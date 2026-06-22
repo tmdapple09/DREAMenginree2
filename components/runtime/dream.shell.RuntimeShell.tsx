@@ -1,9 +1,8 @@
 'use client';
 
-import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
+import { isCompactRuntimeViewport, readInteractiveViewportScale, readInteractiveViewportWidth } from '@/components/ui-system/runtimeViewport';
 import type { ApperceptiveContext } from '@/engine/runtime/apperception';
-import { useTouchGestures } from '@/engine/gestures/useTouchGestures';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Framework directives stay physically first when required.
 
@@ -36,6 +35,7 @@ const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 2.5;
 
 const ZOOM_STEP = 0.15;
+const COARSE_POINTER_QUERY = '(hover: none), (pointer: coarse)';
 
 /** Height of the in-region iframe chrome bar (Back button + title) */
 const CHROME_BAR_H = 44;
@@ -70,9 +70,7 @@ export default function RuntimeShell({
 }: RuntimeShellProps) {
   const [zoom, setZoom] = useState(1.0);
   const [showZoomControls, setShowZoomControls] = useState(true);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  const zoomRef = useRef(1.0);
-  const lastTapAtRef = useRef(0);
+  const [allowNativeZoom, setAllowNativeZoom] = useState(false);
 
   useEffect(() => {
     if (!apperception || typeof window === 'undefined') return;
@@ -80,68 +78,39 @@ export default function RuntimeShell({
   }, [apperception]);
 
   useEffect(() => {
-    zoomRef.current = zoom;
-  }, [zoom]);
-
-  const applyZoom = useCallback((nextZoom: number, center?: { x: number; y: number }) => {
-    setZoom((current) => {
-      const clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.round(nextZoom * 100) / 100));
-      const container = scrollRef.current;
-      if (container && center) {
-        const rect = container.getBoundingClientRect();
-        const localX = Math.max(0, center.x - rect.left);
-        const localY = Math.max(0, center.y - rect.top);
-        const worldX = (container.scrollLeft + localX) / current;
-        const worldY = (container.scrollTop + localY) / current;
-        requestAnimationFrame(() => {
-          const active = scrollRef.current;
-          if (!active) return;
-          active.scrollLeft = Math.max(0, worldX * clamped - localX);
-          active.scrollTop = Math.max(0, worldY * clamped - localY);
-        });
-      }
-      return clamped;
-    });
-  }, []);
-
-  useEffect(() => {
+    const coarseQuery = typeof window.matchMedia === 'function' ? window.matchMedia(COARSE_POINTER_QUERY) : null;
     const update = () => {
-      const coarse = matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
-      setShowZoomControls(!coarse && !isCompactRuntimeViewport(window.innerWidth));
+      const compact = isCompactRuntimeViewport(readInteractiveViewportWidth(window.innerWidth));
+      const coarse = coarseQuery?.matches ?? false;
+      const nativeZoom = compact || coarse || readInteractiveViewportScale() !== 1;
+      setAllowNativeZoom(nativeZoom);
+      setShowZoomControls(!nativeZoom);
+      if (nativeZoom) setZoom(1);
     };
     update();
+    const onMediaChange = () => update();
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
     window.visualViewport?.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('scroll', update);
+    coarseQuery?.addEventListener?.('change', onMediaChange);
+    coarseQuery?.addListener?.(onMediaChange);
     return () => {
       window.removeEventListener('resize', update);
       window.removeEventListener('orientationchange', update);
       window.visualViewport?.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('scroll', update);
+      coarseQuery?.removeEventListener?.('change', onMediaChange);
+      coarseQuery?.removeListener?.(onMediaChange);
     };
   }, []);
 
-  const zoomIn  = useCallback(() => applyZoom(zoomRef.current + ZOOM_STEP), [applyZoom]);
-  const zoomOut = useCallback(() => applyZoom(zoomRef.current - ZOOM_STEP), [applyZoom]);
-  const resetZoom = useCallback(() => applyZoom(1.0), [applyZoom]);
+  const zoomIn  = useCallback(() => setZoom((z) => Math.min(Math.round((z + ZOOM_STEP) * 100) / 100, MAX_ZOOM)), []);
+  const zoomOut = useCallback(() => setZoom((z) => Math.max(Math.round((z - ZOOM_STEP) * 100) / 100, MIN_ZOOM)), []);
+  const resetZoom = useCallback(() => setZoom(1.0), []);
 
   const pct = Math.round(zoom * 100);
   const isDefault = pct === 100;
-
-  useTouchGestures(scrollRef, {
-    onPinch: (event) => {
-      if (!event.scale) return;
-      applyZoom(zoomRef.current * event.scale, event.center);
-    },
-    onTap: (event) => {
-      const now = event.timestamp;
-      if (now - lastTapAtRef.current < 280) {
-        applyZoom(1.0, event.center);
-        lastTapAtRef.current = 0;
-        return;
-      }
-      lastTapAtRef.current = now;
-    },
-  }, { pinchThreshold: 0.015, tapMaxMovement: 18 });
 
   const ctrlBtn = (disabled: boolean): React.CSSProperties => ({
     width: 30, height: 30, borderRadius: '50%',
@@ -338,21 +307,26 @@ export default function RuntimeShell({
          *   zoom=0.75 → 133% × 133% → scale(0.75) → fills parent exactly
          */
         <div
-          ref={scrollRef}
           data-runtime-scroll-container
           className="de-runtime-premium-scroll"
           style={{
             position: 'absolute',
             inset: 0,
             overflowY: 'auto',
-            overflowX: 'hidden',
+            overflowX: allowNativeZoom ? 'auto' : 'hidden',
             overscrollBehavior: 'contain',
             WebkitOverflowScrolling: 'touch',
-            touchAction: 'pan-x pan-y',
+            touchAction: allowNativeZoom ? 'pan-x pan-y pinch-zoom' : 'manipulation',
           }}
         >
           <div
-            style={{
+            style={allowNativeZoom ? {
+              position: 'relative',
+              width: '100%',
+              minHeight: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            } : {
               position: 'relative',
               width: `${(100 / zoom).toFixed(4)}%`,
               minHeight: `${(100 / zoom).toFixed(4)}%`,

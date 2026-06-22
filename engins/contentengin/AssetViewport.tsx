@@ -70,7 +70,6 @@ export default function AssetViewport({
   const lastSculptAt = useRef(0);
   const pickStart = useRef<{ x: number; y: number; at: number } | null>(null);
   const gpuRef = useRef<GpuRuntime | null>(null);
-  const lastTapRef = useRef<{ at: number; x: number; y: number } | null>(null);
 
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
   const [imageVersion, setImageVersion] = useState(0);
@@ -351,16 +350,6 @@ export default function AssetViewport({
       const start = pickStart.current;
       if (pickMode && start && pointers.current.size === 1 && pointDistance(start, p) <= 8 && performance.now() - start.at <= 700) {
         sculptAt(e.currentTarget, p, true);
-      }
-      if (e.pointerType === 'touch' && pointers.current.size === 1 && !editMode && !pickMode) {
-        const now = performance.now();
-        const lastTap = lastTapRef.current;
-        if (lastTap && now - lastTap.at <= 320 && Math.hypot(lastTap.x - p.x, lastTap.y - p.y) <= 18) {
-          onFrame?.();
-          lastTapRef.current = null;
-        } else {
-          lastTapRef.current = { at: now, x: p.x, y: p.y };
-        }
       }
       if (pointers.current.size <= 1) pickStart.current = null;
       pointers.current.delete(e.pointerId);

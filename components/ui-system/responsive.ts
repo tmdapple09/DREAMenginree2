@@ -168,6 +168,10 @@ export function cssClamp(
  */
 export function readViewportWidth(defaultWidth: number = BREAKPOINTS.lg): number {
   if (typeof window === 'undefined') return defaultWidth;
-  const w = window.innerWidth;
-  return Number.isFinite(w) && w > 0 ? w : defaultWidth;
+  const visualWidth = window.visualViewport?.width;
+  const innerWidth = window.innerWidth;
+  const candidates = [visualWidth, innerWidth].filter(
+    (value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0,
+  );
+  return candidates.length ? Math.min(...candidates) : defaultWidth;
 }
