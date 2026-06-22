@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-20T14:42:09.518Z
+Generated: 2026-06-22T03:23:25.759Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -3639,14 +3639,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── dream.StandaloneEnginSurface.tsx ∅
-│   │   │   ├── ⬡ ForgeEngin  ← @/engins/dream.ForgeEngin
-│   │   │   ├── ⬡ BrandingEngin  ← @/engins/engin.BrandingEngin
-│   │   │   ├── ⬡ CodeEngin  ← @/engins/engin.CodeEngin
-│   │   │   ├── ⬡ ContentEngin  ← @/engins/engin.ContentEngin
-│   │   │   ├── ⬡ GameEngin  ← @/engins/engin.GameEngin
-│   │   │   ├── ⬡ LabEngin  ← @/engins/engin.LabEngin
-│   │   │   ├── ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
 │   │   │   ├── useRouter  ← next/navigation
+│   │   │   ├── (dynamic)  ← @/engins/dream.ForgeEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.BrandingEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.CodeEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.ContentEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.LabEngin
+│   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dreamsurface.daydream.BrandDaydream.tsx ⚠ ∅
@@ -4204,7 +4204,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.GameEnginApp.tsx ∅
 │   │   │   │   ├── makeEnginApp  ← @/components/engines/shared
-│   │   │   │   ├── ⬡ GameEngin  ← @/engins/engin.GameEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.GameEngin
 │   │   │   │   ├── → (default)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
@@ -4285,7 +4285,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │       └── ∅ unused: (default)
 │   │   │   ├── dream.MusicEnginApp.tsx ∅
 │   │   │   │   ├── makeEnginApp  ← @/components/engines/shared
-│   │   │   │   ├── ⬡ StarMakerEngin  ← @/engins/engin.StarMakerEngin
+│   │   │   │   ├── (dynamic)  ← @/engins/engin.StarMakerEngin
 │   │   │   │   ├── → (default)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
@@ -12968,6 +12968,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── generative-audio.ts
 │   │   │   ├── → AdaptiveMusicEngine
 │   │   │   └── → NeuralFoley
+│   │   ├── handlers.ts
+│   │   │   ├── GameEnginAction  ← @/engins/rulesets/game/gameEnginRuleSet
+│   │   │   ├── PhysicsConfig  ← @/engins/rulesets/game/gameEnginRuleSet
+│   │   │   ├── ScriptLanguage  ← @/engins/rulesets/game/gameEnginRuleSet
+│   │   │   ├── TileType  ← @/engins/rulesets/game/gameEnginRuleSet
+│   │   │   ├── → dispatchGameControlProfile
+│   │   │   ├── → dispatchGamePhysicsApply
+│   │   │   ├── → dispatchGameScriptSave
+│   │   │   ├── → dispatchGameSelect
+│   │   │   ├── → dispatchGameSessionStart
+│   │   │   ├── → paintWorldTile
+│   │   │   └── → snapshotWorldGrid
 │   │   ├── index.ts ∅
 │   │   │   ├── ...  ← @/engins/gameengin/index
 │   │   │   ├── AIDirector  ← @/engins/gameengin/index
@@ -14073,6 +14085,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useGameInputKeyboardBridge  ← @/engins/gameengin/games/useGameInputKeyboardBridge
 │   │   ├── useGamepad  ← @/engins/gameengin/games/useGamepad
 │   │   ├── useRemoteChannel  ← @/engins/gameengin/games/useRemoteChannel
+│   │   ├── dispatchGameControlProfile  ← @/engins/gameengin/handlers
+│   │   ├── dispatchGamePhysicsApply  ← @/engins/gameengin/handlers
+│   │   ├── dispatchGameScriptSave  ← @/engins/gameengin/handlers
+│   │   ├── dispatchGameSelect  ← @/engins/gameengin/handlers
+│   │   ├── dispatchGameSessionStart  ← @/engins/gameengin/handlers
+│   │   ├── paintWorldTile  ← @/engins/gameengin/handlers
+│   │   ├── snapshotWorldGrid  ← @/engins/gameengin/handlers
 │   │   ├── dispatchRenderHandoff  ← @/engins/renderengin
 │   │   ├── GameScore  ← @/engins/rulesets/game/gameEnginRuleSet
 │   │   ├── GravityPreset  ← @/engins/rulesets/game/gameEnginRuleSet
@@ -15401,6 +15420,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/app/daydream/music/page
 │           │   ├── (dynamic)  ← @/app/daydream/music/upload/page
 │           │   ├── (dynamic)  ← @/app/daydream/play/page
+│           │   ├── (dynamic)  ← @/app/daydream/render/page
 │           │   ├── (dynamic)  ← @/app/discover/page
 │           │   ├── (dynamic)  ← @/app/dream-effects/page
 │           │   ├── (dynamic)  ← @/app/dreamdmbar/_components/DreamBarDataBridge
@@ -15457,8 +15477,6 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/optimize/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/page
 │           │   ├── (dynamic)  ← @/app/engines/portfolio/quantum/page
-│           │   ├── (dynamic)  ← @/app/engines/render/error
-│           │   ├── (dynamic)  ← @/app/engines/render/loading
 │           │   ├── (dynamic)  ← @/app/engines/render/page
 │           │   ├── (dynamic)  ← @/app/feed-settings/dream.FeedSettingsClient
 │           │   ├── (dynamic)  ← @/app/feed-settings/page
