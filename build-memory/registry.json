@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-22T10:53:51.230Z",
+  "generatedAt": "2026-06-23T09:17:44.468Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
     "surface": 300,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 265,
+    "engin": 266,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -5236,7 +5236,10 @@
       "exports": [
         "COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH",
         "getPreferredViewportHeight",
-        "isCompactRuntimeViewport"
+        "isCompactRuntimeViewport",
+        "readInteractiveViewportHeight",
+        "readInteractiveViewportScale",
+        "readInteractiveViewportWidth"
       ]
     },
     {
@@ -6616,6 +6619,16 @@
         "OriginalRecord",
         "SentinelEntry",
         "StorageStats"
+      ]
+    },
+    {
+      "id": "engins/contentengin/assets/localAssetLibrary",
+      "slot": "engin",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "engine": "Universal",
+      "exports": [
+        "listLocalContentAssets",
+        "LocalContentAssetRecord"
       ]
     },
     {
