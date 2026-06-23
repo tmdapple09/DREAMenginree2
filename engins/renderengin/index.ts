@@ -1,6 +1,7 @@
 export * from './core';
 export * from './webgpu';
 export { default as RenderEnginViewport } from './RenderEnginViewport';
+export { default as RenderStage, createInlineRenderIntent } from './RenderStage';
 
 export * from './runtimeRegistration';
 export * from './scene';

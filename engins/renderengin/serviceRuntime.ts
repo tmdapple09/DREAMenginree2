@@ -20,7 +20,7 @@ export interface RenderServiceIntentEnvelope extends JsonObject {
   targetCapability: typeof RENDER_ENGIN_ID;
   payload: JsonObject;
   createdAt: string;
-  route: '/engines/render';
+  route: string;
   status: 'queued' | 'accepted' | 'applied' | 'rejected';
 }
 
@@ -32,7 +32,7 @@ export interface RenderServiceSubmitResult extends JsonObject {
   targetCapability: typeof RENDER_ENGIN_ID;
   dispatcherQueued: boolean;
   serviceQueued: boolean;
-  route: '/engines/render';
+  route: string;
   reason?: string;
 }
 
@@ -77,6 +77,20 @@ function writeStoredIntents(intents: readonly RenderServiceIntentEnvelope[]): vo
   }
 }
 
+export function routeForRenderSource(source: RenderWorkflowSurface): string {
+  switch (source) {
+    case 'ContentEngin': return '/engines/create';
+    case 'GameEngin': return '/engines/game';
+    case 'CodeEngin': return '/engines/code';
+    case 'LabEngin': return '/engines/lab';
+    case 'HomeDream': return '/homedream';
+    case 'DreamSpace': return '/dreamspace';
+    case 'Daydream': return '/daydream/create';
+    case 'DreamDMBar':
+    default: return '/engines';
+  }
+}
+
 function makeIntentId(source: RenderWorkflowSurface, intentType: RenderIntentType, payload: JsonObject): string {
   const stablePart = String(payload.assetId ?? payload.sceneId ?? payload.objectId ?? payload.fileName ?? Date.now());
   return `render:${source}:${intentType}:${stablePart}:${Math.random().toString(36).slice(2, 8)}`;
@@ -102,14 +116,14 @@ export function createRenderServiceIntent(source: RenderWorkflowSurface, intentT
     targetCapability: RENDER_ENGIN_ID,
     payload,
     createdAt,
-    route: '/engines/render',
+    route: routeForRenderSource(source),
     status: 'queued',
   };
 }
 
 export function submitRenderServiceIntent(source: RenderWorkflowSurface, intentType: RenderIntentType, payload: JsonObject = {}): RenderServiceSubmitResult {
   if (!isRenderIntentType(intentType)) {
-    return { accepted: false, intentId: '', source, intentType, targetCapability: RENDER_ENGIN_ID, dispatcherQueued: false, serviceQueued: false, route: '/engines/render', reason: 'Unknown RenderEngin intent type.' };
+    return { accepted: false, intentId: '', source, intentType, targetCapability: RENDER_ENGIN_ID, dispatcherQueued: false, serviceQueued: false, route: routeForRenderSource(source), reason: 'Unknown RenderEngin intent type.' };
   }
 
   const intent = createRenderServiceIntent(source, intentType, payload);
@@ -137,7 +151,7 @@ export function submitRenderServiceIntent(source: RenderWorkflowSurface, intentT
     targetCapability: RENDER_ENGIN_ID,
     dispatcherQueued,
     serviceQueued: true,
-    route: '/engines/render',
+    route: routeForRenderSource(source),
   };
 }
 

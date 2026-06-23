@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function RenderServiceDaydreamRoute() {
-  redirect('/engines/render');
+export default function RenderDaydreamRedirect() {
+  redirect('/engines/create');
 }

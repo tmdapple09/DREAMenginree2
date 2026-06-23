@@ -135,7 +135,7 @@ export const RenderEnginRuleSet: EnginRuleSetContract<RenderIntent> = {
     },
     compatibility:{ minRuntimeVersion:'1.0.0', requiredFeatures:['lifecycle-hooks','manifest-schema','strict-intent-routing','sync-transport','state-snapshotting','compatibility-negotiation'] }
   },
-  params:{ enginId: RENDER_ENGIN_ID, name: RENDER_ENGIN_NAME, layoutMode:'immersive', accentColor:'#38bdf8', route:'/engines/render', capabilityId:'render' },
+  params:{ enginId: RENDER_ENGIN_ID, name: RENDER_ENGIN_NAME, layoutMode:'immersive', accentColor:'#38bdf8', route:'/engines/create', capabilityId:'render' },
   requiredCapabilities:['state:read','state:write','assets:load','bridge:emit','bridge:listen'],
   capabilityTargets:{ enginId: RENDER_ENGIN_ID, targets:[{ dimension:'viewport-framerate', direction:'at-least', target:30, unit:'fps', minimumProgress:0.8 }, { dimension:'gpu-render-latency', direction:'at-most', target:16.7, unit:'ms', minimumProgress:0.8 }], levers:['route render mutations through intent snapshots','pack vertices as 48-byte AOS buffers','dispose GPU resources on unload and remount','keep claimed supports aligned with implemented renderer'] },
   constraints:[(_state, action)=>({valid: RENDER_INTENT_TYPES.includes(action.type), reason:'Unknown RenderEngin intent.'})],

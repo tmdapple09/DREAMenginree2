@@ -1,5 +1,5 @@
-import RenderServiceDiagnostics from '@/components/engines/render/dream.RenderServiceDiagnostics';
+import { redirect } from 'next/navigation';
 
 export default function RenderServiceRoute() {
-  return <RenderServiceDiagnostics />;
+  redirect('/engines/create');
 }

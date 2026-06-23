@@ -4,8 +4,8 @@ import { RenderEnginRuleSet, RENDER_ENGIN_ID, RENDER_INTENT_TYPES } from './core
 export const RenderEnginRuntimeRegistration = registerRuntimeEngin({
   id: RENDER_ENGIN_ID,
   name: 'Render',
-  route: '/engines/render',
-  daydreamHref: '/engines/render',
+  route: '/engines/create',
+  daydreamHref: '/engines/create',
   ruleSet: RenderEnginRuleSet,
   capabilityId: RENDER_ENGIN_ID,
   workflowSurfaces: ['DreamDMBar', 'HomeDream', 'DreamSpace', 'Daydream', 'ContentEngin', 'GameEngin', 'CodeEngin', 'LabEngin'],

@@ -4,6 +4,7 @@ import {
   createRenderServiceIntent,
   submitRenderServiceIntent,
   type RenderServiceIntentEnvelope,
+  routeForRenderSource,
   type RenderServiceSubmitResult,
   type RenderWorkflowSurface,
 } from './serviceRuntime';
@@ -37,14 +38,14 @@ export const RENDER_SERVICE_PIPELINE: readonly string[] = Object.freeze([
 ]);
 
 export const RENDER_SERVICE_COMMANDS: readonly RenderServiceCommand[] = Object.freeze([
-  { id: 'render:preview-asset', label: 'Preview selected asset in Render', surface: 'DreamDMBar', intentType: 'render.asset.preview', route: '/engines/render' },
-  { id: 'render:open-viewport', label: 'Open Render viewport', surface: 'HomeDream', intentType: 'render.viewport.resize', route: '/engines/render' },
-  { id: 'render:snapshot', label: 'Capture Render snapshot', surface: 'DreamSpace', intentType: 'render.viewport.snapshot', route: '/engines/render' },
-  { id: 'render:frame', label: 'Render current frame', surface: 'Daydream', intentType: 'render.frame.render', route: '/engines/render' },
-  { id: 'content:render-preview', label: 'Preview ContentEngin export in Render', surface: 'ContentEngin', intentType: 'render.asset.preview', route: '/engines/render' },
-  { id: 'game:render-cartridge', label: 'Preview GameEngin cartridge in Render', surface: 'GameEngin', intentType: 'render.asset.load', route: '/engines/render' },
-  { id: 'code:render-shader', label: 'Preview CodeEngin shader in Render', surface: 'CodeEngin', intentType: 'render.material.set', route: '/engines/render' },
-  { id: 'lab:render-simulation', label: 'Preview LabEngin simulation in Render', surface: 'LabEngin', intentType: 'render.scene.load', route: '/engines/render' },
+  { id: 'render:preview-asset', label: 'Preview selected asset in Render', surface: 'DreamDMBar', intentType: 'render.asset.preview', route: '/engines' },
+  { id: 'render:open-viewport', label: 'Open Render viewport', surface: 'HomeDream', intentType: 'render.viewport.resize', route: '/homedream' },
+  { id: 'render:snapshot', label: 'Capture Render snapshot', surface: 'DreamSpace', intentType: 'render.viewport.snapshot', route: '/dreamspace' },
+  { id: 'render:frame', label: 'Render current frame', surface: 'Daydream', intentType: 'render.frame.render', route: '/daydream/create' },
+  { id: 'content:render-preview', label: 'Preview ContentEngin asset', surface: 'ContentEngin', intentType: 'render.asset.preview', route: '/engines/create' },
+  { id: 'game:render-cartridge', label: 'Preview GameEngin cartridge', surface: 'GameEngin', intentType: 'render.asset.load', route: '/engines/game' },
+  { id: 'code:render-shader', label: 'Preview CodeEngin shader', surface: 'CodeEngin', intentType: 'render.material.set', route: '/engines/code' },
+  { id: 'lab:render-simulation', label: 'Preview LabEngin simulation', surface: 'LabEngin', intentType: 'render.scene.load', route: '/engines/lab' },
 ]);
 
 export const RENDER_SERVICE_HANDOFFS: readonly RenderServiceHandoff[] = Object.freeze([
@@ -71,10 +72,10 @@ export function dispatchRenderHandoff(
 ): RenderServiceIntegrationResult {
   const handoff = getRenderHandoffForSource(source);
   if (!handoff) {
-    return { accepted: false, intentId: '', source, intentType: 'render.asset.preview', targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: '/engines/render', reason: 'No RenderEngin handoff is registered for this source.' };
+    return { accepted: false, intentId: '', source, intentType: 'render.asset.preview', targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: routeForRenderSource(source), reason: 'No RenderEngin handoff is registered for this source.' };
   }
   if (!handoff.acceptedAssetKinds.includes(assetKind)) {
-    return { accepted: false, intentId: '', source, intentType: handoff.intentType, targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: '/engines/render', reason: `RenderEngin does not accept '${assetKind}' from ${source}.` };
+    return { accepted: false, intentId: '', source, intentType: handoff.intentType, targetCapability: 'render', dispatcherQueued: false, serviceQueued: false, route: routeForRenderSource(source), reason: `RenderEngin does not accept '${assetKind}' from ${source}.` };
   }
   return dispatchRenderServiceIntent(source, handoff.intentType, { ...payload, assetKind });
 }
