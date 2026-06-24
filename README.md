@@ -4,8 +4,6 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/) [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/) [![pnpm workspace](https://img.shields.io/badge/pnpm-workspace-orange?logo=pnpm)](https://pnpm.io/workspaces) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Live Demo](https://img.shields.io/badge/Live-dreamengin.com-000?logo=DREAMengin)](https://dreamengin.com)
 
-## 🗺️ Visual Repository Schematic
-See [`VISUAL-SCHEMATIC.md`](VISUAL-SCHEMATIC.md) for a live, auto-updated visual map of every file, function, and connection in this repo — including orphan/floating nodes. Live viewer: https://tmdapple09.github.io
 
 See [`repo_state.md`] for complete current map of entire map of everything. 
 ARCHITECTURE.md IS THE DOMINANT AUTHORITY OVER EVERY OTHER DOCUMENT IF THERE ARE ANY DISCREPANCIES UPDATE ALL OTHER DOCUMENTS. DO NOT MODIFY ARCHITECTURE.md FOR ANY REASON.Youll find it in Docs and the repo root.
@@ -25,7 +23,7 @@ For readers new to the project: DREAMengin is closer to an OS shell than a singl
 - [9. The Shop](#the-shop)
 - [10. The Marketplace](#the-marketplace)
 - [11. Ads & User Ads](#ads-user-ads)
-- [12. The DmBar (`dreamdmbar/`)](#the-dmbar-dreamdmbar)
+- [12. The DreamDmBar (`dreamdmbar/`)](#the-dmbar-dreamdmbar)
 - [13. Messaging](#messaging)
 - [14. HomeDream](#homedream)
 - [15. DreamSpace](#dreamspace)
