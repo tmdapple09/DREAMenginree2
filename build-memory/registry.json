@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-23T09:17:44.468Z",
+  "generatedAt": "2026-06-24T23:09:30.052Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 300,
+    "surface": 301,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 266,
+    "engin": 268,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -3960,6 +3960,15 @@
       "id": "components/engines/render/dream.RenderServiceDiagnostics",
       "slot": "surface",
       "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/engines/render/dream.RenderSurface",
+      "slot": "surface",
+      "path": "components/engines/render/dream.RenderSurface.tsx",
       "engine": "Universal",
       "exports": [
         "default"
@@ -9520,7 +9529,9 @@
       "path": "engins/renderengin/index.ts",
       "engine": "Universal",
       "exports": [
-        "RenderEnginViewport"
+        "createInlineRenderIntent",
+        "RenderEnginViewport",
+        "RenderStage"
       ]
     },
     {
@@ -9588,6 +9599,15 @@
       ]
     },
     {
+      "id": "engins/renderengin/RenderEnginInlineSurface",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderEnginInlineSurface.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
       "id": "engins/renderengin/RenderEnginViewport",
       "slot": "engin",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
@@ -9607,6 +9627,17 @@
         "RenderQualitySettings",
         "RenderQualityTier",
         "switchRenderPreviewMode"
+      ]
+    },
+    {
+      "id": "engins/renderengin/RenderStage",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderStage.tsx",
+      "engine": "Universal",
+      "exports": [
+        "createInlineRenderIntent",
+        "default",
+        "RenderStageProps"
       ]
     },
     {
@@ -9695,6 +9726,7 @@
         "renderServicePayloadToJson",
         "RenderServiceSubmitResult",
         "RenderWorkflowSurface",
+        "routeForRenderSource",
         "submitRenderServiceIntent",
         "subscribeRenderServiceIntents"
       ]

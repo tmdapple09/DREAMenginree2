@@ -415,6 +415,7 @@ export const surfaces = {
   "components/engines/portfolio/panels/dream.panel.OptimizePanel": () => import("@/components/engines/portfolio/panels/dream.panel.OptimizePanel"),
   "components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel": () => import("@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel"),
   "components/engines/render/dream.RenderServiceDiagnostics": () => import("@/components/engines/render/dream.RenderServiceDiagnostics"),
+  "components/engines/render/dream.RenderSurface": () => import("@/components/engines/render/dream.RenderSurface"),
   "components/engines/render/index": () => import("@/components/engines/render/index"),
   "components/engines/shared/dream.bar.EnginNavBar": () => import("@/components/engines/shared/dream.bar.EnginNavBar"),
   "components/engines/shared/dream.EnginProvider": () => import("@/components/engines/shared/dream.EnginProvider"),

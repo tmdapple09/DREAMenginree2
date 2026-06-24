@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 300,
+  "surface": 301,
   "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 266,
+  "engin": 268,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 300,
+    "surface": 301,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 266,
+    "engin": 268,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -2988,6 +2988,12 @@ export const osArchitectureStageEntries = {
       "id": "components/engines/render/dream.RenderServiceDiagnostics",
       "slot": "surface",
       "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/engines/render/dream.RenderSurface",
+      "slot": "surface",
+      "path": "components/engines/render/dream.RenderSurface.tsx",
       "engine": "Universal"
     },
     {
@@ -5636,6 +5642,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/RenderEnginInlineSurface",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderEnginInlineSurface.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/RenderEnginViewport",
       "slot": "engin",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
@@ -5645,6 +5657,12 @@ export const osArchitectureStageEntries = {
       "id": "engins/renderengin/renderSettings",
       "slot": "engin",
       "path": "engins/renderengin/renderSettings.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/renderengin/RenderStage",
+      "slot": "engin",
+      "path": "engins/renderengin/RenderStage.tsx",
       "engine": "Universal"
     },
     {
@@ -6425,10 +6443,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 300 |
+| surface | 301 |
 | route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 266 |
+| engin | 268 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
