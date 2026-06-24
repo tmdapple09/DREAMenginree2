@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-06-22T06:16:57.816Z",
-  "totalFiles": 2252,
-  "totalNodes": 7825,
-  "totalEdges": 8331,
-  "totalFunctionAndClassNodes": 4489,
-  "orphanCount": 3921,
+  "generatedAt": "2026-06-24T23:30:34.648Z",
+  "totalFiles": 2256,
+  "totalNodes": 7862,
+  "totalEdges": 8367,
+  "totalFunctionAndClassNodes": 4522,
+  "orphanCount": 3946,
   "countsByType": {
     "folder": 631,
-    "file": 114,
+    "file": 113,
     "doc": 231,
     "config": 240,
-    "function": 4219,
+    "function": 4252,
     "python": 18,
     "class": 270,
     "js": 8,
     "mjs": 31,
     "route": 249,
-    "ts": 953,
-    "tsx": 333,
+    "ts": 955,
+    "tsx": 336,
     "css": 8,
     "cjs": 4,
     "sql-table": 152,
@@ -27,7 +27,7 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 582,
+      "degree": 583,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
@@ -55,7 +55,7 @@
     },
     {
       "id": "file:src/engin/generated/engins.ts",
-      "degree": 265,
+      "degree": 269,
       "label": "engins.ts",
       "type": "ts",
       "path": "src/engin/generated/engins.ts"

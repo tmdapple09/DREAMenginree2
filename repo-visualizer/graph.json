@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T06:16:57.816Z",
+  "generatedAt": "2026-06-24T23:30:34.648Z",
   "root": ".",
   "nodes": [
     {
@@ -3526,16 +3526,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-renderengin-real-service.zip",
-      "label": "DREAMengin-renderengin-real-service.zip",
-      "type": "file",
-      "path": "DREAMengin-renderengin-real-service.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -10004,8 +9994,8 @@
       "isOrphan": false
     },
     {
-      "id": "function:app/daydream/render/page.tsx#RenderServiceDaydreamRoute",
-      "label": "RenderServiceDaydreamRoute",
+      "id": "function:app/daydream/render/page.tsx#RenderDaydreamRedirect",
+      "label": "RenderDaydreamRedirect",
       "type": "function",
       "path": "app/daydream/render/page.tsx",
       "parent": "file:app/daydream/render/page.tsx",
@@ -18595,7 +18585,7 @@
       "type": "function",
       "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "parent": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
-      "loc": 8,
+      "loc": 16,
       "isOrphan": true,
       "exported": false
     },
@@ -18604,6 +18594,26 @@
       "label": "dream.RenderServiceDiagnostics.tsx",
       "type": "tsx",
       "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "parent": "folder:components/engines/render",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:components/engines/render/dream.RenderSurface.tsx#RenderSurface",
+      "label": "RenderSurface",
+      "type": "function",
+      "path": "components/engines/render/dream.RenderSurface.tsx",
+      "parent": "file:components/engines/render/dream.RenderSurface.tsx",
+      "loc": 4,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/engines/render/dream.RenderSurface.tsx",
+      "label": "dream.RenderSurface.tsx",
+      "type": "tsx",
+      "path": "components/engines/render/dream.RenderSurface.tsx",
       "parent": "folder:components/engines/render",
       "loc": null,
       "isOrphan": false,
@@ -22418,7 +22428,7 @@
       "type": "function",
       "path": "components/runtime/dream.shell.RuntimeShell.tsx",
       "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 62,
+      "loc": 63,
       "isOrphan": true,
       "exported": true
     },
@@ -23060,12 +23070,42 @@
       "exported": true
     },
     {
+      "id": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportWidth",
+      "label": "readInteractiveViewportWidth",
+      "type": "function",
+      "path": "components/ui-system/runtimeViewport.ts",
+      "parent": "file:components/ui-system/runtimeViewport.ts",
+      "loc": 26,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportHeight",
+      "label": "readInteractiveViewportHeight",
+      "type": "function",
+      "path": "components/ui-system/runtimeViewport.ts",
+      "parent": "file:components/ui-system/runtimeViewport.ts",
+      "loc": 36,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportScale",
+      "label": "readInteractiveViewportScale",
+      "type": "function",
+      "path": "components/ui-system/runtimeViewport.ts",
+      "parent": "file:components/ui-system/runtimeViewport.ts",
+      "loc": 46,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
       "id": "function:components/ui-system/runtimeViewport.ts#getPreferredViewportHeight",
       "label": "getPreferredViewportHeight",
       "type": "function",
       "path": "components/ui-system/runtimeViewport.ts",
       "parent": "file:components/ui-system/runtimeViewport.ts",
-      "loc": 26,
+      "loc": 52,
       "isOrphan": false,
       "exported": true
     },
@@ -46503,7 +46543,7 @@
       "type": "function",
       "path": "engins/contentengin/ImplicitAssetWorkspace.tsx",
       "parent": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
-      "loc": 7,
+      "loc": 8,
       "isOrphan": true,
       "exported": true
     },
@@ -46603,7 +46643,7 @@
       "path": "engins/contentengin/assets/indexedDBStore.ts",
       "parent": "file:engins/contentengin/assets/indexedDBStore.ts",
       "loc": 83,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -46671,6 +46711,106 @@
       "label": "indexedDBStore.ts",
       "type": "ts",
       "path": "engins/contentengin/assets/indexedDBStore.ts",
+      "parent": "folder:engins/contentengin/assets",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#canUseStorage",
+      "label": "canUseStorage",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 21,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#readManifest",
+      "label": "readManifest",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 25,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#writeManifest",
+      "label": "writeManifest",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#objBlobKey",
+      "label": "objBlobKey",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 42,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#glbBlobKey",
+      "label": "glbBlobKey",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#saveLocalContentAsset",
+      "label": "saveLocalContentAsset",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 50,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#listLocalContentAssets",
+      "label": "listLocalContentAssets",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 69,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#getLocalContentAssetObjSource",
+      "label": "getLocalContentAssetObjSource",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 73,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/contentengin/assets/localAssetLibrary.ts#getLocalContentAssetGlb",
+      "label": "getLocalContentAssetGlb",
+      "type": "function",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
+      "parent": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "loc": 79,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "label": "localAssetLibrary.ts",
+      "type": "ts",
+      "path": "engins/contentengin/assets/localAssetLibrary.ts",
       "parent": "folder:engins/contentengin/assets",
       "loc": null,
       "isOrphan": false,
@@ -57822,12 +57962,32 @@
       "tags": []
     },
     {
+      "id": "function:engins/renderengin/RenderEnginInlineSurface.tsx#RenderEnginInlineSurface",
+      "label": "RenderEnginInlineSurface",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginInlineSurface.tsx",
+      "parent": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "loc": 8,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "label": "RenderEnginInlineSurface.tsx",
+      "type": "tsx",
+      "path": "engins/renderengin/RenderEnginInlineSurface.tsx",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:engins/renderengin/RenderEnginViewport.tsx#createDemoTriangle",
       "label": "createDemoTriangle",
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 20,
+      "loc": 34,
       "isOrphan": true,
       "exported": false
     },
@@ -57837,7 +57997,17 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 28,
+      "loc": 42,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#sanitizeIdPart",
+      "label": "sanitizeIdPart",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 51,
       "isOrphan": true,
       "exported": false
     },
@@ -57847,7 +58017,37 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 37,
+      "loc": 55,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#isGridPreview",
+      "label": "isGridPreview",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 80,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#tileHeight",
+      "label": "tileHeight",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 84,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#createGridPreviewMesh",
+      "label": "createGridPreviewMesh",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 92,
       "isOrphan": true,
       "exported": false
     },
@@ -57857,7 +58057,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 62,
+      "loc": 137,
       "isOrphan": true,
       "exported": true
     },
@@ -57866,6 +58066,36 @@
       "label": "RenderEnginViewport.tsx",
       "type": "tsx",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/RenderStage.tsx#createInlineRenderIntent",
+      "label": "createInlineRenderIntent",
+      "type": "function",
+      "path": "engins/renderengin/RenderStage.tsx",
+      "parent": "file:engins/renderengin/RenderStage.tsx",
+      "loc": 15,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/RenderStage.tsx#RenderStage",
+      "label": "RenderStage",
+      "type": "function",
+      "path": "engins/renderengin/RenderStage.tsx",
+      "parent": "file:engins/renderengin/RenderStage.tsx",
+      "loc": 33,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/RenderStage.tsx",
+      "label": "RenderStage.tsx",
+      "type": "tsx",
+      "path": "engins/renderengin/RenderStage.tsx",
       "parent": "folder:engins/renderengin",
       "loc": null,
       "isOrphan": false,
@@ -58328,7 +58558,7 @@
       "path": "engins/renderengin/assets.ts",
       "parent": "file:engins/renderengin/assets.ts",
       "loc": 222,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -59252,22 +59482,12 @@
       "tags": []
     },
     {
-      "id": "function:engins/renderengin/serviceIntegration.ts#createRenderServiceIntent",
-      "label": "createRenderServiceIntent",
-      "type": "function",
-      "path": "engins/renderengin/serviceIntegration.ts",
-      "parent": "file:engins/renderengin/serviceIntegration.ts",
-      "loc": 59,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
       "id": "function:engins/renderengin/serviceIntegration.ts#getRenderHandoffForSource",
       "label": "getRenderHandoffForSource",
       "type": "function",
       "path": "engins/renderengin/serviceIntegration.ts",
       "parent": "file:engins/renderengin/serviceIntegration.ts",
-      "loc": 73,
+      "loc": 59,
       "isOrphan": true,
       "exported": true
     },
@@ -59277,7 +59497,7 @@
       "type": "function",
       "path": "engins/renderengin/serviceIntegration.ts",
       "parent": "file:engins/renderengin/serviceIntegration.ts",
-      "loc": 77,
+      "loc": 63,
       "isOrphan": true,
       "exported": true
     },
@@ -59287,7 +59507,7 @@
       "type": "function",
       "path": "engins/renderengin/serviceIntegration.ts",
       "parent": "file:engins/renderengin/serviceIntegration.ts",
-      "loc": 96,
+      "loc": 67,
       "isOrphan": true,
       "exported": true
     },
@@ -59296,6 +59516,156 @@
       "label": "serviceIntegration.ts",
       "type": "ts",
       "path": "engins/renderengin/serviceIntegration.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#canUseBrowserStorage",
+      "label": "canUseBrowserStorage",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 45,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#isRenderIntentType",
+      "label": "isRenderIntentType",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 49,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#readStoredIntents",
+      "label": "readStoredIntents",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 53,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#writeStoredIntents",
+      "label": "writeStoredIntents",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 70,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#routeForRenderSource",
+      "label": "routeForRenderSource",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 79,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#makeIntentId",
+      "label": "makeIntentId",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 93,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#publishIntent",
+      "label": "publishIntent",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 98,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#createRenderServiceIntent",
+      "label": "createRenderServiceIntent",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 108,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#submitRenderServiceIntent",
+      "label": "submitRenderServiceIntent",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 123,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#readRenderServiceQueue",
+      "label": "readRenderServiceQueue",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 157,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#acknowledgeRenderServiceIntent",
+      "label": "acknowledgeRenderServiceIntent",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 161,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#subscribeRenderServiceIntents",
+      "label": "subscribeRenderServiceIntents",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 166,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#renderServicePayloadToJson",
+      "label": "renderServicePayloadToJson",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 197,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/serviceRuntime.ts#normalizeRenderServicePayload",
+      "label": "normalizeRenderServicePayload",
+      "type": "function",
+      "path": "engins/renderengin/serviceRuntime.ts",
+      "parent": "file:engins/renderengin/serviceRuntime.ts",
+      "loc": 201,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/serviceRuntime.ts",
+      "label": "serviceRuntime.ts",
+      "type": "ts",
+      "path": "engins/renderengin/serviceRuntime.ts",
       "parent": "folder:engins/renderengin",
       "loc": null,
       "isOrphan": false,
@@ -61792,7 +62162,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 38,
+      "loc": 39,
       "isOrphan": true,
       "exported": false
     },
@@ -61802,7 +62172,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 48,
+      "loc": 47,
       "isOrphan": true,
       "exported": false
     },
@@ -61812,7 +62182,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 53,
+      "loc": 52,
       "isOrphan": true,
       "exported": false
     },
@@ -61822,7 +62192,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 61,
+      "loc": 60,
       "isOrphan": true,
       "exported": false
     },
@@ -61832,7 +62202,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 79,
+      "loc": 82,
       "isOrphan": true,
       "exported": false
     },
@@ -61842,7 +62212,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 88,
+      "loc": 91,
       "isOrphan": true,
       "exported": true
     },
@@ -61852,7 +62222,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 93,
+      "loc": 96,
       "isOrphan": true,
       "exported": true
     },
@@ -61862,7 +62232,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 99,
+      "loc": 102,
       "isOrphan": true,
       "exported": true
     },
@@ -61872,7 +62242,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 105,
+      "loc": 108,
       "isOrphan": true,
       "exported": true
     },
@@ -61882,7 +62252,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 111,
+      "loc": 114,
       "isOrphan": true,
       "exported": true
     },
@@ -61892,7 +62262,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 116,
+      "loc": 119,
       "isOrphan": true,
       "exported": true
     },
@@ -61902,7 +62272,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 122,
+      "loc": 125,
       "isOrphan": true,
       "exported": true
     },
@@ -61912,7 +62282,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 132,
+      "loc": 135,
       "isOrphan": true,
       "exported": true
     },
@@ -61922,7 +62292,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 145,
+      "loc": 148,
       "isOrphan": true,
       "exported": true
     },
@@ -61932,7 +62302,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 163,
+      "loc": 166,
       "isOrphan": true,
       "exported": true
     },
@@ -61942,7 +62312,7 @@
       "type": "function",
       "path": "hooks/useResponsive.ts",
       "parent": "file:hooks/useResponsive.ts",
-      "loc": 193,
+      "loc": 196,
       "isOrphan": true,
       "exported": true
     },
@@ -87818,6 +88188,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/engines/render/dream.RenderSurface.tsx",
+      "target": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "kind": "import"
+    },
+    {
       "source": "file:components/engines/render/index.ts",
       "target": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "kind": "reexport"
@@ -96634,6 +97009,11 @@
     },
     {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
+      "target": "file:engins/isosurfaceAssetPipeline.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/renderengin/index.ts",
       "kind": "import"
     },
@@ -96654,6 +97034,11 @@
     },
     {
       "source": "file:engins/contentengin/assets/assetOptimizer.ts",
+      "target": "file:engins/contentengin/assets/indexedDBStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/assets/localAssetLibrary.ts",
       "target": "file:engins/contentengin/assets/indexedDBStore.ts",
       "kind": "import"
     },
@@ -98518,6 +98903,26 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "target": "file:engine/engin-runtime/EnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "target": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/renderengin/RenderEnginViewport.tsx",
       "target": "file:engine/engin-runtime/EnginRuntime.ts",
       "kind": "import"
@@ -98535,6 +98940,36 @@
     {
       "source": "file:engins/renderengin/RenderEnginViewport.tsx",
       "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderStage.tsx",
+      "target": "file:engine/engin-runtime/EnginRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderStage.tsx",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderStage.tsx",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderStage.tsx",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/RenderStage.tsx",
+      "target": "file:engins/renderengin/RenderEnginViewport.tsx",
       "kind": "import"
     },
     {
@@ -98615,6 +99050,11 @@
     {
       "source": "file:engins/renderengin/index.ts",
       "target": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/RenderStage.tsx",
       "kind": "reexport"
     },
     {
@@ -98713,6 +99153,11 @@
       "kind": "reexport"
     },
     {
+      "source": "file:engins/renderengin/index.ts",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
+      "kind": "reexport"
+    },
+    {
       "source": "file:engins/renderengin/lighting.ts",
       "target": "file:engine/engin-runtime/EnginBaseState.ts",
       "kind": "import"
@@ -98789,11 +99234,26 @@
     },
     {
       "source": "file:engins/renderengin/serviceIntegration.ts",
-      "target": "file:engine/runtime/EnginDispatcher.ts",
+      "target": "file:engins/renderengin/core.ts",
       "kind": "import"
     },
     {
       "source": "file:engins/renderengin/serviceIntegration.ts",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/serviceRuntime.ts",
+      "target": "file:engine/engin-runtime/EnginBaseState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/serviceRuntime.ts",
+      "target": "file:engine/runtime/EnginDispatcher.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/renderengin/serviceRuntime.ts",
       "target": "file:engins/renderengin/core.ts",
       "kind": "import"
     },
@@ -99150,6 +99610,11 @@
     {
       "source": "file:hooks/useConnectorInstallFlow.ts",
       "target": "file:engine/widgets/widgetRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:hooks/useResponsive.ts",
+      "target": "file:components/ui-system/runtimeViewport.ts",
       "kind": "import"
     },
     {
@@ -99535,6 +100000,11 @@
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/contentengin/assets/indexedDBStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/assets/localAssetLibrary.ts",
       "kind": "import"
     },
     {
@@ -100524,12 +100994,22 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/RenderEnginInlineSurface.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/RenderEnginViewport.tsx",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/renderSettings.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/RenderStage.tsx",
       "kind": "import"
     },
     {
@@ -100550,6 +101030,11 @@
     {
       "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/serviceIntegration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/serviceRuntime.ts",
       "kind": "import"
     },
     {
@@ -102945,6 +103430,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/engines/render/dream.RenderSurface.tsx",
       "kind": "import"
     },
     {
@@ -109844,6 +110334,11 @@
     },
     {
       "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
+      "target": "file:engins/renderengin/index.ts",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "target": "file:components/engines/shared/index.ts",
       "kind": "call"
     },
@@ -110855,6 +111350,16 @@
     {
       "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
       "target": "function:components/ui-system/runtimeViewport.ts#isCompactRuntimeViewport",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportWidth",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportScale",
       "kind": "call"
     },
     {
@@ -112893,8 +113398,23 @@
       "kind": "call"
     },
     {
+      "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
+      "target": "function:engins/isosurfaceAssetPipeline.ts#exportOBJ",
+      "kind": "call"
+    },
+    {
       "source": "file:engins/contentengin/assets/assetOptimizer.ts",
       "target": "function:engins/contentengin/assets/indexedDBStore.ts#storeOriginal",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "target": "function:engins/contentengin/assets/indexedDBStore.ts#storeOriginal",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/assets/localAssetLibrary.ts",
+      "target": "function:engins/contentengin/assets/indexedDBStore.ts#getOriginal",
       "kind": "call"
     },
     {
@@ -114279,6 +114799,21 @@
     },
     {
       "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/assets.ts#estimateRenderAssetMemory",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#createRenderAsset",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
       "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
       "kind": "call"
     },
@@ -114289,17 +114824,12 @@
     },
     {
       "source": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/RenderEnginViewport.tsx",
       "target": "function:engins/renderengin/assets.ts#createParsedObjRenderAsset",
       "kind": "call"
     },
     {
       "source": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "target": "function:engins/renderengin/assets.ts#estimateRenderAssetMemory",
+      "target": "function:engins/renderengin/assets.ts#createParsedGlbRenderAsset",
       "kind": "call"
     },
     {
@@ -114430,6 +114960,16 @@
     {
       "source": "file:engins/renderengin/scene.ts",
       "target": "function:engins/renderengin/core.ts#mat4Mul",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/serviceIntegration.ts",
+      "target": "function:engins/renderengin/serviceRuntime.ts#submitRenderServiceIntent",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/renderengin/serviceIntegration.ts",
+      "target": "function:engins/renderengin/serviceRuntime.ts#routeForRenderSource",
       "kind": "call"
     },
     {
@@ -114675,6 +115215,16 @@
     {
       "source": "file:hooks/useConnectorInstallFlow.ts",
       "target": "function:engine/connectors/installFlow.ts#consumeDeferredPrompt",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useResponsive.ts",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportWidth",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useResponsive.ts",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportHeight",
       "kind": "call"
     },
     {
