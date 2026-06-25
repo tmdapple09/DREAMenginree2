@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T04:59:00.584Z
+Generated: 2026-06-25T05:02:04.294Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -18879,7 +18879,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: (default)
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
-├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
 ├── next.config.mjs ∅

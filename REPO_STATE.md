@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T04:59:00.445Z
+Generated: 2026-06-25T05:02:04.143Z
 
 ---
 
@@ -24339,7 +24339,6 @@ Legend: ⚠ broken import  ∅ unused export
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
 ├── fix-audit.js
-├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
 ├── next.config.mjs ∅
