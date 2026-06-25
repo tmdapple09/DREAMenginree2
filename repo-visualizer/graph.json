@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T16:12:05.214Z",
+  "generatedAt": "2026-06-25T16:15:39.527Z",
   "root": ".",
   "nodes": [
     {
@@ -66018,6 +66018,748 @@
       "loc": null,
       "isOrphan": true,
       "tags": []
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#toPosix",
+      "label": "toPosix",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 274,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#normalizeRel",
+      "label": "normalizeRel",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 278,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extOf",
+      "label": "extOf",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 284,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#uniqueSorted",
+      "label": "uniqueSorted",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 288,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#shouldIgnoreDir",
+      "label": "shouldIgnoreDir",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 292,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#walk",
+      "label": "walk",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 296,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#readSafe",
+      "label": "readSafe",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 319,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isCodeFile",
+      "label": "isCodeFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 327,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#hasAnySuffix",
+      "label": "hasAnySuffix",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 331,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#includesAny",
+      "label": "includesAny",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 338,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isAPIRoute",
+      "label": "isAPIRoute",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 345,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isPageFile",
+      "label": "isPageFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 349,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isRouteHandlerFile",
+      "label": "isRouteHandlerFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 353,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isAppRouterEntryFile",
+      "label": "isAppRouterEntryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 357,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isTestFile",
+      "label": "isTestFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 361,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isStoryFile",
+      "label": "isStoryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 365,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isTypeFile",
+      "label": "isTypeFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 369,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isStyleFile",
+      "label": "isStyleFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 373,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isRootEntryFile",
+      "label": "isRootEntryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 377,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#mdCell",
+      "label": "mdCell",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 381,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isBoundaryChar",
+      "label": "isBoundaryChar",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 385,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#startsWord",
+      "label": "startsWord",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 393,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findNextNonSpace",
+      "label": "findNextNonSpace",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 398,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findStatementEnd",
+      "label": "findStatementEnd",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 406,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findQuotedValue",
+      "label": "findQuotedValue",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 438,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#splitTopLevelCommas",
+      "label": "splitTopLevelCommas",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 471,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#removeLeadingType",
+      "label": "removeLeadingType",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 518,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#importedNameFromPart",
+      "label": "importedNameFromPart",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 524,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#exportedNameFromPart",
+      "label": "exportedNameFromPart",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 530,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#parseImportClause",
+      "label": "parseImportClause",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 536,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#addRecord",
+      "label": "addRecord",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 576,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findFromSpecifier",
+      "label": "findFromSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 581,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractImportRecords",
+      "label": "extractImportRecords",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 615,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractImports",
+      "label": "extractImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 695,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractDynamicImports",
+      "label": "extractDynamicImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 699,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractNamedImports",
+      "label": "extractNamedImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 703,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractExportStatements",
+      "label": "extractExportStatements",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 724,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#readIdentifier",
+      "label": "readIdentifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 737,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractNamedExports",
+      "label": "extractNamedExports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 752,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isUppercase",
+      "label": "isUppercase",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 794,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectHookExports",
+      "label": "detectHookExports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 798,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectReactComponent",
+      "label": "detectReactComponent",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 818,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isBarrelFile",
+      "label": "isBarrelFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 844,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectSupabase",
+      "label": "detectSupabase",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 860,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectEventBus",
+      "label": "detectEventBus",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 864,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectZustand",
+      "label": "detectZustand",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 868,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectContext",
+      "label": "detectContext",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 872,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectRuntimeRegistry",
+      "label": "detectRuntimeRegistry",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 876,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectDualRuntime",
+      "label": "detectDualRuntime",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 880,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#loadTsconfigPaths",
+      "label": "loadTsconfigPaths",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 884,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#matchesPathPattern",
+      "label": "matchesPathPattern",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 913,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#expandPathPattern",
+      "label": "expandPathPattern",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 923,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#stripSpecifierNoise",
+      "label": "stripSpecifierNoise",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 936,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isExternalSpecifier",
+      "label": "isExternalSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 951,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#tryResolveCandidate",
+      "label": "tryResolveCandidate",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 963,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#resolveInternalSpecifier",
+      "label": "resolveInternalSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 982,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#codeFileForResolvedPath",
+      "label": "codeFileForResolvedPath",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1007,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#buildRouteMap",
+      "label": "buildRouteMap",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1012,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#capabilityId",
+      "label": "capabilityId",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1102,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#addCapability",
+      "label": "addCapability",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1106,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#routeForPage",
+      "label": "routeForPage",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1112,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectCircular",
+      "label": "detectCircular",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1154,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#markExportUsage",
+      "label": "markExportUsage",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1186,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#shouldSkipUnusedExportFile",
+      "label": "shouldSkipUnusedExportFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1212,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#matchGlobs",
+      "label": "matchGlobs",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1254,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#groupByDir",
+      "label": "groupByDir",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1261,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#getFeatureFiles",
+      "label": "getFeatureFiles",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1272,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderListOrEmpty",
+      "label": "renderListOrEmpty",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1302,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderGroupedFiles",
+      "label": "renderGroupedFiles",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1307,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderFeatureSection",
+      "label": "renderFeatureSection",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1318,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#getFeatureAnnotation",
+      "label": "getFeatureAnnotation",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1382,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#sortedTreeEntries",
+      "label": "sortedTreeEntries",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1393,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#buildTreeString",
+      "label": "buildTreeString",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1411,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:scripts/generate-repo-state.mjs",
+      "label": "generate-repo-state.mjs",
+      "type": "mjs",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "folder:scripts",
+      "loc": null,
+      "isOrphan": true,
+      "tags": [
+        "supabase-create-client"
+      ]
     },
     {
       "id": "function:scripts/generate-webapp-final-form.mjs#generateWebAppFinalForm",
