@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T06:01:47.950Z
+Generated: 2026-06-25T10:51:30.508Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -171,6 +171,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── Strict English Codebase Export.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── typst.yml
 │       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
@@ -3128,6 +3129,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── globals-enhanced.css
 │   ├── layout.tsx ∅
 │   │   ├── ⬡ CommandPaletteMount  ← @/components/dream.CommandPaletteMount
+│   │   ├── ⬡ FirstTouchActivator  ← @/components/dream.FirstTouchActivator
 │   │   ├── ⬡ GlobalOverlays  ← @/components/dream.GlobalOverlays
 │   │   ├── ⬡ ThemeApplicator  ← @/components/dream.ThemeApplicator
 │   │   ├── ⬡ CartridgeRegistryBootstrap  ← @/components/gameengin/dream.CartridgeRegistryBootstrap
@@ -3169,11 +3171,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → reset
 │   │   └── ∅ unused: QUEUE_SIZE, enqueue, dequeue, reset
 │   ├── index.ts ∅
+│   │   ├── → computeBounds3F32
 │   │   ├── → hashBytesFNV1A
 │   │   ├── → processAudioBufferSIMD
 │   │   ├── → shapeGlowFieldSIMD
+│   │   ├── → shapeIntentPressureFieldSIMD
 │   │   ├── → tickPhysicsSIMD
-│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD
+│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD, computeBounds3F32, shapeIntentPressureFieldSIMD
 │   └── mad-maxi-player.ts ∅
 │       ├── → getCoyoteTimer
 │       ├── → getDashTimer
@@ -5555,9 +5559,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.shell.RuntimeShell.tsx ∅
-│   │       ├── isCompactRuntimeViewport  ← @/components/ui-system/runtimeViewport
-│   │       ├── readInteractiveViewportScale  ← @/components/ui-system/runtimeViewport
-│   │       ├── readInteractiveViewportWidth  ← @/components/ui-system/runtimeViewport
 │   │       ├── ApperceptiveContext  ← @/engine/runtime/apperception
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
@@ -5792,13 +5793,14 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → pickByBreakpoint
 │   │   │   ├── → readViewportWidth
 │   │   │   └── ∅ unused: BREAKPOINTS, BREAKPOINT_ORDER, getBreakpoint, isAtLeast, isBelow, fluid, clamp, pickByBreakpoint, cssClamp, readViewportWidth
-│   │   ├── runtimeViewport.ts
+│   │   ├── runtimeViewport.ts ∅
 │   │   │   ├── → COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH
 │   │   │   ├── → getPreferredViewportHeight
 │   │   │   ├── → isCompactRuntimeViewport
 │   │   │   ├── → readInteractiveViewportHeight
 │   │   │   ├── → readInteractiveViewportScale
-│   │   │   └── → readInteractiveViewportWidth
+│   │   │   ├── → readInteractiveViewportWidth
+│   │   │   └── ∅ unused: readInteractiveViewportScale
 │   │   ├── skin-engine.ts ∅
 │   │   │   ├── → DEFAULT_SKIN
 │   │   │   ├── → SKIN_PRESETS
@@ -6138,6 +6140,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useMemo  ← react
 │   │   ├── useRef  ← react
 │   │   ├── useState  ← react
+│   │   ├── → (default)
+│   │   └── ∅ unused: (default)
+│   ├── dream.FirstTouchActivator.tsx ∅
+│   │   ├── useEffect  ← react
 │   │   ├── → (default)
 │   │   └── ∅ unused: (default)
 │   ├── dream.ForgeDreamCanvas.tsx ∅
@@ -7131,6 +7137,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → useDreamSystem
 │   │       └── ∅ unused: DEFAULT_WORLD_FOCUS
 │   ├── dream.GlowingLight.tsx ∅
+│   │   ├── useAppIntentPressureSurface  ← @/hooks/useAppIntentPressureSurface
 │   │   ├── CSSProperties  ← react
 │   │   ├── KeyboardEvent  ← react
 │   │   ├── MouseEvent  ← react
@@ -7159,7 +7166,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── useDreamSystem  ← @/dreamdmbar/runtime/DreamSystemContext
 │       ├── DEFAULT_SPLIT_RATIO  ← @/dreamdmbar/runtime/barInteractions
 │       ├── DIVIDER_H  ← @/dreamdmbar/runtime/barInteractions
-│       ├── DOUBLE_TAP_WINDOW_MS  ← @/dreamdmbar/runtime/barInteractions
 │       ├── DRAG_TAP_THRESHOLD_PX  ← @/dreamdmbar/runtime/barInteractions
 │       ├── GOLD_LONG_PRESS_MS  ← @/dreamdmbar/runtime/barInteractions
 │       ├── ORB_TAP_SLOP  ← @/dreamdmbar/runtime/barInteractions
@@ -7172,7 +7178,6 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── calculatePointerVelocity  ← @/dreamdmbar/runtime/barInteractions
 │       ├── computeTypingRhythm  ← @/dreamdmbar/runtime/barInteractions
 │       ├── decideBarRelease  ← @/dreamdmbar/runtime/barInteractions
-│       ├── resolveGoldTapAction  ← @/dreamdmbar/runtime/barInteractions
 │       ├── rhythmToHandleScale  ← @/dreamdmbar/runtime/barInteractions
 │       ├── shouldCollapseTopExpandedDrag  ← @/dreamdmbar/runtime/barInteractions
 │       ├── snapSplitRatioOnRelease  ← @/dreamdmbar/runtime/barInteractions
@@ -9667,6 +9672,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── → PATTERN_MATRIX_LS_KEY
 │   │       ├── → useSessionIntelligence
 │   │       └── ∅ unused: PATTERN_MATRIX_LS_KEY
+│   ├── intent
+│   │   └── appIntentPressure.ts
+│   │       ├── → AppIntentPressureField
+│   │       └── → appIntentPressureFromElementPoint
 │   ├── journey
 │   │   ├── journeyDots.ts
 │   │   │   ├── hasJourneyDot  ← @/engine/journey/journeyDots
@@ -13577,6 +13586,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → selectScreenSpaceLod
 │   │   │   ├── → sphereIntersectsFrustum
 │   │   │   └── ∅ unused: computeMeshBounds, sphereIntersectsFrustum, selectScreenSpaceLod, cullRenderScene, buildInstanceBatches, createTerrainChunks
+│   │   ├── wasmAcceleration.ts ∅
+│   │   │   ├── MeshBuffers  ← ./core
+│   │   │   ├── Vec3  ← ./core
+│   │   │   ├── → computeRenderMeshBounds
+│   │   │   ├── → fallbackRenderMeshBounds
+│   │   │   ├── → getActiveRenderWasmAcceleration
+│   │   │   ├── → loadRenderWasmAcceleration
+│   │   │   ├── → resetRenderWasmAccelerationForTesting
+│   │   │   └── ∅ unused: fallbackRenderMeshBounds, getActiveRenderWasmAcceleration, resetRenderWasmAccelerationForTesting
 │   │   └── webgpu.ts ∅
 │   │       ├── Mat4  ← ./core
 │   │       ├── MeshBuffers  ← ./core
@@ -13585,6 +13603,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │       ├── Vertex  ← ./core
 │   │       ├── mat4Identity  ← ./core
 │   │       ├── validateMeshForRenderUpload  ← ./core
+│   │       ├── RenderMeshBounds  ← ./wasmAcceleration
+│   │       ├── RenderWasmAcceleration  ← ./wasmAcceleration
+│   │       ├── computeRenderMeshBounds  ← ./wasmAcceleration
+│   │       ├── loadRenderWasmAcceleration  ← ./wasmAcceleration
 │   │       ├── → SHADER
 │   │       ├── → WebGpuRenderEngin
 │   │       ├── → packAosVertexBuffer
@@ -14455,6 +14477,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── useEffect  ← react
 │   │   ├── useState  ← react
 │   │   └── → useAccount
+│   ├── useAppIntentPressureSurface.ts ∅
+│   │   ├── AppIntentMassState  ← @/engine/intent/appIntentPressure
+│   │   ├── AppIntentPoint  ← @/engine/intent/appIntentPressure
+│   │   ├── AppIntentPressureField  ← @/engine/intent/appIntentPressure
+│   │   ├── AppIntentPressureSource  ← @/engine/intent/appIntentPressure
+│   │   ├── appIntentPressureFromElementPoint  ← @/engine/intent/appIntentPressure
+│   │   ├── useCallback  ← react
+│   │   ├── useEffect  ← react
+│   │   ├── useRef  ← react
+│   │   ├── → applyIntentPressureToElement
+│   │   ├── → useAppIntentPressureSurface
+│   │   └── ∅ unused: applyIntentPressureToElement
 │   ├── useConnectorInstallFlow.ts
 │   │   ├── getConnectorDef  ← @/engine/connectors/connectorRegistry
 │   │   ├── SlotGrid  ← @/engine/connectors/installFlow
@@ -14542,7 +14576,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── → useSharedDream
 │   ├── useTap.ts ∅
 │   │   ├── useCallback  ← react
-│   │   ├── useEffect  ← react
 │   │   ├── useRef  ← react
 │   │   ├── → useHomeParticleTap
 │   │   ├── → useTap

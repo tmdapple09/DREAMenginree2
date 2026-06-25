@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T06:01:47.812Z
+Generated: 2026-06-25T10:51:30.361Z
 
 ---
 
@@ -281,6 +281,7 @@ _No style files for this feature._
 - `@/engins/forgeengin/forge/forgeRegistry`
 - `@/engins/gameengin/games/useImmersiveGameLayout`
 - `@/hooks/useAccount`
+- `@/hooks/useAppIntentPressureSurface`
 - `@/hooks/useDreamLayout`
 - `@/supabase/client/client`
 - `@/supabase/client/safeGetUser`
@@ -3891,7 +3892,6 @@ _No style files for this feature._
 - `@/components/panels/panelTypes`
 - `@/components/runtime/dream.shell.RuntimeShell`
 - `@/components/spatial/dream.shell.EnhancedSpatialShell`
-- `@/components/ui-system/runtimeViewport`
 - `@/engine/dreams/DreamRegistry`
 - `@/engine/identity/canonical-names`
 - `@/engine/runtime/apperception`
@@ -6665,6 +6665,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `@/components/dream.CommandPaletteMount` | `⬡ CommandPaletteMount` |
+| `@/components/dream.FirstTouchActivator` | `⬡ FirstTouchActivator` |
 | `@/components/dream.GlobalOverlays` | `⬡ GlobalOverlays` |
 | `@/components/dream.ThemeApplicator` | `⬡ ThemeApplicator` |
 | `@/components/gameengin/dream.CartridgeRegistryBootstrap` | `⬡ CartridgeRegistryBootstrap` |
@@ -7575,6 +7576,12 @@ _No style files for this feature._
 | `lucide-react` | `Bookmark`, `ExternalLink`, `FileText`, `Flag`, `Heart`, `Link2`, `MessageCircle`, `MoreHorizontal`, `Share2`, `Sparkles`, `Youtube` |
 | `next/image` | `⬡ Image` |
 | `react` | `memo`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/dream.FirstTouchActivator.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `react` | `useEffect` |
 
 ## `components/dream.ForgeDreamCanvas.tsx`
 
@@ -9106,7 +9113,6 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/ui-system/runtimeViewport` | `isCompactRuntimeViewport`, `readInteractiveViewportScale`, `readInteractiveViewportWidth` |
 | `@/engine/runtime/apperception` | `ApperceptiveContext` |
 
 ## `components/shaders/dream.LightningWing.tsx`
@@ -9621,6 +9627,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
+| `@/hooks/useAppIntentPressureSurface` | `useAppIntentPressureSurface` |
 | `react` | `CSSProperties`, `KeyboardEvent`, `MouseEvent`, `TouchEvent` |
 
 ## `dreamdmbar/dreamsurface.dreamdmbar.tsx`
@@ -9639,7 +9646,7 @@ _No style files for this feature._
 | `@/dreamdmbar/notifications/notificationHelpers` | `UiNotification` |
 | `@/dreamdmbar/notifications/useNotifications` | `useNotifications` |
 | `@/dreamdmbar/runtime/DreamSystemContext` | `BarIntentMode`, `useDreamSystem` |
-| `@/dreamdmbar/runtime/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DOUBLE_TAP_WINDOW_MS`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `SURFACE_ACCENT_COLORS`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `resolveGoldTapAction`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
+| `@/dreamdmbar/runtime/barInteractions` | `DEFAULT_SPLIT_RATIO`, `DIVIDER_H`, `DRAG_TAP_THRESHOLD_PX`, `GOLD_LONG_PRESS_MS`, `ORB_TAP_SLOP`, `Particle`, `QUICK_REACTIONS`, `SPLIT_RATIO_MAX`, `SPLIT_RATIO_MIN`, `SURFACE_ACCENT_COLORS`, `SurfaceAccent`, `calculatePointerVelocity`, `computeTypingRhythm`, `decideBarRelease`, `rhythmToHandleScale`, `shouldCollapseTopExpandedDrag`, `snapSplitRatioOnRelease` |
 | `@/engins/contentengin/media/ledger` | `uploadBlobToLedgerStorage` |
 | `@/engins/gameengin/games/useImmersiveGameLayout` | `useImmersiveGameLayout` |
 | `@/utils/index` | `formatRelativeTime` |
@@ -13297,11 +13304,18 @@ _No style files for this feature._
 | `./core` | `MeshBuffers`, `Vec3`, `v3length`, `v3sub` |
 | `./scene` | `RenderScene` |
 
+## `engins/renderengin/wasmAcceleration.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `MeshBuffers`, `Vec3` |
+
 ## `engins/renderengin/webgpu.ts`
 
 | Module | Connected via |
 |--------|---------------|
 | `./core` | `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `mat4Identity`, `validateMeshForRenderUpload` |
+| `./wasmAcceleration` | `RenderMeshBounds`, `RenderWasmAcceleration`, `computeRenderMeshBounds`, `loadRenderWasmAcceleration` |
 
 ## `engins/rulesets/brand/brandEnginRuleSet.ts`
 
@@ -13472,6 +13486,13 @@ _No style files for this feature._
 | `@/supabase/client/client` | `createClient` |
 | `react` | `useEffect`, `useState` |
 
+## `hooks/useAppIntentPressureSurface.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engine/intent/appIntentPressure` | `AppIntentMassState`, `AppIntentPoint`, `AppIntentPressureField`, `AppIntentPressureSource`, `appIntentPressureFromElementPoint` |
+| `react` | `useCallback`, `useEffect`, `useRef` |
+
 ## `hooks/useConnectorInstallFlow.ts`
 
 | Module | Connected via |
@@ -13522,7 +13543,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `react` | `useCallback`, `useEffect`, `useRef` |
+| `react` | `useCallback`, `useRef` |
 
 ## `hooks/useTapHoldMove.ts`
 
@@ -17770,6 +17791,10 @@ _No style files for this feature._
 
 - `components/dream.FeedCard.tsx`
 
+## `components/dream.FirstTouchActivator.tsx/`
+
+- `components/dream.FirstTouchActivator.tsx`
+
 ## `components/dream.ForgeDreamCanvas.tsx/`
 
 - `components/dream.ForgeDreamCanvas.tsx`
@@ -18603,6 +18628,10 @@ _No style files for this feature._
 
 - `useAccount`
 
+## `hooks/useAppIntentPressureSurface.ts`
+
+- `useAppIntentPressureSurface`
+
 ## `hooks/useConnectorInstallFlow.ts`
 
 - `useConnectorInstallFlow`
@@ -19072,7 +19101,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 26 |
 | `engins/contentengin/pipeline/build.ts` | 25 |
-| `engins/renderengin/index.ts` | 24 |
+| `engins/renderengin/index.ts` | 25 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -19088,11 +19117,11 @@ _No circular dependencies detected._
 | `engins/dream.ForgeEngin.tsx` | 15 |
 | `engins/engin.CodeEngin.tsx` | 15 |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 |
+| `app/layout.tsx` | 14 |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 |
 | `engine/generated/index.ts` | 14 |
 | `src/engin/generated/index.ts` | 14 |
 | `app/api/ai/idari/route.ts` | 13 |
-| `app/layout.tsx` | 13 |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 |
 | `app/api/ai/eams/route.ts` | 12 |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 |
@@ -19111,7 +19140,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 26 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
-| `engins/renderengin/index.ts` | 24 | HIGH_COUPLING |
+| `engins/renderengin/index.ts` | 25 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -19127,11 +19156,11 @@ _No circular dependencies detected._
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING |
+| `app/layout.tsx` | 14 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `engine/generated/index.ts` | 14 | HIGH_COUPLING |
 | `src/engin/generated/index.ts` | 14 | HIGH_COUPLING |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
-| `app/layout.tsx` | 13 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
 | `app/api/connectors/[provider]/connect/route.ts` | 12 | HIGH_COUPLING |
@@ -19932,7 +19961,7 @@ _No circular dependencies detected._
 | `app/settings/dreams/dreams-layout-editor.tsx` | `(default)` |
 | `app/settings/privacy/dream.PrivacyClient.tsx` | `(default)` |
 | `assembly/bus.ts` | `QUEUE_SIZE`, `enqueue`, `dequeue`, `reset` |
-| `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD`, `hashBytesFNV1A`, `shapeGlowFieldSIMD` |
+| `assembly/index.ts` | `tickPhysicsSIMD`, `processAudioBufferSIMD`, `hashBytesFNV1A`, `shapeGlowFieldSIMD`, `computeBounds3F32`, `shapeIntentPressureFieldSIMD` |
 | `assembly/mad-maxi-player.ts` | `init`, `handleInput`, `update`, `getSnapshotSize`, `writeSnapshot`, `loadSnapshot`, `getMemoryUsage`, `getX`, `getY`, `getVX`, `getVY`, `getOnGround`, `getJumpsUsed`, `getCoyoteTimer`, `getDashTimer`, `getTicks` |
 | `components/activity/dream.ActivityPostForm.tsx` | `ActivityPostForm` |
 | `components/ads/dream.SkipCreditBalance.tsx` | `SkipCreditBalance` |
@@ -19989,6 +20018,7 @@ _No circular dependencies detected._
 | `components/dream.DrEamsModeToggle.tsx` | `(default)` |
 | `components/dream.DrEamsVoiceAssistant.tsx` | `(default)` |
 | `components/dream.FeedCard.tsx` | `(default)` |
+| `components/dream.FirstTouchActivator.tsx` | `(default)` |
 | `components/dream.ForgeDreamCanvas.tsx` | `(default)` |
 | `components/dream.GlobalOverlays.tsx` | `(default)` |
 | `components/dream.HeroSprite.tsx` | `(default)` |
@@ -20199,6 +20229,7 @@ _No circular dependencies detected._
 | `components/three/dream.scene.tsx` | `DreamScene`, `(default)` |
 | `components/three/index.ts` | `DreamScene` |
 | `components/ui-system/responsive.ts` | `BREAKPOINTS`, `BREAKPOINT_ORDER`, `getBreakpoint`, `isAtLeast`, `isBelow`, `fluid`, `clamp`, `pickByBreakpoint`, `cssClamp`, `readViewportWidth` |
+| `components/ui-system/runtimeViewport.ts` | `readInteractiveViewportScale` |
 | `components/ui-system/skin-engine.ts` | `getSkinPreset` |
 | `components/ui/dream.AuthenticatedPageHeader.tsx` | `(default)` |
 | `components/ui/dream.DreamWord.tsx` | `(default)` |
@@ -20569,6 +20600,7 @@ _No circular dependencies detected._
 | `engins/renderengin/textures.ts` | `calculateMipLevelCount`, `estimateTextureBytes`, `validateRenderTexture`, `createRenderTexture`, `createTextureMemoryReport` |
 | `engins/renderengin/viewportControls.ts` | `panRenderCamera`, `orbitRenderCamera`, `zoomRenderCamera`, `pinchZoomRenderCamera`, `resetRenderCamera`, `fitCameraToBounds`, `createViewportRay`, `raycastSphere`, `pickRenderObject`, `createBoundingBoxLines`, `transformGizmoDelta`, `createAxisHelper` |
 | `engins/renderengin/virtualization.ts` | `computeMeshBounds`, `sphereIntersectsFrustum`, `selectScreenSpaceLod`, `cullRenderScene`, `buildInstanceBatches`, `createTerrainChunks` |
+| `engins/renderengin/wasmAcceleration.ts` | `fallbackRenderMeshBounds`, `getActiveRenderWasmAcceleration`, `resetRenderWasmAccelerationForTesting` |
 | `engins/renderengin/webgpu.ts` | `SHADER`, `toGpuMat4`, `packAosVertexBuffer` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)` |
 | `engins/rulesets/code/index.ts` | `id`, `constraints`, `transforms`, `params`, `ruleSet`, `(default)` |
@@ -20595,6 +20627,7 @@ _No circular dependencies detected._
 | `engins/starmakerengin/music/wasmAudioBridge.ts` | `createWasmAudioBridge` |
 | `eslint.config.mjs` | `(default)` |
 | `hooks/use-spatial.ts` | `useSpatialNavigation`, `useAlbums`, `useShareToProfile` |
+| `hooks/useAppIntentPressureSurface.ts` | `applyIntentPressureToElement` |
 | `hooks/useHideOnScroll.ts` | `useHideOnScroll` |
 | `hooks/useResponsive.ts` | `useViewport`, `useBreakpoint`, `useIsAtLeast`, `useIsBelow`, `useIsMobile`, `useIsTablet`, `useIsDesktop`, `useBreakpointValue`, `useFluid`, `useMediaQuery`, `getCurrentViewportWidth` |
 | `hooks/useTap.ts` | `useTap`, `useHomeParticleTap` |
@@ -20791,6 +20824,7 @@ Legend: ⚠ broken import  ∅ unused export
 │       ├── Strict English Codebase Export.yml
 │       ├── sync-build-memory.yml
 │       ├── type-audit.yml
+│       ├── typst.yml
 │       ├── unzip-fonts.yml
 │       ├── update-embed-feed.yml
 │       ├── update-repo-state.yml
@@ -21762,7 +21796,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── bus.ts ∅
 │   │   └── ∅ unused: QUEUE_SIZE, enqueue, dequeue, reset
 │   ├── index.ts ∅
-│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD
+│   │   └── ∅ unused: tickPhysicsSIMD, processAudioBufferSIMD, hashBytesFNV1A, shapeGlowFieldSIMD, computeBounds3F32, shapeIntentPressureFieldSIMD
 │   └── mad-maxi-player.ts ∅
 │       └── ∅ unused: init, handleInput, update, getSnapshotSize, writeSnapshot, loadSnapshot, getMemoryUsage, getX, getY, getVX, getVY, getOnGround, getJumpsUsed, getCoyoteTimer, getDashTimer, getTicks
 ├── build-memory  [AI Systems (Boogieman / Dr.EAMS / Idari)]
@@ -22341,7 +22375,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── CustomizeModeContext.tsx
 │   │   ├── responsive.ts ∅
 │   │   │   └── ∅ unused: BREAKPOINTS, BREAKPOINT_ORDER, getBreakpoint, isAtLeast, isBelow, fluid, clamp, pickByBreakpoint, cssClamp, readViewportWidth
-│   │   ├── runtimeViewport.ts
+│   │   ├── runtimeViewport.ts ∅
+│   │   │   └── ∅ unused: readInteractiveViewportScale
 │   │   ├── skin-engine.ts ∅
 │   │   │   └── ∅ unused: getSkinPreset
 │   │   ├── theme-engine.ts
@@ -22418,6 +22453,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── dream.DrEamsVoiceAssistant.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.FeedCard.tsx ∅
+│   │   └── ∅ unused: (default)
+│   ├── dream.FirstTouchActivator.tsx ∅
 │   │   └── ∅ unused: (default)
 │   ├── dream.ForgeDreamCanvas.tsx ∅
 │   │   └── ∅ unused: (default)
@@ -22897,6 +22934,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── sessionPatternEngine.ts
 │   │   └── useSessionIntelligence.ts ∅
 │   │       └── ∅ unused: PATTERN_MATRIX_LS_KEY
+│   ├── intent
+│   │   └── appIntentPressure.ts
 │   ├── journey
 │   │   ├── journeyDots.ts
 │   │   ├── journeyInsights.ts ∅
@@ -23689,6 +23728,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: panRenderCamera, orbitRenderCamera, zoomRenderCamera, pinchZoomRenderCamera, resetRenderCamera, fitCameraToBounds, createViewportRay, raycastSphere, pickRenderObject, createBoundingBoxLines, transformGizmoDelta, createAxisHelper
 │   │   ├── virtualization.ts ∅
 │   │   │   └── ∅ unused: computeMeshBounds, sphereIntersectsFrustum, selectScreenSpaceLod, cullRenderScene, buildInstanceBatches, createTerrainChunks
+│   │   ├── wasmAcceleration.ts ∅
+│   │   │   └── ∅ unused: fallbackRenderMeshBounds, getActiveRenderWasmAcceleration, resetRenderWasmAccelerationForTesting
 │   │   └── webgpu.ts ∅
 │   │       └── ∅ unused: SHADER, toGpuMat4, packAosVertexBuffer
 │   ├── rulesets
@@ -23843,6 +23884,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   └── ∅ unused: useSpatialNavigation, useAlbums, useShareToProfile
 │   ├── useAccount.ts ⚠
 │   │   └── ⚠ @/supabase/client/client  (createClient)
+│   ├── useAppIntentPressureSurface.ts ∅
+│   │   └── ∅ unused: applyIntentPressureToElement
 │   ├── useConnectorInstallFlow.ts
 │   ├── useDreamLayout.ts
 │   ├── useHideOnScroll.ts ∅
