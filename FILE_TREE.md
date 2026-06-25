@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T01:05:21.698Z
+Generated: 2026-06-25T01:06:16.501Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -18884,19 +18884,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: (default)
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
-├── generate-readme.ts ⚠
-│   ├── PRODUCT_SECTIONS  ⚠ ./readme-autosync
-│   ├── buildProductReadmeSections  ⚠ ./readme-autosync
-│   ├── existsSync  ← node:fs
-│   ├── mkdirSync  ← node:fs
-│   ├── readFileSync  ← node:fs
-│   ├── readdirSync  ← node:fs
-│   ├── statSync  ← node:fs
-│   ├── writeFileSync  ← node:fs
-│   ├── dirname  ← node:path
-│   ├── join  ← node:path
-│   ├── relative  ← node:path
-│   └── resolve  ← node:path
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts

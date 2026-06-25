@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T01:05:21.554Z
+Generated: 2026-06-25T01:06:16.366Z
 
 ---
 
@@ -13457,14 +13457,6 @@ _No style files for this feature._
 |--------|---------------|
 | `lucide-react` | `DatabaseIcon` |
 
-## `generate-readme.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `./readme-autosync` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
-| `node:fs` | `existsSync`, `mkdirSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
-| `node:path` | `dirname`, `join`, `relative`, `resolve` |
-
 ## `hooks/use-spatial.ts`
 
 | Module | Connected via |
@@ -19860,7 +19852,6 @@ _No circular dependencies detected._
 | `engins/gameengin/controls/control-mappings.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `engins/gameengin/dream-engine.ts` | `@/supabase/client/client` | `createClient` |
 | `engins/gameengin/dream-engine.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
-| `generate-readme.ts` | `./readme-autosync` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
 | `hooks/use-spatial.ts` | `@/supabase/client/client` | `createClient` |
 | `hooks/useAccount.ts` | `@/supabase/client/client` | `createClient` |
 | `hooks/useResponsive.ts` | `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
@@ -24348,8 +24339,6 @@ Legend: ⚠ broken import  ∅ unused export
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
 ├── fix-audit.js
-├── generate-readme.ts ⚠
-│   └── ⚠ ./readme-autosync  (PRODUCT_SECTIONS, buildProductReadmeSections)
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
