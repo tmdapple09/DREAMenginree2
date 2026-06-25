@@ -15,7 +15,7 @@ const IGNORE_DIRS = new Set([
   ".husky",
 ]);
 
-const TREE_ONLY_IGNORE_DIRS = new Set([
+const TREE_IGNORE_DIRS = new Set([
   ...IGNORE_DIRS,
   "docs",
   "research",
@@ -300,11 +300,13 @@ const FEATURES = [
 ];
 
 function toPosix(value) {
-  return value.replaceAll(path.sep, "/");
+  return value.split(path.sep).join("/");
 }
 
 function normalizeRel(value) {
-  return path.posix.normalize(toPosix(value)).replace(/^\.\//, "");
+  let out = toPosix(value);
+  while (out.startsWith("./")) out = out.slice(2);
+  return path.posix.normalize(out);
 }
 
 function extOf(file) {
@@ -316,7 +318,7 @@ function uniqueSorted(values) {
 }
 
 function shouldIgnoreDir(name, treeMode = false) {
-  return treeMode ? TREE_ONLY_IGNORE_DIRS.has(name) : IGNORE_DIRS.has(name);
+  return treeMode ? TREE_IGNORE_DIRS.has(name) : IGNORE_DIRS.has(name);
 }
 
 function walk(dir, results = [], options = {}) {
@@ -354,16 +356,30 @@ function isCodeFile(file) {
   return CODE_EXTENSIONS.has(extOf(file));
 }
 
+function hasAnySuffix(file, suffixes) {
+  for (const suffix of suffixes) {
+    if (file.endsWith(suffix)) return true;
+  }
+  return false;
+}
+
+function includesAny(value, needles) {
+  for (const needle of needles) {
+    if (value.includes(needle)) return true;
+  }
+  return false;
+}
+
 function isAPIRoute(file) {
-  return /^app\/api\//.test(file) && /\/route[.](ts|tsx|js|jsx)$/.test(file);
+  return file.startsWith("app/api/") && hasAnySuffix(file, ["/route.ts", "/route.tsx", "/route.js", "/route.jsx"]);
 }
 
 function isRouteHandlerFile(file) {
-  return /(^|\/)route[.](ts|tsx|js|jsx)$/.test(file);
+  return hasAnySuffix(file, ["/route.ts", "/route.tsx", "/route.js", "/route.jsx"]) || ["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file);
 }
 
 function isPageFile(file) {
-  return file.startsWith("app/") && /\/page[.](tsx|ts|jsx|js)$/.test(file);
+  return file.startsWith("app/") && hasAnySuffix(file, ["/page.tsx", "/page.ts", "/page.jsx", "/page.js"]);
 }
 
 function isAppRouterEntryFile(file) {
@@ -371,11 +387,11 @@ function isAppRouterEntryFile(file) {
 }
 
 function isTestFile(file) {
-  return /[.](test|spec)[.](ts|tsx|js|jsx|mjs|cjs)$/.test(file) || file.includes("__tests__/");
+  return includesAny(file, [".test.", ".spec.", "__tests__/"]);
 }
 
 function isStoryFile(file) {
-  return /[.](stories|story)[.](ts|tsx|js|jsx|mjs|cjs)$/.test(file);
+  return includesAny(file, [".stories.", ".story."]);
 }
 
 function isTypeFile(file) {
@@ -391,26 +407,129 @@ function isRootEntryFile(file) {
 }
 
 function mdCell(value) {
-  return String(value).replace(/[|]/g, "\\|").replace(/\n/g, " ");
+  return String(value).split("|").join("\\|").split("\n").join(" ");
 }
 
-function splitImportList(value) {
-  return value
-    .split(",")
-    .map((part) => part.trim())
-    .filter(Boolean);
+function isBoundaryChar(ch) {
+  if (!ch) return true;
+  const code = ch.charCodeAt(0);
+  const isLetter = (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+  const isDigit = code >= 48 && code <= 57;
+  return !(isLetter || isDigit || ch === "_" || ch === "$");
+}
+
+function startsWord(content, index, word) {
+  if (content.slice(index, index + word.length) !== word) return false;
+  return isBoundaryChar(content[index - 1]) && isBoundaryChar(content[index + word.length]);
+}
+
+function findStatementEnd(content, start) {
+  let quote = "";
+  let escaped = false;
+
+  for (let index = start; index < content.length; index += 1) {
+    const ch = content[index];
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escaped = true;
+        continue;
+      }
+      if (ch === quote) quote = "";
+      continue;
+    }
+
+    if (ch === '"' || ch === "'" || ch === "`") {
+      quote = ch;
+      continue;
+    }
+
+    if (ch === ";") return index + 1;
+  }
+
+  let newline = content.indexOf("\n", start);
+  if (newline === -1) newline = content.length;
+  return newline;
+}
+
+function findQuotedValue(text, start = 0) {
+  for (let index = start; index < text.length; index += 1) {
+    const quote = text[index];
+    if (quote !== '"' && quote !== "'" && quote !== "`") continue;
+
+    let value = "";
+    let escaped = false;
+
+    for (let cursor = index + 1; cursor < text.length; cursor += 1) {
+      const ch = text[cursor];
+
+      if (escaped) {
+        value += ch;
+        escaped = false;
+        continue;
+      }
+
+      if (ch === "\\") {
+        escaped = true;
+        continue;
+      }
+
+      if (ch === quote) {
+        return { value, start: index, end: cursor + 1 };
+      }
+
+      value += ch;
+    }
+  }
+
+  return null;
+}
+
+function splitTopLevelCommas(value) {
+  const parts = [];
+  let current = "";
+  let depth = 0;
+
+  for (const ch of value) {
+    if (ch === "{" || ch === "(" || ch === "[") depth += 1;
+    if (ch === "}" || ch === ")" || ch === "]") depth = Math.max(0, depth - 1);
+
+    if (ch === "," && depth === 0) {
+      const trimmed = current.trim();
+      if (trimmed) parts.push(trimmed);
+      current = "";
+      continue;
+    }
+
+    current += ch;
+  }
+
+  const trimmed = current.trim();
+  if (trimmed) parts.push(trimmed);
+
+  return parts;
+}
+
+function removeLeadingType(value) {
+  const trimmed = value.trim();
+  if (trimmed.startsWith("type ")) return trimmed.slice(5).trim();
+  return trimmed;
 }
 
 function importedNameFromPart(part) {
-  const clean = part.replace(/^type[ \t\r\n]+/, "").trim();
-  const pieces = clean.split(/[ \t\r\n]+as[ \t\r\n]+/);
-  return pieces[0]?.trim() || "";
+  const clean = removeLeadingType(part);
+  const asIndex = clean.indexOf(" as ");
+  return (asIndex >= 0 ? clean.slice(0, asIndex) : clean).trim();
 }
 
 function exportedNameFromPart(part) {
-  const clean = part.replace(/^type[ \t\r\n]+/, "").trim();
-  const pieces = clean.split(/[ \t\r\n]+as[ \t\r\n]+/);
-  return (pieces[1] || pieces[0] || "").trim();
+  const clean = removeLeadingType(part);
+  const asIndex = clean.indexOf(" as ");
+  return (asIndex >= 0 ? clean.slice(asIndex + 4) : clean).trim();
 }
 
 function parseImportClause(clause) {
@@ -425,8 +544,8 @@ function parseImportClause(clause) {
   }
 
   if (raw.startsWith("{")) {
-    const inside = raw.replace(/^\{/, "").replace(/\}$/, "");
-    const names = splitImportList(inside).map(importedNameFromPart).filter(Boolean);
+    const inside = raw.slice(1, raw.lastIndexOf("}"));
+    const names = splitTopLevelCommas(inside).map(importedNameFromPart).filter(Boolean);
     if (names.length) records.push({ kind: "named", names });
     return records;
   }
@@ -439,8 +558,8 @@ function parseImportClause(clause) {
     if (defaultName) records.push({ kind: "default", names: ["(default)"] });
 
     if (rest.startsWith("{")) {
-      const inside = rest.replace(/^\{/, "").replace(/\}$/, "");
-      const names = splitImportList(inside).map(importedNameFromPart).filter(Boolean);
+      const inside = rest.slice(1, rest.lastIndexOf("}"));
+      const names = splitTopLevelCommas(inside).map(importedNameFromPart).filter(Boolean);
       if (names.length) records.push({ kind: "named", names });
     } else if (rest.startsWith("* as ")) {
       records.push({ kind: "namespace", names: [`* as ${rest.slice(5).trim()}`] });
@@ -455,56 +574,133 @@ function parseImportClause(clause) {
 
 function addRecord(records, specifier, kind, names, source) {
   if (!specifier) return;
-  records.push({ specifier, kind, names: names.length ? names : ["(unknown)"], source });
+  records.push({
+    specifier,
+    kind,
+    names: names.length ? names : ["(unknown)"],
+    source,
+  });
 }
 
 function extractImportRecords(content) {
   const records = [];
-  let match;
 
-  const staticImportRe = /\bimport[ \t\r\n]+(type[ \t\r\n]+)?([\s\S]*?)[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
-  while ((match = staticImportRe.exec(content)) !== null) {
-    const isType = Boolean(match[1]);
-    const clause = match[2];
-    const specifier = match[3];
+  for (let index = 0; index < content.length; index += 1) {
+    if (startsWord(content, index, "import")) {
+      const afterImport = index + "import".length;
+      const nextNonSpace = findNextNonSpace(content, afterImport);
 
-    for (const parsed of parseImportClause(clause)) {
-      addRecord(records, specifier, parsed.kind, parsed.names, isType ? "import type" : "import");
+      if (content[nextNonSpace] === "(") {
+        const statementEnd = findStatementEnd(content, index);
+        const statement = content.slice(index, statementEnd);
+        const quoted = findQuotedValue(statement, statement.indexOf("("));
+        if (quoted) addRecord(records, quoted.value, "dynamic", ["(dynamic import)"], "dynamic");
+        index = statementEnd - 1;
+        continue;
+      }
+
+      const statementEnd = findStatementEnd(content, index);
+      const statement = content.slice(index, statementEnd).trim();
+      const fromInfo = findFromSpecifier(statement);
+
+      if (fromInfo) {
+        let clause = statement.slice("import".length, fromInfo.fromIndex).trim();
+        let source = "import";
+        if (clause.startsWith("type ")) {
+          clause = clause.slice(5).trim();
+          source = "import type";
+        }
+
+        for (const parsed of parseImportClause(clause)) {
+          addRecord(records, fromInfo.specifier, parsed.kind, parsed.names, source);
+        }
+      } else {
+        const quoted = findQuotedValue(statement, "import".length);
+        if (quoted) addRecord(records, quoted.value, "side-effect", ["(side-effect)"], "import");
+      }
+
+      index = statementEnd - 1;
+      continue;
+    }
+
+    if (startsWord(content, index, "require")) {
+      const statementEnd = findStatementEnd(content, index);
+      const statement = content.slice(index, statementEnd);
+      const openIndex = statement.indexOf("(");
+      const quoted = openIndex >= 0 ? findQuotedValue(statement, openIndex) : null;
+      if (quoted) addRecord(records, quoted.value, "require", ["(require)"], "require");
+      index = statementEnd - 1;
+      continue;
+    }
+
+    if (startsWord(content, index, "export")) {
+      const statementEnd = findStatementEnd(content, index);
+      const statement = content.slice(index, statementEnd).trim();
+      const fromInfo = findFromSpecifier(statement);
+
+      if (fromInfo) {
+        const beforeFrom = statement.slice("export".length, fromInfo.fromIndex).trim();
+
+        if (beforeFrom === "*") {
+          addRecord(records, fromInfo.specifier, "reexport-star", ["*"], "export from");
+        } else if (beforeFrom.startsWith("* as ")) {
+          addRecord(records, fromInfo.specifier, "reexport-namespace", [`* as ${beforeFrom.slice(5).trim()}`], "export from");
+        } else if (beforeFrom.startsWith("type {") || beforeFrom.startsWith("{")) {
+          const open = beforeFrom.indexOf("{");
+          const close = beforeFrom.lastIndexOf("}");
+          const inside = open >= 0 && close > open ? beforeFrom.slice(open + 1, close) : "";
+          const names = splitTopLevelCommas(inside).map(importedNameFromPart).filter(Boolean);
+          addRecord(records, fromInfo.specifier, "reexport-named", names, beforeFrom.startsWith("type ") ? "export type from" : "export from");
+        }
+      }
+
+      index = statementEnd - 1;
     }
   }
 
-  const sideEffectImportRe = /(?:^|[;\n])[ \t\r\n]*import[ \t\r\n]+["']([^"']+)["']/g;
-  while ((match = sideEffectImportRe.exec(content)) !== null) {
-    addRecord(records, match[1], "side-effect", ["(side-effect)"], "import");
-  }
-
-  const requireRe = /\brequire[ \t\r\n]*[(][ \t\r\n]*["']([^"']+)["'][ \t\r\n]*[)]/g;
-  while ((match = requireRe.exec(content)) !== null) {
-    addRecord(records, match[1], "require", ["(require)"], "require");
-  }
-
-  const dynamicImportRe = /\bimport[ \t\r\n]*[(][ \t\r\n]*["'`]([^"'`]+)["'`][ \t\r\n]*[)]/g;
-  while ((match = dynamicImportRe.exec(content)) !== null) {
-    addRecord(records, match[1], "dynamic", ["(dynamic import)"], "dynamic");
-  }
-
-  const namedReexportRe = /\bexport[ \t\r\n]+(type[ \t\r\n]+)?\{([^}]+)\}[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
-  while ((match = namedReexportRe.exec(content)) !== null) {
-    const names = splitImportList(match[2]).map(importedNameFromPart).filter(Boolean);
-    addRecord(records, match[3], "reexport-named", names, match[1] ? "export type from" : "export from");
-  }
-
-  const namespaceReexportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+as[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
-  while ((match = namespaceReexportRe.exec(content)) !== null) {
-    addRecord(records, match[2], "reexport-namespace", [`* as ${match[1]}`], "export from");
-  }
-
-  const starReexportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
-  while ((match = starReexportRe.exec(content)) !== null) {
-    addRecord(records, match[1], "reexport-star", ["*"], "export from");
-  }
-
   return records;
+}
+
+function findNextNonSpace(content, start) {
+  for (let index = start; index < content.length; index += 1) {
+    const ch = content[index];
+    if (ch !== " " && ch !== "\t" && ch !== "\n" && ch !== "\r") return index;
+  }
+  return content.length;
+}
+
+function findFromSpecifier(statement) {
+  let quote = "";
+  let escaped = false;
+
+  for (let index = 0; index < statement.length; index += 1) {
+    const ch = statement[index];
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escaped = true;
+        continue;
+      }
+      if (ch === quote) quote = "";
+      continue;
+    }
+
+    if (ch === '"' || ch === "'" || ch === "`") {
+      quote = ch;
+      continue;
+    }
+
+    if (startsWord(statement, index, "from")) {
+      const quoted = findQuotedValue(statement, index + 4);
+      if (quoted) return { fromIndex: index, specifier: quoted.value };
+    }
+  }
+
+  return null;
 }
 
 function extractImports(content) {
@@ -542,88 +738,163 @@ function extractNamedImports(content) {
 
 function extractNamedExports(content) {
   const out = new Set();
-  let match;
+  const statements = extractExportStatements(content);
 
-  const declarationExportRe = /\bexport[ \t\r\n]+(?:declare[ \t\r\n]+)?(?:async[ \t\r\n]+)?(?:function|const|class|let|var|interface|type|enum)[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)/g;
-  while ((match = declarationExportRe.exec(content)) !== null) out.add(match[1]);
+  for (const statement of statements) {
+    const trimmed = statement.trim();
 
-  const listExportRe = /\bexport[ \t\r\n]+(?:type[ \t\r\n]+)?\{([^}]+)\}(?:[ \t\r\n]+from[ \t\r\n]+["'][^"']+["'])?/g;
-  while ((match = listExportRe.exec(content)) !== null) {
-    for (const part of splitImportList(match[1])) {
-      const exported = exportedNameFromPart(part);
-      if (exported) out.add(exported);
+    if (trimmed.startsWith("export default")) {
+      out.add("(default)");
+      continue;
+    }
+
+    let rest = trimmed.slice("export".length).trim();
+
+    if (rest.startsWith("declare ")) rest = rest.slice("declare ".length).trim();
+    if (rest.startsWith("async ")) rest = rest.slice("async ".length).trim();
+
+    for (const keyword of ["function", "const", "class", "let", "var", "interface", "type", "enum"]) {
+      if (rest.startsWith(`${keyword} `)) {
+        const name = readIdentifier(rest.slice(keyword.length).trim());
+        if (name) out.add(name);
+      }
+    }
+
+    if (rest.startsWith("{") || rest.startsWith("type {")) {
+      const open = rest.indexOf("{");
+      const close = rest.lastIndexOf("}");
+      const inside = open >= 0 && close > open ? rest.slice(open + 1, close) : "";
+      for (const part of splitTopLevelCommas(inside)) {
+        const name = exportedNameFromPart(part);
+        if (name) out.add(name);
+      }
+    }
+
+    if (rest.startsWith("* as ")) {
+      const after = rest.slice(5).trim();
+      const name = readIdentifier(after);
+      if (name) out.add(name);
     }
   }
-
-  const namespaceExportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+as[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t\r\n]+from[ \t\r\n]+["'][^"']+["']/g;
-  while ((match = namespaceExportRe.exec(content)) !== null) out.add(match[1]);
-
-  if (/\bexport[ \t\r\n]+default\b/.test(content)) out.add("(default)");
 
   return [...out].sort();
 }
 
+function extractExportStatements(content) {
+  const statements = [];
+
+  for (let index = 0; index < content.length; index += 1) {
+    if (!startsWord(content, index, "export")) continue;
+    const end = findStatementEnd(content, index);
+    statements.push(content.slice(index, end));
+    index = end - 1;
+  }
+
+  return statements;
+}
+
+function readIdentifier(value) {
+  let out = "";
+
+  for (const ch of value) {
+    const code = ch.charCodeAt(0);
+    const isLetter = (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+    const isDigit = code >= 48 && code <= 57;
+    const ok = isLetter || isDigit || ch === "_" || ch === "$";
+
+    if (!ok) break;
+    out += ch;
+  }
+
+  return out;
+}
+
 function detectHookExports(content) {
   const hooks = [];
-  const hookExportRe = /\bexport[ \t\r\n]+(?:function|const)[ \t\r\n]+(use[A-Z][A-Za-z0-9_]*)/g;
-  let match;
-  while ((match = hookExportRe.exec(content)) !== null) hooks.push(match[1]);
+
+  for (const statement of extractExportStatements(content)) {
+    let rest = statement.trim().slice("export".length).trim();
+    if (rest.startsWith("function ")) {
+      const name = readIdentifier(rest.slice("function ".length).trim());
+      if (name.startsWith("use") && name.length > 3 && isUppercase(name[3])) hooks.push(name);
+    }
+    if (rest.startsWith("const ")) {
+      const name = readIdentifier(rest.slice("const ".length).trim());
+      if (name.startsWith("use") && name.length > 3 && isUppercase(name[3])) hooks.push(name);
+    }
+  }
+
   return uniqueSorted(hooks);
+}
+
+function isUppercase(ch) {
+  return ch >= "A" && ch <= "Z";
 }
 
 function detectReactComponent(file, content) {
   if (!file.endsWith(".tsx") && !file.endsWith(".jsx")) return false;
 
-  const exportedComponentRe = /\bexport[ \t\r\n]+(?:default[ \t\r\n]+)?(?:function|const|class)[ \t\r\n]+[A-Z]/;
-  const namedFunctionRe = /\bfunction[ \t\r\n]+[A-Z][A-Za-z0-9_]*[ \t\r\n]*[(]/;
-  const namedConstRe = /\bconst[ \t\r\n]+[A-Z][A-Za-z0-9_]*[ \t\r\n]*=/;
-  const returnsJsxRe = /\breturn[ \t\r\n]*[(]?[ \t\r\n]*</;
+  if (content.includes("return <")) return true;
+  if (content.includes("return (<")) return true;
+  if (content.includes("return  <")) return true;
+  if (content.includes("React.FC")) return true;
+  if (content.includes("JSX.Element")) return true;
 
-  return exportedComponentRe.test(content) || namedFunctionRe.test(content) || namedConstRe.test(content) || returnsJsxRe.test(content);
+  for (const statement of extractExportStatements(content)) {
+    let rest = statement.trim().slice("export".length).trim();
+
+    if (rest.startsWith("default ")) rest = rest.slice("default ".length).trim();
+    if (rest.startsWith("async ")) rest = rest.slice("async ".length).trim();
+
+    for (const keyword of ["function", "const", "class"]) {
+      if (rest.startsWith(`${keyword} `)) {
+        const name = readIdentifier(rest.slice(keyword.length).trim());
+        if (name && isUppercase(name[0])) return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 function isBarrelFile(file, content) {
   const base = path.posix.basename(file);
-  if (!/^index[.](ts|tsx|js|jsx|mjs|cjs)$/.test(base)) return false;
+  if (!["index.ts", "index.tsx", "index.js", "index.jsx", "index.mjs", "index.cjs"].includes(base)) return false;
 
-  const stripped = content
-    .replace(/\/[*][\s\S]*?[*]\//g, "")
-    .replace(/\/\/.*$/gm, "")
-    .replace(/["']use client["'];?/g, "")
-    .replace(/["']use server["'];?/g, "")
-    .trim();
-
-  if (!stripped) return false;
-
-  return stripped
+  const lines = content
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
-    .every((line) => line.startsWith("export ") || line.startsWith("import type "));
+    .filter((line) => !line.startsWith("//"))
+    .filter((line) => line !== "'use client';" && line !== '"use client";' && line !== "'use server';" && line !== '"use server";');
+
+  if (!lines.length) return false;
+
+  return lines.every((line) => line.startsWith("export ") || line.startsWith("import type "));
 }
 
 function detectSupabase(content) {
-  return /from[ \t\r\n]+["']@supabase|createClient[ \t\r\n]*[(]|supabase[.](from|auth|storage|rpc)[ \t\r\n]*[(]/.test(content);
+  return content.includes("@supabase") || content.includes("createClient(") || content.includes("supabase.from(") || content.includes("supabase.auth") || content.includes("supabase.storage") || content.includes("supabase.rpc(");
 }
 
 function detectEventBus(content) {
-  return /[.]on[ \t\r\n]*[(][ \t\r\n]*["']|[.]emit[ \t\r\n]*[(][ \t\r\n]*["']|[.]subscribe[ \t\r\n]*[(]|EventEmitter|eventBus[.]|dreamOSBus/.test(content);
+  return content.includes(".on(") || content.includes(".emit(") || content.includes(".subscribe(") || content.includes("EventEmitter") || content.includes("eventBus.") || content.includes("dreamOSBus");
 }
 
 function detectZustand(content) {
-  return /from[ \t\r\n]+["']zustand["']|create[ \t\r\n]*</.test(content);
+  return content.includes("from 'zustand'") || content.includes('from "zustand"') || content.includes("create<");
 }
 
 function detectContext(content) {
-  return /createContext[ \t\r\n]*[(]|useContext[ \t\r\n]*[(]|React[.]createContext/.test(content);
+  return content.includes("createContext(") || content.includes("useContext(") || content.includes("React.createContext");
 }
 
 function detectRuntimeRegistry(content) {
-  return /[.]register[ \t\r\n]*[(]|EnginDispatcher|registerEngine|new[ \t\r\n]+\w*Registry[ \t\r\n]*[(]|moduleRegistry|enginWorkflowRegistry/.test(content);
+  return content.includes(".register(") || content.includes("EnginDispatcher") || content.includes("registerEngine") || content.includes("Registry(") || content.includes("moduleRegistry") || content.includes("enginWorkflowRegistry");
 }
 
 function detectDualRuntime(content) {
-  return /dualRuntime|DualRuntime|dreamOSBus|EnginDispatcher|runtimeBridge|DualRuntimeBridge|RuntimeShell|RuntimeView/.test(content);
+  return content.includes("dualRuntime") || content.includes("DualRuntime") || content.includes("dreamOSBus") || content.includes("EnginDispatcher") || content.includes("runtimeBridge") || content.includes("DualRuntimeBridge") || content.includes("RuntimeShell") || content.includes("RuntimeView");
 }
 
 function loadTsconfigPaths() {
@@ -641,13 +912,12 @@ function loadTsconfigPaths() {
 
       for (const [aliasPattern, targets] of Object.entries(paths)) {
         if (!Array.isArray(targets)) continue;
-
         for (const targetPattern of targets) {
           mappings.push({ aliasPattern, targetPattern, baseUrl });
         }
       }
     } catch {
-      // Repo-state generation should not die on malformed tsconfig.
+      // Keep repo-state generation alive even if a tsconfig variant is malformed.
     }
   }
 
@@ -679,7 +949,7 @@ function expandPathPattern(specifier, mapping) {
     wildcard = specifier.slice(prefix.length, specifier.length - suffix.length);
   }
 
-  return normalizeRel(path.posix.join(mapping.baseUrl, mapping.targetPattern.replace("*", wildcard)));
+  return normalizeRel(path.posix.join(mapping.baseUrl, mapping.targetPattern.split("*").join(wildcard)));
 }
 
 function stripSpecifierNoise(specifier) {
@@ -774,14 +1044,46 @@ function buildRouteMap(files) {
   const pages = files.filter(isPageFile);
 
   const routes = pages.map((file) => {
-    let route = file
-      .replace(/^app/, "")
-      .replace(/\/page[.](tsx|ts|jsx|js)$/, "")
-      .replace(/\/[(][^)]+[)]/g, "")
-      .replace(/\/$begin:math:display$\[\.\]\[\.\]\[\.\]\(\[\^$end:math:display$]+)\]/g, "/:$1*")
-      .replace(/$begin:math:display$\(\[\^$end:math:display$]+)\]/g, ":$1");
+    let route = file;
 
-    if (!route || route === "") route = "/";
+    if (route.startsWith("app")) {
+      route = route.slice(3);
+    }
+
+    for (const pageName of ["/page.tsx", "/page.ts", "/page.jsx", "/page.js"]) {
+      if (route.endsWith(pageName)) {
+        route = route.slice(0, -pageName.length);
+        break;
+      }
+    }
+
+    const parts = route.split("/").filter(Boolean);
+    const routeParts = [];
+
+    for (const part of parts) {
+      if (part.startsWith("(") && part.endsWith(")")) {
+        continue;
+      }
+
+      if (part.startsWith("[[...") && part.endsWith("]]")) {
+        routeParts.push(`:${part.slice(5, -2)}*`);
+        continue;
+      }
+
+      if (part.startsWith("[...") && part.endsWith("]")) {
+        routeParts.push(`:${part.slice(4, -1)}*`);
+        continue;
+      }
+
+      if (part.startsWith("[") && part.endsWith("]")) {
+        routeParts.push(`:${part.slice(1, -1)}`);
+        continue;
+      }
+
+      routeParts.push(part);
+    }
+
+    route = routeParts.length ? `/${routeParts.join("/")}` : "/";
 
     let label = "";
     if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " ← HOME (DreamDMBar)";
@@ -835,9 +1137,7 @@ for (const file of codeFiles) {
 
 const relDepGraph = {};
 for (const [file, data] of Object.entries(fileData)) {
-  relDepGraph[file] = data.resolvedImports
-    .map((record) => codeFileForResolvedPath(record.resolved))
-    .filter(Boolean);
+  relDepGraph[file] = data.resolvedImports.map((record) => codeFileForResolvedPath(record.resolved)).filter(Boolean);
 }
 
 function detectCircular(graph) {
@@ -976,7 +1276,7 @@ const riskFiles = Object.entries(fileData)
 
 function matchGlobs(file, globs) {
   return globs.some((glob) => {
-    const clean = glob.replace(/\/$/, "");
+    const clean = glob.endsWith("/") ? glob.slice(0, -1) : glob;
     return file === clean || file.startsWith(`${clean}/`) || file.includes(clean);
   });
 }
@@ -1166,7 +1466,7 @@ function renderFeatureSection(feature) {
 const dirFeatureMap = {};
 for (const feature of FEATURES) {
   for (const glob of feature.globs) {
-    const key = glob.replace(/\/$/, "");
+    const key = glob.endsWith("/") ? glob.slice(0, -1) : glob;
     if (!dirFeatureMap[key]) dirFeatureMap[key] = [];
     dirFeatureMap[key].push(feature.name);
   }
@@ -1195,7 +1495,7 @@ function sortedTreeEntries(dir) {
       if (entry.isDirectory()) return true;
       const ext = extOf(entry.name);
       if (MEDIA_EXTENSIONS.has(ext)) return false;
-      if (/[.]md$/i.test(entry.name)) return false;
+      if (entry.name.toLowerCase().endsWith(".md")) return false;
       return true;
     })
     .sort((a, b) => {
@@ -1481,7 +1781,7 @@ md += "\n---\n\n";
 
 md += `<a name="broken-imports"></a>\n\n`;
 md += "# Broken Imports\n\n";
-md += "> Internal imports (`@/`, configured tsconfig path aliases, absolute public paths, or relative imports) that do not resolve to a real file. External npm packages are excluded.\n\n";
+md += "> Internal imports that do not resolve to a real file. External npm packages are excluded.\n\n";
 
 const brokenEntries = Object.entries(brokenImports).filter(([file]) => !isTestFile(file)).sort();
 if (brokenEntries.length) {
@@ -1499,7 +1799,7 @@ md += "\n---\n\n";
 
 md += `<a name="unused-exports"></a>\n\n`;
 md += "# Unused Exports\n\n";
-md += "> Exported identifiers that are not statically imported by another analysed source file after resolving aliases, re-exports, namespace imports, dynamic imports, framework entrypoints, route handlers, root config files, type files, and barrel files.\n\n";
+md += "> Exported identifiers that are not statically imported by another analysed source file after framework, route, root config, barrel, namespace, dynamic, and type-file exceptions.\n\n";
 
 const unusedEntries = Object.entries(unusedExports).sort();
 if (unusedEntries.length) {
