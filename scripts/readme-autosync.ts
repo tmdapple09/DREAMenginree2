@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 type SourceFile = {
   path: string;
@@ -48,6 +49,22 @@ type ProductSectionsResult = {
   sections: ProductSectionOutput[];
 };
 
+export type ProductSectionStats = {
+  number: number;
+  title: string;
+  matchedFiles: number;
+  sourceLines: number;
+  routes: number;
+  apis: number;
+  components: number;
+  hooks: number;
+};
+
+export type ProductReadmeResult = {
+  markdown: string;
+  stats: ProductSectionStats[];
+};
+
 const SOURCE_EXTENSIONS = new Set([
   ".ts",
   ".tsx",
@@ -85,7 +102,7 @@ const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
 
 const META_ROOTS = new Set(["scripts", ".github", "docs", "research", "tests"]);
 
-const PRODUCT_SECTIONS: SectionRule[] = [
+export const PRODUCT_SECTIONS: SectionRule[] = [
   {
     number: 4,
     title: "Tech Stack & Monorepo Layout",
@@ -485,10 +502,6 @@ function includesKeyword(text: string, keyword: string): boolean {
   return text.toLowerCase().includes(keyword.toLowerCase());
 }
 
-function countMatches(text: string, pattern: RegExp): number {
-  return [...text.matchAll(new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`))].length;
-}
-
 function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
   if (section.excludedPaths?.some((pattern) => pattern.test(file.path))) {
     return null;
@@ -520,10 +533,10 @@ function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
   const lowerPath = file.path.toLowerCase();
 
   for (const keyword of section.keywords) {
-    if (lowerPath.includes(keyword.toLowerCase().replace(/\s+/g, "-"))) {
-      score += 20;
-      reasons.push(`path keyword: ${keyword}`);
-    } else if (lowerPath.includes(keyword.toLowerCase())) {
+    const lowerKeyword = keyword.toLowerCase();
+    const dashedKeyword = lowerKeyword.replace(/\s+/g, "-");
+
+    if (lowerPath.includes(dashedKeyword) || lowerPath.includes(lowerKeyword)) {
       score += 20;
       reasons.push(`path keyword: ${keyword}`);
     }
@@ -586,7 +599,11 @@ function extractRouteMethods(text: string): string[] {
   const methods = new Set<string>();
 
   for (const method of ["GET", "POST", "PUT", "PATCH", "DELETE"]) {
-    if (new RegExp(`export\\s+async\\s+function\\s+${method}\\b|export\\s+function\\s+${method}\\b|export\\s+const\\s+${method}\\b`).test(text)) {
+    const methodPattern = new RegExp(
+      `export\\s+async\\s+function\\s+${method}\\b|export\\s+function\\s+${method}\\b|export\\s+const\\s+${method}\\b`
+    );
+
+    if (methodPattern.test(text)) {
       methods.add(method);
     }
   }
@@ -600,6 +617,7 @@ function extractImports(matches: FileMatch[]): string[] {
   for (const { file } of matches) {
     for (const match of file.text.matchAll(/from\s+["']([^"']+)["']/g)) {
       const source = match[1];
+
       if (!source.startsWith(".") && !source.startsWith("@/")) {
         imports.add(source);
       } else {
@@ -655,7 +673,7 @@ function extractHooks(matches: FileMatch[]): string[] {
 }
 
 function behaviorSignals(matches: FileMatch[]): string[] {
-  const signals = [
+  const signals: Array<[string, RegExp]> = [
     ["runtime", /\bruntime\b|Runtime|EnginRuntime/g],
     ["state", /\buseState\b|\bstate\b|zustand|reducer/g],
     ["persistence", /localStorage|sessionStorage|supabase|persist|database|storage/g],
@@ -668,7 +686,15 @@ function behaviorSignals(matches: FileMatch[]): string[] {
 
   return signals
     .map(([name, pattern]) => {
-      const count = matches.reduce((sum, match) => sum + (pattern.test(match.file.text) || pattern.test(match.file.path) ? 1 : 0), 0);
+      const count = matches.reduce((sum, match) => {
+        pattern.lastIndex = 0;
+        const textHit = pattern.test(match.file.text);
+        pattern.lastIndex = 0;
+        const pathHit = pattern.test(match.file.path);
+
+        return sum + (textHit || pathHit ? 1 : 0);
+      }, 0);
+
       return { name, count };
     })
     .filter((item) => item.count > 0)
@@ -766,6 +792,8 @@ export function buildProductSections(options: {
   changedFilesPath: string;
   maxLines?: number;
 }): ProductSectionsResult {
+  void options.maxLines;
+
   const trackedFiles = loadTrackedFiles(options.changedFilesPath);
   const sourceFiles = loadSourceFiles(trackedFiles);
 
@@ -790,6 +818,46 @@ export function renderProductSectionsMarkdown(result: ProductSectionsResult): st
     "<!-- DREAMENGIN_PRODUCT_README:END -->",
     "",
   ].join("\n");
+}
+
+export function buildProductReadmeSections(
+  files: string[],
+  lineBudget = 2800
+): ProductReadmeResult {
+  void lineBudget;
+
+  const trackedFiles = files
+    .map(normalizePath)
+    .filter(Boolean)
+    .filter((file) => !isGloballyExcluded(file));
+
+  const sourceFiles = loadSourceFiles(trackedFiles);
+
+  const sections = PRODUCT_SECTIONS.map((section) => {
+    const matches = getMatches(sourceFiles, section);
+    return sectionMarkdown(section, matches);
+  });
+
+  return {
+    markdown: [
+      "<!-- DREAMENGIN_PRODUCT_README:START -->",
+      "",
+      ...sections.map((section) => section.markdown.trim()),
+      "",
+      "<!-- DREAMENGIN_PRODUCT_README:END -->",
+      "",
+    ].join("\n"),
+    stats: sections.map((section) => ({
+      number: section.number,
+      title: section.title,
+      matchedFiles: section.matchedFiles,
+      sourceLines: section.sourceLines,
+      routes: section.routes,
+      apis: section.apis,
+      components: section.components,
+      hooks: section.hooks,
+    })),
+  };
 }
 
 function parseArgs(argv: string[]): Record<string, string | boolean> {
@@ -862,6 +930,8 @@ function runCli(): void {
   }, null, 2));
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isCli = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isCli) {
   runCli();
 }
