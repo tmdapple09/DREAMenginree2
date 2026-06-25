@@ -10,7 +10,7 @@
  *  3. Enters a requestAnimationFrame loop (browser) or a tight Atomics.wait
  *     loop (shared worker / Node-like runtime) performing entity physics ticks.
  *  4. Each tick:
- *       a. Reads the DreamDM Bar y-offset from the SAB (Dual-Runtime Seam).
+ *       a. Reads the DreamDM Bar y-offset from the SAB (Dual-Runtime boundary).
  *       b. Applies f32x4.add velocity integration to posX/posY/posZ for
  *          every entity in the assigned [startIndex, endIndex) range.
  *       c. Validates every write index before touching the SAB (IDARi /
@@ -39,13 +39,13 @@ const OFFSET_POS_Z        = OFFSET_POS_Y + F32_CHANNEL_BYTES;
 const OFFSET_VEL_X        = OFFSET_POS_Z + F32_CHANNEL_BYTES;
 const OFFSET_VEL_Y        = OFFSET_VEL_X + F32_CHANNEL_BYTES;
 const OFFSET_VEL_Z        = OFFSET_VEL_Y + F32_CHANNEL_BYTES;
-const OFFSET_DREAMDM_BAR_Y = 250_000;  // Int32 — portrait / Y-axis seam ratio
-const OFFSET_DREAMDM_BAR_X = 250_004;  // Int32 — landscape / X-axis seam ratio
+const OFFSET_DREAMDM_BAR_Y = 250_000;  // Int32 — portrait / Y-axis boundary ratio
+const OFFSET_DREAMDM_BAR_X = 250_004;  // Int32 — landscape / X-axis boundary ratio
 const OFFSET_TELEMETRY    = 250_008;  // Float64[MAX_WORKERS]
 const OFFSET_LOCKED_STATE = 250_520;  // Int32 — 0=unlocked, 1=STATE_LOCKED
 const OFFSET_AXIS_STATE   = 250_524;  // Int32 — 0=Portrait/Y, 1=Landscape/X
 
-/** Fixed-point scale for the bar seam slots — mirrors BAR_Y_SCALE in memory.ts. */
+/** Fixed-point scale for the bar boundary slots — mirrors BAR_Y_SCALE in memory.ts. */
 const BAR_Y_SCALE = 100;
 
 interface Workgroup {
@@ -67,8 +67,8 @@ let posZ: Float32Array;
 let velX: Float32Array;
 let velY: Float32Array;
 let velZ: Float32Array;
-let barY: Int32Array;      // Int32 for Atomics.load — portrait seam (Bug C — was Float32Array)
-let barX: Int32Array;      // Int32 for Atomics.load — landscape seam
+let barY: Int32Array;      // Int32 for Atomics.load — portrait boundary (Bug C — was Float32Array)
+let barX: Int32Array;      // Int32 for Atomics.load — landscape boundary
 let lockedState: Int32Array; // 0 = unlocked, 1 = STATE_LOCKED
 let axisState: Int32Array;   // 0 = Portrait/Y, 1 = Landscape/X
 let telemetry: Float64Array;
@@ -91,18 +91,20 @@ function wasmSIMDAddF32x4(
   vArr: Float32Array,
   start: number,
   end: number,
+  deltaTime: number,
 ): void {
-  // Process 4 lanes at a time (SIMD f32x4 semantics)
+  // Process 4 lanes at a time (SIMD f32x4 semantics).
+  // Keep the JS fallback physically equivalent to tickPhysicsSIMD: p += v * dt.
   let i = start;
   for (; i + 4 <= end; i += 4) {
-    pArr[i]     += vArr[i];
-    pArr[i + 1] += vArr[i + 1];
-    pArr[i + 2] += vArr[i + 2];
-    pArr[i + 3] += vArr[i + 3];
+    pArr[i]     += vArr[i] * deltaTime;
+    pArr[i + 1] += vArr[i + 1] * deltaTime;
+    pArr[i + 2] += vArr[i + 2] * deltaTime;
+    pArr[i + 3] += vArr[i + 3] * deltaTime;
   }
-  // Scalar tail for remainder
+  // Scalar tail for remainder.
   for (; i < end; i++) {
-    pArr[i] += vArr[i];
+    pArr[i] += vArr[i] * deltaTime;
   }
 }
 
@@ -148,7 +150,21 @@ async function tryLoadWasm(wasmUrl: string, memory: WebAssembly.Memory | null): 
       },
     });
 
-    wasmExports     = instance.exports as any as WasmExports;
+    const exports = instance.exports as any as WasmExports & { memory?: WebAssembly.Memory };
+
+    if (exports.memory && exports.memory !== memory) {
+      console.warn(
+        '[EnginShaderWorker] Wasm binary owns a separate memory instead of importing the Engin shared memory. JS fallback stays active.',
+      );
+      return;
+    }
+
+    if (typeof exports.tickPhysicsSIMD !== 'function' || typeof exports.processAudioBufferSIMD !== 'function') {
+      console.warn('[EnginShaderWorker] Wasm binary is missing required exports. JS fallback stays active.');
+      return;
+    }
+
+    wasmExports = exports;
     console.info('[EnginShaderWorker] Wasm SIMD engine loaded — near-native physics active.');
   } catch {
     // Wasm not available — JS stub will continue to be used.
@@ -179,7 +195,7 @@ function tick(): void {
 
   const { startIndex, endIndex, workerIndex } = workgroup;
 
-  // Dual-Runtime Seam: read DreamDM Bar seam offset written by Surface Space.
+  // Dual-Runtime boundary: read DreamDM Bar boundary offset written by Surface Space.
   // Select the correct axis slot based on the current orientation flag.
   // Use Atomics.load on Int32 views for sequentially consistent reads
   // (Bug C — replaces non-atomic barY[0] Float32 read).
@@ -187,7 +203,7 @@ function tick(): void {
   const activeBar = isLandscape ? barX : barY;
   const dreamDMBarOffset = Atomics.load(activeBar, 0) / BAR_Y_SCALE;
 
-  // When STATE_LOCKED, the Wasm worker treats the seam as a static collision
+  // When STATE_LOCKED, the Wasm worker treats the boundary as a static collision
   // plane — skip dynamic constraint recalculation for better tick performance.
   const isLocked = Atomics.load(lockedState, 0) === 1;
   void dreamDMBarOffset; // consumed by physics plane logic below
@@ -201,6 +217,8 @@ function tick(): void {
 
   const count = endIndex - startIndex;
 
+  const deltaTime = 1 / 60;
+
   if (wasmExports) {
     // ── Wasm SIMD path: near-native physics via AssemblyScript ────────────
     // posX/velX start at their respective byte offsets inside the SAB.
@@ -209,28 +227,29 @@ function tick(): void {
       OFFSET_POS_X + startIndex * 4,
       OFFSET_VEL_X + startIndex * 4,
       count,
-      1 / 60, // fixed 60 fps delta; a dynamic delta can be passed via SAB in future
+      deltaTime,
     );
     wasmExports.tickPhysicsSIMD(
       OFFSET_POS_Y + startIndex * 4,
       OFFSET_VEL_Y + startIndex * 4,
       count,
-      1 / 60,
+      deltaTime,
     );
     wasmExports.tickPhysicsSIMD(
       OFFSET_POS_Z + startIndex * 4,
       OFFSET_VEL_Z + startIndex * 4,
       count,
-      1 / 60,
+      deltaTime,
     );
   } else {
-    // ── JS stub path: semantically equivalent, used as fallback ──────────
-    wasmSIMDAddF32x4(posX, velX, startIndex, endIndex);
-    wasmSIMDAddF32x4(posY, velY, startIndex, endIndex);
-    wasmSIMDAddF32x4(posZ, velZ, startIndex, endIndex);
+    // ── JS fallback path: semantically equivalent, used when the checked-in
+    // binary does not import the shared Engin memory yet.
+    wasmSIMDAddF32x4(posX, velX, startIndex, endIndex, deltaTime);
+    wasmSIMDAddF32x4(posY, velY, startIndex, endIndex, deltaTime);
+    wasmSIMDAddF32x4(posZ, velZ, startIndex, endIndex, deltaTime);
   }
 
-  // DreamDM Bar seam constraint: clamp posY so Dream Window entities remain
+  // DreamDM Bar boundary constraint: clamp posY so Dream Window entities remain
   // within the DreamSpace region (below the bar).  When the bar is at y=0
   // (default) the constraint is skipped for performance.
   if (dreamDMBarOffset !== 0) {

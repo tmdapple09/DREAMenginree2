@@ -264,7 +264,6 @@ export default function AssetViewport({
 
   const handlers = {
     onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
-    onDoubleClick: () => onFrame?.(),
     onPointerLeave: () => setPointer(null),
     onWheel: (e: React.WheelEvent<HTMLCanvasElement>) => {
       e.preventDefault();

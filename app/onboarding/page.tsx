@@ -22,7 +22,7 @@ const TIPS = [
     step: 2,
     icon: '🔵',
     title: 'The Golden Button',
-    body: 'The gold button at the bottom is your home control. Single-tap to return home. Double-tap to open the Daydreams and System menus.',
+    body: 'The gold button at the bottom is your home control. Single-tap to open the home control and menus. Hold or drag for deeper control.',
     action: null,
     color: '#c8981a',
   },

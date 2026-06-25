@@ -54,9 +54,9 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
  * Renders the content for a single runtime view based on the RuntimeWorld.
  * Used by both Surface Space (top) and DreamSpace (bottom) regions.
  *
- * Every world type is now wrapped in RuntimeShell, which provides:
- *  • A constrained scrollable + zoomable viewport (never the full page).
- *  • Zoom in / zoom out controls.
+ * Every world type is wrapped in RuntimeShell, which provides:
+ *  • A scrollable native-touch viewport that keeps browser pinch zoom alive.
+ *  • No app-owned + / - workspace zoom controls.
  *  • In-region iframe loading so app/engin navigation never leaves the home surface.
  *
  * Panel worlds — { type: 'panel'; name: SystemPanelId } — render the system

@@ -229,7 +229,7 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100%', scrollSnapAlign: 'start', overflow: 'hidden', flexShrink: 0, background: '#0d1526', fontFamily: DR.font }}
+      style={{ position: 'relative', width: '100%', minHeight: '100%', height: 'auto', scrollSnapAlign: 'start', overflow: 'auto', flexShrink: 0, background: '#0d1526', fontFamily: DR.font, touchAction: 'pan-y pinch-zoom' }}
       onTouchStart={e => { const t = e.touches[0]; if (t) touchStart.current = { x: t.clientX, y: t.clientY, at: Date.now() }; }}
       onTouchEnd={e => {
         const s = touchStart.current; touchStart.current = null; if (!s) return;
@@ -415,8 +415,8 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
   return (
     <div
       style={{
-        position: 'relative', width: '100%', height: '100%',
-        scrollSnapAlign: 'start', overflow: 'hidden', flexShrink: 0,
+        position: 'relative', width: '100%', minHeight: '100%', height: 'auto',
+        scrollSnapAlign: 'start', overflow: 'auto', flexShrink: 0, touchAction: 'pan-y pinch-zoom',
         background: hasDark ? 'linear-gradient(180deg,#0d1526,#111d35)' : DR.bg,
         fontFamily: DR.font,
       }}
@@ -560,7 +560,7 @@ function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPo
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100%', scrollSnapAlign: 'start', overflow: 'hidden', flexShrink: 0, background: DR.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', fontFamily: DR.font }}
+      style={{ position: 'relative', width: '100%', minHeight: '100%', height: 'auto', scrollSnapAlign: 'start', overflow: 'auto', flexShrink: 0, background: DR.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', fontFamily: DR.font, touchAction: 'pan-y pinch-zoom' }}
       onTouchStart={e => { const t = e.touches[0]; if (t) touchStart.current = { x: t.clientX, y: t.clientY, at: Date.now() }; }}
       onTouchEnd={e => {
         const s = touchStart.current; touchStart.current = null; if (!s) return;
@@ -640,7 +640,7 @@ function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', scrollSnapAlign: 'start', overflow: 'hidden', flexShrink: 0, background: DR.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', fontFamily: DR.font }}>
+    <div style={{ position: 'relative', width: '100%', minHeight: '100%', height: 'auto', scrollSnapAlign: 'start', overflow: 'auto', flexShrink: 0, background: DR.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', fontFamily: DR.font, touchAction: 'pan-y pinch-zoom' }}>
 
       {/* Label */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 24 }}>
@@ -1044,7 +1044,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: DR.bg }}>
+    <div data-dreamr-feed-surface="true" style={{ position: 'relative', width: '100%', minHeight: '100%', overflow: 'visible', background: DR.bg, touchAction: 'pan-y pinch-zoom' }}>
 
       {feedError && (
         <button type="button" onClick={() => void loadDreamRPage('replace')} style={{ position: 'absolute', top: 58, left: '50%', transform: 'translateX(-50%)', zIndex: 35, background: DR.bg, boxShadow: nmR(5), border: 'none', borderRadius: 99, padding: '9px 18px', fontSize: 12, fontWeight: 800, color: '#b45309', cursor: 'pointer', fontFamily: DR.font, whiteSpace: 'nowrap' }}>
@@ -1064,7 +1064,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         <div
           style={{
             display: 'flex', gap: 6, paddingLeft: 12, paddingRight: 12,
-            overflowX: 'auto', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
+            overflowX: 'auto', scrollbarWidth: 'none',
             pointerEvents: 'auto',
           }}
         >
@@ -1146,7 +1146,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       {/* ── Scroll-snap container ────────────────────────────────────────── */}
       <div
         ref={scrollRef} onScroll={handleScroll}
-        style={{ width: '100%', height: '100%', overflowY: 'scroll', overflowX: 'hidden', scrollSnapType: 'y mandatory', scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
+        style={{ width: '100%', minHeight: '100%', overflowY: 'auto', overflowX: 'auto', scrollSnapType: 'y proximity', scrollBehavior: 'smooth', scrollbarWidth: 'none', touchAction: 'pan-y pinch-zoom' }}
       >
         {/* Spacer for topic strip */}
         <div style={{ height: 54, flexShrink: 0, scrollSnapAlign: 'none' }} />
@@ -1154,7 +1154,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         {personalizedFeedItems.map((item, i: number) => (
           <div
             key={item.kind === 'creator' ? `creator-${item.creator.id}` : item.post.id}
-            style={{ width: '100%', height: '100%', flexShrink: 0, scrollSnapAlign: 'start' }}
+            style={{ width: '100%', minHeight: '100%', height: 'auto', flexShrink: 0, scrollSnapAlign: 'start' }}
           >
             {item.kind === 'post' && isYouTube(item.post) ? (
               <VideoPostCard post={item.post} isActive={i === activeIdx}
@@ -1180,7 +1180,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
 
         {/* Load-more sentinel */}
         {hasMore && (
-          <div style={{ width: '100%', height: '75%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: DR.bg, flexShrink: 0, scrollSnapAlign: 'start' }}>
+          <div style={{ width: '100%', minHeight: '75%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: DR.bg, flexShrink: 0, scrollSnapAlign: 'start' }}>
             {loadingMore ? (
               <Loader2 size={20} style={{ color: DR.sky, animation: 'dr-spin 0.8s linear infinite' }} />
             ) : (

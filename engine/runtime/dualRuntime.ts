@@ -156,7 +156,7 @@ export function swapDominantRuntime(state: DualRuntimeState): DualRuntimeState {
 
 /**
  * Make HomeDream Surface the active world in Surface Space and set it dominant.
- * Used when the user double-taps the Gold button to return home.
+ * Used when the user taps the Gold button to return home.
  */
 export function makeHomeActiveTop(state: DualRuntimeState): DualRuntimeState {
   return {
@@ -169,7 +169,7 @@ export function makeHomeActiveTop(state: DualRuntimeState): DualRuntimeState {
 /**
  * Load HomeDream Surface into the DreamSpace region and make it dominant.
  *
- * Used when the user double-taps the Gold button while the DreamDM Bar is
+ * Used when the user taps the Gold button while the DreamDM Bar is
  * locked at the top — gives the user two independent HomeDream views
  * simultaneously (one in Surface Space, one in DreamSpace).
  */

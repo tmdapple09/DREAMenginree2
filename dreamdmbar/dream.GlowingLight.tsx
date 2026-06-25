@@ -1,6 +1,7 @@
 'use client';
 
 import type { CSSProperties, KeyboardEvent, MouseEvent, TouchEvent } from 'react';
+import { useAppIntentPressureSurface } from '@/hooks/useAppIntentPressureSurface';
 
 export interface GlowingLightProps {
   isDragging?: boolean;
@@ -13,6 +14,8 @@ export interface GlowingLightProps {
   onClick?: (e: MouseEvent<HTMLSpanElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLSpanElement>) => void;
   style?: CSSProperties;
+  intentTarget?: string;
+  intentEnabled?: boolean;
   'aria-label'?: string;
 }
 
@@ -27,14 +30,26 @@ export default function GlowingLight({
   onClick,
   onKeyDown,
   style,
+  intentTarget,
+  intentEnabled = true,
   'aria-label': ariaLabel,
 }: GlowingLightProps) {
+  const pressure = useAppIntentPressureSurface<HTMLSpanElement>({
+    target: intentTarget ?? (isCollapsed ? 'dreamdmbar.minimized-light' : 'dreamdmbar.gold-light'),
+    enabled: intentEnabled,
+    maxTranslatePx: isCollapsed ? 5 : 4,
+    maxTiltDeg: isCollapsed ? 2.4 : 2,
+    maxCompression: 0.022,
+    maxStretch: 0.01,
+    decay: 0.8,
+  });
   const glowSize = isCollapsed ? 14 : 10;
   const glowOpacity = isDragging ? 1.0 : 0.85;
   const spreadPx = isDragging ? 18 : (isCollapsed ? 14 : 10);
 
   return (
     <span
+      ref={pressure.ref}
       role="button"
       tabIndex={0}
       aria-label={ariaLabel ?? 'DreamDM light — tap to open menus'}

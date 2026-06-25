@@ -7,6 +7,12 @@ import {
   type Vertex,
   validateMeshForRenderUpload,
 } from './core';
+import {
+  computeRenderMeshBounds,
+  loadRenderWasmAcceleration,
+  type RenderMeshBounds,
+  type RenderWasmAcceleration,
+} from './wasmAcceleration';
 
 export interface PackedVertexBuffer {
   readonly data: Float32Array;
@@ -30,6 +36,7 @@ export interface RenderEnginGpuMesh {
   readonly indexBuffer: GPUBuffer;
   readonly indexCount: number;
   readonly indexFormat: GPUIndexFormat;
+  readonly bounds: RenderMeshBounds;
   dispose(): void;
 }
 
@@ -224,6 +231,7 @@ export class WebGpuRenderEngin {
   private animationFrame: number | null = null;
   private stopped = true;
   private deviceLost = false;
+  private wasmAcceleration: RenderWasmAcceleration | null = null;
   private scene: RenderEnginScene = {
     viewMatrix: mat4Identity(),
     projectionMatrix: mat4Identity(),
@@ -325,6 +333,11 @@ export class WebGpuRenderEngin {
     });
   }
 
+  async prepareWasmAcceleration(wasmUrl?: string): Promise<RenderWasmAcceleration> {
+    this.wasmAcceleration = await loadRenderWasmAcceleration(wasmUrl);
+    return this.wasmAcceleration;
+  }
+
   resize(width: number, height: number): void {
     const nextWidth = Math.max(1, Math.floor(width));
     const nextHeight = Math.max(1, Math.floor(height));
@@ -370,6 +383,7 @@ export class WebGpuRenderEngin {
     const validation = validateMeshForRenderUpload(mesh);
     if (!validation.valid) throw new Error(validation.reason ?? 'Render asset validation failed before GPU upload.');
     const packed = packAosVertexBuffer(mesh);
+    const bounds = computeRenderMeshBounds(mesh, this.wasmAcceleration);
     const indices = mesh.indexFormat === 'uint16'
       ? new Uint16Array(mesh.indices)
       : new Uint32Array(mesh.indices);
@@ -380,6 +394,7 @@ export class WebGpuRenderEngin {
       indexBuffer,
       indexCount: mesh.indices.length,
       indexFormat: mesh.indexFormat,
+      bounds,
       dispose: () => { vertexBuffer.destroy(); indexBuffer.destroy(); },
     };
   }

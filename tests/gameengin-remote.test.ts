@@ -5,7 +5,7 @@
  *   - Layout invariants (portrait 70/30, landscape 15/70/15, R3 = L × 1.10).
  *   - HUD whitelist (lives, points, timer, streak, branding only).
  *   - Every named base / sprint / multi-touch combo from the directive.
- *   - SprintDetector double-tap+hold-and-move semantics.
+ *   - SprintDetector first-touch hold-and-move semantics.
  *   - ComboMachine sequence + multi-touch + sprint-variant precedence.
  */
 
@@ -134,49 +134,31 @@ describe('GameEngin standard remote — moves & combos catalogue', () => {
 });
 
 describe('GameEngin standard remote — SprintDetector', () => {
-  it('does not sprint on a single tap-and-hold-and-move', () => {
+  it('sprints on first hold-and-move', () => {
     const det = new SprintDetector();
     det.onTouchStart(0);
     det.onMove(10, 0.9);
-    expect(det.isSprinting()).toBe(false);
-  });
-
-  it('sprints on double-tap + hold + move', () => {
-    const det = new SprintDetector();
-    det.onTouchStart(0);
-    det.onTouchEnd(50);
-    det.onTouchStart(100); // within window
-    det.onMove(110, 0.8);
     expect(det.isSprinting()).toBe(true);
   });
 
   it('does not sprint when held but not moving', () => {
     const det = new SprintDetector();
     det.onTouchStart(0);
-    det.onTouchEnd(50);
-    det.onTouchStart(100);
-    det.onMove(110, 0.05); // below threshold
+    det.onMove(10, 0.05);
     expect(det.isSprinting()).toBe(false);
   });
 
   it('exits sprint on release', () => {
     const det = new SprintDetector();
     det.onTouchStart(0);
-    det.onTouchEnd(50);
-    det.onTouchStart(100);
     det.onMove(110, 0.8);
     expect(det.isSprinting()).toBe(true);
     det.onTouchEnd(500);
     expect(det.isSprinting()).toBe(false);
   });
 
-  it('rejects double-tap if 2nd tap is outside the window', () => {
-    const det = new SprintDetector();
-    det.onTouchStart(0);
-    det.onTouchEnd(50);
-    det.onTouchStart(50 + DOUBLE_TAP_WINDOW_MS + 100);
-    det.onMove(60 + DOUBLE_TAP_WINDOW_MS + 100, 0.9);
-    expect(det.isSprinting()).toBe(false);
+  it('keeps the legacy timing constant exported for compatibility only', () => {
+    expect(DOUBLE_TAP_WINDOW_MS).toBeGreaterThan(0);
   });
 });
 

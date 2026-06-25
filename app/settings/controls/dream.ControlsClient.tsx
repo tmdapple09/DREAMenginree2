@@ -141,7 +141,7 @@ export default function ControlsClient( ){
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
                 { step: '1', text: 'Single-tap the gold button to open the Daydreams + System menus.' },
-                { step: '2', text: 'Double-tap the gold button to return to your Home Dream.' },
+                { step: '2', text: 'Single-tap the gold button to open Home Dream controls.' },
                 { step: '3', text: 'Drag the gold button to reposition it on screen.' },
                 { step: '4', text: 'Drag the DreamDM bar upward to open the Dreams Space.' },
               ].map(({ step, text }) => (

@@ -45,7 +45,7 @@ export function snapSplitRatioOnRelease(ratio: number, velocityPxPerMs: number):
   return nearest;
 }
 
-/** Matches the existing touch-friendly second-tap escalation window used by the gold button. */
+/** Legacy compatibility only. Gold particle actions now resolve on first tap. */
 export const GOLD_SECOND_TAP_WINDOW_MS = 280;
 export const GOLD_TAP_SLOP_PX = 14;
 export const BAR_SNAP_TO_TOP_THRESHOLD_PX = 8;
@@ -65,18 +65,16 @@ export const BAR_FLING_LINE_RATIO = 0.4;
 export const MIN_POINTER_SAMPLE_DELTA_MS = 1;
 
 /**
- * Resolves a gold-button release into a double-tap menu action.
+ * Resolves a gold-button release into its immediate menu action.
  *
- * First tap waits. A second tap inside GOLD_SECOND_TAP_WINDOW_MS opens menus.
+ * The app no longer waits on a follow-up tap. The parameters stay in place so
+ * older callers/tests can keep compiling while the UI reacts on first touch.
  */
 export function resolveGoldTapAction(
-  lastTapAt: number = 0,
-  now: number = 0,
-): { action: 'wait'; nextLastTapAt: number } | { action: 'menu'; nextLastTapAt: 0 } {
-  if (lastTapAt > 0 && now - lastTapAt <= GOLD_SECOND_TAP_WINDOW_MS) {
-    return { action: 'menu', nextLastTapAt: 0 };
-  }
-  return { action: 'wait', nextLastTapAt: now };
+  _lastTapAt: number = 0,
+  _now: number = 0,
+): { action: 'menu'; nextLastTapAt: 0 } {
+  return { action: 'menu', nextLastTapAt: 0 };
 }
 
 /** Treats small pointer movement as a tap instead of a swipe or throw. */
@@ -500,7 +498,7 @@ export function generateParticles(count: number): Particle[] {
 /** Minimum vertical movement (px) to treat a touch as a drag instead of a tap. */
 export const DRAG_TAP_THRESHOLD_PX = 5;
 
-/** Maximum delay (ms) between two taps to register as a double-tap. */
+/** Legacy compatibility only. UI tap actions should not wait on this window. */
 export const DOUBLE_TAP_WINDOW_MS = 300;
 
 /** The three named positions the bar can snap to. */
