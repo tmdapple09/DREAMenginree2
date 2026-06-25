@@ -3,7 +3,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 
-const SKIP_DIRS = new Set([
+const IGNORE_DIRS = new Set([
   "node_modules",
   ".git",
   ".next",
@@ -15,14 +15,16 @@ const SKIP_DIRS = new Set([
   ".husky",
 ]);
 
-const SKIP_TREE_DIRS = new Set([
-  ...SKIP_DIRS,
+const TREE_ONLY_IGNORE_DIRS = new Set([
+  ...IGNORE_DIRS,
   "docs",
   "research",
   "research-and-development",
   "repo-visualizer",
 ]);
 
+const CODE_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]);
+const STYLE_EXTENSIONS = new Set([".css", ".scss"]);
 const MEDIA_EXTENSIONS = new Set([
   ".png",
   ".jpg",
@@ -36,17 +38,7 @@ const MEDIA_EXTENSIONS = new Set([
   ".m4v",
   ".avi",
   ".mkv",
-  ".svg",
   ".ico",
-]);
-
-const CODE_EXTENSIONS = new Set([
-  ".ts",
-  ".tsx",
-  ".js",
-  ".jsx",
-  ".mjs",
-  ".cjs",
 ]);
 
 const RESOLVE_EXTENSIONS = [
@@ -64,6 +56,12 @@ const RESOLVE_EXTENSIONS = [
   ".module.scss",
   ".wasm",
   ".sql",
+  ".svg",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".avif",
 ];
 
 const INDEX_EXTENSIONS = [
@@ -73,27 +71,34 @@ const INDEX_EXTENSIONS = [
   "/index.jsx",
   "/index.mjs",
   "/index.cjs",
+  "/index.json",
 ];
 
-const FRAMEWORK_FILE_NAMES = new Set([
-  "page.tsx",
+const APP_ROUTER_ENTRY_NAMES = new Set([
   "page.ts",
-  "layout.tsx",
+  "page.tsx",
+  "page.js",
+  "page.jsx",
   "layout.ts",
-  "template.tsx",
+  "layout.tsx",
+  "layout.js",
+  "layout.jsx",
   "template.ts",
-  "loading.tsx",
+  "template.tsx",
   "loading.ts",
-  "error.tsx",
+  "loading.tsx",
   "error.ts",
-  "global-error.tsx",
+  "error.tsx",
   "global-error.ts",
-  "not-found.tsx",
+  "global-error.tsx",
   "not-found.ts",
-  "default.tsx",
+  "not-found.tsx",
   "default.ts",
+  "default.tsx",
   "route.ts",
   "route.tsx",
+  "route.js",
+  "route.jsx",
 ]);
 
 const ROOT_ENTRY_FILES = new Set([
@@ -116,16 +121,8 @@ const FEATURES = [
     id: "homedream",
     name: "HOME — DreamDMBar",
     group: "user",
-    desc: "DreamDMBar, HomeDream, DreamSpace, and the persistent dual-runtime shell.",
-    globs: [
-      "dreamdmbar/",
-      "app/dreamdmbar",
-      "app/homedream",
-      "components/home/",
-      "components/runtime/",
-      "engine/runtime/",
-      "hooks/useDreamLayout",
-    ],
+    desc: "DreamDMBar, HomeDream, DreamSpace, persistent shell, and dual-runtime entry behavior.",
+    globs: ["dreamdmbar/", "app/dreamdmbar", "app/homedream", "components/home/", "components/runtime/", "engine/runtime/"],
     apiGlobs: ["app/api/dreams/", "app/api/feed/", "app/api/home-layout"],
     testGlobs: ["dreamdm", "homedream", "dual-runtime", "runtime"],
   },
@@ -133,25 +130,16 @@ const FEATURES = [
     id: "dreamr",
     name: "DreamR",
     group: "user",
-    desc: "DreamR feed, profile, messages, scoring, swipe behavior, and social surface.",
+    desc: "DreamR feed, scoring, swipe behavior, profile/social surfaces, and DreamR APIs.",
     globs: ["dreamr/", "components/dreamr/", "app/dreamr/", "app/api/dreamr/"],
     apiGlobs: ["app/api/dreamr/"],
     testGlobs: ["dreamr", "swipe", "torridity"],
   },
   {
-    id: "gameengin",
-    name: "GameEngin",
-    group: "user",
-    desc: "Game runtime, cartridges, controls, HUDs, GameRemote, and WASM game logic.",
-    globs: ["engins/gameengin/", "components/gameengin/", "components/games/", "app/engines/games", "app/daydream/games", "assembly/"],
-    apiGlobs: ["app/api/game-scores", "app/api/gameengin/"],
-    testGlobs: ["gameengin", "game-controller", "madmaxi", "game-remote"],
-  },
-  {
     id: "contentengin",
     name: "ContentEngin / CreateEngin",
     group: "user",
-    desc: "Asset studio, viewport, procedural creation, media tools, publishing paths.",
+    desc: "Asset studio, CreateEngin, ContentEngin panels, viewport, media, publishing, and export paths.",
     globs: ["engins/contentengin/", "engins/engin.ContentEngin", "components/engines/create/", "app/engines/create", "app/daydream/create"],
     apiGlobs: ["app/api/content/", "app/api/drafts/", "app/api/scheduled-posts"],
     testGlobs: ["contentengin", "content-publish", "asset"],
@@ -160,16 +148,25 @@ const FEATURES = [
     id: "renderengin",
     name: "RenderEngin",
     group: "system",
-    desc: "Reusable rendering service technology used by visual Engins.",
+    desc: "Reusable rendering service code used by visual Engins.",
     globs: ["engins/renderengin/", "app/engines/render", "app/daydream/render"],
     apiGlobs: [],
     testGlobs: ["renderengin", "render-engin"],
   },
   {
+    id: "gameengin",
+    name: "GameEngin",
+    group: "user",
+    desc: "Game runtime, cartridges, GameRemote, controls, HUDs, WASM game logic, and scores.",
+    globs: ["engins/gameengin/", "components/gameengin/", "components/games/", "app/engines/games", "app/daydream/games", "assembly/"],
+    apiGlobs: ["app/api/game-scores", "app/api/gameengin/"],
+    testGlobs: ["gameengin", "game-controller", "madmaxi", "game-remote"],
+  },
+  {
     id: "codeengin",
     name: "CodeEngin",
     group: "user",
-    desc: "Scoped user workspace IDE, file APIs, runners, editor shell.",
+    desc: "Scoped user-workspace IDE, files API, runners, diagnostics, and editor surface.",
     globs: ["engins/codeengin/", "engins/engin.CodeEngin", "components/engines/code/", "app/engines/code", "app/daydream/code", "app/api/codeengin/"],
     apiGlobs: ["app/api/codeengin/", "app/api/projects"],
     testGlobs: ["codeengin", "code-dream"],
@@ -178,7 +175,7 @@ const FEATURES = [
     id: "labengin",
     name: "LabEngin",
     group: "user",
-    desc: "Lab panels, simulations, experiment runners, and lab IDE surfaces.",
+    desc: "Lab panels, experiments, simulations, and Lab daydream surfaces.",
     globs: ["engins/labengin/", "engins/engin.LabEngin", "components/engines/lab/", "app/engines/lab", "app/daydream/lab"],
     apiGlobs: ["app/api/lab/"],
     testGlobs: ["labengin", "lab-dream"],
@@ -187,7 +184,7 @@ const FEATURES = [
     id: "starmakerengin",
     name: "StarMakerEngin",
     group: "user",
-    desc: "Music Engin, audio bridge, DAW UI, piano roll, sessions.",
+    desc: "Music Engin, audio bridge, DAW surface, piano roll, and sessions.",
     globs: ["engins/starmakerengin/", "engins/engin.StarMakerEngin", "components/engines/music/", "app/engines/music", "app/daydream/music"],
     apiGlobs: ["app/api/music/"],
     testGlobs: ["starmaker", "music"],
@@ -196,7 +193,7 @@ const FEATURES = [
     id: "brandengin",
     name: "BrandEngin",
     group: "user",
-    desc: "Branding engine, visual identity, campaigns, analytics daydreams.",
+    desc: "Branding Engin, brand identity, campaigns, and analytics daydreams.",
     globs: ["engins/brandengin/", "engins/engin.BrandingEngin", "components/engines/brand/", "app/engines/brand", "app/daydream/brand"],
     apiGlobs: [],
     testGlobs: ["brand", "branding"],
@@ -205,7 +202,7 @@ const FEATURES = [
     id: "forgeengin",
     name: "ForgeEngin",
     group: "user",
-    desc: "Engine builder and forge workflow.",
+    desc: "Forge workflow, engine builder, custom Engin creation, and forge APIs.",
     globs: ["engins/forgeengin/", "engins/dream.ForgeEngin", "components/forge/", "app/daydream/forge"],
     apiGlobs: ["app/api/forge/"],
     testGlobs: ["forge"],
@@ -214,7 +211,7 @@ const FEATURES = [
     id: "profile",
     name: "Profile",
     group: "user",
-    desc: "Profile, edit profile, public profile, avatar, and spatial profile surfaces.",
+    desc: "Profile, edit profile, avatar, spatial profile, and public profile routes.",
     globs: ["coresurfaces/", "components/profile/", "components/spatial/", "app/profile/", "app/view-profile/", "app/edit-profiledream/", "app/u/"],
     apiGlobs: ["app/api/profile/"],
     testGlobs: ["profile", "avatar"],
@@ -223,7 +220,7 @@ const FEATURES = [
     id: "feed",
     name: "Feed & Social",
     group: "user",
-    desc: "Feed, posts, likes, comments, follows, views, hashtags, platform feeds.",
+    desc: "Feed, posts, likes, comments, follows, views, hashtags, and platform feeds.",
     globs: ["components/feed/", "components/dream.FeedCard", "components/dream.HomeFeed", "app/discover/", "app/api/feed/", "app/api/posts/"],
     apiGlobs: ["app/api/feed/", "app/api/posts/", "app/api/follow", "app/api/likes", "app/api/comments", "app/api/views/"],
     testGlobs: ["feed", "post", "social"],
@@ -232,16 +229,16 @@ const FEATURES = [
     id: "marketplace",
     name: "Marketplace & Shop",
     group: "user",
-    desc: "Marketplace, shop, orders, ads, skip credits.",
+    desc: "Marketplace, shop, orders, ads, and skip credits.",
     globs: ["components/marketplace/", "components/ads/", "app/marketplace/", "app/shop/", "app/api/marketplace/", "app/api/shop/", "app/api/ads/"],
     apiGlobs: ["app/api/marketplace/", "app/api/shop/", "app/api/ads/", "app/api/skip-credits/"],
     testGlobs: ["marketplace", "shop", "orders", "ads", "skip-credits"],
   },
   {
     id: "settings",
-    name: "Settings",
+    name: "Settings / Customization",
     group: "user",
-    desc: "Settings, appearance, privacy, safety, account, data, controls.",
+    desc: "Settings, appearance, privacy, safety, customization, and theme paths.",
     globs: ["app/settings/", "components/panels/", "components/customize/", "engine/customization/", "styles/"],
     apiGlobs: ["app/api/settings/"],
     testGlobs: ["settings", "appearance", "privacy"],
@@ -250,7 +247,7 @@ const FEATURES = [
     id: "messages",
     name: "Messages & DMs",
     group: "user",
-    desc: "DMs, conversations, message hooks, boards, composer.",
+    desc: "Direct messages, conversations, message hooks, boards, and composer paths.",
     globs: ["app/messages/", "components/messaging/", "dreamdmbar/", "app/api/messages/"],
     apiGlobs: ["app/api/messages/"],
     testGlobs: ["messages", "messaging", "dreamdm"],
@@ -259,7 +256,7 @@ const FEATURES = [
     id: "auth",
     name: "Auth",
     group: "user",
-    desc: "Login, join, onboarding, OAuth callback, sessions.",
+    desc: "Login, join, onboarding, OAuth callback, sessions, and setup routes.",
     globs: ["app/auth/", "app/login/", "app/join/", "app/onboarding/", "components/auth/", "app/api/auth/"],
     apiGlobs: ["app/api/auth/", "app/api/setup/"],
     testGlobs: ["auth", "login", "safe-get-user"],
@@ -268,7 +265,7 @@ const FEATURES = [
     id: "runtime-core",
     name: "Runtime Core",
     group: "system",
-    desc: "DualRuntime, runtime bridge, dispatcher, workflow registry, module registry.",
+    desc: "DualRuntime, runtime bridge, dispatcher, workflow registry, module registry, and RuntimeShell.",
     globs: ["engine/runtime/", "components/runtime/", "hooks/useEngin", "hooks/useSharedEngin"],
     apiGlobs: [],
     testGlobs: ["runtime", "dispatcher", "workflow"],
@@ -277,7 +274,7 @@ const FEATURES = [
     id: "ai",
     name: "AI / Dr. Eams / Agents",
     group: "system",
-    desc: "Dr. Eams, agents, mock/live AI client, tool router, policy systems.",
+    desc: "Dr. Eams, agents, mock/live AI client, tool router, and policy systems.",
     globs: ["dr-eams/", "agents/", "build-memory/", "components/idari/", "app/api/ai/", "app/api/agent/"],
     apiGlobs: ["app/api/ai/", "app/api/agent/", "app/api/admin/ai"],
     testGlobs: ["agent", "dr-eams", "ai"],
@@ -286,7 +283,7 @@ const FEATURES = [
     id: "supabase",
     name: "Supabase / Database",
     group: "system",
-    desc: "Supabase clients, route usage, migrations, policies, schema/application SQL.",
+    desc: "Supabase clients, migrations, policies, schema, and database-backed application behavior.",
     globs: ["supabase/", "supabaseClient.ts", "engine/supabase/", "app/api/"],
     apiGlobs: ["app/api/"],
     testGlobs: ["supabase", "database", "safe-get-user"],
@@ -295,7 +292,7 @@ const FEATURES = [
     id: "vm-wasm",
     name: "VM / WASM",
     group: "system",
-    desc: "WASM modules, AssemblyScript sources, VM/runtime hot paths.",
+    desc: "WASM modules, AssemblyScript sources, VM/runtime hot paths, and cartridge/worker binaries.",
     globs: ["assembly/", "engine/bus.wasm", "public/workers/", "public/cartridges/"],
     apiGlobs: [],
     testGlobs: ["wasm", "vm"],
@@ -314,15 +311,20 @@ function extOf(file) {
   return path.extname(file).toLowerCase();
 }
 
-function shouldSkipDir(name, treeMode = false) {
-  return treeMode ? SKIP_TREE_DIRS.has(name) : SKIP_DIRS.has(name);
+function uniqueSorted(values) {
+  return [...new Set(values)].sort();
+}
+
+function shouldIgnoreDir(name, treeMode = false) {
+  return treeMode ? TREE_ONLY_IGNORE_DIRS.has(name) : IGNORE_DIRS.has(name);
 }
 
 function walk(dir, results = [], options = {}) {
-  const { treeMode = false, includeMedia = true } = options;
+  const treeMode = Boolean(options.treeMode);
+  const includeMedia = options.includeMedia !== false;
 
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory() && shouldSkipDir(entry.name, treeMode)) continue;
+    if (entry.isDirectory() && shouldIgnoreDir(entry.name, treeMode)) continue;
 
     const full = path.join(dir, entry.name);
     const rel = normalizeRel(path.relative(ROOT, full));
@@ -353,27 +355,27 @@ function isCodeFile(file) {
 }
 
 function isAPIRoute(file) {
-  return /^app\/api\//.test(file) && /\/route\.(ts|tsx|js|jsx)$/.test(file);
+  return /^app\/api\//.test(file) && /\/route[.](ts|tsx|js|jsx)$/.test(file);
 }
 
 function isRouteHandlerFile(file) {
-  return /(^|\/)route\.(ts|tsx|js|jsx)$/.test(file);
+  return /(^|\/)route[.](ts|tsx|js|jsx)$/.test(file);
 }
 
 function isPageFile(file) {
-  return file.startsWith("app/") && /\/page\.(tsx|ts|jsx|js)$/.test(file);
+  return file.startsWith("app/") && /\/page[.](tsx|ts|jsx|js)$/.test(file);
 }
 
-function isFrameworkEntryFile(file) {
-  return file.startsWith("app/") && FRAMEWORK_FILE_NAMES.has(path.posix.basename(file));
+function isAppRouterEntryFile(file) {
+  return file.startsWith("app/") && APP_ROUTER_ENTRY_NAMES.has(path.posix.basename(file));
 }
 
 function isTestFile(file) {
-  return /\.(test|spec)\.(ts|tsx|js|jsx|mjs|cjs)$/.test(file) || file.includes("__tests__/");
+  return /[.](test|spec)[.](ts|tsx|js|jsx|mjs|cjs)$/.test(file) || file.includes("__tests__/");
 }
 
 function isStoryFile(file) {
-  return /\.(stories|story)\.(ts|tsx|js|jsx|mjs|cjs)$/.test(file);
+  return /[.](stories|story)[.](ts|tsx|js|jsx|mjs|cjs)$/.test(file);
 }
 
 function isTypeFile(file) {
@@ -381,41 +383,15 @@ function isTypeFile(file) {
 }
 
 function isStyleFile(file) {
-  return /\.(css|scss)$/.test(file);
+  return STYLE_EXTENSIONS.has(extOf(file));
 }
 
 function isRootEntryFile(file) {
   return !file.includes("/") && ROOT_ENTRY_FILES.has(file);
 }
 
-function isBarrelFile(file, content) {
-  const base = path.posix.basename(file);
-  if (!/^index\.(ts|tsx|js|jsx|mjs|cjs)$/.test(base)) return false;
-
-  const stripped = content
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/.*$/gm, "")
-    .replace(/['"]use client['"];?/g, "")
-    .replace(/['"]use server['"];?/g, "")
-    .trim();
-
-  if (!stripped) return false;
-
-  const exportOnly = stripped
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .every((line) => line.startsWith("export ") || line.startsWith("import type "));
-
-  return exportOnly;
-}
-
 function mdCell(value) {
-  return String(value).replace(/\|/g, "\\|").replace(/\n/g, " ");
-}
-
-function uniqueSorted(values) {
-  return [...new Set(values)].sort();
+  return String(value).replace(/[|]/g, "\\|").replace(/\n/g, " ");
 }
 
 function splitImportList(value) {
@@ -426,14 +402,14 @@ function splitImportList(value) {
 }
 
 function importedNameFromPart(part) {
-  const clean = part.replace(/^type\s+/, "").trim();
-  const pieces = clean.split(/\s+as\s+/);
+  const clean = part.replace(/^type[ \t\r\n]+/, "").trim();
+  const pieces = clean.split(/[ \t\r\n]+as[ \t\r\n]+/);
   return pieces[0]?.trim() || "";
 }
 
 function exportedNameFromPart(part) {
-  const clean = part.replace(/^type\s+/, "").trim();
-  const pieces = clean.split(/\s+as\s+/);
+  const clean = part.replace(/^type[ \t\r\n]+/, "").trim();
+  const pieces = clean.split(/[ \t\r\n]+as[ \t\r\n]+/);
   return (pieces[1] || pieces[0] || "").trim();
 }
 
@@ -477,17 +453,17 @@ function parseImportClause(clause) {
   return records;
 }
 
-function addRecord(records, specifier, kind, names, source = "import") {
+function addRecord(records, specifier, kind, names, source) {
   if (!specifier) return;
   records.push({ specifier, kind, names: names.length ? names : ["(unknown)"], source });
 }
 
 function extractImportRecords(content) {
   const records = [];
-
-  const staticRe = /\bimport\s+(type\s+)?([\s\S]*?)\s+from\s+["']([^"']+)["']/g;
   let match;
-  while ((match = staticRe.exec(content)) !== null) {
+
+  const staticImportRe = /\bimport[ \t\r\n]+(type[ \t\r\n]+)?([\s\S]*?)[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
+  while ((match = staticImportRe.exec(content)) !== null) {
     const isType = Boolean(match[1]);
     const clause = match[2];
     const specifier = match[3];
@@ -497,34 +473,34 @@ function extractImportRecords(content) {
     }
   }
 
-  const sideEffectRe = /(?:^|[;\n])\s*import\s+["']([^"']+)["']/g;
-  while ((match = sideEffectRe.exec(content)) !== null) {
+  const sideEffectImportRe = /(?:^|[;\n])[ \t\r\n]*import[ \t\r\n]+["']([^"']+)["']/g;
+  while ((match = sideEffectImportRe.exec(content)) !== null) {
     addRecord(records, match[1], "side-effect", ["(side-effect)"], "import");
   }
 
-  const requireRe = /\brequire\s*\(\s*["']([^"']+)["']\s*\)/g;
+  const requireRe = /\brequire[ \t\r\n]*[(][ \t\r\n]*["']([^"']+)["'][ \t\r\n]*[)]/g;
   while ((match = requireRe.exec(content)) !== null) {
     addRecord(records, match[1], "require", ["(require)"], "require");
   }
 
-  const dynamicRe = /\bimport\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
-  while ((match = dynamicRe.exec(content)) !== null) {
+  const dynamicImportRe = /\bimport[ \t\r\n]*[(][ \t\r\n]*["'`]([^"'`]+)["'`][ \t\r\n]*[)]/g;
+  while ((match = dynamicImportRe.exec(content)) !== null) {
     addRecord(records, match[1], "dynamic", ["(dynamic import)"], "dynamic");
   }
 
-  const reexportNamedRe = /\bexport\s+(type\s+)?\{([^}]+)\}\s+from\s+["']([^"']+)["']/g;
-  while ((match = reexportNamedRe.exec(content)) !== null) {
+  const namedReexportRe = /\bexport[ \t\r\n]+(type[ \t\r\n]+)?\{([^}]+)\}[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
+  while ((match = namedReexportRe.exec(content)) !== null) {
     const names = splitImportList(match[2]).map(importedNameFromPart).filter(Boolean);
     addRecord(records, match[3], "reexport-named", names, match[1] ? "export type from" : "export from");
   }
 
-  const reexportNamespaceRe = /\bexport\s+\*\s+as\s+([A-Za-z_$][A-Za-z0-9_$]*)\s+from\s+["']([^"']+)["']/g;
-  while ((match = reexportNamespaceRe.exec(content)) !== null) {
+  const namespaceReexportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+as[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
+  while ((match = namespaceReexportRe.exec(content)) !== null) {
     addRecord(records, match[2], "reexport-namespace", [`* as ${match[1]}`], "export from");
   }
 
-  const reexportStarRe = /\bexport\s+\*\s+from\s+["']([^"']+)["']/g;
-  while ((match = reexportStarRe.exec(content)) !== null) {
+  const starReexportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+from[ \t\r\n]+["']([^"']+)["']/g;
+  while ((match = starReexportRe.exec(content)) !== null) {
     addRecord(records, match[1], "reexport-star", ["*"], "export from");
   }
 
@@ -561,111 +537,100 @@ function extractNamedImports(content) {
     }
   }
 
-  return Object.fromEntries(
-    Object.entries(out).map(([key, value]) => [key, [...value].sort()]),
-  );
+  return Object.fromEntries(Object.entries(out).map(([key, value]) => [key, [...value].sort()]));
 }
 
 function extractNamedExports(content) {
   const out = new Set();
-
-  const declRe = /\bexport\s+(?:declare\s+)?(?:async\s+)?(?:function|const|class|let|var|interface|type|enum)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g;
   let match;
-  while ((match = declRe.exec(content)) !== null) out.add(match[1]);
 
-  const listRe = /\bexport\s+(type\s+)?\{([^}]+)\}(?:\s+from\s+["'][^"']+["'])?/g;
-  while ((match = listRe.exec(content)) !== null) {
-    for (const part of splitImportList(match[2])) {
+  const declarationExportRe = /\bexport[ \t\r\n]+(?:declare[ \t\r\n]+)?(?:async[ \t\r\n]+)?(?:function|const|class|let|var|interface|type|enum)[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)/g;
+  while ((match = declarationExportRe.exec(content)) !== null) out.add(match[1]);
+
+  const listExportRe = /\bexport[ \t\r\n]+(?:type[ \t\r\n]+)?\{([^}]+)\}(?:[ \t\r\n]+from[ \t\r\n]+["'][^"']+["'])?/g;
+  while ((match = listExportRe.exec(content)) !== null) {
+    for (const part of splitImportList(match[1])) {
       const exported = exportedNameFromPart(part);
       if (exported) out.add(exported);
     }
   }
 
-  const namespaceRe = /\bexport\s+\*\s+as\s+([A-Za-z_$][A-Za-z0-9_$]*)\s+from\s+["'][^"']+["']/g;
-  while ((match = namespaceRe.exec(content)) !== null) out.add(match[1]);
+  const namespaceExportRe = /\bexport[ \t\r\n]+[*][ \t\r\n]+as[ \t\r\n]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t\r\n]+from[ \t\r\n]+["'][^"']+["']/g;
+  while ((match = namespaceExportRe.exec(content)) !== null) out.add(match[1]);
 
-  if (/\bexport\s+default\b/.test(content)) out.add("(default)");
+  if (/\bexport[ \t\r\n]+default\b/.test(content)) out.add("(default)");
 
   return [...out].sort();
 }
 
 function detectHookExports(content) {
   const hooks = [];
-  const re = /\bexport\s+(?:function|const)\s+(use[A-Z][A-Za-z0-9_]*)/g;
+  const hookExportRe = /\bexport[ \t\r\n]+(?:function|const)[ \t\r\n]+(use[A-Z][A-Za-z0-9_]*)/g;
   let match;
-  while ((match = re.exec(content)) !== null) hooks.push(match[1]);
+  while ((match = hookExportRe.exec(content)) !== null) hooks.push(match[1]);
   return uniqueSorted(hooks);
 }
 
 function detectReactComponent(file, content) {
-  if (!/\.(tsx|jsx)$/.test(file)) return false;
-  return (
-    /\bexport\s+(default\s+)?(function|const|class)\s+[A-Z]/.test(content) ||
-    /\bfunction\s+[A-Z][A-Za-z0-9_]*\s*$begin:math:text$\/\.test\(content\) \|\|
-    \/\\bconst\\s\+\[A\-Z\]\[A\-Za\-z0\-9\_\]\*\\s\*\=\/\.test\(content\) \|\|
-    \/return\\s\*\\\(\?\\s\*\<\/\.test\(content\)
-  \)\;
-\}
+  if (!file.endsWith(".tsx") && !file.endsWith(".jsx")) return false;
 
-function detectSupabase\(content\) \{
-  return \/from\\s\+\[\"\'\]\@supabase\|createClient\\s\*\\\(\|supabase\\\.\(from\|auth\|storage\|rpc\)\\s\*\\\(\/\.test\(content\)\;
-\}
+  const exportedComponentRe = /\bexport[ \t\r\n]+(?:default[ \t\r\n]+)?(?:function|const|class)[ \t\r\n]+[A-Z]/;
+  const namedFunctionRe = /\bfunction[ \t\r\n]+[A-Z][A-Za-z0-9_]*[ \t\r\n]*[(]/;
+  const namedConstRe = /\bconst[ \t\r\n]+[A-Z][A-Za-z0-9_]*[ \t\r\n]*=/;
+  const returnsJsxRe = /\breturn[ \t\r\n]*[(]?[ \t\r\n]*</;
 
-function detectEventBus\(content\) \{
-  return \/\\\.on\\s\*\\\(\[\"\'\]\|\\\.emit\\s\*\\\(\[\"\'\]\|\\\.subscribe\\s\*\\\(\|EventEmitter\|eventBus\\\.\|dreamOSBus\/\.test\(content\)\;
-\}
+  return exportedComponentRe.test(content) || namedFunctionRe.test(content) || namedConstRe.test(content) || returnsJsxRe.test(content);
+}
 
-function detectZustand\(content\) \{
-  return \/from\\s\+\[\"\'\]zustand\[\"\'\]\|create\\s\*\<\/\.test\(content\)\;
-\}
+function isBarrelFile(file, content) {
+  const base = path.posix.basename(file);
+  if (!/^index[.](ts|tsx|js|jsx|mjs|cjs)$/.test(base)) return false;
 
-function detectContext\(content\) \{
-  return \/createContext\\s\*\\\(\|useContext\\s\*\\\(\|React\\\.createContext\/\.test\(content\)\;
-\}
+  const stripped = content
+    .replace(/\/[*][\s\S]*?[*]\//g, "")
+    .replace(/\/\/.*$/gm, "")
+    .replace(/["']use client["'];?/g, "")
+    .replace(/["']use server["'];?/g, "")
+    .trim();
 
-function detectRuntimeRegistry\(content\) \{
-  return \/\\\.register\\s\*\\\(\|EnginDispatcher\|registerEngine\|new\\s\+\\w\*Registry\\s\*\\\(\|moduleRegistry\|enginWorkflowRegistry\/\.test\(content\)\;
-\}
+  if (!stripped) return false;
 
-function detectDualRuntime\(content\) \{
-  return \/dualRuntime\|DualRuntime\|dreamOSBus\|EnginDispatcher\|runtimeBridge\|DualRuntimeBridge\|RuntimeShell\|RuntimeView\/\.test\(content\)\;
-\}
+  return stripped
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .every((line) => line.startsWith("export ") || line.startsWith("import type "));
+}
 
-function buildRouteMap\(files\) \{
-  const pages \= files\.filter\(isPageFile\)\;
+function detectSupabase(content) {
+  return /from[ \t\r\n]+["']@supabase|createClient[ \t\r\n]*[(]|supabase[.](from|auth|storage|rpc)[ \t\r\n]*[(]/.test(content);
+}
 
-  const routes \= pages\.map\(\(file\) \=\> \{
-    let route \= file
-      \.replace\(\/\^app\/\, \"\"\)
-      \.replace\(\/\\\/page\\\.\(tsx\|ts\|jsx\|js\)\$\/\, \"\"\)
-      \.replace\(\/\\\/\\\(\(\[\^\)\]\+\)$end:math:text$/g, "")
-      .replace(/\/$begin:math:display$\\\.\\\.\\\.\(\[\^$end:math:display$]+)\]/g, "/:$1*")
-      .replace(/$begin:math:display$\(\[\^$end:math:display$]+)\]/g, ":$1");
+function detectEventBus(content) {
+  return /[.]on[ \t\r\n]*[(][ \t\r\n]*["']|[.]emit[ \t\r\n]*[(][ \t\r\n]*["']|[.]subscribe[ \t\r\n]*[(]|EventEmitter|eventBus[.]|dreamOSBus/.test(content);
+}
 
-    if (!route || route === "") route = "/";
+function detectZustand(content) {
+  return /from[ \t\r\n]+["']zustand["']|create[ \t\r\n]*</.test(content);
+}
 
-    let label = "";
-    if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " ← HOME (DreamDMBar)";
-    if (route === "/dreamdmbar/dreamspace") label = " ← HOME (DreamSpace)";
+function detectContext(content) {
+  return /createContext[ \t\r\n]*[(]|useContext[ \t\r\n]*[(]|React[.]createContext/.test(content);
+}
 
-    return { route, file, label };
-  });
+function detectRuntimeRegistry(content) {
+  return /[.]register[ \t\r\n]*[(]|EnginDispatcher|registerEngine|new[ \t\r\n]+\w*Registry[ \t\r\n]*[(]|moduleRegistry|enginWorkflowRegistry/.test(content);
+}
 
-  routes.sort((a, b) => {
-    if (a.route === "/") return -1;
-    if (b.route === "/") return 1;
-    return a.route.localeCompare(b.route);
-  });
-
-  return routes;
+function detectDualRuntime(content) {
+  return /dualRuntime|DualRuntime|dreamOSBus|EnginDispatcher|runtimeBridge|DualRuntimeBridge|RuntimeShell|RuntimeView/.test(content);
 }
 
 function loadTsconfigPaths() {
-  const candidates = ["tsconfig.json", "tsconfig.base.json"];
   const mappings = [];
 
-  for (const file of candidates) {
-    const full = path.join(ROOT, file);
+  for (const configFile of ["tsconfig.json", "tsconfig.base.json"]) {
+    const full = path.join(ROOT, configFile);
     if (!fs.existsSync(full)) continue;
 
     try {
@@ -676,62 +641,21 @@ function loadTsconfigPaths() {
 
       for (const [aliasPattern, targets] of Object.entries(paths)) {
         if (!Array.isArray(targets)) continue;
-        const starIndex = aliasPattern.indexOf("*");
 
         for (const targetPattern of targets) {
-          mappings.push({
-            aliasPattern,
-            targetPattern,
-            baseUrl,
-            starIndex,
-          });
+          mappings.push({ aliasPattern, targetPattern, baseUrl });
         }
       }
     } catch {
-      // Ignore malformed tsconfig for state generation.
+      // Repo-state generation should not die on malformed tsconfig.
     }
   }
 
   if (!mappings.some((mapping) => mapping.aliasPattern === "@/*")) {
-    mappings.push({
-      aliasPattern: "@/*",
-      targetPattern: "./*",
-      baseUrl: ".",
-      starIndex: 2,
-    });
+    mappings.push({ aliasPattern: "@/*", targetPattern: "./*", baseUrl: "." });
   }
 
   return mappings;
-}
-
-const tsconfigPathMappings = loadTsconfigPaths();
-
-const allPhysicalFiles = walk(ROOT, [], { includeMedia: true, treeMode: false });
-const reportFiles = walk(ROOT, [], { includeMedia: false, treeMode: false });
-
-const allFileSet = new Set(allPhysicalFiles.map(normalizeRel));
-const allDirSet = new Set();
-
-for (const file of allPhysicalFiles) {
-  const parts = file.split("/");
-  for (let index = 1; index < parts.length; index += 1) {
-    allDirSet.add(parts.slice(0, index).join("/"));
-  }
-}
-
-function stripSpecifierNoise(specifier) {
-  return specifier.split("?")[0].split("#")[0];
-}
-
-function isExternalSpecifier(specifier) {
-  const clean = stripSpecifierNoise(specifier);
-  if (clean.startsWith(".") || clean.startsWith("/") || clean.startsWith("@/")) return false;
-
-  for (const mapping of tsconfigPathMappings) {
-    if (matchesPathPattern(clean, mapping.aliasPattern)) return false;
-  }
-
-  return true;
 }
 
 function matchesPathPattern(specifier, pattern) {
@@ -746,19 +670,45 @@ function matchesPathPattern(specifier, pattern) {
 }
 
 function expandPathPattern(specifier, mapping) {
-  const { aliasPattern, targetPattern, baseUrl } = mapping;
-  const starIndex = aliasPattern.indexOf("*");
-
+  const starIndex = mapping.aliasPattern.indexOf("*");
   let wildcard = "";
 
   if (starIndex >= 0) {
-    const prefix = aliasPattern.slice(0, starIndex);
-    const suffix = aliasPattern.slice(starIndex + 1);
+    const prefix = mapping.aliasPattern.slice(0, starIndex);
+    const suffix = mapping.aliasPattern.slice(starIndex + 1);
     wildcard = specifier.slice(prefix.length, specifier.length - suffix.length);
   }
 
-  const target = targetPattern.replace("*", wildcard);
-  return normalizeRel(path.posix.join(baseUrl, target));
+  return normalizeRel(path.posix.join(mapping.baseUrl, mapping.targetPattern.replace("*", wildcard)));
+}
+
+function stripSpecifierNoise(specifier) {
+  return specifier.split("?")[0].split("#")[0];
+}
+
+const tsconfigPathMappings = loadTsconfigPaths();
+const allPhysicalFiles = walk(ROOT, [], { includeMedia: true, treeMode: false });
+const reportFiles = walk(ROOT, [], { includeMedia: false, treeMode: false });
+const allFileSet = new Set(allPhysicalFiles.map(normalizeRel));
+const allDirSet = new Set();
+
+for (const file of allPhysicalFiles) {
+  const parts = file.split("/");
+  for (let index = 1; index < parts.length; index += 1) {
+    allDirSet.add(parts.slice(0, index).join("/"));
+  }
+}
+
+function isExternalSpecifier(rawSpecifier) {
+  const specifier = stripSpecifierNoise(rawSpecifier);
+
+  if (specifier.startsWith(".") || specifier.startsWith("/") || specifier.startsWith("@/")) return false;
+
+  for (const mapping of tsconfigPathMappings) {
+    if (matchesPathPattern(specifier, mapping.aliasPattern)) return false;
+  }
+
+  return true;
 }
 
 function tryResolveCandidate(candidate) {
@@ -817,8 +767,36 @@ function resolveInternalSpecifier(fromFile, rawSpecifier) {
 
 function codeFileForResolvedPath(resolved) {
   if (!resolved) return null;
-  if (CODE_EXTENSIONS.has(extOf(resolved))) return resolved;
-  return null;
+  return CODE_EXTENSIONS.has(extOf(resolved)) ? resolved : null;
+}
+
+function buildRouteMap(files) {
+  const pages = files.filter(isPageFile);
+
+  const routes = pages.map((file) => {
+    let route = file
+      .replace(/^app/, "")
+      .replace(/\/page[.](tsx|ts|jsx|js)$/, "")
+      .replace(/\/[(][^)]+[)]/g, "")
+      .replace(/\/$begin:math:display$\[\.\]\[\.\]\[\.\]\(\[\^$end:math:display$]+)\]/g, "/:$1*")
+      .replace(/$begin:math:display$\(\[\^$end:math:display$]+)\]/g, ":$1");
+
+    if (!route || route === "") route = "/";
+
+    let label = "";
+    if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " ← HOME (DreamDMBar)";
+    if (route === "/dreamdmbar/dreamspace") label = " ← HOME (DreamSpace)";
+
+    return { route, file, label };
+  });
+
+  routes.sort((a, b) => {
+    if (a.route === "/") return -1;
+    if (b.route === "/") return 1;
+    return a.route.localeCompare(b.route);
+  });
+
+  return routes;
 }
 
 const codeFiles = reportFiles.filter(isCodeFile).sort();
@@ -827,8 +805,7 @@ const fileData = {};
 for (const file of codeFiles) {
   const content = readSafe(file);
   const importRecords = extractImportRecords(content);
-  const imports = uniqueSorted(importRecords.map((record) => record.specifier));
-
+  const imports = extractImports(content);
   const resolvedImports = importRecords.map((record) => ({
     ...record,
     resolved: resolveInternalSpecifier(file, record.specifier),
@@ -891,7 +868,6 @@ function detectCircular(graph) {
   }
 
   for (const node of Object.keys(graph)) dfs(node);
-
   return [...cycles].sort();
 }
 
@@ -903,10 +879,7 @@ for (const [file, data] of Object.entries(fileData)) {
 
   for (const record of data.resolvedImports) {
     if (record.resolved === false) {
-      broken.push({
-        specifier: record.specifier,
-        names: record.names,
-      });
+      broken.push({ specifier: record.specifier, names: record.names });
     }
   }
 
@@ -947,17 +920,14 @@ function markExportUsage(targetFile, record) {
   }
 
   if (record.kind === "named" || record.kind === "reexport-named") {
-    for (const name of record.names) {
-      importedPairs.add(`${targetFile}::${name}`);
-    }
+    for (const name of record.names) importedPairs.add(`${targetFile}::${name}`);
   }
 }
 
 for (const [fromFile, data] of Object.entries(fileData)) {
   for (const record of data.resolvedImports) {
     const targetFile = codeFileForResolvedPath(record.resolved);
-    if (!targetFile) continue;
-    if (targetFile === fromFile) continue;
+    if (!targetFile || targetFile === fromFile) continue;
     markExportUsage(targetFile, record);
   }
 }
@@ -966,21 +936,18 @@ function shouldSkipUnusedExportFile(file, data) {
   if (isTestFile(file)) return true;
   if (isStoryFile(file)) return true;
   if (isTypeFile(file)) return true;
-  if (isFrameworkEntryFile(file)) return true;
+  if (isAppRouterEntryFile(file)) return true;
   if (isRouteHandlerFile(file)) return true;
   if (isRootEntryFile(file)) return true;
   if (data.isBarrel) return true;
   if (wholeModuleUsed.has(file)) return true;
-  if (file.endsWith(".d.ts")) return true;
   return false;
 }
 
 const unusedExports = {};
 for (const [file, data] of Object.entries(fileData)) {
   if (shouldSkipUnusedExportFile(file, data)) continue;
-
   const unused = data.namedExports.filter((exp) => !importedPairs.has(`${file}::${exp}`));
-
   if (unused.length) unusedExports[file] = unused;
 }
 
@@ -1012,6 +979,19 @@ function matchGlobs(file, globs) {
     const clean = glob.replace(/\/$/, "");
     return file === clean || file.startsWith(`${clean}/`) || file.includes(clean);
   });
+}
+
+function groupByDir(files, depth = 3) {
+  const byDir = {};
+
+  for (const file of files.sort()) {
+    const parts = file.split("/");
+    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
+    if (!byDir[dir]) byDir[dir] = [];
+    byDir[dir].push(file);
+  }
+
+  return byDir;
 }
 
 function getFeatureFiles(feature) {
@@ -1066,10 +1046,7 @@ function getFeatureFiles(feature) {
         continue;
       }
 
-      const pkg = imp.startsWith("@")
-        ? imp.split("/").slice(0, 2).join("/")
-        : imp.split("/")[0];
-
+      const pkg = imp.startsWith("@") ? imp.split("/").slice(0, 2).join("/") : imp.split("/")[0];
       extDeps.add(pkg);
     }
   }
@@ -1094,31 +1071,16 @@ function getFeatureFiles(feature) {
   };
 }
 
-function renderListOrEmpty(items, emptyText = "_None detected._") {
+function renderListOrEmpty(items, emptyText) {
   if (!items.length) return `${emptyText}\n\n`;
   return items.sort().map((item) => `- \`${item}\``).join("\n") + "\n\n";
-}
-
-function groupByDir(files, depth = 3) {
-  const byDir = {};
-
-  for (const file of files.sort()) {
-    const parts = file.split("/");
-    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
-    if (!byDir[dir]) byDir[dir] = [];
-    byDir[dir].push(file);
-  }
-
-  return byDir;
 }
 
 function renderGroupedFiles(files, emptyText) {
   if (!files.length) return `${emptyText}\n\n`;
 
   let section = "";
-  const grouped = groupByDir(files);
-
-  for (const [dir, dirFiles] of Object.entries(grouped).sort()) {
+  for (const [dir, dirFiles] of Object.entries(groupByDir(files)).sort()) {
     section += `### \`${dir}/\`\n\n`;
     for (const file of dirFiles) section += `- \`${file}\`\n`;
     section += "\n";
@@ -1228,12 +1190,12 @@ function getFeatureAnnotation(entryPath) {
 function sortedTreeEntries(dir) {
   return fs
     .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => !shouldSkipDir(entry.name, true))
+    .filter((entry) => !shouldIgnoreDir(entry.name, true))
     .filter((entry) => {
       if (entry.isDirectory()) return true;
       const ext = extOf(entry.name);
       if (MEDIA_EXTENSIONS.has(ext)) return false;
-      if (/\.md$/i.test(entry.name)) return false;
+      if (/[.]md$/i.test(entry.name)) return false;
       return true;
     })
     .sort((a, b) => {
@@ -1254,7 +1216,6 @@ function buildTreeString({ detailed = false } = {}) {
       const fullPath = path.join(dir, entry.name);
       const relPath = normalizeRel(path.relative(ROOT, fullPath));
       const childPrefix = prefix + (isLast ? "    " : "│   ");
-
       const annotation = entry.isDirectory() ? getFeatureAnnotation(fullPath) : "";
 
       let issueMarkers = "";
@@ -1271,41 +1232,32 @@ function buildTreeString({ detailed = false } = {}) {
         return;
       }
 
+      const data = fileData[relPath];
+      const broken = brokenImports[relPath] || [];
+      const unused = unusedExports[relPath] || [];
+
       if (!detailed) {
-        const broken = brokenImports[relPath];
-        const unused = unusedExports[relPath];
+        const lines = [];
+        for (const item of broken) lines.push(`⚠ ${item.specifier} (${item.names.join(", ")})`);
+        if (unused.length) lines.push(`∅ unused: ${unused.join(", ")}`);
 
-        if (broken?.length) {
-          broken.forEach((item, brokenIndex) => {
-            const hasUnused = Boolean(unused?.length);
-            const isLastDetail = brokenIndex === broken.length - 1 && !hasUnused;
-            output += `${childPrefix}${isLastDetail ? "└──" : "├──"} ⚠ ${item.specifier} (${item.names.join(", ")})\n`;
-          });
-        }
-
-        if (unused?.length) {
-          output += `${childPrefix}└── ∅ unused: ${unused.join(", ")}\n`;
-        }
-
+        lines.forEach((line, lineIndex) => {
+          const isLastLine = lineIndex === lines.length - 1;
+          output += `${childPrefix}${isLastLine ? "└──" : "├──"} ${line}\n`;
+        });
         return;
       }
 
-      const data = fileData[relPath];
       const lines = [];
-
       if (data) {
         for (const record of data.resolvedImports) {
           const status = record.resolved === false ? "⚠" : "←";
-          const names = record.names.join(", ");
-          lines.push(`${names}  ${status} ${record.specifier}`);
+          lines.push(`${record.names.join(", ")}  ${status} ${record.specifier}`);
         }
 
-        for (const exp of data.namedExports) {
-          lines.push(`→ ${exp}`);
-        }
+        for (const exp of data.namedExports) lines.push(`→ ${exp}`);
       }
 
-      const unused = unusedExports[relPath] || [];
       if (unused.length) lines.push(`∅ unused: ${unused.join(", ")}`);
 
       lines.forEach((line, lineIndex) => {
@@ -1410,12 +1362,7 @@ for (const [file, data] of Object.entries(fileData).sort()) {
 
   for (const record of data.resolvedImports) {
     const names = record.names.map((name) => `\`${mdCell(name)}\``).join(", ");
-    const resolved = record.resolved === null
-      ? "external"
-      : record.resolved === false
-        ? "⚠ broken"
-        : `\`${mdCell(record.resolved)}\``;
-
+    const resolved = record.resolved === null ? "external" : record.resolved === false ? "⚠ broken" : `\`${mdCell(record.resolved)}\``;
     md += `| \`${mdCell(record.specifier)}\` | ${names} | ${resolved} |\n`;
   }
 
@@ -1476,42 +1423,30 @@ md += "\n---\n\n";
 
 md += `<a name="dual-runtime-files"></a>\n\n`;
 md += "# Dual Runtime Files\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesDualRuntime && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesDualRuntime && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n---\n\n";
 
 md += `<a name="supabase-usage"></a>\n\n`;
 md += "# Supabase Usage\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesSupabase && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesSupabase && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n---\n\n";
 
 md += `<a name="state"></a>\n\n`;
 md += "# State: Zustand / Context\n\n";
 md += "## Zustand Stores\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesZustand && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesZustand && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n## React Context Providers & Consumers\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesContext && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesContext && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n---\n\n";
 
 md += `<a name="event-bus"></a>\n\n`;
 md += "# Event Bus Subscribers & Emitters\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesEventBus && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesEventBus && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n---\n\n";
 
 md += `<a name="runtime-registries"></a>\n\n`;
 md += "# Runtime Registries\n\n";
-for (const file of codeFiles.filter((file) => fileData[file].usesRuntimeRegistry && !isTestFile(file)).sort()) {
-  md += `- \`${file}\`\n`;
-}
+for (const file of codeFiles.filter((file) => fileData[file].usesRuntimeRegistry && !isTestFile(file)).sort()) md += `- \`${file}\`\n`;
 md += "\n---\n\n";
 
 md += `<a name="circular-deps"></a>\n\n`;
@@ -1531,18 +1466,14 @@ const topCoupled = Object.entries(fileData)
   .map(([file, data]) => ({ file, score: data.couplingScore }))
   .sort((a, b) => b.score - a.score)
   .slice(0, 30);
-for (const { file, score } of topCoupled) {
-  md += `| \`${mdCell(file)}\` | ${score} |\n`;
-}
+for (const { file, score } of topCoupled) md += `| \`${mdCell(file)}\` | ${score} |\n`;
 md += "\n---\n\n";
 
 md += `<a name="risk-report"></a>\n\n`;
 md += "# System Risk Report\n\n";
 if (riskFiles.length) {
   md += "| File | Coupling | Flags |\n|------|----------|-------|\n";
-  for (const { file, score, flags } of riskFiles) {
-    md += `| \`${mdCell(file)}\` | ${score} | ${flags.join(", ")} |\n`;
-  }
+  for (const { file, score, flags } of riskFiles) md += `| \`${mdCell(file)}\` | ${score} | ${flags.join(", ")} |\n`;
 } else {
   md += "_No high-risk files detected._\n";
 }
@@ -1550,8 +1481,7 @@ md += "\n---\n\n";
 
 md += `<a name="broken-imports"></a>\n\n`;
 md += "# Broken Imports\n\n";
-md += "> Internal imports (`@/`, configured tsconfig path aliases, absolute public paths, or relative imports) that do not resolve to a real file.\n";
-md += "> External npm packages are excluded.\n\n";
+md += "> Internal imports (`@/`, configured tsconfig path aliases, absolute public paths, or relative imports) that do not resolve to a real file. External npm packages are excluded.\n\n";
 
 const brokenEntries = Object.entries(brokenImports).filter(([file]) => !isTestFile(file)).sort();
 if (brokenEntries.length) {
@@ -1569,16 +1499,13 @@ md += "\n---\n\n";
 
 md += `<a name="unused-exports"></a>\n\n`;
 md += "# Unused Exports\n\n";
-md += "> Exported identifiers that are not statically imported by another analysed source file after resolving aliases, re-exports, namespace imports, dynamic imports, framework entrypoints, route handlers, root config files, type files, and barrel files.\n";
-md += "> `(default)` = default export.\n\n";
+md += "> Exported identifiers that are not statically imported by another analysed source file after resolving aliases, re-exports, namespace imports, dynamic imports, framework entrypoints, route handlers, root config files, type files, and barrel files.\n\n";
 
 const unusedEntries = Object.entries(unusedExports).sort();
 if (unusedEntries.length) {
   md += "| File | Unused exports |\n";
   md += "|------|----------------|\n";
-  for (const [file, names] of unusedEntries) {
-    md += `| \`${mdCell(file)}\` | ${names.map((name) => `\`${mdCell(name)}\``).join(", ")} |\n`;
-  }
+  for (const [file, names] of unusedEntries) md += `| \`${mdCell(file)}\` | ${names.map((name) => `\`${mdCell(name)}\``).join(", ")} |\n`;
 } else {
   md += "_No unused exports detected._\n";
 }
