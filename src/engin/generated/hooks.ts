@@ -3,6 +3,7 @@
 export const hooks = {
   "hooks/use-spatial": () => import("@/hooks/use-spatial"),
   "hooks/useAccount": () => import("@/hooks/useAccount"),
+  "hooks/useAppIntentPressureSurface": () => import("@/hooks/useAppIntentPressureSurface"),
   "hooks/useConnectorInstallFlow": () => import("@/hooks/useConnectorInstallFlow"),
   "hooks/useDreamLayout": () => import("@/hooks/useDreamLayout"),
   "hooks/useHideOnScroll": () => import("@/hooks/useHideOnScroll"),

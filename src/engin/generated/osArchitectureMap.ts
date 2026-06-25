@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 301,
+  "surface": 302,
   "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 268,
+  "engin": 269,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -39,7 +39,7 @@ export const osSlotCounts = {
   "migration": 60,
   "memory": 6,
   "dr-eams-tool": 26,
-  "hook": 12,
+  "hook": 13,
   "engine-system": 0,
   "engine-utility": 0
 } as const;
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 301,
+    "surface": 302,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 268,
+    "engin": 269,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -407,7 +407,7 @@ export const osArchitectureGraph = {
     "migration": 60,
     "memory": 6,
     "dr-eams-tool": 26,
-    "hook": 12,
+    "hook": 13,
     "engine-system": 0,
     "engine-utility": 0
   }
@@ -2388,6 +2388,12 @@ export const osArchitectureStageEntries = {
       "id": "components/dream.FeedCard",
       "slot": "surface",
       "path": "components/dream.FeedCard.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/dream.FirstTouchActivator",
+      "slot": "surface",
+      "path": "components/dream.FirstTouchActivator.tsx",
       "engine": "Universal"
     },
     {
@@ -5714,6 +5720,12 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/renderengin/wasmAcceleration",
+      "slot": "engin",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/renderengin/webgpu",
       "slot": "engin",
       "path": "engins/renderengin/webgpu.ts",
@@ -5947,6 +5959,12 @@ export const osArchitectureStageEntries = {
       "id": "hooks/useAccount",
       "slot": "hook",
       "path": "hooks/useAccount.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "hooks/useAppIntentPressureSurface",
+      "slot": "hook",
+      "path": "hooks/useAppIntentPressureSurface.ts",
       "engine": "Universal"
     },
     {
@@ -6443,10 +6461,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 301 |
+| surface | 302 |
 | route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 268 |
+| engin | 269 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
@@ -6459,7 +6477,7 @@ User Action / Agent / CI
 | migration | 60 |
 | memory | 6 |
 | dr-eams-tool | 26 |
-| hook | 12 |
+| hook | 13 |
 | engine-system | 0 |
 | engine-utility | 0 |
 

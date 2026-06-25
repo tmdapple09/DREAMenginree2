@@ -233,6 +233,7 @@ export const engins = {
   "engins/renderengin/textures": () => import("@/engins/renderengin/textures"),
   "engins/renderengin/viewportControls": () => import("@/engins/renderengin/viewportControls"),
   "engins/renderengin/virtualization": () => import("@/engins/renderengin/virtualization"),
+  "engins/renderengin/wasmAcceleration": () => import("@/engins/renderengin/wasmAcceleration"),
   "engins/renderengin/webgpu": () => import("@/engins/renderengin/webgpu"),
   "engins/rulesets/brand/brandEnginRuleSet": () => import("@/engins/rulesets/brand/brandEnginRuleSet"),
   "engins/rulesets/brand/useBrandEnginRuntime": () => import("@/engins/rulesets/brand/useBrandEnginRuntime"),
