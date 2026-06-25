@@ -17,6 +17,9 @@ const IGNORE_DIRS = new Set([
 
 const TREE_IGNORE_DIRS = new Set([
   ...IGNORE_DIRS,
+  ".github",
+  "scripts",
+  "tests",
   "docs",
   "research",
   "research-and-development",
@@ -708,7 +711,7 @@ function extractNamedImports(content) {
     if (!out[record.specifier]) out[record.specifier] = new Set();
 
     for (const name of record.names) {
-      if (record.kind === "default") out[record.specifier].add(`â¬¡ ${name}`);
+      if (record.kind === "default") out[record.specifier].add(`default ${name}`);
       else if (record.kind === "dynamic") out[record.specifier].add("(dynamic import)");
       else if (record.kind === "side-effect") out[record.specifier].add("(side-effect)");
       else if (record.kind === "require") out[record.specifier].add("(require)");
@@ -1047,8 +1050,8 @@ function buildRouteMap(files) {
     route = routeParts.length ? `/${routeParts.join("/")}` : "/";
 
     let label = "";
-    if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " â HOME (DreamDMBar)";
-    if (route === "/dreamdmbar/dreamspace") label = " â HOME (DreamSpace)";
+    if (route === "/dreamdmbar" || route === "/dreamdmbar/homedream") label = " <- HOME (DreamDMBar)";
+    if (route === "/dreamdmbar/dreamspace") label = " <- HOME (DreamSpace)";
 
     return { route, file, label };
   });
@@ -1161,7 +1164,7 @@ function detectCircular(graph) {
   function dfs(node) {
     if (inStack.has(node)) {
       const index = stack.indexOf(node);
-      cycles.add(stack.slice(index).concat(node).join(" â "));
+      cycles.add(stack.slice(index).concat(node).join(" -> "));
       return;
     }
     if (visited.has(node)) return;
@@ -1329,8 +1332,8 @@ function renderFeatureSection(feature) {
     section += `| File Edge | Consumes Nodes | Provides Nodes |\n`;
     section += `|-----------|----------------|----------------|\n`;
     for (const edge of data.edges.slice(0, 80)) {
-      const from = edge.from.slice(0, 6).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "â";
-      const to = edge.to.slice(0, 6).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "â";
+      const from = edge.from.slice(0, 6).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "-";
+      const to = edge.to.slice(0, 6).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "-";
       section += `| \`${mdCell(edge.file)}\` | ${from} | ${to} |\n`;
     }
     if (data.edges.length > 80) section += `\n_Trimmed to first 80 file edges for this feature._\n`;
@@ -1364,7 +1367,7 @@ function renderFeatureSection(feature) {
 
   if (caps.length) {
     section += `## Capability Flags\n\n`;
-    section += caps.join(" Â· ") + "\n\n";
+    section += caps.join(" - ") + "\n\n";
   }
 
   section += `---\n\n`;
@@ -1418,17 +1421,17 @@ function buildTreeString({ detailed = false } = {}) {
       const isLast = index === entries.length - 1;
       const fullPath = path.join(dir, entry.name);
       const relPath = normalizeRel(path.relative(ROOT, fullPath));
-      const childPrefix = prefix + (isLast ? "    " : "â   ");
+      const childPrefix = prefix + (isLast ? "    " : "|   ");
       const annotation = entry.isDirectory() ? getFeatureAnnotation(fullPath) : "";
 
       let issueMarkers = "";
       if (!entry.isDirectory()) {
         const issues = fileIssues[relPath];
-        if (issues?.hasBrokenImports) issueMarkers += " â ";
-        if (issues?.hasUnusedExports) issueMarkers += " â";
+        if (issues?.hasBrokenImports) issueMarkers += " !";
+        if (issues?.hasUnusedExports) issueMarkers += " unused";
       }
 
-      output += `${prefix}${isLast ? "âââ" : "âââ"} ${entry.name}${issueMarkers}${annotation}\n`;
+      output += `${prefix}${isLast ? "`--" : "+--"} ${entry.name}${issueMarkers}${annotation}\n`;
 
       if (entry.isDirectory()) {
         render(fullPath, childPrefix);
@@ -1441,20 +1444,20 @@ function buildTreeString({ detailed = false } = {}) {
       const lines = [];
 
       if (!detailed) {
-        for (const item of unresolved) lines.push(`â  ${item.specifier} (${item.names.join(", ")})`);
-        if (unused.length) lines.push(`â unused: ${unused.join(", ")}`);
+        for (const item of unresolved) lines.push(`! ${item.specifier} (${item.names.join(", ")})`);
+        if (unused.length) lines.push(`unused unused: ${unused.join(", ")}`);
       } else if (data) {
         for (const record of data.resolvedImports) {
-          const status = record.resolved === false ? "â " : "â";
+          const status = record.resolved === false ? "!" : "<-";
           lines.push(`${record.names.join(", ")}  ${status} ${record.specifier}`);
         }
-        for (const exp of data.namedExports) lines.push(`â ${exp}`);
-        if (unused.length) lines.push(`â unused: ${unused.join(", ")}`);
+        for (const exp of data.namedExports) lines.push(`-> ${exp}`);
+        if (unused.length) lines.push(`unused unused: ${unused.join(", ")}`);
       }
 
       lines.forEach((line, lineIndex) => {
         const isLastLine = lineIndex === lines.length - 1;
-        output += `${childPrefix}${isLastLine ? "âââ" : "âââ"} ${line}\n`;
+        output += `${childPrefix}${isLastLine ? "`--" : "+--"} ${line}\n`;
       });
     });
   }
@@ -1504,7 +1507,7 @@ for (const feature of systemFeatures) md += renderFeatureSection(feature);
 
 md += `<a name="route-map"></a>\n\n`;
 md += "# Route Map\n\n";
-for (const route of buildRouteMap(reportFiles)) md += `- \`${route.route}\` â \`${route.file}\`${route.label}\n`;
+for (const route of buildRouteMap(reportFiles)) md += `- \`${route.route}\` - \`${route.file}\`${route.label}\n`;
 md += "\n---\n\n";
 
 md += `<a name="capability-nodes"></a>\n\n`;
@@ -1516,7 +1519,7 @@ for (const node of capabilityNodes.values()) {
 }
 for (const [kind, nodes] of Object.entries(nodesByKind).sort()) {
   md += `## ${kind}\n\n`;
-  for (const node of nodes.sort((a, b) => a.name.localeCompare(b.name)).slice(0, 300)) md += `- \`${mdCell(node.name)}\` â \`${mdCell(node.file)}\`\n`;
+  for (const node of nodes.sort((a, b) => a.name.localeCompare(b.name)).slice(0, 300)) md += `- \`${mdCell(node.name)}\` - \`${mdCell(node.file)}\`\n`;
   if (nodes.length > 300) md += `- _${nodes.length - 300} more omitted from this section_\n`;
   md += "\n";
 }
@@ -1527,8 +1530,8 @@ md += "# Files as Edges\n\n";
 md += "| File Edge | Consumes Nodes | Provides Nodes |\n";
 md += "|-----------|----------------|----------------|\n";
 for (const edge of fileEdges.sort((a, b) => a.file.localeCompare(b.file))) {
-  const from = edge.from.slice(0, 8).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "â";
-  const to = edge.to.slice(0, 8).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "â";
+  const from = edge.from.slice(0, 8).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "-";
+  const to = edge.to.slice(0, 8).map((node) => `\`${mdCell(node.name)}\``).join(", ") || "-";
   md += `| \`${mdCell(edge.file)}\` | ${from} | ${to} |\n`;
 }
 md += "\n---\n\n";
@@ -1560,7 +1563,7 @@ md += "\n---\n\n";
 md += `<a name="circular-deps"></a>\n\n`;
 md += "# Circular Dependencies\n\n";
 if (circularDeps.length) {
-  for (const cycle of circularDeps) md += `- â  ${cycle}\n`;
+  for (const cycle of circularDeps) md += `- ! ${cycle}\n`;
 } else {
   md += "_No circular dependencies detected._\n";
 }
@@ -1580,26 +1583,27 @@ md += "\n---\n\n";
 md += `<a name="raw-tree"></a>\n\n`;
 md += "# Raw File Tree\n\n";
 md += "```text\n";
-md += "Legend: â  unresolved import  â unused export\n\n";
+md += "Legend: ! unresolved import  unused export\n\n";
 md += buildTreeString({ detailed: false });
 md += "```\n";
 
 fs.writeFileSync("REPO_STATE.md", md);
-console.log("â REPO_STATE.md written");
+console.log("OK REPO_STATE.md written");
 
 let treeMd = "";
 treeMd += "# File Tree\n\n";
 treeMd += `Generated: ${new Date().toISOString()}\n\n`;
-treeMd += "Legend: â  unresolved import  â unused export\n\n";
+treeMd += "Legend: ! unresolved import  unused export\n\n";
 treeMd += "```text\n";
 treeMd += buildTreeString({ detailed: true });
 treeMd += "```\n";
 
 fs.writeFileSync("FILE_TREE.md", treeMd);
-console.log("â FILE_TREE.md written");
+console.log("OK FILE_TREE.md written");
 console.log(`  Routes: ${buildRouteMap(reportFiles).length}`);
 console.log(`  Files analysed: ${codeFiles.length}`);
 console.log(`  Capability nodes: ${capabilityNodes.size}`);
 console.log(`  File edges: ${fileEdges.length}`);
 console.log(`  Dual-runtime files: ${codeFiles.filter((file) => fileData[file].usesDualRuntime).length}`);
-console.log(`  Unresolved internal imports: ${unresolvedCount} specifiers across ${Object.keys(unreso
+console.log(`  Unresolved internal imports: ${unresolvedCount} specifiers across ${Object.keys(unresolvedImports).length} files`);
+console.log(`  Unused exports: ${unusedCount} exports across ${Object.keys(unusedExports).length} files`);
