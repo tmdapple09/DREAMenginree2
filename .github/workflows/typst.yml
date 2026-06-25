@@ -1,0 +1,254 @@
+name: Export application code to Typst
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  export-repo-typst:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v6
+
+      - name: Build Typst repo export
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p repo-export
+
+          python3 <<'PY'
+          from pathlib import Path
+          import subprocess
+          import re
+
+          output_path = Path("repo-export/dreamengin-application-code.typ")
+
+          # Actual application-code roots.
+          # Deliberately excludes:
+          # .github, src, scripts, public, tests, docs, research, repo-visualizer, fonts, images/assets.
+          allowed_dirs = {
+              "app",
+              "assembly",
+              "components",
+              "config",
+              "coresurfaces",
+              "daydreams",
+              "dr-eams",
+              "dreamdmbar",
+              "dreamr",
+              "engine",
+              "engins",
+              "hooks",
+              "optimizer",
+              "styles",
+              "supabase",
+              "types",
+              "utils",
+          }
+
+          allowed_root_files = {
+              "_manifest.json",
+              "eslint.config.mjs",
+              "fix-audit.js",
+              "next-env.d.ts",
+              "next.config.mjs",
+              "package.json",
+              "postcss.config.js",
+              "postcss.config.mjs",
+              "proxy.ts",
+              "supabaseClient.ts",
+              "tailwind.config.ts",
+              "tailwindcss-animate.d.ts",
+              "tsconfig.app.json",
+              "tsconfig.base.json",
+              "tsconfig.games.json",
+              "tsconfig.gamesengin.json",
+              "tsconfig.json",
+              "tsconfig.server.json",
+              "tsconfig.worker.json",
+              "vercel.json",
+          }
+
+          allowed_extensions = {
+              ".ts",
+              ".tsx",
+              ".js",
+              ".jsx",
+              ".mjs",
+              ".cjs",
+              ".json",
+              ".css",
+          }
+
+          blocked_dirs = {
+              ".git",
+              ".github",
+              "src",
+              "scripts",
+              "public",
+              "tests",
+              "__tests__",
+              "test",
+              "docs",
+              "research",
+              "research-and-development",
+              "repo-visualizer",
+              "fonts",
+              "build-memory",
+              "DREAMengin-Bot",
+          }
+
+          blocked_suffixes = {
+              ".md",
+              ".mdx",
+              ".png",
+              ".jpg",
+              ".jpeg",
+              ".gif",
+              ".webp",
+              ".avif",
+              ".mp4",
+              ".mov",
+              ".webm",
+              ".m4v",
+              ".avi",
+              ".mkv",
+              ".wasm",
+              ".map",
+              ".tsbuildinfo",
+              ".lock",
+          }
+
+          blocked_name_patterns = (
+              ".test.",
+              ".spec.",
+              ".stories.",
+              ".story.",
+          )
+
+          blocked_exact_names = {
+              "vitest.config.ts",
+              "playwright.config.ts",
+              "pnpm-lock.yaml",
+              "package-lock.json",
+              "yarn.lock",
+          }
+
+          def git_files():
+              result = subprocess.run(
+                  ["git", "ls-files"],
+                  check=True,
+                  text=True,
+                  capture_output=True,
+              )
+              return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+          def is_allowed(path_string: str) -> bool:
+              path = Path(path_string)
+              parts = path.parts
+              name = path.name
+              suffix = path.suffix.lower()
+
+              if not parts:
+                  return False
+
+              if name in blocked_exact_names:
+                  return False
+
+              if any(part in blocked_dirs for part in parts):
+                  return False
+
+              lower_path = path_string.lower()
+
+              if any(lower_path.endswith(suffix) for suffix in blocked_suffixes):
+                  return False
+
+              if any(pattern in name for pattern in blocked_name_patterns):
+                  return False
+
+              if suffix not in allowed_extensions:
+                  return False
+
+              if len(parts) == 1:
+                  return name in allowed_root_files
+
+              return parts[0] in allowed_dirs
+
+          def read_text(path: Path) -> str | None:
+              try:
+                  data = path.read_bytes()
+              except OSError:
+                  return None
+
+              if b"\x00" in data:
+                  return None
+
+              try:
+                  return data.decode("utf-8")
+              except UnicodeDecodeError:
+                  return data.decode("utf-8", errors="replace")
+
+          def typst_escape_text(value: str) -> str:
+              return value.replace("\\", "\\\\").replace('"', '\\"')
+
+          def raw_fence_for(content: str) -> str:
+              runs = re.findall(r"`+", content)
+              max_run = max((len(run) for run in runs), default=2)
+              return "`" * max(3, max_run + 1)
+
+          files = sorted(path for path in git_files() if is_allowed(path))
+
+          with output_path.open("w", encoding="utf-8", newline="\n") as out:
+              out.write('#set document(title: "DREAMengin Application Code Export")\n')
+              out.write('#set text(size: 8pt)\n')
+              out.write('#set page(margin: 0.55in)\n\n')
+              out.write("= DREAMengin Application Code Export\n\n")
+              out.write(f"Generated from tracked repository files only. Files included: {len(files)}.\n\n")
+              out.write("Excluded: `.github/`, `src/`, `scripts/`, `public/`, tests, Markdown, images, video, lockfiles, generated build metadata, and non-code assets.\n\n")
+              out.write("= File Index\n\n")
+
+              for file_path in files:
+                  out.write(f"- `{typst_escape_text(file_path)}`\n")
+
+              out.write("\n#pagebreak()\n\n")
+              out.write("= Files\n\n")
+
+              for file_path in files:
+                  path = Path(file_path)
+                  content = read_text(path)
+
+                  if content is None:
+                      continue
+
+                  out.write(f"== `{typst_escape_text(file_path)}`\n\n")
+                  fence = raw_fence_for(content)
+                  out.write(f"{fence}\n")
+                  out.write(content)
+                  if content and not content.endswith("\n"):
+                      out.write("\n")
+                  out.write(f"{fence}\n\n")
+
+          print(f"Wrote {output_path}")
+          print(f"Included files: {len(files)}")
+          PY
+
+      - name: Show export summary
+        shell: bash
+        run: |
+          wc -l repo-export/dreamengin-application-code.typ
+          du -h repo-export/dreamengin-application-code.typ
+
+      - name: Upload Typst export
+        uses: actions/upload-artifact@v7
+        with:
+          name: dreamengin-application-code-typst
+          path: repo-export/dreamengin-application-code.typ
+          if-no-files-found: error
