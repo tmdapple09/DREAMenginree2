@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T01:04:41.150Z
+Generated: 2026-06-25T01:05:21.554Z
 
 ---
 
@@ -13821,10 +13821,8 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
-| `node:path` | `extname`, `join`, `relative`, `resolve` |
-| `node:url` | `fileURLToPath` |
-| `ts-morph` | `Node`, `Project`, `SourceFile`, `SyntaxKind` |
+| `node:fs` | `existsSync`, `readFileSync`, `statSync`, `writeFileSync` |
+| `node:path` | `dirname`, `extname`, `join`, `relative` |
 
 ## `scripts/update-bugs.mjs`
 
@@ -18777,7 +18775,6 @@ _No style files for this feature._
 - `engins/rulesets/useEnginWorkflow.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
-- `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
 - `src/engin/generated/osArchitectureMap.ts`
 - `src/engin/generated/surfaces.ts`
@@ -19059,7 +19056,6 @@ _No style files for this feature._
 - `engins/gameengin/registerCartridges.ts`
 - `engins/renderengin/serviceRuntime.ts`
 - `scripts/generate-repo-state.mjs`
-- `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
 - `src/engin/generated/osArchitectureMap.ts`
 
@@ -19356,7 +19352,6 @@ _No circular dependencies detected._
 | `engins/rulesets/game/useGameEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
-| `scripts/readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-asset-pipeline.test.ts` | 4 | RUNTIME_REGISTRY |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/spec41-engine-builder.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
@@ -20623,7 +20618,7 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
-| `scripts/readme-autosync.ts` | `isApplicationSourceCode`, `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `upsertSubsectionInSection` |
+| `scripts/readme-autosync.ts` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
@@ -23982,7 +23977,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.ts ⚠
 │   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
 │   ├── readme-autosync.ts ∅
-│   │   └── ∅ unused: isApplicationSourceCode, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
+│   │   └── ∅ unused: PRODUCT_SECTIONS, buildProductReadmeSections
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql

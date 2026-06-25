@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T01:04:41.234Z
+Generated: 2026-06-25T01:05:21.698Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14863,34 +14863,18 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── readme-autosync.ts ∅
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
-│   │   ├── readdirSync  ← node:fs
 │   │   ├── statSync  ← node:fs
 │   │   ├── writeFileSync  ← node:fs
+│   │   ├── dirname  ← node:path
 │   │   ├── extname  ← node:path
 │   │   ├── join  ← node:path
 │   │   ├── relative  ← node:path
-│   │   ├── resolve  ← node:path
-│   │   ├── fileURLToPath  ← node:url
-│   │   ├── Node  ← ts-morph
-│   │   ├── Project  ← ts-morph
-│   │   ├── SourceFile  ← ts-morph
-│   │   ├── SyntaxKind  ← ts-morph
-│   │   ├── → SECTION_REGISTRY
-│   │   ├── → analyzeComponents
-│   │   ├── → analyzeDependencies
-│   │   ├── → analyzeExports
-│   │   ├── → analyzeHooks
-│   │   ├── → analyzeImports
-│   │   ├── → analyzeRoutes
-│   │   ├── → analyzeSubsystem
-│   │   ├── → buildArchitecturalSectionBlock
-│   │   ├── → buildArchitecturalSubsectionBlock
+│   │   ├── → PRODUCT_SECTIONS
 │   │   ├── → buildAutosyncSummary
+│   │   ├── → buildProductReadmeSections
 │   │   ├── → computeAffected
-│   │   ├── → isApplicationSourceCode
-│   │   ├── → runReadmeAutosync
-│   │   ├── → upsertSubsectionInSection
-│   │   └── ∅ unused: isApplicationSourceCode, analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, upsertSubsectionInSection
+│   │   ├── → replaceSection
+│   │   └── ∅ unused: PRODUCT_SECTIONS, buildProductReadmeSections
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
