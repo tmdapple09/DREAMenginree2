@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T01:07:02.558Z
+Generated: 2026-06-25T03:23:02.964Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14863,20 +14863,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
 │   │   └── assertBuildInvariants  ⚠ ../lib/adari
-│   ├── readme-autosync.ts
-│   │   ├── existsSync  ← node:fs
-│   │   ├── readFileSync  ← node:fs
-│   │   ├── statSync  ← node:fs
-│   │   ├── writeFileSync  ← node:fs
-│   │   ├── dirname  ← node:path
-│   │   ├── extname  ← node:path
-│   │   ├── join  ← node:path
-│   │   ├── relative  ← node:path
-│   │   ├── → PRODUCT_SECTIONS
-│   │   ├── → buildAutosyncSummary
-│   │   ├── → buildProductReadmeSections
-│   │   ├── → computeAffected
-│   │   └── → replaceSection
+│   ├── readme-autosync.ts ∅
+│   │   ├── → buildProductSections
+│   │   ├── → renderProductSectionsMarkdown
+│   │   └── ∅ unused: buildProductSections, renderProductSectionsMarkdown
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot

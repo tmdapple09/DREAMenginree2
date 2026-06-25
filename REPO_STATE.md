@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T01:07:02.424Z
+Generated: 2026-06-25T03:23:02.823Z
 
 ---
 
@@ -13809,13 +13809,6 @@ _No style files for this feature._
 |--------|---------------|
 | `../lib/adari` | `assertBuildInvariants` |
 
-## `scripts/readme-autosync.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `statSync`, `writeFileSync` |
-| `node:path` | `dirname`, `extname`, `join`, `relative` |
-
 ## `scripts/update-bugs.mjs`
 
 | Module | Connected via |
@@ -18767,6 +18760,7 @@ _No style files for this feature._
 - `engins/rulesets/useEnginWorkflow.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
+- `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
 - `src/engin/generated/osArchitectureMap.ts`
 - `src/engin/generated/surfaces.ts`
@@ -20609,6 +20603,7 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
+| `scripts/readme-autosync.ts` | `buildProductSections`, `renderProductSectionsMarkdown` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
@@ -23966,7 +23961,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
 │   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
-│   ├── readme-autosync.ts
+│   ├── readme-autosync.ts ∅
+│   │   └── ∅ unused: buildProductSections, renderProductSectionsMarkdown
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql
