@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T03:23:02.823Z
+Generated: 2026-06-25T03:35:12.327Z
 
 ---
 
@@ -13808,6 +13808,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../lib/adari` | `assertBuildInvariants` |
+
+## `scripts/readme-autosync.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `node:url` | `pathToFileURL` |
 
 ## `scripts/update-bugs.mjs`
 

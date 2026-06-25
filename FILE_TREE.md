@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T03:23:02.964Z
+Generated: 2026-06-25T03:35:12.464Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14864,6 +14864,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.ts ⚠
 │   │   └── assertBuildInvariants  ⚠ ../lib/adari
 │   ├── readme-autosync.ts ∅
+│   │   ├── pathToFileURL  ← node:url
+│   │   ├── → PRODUCT_SECTIONS
+│   │   ├── → buildProductReadmeSections
 │   │   ├── → buildProductSections
 │   │   ├── → renderProductSectionsMarkdown
 │   │   └── ∅ unused: buildProductSections, renderProductSectionsMarkdown
