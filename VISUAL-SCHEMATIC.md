@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2254
-- **Total function/class nodes:** 4451
-- **Total edges:** 8363
-- **Orphan nodes:** 3876
+- **Total files:** 2265
+- **Total function/class nodes:** 4576
+- **Total edges:** 8373
+- **Orphan nodes:** 4005
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -60,7 +60,7 @@ graph LR
 
 #### File-Level Connectivity (auto-generated)
 
-<details><summary>engins/ (360 files)</summary>
+<details><summary>engins/ (366 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -68,7 +68,7 @@ graph LR
 | `engins/forgeengin/forge/forgeRegistry.ts` | ts | 0 | 26 | `app/daydream/forge/page.tsx`, `app/engines/page.tsx`, `components/dreams/dreamsurface.dreamspace.tsx` | — |
 | `engins/gameengin/cartridges/manifest.ts` | ts | 1 | 21 | `app/api/game-scores/route.ts`, `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `app/gameengin/cartridges/[id]/page.tsx` | `engins/gameengin/cartridge.ts` |
 | `engins/gameengin/cartridge.ts` | ts | 0 | 20 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`, `engine/generated/engins.ts` | — |
-| `engins/renderengin/core.ts` | ts | 2 | 19 | `engine/runtime/EnginDispatcher.ts`, `engins/renderengin/RenderEnginInlineSurface.tsx`, `engins/renderengin/RenderEnginViewport.tsx` | `engine/engin-runtime/EnginBaseState.ts`, `engine/engin-runtime/EnginRuleSetContract.ts` |
+| `engins/renderengin/core.ts` | ts | 2 | 20 | `engine/runtime/EnginDispatcher.ts`, `engins/renderengin/RenderEnginInlineSurface.tsx`, `engins/renderengin/RenderEnginViewport.tsx` | `engine/engin-runtime/EnginBaseState.ts`, `engine/engin-runtime/EnginRuleSetContract.ts` |
 | `engins/renderengin/index.ts` | ts | 24 | 17 | `components/engines/render/dream.RenderServiceDiagnostics.tsx`, `engins/contentengin/ImplicitAssetWorkspace.tsx`, `engins/engin.GameEngin.tsx` | `engins/renderengin/core.ts`, `engins/renderengin/webgpu.ts`, `engins/renderengin/RenderEnginViewport.tsx` |
 | `engins/contentengin/media/ledger.ts` | ts | 1 | 15 | `app/api/ledger-media/route.ts`, `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.CreatePostModal.tsx` | `utils/index.ts` |
 | `engins/gameengin/games/hooks.ts` | ts | 2 | 15 | `components/games/dream.AvenueOfMirrors.tsx`, `components/games/dream.DefuseRitual.tsx`, `components/games/dream.EchoArena.tsx` | `engins/gameengin/games/performance-baseline.ts`, `engine/rendering/webgpu.ts` |
@@ -78,10 +78,10 @@ graph LR
 | `engins/gameengin/cartridges/loaders.ts` | ts | 16 | 11 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`, `engine/generated/engins.ts` | `engins/gameengin/cartridge.ts`, `engins/gameengin/cartridges/manifest.ts`, `engins/gameengin/cartridges/reactCartridge.ts` |
 | `engins/codeengin/pathSafety.ts` | ts | 0 | 10 | `app/api/codeengin/diagnostics/route.ts`, `app/api/codeengin/file/route.ts`, `app/api/codeengin/git/route.ts` | — |
 | `engins/codeengin/workspaceStore.ts` | ts | 2 | 10 | `app/api/codeengin/file/route.ts`, `app/api/codeengin/upload/route.ts`, `app/api/codeengin/workspace/route.ts` | `engins/codeengin/pathSafety.ts`, `engins/codeengin/types.ts` |
+| `engins/forgeengin/enginpipe/index.ts` | ts | 5 | 10 | `engine/generated/engins.ts`, `engins/CodeEngin/orchestrator/dream.index.tsx`, `engins/codeengin-ui/orchestrator/dream.index.tsx` | `engins/forgeengin/enginpipe/artifact/manifest.ts`, `engins/forgeengin/enginpipe/telemetry/client.ts`, `engins/forgeengin/enginpipe/telemetry/events.ts` |
 | `engins/gameengin/games/navigation.ts` | ts | 0 | 10 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `app/daydream/games/page.tsx`, `app/daydream/play/page.tsx` | — |
 | `engins/codeengin/auth.ts` | ts | 3 | 9 | `app/api/codeengin/diagnostics/route.ts`, `app/api/codeengin/file/route.ts`, `app/api/codeengin/git/route.ts` | `engine/admin/lockout.ts`, `supabase/client/safeGetUser.ts`, `supabase/server/serverClient.ts` |
 | `engins/contentengin/media/postMedia.ts` | ts | 0 | 9 | `app/api/dreamr/suggested/route.ts`, `app/api/feed/route.ts`, `app/api/posts/route.ts` | — |
-| `engins/forgeengin/enginpipe/index.ts` | ts | 5 | 9 | `engine/generated/engins.ts`, `engins/CodeEngin/orchestrator/dream.index.tsx`, `engins/dream.ForgeEngin.tsx` | `engins/forgeengin/enginpipe/artifact/manifest.ts`, `engins/forgeengin/enginpipe/telemetry/client.ts`, `engins/forgeengin/enginpipe/telemetry/events.ts` |
 | `engins/engin.GameEngin.tsx` | tsx | 40 | 8 | `app/daydream/games/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/games/dream.GameEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`, `components/gameengin/dream.cartridge.FeaturedCartridges.tsx` |
 | `engins/engin.StarMakerEngin.tsx` | tsx | 27 | 8 | `app/daydream/music/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/engines/music/dream.MusicEnginApp.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`, `components/daydream/starmaker/dream.panel.CompingPanel.tsx` |
 | `engins/gameengin/brain-reader.ts` | ts | 0 | 8 | `app/api/gameengin/crash-report/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
@@ -108,8 +108,8 @@ graph LR
 | `engins/renderengin/serviceRuntime.ts` | ts | 3 | 6 | `engins/renderengin/RenderEnginInlineSurface.tsx`, `engins/renderengin/RenderEnginViewport.tsx`, `engins/renderengin/RenderStage.tsx` | `engine/engin-runtime/EnginBaseState.ts`, `engine/runtime/EnginDispatcher.ts`, `engins/renderengin/core.ts` |
 | `engins/rulesets/useEnginWorkflow.ts` | ts | 3 | 6 | `engine/generated/engins.ts`, `engins/engin.BrandingEngin.tsx`, `engins/engin.CodeEngin.tsx` | `engine/journey/journeyDots.ts`, `engine/runtime/dualRuntimeBridge.ts`, `engins/rulesets/workflowEngine.ts` |
 | `engins/starmakerengin/audioFingerprint.ts` | ts | 1 | 6 | `components/dream.AudioVisualizer3D.tsx`, `engine/generated/engins.ts`, `engine/ledger/ledger.ts` | `dreamr/torridity.ts` |
+| `engins/codeengin-ui/core/parser.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `engins/codeengin/diagnostics.ts`, `engins/codeengin/projectGraph.ts` | — |
 | `engins/codeengin/ai/drEamsCodeAssist.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts`, `tests/code-dream-preview.test.ts` | — |
-| `engins/CodeEngin/core/parser.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `engins/codeengin/diagnostics.ts`, `engins/codeengin/projectGraph.ts` | — |
 | `engins/contentengin/assets/indexedDBStore.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `engins/contentengin/assets/assetOptimizer.ts`, `engins/contentengin/assets/localAssetLibrary.ts` | — |
 | `engins/contentengin/pipeline/paths.ts` | ts | 0 | 5 | `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts`, `app/api/contentengin/assets/[assetId]/route.ts`, `engine/generated/engins.ts` | — |
 | `engins/dream.ForgeEngin.tsx` | tsx | 11 | 5 | `app/daydream/forge/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/runtime/dream.RuntimeView.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/dream.BrandLogo.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` |
@@ -131,9 +131,9 @@ graph LR
 | `engins/rulesets/homedream/dream.homedream.constants.ts` | ts | 0 | 5 | `engine/generated/rulesets.ts`, `engins/rulesets/homedream/dream.homedream.physics.ts`, `engins/rulesets/homedream/dream.homedream.transforms.ts` | — |
 | `engins/autoopen/dream.AutoOpenGameEngin.tsx` | tsx | 2 | 4 | `app/daydream/games/page.tsx`, `daydreams/games/page.tsx`, `engine/generated/engins.ts` | `engine/runtime/instanceManager.ts`, `engine/runtime/useSharedEnginChannel.ts` |
 | `engins/brandingengin/identity/logos.ts` | ts | 0 | 4 | `components/dream.BrandLogo.tsx`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
+| `engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` | tsx | 1 | 4 | `engine/generated/engins.ts`, `engins/codeengin-ui/modules/ai-co-pilot/index.ts`, `engins/codeengin-ui/orchestrator/dream.index.tsx` | `engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts` |
+| `engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts` | ts | 0 | 4 | `engine/generated/engins.ts`, `engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/codeengin-ui/modules/ai-co-pilot/index.ts` | — |
 | `engins/codeengin/diff/diffUtils.ts` | ts | 0 | 4 | `components/daydream/dream.DiffViewer.tsx`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
-| `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` | tsx | 1 | 4 | `engine/generated/engins.ts`, `engins/CodeEngin/modules/ai-co-pilot/index.ts`, `engins/CodeEngin/orchestrator/dream.index.tsx` | `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` |
-| `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` | ts | 0 | 4 | `engine/generated/engins.ts`, `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/CodeEngin/modules/ai-co-pilot/index.ts` | — |
 | `engins/codeengin/runner.ts` | ts | 3 | 4 | `app/api/ci/run/route.ts`, `app/api/codeengin/run/route.ts`, `engine/generated/engins.ts` | `engins/codeengin/workspaceStore.ts`, `engins/codeengin/runnerCommands.ts`, `engins/codeengin/types.ts` |
 | `engins/contentengin/builders/primitiveBuilder.ts` | ts | 1 | 4 | `engine/generated/engins.ts`, `engins/contentengin/builders/geometryBuilder.ts`, `engins/contentengin/builders/meshBuilder.ts` | `engins/contentengin/assetTypes.ts` |
 | `engins/contentengin/materials/paletteExtractor.ts` | ts | 0 | 4 | `engine/generated/engins.ts`, `engins/contentengin/photo/colorCluster.ts`, `engins/contentengin/photo/imageAnalyzer.ts` | — |
@@ -188,11 +188,11 @@ graph LR
 | `engins/starmakerengin/audio-fingerprint/peak-map.ts` | ts | 0 | 4 | `engine/generated/engins.ts`, `engins/starmakerengin/audio-fingerprint/fingerprint.ts`, `engins/starmakerengin/audio-fingerprint/index.ts` | — |
 | `engins/starmakerengin/music/starmaker.ts` | ts | 0 | 4 | `engine/generated/engins.ts`, `engins/engin.StarMakerEngin.tsx`, `src/engin/generated/engins.ts` | — |
 | `engins/starmakerengin/music/starmakerArrangement.ts` | ts | 0 | 4 | `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx`, `engine/generated/engins.ts`, `engins/engin.StarMakerEngin.tsx` | — |
-| `engins/codeengin/diagnostics.ts` | ts | 3 | 3 | `app/api/codeengin/diagnostics/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/CodeEngin/core/parser.ts`, `engins/codeengin/workspaceStore.ts`, `engins/codeengin/types.ts` |
+| `engins/codeengin-ui/modules/ai-co-pilot/index.ts` | ts | 2 | 3 | `engine/generated/engins.ts`, `engins/engin.CodeEngin.tsx`, `src/engin/generated/engins.ts` | `engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts` |
+| `engins/codeengin/diagnostics.ts` | ts | 3 | 3 | `app/api/codeengin/diagnostics/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/codeengin-ui/core/parser.ts`, `engins/codeengin/workspaceStore.ts`, `engins/codeengin/types.ts` |
 | `engins/codeengin/diff/aiEditEngine.ts` | ts | 0 | 3 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts`, `tests/ai-edit-engine.test.ts` | — |
 | `engins/codeengin/git.ts` | ts | 1 | 3 | `app/api/codeengin/git/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/codeengin/workspaceStore.ts` |
-| `engins/CodeEngin/modules/ai-co-pilot/index.ts` | ts | 2 | 3 | `engine/generated/engins.ts`, `engins/engin.CodeEngin.tsx`, `src/engin/generated/engins.ts` | `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` |
-| `engins/codeengin/projectGraph.ts` | ts | 3 | 3 | `app/api/codeengin/workspace/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/CodeEngin/core/parser.ts`, `engins/codeengin/workspaceStore.ts`, `engins/codeengin/types.ts` |
+| `engins/codeengin/projectGraph.ts` | ts | 3 | 3 | `app/api/codeengin/workspace/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/codeengin-ui/core/parser.ts`, `engins/codeengin/workspaceStore.ts`, `engins/codeengin/types.ts` |
 | `engins/codeengin/runnerCommands.ts` | ts | 0 | 3 | `app/api/codeengin/workspace/route.ts`, `engins/codeengin/runner.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/codeengin/search.ts` | ts | 2 | 3 | `app/api/codeengin/search/route.ts`, `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/codeengin/workspaceStore.ts`, `engins/codeengin/types.ts` |
 | `engins/contentengin/assets/assetOptimizer.ts` | ts | 1 | 3 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts`, `tests/asset-optimizer.test.ts` | `engins/contentengin/assets/indexedDBStore.ts` |
@@ -255,7 +255,9 @@ graph LR
 | `engins/rulesets/workflowEngine.ts` | ts | 0 | 3 | `engine/generated/engins.ts`, `engins/rulesets/useEnginWorkflow.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/starmakerengin/audio-fingerprint/stem-extractor.ts` | ts | 1 | 3 | `engine/generated/engins.ts`, `engins/starmakerengin/audio-fingerprint/index.ts`, `src/engin/generated/engins.ts` | `engins/starmakerengin/audio-fingerprint/fingerprint.ts` |
 | `engins/starmakerengin/music/presets.ts` | ts | 0 | 3 | `engine/generated/engins.ts`, `engins/engin.StarMakerEngin.tsx`, `src/engin/generated/engins.ts` | — |
-| `engins/CodeEngin/orchestrator/dream.index.tsx` | tsx | 2 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/forgeengin/enginpipe/index.ts`, `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` |
+| `engins/codeengin-ui/orchestrator/dream.index.tsx` | tsx | 2 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/forgeengin/enginpipe/index.ts`, `engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` |
+| `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` | tsx | 1 | 2 | `engins/CodeEngin/modules/ai-co-pilot/index.ts`, `engins/CodeEngin/orchestrator/dream.index.tsx` | `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` |
+| `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` | ts | 0 | 2 | `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/CodeEngin/modules/ai-co-pilot/index.ts` | — |
 | `engins/contentengin/AssetViewport.tsx` | tsx | 2 | 2 | `engins/contentengin/ImplicitAssetWorkspace.tsx`, `src/engin/generated/engins.ts` | `engins/isosurfaceAssetPipeline.ts`, `engins/isosurfaceDualContouring.ts` |
 | `engins/contentengin/builders/modifiers.ts` | ts | 0 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | — |
 | `engins/contentengin/builders/textureBuilder.ts` | ts | 1 | 2 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts` | `engins/contentengin/assetTypes.ts` |
@@ -333,6 +335,9 @@ graph LR
 | `engins/gameengin/launcher.ts` | ts | 3 | 1 | `src/engin/generated/engins.ts` | `engins/gameengin/config/demoGameConfig.ts`, `engins/gameengin/GameEnginCore.ts`, `utils/index.ts` |
 | `engins/labengin/implicitSurface.ts` | ts | 1 | 1 | `src/engin/generated/engins.ts` | `engins/isosurfaceDualContouring.ts` |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
+| `engins/CodeEngin/core/parser.ts` | ts | 0 | 0 | — | — |
+| `engins/CodeEngin/modules/ai-co-pilot/index.ts` | ts | 2 | 0 | — | `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`, `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | tsx | 2 | 0 | — | `engins/forgeengin/enginpipe/index.ts`, `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` |
 | `engins/contentengin/rigging/templates/bird_basic.json` | config | 0 | 0 | — | — |
 | `engins/contentengin/rigging/templates/fish_basic.json` | config | 0 | 0 | — | — |
 | `engins/contentengin/rigging/templates/humanoid_basic.json` | config | 0 | 0 | — | — |
@@ -424,10 +429,11 @@ graph LR
 | `engins/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc | 0 | 0 | — | — |
 | `engins/gameengin/brain/work-queue/README.md` | doc | 0 | 0 | — | — |
 | `engins/renderengin/README.md` | doc | 0 | 0 | — | — |
+| `engins/renderengin/wasmAcceleration.ts` | ts | 1 | 0 | — | `engins/renderengin/core.ts` |
 
 </details>
 
-<details><summary>components/ (324 files)</summary>
+<details><summary>components/ (325 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -752,6 +758,7 @@ graph LR
 | `components/engines/render/index.ts` | ts | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/engines/render/dream.RenderServiceDiagnostics.tsx` |
 | `components/games/dream.hud.MobileGameHUD.module.css` | css | 0 | 1 | `components/games/dream.hud.MobileGameHUD.tsx` | — |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
+| `components/dream.FirstTouchActivator.tsx` | tsx | 0 | 0 | — | — |
 | `components/gameengin/README.md` | doc | 0 | 0 | — | — |
 | `components/games/css-modules.d.ts` | ts | 0 | 0 | — | — |
 | `components/games/dream.GameController.module.css` | css | 0 | 0 | — | — |
@@ -1463,7 +1470,7 @@ graph LR
 
 </details>
 
-<details><summary>hooks/ (13 files)</summary>
+<details><summary>hooks/ (14 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -1480,6 +1487,7 @@ graph LR
 | `hooks/useTick.ts` | ts | 0 | 2 | `engine/generated/hooks.ts`, `src/engin/generated/hooks.ts` | — |
 | `hooks/useViewCounter.ts` | ts | 0 | 2 | `engine/generated/hooks.ts`, `src/engin/generated/hooks.ts` | — |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
+| `hooks/useAppIntentPressureSurface.ts` | ts | 1 | 0 | — | `engine/intent/appIntentPressure.ts` |
 
 </details>
 
@@ -1703,7 +1711,7 @@ graph LR
 
 </details>
 
-<details><summary>hooks/ — 13 files</summary>
+<details><summary>hooks/ — 14 files</summary>
 
 ```mermaid
 graph LR
@@ -1711,6 +1719,8 @@ graph LR
   f_supabase_client_client_ts["client.ts"]
   f_types_spatial_ts["spatial.ts"]
   f_hooks_useAccount_ts["useAccount.ts"]
+  f_hooks_useAppIntentPressureSurface_ts["useAppIntentPressureSurface.ts"]
+  f_engine_intent_appIntentPressure_ts["appIntentPressure.ts"]
   f_hooks_useConnectorInstallFlow_ts["useConnectorInstallFlow.ts"]
   f_engine_connectors_connectorRegistry_ts["connectorRegistry.ts"]
   f_engine_connectors_installFlow_ts["installFlow.ts"]
@@ -1732,6 +1742,7 @@ graph LR
   f_hooks_use_spatial_ts --> f_supabase_client_client_ts
   f_hooks_use_spatial_ts --> f_types_spatial_ts
   f_hooks_useAccount_ts --> f_supabase_client_client_ts
+  f_hooks_useAppIntentPressureSurface_ts --> f_engine_intent_appIntentPressure_ts
   f_hooks_useConnectorInstallFlow_ts --> f_engine_connectors_connectorRegistry_ts
   f_hooks_useConnectorInstallFlow_ts --> f_engine_connectors_installFlow_ts
   f_hooks_useConnectorInstallFlow_ts --> f_engine_widgets_widgetRegistry_ts
@@ -1792,15 +1803,15 @@ graph LR
   f_engins_brandingengin_identity_logos_ts["logos.ts"]
   f_engins_codeengin_ai_drEamsCodeAssist_ts["drEamsCodeAssist.ts"]
   f_engins_codeengin_auth_ts["auth.ts"]
-  f_engins_CodeEngin_core_parser_ts["parser.ts"]
+  f_engins_codeengin_ui_core_parser_ts["parser.ts"]
   f_engins_codeengin_diagnostics_ts["diagnostics.ts"]
   f_engins_codeengin_diff_aiEditEngine_ts["aiEditEngine.ts"]
   f_engins_codeengin_diff_diffUtils_ts["diffUtils.ts"]
   f_engins_codeengin_git_ts["git.ts"]
-  f_engins_CodeEngin_modules_ai_co_pilot_dream_panel_AgentPanel_tsx["dream.panel.AgentPanel.tsx"]
-  f_engins_CodeEngin_modules_ai_co_pilot_index_ts["index.ts"]
-  f_engins_CodeEngin_modules_ai_co_pilot_useAgentSession_ts["useAgentSession.ts"]
-  f_engins_CodeEngin_orchestrator_dream_index_tsx["dream.index.tsx"]
+  f_engins_codeengin_ui_modules_ai_co_pilot_dream_panel_AgentPanel_tsx["dream.panel.AgentPanel.tsx"]
+  f_engins_codeengin_ui_modules_ai_co_pilot_index_ts["index.ts"]
+  f_engins_codeengin_ui_modules_ai_co_pilot_useAgentSession_ts["useAgentSession.ts"]
+  f_engins_codeengin_ui_orchestrator_dream_index_tsx["dream.index.tsx"]
   f_engins_codeengin_pathSafety_ts["pathSafety.ts"]
   f_engins_codeengin_projectGraph_ts["projectGraph.ts"]
   f_engins_codeengin_runner_ts["runner.ts"]
@@ -2700,15 +2711,15 @@ graph LR
   f_src_engin_generated_engins_ts --> f_engins_brandingengin_identity_logos_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_ai_drEamsCodeAssist_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_auth_ts
-  f_src_engin_generated_engins_ts --> f_engins_CodeEngin_core_parser_ts
+  f_src_engin_generated_engins_ts --> f_engins_codeengin_ui_core_parser_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_diagnostics_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_diff_aiEditEngine_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_diff_diffUtils_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_git_ts
-  f_src_engin_generated_engins_ts --> f_engins_CodeEngin_modules_ai_co_pilot_dream_panel_AgentPanel_tsx
-  f_src_engin_generated_engins_ts --> f_engins_CodeEngin_modules_ai_co_pilot_index_ts
-  f_src_engin_generated_engins_ts --> f_engins_CodeEngin_modules_ai_co_pilot_useAgentSession_ts
-  f_src_engin_generated_engins_ts --> f_engins_CodeEngin_orchestrator_dream_index_tsx
+  f_src_engin_generated_engins_ts --> f_engins_codeengin_ui_modules_ai_co_pilot_dream_panel_AgentPanel_tsx
+  f_src_engin_generated_engins_ts --> f_engins_codeengin_ui_modules_ai_co_pilot_index_ts
+  f_src_engin_generated_engins_ts --> f_engins_codeengin_ui_modules_ai_co_pilot_useAgentSession_ts
+  f_src_engin_generated_engins_ts --> f_engins_codeengin_ui_orchestrator_dream_index_tsx
   f_src_engin_generated_engins_ts --> f_engins_codeengin_pathSafety_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_projectGraph_ts
   f_src_engin_generated_engins_ts --> f_engins_codeengin_runner_ts
@@ -3832,15 +3843,15 @@ _File-level graph omitted: 277 files exceeds Mermaid render budget. See table ab
 
 </details>
 
-<details><summary>components/ — 324 files</summary>
+<details><summary>components/ — 325 files</summary>
 
-_File-level graph omitted: 324 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 325 files exceeds Mermaid render budget. See table above._
 
 </details>
 
-<details><summary>engins/ — 360 files</summary>
+<details><summary>engins/ — 366 files</summary>
 
-_File-level graph omitted: 360 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 366 files exceeds Mermaid render budget. See table above._
 
 </details>
 
@@ -4008,6 +4019,7 @@ _File-level graph omitted: 360 files exceeds Mermaid render budget. See table ab
 | `build-memory/ui-surfaces.json` | config |
 | `CHANGELOG.md` | doc |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `components/dream.FirstTouchActivator.tsx` | tsx |
 | `components/gameengin/README.md` | doc |
 | `components/games/css-modules.d.ts` | ts |
 | `components/games/dream.GameController.module.css` | css |
@@ -4182,6 +4194,9 @@ _File-level graph omitted: 360 files exceeds Mermaid render budget. See table ab
 | `engine/widgets/useWidget.ts` | ts |
 | `engine/widgets/WidgetEngine.tsx` | tsx |
 | `engins/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `engins/CodeEngin/core/parser.ts` | ts |
+| `engins/CodeEngin/modules/ai-co-pilot/index.ts` | ts |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | tsx |
 | `engins/contentengin/rigging/templates/bird_basic.json` | config |
 | `engins/contentengin/rigging/templates/fish_basic.json` | config |
 | `engins/contentengin/rigging/templates/humanoid_basic.json` | config |
@@ -4273,8 +4288,10 @@ _File-level graph omitted: 360 files exceeds Mermaid render budget. See table ab
 | `engins/gameengin/brain/visual-bible/environments/neon-wasteland.md` | doc |
 | `engins/gameengin/brain/work-queue/README.md` | doc |
 | `engins/renderengin/README.md` | doc |
+| `engins/renderengin/wasmAcceleration.ts` | ts |
 | `FILE_TREE.md` | doc |
 | `fix-audit.js` | js |
+| `fix-repo.cjs` | cjs |
 | `fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf` | file |
 | `fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf` | file |
 | `fonts/Cormorant_Garamond/OFL.txt` | doc |
@@ -4318,6 +4335,7 @@ _File-level graph omitted: 360 files exceeds Mermaid render budget. See table ab
 | `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `hooks/useAppIntentPressureSurface.ts` | ts |
 | `LICENSE` | file |
 | `misc/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `misc/images/arm2_transparent.png` | file |

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T07:33:30.199Z",
+  "generatedAt": "2026-06-25T20:31:43.812Z",
   "root": ".",
   "nodes": [
     {
@@ -2946,6 +2946,16 @@
       "label": "full-audit.yml",
       "type": "config",
       "path": ".github/workflows/full-audit.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/fullrep.yml",
+      "label": "fullrep.yml",
+      "type": "config",
+      "path": ".github/workflows/fullrep.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -15675,6 +15685,96 @@
       "parent": "folder:components",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#isCoarsePointer",
+      "label": "isCoarsePointer",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 86,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#isHTMLElement",
+      "label": "isHTMLElement",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 92,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#closestElement",
+      "label": "closestElement",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 96,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#isDisabled",
+      "label": "isDisabled",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 101,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#interactiveFromEventTarget",
+      "label": "interactiveFromEventTarget",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 110,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#isSameInteractiveClick",
+      "label": "isSameInteractiveClick",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 121,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#movedTooFar",
+      "label": "movedTooFar",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 126,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/dream.FirstTouchActivator.tsx#FirstTouchActivator",
+      "label": "FirstTouchActivator",
+      "type": "function",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "file:components/dream.FirstTouchActivator.tsx",
+      "loc": 142,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/dream.FirstTouchActivator.tsx",
+      "label": "dream.FirstTouchActivator.tsx",
+      "type": "tsx",
+      "path": "components/dream.FirstTouchActivator.tsx",
+      "parent": "folder:components",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
@@ -37102,6 +37202,85 @@
       "tags": []
     },
     {
+      "id": "folder:engine/intent",
+      "label": "intent",
+      "type": "folder",
+      "path": "engine/intent",
+      "parent": "folder:engine",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engine/intent/appIntentPressure.ts#clamp",
+      "label": "clamp",
+      "type": "function",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 48,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/intent/appIntentPressure.ts#normalizePoint",
+      "label": "normalizePoint",
+      "type": "function",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 53,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/intent/appIntentPressure.ts#normalizeVelocity",
+      "label": "normalizeVelocity",
+      "type": "function",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 60,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/intent/appIntentPressure.ts#createCells",
+      "label": "createCells",
+      "type": "function",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 68,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/intent/appIntentPressure.ts#appIntentPressureFromElementPoint",
+      "label": "appIntentPressureFromElementPoint",
+      "type": "function",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 220,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "class:engine/intent/appIntentPressure.ts#AppIntentPressureField",
+      "label": "AppIntentPressureField",
+      "type": "class",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "file:engine/intent/appIntentPressure.ts",
+      "loc": 88,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engine/intent/appIntentPressure.ts",
+      "label": "appIntentPressure.ts",
+      "type": "ts",
+      "path": "engine/intent/appIntentPressure.ts",
+      "parent": "folder:engine/intent",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:engine/io.ts",
       "label": "io.ts",
       "type": "ts",
@@ -45220,8 +45399,250 @@
       "tags": []
     },
     {
-      "id": "folder:engins/codeengin-ui",
+      "id": "folder:engins/CodeEngin",
       "label": "CodeEngin",
+      "type": "folder",
+      "path": "engins/CodeEngin",
+      "parent": "folder:engins",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:engins/CodeEngin/core",
+      "label": "core",
+      "type": "folder",
+      "path": "engins/CodeEngin/core",
+      "parent": "folder:engins/CodeEngin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/CodeEngin/core/parser.ts#normaliseLanguage",
+      "label": "normaliseLanguage",
+      "type": "function",
+      "path": "engins/CodeEngin/core/parser.ts",
+      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "loc": 62,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/CodeEngin/core/parser.ts#extractTSSymbols",
+      "label": "extractTSSymbols",
+      "type": "function",
+      "path": "engins/CodeEngin/core/parser.ts",
+      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "loc": 67,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/CodeEngin/core/parser.ts#extractPythonSymbols",
+      "label": "extractPythonSymbols",
+      "type": "function",
+      "path": "engins/CodeEngin/core/parser.ts",
+      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "loc": 89,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/CodeEngin/core/parser.ts#extractGoSymbols",
+      "label": "extractGoSymbols",
+      "type": "function",
+      "path": "engins/CodeEngin/core/parser.ts",
+      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "loc": 106,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:engins/CodeEngin/core/parser.ts",
+      "label": "parser.ts",
+      "type": "ts",
+      "path": "engins/CodeEngin/core/parser.ts",
+      "parent": "folder:engins/CodeEngin/core",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:engins/CodeEngin/modules",
+      "label": "modules",
+      "type": "folder",
+      "path": "engins/CodeEngin/modules",
+      "parent": "folder:engins/CodeEngin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "label": "ai-co-pilot",
+      "type": "folder",
+      "path": "engins/CodeEngin/modules/ai-co-pilot",
+      "parent": "folder:engins/CodeEngin/modules",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx#AgentPanel",
+      "label": "AgentPanel",
+      "type": "function",
+      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "parent": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "loc": 13,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "label": "dream.panel.AgentPanel.tsx",
+      "type": "tsx",
+      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "label": "index.ts",
+      "type": "ts",
+      "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
+      "label": "useAgentSession",
+      "type": "function",
+      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "parent": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "loc": 19,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "label": "useAgentSession.ts",
+      "type": "ts",
+      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:engins/CodeEngin/orchestrator",
+      "label": "orchestrator",
+      "type": "folder",
+      "path": "engins/CodeEngin/orchestrator",
+      "parent": "folder:engins/CodeEngin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/CodeEngin/orchestrator/dream.index.tsx#CodeEnginOrchestrator",
+      "label": "CodeEnginOrchestrator",
+      "type": "function",
+      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
+      "parent": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "label": "dream.index.tsx",
+      "type": "tsx",
+      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
+      "parent": "folder:engins/CodeEngin/orchestrator",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:engins/autoopen",
+      "label": "autoopen",
+      "type": "folder",
+      "path": "engins/autoopen",
+      "parent": "folder:engins",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/autoopen/dream.AutoOpenGameEngin.tsx#AutoOpenGameEngin",
+      "label": "AutoOpenGameEngin",
+      "type": "function",
+      "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "parent": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "loc": 12,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "label": "dream.AutoOpenGameEngin.tsx",
+      "type": "tsx",
+      "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "parent": "folder:engins/autoopen",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:engins/brandingengin",
+      "label": "brandingengin",
+      "type": "folder",
+      "path": "engins/brandingengin",
+      "parent": "folder:engins",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:engins/brandingengin/identity",
+      "label": "identity",
+      "type": "folder",
+      "path": "engins/brandingengin/identity",
+      "parent": "folder:engins/brandingengin",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:engins/brandingengin/identity/logos.ts#getRandomLogo",
+      "label": "getRandomLogo",
+      "type": "function",
+      "path": "engins/brandingengin/identity/logos.ts",
+      "parent": "file:engins/brandingengin/identity/logos.ts",
+      "loc": 29,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/brandingengin/identity/logos.ts#resetLogoCache",
+      "label": "resetLogoCache",
+      "type": "function",
+      "path": "engins/brandingengin/identity/logos.ts",
+      "parent": "file:engins/brandingengin/identity/logos.ts",
+      "loc": 48,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "file:engins/brandingengin/identity/logos.ts",
+      "label": "logos.ts",
+      "type": "ts",
+      "path": "engins/brandingengin/identity/logos.ts",
+      "parent": "folder:engins/brandingengin/identity",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:engins/codeengin-ui",
+      "label": "codeengin-ui",
       "type": "folder",
       "path": "engins/codeengin-ui",
       "parent": "folder:engins",
@@ -45380,83 +45801,6 @@
       "type": "tsx",
       "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
       "parent": "folder:engins/codeengin-ui/orchestrator",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "folder:engins/autoopen",
-      "label": "autoopen",
-      "type": "folder",
-      "path": "engins/autoopen",
-      "parent": "folder:engins",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "function:engins/autoopen/dream.AutoOpenGameEngin.tsx#AutoOpenGameEngin",
-      "label": "AutoOpenGameEngin",
-      "type": "function",
-      "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "parent": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "loc": 12,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "label": "dream.AutoOpenGameEngin.tsx",
-      "type": "tsx",
-      "path": "engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "parent": "folder:engins/autoopen",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "folder:engins/brandingengin",
-      "label": "brandingengin",
-      "type": "folder",
-      "path": "engins/brandingengin",
-      "parent": "folder:engins",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "folder:engins/brandingengin/identity",
-      "label": "identity",
-      "type": "folder",
-      "path": "engins/brandingengin/identity",
-      "parent": "folder:engins/brandingengin",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "function:engins/brandingengin/identity/logos.ts#getRandomLogo",
-      "label": "getRandomLogo",
-      "type": "function",
-      "path": "engins/brandingengin/identity/logos.ts",
-      "parent": "file:engins/brandingengin/identity/logos.ts",
-      "loc": 29,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/brandingengin/identity/logos.ts#resetLogoCache",
-      "label": "resetLogoCache",
-      "type": "function",
-      "path": "engins/brandingengin/identity/logos.ts",
-      "parent": "file:engins/brandingengin/identity/logos.ts",
-      "loc": 48,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "file:engins/brandingengin/identity/logos.ts",
-      "label": "logos.ts",
-      "type": "ts",
-      "path": "engins/brandingengin/identity/logos.ts",
-      "parent": "folder:engins/brandingengin/identity",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -59942,6 +60286,116 @@
       "tags": []
     },
     {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#emptyBounds",
+      "label": "emptyBounds",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 49,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#fallbackRenderMeshBounds",
+      "label": "fallbackRenderMeshBounds",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 58,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#writePositions",
+      "label": "writePositions",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 100,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#readBounds",
+      "label": "readBounds",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 120,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#makeFallbackAcceleration",
+      "label": "makeFallbackAcceleration",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 130,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#makeActiveAcceleration",
+      "label": "makeActiveAcceleration",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 140,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#computeRenderMeshBounds",
+      "label": "computeRenderMeshBounds",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 155,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#loadRenderWasmAcceleration",
+      "label": "loadRenderWasmAcceleration",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 166,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#getActiveRenderWasmAcceleration",
+      "label": "getActiveRenderWasmAcceleration",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 226,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/wasmAcceleration.ts#resetRenderWasmAccelerationForTesting",
+      "label": "resetRenderWasmAccelerationForTesting",
+      "type": "function",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "file:engins/renderengin/wasmAcceleration.ts",
+      "loc": 230,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:engins/renderengin/wasmAcceleration.ts",
+      "label": "wasmAcceleration.ts",
+      "type": "ts",
+      "path": "engins/renderengin/wasmAcceleration.ts",
+      "parent": "folder:engins/renderengin",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "function:engins/renderengin/webgpu.ts#toGpuMat4",
       "label": "toGpuMat4",
       "type": "function",
@@ -61439,6 +61893,216 @@
       "tags": []
     },
     {
+      "id": "function:fix-repo.cjs#log",
+      "label": "log",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 11,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#ok",
+      "label": "ok",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 13,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#warn",
+      "label": "warn",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 14,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#rel",
+      "label": "rel",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 15,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#abs",
+      "label": "abs",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 16,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#exists",
+      "label": "exists",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 17,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#isDir",
+      "label": "isDir",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 18,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#read",
+      "label": "read",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 19,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#write",
+      "label": "write",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 20,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#rename",
+      "label": "rename",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 21,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#walk",
+      "label": "walk",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 22,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#textFiles",
+      "label": "textFiles",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 33,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#replaceInFiles",
+      "label": "replaceInFiles",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 37,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#fixCodeEnginCaseCollision",
+      "label": "fixCodeEnginCaseCollision",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 51,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#removeExactSelfImports",
+      "label": "removeExactSelfImports",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 89,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#checkUseDualRuntimeDuplicate",
+      "label": "checkUseDualRuntimeDuplicate",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 113,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#checkIssueBotHeavyComponent",
+      "label": "checkIssueBotHeavyComponent",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 140,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#verifyNoCodeEnginStaleRefs",
+      "label": "verifyNoCodeEnginStaleRefs",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 162,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#runRepoStateIfPresent",
+      "label": "runRepoStateIfPresent",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 172,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:fix-repo.cjs#main",
+      "label": "main",
+      "type": "function",
+      "path": "fix-repo.cjs",
+      "parent": "file:fix-repo.cjs",
+      "loc": 186,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:fix-repo.cjs",
+      "label": "fix-repo.cjs",
+      "type": "cjs",
+      "path": "fix-repo.cjs",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "folder:fonts",
       "label": "fonts",
       "type": "folder",
@@ -62035,6 +62699,76 @@
       "tags": [
         "supabase-create-client"
       ]
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#clamp",
+      "label": "clamp",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 30,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#velocityFromSamples",
+      "label": "velocityFromSamples",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 35,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#sourceForce",
+      "label": "sourceForce",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 45,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#sourceRadius",
+      "label": "sourceRadius",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 57,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#applyIntentPressureToElement",
+      "label": "applyIntentPressureToElement",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 67,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:hooks/useAppIntentPressureSurface.ts#useAppIntentPressureSurface",
+      "label": "useAppIntentPressureSurface",
+      "type": "function",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "file:hooks/useAppIntentPressureSurface.ts",
+      "loc": 103,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:hooks/useAppIntentPressureSurface.ts",
+      "label": "useAppIntentPressureSurface.ts",
+      "type": "ts",
+      "path": "hooks/useAppIntentPressureSurface.ts",
+      "parent": "folder:hooks",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
     },
     {
       "id": "function:hooks/useConnectorInstallFlow.ts#useConnectorInstallFlow",
@@ -65591,12 +66325,52 @@
       "tags": []
     },
     {
-      "id": "function:scripts/generate-repo-state.mjs#shouldIgnore",
-      "label": "shouldIgnore",
+      "id": "function:scripts/generate-repo-state.mjs#toPosix",
+      "label": "toPosix",
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 17,
+      "loc": 277,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#normalizeRel",
+      "label": "normalizeRel",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 281,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extOf",
+      "label": "extOf",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 287,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#uniqueSorted",
+      "label": "uniqueSorted",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 291,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#shouldIgnoreDir",
+      "label": "shouldIgnoreDir",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 295,
       "isOrphan": true,
       "exported": false
     },
@@ -65606,7 +66380,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 19,
+      "loc": 299,
       "isOrphan": true,
       "exported": false
     },
@@ -65616,7 +66390,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 29,
+      "loc": 322,
       "isOrphan": true,
       "exported": false
     },
@@ -65626,7 +66400,27 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 34,
+      "loc": 330,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#hasAnySuffix",
+      "label": "hasAnySuffix",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 334,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#includesAny",
+      "label": "includesAny",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 341,
       "isOrphan": true,
       "exported": false
     },
@@ -65636,7 +66430,627 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 36,
+      "loc": 348,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isPageFile",
+      "label": "isPageFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 352,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isRouteHandlerFile",
+      "label": "isRouteHandlerFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 356,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isAppRouterEntryFile",
+      "label": "isAppRouterEntryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 360,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isTestFile",
+      "label": "isTestFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 364,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isStoryFile",
+      "label": "isStoryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 368,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isTypeFile",
+      "label": "isTypeFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 372,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isStyleFile",
+      "label": "isStyleFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 376,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isRootEntryFile",
+      "label": "isRootEntryFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 380,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#mdCell",
+      "label": "mdCell",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 384,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isBoundaryChar",
+      "label": "isBoundaryChar",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 388,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#startsWord",
+      "label": "startsWord",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 396,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findNextNonSpace",
+      "label": "findNextNonSpace",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 401,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findStatementEnd",
+      "label": "findStatementEnd",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 409,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findQuotedValue",
+      "label": "findQuotedValue",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 441,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#splitTopLevelCommas",
+      "label": "splitTopLevelCommas",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 474,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#removeLeadingType",
+      "label": "removeLeadingType",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 521,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#importedNameFromPart",
+      "label": "importedNameFromPart",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 527,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#exportedNameFromPart",
+      "label": "exportedNameFromPart",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 533,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#parseImportClause",
+      "label": "parseImportClause",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 539,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#addRecord",
+      "label": "addRecord",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 579,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#findFromSpecifier",
+      "label": "findFromSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 584,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractImportRecords",
+      "label": "extractImportRecords",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 618,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractImports",
+      "label": "extractImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 698,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractDynamicImports",
+      "label": "extractDynamicImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 702,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractNamedImports",
+      "label": "extractNamedImports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 706,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractExportStatements",
+      "label": "extractExportStatements",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 727,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#readIdentifier",
+      "label": "readIdentifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 740,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#extractNamedExports",
+      "label": "extractNamedExports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 755,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isUppercase",
+      "label": "isUppercase",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 797,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectHookExports",
+      "label": "detectHookExports",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 801,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectReactComponent",
+      "label": "detectReactComponent",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 821,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isBarrelFile",
+      "label": "isBarrelFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 847,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectSupabase",
+      "label": "detectSupabase",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 863,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectEventBus",
+      "label": "detectEventBus",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 867,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectZustand",
+      "label": "detectZustand",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 871,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectContext",
+      "label": "detectContext",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 875,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectRuntimeRegistry",
+      "label": "detectRuntimeRegistry",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 879,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectDualRuntime",
+      "label": "detectDualRuntime",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 883,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#loadTsconfigPaths",
+      "label": "loadTsconfigPaths",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 887,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#matchesPathPattern",
+      "label": "matchesPathPattern",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 916,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#expandPathPattern",
+      "label": "expandPathPattern",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 926,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#stripSpecifierNoise",
+      "label": "stripSpecifierNoise",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 939,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isExternalSpecifier",
+      "label": "isExternalSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 954,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#tryResolveCandidate",
+      "label": "tryResolveCandidate",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 966,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#resolveInternalSpecifier",
+      "label": "resolveInternalSpecifier",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 985,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#codeFileForResolvedPath",
+      "label": "codeFileForResolvedPath",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1010,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#buildRouteMap",
+      "label": "buildRouteMap",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1015,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#capabilityId",
+      "label": "capabilityId",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1105,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#addCapability",
+      "label": "addCapability",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1109,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#routeForPage",
+      "label": "routeForPage",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1115,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectCircular",
+      "label": "detectCircular",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1157,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#markExportUsage",
+      "label": "markExportUsage",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1189,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#shouldSkipUnusedExportFile",
+      "label": "shouldSkipUnusedExportFile",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1215,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#matchGlobs",
+      "label": "matchGlobs",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1257,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#groupByDir",
+      "label": "groupByDir",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1264,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#getFeatureFiles",
+      "label": "getFeatureFiles",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1275,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderListOrEmpty",
+      "label": "renderListOrEmpty",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1305,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderGroupedFiles",
+      "label": "renderGroupedFiles",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1310,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#renderFeatureSection",
+      "label": "renderFeatureSection",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1321,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#getFeatureAnnotation",
+      "label": "getFeatureAnnotation",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1385,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#sortedTreeEntries",
+      "label": "sortedTreeEntries",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1396,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#buildTreeString",
+      "label": "buildTreeString",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1414,
       "isOrphan": true,
       "exported": false
     },
@@ -65648,7 +67062,9 @@
       "parent": "folder:scripts",
       "loc": null,
       "isOrphan": true,
-      "tags": []
+      "tags": [
+        "supabase-create-client"
+      ]
     },
     {
       "id": "function:scripts/generate-webapp-final-form.mjs#generateWebAppFinalForm",
@@ -96138,6 +97554,41 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "kind": "reexport"
+    },
+    {
+      "source": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "target": "file:engins/forgeengin/enginpipe/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "target": "file:engine/runtime/instanceManager.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
+      "target": "file:engine/runtime/useSharedEnginChannel.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "import"
@@ -96160,16 +97611,6 @@
     {
       "source": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "target": "file:engine/runtime/instanceManager.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
-      "target": "file:engine/runtime/useSharedEnginChannel.ts",
       "kind": "import"
     },
     {
@@ -98553,6 +99994,11 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/renderengin/wasmAcceleration.ts",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/renderengin/webgpu.ts",
       "target": "file:engins/renderengin/core.ts",
       "kind": "import"
@@ -98860,6 +100306,11 @@
     {
       "source": "file:hooks/useAccount.ts",
       "target": "file:supabase/client/client.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:hooks/useAppIntentPressureSurface.ts",
+      "target": "file:engine/intent/appIntentPressure.ts",
       "kind": "import"
     },
     {
@@ -112538,8 +113989,8 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "target": "function:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
+      "source": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "function:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
       "kind": "call"
     },
     {
@@ -112550,6 +114001,11 @@
     {
       "source": "file:engins/autoopen/dream.AutoOpenGameEngin.tsx",
       "target": "function:engine/runtime/instanceManager.ts#createInstance",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "function:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
       "kind": "call"
     },
     {
@@ -114440,6 +115896,16 @@
     {
       "source": "file:hooks/useAccount.ts",
       "target": "function:supabase/client/client.ts#createClient",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useAppIntentPressureSurface.ts",
+      "target": "class:engine/intent/appIntentPressure.ts#AppIntentPressureField",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useAppIntentPressureSurface.ts",
+      "target": "function:engine/intent/appIntentPressure.ts#appIntentPressureFromElementPoint",
       "kind": "call"
     },
     {
