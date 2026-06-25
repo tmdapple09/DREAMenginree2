@@ -1,579 +1,867 @@
-import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, extname, join, relative } from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
-export type ProductSection = {
-  number: number;
-  id: string;
-  title: string;
-  plainEnglish: string;
-  userFacing: string;
-  globs: string[];
-  keywords: string[];
+type SourceFile = {
+  path: string;
+  ext: string;
+  root: string;
+  readable: boolean;
+  text: string;
+  lines: number;
 };
 
-export type ProductSectionStats = {
+type SectionRule = {
   number: number;
   title: string;
+  plainEnglish: string;
+  userExperience: string;
+  primaryPaths: RegExp[];
+  supportingPaths: RegExp[];
+  keywords: string[];
+  allowedRoots?: string[];
+  excludedPaths?: RegExp[];
+  maxFiles: number;
+};
+
+type FileMatch = {
+  file: SourceFile;
+  score: number;
+  reasons: string[];
+};
+
+type ProductSectionOutput = {
+  number: number;
+  title: string;
+  markdown: string;
   matchedFiles: number;
   sourceLines: number;
   routes: number;
   apis: number;
   components: number;
   hooks: number;
+  files: string[];
 };
 
-export type ProductReadmeResult = {
-  markdown: string;
-  stats: ProductSectionStats[];
-};
-
-type ImportRecord = {
-  specifier: string;
-  resolved?: string;
-};
-
-type ExportRecord = {
-  name: string;
-  kind: string;
-};
-
-type FileFact = {
-  file: string;
-  ext: string;
-  lines: number;
-  text: string;
-  route?: string;
-  routeKind?: 'page' | 'api';
-  methods: string[];
-  imports: ImportRecord[];
-  exports: ExportRecord[];
-  components: string[];
-  hooks: string[];
-  signals: string[];
+type ProductSectionsResult = {
+  generatedAt: string;
+  trackedFiles: number;
+  sections: ProductSectionOutput[];
 };
 
 const SOURCE_EXTENSIONS = new Set([
-  '.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.json', '.md', '.mdx', '.yml', '.yaml', '.sql', '.sh', '.html', '.txt', '.toml',
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".css",
+  ".scss",
+  ".sql",
+  ".md",
+  ".json",
+  ".yml",
+  ".yaml",
 ]);
 
-const MEDIA_EXTENSIONS = new Set([
-  '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico', '.mp4', '.mov', '.webm', '.avi', '.mkv', '.mp3', '.wav', '.ogg', '.flac', '.wasm', '.zip', '.gz', '.tar', '.pdf', '.ttf', '.otf', '.woff', '.woff2', '.bin',
-]);
+const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
+  /^node_modules\//,
+  /^\.next\//,
+  /^out\//,
+  /^dist\//,
+  /^coverage\//,
+  /^playwright-report\//,
+  /^test-results\//,
+  /^\.turbo\//,
+  /^\.vercel\//,
+  /\.tsbuildinfo$/,
+  /^README\.md$/,
+  /^scripts\/generate-readme\.ts$/,
+  /^scripts\/readme-autosync\.ts$/,
+  /(^|\/)Agents-MUST-READ-ARCHITECTURE\.md$/,
+  /^docs\/issue-.*\.md$/,
+  /\.(png|jpe?g|gif|webp|mp4|mov|webm|avi|mkv|wasm)$/i,
+];
 
-const EXCLUDED_PARTS = new Set([
-  '.git', '.next', '.turbo', '.vercel', 'node_modules', 'coverage', 'dist', 'out', 'playwright-report', 'test-results', 'build-memory',
-]);
+const META_ROOTS = new Set(["scripts", ".github", "docs", "research", "tests"]);
 
-export const PRODUCT_SECTIONS: ProductSection[] = [
+const PRODUCT_SECTIONS: SectionRule[] = [
   {
     number: 4,
-    id: 'tech-stack-monorepo-layout',
-    title: 'Tech Stack & Monorepo Layout',
-    plainEnglish: 'This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase schema, and major folders that make the product ship as one web-native system.',
-    userFacing: 'Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.',
-    globs: ['package.json', 'pnpm-workspace.yaml', 'pnpm-lock.yaml', 'next.config.*', 'tsconfig*.json', 'tailwind.config.*', 'postcss.config.*', 'eslint.config.*', '.github/**', 'app/**', 'components/**', 'engine/**', 'engins/**', 'dreamdmbar/**', 'dreamr/**', 'daydreams/**', 'coresurfaces/**', 'hooks/**', 'types/**', 'utils/**', 'styles/**', 'assembly/**', 'config/**', 'optimizer/**', 'scripts/**', 'supabase/**'],
-    keywords: ['next', 'react', 'typescript', 'pnpm', 'tailwind', 'supabase', 'workflow', 'config', 'package', 'monorepo'],
+    title: "Tech Stack & Monorepo Layout",
+    plainEnglish:
+      "This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase schema, and major folders that make the product ship as one web-native system.",
+    userExperience:
+      "Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.",
+    primaryPaths: [
+      /^package\.json$/,
+      /^pnpm-lock\.yaml$/,
+      /^pnpm-workspace\.yaml$/,
+      /^next\.config\.mjs$/,
+      /^tsconfig.*\.json$/,
+      /^tailwind\.config\.ts$/,
+      /^eslint\.config\.mjs$/,
+      /^postcss\.config\./,
+      /^app\//,
+      /^components\//,
+      /^engine\//,
+      /^engins\//,
+      /^styles\//,
+      /^supabase\//,
+      /^\.github\/workflows\//,
+    ],
+    supportingPaths: [/^types\//, /^config\//, /^utils\//, /^hooks\//],
+    keywords: ["next", "typescript", "supabase", "pnpm", "workflow", "app router"],
+    maxFiles: 90,
   },
   {
     number: 5,
-    id: 'engins-and-daydreams',
-    title: 'The Engins and DayDreams',
-    plainEnglish: 'Engins are the production systems; DayDreams are the user-facing creative spaces around them. This section connects engine code, pages, panels, shells, and components that let users create code, games, music, simulations, media, and brand work.',
-    userFacing: 'A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.',
-    globs: ['engins/**', 'app/engines/**', 'app/daydream/**', 'components/daydream/**', 'components/engines/**', 'daydreams/**', 'engine/engins/**', 'engine/runtime/**'],
-    keywords: ['engin', 'engine', 'daydream', 'ruleset', 'workspace', 'studio', 'asset', 'game', 'music', 'lab', 'brand', 'code', 'content'],
+    title: "The Engins and DayDreams",
+    plainEnglish:
+      "Engins are the production systems; DayDreams are the user-facing creative spaces around them. This section connects engine code, pages, panels, shells, and components that let users create code, games, music, simulations, media, and brand work.",
+    userExperience:
+      "A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.",
+    primaryPaths: [
+      /^engins\/(engin\.|rulesets\/|contentengin\/|gameengin\/|forgeengin\/|renderengin\/|CodeEngin\/)/,
+      /^app\/engines\//,
+      /^app\/daydream\//,
+      /^daydreams\//,
+      /^components\/engines\//,
+      /^components\/daydream\//,
+    ],
+    supportingPaths: [/^engine\/runtime\/engin/i, /^engine\/engin-runtime\//],
+    keywords: ["engin", "daydream", "ruleset", "studio", "workspace"],
+    maxFiles: 120,
   },
   {
     number: 6,
-    id: 'dual-runtimes',
-    title: 'Dual Runtimes',
-    plainEnglish: 'Dual runtimes are the split execution model that lets DREAMengin coordinate navigation, state, snapshots, handoffs, surface lifecycle, and active Engin behavior without making every screen own the whole system.',
-    userFacing: 'Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.',
-    globs: ['engine/runtime/**', 'engine/vm/**', 'components/runtime/**', 'hooks/useEngin*.ts', 'hooks/useShared*.ts', 'types/runtime*', 'types/engin*', 'dreamdmbar/**'],
-    keywords: ['runtime', 'dual', 'bus', 'dispatcher', 'snapshot', 'sync', 'bridge', 'channel', 'intent', 'capability', 'state'],
+    title: "Dual Runtimes",
+    plainEnglish:
+      "Dual runtimes are the split execution model that coordinates navigation, state, snapshots, handoffs, surface lifecycle, and active Engin behavior without making every screen own the whole system.",
+    userExperience:
+      "Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.",
+    primaryPaths: [
+      /^engine\/runtime\/dualRuntime/,
+      /^engine\/runtime\/dualRuntimeBridge/,
+      /^engine\/runtime\/useDualRuntime/,
+      /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
+      /^components\/runtime\/dream\.RuntimeView\.tsx$/,
+      /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
+      /^app\/dreamdmbar\/dualruntime\//,
+    ],
+    supportingPaths: [/^engine\/vm\//, /^engine\/runtime\/iEngine\.ts$/, /^engine\/runtime\/dreamOSBus\.ts$/],
+    keywords: ["dualRuntime", "dual runtime", "runtime bridge", "snapshot", "handoff"],
+    maxFiles: 80,
   },
   {
     number: 7,
-    id: 'shared-dreams',
-    title: 'Shared Dreams',
-    plainEnglish: 'Shared Dreams are the collaboration and publishing layer for Dreams that can be saved, shown, shared, synchronized, or experienced by more than one person.',
-    userFacing: 'Users feel this when a Dream becomes something social: visible posts, shared sessions, public/private access, saved creative objects, and collaboration signals.',
-    globs: ['engine/shared**', 'lib/shared/**', 'hooks/useSharedDream*.ts', 'app/api/dreams/**', 'app/dreams/**', 'components/shared-dream/**', 'types/shared*', 'supabase/**dream**'],
-    keywords: ['shared', 'dream', 'collab', 'presence', 'channel', 'visibility', 'share', 'supabase', 'public'],
+    title: "Shared Dreams",
+    plainEnglish:
+      "Shared Dreams are the collaboration and publishing layer for Dreams that can be saved, shown, shared, synchronized, or experienced by more than one person.",
+    userExperience:
+      "Users feel this when a Dream becomes something social: visible posts, shared sessions, public/private access, saved creative objects, and collaboration signals.",
+    primaryPaths: [
+      /^engine\/sharedDream/,
+      /^components\/shared-dream\//,
+      /^app\/api\/shared-dream\//,
+      /^app\/api\/dreams\//,
+      /^components\/dreams\/dream\.shell\.SharedDreamShell\.tsx$/,
+      /^hooks\/useSharedDream/,
+      /^daydreams\/shared\//,
+      /^supabase\/migrations\/.*shared_dream/i,
+    ],
+    supportingPaths: [/^engine\/runtime\/useSharedEnginChannel\.ts$/, /^supabase\/migrations\/.*dream/i],
+    keywords: ["shared dream", "sharedDream", "session", "presence", "collaboration"],
+    maxFiles: 90,
   },
   {
     number: 8,
-    id: 'dreamr-human-media',
-    title: 'DreamR — Human Media',
-    plainEnglish: 'DreamR is the human media layer: feed, discovery, profile, posts, creator identity, and the browsing surfaces where Dreams become media instead of private project files.',
-    userFacing: 'Users experience DreamR as the social/media side of DREAMengin: scrolling, viewing people, opening Dreams, editing identity, and discovering what others make.',
-    globs: ['dreamr/**', 'app/dreamr/**', 'app/api/dreamr/**', 'components/dreamr/**', 'app/profiledream/**', 'app/view-profile/**', 'app/edit-profiledream/**', 'components/home/**dreamr**', 'dreamdmbar/homedream/dreamr/**', 'types/dreamr*', 'types/feed*'],
-    keywords: ['dreamr', 'feed', 'post', 'profile', 'human', 'media', 'like', 'follow', 'creator', 'identity'],
+    title: "DreamR — Human Media",
+    plainEnglish:
+      "DreamR is the human media layer: feed, discovery, profile, posts, creator identity, and the browsing surfaces where Dreams become media instead of private project files.",
+    userExperience:
+      "Users experience DreamR as the social/media side of DREAMengin: scrolling, viewing people, opening Dreams, editing identity, and discovering what others make.",
+    primaryPaths: [
+      /^dreamr\//,
+      /^app\/dreamr\//,
+      /^app\/api\/dreamr\//,
+      /^components\/dreamr\//,
+      /^app\/dreamdmbar\/_components\/dreamr\//,
+    ],
+    supportingPaths: [/^app\/profile\//, /^app\/view-profile\//, /^app\/edit-profiledream\//],
+    keywords: ["dreamr", "feed", "human media", "creator", "profile"],
+    maxFiles: 80,
   },
   {
     number: 9,
-    id: 'shop',
-    title: 'The Shop',
-    plainEnglish: 'The Shop is the owned storefront area for a user or creator. It covers the files that present products, services, offers, carts, and purchase-related surfaces tied to a person or brand.',
-    userFacing: 'Users feel this as a creator storefront: things to buy, services to offer, and commercial parts attached to the creator identity.',
-    globs: ['app/shop/**', 'app/api/shop/**', 'components/shop/**', 'engine/shop/**', 'types/shop*', 'supabase/**shop**'],
-    keywords: ['shop', 'product', 'storefront', 'cart', 'checkout', 'order', 'seller', 'service'],
+    title: "The Shop",
+    plainEnglish:
+      "The Shop is the owned storefront area for a user or creator. It covers products, services, offers, carts, and purchase-related surfaces tied to a person or brand.",
+    userExperience:
+      "Users feel this as a creator storefront: things to buy, services to offer, and commercial parts attached to the creator identity.",
+    primaryPaths: [/^app\/shop\//, /^app\/api\/shop\//, /^engine\/shop\//, /^supabase\/migrations\/.*shop/i],
+    supportingPaths: [/^types\/shop/i, /^components\/shop\//],
+    keywords: ["shop", "listing", "seller", "storefront"],
+    maxFiles: 45,
   },
   {
     number: 10,
-    id: 'marketplace',
-    title: 'The Marketplace',
-    plainEnglish: 'The Marketplace is the broader exchange area where listings, selling pages, catalogs, vendors, or public offerings live beyond one personal shop.',
-    userFacing: 'Users experience this as the public commercial side of the ecosystem: browsing, listing, buying, selling, and moving between creator shops and wider discovery.',
-    globs: ['app/marketplace/**', 'app/api/marketplace/**', 'components/marketplace/**', 'engine/marketplace/**', 'types/marketplace*', 'supabase/**marketplace**'],
-    keywords: ['marketplace', 'listing', 'sell', 'buy', 'catalog', 'vendor', 'purchase', 'commerce'],
+    title: "The Marketplace",
+    plainEnglish:
+      "The Marketplace is the broader exchange area where listings, selling pages, catalogs, vendors, or public offerings live beyond one personal shop.",
+    userExperience:
+      "Users experience this as the public commercial side of the ecosystem: browsing, listing, buying, selling, and moving between creator shops and wider discovery.",
+    primaryPaths: [
+      /^app\/marketplace\//,
+      /^app\/api\/marketplace\//,
+      /^components\/marketplace\//,
+      /^engine\/marketplace\//,
+      /^types\/marketplace\.ts$/,
+      /^supabase\/migrations\/.*marketplace/i,
+    ],
+    supportingPaths: [/^components\/panels\/dream\.panel\.MarketplacePanel\.tsx$/],
+    keywords: ["marketplace", "market listing", "contact request"],
+    maxFiles: 45,
   },
   {
     number: 11,
-    id: 'ads-user-ads',
-    title: 'Ads & User Ads',
-    plainEnglish: 'Ads and User Ads cover promotion, sponsored inventory, campaign surfaces, impressions, clicks, targeting rules, and any app code that lets users or the platform promote content.',
-    userFacing: 'Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor cards, or paid visibility controls.',
-    globs: ['app/ads/**', 'app/api/ads/**', 'app/user-ads/**', 'app/api/user-ads/**', 'components/ads/**', 'engine/ads/**', 'types/ads*', 'supabase/**ads**'],
-    keywords: ['ads', 'ad', 'campaign', 'impression', 'click', 'sponsor', 'promotion', 'target'],
+    title: "Ads & User Ads",
+    plainEnglish:
+      "Ads and User Ads cover promotion, sponsored inventory, campaign surfaces, impressions, clicks, targeting rules, and any app code that lets users or the platform promote content.",
+    userExperience:
+      "Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor cards, or paid visibility controls.",
+    primaryPaths: [
+      /^app\/ads\//,
+      /^app\/api\/ads\//,
+      /^components\/ads\//,
+      /^types\/ads\.ts$/,
+      /^supabase\/migrations\/.*ads/i,
+    ],
+    supportingPaths: [/^components\/engines\/brand\/panels\/.*Campaign/i, /^app\/engines\/brand\/campaigns\//],
+    keywords: ["ad", "ads", "sponsor", "promotion", "campaign"],
+    maxFiles: 55,
   },
   {
     number: 12,
-    id: 'dreamdmbar',
-    title: 'The DreamDmBar (dreamdmbar/)',
-    plainEnglish: 'The DreamDmBar is the communication, navigation, search, command, notification, and contextual action layer that should always be near the user.',
-    userFacing: 'Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.',
-    globs: ['dreamdmbar/**', 'app/dreamdmbar/**', 'components/**dreamdmbar**', 'components/**DreamDMBar**', 'types/dreamdm*', 'types/message*'],
-    keywords: ['dreamdmbar', 'dmbar', 'message', 'conversation', 'search', 'notification', 'draft', 'command', 'module', 'bar'],
+    title: "The DreamDmBar (dreamdmbar/)",
+    plainEnglish:
+      "The DreamDmBar is the communication, navigation, search, command, notification, and contextual action layer that should always be near the user.",
+    userExperience:
+      "Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.",
+    primaryPaths: [
+      /^dreamdmbar\//,
+      /^app\/dreamdmbar\//,
+      /^components\/panels\/dream\.panel\./,
+      /^engine\/generated\/dreamdmbar\.ts$/,
+    ],
+    supportingPaths: [/^app\/messages\//, /^app\/api\/messages\//],
+    keywords: ["dreamdmbar", "dream dm", "bar", "notification", "command"],
+    maxFiles: 90,
   },
   {
     number: 13,
-    id: 'messaging',
-    title: 'Messaging',
-    plainEnglish: 'Messaging is the direct communication layer: conversations, drafts, notifications, inbox behavior, message APIs, and hooks that keep communication alive across surfaces.',
-    userFacing: 'Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.',
-    globs: ['app/messages/**', 'app/api/messages/**', 'components/messaging/**', 'dreamdmbar/hooks/useDreamDM*.ts', 'dreamdmbar/hooks/useMessagingCore.ts', 'dreamdmbar/hooks/useNotifications.ts', 'types/message*', 'types/conversation*', 'supabase/**message**'],
-    keywords: ['message', 'conversation', 'dm', 'draft', 'notification', 'inbox', 'thread', 'recipient'],
+    title: "Messaging",
+    plainEnglish:
+      "Messaging is the direct communication layer: conversations, drafts, notifications, inbox behavior, message APIs, and hooks that keep communication alive across surfaces.",
+    userExperience:
+      "Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.",
+    primaryPaths: [
+      /^app\/messages\//,
+      /^app\/api\/messages\//,
+      /^components\/messaging\//,
+      /^dreamdmbar\/hooks\/useDreamDM(Conversations|Messages|Draft)/,
+      /^dreamdmbar\/hooks\/useMessagingCore\.ts$/,
+      /^dreamdmbar\/notifications\//,
+      /^app\/api\/drafts\//,
+      /^supabase\/migrations\/.*messages/i,
+      /^supabase\/migrations\/.*conversations/i,
+    ],
+    supportingPaths: [/^app\/settings\/notifications\//, /^app\/api\/settings\/notifications\//],
+    keywords: ["message", "conversation", "draft", "notification", "inbox"],
+    maxFiles: 85,
   },
   {
     number: 14,
-    id: 'homedream',
-    title: 'HomeDream',
-    plainEnglish: 'HomeDream is the personal home surface: the first meaningful app space after login, combining identity, feed, launcher cards, Dream access, and social entry points.',
-    userFacing: 'Users feel HomeDream as the personal starting point where they see themselves, their Dreams, people, feed items, and the app modules they can open.',
-    globs: ['app/homedream/**', 'components/home/**', 'dreamdmbar/homedream/**', 'app/api/homedream/**', 'types/home*'],
-    keywords: ['homedream', 'home', 'feed', 'post', 'profile', 'launcher', 'card', 'welcome'],
+    title: "HomeDream",
+    plainEnglish:
+      "HomeDream is the personal home surface: the first meaningful app space after login, combining identity, feed, launcher cards, Dream access, and social entry points.",
+    userExperience:
+      "Users feel HomeDream as the personal starting point where they see themselves, their Dreams, people, feed items, and the app modules they can open.",
+    primaryPaths: [
+      /^app\/homedream\//,
+      /^components\/home\//,
+      /^app\/dreamdmbar\/_components\/HomeDreamRegion\.tsx$/,
+      /^styles\/home-dream\.css$/,
+      /^engins\/rulesets\/homedream\//,
+      /^engine\/generated\/homedream\.ts$/,
+    ],
+    supportingPaths: [/^components\/dream\.HomeFeed\.tsx$/, /^components\/dream\.FeedCard\.tsx$/, /^app\/api\/home-layout\//],
+    keywords: ["homedream", "home dream", "home feed", "launcher"],
+    maxFiles: 80,
   },
   {
     number: 15,
-    id: 'dreamspace',
-    title: 'DreamSpace',
-    plainEnglish: 'DreamSpace is the workspace/canvas layer where DayDream surfaces, Engins, regions, runtime shells, and user-created windows become one creative environment.',
-    userFacing: 'Users experience DreamSpace as the place where they arrange, open, move through, and work inside creative surfaces rather than just clicking normal web pages.',
-    globs: ['app/dreamspace/**', 'app/daydream/**', 'components/daydream/**', 'daydreams/**', 'coresurfaces/**', 'components/runtime/**DreamSpace**', 'types/daydream*', 'types/surface*'],
-    keywords: ['dreamspace', 'daydream', 'region', 'surface', 'workspace', 'shell', 'runtime', 'window'],
+    title: "DreamSpace",
+    plainEnglish:
+      "DreamSpace is the workspace/canvas layer where DayDream surfaces, Engins, regions, runtime shells, and user-created windows become one creative environment.",
+    userExperience:
+      "Users experience DreamSpace as the place where they arrange, open, move through, and work inside creative surfaces rather than just clicking normal web pages.",
+    primaryPaths: [
+      /^components\/dreams\/dreamsurface\.dreamspace\.tsx$/,
+      /^app\/dreamdmbar\/_components\/DreamSpaceRegion\.tsx$/,
+      /^app\/dreamdmbar\/dreamspace\//,
+      /^components\/spatial\//,
+      /^coresurfaces\//,
+      /^daydreams\//,
+      /^components\/daydream\//,
+      /^app\/daydream\//,
+    ],
+    supportingPaths: [/^components\/runtime\//, /^engine\/runtime\/dreamsurface\//],
+    keywords: ["dreamspace", "dream space", "spatial", "daydream shell", "surface"],
+    maxFiles: 95,
   },
   {
     number: 16,
-    id: 'dreams-widgets-windows-surfaces',
-    title: 'Dreams (Widgets / Windows / Surfaces)',
-    plainEnglish: 'Dreams, widgets, windows, and surfaces are the visible objects users manipulate. This section maps the components and runtime support that make them openable, stateful, movable, and connected to Engins.',
-    userFacing: 'Users feel this as cards, panels, windows, widgets, surface launches, and interactive objects that turn the product into a creative operating system rather than a static website.',
-    globs: ['components/dream.**', 'components/dreams/**', 'components/widgets/**', 'components/runtime/**', 'engine/widgets/**', 'engine/dream-window/**', 'daydreams/**', 'coresurfaces/**', 'types/widget*', 'types/surface*', 'types/dream*'],
-    keywords: ['dream', 'widget', 'window', 'surface', 'panel', 'card', 'open', 'drag', 'stateful'],
+    title: "Dreams (Widgets / Windows / Surfaces)",
+    plainEnglish:
+      "Dreams, widgets, windows, and surfaces are the visible objects users manipulate. This section maps the components and runtime support that make them openable, stateful, movable, and connected to Engins.",
+    userExperience:
+      "Users feel this as cards, panels, windows, widgets, surface launches, and interactive objects that turn the product into a creative operating system rather than a static website.",
+    primaryPaths: [
+      /^components\/dreams\//,
+      /^components\/widgets\//,
+      /^components\/dream\.widget/i,
+      /^components\/dream\.DragToAnchorClose\.tsx$/,
+      /^engine\/dream-window\//,
+      /^types\/dream-window\.ts$/,
+      /^app\/api\/dream-windows\//,
+      /^app\/settings\/dreams\//,
+      /^app\/settings\/widgets\//,
+    ],
+    supportingPaths: [/^engine\/dreams\//, /^components\/dream\.FeedCard\.tsx$/],
+    keywords: ["dream window", "widget", "surface", "dreamsurface", "draggable"],
+    maxFiles: 110,
   },
   {
     number: 17,
-    id: 'user-facing-modularity',
-    title: 'User-Facing Modularity',
-    plainEnglish: 'User-facing modularity is the part of DREAMengin that lets features feel composable to people: launchable modules, reusable panels, shared shells, configurable surfaces, and modules that can move between contexts.',
-    userFacing: 'Users feel modularity when they can open a tool from more than one place, carry state across a surface, combine Engins, and customize the product without waiting for a fixed page.',
-    globs: ['components/runtime/**', 'components/modules/**', 'engine/module**', 'engine/runtime/module**', 'hooks/useModule*.ts', 'dreamdmbar/hooks/useModuleBarIntent.ts', 'types/module*', 'app/**/modules/**'],
-    keywords: ['module', 'modular', 'capability', 'launcher', 'panel', 'surface', 'compose', 'plugin'],
+    title: "User-Facing Modularity",
+    plainEnglish:
+      "User-facing modularity is the part of DREAMengin that lets features feel composable to people: launchable modules, reusable panels, shared shells, configurable surfaces, and modules that can move between contexts.",
+    userExperience:
+      "Users feel modularity when they can open a tool from more than one place, carry state across a surface, combine Engins, and customize the product without waiting for a fixed page.",
+    primaryPaths: [
+      /^engine\/runtime\/moduleRegistry\.ts$/,
+      /^engine\/runtime\/dropTargetRegistry\.ts$/,
+      /^types\/module-manifest\.ts$/,
+      /^components\/runtime\//,
+      /^components\/panels\//,
+      /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
+      /^dreamdmbar\/hooks\/useModuleBarIntent\.ts$/,
+    ],
+    supportingPaths: [/^components\/engines\/shared\//, /^components\/dreams\//],
+    keywords: ["module", "manifest", "panel", "registry", "launch"],
+    maxFiles: 85,
   },
   {
     number: 18,
-    id: 'custom-engins',
-    title: 'Custom Engins',
-    plainEnglish: 'Custom Engins are the extension story: code, rules, manifests, registries, and capability boundaries that let DREAMengin grow by adding or composing new Engin behavior.',
-    userFacing: 'Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.',
-    globs: ['engine/engins/**', 'engins/**', 'engine/runtime/*registry*', 'engine/runtime/*capab*', 'types/engin*', 'types/capability*', 'config/engins/**', 'assembly/**'],
-    keywords: ['custom', 'engin', 'capability', 'registry', 'manifest', 'ruleset', 'extension', 'compose'],
+    title: "Custom Engins",
+    plainEnglish:
+      "Custom Engins are the extension story: code, rules, manifests, registries, and capability boundaries that let DREAMengin grow by adding or composing new Engin behavior.",
+    userExperience:
+      "Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.",
+    primaryPaths: [
+      /^engins\/rulesets\//,
+      /^engins\/forgeengin\/forge\//,
+      /^engins\/gameengin\/cartridges\//,
+      /^engins\/.*manifest/i,
+      /^engine\/runtime\/enginWorkflowRegistry\.ts$/,
+      /^engine\/engin-runtime\//,
+      /^types\/module-manifest\.ts$/,
+    ],
+    supportingPaths: [/^app\/engines\//, /^components\/engines\//],
+    keywords: ["custom engin", "ruleset", "manifest", "capability", "registry"],
+    maxFiles: 105,
   },
   {
     number: 19,
-    id: 'full-website-customizability',
-    title: 'Full Website Customizability',
-    plainEnglish: 'Full website customizability covers appearance, profile editing, brand surfaces, themes, layouts, public profiles, settings, and any code that lets users change how their site or identity looks.',
-    userFacing: 'Users experience this as profile editing, theme choices, brand customization, public pages, custom identity, and the ability to make DREAMengin feel like their own site.',
-    globs: ['app/settings/**', 'app/edit-profiledream/**', 'app/profiledream/**', 'app/view-profile/**', 'components/profile/**', 'components/settings/**', 'engins/engin.BrandingEngin.tsx', 'styles/**', 'types/profile*', 'types/theme*'],
-    keywords: ['customize', 'theme', 'appearance', 'profile', 'brand', 'identity', 'layout', 'style', 'settings'],
+    title: "Full Website Customizability",
+    plainEnglish:
+      "Full website customizability covers appearance, profile editing, brand surfaces, themes, layouts, public profiles, settings, and any code that lets users change how their site or identity looks.",
+    userExperience:
+      "Users experience this as profile editing, theme choices, brand customization, public pages, custom identity, and the ability to make DREAMengin feel like their own site.",
+    primaryPaths: [
+      /^app\/settings\//,
+      /^app\/edit-profiledream\//,
+      /^app\/view-profile\//,
+      /^app\/profile\//,
+      /^components\/profile\//,
+      /^components\/providers\/dream\.ThemeProvider\.tsx$/,
+      /^components\/dream\.ThemeApplicator\.tsx$/,
+      /^components\/ui-system\/theme-engine\.ts$/,
+      /^styles\//,
+      /^engins\/engin\.BrandingEngin\.tsx$/,
+    ],
+    supportingPaths: [/^app\/api\/settings\//, /^components\/ui-system\/CustomizeModeContext\.tsx$/],
+    keywords: ["appearance", "theme", "profile", "customize", "branding"],
+    maxFiles: 95,
   },
   {
     number: 20,
-    id: 'backend-system-core-coresurfaces',
-    title: 'Backend, System, Core & CoreSurfaces',
-    plainEnglish: 'Backend, system, core, and CoreSurfaces are the under-the-hood execution pieces: APIs, server routes, persistence, Supabase schema, shared runtime code, system surfaces, and infrastructure that keep the app functional.',
-    userFacing: 'Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.',
-    globs: ['app/api/**', 'engine/**', 'coresurfaces/**', 'supabase/**', 'config/**', 'assembly/**', 'types/**', 'utils/**', 'hooks/**', 'components/system/**', 'components/core/**'],
-    keywords: ['api', 'backend', 'system', 'core', 'supabase', 'server', 'route', 'database', 'auth', 'persistence', 'state'],
+    title: "Backend, System, Core & CoreSurfaces",
+    plainEnglish:
+      "Backend, system, core, and CoreSurfaces are the under-the-hood execution pieces: APIs, server routes, persistence, Supabase schema, shared runtime code, system surfaces, and infrastructure that keep the app functional.",
+    userExperience:
+      "Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.",
+    primaryPaths: [
+      /^app\/api\//,
+      /^supabase\//,
+      /^engine\//,
+      /^coresurfaces\//,
+      /^types\//,
+      /^utils\//,
+      /^config\//,
+    ],
+    supportingPaths: [/^app\/auth\//, /^app\/login\//, /^app\/join\//, /^components\/runtime\//],
+    keywords: ["api", "backend", "supabase", "core", "system", "auth"],
+    maxFiles: 120,
   },
 ];
 
-function normalizePath(filePath: string): string {
-  return filePath.replace(/\\/g, '/').replace(/^\.\//, '').replace(/^\/+/, '');
+function normalizePath(value: string): string {
+  return value.trim().replace(/\\/g, "/").replace(/^\.\//, "");
 }
 
-function isExcluded(file: string): boolean {
-  const parts = normalizePath(file).split('/');
-  return parts.some((part) => EXCLUDED_PARTS.has(part));
+function getRoot(filePath: string): string {
+  const normalized = normalizePath(filePath);
+  if (normalized.startsWith(".github/")) return ".github";
+  return normalized.split("/")[0] || ".";
 }
 
-function shouldRead(file: string): boolean {
-  const normalized = normalizePath(file);
-  if (!normalized || isExcluded(normalized)) return false;
-  const ext = extname(normalized).toLowerCase();
-  if (MEDIA_EXTENSIONS.has(ext)) return false;
-  if (SOURCE_EXTENSIONS.has(ext)) return true;
-  return !ext && existsSync(normalized) && statSync(normalized).isFile();
+function isGloballyExcluded(filePath: string): boolean {
+  return GLOBAL_EXCLUDED_PATHS.some((pattern) => pattern.test(filePath));
 }
 
-function countLines(text: string): number {
-  if (!text) return 0;
-  return text.split(/\r?\n/g).length;
+function isReadableSource(filePath: string): boolean {
+  return SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
-function globToRegExp(glob: string): RegExp {
-  const normalized = normalizePath(glob).replace(/[.+^${}()|[\]\\]/g, '\\$&');
-  const source = normalized
-    .replace(/\*\*/g, '<<<GLOBSTAR>>>')
-    .replace(/\*/g, '[^/]*')
-    .replace(/<<<GLOBSTAR>>>/g, '.*');
-  return new RegExp(`^${source}$`, 'i');
-}
-
-function matchesGlob(file: string, glob: string): boolean {
-  const normalized = normalizePath(file);
-  if (glob.endsWith('/**')) {
-    const base = normalizePath(glob.slice(0, -3));
-    return normalized === base || normalized.startsWith(`${base}/`);
-  }
-  if (!glob.includes('*')) return normalized === normalizePath(glob);
-  return globToRegExp(glob).test(normalized);
-}
-
-function routeFromFile(file: string): { route?: string; routeKind?: 'page' | 'api' } {
-  const normalized = normalizePath(file);
-  const pageMatch = normalized.match(/^app\/(.+)\/page\.tsx?$/);
-  if (pageMatch) {
-    return { route: `/${pageMatch[1].replace(/\(([^)]+)\)\//g, '').replace(/\/page$/, '')}`.replace(/\/index$/, '').replace(/\/\//g, '/'), routeKind: 'page' };
-  }
-  const apiMatch = normalized.match(/^app\/api\/(.+)\/route\.tsx?$/);
-  if (apiMatch) return { route: `/api/${apiMatch[1]}`, routeKind: 'api' };
-  return {};
-}
-
-function extractImports(text: string, file: string): ImportRecord[] {
-  const imports: ImportRecord[] = [];
-  const re = /import(?:\s+type)?[\s\S]*?from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\)/g;
-  for (const match of text.matchAll(re)) {
-    const specifier = match[1] ?? match[2];
-    if (!specifier) continue;
-    imports.push({ specifier, resolved: resolveImport(file, specifier) });
-  }
-  return imports.slice(0, 60);
-}
-
-function resolveImport(fromFile: string, specifier: string): string | undefined {
-  if (!specifier.startsWith('.') && !specifier.startsWith('@/')) return undefined;
-  const base = specifier.startsWith('@/') ? specifier.slice(2) : normalizePath(join(dirname(fromFile), specifier));
-  const candidates = [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}/index.ts`, `${base}/index.tsx`];
-  return candidates.find((candidate) => existsSync(candidate));
-}
-
-function extractExports(text: string): ExportRecord[] {
-  const exports: ExportRecord[] = [];
-  const re = /export\s+(?:default\s+)?(?:async\s+)?(?:function|class|const|let|var|type|interface|enum)\s+([A-Za-z0-9_$]+)/g;
-  for (const match of text.matchAll(re)) exports.push({ name: match[1], kind: match[0].includes('default') ? 'default' : 'named' });
-  if (/export\s+default\s+/.test(text) && !exports.some((entry) => entry.kind === 'default')) exports.push({ name: 'default', kind: 'default' });
-  return exports.slice(0, 60);
-}
-
-function extractComponents(text: string): string[] {
-  const names = new Set<string>();
-  for (const match of text.matchAll(/(?:function|const)\s+([A-Z][A-Za-z0-9_]*)/g)) names.add(match[1]);
-  return [...names].slice(0, 40);
-}
-
-function extractHooks(text: string): string[] {
-  const names = new Set<string>();
-  for (const match of text.matchAll(/(?:function|const)\s+(use[A-Z][A-Za-z0-9_]*)/g)) names.add(match[1]);
-  for (const match of text.matchAll(/\b(use[A-Z][A-Za-z0-9_]*)\s*\(/g)) names.add(match[1]);
-  return [...names].slice(0, 40);
-}
-
-function extractMethods(text: string): string[] {
-  const methods: string[] = [];
-  for (const method of ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']) {
-    if (new RegExp(`export\\s+(?:async\\s+)?function\\s+${method}\\b`).test(text) || new RegExp(`export\\s+const\\s+${method}\\b`).test(text)) methods.push(method);
-  }
-  return methods;
-}
-
-function extractSignals(text: string): string[] {
-  const signals: string[] = [];
-  const checks: Array<[string, RegExp]> = [
-    ['state', /useState|createStore|setState|Reducer|dispatch/g],
-    ['runtime', /runtime|Runtime|EnginRuntime|IntentBus|dispatcher/g],
-    ['persistence', /localStorage|sessionStorage|supabase|insert\(|update\(|upsert\(|select\(/g],
-    ['events', /addEventListener|dispatchEvent|CustomEvent|subscribe|publish|channel/g],
-    ['mobile-touch', /touch|pointer|gesture|pinch|drag|PointerEvent/g],
-    ['rendering', /canvas|WebGPU|webgpu|babylon|mesh|render|viewport|glb|obj/g],
-    ['auth', /auth|getUser|safeGetUser|redirect\(['"]\/login/g],
-    ['commerce', /checkout|product|order|cart|marketplace|shop|stripe/g],
-  ];
-  for (const [label, re] of checks) if (re.test(text)) signals.push(label);
-  return signals;
-}
-
-function analyzeFile(file: string): FileFact | null {
-  const normalized = normalizePath(file);
-  if (!shouldRead(normalized)) return null;
-  let text = '';
+function readFileSafe(filePath: string): string {
   try {
-    const stat = statSync(normalized);
-    if (stat.size > 1_200_000) return null;
-    text = readFileSync(normalized, 'utf8');
+    return fs.readFileSync(filePath, "utf8");
   } catch {
+    return "";
+  }
+}
+
+function loadTrackedFiles(inventoryPath: string): string[] {
+  const raw = fs.readFileSync(inventoryPath, "utf8");
+
+  return raw
+    .split(/\r?\n/g)
+    .map(normalizePath)
+    .filter(Boolean)
+    .filter((file) => !isGloballyExcluded(file));
+}
+
+function loadSourceFiles(files: string[]): SourceFile[] {
+  return files.map((filePath) => {
+    const ext = path.extname(filePath);
+    const readable = isReadableSource(filePath);
+    const text = readable ? readFileSafe(filePath) : "";
+    const lines = text ? text.split(/\r?\n/g).length : 0;
+
+    return {
+      path: filePath,
+      ext,
+      root: getRoot(filePath),
+      readable,
+      text,
+      lines,
+    };
+  });
+}
+
+function includesKeyword(text: string, keyword: string): boolean {
+  return text.toLowerCase().includes(keyword.toLowerCase());
+}
+
+function countMatches(text: string, pattern: RegExp): number {
+  return [...text.matchAll(new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`))].length;
+}
+
+function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
+  if (section.excludedPaths?.some((pattern) => pattern.test(file.path))) {
     return null;
   }
-  const route = routeFromFile(normalized);
-  return {
-    file: normalized,
-    ext: extname(normalized).toLowerCase(),
-    text,
-    lines: countLines(text),
-    route: route.route,
-    routeKind: route.routeKind,
-    methods: extractMethods(text),
-    imports: extractImports(text, normalized),
-    exports: extractExports(text),
-    components: extractComponents(text),
-    hooks: extractHooks(text),
-    signals: extractSignals(text),
-  };
-}
 
-function keywordRegex(keyword: string): RegExp {
-  const escaped = keyword.replace(/[.+^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, 'i');
-}
+  if (section.allowedRoots && !section.allowedRoots.includes(file.root)) {
+    return null;
+  }
 
-function matchScore(section: ProductSection, fact: FileFact): number {
-  let globScore = 0;
-  for (const glob of section.globs) if (matchesGlob(fact.file, glob)) globScore += 20;
+  let score = 0;
+  const reasons: string[] = [];
 
-  const path = fact.file.toLowerCase();
-  const text = fact.text.slice(0, 8000).toLowerCase();
-  let pathHits = 0;
-  let contentHits = 0;
+  for (const pattern of section.primaryPaths) {
+    if (pattern.test(file.path)) {
+      score += 100;
+      reasons.push("primary path");
+      break;
+    }
+  }
+
+  for (const pattern of section.supportingPaths) {
+    if (pattern.test(file.path)) {
+      score += 45;
+      reasons.push("supporting path");
+      break;
+    }
+  }
+
+  const lowerPath = file.path.toLowerCase();
 
   for (const keyword of section.keywords) {
-    const normalized = keyword.toLowerCase();
-    const re = keywordRegex(normalized);
-    if (path.includes(normalized) || re.test(path)) pathHits += 1;
-    else if (normalized.length > 3 && re.test(text)) contentHits += 1;
-  }
-
-  if (globScore > 0) return globScore + pathHits * 4 + Math.min(contentHits, 4);
-  if (pathHits > 0) return pathHits * 6 + Math.min(contentHits, 3);
-  if (contentHits >= 3) return contentHits;
-  return 0;
-}
-
-function rootOf(file: string): string {
-  const parts = file.split('/');
-  if (parts.length <= 1) return file;
-  return parts[0];
-}
-
-function topCounts(values: string[], limit = 12): Array<{ value: string; count: number }> {
-  const counts = new Map<string, number>();
-  for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1);
-  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit).map(([value, count]) => ({ value, count }));
-}
-
-function unique<T>(values: T[]): T[] {
-  return [...new Set(values)];
-}
-
-function bulletList(values: string[], empty: string, limit: number): string[] {
-  const items = unique(values).filter(Boolean).slice(0, limit);
-  if (!items.length) return [`- ${empty}`];
-  return items.map((item) => `- \`${item}\``);
-}
-
-function buildSectionMarkdown(section: ProductSection, facts: FileFact[], perSectionFileLimit: number): { markdown: string; stats: ProductSectionStats } {
-  const ranked = facts
-    .map((fact) => ({ fact, score: matchScore(section, fact) }))
-    .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.fact.file.localeCompare(b.fact.file));
-
-  const matchedFacts = ranked.map((entry) => entry.fact);
-  const keyFacts = matchedFacts.slice(0, perSectionFileLimit);
-  const sourceLines = matchedFacts.reduce((sum, fact) => sum + fact.lines, 0);
-  const routes = matchedFacts.filter((fact) => fact.routeKind === 'page');
-  const apis = matchedFacts.filter((fact) => fact.routeKind === 'api');
-  const components = unique(matchedFacts.flatMap((fact) => fact.components));
-  const hooks = unique(matchedFacts.flatMap((fact) => fact.hooks));
-  const exports = unique(matchedFacts.flatMap((fact) => fact.exports.map((entry) => `${entry.name} (${entry.kind})`)));
-  const imports = unique(matchedFacts.flatMap((fact) => fact.imports.map((entry) => entry.resolved ?? entry.specifier))).filter((item) => !item.startsWith('node:'));
-  const signals = topCounts(matchedFacts.flatMap((fact) => fact.signals), 12);
-  const roots = topCounts(matchedFacts.map((fact) => rootOf(fact.file)), 12);
-
-  const lines: string[] = [];
-  lines.push(`## ${section.number}. ${section.title}`);
-  lines.push('');
-  lines.push('### Plain English');
-  lines.push(section.plainEnglish);
-  lines.push('');
-  lines.push('### What users experience');
-  lines.push(section.userFacing);
-  lines.push('');
-  lines.push('### Repo-grounded detail');
-  lines.push(`Matched repo evidence: ${matchedFacts.length} files, about ${sourceLines.toLocaleString()} readable source lines.`);
-  lines.push('');
-  lines.push('Important source roots:');
-  lines.push(...(roots.length ? roots.slice(0, 8).map((item) => `- \`${item.value}\` — ${item.count} matched files`) : ['- None found.']));
-  lines.push('');
-  lines.push('Behavior signals found in matched files:');
-  lines.push(...(signals.length ? signals.slice(0, 8).map((item) => `- ${item.value} — ${item.count} file hits`) : ['- None found.']));
-  lines.push('');
-  lines.push('Routes and API endpoints:');
-  lines.push(...bulletList([...routes.map((fact) => `${fact.route} ← ${fact.file}`), ...apis.map((fact) => `${fact.methods.join('|') || 'API'} ${fact.route} ← ${fact.file}`)], 'No direct app routes matched this section.', 14));
-  lines.push('');
-  lines.push('Components and hooks:');
-  lines.push(...bulletList([...components.map((name) => `component:${name}`), ...hooks.map((name) => `hook:${name}`)], 'No obvious component or hook names were detected.', 16));
-  lines.push('');
-  lines.push('Exports that define public behavior:');
-  lines.push(...bulletList(exports, 'No named exports were detected in the matched files.', 12));
-  lines.push('');
-  lines.push('Import/export connections:');
-  lines.push(...bulletList(imports, 'No internal import connections were detected in the matched files.', 12));
-  lines.push('');
-  lines.push('### Key files');
-  if (!keyFacts.length) {
-    lines.push('- No files currently matched. The generator should be tuned if this section is expected to exist.');
-  } else {
-    for (const fact of keyFacts) {
-      const tags = [fact.routeKind, fact.signals.slice(0, 3).join('/'), fact.components[0], fact.hooks[0]].filter(Boolean).join(' · ');
-      lines.push(`- \`${fact.file}\` — ${fact.lines} lines${tags ? `; ${tags}` : ''}`);
-    }
-    if (matchedFacts.length > keyFacts.length) {
-      lines.push(`- Plus ${matchedFacts.length - keyFacts.length} additional matched files summarized by roots/signals above.`);
+    if (lowerPath.includes(keyword.toLowerCase().replace(/\s+/g, "-"))) {
+      score += 20;
+      reasons.push(`path keyword: ${keyword}`);
+    } else if (lowerPath.includes(keyword.toLowerCase())) {
+      score += 20;
+      reasons.push(`path keyword: ${keyword}`);
     }
   }
-  lines.push('');
+
+  if (file.text && score > 0) {
+    for (const keyword of section.keywords) {
+      if (includesKeyword(file.text, keyword)) {
+        score += 8;
+      }
+    }
+  }
+
+  if (file.root === "app" && /^app\/.+\/page\.tsx?$/.test(file.path)) score += 10;
+  if (file.root === "app" && /^app\/api\/.+\/route\.tsx?$/.test(file.path)) score += 10;
+  if (/\.(test|spec)\.(ts|tsx|js|jsx)$/.test(file.path)) score -= 35;
+  if (file.root === "docs") score -= 25;
+  if (file.root === ".github") score -= section.number === 4 ? 0 : 60;
+  if (file.root === "research") score -= 40;
+  if (META_ROOTS.has(file.root) && section.number !== 4 && section.number !== 20) score -= 15;
+
+  if (score <= 0) return null;
+
+  return { file, score, reasons };
+}
+
+function getMatches(files: SourceFile[], section: SectionRule): FileMatch[] {
+  return files
+    .map((file) => scoreFile(file, section))
+    .filter((match): match is FileMatch => Boolean(match))
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      if (b.file.lines !== a.file.lines) return b.file.lines - a.file.lines;
+      return a.file.path.localeCompare(b.file.path);
+    })
+    .slice(0, section.maxFiles);
+}
+
+function extractRoutes(matches: FileMatch[]): string[] {
+  const routes = new Set<string>();
+
+  for (const { file } of matches) {
+    const pageMatch = file.path.match(/^app\/(.+)\/page\.tsx?$/);
+    if (pageMatch) {
+      const route = `/${pageMatch[1]}`.replace(/\/page$/, "").replace(/\/\(.*?\)/g, "");
+      routes.add(`${route} ← ${file.path}`);
+    }
+
+    const apiMatch = file.path.match(/^app\/api\/(.+)\/route\.tsx?$/);
+    if (apiMatch) {
+      const methods = extractRouteMethods(file.text);
+      routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} ← ${file.path}`);
+    }
+  }
+
+  return [...routes].slice(0, 16);
+}
+
+function extractRouteMethods(text: string): string[] {
+  const methods = new Set<string>();
+
+  for (const method of ["GET", "POST", "PUT", "PATCH", "DELETE"]) {
+    if (new RegExp(`export\\s+async\\s+function\\s+${method}\\b|export\\s+function\\s+${method}\\b|export\\s+const\\s+${method}\\b`).test(text)) {
+      methods.add(method);
+    }
+  }
+
+  return [...methods];
+}
+
+function extractImports(matches: FileMatch[]): string[] {
+  const imports = new Set<string>();
+
+  for (const { file } of matches) {
+    for (const match of file.text.matchAll(/from\s+["']([^"']+)["']/g)) {
+      const source = match[1];
+      if (!source.startsWith(".") && !source.startsWith("@/")) {
+        imports.add(source);
+      } else {
+        imports.add(source.replace(/^@\//, ""));
+      }
+    }
+  }
+
+  return [...imports].slice(0, 14);
+}
+
+function extractExports(matches: FileMatch[]): string[] {
+  const exports = new Set<string>();
+
+  for (const { file } of matches) {
+    for (const match of file.text.matchAll(/export\s+(?:async\s+)?(?:function|const|class|type|interface)\s+([A-Za-z0-9_]+)/g)) {
+      exports.add(`${match[1]} — ${file.path}`);
+    }
+
+    if (/export\s+default\b/.test(file.text)) {
+      const component = path.basename(file.path).replace(/\.(tsx?|jsx?|mjs|cjs)$/, "");
+      exports.add(`default export — ${component} (${file.path})`);
+    }
+  }
+
+  return [...exports].slice(0, 14);
+}
+
+function extractComponents(matches: FileMatch[]): string[] {
+  const components = new Set<string>();
+
+  for (const { file } of matches) {
+    if (!file.path.endsWith(".tsx") && !file.path.endsWith(".jsx")) continue;
+
+    for (const match of file.text.matchAll(/(?:export\s+default\s+function|export\s+function|function|const)\s+([A-Z][A-Za-z0-9_]*)/g)) {
+      components.add(`${match[1]} — ${file.path}`);
+    }
+  }
+
+  return [...components].slice(0, 14);
+}
+
+function extractHooks(matches: FileMatch[]): string[] {
+  const hooks = new Set<string>();
+
+  for (const { file } of matches) {
+    for (const match of file.text.matchAll(/\b(use[A-Z][A-Za-z0-9_]*)\b/g)) {
+      hooks.add(`${match[1]} — ${file.path}`);
+    }
+  }
+
+  return [...hooks].slice(0, 14);
+}
+
+function behaviorSignals(matches: FileMatch[]): string[] {
+  const signals = [
+    ["runtime", /\bruntime\b|Runtime|EnginRuntime/g],
+    ["state", /\buseState\b|\bstate\b|zustand|reducer/g],
+    ["persistence", /localStorage|sessionStorage|supabase|persist|database|storage/g],
+    ["events", /dispatchEvent|addEventListener|event|subscribe|broadcast/g],
+    ["mobile touch", /touch|pointer|gesture|drag|swipe|pinch|mobile/g],
+    ["rendering", /canvas|webgpu|render|viewport|mesh|shader|scene/g],
+    ["auth", /auth|user|session|safeGetUser|login|logout/g],
+    ["commerce", /shop|marketplace|ads|order|price|listing|sell/g],
+  ];
+
+  return signals
+    .map(([name, pattern]) => {
+      const count = matches.reduce((sum, match) => sum + (pattern.test(match.file.text) || pattern.test(match.file.path) ? 1 : 0), 0);
+      return { name, count };
+    })
+    .filter((item) => item.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 8)
+    .map((item) => `${item.name} — ${item.count} file hits`);
+}
+
+function formatList(items: string[], empty = "- None found."): string {
+  if (!items.length) return empty;
+
+  return items.map((item) => `- ${item}`).join("\n");
+}
+
+function fileSummary(match: FileMatch): string {
+  const parts = [
+    `\`${match.file.path}\``,
+    `${match.file.lines} lines`,
+    `score ${match.score}`,
+  ];
+
+  if (match.reasons.length) {
+    parts.push(match.reasons.slice(0, 2).join(", "));
+  }
+
+  return `- ${parts.join(" — ")}`;
+}
+
+function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSectionOutput {
+  const sourceLines = matches.reduce((sum, match) => sum + match.file.lines, 0);
+  const routes = extractRoutes(matches);
+  const imports = extractImports(matches);
+  const exports = extractExports(matches);
+  const components = extractComponents(matches);
+  const hooks = extractHooks(matches);
+  const signals = behaviorSignals(matches);
+  const primaryFiles = matches.slice(0, Math.min(34, section.maxFiles));
+  const supportingFiles = matches.slice(primaryFiles.length, Math.min(primaryFiles.length + 30, matches.length));
+
+  const markdown = [
+    `## ${section.number}. ${section.title}`,
+    "",
+    "### Plain English",
+    section.plainEnglish,
+    "",
+    "### What users experience",
+    section.userExperience,
+    "",
+    "### Repo Evidence",
+    `Matched focused repo evidence: ${matches.length} files, about ${sourceLines.toLocaleString()} readable source lines.`,
+    "",
+    "Behavior signals:",
+    formatList(signals),
+    "",
+    "Routes and APIs:",
+    formatList(routes),
+    "",
+    "Components:",
+    formatList(components),
+    "",
+    "Hooks:",
+    formatList(hooks),
+    "",
+    "Exports that define public behavior:",
+    formatList(exports),
+    "",
+    "Import/export connections:",
+    formatList(imports),
+    "",
+    "### Matched Files",
+    "",
+    "Primary files:",
+    primaryFiles.map(fileSummary).join("\n") || "- None found.",
+    "",
+    "Supporting files:",
+    supportingFiles.map(fileSummary).join("\n") || "- None found.",
+    "",
+  ].join("\n");
 
   return {
-    markdown: lines.join('\n'),
-    stats: {
-      number: section.number,
-      title: section.title,
-      matchedFiles: matchedFacts.length,
-      sourceLines,
-      routes: routes.length,
-      apis: apis.length,
-      components: components.length,
-      hooks: hooks.length,
-    },
+    number: section.number,
+    title: section.title,
+    markdown,
+    matchedFiles: matches.length,
+    sourceLines,
+    routes: routes.length,
+    apis: matches.filter((match) => /^app\/api\/.+\/route\.tsx?$/.test(match.file.path)).length,
+    components: components.length,
+    hooks: hooks.length,
+    files: matches.map((match) => match.file.path),
   };
 }
 
-export function buildProductReadmeSections(files: string[], lineBudget = 2800): ProductReadmeResult {
-  const facts = files.map(normalizePath).map(analyzeFile).filter((fact): fact is FileFact => Boolean(fact));
-  const frontDoorReserve = 180;
-  const available = Math.max(lineBudget - frontDoorReserve, 1200);
-  const perSectionLines = Math.max(58, Math.floor(available / PRODUCT_SECTIONS.length));
-  const perSectionFileLimit = Math.max(18, Math.min(34, perSectionLines - 58));
+export function buildProductSections(options: {
+  changedFilesPath: string;
+  maxLines?: number;
+}): ProductSectionsResult {
+  const trackedFiles = loadTrackedFiles(options.changedFilesPath);
+  const sourceFiles = loadSourceFiles(trackedFiles);
 
-  const stats: ProductSectionStats[] = [];
   const sections = PRODUCT_SECTIONS.map((section) => {
-    const built = buildSectionMarkdown(section, facts, perSectionFileLimit);
-    stats.push(built.stats);
-    return built.markdown;
+    const matches = getMatches(sourceFiles, section);
+    return sectionMarkdown(section, matches);
   });
 
   return {
-    markdown: [
-      '<!-- DREAMENGIN_PRODUCT_README:START -->',
-      '',
-      ...sections,
-      '<!-- DREAMENGIN_PRODUCT_README:END -->',
-      '',
-    ].join('\n'),
-    stats,
+    generatedAt: new Date().toISOString(),
+    trackedFiles: trackedFiles.length,
+    sections,
   };
 }
 
-export function computeAffected(changedFiles: string[]): Map<string, { section: ProductSection; subsections: Set<string> }> {
-  const normalized = changedFiles.map(normalizePath);
-  const affected = new Map<string, { section: ProductSection; subsections: Set<string> }>();
-  for (const section of PRODUCT_SECTIONS) {
-    const hit = normalized.some((file) => section.globs.some((glob) => matchesGlob(file, glob)) || section.keywords.some((keyword) => file.toLowerCase().includes(keyword.toLowerCase())));
-    if (hit) affected.set(section.id, { section, subsections: new Set<string>() });
+export function renderProductSectionsMarkdown(result: ProductSectionsResult): string {
+  return [
+    "<!-- DREAMENGIN_PRODUCT_README:START -->",
+    "",
+    ...result.sections.map((section) => section.markdown.trim()),
+    "",
+    "<!-- DREAMENGIN_PRODUCT_README:END -->",
+    "",
+  ].join("\n");
+}
+
+function parseArgs(argv: string[]): Record<string, string | boolean> {
+  const args: Record<string, string | boolean> = {};
+
+  for (let i = 0; i < argv.length; i++) {
+    const value = argv[i];
+
+    if (!value.startsWith("--")) continue;
+
+    const key = value.slice(2);
+    const next = argv[i + 1];
+
+    if (!next || next.startsWith("--")) {
+      args[key] = true;
+    } else {
+      args[key] = next;
+      i++;
+    }
   }
-  return affected;
+
+  return args;
 }
 
-export function buildAutosyncSummary(changedFiles: string[]) {
-  const affected = [...computeAffected(changedFiles).values()].map((entry) => ({ id: entry.section.id, title: `${entry.section.number}. ${entry.section.title}` }));
-  return {
-    changedFiles,
-    affectedSections: affected,
-    regeneratedSections: affected,
-    regeneratedSubsections: [],
-    readmeChanged: false,
-    sectionCount: PRODUCT_SECTIONS.length,
-    trackedFiles: changedFiles.length,
-  };
+function writeJson(filePath: string, value: unknown): void {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-export function replaceSection(markdown: string, section: Pick<ProductSection, 'title'>, replacement: string): string {
-  const heading = `## ${section.title}`;
-  const start = markdown.indexOf(heading);
-  if (start === -1) return `${markdown}${markdown.endsWith('\n') ? '' : '\n'}\n${replacement.trim()}\n`;
-  const next = markdown.indexOf('\n## ', start + heading.length);
-  const before = markdown.slice(0, start);
-  const after = next === -1 ? '' : markdown.slice(next + 1);
-  return `${before}${replacement.trim()}\n\n${after}`;
-}
+function runCli(): void {
+  const args = parseArgs(process.argv.slice(2));
+  const changedFilesPath = String(args["changed-files"] || "");
+  const sectionsFile = String(args["sections-file"] || "");
+  const markdownFile = String(args["markdown-file"] || "");
+  const maxLines = args["max-lines"] ? Number(args["max-lines"]) : undefined;
 
-function parseCliArg(name: string): string | undefined {
-  const index = process.argv.indexOf(name);
-  return index === -1 ? undefined : process.argv[index + 1];
-}
-
-if (process.argv[1] && /readme-autosync\.(t|j)s$/.test(process.argv[1])) {
-  const changedFilesPath = parseCliArg('--changed-files');
-  const summaryPath = parseCliArg('--summary-file');
-  const files = changedFilesPath && existsSync(changedFilesPath)
-    ? readFileSync(changedFilesPath, 'utf8').split(/\r?\n/g).map((line) => normalizePath(line.trim())).filter(Boolean)
-    : [];
-  const result = buildProductReadmeSections(files.length ? files : PRODUCT_SECTIONS.flatMap((section) => section.globs), 2800);
-  const summary = {
-    changedFiles: files,
-    affectedSections: PRODUCT_SECTIONS.map((section) => ({ id: section.id, title: `${section.number}. ${section.title}` })),
-    regeneratedSections: PRODUCT_SECTIONS.map((section) => ({ id: section.id, title: `${section.number}. ${section.title}` })),
-    regeneratedSubsections: [],
-    readmeChanged: true,
-    sectionCount: PRODUCT_SECTIONS.length,
-    trackedFiles: files.length,
-    productSections: result.stats,
-  };
-  if (summaryPath) {
-    const out = summaryPath.startsWith('/') ? summaryPath : join(process.cwd(), summaryPath);
-    writeFileSync(out, JSON.stringify(summary, null, 2));
+  if (!changedFilesPath) {
+    throw new Error("Missing required --changed-files path.");
   }
-  console.log(JSON.stringify(summary, null, 2));
+
+  const result = buildProductSections({
+    changedFilesPath,
+    maxLines,
+  });
+
+  if (sectionsFile) {
+    writeJson(sectionsFile, {
+      ...result,
+      markdown: renderProductSectionsMarkdown(result),
+    });
+  }
+
+  if (markdownFile) {
+    fs.mkdirSync(path.dirname(markdownFile), { recursive: true });
+    fs.writeFileSync(markdownFile, renderProductSectionsMarkdown(result));
+  }
+
+  console.log(JSON.stringify({
+    trackedFiles: result.trackedFiles,
+    sections: result.sections.map((section) => ({
+      number: section.number,
+      title: section.title,
+      matchedFiles: section.matchedFiles,
+      sourceLines: section.sourceLines,
+      routes: section.routes,
+      apis: section.apis,
+      components: section.components,
+      hooks: section.hooks,
+    })),
+  }, null, 2));
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  runCli();
 }
