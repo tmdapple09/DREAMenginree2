@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-24T23:09:19.329Z",
+  "generated_at": "2026-06-25T20:31:50.295Z",
   "generator": "scripts/sync-build-memory.mjs",
-  "count": 28,
+  "count": 30,
   "events": [
     {
       "event": "beforeunload",
@@ -184,9 +184,24 @@
       ]
     },
     {
+      "event": "pointercancel",
+      "payload_type": null,
+      "files": [
+        "components/dream.FirstTouchActivator.tsx"
+      ]
+    },
+    {
+      "event": "pointerdown",
+      "payload_type": null,
+      "files": [
+        "components/dream.FirstTouchActivator.tsx"
+      ]
+    },
+    {
       "event": "pointermove",
       "payload_type": null,
       "files": [
+        "components/dream.FirstTouchActivator.tsx",
         "components/home/dream.ActiveModuleSurface.tsx",
         "engine/rendering/god-tier/useGodTier.ts"
       ]
@@ -195,6 +210,7 @@
       "event": "pointerup",
       "payload_type": null,
       "files": [
+        "components/dream.FirstTouchActivator.tsx",
         "components/home/dream.ActiveModuleSurface.tsx"
       ]
     },
