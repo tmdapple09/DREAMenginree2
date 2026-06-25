@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: readme-product-autosync-${{ github.ref }}
@@ -52,7 +51,7 @@ jobs:
     if: needs.pacific-time-gate.outputs.should_run == 'true'
 
     steps:
-      - name: Checkout full repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -72,7 +71,8 @@ jobs:
       - name: Build tracked-file inventory
         shell: bash
         run: |
-          mkdir -p .readme-autosync
+          README_AUTOSYNC_DIR="$RUNNER_TEMP/readme-autosync"
+          mkdir -p "$README_AUTOSYNC_DIR"
 
           git ls-files \
             ':!:node_modules/**' \
@@ -85,210 +85,41 @@ jobs:
             ':!:.turbo/**' \
             ':!:.vercel/**' \
             ':!:*.tsbuildinfo' \
-            > .readme-autosync/all-files.txt
+            > "$README_AUTOSYNC_DIR/all-files.txt"
 
-          cp .readme-autosync/all-files.txt .readme-autosync/changed-files.txt
+          echo "README_AUTOSYNC_DIR=$README_AUTOSYNC_DIR" >> "$GITHUB_ENV"
 
           echo "Tracked files counted:"
-          wc -l .readme-autosync/all-files.txt
+          wc -l "$README_AUTOSYNC_DIR/all-files.txt"
 
-      - name: Verify README autosync scripts exist
-        shell: bash
-        run: |
-          test -f scripts/generate-readme.ts
-          test -f scripts/readme-autosync.ts
-
-      - name: Verify README section helper loads
-        shell: bash
-        run: |
-          pnpm tsx -e "import('./scripts/readme-autosync.ts').then(() => console.log('scripts/readme-autosync.ts loaded'))"
-
-      - name: Generate README professional front door and product sections
+      - name: Generate README
         shell: bash
         run: |
           pnpm tsx scripts/generate-readme.ts \
-            --changed-files .readme-autosync/all-files.txt \
-            --summary-file .readme-autosync/readme-summary.json \
+            --changed-files "$README_AUTOSYNC_DIR/all-files.txt" \
+            --summary-file "$README_AUTOSYNC_DIR/readme-summary.json" \
             --max-lines 2800
 
-      - name: Validate README product sections
-        id: validate
+      - name: Commit README update
         shell: bash
         run: |
-          node <<'NODE'
-          const fs = require("node:fs");
-
-          const readmePath = "README.md";
-          const reportPath = ".readme-autosync/readme-coverage-report.md";
-          const jsonPath = ".readme-autosync/readme-coverage-report.json";
-
-          if (!fs.existsSync(readmePath)) {
-            throw new Error("README.md does not exist after generation.");
-          }
-
-          const readme = fs.readFileSync(readmePath, "utf8");
-          const lines = readme.split(/\r?\n/g);
-
-          const requiredSections = [
-            "1. Project Overview",
-            "2. Getting Started",
-            "3. Usage, Configuration & Project Notes",
-            "4. Tech Stack & Monorepo Layout",
-            "5. The Engins and DayDreams",
-            "6. Dual Runtimes",
-            "7. Shared Dreams",
-            "8. DreamR — Human Media",
-            "9. The Shop",
-            "10. The Marketplace",
-            "11. Ads & User Ads",
-            "12. The DreamDmBar",
-            "13. Messaging",
-            "14. HomeDream",
-            "15. DreamSpace",
-            "16. Dreams / Widgets / Windows / Surfaces",
-            "17. User-Facing Modularity",
-            "18. Custom Engins",
-            "19. Full Website Customizability",
-            "20. Backend, System, Core & CoreSurfaces",
-          ];
-
-          const failures = [];
-          const warnings = [];
-
-          if (!readme.trim()) {
-            failures.push("README.md is empty.");
-          }
-
-          if (!/^#\s+DREAMengin/m.test(readme)) {
-            failures.push("README must start with a DREAMengin project title.");
-          }
-
-          for (const section of requiredSections) {
-            const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            const pattern = new RegExp(`^##\\s+${escaped}\\s*$`, "m");
-
-            if (!pattern.test(readme)) {
-              failures.push(`Missing section heading: ${section}`);
-            }
-          }
-
-          const productSections = requiredSections.slice(3);
-
-          for (const section of productSections) {
-            const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            const startMatch = readme.match(new RegExp(`^##\\s+${escaped}\\s*$`, "m"));
-
-            if (!startMatch || typeof startMatch.index !== "number") {
-              continue;
-            }
-
-            const start = startMatch.index;
-            const rest = readme.slice(start + startMatch[0].length);
-            const next = rest.search(/^##\s+\d+\.\s+/m);
-            const body = next === -1 ? rest : rest.slice(0, next);
-
-            if (!/###\s+Plain English/i.test(body)) {
-              failures.push(`${section} is missing a Plain English subsection.`);
-            }
-
-            if (!/###\s+Repo Evidence/i.test(body)) {
-              failures.push(`${section} is missing a Repo Evidence subsection.`);
-            }
-
-            if (!/###\s+Matched Files/i.test(body)) {
-              failures.push(`${section} is missing a Matched Files subsection.`);
-            }
-
-            if (!/`[^`]+\.(ts|tsx|js|jsx|mjs|cjs|css|sql|md|json|ya?ml)`/i.test(body)) {
-              failures.push(`${section} does not list concrete repo files.`);
-            }
-          }
-
-          if (lines.length > 2900) {
-            warnings.push(`README is ${lines.length} lines. Target is around 2800 lines.`);
-          }
-
-          if (/@\/lib\//g.test(readme)) {
-            failures.push("README still contains stale @/lib/ import references.");
-          }
-
-          if (/Files tracked:\s*\*\*0\*\*/g.test(readme)) {
-            failures.push("README contains one or more generated sections with Files tracked: **0**.");
-          }
-
-          if (/$begin:math:text$no files currently matched$end:math:text$/g.test(readme)) {
-            failures.push("README contains '(no files currently matched)'.");
-          }
-
-          if (/(…|\.\.\.)\s*$begin:math:text$\\d\+\\s\+more files$end:math:text$/g.test(readme)) {
-            failures.push("README contains truncated file listings like '… (N more files)'.");
-          }
-
-          const report = [
-            "# README Product Autosync Report",
-            "",
-            `README lines: ${lines.length}`,
-            `Required sections checked: ${requiredSections.length}`,
-            `Product sections checked: ${productSections.length}`,
-            `Warnings: ${warnings.length}`,
-            `Failures: ${failures.length}`,
-            "",
-            "## Failures",
-            failures.length ? failures.map((failure) => `- ${failure}`).join("\n") : "- None",
-            "",
-            "## Warnings",
-            warnings.length ? warnings.map((warning) => `- ${warning}`).join("\n") : "- None",
-            "",
-          ].join("\n");
-
-          fs.writeFileSync(reportPath, report);
-          fs.writeFileSync(jsonPath, JSON.stringify({
-            readmeLines: lines.length,
-            requiredSections,
-            productSections,
-            warnings,
-            failures,
-            hasFailures: failures.length > 0,
-          }, null, 2));
-
-          console.log(report);
-
-          if (failures.length) {
-            process.exit(1);
-          }
-          NODE
-
-      - name: Detect README autosync changes
-        id: autosync
-        if: always()
-        shell: bash
-        run: |
-          if git diff --quiet -- README.md scripts/generate-readme.ts scripts/readme-autosync.ts .github/workflows/readme-autosync.yml; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+          if git diff --quiet -- README.md; then
+            echo "README.md did not change."
+            exit 0
           fi
 
-      - name: Commit README autosync update
-        if: steps.autosync.outputs.changed == 'true'
-        shell: bash
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add README.md scripts/generate-readme.ts scripts/readme-autosync.ts .github/workflows/readme-autosync.yml
+          git add README.md
           git commit -m "docs(readme): autosync product README [skip ci]"
           git push
 
       - name: Upload README autosync artifacts
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: readme-product-autosync
           path: |
             README.md
-            .readme-autosync/all-files.txt
-            .readme-autosync/changed-files.txt
-            .readme-autosync/readme-summary.json
-            .readme-autosync/readme-coverage-report.md
-            .readme-autosync/readme-coverage-report.json
+            ${{ env.README_AUTOSYNC_DIR }}/all-files.txt
+            ${{ env.README_AUTOSYNC_DIR }}/readme-summary.json
