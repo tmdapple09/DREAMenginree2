@@ -98,8 +98,14 @@ jobs:
             echo "Tracked files counted:"
             wc -l "$README_AUTOSYNC_DIR/all-files.txt"
 
+            pnpm tsx scripts/readme-autosync.ts \
+              --changed-files "$README_AUTOSYNC_DIR/all-files.txt" \
+              --sections-file "$README_AUTOSYNC_DIR/product-sections.json" \
+              --max-lines 2800
+
             pnpm tsx scripts/generate-readme.ts \
               --changed-files "$README_AUTOSYNC_DIR/all-files.txt" \
+              --sections-file "$README_AUTOSYNC_DIR/product-sections.json" \
               --summary-file "$README_AUTOSYNC_DIR/readme-summary.json" \
               --max-lines 2800
           }
@@ -127,7 +133,7 @@ jobs:
               exit 0
             fi
 
-            echo "Push was rejected. Rebasing onto latest origin/${BRANCH}, regenerating README.md, and retrying..."
+            echo "Push rejected. Rebasing latest origin/${BRANCH}, regenerating README.md, and retrying..."
             git fetch origin "$BRANCH"
             git rebase "origin/$BRANCH"
 
@@ -159,4 +165,5 @@ jobs:
           path: |
             README.md
             ${{ runner.temp }}/readme-autosync/all-files.txt
+            ${{ runner.temp }}/readme-autosync/product-sections.json
             ${{ runner.temp }}/readme-autosync/readme-summary.json
