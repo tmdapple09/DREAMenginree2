@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-22T03:51:52.927Z
+Generated: 2026-06-25T01:04:41.150Z
 
 ---
 
@@ -8319,8 +8319,14 @@ _No style files for this feature._
 |--------|---------------|
 | `@/components/engines/shared` | `makeEnginApp` |
 | `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
-| `@/engins/renderengin` | `RenderEnginRuleSet`, `RenderEnginViewport`, `RenderIntent` |
-| `react` | `useMemo` |
+| `@/engins/renderengin` | `RenderEnginRuleSet`, `RenderEnginViewport`, `RenderIntent`, `RenderServiceIntentEnvelope`, `acknowledgeRenderServiceIntent`, `readRenderServiceQueue`, `subscribeRenderServiceIntents` |
+| `react` | `useCallback`, `useEffect`, `useMemo`, `useRef`, `useState` |
+
+## `components/engines/render/dream.RenderSurface.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/renderengin/RenderEnginInlineSurface` | `⬡ RenderEnginInlineSurface` |
 
 ## `components/engines/shared/dream.EnginProvider.tsx`
 
@@ -9100,7 +9106,7 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `@/components/ui-system/runtimeViewport` | `isCompactRuntimeViewport` |
+| `@/components/ui-system/runtimeViewport` | `isCompactRuntimeViewport`, `readInteractiveViewportScale`, `readInteractiveViewportWidth` |
 | `@/engine/runtime/apperception` | `ApperceptiveContext` |
 
 ## `components/shaders/dream.LightningWing.tsx`
@@ -12117,8 +12123,9 @@ _No style files for this feature._
 |--------|---------------|
 | `@/engins/contentengin/AssetViewport` | `⬡ AssetViewport` |
 | `@/engins/contentengin/useImplicitAssetWorkspace` | `useImplicitAssetWorkspace` |
-| `@/engins/renderengin` | `dispatchRenderHandoff` |
-| `next/navigation` | `useRouter` |
+| `@/engins/isosurfaceAssetPipeline` | `exportOBJ` |
+| `@/engins/renderengin` | `RenderStage`, `createInlineRenderIntent` |
+| `react` | `useMemo`, `useState` |
 
 ## `engins/contentengin/assetTypes.ts`
 
@@ -12132,6 +12139,12 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./indexedDBStore` | `storeOriginal` |
+
+## `engins/contentengin/assets/localAssetLibrary.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `@/engins/contentengin/assets/indexedDBStore` | `OriginalRecord`, `getOriginal`, `storeOriginal` |
 
 ## `engins/contentengin/builders/geometryBuilder.ts`
 
@@ -13109,15 +13122,37 @@ _No style files for this feature._
 | `lucide-react` | `Activity`, `ArrowLeft`, `Cpu`, `ShieldCheck`, `TrendingUp` |
 | `react` | `useState` |
 
+## `engins/renderengin/RenderEnginInlineSurface.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./RenderEnginViewport` | `⬡ RenderEnginViewport` |
+| `./core` | `RenderEnginRuleSet`, `RenderIntent` |
+| `./serviceRuntime` | `RenderServiceIntentEnvelope` |
+| `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
+| `react` | `useEffect`, `useMemo`, `useState` |
+
 ## `engins/renderengin/RenderEnginViewport.tsx`
 
 | Module | Connected via |
 |--------|---------------|
-| `./assets` | `createParsedObjRenderAsset`, `estimateRenderAssetMemory` |
-| `./core` | `MeshBuffers`, `RenderIntent`, `Vec3`, `composeModelMatrix`, `createMeshBuffers`, `mat4LookAt`, `mat4Perspective` |
+| `./assets` | `ParsedRenderAsset`, `createParsedGlbRenderAsset`, `createParsedObjRenderAsset`, `estimateRenderAssetMemory` |
+| `./core` | `MeshBuffers`, `RenderIntent`, `Vec2`, `Vec3`, `composeModelMatrix`, `createMeshBuffers`, `createRenderAsset`, `mat4LookAt`, `mat4Perspective` |
+| `./serviceRuntime` | `RenderServiceIntentEnvelope` |
 | `./webgpu` | `RenderEnginFrameStats`, `WebGpuRenderEngin`, `requestWebGpuDevice` |
 | `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
 | `react` | `useCallback`, `useEffect`, `useRef`, `useState` |
+
+## `engins/renderengin/RenderStage.tsx`
+
+| Module | Connected via |
+|--------|---------------|
+| `./RenderEnginViewport` | `⬡ RenderEnginViewport` |
+| `./core` | `RenderEnginRuleSet`, `RenderIntent` |
+| `./serviceRuntime` | `RenderServiceIntentEnvelope`, `RenderWorkflowSurface` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+| `@/engine/engin-runtime/EnginRuntime` | `EnginRuntime` |
+| `react` | `useEffect`, `useMemo` |
 
 ## `engins/renderengin/advancedRendering.ts`
 
@@ -13231,7 +13266,15 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `./core` | `RenderIntentType` |
+| `./serviceRuntime` | `RenderServiceIntentEnvelope`, `RenderServiceSubmitResult`, `RenderWorkflowSurface`, `createRenderServiceIntent`, `routeForRenderSource`, `submitRenderServiceIntent` |
 | `@/engine/engin-runtime/EnginBaseState` | `JsonObject` |
+
+## `engins/renderengin/serviceRuntime.ts`
+
+| Module | Connected via |
+|--------|---------------|
+| `./core` | `RENDER_ENGIN_ID`, `RENDER_INTENT_TYPES`, `RenderIntentType` |
+| `@/engine/engin-runtime/EnginBaseState` | `JsonObject`, `JsonValue` |
 | `@/engine/runtime/EnginDispatcher` | `EnginDispatcher`, `RenderDispatcherIntent` |
 
 ## `engins/renderengin/textures.ts`
@@ -13418,10 +13461,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
-| `node:fs` | `existsSync`, `readFileSync`, `writeFileSync` |
-| `node:path` | `resolve` |
-| `node:url` | `fileURLToPath` |
+| `./readme-autosync` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
+| `node:fs` | `existsSync`, `mkdirSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `dirname`, `join`, `relative`, `resolve` |
 
 ## `hooks/use-spatial.ts`
 
@@ -13472,6 +13514,7 @@ _No style files for this feature._
 | Module | Connected via |
 |--------|---------------|
 | `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
+| `@/components/ui-system/runtimeViewport` | `readInteractiveViewportHeight`, `readInteractiveViewportWidth` |
 | `react` | `useEffect`, `useState`, `useSyncExternalStore` |
 
 ## `hooks/useSharedDream.ts`
@@ -13554,15 +13597,6 @@ _No style files for this feature._
 | `@/supabase/config` | `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL` |
 | `@/supabase/server/serverClient` | `createServerClientWithCustomCookies` |
 | `next/server` | `NextRequest`, `NextResponse` |
-
-## `readme-autosync.ts`
-
-| Module | Connected via |
-|--------|---------------|
-| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
-| `node:path` | `basename`, `extname`, `join`, `relative`, `resolve` |
-| `node:url` | `fileURLToPath` |
-| `ts-morph` | `ArrowFunction`, `FunctionDeclaration`, `FunctionExpression`, `Node`, `Project`, `SourceFile`, `SyntaxKind` |
 
 ## `repo-visualizer/analyzer.mjs`
 
@@ -13929,6 +13963,7 @@ _No style files for this feature._
 | `@/engins/codeengin/workspaceStore` | _(dynamic import)_ |
 | `@/engins/contentengin/assets/assetOptimizer` | _(dynamic import)_ |
 | `@/engins/contentengin/assets/indexedDBStore` | _(dynamic import)_ |
+| `@/engins/contentengin/assets/localAssetLibrary` | _(dynamic import)_ |
 | `@/engins/contentengin/assetTypes` | _(dynamic import)_ |
 | `@/engins/contentengin/AssetViewport` | _(dynamic import)_ |
 | `@/engins/contentengin/builders/geometryBuilder` | _(dynamic import)_ |
@@ -14126,12 +14161,15 @@ _No style files for this feature._
 | `@/engins/renderengin/materials` | _(dynamic import)_ |
 | `@/engins/renderengin/performanceIntegrity` | _(dynamic import)_ |
 | `@/engins/renderengin/postProcessing` | _(dynamic import)_ |
+| `@/engins/renderengin/RenderEnginInlineSurface` | _(dynamic import)_ |
 | `@/engins/renderengin/RenderEnginViewport` | _(dynamic import)_ |
 | `@/engins/renderengin/renderSettings` | _(dynamic import)_ |
+| `@/engins/renderengin/RenderStage` | _(dynamic import)_ |
 | `@/engins/renderengin/runtimeRegistration` | _(dynamic import)_ |
 | `@/engins/renderengin/scene` | _(dynamic import)_ |
 | `@/engins/renderengin/security` | _(dynamic import)_ |
 | `@/engins/renderengin/serviceIntegration` | _(dynamic import)_ |
+| `@/engins/renderengin/serviceRuntime` | _(dynamic import)_ |
 | `@/engins/renderengin/textures` | _(dynamic import)_ |
 | `@/engins/renderengin/viewportControls` | _(dynamic import)_ |
 | `@/engins/renderengin/virtualization` | _(dynamic import)_ |
@@ -14631,6 +14669,7 @@ _No style files for this feature._
 | `@/components/engines/portfolio/panels/dream.panel.OptimizePanel` | _(dynamic import)_ |
 | `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel` | _(dynamic import)_ |
 | `@/components/engines/render/dream.RenderServiceDiagnostics` | _(dynamic import)_ |
+| `@/components/engines/render/dream.RenderSurface` | _(dynamic import)_ |
 | `@/components/engines/render/index` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.bar.EnginNavBar` | _(dynamic import)_ |
 | `@/components/engines/shared/dream.EnginProvider` | _(dynamic import)_ |
@@ -16057,6 +16096,7 @@ _No style files for this feature._
 - `@/engins/codeengin/workspaceStore`
 - `@/engins/contentengin/assets/assetOptimizer`
 - `@/engins/contentengin/assets/indexedDBStore`
+- `@/engins/contentengin/assets/localAssetLibrary`
 - `@/engins/contentengin/assetTypes`
 - `@/engins/contentengin/AssetViewport`
 - `@/engins/contentengin/builders/geometryBuilder`
@@ -16254,12 +16294,15 @@ _No style files for this feature._
 - `@/engins/renderengin/materials`
 - `@/engins/renderengin/performanceIntegrity`
 - `@/engins/renderengin/postProcessing`
+- `@/engins/renderengin/RenderEnginInlineSurface`
 - `@/engins/renderengin/RenderEnginViewport`
 - `@/engins/renderengin/renderSettings`
+- `@/engins/renderengin/RenderStage`
 - `@/engins/renderengin/runtimeRegistration`
 - `@/engins/renderengin/scene`
 - `@/engins/renderengin/security`
 - `@/engins/renderengin/serviceIntegration`
+- `@/engins/renderengin/serviceRuntime`
 - `@/engins/renderengin/textures`
 - `@/engins/renderengin/viewportControls`
 - `@/engins/renderengin/virtualization`
@@ -16735,6 +16778,7 @@ _No style files for this feature._
 - `@/components/engines/portfolio/panels/dream.panel.OptimizePanel`
 - `@/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel`
 - `@/components/engines/render/dream.RenderServiceDiagnostics`
+- `@/components/engines/render/dream.RenderSurface`
 - `@/components/engines/render/index`
 - `@/components/engines/shared/dream.bar.EnginNavBar`
 - `@/components/engines/shared/dream.EnginProvider`
@@ -17923,6 +17967,7 @@ _No style files for this feature._
 - `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`
 - `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx`
 - `components/engines/render/dream.RenderServiceDiagnostics.tsx`
+- `components/engines/render/dream.RenderSurface.tsx`
 - `components/engines/shared/dream.EnginProvider.tsx`
 - `components/engines/shared/dream.bar.EnginNavBar.tsx`
 - `components/engines/shared/dream.makeEnginApp.tsx`
@@ -18253,7 +18298,9 @@ _No style files for this feature._
 
 ## `engins/renderengin/`
 
+- `engins/renderengin/RenderEnginInlineSurface.tsx`
 - `engins/renderengin/RenderEnginViewport.tsx`
+- `engins/renderengin/RenderStage.tsx`
 
 ---
 
@@ -18726,9 +18773,8 @@ _No style files for this feature._
 - `engins/gameengin/GameRuntime.tsx`
 - `engins/gameengin/games/DualSenseManager.ts`
 - `engins/portfolio/dream.PortfolioEngin.tsx`
-- `engins/renderengin/serviceIntegration.ts`
+- `engins/renderengin/serviceRuntime.ts`
 - `engins/rulesets/useEnginWorkflow.ts`
-- `readme-autosync.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/postbuild.js`
 - `scripts/readme-autosync.ts`
@@ -19011,8 +19057,7 @@ _No style files for this feature._
 - `engine/runtime/useDragSurface.ts`
 - `engins/gameengin/GameEnginCore.ts`
 - `engins/gameengin/registerCartridges.ts`
-- `engins/renderengin/serviceIntegration.ts`
-- `readme-autosync.ts`
+- `engins/renderengin/serviceRuntime.ts`
 - `scripts/generate-repo-state.mjs`
 - `scripts/readme-autosync.ts`
 - `scripts/wire-orphans.mjs`
@@ -19039,7 +19084,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 |
 | `components/runtime/dream.RuntimeView.tsx` | 26 |
 | `engins/contentengin/pipeline/build.ts` | 25 |
-| `engins/renderengin/index.ts` | 22 |
+| `engins/renderengin/index.ts` | 24 |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 |
 | `engins/engin.BrandingEngin.tsx` | 18 |
 | `engins/engin.LabEngin.tsx` | 18 |
@@ -19078,7 +19123,7 @@ _No circular dependencies detected._
 | `engins/engin.StarMakerEngin.tsx` | 30 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/runtime/dream.RuntimeView.tsx` | 26 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
-| `engins/renderengin/index.ts` | 22 | HIGH_COUPLING |
+| `engins/renderengin/index.ts` | 24 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 19 | HIGH_COUPLING |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
@@ -19282,6 +19327,8 @@ _No circular dependencies detected._
 | `engins/codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
 | `engins/contentengin/pipeline/bundle.ts` | 6 | MEDIUM_COUPLING |
 | `engins/contentengin/rigging/index.ts` | 6 | MEDIUM_COUPLING |
+| `engins/renderengin/RenderEnginViewport.tsx` | 6 | MEDIUM_COUPLING |
+| `engins/renderengin/RenderStage.tsx` | 6 | MEDIUM_COUPLING |
 | `scripts/gameengin/package-cartridge.ts` | 6 | MEDIUM_COUPLING |
 | `tests/idari-observability-loop.test.ts` | 6 | MEDIUM_COUPLING |
 | `tests/phase8e-shop-marketplace.test.ts` | 6 | MEDIUM_COUPLING |
@@ -19309,7 +19356,6 @@ _No circular dependencies detected._
 | `engins/rulesets/game/useGameEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/lab/useLabEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/music/useStarMakerEnginRuntime.ts` | 4 | EVENT_BUS |
-| `readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/readme-autosync.ts` | 4 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `tests/gameengin-asset-pipeline.test.ts` | 4 | RUNTIME_REGISTRY |
 | `tests/seam-clipboard.test.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
@@ -19327,7 +19373,7 @@ _No circular dependencies detected._
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
-| `engins/renderengin/serviceIntegration.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
+| `engins/renderengin/serviceRuntime.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `tests/dream-os-bus.test.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `tests/drop-target-registry.test.ts` | 3 | RUNTIME_REGISTRY |
@@ -19819,6 +19865,7 @@ _No circular dependencies detected._
 | `engins/gameengin/controls/control-mappings.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
 | `engins/gameengin/dream-engine.ts` | `@/supabase/client/client` | `createClient` |
 | `engins/gameengin/dream-engine.ts` | `@/supabase/client/safeGetUser` | `safeGetUser` |
+| `generate-readme.ts` | `./readme-autosync` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
 | `hooks/use-spatial.ts` | `@/supabase/client/client` | `createClient` |
 | `hooks/useAccount.ts` | `@/supabase/client/client` | `createClient` |
 | `hooks/useResponsive.ts` | `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
@@ -20055,6 +20102,7 @@ _No circular dependencies detected._
 | `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx` | `(default)` |
 | `components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel.tsx` | `(default)` |
 | `components/engines/render/dream.RenderServiceDiagnostics.tsx` | `(default)` |
+| `components/engines/render/dream.RenderSurface.tsx` | `(default)` |
 | `components/engines/render/index.ts` | `RenderServiceDiagnostics` |
 | `components/engines/shared/dream.EnginProvider.tsx` | `EnginProvider`, `useEngin` |
 | `components/engines/shared/dream.bar.EnginNavBar.tsx` | `(default)` |
@@ -20416,7 +20464,8 @@ _No circular dependencies detected._
 | `engins/contentengin/AssetViewport.tsx` | `(default)` |
 | `engins/contentengin/ImplicitAssetWorkspace.tsx` | `(default)` |
 | `engins/contentengin/assets/assetOptimizer.ts` | `optimiseAsset` |
-| `engins/contentengin/assets/indexedDBStore.ts` | `getOriginal`, `deleteOriginal`, `checkSentinels`, `listStoredOriginals`, `cleanupExpiredOriginals`, `getStorageStats`, `hasOriginal` |
+| `engins/contentengin/assets/indexedDBStore.ts` | `deleteOriginal`, `checkSentinels`, `listStoredOriginals`, `cleanupExpiredOriginals`, `getStorageStats`, `hasOriginal` |
+| `engins/contentengin/assets/localAssetLibrary.ts` | `saveLocalContentAsset`, `listLocalContentAssets`, `getLocalContentAssetObjSource`, `getLocalContentAssetGlb` |
 | `engins/contentengin/builders/meshBuilder.ts` | `sdfFromAlgebraicFit`, `buildImplicitContentMesh`, `buildRegionFitContentMesh` |
 | `engins/contentengin/builders/modifiers.ts` | `applyModifierMetadata` |
 | `engins/contentengin/composite/compositor.ts` | `createNode`, `createGraph`, `addNode`, `connectNodes`, `disconnectInput`, `setParam`, `findNode`, `topologicalSort`, `graphSummary` |
@@ -20511,10 +20560,12 @@ _No circular dependencies detected._
 | `engins/isosurfaceDualContouring.ts` | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `normalizeDualContouringSettings`, `classifyMobileIsoSurfaceTier`, `estimateIsoSurfaceMemoryBytes`, `validateMesh`, `createIsoSurfaceJob` |
 | `engins/labengin/implicitSurface.ts` | `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)` |
+| `engins/renderengin/RenderEnginInlineSurface.tsx` | `(default)` |
 | `engins/renderengin/RenderEnginViewport.tsx` | `(default)` |
+| `engins/renderengin/RenderStage.tsx` | `createInlineRenderIntent`, `(default)` |
 | `engins/renderengin/advancedRendering.ts` | `applyMorphTargets`, `skinVertexDqs`, `buildDualQuaternionPalette`, `planBoneStorage`, `createTimestampQueryPlan`, `reduceTimestampPairs`, `markDeviceLost`, `markDeviceRebuilding`, `markDeviceRestored`, `buildMeshlets`, `planComputeCulling`, `buildIndirectDrawCommands`, `planStreamingPages`, `compressGeometryQuantized`, `solveTwoBoneIk`, `applySkinMatrixToVertex`, `combinePoseMatrix` |
 | `engins/renderengin/animation.ts` | `sampleKeyframes`, `evaluateAnimationClip` |
-| `engins/renderengin/assets.ts` | `parseObjMesh`, `parseGlbHeader`, `renderAssetManifestToJson`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `parseGlbMesh`, `createParsedGlbRenderAsset` |
+| `engins/renderengin/assets.ts` | `parseObjMesh`, `parseGlbHeader`, `renderAssetManifestToJson`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `parseGlbMesh` |
 | `engins/renderengin/benchmarkProof.ts` | `createTenMillionPolygonProof`, `evaluateGpuBenchmarkProof`, `createTenMillionTriangleBenchmarkScene`, `certifyTenMillionScene` |
 | `engins/renderengin/completionEvidence.ts` | `createRenderCompletionEvidence` |
 | `engins/renderengin/core.ts` | `projectVertex`, `computeTangents`, `ggxDistribution`, `schlickG1`, `smithGeometry`, `fresnelSchlick`, `shadeCookTorrance`, `unpackOrm`, `evaluateJointWorldMatrices`, `evaluateSkinMatrices`, `skinVertexLbs`, `selectLod`, `clusterizeMesh`, `buildClusterDag`, `RENDER_ENGIN_NAME` |
@@ -20527,7 +20578,8 @@ _No circular dependencies detected._
 | `engins/renderengin/renderSettings.ts` | `createRenderQualitySettings`, `switchRenderPreviewMode` |
 | `engins/renderengin/scene.ts` | `defaultRenderTransform`, `createRenderScene`, `createRenderSceneObject`, `addObjectToRenderScene`, `selectRenderSceneObjects`, `updateRenderSceneObject`, `removeRenderSceneObject`, `setRenderSceneEnvironment`, `computeRenderObjectWorldMatrix`, `serializeRenderScene`, `deserializeRenderScene`, `undoRenderScene`, `redoRenderScene`, `renderSceneSummary` |
 | `engins/renderengin/security.ts` | `authorizeRenderCapability`, `validateRenderAssetManifestServer` |
-| `engins/renderengin/serviceIntegration.ts` | `RENDER_SERVICE_PIPELINE`, `RENDER_SERVICE_COMMANDS`, `RENDER_SERVICE_HANDOFFS`, `createRenderServiceIntent`, `getRenderHandoffForSource`, `dispatchRenderServiceIntent`, `dispatchRenderHandoff` |
+| `engins/renderengin/serviceIntegration.ts` | `RENDER_SERVICE_PIPELINE`, `RENDER_SERVICE_COMMANDS`, `RENDER_SERVICE_HANDOFFS`, `getRenderHandoffForSource`, `dispatchRenderServiceIntent`, `dispatchRenderHandoff`, `createRenderServiceIntent` |
+| `engins/renderengin/serviceRuntime.ts` | `RENDER_SERVICE_EVENT`, `RENDER_SERVICE_STORAGE_KEY`, `readRenderServiceQueue`, `acknowledgeRenderServiceIntent`, `subscribeRenderServiceIntents`, `renderServicePayloadToJson`, `normalizeRenderServicePayload` |
 | `engins/renderengin/textures.ts` | `calculateMipLevelCount`, `estimateTextureBytes`, `validateRenderTexture`, `createRenderTexture`, `createTextureMemoryReport` |
 | `engins/renderengin/viewportControls.ts` | `panRenderCamera`, `orbitRenderCamera`, `zoomRenderCamera`, `pinchZoomRenderCamera`, `resetRenderCamera`, `fitCameraToBounds`, `createViewportRay`, `raycastSphere`, `pickRenderObject`, `createBoundingBoxLines`, `transformGizmoDelta`, `createAxisHelper` |
 | `engins/renderengin/virtualization.ts` | `computeMeshBounds`, `sphereIntersectsFrustum`, `selectScreenSpaceLod`, `cullRenderScene`, `buildInstanceBatches`, `createTerrainChunks` |
@@ -20567,7 +20619,6 @@ _No circular dependencies detected._
 | `playwright.config.ts` | `(default)` |
 | `postcss.config.mjs` | `(default)` |
 | `proxy.ts` | `proxy`, `config` |
-| `readme-autosync.ts` | `analyzeExports`, `analyzeImports`, `analyzeRoutes`, `analyzeComponents`, `analyzeHooks`, `analyzeDependencies`, `analyzeSubsystem`, `buildArchitecturalSectionBlock`, `buildArchitecturalSubsectionBlock`, `replaceSection`, `upsertSubsectionInSection`, `computeAffected` |
 | `scripts/export-full-code.mjs` | `DEFAULT_EXCLUDED_DIRS`, `DEFAULT_EXCLUDED_BASENAMES`, `isProbablyTextBuffer`, `hasPrintableContent`, `collectExportableFiles`, `exportFullCodeSnapshot` |
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
@@ -22013,6 +22064,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── render
 │   │   │   ├── dream.RenderServiceDiagnostics.tsx ∅
 │   │   │   │   └── ∅ unused: (default)
+│   │   │   ├── dream.RenderSurface.tsx ∅
+│   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
 │   │   │       └── ∅ unused: RenderServiceDiagnostics
 │   │   ├── shared
@@ -23190,8 +23243,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── assets
 │   │   │   ├── assetOptimizer.ts ∅
 │   │   │   │   └── ∅ unused: optimiseAsset
-│   │   │   └── indexedDBStore.ts ∅
-│   │   │       └── ∅ unused: getOriginal, deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
+│   │   │   ├── indexedDBStore.ts ∅
+│   │   │   │   └── ∅ unused: deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
+│   │   │   └── localAssetLibrary.ts ∅
+│   │   │       └── ∅ unused: saveLocalContentAsset, listLocalContentAssets, getLocalContentAssetObjSource, getLocalContentAssetGlb
 │   │   ├── builders
 │   │   │   ├── geometryBuilder.ts
 │   │   │   ├── meshBuilder.ts ∅
@@ -23605,7 +23660,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── animation.ts ∅
 │   │   │   └── ∅ unused: sampleKeyframes, evaluateAnimationClip
 │   │   ├── assets.ts ∅
-│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
+│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh
 │   │   ├── benchmarkProof.ts ∅
 │   │   │   └── ∅ unused: createTenMillionPolygonProof, evaluateGpuBenchmarkProof, createTenMillionTriangleBenchmarkScene, certifyTenMillionScene
 │   │   ├── completionEvidence.ts ∅
@@ -23625,17 +23680,23 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: DEFAULT_RENDER_PERFORMANCE_THRESHOLDS, evaluateRenderPerformanceIntegrity
 │   │   ├── postProcessing.ts ∅
 │   │   │   └── ∅ unused: createRenderPostProcessGraph, executePostProcessPixel
+│   │   ├── RenderEnginInlineSurface.tsx ∅
+│   │   │   └── ∅ unused: (default)
 │   │   ├── RenderEnginViewport.tsx ∅
 │   │   │   └── ∅ unused: (default)
 │   │   ├── renderSettings.ts ∅
 │   │   │   └── ∅ unused: createRenderQualitySettings, switchRenderPreviewMode
+│   │   ├── RenderStage.tsx ∅
+│   │   │   └── ∅ unused: createInlineRenderIntent, (default)
 │   │   ├── runtimeRegistration.ts
 │   │   ├── scene.ts ∅
 │   │   │   └── ∅ unused: defaultRenderTransform, createRenderScene, createRenderSceneObject, addObjectToRenderScene, selectRenderSceneObjects, updateRenderSceneObject, removeRenderSceneObject, setRenderSceneEnvironment, computeRenderObjectWorldMatrix, serializeRenderScene, deserializeRenderScene, undoRenderScene, redoRenderScene, renderSceneSummary
 │   │   ├── security.ts ∅
 │   │   │   └── ∅ unused: authorizeRenderCapability, validateRenderAssetManifestServer
 │   │   ├── serviceIntegration.ts ∅
-│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, createRenderServiceIntent, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff
+│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff, createRenderServiceIntent
+│   │   ├── serviceRuntime.ts ∅
+│   │   │   └── ∅ unused: RENDER_SERVICE_EVENT, RENDER_SERVICE_STORAGE_KEY, readRenderServiceQueue, acknowledgeRenderServiceIntent, subscribeRenderServiceIntents, renderServicePayloadToJson, normalizeRenderServicePayload
 │   │   ├── textures.ts ∅
 │   │   │   └── ∅ unused: calculateMipLevelCount, estimateTextureBytes, validateRenderTexture, createRenderTexture, createTextureMemoryReport
 │   │   ├── viewportControls.ts ∅
@@ -24292,7 +24353,8 @@ Legend: ⚠ broken import  ∅ unused export
 ├── eslint.config.mjs ∅
 │   └── ∅ unused: (default)
 ├── fix-audit.js
-├── generate-readme.ts
+├── generate-readme.ts ⚠
+│   └── ⚠ ./readme-autosync  (PRODUCT_SECTIONS, buildProductReadmeSections)
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
@@ -24311,8 +24373,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── ⚠ @/supabase/config  (SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL)
 │   ├── ⚠ @/supabase/client/safeGetUser  (safeGetUser)
 │   └── ∅ unused: proxy, config
-├── readme-autosync.ts ∅
-│   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
 ├── supabaseClient.ts ∅
 │   └── ∅ unused: supabase
 ├── tailwind.config.ts

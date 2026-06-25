@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-22T03:51:53.068Z
+Generated: 2026-06-25T01:04:41.234Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -4341,7 +4341,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── RenderEnginRuleSet  ← @/engins/renderengin
 │   │   │   │   ├── RenderEnginViewport  ← @/engins/renderengin
 │   │   │   │   ├── RenderIntent  ← @/engins/renderengin
+│   │   │   │   ├── RenderServiceIntentEnvelope  ← @/engins/renderengin
+│   │   │   │   ├── acknowledgeRenderServiceIntent  ← @/engins/renderengin
+│   │   │   │   ├── readRenderServiceQueue  ← @/engins/renderengin
+│   │   │   │   ├── subscribeRenderServiceIntents  ← @/engins/renderengin
+│   │   │   │   ├── useCallback  ← react
+│   │   │   │   ├── useEffect  ← react
 │   │   │   │   ├── useMemo  ← react
+│   │   │   │   ├── useRef  ← react
+│   │   │   │   ├── useState  ← react
+│   │   │   │   ├── → (default)
+│   │   │   │   └── ∅ unused: (default)
+│   │   │   ├── dream.RenderSurface.tsx ∅
+│   │   │   │   ├── ⬡ RenderEnginInlineSurface  ← @/engins/renderengin/RenderEnginInlineSurface
 │   │   │   │   ├── → (default)
 │   │   │   │   └── ∅ unused: (default)
 │   │   │   └── index.ts ∅
@@ -5544,6 +5556,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: (default)
 │   │   └── dream.shell.RuntimeShell.tsx ∅
 │   │       ├── isCompactRuntimeViewport  ← @/components/ui-system/runtimeViewport
+│   │       ├── readInteractiveViewportScale  ← @/components/ui-system/runtimeViewport
+│   │       ├── readInteractiveViewportWidth  ← @/components/ui-system/runtimeViewport
 │   │       ├── ApperceptiveContext  ← @/engine/runtime/apperception
 │   │       ├── → (default)
 │   │       └── ∅ unused: (default)
@@ -5781,7 +5795,10 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── runtimeViewport.ts
 │   │   │   ├── → COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH
 │   │   │   ├── → getPreferredViewportHeight
-│   │   │   └── → isCompactRuntimeViewport
+│   │   │   ├── → isCompactRuntimeViewport
+│   │   │   ├── → readInteractiveViewportHeight
+│   │   │   ├── → readInteractiveViewportScale
+│   │   │   └── → readInteractiveViewportWidth
 │   │   ├── skin-engine.ts ∅
 │   │   │   ├── → DEFAULT_SKIN
 │   │   │   ├── → SKIN_PRESETS
@@ -11473,16 +11490,25 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   │   ├── → optimiseAsset
 │   │   │   │   ├── → registryTagsForContext
 │   │   │   │   └── ∅ unused: optimiseAsset
-│   │   │   └── indexedDBStore.ts ∅
-│   │   │       ├── → checkSentinels
-│   │   │       ├── → cleanupExpiredOriginals
-│   │   │       ├── → deleteOriginal
-│   │   │       ├── → getOriginal
-│   │   │       ├── → getStorageStats
-│   │   │       ├── → hasOriginal
-│   │   │       ├── → listStoredOriginals
-│   │   │       ├── → storeOriginal
-│   │   │       └── ∅ unused: getOriginal, deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
+│   │   │   ├── indexedDBStore.ts ∅
+│   │   │   │   ├── → checkSentinels
+│   │   │   │   ├── → cleanupExpiredOriginals
+│   │   │   │   ├── → deleteOriginal
+│   │   │   │   ├── → getOriginal
+│   │   │   │   ├── → getStorageStats
+│   │   │   │   ├── → hasOriginal
+│   │   │   │   ├── → listStoredOriginals
+│   │   │   │   ├── → storeOriginal
+│   │   │   │   └── ∅ unused: deleteOriginal, checkSentinels, listStoredOriginals, cleanupExpiredOriginals, getStorageStats, hasOriginal
+│   │   │   └── localAssetLibrary.ts ∅
+│   │   │       ├── OriginalRecord  ← @/engins/contentengin/assets/indexedDBStore
+│   │   │       ├── getOriginal  ← @/engins/contentengin/assets/indexedDBStore
+│   │   │       ├── storeOriginal  ← @/engins/contentengin/assets/indexedDBStore
+│   │   │       ├── → getLocalContentAssetGlb
+│   │   │       ├── → getLocalContentAssetObjSource
+│   │   │       ├── → listLocalContentAssets
+│   │   │       ├── → saveLocalContentAsset
+│   │   │       └── ∅ unused: saveLocalContentAsset, listLocalContentAssets, getLocalContentAssetObjSource, getLocalContentAssetGlb
 │   │   ├── builders
 │   │   │   ├── geometryBuilder.ts
 │   │   │   │   ├── PartNode  ← ../assetTypes
@@ -11922,8 +11948,11 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── ImplicitAssetWorkspace.tsx ∅
 │   │   │   ├── ⬡ AssetViewport  ← @/engins/contentengin/AssetViewport
 │   │   │   ├── useImplicitAssetWorkspace  ← @/engins/contentengin/useImplicitAssetWorkspace
-│   │   │   ├── dispatchRenderHandoff  ← @/engins/renderengin
-│   │   │   ├── useRouter  ← next/navigation
+│   │   │   ├── exportOBJ  ← @/engins/isosurfaceAssetPipeline
+│   │   │   ├── RenderStage  ← @/engins/renderengin
+│   │   │   ├── createInlineRenderIntent  ← @/engins/renderengin
+│   │   │   ├── useMemo  ← react
+│   │   │   ├── useState  ← react
 │   │   │   ├── → (default)
 │   │   │   └── ∅ unused: (default)
 │   │   ├── performancePlan.ts
@@ -13263,7 +13292,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → parseGlbMesh
 │   │   │   ├── → parseObjMesh
 │   │   │   ├── → renderAssetManifestToJson
-│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh, createParsedGlbRenderAsset
+│   │   │   └── ∅ unused: parseObjMesh, parseGlbHeader, renderAssetManifestToJson, authorizeRenderAssetOperation, createContentEnginRenderHandoff, createGameEnginRenderHandoff, parseGlbMesh
 │   │   ├── benchmarkProof.ts ∅
 │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   ├── → certifyTenMillionScene
@@ -13336,7 +13365,9 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → frameStatsToPerformanceSample
 │   │   │   └── ∅ unused: createRenderPerformanceReport, frameStatsToPerformanceSample, createBenchmarkScene, evaluateRenderPerformanceGate
 │   │   ├── index.ts
-│   │   │   └── → RenderEnginViewport
+│   │   │   ├── → RenderEnginViewport
+│   │   │   ├── → RenderStage
+│   │   │   └── → createInlineRenderIntent
 │   │   ├── lighting.ts ∅
 │   │   │   ├── Vec3  ← ./core
 │   │   │   ├── v3normalize  ← ./core
@@ -13374,16 +13405,32 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createRenderPostProcessGraph
 │   │   │   ├── → executePostProcessPixel
 │   │   │   └── ∅ unused: createRenderPostProcessGraph, executePostProcessPixel
+│   │   ├── RenderEnginInlineSurface.tsx ∅
+│   │   │   ├── ⬡ RenderEnginViewport  ← ./RenderEnginViewport
+│   │   │   ├── RenderEnginRuleSet  ← ./core
+│   │   │   ├── RenderIntent  ← ./core
+│   │   │   ├── RenderServiceIntentEnvelope  ← ./serviceRuntime
+│   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useMemo  ← react
+│   │   │   ├── useState  ← react
+│   │   │   ├── → (default)
+│   │   │   └── ∅ unused: (default)
 │   │   ├── RenderEnginViewport.tsx ∅
+│   │   │   ├── ParsedRenderAsset  ← ./assets
+│   │   │   ├── createParsedGlbRenderAsset  ← ./assets
 │   │   │   ├── createParsedObjRenderAsset  ← ./assets
 │   │   │   ├── estimateRenderAssetMemory  ← ./assets
 │   │   │   ├── MeshBuffers  ← ./core
 │   │   │   ├── RenderIntent  ← ./core
+│   │   │   ├── Vec2  ← ./core
 │   │   │   ├── Vec3  ← ./core
 │   │   │   ├── composeModelMatrix  ← ./core
 │   │   │   ├── createMeshBuffers  ← ./core
+│   │   │   ├── createRenderAsset  ← ./core
 │   │   │   ├── mat4LookAt  ← ./core
 │   │   │   ├── mat4Perspective  ← ./core
+│   │   │   ├── RenderServiceIntentEnvelope  ← ./serviceRuntime
 │   │   │   ├── RenderEnginFrameStats  ← ./webgpu
 │   │   │   ├── WebGpuRenderEngin  ← ./webgpu
 │   │   │   ├── requestWebGpuDevice  ← ./webgpu
@@ -13399,6 +13446,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → createRenderQualitySettings
 │   │   │   ├── → switchRenderPreviewMode
 │   │   │   └── ∅ unused: createRenderQualitySettings, switchRenderPreviewMode
+│   │   ├── RenderStage.tsx ∅
+│   │   │   ├── ⬡ RenderEnginViewport  ← ./RenderEnginViewport
+│   │   │   ├── RenderEnginRuleSet  ← ./core
+│   │   │   ├── RenderIntent  ← ./core
+│   │   │   ├── RenderServiceIntentEnvelope  ← ./serviceRuntime
+│   │   │   ├── RenderWorkflowSurface  ← ./serviceRuntime
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── EnginRuntime  ← @/engine/engin-runtime/EnginRuntime
+│   │   │   ├── useEffect  ← react
+│   │   │   ├── useMemo  ← react
+│   │   │   ├── → (default)
+│   │   │   ├── → createInlineRenderIntent
+│   │   │   └── ∅ unused: createInlineRenderIntent, (default)
 │   │   ├── runtimeRegistration.ts
 │   │   │   ├── RENDER_ENGIN_ID  ← ./core
 │   │   │   ├── RENDER_INTENT_TYPES  ← ./core
@@ -13438,9 +13498,13 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   └── ∅ unused: authorizeRenderCapability, validateRenderAssetManifestServer
 │   │   ├── serviceIntegration.ts ∅
 │   │   │   ├── RenderIntentType  ← ./core
+│   │   │   ├── RenderServiceIntentEnvelope  ← ./serviceRuntime
+│   │   │   ├── RenderServiceSubmitResult  ← ./serviceRuntime
+│   │   │   ├── RenderWorkflowSurface  ← ./serviceRuntime
+│   │   │   ├── createRenderServiceIntent  ← ./serviceRuntime
+│   │   │   ├── routeForRenderSource  ← ./serviceRuntime
+│   │   │   ├── submitRenderServiceIntent  ← ./serviceRuntime
 │   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
-│   │   │   ├── EnginDispatcher  ← @/engine/runtime/EnginDispatcher
-│   │   │   ├── RenderDispatcherIntent  ← @/engine/runtime/EnginDispatcher
 │   │   │   ├── → RENDER_SERVICE_COMMANDS
 │   │   │   ├── → RENDER_SERVICE_HANDOFFS
 │   │   │   ├── → RENDER_SERVICE_PIPELINE
@@ -13448,7 +13512,26 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   │   ├── → dispatchRenderHandoff
 │   │   │   ├── → dispatchRenderServiceIntent
 │   │   │   ├── → getRenderHandoffForSource
-│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, createRenderServiceIntent, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff
+│   │   │   └── ∅ unused: RENDER_SERVICE_PIPELINE, RENDER_SERVICE_COMMANDS, RENDER_SERVICE_HANDOFFS, getRenderHandoffForSource, dispatchRenderServiceIntent, dispatchRenderHandoff, createRenderServiceIntent
+│   │   ├── serviceRuntime.ts ∅
+│   │   │   ├── RENDER_ENGIN_ID  ← ./core
+│   │   │   ├── RENDER_INTENT_TYPES  ← ./core
+│   │   │   ├── RenderIntentType  ← ./core
+│   │   │   ├── JsonObject  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── JsonValue  ← @/engine/engin-runtime/EnginBaseState
+│   │   │   ├── EnginDispatcher  ← @/engine/runtime/EnginDispatcher
+│   │   │   ├── RenderDispatcherIntent  ← @/engine/runtime/EnginDispatcher
+│   │   │   ├── → RENDER_SERVICE_EVENT
+│   │   │   ├── → RENDER_SERVICE_STORAGE_KEY
+│   │   │   ├── → acknowledgeRenderServiceIntent
+│   │   │   ├── → createRenderServiceIntent
+│   │   │   ├── → normalizeRenderServicePayload
+│   │   │   ├── → readRenderServiceQueue
+│   │   │   ├── → renderServicePayloadToJson
+│   │   │   ├── → routeForRenderSource
+│   │   │   ├── → submitRenderServiceIntent
+│   │   │   ├── → subscribeRenderServiceIntents
+│   │   │   └── ∅ unused: RENDER_SERVICE_EVENT, RENDER_SERVICE_STORAGE_KEY, readRenderServiceQueue, acknowledgeRenderServiceIntent, subscribeRenderServiceIntents, renderServicePayloadToJson, normalizeRenderServicePayload
 │   │   ├── textures.ts ∅
 │   │   │   ├── DomainObject  ← @/engine/engin-runtime/EnginBaseState
 │   │   │   ├── DomainVisibility  ← @/engine/engin-runtime/EnginBaseState
@@ -14416,6 +14499,8 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── isBelow  ⚠ ../ui/responsive
 │   │   ├── pickByBreakpoint  ⚠ ../ui/responsive
 │   │   ├── readViewportWidth  ⚠ ../ui/responsive
+│   │   ├── readInteractiveViewportHeight  ← @/components/ui-system/runtimeViewport
+│   │   ├── readInteractiveViewportWidth  ← @/components/ui-system/runtimeViewport
 │   │   ├── useEffect  ← react
 │   │   ├── useState  ← react
 │   │   ├── useSyncExternalStore  ← react
@@ -14966,6 +15051,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/codeengin/workspaceStore
 │           │   ├── (dynamic)  ← @/engins/contentengin/assets/assetOptimizer
 │           │   ├── (dynamic)  ← @/engins/contentengin/assets/indexedDBStore
+│           │   ├── (dynamic)  ← @/engins/contentengin/assets/localAssetLibrary
 │           │   ├── (dynamic)  ← @/engins/contentengin/assetTypes
 │           │   ├── (dynamic)  ← @/engins/contentengin/AssetViewport
 │           │   ├── (dynamic)  ← @/engins/contentengin/builders/geometryBuilder
@@ -15163,12 +15249,15 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/engins/renderengin/materials
 │           │   ├── (dynamic)  ← @/engins/renderengin/performanceIntegrity
 │           │   ├── (dynamic)  ← @/engins/renderengin/postProcessing
+│           │   ├── (dynamic)  ← @/engins/renderengin/RenderEnginInlineSurface
 │           │   ├── (dynamic)  ← @/engins/renderengin/RenderEnginViewport
 │           │   ├── (dynamic)  ← @/engins/renderengin/renderSettings
+│           │   ├── (dynamic)  ← @/engins/renderengin/RenderStage
 │           │   ├── (dynamic)  ← @/engins/renderengin/runtimeRegistration
 │           │   ├── (dynamic)  ← @/engins/renderengin/scene
 │           │   ├── (dynamic)  ← @/engins/renderengin/security
 │           │   ├── (dynamic)  ← @/engins/renderengin/serviceIntegration
+│           │   ├── (dynamic)  ← @/engins/renderengin/serviceRuntime
 │           │   ├── (dynamic)  ← @/engins/renderengin/textures
 │           │   ├── (dynamic)  ← @/engins/renderengin/viewportControls
 │           │   ├── (dynamic)  ← @/engins/renderengin/virtualization
@@ -15675,6 +15764,7 @@ Legend: ⚠ broken import  ∅ unused export
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.OptimizePanel
 │           │   ├── (dynamic)  ← @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
 │           │   ├── (dynamic)  ← @/components/engines/render/dream.RenderServiceDiagnostics
+│           │   ├── (dynamic)  ← @/components/engines/render/dream.RenderSurface
 │           │   ├── (dynamic)  ← @/components/engines/render/index
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.bar.EnginNavBar
 │           │   ├── (dynamic)  ← @/components/engines/shared/dream.EnginProvider
@@ -18810,14 +18900,19 @@ Legend: ⚠ broken import  ∅ unused export
 │   └── ∅ unused: (default)
 ├── fix-audit.js
 │   └── DatabaseIcon  ← lucide-react
-├── generate-readme.ts
-│   ├── SECTION_REGISTRY  ← ./readme-autosync
-│   ├── runReadmeAutosync  ← ./readme-autosync
+├── generate-readme.ts ⚠
+│   ├── PRODUCT_SECTIONS  ⚠ ./readme-autosync
+│   ├── buildProductReadmeSections  ⚠ ./readme-autosync
 │   ├── existsSync  ← node:fs
+│   ├── mkdirSync  ← node:fs
 │   ├── readFileSync  ← node:fs
+│   ├── readdirSync  ← node:fs
+│   ├── statSync  ← node:fs
 │   ├── writeFileSync  ← node:fs
-│   ├── resolve  ← node:path
-│   └── fileURLToPath  ← node:url
+│   ├── dirname  ← node:path
+│   ├── join  ← node:path
+│   ├── relative  ← node:path
+│   └── resolve  ← node:path
 ├── lib-index.mjs
 ├── LICENSE
 ├── next-env.d.ts
@@ -18847,40 +18942,6 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── → config
 │   ├── → proxy
 │   └── ∅ unused: proxy, config
-├── readme-autosync.ts ∅
-│   ├── existsSync  ← node:fs
-│   ├── readFileSync  ← node:fs
-│   ├── readdirSync  ← node:fs
-│   ├── statSync  ← node:fs
-│   ├── writeFileSync  ← node:fs
-│   ├── basename  ← node:path
-│   ├── extname  ← node:path
-│   ├── join  ← node:path
-│   ├── relative  ← node:path
-│   ├── resolve  ← node:path
-│   ├── fileURLToPath  ← node:url
-│   ├── ArrowFunction  ← ts-morph
-│   ├── FunctionDeclaration  ← ts-morph
-│   ├── FunctionExpression  ← ts-morph
-│   ├── Node  ← ts-morph
-│   ├── Project  ← ts-morph
-│   ├── SourceFile  ← ts-morph
-│   ├── SyntaxKind  ← ts-morph
-│   ├── → SECTION_REGISTRY
-│   ├── → analyzeComponents
-│   ├── → analyzeDependencies
-│   ├── → analyzeExports
-│   ├── → analyzeHooks
-│   ├── → analyzeImports
-│   ├── → analyzeRoutes
-│   ├── → analyzeSubsystem
-│   ├── → buildArchitecturalSectionBlock
-│   ├── → buildArchitecturalSubsectionBlock
-│   ├── → computeAffected
-│   ├── → replaceSection
-│   ├── → runReadmeAutosync
-│   ├── → upsertSubsectionInSection
-│   └── ∅ unused: analyzeExports, analyzeImports, analyzeRoutes, analyzeComponents, analyzeHooks, analyzeDependencies, analyzeSubsystem, buildArchitecturalSectionBlock, buildArchitecturalSubsectionBlock, replaceSection, upsertSubsectionInSection, computeAffected
 ├── supabaseClient.ts ∅
 │   ├── Database  ← ./types/supabase
 │   ├── createClient  ← @supabase/supabase-js
