@@ -1,4 +1,4 @@
-name: Export application code to Typst
+name: Typst
 
 on:
   workflow_dispatch:
@@ -17,7 +17,44 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v6
 
-      - name: Build Typst repo export
+      - name: Install Typst CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY' > /tmp/typst-url.txt
+          import json
+          import urllib.request
+
+          request = urllib.request.Request(
+              "https://api.github.com/repos/typst/typst/releases/latest",
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "User-Agent": "dreamengin-typst-export",
+              },
+          )
+
+          with urllib.request.urlopen(request, timeout=30) as response:
+              release = json.load(response)
+
+          for asset in release.get("assets", []):
+              name = asset.get("name", "")
+              url = asset.get("browser_download_url", "")
+              if name.endswith("x86_64-unknown-linux-musl.tar.xz") and url:
+                  print(url)
+                  break
+          else:
+              raise SystemExit("Could not find Typst Linux x86_64 release asset")
+          PY
+
+          curl -fsSL "$(cat /tmp/typst-url.txt)" -o /tmp/typst.tar.xz
+          mkdir -p /tmp/typst
+          tar -xJf /tmp/typst.tar.xz -C /tmp/typst --strip-components=1
+          sudo install -m 0755 /tmp/typst/typst /usr/local/bin/typst
+
+          typst --version
+
+      - name: Build real Typst repo export
         shell: bash
         run: |
           set -euo pipefail
@@ -26,14 +63,12 @@ jobs:
 
           python3 <<'PY'
           from pathlib import Path
+          import base64
+          import hashlib
           import subprocess
-          import re
 
           output_path = Path("repo-export/dreamengin-application-code.typ")
 
-          # Actual application-code roots.
-          # Deliberately excludes:
-          # .github, src, scripts, public, tests, docs, research, repo-visualizer, fonts, images/assets.
           allowed_dirs = {
               "app",
               "assembly",
@@ -86,6 +121,8 @@ jobs:
               ".cjs",
               ".json",
               ".css",
+              ".sql",
+              ".wasm",
           }
 
           blocked_dirs = {
@@ -93,7 +130,6 @@ jobs:
               ".github",
               "src",
               "scripts",
-              "public",
               "tests",
               "__tests__",
               "test",
@@ -121,7 +157,6 @@ jobs:
               ".m4v",
               ".avi",
               ".mkv",
-              ".wasm",
               ".map",
               ".tsbuildinfo",
               ".lock",
@@ -140,9 +175,28 @@ jobs:
               "pnpm-lock.yaml",
               "package-lock.json",
               "yarn.lock",
+              "tsconfig.test.json",
           }
 
-          def git_files():
+          language_by_extension = {
+              ".ts": "ts",
+              ".tsx": "tsx",
+              ".js": "js",
+              ".jsx": "jsx",
+              ".mjs": "js",
+              ".cjs": "js",
+              ".json": "json",
+              ".css": "css",
+              ".sql": "sql",
+              ".wasm": "txt",
+          }
+
+          public_wasm_code_paths = {
+              "public/cartridges/mad-maxi/logic/main.wasm",
+              "public/workers/engin-shader.wasm",
+          }
+
+          def git_files() -> list[str]:
               result = subprocess.run(
                   ["git", "ls-files"],
                   check=True,
@@ -151,11 +205,16 @@ jobs:
               )
               return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
+          def is_public_wasm_code(path_string: str) -> bool:
+              normalized = path_string.replace("\\", "/")
+              return normalized in public_wasm_code_paths
+
           def is_allowed(path_string: str) -> bool:
               path = Path(path_string)
               parts = path.parts
               name = path.name
               suffix = path.suffix.lower()
+              lower_path = path_string.lower()
 
               if not parts:
                   return False
@@ -163,18 +222,23 @@ jobs:
               if name in blocked_exact_names:
                   return False
 
-              if any(part in blocked_dirs for part in parts):
-                  return False
-
-              lower_path = path_string.lower()
-
-              if any(lower_path.endswith(suffix) for suffix in blocked_suffixes):
-                  return False
-
               if any(pattern in name for pattern in blocked_name_patterns):
                   return False
 
+              if any(lower_path.endswith(blocked) for blocked in blocked_suffixes):
+                  return False
+
               if suffix not in allowed_extensions:
+                  return False
+
+              # Public is normally blocked, but DREAMengin stores real runtime/cartridge WASM there.
+              if is_public_wasm_code(path_string):
+                  return True
+
+              if "public" in parts:
+                  return False
+
+              if any(part in blocked_dirs for part in parts):
                   return False
 
               if len(parts) == 1:
@@ -182,73 +246,213 @@ jobs:
 
               return parts[0] in allowed_dirs
 
-          def read_text(path: Path) -> str | None:
+          def typst_string(value: str) -> str:
+              escaped: list[str] = []
+
+              for char in value:
+                  code = ord(char)
+
+                  if char == "\\":
+                      escaped.append("\\\\")
+                  elif char == '"':
+                      escaped.append('\\"')
+                  elif char == "\n":
+                      escaped.append("\\n")
+                  elif char == "\r":
+                      escaped.append("\\r")
+                  elif char == "\t":
+                      escaped.append("\\t")
+                  elif code < 32 or code == 127:
+                      escaped.append("�")
+                  else:
+                      escaped.append(char)
+
+              return '"' + "".join(escaped) + '"'
+
+          def read_u32(data: bytes, index: int) -> tuple[int, int]:
+              result = 0
+              shift = 0
+
+              while True:
+                  byte = data[index]
+                  index += 1
+                  result |= (byte & 0x7F) << shift
+
+                  if (byte & 0x80) == 0:
+                      break
+
+                  shift += 7
+
+              return result, index
+
+          def read_name(data: bytes, index: int) -> tuple[str, int]:
+              length, index = read_u32(data, index)
+              value = data[index:index + length].decode("utf-8", errors="replace")
+              return value, index + length
+
+          def wasm_exports(data: bytes) -> list[str]:
+              if len(data) < 8 or data[:4] != b"\x00asm":
+                  return []
+
+              index = 8
+              exports: list[str] = []
+
+              while index < len(data):
+                  section_id = data[index]
+                  index += 1
+                  section_size, index = read_u32(data, index)
+                  section_start = index
+                  section_end = section_start + section_size
+
+                  if section_id == 7:
+                      count, cursor = read_u32(data, section_start)
+
+                      for _ in range(count):
+                          name, cursor = read_name(data, cursor)
+                          kind = data[cursor]
+                          cursor += 1
+                          _, cursor = read_u32(data, cursor)
+
+                          kind_label = {
+                              0: "func",
+                              1: "table",
+                              2: "memory",
+                              3: "global",
+                          }.get(kind, f"kind-{kind}")
+
+                          exports.append(f"{name} ({kind_label})")
+
+                  index = section_end
+
+              return exports
+
+          def read_file_for_export(path: Path) -> tuple[str, str] | None:
               try:
                   data = path.read_bytes()
               except OSError:
                   return None
 
+              suffix = path.suffix.lower()
+
+              if suffix == ".wasm":
+                  digest = hashlib.sha256(data).hexdigest()
+                  encoded = base64.b64encode(data).decode("ascii")
+                  exports = wasm_exports(data)
+
+                  body_lines = [
+                      "WASM binary artifact",
+                      f"Path: {path.as_posix()}",
+                      f"Bytes: {len(data)}",
+                      f"SHA256: {digest}",
+                      "",
+                      "Exports:",
+                  ]
+
+                  if exports:
+                      body_lines.extend(f"- {export}" for export in exports)
+                  else:
+                      body_lines.append("- none detected")
+
+                  body_lines.extend([
+                      "",
+                      "Base64:",
+                      encoded,
+                      "",
+                  ])
+
+                  return "txt", "\n".join(body_lines)
+
               if b"\x00" in data:
                   return None
 
               try:
-                  return data.decode("utf-8")
+                  text = data.decode("utf-8")
               except UnicodeDecodeError:
-                  return data.decode("utf-8", errors="replace")
+                  text = data.decode("utf-8", errors="replace")
 
-          def typst_escape_text(value: str) -> str:
-              return value.replace("\\", "\\\\").replace('"', '\\"')
-
-          def raw_fence_for(content: str) -> str:
-              runs = re.findall(r"`+", content)
-              max_run = max((len(run) for run in runs), default=2)
-              return "`" * max(3, max_run + 1)
+              return language_by_extension.get(suffix, ""), text
 
           files = sorted(path for path in git_files() if is_allowed(path))
 
+          written_files = 0
+          written_lines = 0
+          written_wasm = 0
+
           with output_path.open("w", encoding="utf-8", newline="\n") as out:
               out.write('#set document(title: "DREAMengin Application Code Export")\n')
-              out.write('#set text(size: 8pt)\n')
-              out.write('#set page(margin: 0.55in)\n\n')
+              out.write('#set page(margin: 0.45in)\n')
+              out.write('#set text(size: 7pt)\n')
+              out.write('#show raw: set text(size: 5.5pt)\n')
+              out.write('#show heading.where(level: 1): set text(size: 16pt, weight: "bold")\n')
+              out.write('#show heading.where(level: 2): set text(size: 9pt, weight: "bold")\n\n')
+
+              out.write('#let source-file(path, language, body) = [\n')
+              out.write('  == #raw(path)\n')
+              out.write('  #raw(body, lang: language, block: true)\n')
+              out.write(']\n\n')
+
               out.write("= DREAMengin Application Code Export\n\n")
-              out.write(f"Generated from tracked repository files only. Files included: {len(files)}.\n\n")
-              out.write("Excluded: `.github/`, `src/`, `scripts/`, `public/`, tests, Markdown, images, video, lockfiles, generated build metadata, and non-code assets.\n\n")
-              out.write("= File Index\n\n")
-
-              for file_path in files:
-                  out.write(f"- `{typst_escape_text(file_path)}`\n")
-
-              out.write("\n#pagebreak()\n\n")
-              out.write("= Files\n\n")
+              out.write(f"Generated from tracked application-code files only. Included files: {len(files)}.\n\n")
+              out.write("Excluded: `.github/`, `src/`, `scripts/`, tests, Markdown, images, video, lockfiles, generated build metadata, docs, research, repo visualizer, fonts, and non-code assets.\n\n")
+              out.write("Public folder exception: only known DREAMengin runtime/cartridge `.wasm` modules are included as binary artifact sections.\n\n")
+              out.write("#pagebreak()\n\n")
 
               for file_path in files:
                   path = Path(file_path)
-                  content = read_text(path)
+                  file_export = read_file_for_export(path)
 
-                  if content is None:
+                  if file_export is None:
                       continue
 
-                  out.write(f"== `{typst_escape_text(file_path)}`\n\n")
-                  fence = raw_fence_for(content)
-                  out.write(f"{fence}\n")
-                  out.write(content)
-                  if content and not content.endswith("\n"):
-                      out.write("\n")
-                  out.write(f"{fence}\n\n")
+                  language, content = file_export
+
+                  out.write(
+                      "#source-file("
+                      + typst_string(file_path)
+                      + ", "
+                      + typst_string(language)
+                      + ", "
+                      + typst_string(content)
+                      + ")\n\n"
+                  )
+
+                  written_files += 1
+                  written_lines += content.count("\n") + (0 if content.endswith("\n") else 1)
+
+                  if path.suffix.lower() == ".wasm":
+                      written_wasm += 1
 
           print(f"Wrote {output_path}")
-          print(f"Included files: {len(files)}")
+          print(f"Included files: {written_files}")
+          print(f"Included lines/artifact lines: {written_lines}")
+          print(f"Included WASM artifacts: {written_wasm}")
+
+          if written_wasm == 0:
+              raise SystemExit("No WASM artifacts were included; expected DREAMengin runtime WASM files")
           PY
+
+      - name: Compile Typst export to PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          typst compile \
+            repo-export/dreamengin-application-code.typ \
+            repo-export/dreamengin-application-code.pdf
 
       - name: Show export summary
         shell: bash
         run: |
           wc -l repo-export/dreamengin-application-code.typ
           du -h repo-export/dreamengin-application-code.typ
+          du -h repo-export/dreamengin-application-code.pdf
+          ls -lh repo-export
 
       - name: Upload Typst export
         uses: actions/upload-artifact@v7
         with:
           name: dreamengin-application-code-typst
-          path: repo-export/dreamengin-application-code.typ
+          path: |
+            repo-export/dreamengin-application-code.typ
+            repo-export/dreamengin-application-code.pdf
           if-no-files-found: error
