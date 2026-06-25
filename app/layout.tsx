@@ -3,7 +3,6 @@ import '@/styles/view-transitions.css';
 import '@/styles/dream-shell.css';
 import CommandPaletteMount from '@/components/dream.CommandPaletteMount';
 import GlobalOverlays from '@/components/dream.GlobalOverlays';
-import FirstTouchActivator from '@/components/dream.FirstTouchActivator';
 import ThemeApplicator from '@/components/dream.ThemeApplicator';
 import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
 import GodTierProvider from '@/components/providers/dream.GodTierProvider';
@@ -80,7 +79,6 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
       >
         <ThemeProvider>
           <ThemeApplicator />
-          <FirstTouchActivator />
           <Suspense><GodTierProvider /></Suspense>
           <OSProvider>
             <CustomizeModeProvider>

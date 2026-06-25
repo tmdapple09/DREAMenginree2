@@ -85,7 +85,7 @@ function buildRepurposeOutputs(content: string): RepurposeOutput[] {
   const hook = snippet.length > 60 ? snippet.slice(0, 60) + '…' : snippet;
   return [
     { platform: 'Twitter / X',       format: 'Tweet Thread',       text: `🧵 Thread: ${hook}\n\n1/ ${snippet}\n\n2/ Key takeaway: [insight]\n\n3/ Why it matters: [impact]\n\n4/ How to start: [first step]\n\nFollow for more 🔁` },
-    { platform: 'Instagram',          format: 'Caption',            text: `✨ ${hook}\n\nTap if you agree 🔥\n\n#DREAMengin #ContentCreator #CreateDaily` },
+    { platform: 'Instagram',          format: 'Caption',            text: `✨ ${hook}\n\nDouble tap if you agree 🔥\n\n#DREAMengin #ContentCreator #CreateDaily` },
     { platform: 'LinkedIn',           format: 'Professional Post',  text: `📌 ${hook}\n\nHere's what most people miss:\n\n→ [Key point 1]\n→ [Key point 2]\n→ [Key point 3]\n\nWhat's your take? Drop a comment below.` },
     { platform: 'TikTok',             format: 'Script Hook',        text: `POV: ${hook} [Hold for 3s] Let me explain… [cut to explanation] Save this for later!` },
     { platform: 'Instagram Reels',    format: 'Reel Hook',          text: `🎬 Hook: "${hook}" — [B-roll transition] — [Insight] — [CTA: follow for more]` },

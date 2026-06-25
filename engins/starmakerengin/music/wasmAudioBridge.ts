@@ -91,10 +91,9 @@ async function loadWasmModule(): Promise<EnginWasmExports | null> {
 
     const arrayBuffer = await response.arrayBuffer();
 
-    // Allocate enough imported linear memory for audio buffers.
-    // The shared flag matches the runtime shader WASM build so one module can
-    // serve worker physics, RenderEngin prep and StarMaker DSP.
-    const memory = new WebAssembly.Memory({ initial: 16, maximum: 64, shared: true });
+    // Allocate enough linear memory for audio buffers.
+    // 16 pages = 1 MB — sufficient for several seconds of stereo 44.1 kHz audio.
+    const memory = new WebAssembly.Memory({ initial: 16, maximum: 64 });
 
     const { instance } = await WebAssembly.instantiate(arrayBuffer, {
       env: {
@@ -103,23 +102,7 @@ async function loadWasmModule(): Promise<EnginWasmExports | null> {
       },
     });
 
-    const exports = instance.exports as any as EnginWasmExports;
-
-    if (exports.memory && exports.memory !== memory) {
-      console.warn(
-        '[WasmAudioBridge] Wasm binary did not import the bridge memory. Falling back to JS audio processing.',
-      );
-      cachedExports = null;
-      return null;
-    }
-
-    if (typeof exports.processAudioBufferSIMD !== 'function') {
-      console.warn('[WasmAudioBridge] Wasm binary is missing processAudioBufferSIMD. Falling back to JS audio processing.');
-      cachedExports = null;
-      return null;
-    }
-
-    cachedExports = exports;
+    cachedExports = instance.exports as any as EnginWasmExports;
     return cachedExports;
   } catch {
     return null;

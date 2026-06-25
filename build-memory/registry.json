@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-25T16:30:22.442Z",
+  "generatedAt": "2026-06-25T07:33:28.291Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 302,
+    "surface": 301,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 269,
+    "engin": 268,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -19,7 +19,7 @@
     "migration": 60,
     "memory": 6,
     "dr-eams-tool": 26,
-    "hook": 13,
+    "hook": 12,
     "engine-system": 0,
     "engine-utility": 0
   },
@@ -2967,15 +2967,6 @@
       "id": "components/dream.FeedCard",
       "slot": "surface",
       "path": "components/dream.FeedCard.tsx",
-      "engine": "Universal",
-      "exports": [
-        "default"
-      ]
-    },
-    {
-      "id": "components/dream.FirstTouchActivator",
-      "slot": "surface",
-      "path": "components/dream.FirstTouchActivator.tsx",
       "engine": "Universal",
       "exports": [
         "default"
@@ -6414,9 +6405,9 @@
       ]
     },
     {
-      "id": "engins/CodeEngin/core/parser",
+      "id": "engins/codeengin-ui/core/parser",
       "slot": "engin",
-      "path": "engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
       "engine": "CodeEngin",
       "exports": [
         "parseCode",
@@ -6496,18 +6487,18 @@
       "exports": []
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "engine": "CodeEngin",
       "exports": [
         "AgentPanel"
       ]
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/index",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/index",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "engine": "CodeEngin",
       "exports": [
         "AgentPanel",
@@ -6515,9 +6506,9 @@
       ]
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "engine": "CodeEngin",
       "exports": [
         "AgentMessage",
@@ -6526,9 +6517,9 @@
       ]
     },
     {
-      "id": "engins/CodeEngin/orchestrator/dream.index",
+      "id": "engins/codeengin-ui/orchestrator/dream.index",
       "slot": "engin",
-      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
+      "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
       "engine": "CodeEngin",
       "exports": [
         "default"
@@ -9802,21 +9793,6 @@
       ]
     },
     {
-      "id": "engins/renderengin/wasmAcceleration",
-      "slot": "engin",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "engine": "Universal",
-      "exports": [
-        "computeRenderMeshBounds",
-        "fallbackRenderMeshBounds",
-        "getActiveRenderWasmAcceleration",
-        "RenderMeshBounds",
-        "RenderWasmAcceleration",
-        "RenderWasmAccelerationExports",
-        "resetRenderWasmAccelerationForTesting"
-      ]
-    },
-    {
       "id": "engins/renderengin/webgpu",
       "slot": "engin",
       "path": "engins/renderengin/webgpu.ts",
@@ -10390,17 +10366,6 @@
       "engine": "Universal",
       "exports": [
         "useAccount"
-      ]
-    },
-    {
-      "id": "hooks/useAppIntentPressureSurface",
-      "slot": "hook",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "engine": "Universal",
-      "exports": [
-        "AppIntentPressureSurfaceOptions",
-        "applyIntentPressureToElement",
-        "useAppIntentPressureSurface"
       ]
     },
     {

@@ -28,10 +28,12 @@ import {
     decideBarRelease,
     DEFAULT_SPLIT_RATIO,
     DIVIDER_H,
+    DOUBLE_TAP_WINDOW_MS,
     DRAG_TAP_THRESHOLD_PX,
     GOLD_LONG_PRESS_MS,
     ORB_TAP_SLOP as ORB_TAP_SLOP_CONST,
     QUICK_REACTIONS,
+    resolveGoldTapAction,
     rhythmToHandleScale,
     shouldCollapseTopExpandedDrag,
     snapSplitRatioOnRelease,
@@ -188,12 +190,12 @@ interface DreamDMBarProps {
   onSplitChange?: (ratio: number) => void;
   /** Reports whether the DreamDM Bar is hidden so the host can hide DreamSpace with it. */
   onMinimizedChange?: (isMinimized: boolean) => void;
-  /** Optional host-provided runtime swap action. Not bound to hidden multi-tap gestures. */
+  /** Double-tap/hold gesture: swap HomeDream and DreamSpace Dream surfaces. */
   onSwapRuntimes?: () => void;
 }
 
 // Main component
-export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntimeBlendChange, onBarInsets, splitRatio, onSplitChange, onMinimizedChange, onSwapRuntimes: _onSwapRuntimes }: DreamDMBarProps) {
+export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntimeBlendChange, onBarInsets, splitRatio, onSplitChange, onMinimizedChange, onSwapRuntimes }: DreamDMBarProps) {
   const isGameImmersive = useImmersiveGameLayout();
   /** Gold Particle diameter — shrinks when a game overlay is active so it stays out of the way */
   const goldSz = isGameImmersive ? 36 : GOLD_SZ;
@@ -253,25 +255,37 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const [slideDown, setSlideDown] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Whole-bar touch drag: startY, startTarget, didDrag
+  // Whole-bar touch drag: startY, startTarget, didDrag, tapCount, tapTimer
   const barTouchRef = useRef<{
     active: boolean;
     startY: number;
     startTarget: EventTarget | null;
     didDrag: boolean;
+    lastTapAt: number;
+    tapTimer: ReturnType<typeof setTimeout> | null;
     textareaFocused: boolean;
     touchStartedInTextarea: boolean;
   }>({
     active: false, startY: 0, startTarget: null, didDrag: false,
-    textareaFocused: false, touchStartedInTextarea: false,
+    lastTapAt: 0, tapTimer: null, textareaFocused: false, touchStartedInTextarea: false,
   });
+  const swapGestureRef = useRef<{ lastTapAt: number; timer: ReturnType<typeof setTimeout> | null; queued: boolean }>({
+    lastTapAt: 0,
+    timer: null,
+    queued: false,
+  });
+
   const [firstTimeLight, setFirstTimeLight] = useState(false);
   const [lightTooltip, setLightTooltip] = useState<string | null>(null);
   const lightTooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lightPressRef = useRef<{
+    lastTapAt: number;
+    tapTimer: ReturnType<typeof setTimeout> | null;
     holdTimer: ReturnType<typeof setTimeout> | null;
     holdFired: boolean;
   }>({
+    lastTapAt: 0,
+    tapTimer: null,
     holdTimer: null,
     holdFired: false,
   });
@@ -570,6 +584,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const { barIntent, setBarIntent, clearBarIntent, openDrEams, openInDominant } = useDreamSystem();
   const barCtx = useDreamBarContext(barIntent.mode, barIntent.targetLabel);
   const dividerModeActive = typeof splitRatio === 'number' && typeof onSplitChange === 'function';
+  const [expandTapCount, setExpandTapCount] = useState(0);
+
   const [mounted,        setMounted]        = useState(false);
   const [composeFocused, setComposeFocused] = useState(false);
   // Bloom: true when the input overlay is open in seam / divider mode.
@@ -596,6 +612,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   useEffect(() => {
     return () => {
       const ref = lightPressRef.current;
+      if (ref.tapTimer) clearTimeout(ref.tapTimer);
       if (ref.holdTimer) clearTimeout(ref.holdTimer);
     };
   }, []);
@@ -617,13 +634,26 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (target.closest('[data-de-overlay]')) return;
     const isInTextarea = target.tagName === 'TEXTAREA' || target.closest('textarea') !== null;
     const ref = barTouchRef.current;
+    const now = Date.now();
+    if (onSwapRuntimes && now - swapGestureRef.current.lastTapAt < 320 && !swapGestureRef.current.queued) {
+      swapGestureRef.current.queued = true;
+      if (swapGestureRef.current.timer) clearTimeout(swapGestureRef.current.timer);
+      swapGestureRef.current.timer = setTimeout(() => {
+        onSwapRuntimes();
+        swapGestureRef.current.timer = null;
+        window.setTimeout(() => {
+          swapGestureRef.current.queued = false;
+        }, 500);
+      }, 420);
+    }
+    swapGestureRef.current.lastTapAt = now;
     ref.active = true;
     ref.startY = touch.clientY;
     ref.startTarget = e.target;
     ref.didDrag = false;
     ref.textareaFocused = composeFocused;
     ref.touchStartedInTextarea = isInTextarea;
-  }, [revealBar, composeFocused]);
+  }, [revealBar, composeFocused, onSwapRuntimes]);
 
   const handleBarTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const ref = barTouchRef.current;
@@ -710,7 +740,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     openDreamDMCommandDock();
   }, [openDreamDMCommandDock, pendingCommandDockOpen]);
 
-  // First touch/click opens the DreamDM command dock. Hold still opens message input.
+  // Double tap opens the DreamDM command dock; tap-and-hold reveals message input.
 
   const handleLightTap = useCallback(() => {
     const ref = lightPressRef.current;
@@ -718,8 +748,19 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       ref.holdFired = false;
       return;
     }
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(4);
-    openDreamDMCommandDock();
+    const now = Date.now();
+    const result = resolveGoldTapAction(ref.lastTapAt, now);
+    ref.lastTapAt = result.nextLastTapAt;
+    if (ref.tapTimer) clearTimeout(ref.tapTimer);
+    if (result.action === 'menu') {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(4);
+      openDreamDMCommandDock();
+      return;
+    }
+    ref.tapTimer = setTimeout(() => {
+      ref.lastTapAt = 0;
+      ref.tapTimer = null;
+    }, DOUBLE_TAP_WINDOW_MS);
   }, [openDreamDMCommandDock]);
 
   const handleLightTouchStart = useCallback((_e: React.TouchEvent<HTMLSpanElement>) => {
@@ -728,6 +769,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (ref.holdTimer) clearTimeout(ref.holdTimer);
     ref.holdTimer = setTimeout(() => {
       ref.holdFired = true;
+      ref.lastTapAt = 0;
+      if (ref.tapTimer) {
+        clearTimeout(ref.tapTimer);
+        ref.tapTimer = null;
+      }
       openDreamDMInput();
     }, GOLD_LONG_PRESS_MS);
   }, [openDreamDMInput]);
@@ -781,6 +827,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   const closeToParticleLine = useCallback(() => {
     setIsBloom(false);
+    setExpandTapCount(0);
     clearBarIntent();
     setQuickDraft('');
     setQuickDraftFiles([]);
@@ -829,16 +876,22 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   }, [closeToParticleLine, dividerModeActive, minimizeDreamDMBar, onSplitChange, openDreamDMCommandDock, revealBar, screenH, splitRatio]);
 
   const handleExpandButtonClick = useCallback(() => {
-    if (dividerModeActive) {
-      openDreamDMInput();
+    if (expandTapCount === 0) {
+      setExpandTapCount(1);
+      if (dividerModeActive) {
+        openDreamDMInput();
+      } else {
+        revealBar();
+        setDragH((h) => Math.max(h, 280));
+        setIsTop(false);
+        setIsTopExpanded(false);
+        setSlideDown(0);
+      }
       return;
     }
-    revealBar();
-    setDragH((h) => Math.max(h, 280));
-    setIsTop(false);
-    setIsTopExpanded(false);
-    setSlideDown(0);
-  }, [dividerModeActive, openDreamDMInput, revealBar]);
+    openDrEams();
+    setExpandTapCount(0);
+  }, [dividerModeActive, expandTapCount, openDrEams, openDreamDMInput, revealBar]);
 
   const { conversations, reload: reloadConvs } = useDreamDMConversations(userId);
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useLiveNotifications();
@@ -2006,7 +2059,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 onTouchEnd={handleLightTouchEnd}
                 onClick={handleLightClick}
                 onKeyDown={handleLightKeyDown}
-                aria-label="DreamDM seam — tap for menu, hold for input, drag to resize"
+                aria-label="DreamDM seam — double tap or hold for input, drag to resize"
               />
             </div>
           </div>
@@ -2119,14 +2172,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   </button>
                   <button
                     type="button"
-                    aria-label="Expand DreamDM bar"
+                    aria-label={expandTapCount === 0 ? 'Expand DreamDM bar' : 'Open Dr. Eams window'}
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={handleExpandButtonClick}
                     style={{
-                      background: 'rgba(200,152,26,0.15)',
+                      background: expandTapCount === 0 ? 'rgba(200,152,26,0.15)' : 'rgba(42,138,184,0.18)',
                       border: 'none', borderRadius: 8,
                       width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer', color: 'var(--de-gold)',
+                      cursor: 'pointer', color: expandTapCount === 0 ? 'var(--de-gold)' : 'var(--de-blue)',
                       transition: 'background 0.18s',
                     }}
                   >
@@ -2241,23 +2294,23 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 {/* Spacer pushes mode buttons to the right */}
                 <div style={{ flex: 1 }} />
 
-                {/* Expand button: single press grows the bar/input. Dr. Eams stays on its own button. */}
+                {/* Expand button: first press grows the bar/input, second opens Dr. Eams */}
                 <button
                   type="button"
-                  aria-label="Expand DreamDM bar"
-                  title="Expand"
+                  aria-label={expandTapCount === 0 ? 'Expand DreamDM bar' : 'Open Dr. Eams window'}
+                  title={expandTapCount === 0 ? 'Expand' : 'Dr. Eams'}
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={handleExpandButtonClick}
                   style={{
                     flexShrink: 0,
-                    background: 'rgba(200,152,26,0.14)',
-                    border: '1px solid rgba(200,152,26,0.24)',
+                    background: expandTapCount === 0 ? 'rgba(200,152,26,0.14)' : 'rgba(42,138,184,0.18)',
+                    border: expandTapCount === 0 ? '1px solid rgba(200,152,26,0.24)' : '1px solid rgba(42,138,184,0.26)',
                     borderRadius: '50%',
                     width: isCompactViewport ? 36 : 32,
                     height: isCompactViewport ? 36 : 32,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer',
-                    color: 'var(--de-gold)',
+                    color: expandTapCount === 0 ? 'var(--de-gold)' : 'var(--de-blue)',
                     transition: 'all 0.18s',
                     WebkitTapHighlightColor: 'transparent',
                   }}

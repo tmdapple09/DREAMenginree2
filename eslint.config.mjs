@@ -65,8 +65,10 @@ const eslintConfig = [
     },
   },
   {
-    // Tap discipline: single-tap is the system-wide affordance. New code must
-    // use first-tap handlers instead of `onDoubleClick` / `onDblClick`.
+    // Tap discipline (2026-04): single-tap is the system-wide affordance.
+    // The only sanctioned double-tap site is the home particle / light, via
+    // `useHomeParticleTap` from `lib/hooks/useTap.ts`. New code must use
+    // `useTap` (single-tap) instead of `onDoubleClick` / `onDblClick`.
     //
     // Gameplay primitives inside cartridges (e.g. controller mapping,
     // sprint detectors) are exempt: those files live under
@@ -86,12 +88,12 @@ const eslintConfig = [
         {
           selector: "JSXAttribute[name.name='onDoubleClick']",
           message:
-            "Double-click is blocked for DREAMengin UI. Use a first-tap handler instead.",
+            "Double-click is reserved for the home particle. Use the `useTap` hook from lib/hooks/useTap.ts (single-tap) instead. The only sanctioned double-tap site uses `useHomeParticleTap` and lives in the DreamDM bar.",
         },
         {
           selector: "JSXAttribute[name.name='onDblClick']",
           message:
-            "Double-click is blocked for DREAMengin UI. Use a first-tap handler instead.",
+            "Double-click is reserved for the home particle. Use the `useTap` hook from lib/hooks/useTap.ts (single-tap) instead.",
         },
       ],
     },

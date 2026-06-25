@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T16:29:55.947Z
+Generated: 2026-06-25T17:29:28.375Z
 
 Legend: ! unresolved import  unused export
 
@@ -2506,7 +2506,6 @@ Legend: ! unresolved import  unused export
 |   |   +-- (side-effect)  <- @/styles/dream-shell.css
 |   |   +-- (default)  <- @/components/dream.CommandPaletteMount
 |   |   +-- (default)  <- @/components/dream.GlobalOverlays
-|   |   +-- (default)  <- @/components/dream.FirstTouchActivator
 |   |   +-- (default)  <- @/components/dream.ThemeApplicator
 |   |   +-- (default)  <- @/components/gameengin/dream.CartridgeRegistryBootstrap
 |   |   +-- (default)  <- @/components/providers/dream.GodTierProvider
@@ -2546,12 +2545,10 @@ Legend: ! unresolved import  unused export
 |   |   +-- -> reset
 |   |   `-- unused unused: QUEUE_SIZE, dequeue, enqueue, reset
 |   +-- index.ts unused
-|   |   +-- -> computeBounds3F32
 |   |   +-- -> hashBytesFNV1A
 |   |   +-- -> processAudioBufferSIMD
 |   |   +-- -> shapeGlowFieldSIMD
-|   |   +-- -> shapeIntentPressureFieldSIMD
-|   |   `-- unused unused: computeBounds3F32, hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD, shapeIntentPressureFieldSIMD
+|   |   `-- unused unused: hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD
 |   `-- mad-maxi-player.ts unused
 |       +-- -> getCoyoteTimer
 |       +-- -> getDashTimer
@@ -4313,9 +4310,10 @@ const SESSION_SEED: number =
 |   |   |   +-- (dynamic import)  <- @/engins/engin.StarMakerEngin
 |   |   |   `-- -> (default)
 |   |   `-- dream.shell.RuntimeShell.tsx
+|   |       +-- isCompactRuntimeViewport, readInteractiveViewportScale, readInteractiveViewportWidth  <- @/components/ui-system/runtimeViewport
 |   |       +-- ApperceptiveContext  <- @/engine/runtime/apperception
 |   |       +-- (default)  <- react
-|   |       +-- useCallback, useEffect, useMemo, useRef, useState  <- react
+|   |       +-- useCallback, useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- shaders
 |   |   +-- dream.LightningWing.tsx unused
@@ -4505,14 +4503,13 @@ const SESSION_SEED: number =
 |   |   |   +-- -> isBelow
 |   |   |   +-- -> pickByBreakpoint
 |   |   |   `-- -> readViewportWidth
-|   |   +-- runtimeViewport.ts unused
+|   |   +-- runtimeViewport.ts
 |   |   |   +-- *  <- ./responsive
 |   |   |   +-- -> getPreferredViewportHeight
 |   |   |   +-- -> isCompactRuntimeViewport
 |   |   |   +-- -> readInteractiveViewportHeight
 |   |   |   +-- -> readInteractiveViewportScale
-|   |   |   +-- -> readInteractiveViewportWidth
-|   |   |   `-- unused unused: readInteractiveViewportScale
+|   |   |   `-- -> readInteractiveViewportWidth
 |   |   +-- skin-engine.ts unused
 |   |   |   +-- -> AllPageSkins
 |   |   |   +-- -> DEFAULT_SKIN
@@ -4794,9 +4791,6 @@ const SESSION_SEED: number =
 |   |   +-- memo, useEffect, useMemo, useRef, useState  <- react
 |   |   +-- -> (default)
 |   |   `-- unused unused: (default)
-|   +-- dream.FirstTouchActivator.tsx
-|   |   +-- useEffect  <- react
-|   |   `-- -> (default)
 |   +-- dream.ForgeDreamCanvas.tsx unused
 |   |   +-- useCallback, useEffect, useRef, useState, MouseEvent  <- react
 |   |   +-- ALL_CATEGORIES, getByCategory, AtomicComponent, ComponentCategory  <- @/engins/forgeengin/componentInventory
@@ -5608,7 +5602,6 @@ const SESSION_SEED: number =
 |   |       `-- unused unused: DEFAULT_WORLD_FOCUS, HomeData, RuntimeCallbacks, WorldFocusState
 |   +-- dream.GlowingLight.tsx unused
 |   |   +-- CSSProperties, KeyboardEvent, MouseEvent, TouchEvent  <- react
-|   |   +-- useAppIntentPressureSurface  <- @/hooks/useAppIntentPressureSurface
 |   |   +-- -> (default)
 |   |   +-- -> GlowingLightProps
 |   |   `-- unused unused: GlowingLightProps
@@ -5619,7 +5612,7 @@ const SESSION_SEED: number =
 |       +-- useCallback, useEffect, useRef, useState  <- react
 |       +-- (default)  <- @/components/ui/dream.DreamWord
 |       +-- (default)  <- @/dreamdmbar/dream.GlowingLight
-|       +-- calculatePointerVelocity, computeTypingRhythm, decideBarRelease, DEFAULT_SPLIT_RATIO, DIVIDER_H, DRAG_TAP_THRESHOLD_PX, GOLD_LONG_PRESS_MS, ORB_TAP_SLOP, QUICK_REACTIONS, rhythmToHandleScale, shouldCollapseTopExpandedDrag, snapSplitRatioOnRelease, SPLIT_RATIO_MAX, SPLIT_RATIO_MIN, SURFACE_ACCENT_COLORS, Particle, SurfaceAccent  <- @/dreamdmbar/runtime/barInteractions
+|       +-- calculatePointerVelocity, computeTypingRhythm, decideBarRelease, DEFAULT_SPLIT_RATIO, DIVIDER_H, DOUBLE_TAP_WINDOW_MS, DRAG_TAP_THRESHOLD_PX, GOLD_LONG_PRESS_MS, ORB_TAP_SLOP, QUICK_REACTIONS, resolveGoldTapAction, rhythmToHandleScale, shouldCollapseTopExpandedDrag, snapSplitRatioOnRelease, SPLIT_RATIO_MAX, SPLIT_RATIO_MIN, SURFACE_ACCENT_COLORS, Particle, SurfaceAccent  <- @/dreamdmbar/runtime/barInteractions
 |       +-- useDreamSystem, BarIntentMode  <- @/dreamdmbar/runtime/DreamSystemContext
 |       +-- useDreamBarContext, DreamBarContext  <- @/dreamdmbar/hooks/useDreamBarContext
 |       +-- useDreamDMConversations, DMConversation  <- @/dreamdmbar/hooks/useDreamDMConversations
@@ -7547,16 +7540,6 @@ const SESSION_SEED: number =
 |   |       +-- -> SessionIntelligence
 |   |       +-- -> useSessionIntelligence
 |   |       `-- unused unused: PATTERN_MATRIX_LS_KEY, SessionIntelligence
-|   +-- intent
-|   |   `-- appIntentPressure.ts unused
-|   |       +-- -> AppIntentMassState
-|   |       +-- -> AppIntentPoint
-|   |       +-- -> AppIntentPressure
-|   |       +-- -> AppIntentPressureField
-|   |       +-- -> AppIntentPressureFieldOptions
-|   |       +-- -> AppIntentPressureSource
-|   |       +-- -> appIntentPressureFromElementPoint
-|   |       `-- unused unused: AppIntentPressure, AppIntentPressureFieldOptions
 |   +-- journey
 |   |   +-- journeyDots.ts
 |   |   |   +-- LogJourneyDotInput  <- @/types/journey
@@ -9632,7 +9615,7 @@ const SESSION_SEED: number =
 |   |   |   `-- unused unused: CodeEnginAuthenticatedUser
 |   |   +-- diagnostics.ts
 |   |   |   +-- (default)  <- path
-|   |   |   +-- parseCode  <- @/engins/CodeEngin/core/parser
+|   |   |   +-- parseCode  <- @/engins/codeengin-ui/core/parser
 |   |   |   +-- listEditableFiles, readProjectFile  <- ./workspaceStore
 |   |   |   +-- CodeEnginDiagnostic  <- ./types
 |   |   |   +-- -> diagnoseFile
@@ -9657,7 +9640,7 @@ const SESSION_SEED: number =
 |   |   |   `-- unused unused: CODEENGIN_ALLOWED_EXTENSIONS
 |   |   +-- projectGraph.ts unused
 |   |   |   +-- (default)  <- path
-|   |   |   +-- parseCode  <- @/engins/CodeEngin/core/parser
+|   |   |   +-- parseCode  <- @/engins/codeengin-ui/core/parser
 |   |   |   +-- readProjectFile, listEditableFiles  <- ./workspaceStore
 |   |   |   +-- CodeEnginGraphEdge, CodeEnginGraphNode, CodeEnginProjectGraph, CodeEnginSymbol  <- ./types
 |   |   |   +-- (default)  <- ']([^
@@ -9713,8 +9696,8 @@ const SESSION_SEED: number =
 |   |       +-- -> readProjectFile
 |   |       +-- -> writeProjectFile
 |   |       `-- unused unused: (default)
-|   +-- CodeEngin
-|   |   +-- core
+|   +-- codeengin-ui  [CodeEngin]
+|   |   +-- core  [CodeEngin]
 |   |   |   `-- parser.ts unused
 |   |   |       +-- (default)  <- "]([^
 |   |   |       +-- -> ParseError
@@ -9722,8 +9705,8 @@ const SESSION_SEED: number =
 |   |   |       +-- -> ParsedSymbol
 |   |   |       +-- -> parseCode
 |   |   |       `-- unused unused: ParseResult
-|   |   +-- modules
-|   |   |   `-- ai-co-pilot
+|   |   +-- modules  [CodeEngin]
+|   |   |   `-- ai-co-pilot  [CodeEngin]
 |   |   |       +-- dream.panel.AgentPanel.tsx
 |   |   |       |   +-- useState  <- react
 |   |   |       |   +-- useAgentSession  <- ./useAgentSession
@@ -9741,11 +9724,11 @@ const SESSION_SEED: number =
 |   |   |           +-- -> AgentMessage
 |   |   |           +-- -> UseAgentSessionReturn
 |   |   |           `-- -> useAgentSession
-|   |   `-- orchestrator
+|   |   `-- orchestrator  [CodeEngin]
 |   |       `-- dream.index.tsx ! unused
 |   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
-|   |           +-- (default)  ! @/engins/CodeEngin/orchestrator
+|   |           +-- (default)  ! @/engins/codeengin-ui/orchestrator
 |   |           +-- -> (default)
 |   |           `-- unused unused: (default)
 |   +-- contentengin  [ContentEngin / CreateEngin]
@@ -12028,7 +12011,6 @@ const SESSION_SEED: number =
 |   |   |   +-- *  <- ./advancedRendering
 |   |   |   +-- *  <- ./completionEvidence
 |   |   |   +-- *  <- ./serviceRuntime
-|   |   |   +-- *  <- ./wasmAcceleration
 |   |   |   +-- -> RenderEnginViewport
 |   |   |   +-- -> RenderStage
 |   |   |   `-- -> createInlineRenderIntent
@@ -12218,19 +12200,8 @@ const SESSION_SEED: number =
 |   |   |   +-- -> cullRenderScene
 |   |   |   +-- -> selectScreenSpaceLod
 |   |   |   `-- -> sphereIntersectsFrustum
-|   |   +-- wasmAcceleration.ts
-|   |   |   +-- MeshBuffers, Vec3  <- ./core
-|   |   |   +-- -> RenderMeshBounds
-|   |   |   +-- -> RenderWasmAcceleration
-|   |   |   +-- -> RenderWasmAccelerationExports
-|   |   |   +-- -> computeRenderMeshBounds
-|   |   |   +-- -> fallbackRenderMeshBounds
-|   |   |   +-- -> getActiveRenderWasmAcceleration
-|   |   |   +-- -> loadRenderWasmAcceleration
-|   |   |   `-- -> resetRenderWasmAccelerationForTesting
 |   |   `-- webgpu.ts
 |   |       +-- mat4Identity, Mat4, MeshBuffers, Vec3, Vec4, Vertex, validateMeshForRenderUpload  <- ./core
-|   |       +-- computeRenderMeshBounds, loadRenderWasmAcceleration, RenderMeshBounds, RenderWasmAcceleration  <- ./wasmAcceleration
 |   |       +-- -> PackedVertexBuffer
 |   |       +-- -> RenderEnginFrameStats
 |   |       +-- -> RenderEnginGpuMesh
@@ -12722,8 +12693,8 @@ const SESSION_SEED: number =
 |   |   +-- useCodeEnginBridge  <- @/engine/runtime/useEnginBridge
 |   |   +-- ArrowLeft, Bot, Bug, CheckCircle, Clipboard, Code2, Copy, ListChecks, Loader2, Plus, Shield, Terminal, Trash2, X, XCircle, Zap, ZoomIn, ZoomOut  <- lucide-react
 |   |   +-- CSSProperties, useCallback, useEffect, useMemo, useRef, useState  <- react
-|   |   +-- AgentPanel  <- ./CodeEngin/modules/ai-co-pilot
-|   |   +-- parseCode, ParseError, ParsedSymbol  <- ./CodeEngin/core/parser
+|   |   +-- AgentPanel  <- ./codeengin-ui/modules/ai-co-pilot
+|   |   +-- parseCode, ParseError, ParsedSymbol  <- ./codeengin-ui/core/parser
 |   |   +-- (default)  ! @/components/DreamButton
 |   |   +-- -> (default)
 |   |   +-- -> RuntimeIntent
@@ -12980,13 +12951,6 @@ const SESSION_SEED: number =
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- useEffect, useState  <- react
 |   |   `-- -> useAccount
-|   +-- useAppIntentPressureSurface.ts unused
-|   |   +-- useCallback, useEffect, useRef  <- react
-|   |   +-- AppIntentPressureField, appIntentPressureFromElementPoint, AppIntentPressureSource, AppIntentMassState, AppIntentPoint  <- @/engine/intent/appIntentPressure
-|   |   +-- -> AppIntentPressureSurfaceOptions
-|   |   +-- -> applyIntentPressureToElement
-|   |   +-- -> useAppIntentPressureSurface
-|   |   `-- unused unused: AppIntentPressureSurfaceOptions, applyIntentPressureToElement
 |   +-- useConnectorInstallFlow.ts unused
 |   |   +-- getConnectorDef  <- @/engine/connectors/connectorRegistry
 |   |   +-- consumeDeferredPrompt, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater, SlotGrid  <- @/engine/connectors/installFlow
@@ -13044,7 +13008,7 @@ const SESSION_SEED: number =
 |   |   +-- -> useSharedDream
 |   |   `-- unused unused: PeerState, UseSharedDreamReturn
 |   +-- useTap.ts unused
-|   |   +-- useCallback, useRef  <- react
+|   |   +-- useCallback, useEffect, useRef  <- react
 |   |   +-- -> UseHomeParticleTapOptions
 |   |   +-- -> UseHomeParticleTapResult
 |   |   +-- -> UseTapOptions
@@ -13695,6 +13659,29 @@ const SESSION_SEED: number =
 |   +-- (require)  <- ts-morph
 |   +-- (default)  <- "][^
 |   `-- DatabaseIcon  <- lucide-react
++-- fix-repo.cjs ! unused
+|   +-- (require)  <- node:fs
+|   +-- (require)  <- node:path
+|   +-- (require)  <- node:child_process
+|   +-- (default)  ! ./
+|   +-- (dynamic import)  <- );
+    }
+  }
+}
+
+function checkUseDualRuntimeDuplicate(){
+  const componentFile = 'components/runtime/dream.DualRuntimeContainer.tsx';
+  const engineFile = 'engine/runtime/useDualRuntime.ts';
+
+  if (!exists(componentFile)){
+    warn(
+|   +-- (side-effect)  <- );
+    return;
+  }
+
+  warn(
+|   +-- -> useDualRuntime
+|   `-- unused unused: useDualRuntime
 +-- LICENSE
 +-- next-env.d.ts !
 |   `-- (side-effect)  ! ./.next/types/routes.d.ts

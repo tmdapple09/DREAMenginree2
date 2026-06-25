@@ -80,7 +80,7 @@ export default function OnboardingTip( ){
             Access system menus
           </div>
           <div style={{ fontSize: 12, color: 'var(--de-text-dim)', lineHeight: 1.6 }}>
-            Single-tap the home control to open NAV mode and access the System &amp; Daydreams menus.
+            Double-tap the home control to unlock NAV mode and access the System &amp; Daydreams menus.
           </div>
         </div>
         <button

@@ -207,7 +207,7 @@ function asTemplateLiteral(value) {
 }
 
 function inferEngine(relPath) {
-  if (relPath.startsWith('engins/CodeEngin/')) return 'CodeEngin';
+  if (relPath.startsWith('engins/codeengin-ui/')) return 'CodeEngin';
 
   if (
     relPath.startsWith('lib/gameengin/') ||

@@ -31,8 +31,8 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AgentPanel } from './CodeEngin/modules/ai-co-pilot';
-import { parseCode, type ParseError, type ParsedSymbol } from './CodeEngin/core/parser';
+import { AgentPanel } from './codeengin-ui/modules/ai-co-pilot';
+import { parseCode, type ParseError, type ParsedSymbol } from './codeengin-ui/core/parser';
 
 interface Props {
   onBack: () => void;

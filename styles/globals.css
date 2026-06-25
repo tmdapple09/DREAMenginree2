@@ -241,14 +241,6 @@ body > * {
   scroll-behavior: smooth;
 }
 
-
-/* Root first-touch activation state. Gives immediate tactile feedback before
-   React click handlers run, and pairs with components/dream.FirstTouchActivator. */
-[data-first-touch-active="true"] {
-  filter: saturate(1.04) brightness(1.02);
-  opacity: 0.92;
-}
-
 /* ── Button / Link active press states — mobile-first ── */
 button, [role="button"], a {
   -webkit-tap-highlight-color: transparent;
@@ -5177,41 +5169,5 @@ main[role="main"] > * {
   .de-dreamspace-app-icon:hover > div:first-of-type {
     transform: translateY(-2px) scale(1.02);
     transition: transform 160ms ease, box-shadow 160ms ease;
-  }
-}
-
-
-/* RuntimeShell is the shared viewport gate for HomeDream, DreamSpace, DreamR,
-   ContentEngin, and mounted Engins. It owns invisible touch shrink-to-fit here;
-   do not add visible +/- zoom controls or percentage UI back into this layer. */
-.de-runtime-premium-shell,
-.de-runtime-premium-scroll {
-  touch-action: pan-x pan-y;
-}
-
-.de-runtime-premium-scroll {
-  overflow-x: auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-[data-runtime-scale-surface],
-[data-runtime-scale-content] {
-  transform-origin: top left;
-}
-
-[data-runtime-scaled-out="true"] [data-runtime-scale-content] {
-  backface-visibility: hidden;
-}
-
-@media (pointer: coarse) {
-  .de-runtime-premium-shell,
-  .de-runtime-premium-scroll {
-    touch-action: pan-x pan-y;
-  }
-
-  .asset-workspace,
-  [data-dreamr-feed-surface="true"] {
-    touch-action: pan-x pan-y;
   }
 }

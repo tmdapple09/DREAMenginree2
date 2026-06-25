@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T16:15:39.527Z",
+  "generatedAt": "2026-06-25T07:33:30.199Z",
   "root": ".",
   "nodes": [
     {
@@ -12213,7 +12213,7 @@
       "type": "function",
       "path": "app/layout.tsx",
       "parent": "file:app/layout.tsx",
-      "loc": 68,
+      "loc": 67,
       "isOrphan": false,
       "exported": true
     },
@@ -13673,26 +13673,6 @@
       "path": "assembly/index.ts",
       "parent": "file:assembly/index.ts",
       "loc": 133,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:assembly/index.ts#computeBounds3F32",
-      "label": "computeBounds3F32",
-      "type": "function",
-      "path": "assembly/index.ts",
-      "parent": "file:assembly/index.ts",
-      "loc": 175,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:assembly/index.ts#shapeIntentPressureFieldSIMD",
-      "label": "shapeIntentPressureFieldSIMD",
-      "type": "function",
-      "path": "assembly/index.ts",
-      "parent": "file:assembly/index.ts",
-      "loc": 242,
       "isOrphan": true,
       "exported": true
     },
@@ -15692,96 +15672,6 @@
       "label": "dream.FeedCard.tsx",
       "type": "tsx",
       "path": "components/dream.FeedCard.tsx",
-      "parent": "folder:components",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#isCoarsePointer",
-      "label": "isCoarsePointer",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 86,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#isHTMLElement",
-      "label": "isHTMLElement",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 92,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#closestElement",
-      "label": "closestElement",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 96,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#isDisabled",
-      "label": "isDisabled",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 101,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#interactiveFromEventTarget",
-      "label": "interactiveFromEventTarget",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 110,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#isSameInteractiveClick",
-      "label": "isSameInteractiveClick",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 121,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#movedTooFar",
-      "label": "movedTooFar",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 126,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/dream.FirstTouchActivator.tsx#FirstTouchActivator",
-      "label": "FirstTouchActivator",
-      "type": "function",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "parent": "file:components/dream.FirstTouchActivator.tsx",
-      "loc": 142,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:components/dream.FirstTouchActivator.tsx",
-      "label": "dream.FirstTouchActivator.tsx",
-      "type": "tsx",
-      "path": "components/dream.FirstTouchActivator.tsx",
       "parent": "folder:components",
       "loc": null,
       "isOrphan": false,
@@ -22543,72 +22433,12 @@
       "tags": []
     },
     {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#clamp",
-      "label": "clamp",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 83,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#nearlyEqual",
-      "label": "nearlyEqual",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 88,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#distance",
-      "label": "distance",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 92,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#center",
-      "label": "center",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 96,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#getLocalPoint",
-      "label": "getLocalPoint",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 103,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#shouldUseMeasuredHeight",
-      "label": "shouldUseMeasuredHeight",
-      "type": "function",
-      "path": "components/runtime/dream.shell.RuntimeShell.tsx",
-      "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 112,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:components/runtime/dream.shell.RuntimeShell.tsx#RuntimeShell",
       "label": "RuntimeShell",
       "type": "function",
       "path": "components/runtime/dream.shell.RuntimeShell.tsx",
       "parent": "file:components/runtime/dream.shell.RuntimeShell.tsx",
-      "loc": 124,
+      "loc": 63,
       "isOrphan": true,
       "exported": true
     },
@@ -23276,7 +23106,7 @@
       "path": "components/ui-system/runtimeViewport.ts",
       "parent": "file:components/ui-system/runtimeViewport.ts",
       "loc": 46,
-      "isOrphan": true,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -26776,7 +26606,7 @@
       "type": "function",
       "path": "dreamdmbar/dream.GlowingLight.tsx",
       "parent": "file:dreamdmbar/dream.GlowingLight.tsx",
-      "loc": 21,
+      "loc": 18,
       "isOrphan": true,
       "exported": true
     },
@@ -26796,7 +26626,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 113,
+      "loc": 115,
       "isOrphan": true,
       "exported": false
     },
@@ -26806,7 +26636,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2618,
+      "loc": 2671,
       "isOrphan": true,
       "exported": false
     },
@@ -26816,7 +26646,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2726,
+      "loc": 2779,
       "isOrphan": true,
       "exported": false
     },
@@ -26826,7 +26656,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2813,
+      "loc": 2866,
       "isOrphan": true,
       "exported": false
     },
@@ -27320,7 +27150,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 73,
+      "loc": 72,
       "isOrphan": false,
       "exported": true
     },
@@ -27330,7 +27160,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 81,
+      "loc": 83,
       "isOrphan": false,
       "exported": true
     },
@@ -27340,7 +27170,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 86,
+      "loc": 88,
       "isOrphan": false,
       "exported": true
     },
@@ -27350,7 +27180,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 91,
+      "loc": 93,
       "isOrphan": false,
       "exported": true
     },
@@ -27360,7 +27190,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 105,
+      "loc": 107,
       "isOrphan": false,
       "exported": true
     },
@@ -27370,7 +27200,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 126,
+      "loc": 128,
       "isOrphan": false,
       "exported": true
     },
@@ -27380,7 +27210,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 156,
+      "loc": 158,
       "isOrphan": false,
       "exported": true
     },
@@ -27390,7 +27220,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 208,
+      "loc": 210,
       "isOrphan": false,
       "exported": true
     },
@@ -27400,7 +27230,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 217,
+      "loc": 219,
       "isOrphan": false,
       "exported": true
     },
@@ -27410,7 +27240,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 246,
+      "loc": 248,
       "isOrphan": false,
       "exported": true
     },
@@ -27420,7 +27250,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 323,
+      "loc": 325,
       "isOrphan": false,
       "exported": true
     },
@@ -27430,7 +27260,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 345,
+      "loc": 347,
       "isOrphan": false,
       "exported": true
     },
@@ -27440,7 +27270,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 369,
+      "loc": 371,
       "isOrphan": false,
       "exported": true
     },
@@ -27450,7 +27280,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 383,
+      "loc": 385,
       "isOrphan": false,
       "exported": true
     },
@@ -27460,7 +27290,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 396,
+      "loc": 398,
       "isOrphan": false,
       "exported": true
     },
@@ -27470,7 +27300,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 424,
+      "loc": 426,
       "isOrphan": false,
       "exported": true
     },
@@ -27480,7 +27310,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 472,
+      "loc": 474,
       "isOrphan": false,
       "exported": true
     },
@@ -27490,7 +27320,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 514,
+      "loc": 516,
       "isOrphan": false,
       "exported": true
     },
@@ -37272,85 +37102,6 @@
       "tags": []
     },
     {
-      "id": "folder:engine/intent",
-      "label": "intent",
-      "type": "folder",
-      "path": "engine/intent",
-      "parent": "folder:engine",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "function:engine/intent/appIntentPressure.ts#clamp",
-      "label": "clamp",
-      "type": "function",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 48,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/intent/appIntentPressure.ts#normalizePoint",
-      "label": "normalizePoint",
-      "type": "function",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 53,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/intent/appIntentPressure.ts#normalizeVelocity",
-      "label": "normalizeVelocity",
-      "type": "function",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 60,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/intent/appIntentPressure.ts#createCells",
-      "label": "createCells",
-      "type": "function",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 68,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engine/intent/appIntentPressure.ts#appIntentPressureFromElementPoint",
-      "label": "appIntentPressureFromElementPoint",
-      "type": "function",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 220,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "class:engine/intent/appIntentPressure.ts#AppIntentPressureField",
-      "label": "AppIntentPressureField",
-      "type": "class",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "file:engine/intent/appIntentPressure.ts",
-      "loc": 88,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "file:engine/intent/appIntentPressure.ts",
-      "label": "appIntentPressure.ts",
-      "type": "ts",
-      "path": "engine/intent/appIntentPressure.ts",
-      "parent": "folder:engine/intent",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:engine/io.ts",
       "label": "io.ts",
       "type": "ts",
@@ -40614,7 +40365,7 @@
       "type": "class",
       "path": "engine/runtime/EnginDispatcher.ts",
       "parent": "file:engine/runtime/EnginDispatcher.ts",
-      "loc": 273,
+      "loc": 253,
       "isOrphan": true,
       "exported": true
     },
@@ -45469,166 +45220,166 @@
       "tags": []
     },
     {
-      "id": "folder:engins/CodeEngin",
+      "id": "folder:engins/codeengin-ui",
       "label": "CodeEngin",
       "type": "folder",
-      "path": "engins/CodeEngin",
+      "path": "engins/codeengin-ui",
       "parent": "folder:engins",
       "loc": null,
       "isOrphan": false
     },
     {
-      "id": "folder:engins/CodeEngin/core",
+      "id": "folder:engins/codeengin-ui/core",
       "label": "core",
       "type": "folder",
-      "path": "engins/CodeEngin/core",
-      "parent": "folder:engins/CodeEngin",
+      "path": "engins/codeengin-ui/core",
+      "parent": "folder:engins/codeengin-ui",
       "loc": null,
       "isOrphan": false
     },
     {
-      "id": "function:engins/CodeEngin/core/parser.ts#normaliseLanguage",
+      "id": "function:engins/codeengin-ui/core/parser.ts#normaliseLanguage",
       "label": "normaliseLanguage",
       "type": "function",
-      "path": "engins/CodeEngin/core/parser.ts",
-      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
+      "parent": "file:engins/codeengin-ui/core/parser.ts",
       "loc": 62,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/CodeEngin/core/parser.ts#extractTSSymbols",
+      "id": "function:engins/codeengin-ui/core/parser.ts#extractTSSymbols",
       "label": "extractTSSymbols",
       "type": "function",
-      "path": "engins/CodeEngin/core/parser.ts",
-      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
+      "parent": "file:engins/codeengin-ui/core/parser.ts",
       "loc": 67,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/CodeEngin/core/parser.ts#extractPythonSymbols",
+      "id": "function:engins/codeengin-ui/core/parser.ts#extractPythonSymbols",
       "label": "extractPythonSymbols",
       "type": "function",
-      "path": "engins/CodeEngin/core/parser.ts",
-      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
+      "parent": "file:engins/codeengin-ui/core/parser.ts",
       "loc": 89,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/CodeEngin/core/parser.ts#extractGoSymbols",
+      "id": "function:engins/codeengin-ui/core/parser.ts#extractGoSymbols",
       "label": "extractGoSymbols",
       "type": "function",
-      "path": "engins/CodeEngin/core/parser.ts",
-      "parent": "file:engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
+      "parent": "file:engins/codeengin-ui/core/parser.ts",
       "loc": 106,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "file:engins/CodeEngin/core/parser.ts",
+      "id": "file:engins/codeengin-ui/core/parser.ts",
       "label": "parser.ts",
       "type": "ts",
-      "path": "engins/CodeEngin/core/parser.ts",
-      "parent": "folder:engins/CodeEngin/core",
+      "path": "engins/codeengin-ui/core/parser.ts",
+      "parent": "folder:engins/codeengin-ui/core",
       "loc": null,
       "isOrphan": false,
       "tags": []
     },
     {
-      "id": "folder:engins/CodeEngin/modules",
+      "id": "folder:engins/codeengin-ui/modules",
       "label": "modules",
       "type": "folder",
-      "path": "engins/CodeEngin/modules",
-      "parent": "folder:engins/CodeEngin",
+      "path": "engins/codeengin-ui/modules",
+      "parent": "folder:engins/codeengin-ui",
       "loc": null,
       "isOrphan": false
     },
     {
-      "id": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "id": "folder:engins/codeengin-ui/modules/ai-co-pilot",
       "label": "ai-co-pilot",
       "type": "folder",
-      "path": "engins/CodeEngin/modules/ai-co-pilot",
-      "parent": "folder:engins/CodeEngin/modules",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot",
+      "parent": "folder:engins/codeengin-ui/modules",
       "loc": null,
       "isOrphan": false
     },
     {
-      "id": "function:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx#AgentPanel",
+      "id": "function:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx#AgentPanel",
       "label": "AgentPanel",
       "type": "function",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "parent": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "parent": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "loc": 13,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "id": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "label": "dream.panel.AgentPanel.tsx",
       "type": "tsx",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "parent": "folder:engins/codeengin-ui/modules/ai-co-pilot",
       "loc": null,
       "isOrphan": false,
       "tags": []
     },
     {
-      "id": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "id": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "label": "index.ts",
       "type": "ts",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
-      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/index.ts",
+      "parent": "folder:engins/codeengin-ui/modules/ai-co-pilot",
       "loc": null,
       "isOrphan": false,
       "tags": []
     },
     {
-      "id": "function:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
+      "id": "function:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
       "label": "useAgentSession",
       "type": "function",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
-      "parent": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
+      "parent": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "loc": 19,
       "isOrphan": false,
       "exported": true
     },
     {
-      "id": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "id": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "label": "useAgentSession.ts",
       "type": "ts",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
-      "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
+      "parent": "folder:engins/codeengin-ui/modules/ai-co-pilot",
       "loc": null,
       "isOrphan": false,
       "tags": []
     },
     {
-      "id": "folder:engins/CodeEngin/orchestrator",
+      "id": "folder:engins/codeengin-ui/orchestrator",
       "label": "orchestrator",
       "type": "folder",
-      "path": "engins/CodeEngin/orchestrator",
-      "parent": "folder:engins/CodeEngin",
+      "path": "engins/codeengin-ui/orchestrator",
+      "parent": "folder:engins/codeengin-ui",
       "loc": null,
       "isOrphan": false
     },
     {
-      "id": "function:engins/CodeEngin/orchestrator/dream.index.tsx#CodeEnginOrchestrator",
+      "id": "function:engins/codeengin-ui/orchestrator/dream.index.tsx#CodeEnginOrchestrator",
       "label": "CodeEnginOrchestrator",
       "type": "function",
-      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
-      "parent": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
+      "parent": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "loc": 16,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "id": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "label": "dream.index.tsx",
       "type": "tsx",
-      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
-      "parent": "folder:engins/CodeEngin/orchestrator",
+      "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
+      "parent": "folder:engins/codeengin-ui/orchestrator",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -46592,7 +46343,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 381,
+      "loc": 382,
       "isOrphan": true,
       "exported": false
     },
@@ -46602,7 +46353,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 421,
+      "loc": 422,
       "isOrphan": true,
       "exported": false
     },
@@ -46612,7 +46363,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 457,
+      "loc": 458,
       "isOrphan": true,
       "exported": false
     },
@@ -46622,7 +46373,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 487,
+      "loc": 488,
       "isOrphan": true,
       "exported": false
     },
@@ -46632,7 +46383,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 526,
+      "loc": 527,
       "isOrphan": true,
       "exported": false
     },
@@ -46642,7 +46393,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 549,
+      "loc": 550,
       "isOrphan": true,
       "exported": false
     },
@@ -46652,7 +46403,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 559,
+      "loc": 560,
       "isOrphan": true,
       "exported": false
     },
@@ -46662,7 +46413,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 577,
+      "loc": 578,
       "isOrphan": true,
       "exported": false
     },
@@ -46672,7 +46423,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 619,
+      "loc": 620,
       "isOrphan": true,
       "exported": false
     },
@@ -46682,7 +46433,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 627,
+      "loc": 628,
       "isOrphan": true,
       "exported": false
     },
@@ -46692,7 +46443,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 641,
+      "loc": 642,
       "isOrphan": true,
       "exported": false
     },
@@ -46702,7 +46453,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 655,
+      "loc": 656,
       "isOrphan": true,
       "exported": false
     },
@@ -46712,7 +46463,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 663,
+      "loc": 664,
       "isOrphan": true,
       "exported": false
     },
@@ -46722,7 +46473,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 671,
+      "loc": 672,
       "isOrphan": true,
       "exported": false
     },
@@ -46732,7 +46483,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 672,
+      "loc": 673,
       "isOrphan": true,
       "exported": false
     },
@@ -46742,7 +46493,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 673,
+      "loc": 674,
       "isOrphan": true,
       "exported": false
     },
@@ -46752,7 +46503,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 674,
+      "loc": 675,
       "isOrphan": true,
       "exported": false
     },
@@ -46762,7 +46513,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 675,
+      "loc": 676,
       "isOrphan": true,
       "exported": false
     },
@@ -46772,7 +46523,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 676,
+      "loc": 677,
       "isOrphan": true,
       "exported": false
     },
@@ -46782,7 +46533,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 677,
+      "loc": 678,
       "isOrphan": true,
       "exported": false
     },
@@ -54884,7 +54635,7 @@
       "type": "function",
       "path": "engins/gameengin/games/gameControllerButtons.ts",
       "parent": "file:engins/gameengin/games/gameControllerButtons.ts",
-      "loc": 67,
+      "loc": 68,
       "isOrphan": true,
       "exported": false
     },
@@ -54894,7 +54645,7 @@
       "type": "function",
       "path": "engins/gameengin/games/gameControllerButtons.ts",
       "parent": "file:engins/gameengin/games/gameControllerButtons.ts",
-      "loc": 83,
+      "loc": 86,
       "isOrphan": true,
       "exported": false
     },
@@ -54904,7 +54655,7 @@
       "type": "class",
       "path": "engins/gameengin/games/gameControllerButtons.ts",
       "parent": "file:engins/gameengin/games/gameControllerButtons.ts",
-      "loc": 106,
+      "loc": 111,
       "isOrphan": false,
       "exported": true
     },
@@ -56942,7 +56693,7 @@
       "type": "class",
       "path": "engins/gameengin/remote/sprintDetector.ts",
       "parent": "file:engins/gameengin/remote/sprintDetector.ts",
-      "loc": 19,
+      "loc": 33,
       "isOrphan": false,
       "exported": true
     },
@@ -60191,122 +59942,12 @@
       "tags": []
     },
     {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#emptyBounds",
-      "label": "emptyBounds",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 49,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#fallbackRenderMeshBounds",
-      "label": "fallbackRenderMeshBounds",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 58,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#writePositions",
-      "label": "writePositions",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 100,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#readBounds",
-      "label": "readBounds",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 120,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#makeFallbackAcceleration",
-      "label": "makeFallbackAcceleration",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 130,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#makeActiveAcceleration",
-      "label": "makeActiveAcceleration",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 140,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#computeRenderMeshBounds",
-      "label": "computeRenderMeshBounds",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 155,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#loadRenderWasmAcceleration",
-      "label": "loadRenderWasmAcceleration",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 166,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#getActiveRenderWasmAcceleration",
-      "label": "getActiveRenderWasmAcceleration",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 226,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/wasmAcceleration.ts#resetRenderWasmAccelerationForTesting",
-      "label": "resetRenderWasmAccelerationForTesting",
-      "type": "function",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "file:engins/renderengin/wasmAcceleration.ts",
-      "loc": 230,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:engins/renderengin/wasmAcceleration.ts",
-      "label": "wasmAcceleration.ts",
-      "type": "ts",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "parent": "folder:engins/renderengin",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "function:engins/renderengin/webgpu.ts#toGpuMat4",
       "label": "toGpuMat4",
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 156,
+      "loc": 149,
       "isOrphan": true,
       "exported": true
     },
@@ -60316,7 +59957,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 165,
+      "loc": 158,
       "isOrphan": true,
       "exported": false
     },
@@ -60326,7 +59967,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 169,
+      "loc": 162,
       "isOrphan": true,
       "exported": true
     },
@@ -60336,7 +59977,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 186,
+      "loc": 179,
       "isOrphan": true,
       "exported": false
     },
@@ -60346,7 +59987,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 203,
+      "loc": 196,
       "isOrphan": false,
       "exported": true
     },
@@ -60356,7 +59997,7 @@
       "type": "class",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 215,
+      "loc": 208,
       "isOrphan": false,
       "exported": true
     },
@@ -61723,7 +61364,7 @@
       "type": "function",
       "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
       "parent": "file:engins/starmakerengin/music/wasmAudioBridge.ts",
-      "loc": 130,
+      "loc": 113,
       "isOrphan": true,
       "exported": false
     },
@@ -61733,7 +61374,7 @@
       "type": "function",
       "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
       "parent": "file:engins/starmakerengin/music/wasmAudioBridge.ts",
-      "loc": 145,
+      "loc": 128,
       "isOrphan": true,
       "exported": false
     },
@@ -61743,7 +61384,7 @@
       "type": "function",
       "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
       "parent": "file:engins/starmakerengin/music/wasmAudioBridge.ts",
-      "loc": 162,
+      "loc": 145,
       "isOrphan": true,
       "exported": false
     },
@@ -61753,7 +61394,7 @@
       "type": "function",
       "path": "engins/starmakerengin/music/wasmAudioBridge.ts",
       "parent": "file:engins/starmakerengin/music/wasmAudioBridge.ts",
-      "loc": 189,
+      "loc": 172,
       "isOrphan": true,
       "exported": true
     },
@@ -62396,76 +62037,6 @@
       ]
     },
     {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#clamp",
-      "label": "clamp",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 30,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#velocityFromSamples",
-      "label": "velocityFromSamples",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 35,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#sourceForce",
-      "label": "sourceForce",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 45,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#sourceRadius",
-      "label": "sourceRadius",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 57,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#applyIntentPressureToElement",
-      "label": "applyIntentPressureToElement",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 67,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:hooks/useAppIntentPressureSurface.ts#useAppIntentPressureSurface",
-      "label": "useAppIntentPressureSurface",
-      "type": "function",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "file:hooks/useAppIntentPressureSurface.ts",
-      "loc": 103,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:hooks/useAppIntentPressureSurface.ts",
-      "label": "useAppIntentPressureSurface.ts",
-      "type": "ts",
-      "path": "hooks/useAppIntentPressureSurface.ts",
-      "parent": "folder:hooks",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "function:hooks/useConnectorInstallFlow.ts#useConnectorInstallFlow",
       "label": "useConnectorInstallFlow",
       "type": "function",
@@ -62763,7 +62334,7 @@
       "type": "function",
       "path": "hooks/useTap.ts",
       "parent": "file:hooks/useTap.ts",
-      "loc": 25,
+      "loc": 35,
       "isOrphan": true,
       "exported": true
     },
@@ -62773,7 +62344,7 @@
       "type": "function",
       "path": "hooks/useTap.ts",
       "parent": "file:hooks/useTap.ts",
-      "loc": 61,
+      "loc": 80,
       "isOrphan": true,
       "exported": true
     },
@@ -63920,7 +63491,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 133,
+      "loc": 131,
       "isOrphan": true,
       "exported": false
     },
@@ -63930,7 +63501,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 178,
+      "loc": 162,
       "isOrphan": true,
       "exported": false
     },
@@ -63940,7 +63511,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 190,
+      "loc": 174,
       "isOrphan": true,
       "exported": false
     },
@@ -63950,7 +63521,7 @@
       "type": "function",
       "path": "public/workers/engin-shader.worker.ts",
       "parent": "file:public/workers/engin-shader.worker.ts",
-      "loc": 286,
+      "loc": 267,
       "isOrphan": true,
       "exported": false
     },
@@ -66020,52 +65591,12 @@
       "tags": []
     },
     {
-      "id": "function:scripts/generate-repo-state.mjs#toPosix",
-      "label": "toPosix",
+      "id": "function:scripts/generate-repo-state.mjs#shouldIgnore",
+      "label": "shouldIgnore",
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 274,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#normalizeRel",
-      "label": "normalizeRel",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 278,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extOf",
-      "label": "extOf",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 284,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#uniqueSorted",
-      "label": "uniqueSorted",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 288,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#shouldIgnoreDir",
-      "label": "shouldIgnoreDir",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 292,
+      "loc": 17,
       "isOrphan": true,
       "exported": false
     },
@@ -66075,7 +65606,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 296,
+      "loc": 19,
       "isOrphan": true,
       "exported": false
     },
@@ -66085,7 +65616,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 319,
+      "loc": 29,
       "isOrphan": true,
       "exported": false
     },
@@ -66095,27 +65626,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 327,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#hasAnySuffix",
-      "label": "hasAnySuffix",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 331,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#includesAny",
-      "label": "includesAny",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 338,
+      "loc": 34,
       "isOrphan": true,
       "exported": false
     },
@@ -66125,627 +65636,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 345,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isPageFile",
-      "label": "isPageFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 349,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isRouteHandlerFile",
-      "label": "isRouteHandlerFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 353,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isAppRouterEntryFile",
-      "label": "isAppRouterEntryFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 357,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isTestFile",
-      "label": "isTestFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 361,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isStoryFile",
-      "label": "isStoryFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 365,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isTypeFile",
-      "label": "isTypeFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 369,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isStyleFile",
-      "label": "isStyleFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 373,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isRootEntryFile",
-      "label": "isRootEntryFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 377,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#mdCell",
-      "label": "mdCell",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 381,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isBoundaryChar",
-      "label": "isBoundaryChar",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 385,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#startsWord",
-      "label": "startsWord",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 393,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#findNextNonSpace",
-      "label": "findNextNonSpace",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 398,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#findStatementEnd",
-      "label": "findStatementEnd",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 406,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#findQuotedValue",
-      "label": "findQuotedValue",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 438,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#splitTopLevelCommas",
-      "label": "splitTopLevelCommas",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 471,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#removeLeadingType",
-      "label": "removeLeadingType",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 518,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#importedNameFromPart",
-      "label": "importedNameFromPart",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 524,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#exportedNameFromPart",
-      "label": "exportedNameFromPart",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 530,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#parseImportClause",
-      "label": "parseImportClause",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 536,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#addRecord",
-      "label": "addRecord",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 576,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#findFromSpecifier",
-      "label": "findFromSpecifier",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 581,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractImportRecords",
-      "label": "extractImportRecords",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 615,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractImports",
-      "label": "extractImports",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 695,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractDynamicImports",
-      "label": "extractDynamicImports",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 699,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractNamedImports",
-      "label": "extractNamedImports",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 703,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractExportStatements",
-      "label": "extractExportStatements",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 724,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#readIdentifier",
-      "label": "readIdentifier",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 737,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#extractNamedExports",
-      "label": "extractNamedExports",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 752,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isUppercase",
-      "label": "isUppercase",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 794,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectHookExports",
-      "label": "detectHookExports",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 798,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectReactComponent",
-      "label": "detectReactComponent",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 818,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isBarrelFile",
-      "label": "isBarrelFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 844,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectSupabase",
-      "label": "detectSupabase",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 860,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectEventBus",
-      "label": "detectEventBus",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 864,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectZustand",
-      "label": "detectZustand",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 868,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectContext",
-      "label": "detectContext",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 872,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectRuntimeRegistry",
-      "label": "detectRuntimeRegistry",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 876,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectDualRuntime",
-      "label": "detectDualRuntime",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 880,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#loadTsconfigPaths",
-      "label": "loadTsconfigPaths",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 884,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#matchesPathPattern",
-      "label": "matchesPathPattern",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 913,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#expandPathPattern",
-      "label": "expandPathPattern",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 923,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#stripSpecifierNoise",
-      "label": "stripSpecifierNoise",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 936,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#isExternalSpecifier",
-      "label": "isExternalSpecifier",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 951,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#tryResolveCandidate",
-      "label": "tryResolveCandidate",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 963,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#resolveInternalSpecifier",
-      "label": "resolveInternalSpecifier",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 982,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#codeFileForResolvedPath",
-      "label": "codeFileForResolvedPath",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1007,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#buildRouteMap",
-      "label": "buildRouteMap",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1012,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#capabilityId",
-      "label": "capabilityId",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1102,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#addCapability",
-      "label": "addCapability",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1106,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#routeForPage",
-      "label": "routeForPage",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1112,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#detectCircular",
-      "label": "detectCircular",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1154,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#markExportUsage",
-      "label": "markExportUsage",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1186,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#shouldSkipUnusedExportFile",
-      "label": "shouldSkipUnusedExportFile",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1212,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#matchGlobs",
-      "label": "matchGlobs",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1254,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#groupByDir",
-      "label": "groupByDir",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1261,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#getFeatureFiles",
-      "label": "getFeatureFiles",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1272,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#renderListOrEmpty",
-      "label": "renderListOrEmpty",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1302,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#renderGroupedFiles",
-      "label": "renderGroupedFiles",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1307,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#renderFeatureSection",
-      "label": "renderFeatureSection",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1318,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#getFeatureAnnotation",
-      "label": "getFeatureAnnotation",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1382,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#sortedTreeEntries",
-      "label": "sortedTreeEntries",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1393,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-repo-state.mjs#buildTreeString",
-      "label": "buildTreeString",
-      "type": "function",
-      "path": "scripts/generate-repo-state.mjs",
-      "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1411,
+      "loc": 36,
       "isOrphan": true,
       "exported": false
     },
@@ -66757,9 +65648,7 @@
       "parent": "folder:scripts",
       "loc": null,
       "isOrphan": true,
-      "tags": [
-        "supabase-create-client"
-      ]
+      "tags": []
     },
     {
       "id": "function:scripts/generate-webapp-final-form.mjs#generateWebAppFinalForm",
@@ -86025,11 +84914,6 @@
     },
     {
       "source": "file:app/layout.tsx",
-      "target": "file:components/dream.FirstTouchActivator.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:app/layout.tsx",
       "target": "file:components/dream.ThemeApplicator.tsx",
       "kind": "import"
     },
@@ -86096,11 +84980,6 @@
     {
       "source": "file:app/layout.tsx",
       "target": "file:components/dream.GlobalOverlays.tsx",
-      "kind": "route-uses"
-    },
-    {
-      "source": "file:app/layout.tsx",
-      "target": "file:components/dream.FirstTouchActivator.tsx",
       "kind": "route-uses"
     },
     {
@@ -89770,6 +88649,11 @@
     },
     {
       "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "file:components/ui-system/runtimeViewport.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
       "target": "file:engine/runtime/apperception.ts",
       "kind": "import"
     },
@@ -90531,11 +89415,6 @@
     {
       "source": "file:dr-eams/ai/triad.ts",
       "target": "file:dr-eams/ai/schemas.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:dreamdmbar/dream.GlowingLight.tsx",
-      "target": "file:hooks/useAppIntentPressureSurface.ts",
       "kind": "import"
     },
     {
@@ -92020,7 +90899,7 @@
     },
     {
       "source": "file:engine/generated/engins.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "import"
     },
     {
@@ -92045,22 +90924,22 @@
     },
     {
       "source": "file:engine/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "kind": "import"
     },
     {
       "source": "file:engine/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
       "source": "file:engine/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "import"
     },
     {
       "source": "file:engine/generated/engins.ts",
-      "target": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "target": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "kind": "import"
     },
     {
@@ -97259,28 +96138,28 @@
       "kind": "import"
     },
     {
-      "source": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "import"
     },
     {
-      "source": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "kind": "reexport"
     },
     {
-      "source": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "reexport"
     },
     {
-      "source": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "source": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "target": "file:engins/forgeengin/enginpipe/index.ts",
       "kind": "import"
     },
     {
-      "source": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "source": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "kind": "import"
     },
     {
@@ -97310,7 +96189,7 @@
     },
     {
       "source": "file:engins/codeengin/diagnostics.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "import"
     },
     {
@@ -97330,7 +96209,7 @@
     },
     {
       "source": "file:engins/codeengin/projectGraph.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "import"
     },
     {
@@ -97890,12 +96769,12 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "import"
     },
     {
@@ -99549,11 +98428,6 @@
       "kind": "reexport"
     },
     {
-      "source": "file:engins/renderengin/index.ts",
-      "target": "file:engins/renderengin/wasmAcceleration.ts",
-      "kind": "reexport"
-    },
-    {
       "source": "file:engins/renderengin/lighting.ts",
       "target": "file:engine/engin-runtime/EnginBaseState.ts",
       "kind": "import"
@@ -99679,18 +98553,8 @@
       "kind": "import"
     },
     {
-      "source": "file:engins/renderengin/wasmAcceleration.ts",
-      "target": "file:engins/renderengin/core.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:engins/renderengin/webgpu.ts",
       "target": "file:engins/renderengin/core.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/renderengin/webgpu.ts",
-      "target": "file:engins/renderengin/wasmAcceleration.ts",
       "kind": "import"
     },
     {
@@ -99996,11 +98860,6 @@
     {
       "source": "file:hooks/useAccount.ts",
       "target": "file:supabase/client/client.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:hooks/useAppIntentPressureSurface.ts",
-      "target": "file:engine/intent/appIntentPressure.ts",
       "kind": "import"
     },
     {
@@ -100320,7 +99179,7 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "import"
     },
     {
@@ -100345,22 +99204,22 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
+      "target": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
       "kind": "import"
     },
     {
@@ -101460,11 +100319,6 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/renderengin/wasmAcceleration.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/webgpu.ts",
       "kind": "import"
     },
@@ -101656,11 +100510,6 @@
     {
       "source": "file:src/engin/generated/hooks.ts",
       "target": "file:hooks/useAccount.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/hooks.ts",
-      "target": "file:hooks/useAppIntentPressureSurface.ts",
       "kind": "import"
     },
     {
@@ -103421,11 +102270,6 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/dream.FeedCard.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:src/engin/generated/surfaces.ts",
-      "target": "file:components/dream.FirstTouchActivator.tsx",
       "kind": "import"
     },
     {
@@ -111769,6 +110613,21 @@
       "kind": "call"
     },
     {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "function:components/ui-system/runtimeViewport.ts#isCompactRuntimeViewport",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportWidth",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.shell.RuntimeShell.tsx",
+      "target": "function:components/ui-system/runtimeViewport.ts#readInteractiveViewportScale",
+      "kind": "call"
+    },
+    {
       "source": "file:components/shared-dream/dream.InviteFlow.tsx",
       "target": "function:components/shared-dream/dream.SharedDreamProvider.tsx#useSharedDream",
       "kind": "call"
@@ -112196,6 +111055,11 @@
     {
       "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "target": "function:dreamdmbar/hooks/useDreamBarContext.ts#useDreamBarContext",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "target": "function:dreamdmbar/runtime/barInteractions.ts#resolveGoldTapAction",
       "kind": "call"
     },
     {
@@ -113674,8 +112538,8 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
-      "target": "function:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
+      "source": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "function:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts#useAgentSession",
       "kind": "call"
     },
     {
@@ -113710,7 +112574,7 @@
     },
     {
       "source": "file:engins/codeengin/diagnostics.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "call"
     },
     {
@@ -113735,7 +112599,7 @@
     },
     {
       "source": "file:engins/codeengin/projectGraph.ts",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "call"
     },
     {
@@ -114225,7 +113089,7 @@
     },
     {
       "source": "file:engins/engin.CodeEngin.tsx",
-      "target": "file:engins/CodeEngin/core/parser.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
       "kind": "call"
     },
     {
@@ -115410,17 +114274,7 @@
     },
     {
       "source": "file:engins/renderengin/webgpu.ts",
-      "target": "function:engins/renderengin/wasmAcceleration.ts#loadRenderWasmAcceleration",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/webgpu.ts",
       "target": "function:engins/renderengin/core.ts#validateMeshForRenderUpload",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/webgpu.ts",
-      "target": "function:engins/renderengin/wasmAcceleration.ts#computeRenderMeshBounds",
       "kind": "call"
     },
     {
@@ -115586,16 +114440,6 @@
     {
       "source": "file:hooks/useAccount.ts",
       "target": "function:supabase/client/client.ts#createClient",
-      "kind": "call"
-    },
-    {
-      "source": "file:hooks/useAppIntentPressureSurface.ts",
-      "target": "class:engine/intent/appIntentPressure.ts#AppIntentPressureField",
-      "kind": "call"
-    },
-    {
-      "source": "file:hooks/useAppIntentPressureSurface.ts",
-      "target": "function:engine/intent/appIntentPressure.ts#appIntentPressureFromElementPoint",
       "kind": "call"
     },
     {

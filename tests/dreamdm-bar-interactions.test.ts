@@ -22,24 +22,24 @@ import {
 } from '@/dreamdmbar/runtime/barInteractions';
 
 describe('resolveGoldTapAction', () => {
-  it('opens the gold particle menu on the first tap', () => {
+  it('waits on the first gold particle tap', () => {
     expect(resolveGoldTapAction(0, 1000)).toEqual({
-      action: 'menu',
-      nextLastTapAt: 0,
+      action: 'wait',
+      nextLastTapAt: 1000,
     });
   });
 
-  it('does not require a follow-up tap inside a timing window', () => {
+  it('resolves the second gold particle tap to the menu action', () => {
     expect(resolveGoldTapAction(1000, 1120)).toEqual({
       action: 'menu',
       nextLastTapAt: 0,
     });
   });
 
-  it('keeps late taps immediate instead of restarting a wait state', () => {
+  it('restarts waiting when the second tap is too late', () => {
     expect(resolveGoldTapAction(1000, 1400)).toEqual({
-      action: 'menu',
-      nextLastTapAt: 0,
+      action: 'wait',
+      nextLastTapAt: 1400,
     });
   });
 });
@@ -264,7 +264,7 @@ describe('glowing light constants', () => {
     expect(DRAG_TAP_THRESHOLD_PX).toBeGreaterThan(0);
   });
 
-  it('keeps the legacy tap window exported for compatibility only', () => {
+  it('exports a positive DOUBLE_TAP_WINDOW_MS', () => {
     expect(DOUBLE_TAP_WINDOW_MS).toBeGreaterThan(0);
   });
 });

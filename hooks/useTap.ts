@@ -1,12 +1,22 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 /**
  * useTap — canonical single-tap hook.
  *
- * Every interactive DREAMengin surface should respond to the first completed
- * tap. Do not delay ordinary UI reaction while waiting for a follow-up tap.
+ * SYSTEM-WIDE TAP DISCIPLINE
+ * --------------------------
+ * Every interactive surface in DREAMengin responds to a single tap. The user
+ * has explicitly banned double-tap as a UI affordance ("we feel like the
+ * system is not working") *everywhere except the home / gold particle*.
+ *
+ *   - `useTap`              → single-tap only. Use this for all new code.
+ *   - `useHomeParticleTap`  → the SOLE site allowed to expose double-tap.
+ *                             Reserved for the gold particle / home button.
+ *
+ * If you find yourself reaching for `onDoubleClick` or implementing a tap
+ * counter outside the home particle, stop — it is a contract violation.
  */
 
 export interface UseTapOptions {
@@ -20,7 +30,7 @@ export interface UseTapResult {
 }
 
 /**
- * Single-tap. No timers, no second-tap window, no surprise.
+ * Single-tap. No timers, no double-tap window, no surprise.
  */
 export function useTap(
   handler: (event?: unknown) => void,
@@ -42,35 +52,71 @@ export function useTap(
 }
 
 export interface UseHomeParticleTapOptions {
-  /** Kept for compatibility; ignored because the home particle is now first-tap. */
+  /**
+   * Window (ms) within which two taps register as a double-tap.
+   * The default matches the existing gold-particle constant so behaviour
+   * is consistent with the bar's `DOUBLE_TAP_WINDOW_MS`.
+   */
   doubleTapWindowMs?: number;
   disabled?: boolean;
 }
 
 export interface UseHomeParticleTapResult {
-  /** Fires immediately on the first tap. */
+  /** Fires once on the trailing edge of a single tap (after the window closes). */
   onTap: () => void;
 }
 
 /**
- * Compatibility wrapper for older home-particle call sites.
+ * Home-particle tap router — the only place in the system where double-tap
+ * is a sanctioned UI affordance.
  *
- * The old API accepted single/double callbacks. The current behavior fires the
- * single-tap callback immediately and never waits to promote the gesture.
+ *   single tap → `onSingleTap`
+ *   double tap → `onDoubleTap`
+ *
+ * Single-tap firing is delayed by the double-tap window so a follow-up tap
+ * can override and promote the gesture to a double-tap (matching the
+ * existing dreamdmbar gold-particle behaviour).
  */
 export function useHomeParticleTap(
   onSingleTap: () => void,
-  _onDoubleTap: () => void,
+  onDoubleTap: () => void,
   options: UseHomeParticleTapOptions = {},
 ): UseHomeParticleTapResult {
-  const { disabled = false } = options;
+  const { doubleTapWindowMs = 260, disabled = false } = options;
+  const stateRef = useRef<{
+    timer: ReturnType<typeof setTimeout> | null;
+    pending: boolean;
+  }>({ timer: null, pending: false });
+
   const singleRef = useRef(onSingleTap);
+  const doubleRef = useRef(onDoubleTap);
   singleRef.current = onSingleTap;
+  doubleRef.current = onDoubleTap;
+
+  useEffect(
+    () => () => {
+      if (stateRef.current.timer) clearTimeout(stateRef.current.timer);
+    },
+    [],
+  );
 
   const onTap = useCallback(() => {
     if (disabled) return;
-    singleRef.current();
-  }, [disabled]);
+    const state = stateRef.current;
+    if (state.pending && state.timer) {
+      clearTimeout(state.timer);
+      state.timer = null;
+      state.pending = false;
+      doubleRef.current();
+      return;
+    }
+    state.pending = true;
+    state.timer = setTimeout(() => {
+      state.pending = false;
+      state.timer = null;
+      singleRef.current();
+    }, doubleTapWindowMs);
+  }, [disabled, doubleTapWindowMs]);
 
   return { onTap };
 }

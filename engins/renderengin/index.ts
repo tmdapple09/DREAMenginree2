@@ -24,4 +24,3 @@ export * from './advancedRendering';
 export * from './completionEvidence';
 
 export * from './serviceRuntime';
-export * from './wasmAcceleration';

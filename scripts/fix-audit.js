@@ -152,7 +152,7 @@ patch(
 */
 
 [
-  "engins/CodeEngin/core/parser.ts",
+  "engins/codeengin-ui/core/parser.ts",
   "engins/engin.CodeEngin.tsx",
 ].forEach((file) => {
   patch(file, (text) => {

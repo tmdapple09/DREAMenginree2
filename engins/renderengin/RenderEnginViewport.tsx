@@ -236,15 +236,6 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
         canvas.height = Math.max(1, Math.floor(rect.height * pixelRatio));
         const renderer = new WebGpuRenderEngin({ device, canvas });
         rendererRef.current = renderer;
-        const acceleration = await renderer.prepareWasmAcceleration();
-        runtimeRef.current?.dispatch({
-          type: 'render.asset.preview',
-          payload: {
-            source: activeAssetLabelRef.current,
-            wasmAcceleration: acceleration.active ? 'active' : 'fallback',
-            wasmReason: acceleration.reason,
-          },
-        });
         const mesh = renderer.uploadMesh(sceneMeshRef.current);
         const object = renderer.createSceneObject(mesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
         sceneObjectRef.current = object;

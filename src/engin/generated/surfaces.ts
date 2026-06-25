@@ -330,7 +330,6 @@ export const surfaces = {
   "components/dream.DrEamsModeToggle": () => import("@/components/dream.DrEamsModeToggle"),
   "components/dream.DrEamsVoiceAssistant": () => import("@/components/dream.DrEamsVoiceAssistant"),
   "components/dream.FeedCard": () => import("@/components/dream.FeedCard"),
-  "components/dream.FirstTouchActivator": () => import("@/components/dream.FirstTouchActivator"),
   "components/dream.ForgeDreamCanvas": () => import("@/components/dream.ForgeDreamCanvas"),
   "components/dream.GlobalOverlays": () => import("@/components/dream.GlobalOverlays"),
   "components/dream.HeroSprite": () => import("@/components/dream.HeroSprite"),

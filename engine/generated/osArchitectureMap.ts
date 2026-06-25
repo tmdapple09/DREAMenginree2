@@ -4280,9 +4280,9 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/CodeEngin/core/parser",
+      "id": "engins/codeengin-ui/core/parser",
       "slot": "engin",
-      "path": "engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
       "engine": "CodeEngin"
     },
     {
@@ -4310,27 +4310,27 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/index",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/index",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/orchestrator/dream.index",
+      "id": "engins/codeengin-ui/orchestrator/dream.index",
       "slot": "engin",
-      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
+      "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
       "engine": "CodeEngin"
     },
     {

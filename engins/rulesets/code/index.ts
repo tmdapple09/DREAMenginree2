@@ -9,7 +9,7 @@ export const constraints = [
 
 export const transforms = {
   engineMode: 'code',
-  workspace: 'engins/CodeEngin',
+  workspace: 'engins/codeengin-ui',
 };
 
 export const params = {

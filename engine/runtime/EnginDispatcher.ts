@@ -224,11 +224,6 @@ export async function initWasmEngine(
 
     // Pass the caller-provided shared memory so the Wasm module operates
     // on the same bytes as the JS typed-array views — true zero-copy SIMD.
-    if (wasmMemory.buffer.byteLength < SAB_BYTES) {
-      console.warn('[EnginDispatcher] Wasm memory is smaller than the Engin shared memory map. Using JS physics stub.');
-      return null;
-    }
-
     const { instance } = await WebAssembly.instantiate(arrayBuffer, {
       env: {
         memory: wasmMemory,
@@ -238,22 +233,7 @@ export async function initWasmEngine(
       },
     });
 
-    const exports = instance.exports as unknown as WasmEngineExports & { memory?: WebAssembly.Memory };
-
-    if (exports.memory && exports.memory !== wasmMemory) {
-      console.warn(
-        '[EnginDispatcher] Wasm binary owns a separate memory instead of importing the Engin shared memory. ' +
-        'Run the AssemblyScript build with imported shared memory before enabling the SIMD path.',
-      );
-      return null;
-    }
-
-    if (typeof exports.tickPhysicsSIMD !== 'function' || typeof exports.processAudioBufferSIMD !== 'function') {
-      console.warn('[EnginDispatcher] Wasm binary is missing required physics/audio exports. Using JS physics stub.');
-      return null;
-    }
-
-    return exports;
+    return instance.exports as unknown as WasmEngineExports;
   } catch (err: unknown) {
     console.warn('[EnginDispatcher] Wasm init failed; using JS physics stub:', err);
     return null;

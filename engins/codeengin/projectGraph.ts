@@ -1,5 +1,5 @@
 import path from 'path';
-import { parseCode } from '@/engins/CodeEngin/core/parser';
+import { parseCode } from '@/engins/codeengin-ui/core/parser';
 import { readProjectFile, listEditableFiles } from './workspaceStore';
 import type { CodeEnginGraphEdge, CodeEnginGraphNode, CodeEnginProjectGraph, CodeEnginSymbol } from './types';
 

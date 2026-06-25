@@ -133,26 +133,41 @@ describe('ButtonInteractionManager – tap', () => {
   });
 });
 
-describe('ButtonInteractionManager – repeated taps', () => {
-  it('keeps repeated short presses as immediate taps instead of promoting them', () => {
+describe('ButtonInteractionManager – double-tap', () => {
+  it('emits double-tap when two taps arrive within the window', () => {
     const mgr = new ButtonInteractionManager();
     const events: ButtonInteractionEvent[] = [];
     mgr.subscribe((e) => events.push(e));
 
     const t = 0;
     mgr.pressStart('triangle', 3, t);
-    mgr.pressEnd('triangle', 3, t + 80);
+    mgr.pressEnd('triangle', 3, t + 80);           // first tap (short)
+    // Second press within BTN_TAP_AND_HOLD_WINDOW_MS — also short → double-tap
     mgr.pressStart('triangle', 4, t + 200);
-    mgr.pressEnd('triangle', 4, t + 200 + 70);
+    mgr.pressEnd('triangle', 4, t + 200 + 70);     // short second press
 
     const interactions = events.map((e) => e.interaction);
-    expect(interactions.filter((i) => i === 'tap').length).toBe(2);
+    expect(interactions).toContain('double-tap');
     mgr.destroy();
   });
 
-  it('keeps the legacy repeated-tap constants exported for compatibility only', () => {
-    expect(BTN_DOUBLE_TAP_MAX_MS).toBeGreaterThan(0);
-    expect(BTN_TAP_AND_HOLD_WINDOW_MS).toBeGreaterThan(0);
+  it('does NOT emit double-tap when second tap is too slow', () => {
+    const mgr = new ButtonInteractionManager();
+    const events: ButtonInteractionEvent[] = [];
+    mgr.subscribe((e) => events.push(e));
+
+    const t = 0;
+    mgr.pressStart('square', 5, t);
+    mgr.pressEnd('square', 5, t + 80);
+    // Second press outside DOUBLE_TAP_MAX_MS
+    mgr.pressStart('square', 6, t + BTN_DOUBLE_TAP_MAX_MS + 100);
+    mgr.pressEnd('square', 6, t + BTN_DOUBLE_TAP_MAX_MS + 180);
+
+    const interactions = events.map((e) => e.interaction);
+    expect(interactions).not.toContain('double-tap');
+    // Both presses should be individual taps
+    expect(interactions.filter((i) => i === 'tap').length).toBe(2);
+    mgr.destroy();
   });
 });
 
@@ -187,14 +202,18 @@ describe('ButtonInteractionManager – long-press', () => {
 });
 
 describe('ButtonInteractionManager – tap-and-hold', () => {
-  it('emits tap-and-hold on one deliberate press longer than a tap', () => {
+  it('emits tap-and-hold on second press when it arrives quickly after first tap and is held', () => {
     const mgr = new ButtonInteractionManager();
     const events: ButtonInteractionEvent[] = [];
     mgr.subscribe((e) => events.push(e));
 
     const t = 0;
-    mgr.pressStart('r2', 10, t);
-    mgr.pressEnd('r2', 10, t + BTN_TAP_MAX_MS + 50);
+    // First tap
+    mgr.pressStart('r2', 9,  t);
+    mgr.pressEnd('r2',   9,  t + 80);
+    // Quick re-press within TAP_AND_HOLD_WINDOW_MS, held longer than TAP_MAX_MS → tap-and-hold
+    mgr.pressStart('r2', 10, t + 150);
+    mgr.pressEnd('r2',   10, t + 150 + BTN_TAP_MAX_MS + 50);
 
     expect(events.map((e) => e.interaction)).toContain('tap-and-hold');
     mgr.destroy();

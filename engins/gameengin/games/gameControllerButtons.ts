@@ -1,6 +1,6 @@
 // Button interaction state machine for the DREAMengin Game Controller.
-// Handles tap, hold, long-press, tap-and-hold, and release
-// for all eight controller buttons without requiring repeated taps.
+// Handles tap, hold, double-tap, long-press, tap-and-hold, and release
+// for all eight controller buttons.
 
 export type ControllerButton =
   | 'x'
@@ -16,6 +16,7 @@ export type ButtonInteraction =
   | 'tap'
   | 'hold-start'
   | 'hold-end'
+  | 'double-tap'
   | 'long-press'
   | 'tap-and-hold'
   | 'release';
@@ -26,10 +27,10 @@ export const BTN_TAP_MAX_MS = 250;
 /** Threshold for classifying a press as a long-press. */
 export const BTN_LONG_PRESS_MS = 600;
 
-/** Legacy compatibility only. Controller actions should not wait for repeated taps. */
+/** Two taps within this window = double-tap. */
 export const BTN_DOUBLE_TAP_MAX_MS = 400;
 
-/** Presses longer than tap but shorter than long-press emit tap-and-hold. */
+/** A tap followed by a press within this window = tap-and-hold. */
 export const BTN_TAP_AND_HOLD_WINDOW_MS = 300;
 
 export const CONTROLLER_BUTTONS: readonly ControllerButton[] = [
@@ -77,16 +78,20 @@ function emitWindowEvent(button: ControllerButton, interaction: ButtonInteractio
 interface ButtonState {
   touchId: number | null;
   pressStart: number;
+  lastTapAt: number;
   longPressTimer: ReturnType<typeof setTimeout> | null;
   longPressDidFire: boolean;
+  isTapAndHoldCandidate: boolean;
 }
 
 function freshState(): ButtonState {
   return {
     touchId: null,
     pressStart: 0,
+    lastTapAt: 0,
     longPressTimer: null,
     longPressDidFire: false,
+    isTapAndHoldCandidate: false,
   };
 }
 
@@ -135,6 +140,15 @@ export class ButtonInteractionManager {
     s.pressStart = now;
     s.longPressDidFire = false;
 
+    // Check for tap-and-hold candidate: a re-press that arrives quickly after a prior tap.
+    // We don't fire 'tap-and-hold' yet — we wait to see if the second press is held or short.
+    const sinceLastTap = now - s.lastTapAt;
+    s.isTapAndHoldCandidate =
+      s.lastTapAt > 0 && sinceLastTap <= BTN_TAP_AND_HOLD_WINDOW_MS;
+    if (s.isTapAndHoldCandidate) {
+      s.lastTapAt = 0;
+    }
+
     this.fire(button, 'hold-start');
 
     // Schedule long-press detection.
@@ -160,22 +174,43 @@ export class ButtonInteractionManager {
     }
 
     const duration = now - s.pressStart;
+    const prevTapAt = s.lastTapAt;
     s.touchId = null;
 
     // Always fire release.
     this.fire(button, 'release');
 
     if (s.longPressDidFire) {
+      s.lastTapAt = 0;
       this.fire(button, 'hold-end');
       return;
     }
 
-    if (duration <= BTN_TAP_MAX_MS) {
-      this.fire(button, 'tap');
+    if (s.isTapAndHoldCandidate) {
+      // Second press after a tap: short → double-tap, held → tap-and-hold.
+      if (duration <= BTN_TAP_MAX_MS) {
+        this.fire(button, 'double-tap');
+      } else {
+        this.fire(button, 'tap-and-hold');
+      }
       return;
     }
 
-    this.fire(button, 'tap-and-hold');
+    if (duration <= BTN_TAP_MAX_MS) {
+      // Short press — check for double-tap (wider window, no overlap with tap-and-hold here).
+      const sinceLastTap = now - prevTapAt;
+      if (prevTapAt > 0 && sinceLastTap <= BTN_DOUBLE_TAP_MAX_MS) {
+        s.lastTapAt = 0;
+        this.fire(button, 'double-tap');
+      } else {
+        s.lastTapAt = now;
+        this.fire(button, 'tap');
+      }
+    } else {
+      // Medium-length hold.
+      s.lastTapAt = 0;
+      this.fire(button, 'hold-end');
+    }
   }
 
   /** Release all active touches — call on unmount or focus loss. */

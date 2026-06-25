@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 302,
+  "surface": 301,
   "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 269,
+  "engin": 268,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 15,
@@ -39,7 +39,7 @@ export const osSlotCounts = {
   "migration": 60,
   "memory": 6,
   "dr-eams-tool": 26,
-  "hook": 13,
+  "hook": 12,
   "engine-system": 0,
   "engine-utility": 0
 } as const;
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 302,
+    "surface": 301,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 269,
+    "engin": 268,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 15,
@@ -407,7 +407,7 @@ export const osArchitectureGraph = {
     "migration": 60,
     "memory": 6,
     "dr-eams-tool": 26,
-    "hook": 13,
+    "hook": 12,
     "engine-system": 0,
     "engine-utility": 0
   }
@@ -2391,12 +2391,6 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "components/dream.FirstTouchActivator",
-      "slot": "surface",
-      "path": "components/dream.FirstTouchActivator.tsx",
-      "engine": "Universal"
-    },
-    {
       "id": "components/dream.ForgeDreamCanvas",
       "slot": "surface",
       "path": "components/dream.ForgeDreamCanvas.tsx",
@@ -4352,9 +4346,9 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/CodeEngin/core/parser",
+      "id": "engins/codeengin-ui/core/parser",
       "slot": "engin",
-      "path": "engins/CodeEngin/core/parser.ts",
+      "path": "engins/codeengin-ui/core/parser.ts",
       "engine": "CodeEngin"
     },
     {
@@ -4382,27 +4376,27 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/index",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/index",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/index.ts",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession",
+      "id": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession",
       "slot": "engin",
-      "path": "engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
+      "path": "engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
       "engine": "CodeEngin"
     },
     {
-      "id": "engins/CodeEngin/orchestrator/dream.index",
+      "id": "engins/codeengin-ui/orchestrator/dream.index",
       "slot": "engin",
-      "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
+      "path": "engins/codeengin-ui/orchestrator/dream.index.tsx",
       "engine": "CodeEngin"
     },
     {
@@ -5720,12 +5714,6 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
-      "id": "engins/renderengin/wasmAcceleration",
-      "slot": "engin",
-      "path": "engins/renderengin/wasmAcceleration.ts",
-      "engine": "Universal"
-    },
-    {
       "id": "engins/renderengin/webgpu",
       "slot": "engin",
       "path": "engins/renderengin/webgpu.ts",
@@ -5959,12 +5947,6 @@ export const osArchitectureStageEntries = {
       "id": "hooks/useAccount",
       "slot": "hook",
       "path": "hooks/useAccount.ts",
-      "engine": "Universal"
-    },
-    {
-      "id": "hooks/useAppIntentPressureSurface",
-      "slot": "hook",
-      "path": "hooks/useAppIntentPressureSurface.ts",
       "engine": "Universal"
     },
     {
@@ -6461,10 +6443,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 302 |
+| surface | 301 |
 | route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 269 |
+| engin | 268 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 15 |
@@ -6477,7 +6459,7 @@ User Action / Agent / CI
 | migration | 60 |
 | memory | 6 |
 | dr-eams-tool | 26 |
-| hook | 13 |
+| hook | 12 |
 | engine-system | 0 |
 | engine-utility | 0 |
 
