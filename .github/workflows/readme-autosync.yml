@@ -1,25 +1,25 @@
-name: README Full Coverage Autosync
+name: README Product Sync
 
 on:
   workflow_dispatch:
 
   schedule:
-    # 6:00 AM Pacific during daylight saving time
-    - cron: "0 13 * * *"
-    # 6:00 AM Pacific during standard time
-    - cron: "0 14 * * *"
+    # Weekly at 6:00 AM Pacific during daylight saving time
+    - cron: "0 13 * * 1"
+    # Weekly at 6:00 AM Pacific during standard time
+    - cron: "0 14 * * 1"
 
 permissions:
   contents: write
   pull-requests: write
 
 concurrency:
-  group: readme-full-coverage-${{ github.ref }}
+  group: readme-product-autosync-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   pacific-time-gate:
-    name: Allow only 6 AM Pacific or manual runs
+    name: Allow only Monday 6 AM Pacific or manual runs
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.gate.outputs.should_run }}
@@ -34,18 +34,19 @@ jobs:
             exit 0
           fi
 
+          PACIFIC_DAY="$(TZ=America/Los_Angeles date +%u)"
           PACIFIC_HOUR="$(TZ=America/Los_Angeles date +%H)"
 
-          if [ "$PACIFIC_HOUR" = "06" ]; then
+          if [ "$PACIFIC_DAY" = "1" ] && [ "$PACIFIC_HOUR" = "06" ]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "Scheduled run allowed. Current Pacific hour is 06."
+            echo "Scheduled run allowed. Current Pacific time is Monday 06:00."
           else
             echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "Scheduled run skipped. Current Pacific hour is $PACIFIC_HOUR, not 06."
+            echo "Scheduled run skipped. Current Pacific day/hour is ${PACIFIC_DAY}/${PACIFIC_HOUR}, not Monday/06."
           fi
 
-  readme-full-coverage:
-    name: Regenerate and report full README coverage
+  readme-product-autosync:
+    name: Regenerate DREAMengin README
     runs-on: ubuntu-latest
     needs: pacific-time-gate
     if: needs.pacific-time-gate.outputs.should_run == 'true'
@@ -68,7 +69,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build complete tracked-file inventory
+      - name: Build tracked-file inventory
         shell: bash
         run: |
           mkdir -p .readme-autosync
@@ -91,92 +92,67 @@ jobs:
           echo "Tracked files counted:"
           wc -l .readme-autosync/all-files.txt
 
-      - name: Regenerate README from entire repository
+      - name: Verify README autosync scripts exist
         shell: bash
         run: |
-          if [ ! -f scripts/generate-readme.ts ]; then
-            echo "Missing scripts/generate-readme.ts"
-            exit 1
-          fi
+          test -f scripts/generate-readme.ts
+          test -f scripts/readme-autosync.ts
 
+      - name: Typecheck README autosync scripts
+        shell: bash
+        run: |
+          pnpm exec tsc --noEmit --skipLibCheck \
+            scripts/generate-readme.ts \
+            scripts/readme-autosync.ts
+
+      - name: Generate README professional front door and product sections
+        shell: bash
+        run: |
           pnpm tsx scripts/generate-readme.ts \
             --changed-files .readme-autosync/all-files.txt \
-            --summary-file .readme-autosync/readme-summary.json
+            --summary-file .readme-autosync/readme-summary.json \
+            --max-lines 2800
 
-      - name: Report README full coverage
+      - name: Validate README product sections
         id: validate
         shell: bash
         run: |
           node <<'NODE'
           const fs = require("node:fs");
 
-          const inventoryPath = ".readme-autosync/all-files.txt";
           const readmePath = "README.md";
           const reportPath = ".readme-autosync/readme-coverage-report.md";
           const jsonPath = ".readme-autosync/readme-coverage-report.json";
-
-          const repoFiles = fs.readFileSync(inventoryPath, "utf8")
-            .split(/\r?\n/g)
-            .map((line) => line.trim())
-            .filter(Boolean)
-            .map((file) => file.replace(/\\/g, "/"));
 
           if (!fs.existsSync(readmePath)) {
             throw new Error("README.md does not exist after generation.");
           }
 
           const readme = fs.readFileSync(readmePath, "utf8");
+          const lines = readme.split(/\r?\n/g);
 
-          const fileSet = new Set(repoFiles);
-          const dirSet = new Set(["."]);
-
-          for (const file of repoFiles) {
-            const parts = file.split("/");
-            let current = "";
-            for (let i = 0; i < parts.length - 1; i++) {
-              current = current ? `${current}/${parts[i]}` : parts[i];
-              dirSet.add(current);
-            }
-          }
-
-          function normalizeCandidate(raw) {
-            return String(raw)
-              .trim()
-              .replace(/^\.?\//, "")
-              .replace(/#.*$/, "")
-              .replace(/\?.*$/, "")
-              .replace(/[),.;:]+$/g, "")
-              .replace(/\\ /g, " ")
-              .replace(/\\/g, "/");
-          }
-
-          function looksLikeRepoPath(raw) {
-            const value = normalizeCandidate(raw);
-
-            if (!value) return false;
-            if (value.startsWith("http://")) return false;
-            if (value.startsWith("https://")) return false;
-            if (value.startsWith("mailto:")) return false;
-            if (value.startsWith("#")) return false;
-            if (value.includes("*")) return false;
-            if (value.includes("{")) return false;
-            if (value.includes("}")) return false;
-            if (value.includes("$")) return false;
-            if (value.includes("\n")) return false;
-            if (value.length > 180) return false;
-
-            return (
-              value.includes("/") ||
-              /^[A-Za-z0-9._-]+\.[A-Za-z0-9]+$/.test(value) ||
-              value.startsWith(".github") ||
-              value.startsWith(".env")
-            );
-          }
-
-          function existsInRepo(candidate) {
-            const value = normalizeCandidate(candidate);
-            return fileSet.has(value) || dirSet.has(value) || fs.existsSync(value);
-          }
+          const requiredSections = [
+            "1. Project Overview",
+            "2. Getting Started",
+            "3. Usage, Configuration & Project Notes",
+            "4. Tech Stack & Monorepo Layout",
+            "5. The Engins and DayDreams",
+            "6. Dual Runtimes",
+            "7. Shared Dreams",
+            "8. DreamR — Human Media",
+            "9. The Shop",
+            "10. The Marketplace",
+            "11. Ads & User Ads",
+            "12. The DreamDmBar",
+            "13. Messaging",
+            "14. HomeDream",
+            "15. DreamSpace",
+            "16. Dreams / Widgets / Windows / Surfaces",
+            "17. User-Facing Modularity",
+            "18. Custom Engins",
+            "19. Full Website Customizability",
+            "20. Backend, System, Core & CoreSurfaces",
+          ];
 
           const failures = [];
           const warnings = [];
@@ -185,8 +161,49 @@ jobs:
             failures.push("README.md is empty.");
           }
 
-          if (!/ARCHITECTURE\.md/i.test(readme)) {
-            failures.push("README does not mention ARCHITECTURE.md authority.");
+          if (!/^#\s+DREAMengin/m.test(readme)) {
+            failures.push("README must start with a DREAMengin project title.");
+          }
+
+          for (const section of requiredSections) {
+            const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const pattern = new RegExp(`^##\\s+${escaped}\\s*$`, "m");
+            if (!pattern.test(readme)) {
+              failures.push(`Missing section heading: ${section}`);
+            }
+          }
+
+          const productSections = requiredSections.slice(3);
+
+          for (const section of productSections) {
+            const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const start = readme.search(new RegExp(`^##\\s+${escaped}\\s*$`, "m"));
+
+            if (start === -1) continue;
+
+            const rest = readme.slice(start + section.length);
+            const next = rest.search(/^##\s+\d+\.\s+/m);
+            const body = next === -1 ? rest : rest.slice(0, next);
+
+            if (!/###\s+Plain English/i.test(body)) {
+              failures.push(`${section} is missing a Plain English subsection.`);
+            }
+
+            if (!/###\s+Repo Evidence/i.test(body)) {
+              failures.push(`${section} is missing a Repo Evidence subsection.`);
+            }
+
+            if (!/###\s+Matched Files/i.test(body)) {
+              failures.push(`${section} is missing a Matched Files subsection.`);
+            }
+
+            if (!/`[^`]+\.(ts|tsx|js|jsx|mjs|cjs|css|sql|md|json|ya?ml)`/i.test(body)) {
+              failures.push(`${section} does not list concrete repo files.`);
+            }
+          }
+
+          if (lines.length > 2900) {
+            warnings.push(`README is ${lines.length} lines. Target is around 2800 lines.`);
           }
 
           if (/@\/lib\//g.test(readme)) {
@@ -197,186 +214,79 @@ jobs:
             failures.push("README contains one or more generated sections with Files tracked: **0**.");
           }
 
-          if (/\(no files currently matched\)/g.test(readme)) {
-            failures.push("README contains '(no files currently matched)', which means a section is stale or uncovered.");
+          if (/$begin:math:text$no files currently matched$end:math:text$/g.test(readme)) {
+            failures.push("README contains '(no files currently matched)'.");
           }
 
-          if (/(…|\.\.\.)\s*\(\d+\s+more files\)/g.test(readme)) {
-            failures.push("README contains truncated file listings like '… (N more files)'. Full coverage requires every tracked path to be listed.");
-          }
-
-          const missingFiles = repoFiles.filter((file) => !readme.includes(file));
-
-          if (missingFiles.length) {
-            failures.push(`README is missing ${missingFiles.length} tracked file path(s).`);
-          }
-
-          const extractedPaths = new Set();
-
-          const markdownLinkRe = /\[[^\]]+\]\((?!https?:\/\/|mailto:|#)([^)#]+)(?:#[^)]+)?\)/g;
-          for (const match of readme.matchAll(markdownLinkRe)) {
-            const candidate = normalizeCandidate(match[1]);
-            if (looksLikeRepoPath(candidate)) extractedPaths.add(candidate);
-          }
-
-          const backtickRe = /`([^`]+)`/g;
-          for (const match of readme.matchAll(backtickRe)) {
-            const candidate = normalizeCandidate(match[1]);
-            if (looksLikeRepoPath(candidate)) extractedPaths.add(candidate);
-          }
-
-          const codeFenceRe = /```(?:text|txt)?\n([\s\S]*?)```/g;
-          for (const fence of readme.matchAll(codeFenceRe)) {
-            const body = fence[1];
-            if (!/[├└]──/.test(body)) continue;
-
-            const stack = [];
-
-            for (const rawLine of body.split(/\r?\n/g)) {
-              const match = rawLine.match(/^([│\s]*)(?:├──|└──)\s+(.+)$/);
-              if (!match) continue;
-
-              const prefix = match[1] || "";
-              let name = match[2].trim();
-
-              if (!name || name.startsWith("(")) continue;
-              if (/more files/i.test(name)) continue;
-
-              name = name
-                .replace(/\s+#.*$/g, "")
-                .replace(/\/$/g, "")
-                .trim();
-
-              if (!name) continue;
-
-              const depth = Math.floor(prefix.replace(/│/g, " ").length / 4);
-              stack[depth] = name;
-              stack.length = depth + 1;
-
-              const fullPath = normalizeCandidate(stack.join("/"));
-              if (looksLikeRepoPath(fullPath)) extractedPaths.add(fullPath);
-            }
-          }
-
-          const stalePaths = [...extractedPaths]
-            .filter((candidate) => looksLikeRepoPath(candidate))
-            .filter((candidate) => !existsInRepo(candidate));
-
-          if (stalePaths.length) {
-            failures.push(`README contains ${stalePaths.length} stale or nonexistent repo path(s).`);
-          }
-
-          const h2s = [...readme.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
-          const seenH2 = new Set();
-          const duplicateH2 = [];
-
-          for (const heading of h2s) {
-            const key = heading.toLowerCase();
-            if (seenH2.has(key)) duplicateH2.push(heading);
-            seenH2.add(key);
-          }
-
-          if (duplicateH2.length) {
-            warnings.push(`Duplicate README H2 headings detected: ${duplicateH2.join(", ")}`);
-          }
-
-          const appRoutes = repoFiles.filter((file) => /^app\/api\/.+\/route\.tsx?$/.test(file));
-          const appPages = repoFiles.filter((file) => /^app\/.+\/page\.tsx?$/.test(file));
-          const migrations = repoFiles.filter((file) => /^supabase\/migrations\/.+\.sql$/.test(file));
-          const engins = repoFiles.filter((file) => /^engins\/.+\.(ts|tsx|js|jsx|mjs|cjs)$/.test(file));
-          const workflows = repoFiles.filter((file) => /^\.github\/workflows\/.+\.ya?ml$/.test(file));
-
-          const requiredGroups = [
-            ["API routes", appRoutes],
-            ["App pages", appPages],
-            ["Supabase migrations", migrations],
-            ["Engins", engins],
-            ["GitHub workflows", workflows],
-          ];
-
-          for (const [name, files] of requiredGroups) {
-            const missing = files.filter((file) => !readme.includes(file));
-            if (missing.length) {
-              failures.push(`README is missing ${missing.length}/${files.length} ${name}.`);
-            }
+          if (/(…|\.\.\.)\s*$begin:math:text$\\d\+\\s\+more files$end:math:text$/g.test(readme)) {
+            failures.push("README contains truncated file listings like '… (N more files)'.");
           }
 
           const report = [
-            "# README Full Coverage Report",
+            "# README Product Autosync Report",
             "",
-            `Tracked files scanned: ${repoFiles.length}`,
-            `Extracted README repo paths: ${extractedPaths.size}`,
-            `Missing tracked files: ${missingFiles.length}`,
-            `Stale README paths: ${stalePaths.length}`,
+            `README lines: ${lines.length}`,
+            `Required sections checked: ${requiredSections.length}`,
+            `Product sections checked: ${productSections.length}`,
             `Warnings: ${warnings.length}`,
             `Failures: ${failures.length}`,
             "",
             "## Failures",
-            failures.length ? failures.map((f) => `- ${f}`).join("\n") : "- None",
+            failures.length ? failures.map((failure) => `- ${failure}`).join("\n") : "- None",
             "",
             "## Warnings",
-            warnings.length ? warnings.map((w) => `- ${w}`).join("\n") : "- None",
-            "",
-            "## Missing tracked files",
-            missingFiles.length ? missingFiles.map((f) => `- \`${f}\``).join("\n") : "- None",
-            "",
-            "## Stale README paths",
-            stalePaths.length ? stalePaths.map((f) => `- \`${f}\``).join("\n") : "- None",
+            warnings.length ? warnings.map((warning) => `- ${warning}`).join("\n") : "- None",
             "",
           ].join("\n");
 
-          const hasCoverageIssues = failures.length > 0;
-
           fs.writeFileSync(reportPath, report);
           fs.writeFileSync(jsonPath, JSON.stringify({
-            trackedFiles: repoFiles.length,
-            extractedReadmePaths: extractedPaths.size,
-            missingTrackedFiles: missingFiles,
-            staleReadmePaths: stalePaths,
+            readmeLines: lines.length,
+            requiredSections,
+            productSections,
             warnings,
             failures,
-            hasCoverageIssues,
+            hasFailures: failures.length > 0,
           }, null, 2));
 
           console.log(report);
 
-          if (hasCoverageIssues) {
-            console.log("README coverage issues found. Marked in report artifact. Not failing workflow.");
+          if (failures.length) {
+            process.exit(1);
           }
-
-          process.exit(0);
           NODE
 
-      - name: Detect README changes
+      - name: Detect README autosync changes
         id: autosync
         if: always()
         shell: bash
         run: |
-          if git diff --quiet README.md; then
-            echo "readme_changed=false" >> "$GITHUB_OUTPUT"
+          if git diff --quiet -- README.md scripts/generate-readme.ts scripts/readme-autosync.ts .github/workflows/readme-autosync.yml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "readme_changed=true" >> "$GITHUB_OUTPUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit README update
-        if: steps.autosync.outputs.readme_changed == 'true'
+      - name: Commit README autosync update
+        if: steps.autosync.outputs.changed == 'true'
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add README.md
-          git commit -m "docs(readme): full coverage autosync [skip ci]"
+          git add README.md scripts/generate-readme.ts scripts/readme-autosync.ts .github/workflows/readme-autosync.yml
+          git commit -m "docs(readme): autosync product README [skip ci]"
           git push
 
-      - name: Upload README coverage artifacts
+      - name: Upload README autosync artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: readme-full-coverage
+          name: readme-product-autosync
           path: |
             README.md
             .readme-autosync/all-files.txt
+            .readme-autosync/changed-files.txt
             .readme-autosync/readme-summary.json
             .readme-autosync/readme-coverage-report.md
             .readme-autosync/readme-coverage-report.json
