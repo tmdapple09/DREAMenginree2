@@ -144,7 +144,7 @@ This is the build shape of DREAMengin: the Next.js app, TypeScript source, packa
 Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.
 
 ### Repo-grounded detail
-Matched repo evidence: 1762 files, about 377,910 readable source lines.
+Matched repo evidence: 1762 files, about 377,917 readable source lines.
 
 Important source roots:
 - `engins` — 360 matched files
@@ -404,7 +404,7 @@ Dual runtimes are the split execution model that lets DREAMengin coordinate navi
 Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.
 
 ### Repo-grounded detail
-Matched repo evidence: 379 files, about 200,456 readable source lines.
+Matched repo evidence: 379 files, about 200,463 readable source lines.
 
 Important source roots:
 - `engine` — 107 matched files
@@ -1016,7 +1016,7 @@ Ads and User Ads cover promotion, sponsored inventory, campaign surfaces, impres
 Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor cards, or paid visibility controls.
 
 ### Repo-grounded detail
-Matched repo evidence: 203 files, about 60,423 readable source lines.
+Matched repo evidence: 203 files, about 60,430 readable source lines.
 
 Important source roots:
 - `engins` — 33 matched files
@@ -1276,7 +1276,7 @@ Messaging is the direct communication layer: conversations, drafts, notification
 Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.
 
 ### Repo-grounded detail
-Matched repo evidence: 168 files, about 36,631 readable source lines.
+Matched repo evidence: 168 files, about 36,638 readable source lines.
 
 Important source roots:
 - `docs` — 35 matched files
