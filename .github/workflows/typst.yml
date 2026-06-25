@@ -17,43 +17,6 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v6
 
-      - name: Install Typst CLI
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          python3 <<'PY' > /tmp/typst-url.txt
-          import json
-          import urllib.request
-
-          request = urllib.request.Request(
-              "https://api.github.com/repos/typst/typst/releases/latest",
-              headers={
-                  "Accept": "application/vnd.github+json",
-                  "User-Agent": "dreamengin-typst-export",
-              },
-          )
-
-          with urllib.request.urlopen(request, timeout=30) as response:
-              release = json.load(response)
-
-          for asset in release.get("assets", []):
-              name = asset.get("name", "")
-              url = asset.get("browser_download_url", "")
-              if name.endswith("x86_64-unknown-linux-musl.tar.xz") and url:
-                  print(url)
-                  break
-          else:
-              raise SystemExit("Could not find Typst Linux x86_64 release asset")
-          PY
-
-          curl -fsSL "$(cat /tmp/typst-url.txt)" -o /tmp/typst.tar.xz
-          mkdir -p /tmp/typst
-          tar -xJf /tmp/typst.tar.xz -C /tmp/typst --strip-components=1
-          sudo install -m 0755 /tmp/typst/typst /usr/local/bin/typst
-
-          typst --version
-
       - name: Build real Typst repo export
         shell: bash
         run: |
@@ -205,16 +168,18 @@ jobs:
               )
               return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
+          def normalized_path(path_string: str) -> str:
+              return path_string.replace("\\", "/")
+
           def is_public_wasm_code(path_string: str) -> bool:
-              normalized = path_string.replace("\\", "/")
-              return normalized in public_wasm_code_paths
+              return normalized_path(path_string) in public_wasm_code_paths
 
           def is_allowed(path_string: str) -> bool:
               path = Path(path_string)
               parts = path.parts
               name = path.name
               suffix = path.suffix.lower()
-              lower_path = path_string.lower()
+              lower_path = normalized_path(path_string).lower()
 
               if not parts:
                   return False
@@ -231,7 +196,6 @@ jobs:
               if suffix not in allowed_extensions:
                   return False
 
-              # Public is normally blocked, but DREAMengin stores real runtime/cartridge WASM there.
               if is_public_wasm_code(path_string):
                   return True
 
@@ -300,6 +264,7 @@ jobs:
               while index < len(data):
                   section_id = data[index]
                   index += 1
+
                   section_size, index = read_u32(data, index)
                   section_start = index
                   section_end = section_start + section_size
@@ -427,32 +392,25 @@ jobs:
           print(f"Included lines/artifact lines: {written_lines}")
           print(f"Included WASM artifacts: {written_wasm}")
 
+          if written_files == 0:
+              raise SystemExit("No files were exported")
+
           if written_wasm == 0:
               raise SystemExit("No WASM artifacts were included; expected DREAMengin runtime WASM files")
           PY
 
-      - name: Compile Typst export to PDF
+      - name: Show export summary
         shell: bash
         run: |
           set -euo pipefail
 
-          typst compile \
-            repo-export/dreamengin-application-code.typ \
-            repo-export/dreamengin-application-code.pdf
-
-      - name: Show export summary
-        shell: bash
-        run: |
           wc -l repo-export/dreamengin-application-code.typ
           du -h repo-export/dreamengin-application-code.typ
-          du -h repo-export/dreamengin-application-code.pdf
           ls -lh repo-export
 
       - name: Upload Typst export
         uses: actions/upload-artifact@v7
         with:
           name: dreamengin-application-code-typst
-          path: |
-            repo-export/dreamengin-application-code.typ
-            repo-export/dreamengin-application-code.pdf
+          path: repo-export/dreamengin-application-code.typ
           if-no-files-found: error
