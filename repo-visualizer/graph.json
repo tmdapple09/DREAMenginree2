@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T02:37:44.433Z",
+  "generatedAt": "2026-06-25T07:33:30.199Z",
   "root": ".",
   "nodes": [
     {
@@ -3316,6 +3316,16 @@
       "label": "type-audit.yml",
       "type": "config",
       "path": ".github/workflows/type-audit.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/typst.yml",
+      "label": "typst.yml",
+      "type": "config",
+      "path": ".github/workflows/typst.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -62419,116 +62429,6 @@
       "tags": []
     },
     {
-      "id": "function:lib-index.mjs#posix",
-      "label": "posix",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 40,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#rel",
-      "label": "rel",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 44,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#existsFile",
-      "label": "existsFile",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 48,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#existsDir",
-      "label": "existsDir",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 56,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#walk",
-      "label": "walk",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 64,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#isCodeFile",
-      "label": "isCodeFile",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 82,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#isTextLike",
-      "label": "isTextLike",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 86,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#readMaybe",
-      "label": "readMaybe",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 90,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#normalizeImportSpecifier",
-      "label": "normalizeImportSpecifier",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 99,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib-index.mjs#parseImports",
-      "label": "parseImports",
-      "type": "function",
-      "path": "lib-index.mjs",
-      "parent": "file:lib-index.mjs",
-      "loc": 139,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "file:lib-index.mjs",
-      "label": "lib-index.mjs",
-      "type": "mjs",
-      "path": "lib-index.mjs",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
       "id": "folder:misc",
       "label": "misc",
       "type": "folder",
@@ -66168,67 +66068,357 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 222,
+      "loc": 685,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#isExcluded",
-      "label": "isExcluded",
+      "id": "function:scripts/readme-autosync.ts#getRoot",
+      "label": "getRoot",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 226,
+      "loc": 689,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#shouldRead",
-      "label": "shouldRead",
+      "id": "function:scripts/readme-autosync.ts#isGloballyExcluded",
+      "label": "isGloballyExcluded",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 231,
+      "loc": 695,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#countLines",
-      "label": "countLines",
+      "id": "function:scripts/readme-autosync.ts#isSectionExcluded",
+      "label": "isSectionExcluded",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 240,
+      "loc": 699,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#globToRegExp",
-      "label": "globToRegExp",
+      "id": "function:scripts/readme-autosync.ts#isReadableSource",
+      "label": "isReadableSource",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 245,
+      "loc": 703,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#matchesGlob",
-      "label": "matchesGlob",
+      "id": "function:scripts/readme-autosync.ts#isCodeFile",
+      "label": "isCodeFile",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 254,
+      "loc": 707,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#routeFromFile",
-      "label": "routeFromFile",
+      "id": "function:scripts/readme-autosync.ts#readFileSafe",
+      "label": "readFileSafe",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 264,
+      "loc": 711,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#loadTrackedFiles",
+      "label": "loadTrackedFiles",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 719,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#loadSourceFiles",
+      "label": "loadSourceFiles",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 729,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#normalizedNeedle",
+      "label": "normalizedNeedle",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 748,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#escapeRegExp",
+      "label": "escapeRegExp",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 752,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#pathHasKeyword",
+      "label": "pathHasKeyword",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 756,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#textHasKeyword",
+      "label": "textHasKeyword",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 772,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#isMetaFileForSection",
+      "label": "isMetaFileForSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 784,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#scoreFile",
+      "label": "scoreFile",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 791,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#applyRootCaps",
+      "label": "applyRootCaps",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 842,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#getMatches",
+      "label": "getMatches",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 866,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractRouteMethods",
+      "label": "extractRouteMethods",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 879,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractRoutes",
+      "label": "extractRoutes",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 893,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractImports",
+      "label": "extractImports",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 915,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#isLikelyConstant",
+      "label": "isLikelyConstant",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 935,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractExports",
+      "label": "extractExports",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 939,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractComponents",
+      "label": "extractComponents",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 960,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractHooks",
+      "label": "extractHooks",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 984,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#behaviorSignals",
+      "label": "behaviorSignals",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 998,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#formatList",
+      "label": "formatList",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1028,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#fileSummary",
+      "label": "fileSummary",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1033,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#keyInteractionMarkdown",
+      "label": "keyInteractionMarkdown",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1045,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#sanitizeGeneratedMarkdown",
+      "label": "sanitizeGeneratedMarkdown",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1055,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#sectionMarkdown",
+      "label": "sectionMarkdown",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1062,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildProductSections",
+      "label": "buildProductSections",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1128,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#renderProductSectionsMarkdown",
+      "label": "renderProductSectionsMarkdown",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1149,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildProductReadmeSections",
+      "label": "buildProductReadmeSections",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1160,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#parseArgs",
+      "label": "parseArgs",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1197,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#writeJson",
+      "label": "writeJson",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1219,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#runCli",
+      "label": "runCli",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1224,
       "isOrphan": true,
       "exported": false
     },
@@ -114389,7 +114579,7 @@
     },
     {
       "source": "file:scripts/generate-readme.ts",
-      "target": "file:scripts/readme-autosync.ts",
+      "target": "function:scripts/readme-autosync.ts#buildProductReadmeSections",
       "kind": "call"
     },
     {

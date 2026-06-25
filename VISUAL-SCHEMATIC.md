@@ -9,9 +9,9 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 ### Auto-Generated Repository Overview
 
 - **Total files:** 2254
-- **Total function/class nodes:** 4432
+- **Total function/class nodes:** 4451
 - **Total edges:** 8363
-- **Orphan nodes:** 3859
+- **Orphan nodes:** 3876
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4318,7 +4318,6 @@ _File-level graph omitted: 360 files exceeds Mermaid render budget. See table ab
 | `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `lib-index.mjs` | mjs |
 | `LICENSE` | file |
 | `misc/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `misc/images/arm2_transparent.png` | file |
