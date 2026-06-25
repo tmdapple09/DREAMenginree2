@@ -13,7 +13,7 @@
 
 DREAMengin is a web-native creative operating system built around Engins, DayDreams, shared runtime state, communication, social discovery, commerce, and user-owned creative surfaces. It is not a set of isolated apps. It is one product where creative work can move between code, games, content, lab simulations, music, branding, shops, messaging, and social surfaces.
 
-This repository currently exposes about 112 app pages, 125 API route files, and 359 files under `engins/`, with `ARCHITECTURE.md` treated as the project authority for system meaning.
+This repository currently exposes about 112 app pages, 125 API route files, and 360 files under `engins/`, with `ARCHITECTURE.md` treated as the project authority for system meaning.
 
 ### Why would I use it?
 
@@ -114,24 +114,24 @@ DREAMengin is organized around the project architecture in `ARCHITECTURE.md` and
 
 - [1. Project Overview](#1-project-overview)
 - [2. Getting Started](#2-getting-started)
-- [3. Usage, Configuration & Project Notes](#3-usage-configuration--project-notes)
-- [4. Tech Stack & Monorepo Layout](#4-tech-stack--monorepo-layout)
+- [3. Usage, Configuration & Project Notes](#3-usage-configuration-project-notes)
+- [4. Tech Stack & Monorepo Layout](#4-tech-stack-monorepo-layout)
 - [5. The Engins and DayDreams](#5-the-engins-and-daydreams)
 - [6. Dual Runtimes](#6-dual-runtimes)
 - [7. Shared Dreams](#7-shared-dreams)
-- [8. DreamR — Human Media](#8-dreamr--human-media)
+- [8. DreamR — Human Media](#8-dreamr-human-media)
 - [9. The Shop](#9-the-shop)
 - [10. The Marketplace](#10-the-marketplace)
-- [11. Ads & User Ads](#11-ads--user-ads)
+- [11. Ads & User Ads](#11-ads-user-ads)
 - [12. The DreamDmBar (dreamdmbar/)](#12-the-dreamdmbar-dreamdmbar)
 - [13. Messaging](#13-messaging)
 - [14. HomeDream](#14-homedream)
 - [15. DreamSpace](#15-dreamspace)
-- [16. Dreams (Widgets / Windows / Surfaces)](#16-dreams-widgets--windows--surfaces)
+- [16. Dreams (Widgets / Windows / Surfaces)](#16-dreams-widgets-windows-surfaces)
 - [17. User-Facing Modularity](#17-user-facing-modularity)
 - [18. Custom Engins](#18-custom-engins)
 - [19. Full Website Customizability](#19-full-website-customizability)
-- [20. Backend, System, Core & CoreSurfaces](#20-backend-system-core--coresurfaces)
+- [20. Backend, System, Core & CoreSurfaces](#20-backend-system-core-coresurfaces)
 
 <!-- DREAMENGIN_PRODUCT_README:START -->
 
@@ -144,13 +144,13 @@ This is the build shape of DREAMengin: the Next.js app, TypeScript source, packa
 Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.
 
 ### Repo-grounded detail
-Matched repo evidence: 1762 files, about 379,123 readable source lines.
+Matched repo evidence: 1762 files, about 377,910 readable source lines.
 
 Important source roots:
-- `engins` — 359 matched files
-- `components` — 323 matched files
+- `engins` — 360 matched files
+- `components` — 324 matched files
 - `app` — 278 matched files
-- `engine` — 271 matched files
+- `engine` — 270 matched files
 - `.github` — 178 matched files
 - `supabase` — 80 matched files
 - `scripts` — 52 matched files
@@ -159,12 +159,12 @@ Important source roots:
 Behavior signals found in matched files:
 - commerce — 719 file hits
 - rendering — 636 file hits
-- runtime — 501 file hits
-- auth — 476 file hits
-- persistence — 461 file hits
+- runtime — 500 file hits
+- auth — 474 file hits
+- persistence — 460 file hits
 - state — 445 file hits
 - mobile-touch — 414 file hits
-- events — 359 file hits
+- events — 358 file hits
 
 Routes and API endpoints:
 - `/auth/reset-password ← app/auth/reset-password/page.tsx`
@@ -247,7 +247,6 @@ Import/export connections:
 - `.github/workflows/games-library-ai-agent.yml` — 124 lines; state/runtime/rendering
 - `.github/workflows/issue-bot.yml` — 321 lines; state/events/mobile-touch
 - `.github/workflows/neural_decision_engine.yml` — 249 lines; state/commerce
-- `.github/workflows/readme-autosync.yml` — 230 lines; state/runtime/auth
 - `.github/workflows/refreshlock.yml` — 59 lines; state/commerce
 - `.github/workflows/report-driven-coding-agent.yml` — 219 lines; state/commerce
 - `.github/workflows/spec-engin-ai-agent.yml` — 225 lines; state/commerce
@@ -263,6 +262,7 @@ Import/export connections:
 - `supabase/config.toml` — 94 lines; runtime/persistence/auth
 - `supabase/migrations/20260310000001_profiles_widget_config.sql` — 22 lines; rendering
 - `tailwind.config.ts` — 99 lines; commerce
+- `.github/workflows/elite-gameengin-evolution.yml` — 426 lines; state/runtime/rendering
 - Plus 1728 additional matched files summarized by roots/signals above.
 
 ## 5. The Engins and DayDreams
@@ -274,12 +274,12 @@ Engins are the production systems; DayDreams are the user-facing creative spaces
 A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.
 
 ### Repo-grounded detail
-Matched repo evidence: 1341 files, about 355,012 readable source lines.
+Matched repo evidence: 1340 files, about 351,758 readable source lines.
 
 Important source roots:
-- `engins` — 359 matched files
-- `engine` — 271 matched files
-- `components` — 164 matched files
+- `engins` — 360 matched files
+- `engine` — 270 matched files
+- `components` — 165 matched files
 - `.github` — 128 matched files
 - `tests` — 123 matched files
 - `app` — 112 matched files
@@ -287,14 +287,14 @@ Important source roots:
 - `scripts` — 26 matched files
 
 Behavior signals found in matched files:
-- rendering — 550 file hits
-- commerce — 515 file hits
-- runtime — 512 file hits
-- events — 313 file hits
-- mobile-touch — 313 file hits
-- state — 300 file hits
-- auth — 291 file hits
-- persistence — 282 file hits
+- rendering — 549 file hits
+- commerce — 514 file hits
+- runtime — 511 file hits
+- mobile-touch — 312 file hits
+- events — 311 file hits
+- state — 299 file hits
+- auth — 289 file hits
+- persistence — 280 file hits
 
 Routes and API endpoints:
 - `/engines/music/studio ← app/engines/music/studio/page.tsx`
@@ -334,9 +334,9 @@ Exports that define public behavior:
 - `metadata (named)`
 - `MusicStudioPage (default)`
 - `ImplicitAssetWorkspace (default)`
+- `StudioPanel (default)`
 - `WorkspaceIntentLog (named)`
 - `useImplicitAssetWorkspace (named)`
-- `StudioPanel (default)`
 - `EnginId (named)`
 - `WorkflowStage (named)`
 - `STAGE_LABELS (named)`
@@ -352,17 +352,17 @@ Import/export connections:
 - `supabase/client/safeGetUser.ts`
 - `next/navigation`
 - `next/server`
-- `react`
 - `engins/contentengin/AssetViewport.tsx`
 - `engins/isosurfaceAssetPipeline.ts`
-- `engins/renderengin/RenderStage.tsx`
+- `engins/renderengin`
 - `engins/contentengin/useImplicitAssetWorkspace.ts`
+- `react`
 
 ### Key files
 - `app/engines/music/studio/page.tsx` — 40 lines; page · persistence/auth · ACCENT
-- `engins/contentengin/ImplicitAssetWorkspace.tsx` — 89 lines; state/runtime/mobile-touch · ImplicitAssetWorkspace · useImplicitAssetWorkspace
-- `engins/contentengin/useImplicitAssetWorkspace.ts` — 390 lines; state/runtime/rendering · useImplicitAssetWorkspace
+- `engins/contentengin/ImplicitAssetWorkspace.tsx` — 77 lines; state/runtime/mobile-touch · ImplicitAssetWorkspace · useImplicitAssetWorkspace
 - `components/engines/music/panels/dream.panel.StudioPanel.tsx` — 188 lines; state/events/auth · StudioPanel · useState
+- `engins/contentengin/useImplicitAssetWorkspace.ts` — 376 lines; state/runtime/rendering · useImplicitAssetWorkspace
 - `engins/rulesets/workflowEngine.ts` — 281 lines; events/rendering/commerce · STAGE_ORDER
 - `engins/rulesets/code/codeEnginRuleSet.ts` — 395 lines; runtime · DEFAULT_CELLS
 - `app/engines/music/arrange/page.tsx` — 40 lines; page · persistence/auth · ACCENT
@@ -370,7 +370,6 @@ Import/export connections:
 - `components/engines/code/panels/dream.panel.ProjectsPanel.tsx` — 201 lines; state/persistence/auth · ProjectsPanel · useState
 - `components/engines/music/dream.MusicEnginApp.tsx` — 33 lines; StarMakerEngin
 - `components/engines/shared/dream.EnginRuleSet.ts` — 51 lines; runtime/rendering/commerce
-- `engins/contentengin/AssetViewport.tsx` — 714 lines; state/runtime/mobile-touch · AssetViewport · useRef
 - `engins/gameengin/dream-engine.ts` — 166 lines; persistence/events/rendering · DreamEngine
 - `engins/rulesets/brand/brandEnginRuleSet.ts` — 241 lines; runtime/persistence · DEFAULT_METRICS
 - `engins/rulesets/brand/useBrandEnginRuntime.ts` — 109 lines; state/runtime/rendering · useBrandEnginRuntime
@@ -393,7 +392,8 @@ Import/export connections:
 - `app/engines/lab/experiments/page.tsx` — 32 lines; page · persistence/auth · ACCENT
 - `app/engines/lab/quantum/page.tsx` — 32 lines; page · persistence/auth · ACCENT
 - `app/engines/music/layout.tsx` — 18 lines; MusicEnginLayout
-- Plus 1307 additional matched files summarized by roots/signals above.
+- `components/engines/brand/dream.BrandEnginApp.tsx` — 29 lines
+- Plus 1306 additional matched files summarized by roots/signals above.
 
 ## 6. Dual Runtimes
 
@@ -404,11 +404,11 @@ Dual runtimes are the split execution model that lets DREAMengin coordinate navi
 Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.
 
 ### Repo-grounded detail
-Matched repo evidence: 384 files, about 204,050 readable source lines.
+Matched repo evidence: 379 files, about 200,456 readable source lines.
 
 Important source roots:
-- `engine` — 108 matched files
-- `engins` — 54 matched files
+- `engine` — 107 matched files
+- `engins` — 55 matched files
 - `tests` — 44 matched files
 - `components` — 29 matched files
 - `docs` — 29 matched files
@@ -417,14 +417,14 @@ Important source roots:
 - `scripts` — 13 matched files
 
 Behavior signals found in matched files:
-- runtime — 285 file hits
-- rendering — 257 file hits
-- events — 190 file hits
-- commerce — 170 file hits
-- state — 163 file hits
-- mobile-touch — 150 file hits
-- auth — 125 file hits
-- persistence — 122 file hits
+- runtime — 281 file hits
+- rendering — 255 file hits
+- events — 188 file hits
+- commerce — 167 file hits
+- state — 162 file hits
+- mobile-touch — 148 file hits
+- auth — 122 file hits
+- persistence — 120 file hits
 
 Routes and API endpoints:
 - `/dreamdmbar/dualruntime ← app/dreamdmbar/dualruntime/page.tsx`
@@ -514,7 +514,7 @@ Import/export connections:
 - `engine/vm/bus-events.ts` — 56 lines; runtime/events
 - `engine/vm/dualVMCoordinator.ts` — 49 lines; runtime/rendering
 - `components/runtime/dream.shell.RuntimeShell.tsx` — 352 lines; state/runtime/persistence · MIN_ZOOM · useState
-- Plus 350 additional matched files summarized by roots/signals above.
+- Plus 345 additional matched files summarized by roots/signals above.
 
 ## 7. Shared Dreams
 
@@ -525,10 +525,10 @@ Shared Dreams are the collaboration and publishing layer for Dreams that can be 
 Users feel this when a Dream becomes something social: visible posts, shared sessions, public/private access, saved creative objects, and collaboration signals.
 
 ### Repo-grounded detail
-Matched repo evidence: 819 files, about 262,373 readable source lines.
+Matched repo evidence: 819 files, about 261,371 readable source lines.
 
 Important source roots:
-- `components` — 278 matched files
+- `components` — 279 matched files
 - `app` — 111 matched files
 - `supabase` — 80 matched files
 - `engine` — 60 matched files
@@ -538,14 +538,14 @@ Important source roots:
 - `dreamr` — 29 matched files
 
 Behavior signals found in matched files:
-- commerce — 461 file hits
+- commerce — 460 file hits
 - rendering — 358 file hits
 - state — 303 file hits
-- auth — 302 file hits
-- mobile-touch — 292 file hits
-- events — 266 file hits
-- persistence — 262 file hits
-- runtime — 261 file hits
+- auth — 301 file hits
+- mobile-touch — 293 file hits
+- events — 265 file hits
+- persistence — 261 file hits
+- runtime — 260 file hits
 
 Routes and API endpoints:
 - `/daydream/brand ← app/daydream/brand/page.tsx`
@@ -655,7 +655,7 @@ DreamR is the human media layer: feed, discovery, profile, posts, creator identi
 Users experience DreamR as the social/media side of DREAMengin: scrolling, viewing people, opening Dreams, editing identity, and discovering what others make.
 
 ### Repo-grounded detail
-Matched repo evidence: 314 files, about 107,457 readable source lines.
+Matched repo evidence: 310 files, about 105,914 readable source lines.
 
 Important source roots:
 - `app` — 56 matched files
@@ -668,14 +668,14 @@ Important source roots:
 - `engins` — 18 matched files
 
 Behavior signals found in matched files:
-- commerce — 168 file hits
-- auth — 143 file hits
-- rendering — 142 file hits
-- persistence — 102 file hits
+- commerce — 165 file hits
+- auth — 141 file hits
+- rendering — 141 file hits
+- persistence — 101 file hits
 - mobile-touch — 93 file hits
-- runtime — 93 file hits
-- events — 90 file hits
-- state — 61 file hits
+- events — 89 file hits
+- runtime — 89 file hits
+- state — 60 file hits
 
 Routes and API endpoints:
 - `/dreamr ← app/dreamr/page.tsx`
@@ -774,7 +774,7 @@ Import/export connections:
 - `dreamr/activity/scoring.ts` — 174 lines; BASE_POINTS_BY_TIER
 - `dreamr/torridity/physics.ts` — 118 lines
 - `app/view-profile/page.tsx` — 365 lines; page · persistence/mobile-touch/rendering · ViewProfilePage
-- Plus 280 additional matched files summarized by roots/signals above.
+- Plus 276 additional matched files summarized by roots/signals above.
 
 ## 9. The Shop
 
@@ -785,7 +785,7 @@ The Shop is the owned storefront area for a user or creator. It covers the files
 Users feel this as a creator storefront: things to buy, services to offer, and commercial parts attached to the creator identity.
 
 ### Repo-grounded detail
-Matched repo evidence: 58 files, about 10,312 readable source lines.
+Matched repo evidence: 57 files, about 10,102 readable source lines.
 
 Important source roots:
 - `engins` — 15 matched files
@@ -794,17 +794,17 @@ Important source roots:
 - `app` — 7 matched files
 - `docs` — 3 matched files
 - `engine` — 3 matched files
-- `.github` — 2 matched files
 - `agents` — 2 matched files
+- `public` — 2 matched files
 
 Behavior signals found in matched files:
-- commerce — 52 file hits
+- commerce — 51 file hits
 - rendering — 30 file hits
-- runtime — 27 file hits
-- auth — 20 file hits
+- runtime — 26 file hits
+- auth — 19 file hits
 - events — 15 file hits
 - persistence — 14 file hits
-- state — 14 file hits
+- state — 13 file hits
 - mobile-touch — 12 file hits
 
 Routes and API endpoints:
@@ -897,7 +897,7 @@ Import/export connections:
 - `engins/gameengin/cartridges/index.ts` — 17 lines; commerce
 - `engins/gameengin/cartridges/loaders.ts` — 97 lines; commerce · CARTRIDGE_LOADERS
 - `engins/gameengin/cartridges/reactCartridge.ts` — 138 lines; runtime/rendering/commerce · GameEngineAPIContext · useGameEngineAPI
-- Plus 24 additional matched files summarized by roots/signals above.
+- Plus 23 additional matched files summarized by roots/signals above.
 
 ## 10. The Marketplace
 
@@ -908,7 +908,7 @@ The Marketplace is the broader exchange area where listings, selling pages, cata
 Users experience this as the public commercial side of the ecosystem: browsing, listing, buying, selling, and moving between creator shops and wider discovery.
 
 ### Repo-grounded detail
-Matched repo evidence: 20 files, about 5,815 readable source lines.
+Matched repo evidence: 20 files, about 5,820 readable source lines.
 
 Important source roots:
 - `app` — 7 matched files
@@ -1003,7 +1003,7 @@ Import/export connections:
 - `engine/shop/listings.ts` — 124 lines; rendering/commerce · SHOP_TABLE
 - `scripts/readme-autosync.ts` — 580 lines; state/runtime/persistence · SOURCE_EXTENSIONS
 - `engins/gameengin/games/catalog.ts` — 37 lines; rendering/commerce · MOBILE_HUD_BY_GAME_ID
-- `README.md` — 2293 lines; state/runtime/persistence · useImplicitAssetWorkspace
+- `README.md` — 2298 lines; state/runtime/persistence · useImplicitAssetWorkspace
 - `app/shop/page.tsx` — 130 lines; page · persistence/auth/commerce · ShopPage
 - `config/ui-ux-spec.yaml` — 129 lines; runtime/persistence/rendering
 
@@ -1016,7 +1016,7 @@ Ads and User Ads cover promotion, sponsored inventory, campaign surfaces, impres
 Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor cards, or paid visibility controls.
 
 ### Repo-grounded detail
-Matched repo evidence: 209 files, about 64,147 readable source lines.
+Matched repo evidence: 203 files, about 60,423 readable source lines.
 
 Important source roots:
 - `engins` — 33 matched files
@@ -1029,14 +1029,14 @@ Important source roots:
 - `research` — 7 matched files
 
 Behavior signals found in matched files:
-- commerce — 98 file hits
-- rendering — 76 file hits
-- runtime — 70 file hits
-- auth — 66 file hits
-- persistence — 56 file hits
-- state — 55 file hits
-- mobile-touch — 51 file hits
-- events — 45 file hits
+- commerce — 95 file hits
+- rendering — 74 file hits
+- runtime — 65 file hits
+- auth — 63 file hits
+- persistence — 54 file hits
+- state — 54 file hits
+- mobile-touch — 49 file hits
+- events — 43 file hits
 
 Routes and API endpoints:
 - `/ads/create ← app/ads/create/page.tsx`
@@ -1113,7 +1113,6 @@ Import/export connections:
 - `config/advanced-game-targets.json` — 52 lines; rendering/commerce
 - `scripts/readme-autosync.ts` — 580 lines; state/runtime/persistence · SOURCE_EXTENSIONS
 - `.github/workflows/gameengin-upgrader.yml` — 34 lines; state/commerce
-- `.github/workflows/readme-autosync.yml` — 230 lines; state/runtime/auth
 - `Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
 - `agents/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
 - `app/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
@@ -1135,7 +1134,8 @@ Import/export connections:
 - `engine/navigation/README.md` — 480 lines; runtime/persistence/mobile-touch · F · useNavigation
 - `engins/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
 - `engins/renderengin/advancedRendering.ts` — 267 lines; rendering
-- Plus 175 additional matched files summarized by roots/signals above.
+- `hooks/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
+- Plus 169 additional matched files summarized by roots/signals above.
 
 ## 12. The DreamDmBar (dreamdmbar/)
 
@@ -1146,7 +1146,7 @@ The DreamDmBar is the communication, navigation, search, command, notification, 
 Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.
 
 ### Repo-grounded detail
-Matched repo evidence: 147 files, about 43,607 readable source lines.
+Matched repo evidence: 147 files, about 43,564 readable source lines.
 
 Important source roots:
 - `app` — 30 matched files
@@ -1242,7 +1242,7 @@ Import/export connections:
 - `dreamdmbar/hooks/useDreamBarContext.ts` — 185 lines; runtime · CONTEXT_MAP · useDreamBarContext
 - `dreamdmbar/runtime/DreamSystemContext.tsx` — 401 lines; state/runtime/persistence · DEFAULT_BAR_INTENT · useDreamSystem
 - `app/dreamdmbar/dualruntime/page.tsx` — 102 lines; page · state/runtime/persistence · SESSION_STORAGE_KEY · useDreamSystem
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — 3111 lines; state/runtime/persistence · BAR_H · useImmersiveGameLayout
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — 3098 lines; state/runtime/persistence · BAR_H · useImmersiveGameLayout
 - `dreamdmbar/hooks/useMessagingCore.ts` — 189 lines; state/persistence · MAX_FILE_BYTES · useMessagingCore
 - `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
 - `app/dreamdmbar/_components/DreamBarDataBridge.tsx` — 196 lines; state/runtime/persistence · DEFAULT_WORKFLOW_SPLIT · useDualRuntime
@@ -1251,7 +1251,7 @@ Import/export connections:
 - `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` — 115 lines; runtime/persistence/auth · FALLBACK_CREATED_AT
 - `app/dreamdmbar/_components/dreamr/api/route.ts` — 3 lines
 - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` — 55 lines; runtime/events/mobile-touch · DreamRCore · useEffect
-- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` — 189 lines; state/runtime/mobile-touch · DreamRFeed · useState
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` — 159 lines; state/runtime/mobile-touch · DreamRFeed · useState
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` — 2006 lines; state/persistence/mobile-touch · DR · useState
 - `app/dreamdmbar/_components/DreamSpaceRegion.tsx` — 459 lines; state/runtime/events · SUGGESTED_DREAMS · useAccount
 - `app/dreamdmbar/_components/DreamWidgetGrid.tsx` — 33 lines; mobile-touch · DreamWidgetGrid
@@ -1276,7 +1276,7 @@ Messaging is the direct communication layer: conversations, drafts, notification
 Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.
 
 ### Repo-grounded detail
-Matched repo evidence: 174 files, about 40,398 readable source lines.
+Matched repo evidence: 168 files, about 36,631 readable source lines.
 
 Important source roots:
 - `docs` — 35 matched files
@@ -1289,14 +1289,14 @@ Important source roots:
 - `supabase` — 6 matched files
 
 Behavior signals found in matched files:
-- commerce — 64 file hits
-- runtime — 58 file hits
-- rendering — 55 file hits
-- auth — 54 file hits
-- persistence — 51 file hits
-- mobile-touch — 40 file hits
-- state — 36 file hits
-- events — 30 file hits
+- commerce — 61 file hits
+- rendering — 53 file hits
+- runtime — 53 file hits
+- auth — 51 file hits
+- persistence — 49 file hits
+- mobile-touch — 38 file hits
+- state — 35 file hits
+- events — 28 file hits
 
 Routes and API endpoints:
 - `/messages/new ← app/messages/new/page.tsx`
@@ -1395,7 +1395,7 @@ Import/export connections:
 - `app/api/drafts/route.ts` — 119 lines; api · persistence/events/rendering · CONTENT_TYPES
 - `app/api/settings/notifications/route.ts` — 84 lines; api · persistence/rendering/auth · GET
 - `app/settings/notifications/page.tsx` — 207 lines; page · state/persistence/mobile-touch · STORAGE_KEY · useState
-- Plus 140 additional matched files summarized by roots/signals above.
+- Plus 134 additional matched files summarized by roots/signals above.
 
 ## 14. HomeDream
 
@@ -1406,7 +1406,7 @@ HomeDream is the personal home surface: the first meaningful app space after log
 Users feel HomeDream as the personal starting point where they see themselves, their Dreams, people, feed items, and the app modules they can open.
 
 ### Repo-grounded detail
-Matched repo evidence: 258 files, about 85,457 readable source lines.
+Matched repo evidence: 257 files, about 84,412 readable source lines.
 
 Important source roots:
 - `components` — 53 matched files
@@ -1419,13 +1419,13 @@ Important source roots:
 - `dreamr` — 8 matched files
 
 Behavior signals found in matched files:
-- commerce — 155 file hits
-- auth — 121 file hits
-- rendering — 119 file hits
+- commerce — 154 file hits
+- auth — 120 file hits
+- rendering — 118 file hits
 - mobile-touch — 88 file hits
-- runtime — 82 file hits
-- persistence — 78 file hits
-- events — 75 file hits
+- runtime — 81 file hits
+- persistence — 77 file hits
+- events — 74 file hits
 - state — 62 file hits
 
 Routes and API endpoints:
@@ -1525,7 +1525,7 @@ Import/export connections:
 - `dreamr/components/dreamrfeed.tsx` — 1233 lines; state/runtime/events · DR · useState
 - `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — 52 lines; rendering
 - `supabase/migrations/20260405000001_dreamr_feed_registry.sql` — 149 lines; persistence/auth
-- Plus 224 additional matched files summarized by roots/signals above.
+- Plus 223 additional matched files summarized by roots/signals above.
 
 ## 15. DreamSpace
 
@@ -1536,27 +1536,27 @@ DreamSpace is the workspace/canvas layer where DayDream surfaces, Engins, region
 Users experience DreamSpace as the place where they arrange, open, move through, and work inside creative surfaces rather than just clicking normal web pages.
 
 ### Repo-grounded detail
-Matched repo evidence: 443 files, about 171,801 readable source lines.
+Matched repo evidence: 444 files, about 170,847 readable source lines.
 
 Important source roots:
 - `engine` — 79 matched files
-- `components` — 59 matched files
+- `components` — 60 matched files
 - `.github` — 54 matched files
 - `tests` — 48 matched files
 - `app` — 43 matched files
-- `engins` — 39 matched files
+- `engins` — 40 matched files
 - `docs` — 33 matched files
 - `daydreams` — 9 matched files
 
 Behavior signals found in matched files:
 - runtime — 341 file hits
-- rendering — 266 file hits
+- rendering — 267 file hits
 - commerce — 232 file hits
-- mobile-touch — 196 file hits
-- events — 166 file hits
-- auth — 160 file hits
-- state — 160 file hits
-- persistence — 125 file hits
+- mobile-touch — 197 file hits
+- events — 165 file hits
+- state — 161 file hits
+- auth — 159 file hits
+- persistence — 124 file hits
 
 Routes and API endpoints:
 - `/daydream/games ← app/daydream/games/page.tsx`
@@ -1655,7 +1655,7 @@ Import/export connections:
 - `app/daydream/media-vault/page.tsx` — 21 lines; page · auth · MediaVaultLegacyPage
 - `app/daydream/music/engin/page.tsx` — 11 lines; page · MusicEnginRedirectPage
 - `app/daydream/music/upload/page.tsx` — 210 lines; page · state/persistence/auth · UploadMusicPage · useState
-- Plus 409 additional matched files summarized by roots/signals above.
+- Plus 410 additional matched files summarized by roots/signals above.
 
 ## 16. Dreams (Widgets / Windows / Surfaces)
 
@@ -1666,24 +1666,24 @@ Dreams, widgets, windows, and surfaces are the visible objects users manipulate.
 Users feel this as cards, panels, windows, widgets, surface launches, and interactive objects that turn the product into a creative operating system rather than a static website.
 
 ### Repo-grounded detail
-Matched repo evidence: 759 files, about 223,196 readable source lines.
+Matched repo evidence: 760 files, about 223,119 readable source lines.
 
 Important source roots:
-- `components` — 283 matched files
+- `components` — 284 matched files
 - `app` — 117 matched files
-- `engine` — 66 matched files
+- `engine` — 65 matched files
 - `tests` — 56 matched files
 - `docs` — 42 matched files
 - `.github` — 31 matched files
 - `dreamr` — 29 matched files
-- `engins` — 25 matched files
+- `engins` — 26 matched files
 
 Behavior signals found in matched files:
-- commerce — 440 file hits
-- rendering — 342 file hits
+- commerce — 441 file hits
+- rendering — 343 file hits
 - mobile-touch — 304 file hits
-- state — 293 file hits
-- runtime — 257 file hits
+- state — 294 file hits
+- runtime — 258 file hits
 - auth — 238 file hits
 - persistence — 230 file hits
 - events — 228 file hits
@@ -1785,7 +1785,7 @@ Import/export connections:
 - `components/widgets/dream.ConfigureSheet.tsx` — 160 lines; state/mobile-touch/commerce · ConfigureSheet
 - `components/widgets/dream.EditModeBanner.tsx` — 55 lines; mobile-touch/commerce · EditModeBanner · useEditMode
 - `components/widgets/dream.EditModeProvider.tsx` — 35 lines; state · EditModeContext · useEditMode
-- Plus 725 additional matched files summarized by roots/signals above.
+- Plus 726 additional matched files summarized by roots/signals above.
 
 ## 17. User-Facing Modularity
 
@@ -1796,13 +1796,13 @@ User-facing modularity is the part of DREAMengin that lets features feel composa
 Users feel modularity when they can open a tool from more than one place, carry state across a surface, combine Engins, and customize the product without waiting for a fixed page.
 
 ### Repo-grounded detail
-Matched repo evidence: 193 files, about 83,662 readable source lines.
+Matched repo evidence: 194 files, about 82,664 readable source lines.
 
 Important source roots:
-- `components` — 79 matched files
+- `components` — 80 matched files
 - `engine` — 23 matched files
 - `docs` — 21 matched files
-- `engins` — 12 matched files
+- `engins` — 13 matched files
 - `tests` — 11 matched files
 - `coresurfaces` — 5 matched files
 - `dreamdmbar` — 5 matched files
@@ -1810,13 +1810,13 @@ Important source roots:
 
 Behavior signals found in matched files:
 - commerce — 136 file hits
-- rendering — 118 file hits
+- rendering — 119 file hits
 - runtime — 114 file hits
-- mobile-touch — 108 file hits
-- state — 100 file hits
-- events — 87 file hits
-- auth — 78 file hits
-- persistence — 67 file hits
+- mobile-touch — 109 file hits
+- state — 101 file hits
+- events — 86 file hits
+- auth — 77 file hits
+- persistence — 66 file hits
 
 Routes and API endpoints:
 - No direct app routes matched this section.
@@ -1878,7 +1878,7 @@ Import/export connections:
 - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` — 92 lines; state · AgentPanel · useAgentSession
 - `coresurfaces/Agents-MUST-READ-ARCHITECTURE.md` — 1280 lines; state/runtime/persistence
 - `docs/MODULARITY_VIOLATION_LOG.md` — 86 lines; runtime/mobile-touch/rendering
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — 3111 lines; state/runtime/persistence · BAR_H · useImmersiveGameLayout
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — 3098 lines; state/runtime/persistence · BAR_H · useImmersiveGameLayout
 - `tests/dreamspace-panel.test.ts` — 79 lines; runtime/mobile-touch/rendering
 - `tests/modular-os-stores.test.ts` — 141 lines; runtime/persistence/events
 - `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` — 2006 lines; state/persistence/mobile-touch · DR · useState
@@ -1902,7 +1902,7 @@ Import/export connections:
 - `components/panels/dream.panel.MarketplacePanel.tsx` — 139 lines; state/runtime/persistence · FALLBACK_CATEGORIES · useDreamSystem
 - `components/panels/dream.panel.PrivacyPanel.tsx` — 146 lines; state/runtime/persistence · STORAGE_KEY · useDreamSystem
 - `components/panels/dream.panel.SafetyPanel.tsx` — 102 lines; state/runtime/persistence · SafetyPanel · useDreamSystem
-- Plus 159 additional matched files summarized by roots/signals above.
+- Plus 160 additional matched files summarized by roots/signals above.
 
 ## 18. Custom Engins
 
@@ -1913,12 +1913,12 @@ Custom Engins are the extension story: code, rules, manifests, registries, and c
 Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.
 
 ### Repo-grounded detail
-Matched repo evidence: 1058 files, about 240,550 readable source lines.
+Matched repo evidence: 1057 files, about 237,262 readable source lines.
 
 Important source roots:
-- `engins` — 359 matched files
-- `engine` — 271 matched files
-- `components` — 100 matched files
+- `engins` — 360 matched files
+- `engine` — 270 matched files
+- `components` — 101 matched files
 - `.github` — 91 matched files
 - `tests` — 66 matched files
 - `app` — 61 matched files
@@ -1926,14 +1926,14 @@ Important source roots:
 - `scripts` — 18 matched files
 
 Behavior signals found in matched files:
-- rendering — 410 file hits
-- runtime — 391 file hits
-- commerce — 354 file hits
-- events — 229 file hits
-- state — 228 file hits
-- mobile-touch — 193 file hits
-- auth — 192 file hits
-- persistence — 189 file hits
+- rendering — 409 file hits
+- runtime — 390 file hits
+- commerce — 353 file hits
+- events — 227 file hits
+- state — 227 file hits
+- mobile-touch — 192 file hits
+- auth — 190 file hits
+- persistence — 187 file hits
 
 Routes and API endpoints:
 - `/gameengin/cartridges/[id] ← app/gameengin/cartridges/[id]/page.tsx`
@@ -2032,7 +2032,7 @@ Import/export connections:
 - `engins/rulesets/homedream/dream.homedream.transforms.ts` — 36 lines
 - `engins/rulesets/homedream/index.ts` — 15 lines
 - `engins/rulesets/lab/index.ts` — 23 lines
-- Plus 1024 additional matched files summarized by roots/signals above.
+- Plus 1023 additional matched files summarized by roots/signals above.
 
 ## 19. Full Website Customizability
 
@@ -2043,7 +2043,7 @@ Full website customizability covers appearance, profile editing, brand surfaces,
 Users experience this as profile editing, theme choices, brand customization, public pages, custom identity, and the ability to make DREAMengin feel like their own site.
 
 ### Repo-grounded detail
-Matched repo evidence: 212 files, about 81,850 readable source lines.
+Matched repo evidence: 210 files, about 80,580 readable source lines.
 
 Important source roots:
 - `app` — 59 matched files
@@ -2056,14 +2056,14 @@ Important source roots:
 - `styles` — 6 matched files
 
 Behavior signals found in matched files:
-- commerce — 140 file hits
-- rendering — 96 file hits
-- auth — 95 file hits
+- commerce — 138 file hits
+- rendering — 95 file hits
+- auth — 93 file hits
 - mobile-touch — 81 file hits
-- persistence — 79 file hits
-- runtime — 66 file hits
+- persistence — 78 file hits
+- runtime — 64 file hits
 - state — 64 file hits
-- events — 57 file hits
+- events — 55 file hits
 
 Routes and API endpoints:
 - `/settings/appearance ← app/settings/appearance/page.tsx`
@@ -2162,7 +2162,7 @@ Import/export connections:
 - `styles/home-dream.css` — 235 lines; mobile-touch/commerce
 - `styles/view-transitions.css` — 49 lines; rendering
 - `app/api/settings/appearance/route.ts` — 92 lines; api · persistence/rendering/auth · GET
-- Plus 178 additional matched files summarized by roots/signals above.
+- Plus 176 additional matched files summarized by roots/signals above.
 
 ## 20. Backend, System, Core & CoreSurfaces
 
@@ -2173,27 +2173,27 @@ Backend, system, core, and CoreSurfaces are the under-the-hood execution pieces:
 Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.
 
 ### Repo-grounded detail
-Matched repo evidence: 860 files, about 279,681 readable source lines.
+Matched repo evidence: 856 files, about 278,172 readable source lines.
 
 Important source roots:
-- `engine` — 271 matched files
+- `engine` — 270 matched files
 - `app` — 168 matched files
 - `supabase` — 80 matched files
 - `docs` — 51 matched files
-- `engins` — 49 matched files
+- `engins` — 50 matched files
 - `tests` — 41 matched files
 - `components` — 33 matched files
-- `.github` — 26 matched files
+- `.github` — 25 matched files
 
 Behavior signals found in matched files:
-- auth — 431 file hits
-- rendering — 407 file hits
-- commerce — 362 file hits
-- persistence — 349 file hits
-- runtime — 299 file hits
-- events — 251 file hits
-- mobile-touch — 202 file hits
-- state — 182 file hits
+- auth — 429 file hits
+- rendering — 406 file hits
+- commerce — 359 file hits
+- persistence — 348 file hits
+- runtime — 296 file hits
+- events — 250 file hits
+- mobile-touch — 201 file hits
+- state — 181 file hits
 
 Routes and API endpoints:
 - `/engines/games/scores ← app/engines/games/scores/page.tsx`
@@ -2292,6 +2292,6 @@ Import/export connections:
 - `app/api/ai/boogieman/route.ts` — 155 lines; api · persistence/rendering/auth · BoogieRequestSchema
 - `app/api/ai/eams/route.ts` — 193 lines; api · persistence/auth/commerce · POST
 - `app/api/ai/execute/route.ts` — 252 lines; api · state/persistence/rendering · ROUTE_MAP
-- Plus 826 additional matched files summarized by roots/signals above.
+- Plus 822 additional matched files summarized by roots/signals above.
 
 <!-- DREAMENGIN_PRODUCT_README:END -->
