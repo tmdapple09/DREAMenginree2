@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T01:06:16.366Z
+Generated: 2026-06-25T01:07:02.424Z
 
 ---
 
@@ -13778,9 +13778,9 @@ _No style files for this feature._
 
 | Module | Connected via |
 |--------|---------------|
-| `./readme-autosync` | `SECTION_REGISTRY`, `runReadmeAutosync` |
-| `node:fs` | `existsSync`, `readFileSync`, `readdirSync`, `statSync` |
-| `node:path` | `join`, `relative`, `resolve` |
+| `./readme-autosync` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
+| `node:fs` | `existsSync`, `mkdirSync`, `readFileSync`, `readdirSync`, `statSync`, `writeFileSync` |
+| `node:path` | `dirname`, `join`, `relative`, `resolve` |
 
 ## `scripts/generate-repo-state.mjs`
 
@@ -20609,7 +20609,6 @@ _No circular dependencies detected._
 | `scripts/gameengin/package-cartridge.ts` | `packageCartridge` |
 | `scripts/generate-repo-state.mjs` | `...`, `Foo`, `Baz`, `(default)` |
 | `scripts/generate-webapp-final-form.mjs` | `POST`, `$`, `(default)` |
-| `scripts/readme-autosync.ts` | `PRODUCT_SECTIONS`, `buildProductReadmeSections` |
 | `scripts/sync-build-memory.mjs` | `GET`, `name`, `...` |
 | `scripts/wire-orphans.mjs` | `$`, `hydrateEngineRegistry`, `osArchitectureFlow`, `osSlotCounts`, `osGeneratedRouters`, `osArchitectureGraph`, `osArchitectureStageEntries`, `osArchitectureMap` |
 | `src/engin/generated/index.ts` | `hydrateEngineRegistry`, `osArchitectureFlow`, `osArchitectureGraph`, `osArchitectureMap`, `osArchitectureStageEntries`, `osGeneratedRouters`, `osSlotCounts` |
@@ -23967,8 +23966,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
 │   │   └── ⚠ ../lib/adari  (assertBuildInvariants)
-│   ├── readme-autosync.ts ∅
-│   │   └── ∅ unused: PRODUCT_SECTIONS, buildProductReadmeSections
+│   ├── readme-autosync.ts
 │   ├── repository-state-analysis-section.mjs
 │   ├── score-pass.cjs
 │   ├── setup-database.sql

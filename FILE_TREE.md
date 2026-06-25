@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T01:06:16.501Z
+Generated: 2026-06-25T01:07:02.558Z
 
 Legend: ⚠ broken import  ∅ unused export
 
@@ -14821,12 +14821,15 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── readFile  ← node:fs/promises
 │   │   └── writeFile  ← node:fs/promises
 │   ├── generate-readme.ts
-│   │   ├── SECTION_REGISTRY  ← ./readme-autosync
-│   │   ├── runReadmeAutosync  ← ./readme-autosync
+│   │   ├── PRODUCT_SECTIONS  ← ./readme-autosync
+│   │   ├── buildProductReadmeSections  ← ./readme-autosync
 │   │   ├── existsSync  ← node:fs
+│   │   ├── mkdirSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── readdirSync  ← node:fs
 │   │   ├── statSync  ← node:fs
+│   │   ├── writeFileSync  ← node:fs
+│   │   ├── dirname  ← node:path
 │   │   ├── join  ← node:path
 │   │   ├── relative  ← node:path
 │   │   └── resolve  ← node:path
@@ -14860,7 +14863,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   ├── postbuild.js
 │   ├── postbuild.ts ⚠
 │   │   └── assertBuildInvariants  ⚠ ../lib/adari
-│   ├── readme-autosync.ts ∅
+│   ├── readme-autosync.ts
 │   │   ├── existsSync  ← node:fs
 │   │   ├── readFileSync  ← node:fs
 │   │   ├── statSync  ← node:fs
@@ -14873,8 +14876,7 @@ Legend: ⚠ broken import  ∅ unused export
 │   │   ├── → buildAutosyncSummary
 │   │   ├── → buildProductReadmeSections
 │   │   ├── → computeAffected
-│   │   ├── → replaceSection
-│   │   └── ∅ unused: PRODUCT_SECTIONS, buildProductReadmeSections
+│   │   └── → replaceSection
 │   ├── repository-state-analysis-section.mjs
 │   │   ├── → buildRepositoryStateAnalysisSection
 │   │   └── → extractRepositoryStateSnapshot
