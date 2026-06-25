@@ -1,77 +1,17 @@
-name: README Product Autosync
-
-on:
-  workflow_dispatch:
-
-  schedule:
-    # Weekly at 6:00 AM Pacific during daylight saving time.
-    - cron: "0 13 * * 1"
-    # Weekly at 6:00 AM Pacific during standard time.
-    - cron: "0 14 * * 1"
-
-permissions:
-  contents: write
-
-concurrency:
-  group: readme-product-autosync-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  pacific-time-gate:
-    name: Allow only Monday 6 AM Pacific or manual runs
-    runs-on: ubuntu-latest
-    outputs:
-      should_run: ${{ steps.gate.outputs.should_run }}
-    steps:
-      - name: Check Pacific time gate
-        id: gate
+      - name: Commit README update
         shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "Manual workflow_dispatch run allowed."
-            exit 0
-          fi
+          BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
 
-          PACIFIC_DAY="$(TZ=America/Los_Angeles date +%u)"
-          PACIFIC_HOUR="$(TZ=America/Los_Angeles date +%H)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if [ "$PACIFIC_DAY" = "1" ] && [ "$PACIFIC_HOUR" = "06" ]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "Scheduled run allowed. Current Pacific time is Monday 06:00."
-          else
-            echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "Scheduled run skipped. Current Pacific day/hour is ${PACIFIC_DAY}/${PACIFIC_HOUR}, not Monday/06."
-          fi
+          echo "Syncing with origin/${BRANCH} before committing README.md..."
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
 
-  readme-product-autosync:
-    name: Regenerate DREAMengin README
-    runs-on: ubuntu-latest
-    needs: pacific-time-gate
-    if: needs.pacific-time-gate.outputs.should_run == 'true'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node 25
-        uses: actions/setup-node@v6
-        with:
-          node-version: "25"
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build tracked-file inventory
-        shell: bash
-        run: |
-          README_AUTOSYNC_DIR="$RUNNER_TEMP/readme-autosync"
+          echo "Rebuilding tracked-file inventory after rebase..."
+          README_AUTOSYNC_DIR="${README_AUTOSYNC_DIR:-$RUNNER_TEMP/readme-autosync}"
           mkdir -p "$README_AUTOSYNC_DIR"
 
           git ls-files \
@@ -87,39 +27,17 @@ jobs:
             ':!:*.tsbuildinfo' \
             > "$README_AUTOSYNC_DIR/all-files.txt"
 
-          echo "README_AUTOSYNC_DIR=$README_AUTOSYNC_DIR" >> "$GITHUB_ENV"
-
-          echo "Tracked files counted:"
-          wc -l "$README_AUTOSYNC_DIR/all-files.txt"
-
-      - name: Generate README
-        shell: bash
-        run: |
+          echo "Regenerating README.md on top of latest origin/${BRANCH}..."
           pnpm tsx scripts/generate-readme.ts \
             --changed-files "$README_AUTOSYNC_DIR/all-files.txt" \
             --summary-file "$README_AUTOSYNC_DIR/readme-summary.json" \
             --max-lines 2800
 
-      - name: Commit README update
-        shell: bash
-        run: |
           if git diff --quiet -- README.md; then
             echo "README.md did not change."
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add README.md
           git commit -m "docs(readme): autosync product README [skip ci]"
-          git push
-
-      - name: Upload README autosync artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: readme-product-autosync
-          path: |
-            README.md
-            ${{ env.README_AUTOSYNC_DIR }}/all-files.txt
-            ${{ env.README_AUTOSYNC_DIR }}/readme-summary.json
+          git push origin "HEAD:${BRANCH}"
