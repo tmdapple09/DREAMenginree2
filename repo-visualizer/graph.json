@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T01:01:45.532Z",
+  "generatedAt": "2026-06-25T01:13:01.251Z",
   "root": ".",
   "nodes": [
     {
@@ -3526,16 +3526,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-readme-autosync-changed-files.zip",
-      "label": "DREAMengin-readme-autosync-changed-files.zip",
-      "type": "file",
-      "path": "DREAMengin-readme-autosync-changed-files.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -61912,46 +61902,6 @@
       "tags": []
     },
     {
-      "id": "function:generate-readme.ts#parseArg",
-      "label": "parseArg",
-      "type": "function",
-      "path": "generate-readme.ts",
-      "parent": "file:generate-readme.ts",
-      "loc": 32,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:generate-readme.ts#readChangedFiles",
-      "label": "readChangedFiles",
-      "type": "function",
-      "path": "generate-readme.ts",
-      "parent": "file:generate-readme.ts",
-      "loc": 38,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:generate-readme.ts#allRegistryFiles",
-      "label": "allRegistryFiles",
-      "type": "function",
-      "path": "generate-readme.ts",
-      "parent": "file:generate-readme.ts",
-      "loc": 46,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "file:generate-readme.ts",
-      "label": "generate-readme.ts",
-      "type": "ts",
-      "path": "generate-readme.ts",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
       "id": "folder:hooks",
       "label": "hooks",
       "type": "folder",
@@ -63683,406 +63633,6 @@
       "parent": "folder:public/workers",
       "loc": null,
       "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "function:readme-autosync.ts#escapeRegExp",
-      "label": "escapeRegExp",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 167,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#normalizePath",
-      "label": "normalizePath",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 171,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#globToRegExp",
-      "label": "globToRegExp",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 175,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#matchesGlob",
-      "label": "matchesGlob",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 190,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#matchesAnyGlob",
-      "label": "matchesAnyGlob",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 194,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#walkFiles",
-      "label": "walkFiles",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 199,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#toRoutePath",
-      "label": "toRoutePath",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 213,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#toComponentName",
-      "label": "toComponentName",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 222,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#buildTreeLines",
-      "label": "buildTreeLines",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 228,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#getTsProject",
-      "label": "getTsProject",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 260,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#getSourceFile",
-      "label": "getSourceFile",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 269,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#isReactComponent",
-      "label": "isReactComponent",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 283,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#isHook",
-      "label": "isHook",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 291,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeExports",
-      "label": "analyzeExports",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 295,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeImports",
-      "label": "analyzeImports",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 351,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#httpMethodsFromFile",
-      "label": "httpMethodsFromFile",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 384,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeRoutes",
-      "label": "analyzeRoutes",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 400,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeComponents",
-      "label": "analyzeComponents",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 416,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeHooks",
-      "label": "analyzeHooks",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 420,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeDependencies",
-      "label": "analyzeDependencies",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 426,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#analyzeSubsystem",
-      "label": "analyzeSubsystem",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 454,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#inferKeyModules",
-      "label": "inferKeyModules",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 509,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#inferArchitecturalNarrative",
-      "label": "inferArchitecturalNarrative",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 535,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#generateSubsystemDescription",
-      "label": "generateSubsystemDescription",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 667,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#fmtList",
-      "label": "fmtList",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 725,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#fmtRoutes",
-      "label": "fmtRoutes",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 729,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#fmtSymbolList",
-      "label": "fmtSymbolList",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 739,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#buildFileIndex",
-      "label": "buildFileIndex",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 745,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#buildArchitecturalSectionBlock",
-      "label": "buildArchitecturalSectionBlock",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 763,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#buildArchitecturalSubsectionBlock",
-      "label": "buildArchitecturalSubsectionBlock",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 772,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#renderSectionMarkdown",
-      "label": "renderSectionMarkdown",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 782,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#findSectionBounds",
-      "label": "findSectionBounds",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 878,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#replaceSection",
-      "label": "replaceSection",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 890,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#upsertSubsectionInSection",
-      "label": "upsertSubsectionInSection",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 896,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#inferDynamicSections",
-      "label": "inferDynamicSections",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 916,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#computeAffected",
-      "label": "computeAffected",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 939,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#runReadmeAutosync",
-      "label": "runReadmeAutosync",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 960,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:readme-autosync.ts#parseArg",
-      "label": "parseArg",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 1030,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:readme-autosync.ts#readChangedFiles",
-      "label": "readChangedFiles",
-      "type": "function",
-      "path": "readme-autosync.ts",
-      "parent": "file:readme-autosync.ts",
-      "loc": 1036,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "file:readme-autosync.ts",
-      "label": "readme-autosync.ts",
-      "type": "ts",
-      "path": "readme-autosync.ts",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": false,
       "tags": []
     },
     {
@@ -66006,17 +65556,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 30,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#hasFlag",
-      "label": "hasFlag",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 36,
+      "loc": 28,
       "isOrphan": true,
       "exported": false
     },
@@ -66026,47 +65566,117 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 40,
+      "loc": 34,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#readChangedFiles",
-      "label": "readChangedFiles",
+      "id": "function:scripts/generate-readme.ts#readList",
+      "label": "readList",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 44,
+      "loc": 38,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#walkFiles",
-      "label": "walkFiles",
+      "id": "function:scripts/generate-readme.ts#walk",
+      "label": "walk",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 52,
+      "loc": 48,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#registrySentinels",
-      "label": "registrySentinels",
+      "id": "function:scripts/generate-readme.ts#projectName",
+      "label": "projectName",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 67,
+      "loc": 60,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#allRepositoryFilesForFullRebuild",
-      "label": "allRepositoryFilesForFullRebuild",
+      "id": "function:scripts/generate-readme.ts#projectVersion",
+      "label": "projectVersion",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 84,
+      "loc": 69,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#packageManager",
+      "label": "packageManager",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 78,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#packageScripts",
+      "label": "packageScripts",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 85,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#envExampleBlock",
+      "label": "envExampleBlock",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 94,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#commandBlock",
+      "label": "commandBlock",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 105,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#buildFrontDoor",
+      "label": "buildFrontDoor",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 109,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#slug",
+      "label": "slug",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 223,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#allRepoFiles",
+      "label": "allRepoFiles",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 233,
       "isOrphan": true,
       "exported": false
     },
@@ -66553,22 +66163,42 @@
       "tags": []
     },
     {
-      "id": "function:scripts/readme-autosync.ts#escapeRegExp",
-      "label": "escapeRegExp",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 309,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:scripts/readme-autosync.ts#normalizePath",
       "label": "normalizePath",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 313,
+      "loc": 222,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#isExcluded",
+      "label": "isExcluded",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 226,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#shouldRead",
+      "label": "shouldRead",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 231,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#countLines",
+      "label": "countLines",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 240,
       "isOrphan": true,
       "exported": false
     },
@@ -66578,7 +66208,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 317,
+      "loc": 245,
       "isOrphan": true,
       "exported": false
     },
@@ -66588,577 +66218,17 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 352,
+      "loc": 254,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#matchesAnyGlob",
-      "label": "matchesAnyGlob",
+      "id": "function:scripts/readme-autosync.ts#routeFromFile",
+      "label": "routeFromFile",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 356,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#walkFiles",
-      "label": "walkFiles",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 379,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#toRoutePath",
-      "label": "toRoutePath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 398,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildTreeLines",
-      "label": "buildTreeLines",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 412,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#readFileTextSafe",
-      "label": "readFileTextSafe",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 456,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isApplicationSourceCode",
-      "label": "isApplicationSourceCode",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 498,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isLowSignalExportName",
-      "label": "isLowSignalExportName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 551,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDemoOrMockName",
-      "label": "isDemoOrMockName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 555,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isImportantExportName",
-      "label": "isImportantExportName",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 559,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDecorativePath",
-      "label": "isDecorativePath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 566,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isDemoOrMockPath",
-      "label": "isDemoOrMockPath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 570,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isImportantPath",
-      "label": "isImportantPath",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 574,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#hasBehaviorEvidence",
-      "label": "hasBehaviorEvidence",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 604,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isTypeOnlyFile",
-      "label": "isTypeOnlyFile",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 621,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#lineCount",
-      "label": "lineCount",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 625,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#getTsProject",
-      "label": "getTsProject",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 636,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#getSourceFile",
-      "label": "getSourceFile",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 648,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isReactComponent",
-      "label": "isReactComponent",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 666,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#isHook",
-      "label": "isHook",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 674,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeExports",
-      "label": "analyzeExports",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 678,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeImports",
-      "label": "analyzeImports",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 742,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#httpMethodsFromFile",
-      "label": "httpMethodsFromFile",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 778,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeRoutes",
-      "label": "analyzeRoutes",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 797,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeComponents",
-      "label": "analyzeComponents",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 817,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeHooks",
-      "label": "analyzeHooks",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 827,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeDependencies",
-      "label": "analyzeDependencies",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 840,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#scoreKeyModule",
-      "label": "scoreKeyModule",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 877,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferKeyModules",
-      "label": "inferKeyModules",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 981,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#analyzeSubsystem",
-      "label": "analyzeSubsystem",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1022,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#filteredInterfaces",
-      "label": "filteredInterfaces",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1076,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#filteredTypes",
-      "label": "filteredTypes",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1084,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#filteredFunctions",
-      "label": "filteredFunctions",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1092,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferArchitecturalNarrative",
-      "label": "inferArchitecturalNarrative",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1101,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#generateSubsystemDescription",
-      "label": "generateSubsystemDescription",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1250,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#fmtList",
-      "label": "fmtList",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1311,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#fmtRoutes",
-      "label": "fmtRoutes",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1315,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#fmtSymbolList",
-      "label": "fmtSymbolList",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1326,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildFileIndex",
-      "label": "buildFileIndex",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1334,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#fmtKeyModules",
-      "label": "fmtKeyModules",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1356,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#notableExportsForMarkdown",
-      "label": "notableExportsForMarkdown",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1362,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildArchitecturalSectionBlock",
-      "label": "buildArchitecturalSectionBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1371,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildArchitecturalSubsectionBlock",
-      "label": "buildArchitecturalSubsectionBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1380,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#renderSectionMarkdown",
-      "label": "renderSectionMarkdown",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1391,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#findSectionBounds",
-      "label": "findSectionBounds",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1493,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#removeAllSectionsByTitle",
-      "label": "removeAllSectionsByTitle",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1508,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#stripLegacyManagedSections",
-      "label": "stripLegacyManagedSections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1523,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#upsertSubsectionInSection",
-      "label": "upsertSubsectionInSection",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1537,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildSectionWithSubsections",
-      "label": "buildSectionWithSubsections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1558,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildManagedReadmeBlock",
-      "label": "buildManagedReadmeBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1579,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#rebaseReadmeWithManagedBlock",
-      "label": "rebaseReadmeWithManagedBlock",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1601,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferDynamicSections",
-      "label": "inferDynamicSections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1625,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#inferFullRebuildDynamicSections",
-      "label": "inferFullRebuildDynamicSections",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1664,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#computeAffected",
-      "label": "computeAffected",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1702,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#buildAutosyncSummary",
-      "label": "buildAutosyncSummary",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1730,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#runReadmeAutosync",
-      "label": "runReadmeAutosync",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1761,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#parseArg",
-      "label": "parseArg",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1817,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/readme-autosync.ts#readChangedFiles",
-      "label": "readChangedFiles",
-      "type": "function",
-      "path": "scripts/readme-autosync.ts",
-      "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1824,
+      "loc": 264,
       "isOrphan": true,
       "exported": false
     },
@@ -99588,11 +98658,6 @@
       "kind": "import"
     },
     {
-      "source": "file:generate-readme.ts",
-      "target": "file:readme-autosync.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:hooks/use-spatial.ts",
       "target": "file:supabase/client/client.ts",
       "kind": "import"
@@ -115178,11 +114243,6 @@
       "kind": "call"
     },
     {
-      "source": "file:generate-readme.ts",
-      "target": "function:readme-autosync.ts#runReadmeAutosync",
-      "kind": "call"
-    },
-    {
       "source": "file:hooks/use-spatial.ts",
       "target": "function:supabase/client/client.ts#createClient",
       "kind": "call"
@@ -115329,7 +114389,7 @@
     },
     {
       "source": "file:scripts/generate-readme.ts",
-      "target": "function:scripts/readme-autosync.ts#runReadmeAutosync",
+      "target": "file:scripts/readme-autosync.ts",
       "kind": "call"
     },
     {
@@ -118095,16 +117155,6 @@
     {
       "source": "file:tests/post-media.test.ts",
       "target": "function:engins/contentengin/media/postMedia.ts#getPostMediaUrls",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/readme-autosync.test.ts",
-      "target": "function:scripts/readme-autosync.ts#computeAffected",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/readme-autosync.test.ts",
-      "target": "function:scripts/readme-autosync.ts#buildAutosyncSummary",
       "kind": "call"
     },
     {
