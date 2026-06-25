@@ -119,7 +119,7 @@ DREAMengin is organized around the project architecture in `ARCHITECTURE.md` and
 - [5. The Engins and DayDreams](#5-the-engins-and-daydreams)
 - [6. Dual Runtimes](#6-dual-runtimes)
 - [7. Shared Dreams](#7-shared-dreams)
-- [8. DreamR — Human Media](#8-dreamr-human-media)
+- [8. DreamR â Human Media](#8-dreamr-human-media)
 - [9. The Shop](#9-the-shop)
 - [10. The Marketplace](#10-the-marketplace)
 - [11. Ads & User Ads](#11-ads-user-ads)
@@ -138,62 +138,89 @@ DREAMengin is organized around the project architecture in `ARCHITECTURE.md` and
 ## 4. Tech Stack & Monorepo Layout
 
 ### Plain English
-This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase schema, and major folders that make the product ship as one web-native system.
+This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase setup, and major folders that make the product ship as one web-native system.
 
 ### What users experience
 Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.
 
 ### Repo Evidence
-Matched focused repo evidence: 90 files, about 22,230 readable source lines.
+Matched focused repo evidence: 80 files, about 33,928 readable source lines.
 
 Behavior signals:
-- persistence — 85 file hits
-- auth — 82 file hits
-- commerce — 36 file hits
-- events — 30 file hits
-- state — 22 file hits
-- rendering — 18 file hits
-- runtime — 13 file hits
-- mobile touch — 7 file hits
+- auth â 50 file hits
+- commerce â 43 file hits
+- persistence â 40 file hits
+- rendering â 34 file hits
+- state â 33 file hits
+- events â 28 file hits
+- runtime â 26 file hits
+- mobile touch â 23 file hits
 
 Routes and APIs:
-- POST /api/forge/build ← app/api/forge/build/route.ts
-- /daydream/code ← app/daydream/code/page.tsx
-- /daydream/forge ← app/daydream/forge/page.tsx
-- GET|POST|DELETE /api/follow ← app/api/follow/route.ts
-- POST /api/admin/ai-chat ← app/api/admin/ai-chat/route.ts
-- GET|PATCH /api/shared-dream/sessions/[id] ← app/api/shared-dream/sessions/[id]/route.ts
-- GET /api/embed-feed ← app/api/embed-feed/route.ts
-- GET|POST /api/settings/appearance ← app/api/settings/appearance/route.ts
-- GET|POST /api/shared-dream/sessions ← app/api/shared-dream/sessions/route.ts
-- GET /api/account/export-data ← app/api/account/export-data/route.ts
+- /edit-profiledream â app/edit-profiledream/page.tsx
+- /login â app/login/page.tsx
+- /join â app/join/page.tsx
+- /discover â app/discover/page.tsx
+- /view-profile â app/view-profile/page.tsx
+- /ads â app/ads/page.tsx
+- /lab â app/lab/page.tsx
+- /onboarding â app/onboarding/page.tsx
+- /settings â app/settings/page.tsx
+- /marketplace â app/marketplace/page.tsx
+- /engines â app/engines/page.tsx
+- /shop â app/shop/page.tsx
+- /dreamr â app/dreamr/page.tsx
+- /notes â app/notes/page.tsx
+- /homedream â app/homedream/page.tsx
+- /messages â app/messages/page.tsx
 
 Components:
-- CodeDaydreamPage — app/daydream/code/page.tsx
-- ForgeDaydreamPage — app/daydream/forge/page.tsx
+- EditProfileDreamPage â app/edit-profiledream/page.tsx
+- LoginPageInner â app/login/page.tsx
+- LoginPage â app/login/page.tsx
+- JoinPage â app/join/page.tsx
+- DiscoverPage â app/discover/page.tsx
+- ViewProfilePage â app/view-profile/page.tsx
+- AdsPage â app/ads/page.tsx
+- VisibilityBadge â app/lab/page.tsx
+- ProjectCard â app/lab/page.tsx
+- LabPage â app/lab/page.tsx
+- OnboardingPage â app/onboarding/page.tsx
+- SettingsPage â app/settings/page.tsx
+- MarketplacePage â app/marketplace/page.tsx
+- EnginesHubPage â app/engines/page.tsx
 
 Hooks:
-- useSimulation — app/api/forge/build/route.ts
-- useSharedDreamSession — app/api/shared-dream/sessions/[id]/route.ts
-- useEffect — engine/observability/rootCauseAnalyzer.ts
-- useMemo — engine/observability/rootCauseAnalyzer.ts
-- useCallback — engine/observability/rootCauseAnalyzer.ts
+- useRouter â app/edit-profiledream/page.tsx
+- useCallback â app/edit-profiledream/page.tsx
+- useEffect â app/edit-profiledream/page.tsx
+- useRef â app/edit-profiledream/page.tsx
+- useState â app/edit-profiledream/page.tsx
+- useRouter â app/login/page.tsx
+- useSearchParams â app/login/page.tsx
+- useEffect â app/login/page.tsx
+- useMemo â app/login/page.tsx
+- useState â app/login/page.tsx
+- useRouter â app/join/page.tsx
+- useEffect â app/join/page.tsx
+- useMemo â app/join/page.tsx
+- useState â app/join/page.tsx
 
 Exports that define public behavior:
-- safeGetUser — supabase/client/safeGetUser.ts
-- default export — next.config (next.config.mjs)
-- SupabaseCookieStore — supabase/server/serverClient.ts
-- createServerClientWithCookies — supabase/server/serverClient.ts
-- createServerClient — supabase/server/serverClient.ts
-- createServerClientWithCustomCookies — supabase/server/serverClient.ts
-- createServiceClient — supabase/server/serverClient.ts
-- getServerSiteOrigin — supabase/config.ts
-- buildAuthCallbackUrl — supabase/config.ts
-- getSupabaseAuthCallbackUrl — supabase/config.ts
-- fetchWithRetry — app/api/forge/build/route.ts
-- DreamRPulse — supabase/realtime.ts
-- DreamRSubscribeOptions — supabase/realtime.ts
-- subscribeDreamR — supabase/realtime.ts
+- safeGetUser â supabase/client/safeGetUser.ts
+- default export â next.config (next.config.mjs)
+- SupabaseCookieStore â supabase/server/serverClient.ts
+- createServerClientWithCookies â supabase/server/serverClient.ts
+- createServerClient â supabase/server/serverClient.ts
+- createServerClientWithCustomCookies â supabase/server/serverClient.ts
+- createServiceClient â supabase/server/serverClient.ts
+- getServerSiteOrigin â supabase/config.ts
+- buildAuthCallbackUrl â supabase/config.ts
+- getSupabaseAuthCallbackUrl â supabase/config.ts
+- createClient â supabase/client/client.ts
+- default export â page (app/edit-profiledream/page.tsx)
+- default export â page (app/login/page.tsx)
+- default export â page (app/join/page.tsx)
 
 Import/export connections:
 - @supabase/supabase-js
@@ -201,171 +228,171 @@ Import/export connections:
 - @supabase/ssr
 - next/headers
 - ../config
-- dr-eams/ai/groq
-- dr-eams/ai/triad
-- engins/forgeengin/forge/forgeBuild
-- engins/forgeengin/forge/forgeRegistry
-- utils/index
-- next/server
-- components/daydream/dream.OpenDaydreamSideBButton
-- components/daydream/dream.shell.DaydreamShell
-- components/ui/dream.AuthenticatedPageHeader
+- components/activity/dream.ActivityProfile
+- components/profile/dream.widget.ProfileWidgetGrid
+- components/ui/dream.DreamWord
+- supabase/client/client
+- supabase/client/safeGetUser
+- lucide-react
+- next/link
+- next/navigation
+- react
 
 ### Matched Files
 
 Primary files:
-- `pnpm-lock.yaml` — 6804 lines — score 140 — primary path, path keyword: pnpm
-- `supabase/client/safeGetUser.ts` — 40 lines — score 140 — primary path, path keyword: supabase
-- `next.config.mjs` — 207 lines — score 134 — primary path, path keyword: next
-- `supabase/server/serverClient.ts` — 191 lines — score 134 — primary path, path keyword: supabase
-- `supabase/migrations/20260323100000_embed_feed_items.sql` — 56 lines — score 134 — primary path, path keyword: supabase
-- `supabase/config.ts` — 55 lines — score 134 — primary path, path keyword: supabase
-- `supabase/seed.sql` — 50 lines — score 134 — primary path, path keyword: supabase
-- `app/api/forge/build/route.ts` — 923 lines — score 132 — primary path
-- `.github/workflows/sql-migration-guard.yml` — 693 lines — score 130 — primary path
-- `.github/workflows/idari-daily.yml` — 659 lines — score 130 — primary path
-- `.github/workflows/full-audit.yml` — 609 lines — score 130 — primary path
-- `.github/workflows/issue-bot.yml` — 321 lines — score 130 — primary path
-- `.github/workflows/gameengin-ai-agent.yml` — 240 lines — score 130 — primary path
-- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql` — 769 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260129000000_upgrade_schema.sql` — 290 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260605015234_auto_scaffold.sql` — 280 lines — score 128 — primary path, path keyword: supabase
-- `supabase/realtime.ts` — 255 lines — score 128 — primary path, path keyword: supabase
-- `supabase/vector.ts` — 243 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260405042406_auto_scaffold.sql` — 225 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — 186 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260325100000_child_safety.sql` — 160 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260405000001_dreamr_feed_registry.sql` — 149 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260516000300_shared_dream_sessions.sql` — 134 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql` — 133 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260310000003_connector_accounts.sql` — 124 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260418000000_gameengin_core.sql` — 104 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260426000200_build_memory_schema_gaps.sql` — 98 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql` — 89 lines — score 128 — primary path, path keyword: supabase
-- `supabase/schema-final.sql` — 80 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260402000002_game_assets.sql` — 70 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260315000000_content_drafts.sql` — 65 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260401000001_platform_utilities.sql` — 65 lines — score 128 — primary path, path keyword: supabase
-- `supabase/auth/nextRedirect.ts` — 61 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260321200000_phase8a_feed_and_layout.sql` — 52 lines — score 128 — primary path, path keyword: supabase
+- `supabase/client/safeGetUser.ts` â 40 lines â score 134 â primary path, path keyword: supabase
+- `next.config.mjs` â 207 lines â score 130 â primary path, path keyword: next
+- `supabase/server/serverClient.ts` â 191 lines â score 130 â primary path, path keyword: supabase
+- `supabase/config.ts` â 55 lines â score 130 â primary path, path keyword: supabase
+- `supabase/client/client.ts` â 27 lines â score 126 â primary path, path keyword: supabase
+- `pnpm-workspace.yaml` â 10 lines â score 122 â primary path, path keyword: pnpm
+- `app/edit-profiledream/page.tsx` â 561 lines â score 116 â primary path
+- `app/login/page.tsx` â 377 lines â score 116 â primary path
+- `app/join/page.tsx` â 374 lines â score 116 â primary path
+- `app/discover/page.tsx` â 370 lines â score 116 â primary path
+- `app/view-profile/page.tsx` â 365 lines â score 116 â primary path
+- `app/ads/page.tsx` â 267 lines â score 116 â primary path
+- `app/lab/page.tsx` â 235 lines â score 116 â primary path
+- `app/onboarding/page.tsx` â 210 lines â score 116 â primary path
+- `app/settings/page.tsx` â 172 lines â score 116 â primary path
+- `app/marketplace/page.tsx` â 137 lines â score 116 â primary path
+- `app/engines/page.tsx` â 130 lines â score 116 â primary path
+- `app/shop/page.tsx` â 130 lines â score 116 â primary path
+- `package.json` â 116 lines â score 116 â primary path
+- `app/dreamr/page.tsx` â 81 lines â score 116 â primary path
+- `app/notes/page.tsx` â 81 lines â score 116 â primary path
+- `app/homedream/page.tsx` â 75 lines â score 116 â primary path
+- `app/messages/page.tsx` â 69 lines â score 116 â primary path
+- `app/connectors/page.tsx` â 65 lines â score 116 â primary path
+- `app/feed-settings/page.tsx` â 19 lines â score 116 â primary path
+- `engins/engin.StarMakerEngin.tsx` â 4303 lines â score 112 â primary path
+- `engins/engin.CodeEngin.tsx` â 1286 lines â score 112 â primary path
+- `eslint.config.mjs` â 104 lines â score 112 â primary path
+- `engins/engin.GameEngin.tsx` â 2953 lines â score 108 â primary path
+- `engins/engin.LabEngin.tsx` â 1989 lines â score 108 â primary path
+- `engins/dream.ForgeEngin.tsx` â 1928 lines â score 108 â primary path
+- `engins/engin.BrandingEngin.tsx` â 1260 lines â score 108 â primary path
+- `.github/workflows/readme-autosync.yml` â 170 lines â score 108 â primary path
+- `.github/workflows/preflight.yml` â 137 lines â score 108 â primary path
 
 Supporting files:
-- `supabase/migrations/20260417000001_dream_docs_search_rpc.sql` — 49 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260402000001_control_mappings.sql` — 46 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260516000000_agent_sessions_forge_rate_limits.sql` — 41 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260403000002_pgvector_search_rpc.sql` — 40 lines — score 128 — primary path, path keyword: supabase
-- `supabase/migrations/20260226000000_admin_lock.sql` — 32 lines — score 128 — primary path, path keyword: supabase
-- `supabase/client/client.ts` — 27 lines — score 128 — primary path, path keyword: supabase
-- `app/daydream/code/page.tsx` — 1118 lines — score 126 — primary path
-- `app/daydream/forge/page.tsx` — 348 lines — score 126 — primary path
-- `app/api/follow/route.ts` — 199 lines — score 126 — primary path
-- `app/api/admin/ai-chat/route.ts` — 137 lines — score 126 — primary path
-- `app/api/shared-dream/sessions/[id]/route.ts` — 134 lines — score 126 — primary path
-- `app/api/embed-feed/route.ts` — 99 lines — score 126 — primary path
-- `app/api/settings/appearance/route.ts` — 92 lines — score 126 — primary path
-- `app/api/shared-dream/sessions/route.ts` — 92 lines — score 126 — primary path
-- `app/api/account/export-data/route.ts` — 84 lines — score 126 — primary path
-- `.github/workflows/resilient-engine-smoke.yml` — 588 lines — score 124 — primary path
-- `.github/workflows/elite-gameengin-evolution.yml` — 426 lines — score 124 — primary path
-- `engine/observability/rootCauseAnalyzer.ts` — 218 lines — score 124 — primary path
-- `package.json` — 116 lines — score 124 — primary path
-- `supabase/migrations/20260210000001_ai_system_v2026.sql` — 454 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260210000000_widget_system_v2.sql` — 364 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260426000000_activity_coop_gameengin_completion.sql` — 284 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260210_ai_core.sql` — 280 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260319065444_new-migration.sql` — 275 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — 239 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260307000000_readme_gaps.sql` — 233 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20240120000000_initial_schema.sql` — 221 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260325000000_phase8f_daydream_network.sql` — 113 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql` — 110 lines — score 122 — primary path, path keyword: supabase
-- `supabase/migrations/20260403000001_pgvector_embeddings.sql` — 102 lines — score 122 — primary path, path keyword: supabase
+- `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx` â 120 lines â score 108 â primary path
+- `.github/workflows/codeql.yml` â 104 lines â score 108 â primary path
+- `.github/workflows/vercel-deploy.yml` â 101 lines â score 108 â primary path
+- `.github/workflows/export-src-only.yml` â 74 lines â score 108 â primary path
+- `engins/dream.QuantumCircuitCanvas.tsx` â 522 lines â score 104 â primary path
+- `engins/portfolio/dream.PortfolioEngin.tsx` â 501 lines â score 104 â primary path
+- `engine/runtime/index.ts` â 478 lines â score 104 â primary path
+- `components/runtime/dream.RuntimeView.tsx` â 432 lines â score 104 â primary path
+- `engins/renderengin/RenderEnginViewport.tsx` â 378 lines â score 104 â primary path
+- `components/runtime/dream.DualRuntimeContainer.tsx` â 246 lines â score 104 â primary path
+- `engine/runtime/moduleRegistry.ts` â 170 lines â score 104 â primary path
+- `.github/workflows/dreamengin-preflight.yml` â 133 lines â score 104 â primary path
+- `components/providers/dream.ThemeProvider.tsx` â 91 lines â score 104 â primary path
+- `engins/contentengin/ImplicitAssetWorkspace.tsx` â 77 lines â score 104 â primary path
+- `engins/autoopen/dream.AutoOpenGameEngin.tsx` â 42 lines â score 104 â primary path
+- `components/providers/dream.GodTierProvider.tsx` â 37 lines â score 104 â primary path
+- `tsconfig.app.json` â 32 lines â score 104 â primary path
+- `tsconfig.server.json` â 29 lines â score 104 â primary path
+- `tsconfig.worker.json` â 28 lines â score 104 â primary path
+- `tsconfig.games.json` â 27 lines â score 104 â primary path
+- `tsconfig.test.json` â 26 lines â score 104 â primary path
+- `styles/globals.css` â 5174 lines â score 100 â primary path
+- `components/runtime/dream.shell.RuntimeShell.tsx` â 352 lines â score 100 â primary path
+- `styles/home-dream.css` â 235 lines â score 100 â primary path
+- `tailwind.config.ts` â 99 lines â score 100 â primary path
+- `styles/view-transitions.css` â 49 lines â score 100 â primary path
+- `components/providers/dream.AppSurfaceShell.tsx` â 45 lines â score 100 â primary path
+- `styles/theme.css` â 34 lines â score 100 â primary path
+- `tsconfig.base.json` â 32 lines â score 100 â primary path
+- `styles/dream-shell.css` â 24 lines â score 100 â primary path
 ## 5. The Engins and DayDreams
 
 ### Plain English
 Engins are the production systems; DayDreams are the user-facing creative spaces around them. This section connects engine code, pages, panels, shells, and components that let users create code, games, music, simulations, media, and brand work.
 
 ### What users experience
-A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.
+A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, ForgeEngin, and their DayDream wrappers.
 
 ### Repo Evidence
-Matched focused repo evidence: 120 files, about 42,053 readable source lines.
+Matched focused repo evidence: 110 files, about 43,447 readable source lines.
 
 Behavior signals:
-- auth — 84 file hits
-- persistence — 73 file hits
-- commerce — 47 file hits
-- state — 44 file hits
-- rendering — 40 file hits
-- runtime — 35 file hits
-- mobile touch — 35 file hits
-- events — 29 file hits
+- auth â 73 file hits
+- persistence â 60 file hits
+- commerce â 53 file hits
+- state â 52 file hits
+- rendering â 47 file hits
+- runtime â 40 file hits
+- mobile touch â 40 file hits
+- events â 36 file hits
 
 Routes and APIs:
-- /daydream/games/engin ← app/daydream/games/engin/page.tsx
-- /daydream/brand/engin ← app/daydream/brand/engin/page.tsx
-- /daydream/code/engin ← app/daydream/code/engin/page.tsx
-- /daydream/create/engin ← app/daydream/create/engin/page.tsx
-- /daydream/lab/engin ← app/daydream/lab/engin/page.tsx
-- /daydream/music/engin ← app/daydream/music/engin/page.tsx
-- /daydream/code ← app/daydream/code/page.tsx
-- /daydream/lab ← app/daydream/lab/page.tsx
-- /daydream/games ← app/daydream/games/page.tsx
-- /daydream/create ← app/daydream/create/page.tsx
-- /daydream/music ← app/daydream/music/page.tsx
-- /daydream/brand ← app/daydream/brand/page.tsx
-- /daydream/forge ← app/daydream/forge/page.tsx
-- /daydream/lab/portfolio ← app/daydream/lab/portfolio/page.tsx
-- /engines/music/studio ← app/engines/music/studio/page.tsx
-- /daydream/music/upload ← app/daydream/music/upload/page.tsx
+- /daydream/games/engin â app/daydream/games/engin/page.tsx
+- /daydream/brand/engin â app/daydream/brand/engin/page.tsx
+- /daydream/code/engin â app/daydream/code/engin/page.tsx
+- /daydream/create/engin â app/daydream/create/engin/page.tsx
+- /daydream/lab/engin â app/daydream/lab/engin/page.tsx
+- /daydream/music/engin â app/daydream/music/engin/page.tsx
+- /daydream/code â app/daydream/code/page.tsx
+- /daydream/lab â app/daydream/lab/page.tsx
+- /daydream/games â app/daydream/games/page.tsx
+- /daydream/create â app/daydream/create/page.tsx
+- /daydream/music â app/daydream/music/page.tsx
+- /daydream/brand â app/daydream/brand/page.tsx
+- /daydream/forge â app/daydream/forge/page.tsx
+- /daydream/lab/portfolio â app/daydream/lab/portfolio/page.tsx
+- /engines/music/studio â app/engines/music/studio/page.tsx
+- /daydream/music/upload â app/daydream/music/upload/page.tsx
 
 Components:
-- GamesEnginRedirectPage — app/daydream/games/engin/page.tsx
-- BrandEnginRedirectPage — app/daydream/brand/engin/page.tsx
-- CodeEnginRedirectPage — app/daydream/code/engin/page.tsx
-- CreateEnginRedirectPage — app/daydream/create/engin/page.tsx
-- LabEnginRedirectPage — app/daydream/lab/engin/page.tsx
-- MusicEnginRedirectPage — app/daydream/music/engin/page.tsx
-- CodeDaydreamPage — app/daydream/code/page.tsx
-- LabDaydreamPage — app/daydream/lab/page.tsx
-- GamesDaydreamPage — app/daydream/games/page.tsx
-- CreateDaydreamPage — app/daydream/create/page.tsx
-- MusicArtistHubPage — app/daydream/music/page.tsx
-- BrandDaydreamPage — app/daydream/brand/page.tsx
-- ForgeDaydreamPage — app/daydream/forge/page.tsx
-- OptimizeroPage — app/daydream/lab/portfolio/page.tsx
+- GamesEnginRedirectPage â app/daydream/games/engin/page.tsx
+- BrandEnginRedirectPage â app/daydream/brand/engin/page.tsx
+- CodeEnginRedirectPage â app/daydream/code/engin/page.tsx
+- CreateEnginRedirectPage â app/daydream/create/engin/page.tsx
+- LabEnginRedirectPage â app/daydream/lab/engin/page.tsx
+- MusicEnginRedirectPage â app/daydream/music/engin/page.tsx
+- CodeDaydreamPage â app/daydream/code/page.tsx
+- LabDaydreamPage â app/daydream/lab/page.tsx
+- GamesDaydreamPage â app/daydream/games/page.tsx
+- CreateDaydreamPage â app/daydream/create/page.tsx
+- MusicArtistHubPage â app/daydream/music/page.tsx
+- BrandDaydreamPage â app/daydream/brand/page.tsx
+- ForgeDaydreamPage â app/daydream/forge/page.tsx
+- OptimizeroPage â app/daydream/lab/portfolio/page.tsx
 
 Hooks:
-- useSharedDream — engins/engin.StarMakerEngin.tsx
-- useDaydreamPersistence — engins/engin.StarMakerEngin.tsx
-- useDaydreamState — engins/engin.StarMakerEngin.tsx
-- useStarMakerEnginRuntime — engins/engin.StarMakerEngin.tsx
-- useEnginWorkflow — engins/engin.StarMakerEngin.tsx
-- useForgeActivity — engins/engin.StarMakerEngin.tsx
-- useEnginCoopSync — engins/engin.StarMakerEngin.tsx
-- useCallback — engins/engin.StarMakerEngin.tsx
-- useEffect — engins/engin.StarMakerEngin.tsx
-- useMemo — engins/engin.StarMakerEngin.tsx
-- useRef — engins/engin.StarMakerEngin.tsx
-- useState — engins/engin.StarMakerEngin.tsx
-- useGlobalCrashListener — engins/engin.GameEngin.tsx
-- useDaydreamPersistence — engins/engin.GameEngin.tsx
+- useSharedDream â engins/engin.StarMakerEngin.tsx
+- useDaydreamPersistence â engins/engin.StarMakerEngin.tsx
+- useDaydreamState â engins/engin.StarMakerEngin.tsx
+- useStarMakerEnginRuntime â engins/engin.StarMakerEngin.tsx
+- useEnginWorkflow â engins/engin.StarMakerEngin.tsx
+- useForgeActivity â engins/engin.StarMakerEngin.tsx
+- useEnginCoopSync â engins/engin.StarMakerEngin.tsx
+- useCallback â engins/engin.StarMakerEngin.tsx
+- useEffect â engins/engin.StarMakerEngin.tsx
+- useMemo â engins/engin.StarMakerEngin.tsx
+- useRef â engins/engin.StarMakerEngin.tsx
+- useState â engins/engin.StarMakerEngin.tsx
+- useGlobalCrashListener â engins/engin.GameEngin.tsx
+- useDaydreamPersistence â engins/engin.GameEngin.tsx
 
 Exports that define public behavior:
-- default export — page (app/daydream/games/engin/page.tsx)
-- default export — page (app/daydream/brand/engin/page.tsx)
-- default export — page (app/daydream/code/engin/page.tsx)
-- default export — page (app/daydream/create/engin/page.tsx)
-- default export — page (app/daydream/lab/engin/page.tsx)
-- default export — page (app/daydream/music/engin/page.tsx)
-- metadata — app/daydream/code/page.tsx
-- default export — page (app/daydream/code/page.tsx)
-- metadata — app/daydream/lab/page.tsx
-- default export — page (app/daydream/lab/page.tsx)
-- metadata — app/daydream/games/page.tsx
-- default export — page (app/daydream/games/page.tsx)
-- metadata — app/daydream/create/page.tsx
-- default export — page (app/daydream/create/page.tsx)
+- default export â page (app/daydream/games/engin/page.tsx)
+- default export â page (app/daydream/brand/engin/page.tsx)
+- default export â page (app/daydream/code/engin/page.tsx)
+- default export â page (app/daydream/create/engin/page.tsx)
+- default export â page (app/daydream/lab/engin/page.tsx)
+- default export â page (app/daydream/music/engin/page.tsx)
+- metadata â app/daydream/code/page.tsx
+- default export â page (app/daydream/code/page.tsx)
+- metadata â app/daydream/lab/page.tsx
+- default export â page (app/daydream/lab/page.tsx)
+- metadata â app/daydream/games/page.tsx
+- default export â page (app/daydream/games/page.tsx)
+- metadata â app/daydream/create/page.tsx
+- default export â page (app/daydream/create/page.tsx)
 
 Import/export connections:
 - next/navigation
@@ -386,72 +413,72 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/daydream/games/engin/page.tsx` — 30 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/brand/engin/page.tsx` — 11 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/code/engin/page.tsx` — 11 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/create/engin/page.tsx` — 11 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/lab/engin/page.tsx` — 11 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/music/engin/page.tsx` — 11 lines — score 152 — primary path, path keyword: engin
-- `app/daydream/code/page.tsx` — 1118 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/lab/page.tsx` — 1062 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/games/page.tsx` — 365 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/create/page.tsx` — 107 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/music/page.tsx` — 87 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/brand/page.tsx` — 62 lines — score 148 — primary path, path keyword: daydream
-- `app/daydream/forge/page.tsx` — 348 lines — score 142 — primary path, path keyword: daydream
-- `app/daydream/lab/portfolio/page.tsx` — 189 lines — score 142 — primary path, path keyword: daydream
-- `app/engines/music/studio/page.tsx` — 40 lines — score 142 — primary path, path keyword: studio
-- `engins/engin.StarMakerEngin.tsx` — 4303 lines — score 140 — primary path, path keyword: engin
-- `engins/engin.GameEngin.tsx` — 2953 lines — score 140 — primary path, path keyword: engin
-- `engins/engin.LabEngin.tsx` — 1989 lines — score 140 — primary path, path keyword: engin
-- `engins/engin.CodeEngin.tsx` — 1286 lines — score 140 — primary path, path keyword: engin
-- `app/daydream/music/upload/page.tsx` — 210 lines — score 136 — primary path, path keyword: daydream
-- `app/daydream/media-vault/page.tsx` — 21 lines — score 136 — primary path, path keyword: daydream
-- `app/daydream/play/page.tsx` — 19 lines — score 136 — primary path, path keyword: daydream
-- `components/daydream/dream.CodeDreamIDE.tsx` — 1707 lines — score 134 — primary path, path keyword: daydream
-- `engins/engin.BrandingEngin.tsx` — 1260 lines — score 134 — primary path, path keyword: engin
-- `components/daydream/dream.shell.DaydreamShell.tsx` — 465 lines — score 134 — primary path, path keyword: daydream
-- `app/daydream/game/page.tsx` — 31 lines — score 130 — primary path, path keyword: daydream
-- `app/daydream/constellation/page.tsx` — 26 lines — score 130 — primary path, path keyword: daydream
-- `app/daydream/render/page.tsx` — 6 lines — score 130 — primary path, path keyword: daydream
-- `components/daydream/dream.LabDreamIDE.tsx` — 1294 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — 684 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/dream.NGNEngin.tsx` — 600 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — 378 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/dream.constellationmap.tsx` — 356 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/dream.DiffViewer.tsx` — 353 lines — score 128 — primary path, path keyword: daydream
+- `app/daydream/games/engin/page.tsx` â 30 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/brand/engin/page.tsx` â 11 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/code/engin/page.tsx` â 11 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/create/engin/page.tsx` â 11 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/lab/engin/page.tsx` â 11 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/music/engin/page.tsx` â 11 lines â score 152 â primary path, path keyword: engin
+- `app/daydream/code/page.tsx` â 1118 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/lab/page.tsx` â 1062 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/games/page.tsx` â 365 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/create/page.tsx` â 107 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/music/page.tsx` â 87 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/brand/page.tsx` â 62 lines â score 142 â primary path, path keyword: daydream
+- `app/daydream/forge/page.tsx` â 348 lines â score 138 â primary path, path keyword: daydream
+- `app/daydream/lab/portfolio/page.tsx` â 189 lines â score 138 â primary path, path keyword: daydream
+- `app/engines/music/studio/page.tsx` â 40 lines â score 138 â primary path, path keyword: studio
+- `engins/engin.StarMakerEngin.tsx` â 4303 lines â score 134 â primary path, path keyword: engin
+- `engins/engin.GameEngin.tsx` â 2953 lines â score 134 â primary path, path keyword: engin
+- `engins/engin.LabEngin.tsx` â 1989 lines â score 134 â primary path, path keyword: engin
+- `engins/engin.CodeEngin.tsx` â 1286 lines â score 134 â primary path, path keyword: engin
+- `app/daydream/music/upload/page.tsx` â 210 lines â score 134 â primary path, path keyword: daydream
+- `components/daydream/dream.CodeDreamIDE.tsx` â 1707 lines â score 130 â primary path, path keyword: daydream
+- `engins/engin.BrandingEngin.tsx` â 1260 lines â score 130 â primary path, path keyword: engin
+- `components/daydream/dream.shell.DaydreamShell.tsx` â 465 lines â score 130 â primary path, path keyword: daydream
+- `app/daydream/game/page.tsx` â 31 lines â score 130 â primary path, path keyword: daydream
+- `components/daydream/dream.LabDreamIDE.tsx` â 1294 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` â 684 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/dream.NGNEngin.tsx` â 600 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` â 378 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/dream.constellationmap.tsx` â 356 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/dream.DiffViewer.tsx` â 353 lines â score 126 â primary path, path keyword: daydream
+- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` â 330 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/dream.StandaloneEnginSurface.tsx` â 38 lines â score 126 â primary path, path keyword: daydream
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` â 668 lines â score 122 â primary path, path keyword: daydream
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` â 456 lines â score 122 â primary path, path keyword: daydream
 
 Supporting files:
-- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` — 330 lines — score 128 — primary path, path keyword: daydream
-- `app/daydream/constellation/dream.ConstellationClient.tsx` — 114 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — 38 lines — score 128 — primary path, path keyword: daydream
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — 668 lines — score 122 — primary path, path keyword: daydream
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — 456 lines — score 122 — primary path, path keyword: daydream
-- `components/daydream/dream.JourneyTrail.tsx` — 386 lines — score 122 — primary path, path keyword: daydream
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — 347 lines — score 122 — primary path, path keyword: daydream
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — 19 lines — score 122 — primary path, path keyword: daydream
-- `app/daydream/game/dream.GamePageClient.tsx` — 5 lines — score 122 — primary path, path keyword: daydream
-- `engins/engin.ContentEngin.tsx` — 4 lines — score 122 — primary path, path keyword: engin
-- `app/engines/page.tsx` — 130 lines — score 120 — primary path
-- `app/engines/music/arrange/page.tsx` — 40 lines — score 120 — primary path
-- `app/engines/music/library/page.tsx` — 40 lines — score 120 — primary path
-- `daydreams/lab/page.tsx` — 486 lines — score 118 — primary path
-- `daydreams/music/page.tsx` — 393 lines — score 118 — primary path
-- `daydreams/games/page.tsx` — 356 lines — score 118 — primary path
-- `daydreams/shared/useDaydreamPersistence.ts` — 147 lines — score 118 — primary path
-- `components/engines/shared/dream.makeEnginApp.tsx` — 64 lines — score 118 — primary path
-- `daydreams/brand/page.tsx` — 57 lines — score 118 — primary path
-- `components/engines/music/dream.MusicEnginApp.tsx` — 33 lines — score 118 — primary path
-- `engins/renderengin/runtimeRegistration.ts` — 20 lines — score 118 — primary path
-- `components/engines/create/dream.CreateEnginApp.tsx` — 5 lines — score 118 — primary path
-- `app/engines/games/builder/page.tsx` — 51 lines — score 114 — primary path
-- `app/engines/games/library/page.tsx` — 51 lines — score 114 — primary path
-- `app/engines/games/scores/page.tsx` — 51 lines — score 114 — primary path
-- `app/engines/code/notebook/page.tsx` — 42 lines — score 114 — primary path
-- `app/engines/code/ai/page.tsx` — 32 lines — score 114 — primary path
-- `app/engines/code/projects/page.tsx` — 32 lines — score 114 — primary path
-- `app/engines/lab/data/page.tsx` — 32 lines — score 114 — primary path
-- `app/engines/lab/experiments/page.tsx` — 32 lines — score 114 — primary path
+- `components/daydream/dream.JourneyTrail.tsx` â 386 lines â score 122 â primary path, path keyword: daydream
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` â 347 lines â score 122 â primary path, path keyword: daydream
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` â 19 lines â score 122 â primary path, path keyword: daydream
+- `app/daydream/game/dream.GamePageClient.tsx` â 5 lines â score 122 â primary path, path keyword: daydream
+- `engins/engin.ContentEngin.tsx` â 4 lines â score 122 â primary path, path keyword: engin
+- `app/engines/page.tsx` â 130 lines â score 116 â primary path
+- `app/engines/music/arrange/page.tsx` â 40 lines â score 116 â primary path
+- `app/engines/music/library/page.tsx` â 40 lines â score 116 â primary path
+- `daydreams/lab/page.tsx` â 486 lines â score 112 â primary path
+- `daydreams/music/page.tsx` â 393 lines â score 112 â primary path
+- `daydreams/games/page.tsx` â 356 lines â score 112 â primary path
+- `daydreams/shared/useDaydreamPersistence.ts` â 147 lines â score 112 â primary path
+- `components/engines/shared/dream.makeEnginApp.tsx` â 64 lines â score 112 â primary path
+- `daydreams/brand/page.tsx` â 57 lines â score 112 â primary path
+- `app/engines/games/builder/page.tsx` â 51 lines â score 112 â primary path
+- `app/engines/games/library/page.tsx` â 51 lines â score 112 â primary path
+- `app/engines/games/scores/page.tsx` â 51 lines â score 112 â primary path
+- `app/engines/code/notebook/page.tsx` â 42 lines â score 112 â primary path
+- `components/engines/music/dream.MusicEnginApp.tsx` â 33 lines â score 112 â primary path
+- `app/engines/code/ai/page.tsx` â 32 lines â score 112 â primary path
+- `app/engines/code/projects/page.tsx` â 32 lines â score 112 â primary path
+- `engins/renderengin/runtimeRegistration.ts` â 20 lines â score 112 â primary path
+- `components/engines/create/dream.CreateEnginApp.tsx` â 5 lines â score 112 â primary path
+- `engins/gameengin/index.ts` â 3927 lines â score 108 â primary path
+- `engins/dream.ForgeEngin.tsx` â 1928 lines â score 108 â primary path
+- `daydreams/code/page.tsx` â 545 lines â score 108 â primary path
+- `daydreams/create/page.tsx` â 456 lines â score 108 â primary path
+- `engins/forgeengin/forge/forgeRegistry.ts` â 433 lines â score 108 â primary path
+- `engins/rulesets/code/codeEnginRuleSet.ts` â 395 lines â score 108 â primary path
+- `engins/rulesets/game/gameEnginRuleSet.ts` â 302 lines â score 108 â primary path
 ## 6. Dual Runtimes
 
 ### Plain English
@@ -464,55 +491,55 @@ Users feel this when one part of the app keeps context while another part opens 
 Matched focused repo evidence: 26 files, about 7,005 readable source lines.
 
 Behavior signals:
-- runtime — 19 file hits
-- state — 17 file hits
-- rendering — 15 file hits
-- commerce — 13 file hits
-- events — 11 file hits
-- auth — 9 file hits
-- mobile touch — 5 file hits
-- persistence — 2 file hits
+- runtime â 19 file hits
+- state â 17 file hits
+- rendering â 15 file hits
+- commerce â 13 file hits
+- events â 11 file hits
+- auth â 9 file hits
+- mobile touch â 5 file hits
+- persistence â 2 file hits
 
 Routes and APIs:
-- /dreamdmbar/dualruntime ← app/dreamdmbar/dualruntime/page.tsx
+- /dreamdmbar/dualruntime â app/dreamdmbar/dualruntime/page.tsx
 
 Components:
-- DreamDMBarDualRuntimePage — app/dreamdmbar/dualruntime/page.tsx
-- DualRuntimeContainer — components/runtime/dream.DualRuntimeContainer.tsx
-- RuntimeView — components/runtime/dream.RuntimeView.tsx
-- RuntimeShell — components/runtime/dream.shell.RuntimeShell.tsx
+- DreamDMBarDualRuntimePage â app/dreamdmbar/dualruntime/page.tsx
+- DualRuntimeContainer â components/runtime/dream.DualRuntimeContainer.tsx
+- RuntimeView â components/runtime/dream.RuntimeView.tsx
+- RuntimeShell â components/runtime/dream.shell.RuntimeShell.tsx
 
 Hooks:
-- useDreamSystem — app/dreamdmbar/dualruntime/page.tsx
-- useEffect — app/dreamdmbar/dualruntime/page.tsx
-- useState — app/dreamdmbar/dualruntime/page.tsx
-- useCallback — components/runtime/dream.DualRuntimeContainer.tsx
-- useContext — components/runtime/dream.DualRuntimeContainer.tsx
-- useMemo — components/runtime/dream.DualRuntimeContainer.tsx
-- useRef — components/runtime/dream.DualRuntimeContainer.tsx
-- useState — components/runtime/dream.DualRuntimeContainer.tsx
-- useDualRuntime — components/runtime/dream.DualRuntimeContainer.tsx
-- useCallback — engine/runtime/useDualRuntime.ts
-- useEffect — engine/runtime/useDualRuntime.ts
-- useRef — engine/runtime/useDualRuntime.ts
-- useState — engine/runtime/useDualRuntime.ts
-- useDualRuntime — engine/runtime/useDualRuntime.ts
+- useDreamSystem â app/dreamdmbar/dualruntime/page.tsx
+- useEffect â app/dreamdmbar/dualruntime/page.tsx
+- useState â app/dreamdmbar/dualruntime/page.tsx
+- useCallback â components/runtime/dream.DualRuntimeContainer.tsx
+- useContext â components/runtime/dream.DualRuntimeContainer.tsx
+- useMemo â components/runtime/dream.DualRuntimeContainer.tsx
+- useRef â components/runtime/dream.DualRuntimeContainer.tsx
+- useState â components/runtime/dream.DualRuntimeContainer.tsx
+- useDualRuntime â components/runtime/dream.DualRuntimeContainer.tsx
+- useCallback â engine/runtime/useDualRuntime.ts
+- useEffect â engine/runtime/useDualRuntime.ts
+- useRef â engine/runtime/useDualRuntime.ts
+- useState â engine/runtime/useDualRuntime.ts
+- useDualRuntime â engine/runtime/useDualRuntime.ts
 
 Exports that define public behavior:
-- default export — page (app/dreamdmbar/dualruntime/page.tsx)
-- RuntimeWorld — engine/runtime/dualRuntime.ts
-- DualRuntimeState — engine/runtime/dualRuntime.ts
-- TorusDomain — engine/runtime/dualRuntime.ts
-- setRuntimeWorld — engine/runtime/dualRuntime.ts
-- swapDominantRuntime — engine/runtime/dualRuntime.ts
-- makeHomeActiveTop — engine/runtime/dualRuntime.ts
-- makeHomeDreamSpaceActive — engine/runtime/dualRuntime.ts
-- makeDreamSpaceActiveSurface — engine/runtime/dualRuntime.ts
-- isHomeActiveTop — engine/runtime/dualRuntime.ts
-- worldsEqual — engine/runtime/dualRuntime.ts
-- torusFocusKey — engine/runtime/dualRuntime.ts
-- moveTorus — engine/runtime/dualRuntime.ts
-- useDualRuntime — components/runtime/dream.DualRuntimeContainer.tsx
+- default export â page (app/dreamdmbar/dualruntime/page.tsx)
+- RuntimeWorld â engine/runtime/dualRuntime.ts
+- DualRuntimeState â engine/runtime/dualRuntime.ts
+- TorusDomain â engine/runtime/dualRuntime.ts
+- setRuntimeWorld â engine/runtime/dualRuntime.ts
+- swapDominantRuntime â engine/runtime/dualRuntime.ts
+- makeHomeActiveTop â engine/runtime/dualRuntime.ts
+- makeHomeDreamSpaceActive â engine/runtime/dualRuntime.ts
+- makeDreamSpaceActiveSurface â engine/runtime/dualRuntime.ts
+- isHomeActiveTop â engine/runtime/dualRuntime.ts
+- worldsEqual â engine/runtime/dualRuntime.ts
+- torusFocusKey â engine/runtime/dualRuntime.ts
+- moveTorus â engine/runtime/dualRuntime.ts
+- useDualRuntime â components/runtime/dream.DualRuntimeContainer.tsx
 
 Import/export connections:
 - components/shared-dream/dream.SharedDreamRuntime
@@ -533,32 +560,32 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/dreamdmbar/dualruntime/page.tsx` — 102 lines — score 136 — primary path, path keyword: dualruntime
-- `engine/runtime/dualRuntime.ts` — 259 lines — score 134 — primary path, path keyword: dualruntime
-- `components/runtime/dream.DualRuntimeContainer.tsx` — 246 lines — score 118 — primary path
-- `engine/runtime/useDualRuntime.ts` — 184 lines — score 118 — primary path
-- `engine/runtime/useDualRuntimePersistence.ts` — 187 lines — score 112 — primary path
-- `engine/runtime/dualRuntimeBridge.ts` — 873 lines — score 106 — primary path
-- `components/runtime/dream.RuntimeView.tsx` — 432 lines — score 106 — primary path
-- `components/runtime/dream.shell.RuntimeShell.tsx` — 352 lines — score 100 — primary path
-- `engine/vm/dual-runtime.ts` — 259 lines — score 89 — supporting path, path keyword: dual runtime
-- `engine/vm/snapshot.ts` — 334 lines — score 83 — supporting path, path keyword: snapshot
-- `engine/runtime/iEngine.ts` — 362 lines — score 73 — supporting path
-- `engine/vm/README.md` — 253 lines — score 73 — supporting path
-- `engine/vm/index.ts` — 47 lines — score 73 — supporting path
-- `engine/runtime/dreamOSBus.ts` — 792 lines — score 67 — supporting path
-- `engine/vm/bus-events.ts` — 56 lines — score 67 — supporting path
-- `engine/vm/wasmGpuVM.ts` — 510 lines — score 61 — supporting path
-- `engine/runtime/snapshotFingerprint.ts` — 145 lines — score 61 — supporting path
-- `engine/vm/bufferManager.ts` — 328 lines — score 55 — supporting path
-- `engine/vm/types.ts` — 296 lines — score 55 — supporting path
-- `engine/vm/pipelineCache.ts` — 276 lines — score 55 — supporting path
-- `engine/vm/inter-vm-messaging.ts` — 199 lines — score 55 — supporting path
-- `engine/vm/security.ts` — 141 lines — score 55 — supporting path
-- `engine/vm/wasm-features.ts` — 137 lines — score 55 — supporting path
-- `engine/vm/resource-quota.ts` — 119 lines — score 55 — supporting path
-- `engine/runtime/madMaxiSnapshotBridge.ts` — 67 lines — score 55 — supporting path
-- `engine/vm/dualVMCoordinator.ts` — 49 lines — score 55 — supporting path
+- `app/dreamdmbar/dualruntime/page.tsx` â 102 lines â score 134 â primary path, path keyword: dualruntime
+- `engine/runtime/dualRuntime.ts` â 259 lines â score 130 â primary path, path keyword: dualruntime
+- `components/runtime/dream.DualRuntimeContainer.tsx` â 246 lines â score 112 â primary path
+- `engine/runtime/useDualRuntime.ts` â 184 lines â score 112 â primary path
+- `engine/runtime/useDualRuntimePersistence.ts` â 187 lines â score 108 â primary path
+- `engine/runtime/dualRuntimeBridge.ts` â 873 lines â score 104 â primary path
+- `components/runtime/dream.RuntimeView.tsx` â 432 lines â score 104 â primary path
+- `components/runtime/dream.shell.RuntimeShell.tsx` â 352 lines â score 100 â primary path
+- `engine/vm/dual-runtime.ts` â 259 lines â score 85 â supporting path, path keyword: dual runtime
+- `engine/vm/snapshot.ts` â 334 lines â score 81 â supporting path, path keyword: snapshot
+- `engine/runtime/iEngine.ts` â 362 lines â score 67 â supporting path
+- `engine/vm/README.md` â 253 lines â score 67 â supporting path
+- `engine/vm/index.ts` â 47 lines â score 67 â supporting path
+- `engine/runtime/dreamOSBus.ts` â 792 lines â score 63 â supporting path
+- `engine/vm/bus-events.ts` â 56 lines â score 63 â supporting path
+- `engine/vm/wasmGpuVM.ts` â 510 lines â score 59 â supporting path
+- `engine/runtime/snapshotFingerprint.ts` â 145 lines â score 59 â supporting path
+- `engine/vm/bufferManager.ts` â 328 lines â score 55 â supporting path
+- `engine/vm/types.ts` â 296 lines â score 55 â supporting path
+- `engine/vm/pipelineCache.ts` â 276 lines â score 55 â supporting path
+- `engine/vm/inter-vm-messaging.ts` â 199 lines â score 55 â supporting path
+- `engine/vm/security.ts` â 141 lines â score 55 â supporting path
+- `engine/vm/wasm-features.ts` â 137 lines â score 55 â supporting path
+- `engine/vm/resource-quota.ts` â 119 lines â score 55 â supporting path
+- `engine/runtime/madMaxiSnapshotBridge.ts` â 67 lines â score 55 â supporting path
+- `engine/vm/dualVMCoordinator.ts` â 49 lines â score 55 â supporting path
 
 Supporting files:
 - None found.
@@ -571,64 +598,64 @@ Shared Dreams are the collaboration and publishing layer for Dreams that can be 
 Users feel this when a Dream becomes something social: visible posts, shared sessions, public/private access, saved creative objects, and collaboration signals.
 
 ### Repo Evidence
-Matched focused repo evidence: 28 files, about 4,913 readable source lines.
+Matched focused repo evidence: 21 files, about 4,348 readable source lines.
 
 Behavior signals:
-- auth — 25 file hits
-- persistence — 23 file hits
-- commerce — 15 file hits
-- state — 14 file hits
-- events — 12 file hits
-- runtime — 8 file hits
-- rendering — 7 file hits
-- mobile touch — 5 file hits
+- auth â 19 file hits
+- persistence â 16 file hits
+- state â 13 file hits
+- commerce â 13 file hits
+- events â 10 file hits
+- runtime â 7 file hits
+- rendering â 7 file hits
+- mobile touch â 5 file hits
 
 Routes and APIs:
-- GET|PATCH /api/shared-dream/sessions/[id] ← app/api/shared-dream/sessions/[id]/route.ts
-- GET|POST /api/shared-dream/sessions ← app/api/shared-dream/sessions/route.ts
-- GET|POST /api/dreams/feed ← app/api/dreams/feed/route.ts
-- GET /api/dreams/instances ← app/api/dreams/instances/route.ts
-- POST /api/dreams/transfer ← app/api/dreams/transfer/route.ts
+- GET|PATCH /api/shared-dream/sessions/[id] â app/api/shared-dream/sessions/[id]/route.ts
+- GET|POST /api/shared-dream/sessions â app/api/shared-dream/sessions/route.ts
+- GET|POST /api/dreams/feed â app/api/dreams/feed/route.ts
+- GET /api/dreams/instances â app/api/dreams/instances/route.ts
+- POST /api/dreams/transfer â app/api/dreams/transfer/route.ts
 
 Components:
-- SharedDreamProvider — components/shared-dream/dream.SharedDreamProvider.tsx
-- SharedDreamRuntimeInner — components/shared-dream/dream.SharedDreamRuntime.tsx
-- SharedDreamRuntime — components/shared-dream/dream.SharedDreamRuntime.tsx
-- InviteFlow — components/shared-dream/dream.InviteFlow.tsx
-- SharedDreamCanvas — components/shared-dream/dream.SharedDreamCanvas.tsx
-- SharedDreamShell — components/dreams/dream.shell.SharedDreamShell.tsx
+- SharedDreamProvider â components/shared-dream/dream.SharedDreamProvider.tsx
+- SharedDreamRuntimeInner â components/shared-dream/dream.SharedDreamRuntime.tsx
+- SharedDreamRuntime â components/shared-dream/dream.SharedDreamRuntime.tsx
+- InviteFlow â components/shared-dream/dream.InviteFlow.tsx
+- SharedDreamCanvas â components/shared-dream/dream.SharedDreamCanvas.tsx
+- SharedDreamShell â components/dreams/dream.shell.SharedDreamShell.tsx
 
 Hooks:
-- useSharedDreamSession — engine/sharedDream.ts
-- useCallback — components/shared-dream/dream.SharedDreamProvider.tsx
-- useContext — components/shared-dream/dream.SharedDreamProvider.tsx
-- useEffect — components/shared-dream/dream.SharedDreamProvider.tsx
-- useRef — components/shared-dream/dream.SharedDreamProvider.tsx
-- useState — components/shared-dream/dream.SharedDreamProvider.tsx
-- useSharedDream — components/shared-dream/dream.SharedDreamProvider.tsx
-- useSharedDreamSession — app/api/shared-dream/sessions/[id]/route.ts
-- useSharedDreamSession — components/shared-dream/dream.SharedDreamRuntime.tsx
-- useCallback — components/shared-dream/dream.SharedDreamRuntime.tsx
-- useEffect — components/shared-dream/dream.SharedDreamRuntime.tsx
-- useState — components/shared-dream/dream.SharedDreamRuntime.tsx
-- useEnginCoopSync — components/shared-dream/dream.SharedDreamRuntime.tsx
-- useRef — components/shared-dream/dream.SharedDreamRuntime.tsx
+- useSharedDreamSession â engine/sharedDream.ts
+- useCallback â components/shared-dream/dream.SharedDreamProvider.tsx
+- useContext â components/shared-dream/dream.SharedDreamProvider.tsx
+- useEffect â components/shared-dream/dream.SharedDreamProvider.tsx
+- useRef â components/shared-dream/dream.SharedDreamProvider.tsx
+- useState â components/shared-dream/dream.SharedDreamProvider.tsx
+- useSharedDream â components/shared-dream/dream.SharedDreamProvider.tsx
+- useSharedDreamSession â app/api/shared-dream/sessions/[id]/route.ts
+- useSharedDreamSession â components/shared-dream/dream.SharedDreamRuntime.tsx
+- useCallback â components/shared-dream/dream.SharedDreamRuntime.tsx
+- useEffect â components/shared-dream/dream.SharedDreamRuntime.tsx
+- useState â components/shared-dream/dream.SharedDreamRuntime.tsx
+- useEnginCoopSync â components/shared-dream/dream.SharedDreamRuntime.tsx
+- useRef â components/shared-dream/dream.SharedDreamRuntime.tsx
 
 Exports that define public behavior:
-- SharedDreamSession — engine/sharedDream.ts
-- DreamEventType — engine/sharedDream.ts
-- DreamBroadcastPayload — engine/sharedDream.ts
-- DreamEventHandler — engine/sharedDream.ts
-- DreamSessionRole — engine/sharedDream.ts
-- DreamSessionMode — engine/sharedDream.ts
-- DreamPresenceUpdate — engine/sharedDream.ts
-- SharedDreamSessionOptions — engine/sharedDream.ts
-- createSharedDreamSession — engine/sharedDream.ts
-- joinSharedDreamSession — engine/sharedDream.ts
-- broadcastCursorPosition — engine/sharedDream.ts
-- broadcastEdit — engine/sharedDream.ts
-- broadcastStatePatch — engine/sharedDream.ts
-- broadcastDataPacket — engine/sharedDream.ts
+- SharedDreamSession â engine/sharedDream.ts
+- DreamEventType â engine/sharedDream.ts
+- DreamBroadcastPayload â engine/sharedDream.ts
+- DreamEventHandler â engine/sharedDream.ts
+- DreamSessionRole â engine/sharedDream.ts
+- DreamSessionMode â engine/sharedDream.ts
+- DreamPresenceUpdate â engine/sharedDream.ts
+- SharedDreamSessionOptions â engine/sharedDream.ts
+- createSharedDreamSession â engine/sharedDream.ts
+- joinSharedDreamSession â engine/sharedDream.ts
+- broadcastCursorPosition â engine/sharedDream.ts
+- broadcastEdit â engine/sharedDream.ts
+- broadcastStatePatch â engine/sharedDream.ts
+- broadcastDataPacket â engine/sharedDream.ts
 
 Import/export connections:
 - engine/io
@@ -649,38 +676,31 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `supabase/migrations/20260516000300_shared_dream_sessions.sql` — 134 lines — score 195 — primary path, supporting path
-- `engine/sharedDream.ts` — 168 lines — score 146 — primary path, path keyword: sharedDream
-- `components/shared-dream/dream.SharedDreamProvider.tsx` — 259 lines — score 140 — primary path, path keyword: shared dream
-- `app/api/shared-dream/sessions/[id]/route.ts` — 134 lines — score 136 — primary path, path keyword: shared dream
-- `app/api/shared-dream/sessions/route.ts` — 92 lines — score 136 — primary path, path keyword: shared dream
-- `components/shared-dream/dream.SharedDreamRuntime.tsx` — 422 lines — score 134 — primary path, path keyword: shared dream
-- `engine/sharedDream/useSharedDreamSession.ts` — 328 lines — score 134 — primary path, path keyword: sharedDream
-- `components/shared-dream/index.ts` — 22 lines — score 134 — primary path, path keyword: shared dream
-- `components/shared-dream/dream.InviteFlow.tsx` — 134 lines — score 128 — primary path, path keyword: shared dream
-- `components/shared-dream/dream.SharedDreamCanvas.tsx` — 83 lines — score 128 — primary path, path keyword: shared dream
-- `components/dreams/dream.shell.SharedDreamShell.tsx` — 402 lines — score 124 — primary path
-- `hooks/useSharedDream.ts` — 270 lines — score 124 — primary path
-- `app/api/dreams/feed/route.ts` — 152 lines — score 108 — primary path
-- `app/api/dreams/instances/route.ts` — 113 lines — score 108 — primary path
-- `app/api/dreams/transfer/route.ts` — 65 lines — score 108 — primary path
-- `daydreams/shared/useDaydreamPersistence.ts` — 147 lines — score 100 — primary path
-- `daydreams/shared/useDaydreamState.ts` — 93 lines — score 100 — primary path
-- `engine/collaboration/index.ts` — 815 lines — score 95 — supporting path, path keyword: collaboration
-- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` — 239 lines — score 61 — supporting path
-- `engine/runtime/useSharedEnginChannel.ts` — 163 lines — score 61 — supporting path
-- `supabase/migrations/20260405000001_dreamr_feed_registry.sql` — 149 lines — score 55 — supporting path
-- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql` — 133 lines — score 55 — supporting path
-- `supabase/migrations/20260325000000_phase8f_daydream_network.sql` — 113 lines — score 55 — supporting path
-- `supabase/migrations/20260426000100_rename_widgets_to_dreams.sql` — 110 lines — score 55 — supporting path
-- `supabase/migrations/20260516000100_dreamr_tally.sql` — 58 lines — score 55 — supporting path
-- `supabase/migrations/20260310000010_dreamdm_bar_pass2.sql` — 57 lines — score 55 — supporting path
-- `supabase/migrations/20260417000001_dream_docs_search_rpc.sql` — 49 lines — score 55 — supporting path
-- `supabase/migrations/20260310000002_profile_dream_widgets.sql` — 9 lines — score 55 — supporting path
+- `engine/sharedDream.ts` â 168 lines â score 138 â primary path, path keyword: sharedDream
+- `components/shared-dream/dream.SharedDreamProvider.tsx` â 259 lines â score 134 â primary path, path keyword: shared dream
+- `app/api/shared-dream/sessions/[id]/route.ts` â 134 lines â score 134 â primary path, path keyword: shared dream
+- `supabase/migrations/20260516000300_shared_dream_sessions.sql` â 134 lines â score 134 â primary path, path keyword: shared dream
+- `app/api/shared-dream/sessions/route.ts` â 92 lines â score 134 â primary path, path keyword: shared dream
+- `components/shared-dream/dream.SharedDreamRuntime.tsx` â 422 lines â score 130 â primary path, path keyword: shared dream
+- `engine/sharedDream/useSharedDreamSession.ts` â 328 lines â score 130 â primary path, path keyword: sharedDream
+- `components/shared-dream/index.ts` â 22 lines â score 130 â primary path, path keyword: shared dream
+- `components/shared-dream/dream.InviteFlow.tsx` â 134 lines â score 126 â primary path, path keyword: shared dream
+- `components/shared-dream/dream.SharedDreamCanvas.tsx` â 83 lines â score 126 â primary path, path keyword: shared dream
+- `components/dreams/dream.shell.SharedDreamShell.tsx` â 402 lines â score 116 â primary path
+- `hooks/useSharedDream.ts` â 270 lines â score 116 â primary path
+- `app/api/dreams/feed/route.ts` â 152 lines â score 108 â primary path
+- `app/api/dreams/instances/route.ts` â 113 lines â score 108 â primary path
+- `app/api/dreams/transfer/route.ts` â 65 lines â score 108 â primary path
+- `daydreams/shared/useDaydreamPersistence.ts` â 147 lines â score 100 â primary path
+- `daydreams/shared/useDaydreamState.ts` â 93 lines â score 100 â primary path
+- `engine/collaboration/index.ts` â 815 lines â score 89 â supporting path, path keyword: collaboration
+- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` â 239 lines â score 59 â supporting path
+- `engine/runtime/useSharedEnginChannel.ts` â 163 lines â score 59 â supporting path
+- `supabase/migrations/20260325000000_phase8f_daydream_network.sql` â 113 lines â score 55 â supporting path
 
 Supporting files:
 - None found.
-## 8. DreamR — Human Media
+## 8. DreamR â Human Media
 
 ### Plain English
 DreamR is the human media layer: feed, discovery, profile, posts, creator identity, and the browsing surfaces where Dreams become media instead of private project files.
@@ -692,73 +712,73 @@ Users experience DreamR as the social/media side of DREAMengin: scrolling, viewi
 Matched focused repo evidence: 55 files, about 15,036 readable source lines.
 
 Behavior signals:
-- auth — 35 file hits
-- commerce — 26 file hits
-- mobile touch — 23 file hits
-- persistence — 21 file hits
-- state — 20 file hits
-- runtime — 15 file hits
-- rendering — 15 file hits
-- events — 11 file hits
+- auth â 35 file hits
+- commerce â 26 file hits
+- mobile touch â 23 file hits
+- persistence â 21 file hits
+- state â 20 file hits
+- runtime â 15 file hits
+- rendering â 15 file hits
+- events â 11 file hits
 
 Routes and APIs:
-- GET /api/dreamr/feed ← app/api/dreamr/feed/route.ts
-- /dreamr ← app/dreamr/page.tsx
-- GET /api/dreamr/suggested ← app/api/dreamr/suggested/route.ts
-- POST /api/dreamr/tally ← app/api/dreamr/tally/route.ts
-- GET /api/feed ← app/api/feed/route.ts
-- /profile/[handle] ← app/profile/[handle]/page.tsx
-- /view-profile ← app/view-profile/page.tsx
-- /profile ← app/profile/page.tsx
-- /edit-profiledream ← app/edit-profiledream/page.tsx
+- GET /api/dreamr/feed â app/api/dreamr/feed/route.ts
+- /dreamr â app/dreamr/page.tsx
+- GET /api/dreamr/suggested â app/api/dreamr/suggested/route.ts
+- POST /api/dreamr/tally â app/api/dreamr/tally/route.ts
+- GET /api/feed â app/api/feed/route.ts
+- /profile/[handle] â app/profile/[handle]/page.tsx
+- /view-profile â app/view-profile/page.tsx
+- /profile â app/profile/page.tsx
+- /edit-profiledream â app/edit-profiledream/page.tsx
 
 Components:
-- DreamRPage — app/dreamr/page.tsx
-- TrendIcon — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- CreateTab — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- PlatformTab — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- SignalTab — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- JourneyTab — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- DreamRSection — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- SocialBadge — components/dreamr/dream.panel.DreamRCreatorPanel.tsx
-- DreamRCreatorPanel — components/dreamr/dream.panel.DreamRCreatorPanel.tsx
-- ActionBtn — dreamr/components/dreamrfeed.tsx
-- VideoPostCard — dreamr/components/dreamrfeed.tsx
-- PostCard — dreamr/components/dreamrfeed.tsx
-- SuggestedContentCard — dreamr/components/dreamrfeed.tsx
-- SuggestedCreatorCard — dreamr/components/dreamrfeed.tsx
+- DreamRPage â app/dreamr/page.tsx
+- TrendIcon â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- CreateTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- PlatformTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- SignalTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- JourneyTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- DreamRSection â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- SocialBadge â components/dreamr/dream.panel.DreamRCreatorPanel.tsx
+- DreamRCreatorPanel â components/dreamr/dream.panel.DreamRCreatorPanel.tsx
+- ActionBtn â dreamr/components/dreamrfeed.tsx
+- VideoPostCard â dreamr/components/dreamrfeed.tsx
+- PostCard â dreamr/components/dreamrfeed.tsx
+- SuggestedContentCard â dreamr/components/dreamrfeed.tsx
+- SuggestedCreatorCard â dreamr/components/dreamrfeed.tsx
 
 Hooks:
-- useCallback — dreamr/feed/useLiveFeed.ts
-- useEffect — dreamr/feed/useLiveFeed.ts
-- useRef — dreamr/feed/useLiveFeed.ts
-- useState — dreamr/feed/useLiveFeed.ts
-- useLiveFeed — dreamr/feed/useLiveFeed.ts
-- useDreamDMMessages — dreamr/feed/useLiveFeed.ts
-- useLiveFeed — dreamr/feed/useYouTubeLiveFeed.ts
-- useCallback — dreamr/feed/useYouTubeLiveFeed.ts
-- useEffect — dreamr/feed/useYouTubeLiveFeed.ts
-- useRef — dreamr/feed/useYouTubeLiveFeed.ts
-- useState — dreamr/feed/useYouTubeLiveFeed.ts
-- useYouTubeLiveFeed — dreamr/feed/useYouTubeLiveFeed.ts
-- useLiveFeed — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- useCallback — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- useCallback â dreamr/feed/useLiveFeed.ts
+- useEffect â dreamr/feed/useLiveFeed.ts
+- useRef â dreamr/feed/useLiveFeed.ts
+- useState â dreamr/feed/useLiveFeed.ts
+- useLiveFeed â dreamr/feed/useLiveFeed.ts
+- useDreamDMMessages â dreamr/feed/useLiveFeed.ts
+- useLiveFeed â dreamr/feed/useYouTubeLiveFeed.ts
+- useCallback â dreamr/feed/useYouTubeLiveFeed.ts
+- useEffect â dreamr/feed/useYouTubeLiveFeed.ts
+- useRef â dreamr/feed/useYouTubeLiveFeed.ts
+- useState â dreamr/feed/useYouTubeLiveFeed.ts
+- useYouTubeLiveFeed â dreamr/feed/useYouTubeLiveFeed.ts
+- useLiveFeed â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- useCallback â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
 
 Exports that define public behavior:
-- FeedPost — dreamr/feed/useLiveFeed.ts
-- UseLiveFeedReturn — dreamr/feed/useLiveFeed.ts
-- useLiveFeed — dreamr/feed/useLiveFeed.ts
-- metadata — app/dreamr/page.tsx
-- default export — page (app/dreamr/page.tsx)
-- UseYouTubeLiveFeedReturn — dreamr/feed/useYouTubeLiveFeed.ts
-- useYouTubeLiveFeed — dreamr/feed/useYouTubeLiveFeed.ts
-- SocialSource — dreamr/social-feed.ts
-- SocialFeedItem — dreamr/social-feed.ts
-- stripHtml — dreamr/social-feed.ts
-- extractFirstImage — dreamr/social-feed.ts
-- fetchSocialFeed — dreamr/social-feed.ts
-- default export — dreamsurface.dreamr (app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx)
-- default export — dream.panel.DreamRCreatorPanel (components/dreamr/dream.panel.DreamRCreatorPanel.tsx)
+- FeedPost â dreamr/feed/useLiveFeed.ts
+- UseLiveFeedReturn â dreamr/feed/useLiveFeed.ts
+- useLiveFeed â dreamr/feed/useLiveFeed.ts
+- UseYouTubeLiveFeedReturn â dreamr/feed/useYouTubeLiveFeed.ts
+- useYouTubeLiveFeed â dreamr/feed/useYouTubeLiveFeed.ts
+- SocialSource â dreamr/social-feed.ts
+- SocialFeedItem â dreamr/social-feed.ts
+- stripHtml â dreamr/social-feed.ts
+- extractFirstImage â dreamr/social-feed.ts
+- fetchSocialFeed â dreamr/social-feed.ts
+- metadata â app/dreamr/page.tsx
+- default export â page (app/dreamr/page.tsx)
+- Hashtag â dreamr/feed/hashtags.ts
+- TrendingTag â dreamr/feed/hashtags.ts
 
 Import/export connections:
 - app/dreamdmbar/_components/dreamr/api/feedHandler
@@ -766,76 +786,76 @@ Import/export connections:
 - engins/contentengin/media/postMedia
 - supabase/client/client
 - react
+- dreamr/feed/feedTopics
+- dreamr/feed/useLiveFeed
+- types/connector
+- rss-parser
 - app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
 - components/ui/dream.AuthenticatedPageHeader
 - engine/dev-bypass
 - supabase/client/safeGetUser
 - supabase/server/serverClient
-- lucide-react
-- next/navigation
-- next/server
-- dreamr/feed/feedTopics
 
 ### Matched Files
 
 Primary files:
-- `app/api/dreamr/feed/route.ts` — 50 lines — score 170 — primary path, path keyword: dreamr
-- `dreamr/feed/useLiveFeed.ts` — 301 lines — score 168 — primary path, path keyword: dreamr
-- `app/dreamr/page.tsx` — 81 lines — score 160 — primary path, path keyword: dreamr
-- `dreamr/feed/useYouTubeLiveFeed.ts` — 222 lines — score 156 — primary path, path keyword: dreamr
-- `dreamr/social-feed.ts` — 115 lines — score 156 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` — 2006 lines — score 152 — primary path, path keyword: dreamr
-- `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` — 689 lines — score 152 — primary path, path keyword: dreamr
-- `dreamr/feed/hashtags.ts` — 167 lines — score 150 — primary path, path keyword: dreamr
-- `dreamr/feed/feedTopics.ts` — 80 lines — score 150 — primary path, path keyword: dreamr
-- `app/api/dreamr/suggested/route.ts` — 235 lines — score 148 — primary path, path keyword: dreamr
-- `dreamr/components/dreamrfeed.tsx` — 1233 lines — score 146 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` — 350 lines — score 140 — primary path, path keyword: dreamr
-- `app/api/dreamr/tally/route.ts` — 97 lines — score 136 — primary path, path keyword: dreamr
-- `components/dreamr/dream.panel.DreamRChannelPanel.tsx` — 323 lines — score 134 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` — 115 lines — score 134 — primary path, path keyword: dreamr
-- `dreamr/runtime/swipeCalibration.ts` — 115 lines — score 134 — primary path, path keyword: dreamr
-- `dreamr/feeds/embedFeedLoader.ts` — 108 lines — score 134 — primary path, path keyword: dreamr
-- `dreamr/runtime/closeFriendsVisibility.ts` — 100 lines — score 134 — primary path, path keyword: dreamr
-- `dreamr/runtime/feedCursor.ts` — 88 lines — score 134 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` — 260 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/activity/visibility-score.ts` — 234 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/bot-detection/index.ts` — 198 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/runtime/torridityLedger.ts` — 186 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/activity/scoring.ts` — 174 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/torridity.ts` — 163 lines — score 128 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` — 159 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/runtime/swipePersonalization.ts` — 144 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/torridity/physics.ts` — 118 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/activity/boogieActivityPolicy.ts` — 62 lines — score 128 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` — 55 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/activity/revenueSplit.ts` — 48 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/torridity/constants.ts` — 20 lines — score 128 — primary path, path keyword: dreamr
-- `dreamr/activity/types.ts` — 345 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/botDetection.ts` — 293 lines — score 122 — primary path, path keyword: dreamr
+- `app/api/dreamr/feed/route.ts` â 50 lines â score 164 â primary path, path keyword: dreamr
+- `dreamr/feed/useLiveFeed.ts` â 301 lines â score 160 â primary path, path keyword: dreamr
+- `dreamr/feed/useYouTubeLiveFeed.ts` â 222 lines â score 152 â primary path, path keyword: dreamr
+- `dreamr/social-feed.ts` â 115 lines â score 152 â primary path, path keyword: dreamr
+- `app/dreamr/page.tsx` â 81 lines â score 150 â primary path, path keyword: dreamr
+- `dreamr/feed/hashtags.ts` â 167 lines â score 148 â primary path, path keyword: dreamr
+- `dreamr/feed/feedTopics.ts` â 80 lines â score 148 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` â 2006 lines â score 142 â primary path, path keyword: dreamr
+- `components/dreamr/dream.panel.DreamRCreatorPanel.tsx` â 689 lines â score 142 â primary path, path keyword: dreamr
+- `app/api/dreamr/suggested/route.ts` â 235 lines â score 142 â primary path, path keyword: dreamr
+- `dreamr/components/dreamrfeed.tsx` â 1233 lines â score 138 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` â 350 lines â score 134 â primary path, path keyword: dreamr
+- `app/api/dreamr/tally/route.ts` â 97 lines â score 134 â primary path, path keyword: dreamr
+- `components/dreamr/dream.panel.DreamRChannelPanel.tsx` â 323 lines â score 130 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` â 115 lines â score 130 â primary path, path keyword: dreamr
+- `dreamr/runtime/swipeCalibration.ts` â 115 lines â score 130 â primary path, path keyword: dreamr
+- `dreamr/feeds/embedFeedLoader.ts` â 108 lines â score 130 â primary path, path keyword: dreamr
+- `dreamr/runtime/closeFriendsVisibility.ts` â 100 lines â score 130 â primary path, path keyword: dreamr
+- `dreamr/runtime/feedCursor.ts` â 88 lines â score 130 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` â 260 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/activity/visibility-score.ts` â 234 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/bot-detection/index.ts` â 198 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/runtime/torridityLedger.ts` â 186 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/activity/scoring.ts` â 174 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/torridity.ts` â 163 lines â score 126 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` â 159 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/runtime/swipePersonalization.ts` â 144 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/torridity/physics.ts` â 118 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/activity/boogieActivityPolicy.ts` â 62 lines â score 126 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` â 55 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/activity/revenueSplit.ts` â 48 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/torridity/constants.ts` â 20 lines â score 126 â primary path, path keyword: dreamr
+- `dreamr/activity/types.ts` â 345 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/botDetection.ts` â 293 lines â score 122 â primary path, path keyword: dreamr
 
 Supporting files:
-- `components/dreamr/dream.CloseFriendsSettings.tsx` — 250 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/bot-detection/swipe-physics.ts` — 230 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/activity/aqs.ts` — 191 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/runtime/socialHumanityScore.ts` — 191 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/bot-detection/detector.ts` — 152 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/bot-detection/view-tally.ts` — 86 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/activity/skipCredits.ts` — 36 lines — score 122 — primary path, path keyword: dreamr
-- `dreamr/torridity/index.ts` — 12 lines — score 122 — primary path, path keyword: dreamr
-- `app/dreamdmbar/_components/dreamr/api/route.ts` — 3 lines — score 122 — primary path, path keyword: dreamr
-- `app/api/feed/route.ts` — 230 lines — score 103 — supporting path, path keyword: feed
-- `app/profile/[handle]/page.tsx` — 252 lines — score 97 — supporting path, path keyword: profile
-- `components/feed/dream.AlgorithmEngine.tsx` — 598 lines — score 95 — supporting path, path keyword: feed
-- `app/view-profile/page.tsx` — 365 lines — score 91 — supporting path, path keyword: profile
-- `app/profile/page.tsx` — 18 lines — score 91 — supporting path, path keyword: profile
-- `components/feed/dream.FeedVideoCard.tsx` — 494 lines — score 89 — supporting path, path keyword: feed
-- `components/feed/dream.CommentSection.tsx` — 353 lines — score 83 — supporting path, path keyword: feed
-- `components/feed/dream.FollowOnboarding.tsx` — 164 lines — score 83 — supporting path, path keyword: feed
-- `components/feed/dream.FollowButton.tsx` — 118 lines — score 83 — supporting path, path keyword: feed
-- `components/dream.HomeFeed.tsx` — 1329 lines — score 73 — supporting path
-- `app/edit-profiledream/page.tsx` — 561 lines — score 69 — supporting path
-- `components/dream.FeedCard.tsx` — 469 lines — score 67 — supporting path
+- `components/dreamr/dream.CloseFriendsSettings.tsx` â 250 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/bot-detection/swipe-physics.ts` â 230 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/activity/aqs.ts` â 191 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/runtime/socialHumanityScore.ts` â 191 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/bot-detection/detector.ts` â 152 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/bot-detection/view-tally.ts` â 86 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/activity/skipCredits.ts` â 36 lines â score 122 â primary path, path keyword: dreamr
+- `dreamr/torridity/index.ts` â 12 lines â score 122 â primary path, path keyword: dreamr
+- `app/dreamdmbar/_components/dreamr/api/route.ts` â 3 lines â score 122 â primary path, path keyword: dreamr
+- `app/api/feed/route.ts` â 230 lines â score 97 â supporting path, path keyword: feed
+- `app/profile/[handle]/page.tsx` â 252 lines â score 93 â supporting path, path keyword: profile
+- `components/feed/dream.AlgorithmEngine.tsx` â 598 lines â score 89 â supporting path, path keyword: feed
+- `app/view-profile/page.tsx` â 365 lines â score 89 â supporting path, path keyword: profile
+- `app/profile/page.tsx` â 18 lines â score 89 â supporting path, path keyword: profile
+- `components/feed/dream.FeedVideoCard.tsx` â 494 lines â score 85 â supporting path, path keyword: feed
+- `components/feed/dream.CommentSection.tsx` â 353 lines â score 81 â supporting path, path keyword: feed
+- `components/feed/dream.FollowOnboarding.tsx` â 164 lines â score 81 â supporting path, path keyword: feed
+- `components/feed/dream.FollowButton.tsx` â 118 lines â score 81 â supporting path, path keyword: feed
+- `components/dream.HomeFeed.tsx` â 1329 lines â score 67 â supporting path
+- `app/edit-profiledream/page.tsx` â 561 lines â score 67 â supporting path
+- `components/dream.FeedCard.tsx` â 469 lines â score 63 â supporting path
 ## 9. The Shop
 
 ### Plain English
@@ -848,35 +868,35 @@ Users feel this as a creator storefront: things to buy, services to offer, and c
 Matched focused repo evidence: 5 files, about 822 readable source lines.
 
 Behavior signals:
-- auth — 5 file hits
-- commerce — 5 file hits
-- persistence — 4 file hits
-- state — 1 file hits
-- events — 1 file hits
+- auth â 5 file hits
+- commerce â 5 file hits
+- persistence â 4 file hits
+- state â 1 file hits
+- events â 1 file hits
 
 Routes and APIs:
-- GET|POST|PUT|DELETE /api/shop ← app/api/shop/route.ts
-- /shop ← app/shop/page.tsx
-- /shop/sell ← app/shop/sell/page.tsx
+- GET|POST|PUT|DELETE /api/shop â app/api/shop/route.ts
+- /shop â app/shop/page.tsx
+- /shop/sell â app/shop/sell/page.tsx
 
 Components:
-- ShopPage — app/shop/page.tsx
-- SellItemPage — app/shop/sell/page.tsx
+- ShopPage â app/shop/page.tsx
+- SellItemPage â app/shop/sell/page.tsx
 
 Hooks:
-- useRouter — app/shop/sell/page.tsx
-- useState — app/shop/sell/page.tsx
+- useRouter â app/shop/sell/page.tsx
+- useState â app/shop/sell/page.tsx
 
 Exports that define public behavior:
-- ShopListingInput — engine/shop/listings.ts
-- ShopListingRecord — engine/shop/listings.ts
-- ValidationResult — engine/shop/listings.ts
-- validateShopListing — engine/shop/listings.ts
-- normalizeShopListing — engine/shop/listings.ts
-- isOrderOwner — engine/shop/listings.ts
-- metadata — app/shop/page.tsx
-- default export — page (app/shop/page.tsx)
-- default export — page (app/shop/sell/page.tsx)
+- ShopListingInput â engine/shop/listings.ts
+- ShopListingRecord â engine/shop/listings.ts
+- ValidationResult â engine/shop/listings.ts
+- validateShopListing â engine/shop/listings.ts
+- normalizeShopListing â engine/shop/listings.ts
+- isOrderOwner â engine/shop/listings.ts
+- metadata â app/shop/page.tsx
+- default export â page (app/shop/page.tsx)
+- default export â page (app/shop/sell/page.tsx)
 
 Import/export connections:
 - engine/shop/listings
@@ -897,11 +917,11 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `engine/shop/listings.ts` — 124 lines — score 162 — primary path, path keyword: shop
-- `app/api/shop/route.ts` — 181 lines — score 142 — primary path, path keyword: shop
-- `app/shop/page.tsx` — 130 lines — score 142 — primary path, path keyword: shop
-- `app/shop/sell/page.tsx` — 201 lines — score 136 — primary path, path keyword: shop
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — 186 lines — score 128 — primary path, path keyword: shop
+- `engine/shop/listings.ts` â 124 lines â score 156 â primary path, path keyword: shop
+- `app/api/shop/route.ts` â 181 lines â score 138 â primary path, path keyword: shop
+- `app/shop/page.tsx` â 130 lines â score 138 â primary path, path keyword: shop
+- `app/shop/sell/page.tsx` â 201 lines â score 134 â primary path, path keyword: shop
+- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` â 186 lines â score 126 â primary path, path keyword: shop
 
 Supporting files:
 - None found.
@@ -917,54 +937,54 @@ Users experience this as the public commercial side of the ecosystem: browsing, 
 Matched focused repo evidence: 12 files, about 1,672 readable source lines.
 
 Behavior signals:
-- commerce — 12 file hits
-- persistence — 7 file hits
-- auth — 7 file hits
-- state — 3 file hits
-- events — 2 file hits
-- mobile touch — 2 file hits
-- rendering — 2 file hits
-- runtime — 1 file hits
+- commerce â 12 file hits
+- persistence â 7 file hits
+- auth â 7 file hits
+- state â 3 file hits
+- events â 2 file hits
+- mobile touch â 2 file hits
+- rendering â 2 file hits
+- runtime â 1 file hits
 
 Routes and APIs:
-- POST /api/marketplace/request ← app/api/marketplace/request/route.ts
-- /marketplace/sell ← app/marketplace/sell/page.tsx
-- /marketplace/[id] ← app/marketplace/[id]/page.tsx
-- GET|POST /api/marketplace ← app/api/marketplace/route.ts
-- /marketplace ← app/marketplace/page.tsx
+- POST /api/marketplace/request â app/api/marketplace/request/route.ts
+- /marketplace/sell â app/marketplace/sell/page.tsx
+- /marketplace/[id] â app/marketplace/[id]/page.tsx
+- GET|POST /api/marketplace â app/api/marketplace/route.ts
+- /marketplace â app/marketplace/page.tsx
 
 Components:
-- MarketplaceSellPage — app/marketplace/sell/page.tsx
-- MarketplaceItemPage — app/marketplace/[id]/page.tsx
-- MarketplacePage — app/marketplace/page.tsx
-- MarketplaceRequestButton — components/marketplace/dream.MarketplaceRequestButton.tsx
-- MarketplaceListingCard — components/marketplace/dream.MarketplaceListingCard.tsx
-- MarketplacePanel — components/panels/dream.panel.MarketplacePanel.tsx
+- MarketplaceSellPage â app/marketplace/sell/page.tsx
+- MarketplaceItemPage â app/marketplace/[id]/page.tsx
+- MarketplacePage â app/marketplace/page.tsx
+- MarketplaceRequestButton â components/marketplace/dream.MarketplaceRequestButton.tsx
+- MarketplaceListingCard â components/marketplace/dream.MarketplaceListingCard.tsx
+- MarketplacePanel â components/panels/dream.panel.MarketplacePanel.tsx
 
 Hooks:
-- useRouter — app/marketplace/sell/page.tsx
-- useEffect — app/marketplace/sell/page.tsx
-- useState — app/marketplace/sell/page.tsx
-- useState — components/marketplace/dream.MarketplaceRequestButton.tsx
-- useDreamSystem — components/panels/dream.panel.MarketplacePanel.tsx
-- useEffect — components/panels/dream.panel.MarketplacePanel.tsx
-- useState — components/panels/dream.panel.MarketplacePanel.tsx
+- useRouter â app/marketplace/sell/page.tsx
+- useEffect â app/marketplace/sell/page.tsx
+- useState â app/marketplace/sell/page.tsx
+- useState â components/marketplace/dream.MarketplaceRequestButton.tsx
+- useDreamSystem â components/panels/dream.panel.MarketplacePanel.tsx
+- useEffect â components/panels/dream.panel.MarketplacePanel.tsx
+- useState â components/panels/dream.panel.MarketplacePanel.tsx
 
 Exports that define public behavior:
-- default export — page (app/marketplace/sell/page.tsx)
-- default export — page (app/marketplace/[id]/page.tsx)
-- metadata — app/marketplace/page.tsx
-- default export — page (app/marketplace/page.tsx)
-- MarketplaceCategory — engine/marketplace/listings.ts
-- MarketplaceListingInput — engine/marketplace/listings.ts
-- MarketplaceListingRecord — engine/marketplace/listings.ts
-- ValidationResult — engine/marketplace/listings.ts
-- validateMarketplaceListing — engine/marketplace/listings.ts
-- normalizeMarketplaceListing — engine/marketplace/listings.ts
-- marketplaceDetailRoute — engine/marketplace/listings.ts
-- formatMarketplacePrice — engine/marketplace/listings.ts
-- default export — dream.MarketplaceRequestButton (components/marketplace/dream.MarketplaceRequestButton.tsx)
-- ContactRequestInput — engine/marketplace/request.ts
+- default export â page (app/marketplace/sell/page.tsx)
+- default export â page (app/marketplace/[id]/page.tsx)
+- metadata â app/marketplace/page.tsx
+- default export â page (app/marketplace/page.tsx)
+- MarketplaceCategory â engine/marketplace/listings.ts
+- MarketplaceListingInput â engine/marketplace/listings.ts
+- MarketplaceListingRecord â engine/marketplace/listings.ts
+- ValidationResult â engine/marketplace/listings.ts
+- validateMarketplaceListing â engine/marketplace/listings.ts
+- normalizeMarketplaceListing â engine/marketplace/listings.ts
+- marketplaceDetailRoute â engine/marketplace/listings.ts
+- formatMarketplacePrice â engine/marketplace/listings.ts
+- default export â dream.MarketplaceRequestButton (components/marketplace/dream.MarketplaceRequestButton.tsx)
+- ContactRequestInput â engine/marketplace/request.ts
 
 Import/export connections:
 - engine/marketplace/request
@@ -985,18 +1005,18 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/api/marketplace/request/route.ts` — 90 lines — score 142 — primary path, path keyword: marketplace
-- `app/marketplace/sell/page.tsx` — 270 lines — score 136 — primary path, path keyword: marketplace
-- `app/marketplace/[id]/page.tsx` — 205 lines — score 136 — primary path, path keyword: marketplace
-- `app/api/marketplace/route.ts` — 142 lines — score 136 — primary path, path keyword: marketplace
-- `app/marketplace/page.tsx` — 137 lines — score 136 — primary path, path keyword: marketplace
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — 186 lines — score 134 — primary path, path keyword: marketplace
-- `engine/marketplace/listings.ts` — 154 lines — score 134 — primary path, path keyword: marketplace
-- `components/marketplace/dream.MarketplaceRequestButton.tsx` — 132 lines — score 134 — primary path, path keyword: marketplace
-- `engine/marketplace/request.ts` — 88 lines — score 134 — primary path, path keyword: marketplace
-- `components/marketplace/dream.MarketplaceListingCard.tsx` — 78 lines — score 128 — primary path, path keyword: marketplace
-- `types/marketplace.ts` — 51 lines — score 128 — primary path, path keyword: marketplace
-- `components/panels/dream.panel.MarketplacePanel.tsx` — 139 lines — score 61 — supporting path
+- `app/api/marketplace/request/route.ts` â 90 lines â score 138 â primary path, path keyword: marketplace
+- `app/marketplace/sell/page.tsx` â 270 lines â score 134 â primary path, path keyword: marketplace
+- `app/marketplace/[id]/page.tsx` â 205 lines â score 134 â primary path, path keyword: marketplace
+- `app/api/marketplace/route.ts` â 142 lines â score 134 â primary path, path keyword: marketplace
+- `app/marketplace/page.tsx` â 137 lines â score 134 â primary path, path keyword: marketplace
+- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` â 186 lines â score 130 â primary path, path keyword: marketplace
+- `engine/marketplace/listings.ts` â 154 lines â score 130 â primary path, path keyword: marketplace
+- `components/marketplace/dream.MarketplaceRequestButton.tsx` â 132 lines â score 130 â primary path, path keyword: marketplace
+- `engine/marketplace/request.ts` â 88 lines â score 130 â primary path, path keyword: marketplace
+- `components/marketplace/dream.MarketplaceListingCard.tsx` â 78 lines â score 126 â primary path, path keyword: marketplace
+- `types/marketplace.ts` â 51 lines â score 126 â primary path, path keyword: marketplace
+- `components/panels/dream.panel.MarketplacePanel.tsx` â 139 lines â score 59 â supporting path
 
 Supporting files:
 - None found.
@@ -1012,54 +1032,54 @@ Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor car
 Matched focused repo evidence: 11 files, about 1,507 readable source lines.
 
 Behavior signals:
-- commerce — 10 file hits
-- auth — 9 file hits
-- persistence — 7 file hits
-- state — 4 file hits
-- events — 2 file hits
-- mobile touch — 2 file hits
-- rendering — 1 file hits
+- commerce â 10 file hits
+- auth â 9 file hits
+- persistence â 7 file hits
+- state â 4 file hits
+- events â 2 file hits
+- mobile touch â 2 file hits
+- rendering â 1 file hits
 
 Routes and APIs:
-- /ads ← app/ads/page.tsx
-- /ads/create ← app/ads/create/page.tsx
-- POST /api/ads/view ← app/api/ads/view/route.ts
-- /ads/slot/[id] ← app/ads/slot/[id]/page.tsx
-- POST /api/ads/orders ← app/api/ads/orders/route.ts
-- /engines/brand/campaigns ← app/engines/brand/campaigns/page.tsx
+- /ads â app/ads/page.tsx
+- /ads/create â app/ads/create/page.tsx
+- POST /api/ads/view â app/api/ads/view/route.ts
+- /ads/slot/[id] â app/ads/slot/[id]/page.tsx
+- POST /api/ads/orders â app/api/ads/orders/route.ts
+- /engines/brand/campaigns â app/engines/brand/campaigns/page.tsx
 
 Components:
-- AdsPage — app/ads/page.tsx
-- CreateAdSlotPage — app/ads/create/page.tsx
-- AdSlotPage — app/ads/slot/[id]/page.tsx
-- AdUnit — components/ads/dream.AdUnit.tsx
-- SkipCreditBalance — components/ads/dream.SkipCreditBalance.tsx
-- BrandCampaignsPage — app/engines/brand/campaigns/page.tsx
-- CampaignsPanel — components/engines/brand/panels/dream.panel.CampaignsPanel.tsx
+- AdsPage â app/ads/page.tsx
+- CreateAdSlotPage â app/ads/create/page.tsx
+- AdSlotPage â app/ads/slot/[id]/page.tsx
+- AdUnit â components/ads/dream.AdUnit.tsx
+- SkipCreditBalance â components/ads/dream.SkipCreditBalance.tsx
+- BrandCampaignsPage â app/engines/brand/campaigns/page.tsx
+- CampaignsPanel â components/engines/brand/panels/dream.panel.CampaignsPanel.tsx
 
 Hooks:
-- useRouter — app/ads/create/page.tsx
-- useState — app/ads/create/page.tsx
-- useEffect — components/ads/dream.AdUnit.tsx
-- useState — components/ads/dream.AdUnit.tsx
-- useEffect — components/ads/dream.SkipCreditBalance.tsx
-- useState — components/ads/dream.SkipCreditBalance.tsx
-- useState — components/engines/brand/panels/dream.panel.CampaignsPanel.tsx
+- useRouter â app/ads/create/page.tsx
+- useState â app/ads/create/page.tsx
+- useEffect â components/ads/dream.AdUnit.tsx
+- useState â components/ads/dream.AdUnit.tsx
+- useEffect â components/ads/dream.SkipCreditBalance.tsx
+- useState â components/ads/dream.SkipCreditBalance.tsx
+- useState â components/engines/brand/panels/dream.panel.CampaignsPanel.tsx
 
 Exports that define public behavior:
-- default export — page (app/ads/page.tsx)
-- default export — page (app/ads/create/page.tsx)
-- default export — page (app/ads/slot/[id]/page.tsx)
-- AdUnit — components/ads/dream.AdUnit.tsx
-- SkipCreditBalance — components/ads/dream.SkipCreditBalance.tsx
-- AdPlacement — types/ads.ts
-- AdSlot — types/ads.ts
-- ProfileLite — types/ads.ts
-- AdListing — types/ads.ts
-- AdOrder — types/ads.ts
-- metadata — app/engines/brand/campaigns/page.tsx
-- default export — page (app/engines/brand/campaigns/page.tsx)
-- default export — dream.panel.CampaignsPanel (components/engines/brand/panels/dream.panel.CampaignsPanel.tsx)
+- default export â page (app/ads/page.tsx)
+- default export â page (app/ads/create/page.tsx)
+- default export â page (app/ads/slot/[id]/page.tsx)
+- AdUnit â components/ads/dream.AdUnit.tsx
+- SkipCreditBalance â components/ads/dream.SkipCreditBalance.tsx
+- AdPlacement â types/ads.ts
+- AdSlot â types/ads.ts
+- ProfileLite â types/ads.ts
+- AdListing â types/ads.ts
+- AdOrder â types/ads.ts
+- metadata â app/engines/brand/campaigns/page.tsx
+- default export â page (app/engines/brand/campaigns/page.tsx)
+- default export â dream.panel.CampaignsPanel (components/engines/brand/panels/dream.panel.CampaignsPanel.tsx)
 
 Import/export connections:
 - components/ui/dream.DreamWord
@@ -1080,17 +1100,17 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/ads/page.tsx` — 267 lines — score 130 — primary path, path keyword: ads
-- `app/ads/create/page.tsx` — 203 lines — score 130 — primary path, path keyword: ads
-- `app/api/ads/view/route.ts` — 192 lines — score 130 — primary path, path keyword: ads
-- `app/ads/slot/[id]/page.tsx` — 139 lines — score 130 — primary path, path keyword: ads
-- `app/api/ads/orders/route.ts` — 91 lines — score 130 — primary path, path keyword: ads
-- `supabase/migrations/20260321000000_ads_platform_promotions.sql` — 38 lines — score 128 — primary path, path keyword: ads
-- `components/ads/dream.AdUnit.tsx` — 229 lines — score 122 — primary path, path keyword: ads
-- `components/ads/dream.SkipCreditBalance.tsx` — 58 lines — score 122 — primary path, path keyword: ads
-- `types/ads.ts` — 46 lines — score 122 — primary path, path keyword: ads
-- `app/engines/brand/campaigns/page.tsx` — 31 lines — score 69 — supporting path
-- `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx` — 213 lines — score 61 — supporting path
+- `app/ads/page.tsx` â 267 lines â score 130 â primary path, path keyword: ads
+- `app/ads/create/page.tsx` â 203 lines â score 130 â primary path, path keyword: ads
+- `app/api/ads/view/route.ts` â 192 lines â score 130 â primary path, path keyword: ads
+- `app/ads/slot/[id]/page.tsx` â 139 lines â score 130 â primary path, path keyword: ads
+- `app/api/ads/orders/route.ts` â 91 lines â score 130 â primary path, path keyword: ads
+- `supabase/migrations/20260321000000_ads_platform_promotions.sql` â 38 lines â score 126 â primary path, path keyword: ads
+- `components/ads/dream.AdUnit.tsx` â 229 lines â score 122 â primary path, path keyword: ads
+- `components/ads/dream.SkipCreditBalance.tsx` â 58 lines â score 122 â primary path, path keyword: ads
+- `types/ads.ts` â 46 lines â score 122 â primary path, path keyword: ads
+- `app/engines/brand/campaigns/page.tsx` â 31 lines â score 67 â supporting path
+- `components/engines/brand/panels/dream.panel.CampaignsPanel.tsx` â 213 lines â score 59 â supporting path
 
 Supporting files:
 - None found.
@@ -1103,78 +1123,73 @@ The DreamDmBar is the communication, navigation, search, command, notification, 
 Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.
 
 ### Repo Evidence
-Matched focused repo evidence: 55 files, about 14,127 readable source lines.
+Matched focused repo evidence: 50 files, about 13,651 readable source lines.
 
 Behavior signals:
-- commerce — 36 file hits
-- auth — 32 file hits
-- state — 31 file hits
-- persistence — 29 file hits
-- runtime — 28 file hits
-- mobile touch — 28 file hits
-- rendering — 26 file hits
-- events — 15 file hits
+- commerce â 33 file hits
+- state â 30 file hits
+- runtime â 28 file hits
+- auth â 28 file hits
+- mobile touch â 27 file hits
+- persistence â 25 file hits
+- rendering â 25 file hits
+- events â 15 file hits
 
 Routes and APIs:
-- /dreamdmbar/dualruntime ← app/dreamdmbar/dualruntime/page.tsx
-- /dreamdmbar/dreamspace ← app/dreamdmbar/dreamspace/page.tsx
-- /dreamdmbar/homedream ← app/dreamdmbar/homedream/page.tsx
-- /dreamdmbar ← app/dreamdmbar/page.tsx
-- GET|POST /api/messages ← app/api/messages/route.ts
-- /messages/boards/[id] ← app/messages/boards/[id]/page.tsx
-- /messages/boards ← app/messages/boards/page.tsx
-- /messages/boards/new ← app/messages/boards/new/page.tsx
-- POST /api/messages/boards ← app/api/messages/boards/route.ts
-- /messages/new ← app/messages/new/page.tsx
-- /messages ← app/messages/page.tsx
+- /dreamdmbar/dualruntime â app/dreamdmbar/dualruntime/page.tsx
+- /dreamdmbar/dreamspace â app/dreamdmbar/dreamspace/page.tsx
+- /dreamdmbar/homedream â app/dreamdmbar/homedream/page.tsx
+- /dreamdmbar â app/dreamdmbar/page.tsx
+- GET|POST /api/messages â app/api/messages/route.ts
+- /messages/boards/[id] â app/messages/boards/[id]/page.tsx
 
 Components:
-- AvatarChip — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- ContextIcon — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- DreamDMBar — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- CompactNotificationStrip — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- ModeButton — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- DreamSpaceMessaging — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- DreamDMBarDualRuntimePage — app/dreamdmbar/dualruntime/page.tsx
-- DreamDMBarDreamSpacePage — app/dreamdmbar/dreamspace/page.tsx
-- DreamDMBarHomeDreamPage — app/dreamdmbar/homedream/page.tsx
-- DreamDMBarPage — app/dreamdmbar/page.tsx
-- QuickLink — app/dreamdmbar/_components/HomeDreamRegion.tsx
-- HomeDreamSurface — app/dreamdmbar/_components/HomeDreamRegion.tsx
-- TrendIcon — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- CreateTab — app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- AvatarChip â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- ContextIcon â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- DreamDMBar â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- CompactNotificationStrip â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- ModeButton â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- DreamSpaceMessaging â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- DreamDMBarDualRuntimePage â app/dreamdmbar/dualruntime/page.tsx
+- DreamDMBarDreamSpacePage â app/dreamdmbar/dreamspace/page.tsx
+- DreamDMBarHomeDreamPage â app/dreamdmbar/homedream/page.tsx
+- DreamDMBarPage â app/dreamdmbar/page.tsx
+- QuickLink â app/dreamdmbar/_components/HomeDreamRegion.tsx
+- HomeDreamSurface â app/dreamdmbar/_components/HomeDreamRegion.tsx
+- TrendIcon â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- CreateTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
 
 Hooks:
-- useCallback — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useEffect — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useRef — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useState — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamSystem — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamBarContext — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMConversations — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMDraft — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMMessages — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamSearch — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useMessagingCore — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useNotifications — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useLiveNotifications — dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useImmersiveGameLayout — dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useCallback â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useEffect â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useRef â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useState â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamSystem â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamBarContext â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamDMConversations â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamDMDraft â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamDMMessages â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useDreamSearch â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useMessagingCore â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useNotifications â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useLiveNotifications â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useImmersiveGameLayout â dreamdmbar/dreamsurface.dreamdmbar.tsx
 
 Exports that define public behavior:
-- default export — dreamsurface.dreamdmbar (dreamdmbar/dreamsurface.dreamdmbar.tsx)
-- default export — page (app/dreamdmbar/dualruntime/page.tsx)
-- default export — page (app/dreamdmbar/dreamspace/page.tsx)
-- default export — page (app/dreamdmbar/homedream/page.tsx)
-- default export — page (app/dreamdmbar/page.tsx)
-- default export — HomeDreamRegion (app/dreamdmbar/_components/HomeDreamRegion.tsx)
-- useNotifications — dreamdmbar/hooks/useNotifications.ts
-- default export — dreamsurface.dreamr (app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx)
-- snapToSplitPoint — dreamdmbar/runtime/barInteractions.ts
-- snapSplitRatioOnRelease — dreamdmbar/runtime/barInteractions.ts
-- resolveGoldTapAction — dreamdmbar/runtime/barInteractions.ts
-- shouldTreatGoldReleaseAsTap — dreamdmbar/runtime/barInteractions.ts
-- calculatePointerVelocity — dreamdmbar/runtime/barInteractions.ts
-- shouldCollapseGoldSwipe — dreamdmbar/runtime/barInteractions.ts
+- default export â dreamsurface.dreamdmbar (dreamdmbar/dreamsurface.dreamdmbar.tsx)
+- default export â page (app/dreamdmbar/dualruntime/page.tsx)
+- default export â page (app/dreamdmbar/dreamspace/page.tsx)
+- default export â page (app/dreamdmbar/homedream/page.tsx)
+- default export â page (app/dreamdmbar/page.tsx)
+- default export â HomeDreamRegion (app/dreamdmbar/_components/HomeDreamRegion.tsx)
+- useNotifications â dreamdmbar/hooks/useNotifications.ts
+- default export â dreamsurface.dreamr (app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx)
+- snapToSplitPoint â dreamdmbar/runtime/barInteractions.ts
+- snapSplitRatioOnRelease â dreamdmbar/runtime/barInteractions.ts
+- resolveGoldTapAction â dreamdmbar/runtime/barInteractions.ts
+- shouldTreatGoldReleaseAsTap â dreamdmbar/runtime/barInteractions.ts
+- calculatePointerVelocity â dreamdmbar/runtime/barInteractions.ts
+- shouldCollapseGoldSwipe â dreamdmbar/runtime/barInteractions.ts
 
 Import/export connections:
 - lucide-react
@@ -1195,63 +1210,58 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` — 3098 lines — score 140 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/dualruntime/page.tsx` — 102 lines — score 136 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/dreamspace/page.tsx` — 19 lines — score 136 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/homedream/page.tsx` — 19 lines — score 136 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/page.tsx` — 11 lines — score 136 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/HomeDreamRegion.tsx` — 460 lines — score 134 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useNotifications.ts` — 97 lines — score 134 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` — 2006 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/barInteractions.ts` — 533 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/DreamSystemContext.tsx` — 401 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/notifications/notificationHelpers.ts` — 266 lines — score 128 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` — 260 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamSearch.ts` — 233 lines — score 128 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/DreamBarDataBridge.tsx` — 196 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamBarContext.ts` — 185 lines — score 128 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/layout.tsx` — 184 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/notifications/useNotifications.ts` — 172 lines — score 128 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` — 115 lines — score 128 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useModuleBarIntent.ts` — 87 lines — score 128 — primary path, path keyword: dreamdmbar
-- `engine/generated/dreamdmbar.ts` — 22 lines — score 128 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` — 459 lines — score 122 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` — 350 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/bridgeSeamFlow.ts` — 214 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useMessagingCore.ts` — 189 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamDMDraft.ts` — 176 lines — score 122 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` — 159 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamDMMessages.ts` — 141 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamDMConversations.ts` — 123 lines — score 122 — primary path, path keyword: dreamdmbar
-- `dreamdmbar/dream.GlowingLight.tsx` — 103 lines — score 122 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` — 55 lines — score 122 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/DreamWidgetGrid.tsx` — 33 lines — score 122 — primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/api/route.ts` — 3 lines — score 122 — primary path, path keyword: dreamdmbar
-- `components/dream.CommandPalette.tsx` — 482 lines — score 67 — supporting path
-- `components/dream.NotificationCenter.tsx` — 414 lines — score 67 — supporting path
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` â 3098 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/dualruntime/page.tsx` â 102 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/dreamspace/page.tsx` â 19 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/homedream/page.tsx` â 19 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/page.tsx` â 11 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/HomeDreamRegion.tsx` â 460 lines â score 130 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useNotifications.ts` â 97 lines â score 130 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` â 2006 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/barInteractions.ts` â 533 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/DreamSystemContext.tsx` â 401 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/notifications/notificationHelpers.ts` â 266 lines â score 126 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` â 260 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamSearch.ts` â 233 lines â score 126 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/DreamBarDataBridge.tsx` â 196 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamBarContext.ts` â 185 lines â score 126 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/layout.tsx` â 184 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/notifications/useNotifications.ts` â 172 lines â score 126 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` â 115 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useModuleBarIntent.ts` â 87 lines â score 126 â primary path, path keyword: dreamdmbar
+- `engine/generated/dreamdmbar.ts` â 22 lines â score 126 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` â 459 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` â 350 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` â 214 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useMessagingCore.ts` â 189 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamDMDraft.ts` â 176 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` â 159 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamDMMessages.ts` â 141 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamDMConversations.ts` â 123 lines â score 122 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/dream.GlowingLight.tsx` â 103 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` â 55 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/DreamWidgetGrid.tsx` â 33 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/api/route.ts` â 3 lines â score 122 â primary path, path keyword: dreamdmbar
+- `components/dream.CommandPalette.tsx` â 482 lines â score 63 â supporting path
+- `components/dream.NotificationCenter.tsx` â 414 lines â score 63 â supporting path
 
 Supporting files:
-- `app/api/messages/route.ts` — 342 lines — score 63 — supporting path
-- `app/messages/boards/[id]/page.tsx` — 178 lines — score 63 — supporting path
-- `app/messages/boards/page.tsx` — 119 lines — score 63 — supporting path
-- `app/messages/boards/new/page.tsx` — 110 lines — score 63 — supporting path
-- `app/api/messages/boards/route.ts` — 92 lines — score 63 — supporting path
-- `app/messages/new/page.tsx` — 86 lines — score 63 — supporting path
-- `app/messages/page.tsx` — 69 lines — score 63 — supporting path
-- `components/panels/dream.panel.SettingsPanel.tsx` — 185 lines — score 61 — supporting path
-- `components/panels/dream.panel.AppearancePanel.tsx` — 166 lines — score 61 — supporting path
-- `components/panels/dream.panel.PrivacyPanel.tsx` — 146 lines — score 61 — supporting path
-- `components/panels/dream.panel.DataPanel.tsx` — 139 lines — score 61 — supporting path
-- `components/panels/dream.panel.MarketplacePanel.tsx` — 139 lines — score 61 — supporting path
-- `components/panels/dream.panel.WidgetsPanel.tsx` — 108 lines — score 61 — supporting path
-- `components/panels/dream.panel.SafetyPanel.tsx` — 102 lines — score 61 — supporting path
-- `components/panels/dream.panel.ControlsPanel.tsx` — 90 lines — score 61 — supporting path
-- `components/panels/dream.panel.HelpPanel.tsx` — 71 lines — score 61 — supporting path
-- `components/panels/dream.panel.AlgorithmPanel.tsx` — 36 lines — score 61 — supporting path
-- `components/panels/dream.panel.ProfilePanel.tsx` — 338 lines — score 55 — supporting path
-- `components/panels/dream.panel.FeedSettingsPanel.tsx` — 192 lines — score 55 — supporting path
-- `components/panels/dream.panel.ConnectorsPanel.tsx` — 48 lines — score 55 — supporting path
-- `components/panels/dream.panel.FeedPanel.tsx` — 4 lines — score 55 — supporting path
+- `app/api/messages/route.ts` â 342 lines â score 63 â supporting path
+- `app/messages/boards/[id]/page.tsx` â 178 lines â score 63 â supporting path
+- `components/panels/dream.panel.SettingsPanel.tsx` â 185 lines â score 59 â supporting path
+- `components/panels/dream.panel.AppearancePanel.tsx` â 166 lines â score 59 â supporting path
+- `components/panels/dream.panel.PrivacyPanel.tsx` â 146 lines â score 59 â supporting path
+- `components/panels/dream.panel.DataPanel.tsx` â 139 lines â score 59 â supporting path
+- `components/panels/dream.panel.MarketplacePanel.tsx` â 139 lines â score 59 â supporting path
+- `components/panels/dream.panel.WidgetsPanel.tsx` â 108 lines â score 59 â supporting path
+- `components/panels/dream.panel.SafetyPanel.tsx` â 102 lines â score 59 â supporting path
+- `components/panels/dream.panel.ControlsPanel.tsx` â 90 lines â score 59 â supporting path
+- `components/panels/dream.panel.HelpPanel.tsx` â 71 lines â score 59 â supporting path
+- `components/panels/dream.panel.AlgorithmPanel.tsx` â 36 lines â score 59 â supporting path
+- `components/panels/dream.panel.ProfilePanel.tsx` â 338 lines â score 55 â supporting path
+- `components/panels/dream.panel.FeedSettingsPanel.tsx` â 192 lines â score 55 â supporting path
+- `components/panels/dream.panel.ConnectorsPanel.tsx` â 48 lines â score 55 â supporting path
+- `components/panels/dream.panel.FeedPanel.tsx` â 4 lines â score 55 â supporting path
 ## 13. Messaging
 
 ### Plain English
@@ -1261,75 +1271,75 @@ Messaging is the direct communication layer: conversations, drafts, notification
 Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.
 
 ### Repo Evidence
-Matched focused repo evidence: 21 files, about 4,026 readable source lines.
+Matched focused repo evidence: 22 files, about 4,091 readable source lines.
 
 Behavior signals:
-- persistence — 17 file hits
-- auth — 17 file hits
-- commerce — 13 file hits
-- state — 12 file hits
-- mobile touch — 6 file hits
-- events — 5 file hits
-- rendering — 4 file hits
+- persistence â 18 file hits
+- auth â 18 file hits
+- commerce â 14 file hits
+- state â 12 file hits
+- mobile touch â 6 file hits
+- events â 5 file hits
+- rendering â 4 file hits
 
 Routes and APIs:
-- GET|POST /api/messages ← app/api/messages/route.ts
-- PATCH|DELETE /api/drafts/[id] ← app/api/drafts/[id]/route.ts
-- GET|POST /api/drafts ← app/api/drafts/route.ts
-- /messages ← app/messages/page.tsx
-- /messages/boards/[id] ← app/messages/boards/[id]/page.tsx
-- /messages/boards ← app/messages/boards/page.tsx
-- /messages/boards/new ← app/messages/boards/new/page.tsx
-- POST /api/messages/boards ← app/api/messages/boards/route.ts
-- /messages/new ← app/messages/new/page.tsx
-- /settings/notifications ← app/settings/notifications/page.tsx
-- GET|POST /api/settings/notifications ← app/api/settings/notifications/route.ts
+- GET|POST /api/messages â app/api/messages/route.ts
+- PATCH|DELETE /api/drafts/[id] â app/api/drafts/[id]/route.ts
+- GET|POST /api/drafts â app/api/drafts/route.ts
+- /messages â app/messages/page.tsx
+- /messages/boards/[id] â app/messages/boards/[id]/page.tsx
+- /messages/boards â app/messages/boards/page.tsx
+- /messages/boards/new â app/messages/boards/new/page.tsx
+- POST /api/messages/boards â app/api/messages/boards/route.ts
+- /messages/new â app/messages/new/page.tsx
+- /settings/notifications â app/settings/notifications/page.tsx
+- GET|POST /api/settings/notifications â app/api/settings/notifications/route.ts
 
 Components:
-- MessagesPage — app/messages/page.tsx
-- BoardDetailPage — app/messages/boards/[id]/page.tsx
-- BoardsPage — app/messages/boards/page.tsx
-- NewBoardPage — app/messages/boards/new/page.tsx
-- NewMessagePage — app/messages/new/page.tsx
-- BoardComposer — components/messaging/dream.BoardComposer.tsx
-- NotificationSettingsPage — app/settings/notifications/page.tsx
-- MessageContent — components/dream.MessagesClient.tsx
-- MessagesClient — components/dream.MessagesClient.tsx
-- NotifIcon — components/dream.NotificationCenter.tsx
-- NotifRow — components/dream.NotificationCenter.tsx
-- NotificationCenter — components/dream.NotificationCenter.tsx
+- MessagesPage â app/messages/page.tsx
+- BoardDetailPage â app/messages/boards/[id]/page.tsx
+- BoardsPage â app/messages/boards/page.tsx
+- NewBoardPage â app/messages/boards/new/page.tsx
+- NewMessagePage â app/messages/new/page.tsx
+- BoardComposer â components/messaging/dream.BoardComposer.tsx
+- NotificationSettingsPage â app/settings/notifications/page.tsx
+- MessageContent â components/dream.MessagesClient.tsx
+- MessagesClient â components/dream.MessagesClient.tsx
+- NotifIcon â components/dream.NotificationCenter.tsx
+- NotifRow â components/dream.NotificationCenter.tsx
+- NotificationCenter â components/dream.NotificationCenter.tsx
 
 Hooks:
-- useCallback — dreamdmbar/hooks/useDreamDMDraft.ts
-- useEffect — dreamdmbar/hooks/useDreamDMDraft.ts
-- useRef — dreamdmbar/hooks/useDreamDMDraft.ts
-- useState — dreamdmbar/hooks/useDreamDMDraft.ts
-- useDreamDMDraft — dreamdmbar/hooks/useDreamDMDraft.ts
-- useCallback — dreamdmbar/hooks/useDreamDMMessages.ts
-- useEffect — dreamdmbar/hooks/useDreamDMMessages.ts
-- useRef — dreamdmbar/hooks/useDreamDMMessages.ts
-- useState — dreamdmbar/hooks/useDreamDMMessages.ts
-- useDreamDMMessages — dreamdmbar/hooks/useDreamDMMessages.ts
-- useRouter — app/messages/boards/new/page.tsx
-- useState — app/messages/boards/new/page.tsx
-- useCallback — dreamdmbar/hooks/useMessagingCore.ts
-- useState — dreamdmbar/hooks/useMessagingCore.ts
+- useCallback â dreamdmbar/hooks/useDreamDMDraft.ts
+- useEffect â dreamdmbar/hooks/useDreamDMDraft.ts
+- useRef â dreamdmbar/hooks/useDreamDMDraft.ts
+- useState â dreamdmbar/hooks/useDreamDMDraft.ts
+- useDreamDMDraft â dreamdmbar/hooks/useDreamDMDraft.ts
+- useCallback â dreamdmbar/hooks/useDreamDMMessages.ts
+- useEffect â dreamdmbar/hooks/useDreamDMMessages.ts
+- useRef â dreamdmbar/hooks/useDreamDMMessages.ts
+- useState â dreamdmbar/hooks/useDreamDMMessages.ts
+- useDreamDMMessages â dreamdmbar/hooks/useDreamDMMessages.ts
+- useRouter â app/messages/boards/new/page.tsx
+- useState â app/messages/boards/new/page.tsx
+- useCallback â dreamdmbar/hooks/useMessagingCore.ts
+- useState â dreamdmbar/hooks/useMessagingCore.ts
 
 Exports that define public behavior:
-- DraftPayload — dreamdmbar/hooks/useDreamDMDraft.ts
-- listAllDraftIds — dreamdmbar/hooks/useDreamDMDraft.ts
-- cleanupStaleDrafts — dreamdmbar/hooks/useDreamDMDraft.ts
-- getDraftAge — dreamdmbar/hooks/useDreamDMDraft.ts
-- useDreamDMDraft — dreamdmbar/hooks/useDreamDMDraft.ts
-- default export — page (app/messages/page.tsx)
-- DbNotificationContent — dreamdmbar/notifications/notificationHelpers.ts
-- DbNotificationRow — dreamdmbar/notifications/notificationHelpers.ts
-- UiNotificationType — dreamdmbar/notifications/notificationHelpers.ts
-- UiNotification — dreamdmbar/notifications/notificationHelpers.ts
-- mapNotificationType — dreamdmbar/notifications/notificationHelpers.ts
-- getNotificationTitle — dreamdmbar/notifications/notificationHelpers.ts
-- getNotificationActionUrl — dreamdmbar/notifications/notificationHelpers.ts
-- extractNotificationMessage — dreamdmbar/notifications/notificationHelpers.ts
+- DraftPayload â dreamdmbar/hooks/useDreamDMDraft.ts
+- listAllDraftIds â dreamdmbar/hooks/useDreamDMDraft.ts
+- cleanupStaleDrafts â dreamdmbar/hooks/useDreamDMDraft.ts
+- getDraftAge â dreamdmbar/hooks/useDreamDMDraft.ts
+- useDreamDMDraft â dreamdmbar/hooks/useDreamDMDraft.ts
+- default export â page (app/messages/page.tsx)
+- DbNotificationContent â dreamdmbar/notifications/notificationHelpers.ts
+- DbNotificationRow â dreamdmbar/notifications/notificationHelpers.ts
+- UiNotificationType â dreamdmbar/notifications/notificationHelpers.ts
+- UiNotification â dreamdmbar/notifications/notificationHelpers.ts
+- mapNotificationType â dreamdmbar/notifications/notificationHelpers.ts
+- getNotificationTitle â dreamdmbar/notifications/notificationHelpers.ts
+- getNotificationActionUrl â dreamdmbar/notifications/notificationHelpers.ts
+- extractNotificationMessage â dreamdmbar/notifications/notificationHelpers.ts
 
 Import/export connections:
 - engine/safety/child-safety/childSafetyDetector
@@ -1345,32 +1355,33 @@ Import/export connections:
 - react
 - components/dream.MessagesClient
 - next/navigation
-- engine/io
+- components/messaging/dream.BoardComposer
 
 ### Matched Files
 
 Primary files:
-- `app/api/messages/route.ts` — 342 lines — score 126 — primary path
-- `app/api/drafts/[id]/route.ts` — 133 lines — score 120 — primary path
-- `dreamdmbar/hooks/useDreamDMDraft.ts` — 176 lines — score 118 — primary path
-- `app/api/drafts/route.ts` — 119 lines — score 114 — primary path
-- `app/messages/page.tsx` — 69 lines — score 114 — primary path
-- `dreamdmbar/notifications/notificationHelpers.ts` — 266 lines — score 112 — primary path
-- `dreamdmbar/hooks/useDreamDMMessages.ts` — 141 lines — score 112 — primary path
-- `app/messages/boards/[id]/page.tsx` — 178 lines — score 108 — primary path
-- `app/messages/boards/page.tsx` — 119 lines — score 108 — primary path
-- `app/messages/boards/new/page.tsx` — 110 lines — score 108 — primary path
-- `app/api/messages/boards/route.ts` — 92 lines — score 108 — primary path
-- `app/messages/new/page.tsx` — 86 lines — score 108 — primary path
-- `dreamdmbar/hooks/useMessagingCore.ts` — 189 lines — score 106 — primary path
-- `dreamdmbar/notifications/useNotifications.ts` — 172 lines — score 106 — primary path
-- `dreamdmbar/hooks/useDreamDMConversations.ts` — 123 lines — score 106 — primary path
-- `supabase/migrations/20260307000001_conversations_messages.sql` — 80 lines — score 106 — primary path
-- `components/messaging/dream.BoardComposer.tsx` — 89 lines — score 100 — primary path
-- `app/settings/notifications/page.tsx` — 207 lines — score 75 — supporting path
-- `app/api/settings/notifications/route.ts` — 84 lines — score 75 — supporting path
-- `components/dream.MessagesClient.tsx` — 837 lines — score 73 — supporting path
-- `components/dream.NotificationCenter.tsx` — 414 lines — score 67 — supporting path
+- `app/api/messages/route.ts` â 342 lines â score 120 â primary path
+- `app/api/drafts/[id]/route.ts` â 133 lines â score 116 â primary path
+- `dreamdmbar/hooks/useDreamDMDraft.ts` â 176 lines â score 112 â primary path
+- `app/api/drafts/route.ts` â 119 lines â score 112 â primary path
+- `app/messages/page.tsx` â 69 lines â score 112 â primary path
+- `dreamdmbar/notifications/notificationHelpers.ts` â 266 lines â score 108 â primary path
+- `app/messages/boards/[id]/page.tsx` â 178 lines â score 108 â primary path
+- `dreamdmbar/hooks/useDreamDMMessages.ts` â 141 lines â score 108 â primary path
+- `app/messages/boards/page.tsx` â 119 lines â score 108 â primary path
+- `app/messages/boards/new/page.tsx` â 110 lines â score 108 â primary path
+- `app/api/messages/boards/route.ts` â 92 lines â score 108 â primary path
+- `app/messages/new/page.tsx` â 86 lines â score 108 â primary path
+- `supabase/migrations/20260315000000_content_drafts.sql` â 65 lines â score 108 â primary path
+- `dreamdmbar/hooks/useMessagingCore.ts` â 189 lines â score 104 â primary path
+- `dreamdmbar/notifications/useNotifications.ts` â 172 lines â score 104 â primary path
+- `dreamdmbar/hooks/useDreamDMConversations.ts` â 123 lines â score 104 â primary path
+- `supabase/migrations/20260307000001_conversations_messages.sql` â 80 lines â score 104 â primary path
+- `components/messaging/dream.BoardComposer.tsx` â 89 lines â score 100 â primary path
+- `app/settings/notifications/page.tsx` â 207 lines â score 71 â supporting path
+- `app/api/settings/notifications/route.ts` â 84 lines â score 71 â supporting path
+- `components/dream.MessagesClient.tsx` â 837 lines â score 67 â supporting path
+- `components/dream.NotificationCenter.tsx` â 414 lines â score 63 â supporting path
 
 Supporting files:
 - None found.
@@ -1386,64 +1397,64 @@ Users feel HomeDream as the personal starting point where they see themselves, t
 Matched focused repo evidence: 18 files, about 4,511 readable source lines.
 
 Behavior signals:
-- commerce — 11 file hits
-- mobile touch — 10 file hits
-- events — 9 file hits
-- state — 8 file hits
-- auth — 8 file hits
-- runtime — 7 file hits
-- persistence — 5 file hits
-- rendering — 5 file hits
+- commerce â 11 file hits
+- mobile touch â 10 file hits
+- events â 9 file hits
+- state â 8 file hits
+- auth â 8 file hits
+- runtime â 7 file hits
+- persistence â 5 file hits
+- rendering â 5 file hits
 
 Routes and APIs:
-- /homedream ← app/homedream/page.tsx
-- GET|POST /api/home-layout ← app/api/home-layout/route.ts
+- /homedream â app/homedream/page.tsx
+- GET|POST /api/home-layout â app/api/home-layout/route.ts
 
 Components:
-- PersistentDreamBar — components/home/dream.bar.PersistentDreamBar.tsx
-- HomeDreamPage — app/homedream/page.tsx
-- ActiveModuleSurface — components/home/dream.ActiveModuleSurface.tsx
-- FlagshipEnginesStrip — components/home/dream.FlagshipEnginesStrip.tsx
-- NeuralSeamCanvas — components/home/dream.NeuralSeamCanvas.tsx
-- DaydreamPulseStrip — components/home/dream.DaydreamPulseStrip.tsx
-- DreamWidget — components/home/dream.widget.DreamWidget.tsx
-- GlobalDreamBar — components/home/dream.bar.GlobalDreamBar.tsx
-- QuickLink — app/dreamdmbar/_components/HomeDreamRegion.tsx
-- HomeDreamSurface — app/dreamdmbar/_components/HomeDreamRegion.tsx
-- HomeFeed — components/dream.HomeFeed.tsx
-- FeedCard — components/dream.FeedCard.tsx
+- PersistentDreamBar â components/home/dream.bar.PersistentDreamBar.tsx
+- HomeDreamPage â app/homedream/page.tsx
+- ActiveModuleSurface â components/home/dream.ActiveModuleSurface.tsx
+- FlagshipEnginesStrip â components/home/dream.FlagshipEnginesStrip.tsx
+- NeuralSeamCanvas â components/home/dream.NeuralSeamCanvas.tsx
+- DaydreamPulseStrip â components/home/dream.DaydreamPulseStrip.tsx
+- DreamWidget â components/home/dream.widget.DreamWidget.tsx
+- GlobalDreamBar â components/home/dream.bar.GlobalDreamBar.tsx
+- QuickLink â app/dreamdmbar/_components/HomeDreamRegion.tsx
+- HomeDreamSurface â app/dreamdmbar/_components/HomeDreamRegion.tsx
+- HomeFeed â components/dream.HomeFeed.tsx
+- FeedCard â components/dream.FeedCard.tsx
 
 Hooks:
-- useDualRuntime — components/home/dream.bar.PersistentDreamBar.tsx
-- useDreamLayout — components/home/dream.bar.PersistentDreamBar.tsx
-- useDreamSystem — components/home/dream.bar.PersistentDreamBar.tsx
-- useOS — components/home/dream.bar.PersistentDreamBar.tsx
-- usePathname — components/home/dream.bar.PersistentDreamBar.tsx
-- useCallback — components/home/dream.bar.PersistentDreamBar.tsx
-- useEffect — components/home/dream.bar.PersistentDreamBar.tsx
-- useState — components/home/dream.bar.PersistentDreamBar.tsx
-- useLiveFeed — app/homedream/page.tsx
-- useDreamWindowActions — components/home/dream.ActiveModuleSurface.tsx
-- useCallback — components/home/dream.ActiveModuleSurface.tsx
-- useEffect — components/home/dream.ActiveModuleSurface.tsx
-- useMemo — components/home/dream.ActiveModuleSurface.tsx
-- useRef — components/home/dream.ActiveModuleSurface.tsx
+- useDualRuntime â components/home/dream.bar.PersistentDreamBar.tsx
+- useDreamLayout â components/home/dream.bar.PersistentDreamBar.tsx
+- useDreamSystem â components/home/dream.bar.PersistentDreamBar.tsx
+- useOS â components/home/dream.bar.PersistentDreamBar.tsx
+- usePathname â components/home/dream.bar.PersistentDreamBar.tsx
+- useCallback â components/home/dream.bar.PersistentDreamBar.tsx
+- useEffect â components/home/dream.bar.PersistentDreamBar.tsx
+- useState â components/home/dream.bar.PersistentDreamBar.tsx
+- useLiveFeed â app/homedream/page.tsx
+- useDreamWindowActions â components/home/dream.ActiveModuleSurface.tsx
+- useCallback â components/home/dream.ActiveModuleSurface.tsx
+- useEffect â components/home/dream.ActiveModuleSurface.tsx
+- useMemo â components/home/dream.ActiveModuleSurface.tsx
+- useRef â components/home/dream.ActiveModuleSurface.tsx
 
 Exports that define public behavior:
-- DreamDMContainer — components/home/dream.bar.PersistentDreamBar.tsx
-- default export — dream.bar.PersistentDreamBar (components/home/dream.bar.PersistentDreamBar.tsx)
-- default export — page (app/homedream/page.tsx)
-- default export — dream.ActiveModuleSurface (components/home/dream.ActiveModuleSurface.tsx)
-- default export — dream.FlagshipEnginesStrip (components/home/dream.FlagshipEnginesStrip.tsx)
-- default export — dream.NeuralSeamCanvas (components/home/dream.NeuralSeamCanvas.tsx)
-- PhysicsConstraint — engins/rulesets/homedream/dream.homedream.physics.ts
-- resolveConstraint — engins/rulesets/homedream/dream.homedream.physics.ts
-- EntityState — engins/rulesets/homedream/dream.homedream.transforms.ts
-- HomeDreamState — engins/rulesets/homedream/dream.homedream.transforms.ts
-- applyDelta — engins/rulesets/homedream/dream.homedream.transforms.ts
-- createInitialState — engins/rulesets/homedream/dream.homedream.transforms.ts
-- homedream — engine/generated/homedream.ts
-- HomedreamMap — engine/generated/homedream.ts
+- DreamDMContainer â components/home/dream.bar.PersistentDreamBar.tsx
+- default export â dream.bar.PersistentDreamBar (components/home/dream.bar.PersistentDreamBar.tsx)
+- default export â page (app/homedream/page.tsx)
+- default export â dream.ActiveModuleSurface (components/home/dream.ActiveModuleSurface.tsx)
+- default export â dream.FlagshipEnginesStrip (components/home/dream.FlagshipEnginesStrip.tsx)
+- default export â dream.NeuralSeamCanvas (components/home/dream.NeuralSeamCanvas.tsx)
+- PhysicsConstraint â engins/rulesets/homedream/dream.homedream.physics.ts
+- resolveConstraint â engins/rulesets/homedream/dream.homedream.physics.ts
+- EntityState â engins/rulesets/homedream/dream.homedream.transforms.ts
+- HomeDreamState â engins/rulesets/homedream/dream.homedream.transforms.ts
+- applyDelta â engins/rulesets/homedream/dream.homedream.transforms.ts
+- createInitialState â engins/rulesets/homedream/dream.homedream.transforms.ts
+- homedream â engine/generated/homedream.ts
+- HomedreamMap â engine/generated/homedream.ts
 
 Import/export connections:
 - components/home/dream.NeuralSeamCanvas
@@ -1464,24 +1475,24 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `components/home/dream.bar.PersistentDreamBar.tsx` — 345 lines — score 134 — primary path, path keyword: home dream
-- `styles/home-dream.css` — 235 lines — score 134 — primary path, path keyword: home dream
-- `app/homedream/page.tsx` — 75 lines — score 130 — primary path, path keyword: homedream
-- `components/home/dream.ActiveModuleSurface.tsx` — 475 lines — score 128 — primary path, path keyword: home dream
-- `components/home/dream.FlagshipEnginesStrip.tsx` — 278 lines — score 128 — primary path, path keyword: home dream
-- `components/home/dream.NeuralSeamCanvas.tsx` — 276 lines — score 128 — primary path, path keyword: home dream
-- `engins/rulesets/homedream/dream.homedream.physics.ts` — 36 lines — score 128 — primary path, path keyword: homedream
-- `engins/rulesets/homedream/dream.homedream.transforms.ts` — 36 lines — score 128 — primary path, path keyword: homedream
-- `engins/rulesets/homedream/index.ts` — 15 lines — score 128 — primary path, path keyword: homedream
-- `engins/rulesets/homedream/dream.homedream.constants.ts` — 9 lines — score 128 — primary path, path keyword: homedream
-- `engine/generated/homedream.ts` — 8 lines — score 128 — primary path, path keyword: homedream
-- `components/home/dream.DaydreamPulseStrip.tsx` — 139 lines — score 122 — primary path, path keyword: home dream
-- `components/home/dream.widget.DreamWidget.tsx` — 117 lines — score 122 — primary path, path keyword: home dream
-- `components/home/dream.bar.GlobalDreamBar.tsx` — 100 lines — score 122 — primary path, path keyword: home dream
-- `app/dreamdmbar/_components/HomeDreamRegion.tsx` — 460 lines — score 118 — primary path
-- `app/api/home-layout/route.ts` — 109 lines — score 69 — supporting path
-- `components/dream.HomeFeed.tsx` — 1329 lines — score 61 — supporting path
-- `components/dream.FeedCard.tsx` — 469 lines — score 55 — supporting path
+- `components/home/dream.bar.PersistentDreamBar.tsx` â 345 lines â score 130 â primary path, path keyword: home dream
+- `styles/home-dream.css` â 235 lines â score 130 â primary path, path keyword: home dream
+- `app/homedream/page.tsx` â 75 lines â score 130 â primary path, path keyword: homedream
+- `components/home/dream.ActiveModuleSurface.tsx` â 475 lines â score 126 â primary path, path keyword: home dream
+- `components/home/dream.FlagshipEnginesStrip.tsx` â 278 lines â score 126 â primary path, path keyword: home dream
+- `components/home/dream.NeuralSeamCanvas.tsx` â 276 lines â score 126 â primary path, path keyword: home dream
+- `engins/rulesets/homedream/dream.homedream.physics.ts` â 36 lines â score 126 â primary path, path keyword: homedream
+- `engins/rulesets/homedream/dream.homedream.transforms.ts` â 36 lines â score 126 â primary path, path keyword: homedream
+- `engins/rulesets/homedream/index.ts` â 15 lines â score 126 â primary path, path keyword: homedream
+- `engins/rulesets/homedream/dream.homedream.constants.ts` â 9 lines â score 126 â primary path, path keyword: homedream
+- `engine/generated/homedream.ts` â 8 lines â score 126 â primary path, path keyword: homedream
+- `components/home/dream.DaydreamPulseStrip.tsx` â 139 lines â score 122 â primary path, path keyword: home dream
+- `components/home/dream.widget.DreamWidget.tsx` â 117 lines â score 122 â primary path, path keyword: home dream
+- `components/home/dream.bar.GlobalDreamBar.tsx` â 100 lines â score 122 â primary path, path keyword: home dream
+- `app/dreamdmbar/_components/HomeDreamRegion.tsx` â 460 lines â score 112 â primary path
+- `app/api/home-layout/route.ts` â 109 lines â score 67 â supporting path
+- `components/dream.HomeFeed.tsx` â 1329 lines â score 59 â supporting path
+- `components/dream.FeedCard.tsx` â 469 lines â score 55 â supporting path
 
 Supporting files:
 - None found.
@@ -1497,80 +1508,80 @@ Users experience DreamSpace as the place where they arrange, open, move through,
 Matched focused repo evidence: 62 files, about 19,181 readable source lines.
 
 Behavior signals:
-- auth — 39 file hits
-- commerce — 39 file hits
-- state — 31 file hits
-- mobile touch — 28 file hits
-- persistence — 27 file hits
-- rendering — 23 file hits
-- runtime — 20 file hits
-- events — 17 file hits
+- auth â 39 file hits
+- commerce â 39 file hits
+- state â 31 file hits
+- mobile touch â 28 file hits
+- persistence â 27 file hits
+- rendering â 23 file hits
+- runtime â 20 file hits
+- events â 17 file hits
 
 Routes and APIs:
-- /dreamdmbar/dreamspace ← app/dreamdmbar/dreamspace/page.tsx
-- /dreamspace ← app/dreamspace/page.tsx
-- /daydream/games ← app/daydream/games/page.tsx
-- /daydream/music ← app/daydream/music/page.tsx
-- /daydream/code ← app/daydream/code/page.tsx
-- /daydream/lab ← app/daydream/lab/page.tsx
-- /daydream/forge ← app/daydream/forge/page.tsx
-- /daydream/music/upload ← app/daydream/music/upload/page.tsx
-- /daydream/lab/portfolio ← app/daydream/lab/portfolio/page.tsx
-- /daydream/create ← app/daydream/create/page.tsx
-- /daydream/brand ← app/daydream/brand/page.tsx
-- /daydream/game ← app/daydream/game/page.tsx
-- /daydream/games/engin ← app/daydream/games/engin/page.tsx
-- /daydream/constellation ← app/daydream/constellation/page.tsx
-- /daydream/media-vault ← app/daydream/media-vault/page.tsx
-- /daydream/play ← app/daydream/play/page.tsx
+- /dreamdmbar/dreamspace â app/dreamdmbar/dreamspace/page.tsx
+- /dreamspace â app/dreamspace/page.tsx
+- /daydream/games â app/daydream/games/page.tsx
+- /daydream/music â app/daydream/music/page.tsx
+- /daydream/code â app/daydream/code/page.tsx
+- /daydream/lab â app/daydream/lab/page.tsx
+- /daydream/forge â app/daydream/forge/page.tsx
+- /daydream/music/upload â app/daydream/music/upload/page.tsx
+- /daydream/lab/portfolio â app/daydream/lab/portfolio/page.tsx
+- /daydream/create â app/daydream/create/page.tsx
+- /daydream/brand â app/daydream/brand/page.tsx
+- /daydream/game â app/daydream/game/page.tsx
+- /daydream/games/engin â app/daydream/games/engin/page.tsx
+- /daydream/constellation â app/daydream/constellation/page.tsx
+- /daydream/media-vault â app/daydream/media-vault/page.tsx
+- /daydream/play â app/daydream/play/page.tsx
 
 Components:
-- DreamDMBarDreamSpacePage — app/dreamdmbar/dreamspace/page.tsx
-- DreamSpacePage — app/dreamspace/page.tsx
-- AppIcon — components/dreams/dreamsurface.dreamspace.tsx
-- EngineBarChart — components/dreams/dreamsurface.dreamspace.tsx
-- DreamsSpacePanel — components/dreams/dreamsurface.dreamspace.tsx
-- ProfileSpace — components/spatial/dream.ProfileSpace.tsx
-- EmptyProfileState — components/spatial/dream.ProfileSpace.tsx
-- WidgetRenderer — components/spatial/dream.ProfileSpace.tsx
-- GalleryWidget — components/spatial/dream.ProfileSpace.tsx
-- BlankWidget — components/spatial/dream.ProfileSpace.tsx
-- MediaWidget — components/spatial/dream.ProfileSpace.tsx
-- TextWidget — components/spatial/dream.ProfileSpace.tsx
-- ProfileInfoWidget — components/spatial/dream.ProfileSpace.tsx
-- LinkTreeWidget — components/spatial/dream.ProfileSpace.tsx
+- DreamDMBarDreamSpacePage â app/dreamdmbar/dreamspace/page.tsx
+- DreamSpacePage â app/dreamspace/page.tsx
+- AppIcon â components/dreams/dreamsurface.dreamspace.tsx
+- EngineBarChart â components/dreams/dreamsurface.dreamspace.tsx
+- DreamsSpacePanel â components/dreams/dreamsurface.dreamspace.tsx
+- ProfileSpace â components/spatial/dream.ProfileSpace.tsx
+- EmptyProfileState â components/spatial/dream.ProfileSpace.tsx
+- WidgetRenderer â components/spatial/dream.ProfileSpace.tsx
+- GalleryWidget â components/spatial/dream.ProfileSpace.tsx
+- BlankWidget â components/spatial/dream.ProfileSpace.tsx
+- MediaWidget â components/spatial/dream.ProfileSpace.tsx
+- TextWidget â components/spatial/dream.ProfileSpace.tsx
+- ProfileInfoWidget â components/spatial/dream.ProfileSpace.tsx
+- LinkTreeWidget â components/spatial/dream.ProfileSpace.tsx
 
 Hooks:
-- useDualRuntime — app/dreamdmbar/dreamspace/page.tsx
-- useDreamSystem — app/dreamdmbar/dreamspace/page.tsx
-- useEffect — app/dreamdmbar/dreamspace/page.tsx
-- useDreamsRuntime — components/dreams/dreamsurface.dreamspace.tsx
-- useSessionIntelligence — components/dreams/dreamsurface.dreamspace.tsx
-- useRouter — components/dreams/dreamsurface.dreamspace.tsx
-- useCallback — components/dreams/dreamsurface.dreamspace.tsx
-- useEffect — components/dreams/dreamsurface.dreamspace.tsx
-- useRef — components/dreams/dreamsurface.dreamspace.tsx
-- useState — components/dreams/dreamsurface.dreamspace.tsx
-- useContent — components/spatial/dream.ProfileSpace.tsx
-- useWidgets — components/spatial/dream.ProfileSpace.tsx
-- useCallback — components/spatial/dream.ProfileSpace.tsx
-- useEffect — components/spatial/dream.ProfileSpace.tsx
+- useDualRuntime â app/dreamdmbar/dreamspace/page.tsx
+- useDreamSystem â app/dreamdmbar/dreamspace/page.tsx
+- useEffect â app/dreamdmbar/dreamspace/page.tsx
+- useDreamsRuntime â components/dreams/dreamsurface.dreamspace.tsx
+- useSessionIntelligence â components/dreams/dreamsurface.dreamspace.tsx
+- useRouter â components/dreams/dreamsurface.dreamspace.tsx
+- useCallback â components/dreams/dreamsurface.dreamspace.tsx
+- useEffect â components/dreams/dreamsurface.dreamspace.tsx
+- useRef â components/dreams/dreamsurface.dreamspace.tsx
+- useState â components/dreams/dreamsurface.dreamspace.tsx
+- useContent â components/spatial/dream.ProfileSpace.tsx
+- useWidgets â components/spatial/dream.ProfileSpace.tsx
+- useCallback â components/spatial/dream.ProfileSpace.tsx
+- useEffect â components/spatial/dream.ProfileSpace.tsx
 
 Exports that define public behavior:
-- default export — page (app/dreamdmbar/dreamspace/page.tsx)
-- default export — page (app/dreamspace/page.tsx)
-- getAppRoute — components/dreams/dreamsurface.dreamspace.tsx
-- RecentDestination — components/dreams/dreamsurface.dreamspace.tsx
-- buildRecentDestinations — components/dreams/dreamsurface.dreamspace.tsx
-- default export — dreamsurface.dreamspace (components/dreams/dreamsurface.dreamspace.tsx)
-- default export — dream.ProfileSpace (components/spatial/dream.ProfileSpace.tsx)
-- default export — dream.shell.EnhancedSpatialShell (components/spatial/dream.shell.EnhancedSpatialShell.tsx)
-- PixiPhysicsLayerProps — components/spatial/dream.PixiPhysicsLayer.tsx
-- default export — dream.PixiPhysicsLayer (components/spatial/dream.PixiPhysicsLayer.tsx)
-- metadata — app/daydream/games/page.tsx
-- default export — page (app/daydream/games/page.tsx)
-- metadata — app/daydream/music/page.tsx
-- default export — page (app/daydream/music/page.tsx)
+- default export â page (app/dreamdmbar/dreamspace/page.tsx)
+- default export â page (app/dreamspace/page.tsx)
+- getAppRoute â components/dreams/dreamsurface.dreamspace.tsx
+- RecentDestination â components/dreams/dreamsurface.dreamspace.tsx
+- buildRecentDestinations â components/dreams/dreamsurface.dreamspace.tsx
+- default export â dreamsurface.dreamspace (components/dreams/dreamsurface.dreamspace.tsx)
+- default export â dream.ProfileSpace (components/spatial/dream.ProfileSpace.tsx)
+- default export â dream.shell.EnhancedSpatialShell (components/spatial/dream.shell.EnhancedSpatialShell.tsx)
+- PixiPhysicsLayerProps â components/spatial/dream.PixiPhysicsLayer.tsx
+- default export â dream.PixiPhysicsLayer (components/spatial/dream.PixiPhysicsLayer.tsx)
+- metadata â app/daydream/games/page.tsx
+- default export â page (app/daydream/games/page.tsx)
+- metadata â app/daydream/music/page.tsx
+- default export â page (app/daydream/music/page.tsx)
 
 Import/export connections:
 - components/runtime/dream.DualRuntimeContainer
@@ -1591,70 +1602,70 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/dreamdmbar/dreamspace/page.tsx` — 19 lines — score 136 — primary path, path keyword: dreamspace
-- `app/dreamspace/page.tsx` — 8 lines — score 136 — primary path, path keyword: dreamspace
-- `components/dreams/dreamsurface.dreamspace.tsx` — 891 lines — score 134 — primary path, path keyword: dreamspace
-- `components/spatial/dream.ProfileSpace.tsx` — 822 lines — score 128 — primary path, path keyword: spatial
-- `components/spatial/dream.shell.EnhancedSpatialShell.tsx` — 203 lines — score 128 — primary path, path keyword: spatial
-- `components/spatial/dream.PixiPhysicsLayer.tsx` — 149 lines — score 122 — primary path, path keyword: spatial
-- `app/daydream/games/page.tsx` — 365 lines — score 114 — primary path
-- `app/daydream/music/page.tsx` — 87 lines — score 114 — primary path
-- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` — 459 lines — score 112 — primary path
-- `app/daydream/code/page.tsx` — 1118 lines — score 108 — primary path
-- `app/daydream/lab/page.tsx` — 1062 lines — score 108 — primary path
-- `app/daydream/forge/page.tsx` — 348 lines — score 108 — primary path
-- `app/daydream/music/upload/page.tsx` — 210 lines — score 108 — primary path
-- `app/daydream/lab/portfolio/page.tsx` — 189 lines — score 108 — primary path
-- `app/daydream/create/page.tsx` — 107 lines — score 108 — primary path
-- `app/daydream/brand/page.tsx` — 62 lines — score 108 — primary path
-- `app/daydream/game/page.tsx` — 31 lines — score 108 — primary path
-- `app/daydream/games/engin/page.tsx` — 30 lines — score 108 — primary path
-- `app/daydream/constellation/page.tsx` — 26 lines — score 108 — primary path
-- `app/daydream/media-vault/page.tsx` — 21 lines — score 108 — primary path
-- `app/daydream/play/page.tsx` — 19 lines — score 108 — primary path
-- `app/daydream/brand/engin/page.tsx` — 11 lines — score 108 — primary path
-- `app/daydream/code/engin/page.tsx` — 11 lines — score 108 — primary path
-- `app/daydream/create/engin/page.tsx` — 11 lines — score 108 — primary path
-- `app/daydream/lab/engin/page.tsx` — 11 lines — score 108 — primary path
-- `app/daydream/music/engin/page.tsx` — 11 lines — score 108 — primary path
-- `app/daydream/render/page.tsx` — 6 lines — score 108 — primary path
-- `components/daydream/dream.CodeDreamIDE.tsx` — 1707 lines — score 106 — primary path
-- `coresurfaces/home/buttons/contextual-home.ts` — 67 lines — score 106 — primary path
-- `components/daydream/dream.LabDreamIDE.tsx` — 1294 lines — score 100 — primary path
-- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` — 684 lines — score 100 — primary path
-- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` — 668 lines — score 100 — primary path
-- `components/daydream/dream.NGNEngin.tsx` — 600 lines — score 100 — primary path
-- `daydreams/code/page.tsx` — 545 lines — score 100 — primary path
+- `app/dreamdmbar/dreamspace/page.tsx` â 19 lines â score 134 â primary path, path keyword: dreamspace
+- `app/dreamspace/page.tsx` â 8 lines â score 134 â primary path, path keyword: dreamspace
+- `components/dreams/dreamsurface.dreamspace.tsx` â 891 lines â score 130 â primary path, path keyword: dreamspace
+- `components/spatial/dream.ProfileSpace.tsx` â 822 lines â score 126 â primary path, path keyword: spatial
+- `components/spatial/dream.shell.EnhancedSpatialShell.tsx` â 203 lines â score 126 â primary path, path keyword: spatial
+- `components/spatial/dream.PixiPhysicsLayer.tsx` â 149 lines â score 122 â primary path, path keyword: spatial
+- `app/daydream/games/page.tsx` â 365 lines â score 112 â primary path
+- `app/daydream/music/page.tsx` â 87 lines â score 112 â primary path
+- `app/daydream/code/page.tsx` â 1118 lines â score 108 â primary path
+- `app/daydream/lab/page.tsx` â 1062 lines â score 108 â primary path
+- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` â 459 lines â score 108 â primary path
+- `app/daydream/forge/page.tsx` â 348 lines â score 108 â primary path
+- `app/daydream/music/upload/page.tsx` â 210 lines â score 108 â primary path
+- `app/daydream/lab/portfolio/page.tsx` â 189 lines â score 108 â primary path
+- `app/daydream/create/page.tsx` â 107 lines â score 108 â primary path
+- `app/daydream/brand/page.tsx` â 62 lines â score 108 â primary path
+- `app/daydream/game/page.tsx` â 31 lines â score 108 â primary path
+- `app/daydream/games/engin/page.tsx` â 30 lines â score 108 â primary path
+- `app/daydream/constellation/page.tsx` â 26 lines â score 108 â primary path
+- `app/daydream/media-vault/page.tsx` â 21 lines â score 108 â primary path
+- `app/daydream/play/page.tsx` â 19 lines â score 108 â primary path
+- `app/daydream/brand/engin/page.tsx` â 11 lines â score 108 â primary path
+- `app/daydream/code/engin/page.tsx` â 11 lines â score 108 â primary path
+- `app/daydream/create/engin/page.tsx` â 11 lines â score 108 â primary path
+- `app/daydream/lab/engin/page.tsx` â 11 lines â score 108 â primary path
+- `app/daydream/music/engin/page.tsx` â 11 lines â score 108 â primary path
+- `app/daydream/render/page.tsx` â 6 lines â score 108 â primary path
+- `components/daydream/dream.CodeDreamIDE.tsx` â 1707 lines â score 104 â primary path
+- `coresurfaces/home/buttons/contextual-home.ts` â 67 lines â score 104 â primary path
+- `components/daydream/dream.LabDreamIDE.tsx` â 1294 lines â score 100 â primary path
+- `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` â 684 lines â score 100 â primary path
+- `components/daydream/starmaker/dream.panel.MultitrackArrangementPanel.tsx` â 668 lines â score 100 â primary path
+- `components/daydream/dream.NGNEngin.tsx` â 600 lines â score 100 â primary path
+- `daydreams/code/page.tsx` â 545 lines â score 100 â primary path
 
 Supporting files:
-- `coresurfaces/dreamsurface.EditProfileDream.tsx` — 537 lines — score 100 — primary path
-- `daydreams/lab/page.tsx` — 486 lines — score 100 — primary path
-- `components/daydream/dream.shell.DaydreamShell.tsx` — 465 lines — score 100 — primary path
-- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` — 456 lines — score 100 — primary path
-- `daydreams/create/page.tsx` — 456 lines — score 100 — primary path
-- `daydreams/music/page.tsx` — 393 lines — score 100 — primary path
-- `components/daydream/dream.JourneyTrail.tsx` — 386 lines — score 100 — primary path
-- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` — 378 lines — score 100 — primary path
-- `components/daydream/dream.constellationmap.tsx` — 356 lines — score 100 — primary path
-- `daydreams/games/page.tsx` — 356 lines — score 100 — primary path
-- `coresurfaces/dreamsurface.ViewProfile.tsx` — 354 lines — score 100 — primary path
-- `components/daydream/dream.DiffViewer.tsx` — 353 lines — score 100 — primary path
-- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` — 347 lines — score 100 — primary path
-- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` — 330 lines — score 100 — primary path
-- `daydreams/shared/useDaydreamPersistence.ts` — 147 lines — score 100 — primary path
-- `app/daydream/constellation/dream.ConstellationClient.tsx` — 114 lines — score 100 — primary path
-- `daydreams/shared/useDaydreamState.ts` — 93 lines — score 100 — primary path
-- `coresurfaces/home/buttons/button-groups.ts` — 91 lines — score 100 — primary path
-- `daydreams/brand/page.tsx` — 57 lines — score 100 — primary path
-- `components/daydream/dream.StandaloneEnginSurface.tsx` — 38 lines — score 100 — primary path
-- `components/daydream/dream.OpenDaydreamSideBButton.tsx` — 19 lines — score 100 — primary path
-- `app/daydream/game/dream.GamePageClient.tsx` — 5 lines — score 100 — primary path
-- `components/runtime/dream.RuntimeView.tsx` — 432 lines — score 67 — supporting path
-- `components/runtime/dream.shell.RuntimeShell.tsx` — 352 lines — score 61 — supporting path
-- `components/runtime/dream.DualRuntimeContainer.tsx` — 246 lines — score 61 — supporting path
-- `engine/runtime/dreamsurface/dreamsurface.bridge.ts` — 51 lines — score 55 — supporting path
-- `engine/runtime/dreamsurface/dreamsurface.delta.ts` — 23 lines — score 55 — supporting path
-- `engine/runtime/dreamsurface/index.ts` — 8 lines — score 55 — supporting path
+- `coresurfaces/dreamsurface.EditProfileDream.tsx` â 537 lines â score 100 â primary path
+- `daydreams/lab/page.tsx` â 486 lines â score 100 â primary path
+- `components/daydream/dream.shell.DaydreamShell.tsx` â 465 lines â score 100 â primary path
+- `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` â 456 lines â score 100 â primary path
+- `daydreams/create/page.tsx` â 456 lines â score 100 â primary path
+- `daydreams/music/page.tsx` â 393 lines â score 100 â primary path
+- `components/daydream/dream.JourneyTrail.tsx` â 386 lines â score 100 â primary path
+- `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx` â 378 lines â score 100 â primary path
+- `components/daydream/dream.constellationmap.tsx` â 356 lines â score 100 â primary path
+- `daydreams/games/page.tsx` â 356 lines â score 100 â primary path
+- `coresurfaces/dreamsurface.ViewProfile.tsx` â 354 lines â score 100 â primary path
+- `components/daydream/dream.DiffViewer.tsx` â 353 lines â score 100 â primary path
+- `components/daydream/starmaker/dream.panel.CompingPanel.tsx` â 347 lines â score 100 â primary path
+- `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` â 330 lines â score 100 â primary path
+- `daydreams/shared/useDaydreamPersistence.ts` â 147 lines â score 100 â primary path
+- `app/daydream/constellation/dream.ConstellationClient.tsx` â 114 lines â score 100 â primary path
+- `daydreams/shared/useDaydreamState.ts` â 93 lines â score 100 â primary path
+- `coresurfaces/home/buttons/button-groups.ts` â 91 lines â score 100 â primary path
+- `daydreams/brand/page.tsx` â 57 lines â score 100 â primary path
+- `components/daydream/dream.StandaloneEnginSurface.tsx` â 38 lines â score 100 â primary path
+- `components/daydream/dream.OpenDaydreamSideBButton.tsx` â 19 lines â score 100 â primary path
+- `app/daydream/game/dream.GamePageClient.tsx` â 5 lines â score 100 â primary path
+- `components/runtime/dream.RuntimeView.tsx` â 432 lines â score 63 â supporting path
+- `components/runtime/dream.shell.RuntimeShell.tsx` â 352 lines â score 59 â supporting path
+- `components/runtime/dream.DualRuntimeContainer.tsx` â 246 lines â score 59 â supporting path
+- `engine/runtime/dreamsurface/dreamsurface.bridge.ts` â 51 lines â score 55 â supporting path
+- `engine/runtime/dreamsurface/dreamsurface.delta.ts` â 23 lines â score 55 â supporting path
+- `engine/runtime/dreamsurface/index.ts` â 8 lines â score 55 â supporting path
 ## 16. Dreams (Widgets / Windows / Surfaces)
 
 ### Plain English
@@ -1667,68 +1678,68 @@ Users feel this as cards, panels, windows, widgets, surface launches, and intera
 Matched focused repo evidence: 52 files, about 8,304 readable source lines.
 
 Behavior signals:
-- state — 29 file hits
-- commerce — 27 file hits
-- auth — 26 file hits
-- mobile touch — 21 file hits
-- runtime — 17 file hits
-- events — 15 file hits
-- rendering — 12 file hits
-- persistence — 8 file hits
+- state â 29 file hits
+- commerce â 27 file hits
+- auth â 26 file hits
+- mobile touch â 21 file hits
+- runtime â 17 file hits
+- events â 15 file hits
+- rendering â 12 file hits
+- persistence â 8 file hits
 
 Routes and APIs:
-- GET|PATCH|DELETE /api/dream-windows/[id] ← app/api/dream-windows/[id]/route.ts
-- GET|POST /api/dream-windows ← app/api/dream-windows/route.ts
-- /settings/dreams ← app/settings/dreams/page.tsx
-- /settings/widgets ← app/settings/widgets/page.tsx
+- GET|PATCH|DELETE /api/dream-windows/[id] â app/api/dream-windows/[id]/route.ts
+- GET|POST /api/dream-windows â app/api/dream-windows/route.ts
+- /settings/dreams â app/settings/dreams/page.tsx
+- /settings/widgets â app/settings/widgets/page.tsx
 
 Components:
-- AppIcon — components/dreams/dreamsurface.dreamspace.tsx
-- EngineBarChart — components/dreams/dreamsurface.dreamspace.tsx
-- DreamsSpacePanel — components/dreams/dreamsurface.dreamspace.tsx
-- DreamWindowTile — components/dreams/dream.widget.SuperDreamWidget.tsx
-- ClusterCard — components/dreams/dream.widget.SuperDreamWidget.tsx
-- SuperDreamWidget — components/dreams/dream.widget.SuperDreamWidget.tsx
-- WidgetCard — components/widgets/dream.widget.WidgetCard.tsx
-- JourneyDreamWindow — components/dreams/dream.window.JourneyDreamWindow.tsx
-- SkeletonRow — components/dreams/dreamsurface.shell.tsx
-- DreamShell — components/dreams/dreamsurface.shell.tsx
-- AnchorWidget — components/dream.widget.AnchorWidget.tsx
-- UniversalWidget — components/widgets/dream.widget.UniversalWidget.tsx
-- PlayMediaWidget — components/widgets/dream.widget.PlayMediaWidget.tsx
-- WidgetBubble — components/dream.widget.WidgetBubble.tsx
+- AppIcon â components/dreams/dreamsurface.dreamspace.tsx
+- EngineBarChart â components/dreams/dreamsurface.dreamspace.tsx
+- DreamsSpacePanel â components/dreams/dreamsurface.dreamspace.tsx
+- DreamWindowTile â components/dreams/dream.widget.SuperDreamWidget.tsx
+- ClusterCard â components/dreams/dream.widget.SuperDreamWidget.tsx
+- SuperDreamWidget â components/dreams/dream.widget.SuperDreamWidget.tsx
+- WidgetCard â components/widgets/dream.widget.WidgetCard.tsx
+- JourneyDreamWindow â components/dreams/dream.window.JourneyDreamWindow.tsx
+- SkeletonRow â components/dreams/dreamsurface.shell.tsx
+- DreamShell â components/dreams/dreamsurface.shell.tsx
+- AnchorWidget â components/dream.widget.AnchorWidget.tsx
+- UniversalWidget â components/widgets/dream.widget.UniversalWidget.tsx
+- PlayMediaWidget â components/widgets/dream.widget.PlayMediaWidget.tsx
+- WidgetBubble â components/dream.widget.WidgetBubble.tsx
 
 Hooks:
-- useDreamsRuntime — components/dreams/dreamsurface.dreamspace.tsx
-- useSessionIntelligence — components/dreams/dreamsurface.dreamspace.tsx
-- useRouter — components/dreams/dreamsurface.dreamspace.tsx
-- useCallback — components/dreams/dreamsurface.dreamspace.tsx
-- useEffect — components/dreams/dreamsurface.dreamspace.tsx
-- useRef — components/dreams/dreamsurface.dreamspace.tsx
-- useState — components/dreams/dreamsurface.dreamspace.tsx
-- useDreamWindowActions — components/dreams/dream.widget.SuperDreamWidget.tsx
-- useCallback — components/dreams/dream.widget.SuperDreamWidget.tsx
-- useMemo — components/dreams/dream.widget.SuperDreamWidget.tsx
-- useState — components/dreams/dream.widget.SuperDreamWidget.tsx
-- useEffect — components/dreams/dreamsurface.shell.tsx
-- useRef — components/dreams/dreamsurface.shell.tsx
-- useState — components/dreams/dreamsurface.shell.tsx
+- useDreamsRuntime â components/dreams/dreamsurface.dreamspace.tsx
+- useSessionIntelligence â components/dreams/dreamsurface.dreamspace.tsx
+- useRouter â components/dreams/dreamsurface.dreamspace.tsx
+- useCallback â components/dreams/dreamsurface.dreamspace.tsx
+- useEffect â components/dreams/dreamsurface.dreamspace.tsx
+- useRef â components/dreams/dreamsurface.dreamspace.tsx
+- useState â components/dreams/dreamsurface.dreamspace.tsx
+- useDreamWindowActions â components/dreams/dream.widget.SuperDreamWidget.tsx
+- useCallback â components/dreams/dream.widget.SuperDreamWidget.tsx
+- useMemo â components/dreams/dream.widget.SuperDreamWidget.tsx
+- useState â components/dreams/dream.widget.SuperDreamWidget.tsx
+- useEffect â components/dreams/dreamsurface.shell.tsx
+- useRef â components/dreams/dreamsurface.shell.tsx
+- useState â components/dreams/dreamsurface.shell.tsx
 
 Exports that define public behavior:
-- getAppRoute — components/dreams/dreamsurface.dreamspace.tsx
-- RecentDestination — components/dreams/dreamsurface.dreamspace.tsx
-- buildRecentDestinations — components/dreams/dreamsurface.dreamspace.tsx
-- default export — dreamsurface.dreamspace (components/dreams/dreamsurface.dreamspace.tsx)
-- DreamSurface — types/widget-system-v2.ts
-- DreamSurfaceKey — types/widget-system-v2.ts
-- WidgetTransform — types/widget-system-v2.ts
-- transformToArray — types/widget-system-v2.ts
-- transformFromArray — types/widget-system-v2.ts
-- FeedHostConfig — types/widget-system-v2.ts
-- CompositePane — types/widget-system-v2.ts
-- CompositeHostConfig — types/widget-system-v2.ts
-- HostConfig — types/widget-system-v2.ts
-- DreamDefinition — types/widget-system-v2.ts
+- getAppRoute â components/dreams/dreamsurface.dreamspace.tsx
+- RecentDestination â components/dreams/dreamsurface.dreamspace.tsx
+- buildRecentDestinations â components/dreams/dreamsurface.dreamspace.tsx
+- default export â dreamsurface.dreamspace (components/dreams/dreamsurface.dreamspace.tsx)
+- DreamSurface â types/widget-system-v2.ts
+- DreamSurfaceKey â types/widget-system-v2.ts
+- WidgetTransform â types/widget-system-v2.ts
+- transformToArray â types/widget-system-v2.ts
+- transformFromArray â types/widget-system-v2.ts
+- FeedHostConfig â types/widget-system-v2.ts
+- CompositePane â types/widget-system-v2.ts
+- CompositeHostConfig â types/widget-system-v2.ts
+- HostConfig â types/widget-system-v2.ts
+- DreamDefinition â types/widget-system-v2.ts
 
 Import/export connections:
 - app/dreamdmbar/_components/DreamSpaceRegion
@@ -1749,60 +1760,60 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `components/dreams/dreamsurface.dreamspace.tsx` — 891 lines — score 146 — primary path, path keyword: dreamsurface
-- `types/widget-system-v2.ts` — 373 lines — score 146 — primary path, path keyword: widget
-- `components/dreams/dream.widget.SuperDreamWidget.tsx` — 377 lines — score 140 — primary path, path keyword: widget
-- `components/widgets/dream.widget.WidgetCard.tsx` — 62 lines — score 140 — primary path, path keyword: widget
-- `components/dreams/dream.window.JourneyDreamWindow.tsx` — 57 lines — score 140 — primary path, path keyword: dream window
-- `components/widgets/dream.widget.WidgetSurface.tsx` — 19 lines — score 140 — primary path, path keyword: widget
-- `app/api/dream-windows/[id]/route.ts` — 300 lines — score 136 — primary path, path keyword: dream window
-- `app/api/dream-windows/route.ts` — 185 lines — score 136 — primary path, path keyword: dream window
-- `engine/dream-window/DreamWindowLifecycle.ts` — 302 lines — score 134 — primary path, path keyword: dream window
-- `components/dreams/dreamsurface.shell.tsx` — 258 lines — score 134 — primary path, path keyword: dreamsurface
-- `engine/dream-window/runtimeRegion.ts` — 256 lines — score 134 — primary path, path keyword: dream window
-- `engine/dream-window/connectionVerbs.ts` — 229 lines — score 134 — primary path, path keyword: dream window
-- `types/dream-window.ts` — 105 lines — score 134 — primary path, path keyword: dream window
-- `engine/dream-window/index.ts` — 51 lines — score 134 — primary path, path keyword: dream window
-- `components/widgets/dream.widget.WidgetLibrary.tsx` — 19 lines — score 134 — primary path, path keyword: widget
-- `components/widgets/dream.widget.WidgetShell.tsx` — 9 lines — score 134 — primary path, path keyword: widget
-- `components/dream.widget.AnchorWidget.tsx` — 300 lines — score 128 — primary path, path keyword: widget
-- `engine/dream-window/useDreamWindowActions.ts` — 287 lines — score 128 — primary path, path keyword: dream window
-- `components/widgets/dream.widget.UniversalWidget.tsx` — 230 lines — score 128 — primary path, path keyword: widget
-- `engine/dream-window/enginConnectionNetwork.ts` — 205 lines — score 128 — primary path, path keyword: dream window
-- `components/widgets/dream.widget.PlayMediaWidget.tsx` — 152 lines — score 128 — primary path, path keyword: widget
-- `components/dream.widget.WidgetBubble.tsx` — 112 lines — score 128 — primary path, path keyword: widget
-- `components/widgets/dream.widget.WidgetPlaceholder.tsx` — 106 lines — score 128 — primary path, path keyword: widget
-- `components/dream.widget.ProfileWidgetBlock.tsx` — 102 lines — score 128 — primary path, path keyword: widget
-- `components/dreams/dreamsurface.window.tsx` — 67 lines — score 128 — primary path, path keyword: dreamsurface
-- `app/settings/dreams/page.tsx` — 40 lines — score 126 — primary path
-- `app/settings/widgets/page.tsx` — 40 lines — score 126 — primary path
-- `engine/dreams/types.ts` — 483 lines — score 124 — primary path
-- `components/dream.DragToAnchorClose.tsx` — 174 lines — score 112 — primary path
-- `app/settings/dreams/dreams-layout-editor.tsx` — 83 lines — score 112 — primary path
-- `engine/dreams/dreamIntentBus.ts` — 184 lines — score 106 — primary path
-- `components/widgets/dream.ConfigureSheet.tsx` — 160 lines — score 106 — primary path
-- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — 158 lines — score 106 — primary path
-- `types/widgets.ts` — 155 lines — score 106 — primary path
+- `components/dreams/dreamsurface.dreamspace.tsx` â 891 lines â score 138 â primary path, path keyword: dreamsurface
+- `types/widget-system-v2.ts` â 373 lines â score 138 â primary path, path keyword: widget
+- `components/dreams/dream.widget.SuperDreamWidget.tsx` â 377 lines â score 134 â primary path, path keyword: widget
+- `app/api/dream-windows/[id]/route.ts` â 300 lines â score 134 â primary path, path keyword: dream window
+- `app/api/dream-windows/route.ts` â 185 lines â score 134 â primary path, path keyword: dream window
+- `components/widgets/dream.widget.WidgetCard.tsx` â 62 lines â score 134 â primary path, path keyword: widget
+- `components/dreams/dream.window.JourneyDreamWindow.tsx` â 57 lines â score 134 â primary path, path keyword: dream window
+- `components/widgets/dream.widget.WidgetSurface.tsx` â 19 lines â score 134 â primary path, path keyword: widget
+- `engine/dream-window/DreamWindowLifecycle.ts` â 302 lines â score 130 â primary path, path keyword: dream window
+- `components/dreams/dreamsurface.shell.tsx` â 258 lines â score 130 â primary path, path keyword: dreamsurface
+- `engine/dream-window/runtimeRegion.ts` â 256 lines â score 130 â primary path, path keyword: dream window
+- `engine/dream-window/connectionVerbs.ts` â 229 lines â score 130 â primary path, path keyword: dream window
+- `types/dream-window.ts` â 105 lines â score 130 â primary path, path keyword: dream window
+- `engine/dream-window/index.ts` â 51 lines â score 130 â primary path, path keyword: dream window
+- `components/widgets/dream.widget.WidgetLibrary.tsx` â 19 lines â score 130 â primary path, path keyword: widget
+- `components/widgets/dream.widget.WidgetShell.tsx` â 9 lines â score 130 â primary path, path keyword: widget
+- `components/dream.widget.AnchorWidget.tsx` â 300 lines â score 126 â primary path, path keyword: widget
+- `engine/dream-window/useDreamWindowActions.ts` â 287 lines â score 126 â primary path, path keyword: dream window
+- `components/widgets/dream.widget.UniversalWidget.tsx` â 230 lines â score 126 â primary path, path keyword: widget
+- `engine/dream-window/enginConnectionNetwork.ts` â 205 lines â score 126 â primary path, path keyword: dream window
+- `components/widgets/dream.widget.PlayMediaWidget.tsx` â 152 lines â score 126 â primary path, path keyword: widget
+- `components/dream.widget.WidgetBubble.tsx` â 112 lines â score 126 â primary path, path keyword: widget
+- `components/widgets/dream.widget.WidgetPlaceholder.tsx` â 106 lines â score 126 â primary path, path keyword: widget
+- `components/dream.widget.ProfileWidgetBlock.tsx` â 102 lines â score 126 â primary path, path keyword: widget
+- `components/dreams/dreamsurface.window.tsx` â 67 lines â score 126 â primary path, path keyword: dreamsurface
+- `app/settings/dreams/page.tsx` â 40 lines â score 120 â primary path
+- `app/settings/widgets/page.tsx` â 40 lines â score 120 â primary path
+- `engine/dreams/types.ts` â 483 lines â score 116 â primary path
+- `components/dream.DragToAnchorClose.tsx` â 174 lines â score 108 â primary path
+- `app/settings/dreams/dreams-layout-editor.tsx` â 83 lines â score 108 â primary path
+- `engine/dreams/dreamIntentBus.ts` â 184 lines â score 104 â primary path
+- `components/widgets/dream.ConfigureSheet.tsx` â 160 lines â score 104 â primary path
+- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` â 158 lines â score 104 â primary path
+- `types/widgets.ts` â 155 lines â score 104 â primary path
 
 Supporting files:
-- `engine/dreams/useDreamsRuntime.ts` — 101 lines — score 106 — primary path
-- `types/widgetConfigs.ts` — 98 lines — score 106 — primary path
-- `components/dreams/dream.DraggableDream.tsx` — 75 lines — score 106 — primary path
-- `engine/dreams/drag.ts` — 65 lines — score 106 — primary path
-- `components/widgets/dream.AddDreamCTA.tsx` — 63 lines — score 106 — primary path
-- `components/dreams/dream.SlideOverPanel.tsx` — 50 lines — score 106 — primary path
-- `components/dreams/dream.shell.DreamShell.tsx` — 5 lines — score 106 — primary path
-- `components/dreams/dream.shell.SharedDreamShell.tsx` — 402 lines — score 100 — primary path
-- `engine/dreams/DreamRegistry.tsx` — 119 lines — score 100 — primary path
-- `components/dreams/dream.GlobalDragLayer.tsx` — 97 lines — score 100 — primary path
-- `components/widgets/dream.EditModeBanner.tsx` — 55 lines — score 100 — primary path
-- `components/widgets/dream.EditModeProvider.tsx` — 35 lines — score 100 — primary path
-- `components/dreams/dream.outputlayer.tsx` — 33 lines — score 100 — primary path
-- `components/dreams/dream.connectorlayer.tsx` — 31 lines — score 100 — primary path
-- `engine/dreams/profileProjection.ts` — 28 lines — score 100 — primary path
-- `components/dreams/dream.PlatformErrorReporter.tsx` — 25 lines — score 100 — primary path
-- `components/dreams/dream.featurelayer.tsx` — 22 lines — score 100 — primary path
-- `components/dream.FeedCard.tsx` — 469 lines — score 61 — supporting path
+- `engine/dreams/useDreamsRuntime.ts` â 101 lines â score 104 â primary path
+- `types/widgetConfigs.ts` â 98 lines â score 104 â primary path
+- `components/dreams/dream.DraggableDream.tsx` â 75 lines â score 104 â primary path
+- `engine/dreams/drag.ts` â 65 lines â score 104 â primary path
+- `components/widgets/dream.AddDreamCTA.tsx` â 63 lines â score 104 â primary path
+- `components/dreams/dream.SlideOverPanel.tsx` â 50 lines â score 104 â primary path
+- `components/dreams/dream.shell.DreamShell.tsx` â 5 lines â score 104 â primary path
+- `components/dreams/dream.shell.SharedDreamShell.tsx` â 402 lines â score 100 â primary path
+- `engine/dreams/DreamRegistry.tsx` â 119 lines â score 100 â primary path
+- `components/dreams/dream.GlobalDragLayer.tsx` â 97 lines â score 100 â primary path
+- `components/widgets/dream.EditModeBanner.tsx` â 55 lines â score 100 â primary path
+- `components/widgets/dream.EditModeProvider.tsx` â 35 lines â score 100 â primary path
+- `components/dreams/dream.outputlayer.tsx` â 33 lines â score 100 â primary path
+- `components/dreams/dream.connectorlayer.tsx` â 31 lines â score 100 â primary path
+- `engine/dreams/profileProjection.ts` â 28 lines â score 100 â primary path
+- `components/dreams/dream.PlatformErrorReporter.tsx` â 25 lines â score 100 â primary path
+- `components/dreams/dream.featurelayer.tsx` â 22 lines â score 100 â primary path
+- `components/dream.FeedCard.tsx` â 469 lines â score 59 â supporting path
 ## 17. User-Facing Modularity
 
 ### Plain English
@@ -1815,65 +1826,65 @@ Users feel modularity when they can open a tool from more than one place, carry 
 Matched focused repo evidence: 45 files, about 7,123 readable source lines.
 
 Behavior signals:
-- commerce — 30 file hits
-- state — 26 file hits
-- mobile touch — 25 file hits
-- rendering — 25 file hits
-- runtime — 24 file hits
-- auth — 20 file hits
-- events — 15 file hits
-- persistence — 13 file hits
+- commerce â 30 file hits
+- state â 26 file hits
+- mobile touch â 25 file hits
+- rendering â 25 file hits
+- runtime â 24 file hits
+- auth â 20 file hits
+- events â 15 file hits
+- persistence â 13 file hits
 
 Routes and APIs:
 - None found.
 
 Components:
-- ProfilePanel — components/panels/dream.panel.ProfilePanel.tsx
-- SettingsPanel — components/panels/dream.panel.SettingsPanel.tsx
-- HelpPanel — components/panels/dream.panel.HelpPanel.tsx
-- Toggle — components/panels/dream.panel.FeedSettingsPanel.tsx
-- FeedSettingsPanel — components/panels/dream.panel.FeedSettingsPanel.tsx
-- GradientThemePicker — components/panels/dream.panel.AppearancePanel.tsx
-- Slider — components/panels/dream.panel.AppearancePanel.tsx
-- PresetCard — components/panels/dream.panel.AppearancePanel.tsx
-- AppearancePanel — components/panels/dream.panel.AppearancePanel.tsx
-- Toggle — components/panels/dream.panel.PrivacyPanel.tsx
-- PrivacyPanel — components/panels/dream.panel.PrivacyPanel.tsx
-- DataPanel — components/panels/dream.panel.DataPanel.tsx
-- MarketplacePanel — components/panels/dream.panel.MarketplacePanel.tsx
-- WidgetsPanel — components/panels/dream.panel.WidgetsPanel.tsx
+- ProfilePanel â components/panels/dream.panel.ProfilePanel.tsx
+- SettingsPanel â components/panels/dream.panel.SettingsPanel.tsx
+- HelpPanel â components/panels/dream.panel.HelpPanel.tsx
+- Toggle â components/panels/dream.panel.FeedSettingsPanel.tsx
+- FeedSettingsPanel â components/panels/dream.panel.FeedSettingsPanel.tsx
+- GradientThemePicker â components/panels/dream.panel.AppearancePanel.tsx
+- Slider â components/panels/dream.panel.AppearancePanel.tsx
+- PresetCard â components/panels/dream.panel.AppearancePanel.tsx
+- AppearancePanel â components/panels/dream.panel.AppearancePanel.tsx
+- Toggle â components/panels/dream.panel.PrivacyPanel.tsx
+- PrivacyPanel â components/panels/dream.panel.PrivacyPanel.tsx
+- DataPanel â components/panels/dream.panel.DataPanel.tsx
+- MarketplacePanel â components/panels/dream.panel.MarketplacePanel.tsx
+- WidgetsPanel â components/panels/dream.panel.WidgetsPanel.tsx
 
 Hooks:
-- useCallback — components/panels/dream.panel.ProfilePanel.tsx
-- useEffect — components/panels/dream.panel.ProfilePanel.tsx
-- useRef — components/panels/dream.panel.ProfilePanel.tsx
-- useState — components/panels/dream.panel.ProfilePanel.tsx
-- useDreamSystem — components/panels/dream.panel.SettingsPanel.tsx
-- useEffect — components/panels/dream.panel.SettingsPanel.tsx
-- useState — components/panels/dream.panel.SettingsPanel.tsx
-- useDreamSystem — components/panels/dream.panel.HelpPanel.tsx
-- useCallback — components/panels/dream.panel.FeedSettingsPanel.tsx
-- useEffect — components/panels/dream.panel.FeedSettingsPanel.tsx
-- useState — components/panels/dream.panel.FeedSettingsPanel.tsx
-- useTheme — components/panels/dream.panel.AppearancePanel.tsx
-- useDreamSystem — components/panels/dream.panel.AppearancePanel.tsx
-- useCustomizeMode — components/panels/dream.panel.AppearancePanel.tsx
+- useCallback â components/panels/dream.panel.ProfilePanel.tsx
+- useEffect â components/panels/dream.panel.ProfilePanel.tsx
+- useRef â components/panels/dream.panel.ProfilePanel.tsx
+- useState â components/panels/dream.panel.ProfilePanel.tsx
+- useDreamSystem â components/panels/dream.panel.SettingsPanel.tsx
+- useEffect â components/panels/dream.panel.SettingsPanel.tsx
+- useState â components/panels/dream.panel.SettingsPanel.tsx
+- useDreamSystem â components/panels/dream.panel.HelpPanel.tsx
+- useCallback â components/panels/dream.panel.FeedSettingsPanel.tsx
+- useEffect â components/panels/dream.panel.FeedSettingsPanel.tsx
+- useState â components/panels/dream.panel.FeedSettingsPanel.tsx
+- useTheme â components/panels/dream.panel.AppearancePanel.tsx
+- useDreamSystem â components/panels/dream.panel.AppearancePanel.tsx
+- useCustomizeMode â components/panels/dream.panel.AppearancePanel.tsx
 
 Exports that define public behavior:
-- RuntimeId — types/module-manifest.ts
-- ModuleType — types/module-manifest.ts
-- ModuleManifest — types/module-manifest.ts
-- RuntimeCompatibility — types/module-manifest.ts
-- ModuleCompatibility — types/module-manifest.ts
-- isModuleManifest — types/module-manifest.ts
-- negotiateModuleCompatibility — types/module-manifest.ts
-- default export — dream.panel.ProfilePanel (components/panels/dream.panel.ProfilePanel.tsx)
-- default export — dream.panel.SettingsPanel (components/panels/dream.panel.SettingsPanel.tsx)
-- default export — dream.panel.HelpPanel (components/panels/dream.panel.HelpPanel.tsx)
-- default export — dream.panel.FeedSettingsPanel (components/panels/dream.panel.FeedSettingsPanel.tsx)
-- default export — dream.panel.AppearancePanel (components/panels/dream.panel.AppearancePanel.tsx)
-- default export — dream.panel.PrivacyPanel (components/panels/dream.panel.PrivacyPanel.tsx)
-- default export — dream.panel.DataPanel (components/panels/dream.panel.DataPanel.tsx)
+- RuntimeId â types/module-manifest.ts
+- ModuleType â types/module-manifest.ts
+- ModuleManifest â types/module-manifest.ts
+- RuntimeCompatibility â types/module-manifest.ts
+- ModuleCompatibility â types/module-manifest.ts
+- isModuleManifest â types/module-manifest.ts
+- negotiateModuleCompatibility â types/module-manifest.ts
+- default export â dream.panel.ProfilePanel (components/panels/dream.panel.ProfilePanel.tsx)
+- default export â dream.panel.SettingsPanel (components/panels/dream.panel.SettingsPanel.tsx)
+- default export â dream.panel.HelpPanel (components/panels/dream.panel.HelpPanel.tsx)
+- default export â dream.panel.FeedSettingsPanel (components/panels/dream.panel.FeedSettingsPanel.tsx)
+- default export â dream.panel.AppearancePanel (components/panels/dream.panel.AppearancePanel.tsx)
+- default export â dream.panel.PrivacyPanel (components/panels/dream.panel.PrivacyPanel.tsx)
+- default export â dream.panel.DataPanel (components/panels/dream.panel.DataPanel.tsx)
 
 Import/export connections:
 - engine/engin-runtime/EnginBaseState
@@ -1894,53 +1905,53 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `types/module-manifest.ts` — 183 lines — score 156 — primary path, path keyword: module
-- `components/panels/dream.panel.ProfilePanel.tsx` — 338 lines — score 128 — primary path, path keyword: panel
-- `components/panels/dream.panel.SettingsPanel.tsx` — 185 lines — score 128 — primary path, path keyword: panel
-- `components/panels/dream.panel.HelpPanel.tsx` — 71 lines — score 128 — primary path, path keyword: panel
-- `components/panels/dream.panel.FeedPanel.tsx` — 4 lines — score 128 — primary path, path keyword: panel
-- `components/panels/dream.panel.FeedSettingsPanel.tsx` — 192 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.AppearancePanel.tsx` — 166 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.PrivacyPanel.tsx` — 146 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.DataPanel.tsx` — 139 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.MarketplacePanel.tsx` — 139 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.WidgetsPanel.tsx` — 108 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.SafetyPanel.tsx` — 102 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.ControlsPanel.tsx` — 90 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.ConnectorsPanel.tsx` — 48 lines — score 122 — primary path, path keyword: panel
-- `components/panels/dream.panel.AlgorithmPanel.tsx` — 36 lines — score 122 — primary path, path keyword: panel
-- `engine/runtime/moduleRegistry.ts` — 170 lines — score 118 — primary path
-- `engine/runtime/dropTargetRegistry.ts` — 116 lines — score 118 — primary path
-- `components/runtime/dream.RuntimeView.tsx` — 432 lines — score 112 — primary path
-- `components/runtime/dream.shell.RuntimeShell.tsx` — 352 lines — score 112 — primary path
-- `components/runtime/dream.DualRuntimeContainer.tsx` — 246 lines — score 112 — primary path
-- `components/home/dream.ActiveModuleSurface.tsx` — 475 lines — score 106 — primary path
-- `dreamdmbar/hooks/useModuleBarIntent.ts` — 87 lines — score 106 — primary path
-- `components/panels/panelTypes.ts` — 47 lines — score 106 — primary path
-- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` — 158 lines — score 89 — supporting path, path keyword: panel
-- `components/draggable/dream.DraggableModule.tsx` — 359 lines — score 67 — supporting path
-- `components/dreams/dreamsurface.window.tsx` — 67 lines — score 67 — supporting path
-- `components/dreams/dreamsurface.dreamspace.tsx` — 891 lines — score 61 — supporting path
-- `components/dreams/dream.SlideOverPanel.tsx` — 50 lines — score 61 — supporting path
-- `components/dreams/dream.shell.SharedDreamShell.tsx` — 402 lines — score 55 — supporting path
-- `components/dreams/dream.widget.SuperDreamWidget.tsx` — 377 lines — score 55 — supporting path
-- `components/dreams/dreamsurface.shell.tsx` — 258 lines — score 55 — supporting path
-- `components/engines/shared/dream.shell.EnginAppShell.tsx` — 114 lines — score 55 — supporting path
-- `components/dreams/dream.GlobalDragLayer.tsx` — 97 lines — score 55 — supporting path
-- `components/dreams/dream.DraggableDream.tsx` — 75 lines — score 55 — supporting path
+- `types/module-manifest.ts` â 183 lines â score 152 â primary path, path keyword: module
+- `components/panels/dream.panel.ProfilePanel.tsx` â 338 lines â score 126 â primary path, path keyword: panel
+- `components/panels/dream.panel.SettingsPanel.tsx` â 185 lines â score 126 â primary path, path keyword: panel
+- `components/panels/dream.panel.HelpPanel.tsx` â 71 lines â score 126 â primary path, path keyword: panel
+- `components/panels/dream.panel.FeedPanel.tsx` â 4 lines â score 126 â primary path, path keyword: panel
+- `components/panels/dream.panel.FeedSettingsPanel.tsx` â 192 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.AppearancePanel.tsx` â 166 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.PrivacyPanel.tsx` â 146 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.DataPanel.tsx` â 139 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.MarketplacePanel.tsx` â 139 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.WidgetsPanel.tsx` â 108 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.SafetyPanel.tsx` â 102 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.ControlsPanel.tsx` â 90 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.ConnectorsPanel.tsx` â 48 lines â score 122 â primary path, path keyword: panel
+- `components/panels/dream.panel.AlgorithmPanel.tsx` â 36 lines â score 122 â primary path, path keyword: panel
+- `engine/runtime/moduleRegistry.ts` â 170 lines â score 112 â primary path
+- `engine/runtime/dropTargetRegistry.ts` â 116 lines â score 112 â primary path
+- `components/runtime/dream.RuntimeView.tsx` â 432 lines â score 108 â primary path
+- `components/runtime/dream.shell.RuntimeShell.tsx` â 352 lines â score 108 â primary path
+- `components/runtime/dream.DualRuntimeContainer.tsx` â 246 lines â score 108 â primary path
+- `components/home/dream.ActiveModuleSurface.tsx` â 475 lines â score 104 â primary path
+- `dreamdmbar/hooks/useModuleBarIntent.ts` â 87 lines â score 104 â primary path
+- `components/panels/panelTypes.ts` â 47 lines â score 104 â primary path
+- `components/dreams/dream.panel.RuntimeMemoryHUD.tsx` â 158 lines â score 85 â supporting path, path keyword: panel
+- `components/draggable/dream.DraggableModule.tsx` â 359 lines â score 63 â supporting path
+- `components/dreams/dreamsurface.window.tsx` â 67 lines â score 63 â supporting path
+- `components/dreams/dreamsurface.dreamspace.tsx` â 891 lines â score 59 â supporting path
+- `components/dreams/dream.SlideOverPanel.tsx` â 50 lines â score 59 â supporting path
+- `components/dreams/dream.shell.SharedDreamShell.tsx` â 402 lines â score 55 â supporting path
+- `components/dreams/dream.widget.SuperDreamWidget.tsx` â 377 lines â score 55 â supporting path
+- `components/dreams/dreamsurface.shell.tsx` â 258 lines â score 55 â supporting path
+- `components/engines/shared/dream.shell.EnginAppShell.tsx` â 114 lines â score 55 â supporting path
+- `components/dreams/dream.GlobalDragLayer.tsx` â 97 lines â score 55 â supporting path
+- `components/dreams/dream.DraggableDream.tsx` â 75 lines â score 55 â supporting path
 
 Supporting files:
-- `components/engines/shared/dream.makeEnginApp.tsx` — 64 lines — score 55 — supporting path
-- `components/dreams/dream.window.JourneyDreamWindow.tsx` — 57 lines — score 55 — supporting path
-- `components/engines/shared/dream.EnginProvider.tsx` — 54 lines — score 55 — supporting path
-- `components/engines/shared/dream.bar.EnginNavBar.tsx` — 51 lines — score 55 — supporting path
-- `components/engines/shared/dream.EnginRuleSet.ts` — 51 lines — score 55 — supporting path
-- `components/dreams/dream.outputlayer.tsx` — 33 lines — score 55 — supporting path
-- `components/dreams/dream.connectorlayer.tsx` — 31 lines — score 55 — supporting path
-- `components/dreams/dream.PlatformErrorReporter.tsx` — 25 lines — score 55 — supporting path
-- `components/dreams/dream.featurelayer.tsx` — 22 lines — score 55 — supporting path
-- `components/engines/shared/index.ts` — 10 lines — score 55 — supporting path
-- `components/dreams/dream.shell.DreamShell.tsx` — 5 lines — score 55 — supporting path
+- `components/engines/shared/dream.makeEnginApp.tsx` â 64 lines â score 55 â supporting path
+- `components/dreams/dream.window.JourneyDreamWindow.tsx` â 57 lines â score 55 â supporting path
+- `components/engines/shared/dream.EnginProvider.tsx` â 54 lines â score 55 â supporting path
+- `components/engines/shared/dream.bar.EnginNavBar.tsx` â 51 lines â score 55 â supporting path
+- `components/engines/shared/dream.EnginRuleSet.ts` â 51 lines â score 55 â supporting path
+- `components/dreams/dream.outputlayer.tsx` â 33 lines â score 55 â supporting path
+- `components/dreams/dream.connectorlayer.tsx` â 31 lines â score 55 â supporting path
+- `components/dreams/dream.PlatformErrorReporter.tsx` â 25 lines â score 55 â supporting path
+- `components/dreams/dream.featurelayer.tsx` â 22 lines â score 55 â supporting path
+- `components/engines/shared/index.ts` â 10 lines â score 55 â supporting path
+- `components/dreams/dream.shell.DreamShell.tsx` â 5 lines â score 55 â supporting path
 ## 18. Custom Engins
 
 ### Plain English
@@ -1950,83 +1961,83 @@ Custom Engins are the extension story: code, rules, manifests, registries, and c
 Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.
 
 ### Repo Evidence
-Matched focused repo evidence: 105 files, about 16,918 readable source lines.
+Matched focused repo evidence: 90 files, about 16,492 readable source lines.
 
 Behavior signals:
-- persistence — 60 file hits
-- auth — 52 file hits
-- state — 49 file hits
-- runtime — 42 file hits
-- rendering — 40 file hits
-- events — 23 file hits
-- commerce — 21 file hits
-- mobile touch — 12 file hits
+- persistence â 49 file hits
+- state â 47 file hits
+- runtime â 42 file hits
+- auth â 41 file hits
+- rendering â 39 file hits
+- events â 23 file hits
+- commerce â 20 file hits
+- mobile touch â 12 file hits
 
 Routes and APIs:
-- /engines ← app/engines/page.tsx
-- /engines/games/builder ← app/engines/games/builder/page.tsx
-- /engines/games/library ← app/engines/games/library/page.tsx
-- /engines/games/scores ← app/engines/games/scores/page.tsx
-- /engines/code/notebook ← app/engines/code/notebook/page.tsx
-- /engines/music/arrange ← app/engines/music/arrange/page.tsx
-- /engines/music/library ← app/engines/music/library/page.tsx
-- /engines/music/studio ← app/engines/music/studio/page.tsx
-- /engines/code/ai ← app/engines/code/ai/page.tsx
-- /engines/code/projects ← app/engines/code/projects/page.tsx
-- /engines/lab/data ← app/engines/lab/data/page.tsx
-- /engines/lab/experiments ← app/engines/lab/experiments/page.tsx
-- /engines/lab/quantum ← app/engines/lab/quantum/page.tsx
-- /engines/portfolio/assets ← app/engines/portfolio/assets/page.tsx
-- /engines/portfolio/optimize ← app/engines/portfolio/optimize/page.tsx
-- /engines/portfolio/quantum ← app/engines/portfolio/quantum/page.tsx
+- /engines â app/engines/page.tsx
+- /engines/games/builder â app/engines/games/builder/page.tsx
+- /engines/games/library â app/engines/games/library/page.tsx
+- /engines/games/scores â app/engines/games/scores/page.tsx
+- /engines/code/notebook â app/engines/code/notebook/page.tsx
+- /engines/music/arrange â app/engines/music/arrange/page.tsx
+- /engines/music/library â app/engines/music/library/page.tsx
+- /engines/music/studio â app/engines/music/studio/page.tsx
+- /engines/code/ai â app/engines/code/ai/page.tsx
+- /engines/code/projects â app/engines/code/projects/page.tsx
+- /engines/lab/data â app/engines/lab/data/page.tsx
+- /engines/lab/experiments â app/engines/lab/experiments/page.tsx
+- /engines/lab/quantum â app/engines/lab/quantum/page.tsx
+- /engines/portfolio/assets â app/engines/portfolio/assets/page.tsx
+- /engines/portfolio/optimize â app/engines/portfolio/optimize/page.tsx
+- /engines/portfolio/quantum â app/engines/portfolio/quantum/page.tsx
 
 Components:
-- EnginesHubPage — app/engines/page.tsx
-- GamesBuilderPage — app/engines/games/builder/page.tsx
-- GamesLibraryPage — app/engines/games/library/page.tsx
-- GamesScoresPage — app/engines/games/scores/page.tsx
-- CodeNotebookPage — app/engines/code/notebook/page.tsx
-- MusicArrangePage — app/engines/music/arrange/page.tsx
-- MusicLibraryPage — app/engines/music/library/page.tsx
-- MusicStudioPage — app/engines/music/studio/page.tsx
-- CodeAIPage — app/engines/code/ai/page.tsx
-- CodeProjectsPage — app/engines/code/projects/page.tsx
-- LabDataPage — app/engines/lab/data/page.tsx
-- LabExperimentsPage — app/engines/lab/experiments/page.tsx
-- LabQuantumPage — app/engines/lab/quantum/page.tsx
-- PortfolioAssetsPage — app/engines/portfolio/assets/page.tsx
+- EnginesHubPage â app/engines/page.tsx
+- GamesBuilderPage â app/engines/games/builder/page.tsx
+- GamesLibraryPage â app/engines/games/library/page.tsx
+- GamesScoresPage â app/engines/games/scores/page.tsx
+- CodeNotebookPage â app/engines/code/notebook/page.tsx
+- MusicArrangePage â app/engines/music/arrange/page.tsx
+- MusicLibraryPage â app/engines/music/library/page.tsx
+- MusicStudioPage â app/engines/music/studio/page.tsx
+- CodeAIPage â app/engines/code/ai/page.tsx
+- CodeProjectsPage â app/engines/code/projects/page.tsx
+- LabDataPage â app/engines/lab/data/page.tsx
+- LabExperimentsPage â app/engines/lab/experiments/page.tsx
+- LabQuantumPage â app/engines/lab/quantum/page.tsx
+- PortfolioAssetsPage â app/engines/portfolio/assets/page.tsx
 
 Hooks:
-- useContext — engins/gameengin/cartridges/reactCartridge.ts
-- useGameEngineAPI — engins/gameengin/cartridges/reactCartridge.ts
-- useEffect — engins/gameengin/cartridges/reactCartridge.ts
-- useEnginWorkflow — engins/rulesets/workflowEngine.ts
-- useCallback — engins/forgeengin/forge/useForgeBuild.ts
-- useRef — engins/forgeengin/forge/useForgeBuild.ts
-- useState — engins/forgeengin/forge/useForgeBuild.ts
-- useForgeBuild — engins/forgeengin/forge/useForgeBuild.ts
-- useCallback — engins/rulesets/useEnginWorkflow.ts
-- useEffect — engins/rulesets/useEnginWorkflow.ts
-- useState — engins/rulesets/useEnginWorkflow.ts
-- useEnginWorkflow — engins/rulesets/useEnginWorkflow.ts
-- useCallback — engins/rulesets/game/useGameEnginRuntime.ts
-- useEffect — engins/rulesets/game/useGameEnginRuntime.ts
+- useContext â engins/gameengin/cartridges/reactCartridge.ts
+- useGameEngineAPI â engins/gameengin/cartridges/reactCartridge.ts
+- useEffect â engins/gameengin/cartridges/reactCartridge.ts
+- useEnginWorkflow â engins/rulesets/workflowEngine.ts
+- useCallback â engins/forgeengin/forge/useForgeBuild.ts
+- useRef â engins/forgeengin/forge/useForgeBuild.ts
+- useState â engins/forgeengin/forge/useForgeBuild.ts
+- useForgeBuild â engins/forgeengin/forge/useForgeBuild.ts
+- useCallback â engins/rulesets/useEnginWorkflow.ts
+- useEffect â engins/rulesets/useEnginWorkflow.ts
+- useState â engins/rulesets/useEnginWorkflow.ts
+- useEnginWorkflow â engins/rulesets/useEnginWorkflow.ts
+- useCallback â engins/rulesets/game/useGameEnginRuntime.ts
+- useEffect â engins/rulesets/game/useGameEnginRuntime.ts
 
 Exports that define public behavior:
-- CartridgeRenderMode — engins/gameengin/cartridges/manifest.ts
-- CartridgeAssetPolicy — engins/gameengin/cartridges/manifest.ts
-- CartridgeLaunchMetadata — engins/gameengin/cartridges/manifest.ts
-- CartridgeManifestEntry — engins/gameengin/cartridges/manifest.ts
-- getCartridgeManifest — engins/gameengin/cartridges/manifest.ts
-- getCartridgeCategories — engins/gameengin/cartridges/manifest.ts
-- RuntimeId — types/module-manifest.ts
-- ModuleType — types/module-manifest.ts
-- ModuleManifest — types/module-manifest.ts
-- RuntimeCompatibility — types/module-manifest.ts
-- ModuleCompatibility — types/module-manifest.ts
-- isModuleManifest — types/module-manifest.ts
-- negotiateModuleCompatibility — types/module-manifest.ts
-- ArtifactPermissionSchema — engins/forgeengin/enginpipe/artifact/manifest.ts
+- CartridgeRenderMode â engins/gameengin/cartridges/manifest.ts
+- CartridgeAssetPolicy â engins/gameengin/cartridges/manifest.ts
+- CartridgeLaunchMetadata â engins/gameengin/cartridges/manifest.ts
+- CartridgeManifestEntry â engins/gameengin/cartridges/manifest.ts
+- getCartridgeManifest â engins/gameengin/cartridges/manifest.ts
+- getCartridgeCategories â engins/gameengin/cartridges/manifest.ts
+- RuntimeId â types/module-manifest.ts
+- ModuleType â types/module-manifest.ts
+- ModuleManifest â types/module-manifest.ts
+- RuntimeCompatibility â types/module-manifest.ts
+- ModuleCompatibility â types/module-manifest.ts
+- isModuleManifest â types/module-manifest.ts
+- negotiateModuleCompatibility â types/module-manifest.ts
+- ArtifactPermissionSchema â engins/forgeengin/enginpipe/artifact/manifest.ts
 
 Import/export connections:
 - ../cartridge
@@ -2047,72 +2058,72 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `engins/gameengin/cartridges/manifest.ts` — 172 lines — score 134 — primary path, path keyword: manifest
-- `types/module-manifest.ts` — 183 lines — score 128 — primary path, path keyword: manifest
-- `engins/forgeengin/enginpipe/artifact/manifest.ts` — 103 lines — score 128 — primary path, path keyword: manifest
-- `engins/gameengin/cartridge-manifest.ts` — 65 lines — score 128 — primary path, path keyword: manifest
-- `engine/engin-runtime/EnginRuntime.ts` — 1082 lines — score 118 — primary path
-- `engine/engin-runtime/EnginRuleSetContract.ts` — 286 lines — score 118 — primary path
-- `engine/engin-runtime/EnginCapabilityTargets.ts` — 473 lines — score 112 — primary path
-- `engins/forgeengin/forge/forgeRegistry.ts` — 433 lines — score 112 — primary path
-- `engins/rulesets/game/gameEnginRuleSet.ts` — 302 lines — score 112 — primary path
-- `engins/rulesets/music/starMakerEnginRuleSet.ts` — 265 lines — score 112 — primary path
-- `engins/rulesets/brand/brandEnginRuleSet.ts` — 241 lines — score 112 — primary path
-- `engins/rulesets/lab/labEnginRuleSet.ts` — 233 lines — score 112 — primary path
-- `engins/gameengin/cartridges/loaders.ts` — 97 lines — score 112 — primary path
-- `engins/gameengin/cartridges/index.ts` — 17 lines — score 112 — primary path
-- `engine/engin-runtime/EnginDomainCores.ts` — 758 lines — score 106 — primary path
-- `engins/forgeengin/forge/forgeIntelligence.ts` — 618 lines — score 106 — primary path
-- `engine/runtime/enginWorkflowRegistry.ts` — 599 lines — score 106 — primary path
-- `engine/engin-runtime/EnginBaseState.ts` — 496 lines — score 106 — primary path
-- `engins/rulesets/code/codeEnginRuleSet.ts` — 395 lines — score 106 — primary path
-- `engine/engin-runtime/EnginCapabilities.ts` — 242 lines — score 106 — primary path
-- `engine/engin-runtime/index.ts` — 233 lines — score 106 — primary path
-- `engine/engin-runtime/PremiumRuntimeQuality.ts` — 173 lines — score 106 — primary path
-- `engins/gameengin/cartridges/reactCartridge.ts` — 138 lines — score 106 — primary path
-- `engins/gameengin/cartridges/achievementEngine.ts` — 126 lines — score 106 — primary path
-- `engins/gameengin/cartridges/apiStubs.ts` — 75 lines — score 106 — primary path
-- `engins/gameengin/assets/BundleManifest.ts` — 40 lines — score 106 — primary path
-- `engins/rulesets/content/contentEnginRuleSet.ts` — 37 lines — score 106 — primary path
-- `engine/engin-runtime/EnginRuntimeRegistry.ts` — 35 lines — score 106 — primary path
-- `engins/rulesets/forge/index.ts` — 24 lines — score 106 — primary path
-- `engins/rulesets/code/index.ts` — 23 lines — score 106 — primary path
-- `engins/rulesets/dreams/index.ts` — 23 lines — score 106 — primary path
-- `engins/rulesets/game/declarative.ts` — 23 lines — score 106 — primary path
-- `engins/rulesets/lab/index.ts` — 23 lines — score 106 — primary path
-- `engins/rulesets/music/index.ts` — 23 lines — score 106 — primary path
+- `engins/gameengin/cartridges/manifest.ts` â 172 lines â score 130 â primary path, path keyword: manifest
+- `types/module-manifest.ts` â 183 lines â score 126 â primary path, path keyword: manifest
+- `engins/forgeengin/enginpipe/artifact/manifest.ts` â 103 lines â score 126 â primary path, path keyword: manifest
+- `engins/gameengin/cartridge-manifest.ts` â 65 lines â score 126 â primary path, path keyword: manifest
+- `engine/engin-runtime/EnginRuntime.ts` â 1082 lines â score 112 â primary path
+- `engine/engin-runtime/EnginRuleSetContract.ts` â 286 lines â score 112 â primary path
+- `engine/engin-runtime/EnginCapabilityTargets.ts` â 473 lines â score 108 â primary path
+- `engins/forgeengin/forge/forgeRegistry.ts` â 433 lines â score 108 â primary path
+- `engins/rulesets/game/gameEnginRuleSet.ts` â 302 lines â score 108 â primary path
+- `engins/rulesets/music/starMakerEnginRuleSet.ts` â 265 lines â score 108 â primary path
+- `engins/rulesets/brand/brandEnginRuleSet.ts` â 241 lines â score 108 â primary path
+- `engins/rulesets/lab/labEnginRuleSet.ts` â 233 lines â score 108 â primary path
+- `engins/gameengin/cartridges/loaders.ts` â 97 lines â score 108 â primary path
+- `engins/gameengin/cartridges/index.ts` â 17 lines â score 108 â primary path
+- `engine/engin-runtime/EnginDomainCores.ts` â 758 lines â score 104 â primary path
+- `engins/forgeengin/forge/forgeIntelligence.ts` â 618 lines â score 104 â primary path
+- `engine/runtime/enginWorkflowRegistry.ts` â 599 lines â score 104 â primary path
+- `engine/engin-runtime/EnginBaseState.ts` â 496 lines â score 104 â primary path
+- `engins/rulesets/code/codeEnginRuleSet.ts` â 395 lines â score 104 â primary path
+- `engine/engin-runtime/EnginCapabilities.ts` â 242 lines â score 104 â primary path
+- `engine/engin-runtime/index.ts` â 233 lines â score 104 â primary path
+- `engine/engin-runtime/PremiumRuntimeQuality.ts` â 173 lines â score 104 â primary path
+- `engins/gameengin/cartridges/reactCartridge.ts` â 138 lines â score 104 â primary path
+- `engins/gameengin/cartridges/achievementEngine.ts` â 126 lines â score 104 â primary path
+- `engins/gameengin/cartridges/apiStubs.ts` â 75 lines â score 104 â primary path
+- `engins/gameengin/assets/BundleManifest.ts` â 40 lines â score 104 â primary path
+- `engins/rulesets/content/contentEnginRuleSet.ts` â 37 lines â score 104 â primary path
+- `engine/engin-runtime/EnginRuntimeRegistry.ts` â 35 lines â score 104 â primary path
+- `engins/rulesets/forge/index.ts` â 24 lines â score 104 â primary path
+- `engins/rulesets/code/index.ts` â 23 lines â score 104 â primary path
+- `engins/rulesets/dreams/index.ts` â 23 lines â score 104 â primary path
+- `engins/rulesets/game/declarative.ts` â 23 lines â score 104 â primary path
+- `engins/rulesets/lab/index.ts` â 23 lines â score 104 â primary path
+- `engins/rulesets/music/index.ts` â 23 lines â score 104 â primary path
 
 Supporting files:
-- `engins/rulesets/homedream/index.ts` — 15 lines — score 106 — primary path
-- `engins/contentengin/pipeline/writeManifest.ts` — 4 lines — score 106 — primary path
-- `engine/engin-runtime/HotRuntime.ts` — 1164 lines — score 100 — primary path
-- `engine/engin-runtime/EnginCapabilityExecution.ts` — 515 lines — score 100 — primary path
-- `engins/forgeengin/forge/forgeRituals.ts` — 375 lines — score 100 — primary path
-- `engins/forgeengin/forge/forgeNexus.ts` — 311 lines — score 100 — primary path
-- `engins/forgeengin/forge/forgeMomentum.ts` — 297 lines — score 100 — primary path
-- `engins/rulesets/workflowEngine.ts` — 281 lines — score 100 — primary path
-- `engins/forgeengin/forge/engineForge.ts` — 234 lines — score 100 — primary path
-- `engins/forgeengin/forge/useForgeBuild.ts` — 234 lines — score 100 — primary path
-- `engins/forgeengin/forge/forgeBuild.ts` — 227 lines — score 100 — primary path
-- `engins/rulesets/useEnginWorkflow.ts` — 222 lines — score 100 — primary path
-- `engine/engin-runtime/EnginIOAdapter.ts` — 214 lines — score 100 — primary path
-- `engins/gameengin/cartridges/saveState.ts` — 145 lines — score 100 — primary path
-- `engine/engin-runtime/EnginEventBus.ts` — 123 lines — score 100 — primary path
-- `engine/engin-runtime/EnginCapabilityScorecard.ts` — 122 lines — score 100 — primary path
-- `engins/rulesets/game/useGameEnginRuntime.ts` — 119 lines — score 100 — primary path
-- `engins/rulesets/brand/useBrandEnginRuntime.ts` — 109 lines — score 100 — primary path
-- `engins/rulesets/code/useCodeEnginRuntime.ts` — 109 lines — score 100 — primary path
-- `engins/rulesets/content/useContentEnginRuntime.ts` — 109 lines — score 100 — primary path
-- `engins/rulesets/lab/useLabEnginRuntime.ts` — 109 lines — score 100 — primary path
-- `engins/rulesets/music/useStarMakerEnginRuntime.ts` — 109 lines — score 100 — primary path
-- `engine/engin-runtime/EnginHardwareCapabilities.ts` — 96 lines — score 100 — primary path
-- `engine/engin-runtime/EnginPerformanceProbe.ts` — 94 lines — score 100 — primary path
-- `engine/engin-runtime/EnginSnapshotFingerprint.ts` — 90 lines — score 100 — primary path
-- `engins/forgeengin/forge/useForgeActivity.ts` — 65 lines — score 100 — primary path
-- `engine/engin-runtime/InternalMetrics.ts` — 47 lines — score 100 — primary path
-- `engins/rulesets/homedream/dream.homedream.physics.ts` — 36 lines — score 100 — primary path
-- `engins/rulesets/homedream/dream.homedream.transforms.ts` — 36 lines — score 100 — primary path
-- `engins/rulesets/game/index.ts` — 17 lines — score 100 — primary path
+- `engins/rulesets/homedream/index.ts` â 15 lines â score 104 â primary path
+- `engins/contentengin/pipeline/writeManifest.ts` â 4 lines â score 104 â primary path
+- `engine/engin-runtime/HotRuntime.ts` â 1164 lines â score 100 â primary path
+- `engine/engin-runtime/EnginCapabilityExecution.ts` â 515 lines â score 100 â primary path
+- `engins/forgeengin/forge/forgeRituals.ts` â 375 lines â score 100 â primary path
+- `engins/forgeengin/forge/forgeNexus.ts` â 311 lines â score 100 â primary path
+- `engins/forgeengin/forge/forgeMomentum.ts` â 297 lines â score 100 â primary path
+- `engins/rulesets/workflowEngine.ts` â 281 lines â score 100 â primary path
+- `engins/forgeengin/forge/engineForge.ts` â 234 lines â score 100 â primary path
+- `engins/forgeengin/forge/useForgeBuild.ts` â 234 lines â score 100 â primary path
+- `engins/forgeengin/forge/forgeBuild.ts` â 227 lines â score 100 â primary path
+- `engins/rulesets/useEnginWorkflow.ts` â 222 lines â score 100 â primary path
+- `engine/engin-runtime/EnginIOAdapter.ts` â 214 lines â score 100 â primary path
+- `engins/gameengin/cartridges/saveState.ts` â 145 lines â score 100 â primary path
+- `engine/engin-runtime/EnginEventBus.ts` â 123 lines â score 100 â primary path
+- `engine/engin-runtime/EnginCapabilityScorecard.ts` â 122 lines â score 100 â primary path
+- `engins/rulesets/game/useGameEnginRuntime.ts` â 119 lines â score 100 â primary path
+- `engins/rulesets/brand/useBrandEnginRuntime.ts` â 109 lines â score 100 â primary path
+- `engins/rulesets/code/useCodeEnginRuntime.ts` â 109 lines â score 100 â primary path
+- `engins/rulesets/content/useContentEnginRuntime.ts` â 109 lines â score 100 â primary path
+- `engins/rulesets/lab/useLabEnginRuntime.ts` â 109 lines â score 100 â primary path
+- `engins/rulesets/music/useStarMakerEnginRuntime.ts` â 109 lines â score 100 â primary path
+- `engine/engin-runtime/EnginHardwareCapabilities.ts` â 96 lines â score 100 â primary path
+- `engine/engin-runtime/EnginPerformanceProbe.ts` â 94 lines â score 100 â primary path
+- `engine/engin-runtime/EnginSnapshotFingerprint.ts` â 90 lines â score 100 â primary path
+- `engins/forgeengin/forge/useForgeActivity.ts` â 65 lines â score 100 â primary path
+- `engine/engin-runtime/InternalMetrics.ts` â 47 lines â score 100 â primary path
+- `engins/rulesets/homedream/dream.homedream.physics.ts` â 36 lines â score 100 â primary path
+- `app/engines/page.tsx` â 130 lines â score 63 â supporting path
+- `app/engines/games/builder/page.tsx` â 51 lines â score 63 â supporting path
 ## 19. Full Website Customizability
 
 ### Plain English
@@ -2125,80 +2136,80 @@ Users experience this as profile editing, theme choices, brand customization, pu
 Matched focused repo evidence: 52 files, about 16,204 readable source lines.
 
 Behavior signals:
-- commerce — 37 file hits
-- auth — 29 file hits
-- persistence — 28 file hits
-- mobile touch — 24 file hits
-- state — 19 file hits
-- events — 11 file hits
-- rendering — 9 file hits
-- runtime — 3 file hits
+- commerce â 37 file hits
+- auth â 29 file hits
+- persistence â 28 file hits
+- mobile touch â 24 file hits
+- state â 19 file hits
+- events â 11 file hits
+- rendering â 9 file hits
+- runtime â 3 file hits
 
 Routes and APIs:
-- /settings/appearance ← app/settings/appearance/page.tsx
-- /view-profile ← app/view-profile/page.tsx
-- /profile/[handle] ← app/profile/[handle]/page.tsx
-- /profile ← app/profile/page.tsx
-- /settings ← app/settings/page.tsx
-- /settings/help ← app/settings/help/page.tsx
-- /edit-profiledream ← app/edit-profiledream/page.tsx
-- /settings/account ← app/settings/account/page.tsx
-- /settings/security ← app/settings/security/page.tsx
-- /settings/notifications ← app/settings/notifications/page.tsx
-- /settings/safety ← app/settings/safety/page.tsx
-- /settings/dreams ← app/settings/dreams/page.tsx
-- /settings/widgets ← app/settings/widgets/page.tsx
-- /settings/algorithm ← app/settings/algorithm/page.tsx
-- /settings/controls ← app/settings/controls/page.tsx
-- /settings/data ← app/settings/data/page.tsx
+- /settings/appearance â app/settings/appearance/page.tsx
+- /view-profile â app/view-profile/page.tsx
+- /profile/[handle] â app/profile/[handle]/page.tsx
+- /profile â app/profile/page.tsx
+- /settings â app/settings/page.tsx
+- /settings/help â app/settings/help/page.tsx
+- /edit-profiledream â app/edit-profiledream/page.tsx
+- /settings/account â app/settings/account/page.tsx
+- /settings/security â app/settings/security/page.tsx
+- /settings/notifications â app/settings/notifications/page.tsx
+- /settings/safety â app/settings/safety/page.tsx
+- /settings/dreams â app/settings/dreams/page.tsx
+- /settings/widgets â app/settings/widgets/page.tsx
+- /settings/algorithm â app/settings/algorithm/page.tsx
+- /settings/controls â app/settings/controls/page.tsx
+- /settings/data â app/settings/data/page.tsx
 
 Components:
-- VoidThemeSection — app/settings/appearance/page.tsx
-- GradientThemePicker — app/settings/appearance/page.tsx
-- Slider — app/settings/appearance/page.tsx
-- PresetCard — app/settings/appearance/page.tsx
-- BgImageSection — app/settings/appearance/page.tsx
-- AppearanceSettingsPage — app/settings/appearance/page.tsx
-- ProfileCustomizeButton — components/profile/dream.ProfileCustomizeButton.tsx
-- ViewProfilePage — app/view-profile/page.tsx
-- ProfilePage — app/profile/[handle]/page.tsx
-- ProfileLegacyPage — app/profile/page.tsx
-- DotGrid — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- SparkLine — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- BarChart — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- WidgetConfigSheet — components/profile/dream.widget.ProfileWidgetGrid.tsx
+- VoidThemeSection â app/settings/appearance/page.tsx
+- GradientThemePicker â app/settings/appearance/page.tsx
+- Slider â app/settings/appearance/page.tsx
+- PresetCard â app/settings/appearance/page.tsx
+- BgImageSection â app/settings/appearance/page.tsx
+- AppearanceSettingsPage â app/settings/appearance/page.tsx
+- ViewProfilePage â app/view-profile/page.tsx
+- ProfilePage â app/profile/[handle]/page.tsx
+- ProfileCustomizeButton â components/profile/dream.ProfileCustomizeButton.tsx
+- ProfileLegacyPage â app/profile/page.tsx
+- DotGrid â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- SparkLine â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- BarChart â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- WidgetConfigSheet â components/profile/dream.widget.ProfileWidgetGrid.tsx
 
 Hooks:
-- useTheme — app/settings/appearance/page.tsx
-- useCustomizeMode — app/settings/appearance/page.tsx
-- useCallback — app/settings/appearance/page.tsx
-- useEffect — app/settings/appearance/page.tsx
-- useRef — app/settings/appearance/page.tsx
-- useState — app/settings/appearance/page.tsx
-- useCustomizeMode — components/profile/dream.ProfileCustomizeButton.tsx
-- useRef — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- useState — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- useCallback — components/profile/dream.ProfileCanvas.tsx
-- useState — components/profile/dream.ProfileCanvas.tsx
-- useRouter — components/profile/dream.EditableAvatar.tsx
-- useSharedDream — engins/engin.BrandingEngin.tsx
-- useDaydreamPersistence — engins/engin.BrandingEngin.tsx
+- useTheme â app/settings/appearance/page.tsx
+- useCustomizeMode â app/settings/appearance/page.tsx
+- useCallback â app/settings/appearance/page.tsx
+- useEffect â app/settings/appearance/page.tsx
+- useRef â app/settings/appearance/page.tsx
+- useState â app/settings/appearance/page.tsx
+- useCustomizeMode â components/profile/dream.ProfileCustomizeButton.tsx
+- useRef â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- useState â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- useCallback â components/profile/dream.ProfileCanvas.tsx
+- useState â components/profile/dream.ProfileCanvas.tsx
+- useRouter â components/profile/dream.EditableAvatar.tsx
+- useSharedDream â engins/engin.BrandingEngin.tsx
+- useDaydreamPersistence â engins/engin.BrandingEngin.tsx
 
 Exports that define public behavior:
-- default export — page (app/settings/appearance/page.tsx)
-- default export — dream.ProfileCustomizeButton (components/profile/dream.ProfileCustomizeButton.tsx)
-- metadata — app/view-profile/page.tsx
-- default export — page (app/view-profile/page.tsx)
-- default export — page (app/profile/[handle]/page.tsx)
-- default export — page (app/profile/page.tsx)
-- WidgetType — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- WidgetSize — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- WidgetBgStyle — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- WidgetConfig — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- Widget — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- DreamType — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- DreamSize — components/profile/dream.widget.ProfileWidgetGrid.tsx
-- DreamBgStyle — components/profile/dream.widget.ProfileWidgetGrid.tsx
+- default export â page (app/settings/appearance/page.tsx)
+- metadata â app/view-profile/page.tsx
+- default export â page (app/view-profile/page.tsx)
+- default export â page (app/profile/[handle]/page.tsx)
+- default export â dream.ProfileCustomizeButton (components/profile/dream.ProfileCustomizeButton.tsx)
+- default export â page (app/profile/page.tsx)
+- WidgetType â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- WidgetSize â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- WidgetBgStyle â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- WidgetConfig â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- Widget â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- DreamType â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- DreamSize â components/profile/dream.widget.ProfileWidgetGrid.tsx
+- DreamBgStyle â components/profile/dream.widget.ProfileWidgetGrid.tsx
 
 Import/export connections:
 - components/dream.ThemeApplicator
@@ -2219,60 +2230,60 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/settings/appearance/page.tsx` — 750 lines — score 154 — primary path, path keyword: appearance
-- `components/profile/dream.ProfileCustomizeButton.tsx` — 30 lines — score 140 — primary path, path keyword: profile
-- `app/view-profile/page.tsx` — 365 lines — score 136 — primary path, path keyword: profile
-- `app/profile/[handle]/page.tsx` — 252 lines — score 136 — primary path, path keyword: profile
-- `app/profile/page.tsx` — 18 lines — score 136 — primary path, path keyword: profile
-- `components/profile/dream.widget.ProfileWidgetGrid.tsx` — 2209 lines — score 134 — primary path, path keyword: profile
-- `components/profile/dream.ProfileCanvas.tsx` — 340 lines — score 134 — primary path, path keyword: profile
-- `app/settings/page.tsx` — 172 lines — score 132 — primary path
-- `components/ui-system/theme-engine.ts` — 279 lines — score 128 — primary path, path keyword: theme
-- `components/profile/dream.EditableAvatar.tsx` — 110 lines — score 128 — primary path, path keyword: profile
-- `styles/theme.css` — 34 lines — score 122 — primary path, path keyword: theme
-- `app/settings/help/page.tsx` — 94 lines — score 120 — primary path
-- `styles/globals.css` — 5174 lines — score 118 — primary path
-- `engins/engin.BrandingEngin.tsx` — 1260 lines — score 118 — primary path
-- `app/edit-profiledream/page.tsx` — 561 lines — score 114 — primary path
-- `app/settings/account/page.tsx` — 125 lines — score 114 — primary path
-- `app/settings/security/page.tsx` — 254 lines — score 108 — primary path
-- `app/settings/notifications/page.tsx` — 207 lines — score 108 — primary path
-- `app/settings/safety/page.tsx` — 179 lines — score 108 — primary path
-- `app/settings/dreams/page.tsx` — 40 lines — score 108 — primary path
-- `app/settings/widgets/page.tsx` — 40 lines — score 108 — primary path
-- `app/settings/algorithm/page.tsx` — 39 lines — score 108 — primary path
-- `app/settings/controls/page.tsx` — 19 lines — score 108 — primary path
-- `app/settings/data/page.tsx` — 19 lines — score 108 — primary path
-- `app/settings/privacy/page.tsx` — 19 lines — score 108 — primary path
-- `app/settings/feed/page.tsx` — 14 lines — score 108 — primary path
-- `app/settings/privacy/dream.PrivacyClient.tsx` — 394 lines — score 106 — primary path
-- `app/settings/account/dream.DangerZoneActions.tsx` — 325 lines — score 106 — primary path
-- `components/ui-system/CustomizeModeContext.tsx` — 143 lines — score 106 — primary path
-- `app/settings/data/dream.DataClient.tsx` — 138 lines — score 106 — primary path
-- `components/dream.ThemeApplicator.tsx` — 96 lines — score 106 — primary path
-- `components/providers/dream.ThemeProvider.tsx` — 91 lines — score 106 — primary path
-- `styles/home-dream.css` — 235 lines — score 100 — primary path
-- `app/settings/controls/dream.ControlsClient.tsx` — 163 lines — score 100 — primary path
+- `app/settings/appearance/page.tsx` â 750 lines â score 146 â primary path, path keyword: appearance
+- `app/view-profile/page.tsx` â 365 lines â score 134 â primary path, path keyword: profile
+- `app/profile/[handle]/page.tsx` â 252 lines â score 134 â primary path, path keyword: profile
+- `components/profile/dream.ProfileCustomizeButton.tsx` â 30 lines â score 134 â primary path, path keyword: profile
+- `app/profile/page.tsx` â 18 lines â score 134 â primary path, path keyword: profile
+- `components/profile/dream.widget.ProfileWidgetGrid.tsx` â 2209 lines â score 130 â primary path, path keyword: profile
+- `components/profile/dream.ProfileCanvas.tsx` â 340 lines â score 130 â primary path, path keyword: profile
+- `components/ui-system/theme-engine.ts` â 279 lines â score 126 â primary path, path keyword: theme
+- `components/profile/dream.EditableAvatar.tsx` â 110 lines â score 126 â primary path, path keyword: profile
+- `app/settings/page.tsx` â 172 lines â score 124 â primary path
+- `styles/theme.css` â 34 lines â score 122 â primary path, path keyword: theme
+- `app/settings/help/page.tsx` â 94 lines â score 116 â primary path
+- `styles/globals.css` â 5174 lines â score 112 â primary path
+- `engins/engin.BrandingEngin.tsx` â 1260 lines â score 112 â primary path
+- `app/edit-profiledream/page.tsx` â 561 lines â score 112 â primary path
+- `app/settings/account/page.tsx` â 125 lines â score 112 â primary path
+- `app/settings/security/page.tsx` â 254 lines â score 108 â primary path
+- `app/settings/notifications/page.tsx` â 207 lines â score 108 â primary path
+- `app/settings/safety/page.tsx` â 179 lines â score 108 â primary path
+- `app/settings/dreams/page.tsx` â 40 lines â score 108 â primary path
+- `app/settings/widgets/page.tsx` â 40 lines â score 108 â primary path
+- `app/settings/algorithm/page.tsx` â 39 lines â score 108 â primary path
+- `app/settings/controls/page.tsx` â 19 lines â score 108 â primary path
+- `app/settings/data/page.tsx` â 19 lines â score 108 â primary path
+- `app/settings/privacy/page.tsx` â 19 lines â score 108 â primary path
+- `app/settings/feed/page.tsx` â 14 lines â score 108 â primary path
+- `app/settings/privacy/dream.PrivacyClient.tsx` â 394 lines â score 104 â primary path
+- `app/settings/account/dream.DangerZoneActions.tsx` â 325 lines â score 104 â primary path
+- `components/ui-system/CustomizeModeContext.tsx` â 143 lines â score 104 â primary path
+- `app/settings/data/dream.DataClient.tsx` â 138 lines â score 104 â primary path
+- `components/dream.ThemeApplicator.tsx` â 96 lines â score 104 â primary path
+- `components/providers/dream.ThemeProvider.tsx` â 91 lines â score 104 â primary path
+- `styles/home-dream.css` â 235 lines â score 100 â primary path
+- `app/settings/controls/dream.ControlsClient.tsx` â 163 lines â score 100 â primary path
 
 Supporting files:
-- `app/settings/dreams/dreams-layout-editor.tsx` — 83 lines — score 100 — primary path
-- `app/settings/controls/dream.PositionIndicatorToggle.tsx` — 54 lines — score 100 — primary path
-- `styles/view-transitions.css` — 49 lines — score 100 — primary path
-- `styles/dream-shell.css` — 24 lines — score 100 — primary path
-- `app/api/settings/appearance/route.ts` — 92 lines — score 97 — supporting path, path keyword: appearance
-- `components/customize/dream.bar.CustomizeModeBar.tsx` — 92 lines — score 89 — supporting path, path keyword: customize
-- `components/customize/dream.bar.CustomizeToolbar.tsx` — 104 lines — score 83 — supporting path, path keyword: customize
-- `components/customize/dream.GlobalCustomizeUI.tsx` — 31 lines — score 83 — supporting path, path keyword: customize
-- `components/customize/panels/dream.panel.ColorPanel.tsx` — 234 lines — score 77 — supporting path, path keyword: customize
-- `components/customize/panels/dream.panel.LayoutPanel.tsx` — 141 lines — score 77 — supporting path, path keyword: customize
-- `components/customize/panels/dream.panel.EffectsPanel.tsx` — 112 lines — score 77 — supporting path, path keyword: customize
-- `components/customize/panels/dream.panel.FontPanel.tsx` — 110 lines — score 77 — supporting path, path keyword: customize
-- `components/dream.ProfileEditor.tsx` — 457 lines — score 73 — supporting path
-- `app/api/settings/feed/route.ts` — 89 lines — score 63 — supporting path
-- `app/api/settings/notifications/route.ts` — 84 lines — score 63 — supporting path
-- `app/api/settings/privacy/route.ts` — 84 lines — score 63 — supporting path
-- `components/dream.ProfileSpace.tsx` — 102 lines — score 61 — supporting path
-- `components/dream.ProfileShareButton.tsx` — 74 lines — score 61 — supporting path
+- `app/settings/dreams/dreams-layout-editor.tsx` â 83 lines â score 100 â primary path
+- `app/settings/controls/dream.PositionIndicatorToggle.tsx` â 54 lines â score 100 â primary path
+- `styles/view-transitions.css` â 49 lines â score 100 â primary path
+- `styles/dream-shell.css` â 24 lines â score 100 â primary path
+- `app/api/settings/appearance/route.ts` â 92 lines â score 93 â supporting path, path keyword: appearance
+- `components/customize/dream.bar.CustomizeModeBar.tsx` â 92 lines â score 85 â supporting path, path keyword: customize
+- `components/customize/dream.bar.CustomizeToolbar.tsx` â 104 lines â score 81 â supporting path, path keyword: customize
+- `components/customize/dream.GlobalCustomizeUI.tsx` â 31 lines â score 81 â supporting path, path keyword: customize
+- `components/customize/panels/dream.panel.ColorPanel.tsx` â 234 lines â score 77 â supporting path, path keyword: customize
+- `components/customize/panels/dream.panel.LayoutPanel.tsx` â 141 lines â score 77 â supporting path, path keyword: customize
+- `components/customize/panels/dream.panel.EffectsPanel.tsx` â 112 lines â score 77 â supporting path, path keyword: customize
+- `components/customize/panels/dream.panel.FontPanel.tsx` â 110 lines â score 77 â supporting path, path keyword: customize
+- `components/dream.ProfileEditor.tsx` â 457 lines â score 67 â supporting path
+- `app/api/settings/feed/route.ts` â 89 lines â score 63 â supporting path
+- `app/api/settings/notifications/route.ts` â 84 lines â score 63 â supporting path
+- `app/api/settings/privacy/route.ts` â 84 lines â score 63 â supporting path
+- `components/dream.ProfileSpace.tsx` â 102 lines â score 59 â supporting path
+- `components/dream.ProfileShareButton.tsx` â 74 lines â score 59 â supporting path
 ## 20. Backend, System, Core & CoreSurfaces
 
 ### Plain English
@@ -2282,58 +2293,71 @@ Backend, system, core, and CoreSurfaces are the under-the-hood execution pieces:
 Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.
 
 ### Repo Evidence
-Matched focused repo evidence: 120 files, about 17,946 readable source lines.
+Matched focused repo evidence: 100 files, about 31,663 readable source lines.
 
 Behavior signals:
-- auth — 118 file hits
-- persistence — 108 file hits
-- commerce — 52 file hits
-- events — 21 file hits
-- state — 16 file hits
-- rendering — 7 file hits
-- runtime — 6 file hits
-- mobile touch — 3 file hits
+- auth â 95 file hits
+- persistence â 87 file hits
+- commerce â 46 file hits
+- state â 32 file hits
+- events â 28 file hits
+- rendering â 23 file hits
+- runtime â 20 file hits
+- mobile touch â 14 file hits
 
 Routes and APIs:
-- GET /api/auth/providers ← app/api/auth/providers/route.ts
-- GET /api/auth/logout ← app/api/auth/logout/route.ts
-- POST /api/forge/build ← app/api/forge/build/route.ts
-- POST /api/ai/idari ← app/api/ai/idari/route.ts
-- POST /api/ads/view ← app/api/ads/view/route.ts
-- POST /api/account/delete-dream ← app/api/account/delete-dream/route.ts
-- POST /api/admin/ai-chat ← app/api/admin/ai-chat/route.ts
-- PATCH|DELETE /api/drafts/[id] ← app/api/drafts/[id]/route.ts
-- POST /api/skip-credits/earn ← app/api/skip-credits/earn/route.ts
-- GET|POST|DELETE /api/favorites ← app/api/favorites/route.ts
-- POST /api/marketplace/request ← app/api/marketplace/request/route.ts
-- POST /api/skip-credits/use ← app/api/skip-credits/use/route.ts
-- GET /api/skip-credits/balance ← app/api/skip-credits/balance/route.ts
-- GET|PATCH|DELETE /api/dream-windows/[id] ← app/api/dream-windows/[id]/route.ts
-- GET /api/feed ← app/api/feed/route.ts
-- GET|POST|DELETE /api/comments ← app/api/comments/route.ts
+- GET /api/auth/providers â app/api/auth/providers/route.ts
+- GET /api/auth/logout â app/api/auth/logout/route.ts
+- POST /api/forge/build â app/api/forge/build/route.ts
+- POST /api/ai/idari â app/api/ai/idari/route.ts
+- POST /api/ads/view â app/api/ads/view/route.ts
+- POST /api/account/delete-dream â app/api/account/delete-dream/route.ts
+- POST /api/admin/ai-chat â app/api/admin/ai-chat/route.ts
+- PATCH|DELETE /api/drafts/[id] â app/api/drafts/[id]/route.ts
+- POST /api/skip-credits/earn â app/api/skip-credits/earn/route.ts
+- GET|POST|DELETE /api/favorites â app/api/favorites/route.ts
+- POST /api/marketplace/request â app/api/marketplace/request/route.ts
+- POST /api/skip-credits/use â app/api/skip-credits/use/route.ts
+- GET /api/skip-credits/balance â app/api/skip-credits/balance/route.ts
+- GET|PATCH|DELETE /api/dream-windows/[id] â app/api/dream-windows/[id]/route.ts
+- GET /api/feed â app/api/feed/route.ts
+- GET|POST|DELETE /api/comments â app/api/comments/route.ts
 
 Components:
-- None found.
+- EditProfileDreamPage â coresurfaces/dreamsurface.EditProfileDream.tsx
+- ViewProfilePage â coresurfaces/dreamsurface.ViewProfile.tsx
 
 Hooks:
-- useSimulation — app/api/forge/build/route.ts
-- useSharedDreamSession — app/api/shared-dream/sessions/[id]/route.ts
+- useSimulation â app/api/forge/build/route.ts
+- useSharedDreamSession â app/api/shared-dream/sessions/[id]/route.ts
+- useTapHoldMove â engine/generated/osArchitectureMap.ts
+- useDaydreamPersistence â engine/generated/osArchitectureMap.ts
+- useDaydreamState â engine/generated/osArchitectureMap.ts
+- useDreamBarContext â engine/generated/osArchitectureMap.ts
+- useDreamDMConversations â engine/generated/osArchitectureMap.ts
+- useDreamDMDraft â engine/generated/osArchitectureMap.ts
+- useDreamDMMessages â engine/generated/osArchitectureMap.ts
+- useDreamSearch â engine/generated/osArchitectureMap.ts
+- useMessagingCore â engine/generated/osArchitectureMap.ts
+- useModuleBarIntent â engine/generated/osArchitectureMap.ts
+- useNotifications â engine/generated/osArchitectureMap.ts
+- useAgentSession â engine/generated/osArchitectureMap.ts
 
 Exports that define public behavior:
-- OAuthProvidersResponse — app/api/auth/providers/route.ts
-- getOAuthProvidersResponse — app/api/auth/providers/route.ts
-- fetchWithRetry — app/api/forge/build/route.ts
-- resolveSafeNextPath — supabase/auth/nextRedirect.ts
-- buildLoginRedirectPath — supabase/auth/nextRedirect.ts
-- UnifiedFeedEntry — app/api/feed/route.ts
-- ShellHubDevicesResponse — app/api/shellhub/devices/route.ts
-- ConnectorStatusEntry — app/api/connectors/status/route.ts
-- UserRole — types/ai-system.ts
-- ActorContextSchema — types/ai-system.ts
-- ActorContext — types/ai-system.ts
-- HomeAnchorState — types/ai-system.ts
-- Surface — types/ai-system.ts
-- CubePosition — types/ai-system.ts
+- OAuthProvidersResponse â app/api/auth/providers/route.ts
+- getOAuthProvidersResponse â app/api/auth/providers/route.ts
+- fetchWithRetry â app/api/forge/build/route.ts
+- resolveSafeNextPath â supabase/auth/nextRedirect.ts
+- buildLoginRedirectPath â supabase/auth/nextRedirect.ts
+- UnifiedFeedEntry â app/api/feed/route.ts
+- ShellHubDevicesResponse â app/api/shellhub/devices/route.ts
+- UserRole â types/ai-system.ts
+- ActorContextSchema â types/ai-system.ts
+- ActorContext â types/ai-system.ts
+- HomeAnchorState â types/ai-system.ts
+- Surface â types/ai-system.ts
+- CubePosition â types/ai-system.ts
+- Overlay â types/ai-system.ts
 
 Import/export connections:
 - supabase/config
@@ -2354,71 +2378,71 @@ Import/export connections:
 ### Matched Files
 
 Primary files:
-- `app/api/auth/providers/route.ts` — 72 lines — score 164 — primary path, path keyword: api
-- `app/api/auth/logout/route.ts` — 24 lines — score 164 — primary path, path keyword: api
-- `supabase/migrations/20260210_ai_core.sql` — 280 lines — score 162 — primary path, path keyword: supabase
-- `supabase/migrations/20260418000000_gameengin_core.sql` — 104 lines — score 162 — primary path, path keyword: supabase
-- `supabase/migrations/20260210000001_ai_system_v2026.sql` — 454 lines — score 156 — primary path, path keyword: supabase
-- `supabase/migrations/20260210000000_widget_system_v2.sql` — 364 lines — score 156 — primary path, path keyword: supabase
-- `app/api/forge/build/route.ts` — 923 lines — score 154 — primary path, path keyword: api
-- `app/api/ai/idari/route.ts` — 309 lines — score 154 — primary path, path keyword: api
-- `app/api/ads/view/route.ts` — 192 lines — score 148 — primary path, path keyword: api
-- `app/api/account/delete-dream/route.ts` — 154 lines — score 148 — primary path, path keyword: api
-- `app/api/admin/ai-chat/route.ts` — 137 lines — score 148 — primary path, path keyword: api
-- `app/api/drafts/[id]/route.ts` — 133 lines — score 148 — primary path, path keyword: api
-- `app/api/skip-credits/earn/route.ts` — 126 lines — score 148 — primary path, path keyword: api
-- `app/api/favorites/route.ts` — 112 lines — score 148 — primary path, path keyword: api
-- `app/api/marketplace/request/route.ts` — 90 lines — score 148 — primary path, path keyword: api
-- `app/api/skip-credits/use/route.ts` — 81 lines — score 148 — primary path, path keyword: api
-- `app/api/skip-credits/balance/route.ts` — 54 lines — score 148 — primary path, path keyword: api
-- `supabase/auth/nextRedirect.ts` — 61 lines — score 144 — primary path, path keyword: supabase
-- `app/api/dream-windows/[id]/route.ts` — 300 lines — score 142 — primary path, path keyword: api
-- `app/api/feed/route.ts` — 230 lines — score 142 — primary path, path keyword: api
-- `app/api/comments/route.ts` — 209 lines — score 142 — primary path, path keyword: api
-- `app/api/ai/eams/route.ts` — 193 lines — score 142 — primary path, path keyword: api
-- `app/api/dream-windows/route.ts` — 185 lines — score 142 — primary path, path keyword: api
-- `app/api/metrics/platform/route.ts` — 185 lines — score 142 — primary path, path keyword: api
-- `app/api/game-scores/route.ts` — 177 lines — score 142 — primary path, path keyword: api
-- `app/api/likes/route.ts` — 164 lines — score 142 — primary path, path keyword: api
-- `app/api/ai/boogieman/route.ts` — 155 lines — score 142 — primary path, path keyword: api
-- `app/api/dreams/feed/route.ts` — 152 lines — score 142 — primary path, path keyword: api
-- `app/api/social/ipfs/route.ts` — 144 lines — score 142 — primary path, path keyword: api
-- `app/api/marketplace/route.ts` — 142 lines — score 142 — primary path, path keyword: api
-- `app/api/connectors/[provider]/connect/route.ts` — 138 lines — score 142 — primary path, path keyword: api
-- `app/api/scheduled-posts/route.ts` — 138 lines — score 142 — primary path, path keyword: api
-- `app/api/shared-dream/sessions/[id]/route.ts` — 134 lines — score 142 — primary path, path keyword: api
-- `app/api/activity/track/route.ts` — 122 lines — score 142 — primary path, path keyword: api
+- `app/api/auth/providers/route.ts` â 72 lines â score 160 â primary path, path keyword: api
+- `app/api/auth/logout/route.ts` â 24 lines â score 160 â primary path, path keyword: api
+- `supabase/migrations/20260210_ai_core.sql` â 280 lines â score 156 â primary path, path keyword: supabase
+- `supabase/migrations/20260418000000_gameengin_core.sql` â 104 lines â score 156 â primary path, path keyword: supabase
+- `supabase/migrations/20260210000001_ai_system_v2026.sql` â 454 lines â score 152 â primary path, path keyword: supabase
+- `supabase/migrations/20260210000000_widget_system_v2.sql` â 364 lines â score 152 â primary path, path keyword: supabase
+- `app/api/forge/build/route.ts` â 923 lines â score 146 â primary path, path keyword: api
+- `app/api/ai/idari/route.ts` â 309 lines â score 146 â primary path, path keyword: api
+- `supabase/auth/nextRedirect.ts` â 61 lines â score 144 â primary path, path keyword: supabase
+- `app/api/ads/view/route.ts` â 192 lines â score 142 â primary path, path keyword: api
+- `app/api/account/delete-dream/route.ts` â 154 lines â score 142 â primary path, path keyword: api
+- `app/api/admin/ai-chat/route.ts` â 137 lines â score 142 â primary path, path keyword: api
+- `app/api/drafts/[id]/route.ts` â 133 lines â score 142 â primary path, path keyword: api
+- `app/api/skip-credits/earn/route.ts` â 126 lines â score 142 â primary path, path keyword: api
+- `app/api/favorites/route.ts` â 112 lines â score 142 â primary path, path keyword: api
+- `app/api/marketplace/request/route.ts` â 90 lines â score 142 â primary path, path keyword: api
+- `app/api/skip-credits/use/route.ts` â 81 lines â score 142 â primary path, path keyword: api
+- `app/api/skip-credits/balance/route.ts` â 54 lines â score 142 â primary path, path keyword: api
+- `app/api/dream-windows/[id]/route.ts` â 300 lines â score 138 â primary path, path keyword: api
+- `app/api/feed/route.ts` â 230 lines â score 138 â primary path, path keyword: api
+- `app/api/comments/route.ts` â 209 lines â score 138 â primary path, path keyword: api
+- `app/api/ai/eams/route.ts` â 193 lines â score 138 â primary path, path keyword: api
+- `app/api/dream-windows/route.ts` â 185 lines â score 138 â primary path, path keyword: api
+- `app/api/metrics/platform/route.ts` â 185 lines â score 138 â primary path, path keyword: api
+- `app/api/game-scores/route.ts` â 177 lines â score 138 â primary path, path keyword: api
+- `app/api/likes/route.ts` â 164 lines â score 138 â primary path, path keyword: api
+- `app/api/ai/boogieman/route.ts` â 155 lines â score 138 â primary path, path keyword: api
+- `app/api/dreams/feed/route.ts` â 152 lines â score 138 â primary path, path keyword: api
+- `app/api/social/ipfs/route.ts` â 144 lines â score 138 â primary path, path keyword: api
+- `app/api/marketplace/route.ts` â 142 lines â score 138 â primary path, path keyword: api
+- `app/api/connectors/[provider]/connect/route.ts` â 138 lines â score 138 â primary path, path keyword: api
+- `app/api/scheduled-posts/route.ts` â 138 lines â score 138 â primary path, path keyword: api
+- `app/api/shared-dream/sessions/[id]/route.ts` â 134 lines â score 138 â primary path, path keyword: api
+- `app/api/activity/track/route.ts` â 122 lines â score 138 â primary path, path keyword: api
 
 Supporting files:
-- `app/api/drafts/route.ts` — 119 lines — score 142 — primary path, path keyword: api
-- `app/api/agent/session/route.ts` — 115 lines — score 142 — primary path, path keyword: api
-- `app/api/dreams/instances/route.ts` — 113 lines — score 142 — primary path, path keyword: api
-- `app/api/journey/route.ts` — 110 lines — score 142 — primary path, path keyword: api
-- `app/api/setup/google-oauth/route.ts` — 101 lines — score 142 — primary path, path keyword: api
-- `app/api/account/delete-data/route.ts` — 99 lines — score 142 — primary path, path keyword: api
-- `app/api/settings/appearance/route.ts` — 92 lines — score 142 — primary path, path keyword: api
-- `app/api/shellhub/devices/route.ts` — 85 lines — score 142 — primary path, path keyword: api
-- `app/api/account/export-data/route.ts` — 84 lines — score 142 — primary path, path keyword: api
-- `app/api/admin/observability/route.ts` — 84 lines — score 142 — primary path, path keyword: api
-- `app/api/settings/notifications/route.ts` — 84 lines — score 142 — primary path, path keyword: api
-- `app/api/settings/privacy/route.ts` — 84 lines — score 142 — primary path, path keyword: api
-- `app/api/connectors/[provider]/disconnect/route.ts` — 72 lines — score 142 — primary path, path keyword: api
-- `app/api/posts/[id]/route.ts` — 69 lines — score 142 — primary path, path keyword: api
-- `app/api/social/livekit/room/route.ts` — 68 lines — score 142 — primary path, path keyword: api
-- `app/api/social/livekit/token/route.ts` — 67 lines — score 142 — primary path, path keyword: api
-- `app/api/connectors/status/route.ts` — 59 lines — score 142 — primary path, path keyword: api
-- `app/api/dreamengin/os-status/route.ts` — 45 lines — score 142 — primary path, path keyword: api
-- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql` — 769 lines — score 140 — primary path, path keyword: supabase
-- `types/ai-system.ts` — 513 lines — score 140 — primary path, path keyword: system
-- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` — 186 lines — score 140 — primary path, path keyword: supabase
-- `app/api/connectors/webhooks/[provider]/route.ts` — 360 lines — score 136 — primary path, path keyword: api
-- `app/api/messages/route.ts` — 342 lines — score 136 — primary path, path keyword: api
-- `app/api/content/intelligence/route.ts` — 309 lines — score 136 — primary path, path keyword: api
-- `app/api/content/voice-clone/route.ts` — 292 lines — score 136 — primary path, path keyword: api
-- `app/api/social/rss-feed/route.ts` — 277 lines — score 136 — primary path, path keyword: api
-- `app/api/ai/boogieman/child-safety/route.ts` — 264 lines — score 136 — primary path, path keyword: api
-- `app/api/ai/execute/route.ts` — 252 lines — score 136 — primary path, path keyword: api
-- `app/api/dreamr/suggested/route.ts` — 235 lines — score 136 — primary path, path keyword: api
-- `app/api/posts/route.ts` — 232 lines — score 136 — primary path, path keyword: api
+- `app/api/drafts/route.ts` â 119 lines â score 138 â primary path, path keyword: api
+- `app/api/agent/session/route.ts` â 115 lines â score 138 â primary path, path keyword: api
+- `app/api/dreams/instances/route.ts` â 113 lines â score 138 â primary path, path keyword: api
+- `app/api/journey/route.ts` â 110 lines â score 138 â primary path, path keyword: api
+- `app/api/setup/google-oauth/route.ts` â 101 lines â score 138 â primary path, path keyword: api
+- `app/api/account/delete-data/route.ts` â 99 lines â score 138 â primary path, path keyword: api
+- `app/api/settings/appearance/route.ts` â 92 lines â score 138 â primary path, path keyword: api
+- `app/api/shellhub/devices/route.ts` â 85 lines â score 138 â primary path, path keyword: api
+- `app/api/account/export-data/route.ts` â 84 lines â score 138 â primary path, path keyword: api
+- `app/api/admin/observability/route.ts` â 84 lines â score 138 â primary path, path keyword: api
+- `app/api/settings/notifications/route.ts` â 84 lines â score 138 â primary path, path keyword: api
+- `app/api/settings/privacy/route.ts` â 84 lines â score 138 â primary path, path keyword: api
+- `app/api/connectors/[provider]/disconnect/route.ts` â 72 lines â score 138 â primary path, path keyword: api
+- `app/api/posts/[id]/route.ts` â 69 lines â score 138 â primary path, path keyword: api
+- `app/api/social/livekit/room/route.ts` â 68 lines â score 138 â primary path, path keyword: api
+- `app/api/social/livekit/token/route.ts` â 67 lines â score 138 â primary path, path keyword: api
+- `supabase/migrations/20260413000000_phase9_activity_first_protocol.sql` â 769 lines â score 134 â primary path, path keyword: supabase
+- `types/ai-system.ts` â 513 lines â score 134 â primary path, path keyword: system
+- `supabase/migrations/20260324000001_phase8e_shop_marketplace.sql` â 186 lines â score 134 â primary path, path keyword: supabase
+- `supabase/migrations/20260129000000_upgrade_schema.sql` â 290 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260322000000_phase8b_dream_windows.sql` â 239 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260405042406_auto_scaffold.sql` â 225 lines â score 130 â primary path, path keyword: supabase
+- `supabase/server/serverClient.ts` â 191 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260325100000_child_safety.sql` â 160 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260405000001_dreamr_feed_registry.sql` â 149 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260417000000_repurpose_nods_as_dream_docs.sql` â 133 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260310000003_connector_accounts.sql` â 124 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260403000001_pgvector_embeddings.sql` â 102 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260426000200_build_memory_schema_gaps.sql` â 98 lines â score 130 â primary path, path keyword: supabase
+- `supabase/migrations/20260319120000_connector_accounts_schema_reload.sql` â 89 lines â score 130 â primary path, path keyword: supabase
 
 <!-- DREAMENGIN_PRODUCT_README:END -->
