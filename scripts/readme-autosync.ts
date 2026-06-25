@@ -16,7 +16,7 @@ type SectionRule = {
   title: string;
   plainEnglish: string;
   userExperience: string;
-  interactionModel?: string[];
+  keyInteractionModel?: string[];
   primaryPaths: RegExp[];
   supportingPaths: RegExp[];
   keywords: string[];
@@ -116,6 +116,15 @@ const META_ROOTS = new Set([".github", "agents", "docs", "research", "scripts", 
 
 const PRODUCT_SECTION_START = "<!-- DREAMENGIN_PRODUCT_README:START -->";
 const PRODUCT_SECTION_END = "<!-- DREAMENGIN_PRODUCT_README:END -->";
+const MD_DASH = "\u2014";
+const MD_ARROW = "\u2190";
+const MOJIBAKE_REPLACEMENTS: Array<[string, string]> = [
+  ["\u00e2\u0080\u0094", MD_DASH],
+  ["\u00e2\u0086\u0090", MD_ARROW],
+  ["\u00e2\u0080\u0099", "'"],
+  ["\u00e2\u0080\u009c", '"'],
+  ["\u00e2\u0080\u009d", '"'],
+];
 
 export const PRODUCT_SECTIONS: SectionRule[] = [
   {
@@ -206,7 +215,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "Dual runtimes are the split execution model that lets DREAMengin keep two active product worlds available at once instead of replacing one page with another. The runtime layer tracks which world is active, which surface is dominant, and how state, snapshots, and handoffs move between HomeDream, DreamSpace, Engins, and shared surfaces.",
     userExperience:
       "Users feel this as a two-lane workspace: one side can keep HomeDream, DreamSpace, a studio, preview, editor, remote surface, or companion panel alive while the other side changes. Switching context should preserve the active runtime instead of making the user start over.",
-    interactionModel: [
+    keyInteractionModel: [
       "DualRuntimeContainer owns the user-facing split runtime shell and renders runtime worlds through RuntimeView and RuntimeShell.",
       "The runtime helpers expose world changes, HomeDream activation, DreamSpace activation, surface activation, focus keys, movement, and dominant-runtime swaps.",
       "DreamDmBar is the control layer that should be able to drive these runtime changes without acting like a separate app destination.",
@@ -271,7 +280,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
   },
   {
     number: 8,
-    title: "DreamR â Human Media",
+    title: `DreamR ${MD_DASH} Human Media`,
     plainEnglish:
       "DreamR is the human media layer: feed, discovery, profile, posts, creator identity, and the browsing surfaces where Dreams become media instead of private project files.",
     userExperience:
@@ -387,7 +396,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "The DreamDmBar is the persistent interaction rail for DREAMengin: messaging, search, notifications, quick actions, module intent, DreamR, HomeDream, DreamSpace, and runtime control live around this bar instead of being scattered across isolated pages.",
     userExperience:
       "Users experience DreamDmBar as the always-near control surface: tap for immediate action, drag or swipe the gold control to expand, collapse, split, or reveal context, keep DM/search/notification state alive, and jump between HomeDream, DreamSpace, DreamR, messages, panels, and active Engins without losing the runtime they were using.",
-    interactionModel: [
+    keyInteractionModel: [
       "The visible bar is not just navigation. It is an input surface that interprets gold tap, release, drag, swipe, velocity, snap points, and split ratio.",
       "barInteractions owns the physical feel of the bar: tap-vs-release detection, pointer velocity, snap-to-split behavior, collapse decisions, and gold-tap action resolution.",
       "DreamSystemContext is the shared context that lets the bar coordinate active surfaces, module state, panels, and runtime-adjacent decisions.",
@@ -397,42 +406,33 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "The README must describe this as a touch-first runtime control surface, not as a generic toolbar or a page with messaging links.",
     ],
     primaryPaths: [
+      /^dreamdmbar\/runtime\/DreamSystemContext\.tsx$/,
+      /^dreamdmbar\/runtime\/barInteractions\.ts$/,
       /^dreamdmbar\//,
       /^app\/dreamdmbar\//,
-      /^engine\/generated\/dreamdmbar\.ts$/,
       /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
       /^components\/runtime\/dream\.RuntimeView\.tsx$/,
       /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
+      /^engine\/generated\/dreamdmbar\.ts$/,
     ],
     supportingPaths: [
+      /^engine\/runtime\/dualRuntime/,
+      /^engine\/runtime\/useDualRuntime/,
+      /^engine\/runtime\/dualRuntimeBridge\.ts$/,
+      /^components\/home\/dream\.bar\.PersistentDreamBar\.tsx$/,
+      /^components\/home\/dream\.bar\.GlobalDreamBar\.tsx$/,
+      /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
       /^components\/panels\/dream\.panel\./,
       /^app\/messages\//,
       /^app\/api\/messages\//,
       /^components\/dream\.CommandPalette\.tsx$/,
       /^components\/dream\.NotificationCenter\.tsx$/,
-      /^components\/home\/dream\.bar\.PersistentDreamBar\.tsx$/,
-      /^components\/home\/dream\.bar\.GlobalDreamBar\.tsx$/,
-      /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
-      /^engine\/runtime\/dualRuntime/,
-      /^engine\/runtime\/useDualRuntime/,
     ],
-    keywords: [
-      "dreamdmbar",
-      "dream dm",
-      "gold tap",
-      "bar interaction",
-      "split ratio",
-      "notification",
-      "command",
-      "dualruntime",
-      "runtime",
-      "homedream",
-      "dreamspace",
-    ],
-    maxFiles: 80,
+    keywords: ["dreamdmbar", "dream dm", "runtime", "dualruntime", "notification", "command", "split", "gold"],
+    maxFiles: 70,
     rootCaps: {
       app: 20,
-      components: 22,
+      components: 18,
       dreamdmbar: 30,
       engine: 8,
     },
@@ -899,14 +899,14 @@ function extractRoutes(matches: FileMatch[]): string[] {
 
     if (pageMatch) {
       const route = `/${pageMatch[1]}`.replace(/\/\(.*?\)/g, "");
-      routes.add(`${route} â ${file.path}`);
+      routes.add(`${route} ${MD_ARROW} ${file.path}`);
     }
 
     const apiMatch = file.path.match(/^app\/api\/(.+)\/route\.tsx?$/);
 
     if (apiMatch) {
       const methods = extractRouteMethods(file.text);
-      routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} â ${file.path}`);
+      routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} ${MD_ARROW} ${file.path}`);
     }
   }
 
@@ -946,12 +946,12 @@ function extractExports(matches: FileMatch[]): string[] {
     for (const match of file.text.matchAll(/export\s+(?:async\s+)?(?:function|const|class|type|interface)\s+([A-Za-z0-9_]+)/g)) {
       const name = match[1];
       if (isLikelyConstant(name)) continue;
-      exports.add(`${name} â ${file.path}`);
+      exports.add(`${name} ${MD_DASH} ${file.path}`);
     }
 
     if (/export\s+default\b/.test(file.text)) {
       const name = path.basename(file.path).replace(/\.(tsx?|jsx?|mjs|cjs)$/, "");
-      exports.add(`default export â ${name} (${file.path})`);
+      exports.add(`default export ${MD_DASH} ${name} (${file.path})`);
     }
   }
 
@@ -974,7 +974,7 @@ function extractComponents(matches: FileMatch[]): string[] {
       for (const match of file.text.matchAll(pattern)) {
         const name = match[1];
         if (isLikelyConstant(name)) continue;
-        components.add(`${name} â ${file.path}`);
+        components.add(`${name} ${MD_DASH} ${file.path}`);
       }
     }
   }
@@ -989,7 +989,7 @@ function extractHooks(matches: FileMatch[]): string[] {
     if (!isCodeFile(file)) continue;
 
     for (const match of file.text.matchAll(/\b(use[A-Z][A-Za-z0-9_]*)\b/g)) {
-      hooks.add(`${match[1]} â ${file.path}`);
+      hooks.add(`${match[1]} ${MD_DASH} ${file.path}`);
     }
   }
 
@@ -1023,7 +1023,7 @@ function behaviorSignals(matches: FileMatch[]): string[] {
     .filter((item) => item.count > 0)
     .sort((a, b) => b.count - a.count)
     .slice(0, 8)
-    .map((item) => `${item.name} â ${item.count} file hits`);
+    .map((item) => `${item.name} ${MD_DASH} ${item.count} file hits`);
 }
 
 function formatList(items: string[], empty = "- None found."): string {
@@ -1040,17 +1040,24 @@ function fileSummary(match: FileMatch): string {
 
   if (match.reasons.length) parts.push(match.reasons.slice(0, 2).join(", "));
 
-  return `- ${parts.join(" â ")}`;
+  return `- ${parts.join(` ${MD_DASH} `)}`;
 }
 
-function optionalInteractionSection(section: SectionRule): string[] {
-  if (!section.interactionModel?.length) return [];
+function keyInteractionMarkdown(section: SectionRule): string[] {
+  if (!section.keyInteractionModel?.length) return [];
 
   return [
-    "",
     "### Key interaction model",
-    formatList(section.interactionModel),
+    formatList(section.keyInteractionModel),
+    "",
   ];
+}
+
+function sanitizeGeneratedMarkdown(value: string): string {
+  return MOJIBAKE_REPLACEMENTS.reduce(
+    (text, [bad, good]) => text.split(bad).join(good),
+    value
+  );
 }
 
 function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSectionOutput {
@@ -1064,7 +1071,7 @@ function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSec
   const primaryFiles = matches.slice(0, Math.min(34, section.maxFiles));
   const supportingFiles = matches.slice(primaryFiles.length, Math.min(primaryFiles.length + 30, matches.length));
 
-  const markdown = [
+  const markdown = sanitizeGeneratedMarkdown([
     `## ${section.number}. ${section.title}`,
     "",
     "### Plain English",
@@ -1072,8 +1079,8 @@ function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSec
     "",
     "### What users experience",
     section.userExperience,
-    ...optionalInteractionSection(section),
     "",
+    ...keyInteractionMarkdown(section),
     "### Repo Evidence",
     `Matched focused repo evidence: ${matches.length} files, about ${sourceLines.toLocaleString()} readable source lines.`,
     "",
@@ -1103,7 +1110,7 @@ function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSec
     "Supporting files:",
     supportingFiles.map(fileSummary).join("\n") || "- None found.",
     "",
-  ].join("\n");
+  ].join("\n"));
 
   return {
     number: section.number,
@@ -1141,14 +1148,14 @@ export function buildProductSections(options: {
 }
 
 export function renderProductSectionsMarkdown(result: ProductSectionsResult): string {
-  return [
+  return sanitizeGeneratedMarkdown([
     PRODUCT_SECTION_START,
     "",
     ...result.sections.map((section) => section.markdown.trim()),
     "",
     PRODUCT_SECTION_END,
     "",
-  ].join("\n");
+  ].join("\n"));
 }
 
 export function buildProductReadmeSections(files: string[], lineBudget = 2800): ProductReadmeResult {
@@ -1167,17 +1174,17 @@ export function buildProductReadmeSections(files: string[], lineBudget = 2800): 
   });
 
   return {
-    markdown: [
+    markdown: sanitizeGeneratedMarkdown([
       PRODUCT_SECTION_START,
       "",
       ...sections.map((section) => section.markdown.trim()),
       "",
       PRODUCT_SECTION_END,
       "",
-    ].join("\n"),
+    ].join("\n")),
     stats: sections.map((section) => ({
       number: section.number,
-      title: section.title,
+      title: sanitizeGeneratedMarkdown(section.title),
       matchedFiles: section.matchedFiles,
       sourceLines: section.sourceLines,
       routes: section.routes,
@@ -1247,7 +1254,7 @@ function runCli(): void {
     trackedFiles: result.trackedFiles,
     sections: result.sections.map((section) => ({
       number: section.number,
-      title: section.title,
+      title: sanitizeGeneratedMarkdown(section.title),
       matchedFiles: section.matchedFiles,
       sourceLines: section.sourceLines,
       routes: section.routes,
