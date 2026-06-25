@@ -16,6 +16,7 @@ type SectionRule = {
   title: string;
   plainEnglish: string;
   userExperience: string;
+  interactionModel?: string[];
   primaryPaths: RegExp[];
   supportingPaths: RegExp[];
   keywords: string[];
@@ -202,9 +203,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     number: 6,
     title: "Dual Runtimes",
     plainEnglish:
-      "Dual runtimes are the split execution model that coordinates navigation, state, snapshots, handoffs, surface lifecycle, and active Engin behavior without making every screen own the whole system.",
+      "Dual runtimes are the split execution model that lets DREAMengin keep two active product worlds available at once instead of replacing one page with another. The runtime layer tracks which world is active, which surface is dominant, and how state, snapshots, and handoffs move between HomeDream, DreamSpace, Engins, and shared surfaces.",
     userExperience:
-      "Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.",
+      "Users feel this as a two-lane workspace: one side can keep HomeDream, DreamSpace, a studio, preview, editor, remote surface, or companion panel alive while the other side changes. Switching context should preserve the active runtime instead of making the user start over.",
+    interactionModel: [
+      "DualRuntimeContainer owns the user-facing split runtime shell and renders runtime worlds through RuntimeView and RuntimeShell.",
+      "The runtime helpers expose world changes, HomeDream activation, DreamSpace activation, surface activation, focus keys, movement, and dominant-runtime swaps.",
+      "DreamDmBar is the control layer that should be able to drive these runtime changes without acting like a separate app destination.",
+      "The important user behavior is continuity: open, swap, collapse, expand, or refocus a runtime surface without losing the state the user was already carrying.",
+    ],
     primaryPaths: [
       /^engine\/runtime\/dualRuntime/,
       /^engine\/runtime\/useDualRuntime/,
@@ -377,13 +384,25 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     number: 12,
     title: "The DreamDmBar (dreamdmbar/)",
     plainEnglish:
-      "The DreamDmBar is the communication, navigation, search, command, notification, and contextual action layer that should always be near the user.",
+      "The DreamDmBar is the persistent interaction rail for DREAMengin: messaging, search, notifications, quick actions, module intent, DreamR, HomeDream, DreamSpace, and runtime control live around this bar instead of being scattered across isolated pages.",
     userExperience:
-      "Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.",
+      "Users experience DreamDmBar as the always-near control surface: tap for immediate action, drag or swipe the gold control to expand, collapse, split, or reveal context, keep DM/search/notification state alive, and jump between HomeDream, DreamSpace, DreamR, messages, panels, and active Engins without losing the runtime they were using.",
+    interactionModel: [
+      "The visible bar is not just navigation. It is an input surface that interprets gold tap, release, drag, swipe, velocity, snap points, and split ratio.",
+      "barInteractions owns the physical feel of the bar: tap-vs-release detection, pointer velocity, snap-to-split behavior, collapse decisions, and gold-tap action resolution.",
+      "DreamSystemContext is the shared context that lets the bar coordinate active surfaces, module state, panels, and runtime-adjacent decisions.",
+      "The bar carries communication state through useDreamDMConversations, useDreamDMDraft, useDreamDMMessages, useMessagingCore, and notification hooks.",
+      "The bar carries navigation and command state through useDreamSearch, useDreamBarContext, useModuleBarIntent, command palette connections, and panel connections.",
+      "The bar is tied to runtime behavior through the DreamDMBar dualruntime, homedream, and dreamspace routes plus DualRuntimeContainer, RuntimeView, HomeDreamRegion, and DreamSpaceRegion connections.",
+      "The README must describe this as a touch-first runtime control surface, not as a generic toolbar or a page with messaging links.",
+    ],
     primaryPaths: [
       /^dreamdmbar\//,
       /^app\/dreamdmbar\//,
       /^engine\/generated\/dreamdmbar\.ts$/,
+      /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
+      /^components\/runtime\/dream\.RuntimeView\.tsx$/,
+      /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
     ],
     supportingPaths: [
       /^components\/panels\/dream\.panel\./,
@@ -391,14 +410,31 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/api\/messages\//,
       /^components\/dream\.CommandPalette\.tsx$/,
       /^components\/dream\.NotificationCenter\.tsx$/,
+      /^components\/home\/dream\.bar\.PersistentDreamBar\.tsx$/,
+      /^components\/home\/dream\.bar\.GlobalDreamBar\.tsx$/,
+      /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
+      /^engine\/runtime\/dualRuntime/,
+      /^engine\/runtime\/useDualRuntime/,
     ],
-    keywords: ["dreamdmbar", "dream dm", "notification", "command"],
-    maxFiles: 70,
+    keywords: [
+      "dreamdmbar",
+      "dream dm",
+      "gold tap",
+      "bar interaction",
+      "split ratio",
+      "notification",
+      "command",
+      "dualruntime",
+      "runtime",
+      "homedream",
+      "dreamspace",
+    ],
+    maxFiles: 80,
     rootCaps: {
-      app: 18,
-      components: 18,
+      app: 20,
+      components: 22,
       dreamdmbar: 30,
-      engine: 2,
+      engine: 8,
     },
   },
   {
@@ -1007,6 +1043,16 @@ function fileSummary(match: FileMatch): string {
   return `- ${parts.join(" â ")}`;
 }
 
+function optionalInteractionSection(section: SectionRule): string[] {
+  if (!section.interactionModel?.length) return [];
+
+  return [
+    "",
+    "### Key interaction model",
+    formatList(section.interactionModel),
+  ];
+}
+
 function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSectionOutput {
   const sourceLines = matches.reduce((sum, match) => sum + match.file.lines, 0);
   const routes = extractRoutes(matches);
@@ -1026,6 +1072,7 @@ function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSec
     "",
     "### What users experience",
     section.userExperience,
+    ...optionalInteractionSection(section),
     "",
     "### Repo Evidence",
     `Matched focused repo evidence: ${matches.length} files, about ${sourceLines.toLocaleString()} readable source lines.`,
