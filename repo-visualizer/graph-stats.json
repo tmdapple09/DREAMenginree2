@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-24T23:31:40.215Z",
-  "totalFiles": 2256,
-  "totalNodes": 7862,
+  "generatedAt": "2026-06-25T01:01:45.532Z",
+  "totalFiles": 2257,
+  "totalNodes": 7863,
   "totalEdges": 8367,
   "totalFunctionAndClassNodes": 4522,
-  "orphanCount": 3946,
+  "orphanCount": 3947,
   "countsByType": {
     "folder": 631,
-    "file": 113,
+    "file": 114,
     "doc": 231,
     "config": 240,
     "function": 4252,

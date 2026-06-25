@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T23:31:40.215Z",
+  "generatedAt": "2026-06-25T01:01:45.532Z",
   "root": ".",
   "nodes": [
     {
@@ -3526,6 +3526,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMengin-readme-autosync-changed-files.zip",
+      "label": "DREAMengin-readme-autosync-changed-files.zip",
+      "type": "file",
+      "path": "DREAMengin-readme-autosync-changed-files.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
