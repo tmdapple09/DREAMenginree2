@@ -19,8 +19,6 @@ type SectionRule = {
   primaryPaths: RegExp[];
   supportingPaths: RegExp[];
   keywords: string[];
-  allowedRoots?: string[];
-  excludedPaths?: RegExp[];
   maxFiles: number;
 };
 
@@ -81,6 +79,15 @@ const SOURCE_EXTENSIONS = new Set([
   ".yaml",
 ]);
 
+const CODE_EXTENSIONS = new Set([
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+]);
+
 const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
   /^node_modules\//,
   /^\.next\//,
@@ -91,6 +98,8 @@ const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
   /^test-results\//,
   /^\.turbo\//,
   /^\.vercel\//,
+  /^build-memory\//,
+  /^\.ci\//,
   /\.tsbuildinfo$/,
   /^README\.md$/,
   /^scripts\/generate-readme\.ts$/,
@@ -100,7 +109,14 @@ const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
   /\.(png|jpe?g|gif|webp|mp4|mov|webm|avi|mkv|wasm)$/i,
 ];
 
-const META_ROOTS = new Set(["scripts", ".github", "docs", "research", "tests"]);
+const META_ROOTS = new Set([
+  ".github",
+  "agents",
+  "docs",
+  "research",
+  "scripts",
+  "tests",
+]);
 
 export const PRODUCT_SECTIONS: SectionRule[] = [
   {
@@ -139,14 +155,20 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.",
     primaryPaths: [
-      /^engins\/(engin\.|rulesets\/|contentengin\/|gameengin\/|forgeengin\/|renderengin\/|CodeEngin\/)/,
+      /^engins\/engin\.[A-Za-z0-9]+Engin\.tsx$/,
+      /^engins\/dream\.ForgeEngin\.tsx$/,
+      /^engins\/rulesets\//,
+      /^engins\/contentengin\//,
+      /^engins\/gameengin\//,
+      /^engins\/forgeengin\//,
+      /^engins\/renderengin\//,
       /^app\/engines\//,
       /^app\/daydream\//,
       /^daydreams\//,
       /^components\/engines\//,
       /^components\/daydream\//,
     ],
-    supportingPaths: [/^engine\/runtime\/engin/i, /^engine\/engin-runtime\//],
+    supportingPaths: [/^engine\/engin-runtime\//, /^engine\/runtime\/enginWorkflowRegistry\.ts$/],
     keywords: ["engin", "daydream", "ruleset", "studio", "workspace"],
     maxFiles: 120,
   },
@@ -159,15 +181,20 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.",
     primaryPaths: [
       /^engine\/runtime\/dualRuntime/,
-      /^engine\/runtime\/dualRuntimeBridge/,
       /^engine\/runtime\/useDualRuntime/,
       /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
       /^components\/runtime\/dream\.RuntimeView\.tsx$/,
       /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
       /^app\/dreamdmbar\/dualruntime\//,
     ],
-    supportingPaths: [/^engine\/vm\//, /^engine\/runtime\/iEngine\.ts$/, /^engine\/runtime\/dreamOSBus\.ts$/],
-    keywords: ["dualRuntime", "dual runtime", "runtime bridge", "snapshot", "handoff"],
+    supportingPaths: [
+      /^engine\/vm\//,
+      /^engine\/runtime\/iEngine\.ts$/,
+      /^engine\/runtime\/dreamOSBus\.ts$/,
+      /^engine\/runtime\/snapshotFingerprint\.ts$/,
+      /^engine\/runtime\/madMaxiSnapshotBridge\.ts$/,
+    ],
+    keywords: ["dualruntime", "dual runtime", "runtime bridge", "snapshot", "handoff"],
     maxFiles: 80,
   },
   {
@@ -187,8 +214,12 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^daydreams\/shared\//,
       /^supabase\/migrations\/.*shared_dream/i,
     ],
-    supportingPaths: [/^engine\/runtime\/useSharedEnginChannel\.ts$/, /^supabase\/migrations\/.*dream/i],
-    keywords: ["shared dream", "sharedDream", "session", "presence", "collaboration"],
+    supportingPaths: [
+      /^engine\/runtime\/useSharedEnginChannel\.ts$/,
+      /^engine\/collaboration\//,
+      /^supabase\/migrations\/.*dream/i,
+    ],
+    keywords: ["shared dream", "sharedDream", "presence", "collaboration"],
     maxFiles: 90,
   },
   {
@@ -205,7 +236,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dreamr\//,
       /^app\/dreamdmbar\/_components\/dreamr\//,
     ],
-    supportingPaths: [/^app\/profile\//, /^app\/view-profile\//, /^app\/edit-profiledream\//],
+    supportingPaths: [
+      /^app\/profile\//,
+      /^app\/view-profile\//,
+      /^app\/edit-profiledream\//,
+      /^app\/api\/feed\//,
+      /^components\/feed\//,
+      /^components\/dream\.HomeFeed\.tsx$/,
+      /^components\/dream\.FeedCard\.tsx$/,
+    ],
     keywords: ["dreamr", "feed", "human media", "creator", "profile"],
     maxFiles: 80,
   },
@@ -216,9 +255,16 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "The Shop is the owned storefront area for a user or creator. It covers products, services, offers, carts, and purchase-related surfaces tied to a person or brand.",
     userExperience:
       "Users feel this as a creator storefront: things to buy, services to offer, and commercial parts attached to the creator identity.",
-    primaryPaths: [/^app\/shop\//, /^app\/api\/shop\//, /^engine\/shop\//, /^supabase\/migrations\/.*shop/i],
-    supportingPaths: [/^types\/shop/i, /^components\/shop\//],
-    keywords: ["shop", "listing", "seller", "storefront"],
+    primaryPaths: [
+      /^app\/shop\//,
+      /^app\/api\/shop\//,
+      /^engine\/shop\//,
+      /^types\/shop/i,
+      /^components\/shop\//,
+      /^supabase\/migrations\/.*shop/i,
+    ],
+    supportingPaths: [],
+    keywords: ["shop", "storefront", "shop listing", "seller"],
     maxFiles: 45,
   },
   {
@@ -254,8 +300,11 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^types\/ads\.ts$/,
       /^supabase\/migrations\/.*ads/i,
     ],
-    supportingPaths: [/^components\/engines\/brand\/panels\/.*Campaign/i, /^app\/engines\/brand\/campaigns\//],
-    keywords: ["ad", "ads", "sponsor", "promotion", "campaign"],
+    supportingPaths: [
+      /^components\/engines\/brand\/panels\/.*Campaign/i,
+      /^app\/engines\/brand\/campaigns\//,
+    ],
+    keywords: ["ads", "advertising", "sponsor", "promotion", "campaign"],
     maxFiles: 55,
   },
   {
@@ -268,11 +317,16 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     primaryPaths: [
       /^dreamdmbar\//,
       /^app\/dreamdmbar\//,
-      /^components\/panels\/dream\.panel\./,
       /^engine\/generated\/dreamdmbar\.ts$/,
     ],
-    supportingPaths: [/^app\/messages\//, /^app\/api\/messages\//],
-    keywords: ["dreamdmbar", "dream dm", "bar", "notification", "command"],
+    supportingPaths: [
+      /^components\/panels\/dream\.panel\./,
+      /^app\/messages\//,
+      /^app\/api\/messages\//,
+      /^components\/dream\.CommandPalette\.tsx$/,
+      /^components\/dream\.NotificationCenter\.tsx$/,
+    ],
+    keywords: ["dreamdmbar", "dream dm", "notification", "command"],
     maxFiles: 90,
   },
   {
@@ -293,7 +347,12 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^supabase\/migrations\/.*messages/i,
       /^supabase\/migrations\/.*conversations/i,
     ],
-    supportingPaths: [/^app\/settings\/notifications\//, /^app\/api\/settings\/notifications\//],
+    supportingPaths: [
+      /^app\/settings\/notifications\//,
+      /^app\/api\/settings\/notifications\//,
+      /^components\/dream\.MessagesClient\.tsx$/,
+      /^components\/dream\.NotificationCenter\.tsx$/,
+    ],
     keywords: ["message", "conversation", "draft", "notification", "inbox"],
     maxFiles: 85,
   },
@@ -312,7 +371,11 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^engins\/rulesets\/homedream\//,
       /^engine\/generated\/homedream\.ts$/,
     ],
-    supportingPaths: [/^components\/dream\.HomeFeed\.tsx$/, /^components\/dream\.FeedCard\.tsx$/, /^app\/api\/home-layout\//],
+    supportingPaths: [
+      /^components\/dream\.HomeFeed\.tsx$/,
+      /^components\/dream\.FeedCard\.tsx$/,
+      /^app\/api\/home-layout\//,
+    ],
     keywords: ["homedream", "home dream", "home feed", "launcher"],
     maxFiles: 80,
   },
@@ -327,6 +390,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dreams\/dreamsurface\.dreamspace\.tsx$/,
       /^app\/dreamdmbar\/_components\/DreamSpaceRegion\.tsx$/,
       /^app\/dreamdmbar\/dreamspace\//,
+      /^app\/dreamspace\//,
       /^components\/spatial\//,
       /^coresurfaces\//,
       /^daydreams\//,
@@ -334,7 +398,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/daydream\//,
     ],
     supportingPaths: [/^components\/runtime\//, /^engine\/runtime\/dreamsurface\//],
-    keywords: ["dreamspace", "dream space", "spatial", "daydream shell", "surface"],
+    keywords: ["dreamspace", "dream space", "spatial", "daydream shell"],
     maxFiles: 95,
   },
   {
@@ -350,12 +414,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dream\.widget/i,
       /^components\/dream\.DragToAnchorClose\.tsx$/,
       /^engine\/dream-window\//,
+      /^engine\/dreams\//,
       /^types\/dream-window\.ts$/,
+      /^types\/widget/i,
       /^app\/api\/dream-windows\//,
       /^app\/settings\/dreams\//,
       /^app\/settings\/widgets\//,
     ],
-    supportingPaths: [/^engine\/dreams\//, /^components\/dream\.FeedCard\.tsx$/],
+    supportingPaths: [/^components\/dream\.FeedCard\.tsx$/],
     keywords: ["dream window", "widget", "surface", "dreamsurface", "draggable"],
     maxFiles: 110,
   },
@@ -375,7 +441,11 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
       /^dreamdmbar\/hooks\/useModuleBarIntent\.ts$/,
     ],
-    supportingPaths: [/^components\/engines\/shared\//, /^components\/dreams\//],
+    supportingPaths: [
+      /^components\/engines\/shared\//,
+      /^components\/dreams\//,
+      /^components\/draggable\//,
+    ],
     keywords: ["module", "manifest", "panel", "registry", "launch"],
     maxFiles: 85,
   },
@@ -415,10 +485,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/providers\/dream\.ThemeProvider\.tsx$/,
       /^components\/dream\.ThemeApplicator\.tsx$/,
       /^components\/ui-system\/theme-engine\.ts$/,
+      /^components\/ui-system\/CustomizeModeContext\.tsx$/,
       /^styles\//,
       /^engins\/engin\.BrandingEngin\.tsx$/,
     ],
-    supportingPaths: [/^app\/api\/settings\//, /^components\/ui-system\/CustomizeModeContext\.tsx$/],
+    supportingPaths: [
+      /^app\/api\/settings\//,
+      /^components\/customize\//,
+      /^components\/dream\.Profile/,
+    ],
     keywords: ["appearance", "theme", "profile", "customize", "branding"],
     maxFiles: 95,
   },
@@ -462,6 +537,10 @@ function isReadableSource(filePath: string): boolean {
   return SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
+function isCodeFile(file: SourceFile): boolean {
+  return CODE_EXTENSIONS.has(file.ext);
+}
+
 function readFileSafe(filePath: string): string {
   try {
     return fs.readFileSync(filePath, "utf8");
@@ -498,18 +577,52 @@ function loadSourceFiles(files: string[]): SourceFile[] {
   });
 }
 
-function includesKeyword(text: string, keyword: string): boolean {
-  return text.toLowerCase().includes(keyword.toLowerCase());
+function normalizedNeedle(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function pathHasKeyword(filePath: string, keyword: string): boolean {
+  const normalizedPath = normalizedNeedle(filePath);
+  const normalizedKeyword = normalizedNeedle(keyword);
+
+  if (!normalizedKeyword || normalizedKeyword.length < 3) return false;
+
+  const pathTokens = new Set(normalizedPath.split(/\s+/g).filter(Boolean));
+  const keywordTokens = normalizedKeyword.split(/\s+/g).filter(Boolean);
+
+  if (keywordTokens.length === 1) {
+    return pathTokens.has(keywordTokens[0]);
+  }
+
+  return normalizedPath.includes(normalizedKeyword);
+}
+
+function textHasKeyword(text: string, keyword: string): boolean {
+  const normalizedKeyword = normalizedNeedle(keyword);
+
+  if (!normalizedKeyword || normalizedKeyword.length < 4) return false;
+
+  if (normalizedKeyword.includes(" ")) {
+    return normalizedNeedle(text).includes(normalizedKeyword);
+  }
+
+  const pattern = new RegExp(`\\b${escapeRegExp(normalizedKeyword)}\\b`, "i");
+  return pattern.test(text);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isMetaFileForSection(file: SourceFile, section: SectionRule): boolean {
+  if (section.number === 4) return false;
+  if (section.number === 20 && file.root !== ".github") return false;
+
+  return META_ROOTS.has(file.root);
 }
 
 function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
-  if (section.excludedPaths?.some((pattern) => pattern.test(file.path))) {
-    return null;
-  }
-
-  if (section.allowedRoots && !section.allowedRoots.includes(file.root)) {
-    return null;
-  }
+  if (isMetaFileForSection(file, section)) return null;
 
   let score = 0;
   const reasons: string[] = [];
@@ -524,41 +637,38 @@ function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
 
   for (const pattern of section.supportingPaths) {
     if (pattern.test(file.path)) {
-      score += 45;
+      score += 55;
       reasons.push("supporting path");
       break;
     }
   }
 
-  const lowerPath = file.path.toLowerCase();
+  if (score <= 0) return null;
 
   for (const keyword of section.keywords) {
-    const lowerKeyword = keyword.toLowerCase();
-    const dashedKeyword = lowerKeyword.replace(/\s+/g, "-");
-
-    if (lowerPath.includes(dashedKeyword) || lowerPath.includes(lowerKeyword)) {
-      score += 20;
+    if (pathHasKeyword(file.path, keyword)) {
+      score += 22;
       reasons.push(`path keyword: ${keyword}`);
     }
   }
 
-  if (file.text && score > 0) {
+  if (file.text) {
     for (const keyword of section.keywords) {
-      if (includesKeyword(file.text, keyword)) {
-        score += 8;
+      if (textHasKeyword(file.text, keyword)) {
+        score += 6;
       }
     }
   }
 
-  if (file.root === "app" && /^app\/.+\/page\.tsx?$/.test(file.path)) score += 10;
-  if (file.root === "app" && /^app\/api\/.+\/route\.tsx?$/.test(file.path)) score += 10;
-  if (/\.(test|spec)\.(ts|tsx|js|jsx)$/.test(file.path)) score -= 35;
-  if (file.root === "docs") score -= 25;
-  if (file.root === ".github") score -= section.number === 4 ? 0 : 60;
-  if (file.root === "research") score -= 40;
-  if (META_ROOTS.has(file.root) && section.number !== 4 && section.number !== 20) score -= 15;
+  if (file.root === "app" && /^app\/.+\/page\.tsx?$/.test(file.path)) score += 8;
+  if (file.root === "app" && /^app\/api\/.+\/route\.tsx?$/.test(file.path)) score += 8;
 
-  if (score <= 0) return null;
+  if (/\.(test|spec)\.(ts|tsx|js|jsx)$/.test(file.path)) score -= 35;
+  if (file.root === "docs") score -= 35;
+  if (file.root === "research") score -= 45;
+  if (file.root === ".github" && section.number !== 4) score -= 80;
+
+  if (score < 45) return null;
 
   return { file, score, reasons };
 }
@@ -580,12 +690,14 @@ function extractRoutes(matches: FileMatch[]): string[] {
 
   for (const { file } of matches) {
     const pageMatch = file.path.match(/^app\/(.+)\/page\.tsx?$/);
+
     if (pageMatch) {
       const route = `/${pageMatch[1]}`.replace(/\/page$/, "").replace(/\/\(.*?\)/g, "");
       routes.add(`${route} ← ${file.path}`);
     }
 
     const apiMatch = file.path.match(/^app\/api\/(.+)\/route\.tsx?$/);
+
     if (apiMatch) {
       const methods = extractRouteMethods(file.text);
       routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} ← ${file.path}`);
@@ -615,6 +727,8 @@ function extractImports(matches: FileMatch[]): string[] {
   const imports = new Set<string>();
 
   for (const { file } of matches) {
+    if (!isCodeFile(file)) continue;
+
     for (const match of file.text.matchAll(/from\s+["']([^"']+)["']/g)) {
       const source = match[1];
 
@@ -633,17 +747,27 @@ function extractExports(matches: FileMatch[]): string[] {
   const exports = new Set<string>();
 
   for (const { file } of matches) {
+    if (!isCodeFile(file)) continue;
+
     for (const match of file.text.matchAll(/export\s+(?:async\s+)?(?:function|const|class|type|interface)\s+([A-Za-z0-9_]+)/g)) {
-      exports.add(`${match[1]} — ${file.path}`);
+      const name = match[1];
+
+      if (isLikelyConstant(name)) continue;
+
+      exports.add(`${name} — ${file.path}`);
     }
 
     if (/export\s+default\b/.test(file.text)) {
-      const component = path.basename(file.path).replace(/\.(tsx?|jsx?|mjs|cjs)$/, "");
-      exports.add(`default export — ${component} (${file.path})`);
+      const name = path.basename(file.path).replace(/\.(tsx?|jsx?|mjs|cjs)$/, "");
+      exports.add(`default export — ${name} (${file.path})`);
     }
   }
 
   return [...exports].slice(0, 14);
+}
+
+function isLikelyConstant(name: string): boolean {
+  return /^[A-Z0-9_]+$/.test(name);
 }
 
 function extractComponents(matches: FileMatch[]): string[] {
@@ -652,8 +776,19 @@ function extractComponents(matches: FileMatch[]): string[] {
   for (const { file } of matches) {
     if (!file.path.endsWith(".tsx") && !file.path.endsWith(".jsx")) continue;
 
-    for (const match of file.text.matchAll(/(?:export\s+default\s+function|export\s+function|function|const)\s+([A-Z][A-Za-z0-9_]*)/g)) {
-      components.add(`${match[1]} — ${file.path}`);
+    const functionPatterns = [
+      /(?:export\s+default\s+function|export\s+function|function)\s+([A-Z][A-Za-z0-9_]*)\b/g,
+      /(?:export\s+const|const)\s+([A-Z][A-Za-z0-9_]*)\s*=\s*(?:\([^)]*\)|[A-Za-z0-9_]+)\s*=>/g,
+      /(?:export\s+const|const)\s+([A-Z][A-Za-z0-9_]*)\s*:\s*(?:React\.)?(?:FC|FunctionComponent)\b/g,
+    ];
+
+    for (const pattern of functionPatterns) {
+      for (const match of file.text.matchAll(pattern)) {
+        const name = match[1];
+
+        if (isLikelyConstant(name)) continue;
+        components.add(`${name} — ${file.path}`);
+      }
     }
   }
 
@@ -664,6 +799,8 @@ function extractHooks(matches: FileMatch[]): string[] {
   const hooks = new Set<string>();
 
   for (const { file } of matches) {
+    if (!isCodeFile(file)) continue;
+
     for (const match of file.text.matchAll(/\b(use[A-Z][A-Za-z0-9_]*)\b/g)) {
       hooks.add(`${match[1]} — ${file.path}`);
     }
@@ -705,7 +842,6 @@ function behaviorSignals(matches: FileMatch[]): string[] {
 
 function formatList(items: string[], empty = "- None found."): string {
   if (!items.length) return empty;
-
   return items.map((item) => `- ${item}`).join("\n");
 }
 
