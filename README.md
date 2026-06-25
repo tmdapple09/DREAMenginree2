@@ -482,10 +482,16 @@ Supporting files:
 ## 6. Dual Runtimes
 
 ### Plain English
-Dual runtimes are the split execution model that coordinates navigation, state, snapshots, handoffs, surface lifecycle, and active Engin behavior without making every screen own the whole system.
+Dual runtimes are the split execution model that lets DREAMengin keep two active product worlds available at once instead of replacing one page with another. The runtime layer tracks which world is active, which surface is dominant, and how state, snapshots, and handoffs move between HomeDream, DreamSpace, Engins, and shared surfaces.
 
 ### What users experience
-Users feel this when one part of the app keeps context while another part opens a studio, preview, editor, remote surface, or companion panel without losing state.
+Users feel this as a two-lane workspace: one side can keep HomeDream, DreamSpace, a studio, preview, editor, remote surface, or companion panel alive while the other side changes. Switching context should preserve the active runtime instead of making the user start over.
+
+### Key interaction model
+- DualRuntimeContainer owns the user-facing split runtime shell and renders runtime worlds through RuntimeView and RuntimeShell.
+- The runtime helpers expose world changes, HomeDream activation, DreamSpace activation, surface activation, focus keys, movement, and dominant-runtime swaps.
+- DreamDmBar is the control layer that should be able to drive these runtime changes without acting like a separate app destination.
+- The important user behavior is continuity: open, swap, collapse, expand, or refocus a runtime surface without losing the state the user was already carrying.
 
 ### Repo Evidence
 Matched focused repo evidence: 26 files, about 7,005 readable source lines.
@@ -1117,147 +1123,170 @@ Supporting files:
 ## 12. The DreamDmBar (dreamdmbar/)
 
 ### Plain English
-The DreamDmBar is the communication, navigation, search, command, notification, and contextual action layer that should always be near the user.
+The DreamDmBar is the persistent interaction rail for DREAMengin: messaging, search, notifications, quick actions, module intent, DreamR, HomeDream, DreamSpace, and runtime control live around this bar instead of being scattered across isolated pages.
 
 ### What users experience
-Users feel it as the bar that lets them message, search, jump between modules, respond to context, open actions, and keep moving without hunting through pages.
+Users experience DreamDmBar as the always-near control surface: tap for immediate action, drag or swipe the gold control to expand, collapse, split, or reveal context, keep DM/search/notification state alive, and jump between HomeDream, DreamSpace, DreamR, messages, panels, and active Engins without losing the runtime they were using.
+
+### Key interaction model
+- The visible bar is not just navigation. It is an input surface that interprets gold tap, release, drag, swipe, velocity, snap points, and split ratio.
+- barInteractions owns the physical feel of the bar: tap-vs-release detection, pointer velocity, snap-to-split behavior, collapse decisions, and gold-tap action resolution.
+- DreamSystemContext is the shared context that lets the bar coordinate active surfaces, module state, panels, and runtime-adjacent decisions.
+- The bar carries communication state through useDreamDMConversations, useDreamDMDraft, useDreamDMMessages, useMessagingCore, and notification hooks.
+- The bar carries navigation and command state through useDreamSearch, useDreamBarContext, useModuleBarIntent, command palette connections, and panel connections.
+- The bar is tied to runtime behavior through the DreamDMBar dualruntime, homedream, and dreamspace routes plus DualRuntimeContainer, RuntimeView, HomeDreamRegion, and DreamSpaceRegion connections.
+- The README must describe this as a touch-first runtime control surface, not as a generic toolbar or a page with messaging links.
 
 ### Repo Evidence
-Matched focused repo evidence: 50 files, about 13,651 readable source lines.
+Matched focused repo evidence: 62 files, about 17,333 readable source lines.
 
 Behavior signals:
-- commerce â 33 file hits
-- state â 30 file hits
-- runtime â 28 file hits
-- auth â 28 file hits
-- mobile touch â 27 file hits
-- persistence â 25 file hits
-- rendering â 25 file hits
-- events â 15 file hits
+- commerce â 42 file hits
+- state â 40 file hits
+- runtime â 38 file hits
+- auth â 37 file hits
+- mobile touch â 34 file hits
+- rendering â 34 file hits
+- persistence â 28 file hits
+- events â 20 file hits
 
 Routes and APIs:
-- /dreamdmbar/dualruntime â app/dreamdmbar/dualruntime/page.tsx
 - /dreamdmbar/dreamspace â app/dreamdmbar/dreamspace/page.tsx
+- /dreamdmbar/dualruntime â app/dreamdmbar/dualruntime/page.tsx
 - /dreamdmbar/homedream â app/dreamdmbar/homedream/page.tsx
 - /dreamdmbar â app/dreamdmbar/page.tsx
 - GET|POST /api/messages â app/api/messages/route.ts
 - /messages/boards/[id] â app/messages/boards/[id]/page.tsx
+- /messages/boards â app/messages/boards/page.tsx
+- /messages/boards/new â app/messages/boards/new/page.tsx
 
 Components:
+- DreamSystemProvider â dreamdmbar/runtime/DreamSystemContext.tsx
+- DreamDMBarDreamSpacePage â app/dreamdmbar/dreamspace/page.tsx
+- DreamDMBarDualRuntimePage â app/dreamdmbar/dualruntime/page.tsx
+- DreamDMBarHomeDreamPage â app/dreamdmbar/homedream/page.tsx
 - AvatarChip â dreamdmbar/dreamsurface.dreamdmbar.tsx
 - ContextIcon â dreamdmbar/dreamsurface.dreamdmbar.tsx
 - DreamDMBar â dreamdmbar/dreamsurface.dreamdmbar.tsx
 - CompactNotificationStrip â dreamdmbar/dreamsurface.dreamdmbar.tsx
 - ModeButton â dreamdmbar/dreamsurface.dreamdmbar.tsx
 - DreamSpaceMessaging â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- DreamDMBarDualRuntimePage â app/dreamdmbar/dualruntime/page.tsx
-- DreamDMBarDreamSpacePage â app/dreamdmbar/dreamspace/page.tsx
-- DreamDMBarHomeDreamPage â app/dreamdmbar/homedream/page.tsx
-- DreamDMBarPage â app/dreamdmbar/page.tsx
 - QuickLink â app/dreamdmbar/_components/HomeDreamRegion.tsx
 - HomeDreamSurface â app/dreamdmbar/_components/HomeDreamRegion.tsx
-- TrendIcon â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
-- CreateTab â app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx
+- RuntimeView â components/runtime/dream.RuntimeView.tsx
+- DualRuntimeContainer â components/runtime/dream.DualRuntimeContainer.tsx
 
 Hooks:
-- useCallback â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useEffect â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useRef â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useState â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamSystem â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamBarContext â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMConversations â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMDraft â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamDMMessages â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useDreamSearch â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useMessagingCore â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useNotifications â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useLiveNotifications â dreamdmbar/dreamsurface.dreamdmbar.tsx
-- useImmersiveGameLayout â dreamdmbar/dreamsurface.dreamdmbar.tsx
+- useCallback â dreamdmbar/runtime/DreamSystemContext.tsx
+- useContext â dreamdmbar/runtime/DreamSystemContext.tsx
+- useEffect â dreamdmbar/runtime/DreamSystemContext.tsx
+- useRef â dreamdmbar/runtime/DreamSystemContext.tsx
+- useState â dreamdmbar/runtime/DreamSystemContext.tsx
+- useDreamSystem â dreamdmbar/runtime/DreamSystemContext.tsx
+- useDualRuntime â app/dreamdmbar/dreamspace/page.tsx
+- useDreamSystem â app/dreamdmbar/dreamspace/page.tsx
+- useEffect â app/dreamdmbar/dreamspace/page.tsx
+- useDreamSystem â app/dreamdmbar/dualruntime/page.tsx
+- useEffect â app/dreamdmbar/dualruntime/page.tsx
+- useState â app/dreamdmbar/dualruntime/page.tsx
+- useDualRuntime â app/dreamdmbar/homedream/page.tsx
+- useDreamSystem â app/dreamdmbar/homedream/page.tsx
 
 Exports that define public behavior:
-- default export â dreamsurface.dreamdmbar (dreamdmbar/dreamsurface.dreamdmbar.tsx)
-- default export â page (app/dreamdmbar/dualruntime/page.tsx)
+- HomeData â dreamdmbar/runtime/DreamSystemContext.tsx
+- BarIntentMode â dreamdmbar/runtime/DreamSystemContext.tsx
+- ModuleBarAction â dreamdmbar/runtime/DreamSystemContext.tsx
+- BarIntent â dreamdmbar/runtime/DreamSystemContext.tsx
+- WorldFocusState â dreamdmbar/runtime/DreamSystemContext.tsx
+- RuntimeCallbacks â dreamdmbar/runtime/DreamSystemContext.tsx
+- DreamSystemProvider â dreamdmbar/runtime/DreamSystemContext.tsx
+- useDreamSystem â dreamdmbar/runtime/DreamSystemContext.tsx
 - default export â page (app/dreamdmbar/dreamspace/page.tsx)
-- default export â page (app/dreamdmbar/homedream/page.tsx)
-- default export â page (app/dreamdmbar/page.tsx)
-- default export â HomeDreamRegion (app/dreamdmbar/_components/HomeDreamRegion.tsx)
-- useNotifications â dreamdmbar/hooks/useNotifications.ts
-- default export â dreamsurface.dreamr (app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx)
 - snapToSplitPoint â dreamdmbar/runtime/barInteractions.ts
 - snapSplitRatioOnRelease â dreamdmbar/runtime/barInteractions.ts
 - resolveGoldTapAction â dreamdmbar/runtime/barInteractions.ts
 - shouldTreatGoldReleaseAsTap â dreamdmbar/runtime/barInteractions.ts
 - calculatePointerVelocity â dreamdmbar/runtime/barInteractions.ts
-- shouldCollapseGoldSwipe â dreamdmbar/runtime/barInteractions.ts
 
 Import/export connections:
+- dreamdmbar/runtime/barInteractions
+- components/panels/panelTypes
+- engine/runtime/dualRuntime
+- supabase/client/client
+- supabase/client/safeGetUser
+- react
+- components/runtime/dream.DualRuntimeContainer
+- dreamdmbar/runtime/DreamSystemContext
+- components/shared-dream/dream.SharedDreamRuntime
 - lucide-react
 - next/image
-- react
 - components/ui/dream.DreamWord
 - dreamdmbar/dream.GlowingLight
-- dreamdmbar/runtime/barInteractions
-- dreamdmbar/runtime/DreamSystemContext
 - dreamdmbar/hooks/useDreamBarContext
-- dreamdmbar/hooks/useDreamDMConversations
-- dreamdmbar/hooks/useDreamDMDraft
-- dreamdmbar/hooks/useDreamDMMessages
-- dreamdmbar/hooks/useDreamSearch
-- dreamdmbar/hooks/useMessagingCore
-- dreamdmbar/notifications/useNotifications
 
 ### Matched Files
 
 Primary files:
-- `dreamdmbar/dreamsurface.dreamdmbar.tsx` â 3098 lines â score 134 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/dualruntime/page.tsx` â 102 lines â score 134 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/dreamspace/page.tsx` â 19 lines â score 134 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/homedream/page.tsx` â 19 lines â score 134 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/page.tsx` â 11 lines â score 134 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/HomeDreamRegion.tsx` â 460 lines â score 130 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/DreamSystemContext.tsx` â 401 lines â score 168 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/dreamspace/page.tsx` â 19 lines â score 168 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/barInteractions.ts` â 533 lines â score 164 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/dualruntime/page.tsx` â 102 lines â score 164 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/homedream/page.tsx` â 19 lines â score 164 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/dreamsurface.dreamdmbar.tsx` â 3098 lines â score 150 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/runtime/bridgeSeamFlow.ts` â 214 lines â score 148 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/HomeDreamRegion.tsx` â 460 lines â score 142 â primary path, path keyword: dreamdmbar
+- `components/runtime/dream.RuntimeView.tsx` â 432 lines â score 142 â primary path, path keyword: runtime
+- `components/runtime/dream.DualRuntimeContainer.tsx` â 246 lines â score 142 â primary path, path keyword: runtime
+- `app/dreamdmbar/_components/DreamBarDataBridge.tsx` â 196 lines â score 142 â primary path, path keyword: dreamdmbar
+- `components/runtime/dream.shell.RuntimeShell.tsx` â 352 lines â score 138 â primary path, path keyword: runtime
+- `app/dreamdmbar/page.tsx` â 11 lines â score 138 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` â 459 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` â 260 lines â score 134 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamSearch.ts` â 233 lines â score 134 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useDreamBarContext.ts` â 185 lines â score 134 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` â 2006 lines â score 130 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` â 115 lines â score 130 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/hooks/useNotifications.ts` â 97 lines â score 130 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` â 2006 lines â score 126 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/barInteractions.ts` â 533 lines â score 126 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/DreamSystemContext.tsx` â 401 lines â score 126 â primary path, path keyword: dreamdmbar
+- `dreamdmbar/hooks/useModuleBarIntent.ts` â 87 lines â score 130 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` â 55 lines â score 130 â primary path, path keyword: dreamdmbar
+- `engine/generated/dreamdmbar.ts` â 22 lines â score 130 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` â 350 lines â score 126 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/notifications/notificationHelpers.ts` â 266 lines â score 126 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` â 260 lines â score 126 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamSearch.ts` â 233 lines â score 126 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/DreamBarDataBridge.tsx` â 196 lines â score 126 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useDreamBarContext.ts` â 185 lines â score 126 â primary path, path keyword: dreamdmbar
 - `app/dreamdmbar/layout.tsx` â 184 lines â score 126 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/notifications/useNotifications.ts` â 172 lines â score 126 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` â 115 lines â score 126 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/hooks/useModuleBarIntent.ts` â 87 lines â score 126 â primary path, path keyword: dreamdmbar
-- `engine/generated/dreamdmbar.ts` â 22 lines â score 126 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/DreamSpaceRegion.tsx` â 459 lines â score 122 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` â 350 lines â score 122 â primary path, path keyword: dreamdmbar
-- `dreamdmbar/runtime/bridgeSeamFlow.ts` â 214 lines â score 122 â primary path, path keyword: dreamdmbar
+- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` â 159 lines â score 126 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/hooks/useMessagingCore.ts` â 189 lines â score 122 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/hooks/useDreamDMDraft.ts` â 176 lines â score 122 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` â 159 lines â score 122 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/hooks/useDreamDMMessages.ts` â 141 lines â score 122 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/hooks/useDreamDMConversations.ts` â 123 lines â score 122 â primary path, path keyword: dreamdmbar
 - `dreamdmbar/dream.GlowingLight.tsx` â 103 lines â score 122 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` â 55 lines â score 122 â primary path, path keyword: dreamdmbar
 - `app/dreamdmbar/_components/DreamWidgetGrid.tsx` â 33 lines â score 122 â primary path, path keyword: dreamdmbar
-- `app/dreamdmbar/_components/dreamr/api/route.ts` â 3 lines â score 122 â primary path, path keyword: dreamdmbar
-- `components/dream.CommandPalette.tsx` â 482 lines â score 63 â supporting path
-- `components/dream.NotificationCenter.tsx` â 414 lines â score 63 â supporting path
 
 Supporting files:
+- `app/dreamdmbar/_components/dreamr/api/route.ts` â 3 lines â score 122 â primary path, path keyword: dreamdmbar
+- `engine/runtime/dualRuntime.ts` â 259 lines â score 115 â supporting path, path keyword: dualruntime
+- `engine/runtime/useDualRuntimePersistence.ts` â 187 lines â score 89 â supporting path, path keyword: runtime
+- `engine/runtime/dualRuntimeBridge.ts` â 873 lines â score 81 â supporting path, path keyword: runtime
+- `engine/runtime/useDualRuntime.ts` â 184 lines â score 81 â supporting path, path keyword: runtime
+- `components/home/dream.bar.PersistentDreamBar.tsx` â 345 lines â score 75 â supporting path
+- `components/dream.CommandPalette.tsx` â 482 lines â score 67 â supporting path
+- `components/home/dream.ActiveModuleSurface.tsx` â 475 lines â score 67 â supporting path
+- `components/panels/dream.panel.AppearancePanel.tsx` â 166 lines â score 67 â supporting path
+- `components/panels/dream.panel.WidgetsPanel.tsx` â 108 lines â score 67 â supporting path
+- `components/home/dream.bar.GlobalDreamBar.tsx` â 100 lines â score 67 â supporting path
+- `components/dream.NotificationCenter.tsx` â 414 lines â score 63 â supporting path
 - `app/api/messages/route.ts` â 342 lines â score 63 â supporting path
+- `components/panels/dream.panel.SettingsPanel.tsx` â 185 lines â score 63 â supporting path
 - `app/messages/boards/[id]/page.tsx` â 178 lines â score 63 â supporting path
-- `components/panels/dream.panel.SettingsPanel.tsx` â 185 lines â score 59 â supporting path
-- `components/panels/dream.panel.AppearancePanel.tsx` â 166 lines â score 59 â supporting path
-- `components/panels/dream.panel.PrivacyPanel.tsx` â 146 lines â score 59 â supporting path
-- `components/panels/dream.panel.DataPanel.tsx` â 139 lines â score 59 â supporting path
-- `components/panels/dream.panel.MarketplacePanel.tsx` â 139 lines â score 59 â supporting path
-- `components/panels/dream.panel.WidgetsPanel.tsx` â 108 lines â score 59 â supporting path
-- `components/panels/dream.panel.SafetyPanel.tsx` â 102 lines â score 59 â supporting path
-- `components/panels/dream.panel.ControlsPanel.tsx` â 90 lines â score 59 â supporting path
-- `components/panels/dream.panel.HelpPanel.tsx` â 71 lines â score 59 â supporting path
-- `components/panels/dream.panel.AlgorithmPanel.tsx` â 36 lines â score 59 â supporting path
+- `components/panels/dream.panel.PrivacyPanel.tsx` â 146 lines â score 63 â supporting path
+- `components/panels/dream.panel.DataPanel.tsx` â 139 lines â score 63 â supporting path
+- `components/panels/dream.panel.MarketplacePanel.tsx` â 139 lines â score 63 â supporting path
+- `app/messages/boards/page.tsx` â 119 lines â score 63 â supporting path
+- `app/messages/boards/new/page.tsx` â 110 lines â score 63 â supporting path
+- `components/panels/dream.panel.SafetyPanel.tsx` â 102 lines â score 63 â supporting path
+- `components/panels/dream.panel.ControlsPanel.tsx` â 90 lines â score 63 â supporting path
+- `components/panels/dream.panel.HelpPanel.tsx` â 71 lines â score 63 â supporting path
+- `components/panels/dream.panel.AlgorithmPanel.tsx` â 36 lines â score 63 â supporting path
 - `components/panels/dream.panel.ProfilePanel.tsx` â 338 lines â score 55 â supporting path
 - `components/panels/dream.panel.FeedSettingsPanel.tsx` â 192 lines â score 55 â supporting path
 - `components/panels/dream.panel.ConnectorsPanel.tsx` â 48 lines â score 55 â supporting path
