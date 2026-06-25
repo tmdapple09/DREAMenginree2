@@ -20,6 +20,8 @@ type SectionRule = {
   supportingPaths: RegExp[];
   keywords: string[];
   maxFiles: number;
+  rootCaps?: Record<string, number>;
+  excludedPaths?: RegExp[];
 };
 
 type FileMatch = {
@@ -109,43 +111,60 @@ const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
   /\.(png|jpe?g|gif|webp|mp4|mov|webm|avi|mkv|wasm)$/i,
 ];
 
-const META_ROOTS = new Set([
-  ".github",
-  "agents",
-  "docs",
-  "research",
-  "scripts",
-  "tests",
-]);
+const META_ROOTS = new Set([".github", "agents", "docs", "research", "scripts", "tests"]);
+
+const PRODUCT_SECTION_START = "<!-- DREAMENGIN_PRODUCT_README:START -->";
+const PRODUCT_SECTION_END = "<!-- DREAMENGIN_PRODUCT_README:END -->";
 
 export const PRODUCT_SECTIONS: SectionRule[] = [
   {
     number: 4,
     title: "Tech Stack & Monorepo Layout",
     plainEnglish:
-      "This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase schema, and major folders that make the product ship as one web-native system.",
+      "This is the build shape of DREAMengin: the Next.js app, TypeScript source, package scripts, styling system, GitHub automation, Supabase setup, and major folders that make the product ship as one web-native system.",
     userExperience:
       "Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.",
     primaryPaths: [
       /^package\.json$/,
-      /^pnpm-lock\.yaml$/,
       /^pnpm-workspace\.yaml$/,
       /^next\.config\.mjs$/,
       /^tsconfig.*\.json$/,
       /^tailwind\.config\.ts$/,
       /^eslint\.config\.mjs$/,
       /^postcss\.config\./,
-      /^app\//,
-      /^components\//,
-      /^engine\//,
-      /^engins\//,
-      /^styles\//,
-      /^supabase\//,
-      /^\.github\/workflows\//,
+      /^app\/layout\.tsx$/,
+      /^app\/page\.tsx$/,
+      /^app\/globals\.css$/,
+      /^app\/[^/]+\/page\.tsx$/,
+      /^components\/providers\//,
+      /^components\/runtime\//,
+      /^engine\/runtime\/index\.ts$/,
+      /^engine\/runtime\/moduleRegistry\.ts$/,
+      /^engins\/.*\.tsx$/,
+      /^styles\/(globals|theme|home-dream|dream-shell|view-transitions)\.css$/,
+      /^supabase\/config\.ts$/,
+      /^supabase\/client\/client\.ts$/,
+      /^supabase\/client\/safeGetUser\.ts$/,
+      /^supabase\/server\/serverClient\.ts$/,
+      /^\.github\/workflows\/(readme-autosync|export-src-only|preflight|dreamengin-preflight|codeql|vercel-deploy)\.yml$/,
     ],
     supportingPaths: [/^types\//, /^config\//, /^utils\//, /^hooks\//],
     keywords: ["next", "typescript", "supabase", "pnpm", "workflow", "app router"],
-    maxFiles: 90,
+    maxFiles: 80,
+    rootCaps: {
+      ".github": 8,
+      app: 18,
+      components: 14,
+      engine: 10,
+      engins: 12,
+      styles: 8,
+      supabase: 6,
+      types: 8,
+      config: 6,
+      hooks: 6,
+      utils: 4,
+    },
+    excludedPaths: [/^supabase\/migrations\//, /^supabase\/schema/, /^supabase\/seed\.sql$/],
   },
   {
     number: 5,
@@ -153,7 +172,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     plainEnglish:
       "Engins are the production systems; DayDreams are the user-facing creative spaces around them. This section connects engine code, pages, panels, shells, and components that let users create code, games, music, simulations, media, and brand work.",
     userExperience:
-      "A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, and their DayDream wrappers.",
+      "A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, ForgeEngin, and their DayDream wrappers.",
     primaryPaths: [
       /^engins\/engin\.[A-Za-z0-9]+Engin\.tsx$/,
       /^engins\/dream\.ForgeEngin\.tsx$/,
@@ -163,14 +182,21 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^engins\/forgeengin\//,
       /^engins\/renderengin\//,
       /^app\/engines\//,
-      /^app\/daydream\//,
+      /^app\/daydream\/(brand|code|create|forge|game|games|lab|music)(\/|$)/,
       /^daydreams\//,
       /^components\/engines\//,
       /^components\/daydream\//,
     ],
     supportingPaths: [/^engine\/engin-runtime\//, /^engine\/runtime\/enginWorkflowRegistry\.ts$/],
     keywords: ["engin", "daydream", "ruleset", "studio", "workspace"],
-    maxFiles: 120,
+    maxFiles: 110,
+    rootCaps: {
+      app: 28,
+      components: 28,
+      daydreams: 12,
+      engine: 16,
+      engins: 46,
+    },
   },
   {
     number: 6,
@@ -195,7 +221,12 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^engine\/runtime\/madMaxiSnapshotBridge\.ts$/,
     ],
     keywords: ["dualruntime", "dual runtime", "runtime bridge", "snapshot", "handoff"],
-    maxFiles: 80,
+    maxFiles: 40,
+    rootCaps: {
+      app: 3,
+      components: 5,
+      engine: 32,
+    },
   },
   {
     number: 7,
@@ -217,14 +248,23 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     supportingPaths: [
       /^engine\/runtime\/useSharedEnginChannel\.ts$/,
       /^engine\/collaboration\//,
-      /^supabase\/migrations\/.*dream/i,
+      /^supabase\/migrations\/.*dream_windows/i,
+      /^supabase\/migrations\/.*daydream_network/i,
     ],
     keywords: ["shared dream", "sharedDream", "presence", "collaboration"],
-    maxFiles: 90,
+    maxFiles: 50,
+    rootCaps: {
+      app: 8,
+      components: 10,
+      daydreams: 4,
+      engine: 10,
+      hooks: 4,
+      supabase: 8,
+    },
   },
   {
     number: 8,
-    title: "DreamR — Human Media",
+    title: "DreamR â Human Media",
     plainEnglish:
       "DreamR is the human media layer: feed, discovery, profile, posts, creator identity, and the browsing surfaces where Dreams become media instead of private project files.",
     userExperience:
@@ -246,7 +286,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dream\.FeedCard\.tsx$/,
     ],
     keywords: ["dreamr", "feed", "human media", "creator", "profile"],
-    maxFiles: 80,
+    maxFiles: 70,
+    rootCaps: {
+      app: 20,
+      components: 18,
+      dreamr: 32,
+      supabase: 4,
+    },
   },
   {
     number: 9,
@@ -265,7 +311,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [],
     keywords: ["shop", "storefront", "shop listing", "seller"],
-    maxFiles: 45,
+    maxFiles: 20,
+    rootCaps: {
+      app: 8,
+      components: 4,
+      engine: 4,
+      supabase: 4,
+      types: 2,
+    },
   },
   {
     number: 10,
@@ -284,7 +337,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [/^components\/panels\/dream\.panel\.MarketplacePanel\.tsx$/],
     keywords: ["marketplace", "market listing", "contact request"],
-    maxFiles: 45,
+    maxFiles: 24,
+    rootCaps: {
+      app: 10,
+      components: 6,
+      engine: 4,
+      supabase: 3,
+      types: 2,
+    },
   },
   {
     number: 11,
@@ -305,7 +365,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/engines\/brand\/campaigns\//,
     ],
     keywords: ["ads", "advertising", "sponsor", "promotion", "campaign"],
-    maxFiles: 55,
+    maxFiles: 24,
+    rootCaps: {
+      app: 10,
+      components: 8,
+      supabase: 3,
+      types: 2,
+    },
   },
   {
     number: 12,
@@ -327,7 +393,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dream\.NotificationCenter\.tsx$/,
     ],
     keywords: ["dreamdmbar", "dream dm", "notification", "command"],
-    maxFiles: 90,
+    maxFiles: 70,
+    rootCaps: {
+      app: 18,
+      components: 18,
+      dreamdmbar: 30,
+      engine: 2,
+    },
   },
   {
     number: 13,
@@ -346,6 +418,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/api\/drafts\//,
       /^supabase\/migrations\/.*messages/i,
       /^supabase\/migrations\/.*conversations/i,
+      /^supabase\/migrations\/.*drafts/i,
     ],
     supportingPaths: [
       /^app\/settings\/notifications\//,
@@ -354,7 +427,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dream\.NotificationCenter\.tsx$/,
     ],
     keywords: ["message", "conversation", "draft", "notification", "inbox"],
-    maxFiles: 85,
+    maxFiles: 45,
+    rootCaps: {
+      app: 18,
+      components: 6,
+      dreamdmbar: 12,
+      supabase: 5,
+    },
   },
   {
     number: 14,
@@ -377,7 +456,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/api\/home-layout\//,
     ],
     keywords: ["homedream", "home dream", "home feed", "launcher"],
-    maxFiles: 80,
+    maxFiles: 35,
+    rootCaps: {
+      app: 6,
+      components: 18,
+      engine: 2,
+      engins: 6,
+      styles: 2,
+    },
   },
   {
     number: 15,
@@ -399,7 +485,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [/^components\/runtime\//, /^engine\/runtime\/dreamsurface\//],
     keywords: ["dreamspace", "dream space", "spatial", "daydream shell"],
-    maxFiles: 95,
+    maxFiles: 80,
+    rootCaps: {
+      app: 28,
+      components: 28,
+      coresurfaces: 8,
+      daydreams: 10,
+      engine: 4,
+    },
   },
   {
     number: 16,
@@ -423,7 +516,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [/^components\/dream\.FeedCard\.tsx$/],
     keywords: ["dream window", "widget", "surface", "dreamsurface", "draggable"],
-    maxFiles: 110,
+    maxFiles: 80,
+    rootCaps: {
+      app: 8,
+      components: 34,
+      engine: 20,
+      types: 10,
+    },
   },
   {
     number: 17,
@@ -447,7 +546,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/draggable\//,
     ],
     keywords: ["module", "manifest", "panel", "registry", "launch"],
-    maxFiles: 85,
+    maxFiles: 70,
+    rootCaps: {
+      components: 42,
+      dreamdmbar: 3,
+      engine: 10,
+      types: 4,
+    },
   },
   {
     number: 18,
@@ -467,7 +572,14 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [/^app\/engines\//, /^components\/engines\//],
     keywords: ["custom engin", "ruleset", "manifest", "capability", "registry"],
-    maxFiles: 105,
+    maxFiles: 90,
+    rootCaps: {
+      app: 18,
+      components: 16,
+      engine: 28,
+      engins: 42,
+      types: 3,
+    },
   },
   {
     number: 19,
@@ -495,7 +607,13 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/dream\.Profile/,
     ],
     keywords: ["appearance", "theme", "profile", "customize", "branding"],
-    maxFiles: 95,
+    maxFiles: 70,
+    rootCaps: {
+      app: 28,
+      components: 24,
+      engins: 4,
+      styles: 8,
+    },
   },
   {
     number: 20,
@@ -506,7 +624,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.",
     primaryPaths: [
       /^app\/api\//,
-      /^supabase\//,
+      /^supabase\/(config|client|server|auth|migrations|schema)/,
       /^engine\//,
       /^coresurfaces\//,
       /^types\//,
@@ -515,7 +633,17 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     ],
     supportingPaths: [/^app\/auth\//, /^app\/login\//, /^app\/join\//, /^components\/runtime\//],
     keywords: ["api", "backend", "supabase", "core", "system", "auth"],
-    maxFiles: 120,
+    maxFiles: 100,
+    rootCaps: {
+      app: 45,
+      components: 5,
+      config: 6,
+      coresurfaces: 8,
+      engine: 24,
+      supabase: 20,
+      types: 10,
+      utils: 4,
+    },
   },
 ];
 
@@ -531,6 +659,10 @@ function getRoot(filePath: string): string {
 
 function isGloballyExcluded(filePath: string): boolean {
   return GLOBAL_EXCLUDED_PATHS.some((pattern) => pattern.test(filePath));
+}
+
+function isSectionExcluded(filePath: string, section: SectionRule): boolean {
+  return Boolean(section.excludedPaths?.some((pattern) => pattern.test(filePath)));
 }
 
 function isReadableSource(filePath: string): boolean {
@@ -561,15 +693,16 @@ function loadTrackedFiles(inventoryPath: string): string[] {
 
 function loadSourceFiles(files: string[]): SourceFile[] {
   return files.map((filePath) => {
-    const ext = path.extname(filePath);
-    const readable = isReadableSource(filePath);
-    const text = readable ? readFileSafe(filePath) : "";
+    const normalized = normalizePath(filePath);
+    const ext = path.extname(normalized);
+    const readable = isReadableSource(normalized);
+    const text = readable ? readFileSafe(normalized) : "";
     const lines = text ? text.split(/\r?\n/g).length : 0;
 
     return {
-      path: filePath,
+      path: normalized,
       ext,
-      root: getRoot(filePath),
+      root: getRoot(normalized),
       readable,
       text,
       lines,
@@ -579,6 +712,10 @@ function loadSourceFiles(files: string[]): SourceFile[] {
 
 function normalizedNeedle(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function pathHasKeyword(filePath: string, keyword: string): boolean {
@@ -606,12 +743,7 @@ function textHasKeyword(text: string, keyword: string): boolean {
     return normalizedNeedle(text).includes(normalizedKeyword);
   }
 
-  const pattern = new RegExp(`\\b${escapeRegExp(normalizedKeyword)}\\b`, "i");
-  return pattern.test(text);
-}
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escapeRegExp(normalizedKeyword)}\\b`, "i").test(text);
 }
 
 function isMetaFileForSection(file: SourceFile, section: SectionRule): boolean {
@@ -622,6 +754,7 @@ function isMetaFileForSection(file: SourceFile, section: SectionRule): boolean {
 }
 
 function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
+  if (isSectionExcluded(file.path, section)) return null;
   if (isMetaFileForSection(file, section)) return null;
 
   let score = 0;
@@ -654,9 +787,7 @@ function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
 
   if (file.text) {
     for (const keyword of section.keywords) {
-      if (textHasKeyword(file.text, keyword)) {
-        score += 6;
-      }
+      if (textHasKeyword(file.text, keyword)) score += 4;
     }
   }
 
@@ -673,38 +804,41 @@ function scoreFile(file: SourceFile, section: SectionRule): FileMatch | null {
   return { file, score, reasons };
 }
 
+function applyRootCaps(matches: FileMatch[], section: SectionRule): FileMatch[] {
+  if (!section.rootCaps) return matches.slice(0, section.maxFiles);
+
+  const used: Record<string, number> = {};
+  const capped: FileMatch[] = [];
+
+  for (const match of matches) {
+    const root = match.file.root;
+    const cap = section.rootCaps[root];
+
+    if (typeof cap === "number") {
+      const current = used[root] ?? 0;
+      if (current >= cap) continue;
+      used[root] = current + 1;
+    }
+
+    capped.push(match);
+
+    if (capped.length >= section.maxFiles) break;
+  }
+
+  return capped;
+}
+
 function getMatches(files: SourceFile[], section: SectionRule): FileMatch[] {
-  return files
+  const matches = files
     .map((file) => scoreFile(file, section))
     .filter((match): match is FileMatch => Boolean(match))
     .sort((a, b) => {
       if (b.score !== a.score) return b.score - a.score;
       if (b.file.lines !== a.file.lines) return b.file.lines - a.file.lines;
       return a.file.path.localeCompare(b.file.path);
-    })
-    .slice(0, section.maxFiles);
-}
+    });
 
-function extractRoutes(matches: FileMatch[]): string[] {
-  const routes = new Set<string>();
-
-  for (const { file } of matches) {
-    const pageMatch = file.path.match(/^app\/(.+)\/page\.tsx?$/);
-
-    if (pageMatch) {
-      const route = `/${pageMatch[1]}`.replace(/\/page$/, "").replace(/\/\(.*?\)/g, "");
-      routes.add(`${route} ← ${file.path}`);
-    }
-
-    const apiMatch = file.path.match(/^app\/api\/(.+)\/route\.tsx?$/);
-
-    if (apiMatch) {
-      const methods = extractRouteMethods(file.text);
-      routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} ← ${file.path}`);
-    }
-  }
-
-  return [...routes].slice(0, 16);
+  return applyRootCaps(matches, section);
 }
 
 function extractRouteMethods(text: string): string[] {
@@ -715,12 +849,32 @@ function extractRouteMethods(text: string): string[] {
       `export\\s+async\\s+function\\s+${method}\\b|export\\s+function\\s+${method}\\b|export\\s+const\\s+${method}\\b`
     );
 
-    if (methodPattern.test(text)) {
-      methods.add(method);
-    }
+    if (methodPattern.test(text)) methods.add(method);
   }
 
   return [...methods];
+}
+
+function extractRoutes(matches: FileMatch[]): string[] {
+  const routes = new Set<string>();
+
+  for (const { file } of matches) {
+    const pageMatch = file.path.match(/^app\/(.+)\/page\.tsx?$/);
+
+    if (pageMatch) {
+      const route = `/${pageMatch[1]}`.replace(/\/\(.*?\)/g, "");
+      routes.add(`${route} â ${file.path}`);
+    }
+
+    const apiMatch = file.path.match(/^app\/api\/(.+)\/route\.tsx?$/);
+
+    if (apiMatch) {
+      const methods = extractRouteMethods(file.text);
+      routes.add(`${methods.join("|") || "API"} /api/${apiMatch[1]} â ${file.path}`);
+    }
+  }
+
+  return [...routes].slice(0, 16);
 }
 
 function extractImports(matches: FileMatch[]): string[] {
@@ -743,6 +897,10 @@ function extractImports(matches: FileMatch[]): string[] {
   return [...imports].slice(0, 14);
 }
 
+function isLikelyConstant(name: string): boolean {
+  return /^[A-Z0-9_]+$/.test(name);
+}
+
 function extractExports(matches: FileMatch[]): string[] {
   const exports = new Set<string>();
 
@@ -751,23 +909,17 @@ function extractExports(matches: FileMatch[]): string[] {
 
     for (const match of file.text.matchAll(/export\s+(?:async\s+)?(?:function|const|class|type|interface)\s+([A-Za-z0-9_]+)/g)) {
       const name = match[1];
-
       if (isLikelyConstant(name)) continue;
-
-      exports.add(`${name} — ${file.path}`);
+      exports.add(`${name} â ${file.path}`);
     }
 
     if (/export\s+default\b/.test(file.text)) {
       const name = path.basename(file.path).replace(/\.(tsx?|jsx?|mjs|cjs)$/, "");
-      exports.add(`default export — ${name} (${file.path})`);
+      exports.add(`default export â ${name} (${file.path})`);
     }
   }
 
   return [...exports].slice(0, 14);
-}
-
-function isLikelyConstant(name: string): boolean {
-  return /^[A-Z0-9_]+$/.test(name);
 }
 
 function extractComponents(matches: FileMatch[]): string[] {
@@ -776,18 +928,17 @@ function extractComponents(matches: FileMatch[]): string[] {
   for (const { file } of matches) {
     if (!file.path.endsWith(".tsx") && !file.path.endsWith(".jsx")) continue;
 
-    const functionPatterns = [
+    const patterns = [
       /(?:export\s+default\s+function|export\s+function|function)\s+([A-Z][A-Za-z0-9_]*)\b/g,
       /(?:export\s+const|const)\s+([A-Z][A-Za-z0-9_]*)\s*=\s*(?:\([^)]*\)|[A-Za-z0-9_]+)\s*=>/g,
       /(?:export\s+const|const)\s+([A-Z][A-Za-z0-9_]*)\s*:\s*(?:React\.)?(?:FC|FunctionComponent)\b/g,
     ];
 
-    for (const pattern of functionPatterns) {
+    for (const pattern of patterns) {
       for (const match of file.text.matchAll(pattern)) {
         const name = match[1];
-
         if (isLikelyConstant(name)) continue;
-        components.add(`${name} — ${file.path}`);
+        components.add(`${name} â ${file.path}`);
       }
     }
   }
@@ -802,7 +953,7 @@ function extractHooks(matches: FileMatch[]): string[] {
     if (!isCodeFile(file)) continue;
 
     for (const match of file.text.matchAll(/\b(use[A-Z][A-Za-z0-9_]*)\b/g)) {
-      hooks.add(`${match[1]} — ${file.path}`);
+      hooks.add(`${match[1]} â ${file.path}`);
     }
   }
 
@@ -828,7 +979,6 @@ function behaviorSignals(matches: FileMatch[]): string[] {
         const textHit = pattern.test(match.file.text);
         pattern.lastIndex = 0;
         const pathHit = pattern.test(match.file.path);
-
         return sum + (textHit || pathHit ? 1 : 0);
       }, 0);
 
@@ -837,7 +987,7 @@ function behaviorSignals(matches: FileMatch[]): string[] {
     .filter((item) => item.count > 0)
     .sort((a, b) => b.count - a.count)
     .slice(0, 8)
-    .map((item) => `${item.name} — ${item.count} file hits`);
+    .map((item) => `${item.name} â ${item.count} file hits`);
 }
 
 function formatList(items: string[], empty = "- None found."): string {
@@ -852,11 +1002,9 @@ function fileSummary(match: FileMatch): string {
     `score ${match.score}`,
   ];
 
-  if (match.reasons.length) {
-    parts.push(match.reasons.slice(0, 2).join(", "));
-  }
+  if (match.reasons.length) parts.push(match.reasons.slice(0, 2).join(", "));
 
-  return `- ${parts.join(" — ")}`;
+  return `- ${parts.join(" â ")}`;
 }
 
 function sectionMarkdown(section: SectionRule, matches: FileMatch[]): ProductSectionOutput {
@@ -947,19 +1095,16 @@ export function buildProductSections(options: {
 
 export function renderProductSectionsMarkdown(result: ProductSectionsResult): string {
   return [
-    "<!-- DREAMENGIN_PRODUCT_README:START -->",
+    PRODUCT_SECTION_START,
     "",
     ...result.sections.map((section) => section.markdown.trim()),
     "",
-    "<!-- DREAMENGIN_PRODUCT_README:END -->",
+    PRODUCT_SECTION_END,
     "",
   ].join("\n");
 }
 
-export function buildProductReadmeSections(
-  files: string[],
-  lineBudget = 2800
-): ProductReadmeResult {
+export function buildProductReadmeSections(files: string[], lineBudget = 2800): ProductReadmeResult {
   void lineBudget;
 
   const trackedFiles = files
@@ -976,11 +1121,11 @@ export function buildProductReadmeSections(
 
   return {
     markdown: [
-      "<!-- DREAMENGIN_PRODUCT_README:START -->",
+      PRODUCT_SECTION_START,
       "",
       ...sections.map((section) => section.markdown.trim()),
       "",
-      "<!-- DREAMENGIN_PRODUCT_README:END -->",
+      PRODUCT_SECTION_END,
       "",
     ].join("\n"),
     stats: sections.map((section) => ({
@@ -1066,7 +1211,7 @@ function runCli(): void {
   }, null, 2));
 }
 
-const isCli = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+const isCli = Boolean(process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href);
 
 if (isCli) {
   runCli();
