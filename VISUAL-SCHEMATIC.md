@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2258
-- **Total function/class nodes:** 4513
+- **Total files:** 2257
+- **Total function/class nodes:** 4484
 - **Total edges:** 8372
-- **Orphan nodes:** 3935
+- **Orphan nodes:** 3905
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -1297,7 +1297,7 @@ graph LR
 
 </details>
 
-<details><summary>scripts/ (57 files)</summary>
+<details><summary>scripts/ (56 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -1339,7 +1339,6 @@ graph LR
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-readme.ts` | ts | 1 | 0 | — | `scripts/readme-autosync.ts` |
-| `scripts/generate-repo-state.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-webapp-final-form.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/law-check.sh` | file | 0 | 0 | — | — |
 | `scripts/migrate-imports.sh` | file | 0 | 0 | — | — |
@@ -3763,7 +3762,7 @@ graph LR
 
 </details>
 
-<details><summary>scripts/ — 57 files</summary>
+<details><summary>scripts/ — 56 files</summary>
 
 ```mermaid
 graph LR
@@ -3806,7 +3805,6 @@ graph LR
   f_scripts_gameengin_writer_run_ts["writer-run.ts"]
   f_scripts_generate_mobile_nextgen_spec_mjs["generate-mobile-nextgen-spec.mjs"]
   f_scripts_generate_mobile_ps5_spec_mjs["generate-mobile-ps5-spec.mjs"]
-  f_scripts_generate_repo_state_mjs["generate-repo-state.mjs"]
   f_scripts_generate_webapp_final_form_mjs["generate-webapp-final-form.mjs"]
   f_scripts_law_check_sh["law-check.sh"]
   f_scripts_migrate_imports_sh["migrate-imports.sh"]
@@ -4451,7 +4449,6 @@ _File-level graph omitted: 361 files exceeds Mermaid render budget. See table ab
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs |
 | `scripts/generate-readme.ts` | ts |
-| `scripts/generate-repo-state.mjs` | mjs |
 | `scripts/generate-webapp-final-form.mjs` | mjs |
 | `scripts/law-check.sh` | file |
 | `scripts/migrate-imports.sh` | file |
