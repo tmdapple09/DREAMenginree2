@@ -1,0 +1,1148 @@
+name: Full Repair
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_changes:
+        description: "Commit deterministic repairs back to the branch"
+        type: boolean
+        default: true
+      install_dependencies:
+        description: "Install dependencies before verification"
+        type: boolean
+        default: true
+      run_typecheck:
+        description: "Run package typecheck when available"
+        type: boolean
+        default: true
+      run_lint:
+        description: "Run package lint when available"
+        type: boolean
+        default: false
+      run_tests:
+        description: "Run package tests when available"
+        type: boolean
+        default: false
+      commit_message:
+        description: "Commit message"
+        type: string
+        default: "chore(dreamengin): deterministic full repo repair"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: dreamengin-deterministic-full-repair-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deterministic-full-repair:
+    name: Scan, repair, verify, and commit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 25
+
+      - name: Install dependencies
+        if: ${{ inputs.install_dependencies }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable || true
+
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f yarn.lock ]; then
+            yarn install --frozen-lockfile
+          else
+            npm install
+          fi
+
+      - name: Write deterministic DREAMengin repair runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .dreamengin-repair
+
+          cat > .dreamengin-repair/deterministic-full-repair.cjs <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const cp = require("node:child_process");
+
+          const ROOT = process.cwd();
+          const REPORT_PATH = "DREAMENGIN_DETERMINISTIC_REPAIR_REPORT.md";
+          const MODEL_PATH = "DREAMENGIN_DETERMINISTIC_REPO_MODEL.json";
+
+          const IGNORE_DIRS = new Set([
+            "node_modules",
+            ".git",
+            ".next",
+            ".vercel",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".husky",
+          ]);
+
+          const MEDIA_EXTENSIONS = new Set([
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".webp",
+            ".avif",
+            ".mp4",
+            ".mov",
+            ".webm",
+            ".m4v",
+            ".avi",
+            ".mkv",
+            ".ico",
+          ]);
+
+          const CODE_EXTENSIONS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+          ]);
+
+          const TEXT_EXTENSIONS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".json",
+            ".css",
+            ".scss",
+            ".sql",
+            ".md",
+            ".yml",
+            ".yaml",
+          ]);
+
+          const RESOLVE_EXTENSIONS = [
+            "",
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".json",
+            ".css",
+            ".scss",
+            ".module.css",
+            ".module.scss",
+            ".wasm",
+            ".sql",
+            ".svg",
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp",
+            ".avif",
+          ];
+
+          const INDEX_EXTENSIONS = [
+            "/index.ts",
+            "/index.tsx",
+            "/index.js",
+            "/index.jsx",
+            "/index.mjs",
+            "/index.cjs",
+            "/index.json",
+          ];
+
+          const CORE_FEATURES = [
+            {
+              id: "home-runtime",
+              label: "Home / DreamDMBar / DualRuntime",
+              routes: ["/", "/dreamdmbar", "/dreamdmbar/homedream", "/dreamdmbar/dreamspace"],
+              roots: ["dreamdmbar", "components/runtime", "engine/runtime", "components/home", "app/dreamdmbar"],
+            },
+            {
+              id: "dreamr",
+              label: "DreamR",
+              routes: ["/dreamr"],
+              roots: ["dreamr", "components/dreamr", "app/dreamr", "app/api/dreamr"],
+            },
+            {
+              id: "contentengin",
+              label: "ContentEngin / CreateEngin",
+              routes: ["/engines/create", "/daydream/create"],
+              roots: ["engins/contentengin", "components/engines/create", "app/engines/create", "app/daydream/create"],
+            },
+            {
+              id: "renderengin",
+              label: "RenderEngin service",
+              routes: [],
+              roots: ["engins/renderengin"],
+            },
+            {
+              id: "gameengin",
+              label: "GameEngin",
+              routes: ["/engines/games", "/daydream/games"],
+              roots: ["engins/gameengin", "components/gameengin", "components/games", "app/engines/games", "app/daydream/games", "public/cartridges"],
+            },
+            {
+              id: "codeengin",
+              label: "CodeEngin",
+              routes: ["/engines/code", "/daydream/code"],
+              roots: ["engins/codeengin", "engins/codeengin-ui", "app/engines/code", "app/daydream/code", "app/api/codeengin"],
+            },
+            {
+              id: "labengin",
+              label: "LabEngin",
+              routes: ["/engines/lab", "/daydream/lab"],
+              roots: ["engins/labengin", "app/engines/lab", "app/daydream/lab"],
+            },
+            {
+              id: "starmakerengin",
+              label: "StarMakerEngin",
+              routes: ["/engines/music", "/daydream/music"],
+              roots: ["engins/starmakerengin", "app/engines/music", "app/daydream/music"],
+            },
+            {
+              id: "brandengin",
+              label: "BrandEngin",
+              routes: ["/engines/brand", "/daydream/brand"],
+              roots: ["engins/brandengin", "app/engines/brand", "app/daydream/brand"],
+            },
+            {
+              id: "forgeengin",
+              label: "ForgeEngin",
+              routes: ["/daydream/forge"],
+              roots: ["engins/forgeengin", "components/forge", "app/daydream/forge", "app/api/forge"],
+            },
+            {
+              id: "marketplace-shop-ads",
+              label: "Marketplace / Shop / Ads",
+              routes: ["/marketplace", "/shop"],
+              roots: ["components/marketplace", "components/ads", "app/marketplace", "app/shop", "app/api/marketplace", "app/api/shop", "app/api/ads"],
+            },
+            {
+              id: "messages",
+              label: "Messages / DMs",
+              routes: ["/messages"],
+              roots: ["app/messages", "components/messaging", "app/api/messages", "dreamdmbar"],
+            },
+            {
+              id: "settings-customization",
+              label: "Settings / Customization",
+              routes: ["/settings"],
+              roots: ["app/settings", "components/panels", "components/customize", "engine/customization", "styles"],
+            },
+          ];
+
+          const report = [];
+          const changed = [];
+
+          function log(line) {
+            console.log(line);
+            report.push(line);
+          }
+
+          function posix(value) {
+            return value.split(path.sep).join("/");
+          }
+
+          function rel(value) {
+            let out = posix(path.relative(ROOT, value));
+            while (out.startsWith("./")) out = out.slice(2);
+            return path.posix.normalize(out);
+          }
+
+          function abs(file) {
+            return path.join(ROOT, file);
+          }
+
+          function ext(file) {
+            return path.extname(file).toLowerCase();
+          }
+
+          function exists(file) {
+            return fs.existsSync(abs(file));
+          }
+
+          function isDir(file) {
+            try {
+              return fs.statSync(abs(file)).isDirectory();
+            } catch {
+              return false;
+            }
+          }
+
+          function ensureDirFor(file) {
+            fs.mkdirSync(path.dirname(abs(file)), { recursive: true });
+          }
+
+          function read(file) {
+            return fs.readFileSync(abs(file), "utf8");
+          }
+
+          function write(file, content) {
+            ensureDirFor(file);
+            const current = exists(file) ? read(file) : null;
+            if (current === content) return false;
+            fs.writeFileSync(abs(file), content, "utf8");
+            changed.push(file);
+            return true;
+          }
+
+          function walk(dirAbs, out = []) {
+            for (const entry of fs.readdirSync(dirAbs, { withFileTypes: true })) {
+              if (entry.isDirectory() && IGNORE_DIRS.has(entry.name)) continue;
+
+              const full = path.join(dirAbs, entry.name);
+              const relative = rel(full);
+
+              if (entry.isDirectory()) {
+                walk(full, out);
+                continue;
+              }
+
+              out.push(relative);
+            }
+
+            return out;
+          }
+
+          function isTextLike(file) {
+            return TEXT_EXTENSIONS.has(ext(file));
+          }
+
+          function isCode(file) {
+            return CODE_EXTENSIONS.has(ext(file));
+          }
+
+          function isMedia(file) {
+            return MEDIA_EXTENSIONS.has(ext(file));
+          }
+
+          function isRuntimePublicArtifact(file) {
+            if (!file.startsWith("public/")) return false;
+            if (file.endsWith(".wasm")) return true;
+            if (file.endsWith(".ts") || file.endsWith(".tsx") || file.endsWith(".js") || file.endsWith(".mjs")) return true;
+            if (file.endsWith(".json")) return true;
+            return false;
+          }
+
+          const allFiles = walk(ROOT).sort();
+          const sourceFiles = allFiles.filter((file) => !isMedia(file) || isRuntimePublicArtifact(file));
+          const codeFiles = sourceFiles.filter(isCode);
+          const textFiles = sourceFiles.filter(isTextLike);
+
+          const fileSet = new Set(allFiles);
+          const fileCaseMap = new Map();
+          const dirSet = new Set();
+          const dirCaseMap = new Map();
+          const caseCollisions = new Map();
+
+          function addCase(map, value) {
+            const key = value.toLowerCase();
+            const existing = map.get(key);
+            if (existing && existing !== value) {
+              if (!caseCollisions.has(key)) caseCollisions.set(key, new Set([existing]));
+              caseCollisions.get(key).add(value);
+            } else {
+              map.set(key, value);
+            }
+          }
+
+          for (const file of allFiles) {
+            addCase(fileCaseMap, file);
+            const parts = file.split("/");
+            for (let index = 1; index < parts.length; index += 1) {
+              const dir = parts.slice(0, index).join("/");
+              dirSet.add(dir);
+              addCase(dirCaseMap, dir);
+            }
+          }
+
+          function isBoundary(ch) {
+            if (!ch) return true;
+            const code = ch.charCodeAt(0);
+            const letter = (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+            const digit = code >= 48 && code <= 57;
+            return !(letter || digit || ch === "_" || ch === "$");
+          }
+
+          function startsWord(content, index, word) {
+            return content.slice(index, index + word.length) === word &&
+              isBoundary(content[index - 1]) &&
+              isBoundary(content[index + word.length]);
+          }
+
+          function findStatementEnd(content, start) {
+            let quote = "";
+            let escaped = false;
+
+            for (let index = start; index < content.length; index += 1) {
+              const ch = content[index];
+
+              if (quote) {
+                if (escaped) {
+                  escaped = false;
+                  continue;
+                }
+                if (ch === "\\") {
+                  escaped = true;
+                  continue;
+                }
+                if (ch === quote) quote = "";
+                continue;
+              }
+
+              if (ch === "'" || ch === '"' || ch === "`") {
+                quote = ch;
+                continue;
+              }
+
+              if (ch === ";") return index + 1;
+            }
+
+            const newline = content.indexOf("\n", start);
+            return newline === -1 ? content.length : newline;
+          }
+
+          function findQuoted(text, start = 0) {
+            for (let index = start; index < text.length; index += 1) {
+              const quote = text[index];
+              if (quote !== "'" && quote !== '"' && quote !== "`") continue;
+
+              let value = "";
+              let escaped = false;
+
+              for (let cursor = index + 1; cursor < text.length; cursor += 1) {
+                const ch = text[cursor];
+
+                if (escaped) {
+                  value += ch;
+                  escaped = false;
+                  continue;
+                }
+
+                if (ch === "\\") {
+                  escaped = true;
+                  continue;
+                }
+
+                if (ch === quote) {
+                  return { value, start: index, end: cursor + 1 };
+                }
+
+                value += ch;
+              }
+            }
+
+            return null;
+          }
+
+          function findFrom(statement) {
+            let quote = "";
+            let escaped = false;
+
+            for (let index = 0; index < statement.length; index += 1) {
+              const ch = statement[index];
+
+              if (quote) {
+                if (escaped) {
+                  escaped = false;
+                  continue;
+                }
+                if (ch === "\\") {
+                  escaped = true;
+                  continue;
+                }
+                if (ch === quote) quote = "";
+                continue;
+              }
+
+              if (ch === "'" || ch === '"' || ch === "`") {
+                quote = ch;
+                continue;
+              }
+
+              if (startsWord(statement, index, "from")) {
+                const quoted = findQuoted(statement, index + 4);
+                if (quoted) return { fromIndex: index, quoted };
+              }
+            }
+
+            return null;
+          }
+
+          function nextNonSpace(content, start) {
+            for (let index = start; index < content.length; index += 1) {
+              const ch = content[index];
+              if (ch !== " " && ch !== "\t" && ch !== "\n" && ch !== "\r") return index;
+            }
+            return content.length;
+          }
+
+          function importStatements(content) {
+            const items = [];
+
+            for (let index = 0; index < content.length; index += 1) {
+              if (!startsWord(content, index, "import") && !startsWord(content, index, "export")) continue;
+
+              const word = startsWord(content, index, "import") ? "import" : "export";
+              const statementEnd = findStatementEnd(content, index);
+              const statement = content.slice(index, statementEnd);
+              const fromInfo = findFrom(statement);
+              const quoted = fromInfo ? fromInfo.quoted : (word === "import" ? findQuoted(statement, word.length) : null);
+
+              if (quoted) {
+                if (word === "import" && statement.slice(nextNonSpace(statement, word.length))[0] === "(") {
+                  items.push({
+                    kind: "dynamic",
+                    start: index,
+                    end: statementEnd,
+                    specifier: quoted.value,
+                    specifierStart: index + quoted.start + 1,
+                    specifierEnd: index + quoted.end - 1,
+                  });
+                } else {
+                  items.push({
+                    kind: word,
+                    start: index,
+                    end: statementEnd,
+                    specifier: quoted.value,
+                    specifierStart: index + quoted.start + 1,
+                    specifierEnd: index + quoted.end - 1,
+                  });
+                }
+              }
+
+              index = statementEnd - 1;
+            }
+
+            return items;
+          }
+
+          function stripNoise(specifier) {
+            return specifier.split("?")[0].split("#")[0];
+          }
+
+          function isInternal(specifier) {
+            const clean = stripNoise(specifier);
+            return clean.startsWith(".") || clean.startsWith("/") || clean.startsWith("@/");
+          }
+
+          function resolveCandidates(fromFile, specifier) {
+            const clean = stripNoise(specifier);
+            const candidates = [];
+
+            if (clean.startsWith("@/")) {
+              candidates.push(clean.slice(2));
+            } else if (clean.startsWith(".")) {
+              candidates.push(path.posix.join(path.posix.dirname(fromFile), clean));
+            } else if (clean.startsWith("/")) {
+              candidates.push(clean.slice(1));
+              candidates.push(path.posix.join("public", clean.slice(1)));
+            }
+
+            return candidates.map((candidate) => path.posix.normalize(candidate));
+          }
+
+          function tryResolve(candidate, insensitive = false) {
+            const exactSet = insensitive ? null : fileSet;
+            const map = insensitive ? fileCaseMap : null;
+
+            function has(file) {
+              if (insensitive) return map.get(file.toLowerCase()) || null;
+              return exactSet.has(file) ? file : null;
+            }
+
+            const direct = has(candidate);
+            if (direct) return direct;
+
+            for (const extension of RESOLVE_EXTENSIONS) {
+              const hit = has(`${candidate}${extension}`);
+              if (hit) return hit;
+            }
+
+            for (const indexExtension of INDEX_EXTENSIONS) {
+              const hit = has(`${candidate}${indexExtension}`);
+              if (hit) return hit;
+            }
+
+            return null;
+          }
+
+          function resolveSpecifier(fromFile, specifier, insensitive = false) {
+            if (!isInternal(specifier)) return null;
+
+            for (const candidate of resolveCandidates(fromFile, specifier)) {
+              const resolved = tryResolve(candidate, insensitive);
+              if (resolved) return resolved;
+            }
+
+            return false;
+          }
+
+          function removeKnownExtension(file) {
+            for (const extension of [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]) {
+              if (file.endsWith(extension)) return file.slice(0, -extension.length);
+            }
+            return file;
+          }
+
+          function buildSpecifier(fromFile, oldSpecifier, resolvedFile) {
+            const clean = stripNoise(oldSpecifier);
+            const oldHadKnownExtension = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"].some((extension) => clean.endsWith(extension));
+            const target = oldHadKnownExtension ? resolvedFile : removeKnownExtension(resolvedFile);
+
+            if (clean.startsWith("@/")) return `@/${target}`;
+
+            if (clean.startsWith(".")) {
+              let relative = path.posix.relative(path.posix.dirname(fromFile), target);
+              if (!relative.startsWith(".")) relative = `./${relative}`;
+              return relative;
+            }
+
+            if (clean.startsWith("/")) {
+              return target.startsWith("public/") ? `/${target.slice("public/".length)}` : `/${target}`;
+            }
+
+            return oldSpecifier;
+          }
+
+          function replaceRanges(content, replacements) {
+            let out = content;
+            for (const replacement of replacements.sort((a, b) => b.start - a.start)) {
+              out = out.slice(0, replacement.start) + replacement.text + out.slice(replacement.end);
+            }
+            return out;
+          }
+
+          function removeRanges(content, ranges) {
+            let out = content;
+            for (const range of ranges.sort((a, b) => b.start - a.start)) {
+              let start = range.start;
+              let end = range.end;
+
+              while (start > 0 && out[start - 1] !== "\n") start -= 1;
+              while (end < out.length && out[end] !== "\n") end += 1;
+              if (end < out.length && out[end] === "\n") end += 1;
+
+              out = out.slice(0, start) + out.slice(end);
+            }
+            return out;
+          }
+
+          function repairImportPaths() {
+            log("## Repair pass: import casing, extension mismatches, and self-imports");
+
+            let fixes = 0;
+
+            for (const file of codeFiles) {
+              const content = read(file);
+              const statements = importStatements(content);
+              const replacements = [];
+              const removals = [];
+
+              for (const statement of statements) {
+                if (!isInternal(statement.specifier)) continue;
+
+                const exact = resolveSpecifier(file, statement.specifier, false);
+                const loose = resolveSpecifier(file, statement.specifier, true);
+
+                if (exact && exact === file) {
+                  removals.push({ start: statement.start, end: statement.end });
+                  continue;
+                }
+
+                if (!exact && loose) {
+                  const corrected = buildSpecifier(file, statement.specifier, loose);
+                  if (corrected !== statement.specifier) {
+                    replacements.push({
+                      start: statement.specifierStart,
+                      end: statement.specifierEnd,
+                      text: corrected,
+                    });
+                  }
+                }
+
+                if (exact) {
+                  const clean = stripNoise(statement.specifier);
+                  if (clean.endsWith(".js") && (exact.endsWith(".ts") || exact.endsWith(".tsx"))) {
+                    const corrected = buildSpecifier(file, statement.specifier, exact);
+                    if (corrected !== statement.specifier) {
+                      replacements.push({
+                        start: statement.specifierStart,
+                        end: statement.specifierEnd,
+                        text: corrected,
+                      });
+                    }
+                  }
+                }
+              }
+
+              if (!replacements.length && !removals.length) continue;
+
+              let next = content;
+              next = replaceRanges(next, replacements);
+              next = removeRanges(next, removals);
+
+              if (write(file, next)) {
+                fixes += replacements.length + removals.length;
+                log(`- ${file}: ${replacements.length} specifier fix(es), ${removals.length} self-import removal(s)`);
+              }
+            }
+
+            log(`Import repair changes: ${fixes}`);
+            log("");
+          }
+
+          function repairCodeEnginCaseCollision() {
+            log("## Repair pass: CodeEngin casing collision");
+
+            const oldDir = "engins/CodeEngin";
+            const newDir = "engins/codeengin-ui";
+
+            if (isDir(oldDir) && !exists(newDir)) {
+              fs.renameSync(abs(oldDir), abs(newDir));
+              changed.push(`${oldDir} -> ${newDir}`);
+              log(`- renamed ${oldDir} to ${newDir}`);
+            } else if (isDir(oldDir) && isDir(newDir)) {
+              log(`- both ${oldDir} and ${newDir} exist; no rename performed`);
+            } else {
+              log(`- ${oldDir} not present; no rename needed`);
+            }
+
+            let replacements = 0;
+            for (const file of textFiles) {
+              if (!exists(file)) continue;
+              const content = read(file);
+              if (!content.includes("engins/CodeEngin")) continue;
+              const next = content.split("engins/CodeEngin").join("engins/codeengin-ui");
+              if (write(file, next)) {
+                replacements += 1;
+                log(`- updated reference in ${file}`);
+              }
+            }
+
+            log(`CodeEngin reference files changed: ${replacements}`);
+            log("");
+          }
+
+          function writeRedirectPage(file, destination) {
+            const content = [
+              "import { redirect } from 'next/navigation';",
+              "",
+              "export default function RenderEnginServiceRedirect() {",
+              `  redirect('${destination}');`,
+              "}",
+              "",
+            ].join("\n");
+
+            if (write(file, content)) {
+              log(`- ${file} now redirects to ${destination}`);
+            }
+          }
+
+          function repairRenderEnginRoutes() {
+            log("## Repair pass: RenderEngin service routing");
+
+            if (isDir("app/engines/render") || exists("app/engines/render/page.tsx")) {
+              writeRedirectPage("app/engines/render/page.tsx", "/engines/create");
+            } else {
+              log("- app/engines/render not present; no route rewrite");
+            }
+
+            if (isDir("app/daydream/render") || exists("app/daydream/render/page.tsx")) {
+              writeRedirectPage("app/daydream/render/page.tsx", "/engines/create");
+            } else {
+              log("- app/daydream/render not present; no route rewrite");
+            }
+
+            log("");
+          }
+
+          function routeForPage(file) {
+            let route = file;
+            if (route.startsWith("app")) route = route.slice(3);
+
+            for (const pageName of ["/page.tsx", "/page.ts", "/page.jsx", "/page.js"]) {
+              if (route.endsWith(pageName)) {
+                route = route.slice(0, -pageName.length);
+                break;
+              }
+            }
+
+            const parts = route.split("/").filter(Boolean);
+            const routeParts = [];
+
+            for (const part of parts) {
+              if (part.startsWith("(") && part.endsWith(")")) continue;
+              if (part.startsWith("[[...") && part.endsWith("]]")) {
+                routeParts.push(`:${part.slice(5, -2)}*`);
+                continue;
+              }
+              if (part.startsWith("[...") && part.endsWith("]")) {
+                routeParts.push(`:${part.slice(4, -1)}*`);
+                continue;
+              }
+              if (part.startsWith("[") && part.endsWith("]")) {
+                routeParts.push(`:${part.slice(1, -1)}`);
+                continue;
+              }
+              routeParts.push(part);
+            }
+
+            return routeParts.length ? `/${routeParts.join("/")}` : "/";
+          }
+
+          function classifyFiles() {
+            const pages = sourceFiles.filter((file) => file.startsWith("app/") && ["/page.tsx", "/page.ts", "/page.jsx", "/page.js"].some((suffix) => file.endsWith(suffix)));
+            const apiRoutes = sourceFiles.filter((file) => file.startsWith("app/api/") && ["/route.ts", "/route.tsx", "/route.js", "/route.jsx"].some((suffix) => file.endsWith(suffix)));
+            const engins = sourceFiles.filter((file) => file.startsWith("engins/") && isCode(file));
+            const runtime = sourceFiles.filter((file) => file.startsWith("engine/runtime/") || file.startsWith("components/runtime/"));
+            const dreamdmbar = sourceFiles.filter((file) => file.startsWith("dreamdmbar/"));
+            const dreamr = sourceFiles.filter((file) => file.startsWith("dreamr/") || file.startsWith("components/dreamr/") || file.startsWith("app/dreamr/") || file.startsWith("app/api/dreamr/"));
+            const contentengin = sourceFiles.filter((file) => file.startsWith("engins/contentengin/") || file.startsWith("components/engines/create/") || file.startsWith("app/engines/create/") || file.startsWith("app/daydream/create/"));
+            const renderengin = sourceFiles.filter((file) => file.startsWith("engins/renderengin/"));
+            const publicRuntimeArtifacts = sourceFiles.filter(isRuntimePublicArtifact);
+
+            return {
+              pages: pages.map((file) => ({ route: routeForPage(file), file })).sort((a, b) => a.route.localeCompare(b.route)),
+              apiRoutes: apiRoutes.sort(),
+              engins: engins.sort(),
+              runtime: runtime.sort(),
+              dreamdmbar: dreamdmbar.sort(),
+              dreamr: dreamr.sort(),
+              contentengin: contentengin.sort(),
+              renderengin: renderengin.sort(),
+              publicRuntimeArtifacts: publicRuntimeArtifacts.sort(),
+            };
+          }
+
+          function featureCoverage(classified) {
+            const routes = new Set(classified.pages.map((entry) => entry.route));
+            return CORE_FEATURES.map((feature) => {
+              const files = sourceFiles.filter((file) => feature.roots.some((root) => file === root || file.startsWith(`${root}/`) || file.includes(root)));
+              const presentRoutes = feature.routes.filter((route) => routes.has(route));
+              const missingRoutes = feature.routes.filter((route) => !routes.has(route));
+              return {
+                id: feature.id,
+                label: feature.label,
+                files: files.sort(),
+                presentRoutes,
+                missingRoutes,
+              };
+            });
+          }
+
+          function writeGeneratedFile(file, exportsObject, banner) {
+            const content = [
+              "/*",
+              ` * ${banner}`,
+              " * Generated by .github/workflows/dreamengin-full-repair.yml.",
+              " * Deterministic repair output. No AI.",
+              " */",
+              "",
+              `export const ${exportsObject.name} = ${JSON.stringify(exportsObject.value, null, 2)} as const;`,
+              "",
+              `export type ${exportsObject.typeName} = typeof ${exportsObject.name};`,
+              "",
+            ].join("\n");
+
+            if (write(file, content)) {
+              log(`- wrote ${file}`);
+            }
+          }
+
+          function repairGeneratedWiringModules() {
+            log("## Repair pass: deterministic wiring modules");
+
+            const classified = classifyFiles();
+            const coverage = featureCoverage(classified);
+
+            const model = {
+              generatedAt: new Date().toISOString(),
+              model: "capability nodes + files as edges",
+              counts: {
+                sourceFiles: sourceFiles.length,
+                codeFiles: codeFiles.length,
+                pages: classified.pages.length,
+                apiRoutes: classified.apiRoutes.length,
+                engins: classified.engins.length,
+                publicRuntimeArtifacts: classified.publicRuntimeArtifacts.length,
+              },
+              classified,
+              featureCoverage: coverage,
+              caseCollisions: Object.fromEntries([...caseCollisions.entries()].map(([key, values]) => [key, [...values].sort()])),
+            };
+
+            write(MODEL_PATH, `${JSON.stringify(model, null, 2)}\n`);
+
+            writeGeneratedFile(
+              "engine/generated/dreamenginCapabilityGraph.ts",
+              {
+                name: "DREAMENGIN_CAPABILITY_GRAPH",
+                typeName: "DreamenginCapabilityGraph",
+                value: model,
+              },
+              "DREAMengin capability graph: files as edges, capabilities as nodes.",
+            );
+
+            writeGeneratedFile(
+              "engine/generated/dreamenginMenuWiring.ts",
+              {
+                name: "DREAMENGIN_MENU_WIRING",
+                typeName: "DreamenginMenuWiring",
+                value: coverage.map((feature) => ({
+                  id: feature.id,
+                  label: feature.label,
+                  route: feature.presentRoutes[0] || null,
+                  routes: feature.presentRoutes,
+                  missingRoutes: feature.missingRoutes,
+                  fileCount: feature.files.length,
+                  ready: feature.files.length > 0 && (feature.routes.length === 0 || feature.presentRoutes.length > 0),
+                })),
+              },
+              "DREAMengin menu and DreamDMBar capability wiring.",
+            );
+
+            writeGeneratedFile(
+              "engine/generated/dreamenginEnginWiring.ts",
+              {
+                name: "DREAMENGIN_ENGIN_WIRING",
+                typeName: "DreamenginEnginWiring",
+                value: {
+                  enginFiles: classified.engins,
+                  visualServices: {
+                    renderengin: classified.renderengin,
+                    contentengin: classified.contentengin,
+                    gameengin: classified.engins.filter((file) => file.includes("gameengin") || file.includes("GameEngin")),
+                  },
+                },
+              },
+              "DREAMengin Engin wiring manifest.",
+            );
+
+            writeGeneratedFile(
+              "engine/generated/dreamenginPublicRuntimeArtifacts.ts",
+              {
+                name: "DREAMENGIN_PUBLIC_RUNTIME_ARTIFACTS",
+                typeName: "DreamenginPublicRuntimeArtifacts",
+                value: classified.publicRuntimeArtifacts,
+              },
+              "DREAMengin public runtime artifacts that must not be treated as disposable media.",
+            );
+
+            log("");
+          }
+
+          function repairRepoState() {
+            log("## Repair pass: repo-state regeneration");
+
+            if (exists("scripts/generate-repo-state.mjs")) {
+              try {
+                cp.execSync("node scripts/generate-repo-state.mjs", { stdio: "inherit" });
+                log("- regenerated REPO_STATE.md and FILE_TREE.md");
+              } catch (error) {
+                log("- repo-state generator failed; continuing so repair report is still produced");
+                log(String(error.message || error));
+              }
+            } else {
+              log("- scripts/generate-repo-state.mjs not present; skipped");
+            }
+
+            log("");
+          }
+
+          function runSyntaxChecks() {
+            log("## Verification: syntax checks on changed JavaScript files");
+
+            const files = [...new Set(changed)].filter((file) => [".js", ".mjs", ".cjs"].includes(ext(file)) && exists(file));
+
+            if (!files.length) {
+              log("- no changed JS/MJS/CJS files to syntax-check");
+              log("");
+              return;
+            }
+
+            for (const file of files) {
+              cp.execSync(`node --check ${JSON.stringify(file)}`, { stdio: "inherit" });
+              log(`- node --check passed: ${file}`);
+            }
+
+            log("");
+          }
+
+          function runPackageScript(name) {
+            if (!exists("package.json")) return false;
+
+            const pkg = JSON.parse(read("package.json"));
+            if (!pkg.scripts || !pkg.scripts[name]) return false;
+
+            const manager = exists("pnpm-lock.yaml") ? "pnpm" : exists("yarn.lock") ? "yarn" : "npm run";
+            const command = manager === "pnpm" ? `pnpm ${name}` : manager === "yarn" ? `yarn ${name}` : `npm run ${name}`;
+
+            cp.execSync(command, { stdio: "inherit" });
+            return true;
+          }
+
+          function writeReport() {
+            const status = cp.execSync("git status --short", { encoding: "utf8" }).trim();
+
+            const finalReport = [
+              "# DREAMengin Deterministic Full Repair Report",
+              "",
+              `Generated: ${new Date().toISOString()}`,
+              "",
+              ...report,
+              "",
+              "## Changed paths",
+              "",
+              status ? status.split("\n").map((line) => `- ${line}`).join("\n") : "_No git changes detected._",
+              "",
+            ].join("\n");
+
+            write(REPORT_PATH, finalReport);
+          }
+
+          log("# DREAMengin deterministic full repair");
+          log("");
+          log(`Files scanned: ${sourceFiles.length}`);
+          log(`Code files scanned: ${codeFiles.length}`);
+          log("");
+
+          repairCodeEnginCaseCollision();
+          repairImportPaths();
+          repairRenderEnginRoutes();
+          repairGeneratedWiringModules();
+          repairRepoState();
+          runSyntaxChecks();
+          writeReport();
+
+          log("Done.");
+          NODE
+
+      - name: Run deterministic DREAMengin repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check .dreamengin-repair/deterministic-full-repair.cjs
+          node .dreamengin-repair/deterministic-full-repair.cjs
+
+      - name: Verify typecheck
+        if: ${{ inputs.run_typecheck }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f package.json ]; then
+            node - <<'NODE'
+            const fs = require('node:fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            process.exit(pkg.scripts && pkg.scripts.typecheck ? 0 : 1);
+          NODE
+            if [ $? -eq 0 ]; then
+              if [ -f pnpm-lock.yaml ]; then pnpm typecheck;
+              elif [ -f yarn.lock ]; then yarn typecheck;
+              else npm run typecheck;
+              fi
+            fi
+          fi
+
+      - name: Verify lint
+        if: ${{ inputs.run_lint }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f package.json ]; then
+            node - <<'NODE'
+            const fs = require('node:fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            process.exit(pkg.scripts && pkg.scripts.lint ? 0 : 1);
+          NODE
+            if [ $? -eq 0 ]; then
+              if [ -f pnpm-lock.yaml ]; then pnpm lint;
+              elif [ -f yarn.lock ]; then yarn lint;
+              else npm run lint;
+              fi
+            fi
+          fi
+
+      - name: Verify tests
+        if: ${{ inputs.run_tests }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f package.json ]; then
+            node - <<'NODE'
+            const fs = require('node:fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            process.exit(pkg.scripts && pkg.scripts.test ? 0 : 1);
+          NODE
+            if [ $? -eq 0 ]; then
+              if [ -f pnpm-lock.yaml ]; then pnpm test;
+              elif [ -f yarn.lock ]; then yarn test;
+              else npm test;
+              fi
+            fi
+          fi
+
+      - name: Build repair patch and source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dreamengin-repair-artifacts
+
+          git status --short > dreamengin-repair-artifacts/git-status.txt
+          git diff -- . \
+            ':!dreamengin-repair-artifacts/**' \
+            > dreamengin-repair-artifacts/dreamengin-deterministic-full-repair.patch || true
+
+          cp DREAMENGIN_DETERMINISTIC_REPAIR_REPORT.md dreamengin-repair-artifacts/ 2>/dev/null || true
+          cp DREAMENGIN_DETERMINISTIC_REPO_MODEL.json dreamengin-repair-artifacts/ 2>/dev/null || true
+          cp REPO_STATE.md dreamengin-repair-artifacts/ 2>/dev/null || true
+          cp FILE_TREE.md dreamengin-repair-artifacts/ 2>/dev/null || true
+
+          git ls-files -z \
+            | tar --null -T - -czf dreamengin-repair-artifacts/dreamengin-repaired-source.tar.gz
+
+      - name: Commit deterministic repairs
+        if: ${{ inputs.commit_changes }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No deterministic repair changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "${{ inputs.commit_message }}"
+          git push
+
+      - name: Upload repair artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-deterministic-full-repair
+          path: dreamengin-repair-artifacts
+          if-no-files-found: warn
