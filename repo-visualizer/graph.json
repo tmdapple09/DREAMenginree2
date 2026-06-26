@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T20:31:43.812Z",
+  "generatedAt": "2026-06-26T00:14:12.097Z",
   "root": ".",
   "nodes": [
     {
@@ -15774,7 +15774,7 @@
       "path": "components/dream.FirstTouchActivator.tsx",
       "parent": "folder:components",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -45463,7 +45463,7 @@
       "path": "engins/CodeEngin/core/parser.ts",
       "parent": "folder:engins/CodeEngin/core",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -45511,7 +45511,7 @@
       "path": "engins/CodeEngin/modules/ai-co-pilot/index.ts",
       "parent": "folder:engins/CodeEngin/modules/ai-co-pilot",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -45560,7 +45560,7 @@
       "path": "engins/CodeEngin/orchestrator/dream.index.tsx",
       "parent": "folder:engins/CodeEngin/orchestrator",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -60392,7 +60392,7 @@
       "path": "engins/renderengin/wasmAcceleration.ts",
       "parent": "folder:engins/renderengin",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -62767,7 +62767,7 @@
       "path": "hooks/useAppIntentPressureSurface.ts",
       "parent": "folder:hooks",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -100620,6 +100620,31 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin-ui/core/parser.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/codeengin/ai/drEamsCodeAssist.ts",
       "kind": "import"
     },
@@ -100630,7 +100655,7 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/codeengin-ui/core/parser.ts",
+      "target": "file:engins/CodeEngin/core/parser.ts",
       "kind": "import"
     },
     {
@@ -100655,22 +100680,22 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/index.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/index.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts",
+      "target": "file:engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts",
       "kind": "import"
     },
     {
       "source": "file:src/engin/generated/engins.ts",
-      "target": "file:engins/codeengin-ui/orchestrator/dream.index.tsx",
+      "target": "file:engins/CodeEngin/orchestrator/dream.index.tsx",
       "kind": "import"
     },
     {
@@ -101770,6 +101795,11 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/renderengin/wasmAcceleration.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/renderengin/webgpu.ts",
       "kind": "import"
     },
@@ -101961,6 +101991,11 @@
     {
       "source": "file:src/engin/generated/hooks.ts",
       "target": "file:hooks/useAccount.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/hooks.ts",
+      "target": "file:hooks/useAppIntentPressureSurface.ts",
       "kind": "import"
     },
     {
@@ -103721,6 +103756,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/dream.FeedCard.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/dream.FirstTouchActivator.tsx",
       "kind": "import"
     },
     {
