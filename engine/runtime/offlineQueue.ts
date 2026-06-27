@@ -1,68 +1,59 @@
 import { toErrorMessage } from '@/utils/index';
 
-// Framework directives stay physically first when required.
-
-// Runtime file: lib/runtime/offlineQueue.ts.
-
-// Runtime law comments and invariants stay attached to the code they govern.
-
-// Module-owned constants, caches, refs, and mutable runtime memory.
-
-/**
- * lib/runtime/offlineQueue.ts
- *
- * Offline Action Queue — spec §30.14 & §27.3.3
- *
- * Any action initiated while offline (message sends, Dream Window reconfigs,
- * post drafts) is queued here and automatically retried when connectivity returns.
- *
- * The queue is persisted to localStorage so it survives page refresh and
- * browser restart, matching the spec requirement:
- *   "Persistence must survive: surface changes, page refresh, browser restart"
- *
- * Improvements 88-92:
- *  88. enqueue        — add a typed action to the queue
- *  89. dequeue        — remove a completed action
- *  90. flushQueue     — attempt to replay all pending actions on reconnect
- *  91. getQueueStatus — inspect the current queue state
- *  92. listenOnline   — register a navigator.online listener + auto-flush
- */
-
 const STORAGE_KEY = 'de-offline-queue';
-
-const MAX_QUEUE_SIZE = 200;
-
-const MAX_RETRY_ATTEMPTS = 5;
-
-// Imports and external modules this runtime file depends on.
-
-// Top-level runtime registration and connection seams.
-
-// Types, interfaces, and schemas accepted or provided by this file.
+const MAX_QUEUE_SIZE = 500;
+const MAX_RETRY_ATTEMPTS = 8;
+const QUEUE_EVENT = 'dreamengin:offline-queue-changed';
 
 export type OfflineActionType =
   | 'message:send'
+  | 'message:read'
+  | 'message:delete'
   | 'message:react'
+  | 'conversation:update'
+  | 'notification:read'
+  | 'notification:delete'
+  | 'notification:mark-all'
   | 'dream-window:reconfigure'
+  | 'dream-layout:update'
+  | 'dream-system:snapshot'
   | 'post:create'
   | 'post:edit'
+  | 'post:delete'
   | 'content:publish'
-  | 'profile:update';
+  | 'profile:update'
+  | 'settings:update'
+  | 'marketplace:publish'
+  | 'recording:upload'
+  | 'connector:install'
+  | 'ad:slot-create'
+  | 'shop:publish'
+  | 'marketplace:request'
+  | 'ad:view'
+  | 'http:mutation'
+  | string;
 
 export type OfflineActionStatus = 'pending' | 'replaying' | 'failed';
 
+export interface OfflineReplayRequest {
+  url: string;
+  method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  headers?: Record<string, string>;
+  body?: unknown;
+}
+
 export interface OfflineAction {
-  /** Stable unique ID for this action. */
   id: string;
   type: OfflineActionType;
   payload: Record<string, unknown>;
-  /** Epoch ms when the action was enqueued. */
   enqueuedAt: number;
-  /** Number of replay attempts so far. */
+  updatedAt: number;
   attempts: number;
   status: OfflineActionStatus;
-  /** Error message from the last failed attempt. */
   lastError?: string;
+  idempotencyKey: string;
+  route?: string;
+  nextAttemptAt?: number;
 }
 
 export interface QueueStatus {
@@ -71,196 +62,253 @@ export interface QueueStatus {
   failed: number;
   total: number;
   oldestEnqueuedAt: number | null;
+  nextAttemptAt: number | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+export interface EnqueueOptions {
+  id?: string;
+  idempotencyKey?: string;
+  route?: string;
+  dedupe?: boolean;
+}
 
-function _load(): OfflineAction[] {
-  if (typeof localStorage === 'undefined') return [];
+function storageAvailable(): boolean {
+  return typeof localStorage !== 'undefined';
+}
+
+function emitQueueChanged(): void {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new CustomEvent(QUEUE_EVENT, { detail: getQueueStatus() }));
+}
+
+function generateId(prefix = 'offl'): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function defaultIdempotencyKey(type: OfflineActionType, payload: Record<string, unknown>): string {
+  const explicit = payload.idempotencyKey;
+  if (typeof explicit === 'string' && explicit.trim()) return explicit;
+  return `${type}:${generateId('idem')}`;
+}
+
+function loadQueue(): OfflineAction[] {
+  if (!storageAvailable()) return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    return JSON.parse(raw) as OfflineAction[];
+    const parsed = JSON.parse(raw) as OfflineAction[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((action) => action && typeof action.id === 'string');
   } catch {
     return [];
   }
 }
 
-function _save(queue: OfflineAction[]): void {
-  if (typeof localStorage === 'undefined') return;
+function saveQueue(queue: OfflineAction[]): void {
+  if (!storageAvailable()) return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+    emitQueueChanged();
   } catch (err: unknown) {
     console.warn('[offlineQueue] Failed to persist queue', err);
   }
 }
 
-/**
- * Add a typed action to the offline queue.
- * Returns the unique ID assigned to this action.
- *
- * If the queue is full (MAX_QUEUE_SIZE), the oldest failed action is evicted
- * first to make room. If still full, a warning is logged and the action is
- * rejected (returns null).
- */
+function nextBackoffMs(attempts: number): number {
+  const base = 1000 * 2 ** Math.min(8, attempts);
+  const jitter = Math.floor(Math.random() * 400);
+  return Math.min(5 * 60_000, base + jitter);
+}
+
 export function enqueue(
   type: OfflineActionType,
   payload: Record<string, unknown>,
+  options: EnqueueOptions = {},
 ): string | null {
-  const queue = _load();
+  const queue = loadQueue();
+  const idempotencyKey = options.idempotencyKey ?? defaultIdempotencyKey(type, payload);
+  const now = Date.now();
 
-  if (queue.length >= MAX_QUEUE_SIZE) {
-    // Evict oldest failed action
-    const failedIdx = queue.findIndex((a) => a.status === 'failed');
-    if (failedIdx >= 0) {
-      queue.splice(failedIdx, 1);
-    } else {
-      console.warn('[offlineQueue] Queue full, action dropped', { type });
-      return null;
+  if (options.dedupe !== false) {
+    const existing = queue.find((action) => action.idempotencyKey === idempotencyKey && action.status !== 'failed');
+    if (existing) {
+      existing.payload = { ...existing.payload, ...payload };
+      existing.updatedAt = now;
+      existing.route = options.route ?? existing.route;
+      saveQueue(queue);
+      return existing.id;
     }
   }
 
-  const id =
-    typeof crypto !== 'undefined' && crypto.randomUUID
-      ? crypto.randomUUID()
-      : `offl-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  while (queue.length >= MAX_QUEUE_SIZE) {
+    const evictIndex = queue.findIndex((action) => action.status === 'failed');
+    if (evictIndex >= 0) {
+      queue.splice(evictIndex, 1);
+      continue;
+    }
+    console.warn('[offlineQueue] Queue full, action dropped', { type });
+    return null;
+  }
 
   const action: OfflineAction = {
-    id,
+    id: options.id ?? generateId(),
     type,
     payload,
-    enqueuedAt: Date.now(),
+    enqueuedAt: now,
+    updatedAt: now,
     attempts: 0,
     status: 'pending',
+    idempotencyKey,
+    route: options.route,
   };
 
   queue.push(action);
-  _save(queue);
-  return id;
+  saveQueue(queue);
+  return action.id;
 }
 
-/**
- * Remove a successfully completed action from the queue by ID.
- * No-op when the ID is not found.
- */
+export function enqueueFetchMutation(type: OfflineActionType, request: OfflineReplayRequest, payload: Record<string, unknown> = {}, options: EnqueueOptions = {}): string | null {
+  return enqueue(type, { ...payload, request }, {
+    ...options,
+    idempotencyKey: options.idempotencyKey ?? `${type}:${request.method ?? 'POST'}:${request.url}:${JSON.stringify(request.body ?? {})}`,
+    route: options.route ?? request.url,
+  });
+}
+
 export function dequeue(id: string): void {
-  const queue = _load().filter((a) => a.id !== id);
-  _save(queue);
+  saveQueue(loadQueue().filter((action) => action.id !== id));
 }
 
-/**
- * Attempt to replay all pending actions in the queue.
- *
- * `executor` receives each action and should return true on success or throw
- * on failure. Successfully replayed actions are dequeued automatically.
- * Failed actions increment their attempt counter; after MAX_RETRY_ATTEMPTS
- * they are marked 'failed'.
- *
- * Returns a summary of the flush: `{ succeeded, failed, skipped }`.
- */
+export function listQueue(): OfflineAction[] {
+  return loadQueue();
+}
+
+export function clearQueue(): void {
+  saveQueue([]);
+}
+
+export function getQueueStatus(): QueueStatus {
+  const queue = loadQueue();
+  const oldest = queue.reduce<number | null>((min, action) => {
+    if (min === null) return action.enqueuedAt;
+    return Math.min(min, action.enqueuedAt);
+  }, null);
+  const next = queue.reduce<number | null>((min, action) => {
+    if (!action.nextAttemptAt || action.status === 'failed') return min;
+    if (min === null) return action.nextAttemptAt;
+    return Math.min(min, action.nextAttemptAt);
+  }, null);
+
+  return {
+    pending: queue.filter((action) => action.status === 'pending').length,
+    replaying: queue.filter((action) => action.status === 'replaying').length,
+    failed: queue.filter((action) => action.status === 'failed').length,
+    total: queue.length,
+    oldestEnqueuedAt: oldest,
+    nextAttemptAt: next,
+  };
+}
+
+export function subscribeQueueStatus(callback: (status: QueueStatus) => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  const handler = () => callback(getQueueStatus());
+  window.addEventListener(QUEUE_EVENT, handler);
+  callback(getQueueStatus());
+  return () => window.removeEventListener(QUEUE_EVENT, handler);
+}
+
+export async function replayFetchMutation(action: OfflineAction): Promise<void> {
+  const request = action.payload.request as Partial<OfflineReplayRequest> | undefined;
+  if (!request || typeof request.url !== 'string') {
+    throw new Error(`Offline action ${action.type} does not contain a replayable request.`);
+  }
+
+  const response = await fetch(request.url, {
+    method: request.method ?? 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Idempotency-Key': action.idempotencyKey,
+      ...(request.headers ?? {}),
+    },
+    body: request.body === undefined ? undefined : JSON.stringify(request.body),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Replay failed for ${action.type}: ${response.status}`);
+  }
+}
+
 export async function flushQueue(
   executor: (action: OfflineAction) => Promise<void>,
 ): Promise<{ succeeded: number; failed: number; skipped: number }> {
-  const queue = _load();
-  // Iterate over a snapshot so in-flight splices don't skip items
+  if (!isOnline()) {
+    return { succeeded: 0, failed: 0, skipped: loadQueue().length };
+  }
+
+  const queue = loadQueue();
+  const now = Date.now();
   const snapshot = [...queue];
   let succeeded = 0;
   let failed = 0;
   let skipped = 0;
 
   for (const action of snapshot) {
-    if (action.status === 'failed') { skipped++; continue; }
+    const liveIndex = queue.findIndex((entry) => entry.id === action.id);
+    if (liveIndex < 0) {
+      skipped += 1;
+      continue;
+    }
 
-    // Locate live entry in the mutable queue
-    const liveEntry = queue.find((a) => a.id === action.id);
-    if (!liveEntry) continue; // already removed in a previous iteration
+    const live = queue[liveIndex];
+    if (live.status === 'failed' || (live.nextAttemptAt && live.nextAttemptAt > now)) {
+      skipped += 1;
+      continue;
+    }
 
-    liveEntry.status = 'replaying';
+    live.status = 'replaying';
+    live.updatedAt = Date.now();
+    saveQueue(queue);
 
     try {
-      await executor(liveEntry);
-      succeeded++;
-      // Remove from the live array and persist
-      const idx = queue.findIndex((a) => a.id === liveEntry.id);
-      if (idx >= 0) queue.splice(idx, 1);
-      _save(queue);
+      await executor(live);
+      queue.splice(liveIndex, 1);
+      succeeded += 1;
+      saveQueue(queue);
     } catch (err: unknown) {
-      liveEntry.attempts++;
-      liveEntry.lastError = err instanceof Error ? toErrorMessage(err) : String(err);
-      liveEntry.status = liveEntry.attempts >= MAX_RETRY_ATTEMPTS ? 'failed' : 'pending';
-      _save(queue);
-      failed++;
+      const nextAttempts = live.attempts + 1;
+      live.attempts = nextAttempts;
+      live.updatedAt = Date.now();
+      live.lastError = toErrorMessage(err);
+      if (nextAttempts >= MAX_RETRY_ATTEMPTS) {
+        live.status = 'failed';
+        live.nextAttemptAt = undefined;
+      } else {
+        live.status = 'pending';
+        live.nextAttemptAt = Date.now() + nextBackoffMs(nextAttempts);
+      }
+      failed += 1;
+      saveQueue(queue);
     }
   }
 
   return { succeeded, failed, skipped };
 }
 
-/**
- * Return a point-in-time status summary of the offline queue.
- * Safe to call server-side (returns zeroed stats).
- */
-export function getQueueStatus(): QueueStatus {
-  if (typeof localStorage === 'undefined') {
-    return { pending: 0, replaying: 0, failed: 0, total: 0, oldestEnqueuedAt: null };
-  }
-  const queue = _load();
-  let pending = 0, replaying = 0, failed = 0;
-  let oldestEnqueuedAt: number | null = null;
-
-  for (const action of queue) {
-    if (action.status === 'pending' || action.status === 'replaying') {
-      if (action.status === 'pending') pending++;
-      else replaying++;
-    } else {
-      failed++;
-    }
-    if (oldestEnqueuedAt === null || action.enqueuedAt < oldestEnqueuedAt) {
-      oldestEnqueuedAt = action.enqueuedAt;
-    }
-  }
-
-  return { pending, replaying, failed, total: queue.length, oldestEnqueuedAt };
-}
-
-/**
- * Register a navigator `online` event listener that automatically calls
- * `flushQueue(executor)` whenever the browser reconnects.
- *
- * Returns a cleanup function that removes the listener.
- *
- * Usage:
- *   const off = listenOnline(async (action) => {
- *     await fetch('/api/messages', { method: 'POST', body: JSON.stringify(action.payload) });
- *   });
- *   // call off() on component unmount
- */
-export function listenOnline(
-  executor: (action: OfflineAction) => Promise<void>,
-): () => void {
-  if (typeof window === 'undefined') return () => {};
-
-  const handler = () => {
-    flushQueue(executor).catch((err: unknown ) => {
-      console.error('[offlineQueue] Auto-flush failed', err);
-    });
-  };
-
-  window.addEventListener('online', handler);
-  return () => window.removeEventListener('online', handler);
-}
-
-/**
- * Convenience: return true when the browser is currently online.
- * Safe to call server-side (returns true).
- */
 export function isOnline(): boolean {
   if (typeof navigator === 'undefined') return true;
   return navigator.onLine !== false;
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
+export function listenOnline(executor: (action: OfflineAction) => Promise<void>): () => void {
+  if (typeof window === 'undefined') return () => {};
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
+  const replay = () => {
+    void flushQueue(executor);
+  };
 
-// Exported declarations and re-export barrels are this file's public surface.
+  window.addEventListener('online', replay);
+  if (isOnline()) replay();
+
+  return () => window.removeEventListener('online', replay);
+}

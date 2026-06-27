@@ -9,6 +9,11 @@ import { ArrowLeft, Eye, Loader2, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { queueLocalFirstMutation, readOfflineCache, writeOfflineCache } from '@/engine/offline/offlineCache';
+
+const PROFILE_EDIT_DRAFT_KEY = 'profile:edit-draft';
+
+const PROFILE_DRAFT_KEY = 'profile:draft';
 
 // SURFACE: dreamsurface.EditProfiledream  (framework-mandated basename: page.tsx)
 
@@ -41,6 +46,20 @@ export default function EditProfileDreamPage( ){
   const supabase = createClient();
   const router = useRouter();
   const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void readOfflineCache<{ profile: Profile; widgets: ProfileDream[] }>(PROFILE_EDIT_DRAFT_KEY).then((draft) => {
+      if (cancelled || !draft) return;
+      setProfile((prev) => ({ ...prev, ...draft.profile }));
+      if (Array.isArray(draft.widgets) && draft.widgets.length) setWidgets(draft.widgets);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    void writeOfflineCache(PROFILE_EDIT_DRAFT_KEY, { profile, widgets });
+  }, [profile, widgets]);
 
   useEffect(() => {
     (async () => {
@@ -77,7 +96,25 @@ export default function EditProfileDreamPage( ){
         setInitialWidgets(loadedDreams);
         setIsLoading(false);
       } catch {
-        // Supabase unavailable or auth error — redirect to login
+        const cached = await readOfflineCache<{ profile: Profile; widgets: ProfileDream[] }>(PROFILE_DRAFT_KEY);
+        if (cached) {
+          setProfile(cached.profile);
+          setWidgets(cached.widgets);
+          setInitialProfile(cached.profile);
+          setInitialWidgets(cached.widgets);
+          setIsLoading(false);
+          return;
+        }
+        try {
+          const saved = localStorage.getItem('de-profile-widget-order');
+          if (saved) {
+            const localWidgets = JSON.parse(saved) as ProfileDream[];
+            setWidgets(localWidgets);
+            setInitialWidgets(localWidgets);
+            setIsLoading(false);
+            return;
+          }
+        } catch { /* noop */ }
         router.push('/login');
       }
     })();
@@ -124,6 +161,7 @@ export default function EditProfileDreamPage( ){
         body: JSON.stringify({ dream_config: widgets }),
       });
       localStorage.setItem('de-profile-widget-order', JSON.stringify(widgets));
+      void writeOfflineCache(PROFILE_DRAFT_KEY, { profile, widgets });
 
       // On a private save, detect Dream Windows whose visibility changed and log
       // VISIBILITY_CHANGE events (no update_mapping — draft not yet published).
@@ -159,7 +197,10 @@ export default function EditProfileDreamPage( ){
       // Private save — stay on EditProfileDream, not navigate to ViewProfile.
       // The user must explicitly publish to update their public profile.
     } catch {
-      setSaveError('Network error. Please try again.');
+      void queueLocalFirstMutation(`profile-save:${userId ?? 'local'}:${Date.now()}`, { profile, widgets }, { url: '/api/profile', method: 'PUT' });
+      setInitialProfile(profile);
+      setInitialWidgets(widgets);
+      setSaveError('Saved locally and queued for sync when service returns.');
     } finally {
       setIsSaving(false);
     }
@@ -241,7 +282,8 @@ export default function EditProfileDreamPage( ){
       // Navigate to ViewProfile to confirm the published output.
       router.push('/view-profile');
     } catch {
-      setSaveError('Network error during publish. Please try again.');
+      void queueLocalFirstMutation(`profile-publish:${userId ?? 'local'}:${Date.now()}`, { profile, widgets }, { url: '/api/profile', method: 'PUT' });
+      setSaveError('Saved locally and queued for publish when service returns.');
     } finally {
       setIsPublishing(false);
     }

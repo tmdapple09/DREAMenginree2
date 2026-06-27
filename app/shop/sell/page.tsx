@@ -6,8 +6,11 @@ import { ArrowLeft, DollarSign, ImageIcon, Loader2, Package, ShoppingBag } from 
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
+
+const SHOP_SELL_DRAFT_KEY = 'de:shop:sell-draft';
 
 // SURFACE: dreamsurface.ShopSell  (framework-mandated basename: page.tsx)
 
@@ -17,6 +20,23 @@ export default function SellItemPage( ){
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('1');
   const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(SHOP_SELL_DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw) as Partial<{ title: string; description: string; price: string; stock: string; imageUrl: string }>;
+      if (draft.title) setTitle(draft.title);
+      if (draft.description) setDescription(draft.description);
+      if (draft.price) setPrice(draft.price);
+      if (draft.stock) setStock(draft.stock);
+      if (draft.imageUrl) setImageUrl(draft.imageUrl);
+    } catch { /* ignore corrupt draft */ }
+  }, []);
+
+  useEffect(() => {
+    try { localStorage.setItem(SHOP_SELL_DRAFT_KEY, JSON.stringify({ title, description, price, stock, imageUrl, updatedAt: new Date().toISOString() })); } catch { /* local draft best effort */ }
+  }, [title, description, price, stock, imageUrl]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const supabase = createClient();
@@ -57,7 +77,9 @@ export default function SellItemPage( ){
       router.push('/shop');
     } catch (err: unknown) {
       const message = err instanceof Error ? toErrorMessage(err) : 'Failed to create listing';
-      setError(message);
+      const payload = { title, description, price: parseFloat(price) || 0, stock: parseInt(stock, 10) || 1, image_url: imageUrl || null };
+      void queueLocalFirstMutation(`shop-listing:${Date.now()}`, payload, { url: '/api/shop', method: 'POST' });
+      setError(`Saved locally and queued for publish when service returns. ${message}`);
     } finally {
       setIsLoading(false);
     }

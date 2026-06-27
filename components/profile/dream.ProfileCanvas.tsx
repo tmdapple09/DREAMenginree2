@@ -22,6 +22,7 @@ import {
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 type Profile = {
   id: string;
@@ -92,7 +93,13 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
       })
       .eq('id', profile.id);
     setSaving(false);
-    if (error) { setSaveErr(toErrorMessage(error)); return; }
+    if (error) {
+      void queueLocalFirstMutation(`profile-canvas:${profile.id}`, draft, { url: '/api/profile', method: 'POST' });
+      setSaveErr('Saved locally and queued for sync when service returns.');
+      setProfile((p) => ({ ...p, ...draft }));
+      setEditing(false);
+      return;
+    }
     setProfile((p) => ({ ...p, ...draft }));
     setEditing(false);
     setSaved(true);
@@ -103,6 +110,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
     setVisibility((prev) => {
       const next = { ...prev, [id]: !(prev[id] !== false) };
       saveVisibility(next);
+      void queueLocalFirstMutation(`profile-widget-visibility:${profile.id}`, next, { url: '/api/widgets', method: 'POST' });
       return next;
     });
   }, []);

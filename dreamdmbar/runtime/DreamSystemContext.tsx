@@ -7,6 +7,7 @@ import {
     torusFocusKey,
 } from '@/engine/runtime/dualRuntime';
 import { createClient } from '@/supabase/client/client';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import {
     createContext,
@@ -235,6 +236,56 @@ interface DreamSystemContextValue {
   setDominantViewport: (viewport: 'top' | 'bottom') => void;
 }
 
+
+interface DreamSystemOfflineSnapshot {
+  bothMenusOpen: boolean;
+  drEamsOpen: boolean;
+  barIntent: BarIntent;
+  splitRatio: number;
+  isBarMinimized: boolean;
+  homeData: HomeData | null;
+  worldFocus: WorldFocusState;
+  savedAt: string;
+}
+
+const DREAM_SYSTEM_OFFLINE_ID = 'shell';
+
+function sanitizeBarIntentForOffline(intent: BarIntent): BarIntent {
+  if (intent.mode !== 'module-actions') return intent;
+  return {
+    mode: 'module-actions',
+    moduleId: intent.moduleId,
+    targetLabel: intent.targetLabel,
+    moduleActions: intent.moduleActions?.map((action) => ({
+      id: action.id,
+      label: action.label,
+      icon: action.icon,
+      active: action.active,
+      disabled: action.disabled,
+      onAction: () => {},
+    })),
+  };
+}
+
+function normalizeOfflineSnapshot(value: unknown): DreamSystemOfflineSnapshot | null {
+  if (!value || typeof value !== 'object') return null;
+  const snapshot = value as Partial<DreamSystemOfflineSnapshot>;
+  if (typeof snapshot.splitRatio !== 'number') return null;
+  return {
+    bothMenusOpen: Boolean(snapshot.bothMenusOpen),
+    drEamsOpen: Boolean(snapshot.drEamsOpen),
+    barIntent: snapshot.barIntent && typeof snapshot.barIntent === 'object' ? snapshot.barIntent : DEFAULT_BAR_INTENT,
+    splitRatio: Math.max(0, Math.min(1, snapshot.splitRatio)),
+    isBarMinimized: Boolean(snapshot.isBarMinimized),
+    homeData: snapshot.homeData ?? null,
+    worldFocus: snapshot.worldFocus && typeof snapshot.worldFocus === 'object' ? {
+      ...DEFAULT_WORLD_FOCUS,
+      ...snapshot.worldFocus,
+    } : DEFAULT_WORLD_FOCUS,
+    savedAt: typeof snapshot.savedAt === 'string' ? snapshot.savedAt : new Date(0).toISOString(),
+  };
+}
+
 const DreamSystemContext = createContext<DreamSystemContextValue>({
   bothMenusOpen:              false,
   openBothMenus:              () => {},
@@ -275,6 +326,7 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
   const [homeData,      setHomeData]             = useState<HomeData | null>(null);
 
   const [worldFocus, setWorldFocusState] = useState<WorldFocusState>(DEFAULT_WORLD_FOCUS);
+  const offlineRestoredRef = useRef(false);
 
   // Bootstrap homeData from Supabase on any authenticated page so both
   // runtime regions are always available regardless of current route.

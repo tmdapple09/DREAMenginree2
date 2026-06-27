@@ -3,6 +3,8 @@ import '@/styles/view-transitions.css';
 import '@/styles/dream-shell.css';
 import CommandPaletteMount from '@/components/dream.CommandPaletteMount';
 import GlobalOverlays from '@/components/dream.GlobalOverlays';
+import OfflineRuntimeBootstrap from '@/components/offline/dream.OfflineRuntimeBootstrap';
+import OfflineStatusPill from '@/components/offline/dream.OfflineStatusPill';
 import ThemeApplicator from '@/components/dream.ThemeApplicator';
 import CartridgeRegistryBootstrap from '@/components/gameengin/dream.CartridgeRegistryBootstrap';
 import GodTierProvider from '@/components/providers/dream.GodTierProvider';
@@ -78,6 +80,7 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
         style={{ fontFamily: 'var(--font-space-grotesk, "Space Grotesk", system-ui, sans-serif)' }}
       >
         <ThemeProvider>
+          <OfflineRuntimeBootstrap />
           <ThemeApplicator />
           <Suspense><GodTierProvider /></Suspense>
           <OSProvider>
@@ -87,6 +90,7 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
                 <DualRuntimeContainer>
                   <main role="main" aria-label="Main content">{children}</main>
                   <GlobalOverlays />
+                  <OfflineStatusPill />
                   <Suspense><CommandPaletteMount /></Suspense>
                 </DualRuntimeContainer>
               </DreamSystemProvider>

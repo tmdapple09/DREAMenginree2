@@ -3,6 +3,7 @@
 import { CheckCircle, Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 /**
  * components/marketplace/dream.MarketplaceRequestButton.tsx
@@ -45,7 +46,10 @@ export default function MarketplaceRequestButton({ itemId, itemTitle }: Props) {
       setSuccess(true);
       setIsOpen(false);
     } catch (err: unknown) {
-      setError(err instanceof Error ? toErrorMessage(err) : 'Something went wrong.');
+      void queueLocalFirstMutation(`marketplace-request:${itemId}`, { item_id: itemId, message }, { url: '/api/marketplace/request', method: 'POST' });
+      setSuccess(true);
+      setIsOpen(false);
+      setError('Saved locally and queued for replay.');
     } finally {
       setIsLoading(false);
     }

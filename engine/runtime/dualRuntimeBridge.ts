@@ -33,6 +33,8 @@ const PAYLOAD_PREFIX_BYTES = 4; // length prefix stored before JSON payload
 
 const DEFAULT_ALLOC_START = 1 * 1024 * 1024; // 1 MB offset to avoid clobbering static data
 
+const DURABLE_BRIDGE_QUEUE_KEY = 'de:dual-runtime-bridge:durable-queue';
+
 const POLL_INTERVAL_MS = 0; // as fast as possible; the timer is coalesced by the browser/event loop
 
 const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
@@ -273,6 +275,7 @@ class DualRuntimeBridge extends EventEmitter {
   constructor() {
     super();
     this.setMaxListeners(100);
+    this.restoreDurableQueue();
     void this.initWasm();
     // ── Quantum compute handler ───────────────────────────────────────────
     // bridge.emit('lab', 'quantum:run', {algorithm, ansatz, numQubits?})
@@ -289,6 +292,34 @@ class DualRuntimeBridge extends EventEmitter {
         this._writeInterVMMessage(new TextEncoder().encode(JSON.stringify(result)));
       }
     });
+  }
+
+
+  private restoreDurableQueue(): void {
+    if (typeof localStorage === 'undefined') return;
+    try {
+      const raw = localStorage.getItem(DURABLE_BRIDGE_QUEUE_KEY);
+      if (!raw) return;
+      const entries = JSON.parse(raw) as QueuedEmission[];
+      if (!Array.isArray(entries)) return;
+      this.durableQueue.clear();
+      for (const entry of entries) {
+        if (!entry || typeof entry.id !== 'string') continue;
+        this.durableQueue.set(entry.id, entry);
+      }
+      this._evictExpired();
+    } catch {
+      this.durableQueue.clear();
+    }
+  }
+
+  private persistDurableQueue(): void {
+    if (typeof localStorage === 'undefined') return;
+    try {
+      localStorage.setItem(DURABLE_BRIDGE_QUEUE_KEY, JSON.stringify(Array.from(this.durableQueue.values())));
+    } catch {
+      // Durable bridge state is best-effort; active runtime delivery remains in memory.
+    }
   }
 
   private async initWasm(): Promise<void> {
@@ -545,6 +576,7 @@ class DualRuntimeBridge extends EventEmitter {
     this.emit(channel, event, payload);
     this._evictExpired();
     this._trimQueue();
+    this.persistDurableQueue();
     return id;
   }
 
@@ -556,6 +588,7 @@ class DualRuntimeBridge extends EventEmitter {
     const entry = this.durableQueue.get(id);
     if (!entry || entry.status !== 'pending') return;
     this.durableQueue.set(id, { ...entry, status: 'acked', ackedAt: Date.now() });
+    this.persistDurableQueue();
   }
 
   /**
@@ -567,6 +600,7 @@ class DualRuntimeBridge extends EventEmitter {
     const entry = this.durableQueue.get(id);
     if (!entry || entry.status !== 'pending') return;
     this.durableQueue.set(id, { ...entry, status: 'dropped' });
+    this.persistDurableQueue();
   }
 
   /**
@@ -733,11 +767,14 @@ class DualRuntimeBridge extends EventEmitter {
   /** Remove durable queue entries that have exceeded their TTL. */
   private _evictExpired(): void {
     const now = Date.now();
+    let changed = false;
     for (const [id, entry] of this.durableQueue) {
       if (entry.status === 'pending' && now - entry.enqueuedAt > entry.ttlMs) {
         this.durableQueue.set(id, { ...entry, status: 'dropped' });
+        changed = true;
       }
     }
+    if (changed) this.persistDurableQueue();
   }
 
   /**
@@ -746,18 +783,24 @@ class DualRuntimeBridge extends EventEmitter {
    */
   private _trimQueue(): void {
     if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) return;
+    let changed = false;
     const entries = Array.from(this.durableQueue.entries())
       .sort(([, a], [, b]) => a.enqueuedAt - b.enqueuedAt);
     // Remove non-pending first
     for (const [id, entry] of entries) {
       if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
-      if (entry.status !== 'pending') this.durableQueue.delete(id);
+      if (entry.status !== 'pending') {
+        this.durableQueue.delete(id);
+        changed = true;
+      }
     }
     // If still over limit, remove oldest pending
     for (const [id] of entries) {
       if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
       this.durableQueue.delete(id);
+      changed = true;
     }
+    if (changed) this.persistDurableQueue();
   }
 
   private _touchPeer(channel: string) {

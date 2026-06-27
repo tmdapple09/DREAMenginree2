@@ -5,6 +5,8 @@ import type { DMMessage } from '@/dreamdmbar/hooks/useDreamDMMessages';
 import { useDreamDMMessages } from '@/dreamdmbar/hooks/useDreamDMMessages';
 import { useDreamSearch } from '@/dreamdmbar/hooks/useDreamSearch';
 import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
+import { enqueueFetchMutation } from '@/engine/runtime/offlineQueue';
 import { createClient } from '@/supabase/client/client';
 import { formatRelativeTime, toErrorMessage } from '@/utils/index';
 import { ArrowLeft, Bot, FileText, Loader2, Mail, MessageSquare, Music, Plus, Search, Send, X } from 'lucide-react';
@@ -97,6 +99,24 @@ export default function MessagesClient({
 
   const [conversations, setConversations] = useState(initialConversations);
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(initialSelectedConversation);
+
+  useEffect(() => {
+    let cancelled = false;
+    void getOfflineRecord<Conversation[]>('dreamdm-conversations', userId).then((record) => {
+      if (cancelled || !record?.value?.length || initialConversations.length > 0) return;
+      setConversations(record.value);
+      setSelectedConv((prev) => prev ?? record.value[0] ?? null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [initialConversations.length, userId]);
+
+  useEffect(() => {
+    if (conversations.length > 0) {
+      void putOfflineRecord({ namespace: 'dreamdm-conversations', id: userId, value: conversations });
+    }
+  }, [conversations, userId]);
   const [newMessage, setNewMessage] = useState(initialCompose);
   const [newSubject, setNewSubject] = useState('');
   const [showSubjectField, setShowSubjectField] = useState(false);
@@ -287,11 +307,41 @@ export default function MessagesClient({
       );
     } catch (err: unknown) {
       console.error('Failed to send message:', err);
-      alert(err instanceof Error ? toErrorMessage(err) : 'Failed to send message');
-      if (optimisticMessage) removeOptimistic(optimisticMessage.id);
-      setNewMessage(rawBody);
-      setNewSubject(rawSubject);
-      setShowSubjectField(!!rawSubject.trim());
+      const canReplay = Boolean(selectedConv && optimisticMessage && (!selectedFile || mediaUrl));
+      if (canReplay && optimisticMessage && selectedConv) {
+        enqueueFetchMutation('message:send', {
+          url: '/api/messages',
+          method: 'POST',
+          body: {
+            conversation_id: selectedConv.id,
+            recipient_id: selectedConv.otherUser.id,
+            content: messageContent,
+            media_url: mediaUrl,
+            media_type: mediaType,
+          },
+        }, {
+          conversationId: selectedConv.id,
+          tempId: optimisticMessage.id,
+        }, {
+          idempotencyKey: optimisticMessage.id,
+          route: '/messages',
+        });
+        replaceOptimistic(optimisticMessage.id, { ...optimisticMessage, pending: true, failed: true });
+        setConversations((prev) =>
+          prev.map((c) =>
+            c.id === selectedConv.id
+              ? { ...c, lastMessage: messageContent, updatedAt: new Date().toISOString() }
+              : c
+          )
+        );
+      } else {
+        alert(err instanceof Error ? toErrorMessage(err) : 'Failed to send message');
+        if (optimisticMessage) removeOptimistic(optimisticMessage.id);
+        setNewMessage(rawBody);
+        setNewSubject(rawSubject);
+        setShowSubjectField(!!rawSubject.trim());
+        if (selectedConv?.id) saveDraft({ subject: rawSubject, body: rawBody });
+      }
     } finally {
       setIsSending(false);
     }

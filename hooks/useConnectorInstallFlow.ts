@@ -11,7 +11,10 @@ import {
 } from '@/engine/connectors/installFlow';
 import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { getWidgetTypeDef } from '@/engine/widgets/widgetRegistry';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { readOfflineCache, writeOfflineCache } from '@/engine/offline/offlineCache';
+
+const CONNECTOR_INSTALL_STATE_KEY = 'connector:install-flow';
 
 // hooks/useConnectorInstallFlow.ts
 // React hook that orchestrates the full Connect → Widget Install flow (req 1-100)
@@ -108,6 +111,38 @@ export function useConnectorInstallFlow(
   const [sliceSheetConnectorId, setSliceSheetConnectorId] = useState<string | null>(null);
 
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void readOfflineCache<ConnectorInstallFlowState>(CONNECTOR_INSTALL_STATE_KEY).then((cached) => {
+      if (cancelled || !cached) return;
+      setToastMessage(cached.toastMessage);
+      setPrompt(cached.prompt);
+      setPlacementRequest(cached.placementRequest);
+      setSliceSheetConnectorId(cached.sliceSheetConnectorId);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    void writeOfflineCache(CONNECTOR_INSTALL_STATE_KEY, { toastMessage, prompt, placementRequest, sliceSheetConnectorId });
+  }, [toastMessage, prompt, placementRequest, sliceSheetConnectorId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void readOfflineCache<ConnectorInstallFlowState>('connector:install-flow').then((cached) => {
+      if (cancelled || !cached) return;
+      setToastMessage(cached.toastMessage);
+      setPrompt(cached.prompt);
+      setPlacementRequest(cached.placementRequest);
+      setSliceSheetConnectorId(cached.sliceSheetConnectorId);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    void writeOfflineCache('connector:install-flow', { toastMessage, prompt, placementRequest, sliceSheetConnectorId });
+  }, [toastMessage, prompt, placementRequest, sliceSheetConnectorId]);
 
   const showToast = useCallback((msg: string) => {
     setToastMessage(msg);

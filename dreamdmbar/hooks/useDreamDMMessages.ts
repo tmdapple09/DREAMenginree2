@@ -2,6 +2,7 @@
 
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { createClient } from '@/supabase/client/client';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
@@ -28,6 +29,8 @@ export interface DMMessage {
   created_at: string;
   media_url?: string | null;
   media_type?: 'image' | 'video' | 'audio' | 'file' | null;
+  pending?: boolean;
+  failed?: boolean;
   sender?: {
     id: string;
     display_name: string | null;
@@ -57,16 +60,28 @@ export function useDreamDMMessages(
   const channelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
 
   const addOptimistic = useCallback((msg: DMMessage) => {
-    setMessages((prev) => [...prev, msg]);
-  }, []);
+    setMessages((prev) => {
+      const next = [...prev, { ...msg, pending: msg.pending ?? true }];
+      if (conversationId) void putOfflineRecord({ namespace: 'dreamdm-messages', id: conversationId, value: next });
+      return next;
+    });
+  }, [conversationId]);
 
   const replaceOptimistic = useCallback((tempId: string, real: DMMessage) => {
-    setMessages((prev) => prev.map((m) => (m.id === tempId ? real : m)));
-  }, []);
+    setMessages((prev) => {
+      const next = prev.map((m) => (m.id === tempId ? { ...real, pending: false } : m));
+      if (conversationId) void putOfflineRecord({ namespace: 'dreamdm-messages', id: conversationId, value: next });
+      return next;
+    });
+  }, [conversationId]);
 
   const removeOptimistic = useCallback((tempId: string) => {
-    setMessages((prev) => prev.filter((m) => m.id !== tempId));
-  }, []);
+    setMessages((prev) => {
+      const next = prev.filter((m) => m.id !== tempId);
+      if (conversationId) void putOfflineRecord({ namespace: 'dreamdm-messages', id: conversationId, value: next });
+      return next;
+    });
+  }, [conversationId]);
 
   useEffect(() => {
     if (!conversationId) {
@@ -81,20 +96,28 @@ export function useDreamDMMessages(
 
     const fetchMessages = async () => {
       setIsLoading(true);
+      const cached = await getOfflineRecord<DMMessage[]>('dreamdm-messages', conversationId);
+      if (cached?.value) {
+        setMessages(cached.value);
+        setIsLoading(false);
+      }
+
       try {
         const res = await fetch(`/api/messages?conversation_id=${conversationId}`);
         const data = await res.json();
         if (data.messages) {
-          setMessages(data.messages);
+          const next = data.messages as DMMessage[];
+          setMessages(next);
+          await putOfflineRecord({ namespace: 'dreamdm-messages', id: conversationId, value: next });
         }
       } catch (err: unknown) {
-        console.error('Failed to load messages:', err);
+        if (!cached?.value) console.error('Failed to load messages:', err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchMessages();
+    void fetchMessages();
 
     // Subscribe to new messages on this conversation
     const channel = supabase
@@ -113,7 +136,9 @@ export function useDreamDMMessages(
             // Avoid duplicate if already present (e.g., from optimistic insert)
             const exists = prev.some((m) => m.id === newMsg.id);
             if (exists) return prev;
-            return [...prev, newMsg];
+            const next = [...prev, { ...newMsg, pending: false }];
+            void putOfflineRecord({ namespace: 'dreamdm-messages', id: conversationId, value: next });
+            return next;
           });
         },
       )

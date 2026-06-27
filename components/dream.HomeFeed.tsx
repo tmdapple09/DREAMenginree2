@@ -9,6 +9,8 @@ import { useDreamSystem } from "@/dreamdmbar/runtime/DreamSystemContext";
 import { useLiveFeed, type FeedPost } from "@/dreamr/feed/useLiveFeed";
 import { useYouTubeLiveFeed } from "@/dreamr/feed/useYouTubeLiveFeed";
 import { uploadBlobToLedgerStorage } from "@/engins/contentengin/media/ledger";
+import { getOfflineRecord, putOfflineRecord } from "@/engine/offline/offlineCache";
+import { enqueueFetchMutation } from "@/engine/runtime/offlineQueue";
 import { createClient } from "@/supabase/client/client";
 import { isCompactRuntimeViewport } from "@/components/ui-system/runtimeViewport";
 import {
@@ -61,6 +63,10 @@ import { toErrorMessage } from "@/utils/index";
  *   - Own posts prepend immediately (seamless with optimistic insert)
  *   - Like/comment counts sync via UPDATE events (no re-fetch)
  */
+
+function feedCacheId(tab: string, userId: string): string {
+  return `${tab}:${userId}`;
+}
 
 interface Comment {
   id: string;
@@ -265,6 +271,13 @@ export default function HomeFeed({
       if (tab === "trending") params.set("sort", "trending");
       if (tab === "following") params.set("feed", "following");
 
+      const cacheId = feedCacheId(tab, userId);
+      const cached = await getOfflineRecord<FeedPost[]>("dream-feed", cacheId);
+      if (cached?.value?.length) {
+        replacePosts(cached.value);
+        setTabLoading(false);
+      }
+
       try {
         const response = await fetch(`/api/posts?${params.toString()}`, {
           signal,
@@ -276,18 +289,20 @@ export default function HomeFeed({
         };
         if (!response.ok)
           throw new Error(payload.error ?? "Feed request failed.");
-        replacePosts(Array.isArray(payload.posts) ? payload.posts : []);
+        const next = Array.isArray(payload.posts) ? payload.posts : [];
+        replacePosts(next);
+        await putOfflineRecord({ namespace: "dream-feed", id: cacheId, value: next });
       } catch (error) {
         if ((error as DOMException).name === "AbortError") return;
         setFeedLoadError(
-          error instanceof Error ? error.message : "Unable to load the feed.",
+          cached?.value?.length ? null : error instanceof Error ? error.message : "Unable to load the feed.",
         );
-        if (tab === "feed") replacePosts(initialPosts);
+        if (!cached?.value?.length && tab === "feed") replacePosts(initialPosts);
       } finally {
         setTabLoading(false);
       }
     },
-    [initialPosts, replacePosts],
+    [initialPosts, replacePosts, userId],
   );
 
   useEffect(() => {
@@ -397,11 +412,42 @@ export default function HomeFeed({
       });
       setShowComposer(false);
     } catch (err: unknown) {
-      setPostError(
-        err instanceof Error
-          ? toErrorMessage(err)
-          : "Unable to create your post right now.",
-      );
+      const canQueue = selectedImages.length === 0;
+      if (canQueue) {
+        const pendingPost: FeedPost = {
+          id: `pending-${Date.now()}`,
+          content: trimmed,
+          visibility: newPostVisibility,
+          media_url: null,
+          created_at: new Date().toISOString(),
+          profiles: {
+            handle: userHandle,
+            display_name: userDisplayName,
+            avatar_url: userAvatar,
+          },
+          likes_count: 0,
+          comments_count: 0,
+          source: "post",
+        };
+        prependPost(pendingPost);
+        enqueueFetchMutation("post:create", {
+          url: "/api/posts",
+          method: "POST",
+          body: {
+            content: trimmed,
+            visibility: newPostVisibility,
+            media_urls: [],
+          },
+        }, { pendingPostId: pendingPost.id }, { idempotencyKey: pendingPost.id, route: "/homedream" });
+        setNewPostContent("");
+        setShowComposer(false);
+      } else {
+        setPostError(
+          err instanceof Error
+            ? toErrorMessage(err)
+            : "Unable to create your post right now.",
+        );
+      }
     } finally {
       setIsPosting(false);
     }
@@ -433,13 +479,14 @@ export default function HomeFeed({
         });
       }
     } catch {
-      setLikedPosts((prev) => {
-        const n = new Set(prev);
-        if (alreadyLiked) n.add(postId);
-        else n.delete(postId);
-        return n;
-      });
-      updatePost(postId, { likes_count: cur });
+      enqueueFetchMutation(alreadyLiked ? "post:edit" : "post:edit", alreadyLiked ? {
+        url: `/api/likes?content_type=post&content_id=${encodeURIComponent(postId)}`,
+        method: "DELETE",
+      } : {
+        url: "/api/likes",
+        method: "POST",
+        body: { content_type: "post", content_id: postId },
+      }, { postId, action: alreadyLiked ? "unlike" : "like" });
     }
   };
 
@@ -465,12 +512,14 @@ export default function HomeFeed({
         });
       }
     } catch {
-      setSavedPosts((prev) => {
-        const n = new Set(prev);
-        if (alreadySaved) n.add(postId);
-        else n.delete(postId);
-        return n;
-      });
+      enqueueFetchMutation("post:edit", alreadySaved ? {
+        url: `/api/favorites?target_type=post&target_id=${encodeURIComponent(postId)}`,
+        method: "DELETE",
+      } : {
+        url: "/api/favorites",
+        method: "POST",
+        body: { target_type: "post", target_id: postId },
+      }, { postId, action: alreadySaved ? "unsave" : "save" });
     }
   };
 

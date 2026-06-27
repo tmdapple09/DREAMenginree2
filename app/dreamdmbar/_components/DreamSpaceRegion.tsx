@@ -6,6 +6,7 @@ import {
     listSystemArtifacts,
     listVisibleArtifacts,
     restoreArtifact,
+    restoreArtifactsFromOfflineCache,
 } from '@/engine/artifacts/artifactStore';
 import { useOS } from '@/engine/os/OSContext';
 import type { AssetEntry, AssetType } from '@/engine/ledger/ledger';
@@ -62,7 +63,12 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
 
   useEffect(() => {
     refreshArtifacts();
-  }, [refreshArtifacts]);
+    if (accountId) {
+      void restoreArtifactsFromOfflineCache(accountId).then((restored) => {
+        if (restored.length) refreshArtifacts();
+      });
+    }
+  }, [accountId, refreshArtifacts]);
 
   useEffect(() => {
     const unsubscribeArtifact = dreamOSBus.on('artifact:new', ({ accountId: nextAccountId }) => {

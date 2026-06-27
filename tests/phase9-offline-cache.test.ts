@@ -121,12 +121,16 @@ describe('Offline Cache — constants', () => {
       STORE_ASSETS,
       STORE_SCENES,
       STORE_SYNC_QUEUE,
+      STORE_RECORDS,
+      STORE_HTTP_CACHE,
     } = await import('@/engine/offline/offlineCache');
 
     expect(DB_NAME).toBe('dreamengin-offline');
-    expect(DB_VERSION).toBe(1);
+    expect(DB_VERSION).toBe(2);
     expect(STORE_ASSETS).toBe('assets');
     expect(STORE_SCENES).toBe('scenes');
     expect(STORE_SYNC_QUEUE).toBe('sync-queue');
+    expect(STORE_RECORDS).toBe('records');
+    expect(STORE_HTTP_CACHE).toBe('http-cache');
   });
 });

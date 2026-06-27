@@ -1,6 +1,7 @@
 'use client';
 
 import type { DreamArtifact } from '@/types/dreamArtifact';
+import { cacheAsset } from '@/engine/offline/offlineCache';
 
 const STORAGE_KEY = (accountId: string) => `dream_artifacts_${accountId}`;
 
@@ -97,6 +98,7 @@ function mergeWithSystemArtifacts(accountId: string, artifacts: DreamArtifact[])
 function writeArtifacts(accountId: string, artifacts: DreamArtifact[]): DreamArtifact[] | undefined {
   if (!isBrowser()) return;
   window.localStorage.setItem(STORAGE_KEY(accountId), JSON.stringify(artifacts));
+  void putOfflineRecord({ namespace: 'artifacts', id: accountId, value: artifacts });
 }
 
 export function getDefaultSystemArtifacts(defaultOwnerId: string = 'system') {
@@ -121,6 +123,13 @@ export function loadArtifacts(accountId?: string | null) {
   } catch {
     return getDefaultSystemArtifacts(accountId);
   }
+}
+
+export async function restoreArtifactsFromOfflineCache(accountId: string): Promise<DreamArtifact[]> {
+  const record = await getOfflineRecord<DreamArtifact[]>('artifacts', accountId);
+  const restored = mergeWithSystemArtifacts(accountId, Array.isArray(record?.value) ? record.value : []);
+  if (isBrowser()) window.localStorage.setItem(STORAGE_KEY(accountId), JSON.stringify(restored));
+  return restored;
 }
 
 export function saveArtifact(accountId: string, artifact: DreamArtifact): void {
@@ -163,4 +172,37 @@ export function restoreArtifact(accountId: string, artifactId: string): void {
 
 export function listSystemArtifacts(accountId?: string | null) {
   return loadArtifacts(accountId).filter((artifact) => artifact.isSystemModule);
+}
+
+
+export interface OfflineBlobArtifactRecord {
+  id: string;
+  name: string;
+  mimeType: string;
+  sizeBytes: number;
+  objectUrl?: string;
+  createdAt: string;
+}
+
+const OFFLINE_BLOB_ARTIFACTS_KEY = 'dreamengin:offline:blob-artifacts';
+
+export function readOfflineBlobArtifacts(): OfflineBlobArtifactRecord[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(OFFLINE_BLOB_ARTIFACTS_KEY) ?? '[]');
+    return Array.isArray(parsed) ? parsed as OfflineBlobArtifactRecord[] : [];
+  } catch {
+    return [];
+  }
+}
+
+export function recordOfflineBlobArtifact(record: OfflineBlobArtifactRecord & { blob?: Blob }): OfflineBlobArtifactRecord[] {
+  if (typeof window === 'undefined') return [record];
+  if (record.blob) {
+    void record.blob.arrayBuffer().then((data) => cacheAsset({ id: record.id, mimeType: record.mimeType, data, cachedAt: record.createdAt, modifiedAt: record.createdAt, synced: false, meta: { name: record.name, objectUrl: record.objectUrl } })).catch(() => undefined);
+  }
+  const { blob: _blob, ...persisted } = record;
+  const next = [persisted, ...readOfflineBlobArtifacts().filter((item) => item.id !== record.id)].slice(0, 64);
+  window.localStorage.setItem(OFFLINE_BLOB_ARTIFACTS_KEY, JSON.stringify(next));
+  return next;
 }

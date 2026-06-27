@@ -38,6 +38,7 @@ import {
 // Module-owned constants, caches, refs, and mutable runtime memory.
 
 const MAX_ARTIFACTS = 48;
+const DREAM_OS_BUS_CACHE_KEY = 'de:dream-os-bus:snapshot';
 
 const INTENT_BUS_COHERENCE_CAPACITY = createCoherenceCapacity({
   maxEventPressure: 36,
@@ -416,7 +417,45 @@ class DreamOSBusImpl {
     Set<(payload: DreamArtifactBusEventMap[DreamOSCustomEventName]) => void>
   >();
 
+
+  private restoreOfflineSnapshot(): void {
+    if (typeof localStorage === 'undefined') return;
+    try {
+      const raw = localStorage.getItem(DREAM_OS_BUS_CACHE_KEY);
+      if (!raw) return;
+      const snapshot = JSON.parse(raw) as DreamOSSnapshot;
+      if (Array.isArray(snapshot.artifacts)) {
+        for (const artifact of snapshot.artifacts) {
+          if (artifact && typeof artifact.id === 'string') this.artifacts.set(artifact.id, artifact);
+        }
+      }
+      if (Array.isArray(snapshot.runtimeContexts)) {
+        for (const context of snapshot.runtimeContexts) {
+          this.runtimeContexts.run({
+            region: context.region,
+            world: context.world,
+            splitRatio: context.splitRatio,
+            dominant: context.dominant,
+          });
+        }
+      }
+    } catch {
+      this.artifacts.clear();
+      this.runtimeContexts = createRuntimeContextContainer();
+    }
+  }
+
+  private persistOfflineSnapshot(): void {
+    if (typeof localStorage === 'undefined') return;
+    try {
+      localStorage.setItem(DREAM_OS_BUS_CACHE_KEY, JSON.stringify(this.getSnapshot()));
+    } catch {
+      // Runtime continuity is best-effort; in-memory bus remains authoritative for the live session.
+    }
+  }
+
   constructor() {
+    this.restoreOfflineSnapshot();
     bridge.subscribeEventActivity((emission) => {
       this.recordBridgeEmission(emission);
     });
@@ -531,11 +570,13 @@ class DreamOSBusImpl {
       updatedAt: input.updatedAt ?? Date.now(),
     });
     this.notify();
+    this.persistOfflineSnapshot();
   }
 
   publishRuntimeContext(input: PublishRuntimeContextInput): void {
     this.runtimeContexts.run(input);
     this.notify();
+    this.persistOfflineSnapshot();
   }
 
   /**
@@ -554,6 +595,7 @@ class DreamOSBusImpl {
     if (!this.artifacts.has(id)) return;
     this.artifacts.delete(id);
     this.notify();
+    this.persistOfflineSnapshot();
   }
 
   /**
@@ -563,6 +605,7 @@ class DreamOSBusImpl {
   clearArtifacts(): void {
     this.artifacts.clear();
     this.notify();
+    this.persistOfflineSnapshot();
   }
 
   /**

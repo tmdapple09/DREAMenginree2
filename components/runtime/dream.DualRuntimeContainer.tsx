@@ -19,7 +19,8 @@ import {
     type JsonObject,
     type JsonValue,
 } from '@/engine/runtime/iEngine';
-import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 // Framework directives stay physically first when required.
 
@@ -55,6 +56,8 @@ import React, { createContext, useCallback, useContext, useMemo, useRef, useStat
 const DualRuntimeContext = createContext<DualRuntimeContextValue | null>(null);
 
 const CORE_VERSION = '1.0.0';
+const DUAL_RUNTIME_OFFLINE_ID = 'dual-runtime-state';
+
 const SYSTEM_ACTOR: ActorContext = {
   actorId: 'dreamdmbar-system',
   runtimeId: 'homedream',
@@ -143,7 +146,30 @@ export default function DualRuntimeContainer({ children }: DualRuntimeContainerP
   }
 
   const intentBusRef = useRef(new IntentBus(dualRuntimeRuleSet));
+  const offlineRestoredRef = useRef(false);
   const [state, setState] = useState<DualRuntimeState>(DEFAULT_DUAL_RUNTIME);
+
+
+  useEffect(() => {
+    let cancelled = false;
+    void getOfflineRecord<DualRuntimeState>('dream-system', DUAL_RUNTIME_OFFLINE_ID)
+      .then((record) => {
+        if (cancelled || !record?.value) return;
+        setState(record.value);
+      })
+      .finally(() => {
+        if (!cancelled) offlineRestoredRef.current = true;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!offlineRestoredRef.current) return;
+    void putOfflineRecord({ namespace: 'dream-system', id: DUAL_RUNTIME_OFFLINE_ID, value: state });
+  }, [state]);
+
 
   // Refs to the scroll-root elements for each viewport.
   // Populated via registerViewportRef from the PersistentDreamBar scroll containers.

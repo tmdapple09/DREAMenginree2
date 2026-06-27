@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-27T15:31:57.815Z",
+  "generatedAt": "2026-06-26T00:14:12.097Z",
   "root": ".",
   "nodes": [
     {
@@ -3546,16 +3546,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMenginree2-offline-pass3-pass4-complete.zip",
-      "label": "DREAMenginree2-offline-pass3-pass4-complete.zip",
-      "type": "file",
-      "path": "DREAMenginree2-offline-pass3-pass4-complete.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -46687,87 +46677,27 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 47,
+      "loc": 36,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "function:engins/contentengin/AssetViewport.tsx#drawRenderEnginService",
-      "label": "drawRenderEnginService",
+      "id": "function:engins/contentengin/AssetViewport.tsx#drawWebGPU",
+      "label": "drawWebGPU",
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 353,
+      "loc": 382,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/contentengin/AssetViewport.tsx#createRenderServiceCamera",
-      "label": "createRenderServiceCamera",
+      "id": "function:engins/contentengin/AssetViewport.tsx#buildGpuVertices",
+      "label": "buildGpuVertices",
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 417,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#contentMeshToRenderMesh",
-      "label": "contentMeshToRenderMesh",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 433,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#computeVertexNormals",
-      "label": "computeVertexNormals",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 448,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#addNormal",
-      "label": "addNormal",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 469,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#contentMeshCullBounds",
-      "label": "contentMeshCullBounds",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 473,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#meshSignature",
-      "label": "meshSignature",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 492,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/AssetViewport.tsx#hashFloat",
-      "label": "hashFloat",
-      "type": "function",
-      "path": "engins/contentengin/AssetViewport.tsx",
-      "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 503,
+      "loc": 422,
       "isOrphan": true,
       "exported": false
     },
@@ -46777,7 +46707,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 508,
+      "loc": 458,
       "isOrphan": true,
       "exported": false
     },
@@ -46787,7 +46717,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 538,
+      "loc": 488,
       "isOrphan": true,
       "exported": false
     },
@@ -46797,7 +46727,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 577,
+      "loc": 527,
       "isOrphan": true,
       "exported": false
     },
@@ -46807,7 +46737,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 600,
+      "loc": 550,
       "isOrphan": true,
       "exported": false
     },
@@ -46817,7 +46747,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 610,
+      "loc": 560,
       "isOrphan": true,
       "exported": false
     },
@@ -46827,7 +46757,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 628,
+      "loc": 578,
       "isOrphan": true,
       "exported": false
     },
@@ -46837,7 +46767,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 670,
+      "loc": 620,
       "isOrphan": true,
       "exported": false
     },
@@ -46847,7 +46777,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 678,
+      "loc": 628,
       "isOrphan": true,
       "exported": false
     },
@@ -46857,7 +46787,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 692,
+      "loc": 642,
       "isOrphan": true,
       "exported": false
     },
@@ -46867,7 +46797,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 706,
+      "loc": 656,
       "isOrphan": true,
       "exported": false
     },
@@ -46877,7 +46807,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 714,
+      "loc": 664,
       "isOrphan": true,
       "exported": false
     },
@@ -46887,7 +46817,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 722,
+      "loc": 672,
       "isOrphan": true,
       "exported": false
     },
@@ -46897,7 +46827,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 723,
+      "loc": 673,
       "isOrphan": true,
       "exported": false
     },
@@ -46907,7 +46837,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 724,
+      "loc": 674,
       "isOrphan": true,
       "exported": false
     },
@@ -46917,7 +46847,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 725,
+      "loc": 675,
       "isOrphan": true,
       "exported": false
     },
@@ -46927,7 +46857,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 726,
+      "loc": 676,
       "isOrphan": true,
       "exported": false
     },
@@ -46937,7 +46867,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 727,
+      "loc": 677,
       "isOrphan": true,
       "exported": false
     },
@@ -46947,7 +46877,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 728,
+      "loc": 678,
       "isOrphan": true,
       "exported": false
     },
@@ -54880,7 +54810,7 @@
       "type": "function",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 50,
+      "loc": 49,
       "isOrphan": true,
       "exported": false
     },
@@ -54890,7 +54820,7 @@
       "type": "function",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 56,
+      "loc": 55,
       "isOrphan": true,
       "exported": true
     },
@@ -54900,7 +54830,7 @@
       "type": "class",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 98,
+      "loc": 97,
       "isOrphan": false,
       "exported": true
     },
@@ -58411,7 +58341,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 35,
+      "loc": 34,
       "isOrphan": true,
       "exported": false
     },
@@ -58421,7 +58351,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 43,
+      "loc": 42,
       "isOrphan": true,
       "exported": false
     },
@@ -58431,27 +58361,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 52,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/RenderEnginViewport.tsx#stableNumericObjectId",
-      "label": "stableNumericObjectId",
-      "type": "function",
-      "path": "engins/renderengin/RenderEnginViewport.tsx",
-      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 56,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/RenderEnginViewport.tsx#createRenderCullBounds",
-      "label": "createRenderCullBounds",
-      "type": "function",
-      "path": "engins/renderengin/RenderEnginViewport.tsx",
-      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 65,
+      "loc": 51,
       "isOrphan": true,
       "exported": false
     },
@@ -58461,7 +58371,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 94,
+      "loc": 55,
       "isOrphan": true,
       "exported": false
     },
@@ -58471,7 +58381,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 119,
+      "loc": 80,
       "isOrphan": true,
       "exported": false
     },
@@ -58481,7 +58391,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 123,
+      "loc": 84,
       "isOrphan": true,
       "exported": false
     },
@@ -58491,7 +58401,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 131,
+      "loc": 92,
       "isOrphan": true,
       "exported": false
     },
@@ -58501,7 +58411,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 176,
+      "loc": 137,
       "isOrphan": true,
       "exported": true
     },
@@ -58551,7 +58461,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 90,
+      "loc": 89,
       "isOrphan": true,
       "exported": false
     },
@@ -58561,7 +58471,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 92,
+      "loc": 91,
       "isOrphan": true,
       "exported": false
     },
@@ -58571,7 +58481,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 93,
+      "loc": 92,
       "isOrphan": true,
       "exported": false
     },
@@ -58581,7 +58491,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 94,
+      "loc": 93,
       "isOrphan": true,
       "exported": false
     },
@@ -58591,7 +58501,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 95,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -58601,7 +58511,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 102,
+      "loc": 101,
       "isOrphan": true,
       "exported": true
     },
@@ -58611,7 +58521,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 120,
+      "loc": 119,
       "isOrphan": true,
       "exported": true
     },
@@ -58621,7 +58531,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 137,
+      "loc": 136,
       "isOrphan": true,
       "exported": true
     },
@@ -58631,7 +58541,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 141,
+      "loc": 140,
       "isOrphan": true,
       "exported": true
     },
@@ -58641,7 +58551,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 150,
+      "loc": 149,
       "isOrphan": true,
       "exported": true
     },
@@ -58651,7 +58561,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 155,
+      "loc": 154,
       "isOrphan": true,
       "exported": true
     },
@@ -58661,7 +58571,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 165,
+      "loc": 164,
       "isOrphan": true,
       "exported": true
     },
@@ -58671,7 +58581,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 169,
+      "loc": 168,
       "isOrphan": true,
       "exported": true
     },
@@ -58681,7 +58591,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 173,
+      "loc": 172,
       "isOrphan": true,
       "exported": true
     },
@@ -58691,7 +58601,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 177,
+      "loc": 176,
       "isOrphan": true,
       "exported": true
     },
@@ -58701,7 +58611,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 192,
+      "loc": 191,
       "isOrphan": true,
       "exported": true
     },
@@ -58711,7 +58621,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 203,
+      "loc": 202,
       "isOrphan": true,
       "exported": true
     },
@@ -58721,7 +58631,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 207,
+      "loc": 206,
       "isOrphan": true,
       "exported": true
     },
@@ -58731,7 +58641,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 227,
+      "loc": 226,
       "isOrphan": true,
       "exported": true
     },
@@ -58741,7 +58651,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 262,
+      "loc": 246,
       "isOrphan": true,
       "exported": true
     },
@@ -58751,7 +58661,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 274,
+      "loc": 258,
       "isOrphan": true,
       "exported": true
     },
@@ -58761,7 +58671,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 279,
+      "loc": 263,
       "isOrphan": true,
       "exported": true
     },
@@ -59176,62 +59086,12 @@
       "exported": true
     },
     {
-      "id": "function:engins/renderengin/core.ts#compensatedDot4",
-      "label": "compensatedDot4",
-      "type": "function",
-      "path": "engins/renderengin/core.ts",
-      "parent": "file:engins/renderengin/core.ts",
-      "loc": 25,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/core.ts#splitFloat64",
-      "label": "splitFloat64",
-      "type": "function",
-      "path": "engins/renderengin/core.ts",
-      "parent": "file:engins/renderengin/core.ts",
-      "loc": 48,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/core.ts#twoProduct",
-      "label": "twoProduct",
-      "type": "function",
-      "path": "engins/renderengin/core.ts",
-      "parent": "file:engins/renderengin/core.ts",
-      "loc": 55,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/core.ts#preciseDot4",
-      "label": "preciseDot4",
-      "type": "function",
-      "path": "engins/renderengin/core.ts",
-      "parent": "file:engins/renderengin/core.ts",
-      "loc": 63,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
       "id": "function:engins/renderengin/core.ts#mat4Mul",
       "label": "mat4Mul",
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 81,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/core.ts#mat4MulPrecise",
-      "label": "mat4MulPrecise",
-      "type": "function",
-      "path": "engins/renderengin/core.ts",
-      "parent": "file:engins/renderengin/core.ts",
-      "loc": 102,
+      "loc": 25,
       "isOrphan": false,
       "exported": true
     },
@@ -59241,7 +59101,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 123,
+      "loc": 26,
       "isOrphan": false,
       "exported": true
     },
@@ -59251,7 +59111,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 125,
+      "loc": 27,
       "isOrphan": false,
       "exported": true
     },
@@ -59261,7 +59121,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 126,
+      "loc": 28,
       "isOrphan": false,
       "exported": true
     },
@@ -59271,7 +59131,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 127,
+      "loc": 29,
       "isOrphan": false,
       "exported": true
     },
@@ -59281,7 +59141,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 128,
+      "loc": 30,
       "isOrphan": false,
       "exported": true
     },
@@ -59291,7 +59151,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 129,
+      "loc": 31,
       "isOrphan": true,
       "exported": true
     },
@@ -59301,7 +59161,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 133,
+      "loc": 35,
       "isOrphan": false,
       "exported": true
     },
@@ -59311,7 +59171,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 134,
+      "loc": 36,
       "isOrphan": true,
       "exported": true
     },
@@ -59321,7 +59181,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 135,
+      "loc": 37,
       "isOrphan": true,
       "exported": true
     },
@@ -59331,7 +59191,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 137,
+      "loc": 39,
       "isOrphan": true,
       "exported": true
     },
@@ -59341,7 +59201,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 138,
+      "loc": 40,
       "isOrphan": true,
       "exported": true
     },
@@ -59351,7 +59211,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 139,
+      "loc": 41,
       "isOrphan": true,
       "exported": true
     },
@@ -59361,7 +59221,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 140,
+      "loc": 42,
       "isOrphan": true,
       "exported": true
     },
@@ -59371,7 +59231,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 141,
+      "loc": 43,
       "isOrphan": true,
       "exported": true
     },
@@ -59381,7 +59241,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 144,
+      "loc": 46,
       "isOrphan": true,
       "exported": true
     },
@@ -59391,7 +59251,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 145,
+      "loc": 47,
       "isOrphan": true,
       "exported": true
     },
@@ -59401,7 +59261,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 146,
+      "loc": 48,
       "isOrphan": true,
       "exported": true
     },
@@ -59411,7 +59271,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 148,
+      "loc": 50,
       "isOrphan": false,
       "exported": true
     },
@@ -59421,7 +59281,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 149,
+      "loc": 51,
       "isOrphan": false,
       "exported": true
     },
@@ -59431,7 +59291,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 152,
+      "loc": 54,
       "isOrphan": true,
       "exported": true
     },
@@ -59441,7 +59301,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 154,
+      "loc": 56,
       "isOrphan": true,
       "exported": true
     },
@@ -59451,7 +59311,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 155,
+      "loc": 57,
       "isOrphan": true,
       "exported": true
     },
@@ -59461,7 +59321,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 189,
+      "loc": 91,
       "isOrphan": false,
       "exported": true
     },
@@ -59471,7 +59331,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 202,
+      "loc": 104,
       "isOrphan": false,
       "exported": true
     },
@@ -59481,7 +59341,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 209,
+      "loc": 111,
       "isOrphan": true,
       "exported": false
     },
@@ -59491,7 +59351,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 219,
+      "loc": 121,
       "isOrphan": true,
       "exported": false
     },
@@ -60301,7 +60161,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 43,
+      "loc": 42,
       "isOrphan": true,
       "exported": true
     },
@@ -60311,7 +60171,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 53,
+      "loc": 52,
       "isOrphan": true,
       "exported": true
     },
@@ -60321,7 +60181,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 66,
+      "loc": 59,
       "isOrphan": true,
       "exported": true
     },
@@ -60331,7 +60191,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 74,
+      "loc": 67,
       "isOrphan": true,
       "exported": true
     },
@@ -60341,7 +60201,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 81,
+      "loc": 74,
       "isOrphan": true,
       "exported": true
     },
@@ -60541,7 +60401,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 780,
+      "loc": 149,
       "isOrphan": true,
       "exported": true
     },
@@ -60551,67 +60411,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 789,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#writeGpuMat4",
-      "label": "writeGpuMat4",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 793,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#writeVec4",
-      "label": "writeVec4",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 812,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#writeVec3AsVec4",
-      "label": "writeVec3AsVec4",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 819,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#normalizePlane",
-      "label": "normalizePlane",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 826,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#writeFrustumPlanes",
-      "label": "writeFrustumPlanes",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 831,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/renderengin/webgpu.ts#writeMat4Mul",
-      "label": "writeMat4Mul",
-      "type": "function",
-      "path": "engins/renderengin/webgpu.ts",
-      "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 844,
+      "loc": 158,
       "isOrphan": true,
       "exported": false
     },
@@ -60621,7 +60421,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 863,
+      "loc": 162,
       "isOrphan": true,
       "exported": true
     },
@@ -60631,7 +60431,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 880,
+      "loc": 179,
       "isOrphan": true,
       "exported": false
     },
@@ -60641,7 +60441,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 897,
+      "loc": 196,
       "isOrphan": false,
       "exported": true
     },
@@ -60651,7 +60451,7 @@
       "type": "class",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 923,
+      "loc": 208,
       "isOrphan": false,
       "exported": true
     },
@@ -97914,16 +97714,6 @@
       "kind": "import"
     },
     {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "file:engins/renderengin/core.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "file:engins/renderengin/webgpu.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/contentengin/AssetViewport.tsx",
       "kind": "import"
@@ -99401,11 +99191,6 @@
     {
       "source": "file:engins/gameengin/gameEnginRuntime.ts",
       "target": "file:engins/gameengin/runtime/RuntimeQuality.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/gameengin/gameEnginRuntime.ts",
-      "target": "file:engins/renderengin/webgpu.ts",
       "kind": "import"
     },
     {
@@ -114360,37 +114145,7 @@
     },
     {
       "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "class:engins/renderengin/webgpu.ts#WebGpuRenderEngin",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "function:engins/renderengin/core.ts#mat4LookAt",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "function:engins/renderengin/core.ts#mat4Perspective",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
       "target": "function:engins/isosurfaceAssetPipeline.ts#computeBounds",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/AssetViewport.tsx",
-      "target": "function:engins/renderengin/core.ts#createMeshBuffers",
       "kind": "call"
     },
     {
@@ -115649,11 +115404,6 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/gameengin/gameEnginRuntime.ts",
-      "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
-      "kind": "call"
-    },
-    {
       "source": "file:engins/gameengin/games/hooks.ts",
       "target": "function:engins/gameengin/games/performance-baseline.ts#resolveRendererBackend",
       "kind": "call"
@@ -115890,7 +115640,7 @@
     },
     {
       "source": "file:engins/renderengin/advancedRendering.ts",
-      "target": "function:engins/renderengin/core.ts#mat4MulPrecise",
+      "target": "function:engins/renderengin/core.ts#mat4Mul",
       "kind": "call"
     },
     {

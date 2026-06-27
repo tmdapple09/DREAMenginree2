@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 // SURFACE: dreamsurface.MarketplaceSell  (framework-mandated basename: page.tsx)
 // app/marketplace/sell/page.tsx
@@ -18,6 +19,8 @@ import { toErrorMessage } from '@/utils/index';
 //
 // Pattern mirrors app/shop/sell/page.tsx for consistency.
 
+
+const MARKETPLACE_SELL_DRAFT_KEY = 'de:marketplace:sell-draft';
 
 const CATEGORIES = [
   { value: 'widget',    label: '🧩 Dream',    desc: 'Dream module for HomeDream' },
@@ -45,6 +48,24 @@ export default function MarketplaceSellPage( ){
   const [category,    setCategory]    = useState('widget');
   const [price,       setPrice]       = useState('0');
   const [tags,        setTags]        = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(MARKETPLACE_SELL_DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw) as Partial<{ title: string; description: string; category: string; price: string; tags: string }>;
+      if (draft.title) setTitle(draft.title);
+      if (draft.description) setDescription(draft.description);
+      if (draft.category) setCategory(draft.category);
+      if (draft.price) setPrice(draft.price);
+      if (draft.tags) setTags(draft.tags);
+    } catch { /* ignore corrupt draft */ }
+  }, []);
+
+  useEffect(() => {
+    const draft = { title, description, category, price, tags, updatedAt: new Date().toISOString() };
+    try { localStorage.setItem(MARKETPLACE_SELL_DRAFT_KEY, JSON.stringify(draft)); } catch { /* local draft best effort */ }
+  }, [title, description, category, price, tags]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error,     setError]     = useState('');
@@ -78,7 +99,10 @@ export default function MarketplaceSellPage( ){
       // Small delay so the success state is visible before redirect
       setTimeout(() => router.push('/marketplace'), 1400);
     } catch (err: unknown) {
-      setError(err instanceof Error ? toErrorMessage(err) : 'Something went wrong.');
+      const payload = { title, description, category, price: parseFloat(price) || 0, tags };
+      void queueLocalFirstMutation(`marketplace-listing:${Date.now()}`, payload, { url: '/api/marketplace', method: 'POST' });
+      setSuccess(true);
+      setError(`Saved locally and queued for publish when service returns. ${message}`);
     } finally {
       setIsLoading(false);
     }

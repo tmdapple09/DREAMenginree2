@@ -2,6 +2,7 @@
 
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { createClient } from '@/supabase/client/client';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useState } from 'react';
 
 /**
@@ -41,6 +42,12 @@ export function useDreamDMConversations(userId: string, initial: DMConversation[
   const load = useCallback(async () => {
     if (!userId) return;
     setIsLoading(true);
+    const cached = await getOfflineRecord<DMConversation[]>('dreamdm-conversations', userId);
+    if (cached?.value) {
+      setConversations(cached.value);
+      setIsLoading(false);
+    }
+
     try {
       const supabase = createClient();
       const { data, error } = await supabase
@@ -76,6 +83,7 @@ export function useDreamDMConversations(userId: string, initial: DMConversation[
       });
 
       setConversations(formatted);
+      await putOfflineRecord({ namespace: 'dreamdm-conversations', id: userId, value: formatted });
     } finally {
       setIsLoading(false);
     }

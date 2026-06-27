@@ -1,5 +1,6 @@
 'use client';
 
+import { deleteOfflineRecord, getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
@@ -70,6 +71,7 @@ function writeDraft(conversationId: string, payload: DraftPayload): void {
       savedAt: Date.now(),
     };
     localStorage.setItem(buildKey(conversationId), JSON.stringify(truncated));
+    void putOfflineRecord({ namespace: 'dreamdm-drafts', id: conversationId, value: truncated });
   } catch (err: unknown) {
     // ── Improvement 83: log storage quota errors instead of silently swallowing ──
     console.warn('[DreamDMDraft] Failed to persist draft', { conversationId, err });
@@ -105,6 +107,7 @@ export function cleanupStaleDrafts(maxAgeDays: number): string[] {
     const draft = readDraft(convId);
     if (!draft || !draft.savedAt || draft.savedAt < cutoff) {
       localStorage.removeItem(buildKey(convId));
+      void deleteOfflineRecord('dreamdm-drafts', convId);
       removed.push(convId);
     }
   }
@@ -133,14 +136,30 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
       setDraftRestored(false);
       return;
     }
+    let cancelled = false;
     const saved = readDraft(conversationId);
     setDraft(saved);
+    void getOfflineRecord<DraftPayload>('dreamdm-drafts', conversationId).then((record) => {
+      if (cancelled || saved || !record?.value) return;
+      setDraft(record.value);
+      if (typeof window !== 'undefined') localStorage.setItem(buildKey(conversationId), JSON.stringify(record.value));
+      if (record.value.body.trim() || record.value.subject.trim()) {
+        setDraftRestored(true);
+        window.setTimeout(() => setDraftRestored(false), 2000);
+      }
+    });
     // Show "Draft restored" indicator briefly if a non-empty draft was found
     if (saved && (saved.body.trim() || saved.subject.trim())) {
       setDraftRestored(true);
       const timer = setTimeout(() => setDraftRestored(false), 2000);
-      return () => clearTimeout(timer);
+      return () => {
+        cancelled = true;
+        clearTimeout(timer);
+      };
     }
+    return () => {
+      cancelled = true;
+    };
   }, [conversationId]);
 
   const saveDraft = useCallback((payload: DraftPayload) => {
@@ -155,6 +174,7 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
   const clearDraft = useCallback((convId: string) => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(buildKey(convId));
+      void deleteOfflineRecord('dreamdm-drafts', convId);
     }
     if (convId === conversationId) {
       setDraft(null);

@@ -3,6 +3,7 @@
 import { ArrowLeft, Check, Sliders } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 import PositionIndicatorToggle from './dream.PositionIndicatorToggle';
 
 /**
@@ -77,6 +78,7 @@ export default function ControlsClient( ){
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch (err) {
         console.warn('[ControlsClient] Failed to persist settings:', err);
       }
+      void queueLocalFirstMutation('control-settings', next, { url: '/api/settings/controls', method: 'POST' });
       return next;
     });
     setSaved(true);

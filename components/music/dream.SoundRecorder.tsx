@@ -1,5 +1,7 @@
 'use client';
 
+import { recordOfflineBlobArtifact } from '@/engine/artifacts/artifactStore';
+
 import { Download, Mic, Pause, Play, Square, Trash2, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
@@ -124,6 +126,7 @@ export default function SoundRecorder( ){
         stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(chunksRef.current, { type: usedMime });
         const url = URL.createObjectURL(blob);
+      recordOfflineBlobArtifact({ id: `recording:${Date.now()}`, name: 'Dream recording', mimeType: blob.type || 'audio/webm', sizeBytes: blob.size, objectUrl: url, createdAt: new Date().toISOString(), blob });
         const durationMs = Date.now() - startTimeRef.current;
         setRecordings((prev) => [...prev, { url, name: `Take ${prev.length + 1}`, durationMs, blob, mimeType: usedMime }]);
         setState('recorded');

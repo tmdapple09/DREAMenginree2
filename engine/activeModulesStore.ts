@@ -1,6 +1,7 @@
 'use client';
 
 import type { ActiveModuleInstance, RuntimeRegionKey } from '@/types/dreamArtifact';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 
 const STORAGE_KEY = (accountId: string) => `dream_active_modules_${accountId}`;
 
@@ -11,6 +12,7 @@ function isBrowser( ){
 function writeInstances(accountId: string, instances: ActiveModuleInstance[]): ActiveModuleInstance[] | undefined {
   if (!isBrowser()) return;
   window.localStorage.setItem(STORAGE_KEY(accountId), JSON.stringify(instances));
+  void putOfflineRecord({ namespace: 'active-modules', id: accountId, value: instances });
 }
 
 export function loadActiveModules(accountId?: string | null) {
@@ -25,6 +27,13 @@ export function loadActiveModules(accountId?: string | null) {
   } catch {
     return [];
   }
+}
+
+export async function restoreActiveModulesFromOfflineCache(accountId: string): Promise<ActiveModuleInstance[]> {
+  const record = await getOfflineRecord<ActiveModuleInstance[]>('active-modules', accountId);
+  const restored = Array.isArray(record?.value) ? record.value : [];
+  if (isBrowser()) window.localStorage.setItem(STORAGE_KEY(accountId), JSON.stringify(restored));
+  return restored;
 }
 
 export function saveActiveModule(accountId: string, instance: ActiveModuleInstance): void {

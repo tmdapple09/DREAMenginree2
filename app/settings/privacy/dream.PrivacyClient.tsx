@@ -3,6 +3,7 @@
 import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX, X } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 /**
  * PrivacyClient — interactive privacy settings persisted to Supabase.
@@ -118,13 +119,21 @@ export default function PrivacyClient( ){
       const data = await res.json() as { ok?: boolean; message?: string; block?: BlockEntry };
       if (!res.ok) { setBlockError(data.message ?? 'Failed to block user.'); }
       else if (data.block) { setBlocks((prev) => [data.block!, ...prev]); setBlockInput(''); }
-    } catch { setBlockError('Network error — please try again.'); }
+    } catch {
+      const queued: BlockEntry = { id: `pending:${id}`, blocked_id: id, created_at: new Date().toISOString() };
+      setBlocks((prev) => [queued, ...prev.filter((b) => b.blocked_id !== id)]);
+      setBlockInput('');
+      void queueLocalFirstMutation(`privacy-block:${id}`, { blocked_id: id }, { url: '/api/blocks', method: 'POST' });
+      setBlockError('');
+    }
     finally { setBlockLoading(false); }
   };
 
   const handleUnblock = async (blocked_id: string) => {
     setBlocks((prev) => prev.filter((b) => b.blocked_id !== blocked_id));
-    await fetch(`/api/blocks?blocked_id=${blocked_id}`, { method: 'DELETE' }).catch(() => {});
+    await fetch(`/api/blocks?blocked_id=${blocked_id}`, { method: 'DELETE' }).catch(() => {
+      void queueLocalFirstMutation(`privacy-unblock:${blocked_id}`, { blocked_id }, { url: `/api/blocks?blocked_id=${blocked_id}`, method: 'DELETE' });
+    });
   };
 
   // Load settings on mount — try DB first, fall back to localStorage cache
@@ -156,12 +165,12 @@ export default function PrivacyClient( ){
       const next = { ...prev, [key]: !prev[key] };
       // Update localStorage cache immediately for fast re-render
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
-      // Persist to Supabase
+      void queueLocalFirstMutation('privacy-settings', next, { url: '/api/settings/privacy', method: 'POST' });
       fetch('/api/settings/privacy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(next),
-      }).catch(() => { /* ignore network error — localStorage cache remains */ });
+      }).catch(() => { /* local privacy setting is already effective and queued */ });
       return next;
     });
     setSaved(true);
@@ -187,7 +196,10 @@ export default function PrivacyClient( ){
         setAppealMsg((data as { error?: string }).error || 'Submission failed. Please try again.');
       }
     } catch {
-      setAppealMsg('Network error. Please try again.');
+      void queueLocalFirstMutation(`privacy-appeal:${Date.now()}`, { reason: appealReason.trim() }, { url: '/api/appeal', method: 'POST' });
+      setAppealMsg('Saved locally and queued for review when service returns.');
+      setAppealReason('');
+      setShowAppealForm(false);
     } finally {
       setAppealing(false);
     }

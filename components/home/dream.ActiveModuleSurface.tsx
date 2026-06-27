@@ -3,6 +3,7 @@
 import {
     loadActiveModules,
     removeActiveModule,
+    restoreActiveModulesFromOfflineCache,
     saveActiveModule,
     saveActiveModulesForRegion,
     transferActiveModuleRegion,
@@ -80,9 +81,12 @@ export default function ActiveModuleSurface({ accountId, runtimeRegion = 'surfac
       setLoadedAccountId(null);
       return;
     }
-    setActiveModules(
-      loadActiveModules(accountId).filter((instance) => instance.runtimeRegion === runtimeRegion),
-    );
+    const local = loadActiveModules(accountId).filter((instance) => instance.runtimeRegion === runtimeRegion);
+    setActiveModules(local);
+    void restoreActiveModulesFromOfflineCache(accountId).then((restored) => {
+      const regionModules = restored.filter((instance) => instance.runtimeRegion === runtimeRegion);
+      if (regionModules.length > local.length) setActiveModules(regionModules);
+    });
     setLoadedAccountId(accountId);
   }, [accountId, runtimeRegion]);
 

@@ -3,6 +3,7 @@
 import type { RealtimePostgresInsertPayload } from '@/engine/io';
 import { getPrimaryPostMediaUrl } from '@/engins/contentengin/media/postMedia';
 import { createClient } from '@/supabase/client/client';
+import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
@@ -111,6 +112,24 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
   // Keep a stable ref to the channel so we can tear it down cleanly
   const postsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
   const itemsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
+
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    void getOfflineRecord<FeedPost[]>('dream-feed', `home:${userId}`).then((record) => {
+      if (cancelled || !record?.value?.length) return;
+      setPosts((current) => current.length > 0 ? current : record.value);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    void putOfflineRecord({ namespace: 'dream-feed', id: `home:${userId}`, value: posts.slice(0, 80) });
+  }, [posts, userId]);
+
 
   const flushNew = useCallback(() => {
     setQueued((prev) => {

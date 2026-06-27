@@ -5,8 +5,11 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ArrowLeft, DollarSign, Info, LayoutGrid, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
+
+const ADS_CREATE_DRAFT_KEY = 'de:ads:create-draft';
 
 // SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
 
@@ -16,6 +19,21 @@ export default function CreateAdSlotPage( ){
   const [priceWeek, setPriceWeek] = useState('25.00');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(ADS_CREATE_DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw) as Partial<{ placement: string; priceDay: string; priceWeek: string }>;
+      if (draft.placement) setPlacement(draft.placement);
+      if (draft.priceDay) setPriceDay(draft.priceDay);
+      if (draft.priceWeek) setPriceWeek(draft.priceWeek);
+    } catch { /* ignore corrupt draft */ }
+  }, []);
+
+  useEffect(() => {
+    try { localStorage.setItem(ADS_CREATE_DRAFT_KEY, JSON.stringify({ placement, priceDay, priceWeek, updatedAt: new Date().toISOString() })); } catch { /* local draft best effort */ }
+  }, [placement, priceDay, priceWeek]);
   const supabase = createClient();
   const router = useRouter();
 
@@ -75,7 +93,9 @@ export default function CreateAdSlotPage( ){
       router.push('/ads');
     } catch (err: unknown) {
       const message = err instanceof Error ? toErrorMessage(err) : 'Failed to create ad slot';
-      setError(message);
+      const payload = { placement, price_per_day: parseFloat(priceDay) || 0, price_per_week: parseFloat(priceWeek) || 0 };
+      void queueLocalFirstMutation(`ad-slot:${Date.now()}`, payload);
+      setError(`Saved locally as an ad-slot draft. ${message}`);
     } finally {
       setIsLoading(false);
     }

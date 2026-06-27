@@ -13,6 +13,7 @@ import DaydreamPulseStrip from '@/components/home/dream.DaydreamPulseStrip';
 import FlagshipEnginesStrip from '@/components/home/dream.FlagshipEnginesStrip';
 import { useNotifications } from '@/dreamdmbar/notifications/useNotifications';
 import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
+import { cacheHttpGet } from '@/engine/offline/offlineCache';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 
 type ProfileLike = {
@@ -114,7 +115,7 @@ export default function HomeDreamSurface({
 
   const prefetchDream = (url: string) => {
     router.prefetch?.(url);
-    void fetch(url, { method: 'HEAD' }).catch(() => undefined);
+    void fetch(url, { method: 'HEAD' }).then((response) => cacheHttpGet(`prefetch:route:${url}`, { ok: response.ok, status: response.status }, { ttlMs: 60_000 })).catch(() => undefined);
   };
 
   useEffect(() => {

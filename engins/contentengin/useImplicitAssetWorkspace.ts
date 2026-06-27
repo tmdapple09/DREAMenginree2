@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { readOfflineCache, writeOfflineCache } from '@/engine/offline/offlineCache';
 import { useContentEnginRuntime } from '@/engins/rulesets/content/useContentEnginRuntime';
 import { analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type RigTargetKind, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
@@ -15,6 +16,18 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
   const lastBrushEmit = useRef(0);
   const processTokenRef = useRef(0);
   const [intents, setIntents] = useState<WorkspaceIntentLog[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void readOfflineCache<ImplicitAssetWorkspaceObject>('content:implicit-workspace').then((cached) => {
+      if (!cancelled && cached) setWorkspace(cached);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    void writeOfflineCache('content:implicit-workspace', workspace);
+  }, [workspace]);
 
   useEffect(() => { workspaceRef.current = workspace; }, [workspace]);
   useEffect(() => () => { if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current); }, []);

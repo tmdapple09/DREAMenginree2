@@ -3,6 +3,7 @@
 import { ArrowLeft, Check, Loader2, Plus, Rss, Sliders } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
+import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 /**
  * FeedSettingsClient — interactive feed preference toggles with database persistence.
@@ -99,12 +100,12 @@ export default function FeedSettingsClient( ){
       const next = { ...prev, [key]: !prev[key] };
       // Write-through to localStorage for instant feedback
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
-      // Phase 8 §A Point 3: persist to DB
+      void queueLocalFirstMutation('feed-settings', next, { url: '/api/settings/feed', method: 'POST' });
       fetch('/api/settings/feed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(next),
-      }).catch(() => { /* non-critical — localStorage already updated */ });
+      }).catch(() => { /* local setting is already effective and queued */ });
       return next;
     });
     setSaved(true);
@@ -132,7 +133,7 @@ export default function FeedSettingsClient( ){
             </span>
           ) : saved ? (
             <span className="ml-auto flex items-center gap-1 text-xs" style={{ color: '#22c55e' }}>
-              <Check className="w-3 h-3" /> Saved to database
+              <Check className="w-3 h-3" /> Saved locally
             </span>
           ) : null}
         </div>
