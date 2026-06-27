@@ -17,6 +17,7 @@ import {
   requestWebGpuDevice,
   WebGpuRenderEngin,
   type RenderEnginFrameStats,
+  type RenderGpuCullBounds,
 } from './webgpu';
 import type { RenderIntent } from './core';
 import type { RenderServiceIntentEnvelope } from './serviceRuntime';
@@ -51,6 +52,44 @@ function orbitEye(azimuth: number, elevation: number, zoom: number): Vec3 {
 
 function sanitizeIdPart(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9:_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'asset';
+}
+
+function stableNumericObjectId(value: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i += 1) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) || 1;
+}
+
+function createRenderCullBounds(mesh: MeshBuffers): RenderGpuCullBounds {
+  if (!mesh.vertices.length) return { center: [0, 0, 0], radius: 1 };
+  let minX = Infinity;
+  let minY = Infinity;
+  let minZ = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let maxZ = -Infinity;
+  for (const vertex of mesh.vertices) {
+    const [x, y, z] = vertex.position;
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (z < minZ) minZ = z;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+    if (z > maxZ) maxZ = z;
+  }
+  const center: Vec3 = [(minX + maxX) * 0.5, (minY + maxY) * 0.5, (minZ + maxZ) * 0.5];
+  let radiusSq = 0;
+  for (const vertex of mesh.vertices) {
+    const dx = vertex.position[0] - center[0];
+    const dy = vertex.position[1] - center[1];
+    const dz = vertex.position[2] - center[2];
+    const d = dx * dx + dy * dy + dz * dz;
+    if (d > radiusSq) radiusSq = d;
+  }
+  return { center, radius: Math.max(0.001, Math.sqrt(radiusSq)) };
 }
 
 function drawFallbackScene(canvas: HTMLCanvasElement, label: string): void {
@@ -145,6 +184,8 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   const processedIntentIdsRef = useRef(new Set<string>());
   const activeAssetLabelRef = useRef('Demo triangle');
   const activeObjectIdRef = useRef('object:demo-triangle');
+  const activeObjectNumericIdRef = useRef(stableNumericObjectId('object:demo-triangle'));
+  const objectIdLookupRef = useRef(new Map<number, string>([[activeObjectNumericIdRef.current, activeObjectIdRef.current]]));
   const [status, setStatus] = useState('Checking browser WebGPU support…');
   const [stats, setStats] = useState<RenderEnginFrameStats | null>(null);
   const [camera, setCamera] = useState({ azimuth: 0, elevation: 0, zoom: 2.4 });
@@ -155,6 +196,15 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   const cameraEyeRef = useRef<Vec3>(orbitEye(0, 0, 2.4));
 
   useEffect(() => { runtimeRef.current = runtime; }, [runtime]);
+
+  const registerActiveObjectId = useCallback((objectId: string): number => {
+    const numericId = stableNumericObjectId(objectId);
+    activeObjectIdRef.current = objectId;
+    activeObjectNumericIdRef.current = numericId;
+    objectIdLookupRef.current.set(numericId, objectId);
+    setSelectedObjectId(objectId);
+    return numericId;
+  }, []);
 
   const applyCurrentScene = useCallback((width?: number, height?: number) => {
     const renderer = rendererRef.current;
@@ -179,31 +229,32 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
     const objectId = `object:${sanitizeIdPart(meta.assetId)}`;
     sceneMeshRef.current = mesh;
     activeAssetLabelRef.current = meta.name;
-    activeObjectIdRef.current = objectId;
-    setSelectedObjectId(objectId);
+    const numericObjectId = registerActiveObjectId(objectId);
     const memory = estimateRenderAssetMemory(mesh);
     const asset = createRenderAsset({ id: meta.assetId, ownerId, runtimeId, visibility: 'local', mesh, material: { albedo: [0.58, 0.72, 0.95], orm: [1, 0.55, 0] } });
     const renderer = rendererRef.current;
     if (renderer) {
       renderer.disposeScene();
       const gpuMesh = renderer.uploadMesh(mesh);
-      sceneObjectRef.current = renderer.createSceneObject(gpuMesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
+      sceneObjectRef.current = renderer.createSceneObject(gpuMesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]), undefined, undefined, { cullBounds: createRenderCullBounds(mesh), objectId: numericObjectId, zIndex: 0 });
       applyCurrentScene();
     }
     runtimeRef.current?.dispatch({ type: 'render.asset.register', payload: { asset, memory, source: meta.source } });
     runtimeRef.current?.dispatch({ type: 'render.asset.load', payload: { id: meta.assetId, progress: 1, status: 'loaded', memory, source: meta.source } });
     runtimeRef.current?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source: meta.source, selectedObjectId: objectId, assetId: meta.assetId } } });
     setAssetInfo(`${meta.name} · ${mesh.vertices.length} vertices · ${mesh.indices.length} indices · ${String(memory.totalBytes)} bytes`);
-  }, [applyCurrentScene]);
+  }, [applyCurrentScene, registerActiveObjectId]);
 
   const loadParsedAsset = useCallback((parsed: ParsedRenderAsset, name: string, source: string) => {
     sceneMeshRef.current = parsed.mesh;
     activeAssetLabelRef.current = name;
+    const objectId = `object:${sanitizeIdPart(parsed.asset.id)}`;
+    const numericObjectId = registerActiveObjectId(objectId);
     const renderer = rendererRef.current;
     if (renderer) {
       renderer.disposeScene();
       const gpuMesh = renderer.uploadMesh(parsed.mesh);
-      sceneObjectRef.current = renderer.createSceneObject(gpuMesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
+      sceneObjectRef.current = renderer.createSceneObject(gpuMesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]), undefined, undefined, { cullBounds: createRenderCullBounds(parsed.mesh), objectId: numericObjectId, zIndex: 0 });
       applyCurrentScene();
     }
     const memory = estimateRenderAssetMemory(parsed.mesh);
@@ -211,7 +262,7 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
     runtimeRef.current?.dispatch({ type: 'render.asset.load', payload: { id: parsed.asset.id, progress: 1, status: 'loaded', memory, source } });
     runtimeRef.current?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source, selectedObjectId: activeObjectIdRef.current, assetId: parsed.asset.id } } });
     setAssetInfo(`${name} · ${parsed.validation.vertexCount} vertices · ${parsed.validation.indexCount} indices · ${memory.totalBytes} bytes`);
-  }, [applyCurrentScene]);
+  }, [applyCurrentScene, registerActiveObjectId]);
 
   useEffect(() => {
     cameraEyeRef.current = orbitEye(camera.azimuth, camera.elevation, camera.zoom);
@@ -237,7 +288,7 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
         const renderer = new WebGpuRenderEngin({ device, canvas });
         rendererRef.current = renderer;
         const mesh = renderer.uploadMesh(sceneMeshRef.current);
-        const object = renderer.createSceneObject(mesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]));
+        const object = renderer.createSceneObject(mesh, composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]), undefined, undefined, { cullBounds: createRenderCullBounds(sceneMeshRef.current), objectId: activeObjectNumericIdRef.current, zIndex: 0 });
         sceneObjectRef.current = object;
         runtimeRef.current?.dispatch({ type: 'render.scene.load', payload: { scene: { objectCount: 1, source: activeAssetLabelRef.current, selectedObjectId: activeObjectIdRef.current } } });
         applyCurrentScene();
@@ -362,7 +413,23 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
         }}
         onPointerUp={(event) => { if (pointerRef.current?.id === event.pointerId) pointerRef.current = null; }}
         onWheel={(event) => { event.preventDefault(); updateCamera({ ...camera, zoom: Math.max(0.8, Math.min(12, camera.zoom + event.deltaY * 0.003)) }); }}
-        onClick={() => { const objectId = activeObjectIdRef.current; setSelectedObjectId(objectId); runtime?.dispatch({ type: 'render.object.select', payload: { id: objectId } }); }}
+        onClick={(event) => {
+          const renderer = rendererRef.current;
+          const fallbackObjectId = activeObjectIdRef.current;
+          if (!renderer) {
+            setSelectedObjectId(fallbackObjectId);
+            runtime?.dispatch({ type: 'render.object.select', payload: { id: fallbackObjectId, source: 'fallback-active-object' } });
+            return;
+          }
+          void renderer.pickResidentObjectFromCanvas(event.clientX, event.clientY).then((pick) => {
+            const objectId = pick.hit ? (objectIdLookupRef.current.get(pick.objectId) ?? `object:${String(pick.objectId)}`) : fallbackObjectId;
+            setSelectedObjectId(objectId);
+            runtime?.dispatch({ type: 'render.object.select', payload: { id: objectId, gpuPicked: pick.hit, objectIndex: pick.objectIndex } });
+          }).catch(() => {
+            setSelectedObjectId(fallbackObjectId);
+            runtime?.dispatch({ type: 'render.object.select', payload: { id: fallbackObjectId, source: 'pick-fallback' } });
+          });
+        }}
         style={{ width: '100%', minHeight: 320, borderRadius: 24, background: 'linear-gradient(135deg, #eff6ff, #fef3c7)', touchAction: 'none', outline: selectedObjectId ? '3px solid rgba(56,189,248,0.55)' : 'none' }}
       />
       <p style={{ color: '#1d4ed8', fontWeight: 800 }}>{status}</p>

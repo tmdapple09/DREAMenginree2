@@ -35,8 +35,9 @@ export function fitCameraToBounds(bounds: RenderBounds, fovYRadians = Math.PI / 
 
 export function createViewportRay(input: { ndc: Vec2; cameraPosition: Vec3; target: Vec3 }): RenderRay {
   const forward = v3normalize(v3sub(input.target, input.cameraPosition));
-  const right = v3normalize([forward[2], 0, -forward[0]]);
-  const up: Vec3 = [0, 1, 0];
+  const worldUp: Vec3 = Math.abs(forward[1]) > 0.98 ? [0, 0, 1] : [0, 1, 0];
+  const right = v3normalize([worldUp[1] * forward[2] - worldUp[2] * forward[1], worldUp[2] * forward[0] - worldUp[0] * forward[2], worldUp[0] * forward[1] - worldUp[1] * forward[0]]);
+  const up: Vec3 = v3normalize([forward[1] * right[2] - forward[2] * right[1], forward[2] * right[0] - forward[0] * right[2], forward[0] * right[1] - forward[1] * right[0]]);
   return { origin: input.cameraPosition, direction: v3normalize([forward[0] + right[0] * input.ndc[0] + up[0] * input.ndc[1], forward[1] + right[1] * input.ndc[0] + up[1] * input.ndc[1], forward[2] + right[2] * input.ndc[0] + up[2] * input.ndc[1]]) };
 }
 
@@ -51,10 +52,16 @@ export function raycastSphere(ray: RenderRay, bounds: RenderBounds): number | nu
 }
 
 export function pickRenderObject(ray: RenderRay, boundsByObjectId: Record<string, RenderBounds>): string | null {
-  return Object.entries(boundsByObjectId)
-    .map(([id, bounds]) => ({ id, t: raycastSphere(ray, bounds) }))
-    .filter((hit): hit is { id: string; t: number } => hit.t !== null)
-    .sort((a, b) => a.t - b.t)[0]?.id ?? null;
+  let bestId: string | null = null;
+  let bestT = Number.POSITIVE_INFINITY;
+  for (const [id, bounds] of Object.entries(boundsByObjectId)) {
+    const t = raycastSphere(ray, bounds);
+    if (t !== null && t < bestT) {
+      bestT = t;
+      bestId = id;
+    }
+  }
+  return bestId;
 }
 
 export function createBoundingBoxLines(bounds: RenderBounds): Vec3[] {

@@ -1,6 +1,7 @@
 import { createEventBus, type EventBus } from '@/engine/events/eventBus';
 import { resolveFrameBudget, type GameEnginQualityTier } from './runtime/FrameBudget';
 import { decideRuntimeQuality } from './runtime/RuntimeQuality';
+import { requestWebGpuDevice } from '@/engins/renderengin/webgpu';
 
 export type DreamGameBackend = 'webgpu' | 'webgl2' | 'canvas2d' | 'dom';
 
@@ -120,14 +121,14 @@ export class GameEnginRuntime {
       return state;
     }
 
-    const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
-    if (!adapter) {
-      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-adapter-unavailable', quality };
+    let gpuDevice: GPUDevice;
+    try {
+      ({ device: gpuDevice } = await requestWebGpuDevice());
+    } catch {
+      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-device-unavailable', quality };
       this.bus.emit('backendReady', state);
       return state;
     }
-
-    const gpuDevice = await adapter.requestDevice();
     this.device = gpuDevice;
     gpuDevice.lost.then((info) => {
       this.bus.emit('error', { message: `WebGPU device lost: ${info.reason}` });

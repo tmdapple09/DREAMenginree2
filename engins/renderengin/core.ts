@@ -7,7 +7,7 @@ export type Vec4 = readonly [number, number, number, number];
 export type Mat4 = readonly [number, number, number, number, number, number, number, number, number, number, number, number, number, number, number, number];
 export type Quat = readonly [number, number, number, number];
 
-const EPS = 1e-8;
+export const EPS = 1e-8;
 const PI = Math.PI;
 
 export function v3add(a: Vec3, b: Vec3): Vec3 { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
@@ -22,12 +22,110 @@ export function clamp01(x: number): number { return Math.min(1, Math.max(0, x));
 export const mat4Identity = (): Mat4 => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 export const mat4Translation = (t: Vec3): Mat4 => [1, 0, 0, t[0], 0, 1, 0, t[1], 0, 0, 1, t[2], 0, 0, 0, 1];
 export const mat4Scale = (s: Vec3): Mat4 => [s[0], 0, 0, 0, 0, s[1], 0, 0, 0, 0, s[2], 0, 0, 0, 0, 1];
-export function mat4Mul(a: Mat4, b: Mat4): Mat4 { const o = Array(16).fill(0) as number[]; for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) for (let k = 0; k < 4; k++) o[r * 4 + c] += a[r * 4 + k] * b[k * 4 + c]; return o as unknown as Mat4; }
-export function mat4Transform(m: Mat4, v: Vec4): Vec4 { return [m[0]*v[0]+m[1]*v[1]+m[2]*v[2]+m[3]*v[3], m[4]*v[0]+m[5]*v[1]+m[6]*v[2]+m[7]*v[3], m[8]*v[0]+m[9]*v[1]+m[10]*v[2]+m[11]*v[3], m[12]*v[0]+m[13]*v[1]+m[14]*v[2]+m[15]*v[3]]; }
+function compensatedDot4(a0: number, a1: number, a2: number, a3: number, b0: number, b1: number, b2: number, b3: number): number {
+  let sum = 0;
+  let correction = 0;
+  let product = a0 * b0;
+  let y = product - correction;
+  let t = sum + y;
+  correction = (t - sum) - y;
+  sum = t;
+  product = a1 * b1;
+  y = product - correction;
+  t = sum + y;
+  correction = (t - sum) - y;
+  sum = t;
+  product = a2 * b2;
+  y = product - correction;
+  t = sum + y;
+  correction = (t - sum) - y;
+  sum = t;
+  product = a3 * b3;
+  y = product - correction;
+  t = sum + y;
+  return t;
+}
+
+function splitFloat64(value: number): readonly [number, number] {
+  const splitter = 134_217_729; // 2^27 + 1, Dekker split for IEEE doubles.
+  const c = splitter * value;
+  const high = c - (c - value);
+  return [high, value - high];
+}
+
+function twoProduct(a: number, b: number): readonly [number, number] {
+  const product = a * b;
+  const [ah, al] = splitFloat64(a);
+  const [bh, bl] = splitFloat64(b);
+  const error = ((ah * bh - product) + ah * bl + al * bh) + al * bl;
+  return [product, error];
+}
+
+function preciseDot4(a0: number, a1: number, a2: number, a3: number, b0: number, b1: number, b2: number, b3: number): number {
+  let hi = 0;
+  let lo = 0;
+  const addProduct = (a: number, b: number) => {
+    const [product, productError] = twoProduct(a, b);
+    const sum = hi + product;
+    const bv = sum - hi;
+    const addError = (hi - (sum - bv)) + (product - bv);
+    hi = sum;
+    lo += addError + productError;
+  };
+  addProduct(a0, b0);
+  addProduct(a1, b1);
+  addProduct(a2, b2);
+  addProduct(a3, b3);
+  return hi + lo;
+}
+
+export function mat4Mul(a: Mat4, b: Mat4): Mat4 {
+  return [
+    compensatedDot4(a[0], a[1], a[2], a[3], b[0], b[4], b[8], b[12]),
+    compensatedDot4(a[0], a[1], a[2], a[3], b[1], b[5], b[9], b[13]),
+    compensatedDot4(a[0], a[1], a[2], a[3], b[2], b[6], b[10], b[14]),
+    compensatedDot4(a[0], a[1], a[2], a[3], b[3], b[7], b[11], b[15]),
+    compensatedDot4(a[4], a[5], a[6], a[7], b[0], b[4], b[8], b[12]),
+    compensatedDot4(a[4], a[5], a[6], a[7], b[1], b[5], b[9], b[13]),
+    compensatedDot4(a[4], a[5], a[6], a[7], b[2], b[6], b[10], b[14]),
+    compensatedDot4(a[4], a[5], a[6], a[7], b[3], b[7], b[11], b[15]),
+    compensatedDot4(a[8], a[9], a[10], a[11], b[0], b[4], b[8], b[12]),
+    compensatedDot4(a[8], a[9], a[10], a[11], b[1], b[5], b[9], b[13]),
+    compensatedDot4(a[8], a[9], a[10], a[11], b[2], b[6], b[10], b[14]),
+    compensatedDot4(a[8], a[9], a[10], a[11], b[3], b[7], b[11], b[15]),
+    compensatedDot4(a[12], a[13], a[14], a[15], b[0], b[4], b[8], b[12]),
+    compensatedDot4(a[12], a[13], a[14], a[15], b[1], b[5], b[9], b[13]),
+    compensatedDot4(a[12], a[13], a[14], a[15], b[2], b[6], b[10], b[14]),
+    compensatedDot4(a[12], a[13], a[14], a[15], b[3], b[7], b[11], b[15]),
+  ];
+}
+
+export function mat4MulPrecise(a: Mat4, b: Mat4): Mat4 {
+  return [
+    preciseDot4(a[0], a[1], a[2], a[3], b[0], b[4], b[8], b[12]),
+    preciseDot4(a[0], a[1], a[2], a[3], b[1], b[5], b[9], b[13]),
+    preciseDot4(a[0], a[1], a[2], a[3], b[2], b[6], b[10], b[14]),
+    preciseDot4(a[0], a[1], a[2], a[3], b[3], b[7], b[11], b[15]),
+    preciseDot4(a[4], a[5], a[6], a[7], b[0], b[4], b[8], b[12]),
+    preciseDot4(a[4], a[5], a[6], a[7], b[1], b[5], b[9], b[13]),
+    preciseDot4(a[4], a[5], a[6], a[7], b[2], b[6], b[10], b[14]),
+    preciseDot4(a[4], a[5], a[6], a[7], b[3], b[7], b[11], b[15]),
+    preciseDot4(a[8], a[9], a[10], a[11], b[0], b[4], b[8], b[12]),
+    preciseDot4(a[8], a[9], a[10], a[11], b[1], b[5], b[9], b[13]),
+    preciseDot4(a[8], a[9], a[10], a[11], b[2], b[6], b[10], b[14]),
+    preciseDot4(a[8], a[9], a[10], a[11], b[3], b[7], b[11], b[15]),
+    preciseDot4(a[12], a[13], a[14], a[15], b[0], b[4], b[8], b[12]),
+    preciseDot4(a[12], a[13], a[14], a[15], b[1], b[5], b[9], b[13]),
+    preciseDot4(a[12], a[13], a[14], a[15], b[2], b[6], b[10], b[14]),
+    preciseDot4(a[12], a[13], a[14], a[15], b[3], b[7], b[11], b[15]),
+  ];
+}
+
+export function mat4Transform(m: Mat4, v: Vec4): Vec4 { return [compensatedDot4(m[0],m[1],m[2],m[3],v[0],v[1],v[2],v[3]), compensatedDot4(m[4],m[5],m[6],m[7],v[0],v[1],v[2],v[3]), compensatedDot4(m[8],m[9],m[10],m[11],v[0],v[1],v[2],v[3]), compensatedDot4(m[12],m[13],m[14],m[15],v[0],v[1],v[2],v[3])]; }
 export function mat4Perspective(fovYRadians: number, aspect: number, near: number, far: number): Mat4 { const y = 1 / Math.tan(fovYRadians / 2); const x = y / aspect; const nf = 1 / (near - far); return [x, 0, 0, 0, 0, y, 0, 0, 0, 0, (far + near) * nf, 2 * far * near * nf, 0, 0, -1, 0]; }
-export function mat4LookAt(eye: Vec3, target: Vec3, up: Vec3): Mat4 { const z = v3normalize(v3sub(eye, target)); const x = v3normalize(v3cross(up, z)); const y = v3cross(z, x); return [x[0], x[1], x[2], -v3dot(x, eye), y[0], y[1], y[2], -v3dot(y, eye), z[0], z[1], z[2], -v3dot(z, eye), 0, 0, 0, 1]; }
+export function mat4LookAt(eye: Vec3, target: Vec3, up: Vec3): Mat4 { const z = v3normalize(v3sub(eye, target)); const fallbackUp: Vec3 = Math.abs(v3dot(z, up)) > 0.999 ? [0, 0, 1] : up; const x = v3normalize(v3cross(fallbackUp, z)); const y = v3cross(z, x); return [x[0], x[1], x[2], -v3dot(x, eye), y[0], y[1], y[2], -v3dot(y, eye), z[0], z[1], z[2], -v3dot(z, eye), 0, 0, 0, 1]; }
 export function mat4FromQuat(q: Quat): Mat4 { const [x,y,z,w]=q; const x2=x+x,y2=y+y,z2=z+z; const xx=x*x2, xy=x*y2, xz=x*z2, yy=y*y2, yz=y*z2, zz=z*z2, wx=w*x2, wy=w*y2, wz=w*z2; return [1-(yy+zz), xy-wz, xz+wy, 0, xy+wz, 1-(xx+zz), yz-wx, 0, xz-wy, yz+wx, 1-(xx+yy), 0, 0,0,0,1]; }
-export function composeModelMatrix(translation: Vec3, rotation: Quat, scale: Vec3): Mat4 { return mat4Mul(mat4Mul(mat4Translation(translation), mat4FromQuat(rotation)), mat4Scale(scale)); }
+export function composeModelMatrix(translation: Vec3, rotation: Quat, scale: Vec3): Mat4 { return mat4MulPrecise(mat4MulPrecise(mat4Translation(translation), mat4FromQuat(rotation)), mat4Scale(scale)); }
 export function projectVertex(local: Vec3, model: Mat4, view: Mat4, projection: Mat4): { clip: Vec4; ndc: Vec3 } { const clip = mat4Transform(mat4Mul(mat4Mul(projection, view), model), [local[0], local[1], local[2], 1]); const w = Math.abs(clip[3]) < EPS ? EPS : clip[3]; return { clip, ndc: [clip[0]/w, clip[1]/w, clip[2]/w] }; }
 
 export interface Vertex { position: Vec3; normal: Vec3; tangent: Vec4; uv: Vec2; boneIds?: readonly [number, number, number, number]; weights?: readonly [number, number, number, number]; }
@@ -43,8 +141,8 @@ export function shadeCookTorrance(input: { albedo: Vec3; normal: Vec3; view: Vec
 export function unpackOrm([r,g,b]: Vec3): { ambientOcclusion: number; roughness: number; metallic: number } { return { ambientOcclusion: clamp01(r), roughness: clamp01(g), metallic: clamp01(b) }; }
 
 export interface Joint { name: string; parentIndex: number; localMatrix: Mat4; inverseBindMatrix: Mat4; }
-export function evaluateJointWorldMatrices(joints: readonly Joint[]): Mat4[] { const out: Mat4[]=[]; joints.forEach((j,i)=>{ out[i]=j.parentIndex >=0 ? mat4Mul(out[j.parentIndex], j.localMatrix) : j.localMatrix; }); return out; }
-export function evaluateSkinMatrices(joints: readonly Joint[]): Mat4[] { return evaluateJointWorldMatrices(joints).map((m,i)=>mat4Mul(m,joints[i].inverseBindMatrix)); }
+export function evaluateJointWorldMatrices(joints: readonly Joint[]): Mat4[] { const out: Mat4[]=[]; joints.forEach((j,i)=>{ out[i]=j.parentIndex >=0 ? mat4MulPrecise(out[j.parentIndex], j.localMatrix) : j.localMatrix; }); return out; }
+export function evaluateSkinMatrices(joints: readonly Joint[]): Mat4[] { return evaluateJointWorldMatrices(joints).map((m,i)=>mat4MulPrecise(m,joints[i].inverseBindMatrix)); }
 export function skinVertexLbs(vertex: Vertex, skinMatrices: readonly Mat4[]): Vec3 { const ids=vertex.boneIds ?? [0,0,0,0], ws=vertex.weights ?? [1,0,0,0]; let out: Vec3=[0,0,0]; for(let i=0;i<4;i++){ if(ws[i]===0) continue; const p=mat4Transform(skinMatrices[ids[i]] ?? mat4Identity(), [vertex.position[0],vertex.position[1],vertex.position[2],1]); out=v3add(out, v3scale([p[0],p[1],p[2]], ws[i])); } return out; }
 export interface DualQuaternion { real: Quat; dual: Quat; }
 export function makeDualQuaternion(rotation: Quat, translation: Vec3): DualQuaternion { const t: Quat=[translation[0],translation[1],translation[2],0]; const d=quatMul(t, rotation).map(x=>x*0.5) as unknown as Quat; return { real: rotation, dual: d }; }
@@ -131,14 +229,14 @@ export const RenderEnginRuleSet: EnginRuleSetContract<RenderIntent> = {
     schema:{
       actionTypes: RENDER_INTENT_TYPES,
       domainVersion:1,
-      validateAction: (action) => ({ valid: RENDER_INTENT_TYPES.includes(action.type) }),
+      validateAction: (action: RenderIntent) => ({ valid: RENDER_INTENT_TYPES.includes(action.type) }),
     },
     compatibility:{ minRuntimeVersion:'1.0.0', requiredFeatures:['lifecycle-hooks','manifest-schema','strict-intent-routing','sync-transport','state-snapshotting','compatibility-negotiation'] }
   },
   params:{ enginId: RENDER_ENGIN_ID, name: RENDER_ENGIN_NAME, layoutMode:'immersive', accentColor:'#38bdf8', route:'/engines/create', capabilityId:'render' },
   requiredCapabilities:['state:read','state:write','assets:load','bridge:emit','bridge:listen'],
   capabilityTargets:{ enginId: RENDER_ENGIN_ID, targets:[{ dimension:'viewport-framerate', direction:'at-least', target:30, unit:'fps', minimumProgress:0.8 }, { dimension:'gpu-render-latency', direction:'at-most', target:16.7, unit:'ms', minimumProgress:0.8 }], levers:['route render mutations through intent snapshots','pack vertices as 48-byte AOS buffers','dispose GPU resources on unload and remount','keep claimed supports aligned with implemented renderer'] },
-  constraints:[(_state, action)=>({valid: RENDER_INTENT_TYPES.includes(action.type), reason:'Unknown RenderEngin intent.'})],
+  constraints:[(_state: EnginBaseState, action: RenderIntent)=>({valid: RENDER_INTENT_TYPES.includes(action.type), reason:'Unknown RenderEngin intent.'})],
   transform(state: EnginBaseState, action: RenderIntent): EnginBaseState {
     const base = renderDomain(state);
     const assets = { ...(base.assets as JsonObject) };

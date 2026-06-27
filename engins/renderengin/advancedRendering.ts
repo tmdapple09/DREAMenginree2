@@ -1,6 +1,7 @@
 import {
   mat4Identity,
   mat4Mul,
+  mat4MulPrecise,
   mat4Transform,
   makeDualQuaternion,
   quatMul,
@@ -225,20 +226,35 @@ export function planStreamingPages(objectIds: readonly string[], bytesPerObject:
 }
 
 export function compressGeometryQuantized(mesh: MeshBuffers): RenderCompressedGeometry {
-  const positions = mesh.vertices.map((vertex) => vertex.position);
-  const min: Vec3 = [Math.min(...positions.map((p) => p[0])), Math.min(...positions.map((p) => p[1])), Math.min(...positions.map((p) => p[2]))];
-  const max: Vec3 = [Math.max(...positions.map((p) => p[0])), Math.max(...positions.map((p) => p[1])), Math.max(...positions.map((p) => p[2]))];
-  const scale: Vec3 = [Math.max(1e-6, max[0] - min[0]), Math.max(1e-6, max[1] - min[1]), Math.max(1e-6, max[2] - min[2])];
+  let minX = Number.POSITIVE_INFINITY;
+  let minY = Number.POSITIVE_INFINITY;
+  let minZ = Number.POSITIVE_INFINITY;
+  let maxX = Number.NEGATIVE_INFINITY;
+  let maxY = Number.NEGATIVE_INFINITY;
+  let maxZ = Number.NEGATIVE_INFINITY;
+  for (const vertex of mesh.vertices) {
+    const [x, y, z] = vertex.position;
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (z < minZ) minZ = z;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+    if (z > maxZ) maxZ = z;
+  }
+  const min: Vec3 = [minX, minY, minZ];
+  const scale: Vec3 = [Math.max(1e-6, maxX - minX), Math.max(1e-6, maxY - minY), Math.max(1e-6, maxZ - minZ)];
   const bytes = new Uint8Array(mesh.vertices.length * 12 + mesh.indices.length * 4);
   const view = new DataView(bytes.buffer);
+  const quantizeU16 = (value: number, offset: number, range: number): number => Math.max(0, Math.min(65535, Math.round(((value - offset) / range) * 65535)));
+  const quantizeS16 = (value: number): number => Math.max(-32767, Math.min(32767, Math.round(value * 32767)));
   mesh.vertices.forEach((vertex, index) => {
     const base = index * 12;
-    view.setUint16(base, Math.round(((vertex.position[0] - min[0]) / scale[0]) * 65535), true);
-    view.setUint16(base + 2, Math.round(((vertex.position[1] - min[1]) / scale[1]) * 65535), true);
-    view.setUint16(base + 4, Math.round(((vertex.position[2] - min[2]) / scale[2]) * 65535), true);
-    view.setInt16(base + 6, Math.round(vertex.normal[0] * 32767), true);
-    view.setInt16(base + 8, Math.round(vertex.normal[1] * 32767), true);
-    view.setInt16(base + 10, Math.round(vertex.normal[2] * 32767), true);
+    view.setUint16(base, quantizeU16(vertex.position[0], min[0], scale[0]), true);
+    view.setUint16(base + 2, quantizeU16(vertex.position[1], min[1], scale[1]), true);
+    view.setUint16(base + 4, quantizeU16(vertex.position[2], min[2], scale[2]), true);
+    view.setInt16(base + 6, quantizeS16(vertex.normal[0]), true);
+    view.setInt16(base + 8, quantizeS16(vertex.normal[1]), true);
+    view.setInt16(base + 10, quantizeS16(vertex.normal[2]), true);
   });
   mesh.indices.forEach((index, i) => view.setUint32(mesh.vertices.length * 12 + i * 4, index, true));
   return { codec: 'quantized-position-normal-uv16', vertexCount: mesh.vertices.length, indexCount: mesh.indices.length, positionScale: scale, positionOffset: min, bytes };
@@ -262,5 +278,5 @@ export function applySkinMatrixToVertex(vertex: Vertex, skinMatrices: readonly M
 }
 
 export function combinePoseMatrix(parent: Mat4, child: Mat4): Mat4 {
-  return mat4Mul(parent, child);
+  return mat4MulPrecise(parent, child);
 }

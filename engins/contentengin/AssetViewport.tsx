@@ -4,6 +4,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { computeBounds } from '@/engins/isosurfaceAssetPipeline';
 import type { CameraState, RigBendPoint } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
+import {
+  composeModelMatrix,
+  createMeshBuffers,
+  mat4LookAt,
+  mat4Perspective,
+  type MeshBuffers,
+  type Vec3 as RenderVec3,
+} from '@/engins/renderengin/core';
+import {
+  requestWebGpuDevice,
+  WebGpuRenderEngin,
+  type RenderEnginSceneObject,
+  type RenderGpuCullBounds,
+} from '@/engins/renderengin/webgpu';
 
 type ColorRGB = { r: number; g: number; b: number };
 type ColoredMesh = Mesh & { vertexColors?: ColorRGB[]; palette?: ColorRGB[] };
@@ -25,13 +39,10 @@ interface PointerPoint {
 type GestureMode = 'none' | 'orbit' | 'pan' | 'sculpt' | 'pinch' | 'blocked';
 type RenderMode = 'webgpu' | 'canvas';
 
-type GpuRuntime = {
-  device: GPUDevice;
-  context: GPUCanvasContext;
-  format: GPUTextureFormat;
-  pipeline: GPURenderPipeline;
-  vertexBuffer: GPUBuffer | null;
-  vertexBufferSize: number;
+type RenderServiceRuntime = {
+  renderer: WebGpuRenderEngin;
+  meshKey: string | null;
+  object: RenderEnginSceneObject | null;
 };
 
 export default function AssetViewport({
@@ -69,7 +80,7 @@ export default function AssetViewport({
   }>({ mode: 'none' });
   const lastSculptAt = useRef(0);
   const pickStart = useRef<{ x: number; y: number; at: number } | null>(null);
-  const gpuRef = useRef<GpuRuntime | null>(null);
+  const gpuRef = useRef<RenderServiceRuntime | null>(null);
 
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
   const [imageVersion, setImageVersion] = useState(0);
@@ -112,56 +123,16 @@ export default function AssetViewport({
     async function initWebGPU() {
       try {
         const canvas = canvasRef.current;
-        const gpu = navigator.gpu;
-        if (!canvas || !gpu) return;
+        if (!canvas || !globalThis.navigator?.gpu) return;
 
-        const adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
-        if (!adapter || cancelled) return;
-
-        const device = await adapter.requestDevice();
+        const { device } = await requestWebGpuDevice();
         if (cancelled) return;
 
-        const format = gpu.getPreferredCanvasFormat();
-        const shader = device.createShaderModule({
-          code: `
-            struct Out { @builtin(position) position: vec4f, @location(0) color: vec3f };
-            @vertex fn vs(@location(0) position: vec3f, @location(1) color: vec3f) -> Out {
-              var o: Out;
-              o.position = vec4f(position, 1.0);
-              o.color = color;
-              return o;
-            }
-            @fragment fn fs(in: Out) -> @location(0) vec4f {
-              return vec4f(in.color, 1.0);
-            }
-          `,
-        });
-
-        const pipeline = device.createRenderPipeline({
-          layout: 'auto',
-          vertex: {
-            module: shader,
-            entryPoint: 'vs',
-            buffers: [
-              {
-                arrayStride: 24,
-                attributes: [
-                  { shaderLocation: 0, offset: 0, format: 'float32x3' },
-                  { shaderLocation: 1, offset: 12, format: 'float32x3' },
-                ],
-              },
-            ],
-          },
-          fragment: { module: shader, entryPoint: 'fs', targets: [{ format }] },
-          primitive: { topology: 'triangle-list', cullMode: 'none' },
-        });
-
-        const context = canvas.getContext('webgpu');
-        if (!context || cancelled) return;
-
-        gpuRef.current = { device, context, format, pipeline, vertexBuffer: null, vertexBufferSize: 0 };
+        const renderer = new WebGpuRenderEngin({ device, canvas });
+        gpuRef.current = { renderer, meshKey: null, object: null };
         setRenderMode('webgpu');
       } catch {
+        gpuRef.current?.renderer.dispose();
         gpuRef.current = null;
         setRenderMode('canvas');
       }
@@ -171,7 +142,7 @@ export default function AssetViewport({
 
     return () => {
       cancelled = true;
-      gpuRef.current?.vertexBuffer?.destroy();
+      gpuRef.current?.renderer.dispose();
       gpuRef.current = null;
     };
   }, []);
@@ -203,7 +174,7 @@ export default function AssetViewport({
     overlayCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     if (renderMode === 'webgpu' && gpuRef.current) {
-      drawWebGPU(canvas, width, height, mesh as ColoredMesh | null, cameraRef.current, editMode, gpuRef.current);
+      drawRenderEnginService(canvas, width, height, mesh as ColoredMesh | null, cameraRef.current, editMode, gpuRef.current);
       drawOverlay(overlayCtx, width, height, editMode || pickMode, brushRadius, pointer, imageRef.current, cameraRef.current, mesh, rigBendPoints);
       return;
     }
@@ -380,80 +351,159 @@ export default function AssetViewport({
   );
 }
 
-function drawWebGPU(
-  _canvas: HTMLCanvasElement,
+function drawRenderEnginService(
+  canvas: HTMLCanvasElement,
   width: number,
   height: number,
   mesh: ColoredMesh | null,
   camera: CameraState,
   editMode: boolean,
-  gpu: GpuRuntime
+  gpu: RenderServiceRuntime
 ) {
-  gpu.context.configure({ device: gpu.device, format: gpu.format, alphaMode: 'opaque' });
-  const data = mesh ? buildGpuVertices(mesh, width, height, camera, editMode) : new Float32Array();
-  const encoder = gpu.device.createCommandEncoder();
-  const view = gpu.context.getCurrentTexture().createView();
-  const pass = encoder.beginRenderPass({
-    colorAttachments: [
-      {
-        view,
-        loadOp: 'clear',
-        storeOp: 'store',
-        clearValue: { r: 0.02, g: 0.027, b: 0.07, a: 1 },
-      },
-    ],
-  });
-
-  if (data.length) {
-    if (!gpu.vertexBuffer || gpu.vertexBufferSize < data.byteLength) {
-      gpu.vertexBuffer?.destroy();
-      gpu.vertexBufferSize = Math.max(data.byteLength, 4096);
-      gpu.vertexBuffer = gpu.device.createBuffer({ size: gpu.vertexBufferSize, usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST });
-    }
-    gpu.device.queue.writeBuffer(gpu.vertexBuffer, 0, data);
-    pass.setPipeline(gpu.pipeline);
-    pass.setVertexBuffer(0, gpu.vertexBuffer);
-    pass.draw(data.length / 6);
+  const renderer = gpu.renderer;
+  const pixelRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
+  const renderWidth = Math.max(1, Math.floor(width * pixelRatio));
+  const renderHeight = Math.max(1, Math.floor(height * pixelRatio));
+  if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
+    canvas.width = renderWidth;
+    canvas.height = renderHeight;
+    renderer.resize(renderWidth, renderHeight);
   }
 
-  pass.end();
-  gpu.device.queue.submit([encoder.finish()]);
+  const sceneCamera = createRenderServiceCamera(camera, width, height);
+  if (!mesh || mesh.vertices.length === 0 || mesh.indices.length < 3) {
+    renderer.disposeScene();
+    renderer.setScene({
+      viewMatrix: sceneCamera.viewMatrix,
+      projectionMatrix: sceneCamera.projectionMatrix,
+      cameraPosition: sceneCamera.eye,
+      lightDirection: [0.25, -0.65, -1],
+      objects: [],
+    });
+    renderer.renderFrame();
+    gpu.meshKey = null;
+    gpu.object = null;
+    return;
+  }
+
+  const nextKey = meshSignature(mesh);
+  if (gpu.meshKey !== nextKey || !gpu.object) {
+    renderer.resetDynamicPreviewResidency();
+    const renderMesh = contentMeshToRenderMesh(mesh);
+    const uploaded = renderer.uploadMesh(renderMesh);
+    gpu.object = renderer.createSceneObject(
+      uploaded,
+      composeModelMatrix([0, 0, 0], [0, 0, 0, 1], [1, 1, 1]),
+      {
+        albedo: editMode ? [0.95, 0.72, 0.22, 1] : [0.58, 0.72, 0.95, 1],
+        orm: [1, 0.55, 0, 0],
+        emissive: [0, 0, 0, 0],
+      },
+      undefined,
+      { cullBounds: contentMeshCullBounds(mesh), objectId: 1, zIndex: 0 },
+    );
+    gpu.meshKey = nextKey;
+  }
+
+  renderer.setScene({
+    viewMatrix: sceneCamera.viewMatrix,
+    projectionMatrix: sceneCamera.projectionMatrix,
+    cameraPosition: sceneCamera.eye,
+    lightDirection: [0.25, -0.65, -1],
+    objects: gpu.object ? [gpu.object] : [],
+  });
+  renderer.renderFrame();
 }
 
-function buildGpuVertices(mesh: ColoredMesh, width: number, height: number, camera: CameraState, _editMode: boolean): Float32Array {
-  const projected = mesh.vertices.map((v) => project(v, width, height, camera));
-  const tris: { a: number; b: number; c: number; depth: number; shade: number }[] = [];
-  const light = norm({ x: -0.35, y: 0.65, z: 0.7 });
+function createRenderServiceCamera(camera: CameraState, width: number, height: number) {
+  const target: RenderVec3 = [camera.target.x, camera.target.y, camera.target.z];
+  const distance = Math.max(0.65, 3.2 / Math.max(0.2, camera.zoom));
+  const cosPitch = Math.cos(camera.pitch);
+  const eye: RenderVec3 = [
+    target[0] + Math.sin(camera.yaw) * cosPitch * distance,
+    target[1] + Math.sin(camera.pitch) * distance,
+    target[2] + Math.cos(camera.yaw) * cosPitch * distance,
+  ];
+  return {
+    eye,
+    viewMatrix: mat4LookAt(eye, target, [0, 1, 0]),
+    projectionMatrix: mat4Perspective(Math.PI / 3, Math.max(0.1, width / Math.max(1, height)), 0.05, 100),
+  };
+}
 
+function contentMeshToRenderMesh(mesh: ColoredMesh): MeshBuffers {
+  const normals = computeVertexNormals(mesh);
+  const bounds = computeBounds(mesh);
+  const sizeX = Math.max(1e-5, bounds.max.x - bounds.min.x);
+  const sizeZ = Math.max(1e-5, bounds.max.z - bounds.min.z);
+  return createMeshBuffers(mesh.vertices.map((vertex, index) => ({
+    position: [vertex.x, vertex.y, vertex.z] as RenderVec3,
+    normal: normals[index] ?? [0, 1, 0],
+    uv: [
+      clamp((vertex.x - bounds.min.x) / sizeX, 0, 1),
+      clamp((vertex.z - bounds.min.z) / sizeZ, 0, 1),
+    ],
+  })), mesh.indices);
+}
+
+function computeVertexNormals(mesh: Mesh): RenderVec3[] {
+  const normals = mesh.vertices.map((): RenderVec3 => [0, 0, 0]);
   for (let i = 0; i + 2 < mesh.indices.length; i += 3) {
-    const a = mesh.indices[i];
-    const b = mesh.indices[i + 1];
-    const c = mesh.indices[i + 2];
-    if (![a, b, c].every((idx) => Number.isInteger(idx) && idx >= 0 && idx < mesh.vertices.length)) continue;
-
-    const pa = projected[a];
-    const pb = projected[b];
-    const pc = projected[c];
-    if (!pa.visible || !pb.visible || !pc.visible) continue;
-
-    const area2D = Math.abs((pb.x - pa.x) * (pc.y - pa.y) - (pc.x - pa.x) * (pb.y - pa.y));
-    if (area2D < 0.01) continue;
-
-    const normal = norm(cross(sub(mesh.vertices[b], mesh.vertices[a]), sub(mesh.vertices[c], mesh.vertices[a])));
-    tris.push({ a, b, c, depth: (pa.z + pb.z + pc.z) / 3, shade: clamp(dot(normal, light) * 0.45 + 0.55, 0.25, 0.95) });
+    const ia = mesh.indices[i];
+    const ib = mesh.indices[i + 1];
+    const ic = mesh.indices[i + 2];
+    if (![ia, ib, ic].every((idx) => Number.isInteger(idx) && idx >= 0 && idx < mesh.vertices.length)) continue;
+    const a = mesh.vertices[ia];
+    const b = mesh.vertices[ib];
+    const c = mesh.vertices[ic];
+    const normal = cross(sub(b, a), sub(c, a));
+    normals[ia] = addNormal(normals[ia], normal);
+    normals[ib] = addNormal(normals[ib], normal);
+    normals[ic] = addNormal(normals[ic], normal);
   }
+  return normals.map((normal) => {
+    const l = Math.hypot(normal[0], normal[1], normal[2]);
+    return l <= 1e-8 ? [0, 1, 0] : [normal[0] / l, normal[1] / l, normal[2] / l];
+  });
+}
 
-  tris.sort((a, b) => b.depth - a.depth);
-  const out: number[] = [];
-  for (const t of tris) {
-    for (const idx of [t.a, t.b, t.c]) {
-      const p = projected[idx];
-      const c = mesh.vertexColors?.[idx] ?? { r: 1, g: 0.62, b: 0.08 };
-      out.push((p.x / width) * 2 - 1, 1 - (p.y / height) * 2, (p.z - 3) / 8, clamp(c.r * t.shade, 0, 1), clamp(c.g * t.shade, 0, 1), clamp(c.b * t.shade, 0, 1));
-    }
+function addNormal(a: RenderVec3, b: Vec3): RenderVec3 {
+  return [a[0] + b.x, a[1] + b.y, a[2] + b.z];
+}
+
+function contentMeshCullBounds(mesh: Mesh): RenderGpuCullBounds {
+  if (!mesh.vertices.length) return { center: [0, 0, 0], radius: 1 };
+  const bounds = computeBounds(mesh);
+  const center: RenderVec3 = [
+    (bounds.min.x + bounds.max.x) * 0.5,
+    (bounds.min.y + bounds.max.y) * 0.5,
+    (bounds.min.z + bounds.max.z) * 0.5,
+  ];
+  let radiusSq = 0;
+  for (const vertex of mesh.vertices) {
+    const dx = vertex.x - center[0];
+    const dy = vertex.y - center[1];
+    const dz = vertex.z - center[2];
+    const d = dx * dx + dy * dy + dz * dz;
+    if (d > radiusSq) radiusSq = d;
   }
+  return { center, radius: Math.max(0.001, Math.sqrt(radiusSq)) };
+}
 
-  return new Float32Array(out);
+function meshSignature(mesh: Mesh): string {
+  let hash = 2166136261;
+  for (const vertex of mesh.vertices) {
+    hash = hashFloat(hash, vertex.x);
+    hash = hashFloat(hash, vertex.y);
+    hash = hashFloat(hash, vertex.z);
+  }
+  for (const index of mesh.indices) hash = Math.imul(hash ^ index, 16777619);
+  return `${mesh.vertices.length}:${mesh.indices.length}:${hash >>> 0}`;
+}
+
+function hashFloat(hash: number, value: number): number {
+  const n = Math.round(value * 100000);
+  return Math.imul(hash ^ n, 16777619);
 }
 
 function drawOverlay(
