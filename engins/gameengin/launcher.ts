@@ -43,13 +43,13 @@ export async function launch(
   canvas: HTMLCanvasElement,
   config: GameConfig = demoGameConfig,
 ): Promise<{ core: GameEnginCore; stop: () => void }> {
-  console.log('🚀 DREAMengin GameEngin starting…');
+  console.debug('🚀 DREAMengin GameEngin starting…');
 
   const core = new GameEnginCore();
 
   try {
     await core.start(canvas, config);
-    console.log('✅ GameEngin runtime is active.');
+    console.debug('✅ GameEngin runtime is active.');
   } catch (err: unknown) {
     if (err instanceof GameEnginConfigError) {
       console.error('❌ Configuration error:', toErrorMessage(err));
@@ -61,7 +61,7 @@ export async function launch(
 
   const stop = (): void => {
     core.stop();
-    console.log('🛑 GameEngin runtime stopped.');
+    console.debug('🛑 GameEngin runtime stopped.');
   };
 
   // Clean up automatically when the page is closed / navigated away

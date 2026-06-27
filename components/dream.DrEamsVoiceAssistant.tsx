@@ -159,7 +159,7 @@ export default function DrEamsVoiceAssistant( ){
             try {
               recognition.start();
             } catch (e: unknown) {
-              console.log('Recognition restart failed:', e);
+              console.debug('Recognition restart failed:', e);
             }
           }, 100);
         }

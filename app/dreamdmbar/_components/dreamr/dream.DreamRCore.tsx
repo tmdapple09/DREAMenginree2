@@ -27,7 +27,7 @@ export default function DreamRCore({ sharerId }: Props) {
     const subs = [
       bridge.subscribe('create', 'create:published', (payload) => {
         const contentId = typeof payload['contentId'] === 'string' ? payload['contentId'] : '';
-        console.log('[DreamRCore] Published:', contentId, 'via sharer', sharerId);
+        console.debug('[DreamRCore] Published:', contentId, 'via sharer', sharerId);
         void fetch('/api/dreamr/tally', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -37,12 +37,12 @@ export default function DreamRCore({ sharerId }: Props) {
 
       bridge.subscribe('games', 'games:achievement-unlocked', (payload) => {
         const title = typeof payload['title'] === 'string' ? payload['title'] : 'Achievement';
-        console.log('[DreamRCore] Game achievement:', title);
+        console.debug('[DreamRCore] Game achievement:', title);
       }),
 
       bridge.subscribe('music', 'music:session-end', (payload) => {
         const sessionId = typeof payload['sessionId'] === 'string' ? payload['sessionId'] : '';
-        console.log('[DreamRCore] Music session ended:', sessionId);
+        console.debug('[DreamRCore] Music session ended:', sessionId);
       }),
     ];
 

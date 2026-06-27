@@ -1,7 +1,7 @@
 'use client';
 
 import { DualSenseManager } from '@/components/gameengin/input/DualSenseManager';
-import { EliteGameEngine } from '@/engins/gameengin/index';
+import { EliteGameEngine } from '@/engins/gameengin/core';
 import { AIDirector } from '@/engins/gameengin/ai-director';
 import { PostFXManager } from '@/engins/gameengin/post-fx';
 import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';

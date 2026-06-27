@@ -437,7 +437,7 @@ export class GameEnginCore {
     this.config = config;
     this.emitLifecycle('after-validate');
 
-    console.log(
+    console.debug(
       `[GameEnginCore] Initialising "${config.name}" v${config.version} …`
     );
 
@@ -536,7 +536,7 @@ export class GameEnginCore {
     this.running = true;
     this.emitLifecycle('after-runtime');
     this.emitLifecycle('running');
-    console.log(`[GameEnginCore] ✅ "${config.name}" is running.`);
+    console.debug(`[GameEnginCore] ✅ "${config.name}" is running.`);
   }
 
   /**
@@ -548,7 +548,7 @@ export class GameEnginCore {
   stop(): void {
     if (!this.running) return;
 
-    console.log(`[GameEnginCore] Stopping "${this.config?.name ?? 'engine'}" …`);
+    console.debug(`[GameEnginCore] Stopping "${this.config?.name ?? 'engine'}" …`);
 
     this.runtime?.stopGame();
     this.runtime?.dispose();
@@ -561,7 +561,7 @@ export class GameEnginCore {
     this.config   = null;
     this.emitLifecycle('stopped');
 
-    console.log('[GameEnginCore] Engine stopped.');
+    console.debug('[GameEnginCore] Engine stopped.');
   }
 
   /** True while the engine is running. */

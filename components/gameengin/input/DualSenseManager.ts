@@ -78,12 +78,12 @@ export class DualSenseManager {
       ) {
         this.gamepadIndex = gp.index;
         const mode = this.isMobile ? 'phone Bluetooth' : 'USB/desktop';
-        console.log(`🎮 PS5 DualSense connected via ${mode}`);
+        console.debug(`🎮 PS5 DualSense connected via ${mode}`);
 
         // Mobile-friendly status
         if (this.isMobile) {
           const status = 'DualSense ready — gyro steering + basic rumble active';
-          console.log('📱 Mobile mode: Gyro steering/aim + basic rumble active. Adaptive triggers limited.');
+          console.debug('📱 Mobile mode: Gyro steering/aim + basic rumble active. Adaptive triggers limited.');
           this.onStatusChange?.(status);
         } else {
           this.onStatusChange?.('DualSense ready — all features active');
@@ -181,7 +181,7 @@ export class DualSenseManager {
 
   // Optional: Visual LED feedback in-game (since real LED control is desktop/WebHID only)
   showFeedback(color: string = 'neon') {
-    console.log(`Visual feedback: ${color} (real LED limited on mobile)`);
+    console.debug(`Visual feedback: ${color} (real LED limited on mobile)`);
   }
 
   isConnected(): boolean {

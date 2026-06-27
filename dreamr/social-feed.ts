@@ -92,7 +92,7 @@ export async function fetchSocialFeed(
   const items = (feed.items ?? []).slice(0, limit);
 
   return items.map((raw) => {
-    const a = raw as any;
+    const a = raw as Record<string, unknown>;
     return {
       id: raw.guid ?? a.id ?? raw.link ?? String(Math.random()),
       source,

@@ -13,6 +13,9 @@ interface CreatePostModalProps {
 }
 
 type MediaType = 'image' | 'video' | 'audio' | null;
+const POST_VISIBILITIES = ['public', 'followers', 'private', 'everyone', 'close_friends'] as const;
+type PostVisibility = typeof POST_VISIBILITIES[number];
+function parsePostVisibility(value: string): PostVisibility { return (POST_VISIBILITIES as readonly string[]).includes(value) ? value as PostVisibility : 'followers'; }
 
 interface UploadedMedia {
   type: MediaType;
@@ -23,7 +26,7 @@ interface UploadedMedia {
 export default function CreatePostModal({ onClose, userId }: CreatePostModalProps) {
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [visibility, setVisibility] = useState<'public' | 'followers' | 'private' | 'everyone' | 'close_friends'>('followers');
+  const [visibility, setVisibility] = useState<PostVisibility>('followers');
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
   const [uploadProgress, setUploadProgress] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -275,7 +278,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
               <div className="ml-2">
                 <select
                   value={visibility}
-                  onChange={(e) => setVisibility(e.target.value as any)}
+                  onChange={(e) => setVisibility(parsePostVisibility(e.target.value))}
                   disabled={isSubmitting}
                   className="text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                 >

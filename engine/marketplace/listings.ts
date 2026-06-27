@@ -71,7 +71,7 @@ export function validateMarketplaceListing(body: unknown): ValidationResult {
     return { valid: false, errors: ['Request body must be a JSON object.'] };
   }
 
-  const b = body as any;
+  const b = body as Record<string, unknown>;
 
   const title = String(b.title ?? '').trim();
   if (!title) {

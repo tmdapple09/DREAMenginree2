@@ -115,7 +115,7 @@ export interface SubWidgetRef {
 
 export function getWidgetType(widget: unknown): WidgetType | undefined {
   if (!widget || typeof widget !== 'object') return undefined;
-  const w = widget as any;
+  const w = widget as Record<string, unknown>;
   const type = w['type'];
   if (typeof type === 'string') return type as WidgetType;
   const widgetType = w['widget_type'];
@@ -125,20 +125,20 @@ export function getWidgetType(widget: unknown): WidgetType | undefined {
 
 export function getWidgetConfig(widget: unknown): Record<string, unknown> {
   if (!widget || typeof widget !== 'object') return {};
-  const w = widget as any;
+  const w = widget as Record<string, unknown>;
   const configJson = w['config_json'];
   if (configJson && typeof configJson === 'object' && !Array.isArray(configJson)) {
-    return configJson as any;
+    return configJson as Record<string, unknown>;
   }
   const config = w['config'];
   if (config && typeof config === 'object' && !Array.isArray(config)) {
-    return config as any;
+    return config as Record<string, unknown>;
   }
   return {};
 }
 
 export function isWidgetInstance(widget: unknown): widget is WidgetInstance {
-  return !!widget && typeof widget === "object" && "id" in (widget as any);
+  return !!widget && typeof widget === "object" && "id" in widget;
 }
 
 export function isFeedWidget(widget: unknown): widget is WidgetInstance {

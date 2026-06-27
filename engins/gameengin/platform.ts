@@ -379,7 +379,7 @@ export class GameEnginPlatform {
       },
 
       achievements: {
-        unlock: async (id: string) => { console.log(`[Platform] Achievement unlocked: ${id}`); },
+        unlock: async (id: string) => { console.debug(`[Platform] Achievement unlocked: ${id}`); },
         progress: async () => {},
         getAll: async () => [],
       },

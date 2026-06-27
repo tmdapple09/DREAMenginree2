@@ -8,6 +8,11 @@ import { Bookmark, ExternalLink, FileText, Flag, Heart, Link2, MessageCircle, Mo
 import Image from 'next/image';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
+}
+
 interface FeedCardProps {
   item: {
     id: string;
@@ -47,7 +52,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
   const contentObj = useMemo(
     () =>
       item.content && typeof item.content === 'object' && !Array.isArray(item.content)
-        ? (item.content as any)
+        ? asRecord(item.content)
         : undefined,
     [item.content]
   );
@@ -354,8 +359,8 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
             {(() => {
               const thumbnail =
                 (item.media_json && typeof item.media_json === 'object' && !Array.isArray(item.media_json) &&
-                  typeof (item.media_json as any).thumbnail === 'string'
-                  ? ((item.media_json as any).thumbnail as string)
+                  typeof asRecord(item.media_json).thumbnail === 'string'
+                  ? (asRecord(item.media_json).thumbnail as string)
                   : undefined) ||
                 (typeof contentObj?.image === 'string' ? (contentObj.image as string) : undefined);
 

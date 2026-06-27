@@ -188,7 +188,7 @@ export class CrossWidgetPostingEngine {
       return;
     }
 
-    console.log('SEND_TEXT:', {
+    console.debug('SEND_TEXT:', {
       source: sourceWidgetId,
       target: targetWidgetId,
       payload: msg.payload
@@ -207,7 +207,7 @@ export class CrossWidgetPostingEngine {
       return;
     }
 
-    console.log('SEND_MEDIA:', {
+    console.debug('SEND_MEDIA:', {
       source: sourceWidgetId,
       target: targetWidgetId,
       payload: msg.payload

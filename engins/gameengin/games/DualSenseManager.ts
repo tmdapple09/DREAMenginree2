@@ -224,7 +224,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
 
   const showFeedback = (color: string = 'neon', pattern: 'pulse' | 'flash' | 'solid' = 'pulse') => {
     if (debug) {
-      console.log(`[DualSense] Visual feedback: ${color} (${pattern}) - LED control limited on mobile`);
+      console.debug(`[DualSense] Visual feedback: ${color} (${pattern}) - LED control limited on mobile`);
     }
     // Real LED control requires WebHID (desktop only)
     // Emit custom event for in-game visual feedback
@@ -245,7 +245,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
       setState((prev) => ({ ...prev, connected: true }));
 
       if (debug) {
-        console.log(
+        console.debug(
           `🎮 PS5 DualSense connected via ${isMobile.current ? 'phone Bluetooth' : 'USB/desktop'}`,
           '\nGamepad ID:', e.gamepad.id,
           '\nGyro enabled:', enableGyro && isMobile.current,
@@ -265,7 +265,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
         setState((prev) => ({ ...prev, connected: false }));
 
         if (debug) {
-          console.log('🎮 DualSense disconnected');
+          console.debug('🎮 DualSense disconnected');
         }
 
         // Stop polling
@@ -289,7 +289,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
         rafRef.current = requestAnimationFrame(poll);
 
         if (debug) {
-          console.log('🎮 DualSense already connected on mount');
+          console.debug('🎮 DualSense already connected on mount');
         }
       }
     }
@@ -372,7 +372,7 @@ export class DualSenseManager {
         this.startPolling();
 
         if (this.config.debug) {
-          console.log('🎮 DualSense already connected');
+          console.debug('🎮 DualSense already connected');
         }
       }
     }
@@ -410,7 +410,7 @@ export class DualSenseManager {
 
   showFeedback(color: string = 'neon', pattern: 'pulse' | 'flash' | 'solid' = 'pulse') {
     if (this.config.debug) {
-      console.log(`[DualSense] Visual feedback: ${color} (${pattern})`);
+      console.debug(`[DualSense] Visual feedback: ${color} (${pattern})`);
     }
 
     if (typeof window !== 'undefined') {
@@ -528,7 +528,7 @@ export class DualSenseManager {
     this.startPolling();
 
     if (this.config.debug) {
-      console.log(
+      console.debug(
         `🎮 PS5 DualSense connected via ${this.isMobile ? 'phone Bluetooth' : 'USB/desktop'}`,
         '\nGamepad ID:', e.gamepad.id
       );
@@ -542,7 +542,7 @@ export class DualSenseManager {
       this.stopPolling();
 
       if (this.config.debug) {
-        console.log('🎮 DualSense disconnected');
+        console.debug('🎮 DualSense disconnected');
       }
     }
   };

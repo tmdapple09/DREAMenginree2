@@ -23,7 +23,47 @@ export interface ValidationReport { gameReady:boolean; profile:ExportProfile; er
 export interface SourceImageAnalysis { width:number; height:number; dominantColors:string[]; shadowColors:string[]; highlightColors:string[]; edgeMapPath?:string; maskPath?:string; symmetryAxisX?:number; regions:ShapeRegion[] }
 export interface ShapeRegion { id:string; label:'head'|'torso'|'waist'|'arm-left'|'arm-right'|'leg-left'|'leg-right'|'wheel'|'window'|'door'|'roof'|'trunk'|'branch'|'leaf'|'road'|'water'|'unknown'; bounds:{minX:number;minY:number;maxX:number;maxY:number}; centroid:Vec2; contour:Vec2[]; averageColor:string; dominantColors:string[]; confidence:number }
 export interface ContentRecipe { assetType:string; seed:number; profile:ExportProfile; parameters:Record<string,unknown>; materialParameters:Record<string,unknown>; partOverrides?:Record<string,Partial<PartNode>>; sourceImage?:SourceImageAnalysis }
-export interface ContentAsset { id:string; category:ContentAssetCategory; subcategory:string; seed:number; contentenginVersion:string; recipe:ContentRecipe; parts:PartNode[]; materials:MaterialDef[]; shaders:ShaderDef[]; skeleton?:SkeletonDef; animations:AnimationClipDef[]; collision:CollisionBlock; physics?:PhysicsDef; lods:LodDef[]; runtimeProfile?: import('./runtimeProfile').ContentEnginRuntimeProfile; performancePlan?: import('./performancePlan').ContentEnginPerformancePlan; exportProfile:ExportProfile; validation:ValidationReport }
+export type ContentEnginUpgradeIdSnapshot =
+  | 'webgpu-first-rendering'
+  | 'mobile-desktop-parity'
+  | 'adaptive-lod-streaming'
+  | 'intent-routed-generation'
+  | 'local-first-snapshots'
+  | 'meshopt-ready-exports'
+  | 'material-budget-guardrails'
+  | 'safe-user-facing-audits'
+  | 'background-artifact-generation'
+  | 'progressive-viewport-scheduling';
+
+export interface ContentEnginRuntimeProfileSnapshot {
+  tier: 'mobile-2026' | 'desktop-2026' | 'console-2026';
+  renderBackendPriority: readonly ['webgpu', 'webgl2', 'canvas'];
+  mobileFirst: true;
+  desktopClassOutput: true;
+  maxTextureResolution: number;
+  maxDrawCalls: number;
+  meshCompression: 'meshopt-draco-ready';
+  materialModel: 'pbr-mobile-plus';
+  lodStrategy: 'continuous-mobile-first-desktop-quality';
+  shaderFeatureLevel: 'webgpu-2026';
+  intentOnlyIO: true;
+  snapshotCadenceMs: number;
+  syncTransport: 'abstract-intent-bus';
+  enabledUpgrades: ContentEnginUpgradeIdSnapshot[];
+  userFacingAuditMode: 'readiness-guidance-only';
+}
+
+export interface ContentEnginPerformancePlanSnapshot {
+  previewResolution: number;
+  exportResolution: number;
+  maxFrameTimeMs: number;
+  idleWorkChunkMs: number;
+  visibilityPause: true;
+  touchFirstControls: true;
+  reducedMotionAware: true;
+  batteryAwareQuality: 'adaptive';
+}
+export interface ContentAsset { id:string; category:ContentAssetCategory; subcategory:string; seed:number; contentenginVersion:string; recipe:ContentRecipe; parts:PartNode[]; materials:MaterialDef[]; shaders:ShaderDef[]; skeleton?:SkeletonDef; animations:AnimationClipDef[]; collision:CollisionBlock; physics?:PhysicsDef; lods:LodDef[]; runtimeProfile?: ContentEnginRuntimeProfileSnapshot; performancePlan?: ContentEnginPerformancePlanSnapshot; exportProfile:ExportProfile; validation:ValidationReport }
 export type ContentAssetObject = DomainObject<'contentengin.asset', ContentAsset>;
 export const CONTENTENGIN_VERSION = '2026.06.18-mobile-desktop';
 export const vec3 = (x=0,y=0,z=0):Vec3 => ({x,y,z});
