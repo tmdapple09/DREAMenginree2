@@ -1,15 +1,15 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-25T17:29:28.155Z
+Generated: 2026-06-27T16:04:04.956Z
 
 Model: capability nodes + files as edges.
 
-- Capability nodes: 11363
-- File edges: 1581
+- Capability nodes: 11489
+- File edges: 1593
 - Routes: 113
-- Files analysed: 1581
-- Unresolved internal imports: 140 specifiers across 35 files
-- Unused exports: 2189 exports across 531 files
+- Files analysed: 1593
+- Unresolved internal imports: 141 specifiers across 36 files
+- Unused exports: 2216 exports across 540 files
 
 ---
 
@@ -68,7 +68,7 @@ Model: capability nodes + files as edges.
 | File Edge | Consumes Nodes | Provides Nodes |
 |-----------|----------------|----------------|
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `useDualRuntime`, `useDreamSystem`, `DIVIDER_H`, `SystemPanelId`, `EnginDispatcher`, `dreamOSBus` | `DreamBarDataBridge.tsx`, `(default)` |
-| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `useOS` | `DreamSpaceRegion.tsx`, `(default)` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `restoreArtifactsFromOfflineCache` | `DreamSpaceRegion.tsx`, `(default)` |
 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx` | `WidgetInstance` | `DreamWidgetGrid.tsx`, `(default)` |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | `lucide-react`, `next/navigation`, `react`, `(default)`, `(default)`, `(default)` | `HomeDreamRegion.tsx`, `(default)` |
 | `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` | `slog`, `TORRIDITY_LEDGER_CONFIG` | `InteractionSignal`, `SwipePathScore`, `TouchPoint`, `isLikelyBot`, `isSwipeBot`, `scoreBotLikelihood` |
@@ -84,7 +84,7 @@ Model: capability nodes + files as edges.
 | `app/dreamdmbar/layout.tsx` | `(default)`, `(default)`, `(default)`, `isOwnerEmail`, `isDevBypassActive`, `FeedPost` | `layout.tsx`, `(default)` |
 | `app/dreamdmbar/page.tsx` | `next/navigation` | `/dreamdmbar`, `page.tsx`, `(default)` |
 | `app/homedream/page.tsx` | `(default)`, `isDevBypassActive`, `FeedPost`, `safeGetUser`, `createServerClient`, `next/navigation` | `/homedream`, `page.tsx`, `(default)` |
-| `components/home/dream.ActiveModuleSurface.tsx` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion`, `loadArtifacts` | `dream.ActiveModuleSurface.tsx`, `(default)` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `loadActiveModules`, `removeActiveModule`, `restoreActiveModulesFromOfflineCache`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion` | `dream.ActiveModuleSurface.tsx`, `(default)` |
 | `components/home/dream.DaydreamPulseStrip.tsx` | `next/navigation` | `dream.DaydreamPulseStrip.tsx`, `(default)` |
 | `components/home/dream.FlagshipEnginesStrip.tsx` | `getEnginById`, `lucide-react`, `next/navigation` | `dream.FlagshipEnginesStrip.tsx`, `(default)` |
 | `components/home/dream.NeuralSeamCanvas.tsx` | `DIVIDER_H`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles`, `tickParticles`, `SeamParticle` | `dream.NeuralSeamCanvas.tsx`, `(default)` |
@@ -97,16 +97,16 @@ Model: capability nodes + files as edges.
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
-| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
-| `dreamdmbar/hooks/useDreamDMDraft.ts` | `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
-| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
+| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
+| `dreamdmbar/hooks/useDreamDMDraft.ts` | `deleteOfflineRecord`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
+| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
 | `dreamdmbar/hooks/useDreamSearch.ts` | `USER_FACING_ENGINES`, `createClient`, `react` | `useDreamSearch`, `SearchResult`, `SearchResultType`, `UseDreamSearchReturn`, `useDreamSearch` |
 | `dreamdmbar/hooks/useMessagingCore.ts` | `uploadBlobToLedgerStorage`, `createClient`, `react`, `DMMessage`, `toErrorMessage` | `useMessagingCore`, `MediaType`, `SendMessageParams`, `UseMessagingCoreReturn`, `useMessagingCore` |
 | `dreamdmbar/hooks/useModuleBarIntent.ts` | `ModuleBarAction`, `useDreamSystem`, `react` | `useModuleBarIntent`, `UseModuleBarIntentResult`, `useModuleBarIntent` |
 | `dreamdmbar/hooks/useNotifications.ts` | `react` | `useNotifications`, `useNotifications` |
 | `dreamdmbar/notifications/notificationHelpers.ts` | - | `DbNotificationContent`, `DbNotificationRow`, `UiNotification`, `UiNotificationType`, `applyOptimisticDelete`, `applyOptimisticMarkAll` |
 | `dreamdmbar/notifications/useNotifications.ts` | `react`, `applyOptimisticDelete`, `applyOptimisticMarkAll`, `applyOptimisticRead`, `getUnreadCount`, `normalizeDbRow` | `useNotifications`, `UseNotificationsReturn`, `useNotifications` |
-| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `safeGetUser` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS` |
+| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `getOfflineRecord` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS` |
 | `dreamdmbar/runtime/barInteractions.ts` | - | `BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_SNAP_TO_TOP_THRESHOLD_PX` |
 | `dreamdmbar/runtime/bridgeSeamFlow.ts` | - | `SEAM_CHANNEL_COLORS`, `SEAM_DEFAULT_COLOR`, `SeamParticle`, `_resetIdCounter`, `channelColor`, `createIdleParticle` |
 | `engine/generated/dreamdmbar.ts` | - | `DreamdmbarMap`, `dreamdmbar` |
@@ -133,7 +133,7 @@ Model: capability nodes + files as edges.
 | `engine/runtime/madMaxiSnapshotBridge.ts` | `fs/promises` | `invokeMadMaxiSnapshotTransfer` |
 | `engine/runtime/memory.ts` | `MEM_PRIVATE_ACCESS` | `BAR_SEAM_ATOMICS_INDEX`, `BAR_SEAM_SCALE`, `BAR_Y_SCALE`, `CACHE_LINE`, `ConformMemoryMap`, `ENGIN_OFFSET_AXIS_STATE` |
 | `engine/runtime/moduleRegistry.ts` | `bridge`, `isModuleManifest`, `negotiateModuleCompatibility`, `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId` | `useModuleRegistry`, `manifestFromWidget`, `moduleRegistry`, `subscribeRegistryToTransferEvents`, `useModuleRegistry` |
-| `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `QueueStatus`, `dequeue`, `enqueue` |
+| `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `EnqueueOptions`, `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `OfflineReplayRequest`, `QueueStatus` |
 | `engine/runtime/quantumCircuit.ts` | `QuantumComputeResult`, `QuantumComputeResult` | `QuantumComputeResult`, `runQuantumCircuit` |
 | `engine/runtime/runtimeChannel.ts` | `isJsonSerializable` | `RealtimeChannel`, `RealtimeChannelOptions`, `RealtimeClient`, `RuntimeChannel`, `RuntimeChannelEvent`, `RuntimeChannelOptions` |
 | `engine/runtime/runtimeContainer.ts` | `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad` | `RuntimeContainer`, `RuntimeContainerOptions`, `RuntimeStrategy` |
@@ -351,7 +351,7 @@ _No style files for this feature._
 | `dreamr/components/dreamrfeed.tsx` | `(default)`, `(default)`, `useDreamSystem`, `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences` | `dreamrfeed.tsx`, `(default)`, `DREAMR_TOPICS` |
 | `dreamr/feed/feedTopics.ts` | - | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `FEED_TOPICS_KEY`, `FeedTopic`, `loadActiveTopicIds`, `topicIdsToQueries` |
 | `dreamr/feed/hashtags.ts` | - | `Hashtag`, `MAX_TAGS_PER_POST`, `MAX_TAG_LENGTH`, `TrendingTag`, `calculateTrending`, `extractHashtags` |
-| `dreamr/feed/useLiveFeed.ts` | `RealtimePostgresInsertPayload`, `getPrimaryPostMediaUrl`, `createClient`, `react` | `useLiveFeed`, `FeedPost`, `UseLiveFeedReturn`, `useLiveFeed` |
+| `dreamr/feed/useLiveFeed.ts` | `RealtimePostgresInsertPayload`, `getPrimaryPostMediaUrl`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useLiveFeed`, `FeedPost`, `UseLiveFeedReturn`, `useLiveFeed` |
 | `dreamr/feed/useYouTubeLiveFeed.ts` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries`, `FeedPost`, `UnifiedFeedItem` | `useYouTubeLiveFeed`, `UseYouTubeLiveFeedReturn`, `useYouTubeLiveFeed` |
 | `dreamr/feeds/embedFeedLoader.ts` | `server-only`, `node:fs`, `node:path`, `loadEmbedFeed` | `EmbedFeed`, `EmbedFeedAlgorithm`, `EmbedFeedItem`, `loadEmbedFeed`, `loadEmbedFeedByProvider` |
 | `dreamr/runtime/closeFriendsVisibility.ts` | `SupabaseClient`, `(dynamic import)` | `VisibilityCandidate`, `fetchCloseFriendsCircle`, `filterByCloseFriends`, `loadVisibilityCircle` |
@@ -510,7 +510,7 @@ _No style files for this feature._
 | `components/engines/create/panels/dream.panel.QueuePanel.tsx` | `lucide-react`, `react` | `dream.panel.QueuePanel.tsx`, `(default)` |
 | `engins/contentengin/AssetViewport.tsx` | `react`, `computeBounds`, `CameraState`, `RigBendPoint`, `Mesh`, `Vec3` | `AssetViewport.tsx`, `(default)` |
 | `engins/contentengin/ImplicitAssetWorkspace.tsx` | `(default)`, `exportOBJ`, `RenderStage`, `createInlineRenderIntent`, `useImplicitAssetWorkspace`, `react` | `ImplicitAssetWorkspace.tsx`, `(default)` |
-| `engins/contentengin/assetTypes.ts` | `(dynamic import)`, `(dynamic import)` | `AnimationClipDef`, `BoneDef`, `CONTENTENGIN_VERSION`, `CollisionBlock`, `CollisionShape`, `CollisionShapeKind` |
+| `engins/contentengin/assetTypes.ts` | - | `AnimationClipDef`, `BoneDef`, `CONTENTENGIN_VERSION`, `CollisionBlock`, `CollisionShape`, `CollisionShapeKind` |
 | `engins/contentengin/assets/assetOptimizer.ts` | `storeOriginal` | `AssetUploadContext`, `OptimisationQuality`, `OptimisationResult`, `OptimiseOptions`, `optimiseAsset`, `registryTagsForContext` |
 | `engins/contentengin/assets/indexedDBStore.ts` | - | `OriginalRecord`, `SentinelEntry`, `StorageStats`, `checkSentinels`, `cleanupExpiredOriginals`, `deleteOriginal` |
 | `engins/contentengin/assets/localAssetLibrary.ts` | `getOriginal`, `storeOriginal`, `OriginalRecord` | `LocalContentAssetRecord`, `getLocalContentAssetGlb`, `getLocalContentAssetObjSource`, `listLocalContentAssets`, `saveLocalContentAsset` |
@@ -841,7 +841,7 @@ _No style files for this feature._
 | `engins/gameengin/dream-engine.ts` | `decodeLedgerStringToUint8Array`, `encodeUint8ArrayToLedgerString`, `createClient`, `safeGetUser`, `toErrorMessage` | `DreamEngine`, `GameAsset`, `GlobalRegistryEntry`, `WasmOutput` |
 | `engins/gameengin/dreamr-loader.ts` | `CARTRIDGE_MAGIC`, `validateManifest`, `CartridgeManifest` | `DreamrCartridgeArchive`, `DreamrFileEntry`, `loadDreamrCartridgeFromResponse`, `parseDreamrArchive` |
 | `engins/gameengin/executionWiring.ts` | `RealtimeCaptioner`, `MotionReductionAI`, `ColorVisionAdapter`, `AIDirector`, `PlayerSignals`, `EmergentDialogue` | `GameEnginExecutionCrash`, `GameEnginExecutionFrame`, `GameEnginExecutionKernel`, `GameEnginExecutionKernelSnapshot`, `createGameEnginExecutionKernel` |
-| `engins/gameengin/gameEnginRuntime.ts` | `createEventBus`, `EventBus`, `resolveFrameBudget`, `GameEnginQualityTier`, `decideRuntimeQuality` | `DreamGameBackend`, `DreamGameInstance`, `DreamGameManifest`, `GameEnginBackendState`, `GameEnginEvents`, `GameEnginRuntime` |
+| `engins/gameengin/gameEnginRuntime.ts` | `createEventBus`, `EventBus`, `resolveFrameBudget`, `GameEnginQualityTier`, `decideRuntimeQuality`, `requestWebGpuDevice` | `DreamGameBackend`, `DreamGameInstance`, `DreamGameManifest`, `GameEnginBackendState`, `GameEnginEvents`, `GameEnginRuntime` |
 | `engins/gameengin/games/DualSenseManager.ts` | `react` | `useDualSense`, `DualSenseConfig`, `DualSenseManager`, `DualSenseState`, `useDualSense` |
 
 _Trimmed to first 80 file edges for this feature._
@@ -1817,7 +1817,7 @@ _No style files for this feature._
 | `components/ads/dream.AdUnit.tsx` | `AdType`, `next/image`, `react` | `dream.AdUnit.tsx`, `AdUnit` |
 | `components/ads/dream.SkipCreditBalance.tsx` | `react` | `dream.SkipCreditBalance.tsx`, `SkipCreditBalance` |
 | `components/marketplace/dream.MarketplaceListingCard.tsx` | `next/link` | `dream.MarketplaceListingCard.tsx`, `(default)` |
-| `components/marketplace/dream.MarketplaceRequestButton.tsx` | `lucide-react`, `react`, `toErrorMessage` | `dream.MarketplaceRequestButton.tsx`, `(default)` |
+| `components/marketplace/dream.MarketplaceRequestButton.tsx` | `lucide-react`, `react`, `toErrorMessage`, `queueLocalFirstMutation` | `dream.MarketplaceRequestButton.tsx`, `(default)` |
 
 ## Pages
 
@@ -1912,7 +1912,7 @@ _No style files for this feature._
 | `app/settings/account/page.tsx` | `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/settings/account`, `page.tsx`, `(default)` |
 | `app/settings/algorithm/page.tsx` | `(default)`, `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/navigation` | `/settings/algorithm`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/appearance/page.tsx` | `THEME_PRESETS`, `applyTheme`, `applyVoidTheme`, `isVoidThemeActive`, `DeTheme`, `useTheme` | `/settings/appearance`, `page.tsx`, `(default)` |
-| `app/settings/controls/dream.ControlsClient.tsx` | `lucide-react`, `next/link`, `react`, `(default)` | `dream.ControlsClient.tsx`, `(default)` |
+| `app/settings/controls/dream.ControlsClient.tsx` | `lucide-react`, `next/link`, `react`, `queueLocalFirstMutation`, `(default)` | `dream.ControlsClient.tsx`, `(default)` |
 | `app/settings/controls/dream.PositionIndicatorToggle.tsx` | `react` | `dream.PositionIndicatorToggle.tsx`, `(default)` |
 | `app/settings/controls/page.tsx` | `createServerClient`, `safeGetUser`, `next/navigation`, `next/server`, `(default)` | `/settings/controls`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/data/dream.DataClient.tsx` | `lucide-react`, `next/link`, `react` | `dream.DataClient.tsx` |
@@ -1923,7 +1923,7 @@ _No style files for this feature._
 | `app/settings/help/page.tsx` | `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation` | `/settings/help`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/notifications/page.tsx` | `(default)`, `lucide-react`, `react` | `/settings/notifications`, `page.tsx`, `(default)` |
 | `app/settings/page.tsx` | `isOwnerEmail`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation` | `/settings`, `page.tsx`, `(default)`, `metadata` |
-| `app/settings/privacy/dream.PrivacyClient.tsx` | `lucide-react`, `next/link`, `react` | `dream.PrivacyClient.tsx`, `(default)` |
+| `app/settings/privacy/dream.PrivacyClient.tsx` | `lucide-react`, `next/link`, `react`, `queueLocalFirstMutation` | `dream.PrivacyClient.tsx`, `(default)` |
 | `app/settings/privacy/page.tsx` | `createServerClient`, `safeGetUser`, `next/navigation`, `next/server`, `(default)` | `/settings/privacy`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/safety/page.tsx` | `(default)`, `BOOGIE_POLICY_VERSION`, `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `lucide-react` | `/settings/safety`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/security/page.tsx` | `(default)`, `createClient`, `safeGetUser`, `buildAuthCallbackUrl`, `lucide-react`, `next/link` | `/settings/security`, `page.tsx`, `(default)` |
@@ -2101,7 +2101,7 @@ _No type files for this feature._
 | `app/api/messages/boards/route.ts` | `createServerClient`, `safeGetUser`, `next/server`, `zod` | `/api/messages/boards`, `POST` |
 | `app/api/messages/route.ts` | `scanContent`, `reportChildSafetyIncident`, `scanMediaUrlsForChildSafety`, `safeGetUser`, `createServerClient`, `toErrorMessage` | `/api/messages`, `GET`, `POST` |
 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx` | `useDualRuntime`, `useDreamSystem`, `DIVIDER_H`, `SystemPanelId`, `EnginDispatcher`, `dreamOSBus` | `DreamBarDataBridge.tsx`, `(default)` |
-| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `useOS` | `DreamSpaceRegion.tsx`, `(default)` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `restoreArtifactsFromOfflineCache` | `DreamSpaceRegion.tsx`, `(default)` |
 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx` | `WidgetInstance` | `DreamWidgetGrid.tsx`, `(default)` |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | `lucide-react`, `next/navigation`, `react`, `(default)`, `(default)`, `(default)` | `HomeDreamRegion.tsx`, `(default)` |
 | `app/dreamdmbar/_components/dreamr/algorithms/botDetector.ts` | `slog`, `TORRIDITY_LEDGER_CONFIG` | `InteractionSignal`, `SwipePathScore`, `TouchPoint`, `isLikelyBot`, `isSwipeBot`, `scoreBotLikelihood` |
@@ -2125,16 +2125,16 @@ _No type files for this feature._
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
-| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
-| `dreamdmbar/hooks/useDreamDMDraft.ts` | `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
-| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
+| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
+| `dreamdmbar/hooks/useDreamDMDraft.ts` | `deleteOfflineRecord`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
+| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
 | `dreamdmbar/hooks/useDreamSearch.ts` | `USER_FACING_ENGINES`, `createClient`, `react` | `useDreamSearch`, `SearchResult`, `SearchResultType`, `UseDreamSearchReturn`, `useDreamSearch` |
 | `dreamdmbar/hooks/useMessagingCore.ts` | `uploadBlobToLedgerStorage`, `createClient`, `react`, `DMMessage`, `toErrorMessage` | `useMessagingCore`, `MediaType`, `SendMessageParams`, `UseMessagingCoreReturn`, `useMessagingCore` |
 | `dreamdmbar/hooks/useModuleBarIntent.ts` | `ModuleBarAction`, `useDreamSystem`, `react` | `useModuleBarIntent`, `UseModuleBarIntentResult`, `useModuleBarIntent` |
 | `dreamdmbar/hooks/useNotifications.ts` | `react` | `useNotifications`, `useNotifications` |
 | `dreamdmbar/notifications/notificationHelpers.ts` | - | `DbNotificationContent`, `DbNotificationRow`, `UiNotification`, `UiNotificationType`, `applyOptimisticDelete`, `applyOptimisticMarkAll` |
 | `dreamdmbar/notifications/useNotifications.ts` | `react`, `applyOptimisticDelete`, `applyOptimisticMarkAll`, `applyOptimisticRead`, `getUnreadCount`, `normalizeDbRow` | `useNotifications`, `UseNotificationsReturn`, `useNotifications` |
-| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `safeGetUser` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS` |
+| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `getOfflineRecord` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS` |
 | `dreamdmbar/runtime/barInteractions.ts` | - | `BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_SNAP_TO_TOP_THRESHOLD_PX` |
 | `dreamdmbar/runtime/bridgeSeamFlow.ts` | - | `SEAM_CHANNEL_COLORS`, `SEAM_DEFAULT_COLOR`, `SeamParticle`, `_resetIdCounter`, `channelColor`, `createIdleParticle` |
 | `engine/generated/dreamdmbar.ts` | - | `DreamdmbarMap`, `dreamdmbar` |
@@ -2365,12 +2365,12 @@ _No style files for this feature._
 | `engins/renderengin/RenderEnginInlineSurface.tsx` | `react`, `EnginRuntime`, `RenderEnginRuleSet`, `RenderIntent`, `RenderServiceIntentEnvelope`, `(default)` | `RenderEnginInlineSurface.tsx`, `(default)` |
 | `engins/renderengin/RenderEnginViewport.tsx` | `react`, `EnginRuntime`, `composeModelMatrix`, `createMeshBuffers`, `createRenderAsset`, `mat4LookAt` | `RenderEnginViewport.tsx`, `(default)` |
 | `engins/renderengin/RenderStage.tsx` | `react`, `EnginRuntime`, `JsonObject`, `RenderEnginRuleSet`, `RenderIntent`, `RenderServiceIntentEnvelope` | `RenderStage.tsx`, `(default)`, `RenderStageProps`, `createInlineRenderIntent` |
-| `engins/renderengin/advancedRendering.ts` | `mat4Identity`, `mat4Mul`, `mat4Transform`, `makeDualQuaternion`, `quatMul`, `DualQuaternion` | `RenderBoneStoragePlan`, `RenderCompressedGeometry`, `RenderDeviceRecoveryState`, `RenderIndirectDrawCommand`, `RenderMeshlet`, `RenderMorphTarget` |
+| `engins/renderengin/advancedRendering.ts` | `mat4Identity`, `mat4Mul`, `mat4MulPrecise`, `mat4Transform`, `makeDualQuaternion`, `quatMul` | `RenderBoneStoragePlan`, `RenderCompressedGeometry`, `RenderDeviceRecoveryState`, `RenderIndirectDrawCommand`, `RenderMeshlet`, `RenderMorphTarget` |
 | `engins/renderengin/animation.ts` | `mat4Mul`, `mat4Translation`, `mat4Scale`, `mat4FromQuat`, `Mat4`, `Quat` | `RenderAnimationChannel`, `RenderAnimationClip`, `RenderAnimationPath`, `RenderAnimationPose`, `RenderKeyframeQuat`, `RenderKeyframeVec3` |
 | `engins/renderengin/assets.ts` | `authorizeDomainCapability`, `DomainAuthorizationContext`, `DomainCapability`, `DomainVisibility`, `JsonObject`, `JsonValue` | `ParsedRenderAsset`, `RenderAssetManifest`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `createParsedGlbRenderAsset` |
 | `engins/renderengin/benchmarkProof.ts` | `JsonObject` | `RenderDeviceCapture`, `RenderMillionPolyProof`, `RenderTenMillionBenchmarkObject`, `RenderTenMillionBenchmarkScene`, `certifyTenMillionScene`, `createTenMillionPolygonProof` |
 | `engins/renderengin/completionEvidence.ts` | `DomainObject`, `JsonObject`, `JsonValue` | `RenderCompletionEvidence`, `RenderEvidenceData`, `RenderEvidenceItem`, `RenderEvidenceStatus`, `createRenderCompletionEvidence` |
-| `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction` | `DualQuaternion`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4`, `MeshBuffers` |
+| `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction` | `DualQuaternion`, `EPS`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4` |
 | `engins/renderengin/diagnostics.ts` | `JsonObject`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateRenderPerformanceGate` |
 | `engins/renderengin/index.ts` | `*`, `*`, `default`, `default`, `createInlineRenderIntent`, `*` | `RenderEnginViewport`, `RenderStage`, `createInlineRenderIntent` |
 | `engins/renderengin/lighting.ts` | `DomainObject`, `DomainVisibility`, `JsonObject`, `v3normalize`, `Vec3` | `RenderEnvironment`, `RenderEnvironmentData`, `RenderLight`, `RenderLightData`, `RenderLightKind`, `createRenderEnvironment` |
@@ -2387,7 +2387,8 @@ _No style files for this feature._
 | `engins/renderengin/textures.ts` | `DomainObject`, `DomainVisibility`, `JsonObject` | `RenderTexture`, `RenderTextureData`, `RenderTextureFormat`, `RenderTextureRole`, `RenderTextureValidation`, `calculateMipLevelCount` |
 | `engins/renderengin/viewportControls.ts` | `v3dot`, `v3length`, `v3normalize`, `v3scale`, `v3sub`, `Vec2` | `RenderCameraState`, `RenderPointerSample`, `RenderRay`, `RenderTransformMode`, `createAxisHelper`, `createBoundingBoxLines` |
 | `engins/renderengin/virtualization.ts` | `v3length`, `v3sub`, `MeshBuffers`, `Vec3`, `RenderScene` | `RenderBounds`, `RenderCullingResult`, `RenderFrustumPlane`, `RenderInstanceBatch`, `RenderTerrainChunk`, `buildInstanceBatches` |
-| `engins/renderengin/webgpu.ts` | `mat4Identity`, `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex` | `PackedVertexBuffer`, `RenderEnginFrameStats`, `RenderEnginGpuMesh`, `RenderEnginGpuTexture`, `RenderEnginLifecycleHooks`, `RenderEnginScene` |
+| `engins/renderengin/wasmAcceleration.ts` | `MeshBuffers`, `Vec3` | `RenderMeshBounds`, `RenderWasmAcceleration`, `RenderWasmAccelerationExports`, `computeRenderMeshBounds`, `fallbackRenderMeshBounds`, `getActiveRenderWasmAcceleration` |
+| `engins/renderengin/webgpu.ts` | `mat4Identity`, `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex` | `BATCH_SHADER`, `PackedVertexBuffer`, `RenderEnginFrameStats`, `RenderEnginGpuMesh`, `RenderEnginGpuTexture`, `RenderEnginLifecycleHooks` |
 
 ## Pages
 
@@ -2435,6 +2436,7 @@ _No API routes for this feature._
 - `engins/renderengin/textures.ts`
 - `engins/renderengin/viewportControls.ts`
 - `engins/renderengin/virtualization.ts`
+- `engins/renderengin/wasmAcceleration.ts`
 - `engins/renderengin/webgpu.ts`
 
 ## Types
@@ -3571,6 +3573,7 @@ _No style files for this feature._
 - `dream.FeedCard.tsx` - `components/dream.FeedCard.tsx`
 - `dream.FeedSettingsClient.tsx` - `app/feed-settings/dream.FeedSettingsClient.tsx`
 - `dream.FeedVideoCard.tsx` - `components/feed/dream.FeedVideoCard.tsx`
+- `dream.FirstTouchActivator.tsx` - `components/dream.FirstTouchActivator.tsx`
 - `dream.FlagshipEnginesStrip.tsx` - `components/home/dream.FlagshipEnginesStrip.tsx`
 - `dream.FollowButton.tsx` - `components/feed/dream.FollowButton.tsx`
 - `dream.FollowOnboarding.tsx` - `components/feed/dream.FollowOnboarding.tsx`
@@ -3590,6 +3593,7 @@ _No style files for this feature._
 - `dream.hud.MobileGameHUD.tsx` - `components/games/dream.hud.MobileGameHUD.tsx`
 - `dream.IconList.tsx` - `components/ui/dream.IconList.tsx`
 - `dream.IconSelector.tsx` - `components/dream.IconSelector.tsx`
+- `dream.index.tsx` - `engins/CodeEngin/orchestrator/dream.index.tsx`
 - `dream.index.tsx` - `engins/codeengin-ui/orchestrator/dream.index.tsx`
 - `dream.InfinityIcon.tsx` - `components/ui/dream.InfinityIcon.tsx`
 - `dream.InnerDreamsButton.tsx` - `components/dream.InnerDreamsButton.tsx`
@@ -3627,11 +3631,14 @@ _No style files for this feature._
 - `dream.NoSlotDialog.tsx` - `components/connectors/dream.NoSlotDialog.tsx`
 - `dream.NotificationCenter.tsx` - `components/dream.NotificationCenter.tsx`
 - `dream.NullCathedral.tsx` - `components/games/dream.NullCathedral.tsx`
+- `dream.OfflineRuntimeBootstrap.tsx` - `components/offline/dream.OfflineRuntimeBootstrap.tsx`
+- `dream.OfflineStatusPill.tsx` - `components/offline/dream.OfflineStatusPill.tsx`
 - `dream.OnboardingTip.tsx` - `components/onboarding/dream.OnboardingTip.tsx`
 - `dream.OpenDaydreamSideBButton.tsx` - `components/daydream/dream.OpenDaydreamSideBButton.tsx`
 - `dream.OSShellActivator.tsx` - `components/dream.OSShellActivator.tsx`
 - `dream.outputlayer.tsx` - `components/dreams/dream.outputlayer.tsx`
 - `dream.overlay.ViewAllDreamsOverlay.tsx` - `components/dreamengin/dream.overlay.ViewAllDreamsOverlay.tsx`
+- `dream.panel.AgentPanel.tsx` - `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
 - `dream.panel.AgentPanel.tsx` - `engins/codeengin-ui/modules/ai-co-pilot/dream.panel.AgentPanel.tsx`
 - `dream.panel.AIBuilderPanel.tsx` - `components/forge/dream.panel.AIBuilderPanel.tsx`
 - `dream.panel.AIPanel.tsx` - `components/engines/code/panels/dream.panel.AIPanel.tsx`
@@ -3789,12 +3796,7 @@ _No style files for this feature._
 - `GameRuntime.tsx` - `engins/gameengin/GameRuntime.tsx`
 - `global-error.tsx` - `app/global-error.tsx`
 - `HomeDreamRegion.tsx` - `app/dreamdmbar/_components/HomeDreamRegion.tsx`
-- `ImplicitAssetWorkspace.tsx` - `engins/contentengin/ImplicitAssetWorkspace.tsx`
-- `layout.tsx` - `app/dreamdmbar/layout.tsx`
-- `layout.tsx` - `app/engines/brand/layout.tsx`
-- `layout.tsx` - `app/engines/code/layout.tsx`
-- `layout.tsx` - `app/engines/create/layout.tsx`
-- _137 more omitted from this section_
+- _142 more omitted from this section_
 
 ## export
 
@@ -3998,6 +4000,7 @@ _No style files for this feature._
 - `(default)` - `components/dream.DrEamsModeToggle.tsx`
 - `(default)` - `components/dream.DrEamsVoiceAssistant.tsx`
 - `(default)` - `components/dream.FeedCard.tsx`
+- `(default)` - `components/dream.FirstTouchActivator.tsx`
 - `(default)` - `components/dream.ForgeDreamCanvas.tsx`
 - `(default)` - `components/dream.GlobalOverlays.tsx`
 - `(default)` - `components/dream.HeroSprite.tsx`
@@ -4097,8 +4100,7 @@ _No style files for this feature._
 - `(default)` - `components/forge/dream.EngineBuilderCanvas.tsx`
 - `(default)` - `components/forge/dream.panel.AIBuilderPanel.tsx`
 - `(default)` - `components/forge/dream.widget.ForgeMomentumWidget.tsx`
-- `(default)` - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
-- _6378 more omitted from this section_
+- _6466 more omitted from this section_
 
 ## external
 
@@ -4313,6 +4315,7 @@ _No style files for this feature._
 - `dreamdm-messaging-phase2.test.ts` - `tests/dreamdm-messaging-phase2.test.ts`
 - `dreamengin-competitive-workflow-gate.test.ts` - `tests/dreamengin-superiority/dreamengin-competitive-workflow-gate.test.ts`
 - `dreamengin-os.test.ts` - `tests/dreamengin-os.test.ts`
+- `dreamengin-sw.js` - `public/dreamengin-sw.js`
 - `dreamnav.tau.test.ts` - `tests/dreamnav.tau.test.ts`
 - `dreamr-algorithm-velocity.test.ts` - `tests/dreamr-algorithm-velocity.test.ts`
 - `dreamr-algorithm.test.ts` - `tests/dreamr-algorithm.test.ts`
@@ -4529,9 +4532,11 @@ _No style files for this feature._
 ## hook
 
 - `useAccount` - `hooks/useAccount.ts`
+- `useAgentSession` - `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts`
 - `useAgentSession` - `engins/codeengin-ui/modules/ai-co-pilot/useAgentSession.ts`
 - `useAIDirector` - `engins/gameengin/games/useAIDirector.ts`
 - `useAlbums` - `hooks/use-spatial.ts`
+- `useAppIntentPressureSurface` - `hooks/useAppIntentPressureSurface.ts`
 - `useArtifactSlot` - `engins/forgeengin/enginpipe/shell/ArtifactSlot.tsx`
 - `useBrandEnginRuntime` - `engins/rulesets/brand/useBrandEnginRuntime.ts`
 - `useBrandingEnginBridge` - `engine/runtime/useEnginBridge.ts`
@@ -4722,6 +4727,8 @@ _No style files for this feature._
 - `(default)` - `app/dreamdmbar/_components/HomeDreamRegion.tsx`
 - `(default)` - `components/dream.CommandPaletteMount.tsx`
 - `(default)` - `components/dream.GlobalOverlays.tsx`
+- `(default)` - `components/offline/dream.OfflineRuntimeBootstrap.tsx`
+- `(default)` - `components/offline/dream.OfflineStatusPill.tsx`
 - `(default)` - `components/dream.ThemeApplicator.tsx`
 - `(default)` - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `(default)` - `components/providers/dream.GodTierProvider.tsx`
@@ -4868,8 +4875,6 @@ _No style files for this feature._
 - `(dynamic import)` - `build-memory/registry.json`
 - `(dynamic import)` - `engine/generated/index.ts`
 - `(dynamic import)` - `engine/vm/types.ts`
-- `(dynamic import)` - `engins/contentengin/runtimeProfile.ts`
-- `(dynamic import)` - `engins/contentengin/performancePlan.ts`
 - `(dynamic import)` - `engine/rendering/babylon/createEngine.ts`
 - `(dynamic import)` - `dr-eams/ai/triad.ts`
 - `(dynamic import)` - `engine/agents/agentBus.ts`
@@ -4941,7 +4946,7 @@ _No style files for this feature._
 - `*` - `engine/gct/image-search.ts`
 - `*` - `engine/gct/recommendations.ts`
 - `*` - `engine/navigation/quaternion.ts`
-- _3181 more omitted from this section_
+- _3211 more omitted from this section_
 
 ## route
 
@@ -5075,7 +5080,7 @@ _No style files for this feature._
 | `app/(internal)/idari-console/platform-health/page.tsx` | `PlatformHealth`, `createServerClient`, `safeGetUser`, `next/navigation`, `next/server` | `/idari-console/platform-health`, `page.tsx`, `(default)`, `metadata` |
 | `app/about/page.tsx` | `(default)`, `lucide-react`, `next/link` | `/about`, `page.tsx`, `(default)` |
 | `app/actions/dream-docs.ts` | `isOwnerEmail`, `embedDocSection`, `createServerClient`, `safeGetUser`, `Json`, `toErrorMessage` | `CreateDreamDocInput`, `UpsertDocSectionInput`, `createDreamDoc`, `publishDreamDoc`, `upsertDocSection` |
-| `app/ads/create/page.tsx` | `createClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `react`, `toErrorMessage` | `/ads/create`, `page.tsx`, `(default)` |
+| `app/ads/create/page.tsx` | `createClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `react`, `toErrorMessage`, `queueLocalFirstMutation` | `/ads/create`, `page.tsx`, `(default)` |
 | `app/ads/page.tsx` | `(default)`, `createServerClient`, `safeGetUser`, `AdListing`, `AdOrder`, `AdSlot`, `@supabase/supabase-js`, `lucide-react` | `/ads`, `page.tsx`, `(default)` |
 | `app/ads/slot/[id]/page.tsx` | `createServerClient`, `safeGetUser`, `AdSlot`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/ads/slot/:id`, `page.tsx`, `(default)` |
 | `app/api/account/delete-data/route.ts` | `writeAuditLog`, `jsonApiError`, `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `next/server`, `uuid`, `zod` | `/api/account/delete-data`, `POST` |
@@ -5240,7 +5245,7 @@ _No style files for this feature._
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | `bridge`, `react` | `dream.DreamRCore.tsx`, `(default)` |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` | `Point`, `analyzeSwipe`, `tallyView`, `enginBridge`, `react`, `react`, `DREAMR_TOPICS` | `dream.DreamRFeed.tsx`, `(default)`, `DREAMR_TOPICS` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | `(default)`, `(default)`, `(default)`, `FeedPost`, `uploadBlobToLedgerStorage`, `createClient`, `lucide-react`, `next/image` | `dreamsurface.dreamr.tsx`, `(default)` |
-| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `useOS`, `AssetEntry`, `AssetType` | `DreamSpaceRegion.tsx`, `(default)` |
+| `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | `(default)`, `useAccount`, `listSystemArtifacts`, `listVisibleArtifacts`, `restoreArtifact`, `restoreArtifactsFromOfflineCache`, `useOS`, `AssetEntry` | `DreamSpaceRegion.tsx`, `(default)` |
 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx` | `WidgetInstance` | `DreamWidgetGrid.tsx`, `(default)` |
 | `app/dreamdmbar/_components/HomeDreamRegion.tsx` | `lucide-react`, `next/navigation`, `react`, `(default)`, `(default)`, `(default)`, `(default)`, `(default)` | `HomeDreamRegion.tsx`, `(default)` |
 | `app/dreamdmbar/dreamspace/page.tsx` | `useDualRuntime`, `useDreamSystem`, `react` | `/dreamdmbar/dreamspace`, `page.tsx`, `(default)` |
@@ -5289,7 +5294,7 @@ _No style files for this feature._
 | `app/engines/portfolio/quantum/page.tsx` | `(default)`, `EnginAppShell`, `EnginNavBar`, `isDevBypassActive`, `createServerClient`, `safeGetUser`, `next/navigation`, `next/server` | `/engines/portfolio/quantum`, `page.tsx`, `(default)`, `metadata` |
 | `app/engines/render/page.tsx` | `next/navigation` | `/engines/render`, `page.tsx`, `(default)` |
 | `app/error.tsx` | `(default)`, `isAuthRelatedError`, `createClient`, `react` | `error.tsx`, `(default)` |
-| `app/feed-settings/dream.FeedSettingsClient.tsx` | `lucide-react`, `next/link`, `react` | `dream.FeedSettingsClient.tsx`, `(default)` |
+| `app/feed-settings/dream.FeedSettingsClient.tsx` | `lucide-react`, `next/link`, `react`, `queueLocalFirstMutation` | `dream.FeedSettingsClient.tsx`, `(default)` |
 | `app/feed-settings/page.tsx` | `createServerClient`, `safeGetUser`, `next/navigation`, `next/server`, `(default)` | `/feed-settings`, `page.tsx`, `(default)`, `metadata` |
 | `app/gameengin/cartridges/[id]/page.tsx` | `(default)`, `getCartridgeManifest`, `next/navigation`, `next/server` | `/gameengin/cartridges/:id`, `page.tsx`, `(default)` |
 | `app/gameengin/cartridges/page.tsx` | `(default)`, `next` | `/gameengin/cartridges`, `page.tsx`, `(default)`, `metadata` |
@@ -5306,7 +5311,7 @@ _No style files for this feature._
 | `app/login/page.tsx` | `(default)`, `resolveSafeNextPath`, `createClient`, `buildAuthCallbackUrl`, `next/image`, `next/link`, `next/navigation`, `react` | `/login`, `page.tsx`, `(default)` |
 | `app/marketplace/[id]/page.tsx` | `(default)`, `(default)`, `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `lucide-react`, `next/link`, `next/navigation` | `/marketplace/:id`, `page.tsx`, `(default)` |
 | `app/marketplace/page.tsx` | `(default)`, `(default)`, `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation` | `/marketplace`, `page.tsx`, `(default)`, `metadata` |
-| `app/marketplace/sell/page.tsx` | `createClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `react`, `toErrorMessage` | `/marketplace/sell`, `page.tsx`, `(default)` |
+| `app/marketplace/sell/page.tsx` | `createClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `react`, `toErrorMessage`, `queueLocalFirstMutation` | `/marketplace/sell`, `page.tsx`, `(default)` |
 | `app/messages/boards/[id]/page.tsx` | `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/messages/boards/:id`, `page.tsx`, `(default)` |
 | `app/messages/boards/new/page.tsx` | `lucide-react`, `next/link`, `next/navigation`, `react` | `/messages/boards/new`, `page.tsx`, `(default)` |
 | `app/messages/boards/page.tsx` | `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/messages/boards`, `page.tsx`, `(default)`, `metadata` |
@@ -5324,7 +5329,7 @@ _No style files for this feature._
 | `app/settings/account/page.tsx` | `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server`, `(default)` | `/settings/account`, `page.tsx`, `(default)` |
 | `app/settings/algorithm/page.tsx` | `(default)`, `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/navigation`, `next/server` | `/settings/algorithm`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/appearance/page.tsx` | `THEME_PRESETS`, `applyTheme`, `applyVoidTheme`, `isVoidThemeActive`, `DeTheme`, `useTheme`, `useCustomizeMode`, `THEME_PRESETS` | `/settings/appearance`, `page.tsx`, `(default)` |
-| `app/settings/controls/dream.ControlsClient.tsx` | `lucide-react`, `next/link`, `react`, `(default)` | `dream.ControlsClient.tsx`, `(default)` |
+| `app/settings/controls/dream.ControlsClient.tsx` | `lucide-react`, `next/link`, `react`, `queueLocalFirstMutation`, `(default)` | `dream.ControlsClient.tsx`, `(default)` |
 | `app/settings/controls/dream.PositionIndicatorToggle.tsx` | `react` | `dream.PositionIndicatorToggle.tsx`, `(default)` |
 | `app/settings/controls/page.tsx` | `createServerClient`, `safeGetUser`, `next/navigation`, `next/server`, `(default)` | `/settings/controls`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/data/dream.DataClient.tsx` | `lucide-react`, `next/link`, `react` | `dream.DataClient.tsx` |
@@ -5335,7 +5340,7 @@ _No style files for this feature._
 | `app/settings/help/page.tsx` | `(default)`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/settings/help`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/notifications/page.tsx` | `(default)`, `lucide-react`, `react` | `/settings/notifications`, `page.tsx`, `(default)` |
 | `app/settings/page.tsx` | `isOwnerEmail`, `createServerClient`, `safeGetUser`, `lucide-react`, `next/link`, `next/navigation`, `next/server` | `/settings`, `page.tsx`, `(default)`, `metadata` |
-| `app/settings/privacy/dream.PrivacyClient.tsx` | `lucide-react`, `next/link`, `react` | `dream.PrivacyClient.tsx`, `(default)` |
+| `app/settings/privacy/dream.PrivacyClient.tsx` | `lucide-react`, `next/link`, `react`, `queueLocalFirstMutation` | `dream.PrivacyClient.tsx`, `(default)` |
 | `app/settings/privacy/page.tsx` | `createServerClient`, `safeGetUser`, `next/navigation`, `next/server`, `(default)` | `/settings/privacy`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/safety/page.tsx` | `(default)`, `BOOGIE_POLICY_VERSION`, `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `lucide-react`, `next/link`, `next/navigation` | `/settings/safety`, `page.tsx`, `(default)`, `metadata` |
 | `app/settings/security/page.tsx` | `(default)`, `createClient`, `safeGetUser`, `buildAuthCallbackUrl`, `lucide-react`, `next/link`, `react`, `toErrorMessage` | `/settings/security`, `page.tsx`, `(default)` |
@@ -5407,6 +5412,7 @@ _No style files for this feature._
 | `components/dream.DrEamsModeToggle.tsx` | `getDrEamsMode`, `onDrEamsModeChange`, `setDrEamsMode`, `emitTeach`, `lucide-react`, `react` | `dream.DrEamsModeToggle.tsx`, `(default)` |
 | `components/dream.DrEamsVoiceAssistant.tsx` | `onIdariEvent`, `lucide-react`, `next/navigation`, `react` | `dream.DrEamsVoiceAssistant.tsx`, `(default)` |
 | `components/dream.FeedCard.tsx` | `(default)`, `UniverseCard`, `UniverseCardContent`, `cn`, `formatRelativeTime`, `inferProviderFromUrl`, `lucide-react`, `next/image` | `dream.FeedCard.tsx`, `(default)` |
+| `components/dream.FirstTouchActivator.tsx` | `react` | `dream.FirstTouchActivator.tsx`, `(default)` |
 | `components/dream.ForgeDreamCanvas.tsx` | `react`, `ALL_CATEGORIES`, `getByCategory`, `AtomicComponent`, `ComponentCategory`, `createEventBus`, `atomicPieceFromComponent`, `createAssembly` | `dream.ForgeDreamCanvas.tsx`, `(default)`, `ForgeDreamCanvas` |
 | `components/dream.GlobalOverlays.tsx` | `next/dynamic`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)` | `dream.GlobalOverlays.tsx`, `(default)` |
 | `components/dream.HeroSprite.tsx` | `react` | `dream.HeroSprite.tsx`, `(default)`, `ZONE_QUOTES`, `hitZone`, `pickZoneQuote` |
@@ -5416,7 +5422,7 @@ _No style files for this feature._
 | `components/dream.KonamiDream.tsx` | `framer-motion`, `react` | `dream.KonamiDream.tsx`, `(default)` |
 | `components/dream.LandingHero.tsx` | `react`, `calibrateDevice`, `CalibrationSample`, `(default)` | `dream.LandingHero.tsx`, `(default)` |
 | `components/dream.LedgerChart.tsx` | `LedgerData`, `react` | `dream.LedgerChart.tsx`, `(default)` |
-| `components/dream.MessagesClient.tsx` | `useDreamDMDraft`, `DMMessage`, `useDreamDMMessages`, `useDreamSearch`, `uploadBlobToLedgerStorage`, `createClient`, `formatRelativeTime`, `toErrorMessage` | `dream.MessagesClient.tsx`, `(default)` |
+| `components/dream.MessagesClient.tsx` | `useDreamDMDraft`, `DMMessage`, `useDreamDMMessages`, `useDreamSearch`, `uploadBlobToLedgerStorage`, `getOfflineRecord`, `putOfflineRecord`, `enqueueFetchMutation` | `dream.MessagesClient.tsx`, `(default)` |
 | `components/dream.NotificationCenter.tsx` | `UiNotification`, `UiNotificationType`, `useNotifications`, `lucide-react`, `next/navigation`, `react` | `dream.NotificationCenter.tsx`, `(default)` |
 | `components/dream.OSShellActivator.tsx` | `useDualRuntime`, `useDreamSystem`, `DIVIDER_H`, `SystemPanelId`, `isPublicSurfacePath`, `EnginDispatcher`, `dreamOSBus`, `next/navigation` | `dream.OSShellActivator.tsx`, `(default)` |
 | `components/dream.panel.ChildSafetyPanel.tsx` | `lucide-react`, `react`, `toErrorMessage` | `dream.panel.ChildSafetyPanel.tsx`, `(default)` |
@@ -5568,7 +5574,7 @@ _No style files for this feature._
 | `components/games/madmaxi/materials.ts` | `@babylonjs/core` | `DetailMatOpts`, `ScanLineTexture`, `createScanLineTexture`, `getSharedNoiseTexture`, `makeDetailMat` |
 | `components/games/madmaxi/types.ts` | - | `BossMeta`, `CoinDef`, `EnemyDef`, `HazardDef`, `LevelDef`, `MadmaxiEnemyKind`, `MadmaxiPowerUpKind`, `PlatDef` |
 | `components/games/madmaxi/vfx.ts` | `@babylonjs/core` | `VfxKit`, `VfxTier`, `createMadmaxiVfx` |
-| `components/home/dream.ActiveModuleSurface.tsx` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion`, `loadArtifacts`, `saveArtifact`, `DREAM_WINDOW_STATES` | `dream.ActiveModuleSurface.tsx`, `(default)` |
+| `components/home/dream.ActiveModuleSurface.tsx` | `loadActiveModules`, `removeActiveModule`, `restoreActiveModulesFromOfflineCache`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion`, `loadArtifacts`, `saveArtifact` | `dream.ActiveModuleSurface.tsx`, `(default)` |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | `(default)`, `(default)`, `SystemMenuAction`, `useDreamSystem`, `runHomeAction`, `isPublicSurfacePath`, `next/navigation`, `react` | `dream.bar.GlobalDreamBar.tsx`, `(default)` |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)`, `useDualRuntime`, `(default)`, `(default)`, `useDreamLayout`, `useDreamSystem`, `DIVIDER_H`, `useOS` | `dream.bar.PersistentDreamBar.tsx`, `(default)`, `DreamDMContainer` |
 | `components/home/dream.DaydreamPulseStrip.tsx` | `next/navigation` | `dream.DaydreamPulseStrip.tsx`, `(default)` |
@@ -5581,14 +5587,16 @@ _No style files for this feature._
 | `components/landing/dream.LandingProductStatement.tsx` | `next/link` | `dream.LandingProductStatement.tsx`, `(default)` |
 | `components/landing/dream.scene.UniverseField.tsx` | `n`, `react` | `dream.scene.UniverseField.tsx`, `(default)`, `UniverseFieldProps` |
 | `components/marketplace/dream.MarketplaceListingCard.tsx` | `next/link` | `dream.MarketplaceListingCard.tsx`, `(default)` |
-| `components/marketplace/dream.MarketplaceRequestButton.tsx` | `lucide-react`, `react`, `toErrorMessage` | `dream.MarketplaceRequestButton.tsx`, `(default)` |
+| `components/marketplace/dream.MarketplaceRequestButton.tsx` | `lucide-react`, `react`, `toErrorMessage`, `queueLocalFirstMutation` | `dream.MarketplaceRequestButton.tsx`, `(default)` |
 | `components/menus/dream.menu.DreamRadialMenu.tsx` | `next/navigation`, `react`, `(default)`, `MenuItem` | `dream.menu.DreamRadialMenu.tsx`, `(default)` |
 | `components/menus/dream.menu.DualBottomMenu.tsx` | `next/navigation`, `react`, `react` | `dream.menu.DualBottomMenu.tsx`, `(default)`, `SystemMenuAction` |
 | `components/menus/dream.menu.RadialMenu.tsx` | `react`, `react` | `dream.menu.RadialMenu.tsx`, `(default)` |
 | `components/menus/dream.menu.SystemRadialMenu.tsx` | `(default)`, `MenuItem` | `dream.menu.SystemRadialMenu.tsx`, `(default)`, `SystemMenuAction` |
 | `components/menus/dream.panel.MenuPanel.tsx` | `react`, `react` | `dream.panel.MenuPanel.tsx`, `(default)`, `MenuItem` |
 | `components/messaging/dream.BoardComposer.tsx` | `lucide-react`, `react` | `dream.BoardComposer.tsx`, `(default)` |
-| `components/music/dream.SoundRecorder.tsx` | `lucide-react`, `react`, `toErrorMessage` | `dream.SoundRecorder.tsx`, `(default)` |
+| `components/music/dream.SoundRecorder.tsx` | `recordOfflineBlobArtifact`, `lucide-react`, `react`, `toErrorMessage` | `dream.SoundRecorder.tsx`, `(default)` |
+| `components/offline/dream.OfflineRuntimeBootstrap.tsx` | `getCachedHttpGet`, `putOfflineRecord`, `onConnectivityChange`, `flushQueue`, `getQueueStatus`, `listenOnline`, `replayFetchMutation`, `subscribeQueueStatus` | `dream.OfflineRuntimeBootstrap.tsx`, `(default)`, `OfflineRuntimeState` |
+| `components/offline/dream.OfflineStatusPill.tsx` | `getQueueStatus`, `subscribeQueueStatus`, `QueueStatus`, `react` | `dream.OfflineStatusPill.tsx`, `(default)` |
 | `components/onboarding/dream.OnboardingTip.tsx` | `react` | `dream.OnboardingTip.tsx`, `(default)` |
 | `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `createBabylonEngine`, `DreamEngineGodTierSystem`, `applyGodTierToBabylon`, `defaultDeviceSignals`, `defaultRouteSignals`, `defaultRuntimeMetrics`, `defaultUXSignals`, `BabylonSceneLike` | `dream.scene.BabylonOptimizeroScene.tsx`, `(default)` |
 | `components/overlays/dream.RootStatusScreen.tsx` | `next/link` | `dream.RootStatusScreen.tsx`, `(default)` |
@@ -5608,7 +5616,7 @@ _No style files for this feature._
 | `components/panels/dream.panel.WidgetsPanel.tsx` | `(default)`, `useDreamSystem`, `lucide-react`, `react` | `dream.panel.WidgetsPanel.tsx`, `(default)` |
 | `components/panels/panelTypes.ts` | - | `PANEL_META`, `PanelMeta`, `SystemPanelId` |
 | `components/profile/dream.EditableAvatar.tsx` | `next/image`, `next/navigation`, `react` | `dream.EditableAvatar.tsx`, `(default)` |
-| `components/profile/dream.ProfileCanvas.tsx` | `(default)`, `PROFILE_SHARE_PLATFORMS`, `createClient`, `lucide-react`, `next/link`, `react`, `toErrorMessage` | `dream.ProfileCanvas.tsx`, `(default)` |
+| `components/profile/dream.ProfileCanvas.tsx` | `(default)`, `PROFILE_SHARE_PLATFORMS`, `createClient`, `lucide-react`, `next/link`, `react`, `toErrorMessage`, `queueLocalFirstMutation` | `dream.ProfileCanvas.tsx`, `(default)` |
 | `components/profile/dream.ProfileCustomizeButton.tsx` | `useCustomizeMode` | `dream.ProfileCustomizeButton.tsx`, `(default)` |
 | `components/profile/dream.widget.ProfileWidgetGrid.tsx` | `(default)`, `PickerConnector`, `TOP_10_CONNECTORS`, `(default)`, `lucide-react`, `next/link`, `react`, `react` | `dream.widget.ProfileWidgetGrid.tsx`, `(default)`, `DEFAULT_CONFIG`, `DEFAULT_DREAMS`, `DEFAULT_WIDGETS`, `DreamBgStyle`, `DreamConfig`, `DreamSize` |
 | `components/providers/dream.AppSurfaceShell.tsx` | `(default)`, `(default)`, `(default)`, `(default)`, `(default)`, `(default)`, `DreamSystemProvider`, `OSProvider` | `dream.AppSurfaceShell.tsx`, `(default)` |
@@ -5710,9 +5718,9 @@ _No style files for this feature._
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)`, `calculatePointerVelocity`, `computeTypingRhythm` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
-| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
-| `dreamdmbar/hooks/useDreamDMDraft.ts` | `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
-| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
+| `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
+| `dreamdmbar/hooks/useDreamDMDraft.ts` | `deleteOfflineRecord`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
+| `dreamdmbar/hooks/useDreamDMMessages.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMMessages`, `DMMessage`, `useDreamDMMessages` |
 | `dreamdmbar/hooks/useDreamSearch.ts` | `USER_FACING_ENGINES`, `createClient`, `react` | `useDreamSearch`, `SearchResult`, `SearchResultType`, `UseDreamSearchReturn`, `useDreamSearch` |
 | `dreamdmbar/hooks/useMessagingCore.ts` | `uploadBlobToLedgerStorage`, `createClient`, `react`, `DMMessage`, `toErrorMessage` | `useMessagingCore`, `MediaType`, `SendMessageParams`, `UseMessagingCoreReturn`, `useMessagingCore` |
 | `dreamdmbar/hooks/useModuleBarIntent.ts` | `ModuleBarAction`, `useDreamSystem`, `react` | `useModuleBarIntent`, `UseModuleBarIntentResult`, `useModuleBarIntent` |
@@ -5721,7 +5729,7 @@ _No style files for this feature._
 | `dreamdmbar/notifications/useNotifications.ts` | `react`, `applyOptimisticDelete`, `applyOptimisticMarkAll`, `applyOptimisticRead`, `getUnreadCount`, `normalizeDbRow`, `sortByRecent`, `DbNotificationRow` | `useNotifications`, `UseNotificationsReturn`, `useNotifications` |
 | `dreamdmbar/runtime/barInteractions.ts` | - | `BAR_FLING_LINE_RATIO`, `BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_FLING_TO_TOP_MIN_DRAG_PX`, `BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS`, `BAR_SNAP_TO_TOP_HEIGHT_RATIO`, `BAR_SNAP_TO_TOP_THRESHOLD_PX`, `BarReleaseAction`, `DEFAULT_SPLIT_RATIO` |
 | `dreamdmbar/runtime/bridgeSeamFlow.ts` | - | `SEAM_CHANNEL_COLORS`, `SEAM_DEFAULT_COLOR`, `SeamParticle`, `_resetIdCounter`, `channelColor`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles` |
-| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `safeGetUser`, `react` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS`, `DreamSystemProvider`, `HomeData` |
+| `dreamdmbar/runtime/DreamSystemContext.tsx` | `DEFAULT_SPLIT_RATIO`, `SystemPanelId`, `moveTorus`, `torusFocusKey`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `safeGetUser` | `DreamSystemContext.tsx`, `useDreamSystem`, `BarIntent`, `BarIntentMode`, `DEFAULT_BAR_INTENT`, `DEFAULT_WORLD_FOCUS`, `DreamSystemProvider`, `HomeData` |
 | `dreamr/activity/aqs.ts` | `createClient`, `UserMetrics` | `calculateAQS`, `calculateRealShitRate`, `formatAQS`, `formatRealShitRate`, `getAQS`, `getAQSLeaderboard`, `getAQSTier`, `getAQSTierColor` |
 | `dreamr/activity/boogieActivityPolicy.ts` | `PolicyCategory`, `PolicyCategoryValue` | `ActivityFeedTreatment`, `BoogieActivitySignals`, `detectActivityFraudSignals`, `resolveActivityFeedTreatment`, `shouldExcludeFromFeed` |
 | `dreamr/activity/revenueSplit.ts` | - | `ACTIVITY_REVENUE_SPLIT`, `ActivityRevenueSplit`, `calculateActivityRevenueSplit`, `validateActivityRevenueSplit` |
@@ -5737,7 +5745,7 @@ _No style files for this feature._
 | `dreamr/components/dreamrfeed.tsx` | `(default)`, `(default)`, `useDreamSystem`, `canRecordDreamRView`, `contentTypePreferenceKey`, `emptyDreamRSwipePreferences`, `nextSwipePreferences`, `personalizeFeedOrder` | `dreamrfeed.tsx`, `(default)`, `DREAMR_TOPICS` |
 | `dreamr/feed/feedTopics.ts` | - | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `FEED_TOPICS_KEY`, `FeedTopic`, `loadActiveTopicIds`, `topicIdsToQueries` |
 | `dreamr/feed/hashtags.ts` | - | `Hashtag`, `MAX_TAGS_PER_POST`, `MAX_TAG_LENGTH`, `TrendingTag`, `calculateTrending`, `extractHashtags`, `formatTag`, `segmentText` |
-| `dreamr/feed/useLiveFeed.ts` | `RealtimePostgresInsertPayload`, `getPrimaryPostMediaUrl`, `createClient`, `react` | `useLiveFeed`, `FeedPost`, `UseLiveFeedReturn`, `useLiveFeed` |
+| `dreamr/feed/useLiveFeed.ts` | `RealtimePostgresInsertPayload`, `getPrimaryPostMediaUrl`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useLiveFeed`, `FeedPost`, `UseLiveFeedReturn`, `useLiveFeed` |
 | `dreamr/feed/useYouTubeLiveFeed.ts` | `ALL_TOPICS`, `DEFAULT_TOPIC_IDS`, `loadActiveTopicIds`, `topicIdsToQueries`, `FeedPost`, `UnifiedFeedItem`, `react` | `useYouTubeLiveFeed`, `UseYouTubeLiveFeedReturn`, `useYouTubeLiveFeed` |
 | `dreamr/feeds/embedFeedLoader.ts` | `server-only`, `node:fs`, `node:path`, `loadEmbedFeed` | `EmbedFeed`, `EmbedFeedAlgorithm`, `EmbedFeedItem`, `loadEmbedFeed`, `loadEmbedFeedByProvider` |
 | `dreamr/runtime/closeFriendsVisibility.ts` | `SupabaseClient`, `(dynamic import)` | `VisibilityCandidate`, `fetchCloseFriendsCircle`, `filterByCloseFriends`, `loadVisibilityCircle` |
@@ -5751,7 +5759,7 @@ _No style files for this feature._
 | `dreamr/torridity/constants.ts` | - | `a0Perception`, `deltaP`, `lambda`, `n` |
 | `dreamr/torridity/index.ts` | `a0Perception`, `deltaP`, `lambda`, `n`, `contentMass`, `decayFactor`, `mu`, `rankFeed` | `ContentItem`, `RankedItem`, `a0Perception`, `contentMass`, `decayFactor`, `deltaP`, `lambda`, `mu` |
 | `dreamr/torridity/physics.ts` | `a0Perception`, `deltaP`, `n` | `ContentItem`, `RankedItem`, `contentMass`, `decayFactor`, `mu`, `rankFeed`, `throttlingGate`, `torridityRank` |
-| `engine/activeModulesStore.ts` | `ActiveModuleInstance`, `RuntimeRegionKey` | `loadActiveModules`, `removeActiveModule`, `saveActiveModule`, `saveActiveModules`, `saveActiveModulesForRegion`, `transferActiveModuleRegion` |
+| `engine/activeModulesStore.ts` | `ActiveModuleInstance`, `RuntimeRegionKey`, `getOfflineRecord`, `putOfflineRecord` | `loadActiveModules`, `removeActiveModule`, `restoreActiveModulesFromOfflineCache`, `saveActiveModule`, `saveActiveModules`, `saveActiveModulesForRegion`, `transferActiveModuleRegion` |
 | `engine/admin/lockout.ts` | `createServiceClient` | `OWNER_EMAIL`, `isAdminLocked`, `isDomainBlocked`, `isOwner`, `triggerAdminLockout` |
 | `engine/admin/upgrade-readiness.ts` | `createPatchPlan`, `PatchPlan`, `FEATURE_MANIFESTS`, `calculateProgress`, `computeAllBuildCycleStates`, `BuildCycleState`, `DaydreamEnginManifest`, `FeatureEntry` | `BuildReadinessSummary`, `UpgradeApproval`, `UpgradeApprovalStatus`, `UpgradeProposal`, `UpgradeReadinessSnapshot`, `UpgradeTarget`, `buildPatchPlanChecklist`, `createUpgradeProposal` |
 | `engine/agentOS.ts` | `CodeEnginHostTools` | `getAgentOS` |
@@ -5770,7 +5778,7 @@ _No style files for this feature._
 | `engine/animation/gsap/useGsapFlip.ts` | `getGsap`, `react` | `useGsapFlip`, `useGsapFlip` |
 | `engine/animation/gsap/useGsapScrollReveal.ts` | `getGsap`, `react` | `useGsapScrollReveal`, `ScrollRevealOptions`, `useGsapScrollReveal` |
 | `engine/api/route.ts` | `createServerClient`, `safeGetUser`, `next/server`, `zod` | `ApiContext`, `json`, `jsonApiError`, `jsonError`, `parseJson`, `parseQuery`, `requireUser`, `withApi` |
-| `engine/artifacts/artifactStore.ts` | `DreamArtifact` | `getDefaultSystemArtifacts`, `hideArtifact`, `listSystemArtifacts`, `listVisibleArtifacts`, `loadArtifacts`, `removeArtifact`, `restoreArtifact`, `saveArtifact` |
+| `engine/artifacts/artifactStore.ts` | `DreamArtifact`, `cacheAsset` | `OfflineBlobArtifactRecord`, `getDefaultSystemArtifacts`, `hideArtifact`, `listSystemArtifacts`, `listVisibleArtifacts`, `loadArtifacts`, `readOfflineBlobArtifacts`, `recordOfflineBlobArtifact` |
 | `engine/assets/engineAssets.ts` | `encodeUint8ArrayToLedgerString`, `createClient`, `safeGetUser` | `saveEngineAsset` |
 | `engine/collaboration/index.ts` | `SupabaseClient`, `@supabase/supabase-js` | `CollabEventHandler`, `CollabEventType`, `CollabMode`, `CollabModeRuleSet`, `CollabOutboundPayload`, `CollabPayload`, `CollabSession`, `CollabSessionOptions` |
 | `engine/connectors/connectorRegistry.ts` | - | `CONNECTOR_REGISTRY`, `ConnectorCategory`, `ConnectorDef`, `ConnectorLimitation`, `ConnectorStatus`, `ConnectorTier`, `SliceTypeDef`, `getConnectorDef` |
@@ -5874,6 +5882,7 @@ _No style files for this feature._
 | `engine/intelligence/sessionContinuity.ts` | - | `SessionContinuity`, `SessionDiff`, `SessionStorageBackend`, `SessionSummary`, `StoredSession`, `sessionContinuity` |
 | `engine/intelligence/sessionPatternEngine.ts` | `@tensorflow/tfjs`, `@tensorflow/tfjs-backend-webgpu`, `@tensorflow/tfjs` | `PatternEngineState`, `PredictedNext`, `SessionPatternEngine` |
 | `engine/intelligence/useSessionIntelligence.ts` | `dreamOSBus`, `react`, `SessionContinuity`, `SessionDiff`, `SessionSummary`, `SessionPatternEngine`, `PatternEngineState`, `PredictedNext` | `useSessionIntelligence`, `PATTERN_MATRIX_LS_KEY`, `SessionIntelligence`, `useSessionIntelligence` |
+| `engine/intent/appIntentPressure.ts` | - | `AppIntentMassState`, `AppIntentPoint`, `AppIntentPressure`, `AppIntentPressureField`, `AppIntentPressureFieldOptions`, `AppIntentPressureSource`, `appIntentPressureFromElementPoint` |
 | `engine/io.ts` | `@supabase/supabase-js`, `@supabase/supabase-js` | `RealtimePostgresInsertPayload`, `SupabaseClient` |
 | `engine/journey/journeyDots.ts` | `LogJourneyDotInput`, `logJourneyDot`, `hasJourneyDot` | `hasJourneyDot`, `logJourneyDot` |
 | `engine/journey/journeyInsights.ts` | `JourneyDot` | `AnnotatedDot`, `DotInsight`, `MS_PER_DAY`, `RETURN_GAP_DAYS`, `annotateDotsWithInsights`, `computeCurrentStreak`, `computeWeeklyFrequency`, `detectReturnGaps` |
@@ -5909,7 +5918,7 @@ _No style files for this feature._
 | `engine/observability/otel.ts` | `@opentelemetry/api`, `@opentelemetry/exporter-prometheus`, `@opentelemetry/exporter-trace-otlp-http`, `@opentelemetry/resources`, `@opentelemetry/sdk-metrics`, `@opentelemetry/sdk-trace-node`, `@opentelemetry/semantic-conventions`, `node:http` | `getMeter`, `getPrometheusMetrics`, `getTracer` |
 | `engine/observability/otelBridge.ts` | `@opentelemetry/api`, `@opentelemetry/api`, `getMeter`, `getTracer` | `initOtelBridge`, `otelRecordLog`, `otelRecordMetric`, `otelRecordTrace`, `otelRequestEnd`, `otelRequestStart` |
 | `engine/observability/rootCauseAnalyzer.ts` | `PatchRisk`, `TelemetrySnapshot`, `AnomalySignal`, `Build / bundler error — missing module or incorrect import path` | `RootCauseAnalysis`, `RootCauseConfidence`, `inferRootCause` |
-| `engine/offline/offlineCache.ts` | - | `CachedAsset`, `CachedScene`, `DB_NAME`, `DB_VERSION`, `STORE_ASSETS`, `STORE_SCENES`, `STORE_SYNC_QUEUE`, `SceneObject` |
+| `engine/offline/offlineCache.ts` | - | `CachedAsset`, `CachedHttpResponse`, `CachedScene`, `DB_NAME`, `DB_VERSION`, `JsonPrimitive`, `JsonValue`, `LocalFirstMutation` |
 | `engine/offline/useOfflineSync.ts` | `react`, `isOnline`, `onConnectivityChange`, `processSyncQueue`, `SyncQueueEntry` | `useOfflineSync`, `UseOfflineSyncReturn`, `useOfflineSync` |
 | `engine/os/index.ts` | `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `slog`, `slogArray`, `slogEntropy`, `slogInv` | `ALL_CATEGORIES`, `AssemblySandbox`, `AssetEntry`, `AssetManifest`, `AssetType`, `AtomicComponent`, `AtomicPiece`, `BUGS_LOG` |
 | `engine/os/OSContext.tsx` | `react`, `react`, `EventBus`, `createEventBus`, `Ledger`, `createLedger`, `upgradeEngine` | `OSContext.tsx`, `useOS`, `OSInstance`, `OSProvider`, `useOS` |
@@ -5957,7 +5966,7 @@ _No style files for this feature._
 | `engine/runtime/madMaxiSnapshotBridge.ts` | `fs/promises` | `invokeMadMaxiSnapshotTransfer` |
 | `engine/runtime/memory.ts` | `MEM_PRIVATE_ACCESS` | `BAR_SEAM_ATOMICS_INDEX`, `BAR_SEAM_SCALE`, `BAR_Y_SCALE`, `CACHE_LINE`, `ConformMemoryMap`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_DREAMDM_BAR_Y` |
 | `engine/runtime/moduleRegistry.ts` | `bridge`, `isModuleManifest`, `negotiateModuleCompatibility`, `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId`, `zustand`, `WidgetInstance` | `useModuleRegistry`, `manifestFromWidget`, `moduleRegistry`, `subscribeRegistryToTransferEvents`, `useModuleRegistry` |
-| `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `QueueStatus`, `dequeue`, `enqueue`, `flushQueue`, `getQueueStatus` |
+| `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `EnqueueOptions`, `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `OfflineReplayRequest`, `QueueStatus`, `clearQueue`, `dequeue` |
 | `engine/runtime/quantumCircuit.ts` | `QuantumComputeResult`, `QuantumComputeResult` | `QuantumComputeResult`, `runQuantumCircuit` |
 | `engine/runtime/runtimeChannel.ts` | `isJsonSerializable` | `RealtimeChannel`, `RealtimeChannelOptions`, `RealtimeClient`, `RuntimeChannel`, `RuntimeChannelEvent`, `RuntimeChannelOptions`, `createLocalChannel`, `createRealtimeChannel` |
 | `engine/runtime/runtimeContainer.ts` | `createCoherenceCapacity`, `createCoherenceReport`, `createRuntimeLoad`, `CoherenceCapacity`, `RuntimeCoherenceReport`, `RuntimeLoad` | `RuntimeContainer`, `RuntimeContainerOptions`, `RuntimeStrategy` |
@@ -6027,10 +6036,15 @@ _No style files for this feature._
 | `engins/codeengin-ui/orchestrator/dream.index.tsx` | `ArtifactSlot`, `AgentPanel` | `dream.index.tsx`, `(default)` |
 | `engins/codeengin/ai/drEamsCodeAssist.ts` | - | `CODE_VOCABULARY`, `CellLanguage`, `CodeContext`, `NLCommand`, `ParsedCodeResponse`, `QueryIntent`, `VOCAB_TERMS`, `VocabEntry` |
 | `engins/codeengin/auth.ts` | `isOwner`, `safeGetUser`, `createServerClient` | `CodeEnginAuthenticatedUser`, `assertCodeEnginAccess` |
+| `engins/CodeEngin/core/parser.ts` | `"]([^` | `ParseError`, `ParseResult`, `ParsedSymbol`, `parseCode` |
 | `engins/codeengin/diagnostics.ts` | `path`, `parseCode`, `listEditableFiles`, `readProjectFile`, `CodeEnginDiagnostic` | `diagnoseFile`, `diagnoseWorkspace` |
 | `engins/codeengin/diff/aiEditEngine.ts` | `high` | `AiSuggestion`, `BuildPreviewOptions`, `CODEENGIN_PRODUCTION_MODE`, `CONFIRMATION_REQUIRED`, `EditDiffLine`, `EditDiffLineType`, `EditPreview`, `EditScope` |
 | `engins/codeengin/diff/diffUtils.ts` | - | `DEMO_DIFF`, `DiffFile`, `DiffHunk`, `DiffLine`, `DiffLineType`, `FullFileLine`, `HunkScrollMarker`, `buildFullFileLines` |
 | `engins/codeengin/git.ts` | `child_process`, `getWorkspaceMeta` | `getGitDiff`, `getGitLog`, `getGitStatus` |
+| `engins/CodeEngin/modules/ai-co-pilot/dream.panel.AgentPanel.tsx` | `react`, `useAgentSession` | `dream.panel.AgentPanel.tsx`, `AgentPanel` |
+| `engins/CodeEngin/modules/ai-co-pilot/index.ts` | `AgentPanel`, `useAgentSession`, `AgentMessage`, `UseAgentSessionReturn` | `AgentMessage`, `AgentPanel`, `UseAgentSessionReturn`, `useAgentSession` |
+| `engins/CodeEngin/modules/ai-co-pilot/useAgentSession.ts` | `react` | `useAgentSession`, `AgentMessage`, `UseAgentSessionReturn`, `useAgentSession` |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | `ArtifactSlot`, `AgentPanel` | `dream.index.tsx`, `(default)` |
 | `engins/codeengin/pathSafety.ts` | `path` | `CODEENGIN_ALLOWED_EXTENSIONS`, `CODEENGIN_BLOCKED_SEGMENTS`, `assertSafeWorkspacePath`, `assertValidWorkspaceId`, `getCodeEnginWorkspacesRoot`, `getWorkspaceRoot`, `isLikelyEditableFile`, `normalizeProjectPath` |
 | `engins/codeengin/projectGraph.ts` | `path`, `parseCode`, `readProjectFile`, `listEditableFiles`, `CodeEnginGraphEdge`, `CodeEnginGraphNode`, `CodeEnginProjectGraph`, `CodeEnginSymbol` | `buildProjectGraph`, `extractImports` |
 | `engins/codeengin/runner.ts` | `child_process`, `getWorkspaceMeta`, `CODEENGIN_COMMANDS`, `listRunnerCommands`, `CodeEnginCommandResult` | `listRunnerCommands`, `runCiCommand`, `runCodeEnginCommand` |
@@ -6041,8 +6055,8 @@ _No style files for this feature._
 | `engins/contentengin/assets/assetOptimizer.ts` | `storeOriginal` | `AssetUploadContext`, `OptimisationQuality`, `OptimisationResult`, `OptimiseOptions`, `optimiseAsset`, `registryTagsForContext` |
 | `engins/contentengin/assets/indexedDBStore.ts` | - | `OriginalRecord`, `SentinelEntry`, `StorageStats`, `checkSentinels`, `cleanupExpiredOriginals`, `deleteOriginal`, `getOriginal`, `getStorageStats` |
 | `engins/contentengin/assets/localAssetLibrary.ts` | `getOriginal`, `storeOriginal`, `OriginalRecord` | `LocalContentAssetRecord`, `getLocalContentAssetGlb`, `getLocalContentAssetObjSource`, `listLocalContentAssets`, `saveLocalContentAsset` |
-| `engins/contentengin/assetTypes.ts` | `(dynamic import)`, `(dynamic import)` | `AnimationClipDef`, `BoneDef`, `CONTENTENGIN_VERSION`, `CollisionBlock`, `CollisionShape`, `CollisionShapeKind`, `ContentAsset`, `ContentAssetCategory` |
-| `engins/contentengin/AssetViewport.tsx` | `react`, `computeBounds`, `CameraState`, `RigBendPoint`, `Mesh`, `Vec3` | `AssetViewport.tsx`, `(default)` |
+| `engins/contentengin/assetTypes.ts` | - | `AnimationClipDef`, `BoneDef`, `CONTENTENGIN_VERSION`, `CollisionBlock`, `CollisionShape`, `CollisionShapeKind`, `ContentAsset`, `ContentAssetCategory` |
+| `engins/contentengin/AssetViewport.tsx` | `react`, `computeBounds`, `CameraState`, `RigBendPoint`, `Mesh`, `Vec3`, `composeModelMatrix`, `createMeshBuffers` | `AssetViewport.tsx`, `(default)` |
 | `engins/contentengin/builders/geometryBuilder.ts` | `PartNode`, `Vec3`, `flattenParts` | `MeshGeometry`, `buildGeometry` |
 | `engins/contentengin/builders/meshBuilder.ts` | `createBoxSDF`, `createCapsuleSDF`, `createSphereSDF`, `createTorusSDF`, `meshToSnapshot`, `runIsoSurfaceJob`, `DualContouringSettings`, `IsoSurfaceJob` | `buildImplicitContentMesh`, `buildRegionFitContentMesh`, `computeMeshMetrics`, `sdfFromAlgebraicFit` |
 | `engins/contentengin/builders/modifiers.ts` | - | `ModifierKind`, `ModifierSpec`, `applyModifierMetadata` |
@@ -6107,7 +6121,7 @@ _No style files for this feature._
 | `engins/contentengin/shaders/shaderRegistry.ts` | `ShaderDef` | `SHADERS`, `getShader` |
 | `engins/contentengin/shaders/shaderTypes.ts` | `ShaderDef` | `ShaderDef` |
 | `engins/contentengin/upgradeMatrix.ts` | `ExportProfile` | `CONTENTENGIN_2026_UPGRADES`, `ContentEnginUpgrade`, `ContentEnginUpgradeId`, `enabledUpgradeIds` |
-| `engins/contentengin/useImplicitAssetWorkspace.ts` | `react`, `useContentEnginRuntime`, `analyzeImageMask`, `CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES`, `createImplicitAssetWorkspaceObject`, `DEFAULT_BRUSH_STATE`, `DEFAULT_CAMERA_STATE`, `addRigBendPoint` | `useImplicitAssetWorkspace`, `WorkspaceIntentLog`, `useImplicitAssetWorkspace` |
+| `engins/contentengin/useImplicitAssetWorkspace.ts` | `react`, `readOfflineCache`, `writeOfflineCache`, `useContentEnginRuntime`, `analyzeImageMask`, `CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES`, `createImplicitAssetWorkspaceObject`, `DEFAULT_BRUSH_STATE` | `useImplicitAssetWorkspace`, `WorkspaceIntentLog`, `useImplicitAssetWorkspace` |
 | `engins/dream.ForgeEngin.tsx` | `(default)`, `(default)`, `(default)`, `ArtifactSlot`, `clearWorkflowRun`, `deleteCustomWorkflow`, `generateSuggestions`, `getActiveWorkflowRun` | `dream.ForgeEngin.tsx` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | `react`, `(default)`, `*     type QuantumMeasurementResult`, `*` | `dream.QuantumCircuitCanvas.tsx`, `(default)`, `GateOp`, `QuantumCircuitCanvasProps`, `QuantumMeasurementResult` |
 | `engins/engin.BrandingEngin.tsx` | `(default)`, `useSharedDream`, `useDaydreamPersistence`, `useDaydreamState`, `EngineBase`, `UpgradedEngine`, `createEventBus`, `upgradeEngine` | `engin.BrandingEngin.tsx`, `(default)` |
@@ -6160,7 +6174,7 @@ _No style files for this feature._
 | `engins/gameengin/dreamr-loader.ts` | `CARTRIDGE_MAGIC`, `validateManifest`, `CartridgeManifest` | `DreamrCartridgeArchive`, `DreamrFileEntry`, `loadDreamrCartridgeFromResponse`, `parseDreamrArchive` |
 | `engins/gameengin/executionWiring.ts` | `RealtimeCaptioner`, `MotionReductionAI`, `ColorVisionAdapter`, `AIDirector`, `PlayerSignals`, `EmergentDialogue`, `LLMNPCBrain`, `NPCPersonalityStore` | `GameEnginExecutionCrash`, `GameEnginExecutionFrame`, `GameEnginExecutionKernel`, `GameEnginExecutionKernelSnapshot`, `createGameEnginExecutionKernel` |
 | `engins/gameengin/GameEnginCore.ts` | `QualityTier`, `EliteGameEngine`, `GameEnginRuntime` | `AssetEntry`, `AssetsConfig`, `AudioConfig`, `GameConfig`, `GameEnginCompatibilityReport`, `GameEnginConfigError`, `GameEnginCore`, `GameEnginIntent` |
-| `engins/gameengin/gameEnginRuntime.ts` | `createEventBus`, `EventBus`, `resolveFrameBudget`, `GameEnginQualityTier`, `decideRuntimeQuality` | `DreamGameBackend`, `DreamGameInstance`, `DreamGameManifest`, `GameEnginBackendState`, `GameEnginEvents`, `GameEnginRuntime`, `InputHandler`, `InputType` |
+| `engins/gameengin/gameEnginRuntime.ts` | `createEventBus`, `EventBus`, `resolveFrameBudget`, `GameEnginQualityTier`, `decideRuntimeQuality`, `requestWebGpuDevice` | `DreamGameBackend`, `DreamGameInstance`, `DreamGameManifest`, `GameEnginBackendState`, `GameEnginEvents`, `GameEnginRuntime`, `InputHandler`, `InputType` |
 | `engins/gameengin/GameRuntime.tsx` | `recordEmission`, `dreamOSBus`, `createLocalChannel`, `acquireSharedResource`, `releaseSharedResource`, `react`, `AchievementDefinition`, `CartridgeInputEvent` | `GameRuntime.tsx`, `(default)`, `GameRuntimeCrash`, `GameRuntimeProps` |
 | `engins/gameengin/games/avatar.ts` | - | `AVATAR_CREATED_KEY`, `AVATAR_IMAGE_KEY`, `AVATAR_PLAY_AS_ME_KEY`, `clearAvatar`, `consumePlayAsMe`, `getAvatarDataUrl`, `hasAvatar`, `resizeImageToDataUrl` |
 | `engins/gameengin/games/catalog.ts` | `CARTRIDGE_MANIFEST`, `MobileHudMode`, `GameRenderMode` | `GAME_CATALOG`, `GAME_CATALOG_IDS`, `GameCatalogEntry` |
@@ -6225,12 +6239,12 @@ _No style files for this feature._
 | `engins/isosurfaceDualContouring.ts` | - | `DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS`, `DualContouringSettings`, `IsoSurfaceJob`, `IsoSurfacePurpose`, `IsoSurfaceSdfKind`, `IsoSurfaceSourceEngin`, `Mesh`, `MeshDiagnostics` |
 | `engins/labengin/implicitSurface.ts` | `createSphereSDF`, `createTerrainCaveSDF`, `meshToSnapshot`, `runIsoSurfaceJob`, `DualContouringSettings`, `SDF` | `LabImplicitSurfacePreset`, `LabImplicitSurfaceRun`, `runLabImplicitSurface` |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)`, `(default)`, `QuantumMeasurementResult`, `recordForgeTransfer`, `useForgeActivity`, `bridge`, `lucide-react`, `react` | `dream.PortfolioEngin.tsx`, `(default)` |
-| `engins/renderengin/advancedRendering.ts` | `mat4Identity`, `mat4Mul`, `mat4Transform`, `makeDualQuaternion`, `quatMul`, `DualQuaternion`, `Mat4`, `MeshBuffers` | `RenderBoneStoragePlan`, `RenderCompressedGeometry`, `RenderDeviceRecoveryState`, `RenderIndirectDrawCommand`, `RenderMeshlet`, `RenderMorphTarget`, `RenderMorphWeight`, `RenderStreamingPage` |
+| `engins/renderengin/advancedRendering.ts` | `mat4Identity`, `mat4Mul`, `mat4MulPrecise`, `mat4Transform`, `makeDualQuaternion`, `quatMul`, `DualQuaternion`, `Mat4` | `RenderBoneStoragePlan`, `RenderCompressedGeometry`, `RenderDeviceRecoveryState`, `RenderIndirectDrawCommand`, `RenderMeshlet`, `RenderMorphTarget`, `RenderMorphWeight`, `RenderStreamingPage` |
 | `engins/renderengin/animation.ts` | `mat4Mul`, `mat4Translation`, `mat4Scale`, `mat4FromQuat`, `Mat4`, `Quat`, `Vec3` | `RenderAnimationChannel`, `RenderAnimationClip`, `RenderAnimationPath`, `RenderAnimationPose`, `RenderKeyframeQuat`, `RenderKeyframeVec3`, `evaluateAnimationClip`, `sampleKeyframes` |
 | `engins/renderengin/assets.ts` | `authorizeDomainCapability`, `DomainAuthorizationContext`, `DomainCapability`, `DomainVisibility`, `JsonObject`, `JsonValue`, `createMeshBuffers`, `createRenderAsset` | `ParsedRenderAsset`, `RenderAssetManifest`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `createParsedGlbRenderAsset`, `createParsedObjRenderAsset`, `estimateRenderAssetMemory` |
 | `engins/renderengin/benchmarkProof.ts` | `JsonObject` | `RenderDeviceCapture`, `RenderMillionPolyProof`, `RenderTenMillionBenchmarkObject`, `RenderTenMillionBenchmarkScene`, `certifyTenMillionScene`, `createTenMillionPolygonProof`, `createTenMillionTriangleBenchmarkScene`, `evaluateGpuBenchmarkProof` |
 | `engins/renderengin/completionEvidence.ts` | `DomainObject`, `JsonObject`, `JsonValue` | `RenderCompletionEvidence`, `RenderEvidenceData`, `RenderEvidenceItem`, `RenderEvidenceStatus`, `createRenderCompletionEvidence` |
-| `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction`, `EnginRuleSetContract`, `,` | `DualQuaternion`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4`, `MeshBuffers`, `Quat`, `RENDER_ENGIN_ID` |
+| `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction`, `EnginRuleSetContract`, `,` | `DualQuaternion`, `EPS`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4`, `MeshBuffers`, `Quat` |
 | `engins/renderengin/diagnostics.ts` | `JsonObject`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateRenderPerformanceGate`, `frameStatsToPerformanceSample` |
 | `engins/renderengin/index.ts` | `*`, `*`, `default`, `default`, `createInlineRenderIntent`, `*`, `*`, `*` | `RenderEnginViewport`, `RenderStage`, `createInlineRenderIntent` |
 | `engins/renderengin/lighting.ts` | `DomainObject`, `DomainVisibility`, `JsonObject`, `v3normalize`, `Vec3` | `RenderEnvironment`, `RenderEnvironmentData`, `RenderLight`, `RenderLightData`, `RenderLightKind`, `createRenderEnvironment`, `createRenderLight`, `summarizeRenderLights` |
@@ -6250,7 +6264,8 @@ _No style files for this feature._
 | `engins/renderengin/textures.ts` | `DomainObject`, `DomainVisibility`, `JsonObject` | `RenderTexture`, `RenderTextureData`, `RenderTextureFormat`, `RenderTextureRole`, `RenderTextureValidation`, `calculateMipLevelCount`, `createRenderTexture`, `createTextureMemoryReport` |
 | `engins/renderengin/viewportControls.ts` | `v3dot`, `v3length`, `v3normalize`, `v3scale`, `v3sub`, `Vec2`, `Vec3`, `RenderBounds` | `RenderCameraState`, `RenderPointerSample`, `RenderRay`, `RenderTransformMode`, `createAxisHelper`, `createBoundingBoxLines`, `createViewportRay`, `fitCameraToBounds` |
 | `engins/renderengin/virtualization.ts` | `v3length`, `v3sub`, `MeshBuffers`, `Vec3`, `RenderScene` | `RenderBounds`, `RenderCullingResult`, `RenderFrustumPlane`, `RenderInstanceBatch`, `RenderTerrainChunk`, `buildInstanceBatches`, `computeMeshBounds`, `createTerrainChunks` |
-| `engins/renderengin/webgpu.ts` | `mat4Identity`, `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `validateMeshForRenderUpload` | `PackedVertexBuffer`, `RenderEnginFrameStats`, `RenderEnginGpuMesh`, `RenderEnginGpuTexture`, `RenderEnginLifecycleHooks`, `RenderEnginScene`, `RenderEnginSceneObject`, `RenderGpuMaterial` |
+| `engins/renderengin/wasmAcceleration.ts` | `MeshBuffers`, `Vec3` | `RenderMeshBounds`, `RenderWasmAcceleration`, `RenderWasmAccelerationExports`, `computeRenderMeshBounds`, `fallbackRenderMeshBounds`, `getActiveRenderWasmAcceleration`, `loadRenderWasmAcceleration`, `resetRenderWasmAccelerationForTesting` |
+| `engins/renderengin/webgpu.ts` | `mat4Identity`, `Mat4`, `MeshBuffers`, `Vec3`, `Vec4`, `Vertex`, `validateMeshForRenderUpload` | `BATCH_SHADER`, `PackedVertexBuffer`, `RenderEnginFrameStats`, `RenderEnginGpuMesh`, `RenderEnginGpuTexture`, `RenderEnginLifecycleHooks`, `RenderEnginMeshArenaRange`, `RenderEnginScene` |
 | `engins/rulesets/brand/brandEnginRuleSet.ts` | `patchBaseState`, `EnginBaseState`, `JsonObject`, `EnginCapability`, `getEnginCapabilityProfile`, `ConstraintResult`, `EnginAction`, `EnginConstraint` | `ABTest`, `AnalyticMetric`, `BRAND_ENGIN_RULE_SET`, `BrandAsset`, `BrandEnginAction`, `BrandEnginDerivedState`, `BrandProfile` |
 | `engins/rulesets/brand/useBrandEnginRuntime.ts` | `MemoryAdapter`, `EnginHardwareAccelerationState`, `EnginRuntimeOptions`, `EnginRuntime`, `react`, `BrandEnginAction`, `BrandEnginDerivedState`, `BRAND_ENGIN_RULE_SET` | `useBrandEnginRuntime`, `UseBrandEnginRuntimeOptions`, `UseBrandEnginRuntimeResult`, `useBrandEnginRuntime` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `patchBaseState`, `EnginBaseState`, `JsonObject`, `EnginCapability`, `getEnginCapabilityProfile`, `ConstraintResult`, `EnginAction`, `EnginConstraint` | `(default)`, `CODE_ENGIN_RULE_SET`, `CellLanguage`, `CellStatus`, `CiStatus`, `CodeDiagnostic`, `CodeEnginAction`, `CodeEnginDerivedState` |
@@ -6291,8 +6306,9 @@ _No style files for this feature._
 | `fix-repo.cjs` | `node:fs`, `node:path`, `node:child_process`, `);     }   } }  function checkUseDualRuntimeDuplicate(){   const componentFile = 'components/runtime/dream.DualRuntimeContainer.tsx';   const engineFile = 'engine/runtime/useDualRuntime.ts';    if (!exists(componentFile)){     warn(`, `);     return;   }    warn(` | `useDualRuntime`, `useDualRuntime` |
 | `hooks/use-spatial.ts` | `createClient`, `Album`, `ContentObject`, `CreateAlbumInput`, `CreateContentInput`, `CreateWidgetInput`, `NavigationState`, `ShareIntent` | `useAlbums`, `useContent`, `useShareToProfile`, `useSpatialNavigation`, `useWidgets`, `UseWidgetsResult`, `useAlbums`, `useContent` |
 | `hooks/useAccount.ts` | `createClient`, `react` | `useAccount`, `useAccount` |
+| `hooks/useAppIntentPressureSurface.ts` | `react`, `AppIntentPressureField`, `appIntentPressureFromElementPoint`, `AppIntentPressureSource`, `AppIntentMassState`, `AppIntentPoint` | `useAppIntentPressureSurface`, `AppIntentPressureSurfaceOptions`, `applyIntentPressureToElement`, `useAppIntentPressureSurface` |
 | `hooks/useConnectorInstallFlow.ts` | `getConnectorDef`, `consumeDeferredPrompt`, `handleAddWidget`, `handleConnectSuccess`, `handleDismissPrompt`, `handlePlaceLater`, `SlotGrid`, `WidgetTypeDef` | `useConnectorInstallFlow`, `ActivePrompt`, `ConnectorInstallFlowActions`, `ConnectorInstallFlowOptions`, `ConnectorInstallFlowState`, `PlacementRequest`, `useConnectorInstallFlow` |
-| `hooks/useDreamLayout.ts` | `react` | `useDreamLayout`, `UserDreamLayout`, `useDreamLayout` |
+| `hooks/useDreamLayout.ts` | `getOfflineRecord`, `putOfflineRecord`, `enqueueFetchMutation`, `react` | `useDreamLayout`, `UserDreamLayout`, `useDreamLayout` |
 | `hooks/useHideOnScroll.ts` | `react` | `useHideOnScroll`, `useHideOnScroll` |
 | `hooks/useMotionTilt.ts` | `framer-motion`, `framer-motion`, `react`, `useMotionTilt` | `useMotionTilt`, `MotionTiltOptions`, `MotionTiltResult`, `useMotionTilt` |
 | `hooks/useResponsive.ts` | `react`, `readInteractiveViewportHeight`, `readInteractiveViewportWidth` | `useBreakpoint`, `useBreakpointValue`, `useFluid`, `useIsAtLeast`, `useIsBelow`, `useIsDesktop`, `useIsMobile`, `useIsTablet` |
@@ -6313,6 +6329,7 @@ _No style files for this feature._
 | `postcss.config.js` | - | `postcss.config.js` |
 | `postcss.config.mjs` | - | `(default)` |
 | `proxy.ts` | `next/server`, `next/server`, `createServerClientWithCustomCookies`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL`, `safeGetUser` | `config`, `proxy` |
+| `public/dreamengin-sw.js` | - | `dreamengin-sw.js` |
 | `public/workers/asset-optimizer.worker.js` | - | `asset-optimizer.worker.js` |
 | `public/workers/engin-shader.worker.ts` | - | `engin-shader.worker.ts` |
 | `repo-visualizer/analyzer.mjs` | `node:fs`, `node:path`, `node:child_process`, `node:url`, `"]([^`, `"]([^`, `"]([^`, `,` | `analyzer.mjs` |
@@ -6659,6 +6676,7 @@ _No style files for this feature._
 |------|-----------|-------|
 | `.github/scripts/issue-bot.js` | `./HeavyComponent` | `(dynamic import)` |
 | `components/branding/dream.DreamEnginLogo.tsx` | `@/components/DreamEnginLogo` | `DreamEnginLogo` |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | `@/engins/CodeEngin/orchestrator` | `(default)` |
 | `engins/codeengin-ui/orchestrator/dream.index.tsx` | `@/engins/codeengin-ui/orchestrator` | `(default)` |
 | `engins/engin.CodeEngin.tsx` | `@/components/DreamButton` | `(default)` |
 | `fix-repo.cjs` | `./` | `(default)` |
@@ -6848,6 +6866,7 @@ _No style files for this feature._
 | `components/dream.DrEamsModeToggle.tsx` | `(default)` |
 | `components/dream.DrEamsVoiceAssistant.tsx` | `(default)` |
 | `components/dream.FeedCard.tsx` | `(default)` |
+| `components/dream.FirstTouchActivator.tsx` | `(default)` |
 | `components/dream.ForgeDreamCanvas.tsx` | `(default)` |
 | `components/dream.HeroSprite.tsx` | `(default)` |
 | `components/dream.IconSelector.tsx` | `(default)` |
@@ -6925,6 +6944,7 @@ _No style files for this feature._
 | `components/menus/dream.menu.DreamRadialMenu.tsx` | `(default)` |
 | `components/menus/dream.menu.RadialMenu.tsx` | `(default)` |
 | `components/menus/dream.menu.SystemRadialMenu.tsx` | `(default)`, `SystemMenuAction` |
+| `components/offline/dream.OfflineRuntimeBootstrap.tsx` | `OfflineRuntimeState` |
 | `components/onboarding/dream.OnboardingTip.tsx` | `(default)` |
 | `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | `(default)` |
 | `components/panels/dream.panel.FeedPanel.tsx` | `default` |
@@ -7026,7 +7046,7 @@ _No style files for this feature._
 | `engine/agents/teachBus.ts` | `TeachEvent` |
 | `engine/agents/uiActions.ts` | `UiActionContext`, `UiActionResult` |
 | `engine/animation/gsap/useGsapScrollReveal.ts` | `ScrollRevealOptions` |
-| `engine/artifacts/artifactStore.ts` | `getDefaultSystemArtifacts`, `removeArtifact`, `saveArtifacts` |
+| `engine/artifacts/artifactStore.ts` | `OfflineBlobArtifactRecord`, `getDefaultSystemArtifacts`, `readOfflineBlobArtifacts`, `removeArtifact`, `saveArtifacts` |
 | `engine/assets/engineAssets.ts` | `saveEngineAsset` |
 | `engine/collaboration/index.ts` | `CollabModeRuleSet`, `CollabOutboundPayload`, `CollabTransport`, `MediaSyncData`, `broadcastPlayhead`, `createLocalCollabSession`, `createSupabaseCollabSession` |
 | `engine/connectors/connectorRegistry.ts` | `ConnectorCategory`, `ConnectorLimitation`, `ConnectorTier` |
@@ -7089,6 +7109,7 @@ _No style files for this feature._
 | `engine/intelligence/continuityHelpers.ts` | `ResumeDest` |
 | `engine/intelligence/sessionContinuity.ts` | `sessionContinuity` |
 | `engine/intelligence/useSessionIntelligence.ts` | `PATTERN_MATRIX_LS_KEY`, `SessionIntelligence` |
+| `engine/intent/appIntentPressure.ts` | `AppIntentPressure`, `AppIntentPressureFieldOptions` |
 | `engine/journey/journeyInsights.ts` | `DotInsight`, `MS_PER_DAY` |
 | `engine/journey/withJourney.ts` | `JourneyMeta`, `withJourney` |
 | `engine/ledger/ledger-data.ts` | `ledgerData` |
@@ -7130,7 +7151,7 @@ _No style files for this feature._
 | `engine/runtime/instanceManager.ts` | `EnginInstance`, `InstanceMode`, `persistInstanceList`, `spawnDualInstances` |
 | `engine/runtime/memory.ts` | `ConformMemoryMap`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_DREAMDM_BAR_Y`, `ENGIN_OFFSET_LOCKED_STATE`, `ENGIN_OFFSET_POS_X`, `ENGIN_OFFSET_POS_Y`, `ENGIN_OFFSET_POS_Z`, `ENGIN_OFFSET_TELEMETRY`, `ENGIN_OFFSET_VEL_X`, `ENGIN_OFFSET_VEL_Y`, `ENGIN_OFFSET_VEL_Z`, `ENGIN_SAB_SIZE`, `EntityBounds`, `MemoryPolicyResult`, `getEntityBounds`, `getWorkerCount`, `isSABAvailable`, `validateWorkgroup` |
 | `engine/runtime/moduleRegistry.ts` | `manifestFromWidget`, `subscribeRegistryToTransferEvents` |
-| `engine/runtime/offlineQueue.ts` | `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `QueueStatus`, `dequeue`, `enqueue`, `flushQueue`, `getQueueStatus`, `isOnline`, `listenOnline` |
+| `engine/runtime/offlineQueue.ts` | `EnqueueOptions`, `OfflineActionStatus`, `OfflineActionType`, `OfflineReplayRequest`, `clearQueue`, `dequeue`, `enqueue`, `isOnline`, `listQueue` |
 | `engine/runtime/quantumCircuit.ts` | `QuantumComputeResult`, `runQuantumCircuit` |
 | `engine/runtime/runtimeChannel.ts` | `RealtimeChannel`, `RealtimeChannelOptions`, `RealtimeClient`, `RuntimeChannelOptions`, `createRealtimeChannel` |
 | `engine/runtime/runtimeContainer.ts` | `RuntimeContainerOptions`, `RuntimeStrategy` |
@@ -7168,6 +7189,8 @@ _No style files for this feature._
 | `engine/widgets/parseConfig.ts` | `parseSocialEmbedWidgetConfig`, `parseSocialFeedWidgetConfig`, `parseSocialProfileWidgetConfig`, `parseYouTubeWidgetConfig` |
 | `engine/widgets/useWidget.ts` | `chainWidgets`, `emitWidget`, `getSubWidgets`, `getWidgetMemory`, `setWidgetMemory`, `spawnSubWidget`, `useWidget` |
 | `engine/widgets/widgetRegistry.ts` | `ConnectorRequirement`, `ConnectorState`, `WidgetPermissions` |
+| `engins/CodeEngin/core/parser.ts` | `ParseError`, `ParseResult`, `ParsedSymbol`, `parseCode` |
+| `engins/CodeEngin/orchestrator/dream.index.tsx` | `(default)` |
 | `engins/brandingengin/identity/logos.ts` | `LogoPath` |
 | `engins/codeengin-ui/core/parser.ts` | `ParseResult` |
 | `engins/codeengin-ui/orchestrator/dream.index.tsx` | `(default)` |
@@ -7177,7 +7200,7 @@ _No style files for this feature._
 | `engins/codeengin/pathSafety.ts` | `CODEENGIN_ALLOWED_EXTENSIONS` |
 | `engins/codeengin/projectGraph.ts` | `extractImports` |
 | `engins/codeengin/workspaceStore.ts` | `(default)` |
-| `engins/contentengin/assetTypes.ts` | `AnimationClipDef`, `CollisionShape`, `CollisionShapeKind`, `PhysicsDef`, `PrimitiveSpec`, `RigWeights`, `TextureSlots`, `Transform`, `Visibility` |
+| `engins/contentengin/assetTypes.ts` | `AnimationClipDef`, `CollisionShape`, `CollisionShapeKind`, `ContentEnginPerformancePlanSnapshot`, `ContentEnginRuntimeProfileSnapshot`, `ContentEnginUpgradeIdSnapshot`, `PhysicsDef`, `PrimitiveSpec`, `RigWeights`, `TextureSlots`, `Transform`, `Visibility` |
 | `engins/contentengin/assets/assetOptimizer.ts` | `AssetUploadContext`, `OptimisationQuality`, `OptimisationResult`, `OptimiseOptions`, `optimiseAsset` |
 | `engins/contentengin/assets/localAssetLibrary.ts` | `LocalContentAssetRecord`, `getLocalContentAssetGlb`, `getLocalContentAssetObjSource`, `listLocalContentAssets`, `saveLocalContentAsset` |
 | `engins/contentengin/builders/geometryBuilder.ts` | `MeshGeometry` |
@@ -7199,6 +7222,7 @@ _No style files for this feature._
 | `engins/contentengin/materials/proceduralMaterials.ts` | `material` |
 | `engins/contentengin/media/h265-encoder.ts` | `BackendKind`, `EncodedPacket`, `EncoderCapabilities`, `EncoderOptions`, `H265Encoder`, `H265Preset`, `PixelFormat`, `VideoFrameLike` |
 | `engins/contentengin/media/ledger.ts` | `LedgerBinaryHeader`, `LedgerDbPayload`, `LedgerDensityProfile`, `LedgerUploadResult`, `compressData`, `downloadBlobFromLedgerStorage` |
+| `engins/contentengin/performancePlan.ts` | `ContentEnginPerformancePlan` |
 | `engins/contentengin/photo/colorCluster.ts` | `extractPalette` |
 | `engins/contentengin/photo/edgeDetector.ts` | `buildEdgeMapFromRgba` |
 | `engins/contentengin/photo/photoToRecipe.ts` | `photoToRecipe` |
@@ -7211,6 +7235,7 @@ _No style files for this feature._
 | `engins/contentengin/recipes/seededRandom.ts` | `pick` |
 | `engins/contentengin/rigging/index.ts` | `RigStandard`, `RiggingRequest` |
 | `engins/contentengin/rigging/landmarks.ts` | `estimateLandmarks` |
+| `engins/contentengin/runtimeProfile.ts` | `ContentEnginRuntimeTier` |
 | `engins/contentengin/shaders/shaderRegistry.ts` | `getShader` |
 | `engins/contentengin/shaders/shaderTypes.ts` | `ShaderDef` |
 | `engins/contentengin/upgradeMatrix.ts` | `CONTENTENGIN_2026_UPGRADES`, `ContentEnginUpgrade` |
@@ -7254,7 +7279,7 @@ _No style files for this feature._
 | `engins/gameengin/games/useImmersiveGameLayout.ts` | `getImmersiveCanvasStyle`, `getImmersiveOverlayStyle`, `getImmersiveStageStyle` |
 | `engins/gameengin/generative-audio.ts` | `FoleyCategory`, `FoleyParams`, `FoleyResult`, `MusicConfig`, `MusicEdge`, `MusicNode` |
 | `engins/gameengin/handlers.ts` | `GameEnginDispatch` |
-| `engins/gameengin/index.ts` | `AABB`, `AIDirector`, `AdvancedPhysicsWorld`, `AnimState`, `AnimTransition`, `AnimationClip`, `AnimationStateMachine`, `AssetHandle`, `AssetState`, `AssetStreamManager`, `AssetType`, `AudioSourceDef`, `BTContext`, `BTNode`, `BTStatus`, `BehaviorTreeEngine`, `CARTRIDGE_MANIFEST`, `CartridgeInputEvent`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `ClientSidePrediction`, `Component`, `ComputeDispatch`, `ComputeKernel`, `ComputeShaderPipeline`, `ControlMapping`, `DirectorState`, `DreamEngine`, `ECSWorld`, `EntityId`, `EventMap`, `FrameCallback`, `FrameTelemetry`, `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `GIProbe`, `GPUProfiler`, `GRAVITY_VALUES`, `GameAsset`, `GameCartridge`, `GameEnginCapabilityLane`, `GameEnginExecutionCrash`, `GameEnginExecutionFrame`, `GameEnginExecutionKernel`, `GameEnginExecutionKernelSnapshot`, `GameEnginPlatform`, `GameEnginWiringTarget`, `GameEnginWorkPacketEntry`, `GameEngineAPI`, `GameRuntime`, `GameRuntimeProps`, `GlobalIllumProbes`, `GlobalRegistryEntry`, `GravityPreset`, `InputFrame`, `Job`, `JobPriority`, `JobResult`, `LODLevel`, `LODObject`, `LODSystem`, `ListenerState`, `LoopPriority`, `MaterialPair`, `NetInput`, `OctreeBVH`, `PerformanceBudget`, `PhysicsBody`, `PhysicsBodyDef`, `PhysicsBodyType`, `PhysicsConstraint`, `PhysicsMaterial`, `PhysicsMaterialSystem`, `PlatformBootOptions`, `PlatformCapabilities`, `PlayerSignals`, `PostFXManager`, `PredictionState`, `ProceduralWorldGen`, `ProfileFrame`, `ProfileSpan`, `QualityChangeCallback`, `QualityTier`, `QuickResumeEntry`, `RaycastResult`, `ReplayBuffer`, `ReplayMeta`, `ResourcePool`, `RollbackConfig`, `RollbackNetcode`, `SHCoeffs`, `ServerSnapshot`, `ShaderVariant`, `ShapeType`, `SpatialAudioDSP`, `SpatialEntry`, `System`, `TerrainEngine`, `TerrainPage`, `TypedEventBus`, `WGSLShaderManager`, `WasmOutput`, `WorkerJobSystem`, `WorldChunk`, `WorldGenConfig`, `activeGameCount`, `assertCartridgeLoadersReady`, `createGameEnginExecutionKernel`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `detectCapabilities`, `getCartridgeCategories`, `getCartridgeIds`, `getCartridgeManifest`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `isLoopRunning`, `loadCartridge`, `mapJoystickToAsset`, `registerGame`, `unregisterGame`, `useUnifiedLoop` |
+| `engins/gameengin/index.ts` | `AABB`, `AIDirector`, `AdvancedPhysicsWorld`, `AnimState`, `AnimTransition`, `AnimationClip`, `AnimationStateMachine`, `AssetHandle`, `AssetState`, `AssetStreamManager`, `AssetType`, `AudioSourceDef`, `BTContext`, `BTNode`, `BTStatus`, `BehaviorTreeEngine`, `CARTRIDGE_MANIFEST`, `CartridgeInputEvent`, `CartridgeManifestEntry`, `CartridgeRenderMode`, `ClientSidePrediction`, `Component`, `ComputeDispatch`, `ComputeKernel`, `ComputeShaderPipeline`, `ControlMapping`, `DirectorState`, `DreamEngine`, `ECSWorld`, `EliteGameEngine`, `EntityId`, `EventMap`, `FrameCallback`, `FrameTelemetry`, `GAMEENGIN_CAPABILITY_LANES`, `GAMEENGIN_WORK_PACKET`, `GAMEENGIN_WORK_PACKET_BY_TARGET`, `GIProbe`, `GPUProfiler`, `GRAVITY_VALUES`, `GameAsset`, `GameCartridge`, `GameEnginCapabilityLane`, `GameEnginExecutionCrash`, `GameEnginExecutionFrame`, `GameEnginExecutionKernel`, `GameEnginExecutionKernelSnapshot`, `GameEnginPlatform`, `GameEnginWiringTarget`, `GameEnginWorkPacketEntry`, `GameEngineAPI`, `GameRuntime`, `GameRuntimeProps`, `GlobalIllumProbes`, `GlobalRegistryEntry`, `GravityPreset`, `InputFrame`, `Job`, `JobPriority`, `JobResult`, `LODLevel`, `LODObject`, `LODSystem`, `ListenerState`, `LoopPriority`, `MaterialPair`, `NetInput`, `OctreeBVH`, `PerformanceBudget`, `PhysicsBody`, `PhysicsBodyDef`, `PhysicsBodyType`, `PhysicsConstraint`, `PhysicsMaterial`, `PhysicsMaterialSystem`, `PlatformBootOptions`, `PlatformCapabilities`, `PlayerSignals`, `PostFXManager`, `PredictionState`, `ProceduralWorldGen`, `ProfileFrame`, `ProfileSpan`, `QualityChangeCallback`, `QualityTier`, `QuickResumeEntry`, `RaycastResult`, `ReplayBuffer`, `ReplayMeta`, `ResourcePool`, `RollbackConfig`, `RollbackNetcode`, `SHCoeffs`, `ServerSnapshot`, `ShaderVariant`, `ShapeType`, `SpatialAudioDSP`, `SpatialEntry`, `System`, `TerrainEngine`, `TerrainPage`, `TypedEventBus`, `WGSLShaderManager`, `WasmOutput`, `WorkerJobSystem`, `WorldChunk`, `WorldGenConfig`, `activeGameCount`, `assertCartridgeLoadersReady`, `createGameEnginExecutionKernel`, `createReactGameCartridge`, `defineReactCartridgeLoader`, `detectCapabilities`, `getCartridgeCategories`, `getCartridgeIds`, `getCartridgeManifest`, `getGameEnginWorkPacketByTarget`, `getGameEnginWorkPacketEntry`, `getMissingCartridgeLoaders`, `getOrphanCartridgeLoaders`, `isLoopRunning`, `loadCartridge`, `mapJoystickToAsset`, `registerGame`, `unregisterGame`, `useUnifiedLoop` |
 | `engins/gameengin/launcher.ts` | `launch` |
 | `engins/gameengin/neural-render.ts` | `FrameGenConfig`, `NTCBlock`, `UpscaleRatio`, `UpscalerConfig` |
 | `engins/gameengin/path-tracing.ts` | `BVHNode`, `DenoiserConfig`, `PathTraceConfig`, `Reservoir` |
@@ -7270,6 +7295,7 @@ _No style files for this feature._
 | `engins/isosurfaceDualContouring.ts` | `IsoSurfacePurpose`, `IsoSurfaceSdfKind`, `IsoSurfaceSourceEngin`, `MobileIsoSurfaceTier`, `classifyMobileIsoSurfaceTier`, `createIsoSurfaceJob`, `estimateIsoSurfaceMemoryBytes`, `normalizeDualContouringSettings` |
 | `engins/labengin/implicitSurface.ts` | `LabImplicitSurfacePreset`, `LabImplicitSurfaceRun`, `runLabImplicitSurface` |
 | `engins/renderengin/RenderStage.tsx` | `(default)`, `RenderStageProps` |
+| `engins/renderengin/wasmAcceleration.ts` | `RenderMeshBounds`, `RenderWasmAcceleration`, `RenderWasmAccelerationExports`, `computeRenderMeshBounds`, `fallbackRenderMeshBounds`, `getActiveRenderWasmAcceleration`, `loadRenderWasmAcceleration`, `resetRenderWasmAccelerationForTesting` |
 | `engins/rulesets/brand/brandEnginRuleSet.ts` | `ABTest`, `AnalyticMetric`, `BrandAsset`, `BrandProfile` |
 | `engins/rulesets/brand/useBrandEnginRuntime.ts` | `UseBrandEnginRuntimeOptions`, `UseBrandEnginRuntimeResult` |
 | `engins/rulesets/code/codeEnginRuleSet.ts` | `(default)`, `CellLanguage`, `CellStatus`, `CiStatus`, `CodeDiagnostic`, `CodeRuntimeMode`, `CodeTerminalEntry`, `CodeWorkspaceFile`, `DiagnosticSeverity`, `NotebookCell`, `SecurityFinding`, `SourceLanguage` |
@@ -7299,6 +7325,7 @@ _No style files for this feature._
 | `engins/starmakerengin/music/wasmAudioBridge.ts` | `WasmAudioBridge`, `createWasmAudioBridge` |
 | `fix-repo.cjs` | `useDualRuntime` |
 | `hooks/use-spatial.ts` | `UseWidgetsResult`, `useAlbums`, `useShareToProfile`, `useSpatialNavigation` |
+| `hooks/useAppIntentPressureSurface.ts` | `AppIntentPressureSurfaceOptions`, `applyIntentPressureToElement`, `useAppIntentPressureSurface` |
 | `hooks/useConnectorInstallFlow.ts` | `ActivePrompt`, `ConnectorInstallFlowActions`, `ConnectorInstallFlowOptions`, `ConnectorInstallFlowState`, `PlacementRequest` |
 | `hooks/useDreamLayout.ts` | `UserDreamLayout` |
 | `hooks/useHideOnScroll.ts` | `useHideOnScroll` |
@@ -7355,8 +7382,6 @@ _No style files for this feature._
 - ! engine/safety/child-safety/childSafetyDetector.ts -> engine/safety/child-safety/childSafetyDetector.ts
 - ! engine/safety/child-safety/scanMediaUrls.ts -> engine/safety/child-safety/scanMediaUrls.ts
 - ! engine/web3/index.ts -> engine/web3/index.ts
-- ! engins/contentengin/assetTypes.ts -> engins/contentengin/runtimeProfile.ts -> engins/contentengin/assetTypes.ts
-- ! engins/contentengin/assetTypes.ts -> engins/contentengin/runtimeProfile.ts -> engins/contentengin/upgradeMatrix.ts -> engins/contentengin/assetTypes.ts
 - ! engins/dream.QuantumCircuitCanvas.tsx -> engins/dream.QuantumCircuitCanvas.tsx
 - ! engins/gameengin/index.ts -> engins/gameengin/index.ts
 - ! engins/gameengin/launcher.ts -> engins/gameengin/launcher.ts
@@ -7378,27 +7403,28 @@ _No style files for this feature._
 | `engins/renderengin/index.ts` | 24 | HIGH_COUPLING |
 | `components/games/dream.GamesHub.tsx` | 23 | HIGH_COUPLING |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 20 | HIGH_COUPLING, DUAL_RUNTIME |
+| `app/layout.tsx` | 19 | HIGH_COUPLING, DUAL_RUNTIME |
+| `components/dream.HomeFeed.tsx` | 19 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `scripts/wire-orphans.mjs` | 18 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/daydream/games/page.tsx` | 17 | HIGH_COUPLING |
-| `app/layout.tsx` | 17 | HIGH_COUPLING, DUAL_RUNTIME |
-| `components/dream.HomeFeed.tsx` | 17 | HIGH_COUPLING, DUAL_RUNTIME |
 | `daydreams/games/page.tsx` | 16 | HIGH_COUPLING |
 | `engine/engin-runtime/index.ts` | 16 | HIGH_COUPLING |
 | `engine/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `engins/gameengin/index.ts` | 16 | HIGH_COUPLING, EVENT_BUS |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 14 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/dreams/dreamsurface.dreamspace.tsx` | 14 | HIGH_COUPLING |
 | `components/games/madmaxi/dream.MadmaxiGame.tsx` | 14 | HIGH_COUPLING |
 | `engine/generated/index.ts` | 14 | HIGH_COUPLING, RUNTIME_REGISTRY |
 | `src/engin/generated/index.ts` | 14 | HIGH_COUPLING, RUNTIME_REGISTRY |
 | `app/api/ai/idari/route.ts` | 13 | HIGH_COUPLING |
 | `app/daydream/lab/page.tsx` | 13 | HIGH_COUPLING |
+| `components/dream.MessagesClient.tsx` | 13 | HIGH_COUPLING |
 | `components/home/dream.bar.PersistentDreamBar.tsx` | 13 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/index.ts` | 13 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY |
 | `app/api/ai/eams/route.ts` | 12 | HIGH_COUPLING |
@@ -7417,7 +7443,6 @@ _No style files for this feature._
 | `app/api/posts/route.ts` | 11 | HIGH_COUPLING |
 | `app/daydream/create/page.tsx` | 11 | HIGH_COUPLING |
 | `app/daydream/music/page.tsx` | 11 | HIGH_COUPLING |
-| `components/dream.MessagesClient.tsx` | 11 | HIGH_COUPLING |
 | `components/providers/dream.AppSurfaceShell.tsx` | 11 | HIGH_COUPLING, DUAL_RUNTIME |
 | `daydreams/code/page.tsx` | 11 | HIGH_COUPLING |
 | `daydreams/lab/page.tsx` | 11 | HIGH_COUPLING |
@@ -7427,6 +7452,7 @@ _No style files for this feature._
 | `app/api/admin/observability/route.ts` | 10 | MEDIUM_COUPLING |
 | `app/daydream/brand/page.tsx` | 10 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | 10 | MEDIUM_COUPLING |
+| `app/edit-profiledream/page.tsx` | 10 | MEDIUM_COUPLING |
 | `components/gameengin/dream.cartridge.CartridgeLauncher.tsx` | 10 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.ViewProfile.tsx` | 10 | MEDIUM_COUPLING |
 | `daydreams/create/page.tsx` | 10 | MEDIUM_COUPLING |
@@ -7442,10 +7468,10 @@ _No style files for this feature._
 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx` | 9 | MEDIUM_COUPLING |
 | `app/daydream/lab/portfolio/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
-| `app/edit-profiledream/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/[id]/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/marketplace/page.tsx` | 9 | MEDIUM_COUPLING |
 | `app/settings/safety/page.tsx` | 9 | MEDIUM_COUPLING |
+| `app/shop/sell/page.tsx` | 9 | MEDIUM_COUPLING |
 | `components/daydream/dream.StandaloneEnginSurface.tsx` | 9 | MEDIUM_COUPLING |
 | `components/dream.OSShellActivator.tsx` | 9 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `components/dreamengin/dreamsurface.dreamengin.tsx` | 9 | MEDIUM_COUPLING |
@@ -7455,6 +7481,7 @@ _No style files for this feature._
 | `engine/connectors/syncDispatch.ts` | 9 | MEDIUM_COUPLING |
 | `engine/observability/otel.ts` | 9 | MEDIUM_COUPLING, RUNTIME_REGISTRY |
 | `.github/scripts/issue-bot.js` | 8 | MEDIUM_COUPLING |
+| `app/ads/create/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/api/admin/child-safety/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/appeal/route.ts` | 8 | MEDIUM_COUPLING |
 | `app/api/comments/route.ts` | 8 | MEDIUM_COUPLING |
@@ -7465,15 +7492,15 @@ _No style files for this feature._
 | `app/engines/games/library/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/engines/games/scores/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/login/page.tsx` | 8 | MEDIUM_COUPLING |
+| `app/marketplace/sell/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/page.tsx` | 8 | MEDIUM_COUPLING |
 | `app/settings/security/page.tsx` | 8 | MEDIUM_COUPLING |
-| `app/shop/sell/page.tsx` | 8 | MEDIUM_COUPLING |
 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx` | 8 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `components/dream.ProfileEditor.tsx` | 8 | MEDIUM_COUPLING |
 | `components/engines/index.ts` | 8 | MEDIUM_COUPLING |
+| `components/profile/dream.ProfileCanvas.tsx` | 8 | MEDIUM_COUPLING |
 | `coresurfaces/dreamsurface.EditProfileDream.tsx` | 8 | MEDIUM_COUPLING |
 | `engine/runtime/dreamOSBus.ts` | 8 | MEDIUM_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `app/ads/create/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/ads/slot/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/api/admin/code-files/route.ts` | 7 | MEDIUM_COUPLING |
 | `app/api/ads/view/route.ts` | 7 | MEDIUM_COUPLING |
@@ -7505,7 +7532,6 @@ _No style files for this feature._
 | `app/join/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/new/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/lab/page.tsx` | 7 | MEDIUM_COUPLING |
-| `app/marketplace/sell/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/messages/boards/[id]/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/account/page.tsx` | 7 | MEDIUM_COUPLING |
 | `app/settings/algorithm/page.tsx` | 7 | MEDIUM_COUPLING |
@@ -7521,9 +7547,9 @@ _No style files for this feature._
 | `components/home/dream.bar.GlobalDreamBar.tsx` | 7 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.AppearancePanel.tsx` | 7 | MEDIUM_COUPLING |
 | `components/panels/dream.panel.SafetyPanel.tsx` | 7 | MEDIUM_COUPLING |
-| `components/profile/dream.ProfileCanvas.tsx` | 7 | MEDIUM_COUPLING |
 | `components/spatial/dream.shell.EnhancedSpatialShell.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS |
 | `components/three/dream.scene.tsx` | 7 | MEDIUM_COUPLING |
+| `dreamdmbar/runtime/DreamSystemContext.tsx` | 7 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `engine/agents/idariLoop.ts` | 7 | MEDIUM_COUPLING |
 | `engine/engin-runtime/EnginDomainCores.ts` | 7 | MEDIUM_COUPLING |
 | `engine/navigation/SpatialNavigationEngine.ts` | 7 | MEDIUM_COUPLING, EVENT_BUS |
@@ -7574,7 +7600,6 @@ _No style files for this feature._
 | `components/panels/dream.panel.SettingsPanel.tsx` | 6 | MEDIUM_COUPLING |
 | `components/shared-dream/dream.SharedDreamRuntime.tsx` | 6 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `components/spatial/dream.ProfileSpace.tsx` | 6 | MEDIUM_COUPLING |
-| `dreamdmbar/runtime/DreamSystemContext.tsx` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `engine/connectors/reconcile.ts` | 6 | MEDIUM_COUPLING |
 | `engins/codeengin/workspaceStore.ts` | 6 | MEDIUM_COUPLING |
 | `engins/contentengin/pipeline/bundle.ts` | 6 | MEDIUM_COUPLING |
@@ -7584,6 +7609,7 @@ _No style files for this feature._
 | `engins/renderengin/RenderStage.tsx` | 6 | MEDIUM_COUPLING |
 | `fix-repo.cjs` | 6 | MEDIUM_COUPLING, DUAL_RUNTIME |
 | `repo-visualizer/analyzer.mjs` | 6 | MEDIUM_COUPLING |
+| `dreamr/feed/useLiveFeed.ts` | 5 | EVENT_BUS |
 | `engine/runtime/seamClipboard.ts` | 5 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engins/rulesets/useEnginWorkflow.ts` | 5 | EVENT_BUS, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRFeed.tsx` | 4 | DUAL_RUNTIME |
@@ -7591,7 +7617,9 @@ _No style files for this feature._
 | `components/daydream/dream.LabDreamIDE.tsx` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `components/games/dream.MadMaxiWildfall.tsx` | 4 | EVENT_BUS |
 | `components/home/dream.NeuralSeamCanvas.tsx` | 4 | DUAL_RUNTIME |
-| `dreamr/feed/useLiveFeed.ts` | 4 | EVENT_BUS |
+| `components/runtime/dream.DualRuntimeContainer.tsx` | 4 | DUAL_RUNTIME |
+| `dreamdmbar/hooks/useDreamDMConversations.ts` | 4 | EVENT_BUS |
+| `dreamdmbar/hooks/useDreamDMMessages.ts` | 4 | EVENT_BUS |
 | `engine/dreams/dreamIntentBus.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/apperception.ts` | 4 | DUAL_RUNTIME |
@@ -7602,6 +7630,7 @@ _No style files for this feature._
 | `engine/runtime/useSharedEnginChannel.ts` | 4 | EVENT_BUS |
 | `engins/codeengin/runner.ts` | 4 | EVENT_BUS |
 | `engins/gameengin/dream-engine.ts` | 4 | EVENT_BUS |
+| `engins/gameengin/gameEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/gameengin/registerCartridges.ts` | 4 | RUNTIME_REGISTRY |
 | `engins/rulesets/brand/useBrandEnginRuntime.ts` | 4 | EVENT_BUS |
 | `engins/rulesets/code/useCodeEnginRuntime.ts` | 4 | EVENT_BUS |
@@ -7623,16 +7652,13 @@ _No style files for this feature._
 | `components/games/dream.Glassfall.tsx` | 3 | EVENT_BUS |
 | `components/games/dream.SerpentSiege.tsx` | 3 | EVENT_BUS |
 | `components/games/dream.VoidlineGP.tsx` | 3 | EVENT_BUS |
-| `components/runtime/dream.DualRuntimeContainer.tsx` | 3 | DUAL_RUNTIME |
+| `components/offline/dream.OfflineRuntimeBootstrap.tsx` | 3 | RUNTIME_REGISTRY |
 | `components/runtime/dream.shell.RuntimeShell.tsx` | 3 | DUAL_RUNTIME |
-| `dreamdmbar/hooks/useDreamDMConversations.ts` | 3 | EVENT_BUS |
-| `dreamdmbar/hooks/useDreamDMMessages.ts` | 3 | EVENT_BUS |
 | `engine/navigation/useNavigation.ts` | 3 | EVENT_BUS |
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/web3/client.ts` | 3 | EVENT_BUS |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/brain-reader.ts` | 3 | RUNTIME_REGISTRY |
-| `engins/gameengin/gameEnginRuntime.ts` | 3 | EVENT_BUS |
 | `engins/renderengin/serviceRuntime.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `scripts/generate-repo-state.mjs` | 3 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME, ZUSTAND_STATE |
@@ -8629,6 +8655,10 @@ Legend: ! unresolved import  unused export
 |   |   `-- dream.BoardComposer.tsx
 |   +-- music
 |   |   `-- dream.SoundRecorder.tsx
+|   +-- offline
+|   |   +-- dream.OfflineRuntimeBootstrap.tsx unused
+|   |   |   `-- unused unused: OfflineRuntimeState
+|   |   `-- dream.OfflineStatusPill.tsx
 |   +-- onboarding
 |   |   `-- dream.OnboardingTip.tsx unused
 |   |       `-- unused unused: (default)
@@ -8775,6 +8805,8 @@ Legend: ! unresolved import  unused export
 |   +-- dream.DrEamsVoiceAssistant.tsx unused
 |   |   `-- unused unused: (default)
 |   +-- dream.FeedCard.tsx unused
+|   |   `-- unused unused: (default)
+|   +-- dream.FirstTouchActivator.tsx unused
 |   |   `-- unused unused: (default)
 |   +-- dream.ForgeDreamCanvas.tsx unused
 |   |   `-- unused unused: (default)
@@ -9027,7 +9059,7 @@ Legend: ! unresolved import  unused export
 |   |   `-- route.ts
 |   +-- artifacts
 |   |   `-- artifactStore.ts unused
-|   |       `-- unused unused: getDefaultSystemArtifacts, removeArtifact, saveArtifacts
+|   |       `-- unused unused: OfflineBlobArtifactRecord, getDefaultSystemArtifacts, readOfflineBlobArtifacts, removeArtifact, saveArtifacts
 |   +-- assets
 |   |   `-- engineAssets.ts unused
 |   |       `-- unused unused: saveEngineAsset
@@ -9206,6 +9238,9 @@ Legend: ! unresolved import  unused export
 |   |   +-- sessionPatternEngine.ts
 |   |   `-- useSessionIntelligence.ts unused
 |   |       `-- unused unused: PATTERN_MATRIX_LS_KEY, SessionIntelligence
+|   +-- intent
+|   |   `-- appIntentPressure.ts unused
+|   |       `-- unused unused: AppIntentPressure, AppIntentPressureFieldOptions
 |   +-- journey
 |   |   +-- journeyDots.ts
 |   |   +-- journeyInsights.ts unused
@@ -9350,7 +9385,7 @@ Legend: ! unresolved import  unused export
 |   |   +-- moduleRegistry.ts unused
 |   |   |   `-- unused unused: manifestFromWidget, subscribeRegistryToTransferEvents
 |   |   +-- offlineQueue.ts unused
-|   |   |   `-- unused unused: OfflineAction, OfflineActionStatus, OfflineActionType, QueueStatus, dequeue, enqueue, flushQueue, getQueueStatus, isOnline, listenOnline
+|   |   |   `-- unused unused: EnqueueOptions, OfflineActionStatus, OfflineActionType, OfflineReplayRequest, clearQueue, dequeue, enqueue, isOnline, listQueue
 |   |   +-- quantumCircuit.ts unused
 |   |   |   `-- unused unused: QuantumComputeResult, runQuantumCircuit
 |   |   +-- runtimeChannel.ts unused
@@ -9500,6 +9535,19 @@ Legend: ! unresolved import  unused export
 |   |   +-- types.ts
 |   |   `-- workspaceStore.ts unused
 |   |       `-- unused unused: (default)
+|   +-- CodeEngin
+|   |   +-- core
+|   |   |   `-- parser.ts unused
+|   |   |       `-- unused unused: ParseError, ParseResult, ParsedSymbol, parseCode
+|   |   +-- modules
+|   |   |   `-- ai-co-pilot
+|   |   |       +-- dream.panel.AgentPanel.tsx
+|   |   |       +-- index.ts
+|   |   |       `-- useAgentSession.ts
+|   |   `-- orchestrator
+|   |       `-- dream.index.tsx ! unused
+|   |           +-- ! @/engins/CodeEngin/orchestrator ((default))
+|   |           `-- unused unused: (default)
 |   +-- codeengin-ui  [CodeEngin]
 |   |   +-- core  [CodeEngin]
 |   |   |   `-- parser.ts unused
@@ -9630,12 +9678,14 @@ Legend: ! unresolved import  unused export
 |   |   |   `-- shaderTypes.ts unused
 |   |   |       `-- unused unused: ShaderDef
 |   |   +-- assetTypes.ts unused
-|   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
+|   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, ContentEnginPerformancePlanSnapshot, ContentEnginRuntimeProfileSnapshot, ContentEnginUpgradeIdSnapshot, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
 |   |   +-- AssetViewport.tsx
 |   |   +-- cli.ts
 |   |   +-- ImplicitAssetWorkspace.tsx
-|   |   +-- performancePlan.ts
-|   |   +-- runtimeProfile.ts
+|   |   +-- performancePlan.ts unused
+|   |   |   `-- unused unused: ContentEnginPerformancePlan
+|   |   +-- runtimeProfile.ts unused
+|   |   |   `-- unused unused: ContentEnginRuntimeTier
 |   |   +-- upgradeMatrix.ts unused
 |   |   |   `-- unused unused: CONTENTENGIN_2026_UPGRADES, ContentEnginUpgrade
 |   |   `-- useImplicitAssetWorkspace.ts unused
@@ -9895,7 +9945,7 @@ Legend: ! unresolved import  unused export
 |   |   +-- handlers.ts unused
 |   |   |   `-- unused unused: GameEnginDispatch
 |   |   +-- index.ts unused
-|   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
+|   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EliteGameEngine, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
 |   |   +-- launcher.ts unused
 |   |   |   `-- unused unused: launch
 |   |   +-- neural-render.ts unused
@@ -9951,6 +10001,8 @@ Legend: ! unresolved import  unused export
 |   |   +-- textures.ts
 |   |   +-- viewportControls.ts
 |   |   +-- virtualization.ts
+|   |   +-- wasmAcceleration.ts unused
+|   |   |   `-- unused unused: RenderMeshBounds, RenderWasmAcceleration, RenderWasmAccelerationExports, computeRenderMeshBounds, fallbackRenderMeshBounds, getActiveRenderWasmAcceleration, loadRenderWasmAcceleration, resetRenderWasmAccelerationForTesting
 |   |   `-- webgpu.ts
 |   +-- rulesets
 |   |   +-- brand
@@ -10092,6 +10144,8 @@ Legend: ! unresolved import  unused export
 |   +-- use-spatial.ts unused
 |   |   `-- unused unused: UseWidgetsResult, useAlbums, useShareToProfile, useSpatialNavigation
 |   +-- useAccount.ts
+|   +-- useAppIntentPressureSurface.ts unused
+|   |   `-- unused unused: AppIntentPressureSurfaceOptions, applyIntentPressureToElement, useAppIntentPressureSurface
 |   +-- useConnectorInstallFlow.ts unused
 |   |   `-- unused unused: ActivePrompt, ConnectorInstallFlowActions, ConnectorInstallFlowOptions, ConnectorInstallFlowState, PlacementRequest
 |   +-- useDreamLayout.ts unused
@@ -10146,6 +10200,7 @@ Legend: ! unresolved import  unused export
 |   |   +-- engin-shader.wasm
 |   |   `-- engin-shader.worker.ts
 |   +-- dr-eams-pbr.html
+|   +-- dreamengin-sw.js
 |   +-- file.svg
 |   +-- globe.svg
 |   +-- manifest.json

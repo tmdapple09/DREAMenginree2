@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-06-25T17:29:28.375Z
+Generated: 2026-06-27T16:04:05.078Z
 
 Legend: ! unresolved import  unused export
 
@@ -73,8 +73,9 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- ArrowLeft, DollarSign, Info, LayoutGrid, Loader2  <- lucide-react
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- useRouter  <- next/navigation
-|   |   |       +-- useState  <- react
+|   |   |       +-- useEffect, useState  <- react
 |   |   |       +-- toErrorMessage  <- @/utils/index
+|   |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |       `-- -> (default)
 |   |   +-- slot
 |   |   |   `-- [id]
@@ -1619,7 +1620,7 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- DreamSpaceRegion.tsx
 |   |   |   |   +-- (default)  <- @/components/dreams/dream.DraggableDream
 |   |   |   |   +-- useAccount  <- @/hooks/useAccount
-|   |   |   |   +-- listSystemArtifacts, listVisibleArtifacts, restoreArtifact  <- @/engine/artifacts/artifactStore
+|   |   |   |   +-- listSystemArtifacts, listVisibleArtifacts, restoreArtifact, restoreArtifactsFromOfflineCache  <- @/engine/artifacts/artifactStore
 |   |   |   |   +-- useOS  <- @/engine/os/OSContext
 |   |   |   |   +-- AssetEntry, AssetType  <- @/engine/ledger/ledger
 |   |   |   |   +-- getAllByKind  <- @/engine/ledger/ledger
@@ -1647,6 +1648,7 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- (default)  <- @/components/home/dream.FlagshipEnginesStrip
 |   |   |       +-- useNotifications  <- @/dreamdmbar/notifications/useNotifications
 |   |   |       +-- isCompactRuntimeViewport  <- @/components/ui-system/runtimeViewport
+|   |   |       +-- cacheHttpGet  <- @/engine/offline/offlineCache
 |   |   |       +-- RuntimeRegionKey  <- @/types/dreamArtifact
 |   |   |       `-- -> (default)
 |   |   +-- dreamspace  [Home / DreamDMBar / DualRuntime, Messages / DMs]
@@ -1712,6 +1714,7 @@ Legend: ! unresolved import  unused export
 |   |       +-- (default)  <- next/link
 |   |       +-- useRouter  <- next/navigation
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
+|   |       +-- queueLocalFirstMutation, readOfflineCache, writeOfflineCache  <- @/engine/offline/offlineCache
 |   |       `-- -> (default)
 |   +-- engines
 |   |   +-- brand  [BrandEngin]
@@ -2048,6 +2051,7 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- ArrowLeft, Check, Loader2, Plus, Rss, Sliders  <- lucide-react
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useCallback, useEffect, useState  <- react
+|   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   `-- -> (default)
 |   |   `-- page.tsx
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2163,6 +2167,7 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- useRouter  <- next/navigation
 |   |   |       +-- useEffect, useState  <- react
 |   |   |       +-- toErrorMessage  <- @/utils/index
+|   |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |       `-- -> (default)
 |   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/marketplace/dream.MarketplaceListingCard
@@ -2322,6 +2327,7 @@ Legend: ! unresolved import  unused export
 |   |   |   |   +-- ArrowLeft, Check, Sliders  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
+|   |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   |   +-- (default)  <- ./dream.PositionIndicatorToggle
 |   |   |   |   `-- -> (default)
 |   |   |   +-- dream.PositionIndicatorToggle.tsx
@@ -2388,6 +2394,7 @@ Legend: ! unresolved import  unused export
 |   |   |   |   +-- ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX, X  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- useCallback, useEffect, useState  <- react
+|   |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   |   `-- -> (default)
 |   |   |   `-- page.tsx
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2447,8 +2454,9 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- (default)  <- next/image
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- useRouter  <- next/navigation
-|   |   |       +-- useState  <- react
+|   |   |       +-- useEffect, useState  <- react
 |   |   |       +-- toErrorMessage  <- @/utils/index
+|   |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |       `-- -> (default)
 |   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/ui/dream.DreamWord
@@ -2506,6 +2514,8 @@ Legend: ! unresolved import  unused export
 |   |   +-- (side-effect)  <- @/styles/dream-shell.css
 |   |   +-- (default)  <- @/components/dream.CommandPaletteMount
 |   |   +-- (default)  <- @/components/dream.GlobalOverlays
+|   |   +-- (default)  <- @/components/offline/dream.OfflineRuntimeBootstrap
+|   |   +-- (default)  <- @/components/offline/dream.OfflineStatusPill
 |   |   +-- (default)  <- @/components/dream.ThemeApplicator
 |   |   +-- (default)  <- @/components/gameengin/dream.CartridgeRegistryBootstrap
 |   |   +-- (default)  <- @/components/providers/dream.GodTierProvider
@@ -3892,7 +3902,7 @@ const SESSION_SEED: number =
 |   |   |   `-- -> (default)
 |   |   +-- dream.NeonDrift.tsx
 |   |   |   +-- DualSenseManager  <- @/components/gameengin/input/DualSenseManager
-|   |   |   +-- EliteGameEngine  <- @/engins/gameengin/index
+|   |   |   +-- EliteGameEngine  <- @/engins/gameengin/core
 |   |   |   +-- AIDirector  <- @/engins/gameengin/ai-director
 |   |   |   +-- PostFXManager  <- @/engins/gameengin/post-fx
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
@@ -3944,7 +3954,7 @@ const SESSION_SEED: number =
 |   |       `-- -> (default)
 |   +-- home  [Home / DreamDMBar / DualRuntime]
 |   |   +-- dream.ActiveModuleSurface.tsx
-|   |   |   +-- loadActiveModules, removeActiveModule, saveActiveModule, saveActiveModulesForRegion, transferActiveModuleRegion  <- @/engine/activeModulesStore
+|   |   |   +-- loadActiveModules, removeActiveModule, restoreActiveModulesFromOfflineCache, saveActiveModule, saveActiveModulesForRegion, transferActiveModuleRegion  <- @/engine/activeModulesStore
 |   |   |   +-- loadArtifacts, saveArtifact  <- @/engine/artifacts/artifactStore
 |   |   |   +-- DREAM_WINDOW_STATES  <- @/engine/dream-window/DreamWindowLifecycle
 |   |   |   +-- useDreamWindowActions  <- @/engine/dream-window/useDreamWindowActions
@@ -4046,6 +4056,7 @@ const SESSION_SEED: number =
 |   |       +-- CheckCircle, Loader2, Send  <- lucide-react
 |   |       +-- useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
+|   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |       `-- -> (default)
 |   +-- menus
 |   |   +-- dream.menu.DreamRadialMenu.tsx unused
@@ -4084,9 +4095,22 @@ const SESSION_SEED: number =
 |   |       `-- -> (default)
 |   +-- music
 |   |   `-- dream.SoundRecorder.tsx
+|   |       +-- recordOfflineBlobArtifact  <- @/engine/artifacts/artifactStore
 |   |       +-- Download, Mic, Pause, Play, Square, Trash2, Zap  <- lucide-react
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
+|   |       `-- -> (default)
+|   +-- offline
+|   |   +-- dream.OfflineRuntimeBootstrap.tsx unused
+|   |   |   +-- getCachedHttpGet, putOfflineRecord, onConnectivityChange  <- @/engine/offline/offlineCache
+|   |   |   +-- flushQueue, getQueueStatus, listenOnline, replayFetchMutation, subscribeQueueStatus, OfflineAction, QueueStatus  <- @/engine/runtime/offlineQueue
+|   |   |   +-- useEffect, useState  <- react
+|   |   |   +-- -> (default)
+|   |   |   +-- -> OfflineRuntimeState
+|   |   |   `-- unused unused: OfflineRuntimeState
+|   |   `-- dream.OfflineStatusPill.tsx
+|   |       +-- getQueueStatus, subscribeQueueStatus, QueueStatus  <- @/engine/runtime/offlineQueue
+|   |       +-- useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- onboarding
 |   |   `-- dream.OnboardingTip.tsx unused
@@ -4217,6 +4241,7 @@ const SESSION_SEED: number =
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   +-- toErrorMessage  <- @/utils/index
+|   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   +-- -> (default)
 |   |   |   `-- unused unused: (default)
 |   |   +-- dream.ProfileCustomizeButton.tsx
@@ -4275,8 +4300,9 @@ const SESSION_SEED: number =
 |   |   +-- dream.DualRuntimeContainer.tsx
 |   |   |   +-- DualRuntimeState, RuntimeWorld, DEFAULT_DUAL_RUNTIME, isHomeActiveTop, makeDreamSpaceActiveSurface, makeHomeActiveTop, makeHomeDreamSpaceActive  <- @/engine/runtime/dualRuntime
 |   |   |   +-- IntentBus, createIntentPacket, dualRuntimeManifest, dualRuntimeRuleSet, negotiateCompatibility, ActorContext, JsonObject, JsonValue  <- @/engine/runtime/iEngine
+|   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- (default)  <- react
-|   |   |   +-- createContext, useCallback, useContext, useMemo, useRef, useState  <- react
+|   |   |   +-- createContext, useCallback, useContext, useEffect, useMemo, useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> useDualRuntime
 |   |   +-- dream.RuntimeView.tsx
@@ -4791,6 +4817,10 @@ const SESSION_SEED: number =
 |   |   +-- memo, useEffect, useMemo, useRef, useState  <- react
 |   |   +-- -> (default)
 |   |   `-- unused unused: (default)
+|   +-- dream.FirstTouchActivator.tsx unused
+|   |   +-- useEffect  <- react
+|   |   +-- -> (default)
+|   |   `-- unused unused: (default)
 |   +-- dream.ForgeDreamCanvas.tsx unused
 |   |   +-- useCallback, useEffect, useRef, useState, MouseEvent  <- react
 |   |   +-- ALL_CATEGORIES, getByCategory, AtomicComponent, ComponentCategory  <- @/engins/forgeengin/componentInventory
@@ -4825,6 +4855,8 @@ const SESSION_SEED: number =
 |   |   +-- useLiveFeed, FeedPost  <- @/dreamr/feed/useLiveFeed
 |   |   +-- useYouTubeLiveFeed  <- @/dreamr/feed/useYouTubeLiveFeed
 |   |   +-- uploadBlobToLedgerStorage  <- @/engins/contentengin/media/ledger
+|   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
+|   |   +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- isCompactRuntimeViewport  <- @/components/ui-system/runtimeViewport
 |   |   +-- ArrowUp, Bookmark, ChevronDown, ChevronUp, FileText, Globe, Heart, Image, Loader2, Lock, MessageCircle, MoreHorizontal, Plus, Radio, RefreshCw, Send, Share2, Sparkles, TrendingUp, Users, Wifi, X  <- lucide-react
@@ -4865,6 +4897,8 @@ const SESSION_SEED: number =
 |   |   +-- useDreamDMMessages  <- @/dreamdmbar/hooks/useDreamDMMessages
 |   |   +-- useDreamSearch  <- @/dreamdmbar/hooks/useDreamSearch
 |   |   +-- uploadBlobToLedgerStorage  <- @/engins/contentengin/media/ledger
+|   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
+|   |   +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- formatRelativeTime, toErrorMessage  <- @/utils/index
 |   |   +-- ArrowLeft, Bot, FileText, Loader2, Mail, MessageSquare, Music, Plus, Search, Send, X  <- lucide-react
@@ -5439,10 +5473,12 @@ const SESSION_SEED: number =
 |   |   +-- useDreamDMConversations.ts
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- createClient  <- @/supabase/client/client
+|   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- -> DMConversation
 |   |   |   `-- -> useDreamDMConversations
 |   |   +-- useDreamDMDraft.ts unused
+|   |   |   +-- deleteOfflineRecord, getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> DraftPayload
 |   |   |   +-- -> cleanupStaleDrafts
@@ -5453,6 +5489,7 @@ const SESSION_SEED: number =
 |   |   +-- useDreamDMMessages.ts
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- createClient  <- @/supabase/client/client
+|   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> DMMessage
 |   |   |   `-- -> useDreamDMMessages
@@ -5508,6 +5545,8 @@ const SESSION_SEED: number =
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- applyOptimisticDelete, applyOptimisticMarkAll, applyOptimisticRead, getUnreadCount, normalizeDbRow, sortByRecent, DbNotificationRow, UiNotification  <- ./notificationHelpers
 |   |       +-- toErrorMessage  <- @/utils/index
+|   |       +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
+|   |       +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |       +-- -> UseNotificationsReturn
 |   |       +-- -> useNotifications
 |   |       `-- unused unused: UseNotificationsReturn
@@ -5587,6 +5626,7 @@ const SESSION_SEED: number =
 |   |       +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |       +-- moveTorus, torusFocusKey  <- @/engine/runtime/dualRuntime
 |   |       +-- createClient  <- @/supabase/client/client
+|   |       +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- createContext, useCallback, useContext, useEffect, useRef, useState, Dispatch, ReactNode, SetStateAction  <- react
 |   |       +-- -> BarIntent
@@ -5815,6 +5855,7 @@ const SESSION_SEED: number =
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- getPrimaryPostMediaUrl  <- @/engins/contentengin/media/postMedia
 |   |   |   +-- createClient  <- @/supabase/client/client
+|   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> FeedPost
 |   |   |   +-- -> UseLiveFeedReturn
@@ -6178,16 +6219,21 @@ const SESSION_SEED: number =
 |   +-- artifacts
 |   |   `-- artifactStore.ts unused
 |   |       +-- DreamArtifact  <- @/types/dreamArtifact
+|   |       +-- cacheAsset  <- @/engine/offline/offlineCache
+|   |       +-- -> OfflineBlobArtifactRecord
 |   |       +-- -> getDefaultSystemArtifacts
 |   |       +-- -> hideArtifact
 |   |       +-- -> listSystemArtifacts
 |   |       +-- -> listVisibleArtifacts
 |   |       +-- -> loadArtifacts
+|   |       +-- -> readOfflineBlobArtifacts
+|   |       +-- -> recordOfflineBlobArtifact
 |   |       +-- -> removeArtifact
 |   |       +-- -> restoreArtifact
+|   |       +-- -> restoreArtifactsFromOfflineCache
 |   |       +-- -> saveArtifact
 |   |       +-- -> saveArtifacts
-|   |       `-- unused unused: getDefaultSystemArtifacts, removeArtifact, saveArtifacts
+|   |       `-- unused unused: OfflineBlobArtifactRecord, getDefaultSystemArtifacts, readOfflineBlobArtifacts, removeArtifact, saveArtifacts
 |   +-- assets
 |   |   `-- engineAssets.ts unused
 |   |       +-- encodeUint8ArrayToLedgerString  <- @/engins/contentengin/media/ledger
@@ -7540,6 +7586,16 @@ const SESSION_SEED: number =
 |   |       +-- -> SessionIntelligence
 |   |       +-- -> useSessionIntelligence
 |   |       `-- unused unused: PATTERN_MATRIX_LS_KEY, SessionIntelligence
+|   +-- intent
+|   |   `-- appIntentPressure.ts unused
+|   |       +-- -> AppIntentMassState
+|   |       +-- -> AppIntentPoint
+|   |       +-- -> AppIntentPressure
+|   |       +-- -> AppIntentPressureField
+|   |       +-- -> AppIntentPressureFieldOptions
+|   |       +-- -> AppIntentPressureSource
+|   |       +-- -> appIntentPressureFromElementPoint
+|   |       `-- unused unused: AppIntentPressure, AppIntentPressureFieldOptions
 |   +-- journey
 |   |   +-- journeyDots.ts
 |   |   |   +-- LogJourneyDotInput  <- @/types/journey
@@ -7957,31 +8013,60 @@ const SESSION_SEED: number =
 |   +-- offline
 |   |   +-- offlineCache.ts
 |   |   |   +-- -> CachedAsset
+|   |   |   +-- -> CachedHttpResponse
 |   |   |   +-- -> CachedScene
 |   |   |   +-- -> DB_NAME
 |   |   |   +-- -> DB_VERSION
+|   |   |   +-- -> JsonPrimitive
+|   |   |   +-- -> JsonValue
+|   |   |   +-- -> LocalFirstMutation
+|   |   |   +-- -> LocalFirstMutationState
+|   |   |   +-- -> OfflineNamespace
+|   |   |   +-- -> OfflineRecord
 |   |   |   +-- -> STORE_ASSETS
+|   |   |   +-- -> STORE_HTTP_CACHE
+|   |   |   +-- -> STORE_RECORDS
 |   |   |   +-- -> STORE_SCENES
 |   |   |   +-- -> STORE_SYNC_QUEUE
 |   |   |   +-- -> SceneObject
 |   |   |   +-- -> SceneSnapshot
 |   |   |   +-- -> SyncQueueEntry
 |   |   |   +-- -> cacheAsset
+|   |   |   +-- -> cacheHttpGet
 |   |   |   +-- -> clearSyncQueue
+|   |   |   +-- -> createAutoSave
+|   |   |   +-- -> createDefaultSnapshot
 |   |   |   +-- -> deleteAsset
+|   |   |   +-- -> deleteOfflineRecord
 |   |   |   +-- -> deleteScene
 |   |   |   +-- -> enqueueSyncAction
+|   |   |   +-- -> evictExpiredHttpCache
 |   |   |   +-- -> getAsset
+|   |   |   +-- -> getCachedHttpGet
+|   |   |   +-- -> getOfflineRecord
+|   |   |   +-- -> getOfflineValue
 |   |   |   +-- -> getScene
 |   |   |   +-- -> getSyncQueue
 |   |   |   +-- -> isOnline
 |   |   |   +-- -> listAssets
+|   |   |   +-- -> listOfflineRecords
+|   |   |   +-- -> listPersistedScenes
 |   |   |   +-- -> listScenes
 |   |   |   +-- -> onConnectivityChange
 |   |   |   +-- -> openDB
+|   |   |   +-- -> persistScene
 |   |   |   +-- -> processSyncQueue
+|   |   |   +-- -> putOfflineRecord
+|   |   |   +-- -> queueLocalFirstMutation
+|   |   |   +-- -> readLocalFirstMutation
+|   |   |   +-- -> readOfflineCache
+|   |   |   +-- -> removeScene
 |   |   |   +-- -> removeSyncEntry
-|   |   |   `-- -> saveScene
+|   |   |   +-- -> restoreScene
+|   |   |   +-- -> saveLocalFirstMutation
+|   |   |   +-- -> saveScene
+|   |   |   +-- -> scenesAreDifferent
+|   |   |   `-- -> writeOfflineCache
 |   |   `-- useOfflineSync.ts unused
 |   |       +-- useCallback, useEffect, useState  <- react
 |   |       +-- isOnline, onConnectivityChange, processSyncQueue, SyncQueueEntry  <- ./offlineCache
@@ -8762,17 +8847,24 @@ const SESSION_SEED: number =
 |   |   |   `-- unused unused: manifestFromWidget, subscribeRegistryToTransferEvents
 |   |   +-- offlineQueue.ts unused
 |   |   |   +-- toErrorMessage  <- @/utils/index
+|   |   |   +-- -> EnqueueOptions
 |   |   |   +-- -> OfflineAction
 |   |   |   +-- -> OfflineActionStatus
 |   |   |   +-- -> OfflineActionType
+|   |   |   +-- -> OfflineReplayRequest
 |   |   |   +-- -> QueueStatus
+|   |   |   +-- -> clearQueue
 |   |   |   +-- -> dequeue
 |   |   |   +-- -> enqueue
+|   |   |   +-- -> enqueueFetchMutation
 |   |   |   +-- -> flushQueue
 |   |   |   +-- -> getQueueStatus
 |   |   |   +-- -> isOnline
+|   |   |   +-- -> listQueue
 |   |   |   +-- -> listenOnline
-|   |   |   `-- unused unused: OfflineAction, OfflineActionStatus, OfflineActionType, QueueStatus, dequeue, enqueue, flushQueue, getQueueStatus, isOnline, listenOnline
+|   |   |   +-- -> replayFetchMutation
+|   |   |   +-- -> subscribeQueueStatus
+|   |   |   `-- unused unused: EnqueueOptions, OfflineActionStatus, OfflineActionType, OfflineReplayRequest, clearQueue, dequeue, enqueue, isOnline, listQueue
 |   |   +-- quantumCircuit.ts unused
 |   |   |   +-- QuantumComputeResult  <- ./dualRuntimeBridge
 |   |   |   +-- QuantumComputeResult  <- ./dualRuntimeBridge
@@ -9433,8 +9525,10 @@ const SESSION_SEED: number =
 |   |       `-- unused unused: ConnectorRequirement, ConnectorState, WidgetPermissions
 |   +-- activeModulesStore.ts unused
 |   |   +-- ActiveModuleInstance, RuntimeRegionKey  <- @/types/dreamArtifact
+|   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   +-- -> loadActiveModules
 |   |   +-- -> removeActiveModule
+|   |   +-- -> restoreActiveModulesFromOfflineCache
 |   |   +-- -> saveActiveModule
 |   |   +-- -> saveActiveModules
 |   |   +-- -> saveActiveModulesForRegion
@@ -9696,6 +9790,41 @@ const SESSION_SEED: number =
 |   |       +-- -> readProjectFile
 |   |       +-- -> writeProjectFile
 |   |       `-- unused unused: (default)
+|   +-- CodeEngin
+|   |   +-- core
+|   |   |   `-- parser.ts unused
+|   |   |       +-- (default)  <- "]([^
+|   |   |       +-- -> ParseError
+|   |   |       +-- -> ParseResult
+|   |   |       +-- -> ParsedSymbol
+|   |   |       +-- -> parseCode
+|   |   |       `-- unused unused: ParseError, ParseResult, ParsedSymbol, parseCode
+|   |   +-- modules
+|   |   |   `-- ai-co-pilot
+|   |   |       +-- dream.panel.AgentPanel.tsx
+|   |   |       |   +-- useState  <- react
+|   |   |       |   +-- useAgentSession  <- ./useAgentSession
+|   |   |       |   `-- -> AgentPanel
+|   |   |       +-- index.ts
+|   |   |       |   +-- AgentPanel  <- ./dream.panel.AgentPanel
+|   |   |       |   +-- useAgentSession  <- ./useAgentSession
+|   |   |       |   +-- AgentMessage, UseAgentSessionReturn  <- ./useAgentSession
+|   |   |       |   +-- -> AgentMessage
+|   |   |       |   +-- -> AgentPanel
+|   |   |       |   +-- -> UseAgentSessionReturn
+|   |   |       |   `-- -> useAgentSession
+|   |   |       `-- useAgentSession.ts
+|   |   |           +-- useCallback, useRef, useState  <- react
+|   |   |           +-- -> AgentMessage
+|   |   |           +-- -> UseAgentSessionReturn
+|   |   |           `-- -> useAgentSession
+|   |   `-- orchestrator
+|   |       `-- dream.index.tsx ! unused
+|   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
+|   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
+|   |           +-- (default)  ! @/engins/CodeEngin/orchestrator
+|   |           +-- -> (default)
+|   |           `-- unused unused: (default)
 |   +-- codeengin-ui  [CodeEngin]
 |   |   +-- core  [CodeEngin]
 |   |   |   `-- parser.ts unused
@@ -10189,8 +10318,6 @@ const SESSION_SEED: number =
 |   |   |       +-- -> ShaderDef
 |   |   |       `-- unused unused: ShaderDef
 |   |   +-- assetTypes.ts unused
-|   |   |   +-- (dynamic import)  <- ./runtimeProfile
-|   |   |   +-- (dynamic import)  <- ./performancePlan
 |   |   |   +-- -> AnimationClipDef
 |   |   |   +-- -> BoneDef
 |   |   |   +-- -> CONTENTENGIN_VERSION
@@ -10200,6 +10327,9 @@ const SESSION_SEED: number =
 |   |   |   +-- -> ContentAsset
 |   |   |   +-- -> ContentAssetCategory
 |   |   |   +-- -> ContentAssetObject
+|   |   |   +-- -> ContentEnginPerformancePlanSnapshot
+|   |   |   +-- -> ContentEnginRuntimeProfileSnapshot
+|   |   |   +-- -> ContentEnginUpgradeIdSnapshot
 |   |   |   +-- -> ContentRecipe
 |   |   |   +-- -> DomainObject
 |   |   |   +-- -> ExportProfile
@@ -10222,12 +10352,14 @@ const SESSION_SEED: number =
 |   |   |   +-- -> Visibility
 |   |   |   +-- -> identityTransform
 |   |   |   +-- -> vec3
-|   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
+|   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, ContentEnginPerformancePlanSnapshot, ContentEnginRuntimeProfileSnapshot, ContentEnginUpgradeIdSnapshot, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
 |   |   +-- AssetViewport.tsx
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- computeBounds  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- CameraState, RigBendPoint  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
+|   |   |   +-- composeModelMatrix, createMeshBuffers, mat4LookAt, mat4Perspective, MeshBuffers, Vec3  <- @/engins/renderengin/core
+|   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginSceneObject, RenderGpuCullBounds  <- @/engins/renderengin/webgpu
 |   |   |   `-- -> (default)
 |   |   +-- cli.ts
 |   |   |   +-- readFile, writeFile, mkdir, cp  <- fs/promises
@@ -10242,18 +10374,20 @@ const SESSION_SEED: number =
 |   |   |   +-- exportOBJ  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- RenderStage, createInlineRenderIntent  <- @/engins/renderengin
 |   |   |   +-- useImplicitAssetWorkspace  <- @/engins/contentengin/useImplicitAssetWorkspace
-|   |   |   +-- useMemo, useState  <- react
+|   |   |   +-- useEffect, useMemo, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- performancePlan.ts
+|   |   +-- performancePlan.ts unused
 |   |   |   +-- ContentEnginRuntimeProfile  <- ./runtimeProfile
 |   |   |   +-- -> ContentEnginPerformancePlan
-|   |   |   `-- -> createContentEnginPerformancePlan
-|   |   +-- runtimeProfile.ts
+|   |   |   +-- -> createContentEnginPerformancePlan
+|   |   |   `-- unused unused: ContentEnginPerformancePlan
+|   |   +-- runtimeProfile.ts unused
 |   |   |   +-- ExportProfile  <- ./assetTypes
 |   |   |   +-- enabledUpgradeIds, ContentEnginUpgradeId  <- ./upgradeMatrix
 |   |   |   +-- -> ContentEnginRuntimeProfile
 |   |   |   +-- -> ContentEnginRuntimeTier
-|   |   |   `-- -> createContentEnginRuntimeProfile
+|   |   |   +-- -> createContentEnginRuntimeProfile
+|   |   |   `-- unused unused: ContentEnginRuntimeTier
 |   |   +-- upgradeMatrix.ts unused
 |   |   |   +-- ExportProfile  <- ./assetTypes
 |   |   |   +-- -> CONTENTENGIN_2026_UPGRADES
@@ -10263,6 +10397,7 @@ const SESSION_SEED: number =
 |   |   |   `-- unused unused: CONTENTENGIN_2026_UPGRADES, ContentEnginUpgrade
 |   |   `-- useImplicitAssetWorkspace.ts unused
 |   |       +-- useCallback, useEffect, useMemo, useRef, useState  <- react
+|   |       +-- readOfflineCache, writeOfflineCache  <- @/engine/offline/offlineCache
 |   |       +-- useContentEnginRuntime  <- @/engins/rulesets/content/useContentEnginRuntime
 |   |       +-- analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, BrushState, CameraState, EditableMeshState, ExportFormat, ImplicitAssetWorkspaceObject, RigTargetKind, SculptTool  <- @/engins/isosurfaceAssetPipeline
 |   |       +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
@@ -11432,6 +11567,7 @@ const SESSION_SEED: number =
 |   |   |   +-- createEventBus, EventBus  <- @/engine/events/eventBus
 |   |   |   +-- resolveFrameBudget, GameEnginQualityTier  <- ./runtime/FrameBudget
 |   |   |   +-- decideRuntimeQuality  <- ./runtime/RuntimeQuality
+|   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
 |   |   |   +-- -> DreamGameBackend
 |   |   |   +-- -> DreamGameInstance
 |   |   |   +-- -> DreamGameManifest
@@ -11633,7 +11769,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> registerGame
 |   |   |   +-- -> unregisterGame
 |   |   |   +-- -> useUnifiedLoop
-|   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
+|   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EliteGameEngine, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
 |   |   +-- launcher.ts unused
 |   |   |   +-- (default)  <- ./config/demoGameConfig
 |   |   |   +-- GameConfig  <- ./GameEnginCore
@@ -11844,7 +11980,7 @@ const SESSION_SEED: number =
 |   |       `-- -> (default)
 |   +-- renderengin  [RenderEngin]
 |   |   +-- advancedRendering.ts
-|   |   |   +-- mat4Identity, mat4Mul, mat4Transform, makeDualQuaternion, quatMul, DualQuaternion, Mat4, MeshBuffers, Quat, Vec3, Vec4, Vertex, v3add, v3length, v3normalize, v3scale, v3sub  <- ./core
+|   |   |   +-- mat4Identity, mat4Mul, mat4MulPrecise, mat4Transform, makeDualQuaternion, quatMul, DualQuaternion, Mat4, MeshBuffers, Quat, Vec3, Vec4, Vertex, v3add, v3length, v3normalize, v3scale, v3sub  <- ./core
 |   |   |   +-- RenderBounds, RenderFrustumPlane  <- ./virtualization
 |   |   |   +-- -> RenderBoneStoragePlan
 |   |   |   +-- -> RenderCompressedGeometry
@@ -11920,6 +12056,7 @@ const SESSION_SEED: number =
 |   |   |   +-- EnginAction, EnginRuleSetContract  <- ../../engine/engin-runtime/EnginRuleSetContract
 |   |   |   +-- (side-effect)  <- ,
 |   |   |   +-- -> DualQuaternion
+|   |   |   +-- -> EPS
 |   |   |   +-- -> GeometryCluster
 |   |   |   +-- -> Joint
 |   |   |   +-- -> LodLevel
@@ -11955,6 +12092,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> mat4Identity
 |   |   |   +-- -> mat4LookAt
 |   |   |   +-- -> mat4Mul
+|   |   |   +-- -> mat4MulPrecise
 |   |   |   +-- -> mat4Perspective
 |   |   |   +-- -> mat4Scale
 |   |   |   +-- -> mat4Transform
@@ -12063,7 +12201,7 @@ const SESSION_SEED: number =
 |   |   |   +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
 |   |   |   +-- composeModelMatrix, createMeshBuffers, createRenderAsset, mat4LookAt, mat4Perspective, MeshBuffers, Vec2, Vec3  <- ./core
 |   |   |   +-- createParsedGlbRenderAsset, createParsedObjRenderAsset, estimateRenderAssetMemory, ParsedRenderAsset  <- ./assets
-|   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginFrameStats  <- ./webgpu
+|   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginFrameStats, RenderGpuCullBounds  <- ./webgpu
 |   |   |   +-- RenderIntent  <- ./core
 |   |   |   +-- RenderServiceIntentEnvelope  <- ./serviceRuntime
 |   |   |   `-- -> (default)
@@ -12200,16 +12338,34 @@ const SESSION_SEED: number =
 |   |   |   +-- -> cullRenderScene
 |   |   |   +-- -> selectScreenSpaceLod
 |   |   |   `-- -> sphereIntersectsFrustum
+|   |   +-- wasmAcceleration.ts unused
+|   |   |   +-- MeshBuffers, Vec3  <- ./core
+|   |   |   +-- -> RenderMeshBounds
+|   |   |   +-- -> RenderWasmAcceleration
+|   |   |   +-- -> RenderWasmAccelerationExports
+|   |   |   +-- -> computeRenderMeshBounds
+|   |   |   +-- -> fallbackRenderMeshBounds
+|   |   |   +-- -> getActiveRenderWasmAcceleration
+|   |   |   +-- -> loadRenderWasmAcceleration
+|   |   |   +-- -> resetRenderWasmAccelerationForTesting
+|   |   |   `-- unused unused: RenderMeshBounds, RenderWasmAcceleration, RenderWasmAccelerationExports, computeRenderMeshBounds, fallbackRenderMeshBounds, getActiveRenderWasmAcceleration, loadRenderWasmAcceleration, resetRenderWasmAccelerationForTesting
 |   |   `-- webgpu.ts
 |   |       +-- mat4Identity, Mat4, MeshBuffers, Vec3, Vec4, Vertex, validateMeshForRenderUpload  <- ./core
+|   |       +-- -> BATCH_SHADER
 |   |       +-- -> PackedVertexBuffer
 |   |       +-- -> RenderEnginFrameStats
 |   |       +-- -> RenderEnginGpuMesh
 |   |       +-- -> RenderEnginGpuTexture
 |   |       +-- -> RenderEnginLifecycleHooks
+|   |       +-- -> RenderEnginMeshArenaRange
 |   |       +-- -> RenderEnginScene
 |   |       +-- -> RenderEnginSceneObject
+|   |       +-- -> RenderEnginTextureAtlasAllocation
+|   |       +-- -> RenderGpuCullBounds
 |   |       +-- -> RenderGpuMaterial
+|   |       +-- -> RenderGpuPickRequest
+|   |       +-- -> RenderGpuPickResult
+|   |       +-- -> RenderGpuVisibilityState
 |   |       +-- -> SHADER
 |   |       +-- -> WebGpuRenderEngin
 |   |       +-- -> packAosVertexBuffer
@@ -12951,12 +13107,20 @@ const SESSION_SEED: number =
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- useEffect, useState  <- react
 |   |   `-- -> useAccount
+|   +-- useAppIntentPressureSurface.ts unused
+|   |   +-- useCallback, useEffect, useRef  <- react
+|   |   +-- AppIntentPressureField, appIntentPressureFromElementPoint, AppIntentPressureSource, AppIntentMassState, AppIntentPoint  <- @/engine/intent/appIntentPressure
+|   |   +-- -> AppIntentPressureSurfaceOptions
+|   |   +-- -> applyIntentPressureToElement
+|   |   +-- -> useAppIntentPressureSurface
+|   |   `-- unused unused: AppIntentPressureSurfaceOptions, applyIntentPressureToElement, useAppIntentPressureSurface
 |   +-- useConnectorInstallFlow.ts unused
 |   |   +-- getConnectorDef  <- @/engine/connectors/connectorRegistry
 |   |   +-- consumeDeferredPrompt, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater, SlotGrid  <- @/engine/connectors/installFlow
 |   |   +-- WidgetTypeDef  <- @/engine/widgets/widgetRegistry
 |   |   +-- getWidgetTypeDef  <- @/engine/widgets/widgetRegistry
-|   |   +-- useCallback, useRef, useState  <- react
+|   |   +-- useCallback, useEffect, useRef, useState  <- react
+|   |   +-- readOfflineCache, writeOfflineCache  <- @/engine/offline/offlineCache
 |   |   +-- -> ActivePrompt
 |   |   +-- -> ConnectorInstallFlowActions
 |   |   +-- -> ConnectorInstallFlowOptions
@@ -12965,6 +13129,8 @@ const SESSION_SEED: number =
 |   |   +-- -> useConnectorInstallFlow
 |   |   `-- unused unused: ActivePrompt, ConnectorInstallFlowActions, ConnectorInstallFlowOptions, ConnectorInstallFlowState, PlacementRequest
 |   +-- useDreamLayout.ts unused
+|   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
+|   |   +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- -> UserDreamLayout
 |   |   +-- -> useDreamLayout
@@ -13118,6 +13284,7 @@ const SESSION_SEED: number =
 |   |   +-- engin-shader.wasm
 |   |   `-- engin-shader.worker.ts
 |   +-- dr-eams-pbr.html
+|   +-- dreamengin-sw.js
 |   +-- file.svg
 |   +-- globe.svg
 |   +-- manifest.json
