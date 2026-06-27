@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T00:14:12.097Z",
+  "generatedAt": "2026-06-27T14:13:17.195Z",
   "root": ".",
   "nodes": [
     {
@@ -3546,6 +3546,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-renderengin-service-integrated.zip",
+      "label": "DREAMenginree2-renderengin-service-integrated.zip",
+      "type": "file",
+      "path": "DREAMenginree2-renderengin-service-integrated.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
