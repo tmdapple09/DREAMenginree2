@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T06:15:43.441Z",
+  "generatedAt": "2026-06-29T06:45:44.640Z",
   "root": ".",
   "nodes": [
     {
@@ -3182,10 +3182,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-behavior-proof.yml",
-      "label": "organize-repo-build-map-semantic-determinism-behavior-proof.yml",
+      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-tree-only.yml",
+      "label": "organize-repo-build-map-semantic-determinism-tree-only.yml",
       "type": "config",
-      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-behavior-proof.yml",
+      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-tree-only.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
