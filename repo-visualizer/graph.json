@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T13:54:09.339Z",
+  "generatedAt": "2026-06-29T18:48:01.192Z",
   "root": ".",
   "nodes": [
     {
@@ -3236,16 +3236,6 @@
       "label": "readme-autosync.yml",
       "type": "config",
       "path": ".github/workflows/readme-autosync.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/rebase-organized-zip-files-commit-before-verification.yml",
-      "label": "rebase-organized-zip-files-commit-before-verification.yml",
-      "type": "config",
-      "path": ".github/workflows/rebase-organized-zip-files-commit-before-verification.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
