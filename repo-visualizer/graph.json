@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T00:14:12.097Z",
+  "generatedAt": "2026-06-29T02:21:33.508Z",
   "root": ".",
   "nodes": [
     {
@@ -3132,6 +3132,25 @@
       "tags": []
     },
     {
+      "id": "folder:.github/workflows/lows",
+      "label": "lows",
+      "type": "folder",
+      "path": ".github/workflows/lows",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:.github/workflows/lows/organize-repo-build-map.yml",
+      "label": "organize-repo-build-map.yml",
+      "type": "config",
+      "path": ".github/workflows/lows/organize-repo-build-map.yml",
+      "parent": "folder:.github/workflows/lows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/massivejson.yml",
       "label": "massivejson.yml",
       "type": "config",
@@ -3977,7 +3996,7 @@
       "type": "function",
       "path": "app/ads/create/page.tsx",
       "parent": "file:app/ads/create/page.tsx",
-      "loc": 12,
+      "loc": 15,
       "isOrphan": false,
       "exported": true
     },
@@ -10140,7 +10159,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/DreamSpaceRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/DreamSpaceRegion.tsx",
-      "loc": 17,
+      "loc": 18,
       "isOrphan": true,
       "exported": false
     },
@@ -10150,7 +10169,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/DreamSpaceRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/DreamSpaceRegion.tsx",
-      "loc": 37,
+      "loc": 38,
       "isOrphan": true,
       "exported": true
     },
@@ -10190,7 +10209,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 46,
+      "loc": 47,
       "isOrphan": true,
       "exported": false
     },
@@ -10200,7 +10219,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 85,
+      "loc": 86,
       "isOrphan": true,
       "exported": true
     },
@@ -10844,7 +10863,7 @@
       "type": "function",
       "path": "app/edit-profiledream/page.tsx",
       "parent": "file:app/edit-profiledream/page.tsx",
-      "loc": 24,
+      "loc": 29,
       "isOrphan": false,
       "exported": true
     },
@@ -11849,7 +11868,7 @@
       "type": "function",
       "path": "app/feed-settings/dream.FeedSettingsClient.tsx",
       "parent": "file:app/feed-settings/dream.FeedSettingsClient.tsx",
-      "loc": 31,
+      "loc": 32,
       "isOrphan": true,
       "exported": false
     },
@@ -11859,7 +11878,7 @@
       "type": "function",
       "path": "app/feed-settings/dream.FeedSettingsClient.tsx",
       "parent": "file:app/feed-settings/dream.FeedSettingsClient.tsx",
-      "loc": 55,
+      "loc": 56,
       "isOrphan": true,
       "exported": true
     },
@@ -12223,7 +12242,7 @@
       "type": "function",
       "path": "app/layout.tsx",
       "parent": "file:app/layout.tsx",
-      "loc": 67,
+      "loc": 69,
       "isOrphan": false,
       "exported": true
     },
@@ -12376,7 +12395,7 @@
       "type": "function",
       "path": "app/marketplace/sell/page.tsx",
       "parent": "file:app/marketplace/sell/page.tsx",
-      "loc": 28,
+      "loc": 31,
       "isOrphan": false,
       "exported": true
     },
@@ -12983,7 +13002,7 @@
       "type": "function",
       "path": "app/settings/controls/dream.ControlsClient.tsx",
       "parent": "file:app/settings/controls/dream.ControlsClient.tsx",
-      "loc": 30,
+      "loc": 31,
       "isOrphan": true,
       "exported": false
     },
@@ -12993,7 +13012,7 @@
       "type": "function",
       "path": "app/settings/controls/dream.ControlsClient.tsx",
       "parent": "file:app/settings/controls/dream.ControlsClient.tsx",
-      "loc": 54,
+      "loc": 55,
       "isOrphan": true,
       "exported": true
     },
@@ -13279,7 +13298,7 @@
       "type": "function",
       "path": "app/settings/privacy/dream.PrivacyClient.tsx",
       "parent": "file:app/settings/privacy/dream.PrivacyClient.tsx",
-      "loc": 38,
+      "loc": 39,
       "isOrphan": true,
       "exported": false
     },
@@ -13289,7 +13308,7 @@
       "type": "function",
       "path": "app/settings/privacy/dream.PrivacyClient.tsx",
       "parent": "file:app/settings/privacy/dream.PrivacyClient.tsx",
-      "loc": 83,
+      "loc": 84,
       "isOrphan": true,
       "exported": true
     },
@@ -13461,7 +13480,7 @@
       "type": "function",
       "path": "app/shop/sell/page.tsx",
       "parent": "file:app/shop/sell/page.tsx",
-      "loc": 13,
+      "loc": 16,
       "isOrphan": false,
       "exported": true
     },
@@ -15586,12 +15605,22 @@
       "tags": []
     },
     {
+      "id": "function:components/dream.CreatePostModal.tsx#parsePostVisibility",
+      "label": "parsePostVisibility",
+      "type": "function",
+      "path": "components/dream.CreatePostModal.tsx",
+      "parent": "file:components/dream.CreatePostModal.tsx",
+      "loc": 18,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/dream.CreatePostModal.tsx#CreatePostModal",
       "label": "CreatePostModal",
       "type": "function",
       "path": "components/dream.CreatePostModal.tsx",
       "parent": "file:components/dream.CreatePostModal.tsx",
-      "loc": 22,
+      "loc": 25,
       "isOrphan": true,
       "exported": true
     },
@@ -15676,6 +15705,16 @@
       "loc": null,
       "isOrphan": false,
       "tags": []
+    },
+    {
+      "id": "function:components/dream.FeedCard.tsx#asRecord",
+      "label": "asRecord",
+      "type": "function",
+      "path": "components/dream.FeedCard.tsx",
+      "parent": "file:components/dream.FeedCard.tsx",
+      "loc": 11,
+      "isOrphan": true,
+      "exported": false
     },
     {
       "id": "file:components/dream.FeedCard.tsx",
@@ -15871,12 +15910,22 @@
       "tags": []
     },
     {
+      "id": "function:components/dream.HomeFeed.tsx#feedCacheId",
+      "label": "feedCacheId",
+      "type": "function",
+      "path": "components/dream.HomeFeed.tsx",
+      "parent": "file:components/dream.HomeFeed.tsx",
+      "loc": 66,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/dream.HomeFeed.tsx#HomeFeed",
       "label": "HomeFeed",
       "type": "function",
       "path": "components/dream.HomeFeed.tsx",
       "parent": "file:components/dream.HomeFeed.tsx",
-      "loc": 84,
+      "loc": 90,
       "isOrphan": true,
       "exported": true
     },
@@ -16008,7 +16057,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 48,
+      "loc": 50,
       "isOrphan": true,
       "exported": false
     },
@@ -16018,7 +16067,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 55,
+      "loc": 57,
       "isOrphan": true,
       "exported": false
     },
@@ -16028,7 +16077,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 61,
+      "loc": 63,
       "isOrphan": true,
       "exported": false
     },
@@ -16038,7 +16087,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 76,
+      "loc": 78,
       "isOrphan": true,
       "exported": false
     },
@@ -16048,7 +16097,7 @@
       "type": "function",
       "path": "components/dream.MessagesClient.tsx",
       "parent": "file:components/dream.MessagesClient.tsx",
-      "loc": 84,
+      "loc": 86,
       "isOrphan": true,
       "exported": true
     },
@@ -21005,7 +21054,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 39,
+      "loc": 40,
       "isOrphan": true,
       "exported": false
     },
@@ -21015,7 +21064,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 43,
+      "loc": 44,
       "isOrphan": true,
       "exported": false
     },
@@ -21025,7 +21074,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 56,
+      "loc": 57,
       "isOrphan": true,
       "exported": false
     },
@@ -21035,7 +21084,7 @@
       "type": "function",
       "path": "components/home/dream.ActiveModuleSurface.tsx",
       "parent": "file:components/home/dream.ActiveModuleSurface.tsx",
-      "loc": 61,
+      "loc": 62,
       "isOrphan": true,
       "exported": true
     },
@@ -21461,7 +21510,7 @@
       "type": "function",
       "path": "components/marketplace/dream.MarketplaceRequestButton.tsx",
       "parent": "file:components/marketplace/dream.MarketplaceRequestButton.tsx",
-      "loc": 21,
+      "loc": 22,
       "isOrphan": true,
       "exported": true
     },
@@ -21648,7 +21697,7 @@
       "type": "function",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "file:components/music/dream.SoundRecorder.tsx",
-      "loc": 16,
+      "loc": 18,
       "isOrphan": true,
       "exported": false
     },
@@ -21658,7 +21707,7 @@
       "type": "function",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "file:components/music/dream.SoundRecorder.tsx",
-      "loc": 22,
+      "loc": 24,
       "isOrphan": true,
       "exported": false
     },
@@ -21668,7 +21717,7 @@
       "type": "function",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "file:components/music/dream.SoundRecorder.tsx",
-      "loc": 30,
+      "loc": 32,
       "isOrphan": true,
       "exported": false
     },
@@ -21678,7 +21727,7 @@
       "type": "function",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "file:components/music/dream.SoundRecorder.tsx",
-      "loc": 46,
+      "loc": 48,
       "isOrphan": true,
       "exported": false
     },
@@ -21688,7 +21737,7 @@
       "type": "function",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "file:components/music/dream.SoundRecorder.tsx",
-      "loc": 52,
+      "loc": 54,
       "isOrphan": true,
       "exported": true
     },
@@ -21698,6 +21747,75 @@
       "type": "tsx",
       "path": "components/music/dream.SoundRecorder.tsx",
       "parent": "folder:components/music",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:components/offline",
+      "label": "offline",
+      "type": "folder",
+      "path": "components/offline",
+      "parent": "folder:components",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "function:components/offline/dream.OfflineRuntimeBootstrap.tsx#emitState",
+      "label": "emitState",
+      "type": "function",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "parent": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "loc": 24,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/offline/dream.OfflineRuntimeBootstrap.tsx#replayAction",
+      "label": "replayAction",
+      "type": "function",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "parent": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "loc": 29,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/offline/dream.OfflineRuntimeBootstrap.tsx#OfflineRuntimeBootstrap",
+      "label": "OfflineRuntimeBootstrap",
+      "type": "function",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "parent": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "loc": 33,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "label": "dream.OfflineRuntimeBootstrap.tsx",
+      "type": "tsx",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "parent": "folder:components/offline",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "function:components/offline/dream.OfflineStatusPill.tsx#OfflineStatusPill",
+      "label": "OfflineStatusPill",
+      "type": "function",
+      "path": "components/offline/dream.OfflineStatusPill.tsx",
+      "parent": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "loc": 15,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "label": "dream.OfflineStatusPill.tsx",
+      "type": "tsx",
+      "path": "components/offline/dream.OfflineStatusPill.tsx",
+      "parent": "folder:components/offline",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -22187,7 +22305,7 @@
       "type": "function",
       "path": "components/profile/dream.ProfileCanvas.tsx",
       "parent": "file:components/profile/dream.ProfileCanvas.tsx",
-      "loc": 54,
+      "loc": 55,
       "isOrphan": true,
       "exported": false
     },
@@ -22197,7 +22315,7 @@
       "type": "function",
       "path": "components/profile/dream.ProfileCanvas.tsx",
       "parent": "file:components/profile/dream.ProfileCanvas.tsx",
-      "loc": 60,
+      "loc": 61,
       "isOrphan": true,
       "exported": false
     },
@@ -22207,7 +22325,7 @@
       "type": "function",
       "path": "components/profile/dream.ProfileCanvas.tsx",
       "parent": "file:components/profile/dream.ProfileCanvas.tsx",
-      "loc": 63,
+      "loc": 64,
       "isOrphan": true,
       "exported": true
     },
@@ -22468,7 +22586,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 65,
+      "loc": 68,
       "isOrphan": true,
       "exported": false
     },
@@ -22478,7 +22596,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 132,
+      "loc": 135,
       "isOrphan": false,
       "exported": true
     },
@@ -22488,7 +22606,7 @@
       "type": "function",
       "path": "components/runtime/dream.DualRuntimeContainer.tsx",
       "parent": "file:components/runtime/dream.DualRuntimeContainer.tsx",
-      "loc": 138,
+      "loc": 141,
       "isOrphan": true,
       "exported": true
     },
@@ -26827,7 +26945,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMConversations.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMConversations.ts",
-      "loc": 36,
+      "loc": 37,
       "isOrphan": false,
       "exported": true
     },
@@ -26850,7 +26968,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 48,
+      "loc": 49,
       "isOrphan": true,
       "exported": false
     },
@@ -26860,7 +26978,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 52,
+      "loc": 53,
       "isOrphan": true,
       "exported": false
     },
@@ -26870,7 +26988,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 63,
+      "loc": 64,
       "isOrphan": true,
       "exported": false
     },
@@ -26880,7 +26998,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 83,
+      "loc": 85,
       "isOrphan": true,
       "exported": true
     },
@@ -26890,7 +27008,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 100,
+      "loc": 102,
       "isOrphan": true,
       "exported": true
     },
@@ -26900,7 +27018,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 118,
+      "loc": 121,
       "isOrphan": true,
       "exported": true
     },
@@ -26910,7 +27028,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMDraft.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
-      "loc": 123,
+      "loc": 126,
       "isOrphan": false,
       "exported": true
     },
@@ -26930,7 +27048,7 @@
       "type": "function",
       "path": "dreamdmbar/hooks/useDreamDMMessages.ts",
       "parent": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
-      "loc": 49,
+      "loc": 52,
       "isOrphan": false,
       "exported": true
     },
@@ -27168,7 +27286,7 @@
       "type": "function",
       "path": "dreamdmbar/notifications/useNotifications.ts",
       "parent": "file:dreamdmbar/notifications/useNotifications.ts",
-      "loc": 58,
+      "loc": 61,
       "isOrphan": false,
       "exported": true
     },
@@ -27192,12 +27310,32 @@
       "isOrphan": false
     },
     {
+      "id": "function:dreamdmbar/runtime/DreamSystemContext.tsx#sanitizeBarIntentForOffline",
+      "label": "sanitizeBarIntentForOffline",
+      "type": "function",
+      "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
+      "parent": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
+      "loc": 252,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:dreamdmbar/runtime/DreamSystemContext.tsx#normalizeOfflineSnapshot",
+      "label": "normalizeOfflineSnapshot",
+      "type": "function",
+      "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
+      "parent": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
+      "loc": 269,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:dreamdmbar/runtime/DreamSystemContext.tsx#DreamSystemProvider",
       "label": "DreamSystemProvider",
       "type": "function",
       "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
       "parent": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
-      "loc": 264,
+      "loc": 315,
       "isOrphan": true,
       "exported": true
     },
@@ -27207,7 +27345,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/DreamSystemContext.tsx",
       "parent": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
-      "loc": 399,
+      "loc": 451,
       "isOrphan": false,
       "exported": true
     },
@@ -28584,7 +28722,7 @@
       "type": "function",
       "path": "dreamr/feed/useLiveFeed.ts",
       "parent": "file:dreamr/feed/useLiveFeed.ts",
-      "loc": 104,
+      "loc": 105,
       "isOrphan": false,
       "exported": true
     },
@@ -29274,7 +29412,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 6,
+      "loc": 7,
       "isOrphan": true,
       "exported": false
     },
@@ -29284,7 +29422,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 10,
+      "loc": 11,
       "isOrphan": true,
       "exported": false
     },
@@ -29294,7 +29432,17 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 15,
+      "loc": 17,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/activeModulesStore.ts#restoreActiveModulesFromOfflineCache",
+      "label": "restoreActiveModulesFromOfflineCache",
+      "type": "function",
+      "path": "engine/activeModulesStore.ts",
+      "parent": "file:engine/activeModulesStore.ts",
+      "loc": 31,
       "isOrphan": false,
       "exported": true
     },
@@ -29304,7 +29452,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 29,
+      "loc": 38,
       "isOrphan": false,
       "exported": true
     },
@@ -29314,7 +29462,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 36,
+      "loc": 45,
       "isOrphan": true,
       "exported": true
     },
@@ -29324,7 +29472,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 42,
+      "loc": 51,
       "isOrphan": false,
       "exported": true
     },
@@ -29334,7 +29482,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 54,
+      "loc": 63,
       "isOrphan": false,
       "exported": true
     },
@@ -29344,7 +29492,7 @@
       "type": "function",
       "path": "engine/activeModulesStore.ts",
       "parent": "file:engine/activeModulesStore.ts",
-      "loc": 69,
+      "loc": 78,
       "isOrphan": false,
       "exported": true
     },
@@ -30340,7 +30488,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 81,
+      "loc": 82,
       "isOrphan": true,
       "exported": false
     },
@@ -30350,7 +30498,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 85,
+      "loc": 86,
       "isOrphan": true,
       "exported": false
     },
@@ -30360,7 +30508,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 96,
+      "loc": 97,
       "isOrphan": true,
       "exported": false
     },
@@ -30370,7 +30518,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 101,
+      "loc": 103,
       "isOrphan": true,
       "exported": true
     },
@@ -30380,7 +30528,17 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 110,
+      "loc": 112,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/artifacts/artifactStore.ts#restoreArtifactsFromOfflineCache",
+      "label": "restoreArtifactsFromOfflineCache",
+      "type": "function",
+      "path": "engine/artifacts/artifactStore.ts",
+      "parent": "file:engine/artifacts/artifactStore.ts",
+      "loc": 127,
       "isOrphan": false,
       "exported": true
     },
@@ -30390,7 +30548,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 125,
+      "loc": 134,
       "isOrphan": false,
       "exported": true
     },
@@ -30400,7 +30558,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 132,
+      "loc": 141,
       "isOrphan": true,
       "exported": true
     },
@@ -30410,7 +30568,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 136,
+      "loc": 145,
       "isOrphan": true,
       "exported": true
     },
@@ -30420,7 +30578,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 141,
+      "loc": 150,
       "isOrphan": false,
       "exported": true
     },
@@ -30430,7 +30588,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 145,
+      "loc": 154,
       "isOrphan": false,
       "exported": true
     },
@@ -30440,7 +30598,7 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 154,
+      "loc": 163,
       "isOrphan": false,
       "exported": true
     },
@@ -30450,7 +30608,27 @@
       "type": "function",
       "path": "engine/artifacts/artifactStore.ts",
       "parent": "file:engine/artifacts/artifactStore.ts",
-      "loc": 163,
+      "loc": 172,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/artifacts/artifactStore.ts#readOfflineBlobArtifacts",
+      "label": "readOfflineBlobArtifacts",
+      "type": "function",
+      "path": "engine/artifacts/artifactStore.ts",
+      "parent": "file:engine/artifacts/artifactStore.ts",
+      "loc": 188,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/artifacts/artifactStore.ts#recordOfflineBlobArtifact",
+      "label": "recordOfflineBlobArtifact",
+      "type": "function",
+      "path": "engine/artifacts/artifactStore.ts",
+      "parent": "file:engine/artifacts/artifactStore.ts",
+      "loc": 198,
       "isOrphan": false,
       "exported": true
     },
@@ -39054,12 +39232,252 @@
       "isOrphan": false
     },
     {
+      "id": "function:engine/offline/offlineCache.ts#hasIndexedDB",
+      "label": "hasIndexedDB",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 113,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#hasLocalStorage",
+      "label": "hasLocalStorage",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 117,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#nowIso",
+      "label": "nowIso",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 121,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#recordKey",
+      "label": "recordKey",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 125,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#fallbackKey",
+      "label": "fallbackKey",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 129,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#fallbackPut",
+      "label": "fallbackPut",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 133,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#fallbackGet",
+      "label": "fallbackGet",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 138,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#fallbackDelete",
+      "label": "fallbackDelete",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 149,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#fallbackList",
+      "label": "fallbackList",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 154,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:engine/offline/offlineCache.ts#openDB",
       "label": "openDB",
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 89,
+      "loc": 173,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#withStore",
+      "label": "withStore",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 235,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#putStore",
+      "label": "putStore",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 256,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#getStore",
+      "label": "getStore",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 266,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#deleteStore",
+      "label": "deleteStore",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 274,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#listStore",
+      "label": "listStore",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 284,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "label": "putOfflineRecord",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 292,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#getOfflineRecord",
+      "label": "getOfflineRecord",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 314,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#getOfflineValue",
+      "label": "getOfflineValue",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 324,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#deleteOfflineRecord",
+      "label": "deleteOfflineRecord",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 328,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#listOfflineRecords",
+      "label": "listOfflineRecords",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 332,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#writeOfflineCache",
+      "label": "writeOfflineCache",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 339,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#readOfflineCache",
+      "label": "readOfflineCache",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 343,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#cacheHttpGet",
+      "label": "cacheHttpGet",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 347,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#getCachedHttpGet",
+      "label": "getCachedHttpGet",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 362,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#evictExpiredHttpCache",
+      "label": "evictExpiredHttpCache",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 372,
       "isOrphan": true,
       "exported": true
     },
@@ -39069,7 +39487,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 131,
+      "loc": 385,
       "isOrphan": false,
       "exported": true
     },
@@ -39079,7 +39497,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 141,
+      "loc": 389,
       "isOrphan": true,
       "exported": true
     },
@@ -39089,7 +39507,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 151,
+      "loc": 393,
       "isOrphan": true,
       "exported": true
     },
@@ -39099,7 +39517,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 161,
+      "loc": 397,
       "isOrphan": true,
       "exported": true
     },
@@ -39109,7 +39527,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 171,
+      "loc": 401,
       "isOrphan": false,
       "exported": true
     },
@@ -39119,7 +39537,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 181,
+      "loc": 405,
       "isOrphan": false,
       "exported": true
     },
@@ -39129,7 +39547,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 191,
+      "loc": 409,
       "isOrphan": false,
       "exported": true
     },
@@ -39139,7 +39557,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 201,
+      "loc": 413,
       "isOrphan": false,
       "exported": true
     },
@@ -39149,7 +39567,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 211,
+      "loc": 417,
       "isOrphan": false,
       "exported": true
     },
@@ -39159,7 +39577,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 221,
+      "loc": 429,
       "isOrphan": true,
       "exported": true
     },
@@ -39169,7 +39587,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 231,
+      "loc": 433,
       "isOrphan": true,
       "exported": true
     },
@@ -39179,7 +39597,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 241,
+      "loc": 450,
       "isOrphan": true,
       "exported": true
     },
@@ -39189,7 +39607,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 251,
+      "loc": 454,
       "isOrphan": false,
       "exported": true
     },
@@ -39199,7 +39617,7 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 261,
+      "loc": 459,
       "isOrphan": false,
       "exported": true
     },
@@ -39209,7 +39627,107 @@
       "type": "function",
       "path": "engine/offline/offlineCache.ts",
       "parent": "file:engine/offline/offlineCache.ts",
-      "loc": 288,
+      "loc": 474,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#createDefaultSnapshot",
+      "label": "createDefaultSnapshot",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 501,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#persistScene",
+      "label": "persistScene",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 510,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#restoreScene",
+      "label": "restoreScene",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 516,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#removeScene",
+      "label": "removeScene",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 520,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#listPersistedScenes",
+      "label": "listPersistedScenes",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 524,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#scenesAreDifferent",
+      "label": "scenesAreDifferent",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 528,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#createAutoSave",
+      "label": "createAutoSave",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 554,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#saveLocalFirstMutation",
+      "label": "saveLocalFirstMutation",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 597,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#readLocalFirstMutation",
+      "label": "readLocalFirstMutation",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 604,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
+      "label": "queueLocalFirstMutation",
+      "type": "function",
+      "path": "engine/offline/offlineCache.ts",
+      "parent": "file:engine/offline/offlineCache.ts",
+      "loc": 608,
       "isOrphan": false,
       "exported": true
     },
@@ -40744,7 +41262,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 226,
+      "loc": 227,
       "isOrphan": true,
       "exported": false
     },
@@ -40754,7 +41272,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 237,
+      "loc": 238,
       "isOrphan": true,
       "exported": false
     },
@@ -40764,7 +41282,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 250,
+      "loc": 251,
       "isOrphan": true,
       "exported": true
     },
@@ -40774,7 +41292,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 285,
+      "loc": 286,
       "isOrphan": true,
       "exported": true
     },
@@ -40784,7 +41302,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 289,
+      "loc": 290,
       "isOrphan": false,
       "exported": true
     },
@@ -40794,7 +41312,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 293,
+      "loc": 294,
       "isOrphan": false,
       "exported": true
     },
@@ -40804,7 +41322,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 301,
+      "loc": 302,
       "isOrphan": false,
       "exported": true
     },
@@ -40814,7 +41332,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 310,
+      "loc": 311,
       "isOrphan": true,
       "exported": false
     },
@@ -40824,7 +41342,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 314,
+      "loc": 315,
       "isOrphan": true,
       "exported": false
     },
@@ -40834,7 +41352,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 318,
+      "loc": 319,
       "isOrphan": true,
       "exported": false
     },
@@ -40844,7 +41362,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 325,
+      "loc": 326,
       "isOrphan": true,
       "exported": false
     },
@@ -40854,7 +41372,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 333,
+      "loc": 334,
       "isOrphan": true,
       "exported": false
     },
@@ -40864,7 +41382,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 347,
+      "loc": 348,
       "isOrphan": false,
       "exported": true
     },
@@ -40874,7 +41392,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 362,
+      "loc": 363,
       "isOrphan": true,
       "exported": false
     },
@@ -40884,7 +41402,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 373,
+      "loc": 374,
       "isOrphan": true,
       "exported": false
     },
@@ -40894,7 +41412,7 @@
       "type": "function",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 382,
+      "loc": 383,
       "isOrphan": true,
       "exported": false
     },
@@ -40904,7 +41422,7 @@
       "type": "class",
       "path": "engine/runtime/dreamOSBus.ts",
       "parent": "file:engine/runtime/dreamOSBus.ts",
-      "loc": 392,
+      "loc": 393,
       "isOrphan": true,
       "exported": false
     },
@@ -41113,7 +41631,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 148,
+      "loc": 150,
       "isOrphan": true,
       "exported": false
     },
@@ -41123,7 +41641,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 150,
+      "loc": 152,
       "isOrphan": true,
       "exported": false
     },
@@ -41133,7 +41651,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 152,
+      "loc": 154,
       "isOrphan": true,
       "exported": false
     },
@@ -41143,7 +41661,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 154,
+      "loc": 156,
       "isOrphan": true,
       "exported": false
     },
@@ -41153,7 +41671,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 156,
+      "loc": 158,
       "isOrphan": true,
       "exported": false
     },
@@ -41163,7 +41681,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 158,
+      "loc": 160,
       "isOrphan": true,
       "exported": false
     },
@@ -41173,7 +41691,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 160,
+      "loc": 162,
       "isOrphan": true,
       "exported": false
     },
@@ -41183,7 +41701,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 173,
+      "loc": 175,
       "isOrphan": true,
       "exported": false
     },
@@ -41193,7 +41711,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 182,
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
@@ -41203,7 +41721,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 192,
+      "loc": 194,
       "isOrphan": true,
       "exported": false
     },
@@ -41213,7 +41731,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 220,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -41223,7 +41741,7 @@
       "type": "class",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 244,
+      "loc": 246,
       "isOrphan": true,
       "exported": false
     },
@@ -42021,22 +42539,72 @@
       "tags": []
     },
     {
-      "id": "function:engine/runtime/offlineQueue.ts#_load",
-      "label": "_load",
+      "id": "function:engine/runtime/offlineQueue.ts#storageAvailable",
+      "label": "storageAvailable",
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 77,
+      "loc": 74,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engine/runtime/offlineQueue.ts#_save",
-      "label": "_save",
+      "id": "function:engine/runtime/offlineQueue.ts#emitQueueChanged",
+      "label": "emitQueueChanged",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 78,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#generateId",
+      "label": "generateId",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 83,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#defaultIdempotencyKey",
+      "label": "defaultIdempotencyKey",
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
       "loc": 88,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#loadQueue",
+      "label": "loadQueue",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 94,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#saveQueue",
+      "label": "saveQueue",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 107,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#nextBackoffMs",
+      "label": "nextBackoffMs",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -42046,8 +42614,18 @@
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 106,
+      "loc": 123,
       "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#enqueueFetchMutation",
+      "label": "enqueueFetchMutation",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 170,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42056,17 +42634,27 @@
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 146,
+      "loc": 178,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "function:engine/runtime/offlineQueue.ts#flushQueue",
-      "label": "flushQueue",
+      "id": "function:engine/runtime/offlineQueue.ts#listQueue",
+      "label": "listQueue",
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 161,
+      "loc": 182,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#clearQueue",
+      "label": "clearQueue",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 186,
       "isOrphan": true,
       "exported": true
     },
@@ -42076,7 +42664,47 @@
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 203,
+      "loc": 190,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#subscribeQueueStatus",
+      "label": "subscribeQueueStatus",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 212,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#replayFetchMutation",
+      "label": "replayFetchMutation",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 220,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#flushQueue",
+      "label": "flushQueue",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 241,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engine/runtime/offlineQueue.ts#isOnline",
+      "label": "isOnline",
+      "type": "function",
+      "path": "engine/runtime/offlineQueue.ts",
+      "parent": "file:engine/runtime/offlineQueue.ts",
+      "loc": 297,
       "isOrphan": true,
       "exported": true
     },
@@ -42086,18 +42714,8 @@
       "type": "function",
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 238,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:engine/runtime/offlineQueue.ts#isOnline",
-      "label": "isOnline",
-      "type": "function",
-      "path": "engine/runtime/offlineQueue.ts",
-      "parent": "file:engine/runtime/offlineQueue.ts",
-      "loc": 257,
-      "isOrphan": true,
+      "loc": 302,
+      "isOrphan": false,
       "exported": true
     },
     {
@@ -42107,7 +42725,7 @@
       "path": "engine/runtime/offlineQueue.ts",
       "parent": "folder:engine/runtime",
       "loc": null,
-      "isOrphan": true,
+      "isOrphan": false,
       "tags": []
     },
     {
@@ -46677,27 +47295,87 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 36,
+      "loc": 47,
       "isOrphan": true,
       "exported": true
     },
     {
-      "id": "function:engins/contentengin/AssetViewport.tsx#drawWebGPU",
-      "label": "drawWebGPU",
+      "id": "function:engins/contentengin/AssetViewport.tsx#drawRenderEnginService",
+      "label": "drawRenderEnginService",
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 382,
+      "loc": 353,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/contentengin/AssetViewport.tsx#buildGpuVertices",
-      "label": "buildGpuVertices",
+      "id": "function:engins/contentengin/AssetViewport.tsx#createRenderServiceCamera",
+      "label": "createRenderServiceCamera",
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 422,
+      "loc": 417,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#contentMeshToRenderMesh",
+      "label": "contentMeshToRenderMesh",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 433,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#computeVertexNormals",
+      "label": "computeVertexNormals",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 448,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#addNormal",
+      "label": "addNormal",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 469,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#contentMeshCullBounds",
+      "label": "contentMeshCullBounds",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 473,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#meshSignature",
+      "label": "meshSignature",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 492,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/contentengin/AssetViewport.tsx#hashFloat",
+      "label": "hashFloat",
+      "type": "function",
+      "path": "engins/contentengin/AssetViewport.tsx",
+      "parent": "file:engins/contentengin/AssetViewport.tsx",
+      "loc": 503,
       "isOrphan": true,
       "exported": false
     },
@@ -46707,7 +47385,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 458,
+      "loc": 508,
       "isOrphan": true,
       "exported": false
     },
@@ -46717,7 +47395,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 488,
+      "loc": 538,
       "isOrphan": true,
       "exported": false
     },
@@ -46727,7 +47405,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 527,
+      "loc": 577,
       "isOrphan": true,
       "exported": false
     },
@@ -46737,7 +47415,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 550,
+      "loc": 600,
       "isOrphan": true,
       "exported": false
     },
@@ -46747,7 +47425,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 560,
+      "loc": 610,
       "isOrphan": true,
       "exported": false
     },
@@ -46757,7 +47435,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 578,
+      "loc": 628,
       "isOrphan": true,
       "exported": false
     },
@@ -46767,7 +47445,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 620,
+      "loc": 670,
       "isOrphan": true,
       "exported": false
     },
@@ -46777,7 +47455,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 628,
+      "loc": 678,
       "isOrphan": true,
       "exported": false
     },
@@ -46787,7 +47465,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 642,
+      "loc": 692,
       "isOrphan": true,
       "exported": false
     },
@@ -46797,7 +47475,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 656,
+      "loc": 706,
       "isOrphan": true,
       "exported": false
     },
@@ -46807,7 +47485,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 664,
+      "loc": 714,
       "isOrphan": true,
       "exported": false
     },
@@ -46817,7 +47495,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 672,
+      "loc": 722,
       "isOrphan": true,
       "exported": false
     },
@@ -46827,7 +47505,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 673,
+      "loc": 723,
       "isOrphan": true,
       "exported": false
     },
@@ -46837,7 +47515,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 674,
+      "loc": 724,
       "isOrphan": true,
       "exported": false
     },
@@ -46847,7 +47525,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 675,
+      "loc": 725,
       "isOrphan": true,
       "exported": false
     },
@@ -46857,7 +47535,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 676,
+      "loc": 726,
       "isOrphan": true,
       "exported": false
     },
@@ -46867,7 +47545,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 677,
+      "loc": 727,
       "isOrphan": true,
       "exported": false
     },
@@ -46877,7 +47555,7 @@
       "type": "function",
       "path": "engins/contentengin/AssetViewport.tsx",
       "parent": "file:engins/contentengin/AssetViewport.tsx",
-      "loc": 678,
+      "loc": 728,
       "isOrphan": true,
       "exported": false
     },
@@ -49904,7 +50582,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 9,
+      "loc": 10,
       "isOrphan": false,
       "exported": true
     },
@@ -49914,7 +50592,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 336,
+      "loc": 349,
       "isOrphan": true,
       "exported": false
     },
@@ -49924,7 +50602,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 347,
+      "loc": 360,
       "isOrphan": true,
       "exported": false
     },
@@ -49934,7 +50612,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 353,
+      "loc": 366,
       "isOrphan": true,
       "exported": false
     },
@@ -49944,7 +50622,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 366,
+      "loc": 379,
       "isOrphan": true,
       "exported": false
     },
@@ -54810,7 +55488,7 @@
       "type": "function",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 49,
+      "loc": 50,
       "isOrphan": true,
       "exported": false
     },
@@ -54820,7 +55498,7 @@
       "type": "function",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 55,
+      "loc": 56,
       "isOrphan": true,
       "exported": true
     },
@@ -54830,7 +55508,7 @@
       "type": "class",
       "path": "engins/gameengin/gameEnginRuntime.ts",
       "parent": "file:engins/gameengin/gameEnginRuntime.ts",
-      "loc": 97,
+      "loc": 98,
       "isOrphan": false,
       "exported": true
     },
@@ -58341,7 +59019,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 34,
+      "loc": 35,
       "isOrphan": true,
       "exported": false
     },
@@ -58351,7 +59029,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 42,
+      "loc": 43,
       "isOrphan": true,
       "exported": false
     },
@@ -58361,7 +59039,27 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 51,
+      "loc": 52,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#stableNumericObjectId",
+      "label": "stableNumericObjectId",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 56,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/RenderEnginViewport.tsx#createRenderCullBounds",
+      "label": "createRenderCullBounds",
+      "type": "function",
+      "path": "engins/renderengin/RenderEnginViewport.tsx",
+      "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
+      "loc": 65,
       "isOrphan": true,
       "exported": false
     },
@@ -58371,7 +59069,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 55,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -58381,7 +59079,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 80,
+      "loc": 119,
       "isOrphan": true,
       "exported": false
     },
@@ -58391,7 +59089,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 84,
+      "loc": 123,
       "isOrphan": true,
       "exported": false
     },
@@ -58401,7 +59099,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 92,
+      "loc": 131,
       "isOrphan": true,
       "exported": false
     },
@@ -58411,7 +59109,7 @@
       "type": "function",
       "path": "engins/renderengin/RenderEnginViewport.tsx",
       "parent": "file:engins/renderengin/RenderEnginViewport.tsx",
-      "loc": 137,
+      "loc": 176,
       "isOrphan": true,
       "exported": true
     },
@@ -58461,7 +59159,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 89,
+      "loc": 90,
       "isOrphan": true,
       "exported": false
     },
@@ -58471,7 +59169,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 91,
+      "loc": 92,
       "isOrphan": true,
       "exported": false
     },
@@ -58481,7 +59179,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 92,
+      "loc": 93,
       "isOrphan": true,
       "exported": false
     },
@@ -58491,7 +59189,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 93,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -58501,7 +59199,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 94,
+      "loc": 95,
       "isOrphan": true,
       "exported": false
     },
@@ -58511,7 +59209,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 101,
+      "loc": 102,
       "isOrphan": true,
       "exported": true
     },
@@ -58521,7 +59219,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 119,
+      "loc": 120,
       "isOrphan": true,
       "exported": true
     },
@@ -58531,7 +59229,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 136,
+      "loc": 137,
       "isOrphan": true,
       "exported": true
     },
@@ -58541,7 +59239,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 140,
+      "loc": 141,
       "isOrphan": true,
       "exported": true
     },
@@ -58551,7 +59249,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 149,
+      "loc": 150,
       "isOrphan": true,
       "exported": true
     },
@@ -58561,7 +59259,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 154,
+      "loc": 155,
       "isOrphan": true,
       "exported": true
     },
@@ -58571,7 +59269,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 164,
+      "loc": 165,
       "isOrphan": true,
       "exported": true
     },
@@ -58581,7 +59279,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 168,
+      "loc": 169,
       "isOrphan": true,
       "exported": true
     },
@@ -58591,7 +59289,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 172,
+      "loc": 173,
       "isOrphan": true,
       "exported": true
     },
@@ -58601,7 +59299,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 176,
+      "loc": 177,
       "isOrphan": true,
       "exported": true
     },
@@ -58611,7 +59309,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 191,
+      "loc": 192,
       "isOrphan": true,
       "exported": true
     },
@@ -58621,7 +59319,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 202,
+      "loc": 203,
       "isOrphan": true,
       "exported": true
     },
@@ -58631,7 +59329,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 206,
+      "loc": 207,
       "isOrphan": true,
       "exported": true
     },
@@ -58641,7 +59339,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 226,
+      "loc": 227,
       "isOrphan": true,
       "exported": true
     },
@@ -58651,7 +59349,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 246,
+      "loc": 262,
       "isOrphan": true,
       "exported": true
     },
@@ -58661,7 +59359,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 258,
+      "loc": 274,
       "isOrphan": true,
       "exported": true
     },
@@ -58671,7 +59369,7 @@
       "type": "function",
       "path": "engins/renderengin/advancedRendering.ts",
       "parent": "file:engins/renderengin/advancedRendering.ts",
-      "loc": 263,
+      "loc": 279,
       "isOrphan": true,
       "exported": true
     },
@@ -59086,12 +59784,62 @@
       "exported": true
     },
     {
+      "id": "function:engins/renderengin/core.ts#compensatedDot4",
+      "label": "compensatedDot4",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 25,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#splitFloat64",
+      "label": "splitFloat64",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 48,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#twoProduct",
+      "label": "twoProduct",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 55,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#preciseDot4",
+      "label": "preciseDot4",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 63,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:engins/renderengin/core.ts#mat4Mul",
       "label": "mat4Mul",
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 25,
+      "loc": 81,
+      "isOrphan": false,
+      "exported": true
+    },
+    {
+      "id": "function:engins/renderengin/core.ts#mat4MulPrecise",
+      "label": "mat4MulPrecise",
+      "type": "function",
+      "path": "engins/renderengin/core.ts",
+      "parent": "file:engins/renderengin/core.ts",
+      "loc": 102,
       "isOrphan": false,
       "exported": true
     },
@@ -59101,7 +59849,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 26,
+      "loc": 123,
       "isOrphan": false,
       "exported": true
     },
@@ -59111,7 +59859,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 27,
+      "loc": 125,
       "isOrphan": false,
       "exported": true
     },
@@ -59121,7 +59869,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 28,
+      "loc": 126,
       "isOrphan": false,
       "exported": true
     },
@@ -59131,7 +59879,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 29,
+      "loc": 127,
       "isOrphan": false,
       "exported": true
     },
@@ -59141,7 +59889,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 30,
+      "loc": 128,
       "isOrphan": false,
       "exported": true
     },
@@ -59151,7 +59899,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 31,
+      "loc": 129,
       "isOrphan": true,
       "exported": true
     },
@@ -59161,7 +59909,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 35,
+      "loc": 133,
       "isOrphan": false,
       "exported": true
     },
@@ -59171,7 +59919,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 36,
+      "loc": 134,
       "isOrphan": true,
       "exported": true
     },
@@ -59181,7 +59929,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 37,
+      "loc": 135,
       "isOrphan": true,
       "exported": true
     },
@@ -59191,7 +59939,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 39,
+      "loc": 137,
       "isOrphan": true,
       "exported": true
     },
@@ -59201,7 +59949,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 40,
+      "loc": 138,
       "isOrphan": true,
       "exported": true
     },
@@ -59211,7 +59959,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 41,
+      "loc": 139,
       "isOrphan": true,
       "exported": true
     },
@@ -59221,7 +59969,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 42,
+      "loc": 140,
       "isOrphan": true,
       "exported": true
     },
@@ -59231,7 +59979,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 43,
+      "loc": 141,
       "isOrphan": true,
       "exported": true
     },
@@ -59241,7 +59989,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 46,
+      "loc": 144,
       "isOrphan": true,
       "exported": true
     },
@@ -59251,7 +59999,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 47,
+      "loc": 145,
       "isOrphan": true,
       "exported": true
     },
@@ -59261,7 +60009,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 48,
+      "loc": 146,
       "isOrphan": true,
       "exported": true
     },
@@ -59271,7 +60019,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 50,
+      "loc": 148,
       "isOrphan": false,
       "exported": true
     },
@@ -59281,7 +60029,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 51,
+      "loc": 149,
       "isOrphan": false,
       "exported": true
     },
@@ -59291,7 +60039,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 54,
+      "loc": 152,
       "isOrphan": true,
       "exported": true
     },
@@ -59301,7 +60049,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 56,
+      "loc": 154,
       "isOrphan": true,
       "exported": true
     },
@@ -59311,7 +60059,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 57,
+      "loc": 155,
       "isOrphan": true,
       "exported": true
     },
@@ -59321,7 +60069,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 91,
+      "loc": 189,
       "isOrphan": false,
       "exported": true
     },
@@ -59331,7 +60079,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 104,
+      "loc": 202,
       "isOrphan": false,
       "exported": true
     },
@@ -59341,7 +60089,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 111,
+      "loc": 209,
       "isOrphan": true,
       "exported": false
     },
@@ -59351,7 +60099,7 @@
       "type": "function",
       "path": "engins/renderengin/core.ts",
       "parent": "file:engins/renderengin/core.ts",
-      "loc": 121,
+      "loc": 219,
       "isOrphan": true,
       "exported": false
     },
@@ -60161,7 +60909,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 42,
+      "loc": 43,
       "isOrphan": true,
       "exported": true
     },
@@ -60171,7 +60919,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 52,
+      "loc": 53,
       "isOrphan": true,
       "exported": true
     },
@@ -60181,7 +60929,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 59,
+      "loc": 66,
       "isOrphan": true,
       "exported": true
     },
@@ -60191,7 +60939,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 67,
+      "loc": 74,
       "isOrphan": true,
       "exported": true
     },
@@ -60201,7 +60949,7 @@
       "type": "function",
       "path": "engins/renderengin/viewportControls.ts",
       "parent": "file:engins/renderengin/viewportControls.ts",
-      "loc": 74,
+      "loc": 81,
       "isOrphan": true,
       "exported": true
     },
@@ -60401,7 +61149,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 149,
+      "loc": 780,
       "isOrphan": true,
       "exported": true
     },
@@ -60411,7 +61159,67 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 158,
+      "loc": 789,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeGpuMat4",
+      "label": "writeGpuMat4",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 793,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeVec4",
+      "label": "writeVec4",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 812,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeVec3AsVec4",
+      "label": "writeVec3AsVec4",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 819,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#normalizePlane",
+      "label": "normalizePlane",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 826,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeFrustumPlanes",
+      "label": "writeFrustumPlanes",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 831,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:engins/renderengin/webgpu.ts#writeMat4Mul",
+      "label": "writeMat4Mul",
+      "type": "function",
+      "path": "engins/renderengin/webgpu.ts",
+      "parent": "file:engins/renderengin/webgpu.ts",
+      "loc": 844,
       "isOrphan": true,
       "exported": false
     },
@@ -60421,7 +61229,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 162,
+      "loc": 863,
       "isOrphan": true,
       "exported": true
     },
@@ -60431,7 +61239,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 179,
+      "loc": 880,
       "isOrphan": true,
       "exported": false
     },
@@ -60441,7 +61249,7 @@
       "type": "function",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 196,
+      "loc": 897,
       "isOrphan": false,
       "exported": true
     },
@@ -60451,7 +61259,7 @@
       "type": "class",
       "path": "engins/renderengin/webgpu.ts",
       "parent": "file:engins/renderengin/webgpu.ts",
-      "loc": 208,
+      "loc": 923,
       "isOrphan": false,
       "exported": true
     },
@@ -62776,7 +63584,7 @@
       "type": "function",
       "path": "hooks/useConnectorInstallFlow.ts",
       "parent": "file:hooks/useConnectorInstallFlow.ts",
-      "loc": 91,
+      "loc": 94,
       "isOrphan": false,
       "exported": true
     },
@@ -62796,7 +63604,17 @@
       "type": "function",
       "path": "hooks/useDreamLayout.ts",
       "parent": "file:hooks/useDreamLayout.ts",
-      "loc": 16,
+      "loc": 20,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:hooks/useDreamLayout.ts#cacheLayout",
+      "label": "cacheLayout",
+      "type": "function",
+      "path": "hooks/useDreamLayout.ts",
+      "parent": "file:hooks/useDreamLayout.ts",
+      "loc": 31,
       "isOrphan": true,
       "exported": false
     },
@@ -62806,7 +63624,7 @@
       "type": "function",
       "path": "hooks/useDreamLayout.ts",
       "parent": "file:hooks/useDreamLayout.ts",
-      "loc": 25,
+      "loc": 35,
       "isOrphan": false,
       "exported": true
     },
@@ -63857,6 +64675,56 @@
       "label": "dr-eams-pbr.html",
       "type": "file",
       "path": "public/dr-eams-pbr.html",
+      "parent": "folder:public",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:public/dreamengin-sw.js#isNavigation",
+      "label": "isNavigation",
+      "type": "function",
+      "path": "public/dreamengin-sw.js",
+      "parent": "file:public/dreamengin-sw.js",
+      "loc": 28,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:public/dreamengin-sw.js#shouldCacheGet",
+      "label": "shouldCacheGet",
+      "type": "function",
+      "path": "public/dreamengin-sw.js",
+      "parent": "file:public/dreamengin-sw.js",
+      "loc": 32,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:public/dreamengin-sw.js#networkFirst",
+      "label": "networkFirst",
+      "type": "function",
+      "path": "public/dreamengin-sw.js",
+      "parent": "file:public/dreamengin-sw.js",
+      "loc": 49,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:public/dreamengin-sw.js#cacheFirst",
+      "label": "cacheFirst",
+      "type": "function",
+      "path": "public/dreamengin-sw.js",
+      "parent": "file:public/dreamengin-sw.js",
+      "loc": 64,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "file:public/dreamengin-sw.js",
+      "label": "dreamengin-sw.js",
+      "type": "js",
+      "path": "public/dreamengin-sw.js",
       "parent": "folder:public",
       "loc": null,
       "isOrphan": true,
@@ -79240,6 +80108,11 @@
     },
     {
       "source": "file:app/ads/create/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/ads/create/page.tsx",
       "target": "file:supabase/client/client.ts",
       "kind": "route-uses"
     },
@@ -79251,6 +80124,11 @@
     {
       "source": "file:app/ads/create/page.tsx",
       "target": "file:utils/index.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/ads/create/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "route-uses"
     },
     {
@@ -84395,6 +85273,11 @@
     },
     {
       "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "target": "file:types/dreamArtifact.ts",
       "kind": "import"
     },
@@ -84735,6 +85618,11 @@
     },
     {
       "source": "file:app/edit-profiledream/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/edit-profiledream/page.tsx",
       "target": "file:components/activity/dream.ActivityProfile.tsx",
       "kind": "route-uses"
     },
@@ -84756,6 +85644,11 @@
     {
       "source": "file:app/edit-profiledream/page.tsx",
       "target": "file:supabase/client/safeGetUser.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/edit-profiledream/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "route-uses"
     },
     {
@@ -86104,6 +86997,11 @@
       "kind": "import"
     },
     {
+      "source": "file:app/feed-settings/dream.FeedSettingsClient.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:app/feed-settings/page.tsx",
       "target": "file:supabase/server/serverClient.ts",
       "kind": "import"
@@ -86330,6 +87228,16 @@
     },
     {
       "source": "file:app/layout.tsx",
+      "target": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/layout.tsx",
+      "target": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/layout.tsx",
       "target": "file:components/dream.ThemeApplicator.tsx",
       "kind": "import"
     },
@@ -86396,6 +87304,16 @@
     {
       "source": "file:app/layout.tsx",
       "target": "file:components/dream.GlobalOverlays.tsx",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/layout.tsx",
+      "target": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/layout.tsx",
+      "target": "file:components/offline/dream.OfflineStatusPill.tsx",
       "kind": "route-uses"
     },
     {
@@ -86610,6 +87528,11 @@
     },
     {
       "source": "file:app/marketplace/sell/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/marketplace/sell/page.tsx",
       "target": "file:supabase/client/client.ts",
       "kind": "route-uses"
     },
@@ -86621,6 +87544,11 @@
     {
       "source": "file:app/marketplace/sell/page.tsx",
       "target": "file:utils/index.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/marketplace/sell/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "route-uses"
     },
     {
@@ -87030,6 +87958,11 @@
     },
     {
       "source": "file:app/settings/controls/dream.ControlsClient.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/settings/controls/dream.ControlsClient.tsx",
       "target": "file:app/settings/controls/dream.PositionIndicatorToggle.tsx",
       "kind": "import"
     },
@@ -87194,6 +88127,11 @@
       "kind": "route-uses"
     },
     {
+      "source": "file:app/settings/privacy/dream.PrivacyClient.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:app/settings/privacy/page.tsx",
       "target": "file:supabase/server/serverClient.ts",
       "kind": "import"
@@ -87370,6 +88308,11 @@
     },
     {
       "source": "file:app/shop/sell/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/shop/sell/page.tsx",
       "target": "file:supabase/client/client.ts",
       "kind": "route-uses"
     },
@@ -87381,6 +88324,11 @@
     {
       "source": "file:app/shop/sell/page.tsx",
       "target": "file:utils/index.ts",
+      "kind": "route-uses"
+    },
+    {
+      "source": "file:app/shop/sell/page.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "route-uses"
     },
     {
@@ -88010,6 +88958,16 @@
     },
     {
       "source": "file:components/dream.HomeFeed.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/dream.HomeFeed.tsx",
+      "target": "file:engine/runtime/offlineQueue.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/dream.HomeFeed.tsx",
       "target": "file:supabase/client/client.ts",
       "kind": "import"
     },
@@ -88056,6 +89014,16 @@
     {
       "source": "file:components/dream.MessagesClient.tsx",
       "target": "file:engins/contentengin/media/ledger.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/dream.MessagesClient.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/dream.MessagesClient.tsx",
+      "target": "file:engine/runtime/offlineQueue.ts",
       "kind": "import"
     },
     {
@@ -89240,7 +90208,7 @@
     },
     {
       "source": "file:components/games/dream.NeonDrift.tsx",
-      "target": "file:engins/gameengin/index.ts",
+      "target": "file:engins/gameengin/core.ts",
       "kind": "import"
     },
     {
@@ -89599,6 +90567,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/marketplace/dream.MarketplaceRequestButton.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:components/menus/dream.menu.DreamRadialMenu.tsx",
       "target": "file:components/menus/dream.panel.MenuPanel.tsx",
       "kind": "import"
@@ -89610,7 +90583,27 @@
     },
     {
       "source": "file:components/music/dream.SoundRecorder.tsx",
+      "target": "file:engine/artifacts/artifactStore.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/music/dream.SoundRecorder.tsx",
       "target": "file:utils/index.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "file:engine/runtime/offlineQueue.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "target": "file:engine/runtime/offlineQueue.ts",
       "kind": "import"
     },
     {
@@ -89824,6 +90817,11 @@
       "kind": "import"
     },
     {
+      "source": "file:components/profile/dream.ProfileCanvas.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:components/profile/dream.ProfileCustomizeButton.tsx",
       "target": "file:components/ui-system/CustomizeModeContext.tsx",
       "kind": "import"
@@ -89906,6 +90904,11 @@
     {
       "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
       "target": "file:engine/runtime/iEngine.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -90934,6 +91937,16 @@
       "kind": "import"
     },
     {
+      "source": "file:dreamdmbar/hooks/useDreamDMConversations.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
       "target": "file:engine/io.ts",
       "kind": "import"
@@ -90941,6 +91954,11 @@
     {
       "source": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
       "target": "file:supabase/client/client.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -90989,6 +92007,16 @@
       "kind": "import"
     },
     {
+      "source": "file:dreamdmbar/notifications/useNotifications.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:dreamdmbar/notifications/useNotifications.ts",
+      "target": "file:engine/runtime/offlineQueue.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
       "target": "file:dreamdmbar/runtime/barInteractions.ts",
       "kind": "import"
@@ -91006,6 +92034,11 @@
     {
       "source": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
       "target": "file:supabase/client/client.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:dreamdmbar/runtime/DreamSystemContext.tsx",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -91119,6 +92152,11 @@
       "kind": "import"
     },
     {
+      "source": "file:dreamr/feed/useLiveFeed.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:dreamr/feed/useYouTubeLiveFeed.ts",
       "target": "file:dreamr/feed/feedTopics.ts",
       "kind": "import"
@@ -91176,6 +92214,11 @@
     {
       "source": "file:engine/activeModulesStore.ts",
       "target": "file:types/dreamArtifact.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/activeModulesStore.ts",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -91286,6 +92329,11 @@
     {
       "source": "file:engine/artifacts/artifactStore.ts",
       "target": "file:types/dreamArtifact.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engine/artifacts/artifactStore.ts",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -97714,6 +98762,16 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "file:engins/renderengin/core.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/contentengin/AssetViewport.tsx",
       "kind": "import"
@@ -97731,16 +98789,6 @@
     {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/assetTypes.ts",
-      "target": "file:engins/contentengin/runtimeProfile.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/assetTypes.ts",
-      "target": "file:engins/contentengin/performancePlan.ts",
       "kind": "import"
     },
     {
@@ -98011,6 +99059,11 @@
     {
       "source": "file:engins/contentengin/upgradeMatrix.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
+      "target": "file:engine/offline/offlineCache.ts",
       "kind": "import"
     },
     {
@@ -99194,6 +100247,11 @@
       "kind": "import"
     },
     {
+      "source": "file:engins/gameengin/gameEnginRuntime.ts",
+      "target": "file:engins/renderengin/webgpu.ts",
+      "kind": "import"
+    },
+    {
       "source": "file:engins/gameengin/games/catalog.ts",
       "target": "file:engins/gameengin/cartridges/manifest.ts",
       "kind": "import"
@@ -100326,6 +101384,21 @@
     {
       "source": "file:hooks/useConnectorInstallFlow.ts",
       "target": "file:engine/widgets/widgetRegistry.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:hooks/useConnectorInstallFlow.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:hooks/useDreamLayout.ts",
+      "target": "file:engine/offline/offlineCache.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:hooks/useDreamLayout.ts",
+      "target": "file:engine/runtime/offlineQueue.ts",
       "kind": "import"
     },
     {
@@ -106694,6 +107767,11 @@
       "kind": "call"
     },
     {
+      "source": "file:app/ads/create/page.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
+      "kind": "call"
+    },
+    {
       "source": "file:app/ads/page.tsx",
       "target": "function:supabase/server/serverClient.ts#createServerClient",
       "kind": "call"
@@ -109140,6 +110218,11 @@
     },
     {
       "source": "file:app/dreamdmbar/_components/DreamSpaceRegion.tsx",
+      "target": "function:engine/artifacts/artifactStore.ts#restoreArtifactsFromOfflineCache",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/dreamdmbar/_components/DreamSpaceRegion.tsx",
       "target": "function:engine/artifacts/artifactStore.ts#listSystemArtifacts",
       "kind": "call"
     },
@@ -109156,6 +110239,11 @@
     {
       "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "target": "function:components/ui-system/runtimeViewport.ts#isCompactRuntimeViewport",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
+      "target": "function:engine/offline/offlineCache.ts#cacheHttpGet",
       "kind": "call"
     },
     {
@@ -109320,7 +110408,17 @@
     },
     {
       "source": "file:app/edit-profiledream/page.tsx",
+      "target": "function:engine/offline/offlineCache.ts#writeOfflineCache",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/edit-profiledream/page.tsx",
       "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/edit-profiledream/page.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
       "kind": "call"
     },
     {
@@ -109774,6 +110872,11 @@
       "kind": "call"
     },
     {
+      "source": "file:app/feed-settings/dream.FeedSettingsClient.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
+      "kind": "call"
+    },
+    {
       "source": "file:app/feed-settings/page.tsx",
       "target": "function:supabase/server/serverClient.ts#createServerClient",
       "kind": "call"
@@ -109900,7 +111003,7 @@
     },
     {
       "source": "file:app/marketplace/sell/page.tsx",
-      "target": "function:utils/index.ts#toErrorMessage",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
       "kind": "call"
     },
     {
@@ -110029,6 +111132,11 @@
       "kind": "call"
     },
     {
+      "source": "file:app/settings/controls/dream.ControlsClient.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
+      "kind": "call"
+    },
+    {
       "source": "file:app/settings/controls/page.tsx",
       "target": "function:supabase/server/serverClient.ts#createServerClient",
       "kind": "call"
@@ -110076,6 +111184,11 @@
     {
       "source": "file:app/settings/page.tsx",
       "target": "function:dr-eams/ai/triad.ts#isOwnerEmail",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/settings/privacy/dream.PrivacyClient.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
       "kind": "call"
     },
     {
@@ -110141,6 +111254,11 @@
     {
       "source": "file:app/shop/sell/page.tsx",
       "target": "function:utils/index.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:app/shop/sell/page.tsx",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
       "kind": "call"
     },
     {
@@ -110600,12 +111718,22 @@
     },
     {
       "source": "file:components/dream.HomeFeed.tsx",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/dream.HomeFeed.tsx",
       "target": "function:supabase/client/client.ts#createClient",
       "kind": "call"
     },
     {
       "source": "file:components/dream.HomeFeed.tsx",
       "target": "function:engins/contentengin/media/ledger.ts#uploadBlobToLedgerStorage",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/dream.HomeFeed.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#enqueueFetchMutation",
       "kind": "call"
     },
     {
@@ -110621,6 +111749,11 @@
     {
       "source": "file:components/dream.LandingHero.tsx",
       "target": "function:dreamr/runtime/swipeCalibration.ts#calibrateDevice",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/dream.MessagesClient.tsx",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
       "kind": "call"
     },
     {
@@ -110646,6 +111779,11 @@
     {
       "source": "file:components/dream.MessagesClient.tsx",
       "target": "function:engins/contentengin/media/ledger.ts#uploadBlobToLedgerStorage",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/dream.MessagesClient.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#enqueueFetchMutation",
       "kind": "call"
     },
     {
@@ -111415,7 +112553,7 @@
     },
     {
       "source": "file:components/games/dream.NeonDrift.tsx",
-      "target": "file:engins/gameengin/index.ts",
+      "target": "class:engins/gameengin/core.ts#EliteGameEngine",
       "kind": "call"
     },
     {
@@ -111740,6 +112878,11 @@
     },
     {
       "source": "file:components/home/dream.ActiveModuleSurface.tsx",
+      "target": "function:engine/activeModulesStore.ts#restoreActiveModulesFromOfflineCache",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.ActiveModuleSurface.tsx",
       "target": "function:engine/activeModulesStore.ts#saveActiveModulesForRegion",
       "kind": "call"
     },
@@ -111850,12 +112993,67 @@
     },
     {
       "source": "file:components/marketplace/dream.MarketplaceRequestButton.tsx",
-      "target": "function:utils/index.ts#toErrorMessage",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/music/dream.SoundRecorder.tsx",
+      "target": "function:engine/artifacts/artifactStore.ts#recordOfflineBlobArtifact",
       "kind": "call"
     },
     {
       "source": "file:components/music/dream.SoundRecorder.tsx",
       "target": "function:utils/index.ts#toErrorMessage",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#replayFetchMutation",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#getQueueStatus",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#subscribeQueueStatus",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/offline/offlineCache.ts#onConnectivityChange",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/offline/offlineCache.ts#getCachedHttpGet",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#listenOnline",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#flushQueue",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#getQueueStatus",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/offline/dream.OfflineStatusPill.tsx",
+      "target": "function:engine/runtime/offlineQueue.ts#subscribeQueueStatus",
       "kind": "call"
     },
     {
@@ -112015,7 +113213,7 @@
     },
     {
       "source": "file:components/profile/dream.ProfileCanvas.tsx",
-      "target": "function:utils/index.ts#toErrorMessage",
+      "target": "function:engine/offline/offlineCache.ts#queueLocalFirstMutation",
       "kind": "call"
     },
     {
@@ -112066,6 +113264,11 @@
     {
       "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
       "target": "class:engine/runtime/iEngine.ts#IntentBus",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/runtime/dream.DualRuntimeContainer.tsx",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
       "kind": "call"
     },
     {
@@ -112609,6 +113812,26 @@
       "kind": "call"
     },
     {
+      "source": "file:dreamdmbar/hooks/useDreamDMConversations.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/hooks/useDreamDMDraft.ts",
+      "target": "function:engine/offline/offlineCache.ts#deleteOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
       "source": "file:dreamdmbar/hooks/useDreamDMMessages.ts",
       "target": "function:supabase/client/client.ts#createClient",
       "kind": "call"
@@ -112645,12 +113868,22 @@
     },
     {
       "source": "file:dreamdmbar/notifications/useNotifications.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/notifications/useNotifications.ts",
       "target": "function:utils/index.ts#toErrorMessage",
       "kind": "call"
     },
     {
       "source": "file:dreamdmbar/notifications/useNotifications.ts",
       "target": "function:dreamdmbar/notifications/notificationHelpers.ts#applyOptimisticRead",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/notifications/useNotifications.ts",
+      "target": "function:engine/runtime/offlineQueue.ts#enqueueFetchMutation",
       "kind": "call"
     },
     {
@@ -112795,6 +114028,11 @@
     },
     {
       "source": "file:dreamr/feed/useLiveFeed.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamr/feed/useLiveFeed.ts",
       "target": "function:supabase/client/client.ts#createClient",
       "kind": "call"
     },
@@ -112831,6 +114069,11 @@
     {
       "source": "file:dreamr/torridity.ts",
       "target": "function:engine/slog.ts#slog",
+      "kind": "call"
+    },
+    {
+      "source": "file:engine/activeModulesStore.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
       "kind": "call"
     },
     {
@@ -112911,6 +114154,11 @@
     {
       "source": "file:engine/api/route.ts",
       "target": "function:supabase/client/safeGetUser.ts#safeGetUser",
+      "kind": "call"
+    },
+    {
+      "source": "file:engine/artifacts/artifactStore.ts",
+      "target": "function:engine/offline/offlineCache.ts#cacheAsset",
       "kind": "call"
     },
     {
@@ -114145,7 +115393,37 @@
     },
     {
       "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "class:engins/renderengin/webgpu.ts#WebGpuRenderEngin",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#composeModelMatrix",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#mat4LookAt",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#mat4Perspective",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
       "target": "function:engins/isosurfaceAssetPipeline.ts#computeBounds",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/AssetViewport.tsx",
+      "target": "function:engins/renderengin/core.ts#createMeshBuffers",
       "kind": "call"
     },
     {
@@ -114351,6 +115629,11 @@
     {
       "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
       "target": "function:engins/isosurfaceAssetPipeline.ts#createImplicitAssetWorkspaceObject",
+      "kind": "call"
+    },
+    {
+      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
+      "target": "function:engine/offline/offlineCache.ts#writeOfflineCache",
       "kind": "call"
     },
     {
@@ -115404,6 +116687,11 @@
       "kind": "call"
     },
     {
+      "source": "file:engins/gameengin/gameEnginRuntime.ts",
+      "target": "function:engins/renderengin/webgpu.ts#requestWebGpuDevice",
+      "kind": "call"
+    },
+    {
       "source": "file:engins/gameengin/games/hooks.ts",
       "target": "function:engins/gameengin/games/performance-baseline.ts#resolveRendererBackend",
       "kind": "call"
@@ -115640,7 +116928,7 @@
     },
     {
       "source": "file:engins/renderengin/advancedRendering.ts",
-      "target": "function:engins/renderengin/core.ts#mat4Mul",
+      "target": "function:engins/renderengin/core.ts#mat4MulPrecise",
       "kind": "call"
     },
     {
@@ -115950,6 +117238,11 @@
     },
     {
       "source": "file:hooks/useConnectorInstallFlow.ts",
+      "target": "function:engine/offline/offlineCache.ts#writeOfflineCache",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useConnectorInstallFlow.ts",
       "target": "function:engine/connectors/installFlow.ts#handleConnectSuccess",
       "kind": "call"
     },
@@ -115981,6 +117274,16 @@
     {
       "source": "file:hooks/useConnectorInstallFlow.ts",
       "target": "function:engine/connectors/installFlow.ts#consumeDeferredPrompt",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useDreamLayout.ts",
+      "target": "function:engine/offline/offlineCache.ts#putOfflineRecord",
+      "kind": "call"
+    },
+    {
+      "source": "file:hooks/useDreamLayout.ts",
+      "target": "function:engine/runtime/offlineQueue.ts#enqueueFetchMutation",
       "kind": "call"
     },
     {
