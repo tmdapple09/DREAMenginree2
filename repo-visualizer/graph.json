@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T05:17:17.850Z",
+  "generatedAt": "2026-06-29T05:45:03.519Z",
   "root": ".",
   "nodes": [
     {
@@ -3176,16 +3176,6 @@
       "label": "optimize-dreamengin.yml",
       "type": "config",
       "path": ".github/workflows/optimize-dreamengin.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/organize-repo-build-map-code-evidence-inline-tree.yml",
-      "label": "organize-repo-build-map-code-evidence-inline-tree.yml",
-      "type": "config",
-      "path": ".github/workflows/organize-repo-build-map-code-evidence-inline-tree.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
