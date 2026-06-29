@@ -1,0 +1,1165 @@
+name: Organize Repo Into Web App Build Map
+
+on:
+  workflow_dispatch:
+    inputs:
+      organized_repo_artifact_name:
+        description: "Download name for the organized repository ZIP"
+        required: true
+        default: "dreamengin-organized-repository"
+      file_tree_artifact_name:
+        description: "Download name for the organized file tree TXT"
+        required: true
+        default: "dreamengin-organized-file-tree"
+      retention_days:
+        description: "Artifact retention days"
+        required: true
+        default: "14"
+
+permissions:
+  contents: read
+
+jobs:
+  organize-repository:
+    name: Organize repository into 20 web app categories
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Build organized repository and file tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import os
+          import re
+          import shutil
+          import subprocess
+          import zipfile
+          from collections import Counter, defaultdict
+          from pathlib import Path
+          from typing import Dict, List, Tuple
+
+          REPO = Path.cwd()
+
+          OUT_ROOT = REPO / "_organized_repo_artifact"
+          ORGANIZED = OUT_ROOT / "organized-repository"
+
+          ZIP_PATH = OUT_ROOT / "dreamengin-organized-repository.zip"
+          TREE_FILE = OUT_ROOT / "organized_file_tree.txt"
+          MANIFEST_JSON = OUT_ROOT / "organized_manifest.json"
+          MANIFEST_CSV = OUT_ROOT / "organized_manifest.csv"
+
+          if OUT_ROOT.exists():
+              shutil.rmtree(OUT_ROOT)
+
+          OUT_ROOT.mkdir(parents=True, exist_ok=True)
+          ORGANIZED.mkdir(parents=True, exist_ok=True)
+
+          CATEGORIES: Dict[str, List[str]] = {
+              "01_define_user_flow": [
+                  "entry_point",
+                  "user_goal",
+                  "user_role",
+                  "user_permissions",
+                  "user_account_type",
+                  "logged_out_path",
+                  "logged_in_path",
+                  "guest_path",
+                  "first_time_user_path",
+                  "returning_user_path",
+                  "onboarding_path",
+                  "onboarding_completion_path",
+                  "account_recovery_path",
+                  "notification_entry_path",
+                  "deep_link_entry_path",
+                  "share_link_entry_path",
+                  "invited_user_path",
+                  "admin_path",
+                  "moderator_path",
+                  "support_path",
+                  "happy_path",
+                  "failure_path",
+                  "empty_path",
+                  "loading_path",
+                  "blocked_path",
+                  "recovery_path",
+                  "retry_path",
+                  "cancel_path",
+                  "mobile_path",
+                  "desktop_path",
+                  "tablet_path",
+                  "browser_back_behavior",
+                  "refresh_behavior",
+                  "tab_close_behavior",
+                  "user_leaves_mid_flow",
+                  "network_fails",
+                  "auth_expires",
+                  "data_missing",
+                  "data_stale",
+                  "access_denied",
+                  "user_lacks_permission",
+                  "feature_disabled",
+                  "device_browser_support_missing",
+                  "upload_fails",
+                  "save_fails",
+                  "concurrent_user_changes",
+                  "app_offline",
+                  "after_reconnect",
+                  "abuse_path",
+                  "spam_path",
+                  "moderation_path",
+                  "support_escalation_path",
+                  "success_state",
+                  "error_state",
+                  "empty_state",
+                  "loading_state",
+                  "confirmation_state",
+                  "undo_state",
+                  "recovery_state",
+                  "final_user_visible_outcome",
+              ],
+              "02_build_data_model": [
+                  "entities",
+                  "nouns",
+                  "fields",
+                  "relationships",
+                  "ids",
+                  "primary_keys",
+                  "foreign_keys",
+                  "timestamps",
+                  "created_at",
+                  "updated_at",
+                  "deleted_at",
+                  "ownership",
+                  "user_ownership",
+                  "author_ownership",
+                  "organization_team_ownership",
+                  "visibility",
+                  "permissions",
+                  "permission_matrix",
+                  "roles",
+                  "status_values",
+                  "enums",
+                  "validation_rules",
+                  "default_values",
+                  "nullable_fields",
+                  "required_fields",
+                  "indexes",
+                  "search_indexes",
+                  "unique_constraints",
+                  "check_constraints",
+                  "database_tables",
+                  "database_views",
+                  "join_tables",
+                  "history_tables",
+                  "audit_tables",
+                  "analytics_event_tables",
+                  "billing_subscription_tables",
+                  "storage_buckets",
+                  "storage_paths",
+                  "file_metadata",
+                  "file_ownership",
+                  "file_visibility",
+                  "data_retention_rules",
+                  "deletion_cascade_rules",
+                  "soft_delete_fields",
+                  "version_fields",
+                  "import_schema",
+                  "export_schema",
+                  "migration_files",
+                  "rollback_migration_files",
+                  "seed_data",
+                  "test_fixtures",
+                  "typescript_types",
+                  "generated_database_types",
+                  "schema_docs",
+              ],
+              "03_build_backend": [
+                  "auth",
+                  "session_handling",
+                  "permissions",
+                  "role_checks",
+                  "database_access",
+                  "row_level_security",
+                  "storage_access",
+                  "file_upload_handling",
+                  "file_validation",
+                  "file_size_limits",
+                  "server_only_logic",
+                  "business_rules",
+                  "scheduled_jobs",
+                  "background_jobs",
+                  "queues",
+                  "webhooks",
+                  "webhook_verification",
+                  "webhook_replay_handling",
+                  "email_sending",
+                  "email_templates",
+                  "notifications",
+                  "push_notification_delivery",
+                  "payment_logic",
+                  "billing_logic",
+                  "subscription_logic",
+                  "cache_invalidation",
+                  "search_indexing",
+                  "rate_limits",
+                  "abuse_protection",
+                  "bot_protection",
+                  "content_moderation",
+                  "admin_only_actions",
+                  "audit_logging",
+                  "error_handling",
+                  "server_caching",
+                  "backend_fallbacks",
+                  "health_checks",
+                  "secrets_env_handling",
+                  "secret_rotation_behavior",
+                  "data_export_flow",
+                  "data_delete_flow",
+                  "data_import_flow",
+                  "backup_behavior",
+                  "restore_from_backup_behavior",
+              ],
+              "04_build_api_layer": [
+                  "routes",
+                  "route_handlers",
+                  "server_actions",
+                  "request_shape",
+                  "response_shape",
+                  "query_params",
+                  "path_params",
+                  "body_validation",
+                  "auth_checks",
+                  "permission_checks",
+                  "success_responses",
+                  "error_responses",
+                  "status_codes",
+                  "pagination",
+                  "filtering",
+                  "sorting",
+                  "search_params",
+                  "upload_endpoints",
+                  "webhook_endpoints",
+                  "typed_api_contracts",
+                  "api_client_functions",
+                  "request_normalization",
+                  "response_normalization",
+                  "retry_rules",
+                  "timeout_rules",
+                  "idempotency_rules",
+                  "cache_headers",
+                  "no_store_behavior",
+                  "cors",
+                  "api_versioning",
+                  "api_deprecation_behavior",
+                  "upload_size_limits",
+                  "api_tests",
+              ],
+              "05_build_runtime_state": [
+                  "current_user",
+                  "current_session",
+                  "current_route",
+                  "active_page",
+                  "active_screen",
+                  "active_tool",
+                  "active_mode",
+                  "active_selection",
+                  "active_feature",
+                  "active_runtime",
+                  "active_engine",
+                  "loaded_data",
+                  "derived_data",
+                  "local_draft_state",
+                  "optimistic_state",
+                  "cache",
+                  "cache_invalidation_behavior",
+                  "stale_data_behavior",
+                  "events",
+                  "event_cleanup",
+                  "realtime_subscriptions",
+                  "sync_state",
+                  "offline_queue",
+                  "reconnect_behavior",
+                  "undo_redo",
+                  "hydration_state",
+                  "dirty_state",
+                  "save_state",
+                  "loading_state",
+                  "error_state",
+                  "success_state",
+                  "persisted_local_state",
+                  "feature_flag_state",
+                  "device_capability_state",
+                  "permission_state",
+                  "notification_state",
+                  "search_filter_state",
+                  "billing_subscription_state",
+                  "memory_cleanup",
+                  "state_performance_budget",
+              ],
+              "06_build_application_behavior": [
+                  "what_happens_on_tap",
+                  "what_happens_on_click",
+                  "what_happens_on_type",
+                  "what_happens_on_upload",
+                  "what_happens_on_save",
+                  "what_happens_on_edit",
+                  "what_happens_on_delete",
+                  "what_happens_on_cancel",
+                  "what_happens_on_retry",
+                  "what_happens_on_undo",
+                  "what_happens_on_auth_expiration",
+                  "what_happens_on_permission_change",
+                  "what_happens_on_screen_switch",
+                  "what_happens_on_route_change",
+                  "what_happens_when_data_updates",
+                  "what_happens_when_realtime_data_arrives",
+                  "what_happens_offline",
+                  "what_happens_on_reconnect",
+                  "what_happens_when_feature_disabled",
+                  "what_happens_when_device_capability_missing",
+                  "what_happens_when_browser_unsupported",
+                  "what_happens_when_payment_subscription_fails",
+                  "what_happens_when_upload_too_large",
+                  "what_happens_when_content_rejected_moderated",
+                  "what_happens_when_concurrent_edits_conflict",
+                  "what_gets_persisted",
+                  "what_stays_local",
+                  "what_gets_reset",
+                  "what_gets_remembered",
+                  "what_gets_logged",
+                  "what_gets_blocked",
+                  "what_gets_retried",
+                  "what_validation_runs",
+                  "what_business_rules_run",
+                  "what_user_feedback_appears",
+              ],
+              "07_build_pages_screens": [
+                  "routes",
+                  "page_files",
+                  "layout_files",
+                  "nested_layouts",
+                  "loading_pages",
+                  "error_pages",
+                  "not_found_pages",
+                  "redirects",
+                  "protected_pages",
+                  "public_pages",
+                  "unauthorized_states",
+                  "account_recovery_screens",
+                  "billing_screens",
+                  "admin_screens",
+                  "moderation_screens",
+                  "page_metadata",
+                  "seo_metadata",
+                  "open_graph_social_metadata",
+                  "sitemap",
+                  "robots_behavior",
+                  "canonical_urls",
+                  "page_level_data_loading",
+                  "screen_structure",
+                  "navigation_targets",
+                  "tabs",
+                  "sections",
+                  "mobile_layout",
+                  "desktop_layout",
+                  "tablet_layout",
+                  "responsive_breakpoints",
+                  "scroll_containers",
+                  "route_level_empty_states",
+                  "route_level_fallbacks",
+                  "deep_link_behavior",
+              ],
+              "08_build_ui_components": [
+                  "design_tokens",
+                  "colors",
+                  "typography",
+                  "spacing",
+                  "shadows",
+                  "borders",
+                  "icons",
+                  "buttons",
+                  "cards",
+                  "inputs",
+                  "forms",
+                  "form_errors",
+                  "modals",
+                  "drawers",
+                  "panels",
+                  "tabs",
+                  "toolbars",
+                  "nav_bars",
+                  "sidebars",
+                  "menus",
+                  "dropdowns",
+                  "lists",
+                  "feed_items",
+                  "avatars",
+                  "loaders",
+                  "skeletons",
+                  "empty_states",
+                  "error_states",
+                  "success_states",
+                  "toast_notifications",
+                  "banners",
+                  "confirmation_dialogs",
+                  "permission_prompts",
+                  "paywall_subscription_components",
+                  "search_components",
+                  "filter_components",
+                  "pagination_components",
+                  "infinite_scroll_components",
+                  "upload_components",
+                  "media_previews",
+                  "canvas_viewports",
+                  "component_variants",
+                  "disabled_states",
+                  "active_states",
+                  "focus_states",
+                  "hover_states",
+                  "accessibility_labels",
+                  "keyboard_support",
+                  "reduced_motion_support",
+              ],
+              "09_wire_interactions": [
+                  "tap",
+                  "click",
+                  "double_tap_only_if_intentional",
+                  "hold",
+                  "long_press",
+                  "drag",
+                  "drop",
+                  "scroll",
+                  "swipe",
+                  "pinch",
+                  "zoom",
+                  "keyboard_input",
+                  "focus",
+                  "blur",
+                  "hover_for_desktop",
+                  "pointer_capture",
+                  "touch_cancellation",
+                  "gesture_conflict_handling",
+                  "animations",
+                  "transitions",
+                  "haptics",
+                  "screen_reader_behavior",
+                  "mobile_touch_behavior",
+                  "loading_interaction",
+                  "disabled_interaction",
+                  "retry_interaction",
+                  "undo_interaction",
+                  "confirmation_interaction",
+                  "escape_behavior",
+                  "browser_back_behavior",
+                  "long_running_task_feedback",
+                  "upload_progress",
+                  "cancel_upload",
+                  "pull_to_refresh",
+                  "infinite_scroll_behavior",
+                  "copy_share_behavior",
+                  "permission_prompt_behavior",
+                  "conflict_resolution_behavior",
+              ],
+              "10_verify_build_deploy": [
+                  "typecheck",
+                  "lint",
+                  "unit_tests",
+                  "integration_tests",
+                  "route_tests",
+                  "api_tests",
+                  "auth_tests",
+                  "permission_tests",
+                  "database_tests",
+                  "storage_tests",
+                  "realtime_tests",
+                  "mobile_tests",
+                  "desktop_tests",
+                  "browser_compatibility_check",
+                  "accessibility_checks",
+                  "performance_checks",
+                  "bundle_size_check",
+                  "loading_speed_check",
+                  "error_state_check",
+                  "empty_state_check",
+                  "offline_reconnect_check",
+                  "clean_checkout_test",
+                  "install_from_lockfile_test",
+                  "migration_test",
+                  "rollback_migration_test",
+                  "build",
+                  "production_env_check",
+                  "environment_variables",
+                  "secrets",
+                  "deployment_config",
+                  "deploy_preview_check",
+                  "domain_config",
+                  "https",
+                  "source_map_error_reporting_check",
+                  "logs",
+                  "monitoring",
+                  "alerts",
+                  "rollback_plan",
+                  "migration_plan",
+                  "backup_plan",
+                  "release_notes",
+                  "real_device_smoke_test",
+                  "post_deploy_smoke_test",
+              ],
+              "11_security": [
+                  "auth",
+                  "authorization",
+                  "permissions",
+                  "permission_matrix_tests",
+                  "row_level_security",
+                  "input_validation",
+                  "output_sanitization",
+                  "secrets",
+                  "secret_rotation",
+                  "rate_limiting",
+                  "file_validation",
+                  "upload_size_limits",
+                  "abuse_prevention",
+                  "bot_prevention",
+                  "audit_logs",
+                  "csrf_protection",
+                  "xss_protection",
+                  "ssrf_protection",
+                  "dependency_vulnerability_checks",
+                  "secure_headers",
+                  "session_expiration",
+                  "account_recovery_safety",
+                  "admin_access_controls",
+              ],
+              "12_performance": [
+                  "bundle_size",
+                  "code_splitting",
+                  "lazy_loading",
+                  "caching",
+                  "cache_invalidation",
+                  "image_optimization",
+                  "responsive_images",
+                  "cdn_static_asset_caching",
+                  "database_indexes",
+                  "database_query_plans",
+                  "query_limits",
+                  "api_latency_budget",
+                  "interaction_latency_budget",
+                  "render_cost",
+                  "hydration_cost",
+                  "long_task_detection",
+                  "memory_leaks",
+                  "mobile_frame_rate",
+                  "mobile_touch_responsiveness",
+                  "loading_speed",
+                  "background_job_performance",
+                  "realtime_subscription_load",
+              ],
+              "13_accessibility": [
+                  "labels",
+                  "form_label_associations",
+                  "focus_order",
+                  "keyboard_navigation",
+                  "contrast",
+                  "reduced_motion",
+                  "screen_reader_text",
+                  "error_announcement",
+                  "modal_focus_trap",
+                  "skip_links",
+                  "touch_target_size",
+                  "accessible_touch_targets",
+                  "semantic_html",
+                  "aria_only_where_needed",
+                  "accessible_loading_states",
+                  "accessible_empty_states",
+                  "accessible_error_states",
+                  "tab_order",
+                  "visible_focus_states",
+              ],
+              "14_observability": [
+                  "logs",
+                  "metrics",
+                  "error_reporting",
+                  "crash_reporting",
+                  "health_checks",
+                  "request_ids",
+                  "user_action_traces",
+                  "analytics_events",
+                  "funnel_tracking",
+                  "slow_request_traces",
+                  "failed_job_traces",
+                  "deployment_monitoring",
+                  "alert_thresholds",
+                  "api_error_rates",
+                  "backend_error_rates",
+                  "client_error_rates",
+                  "performance_metrics",
+                  "uptime_monitoring",
+              ],
+              "15_dev_tooling": [
+                  "package_manager",
+                  "scripts",
+                  "formatter",
+                  "lint_config",
+                  "typecheck_config",
+                  "test_commands",
+                  "env_examples",
+                  "local_setup",
+                  "local_env_validation",
+                  "ci_workflows",
+                  "seed_scripts",
+                  "migration_scripts",
+                  "rollback_migration_scripts",
+                  "type_generation",
+                  "codegen_commands",
+                  "mock_data_tools",
+                  "story_dev_component_preview",
+                  "pre_commit_hooks",
+                  "pre_push_hooks",
+                  "dependency_management",
+                  "repo_structure_rules",
+              ],
+              "16_product_operations": [
+                  "admin_panels",
+                  "moderation_tools",
+                  "user_support_lookup",
+                  "account_suspension",
+                  "account_restore",
+                  "content_takedown",
+                  "support_flows",
+                  "user_recovery",
+                  "data_export",
+                  "data_deletion",
+                  "announcements",
+                  "feature_flags",
+                  "feature_rollout",
+                  "kill_switches",
+                  "incident_response",
+                  "abuse_review",
+                  "reporting_tools",
+                  "user_communication_flows",
+              ],
+              "17_compliance_policy": [
+                  "privacy_policy",
+                  "terms",
+                  "cookie_behavior",
+                  "consent_records",
+                  "age_gates",
+                  "child_safety",
+                  "data_retention",
+                  "delete_account_flow",
+                  "export_data_flow",
+                  "third_party_terms",
+                  "license_compliance",
+                  "data_processing_records",
+                  "payment_compliance",
+                  "moderation_policy",
+                  "content_policy",
+              ],
+              "18_content_assets": [
+                  "images",
+                  "icons",
+                  "fonts",
+                  "audio",
+                  "video",
+                  "models",
+                  "static_files",
+                  "manifests",
+                  "metadata",
+                  "alt_text",
+                  "favicon_app_icons",
+                  "pwa_manifest",
+                  "asset_compression",
+                  "responsive_images",
+                  "content_versioning",
+                  "asset_licensing",
+                  "upload_assets",
+                  "generated_assets",
+                  "public_assets",
+                  "protected_assets",
+                  "storage_paths",
+                  "cache_rules_for_assets",
+              ],
+              "19_release_management": [
+                  "branches",
+                  "commits",
+                  "pr_checks",
+                  "changelog",
+                  "versioning",
+                  "version_tags",
+                  "release_checklist",
+                  "deploy_target",
+                  "deploy_freeze_rules",
+                  "staged_rollout",
+                  "hotfix_path",
+                  "rollback",
+                  "incident_rollback",
+                  "backups",
+                  "migration_plan",
+                  "rollback_migration_plan",
+                  "smoke_tests",
+                  "deploy_preview",
+                  "production_deploy",
+                  "post_deploy_verification",
+              ],
+              "20_documentation": [
+                  "architecture_notes",
+                  "api_docs",
+                  "data_model_docs",
+                  "setup_docs",
+                  "feature_docs",
+                  "agent_instructions",
+                  "known_issues",
+                  "runbook",
+                  "troubleshooting_guide",
+                  "environment_variable_docs",
+                  "deployment_docs",
+                  "migration_docs",
+                  "support_admin_docs",
+                  "test_docs",
+                  "release_docs",
+                  "security_notes",
+                  "performance_notes",
+                  "repo_structure_notes",
+                  "onboarding_docs_for_future_contributors",
+              ],
+          }
+
+          for category, subfolders in CATEGORIES.items():
+              for subfolder in subfolders:
+                  (ORGANIZED / category / subfolder).mkdir(parents=True, exist_ok=True)
+
+          def safe_part(value: str) -> str:
+              value = value.strip().lower()
+              value = re.sub(r"[^a-z0-9._-]+", "_", value)
+              value = re.sub(r"_+", "_", value).strip("_")
+              return value or "uncategorized"
+
+          def path_contains(path: str, needles: List[str]) -> bool:
+              lower = path.lower()
+              return any(needle in lower for needle in needles)
+
+          def dreamengin_area(path: str) -> str:
+              p = path.lower()
+
+              explicit = [
+                  ("dreamdmbar", ["dreamdmbar", "dreamdm"]),
+                  ("dreamr", ["dreamr", "/feed", "feed/", "profile", "messages"]),
+                  ("gameengin", ["gameengin", "games", "cartridge", "madmaxi"]),
+                  ("contentengin", ["contentengin", "content"]),
+                  ("codeengin", ["codeengin", "code"]),
+                  ("starmakerengin", ["starmaker", "music"]),
+                  ("labengin", ["labengin", "/lab", "lab/"]),
+                  ("brandingengin", ["brandingengin", "brand"]),
+                  ("forgeengin", ["forgeengin", "forge"]),
+                  ("runtime", ["engine/runtime", "dualruntime", "runtime"]),
+                  ("supabase", ["supabase"]),
+                  ("agents_dr_eams", ["agents", "dr-eams", "idari", "boogie", "humanai"]),
+                  ("ui_shell", ["components", "styles", "ui"]),
+                  ("docs", ["docs", "readme", "architecture"]),
+                  ("public_assets", ["public", "fonts", "images", "icons", "models", "audio"]),
+              ]
+
+              for area, needles in explicit:
+                  if path_contains(p, needles):
+                      return area
+
+              first = p.split("/", 1)[0]
+              return safe_part(first)
+
+          def secondary_tracks(path: str) -> List[str]:
+              p = path.lower()
+              tracks = []
+
+              checks = [
+                  ("11_security", ["auth", "security", "permission", "rls", "csrf", "xss", "ssrf", "secret", "abuse", "bot", "child-safety", "privacy"]),
+                  ("12_performance", ["perf", "performance", "benchmark", "optimizer", "webgpu", "wasm", "cache", "lazy", "bundle", "frame", "latency"]),
+                  ("13_accessibility", ["accessibility", "a11y", "aria", "screen-reader", "reduced-motion", "focus", "keyboard"]),
+                  ("14_observability", ["observability", "metric", "telemetry", "log", "logger", "health", "trace", "monitor", "alert", "sentry"]),
+                  ("15_dev_tooling", [".github", ".ci", "script", "config", "tsconfig", "eslint", "prettier", "package.json", "pnpm-lock", "docker"]),
+                  ("16_product_operations", ["admin", "moderation", "support", "report", "feature-flag", "announcement", "incident"]),
+                  ("17_compliance_policy", ["policy", "privacy", "terms", "cookie", "consent", "delete-data", "export-data", "retention", "license"]),
+                  ("18_content_assets", ["asset", "image", "icon", "font", "audio", "video", "model", "media", "manifest", "public"]),
+                  ("19_release_management", ["release", "deploy", "rollback", "changelog", "version", "workflow", "ci", "smoke"]),
+                  ("20_documentation", ["readme", "docs", ".md", "architecture", "known-issues", "runbook"]),
+              ]
+
+              for track, needles in checks:
+                  if path_contains(p, needles):
+                      tracks.append(track)
+
+              return sorted(set(tracks))
+
+          def classify(path: str) -> Tuple[str, str, str]:
+              p = path.replace("\\", "/")
+              lower = p.lower()
+
+              if lower.startswith("engins/gameengin/") or lower.startswith("lib/gameengin/"):
+                  return "05_build_runtime_state", "active_engine", "whole gameengin source area"
+              if lower.startswith("engins/contentengin/") or lower.startswith("lib/contentengin/"):
+                  return "05_build_runtime_state", "active_engine", "whole contentengin source area"
+              if lower.startswith("engins/codeengin/") or lower.startswith("lib/codeengin/"):
+                  return "05_build_runtime_state", "active_engine", "whole codeengin source area"
+              if lower.startswith("engins/starmakerengin/") or lower.startswith("engins/music/") or lower.startswith("lib/music/"):
+                  return "05_build_runtime_state", "active_engine", "whole starmaker/music source area"
+              if lower.startswith("engins/labengin/"):
+                  return "05_build_runtime_state", "active_engine", "whole labengin source area"
+              if lower.startswith("engins/brandingengin/") or lower.startswith("engins/branding/") or lower.startswith("lib/branding/"):
+                  return "05_build_runtime_state", "active_engine", "whole branding source area"
+              if lower.startswith("engins/forgeengin/") or lower.startswith("engins/forge/") or lower.startswith("lib/forge/") or lower.startswith("lib/forge-ngn/"):
+                  return "05_build_runtime_state", "active_engine", "whole forge source area"
+              if lower.startswith("dreamr/") or lower.startswith("lib/dreamr/") or lower.startswith("lib/feed/") or lower.startswith("lib/feeds/") or lower.startswith("lib/social/"):
+                  return "06_build_application_behavior", "what_business_rules_run", "whole dreamr/feed/social source area"
+              if lower.startswith("dreamdmbar/") or lower.startswith("lib/dreamdm/"):
+                  return "06_build_application_behavior", "what_happens_on_type", "whole dreamdmbar messaging source area"
+
+              if lower.startswith("engine/runtime/") or lower.startswith("lib/runtime/"):
+                  return "05_build_runtime_state", "active_runtime", "runtime spine"
+              if lower.startswith("engine/engin-runtime/") or lower.startswith("lib/engin-runtime/"):
+                  return "05_build_runtime_state", "active_engine", "engin runtime"
+              if lower.startswith("engine/channels/") or lower.startswith("lib/event-bus/") or lower.startswith("lib/shareddream/"):
+                  return "05_build_runtime_state", "events", "event/channel system"
+              if lower.startswith("engine/state/"):
+                  return "05_build_runtime_state", "loaded_data", "state layer"
+              if lower.startswith("engine/sync/"):
+                  return "05_build_runtime_state", "sync_state", "sync/offline layer"
+              if lower.startswith("engine/vm/"):
+                  return "05_build_runtime_state", "active_runtime", "vm/runtime execution"
+              if lower.startswith("engine/security/"):
+                  return "11_security", "permissions", "security-owned engine code"
+              if lower.startswith("engine/orchestration/"):
+                  return "06_build_application_behavior", "what_business_rules_run", "orchestration/application behavior"
+
+              if lower.startswith("app/api/"):
+                  if any(x in lower for x in ["delete-data", "export-data", "privacy", "policy", "terms"]):
+                      return "17_compliance_policy", "export_data_flow", "compliance API route"
+                  if any(x in lower for x in ["auth", "login", "logout", "security", "admin"]):
+                      return "03_build_backend", "auth", "backend/security API route"
+                  return "04_build_api_layer", "routes", "API route"
+
+              if lower.startswith("supabase/migrations/"):
+                  return "02_build_data_model", "migration_files", "database migration"
+              if lower.startswith("supabase/schema/"):
+                  return "02_build_data_model", "database_tables", "database schema"
+              if lower.startswith("supabase/"):
+                  return "03_build_backend", "database_access", "supabase backend integration"
+
+              if lower.startswith("app/"):
+                  if "/page." in lower or lower.endswith("page.tsx") or lower.endswith("page.ts"):
+                      if any(x in lower for x in ["privacy", "policy", "terms", "delete", "export"]):
+                          return "17_compliance_policy", "privacy_policy", "policy/compliance page"
+                      if any(x in lower for x in ["admin", "idari-console", "(internal)"]):
+                          return "16_product_operations", "admin_panels", "admin/internal page"
+                      return "07_build_pages_screens", "page_files", "Next.js app page"
+                  if "/layout." in lower or lower.endswith("layout.tsx") or lower.endswith("layout.ts"):
+                      return "07_build_pages_screens", "layout_files", "Next.js layout"
+                  if "loading." in lower:
+                      return "07_build_pages_screens", "loading_pages", "loading route file"
+                  if "error." in lower:
+                      return "07_build_pages_screens", "error_pages", "error route file"
+                  if "not-found." in lower:
+                      return "07_build_pages_screens", "not_found_pages", "not-found route file"
+                  return "07_build_pages_screens", "routes", "app router file"
+
+              if lower.startswith("daydreams/") or lower.startswith("coresurfaces/"):
+                  return "07_build_pages_screens", "screen_structure", "surface/daydream screen area"
+
+              if lower.startswith("components/ui/"):
+                  return "08_build_ui_components", "buttons" if "button" in lower else "component_variants", "ui component"
+              if lower.startswith("components/"):
+                  if "modal" in lower:
+                      return "08_build_ui_components", "modals", "component"
+                  if "panel" in lower:
+                      return "08_build_ui_components", "panels", "component"
+                  if "card" in lower:
+                      return "08_build_ui_components", "cards", "component"
+                  if "feed" in lower:
+                      return "08_build_ui_components", "feed_items", "component"
+                  if "nav" in lower:
+                      return "08_build_ui_components", "nav_bars", "component"
+                  if "avatar" in lower:
+                      return "08_build_ui_components", "avatars", "component"
+                  if "loader" in lower or "skeleton" in lower:
+                      return "08_build_ui_components", "loaders", "component"
+                  return "08_build_ui_components", "component_variants", "component"
+
+              if lower.startswith("styles/"):
+                  return "08_build_ui_components", "design_tokens", "styles/design tokens"
+
+              if lower.startswith("hooks/"):
+                  if any(x in lower for x in ["tap", "drag", "gesture", "touch", "scroll", "swipe", "pinch", "keyboard", "hover", "focus"]):
+                      return "09_wire_interactions", "mobile_touch_behavior", "interaction hook"
+                  return "05_build_runtime_state", "persisted_local_state", "state/runtime hook"
+
+              if lower.startswith("agents/") or lower.startswith("dr-eams/") or lower.startswith("lib/ai/") or lower.startswith("lib/agents/"):
+                  return "06_build_application_behavior", "what_business_rules_run", "agent/application behavior"
+
+              if lower.startswith(".github/workflows/"):
+                  return "15_dev_tooling", "ci_workflows", "GitHub Actions workflow"
+              if lower.startswith(".github/"):
+                  return "15_dev_tooling", "repo_structure_rules", "GitHub repo configuration"
+              if lower.startswith(".ci/"):
+                  return "15_dev_tooling", "ci_workflows", "CI support"
+
+              if lower.startswith("scripts/"):
+                  if any(x in lower for x in ["deploy", "release", "rollback"]):
+                      return "19_release_management", "deploy_target", "release script"
+                  if "test" in lower or "typecheck" in lower or "lint" in lower:
+                      return "10_verify_build_deploy", "test_commands", "verification script"
+                  return "15_dev_tooling", "scripts", "developer script"
+
+              if lower.startswith("tests/") or lower.startswith("__tests__/") or ".test." in lower or ".spec." in lower:
+                  return "10_verify_build_deploy", "unit_tests", "test file"
+
+              if lower.startswith("docs/") or lower.endswith(".md") or lower.endswith(".mdx"):
+                  if any(x in lower for x in ["security", "privacy", "policy", "terms"]):
+                      return "17_compliance_policy", "privacy_policy", "policy/compliance doc"
+                  if any(x in lower for x in ["release", "deploy", "rollback", "changelog"]):
+                      return "19_release_management", "release_checklist", "release doc"
+                  return "20_documentation", "feature_docs", "documentation"
+
+              if lower.startswith("public/") or lower.startswith("fonts/") or any(lower.endswith(ext) for ext in [".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".ico", ".mp3", ".wav", ".glb", ".gltf", ".wasm"]):
+                  if lower.endswith(".wasm"):
+                      return "18_content_assets", "static_files", "wasm/static asset"
+                  if "font" in lower or lower.startswith("fonts/"):
+                      return "18_content_assets", "fonts", "font asset"
+                  if "icon" in lower:
+                      return "18_content_assets", "icons", "icon asset"
+                  if any(x in lower for x in ["audio", ".mp3", ".wav"]):
+                      return "18_content_assets", "audio", "audio asset"
+                  if any(x in lower for x in ["model", ".glb", ".gltf"]):
+                      return "18_content_assets", "models", "model asset"
+                  return "18_content_assets", "static_files", "static/public asset"
+
+              basename = Path(lower).name
+
+              if basename in {"package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "bun.lockb"}:
+                  return "15_dev_tooling", "package_manager", "package manager/dependency file"
+
+              if basename.startswith("tsconfig") or basename in {"eslint.config.mjs", ".eslintrc", ".prettierrc", "tailwind.config.ts", "postcss.config.mjs"}:
+                  return "15_dev_tooling", "typecheck_config", "tooling config"
+
+              if basename in {"next.config.mjs", "next.config.js", "vite.config.ts"}:
+                  return "15_dev_tooling", "local_setup", "build/tooling config"
+
+              if basename.startswith(".env"):
+                  return "15_dev_tooling", "env_examples", "environment example/config"
+
+              if basename.startswith("docker") or basename in {"docker-compose.yml", "docker-compose.yaml"}:
+                  return "15_dev_tooling", "local_setup", "local/deploy tooling"
+
+              if "architecture" in lower:
+                  return "20_documentation", "architecture_notes", "architecture document"
+
+              if "readme" in lower:
+                  return "20_documentation", "setup_docs", "readme/setup document"
+
+              return "06_build_application_behavior", "what_business_rules_run", "fallback: app behavior/business logic"
+
+          def git_files() -> List[str]:
+              raw = subprocess.check_output(["git", "ls-files", "-z"], cwd=REPO)
+              return [p for p in raw.decode("utf-8", errors="replace").split("\0") if p]
+
+          files = git_files()
+          manifest = []
+          counts = Counter()
+          area_counts = Counter()
+          copied = set()
+
+          cross_links_by_category = defaultdict(list)
+
+          for rel in files:
+              src = REPO / rel
+              if not src.exists():
+                  continue
+
+              category, subfolder, reason = classify(rel)
+              area = dreamengin_area(rel)
+              secondary = [track for track in secondary_tracks(rel) if track != category]
+
+              dest = ORGANIZED / category / subfolder / safe_part(area) / rel
+              dest.parent.mkdir(parents=True, exist_ok=True)
+
+              if src.is_symlink():
+                  target = os.readlink(src)
+                  if dest.exists() or dest.is_symlink():
+                      dest.unlink()
+                  os.symlink(target, dest)
+              else:
+                  shutil.copy2(src, dest)
+
+              copied.add(rel)
+              counts[category] += 1
+              area_counts[area] += 1
+
+              row = {
+                  "source_path": rel,
+                  "category": category,
+                  "subfolder": subfolder,
+                  "dreamengin_area": area,
+                  "destination_path": str(dest.relative_to(ORGANIZED)).replace("\\", "/"),
+                  "secondary_tracks": secondary,
+                  "reason": reason,
+              }
+              manifest.append(row)
+
+              if secondary:
+                  cross_links_by_category[category].append(row)
+
+          missing = sorted(set(files) - copied)
+          if missing:
+              raise SystemExit("Some tracked files were not copied:\n" + "\n".join(missing[:100]))
+
+          def tree_lines(root: Path) -> List[str]:
+              lines = [root.name + "/"]
+
+              def walk(directory: Path, prefix: str = "") -> None:
+                  entries = sorted(directory.iterdir(), key=lambda x: (x.is_file(), x.name.lower()))
+                  for index, entry in enumerate(entries):
+                      connector = "└── " if index == len(entries) - 1 else "├── "
+                      lines.append(prefix + connector + entry.name + ("/" if entry.is_dir() else ""))
+                      if entry.is_dir():
+                          extension = "    " if index == len(entries) - 1 else "│   "
+                          walk(entry, prefix + extension)
+
+              walk(root)
+              return lines
+
+          tree_output = []
+          tree_output.append("DREAMENGIN ORGANIZED REPOSITORY FILE TREE")
+          tree_output.append("")
+          tree_output.append("This file is a separate download from the organized repository ZIP.")
+          tree_output.append("The organized repository ZIP contains only organized-repository/ with the 20 category folders.")
+          tree_output.append("")
+          tree_output.append(f"Total tracked files copied: {len(copied)}")
+          tree_output.append("")
+          tree_output.append("CATEGORY COUNTS")
+          tree_output.append("")
+
+          for category in CATEGORIES:
+              tree_output.append(f"- {category}: {counts[category]} files")
+
+          tree_output.append("")
+          tree_output.append("DREAMENGIN AREA COUNTS")
+          tree_output.append("")
+
+          for area, count in sorted(area_counts.items()):
+              tree_output.append(f"- {area}: {count} files")
+
+          tree_output.append("")
+          tree_output.append("ORGANIZED FILE TREE")
+          tree_output.append("")
+          tree_output.extend(tree_lines(ORGANIZED))
+
+          tree_output.append("")
+          tree_output.append("CROSS-LINKED FILES")
+          tree_output.append("")
+          tree_output.append("Files are copied once into their primary category. This section lists files that also tie to other support tracks.")
+          tree_output.append("")
+
+          any_cross_links = False
+          for category in CATEGORIES:
+              rows = cross_links_by_category.get(category, [])
+              if not rows:
+                  continue
+
+              any_cross_links = True
+              tree_output.append(f"{category}")
+              for row in rows:
+                  tree_output.append(f"  - {row['source_path']}")
+                  tree_output.append(f"    primary: {row['category']}/{row['subfolder']}")
+                  tree_output.append(f"    dreamengin_area: {row['dreamengin_area']}")
+                  tree_output.append(f"    also_ties_to: {', '.join(row['secondary_tracks'])}")
+              tree_output.append("")
+
+          if not any_cross_links:
+              tree_output.append("No cross-linked files found.")
+
+          TREE_FILE.write_text("\n".join(tree_output) + "\n", encoding="utf-8")
+
+          MANIFEST_JSON.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+          with MANIFEST_CSV.open("w", newline="", encoding="utf-8") as f:
+              writer = csv.DictWriter(
+                  f,
+                  fieldnames=[
+                      "source_path",
+                      "category",
+                      "subfolder",
+                      "dreamengin_area",
+                      "destination_path",
+                      "secondary_tracks",
+                      "reason",
+                  ],
+              )
+              writer.writeheader()
+              for row in manifest:
+                  csv_row = dict(row)
+                  csv_row["secondary_tracks"] = ";".join(row["secondary_tracks"])
+                  writer.writerow(csv_row)
+
+          def zip_with_empty_dirs(source_root: Path, zip_path: Path) -> None:
+              with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as z:
+                  for path in sorted(source_root.rglob("*")):
+                      arcname = path.relative_to(source_root.parent).as_posix()
+                      if path.is_dir():
+                          z.writestr(arcname.rstrip("/") + "/", "")
+                      elif path.is_symlink():
+                          z.writestr(arcname, os.readlink(path))
+                      else:
+                          z.write(path, arcname)
+
+          zip_with_empty_dirs(ORGANIZED, ZIP_PATH)
+
+          top = sorted([p.name for p in ORGANIZED.iterdir() if p.is_dir()])
+          if len(top) != 20:
+              raise SystemExit(f"Expected 20 top-level folders in organized repository, found {len(top)}")
+
+          print("")
+          print("ORGANIZED REPOSITORY CREATED")
+          print(f"Tracked files copied: {len(copied)}")
+          print(f"Repository ZIP: {ZIP_PATH.relative_to(REPO)}")
+          print(f"Separate file tree: {TREE_FILE.relative_to(REPO)}")
+          print("")
+          print("20 TOP-LEVEL FOLDERS")
+          for item in top:
+              print(item)
+          print("")
+          print("CATEGORY COUNTS")
+          for category in CATEGORIES:
+              print(f"{category}: {counts[category]}")
+          PY
+
+      - name: Print organized file tree in workflow log
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Organized file tree"
+          cat _organized_repo_artifact/organized_file_tree.txt
+          echo "::endgroup::"
+
+      - name: Upload organized repository ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.organized_repo_artifact_name }}
+          path: _organized_repo_artifact/dreamengin-organized-repository.zip
+          retention-days: ${{ inputs.retention_days }}
+          if-no-files-found: error
+
+      - name: Upload organized file tree TXT
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.file_tree_artifact_name }}
+          path: _organized_repo_artifact/organized_file_tree.txt
+          retention-days: ${{ inputs.retention_days }}
+          if-no-files-found: error
