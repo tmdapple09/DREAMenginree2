@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T06:45:44.640Z",
+  "generatedAt": "2026-06-29T07:10:57.647Z",
   "root": ".",
   "nodes": [
     {
@@ -3182,10 +3182,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-tree-only.yml",
-      "label": "organize-repo-build-map-semantic-determinism-tree-only.yml",
+      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-dreamengin-feature-labels.yml",
+      "label": "organize-repo-build-map-semantic-determinism-dreamengin-feature-labels.yml",
       "type": "config",
-      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-tree-only.yml",
+      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-dreamengin-feature-labels.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
