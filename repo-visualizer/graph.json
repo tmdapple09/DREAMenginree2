@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T13:31:03.152Z",
+  "generatedAt": "2026-06-29T13:34:30.680Z",
   "root": ".",
   "nodes": [
     {
@@ -27651,6 +27651,16 @@
       "parent": "folder:dreamdmbar/runtime",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
+      "label": "dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
+      "type": "file",
+      "path": "dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
