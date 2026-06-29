@@ -1,129 +1,74 @@
-name: Rebase Organized ZIP Files Into Repo Paths
+name: Rebase ZIP Into Existing Repo Paths
 
 on:
   workflow_dispatch:
-    inputs:
-      zip_path:
-        description: "Path to organized ZIP in repo, or a folder containing the ZIP"
-        required: true
-        default: "_incoming/dreamengin-organized-repository.zip"
-      commit_changes:
-        description: "Commit rebased files back to this branch"
-        required: true
-        type: boolean
-        default: true
-      run_install:
-        description: "Install dependencies before verification"
-        required: true
-        type: boolean
-        default: true
-      run_typecheck:
-        description: "Run pnpm typecheck after rebasing"
-        required: true
-        type: boolean
-        default: true
-      run_build:
-        description: "Run pnpm build after rebasing"
-        required: true
-        type: boolean
-        default: false
-      fail_on_unmapped_files:
-        description: "Fail if any file in the ZIP cannot be mapped back to a repo path"
-        required: true
-        type: boolean
-        default: true
-      allow_png_files:
-        description: "Allow PNG files from the organized ZIP to be rebased into the repo"
-        required: true
-        type: boolean
-        default: false
-      commit_message:
-        description: "Commit message"
-        required: true
-        default: "chore(dreamengin): rebase organized zip files into repo paths"
 
 permissions:
   contents: write
 
 jobs:
-  rebase-organized-zip:
-    name: Strip organized wrapper and restore real repo paths
+  update-code:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout current branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref_name }}
 
-      - name: Resolve ZIP from repo
+      - name: Unzip -> rebase paths -> replace repo files -> commit
         shell: bash
-        env:
-          ZIP_PATH_INPUT: ${{ inputs.zip_path }}
         run: |
           set -euo pipefail
 
-          mkdir -p _rebase_organized_zip_work
-          RESOLVED_ZIP="_rebase_organized_zip_work/resolved-organized-repository.zip"
-          rm -f "$RESOLVED_ZIP"
+          BRANCH="${GITHUB_REF_NAME}"
+          echo "Working branch: $BRANCH"
 
-          if [ -f "$ZIP_PATH_INPUT" ]; then
-            cp "$ZIP_PATH_INPUT" "$RESOLVED_ZIP"
-            echo "Using ZIP: $ZIP_PATH_INPUT"
-          else
-            ZIP_FOUND="$(find . -type f -name '*.zip' | sort | head -n 1 || true)"
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
 
-            if [ -z "$ZIP_FOUND" ]; then
-              echo "No .zip file found in the repo."
-              exit 1
-            fi
+          mapfile -t zips < <(
+            find . -type f -name '*.zip' \
+              -not -path './.git/*' \
+              -not -path './node_modules/*' \
+              -not -path './.next/*' \
+              -not -path './dist/*' \
+              -not -path './build/*' \
+              | sort
+          )
 
-            cp "$ZIP_FOUND" "$RESOLVED_ZIP"
-            echo "Using ZIP: $ZIP_FOUND"
+          if [ "${#zips[@]}" -eq 0 ]; then
+            echo "No zip files found, nothing to do."
+            exit 0
           fi
 
-          unzip -t "$RESOLVED_ZIP" >/dev/null
-          echo "RESOLVED_ZIP_PATH=$RESOLVED_ZIP" >> "$GITHUB_ENV"
+          ZIP="${zips[$((${#zips[@]} - 1))]}"
+          echo "Processing: $ZIP"
 
+          TMP="$(mktemp -d)"
+          unzip -q "$ZIP" -d "$TMP"
 
-      - name: Rebase organized ZIP files into real repository paths
-        shell: bash
-        env:
-          ZIP_PATH_INPUT: ${{ env.RESOLVED_ZIP_PATH }}
-          FAIL_ON_UNMAPPED_FILES: ${{ inputs.fail_on_unmapped_files }}
-          ALLOW_PNG_FILES: ${{ inputs.allow_png_files }}
-        run: |
-          set -euo pipefail
+          ROOT="$TMP"
+          top_dirs=()
+          for d in "$TMP"/*/; do
+            [ -d "$d" ] || continue
+            [ "$(basename "$d")" = "__MACOSX" ] && continue
+            top_dirs+=( "$d" )
+          done
 
-          if [ ! -f "$ZIP_PATH_INPUT" ]; then
-            echo "Resolved ZIP not found: $ZIP_PATH_INPUT"
-            exit 1
+          if [ "${#top_dirs[@]}" -eq 1 ]; then
+            ROOT="${top_dirs[0]}"
           fi
 
-          python <<'PY'
+          ROOT="$ROOT" python <<'PY'
           from __future__ import annotations
 
-          import csv
-          import hashlib
-          import json
           import os
           import shutil
-          import zipfile
-          from dataclasses import dataclass
           from pathlib import Path
-          from typing import Dict, Iterable, List, Optional, Tuple
 
           REPO = Path.cwd().resolve()
-          ZIP_PATH = (REPO / os.environ["ZIP_PATH_INPUT"]).resolve()
-          FAIL_ON_UNMAPPED = os.environ.get("FAIL_ON_UNMAPPED_FILES") == "true"
-          ALLOW_PNG_FILES = os.environ.get("ALLOW_PNG_FILES") == "true"
-
-          WORK = REPO / "_rebase_organized_zip_work"
-          OUTER_EXTRACT = WORK / "outer_extract"
-          NESTED_EXTRACT = WORK / "nested_extract"
-          REPORT_MD = WORK / "rebase_report.md"
-          REPORT_CSV = WORK / "rebase_manifest.csv"
-          REPORT_JSON = WORK / "rebase_manifest.json"
+          ROOT = Path(os.environ["ROOT"]).resolve()
 
           CATEGORY_NAMES = {
               "01_define_user_flow",
@@ -149,6 +94,8 @@ jobs:
           }
 
           GENERATED_FILE_NAMES = {
+              ".DS_Store",
+              "Thumbs.db",
               "__DO_NOT_RETURN_BEHAVIOR_LOCATIONS.md",
               "organized_file_tree.txt",
               "organized_manifest.json",
@@ -160,498 +107,149 @@ jobs:
               "rebase_manifest.json",
           }
 
-          SKIP_FILE_NAMES = {
-              ".DS_Store",
-              "Thumbs.db",
-              *GENERATED_FILE_NAMES,
-          }
-
-          BLOCKED_DIR_NAMES = {
+          BLOCKED_PARTS = {
               "__MACOSX",
               ".git",
-              ".svn",
-              ".hg",
               "node_modules",
               ".next",
               "dist",
               "build",
               ".turbo",
               ".cache",
-              "_organized_repo_artifact",
               "_rebase_organized_zip_work",
+              "_organized_repo_artifact",
           }
 
-          BLOCKED_ROOT_OUTPUTS = {
-              "_incoming",
-              "_organized_repo_artifact",
-              "_rebase_organized_zip_work",
-          }
-
-          @dataclass
-          class PlannedFile:
-              extracted_path: Path
-              source_inside_zip: str
-              destination: Path
-              category: str
-              subfolder: str
-              dreamengin_area: str
-
-          @dataclass
-          class RebaseRow:
-              source_inside_zip: str
-              destination: str
-              action: str
-              category: str
-              subfolder: str
-              dreamengin_area: str
-              size: int
-              sha256: str
-              note: str
-
-          @dataclass
-          class UnmappedRow:
-              source_inside_zip: str
-              reason: str
-
-          def sha256_file(path: Path) -> str:
-              h = hashlib.sha256()
-              with path.open("rb") as f:
-                  for chunk in iter(lambda: f.read(1024 * 1024), b""):
-                      h.update(chunk)
-              return h.hexdigest()
-
-          def normalize_zip_name(name: str) -> str:
-              return name.replace("\\", "/")
-
-          def safe_zip_member(name: str) -> bool:
-              normalized = normalize_zip_name(name)
-              if normalized.startswith("/"):
-                  return False
-              parts = [part for part in normalized.split("/") if part not in {"", "."}]
+          def safe_destination(parts: tuple[str, ...]) -> Path | None:
               if not parts:
-                  return False
-              if any(part == ".." for part in parts):
-                  return False
-              if any(part in BLOCKED_DIR_NAMES for part in parts):
-                  return False
-              return True
+                  return None
+              if any(part in {"", ".", ".."} for part in parts):
+                  return None
+              if any(part in BLOCKED_PARTS for part in parts):
+                  return None
 
-          def extract_zip(zip_path: Path, target_dir: Path) -> None:
-              target_dir.mkdir(parents=True, exist_ok=True)
-              with zipfile.ZipFile(zip_path, "r") as archive:
-                  for member in archive.infolist():
-                      name = normalize_zip_name(member.filename)
-                      if not safe_zip_member(name):
-                          raise SystemExit(f"Blocked unsafe ZIP member: {member.filename}")
-                      if member.is_dir():
-                          continue
-
-                      parts = [part for part in name.split("/") if part not in {"", "."}]
-                      if not parts:
-                          continue
-
-                      if parts[-1] in SKIP_FILE_NAMES:
-                          continue
-
-                      if not ALLOW_PNG_FILES and parts[-1].lower().endswith(".png"):
-                          continue
-
-                      target = target_dir.joinpath(*parts).resolve()
-                      try:
-                          target.relative_to(target_dir.resolve())
-                      except ValueError:
-                          raise SystemExit(f"Blocked ZIP extraction outside target dir: {member.filename}")
-
-                      target.parent.mkdir(parents=True, exist_ok=True)
-                      with archive.open(member, "r") as src, target.open("wb") as dst:
-                          shutil.copyfileobj(src, dst)
-
-          def iter_files(root: Path) -> Iterable[Path]:
-              for path in sorted(root.rglob("*")):
-                  if not path.is_file():
-                      continue
-
-                  relative_parts = path.relative_to(root).parts
-                  if any(part in BLOCKED_DIR_NAMES for part in relative_parts):
-                      continue
-
-                  if path.name in SKIP_FILE_NAMES:
-                      continue
-
-                  if not ALLOW_PNG_FILES and path.name.lower().endswith(".png"):
-                      continue
-
-                  yield path
-
-          def find_category_index(parts: Tuple[str, ...]) -> Optional[int]:
-              for index, part in enumerate(parts):
-                  if part in CATEGORY_NAMES:
-                      return index
-              return None
-
-          def contains_organized_category(root: Path) -> bool:
-              for file in iter_files(root):
-                  if find_category_index(file.relative_to(root).parts) is not None:
-                      return True
-              return False
-
-          def choose_extract_root() -> Path:
-              if contains_organized_category(OUTER_EXTRACT):
-                  return OUTER_EXTRACT
-
-              nested_zips = [
-                  path for path in iter_files(OUTER_EXTRACT)
-                  if path.suffix.lower() == ".zip"
-              ]
-
-              if len(nested_zips) == 1:
-                  extract_zip(nested_zips[0], NESTED_EXTRACT)
-                  if contains_organized_category(NESTED_EXTRACT):
-                      return NESTED_EXTRACT
-                  raise SystemExit("Nested ZIP was found and extracted, but it does not contain the organized 20-folder structure.")
-
-              if len(nested_zips) > 1:
-                  found = "\n".join(str(path.relative_to(OUTER_EXTRACT)) for path in nested_zips)
-                  raise SystemExit(
-                      "Outer ZIP does not contain the organized 20-folder structure and has multiple nested ZIPs. "
-                      "Upload the actual organized repository ZIP or leave only one nested ZIP.\n"
-                      + found
-                  )
-
-              raise SystemExit(
-                  "ZIP does not contain the organized 20-folder structure. Expected paths like:\n"
-                  "organized-repository/05_build_runtime_state/active_engine/gameengin/engins/gameengin/index.ts"
-              )
-
-          def map_back_to_repo_path(extracted_file: Path, extract_root: Path) -> Tuple[Optional[PlannedFile], Optional[UnmappedRow]]:
-              relative = extracted_file.relative_to(extract_root)
-              parts = relative.parts
-              category_index = find_category_index(parts)
-
-              if category_index is None:
-                  return None, UnmappedRow(str(relative).replace("\\", "/"), "No 20-category bucket found in file path")
-
-              if len(parts) <= category_index + 3:
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      "Path has category bucket but is missing subfolder, DREAMengin area, or original repo path"
-                  )
-
-              category = parts[category_index]
-              subfolder = parts[category_index + 1]
-              dreamengin_area = parts[category_index + 2]
-              original_repo_parts = parts[category_index + 3:]
-
-              if not original_repo_parts:
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      "No original repo path after category/subfolder/DREAMengin-area wrapper"
-                  )
-
-              if original_repo_parts[0] in CATEGORY_NAMES:
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      "Original repo path starts with another category bucket; wrapper is ambiguous"
-                  )
-
-              if original_repo_parts[0] in BLOCKED_ROOT_OUTPUTS:
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      f"Original repo path targets generated/upload workspace: {original_repo_parts[0]}"
-                  )
-
-              if any(part in BLOCKED_DIR_NAMES for part in original_repo_parts):
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      "Original repo path contains a blocked generated/dependency directory"
-                  )
-
-              if any(part == ".." for part in original_repo_parts):
-                  return None, UnmappedRow(
-                      str(relative).replace("\\", "/"),
-                      "Original repo path contains parent traversal"
-                  )
-
-              destination = REPO.joinpath(*original_repo_parts).resolve()
+              destination = REPO.joinpath(*parts).resolve()
               try:
                   destination.relative_to(REPO)
               except ValueError:
-                  return None, UnmappedRow(str(relative).replace("\\", "/"), "Mapped destination escapes repository root")
+                  return None
+              return destination
 
-              return PlannedFile(
-                  extracted_path=extracted_file,
-                  source_inside_zip=str(relative).replace("\\", "/"),
-                  destination=destination,
-                  category=category,
-                  subfolder=subfolder,
-                  dreamengin_area=dreamengin_area,
-              ), None
+          def replace_repo_file(src: Path, dst: Path) -> str:
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              if dst.exists() and dst.is_dir():
+                  raise SystemExit(f"Refusing to replace directory with file: {dst.relative_to(REPO)}")
 
-          def plan_files(extract_root: Path) -> Tuple[List[PlannedFile], List[UnmappedRow], List[RebaseRow]]:
-              planned_by_destination: Dict[str, PlannedFile] = {}
-              planned: List[PlannedFile] = []
-              unmapped: List[UnmappedRow] = []
-              duplicate_rows: List[RebaseRow] = []
+              existed = dst.exists()
+              temp_dst = dst.with_name(f".{dst.name}.rebase-tmp")
+              if temp_dst.exists():
+                  temp_dst.unlink()
 
-              for file in iter_files(extract_root):
-                  mapped, unmapped_row = map_back_to_repo_path(file, extract_root)
+              shutil.move(str(src), str(temp_dst))
+              os.replace(temp_dst, dst)
 
-                  if unmapped_row is not None:
-                      unmapped.append(unmapped_row)
+              return "replaced" if existed else "created"
+
+          def iter_files(root: Path):
+              for path in sorted(root.rglob("*")):
+                  if not path.is_file():
+                      continue
+                  rel_parts = path.relative_to(root).parts
+                  if path.name in GENERATED_FILE_NAMES:
+                      continue
+                  if any(part in BLOCKED_PARTS for part in rel_parts):
+                      continue
+                  yield path
+
+          has_organized_wrapper = any((ROOT / name).is_dir() for name in CATEGORY_NAMES)
+
+          created = 0
+          replaced = 0
+          skipped = 0
+          unmapped = 0
+
+          if has_organized_wrapper:
+              print("Mode: organized wrapper ZIP; stripping category/subfolder/DREAMengin-area wrapper.")
+
+              for category in sorted(CATEGORY_NAMES):
+                  category_root = ROOT / category
+                  if not category_root.is_dir():
                       continue
 
-                  if mapped is None:
-                      continue
+                  for src in iter_files(category_root):
+                      rel = src.relative_to(category_root)
+                      parts = rel.parts
 
-                  destination_key = str(mapped.destination.relative_to(REPO)).replace("\\", "/")
-                  if destination_key not in planned_by_destination:
-                      planned_by_destination[destination_key] = mapped
-                      planned.append(mapped)
-                      continue
+                      if len(parts) < 3:
+                          unmapped += 1
+                          print(f"unmapped: {category}/{rel} :: missing subfolder/DREAMengin-area/original path")
+                          continue
 
-                  first = planned_by_destination[destination_key]
-                  if sha256_file(first.extracted_path) != sha256_file(mapped.extracted_path):
-                      raise SystemExit(
-                          "Duplicate destination conflict. Two different files map back to the same repo path:\n"
-                          f"destination: {destination_key}\n"
-                          f"first: {first.source_inside_zip}\n"
-                          f"second: {mapped.source_inside_zip}"
-                      )
+                      original_parts = parts[2:]
+                      destination = safe_destination(original_parts)
 
-                  duplicate_rows.append(
-                      RebaseRow(
-                          source_inside_zip=mapped.source_inside_zip,
-                          destination=destination_key,
-                          action="duplicate_same_content_skipped",
-                          category=mapped.category,
-                          subfolder=mapped.subfolder,
-                          dreamengin_area=mapped.dreamengin_area,
-                          size=mapped.extracted_path.stat().st_size,
-                          sha256=sha256_file(mapped.extracted_path),
-                          note="Same destination and same content as another ZIP file; skipped to avoid duplicate writes.",
-                      )
-                  )
+                      if destination is None:
+                          unmapped += 1
+                          print(f"unmapped: {category}/{rel} :: unsafe original repo path")
+                          continue
 
-              return planned, unmapped, duplicate_rows
-
-          def apply_planned_files(planned: List[PlannedFile]) -> List[RebaseRow]:
-              rows: List[RebaseRow] = []
-
-              for item in planned:
-                  destination_relative = str(item.destination.relative_to(REPO)).replace("\\", "/")
-                  source_hash = sha256_file(item.extracted_path)
-                  source_size = item.extracted_path.stat().st_size
-
-                  if item.destination.exists():
-                      if item.destination.is_dir():
-                          raise SystemExit(f"Destination is a directory, cannot overwrite with file: {destination_relative}")
-                      existing_hash = sha256_file(item.destination)
-                      if existing_hash == source_hash:
-                          action = "unchanged"
+                      action = replace_repo_file(src, destination)
+                      if action == "created":
+                          created += 1
                       else:
-                          item.destination.parent.mkdir(parents=True, exist_ok=True)
-                          shutil.copy2(item.extracted_path, item.destination)
-                          action = "updated"
+                          replaced += 1
+
+              for category in sorted(CATEGORY_NAMES):
+                  repo_wrapper = REPO / category
+                  if repo_wrapper.is_dir():
+                      shutil.rmtree(repo_wrapper)
+                      print(f"removed wrapper folder: {category}")
+
+          else:
+              print("Mode: repo-shaped ZIP; replacing files at matching repo paths.")
+
+              for src in iter_files(ROOT):
+                  rel = src.relative_to(ROOT)
+                  destination = safe_destination(rel.parts)
+
+                  if destination is None:
+                      skipped += 1
+                      print(f"skipped unsafe path: {rel}")
+                      continue
+
+                  action = replace_repo_file(src, destination)
+                  if action == "created":
+                      created += 1
                   else:
-                      item.destination.parent.mkdir(parents=True, exist_ok=True)
-                      shutil.copy2(item.extracted_path, item.destination)
-                      action = "created"
+                      replaced += 1
 
-                  rows.append(
-                      RebaseRow(
-                          source_inside_zip=item.source_inside_zip,
-                          destination=destination_relative,
-                          action=action,
-                          category=item.category,
-                          subfolder=item.subfolder,
-                          dreamengin_area=item.dreamengin_area,
-                          size=source_size,
-                          sha256=source_hash,
-                          note="Stripped organized wrapper and restored to real repo path.",
-                      )
-                  )
+          for generated in ["_rebase_organized_zip_work", "_organized_repo_artifact"]:
+              path = REPO / generated
+              if path.is_dir():
+                  shutil.rmtree(path)
+                  print(f"removed generated folder: {generated}")
 
-              return rows
-
-          def write_reports(rows: List[RebaseRow], unmapped: List[UnmappedRow]) -> None:
-              created = sum(1 for row in rows if row.action == "created")
-              updated = sum(1 for row in rows if row.action == "updated")
-              unchanged = sum(1 for row in rows if row.action == "unchanged")
-              duplicate_skipped = sum(1 for row in rows if row.action == "duplicate_same_content_skipped")
-
-              REPORT_JSON.write_text(
-                  json.dumps(
-                      {
-                          "zip_path": str(ZIP_PATH.relative_to(REPO)),
-                          "created": created,
-                          "updated": updated,
-                          "unchanged": unchanged,
-                          "duplicate_same_content_skipped": duplicate_skipped,
-                          "unmapped": len(unmapped),
-                          "allow_png_files": ALLOW_PNG_FILES,
-                          "rebased_files": [row.__dict__ for row in rows],
-                          "unmapped_files": [row.__dict__ for row in unmapped],
-                      },
-                      indent=2,
-                  ),
-                  encoding="utf-8",
-              )
-
-              with REPORT_CSV.open("w", newline="", encoding="utf-8") as f:
-                  writer = csv.DictWriter(
-                      f,
-                      fieldnames=[
-                          "source_inside_zip",
-                          "destination",
-                          "action",
-                          "category",
-                          "subfolder",
-                          "dreamengin_area",
-                          "size",
-                          "sha256",
-                          "note",
-                      ],
-                  )
-                  writer.writeheader()
-                  for row in rows:
-                      writer.writerow(row.__dict__)
-
-              lines: List[str] = []
-              lines.append("# Rebase Organized ZIP Into Real Repo Paths")
-              lines.append("")
-              lines.append("This workflow does not copy the 20-folder organized structure into the repo.")
-              lines.append("It strips the organized wrapper and writes each file back to its real repository path.")
-              lines.append("")
-              lines.append(f"ZIP: `{ZIP_PATH.relative_to(REPO)}`")
-              lines.append(f"PNG rebasing allowed: `{ALLOW_PNG_FILES}`")
-              lines.append("")
-              lines.append("## Summary")
-              lines.append("")
-              lines.append(f"- created: {created}")
-              lines.append(f"- updated: {updated}")
-              lines.append(f"- unchanged: {unchanged}")
-              lines.append(f"- duplicate same-content skipped: {duplicate_skipped}")
-              lines.append(f"- unmapped: {len(unmapped)}")
-              lines.append(f"- total processed rows: {len(rows)}")
-              lines.append("")
-              lines.append("## Rebased Files")
-              lines.append("")
-
-              for row in rows:
-                  lines.append(f"- `{row.destination}`")
-                  lines.append(f"  - action: `{row.action}`")
-                  lines.append(f"  - source in ZIP: `{row.source_inside_zip}`")
-                  lines.append(f"  - wrapper stripped: `{row.category}/{row.subfolder}/{row.dreamengin_area}`")
-
-              if unmapped:
-                  lines.append("")
-                  lines.append("## Unmapped Files")
-                  lines.append("")
-                  for row in unmapped:
-                      lines.append(f"- `{row.source_inside_zip}`")
-                      lines.append(f"  - reason: {row.reason}")
-
-              REPORT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-          def main() -> None:
-              if OUTER_EXTRACT.exists():
-                  shutil.rmtree(OUTER_EXTRACT)
-              if NESTED_EXTRACT.exists():
-                  shutil.rmtree(NESTED_EXTRACT)
-
-              OUTER_EXTRACT.mkdir(parents=True, exist_ok=True)
-              extract_zip(ZIP_PATH, OUTER_EXTRACT)
-              extract_root = choose_extract_root()
-
-              planned, unmapped, duplicate_rows = plan_files(extract_root)
-
-              if unmapped and FAIL_ON_UNMAPPED:
-                  write_reports(duplicate_rows, unmapped)
-                  print(REPORT_MD.read_text(encoding="utf-8"))
-                  raise SystemExit("Unmapped files found and fail_on_unmapped_files=true.")
-
-              if not planned and not duplicate_rows:
-                  write_reports([], unmapped)
-                  print(REPORT_MD.read_text(encoding="utf-8"))
-                  raise SystemExit("No files mapped back to repository paths.")
-
-              applied_rows = apply_planned_files(planned)
-              all_rows = applied_rows + duplicate_rows
-              write_reports(all_rows, unmapped)
-              print(REPORT_MD.read_text(encoding="utf-8"))
-
-          main()
+          print(f"replaced={replaced}")
+          print(f"created={created}")
+          print(f"skipped={skipped}")
+          print(f"unmapped={unmapped}")
           PY
 
-      - name: Show rebase result
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          echo "::group::Rebase report"
-          cat _rebase_organized_zip_work/rebase_report.md
-          echo "::endgroup::"
-
-          echo "::group::Git status"
-          git status --short
-          echo "::endgroup::"
-
-
-      - name: Commit rebased files
-        if: ${{ inputs.commit_changes }}
-        shell: bash
-        env:
-          COMMIT_MESSAGE: ${{ inputs.commit_message }}
-        run: |
-          set -euo pipefail
+          rm -f "$ZIP"
+          git rm -f "$ZIP" 2>/dev/null || true
 
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add -A -- . \
-            ':!_rebase_organized_zip_work/**' \
-            ':!_organized_repo_artifact/**' \
-            ':!_incoming/**'
+          git add -A
 
           if git diff --cached --quiet; then
-            echo "No repository file changes to commit."
+            echo "No code changes to commit."
             exit 0
           fi
 
-          git commit -m "$COMMIT_MESSAGE"
-          git push
-      - name: Setup pnpm
-        if: ${{ inputs.run_install && (inputs.run_typecheck || inputs.run_build) }}
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
+          git commit -m "chore(dreamengin): apply code updates from zip [skip ci] [skip vercel]"
 
-      - name: Setup Node
-        if: ${{ inputs.run_install && (inputs.run_typecheck || inputs.run_build) }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install dependencies
-        if: ${{ inputs.run_install && (inputs.run_typecheck || inputs.run_build) }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          corepack enable
-          pnpm install --frozen-lockfile --config.confirmModulesPurge=false
-
-      - name: Run typecheck
-        if: ${{ inputs.run_typecheck }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          pnpm typecheck
-
-      - name: Run build
-        if: ${{ inputs.run_build }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          pnpm build
-
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
+          git push origin "HEAD:$BRANCH"
