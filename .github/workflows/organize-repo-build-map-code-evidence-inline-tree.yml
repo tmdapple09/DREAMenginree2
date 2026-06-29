@@ -1,0 +1,2131 @@
+name: Organize Repo Into Web App Build Map
+
+on:
+  workflow_dispatch:
+    inputs:
+      organized_repo_artifact_name:
+        description: "Download name for the organized repository ZIP"
+        required: true
+        default: "dreamengin-organized-repository"
+      file_tree_artifact_name:
+        description: "Download name for the organized file tree plus code-evidence report"
+        required: true
+        default: "dreamengin-organized-file-tree"
+      retention_days:
+        description: "Artifact retention days"
+        required: true
+        default: "14"
+
+permissions:
+  contents: read
+
+jobs:
+  organize-repository:
+    name: Organize repository by file code evidence plus DREAMengin behavior
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Build organized repository from code evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import os
+          import re
+          import shutil
+          import subprocess
+          import zipfile
+          from collections import Counter, defaultdict
+          from dataclasses import dataclass, field
+          from pathlib import Path
+          from typing import Callable, Dict, Iterable, List, Optional, Set, Tuple
+
+          REPO = Path.cwd()
+          OUT_ROOT = REPO / "_organized_repo_artifact"
+          ORGANIZED = OUT_ROOT / "organized-repository"
+
+          ZIP_PATH = OUT_ROOT / "dreamengin-organized-repository.zip"
+          TREE_FILE = OUT_ROOT / "organized_file_tree.txt"
+          MANIFEST_JSON = OUT_ROOT / "organized_manifest.json"
+          MANIFEST_CSV = OUT_ROOT / "organized_manifest.csv"
+
+          BEHAVIOR_HELPER_FILENAME = "__DO_NOT_RETURN_BEHAVIOR_LOCATIONS.md"
+
+          # These are the 20 build buckets and their subfolder vocabulary.
+          # They are classification targets. The workflow only creates subfolders
+          # when a real repo file lands there by code evidence.
+          CATEGORIES: Dict[str, List[str]] = {
+              "01_define_user_flow": [
+                  "entry_point",
+                  "user_goal",
+                  "user_role",
+                  "user_permissions",
+                  "user_account_type",
+                  "logged_out_path",
+                  "logged_in_path",
+                  "guest_path",
+                  "first_time_user_path",
+                  "returning_user_path",
+                  "onboarding_path",
+                  "onboarding_completion_path",
+                  "account_recovery_path",
+                  "notification_entry_path",
+                  "deep_link_entry_path",
+                  "share_link_entry_path",
+                  "invited_user_path",
+                  "admin_path",
+                  "moderator_path",
+                  "support_path",
+                  "happy_path",
+                  "failure_path",
+                  "empty_path",
+                  "loading_path",
+                  "blocked_path",
+                  "recovery_path",
+                  "retry_path",
+                  "cancel_path",
+                  "mobile_path",
+                  "desktop_path",
+                  "tablet_path",
+                  "browser_back_behavior",
+                  "refresh_behavior",
+                  "tab_close_behavior",
+                  "user_leaves_mid_flow",
+                  "network_fails",
+                  "auth_expires",
+                  "data_missing",
+                  "data_stale",
+                  "access_denied",
+                  "user_lacks_permission",
+                  "feature_disabled",
+                  "device_browser_support_missing",
+                  "upload_fails",
+                  "save_fails",
+                  "concurrent_user_changes",
+                  "app_offline",
+                  "after_reconnect",
+                  "abuse_path",
+                  "spam_path",
+                  "moderation_path",
+                  "support_escalation_path",
+                  "success_state",
+                  "error_state",
+                  "empty_state",
+                  "loading_state",
+                  "confirmation_state",
+                  "undo_state",
+                  "recovery_state",
+                  "final_user_visible_outcome",
+              ],
+              "02_build_data_model": [
+                  "entities",
+                  "nouns",
+                  "fields",
+                  "relationships",
+                  "ids",
+                  "primary_keys",
+                  "foreign_keys",
+                  "timestamps",
+                  "created_at",
+                  "updated_at",
+                  "deleted_at",
+                  "ownership",
+                  "user_ownership",
+                  "author_ownership",
+                  "organization_team_ownership",
+                  "visibility",
+                  "permissions",
+                  "permission_matrix",
+                  "roles",
+                  "status_values",
+                  "enums",
+                  "validation_rules",
+                  "default_values",
+                  "nullable_fields",
+                  "required_fields",
+                  "indexes",
+                  "search_indexes",
+                  "unique_constraints",
+                  "check_constraints",
+                  "database_tables",
+                  "database_views",
+                  "join_tables",
+                  "history_tables",
+                  "audit_tables",
+                  "analytics_event_tables",
+                  "billing_subscription_tables",
+                  "storage_buckets",
+                  "storage_paths",
+                  "file_metadata",
+                  "file_ownership",
+                  "file_visibility",
+                  "data_retention_rules",
+                  "deletion_cascade_rules",
+                  "soft_delete_fields",
+                  "version_fields",
+                  "import_schema",
+                  "export_schema",
+                  "migration_files",
+                  "rollback_migration_files",
+                  "seed_data",
+                  "test_fixtures",
+                  "typescript_types",
+                  "generated_database_types",
+                  "schema_docs",
+              ],
+              "03_build_backend": [
+                  "auth",
+                  "session_handling",
+                  "permissions",
+                  "role_checks",
+                  "database_access",
+                  "row_level_security",
+                  "storage_access",
+                  "file_upload_handling",
+                  "file_validation",
+                  "file_size_limits",
+                  "server_only_logic",
+                  "business_rules",
+                  "scheduled_jobs",
+                  "background_jobs",
+                  "queues",
+                  "webhooks",
+                  "webhook_verification",
+                  "webhook_replay_handling",
+                  "email_sending",
+                  "email_templates",
+                  "notifications",
+                  "push_notification_delivery",
+                  "payment_logic",
+                  "billing_logic",
+                  "subscription_logic",
+                  "cache_invalidation",
+                  "search_indexing",
+                  "rate_limits",
+                  "abuse_protection",
+                  "bot_protection",
+                  "content_moderation",
+                  "admin_only_actions",
+                  "audit_logging",
+                  "error_handling",
+                  "server_caching",
+                  "backend_fallbacks",
+                  "health_checks",
+                  "secrets_env_handling",
+                  "secret_rotation_behavior",
+                  "data_export_flow",
+                  "data_delete_flow",
+                  "data_import_flow",
+                  "backup_behavior",
+                  "restore_from_backup_behavior",
+              ],
+              "04_build_api_layer": [
+                  "routes",
+                  "route_handlers",
+                  "server_actions",
+                  "request_shape",
+                  "response_shape",
+                  "query_params",
+                  "path_params",
+                  "body_validation",
+                  "auth_checks",
+                  "permission_checks",
+                  "success_responses",
+                  "error_responses",
+                  "status_codes",
+                  "pagination",
+                  "filtering",
+                  "sorting",
+                  "search_params",
+                  "upload_endpoints",
+                  "webhook_endpoints",
+                  "typed_api_contracts",
+                  "api_client_functions",
+                  "request_normalization",
+                  "response_normalization",
+                  "retry_rules",
+                  "timeout_rules",
+                  "idempotency_rules",
+                  "cache_headers",
+                  "no_store_behavior",
+                  "cors",
+                  "api_versioning",
+                  "api_deprecation_behavior",
+                  "upload_size_limits",
+                  "api_tests",
+              ],
+              "05_build_runtime_state": [
+                  "current_user",
+                  "current_session",
+                  "current_route",
+                  "active_page",
+                  "active_screen",
+                  "active_tool",
+                  "active_mode",
+                  "active_selection",
+                  "active_feature",
+                  "active_runtime",
+                  "active_engine",
+                  "loaded_data",
+                  "derived_data",
+                  "local_draft_state",
+                  "optimistic_state",
+                  "cache",
+                  "cache_invalidation_behavior",
+                  "stale_data_behavior",
+                  "events",
+                  "event_cleanup",
+                  "realtime_subscriptions",
+                  "sync_state",
+                  "offline_queue",
+                  "reconnect_behavior",
+                  "undo_redo",
+                  "hydration_state",
+                  "dirty_state",
+                  "save_state",
+                  "loading_state",
+                  "error_state",
+                  "success_state",
+                  "persisted_local_state",
+                  "feature_flag_state",
+                  "device_capability_state",
+                  "permission_state",
+                  "notification_state",
+                  "search_filter_state",
+                  "billing_subscription_state",
+                  "memory_cleanup",
+                  "state_performance_budget",
+              ],
+              "06_build_application_behavior": [
+                  "what_happens_on_tap",
+                  "what_happens_on_click",
+                  "what_happens_on_type",
+                  "what_happens_on_upload",
+                  "what_happens_on_save",
+                  "what_happens_on_edit",
+                  "what_happens_on_delete",
+                  "what_happens_on_cancel",
+                  "what_happens_on_retry",
+                  "what_happens_on_undo",
+                  "what_happens_on_auth_expiration",
+                  "what_happens_on_permission_change",
+                  "what_happens_on_screen_switch",
+                  "what_happens_on_route_change",
+                  "what_happens_when_data_updates",
+                  "what_happens_when_realtime_data_arrives",
+                  "what_happens_offline",
+                  "what_happens_on_reconnect",
+                  "what_happens_when_feature_disabled",
+                  "what_happens_when_device_capability_missing",
+                  "what_happens_when_browser_unsupported",
+                  "what_happens_when_payment_subscription_fails",
+                  "what_happens_when_upload_too_large",
+                  "what_happens_when_content_rejected_moderated",
+                  "what_happens_when_concurrent_edits_conflict",
+                  "what_gets_persisted",
+                  "what_stays_local",
+                  "what_gets_reset",
+                  "what_gets_remembered",
+                  "what_gets_logged",
+                  "what_gets_blocked",
+                  "what_gets_retried",
+                  "what_validation_runs",
+                  "what_business_rules_run",
+                  "what_user_feedback_appears",
+              ],
+              "07_build_pages_screens": [
+                  "routes",
+                  "page_files",
+                  "layout_files",
+                  "nested_layouts",
+                  "loading_pages",
+                  "error_pages",
+                  "not_found_pages",
+                  "redirects",
+                  "protected_pages",
+                  "public_pages",
+                  "unauthorized_states",
+                  "account_recovery_screens",
+                  "billing_screens",
+                  "admin_screens",
+                  "moderation_screens",
+                  "page_metadata",
+                  "seo_metadata",
+                  "open_graph_social_metadata",
+                  "sitemap",
+                  "robots_behavior",
+                  "canonical_urls",
+                  "page_level_data_loading",
+                  "screen_structure",
+                  "navigation_targets",
+                  "tabs",
+                  "sections",
+                  "mobile_layout",
+                  "desktop_layout",
+                  "tablet_layout",
+                  "responsive_breakpoints",
+                  "scroll_containers",
+                  "route_level_empty_states",
+                  "route_level_fallbacks",
+                  "deep_link_behavior",
+              ],
+              "08_build_ui_components": [
+                  "design_tokens",
+                  "colors",
+                  "typography",
+                  "spacing",
+                  "shadows",
+                  "borders",
+                  "icons",
+                  "buttons",
+                  "cards",
+                  "inputs",
+                  "forms",
+                  "form_errors",
+                  "modals",
+                  "drawers",
+                  "panels",
+                  "tabs",
+                  "toolbars",
+                  "nav_bars",
+                  "sidebars",
+                  "menus",
+                  "dropdowns",
+                  "lists",
+                  "feed_items",
+                  "avatars",
+                  "loaders",
+                  "skeletons",
+                  "empty_states",
+                  "error_states",
+                  "success_states",
+                  "toast_notifications",
+                  "banners",
+                  "confirmation_dialogs",
+                  "permission_prompts",
+                  "paywall_subscription_components",
+                  "search_components",
+                  "filter_components",
+                  "pagination_components",
+                  "infinite_scroll_components",
+                  "upload_components",
+                  "media_previews",
+                  "canvas_viewports",
+                  "component_variants",
+                  "disabled_states",
+                  "active_states",
+                  "focus_states",
+                  "hover_states",
+                  "accessibility_labels",
+                  "keyboard_support",
+                  "reduced_motion_support",
+              ],
+              "09_wire_interactions": [
+                  "tap",
+                  "click",
+                  "double_tap_only_if_intentional",
+                  "hold",
+                  "long_press",
+                  "drag",
+                  "drop",
+                  "scroll",
+                  "swipe",
+                  "pinch",
+                  "zoom",
+                  "keyboard_input",
+                  "focus",
+                  "blur",
+                  "hover_for_desktop",
+                  "pointer_capture",
+                  "touch_cancellation",
+                  "gesture_conflict_handling",
+                  "animations",
+                  "transitions",
+                  "haptics",
+                  "screen_reader_behavior",
+                  "mobile_touch_behavior",
+                  "loading_interaction",
+                  "disabled_interaction",
+                  "retry_interaction",
+                  "undo_interaction",
+                  "confirmation_interaction",
+                  "escape_behavior",
+                  "browser_back_behavior",
+                  "long_running_task_feedback",
+                  "upload_progress",
+                  "cancel_upload",
+                  "pull_to_refresh",
+                  "infinite_scroll_behavior",
+                  "copy_share_behavior",
+                  "permission_prompt_behavior",
+                  "conflict_resolution_behavior",
+              ],
+              "10_verify_build_deploy": [
+                  "typecheck",
+                  "lint",
+                  "unit_tests",
+                  "integration_tests",
+                  "route_tests",
+                  "api_tests",
+                  "auth_tests",
+                  "permission_tests",
+                  "database_tests",
+                  "storage_tests",
+                  "realtime_tests",
+                  "mobile_tests",
+                  "desktop_tests",
+                  "browser_compatibility_check",
+                  "accessibility_checks",
+                  "performance_checks",
+                  "bundle_size_check",
+                  "loading_speed_check",
+                  "error_state_check",
+                  "empty_state_check",
+                  "offline_reconnect_check",
+                  "clean_checkout_test",
+                  "install_from_lockfile_test",
+                  "migration_test",
+                  "rollback_migration_test",
+                  "build",
+                  "production_env_check",
+                  "environment_variables",
+                  "secrets",
+                  "deployment_config",
+                  "deploy_preview_check",
+                  "domain_config",
+                  "https",
+                  "source_map_error_reporting_check",
+                  "logs",
+                  "monitoring",
+                  "alerts",
+                  "rollback_plan",
+                  "migration_plan",
+                  "backup_plan",
+                  "release_notes",
+                  "real_device_smoke_test",
+                  "post_deploy_smoke_test",
+              ],
+              "11_security": [
+                  "auth",
+                  "authorization",
+                  "permissions",
+                  "permission_matrix_tests",
+                  "row_level_security",
+                  "input_validation",
+                  "output_sanitization",
+                  "secrets",
+                  "secret_rotation",
+                  "rate_limiting",
+                  "file_validation",
+                  "upload_size_limits",
+                  "abuse_prevention",
+                  "bot_prevention",
+                  "audit_logs",
+                  "csrf_protection",
+                  "xss_protection",
+                  "ssrf_protection",
+                  "dependency_vulnerability_checks",
+                  "secure_headers",
+                  "session_expiration",
+                  "account_recovery_safety",
+                  "admin_access_controls",
+              ],
+              "12_performance": [
+                  "bundle_size",
+                  "code_splitting",
+                  "lazy_loading",
+                  "caching",
+                  "cache_invalidation",
+                  "image_optimization",
+                  "responsive_images",
+                  "cdn_static_asset_caching",
+                  "database_indexes",
+                  "database_query_plans",
+                  "query_limits",
+                  "api_latency_budget",
+                  "interaction_latency_budget",
+                  "render_cost",
+                  "hydration_cost",
+                  "long_task_detection",
+                  "memory_leaks",
+                  "mobile_frame_rate",
+                  "mobile_touch_responsiveness",
+                  "loading_speed",
+                  "background_job_performance",
+                  "realtime_subscription_load",
+              ],
+              "13_accessibility": [
+                  "labels",
+                  "form_label_associations",
+                  "focus_order",
+                  "keyboard_navigation",
+                  "contrast",
+                  "reduced_motion",
+                  "screen_reader_text",
+                  "error_announcement",
+                  "modal_focus_trap",
+                  "skip_links",
+                  "touch_target_size",
+                  "accessible_touch_targets",
+                  "semantic_html",
+                  "aria_only_where_needed",
+                  "accessible_loading_states",
+                  "accessible_empty_states",
+                  "accessible_error_states",
+                  "tab_order",
+                  "visible_focus_states",
+              ],
+              "14_observability": [
+                  "logs",
+                  "metrics",
+                  "error_reporting",
+                  "crash_reporting",
+                  "health_checks",
+                  "request_ids",
+                  "user_action_traces",
+                  "analytics_events",
+                  "funnel_tracking",
+                  "slow_request_traces",
+                  "failed_job_traces",
+                  "deployment_monitoring",
+                  "alert_thresholds",
+                  "api_error_rates",
+                  "backend_error_rates",
+                  "client_error_rates",
+                  "performance_metrics",
+                  "uptime_monitoring",
+              ],
+              "15_dev_tooling": [
+                  "package_manager",
+                  "scripts",
+                  "formatter",
+                  "lint_config",
+                  "typecheck_config",
+                  "test_commands",
+                  "env_examples",
+                  "local_setup",
+                  "local_env_validation",
+                  "ci_workflows",
+                  "seed_scripts",
+                  "migration_scripts",
+                  "rollback_migration_scripts",
+                  "type_generation",
+                  "codegen_commands",
+                  "mock_data_tools",
+                  "story_dev_component_preview",
+                  "pre_commit_hooks",
+                  "pre_push_hooks",
+                  "dependency_management",
+                  "repo_structure_rules",
+              ],
+              "16_product_operations": [
+                  "admin_panels",
+                  "moderation_tools",
+                  "user_support_lookup",
+                  "account_suspension",
+                  "account_restore",
+                  "content_takedown",
+                  "support_flows",
+                  "user_recovery",
+                  "data_export",
+                  "data_deletion",
+                  "announcements",
+                  "feature_flags",
+                  "feature_rollout",
+                  "kill_switches",
+                  "incident_response",
+                  "abuse_review",
+                  "reporting_tools",
+                  "user_communication_flows",
+              ],
+              "17_compliance_policy": [
+                  "privacy_policy",
+                  "terms",
+                  "cookie_behavior",
+                  "consent_records",
+                  "age_gates",
+                  "child_safety",
+                  "data_retention",
+                  "delete_account_flow",
+                  "export_data_flow",
+                  "third_party_terms",
+                  "license_compliance",
+                  "data_processing_records",
+                  "payment_compliance",
+                  "moderation_policy",
+                  "content_policy",
+              ],
+              "18_content_assets": [
+                  "images",
+                  "icons",
+                  "fonts",
+                  "audio",
+                  "video",
+                  "models",
+                  "static_files",
+                  "manifests",
+                  "metadata",
+                  "alt_text",
+                  "favicon_app_icons",
+                  "pwa_manifest",
+                  "asset_compression",
+                  "responsive_images",
+                  "content_versioning",
+                  "asset_licensing",
+                  "upload_assets",
+                  "generated_assets",
+                  "public_assets",
+                  "protected_assets",
+                  "storage_paths",
+                  "cache_rules_for_assets",
+              ],
+              "19_release_management": [
+                  "branches",
+                  "commits",
+                  "pr_checks",
+                  "changelog",
+                  "versioning",
+                  "version_tags",
+                  "release_checklist",
+                  "deploy_target",
+                  "deploy_freeze_rules",
+                  "staged_rollout",
+                  "hotfix_path",
+                  "rollback",
+                  "incident_rollback",
+                  "backups",
+                  "migration_plan",
+                  "rollback_migration_plan",
+                  "smoke_tests",
+                  "deploy_preview",
+                  "production_deploy",
+                  "post_deploy_verification",
+              ],
+              "20_documentation": [
+                  "architecture_notes",
+                  "api_docs",
+                  "data_model_docs",
+                  "setup_docs",
+                  "feature_docs",
+                  "agent_instructions",
+                  "known_issues",
+                  "runbook",
+                  "troubleshooting_guide",
+                  "environment_variable_docs",
+                  "deployment_docs",
+                  "migration_docs",
+                  "support_admin_docs",
+                  "test_docs",
+                  "release_docs",
+                  "security_notes",
+                  "performance_notes",
+                  "repo_structure_notes",
+                  "onboarding_docs_for_future_contributors",
+              ],
+          }
+
+          DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
+              "dreams_lifecycle": [
+                  "dream", "dreams", "create dream", "open dream", "save dream", "delete dream",
+                  "clone dream", "restore dream", "transfer dream", "dream visibility", "dream instance",
+                  "dream-windows", "dream window", "dreamregistry", "dream registry",
+              ],
+              "dreams_as_everything": [
+                  "dream as", "dream surface", "dream object", "widget", "window", "surface",
+                  "feed object", "profile object", "shared object", "spatial object", "cartridge",
+              ],
+              "dream_customization_everywhere": [
+                  "customize", "customization", "hide", "remove", "replace", "reorder", "resize",
+                  "reset layout", "layout", "overrides", "appearance", "settings/appearance",
+              ],
+              "dream_drag_drop_spatial_behavior": [
+                  "drag", "drop", "draggable", "drop target", "dock", "undock", "snap", "resize",
+                  "spatial", "pointer", "touch", "dreamspace", "useDrag",
+              ],
+              "homedream": [
+                  "homedream", "home dream", "home-layout", "HomeDreamRegion", "DreamWidget",
+              ],
+              "dreamspace": [
+                  "dreamspace", "dream space", "spatial", "DreamSpaceRegion", "dreamsurface.dreamspace",
+              ],
+              "daydreams": [
+                  "daydream", "daydreams", "DaydreamShell", "daydream/code", "daydream/game",
+                  "daydream/create", "daydream/music", "daydream/lab", "daydream/brand",
+              ],
+              "shared_dreams": [
+                  "shared dream", "shared-dream", "sharedDream", "presence", "collaboration",
+                  "cursor", "media sync", "shared session", "shared channel",
+              ],
+              "dreamr": [
+                  "dreamr", "feed", "profile", "edit profile", "social", "post", "visibility",
+                  "discover", "messages",
+              ],
+              "dreamdmbar": [
+                  "dreamdmbar", "dreamdm", "conversation", "message", "draft", "module bar",
+                  "notification", "DreamSystemContext",
+              ],
+              "engins": [
+                  "engin", "engins", "engine card", "activeEngin", "StandaloneEnginSurface",
+                  "Engin shell", "GameEngin", "ContentEngin", "CodeEngin", "LabEngin",
+              ],
+              "rulesets": [
+                  "ruleset", "rule-set", "constraints", "transformations", "parameters",
+                  "active rule", "useGameEnginRuntime", "RuleSet",
+              ],
+              "runtime": [
+                  "runtime", "snapshot", "memory", "event", "channel", "sync", "offline queue",
+                  "moduleRegistry", "EnginRuntime",
+              ],
+              "dualruntime": [
+                  "dualruntime", "dual runtime", "topRuntime", "bottomRuntime", "dominance",
+                  "swap", "dualRuntimeBridge", "wasm bus", "runtime container",
+              ],
+              "gameengin_behavior": [
+                  "gameengin", "cartridge", "game runtime", "GameRemote", "mobile controls",
+                  "keyboard bridge", "gamepad", "score", "crash report", "save state",
+              ],
+              "contentengin_behavior": [
+                  "contentengin", "asset", "recipe", "photo", "mesh", "material", "rigging",
+                  "glb", "export", "validate asset", "procedural",
+              ],
+              "codeengin_behavior": [
+                  "codeengin", "workspace", "editor", "notebook", "diagnostics", "search",
+                  "safe path", "upload workspace", "run simulation",
+              ],
+              "starmaker_music_behavior": [
+                  "starmaker", "music", "arrangement", "daw", "mixer", "sequencer", "preset", "audio",
+              ],
+              "lab_sim_behavior": [
+                  "labengin", "lab", "simengin", "simulation", "experiment", "particles",
+                  "benchmark", "physics", "quantum",
+              ],
+              "forge_brand_agent_behavior": [
+                  "forge", "assembly", "pieces", "build graph", "brand", "branding", "identity",
+                  "campaign", "analytics", "dr-eams", "idari", "boogieman", "humanai",
+              ],
+              "auth_profile_account": [
+                  "auth", "login", "logout", "callback", "profile", "settings", "account",
+                  "delete-data", "export-data", "supabase",
+              ],
+              "admin_agent_dr_eams": [
+                  "admin", "dr-eams", "idari", "boogie", "boogieman", "humanai", "audit", "agent",
+              ],
+              "render_webgpu_visual_runtime": [
+                  "render", "renderer", "webgpu", "babylon", "three", "shader", "canvas",
+                  "viewport", "visual",
+              ],
+              "repo_ci_release_tooling": [
+                  ".github", "workflow", "scripts", "typecheck", "build", "file_tree",
+                  "repo_state", "organized", "rebase", "ci",
+              ],
+          }
+
+          TEXT_EXTENSIONS = {
+              ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".md", ".mdx",
+              ".yml", ".yaml", ".css", ".scss", ".html", ".sql", ".sh", ".py",
+              ".toml", ".env", ".example", ".txt", ".svg", ".tsx", ".mts", ".cts",
+          }
+
+          BINARY_EXTENSIONS = {
+              ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".mp3", ".wav",
+              ".mp4", ".mov", ".glb", ".gltf", ".wasm", ".zip", ".pdf",
+              ".ttf", ".otf", ".woff", ".woff2",
+          }
+
+          SKIP_SCAN_DIRS = {
+              ".git", "node_modules", ".next", "dist", "build", ".turbo", ".cache",
+              "_organized_repo_artifact", "_rebase_organized_zip_work", "__MACOSX",
+          }
+
+          GENERATED_NAMES = {
+              BEHAVIOR_HELPER_FILENAME,
+              "organized_file_tree.txt",
+              "organized_manifest.json",
+              "organized_manifest.csv",
+          }
+
+          @dataclass
+          class FileFacts:
+              rel: str
+              path_lower: str
+              name_lower: str
+              suffix: str
+              text: str
+              lower: str
+              is_text: bool
+              is_binary: bool
+              is_typescript: bool
+              is_tsx: bool
+              is_jsx: bool
+              is_markdown: bool
+              is_sql: bool
+              is_yaml: bool
+              is_json: bool
+              is_css: bool
+              is_page_file: bool
+              is_layout_file: bool
+              is_route_file: bool
+              is_test_file: bool
+              is_workflow: bool
+              is_component_like: bool
+              line_count: int
+
+          def safe_part(value: str) -> str:
+              value = value.strip().lower()
+              value = re.sub(r"[^a-z0-9._-]+", "_", value)
+              value = re.sub(r"_+", "_", value).strip("_")
+              return value or "uncategorized"
+
+          def git_files() -> List[str]:
+              raw = subprocess.check_output(["git", "ls-files", "-z"], cwd=REPO)
+              files = [p for p in raw.decode("utf-8", errors="replace").split("\0") if p]
+              return [
+                  p for p in files
+                  if Path(p).name not in GENERATED_NAMES
+                  and not any(part in SKIP_SCAN_DIRS for part in Path(p).parts)
+              ]
+
+          def is_probably_text_path(path: Path) -> bool:
+              suffix = path.suffix.lower()
+              if suffix in BINARY_EXTENSIONS:
+                  return False
+              if suffix in TEXT_EXTENSIONS:
+                  return True
+              if path.name in {"Dockerfile", "LICENSE", "Makefile", ".gitignore", ".gitleaks.toml", ".cursorrules"}:
+                  return True
+              return False
+
+          def read_text(path: Path, limit: int = 900_000) -> Tuple[str, bool]:
+              if not path.exists() or not path.is_file():
+                  return "", False
+              if not is_probably_text_path(path):
+                  return "", False
+              try:
+                  data = path.read_bytes()
+              except Exception:
+                  return "", False
+              if len(data) > limit:
+                  data = data[:limit]
+              return data.decode("utf-8", errors="replace"), True
+
+          def facts_for(rel: str) -> FileFacts:
+              path = REPO / rel
+              suffix = path.suffix.lower()
+              text, is_text = read_text(path)
+              path_lower = rel.lower()
+              name_lower = path.name.lower()
+              lower = text.lower()
+              is_ts = suffix in {".ts", ".tsx", ".mts", ".cts"}
+              is_tsx = suffix == ".tsx"
+              is_jsx = suffix == ".jsx"
+              is_route_file = name_lower == "route.ts" or name_lower == "route.js" or "/route." in path_lower
+              is_page_file = name_lower in {"page.tsx", "page.ts", "page.jsx", "page.js"} or "/page." in path_lower
+              is_layout_file = name_lower in {"layout.tsx", "layout.ts", "layout.jsx", "layout.js"} or "/layout." in path_lower
+              is_test_file = (
+                  "/tests/" in f"/{path_lower}" or
+                  name_lower.endswith(".test.ts") or name_lower.endswith(".test.tsx") or
+                  name_lower.endswith(".spec.ts") or name_lower.endswith(".spec.tsx") or
+                  "describe(" in lower and "expect(" in lower
+              )
+              is_workflow = path_lower.startswith(".github/workflows/") or path_lower.startswith(".github/ruleset/")
+              is_component_like = (
+                  is_tsx or is_jsx or
+                  "export default function" in lower and "return (" in lower or
+                  "react" in lower and "jsx" in lower
+              )
+              return FileFacts(
+                  rel=rel,
+                  path_lower=path_lower,
+                  name_lower=name_lower,
+                  suffix=suffix,
+                  text=text,
+                  lower=lower,
+                  is_text=is_text,
+                  is_binary=not is_text,
+                  is_typescript=is_ts,
+                  is_tsx=is_tsx,
+                  is_jsx=is_jsx,
+                  is_markdown=suffix in {".md", ".mdx"},
+                  is_sql=suffix == ".sql",
+                  is_yaml=suffix in {".yml", ".yaml"},
+                  is_json=suffix == ".json",
+                  is_css=suffix in {".css", ".scss"},
+                  is_page_file=is_page_file,
+                  is_layout_file=is_layout_file,
+                  is_route_file=is_route_file,
+                  is_test_file=is_test_file,
+                  is_workflow=is_workflow,
+                  is_component_like=is_component_like,
+                  line_count=text.count("\n") + (1 if text else 0),
+              )
+
+          def contains_any(haystack: str, needles: Iterable[str]) -> bool:
+              return any(needle.lower() in haystack for needle in needles)
+
+          def count_any(haystack: str, needles: Iterable[str]) -> int:
+              return sum(haystack.count(needle.lower()) for needle in needles)
+
+          def regex_any(patterns: Iterable[str], haystack: str) -> bool:
+              return any(re.search(pattern, haystack, flags=re.IGNORECASE | re.MULTILINE) for pattern in patterns)
+
+          def add_score(scores: Dict[Tuple[str, str], int], reasons: Dict[Tuple[str, str], List[str]], category: str, subfolder: str, weight: int, reason: str) -> None:
+              if category not in CATEGORIES:
+                  raise KeyError(f"Unknown category: {category}")
+              if subfolder not in CATEGORIES[category]:
+                  raise KeyError(f"Unknown subfolder: {category}/{subfolder}")
+              key = (category, subfolder)
+              scores[key] += weight
+              reasons[key].append(reason)
+
+          def classify_by_code(f: FileFacts) -> Tuple[str, str, str, List[Dict[str, object]]]:
+              scores: Dict[Tuple[str, str], int] = defaultdict(int)
+              reasons: Dict[Tuple[str, str], List[str]] = defaultdict(list)
+              h = f.lower
+              p = f.path_lower
+
+              # Assets and docs still use file type evidence because they have no executable code.
+              if f.suffix in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}:
+                  add_score(scores, reasons, "18_content_assets", "images" if f.suffix != ".svg" else "icons", 140, f"asset extension {f.suffix}")
+              if f.suffix in {".ttf", ".otf", ".woff", ".woff2"}:
+                  add_score(scores, reasons, "18_content_assets", "fonts", 160, f"font extension {f.suffix}")
+              if f.suffix in {".mp3", ".wav"}:
+                  add_score(scores, reasons, "18_content_assets", "audio", 160, f"audio extension {f.suffix}")
+              if f.suffix in {".mp4", ".mov"}:
+                  add_score(scores, reasons, "18_content_assets", "video", 160, f"video extension {f.suffix}")
+              if f.suffix in {".glb", ".gltf"}:
+                  add_score(scores, reasons, "18_content_assets", "models", 170, f"model extension {f.suffix}")
+              if f.suffix == ".wasm":
+                  add_score(scores, reasons, "18_content_assets", "static_files", 120, "compiled WASM static file")
+                  add_score(scores, reasons, "12_performance", "render_cost", 80, "compiled runtime performance asset")
+
+              if f.is_markdown:
+                  add_score(scores, reasons, "20_documentation", "feature_docs", 220, "Markdown documentation")
+                  if contains_any(p + h, ["architecture", "blueprint", "axiom", "constitution"]):
+                      add_score(scores, reasons, "20_documentation", "architecture_notes", 150, "architecture documentation terms")
+                  if contains_any(p + h, ["setup", "install", "local", "getting started"]):
+                      add_score(scores, reasons, "20_documentation", "setup_docs", 145, "setup documentation terms")
+                  if contains_any(p + h, ["api", "endpoint", "route"]):
+                      add_score(scores, reasons, "20_documentation", "api_docs", 140, "API documentation terms")
+                  if contains_any(p + h, ["migration", "schema", "table"]):
+                      add_score(scores, reasons, "20_documentation", "migration_docs", 140, "migration/schema documentation")
+                  if contains_any(p + h, ["security", "rls", "auth", "privacy"]):
+                      add_score(scores, reasons, "20_documentation", "security_notes", 145, "security documentation terms")
+                  if contains_any(p + h, ["performance", "benchmark", "latency", "fps"]):
+                      add_score(scores, reasons, "20_documentation", "performance_notes", 145, "performance documentation terms")
+                  if contains_any(p + h, ["known issue", "bug", "fix", "triage"]):
+                      add_score(scores, reasons, "20_documentation", "known_issues", 140, "known issue / triage documentation")
+                  if contains_any(p + h, ["release", "changelog", "deploy", "rollback"]):
+                      add_score(scores, reasons, "19_release_management", "release_checklist", 90, "release documentation terms")
+
+              # Tooling and release files by declarative code/config.
+              if f.is_workflow:
+                  add_score(scores, reasons, "15_dev_tooling", "ci_workflows", 160, "GitHub workflow/ruleset file")
+                  if contains_any(h + p, ["deploy", "vercel", "production", "release", "rollback"]):
+                      add_score(scores, reasons, "19_release_management", "production_deploy", 135, "workflow deploy/release code")
+                  if contains_any(h + p, ["typecheck", "lint", "test", "build"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "build", 120, "workflow verification command")
+              if f.name_lower in {"package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock", "bun.lockb", "pnpm-workspace.yaml"}:
+                  add_score(scores, reasons, "15_dev_tooling", "package_manager", 170, "package manager file")
+              if f.name_lower.startswith("tsconfig"):
+                  add_score(scores, reasons, "15_dev_tooling", "typecheck_config", 160, "TypeScript config")
+              if contains_any(f.name_lower, ["eslint", "prettier", "postcss", "tailwind", "vitest", "playwright"]):
+                  add_score(scores, reasons, "15_dev_tooling", "lint_config", 120, "tooling config filename")
+              if f.path_lower.startswith("scripts/") or f.suffix in {".sh", ".py", ".mjs", ".cjs"} and "/scripts/" in f"/{p}":
+                  add_score(scores, reasons, "15_dev_tooling", "scripts", 120, "script file")
+                  if contains_any(h + p, ["seed", "setup-database"]):
+                      add_score(scores, reasons, "15_dev_tooling", "seed_scripts", 100, "seed/setup script code")
+                  if contains_any(h + p, ["generate", "codegen"]):
+                      add_score(scores, reasons, "15_dev_tooling", "codegen_commands", 95, "codegen script code")
+                  if contains_any(h + p, ["migration", "rollback"]):
+                      add_score(scores, reasons, "15_dev_tooling", "migration_scripts", 95, "migration script code")
+                  if contains_any(h + p, ["deploy", "release"]):
+                      add_score(scores, reasons, "19_release_management", "deploy_target", 105, "deploy/release script code")
+
+              # Database and data model code.
+              if f.is_sql or "create table" in h or "alter table" in h:
+                  add_score(scores, reasons, "02_build_data_model", "migration_files", 120, "SQL migration/data definition")
+                  if "create table" in h:
+                      add_score(scores, reasons, "02_build_data_model", "database_tables", 130, "CREATE TABLE code")
+                  if "create view" in h:
+                      add_score(scores, reasons, "02_build_data_model", "database_views", 110, "CREATE VIEW code")
+                  if "create index" in h or "using gin" in h:
+                      add_score(scores, reasons, "02_build_data_model", "indexes", 110, "index definition code")
+                      add_score(scores, reasons, "12_performance", "database_indexes", 105, "database index code")
+                  if "unique" in h:
+                      add_score(scores, reasons, "02_build_data_model", "unique_constraints", 90, "unique constraint code")
+                  if "foreign key" in h or "references " in h:
+                      add_score(scores, reasons, "02_build_data_model", "foreign_keys", 100, "foreign key/reference code")
+                  if "primary key" in h:
+                      add_score(scores, reasons, "02_build_data_model", "primary_keys", 95, "primary key code")
+                  if "create policy" in h or "alter table" in h and "enable row level security" in h or "auth.uid()" in h:
+                      add_score(scores, reasons, "11_security", "row_level_security", 180, "RLS/policy SQL code")
+                  if "storage.objects" in h or "bucket" in h:
+                      add_score(scores, reasons, "02_build_data_model", "storage_buckets", 105, "storage/bucket schema code")
+
+              if regex_any([r"\bexport\s+(type|interface)\b", r"\binterface\s+\w+", r"\btype\s+\w+\s*="], h):
+                  add_score(scores, reasons, "02_build_data_model", "typescript_types", 90, "TypeScript type/interface declarations")
+                  if contains_any(h, [" id:", "uuid", "user_id", "owner_id", "created_at", "updated_at"]):
+                      add_score(scores, reasons, "02_build_data_model", "fields", 75, "typed data fields")
+              if contains_any(h, ["z.object", "zod", ".safeparse", ".parse(", "validate", "validation"]):
+                  add_score(scores, reasons, "02_build_data_model", "validation_rules", 95, "schema/validation code")
+                  add_score(scores, reasons, "04_build_api_layer", "body_validation", 85, "request/body validation code")
+                  add_score(scores, reasons, "11_security", "input_validation", 80, "input validation code")
+
+              # API route handlers and API clients.
+              if f.is_route_file or regex_any([r"export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE)", r"NextResponse\.json", r"new\s+Response\("], h):
+                  add_score(scores, reasons, "04_build_api_layer", "routes", 150, "Next.js/API route handler code")
+                  if regex_any([r"export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE)"], h):
+                      add_score(scores, reasons, "04_build_api_layer", "route_handlers", 140, "HTTP verb route exports")
+                  if "searchparams" in h or ".nexturl.searchparams" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "query_params", 105, "query/search params code")
+                  if "params" in h and ("context" in h or "params:" in h):
+                      add_score(scores, reasons, "04_build_api_layer", "path_params", 90, "path params code")
+                  if "request.json" in h or "await req.json" in h or "formdata" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "request_shape", 105, "request body/form parsing code")
+                  if "nextresponse.json" in h or "json(" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "response_shape", 100, "JSON response code")
+                  if "status:" in h or "status :" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "status_codes", 90, "status code response code")
+                  if "ok: true" in h or "success" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "success_responses", 70, "success response code")
+                  if "ok: false" in h or "error" in h or "catch" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "error_responses", 90, "error response code")
+                  if contains_any(h + p, ["webhook", "signature", "x-hub", "stripe-signature"]):
+                      add_score(scores, reasons, "04_build_api_layer", "webhook_endpoints", 125, "webhook endpoint code")
+                  if "cors" in h or "access-control-allow" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "cors", 95, "CORS header code")
+                  if "no-store" in h or "cache-control" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "cache_headers", 85, "cache header code")
+              if regex_any([r"\bfetch\(", r"\baxios\.", r"\bswr\b", r"useSWR"], h):
+                  add_score(scores, reasons, "04_build_api_layer", "api_client_functions", 85, "API client/fetch code")
+                  if contains_any(h, ["retry", "backoff"]):
+                      add_score(scores, reasons, "04_build_api_layer", "retry_rules", 90, "API retry code")
+                  if "timeout" in h or "abortcontroller" in h:
+                      add_score(scores, reasons, "04_build_api_layer", "timeout_rules", 90, "API timeout/abort code")
+
+              # Backend/server logic and security.
+              if contains_any(h + p, ["supabase", "service_role", "serverclient", "createclient", "database"]):
+                  add_score(scores, reasons, "03_build_backend", "database_access", 105, "Supabase/database access code")
+              if contains_any(h + p, ["supabase.auth", "getuser", "getsession", "session", "login", "logout", "auth/callback"]):
+                  add_score(scores, reasons, "03_build_backend", "auth", 115, "auth/session backend code")
+                  add_score(scores, reasons, "04_build_api_layer", "auth_checks", 75, "API auth check code")
+                  add_score(scores, reasons, "11_security", "auth", 95, "auth security code")
+              if contains_any(h, ["unauthorized", "forbidden", "access denied", "permission", "role", "admin", "moderator"]):
+                  add_score(scores, reasons, "03_build_backend", "permissions", 85, "permission/role backend code")
+                  add_score(scores, reasons, "11_security", "authorization", 115, "authorization/permission checks")
+                  add_score(scores, reasons, "04_build_api_layer", "permission_checks", 70, "API permission check response")
+              if contains_any(h + p, ["process.env", "server-only", "service role", "secret"]):
+                  add_score(scores, reasons, "03_build_backend", "server_only_logic", 100, "server-only/env/secret code")
+                  add_score(scores, reasons, "11_security", "secrets", 95, "secret/env handling code")
+              if contains_any(h + p, ["storage.from", ".upload(", "formdata", "file.name", "file.type", "mime"]):
+                  add_score(scores, reasons, "03_build_backend", "file_upload_handling", 120, "file upload handling code")
+                  add_score(scores, reasons, "18_content_assets", "upload_assets", 75, "upload asset code")
+                  if contains_any(h, ["size", "mimetype", "mime", "file.type", "file.size"]):
+                      add_score(scores, reasons, "03_build_backend", "file_validation", 105, "file validation code")
+                      add_score(scores, reasons, "11_security", "file_validation", 100, "file validation security code")
+              if contains_any(h + p, ["rate limit", "ratelimit", "rate-limiter"]):
+                  add_score(scores, reasons, "03_build_backend", "rate_limits", 125, "rate limiting code")
+                  add_score(scores, reasons, "11_security", "rate_limiting", 125, "rate limiting security code")
+              if contains_any(h + p, ["bot", "abuse", "spam", "child-safety", "moderation", "ncmec"]):
+                  add_score(scores, reasons, "03_build_backend", "abuse_protection", 95, "abuse/moderation backend code")
+                  add_score(scores, reasons, "11_security", "abuse_prevention", 105, "abuse/bot/child safety security code")
+                  add_score(scores, reasons, "16_product_operations", "moderation_tools", 95, "moderation operation code")
+              if contains_any(h + p, ["webhook", "verify", "signature", "hmac"]):
+                  add_score(scores, reasons, "03_build_backend", "webhook_verification", 110, "webhook verification code")
+                  add_score(scores, reasons, "11_security", "input_validation", 85, "signature/verification code")
+              if contains_any(h + p, ["cron", "scheduled", "schedule"]):
+                  add_score(scores, reasons, "03_build_backend", "scheduled_jobs", 115, "scheduled job code")
+              if contains_any(h + p, ["queue", "background job", "worker"]):
+                  add_score(scores, reasons, "03_build_backend", "queues", 95, "queue/background job code")
+              if contains_any(h + p, ["health", "status", "uptime"]):
+                  add_score(scores, reasons, "03_build_backend", "health_checks", 90, "backend health check code")
+                  add_score(scores, reasons, "14_observability", "health_checks", 115, "health/status observability code")
+
+              # Runtime/state code.
+              if contains_any(h + p, ["usestate", "usereducer", "zustand", "create(", "store", "state", "setstate"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "loaded_data", 65, "state/store code")
+              if contains_any(h + p, ["currentuser", "current user", "getuser", "user_id"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "current_user", 85, "current user state code")
+              if contains_any(h + p, ["session", "getsession"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "current_session", 80, "session state code")
+              if contains_any(h + p, ["pathname", "router", "searchparams", "usepath"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "current_route", 70, "route state code")
+              if contains_any(h + p, ["activetool", "active tool", "active_tool"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "active_tool", 95, "active tool state code")
+              if contains_any(h + p, ["activemode", "active mode", "mode"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "active_mode", 75, "active mode state code")
+              if contains_any(h + p, ["activeengin", "active engine", "runtime", "enginruntime"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "active_engine", 95, "active engine/runtime state code")
+              if contains_any(h + p, ["localstorage", "sessionstorage", "persist", "draft"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "persisted_local_state", 100, "local persisted state/draft code")
+              if contains_any(h + p, ["optimistic", "mutate("]):
+                  add_score(scores, reasons, "05_build_runtime_state", "optimistic_state", 100, "optimistic state code")
+              if contains_any(h + p, ["cache", "revalidate", "unstable_cache", "memo"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "cache", 80, "cache/memo state code")
+                  add_score(scores, reasons, "12_performance", "caching", 95, "cache/memo performance code")
+              if contains_any(h + p, ["event", "emit(", "dispatch", "addeventlistener", "removeeventlistener", "subscribe", "unsubscribe"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "events", 90, "event/subscription code")
+              if contains_any(h + p, ["realtime", "channel(", "onmessage", "websocket"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "realtime_subscriptions", 105, "realtime subscription code")
+                  add_score(scores, reasons, "12_performance", "realtime_subscription_load", 75, "realtime load code")
+              if contains_any(h + p, ["sync", "offlinequeue", "offline queue", "offline", "reconnect"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "sync_state", 100, "sync/offline runtime code")
+                  if "offline" in h + p:
+                      add_score(scores, reasons, "05_build_runtime_state", "offline_queue", 105, "offline queue code")
+                  if "reconnect" in h + p:
+                      add_score(scores, reasons, "05_build_runtime_state", "reconnect_behavior", 90, "reconnect code")
+              if contains_any(h + p, ["undo", "redo"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "undo_redo", 110, "undo/redo code")
+              if contains_any(h + p, ["mounted", "hydrate", "hydration"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "hydration_state", 95, "hydration/mounted state code")
+              if contains_any(h + p, ["dirty", "isdirty"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "dirty_state", 95, "dirty state code")
+              if contains_any(h + p, ["loading", "isloading", "pending"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "loading_state", 60, "loading state code")
+              if contains_any(h + p, ["error", "catch", "throw new"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "error_state", 60, "error state code")
+              if contains_any(h + p, ["success", "saved", "complete"]):
+                  add_score(scores, reasons, "05_build_runtime_state", "success_state", 55, "success state code")
+
+              # User flow and application behavior by code.
+              if f.is_page_file or f.is_layout_file:
+                  add_score(scores, reasons, "07_build_pages_screens", "page_files" if f.is_page_file else "layout_files", 130, "Next app page/layout file")
+                  add_score(scores, reasons, "01_define_user_flow", "entry_point", 95, "route/page entry point code")
+              if "redirect(" in h or "router.push" in h or "router.replace" in h or "<link" in h or "href=" in h:
+                  add_score(scores, reasons, "01_define_user_flow", "entry_point", 70, "navigation/entry code")
+                  add_score(scores, reasons, "07_build_pages_screens", "navigation_targets", 85, "navigation target code")
+              if "router.back" in h or "history.back" in h or "popstate" in h:
+                  add_score(scores, reasons, "01_define_user_flow", "browser_back_behavior", 110, "browser back handling code")
+                  add_score(scores, reasons, "09_wire_interactions", "browser_back_behavior", 85, "browser back interaction code")
+              if contains_any(h, ["login", "sign in", "signin", "unauthenticated"]):
+                  add_score(scores, reasons, "01_define_user_flow", "logged_out_path", 95, "logged-out/login flow code")
+              if contains_any(h, ["authenticated", "session", "getuser"]):
+                  add_score(scores, reasons, "01_define_user_flow", "logged_in_path", 75, "logged-in/session flow code")
+              if contains_any(h + p, ["onboarding", "welcome", "first time"]):
+                  add_score(scores, reasons, "01_define_user_flow", "onboarding_path", 120, "onboarding flow code")
+              if contains_any(h + p, ["reset-password", "recover", "forgot password", "account recovery"]):
+                  add_score(scores, reasons, "01_define_user_flow", "account_recovery_path", 120, "account recovery flow code")
+              if contains_any(h + p, ["loading.tsx", "loading", "skeleton", "spinner"]):
+                  add_score(scores, reasons, "01_define_user_flow", "loading_state", 85, "loading user-flow code")
+              if contains_any(h + p, ["empty", "no data", "no posts", "not found"]):
+                  add_score(scores, reasons, "01_define_user_flow", "empty_state", 85, "empty user-flow code")
+              if contains_any(h + p, ["error.tsx", "error", "catch", "failed"]):
+                  add_score(scores, reasons, "01_define_user_flow", "error_state", 80, "error/failure user-flow code")
+                  add_score(scores, reasons, "01_define_user_flow", "failure_path", 75, "failure path code")
+              if contains_any(h + p, ["retry"]):
+                  add_score(scores, reasons, "01_define_user_flow", "retry_path", 105, "retry flow code")
+                  add_score(scores, reasons, "06_build_application_behavior", "what_happens_on_retry", 95, "retry behavior code")
+              if contains_any(h + p, ["cancel", "abort"]):
+                  add_score(scores, reasons, "01_define_user_flow", "cancel_path", 90, "cancel flow code")
+                  add_score(scores, reasons, "06_build_application_behavior", "what_happens_on_cancel", 90, "cancel behavior code")
+              if contains_any(h + p, ["offline", "network"]):
+                  add_score(scores, reasons, "01_define_user_flow", "network_fails", 95, "network/offline flow code")
+              if contains_any(h + p, ["expired", "session expired"]):
+                  add_score(scores, reasons, "01_define_user_flow", "auth_expires", 110, "auth-expiration flow code")
+              if contains_any(h + p, ["permission", "forbidden", "unauthorized", "access denied"]):
+                  add_score(scores, reasons, "01_define_user_flow", "access_denied", 90, "access denied flow code")
+              if contains_any(h + p, ["feature flag", "disabled", "enabled"]):
+                  add_score(scores, reasons, "01_define_user_flow", "feature_disabled", 85, "feature-flag/disabled path code")
+                  add_score(scores, reasons, "16_product_operations", "feature_flags", 95, "feature flag operation code")
+
+              behavior_terms = {
+                  "what_happens_on_tap": ["ontap", "tap", "pointerdown", "touchstart"],
+                  "what_happens_on_click": ["onclick", "click"],
+                  "what_happens_on_type": ["onchange", "textarea", "input", "draft", "value="],
+                  "what_happens_on_upload": ["upload", "formdata", "file"],
+                  "what_happens_on_save": ["save", "submit", "onsubmit"],
+                  "what_happens_on_edit": ["edit", "update"],
+                  "what_happens_on_delete": ["delete", "remove"],
+                  "what_happens_on_undo": ["undo"],
+                  "what_happens_on_screen_switch": ["setscreen", "activescreen", "screen switch"],
+                  "what_happens_on_route_change": ["router.push", "router.replace", "pathname"],
+                  "what_happens_when_data_updates": ["setdata", "mutate", "update"],
+                  "what_happens_when_realtime_data_arrives": ["realtime", "subscribe", "channel"],
+                  "what_happens_offline": ["offline"],
+                  "what_happens_on_reconnect": ["reconnect", "online"],
+                  "what_gets_persisted": ["localstorage", "persist", "save"],
+                  "what_gets_logged": ["console.", "log", "track", "analytics"],
+                  "what_gets_blocked": ["blocked", "forbidden", "denied"],
+                  "what_validation_runs": ["validate", "z.object", "safeparse"],
+                  "what_business_rules_run": ["rule", "policy", "if (", "switch ("],
+                  "what_user_feedback_appears": ["toast", "alert", "banner", "message", "error", "success"],
+              }
+              for sub, terms in behavior_terms.items():
+                  hits = count_any(h, terms)
+                  if hits:
+                      add_score(scores, reasons, "06_build_application_behavior", sub, min(125, 55 + hits * 8), f"behavior code terms: {', '.join([t for t in terms if t in h][:5])}")
+
+              # Pages and screens.
+              if f.name_lower == "loading.tsx":
+                  add_score(scores, reasons, "07_build_pages_screens", "loading_pages", 150, "Next loading route file")
+              if f.name_lower == "error.tsx" or f.name_lower == "global-error.tsx":
+                  add_score(scores, reasons, "07_build_pages_screens", "error_pages", 150, "Next error route file")
+              if "not-found" in f.name_lower:
+                  add_score(scores, reasons, "07_build_pages_screens", "not_found_pages", 150, "Next not-found route file")
+              if f.is_page_file and contains_any(h + p, ["auth", "session", "protected", "login"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "protected_pages", 100, "protected/auth page code")
+              if f.is_page_file and contains_any(h + p, ["metadata", "opengraph", "title:", "description:"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "page_metadata", 85, "page metadata code")
+              if contains_any(h + p, ["metadata", "seo", "opengraph", "canonical"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "seo_metadata", 75, "SEO/open graph metadata code")
+              if f.is_component_like and contains_any(h, ["<section", "<main", "<article", "<aside"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "screen_structure", 75, "screen structure JSX")
+              if contains_any(h + p, ["tabs", "tablist", "activeTab"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "tabs", 75, "tabs screen code")
+                  add_score(scores, reasons, "08_build_ui_components", "tabs", 95, "tabs UI code")
+              if contains_any(h + p, ["mobile", "iphone", "touch", "sm:", "md:", "lg:", "viewport"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "mobile_layout", 65, "mobile/responsive layout code")
+              if contains_any(h + p, ["overflow", "scroll", "scrollarea"]):
+                  add_score(scores, reasons, "07_build_pages_screens", "scroll_containers", 65, "scroll container code")
+
+              # UI components.
+              if f.is_component_like or f.path_lower.startswith("components/") or f.path_lower.startswith("app/"):
+                  add_score(scores, reasons, "08_build_ui_components", "component_variants", 75, "React/JSX component code")
+              ui_terms = {
+                  "design_tokens": ["--", "theme", "token", "css variable"],
+                  "colors": ["color", "background", "foreground", "bg-"],
+                  "typography": ["font", "text-", "leading", "tracking"],
+                  "spacing": ["gap", "space-", "padding", "margin", "p-", "m-"],
+                  "icons": ["icon", "lucide", "<svg"],
+                  "buttons": ["<button", "button", "Button"],
+                  "cards": ["card", "Card"],
+                  "inputs": ["<input", "input", "Input"],
+                  "forms": ["<form", "onsubmit", "form"],
+                  "form_errors": ["form error", "fielderror", "aria-invalid"],
+                  "modals": ["modal", "dialog", "Dialog"],
+                  "drawers": ["drawer", "sheet"],
+                  "panels": ["panel", "Panel"],
+                  "tabs": ["tab", "Tabs"],
+                  "toolbars": ["toolbar"],
+                  "nav_bars": ["nav", "navbar"],
+                  "sidebars": ["sidebar", "aside"],
+                  "menus": ["menu", "dropdown"],
+                  "dropdowns": ["dropdown", "select"],
+                  "lists": ["map(", "<ul", "<ol", "list"],
+                  "feed_items": ["feed", "post"],
+                  "avatars": ["avatar"],
+                  "loaders": ["loader", "loading", "spinner"],
+                  "skeletons": ["skeleton"],
+                  "empty_states": ["empty", "no "],
+                  "error_states": ["error"],
+                  "success_states": ["success"],
+                  "toast_notifications": ["toast"],
+                  "banners": ["banner"],
+                  "confirmation_dialogs": ["confirm", "confirmation"],
+                  "permission_prompts": ["permission", "allow"],
+                  "search_components": ["search", "query"],
+                  "filter_components": ["filter"],
+                  "pagination_components": ["pagination", "page"],
+                  "infinite_scroll_components": ["infinite", "intersectionobserver"],
+                  "upload_components": ["upload", "dropzone"],
+                  "media_previews": ["preview", "media", "image"],
+                  "canvas_viewports": ["canvas", "viewport"],
+                  "disabled_states": ["disabled"],
+                  "active_states": ["active"],
+                  "focus_states": ["focus"],
+                  "hover_states": ["hover:"],
+                  "accessibility_labels": ["aria-label", "aria-labelledby"],
+                  "keyboard_support": ["keydown", "keyboard"],
+                  "reduced_motion_support": ["reduced-motion", "prefers-reduced-motion"],
+              }
+              for sub, terms in ui_terms.items():
+                  hits = count_any(h + p, [t.lower() for t in terms])
+                  if hits:
+                      add_score(scores, reasons, "08_build_ui_components", sub, min(130, 50 + hits * 7), f"UI code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Interactions, with strong primary routing based on handler code.
+              interaction_terms = {
+                  "tap": ["ontap", "tap"],
+                  "click": ["onclick", "click"],
+                  "double_tap_only_if_intentional": ["doubletap", "double tap", "dblclick"],
+                  "hold": ["hold", "press"],
+                  "long_press": ["longpress", "long press"],
+                  "drag": ["drag", "ondrag", "draggable"],
+                  "drop": ["drop", "ondrop", "droptarget"],
+                  "scroll": ["scroll", "onscroll"],
+                  "swipe": ["swipe"],
+                  "pinch": ["pinch"],
+                  "zoom": ["zoom", "scale"],
+                  "keyboard_input": ["keydown", "keyup", "keyboard"],
+                  "focus": ["focus", "onfocus"],
+                  "blur": ["blur", "onblur"],
+                  "hover_for_desktop": ["hover", "mouseenter", "mouseleave"],
+                  "pointer_capture": ["pointer", "setpointercapture", "releasepointercapture"],
+                  "touch_cancellation": ["touchcancel", "pointercancel"],
+                  "gesture_conflict_handling": ["gesture", "preventdefault", "stoppropagation"],
+                  "animations": ["animate", "animation", "framer-motion", "motion."],
+                  "transitions": ["transition"],
+                  "haptics": ["haptic", "vibrate"],
+                  "screen_reader_behavior": ["screen reader", "aria-live", "role="],
+                  "mobile_touch_behavior": ["touch", "mobile", "pointerdown", "pointermove"],
+                  "loading_interaction": ["loading", "pending", "disabled"],
+                  "disabled_interaction": ["disabled"],
+                  "retry_interaction": ["retry"],
+                  "undo_interaction": ["undo"],
+                  "confirmation_interaction": ["confirm"],
+                  "escape_behavior": ["escape", "esc"],
+                  "browser_back_behavior": ["router.back", "history.back", "popstate"],
+                  "upload_progress": ["progress", "upload"],
+                  "cancel_upload": ["abortcontroller", "cancel"],
+                  "pull_to_refresh": ["pulltorefresh", "pull to refresh"],
+                  "infinite_scroll_behavior": ["intersectionobserver", "infinite"],
+                  "copy_share_behavior": ["clipboard", "share"],
+                  "permission_prompt_behavior": ["permission", "requestpermission"],
+                  "conflict_resolution_behavior": ["conflict", "merge"],
+              }
+              for sub, terms in interaction_terms.items():
+                  hits = count_any(h + p, [t.lower() for t in terms])
+                  if hits:
+                      add_score(scores, reasons, "09_wire_interactions", sub, min(150, 65 + hits * 12), f"interaction handler terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Verification/build/deploy/testing.
+              if f.is_test_file:
+                  add_score(scores, reasons, "10_verify_build_deploy", "unit_tests", 170, "test file code")
+                  if contains_any(p + h, ["integration", "wiring"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "integration_tests", 135, "integration test code")
+                  if contains_any(p + h, ["api", "route"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "api_tests", 120, "API test code")
+                  if contains_any(p + h, ["auth", "session"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "auth_tests", 120, "auth test code")
+                  if contains_any(p + h, ["permission", "rls"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "permission_tests", 120, "permission test code")
+                  if contains_any(p + h, ["database", "migration", "supabase"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "database_tests", 120, "database test code")
+                  if contains_any(p + h, ["mobile", "touch", "iphone"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "mobile_tests", 120, "mobile test code")
+                  if contains_any(p + h, ["accessibility", "aria", "keyboard"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "accessibility_checks", 120, "accessibility test code")
+                  if contains_any(p + h, ["performance", "benchmark", "latency", "fps"]):
+                      add_score(scores, reasons, "10_verify_build_deploy", "performance_checks", 120, "performance test code")
+              if contains_any(h + p, ["pnpm typecheck", "tsc --", "typecheck"]):
+                  add_score(scores, reasons, "10_verify_build_deploy", "typecheck", 125, "typecheck command/code")
+              if contains_any(h + p, ["eslint", "lint"]):
+                  add_score(scores, reasons, "10_verify_build_deploy", "lint", 115, "lint command/config")
+              if contains_any(h + p, ["next build", "pnpm build", "build"]):
+                  add_score(scores, reasons, "10_verify_build_deploy", "build", 100, "build command/code")
+              if contains_any(h + p, [".env", "process.env", "env"]):
+                  add_score(scores, reasons, "10_verify_build_deploy", "environment_variables", 75, "environment variable code/config")
+
+              # Security code.
+              security_terms = {
+                  "output_sanitization": ["sanitize", "escapehtml", "xss"],
+                  "csrf_protection": ["csrf"],
+                  "xss_protection": ["xss"],
+                  "ssrf_protection": ["ssrf"],
+                  "dependency_vulnerability_checks": ["audit", "vulnerability", "gitleaks"],
+                  "secure_headers": ["content-security-policy", "x-frame-options", "headers"],
+                  "session_expiration": ["expires", "expiration", "maxage"],
+                  "admin_access_controls": ["admin", "isadmin", "admin_only"],
+                  "bot_prevention": ["bot", "botdetection"],
+                  "audit_logs": ["audit", "auditlog"],
+              }
+              for sub, terms in security_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "11_security", sub, 105, f"security code terms: {', '.join([t for t in terms if t in h + p])}")
+
+              # Performance code.
+              performance_terms = {
+                  "bundle_size": ["bundle", "dynamic(", "lazy("],
+                  "code_splitting": ["dynamic(", "import(", "lazy("],
+                  "lazy_loading": ["lazy", "dynamic(", "loading="],
+                  "image_optimization": ["next/image", "image", "sizes=", "srcset"],
+                  "query_limits": ["limit(", "limit:", "range("],
+                  "api_latency_budget": ["timeout", "latency", "duration"],
+                  "interaction_latency_budget": ["performance.now", "requestanimationframe"],
+                  "render_cost": ["render", "canvas", "webgpu", "webgl", "three", "babylon"],
+                  "hydration_cost": ["hydration", "useclient", "mounted"],
+                  "long_task_detection": ["longtask", "performanceobserver"],
+                  "memory_leaks": ["cleanup", "clearinterval", "removeeventlistener", "unsubscribe"],
+                  "mobile_frame_rate": ["fps", "frame", "requestanimationframe", "mobile"],
+                  "mobile_touch_responsiveness": ["touch", "pointer", "mobile"],
+                  "loading_speed": ["preload", "prefetch", "loading"],
+                  "background_job_performance": ["worker", "queue"],
+              }
+              for sub, terms in performance_terms.items():
+                  hits = count_any(h + p, [t.lower() for t in terms])
+                  if hits:
+                      add_score(scores, reasons, "12_performance", sub, min(130, 55 + hits * 9), f"performance code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Accessibility code.
+              accessibility_terms = {
+                  "labels": ["aria-label", "label htmlfor", "<label"],
+                  "form_label_associations": ["htmlfor", "aria-labelledby"],
+                  "focus_order": ["tabindex", "focus"],
+                  "keyboard_navigation": ["keydown", "keyup", "keyboard"],
+                  "contrast": ["contrast", "foreground", "background"],
+                  "reduced_motion": ["reduced-motion", "prefers-reduced-motion", "usereducedmotion"],
+                  "screen_reader_text": ["sr-only", "screen reader", "aria-live"],
+                  "error_announcement": ["aria-live", "role=\"alert\"", "role='alert'"],
+                  "modal_focus_trap": ["focustrap", "dialog", "aria-modal"],
+                  "skip_links": ["skip link", "skip to"],
+                  "touch_target_size": ["touch target", "min-h-", "min-w-"],
+                  "semantic_html": ["<main", "<nav", "<section", "<article", "<header", "<footer"],
+                  "aria_only_where_needed": ["aria-"],
+                  "accessible_loading_states": ["aria-busy", "loading"],
+                  "accessible_empty_states": ["empty", "aria"],
+                  "accessible_error_states": ["error", "aria"],
+                  "visible_focus_states": ["focus-visible", "focus:"],
+              }
+              for sub, terms in accessibility_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "13_accessibility", sub, 105, f"accessibility code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Observability code.
+              observability_terms = {
+                  "logs": ["console.", "logger", "log("],
+                  "metrics": ["metric", "counter", "histogram"],
+                  "error_reporting": ["reporterror", "captureexception", "error reporter"],
+                  "crash_reporting": ["crash", "crash report"],
+                  "request_ids": ["requestid", "request id", "x-request-id"],
+                  "user_action_traces": ["track(", "analytics", "event"],
+                  "analytics_events": ["analytics", "track"],
+                  "slow_request_traces": ["slow", "duration", "latency"],
+                  "failed_job_traces": ["failed", "job"],
+                  "deployment_monitoring": ["deployment", "monitor"],
+                  "alert_thresholds": ["alert", "threshold"],
+                  "api_error_rates": ["api", "error rate"],
+                  "client_error_rates": ["client", "error"],
+                  "performance_metrics": ["performance", "fps", "latency"],
+                  "uptime_monitoring": ["uptime", "health"],
+              }
+              for sub, terms in observability_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "14_observability", sub, 95, f"observability code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Product operations.
+              product_ops_terms = {
+                  "admin_panels": ["admin", "idari-console"],
+                  "moderation_tools": ["moderation", "moderator", "report", "appeal"],
+                  "user_support_lookup": ["support", "lookup"],
+                  "account_suspension": ["suspend", "ban"],
+                  "content_takedown": ["takedown", "remove content"],
+                  "support_flows": ["support", "help"],
+                  "data_export": ["export-data", "export data"],
+                  "data_deletion": ["delete-data", "delete account", "delete data"],
+                  "announcements": ["announcement"],
+                  "feature_rollout": ["rollout"],
+                  "kill_switches": ["kill switch", "disable"],
+                  "incident_response": ["incident"],
+                  "reporting_tools": ["report"],
+                  "user_communication_flows": ["email", "notification", "message user"],
+              }
+              for sub, terms in product_ops_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "16_product_operations", sub, 100, f"product ops code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Compliance and policy.
+              compliance_terms = {
+                  "privacy_policy": ["privacy"],
+                  "terms": ["terms"],
+                  "cookie_behavior": ["cookie"],
+                  "consent_records": ["consent"],
+                  "age_gates": ["age gate", "age"],
+                  "child_safety": ["child-safety", "child safety", "ncmec"],
+                  "data_retention": ["retention"],
+                  "delete_account_flow": ["delete account", "delete-data"],
+                  "export_data_flow": ["export data", "export-data"],
+                  "third_party_terms": ["third party", "provider terms"],
+                  "license_compliance": ["license"],
+                  "data_processing_records": ["data processing"],
+                  "payment_compliance": ["payment", "billing"],
+                  "moderation_policy": ["moderation policy"],
+                  "content_policy": ["content policy"],
+              }
+              for sub, terms in compliance_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "17_compliance_policy", sub, 120, f"compliance/policy code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # Content/assets metadata by code.
+              if f.is_json and contains_any(h + p, ["manifest", "metadata", "asset", "icon", "image", "audio", "model"]):
+                  add_score(scores, reasons, "18_content_assets", "manifests", 95, "asset manifest/metadata JSON")
+              if contains_any(h + p, ["alt=", "alt text", "aria-label"]):
+                  add_score(scores, reasons, "18_content_assets", "alt_text", 80, "alt text/media accessibility code")
+              if contains_any(h + p, ["compress", "optimizer", "asset optimizer"]):
+                  add_score(scores, reasons, "18_content_assets", "asset_compression", 95, "asset compression/optimization code")
+                  add_score(scores, reasons, "12_performance", "image_optimization", 80, "asset optimization code")
+              if p.startswith("public/"):
+                  add_score(scores, reasons, "18_content_assets", "public_assets", 90, "public asset path")
+              if contains_any(h + p, ["storage path", "bucket", "storage.from"]):
+                  add_score(scores, reasons, "18_content_assets", "storage_paths", 80, "asset storage path code")
+
+              # Release management.
+              release_terms = {
+                  "branches": ["branch"],
+                  "commits": ["commit"],
+                  "pr_checks": ["pull_request", "pr check"],
+                  "changelog": ["changelog"],
+                  "versioning": ["version"],
+                  "version_tags": ["tag"],
+                  "deploy_target": ["deploy", "vercel"],
+                  "staged_rollout": ["rollout"],
+                  "hotfix_path": ["hotfix"],
+                  "rollback": ["rollback"],
+                  "backups": ["backup"],
+                  "migration_plan": ["migration"],
+                  "rollback_migration_plan": ["rollback migration"],
+                  "smoke_tests": ["smoke"],
+                  "deploy_preview": ["preview"],
+                  "production_deploy": ["production", "deploy"],
+                  "post_deploy_verification": ["post-deploy", "post deploy"],
+              }
+              for sub, terms in release_terms.items():
+                  if contains_any(h + p, terms):
+                      add_score(scores, reasons, "19_release_management", sub, 90, f"release code terms: {', '.join([t for t in terms if t.lower() in h + p][:5])}")
+
+              # If nothing executable matched, fallback by path and extension.
+              if not scores:
+                  if f.is_binary:
+                      add_score(scores, reasons, "18_content_assets", "static_files", 100, "binary/static file fallback")
+                  elif f.is_markdown:
+                      add_score(scores, reasons, "20_documentation", "feature_docs", 100, "Markdown fallback")
+                  elif f.path_lower.startswith("app/"):
+                      add_score(scores, reasons, "07_build_pages_screens", "routes", 80, "app router fallback")
+                  elif f.path_lower.startswith("components/"):
+                      add_score(scores, reasons, "08_build_ui_components", "component_variants", 80, "component path fallback")
+                  elif f.path_lower.startswith("engine/") or f.path_lower.startswith("engins/"):
+                      add_score(scores, reasons, "05_build_runtime_state", "active_engine", 80, "engine/engin path fallback")
+                  else:
+                      add_score(scores, reasons, "06_build_application_behavior", "what_business_rules_run", 60, "last-resort behavior fallback")
+
+              ranked = sorted(scores.items(), key=lambda kv: (kv[1], category_priority(kv[0][0]), kv[0][0], kv[0][1]), reverse=True)
+              primary_key, primary_score = ranked[0]
+              reason = "; ".join(reasons[primary_key][:6])
+              evidence = [
+                  {
+                      "category": cat,
+                      "subfolder": sub,
+                      "score": score,
+                      "reasons": reasons[(cat, sub)][:8],
+                  }
+                  for (cat, sub), score in ranked[:12]
+              ]
+              return primary_key[0], primary_key[1], f"score {primary_score}: {reason}", evidence
+
+          def category_priority(category: str) -> int:
+              # This only breaks ties. It prevents generic UI/runtime words from beating exact code responsibility.
+              priorities = {
+                  "11_security": 20,
+                  "04_build_api_layer": 19,
+                  "03_build_backend": 18,
+                  "02_build_data_model": 17,
+                  "09_wire_interactions": 16,
+                  "13_accessibility": 15,
+                  "12_performance": 14,
+                  "14_observability": 13,
+                  "07_build_pages_screens": 12,
+                  "08_build_ui_components": 11,
+                  "05_build_runtime_state": 10,
+                  "06_build_application_behavior": 9,
+                  "10_verify_build_deploy": 8,
+                  "15_dev_tooling": 7,
+                  "16_product_operations": 6,
+                  "17_compliance_policy": 5,
+                  "19_release_management": 4,
+                  "20_documentation": 3,
+                  "18_content_assets": 2,
+                  "01_define_user_flow": 1,
+              }
+              return priorities.get(category, 0)
+
+          def dreamengin_area(f: FileFacts) -> str:
+              p = f.path_lower
+              h = f.lower
+              area_rules = [
+                  ("dreamdmbar", ["dreamdmbar", "dreamdm", "DreamSystemContext".lower()]),
+                  ("dreamr", ["dreamr", "/feed", "feed/", "profile", "messages", "social"]),
+                  ("gameengin", ["gameengin", "games", "cartridge", "madmaxi", "game remote"]),
+                  ("contentengin", ["contentengin", "asset", "glb", "recipe", "rigging"]),
+                  ("codeengin", ["codeengin", "workspace", "diagnostics", "notebook"]),
+                  ("starmakerengin", ["starmaker", "music", "daw", "sequencer", "mixer"]),
+                  ("labengin", ["labengin", "/lab", "lab/", "simulation", "quantum"]),
+                  ("brandingengin", ["brandingengin", "brand", "campaign", "identity"]),
+                  ("forgeengin", ["forgeengin", "forge", "assembly"]),
+                  ("dualruntime", ["dualruntime", "dual runtime", "dualRuntimeBridge".lower()]),
+                  ("runtime", ["engine/runtime", "engin-runtime", "runtime", "snapshot", "offlinequeue"]),
+                  ("dreamspace", ["dreamspace", "dream space", "dreamsurface.dreamspace"]),
+                  ("homedream", ["homedream", "home dream"]),
+                  ("daydreams", ["daydream", "daydreams"]),
+                  ("shared_dreams", ["shared-dream", "shared dream", "sharedDream".lower()]),
+                  ("dreams", ["dreams", "dream-windows", "dream window", "dreamregistry"]),
+                  ("supabase", ["supabase"]),
+                  ("agents_dr_eams", ["agents", "dr-eams", "idari", "boogie", "humanai"]),
+                  ("ui_shell", ["components", "styles", "ui-system", "ui/"]),
+                  ("docs", ["docs", "readme", "architecture", ".md"]),
+                  ("public_assets", ["public", "fonts", "images", "icons", "models", "audio"]),
+              ]
+              combined = p + "\n" + h[:200_000]
+              best_area = None
+              best_score = 0
+              for area, terms in area_rules:
+                  score = 0
+                  for term in terms:
+                      term_l = term.lower()
+                      if term_l in p:
+                          score += 12
+                      elif term_l in combined:
+                          score += 3
+                  if score > best_score:
+                      best_area = area
+                      best_score = score
+              if best_area:
+                  return best_area
+              return safe_part(p.split("/", 1)[0])
+
+          def dreamengin_behavior(f: FileFacts) -> Tuple[str, str]:
+              combined = f.path_lower + "\n" + f.lower[:500_000]
+              best_name = "unclassified_dreamengin_behavior"
+              best_score = 0
+              best_hits: List[str] = []
+              for behavior, terms in DREAMENGIN_BEHAVIORS.items():
+                  score = 0
+                  hits: List[str] = []
+                  for term in terms:
+                      term_l = term.lower()
+                      if term_l in f.path_lower:
+                          score += 12
+                          hits.append(term)
+                      elif term_l in combined:
+                          score += 3
+                          hits.append(term)
+                  if score > best_score:
+                      best_score = score
+                      best_name = behavior
+                      best_hits = hits[:8]
+              if best_score <= 0:
+                  area = dreamengin_area(f)
+                  area_fallbacks = {
+                      "dreamdmbar": "dreamdmbar",
+                      "dreamr": "dreamr",
+                      "gameengin": "gameengin_behavior",
+                      "contentengin": "contentengin_behavior",
+                      "codeengin": "codeengin_behavior",
+                      "starmakerengin": "starmaker_music_behavior",
+                      "labengin": "lab_sim_behavior",
+                      "brandingengin": "forge_brand_agent_behavior",
+                      "forgeengin": "forge_brand_agent_behavior",
+                      "runtime": "runtime",
+                      "dualruntime": "dualruntime",
+                      "dreamspace": "dreamspace",
+                      "homedream": "homedream",
+                      "daydreams": "daydreams",
+                      "shared_dreams": "shared_dreams",
+                      "dreams": "dreams_lifecycle",
+                      "agents_dr_eams": "admin_agent_dr_eams",
+                      "public_assets": "render_webgpu_visual_runtime",
+                  }
+                  return area_fallbacks.get(area, "unclassified_dreamengin_behavior"), f"fallback from DREAMengin area `{area}`"
+              return best_name, "matched code/path terms: " + ", ".join(best_hits)
+
+          def line_is_meaningful(line: str) -> bool:
+              stripped = line.strip()
+              if not stripped:
+                  return False
+              if stripped in {"{", "}", "};", ");", "};"}:
+                  return False
+              return True
+
+          def keyword_bundle(category: str, subfolder: str) -> List[str]:
+              words = []
+              words.extend(category.split("_")[1:])
+              words.extend(subfolder.split("_"))
+              words.extend(re.split(r"[_/-]+", category + " " + subfolder))
+              return sorted({w.lower() for w in words if len(w) > 2 and w not in {"build", "define", "wire"}})
+
+          def find_line_refs(terms: List[str], scan_files: List[str], max_results: int = 12) -> List[Tuple[str, int, str]]:
+              results: List[Tuple[str, int, str]] = []
+              seen: Set[Tuple[str, int]] = set()
+              lowered_terms = [t.lower() for t in terms if len(t.strip()) >= 3]
+              if not lowered_terms:
+                  return results
+
+              scored = []
+              for rel in scan_files:
+                  lower_rel = rel.lower()
+                  score = sum(10 for term in lowered_terms if term in lower_rel)
+                  scored.append((score, rel))
+              scored.sort(reverse=True)
+              ordered_files = [rel for score, rel in scored if score > 0] + [rel for score, rel in scored if score == 0]
+
+              for rel in ordered_files[:500]:
+                  text, ok = read_text(REPO / rel)
+                  if not ok or not text:
+                      continue
+                  for index, line in enumerate(text.splitlines(), start=1):
+                      lower_line = line.lower()
+                      if not line_is_meaningful(line):
+                          continue
+                      if any(term in lower_line for term in lowered_terms):
+                          key = (rel, index)
+                          if key in seen:
+                              continue
+                          seen.add(key)
+                          snippet = line.strip()
+                          if len(snippet) > 180:
+                              snippet = snippet[:177] + "..."
+                          results.append((rel, index, snippet))
+                          if len(results) >= max_results:
+                              return results
+              return results
+
+          def inline_tree_evidence(row: Dict[str, object], prefix: str) -> List[str]:
+              lines: List[str] = []
+              lines.append(f"{prefix}• primary: {row['category']}/{row['subfolder']}")
+              lines.append(f"{prefix}• dreamengin: {row['dreamengin_area']} / {row['dreamengin_behavior']}")
+              lines.append(f"{prefix}• reason: {row['reason']}")
+
+              secondary = row.get("secondary_tracks", [])
+              if isinstance(secondary, list) and secondary:
+                  lines.append(f"{prefix}• also_ties_to: {', '.join(str(item) for item in secondary)}")
+
+              evidence_items = row.get("code_evidence", [])
+              if isinstance(evidence_items, list):
+                  for ev in evidence_items[:3]:
+                      if not isinstance(ev, dict):
+                          continue
+                      ev_category = ev.get("category", "unknown_category")
+                      ev_subfolder = ev.get("subfolder", "unknown_subfolder")
+                      ev_score = ev.get("score", "unknown_score")
+                      ev_reasons = ev.get("reasons", [])
+                      if isinstance(ev_reasons, list):
+                          reason_text = "; ".join(str(reason) for reason in ev_reasons[:3])
+                      else:
+                          reason_text = str(ev_reasons)
+                      lines.append(f"{prefix}• evidence: {ev_category}/{ev_subfolder} score={ev_score} {reason_text}")
+
+              return lines
+
+          def tree_lines(root: Path, placement_by_destination: Dict[str, Dict[str, object]]) -> List[str]:
+              lines = [root.name + "/"]
+
+              def walk(directory: Path, prefix: str = "") -> None:
+                  entries = sorted(directory.iterdir(), key=lambda x: (x.is_file(), x.name.lower()))
+                  for index, entry in enumerate(entries):
+                      connector = "└── " if index == len(entries) - 1 else "├── "
+                      lines.append(prefix + connector + entry.name + ("/" if entry.is_dir() else ""))
+
+                      extension = "    " if index == len(entries) - 1 else "│   "
+                      next_prefix = prefix + extension
+
+                      if entry.is_dir():
+                          walk(entry, next_prefix)
+                          continue
+
+                      rel = entry.relative_to(root).as_posix()
+                      row = placement_by_destination.get(rel)
+                      if row is not None:
+                          lines.extend(inline_tree_evidence(row, next_prefix))
+
+              walk(root)
+              return lines
+
+          def zip_with_empty_dirs(source_root: Path, zip_path: Path) -> None:
+              with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as z:
+                  for path in sorted(source_root.rglob("*")):
+                      arcname = path.relative_to(source_root.parent).as_posix()
+                      if path.is_dir():
+                          z.writestr(arcname.rstrip("/") + "/", "")
+                      elif path.is_symlink():
+                          z.writestr(arcname, os.readlink(path))
+                      else:
+                          z.write(path, arcname)
+
+          if OUT_ROOT.exists():
+              shutil.rmtree(OUT_ROOT)
+          OUT_ROOT.mkdir(parents=True, exist_ok=True)
+          ORGANIZED.mkdir(parents=True, exist_ok=True)
+
+          # Main buckets exist even if no files land there; subfolders are created only by code classification.
+          for category in CATEGORIES:
+              (ORGANIZED / category).mkdir(parents=True, exist_ok=True)
+
+          files = git_files()
+          scan_files = [rel for rel in files if is_probably_text_path(REPO / rel)]
+
+          manifest: List[Dict[str, object]] = []
+          counts = Counter()
+          subfolder_counts = Counter()
+          area_counts = Counter()
+          dream_behavior_counts = Counter()
+          copied: Set[str] = set()
+          cross_links_by_category: Dict[str, List[Dict[str, object]]] = defaultdict(list)
+          dream_behavior_files: Dict[str, List[str]] = defaultdict(list)
+          populated_subfolders: Dict[str, Set[str]] = defaultdict(set)
+
+          for rel in files:
+              src = REPO / rel
+              if not src.exists() or not src.is_file():
+                  continue
+
+              facts = facts_for(rel)
+              category, subfolder, reason, evidence = classify_by_code(facts)
+              area = dreamengin_area(facts)
+              dream_behavior_name, dream_behavior_reason = dreamengin_behavior(facts)
+
+              secondary_tracks = []
+              for ev in evidence[1:]:
+                  cat = str(ev["category"])
+                  if cat != category and cat not in secondary_tracks:
+                      secondary_tracks.append(cat)
+
+              dest = ORGANIZED / category / subfolder / safe_part(area) / rel
+              dest.parent.mkdir(parents=True, exist_ok=True)
+
+              if src.is_symlink():
+                  target = os.readlink(src)
+                  if dest.exists() or dest.is_symlink():
+                      dest.unlink()
+                  os.symlink(target, dest)
+              else:
+                  shutil.copy2(src, dest)
+
+              copied.add(rel)
+              counts[category] += 1
+              subfolder_counts[(category, subfolder)] += 1
+              populated_subfolders[category].add(subfolder)
+              area_counts[area] += 1
+              dream_behavior_counts[dream_behavior_name] += 1
+              dream_behavior_files[dream_behavior_name].append(rel)
+
+              row: Dict[str, object] = {
+                  "source_path": rel,
+                  "category": category,
+                  "subfolder": subfolder,
+                  "dreamengin_area": area,
+                  "dreamengin_behavior": dream_behavior_name,
+                  "dreamengin_behavior_reason": dream_behavior_reason,
+                  "destination_path": str(dest.relative_to(ORGANIZED)).replace("\\", "/"),
+                  "secondary_tracks": secondary_tracks,
+                  "reason": reason,
+                  "code_evidence": evidence,
+              }
+              manifest.append(row)
+              if secondary_tracks:
+                  cross_links_by_category[category].append(row)
+
+          missing = sorted(set(files) - copied)
+          if missing:
+              raise SystemExit("Some tracked files were not copied:\n" + "\n".join(missing[:100]))
+
+          unused_subfolders: Dict[str, List[str]] = {
+              category: [sub for sub in subfolders if sub not in populated_subfolders[category]]
+              for category, subfolders in CATEGORIES.items()
+          }
+
+          empty_pointer_refs: Dict[str, List[Tuple[str, int, str]]] = {}
+          for category, subs in unused_subfolders.items():
+              for subfolder in subs[:40]:
+                  key = f"{category}/{subfolder}"
+                  empty_pointer_refs[key] = find_line_refs(keyword_bundle(category, subfolder), scan_files, max_results=6)
+
+          tree_output: List[str] = []
+          tree_output.append("DREAMENGIN ORGANIZED REPOSITORY FILE TREE")
+          tree_output.append("")
+          tree_output.append("This file is a separate download from the organized repository ZIP.")
+          tree_output.append("The organized repository ZIP contains organized-repository/ with the 20 main build folders.")
+          tree_output.append("")
+          tree_output.append("This version organizes files by code evidence first. Paths are fallback evidence, not the main sorter.")
+          tree_output.append("Subfolders are created only when real repo files land there.")
+          tree_output.append("No generated helper Markdown files are placed inside the organized ZIP.")
+          tree_output.append("")
+          tree_output.append("DREAMengin law tracked by this workflow:")
+          tree_output.append("Any user-facing visible object should be treated as Dream-owned behavior: hideable, removable, replaceable, movable, resizable, shareable, cloneable, attachable, fullscreenable, and customizable.")
+          tree_output.append("")
+          tree_output.append(f"Total tracked files copied: {len(copied)}")
+          tree_output.append(f"Generated helper Markdown files inside ZIP: 0")
+          tree_output.append("")
+          tree_output.append("CATEGORY COUNTS")
+          tree_output.append("")
+          for category in CATEGORIES:
+              tree_output.append(f"- {category}: {counts[category]} files")
+
+          tree_output.append("")
+          tree_output.append("SUBFOLDER COUNTS")
+          tree_output.append("")
+          for category in CATEGORIES:
+              tree_output.append(category)
+              for subfolder in CATEGORIES[category]:
+                  count = subfolder_counts[(category, subfolder)]
+                  if count:
+                      tree_output.append(f"  - {subfolder}: {count} files")
+              tree_output.append("")
+
+          tree_output.append("")
+          tree_output.append("UNUSED SUBFOLDERS FROM CHECKLIST")
+          tree_output.append("")
+          tree_output.append("These remain report-only labels. They are not empty folders in the organized ZIP.")
+          tree_output.append("")
+          for category, subs in unused_subfolders.items():
+              if not subs:
+                  continue
+              tree_output.append(category)
+              for sub in subs:
+                  tree_output.append(f"  - {sub}")
+              tree_output.append("")
+
+          tree_output.append("")
+          tree_output.append("DREAMENGIN AREA COUNTS")
+          tree_output.append("")
+          for area, count in sorted(area_counts.items()):
+              tree_output.append(f"- {area}: {count} files")
+
+          tree_output.append("")
+          tree_output.append("DREAMENGIN BEHAVIOR COUNTS")
+          tree_output.append("")
+          for behavior in DREAMENGIN_BEHAVIORS:
+              tree_output.append(f"- {behavior}: {dream_behavior_counts[behavior]} files")
+          unclassified = dream_behavior_counts.get("unclassified_dreamengin_behavior", 0)
+          if unclassified:
+              tree_output.append(f"- unclassified_dreamengin_behavior: {unclassified} files")
+
+          tree_output.append("")
+          tree_output.append("DREAMENGIN BEHAVIOR MAP")
+          tree_output.append("")
+          for behavior in DREAMENGIN_BEHAVIORS:
+              tree_output.append(behavior)
+              for rel in sorted(dream_behavior_files.get(behavior, []))[:200]:
+                  tree_output.append(f"  - {rel}")
+              if len(dream_behavior_files.get(behavior, [])) > 200:
+                  tree_output.append(f"  - ... {len(dream_behavior_files[behavior]) - 200} more files")
+              tree_output.append("")
+
+          tree_output.append("")
+          tree_output.append("UNUSED SUBFOLDER CODE POINTERS")
+          tree_output.append("")
+          tree_output.append("Format: category/subfolder -> file:line. These are report pointers only, not generated repo files.")
+          tree_output.append("")
+          for key in sorted(empty_pointer_refs):
+              refs = empty_pointer_refs[key]
+              tree_output.append(key)
+              if refs:
+                  for rel, line, _snippet in refs:
+                      tree_output.append(f"  - {rel}:{line}")
+              else:
+                  tree_output.append("  - no direct code evidence found")
+              tree_output.append("")
+
+          tree_output.append("")
+          tree_output.append("ORGANIZED FILE TREE")
+          tree_output.append("")
+          tree_output.append("Each file line below carries its placement evidence inline inside the tree itself.")
+          tree_output.append("")
+          placement_by_destination: Dict[str, Dict[str, object]] = {
+              str(row["destination_path"]): row
+              for row in manifest
+          }
+          tree_output.extend(tree_lines(ORGANIZED, placement_by_destination))
+
+          tree_output.append("")
+          tree_output.append("CROSS-LINKED FILES")
+          tree_output.append("")
+          tree_output.append("Each file is copied once by strongest code evidence. Secondary category matches are listed here.")
+          tree_output.append("")
+          any_cross_links = False
+          for category in CATEGORIES:
+              rows = cross_links_by_category.get(category, [])
+              if not rows:
+                  continue
+              any_cross_links = True
+              tree_output.append(category)
+              for row in rows:
+                  tree_output.append(f"  - {row['source_path']}")
+                  tree_output.append(f"    primary: {row['category']}/{row['subfolder']}")
+                  tree_output.append(f"    dreamengin_area: {row['dreamengin_area']}")
+                  tree_output.append(f"    dreamengin_behavior: {row['dreamengin_behavior']}")
+                  tree_output.append(f"    also_ties_to: {', '.join(row['secondary_tracks'])}")
+              tree_output.append("")
+          if not any_cross_links:
+              tree_output.append("No cross-linked files found.")
+
+          TREE_FILE.write_text("\n".join(tree_output) + "\n", encoding="utf-8")
+
+          MANIFEST_JSON.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+          with MANIFEST_CSV.open("w", newline="", encoding="utf-8") as f:
+              writer = csv.DictWriter(
+                  f,
+                  fieldnames=[
+                      "source_path",
+                      "category",
+                      "subfolder",
+                      "dreamengin_area",
+                      "dreamengin_behavior",
+                      "dreamengin_behavior_reason",
+                      "destination_path",
+                      "secondary_tracks",
+                      "reason",
+                      "code_evidence",
+                  ],
+              )
+              writer.writeheader()
+              for row in manifest:
+                  csv_row = dict(row)
+                  csv_row["secondary_tracks"] = ";".join(row["secondary_tracks"])  # type: ignore[index]
+                  csv_row["code_evidence"] = json.dumps(row["code_evidence"], ensure_ascii=False)
+                  writer.writerow(csv_row)
+
+          zip_with_empty_dirs(ORGANIZED, ZIP_PATH)
+
+          top = sorted([p.name for p in ORGANIZED.iterdir() if p.is_dir()])
+          if len(top) != 20:
+              raise SystemExit(f"Expected 20 top-level folders in organized repository, found {len(top)}")
+
+          helper_files = list(ORGANIZED.rglob(BEHAVIOR_HELPER_FILENAME))
+          if helper_files:
+              raise SystemExit("Generated helper Markdown files leaked into organized ZIP tree.")
+
+          print("")
+          print("ORGANIZED REPOSITORY CREATED FROM CODE EVIDENCE")
+          print(f"Tracked files copied: {len(copied)}")
+          print(f"Generated helper Markdown files inside ZIP: 0")
+          print(f"Repository ZIP: {ZIP_PATH.relative_to(REPO)}")
+          print(f"Separate file tree: {TREE_FILE.relative_to(REPO)}")
+          print(f"Manifest JSON: {MANIFEST_JSON.relative_to(REPO)}")
+          print("")
+          print("20 TOP-LEVEL FOLDERS")
+          for item in top:
+              print(item)
+          print("")
+          print("CATEGORY COUNTS")
+          for category in CATEGORIES:
+              print(f"{category}: {counts[category]}")
+          print("")
+          print("DREAMENGIN BEHAVIOR COUNTS")
+          for behavior in DREAMENGIN_BEHAVIORS:
+              print(f"{behavior}: {dream_behavior_counts[behavior]}")
+          PY
+
+      - name: Print organized file tree in workflow log
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Organized file tree"
+          cat _organized_repo_artifact/organized_file_tree.txt
+          echo "::endgroup::"
+
+      - name: Upload organized repository ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.organized_repo_artifact_name }}
+          path: _organized_repo_artifact/dreamengin-organized-repository.zip
+          retention-days: ${{ inputs.retention_days }}
+          if-no-files-found: error
+
+      - name: Upload organized file tree and code-evidence report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.file_tree_artifact_name }}
+          path: |
+            _organized_repo_artifact/organized_file_tree.txt
+            _organized_repo_artifact/organized_manifest.json
+            _organized_repo_artifact/organized_manifest.csv
+          retention-days: ${{ inputs.retention_days }}
+          if-no-files-found: error
