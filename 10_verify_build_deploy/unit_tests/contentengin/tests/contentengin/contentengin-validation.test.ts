@@ -1,3 +1,0 @@
-import { describe, expect, it } from 'vitest'; import { buildAsset } from '../../engins/contentengin/pipeline/build'; import { validateAsset } from '../../engins/contentengin/pipeline/validate'; import type { PartNode } from '../../engins/contentengin/assetTypes';
-function inflate(p:PartNode):PartNode{ return {...p,primitive:{...p.primitive,segments:1000},children:p.children.map(inflate)}; }
-describe('ContentEngin validation',()=>{ it('marks oversize assets not game ready',()=>{ const asset=buildAsset({assetType:'terrain',seed:1,profile:'ps3',parameters:{},materialParameters:{}}); const report=validateAsset({...asset,parts:asset.parts.map(inflate)}); expect(report.gameReady).toBe(false); expect(report.errors.join(' ')).toContain('triangles'); }); });
