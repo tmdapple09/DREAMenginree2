@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T05:45:03.519Z",
+  "generatedAt": "2026-06-29T05:46:00.943Z",
   "root": ".",
   "nodes": [
     {
@@ -3176,6 +3176,16 @@
       "label": "optimize-dreamengin.yml",
       "type": "config",
       "path": ".github/workflows/optimize-dreamengin.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/organize-repo-build-map-semantic-deterministic.yml",
+      "label": "organize-repo-build-map-semantic-deterministic.yml",
+      "type": "config",
+      "path": ".github/workflows/organize-repo-build-map-semantic-deterministic.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
