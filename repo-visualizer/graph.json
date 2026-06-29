@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T11:10:20.777Z",
+  "generatedAt": "2026-06-29T11:22:20.973Z",
   "root": ".",
   "nodes": [
     {
@@ -3242,10 +3242,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/rebase-organized-zip-files-into-repo-paths-repo-zip-autodetect.yml",
-      "label": "rebase-organized-zip-files-into-repo-paths-repo-zip-autodetect.yml",
+      "id": "file:.github/workflows/rebase-organized-zip-files-into-repo-paths-any-zip.yml",
+      "label": "rebase-organized-zip-files-into-repo-paths-any-zip.yml",
       "type": "config",
-      "path": ".github/workflows/rebase-organized-zip-files-into-repo-paths-repo-zip-autodetect.yml",
+      "path": ".github/workflows/rebase-organized-zip-files-into-repo-paths-any-zip.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
