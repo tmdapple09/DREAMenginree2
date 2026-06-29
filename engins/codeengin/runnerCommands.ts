@@ -1,9 +1,10 @@
+
 export const CODEENGIN_COMMANDS: Record<string, { command: string; args: string[]; label: string }> = {
-  lint: { command: 'pnpm', args: ['lint'], label: 'Lint' },
-  typecheck: { command: 'pnpm', args: ['typecheck'], label: 'Typecheck' },
-  test: { command: 'pnpm', args: ['test'], label: 'Unit tests' },
-  build: { command: 'pnpm', args: ['build'], label: 'Build' },
-  preflight: { command: 'pnpm', args: ['preflight'], label: 'Preflight' },
+  lint: { command: 'codeengin-sim', args: ['lint'], label: 'Lint simulation' },
+  typecheck: { command: 'codeengin-sim', args: ['typecheck'], label: 'Typecheck simulation' },
+  test: { command: 'codeengin-sim', args: ['test'], label: 'Test simulation' },
+  build: { command: 'codeengin-sim', args: ['build'], label: 'Build simulation' },
+  preflight: { command: 'codeengin-sim', args: ['preflight'], label: 'Preflight simulation' },
 };
 
 export function listRunnerCommands(): Array<{ id: string; label: string; command: string }> {

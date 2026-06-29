@@ -20,3 +20,10 @@ export { ComputeShaderPipeline as GPUComputeSystem } from '../power-systems';
 export type {
     ComputeDispatch, ComputeKernel, ProfileFrame, ProfileSpan, ShaderVariant
 } from '../power-systems';
+
+
+// GameEngin does not own a separate graphics backend. It asks RenderEngin for
+// the WebGPU device path so cartridges, shader work, and world previews stay on
+// one DREAMengin visual runtime.
+export { requestWebGpuDevice as requestRenderEnginWebGPUDevice } from '@/engins/renderengin/webgpu';
+export type { RenderEnginFrameStats } from '@/engins/renderengin/webgpu';

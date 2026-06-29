@@ -1,7 +1,7 @@
 'use client';
 
 import type { DreamArtifact } from '@/types/dreamArtifact';
-import { cacheAsset } from '@/engine/offline/offlineCache';
+import { cacheAsset, getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 
 const STORAGE_KEY = (accountId: string) => `dream_artifacts_${accountId}`;
 

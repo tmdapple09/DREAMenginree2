@@ -91,9 +91,22 @@ export function routeForRenderSource(source: RenderWorkflowSurface): string {
   }
 }
 
+let renderIntentSequence = 0;
+
+function stableIntentPart(value: JsonObject): string {
+  const source = JSON.stringify(value) ?? 'render';
+  let hash = 2166136261;
+  for (let index = 0; index < source.length; index += 1) {
+    hash ^= source.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36);
+}
+
 function makeIntentId(source: RenderWorkflowSurface, intentType: RenderIntentType, payload: JsonObject): string {
-  const stablePart = String(payload.assetId ?? payload.sceneId ?? payload.objectId ?? payload.fileName ?? Date.now());
-  return `render:${source}:${intentType}:${stablePart}:${Math.random().toString(36).slice(2, 8)}`;
+  const stablePart = String(payload.assetId ?? payload.sceneId ?? payload.objectId ?? payload.fileName ?? stableIntentPart(payload));
+  renderIntentSequence = (renderIntentSequence + 1) % 1_000_000;
+  return `render:${source}:${intentType}:${stablePart}:${renderIntentSequence.toString(36)}`;
 }
 
 function publishIntent(intent: RenderServiceIntentEnvelope): void {
@@ -200,7 +213,9 @@ export function renderServicePayloadToJson(payload: JsonObject): JsonObject {
 }
 
 export function normalizeRenderServicePayload(payload: Record<string, unknown>): JsonObject {
-  return Object.entries(payload).reduce<JsonObject>((acc, [key, value]) => {
+  const normalized: Record<string, JsonValue> = {};
+
+  for (const [key, value] of Object.entries(payload)) {
     if (
       value === null ||
       typeof value === 'string' ||
@@ -209,8 +224,9 @@ export function normalizeRenderServicePayload(payload: Record<string, unknown>):
       Array.isArray(value) ||
       (typeof value === 'object' && value !== null)
     ) {
-      acc[key] = value as JsonValue;
+      normalized[key] = value as JsonValue;
     }
-    return acc;
-  }, {});
+  }
+
+  return normalized as JsonObject;
 }

@@ -14,6 +14,7 @@ import {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useRef,
     useState,
     type Dispatch,
@@ -321,11 +322,41 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
   // Start at 0.9 so the bar rests near the bottom with a visible DreamSpace sliver.
   // DEFAULT_SPLIT_RATIO (1.0) is kept as the snap-point constant used by
   // barInteractions and its tests; this initial value is intentionally different.
-  const [splitRatio,    setSplitRatio]           = useState(0.9);
+  const [splitRatio,    setSplitRatioState]      = useState(0.9);
   const [isBarMinimized, setIsBarMinimized]      = useState(false);
   const [homeData,      setHomeData]             = useState<HomeData | null>(null);
 
   const [worldFocus, setWorldFocusState] = useState<WorldFocusState>(DEFAULT_WORLD_FOCUS);
+  const splitRatioRafRef = useRef<number | null>(null);
+  const pendingSplitRatioRef = useRef<SetStateAction<number> | null>(null);
+
+  const setSplitRatio = useCallback((next: SetStateAction<number>) => {
+    const pending = pendingSplitRatioRef.current;
+    if (typeof next === 'function' && typeof pending === 'function') {
+      pendingSplitRatioRef.current = (current: number) => next(pending(current));
+    } else if (typeof next === 'function' && typeof pending === 'number') {
+      pendingSplitRatioRef.current = next(pending);
+    } else {
+      pendingSplitRatioRef.current = next;
+    }
+
+    if (splitRatioRafRef.current !== null) return;
+
+    splitRatioRafRef.current = window.requestAnimationFrame(() => {
+      splitRatioRafRef.current = null;
+      const queued = pendingSplitRatioRef.current;
+      pendingSplitRatioRef.current = null;
+      if (queued !== null) setSplitRatioState(queued);
+    });
+  }, []);
+
+  useEffect(() => () => {
+    if (splitRatioRafRef.current !== null) {
+      window.cancelAnimationFrame(splitRatioRafRef.current);
+      splitRatioRafRef.current = null;
+    }
+  }, []);
+
   const offlineRestoredRef = useRef(false);
 
   // Bootstrap homeData from Supabase on any authenticated page so both
@@ -417,33 +448,60 @@ export function DreamSystemProvider({ children }: {children: ReactNode}) {
     setWorldFocusState((prev) => ({ ...prev, dominantViewport: viewport }));
   }, []);
 
+  const contextValue = useMemo<DreamSystemContextValue>(() => ({
+    bothMenusOpen,
+    openBothMenus,
+    closeBothMenus,
+    drEamsOpen,
+    openDrEams,
+    closeDrEams,
+    runtimeCallbacks,
+    registerRuntimeCallbacks,
+    unregisterRuntimeCallbacks,
+    openInSurface,
+    openInDominant,
+    barIntent,
+    setBarIntent,
+    clearBarIntent,
+    splitRatio,
+    setSplitRatio,
+    isBarMinimized,
+    setIsBarMinimized,
+    homeData,
+    setHomeData,
+    worldFocus,
+    setFocus,
+    moveTorus,
+    setDominantViewport,
+  }), [
+    bothMenusOpen,
+    openBothMenus,
+    closeBothMenus,
+    drEamsOpen,
+    openDrEams,
+    closeDrEams,
+    runtimeCallbacks,
+    registerRuntimeCallbacks,
+    unregisterRuntimeCallbacks,
+    openInSurface,
+    openInDominant,
+    barIntent,
+    setBarIntent,
+    clearBarIntent,
+    splitRatio,
+    setSplitRatio,
+    isBarMinimized,
+    setIsBarMinimized,
+    homeData,
+    setHomeData,
+    worldFocus,
+    setFocus,
+    moveTorus,
+    setDominantViewport,
+  ]);
+
   return (
-    <DreamSystemContext.Provider value={{
-      bothMenusOpen,
-      openBothMenus,
-      closeBothMenus,
-      drEamsOpen,
-      openDrEams,
-      closeDrEams,
-      runtimeCallbacks,
-      registerRuntimeCallbacks,
-      unregisterRuntimeCallbacks,
-      openInSurface,
-      openInDominant,
-      barIntent,
-      setBarIntent,
-      clearBarIntent,
-      splitRatio,
-      setSplitRatio,
-      isBarMinimized,
-      setIsBarMinimized,
-      homeData,
-      setHomeData,
-      worldFocus,
-      setFocus,
-      moveTorus,
-      setDominantViewport,
-    }}>
+    <DreamSystemContext.Provider value={contextValue}>
       {children}
     </DreamSystemContext.Provider>
   );

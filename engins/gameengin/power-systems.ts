@@ -30,6 +30,8 @@
  * 20.  PhysicsMaterialSystem   — surface-pair material table (friction/restitution/sound)
  */
 
+import { requestWebGpuDevice } from '@/engins/renderengin/webgpu';
+
 //  1. ROLLBACK NETCODE
 
 export interface NetInput {
@@ -164,14 +166,9 @@ export class ComputeShaderPipeline {
   private isAvailable = false;
 
   async init(): Promise<boolean> {
-    if (typeof navigator === 'undefined' || !navigator.gpu) return false;
     try {
-      const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
-      if (!adapter) return false;
-      this.device = await adapter.requestDevice({
-        requiredFeatures: adapter.features.has('timestamp-query')
-          ? ['timestamp-query'] : [],
-      });
+      const { device } = await requestWebGpuDevice();
+      this.device = device;
       this.isAvailable = true;
       return true;
     } catch {
@@ -1865,11 +1862,10 @@ export class WGSLShaderManager {
 
   async init(device?: unknown): Promise<void> {
     if (device) { this.device = device; return; }
-    if (typeof navigator === 'undefined' || !navigator.gpu) return;
     try {
-      const adapter = await navigator.gpu.requestAdapter();
-      if (adapter) this.device = await adapter.requestDevice();
-    } catch { /* no WebGPU */ }
+      const lease = await requestWebGpuDevice();
+      this.device = lease.device;
+    } catch { /* RenderEngin WebGPU unavailable */ }
   }
 
   /** Register a raw WGSL source string. Returns a compiled key or null. */

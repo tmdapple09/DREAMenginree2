@@ -1,3 +1,4 @@
+import { requestWebGpuDevice } from '@/engins/renderengin/webgpu';
 import {
     BLUR_FRAG_WGSL,
     BRIGHT_FRAG_WGSL,
@@ -14,7 +15,7 @@ import {
 } from './shaders';
 
 /**
- * WebGPURenderer — raw WebGPU multi-pass renderer for DREAMengin.
+ * WebGPURenderer — legacy WebGPU effect renderer backed by RenderEngin device ownership.
  *
  * Pipeline order per frame:
  *   1. Compute pass  — particle attractor physics (2048 particles, GPU-only)
@@ -83,10 +84,9 @@ export class WebGPURenderer {
 
   private async _init(canvas: HTMLCanvasElement) {
     const gpu = (navigator as NavWithGPU).gpu;
-    const adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
-    if (!adapter) throw new Error('no WebGPU adapter');
+    const { device } = await requestWebGpuDevice();
 
-    this.dev = (await adapter.requestDevice()) as unknown as GPUDevice;
+    this.dev = device as unknown as GPUDevice;
 
     this.ctx = canvas.getContext('webgpu') as GPUCanvasContext;
     this.fmt = gpu.getPreferredCanvasFormat() as GPUTextureFormat;

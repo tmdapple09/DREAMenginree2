@@ -895,30 +895,74 @@ function createBuffer(
   return buffer;
 }
 
-export async function requestWebGpuDevice(): Promise<{ adapter: GPUAdapter; device: GPUDevice }> {
+export interface RenderEnginGpuDeviceLease {
+  readonly adapter: GPUAdapter;
+  readonly device: GPUDevice;
+  readonly owner: 'RenderEngin';
+  readonly shared: true;
+}
+
+let sharedRenderGpuDevicePromise: Promise<RenderEnginGpuDeviceLease> | null = null;
+let sharedRenderGpuDevice: RenderEnginGpuDeviceLease | null = null;
+
+async function warmRenderGpuDevice(device: GPUDevice): Promise<void> {
+  const warmModule = device.createShaderModule({ code: KEEP_ALIVE_SHADER });
+  const warmPipeline = device.createComputePipeline({ layout: 'auto', compute: { module: warmModule, entryPoint: 'main' } });
+  const warmBuffer = device.createBuffer({ size: 4, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
+  try {
+    device.queue.writeBuffer(warmBuffer, 0, new Uint32Array([0]));
+    const warmBindGroup = device.createBindGroup({ layout: warmPipeline.getBindGroupLayout(0), entries: [{ binding: 0, resource: { buffer: warmBuffer } }] });
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(warmPipeline);
+    pass.setBindGroup(0, warmBindGroup);
+    pass.dispatchWorkgroups(1);
+    pass.end();
+    device.queue.submit([encoder.finish()]);
+    await device.queue.onSubmittedWorkDone();
+  } finally {
+    warmBuffer.destroy();
+  }
+}
+
+async function createSharedRenderGpuDevice(): Promise<RenderEnginGpuDeviceLease> {
   if (!globalThis.navigator?.gpu) {
     throw new Error('WebGPU is not available in this runtime.');
   }
-  const adapter = await globalThis.navigator.gpu.requestAdapter();
+  const adapter = await globalThis.navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
   if (!adapter) {
     throw new Error('WebGPU adapter request failed.');
   }
   const device = await adapter.requestDevice();
-  const warmModule = device.createShaderModule({ code: KEEP_ALIVE_SHADER });
-  const warmPipeline = device.createComputePipeline({ layout: 'auto', compute: { module: warmModule, entryPoint: 'main' } });
-  const warmBuffer = device.createBuffer({ size: 4, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
-  device.queue.writeBuffer(warmBuffer, 0, new Uint32Array([0]));
-  const warmBindGroup = device.createBindGroup({ layout: warmPipeline.getBindGroupLayout(0), entries: [{ binding: 0, resource: { buffer: warmBuffer } }] });
-  const encoder = device.createCommandEncoder();
-  const pass = encoder.beginComputePass();
-  pass.setPipeline(warmPipeline);
-  pass.setBindGroup(0, warmBindGroup);
-  pass.dispatchWorkgroups(1);
-  pass.end();
-  device.queue.submit([encoder.finish()]);
-  await device.queue.onSubmittedWorkDone();
-  warmBuffer.destroy();
-  return { adapter, device };
+  const lease: RenderEnginGpuDeviceLease = { adapter, device, owner: 'RenderEngin', shared: true };
+  sharedRenderGpuDevice = lease;
+  void device.lost.then(() => {
+    if (sharedRenderGpuDevice?.device === device) {
+      sharedRenderGpuDevice = null;
+      sharedRenderGpuDevicePromise = null;
+    }
+  });
+  await warmRenderGpuDevice(device);
+  return lease;
+}
+
+/**
+ * Returns DREAMengin's shared RenderEngin WebGPU device.
+ *
+ * ContentEngin, GameEngin, LabEngin, DreamSpace, and diagnostics should all
+ * request GPU access through this facade so the app does not create separate
+ * renderer identities or one GPUDevice per surface.
+ */
+export async function requestWebGpuDevice(): Promise<RenderEnginGpuDeviceLease> {
+  if (sharedRenderGpuDevice) return sharedRenderGpuDevice;
+  if (!sharedRenderGpuDevicePromise) {
+    sharedRenderGpuDevicePromise = createSharedRenderGpuDevice().catch((error) => {
+      sharedRenderGpuDevice = null;
+      sharedRenderGpuDevicePromise = null;
+      throw error;
+    });
+  }
+  return sharedRenderGpuDevicePromise;
 }
 
 export class WebGpuRenderEngin {
@@ -1792,7 +1836,10 @@ export class WebGpuRenderEngin {
   }
 
   pickResidentObjectFromCanvas(clientX: number, clientY: number, radiusPx = 12): Promise<RenderGpuPickResult> {
-    const rect = this.context.canvas.getBoundingClientRect();
+    const canvas = this.context.canvas;
+    const rect = 'getBoundingClientRect' in canvas
+      ? canvas.getBoundingClientRect()
+      : { left: 0, top: 0, width: canvas.width, height: canvas.height };
     const x = ((clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
     const y = 1 - ((clientY - rect.top) / Math.max(1, rect.height)) * 2;
     const radiusNdc = (radiusPx / Math.max(1, Math.min(rect.width, rect.height))) * 2;

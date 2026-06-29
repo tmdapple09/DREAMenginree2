@@ -33,6 +33,18 @@ type GridPreviewTile = 'empty' | 'ground' | 'wall' | 'water' | 'spawn' | string;
 
 type GridPreview = GridPreviewTile[][];
 
+const MAX_RENDER_HANDOFF_BYTES = 64 * 1024 * 1024;
+const MAX_RENDER_IMPORT_BYTES = 64 * 1024 * 1024;
+
+function assertRenderPayloadSize(byteLength: number, label: string): void {
+  if (!Number.isFinite(byteLength) || byteLength <= 0) {
+    throw new Error(`${label} is empty or unreadable.`);
+  }
+  if (byteLength > MAX_RENDER_HANDOFF_BYTES) {
+    throw new Error(`${label} is too large for mobile RenderEngin preview (${byteLength} bytes).`);
+  }
+}
+
 function createDemoTriangle(): MeshBuffers {
   return createMeshBuffers([
     { position: [0, 0.75, 0], normal: [0, 0, 1], uv: [0.5, 1] },
@@ -181,6 +193,10 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   const sceneObjectRef = useRef<ReturnType<WebGpuRenderEngin['createSceneObject']> | null>(null);
   const runtimeRef = useRef(runtime);
   const lastFrameTelemetryAtRef = useRef(0);
+  const lastStatsStateAtRef = useRef(0);
+  const cameraStateRef = useRef({ azimuth: 0, elevation: 0, zoom: 2.4 });
+  const pendingCameraRef = useRef<{ azimuth: number; elevation: number; zoom: number } | null>(null);
+  const cameraRafRef = useRef<number | null>(null);
   const processedIntentIdsRef = useRef(new Set<string>());
   const activeAssetLabelRef = useRef('Demo triangle');
   const activeObjectIdRef = useRef('object:demo-triangle');
@@ -196,6 +212,13 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   const cameraEyeRef = useRef<Vec3>(orbitEye(0, 0, 2.4));
 
   useEffect(() => { runtimeRef.current = runtime; }, [runtime]);
+
+  useEffect(() => () => {
+    if (cameraRafRef.current !== null) {
+      window.cancelAnimationFrame(cameraRafRef.current);
+      cameraRafRef.current = null;
+    }
+  }, []);
 
   const registerActiveObjectId = useCallback((objectId: string): number => {
     const numericId = stableNumericObjectId(objectId);
@@ -307,8 +330,11 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
         renderer.start({
           onReady: () => setStatus('RenderEngin WebGPU viewport running'),
           onFrame: (nextStats) => {
-            setStats(nextStats);
             const now = performance.now();
+            if (now - lastStatsStateAtRef.current >= 250) {
+              lastStatsStateAtRef.current = now;
+              setStats(nextStats);
+            }
             if (now - lastFrameTelemetryAtRef.current >= 1000) {
               lastFrameTelemetryAtRef.current = now;
               runtimeRef.current?.dispatch({ type: 'render.frame.render', payload: { ...nextStats, telemetry: 'throttled' } });
@@ -337,43 +363,101 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   useEffect(() => {
     if (!incomingIntent || processedIntentIdsRef.current.has(incomingIntent.id)) return;
     processedIntentIdsRef.current.add(incomingIntent.id);
+    let cancelled = false;
     const payload = incomingIntent.payload;
-    try {
-      if (typeof payload.objSource === 'string') {
-        const fileName = typeof payload.fileName === 'string' ? payload.fileName : `${String(payload.assetId ?? 'render-handoff')}.obj`;
-        const parsed = createParsedObjRenderAsset({ id: `asset:${sanitizeIdPart(fileName)}`, ownerId: String(payload.ownerId ?? 'local-user'), runtimeId: 'render:shared-service', name: fileName, source: payload.objSource });
-        loadParsedAsset(parsed, fileName, incomingIntent.source);
-        setStatus(`Render handoff loaded from ${incomingIntent.source}`);
-        return;
+
+    const applyIntent = async () => {
+      try {
+        const glbUrl = typeof payload.glbUrl === 'string'
+          ? payload.glbUrl
+          : typeof payload.modelUrl === 'string'
+            ? payload.modelUrl
+            : '';
+        if (glbUrl) {
+          setStatus(`Loading RenderEngin GLB handoff from ${incomingIntent.source}…`);
+          const response = await fetch(glbUrl, { cache: 'force-cache' });
+          if (!response.ok) throw new Error(`RenderEngin GLB fetch failed: ${response.status}`);
+          const contentLength = Number(response.headers.get('content-length') ?? '0');
+          if (contentLength > MAX_RENDER_HANDOFF_BYTES) {
+            throw new Error(`RenderEngin GLB handoff is too large for mobile preview (${contentLength} bytes).`);
+          }
+          const buffer = await response.arrayBuffer();
+          assertRenderPayloadSize(buffer.byteLength, 'RenderEngin GLB handoff');
+          if (cancelled) return;
+          const name = typeof payload.fileName === 'string'
+            ? payload.fileName
+            : `${String(payload.assetId ?? 'contentengin-asset')}.glb`;
+          const parsed = createParsedGlbRenderAsset({
+            id: `asset:${sanitizeIdPart(String(payload.assetId ?? name))}`,
+            ownerId: String(payload.ownerId ?? 'local-user'),
+            runtimeId: 'render:shared-service',
+            name,
+            buffer,
+          });
+          loadParsedAsset(parsed, name, incomingIntent.source);
+          setStatus(`RenderEngin GLB handoff loaded from ${incomingIntent.source}`);
+          return;
+        }
+        if (typeof payload.objSource === 'string') {
+          const fileName = typeof payload.fileName === 'string' ? payload.fileName : `${String(payload.assetId ?? 'render-handoff')}.obj`;
+          const parsed = createParsedObjRenderAsset({ id: `asset:${sanitizeIdPart(fileName)}`, ownerId: String(payload.ownerId ?? 'local-user'), runtimeId: 'render:shared-service', name: fileName, source: payload.objSource });
+          loadParsedAsset(parsed, fileName, incomingIntent.source);
+          setStatus(`RenderEngin OBJ handoff loaded from ${incomingIntent.source}`);
+          return;
+        }
+        if (isGridPreview(payload.worldGrid)) {
+          const name = typeof payload.worldName === 'string' ? payload.worldName : 'GameEngin world';
+          const mesh = createGridPreviewMesh(payload.worldGrid);
+          loadMeshIntoViewport(mesh, { assetId: String(payload.assetId ?? `game-world:${sanitizeIdPart(name)}`), name, source: incomingIntent.source, ownerId: String(payload.ownerId ?? 'local-user'), runtimeId: 'render:shared-service' });
+          setStatus(`RenderEngin GameEngin world handoff loaded from ${incomingIntent.source}`);
+          return;
+        }
+        setAssetInfo(`${incomingIntent.source} handoff received · waiting for mesh payload · ${String(payload.assetId ?? payload.assetKind ?? incomingIntent.intentType)}`);
+        setStatus('RenderEngin service intent applied; no direct mesh payload was attached.');
+      } catch (error) {
+        if (!cancelled) setStatus(error instanceof Error ? error.message : String(error));
       }
-      if (isGridPreview(payload.worldGrid)) {
-        const name = typeof payload.worldName === 'string' ? payload.worldName : 'GameEngin world';
-        const mesh = createGridPreviewMesh(payload.worldGrid);
-        loadMeshIntoViewport(mesh, { assetId: String(payload.assetId ?? `game-world:${sanitizeIdPart(name)}`), name, source: incomingIntent.source, ownerId: String(payload.ownerId ?? 'local-user'), runtimeId: 'render:shared-service' });
-        setStatus(`Render handoff loaded from ${incomingIntent.source}`);
-        return;
-      }
-      setAssetInfo(`${incomingIntent.source} handoff received · waiting for mesh payload · ${String(payload.assetId ?? payload.assetKind ?? incomingIntent.intentType)}`);
-      setStatus('Render service intent applied; no direct mesh payload was attached.');
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : String(error));
-    }
+    };
+
+    void applyIntent();
+    return () => {
+      cancelled = true;
+    };
   }, [incomingIntent, loadMeshIntoViewport, loadParsedAsset]);
 
   function updateCamera(next: typeof camera): void {
-    setCamera(next);
-    runtime?.dispatch({ type: 'render.camera.orbit', payload: { orbit: [next.azimuth, next.elevation], zoom: next.zoom } });
-    runtime?.dispatch({ type: 'render.camera.zoom', payload: { zoom: next.zoom } });
+    cameraStateRef.current = next;
+    pendingCameraRef.current = next;
+    if (cameraRafRef.current !== null) return;
+    cameraRafRef.current = window.requestAnimationFrame(() => {
+      cameraRafRef.current = null;
+      const pending = pendingCameraRef.current;
+      pendingCameraRef.current = null;
+      if (!pending) return;
+      setCamera(pending);
+      runtimeRef.current?.dispatch({ type: 'render.camera.orbit', payload: { orbit: [pending.azimuth, pending.elevation], zoom: pending.zoom } });
+      runtimeRef.current?.dispatch({ type: 'render.camera.zoom', payload: { zoom: pending.zoom } });
+    });
   }
 
   async function importAssetFile(file: File): Promise<void> {
-    if (file.name.toLowerCase().endsWith('.glb')) {
+    if (file.size <= 0) throw new Error('RenderEngin import is empty.');
+    if (file.size > MAX_RENDER_IMPORT_BYTES) {
+      throw new Error(`RenderEngin import is too large for mobile preview (${file.size} bytes).`);
+    }
+    const lowerName = file.name.toLowerCase();
+    if (lowerName.endsWith('.glb')) {
       const buffer = await file.arrayBuffer();
+      assertRenderPayloadSize(buffer.byteLength, 'RenderEngin GLB import');
       const parsed = createParsedGlbRenderAsset({ id: `asset:${sanitizeIdPart(file.name)}`, ownerId: 'local-user', runtimeId: 'render:surface', name: file.name, buffer });
       loadParsedAsset(parsed, file.name, 'local-glb-import');
       return;
     }
+    if (!lowerName.endsWith('.obj')) {
+      throw new Error('RenderEngin only accepts OBJ or GLB imports in this viewport.');
+    }
     const source = await file.text();
+    assertRenderPayloadSize(source.length, 'RenderEngin OBJ import');
     const parsed = createParsedObjRenderAsset({ id: `asset:${sanitizeIdPart(file.name)}`, ownerId: 'local-user', runtimeId: 'render:surface', name: file.name, source });
     loadParsedAsset(parsed, file.name, 'local-obj-import');
   }
@@ -390,12 +474,25 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
     <section style={{ display: 'grid', gap: 12 }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
         <button type="button" onClick={() => updateCamera({ azimuth: 0, elevation: 0, zoom: 2.4 })} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Reset camera</button>
-        <button type="button" onClick={() => updateCamera({ ...camera, zoom: Math.max(0.8, camera.zoom - 0.3) })} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Zoom in</button>
-        <button type="button" onClick={() => updateCamera({ ...camera, zoom: Math.min(12, camera.zoom + 0.3) })} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Zoom out</button>
+        <button type="button" onClick={() => updateCamera({ ...cameraStateRef.current, zoom: Math.max(0.8, cameraStateRef.current.zoom - 0.3) })} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Zoom in</button>
+        <button type="button" onClick={() => updateCamera({ ...cameraStateRef.current, zoom: Math.min(12, cameraStateRef.current.zoom + 0.3) })} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Zoom out</button>
         <button type="button" onClick={() => { const objectId = activeObjectIdRef.current; setSelectedObjectId(objectId); runtime?.dispatch({ type: 'render.object.select', payload: { id: objectId } }); }} style={{ border: '1px solid #bae6fd', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Select object</button>
         <button type="button" onClick={captureSnapshot} style={{ border: '1px solid #fbbf24', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Capture snapshot</button>
         <button type="button" onClick={() => fileInputRef.current?.click()} style={{ border: '1px solid #38bdf8', borderRadius: 999, padding: '8px 12px', fontWeight: 900 }}>Import OBJ/GLB</button>
-        <input ref={fileInputRef} type="file" accept=".obj,.glb,model/obj,model/gltf-binary,text/plain" hidden onChange={(event) => { const file = event.target.files?.[0]; if (file) void importAssetFile(file); }} />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".obj,.glb,model/obj,model/gltf-binary,text/plain"
+          hidden
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            void importAssetFile(file).catch((error) => {
+              setStatus(error instanceof Error ? error.message : String(error));
+            });
+            event.currentTarget.value = '';
+          }}
+        />
       </div>
       <canvas
         ref={canvasRef}
@@ -409,10 +506,15 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
           const dx = event.clientX - pointer.x;
           const dy = event.clientY - pointer.y;
           pointerRef.current = { ...pointer, x: event.clientX, y: event.clientY };
-          updateCamera({ ...camera, azimuth: camera.azimuth + dx * 0.01, elevation: camera.elevation + dy * 0.01 });
+          const currentCamera = cameraStateRef.current;
+          updateCamera({ ...currentCamera, azimuth: currentCamera.azimuth + dx * 0.01, elevation: currentCamera.elevation + dy * 0.01 });
         }}
         onPointerUp={(event) => { if (pointerRef.current?.id === event.pointerId) pointerRef.current = null; }}
-        onWheel={(event) => { event.preventDefault(); updateCamera({ ...camera, zoom: Math.max(0.8, Math.min(12, camera.zoom + event.deltaY * 0.003)) }); }}
+        onWheel={(event) => {
+          event.preventDefault();
+          const currentCamera = cameraStateRef.current;
+          updateCamera({ ...currentCamera, zoom: Math.max(0.8, Math.min(12, currentCamera.zoom + event.deltaY * 0.003)) });
+        }}
         onClick={(event) => {
           const renderer = rendererRef.current;
           const fallbackObjectId = activeObjectIdRef.current;

@@ -25,7 +25,7 @@ function detectRegion(width: number, height: number, rgba: Uint8Array, colors: s
       }
     }
   }
-  if (!count) { minX = 0; minY = 0; maxX = width - 1; maxY = height - 1; count = width * height; sx = width * height / 2; sy = width * height / 2; }
+  if (!count) { minX = 0; minY = 0; maxX = width - 1; maxY = height - 1; count = width * height; sx = ((width - 1) * count) / 2; sy = ((height - 1) * count) / 2; }
   const aspect = (maxX - minX + 1) / Math.max(1, maxY - minY + 1);
   const label: ShapeRegion['label'] = aspect > 2.4 ? 'road' : aspect < 0.45 ? 'trunk' : 'unknown';
   return {

@@ -82,11 +82,29 @@ export default function AssetViewport({
   const pickStart = useRef<{ x: number; y: number; at: number } | null>(null);
   const gpuRef = useRef<RenderServiceRuntime | null>(null);
 
-  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
+  const [pointer, setPointerState] = useState<{ x: number; y: number } | null>(null);
   const [imageVersion, setImageVersion] = useState(0);
   const [renderMode, setRenderMode] = useState<RenderMode>('canvas');
+  const pointerFrameRef = useRef<number | null>(null);
+  const pendingPointerRef = useRef<{ x: number; y: number } | null>(null);
 
   cameraRef.current = camera;
+
+  const setPointer = useCallback((next: { x: number; y: number } | null) => {
+    pendingPointerRef.current = next;
+    if (pointerFrameRef.current !== null) return;
+    pointerFrameRef.current = window.requestAnimationFrame(() => {
+      pointerFrameRef.current = null;
+      setPointerState(pendingPointerRef.current);
+    });
+  }, []);
+
+  useEffect(() => () => {
+    if (pointerFrameRef.current !== null) {
+      window.cancelAnimationFrame(pointerFrameRef.current);
+      pointerFrameRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (!sourceUrl) {

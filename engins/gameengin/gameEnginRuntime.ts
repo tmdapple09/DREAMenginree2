@@ -113,10 +113,11 @@ export class GameEnginRuntime {
   async initWebGPU(canvas: HTMLCanvasElement, qualityTier: GameEnginQualityTier = 'balanced'): Promise<GameEnginBackendState> {
     this.canvas = canvas;
     const budget = resolveFrameBudget(qualityTier);
-    const quality = decideRuntimeQuality(budget.frameBudgetMs, Boolean(navigator.gpu));
+    const hasRenderEnginWebGpuPath = typeof navigator !== 'undefined' && Boolean(navigator.gpu);
+    const quality = decideRuntimeQuality(budget.frameBudgetMs, hasRenderEnginWebGpuPath);
 
-    if (!navigator.gpu) {
-      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-unavailable', quality };
+    if (!hasRenderEnginWebGpuPath) {
+      const state = { backend: 'webgl2' as const, ready: false, reason: 'renderengin-webgpu-unavailable', quality };
       this.bus.emit('backendReady', state);
       return state;
     }
@@ -125,7 +126,7 @@ export class GameEnginRuntime {
     try {
       ({ device: gpuDevice } = await requestWebGpuDevice());
     } catch {
-      const state = { backend: 'webgl2' as const, ready: false, reason: 'webgpu-device-unavailable', quality };
+      const state = { backend: 'webgl2' as const, ready: false, reason: 'renderengin-webgpu-device-unavailable', quality };
       this.bus.emit('backendReady', state);
       return state;
     }

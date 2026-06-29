@@ -1,15 +1,26 @@
+import {
+  requestWebGpuDevice,
+  WebGpuRenderEngin,
+  type RenderEnginFrameStats,
+  type RenderEnginLifecycleHooks,
+  type RenderEnginScene,
+} from '@/engins/renderengin/webgpu';
+
 /**
- * WebGPU detection and renderer utilities.
+ * Public DREAMengin graphics probe.
  *
- * This file owns the public DREAMengin WebGPU probe. It does not merely check
- * for a flag: initializeWebGPURuntime() requests an adapter and a GPUDevice so
- * supported iPhone/Safari/desktop browsers prove the GPU path can actually run.
+ * WebGPU is not a separate creative engine here. WebGPU is the GPU backend
+ * owned by RenderEngin and consumed by ContentEngin, GameEngin, LabEngin,
+ * Daydreams, DreamSpace, and shell surfaces through one rendering path.
  */
+export type RenderEnginGraphicsBackend = 'webgpu' | 'webgl2' | 'webgl' | 'canvas2d';
 
 export interface WebGPURuntimeInitialization {
   readonly ready: boolean;
   readonly adapter: GPUAdapter | null;
   readonly device: GPUDevice | null;
+  readonly backend: RenderEnginGraphicsBackend;
+  readonly owner: 'RenderEngin';
   readonly reason?: string;
   readonly maxTextureDimension2D?: number;
 }
@@ -19,59 +30,80 @@ function gpuFromNavigator(): GPU | null {
   return (navigator as Navigator & { gpu?: GPU }).gpu ?? null;
 }
 
-export async function initializeWebGPURuntime(
-  powerPreference: GPUPowerPreference = 'high-performance',
-): Promise<WebGPURuntimeInitialization> {
+function fallbackBackend(): RenderEnginGraphicsBackend {
+  if (typeof document === 'undefined') return 'canvas2d';
+  const canvas = document.createElement('canvas');
+  if (canvas.getContext('webgl2')) return 'webgl2';
+  if (canvas.getContext('webgl')) return 'webgl';
+  return 'canvas2d';
+}
+
+export async function initializeRenderEnginGraphicsRuntime(_powerPreference: GPUPowerPreference = 'high-performance'): Promise<WebGPURuntimeInitialization> {
   const gpu = gpuFromNavigator();
-  if (!gpu) return { ready: false, adapter: null, device: null, reason: 'navigator.gpu is unavailable.' };
+  if (!gpu) {
+    return {
+      ready: false,
+      adapter: null,
+      device: null,
+      backend: fallbackBackend(),
+      owner: 'RenderEngin',
+      reason: 'navigator.gpu is unavailable; RenderEngin will use the best non-WebGPU fallback available.',
+    };
+  }
+
   if (typeof globalThis !== 'undefined' && globalThis.isSecureContext === false) {
-    return { ready: false, adapter: null, device: null, reason: 'WebGPU requires HTTPS or localhost secure context.' };
+    return {
+      ready: false,
+      adapter: null,
+      device: null,
+      backend: fallbackBackend(),
+      owner: 'RenderEngin',
+      reason: 'WebGPU requires HTTPS or localhost secure context; RenderEngin will use a fallback backend.',
+    };
   }
 
-  const preferences: ReadonlyArray<GPUPowerPreference | undefined> = powerPreference === 'high-performance'
-    ? ['high-performance', undefined, 'low-power']
-    : [powerPreference, undefined, 'high-performance'];
-
-  let lastReason = 'No WebGPU adapter was returned.';
-  for (const preference of preferences) {
-    try {
-      const adapter = await gpu.requestAdapter(preference ? { powerPreference: preference } : undefined);
-      if (!adapter) {
-        lastReason = `No WebGPU adapter for ${preference ?? 'default'} preference.`;
-        continue;
-      }
-      const device = await adapter.requestDevice();
-      return {
-        ready: true,
-        adapter,
-        device,
-        maxTextureDimension2D: device.limits.maxTextureDimension2D ?? adapter.limits.maxTextureDimension2D,
-      };
-    } catch (error) {
-      lastReason = error instanceof Error ? error.message : String(error);
-    }
+  try {
+    const { adapter, device } = await requestWebGpuDevice();
+    return {
+      ready: true,
+      adapter,
+      device,
+      backend: 'webgpu',
+      owner: 'RenderEngin',
+      maxTextureDimension2D: device.limits.maxTextureDimension2D ?? adapter.limits.maxTextureDimension2D,
+    };
+  } catch (error) {
+    return {
+      ready: false,
+      adapter: null,
+      device: null,
+      backend: fallbackBackend(),
+      owner: 'RenderEngin',
+      reason: error instanceof Error ? error.message : String(error),
+    };
   }
+}
 
-  return { ready: false, adapter: null, device: null, reason: lastReason };
+export async function initializeWebGPURuntime(powerPreference: GPUPowerPreference = 'high-performance'): Promise<WebGPURuntimeInitialization> {
+  return initializeRenderEnginGraphicsRuntime(powerPreference);
 }
 
 export async function isWebGPUAvailable(): Promise<boolean> {
-  const runtime = await initializeWebGPURuntime();
-  runtime.device?.destroy?.();
-  return runtime.ready;
+  const runtime = await initializeRenderEnginGraphicsRuntime();
+  return runtime.ready && runtime.backend === 'webgpu';
 }
 
-/**
- * Return a label describing the best available GPU backend so UI can
- * surface it to the user.
- */
 export async function getRendererBackend(): Promise<'webgpu' | 'webgl2' | 'webgl'> {
-  if (await isWebGPUAvailable()) return 'webgpu';
-
-  if (typeof document === 'undefined') return 'webgl2';
-
-  const canvas = document.createElement('canvas');
-  if (canvas.getContext('webgl2')) return 'webgl2';
+  const runtime = await initializeRenderEnginGraphicsRuntime();
+  if (runtime.backend === 'webgpu') return 'webgpu';
+  if (runtime.backend === 'webgl2') return 'webgl2';
   return 'webgl';
 }
 
+export {
+  requestWebGpuDevice,
+  WebGpuRenderEngin,
+  type RenderEnginFrameStats,
+  type RenderEnginLifecycleHooks,
+  type RenderEnginScene,
+};

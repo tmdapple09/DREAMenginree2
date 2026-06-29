@@ -38,20 +38,20 @@ export const RENDER_SERVICE_PIPELINE: readonly string[] = Object.freeze([
 ]);
 
 export const RENDER_SERVICE_COMMANDS: readonly RenderServiceCommand[] = Object.freeze([
-  { id: 'render:preview-asset', label: 'Preview selected asset in Render', surface: 'DreamDMBar', intentType: 'render.asset.preview', route: '/engines' },
-  { id: 'render:open-viewport', label: 'Open Render viewport', surface: 'HomeDream', intentType: 'render.viewport.resize', route: '/homedream' },
-  { id: 'render:snapshot', label: 'Capture Render snapshot', surface: 'DreamSpace', intentType: 'render.viewport.snapshot', route: '/dreamspace' },
-  { id: 'render:frame', label: 'Render current frame', surface: 'Daydream', intentType: 'render.frame.render', route: '/daydream/create' },
+  { id: 'render:preview-asset', label: 'Preview selected asset through RenderEngin', surface: 'DreamDMBar', intentType: 'render.asset.preview', route: '/engines' },
+  { id: 'render:open-viewport', label: 'Attach RenderEngin viewport to active surface', surface: 'HomeDream', intentType: 'render.viewport.resize', route: '/homedream' },
+  { id: 'render:snapshot', label: 'Capture RenderEngin snapshot', surface: 'DreamSpace', intentType: 'render.viewport.snapshot', route: '/dreamspace' },
+  { id: 'render:frame', label: 'Render current frame through RenderEngin', surface: 'Daydream', intentType: 'render.frame.render', route: '/daydream/create' },
   { id: 'content:render-preview', label: 'Preview ContentEngin asset', surface: 'ContentEngin', intentType: 'render.asset.preview', route: '/engines/create' },
   { id: 'game:render-cartridge', label: 'Preview GameEngin cartridge', surface: 'GameEngin', intentType: 'render.asset.load', route: '/engines/game' },
-  { id: 'code:render-shader', label: 'Preview CodeEngin shader', surface: 'CodeEngin', intentType: 'render.material.set', route: '/engines/code' },
+  { id: 'code:render-shader', label: 'Preview CodeEngin shader through RenderEngin', surface: 'CodeEngin', intentType: 'render.material.set', route: '/engines/code' },
   { id: 'lab:render-simulation', label: 'Preview LabEngin simulation', surface: 'LabEngin', intentType: 'render.scene.load', route: '/engines/lab' },
 ]);
 
 export const RENDER_SERVICE_HANDOFFS: readonly RenderServiceHandoff[] = Object.freeze([
   { source: 'ContentEngin', intentType: 'render.asset.preview', acceptedAssetKinds: ['glb', 'obj', 'mesh', 'recipe-output'] },
   { source: 'GameEngin', intentType: 'render.asset.load', acceptedAssetKinds: ['cartridge-mesh', 'terrain', 'scene', 'level'] },
-  { source: 'CodeEngin', intentType: 'render.material.set', acceptedAssetKinds: ['wgsl', 'shader', 'material'] },
+  { source: 'CodeEngin', intentType: 'render.material.set', acceptedAssetKinds: ['wgsl', 'shader', 'material', 'webgpu'] },
   { source: 'LabEngin', intentType: 'render.scene.load', acceptedAssetKinds: ['simulation-mesh', 'point-cloud', 'field'] },
 ]);
 

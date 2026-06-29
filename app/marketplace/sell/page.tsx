@@ -99,6 +99,7 @@ export default function MarketplaceSellPage( ){
       // Small delay so the success state is visible before redirect
       setTimeout(() => router.push('/marketplace'), 1400);
     } catch (err: unknown) {
+      const message = toErrorMessage(err);
       const payload = { title, description, category, price: parseFloat(price) || 0, tags };
       void queueLocalFirstMutation(`marketplace-listing:${Date.now()}`, payload, { url: '/api/marketplace', method: 'POST' });
       setSuccess(true);

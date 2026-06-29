@@ -1,21 +1,28 @@
-import { spawn } from 'child_process';
-import { getWorkspaceMeta } from './workspaceStore';
+
+import { listEditableFiles } from './workspaceStore';
 
 interface GitResult { command: string; code: number; stdout: string; stderr: string; }
 
-async function runGit(workspaceId: string, ownerId: string, args: string[]): Promise<GitResult> {
-  const workspace = await getWorkspaceMeta(workspaceId, ownerId);
-  return new Promise((resolve) => {
-    const child = spawn('git', args, { cwd: workspace.root, shell: false });
-    let stdout = '';
-    let stderr = '';
-    child.stdout.on('data', (data: Buffer) => { stdout += data.toString(); });
-    child.stderr.on('data', (data: Buffer) => { stderr += data.toString(); });
-    child.on('error', (error: Error) => resolve({ command: `git ${args.join(' ')}`, code: 1, stdout, stderr: `${stderr}\n${error.message}`.trim() }));
-    child.on('close', (code: number | null) => resolve({ command: `git ${args.join(' ')}`, code: code ?? 0, stdout, stderr }));
-  });
+function result(command: string, stdout: string): GitResult {
+  return { command, code: 0, stdout, stderr: '' };
 }
 
-export async function getGitStatus(workspaceId: string, ownerId: string): Promise<GitResult> { return runGit(workspaceId, ownerId, ['status', '--short', '--branch']); }
-export async function getGitDiff(workspaceId: string, ownerId: string, filePath?: string): Promise<GitResult> { return filePath ? runGit(workspaceId, ownerId, ['diff', '--', filePath]) : runGit(workspaceId, ownerId, ['diff']); }
-export async function getGitLog(workspaceId: string, ownerId: string): Promise<GitResult> { return runGit(workspaceId, ownerId, ['log', '--oneline', '-n', '25']); }
+export async function getGitStatus(workspaceId: string, ownerId: string): Promise<GitResult> {
+  const files = await listEditableFiles(workspaceId, ownerId);
+  return result('codeengin-git status', [
+    'CodeEngin git simulation only. No git process was executed against the uploaded workspace.',
+    `Editable files visible: ${files.length}`,
+    ...files.slice(0, 120).map((file) => `?? ${file}`),
+    files.length > 120 ? `… ${files.length - 120} more files omitted` : '',
+  ].filter(Boolean).join('\n'));
+}
+
+export async function getGitDiff(workspaceId: string, ownerId: string, filePath?: string): Promise<GitResult> {
+  await listEditableFiles(workspaceId, ownerId, filePath ? filePath.replace(/\/[^/]*$/, '') : '');
+  return result('codeengin-git diff', 'CodeEngin git diff is simulation-only. No git process or external diff driver was executed against the uploaded workspace.');
+}
+
+export async function getGitLog(workspaceId: string, ownerId: string): Promise<GitResult> {
+  await listEditableFiles(workspaceId, ownerId);
+  return result('codeengin-git log', 'CodeEngin git log is simulation-only for uploaded workspaces. No .git history is trusted or executed on the server.');
+}

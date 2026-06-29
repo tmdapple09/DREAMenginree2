@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { makeEnginApp } from '@/components/engines/shared';
 import { EnginRuntime } from '@/engine/engin-runtime/EnginRuntime';
 import {
   RenderEnginRuleSet,
@@ -14,7 +13,7 @@ import {
 } from '@/engins/renderengin';
 import '@/engins/renderengin/runtimeRegistration';
 
-function RenderDiagnosticsSurface({ onBack }: { onBack: () => void }): React.JSX.Element {
+export function RenderDiagnosticsSurface({ onBack }: { onBack: () => void }): React.JSX.Element {
   const runtime = useMemo(() => new EnginRuntime<RenderIntent>(RenderEnginRuleSet, {
     runtimeId: 'render:shared-service',
     persistenceKey: 'render-domain-state',
@@ -111,13 +110,9 @@ function RenderDiagnosticsSurface({ onBack }: { onBack: () => void }): React.JSX
   );
 }
 
-export default makeEnginApp({
-  id: 'render',
-  name: 'RenderEngin',
-  emoji: '🧊',
-  accentColor: '#38bdf8',
-  backHref: '/engines',
-  backLabel: 'Engines',
-  nav: [],
-  EnginComponent: RenderDiagnosticsSurface,
-});
+export default function RenderServiceDiagnostics({ onBack }: { onBack?: () => void }): React.JSX.Element {
+  const fallbackBack = useCallback(() => {
+    if (typeof window !== 'undefined') window.history.back();
+  }, []);
+  return <RenderDiagnosticsSurface onBack={onBack ?? fallbackBack} />;
+}

@@ -6,8 +6,8 @@ export default function RenderSurface({ onBack }: { onBack?: () => void }) {
   return (
     <main className="min-h-full" style={{ minHeight: '100vh', position: 'relative' }}>
       <RenderEnginInlineSurface
-        title="Render workspace"
-        subtitle="OBJ / GLB import · touch orbit · snapshots"
+        title="RenderEngin visual runtime"
+        subtitle="WebGPU · GLB/OBJ · ContentEngin/GameEngin/LabEngin handoffs · touch orbit · snapshots"
         onBack={onBack}
       />
     </main>
