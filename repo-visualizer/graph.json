@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T10:53:54.664Z",
+  "generatedAt": "2026-06-29T10:54:58.796Z",
   "root": ".",
   "nodes": [
     {
@@ -3566,16 +3566,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMenginree2-completedream 12.zip",
-      "label": "DREAMenginree2-completedream 12.zip",
-      "type": "file",
-      "path": "DREAMenginree2-completedream 12.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,

@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2255
+- **Total files:** 2254
 - **Total function/class nodes:** 4657
 - **Total edges:** 8470
-- **Orphan nodes:** 4049
+- **Orphan nodes:** 4048
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4176,7 +4176,6 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `DREAMenginree2-completedream 12.zip` | file |
 | `dreamr/activity/boogieActivityPolicy.ts` | ts |
 | `dreamr/bot-detection/detector.ts` | ts |
 | `dreamr/bot-detection/view-tally.ts` | ts |
