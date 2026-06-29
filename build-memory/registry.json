@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-26T00:14:12.974Z",
+  "generatedAt": "2026-06-29T02:21:25.895Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 302,
+    "surface": 304,
     "route-surface": 276,
     "dreamsurface": 15,
     "engin": 274,
@@ -4794,6 +4794,25 @@
       ]
     },
     {
+      "id": "components/offline/dream.OfflineRuntimeBootstrap",
+      "slot": "surface",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default",
+        "OfflineRuntimeState"
+      ]
+    },
+    {
+      "id": "components/offline/dream.OfflineStatusPill",
+      "slot": "surface",
+      "path": "components/offline/dream.OfflineStatusPill.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
       "id": "components/onboarding/dream.OnboardingTip",
       "slot": "surface",
       "path": "components/onboarding/dream.OnboardingTip.tsx",
@@ -6715,6 +6734,9 @@
         "ContentAssetCategory",
         "ContentAssetObject",
         "CONTENTENGIN_VERSION",
+        "ContentEnginPerformancePlanSnapshot",
+        "ContentEnginRuntimeProfileSnapshot",
+        "ContentEnginUpgradeIdSnapshot",
         "ContentRecipe",
         "DomainObject",
         "ExportProfile",
@@ -9518,6 +9540,7 @@
         "createMeshBuffers",
         "createRenderAsset",
         "DualQuaternion",
+        "EPS",
         "evaluateJointWorldMatrices",
         "evaluateSkinMatrices",
         "fresnelSchlick",
@@ -9531,6 +9554,7 @@
         "mat4Identity",
         "mat4LookAt",
         "mat4Mul",
+        "mat4MulPrecise",
         "mat4Perspective",
         "mat4Scale",
         "mat4Transform",
@@ -9873,15 +9897,22 @@
       "path": "engins/renderengin/webgpu.ts",
       "engine": "Universal",
       "exports": [
+        "BATCH_SHADER",
         "packAosVertexBuffer",
         "PackedVertexBuffer",
         "RenderEnginFrameStats",
         "RenderEnginGpuMesh",
         "RenderEnginGpuTexture",
         "RenderEnginLifecycleHooks",
+        "RenderEnginMeshArenaRange",
         "RenderEnginScene",
         "RenderEnginSceneObject",
+        "RenderEnginTextureAtlasAllocation",
+        "RenderGpuCullBounds",
         "RenderGpuMaterial",
+        "RenderGpuPickRequest",
+        "RenderGpuPickResult",
+        "RenderGpuVisibilityState",
         "SHADER",
         "toGpuMat4",
         "WebGpuRenderEngin"

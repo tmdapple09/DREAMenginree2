@@ -23,7 +23,7 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 302,
+  "surface": 304,
   "route-surface": 276,
   "dreamsurface": 15,
   "engin": 274,
@@ -391,7 +391,7 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 302,
+    "surface": 304,
     "route-surface": 276,
     "dreamsurface": 15,
     "engin": 274,
@@ -3465,6 +3465,18 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "components/offline/dream.OfflineRuntimeBootstrap",
+      "slot": "surface",
+      "path": "components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/offline/dream.OfflineStatusPill",
+      "slot": "surface",
+      "path": "components/offline/dream.OfflineStatusPill.tsx",
+      "engine": "Universal"
+    },
+    {
       "id": "components/onboarding/dream.OnboardingTip",
       "slot": "surface",
       "path": "components/onboarding/dream.OnboardingTip.tsx",
@@ -6491,7 +6503,7 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 302 |
+| surface | 304 |
 | route-surface | 276 |
 | dreamsurface | 15 |
 | engin | 274 |
