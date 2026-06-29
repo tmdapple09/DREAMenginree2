@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T10:55:52.278Z",
+  "generatedAt": "2026-06-29T11:09:18.744Z",
   "root": ".",
   "nodes": [
     {
@@ -3236,16 +3236,6 @@
       "label": "readme-autosync.yml",
       "type": "config",
       "path": ".github/workflows/readme-autosync.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/rebasetorepo.yml",
-      "label": "rebasetorepo.yml",
-      "type": "config",
-      "path": ".github/workflows/rebasetorepo.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
