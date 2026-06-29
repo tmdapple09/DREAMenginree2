@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2270
+- **Total files:** 2263
 - **Total function/class nodes:** 4657
 - **Total edges:** 8470
-- **Orphan nodes:** 4064
+- **Orphan nodes:** 4057
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4369,14 +4369,9 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `misc/images/arm2_transparent.png` | file |
 | `misc/images/coat_transparent.png` | file |
 | `misc/images/head_transparent.png` | file |
-| `misc/images/iconslist.png` | file |
-| `misc/images/logo_DREAM_transparent.png` | file |
-| `misc/images/logo_ENGIN_transparent.png` | file |
 | `misc/images/logo_transparent.png` | file |
 | `misc/images/shoe1_transparent.png` | file |
 | `misc/images/shoe2_transparent.png` | file |
-| `misc/images/sprite_2x_transparent.png` | file |
-| `misc/images/sprite_transparent.png` | file |
 | `next-env.d.ts` | ts |
 | `optimizer/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `optimizer/README.md` | doc |
@@ -4416,8 +4411,6 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `public/next.svg` | file |
 | `public/shoe1_transparent.png` | file |
 | `public/shoe2_transparent.png` | file |
-| `public/sprite_2x_transparent.png` | file |
-| `public/sprite_transparent.png` | file |
 | `public/vercel.svg` | file |
 | `public/window.svg` | file |
 | `public/workers/asset-optimizer.worker.js` | js |

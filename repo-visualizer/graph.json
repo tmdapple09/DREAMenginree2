@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T03:50:12.639Z",
+  "generatedAt": "2026-06-29T04:17:52.520Z",
   "root": ".",
   "nodes": [
     {
@@ -64040,36 +64040,6 @@
       "tags": []
     },
     {
-      "id": "file:misc/images/iconslist.png",
-      "label": "iconslist.png",
-      "type": "file",
-      "path": "misc/images/iconslist.png",
-      "parent": "folder:misc/images",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:misc/images/logo_DREAM_transparent.png",
-      "label": "logo_DREAM_transparent.png",
-      "type": "file",
-      "path": "misc/images/logo_DREAM_transparent.png",
-      "parent": "folder:misc/images",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:misc/images/logo_ENGIN_transparent.png",
-      "label": "logo_ENGIN_transparent.png",
-      "type": "file",
-      "path": "misc/images/logo_ENGIN_transparent.png",
-      "parent": "folder:misc/images",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
       "id": "file:misc/images/logo_transparent.png",
       "label": "logo_transparent.png",
       "type": "file",
@@ -64094,26 +64064,6 @@
       "label": "shoe2_transparent.png",
       "type": "file",
       "path": "misc/images/shoe2_transparent.png",
-      "parent": "folder:misc/images",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:misc/images/sprite_2x_transparent.png",
-      "label": "sprite_2x_transparent.png",
-      "type": "file",
-      "path": "misc/images/sprite_2x_transparent.png",
-      "parent": "folder:misc/images",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:misc/images/sprite_transparent.png",
-      "label": "sprite_transparent.png",
-      "type": "file",
-      "path": "misc/images/sprite_transparent.png",
       "parent": "folder:misc/images",
       "loc": null,
       "isOrphan": true,
@@ -64924,26 +64874,6 @@
       "label": "shoe2_transparent.png",
       "type": "file",
       "path": "public/shoe2_transparent.png",
-      "parent": "folder:public",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:public/sprite_2x_transparent.png",
-      "label": "sprite_2x_transparent.png",
-      "type": "file",
-      "path": "public/sprite_2x_transparent.png",
-      "parent": "folder:public",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:public/sprite_transparent.png",
-      "label": "sprite_transparent.png",
-      "type": "file",
-      "path": "public/sprite_transparent.png",
       "parent": "folder:public",
       "loc": null,
       "isOrphan": true,
