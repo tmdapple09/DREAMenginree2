@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T11:40:30.121Z",
+  "generatedAt": "2026-06-29T12:45:25.614Z",
   "root": ".",
   "nodes": [
     {
@@ -27658,16 +27658,6 @@
       "label": "dreamengin-organized-repository-code-fixed-pass5-render-shared-runtime.zip",
       "type": "file",
       "path": "dreamengin-organized-repository-code-fixed-pass5-render-shared-runtime.zip",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
-      "label": "dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
-      "type": "file",
-      "path": "dreamengin-organized-repository-code-fixed-pass6-typecheck.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
