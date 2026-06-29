@@ -8,10 +8,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2263
+- **Total files:** 2254
 - **Total function/class nodes:** 4657
 - **Total edges:** 8470
-- **Orphan nodes:** 4057
+- **Orphan nodes:** 4048
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4384,15 +4384,6 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `public/coat_transparent.png` | file |
 | `public/dr-eams-pbr.html` | file |
 | `public/dreamengin-sw.js` | js |
-| `public/DREAMenginree2-completedream/public/favicon.ico` | file |
-| `public/DREAMenginree2-completedream/public/file.svg` | file |
-| `public/DREAMenginree2-completedream/public/globe.svg` | file |
-| `public/DREAMenginree2-completedream/public/images/logo1.PNG` | file |
-| `public/DREAMenginree2-completedream/public/images/logo2.PNG` | file |
-| `public/DREAMenginree2-completedream/public/images/logo3.PNG` | file |
-| `public/DREAMenginree2-completedream/public/next.svg` | file |
-| `public/DREAMenginree2-completedream/public/vercel.svg` | file |
-| `public/DREAMenginree2-completedream/public/window.svg` | file |
 | `public/favicon.ico` | file |
 | `public/feeds/embed-feed.json` | config |
 | `public/file.svg` | file |
