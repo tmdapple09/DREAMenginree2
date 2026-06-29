@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T18:48:01.192Z",
+  "generatedAt": "2026-06-29T18:49:56.821Z",
   "root": ".",
   "nodes": [
     {
@@ -3236,6 +3236,16 @@
       "label": "readme-autosync.yml",
       "type": "config",
       "path": ".github/workflows/readme-autosync.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/rebase-zip-replace-existing-repo-files-skip-workflows-proper.yml",
+      "label": "rebase-zip-replace-existing-repo-files-skip-workflows-proper.yml",
+      "type": "config",
+      "path": ".github/workflows/rebase-zip-replace-existing-repo-files-skip-workflows-proper.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
