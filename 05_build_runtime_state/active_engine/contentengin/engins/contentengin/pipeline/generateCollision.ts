@@ -1,0 +1,2 @@
+import { CollisionBlock, PartNode } from '../assetTypes'; import { flattenParts } from '../builders/primitiveBuilder';
+export function generateCollision(parts:PartNode[], strategy:CollisionBlock['strategy']='compound'):CollisionBlock{ return {strategy, shapes:flattenParts(parts).filter(p=>p.category!=='root').map(p=>({kind:p.primitive.kind==='terrain-grid'?'heightfield':p.primitive.kind==='sphere'?'sphere':p.primitive.kind==='capsule'?'capsule':'box', transform:p.transform, dimensions:p.dimensions}))}; }

@@ -1,0 +1,99 @@
+'use client';
+
+import DrEamsPanel from '@/components/dreamengin/dream.panel.DrEamsPanel';
+import DualBottomMenu, { type SystemMenuAction } from '@/components/menus/dream.menu.DualBottomMenu';
+import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { runHomeAction } from '@/coresurfaces/home/buttons/contextual-home';
+import { isPublicSurfacePath } from '@/engine/routing/surfaces';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback } from 'react';
+
+/**
+ * GlobalDreamBar — global overlay menus only.
+ *
+ * DreamDMBar is the permanent exchange capability mounted with the dual runtime.
+ * Its divider seam is one interaction mode, not the whole capability.
+ *
+ * This component handles only the true global overlays that need to appear
+ * above any surface: DualBottomMenu and DrEamsPanel.
+ *
+ * Hidden on public/pre-login routes so unauthenticated users never see
+ * system menus.
+ */
+
+export default function GlobalDreamBar( ){
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const {
+    bothMenusOpen,
+    closeBothMenus,
+    drEamsOpen,
+    openDrEams,
+    closeDrEams,
+    runtimeCallbacks,
+    openInSurface,
+    openInDominant,
+    splitRatio,
+    setFocus,
+  } = useDreamSystem();
+
+  const handleHome = useCallback(() => {
+    closeBothMenus();
+    closeDrEams();
+    // Update world focus to home region — this is the torus "camera back to origin" move.
+    setFocus('home');
+    // Smart Home — the DreamDM Bar IS home. Bar position decides scope:
+    //   bar at bottom  → reset Surface (top runtime) only
+    //   bar at top     → reset DreamSpace (bottom runtime) only
+    //   bar in middle  → reset both runtimes
+    // See lib/home-buttons/contextual-home.ts and docs/ARCHITECTURE.md §1.
+    const fired = runHomeAction(splitRatio, runtimeCallbacks);
+    if (!fired) {
+      // No dual runtime mounted (we're outside /dreamdmbar) — navigate there.
+      router.push('/dreamdmbar');
+    }
+  }, [closeBothMenus, closeDrEams, setFocus, runtimeCallbacks, router, splitRatio]);
+
+  //    fall back to route navigation otherwise so links always work.   ──────
+
+  const handleSystemAction = useCallback((action: SystemMenuAction) => {
+    // NOTE: don't close the menu synchronously here. The PanelItem's onClick
+    // already defers `onClose` to the next animation frame so the click that
+    // dispatched this action can't be swallowed by the unmount. Closing again
+    // here would re-introduce that race on iOS / Android.
+    if (action === 'dr-eams')       { openDrEams(); return; }
+    if (action === 'go-home')       { handleHome(); return; }
+    if (action === 'logout')        { window.location.assign('/api/auth/logout'); return; }
+
+    // When HomeSystem's runtimeCallbacks are registered (user is on /dreamdmbar),
+    // open the feature inline in Surface Space — no routing, no page reload.
+    // When they're not (user is on any other page), fall back to direct navigation.
+    const hasSpaCallbacks = Boolean(runtimeCallbacks?.openInSurface);
+    if (action === 'settings')      { hasSpaCallbacks ? openInSurface('settings')            : router.push('/settings');              return; }
+    if (action === 'account')       { hasSpaCallbacks ? openInSurface('profile')             : router.push('/edit-profiledream');     return; }
+    if (action === 'profiles')      { hasSpaCallbacks ? openInSurface('profile')             : router.push('/edit-profiledream');     return; }
+    if (action === 'feed-settings') { hasSpaCallbacks ? openInSurface('feed-settings')       : router.push('/feed-settings');         return; }
+    if (action === 'connectors')    { hasSpaCallbacks ? openInSurface('connectors')          : router.push('/connectors');            return; }
+    if (action === 'marketplace')   { hasSpaCallbacks ? openInSurface('marketplace')         : router.push('/marketplace');           return; }
+    if (action === 'appearance')    { hasSpaCallbacks ? openInSurface('settings/appearance') : router.push('/settings/appearance');   return; }
+  }, [openDrEams, handleHome, openInSurface, runtimeCallbacks, router]);
+
+  if (isPublicSurfacePath(pathname)) return null;
+
+  return (
+    <>
+      <DualBottomMenu
+        open={bothMenusOpen}
+        onClose={closeBothMenus}
+        onSystemAction={handleSystemAction}
+        onOpenDaydream={(route) => {
+          if (runtimeCallbacks?.openInDominant) openInDominant(route);
+          else router.push(route);
+        }}
+      />
+
+      {drEamsOpen && <DrEamsPanel onClose={closeDrEams} />}
+    </>
+  );
+}

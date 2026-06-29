@@ -1,0 +1,28 @@
+/**
+ * components/engines/index.ts
+ *
+ * Top-level barrel export for all eight DREAMengin engine apps.
+ *
+ * Each engine lives in its own folder with:
+ *   - <Name>EnginApp — full-screen app shell (wraps the existing Engin component)
+ *   - panels/ — standalone panel components for the engine's sub-routes
+ *   - index.ts — barrel exports
+ *
+ * Shared infrastructure lives in shared/:
+ *   - EnginAppShell  — full-screen immersive wrapper
+ *   - EnginNavBar    — horizontal sub-route nav
+ *   - EnginProvider  — React context for engine-wide state
+ */
+
+// Shared
+
+// Engine apps
+
+export * from './shared';
+export * from './brand';
+export * from './code';
+export * from './create';
+export * from './games';
+export * from './lab';
+export * from './music';
+export * from './portfolio';

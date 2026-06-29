@@ -1,0 +1,11 @@
+{
+  "assetType": "car",
+  "seed": 61802,
+  "profile": "ps3",
+  "parameters": {
+    "assetId": "test-canyon-racer",
+    "paintColor": "#ff5a36",
+    "trimColor": "#111827"
+  },
+  "materialParameters": {}
+}

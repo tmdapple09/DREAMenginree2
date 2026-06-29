@@ -1,0 +1,3097 @@
+'use client';
+
+import {
+    Bell,
+    Menu,
+    Bot,
+    Code2,
+    FileText,
+    ImageIcon,
+    Loader2,
+    Maximize2,
+    MessageCircle,
+    Music,
+    Paperclip,
+    PenLine,
+    Search,
+    Send,
+    Sparkles,
+    X,
+} from 'lucide-react';
+import Image from 'next/image';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import DreamWord from '@/components/ui/dream.DreamWord';
+import GlowingLight from '@/dreamdmbar/dream.GlowingLight';
+import {
+    calculatePointerVelocity,
+    computeTypingRhythm,
+    decideBarRelease,
+    DEFAULT_SPLIT_RATIO,
+    DIVIDER_H,
+    DOUBLE_TAP_WINDOW_MS,
+    DRAG_TAP_THRESHOLD_PX,
+    GOLD_LONG_PRESS_MS,
+    ORB_TAP_SLOP as ORB_TAP_SLOP_CONST,
+    QUICK_REACTIONS,
+    resolveGoldTapAction,
+    rhythmToHandleScale,
+    shouldCollapseTopExpandedDrag,
+    snapSplitRatioOnRelease,
+    SPLIT_RATIO_MAX,
+    SPLIT_RATIO_MIN,
+    SURFACE_ACCENT_COLORS,
+    type Particle,
+    type SurfaceAccent
+} from '@/dreamdmbar/runtime/barInteractions';
+import { useDreamSystem, type BarIntentMode } from '@/dreamdmbar/runtime/DreamSystemContext';
+import { useDreamBarContext, type DreamBarContext } from '@/dreamdmbar/hooks/useDreamBarContext';
+import {
+    useDreamDMConversations,
+    type DMConversation,
+} from '@/dreamdmbar/hooks/useDreamDMConversations';
+import { useDreamDMDraft } from '@/dreamdmbar/hooks/useDreamDMDraft';
+import type { DMMessage } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamDMMessages } from '@/dreamdmbar/hooks/useDreamDMMessages';
+import { useDreamSearch, type SearchResult } from '@/dreamdmbar/hooks/useDreamSearch';
+import { useMessagingCore, type MediaType } from '@/dreamdmbar/hooks/useMessagingCore';
+import { useNotifications as useLiveNotifications } from '@/dreamdmbar/notifications/useNotifications';
+import type { UiNotification } from '@/dreamdmbar/notifications/notificationHelpers';
+import { useImmersiveGameLayout } from '@/engins/gameengin/games/useImmersiveGameLayout';
+import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
+import { getPreferredViewportHeight, isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
+import { formatRelativeTime } from '@/utils/index';
+
+/**
+ * DreamDMBar — Pass 3 (Window Model) — CORRECTED GOLD PARTICLE SPEC
+ *
+ * DreamDMBar is a draggable window, not a thin rail.
+ *
+ * GOLD PARTICLE ATTACHMENT RULE (CORRECTED):
+ *   1. The Gold Particle is attached to the TOP of the DreamDM Bar by default
+ *   2. It stays attached while the bar is visible and on screen
+ *   3. It detaches ONLY when dragging the bar upward causes the button's
+ *      normal attached position to go off the top of the screen
+ *   4. When detached, the Gold Particle locks to the SCREEN/viewport (not the bar)
+ *   5. It does NOT move with page scroll when screen-locked
+ *   6. It does NOT detach for typing, keyboard, or compose state
+ *   7. When the bar is dragged back down and the top-of-box position is back
+ *      on screen, the Gold Particle unlocks and reattaches to the TOP of the bar
+ *
+ * Behaviour:
+ *   - Rests at the bottom as a thick bar (BAR_H = 80 px)
+ *   - Gold Particle attached to the top edge of the bar
+ *   - Drag UP → bar expands from bottom; HomeDream content revealed above
+ *   - Past threshold (bar top < 40% from screen top) → snaps to top as panel
+ *   - If button's attached position goes off-screen → button screen-locks at top
+ *   - Swipe DOWN on bar or gold → bar returns to bottom, gold re-attaches
+ *   - All Phase-2 messaging / search / Dr. Eams capability preserved
+ *
+ * Architecture: drag state lives here; messaging logic in lib/dreamdm/ hooks.
+ */
+
+/** Thick bar height when locked at the bottom */
+export const BAR_H = 80;
+/** Panel height when locked at the top (expanded) */
+const TOP_H        = 340;
+/** Compact nav-bar height when locked at the top (collapsed/nav-bar mode) */
+export const NAV_H = 52;
+/** Gold Particle diameter (full / revealed) */
+const GOLD_SZ      = 60;
+const GOLD_MIN_H   = 8;
+/** Snap to bottom when dragged down this many px from top */
+const SNAP_DOWN_PX = 88;
+/** Drag distance to expand compact nav bar into full panel */
+const EXPAND_THRESHOLD = 80;
+/** Spring animation string */
+const SPRING       = '0.46s cubic-bezier(0.34,1.22,0.64,1)';
+/** Minimum pointer movement (px) to switch from tap to drag on minimized orb */
+const ORB_DRAG_SLOP = 6;
+/** Thickness of the divider bar in its resting "seam" state (px) */
+const SEAM_H = 2;
+/** Diameter of the divider bar in particle / MANIPULATE state (px) */
+const PARTICLE_D = 12;
+/** Movement slop (px) before a seam touch is treated as a drag vs a tap */
+const SEAM_DRAG_SLOP = 4;
+
+function AvatarChip({ name, url, size = 28 }: {name: string; url?: string | null; size?: number}) {
+  if (url) {
+    return (
+      <Image
+        src={url}
+        alt={name}
+        width={size}
+        height={size}
+        style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0, width: size, height: size }}
+      />
+    );
+  }
+  return (
+    <div
+      style={{
+        width: size, height: size, borderRadius: '50%',
+        background: 'rgba(42,138,184,0.15)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexShrink: 0, fontSize: size * 0.4, fontWeight: 700, color: 'var(--de-accent)',
+      }}
+    >
+      {(name || 'U')[0].toUpperCase()}
+    </div>
+  );
+}
+
+// ContextIcon — maps DreamBarContext iconHint to a Lucide icon
+function ContextIcon({ ctx, size }: {ctx: DreamBarContext; size: number}) {
+  const props = { size, 'aria-hidden': true as const, style: { color: 'var(--de-blue)' } as React.CSSProperties };
+  switch (ctx.iconHint) {
+    case 'send':           return <Send          {...props} />;
+    case 'pen-line':       return <PenLine       {...props} />;
+    case 'code':           return <Code2         {...props} />;
+    case 'bot':            return <Bot           {...props} />;
+    case 'music':          return <Music         {...props} />;
+    case 'search':         return <Search        {...props} />;
+    case 'message-circle': return <MessageCircle {...props} />;
+    case 'sparkles':
+    default:               return <Sparkles      {...props} />;
+  }
+}
+
+// ParticleFountain — renders animated particles from Gold Particle long-press
+
+interface DreamDMBarProps {
+  /**
+   * Menu button opens both radial menus (Daydreams + System).
+   */
+  onBothMenus: () => void;
+  /** Bridge bar state to the dual-runtime host */
+  onRuntimeModeChange?: (mode: 'home' | 'blend' | 'dreamspace') => void;
+  /** 0..1 blend for dragging second runtime from off-screen */
+  onRuntimeBlendChange?: (value: number) => void;
+  /**
+   * Reports the safe-area insets the runtime regions should reserve so that
+   * content never hides behind the bar.
+   *   top:    pixels to inset from the top of the viewport (bar is at the top)
+   *   bottom: pixels to inset from the bottom of the viewport (bar is at the bottom)
+   */
+  onBarInsets?: (top: number, bottom: number) => void;
+  /**
+   * Split-screen divider mode.
+   *
+   * When provided, the bar operates as a persistent spatial divider between
+   * Surface Space (top) and DreamSpace (bottom).
+   *
+   *   0.0 = DreamSpace fills the entire viewport (Surface collapsed)
+   *   0.5 = 50 / 50 balanced split
+   *   1.0 = Surface Space fills the entire viewport (DreamSpace collapsed)
+   *
+   * Default snap positions: 0.9 (Surface focus), 0.5 (balanced), 0.1 (Dream focus).
+   */
+  splitRatio?: number;
+  /** Called continuously while the user drags the divider. Emits the new 0..1 ratio. */
+  onSplitChange?: (ratio: number) => void;
+  /** Reports whether the DreamDM Bar is hidden so the host can hide DreamSpace with it. */
+  onMinimizedChange?: (isMinimized: boolean) => void;
+  /** Double-tap/hold gesture: swap HomeDream and DreamSpace Dream surfaces. */
+  onSwapRuntimes?: () => void;
+}
+
+// Main component
+export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntimeBlendChange, onBarInsets, splitRatio, onSplitChange, onMinimizedChange, onSwapRuntimes }: DreamDMBarProps) {
+  const isGameImmersive = useImmersiveGameLayout();
+  /** Gold Particle diameter — shrinks when a game overlay is active so it stays out of the way */
+  const goldSz = isGameImmersive ? 36 : GOLD_SZ;
+  const goldR  = goldSz / 2;
+  // ── Screen geometry + keyboard tracking ───────────────────────────────────
+  const [screenH, setScreenH] = useState(900);
+  const [screenW, setScreenW] = useState(1440);
+  /** px the keyboard pushes the visual viewport up from the bottom (0 when hidden) */
+  const [keyboardOffsetPx, setKeyboardOffsetPx] = useState(0);
+  const [safeAreaBottomPx, setSafeAreaBottomPx] = useState(0);
+  useEffect(() => {
+    const readSafeAreaBottom = () => {
+      const probe = document.createElement('div');
+      probe.style.position = 'fixed';
+      probe.style.bottom = 'env(safe-area-inset-bottom, 0px)';
+      probe.style.visibility = 'hidden';
+      probe.style.pointerEvents = 'none';
+      document.body.appendChild(probe);
+      const inset = parseFloat(window.getComputedStyle(probe).bottom || '0');
+      probe.remove();
+      return Number.isFinite(inset) ? inset : 0;
+    };
+    const update = () => {
+      const innerH = window.innerHeight;
+      const vvH    = window.visualViewport?.height ?? innerH;
+      const vvOff  = window.visualViewport?.offsetTop ?? 0;
+      setScreenH(getPreferredViewportHeight(innerH, vvH));
+      setScreenW(window.visualViewport?.width ?? window.innerWidth);
+      setSafeAreaBottomPx(readSafeAreaBottom());
+      // Keyboard offset = layout height minus (visual height + viewport scrolled-up amount)
+      const kbOffset = Math.max(0, innerH - vvH - vvOff);
+      setKeyboardOffsetPx(kbOffset);
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    window.visualViewport?.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('scroll', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+      window.visualViewport?.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('scroll', update);
+    };
+  }, []);
+
+  /** Whether bar is snapped to top (nav-bar or panel mode) */
+  const [isTop,         setIsTop]         = useState(false);
+  /**
+   * Whether the top-locked bar is in full-panel mode.
+   * false = compact nav-bar (NAV_H); true = expanded panel (TOP_H).
+   */
+  const [isTopExpanded, setIsTopExpanded] = useState(false);
+  /** Current bar height while dragging from bottom (px). Rests at BAR_H. */
+  const [dragH,    setDragH]    = useState(BAR_H);
+  /** How far bar has slid down from the top during a top-expanded→bottom drag (px) */
+  const [slideDown, setSlideDown] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Whole-bar touch drag: startY, startTarget, didDrag, tapCount, tapTimer
+  const barTouchRef = useRef<{
+    active: boolean;
+    startY: number;
+    startTarget: EventTarget | null;
+    didDrag: boolean;
+    lastTapAt: number;
+    tapTimer: ReturnType<typeof setTimeout> | null;
+    textareaFocused: boolean;
+    touchStartedInTextarea: boolean;
+  }>({
+    active: false, startY: 0, startTarget: null, didDrag: false,
+    lastTapAt: 0, tapTimer: null, textareaFocused: false, touchStartedInTextarea: false,
+  });
+  const swapGestureRef = useRef<{ lastTapAt: number; timer: ReturnType<typeof setTimeout> | null; queued: boolean }>({
+    lastTapAt: 0,
+    timer: null,
+    queued: false,
+  });
+
+  const [firstTimeLight, setFirstTimeLight] = useState(false);
+  const [lightTooltip, setLightTooltip] = useState<string | null>(null);
+  const lightTooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lightPressRef = useRef<{
+    lastTapAt: number;
+    tapTimer: ReturnType<typeof setTimeout> | null;
+    holdTimer: ReturnType<typeof setTimeout> | null;
+    holdFired: boolean;
+  }>({
+    lastTapAt: 0,
+    tapTimer: null,
+    holdTimer: null,
+    holdFired: false,
+  });
+
+  /**
+   * When minimized, the bar disappears and a gold glowing orb appears.
+   * Tap the orb to restore the bar. Drag it to reposition out of the way.
+   */
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [minOrbPos, setMinOrbPos] = useState<{ x: number; y: number } | null>(null);
+  const minOrbDragRef = useRef<{ active: boolean; startX: number; startY: number; startPosX: number; startPosY: number; moved: boolean } | null>(null);
+
+  useEffect(() => {
+    onMinimizedChange?.(isMinimized);
+  }, [isMinimized, onMinimizedChange]);
+
+  /** Position of the minimized orb (CSS right/bottom offsets from viewport edges) */
+  const [orbPos, setOrbPos] = useState<{ x: number; y: number }>({ x: 20, y: 20 });
+  const orbDragRef = useRef({ active: false, startX: 0, startY: 0, startOrbX: 0, startOrbY: 0, moved: false });
+  const ORB_TAP_SLOP = ORB_TAP_SLOP_CONST;
+
+  /**
+   * The bar is fully transparent when not in use. It becomes opaque when the
+   * user touches it and fades back after 3 seconds of inactivity.
+   */
+  const [barTouched, setBarTouched] = useState(false);
+  const barTouchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /**
+   * Pointer position during an active divider drag that started from seam mode.
+   * Drives the particle (12px circle) position on screen.
+   * null = not in particle mode.
+   */
+  const [particlePos, setParticlePos] = useState<{ x: number; y: number } | null>(null);
+  /**
+   * Ref mirror of isSeamMode (computed in render) so event callbacks can read it
+   * without being stale — avoids adding isSeamMode to every useCallback dep array.
+   */
+  const isSeamModeRef = useRef(false);
+  const [pendingCommandDockOpen, setPendingCommandDockOpen] = useState(false);
+  const revealBar = useCallback(() => {
+    setBarTouched(true);
+    if (barTouchTimerRef.current) clearTimeout(barTouchTimerRef.current);
+    barTouchTimerRef.current = setTimeout(() => { setBarTouched(false); }, 3000);
+  }, []);
+
+  const keystrokeTimesRef = useRef<number[]>([]);
+  const [typingRhythm, setTypingRhythm] = useState(0);
+
+  const recordKeystroke = useCallback(() => {
+    const now = Date.now();
+    keystrokeTimesRef.current.push(now);
+    // Keep only last 20 keystrokes
+    if (keystrokeTimesRef.current.length > 20) {
+      keystrokeTimesRef.current = keystrokeTimesRef.current.slice(-20);
+    }
+    setTypingRhythm(computeTypingRhythm(keystrokeTimesRef.current, now));
+  }, []);
+
+  // Decay rhythm when idle
+  useEffect(() => {
+    if (typingRhythm <= 0) return;
+    const decay = setInterval(() => {
+      const now = Date.now();
+      const newRhythm = computeTypingRhythm(keystrokeTimesRef.current, now);
+      setTypingRhythm(newRhythm);
+      if (newRhythm <= 0) clearInterval(decay);
+    }, 300);
+    return () => clearInterval(decay);
+  }, [typingRhythm]);
+
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  const dragRef = useRef({
+    active: false, startY: 0,
+    startH: BAR_H, startSlide: 0,
+    fromTop: false,
+    fromTopExpanded: false,
+    lastY: 0,
+    lastAt: 0,
+    velocity: 0,
+  });
+
+  const minimizeDreamDMBar = useCallback(() => {
+    setIsMinimized(true);
+    setIsTop(false);
+    setIsTopExpanded(false);
+    setDragH(BAR_H);
+    setSlideDown(0);
+    // NOTE: intentionally do NOT reset splitRatio — runtimes preserve their layout
+  }, []);
+
+  const handleDragStart = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault(); e.stopPropagation();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    revealBar();
+    const now = performance.now();
+    dragRef.current = {
+      active: true, startY: e.clientY,
+      startH: dragH, startSlide: slideDown,
+      fromTop: isTop,
+      fromTopExpanded: isTop && isTopExpanded,
+      lastY: e.clientY,
+      lastAt: now,
+      velocity: 0,
+    };
+    setIsDragging(true);
+  }, [revealBar, dragH, isTop, isTopExpanded, slideDown]);
+
+  const handleDragMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current.active) return;
+    const now = performance.now();
+    dragRef.current.velocity = calculatePointerVelocity(dragRef.current.lastY, e.clientY, dragRef.current.lastAt, now);
+    dragRef.current.lastY = e.clientY;
+    dragRef.current.lastAt = now;
+    const dy = e.clientY - dragRef.current.startY; // positive = dragging DOWN
+
+    if (!dragRef.current.fromTop) {
+      // Expanding from bottom: dragging UP increases bar height
+      const newH = Math.max(BAR_H, Math.min(screenH * 0.85, dragRef.current.startH - dy));
+      setDragH(newH);
+    } else if (!dragRef.current.fromTopExpanded) {
+      // Top-compact → dragging DOWN expands the panel downward (grow height)
+      const newH = Math.max(NAV_H, Math.min(TOP_H, dragRef.current.startH + dy));
+      setDragH(newH);
+    } else {
+      // Top-expanded → dragging DOWN slides the bar away from the top edge
+      const newSlide = Math.max(0, Math.min(screenH * 0.5, dragRef.current.startSlide + dy));
+      setSlideDown(newSlide);
+    }
+  }, [screenH]);
+
+  const handleDragEnd = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current.active) return;
+    const now = performance.now();
+    const releaseVelocity = calculatePointerVelocity(dragRef.current.lastY, e.clientY, dragRef.current.lastAt, now);
+    // If the release lands without a usable fresh sample, keep the last measured move velocity.
+    const velocity = Number.isFinite(releaseVelocity)
+      ? releaseVelocity
+      : dragRef.current.velocity;
+    dragRef.current.active = false;
+    setIsDragging(false);
+
+    if (!dragRef.current.fromTop) {
+      // Bottom-origin release. Three outcomes (see decideBarRelease):
+      //   • snap-top    — already pinned at top, or upward fling past the
+      //                   invisible 2/5 line.
+      //   • snap-bottom — downward fling near/below the line.
+      //   • park        — slow drag — leave the bar exactly where the user
+      //                   let go. No forced snap to BAR_H. This is the
+      //                   "drag with intention" behaviour the user asked
+      //                   to bring back.
+      const action = decideBarRelease({
+        screenH,
+        dragH,
+        barH: BAR_H,
+        velocityPxPerMs: velocity,
+      });
+      if (action === 'snap-top') {
+        setIsTop(true); setIsTopExpanded(false); setDragH(NAV_H); setSlideDown(0);
+      } else if (action === 'snap-bottom') {
+        setDragH(BAR_H);
+      }
+      // 'park' → intentionally do nothing; current dragH is preserved.
+    } else if (!dragRef.current.fromTopExpanded) {
+      // Top-compact: decide whether to expand to full panel or snap back to compact
+      const dy = e.clientY - dragRef.current.startY;
+      if (dy > EXPAND_THRESHOLD || dragH > NAV_H + EXPAND_THRESHOLD) {
+        setIsTopExpanded(true); setDragH(BAR_H); setSlideDown(0);
+      } else {
+        setDragH(NAV_H); // snap back to compact nav-bar
+      }
+    } else {
+      // Top-expanded: decide whether to collapse to bottom or spring back to panel
+      const dy = e.clientY - dragRef.current.startY;
+      if (shouldCollapseTopExpandedDrag({
+        dy,
+        slideDown,
+        snapDownPx: SNAP_DOWN_PX,
+        velocityPxPerMs: velocity,
+      })) {
+        setIsTop(false); setIsTopExpanded(false); setDragH(BAR_H); setSlideDown(0);
+      } else {
+        setSlideDown(0); // spring back to expanded panel
+      }
+    }
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  }, [dragH, screenH, slideDown]);
+
+  // When onSplitChange is provided, the bar operates as a true spatial divider.
+  // Dragging the handle resizes both regions in real time; releasing snaps to
+  // the closest of the three canonical split points (0.1 / 0.5 / 0.9).
+  //
+  // Structural transformation:
+  //   Resting (seam)  → 2px horizontal line spanning full width
+  //   Dragging (particle) → 12px circle following the pointer, detached from flow
+  const dividerDragRef = useRef({
+    active: false,
+    lastY: 0, lastAt: 0, velocity: 0,
+    startX: 0, startY: 0,
+    /** true once pointer has moved past SEAM_DRAG_SLOP — lets us distinguish tap vs drag */
+    hasMovedPastSlop: false,
+    /** true when the drag originated from seam mode (triggers particle transformation) */
+    startedFromSeam: false,
+  });
+
+  const handleDividerDragStart = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!onSplitChange) return;
+    e.preventDefault(); e.stopPropagation();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const now = performance.now();
+    const startedFromSeam = isSeamModeRef.current;
+    dividerDragRef.current = {
+      active: true,
+      lastY: e.clientY, lastAt: now, velocity: 0,
+      startX: e.clientX, startY: e.clientY,
+      hasMovedPastSlop: false,
+      startedFromSeam,
+    };
+    // In expanded divider mode (bar already revealed), enter dragging state immediately.
+    // In seam mode, defer until the pointer moves past SEAM_DRAG_SLOP so a tap stays a tap.
+    if (!startedFromSeam) {
+      setIsDragging(true);
+    }
+  }, [onSplitChange]);
+
+  const handleDividerDragMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dividerDragRef.current.active || !onSplitChange) return;
+    const now = performance.now();
+    dividerDragRef.current.velocity = calculatePointerVelocity(
+      dividerDragRef.current.lastY, e.clientY, dividerDragRef.current.lastAt, now,
+    );
+    dividerDragRef.current.lastY = e.clientY;
+    dividerDragRef.current.lastAt = now;
+
+    // Resolve drag intent — seam drags check slop before entering particle mode.
+    if (!dividerDragRef.current.hasMovedPastSlop) {
+      if (dividerDragRef.current.startedFromSeam) {
+        const dx = e.clientX - dividerDragRef.current.startX;
+        const dy = e.clientY - dividerDragRef.current.startY;
+        if (Math.hypot(dx, dy) < SEAM_DRAG_SLOP) return; // below slop → ignore movement
+        dividerDragRef.current.hasMovedPastSlop = true;
+        setIsDragging(true); // NOW enter dragging/particle state
+      } else {
+        // Expanded-mode drag: no slop needed, mark immediately
+        dividerDragRef.current.hasMovedPastSlop = true;
+      }
+    }
+
+    // Track pointer for the particle element position (seam-started drags only)
+    if (dividerDragRef.current.startedFromSeam) {
+      setParticlePos({ x: e.clientX, y: e.clientY });
+    }
+
+    // Bar top = clientY - DIVIDER_H/2 so the grab point stays under the pointer.
+    const availH = screenH - DIVIDER_H;
+    const newRatio = availH > 0
+      ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (e.clientY - DIVIDER_H / 2) / availH))
+      : (splitRatio ?? 0.9);
+    onSplitChange(newRatio);
+  }, [onSplitChange, screenH, splitRatio]);
+
+  const handleDividerDragEnd = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dividerDragRef.current.active || !onSplitChange) return;
+
+    // Tap (pointer released before moving past slop) → expand bar into compose view
+    if (dividerDragRef.current.startedFromSeam && !dividerDragRef.current.hasMovedPastSlop) {
+      dividerDragRef.current.active = false;
+      revealBar(); // barTouched = true → isSeamMode = false → bar expands
+      setPendingCommandDockOpen(true); // a seam tap must reveal the full DreamDM command dock, not just the line
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
+      return;
+    }
+
+    const now = performance.now();
+    const vel = calculatePointerVelocity(
+      dividerDragRef.current.lastY, e.clientY, dividerDragRef.current.lastAt, now,
+    );
+    const velocity = Number.isFinite(vel) ? vel : dividerDragRef.current.velocity;
+    dividerDragRef.current.active = false;
+    setIsDragging(false);
+    setParticlePos(null); // exit particle mode
+    const availH = screenH - DIVIDER_H;
+    const rawRatio = availH > 0
+      ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (e.clientY - DIVIDER_H / 2) / availH))
+      : (splitRatio ?? 0.9);
+    onSplitChange(snapSplitRatioOnRelease(rawRatio, velocity));
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  }, [onSplitChange, screenH, splitRatio, revealBar]);
+
+  const { barIntent, setBarIntent, clearBarIntent, openDrEams, openInDominant } = useDreamSystem();
+  const barCtx = useDreamBarContext(barIntent.mode, barIntent.targetLabel);
+  const dividerModeActive = typeof splitRatio === 'number' && typeof onSplitChange === 'function';
+  const [expandTapCount, setExpandTapCount] = useState(0);
+
+  const [mounted,        setMounted]        = useState(false);
+  const [composeFocused, setComposeFocused] = useState(false);
+  // Bloom: true when the input overlay is open in seam / divider mode.
+  // In non-divider (nav-rail) mode this is always false.
+  const [isBloom, setIsBloom] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem('de-light-discovered')) {
+        setFirstTimeLight(true);
+        setLightTooltip('tap menu');
+        localStorage.setItem('de-light-discovered', '1');
+        lightTooltipTimerRef.current = setTimeout(() => {
+          setLightTooltip(null);
+          setFirstTimeLight(false);
+        }, 3000);
+      }
+    } catch { /* ignore */ }
+    return () => {
+      if (lightTooltipTimerRef.current) clearTimeout(lightTooltipTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const ref = lightPressRef.current;
+      if (ref.tapTimer) clearTimeout(ref.tapTimer);
+      if (ref.holdTimer) clearTimeout(ref.holdTimer);
+    };
+  }, []);
+
+  // The entire bar surface is draggable.
+  // Exception: when textarea is focused AND touch started inside the textarea.
+
+  const handleBarTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    // In seam mode the bar uses pointer events for drag/tap — skip touch handling
+    // here to avoid double-firing revealBar on the same gesture.
+    if (isSeamModeRef.current) return;
+    revealBar();
+    const touch = e.touches[0];
+    if (!touch) return;
+    const target = e.target as HTMLElement;
+    // Ignore touches that originated inside an overlay (DualBottomMenu,
+    // DrEams panel, lightbox, etc.). The bar's drag detector
+    // would otherwise swallow taps on overlay buttons.
+    if (target.closest('[data-de-overlay]')) return;
+    const isInTextarea = target.tagName === 'TEXTAREA' || target.closest('textarea') !== null;
+    const ref = barTouchRef.current;
+    const now = Date.now();
+    if (onSwapRuntimes && now - swapGestureRef.current.lastTapAt < 320 && !swapGestureRef.current.queued) {
+      swapGestureRef.current.queued = true;
+      if (swapGestureRef.current.timer) clearTimeout(swapGestureRef.current.timer);
+      swapGestureRef.current.timer = setTimeout(() => {
+        onSwapRuntimes();
+        swapGestureRef.current.timer = null;
+        window.setTimeout(() => {
+          swapGestureRef.current.queued = false;
+        }, 500);
+      }, 420);
+    }
+    swapGestureRef.current.lastTapAt = now;
+    ref.active = true;
+    ref.startY = touch.clientY;
+    ref.startTarget = e.target;
+    ref.didDrag = false;
+    ref.textareaFocused = composeFocused;
+    ref.touchStartedInTextarea = isInTextarea;
+  }, [revealBar, composeFocused, onSwapRuntimes]);
+
+  const handleBarTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const ref = barTouchRef.current;
+    if (!ref.active) return;
+    // Block drag if user started touch inside focused textarea
+    if (ref.textareaFocused && ref.touchStartedInTextarea) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+    const dy = touch.clientY - ref.startY;
+    if (Math.abs(dy) >= DRAG_TAP_THRESHOLD_PX) {
+      ref.didDrag = true;
+    }
+    if (!ref.didDrag) return;
+
+    // Prevent page scroll while dragging bar
+    e.preventDefault();
+
+    if (onSplitChange) {
+      // Seam / divider mode: touch drag moves the seam line
+      const availH = screenH - DIVIDER_H;
+      const newRatio = availH > 0
+        ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (touch.clientY - DIVIDER_H / 2) / availH))
+        : (splitRatio ?? DEFAULT_SPLIT_RATIO);
+      onSplitChange(newRatio);
+      setIsDragging(true);
+      return;
+    }
+
+    // Legacy bottom-bar drag: bar grows upward from the bottom
+    const newDragH = Math.max(BAR_H, Math.min(screenH * 0.85, screenH - touch.clientY + BAR_H / 2));
+    setDragH(newDragH);
+    setIsTop(false);
+    setIsTopExpanded(false);
+    setSlideDown(0);
+    setIsDragging(true);
+  }, [composeFocused, screenH, onSplitChange, splitRatio]);
+
+  const handleBarTouchEnd = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const ref = barTouchRef.current;
+    if (!ref.active) return;
+    ref.active = false;
+    setIsDragging(false);
+
+    if (ref.didDrag) {
+      if (onSplitChange) {
+        // Divider mode: snap to nearest canonical split point on release
+        const touch = e.changedTouches[0];
+        if (touch) {
+          const availH = screenH - DIVIDER_H;
+          const rawRatio = availH > 0
+            ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (touch.clientY - DIVIDER_H / 2) / availH))
+            : (splitRatio ?? DEFAULT_SPLIT_RATIO);
+          onSplitChange(snapSplitRatioOnRelease(rawRatio, 0));
+        }
+      } else {
+        // Legacy mode: snap bar back to rest height
+        setDragH(BAR_H);
+      }
+      return;
+    }
+
+    // It was a tap — the light's touch handlers manage the tap separately
+  }, [onSplitChange, screenH, splitRatio]);
+
+  const openDreamDMInput = useCallback(() => {
+    setIsMinimized(false);
+    revealBar();
+    setIsBloom(true);
+    setBarIntent({ mode: 'message' });
+    setTimeout(() => textareaRef.current?.focus(), 60);
+  }, [revealBar, setBarIntent]);
+
+  const openDreamDMCommandDock = useCallback(() => {
+    setIsMinimized(false);
+    revealBar();
+    setIsBloom(true);
+    clearBarIntent();
+  }, [clearBarIntent, revealBar]);
+
+  useEffect(() => {
+    if (!pendingCommandDockOpen) return;
+    setPendingCommandDockOpen(false);
+    openDreamDMCommandDock();
+  }, [openDreamDMCommandDock, pendingCommandDockOpen]);
+
+  // Double tap opens the DreamDM command dock; tap-and-hold reveals message input.
+
+  const handleLightTap = useCallback(() => {
+    const ref = lightPressRef.current;
+    if (ref.holdFired) {
+      ref.holdFired = false;
+      return;
+    }
+    const now = Date.now();
+    const result = resolveGoldTapAction(ref.lastTapAt, now);
+    ref.lastTapAt = result.nextLastTapAt;
+    if (ref.tapTimer) clearTimeout(ref.tapTimer);
+    if (result.action === 'menu') {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(4);
+      openDreamDMCommandDock();
+      return;
+    }
+    ref.tapTimer = setTimeout(() => {
+      ref.lastTapAt = 0;
+      ref.tapTimer = null;
+    }, DOUBLE_TAP_WINDOW_MS);
+  }, [openDreamDMCommandDock]);
+
+  const handleLightTouchStart = useCallback((_e: React.TouchEvent<HTMLSpanElement>) => {
+    const ref = lightPressRef.current;
+    ref.holdFired = false;
+    if (ref.holdTimer) clearTimeout(ref.holdTimer);
+    ref.holdTimer = setTimeout(() => {
+      ref.holdFired = true;
+      ref.lastTapAt = 0;
+      if (ref.tapTimer) {
+        clearTimeout(ref.tapTimer);
+        ref.tapTimer = null;
+      }
+      openDreamDMInput();
+    }, GOLD_LONG_PRESS_MS);
+  }, [openDreamDMInput]);
+
+  const handleLightTouchMove = useCallback(() => {
+    const ref = lightPressRef.current;
+    if (ref.holdTimer) {
+      clearTimeout(ref.holdTimer);
+      ref.holdTimer = null;
+    }
+  }, []);
+
+  const handleLightTouchEnd = useCallback((e: React.TouchEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    // Suppress the synthetic mouse/click that follows touchend so we don't
+    // double-count the tap on iOS / Android.
+    e.preventDefault();
+    const pressRef = lightPressRef.current;
+    if (pressRef.holdTimer) {
+      clearTimeout(pressRef.holdTimer);
+      pressRef.holdTimer = null;
+    }
+    const ref = barTouchRef.current;
+    if (ref.didDrag) return;
+    handleLightTap();
+  }, [handleLightTap]);
+
+  const handleLightClick = useCallback((e: React.MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    // touchend already handled the tap on touch devices (it called preventDefault),
+    // so this only fires for real mouse clicks.
+    handleLightTap();
+  }, [handleLightTap]);
+  const [userId,         setUserId]         = useState('');
+  const [selectedConv,   setSelectedConv]   = useState<DMConversation | null>(null);
+  const [recipientQuery,  setRecipientQuery]  = useState('');
+  const [selectedRecipient, setSelectedRecipient] = useState<SearchResult | null>(null);
+  const [quickDraft,     setQuickDraft]     = useState('');
+  const [commentSending, setCommentSending] = useState(false);
+  const [quickDraftFiles, setQuickDraftFiles] = useState<File[]>([]);
+  const [quickDraftPreviews, setQuickDraftPreviews] = useState<string[]>([]);
+  const [lightboxUrl,    setLightboxUrl]    = useState<string | null>(null);
+  const quickFileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // Canvas ref for the animated seam line + gold particle in divider mode
+  const seamCanvasRef = useRef<HTMLCanvasElement>(null);
+  // Measured height of a single empty line — captured on first resize
+  const singleLineHRef = useRef(0);
+  // Extra height the compose bubble adds above the fixed bar (divider mode only)
+  const [composeExtraH, setComposeExtraH] = useState(0);
+
+  const closeToParticleLine = useCallback(() => {
+    setIsBloom(false);
+    setExpandTapCount(0);
+    clearBarIntent();
+    setQuickDraft('');
+    setQuickDraftFiles([]);
+    quickDraftPreviews.forEach((url) => URL.revokeObjectURL(url));
+    setQuickDraftPreviews([]);
+    setBarTouched(false);
+    setComposeFocused(false);
+  }, [clearBarIntent, quickDraftPreviews]);
+
+  const handleLightKeyDown = useCallback((e: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openDreamDMCommandDock();
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (onSplitChange && typeof splitRatio === 'number') {
+        onSplitChange(Math.max(SPLIT_RATIO_MIN, splitRatio - 0.05));
+        return;
+      }
+      revealBar();
+      setDragH((current) => Math.min(screenH * 0.85, current + 48));
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (onSplitChange && typeof splitRatio === 'number') {
+        onSplitChange(Math.min(SPLIT_RATIO_MAX, splitRatio + 0.05));
+        return;
+      }
+      setDragH(BAR_H);
+      setIsTop(false);
+      setIsTopExpanded(false);
+      setSlideDown(0);
+      return;
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      if (dividerModeActive) {
+        closeToParticleLine();
+      } else {
+        minimizeDreamDMBar();
+      }
+    }
+  }, [closeToParticleLine, dividerModeActive, minimizeDreamDMBar, onSplitChange, openDreamDMCommandDock, revealBar, screenH, splitRatio]);
+
+  const handleExpandButtonClick = useCallback(() => {
+    if (expandTapCount === 0) {
+      setExpandTapCount(1);
+      if (dividerModeActive) {
+        openDreamDMInput();
+      } else {
+        revealBar();
+        setDragH((h) => Math.max(h, 280));
+        setIsTop(false);
+        setIsTopExpanded(false);
+        setSlideDown(0);
+      }
+      return;
+    }
+    openDrEams();
+    setExpandTapCount(0);
+  }, [dividerModeActive, expandTapCount, openDrEams, openDreamDMInput, revealBar]);
+
+  const { conversations, reload: reloadConvs } = useDreamDMConversations(userId);
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useLiveNotifications();
+  const markAllRead = useCallback(() => {
+    void markAllAsRead();
+  }, [markAllAsRead]);
+
+  const { messages, isLoading: msgsLoading, addOptimistic, replaceOptimistic, removeOptimistic } =
+    useDreamDMMessages(selectedConv?.id ?? null, false, []);
+
+  const { draft, saveDraft, clearDraft, draftRestored } =
+    useDreamDMDraft(selectedConv?.id ?? null);
+
+  const [messageBody,    setMessageBody]    = useState('');
+  const [selectedFile,   setSelectedFile]   = useState<File | null>(null);
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const msgsEndRef   = useRef<HTMLDivElement>(null);
+
+  const { isSending, sendError, validateFile, getFileType, sendMessage, clearSendError } =
+    useMessagingCore(addOptimistic, replaceOptimistic, removeOptimistic);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch,  setShowSearch]  = useState(false);
+  const { results: searchResults, isSearching, drEamsMode, toggleDrEams, clearResults } =
+    useDreamSearch(searchQuery);
+  const { results: recipientResults, isSearching: isSearchingRecipients, clearResults: clearRecipientResults } =
+    useDreamSearch(recipientQuery);
+
+  // Restore draft on conversation change
+  useEffect(() => {
+    setMessageBody(draft?.body ?? '');
+
+  }, [selectedConv?.id]);
+
+  // Scroll to bottom
+  useEffect(() => {
+    msgsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Uses Canvas 2D API (same pattern as NeuralSeamCanvas). The canvas is
+  // pointer-events: none; the GlowingLight renders on top as the touch target.
+  // Use props directly (splitRatio / onSplitChange) to avoid referencing the
+  // derived `isDividerMode` const that is declared later in the render body.
+  const _inDividerMode = typeof splitRatio === 'number' && typeof onSplitChange === 'function';
+  useEffect(() => {
+    if (!_inDividerMode) return;
+    const canvas = seamCanvasRef.current;
+    if (!canvas) return;
+
+    let rafId: number;
+    let startT = 0;
+
+    const draw = (t: number) => {
+      if (!startT) startT = t;
+      const elapsed = t - startT;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const cx = W / 2;
+      const cy = H / 2;
+
+      // Slow breathe pulse for the particle (0 → 1 period ~3 s)
+      const breathe = 0.5 + 0.5 * Math.sin((elapsed / 3000) * Math.PI * 2);
+      // Subtle shimmer travelling along the line
+      const shimmerX = (elapsed / 2000 % 1) * W;
+
+      const lineGrad = ctx.createLinearGradient(0, cy, W, cy);
+      lineGrad.addColorStop(0,    'rgba(200,152,26,0)');
+      lineGrad.addColorStop(0.15, `rgba(200,152,26,${0.35 + breathe * 0.15})`);
+      lineGrad.addColorStop(0.5,  `rgba(220,172,46,${0.55 + breathe * 0.20})`);
+      lineGrad.addColorStop(0.85, `rgba(200,152,26,${0.35 + breathe * 0.15})`);
+      lineGrad.addColorStop(1,    'rgba(200,152,26,0)');
+
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(W, cy);
+      ctx.strokeStyle = lineGrad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      const shimGrad = ctx.createRadialGradient(shimmerX, cy, 0, shimmerX, cy, 18);
+      shimGrad.addColorStop(0, 'rgba(255,230,120,0.55)');
+      shimGrad.addColorStop(1, 'rgba(255,230,120,0)');
+      ctx.beginPath();
+      ctx.arc(shimmerX, cy, 18, 0, Math.PI * 2);
+      ctx.fillStyle = shimGrad;
+      ctx.fill();
+
+      const outerR = 22 + breathe * 6;
+      const outerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, outerR);
+      outerGrad.addColorStop(0,   `rgba(220,172,46,${0.28 + breathe * 0.12})`);
+      outerGrad.addColorStop(0.5, `rgba(200,152,26,${0.14 + breathe * 0.08})`);
+      outerGrad.addColorStop(1,   'rgba(200,152,26,0)');
+      ctx.beginPath();
+      ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+      ctx.fillStyle = outerGrad;
+      ctx.fill();
+
+      const coreR = 7 + breathe * 2;
+      const coreGrad = ctx.createRadialGradient(cx - 2, cy - 2, 0, cx, cy, coreR);
+      coreGrad.addColorStop(0,   'rgba(255,240,160,0.95)');
+      coreGrad.addColorStop(0.4, `rgba(220,172,46,${0.80 + breathe * 0.15})`);
+      coreGrad.addColorStop(1,   `rgba(180,130,20,${0.50 + breathe * 0.20})`);
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+      ctx.fillStyle = coreGrad;
+      ctx.fill();
+
+      const flareOp = 0.18 + breathe * 0.12;
+      const flareGrad = ctx.createRadialGradient(cx + 10, cy + 6, 0, cx + 10, cy + 6, 14);
+      flareGrad.addColorStop(0, `rgba(125,211,252,${flareOp})`);
+      flareGrad.addColorStop(1, 'rgba(125,211,252,0)');
+      ctx.beginPath();
+      ctx.arc(cx + 10, cy + 6, 14, 0, Math.PI * 2);
+      ctx.fillStyle = flareGrad;
+      ctx.fill();
+
+      rafId = requestAnimationFrame(draw);
+    };
+
+    rafId = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(rafId);
+
+  }, [_inDividerMode]);
+
+  // Any component in the app can dispatch:
+  //   window.dispatchEvent(new CustomEvent('de:input-intent', {
+  //     detail: { mode: 'comment'|'message'|'search', targetPostId?, targetLabel? }
+  //   }))
+  // to open the bar bloom with that context pre-selected.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const det = (e as CustomEvent<{ mode?: BarIntentMode; targetPostId?: string; targetLabel?: string }>).detail ?? {};
+      if (det.mode && det.mode !== 'default') {
+        setBarIntent({ mode: det.mode, targetPostId: det.targetPostId, targetLabel: det.targetLabel });
+      }
+      setIsBloom(true);
+      setTimeout(() => textareaRef.current?.focus(), 60);
+    };
+    const isContextualTextInput = (target: EventTarget | null): target is HTMLInputElement | HTMLTextAreaElement => {
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return false;
+      if (target.closest('[data-dreamdm-compose]')) return false;
+      if (target instanceof HTMLTextAreaElement) return true;
+      return !target.type || ['text', 'search', 'email', 'url', 'tel'].includes(target.type);
+    };
+    const mirrorContextualInput = (event: Event) => {
+      if (!isContextualTextInput(event.target)) return;
+      const target = event.target;
+      const declaredIntent = target.dataset.dreamdmIntent as BarIntentMode | undefined;
+      const inferredComment = target.placeholder.toLowerCase().includes('comment');
+      const mode: BarIntentMode | undefined = declaredIntent
+        ?? (target.type === 'search' ? 'search' : undefined)
+        ?? (inferredComment ? 'comment' : undefined);
+      const targetLabel = target.dataset.dreamdmTargetLabel
+        || target.getAttribute('aria-label')
+        || target.placeholder
+        || 'Context typing';
+
+      if (mode && mode !== 'default') {
+        setBarIntent({
+          mode,
+          targetPostId: target.dataset.dreamdmTargetPostId,
+          targetLabel,
+        });
+        if (mode === 'search') setSearchQuery(target.value);
+      } else {
+        // Plain page text inputs should inherit the current surface action
+        // (feed → Post, discover → Search, etc.) instead of being forced into
+        // DM mode with no recipient. That forced-message state made Send a no-op.
+        clearBarIntent();
+      }
+
+      setQuickDraft(target.value);
+      setIsBloom(true);
+    };
+    window.addEventListener('de:input-intent', handler);
+    document.addEventListener('focusin', mirrorContextualInput);
+    document.addEventListener('input', mirrorContextualInput);
+    return () => {
+      window.removeEventListener('de:input-intent', handler);
+      document.removeEventListener('focusin', mirrorContextualInput);
+      document.removeEventListener('input', mirrorContextualInput);
+    };
+  }, [setBarIntent, clearBarIntent]);
+
+  // Resolve userId
+  useEffect(() => {
+    setMounted(true);
+    import('@/supabase/client/client')
+      .then(({ createClient }) =>
+        createClient().auth.getUser().then(({ data }: { data: { user: { id: string } | null } }) => {
+          if (data.user) { setUserId(data.user.id); reloadConvs(); }
+        })
+      )
+      .catch(() => {
+        // Supabase may be unconfigured or temporarily unavailable. The bar must
+        // still render and not surface this as an unhandledRejection — that
+        // would propagate to error.tsx and replace the entire UI with an error
+        // screen (themed by --de-theme-*, which appears as a solid orange page
+        // for users on the sunset/sunrise theme).
+      });
+  }, []);
+
+  const handleQuickFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const newFiles = files.slice(0, 5 - quickDraftFiles.length);
+
+    if (newFiles.length === 0) return;
+
+    // Create previews
+    const newPreviews: string[] = [];
+    newFiles.forEach((file) => {
+      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+        newPreviews.push(URL.createObjectURL(file));
+      }
+    });
+
+    setQuickDraftFiles((prev) => [...prev, ...newFiles]);
+    setQuickDraftPreviews((prev) => [...prev, ...newPreviews]);
+
+    // Auto-expand the bar when files are attached so user can see the thumbnail
+    if (typeof splitRatio !== 'number' || typeof onSplitChange !== 'function') {
+      const expandH = Math.min(screenH * 0.55, Math.max(BAR_H, 280));
+      setDragH(expandH);
+      setIsTop(false);
+      setIsTopExpanded(false);
+      setSlideDown(0);
+    }
+
+    // Reset input
+    if (quickFileInputRef.current) quickFileInputRef.current.value = '';
+  }, [quickDraftFiles.length, splitRatio, onSplitChange, screenH]);
+
+  const handleRemoveQuickFile = useCallback((index: number) => {
+    setQuickDraftFiles((prev) => prev.filter((_, i: number) => i !== index));
+    setQuickDraftPreviews((prev) => {
+      const updated = prev.filter((_, i: number) => i !== index);
+      // Revoke the URL to free memory
+      if (prev[index]) URL.revokeObjectURL(prev[index]);
+      return updated;
+    });
+  }, []);
+
+  // Auto-resize textarea — bubble expansion
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    // Reset height to get accurate scrollHeight
+    textarea.style.height = 'auto';
+    // Allow up to 240px (~8 lines) — much more room than the old 120px cap
+    const newHeight = Math.min(textarea.scrollHeight, 240);
+    textarea.style.height = `${newHeight}px`;
+
+    // Capture the single-line height the first time (when textarea is empty or one line)
+    if (singleLineHRef.current === 0 || quickDraft === '') {
+      singleLineHRef.current = newHeight;
+    }
+    const baseline = singleLineHRef.current || newHeight;
+    setComposeExtraH(Math.max(0, newHeight - baseline));
+  }, [quickDraft]);
+
+  const handleQuickSend = useCallback(async () => {
+    const text = quickDraft.trim();
+    if (!text && quickDraftFiles.length === 0) return;
+
+    if (barIntent.mode === 'comment' && barIntent.targetPostId) {
+      setCommentSending(true);
+      try {
+        // Upload any attached media files first
+        const mediaUrls: string[] = [];
+        if (quickDraftFiles.length > 0) {
+          const { createClient } = await import('@/supabase/client/client');
+          const supabase = createClient();
+          for (const file of quickDraftFiles) {
+            const bucket = file.type.startsWith('image/') ? 'images'
+                         : file.type.startsWith('video/') ? 'videos'
+                         : 'files';
+            const ext = file.name.split('.').pop();
+            const filename = `${userId}/comments/${Date.now()}-${crypto.randomUUID()}.${ext}.ledger`;
+            try {
+              const upload = await uploadBlobToLedgerStorage(supabase, {
+                bucket,
+                storagePath: filename,
+                blob: file,
+                fileName: file.name,
+                mimeType: file.type,
+              });
+              mediaUrls.push(upload.mediaUrl);
+            } catch (uploadError: unknown) {
+              console.error('[DreamBar] Comment media upload failed:', uploadError);
+              alert(`Comment media upload failed for ${file.name}. Please try again.`);
+            }
+          }
+        }
+        const res = await fetch('/api/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ post_id: barIntent.targetPostId, content: text, media_urls: mediaUrls }),
+        });
+        if (res.ok) {
+          setQuickDraft('');
+          quickDraftPreviews.forEach((url) => URL.revokeObjectURL(url));
+          setQuickDraftFiles([]);
+          setQuickDraftPreviews([]);
+          clearBarIntent();
+        } else {
+          const { error } = await res.json().catch(() => ({})) as { error?: string };
+          console.error('[DreamBar] Comment failed:', error ?? 'Unknown error');
+        }
+      } catch (err: unknown) {
+        console.error('[DreamBar] Network error posting comment:', err);
+      } finally {
+        setCommentSending(false);
+      }
+      return;
+    }
+
+    if (barIntent.mode === 'search') {
+      const firstDestination = searchResults.find((result) => result.href);
+      if (firstDestination?.href) {
+        openInDominant(firstDestination.href);
+        setQuickDraft('');
+        setSearchQuery('');
+        clearResults();
+        return;
+      }
+      setSearchQuery(text);
+      setShowSearch(true);
+      return;
+    }
+
+    if (barIntent.mode === 'message') {
+      if (selectedConv) {
+        await sendMessage({ conversationId: selectedConv.id, recipientId: selectedConv.otherUser.id, content: text, userId });
+        clearDraft(selectedConv.id);
+      } else if (selectedRecipient?.targetId) {
+        window.location.href = `/messages/new?recipient=${encodeURIComponent(selectedRecipient.targetId)}&compose=${encodeURIComponent(text)}`;
+      } else {
+        setRecipientQuery('');
+        return;
+      }
+      setQuickDraft('');
+      return;
+    }
+
+    if (barIntent.mode === 'dreams') {
+      toggleDrEams();
+      setQuickDraft('');
+      return;
+    }
+
+    // Messages surface: send as DM (existing behaviour)
+    if (barCtx.surface === 'messages') {
+      if (selectedConv) {
+        await sendMessage({ conversationId: selectedConv.id, recipientId: selectedConv.otherUser.id, content: text, userId });
+        clearDraft(selectedConv.id);
+      } else {
+        window.location.href = `/messages?compose=${encodeURIComponent(text)}`;
+      }
+      setQuickDraft('');
+      return;
+    }
+
+    // Feed / home surface: create a post via POST /api/posts
+    if (barCtx.surface === 'feed') {
+      try {
+        // Upload media files if any
+        const mediaUrls: string[] = [];
+        if (quickDraftFiles.length > 0) {
+          const { createClient } = await import('@/supabase/client/client');
+          const supabase = createClient();
+
+          for (const file of quickDraftFiles) {
+            const bucket = file.type.startsWith('image/') ? 'images'
+                         : file.type.startsWith('video/') ? 'videos'
+                         : 'files';
+            const ext = file.name.split('.').pop();
+            const filename = `${userId}/posts/${Date.now()}-${crypto.randomUUID()}.${ext}.ledger`;
+
+            try {
+              const upload = await uploadBlobToLedgerStorage(supabase, {
+                bucket,
+                storagePath: filename,
+                blob: file,
+                fileName: file.name,
+                mimeType: file.type,
+              });
+              mediaUrls.push(upload.mediaUrl);
+            } catch (uploadError: unknown) {
+              console.error('[DreamBar] Feed media upload failed:', uploadError);
+              alert(`Post media upload failed for ${file.name}. Please try again.`);
+            }
+          }
+        }
+
+        const res = await fetch('/api/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: text || '',
+            visibility: 'public',
+            media_urls: mediaUrls
+          }),
+        });
+        if (res.ok) {
+          setQuickDraft('');
+          // Clean up files and previews
+          quickDraftPreviews.forEach((url) => URL.revokeObjectURL(url));
+          setQuickDraftFiles([]);
+          setQuickDraftPreviews([]);
+        } else {
+          const { error } = await res.json().catch(() => ({})) as { error?: string };
+          console.error('[DreamBar] Post creation failed:', error ?? 'Unknown error', '— opening full composer');
+          window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
+        }
+      } catch (err: unknown) {
+        console.error('[DreamBar] Network error creating post:', err, '— opening full composer');
+        window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
+      }
+      return;
+    }
+
+    // Code surface: open Code Daydream (v2 canonical route)
+    if (barCtx.surface === 'code') {
+      window.location.href = `/daydream/code`;
+      setQuickDraft('');
+      return;
+    }
+
+    // Dreams / Dr. Eams surface: open Dr. Eams chat panel (v2 — stays in HomeDream)
+    if (barCtx.surface === 'dreams') {
+      toggleDrEams();
+      setQuickDraft('');
+      return;
+    }
+
+    // Music surface: open Music Daydream (v2 canonical route)
+    if (barCtx.surface === 'music') {
+      window.location.href = `/daydream/music`;
+      setQuickDraft('');
+      return;
+    }
+
+    // Create surface: open content composer
+    if (barCtx.surface === 'create') {
+      window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
+      setQuickDraft('');
+      return;
+    }
+
+    // Discover / search surface
+    if (barCtx.surface === 'discover') {
+      window.location.href = `/discover?q=${encodeURIComponent(text)}`;
+      setQuickDraft('');
+      return;
+    }
+
+    // General / fallback: compose a message
+    window.location.href = `/messages?compose=${encodeURIComponent(text)}`;
+    setQuickDraft('');
+  }, [quickDraft, quickDraftFiles, quickDraftPreviews, selectedConv, sendMessage, clearDraft, userId, barCtx.surface, barIntent, clearBarIntent, toggleDrEams, selectedRecipient, searchResults, openInDominant, clearResults]);
+
+  const handlePanelSend = useCallback(async () => {
+    if (!selectedConv) return;
+    const result = await sendMessage({
+      conversationId: selectedConv.id, recipientId: selectedConv.otherUser.id,
+      content: messageBody.trim(), file: selectedFile, userId,
+    });
+    if (result) {
+      clearDraft(selectedConv.id);
+      setMessageBody('');
+      if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl);
+      setSelectedFile(null);
+      setFilePreviewUrl(null);
+    }
+  }, [selectedConv, sendMessage, messageBody, selectedFile, filePreviewUrl, clearDraft, userId]);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const err = validateFile(file);
+    if (err) { alert(err); return; }
+    setSelectedFile(file);
+    setFilePreviewUrl(URL.createObjectURL(file));
+  };
+
+  const removeFile = () => {
+    if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl);
+    setSelectedFile(null); setFilePreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleSearchResultSelect = useCallback((result: SearchResult) => {
+    setSearchQuery(''); clearResults(); setShowSearch(false);
+    if (result.type === 'conversation' && result.targetId) {
+      const conv = conversations.find((c) => c.id === result.targetId);
+      if (conv) { setSelectedConv(conv); markAllRead(); }
+      else window.location.href = result.href ?? '/messages';
+    } else if (result.type === 'person' && result.targetId) {
+      window.location.href = `/messages/new?recipient=${result.targetId}`;
+    } else if (result.href) {
+      openInDominant(result.href);
+    }
+  }, [conversations, clearResults, markAllRead, openInDominant]);
+
+  const handleRecipientSelect = useCallback((result: SearchResult) => {
+    setSelectedRecipient(result);
+    setRecipientQuery(result.label);
+    clearRecipientResults();
+    if (result.type === 'conversation') {
+      const conversation = conversations.find((item) => item.id === result.id);
+      if (conversation) setSelectedConv(conversation);
+    }
+    setTimeout(() => textareaRef.current?.focus(), 40);
+  }, [clearRecipientResults, conversations]);
+
+  useEffect(() => {
+    if (!onRuntimeModeChange) return;
+    if (isTop) {
+      onRuntimeModeChange('dreamspace');
+      return;
+    }
+    if (dragH <= BAR_H + 6) {
+      onRuntimeModeChange('home');
+      return;
+    }
+    onRuntimeModeChange('blend');
+  }, [dragH, isTop, onRuntimeModeChange]);
+
+  useEffect(() => {
+    if (!onRuntimeBlendChange) return;
+    if (isTop && isTopExpanded) {
+      onRuntimeBlendChange(1);
+      return;
+    }
+    if (isTop && !isTopExpanded) {
+      // Compact nav-bar at top: blend proportional to how far the user is dragging it open
+      const maxExpand = TOP_H - NAV_H;
+      const expand = Math.max(0, dragH - NAV_H);
+      const blend = maxExpand > 0 ? Math.max(0, Math.min(1, expand / maxExpand)) : 0;
+      onRuntimeBlendChange(blend);
+      return;
+    }
+    const maxDrag = (screenH * 0.85) - BAR_H;
+    const raw = maxDrag > 0 ? (dragH - BAR_H) / maxDrag : 0;
+    const blend = Math.max(0, Math.min(1, raw));
+    onRuntimeBlendChange(blend);
+  }, [dragH, isTop, isTopExpanded, onRuntimeBlendChange, screenH]);
+
+  // top:    runtime content must not start until this many px from the screen top
+  // bottom: runtime content must not extend past this many px from the screen bottom
+  useEffect(() => {
+    if (!onBarInsets) return;
+    if (isTop) {
+      // Bar is at the top; bottom of bar = slideDown (offset) + barH
+      const barH = isTopExpanded ? TOP_H : dragH;
+      const barTop = isTopExpanded ? slideDown : 0;
+      onBarInsets(barTop + barH, 0);
+    } else {
+      // Bar is at the bottom; include the iOS safe-area so the resting bar
+      // clears the home-indicator region instead of overlapping it.
+      onBarInsets(0, dragH + safeAreaBottomPx);
+    }
+  }, [isTop, isTopExpanded, dragH, safeAreaBottomPx, slideDown, onBarInsets]);
+
+  if (!mounted) return null;
+
+  const isDividerMode = dividerModeActive;
+  const dividerBarTop: number = isDividerMode
+    ? Math.round((splitRatio as number) * (screenH - DIVIDER_H))
+    : 0;
+
+  // Bar geometry (legacy window mode)
+  // - Bottom mode:       grows upward from the screen bottom (dragH)
+  // - Top-compact mode:  thin nav bar at top (NAV_H), drag handle below
+  // - Top-expanded mode: full panel at top (TOP_H), can slide away from top
+  //
+  // In divider mode, the bar grows upward into Surface Space as the user types
+  // (composeExtraH > 0), keeping the divider line anchored at its split position.
+  const barH: number    = isDividerMode
+    ? DIVIDER_H + composeExtraH
+    : (isTop ? (isTopExpanded ? TOP_H : dragH) : dragH + safeAreaBottomPx);
+  const barTop: number  = isDividerMode
+    ? Math.max(8, dividerBarTop - composeExtraH)
+    : (isTop ? (isTopExpanded ? slideDown : 0) : (screenH - dragH - safeAreaBottomPx));
+
+  // showFull: whether to render the expanded tab panel instead of the compact bar
+  const showFull: boolean = !isDividerMode && (isTopExpanded || dragH > 180);
+
+  // Gold Particle geometry:
+  // - Divider mode: gold sits centered on the divider bar (vertically centered)
+  // - Bottom mode: gold sits on the BAR's top edge  (center = barTop)
+  // - Top modes:   gold hangs from the BAR's bottom edge (center = barTop + barH)
+  const attachedGoldTop: number = isDividerMode
+    ? (barTop + DIVIDER_H / 2 - goldR)  // centered on the divider
+    : (isTop
+      ? (barTop + barH - goldR)  // bottom edge of the top bar / panel
+      : (barTop - goldR));       // top edge of the bottom bar
+  const isGoldOffScreen: boolean = !isDividerMode && !isTop && (barTop - goldR < 0);
+  const goldTopPx: number = isGoldOffScreen ? 10 : attachedGoldTop;
+
+  // Track if button is in screen-locked mode (for styling/behavior)
+  const isCompactViewport = isCompactRuntimeViewport(screenW);
+
+  // When minimized, the capsule is centered on the same Y axis as the full button
+  // but only GOLD_MIN_H tall and GOLD_MIN_W wide (a subtle gold pill indicator).
+  // The "top" for the capsule should align its center with goldTopPx + goldR.
+  const goldCenterY = goldTopPx + goldR;
+
+  // Bar is "resting" when: at bottom (not top), not dragging, not composeFocused,
+  // at default height (BAR_H), not in divider mode, and no active intent,
+  // and the user has not recently touched it.
+  const isResting = !isDividerMode && !isTop && !isDragging && !composeFocused
+    && dragH <= BAR_H && barIntent.mode === 'default' && !barTouched;
+
+  // When the user is composing and the keyboard is visible, translate the bar
+  // upward so it floats just above the keyboard instead of being hidden behind it.
+  const keyboardTranslateY = !isDividerMode && composeFocused && keyboardOffsetPx > 0
+    ? -keyboardOffsetPx
+    : 0;
+
+  const surfaceAccent = SURFACE_ACCENT_COLORS[(barCtx.surface as SurfaceAccent)] ?? SURFACE_ACCENT_COLORS.general;
+  const handleScale = rhythmToHandleScale(typingRhythm);
+
+  //
+  // The DreamDMBar IS the divider line — not a separate object on top of it.
+  // The element transforms its DOM geometry based on two states:
+  //
+  //   SEAM (NAV)        → 2px horizontal line spanning full viewport width.
+  //                        Tapping it expands to the compose view; dragging
+  //                        immediately enters PARTICLE mode.
+  //
+  //   PARTICLE (MANIPULATE) → 12px circle at the pointer, detached from flow.
+  //                            The bar collapses to a single node that can
+  //                            slide freely to reposition the split point.
+  //
+  // isSeamMode:   bar is at rest as a thin line
+  // isParticleMode: bar has been grabbed and is a 12px node following the pointer
+  //
+  const isSeamMode = isDividerMode && !isDragging && !barTouched
+    && !composeFocused && composeExtraH === 0;
+  const isParticleMode = isDividerMode && isDragging && particlePos !== null;
+  const bloomBottomPx = Math.max(
+    8,
+    Math.min(Math.max(8, screenH - 116), screenH - barTop + keyboardOffsetPx + 6),
+  );
+  const overlayBottomPx = Math.max(
+    8,
+    Math.min(Math.max(8, screenH - 96), screenH - barTop + keyboardOffsetPx + 8),
+  );
+  // Keep isSeamModeRef in sync so event callbacks can read it without staleness.
+  isSeamModeRef.current = isSeamMode;
+
+  if (isMinimized) {
+    const posStyle: React.CSSProperties = minOrbPos !== null
+      ? { left: minOrbPos.x, top: minOrbPos.y, right: undefined, bottom: undefined }
+      : { right: 20, bottom: 20 + keyboardOffsetPx + safeAreaBottomPx };
+    return (
+      <div
+        aria-label="DreamDM — tap to expand, drag to reposition"
+        style={{
+          position: 'fixed',
+          ...posStyle,
+          width: 44,
+          height: 44,
+          zIndex: 200,
+          touchAction: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+          const rect = e.currentTarget.getBoundingClientRect();
+          minOrbDragRef.current = { active: true, startX: e.clientX, startY: e.clientY, startPosX: rect.left, startPosY: rect.top, moved: false };
+        }}
+        onPointerMove={(e) => {
+          const drag = minOrbDragRef.current;
+          if (!drag?.active) return;
+          const dx = e.clientX - drag.startX;
+          const dy = e.clientY - drag.startY;
+          if (Math.abs(dx) > ORB_DRAG_SLOP || Math.abs(dy) > ORB_DRAG_SLOP) drag.moved = true;
+          if (drag.moved) {
+            const nx = Math.max(0, Math.min(window.innerWidth - 48, drag.startPosX + dx));
+            const ny = Math.max(0, Math.min(window.innerHeight - 48, drag.startPosY + dy));
+            setMinOrbPos({ x: nx, y: ny });
+          }
+        }}
+        onPointerUp={() => {
+          const drag = minOrbDragRef.current;
+          if (!drag?.active) return;
+          const wasDragged = drag.moved;
+          minOrbDragRef.current = null;
+          if (!wasDragged) {
+            // Restore bar without resetting positions — runtimes stay exactly as they were
+            setIsMinimized(false);
+            revealBar();
+          }
+        }}
+        onPointerCancel={() => { minOrbDragRef.current = null; }}
+      >
+        <GlowingLight
+          isCollapsed
+          firstTime={firstTimeLight}
+          tooltip={lightTooltip}
+          aria-label="DreamDM — tap to expand"
+          onKeyDown={handleLightKeyDown}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {/* ── Seam bloom overlay — divider mode only ───────────────────────────── */}
+      {/* Floats above the seam line when the user taps the gold particle.       */}
+      {/* In divider mode this IS the input surface — the bar body is hidden.    */}
+      {isDividerMode && isBloom && (
+        <div
+          data-de-overlay
+          style={{
+            position: 'fixed',
+            left: 12,
+            right: 12,
+            // Position bottom edge just above the seam (barTop), accounting for keyboard
+            bottom: bloomBottomPx,
+            maxHeight: `calc(100dvh - ${bloomBottomPx + 12}px)`,
+            overflowY: 'auto',
+            zIndex: 101,
+            background: 'rgba(255,255,255,0.97)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            borderRadius: 20,
+            overflow: 'hidden',
+            boxShadow: '0 -8px 40px rgba(0,0,0,0.12), 0 -2px 16px rgba(200,152,26,0.10), inset 0 -1px 0 rgba(200,152,26,0.18)',
+            padding: '10px 12px',
+            animation: 'sicc-bloom-in 0.22s cubic-bezier(0.34,1.22,0.64,1) both',
+          }}
+        >
+          {/* Close button */}
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+            {barIntent.mode !== 'default' && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 4,
+                background: 'rgba(42,138,184,0.12)', borderRadius: 9999,
+                padding: '3px 10px', fontSize: 11, color: 'var(--de-accent)',
+                fontWeight: 700, flexShrink: 0, maxWidth: 200, overflow: 'hidden',
+              }}>
+                <MessageCircle size={11} aria-hidden />
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {barCtx.placeholder}
+                </span>
+              </div>
+            )}
+            <div style={{ flex: 1 }} />
+            <button
+              type="button"
+              aria-label="Close input"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={closeToParticleLine}
+              style={{
+                background: 'rgba(180,185,200,0.18)', border: 'none', borderRadius: '50%',
+                width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', color: 'var(--de-text-dim)',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              <X size={13} aria-hidden />
+            </button>
+          </div>
+
+          {/* Mode picker — the DreamDMBar is a command dock, not just a seam. */}
+          {barIntent.mode === 'default' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8, paddingBottom: 2 }}>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => { setBarIntent({ mode: 'message' }); setTimeout(() => textareaRef.current?.focus(), 40); }}
+                aria-label="Open DreamDM message composer"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(200,152,26,0.10)', border: '1px solid rgba(200,152,26,0.22)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-gold)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
+                }}
+              >
+                <Send size={14} aria-hidden /> <span>Message</span>
+              </button>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => { setBarIntent({ mode: 'search' }); setTimeout(() => textareaRef.current?.focus(), 40); }}
+                aria-label="Open DreamDM search"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(42,138,184,0.10)', border: '1px solid rgba(42,138,184,0.22)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-accent)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
+                }}
+              >
+                <Search size={14} aria-hidden /> <span>Search</span>
+              </button>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => { setBarIntent({ mode: 'dreams' }); openDrEams(); }}
+                aria-label="Open Dr. Eams"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(125,211,252,0.12)', border: '1px solid rgba(42,138,184,0.24)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-blue)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
+                }}
+              >
+                <Bot size={14} aria-hidden /> <span>Dr. Eams</span>
+              </button>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={onBothMenus}
+                aria-label="Open dual menu"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  padding: '10px 8px', borderRadius: 14,
+                  background: 'rgba(180,185,200,0.10)', border: '1px solid rgba(180,185,200,0.22)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--de-text-dim)',
+                  WebkitTapHighlightColor: 'transparent', minWidth: 0,
+                }}
+              >
+                <Menu size={14} aria-hidden /> <span>Dual Menu</span>
+              </button>
+            </div>
+          )}
+
+          {barIntent.mode === 'search' && quickDraft.trim() && (
+            <div style={{ maxHeight: 168, overflowY: 'auto', marginBottom: 8, borderRadius: 14, background: 'rgba(255,255,255,0.96)', border: '1px solid rgba(180,185,200,0.24)' }}>
+              {isSearching && <p style={{ margin: 0, padding: 10, fontSize: 12, color: 'var(--de-text-dim)' }}>Searching…</p>}
+              {searchResults.slice(0, 8).map((result) => (
+                <button key={`${result.type}:${result.id}`} type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => handleSearchResultSelect(result)} style={{ width: '100%', padding: '9px 12px', border: 'none', borderBottom: '1px solid rgba(180,185,200,0.14)', background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'var(--de-text)' }}>
+                  <strong>{result.label}</strong>{result.sublabel ? <span style={{ marginLeft: 6, color: 'var(--de-text-dim)' }}>{result.sublabel}</span> : null}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {barIntent.mode === 'message' && (
+            <div style={{ position: 'relative', paddingBottom: 8 }}>
+              <input
+                value={recipientQuery}
+                onChange={(event) => { setRecipientQuery(event.target.value); setSelectedRecipient(null); setSelectedConv(null); }}
+                onPointerDown={(event) => event.stopPropagation()}
+                placeholder="To: start typing a name"
+                aria-label="Message recipient"
+                style={{ width: '100%', borderRadius: 999, border: '1px solid rgba(200,152,26,0.35)', background: 'rgba(255,255,255,0.72)', padding: '8px 14px', color: 'var(--de-text)', outline: 'none' }}
+              />
+              {recipientQuery.trim() && !selectedRecipient && (
+                <div style={{ marginTop: 6, maxHeight: 144, overflowY: 'auto', borderRadius: 14, background: 'rgba(255,255,255,0.96)', border: '1px solid rgba(180,185,200,0.24)' }}>
+                  {isSearchingRecipients && <p style={{ margin: 0, padding: 10, fontSize: 12, color: 'var(--de-text-dim)' }}>Searching…</p>}
+                  {!isSearchingRecipients && recipientResults.filter((result) => result.type === 'person' || result.type === 'conversation').slice(0, 6).map((result) => (
+                    <button key={`${result.type}:${result.id}`} type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => handleRecipientSelect(result)} style={{ width: '100%', padding: '9px 12px', border: 'none', borderBottom: '1px solid rgba(180,185,200,0.14)', background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'var(--de-text)' }}>
+                      <strong>{result.label}</strong>{result.sublabel ? <span style={{ marginLeft: 6, color: 'var(--de-text-dim)' }}>{result.sublabel}</span> : null}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Compose row — shown when mode is selected */}
+          {barIntent.mode !== 'default' && (
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
+              <textarea
+                ref={textareaRef}
+                data-dreamdm-compose
+                value={quickDraft}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setQuickDraft(val);
+                  if (barIntent.mode === 'search') setSearchQuery(val);
+                  recordKeystroke();
+                }}
+                onFocus={() => setComposeFocused(true)}
+                onBlur={() => {
+                  setComposeFocused(false);
+                  setTimeout(() => {
+                    if (!quickDraft.trim() && quickDraftFiles.length === 0) {
+                      setIsBloom(false);
+                    }
+                  }, 200);
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleQuickSend(); }
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
+                placeholder={barCtx.placeholder}
+                aria-label={barCtx.actionAriaLabel}
+                rows={1}
+                style={{
+                  flex: 1, minWidth: 0, resize: 'none', overflow: 'hidden',
+                  background: composeFocused ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.60)',
+                  border: composeFocused ? '1.5px solid rgba(200,152,26,0.60)' : '1px solid rgba(180,185,200,0.30)',
+                  borderRadius: 14,
+                  padding: '10px 14px',
+                  fontSize: isCompactViewport ? 16 : 14,
+                  color: 'var(--de-text)', outline: 'none', cursor: 'text',
+                  transition: 'background 0.22s ease, border 0.22s ease, box-shadow 0.22s ease',
+                  WebkitAppearance: 'none',
+                  boxShadow: composeFocused ? '0 0 0 3px rgba(200,152,26,0.10)' : 'none',
+                  lineHeight: 1.4, fontFamily: 'inherit',
+                  maxHeight: 180,
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => { void handleQuickSend(); }}
+                onPointerDown={(e) => e.stopPropagation()}
+                disabled={(!quickDraft.trim() && quickDraftFiles.length === 0) || isSending || commentSending}
+                aria-label={barCtx.actionAriaLabel}
+                className="sicc-shimmer"
+                style={{
+                  flexShrink: 0,
+                  background: 'linear-gradient(135deg, var(--de-gold) 0%, #e0b020 38%, var(--de-blue) 100%)',
+                  border: 'none', borderRadius: '50%',
+                  width: isCompactViewport ? 40 : 36,
+                  height: isCompactViewport ? 40 : 36,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: ((!quickDraft.trim() && quickDraftFiles.length === 0) || isSending || commentSending) ? 'not-allowed' : 'pointer',
+                  color: 'white',
+                  opacity: ((!quickDraft.trim() && quickDraftFiles.length === 0) || isSending || commentSending) ? 0.5 : 1,
+                  boxShadow: '0 4px 16px rgba(200,152,26,0.40)',
+                  transition: 'transform 0.15s, opacity 0.18s',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                {(isSending || commentSending)
+                  ? <Loader2 size={16} aria-hidden style={{ animation: 'spin 1s linear infinite' }} />
+                  : <ContextIcon ctx={barCtx} size={16} />}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── DreamDM window ───────────────────────────────────────────────────── */}
+      <div
+        aria-label="DreamDM Bar"
+        className="sicc-bar-edge de-dreamdmbar-material de-runtime-seam"
+        data-bar-state={isParticleMode ? 'particle' : isSeamMode ? 'seam' : 'normal'}
+        // ── Pointer routing ──────────────────────────────────────────────────
+        // seam mode:    whole 2px line is the drag/tap target → divider handlers
+        // particle mode: bar IS the 12px circle, keep divider move/up wired
+        // expanded divider: inner GlowingLight wrapper owns drag → bar just reveals
+        // legacy window: whole-bar drag handled by handleDragStart/Move/End
+        onPointerDown={
+          isSeamMode
+            ? handleDividerDragStart
+            : isDividerMode ? revealBar : handleDragStart
+        }
+        onPointerMove={
+          isSeamMode || isParticleMode
+            ? handleDividerDragMove
+            : isDividerMode ? undefined : handleDragMove
+        }
+        onPointerUp={
+          isSeamMode || isParticleMode
+            ? handleDividerDragEnd
+            : isDividerMode ? undefined : handleDragEnd
+        }
+        onPointerCancel={
+          isSeamMode || isParticleMode
+            ? handleDividerDragEnd
+            : isDividerMode ? undefined : handleDragEnd
+        }
+        onTouchStart={handleBarTouchStart}
+        onTouchMove={handleBarTouchMove}
+        onTouchEnd={handleBarTouchEnd}
+        style={(() => {
+          // ── Structural geometry ─────────────────────────────────────────────
+          // Particle mode: 12px circle at pointer position, detached from layout flow
+          // Seam mode:     2px full-width horizontal line (portrait)
+          // Normal modes:  existing pill/panel geometry
+          let geo: React.CSSProperties;
+          if (isParticleMode && particlePos) {
+            geo = {
+              top: particlePos.y - PARTICLE_D / 2,
+              left: particlePos.x - PARTICLE_D / 2,
+              width: PARTICLE_D,
+              height: PARTICLE_D,
+            };
+          } else if (isSeamMode) {
+            geo = {
+              top: dividerBarTop,
+              left: 0,
+              right: 0,
+              height: SEAM_H,
+            };
+          } else {
+            geo = {
+              top: barTop,
+              ...(isDividerMode
+                ? { left: 12, right: 12 }
+                : isTop
+                  ? { left: 0, right: 0 }
+                  : { left: 12, right: 12 }),
+              height: barH,
+            };
+          }
+
+          return {
+            position: 'fixed',
+            ...geo,
+            zIndex: 100,
+            pointerEvents: 'auto',
+            // particle: visible; seam: visible so GlowingLight overflows the 2px line; normal: clip
+            overflow: (isParticleMode || isSeamMode) ? 'visible' : 'hidden',
+            touchAction: isSeamMode || isParticleMode ? 'none' : 'manipulation',
+            borderRadius: isParticleMode
+              ? '50%'
+              : (isSeamMode ? 0 : (isDividerMode ? 999 : (isTop ? (showFull ? 24 : 0) : (showFull ? 24 : 999)))),
+            transition: isDragging
+              ? 'none'
+              : `top ${SPRING}, left ${SPRING}, width ${SPRING}, height ${SPRING}, border-radius ${SPRING}, opacity 0.5s ease, background 0.5s ease, transform 0.25s ease, box-shadow 0.35s ease`,
+            willChange: isDragging ? 'top, left, width, height' : undefined,
+            transform: keyboardTranslateY !== 0 ? `translateY(${keyboardTranslateY}px)` : undefined,
+            display: 'flex',
+            flexDirection: isDividerMode ? 'column' : (isTop ? 'column-reverse' : 'column'),
+            // ── Background ───────────────────────────────────────────────────
+            background: isParticleMode
+              // Particle: gold radial glow — no hard border, just light
+              ? 'radial-gradient(circle at center, rgba(255,223,64,0.98) 0%, rgba(232,184,48,0.85) 45%, rgba(200,152,26,0.55) 75%, transparent 100%)'
+              : (isSeamMode
+                // Seam: transparent — the ::before pseudo-element provides the glow line
+                ? 'transparent'
+                : (isDividerMode
+                  ? 'rgba(255,255,255,0.92)'
+                  : (isResting ? 'transparent' : 'linear-gradient(180deg, rgba(248,249,253,0.97) 0%, rgba(242,244,249,0.99) 100%)'))),
+            backdropFilter: isParticleMode || isSeamMode
+              ? 'none'
+              : (isDividerMode ? 'blur(48px) saturate(200%)' : (isResting ? 'none' : 'blur(32px) saturate(160%)')),
+            WebkitBackdropFilter: isParticleMode || isSeamMode
+              ? 'none'
+              : (isDividerMode ? 'blur(48px) saturate(200%)' : (isResting ? 'none' : 'blur(32px) saturate(160%)')),
+            opacity: isResting ? 0 : 1,
+            border: isParticleMode || isSeamMode ? 'none' : (isDividerMode ? '1px solid rgba(0,0,0,0.07)' : 'none'),
+            // ── Shadow / glow ─────────────────────────────────────────────────
+            boxShadow: isParticleMode
+              ? `0 0 16px 8px rgba(255,215,64,0.72), 0 0 32px 14px rgba(200,152,26,0.48), 0 0 2px rgba(255,248,180,0.95)`
+              : (isSeamMode
+                ? 'none'
+                : (isResting
+                  ? 'none'
+                  : (isDividerMode
+                    ? `0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.07),
+                       0 0 0 1px rgba(255,255,255,0.55),
+                       inset 0 1px 0 rgba(255,255,255,0.80), inset 0 -1px 0 rgba(0,0,0,0.04),
+                       0 -4px 24px rgba(125,211,252,0.12), 0 4px 24px rgba(200,152,26,0.08)`
+                    : (isTop
+                      ? `0 6px 32px rgba(0,0,0,0.12), 0 1px 0 rgba(200,152,26,0.15),
+                         inset 0 -1px 0 rgba(255,255,255,0.35),
+                         0 -6px 32px rgba(125,211,252,0.18), 0 -1px 0 rgba(125,211,252,0.22)`
+                      : `0 -6px 32px rgba(0,0,0,0.10), 0 -1px 0 rgba(200,152,26,0.15),
+                         inset 0 1px 0 rgba(255,255,255,0.45),
+                         0 -8px 32px rgba(125,211,252,0.18), 0 -1px 0 rgba(125,211,252,0.25)`)))),
+            // Particle breathing animation via inline style (refs CSS @keyframes)
+            animation: isParticleMode
+              ? 'sicc-bar-particle-glow 1.0s ease-in-out infinite'
+              : 'none',
+            cursor: isParticleMode ? 'grabbing' : (isSeamMode ? 'ns-resize' : 'default'),
+          } as React.CSSProperties;
+        })()}
+      >
+        {!isResting && !isSeamMode && !isParticleMode && (
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute', inset: 0, zIndex: 0,
+              background: surfaceAccent,
+              pointerEvents: 'none',
+              borderRadius: 'inherit',
+            }}
+          />
+        )}
+
+        {/* ── Drag handle / Glowing Light ──────────────────────────────────── */}
+        {/* In particle mode the bar IS the 12px circle — hide the handle. */}
+        {/* In seam mode the handle overflows the 2px line so the gold particle */}
+        {/* remains visible and tappable (the only affordance in seam state).   */}
+        <div
+          role="separator" aria-label="Drag to resize DreamDM"
+          style={{
+            height: 28, display: isParticleMode ? 'none' : 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, cursor: 'default',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            position: 'relative',
+          }}
+        >
+          {isDividerMode && (
+          <>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+            width: isDividerMode ? 112 : '100%',
+            maxWidth: isDividerMode ? 112 : 164,
+            height: '100%',
+            pointerEvents: 'auto',
+            cursor: isDragging ? 'grabbing' : 'grab',
+            touchAction: 'none',
+          }}>
+            <div
+              // In non-divider mode the wrapper owns the pointer drag so the
+              // *whole* bar is the drag handle. We leave the light's inner box
+              // free of pointer-drag wiring there to avoid double-firing.
+              // In divider mode (expanded, not seam/particle), inner div handles divider drag.
+              onPointerDown={isDividerMode ? handleDividerDragStart : undefined}
+              onPointerMove={isDividerMode ? handleDividerDragMove : undefined}
+              onPointerUp={isDividerMode ? handleDividerDragEnd : undefined}
+              onPointerCancel={isDividerMode ? handleDividerDragEnd : undefined}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
+            {/* Gold particle — touch target + drag handle, centered on seam */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 2,
+                pointerEvents: 'auto',
+                touchAction: 'none',
+              }}
+              onPointerDown={handleDividerDragStart}
+              onPointerMove={handleDividerDragMove}
+              onPointerUp={handleDividerDragEnd}
+              onPointerCancel={handleDividerDragEnd}
+            >
+              <GlowingLight
+                isDragging={isDragging}
+                tooltip={lightTooltip}
+                onTouchStart={handleLightTouchStart}
+                onTouchMove={handleLightTouchMove}
+                onTouchEnd={handleLightTouchEnd}
+                onClick={handleLightClick}
+                onKeyDown={handleLightKeyDown}
+                aria-label="DreamDM seam — double tap or hold for input, drag to resize"
+              />
+            </div>
+          </div>
+          </>
+        )}
+
+        {/* ── Legacy drag handle / Glowing Light — non-divider mode only ─── */}
+        {!isDividerMode && (
+          <>
+          <div
+            role="separator" aria-label="Drag to resize DreamDM"
+            style={{
+              height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, cursor: 'default',
+              pointerEvents: 'none',
+              userSelect: 'none',
+              position: 'relative',
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 2,
+              // NOTE: Expression kept as-is for home-feed-home.test.ts contract
+              // (the string "width: isDividerMode ? 112 : '100%'" is asserted by
+              // a live test to verify the drag-capture guard remains in the file).
+              width: isDividerMode ? 112 : '100%',
+              maxWidth: isDividerMode ? 112 : 164,
+              height: '100%',
+              pointerEvents: 'auto',
+              cursor: isDragging ? 'grabbing' : 'grab',
+              touchAction: 'none',
+            }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
+                <GlowingLight
+                  isDragging={isDragging}
+                  tooltip={lightTooltip}
+                  onTouchStart={handleLightTouchStart}
+                  onTouchMove={handleLightTouchMove}
+                  onTouchEnd={handleLightTouchEnd}
+                  onClick={handleLightClick}
+                  onKeyDown={handleLightKeyDown}
+                />
+              </div>
+            </div>
+          </div>
+          {/* Typing-rhythm handle: pulses wider as the user types faster */}
+          {typingRhythm > 0 && (
+            <div
+              aria-hidden
+              className="sicc-rhythm-handle"
+              style={{
+                position: 'absolute',
+                bottom: 3,
+                left: 'calc(50% - 12px)',
+                width: 24,
+                height: 3,
+                borderRadius: 99,
+                background: 'var(--de-gold)',
+                pointerEvents: 'none',
+                '--rhythm-scale': handleScale,
+              } as React.CSSProperties}
+            />
+          )}
+          </>
+        )}
+        </div>
+
+        {/* ── Bar body ─────────────────────────────────────────────────────── */}
+        {/* Hidden in seam and particle modes — the bar is purely structural in those states */}
+        <div style={{ flex: 1, minHeight: 0, display: isSeamMode || isParticleMode ? 'none' : 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          {showFull ? (
+            /* Expanded panel — Messages */
+            <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              {/* Minimize header */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '6px 12px 4px', flexShrink: 0,
+                borderBottom: '1px solid rgba(180,185,200,0.15)',
+              }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-heading)', letterSpacing: '-0.01em' }}>
+                  Messages
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <button
+                    type="button"
+                    aria-label="Minimize DreamDM bar"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={() => { setDragH(BAR_H); setIsTop(false); setIsTopExpanded(false); setSlideDown(0); }}
+                    style={{
+                      background: 'rgba(180,185,200,0.15)', border: 'none', borderRadius: 8,
+                      width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: 'var(--de-text-dim)',
+                      transition: 'background 0.18s',
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                      <path d="M3 7h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={expandTapCount === 0 ? 'Expand DreamDM bar' : 'Open Dr. Eams window'}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={handleExpandButtonClick}
+                    style={{
+                      background: expandTapCount === 0 ? 'rgba(200,152,26,0.15)' : 'rgba(42,138,184,0.18)',
+                      border: 'none', borderRadius: 8,
+                      width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: expandTapCount === 0 ? 'var(--de-gold)' : 'var(--de-blue)',
+                      transition: 'background 0.18s',
+                    }}
+                  >
+                    <Maximize2 size={13} aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Close DreamDM Bar"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={isDividerMode ? closeToParticleLine : minimizeDreamDMBar}
+                    style={{
+                      background: 'rgba(180,185,200,0.15)', border: 'none', borderRadius: 8,
+                      width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: 'var(--de-text-dim)',
+                      transition: 'background 0.18s',
+                    }}
+                  >
+                    <X size={13} aria-hidden />
+                  </button>
+                </div>
+              </div>
+              <DreamSpaceMessaging
+                conversations={conversations} selectedConv={selectedConv}
+                onSelectConv={(c) => { setSelectedConv(c); markAllRead(); }}
+                messages={messages} msgsLoading={msgsLoading} msgsEndRef={msgsEndRef}
+                userId={userId} messageBody={messageBody}
+                onMessageBodyChange={(v) => { setMessageBody(v); saveDraft({ subject: '', body: v }); }}
+                draftRestored={draftRestored} selectedFile={selectedFile} filePreviewUrl={filePreviewUrl}
+                fileInputRef={fileInputRef} onFileSelect={handleFileSelect} onRemoveFile={removeFile}
+                getFileType={getFileType} isSending={isSending} sendError={sendError}
+                onClearSendError={clearSendError} onPanelSend={handlePanelSend}
+                searchQuery={searchQuery}
+                onSearchQueryChange={(v) => { setSearchQuery(v); setShowSearch(true); }}
+                showSearch={showSearch} onShowSearch={setShowSearch}
+                searchResults={searchResults} isSearching={isSearching}
+                drEamsMode={drEamsMode} onToggleDrEams={toggleDrEams}
+                onSearchResultSelect={handleSearchResultSelect}
+              />
+            </div>
+          ) : (
+            /* Compact bar — quick compose + mode buttons + notifications */
+            <div style={{
+              flex: 1, display: 'flex', flexDirection: 'column',
+              gap: isCompactViewport ? 3 : 4, paddingTop: 0, paddingRight: isCompactViewport ? 8 : 12, paddingLeft: isCompactViewport ? 10 : 14,
+              paddingBottom: isDividerMode ? 6 : 'env(safe-area-inset-bottom, 0px)',
+              justifyContent: 'flex-end',
+            }}>
+              {/* ── Top accessory row: Bell + Comment indicator + Mode buttons ── */}
+              {/* Slides out of the way when composing multi-line */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: isCompactViewport ? 5 : 4,
+                overflow: 'hidden',
+                maxHeight: composeExtraH > 20 ? 0 : 28,
+                opacity: composeExtraH > 20 ? 0 : 1,
+                transition: 'max-height 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease',
+              }}>
+                {/* Notification bell + unread badge */}
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  <Bell size={16} aria-hidden style={{
+                    color: unreadCount > 0 ? 'var(--de-gold)' : 'var(--de-text-dim)',
+                    transition: 'color 0.18s, filter 0.3s',
+                    filter: unreadCount > 0 ? 'drop-shadow(0 0 4px rgba(200,152,26,0.35))' : 'none',
+                  }} />
+                  {unreadCount > 0 && (
+                    <span
+                      aria-label={`${unreadCount} unread notification${unreadCount === 1 ? '' : 's'}`}
+                      className="sicc-badge-pop"
+                      style={{
+                        position: 'absolute', top: -6, right: -8,
+                        background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                        color: 'white',
+                        borderRadius: 9999, fontSize: 8, fontWeight: 700,
+                        lineHeight: 1, padding: '2px 4px', minWidth: 14, textAlign: 'center',
+                        boxShadow: '0 2px 6px rgba(220,38,38,0.35), 0 0 0 1.5px rgba(255,255,255,0.85)',
+                      }}
+                    >
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                </div>
+
+                <CompactNotificationStrip
+                  notifications={notifications}
+                  unreadCount={unreadCount}
+                  onRead={(id) => { void markAsRead(id); }}
+                  compact={isCompactViewport}
+                />
+
+                {/* Comment mode indicator */}
+                {barIntent.mode === 'comment' && (
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    background: 'rgba(42,138,184,0.12)', borderRadius: 9999,
+                    padding: '3px 8px', fontSize: 10, color: 'var(--de-accent)',
+                    fontWeight: 600, flexShrink: 0, maxWidth: 120, overflow: 'hidden',
+                  }}>
+                    <MessageCircle size={10} aria-hidden />
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {barIntent.targetLabel ? `→ ${barIntent.targetLabel}` : 'Comment'}
+                    </span>
+                    <button
+                      type="button" onClick={clearBarIntent}
+                      onPointerDown={(e) => e.stopPropagation()}
+                      aria-label="Cancel comment"
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', color: 'var(--de-text-dim)' }}
+                    >
+                      <X size={10} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Spacer pushes mode buttons to the right */}
+                <div style={{ flex: 1 }} />
+
+                {/* Expand button: first press grows the bar/input, second opens Dr. Eams */}
+                <button
+                  type="button"
+                  aria-label={expandTapCount === 0 ? 'Expand DreamDM bar' : 'Open Dr. Eams window'}
+                  title={expandTapCount === 0 ? 'Expand' : 'Dr. Eams'}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={handleExpandButtonClick}
+                  style={{
+                    flexShrink: 0,
+                    background: expandTapCount === 0 ? 'rgba(200,152,26,0.14)' : 'rgba(42,138,184,0.18)',
+                    border: expandTapCount === 0 ? '1px solid rgba(200,152,26,0.24)' : '1px solid rgba(42,138,184,0.26)',
+                    borderRadius: '50%',
+                    width: isCompactViewport ? 36 : 32,
+                    height: isCompactViewport ? 36 : 32,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: expandTapCount === 0 ? 'var(--de-gold)' : 'var(--de-blue)',
+                    transition: 'all 0.18s',
+                    WebkitTapHighlightColor: 'transparent',
+                  }}
+                >
+                  <Maximize2 size={13} aria-hidden />
+                </button>
+
+                {/* Mode buttons: Search · Message · Dr. Eams */}
+                <ModeButton
+                  mode="search"
+                  icon={<Search size={13} aria-hidden />}
+                  activeMode={barIntent.mode}
+                  onSelect={(m) => setBarIntent(m === barIntent.mode ? { mode: 'default' } : { mode: m })}
+                  label="Search"
+                  compact={isCompactViewport}
+                />
+                <ModeButton
+                  mode="message"
+                  icon={<Send size={13} aria-hidden />}
+                  activeMode={barIntent.mode}
+                  onSelect={(m) => setBarIntent(m === barIntent.mode ? { mode: 'default' } : { mode: m })}
+                  label="Message"
+                  compact={isCompactViewport}
+                />
+                <ModeButton
+                  mode="dreams"
+                  icon={<Bot size={13} aria-hidden />}
+                  activeMode={barIntent.mode}
+                  onSelect={() => { setBarIntent({ mode: 'dreams' }); openDrEams(); }}
+                  label="Dr. Eams"
+                  compact={isCompactViewport}
+                />
+
+                {/* Close (X) button — divider mode returns to particle + line */}
+                <button
+                  type="button"
+                  aria-label="Close DreamDM Bar"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={isDividerMode ? closeToParticleLine : minimizeDreamDMBar}
+                  style={{
+                    flexShrink: 0,
+                    background: 'rgba(180,185,200,0.15)',
+                    border: '1px solid rgba(180,185,200,0.22)',
+                    borderRadius: '50%',
+                    width: isCompactViewport ? 36 : 32,
+                    height: isCompactViewport ? 36 : 32,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: 'var(--de-text-dim)',
+                    transition: 'all 0.18s',
+                    WebkitTapHighlightColor: 'transparent',
+                  }}
+                >
+                  <X size={13} aria-hidden />
+                </button>
+              </div>
+
+              {/* 😀 Quick React emoji row — appears in comment mode */}
+              {barIntent.mode === 'comment' && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: isCompactViewport ? 6 : 4,
+                  padding: '2px 0',
+                  overflow: 'hidden',
+                  maxHeight: 32,
+                }}>
+                  {QUICK_REACTIONS.map((reaction, idx: number) => (
+                    <button
+                      key={reaction.emoji}
+                      type="button"
+                      aria-label={`React with ${reaction.label}`}
+                      className="sicc-react-pop"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={() => {
+                        // Insert emoji into the quick draft
+                        setQuickDraft((prev) => prev + reaction.emoji);
+                        // Haptic feedback
+                        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(3);
+                      }}
+                      style={{
+                        background: 'rgba(255,255,255,0.65)',
+                        border: '1px solid rgba(180,185,200,0.25)',
+                        borderRadius: 999,
+                        width: isCompactViewport ? 36 : 30,
+                        height: isCompactViewport ? 36 : 30,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', fontSize: isCompactViewport ? 16 : 14,
+                        animationDelay: `${idx * 0.04}s`,
+                        transition: 'transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.18s',
+                        WebkitTapHighlightColor: 'transparent',
+                      }}
+                      onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.25)'; }}
+                      onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }}
+                    >
+                      {reaction.emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Media previews - shown when files are selected */}
+              {quickDraftFiles.length > 0 && (
+                <div style={{
+                  display: 'flex', gap: 6, overflowX: 'auto', padding: '4px 0',
+                  scrollbarWidth: 'thin',
+                }}>
+                  {quickDraftFiles.map((file, idx: number) => (
+                    <div key={idx} style={{
+                      position: 'relative', minWidth: 72, height: 72,
+                      borderRadius: 10, overflow: 'hidden',
+                      background: 'rgba(180,185,200,0.15)',
+                      flexShrink: 0,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                    }}>
+                      {file.type.startsWith('image/') && quickDraftPreviews[idx] && (
+                        <button
+                          type="button"
+                          aria-label="Expand image preview"
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onClick={() => setLightboxUrl(quickDraftPreviews[idx])}
+                          style={{ display: 'block', width: '100%', height: '100%', border: 'none', padding: 0, background: 'none', cursor: 'zoom-in' }}
+                        >
+                          <Image
+                            src={quickDraftPreviews[idx]}
+                            alt="Preview"
+                            width={72}
+                            height={72}
+                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                          />
+                        </button>
+                      )}
+                      {file.type.startsWith('video/') && quickDraftPreviews[idx] && (
+                        <button
+                          type="button"
+                          aria-label="Expand video preview"
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onClick={() => setLightboxUrl(quickDraftPreviews[idx])}
+                          style={{ display: 'block', width: '100%', height: '100%', border: 'none', padding: 0, background: 'none', cursor: 'zoom-in' }}
+                        >
+                          <video
+                            src={quickDraftPreviews[idx]}
+                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                          />
+                        </button>
+                      )}
+                      {!file.type.startsWith('image/') && !file.type.startsWith('video/') && (
+                        <div style={{
+                          width: '100%', height: '100%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: 24,
+                        }}>
+                          📎
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveQuickFile(idx)}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        aria-label="Remove file"
+                        style={{
+                          position: 'absolute', top: 2, right: 2,
+                          background: '#dc4444', color: 'white',
+                          border: 'none', borderRadius: '50%',
+                          width: 18, height: 18,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          cursor: 'pointer', padding: 0,
+                        }}
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* ── Compose row: [Camera] [Bubble textarea] [Send] ───────────── */}
+              {/* Bottom-aligned so buttons anchor to the baseline as the bubble grows */}
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: isCompactViewport ? 6 : 5 }}>
+                {/* Media picker button - hidden file input */}
+                <input
+                  ref={quickFileInputRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  capture="environment"
+                  multiple
+                  onChange={handleQuickFileSelect}
+                  style={{ display: 'none' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => quickFileInputRef.current?.click()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  disabled={quickDraftFiles.length >= 5}
+                  aria-label="Add photos or videos"
+                  style={{
+                    flexShrink: 0,
+                    background: quickDraftFiles.length > 0 ? 'rgba(42,138,184,0.15)' : 'rgba(180,185,200,0.15)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: isCompactViewport ? 36 : 32,
+                    height: isCompactViewport ? 36 : 32,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: quickDraftFiles.length >= 5 ? 'not-allowed' : 'pointer',
+                    color: quickDraftFiles.length > 0 ? 'var(--de-accent)' : 'var(--de-text-dim)',
+                    opacity: quickDraftFiles.length >= 5 ? 0.5 : 1,
+                    transition: 'all 0.18s',
+                  }}
+                >
+                  <ImageIcon size={13} aria-hidden />
+                </button>
+
+                {/* Quick compose — bubble textarea */}
+                <textarea
+                  ref={textareaRef}
+                  data-dreamdm-compose
+                  value={quickDraft}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setQuickDraft(val);
+                    if (barIntent.mode === 'search') setSearchQuery(val);
+                    recordKeystroke();
+                  }}
+                  onFocus={() => setComposeFocused(true)}
+                  onBlur={() => {
+                    setComposeFocused(false);
+                    setTimeout(() => {
+                        // Collapse bloom if user left the field empty
+                      if (onSplitChange && !quickDraft.trim() && quickDraftFiles.length === 0) {
+                        setIsBloom(false);
+                      }
+                    }, 200);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleQuickSend(); }
+                  }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  placeholder={
+                    barCtx.surface === 'messages' && selectedConv && barIntent.mode === 'default'
+                      ? `Message ${selectedConv.otherUser.display_name || selectedConv.otherUser.handle}…`
+                      : barCtx.placeholder
+                  }
+                  aria-label={barCtx.actionAriaLabel}
+                  rows={1}
+                  style={{
+                    flex: 1, minWidth: 0, width: '100%', resize: 'none', overflow: 'hidden',
+                    background: composeFocused
+                      ? 'rgba(255,255,255,0.88)'
+                      : 'rgba(255,255,255,0.52)',
+                    border: composeFocused
+                      ? '1.5px solid rgba(200,152,26,0.60)'
+                      : barIntent.mode !== 'default'
+                        ? '1.5px solid rgba(42,138,184,0.50)'
+                        : '1px solid rgba(180,185,200,0.35)',
+                    // Pill when single-line; relax to speech-bubble radius as it grows
+                    borderRadius: composeExtraH > 20 ? 20 : 999,
+                    padding: isCompactViewport ? '9px 16px' : '8px 16px',
+                    fontSize: isCompactViewport ? 16 : 14,
+                    color: 'var(--de-text)', outline: 'none', cursor: 'text',
+                    transition: 'background 0.22s ease, border 0.22s ease, box-shadow 0.22s ease, border-radius 0.22s ease',
+                    WebkitAppearance: 'none',
+                    boxShadow: composeFocused
+                      ? '0 0 0 3px rgba(200,152,26,0.10), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.50)'
+                      : 'inset 0 1px 0 rgba(255,255,255,0.35)',
+                    lineHeight: 1.4,
+                    fontFamily: 'inherit',
+                    // Truncate placeholder on single line
+                    textOverflow: composeExtraH > 0 ? 'unset' : 'ellipsis',
+                    whiteSpace: composeExtraH > 0 ? 'pre-wrap' : 'nowrap',
+                  }}
+                />
+
+                {/* Send / action button — SICC premium gradient with shimmer */}
+                {(quickDraft.trim() || quickDraftFiles.length > 0) ? (
+                  <button
+                    type="button" onClick={() => { void handleQuickSend(); }}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    disabled={isSending || commentSending} aria-label={barCtx.actionAriaLabel}
+                    className="sicc-shimmer"
+                    style={{
+                      background: 'linear-gradient(135deg, var(--de-gold) 0%, #e0b020 38%, var(--de-blue) 100%)',
+                      border: 'none', borderRadius: '50%',
+                      width: isCompactViewport ? 36 : 32,
+                      height: isCompactViewport ? 36 : 32,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: (isSending || commentSending) ? 'not-allowed' : 'pointer', flexShrink: 0, color: 'white',
+                      opacity: (isSending || commentSending) ? 0.6 : 1,
+                      boxShadow: '0 4px 16px rgba(200,152,26,0.40), 0 1px 4px rgba(0,0,0,0.12)',
+                      transition: 'transform 0.15s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s, box-shadow 0.2s',
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
+                  >
+                    {(isSending || commentSending)
+                      ? <Loader2 size={15} aria-hidden style={{ animation: 'spin 1s linear infinite' }} />
+                      : <ContextIcon ctx={barCtx} size={15} />}
+                  </button>
+                ) : (
+                  /* Placeholder spacer keeps layout stable when send button is hidden */
+                  <div style={{ width: isCompactViewport ? 36 : 32, flexShrink: 0 }} />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Media lightbox overlay ─────────────────────────────────────────── */}
+      {lightboxUrl && (
+        <div
+          role="dialog"
+          aria-label="Media preview"
+          aria-modal="true"
+          style={{
+            position: 'fixed', inset: 0, zIndex: 200,
+            background: 'rgba(0,0,0,0.88)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+          onClick={() => setLightboxUrl(null)}
+        >
+          <button
+            type="button"
+            aria-label="Close preview"
+            onClick={() => setLightboxUrl(null)}
+            style={{
+              position: 'absolute', top: 18, right: 18,
+              background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%',
+              width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'white',
+            }}
+          >
+            <X size={20} />
+          </button>
+          {lightboxUrl.startsWith('blob:') || /\.(jpg|jpeg|png|gif|webp|avif)/i.test(lightboxUrl) || !lightboxUrl.includes('.mp4') ? (
+            <Image
+              src={lightboxUrl}
+              alt="Full size preview"
+              width={1600}
+              height={1200}
+              unoptimized
+              style={{ maxWidth: '92vw', maxHeight: '84vh', objectFit: 'contain', borderRadius: 12, boxShadow: '0 8px 48px rgba(0,0,0,0.6)' }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <video
+              src={lightboxUrl}
+              controls
+              style={{ maxWidth: '92vw', maxHeight: '84vh', borderRadius: 12, boxShadow: '0 8px 48px rgba(0,0,0,0.6)' }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
+// CompactNotificationStrip — live notification previews for the compact bar.
+
+function CompactNotificationStrip({
+  notifications,
+  unreadCount,
+  onRead,
+  compact,
+}: {
+  notifications: UiNotification[];
+  unreadCount: number;
+  onRead: (id: string) => void;
+  compact: boolean;
+}) {
+  const visibleNotifications = notifications.slice(0, compact ? 1 : 2);
+  if (visibleNotifications.length === 0) {
+    return (
+      <div
+        aria-label="No new notifications"
+        style={{
+          flexShrink: 1,
+          minWidth: 0,
+          maxWidth: compact ? 82 : 118,
+          borderRadius: 999,
+          padding: compact ? '3px 7px' : '3px 8px',
+          background: 'rgba(42,138,184,0.08)',
+          border: '1px solid rgba(42,138,184,0.14)',
+          color: 'var(--de-text-dim)',
+          fontSize: compact ? 9 : 10,
+          fontWeight: 700,
+          lineHeight: 1,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+      >
+        All clear
+      </div>
+    );
+  }
+
+  return (
+    <div
+      aria-label={`${unreadCount} unread notification${unreadCount === 1 ? '' : 's'}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        flexShrink: 1,
+        minWidth: 0,
+        maxWidth: compact ? 118 : 220,
+        overflow: 'hidden',
+      }}
+    >
+      {visibleNotifications.map((notification) => {
+        const isUnread = !notification.read;
+        return (
+          <button
+            key={notification.id}
+            type="button"
+            aria-label={`${notification.title}: ${notification.message}`}
+            title={`${notification.title}: ${notification.message}`}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={() => {
+              onRead(notification.id);
+              if (notification.actionUrl) {
+                window.location.href = notification.actionUrl;
+              }
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              minWidth: 0,
+              maxWidth: compact ? 112 : 104,
+              border: isUnread ? '1px solid rgba(200,152,26,0.28)' : '1px solid rgba(180,185,200,0.18)',
+              borderRadius: 999,
+              background: isUnread ? 'rgba(200,152,26,0.12)' : 'rgba(255,255,255,0.42)',
+              color: isUnread ? 'var(--de-heading)' : 'var(--de-text-dim)',
+              padding: compact ? '3px 7px' : '3px 8px',
+              cursor: notification.actionUrl ? 'pointer' : 'default',
+              fontSize: compact ? 9 : 10,
+              fontWeight: 700,
+              lineHeight: 1,
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            <span
+              aria-hidden
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                flexShrink: 0,
+                background: isUnread ? 'var(--de-gold)' : 'rgba(180,185,200,0.55)',
+                boxShadow: isUnread ? '0 0 6px rgba(200,152,26,0.52)' : 'none',
+              }}
+            />
+            <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {notification.message}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ModeButton — compact pill for switching bar intent mode
+
+function ModeButton({
+  mode,
+  icon,
+  activeMode,
+  onSelect,
+  label,
+  compact = false,
+}: {
+  mode: BarIntentMode;
+  icon: React.ReactNode;
+  activeMode: BarIntentMode;
+  onSelect: (mode: BarIntentMode) => void;
+  label: string;
+  compact?: boolean;
+}) {
+  const isActive = activeMode === mode;
+  const sz = compact ? 36 : 32;
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(mode)}
+      onPointerDown={(e) => e.stopPropagation()}
+      aria-pressed={isActive}
+      aria-label={isActive ? `${label} mode active — tap to deactivate` : `Switch to ${label} mode`}
+      title={label}
+      className="sicc-mode-btn"
+      style={{
+        flexShrink: 0,
+        background: isActive
+          ? 'linear-gradient(135deg, var(--de-gold) 0%, #d4a843 100%)'
+          : 'rgba(180,185,200,0.15)',
+        border: isActive
+          ? '1.5px solid rgba(232,184,48,0.55)'
+          : '1px solid rgba(180,185,200,0.22)',
+        borderRadius: '50%',
+        width: sz, height: sz,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: 'pointer',
+        color: isActive ? 'white' : 'var(--de-text-dim)',
+        transition: 'all 0.22s cubic-bezier(0.34,1.56,0.64,1)',
+        transform: isActive ? 'scale(1.12)' : 'scale(1)',
+        boxShadow: isActive
+          ? '0 3px 12px rgba(200,152,26,0.42), 0 0 0 2.5px rgba(200,152,26,0.16)'
+          : '0 1px 3px rgba(0,0,0,0.06)',
+        animation: isActive ? 'sicc-mode-glow 2s ease-in-out infinite' : 'none',
+        WebkitTapHighlightColor: 'transparent',
+      }}
+    >
+      {icon}
+    </button>
+  );
+}
+
+// DreamSpaceMessaging
+
+interface DreamSpaceMessagingProps {
+  conversations:       DMConversation[];
+  selectedConv:        DMConversation | null;
+  onSelectConv:        (c: DMConversation) => void;
+  messages:            DMMessage[];
+  msgsLoading:         boolean;
+  msgsEndRef:          React.RefObject<HTMLDivElement | null>;
+  userId:              string;
+  messageBody:         string;
+  onMessageBodyChange: (v: string) => void;
+  draftRestored:       boolean;
+  selectedFile:        File | null;
+  filePreviewUrl:      string | null;
+  fileInputRef:        React.RefObject<HTMLInputElement | null>;
+  onFileSelect:        (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRemoveFile:        () => void;
+  getFileType:         (f: File) => MediaType;
+  isSending:           boolean;
+  sendError:           string | null;
+  onClearSendError:    () => void;
+  onPanelSend:         () => void;
+  searchQuery:         string;
+  onSearchQueryChange: (v: string) => void;
+  showSearch:          boolean;
+  onShowSearch:        (v: boolean) => void;
+  searchResults:       SearchResult[];
+  isSearching:         boolean;
+  drEamsMode:          boolean;
+  onToggleDrEams:      () => void;
+  onSearchResultSelect:(r: SearchResult) => void;
+}
+
+function DreamSpaceMessaging({
+  conversations, selectedConv, onSelectConv,
+  messages, msgsLoading, msgsEndRef, userId,
+  messageBody, onMessageBodyChange, draftRestored,
+  selectedFile, filePreviewUrl, fileInputRef, onFileSelect, onRemoveFile, getFileType,
+  isSending, sendError, onClearSendError, onPanelSend,
+  searchQuery, onSearchQueryChange, showSearch, onShowSearch,
+  searchResults, isSearching, drEamsMode, onToggleDrEams, onSearchResultSelect,
+}: DreamSpaceMessagingProps) {
+  return (
+    <div style={{ display: 'flex', height: '100%', minHeight: 0 }}>
+
+      {/* ── Compact conversation list ──────────────────────────────────────── */}
+      <div style={{ width: 200, flexShrink: 0, borderRight: '1px solid rgba(180,185,200,0.20)', overflowY: 'auto', overscrollBehavior: 'contain', display: 'flex', flexDirection: 'column' }}>
+
+        {/* Search + Dr. Eams toggle */}
+        <div style={{ padding: '10px 10px 6px', borderBottom: '1px solid rgba(180,185,200,0.15)' }}>
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Search size={12} aria-hidden style={{ color: 'var(--de-text-dim)', position: 'absolute', left: 8, pointerEvents: 'none', zIndex: 1 }} />
+            <input
+              type="text" value={searchQuery}
+              onChange={(e) => onSearchQueryChange(e.target.value)}
+              onFocus={() => onShowSearch(true)}
+              placeholder={drEamsMode ? 'Dr. Eams…' : 'Search…'}
+              aria-label={drEamsMode ? 'Dr. Eams search' : 'Universal search'}
+              style={{
+                flex: 1, paddingLeft: 26, paddingRight: 8, paddingTop: 5, paddingBottom: 5,
+                borderRadius: 9999,
+                border: drEamsMode ? '1.5px solid rgba(200,152,26,0.65)' : '1px solid rgba(180,185,200,0.40)',
+                background: drEamsMode ? 'rgba(255,245,215,0.75)' : 'rgba(255,255,255,0.45)',
+                fontSize: 11, color: 'var(--de-text)', outline: 'none',
+              }}
+            />
+            <button
+              type="button" onClick={onToggleDrEams}
+              aria-pressed={drEamsMode}
+              aria-label={drEamsMode ? 'Dr. Eams mode active — click to switch to standard search' : 'Switch to Dr. Eams mode'}
+              title={drEamsMode ? 'Dr. Eams ON' : 'Dr. Eams OFF'}
+              style={{
+                flexShrink: 0, background: drEamsMode ? 'var(--de-gold)' : 'rgba(180,185,200,0.18)',
+                border: 'none', borderRadius: '50%', width: 24, height: 24,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', color: drEamsMode ? 'white' : 'var(--de-text-dim)',
+                transition: 'background 0.18s, color 0.18s',
+              }}
+            >
+              <Bot size={12} aria-hidden />
+            </button>
+          </div>
+          {drEamsMode && (
+            <p style={{ fontSize: 9, color: 'var(--de-gold)', marginTop: 4, textAlign: 'center' }}>
+              Dr. Eams mode
+            </p>
+          )}
+        </div>
+
+        {/* Search suggestions */}
+        {showSearch && (searchQuery.trim() || isSearching) && (
+          <div role="listbox" aria-label="Search suggestions" style={{ background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid rgba(180,185,200,0.18)', maxHeight: 180, overflowY: 'auto', overscrollBehavior: 'contain' }}>
+            {isSearching && (
+              <div style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Loader2 size={11} aria-hidden style={{ color: 'var(--de-text-dim)' }} />
+                <span style={{ fontSize: 11, color: 'var(--de-text-dim)' }}>Searching…</span>
+              </div>
+            )}
+            {!isSearching && searchResults.length === 0 && searchQuery.trim() && (
+              <p style={{ padding: '8px 12px', fontSize: 11, color: 'var(--de-text-dim)' }}>No results</p>
+            )}
+            {searchResults.map((result) => (
+              <button
+                key={`${result.type}-${result.id}`}
+                role="option" aria-selected={false} type="button"
+                onClick={() => onSearchResultSelect(result)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '7px 12px', background: 'transparent', border: 'none',
+                  cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid rgba(180,185,200,0.10)',
+                }}
+              >
+                <AvatarChip name={result.label} url={result.avatarUrl} size={22} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--de-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>{result.label}</p>
+                  {result.sublabel && (
+                    <p style={{ fontSize: 10, color: 'var(--de-text-dim)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>{result.sublabel}</p>
+                  )}
+                </div>
+                <span style={{ fontSize: 9, color: 'var(--de-text-dim)', opacity: 0.7, flexShrink: 0 }}>{result.type}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Conversation list */}
+        <div style={{ flex: 1, overflowY: 'auto', overscrollBehavior: 'contain' }}>
+          {conversations.map((conv) => (
+            <button
+              key={conv.id} type="button" onClick={() => onSelectConv(conv)}
+              style={{
+                width: '100%', display: 'flex', alignItems: 'center', gap: 8,
+                padding: '9px 10px',
+                background: selectedConv?.id === conv.id ? 'rgba(42,138,184,0.10)' : 'transparent',
+                border: 'none', borderBottom: '1px solid rgba(180,185,200,0.10)',
+                cursor: 'pointer', textAlign: 'left',
+              }}
+            >
+              <AvatarChip name={conv.otherUser.display_name || conv.otherUser.handle || 'U'} url={conv.otherUser.avatar_url} size={28} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--de-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>
+                  {conv.otherUser.display_name || conv.otherUser.handle || 'Unknown'}
+                </p>
+                {conv.lastMessage && (
+                  <p style={{ fontSize: 10, color: 'var(--de-text-dim)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>{conv.lastMessage}</p>
+                )}
+              </div>
+              <span style={{ fontSize: 9, color: 'var(--de-text-dim)', flexShrink: 0 }}>{formatRelativeTime(conv.updatedAt, { compact: true })}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Message panel ──────────────────────────────────────────────────── */}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        {selectedConv ? (
+          <>
+            {/* Header */}
+            <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(180,185,200,0.18)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+              <AvatarChip name={selectedConv.otherUser.display_name || selectedConv.otherUser.handle || 'U'} url={selectedConv.otherUser.avatar_url} size={26} />
+              <div>
+                <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-heading)', margin: 0 }}>{selectedConv.otherUser.display_name || selectedConv.otherUser.handle}</p>
+                {selectedConv.otherUser.handle && <p style={{ fontSize: 10, color: 'var(--de-text-dim)', margin: 0 }}>@{selectedConv.otherUser.handle}</p>}
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div style={{ flex: 1, overflowY: 'auto', overscrollBehavior: 'contain', padding: '12px 12px 0' }}>
+              {msgsLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 60 }}>
+                  <Loader2 size={16} aria-hidden style={{ color: 'var(--de-text-dim)' }} />
+                </div>
+              ) : messages.length === 0 ? (
+                <p style={{ fontSize: 11, color: 'var(--de-text-dim)', textAlign: 'center', marginTop: 20 }}>No messages yet — say hello!</p>
+              ) : (
+                messages.map((msg) => {
+                  const isMe = msg.sender_id === userId;
+                  return (
+                    <div key={msg.id} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start', marginBottom: 8 }}>
+                      <div style={{
+                        maxWidth: '80%', borderRadius: 12, padding: '6px 10px', fontSize: 11,
+                        ...(isMe
+                          ? { background: 'var(--de-heading)', color: 'white', borderBottomRightRadius: 3 }
+                          : { background: 'rgba(42,138,184,0.10)', color: 'var(--de-text)', borderBottomLeftRadius: 3, border: '1px solid rgba(180,185,200,0.25)' }),
+                      }}>
+                        {msg.media_url && msg.media_type === 'image' && (
+                          <Image src={msg.media_url} alt="Shared image" width={160} height={100} style={{ borderRadius: 8, marginBottom: 4 }} />
+                        )}
+                        {msg.content && <p style={{ margin: 0 }}>{msg.content}</p>}
+                        <p style={{ margin: 0, fontSize: 9, opacity: 0.55, marginTop: 2 }}>{formatRelativeTime(msg.created_at, { compact: true })}</p>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+              <div ref={msgsEndRef} />
+            </div>
+
+            {/* Compose */}
+            <form onSubmit={(e) => { e.preventDefault(); onPanelSend(); }} style={{ padding: '8px 10px', borderTop: '1px solid rgba(180,185,200,0.18)', flexShrink: 0 }}>
+              {sendError && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <p style={{ fontSize: 10, color: '#dc4444', flex: 1, margin: 0 }}>{sendError}</p>
+                  <button type="button" onClick={onClearSendError} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#dc4444', padding: 0 }}><X size={12} /></button>
+                </div>
+              )}
+              {draftRestored && (
+                <p style={{ fontSize: 10, color: 'var(--de-text-dim)', marginBottom: 4 }} aria-live="polite">Draft restored</p>
+              )}
+              {selectedFile && filePreviewUrl && (
+                <div style={{ marginBottom: 8, position: 'relative', display: 'inline-block' }}>
+                  <div style={{ background: 'rgba(180,185,200,0.15)', borderRadius: 8, padding: 6 }}>
+                    {getFileType(selectedFile) === 'image' && (
+                      <Image src={filePreviewUrl} alt="Preview" width={80} height={60} style={{ borderRadius: 6 }} />
+                    )}
+                    {(getFileType(selectedFile) === 'audio' || getFileType(selectedFile) === 'file') && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 6px' }}>
+                        {getFileType(selectedFile) === 'audio' ? <Music size={12} style={{ color: 'var(--de-text-dim)' }} /> : <FileText size={12} style={{ color: 'var(--de-text-dim)' }} />}
+                        <span style={{ fontSize: 10, color: 'var(--de-text)', maxWidth: 80, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedFile.name}</span>
+                      </div>
+                    )}
+                  </div>
+                  <button type="button" onClick={onRemoveFile} style={{ position: 'absolute', top: -4, right: -4, background: '#dc4444', border: 'none', borderRadius: '50%', width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', padding: 0 }}>
+                    <X size={9} />
+                  </button>
+                </div>
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <input ref={fileInputRef} type="file" accept="image/*,video/*,audio/*" onChange={onFileSelect} style={{ display: 'none' }} />
+                <button
+                  type="button" onClick={() => fileInputRef.current?.click()} disabled={isSending}
+                  aria-label="Attach file"
+                  style={{ background: 'rgba(180,185,200,0.15)', border: 'none', borderRadius: 8, padding: '5px 7px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: isSending ? 'not-allowed' : 'pointer', color: 'var(--de-text-dim)', flexShrink: 0, opacity: isSending ? 0.5 : 1 }}
+                >
+                  <Paperclip size={12} aria-hidden />
+                </button>
+                <input
+                  type="text" value={messageBody} onChange={(e) => onMessageBodyChange(e.target.value)}
+                  placeholder="Type a message…" aria-label="Message body"
+                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onPanelSend(); } }}
+                  style={{ flex: 1, padding: '5px 10px', borderRadius: 9999, border: '1px solid rgba(180,185,200,0.32)', background: 'rgba(255,255,255,0.55)', fontSize: 11, color: 'var(--de-text)', outline: 'none' }}
+                />
+                <button
+                  type="submit" aria-label="Send message"
+                  disabled={(!messageBody.trim() && !selectedFile) || isSending}
+                  className="sicc-shimmer"
+                  style={{ background: 'linear-gradient(135deg, var(--de-gold) 0%, #e0b020 40%, var(--de-blue) 100%)', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: (!messageBody.trim() && !selectedFile) || isSending ? 'not-allowed' : 'pointer', color: 'white', flexShrink: 0, opacity: (!messageBody.trim() && !selectedFile) || isSending ? 0.5 : 1, boxShadow: '0 3px 10px rgba(200,152,26,0.30)', transition: 'transform 0.15s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s' }}
+                >
+                  {isSending ? <Loader2 size={13} aria-hidden /> : <Send size={13} aria-hidden />}
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <div style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
+            <MessageCircle size={28} style={{ color: 'var(--de-text-dim)', opacity: 0.3 }} aria-hidden />
+            <p style={{ fontSize: 11, color: 'var(--de-text-dim)', margin: 0 }}>Select a conversation</p>
+            <a href="/messages" style={{ fontSize: 11, color: 'var(--de-gold)', textDecoration: 'none' }}>Open <DreamWord />DM →</a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

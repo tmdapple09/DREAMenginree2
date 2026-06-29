@@ -1,0 +1,17 @@
+/**
+ * components/universal-editor/index.ts — §39 Universal Editor
+ *
+ * Re-exports all universal editor components and hooks.
+ */
+
+export {
+    useTapHoldMove, type Position, type TapHoldMoveBindings, type TapHoldMoveOptions
+} from './useTapHoldMove';
+export {
+    UniversalEditorWrapper,
+    type UniversalEditorWrapperProps
+} from './dream.UniversalEditorWrapper';
+export {
+    UniversalEditor,
+    type UniversalEditorProps
+} from './dream.UniversalEditor';

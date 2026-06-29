@@ -1,0 +1,28 @@
+/*
+ * app/globals-enhanced.css — LEGACY / NOT IMPORTED
+ *
+ * This file is NOT imported by app/layout.tsx and must NOT be imported.
+ * The canonical design-system CSS lives in:
+ *   styles/globals.css  ← imported by app/layout.tsx
+ *
+ * This file previously defined enhanced design tokens using Tailwind v3 syntax
+ * (@tailwind base/components/utilities) which conflicts with the Tailwind v4
+ * syntax used in styles/globals.css (@import "tailwindcss").
+ *
+ * All tokens, layers, and utilities below have been neutralised.
+ * Do NOT add active CSS rules here. Use styles/globals.css instead.
+ *
+ * Architecture: docs/ARCHITECTURE.md §8 (Design system direction)
+ * Law:          docs/LAW.md §Product law
+ */
+
+/* ── NEUTRALISED — original content preserved for reference only ────────────
+   (Tailwind v3 directives that conflict with the v4 setup in styles/globals.css)
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+(see git history for the full original content)
+── end of neutralised content ────────────────────────────────────────────── */
+
