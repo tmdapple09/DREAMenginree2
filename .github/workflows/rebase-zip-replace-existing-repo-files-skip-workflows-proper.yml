@@ -1,0 +1,259 @@
+name: Rebase ZIP Into Existing Repo Paths
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - name: Unzip -> rebase paths -> replace repo files -> commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME}"
+          echo "Working branch: $BRANCH"
+
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
+
+          mapfile -t zips < <(
+            find . -type f -name '*.zip' \
+              -not -path './.git/*' \
+              -not -path './node_modules/*' \
+              -not -path './.next/*' \
+              -not -path './dist/*' \
+              -not -path './build/*' \
+              | sort
+          )
+
+          if [ "${#zips[@]}" -eq 0 ]; then
+            echo "No zip files found, nothing to do."
+            exit 0
+          fi
+
+          ZIP="${zips[$((${#zips[@]} - 1))]}"
+          echo "Processing: $ZIP"
+
+          TMP="$(mktemp -d)"
+          unzip -q "$ZIP" -d "$TMP"
+
+          ROOT="$TMP"
+          top_dirs=()
+          for d in "$TMP"/*/; do
+            [ -d "$d" ] || continue
+            [ "$(basename "$d")" = "__MACOSX" ] && continue
+            top_dirs+=( "$d" )
+          done
+
+          if [ "${#top_dirs[@]}" -eq 1 ]; then
+            ROOT="${top_dirs[0]}"
+          fi
+
+          ROOT="$ROOT" python <<'PY'
+          from __future__ import annotations
+
+          import os
+          import shutil
+          from pathlib import Path
+
+          REPO = Path.cwd().resolve()
+          ROOT = Path(os.environ["ROOT"]).resolve()
+
+          CATEGORY_NAMES = {
+              "01_define_user_flow",
+              "02_build_data_model",
+              "03_build_backend",
+              "04_build_api_layer",
+              "05_build_runtime_state",
+              "06_build_application_behavior",
+              "07_build_pages_screens",
+              "08_build_ui_components",
+              "09_wire_interactions",
+              "10_verify_build_deploy",
+              "11_security",
+              "12_performance",
+              "13_accessibility",
+              "14_observability",
+              "15_dev_tooling",
+              "16_product_operations",
+              "17_compliance_policy",
+              "18_content_assets",
+              "19_release_management",
+              "20_documentation",
+          }
+
+          GENERATED_FILE_NAMES = {
+              ".DS_Store",
+              "Thumbs.db",
+              "__DO_NOT_RETURN_BEHAVIOR_LOCATIONS.md",
+              "organized_file_tree.txt",
+              "organized_manifest.json",
+              "organized_manifest.csv",
+              "cross_linked_files.md",
+              "category_counts.md",
+              "rebase_report.md",
+              "rebase_manifest.csv",
+              "rebase_manifest.json",
+          }
+
+          BLOCKED_PARTS = {
+              "__MACOSX",
+              ".git",
+              "node_modules",
+              ".next",
+              "dist",
+              "build",
+              ".turbo",
+              ".cache",
+              "_rebase_organized_zip_work",
+              "_organized_repo_artifact",
+          }
+
+          def safe_destination(parts: tuple[str, ...]) -> Path | None:
+              if not parts:
+                  return None
+              if any(part in {"", ".", ".."} for part in parts):
+                  return None
+              if any(part in BLOCKED_PARTS for part in parts):
+                  return None
+              if len(parts) >= 2 and parts[0] == ".github" and parts[1] == "workflows":
+                  return None
+
+              destination = REPO.joinpath(*parts).resolve()
+              try:
+                  destination.relative_to(REPO)
+              except ValueError:
+                  return None
+              return destination
+
+          def replace_repo_file(src: Path, dst: Path) -> str:
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              if dst.exists() and dst.is_dir():
+                  raise SystemExit(f"Refusing to replace directory with file: {dst.relative_to(REPO)}")
+
+              existed = dst.exists()
+              temp_dst = dst.with_name(f".{dst.name}.rebase-tmp")
+              if temp_dst.exists():
+                  temp_dst.unlink()
+
+              shutil.move(str(src), str(temp_dst))
+              os.replace(temp_dst, dst)
+
+              return "replaced" if existed else "created"
+
+          def iter_files(root: Path):
+              for path in sorted(root.rglob("*")):
+                  if not path.is_file():
+                      continue
+                  rel_parts = path.relative_to(root).parts
+                  if path.name in GENERATED_FILE_NAMES:
+                      continue
+                  if any(part in BLOCKED_PARTS for part in rel_parts):
+                      continue
+                  yield path
+
+          has_organized_wrapper = any((ROOT / name).is_dir() for name in CATEGORY_NAMES)
+
+          created = 0
+          replaced = 0
+          skipped = 0
+          unmapped = 0
+
+          if has_organized_wrapper:
+              print("Mode: organized wrapper ZIP; stripping category/subfolder/DREAMengin-area wrapper.")
+
+              for category in sorted(CATEGORY_NAMES):
+                  category_root = ROOT / category
+                  if not category_root.is_dir():
+                      continue
+
+                  for src in iter_files(category_root):
+                      rel = src.relative_to(category_root)
+                      parts = rel.parts
+
+                      if len(parts) < 3:
+                          unmapped += 1
+                          print(f"unmapped: {category}/{rel} :: missing subfolder/DREAMengin-area/original path")
+                          continue
+
+                      original_parts = parts[2:]
+                      destination = safe_destination(original_parts)
+
+                      if destination is None:
+                          unmapped += 1
+                          print(f"unmapped: {category}/{rel} :: unsafe original repo path")
+                          continue
+
+                      action = replace_repo_file(src, destination)
+                      if action == "created":
+                          created += 1
+                      else:
+                          replaced += 1
+
+              for category in sorted(CATEGORY_NAMES):
+                  repo_wrapper = REPO / category
+                  if repo_wrapper.is_dir():
+                      shutil.rmtree(repo_wrapper)
+                      print(f"removed wrapper folder: {category}")
+
+          else:
+              print("Mode: repo-shaped ZIP; replacing files at matching repo paths.")
+
+              for src in iter_files(ROOT):
+                  rel = src.relative_to(ROOT)
+                  destination = safe_destination(rel.parts)
+
+                  if destination is None:
+                      skipped += 1
+                      print(f"skipped unsafe path: {rel}")
+                      continue
+
+                  action = replace_repo_file(src, destination)
+                  if action == "created":
+                      created += 1
+                  else:
+                      replaced += 1
+
+          for generated in ["_rebase_organized_zip_work", "_organized_repo_artifact"]:
+              path = REPO / generated
+              if path.is_dir():
+                  shutil.rmtree(path)
+                  print(f"removed generated folder: {generated}")
+
+          print(f"replaced={replaced}")
+          print(f"created={created}")
+          print(f"skipped={skipped}")
+          print(f"unmapped={unmapped}")
+          PY
+
+          rm -f "$ZIP"
+          git rm -f "$ZIP" 2>/dev/null || true
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git restore --staged --worktree .github/workflows 2>/dev/null || true
+          git add -A
+          git restore --staged --worktree .github/workflows 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No code changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(dreamengin): apply code updates from zip [skip ci] [skip vercel]"
+
+          git fetch origin "$BRANCH"
+          git rebase "origin/$BRANCH"
+          git push origin "HEAD:$BRANCH"
