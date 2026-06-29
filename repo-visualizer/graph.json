@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T02:22:59.899Z",
+  "generatedAt": "2026-06-29T02:46:21.113Z",
   "root": ".",
   "nodes": [
     {
@@ -3236,6 +3236,16 @@
       "label": "readme-autosync.yml",
       "type": "config",
       "path": ".github/workflows/readme-autosync.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/rebasetorepo.yml",
+      "label": "rebasetorepo.yml",
+      "type": "config",
+      "path": ".github/workflows/rebasetorepo.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -105640,6 +105650,16 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/music/dream.SoundRecorder.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/offline/dream.OfflineRuntimeBootstrap.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/offline/dream.OfflineStatusPill.tsx",
       "kind": "import"
     },
     {

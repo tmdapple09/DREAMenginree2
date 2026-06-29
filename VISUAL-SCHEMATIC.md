@@ -8,16 +8,16 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2269
+- **Total files:** 2270
 - **Total function/class nodes:** 4657
-- **Total edges:** 8468
+- **Total edges:** 8470
 - **Orphan nodes:** 4064
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
 graph LR
   app["app"] -->|701| supabase["supabase"]
-  src["src"] -->|320| components["components"]
+  src["src"] -->|322| components["components"]
   engine["engine"] -->|314| components["components"]
   app["app"] -->|292| components["components"]
   src["src"] -->|274| engins["engins"]
@@ -735,6 +735,8 @@ graph LR
 | `components/menus/dream.menu.DreamRadialMenu.tsx` | tsx | 1 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/menus/dream.panel.MenuPanel.tsx` |
 | `components/menus/dream.menu.RadialMenu.tsx` | tsx | 0 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | — |
 | `components/menus/dream.menu.SystemRadialMenu.tsx` | tsx | 1 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/menus/dream.panel.MenuPanel.tsx` |
+| `components/offline/dream.OfflineRuntimeBootstrap.tsx` | tsx | 2 | 2 | `app/layout.tsx`, `src/engin/generated/surfaces.ts` | `engine/offline/offlineCache.ts`, `engine/runtime/offlineQueue.ts` |
+| `components/offline/dream.OfflineStatusPill.tsx` | tsx | 1 | 2 | `app/layout.tsx`, `src/engin/generated/surfaces.ts` | `engine/runtime/offlineQueue.ts` |
 | `components/onboarding/dream.OnboardingTip.tsx` | tsx | 0 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | — |
 | `components/optimizer/dream.scene.BabylonOptimizeroScene.tsx` | tsx | 4 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `engine/rendering/babylon/createEngine.ts`, `engine/rendering/god-tier/godTierEngine.ts`, `optimizer/babylon-optimizero.ts` |
 | `components/panels/dream.panel.FeedPanel.tsx` | tsx | 1 | 2 | `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/panels/dream.panel.FeedSettingsPanel.tsx` |
@@ -758,8 +760,6 @@ graph LR
 | `components/engines/render/dream.RenderSurface.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `engins/renderengin/RenderEnginInlineSurface.tsx` |
 | `components/engines/render/index.ts` | ts | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/engines/render/dream.RenderServiceDiagnostics.tsx` |
 | `components/games/dream.hud.MobileGameHUD.module.css` | css | 0 | 1 | `components/games/dream.hud.MobileGameHUD.tsx` | — |
-| `components/offline/dream.OfflineRuntimeBootstrap.tsx` | tsx | 2 | 1 | `app/layout.tsx` | `engine/offline/offlineCache.ts`, `engine/runtime/offlineQueue.ts` |
-| `components/offline/dream.OfflineStatusPill.tsx` | tsx | 1 | 1 | `app/layout.tsx` | `engine/runtime/offlineQueue.ts` |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `components/gameengin/README.md` | doc | 0 | 0 | — | — |
 | `components/games/css-modules.d.ts` | ts | 0 | 0 | — | — |
@@ -1466,7 +1466,7 @@ graph LR
 | `src/engin/generated/osArchitectureMap.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
-| `src/engin/generated/surfaces.ts` | ts | 583 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
+| `src/engin/generated/surfaces.ts` | ts | 585 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
 | `src/engin/generated/systems.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/index.ts` | ts | 14 | 0 | — | `src/engin/generated/engins.ts`, `src/engin/generated/rulesets.ts`, `src/engin/generated/surfaces.ts` |
 
@@ -2596,6 +2596,8 @@ graph LR
   f_components_menus_dream_panel_MenuPanel_tsx["dream.panel.MenuPanel.tsx"]
   f_components_messaging_dream_BoardComposer_tsx["dream.BoardComposer.tsx"]
   f_components_music_dream_SoundRecorder_tsx["dream.SoundRecorder.tsx"]
+  f_components_offline_dream_OfflineRuntimeBootstrap_tsx["dream.OfflineRuntimeBootstrap.tsx"]
+  f_components_offline_dream_OfflineStatusPill_tsx["dream.OfflineStatusPill.tsx"]
   f_components_onboarding_dream_OnboardingTip_tsx["dream.OnboardingTip.tsx"]
   f_components_optimizer_dream_scene_BabylonOptimizeroScene_tsx["dream.scene.BabylonOptimizeroScene.tsx"]
   f_components_overlays_dream_RootStatusScreen_tsx["dream.RootStatusScreen.tsx"]
@@ -3516,6 +3518,8 @@ graph LR
   f_src_engin_generated_surfaces_ts --> f_components_menus_dream_panel_MenuPanel_tsx
   f_src_engin_generated_surfaces_ts --> f_components_messaging_dream_BoardComposer_tsx
   f_src_engin_generated_surfaces_ts --> f_components_music_dream_SoundRecorder_tsx
+  f_src_engin_generated_surfaces_ts --> f_components_offline_dream_OfflineRuntimeBootstrap_tsx
+  f_src_engin_generated_surfaces_ts --> f_components_offline_dream_OfflineStatusPill_tsx
   f_src_engin_generated_surfaces_ts --> f_components_onboarding_dream_OnboardingTip_tsx
   f_src_engin_generated_surfaces_ts --> f_components_optimizer_dream_scene_BabylonOptimizeroScene_tsx
   f_src_engin_generated_surfaces_ts --> f_components_overlays_dream_RootStatusScreen_tsx

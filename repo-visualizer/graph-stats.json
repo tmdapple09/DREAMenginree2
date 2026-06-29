@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-06-29T02:22:59.899Z",
-  "totalFiles": 2269,
-  "totalNodes": 8017,
-  "totalEdges": 8468,
+  "generatedAt": "2026-06-29T02:46:21.113Z",
+  "totalFiles": 2270,
+  "totalNodes": 8018,
+  "totalEdges": 8470,
   "totalFunctionAndClassNodes": 4657,
   "orphanCount": 4064,
   "countsByType": {
     "folder": 638,
     "file": 113,
     "doc": 231,
-    "config": 243,
+    "config": 244,
     "function": 4386,
     "python": 18,
     "class": 271,
@@ -27,7 +27,7 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 584,
+      "degree": 586,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
