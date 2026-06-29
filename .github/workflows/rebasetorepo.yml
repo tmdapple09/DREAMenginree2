@@ -32,6 +32,11 @@ on:
         required: true
         type: boolean
         default: true
+      allow_png_files:
+        description: "Allow PNG files from the organized ZIP to be rebased into the repo"
+        required: true
+        type: boolean
+        default: false
       commit_message:
         description: "Commit message"
         required: true
@@ -56,6 +61,7 @@ jobs:
         env:
           ZIP_PATH_INPUT: ${{ inputs.zip_path }}
           FAIL_ON_UNMAPPED_FILES: ${{ inputs.fail_on_unmapped_files }}
+          ALLOW_PNG_FILES: ${{ inputs.allow_png_files }}
         run: |
           set -euo pipefail
 
@@ -82,6 +88,7 @@ jobs:
           REPO = Path.cwd().resolve()
           ZIP_PATH = (REPO / os.environ["ZIP_PATH_INPUT"]).resolve()
           FAIL_ON_UNMAPPED = os.environ.get("FAIL_ON_UNMAPPED_FILES") == "true"
+          ALLOW_PNG_FILES = os.environ.get("ALLOW_PNG_FILES") == "true"
 
           WORK = REPO / "_rebase_organized_zip_work"
           OUTER_EXTRACT = WORK / "outer_extract"
@@ -114,6 +121,7 @@ jobs:
           }
 
           GENERATED_FILE_NAMES = {
+              "__DO_NOT_RETURN_BEHAVIOR_LOCATIONS.md",
               "organized_file_tree.txt",
               "organized_manifest.json",
               "organized_manifest.csv",
@@ -189,53 +197,44 @@ jobs:
 
           def safe_zip_member(name: str) -> bool:
               normalized = normalize_zip_name(name)
-
               if normalized.startswith("/"):
                   return False
-
               parts = [part for part in normalized.split("/") if part not in {"", "."}]
-
               if not parts:
                   return False
-
               if any(part == ".." for part in parts):
                   return False
-
               if any(part in BLOCKED_DIR_NAMES for part in parts):
                   return False
-
               return True
 
           def extract_zip(zip_path: Path, target_dir: Path) -> None:
               target_dir.mkdir(parents=True, exist_ok=True)
-
               with zipfile.ZipFile(zip_path, "r") as archive:
                   for member in archive.infolist():
                       name = normalize_zip_name(member.filename)
-
                       if not safe_zip_member(name):
                           raise SystemExit(f"Blocked unsafe ZIP member: {member.filename}")
-
                       if member.is_dir():
                           continue
 
                       parts = [part for part in name.split("/") if part not in {"", "."}]
-
                       if not parts:
                           continue
 
                       if parts[-1] in SKIP_FILE_NAMES:
                           continue
 
-                      target = target_dir.joinpath(*parts).resolve()
+                      if not ALLOW_PNG_FILES and parts[-1].lower().endswith(".png"):
+                          continue
 
+                      target = target_dir.joinpath(*parts).resolve()
                       try:
                           target.relative_to(target_dir.resolve())
                       except ValueError:
                           raise SystemExit(f"Blocked ZIP extraction outside target dir: {member.filename}")
 
                       target.parent.mkdir(parents=True, exist_ok=True)
-
                       with archive.open(member, "r") as src, target.open("wb") as dst:
                           shutil.copyfileobj(src, dst)
 
@@ -245,11 +244,13 @@ jobs:
                       continue
 
                   relative_parts = path.relative_to(root).parts
-
                   if any(part in BLOCKED_DIR_NAMES for part in relative_parts):
                       continue
 
                   if path.name in SKIP_FILE_NAMES:
+                      continue
+
+                  if not ALLOW_PNG_FILES and path.name.lower().endswith(".png"):
                       continue
 
                   yield path
@@ -277,13 +278,9 @@ jobs:
 
               if len(nested_zips) == 1:
                   extract_zip(nested_zips[0], NESTED_EXTRACT)
-
                   if contains_organized_category(NESTED_EXTRACT):
                       return NESTED_EXTRACT
-
-                  raise SystemExit(
-                      "Nested ZIP was found and extracted, but it does not contain the organized 20-folder structure."
-                  )
+                  raise SystemExit("Nested ZIP was found and extracted, but it does not contain the organized 20-folder structure.")
 
               if len(nested_zips) > 1:
                   found = "\n".join(str(path.relative_to(OUTER_EXTRACT)) for path in nested_zips)
@@ -294,9 +291,8 @@ jobs:
                   )
 
               raise SystemExit(
-                  "ZIP does not contain the organized 20-folder structure. "
-                  "Expected paths like:\n"
-                  "  organized-repository/05_build_runtime_state/active_engine/gameengin/engins/gameengin/index.ts"
+                  "ZIP does not contain the organized 20-folder structure. Expected paths like:\n"
+                  "organized-repository/05_build_runtime_state/active_engine/gameengin/engins/gameengin/index.ts"
               )
 
           def map_back_to_repo_path(extracted_file: Path, extract_root: Path) -> Tuple[Optional[PlannedFile], Optional[UnmappedRow]]:
@@ -305,62 +301,54 @@ jobs:
               category_index = find_category_index(parts)
 
               if category_index is None:
-                  return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="No 20-category bucket found in file path",
-                  )
+                  return None, UnmappedRow(str(relative).replace("\\", "/"), "No 20-category bucket found in file path")
 
               if len(parts) <= category_index + 3:
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="Path has category bucket but is missing subfolder, DREAMengin area, or original repo path",
+                      str(relative).replace("\\", "/"),
+                      "Path has category bucket but is missing subfolder, DREAMengin area, or original repo path"
                   )
 
               category = parts[category_index]
               subfolder = parts[category_index + 1]
               dreamengin_area = parts[category_index + 2]
-
               original_repo_parts = parts[category_index + 3:]
 
               if not original_repo_parts:
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="No original repo path after category/subfolder/DREAMengin-area wrapper",
+                      str(relative).replace("\\", "/"),
+                      "No original repo path after category/subfolder/DREAMengin-area wrapper"
                   )
 
               if original_repo_parts[0] in CATEGORY_NAMES:
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="Original repo path starts with another category bucket; wrapper is ambiguous",
+                      str(relative).replace("\\", "/"),
+                      "Original repo path starts with another category bucket; wrapper is ambiguous"
                   )
 
               if original_repo_parts[0] in BLOCKED_ROOT_OUTPUTS:
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason=f"Original repo path targets generated/upload workspace: {original_repo_parts[0]}",
+                      str(relative).replace("\\", "/"),
+                      f"Original repo path targets generated/upload workspace: {original_repo_parts[0]}"
                   )
 
               if any(part in BLOCKED_DIR_NAMES for part in original_repo_parts):
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="Original repo path contains a blocked generated/dependency directory",
+                      str(relative).replace("\\", "/"),
+                      "Original repo path contains a blocked generated/dependency directory"
                   )
 
               if any(part == ".." for part in original_repo_parts):
                   return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="Original repo path contains parent traversal",
+                      str(relative).replace("\\", "/"),
+                      "Original repo path contains parent traversal"
                   )
 
               destination = REPO.joinpath(*original_repo_parts).resolve()
-
               try:
                   destination.relative_to(REPO)
               except ValueError:
-                  return None, UnmappedRow(
-                      source_inside_zip=str(relative).replace("\\", "/"),
-                      reason="Mapped destination escapes repository root",
-                  )
+                  return None, UnmappedRow(str(relative).replace("\\", "/"), "Mapped destination escapes repository root")
 
               return PlannedFile(
                   extracted_path=extracted_file,
@@ -388,20 +376,18 @@ jobs:
                       continue
 
                   destination_key = str(mapped.destination.relative_to(REPO)).replace("\\", "/")
-
                   if destination_key not in planned_by_destination:
                       planned_by_destination[destination_key] = mapped
                       planned.append(mapped)
                       continue
 
                   first = planned_by_destination[destination_key]
-
                   if sha256_file(first.extracted_path) != sha256_file(mapped.extracted_path):
                       raise SystemExit(
                           "Duplicate destination conflict. Two different files map back to the same repo path:\n"
-                          f"  destination: {destination_key}\n"
-                          f"  first: {first.source_inside_zip}\n"
-                          f"  second: {mapped.source_inside_zip}"
+                          f"destination: {destination_key}\n"
+                          f"first: {first.source_inside_zip}\n"
+                          f"second: {mapped.source_inside_zip}"
                       )
 
                   duplicate_rows.append(
@@ -430,12 +416,8 @@ jobs:
 
                   if item.destination.exists():
                       if item.destination.is_dir():
-                          raise SystemExit(
-                              f"Destination is a directory, cannot overwrite with file: {destination_relative}"
-                          )
-
+                          raise SystemExit(f"Destination is a directory, cannot overwrite with file: {destination_relative}")
                       existing_hash = sha256_file(item.destination)
-
                       if existing_hash == source_hash:
                           action = "unchanged"
                       else:
@@ -478,6 +460,7 @@ jobs:
                           "unchanged": unchanged,
                           "duplicate_same_content_skipped": duplicate_skipped,
                           "unmapped": len(unmapped),
+                          "allow_png_files": ALLOW_PNG_FILES,
                           "rebased_files": [row.__dict__ for row in rows],
                           "unmapped_files": [row.__dict__ for row in unmapped],
                       },
@@ -512,6 +495,7 @@ jobs:
               lines.append("It strips the organized wrapper and writes each file back to its real repository path.")
               lines.append("")
               lines.append(f"ZIP: `{ZIP_PATH.relative_to(REPO)}`")
+              lines.append(f"PNG rebasing allowed: `{ALLOW_PNG_FILES}`")
               lines.append("")
               lines.append("## Summary")
               lines.append("")
@@ -546,7 +530,6 @@ jobs:
                   shutil.rmtree(WORK)
 
               OUTER_EXTRACT.mkdir(parents=True, exist_ok=True)
-
               extract_zip(ZIP_PATH, OUTER_EXTRACT)
               extract_root = choose_extract_root()
 
@@ -564,7 +547,6 @@ jobs:
 
               applied_rows = apply_planned_files(planned)
               all_rows = applied_rows + duplicate_rows
-
               write_reports(all_rows, unmapped)
               print(REPORT_MD.read_text(encoding="utf-8"))
 
@@ -623,7 +605,6 @@ jobs:
         if: ${{ inputs.commit_changes }}
         shell: bash
         env:
-          ZIP_PATH_INPUT: ${{ inputs.zip_path }}
           COMMIT_MESSAGE: ${{ inputs.commit_message }}
         run: |
           set -euo pipefail
