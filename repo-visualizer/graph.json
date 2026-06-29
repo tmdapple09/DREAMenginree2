@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T07:33:16.733Z",
+  "generatedAt": "2026-06-29T08:45:56.115Z",
   "root": ".",
   "nodes": [
     {
@@ -3182,10 +3182,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-fixed.yml",
-      "label": "organize-repo-build-map-semantic-determinism-fixed.yml",
+      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-user-flow-fixed.yml",
+      "label": "organize-repo-build-map-semantic-determinism-user-flow-fixed.yml",
       "type": "config",
-      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-fixed.yml",
+      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-user-flow-fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
