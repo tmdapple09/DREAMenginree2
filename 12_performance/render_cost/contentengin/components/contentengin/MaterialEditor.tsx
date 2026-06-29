@@ -1,2 +1,0 @@
-'use client'; import type { MaterialDef } from '@/engins/contentengin/assetTypes';
-export default function MaterialEditor({materials}:{materials:MaterialDef[]}){return <section className="ce-card"><h2>Materials & Shaders</h2>{materials.map(m=><div key={m.id} className="ce-row"><span style={{background:m.baseColor}} className="ce-swatch"/><strong>{m.name}</strong><code>{m.shaderId}</code></div>)}</section>}
