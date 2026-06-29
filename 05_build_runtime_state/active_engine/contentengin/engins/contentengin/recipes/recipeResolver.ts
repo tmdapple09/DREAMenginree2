@@ -1,4 +1,0 @@
-import { ContentRecipe, ExportProfile } from '../assetTypes';
-import { SUPPORTED_ASSET_TYPES } from './recipeTypes';
-export function normalizeAssetType(t:string): string { const x=t.toLowerCase().trim(); if(x==='quadruped animal') return 'quadruped'; if(x==='terrain tile') return 'terrain'; if(x==='water surface') return 'water'; return x; }
-export function resolveRecipe(input:Partial<ContentRecipe> & {assetType:string}): ContentRecipe { const assetType=normalizeAssetType(input.assetType); if(!SUPPORTED_ASSET_TYPES.includes(assetType as never)) throw new Error(`Unsupported ContentEngin asset type: ${input.assetType}`); const profile:ExportProfile=input.profile??'ps3'; return { assetType, seed:Number.isFinite(input.seed)?Number(input.seed):1, profile, parameters:input.parameters??{}, materialParameters:input.materialParameters??{}, partOverrides:input.partOverrides, sourceImage:input.sourceImage }; }
