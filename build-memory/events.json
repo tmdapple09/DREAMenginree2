@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T12:49:47.120Z",
+  "generated_at": "2026-06-29T12:54:08.564Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 30,
   "events": [
@@ -7,9 +7,6 @@
       "event": "beforeunload",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_engine/gameengin/engins/gameengin/launcher.ts",
-        "05_build_runtime_state/persisted_local_state/runtime/engine/intelligence/useSessionIntelligence.ts",
-        "12_performance/render_cost/gameengin/engins/gameengin/games/useRemoteChannel.ts",
         "engine/intelligence/useSessionIntelligence.ts",
         "engins/gameengin/games/useRemoteChannel.ts",
         "engins/gameengin/launcher.ts"
@@ -19,7 +16,6 @@
       "event": "de-ctrl-button",
       "payload_type": "ButtonInteractionEvent",
       "files": [
-        "05_build_runtime_state/active_engine/gameengin/engins/gameengin/games/gameControllerButtons.ts",
         "engins/gameengin/games/gameControllerButtons.ts"
       ]
     },
@@ -27,11 +23,6 @@
       "event": "de-game-input",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/events/gameengin/engins/gameengin/games/useGameInputKeyboardBridge.ts",
-        "12_performance/memory_leaks/gameengin/components/games/dream.EchoArena.tsx",
-        "12_performance/memory_leaks/gameengin/components/games/madmaxi/dream.MadmaxiGame.tsx",
-        "12_performance/mobile_frame_rate/gameengin/components/games/dream.NeonDrift.tsx",
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/GameRuntime.tsx",
         "components/games/dream.EchoArena.tsx",
         "components/games/dream.NeonDrift.tsx",
         "components/games/madmaxi/dream.MadmaxiGame.tsx",
@@ -43,7 +34,6 @@
       "event": "de-game-layout-change",
       "payload_type": null,
       "files": [
-        "09_wire_interactions/mobile_touch_behavior/gameengin/engins/gameengin/games/useImmersiveGameLayout.ts",
         "engins/gameengin/games/useImmersiveGameLayout.ts"
       ]
     },
@@ -51,7 +41,6 @@
       "event": "de-game-start",
       "payload_type": null,
       "files": [
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/games/hooks.ts",
         "engins/gameengin/games/hooks.ts"
       ]
     },
@@ -59,7 +48,6 @@
       "event": "de-theme-changed",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_screen/ui_shell/components/dream.ThemeApplicator.tsx",
         "components/dream.ThemeApplicator.tsx"
       ]
     },
@@ -67,7 +55,6 @@
       "event": "de-theme-mode-changed",
       "payload_type": null,
       "files": [
-        "09_wire_interactions/click/ui_shell/components/dream.VoidThemeToggle.tsx",
         "app/settings/appearance/page.tsx",
         "components/dream.VoidThemeToggle.tsx"
       ]
@@ -76,7 +63,6 @@
       "event": "de:avatar:updated",
       "payload_type": null,
       "files": [
-        "09_wire_interactions/click/gameengin/components/games/dream.GamesHub.tsx",
         "components/games/dream.GamesHub.tsx"
       ]
     },
@@ -84,7 +70,6 @@
       "event": "de:input-intent",
       "payload_type": null,
       "files": [
-        "12_performance/mobile_frame_rate/dreamdmbar/dreamdmbar/dreamsurface.dreamdmbar.tsx",
         "dreamdmbar/dreamsurface.dreamdmbar.tsx"
       ]
     },
@@ -92,7 +77,6 @@
       "event": "de:open-side-b",
       "payload_type": null,
       "files": [
-        "09_wire_interactions/click/daydreams/components/daydream/dream.shell.DaydreamShell.tsx",
         "components/daydream/dream.shell.DaydreamShell.tsx"
       ]
     },
@@ -100,7 +84,6 @@
       "event": "dragover",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/dreams/components/dreams/dream.GlobalDragLayer.tsx",
         "components/dreams/dream.GlobalDragLayer.tsx"
       ]
     },
@@ -108,7 +91,6 @@
       "event": "dream:drag-end",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/dreams/components/dreams/dream.GlobalDragLayer.tsx",
         "components/dreams/dream.GlobalDragLayer.tsx"
       ]
     },
@@ -116,7 +98,6 @@
       "event": "dream:drag-move",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/dreams/components/dreams/dream.GlobalDragLayer.tsx",
         "components/dreams/dream.GlobalDragLayer.tsx"
       ]
     },
@@ -124,7 +105,6 @@
       "event": "dream:drag-start",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/dreams/components/dreams/dream.GlobalDragLayer.tsx",
         "components/dreams/dream.GlobalDragLayer.tsx"
       ]
     },
@@ -132,7 +112,6 @@
       "event": "dreamengin:boogieman",
       "payload_type": "PolicyResult",
       "files": [
-        "05_build_runtime_state/active_runtime/agents_dr_eams/engine/policy/boogiePolicy.ts",
         "engine/policy/boogiePolicy.ts"
       ]
     },
@@ -140,7 +119,6 @@
       "event": "dreamengin:idari",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_runtime/agents_dr_eams/engine/agents/agentBus.ts",
         "engine/agents/agentBus.ts"
       ]
     },
@@ -148,7 +126,6 @@
       "event": "drop",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/dreams/components/dreams/dream.GlobalDragLayer.tsx",
         "components/dreams/dream.GlobalDragLayer.tsx"
       ]
     },
@@ -156,8 +133,6 @@
       "event": "error",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_screen/dreams/components/dreams/dream.PlatformErrorReporter.tsx",
-        "13_accessibility/labels/gameengin/components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx",
         "components/dreams/dream.PlatformErrorReporter.tsx",
         "components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx"
       ]
@@ -166,9 +141,6 @@
       "event": "gamepadconnected",
       "payload_type": null,
       "files": [
-        "06_build_application_behavior/what_business_rules_run/gameengin/components/gameengin/input/DualSenseManager.ts",
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/games/DualSenseManager.ts",
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/games/useGamepad.ts",
         "components/gameengin/input/DualSenseManager.ts",
         "engins/gameengin/games/DualSenseManager.ts",
         "engins/gameengin/games/useGamepad.ts"
@@ -178,9 +150,6 @@
       "event": "gamepaddisconnected",
       "payload_type": null,
       "files": [
-        "06_build_application_behavior/what_business_rules_run/gameengin/components/gameengin/input/DualSenseManager.ts",
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/games/DualSenseManager.ts",
-        "12_performance/mobile_frame_rate/gameengin/engins/gameengin/games/useGamepad.ts",
         "components/gameengin/input/DualSenseManager.ts",
         "engins/gameengin/games/DualSenseManager.ts",
         "engins/gameengin/games/useGamepad.ts"
@@ -190,7 +159,6 @@
       "event": "offline",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_runtime/dreamdmbar/engine/offline/offlineCache.ts",
         "engine/offline/offlineCache.ts"
       ]
     },
@@ -198,8 +166,6 @@
       "event": "online",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_runtime/dreamdmbar/engine/offline/offlineCache.ts",
-        "05_build_runtime_state/active_runtime/runtime/engine/runtime/offlineQueue.ts",
         "engine/offline/offlineCache.ts",
         "engine/runtime/offlineQueue.ts"
       ]
@@ -208,13 +174,6 @@
       "event": "orientationchange",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_runtime/runtime/components/runtime/dream.shell.RuntimeShell.tsx",
-        "05_build_runtime_state/events/ui_shell/hooks/useResponsive.ts",
-        "09_wire_interactions/drag/dreamdmbar/app/dreamdmbar/_components/HomeDreamRegion.tsx",
-        "09_wire_interactions/mobile_touch_behavior/ui_shell/components/dream.HomeFeed.tsx",
-        "09_wire_interactions/pointer_capture/ui_shell/components/dream.widget.AnchorWidget.tsx",
-        "12_performance/memory_leaks/ui_shell/components/home/dream.NeuralSeamCanvas.tsx",
-        "12_performance/mobile_frame_rate/dreamdmbar/dreamdmbar/dreamsurface.dreamdmbar.tsx",
         "app/dreamdmbar/_components/HomeDreamRegion.tsx",
         "components/dream.HomeFeed.tsx",
         "components/dream.widget.AnchorWidget.tsx",
@@ -228,7 +187,6 @@
       "event": "pointercancel",
       "payload_type": null,
       "files": [
-        "08_build_ui_components/component_variants/ui_shell/components/dream.FirstTouchActivator.tsx",
         "components/dream.FirstTouchActivator.tsx"
       ]
     },
@@ -236,7 +194,6 @@
       "event": "pointerdown",
       "payload_type": null,
       "files": [
-        "08_build_ui_components/component_variants/ui_shell/components/dream.FirstTouchActivator.tsx",
         "components/dream.FirstTouchActivator.tsx"
       ]
     },
@@ -244,9 +201,6 @@
       "event": "pointermove",
       "payload_type": null,
       "files": [
-        "08_build_ui_components/component_variants/ui_shell/components/dream.FirstTouchActivator.tsx",
-        "09_wire_interactions/drag/ui_shell/components/home/dream.ActiveModuleSurface.tsx",
-        "12_performance/memory_leaks/runtime/engine/rendering/god-tier/useGodTier.ts",
         "components/dream.FirstTouchActivator.tsx",
         "components/home/dream.ActiveModuleSurface.tsx",
         "engine/rendering/god-tier/useGodTier.ts"
@@ -256,8 +210,6 @@
       "event": "pointerup",
       "payload_type": null,
       "files": [
-        "08_build_ui_components/component_variants/ui_shell/components/dream.FirstTouchActivator.tsx",
-        "09_wire_interactions/drag/ui_shell/components/home/dream.ActiveModuleSurface.tsx",
         "components/dream.FirstTouchActivator.tsx",
         "components/home/dream.ActiveModuleSurface.tsx"
       ]
@@ -266,7 +218,6 @@
       "event": "starmaker:load-recording",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/starmakerengin/engins/engin.StarMakerEngin.tsx",
         "engins/engin.StarMakerEngin.tsx"
       ]
     },
@@ -274,7 +225,6 @@
       "event": "storage",
       "payload_type": null,
       "files": [
-        "12_performance/render_cost/runtime/engins/renderengin/serviceRuntime.ts",
         "engins/renderengin/serviceRuntime.ts"
       ]
     },
@@ -282,8 +232,6 @@
       "event": "unhandledrejection",
       "payload_type": null,
       "files": [
-        "05_build_runtime_state/active_screen/dreams/components/dreams/dream.PlatformErrorReporter.tsx",
-        "13_accessibility/labels/gameengin/components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx",
         "components/dreams/dream.PlatformErrorReporter.tsx",
         "components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx"
       ]
