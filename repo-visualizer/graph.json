@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T02:25:41.543Z",
+  "generatedAt": "2026-06-30T02:40:09.827Z",
   "root": ".",
   "nodes": [
     {
@@ -3176,16 +3176,6 @@
       "label": "optimize-dreamengin.yml",
       "type": "config",
       "path": ".github/workflows/optimize-dreamengin.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/organize-repo-build-map-semantic-determinism-user-flow-performance-01-17-filtered.yml",
-      "label": "organize-repo-build-map-semantic-determinism-user-flow-performance-01-17-filtered.yml",
-      "type": "config",
-      "path": ".github/workflows/organize-repo-build-map-semantic-determinism-user-flow-performance-01-17-filtered.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
