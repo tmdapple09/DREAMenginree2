@@ -58,7 +58,7 @@ jobs:
           TREE_FILE = OUT_ROOT / "organized_file_tree.txt"
 
 
-            DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
+          DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
               "dreams_lifecycle": [
                   "dream", "dreams", "create dream", "open dream", "save dream", "delete dream",
                   "clone dream", "restore dream", "transfer dream", "dream visibility", "dream instance",
