@@ -2065,9 +2065,6 @@ jobs:
                   "15_dev_tooling": 7,
                   "16_product_operations": 6,
                   "17_compliance_policy": 5,
-                  "19_release_management": 4,
-                  "20_documentation": 3,
-                  "18_content_assets": 2,
                   "01_define_user_flow": 1,
               }
               return priorities.get(category, 0)
