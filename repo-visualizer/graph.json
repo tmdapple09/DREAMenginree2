@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T02:40:09.827Z",
+  "generatedAt": "2026-06-30T02:41:14.520Z",
   "root": ".",
   "nodes": [
     {
@@ -3176,6 +3176,16 @@
       "label": "optimize-dreamengin.yml",
       "type": "config",
       "path": ".github/workflows/optimize-dreamengin.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/organize-semantic-determinism.yml",
+      "label": "organize-semantic-determinism.yml",
+      "type": "config",
+      "path": ".github/workflows/organize-semantic-determinism.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
