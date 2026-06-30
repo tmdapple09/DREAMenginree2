@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       organized_repo_artifact_name:
-        description: "Download name for the organized repository ZIP"
+        description: "organized repository ZIP NAME"
         required: true
         default: "dreamengin-organized-repository"
       file_tree_artifact_name:
-        description: "Download name for the organized file tree TXT"
+        description: "Name for file tree .TXT"
         required: true
-        default: "dreamengin-organized-file-tree"
+        default: "dreamengin-file-tree"
       retention_days:
         description: "Artifact retention days"
         required: true
-        default: "14"
+        default: "1"
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@V6
         with:
           fetch-depth: 1
 
@@ -56,8 +56,7 @@ jobs:
 
           ZIP_PATH = OUT_ROOT / "dreamengin-organized-repository.zip"
           TREE_FILE = OUT_ROOT / "organized_file_tree.txt"
-          MANIFEST_JSON = OUT_ROOT / "organized_manifest.json"
-          MANIFEST_CSV = OUT_ROOT / "organized_manifest.csv"
+
 
             DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
               "dreams_lifecycle": [
@@ -1738,85 +1737,6 @@ jobs:
 
               # Hard role gates stop content words in data files from pretending to be user-flow/app behavior.
               # Example: a GameEngin brain JSON can mention recovery, screen, progress, or save, but it is not a UI flow file.
-
-              # Binary/static assets.
-              if role in {"asset_binary", "asset_source"}:
-                  if f.suffix in {".png", ".jpg", ".jpeg", ".gif", ".webp"}:
-                      add_role_score(role, scores, reasons, "18_content_assets", "images", 180, "image file extension")
-                  if f.suffix == ".svg" or "/icons/" in p:
-                      add_role_score(role, scores, reasons, "18_content_assets", "icons", 175, "icon/SVG asset evidence")
-                  if f.suffix in {".ttf", ".otf", ".woff", ".woff2"} or "/fonts/" in p:
-                      add_role_score(role, scores, reasons, "18_content_assets", "fonts", 180, "font asset evidence")
-                  if f.suffix in {".glb", ".gltf"} or "/models/" in p:
-                      add_role_score(role, scores, reasons, "18_content_assets", "models", 180, "model asset evidence")
-                  if f.suffix in {".mp3", ".wav"} or "/audio/" in p:
-                      add_role_score(role, scores, reasons, "18_content_assets", "audio", 180, "audio asset evidence")
-                  if "manifest" in p or nh == "manifest.json":
-                      add_role_score(role, scores, reasons, "18_content_assets", "manifests", 145, "manifest asset evidence")
-
-              # Documentation only maps by document purpose, not by random code words inside docs.
-              if role == "documentation":
-                  doc_terms = p + "\n" + h[:120000]
-                  if contains_any(doc_terms, ["architecture", "blueprint", "runtime law", "engine + rule", "system design"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "architecture_notes", 180, "architecture documentation evidence")
-                  if contains_any(doc_terms, ["api", "endpoint", "request", "response"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "api_docs", 130, "API documentation evidence")
-                  if contains_any(doc_terms, ["schema", "table", "migration", "database"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "data_model_docs", 130, "data model documentation evidence")
-                  if contains_any(doc_terms, ["setup", "install", "local", "environment"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "setup_docs", 125, "setup documentation evidence")
-                  if contains_any(doc_terms, ["agent", "ai agent", "operating law", "instructions"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "agent_instructions", 150, "agent instruction documentation evidence")
-                  if contains_any(doc_terms, ["known issue", "bug", "failure", "troubleshoot"]):
-                      add_role_score(role, scores, reasons, "20_documentation", "known_issues", 110, "known issue documentation evidence")
-                  if contains_any(doc_terms, ["release", "changelog", "deploy", "rollback"]):
-                      add_role_score(role, scores, reasons, "19_release_management", "release_checklist", 90, "release/deploy documentation evidence")
-                  if contains_any(doc_terms, ["privacy", "terms", "policy", "child safety", "data retention"]):
-                      add_role_score(role, scores, reasons, "17_compliance_policy", "privacy_policy", 120, "policy/compliance documentation evidence")
-
-              # CI, package, config, scripts.
-              if role == "workflow":
-                  add_role_score(role, scores, reasons, "15_dev_tooling", "ci_workflows", 200, "workflow syntax path .github/workflows")
-                  if contains_any(h + p, ["typecheck", "tsc", "lint", "eslint", "vitest", "test", "next build", "pnpm build"]):
-                      add_role_score(role, scores, reasons, "10_verify_build_deploy", "build", 130, "verification/build command in workflow")
-                  if contains_any(h + p, ["deploy", "vercel", "production", "rollback", "release"]):
-                      add_role_score(role, scores, reasons, "19_release_management", "production_deploy", 130, "deploy/release command in workflow")
-                  if contains_any(h + p, ["permissions:", "secrets", "token", "contents: write"]):
-                      add_role_score(role, scores, reasons, "11_security", "secrets", 85, "workflow permission/secret handling")
-              if role == "package_manager":
-                  add_role_score(role, scores, reasons, "15_dev_tooling", "dependency_management", 120, "dependency manifest/lockfile")
-                  if contains_any(h, ["scripts", "typecheck", "lint", "test", "build"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "scripts", 90, "package scripts")
-              if role == "tool_config":
-                  if nh.startswith("tsconfig"):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "typecheck_config", 180, "TypeScript config filename")
-                  if contains_any(nh + p, ["eslint", "prettier"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "lint_config", 165, "lint/format config filename")
-                  if contains_any(nh + p, ["vitest", "playwright"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "test_commands", 135, "test config filename")
-                  if contains_any(nh + p, ["next.config", "tailwind", "postcss"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "local_setup", 120, "app build/style tooling config")
-              if role == "script_tooling":
-                  if contains_any(h + p, ["typecheck", "lint", "test", "build"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "test_commands", 125, "script runs verification/build command")
-                  if contains_any(h + p, ["deploy", "release", "rollback", "changelog"]):
-                      add_role_score(role, scores, reasons, "19_release_management", "deploy_target", 125, "script handles deploy/release")
-                  if contains_any(h + p, ["migration", "supabase", "schema"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "migration_scripts", 115, "script handles migrations/schema")
-                  if contains_any(h + p, ["generate", "codegen", "export-repo", "file_tree"]):
-                      add_role_score(role, scores, reasons, "15_dev_tooling", "codegen_commands", 105, "script handles generation/export")
-
-              # Tests.
-              if role == "test":
-                  add_role_score(role, scores, reasons, "10_verify_build_deploy", "unit_tests", 170, "test file syntax/path")
-                  if contains_any(p + h, ["integration", "route", "api", "request", "response"]):
-                      add_role_score(role, scores, reasons, "10_verify_build_deploy", "integration_tests", 115, "integration/API test evidence")
-                  if contains_any(p + h, ["auth", "permission", "security", "rls"]):
-                      add_role_score(role, scores, reasons, "10_verify_build_deploy", "permission_tests", 110, "security/auth test evidence")
-                  if contains_any(p + h, ["performance", "benchmark", "fps", "latency"]):
-                      add_role_score(role, scores, reasons, "10_verify_build_deploy", "performance_checks", 110, "performance test evidence")
-                  if contains_any(p + h, ["accessibility", "aria", "keyboard", "focus"]):
-                      add_role_score(role, scores, reasons, "10_verify_build_deploy", "accessibility_checks", 110, "accessibility test evidence")
 
               # SQL/data schema.
               if role == "sql_schema":
