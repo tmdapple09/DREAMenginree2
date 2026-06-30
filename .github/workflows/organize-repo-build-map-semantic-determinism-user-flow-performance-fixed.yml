@@ -59,7 +59,126 @@ jobs:
           MANIFEST_JSON = OUT_ROOT / "organized_manifest.json"
           MANIFEST_CSV = OUT_ROOT / "organized_manifest.csv"
 
-          BEHAVIOR_HELPER_FILENAME = "__DO_NOT_RETURN_BEHAVIOR_LOCATIONS.md"
+            DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
+              "dreams_lifecycle": [
+                  "dream", "dreams", "create dream", "open dream", "save dream", "delete dream",
+                  "clone dream", "restore dream", "transfer dream", "dream visibility", "dream instance",
+                  "dream-windows", "dream window", "dreamregistry", "dream registry",
+              ],
+              "dreams_as_everything": [
+                  "dream as", "dream surface", "dream object", "widget", "window", "surface",
+                  "feed object", "profile object", "shared object", "spatial object", "cartridge",
+              ],
+              "dream_customization_everywhere": [
+                  "customize", "customization", "hide", "remove", "replace", "reorder", "resize",
+                  "reset layout", "layout", "overrides", "appearance", "settings/appearance",
+              ],
+              "dream_drag_drop_spatial_behavior": [
+                  "drag", "drop", "draggable", "drop target", "dock", "undock", "snap", "resize",
+                  "spatial", "pointer", "touch", "dreamspace", "useDrag",
+              ],
+              "homedream": [
+                  "homedream", "home dream", "home-layout", "HomeDreamRegion", "DreamWidget",
+              ],
+              "dreamspace": [
+                  "dreamspace", "dream space", "spatial", "DreamSpaceRegion", "dreamsurface.dreamspace",
+              ],
+              "daydreams": [
+                  "daydream", "daydreams", "DaydreamShell", "daydream/code", "daydream/game",
+                  "daydream/create", "daydream/music", "daydream/lab", "daydream/brand",
+              ],
+              "shared_dreams": [
+                  "shared dream", "shared-dream", "sharedDream", "presence", "collaboration",
+                  "cursor", "media sync", "shared session", "shared channel",
+              ],
+              "dreamr": [
+                  "dreamr", "dreamr/feed", "dreamr/profile", "app/dreamr", "app/api/dreamr",
+                  "app/api/posts", "/posts/", "dream post", "dream posts", "feed", "profile",
+                  "edit profile", "social", "visibility", "discover", "messages",
+              ],
+              "dreamdmbar": [
+                  "dreamdmbar", "dreamdm", "conversation", "message", "draft", "module bar",
+                  "notification", "DreamSystemContext",
+              ],
+              "engins": [
+                  "engin", "engins", "engine card", "activeEngin", "StandaloneEnginSurface",
+                  "Engin shell", "GameEngin", "ContentEngin", "CodeEngin", "LabEngin",
+              ],
+              "rulesets": [
+                  "ruleset", "rule-set", "constraints", "transformations", "parameters",
+                  "active rule", "useGameEnginRuntime", "RuleSet",
+              ],
+              "runtime": [
+                  "runtime", "snapshot", "memory", "event", "channel", "sync", "offline queue",
+                  "moduleRegistry", "EnginRuntime",
+              ],
+              "dualruntime": [
+                  "dualruntime", "dual runtime", "topRuntime", "bottomRuntime", "dominance",
+                  "swap", "dualRuntimeBridge", "wasm bus", "runtime container",
+              ],
+              "gameengin_behavior": [
+                  "gameengin", "cartridge", "game runtime", "GameRemote", "mobile controls",
+                  "keyboard bridge", "gamepad", "score", "crash report", "save state",
+              ],
+              "contentengin_behavior": [
+                  "contentengin", "asset", "recipe", "photo", "mesh", "material", "rigging",
+                  "glb", "export", "validate asset", "procedural",
+              ],
+              "codeengin_behavior": [
+                  "codeengin", "workspace", "editor", "notebook", "diagnostics", "search",
+                  "safe path", "upload workspace", "run simulation",
+              ],
+              "starmaker_music_behavior": [
+                  "starmaker", "music", "arrangement", "daw", "mixer", "sequencer", "preset", "audio",
+              ],
+              "lab_sim_behavior": [
+                  "labengin", "lab", "simengin", "simulation", "experiment", "particles",
+                  "benchmark", "physics", "quantum",
+              ],
+              "forge_brand_agent_behavior": [
+                  "forge", "assembly", "pieces", "build graph", "brand", "branding", "identity",
+                  "campaign", "analytics", "dr-eams", "idari", "boogieman", "humanai",
+              ],
+              "auth_profile_account": [
+                  "auth", "login", "logout", "callback", "profile", "settings", "account",
+                  "delete-data", "export-data", "supabase",
+              ],
+              "admin_agent_dr_eams": [
+                  "admin", "dr-eams", "idari", "boogie", "boogieman", "humanai", "audit", "agent",
+              ],
+              "render_webgpu_visual_runtime": [
+                  "render", "renderer", "webgpu", "babylon", "three", "shader", "canvas",
+                  "viewport", "visual",
+              ],
+              "repo_ci_release_tooling": [
+                  ".github", "workflow", "scripts", "typecheck", "build", "file_tree",
+                  "repo_state", "organized", "rebase", "ci",
+              ],
+          }
+
+          TEXT_EXTENSIONS = {
+              ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".md", ".mdx",
+              ".yml", ".yaml", ".css", ".scss", ".html", ".sql", ".sh", ".py",
+              ".toml", ".env", ".example", ".txt", ".svg", ".tsx", ".mts", ".cts",
+          }
+
+          BINARY_EXTENSIONS = {
+              ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".mp3", ".wav",
+              ".mp4", ".mov", ".glb", ".gltf", ".wasm", ".zip", ".pdf",
+              ".ttf", ".otf", ".woff", ".woff2",
+          }
+
+          SKIP_SCAN_DIRS = {
+              ".git", "node_modules", ".next", "dist", "build", ".turbo", ".cache",
+              "_organized_repo_artifact", "_rebase_organized_zip_work", "__MACOSX",
+          }
+
+          GENERATED_NAMES = {
+              BEHAVIOR_HELPER_FILENAME,
+              "organized_file_tree.txt",
+              "organized_manifest.json",
+              "organized_manifest.csv",
+          }
 
           # These are the 20 build buckets and their subfolder vocabulary.
           # They are classification targets. The workflow only creates subfolders
@@ -84,7 +203,6 @@ jobs:
                   "share_link_entry_path",
                   "invited_user_path",
                   "admin_path",
-                  "moderator_path",
                   "support_path",
                   "happy_path",
                   "failure_path",
@@ -163,7 +281,6 @@ jobs:
                   "history_tables",
                   "audit_tables",
                   "analytics_event_tables",
-                  "billing_subscription_tables",
                   "storage_buckets",
                   "storage_paths",
                   "file_metadata",
@@ -207,7 +324,6 @@ jobs:
                   "notifications",
                   "push_notification_delivery",
                   "payment_logic",
-                  "billing_logic",
                   "subscription_logic",
                   "cache_invalidation",
                   "search_indexing",
@@ -302,7 +418,6 @@ jobs:
                   "permission_state",
                   "notification_state",
                   "search_filter_state",
-                  "billing_subscription_state",
                   "memory_cleanup",
                   "state_performance_budget",
               ],
@@ -328,7 +443,6 @@ jobs:
                   "what_happens_when_feature_disabled",
                   "what_happens_when_device_capability_missing",
                   "what_happens_when_browser_unsupported",
-                  "what_happens_when_payment_subscription_fails",
                   "what_happens_when_upload_too_large",
                   "what_happens_when_content_rejected_moderated",
                   "what_happens_when_concurrent_edits_conflict",
@@ -356,7 +470,6 @@ jobs:
                   "public_pages",
                   "unauthorized_states",
                   "account_recovery_screens",
-                  "billing_screens",
                   "admin_screens",
                   "moderation_screens",
                   "page_metadata",
@@ -413,7 +526,6 @@ jobs:
                   "banners",
                   "confirmation_dialogs",
                   "permission_prompts",
-                  "paywall_subscription_components",
                   "search_components",
                   "filter_components",
                   "pagination_components",
@@ -665,194 +777,6 @@ jobs:
                   "moderation_policy",
                   "content_policy",
               ],
-              "18_content_assets": [
-                  "images",
-                  "icons",
-                  "fonts",
-                  "audio",
-                  "video",
-                  "models",
-                  "static_files",
-                  "manifests",
-                  "metadata",
-                  "alt_text",
-                  "favicon_app_icons",
-                  "pwa_manifest",
-                  "asset_compression",
-                  "responsive_images",
-                  "content_versioning",
-                  "asset_licensing",
-                  "upload_assets",
-                  "generated_assets",
-                  "public_assets",
-                  "protected_assets",
-                  "storage_paths",
-                  "cache_rules_for_assets",
-              ],
-              "19_release_management": [
-                  "branches",
-                  "commits",
-                  "pr_checks",
-                  "changelog",
-                  "versioning",
-                  "version_tags",
-                  "release_checklist",
-                  "deploy_target",
-                  "deploy_freeze_rules",
-                  "staged_rollout",
-                  "hotfix_path",
-                  "rollback",
-                  "incident_rollback",
-                  "backups",
-                  "migration_plan",
-                  "rollback_migration_plan",
-                  "smoke_tests",
-                  "deploy_preview",
-                  "production_deploy",
-                  "post_deploy_verification",
-              ],
-              "20_documentation": [
-                  "architecture_notes",
-                  "api_docs",
-                  "data_model_docs",
-                  "setup_docs",
-                  "feature_docs",
-                  "agent_instructions",
-                  "known_issues",
-                  "runbook",
-                  "troubleshooting_guide",
-                  "environment_variable_docs",
-                  "deployment_docs",
-                  "migration_docs",
-                  "support_admin_docs",
-                  "test_docs",
-                  "release_docs",
-                  "security_notes",
-                  "performance_notes",
-                  "repo_structure_notes",
-                  "onboarding_docs_for_future_contributors",
-              ],
-          }
-
-          DREAMENGIN_BEHAVIORS: Dict[str, List[str]] = {
-              "dreams_lifecycle": [
-                  "dream", "dreams", "create dream", "open dream", "save dream", "delete dream",
-                  "clone dream", "restore dream", "transfer dream", "dream visibility", "dream instance",
-                  "dream-windows", "dream window", "dreamregistry", "dream registry",
-              ],
-              "dreams_as_everything": [
-                  "dream as", "dream surface", "dream object", "widget", "window", "surface",
-                  "feed object", "profile object", "shared object", "spatial object", "cartridge",
-              ],
-              "dream_customization_everywhere": [
-                  "customize", "customization", "hide", "remove", "replace", "reorder", "resize",
-                  "reset layout", "layout", "overrides", "appearance", "settings/appearance",
-              ],
-              "dream_drag_drop_spatial_behavior": [
-                  "drag", "drop", "draggable", "drop target", "dock", "undock", "snap", "resize",
-                  "spatial", "pointer", "touch", "dreamspace", "useDrag",
-              ],
-              "homedream": [
-                  "homedream", "home dream", "home-layout", "HomeDreamRegion", "DreamWidget",
-              ],
-              "dreamspace": [
-                  "dreamspace", "dream space", "spatial", "DreamSpaceRegion", "dreamsurface.dreamspace",
-              ],
-              "daydreams": [
-                  "daydream", "daydreams", "DaydreamShell", "daydream/code", "daydream/game",
-                  "daydream/create", "daydream/music", "daydream/lab", "daydream/brand",
-              ],
-              "shared_dreams": [
-                  "shared dream", "shared-dream", "sharedDream", "presence", "collaboration",
-                  "cursor", "media sync", "shared session", "shared channel",
-              ],
-              "dreamr": [
-                  "dreamr", "dreamr/feed", "dreamr/profile", "app/dreamr", "app/api/dreamr",
-                  "app/api/posts", "/posts/", "dream post", "dream posts", "feed", "profile",
-                  "edit profile", "social", "visibility", "discover", "messages",
-              ],
-              "dreamdmbar": [
-                  "dreamdmbar", "dreamdm", "conversation", "message", "draft", "module bar",
-                  "notification", "DreamSystemContext",
-              ],
-              "engins": [
-                  "engin", "engins", "engine card", "activeEngin", "StandaloneEnginSurface",
-                  "Engin shell", "GameEngin", "ContentEngin", "CodeEngin", "LabEngin",
-              ],
-              "rulesets": [
-                  "ruleset", "rule-set", "constraints", "transformations", "parameters",
-                  "active rule", "useGameEnginRuntime", "RuleSet",
-              ],
-              "runtime": [
-                  "runtime", "snapshot", "memory", "event", "channel", "sync", "offline queue",
-                  "moduleRegistry", "EnginRuntime",
-              ],
-              "dualruntime": [
-                  "dualruntime", "dual runtime", "topRuntime", "bottomRuntime", "dominance",
-                  "swap", "dualRuntimeBridge", "wasm bus", "runtime container",
-              ],
-              "gameengin_behavior": [
-                  "gameengin", "cartridge", "game runtime", "GameRemote", "mobile controls",
-                  "keyboard bridge", "gamepad", "score", "crash report", "save state",
-              ],
-              "contentengin_behavior": [
-                  "contentengin", "asset", "recipe", "photo", "mesh", "material", "rigging",
-                  "glb", "export", "validate asset", "procedural",
-              ],
-              "codeengin_behavior": [
-                  "codeengin", "workspace", "editor", "notebook", "diagnostics", "search",
-                  "safe path", "upload workspace", "run simulation",
-              ],
-              "starmaker_music_behavior": [
-                  "starmaker", "music", "arrangement", "daw", "mixer", "sequencer", "preset", "audio",
-              ],
-              "lab_sim_behavior": [
-                  "labengin", "lab", "simengin", "simulation", "experiment", "particles",
-                  "benchmark", "physics", "quantum",
-              ],
-              "forge_brand_agent_behavior": [
-                  "forge", "assembly", "pieces", "build graph", "brand", "branding", "identity",
-                  "campaign", "analytics", "dr-eams", "idari", "boogieman", "humanai",
-              ],
-              "auth_profile_account": [
-                  "auth", "login", "logout", "callback", "profile", "settings", "account",
-                  "delete-data", "export-data", "supabase",
-              ],
-              "admin_agent_dr_eams": [
-                  "admin", "dr-eams", "idari", "boogie", "boogieman", "humanai", "audit", "agent",
-              ],
-              "render_webgpu_visual_runtime": [
-                  "render", "renderer", "webgpu", "babylon", "three", "shader", "canvas",
-                  "viewport", "visual",
-              ],
-              "repo_ci_release_tooling": [
-                  ".github", "workflow", "scripts", "typecheck", "build", "file_tree",
-                  "repo_state", "organized", "rebase", "ci",
-              ],
-          }
-
-          TEXT_EXTENSIONS = {
-              ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".md", ".mdx",
-              ".yml", ".yaml", ".css", ".scss", ".html", ".sql", ".sh", ".py",
-              ".toml", ".env", ".example", ".txt", ".svg", ".tsx", ".mts", ".cts",
-          }
-
-          BINARY_EXTENSIONS = {
-              ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".mp3", ".wav",
-              ".mp4", ".mov", ".glb", ".gltf", ".wasm", ".zip", ".pdf",
-              ".ttf", ".otf", ".woff", ".woff2",
-          }
-
-          SKIP_SCAN_DIRS = {
-              ".git", "node_modules", ".next", "dist", "build", ".turbo", ".cache",
-              "_organized_repo_artifact", "_rebase_organized_zip_work", "__MACOSX",
-          }
-
-          GENERATED_NAMES = {
-              BEHAVIOR_HELPER_FILENAME,
-              "organized_file_tree.txt",
-              "organized_manifest.json",
-              "organized_manifest.csv",
           }
 
           @dataclass
