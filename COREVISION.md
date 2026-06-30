@@ -1,4 +1,27 @@
-# Executive Summary  
+# Executive Summary
+
+<!-- DREAMENGIN_DOCUMENT_ALIGNMENT_GUARD_START -->
+## DREAMengin Vision Alignment Guard
+
+This document must not drift away from the DREAMengin canonical product contract.
+
+Interpret this file under these rules:
+
+- DREAMengin is a web-native creative OS/world, not disconnected pages.
+- Dreams, posts, messages, games, assets, tools, settings, profiles, media, workspaces, and shared sessions must operate as one connected system.
+- Every visible feature must satisfy: visible user action → reachable handler → real runtime/API/state behavior → persisted or visible result → clear feedback/error state.
+- DreamDMBar is the canonical search/control/menu layer.
+- DreamR owns feed/profile/posts/comments/messages/social identity, with one canonical edit-profile path.
+- HomeDream and DreamSpace must be real operating surfaces, not decorative grids.
+- Engins are first-class capabilities with real surfaces, state, actions, runtime behavior, and mobile-smooth UI.
+- RenderEngin is rendering technology used by Engins, especially ContentEngin first, not a standalone fake destination.
+- Settings, language, uploads, media, YouTube behavior, customization, Shared Dreams, offline behavior, performance, security, accessibility, and observability must connect to canonical state.
+- AI-like behavior should be deterministic and work without live AI where possible.
+- Code should follow the DREAMengin grammar: directive → imports → identity/law → constants → types → helpers → owned state → derived gates → named actions → effects/cleanup → render/return → export.
+
+If this document describes a feature, route, surface, tool, setting, or Engin behavior, it must not imply fake buttons, decorative controls, duplicate ownership, unreachable pages, hidden failures, or placeholder panels pretending to work.
+<!-- DREAMENGIN_DOCUMENT_ALIGNMENT_GUARD_END -->
+
 DREAMengin is a vision for a **“creative OS”** – a single persistent runtime with a fixed core engine and pluggable **Engins** (modules) that users assemble by dragging and connecting pieces.  Unlike typical no-code tools or CMSs, it treats the browser as a long-lived operating environment.  The core engine handles global concerns (state, events, I/O, security) while all business logic comes from external rule-sets (Engins).  As *The Verge* observes, the industry trend toward “low-code/no-code” (e.g. Zapier, Shortcuts, Notion, Airtable【3†L297-L304】) is maturing into platforms where users can truly build without coding.  DREAMengin takes this further by enabling **runtime composition**: users visually wire together behaviors and data flows in real time, on a phone-first canvas that supports collaboration.  Key design patterns include: a **single engine with infinite rule-sets**, **micro-frontend style modules (Module Federation or Next.js Multi-Zones)** for loading Engins, and **hybrid real-time sync** (BroadcastChannel for same-browser, WebSockets/CRDT for cross-device).  This plan maps the existing prototype to a robust architecture (with Next.js 16+, React 20+, TS 6+, Supabase backend, Babylon.js/WebGPU) and lays out a detailed roadmap to reach production.  
 
 ## 1. Runtime Architecture & Core Components  
@@ -467,4 +490,3 @@ These examples illustrate how structured the data will be.  In practice, we will
 - **Plugin Security:** We mirror browser extension/IDE plugin models (CSP, manifest permissions) for safety.  
 
 These sources (from libraries, official docs, and engineering blogs) guide our design choices. By adhering to 2026 best practices and citing them throughout, we ensure DREAMengin is built on solid, modern foundations.
-
