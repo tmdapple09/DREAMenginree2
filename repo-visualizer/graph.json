@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T02:41:14.520Z",
+  "generatedAt": "2026-06-30T08:08:39.556Z",
   "root": ".",
   "nodes": [
     {
@@ -3566,6 +3566,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:DREAMenginree2-completedream-doc-vision-lock.zip",
+      "label": "DREAMenginree2-completedream-doc-vision-lock.zip",
+      "type": "file",
+      "path": "DREAMenginree2-completedream-doc-vision-lock.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
