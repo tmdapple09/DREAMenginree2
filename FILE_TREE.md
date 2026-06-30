@@ -1,28 +1,6 @@
 # File Tree
 
-<!-- DREAMENGIN_DOCUMENT_ALIGNMENT_GUARD_START -->
-## DREAMengin Vision Alignment Guard
-
-This document must not drift away from the DREAMengin canonical product contract.
-
-Interpret this file under these rules:
-
-- DREAMengin is a web-native creative OS/world, not disconnected pages.
-- Dreams, posts, messages, games, assets, tools, settings, profiles, media, workspaces, and shared sessions must operate as one connected system.
-- Every visible feature must satisfy: visible user action → reachable handler → real runtime/API/state behavior → persisted or visible result → clear feedback/error state.
-- DreamDMBar is the canonical search/control/menu layer.
-- DreamR owns feed/profile/posts/comments/messages/social identity, with one canonical edit-profile path.
-- HomeDream and DreamSpace must be real operating surfaces, not decorative grids.
-- Engins are first-class capabilities with real surfaces, state, actions, runtime behavior, and mobile-smooth UI.
-- RenderEngin is rendering technology used by Engins, especially ContentEngin first, not a standalone fake destination.
-- Settings, language, uploads, media, YouTube behavior, customization, Shared Dreams, offline behavior, performance, security, accessibility, and observability must connect to canonical state.
-- AI-like behavior should be deterministic and work without live AI where possible.
-- Code should follow the DREAMengin grammar: directive → imports → identity/law → constants → types → helpers → owned state → derived gates → named actions → effects/cleanup → render/return → export.
-
-If this document describes a feature, route, surface, tool, setting, or Engin behavior, it must not imply fake buttons, decorative controls, duplicate ownership, unreachable pages, hidden failures, or placeholder panels pretending to work.
-<!-- DREAMENGIN_DOCUMENT_ALIGNMENT_GUARD_END -->
-
-Generated: 2026-06-29T04:16:09.822Z
+Generated: 2026-06-30T08:47:59.267Z
 
 Legend: ! unresolved import  unused export
 
@@ -40,7 +18,10 @@ Legend: ! unresolved import  unused export
 |   |       +-- platform-errors
 |   |       |   `-- page.tsx
 |   |       |       +-- createServerClient  <- @/supabase/server/serverClient
+|   |       |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       |       +-- SupabaseClient  <- @supabase/supabase-js
+|   |       |       +-- redirect  <- next/navigation
+|   |       |       +-- connection  <- next/server
 |   |       |       +-- -> (default)
 |   |       |       `-- -> metadata
 |   |       +-- platform-health
@@ -437,9 +418,10 @@ Legend: ! unresolved import  unused export
 |   |   |   |   `-- route.ts
 |   |   |   |       +-- spawn  <- child_process
 |   |   |   |       +-- (default)  <- fs/promises
+|   |   |   |       +-- (default)  <- os
 |   |   |   |       +-- (default)  <- path
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
-|   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
+|   |   |   |       +-- CODEENGIN_BLOCKED_SEGMENTS, isLikelyEditableFile, normalizeProjectPath, safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- createCodeEnginWorkspace, getWorkspaceOverview  <- @/engins/codeengin/workspaceStore
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
@@ -652,7 +634,8 @@ Legend: ! unresolved import  unused export
 |   |   |       `-- route.ts
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           +-- analyzeImageBytes  <- @/engins/contentengin/photo/imageAnalyzer
-|   |   |           `-- -> POST
+|   |   |           +-- -> POST
+|   |   |           `-- -> runtime
 |   |   +-- dr-eams  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- hf  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   |   `-- route.ts
@@ -1537,7 +1520,8 @@ Legend: ! unresolved import  unused export
 |   |   `-- render  [RenderEngin]
 |   |       `-- page.tsx
 |   |           +-- redirect  <- next/navigation
-|   |           `-- -> (default)
+|   |           +-- -> (default)
+|   |           `-- -> metadata
 |   +-- discover  [Feed / Social]
 |   |   `-- page.tsx
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2054,7 +2038,8 @@ Legend: ! unresolved import  unused export
 |   |   +-- render  [RenderEngin]
 |   |   |   `-- page.tsx
 |   |   |       +-- redirect  <- next/navigation
-|   |   |       `-- -> (default)
+|   |   |       +-- -> (default)
+|   |   |       `-- -> metadata
 |   |   +-- layout.tsx
 |   |   |   +-- ReactNode  <- react
 |   |   |   `-- -> (default)
@@ -2515,7 +2500,7 @@ Legend: ! unresolved import  unused export
 |   |       `-- -> metadata
 |   +-- webgpu
 |   |   `-- page.tsx
-|   |       +-- (default)  <- @/components/webgpu/dream.WebGPUShowcase
+|   |       +-- redirect  <- next/navigation
 |   |       +-- Metadata  <- next
 |   |       +-- -> (default)
 |   |       `-- -> metadata
@@ -2718,10 +2703,10 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- -> (default)
 |   |   |   `-- unused unused: (default)
 |   |   +-- AssetPreview3D.tsx unused
+|   |   |   +-- useMemo  <- react
 |   |   |   +-- ContentAsset  <- @/engins/contentengin/assetTypes
-|   |   |   +-- useEffect, useRef  <- react
-|   |   |   +-- * as THREE  <- three
-|   |   |   +-- GLTFLoader  <- three/examples/jsm/loaders/GLTFLoader.js
+|   |   |   +-- (default)  <- @/engins/renderengin/RenderStage
+|   |   |   +-- createInlineRenderIntent  <- @/engins/renderengin/RenderStage
 |   |   |   +-- -> (default)
 |   |   |   `-- unused unused: (default)
 |   |   +-- ContentEnginStudio.tsx
@@ -3391,12 +3376,12 @@ Legend: ! unresolved import  unused export
 |   |   +-- render
 |   |   |   +-- dream.RenderServiceDiagnostics.tsx unused
 |   |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
-|   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
 |   |   |   |   +-- RenderEnginRuleSet, RenderEnginViewport, acknowledgeRenderServiceIntent, readRenderServiceQueue, subscribeRenderServiceIntents, RenderIntent, RenderServiceIntentEnvelope  <- @/engins/renderengin
 |   |   |   |   +-- (side-effect)  <- @/engins/renderengin/runtimeRegistration
 |   |   |   |   +-- -> (default)
-|   |   |   |   `-- unused unused: (default)
+|   |   |   |   +-- -> RenderDiagnosticsSurface
+|   |   |   |   `-- unused unused: (default), RenderDiagnosticsSurface
 |   |   |   +-- dream.RenderSurface.tsx unused
 |   |   |   |   +-- (default)  <- @/engins/renderengin/RenderEnginInlineSurface
 |   |   |   |   +-- -> (default)
@@ -4669,12 +4654,14 @@ const SESSION_SEED: number =
 |   |       +-- -> WarpCanvasProps
 |   |       `-- unused unused: (default), WarpCanvasProps
 |   +-- webgpu
-|   |   +-- dream.WebGPUShowcase.tsx
-|   |   |   +-- isWebGPUAvailable  <- @/engine/rendering/webgpu
+|   |   +-- dream.WebGPUShowcase.tsx unused
+|   |   |   +-- getRendererBackend  <- @/engine/rendering/webgpu
+|   |   |   +-- (default)  <- @/engins/renderengin/RenderStage
+|   |   |   +-- createInlineRenderIntent  <- @/engins/renderengin/RenderStage
 |   |   |   +-- (default)  <- next/link
-|   |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   |   +-- WebGPURenderer  <- ./renderer
-|   |   |   `-- -> (default)
+|   |   |   +-- useEffect, useMemo, useState  <- react
+|   |   |   +-- -> (default)
+|   |   |   `-- unused unused: (default)
 |   |   +-- neuralPostProcess.ts unused
 |   |   |   +-- -> NEURAL_POST_PROCESS_WGSL
 |   |   |   +-- -> NEURAL_UNIFORM_SIZE
@@ -4682,9 +4669,11 @@ const SESSION_SEED: number =
 |   |   |   +-- -> createNeuralUniforms
 |   |   |   +-- -> dispatchNeuralPostProcess
 |   |   |   `-- unused unused: NEURAL_POST_PROCESS_WGSL, NEURAL_UNIFORM_SIZE, createNeuralPostProcessPipeline, createNeuralUniforms, dispatchNeuralPostProcess
-|   |   +-- renderer.ts
+|   |   +-- renderer.ts unused
+|   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
 |   |   |   +-- BLUR_FRAG_WGSL, BRIGHT_FRAG_WGSL, COMPOSITE_FRAG_WGSL, COMPUTE_WGSL, FS_VERT_WGSL, LEMN_FRAG_WGSL, LEMN_VERT_WGSL, N_LEMN_VERTS, N_PARTICLE_VERTS, N_PARTICLES, PARTICLE_FRAG_WGSL, PARTICLE_VERT_WGSL  <- ./shaders
-|   |   |   `-- -> WebGPURenderer
+|   |   |   +-- -> WebGPURenderer
+|   |   |   `-- unused unused: WebGPURenderer
 |   |   `-- shaders.ts unused
 |   |       +-- -> BLUR_FRAG_WGSL
 |   |       +-- -> BRIGHT_FRAG_WGSL
@@ -5650,7 +5639,7 @@ const SESSION_SEED: number =
 |   |       +-- createClient  <- @/supabase/client/client
 |   |       +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
-|   |       +-- createContext, useCallback, useContext, useEffect, useRef, useState, Dispatch, ReactNode, SetStateAction  <- react
+|   |       +-- createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, Dispatch, ReactNode, SetStateAction  <- react
 |   |       +-- -> BarIntent
 |   |       +-- -> BarIntentMode
 |   |       +-- -> DEFAULT_BAR_INTENT
@@ -6241,7 +6230,7 @@ const SESSION_SEED: number =
 |   +-- artifacts
 |   |   `-- artifactStore.ts unused
 |   |       +-- DreamArtifact  <- @/types/dreamArtifact
-|   |       +-- cacheAsset  <- @/engine/offline/offlineCache
+|   |       +-- cacheAsset, getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |       +-- -> OfflineBlobArtifactRecord
 |   |       +-- -> getDefaultSystemArtifacts
 |   |       +-- -> hideArtifact
@@ -8504,11 +8493,19 @@ const SESSION_SEED: number =
 |   |   |       +-- -> useWebGPUDirector
 |   |   |       `-- unused unused: CameraSignals, CameraState, DirectorFrame, MeshHints, RuntimeMetrics, UseWebGPUDirectorOptions, UseWebGPUDirectorReturn, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals, defaultDirectorMetrics, useWebGPUDirector
 |   |   `-- webgpu.ts unused
+|   |       +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginFrameStats, RenderEnginLifecycleHooks, RenderEnginScene  <- @/engins/renderengin/webgpu
+|   |       +-- -> RenderEnginFrameStats
+|   |       +-- -> RenderEnginGraphicsBackend
+|   |       +-- -> RenderEnginLifecycleHooks
+|   |       +-- -> RenderEnginScene
 |   |       +-- -> WebGPURuntimeInitialization
+|   |       +-- -> WebGpuRenderEngin
 |   |       +-- -> getRendererBackend
+|   |       +-- -> initializeRenderEnginGraphicsRuntime
 |   |       +-- -> initializeWebGPURuntime
 |   |       +-- -> isWebGPUAvailable
-|   |       `-- unused unused: WebGPURuntimeInitialization, getRendererBackend, initializeWebGPURuntime
+|   |       +-- -> requestWebGpuDevice
+|   |       `-- unused unused: RenderEnginFrameStats, RenderEnginGraphicsBackend, RenderEnginLifecycleHooks, RenderEnginScene, WebGPURuntimeInitialization, WebGpuRenderEngin, initializeRenderEnginGraphicsRuntime, initializeWebGPURuntime, requestWebGpuDevice
 |   +-- routing
 |   |   `-- surfaces.ts unused
 |   |       +-- -> PUBLIC_SURFACE_PREFIXES
@@ -9737,23 +9734,24 @@ const SESSION_SEED: number =
 |   |   |   +-- -> diagnoseFile
 |   |   |   `-- -> diagnoseWorkspace
 |   |   +-- git.ts
-|   |   |   +-- spawn  <- child_process
-|   |   |   +-- getWorkspaceMeta  <- ./workspaceStore
+|   |   |   +-- listEditableFiles  <- ./workspaceStore
 |   |   |   +-- -> getGitDiff
 |   |   |   +-- -> getGitLog
 |   |   |   `-- -> getGitStatus
 |   |   +-- pathSafety.ts unused
 |   |   |   +-- (default)  <- path
 |   |   |   +-- -> CODEENGIN_ALLOWED_EXTENSIONS
+|   |   |   +-- -> CODEENGIN_ALLOWED_FILENAMES
 |   |   |   +-- -> CODEENGIN_BLOCKED_SEGMENTS
 |   |   |   +-- -> assertSafeWorkspacePath
 |   |   |   +-- -> assertValidWorkspaceId
 |   |   |   +-- -> getCodeEnginWorkspacesRoot
 |   |   |   +-- -> getWorkspaceRoot
+|   |   |   +-- -> isAllowedCodeEnginFileName
 |   |   |   +-- -> isLikelyEditableFile
 |   |   |   +-- -> normalizeProjectPath
 |   |   |   +-- -> safeErrorMessage
-|   |   |   `-- unused unused: CODEENGIN_ALLOWED_EXTENSIONS
+|   |   |   `-- unused unused: CODEENGIN_ALLOWED_EXTENSIONS, CODEENGIN_ALLOWED_FILENAMES, isAllowedCodeEnginFileName
 |   |   +-- projectGraph.ts unused
 |   |   |   +-- (default)  <- path
 |   |   |   +-- parseCode  <- @/engins/codeengin-ui/core/parser
@@ -9767,8 +9765,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> extractImports
 |   |   |   `-- unused unused: extractImports
 |   |   +-- runner.ts
-|   |   |   +-- spawn  <- child_process
-|   |   |   +-- getWorkspaceMeta  <- ./workspaceStore
+|   |   |   +-- listEditableFiles, readProjectFile  <- ./workspaceStore
 |   |   |   +-- CODEENGIN_COMMANDS  <- ./runnerCommands
 |   |   |   +-- listRunnerCommands  <- ./runnerCommands
 |   |   |   +-- CodeEnginCommandResult  <- ./types
@@ -9811,7 +9808,7 @@ const SESSION_SEED: number =
 |   |       +-- -> moveProjectFile
 |   |       +-- -> readProjectFile
 |   |       +-- -> writeProjectFile
-|   |       `-- unused unused: (default)
+|   |       `-- unused unused: (default), getWorkspaceMeta
 |   +-- CodeEngin
 |   |   +-- core
 |   |   |   `-- parser.ts unused
@@ -11294,6 +11291,8 @@ const SESSION_SEED: number =
 |   |   |   |   +-- ComputeShaderPipeline, GPUProfiler, WGSLShaderManager  <- ../power-systems
 |   |   |   |   +-- ComputeShaderPipeline  <- ../power-systems
 |   |   |   |   +-- ComputeDispatch, ComputeKernel, ProfileFrame, ProfileSpan, ShaderVariant  <- ../power-systems
+|   |   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
+|   |   |   |   +-- RenderEnginFrameStats  <- @/engins/renderengin/webgpu
 |   |   |   |   +-- -> ComputeDispatch
 |   |   |   |   +-- -> ComputeKernel
 |   |   |   |   +-- -> ComputeShaderPipeline
@@ -11301,8 +11300,10 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> GPUProfiler
 |   |   |   |   +-- -> ProfileFrame
 |   |   |   |   +-- -> ProfileSpan
+|   |   |   |   +-- -> RenderEnginFrameStats
 |   |   |   |   +-- -> ShaderVariant
-|   |   |   |   `-- -> WGSLShaderManager
+|   |   |   |   +-- -> WGSLShaderManager
+|   |   |   |   `-- -> requestRenderEnginWebGPUDevice
 |   |   |   +-- spatial.ts
 |   |   |   |   +-- OctreeBVH, SpatialAudioDSP  <- ../power-systems
 |   |   |   |   +-- AABB, AudioSourceDef, ListenerState, SpatialEntry  <- ../power-systems
@@ -11840,6 +11841,7 @@ const SESSION_SEED: number =
 |   |   |   +-- (dynamic import)  <- @babylonjs/core/Layers/glowLayer
 |   |   |   `-- -> PostFXManager
 |   |   +-- power-systems.ts unused
+|   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
 |   |   |   +-- -> AABB
 |   |   |   +-- -> AdvancedPhysicsWorld
 |   |   |   +-- -> AnimState
@@ -12244,7 +12246,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> (default)
 |   |   |   +-- -> RenderStageProps
 |   |   |   +-- -> createInlineRenderIntent
-|   |   |   `-- unused unused: (default), RenderStageProps
+|   |   |   `-- unused unused: RenderStageProps
 |   |   +-- runtimeRegistration.ts
 |   |   |   +-- registerRuntimeEngin  <- @/engine/engin-runtime/EnginRuntimeRegistry
 |   |   |   +-- RenderEnginRuleSet, RENDER_ENGIN_ID, RENDER_INTENT_TYPES  <- ./core
@@ -12376,6 +12378,7 @@ const SESSION_SEED: number =
 |   |       +-- -> BATCH_SHADER
 |   |       +-- -> PackedVertexBuffer
 |   |       +-- -> RenderEnginFrameStats
+|   |       +-- -> RenderEnginGpuDeviceLease
 |   |       +-- -> RenderEnginGpuMesh
 |   |       +-- -> RenderEnginGpuTexture
 |   |       +-- -> RenderEnginLifecycleHooks
@@ -13290,14 +13293,6 @@ const SESSION_SEED: number =
 |   |       |   `-- main.wasm
 |   |       +-- MANIFEST.json
 |   |       `-- tuning.json
-|   +-- DREAMenginree2-completedream
-|   |   `-- public
-|   |       +-- images
-|   |       +-- file.svg
-|   |       +-- globe.svg
-|   |       +-- next.svg
-|   |       +-- vercel.svg
-|   |       `-- window.svg
 |   +-- feeds
 |   |   `-- embed-feed.json
 |   +-- images
