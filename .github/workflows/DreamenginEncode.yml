@@ -24,6 +24,7 @@ jobs:
         run: |
           set -euo pipefail
 
+          rm -rf artifact/encoded-codebase
           mkdir -p artifact
           mkdir -p artifact/encoded-codebase
 
@@ -215,6 +216,19 @@ jobs:
             fs.mkdirSync(path.dirname(file), { recursive: true });
           }
 
+          function makeDuplicateFilePlaceholder(entry, canonicalEntry) {
+            return [
+              "DREAMENGIN_DUPLICATE_FILE_REF",
+              `file=${entry.rel}`,
+              `canonical=${canonicalEntry.rel}`,
+              `encodedSha256=${entry.encodedSha256}`,
+              `originalSha256=${entry.originalSha256}`,
+              `originalBytes=${entry.originalBytes}`,
+              `canonicalEncodedBytes=${canonicalEntry.encodedBytes}`,
+              ""
+            ].join("\n");
+          }
+
           const programmingJson = readJson(PROGRAMMING_MAP_FILE);
           const dreamJson = readJson(DREAM_MAP_FILE);
           const encoder = buildEncoder(programmingJson, dreamJson);
@@ -224,29 +238,114 @@ jobs:
 
           let totalReplacementCount = 0;
 
+          const encodedEntries = [];
+          const canonicalByEncodedHash = new Map();
+
           for (const file of files) {
             const rel = relativeFile(file);
             const original = fs.readFileSync(file, "utf8");
-
             const result = encoder.encode(original);
-            const outFile = path.join(OUT_DIR, rel);
 
-            ensureParentDir(outFile);
-            fs.writeFileSync(outFile, result.encoded);
+            const encodedSha256 = sha256(result.encoded);
+            const originalSha256 = sha256(original);
 
-            totalReplacementCount += result.replacementCount;
-
-            manifestFiles.push({
-              file: rel,
-              encodedFile: normalize(path.relative(ROOT, outFile)),
-              originalSha256: sha256(original),
-              encodedSha256: sha256(result.encoded),
+            const entry = {
+              rel,
+              originalSha256,
+              encodedSha256,
               originalBytes: Buffer.byteLength(original),
               encodedBytes: Buffer.byteLength(result.encoded),
               replacementCount: result.replacementCount,
-              usedCodes: result.usedCodes
+              usedCodes: result.usedCodes,
+              encoded: result.encoded
+            };
+
+            if (!canonicalByEncodedHash.has(encodedSha256)) {
+              canonicalByEncodedHash.set(encodedSha256, entry);
+            }
+
+            encodedEntries.push(entry);
+            totalReplacementCount += result.replacementCount;
+          }
+
+          let duplicateFileRefs = 0;
+          let duplicateRawBytesReplaced = 0;
+          let duplicateEncodedBytesReplaced = 0;
+          let duplicatePlaceholderBytes = 0;
+
+          const duplicateGroups = new Map();
+
+          for (const entry of encodedEntries) {
+            const canonicalEntry = canonicalByEncodedHash.get(entry.encodedSha256);
+            const outFile = path.join(OUT_DIR, entry.rel);
+
+            ensureParentDir(outFile);
+
+            const isDuplicate = canonicalEntry.rel !== entry.rel;
+
+            let writtenText;
+
+            if (isDuplicate) {
+              writtenText = makeDuplicateFilePlaceholder(entry, canonicalEntry);
+
+              duplicateFileRefs += 1;
+              duplicateRawBytesReplaced += entry.originalBytes;
+              duplicateEncodedBytesReplaced += entry.encodedBytes;
+              duplicatePlaceholderBytes += Buffer.byteLength(writtenText);
+
+              if (!duplicateGroups.has(entry.encodedSha256)) {
+                duplicateGroups.set(entry.encodedSha256, {
+                  encodedSha256: entry.encodedSha256,
+                  originalSha256: entry.originalSha256,
+                  canonicalFile: canonicalEntry.rel,
+                  canonicalEncodedBytes: canonicalEntry.encodedBytes,
+                  canonicalOriginalBytes: canonicalEntry.originalBytes,
+                  duplicateFiles: [],
+                  duplicateCount: 0,
+                  duplicateRawBytesReplaced: 0,
+                  duplicateEncodedBytesReplaced: 0,
+                  duplicatePlaceholderBytes: 0
+                });
+              }
+
+              const group = duplicateGroups.get(entry.encodedSha256);
+              group.duplicateFiles.push(entry.rel);
+              group.duplicateCount += 1;
+              group.duplicateRawBytesReplaced += entry.originalBytes;
+              group.duplicateEncodedBytesReplaced += entry.encodedBytes;
+              group.duplicatePlaceholderBytes += Buffer.byteLength(writtenText);
+            } else {
+              writtenText = entry.encoded;
+            }
+
+            fs.writeFileSync(outFile, writtenText);
+
+            manifestFiles.push({
+              file: entry.rel,
+              encodedFile: normalize(path.relative(ROOT, outFile)),
+              duplicateFileRef: isDuplicate,
+              canonicalFile: isDuplicate ? canonicalEntry.rel : null,
+              originalSha256: entry.originalSha256,
+              encodedSha256: entry.encodedSha256,
+              originalBytes: entry.originalBytes,
+              encodedBytes: entry.encodedBytes,
+              writtenBytes: Buffer.byteLength(writtenText),
+              replacementCount: entry.replacementCount,
+              usedCodes: entry.usedCodes
             });
           }
+
+          const duplicateGroupsOutput = [...duplicateGroups.values()]
+            .map((group) => ({
+              ...group,
+              duplicateFiles: group.duplicateFiles.sort(),
+              duplicateNetEncodedBytesSaved:
+                group.duplicateEncodedBytesReplaced - group.duplicatePlaceholderBytes
+            }))
+            .sort((a, b) =>
+              b.duplicateNetEncodedBytesSaved - a.duplicateNetEncodedBytesSaved ||
+              a.canonicalFile.localeCompare(b.canonicalFile)
+            );
 
           const manifest = {
             generatedAt: new Date().toISOString(),
@@ -263,8 +362,16 @@ jobs:
               programmingReferenceTerms: encoder.programmingCount,
               dreamReferenceTerms: encoder.dreamCount,
               totalReferenceTerms: encoder.totalWordCount,
-              totalReplacementCount
+              totalReplacementCount,
+              duplicateFileRefs,
+              duplicateGroups: duplicateGroupsOutput.length,
+              duplicateRawBytesReplaced,
+              duplicateEncodedBytesReplaced,
+              duplicatePlaceholderBytes,
+              duplicateNetEncodedBytesSaved:
+                duplicateEncodedBytesReplaced - duplicatePlaceholderBytes
             },
+            duplicateGroups: duplicateGroupsOutput,
             files: manifestFiles
           };
 
@@ -277,6 +384,11 @@ jobs:
 
           console.log(`Encoded ${files.length} files.`);
           console.log(`Total replacements: ${totalReplacementCount}`);
+          console.log(`Duplicate file refs: ${duplicateFileRefs}`);
+          console.log(`Duplicate groups: ${duplicateGroupsOutput.length}`);
+          console.log(`Duplicate encoded bytes replaced: ${duplicateEncodedBytesReplaced}`);
+          console.log(`Duplicate placeholder bytes: ${duplicatePlaceholderBytes}`);
+          console.log(`Duplicate net encoded bytes saved: ${duplicateEncodedBytesReplaced - duplicatePlaceholderBytes}`);
           console.log(`Wrote ${normalize(path.relative(ROOT, ZIP_FILE))}`);
           console.log(`Wrote ${normalize(path.relative(ROOT, MANIFEST_FILE))}`);
           NODE
@@ -287,6 +399,7 @@ jobs:
           name: Dreamengin-encoded-codebase
           path: artifact/Dreamengin.encoded-codebase.zip
           if-no-files-found: error
+          compression-level: 0
 
       - name: Upload encoding manifest
         uses: actions/upload-artifact@v6
