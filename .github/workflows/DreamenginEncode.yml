@@ -25,6 +25,9 @@ jobs:
           set -euo pipefail
 
           rm -rf artifact/encoded-codebase
+          rm -f artifact/Dreamengin.encoded-codebase.zip
+          rm -f artifact/encoding-manifest.json
+
           mkdir -p artifact
           mkdir -p artifact/encoded-codebase
 
@@ -153,7 +156,6 @@ jobs:
 
             const wordToCode = new Map();
 
-            // DREAMengin vocabulary wins if the same text appears in both maps.
             for (const [word, code] of programming.wordToCode.entries()) {
               wordToCode.set(word, code);
             }
@@ -216,17 +218,8 @@ jobs:
             fs.mkdirSync(path.dirname(file), { recursive: true });
           }
 
-          function makeDuplicateFilePlaceholder(entry, canonicalEntry) {
-            return [
-              "DREAMENGIN_DUPLICATE_FILE_REF",
-              `file=${entry.rel}`,
-              `canonical=${canonicalEntry.rel}`,
-              `encodedSha256=${entry.encodedSha256}`,
-              `originalSha256=${entry.originalSha256}`,
-              `originalBytes=${entry.originalBytes}`,
-              `canonicalEncodedBytes=${canonicalEntry.encodedBytes}`,
-              ""
-            ].join("\n");
+          function makeDuplicateFilePlaceholder(canonicalEntry) {
+            return `${canonicalEntry.rel}\n`;
           }
 
           const programmingJson = readJson(PROGRAMMING_MAP_FILE);
@@ -286,7 +279,7 @@ jobs:
             let writtenText;
 
             if (isDuplicate) {
-              writtenText = makeDuplicateFilePlaceholder(entry, canonicalEntry);
+              writtenText = makeDuplicateFilePlaceholder(canonicalEntry);
 
               duplicateFileRefs += 1;
               duplicateRawBytesReplaced += entry.originalBytes;
@@ -399,7 +392,7 @@ jobs:
           name: Dreamengin-encoded-codebase
           path: artifact/Dreamengin.encoded-codebase.zip
           if-no-files-found: error
-          compression-level: 0
+          compression-level: 9
 
       - name: Upload encoding manifest
         uses: actions/upload-artifact@v6
