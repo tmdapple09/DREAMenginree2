@@ -164,6 +164,14 @@ jobs:
             return Array.from(String(value || "")).length;
           }
 
+          function isValidIdentifier(value) {
+            return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(String(value || ""));
+          }
+
+          function quoteSource(source) {
+            return `"${source}"`;
+          }
+
           function walk(dir, files = []) {
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
               const full = path.join(dir, entry.name);
@@ -221,13 +229,18 @@ jobs:
           function splitNamedImports(namedBlock) {
             return String(namedBlock || "")
               .split(",")
-              .map((item) => cleanImportedName(item))
+              .map((raw) => raw.trim())
               .filter(Boolean)
-              .map((item) => {
+              .map((raw) => {
+                const isTypeSpecifier = raw.startsWith("type ");
+                const item = cleanImportedName(raw);
                 const parts = item.split(/\s+as\s+/);
+
                 return {
+                  importShape: "named",
                   imported: parts[0].trim(),
-                  local: (parts[1] || parts[0]).trim()
+                  local: (parts[1] || parts[0]).trim(),
+                  specifierKind: isTypeSpecifier ? "type" : "value"
                 };
               })
               .filter((item) => item.imported && item.local);
@@ -249,8 +262,10 @@ jobs:
 
               return [
                 {
+                  importShape: "namespace",
                   imported: "*",
-                  local
+                  local,
+                  specifierKind: "value"
                 }
               ];
             }
@@ -260,8 +275,10 @@ jobs:
 
               if (defaultPart) {
                 names.push({
+                  importShape: "default",
                   imported: "default",
-                  local: defaultPart
+                  local: cleanImportedName(defaultPart),
+                  specifierKind: "value"
                 });
               }
 
@@ -276,8 +293,10 @@ jobs:
 
             return [
               {
+                importShape: "default",
                 imported: "default",
-                local: cleaned
+                local: cleanImportedName(cleaned),
+                specifierKind: "value"
               }
             ];
           }
@@ -424,7 +443,7 @@ jobs:
             let match;
 
             while ((match = importFromRegex.exec(text))) {
-              const isTypeOnly = Boolean(match[1]);
+              const isWholeImportTypeOnly = Boolean(match[1]);
               const rawImport = match[2].trim();
               const source = normalizePath(match[3].trim());
 
@@ -438,11 +457,17 @@ jobs:
                 continue;
               }
 
+              const importedNames = extractImportNames(rawImport).map((item) => ({
+                ...item,
+                importKind: isWholeImportTypeOnly || item.specifierKind === "type" ? "type" : "value"
+              }));
+
               imports.push({
                 file: normalizePath(path.relative(ROOT, filePath)),
                 source,
-                importKind: isTypeOnly ? "type" : "value",
-                importedNames: extractImportNames(rawImport)
+                rawImport,
+                importKind: isWholeImportTypeOnly ? "type" : "value",
+                importedNames
               });
             }
 
@@ -462,12 +487,57 @@ jobs:
               imports.push({
                 file: normalizePath(path.relative(ROOT, filePath)),
                 source,
+                rawImport: null,
                 importKind: "sideEffect",
                 importedNames: []
               });
             }
 
             return imports;
+          }
+
+          function makeAliasImportLine({ code, source, importShape, importedName, importKind }) {
+            const prefix = importKind === "type" ? "import type" : "import";
+
+            if (importShape === "named") {
+              if (importedName === code) {
+                return `${prefix} { ${importedName} } from ${quoteSource(source)};`;
+              }
+
+              return `${prefix} { ${importedName} as ${code} } from ${quoteSource(source)};`;
+            }
+
+            if (importShape === "default") {
+              return `${prefix} ${code} from ${quoteSource(source)};`;
+            }
+
+            if (importShape === "namespace") {
+              return `${prefix} * as ${code} from ${quoteSource(source)};`;
+            }
+
+            return null;
+          }
+
+          function makeOriginalImportLine({ source, importShape, importedName, localName, importKind }) {
+            const prefix = importKind === "type" ? "import type" : "import";
+
+            if (importShape === "named") {
+              if (importedName === localName) {
+                return `${prefix} { ${importedName} } from ${quoteSource(source)};`;
+              }
+
+              return `${prefix} { ${importedName} as ${localName} } from ${quoteSource(source)};`;
+            }
+
+            if (importShape === "default") {
+              return `${prefix} ${localName} from ${quoteSource(source)};`;
+            }
+
+            if (importShape === "namespace") {
+              return `${prefix} * as ${localName} from ${quoteSource(source)};`;
+            }
+
+            return `import ${quoteSource(source)};`;
           }
 
           function uniqueSortedArray(values) {
@@ -483,6 +553,17 @@ jobs:
               a.characterCount - b.characterCount ||
               a.vocabularyText.toLowerCase().localeCompare(b.vocabularyText.toLowerCase()) ||
               a.vocabularyText.localeCompare(b.vocabularyText)
+            );
+          }
+
+          function compareUsage(a, b) {
+            return (
+              a.file.localeCompare(b.file) ||
+              a.source.localeCompare(b.source) ||
+              a.importShape.localeCompare(b.importShape) ||
+              String(a.importedName || "").localeCompare(String(b.importedName || "")) ||
+              String(a.localName || "").localeCompare(String(b.localName || "")) ||
+              a.importKind.localeCompare(b.importKind)
             );
           }
 
@@ -514,6 +595,7 @@ jobs:
                   importedNames: new Set(),
                   localNames: new Set(),
                   importKinds: new Set(),
+                  importShapes: new Set(),
                   usedBy: new Set(),
                   usages: [],
                   usageCount: 0
@@ -524,17 +606,25 @@ jobs:
 
               item.categories.add(category);
               item.sources.add(record.source);
-              item.importKinds.add(record.importKind);
+              item.importKinds.add("sideEffect");
+              item.importShapes.add("sideEffect");
               item.usedBy.add(record.file);
               item.usageCount += 1;
 
               item.usages.push({
                 file: record.file,
                 source: record.source,
-                importKind: record.importKind,
+                importKind: "sideEffect",
+                importShape: "sideEffect",
                 category,
                 importedName: null,
-                localName: null
+                localName: null,
+                originalImportLine: `import ${quoteSource(record.source)};`,
+                aliasImportLine: null,
+                replacement: {
+                  canAlias: false,
+                  reason: "Side-effect imports do not create a local binding."
+                }
               });
 
               continue;
@@ -567,6 +657,7 @@ jobs:
                   importedNames: new Set(),
                   localNames: new Set(),
                   importKinds: new Set(),
+                  importShapes: new Set(),
                   usedBy: new Set(),
                   usages: [],
                   usageCount: 0
@@ -579,17 +670,35 @@ jobs:
               item.sources.add(record.source);
               item.importedNames.add(importedName.imported);
               item.localNames.add(importedName.local);
-              item.importKinds.add(record.importKind);
+              item.importKinds.add(importedName.importKind);
+              item.importShapes.add(importedName.importShape);
               item.usedBy.add(record.file);
               item.usageCount += 1;
 
               item.usages.push({
                 file: record.file,
                 source: record.source,
-                importKind: record.importKind,
+                importKind: importedName.importKind,
+                importShape: importedName.importShape,
                 category,
                 importedName: importedName.imported,
-                localName: importedName.local
+                localName: importedName.local,
+                originalImportLine: makeOriginalImportLine({
+                  source: record.source,
+                  importShape: importedName.importShape,
+                  importedName: importedName.imported,
+                  localName: importedName.local,
+                  importKind: importedName.importKind
+                }),
+                replacement: {
+                  canAlias: true,
+                  replaceIdentifier: importedName.local,
+                  withIdentifier: null,
+                  requires: [
+                    "Alias the import binding to the D-code.",
+                    "Replace references to the old local identifier inside that file."
+                  ]
+                }
               });
             }
           }
@@ -603,20 +712,123 @@ jobs:
               importedNames: uniqueSortedArray([...item.importedNames]),
               localNames: uniqueSortedArray([...item.localNames]),
               importKinds: uniqueSortedArray([...item.importKinds]),
+              importShapes: uniqueSortedArray([...item.importShapes]),
               usedBy: uniqueSortedArray([...item.usedBy]),
               usageCount: item.usageCount,
-              usages: item.usages.sort((a, b) =>
-                a.file.localeCompare(b.file) ||
-                a.source.localeCompare(b.source) ||
-                String(a.localName || "").localeCompare(String(b.localName || ""))
-              )
+              usages: item.usages.sort(compareUsage)
             }))
             .sort(compareVocabularyEntry);
 
-          const dreamCodeList = sortedVocabulary.map((item, index) => ({
-            code: `D${index + 1}`,
-            ...item
-          }));
+          const dreamCodeList = sortedVocabulary.map((item, index) => {
+            const code = `D${index + 1}`;
+            const codeCharacterCount = characterCount(code);
+            const textCharacterCount = item.characterCount;
+            const compressionGain = textCharacterCount - codeCharacterCount;
+
+            const usages = item.usages.map((usage) => {
+              if (!usage.replacement.canAlias) {
+                return {
+                  ...usage,
+                  aliasImportLine: null,
+                  replacement: {
+                    ...usage.replacement,
+                    withIdentifier: null
+                  }
+                };
+              }
+
+              return {
+                ...usage,
+                aliasImportLine: makeAliasImportLine({
+                  code,
+                  source: usage.source,
+                  importShape: usage.importShape,
+                  importedName: usage.importedName,
+                  importKind: usage.importKind
+                }),
+                replacement: {
+                  ...usage.replacement,
+                  withIdentifier: code
+                }
+              };
+            });
+
+            const aliasMap = new Map();
+
+            for (const usage of usages) {
+              if (!usage.aliasImportLine) continue;
+
+              const aliasKey = [
+                usage.source,
+                usage.importKind,
+                usage.importShape,
+                usage.importedName,
+                usage.aliasImportLine
+              ].join("::");
+
+              if (!aliasMap.has(aliasKey)) {
+                aliasMap.set(aliasKey, {
+                  source: usage.source,
+                  importKind: usage.importKind,
+                  importShape: usage.importShape,
+                  importedName: usage.importedName,
+                  code,
+                  aliasImportLine: usage.aliasImportLine,
+                  originalLocalNames: new Set(),
+                  usedBy: new Set()
+                });
+              }
+
+              const alias = aliasMap.get(aliasKey);
+
+              if (usage.localName) {
+                alias.originalLocalNames.add(usage.localName);
+              }
+
+              alias.usedBy.add(usage.file);
+            }
+
+            const aliases = [...aliasMap.values()]
+              .map((alias) => ({
+                source: alias.source,
+                importKind: alias.importKind,
+                importShape: alias.importShape,
+                importedName: alias.importedName,
+                code: alias.code,
+                aliasImportLine: alias.aliasImportLine,
+                originalLocalNames: uniqueSortedArray([...alias.originalLocalNames]),
+                usedBy: uniqueSortedArray([...alias.usedBy])
+              }))
+              .sort((a, b) =>
+                a.source.localeCompare(b.source) ||
+                a.importKind.localeCompare(b.importKind) ||
+                a.importShape.localeCompare(b.importShape) ||
+                String(a.importedName || "").localeCompare(String(b.importedName || ""))
+              );
+
+            return {
+              code,
+              identifier: code,
+              vocabularyText: item.vocabularyText,
+              characterCount: item.characterCount,
+              codeCharacterCount,
+              textCharacterCount,
+              compressionGain,
+              codeIsShorter: compressionGain > 0,
+              validCodeIdentifier: isValidIdentifier(code),
+              categories: item.categories,
+              sources: item.sources,
+              importedNames: item.importedNames,
+              localNames: item.localNames,
+              importKinds: item.importKinds,
+              importShapes: item.importShapes,
+              usedBy: item.usedBy,
+              usageCount: item.usageCount,
+              aliasReady: aliases.length > 0,
+              aliases,
+              usages
+            };
+          });
 
           const dreamCodes = Object.fromEntries(
             dreamCodeList.map((item) => [item.code, item])
@@ -630,11 +842,18 @@ jobs:
             dreamCodeList.map((item) => [item.vocabularyText, item.code])
           );
 
+          const importAliases = Object.fromEntries(
+            dreamCodeList.map((item) => [item.code, item.aliases])
+          );
+
           const byCharacterCount = {};
           const byCategory = {};
           const bySource = {};
           const byFile = {};
           const byImportKind = {};
+          const byImportShape = {};
+          const replacementReadyCodes = [];
+          const notShorterCodes = [];
 
           for (const item of dreamCodeList) {
             const lengthKey = String(item.characterCount);
@@ -660,6 +879,19 @@ jobs:
             for (const importKind of item.importKinds) {
               byImportKind[importKind] ||= [];
               byImportKind[importKind].push(item.code);
+            }
+
+            for (const importShape of item.importShapes) {
+              byImportShape[importShape] ||= [];
+              byImportShape[importShape].push(item.code);
+            }
+
+            if (item.aliasReady) {
+              replacementReadyCodes.push(item.code);
+            }
+
+            if (!item.codeIsShorter) {
+              notShorterCodes.push(item.code);
             }
           }
 
@@ -693,12 +925,18 @@ jobs:
               .map(([kind, codes]) => [kind, codes.sort(compareCode)])
           );
 
+          const finalByImportShape = Object.fromEntries(
+            Object.entries(byImportShape)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([shape, codes]) => [shape, codes.sort(compareCode)])
+          );
+
           const output = {
-            schema: "dreamengin.vocabulary.dictionary.v1",
+            schema: "dreamengin.vocabulary.codebook.v1",
             generatedAt: new Date().toISOString(),
 
             purpose:
-              "Canonical DREAMengin vocabulary dictionary generated from DREAMengin-owned import symbols. Each D-code represents one unique DREAMengin vocabulary item. Repeated usage is preserved under usedBy and usages.",
+              "Canonical DREAMengin vocabulary codebook generated from DREAMengin-owned import symbols. Each D-code represents one unique DREAMengin vocabulary item and includes code-ready import alias instructions.",
 
             codeRule: {
               mode: "dictionary",
@@ -707,12 +945,17 @@ jobs:
               ordering:
                 "D-codes are assigned by vocabularyText character count ascending, then alphabetical order inside each character-count group.",
               dedupe:
-                "Enabled. Repeated imports of the same vocabularyText collapse into one D-code.",
+                "Enabled by vocabularyText. Repeated imports of the same vocabularyText collapse into one D-code.",
               usageTracking:
-                "Each D-code includes usedBy and usages so the file locations are still reachable.",
+                "Each D-code includes usedBy, usages, and aliases so every code location remains reachable.",
+              codeUse:
+                "Use aliases[].aliasImportLine to bind the DREAMengin D-code inside real TypeScript or JavaScript files.",
+              replacementRule:
+                "A D-code can replace a local imported identifier only after the import binding is aliased to that D-code in the same file.",
               example: {
-                D1: "Shortest unique DREAMengin vocabulary item.",
-                D2: "Next unique DREAMengin vocabulary item by character count, then alphabetical order."
+                namedImport: "import { slog as D17 } from \"@/engine/slog\";",
+                defaultImport: "import D18 from \"@/engine/animation/gsap/gsap\";",
+                namespaceImport: "import * as D19 from \"@/engine/example\";"
               },
               stability:
                 "Codes are deterministic for a given repo state. Adding, deleting, or renaming vocabulary items can change later numbers."
@@ -772,6 +1015,8 @@ jobs:
               dreamenginImportRecords: importRecords.length,
               rawDreamenginSymbolOccurrences,
               uniqueDreamenginVocabularyCodes: dreamCodeList.length,
+              replacementReadyCodes: replacementReadyCodes.length,
+              notShorterCodes: notShorterCodes.length,
               characterCountGroups: Object.keys(finalByCharacterCount).length,
               categories: Object.fromEntries(
                 Object.entries(finalByCategory).map(([category, codes]) => [
@@ -783,26 +1028,44 @@ jobs:
 
             dreamCodeText,
             vocabularyTextToCode,
+            importAliases,
             dreamCodes,
             dreamCodeList,
+
+            replacementReadyCodes: replacementReadyCodes.sort(compareCode),
+            notShorterCodes: notShorterCodes.sort(compareCode),
 
             byCharacterCount: finalByCharacterCount,
             byCategory: finalByCategory,
             bySource: finalBySource,
             byFile: finalByFile,
-            byImportKind: finalByImportKind
+            byImportKind: finalByImportKind,
+            byImportShape: finalByImportShape
           };
 
           fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
 
-          console.log("Generated canonical DREAMengin vocabulary dictionary.");
+          console.log("Generated canonical DREAMengin vocabulary codebook.");
           console.log(`Wrote ${OUT_FILE}`);
           console.log("");
           console.log("Summary:");
           console.log(JSON.stringify(output.counts, null, 2));
           console.log("");
           console.log("First 25 D-code meanings:");
-          console.log(JSON.stringify(dreamCodeList.slice(0, 25), null, 2));
+          console.log(JSON.stringify(
+            dreamCodeList.slice(0, 25).map((item) => ({
+              code: item.code,
+              vocabularyText: item.vocabularyText,
+              characterCount: item.characterCount,
+              codeCharacterCount: item.codeCharacterCount,
+              compressionGain: item.compressionGain,
+              codeIsShorter: item.codeIsShorter,
+              aliasReady: item.aliasReady,
+              aliases: item.aliases.slice(0, 3)
+            })),
+            null,
+            2
+          ));
           NODE
 
       - name: Upload downloadable Dreamengin.json
