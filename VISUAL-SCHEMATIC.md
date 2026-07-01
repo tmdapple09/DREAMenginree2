@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2255
+- **Total files:** 2258
 - **Total function/class nodes:** 4682
 - **Total edges:** 8489
-- **Orphan nodes:** 4065
+- **Orphan nodes:** 4067
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4093,6 +4093,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `COREUX.md` | doc |
 | `COREVISION.md` | doc |
 | `daydreams/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `deepseek_json_20260701_3ac1d7.json` | config |
 | `docs/ACTION_AUDIT.md` | doc |
 | `docs/ACTIVITY_FIRST_PROTOCOL.md` | doc |
 | `docs/ADD_WORKFLOW.md` | doc |
@@ -4198,6 +4199,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `dr-eams/capabilities.yaml` | config |
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `Dreamengin.names.json` | config |
 | `dreamr/activity/boogieActivityPolicy.ts` | ts |
 | `dreamr/bot-detection/detector.ts` | ts |
 | `dreamr/bot-detection/view-tally.ts` | ts |

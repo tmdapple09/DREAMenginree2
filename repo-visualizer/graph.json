@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T08:15:55.962Z",
+  "generatedAt": "2026-07-01T08:44:48.169Z",
   "root": ".",
   "nodes": [
     {
@@ -2652,6 +2652,16 @@
       "isOrphan": false
     },
     {
+      "id": "file:.github/workflows/DreamenginEncode.yml",
+      "label": "DreamenginEncode.yml",
+      "type": "config",
+      "path": ".github/workflows/DreamenginEncode.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/Repo Audit Auto Fix.yml",
       "label": "Repo Audit Auto Fix.yml",
       "type": "config",
@@ -3576,6 +3586,16 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:Dreamengin.names.json",
+      "label": "Dreamengin.names.json",
+      "type": "config",
+      "path": "Dreamengin.names.json",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -24726,6 +24746,16 @@
         "supabase-table:daydream_states",
         "supabase-table:daydream_states"
       ]
+    },
+    {
+      "id": "file:deepseek_json_20260701_3ac1d7.json",
+      "label": "deepseek_json_20260701_3ac1d7.json",
+      "type": "config",
+      "path": "deepseek_json_20260701_3ac1d7.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
     },
     {
       "id": "folder:docs",
