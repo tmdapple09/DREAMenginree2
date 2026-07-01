@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-07-01T08:39:53.499Z
+Generated: 2026-07-01T11:23:51.408Z
 
 Legend: ! unresolved import  unused export
 
@@ -184,10 +184,8 @@ Legend: ! unresolved import  unused export
 |   |   |   |       +-- (default)  <- fs/promises
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       +-- (default)  <- path
-|   |   |   |       +-- (require)  <- export const runtime = 'nodejs'
 |   |   |   |       +-- -> FileNode
-|   |   |   |       +-- -> POST
-|   |   |   |       `-- -> runtime
+|   |   |   |       `-- -> POST
 |   |   |   `-- observability  [Supabase / Database]
 |   |   |       `-- route.ts
 |   |   |           +-- isOwnerEmail  <- @/dr-eams/ai/triad
@@ -863,7 +861,6 @@ Legend: ! unresolved import  unused export
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
-|   |   |   |       +-- (require)  <- Unauthorized
 |   |   |   |       `-- -> POST
 |   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2352,7 +2349,8 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- dream.DataClient.tsx
 |   |   |   |   +-- AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
-|   |   |   |   `-- useCallback, useState  <- react
+|   |   |   |   +-- useCallback, useState  <- react
+|   |   |   |   `-- -> (default)
 |   |   |   `-- page.tsx
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2554,6 +2552,8 @@ Legend: ! unresolved import  unused export
 |       +-- (dynamic import)  <- @/components/landing/dream.LandingNav
 |       +-- (dynamic import)  <- @/components/landing/dream.scene.UniverseField
 |       `-- -> (default)
++-- artifact
+|   `-- dreamengin-clean-codebase-report.json
 +-- assembly  [GameEngin, VM / WASM]
 |   +-- bus.ts unused
 |   |   +-- -> QUEUE_SIZE
@@ -2565,7 +2565,8 @@ Legend: ! unresolved import  unused export
 |   |   +-- -> hashBytesFNV1A
 |   |   +-- -> processAudioBufferSIMD
 |   |   +-- -> shapeGlowFieldSIMD
-|   |   `-- unused unused: hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD
+|   |   +-- -> tickPhysicsSIMD
+|   |   `-- unused unused: hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD, tickPhysicsSIMD
 |   `-- mad-maxi-player.ts unused
 |       +-- -> getCoyoteTimer
 |       +-- -> getDashTimer
@@ -2629,13 +2630,11 @@ Legend: ! unresolved import  unused export
 |   |       +-- useId, useState  <- react
 |   |       `-- -> (default)
 |   +-- branding
-|   |   +-- dream.DreamEnginLogo.tsx ! unused
+|   |   +-- dream.DreamEnginLogo.tsx unused
 |   |   |   +-- useDreamLogoScene, DreamLogoSceneOptions  <- @/engine/rendering/babylon/useDreamLogoScene
 |   |   |   +-- useRef  <- react
-|   |   |   +-- DreamEnginLogo  ! @/components/DreamEnginLogo
-|   |   |   +-- -> (default)
 |   |   |   +-- -> DreamEnginLogo
-|   |   |   `-- unused unused: (default), DreamEnginLogo
+|   |   |   `-- unused unused: DreamEnginLogo
 |   |   +-- dream.LogoHero.tsx unused
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- -> (default)
@@ -2921,7 +2920,6 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- cacheAsset, enqueueSyncAction  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useState, ReactNode  <- react
 |   |   |   +-- v4  <- uuid
-|   |   |   +-- (default)  <- image
 |   |   |   +-- -> (default)
 |   |   |   +-- -> ASSET_IMPORT_EVENT
 |   |   |   +-- -> AssetCategory
@@ -2984,7 +2982,7 @@ Legend: ! unresolved import  unused export
 |   |   |   +-- WebGPUDirector, applyDirectorFrame, buildSceneObjects, defaultCameraSignals  <- @/engine/rendering/webgpu/director
 |   |   |   +-- useEffect, useRef  <- react
 |   |   |   +-- (dynamic import)  <- @babylonjs/core
-|   |   |   +-- (side-effect)  <- @babylonjs/core
+|   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/god-tier/godTierEngine
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/webgpu/director
@@ -3405,16 +3403,12 @@ Legend: ! unresolved import  unused export
 |   |   |   |   +-- EngineId  <- ./dream.EnginProvider
 |   |   |   |   +-- NavItem  <- ./dream.bar.EnginNavBar
 |   |   |   |   `-- -> EnginRuleSet
-|   |   |   +-- dream.makeEnginApp.tsx unused
+|   |   |   +-- dream.makeEnginApp.tsx
 |   |   |   |   +-- useRouter  <- next/navigation
 |   |   |   |   +-- (default)  <- ./dream.bar.EnginNavBar
 |   |   |   |   +-- EnginRuleSet  <- ./dream.EnginRuleSet
 |   |   |   |   +-- (default)  <- ./dream.shell.EnginAppShell
-|   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
-|   |   |   |   +-- (default)  <- @/engins/engin.StarMakerEngin
-|   |   |   |   +-- -> (default)
-|   |   |   |   +-- -> makeEnginApp
-|   |   |   |   `-- unused unused: (default)
+|   |   |   |   `-- -> makeEnginApp
 |   |   |   +-- dream.shell.EnginAppShell.tsx
 |   |   |   |   +-- InviteFlow, SharedDreamProvider  <- @/components/shared-dream
 |   |   |   |   +-- ChevronLeft, X  <- lucide-react
@@ -3577,6 +3571,7 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- -> HitStop
 |   |   |       +-- -> ParallaxLayer
 |   |   |       +-- -> ParallaxLayers
+|   |   |       +-- -> Particle
 |   |   |       +-- -> ParticlePool
 |   |   |       +-- -> ScreenShake
 |   |   |       +-- -> clamp
@@ -3585,7 +3580,7 @@ Legend: ! unresolved import  unused export
 |   |   |       +-- -> lerp
 |   |   |       +-- -> motionTrail
 |   |   |       +-- -> prefersReducedMotion
-|   |   |       `-- unused unused: HitStop, ParallaxLayer, ParallaxLayers, clamp, easeOutCubic, lerp
+|   |   |       `-- unused unused: HitStop, ParallaxLayer, ParallaxLayers, Particle, clamp, easeOutCubic, lerp
 |   |   +-- madmaxi  [GameEngin]
 |   |   |   +-- audio.ts unused
 |   |   |   |   +-- -> MadmaxiAudioController
@@ -3633,39 +3628,6 @@ Legend: ! unresolved import  unused export
 |   |   |   |   +-- createScanLineTexture, makeDetailMat, ScanLineTexture  <- ./materials
 |   |   |   |   +-- CoinDef, EnemyDef, HazardDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef  <- ./types
 |   |   |   |   +-- createMadmaxiVfx, VfxKit, VfxTier  <- ./vfx
-|   |   |   |   +-- (side-effect)  <- s SceneLoader so
-// the MADMAXI authored hero mesh (`/models/madmaxi.glb`) can be imported at runtime.
-
-const GW = 800; // logical canvas width
-const GH = 480; // logical canvas height
-const GRAV          = 0.048;   // units / frame² (upward phase)
-const FALL_GRAV_MUL = 3.0;    // max gravity multiplier at terminal velocity (fall phase)
-const MAX_FALL      = 0.95;    // terminal velocity (positive = down in BJS Y-up is handled)
-const JUMP_VY       = 0.936;   // +20% jump reach — jet-like upward burst
-const WALK_SPD      = 0.2088;  // +20% horizontal speed — brisk robot run
-// Visual offset to raise the player rig so boots sit on the platform surface
-// (the detailed rig geometry extends further below the hitbox centre than the
-//  32-px hitbox half-height, causing an apparent 2 BU sink without the lift).
-const PLAYER_RIG_Y_OFFSET = 2.0; // Babylon units upward from hitbox centre
-const COYOTE_MS  = 8;       // extra frames to jump after leaving ledge
-const JBUF_MS    = 6;       // frames to buffer a jump before landing
-const DASH_SPD   = 0.357;   // player dash speed (reduced ~15%, still ≈ 3.6× walk)
-const DASH_DUR   = 10;      // dash duration in frames
-const DASH_COOL  = 45;      // frames between dashes
-const PROJ_SPD   = 4.5;     // boss projectile speed (px/frame)
-const PROJ_LIFE  = 120;     // frames before projectile despawns
-const COMBO_WIN  = 1500;    // ms window to chain a combo kill
-
-// World scale: all Babylon geometry is WORLD_SCALE× larger than before.
-// The camera is pulled back by the same factor so the viewport looks identical,
-// but every mesh has 2.5× more geometric space → higher tessellation pays off.
-const WORLD_SCALE = 2.5;
-
-// Babylon render-unit scale: 1 BU ≈ 40 / WORLD_SCALE logical px
-const PX_PER_BU = 40 / WORLD_SCALE; // = 16
-
-const SESSION_SEED: number =
-  typeof window !== 
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
@@ -3996,8 +3958,6 @@ const SESSION_SEED: number =
 |   |   |   +-- usePathname  <- next/navigation
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useState  <- react
-|   |   |   +-- (default)  <- @/components/home/dream.bar.PersistentDreamBar
-|   |   |   +-- (default)  <- @/components/home/dream.bar.PersistentDreamBar
 |   |   |   +-- -> (default)
 |   |   |   +-- -> DreamDMContainer
 |   |   |   `-- unused unused: DreamDMContainer
@@ -4132,7 +4092,7 @@ const SESSION_SEED: number =
 |   |       +-- CHAOS_WEIGHTS, DEFAULT_WEIGHTS, STABLE_WEIGHTS, OptimizeroResult, OptimizeroWeights  <- @/optimizer/creative-optimizero
 |   |       +-- useEffect, useRef, useState  <- react
 |   |       +-- (dynamic import)  <- @babylonjs/core
-|   |       +-- (side-effect)  <- @babylonjs/core
+|   |       +-- (dynamic import)  <- @babylonjs/core
 |   |       +-- (dynamic import)  <- @babylonjs/core
 |   |       +-- (dynamic import)  <- @babylonjs/core
 |   |       +-- -> (default)
@@ -4170,7 +4130,8 @@ const SESSION_SEED: number =
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2  <- lucide-react
-|   |   |   `-- useCallback, useState  <- react
+|   |   |   +-- useCallback, useState  <- react
+|   |   |   `-- -> (default)
 |   |   +-- dream.panel.FeedPanel.tsx unused
 |   |   |   +-- default  <- @/components/panels/dream.panel.FeedSettingsPanel
 |   |   |   +-- -> default
@@ -4486,7 +4447,6 @@ const SESSION_SEED: number =
 |   |   |   +-- ReactNode  <- react
 |   |   |   `-- -> (default)
 |   |   +-- dream.DreamWord.tsx
-|   |   |   +-- (default)  <- @/components/ui/dream.DreamWord
 |   |   |   `-- -> (default)
 |   |   +-- dream.IconList.tsx unused
 |   |   |   +-- (default)  <- next/link
@@ -4538,6 +4498,7 @@ const SESSION_SEED: number =
 |   |   |   `-- -> readViewportWidth
 |   |   +-- runtimeViewport.ts
 |   |   |   +-- *  <- ./responsive
+|   |   |   +-- -> COMPACT_RUNTIME_VIEWPORT_MAX_WIDTH
 |   |   |   +-- -> getPreferredViewportHeight
 |   |   |   +-- -> isCompactRuntimeViewport
 |   |   |   +-- -> readInteractiveViewportHeight
@@ -4761,7 +4722,7 @@ const SESSION_SEED: number =
 |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- (dynamic import)  <- @babylonjs/core
-|   |   +-- (side-effect)  <- @babylonjs/core
+|   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- -> (default)
@@ -5331,7 +5292,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> makeConfirmToken
 |   |   |   `-- -> verifyConfirmToken
 |   |   +-- groq.ts unused
-|   |   |   +-- (side-effect)  <- GROQ_API_KEY is not set
 |   |   |   +-- -> GroqChatOptions
 |   |   |   +-- -> GroqMessage
 |   |   |   +-- -> GroqRole
@@ -5885,7 +5845,6 @@ const SESSION_SEED: number =
 |   |       +-- (side-effect)  <- server-only
 |   |       +-- readFileSync  <- node:fs
 |   |       +-- join  <- node:path
-|   |       +-- loadEmbedFeed  <- @/dreamr/feeds/embedFeedLoader
 |   |       +-- -> EmbedFeed
 |   |       +-- -> EmbedFeedAlgorithm
 |   |       +-- -> EmbedFeedItem
@@ -6066,8 +6025,7 @@ const SESSION_SEED: number =
 |   |   +-- agentBus.ts
 |   |   |   +-- (dynamic import)  <- @/dr-eams/ai/schemas
 |   |   |   +-- (dynamic import)  <- @/dr-eams/ai/schemas
-|   |   |   +-- (default)  <- { unanimous: true }
-|   |   |   +-- (side-effect)  <- @/dr-eams/ai/triad
+|   |   |   +-- (dynamic import)  <- @/dr-eams/ai/triad
 |   |   |   +-- Intent  <- @/dr-eams/ai/schemas
 |   |   |   +-- -> GameEnginAgentRole
 |   |   |   +-- -> IdariEventDetail
@@ -6196,7 +6154,6 @@ const SESSION_SEED: number =
 |   |   `-- gsap
 |   |       +-- gsap.ts
 |   |       |   +-- gsap  <- gsap
-|   |       |   +-- (default)  <- @/engine/animation/gsap/gsap
 |   |       |   +-- (dynamic import)  <- gsap
 |   |       |   `-- -> getGsap
 |   |       +-- useGsapEntrance.ts
@@ -6310,7 +6267,6 @@ const SESSION_SEED: number =
 |   |   |   |   +-- facebookPageRssUrl, parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   |   +-- (require)  <- Public
 |   |   |   |   +-- -> FacebookCredentials
 |   |   |   |   +-- -> facebookCredentialFields
 |   |   |   |   +-- -> facebookSync
@@ -6465,7 +6421,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> getConnectorDef
 |   |   |   `-- unused unused: ConnectorCategory, ConnectorLimitation, ConnectorTier
 |   |   +-- deliveryStrategy.ts unused
-|   |   |   +-- (side-effect)  <- webhook
 |   |   |   +-- -> ConnectorDeliveryStrategy
 |   |   |   +-- -> DELIVERY_STRATEGY_MATRIX
 |   |   |   +-- -> DeliveryMethod
@@ -6575,11 +6530,13 @@ const SESSION_SEED: number =
 |   |       +-- -> resolveAcceptPolicy
 |   |       `-- unused unused: AuditEntry, ConsentDecision, ConsentDomain, ConsentEntry, ConsentManager, consentManager, resolveAcceptPolicy
 |   +-- dream-window
-|   |   +-- connectionVerbs.ts
+|   |   +-- connectionVerbs.ts unused
 |   |   |   +-- CONNECTION_VERBS, isRejectedConnectionVerb, isValidConnectionVerb, REJECTED_CONNECTION_VERBS, ConnectionVerb  <- @/engine/identity/canonical-names
+|   |   |   +-- -> CONNECTION_VERBS
 |   |   |   +-- -> ConnectionAction
 |   |   |   +-- -> ConnectionResult
 |   |   |   +-- -> ConnectionVerb
+|   |   |   +-- -> REJECTED_CONNECTION_VERBS
 |   |   |   +-- -> createActivateAction
 |   |   |   +-- -> createAttachAction
 |   |   |   +-- -> createBindAction
@@ -6587,10 +6544,13 @@ const SESSION_SEED: number =
 |   |   |   +-- -> createMountAction
 |   |   |   +-- -> createOpenIntoAction
 |   |   |   +-- -> createRouteIntoAction
-|   |   |   `-- -> dispatch
+|   |   |   +-- -> dispatch
+|   |   |   +-- -> isValidConnectionVerb
+|   |   |   `-- unused unused: REJECTED_CONNECTION_VERBS
 |   |   +-- DreamWindowLifecycle.ts
 |   |   |   +-- DREAM_WINDOW_STATES, ConnectionVerb, DreamWindowState  <- @/engine/identity/canonical-names
 |   |   |   +-- -> DREAM_WINDOW_REQUIRED_LAYERS
+|   |   |   +-- -> DREAM_WINDOW_STATES
 |   |   |   +-- -> DestinationRule
 |   |   |   +-- -> DreamWindowConfig
 |   |   |   +-- -> DreamWindowInstance
@@ -6615,9 +6575,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> getPathsForEngin
 |   |   |   `-- -> hasConnectionPath
 |   |   +-- index.ts unused
-|   |   |   +-- dispatch, createBindAction  <- @/engine/dream-window
-|   |   |   +-- DEFAULT_RUNTIME_REGION_STATE, activateSurface  <- @/engine/dream-window
-|   |   |   +-- ALL_CONNECTION_PATHS, getPathsForDomain  <- @/engine/dream-window
 |   |   |   +-- DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize  <- ./DreamWindowLifecycle
 |   |   |   +-- DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, activateDreamWindow, bindDreamWindow, collapseDreamWindow, createDreamWindowInstance, mountDreamWindow, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers  <- ./DreamWindowLifecycle
 |   |   |   +-- DreamWindowLayer, DreamWindowLayerValidationResult, DreamWindowState  <- ./DreamWindowLifecycle
@@ -6683,6 +6640,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> DEFAULT_RUNTIME_REGION_STATE
 |   |   |   +-- -> DreamSpaceState
 |   |   |   +-- -> DreamWindowRef
+|   |   |   +-- -> RUNTIME_REGIONS
 |   |   |   +-- -> RuntimeRegionState
 |   |   |   +-- -> SeamState
 |   |   |   +-- -> SurfaceSpaceState
@@ -7506,6 +7464,7 @@ const SESSION_SEED: number =
 |   |       +-- -> AIAgent
 |   |       +-- -> AI_AGENTS
 |   |       +-- -> AI_ROUTES
+|   |       +-- -> ALL_CANONICAL_NAMES
 |   |       +-- -> ALL_ENGIN_NAMES
 |   |       +-- -> CONNECTION_VERBS
 |   |       +-- -> CORE_SURFACES
@@ -7610,7 +7569,6 @@ const SESSION_SEED: number =
 |   +-- journey
 |   |   +-- journeyDots.ts
 |   |   |   +-- LogJourneyDotInput  <- @/types/journey
-|   |   |   +-- logJourneyDot, hasJourneyDot  <- @/engine/journey/journeyDots
 |   |   |   +-- -> hasJourneyDot
 |   |   |   `-- -> logJourneyDot
 |   |   +-- journeyInsights.ts unused
@@ -7693,12 +7651,13 @@ const SESSION_SEED: number =
 |   |   `-- request.ts unused
 |   |       +-- MARKETPLACE_CONTACT_TABLE  <- ./listings
 |   |       +-- -> CONTACT_REQUEST_MESSAGE_MAX
+|   |       +-- -> ContactRequestInput
 |   |       +-- -> ContactRequestRecord
 |   |       +-- -> ContactRequestValidationResult
 |   |       +-- -> MARKETPLACE_CONTACT_TABLE
 |   |       +-- -> buildContactRequestRecord
 |   |       +-- -> validateContactRequest
-|   |       `-- unused unused: ContactRequestRecord, ContactRequestValidationResult, MARKETPLACE_CONTACT_TABLE
+|   |       `-- unused unused: ContactRequestInput, ContactRequestRecord, ContactRequestValidationResult, MARKETPLACE_CONTACT_TABLE
 |   +-- navigation
 |   |   +-- anchorField.ts
 |   |   |   +-- Vector3  <- ./manifold
@@ -7947,6 +7906,8 @@ const SESSION_SEED: number =
 |   |   |   +-- -> clearBuffers
 |   |   |   +-- -> collectBatchLogs
 |   |   |   +-- -> collectLog
+|   |   |   +-- -> collectMetric
+|   |   |   +-- -> collectTrace
 |   |   |   +-- -> getBufferStats
 |   |   |   +-- -> getErrorRate
 |   |   |   +-- -> getLogCountsBySeverity
@@ -7969,13 +7930,15 @@ const SESSION_SEED: number =
 |   |   |   +-- LoopIteration, LoopStatus  <- @/engine/agents/idariLoop
 |   |   |   +-- -> HealthDataPoint
 |   |   |   +-- -> HealthReport
+|   |   |   +-- -> HealthStatus
 |   |   |   +-- -> HealthTrend
 |   |   |   +-- -> clearHealthTrend
+|   |   |   +-- -> exportHealthReport
 |   |   |   +-- -> getHealthScore
 |   |   |   +-- -> getHealthTrend
 |   |   |   +-- -> getMTTR
 |   |   |   +-- -> updateHealthTrend
-|   |   |   `-- unused unused: HealthDataPoint, HealthReport, HealthTrend, clearHealthTrend, getHealthScore, getHealthTrend, getMTTR, updateHealthTrend
+|   |   |   `-- unused unused: HealthDataPoint, HealthReport, HealthStatus, HealthTrend, clearHealthTrend, exportHealthReport, getHealthScore, getHealthTrend, getMTTR, updateHealthTrend
 |   |   +-- immediateAction.ts unused
 |   |   |   +-- RootCauseAnalysis  <- ./rootCauseAnalyzer
 |   |   |   +-- (side-effect)  <- ,
@@ -7999,7 +7962,6 @@ const SESSION_SEED: number =
 |   |   |   +-- BatchSpanProcessor, NodeTracerProvider  <- @opentelemetry/sdk-trace-node
 |   |   |   +-- ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION  <- @opentelemetry/semantic-conventions
 |   |   |   +-- IncomingMessage, ServerResponse  <- node:http
-|   |   |   +-- (side-effect)  <- dreamengin
 |   |   |   +-- -> getMeter
 |   |   |   +-- -> getPrometheusMetrics
 |   |   |   `-- -> getTracer
@@ -8259,6 +8221,7 @@ const SESSION_SEED: number =
 |   |       +-- -> ENFORCEMENT_SCOPES
 |   |       +-- -> EnforcementAction
 |   |       +-- -> EnforcementScope
+|   |       +-- -> PolicyCategory
 |   |       +-- -> PolicyCategoryValue
 |   |       +-- -> PolicyResult
 |   |       +-- -> PolicySeverity
@@ -8308,7 +8271,6 @@ const SESSION_SEED: number =
 |   |   +-- babylon
 |   |   |   +-- createEngine.ts
 |   |   |   |   +-- AbstractEngine  <- @babylonjs/core
-|   |   |   |   +-- webGPUDirector, defaultCameraSignals, defaultDirectorMetrics  <- @/engine/rendering/webgpu/director
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   |   +-- -> BabylonEngineOptions
 |   |   |   |   +-- -> BabylonEngineResult
@@ -8323,35 +8285,62 @@ const SESSION_SEED: number =
 |   |   |       `-- -> useDreamLogoScene
 |   |   +-- god-tier
 |   |   |   +-- godTierEngine.ts
+|   |   |   |   +-- WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildPassPlan, buildSceneObjects, classifyObject, classifyPressure, decideObject, defaultCameraSignals, defaultDirectorMetrics, resolveFrameBudget, resolveResolutionScale, resolveTemporalState, scoreObject, webGPUDirector, CameraSignals, CameraState, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, DirectorFrame, FrameBudget, MeshHints, ObjectDecision, PassConfig, PassName, PassPlan, Pressure, QualityClass, SceneObject, TemporalState  <- ../webgpu/director
 |   |   |   |   +-- -> AlgorithmLevel
 |   |   |   |   +-- -> BabylonEngineLike
 |   |   |   |   +-- -> BabylonMeshLike
 |   |   |   |   +-- -> BabylonSceneLike
+|   |   |   |   +-- -> CameraSignals
+|   |   |   |   +-- -> CameraState
 |   |   |   |   +-- -> ChildContentFilter
 |   |   |   |   +-- -> DeviceSignals
+|   |   |   |   +-- -> DirectorBabylonEngine
+|   |   |   |   +-- -> DirectorBabylonMesh
+|   |   |   |   +-- -> DirectorBabylonScene
+|   |   |   |   +-- -> DirectorFrame
 |   |   |   |   +-- -> DreamEngineGodTierSystem
+|   |   |   |   +-- -> FrameBudget
 |   |   |   |   +-- -> GodTierState
 |   |   |   |   +-- -> IntentClass
 |   |   |   |   +-- -> MeshDecision
+|   |   |   |   +-- -> MeshHints
 |   |   |   |   +-- -> MeshSnapshot
 |   |   |   |   +-- -> MotionPlan
+|   |   |   |   +-- -> ObjectDecision
+|   |   |   |   +-- -> PassConfig
+|   |   |   |   +-- -> PassName
+|   |   |   |   +-- -> PassPlan
 |   |   |   |   +-- -> PredictedIntent
 |   |   |   |   +-- -> PrefetchRequest
+|   |   |   |   +-- -> Pressure
+|   |   |   |   +-- -> QualityClass
 |   |   |   |   +-- -> QualityMode
 |   |   |   |   +-- -> RenderPlan
 |   |   |   |   +-- -> RingAverage
 |   |   |   |   +-- -> RouteSignals
 |   |   |   |   +-- -> RuntimeMetrics
 |   |   |   |   +-- -> SceneMode
+|   |   |   |   +-- -> SceneObject
+|   |   |   |   +-- -> TemporalState
 |   |   |   |   +-- -> UIElementSnapshot
 |   |   |   |   +-- -> UIHierarchyDecision
 |   |   |   |   +-- -> UXSignals
 |   |   |   |   +-- -> VisualPlan
+|   |   |   |   +-- -> WebGPUDirector
+|   |   |   |   +-- -> applyDirectorFrame
 |   |   |   |   +-- -> applyGodTierToBabylon
+|   |   |   |   +-- -> babylonMeshToSceneObject
 |   |   |   |   +-- -> buildChildContentFilter
+|   |   |   |   +-- -> buildPassPlan
+|   |   |   |   +-- -> buildSceneObjects
 |   |   |   |   +-- -> cinematicMotionStack
+|   |   |   |   +-- -> classifyObject
+|   |   |   |   +-- -> classifyPressure
 |   |   |   |   +-- -> computeAlgorithmLevel
+|   |   |   |   +-- -> decideObject
+|   |   |   |   +-- -> defaultCameraSignals
 |   |   |   |   +-- -> defaultDeviceSignals
+|   |   |   |   +-- -> defaultDirectorMetrics
 |   |   |   |   +-- -> defaultRouteSignals
 |   |   |   |   +-- -> defaultRuntimeMetrics
 |   |   |   |   +-- -> defaultUXSignals
@@ -8364,10 +8353,15 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> heroObjectImportance
 |   |   |   |   +-- -> maxAssumptionBoot
 |   |   |   |   +-- -> predictIntent
+|   |   |   |   +-- -> resolveFrameBudget
+|   |   |   |   +-- -> resolveResolutionScale
+|   |   |   |   +-- -> resolveTemporalState
 |   |   |   |   +-- -> runDreamEngineGodTier
+|   |   |   |   +-- -> scoreObject
 |   |   |   |   +-- -> speculativePrefetchEngine
 |   |   |   |   +-- -> uiPrioritySolver
-|   |   |   |   `-- -> visualDominanceEngine
+|   |   |   |   +-- -> visualDominanceEngine
+|   |   |   |   `-- -> webGPUDirector
 |   |   |   `-- useGodTier.ts unused
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       +-- defaultDeviceSignals, defaultRuntimeMetrics, defaultUXSignals, DreamEngineGodTierSystem, getGodTierUiTokens, DeviceSignals, GodTierState, MeshSnapshot, RouteSignals, RuntimeMetrics, UIElementSnapshot, UXSignals  <- ./godTierEngine
@@ -8545,7 +8539,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> buildApperceptiveContext
 |   |   |   `-- unused unused: ApperceptiveSurface
 |   |   +-- channelMetrics.ts unused
-|   |   |   +-- recordEmission, getChannelMetrics  <- @/engine/runtime/channelMetrics
 |   |   |   +-- -> ChannelMetrics
 |   |   |   +-- -> getAllChannelMetrics
 |   |   |   +-- -> getChannelMetrics
@@ -8600,7 +8593,9 @@ const SESSION_SEED: number =
 |   |   |   +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |   |   +-- -> DEFAULT_DUAL_RUNTIME
 |   |   |   +-- -> DualRuntimeState
+|   |   |   +-- -> RUNTIME_REGIONS
 |   |   |   +-- -> RuntimeWorld
+|   |   |   +-- -> SURFACE_NAMES
 |   |   |   +-- -> TORUS_DOMAINS
 |   |   |   +-- -> TORUS_FOCUS_MAP
 |   |   |   +-- -> TORUS_HEIGHT
@@ -8615,7 +8610,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> swapDominantRuntime
 |   |   |   +-- -> torusFocusKey
 |   |   |   +-- -> worldsEqual
-|   |   |   `-- unused unused: TORUS_DOMAINS, TORUS_FOCUS_MAP, TORUS_HEIGHT, TORUS_WIDTH, TorusDomain
+|   |   |   `-- unused unused: RUNTIME_REGIONS, TORUS_DOMAINS, TORUS_FOCUS_MAP, TORUS_HEIGHT, TORUS_WIDTH, TorusDomain
 |   |   +-- dualRuntimeBridge.ts unused
 |   |   |   +-- invokeMadMaxiSnapshotTransfer  <- @/engine/runtime/madMaxiSnapshotBridge
 |   |   |   +-- EventEmitter  <- events
@@ -8673,14 +8668,19 @@ const SESSION_SEED: number =
 |   |   |   `-- unused unused: DispatcherToWorkerMessage, WasmEngineExports, WorkerBoundsViolationMessage, WorkerInboundMessage, WorkerInitMessage, WorkerOutboundMessage, WorkerStopMessage, WorkerTickMessage, WorkerToDispatcherMessage, WorkerWasmBudgetExceededMessage, initWasmEngine
 |   |   +-- enginWorkflowRegistry.ts unused
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
-|   |   |   +-- (side-effect)  <- starmaker
 |   |   |   +-- -> ENGIN_KEYS
+|   |   |   +-- -> EnginKey
+|   |   |   +-- -> WorkflowArtifactType
+|   |   |   +-- -> WorkflowDefinition
+|   |   |   +-- -> WorkflowStats
 |   |   |   +-- -> allWorkflows
 |   |   |   +-- -> executeWorkflow
+|   |   |   +-- -> findWorkflowById
+|   |   |   +-- -> findWorkflows
 |   |   |   +-- -> getWorkflowStats
 |   |   |   +-- -> getWorkflowsByArtifactType
 |   |   |   +-- -> workflowExists
-|   |   |   `-- unused unused: getWorkflowStats, getWorkflowsByArtifactType, workflowExists
+|   |   |   `-- unused unused: WorkflowArtifactType, WorkflowDefinition, WorkflowStats, getWorkflowStats, getWorkflowsByArtifactType, workflowExists
 |   |   +-- iEngine.ts unused
 |   |   |   +-- createDomainObject, isDomainObject, DomainObject, DomainVisibility, JsonObject, JsonValue  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- authorizeDomainCapability, DomainAuthorizationContext, DomainCapability  <- @/engine/engin-runtime/EnginCapabilities
@@ -8783,7 +8783,6 @@ const SESSION_SEED: number =
 |   |   |   +-- (dynamic import)  <- fs/promises
 |   |   |   `-- -> invokeMadMaxiSnapshotTransfer
 |   |   +-- memory.ts unused
-|   |   |   +-- (require)  <- MEM_PRIVATE_ACCESS
 |   |   |   +-- -> BAR_SEAM_ATOMICS_INDEX
 |   |   |   +-- -> BAR_SEAM_SCALE
 |   |   |   +-- -> BAR_Y_SCALE
@@ -8847,6 +8846,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> int32DreamDMBarX
 |   |   |   +-- -> int32DreamDMBarY
 |   |   |   +-- -> int32LockedState
+|   |   |   +-- -> isIndexInBounds
 |   |   |   +-- -> isSABAvailable
 |   |   |   +-- -> readBarSeam
 |   |   |   +-- -> u8DaydreamType
@@ -8913,7 +8913,6 @@ const SESSION_SEED: number =
 |   |   |   +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- ENGIN_KEYS, findWorkflows, EnginKey  <- @/engine/runtime/enginWorkflowRegistry
-|   |   |   +-- (side-effect)  <- starmaker
 |   |   |   +-- -> SeamClipboardMimeType
 |   |   |   +-- -> SeamClipboardPayload
 |   |   |   +-- -> seamClipboard
@@ -9021,7 +9020,6 @@ const SESSION_SEED: number =
 |   +-- safety
 |   |   `-- child-safety
 |   |       +-- childSafetyDetector.ts
-|   |       |   +-- scanContent  <- @/engine/safety/child-safety/childSafetyDetector
 |   |       |   +-- (dynamic import)  <- ./imageClassifier
 |   |       |   +-- -> ChildSafetyResult
 |   |       |   +-- -> ChildSafetyRuleCode
@@ -9037,26 +9035,6 @@ const SESSION_SEED: number =
 |   |       |   +-- -> ImageRiskLevel
 |   |       |   `-- -> classifyImage
 |   |       +-- messageContextChecker.ts unused
-|   |       |   +-- (require)  <- s Internet Protection Act): Platforms serving minors must filter
-//   obscene or harmful material.
-// • CDA §230 safe harbor: Platforms lose protection when they have actual knowledge
-//   of CSAM and fail to act.
-// • Violence Against Women Act / STOP CSAM Act (2023): Platforms must adopt
-//   reasonable measures to detect and remove CSAM.
-// • State-level "Age-Appropriate Design" codes (e.g., California AB 2273): Platforms
-//   must apply the highest privacy and safety settings by default for minors.
-//
-// Usage:
-//   import { evaluateMessageContext } from 
-|   |       |   +-- (require)  <- s Internet Protection Act):
- *    - Must filter/block harmful material when minors are accessing the platform.
- *    - All image attachments from minors to adults are blocked regardless of content.
- *
- * 4. CDA §230 / STOP CSAM Act (2023):
- *    - Platforms lose safe harbor when they have actual knowledge of CSAM and fail to act.
- *    - The platform must adopt reasonable technical measures to detect and remove CSAM.
- *
- * 5. Age-Appropriate Design Codes (e.g., California AB 2273, UK Children
 |   |       |   +-- -> CHILD_SAFETY_LAW_SUMMARY
 |   |       |   +-- -> MessageContextInput
 |   |       |   +-- -> MessageContextResult
@@ -9079,7 +9057,6 @@ const SESSION_SEED: number =
 |   |           +-- ChildSafetyResult  <- ./childSafetyDetector
 |   |           +-- scanContent  <- ./childSafetyDetector
 |   |           +-- classifyImage  <- ./imageClassifier
-|   |           +-- scanMediaUrlsForChildSafety  <- @/engine/safety/child-safety/scanMediaUrls
 |   |           +-- -> ScanMediaUrlsInput
 |   |           +-- -> isImageUrl
 |   |           +-- -> scanMediaUrlsForChildSafety
@@ -9091,6 +9068,7 @@ const SESSION_SEED: number =
 |   |       +-- -> SceneObject
 |   |       +-- -> SceneSnapshot
 |   |       +-- -> createAutoSave
+|   |       +-- -> createDefaultSnapshot
 |   |       +-- -> listPersistedScenes
 |   |       +-- -> persistScene
 |   |       +-- -> removeScene
@@ -9252,6 +9230,7 @@ const SESSION_SEED: number =
 |   |   |   +-- -> getDualVMCoordinator
 |   |   |   `-- -> initializeDualVMCoordinator
 |   |   +-- index.ts unused
+|   |   |   +-- detectWasmFeatures, resetWasmFeatureCache, WasmFeatureSet  <- ./wasm-features
 |   |   |   +-- DEFAULT_RESOURCE_QUOTA, QuotaExceededError, enforceQuota, withinQuota, QuotaViolation, ResourceQuota, ResourceUsage  <- ./resource-quota
 |   |   |   +-- InterVMChannel, VMEvent  <- ./inter-vm-messaging
 |   |   |   +-- GPUTimeSlicer, MemoryBoundsError, SYSCALL_ALLOWLIST, checkBounds, isSyscallAllowed, AllowedSyscall, TimeBudget  <- ./security
@@ -9317,18 +9296,21 @@ const SESSION_SEED: number =
 |   |   |   +-- -> VMWorkload
 |   |   |   +-- -> VMWorkloadSpec
 |   |   |   +-- -> VMWorkloadSubmittedPayload
+|   |   |   +-- -> WasmFeatureSet
 |   |   |   +-- -> WasmGpuVM
 |   |   |   +-- -> WasmLinearMemory
 |   |   |   +-- -> WasmMemorySnapshot
 |   |   |   +-- -> checkBounds
 |   |   |   +-- -> destroyDualVMCoordinator
+|   |   |   +-- -> detectWasmFeatures
 |   |   |   +-- -> dualRuntime
 |   |   |   +-- -> enforceQuota
 |   |   |   +-- -> getDualVMCoordinator
 |   |   |   +-- -> initializeDualVMCoordinator
 |   |   |   +-- -> isSyscallAllowed
+|   |   |   +-- -> resetWasmFeatureCache
 |   |   |   +-- -> withinQuota
-|   |   |   `-- unused unused: AllowedSyscall, BindGroupDescriptor, BindGroupHandle, BufferHandle, BufferManager, CommandBufferState, ComputePipelineDescriptor, DEFAULT_RESOURCE_QUOTA, DEFAULT_VM_CONFIG, DualRuntime, DualVMConfig, DualVMCoordinator, ErrorCode, GPUBufferDescriptor, GPUBufferSnapshot, GPUBufferUsageFlags, GPUTimeSlicer, HandleTableSnapshot, InterVMChannel, LayoutHandle, MemoryBoundsError, PipelineCache, PipelineHandle, PipelineSnapshot, QuotaExceededError, QuotaViolation, ResourceQuota, ResourceUsage, SYSCALL_ALLOWLIST, SnapshotManager, TimeBudget, VMBusEventMap, VMBusEventName, VMComputeCompletePayload, VMConfig, VMErrorCode, VMErrorPayload, VMEvent, VMEventChannel, VMId, VMMessageQueueDescriptor, VMPerformanceCounters, VMRegion, VMResourceQuotas, VMRuntimeStats, VMSnapshot, VMState, VMStatsPayload, VMStatsUpdatePayload, VMSyscalls, VMWorkload, VMWorkloadSpec, VMWorkloadSubmittedPayload, WasmGpuVM, WasmLinearMemory, WasmMemorySnapshot, checkBounds, destroyDualVMCoordinator, dualRuntime, enforceQuota, getDualVMCoordinator, initializeDualVMCoordinator, isSyscallAllowed, withinQuota
+|   |   |   `-- unused unused: AllowedSyscall, BindGroupDescriptor, BindGroupHandle, BufferHandle, BufferManager, CommandBufferState, ComputePipelineDescriptor, DEFAULT_RESOURCE_QUOTA, DEFAULT_VM_CONFIG, DualRuntime, DualVMConfig, DualVMCoordinator, ErrorCode, GPUBufferDescriptor, GPUBufferSnapshot, GPUBufferUsageFlags, GPUTimeSlicer, HandleTableSnapshot, InterVMChannel, LayoutHandle, MemoryBoundsError, PipelineCache, PipelineHandle, PipelineSnapshot, QuotaExceededError, QuotaViolation, ResourceQuota, ResourceUsage, SYSCALL_ALLOWLIST, SnapshotManager, TimeBudget, VMBusEventMap, VMBusEventName, VMComputeCompletePayload, VMConfig, VMErrorCode, VMErrorPayload, VMEvent, VMEventChannel, VMId, VMMessageQueueDescriptor, VMPerformanceCounters, VMRegion, VMResourceQuotas, VMRuntimeStats, VMSnapshot, VMState, VMStatsPayload, VMStatsUpdatePayload, VMSyscalls, VMWorkload, VMWorkloadSpec, VMWorkloadSubmittedPayload, WasmFeatureSet, WasmGpuVM, WasmLinearMemory, WasmMemorySnapshot, checkBounds, destroyDualVMCoordinator, detectWasmFeatures, dualRuntime, enforceQuota, getDualVMCoordinator, initializeDualVMCoordinator, isSyscallAllowed, resetWasmFeatureCache, withinQuota
 |   |   +-- inter-vm-messaging.ts
 |   |   |   +-- -> InterVMChannel
 |   |   |   `-- -> VMEvent
@@ -9379,11 +9361,10 @@ const SESSION_SEED: number =
 |   |   |   +-- -> VMSyscalls
 |   |   |   +-- -> WasmLinearMemory
 |   |   |   `-- -> WasmMemorySnapshot
-|   |   +-- wasm-features.ts unused
+|   |   +-- wasm-features.ts
 |   |   |   +-- -> WasmFeatureSet
 |   |   |   +-- -> detectWasmFeatures
-|   |   |   +-- -> resetWasmFeatureCache
-|   |   |   `-- unused unused: WasmFeatureSet, detectWasmFeatures, resetWasmFeatureCache
+|   |   |   `-- -> resetWasmFeatureCache
 |   |   `-- wasmGpuVM.ts
 |   |       +-- BufferManager  <- ./bufferManager
 |   |       +-- PipelineCache  <- ./pipelineCache
@@ -9396,7 +9377,6 @@ const SESSION_SEED: number =
 |   |   +-- client.ts
 |   |   |   +-- DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, WalletAccount, WalletConnectionState, WalletProvider, Web3Error, ChainConfig  <- ./types
 |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   +-- (side-effect)  <- new Web3Client()
 |   |   |   +-- -> Web3Client
 |   |   |   `-- -> web3Client
 |   |   +-- engagement.ts
@@ -9408,7 +9388,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> getOptimisticDelta
 |   |   |   `-- -> trackEngagement
 |   |   +-- index.ts unused
-|   |   |   +-- web3Client, trackEngagement, uploadToIpfs  <- @/engine/web3
 |   |   |   +-- DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, Web3Error  <- ./types
 |   |   |   +-- ChainConfig, EngagementPayload, EngagementStats, IpfsContent, IpfsUploadResult, WalletAccount, WalletConnectionState, WalletProvider  <- ./types
 |   |   |   +-- Web3Client, web3Client  <- ./client
@@ -9597,7 +9576,7 @@ const SESSION_SEED: number =
 |   |   +-- -> UniversalEngine
 |   |   `-- -> engine
 |   +-- io.ts
-|   |   +-- (default)  <- @supabase/supabase-js
+|   |   +-- SupabaseClient  <- @supabase/supabase-js
 |   |   +-- RealtimePostgresInsertPayload  <- @supabase/supabase-js
 |   |   +-- -> RealtimePostgresInsertPayload
 |   |   `-- -> SupabaseClient
@@ -9676,7 +9655,6 @@ const SESSION_SEED: number =
 |   |   |       `-- unused unused: CodeContext, ParsedCodeResponse, QueryIntent, VocabEntry, buildCodePrompt, getCodeAssistCompletion
 |   |   +-- diff  [CodeEngin]
 |   |   |   +-- aiEditEngine.ts unused
-|   |   |   |   +-- (require)  <- high
 |   |   |   |   +-- -> AiSuggestion
 |   |   |   |   +-- -> BuildPreviewOptions
 |   |   |   |   +-- -> CODEENGIN_PRODUCTION_MODE
@@ -9838,10 +9816,9 @@ const SESSION_SEED: number =
 |   |   |           +-- -> UseAgentSessionReturn
 |   |   |           `-- -> useAgentSession
 |   |   `-- orchestrator
-|   |       `-- dream.index.tsx ! unused
+|   |       `-- dream.index.tsx unused
 |   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
-|   |           +-- (default)  ! @/engins/CodeEngin/orchestrator
 |   |           +-- -> (default)
 |   |           `-- unused unused: (default)
 |   +-- codeengin-ui  [CodeEngin]
@@ -9873,10 +9850,9 @@ const SESSION_SEED: number =
 |   |   |           +-- -> UseAgentSessionReturn
 |   |   |           `-- -> useAgentSession
 |   |   `-- orchestrator  [CodeEngin]
-|   |       `-- dream.index.tsx ! unused
+|   |       `-- dream.index.tsx unused
 |   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
-|   |           +-- (default)  ! @/engins/codeengin-ui/orchestrator
 |   |           +-- -> (default)
 |   |           `-- unused unused: (default)
 |   +-- contentengin  [ContentEngin / CreateEngin]
@@ -9983,6 +9959,7 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> Homography
 |   |   |   |   +-- -> MotionEstimate
 |   |   |   |   +-- -> TrackPoint
+|   |   |   |   +-- -> TrackSample
 |   |   |   |   +-- -> addSample
 |   |   |   |   +-- -> addTrackPoint
 |   |   |   |   +-- -> computeHomography
@@ -9990,7 +9967,7 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> estimateCameraMotion
 |   |   |   |   +-- -> exportTrackCSV
 |   |   |   |   +-- -> trackSummary
-|   |   |   |   `-- unused unused: CameraFrame, CameraTrack, Homography, MotionEstimate, TrackPoint, addSample, addTrackPoint, computeHomography, createTrack, estimateCameraMotion, exportTrackCSV, trackSummary
+|   |   |   |   `-- unused unused: CameraFrame, CameraTrack, Homography, MotionEstimate, TrackPoint, TrackSample, addSample, addTrackPoint, computeHomography, createTrack, estimateCameraMotion, exportTrackCSV, trackSummary
 |   |   |   +-- motionCapture.ts unused
 |   |   |   |   +-- -> ClipSummary
 |   |   |   |   +-- -> FramePose
@@ -9998,12 +9975,14 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> JointTransform
 |   |   |   |   +-- -> MocapClip
 |   |   |   |   +-- -> clipSummary
+|   |   |   |   +-- -> exportBVH
 |   |   |   |   +-- -> findJoint
 |   |   |   |   +-- -> getFramePose
 |   |   |   |   +-- -> parseBVH
 |   |   |   |   +-- -> retargetClip
-|   |   |   |   `-- unused unused: ClipSummary, FramePose, Joint, JointTransform, MocapClip, clipSummary, findJoint, getFramePose, parseBVH, retargetClip
+|   |   |   |   `-- unused unused: ClipSummary, FramePose, Joint, JointTransform, MocapClip, clipSummary, exportBVH, findJoint, getFramePose, parseBVH, retargetClip
 |   |   |   `-- rotoscope.ts unused
+|   |   |       +-- -> BezierPoint
 |   |   |       +-- -> InterpolatedShape
 |   |   |       +-- -> RotoLayer
 |   |   |       +-- -> RotoProject
@@ -10011,11 +9990,12 @@ const SESSION_SEED: number =
 |   |   |       +-- -> addLayer
 |   |   |       +-- -> createProject
 |   |   |       +-- -> exportFrameSVG
+|   |   |       +-- -> exportShapeSVG
 |   |   |       +-- -> interpolateShape
 |   |   |       +-- -> keyframeList
 |   |   |       +-- -> removeKeyframe
 |   |   |       +-- -> setKeyframe
-|   |   |       `-- unused unused: InterpolatedShape, RotoLayer, RotoProject, RotoShape, addLayer, createProject, exportFrameSVG, interpolateShape, keyframeList, removeKeyframe, setKeyframe
+|   |   |       `-- unused unused: BezierPoint, InterpolatedShape, RotoLayer, RotoProject, RotoShape, addLayer, createProject, exportFrameSVG, exportShapeSVG, interpolateShape, keyframeList, removeKeyframe, setKeyframe
 |   |   +-- content  [ContentEngin / CreateEngin]
 |   |   |   +-- generativeFill.ts unused
 |   |   |   |   +-- -> DominantColor
@@ -10046,15 +10026,17 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> SearchResult
 |   |   |   |   +-- -> TimelineCut
 |   |   |   |   +-- -> TranscriptSegment
+|   |   |   |   +-- -> TranscriptWord
 |   |   |   |   +-- -> annotateSearchMatches
 |   |   |   |   +-- -> applyEditsToSegments
 |   |   |   |   +-- -> computeCuts
+|   |   |   |   +-- -> exportSRT
 |   |   |   |   +-- -> parseSRT
 |   |   |   |   +-- -> parseVTT
 |   |   |   |   +-- -> searchTranscript
 |   |   |   |   +-- -> segmentsToPlainText
 |   |   |   |   +-- -> totalDurationMs
-|   |   |   |   `-- unused unused: SearchResult, TimelineCut, TranscriptSegment, annotateSearchMatches, applyEditsToSegments, computeCuts, searchTranscript, segmentsToPlainText
+|   |   |   |   `-- unused unused: SearchResult, TimelineCut, TranscriptSegment, TranscriptWord, annotateSearchMatches, applyEditsToSegments, computeCuts, exportSRT, searchTranscript, segmentsToPlainText
 |   |   |   `-- voiceClone.ts unused
 |   |   |       +-- -> ListVoiceProfilesResult
 |   |   |       +-- -> TTSRequest
@@ -10524,12 +10506,16 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> AtomicPiece
 |   |   |   |   +-- -> EngineAssembly
 |   |   |   |   +-- -> Port
+|   |   |   |   +-- -> ValidationResult
 |   |   |   |   +-- -> Wire
 |   |   |   |   +-- -> atomicPieceFromComponent
+|   |   |   |   +-- -> createAssembly
 |   |   |   |   +-- -> deserializeAssembly
+|   |   |   |   +-- -> runAssembly
 |   |   |   |   +-- -> serializeAssembly
+|   |   |   |   +-- -> validateAssembly
 |   |   |   |   `-- unused unused: AssemblyEvents
-|   |   |   +-- forgeBuild.ts unused
+|   |   |   +-- forgeBuild.ts
 |   |   |   |   +-- v4  <- uuid
 |   |   |   |   +-- -> ForgeArtifact
 |   |   |   |   +-- -> ForgeArtifactType
@@ -10542,20 +10528,33 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> readForgeBuilds
 |   |   |   |   +-- -> recordBuildToday
 |   |   |   |   +-- -> saveForgeBuild
-|   |   |   |   +-- -> stageForgeArtifact
-|   |   |   |   `-- unused unused: clearForgeBuilds
-|   |   |   +-- forgeIntelligence.ts
+|   |   |   |   `-- -> stageForgeArtifact
+|   |   |   +-- forgeIntelligence.ts unused
 |   |   |   |   +-- CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY, FORGE_WORKFLOWS, EnginEntry, ForgeWorkflow  <- ./forgeRegistry
 |   |   |   |   +-- -> ForgeHistoryEntry
 |   |   |   |   +-- -> ForgeSuggestion
+|   |   |   |   +-- -> ForgeTransferEntry
+|   |   |   |   +-- -> WorkflowRunState
+|   |   |   |   +-- -> WorkflowStepStatus
 |   |   |   |   +-- -> appendForgeHistory
+|   |   |   |   +-- -> clearCustomWorkflows
 |   |   |   |   +-- -> clearForgeHistory
+|   |   |   |   +-- -> clearForgeTransfers
 |   |   |   |   +-- -> clearWorkflowRun
+|   |   |   |   +-- -> deleteCustomWorkflow
 |   |   |   |   +-- -> generateSuggestions
 |   |   |   |   +-- -> getActiveWorkflowRun
 |   |   |   |   +-- -> getFailureRecovery
+|   |   |   |   +-- -> parseGoalToWorkflow
 |   |   |   |   +-- -> predictNextEngines
-|   |   |   |   `-- -> readForgeHistory
+|   |   |   |   +-- -> readCustomWorkflows
+|   |   |   |   +-- -> readForgeHistory
+|   |   |   |   +-- -> readForgeTransfers
+|   |   |   |   +-- -> recordForgeTransfer
+|   |   |   |   +-- -> saveCustomWorkflow
+|   |   |   |   +-- -> startWorkflowRun
+|   |   |   |   +-- -> updateWorkflowStep
+|   |   |   |   `-- unused unused: WorkflowStepStatus
 |   |   |   +-- forgeMomentum.ts unused
 |   |   |   |   +-- CREATIVE_ENGINES, FORGE_HISTORY_KEY  <- ./forgeRegistry
 |   |   |   |   +-- -> MomentumDimension
@@ -10854,13 +10853,12 @@ const SESSION_SEED: number =
 |   |   |   |   +-- getCartridgeManifest, CartridgeManifestEntry  <- ./manifest
 |   |   |   |   +-- createContext, createElement, useContext, ComponentType  <- react
 |   |   |   |   +-- createRoot, Root  <- react-dom/client
-|   |   |   |   +-- -> CARTRIDGE_LOADERS
 |   |   |   |   +-- -> GameEngineAPIContext
 |   |   |   |   +-- -> createReactCartridgeHost
 |   |   |   |   +-- -> createReactGameCartridge
 |   |   |   |   +-- -> defineReactCartridgeLoader
 |   |   |   |   +-- -> useGameEngineAPI
-|   |   |   |   `-- unused unused: CARTRIDGE_LOADERS, GameEngineAPIContext, createReactCartridgeHost
+|   |   |   |   `-- unused unused: GameEngineAPIContext, createReactCartridgeHost
 |   |   |   `-- saveState.ts unused
 |   |   |       +-- CartridgeSaveAPI, CartridgeSaveSlot  <- ../cartridge
 |   |   |       +-- -> createSaveAPI
@@ -11074,7 +11072,6 @@ const SESSION_SEED: number =
 |   |   |   +-- useAIDirector.ts unused
 |   |   |   |   +-- AIDirector, DirectorState, PlayerSignals  <- @/engins/gameengin/ai-director
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   |   |   +-- (side-effect)  <- AIDirector
 |   |   |   |   +-- -> AIDirectorHookResult
 |   |   |   |   +-- -> useAIDirector
 |   |   |   |   `-- unused unused: AIDirectorHookResult
@@ -11111,7 +11108,7 @@ const SESSION_SEED: number =
 |   |   |       +-- -> GameRuntimeInputRouter
 |   |   |       `-- -> GameRuntimeInputRouterOptions
 |   |   +-- remote  [GameEngin]
-|   |   |   +-- comboMachine.ts unused
+|   |   |   +-- comboMachine.ts
 |   |   |   |   +-- ALL_COMBOS, maxComboLength, MULTITOUCH_COMBOS, Combo, FaceButton, MultiTouchCombo  <- ./moves
 |   |   |   |   +-- -> COMBO_WINDOW_MS
 |   |   |   |   +-- -> ComboMachine
@@ -11119,9 +11116,9 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> ComboMatch
 |   |   |   |   +-- -> MULTITOUCH_WINDOW_MS
 |   |   |   |   +-- -> MultiTouchMatch
-|   |   |   |   +-- -> RemoteMatch
-|   |   |   |   `-- unused unused: COMBO_WINDOW_MS, ComboMachineOptions, ComboMatch, MULTITOUCH_WINDOW_MS, MultiTouchMatch, RemoteMatch
+|   |   |   |   `-- -> RemoteMatch
 |   |   |   +-- index.ts
+|   |   |   |   +-- *  <- ./comboMachine
 |   |   |   |   +-- *  <- ./layout
 |   |   |   |   +-- *  <- ./moves
 |   |   |   |   `-- *  <- ./sprintDetector
@@ -11460,16 +11457,36 @@ const SESSION_SEED: number =
 |   |   |   +-- -> validateManifest
 |   |   |   `-- unused unused: CARTRIDGE_EXT, CARTRIDGE_MIME, CartridgeManifestSchema, PermissionSchema, QualityTierSchema, RenderModeSchema
 |   |   +-- cartridge.ts unused
+|   |   |   +-- -> AchievementDefinition
+|   |   |   +-- -> AchievementState
+|   |   |   +-- -> CartridgeAchievementsAPI
+|   |   |   +-- -> CartridgeAssetsAPI
+|   |   |   +-- -> CartridgeAudioAPI
 |   |   |   +-- -> CartridgeBackendRequirements
 |   |   |   +-- -> CartridgeCapability
+|   |   |   +-- -> CartridgeHapticsAPI
+|   |   |   +-- -> CartridgeInputEvent
+|   |   |   +-- -> CartridgeInputProfile
+|   |   |   +-- -> CartridgeNetworkAPI
+|   |   |   +-- -> CartridgeOrientationPreference
+|   |   |   +-- -> CartridgeQualityDefaults
 |   |   |   +-- -> CartridgeRendererFamily
+|   |   |   +-- -> CartridgeSaveAPI
+|   |   |   +-- -> CartridgeSaveSlot
+|   |   |   +-- -> CartridgeSessionPlayer
+|   |   |   +-- -> CartridgeSoundOptions
+|   |   |   +-- -> CartridgeWarmupPipeline
+|   |   |   +-- -> CartridgeWarmupPlan
+|   |   |   +-- -> CartridgeWorkerEntry
 |   |   |   +-- -> ENGINE_VERSION
 |   |   |   +-- -> GRAVITY_VALUES
 |   |   |   +-- -> GameCartridge
+|   |   |   +-- -> GameEngineAPI
 |   |   |   +-- -> GravityPreset
 |   |   |   +-- -> RendererBackendId
+|   |   |   +-- -> RuntimeBackendDiagnostics
 |   |   |   +-- -> engineSatisfies
-|   |   |   `-- unused unused: CartridgeBackendRequirements, CartridgeCapability
+|   |   |   `-- unused unused: CartridgeBackendRequirements, CartridgeCapability, CartridgeSessionPlayer, CartridgeSoundOptions, CartridgeWarmupPipeline
 |   |   +-- cartridgeLoader.ts
 |   |   |   +-- loadDreamrCartridgeFromResponse, parseDreamrArchive, DreamrCartridgeArchive, DreamrFileEntry  <- ./dreamr-loader
 |   |   |   +-- -> DreamrCartridgeArchive
@@ -11638,8 +11655,6 @@ const SESSION_SEED: number =
 |   |   |   +-- -> snapshotWorldGrid
 |   |   |   `-- unused unused: GameEnginDispatch
 |   |   +-- index.ts unused
-|   |   |   +-- (default)  <- @/engins/gameengin/index
-|   |   |   +-- RollbackNetcode, ComputeShaderPipeline, AdvancedPhysicsWorld, ...  <- @/engins/gameengin/index
 |   |   |   +-- mapJoystickToAsset  <- ./controls/control-mappings
 |   |   |   +-- ControlMapping  <- ./controls/control-mappings
 |   |   |   +-- ECSWorld, EliteGameEngine  <- ./core
@@ -11798,7 +11813,6 @@ const SESSION_SEED: number =
 |   |   |   +-- GameConfig  <- ./GameEnginCore
 |   |   |   +-- GameEnginConfigError, GameEnginCore  <- ./GameEnginCore
 |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   +-- launch  <- @/engins/gameengin/launcher
 |   |   |   +-- -> launch
 |   |   |   `-- unused unused: launch
 |   |   +-- neural-render.ts unused
@@ -12533,7 +12547,10 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> WorldState
 |   |   |   |   `-- unused unused: GAME_IMPLICIT_WORLD_POLICY
 |   |   |   +-- index.ts
+|   |   |   |   +-- GAME_ENGIN_RULE_SET, GRAVITY_VALUES  <- ./gameEnginRuleSet
 |   |   |   |   +-- GameEnginAction, GameEnginDerivedState, GameScore, GravityPreset, PhysicsConfig, ScriptLanguage, ScriptState, TileType, WorldState  <- ./gameEnginRuleSet
+|   |   |   |   +-- -> GAME_ENGIN_RULE_SET
+|   |   |   |   +-- -> GRAVITY_VALUES
 |   |   |   |   +-- -> GameEnginAction
 |   |   |   |   +-- -> GameEnginDerivedState
 |   |   |   |   +-- -> GameScore
@@ -12610,8 +12627,9 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> LabEnginAction
 |   |   |   |   +-- -> LabEnginDerivedState
 |   |   |   |   +-- -> SimState
+|   |   |   |   +-- -> SimulationKind
 |   |   |   |   +-- -> SimulationResult
-|   |   |   |   `-- unused unused: ChartType, Experiment, LAB_IMPLICIT_SURFACE_POLICY, SimState, SimulationResult
+|   |   |   |   `-- unused unused: ChartType, Experiment, LAB_IMPLICIT_SURFACE_POLICY, SimState, SimulationKind, SimulationResult
 |   |   |   `-- useLabEnginRuntime.ts unused
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
@@ -12660,11 +12678,11 @@ const SESSION_SEED: number =
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- EnginWorkflow, HandoffKind, WorkflowStage, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef, HANDOFF_PATHS  <- ./workflowEngine
-|   |   |   +-- (require)  <- engin_workflow:${workflowId}
 |   |   |   +-- -> EnginWorkflowHook
 |   |   |   +-- -> useEnginWorkflow
 |   |   |   `-- unused unused: EnginWorkflowHook
 |   |   `-- workflowEngine.ts unused
+|   |       +-- -> EnginId
 |   |       +-- -> EnginWorkflow
 |   |       +-- -> HANDOFF_PATHS
 |   |       +-- -> HandoffEligibility
@@ -12684,7 +12702,7 @@ const SESSION_SEED: number =
 |   |       +-- -> handoffsFrom
 |   |       +-- -> isValidTransition
 |   |       +-- -> workflowsForEngin
-|   |       `-- unused unused: HandoffEligibility, HandoffPath, STAGE_LABELS, StageTransitionResult, WORKFLOW_CATALOG, WorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin
+|   |       `-- unused unused: EnginId, HandoffEligibility, HandoffPath, STAGE_LABELS, StageTransitionResult, WORKFLOW_CATALOG, WorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin
 |   +-- starmakerengin  [StarMakerEngin]
 |   |   +-- audio-fingerprint  [StarMakerEngin]
 |   |   |   +-- fingerprint.ts
@@ -12693,7 +12711,7 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> TimeSlice
 |   |   |   |   +-- -> matchFingerprint
 |   |   |   |   `-- -> recordFingerprint
-|   |   |   +-- index.ts unused
+|   |   |   +-- index.ts
 |   |   |   |   +-- matchFingerprint, recordFingerprint, Fingerprint, TimeSlice  <- ./fingerprint
 |   |   |   |   +-- buildPeakMap, FrequencyPeak, PeakMap  <- ./peak-map
 |   |   |   |   +-- extractStem  <- ./stem-extractor
@@ -12704,8 +12722,7 @@ const SESSION_SEED: number =
 |   |   |   |   +-- -> buildPeakMap
 |   |   |   |   +-- -> extractStem
 |   |   |   |   +-- -> matchFingerprint
-|   |   |   |   +-- -> recordFingerprint
-|   |   |   |   `-- unused unused: Fingerprint, FrequencyPeak, PeakMap, TimeSlice, buildPeakMap, extractStem, matchFingerprint, recordFingerprint
+|   |   |   |   `-- -> recordFingerprint
 |   |   |   +-- peak-map.ts
 |   |   |   |   +-- -> FrequencyPeak
 |   |   |   |   +-- -> PeakMap
@@ -12830,11 +12847,10 @@ const SESSION_SEED: number =
 |   |   +-- AnimatePresence, motion  <- framer-motion
 |   |   +-- Activity, AlertTriangle, ArrowLeft, ArrowRightLeft, BarChart3, Brain, CheckCircle2, ChevronDown, ChevronRight, Clock, ExternalLink, Flame, Layers, Plus, RefreshCw, Save, Sparkles, Trash2, Wand2, Workflow, X, XCircle, Zap  <- lucide-react
 |   |   +-- (default)  <- next/link
-|   |   `-- useCallback, useEffect, useMemo, useState  <- react
+|   |   +-- useCallback, useEffect, useMemo, useState  <- react
+|   |   `-- -> (default)
 |   +-- dream.QuantumCircuitCanvas.tsx unused
 |   |   +-- useCallback, useEffect, useMemo, useRef  <- react
-|   |   +-- (default)  <- @/engins/dream.QuantumCircuitCanvas
-|   |   +-- *     type QuantumMeasurementResult, *  <- @/engins/dream.QuantumCircuitCanvas
 |   |   +-- -> (default)
 |   |   +-- -> GateOp
 |   |   +-- -> QuantumCircuitCanvasProps
@@ -12929,7 +12945,8 @@ const SESSION_SEED: number =
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |   +-- toErrorMessage  <- @/utils/index
-|   |   `-- dispatchRenderHandoff  <- @/engins/renderengin
+|   |   +-- dispatchRenderHandoff  <- @/engins/renderengin
+|   |   `-- -> (default)
 |   +-- engin.LabEngin.tsx
 |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   +-- ForgeDreamCanvas  <- @/components/dream.ForgeDreamCanvas
@@ -13168,7 +13185,6 @@ const SESSION_SEED: number =
 |   |   +-- MotionProps  <- framer-motion
 |   |   +-- useMotionTemplate, useMotionValue, useSpring, useTransform  <- framer-motion
 |   |   +-- useRef  <- react
-|   |   +-- useMotionTilt  <- @/hooks/useMotionTilt
 |   |   +-- -> MotionTiltOptions
 |   |   +-- -> MotionTiltResult
 |   |   +-- -> useMotionTilt
@@ -13223,7 +13239,6 @@ const SESSION_SEED: number =
 |       +-- -> useViewCounter
 |       `-- unused unused: useViewCounter
 +-- misc
-|   `-- images
 +-- optimizer
 |   +-- babylon-optimizero.ts
 |   |   +-- CreativeCandidate, OptimizeroResult, OptimizeroWeights, ScoredCandidate  <- ./creative-optimizero
@@ -13295,7 +13310,6 @@ const SESSION_SEED: number =
 |   |       `-- tuning.json
 |   +-- feeds
 |   |   `-- embed-feed.json
-|   +-- images
 |   +-- workers  [VM / WASM]
 |   |   +-- asset-optimizer.worker.js
 |   |   +-- engin-shader.wasm
@@ -13503,7 +13517,6 @@ const SESSION_SEED: number =
 |   |       +-- Database  <- @/types/supabase
 |   |       +-- -> SupabaseCookieStore
 |   |       +-- -> createServerClient
-|   |       +-- -> createServerClientWithCookies
 |   |       `-- -> createServiceClient
 |   +-- config.toml
 |   +-- config.ts
@@ -13822,11 +13835,10 @@ const SESSION_SEED: number =
 |       +-- -> clamp
 |       +-- -> cn
 |       +-- -> debounce
-|       +-- -> deepClone
 |       +-- -> isError
 |       +-- -> sleep
 |       +-- -> throttle
-|       `-- unused unused: clamp, debounce, deepClone, isError, sleep, throttle
+|       `-- unused unused: clamp, debounce, isError, sleep, throttle
 +-- _manifest.json
 +-- .cursorrules
 +-- .env.example
@@ -13872,7 +13884,6 @@ function checkUseDualRuntimeDuplicate(){
 +-- next-env.d.ts !
 |   `-- (side-effect)  ! ./.next/types/routes.d.ts
 +-- next.config.mjs
-|   +-- (dynamic import)  <- next
 |   `-- -> (default)
 +-- package.json
 +-- playwright.config.ts unused
