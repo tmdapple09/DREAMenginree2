@@ -1,0 +1,605 @@
+name: DREAMengin Import Taxonomy JSON
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  dreamengin-import-taxonomy:
+    name: Extract DREAMengin-specific import vocabulary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate DREAMengin import taxonomy JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p artifact
+
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+
+          const ROOT = process.cwd();
+          const OUT_FILE = path.join(ROOT, "artifact", "dreamengin-import-taxonomy.json");
+
+          const SOURCE_FILE_EXTENSIONS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs"
+          ]);
+
+          const NON_CODE_IMPORT_EXTENSIONS = new Set([
+            ".css",
+            ".scss",
+            ".sass",
+            ".less",
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".svg",
+            ".webp",
+            ".ico",
+            ".json",
+            ".md",
+            ".txt",
+            ".wasm",
+            ".woff",
+            ".woff2",
+            ".ttf",
+            ".otf"
+          ]);
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            "node_modules",
+            ".next",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".vercel",
+            "public"
+          ]);
+
+          const EXTERNAL_PROGRAMMING_IMPORTS = new Set([
+            "typescript",
+            "tslib",
+            "react",
+            "react-dom",
+            "next",
+            "next/link",
+            "next/navigation",
+            "next/image",
+            "next/dynamic",
+            "next/server",
+            "zod",
+            "lucide-react",
+            "clsx",
+            "tailwind-merge",
+            "zustand",
+            "framer-motion",
+            "three",
+            "@react-three/fiber",
+            "@react-three/drei",
+            "@supabase/supabase-js",
+            "fs",
+            "node:fs",
+            "path",
+            "node:path",
+            "crypto",
+            "node:crypto",
+            "url",
+            "node:url",
+            "util",
+            "node:util",
+            "stream",
+            "node:stream",
+            "buffer",
+            "node:buffer",
+            "events",
+            "node:events",
+            "os",
+            "node:os",
+            "process",
+            "node:process"
+          ]);
+
+          const DREAMENGIN_ROOTS = [
+            "@/app/",
+            "@/components/",
+            "@/engine/",
+            "@/engins/",
+            "@/lib/",
+            "@/hooks/",
+            "@/dreamr/",
+            "@/dreamdmbar/",
+            "@/daydreams/",
+            "@/coresurfaces/",
+            "@/assembly/",
+            "@/types/",
+            "@/utils/",
+            "@/styles/",
+            "app/",
+            "components/",
+            "engine/",
+            "engins/",
+            "lib/",
+            "hooks/",
+            "dreamr/",
+            "dreamdmbar/",
+            "daydreams/",
+            "coresurfaces/",
+            "assembly/",
+            "types/",
+            "utils/",
+            "styles/"
+          ];
+
+          function walk(dir, files = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) {
+                  walk(full, files);
+                }
+                continue;
+              }
+
+              if (SOURCE_FILE_EXTENSIONS.has(path.extname(entry.name))) {
+                files.push(full);
+              }
+            }
+
+            return files;
+          }
+
+          function hasNonCodeImportExtension(source) {
+            const cleanSource = source.split("?")[0].split("#")[0];
+            const ext = path.extname(cleanSource);
+            return NON_CODE_IMPORT_EXTENSIONS.has(ext);
+          }
+
+          function isExternalPackage(source) {
+            if (!source) return false;
+            if (source.startsWith(".") || source.startsWith("@/")) return false;
+            if (DREAMENGIN_ROOTS.some((root) => source.startsWith(root))) return false;
+            return true;
+          }
+
+          function isDreamenginImport(source) {
+            if (!source) return false;
+            if (hasNonCodeImportExtension(source)) return false;
+            if (EXTERNAL_PROGRAMMING_IMPORTS.has(source)) return false;
+
+            const lower = source.toLowerCase();
+
+            if (source.startsWith("./") || source.startsWith("../")) return true;
+            if (DREAMENGIN_ROOTS.some((root) => source.startsWith(root))) return true;
+            if (lower.includes("dream")) return true;
+            if (lower.includes("engin")) return true;
+
+            return false;
+          }
+
+          function normalizeSource(source) {
+            return source.replace(/\\/g, "/");
+          }
+
+          function cleanImportedName(name) {
+            return name
+              .replace(/^type\s+/, "")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+
+          function splitNamedImports(namedBlock) {
+            return namedBlock
+              .split(",")
+              .map((item) => cleanImportedName(item))
+              .filter(Boolean)
+              .map((item) => {
+                const parts = item.split(/\s+as\s+/);
+                return {
+                  imported: parts[0].trim(),
+                  local: (parts[1] || parts[0]).trim()
+                };
+              })
+              .filter((item) => item.imported && item.local);
+          }
+
+          function extractImportNames(rawImport) {
+            const names = [];
+            const cleaned = rawImport.trim();
+
+            if (!cleaned) return names;
+
+            if (cleaned.startsWith("{")) {
+              const named = cleaned.replace(/^\{/, "").replace(/\}$/, "");
+              return splitNamedImports(named);
+            }
+
+            if (cleaned.startsWith("* as ")) {
+              const local = cleaned.replace("* as ", "").trim();
+              return [{ imported: "*", local }];
+            }
+
+            if (cleaned.includes("{")) {
+              const defaultPart = cleaned.split(",")[0].trim();
+              if (defaultPart) {
+                names.push({
+                  imported: "default",
+                  local: defaultPart
+                });
+              }
+
+              const namedMatch = cleaned.match(/\{([\s\S]*?)\}/);
+              if (namedMatch) {
+                names.push(...splitNamedImports(namedMatch[1]));
+              }
+
+              return names;
+            }
+
+            return [
+              {
+                imported: "default",
+                local: cleaned
+              }
+            ];
+          }
+
+          function classifySymbol(localName, importedName, source) {
+            const name = String(localName || "");
+            const imported = String(importedName || "");
+            const value = `${name} ${imported} ${source}`.toLowerCase();
+
+            if (/^(d\d+|op\d+|opcode|opcodes)$/.test(name.toLowerCase())) {
+              return "opCode";
+            }
+
+            if (
+              value.includes("opcode") ||
+              value.includes("operationcode") ||
+              value.includes("commandcode")
+            ) {
+              return "opCode";
+            }
+
+            if (
+              value.includes("mountengine") ||
+              value.includes("applyruleset") ||
+              value.includes("dispatch") ||
+              value.includes("routeintent") ||
+              value.includes("authorize") ||
+              value.includes("validate") ||
+              value.includes("negotiate") ||
+              value.includes("syncframe") ||
+              value.includes("snapshot") ||
+              value.includes("hydrate") ||
+              value.includes("persist") ||
+              value.includes("registerengin") ||
+              value.includes("runtimemount") ||
+              value.includes("engincall")
+            ) {
+              return "systemCall";
+            }
+
+            if (
+              value.includes("primitive") ||
+              value.includes("ruleset") ||
+              value.includes("rule-set") ||
+              value.includes("constraint") ||
+              value.includes("domainobject") ||
+              value.includes("basestate") ||
+              value.includes("manifest") ||
+              value.includes("packet") ||
+              value.includes("frame")
+            ) {
+              return "primitive";
+            }
+
+            if (
+              value.includes("lifecycle") ||
+              value.includes("onmount") ||
+              value.includes("oncreate") ||
+              value.includes("ondestroy") ||
+              value.includes("onupdate") ||
+              value.includes("before") ||
+              value.includes("after")
+            ) {
+              return "lifecycleHook";
+            }
+
+            if (
+              value.includes("entry") ||
+              value.includes("page") ||
+              value.includes("surface") ||
+              value.includes("shell") ||
+              value.includes("container") ||
+              value.includes("registry") ||
+              value.includes("route")
+            ) {
+              return "entryPoint";
+            }
+
+            if (name.startsWith("use") || value.includes("hook")) {
+              return "hook";
+            }
+
+            if (
+              value.includes("runtime") ||
+              value.includes("engine") ||
+              value.includes("engin") ||
+              value.includes("dispatcher") ||
+              value.includes("bridge") ||
+              value.includes("bus")
+            ) {
+              return "engineRuntime";
+            }
+
+            if (
+              value.includes("store") ||
+              value.includes("state") ||
+              value.includes("memory") ||
+              value.includes("queue") ||
+              value.includes("cache")
+            ) {
+              return "stateMemory";
+            }
+
+            if (
+              /^[A-Z]/.test(name) ||
+              value.includes("component") ||
+              value.includes("panel") ||
+              value.includes("view") ||
+              value.includes("viewport") ||
+              value.includes("card") ||
+              value.includes("bar")
+            ) {
+              return "component";
+            }
+
+            return "dreamenginSpecific";
+          }
+
+          function parseImports(filePath, text) {
+            const imports = [];
+
+            const importFromRegex =
+              /import\s+(type\s+)?([\s\S]*?)\s+from\s+["']([^"']+)["'];?/g;
+
+            const sideEffectImportRegex =
+              /import\s+["']([^"']+)["'];?/g;
+
+            let match;
+
+            while ((match = importFromRegex.exec(text))) {
+              const isTypeOnly = Boolean(match[1]);
+              const rawImport = match[2].trim();
+              const source = normalizeSource(match[3].trim());
+
+              if (!isDreamenginImport(source)) continue;
+              if (isExternalPackage(source) && !source.toLowerCase().includes("dream") && !source.toLowerCase().includes("engin")) continue;
+
+              imports.push({
+                file: normalizeSource(path.relative(ROOT, filePath)),
+                source,
+                importKind: isTypeOnly ? "type" : "value",
+                importedNames: extractImportNames(rawImport)
+              });
+            }
+
+            while ((match = sideEffectImportRegex.exec(text))) {
+              const source = normalizeSource(match[1].trim());
+
+              if (!isDreamenginImport(source)) continue;
+              if (isExternalPackage(source) && !source.toLowerCase().includes("dream") && !source.toLowerCase().includes("engin")) continue;
+
+              imports.push({
+                file: normalizeSource(path.relative(ROOT, filePath)),
+                source,
+                importKind: "sideEffect",
+                importedNames: []
+              });
+            }
+
+            return imports;
+          }
+
+          const files = walk(ROOT).sort();
+          const importRecords = [];
+
+          for (const file of files) {
+            const text = fs.readFileSync(file, "utf8");
+            importRecords.push(...parseImports(file, text));
+          }
+
+          const symbols = [];
+          const byCategory = {};
+          const bySource = {};
+          const byFile = {};
+
+          for (const record of importRecords) {
+            byFile[record.file] ||= [];
+            byFile[record.file].push(record);
+
+            bySource[record.source] ||= {
+              source: record.source,
+              files: new Set(),
+              importedNames: new Set(),
+              importKinds: new Set()
+            };
+
+            bySource[record.source].files.add(record.file);
+            bySource[record.source].importKinds.add(record.importKind);
+
+            if (record.importedNames.length === 0) {
+              const symbol = {
+                name: null,
+                importedName: null,
+                category: "sideEffectImport",
+                source: record.source,
+                file: record.file,
+                importKind: record.importKind
+              };
+
+              symbols.push(symbol);
+              byCategory.sideEffectImport ||= [];
+              byCategory.sideEffectImport.push(symbol);
+              continue;
+            }
+
+            for (const importedName of record.importedNames) {
+              const category = classifySymbol(
+                importedName.local,
+                importedName.imported,
+                record.source
+              );
+
+              bySource[record.source].importedNames.add(importedName.local);
+              byCategory[category] ||= [];
+
+              const symbol = {
+                name: importedName.local,
+                importedName: importedName.imported,
+                category,
+                source: record.source,
+                file: record.file,
+                importKind: record.importKind
+              };
+
+              symbols.push(symbol);
+              byCategory[category].push(symbol);
+            }
+          }
+
+          const finalByCategory = Object.fromEntries(
+            Object.entries(byCategory)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([category, items]) => [
+                category,
+                items.sort((a, b) =>
+                  `${a.name || ""}${a.source}${a.file}`.localeCompare(
+                    `${b.name || ""}${b.source}${b.file}`
+                  )
+                )
+              ])
+          );
+
+          const finalBySource = Object.fromEntries(
+            Object.entries(bySource)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([source, value]) => [
+                source,
+                {
+                  source,
+                  files: [...value.files].sort(),
+                  importedNames: [...value.importedNames].sort(),
+                  importKinds: [...value.importKinds].sort()
+                }
+              ])
+          );
+
+          const output = {
+            schema: "dreamengin.import-taxonomy.v1",
+            generatedAt: new Date().toISOString(),
+
+            purpose:
+              "Extracts DREAMengin-owned import vocabulary and excludes TypeScript, JavaScript, React, Next, Node, asset, style, and external package imports.",
+
+            meaning: {
+              systemCall:
+                "Fixed low-level DREAMengin operation used by engines, runtimes, rule-sets, surfaces, or app systems.",
+              primitive:
+                "Atomic DREAMengin building block: rule-set, constraint, manifest, domain object, packet, frame, or base-state unit.",
+              lifecycleHook:
+                "DREAMengin behavior attached to a creation, mount, update, destroy, before, after, or phase boundary.",
+              entryPoint:
+                "DREAMengin surface, shell, page, container, registry, route, or entry module where engine flow is entered.",
+              opCode:
+                "Named or numbered operation identifier such as D1, D2, opcode, operation code, or command code.",
+              hook:
+                "DREAMengin-owned application hook, not a generic programming-language concept.",
+              engineRuntime:
+                "DREAMengin runtime, Engin, dispatcher, bridge, bus, rule engine, or execution unit.",
+              stateMemory:
+                "DREAMengin-owned state, memory, store, queue, cache, snapshot, or persistence import.",
+              component:
+                "DREAMengin-owned UI component, panel, viewport, shell, strip, card, bar, or view.",
+              dreamenginSpecific:
+                "DREAMengin-local import that did not match a narrower category.",
+              sideEffectImport:
+                "DREAMengin-local import executed only for side effects."
+            },
+
+            filters: {
+              included: [
+                "relative repo imports",
+                "@/ repo-root imports",
+                "imports under DREAMengin-owned folders",
+                "imports containing dream",
+                "imports containing engin"
+              ],
+              excluded: [
+                "TypeScript language imports",
+                "JavaScript/Node built-ins",
+                "React imports",
+                "Next.js imports",
+                "external package imports",
+                "CSS/style imports",
+                "image/font/static asset imports",
+                "JSON/Markdown/text imports",
+                "node_modules",
+                "build output",
+                "public assets"
+              ]
+            },
+
+            counts: {
+              filesScanned: files.length,
+              dreamenginImportRecords: importRecords.length,
+              dreamenginSymbols: symbols.length,
+              sources: Object.keys(finalBySource).length,
+              categories: Object.fromEntries(
+                Object.entries(finalByCategory).map(([category, items]) => [
+                  category,
+                  items.length
+                ])
+              )
+            },
+
+            byCategory: finalByCategory,
+            bySource: finalBySource,
+            byFile
+          };
+
+          fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
+
+          console.log("DREAMengin import taxonomy JSON:");
+          console.log(JSON.stringify(output, null, 2));
+          console.log("");
+          console.log(`Wrote ${OUT_FILE}`);
+          NODE
+
+      - name: Upload downloadable JSON artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: dreamengin-import-taxonomy-json
+          path: artifact/dreamengin-import-taxonomy.json
+          if-no-files-found: error
