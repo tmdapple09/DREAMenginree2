@@ -130,4 +130,4 @@ jobs:
           name: Dreamengin-repo-minus-exclusions
           path: artifact/Dreamengin.repo-minus-exclusions.zip
           if-no-files-found: error
-          compression-level: 0
+          compression-level: 9
