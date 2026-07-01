@@ -20,7 +20,7 @@ export function setWidgetMemory(key: string, value: unknown): void {
   widgetBus.setMemory(key, value);
 }
 
-export function getWidgetMemory(key: string): unknown { // intentional - memory can be any type
+export function getWidgetMemory(key: string): unknown { 
   return widgetBus.getMemory(key);
 }
 

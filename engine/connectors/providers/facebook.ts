@@ -3,36 +3,14 @@ import { facebookPageRssUrl, parseRssFeed } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/providers/facebook.ts
- *
- * Facebook provider (Tier 1) — public Page RSS.
- *
- * Facebook exposes RSS feeds for public Pages.
- * This does NOT require OAuth or a Facebook developer account.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { page: string }  — Page ID, page username, or full Facebook page URL
- *
- * ⚠️  YOUR FACEBOOK PAGE/PROFILE MUST BE SET TO PUBLIC.
- *     Go to Facebook Page settings → Privacy → set visibility to "Public".
- *     Personal profiles with privacy set to Friends or Private are not accessible.
- *
- * Note: Facebook RSS works best for public Pages (businesses, creators, groups).
- * Personal profile RSS was deprecated — use a Page instead, or use the
- * "Any RSS Feed" connector with a third-party bridge for personal profiles.
- *
- * No API key or OAuth required.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface FacebookCredentials {
-  /** Page ID, page username, or full Facebook page URL */
+  
   page: string;
 }
 
-/** Extract a short handle from the page input for display. */
+
 function pageHandle(page: string): string {
   if (page.includes('facebook.com/')) {
     const match = page.match(/facebook\.com\/([^/?#]+)/);
@@ -41,9 +19,7 @@ function pageHandle(page: string): string {
   return page.trim().replace(/\/$/, '');
 }
 
-/**
- * Verify that the Facebook public page RSS is accessible.
- */
+
 export async function facebookVerify(creds: FacebookCredentials): Promise<string> {
   const page = (creds.page ?? '').trim();
   if (!page) throw new Error('Facebook page ID, username, or URL is required.');
@@ -72,9 +48,7 @@ export async function facebookVerify(creds: FacebookCredentials): Promise<string
   return pageHandle(page);
 }
 
-/**
- * Fetch and normalise the public Facebook page RSS feed.
- */
+
 export async function facebookSync(creds: FacebookCredentials): Promise<UnifiedFeedItem[]> {
   const page = (creds.page ?? '').trim();
   const url = facebookPageRssUrl(page);

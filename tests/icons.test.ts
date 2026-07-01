@@ -12,7 +12,7 @@ import {
   type IconName,
 } from '@/components/icons/sheet';
 
-// ─── Sheet constants ──────────────────────────────────────────────────────────
+
 
 describe('sheet constants', () => {
   it('COLS and ROWS are positive integers', () => {
@@ -30,7 +30,7 @@ describe('sheet constants', () => {
   });
 });
 
-// ─── ICONS map bounds ─────────────────────────────────────────────────────────
+
 
 describe('ICONS — every entry is within grid bounds', () => {
   const entries = ICON_ENTRIES;
@@ -49,7 +49,7 @@ describe('ICONS — every entry is within grid bounds', () => {
   }
 });
 
-// ─── No duplicate names ───────────────────────────────────────────────────────
+
 
 describe('ICONS — no duplicate icon names', () => {
   it('all keys are unique (object guarantees this, but belt-and-braces)', () => {
@@ -58,30 +58,30 @@ describe('ICONS — no duplicate icon names', () => {
   });
 });
 
-// ─── getIconPos ───────────────────────────────────────────────────────────────
+
 
 describe('getIconPos', () => {
   it('returns negative x/y offsets for non-zero positions', () => {
-    const pos = getIconPos('twitter'); // col 1, row 0
+    const pos = getIconPos('twitter'); 
     expect(pos.x).toBe(-(1 * FRAME_W));
     expect(pos.y).toEqual(0);
   });
 
   it('returns (0, 0) for the top-left icon', () => {
-    const pos = getIconPos('facebook'); // col 0, row 0
+    const pos = getIconPos('facebook'); 
     expect(pos.x).toEqual(0);
     expect(pos.y).toEqual(0);
   });
 
   it('computes correct offsets for an interior icon', () => {
-    const { col, row } = ICONS['spotify']; // col 6, row 1
+    const { col, row } = ICONS['spotify']; 
     const pos = getIconPos('spotify');
     expect(pos.x).toBe(-(col * FRAME_W));
     expect(pos.y).toBe(-(row * FRAME_H));
   });
 });
 
-// ─── hasIcon ─────────────────────────────────────────────────────────────────
+
 
 describe('hasIcon', () => {
   it('returns true for registered icon names', () => {
@@ -99,14 +99,14 @@ describe('hasIcon', () => {
   it('narrows type to IconName when true', () => {
     const name: string = 'spotify';
     if (hasIcon(name)) {
-      // TypeScript should accept this without error
+      
       const _check: IconName = name;
       expect(_check).toBe('spotify');
     }
   });
 });
 
-// ─── fallback "dot" icon ──────────────────────────────────────────────────────
+
 
 describe('"dot" fallback icon', () => {
   it('is registered in ICONS', () => {

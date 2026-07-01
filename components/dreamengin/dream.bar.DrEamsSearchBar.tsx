@@ -12,36 +12,11 @@ import { ArrowRight, MessageCircle, Search, Sparkles, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * components/dreamengin/dream.bar.DrEamsSearchBar.tsx
- *
- * Dr. Eams–powered search bar for HomeDream.
- *
- * Phase 6 item #4: "Integrate Dr. Eams as HomeDream search bar with
- * send-to-DreamDM routing." — docs/FEATURE_STATUS.md
- *
- * Architecture justification:
- *   - docs/ARCHITECTURE.md §1  — Dr. Eams is the user-facing AI agent
- *   - docs/AXIOMS.md           — every visible action must do something real
- *   - docs/LAW.md §3           — every visible action must do something real
- *
- * Behaviour:
- *   1. Typing shows navigation suggestions (fast, client-side).
- *   2. Selecting a suggestion routes directly (no AI call needed).
- *   3. Pressing Enter with no exact match — or clicking "Ask Dr. Eams ◈" —
- *      calls POST /api/ai/eams and shows an inline reply card.
- *   4. The reply card offers two real actions:
- *      a. "Full Chat ◈"        → opens DrEamsPanel (full conversation surface)
- *      b. "Send to DreamDM 💬" → navigates to /messages with query context
- *         so the user can share the insight via DreamDM.
- *
- * Performance: render-on-demand; no continuous render loops.
- * All heavy logic lives in lib/dreamengin/drEamsSearch.ts (pure, tested).
- */
+
 
 'use client';
 
-// Sub-components
+
 
 function DrEamsBadge({ size = 28 }: {size?: number}) {
   return (
@@ -87,7 +62,7 @@ function SpinningDot( ){
   );
 }
 
-// Types
+
 
 type InlineReply = {
   text: string;
@@ -96,11 +71,11 @@ type InlineReply = {
 };
 
 export interface DrEamsSearchBarProps {
-  /** Called when the user clicks "Full Chat ◈" or selects "Dr. Eams" from nav. */
+  
   onOpenDrEams: () => void;
 }
 
-// DrEamsSearchBar
+
 
 export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) {
   const router = useRouter();
@@ -113,7 +88,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef     = useRef<HTMLInputElement>(null);
 
-  // Nav suggestions filtered by current query
+  
   const suggestions: NavSuggestion[] = query.trim()
     ? matchNavSuggestions(query)
     : [];
@@ -155,7 +130,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     if (s.href) {
       router.push(s.href);
     } else {
-      // "Dr. Eams" entry → open full panel
+      
       onOpenDrEams();
     }
   }, [router, onOpenDrEams]);
@@ -164,13 +139,13 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
     if (e.key !== 'Enter' || !query.trim()) return;
     e.preventDefault();
 
-    // Exact single match → navigate directly
+    
     if (suggestions.length === 1) {
       selectSuggestion(suggestions[0]);
       return;
     }
 
-    // Otherwise → ask Dr. Eams
+    
     void askDrEams(query);
   }, [query, suggestions, askDrEams, selectSuggestion]);
 
@@ -187,7 +162,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     setDropOpen(true);
-    if (reply) setReply(null); // dismiss previous reply when user types again
+    if (reply) setReply(null); 
   }, [reply]);
 
   const clearAll = useCallback(() => {
@@ -213,7 +188,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
   return (
     <div ref={containerRef} style={{ flex: 1, position: 'relative' }}>
 
-      {/* ── Search pill ── */}
+      
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -274,7 +249,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
         )}
       </div>
 
-      {/* ── Dropdown: navigation suggestions + "Ask Dr. Eams" chip ── */}
+      
       {hasDropdown && (
         <div
           role="listbox"
@@ -295,7 +270,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
             overflow: 'hidden',
           }}
         >
-          {/* Navigation matches */}
+          
           {suggestions.map((s) => (
             <button
               key={s.label}
@@ -324,7 +299,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
             </button>
           ))}
 
-          {/* "Ask Dr. Eams ◈" chip — always shown when there is a query */}
+          
           {showAskChip && (
             <button
               type="button"
@@ -365,7 +340,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
         </div>
       )}
 
-      {/* ── Inline Dr. Eams reply card ── */}
+      
       {reply && !dropOpen && (
         <div
           role="region"
@@ -395,7 +370,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
             }
           `}</style>
 
-          {/* Header */}
+          
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -419,7 +394,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
             </span>
           </div>
 
-          {/* Response text */}
+          
           <div style={{
             fontSize: 13,
             color: reply.isError ? 'var(--de-text-dim)' : 'var(--de-heading)',
@@ -437,9 +412,9 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
             {reply.text}
           </div>
 
-          {/* Action row */}
+          
           <div style={{ display: 'flex', gap: 8 }}>
-            {/* Full Chat — opens DrEamsPanel */}
+            
             <button
               type="button"
               onClick={onOpenDrEams}
@@ -467,7 +442,7 @@ export default function DrEamsSearchBar({ onOpenDrEams }: DrEamsSearchBarProps) 
               Full Chat ◈
             </button>
 
-            {/* Send to DreamDM — routes to /messages with query context */}
+            
             <button
               type="button"
               onClick={sendToDreamDM}

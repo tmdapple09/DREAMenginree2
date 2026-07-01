@@ -3,13 +3,13 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { ActorContext, IntentType } from '@/types/ai-system';
 
-// lib/ai/capability-gate.ts
-// RBAC + ABAC Capability Gate
-// DB-backed authorization checks
 
-// ============================================================================
-// ROLE RANKS
-// ============================================================================
+
+
+
+
+
+
 
 const ROLE_RANKS: Record<string, number> = {
   user: 0,
@@ -21,22 +21,22 @@ export function getRoleRank(role: string): number {
   return ROLE_RANKS[role] ?? 0;
 }
 
-// ============================================================================
-// BUILD ACTOR CONTEXT
-// ============================================================================
+
+
+
 
 export async function buildActorContext(userId: string): Promise<ActorContext> {
   const supabase = await createServerClient();
 
-  // Get authenticated user to check email for owner admin role
+  
   const user = await safeGetUser(supabase);
 
-  // Owner email always gets admin role, regardless of DB state
+  
   let role = 'user';
   if (user && isOwnerEmail(user.email)) {
     role = 'admin';
   } else {
-    // Get user role from DB
+    
     const { data: roleData } = await supabase
       .from('user_roles')
       .select('role')
@@ -45,15 +45,15 @@ export async function buildActorContext(userId: string): Promise<ActorContext> {
     role = roleData?.role ?? 'user';
   }
 
-  // Get capabilities (from DB function)
+  
   const { data: capsData } = await supabase.rpc('get_user_capabilities', {
     p_user_id: userId,
   });
 
   const caps = capsData ?? ['user:follow', 'user:post', 'user:dream_manage'];
 
-  // Get space memberships (if you have spaces/workspaces)
-  // For now, returning empty array
+  
+  
   const space_memberships: string[] = [];
 
   return {
@@ -65,18 +65,18 @@ export async function buildActorContext(userId: string): Promise<ActorContext> {
   };
 }
 
-// ============================================================================
-// CAPABILITY CHECKS
-// ============================================================================
+
+
+
 
 export function hasCapability(actor: ActorContext, capability: string): boolean {
-  // System role has all capabilities
+  
   if (actor.role === 'system') return true;
 
-  // Check for wildcard
+  
   if (actor.caps.includes('*')) return true;
 
-  // Check for specific capability
+  
   return actor.caps.includes(capability);
 }
 
@@ -86,9 +86,9 @@ export function meetsMinimumRole(actor: ActorContext, minRole: string): boolean 
   return actorRank >= minRank;
 }
 
-// ============================================================================
-// INTENT AUTHORIZATION
-// ============================================================================
+
+
+
 
 interface IntentRequirement {
   min_rank: number;
@@ -96,9 +96,9 @@ interface IntentRequirement {
   resource_checks?: (actor: ActorContext, payload: Record<string, unknown>) => Promise<boolean>;
 }
 
-// Define requirements for each intent type
+
 const INTENT_REQUIREMENTS: Partial<Record<IntentType, IntentRequirement>> = {
-  // Dr. Eams intents - user level
+  
   NAV_DELTA: {
     min_rank: ROLE_RANKS.user,
   },
@@ -118,7 +118,7 @@ const INTENT_REQUIREMENTS: Partial<Record<IntentType, IntentRequirement>> = {
     min_rank: ROLE_RANKS.user,
     capabilities: ['user:dream_manage'],
     resource_checks: async (actor, payload) => {
-      // Check ownership of dream
+      
       const dreamId = payload.dream_id as string | undefined;
       if (!dreamId) return false;
 
@@ -129,7 +129,7 @@ const INTENT_REQUIREMENTS: Partial<Record<IntentType, IntentRequirement>> = {
         .eq('id', dreamId)
         .single();
 
-      // Allow if owner or admin
+      
       return data?.user_id === actor.user_id || actor.role === 'admin';
     },
   },
@@ -176,7 +176,7 @@ const INTENT_REQUIREMENTS: Partial<Record<IntentType, IntentRequirement>> = {
     min_rank: ROLE_RANKS.user,
   },
 
-  // iDari intents - admin only
+  
   DIAG_SCHEMA_SNAPSHOT: {
     min_rank: ROLE_RANKS.admin,
     capabilities: ['admin:diagnostics'],
@@ -214,12 +214,12 @@ export async function authorizeIntent(
 ): Promise<{ authorized: boolean; reason?: string }> {
   const requirement = INTENT_REQUIREMENTS[intentType];
 
-  // If no specific requirement, default to user level
+  
   if (!requirement) {
     return { authorized: getRoleRank(actor.role) >= ROLE_RANKS.user };
   }
 
-  // Check minimum rank
+  
   if (getRoleRank(actor.role) < requirement.min_rank) {
     return {
       authorized: false,
@@ -227,7 +227,7 @@ export async function authorizeIntent(
     };
   }
 
-  // Check capabilities
+  
   if (requirement.capabilities) {
     for (const cap of requirement.capabilities) {
       if (!hasCapability(actor, cap)) {
@@ -239,7 +239,7 @@ export async function authorizeIntent(
     }
   }
 
-  // Check resource-specific rules
+  
   if (requirement.resource_checks) {
     const resourceOk = await requirement.resource_checks(actor, payload);
     if (!resourceOk) {
@@ -253,9 +253,9 @@ export async function authorizeIntent(
   return { authorized: true };
 }
 
-// ============================================================================
-// BATCH AUTHORIZATION
-// ============================================================================
+
+
+
 
 export async function authorizeIntents(
   actor: ActorContext,

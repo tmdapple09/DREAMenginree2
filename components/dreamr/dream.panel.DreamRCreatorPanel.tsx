@@ -18,18 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-/**
- * DreamRCreatorPanel — neomorphic slide-in "more from this creator" panel.
- *
- * Opens when the user swipes left on any DreamR feed card.
- * Shows: creator identity card, follow, connected socials, their recent posts
- * (grid), and a "More like this" discovery strip.
- *
- * Visual language: DreamR neomorphism
- *  Base: #e8eff6 pearl-sky  |  Sky: #5ba8d4  |  Gold: #c8981a
- *  Font: Plus Jakarta Sans (--font-dreamr)
- *  Shadow pair: -5px -5px 12px rgba(255,255,255,0.88), 5px 5px 14px rgba(163,189,218,0.42)
- */
+
 
 const DR = {
   bg: "#e8eff6",
@@ -116,7 +105,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
   const [socials, setSocials] = useState<ConnectedSocial[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
-  // Slide-in animation
+  
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
@@ -126,7 +115,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
     });
   }, []);
 
-  // Fetch creator's recent posts
+  
   useEffect(() => {
     if (!creator?.handle) return;
     setLoadingPosts(true);
@@ -144,7 +133,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
       .finally(() => setLoadingPosts(false));
   }, [creator?.handle]);
 
-  // Fetch connected socials
+  
   useEffect(() => {
     fetch("/api/connectors/status")
       .then((r) => (r.ok ? r.json() : []))
@@ -180,7 +169,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
 
   return (
     <>
-      {/* Backdrop */}
+      
       <div
         onClick={handleClose}
         aria-hidden
@@ -192,7 +181,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
         }}
       />
 
-      {/* Panel */}
+      
       <div
         ref={panelRef}
         role="dialog"
@@ -216,9 +205,9 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
           fontFamily: DR.font,
         }}
       >
-        {/* ── Top identity card ─────────────────────────────────────────── */}
+        
         <div style={{ padding: "20px 18px 0" }}>
-          {/* Close button */}
+          
           <div
             style={{
               display: "flex",
@@ -249,7 +238,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
             </button>
           </div>
 
-          {/* Avatar + name */}
+          
           <div
             style={{
               background: DR.bg,
@@ -338,7 +327,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
             </div>
           </div>
 
-          {/* Follow + socials row */}
+          
           <div
             style={{
               display: "flex",
@@ -398,16 +387,16 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
               <MessageCircle size={13} /> Message
             </button>
 
-            {/* Social badges */}
+            
             {socials.slice(0, 3).map((s) => (
               <SocialBadge key={s.provider} provider={s.provider} />
             ))}
           </div>
         </div>
 
-        {/* ── Scrollable body ────────────────────────────────────────────── */}
+        
         <div style={{ flex: 1, overflowY: "auto", padding: "0 18px 80px" }}>
-          {/* Hashtag chips */}
+          
           {tags.length > 0 && (
             <div style={{ marginBottom: 18 }}>
               <div
@@ -448,7 +437,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
             </div>
           )}
 
-          {/* Creator posts grid */}
+          
           <div
             style={{
               fontSize: 10,
@@ -541,7 +530,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
                     </div>
                   )}
                   <div style={{ padding: "5px 10px" }}>
-                    {/* Only timestamp shown — like count is private to the creator */}
+                    
                     <span
                       style={{
                         fontSize: 10,
@@ -557,7 +546,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
             </div>
           )}
 
-          {/* More like this card */}
+          
           <div style={{ marginTop: 20 }}>
             <div
               style={{
@@ -621,7 +610,7 @@ export default function DreamRCreatorPanel({ post, onClose }: Props) {
           </div>
         </div>
 
-        {/* ── DreamR brand footer ────────────────────────────────────────── */}
+        
         <div
           style={{
             padding: "12px 18px",

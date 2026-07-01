@@ -10,37 +10,22 @@ import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * NeonDrift — Elite WebGPU cyberpunk endless racer — 2026 Edition
- * Category: Racing / Arcade
- *
- * Powered by the DREAMengin Elite Game Engine core:
- *  • WebGPU-first Babylon.js rendering with auto WebGL2 fallback
- *  • Post-processing pipeline: neon bloom, glow layer, chromatic aberration
- *  • AI Director: adaptive difficulty via TensorFlow.js (in-browser, privacy-first)
- *  • Procedural neon track with dynamic lane obstacles and boost gates
- *  • Particle trail system tied to speed and drifting
- *  • Adaptive quality scaling (ultra → low) based on real frame telemetry
- *  • DualSense controller support (Bluetooth mobile + USB desktop)
- *  • Gyroscope steering for natural mobile gameplay
- *  • Haptic rumble feedback on crash/boost/speed
- *  • Score multiplier chains and distance bonuses
- */
+
 
 type Phase = 'menu' | 'playing' | 'gameover';
 
-const LANE_COUNT    = 5;          // five lanes
-const LANE_WIDTH    = 3.0;        // Babylon units per lane
-const TRACK_WIDTH   = LANE_COUNT * LANE_WIDTH; // 15 BU wide
-const OBS_POOL_SIZE = 40;         // recycled obstacle meshes
-const BOOST_POOL    = 8;          // boost gate meshes
-const TILE_LENGTH   = 30;         // BU per track tile
-const TILE_COUNT    = 12;         // tiles in the ring buffer
+const LANE_COUNT    = 5;          
+const LANE_WIDTH    = 3.0;        
+const TRACK_WIDTH   = LANE_COUNT * LANE_WIDTH; 
+const OBS_POOL_SIZE = 40;         
+const BOOST_POOL    = 8;          
+const TILE_LENGTH   = 30;         
+const TILE_COUNT    = 12;         
 const TOTAL_TILES   = TILE_COUNT * TILE_LENGTH;
 
-// Obstacle types
-const OBS_BARRIER = 0; // red barrier block
-const OBS_PILLAR  = 1; // tall neon pillar
+
+const OBS_BARRIER = 0; 
+const OBS_PILLAR  = 1; 
 
 interface ObstacleState {
   mesh: BABYLON.Mesh;
@@ -57,7 +42,7 @@ interface BoostGateState {
   z: number;
 }
 
-// Lane X positions (centre of each lane)
+
 function laneX(lane: number): number {
   return (lane - Math.floor(LANE_COUNT / 2)) * LANE_WIDTH;
 }
@@ -79,11 +64,11 @@ export default function NeonDrift( ){
   const scoreRef = useRef(0);
   const speedRef = useRef(0);
   const distanceRef = useRef(0);
-  const carLaneRef = useRef(2); // start in middle lane (0-indexed)
+  const carLaneRef = useRef(2); 
   const carXRef = useRef(laneX(2));
   const deathsRef = useRef(0);
   const comboRef = useRef(1);
-  const invincibleRef = useRef(0); // invincibility frames after crash
+  const invincibleRef = useRef(0); 
   const submitScore = useSubmitScore('neon-drift');
 
   useEffect(() => {
@@ -107,7 +92,7 @@ export default function NeonDrift( ){
 
   useGameAutoStart(phase === 'menu' ? startGame : null);
 
-  // Lane switching from keyboard / GameRemote
+  
   useEffect(() => {
     if (phase !== 'playing') return;
 
@@ -147,7 +132,7 @@ export default function NeonDrift( ){
     const trackTiles: BABYLON.Mesh[] = [];
     let lastRumble = 0;
     let frameTick = 0;
-    let nextObstacleZ = -40;  // spawn obstacles behind camera
+    let nextObstacleZ = -40;  
     let nextBoostZ = -80;
 
     const init = async () => {
@@ -176,7 +161,7 @@ export default function NeonDrift( ){
         ambientLight.specular = new BABYLON.Color3(0.05, 0.1, 0.3);
         ambientLight.groundColor = new BABYLON.Color3(0.02, 0.02, 0.06);
 
-        // Point light inside the car trail area — PBR specular bouncing
+        
         const raceLight = new BABYLON.PointLight('raceLight',
           new BABYLON.Vector3(0, 3, -8), scene);
         raceLight.diffuse = new BABYLON.Color3(0, 0.9, 1);
@@ -184,28 +169,28 @@ export default function NeonDrift( ){
         raceLight.intensity = 3;
         raceLight.range = 40;
 
-        // Directional fill light for shadow casting
+        
         const dirLight = new BABYLON.DirectionalLight('dirLight',
           new BABYLON.Vector3(0.2, -1, 0.5), scene);
         dirLight.intensity = 0.6;
         dirLight.diffuse = new BABYLON.Color3(0.4, 0.5, 1.0);
         dirLight.specular = new BABYLON.Color3(0.3, 0.4, 0.8);
 
-        // Shadow generator for directional light
+        
         const shadowGen = new BABYLON.ShadowGenerator(2048, dirLight);
         shadowGen.usePercentageCloserFiltering = true;
         shadowGen.filteringQuality = BABYLON.ShadowGenerator.QUALITY_HIGH;
         shadowGen.bias = 0.0006;
         shadowGen.darkness = 0.4;
 
-        // Environment for PBR reflections (dark neon environment)
-        try { scene.createDefaultEnvironment({ createGround: false, createSkybox: false }); } catch { /* graceful */ }
+        
+        try { scene.createDefaultEnvironment({ createGround: false, createSkybox: false }); } catch {  }
         scene.environmentIntensity = 0.5;
 
         const trackMat = new BABYLON.PBRMaterial('track', scene);
         trackMat.albedoColor = new BABYLON.Color3(0.03, 0.08, 0.12);
         trackMat.metallic = 0.15;
-        trackMat.roughness = 0.25; // wet-road reflective finish
+        trackMat.roughness = 0.25; 
         trackMat.emissiveColor = new BABYLON.Color3(0.01, 0.04, 0.06);
 
         const lineMat = new BABYLON.PBRMaterial('lane', scene);
@@ -223,7 +208,7 @@ export default function NeonDrift( ){
           tile.receiveShadows = true;
           trackTiles.push(tile);
 
-          // Lane dividers
+          
           for (let l = 1; l < LANE_COUNT; l++) {
             const line = BABYLON.MeshBuilder.CreateBox('line' + i + '_' + l,
               { width: 0.08, height: 0.06, depth: TILE_LENGTH * 0.9 }, scene);
@@ -234,7 +219,7 @@ export default function NeonDrift( ){
           }
         }
 
-        // Edge barriers — PBR metallic neon strips
+        
         const edgeMat = new BABYLON.PBRMaterial('edge', scene);
         edgeMat.albedoColor = new BABYLON.Color3(0.8, 0.05, 0.3);
         edgeMat.metallic = 0.7;
@@ -267,7 +252,7 @@ export default function NeonDrift( ){
         car.material = carMat;
         shadowGen.addShadowCaster(car, true);
 
-        // Car cabin — glass-like PBR
+        
         const cabin = BABYLON.MeshBuilder.CreateBox('cabin',
           { width: 1.2, height: 0.5, depth: 1.8 }, scene);
         cabin.position.y = 1.1;
@@ -280,7 +265,7 @@ export default function NeonDrift( ){
         cabinMat.alpha = 0.65;
         cabin.material = cabinMat;
 
-        // Wheels — dark rubber PBR
+        
         const wheelMat = new BABYLON.PBRMaterial('wheelMat', scene);
         wheelMat.albedoColor = new BABYLON.Color3(0.08, 0.08, 0.08);
         wheelMat.metallic = 0.1;
@@ -305,7 +290,7 @@ export default function NeonDrift( ){
         trailPS.maxSize = 0.28;
         trailPS.minLifeTime = 0.3;
         trailPS.maxLifeTime = 0.65;
-        trailPS.emitRate = 0; // controlled dynamically by speed
+        trailPS.emitRate = 0; 
         trailPS.minEmitPower = 1;
         trailPS.maxEmitPower = 5;
         trailPS.direction1 = new BABYLON.Vector3(-0.5, 0.2, -1);
@@ -371,7 +356,7 @@ export default function NeonDrift( ){
           await postFx.enableGlow(0.7, 48);
           await postFx.enableSSAO(1.5, 0.8, 12);
           postFx.applyBudget(elite.budget);
-        } catch { /* post-fx optional */ }
+        } catch {  }
 
         await directorRef.current.init();
 
@@ -418,14 +403,14 @@ export default function NeonDrift( ){
           const input = dualSense?.getState();
 
           const dirLevel = directorRef.current.level;
-          const baseAccel = 0.18 + dirLevel * 0.22; // harder = faster base
+          const baseAccel = 0.18 + dirLevel * 0.22; 
           const r2 = input?.triggers.r2 ?? 0.6;
           const accel = r2 > 0.1 ? r2 * baseAccel : baseAccel * 0.4;
           speedRef.current = Math.max(0, Math.min(30 + dirLevel * 15, speedRef.current + accel - 0.12));
 
           const targetX = laneX(carLaneRef.current);
 
-          // DualSense gyro/stick lane switch
+          
           if (input) {
             const gyroX = input.gyro.x;
             const stickX = input.leftStick.x;
@@ -446,7 +431,7 @@ export default function NeonDrift( ){
 
           const tileZ = distanceRef.current;
           for (const tile of trackTiles) {
-            // Reset tiles behind player to ahead
+            
             while (tile.position.z < tileZ - TILE_LENGTH) {
               tile.position.z += TOTAL_TILES;
             }
@@ -488,23 +473,23 @@ export default function NeonDrift( ){
 
           if (invincibleRef.current > 0) {
             invincibleRef.current--;
-            // Flicker car during invincibility
+            
             car.setEnabled(frameTick % 6 < 4);
           } else {
             car.setEnabled(true);
             for (const obs of obstacles) {
               if (!obs.active) continue;
-              // Recycle if behind player
+              
               if (obs.z < distanceRef.current - 10) {
                 obs.active = false;
                 obs.mesh.setEnabled(false);
                 continue;
               }
-              // Hit check (simple AABB in lane + distance)
+              
               const dz = Math.abs(obs.z - distanceRef.current);
               const dx = Math.abs(carXRef.current - laneX(obs.lane));
               if (dz < 2.0 && dx < LANE_WIDTH * 0.45) {
-                // CRASH!
+                
                 obs.active = false;
                 obs.mesh.setEnabled(false);
                 deathsRef.current++;
@@ -512,7 +497,7 @@ export default function NeonDrift( ){
                 speedRef.current = Math.max(5, speedRef.current * 0.4);
                 invincibleRef.current = 90;
                 setMultiplier(1);
-                // Haptic rumble
+                
                 const now = Date.now();
                 if (now - lastRumble > 300) {
                   dualSense?.rumble(1.0, 200);
@@ -521,7 +506,7 @@ export default function NeonDrift( ){
               }
             }
 
-            // Boost gate check
+            
             for (const gate of boostGates) {
               if (!gate.active) continue;
               if (gate.z < distanceRef.current - 5) {
@@ -534,7 +519,7 @@ export default function NeonDrift( ){
               const gx = gate.meshL.position.x + LANE_WIDTH * 0.45;
               const dx = Math.abs(carXRef.current - gx);
               if (dz < 2.5 && dx < LANE_WIDTH * 0.55) {
-                // Boost collected!
+                
                 gate.active = false;
                 gate.meshL.setEnabled(false);
                 gate.meshR.setEnabled(false);
@@ -649,7 +634,7 @@ export default function NeonDrift( ){
       {phase === 'playing' && (
         <>
           <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
-          {/* Top-left: render info + director */}
+          
           <div style={{
             position: 'absolute', top: 10, left: 10,
             display: 'flex', flexDirection: 'column', gap: 4,
@@ -664,7 +649,7 @@ export default function NeonDrift( ){
               </div>
             )}
           </div>
-          {/* Top-right: score + multiplier */}
+          
           <div style={{
             position: 'absolute', top: 10, right: 10,
             background: 'rgba(0,0,0,0.75)', padding: '10px 14px', borderRadius: 6,
@@ -680,7 +665,7 @@ export default function NeonDrift( ){
               </div>
             )}
           </div>
-          {/* Bottom: speed bar */}
+          
           <div style={{
             position: 'absolute', bottom: 10, left: '50%',
             transform: 'translateX(-50%)',

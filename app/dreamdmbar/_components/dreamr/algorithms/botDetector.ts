@@ -1,56 +1,38 @@
 import { slog, TORRIDITY_LEDGER_CONFIG } from '@/dreamr/runtime/torridityLedger';
 
-/**
- * botDetector — Physical Turing Test for DreamR swipe interactions.
- *
- * Analyses per-swipe touch paths using 7 bio-mechanical features to compute
- * a weighted bot-likelihood score.  A score ≥ 0.55 flags the swipe as bot.
- *
- * Feature weights (sum to 1.0):
- *   straightness   0.15 – deviation from straight line (low dev → bot)
- *   avgDevSlog     0.25 – slog-scaled average deviation (low → bot)
- *   coarseShift    0.10 – first-half vs second-half deviation difference (high → bot)
- *   crossSim       0.15 – similarity to last 5 stored paths (high → bot)
- *   entropy        0.10 – Shannon entropy of deviations (low → bot)
- *   velVar         0.15 – slog-transformed velocity variance (low → bot)
- *   jerk           0.10 – slog-transformed mean jerk (low → bot)
- *
- * Architecture: dreamdmbar/homedream/dreamr/algorithms/
- * Called by: DreamRCore before writing to torridityLedger
- */
 
-/** A single touch sample from a swipe gesture. */
+
+
 export interface TouchPoint {
   x: number;
   y: number;
-  /** Timestamp in milliseconds (e.g. from PointerEvent.timeStamp). */
+  
   t: number;
 }
 
-/** Per-feature botness scores (0 = human-like, 1 = bot-like) and summary. */
+
 export interface SwipePathScore {
-  /** 1 = perfectly straight (bot); 0 = average deviation ≥ 1.5 px (human). */
+  
   straightness: number;
-  /** slog-scaled inverse of average deviation. */
+  
   avgDevSlog: number;
-  /** Difference between first-half and second-half mean deviations (normalised). */
+  
   coarseShift: number;
-  /** Cosine similarity to stored recent paths (normalised). */
+  
   crossSim: number;
-  /** 1 − normalised Shannon entropy of deviations. */
+  
   entropy: number;
-  /** 1 − slog-normalised velocity variance. */
+  
   velVar: number;
-  /** 1 − slog-normalised mean jerk. */
+  
   jerk: number;
-  /** Weighted sum of the above (0–1). Threshold 0.55 → bot. */
+  
   botScore: number;
-  /** True when botScore ≥ TORRIDITY_LEDGER_CONFIG.botScoreThreshold (0.55). */
+  
   isBot: boolean;
 }
 
-/** Perpendicular distances from each interior touch point to the chord
- *  connecting the first and last point of the swipe. */
+
 function perpendicularDeviations(points: TouchPoint[]): number[] {
   if (points.length < 3) return [];
   const p0 = points[0];
@@ -67,7 +49,7 @@ function perpendicularDeviations(points: TouchPoint[]): number[] {
   });
 }
 
-/** Normalised Shannon entropy (0–1) using 10 equal-width bins. */
+
 function shannonEntropy(values: number[]): number {
   if (values.length === 0) return 0;
   const BINS = 10;
@@ -93,7 +75,7 @@ function shannonEntropy(values: number[]): number {
   return h / Math.log2(BINS);
 }
 
-/** |mean(firstHalf) − mean(secondHalf)| of the deviation array. */
+
 function coarseGrainShift(deviations: number[]): number {
   if (deviations.length < 2) return 0;
   const half = Math.floor(deviations.length / 2);
@@ -101,10 +83,7 @@ function coarseGrainShift(deviations: number[]): number {
   return Math.abs(mean(deviations.slice(0, half)) - mean(deviations.slice(half)));
 }
 
-/**
- * Average cosine similarity between `currentPath` and each of the
- * `storedPaths` (last ≤ 5 normalised deviation arrays).
- */
+
 function crossSwipeSimilarity(
   currentPath: number[],
   storedPaths: number[][],
@@ -138,7 +117,7 @@ function crossSwipeSimilarity(
   return totalSim / storedPaths.length;
 }
 
-/** slog-transformed velocity variance and mean jerk from touch points. */
+
 function velocityFeatures(points: TouchPoint[]): { variance: number; jerk: number } {
   if (points.length < 2) return { variance: 0, jerk: 0 };
 
@@ -164,13 +143,7 @@ function velocityFeatures(points: TouchPoint[]): { variance: number; jerk: numbe
   return { variance: slog(rawVariance), jerk: slog(avgJerk) };
 }
 
-/**
- * Score a swipe path against the Physical Turing Test.
- *
- * @param points      Ordered touch samples for this swipe (≥ 3 recommended).
- * @param recentPaths Last ≤ 5 deviation arrays from previous swipes (optional).
- *                    Caller is responsible for maintaining and trimming the list.
- */
+
 export function scoreSwipePath(
   points: TouchPoint[],
   recentPaths: number[][] = [],
@@ -182,31 +155,31 @@ export function scoreSwipePath(
       ? deviations.reduce((a, b) => a + b, 0) / deviations.length
       : 0;
 
-  // Straightness: bot swipes straight (avgDev < 0.8 px → score near 1)
+  
   const straightness = Math.max(0, 1 - avgDev / 1.5);
 
-  // avgDevSlog: slog-scale the average deviation; near-zero deviation → score 1
-  const slogRef = slog(1.5); // slog at the human-threshold boundary (1.5 px)
+  
+  const slogRef = slog(1.5); 
   const avgDevSlog = Math.max(0, 1 - slog(avgDev) / slogRef);
 
-  // Coarse-graining: human distributions are fractal (small shift); bot > 0.15
+  
   const shift = coarseGrainShift(deviations);
   const coarseShift = Math.min(1, shift / 0.15);
 
-  // Cross-swipe similarity: identical repeated paths → high similarity → bot
+  
   const sim = crossSwipeSimilarity(deviations, recentPaths);
   const crossSim = Math.min(1, Math.max(0, (sim - 0.85) / (TORRIDITY_LEDGER_CONFIG.crossSimThreshold - 0.85)));
 
-  // Shannon entropy: low entropy (concentrated deviations) → bot
+  
   const ent = shannonEntropy(deviations);
   const entropy = Math.max(0, 1 - ent / 0.7);
 
-  // Velocity variance & jerk: high slog-transformed values → human
+  
   const { variance: slogVelVar, jerk: slogJerk } = velocityFeatures(points);
   const velVar = Math.max(0, 1 - Math.min(1, slogVelVar / 0.5));
   const jerk = Math.max(0, 1 - Math.min(1, slogJerk / 0.5));
 
-  // Weighted combination
+  
   const botScore =
     0.15 * straightness +
     0.25 * avgDevSlog +
@@ -229,7 +202,7 @@ export function scoreSwipePath(
   };
 }
 
-/** Convenience wrapper — returns true when the swipe path scores as bot. */
+
 export function isSwipeBot(points: TouchPoint[], recentPaths: number[][] = []): boolean {
   return scoreSwipePath(points, recentPaths).isBot;
 }
@@ -242,7 +215,7 @@ export interface InteractionSignal {
   sessionDurationMs?: number;
 }
 
-/** Returns a coarse confidence score 0–1 based on timing heuristics only. */
+
 export function scoreBotLikelihood(signal: InteractionSignal): number {
   let score = 0;
   if (signal.sessionDurationMs !== undefined && signal.sessionDurationMs < 500) {

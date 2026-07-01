@@ -1,19 +1,12 @@
-/**
- * lib/enginpipe/index.ts
- *
- * Barrel export for the generic "Engin Pipe" backbone. See
- * `docs/enginpipe/README.md` for the 12-component template that this
- * library implements (PR #1 ships components 1, 4, 8, 11; later PRs
- * fill in the rest).
- */
 
-// 1. Artifact container — manifest schema
 
-// 4. Telemetry & feedback loop
 
-// 8. Adaptive quality tier system
 
-// 11. Hot-swap runtime shell primitive
+
+
+
+
+
 
 export {
     ArtifactPermissionSchema,

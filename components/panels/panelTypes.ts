@@ -1,10 +1,4 @@
-/**
- * panelTypes — canonical panel IDs for the SPA panel system.
- *
- * Every feature of DREAMengin that was previously a separate route is now
- * a SystemPanelId. The PanelHost renders them inline within the single page.
- * No router.push(). No browser navigation. One page, everything inside.
- */
+
 
 export type SystemPanelId =
   | 'settings'

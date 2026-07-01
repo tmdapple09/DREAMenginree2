@@ -5,28 +5,20 @@ import { ArrowRight, Check, Plug, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
-/**
- * ConnectorWidgetPicker
- * ---------------------
- * Shown in edit-widget mode inside ProfileWidgetGrid.
- * S.I.C.C. — Synchronized, Intuitive, Coherent, Cohesive.
- *
- * HARD RULE: connectors whose widget type is already in the grid
- * are permanently disabled and cannot be tapped.
- */
+
 
 export interface PickerConnector {
   id: string;
   name: string;
-  /** Displayed in the icon bubble — emoji or short text */
+  
   symbol: string;
-  /** CSS color for the icon bubble text / ring */
+  
   brandColor: string;
-  /** CSS background for icon bubble */
+  
   iconBg: string;
-  /** 1-liner shown under the name */
+  
   description: string;
-  /** Profile widget type this maps to (enforces the hard rule) */
+  
   widgetType: WidgetType;
 }
 
@@ -124,11 +116,11 @@ export const TOP_10_CONNECTORS: PickerConnector[] = [
 ];
 
 export interface ConnectorWidgetPickerProps {
-  /** Widget types already present in the grid — these connectors are DISABLED */
+  
   activeWidgetTypes: WidgetType[];
-  /** Called when the user confirms adding a connector's widget */
+  
   onAdd: (connector: PickerConnector) => void;
-  /** Called to close the picker */
+  
   onClose: () => void;
 }
 
@@ -149,7 +141,7 @@ export default function ConnectorWidgetPicker({
   }, [query]);
 
   function handleCardTap(connector: PickerConnector ){
-    // HARD RULE: already in grid → do nothing
+    
     if (activeWidgetTypes.includes(connector.widgetType)) return;
     setPending(connector);
   }
@@ -163,7 +155,7 @@ export default function ConnectorWidgetPicker({
 
   return (
     <>
-      {/* ── Frosted backdrop ── */}
+      
       <div
         onClick={() => { if (pending) { setPending(null); } else { onClose(); } }}
         style={{
@@ -174,7 +166,7 @@ export default function ConnectorWidgetPicker({
         }}
       />
 
-      {/* ── Bottom sheet ── */}
+      
       <div style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
         zIndex: 211,
@@ -186,12 +178,12 @@ export default function ConnectorWidgetPicker({
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 24px)',
       }}>
 
-        {/* ── Handle ── */}
+        
         <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 12, flexShrink: 0 }}>
           <div style={{ width: 38, height: 4, borderRadius: 99, background: 'rgba(0,0,0,0.15)' }} />
         </div>
 
-        {/* ── Header ── */}
+        
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '10px 18px 0', flexShrink: 0,
@@ -239,7 +231,7 @@ export default function ConnectorWidgetPicker({
           </div>
         </div>
 
-        {/* ── Search bar ── */}
+        
         <div style={{ padding: '12px 18px 0', flexShrink: 0 }}>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 9,
@@ -269,10 +261,10 @@ export default function ConnectorWidgetPicker({
           </div>
         </div>
 
-        {/* ── Scrollable content ── */}
+        
         <div style={{ flex: 1, overflowY: 'auto', padding: '14px 18px 0' }}>
 
-          {/* ── Confirmation phase ── */}
+          
           {pending && (
             <div style={{
               background: 'rgba(255,255,255,0.96)',
@@ -283,7 +275,7 @@ export default function ConnectorWidgetPicker({
               marginBottom: 18,
               animation: 'cpk-pop 180ms cubic-bezier(0.34,1.56,0.64,1)',
             }}>
-              {/* Brand icon */}
+              
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
                 <div style={{
                   width: 64, height: 64, borderRadius: 20,
@@ -352,7 +344,7 @@ export default function ConnectorWidgetPicker({
             </div>
           )}
 
-          {/* ── Grid of connector cards ── */}
+          
           {!pending && (
             <>
               {filtered.length === 0 ? (
@@ -380,7 +372,7 @@ export default function ConnectorWidgetPicker({
                 </div>
               )}
 
-              {/* All connectors link */}
+              
               <Link
                 href="/connectors"
                 style={{
@@ -448,7 +440,7 @@ function ConnectorCard({
         overflow: 'hidden',
       }}
     >
-      {/* Added checkmark badge */}
+      
       {isAdded && (
         <div style={{
           position: 'absolute', top: 8, right: 8,
@@ -460,7 +452,7 @@ function ConnectorCard({
         </div>
       )}
 
-      {/* Brand icon bubble */}
+      
       <div style={{
         width: 38, height: 38, borderRadius: 11,
         background: connector.iconBg,
@@ -474,7 +466,7 @@ function ConnectorCard({
         {connector.symbol}
       </div>
 
-      {/* Name */}
+      
       <div style={{
         fontSize: 13, fontWeight: 800,
         color: isAdded ? '#aaa' : '#1a1a1a',
@@ -483,7 +475,7 @@ function ConnectorCard({
         {connector.name}
       </div>
 
-      {/* Description */}
+      
       <div style={{
         fontSize: 10, color: isAdded ? '#bbb' : '#888',
         lineHeight: 1.35,
@@ -491,7 +483,7 @@ function ConnectorCard({
         {connector.description}
       </div>
 
-      {/* Status pill */}
+      
       <div style={{
         display: 'inline-flex', alignItems: 'center', gap: 3,
         marginTop: 8, padding: '3px 8px',

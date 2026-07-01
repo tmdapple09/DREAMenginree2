@@ -22,11 +22,11 @@ export interface DreamRSwipePreferenceSets {
 export type DreamRSwipeIntent = 'more' | 'less';
 export type DreamRViewIntent = 'left' | 'up' | 'right';
 
-// JavaScript string characters, including spaces. A roughly two-sentence post
-// stays "text"; beyond this, swipes tune essays separately from quick notes.
+
+
 export const LONGFORM_CONTENT_THRESHOLD = 180;
-// Creator intent is weighted twice as strongly as broad content-type intent:
-// "more from this person" should outrank "more text/image/video" in the next stack.
+
+
 export const CREATOR_PREFERENCE_WEIGHT = 8;
 export const TYPE_PREFERENCE_WEIGHT = 4;
 

@@ -32,7 +32,7 @@ interface ReplicatePrediction {
 }
 
 const REPLICATE_BASE = 'https://api.replicate.com/v1';
-// stable-diffusion-inpainting — well-supported inpainting model on Replicate
+
 const REPLICATE_MODEL_VERSION = '95b7223104132402a9ae91d072d9f753d76f6bbec0f64d0d28aaf1f66082f7b6';
 
 const MAX_POLL_MS = 60_000;
@@ -54,14 +54,7 @@ async function pollPrediction(predictionUrl: string, apiToken: string): Promise<
   throw new Error('Generative fill timed out after 60 seconds.');
 }
 
-/**
- * POST /api/content/generative-fill
- *
- * Accepts an image + prompt (+ optional mask) and returns an inpainted result.
- *
- * When REPLICATE_API_TOKEN is set, calls stable-diffusion-inpainting via Replicate.
- * Falls back to a graceful dev stub when no credentials are present.
- */
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -91,15 +84,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
       const imageUri = `data:image/png;base64,${imageBase64}`;
 
-      // Build mask image: if a mask region is provided, generate a simple white-on-black mask.
-      // Otherwise pass the source image as the mask (full-image fill).
+      
+      
       let maskUri = imageUri;
       if (mask) {
-        // Create a minimal white-rectangle-on-black mask as a data URI.
-        // Replicate expects mask as image: white = fill area, black = preserve.
-        // We encode a minimal 1×1 white PNG for full-image when no mask,
-        // or pass the same image for region-only inpainting via prompt guidance.
-        maskUri = imageUri; // Replicate inpainting uses prompt-guided fill even without a precise pixel mask
+        
+        
+        
+        
+        maskUri = imageUri; 
       }
 
       const input: Record<string, unknown> = {
@@ -143,7 +136,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         );
       }
 
-      // Replicate returns a URL to the output image. Fetch it and return as base64.
+      
       const outputUrl = finalPrediction.output[0];
       const imgRes = await fetch(outputUrl);
       if (!imgRes.ok) {
@@ -164,7 +157,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // Dev stub — no API key configured. Echo source image back with metadata.
+  
   const maskDescription = mask
     ? ` [mask: x=${mask.x.toFixed(2)}, y=${mask.y.toFixed(2)}, w=${mask.width.toFixed(2)}, h=${mask.height.toFixed(2)}]`
     : '';

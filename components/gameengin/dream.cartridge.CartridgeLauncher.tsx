@@ -15,19 +15,13 @@ import {
 } from "./dream.cartridge.CartridgeErrorBoundary";
 import { toErrorMessage } from "@/utils/index";
 
-/**
- * components/gameengin/dream.cartridge.CartridgeLauncher.tsx
- *
- * Mounts a single GameEngin cartridge via the platform's GameRuntime host.
- * Used by /gameengin/cartridges/[id]. On unmount the runtime cleans up the
- * cartridge automatically.
- */
+
 
 export interface CartridgeLauncherProps {
   manifest: CartridgeManifestEntry;
-  /** Initial gravity preset for the cartridge (defaults to 'earth'). */
+  
   gravity?: GravityPreset;
-  /** Initial 0–1 friction value (defaults to 0.5). */
+  
   friction?: number;
 }
 
@@ -107,7 +101,7 @@ export default function CartridgeLauncher({
       <div
         style={{ maxWidth: 1180, margin: "0 auto", padding: "24px 20px 64px" }}
       >
-        {/* Header */}
+        
         <div
           style={{
             display: "flex",
@@ -202,7 +196,7 @@ export default function CartridgeLauncher({
           </div>
         )}
 
-        {/* Runtime host */}
+        
         <div
           style={{
             borderRadius: 14,

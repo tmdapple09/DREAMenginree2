@@ -1,9 +1,4 @@
-/**
- * tests/dream-continuity-spine.test.ts
- *
- * Tests for lib/intelligence/continuityHelpers.ts — pure logic only.
- * All test inputs are plain objects; no browser APIs required.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -13,7 +8,7 @@ import {
 } from '@/engine/intelligence/continuityHelpers';
 import type { ForgeActivityPulse } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── resolveResumeDest ─────────────────────────────────────────────────────────
+
 
 describe('resolveResumeDest', () => {
   it('returns null when continueFrom is null and activity is empty', () => {
@@ -62,7 +57,7 @@ describe('resolveResumeDest', () => {
     ];
     const dest = resolveResumeDest(null, activity);
     expect(dest).not.toBeNull();
-    // music has the highest heat
+    
     expect(dest!.href).toBe('/daydream/music');
     expect(dest!.label).toBe('StarMakerEngin');
   });
@@ -71,7 +66,7 @@ describe('resolveResumeDest', () => {
     const activity: ForgeActivityPulse[] = [
       { enginId: 'games', lastActive: new Date().toISOString(), heat: 1.0, label: 'GameEngin active' },
     ];
-    // continueFrom says "lab" even though games heat is 1.0
+    
     const dest = resolveResumeDest('lab', activity);
     expect(dest).not.toBeNull();
     expect(dest!.href).toBe('/daydream/lab');
@@ -104,7 +99,7 @@ describe('resolveResumeDest', () => {
   });
 });
 
-// ── formatArtifactKind ────────────────────────────────────────────────────────
+
 
 describe('formatArtifactKind', () => {
   it('maps known kinds to short labels', () => {
@@ -126,7 +121,7 @@ describe('formatArtifactKind', () => {
   });
 });
 
-// ── getArtifactAccent ─────────────────────────────────────────────────────────
+
 
 describe('getArtifactAccent', () => {
   it('returns a CSS colour string for known kinds', () => {

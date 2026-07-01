@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import DataClient from './dream.DataClient';
 
-// SURFACE: dreamsurface.SettingsData  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Data – Dreamengin Settings' };
 

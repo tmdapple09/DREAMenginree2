@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamGamesEngin  (framework-mandated basename: page.tsx)
+
 
 interface GamesEnginRedirectPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -11,7 +11,7 @@ function firstValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-/** Redirect to the standalone GameEngin app while preserving launch intent. */
+
 export default async function GamesEnginRedirectPage(props?: GamesEnginRedirectPageProps) {
   await connection();
   const searchParams = props?.searchParams ? await props.searchParams : undefined;

@@ -23,9 +23,9 @@ const IntelligenceSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     type: z.literal('brand-voice'),
-    /** The draft content to check */
+    
     content: z.string().min(10).max(5000),
-    /** Comma-separated brand keywords / tone descriptors e.g. "bold, playful, Gen-Z" */
+    
     voiceProfile: z.string().min(2).max(300),
   }),
   z.object({
@@ -138,7 +138,7 @@ function checkBrandVoice(content: string, voiceProfile: string): {
   const onBrand: string[] = [];
   const flags: BrandVoiceFlag[] = [];
 
-  // Detect tone-aligned signals
+  
   if (tones.some((t) => ['bold', 'direct', 'confident'].includes(t))) {
     if (/\b(you|your|stop|now|start|get|do)\b/.test(content)) onBrand.push('Direct address detected ✓');
   }
@@ -154,7 +154,7 @@ function checkBrandVoice(content: string, voiceProfile: string): {
   }
   if (onBrand.length === 0) onBrand.push('Neutral tone — see suggestions below');
 
-  // Flag off-brand signals
+  
   const corporate = ['synergy', 'leverage', 'utilize', 'paradigm', 'bandwidth', 'circle back', 'deep dive', 'touch base'];
   corporate.forEach((w) => {
     if (words.includes(w)) {
@@ -174,7 +174,7 @@ function checkBrandVoice(content: string, voiceProfile: string): {
   const bonusFromOnBrand = Math.min(onBrand.filter((o) => o.includes('✓')).length * 15, 45);
   const score = Math.max(30, Math.min(100, 55 + bonusFromOnBrand - flagPenalty));
 
-  // Light rewrite suggestion
+  
   let rewrite = content.slice(0, 200);
   if (flags.length > 0) {
     corporate.forEach((w) => { rewrite = rewrite.replace(new RegExp(`\\b${w}\\b`, 'gi'), '[rephrase]'); });

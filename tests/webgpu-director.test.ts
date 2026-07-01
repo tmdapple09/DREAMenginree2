@@ -1,8 +1,4 @@
-/**
- * Tests for lib/webgpu/director.ts — DREAM_ENGINE_WEBGPU_DIRECTOR.
- *
- * Covers all exported pure functions and the WebGPUDirector class.
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
@@ -28,7 +24,7 @@ import {
   type DirectorBabylonMesh,
 } from '@/engine/rendering/webgpu/director';
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
+
 
 const nominalMetrics = (): RuntimeMetrics => ({
   frameMs:           16.0,
@@ -77,7 +73,7 @@ const makeObject = (overrides: Partial<SceneObject> = {}): SceneObject => ({
   ...overrides,
 });
 
-// ─── classifyPressure ─────────────────────────────────────────────────────────
+
 
 describe('classifyPressure', () => {
   it('returns 0 for nominal metrics', () => {
@@ -106,7 +102,7 @@ describe('classifyPressure', () => {
   });
 });
 
-// ─── buildPassPlan ────────────────────────────────────────────────────────────
+
 
 describe('buildPassPlan', () => {
   it('enables all hero passes at pressure 0 with hero camera', () => {
@@ -164,7 +160,7 @@ describe('buildPassPlan', () => {
   });
 });
 
-// ─── scoreObject ──────────────────────────────────────────────────────────────
+
 
 describe('scoreObject', () => {
   it('returns 0 for invisible object', () => {
@@ -195,7 +191,7 @@ describe('scoreObject', () => {
   });
 });
 
-// ─── classifyObject ───────────────────────────────────────────────────────────
+
 
 describe('classifyObject', () => {
   it('classifies importance 0 as culled', () => {
@@ -223,7 +219,7 @@ describe('classifyObject', () => {
   });
 });
 
-// ─── decideObject ─────────────────────────────────────────────────────────────
+
 
 describe('decideObject', () => {
   it('freezes invisible non-moving objects', () => {
@@ -266,7 +262,7 @@ describe('decideObject', () => {
   });
 
   it('shadow casting requires sufficient importance', () => {
-    // Very low importance object should not cast shadow
+    
     const obj = makeObject({
       visible:        false,
       occluded:       true,
@@ -279,7 +275,7 @@ describe('decideObject', () => {
   });
 });
 
-// ─── resolveFrameBudget ───────────────────────────────────────────────────────
+
 
 describe('resolveFrameBudget', () => {
   it('is within budget for nominal metrics', () => {
@@ -306,7 +302,7 @@ describe('resolveFrameBudget', () => {
   });
 });
 
-// ─── resolveTemporalState ─────────────────────────────────────────────────────
+
 
 describe('resolveTemporalState', () => {
   it('enables TAA at pressure 0 without cut', () => {
@@ -344,7 +340,7 @@ describe('resolveTemporalState', () => {
   });
 });
 
-// ─── resolveResolutionScale ───────────────────────────────────────────────────
+
 
 describe('resolveResolutionScale', () => {
   it('returns 1.0 at pressure 0 for hero camera', () => {
@@ -373,7 +369,7 @@ describe('resolveResolutionScale', () => {
   });
 });
 
-// ─── WebGPUDirector ───────────────────────────────────────────────────────────
+
 
 describe('WebGPUDirector', () => {
   let director: WebGPUDirector;
@@ -406,16 +402,16 @@ describe('WebGPUDirector', () => {
   });
 
   it('applies hysteresis when recovering from high pressure', () => {
-    // Push to pressure 3
+    
     director.update({ metrics: pressuredMetrics(26), camera: browseCamera(), objects: [] });
 
-    // Recovery frame (nominal metrics) — should still report high pressure for several frames
+    
     const frame = director.update({
       metrics: nominalMetrics(),
       camera:  browseCamera(),
       objects: [],
     });
-    // Still held at previous pressure due to hysteresis
+    
     expect(frame.pressure).toBeGreaterThan(0);
   });
 
@@ -432,7 +428,7 @@ describe('WebGPUDirector', () => {
   });
 });
 
-// ─── applyDirectorFrame ───────────────────────────────────────────────────────
+
 
 describe('applyDirectorFrame', () => {
   const makeMesh = (id: string, frozen = false): DirectorBabylonMesh => ({
@@ -470,7 +466,7 @@ describe('applyDirectorFrame', () => {
     const scene = makeScene([mesh]);
     const engine = makeEngine();
 
-    // Build a director frame where the object is culled/frozen
+    
     const director = new WebGPUDirector();
     const frame = director.update({
       metrics: nominalMetrics(),
@@ -501,7 +497,7 @@ describe('applyDirectorFrame', () => {
   });
 });
 
-// ─── default helpers ──────────────────────────────────────────────────────────
+
 
 describe('default helpers', () => {
   it('defaultDirectorMetrics returns nominal values', () => {
@@ -522,29 +518,29 @@ describe('default helpers', () => {
   });
 });
 
-// ─── scoreObject improvements ─────────────────────────────────────────────────
+
 
 describe('scoreObject — squared distance falloff', () => {
   it('close object scores much higher than mid-range (non-linear gap)', () => {
-    // At linear falloff d=2 and d=10 differ by (18/20)*20 vs (10/20)*20 = 18 vs 10
-    // At squared falloff: (18/20)^2*20 = 16.2 vs (10/20)^2*20 = 5.0 — much bigger gap
+    
+    
     const close = scoreObject(makeObject({ distance: 2,  screenCoverage: 0, heroWeight: 0, semanticWeight: 0, motionWeight: 0, interactionWeight: 0, materialCost: 0, shadowCost: 0, geometryCost: 0, textureCost: 0 }), browseCamera());
     const mid   = scoreObject(makeObject({ distance: 10, screenCoverage: 0, heroWeight: 0, semanticWeight: 0, motionWeight: 0, interactionWeight: 0, materialCost: 0, shadowCost: 0, geometryCost: 0, textureCost: 0 }), browseCamera());
     const far   = scoreObject(makeObject({ distance: 18, screenCoverage: 0, heroWeight: 0, semanticWeight: 0, motionWeight: 0, interactionWeight: 0, materialCost: 0, shadowCost: 0, geometryCost: 0, textureCost: 0 }), browseCamera());
-    // Squared curve: close >> mid >> far
+    
     expect(close - mid).toBeGreaterThan(mid - far);
   });
 
   it('cost penalty cannot reduce score below 70% of pre-penalty value', () => {
-    // Very expensive object — all costs at max
+    
     const obj = makeObject({ materialCost: 1, shadowCost: 1, geometryCost: 1, textureCost: 1 });
     const score = scoreObject(obj, heroCamera());
-    // Should still be > 0 even with full costs
+    
     expect(score).toBeGreaterThan(0);
   });
 });
 
-// ─── buildPassPlan — transition camera ssao ───────────────────────────────────
+
 
 describe('buildPassPlan — transition camera', () => {
   it('disables ssao during camera transition', () => {
@@ -559,7 +555,7 @@ describe('buildPassPlan — transition camera', () => {
   });
 });
 
-// ─── snapUpdateHz — motion-weight aware ──────────────────────────────────────
+
 
 describe('decideObject — motion-aware update rate', () => {
   it('high motionWeight object does not drop to 15Hz at pressure 3', () => {
@@ -571,7 +567,7 @@ describe('decideObject — motion-aware update rate', () => {
       distance: 15,
     });
     const d = decideObject(obj, browseCamera(), 3);
-    // Even at max pressure, a moving object must not be throttled to 15Hz
+    
     expect(d.updateHz).toBeGreaterThanOrEqual(30);
   });
 
@@ -590,11 +586,11 @@ describe('decideObject — motion-aware update rate', () => {
   });
 });
 
-// ─── resolveResolutionScale — metrics feedback ────────────────────────────────
+
 
 describe('resolveResolutionScale — budget feedback', () => {
   it('tightens scale when gpu is near budget at pressure 0', () => {
-    // GPU at 90%+ of budget (budget = 16.6 * 0.60 = ~9.96ms; 90% = ~8.96ms)
+    
     const hotMetrics: RuntimeMetrics = { ...nominalMetrics(), gpuMs: 9.5 };
     const noMetrics  = resolveResolutionScale(0, heroCamera());
     const withMetrics = resolveResolutionScale(0, heroCamera(), hotMetrics);
@@ -615,7 +611,7 @@ describe('resolveResolutionScale — budget feedback', () => {
   });
 });
 
-// ─── babylonMeshToSceneObject ─────────────────────────────────────────────────
+
 
 describe('babylonMeshToSceneObject', () => {
   const makeBabylonMesh = (id: string, isVisible = true): DirectorBabylonMesh => ({
@@ -645,8 +641,8 @@ describe('babylonMeshToSceneObject', () => {
   });
 
   it('uses provided lastVisible override', () => {
-    const mesh = makeBabylonMesh('obj', false); // currently invisible
-    const obj = babylonMeshToSceneObject(mesh, {}, true); // was visible last frame
+    const mesh = makeBabylonMesh('obj', false); 
+    const obj = babylonMeshToSceneObject(mesh, {}, true); 
     expect(obj.visible).toBe(false);
     expect(obj.lastFrameVisible).toBe(true);
   });
@@ -659,7 +655,7 @@ describe('babylonMeshToSceneObject', () => {
   });
 });
 
-// ─── buildSceneObjects ────────────────────────────────────────────────────────
+
 
 describe('buildSceneObjects', () => {
   const makeMesh = (id: string, isVisible = true): DirectorBabylonMesh => ({
@@ -687,8 +683,8 @@ describe('buildSceneObjects', () => {
   });
 
   it('uses lastVisibleSet for temporal tracking', () => {
-    const meshes = [makeMesh('obj', false)]; // currently not visible
-    const lastVisible = new Set(['obj']);    // was visible last frame
+    const meshes = [makeMesh('obj', false)]; 
+    const lastVisible = new Set(['obj']);    
     const objects = buildSceneObjects(meshes, () => ({}), lastVisible);
     expect(objects[0].lastFrameVisible).toBe(true);
   });

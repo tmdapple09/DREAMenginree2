@@ -1,22 +1,10 @@
-/**
- * tests/journey.test.ts
- *
- * Unit tests for the Journey Trail feature.
- *
- * Architecture justification:
- *   docs/AXIOMS.md §3 — every visible action must do something real.
- *   The Journey Trail persists meaningful user actions as private data points.
- *   These tests verify pure logic helpers that drive the trail visualization
- *   and API behavior.
- *
- * All functions under test are pure — no DOM, no network, no React needed.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import type { JourneyDot, JourneyTimeGroup } from '@/types/journey';
 import { JOURNEY_DOMAIN_COLORS } from '@/types/journey';
 
-// ── Helpers mirrored from JourneyTrail.tsx ────────────────────────────────────
+
 
 function groupDotsByTime(dots: JourneyDot[]): JourneyTimeGroup[] {
   const now = Date.now();
@@ -46,7 +34,7 @@ function dotRadius(significance: number): number {
   return 4;
 }
 
-// ── API validation logic (mirrors app/api/journey/route.ts) ──────────────────
+
 
 function validateDotInput(body): string | null {
   if (!body.kind || typeof body.kind !== 'string') {
@@ -62,7 +50,7 @@ function validateDotInput(body): string | null {
   return null;
 }
 
-// ── Fixture factories ─────────────────────────────────────────────────────────
+
 
 function makeDot(overrides: Partial<JourneyDot> = {}): JourneyDot {
   return {
@@ -83,7 +71,7 @@ function ageMs(ms: number): string {
   return new Date(Date.now() - ms).toISOString();
 }
 
-// ── Tests: groupDotsByTime ────────────────────────────────────────────────────
+
 
 describe('groupDotsByTime', () => {
   it('returns empty array when no dots provided', () => {
@@ -91,7 +79,7 @@ describe('groupDotsByTime', () => {
   });
 
   it('places a dot created now into Today group', () => {
-    const dot = makeDot({ created_at: ageMs(1_000) });  // 1 second ago
+    const dot = makeDot({ created_at: ageMs(1_000) });  
     const groups = groupDotsByTime([dot]);
     expect(groups).toHaveLength(1);
     expect(groups[0].label).toBe('Today');
@@ -119,15 +107,15 @@ describe('groupDotsByTime', () => {
   it('filters out empty groups', () => {
     const dot = makeDot({ created_at: ageMs(1_000) });
     const groups = groupDotsByTime([dot]);
-    // Only 'Today' should be returned — no empty This Week / This Month / Earlier
+    
     expect(groups.every((g) => g.dots.length > 0)).toBe(true);
   });
 
   it('distributes multiple dots into correct groups', () => {
     const dots = [
-      makeDot({ id: '1', created_at: ageMs(1_000) }),            // Today
-      makeDot({ id: '2', created_at: ageMs(3 * 86_400_000) }),   // This Week
-      makeDot({ id: '3', created_at: ageMs(60 * 86_400_000) }),  // Earlier
+      makeDot({ id: '1', created_at: ageMs(1_000) }),            
+      makeDot({ id: '2', created_at: ageMs(3 * 86_400_000) }),   
+      makeDot({ id: '3', created_at: ageMs(60 * 86_400_000) }),  
     ];
     const groups = groupDotsByTime(dots);
     expect(groups).toHaveLength(3);
@@ -139,8 +127,8 @@ describe('groupDotsByTime', () => {
 
   it('maintains order within each group (newest first)', () => {
     const dots = [
-      makeDot({ id: 'a', created_at: ageMs(60_000) }),     // 1 min ago
-      makeDot({ id: 'b', created_at: ageMs(3_600_000) }),  // 1 hour ago
+      makeDot({ id: 'a', created_at: ageMs(60_000) }),     
+      makeDot({ id: 'b', created_at: ageMs(3_600_000) }),  
     ];
     const groups = groupDotsByTime(dots);
     expect(groups[0].dots[0].id).toBe('a');
@@ -148,7 +136,7 @@ describe('groupDotsByTime', () => {
   });
 });
 
-// ── Tests: dotRadius ──────────────────────────────────────────────────────────
+
 
 describe('dotRadius', () => {
   it('returns 8 for high significance (>= 0.9)', () => {
@@ -167,7 +155,7 @@ describe('dotRadius', () => {
   });
 });
 
-// ── Tests: validateDotInput ───────────────────────────────────────────────────
+
 
 describe('validateDotInput', () => {
   it('returns null for a valid minimal input', () => {
@@ -210,12 +198,12 @@ describe('validateDotInput', () => {
   });
 
   it('defaults to 0.5 significance when not provided (valid)', () => {
-    // When significance is missing the default 0.5 is used — should be valid
+    
     expect(validateDotInput({ kind: 'runtime_first_entry', label: 'Test' })).toBeNull();
   });
 });
 
-// ── Tests: JOURNEY_DOMAIN_COLORS ──────────────────────────────────────────────
+
 
 describe('JOURNEY_DOMAIN_COLORS', () => {
   it('contains all canonical surface names', () => {
@@ -234,7 +222,7 @@ describe('JOURNEY_DOMAIN_COLORS', () => {
     for (const name of expected) {
       expect(JOURNEY_DOMAIN_COLORS).toHaveProperty(name);
     }
-    // All defined colors are accounted for — no undocumented entries
+    
     expect(Object.keys(JOURNEY_DOMAIN_COLORS)).toHaveLength(expected.length);
   });
 
@@ -252,13 +240,13 @@ describe('JOURNEY_DOMAIN_COLORS', () => {
   });
 });
 
-// ── Tests: JourneyDot privacy guarantees ─────────────────────────────────────
+
 
 describe('JourneyDot privacy model', () => {
   it('a JourneyDot has no visibility field (privacy enforced at DB layer)', () => {
     const dot = makeDot();
-    // The JourneyDot type intentionally has no visibility field —
-    // privacy is enforced by RLS at the database layer, not by a flag.
+    
+    
     expect('visibility' in dot).toBe(false);
   });
 

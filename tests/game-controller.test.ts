@@ -27,7 +27,7 @@ import {
 
 const REPO_ROOT = process.cwd();
 
-// ─── Left stick math ────────────────────────────────────────────────────────
+
 
 describe('gameControllerLeft – stick vector math', () => {
   it('returns zero vector when at origin', () => {
@@ -47,7 +47,7 @@ describe('gameControllerLeft – stick vector math', () => {
   });
 
   it('returns diagonal at ~0.707 when dragged to half-radius diagonally', () => {
-    // Dragging to (r/2, r/2) has Euclidean distance r/√2 ≈ 0.707r, so magnitude ≈ 0.707.
+    
     const r = LEFT_STICK_RADIUS_PX / 2;
     const v = computeLeftStickVector(0, 0, r, r);
     expect(Math.hypot(v.x, v.y)).toBeCloseTo(1 / Math.SQRT2, 1);
@@ -63,7 +63,7 @@ describe('gameControllerLeft – stick vector math', () => {
   });
 });
 
-// ─── Right stick tap/aim ─────────────────────────────────────────────────────
+
 
 describe('gameControllerRight – tap detection', () => {
   it('classifies a short, low-movement touch as a tap', () => {
@@ -102,7 +102,7 @@ describe('gameControllerRight – aim delta', () => {
   });
 });
 
-// ─── Button interaction manager ──────────────────────────────────────────────
+
 
 describe('ButtonInteractionManager – tap', () => {
   it('emits hold-start then tap then release for a short press', () => {
@@ -112,7 +112,7 @@ describe('ButtonInteractionManager – tap', () => {
 
     const now = 1000;
     mgr.pressStart('circle', 1, now);
-    mgr.pressEnd('circle', 1, now + 100); // 100ms < TAP_MAX_MS
+    mgr.pressEnd('circle', 1, now + 100); 
 
     expect(events.map((e) => e.interaction)).toEqual(['hold-start', 'release', 'tap']);
     expect(events.every((e) => e.button === 'circle')).toBe(true);
@@ -126,7 +126,7 @@ describe('ButtonInteractionManager – tap', () => {
 
     const now = 1000;
     mgr.pressStart('x', 2, now);
-    mgr.pressEnd('x', 2, now + BTN_TAP_MAX_MS + 100); // longer than tap
+    mgr.pressEnd('x', 2, now + BTN_TAP_MAX_MS + 100); 
 
     expect(events.map((e) => e.interaction)).toEqual(['hold-start', 'release', 'hold-end']);
     mgr.destroy();
@@ -141,10 +141,10 @@ describe('ButtonInteractionManager – double-tap', () => {
 
     const t = 0;
     mgr.pressStart('triangle', 3, t);
-    mgr.pressEnd('triangle', 3, t + 80);           // first tap (short)
-    // Second press within BTN_TAP_AND_HOLD_WINDOW_MS — also short → double-tap
+    mgr.pressEnd('triangle', 3, t + 80);           
+    
     mgr.pressStart('triangle', 4, t + 200);
-    mgr.pressEnd('triangle', 4, t + 200 + 70);     // short second press
+    mgr.pressEnd('triangle', 4, t + 200 + 70);     
 
     const interactions = events.map((e) => e.interaction);
     expect(interactions).toContain('double-tap');
@@ -159,13 +159,13 @@ describe('ButtonInteractionManager – double-tap', () => {
     const t = 0;
     mgr.pressStart('square', 5, t);
     mgr.pressEnd('square', 5, t + 80);
-    // Second press outside DOUBLE_TAP_MAX_MS
+    
     mgr.pressStart('square', 6, t + BTN_DOUBLE_TAP_MAX_MS + 100);
     mgr.pressEnd('square', 6, t + BTN_DOUBLE_TAP_MAX_MS + 180);
 
     const interactions = events.map((e) => e.interaction);
     expect(interactions).not.toContain('double-tap');
-    // Both presses should be individual taps
+    
     expect(interactions.filter((i) => i === 'tap').length).toBe(2);
     mgr.destroy();
   });
@@ -208,10 +208,10 @@ describe('ButtonInteractionManager – tap-and-hold', () => {
     mgr.subscribe((e) => events.push(e));
 
     const t = 0;
-    // First tap
+    
     mgr.pressStart('r2', 9,  t);
     mgr.pressEnd('r2',   9,  t + 80);
-    // Quick re-press within TAP_AND_HOLD_WINDOW_MS, held longer than TAP_MAX_MS → tap-and-hold
+    
     mgr.pressStart('r2', 10, t + 150);
     mgr.pressEnd('r2',   10, t + 150 + BTN_TAP_MAX_MS + 50);
 
@@ -244,13 +244,13 @@ describe('ButtonInteractionManager – button definitions', () => {
 });
 
 
-// ─── Dream → GameEngin pipeline — architecture contract ─────────────────────
-//
-// Validates that the GameEngin pipeline (ARCHITECTURE.md §16-19) satisfies:
-//   Dream (kind: 'game') → GameEngin → Cartridge → GameRemote/GameController
-//
-// These source-level checks confirm the wiring is in place and that the
-// GameHUD correctly routes control surfaces by MobileHudMode.
+
+
+
+
+
+
+
 
 describe('GameController integration', () => {
   it('GameHUD delegates to the shared GameRemote instead of preserving a duplicate controller path', () => {

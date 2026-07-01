@@ -58,7 +58,7 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
   }, [handle, displayName, selected, onConfirm, submitting]);
 
   return (
-    /* Backdrop */
+    
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 200,
@@ -69,7 +69,7 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
       }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      {/* Bottom sheet */}
+      
       <div
         style={{
           width: '100%', maxWidth: 540,
@@ -82,12 +82,12 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
           paddingBottom: 'env(safe-area-inset-bottom)',
         }}
       >
-        {/* Handle bar */}
+        
         <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 0' }}>
           <div style={{ width: 40, height: 4, borderRadius: 2, background: 'rgba(160,195,240,0.5)' }} />
         </div>
 
-        {/* Header */}
+        
         <div style={{ padding: '12px 20px 4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--de-heading)' }}>
@@ -106,7 +106,7 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
           </button>
         </div>
 
-        {/* Options grid */}
+        
         <div style={{ padding: '12px 16px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
           {FOLLOW_OPTIONS.map((opt) => {
             const active = selected === opt.id;
@@ -142,12 +142,12 @@ export default function FollowOnboarding({ handle, displayName, onConfirm, onClo
           })}
         </div>
 
-        {/* Info note */}
+        
         <p style={{ fontSize: 11, color: 'var(--de-text-dim)', textAlign: 'center', padding: '0 20px 10px', lineHeight: 1.4 }}>
           You own this. Change anytime in <strong>Settings → Algorithm</strong>.
         </p>
 
-        {/* Confirm */}
+        
         <div style={{ padding: '0 16px 20px', display: 'flex', gap: 10 }}>
           <button type="button" onClick={onClose} className="de-btn de-btn-ghost" style={{ flex: 1 }}>
             Cancel

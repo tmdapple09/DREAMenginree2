@@ -1,11 +1,11 @@
 import crypto from 'crypto';
 
-// lib/ai/confirm.ts
-// HMAC-based confirmation token system
+
+
 
 const SECRET = process.env.AI_CONFIRM_TOKEN_SECRET;
 
-// Resolved at module load; null in production when env var is absent.
+
 const CACHED_SECRET = SECRET || (process.env.NODE_ENV === 'production' ? null : 'dev-secret-change-in-production');
 
 function getSecret(): string {
@@ -27,9 +27,7 @@ interface VerifyConfirmTokenInput {
   userId: string;
 }
 
-/**
- * Generate HMAC confirmation token
- */
+
 export function makeConfirmToken(input: MakeConfirmTokenInput): string {
   const { requestId, userId, ttlSeconds } = input;
   const expiresAt = Date.now() + ttlSeconds * 1000;
@@ -39,14 +37,12 @@ export function makeConfirmToken(input: MakeConfirmTokenInput): string {
   hmac.update(payload);
   const signature = hmac.digest('hex');
 
-  // Token format: base64(payload:signature)
+  
   const token = Buffer.from(`${payload}:${signature}`).toString('base64url');
   return token;
 }
 
-/**
- * Verify confirmation token
- */
+
 export function verifyConfirmToken(input: VerifyConfirmTokenInput): boolean {
   const { token, requestId, userId } = input;
 
@@ -60,18 +56,18 @@ export function verifyConfirmToken(input: VerifyConfirmTokenInput): boolean {
 
     const [tokenRequestId, tokenUserId, expiresAtStr, signature] = parts;
 
-    // Check request ID and user ID match
+    
     if (tokenRequestId !== requestId || tokenUserId !== userId) {
       return false;
     }
 
-    // Check expiration
+    
     const expiresAt = parseInt(expiresAtStr, 10);
     if (isNaN(expiresAt) || Date.now() > expiresAt) {
       return false;
     }
 
-    // Verify HMAC signature
+    
     const expectedPayload = `${tokenRequestId}:${tokenUserId}:${expiresAtStr}`;
     const hmac = crypto.createHmac('sha256', getSecret());
     hmac.update(expectedPayload);

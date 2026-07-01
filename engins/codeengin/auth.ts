@@ -24,7 +24,7 @@ export async function assertCodeEnginAccess(request: Request): Promise<CodeEngin
       return { id: user.id, email, isOwner: isOwner(email) };
     }
   } catch {
-    // Fall through to dev-only fallback / deny.
+    
   }
 
   if (process.env.NODE_ENV !== 'production' && !configuredToken) {

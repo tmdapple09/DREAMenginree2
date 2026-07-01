@@ -1,21 +1,5 @@
 #!/usr/bin/env node
-/**
- * scripts/update-readme.mjs
- *
- * Automatically updates README.md after every push.
- *
- * What it does:
- *  1. Reads the latest commit metadata (hash, message, author, datetime, files).
- *  2. Regenerates the AI Agent Quick Reference block (between
- *     <!-- DREAMENGIN-AI-CONTEXT:START --> and <!-- DREAMENGIN-AI-CONTEXT:END -->).
- *  3. Refreshes the "Last updated" line inside "## Current Implementation Status".
- *  4. Prepends a new row into the "## Recent Changes" table (created if absent).
- *  5. Keeps exactly MAX_ROWS recent entries; older ones are trimmed.
- *  6. Writes a rich GitHub Actions Step Summary (AI agent context + change info).
- *
- * Called by Idari[bot] via .github/workflows/update-readme.yml on every push and merge.
- * Can also be run locally: node scripts/update-readme.mjs
- */
+
 
 import { execSync }                          from 'child_process';
 import { readFileSync, writeFileSync,
@@ -41,7 +25,7 @@ const AI_CTX_END   = '<!-- DREAMENGIN-AI-CONTEXT:END -->';
 const FS_START     = '<!-- FILE-STRUCTURE:START -->';
 const FS_END       = '<!-- FILE-STRUCTURE:END -->';
 
-// ── Helper: run git / shell commands ──────────────────────────────────────────
+
 
 function git(cmd) {
   try {
@@ -59,11 +43,11 @@ function countShell(cmd) {
   }
 }
 
-// ── Helper: escape table cell content ─────────────────────────────────────────
+
 
 function cell(s) { return s.replace(/\|/g, '\\|').replace(/\n/g, ' '); }
 
-// ── 1. Collect git metadata ────────────────────────────────────────────────────
+
 
 const sha     = (process.env.GITHUB_SHA      || git('git rev-parse HEAD')).slice(0, 7);
 const branch  = (process.env.GITHUB_REF_NAME || git('git rev-parse --abbrev-ref HEAD'));
@@ -71,13 +55,13 @@ const actor   = (process.env.GITHUB_ACTOR    || git('git log -1 --format=%an'));
 const rawDate = git('git log -1 --format=%aI');
 const message = git('git log -1 --format=%s');
 
-// Human-readable UTC datetime, e.g. "2026-03-24 17:56 UTC"
+
 const utcDate = new Date(rawDate || Date.now())
   .toISOString()
   .replace('T', ' ')
   .replace(/:\d{2}\.\d{3}Z$/, ' UTC');
 
-// ── 2. Collect file-change stats ──────────────────────────────────────────────
+
 
 const nameStatus = git('git diff-tree --no-commit-id -r --name-status HEAD');
 const diffLines  = nameStatus.split('\n').filter(Boolean);
@@ -92,7 +76,7 @@ if (deleted)  statParts.push(`−${deleted}`);
 if (modified) statParts.push(`~${modified}`);
 const statLine = statParts.length ? statParts.join(' ') : '—';
 
-// ── 3. Collect live repo stats ────────────────────────────────────────────────
+
 
 const testCount     = existsSync(resolve(ROOT, 'tests'))
   ? readdirSync(resolve(ROOT, 'tests')).filter((f) => f.endsWith('.test.ts')).length
@@ -104,20 +88,16 @@ const workflowCount = existsSync(resolve(ROOT, '.github/workflows'))
   ? readdirSync(resolve(ROOT, '.github/workflows')).filter((f) => f.endsWith('.yml') || f.endsWith('.yaml')).length
   : 0;
 
-// ── 4a. Build a live file-structure tree (2 levels deep) ──────────────────────
 
-/**
- * Returns a markdown code-block with the top-level repo structure,
- * expanding key directories one level deeper.  Hidden dirs, node_modules,
- * .next, and large generated directories are skipped.
- */
+
+
 function buildFileStructure() {
   const SKIP = new Set([
     'node_modules', '.next', '.git', 'dist', 'out', '.turbo', 'coverage',
     '.vercel', '.cache', '__pycache__',
   ]);
 
-  // Directories we want to expand to show their immediate children
+  
   const EXPAND = new Set([
     'app', 'components', 'lib', 'docs', 'scripts', 'tests',
     '.github', 'build-memory', 'hooks', 'types', 'public',
@@ -136,7 +116,7 @@ function buildFileStructure() {
   const entries = readdirSync(ROOT)
     .filter((n) => !SKIP.has(n) && !n.startsWith('.') || n === '.github')
     .sort((a, b) => {
-      // dirs first
+      
       const aDir = statSync(join(ROOT, a)).isDirectory();
       const bDir = statSync(join(ROOT, b)).isDirectory();
       if (aDir && !bDir) return -1;
@@ -166,7 +146,7 @@ function buildFileStructure() {
             if (!aD && bD) return 1;
             return a.localeCompare(b);
           })
-          .slice(0, 20); // cap at 20 children to keep output readable
+          .slice(0, 20); 
       } catch {
         children = [];
       }
@@ -187,7 +167,7 @@ function buildFileStructure() {
   return lines.join('\n');
 }
 
-// ── 4. Build the AI Agent Context block ───────────────────────────────────────
+
 
 function buildAIContextBlock() {
   return `${AI_CTX_START}
@@ -314,7 +294,7 @@ ${buildFileStructure()}
 ${AI_CTX_END}`;
 }
 
-// ── 5. Write GitHub Actions Step Summary ─────────────────────────────────────
+
 
 function writeSummary(status) {
   const summaryFile = process.env.GITHUB_STEP_SUMMARY;
@@ -363,37 +343,37 @@ function writeSummary(status) {
   try {
     appendFileSync(summaryFile, lines.join('\n') + '\n');
   } catch {
-    // GITHUB_STEP_SUMMARY may not be writable in local runs — silently skip
+    
   }
 }
 
-// ── 6. Build the new Recent Changes table row ─────────────────────────────────
+
 
 const newRow =
   `| \`${sha}\` | ${utcDate} | ${branch} | ${actor} | ${statLine} | ${cell(message)} |`;
 
-// ── 7. Read README ────────────────────────────────────────────────────────────
+
 
 let doc = readFileSync(README, 'utf8');
 
-// ── 8. Update or insert AI Agent Context block ────────────────────────────────
+
 
 const contextBlock = buildAIContextBlock();
 const ctxStart = doc.indexOf(AI_CTX_START);
 const ctxEnd   = doc.indexOf(AI_CTX_END);
 
 if (ctxStart !== -1 && ctxEnd !== -1 && ctxEnd > ctxStart) {
-  // Markers exist — replace everything from START to end of END line
+  
   const afterEnd = ctxEnd + AI_CTX_END.length;
   doc = doc.slice(0, ctxStart) + contextBlock + doc.slice(afterEnd);
 } else {
-  // Markers absent — insert block right before "## Recent Changes"
+  
   const rcIdx = doc.indexOf('\n## Recent Changes');
   const insertAt = rcIdx !== -1 ? rcIdx + 1 : doc.indexOf('\n\n') + 2;
   doc = doc.slice(0, insertAt) + contextBlock + '\n\n' + doc.slice(insertAt);
 }
 
-// ── 9. Refresh the live File Structure block (between FILE-STRUCTURE markers) ─
+
 
 const fileStructureBlock = `${FS_START}\n${buildFileStructure()}\n${FS_END}`;
 const fsStartIdx = doc.indexOf(FS_START);
@@ -411,7 +391,7 @@ if (fsStartIdx !== -1 && fsEndIdx !== -1 && fsEndIdx > fsStartIdx) {
   }
 }
 
-// ── 10. Refresh "## Current Implementation Status" with live metadata ───────────
+
 
 let babylonMajor;
 let pnpmVersion;
@@ -424,14 +404,14 @@ try {
   babylonMajor = majorMatch?.[1];
   pnpmVersion = extractPnpmVersion(pkg.packageManager);
 } catch {
-  // package.json unreadable — skip silently
+  
 }
 
 try {
   const dockerfileDev = readFileSync(resolve(ROOT, 'Dockerfile.dev'), 'utf8');
   nodeMajor = extractNodeMajorFromDockerfile(dockerfileDev);
 } catch {
-  // Dockerfile.dev unreadable — skip silently
+  
 }
 
 doc = refreshCurrentImplementationStatusSection(doc, {
@@ -447,7 +427,7 @@ doc = refreshCurrentImplementationStatusSection(doc, {
   nodeMajor,
 });
 
-// ── 11. Update the "## Recent Changes" table ──────────────────────────────────
+
 
 const TABLE_HEADER   = '| Revision | Date / Time (UTC) | Branch | Author | Files | Summary |';
 const TABLE_DIVIDER  = '|---|---|---|---|---|---|';
@@ -456,13 +436,13 @@ const SECTION_ANCHOR = '## Recent Changes';
 const sectionIdx = doc.indexOf(SECTION_ANCHOR);
 
 if (sectionIdx === -1) {
-  // Prefer placement AFTER the AI Context END marker so the table doesn't
-  // land inside the regenerated AI block (which would wipe it on every run).
+  
+  
   const ctxEndIdx = doc.indexOf(AI_CTX_END);
   let insertAt;
   if (ctxEndIdx !== -1) {
     insertAt = ctxEndIdx + AI_CTX_END.length;
-    // skip trailing newline after the marker if present
+    
     if (doc[insertAt] === '\n') insertAt += 1;
   } else {
     const hrIdx = doc.indexOf('\n---\n');

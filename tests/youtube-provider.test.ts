@@ -165,7 +165,7 @@ describe('youtube provider discovery helpers', () => {
 
     await youtubeSearchByQuery('youtube-key', 'neil degrasse tyson', 999);
 
-    // max should be clamped to 50
+    
     expect(fetchMock.mock.calls[0]?.[0]).toContain('maxResults=50');
   });
 

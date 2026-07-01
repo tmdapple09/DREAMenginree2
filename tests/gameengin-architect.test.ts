@@ -1,12 +1,4 @@
-/**
- * tests/gameengin-architect.test.ts
- *
- * Locks the new pieces from the Game Architect + Cartridge Status directive:
- *   - Concept Patterns library (settings / protagonists / scope-formulas)
- *   - Vision Statement schema + recordVisionStatement validation
- *   - Cartridge Status System (active / improving / stable) on MANIFEST.json
- *   - Maestro skips `stable` cartridges
- */
+
 
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import * as fs from 'node:fs';

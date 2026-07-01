@@ -1,13 +1,13 @@
 import type { IDARiAgent } from "@/types/ai";
 
-// lib/agents/idari.ts
-// Section 13: IDARi — Admin AI: Debugger / Overseer
-//
-// IDARi is the admin-tier AI agent for DREAMengin.
-// It can debug widget issues, oversee system health, and manage widget state.
-//
-// Output format: patch plans (cause → impact → fix → verification).
-// See requirements #1–13, #23 from the IDARi system spec.
+
+
+
+
+
+
+
+
 
 export const IDARI_EVENT = "dreamengin:idari";
 
@@ -26,47 +26,41 @@ export interface IDARiResult {
   details?: Record<string, unknown>;
 }
 
-// PatchPlan — IDARi's primary output format (req #11, #12, #13).
-// Every fix is expressed as: cause → impact → fix → verification.
-// Rollback steps are required for any change rated "high" or "critical".
+
+
+
 
 export type PatchRisk = "low" | "medium" | "high" | "critical";
 
 export interface PatchStep {
-  /** Relative file path from repo root. */
+  
   file: string;
-  /** Minimal diff description or literal unified diff. */
+  
   diff: string;
 }
 
 export interface PatchPlan {
   id: string;
-  /** One-line summary of the issue. */
+  
   title: string;
-  /** Root cause analysis. */
+  
   cause: string;
-  /** User / system impact if left unfixed. */
+  
   impact: string;
-  /** The smallest safe change that fixes the issue. */
+  
   fix: string;
-  /** How to confirm the fix worked (test / metric / visual check). */
+  
   verification: string;
-  /** Ordered list of file changes. Always minimal. */
+  
   steps: PatchStep[];
-  /** Risk level — determines whether rollback steps are required. */
+  
   risk: PatchRisk;
-  /**
-   * Rollback instructions (required when risk is "high" or "critical").
-   * Describes how to revert if the fix causes regressions.
-   */
+  
   rollback?: string;
   created_at: string;
 }
 
-/**
- * Create a PatchPlan with the current ISO timestamp and validated rollback
- * requirement (req #13: rollback steps required for risky changes).
- */
+
 export function createPatchPlan(
   plan: Omit<PatchPlan, "created_at">
 ): PatchPlan {
@@ -78,8 +72,8 @@ export function createPatchPlan(
   return { ...plan, created_at: new Date().toISOString() };
 }
 
-// Generation Law — Phase 8 runtime-complete scope enforcement.
-// Provides deterministic pre-flight scoring used by IDARi system instructions.
+
+
 
 export type GenerationLawMode = "CREATE" | "CONFORM" | "PATCH_ONLY";
 
@@ -180,9 +174,9 @@ export function formatGenerationLawLoadCheck(
   return `LOAD_CHECK: ${assessment.score.toFixed(1)} | MODE: ${assessment.mode}`;
 }
 
-// KnownIssue — IDARi's "known issues" log (req #23).
-// Issues that are identified but not yet patched are tracked here so nothing
-// gets silently dropped.
+
+
+
 
 export type KnownIssueStatus = "open" | "in_progress" | "resolved" | "wont_fix";
 
@@ -192,15 +186,13 @@ export interface KnownIssue {
   description: string;
   status: KnownIssueStatus;
   risk: PatchRisk;
-  /** Optional linked PatchPlan id when a fix is in progress. */
+  
   patch_plan_id?: string;
   created_at: string;
   updated_at: string;
 }
 
-/**
- * Create a new open KnownIssue entry with timestamps.
- */
+
 export function createKnownIssue(
   issue: Omit<KnownIssue, "status" | "created_at" | "updated_at">
 ): KnownIssue {
@@ -208,9 +200,7 @@ export function createKnownIssue(
   return { ...issue, status: "open", created_at: now, updated_at: now };
 }
 
-/**
- * Update a KnownIssue's status and refreshes `updated_at`.
- */
+
 export function updateKnownIssueStatus(
   issue: KnownIssue,
   status: KnownIssueStatus,
@@ -224,7 +214,7 @@ export function updateKnownIssueStatus(
   };
 }
 
-// Agent factory + event bus (existing, unchanged).
+
 
 export function createIDARiAgent(widgetId?: string): IDARiAgent {
   return {
@@ -258,36 +248,31 @@ export function onIDARiEvent(
   return () => window.removeEventListener(IDARI_EVENT, listener);
 }
 
-// SpecCheck — IDARi verifies spec requirements before building or upgrading
-// any part of the platform (mirrors portfolio-optimizer "build" job pattern).
-// Every build / upgrade cycle must pass spec-check before changes are applied.
 
-/** Status of a single spec requirement. */
+
+
+
+
 export type SpecRequirementStatus = "met" | "partial" | "missing";
 
-/** A single verifiable requirement drawn from the project spec. */
+
 export interface SpecRequirement {
-  /** Short unique key, e.g. "homedream-route". */
+  
   id: string;
-  /** Architectural area, e.g. "core-surfaces", "ai-triad", "privacy". */
+  
   area: string;
-  /** Human-readable description of what must be true. */
+  
   description: string;
-  /** Current satisfaction state. */
+  
   status: SpecRequirementStatus;
-  /** Optional detail — why it is partial or missing. */
+  
   notes?: string;
 }
 
-/**
- * Aggregate result of one spec-check run.
- * overall is "fail" when any requirement is "missing",
- *             "warn" when any is "partial" but none are "missing",
- *             "pass" when all are "met".
- */
+
 export interface SpecCheckResult {
   timestamp: string;
-  /** Identifies the spec version being checked (e.g. "dreamengin_phase6"). */
+  
   spec_version: string;
   requirements: SpecRequirement[];
   overall: "pass" | "warn" | "fail";
@@ -295,11 +280,7 @@ export interface SpecCheckResult {
   partial_count: number;
 }
 
-/**
- * Evaluate a list of spec requirements and produce a SpecCheckResult.
- * Call this before applying any PatchPlan to confirm the target area is
- * spec-compliant.
- */
+
 export function evaluateSpecRequirements(
   specVersion: string,
   requirements: SpecRequirement[]
@@ -319,40 +300,36 @@ export function evaluateSpecRequirements(
   };
 }
 
-// VercelBuildResult — IDARi records whether the codebase builds cleanly on the
-// Vercel-equivalent runtime (mirrors portfolio-optimizer "optimize" job that
-// runs only after the "build" job passes).
-// 2026 target runtime: Node 24, pnpm 10.30.0, Next.js 16+.
 
-/** Known 2026 Vercel-compatible runtime targets (docs/ARCHITECTURE.md §10). */
+
+
+
+
+
 export const VERCEL_2026_RUNTIME = {
   node: "24",
   pnpm: "10.30.0",
   nextjs_minimum: "16",
 } as const;
 
-/** Result of a Vercel-compatible build verification run. */
+
 export interface VercelBuildResult {
   timestamp: string;
-  /** Node.js version used, e.g. "24". */
+  
   node_version: string;
-  /** pnpm version used, e.g. "10.30.0". */
+  
   pnpm_version: string;
-  /** Next.js major version detected, e.g. "16". */
+  
   nextjs_version: string;
-  /** True when `next build` exited 0. */
+  
   build_passed: boolean;
-  /** Number of routes compiled (from build output), if available. */
+  
   route_count?: number;
-  /** First error line from build output when build_passed is false. */
+  
   error_summary?: string;
 }
 
-/**
- * Create a VercelBuildResult record.
- * Validates that the reported runtime meets VERCEL_2026_RUNTIME minimums
- * and throws when the node or pnpm version is below the 2026 target.
- */
+
 export function createVercelBuildResult(
   result: Omit<VercelBuildResult, "timestamp">
 ): VercelBuildResult {

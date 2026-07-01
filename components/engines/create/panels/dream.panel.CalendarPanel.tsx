@@ -3,12 +3,7 @@
 import { Calendar, ChevronLeft, ChevronRight, Clock, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * CalendarPanel — 7-day content calendar for the Content Engine app.
- *
- * Add, view, and schedule content across the week.
- * Lives at /engines/create/calendar.
- */
+
 
 type ContentType = 'Post' | 'Video' | 'Story' | 'Thread';
 
@@ -91,7 +86,7 @@ export default function CalendarPanel( ){
           </div>
         </div>
 
-        {/* Week grid */}
+        
         <div className="grid grid-cols-7 gap-2">
           {Array.from({ length: 7 }, (_, di: number) => {
             const date = new Date(weekStart);
@@ -101,7 +96,7 @@ export default function CalendarPanel( ){
 
             return (
               <div key={di} className="flex flex-col gap-1.5">
-                {/* Day header */}
+                
                 <div className={`text-center pb-1.5 border-b ${isToday ? 'border-[#fb923c]/50' : 'border-white/[0.06]'}`}>
                   <div className="text-[10px] text-white/40 uppercase">{DAYS[date.getDay()]}</div>
                   <div
@@ -112,7 +107,7 @@ export default function CalendarPanel( ){
                   </div>
                 </div>
 
-                {/* Items */}
+                
                 <div className="flex flex-col gap-1.5 min-h-[80px]">
                   {dayItems.map((item) => (
                     <div
@@ -138,7 +133,7 @@ export default function CalendarPanel( ){
                   ))}
                 </div>
 
-                {/* Add button */}
+                
                 <button
                   onClick={() => setShowAdd(showAdd === di ? null : di)}
                   className="flex items-center justify-center w-full py-1 rounded-lg border border-dashed border-white/[0.08] hover:border-[#fb923c]/40 text-white/20 hover:text-[#fb923c] transition-all text-xs"
@@ -150,7 +145,7 @@ export default function CalendarPanel( ){
           })}
         </div>
 
-        {/* Add form */}
+        
         {showAdd !== null && (
           <div className="mt-5 p-4 rounded-xl bg-white/[0.04] border border-[#fb923c]/20">
             <div className="flex items-center gap-2 mb-3">

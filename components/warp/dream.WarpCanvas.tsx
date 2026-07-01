@@ -3,23 +3,16 @@
 import { useWarp } from '@/engine/rendering/warp/useWarp';
 import type { WarpEffect } from '@/engine/rendering/warp/warpEngine';
 
-/**
- * WarpCanvas — a full-viewport fixed canvas overlay that renders the
- * WarpEngine particle simulation as a subtle background effect on every
- * page of DREAMengin.
- *
- * It sits at z-index 0, behind all page content, with pointer-events:none
- * so it never intercepts clicks or touches.
- */
+
 
 export interface WarpCanvasProps {
-  /** Which visual effect to render. Default: 'flow'. */
+  
   effect?: WarpEffect;
-  /** Override the maximum particle count (default: 200). */
+  
   maxParticles?: number;
-  /** Override the spawn rate (default: 25). */
+  
   spawnRate?: number;
-  /** Overall canvas opacity (0–1). Default: 0.35. */
+  
   opacity?: number;
 }
 

@@ -4,31 +4,17 @@ import {
   type JsonValue,
 } from './EnginBaseState';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginCapabilities.ts.
 
-/**
- * lib/engin-runtime/EnginCapabilities.ts
- *
- * Security / capabilities layer for Engins.
- *
- * Every action that an Engin can perform is declared as a capability string.
- * The engine consults the active capability map before executing each action.
- * Rule-sets declare which capabilities they require; the engine grants or
- * denies them at runtime.
- *
- * Server-side checks remain authoritative — this layer is defence-in-depth
- * on the client.  RLS on Supabase is the final enforcement boundary.
- *
- * Architecture: docs/AXIOMS.md §4 — security by default.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-/** All capabilities denied — safe starting point. */
+
+
+
+
+
+
 export const DENY_ALL: EnginCapabilityMap = new Proxy(
   {} as EnginCapabilityMap,
   {
@@ -36,7 +22,7 @@ export const DENY_ALL: EnginCapabilityMap = new Proxy(
   },
 );
 
-/** Predefined set for a standard authenticated user. */
+
 export const DEFAULT_USER_CAPABILITIES: EnginCapabilityMap = Object.freeze({
   'state:read': true,
   'state:write': true,
@@ -59,47 +45,47 @@ export const DEFAULT_USER_CAPABILITIES: EnginCapabilityMap = Object.freeze({
   'co-op:enable': false,
 } as Record<EnginCapability, boolean> as EnginCapabilityMap);
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type EnginCapability =
-  // Persistence
+  
   | 'state:read'
   | 'state:write'
   | 'persistence:local'
   | 'persistence:remote'
-  // Session
+  
   | 'session:start'
   | 'session:end'
   | 'session:pause'
   | 'session:resume'
-  // Scores / leaderboard
+  
   | 'scores:read'
   | 'scores:publish'
-  // World builder
+  
   | 'world:edit'
   | 'world:save'
-  // Assets / media
+  
   | 'assets:load'
   | 'assets:upload'
-  // Cross-engin
+  
   | 'bridge:emit'
   | 'bridge:listen'
-  // Admin / premium
+  
   | 'scripts:edit'
   | 'scripts:run'
   | 'co-op:enable'
-  // Custom capability for rule-set extension
+  
   | `custom:${string}`;
 
 export type EnginCapabilityMap = Readonly<Record<EnginCapability, boolean>>;
 
 export interface CapabilityGateResult {
   granted: boolean;
-  /** Populated when granted === false. */
+  
   reason?: string;
 }
 
@@ -125,14 +111,9 @@ export interface DomainAuthorizationContext {
   admin?: boolean;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/**
- * gateCapability(map, capability)
- *
- * Returns whether the given capability is granted in the active map.
- * This is the single enforcement point — engine calls this before each action.
- */
+
+
 export function gateCapability(
   map: EnginCapabilityMap,
   capability: EnginCapability,
@@ -143,11 +124,7 @@ export function gateCapability(
     : { granted: false, reason: `Capability '${capability}' is not granted.` };
 }
 
-/**
- * mergeCapabilities(base, overrides)
- *
- * Returns a new capability map with override values applied on top of base.
- */
+
 export function mergeCapabilities(
   base: EnginCapabilityMap,
   overrides: Partial<Record<EnginCapability, boolean>>,
@@ -158,7 +135,7 @@ export function mergeCapabilities(
   }) as EnginCapabilityMap;
 }
 
-/** The single capability check for runtime-owned domain objects. */
+
 export function authorizeDomainCapability(
   action: DomainCapability,
   object: DomainObject<string, JsonValue>,
@@ -234,8 +211,8 @@ export function authorizeDomainCapability(
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

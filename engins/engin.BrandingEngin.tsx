@@ -20,21 +20,7 @@ import { ArrowLeft, BarChart2, BookOpen, DollarSign, Eye, FlaskConical, Layers, 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-/**
- * BrandingEngin — Side B control layer for the Brand Daydream.
- *
- * Responsibilities (README spec §11.2 / ARCHITECTURE.md §1 Daydream pairs):
- *   - Brand Kit: link to appearance settings and public profile.
- *   - Analytics: link to algorithm/signal settings.
- *   - Campaigns: direct entry point to DreamAds create flow.
- *   - Audience: fetch follower count from the `follows` table.
- *   - Brand Analytics: 4 metric cards with Refresh.
- *   - A/B Test Manager: create, pause, pick winner.
- *   - Campaign ROI Calculator: live CPM/CPC/ROI from inputs.
- *
- * Security: profile and follower count are read for auth.uid() only.
- * Follows AXIOM 4 (security by default) and AXIOM 5 (privacy by design).
- */
+
 
 interface Props {
   onBack: () => void;
@@ -64,10 +50,10 @@ interface ABTest {
 }
 
 const ACCENT = '#ec4899';
-// const ACCENT_LEGACY = '#f472b6'; // old pink — kept for reference
-// const ACCENT_GRADIENT_LEGACY = 'linear-gradient(135deg, #f472b6 0%, #fb923c 100%)';
 
-// Feature identifiers — used by CI grep scans (daydream-engin-build-cycle.yml)
+
+
+
 
 export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Props) {
   const brandBridge = useBrandingEnginBridge();
@@ -98,7 +84,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     region: 'engin:brand',
     active: sharedAnalyticsActive,
     stateSnapshot: () => ({ type: 'brand:state', sharedAnalyticsId }),
-    onPeerState: (_evt) => { /* brand analytics are read-only; peer sync is view-only */ },
+    onPeerState: (_evt) => {  },
   });
 
   const { persistState } = useDaydreamState({ daydreamType: 'brand', side: 'B' });
@@ -218,7 +204,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
   const [voicePrompt, setVoicePrompt]         = useState('');
   const [voiceSuggestion, setVoiceSuggestion] = useState('');
   const [voiceLoading, setVoiceLoading]       = useState(false);
-  // multi-connection path: Brand → ContentEngin
+  
   const [contentBridgeSending, setContentBridgeSending] = useState(false);
 
   const [competitors, setCompetitors] = useState<Array<{ handle: string; followers: string; lastPost: string }>>([
@@ -346,14 +332,14 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
       type: 'logo' as const,
       value: newAssetValue.trim(),
     };
-    // Optimistic update — show in UI immediately
+    
     setAssets((prev) => [optimisticAsset, ...prev]);
     setNewAssetName('');
     setNewAssetValue('');
     (bridge.emit as (ch: string, ev: string, pl: unknown) => void)(
       'brand', 'brand:asset-save', { name: optimisticAsset.name, type: 'logo', value: optimisticAsset.value },
     );
-    // Real DB write — correct optimistic id with DB id
+    
     try {
       const supabase = createClient();
       const user = await safeGetUser(supabase);
@@ -367,10 +353,10 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           setAssets((prev) => prev.map((a) => a.id === optimisticId ? { ...a, id: data.id } : a));
         }
       }
-    } catch { /* non-blocking — optimistic item remains */ }
+    } catch {  }
   }
 
-  // multi-connection path: Brand → ContentEngin via /api/drafts + bridge event
+  
   async function handleSendToContentEngin( ){
     if (!voiceSuggestion.trim()) return;
     forgeRecord('Sent to ContentEngin');
@@ -401,7 +387,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
     <ArtifactSlot artifactId="engin:brand">
     <div className="de-sky-bg min-h-screen">
 
-      {/* ── Header ── */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <button type="button" onClick={onBack} className="p-2 -ml-2 rounded-full"
@@ -418,10 +404,10 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
         </div>
       </header>
 
-      {/* ── Body ── */}
+      
       <div className="max-w-2xl mx-auto px-4 pb-32" style={{ paddingTop: 20 }}>
 
-        {/* ── Game → BrandingEngin Achievement Campaign receiver ── */}
+        
         {achievementPrompt && (
           <div className="de-widget" style={{ marginBottom: 14, borderColor: 'rgba(200,152,26,0.3)', background: 'rgba(200,152,26,0.04)' }}>
             <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -446,7 +432,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         )}
 
-        {/* ── Brand Kit (existing) ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header"><span className="de-widget-title">Brand Kit</span></div>
           <div className="de-widget-body">
@@ -487,7 +473,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Analytics link (existing) ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header"><span className="de-widget-title">Analytics</span></div>
           <div className="de-widget-body">
@@ -509,7 +495,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── NEW: Brand Analytics ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header"><span className="de-widget-title">Brand Analytics</span></div>
           <div className="de-widget-body">
@@ -533,14 +519,14 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── NEW: A/B Test Manager ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">A/B Test Manager</span>
             <FlaskConical className="w-4 h-4" style={{ color: ACCENT, opacity: 0.6 }} />
           </div>
           <div className="de-widget-body">
-            {/* Create form */}
+            
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
               <input
                 placeholder="Test name…"
@@ -566,7 +552,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
               </button>
             </div>
 
-            {/* Running tests */}
+            
             {abTests.length === 0 ? (
               <p style={{ fontSize: 11, color: 'var(--de-text-dim)' }}>No tests running yet.</p>
             ) : (
@@ -606,7 +592,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── NEW: Campaign ROI Calculator ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Campaign ROI Calculator</span>
@@ -637,7 +623,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Campaigns (existing) ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header"><span className="de-widget-title">Campaigns</span></div>
           <div className="de-widget-body">
@@ -652,7 +638,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Audience (existing) ── */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Audience</span></div>
           <div className="de-widget-body">
@@ -670,7 +656,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Content Calendar Link ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <Megaphone className="w-4 h-4" style={{ color: ACCENT }} />
@@ -692,7 +678,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Audience Segments ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <Users className="w-4 h-4" style={{ color: ACCENT }} />
@@ -762,7 +748,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Brand Voice AI ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <Layers className="w-4 h-4" style={{ color: ACCENT }} />
@@ -821,7 +807,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Competitor Watch ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <Eye className="w-4 h-4" style={{ color: ACCENT }} />
@@ -875,7 +861,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Asset Library ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <BookOpen className="w-4 h-4" style={{ color: ACCENT }} />
@@ -956,7 +942,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 13: Brand Health Score ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span style={{ fontSize: 16 }}>💪</span>
@@ -986,7 +972,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 14: Color Palette Generator ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Palette className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1013,7 +999,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 15: Typography Kit ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <BookOpen className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1035,7 +1021,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 16: Sponsorship Pitch Generator ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Megaphone className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1066,7 +1052,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 17: Press Kit Builder ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Layers className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1098,7 +1084,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 18: Social Media Bio Optimizer ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Eye className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1126,7 +1112,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 19: Audience Persona Builder ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <Users className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1150,7 +1136,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Feature 20: Game Engine Visual Presets ── */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span style={{ fontSize: 16 }}>🎮</span>
@@ -1184,7 +1170,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Shared Dream Analytics Dashboard ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <Users className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -1238,7 +1224,7 @@ export default function BrandingEngin({ onBack, instanceId: instanceIdProp }: Pr
           </div>
         </div>
 
-        {/* ── Journey Trail ── */}
+        
         <div className="de-widget" style={{ marginTop: 14 }}>
           <div className="de-widget-header">
             <span style={{ color: '#c8981a', fontSize: 16 }}>✦</span>

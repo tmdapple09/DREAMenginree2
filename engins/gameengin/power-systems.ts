@@ -1,38 +1,8 @@
-/**
- * lib/gameengin/power-systems.ts
- *
- * ELITE GAME ENGINE — 20 POWER SYSTEMS (2026+)
- *
- * Pure computational engine subsystems. Zero visual side-effects.
- * Each system is self-contained, tree-shakeable, and SSR-safe
- * (browser APIs are guard-checked before use).
- *
- * Systems index:
- *  1.  RollbackNetcode         — deterministic lockstep + rollback for lag-free multiplayer
- *  2.  ComputeShaderPipeline      — WebGPU compute shaders (physics, particles, cloth)
- *  3.  AdvancedPhysicsWorld    — Havok-compatible rigid/soft body simulation
- *  4.  OctreeBVH               — spatial acceleration structure (O(log n) ray / AABB queries)
- *  5.  WorkerJobSystem         — parallel off-main-thread computation pool
- *  6.  ProceduralWorldGen      — seeded Simplex noise world generator
- *  7.  SpatialAudioDSP         — HRTF + convolution reverb + Doppler
- *  8.  ReplayBuffer            — deterministic input recording, replay & anti-cheat hash
- *  9.  BehaviorTreeEngine      — NPC AI (sequence/selector/decorator nodes + GOAP planner)
- * 10.  GPUProfiler             — WebGPU timestamp queries + CPU flame-graph ring buffer
- * 11.  TypedEventBus           — strongly-typed publish/subscribe with history
- * 12.  AnimationStateMachine   — blend-tree + state transitions + IK solver interface
- * 13.  LODSystem               — distance-based level-of-detail with hysteresis
- * 14.  ClientSidePrediction    — optimistic tick + server-reconciliation
- * 15.  ResourcePool            — zero-allocation fixed-capacity object pools
- * 16.  WGSLShaderManager       — hot-reload WGSL pipeline caching & variant compilation
- * 17.  TerrainEngine           — heightmap clipmap LOD with virtual texture pages
- * 18.  GlobalIllumProbes       — spherical-harmonics light probes (L2 = 9 coefficients)
- * 19.  AssetStreamManager      — priority-queue progressive LOD asset streaming
- * 20.  PhysicsMaterialSystem   — surface-pair material table (friction/restitution/sound)
- */
+
 
 import { requestWebGpuDevice } from '@/engins/renderengin/webgpu';
 
-//  1. ROLLBACK NETCODE
+
 
 export interface NetInput {
   tick: number;
@@ -42,16 +12,12 @@ export interface NetInput {
 }
 
 export interface RollbackConfig {
-  maxRollbackFrames?: number;  // default 8
-  inputDelayFrames?: number;   // default 2
-  tickRateHz?: number;         // default 60
+  maxRollbackFrames?: number;  
+  inputDelayFrames?: number;   
+  tickRateHz?: number;         
 }
 
-/**
- * Deterministic lockstep rollback netcode.
- * Records input snapshots per tick, detects divergence via checksums,
- * and re-simulates diverged frames on misprediction.
- */
+
 export class RollbackNetcode {
   private readonly maxRollback: number;
   private readonly inputDelay: number;
@@ -69,7 +35,7 @@ export class RollbackNetcode {
     this.tickRate    = config.tickRateHz        ?? 60;
   }
 
-  /** Advance the local simulation tick and record input. */
+  
   recordInput(input: Omit<NetInput, 'tick'>): NetInput {
     const stamped: NetInput = { ...input, tick: this.currentTick + this.inputDelay };
     const bucket = this.inputHistory.get(stamped.tick) ?? [];
@@ -78,12 +44,12 @@ export class RollbackNetcode {
     return stamped;
   }
 
-  /** Snapshot current simulation state for potential rollback. */
+  
   saveSnapshot(stateBytes: Uint8Array): void {
     this.stateSnapshots[this.currentTick % this.maxRollback] = new Uint8Array(stateBytes);
   }
 
-  /** Process received remote input; returns ticks that need re-simulation. */
+  
   receiveRemoteInput(input: NetInput): number[] {
     const bucket = this.inputHistory.get(input.tick) ?? [];
     bucket.push(input);
@@ -100,20 +66,20 @@ export class RollbackNetcode {
     return [];
   }
 
-  /** Returns the snapshot saved at the given tick (for rollback restore). */
+  
   getSnapshot(tick: number): Uint8Array | null {
     const slot = tick % this.maxRollback;
     return this.stateSnapshots[slot] ?? null;
   }
 
-  /** Validate checksum equality for two inputs at the same tick. */
+  
   validateChecksum(a: NetInput, b: NetInput): boolean {
     const ok = a.checksum === b.checksum;
     if (!ok) this.lastChecksumMismatch = a.tick;
     return ok;
   }
 
-  /** All inputs confirmed delivered up to this tick. Prune history. */
+  
   confirmTick(tick: number): void {
     for (const key of this.inputHistory.keys()) {
       if (key < tick - this.maxRollback) this.inputHistory.delete(key);
@@ -132,7 +98,7 @@ export class RollbackNetcode {
   }
 }
 
-//  2. GPU COMPUTE PIPELINE
+
 
 export interface ComputeKernel {
   label: string;
@@ -147,19 +113,14 @@ export interface ComputeDispatch {
 }
 
 interface CompiledKernelEntry {
-  // Using unknown to avoid clashing with the global ComputeShaderPipeline WebGPU type
+  
   pipeline: unknown;
   workgroupSize: [number, number, number];
 }
 
-/**
- * WebGPU compute shader pipeline manager.
- * Compiles and caches WGSL compute kernels; dispatches to the GPU
- * without touching the render pipeline.
- * Falls back to a no-op when WebGPU is unavailable (SSR, WebGL-only).
- */
+
 export class ComputeShaderPipeline {
-  // Use unknown to avoid clashing with WebGPU's branded GPUDevice type
+  
   private device: unknown = null;
   private kernels = new Map<string, CompiledKernelEntry>();
   private dispatchCount = 0;
@@ -198,13 +159,13 @@ export class ComputeShaderPipeline {
     const entry = this.kernels.get(dispatch.kernel);
     if (!entry) return false;
 
-    // Cast to the WebGPU native type (not our class - we renamed ours to ComputeShaderPipeline)
+    
     const nativePipeline = entry.pipeline as unknown as GPUComputePipeline;
     const encoder = dev.createCommandEncoder();
     const pass = encoder.beginComputePass();
     pass.setPipeline(nativePipeline);
     dispatch.bindings.forEach((buf, i: number) => {
-      // Cast layout to bypass branded GPUBindGroupLayout type check
+      
       const layout = nativePipeline.getBindGroupLayout(0) as unknown as GPUBindGroupLayout;
       const bg = dev.createBindGroup({
         layout,
@@ -229,7 +190,7 @@ export class ComputeShaderPipeline {
   dispose(): void { (this.device as GPUDevice | null)?.destroy(); this.device = null; }
 }
 
-//  3. ADVANCED PHYSICS WORLD
+
 
 export type PhysicsBodyType = 'dynamic' | 'static' | 'kinematic';
 export type ShapeType = 'box' | 'sphere' | 'capsule' | 'mesh' | 'convex';
@@ -240,7 +201,7 @@ export interface PhysicsBodyDef {
   shape: ShapeType;
   mass?: number;
   position: [number, number, number];
-  rotation?: [number, number, number, number]; // quaternion xyzw
+  rotation?: [number, number, number, number]; 
   restitution?: number;
   friction?: number;
   linearDamping?: number;
@@ -316,12 +277,7 @@ function totalAttentionWeight(point: [number, number, number], focus: Computatio
   return clamp01(Math.max(awarenessWeight, predictionWeight));
 }
 
-/**
- * Advanced in-process physics world.
- * Provides rigid-body dynamics, constraints, continuous collision detection,
- * and a raycast/AABB query API. Compatible with Havok plugin when available;
- * falls back to the built-in impulse solver.
- */
+
 export class AdvancedPhysicsWorld {
   private bodies = new Map<string, PhysicsBody>();
   private constraints: PhysicsConstraint[] = [];
@@ -642,7 +598,7 @@ export interface PhysicsConstraint {
   limits?: [number, number];
 }
 
-//  4. OCTREE / BVH SPATIAL PARTITIONING
+
 
 export interface AABB {
   min: [number, number, number];
@@ -661,10 +617,7 @@ interface OctreeNode {
   depth: number;
 }
 
-/**
- * Dynamic Octree for broad-phase spatial queries.
- * O(log n) point-in-bounds and AABB-overlap tests against thousands of objects.
- */
+
 export class OctreeBVH {
   private root: OctreeNode;
   private readonly maxDepth: number;
@@ -775,7 +728,7 @@ export class OctreeBVH {
   }
 }
 
-//  5. WORKER JOB SYSTEM
+
 
 export type JobPriority = 'high' | 'normal' | 'low';
 
@@ -794,12 +747,7 @@ export interface JobResult<T = unknown> {
 
 const PRIORITY_WEIGHT: Record<JobPriority, number> = { high: 0, normal: 1, low: 2 };
 
-/**
- * Priority-based async job scheduler.
- * Runs heavy tasks (path-finding, AI tree evaluation, mesh processing) off the
- * critical render path using microtask scheduling; upgrades to Worker threads
- * when SharedArrayBuffer + Worker are available.
- */
+
 export class WorkerJobSystem {
   private queue: Array<{ job: Job; resolve: (r: JobResult) => void }> = [];
   private activeCount = 0;
@@ -849,7 +797,7 @@ export class WorkerJobSystem {
   }
 }
 
-//  6. PROCEDURAL WORLD GENERATOR
+
 
 export interface WorldGenConfig {
   seed: number;
@@ -865,16 +813,12 @@ export interface WorldGenConfig {
 export interface WorldChunk {
   x: number;
   z: number;
-  heightmap: Float32Array;  // width × depth elevation data
+  heightmap: Float32Array;  
   biome: string;
-  entitySeeds: number[];    // deterministic entity placement seeds
+  entitySeeds: number[];    
 }
 
-/**
- * Seeded Simplex-noise world generator.
- * Deterministic: same seed always produces the same world.
- * Generates infinite chunked terrain with biome classification.
- */
+
 export class ProceduralWorldGen {
   private readonly config: Required<WorldGenConfig>;
   private readonly perm: Uint8Array;
@@ -931,7 +875,7 @@ export class ProceduralWorldGen {
     return chunk;
   }
 
-  /** Sample elevation at exact world coordinates (interpolated). */
+  
   sampleHeight(wx: number, wz: number): number {
     const { scale, octaves, persistence, lacunarity } = this.config;
     let h = 0; let amp = 1; let freq = 1; let norm = 0;
@@ -1027,7 +971,7 @@ export class ProceduralWorldGen {
   }
 }
 
-//  7. SPATIAL AUDIO DSP
+
 
 export interface AudioSourceDef {
   id: string;
@@ -1047,15 +991,7 @@ export interface ListenerState {
   velocity?: [number, number, number];
 }
 
-/**
- * Spatial audio DSP engine.
- * Wraps the Web Audio API with:
- *   • HRTF panning (AudioListener + PannerNode)
- *   • Distance-based attenuation (inverse rolloff)
- *   • Doppler shift calculation
- *   • Per-source reverb send
- *   • Graceful no-op when AudioContext is unavailable (SSR)
- */
+
 export class SpatialAudioDSP {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
@@ -1085,7 +1021,7 @@ export class SpatialAudioDSP {
         this.reverbGain.connect(this.masterGain);
       }
 
-      // AudioListener does not have panningModel; HRTF is controlled per-panner.
+      
       return true;
     } catch {
       return false;
@@ -1179,7 +1115,7 @@ export class SpatialAudioDSP {
   dispose(): void { this.sources.forEach((_, id: string) => this.removeSource(id)); this.ctx?.close(); this.ctx = null; }
 }
 
-//  8. REPLAY BUFFER
+
 
 export interface InputFrame {
   tick: number;
@@ -1195,13 +1131,7 @@ export interface ReplayMeta {
   checksum: number;
 }
 
-/**
- * Deterministic input replay buffer.
- * Records per-tick input frames; can serialize to compact binary for:
- *   • Ghost playback (race ghosts, speedrun comparisons)
- *   • Anti-cheat verification (server re-simulates and checks checksum)
- *   • Tutorial recording / replay
- */
+
 export class ReplayBuffer {
   private frames: InputFrame[] = [];
   private meta: Partial<ReplayMeta> = {};
@@ -1241,7 +1171,7 @@ export class ReplayBuffer {
     return this.frames[this.playbackHead++];
   }
 
-  /** Serialize to compact binary (little-endian). */
+  
   serialize(): Uint8Array {
     const tickSize = 4;
     const headerSize = 16;
@@ -1259,7 +1189,7 @@ export class ReplayBuffer {
     return new Uint8Array(buf);
   }
 
-  /** Deserialize from compact binary. Returns frame count. */
+  
   deserialize(data: Uint8Array): number {
     const view = new DataView(data.buffer);
     const count = view.getUint32(0, true);
@@ -1282,7 +1212,7 @@ export class ReplayBuffer {
   get isRecording(): boolean { return this.recording; }
 }
 
-//  9. BEHAVIOR TREE ENGINE
+
 
 export type BTStatus = 'success' | 'failure' | 'running';
 
@@ -1313,12 +1243,7 @@ export type BTNode = {
   children: BTNode[];
 };
 
-/**
- * Behavior Tree engine for NPC AI.
- * Supports composite nodes (Sequence, Selector, Parallel),
- * decorator nodes (Inverter, Succeeder, Repeater), and leaf nodes (Action, Condition).
- * Each AI agent ticks one tree per frame — fully synchronous and allocation-light.
- */
+
 export class BehaviorTreeEngine {
   private trees = new Map<string, BTNode>();
 
@@ -1394,7 +1319,7 @@ export class BehaviorTreeEngine {
   get registeredTrees(): string[] { return [...this.trees.keys()]; }
 }
 
-//  10. GPU PROFILER
+
 
 export interface ProfileSpan {
   label: string;
@@ -1411,12 +1336,7 @@ export interface ProfileFrame {
   gpuTotalMs?: number;
 }
 
-/**
- * Lightweight CPU+GPU profiler.
- * Uses Performance API marks/measures for CPU spans.
- * Uses WebGPU timestamp queries for GPU spans when available.
- * Stores a rolling ring buffer of frames for flame-graph rendering.
- */
+
 export class GPUProfiler {
   private frameIndex = 0;
   private frames: ProfileFrame[] = [];
@@ -1445,7 +1365,7 @@ export class GPUProfiler {
     this.currentFrame.spans.push(span);
     this.pendingSpans.delete(label);
     if (typeof performance !== 'undefined') {
-      try { performance.measure(`__gp_${label}`, `__gp_${label}_start`); } catch { /* ignore */ }
+      try { performance.measure(`__gp_${label}`, `__gp_${label}_start`); } catch {  }
     }
     return span;
   }
@@ -1468,14 +1388,14 @@ export class GPUProfiler {
     return f;
   }
 
-  /** Average CPU frame time over the last N frames. */
+  
   avgFrameMs(n = 60): number {
     const slice = this.frames.slice(-n);
     if (!slice.length) return 0;
     return slice.reduce((a, f) => a + f.totalMs, 0) / slice.length;
   }
 
-  /** Slowest span label across the last frame. */
+  
   hotSpot(): string {
     const last = this.frames[this.frames.length - 1];
     if (!last || !last.spans.length) return 'none';
@@ -1487,7 +1407,7 @@ export class GPUProfiler {
   get stats() { return { frames: this.frames.length, avgMs: this.avgFrameMs(), hotSpot: this.hotSpot() }; }
 }
 
-//  11. TYPED EVENT BUS
+
 
 export type EventMap = Record<string, unknown>;
 
@@ -1499,11 +1419,7 @@ interface EventRecord<T> {
   timestamp: number;
 }
 
-/**
- * Typed publish/subscribe event bus with history.
- * Supports wildcard '*' subscriptions, once() listeners, and a
- * rolling history buffer for late subscribers (e.g. joining multiplayer mid-game).
- */
+
 export class TypedEventBus<M extends EventMap = EventMap> {
   private listeners = new Map<string, Array<{ fn: Listener<unknown>; once: boolean }>>();
   private history: EventRecord<unknown>[] = [];
@@ -1546,7 +1462,7 @@ export class TypedEventBus<M extends EventMap = EventMap> {
     }
   }
 
-  /** Replay history to a new subscriber (max `last` events). */
+  
   replayTo<K extends keyof M & string>(event: K, fn: Listener<M[K]>, last = 32): void {
     this.history.filter((r) => r.event === event).slice(-last).forEach((r) => fn(r.data as M[K]));
   }
@@ -1561,7 +1477,7 @@ export class TypedEventBus<M extends EventMap = EventMap> {
   dispose(): void { this.listeners.clear(); this.history = []; }
 }
 
-//  12. ANIMATION STATE MACHINE
+
 
 export interface AnimationClip {
   id: string;
@@ -1587,11 +1503,7 @@ export interface AnimState {
   parameters: Map<string, unknown>;
 }
 
-/**
- * Animation state machine with blend-tree transitions.
- * Supports any number of clips, parameter-driven transitions,
- * and cross-fade blending.
- */
+
 export class AnimationStateMachine {
   private clips = new Map<string, AnimationClip>();
   private transitions: AnimTransition[] = [];
@@ -1622,7 +1534,7 @@ export class AnimationStateMachine {
     const clip = this.clips.get(state.currentClip);
     if (!clip) return state;
 
-    // Advance frame
+    
     const fps = clip.frameRate;
     state.frame += dt * fps / 1000;
     if (clip.looping && state.frame >= clip.durationFrames) {
@@ -1631,7 +1543,7 @@ export class AnimationStateMachine {
       state.frame = clip.durationFrames - 1;
     }
 
-    // Blend
+    
     if (state.targetClip) {
       const targetClip = this.clips.get(state.targetClip);
       const blendFrames = this.transitions.find((t) => t.from === state.currentClip && t.to === state.targetClip)?.blendFrames ?? 8;
@@ -1647,7 +1559,7 @@ export class AnimationStateMachine {
       void targetClip;
     }
 
-    // Check transitions
+    
     if (!state.targetClip) {
       for (const t of this.transitions) {
         if (t.from !== state.currentClip) continue;
@@ -1669,12 +1581,12 @@ export class AnimationStateMachine {
   get stats() { return { clips: this.clips.size, transitions: this.transitions.length, agents: this.agentStates.size }; }
 }
 
-//  13. LOD SYSTEM
+
 
 export interface LODLevel {
   minDist: number;
   maxDist: number;
-  meshId: string;      // reference to mesh/asset ID at this LOD
+  meshId: string;      
   triangleCount: number;
 }
 
@@ -1689,14 +1601,10 @@ export interface LODObject {
   motionImportance?: number;
 }
 
-/**
- * Distance-based LOD manager with hysteresis.
- * Updates mesh LOD levels once per tick for all registered objects.
- * Hysteresis prevents flickering at transition boundaries.
- */
+
 export class LODSystem {
   private objects = new Map<string, LODObject>();
-  private hysteresis = 1.1;   // switch-in distance is hysteresis × switch-out distance
+  private hysteresis = 1.1;   
   private updateCount = 0;
 
   setHysteresis(h: number): void { this.hysteresis = Math.max(1, h); }
@@ -1732,7 +1640,7 @@ export class LODSystem {
   get stats() { return { objects: this.objects.size, updateCount: this.updateCount, density: this.lastDensityStats }; }
 }
 
-//  14. CLIENT-SIDE PREDICTION
+
 
 export interface PredictionState {
   tick: number;
@@ -1747,11 +1655,7 @@ export interface ServerSnapshot {
   authoritative: boolean;
 }
 
-/**
- * Client-side prediction with server reconciliation.
- * Maintains a ring buffer of predicted states; when a server snapshot arrives
- * it detects divergence and re-simulates from the snapshot tick forward.
- */
+
 export class ClientSidePrediction {
   private predictedStates: PredictionState[] = [];
   private readonly bufferSize: number;
@@ -1760,16 +1664,13 @@ export class ClientSidePrediction {
 
   constructor(bufferSize = 64) { this.bufferSize = bufferSize; }
 
-  /** Record a locally-predicted state. */
+  
   saveState(state: PredictionState): void {
     this.predictedStates.push({ ...state });
     if (this.predictedStates.length > this.bufferSize) this.predictedStates.shift();
   }
 
-  /**
-   * Process an authoritative server snapshot.
-   * Returns the base state to re-simulate from, or null if no reconciliation needed.
-   */
+  
   reconcile(snapshot: ServerSnapshot, divergenceThreshold = 0.05): PredictionState | null {
     const predicted = this.predictedStates.find((s) => s.tick === snapshot.tick);
     if (!predicted) return null;
@@ -1783,12 +1684,12 @@ export class ClientSidePrediction {
     if (divergence < divergenceThreshold) return null;
 
     this.reconciliationCount++;
-    // Prune history after the snapshot tick
+    
     this.predictedStates = this.predictedStates.filter((s) => s.tick <= snapshot.tick);
     return snapshot.state;
   }
 
-  /** All ticks after the given one that need re-simulation. */
+  
   pendingResimTicks(afterTick: number): number[] {
     return this.predictedStates.filter((s) => s.tick > afterTick).map((s) => s.tick);
   }
@@ -1796,14 +1697,9 @@ export class ClientSidePrediction {
   get stats() { return { buffered: this.predictedStates.length, reconciliations: this.reconciliationCount, maxDivergence: this.maxDivergence }; }
 }
 
-//  15. RESOURCE POOL
 
-/**
- * Zero-allocation fixed-capacity object pool.
- * Pre-allocates N instances via a factory; acquire() reuses them.
- * Critical for hot paths (bullets, particles, hit-effects) where
- * GC pressure would cause frame spikes.
- */
+
+
 export class ResourcePool<T extends { reset?(): void }> {
   private pool: T[] = [];
   private active = new Set<T>();
@@ -1837,7 +1733,7 @@ export class ResourcePool<T extends { reset?(): void }> {
   get stats() { return { pool: this.pool.length, active: this.active.size, acquireCount: this.acquireCount, missCount: this.missCount }; }
 }
 
-//  16. WGSL SHADER MANAGER
+
 
 export interface ShaderVariant {
   key: string;
@@ -1845,17 +1741,12 @@ export interface ShaderVariant {
   wgsl: string;
 }
 
-/**
- * WebGPU WGSL shader pipeline cache and variant compiler.
- * Supports hot-reload (diff-checks source strings) and
- * preprocessor-style #if/#define variant compilation.
- * Falls back to a no-op registry when WebGPU is unavailable.
- */
+
 export class WGSLShaderManager {
-  // Use unknown to avoid clashing with WebGPU branded types for pipelines
+  
   private cache = new Map<string, unknown>();
   private sources = new Map<string, string>();
-  // Use unknown to avoid GPUDevice brand type clash
+  
   private device: unknown = null;
   private hotReloadCount = 0;
   private cacheHits = 0;
@@ -1865,10 +1756,10 @@ export class WGSLShaderManager {
     try {
       const lease = await requestWebGpuDevice();
       this.device = lease.device;
-    } catch { /* RenderEngin WebGPU unavailable */ }
+    } catch {  }
   }
 
-  /** Register a raw WGSL source string. Returns a compiled key or null. */
+  
   register(id: string, wgsl: string): string {
     const prev = this.sources.get(id);
     if (prev === wgsl) { this.cacheHits++; return id; }
@@ -1878,7 +1769,7 @@ export class WGSLShaderManager {
     return id;
   }
 
-  /** Apply #define substitutions to produce a variant key and processed WGSL. */
+  
   compileVariant(id: string, variant: ShaderVariant): string {
     let src = this.sources.get(id) ?? variant.wgsl;
     for (const [k, v] of Object.entries(variant.defines)) {
@@ -1897,26 +1788,21 @@ export class WGSLShaderManager {
   dispose(): void { this.cache.clear(); this.sources.clear(); this.device = null; }
 }
 
-//  17. TERRAIN ENGINE
+
 
 export interface TerrainPage {
-  lod: number;      // 0 = highest detail
+  lod: number;      
   x: number;
   z: number;
-  vertices: Float32Array;   // interleaved xyz (9 × 9 = 81 verts per page)
+  vertices: Float32Array;   
   indices: Uint16Array;
-  normalMap: Float32Array;  // packed xy normals (same dimensions)
+  normalMap: Float32Array;  
 }
 
-/**
- * Heightmap-driven clipmap LOD terrain engine.
- * Generates geometry pages on demand using the ProceduralWorldGen heightmap.
- * Virtual texture pages are pre-computed up to `maxLOD` levels.
- * Compatible with Babylon.js VertexData / Three.js BufferGeometry.
- */
+
 export class TerrainEngine {
   private pageCache = new Map<string, TerrainPage>();
-  private readonly pageSize: number;   // vertices per side
+  private readonly pageSize: number;   
   private readonly maxLOD: number;
   private gen: ProceduralWorldGen | null = null;
 
@@ -1937,7 +1823,7 @@ export class TerrainEngine {
 
   evictPage(lod: number, x: number, z: number): void { this.pageCache.delete(`${lod}:${x}:${z}`); }
 
-  /** Determine which pages are needed around a camera position. */
+  
   requiredPages(camX: number, camZ: number, viewDist: number): Array<{ lod: number; x: number; z: number }> {
     const pages: Array<{ lod: number; x: number; z: number }> = [];
     for (let lod = 0; lod <= this.maxLOD; lod++) {
@@ -1994,10 +1880,10 @@ export class TerrainEngine {
   dispose(): void { this.pageCache.clear(); }
 }
 
-//  18. GLOBAL ILLUMINATION PROBES (SPHERICAL HARMONICS)
 
-/** 9-coefficient L2 spherical harmonics probe (RGB). */
-export type SHCoeffs = Float32Array; // length 27 (9 × RGB)
+
+
+export type SHCoeffs = Float32Array; 
 
 export interface GIProbe {
   id: string;
@@ -2007,15 +1893,7 @@ export interface GIProbe {
   dirty: boolean;
 }
 
-/**
- * Spherical-harmonics global illumination probe system.
- * Each probe stores L2 SH (9 coefficients × RGB) captured from its
- * local environment. At runtime, probes are blended by inverse-distance
- * weighting to produce a smooth indirect lighting signal.
- *
- * SH evaluation is fully CPU-side — results are uploaded as a UBO to
- * the WGSL shader pipeline for use in diffuse GI lighting.
- */
+
 export class GlobalIllumProbes {
   private probes = new Map<string, GIProbe>();
   private updateQueue: string[] = [];
@@ -2027,7 +1905,7 @@ export class GlobalIllumProbes {
 
   removeProbe(id: string): void { this.probes.delete(id); }
 
-  /** Bake SH coefficients from 6 directional colour samples (cube-face average). */
+  
   bakeProbe(id: string, cubeColors: Array<[number, number, number]>): void {
     const probe = this.probes.get(id);
     if (!probe || cubeColors.length < 6) return;
@@ -2042,11 +1920,11 @@ export class GlobalIllumProbes {
       const [nx, ny, nz] = dirs[f];
       const [r, g, b] = cubeColors[f];
       const weight = (Math.PI * 4) / 6;
-      // L0
+      
       coeffs[0]  += r * 0.2821 * weight;
       coeffs[9]  += g * 0.2821 * weight;
       coeffs[18] += b * 0.2821 * weight;
-      // L1
+      
       coeffs[1]  += r * 0.4886 * ny * weight;
       coeffs[2]  += r * 0.4886 * nz * weight;
       coeffs[3]  += r * 0.4886 * nx * weight;
@@ -2062,7 +1940,7 @@ export class GlobalIllumProbes {
     probe.dirty = false;
   }
 
-  /** Evaluate blended SH at a world position. Returns RGB indirect light. */
+  
   evaluateAt(pos: [number, number, number], normal: [number, number, number]): [number, number, number] {
     let totalW = 0;
     let r = 0; let g = 0; let b = 0;
@@ -2102,7 +1980,7 @@ export class GlobalIllumProbes {
   get stats() { return { probes: this.probes.size, dirtyProbes: this.getDirtyProbes().length }; }
 }
 
-//  19. ASSET STREAM MANAGER
+
 
 export type AssetType = 'mesh' | 'texture' | 'audio' | 'shader' | 'script';
 export type AssetState = 'unloaded' | 'queued' | 'loading' | 'loaded' | 'error';
@@ -2111,19 +1989,14 @@ export interface AssetHandle {
   id: string;
   url: string;
   type: AssetType;
-  priority: number;   // higher = sooner
-  lod: number;        // 0 = highest quality
+  priority: number;   
+  lod: number;        
   state: AssetState;
   data?: ArrayBuffer;
   loadTimeMs?: number;
 }
 
-/**
- * Priority-queue progressive LOD asset streaming manager.
- * Sorts pending loads by priority + LOD level; enforces a max-concurrent
- * fetch budget to avoid network saturation; supports cancellation and
- * LRU eviction to keep memory within a configurable budget.
- */
+
 export class AssetStreamManager {
   private assets = new Map<string, AssetHandle>();
   private queue: AssetHandle[] = [];
@@ -2205,17 +2078,17 @@ export class AssetStreamManager {
   get stats() { return { assets: this.assets.size, queued: this.queue.length, active: this.active.size, loadedMB: (this.loadedBytes / 1024 / 1024).toFixed(2), loadCount: this.loadCount, deferredCount: this.deferredCount }; }
 }
 
-//  20. PHYSICS MATERIAL SYSTEM
+
 
 export interface PhysicsMaterial {
   id: string;
   name: string;
-  staticFriction: number;    // 0 (ice) → 2 (rubber)
+  staticFriction: number;    
   dynamicFriction: number;
-  restitution: number;       // 0 (clay) → 1 (superball)
-  density: number;           // kg/m³
+  restitution: number;       
+  density: number;           
   audioSurface: 'concrete' | 'metal' | 'wood' | 'grass' | 'sand' | 'water' | 'glass';
-  particleEffect?: string;   // e.g. 'sparks', 'dust', 'splash'
+  particleEffect?: string;   
 }
 
 export interface MaterialPair {
@@ -2225,11 +2098,7 @@ export interface MaterialPair {
   combinedRestitution: number;
 }
 
-/**
- * Physics material library.
- * Stores surface material properties and computes pair-wise friction/restitution
- * for collision response. Drives audio surface selection and particle spawning.
- */
+
 export class PhysicsMaterialSystem {
   private materials = new Map<string, PhysicsMaterial>();
   private pairs = new Map<string, MaterialPair>();
@@ -2240,7 +2109,7 @@ export class PhysicsMaterialSystem {
 
   get(id: string): PhysicsMaterial | undefined { return this.materials.get(id); }
 
-  /** Compute the contact material for two surface IDs. Uses geometric mean. */
+  
   getContactPair(idA: string, idB: string): MaterialPair {
     const key = [idA, idB].sort().join('::');
     if (this.pairs.has(key)) return this.pairs.get(key)!;
@@ -2256,7 +2125,7 @@ export class PhysicsMaterialSystem {
     return pair;
   }
 
-  /** Override a specific pair. */
+  
   setPair(matA: string, matB: string, pair: Partial<Omit<MaterialPair, 'matA' | 'matB'>>): void {
     const key = [matA, matB].sort().join('::');
     const existing = this.getContactPair(matA, matB);

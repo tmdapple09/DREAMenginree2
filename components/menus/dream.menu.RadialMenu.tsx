@@ -26,7 +26,7 @@ const ICONS: Record<string, string> = {
 export default function RadialMenu({ open, anchor, items, onClose, variant = 'blue' }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape
+  
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -53,7 +53,7 @@ export default function RadialMenu({ open, anchor, items, onClose, variant = 'bl
       aria-modal="true"
       aria-label={`${variant === 'blue' ? 'Dreams' : 'System'} menu`}
     >
-      {/* Close button */}
+      
       <button
         type="button"
         className="de-radial-close"
@@ -64,12 +64,12 @@ export default function RadialMenu({ open, anchor, items, onClose, variant = 'bl
         ✕
       </button>
 
-      {/* Radial container positioned at anchor */}
+      
       <div
         style={{ position: 'fixed', left: centerX, top: centerY, width: 0, height: 0 }}
         onPointerDown={(e) => e.stopPropagation()}
       >
-        {/* Centre hub */}
+        
         <div
           style={{
             position: 'absolute',
@@ -90,7 +90,7 @@ export default function RadialMenu({ open, anchor, items, onClose, variant = 'bl
           {variant === 'blue' ? '🌌' : '⚙️'}
         </div>
 
-        {/* Radial items */}
+        
         {items.map((item, index: number) => {
           const angle = ((Math.PI * 2) / Math.max(items.length, 1)) * index - Math.PI / 2;
           const x = Math.cos(angle) * RADIUS;

@@ -105,7 +105,7 @@ describe('bar snap helpers', () => {
   });
 });
 
-// ── Split-screen divider snap helpers ─────────────────────────────────────────
+
 
 describe('snapToSplitPoint', () => {
   it('snaps 0.9 ratio to the Surface-focus point', () => {
@@ -146,20 +146,20 @@ describe('snapSplitRatioOnRelease', () => {
   });
 
   it('advances one snap step downward (Dream-focus) on a strong downward fling', () => {
-    // Current ratio near Surface-only, flung downward → goes to Surface-focus
+    
     expect(snapSplitRatioOnRelease(0.97, SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(0.9);
-    // Current ratio near Surface-focus, flung downward → goes to balanced
+    
     expect(snapSplitRatioOnRelease(0.88, SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(0.5);
-    // Current ratio near balanced, flung downward → goes to Dream-focus
+    
     expect(snapSplitRatioOnRelease(0.52, SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(0.1);
   });
 
   it('advances one snap step upward (Surface-only) on a strong upward fling', () => {
-    // Current ratio near Dream-focus, flung upward → goes to balanced
+    
     expect(snapSplitRatioOnRelease(0.12, -SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(0.5);
-    // Current ratio near balanced, flung upward → goes to Surface-focus
+    
     expect(snapSplitRatioOnRelease(0.48, -SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(0.9);
-    // Current ratio near Surface-focus, flung upward → goes to Surface-only
+    
     expect(snapSplitRatioOnRelease(0.88, -SPLIT_FLING_VELOCITY_PX_PER_MS)).toBe(1.0);
   });
 
@@ -190,7 +190,7 @@ describe('split-screen divider constants', () => {
   });
 });
 
-// ── Minimized orb drag helpers ──────────────────────────────────────────────
+
 
 describe('minimized orb constants', () => {
   it('exports a positive ORB_SIZE', () => {
@@ -229,14 +229,14 @@ describe('computeOrbDragPosition', () => {
   });
 
   it('moves the orb to the left when dragging right (positive dx)', () => {
-    // "right" offset decreases by dx
+    
     const result = computeOrbDragPosition(200, 100, 50, 0, W, H);
     expect(result.x).toBe(150);
     expect(result.y).toBe(100);
   });
 
   it('moves the orb upward when dragging down (positive dy)', () => {
-    // "bottom" offset decreases by dy
+    
     const result = computeOrbDragPosition(100, 200, 0, 80, W, H);
     expect(result.x).toBe(100);
     expect(result.y).toBe(120);
@@ -255,7 +255,7 @@ describe('computeOrbDragPosition', () => {
   });
 });
 
-// ── Glowing light position cycle ────────────────────────────────────────────
+
 
 import { cycleLightPosition, DRAG_TAP_THRESHOLD_PX, DOUBLE_TAP_WINDOW_MS, type LightPosition } from '@/dreamdmbar/runtime/barInteractions';
 
@@ -283,15 +283,15 @@ describe('cycleLightPosition', () => {
   });
 
   it('returns from second middle back to bottom', () => {
-    // Simulate: bottom→middle→top→middle (4-step cycle, 3 calls from bottom)
-    // The caller (DreamDMBar) tracks the full ping-pong via lightCycleRef.
-    // Verify the 3-step descent back to middle from top:
+    
+    
+    
     let pos: LightPosition = 'bottom';
-    pos = cycleLightPosition(pos); // → middle
-    pos = cycleLightPosition(pos); // → top
-    pos = cycleLightPosition(pos); // → middle (ping-pong peak reached)
-    // After top→middle, the bar is back at middle.
-    // The caller detects this and will reset to bottom on the next interaction.
+    pos = cycleLightPosition(pos); 
+    pos = cycleLightPosition(pos); 
+    pos = cycleLightPosition(pos); 
+    
+    
     expect(pos).toBe('middle');
   });
 });

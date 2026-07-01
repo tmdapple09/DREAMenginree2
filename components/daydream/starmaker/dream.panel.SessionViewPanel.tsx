@@ -7,19 +7,7 @@ import {
 import { Mic2, Radio, Square, StopCircle, Volume2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * SessionViewPanel — Ableton Live-style clip launcher (Session View).
- *
- * Features:
- *  - 5 instrument tracks × 6 scene rows
- *  - Clip cells: filled with name & color, or empty (recordable) slots
- *  - Click a filled clip to toggle play/stop
- *  - Scene launch buttons (launch all clips in a row simultaneously)
- *  - Per-track: Mute, Solo, Arm, Volume
- *  - Master Stop All
- *  - Beat-sync indicator (flashing when clip is playing)
- *  - Inspired by Ableton Live Session View
- */
+
 
 const T = {
   bg:          '#0d0f17',
@@ -54,7 +42,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
   const { tracks, scenes, soloTrackId } = state;
   const anyPlaying = tracks.some((tr) => tr.clips.some((cl) => cl.playing));
 
-  // Beat-flash when any clip is playing
+  
   useEffect(() => {
     if (anyPlaying) {
       const beatMs = (60 / bpm) * 1000;
@@ -80,7 +68,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
     if (!clip || clip.isEmpty) return;
 
     const isPlaying = clip.playing;
-    // Stop all clips in track first, then start this one if it was not playing
+    
     onStateChange({
       ...state,
       tracks: tracks.map((tr) =>
@@ -96,7 +84,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
   }
 
   function handleSceneLaunch(sceneIndex: number ){
-    // Launch all non-empty clips in this scene row, stop others in each track
+    
     onStateChange({
       ...state,
       tracks: tracks.map((tr) => ({
@@ -144,7 +132,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
 
   return (
     <div style={{ background: T.surface, borderBottom: `1px solid ${T.border}` }}>
-      {/* ── Header ── */}
+      
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '8px 12px',
@@ -181,10 +169,10 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
 
       {isOpen && (
         <div style={{ padding: '12px', overflowX: 'auto' }}>
-          {/* Outer grid */}
+          
           <div style={{ minWidth: (CELL_W * tracks.length) + 100, userSelect: 'none' }}>
 
-            {/* ── Track headers ── */}
+            
             <div style={{ display: 'flex', marginLeft: 80 }}>
               {tracks.map((track) => {
                 const isEffective = isSoloActive ? soloTrackId === track.id : !track.muted;
@@ -201,14 +189,14 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                       display: 'flex', flexDirection: 'column', gap: 4,
                       opacity: isEffective ? 1 : 0.45,
                     }}>
-                    {/* Track name */}
+                    
                     <div style={{ fontSize: 11, fontWeight: 800, color: track.color, letterSpacing: '0.05em' }}>
                       {track.name}
                     </div>
 
-                    {/* Control row */}
+                    
                     <div style={{ display: 'flex', gap: 4 }}>
-                      {/* Mute */}
+                      
                       <button
                         type="button"
                         onClick={() => handleMuteToggle(track.id)}
@@ -222,7 +210,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                         M
                       </button>
 
-                      {/* Solo */}
+                      
                       <button
                         type="button"
                         onClick={() => handleSoloToggle(track.id)}
@@ -236,7 +224,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                         S
                       </button>
 
-                      {/* Arm */}
+                      
                       <button
                         type="button"
                         onClick={() => handleArmToggle(track.id)}
@@ -251,7 +239,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                       </button>
                     </div>
 
-                    {/* Volume fader */}
+                    
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                       <Volume2 className="w-2.5 h-2.5" style={{ color: T.dim, flexShrink: 0 }} />
                       <input
@@ -268,10 +256,10 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
               })}
             </div>
 
-            {/* ── Scene rows ── */}
+            
             {scenes.map((scene, sceneIndex) => (
               <div key={scene.id} style={{ display: 'flex' }}>
-                {/* Scene launch button */}
+                
                 <div style={{
                   width: 80, flexShrink: 0,
                   height: CELL_H,
@@ -299,7 +287,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                   </button>
                 </div>
 
-                {/* Clip cells */}
+                
                 {tracks.map((track, trackIndex) => {
                   const clip = track.clips[sceneIndex];
                   if (!clip) return <div key={trackIndex} style={{ width: CELL_W, flexShrink: 0 }} />;
@@ -334,7 +322,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
 
                       {!isEmpty && (
                         <>
-                          {/* Play indicator / stop button */}
+                          
                           <div style={{
                             width: 18, height: 18, flexShrink: 0, borderRadius: 4,
                             border: `1px solid ${clip.color}60`,
@@ -351,7 +339,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                             }
                           </div>
 
-                          {/* Clip name + bars */}
+                          
                           <div style={{ minWidth: 0 }}>
                             <div style={{
                               fontSize: 10, fontWeight: 700,
@@ -366,7 +354,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                             </div>
                           </div>
 
-                          {/* Playing pulse */}
+                          
                           {isPlaying && flash && (
                             <div style={{
                               position: 'absolute', inset: 0,
@@ -392,9 +380,9 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
               </div>
             ))}
 
-            {/* ── Stop buttons row ── */}
+            
             <div style={{ display: 'flex', marginTop: 4 }}>
-              {/* Stop All */}
+              
               <div style={{ width: 80, flexShrink: 0, padding: '0 6px' }}>
                 <button
                   type="button"
@@ -411,7 +399,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
                 </button>
               </div>
 
-              {/* Per-track stop */}
+              
               {tracks.map((track) => (
                 <div key={track.id} style={{ width: CELL_W, flexShrink: 0, padding: '0 5px' }}>
                   <button
@@ -443,7 +431,7 @@ export default function SessionViewPanel({ state, bpm, onStateChange }: SessionV
             </div>
           </div>
 
-          {/* Hint */}
+          
           <div style={{ marginTop: 10, fontSize: 9, color: T.dim, lineHeight: 1.6 }}>
             Click clip ▶ to launch · Scene ▶ to launch full row · M=Mute · S=Solo · ●=Arm for recording ·
             Inspired by <span style={{ color: T.accent }}>Ableton Live Session View</span>

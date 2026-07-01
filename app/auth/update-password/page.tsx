@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
-// SURFACE: dreamsurface.AuthUpdatePassword  (framework-mandated basename: page.tsx)
+
 
 export default function UpdatePasswordPage( ){
   const router = useRouter();

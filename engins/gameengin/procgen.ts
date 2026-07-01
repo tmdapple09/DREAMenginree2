@@ -1,15 +1,7 @@
 import { createBoxSDF as createBoxSDFInternal, createSphereSDF as createSphereSDFInternal, createTerrainCaveSDF as createTerrainCaveSDFInternal, meshToSnapshot as meshToSnapshotInternal, runIsoSurfaceJob as runIsoSurfaceJobInternal, type DualContouringSettings } from '@/engins/isosurfaceDualContouring';
-/**
- * lib/gameengin/procgen.ts
- *
- * NEXT-GEN — Deterministic procedural world generation.
- *
- *  - WaveFunctionCollapse — Constraint-propagation tile/structure synthesis
- *  - BiomeSynthesizer     — Multi-octave biome blending + macro structure
- *  - ChunkScheduler       — Async budgeted chunk generation scheduler
- */
 
-/** Mulberry32 — small, fast, deterministic PRNG. */
+
+
 function mulberry32(seed: number): () => number {
   let t = seed >>> 0;
   return () => {
@@ -23,15 +15,12 @@ function mulberry32(seed: number): () => number {
 
 export interface WFCTile {
   id: string;
-  /** Edge socket descriptors per side (N, E, S, W). */
+  
   edges: [string, string, string, string];
   weight?: number;
 }
 
-/**
- * Wave Function Collapse — collapse a 2D grid of tiles by iteratively choosing
- * the lowest-entropy cell and propagating socket constraints to neighbours.
- */
+
 export class WaveFunctionCollapse {
   private readonly tiles: WFCTile[];
   private readonly width: number;
@@ -53,7 +42,7 @@ export class WaveFunctionCollapse {
     this.grid = new Array(this.width * this.height).fill(null).map(() => new Set(all));
   }
 
-  /** Run the algorithm. Returns null on contradiction. */
+  
   collapse(maxSteps = 10000): (string | null)[] | null {
     for (let step = 0; step < maxSteps; step++) {
       const next = this.lowestEntropyCell();
@@ -95,10 +84,10 @@ export class WaveFunctionCollapse {
       const x = i % this.width;
       const y = Math.floor(i / this.width);
       const neighbours: Array<[number, number, number, number]> = [
-        [x, y - 1, 0, 2], // N -> their S
-        [x + 1, y, 1, 3], // E -> their W
-        [x, y + 1, 2, 0], // S -> their N
-        [x - 1, y, 3, 1], // W -> their E
+        [x, y - 1, 0, 2], 
+        [x + 1, y, 1, 3], 
+        [x, y + 1, 2, 0], 
+        [x - 1, y, 3, 1], 
       ];
       for (const [nx, ny, mySide, theirSide] of neighbours) {
         if (nx < 0 || ny < 0 || nx >= this.width || ny >= this.height) continue;
@@ -134,15 +123,12 @@ export type BiomeId = 'plains' | 'forest' | 'desert' | 'tundra' | 'ocean' | 'mou
 
 export interface BiomeSample {
   biome: BiomeId;
-  elevation: number;   // -1..1
-  moisture: number;    // 0..1
-  temperature: number; // 0..1
+  elevation: number;   
+  moisture: number;    
+  temperature: number; 
 }
 
-/**
- * Multi-octave biome synthesizer. Deterministic for a given seed; samples a
- * (x,z) world position and returns biome + macro fields.
- */
+
 export class BiomeSynthesizer {
   private readonly seed: number;
 
@@ -194,7 +180,7 @@ export class BiomeSynthesizer {
 
 export interface ChunkJob {
   id: string;
-  priority: number;          // higher = more important
+  priority: number;          
   estimatedCostMs: number;
   run(): Promise<void>;
 }
@@ -205,16 +191,13 @@ interface ScheduledChunkJob {
 }
 
 export interface SchedulerConfig {
-  /** Max ms of work per scheduling tick (frame budget for procgen). */
+  
   budgetPerTickMs?: number;
-  /** Max concurrent in-flight jobs. */
+  
   maxConcurrent?: number;
 }
 
-/**
- * Async procedural-chunk scheduler with frame-budget backpressure.
- * Scheduling is priority-first, FIFO within a priority band.
- */
+
 export class ChunkScheduler {
   private readonly budget: number;
   private readonly maxConcurrent: number;
@@ -234,7 +217,7 @@ export class ChunkScheduler {
     this.bubbleUp(this.heap.length - 1);
   }
 
-  /** Drain jobs up to the per-tick budget. */
+  
   async tick(): Promise<number> {
     let spent = 0;
     let started = 0;

@@ -8,25 +8,15 @@ import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Activity, ArrowLeft, Cpu, ShieldCheck, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * PortfolioEngin — Side B control layer for the Optimizero Daydream.
- *
- * Lets the user configure and trigger a Markowitz / QUBO portfolio optimization
- * run directly from the DREAMengin UI.  All computation is dispatched to the
- * GitHub Actions workflow via the /api/ai/idari admin endpoint.
- *
- * Architecture: docs/ARCHITECTURE.md §1 (Daydream pair system)
- * Privacy:      all runs are owner-scoped (no public exposure)
- * Performance:  render-on-demand; no polling or continuous loops
- */
+
 
 interface Props {
   onBack: () => void;
 }
 
-const ACCENT  = '#2a8ab8';   // DREAMengin light-blue (live / connected state)
-const GOLD    = '#c8981a';   // DREAMengin gold (action / confirm)
-const PURPLE  = '#8b5cf6';   // quantum / ansatz accent
+const ACCENT  = '#2a8ab8';   
+const GOLD    = '#c8981a';   
+const PURPLE  = '#8b5cf6';   
 
 type Algorithm = 'vqe' | 'qaoa';
 type Backend   = 'local_simulator' | 'ibm_quantum';
@@ -58,7 +48,7 @@ export default function PortfolioEngin({ onBack }: Props) {
   const [error,         setError]         = useState<string | null>(null);
   const [quantumResult, setQuantumResult] = useState<QuantumMeasurementResult | null>(null);
 
-  // Portfolio is its own 7th engine — pulse Forge under its own enginId
+  
   const forge = useForgeActivity({ enginId: 'portfolio' });
 
   async function handleRun( ){
@@ -92,14 +82,14 @@ export default function PortfolioEngin({ onBack }: Props) {
       };
       setResult(runResult);
 
-      // Record the completed optimization as a Forge transfer (portfolio → portfolio)
+      
       forge.record('Optimization run completed');
       recordForgeTransfer('portfolio', 'portfolio', 'optimization', 'Portfolio optimization complete', {
         algorithm: runResult.algorithm,
         backend: runResult.backend,
       });
 
-      // Emit portfolio:result-ready so other Engins know results are available
+      
       bridge.emit('portfolio', 'portfolio:result-ready', {
         experimentId:   `portfolio-${Date.now()}`,
         resultType:     'portfolio-optimization',
@@ -118,7 +108,7 @@ export default function PortfolioEngin({ onBack }: Props) {
   return (
     <div className="de-sky-bg min-h-screen">
 
-      {/* ── Header ─────────────────────────────────────────── */}
+      
       <header
         className="sticky top-0 z-30 backdrop-blur-xl"
         style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}
@@ -160,10 +150,10 @@ export default function PortfolioEngin({ onBack }: Props) {
         </div>
       </header>
 
-      {/* ── Body ───────────────────────────────────────────── */}
+      
       <div className="max-w-2xl mx-auto px-4 pb-32" style={{ paddingTop: 20 }}>
 
-        {/* Algorithm picker */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Algorithm</span>
@@ -196,7 +186,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Backend picker */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Backend</span>
@@ -232,7 +222,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Ansatz picker */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Ansatz</span>
@@ -269,7 +259,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Active features */}
+        
         <div className="de-widget" style={{ marginBottom: 14 }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Active Features</span>
@@ -301,7 +291,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Quantum circuit — live simulator */}
+        
         <div className="de-widget" style={{ marginBottom: 14, overflow: 'hidden' }}>
           <div className="de-widget-header">
             <span className="de-widget-title">Quantum Circuit</span>
@@ -332,7 +322,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Quantum selection result — shown as soon as the circuit finishes */}
+        
         {quantumResult && (
           <div className="de-widget" style={{ marginBottom: 14 }}>
             <div className="de-widget-header">
@@ -344,7 +334,7 @@ export default function PortfolioEngin({ onBack }: Props) {
               </span>
             </div>
             <div className="de-widget-body">
-              {/* Per-asset selection */}
+              
               <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
                 {quantumResult.selectedAssets.map((selected, i: number) => (
                   <div key={i} style={{
@@ -362,7 +352,7 @@ export default function PortfolioEngin({ onBack }: Props) {
                   </div>
                 ))}
               </div>
-              {/* State + confidence */}
+              
               <div style={{ display: 'flex', justifyContent: 'space-between',
                 fontSize: 10, color: '#4a6280' }}>
                 <span>
@@ -378,7 +368,7 @@ export default function PortfolioEngin({ onBack }: Props) {
                   </span>
                 </span>
               </div>
-              {/* Probability distribution summary */}
+              
               <div style={{ marginTop: 8, display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                 {quantumResult.probabilities.map((p, i: number) => (
                   p > 0.02 ? (
@@ -399,14 +389,14 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* Run button */}
+        
         <button
           type="button"
           onClick={handleRun}
           disabled={running}
           className="de-btn de-btn-gold"
           style={{ width: '100%', fontSize: 14, fontWeight: 800, padding: '14px 0', borderRadius: 14, marginBottom: 14, opacity: running ? 0.7 : 1,
-            // Optimised touch: disable 300 ms delay on mobile tap
+            
             touchAction: 'manipulation',
           }}
         >
@@ -423,7 +413,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           )}
         </button>
 
-        {/* Error state */}
+        
         {error && (
           <div style={{
             padding: '12px 16px', borderRadius: 12, marginBottom: 14,
@@ -433,7 +423,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* Results */}
+        
         {result && (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -469,7 +459,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* Placeholder state (no result yet) */}
+        
         {!result && !running && !error && (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -491,7 +481,7 @@ export default function PortfolioEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── Journey Trail ── */}
+        
         <JourneyTrail compact />
 
       </div>

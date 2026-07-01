@@ -13,17 +13,7 @@ import {
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * DreamRChannelPanel — neomorphic slide-in panel for YouTube channel + similar content.
- *
- * Opens when the user swipes left on a YouTube/video card in the DreamRFeed.
- * Shows:
- *   - Channel identity (name from post.profiles.display_name)
- *   - More videos from that exact channel (fetched via /api/youtube/channel)
- *   - Similar / topic-related videos section
- *
- * Visual language: DreamR neomorphism (identical to DreamRCreatorPanel).
- */
+
 
 const DR = {
   bg:          '#e8eff6',
@@ -50,7 +40,7 @@ function extractVideoId(permalink: string): string | null {
     if (u.hostname === 'youtu.be') return u.pathname.slice(1).split('?')[0] ?? null;
     const v = u.searchParams.get('v');
     if (v) return v;
-  } catch { /* fall through */ }
+  } catch {  }
   const m = permalink.match(/youtube\.com\/embed\/([^/?#]+)/i);
   return m?.[1] ?? null;
 }
@@ -67,7 +57,7 @@ function VideoRow({ item }: {item: UnifiedFeedItem}) {
 
   return (
     <div style={{ display: 'flex', gap: 10, padding: '10px 0', borderBottom: `1px solid rgba(163,189,218,0.18)` }}>
-      {/* Thumb */}
+      
       <div
         style={{ width: 88, height: 52, borderRadius: 8, overflow: 'hidden', background: '#0d1526', flexShrink: 0, position: 'relative', cursor: 'pointer' }}
         onClick={() => setPlaying(true)}
@@ -85,7 +75,7 @@ function VideoRow({ item }: {item: UnifiedFeedItem}) {
           </>
         )}
       </div>
-      {/* Meta */}
+      
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: DR.text, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: 4 }}>
           {item.content_text}
@@ -105,9 +95,9 @@ function VideoRow({ item }: {item: UnifiedFeedItem}) {
 }
 
 interface Props {
-  /** The YouTube post card that was swiped left */
+  
   post: FeedPost;
-  /** Active topic label (e.g. "World News") for "Similar" section */
+  
   activeTopic: string;
   onClose: () => void;
 }
@@ -128,7 +118,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
     return () => { mountedRef.current = false; };
   }, []);
 
-  // Slide-in animation
+  
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
@@ -139,7 +129,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
     });
   }, []);
 
-  // Fetch channel + similar videos
+  
   useEffect(() => {
     setLoading(true);
     const params = new URLSearchParams({
@@ -188,7 +178,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
         overflowY: 'auto', overflowX: 'hidden',
       }}
     >
-      {/* Header */}
+      
       <div style={{ flexShrink: 0, padding: '14px 16px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 30, height: 30, borderRadius: 9, background: 'rgba(239,68,68,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: nmR(2) }}>
@@ -205,7 +195,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
         </button>
       </div>
 
-      {/* Hero video */}
+      
       <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
         <div style={{ borderRadius: 16, overflow: 'hidden', position: 'relative', boxShadow: nmR(6) }}>
           {heroPlaying && embed ? (
@@ -222,7 +212,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
                   </button>
                 )}
               </div>
-              {/* Expand + Watch buttons */}
+              
               <div style={{ position: 'absolute', bottom: 8, right: 8, display: 'flex', gap: 6 }}>
                 {embed && (
                   <button type="button" onClick={() => setHeroExpanded(true)}
@@ -245,7 +235,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
         </p>
       </div>
 
-      {/* Section tabs */}
+      
       <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
         <div style={{ display: 'flex', gap: 4, background: DR.bg, borderRadius: 12, boxShadow: nmI(4), padding: 4 }}>
           {(['channel', 'similar'] as const).map((s) => {
@@ -269,7 +259,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
         </div>
       </div>
 
-      {/* Video list */}
+      
       <div style={{ flex: 1, padding: '8px 16px 24px' }}>
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 32 }}>
@@ -286,7 +276,7 @@ export default function DreamRChannelPanel({ post, activeTopic, onClose }: Props
         )}
       </div>
 
-      {/* Fullscreen overlay */}
+      
       {heroExpanded && embed && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.97)', display: 'flex', flexDirection: 'column' }} role="dialog" aria-modal="true">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>

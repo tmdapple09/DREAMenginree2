@@ -102,7 +102,7 @@ export default function LandingHero() {
       aria-labelledby="hero-heading"
     >
       <div className="flex w-full max-w-6xl flex-col items-center lg:items-start">
-        {/* The UI is now safely compartmentalized in the child component */}
+        
         <LandingProductStatement />
       </div>
     </section>

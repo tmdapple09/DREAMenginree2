@@ -4,27 +4,17 @@ import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameeng
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ParticlePool, ScreenShake, motionTrail, prefersReducedMotion } from './_fx/canvasFx';
 
-/**
- * VOIDLINE GP — fusion of racing + space-shooter + rhythm.
- *
- * Yuna "Telegraph" Orr races the illegal courier circuit above Lucid Avenue.
- * Hold throttle, weave the asteroid corridor, fire only on the soundtrack
- * downbeat — off-beat shots overheat the engine and slow the ship. Chain
- * perfect-beat actions to fill Resonance and warp past Coda.
- *
- * Render: 2-D canvas, neon-orange/magenta on indigo, scanline overlay,
- * pulsing HUD beat ring, chromatic-aberration on speed.
- */
+
 
 const W = 640;
 const H = 720;
 const BPM = 132;
-const BEAT_MS = (60 / BPM) * 1000;          // 454.5ms per beat
-const HIT_WINDOW = 110;                      // ±ms tolerance for "on-beat"
+const BEAT_MS = (60 / BPM) * 1000;          
+const HIT_WINDOW = 110;                      
 const PERFECT_WINDOW = 45;
 const TRACK_W = 360;
 const SHIP_Y = H - 110;
-const RACE_DURATION_MS = 90_000;             // 90s race
+const RACE_DURATION_MS = 90_000;             
 
 type Phase = 'menu' | 'playing' | 'win' | 'lose';
 interface Asteroid { x: number; y: number; r: number; vx: number; vy: number; }
@@ -51,12 +41,12 @@ export default function VoidlineGP( ){
   const shipYRef = useRef(SHIP_Y);
   const shipVxRef = useRef(0);
   const shipVyRef = useRef(0);
-  const heatRef = useRef(0);                 // 0..1 engine overheat
-  const resoRef = useRef(0);                 // 0..1 Resonance gauge
-  const positionRef = useRef(0);             // race progress 0..1
+  const heatRef = useRef(0);                 
+  const resoRef = useRef(0);                 
+  const positionRef = useRef(0);             
   const startTimeRef = useRef(0);
   const lastBeatRef = useRef(0);
-  const beatPhaseRef = useRef(0);            // 0..1 inside current beat
+  const beatPhaseRef = useRef(0);            
   const asteroidsRef = useRef<Asteroid[]>([]);
   const bulletsRef = useRef<Bullet[]>([]);
   const rivalsRef = useRef<Rival[]>([]);
@@ -64,7 +54,7 @@ export default function VoidlineGP( ){
   const particlesRef = useRef(new ParticlePool(220));
   const shakeRef = useRef(new ScreenShake(8));
   const reducedMotionRef = useRef(false);
-  const chainRef = useRef(0);                 // chain-meter 0..1, decays
+  const chainRef = useRef(0);                 
   const keysRef = useRef<Set<string>>(new Set());
   const scoreRef = useRef(0);
   const comboRef = useRef(0);
@@ -81,9 +71,9 @@ export default function VoidlineGP( ){
     rivalsRef.current = [
       { x: W / 2 - 60, y: 280, speed: 0.0009, lane: 0, hp: 3 },
       { x: W / 2 + 60, y: 200, speed: 0.0011, lane: 1, hp: 3 },
-      { x: W / 2,      y: 120, speed: 0.00125, lane: 2, hp: 5 }, // Coda — boss
+      { x: W / 2,      y: 120, speed: 0.00125, lane: 2, hp: 5 }, 
     ];
-    // Three star layers — different scroll speeds
+    
     starsRef.current = [];
     for (let i = 0; i < 60; i++) starsRef.current.push({ x: Math.random() * W, y: Math.random() * H, layer: 0 });
     for (let i = 0; i < 35; i++) starsRef.current.push({ x: Math.random() * W, y: Math.random() * H, layer: 1 });
@@ -98,7 +88,7 @@ export default function VoidlineGP( ){
 
   useEffect(() => { if (phase === 'win' || phase === 'lose') submit(scoreRef.current); }, [phase, submit]);
 
-  // Input
+  
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       keysRef.current.add(e.key);
@@ -112,13 +102,13 @@ export default function VoidlineGP( ){
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); };
   }, [phaseRef]);
 
-  // Touch fire
+  
   const tryFire = useCallback(() => {
     const dt = (performance.now() - lastBeatRef.current);
     const offset = Math.min(dt, BEAT_MS - dt);
     if (offset < PERFECT_WINDOW) {
       const sx = shipXRef.current, sy = shipYRef.current;
-      const ivx = shipVxRef.current * 0.4;     // bullets inherit ship velocity
+      const ivx = shipVxRef.current * 0.4;     
       bulletsRef.current.push({ x: sx, y: sy, vx: ivx, vy: -720 });
       bulletsRef.current.push({ x: sx - 14, y: sy, vx: ivx - 60, vy: -720 });
       bulletsRef.current.push({ x: sx + 14, y: sy, vx: ivx + 60, vy: -720 });
@@ -126,7 +116,7 @@ export default function VoidlineGP( ){
       chainRef.current = Math.min(1, chainRef.current + 0.18);
       resoRef.current = Math.min(1, resoRef.current + 0.08);
       scoreRef.current += 50 + comboRef.current * 5;
-      // Perfect-fire muzzle particles
+      
       particlesRef.current.burst(sx, sy - 10, 8, { color: COL.perfect, speed: 200, size: 1.6, maxLife: 0.35, drag: 0.85 });
       setHud((h) => ({ ...h, lastHit: 'PERFECT' }));
     } else if (offset < HIT_WINDOW) {
@@ -152,7 +142,7 @@ export default function VoidlineGP( ){
     scoreRef.current += 200;
   }, []);
 
-  // Game loop
+  
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
@@ -162,36 +152,36 @@ export default function VoidlineGP( ){
       const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
 
       if (phaseRef.current === 'playing') {
-        // Beat tracking
+        
         while (t - lastBeatRef.current >= BEAT_MS) lastBeatRef.current += BEAT_MS;
         beatPhaseRef.current = (t - lastBeatRef.current) / BEAT_MS;
 
-        // Steer — accel/drag with momentum + small slide window
+        
         const k = keysRef.current;
         let ax = 0;
         if (k.has('ArrowLeft') || k.has('a') || k.has('A')) ax -= 1700;
         if (k.has('ArrowRight') || k.has('d') || k.has('D')) ax += 1700;
         shipVxRef.current += ax * dt;
-        // Drag (per-second)
+        
         const drag = Math.exp(-2.4 * dt);
         shipVxRef.current *= drag;
         shipXRef.current += shipVxRef.current * dt;
-        // Track-edge bounce with restitution
+        
         const minX = (W - TRACK_W) / 2 + 24;
         const maxX = (W + TRACK_W) / 2 - 24;
         if (shipXRef.current < minX) { shipXRef.current = minX; shipVxRef.current = -shipVxRef.current * 0.35; shakeRef.current.kick(2); }
         else if (shipXRef.current > maxX) { shipXRef.current = maxX; shipVxRef.current = -shipVxRef.current * 0.35; shakeRef.current.kick(2); }
 
-        // Chain meter decay
+        
         chainRef.current = Math.max(0, chainRef.current - 0.18 * dt);
 
-        // Heat decay
+        
         heatRef.current = Math.max(0, heatRef.current - 0.15 * dt);
-        // Auto progress (slowed by heat, accelerated by chain trickle)
+        
         const baseRate = 0.0085;
         positionRef.current = Math.min(1, positionRef.current + baseRate * dt * (1 - heatRef.current * 0.5) * (1 + chainRef.current * 0.4));
 
-        // Spawn asteroids — now with vx
+        
         if (Math.random() < 0.04 + positionRef.current * 0.06) {
           asteroidsRef.current.push({
             x: (W - TRACK_W) / 2 + 30 + Math.random() * (TRACK_W - 60),
@@ -201,7 +191,7 @@ export default function VoidlineGP( ){
             vy: 200 + Math.random() * 220 + positionRef.current * 280,
           });
         }
-        // Update asteroids — bounce off track edges with restitution
+        
         for (const a of asteroidsRef.current) {
           a.x += a.vx * dt;
           a.y += a.vy * dt;
@@ -215,7 +205,7 @@ export default function VoidlineGP( ){
             comboRef.current = 0;
             chainRef.current = Math.max(0, chainRef.current - 0.5);
             shakeRef.current.kick(10);
-            // Debris with proper collision normal
+            
             const nrm = Math.atan2(dy, dx);
             for (let i = 0; i < 12; i++) {
               const ang = nrm + (Math.random() - 0.5) * 1.4;
@@ -227,7 +217,7 @@ export default function VoidlineGP( ){
         }
         asteroidsRef.current = asteroidsRef.current.filter((a) => a.y < H + 40);
 
-        // Bullets — full velocity integration
+        
         for (const b of bulletsRef.current) { b.x += b.vx * dt; b.y += b.vy * dt; }
         for (const b of bulletsRef.current) {
           for (const a of asteroidsRef.current) {
@@ -244,7 +234,7 @@ export default function VoidlineGP( ){
         }
         bulletsRef.current = bulletsRef.current.filter((b) => b.y > -10 && b.x > -20 && b.x < W + 20);
 
-        // Per-ship exhaust trail particle
+        
         if (Math.random() < 0.6) {
           particlesRef.current.emit({ x: shipXRef.current + (Math.random() - 0.5) * 4, y: shipYRef.current + 16, vx: -shipVxRef.current * 0.3, vy: 90 + Math.random() * 60, color: COL.neon, size: 2, maxLife: 0.35, drag: 0.95 });
         }
@@ -252,23 +242,23 @@ export default function VoidlineGP( ){
           if (Math.random() < 0.3) particlesRef.current.emit({ x: r.x, y: r.y + 14, vx: 0, vy: 60, color: r.hp > 3 ? COL.hot : COL.cool, size: 1.4, maxLife: 0.3, drag: 0.95 });
         }
 
-        // Rivals drift
+        
         for (const r of rivalsRef.current) {
           r.y += Math.sin((t / 600) + r.lane) * 12 * dt;
           r.x += Math.sin((t / 800) + r.lane * 2) * 18 * dt;
         }
         rivalsRef.current = rivalsRef.current.filter((r) => r.hp > 0);
 
-        // Step FX
+        
         particlesRef.current.step(dt);
         shakeRef.current.step(dt);
 
-        // Win conditions
+        
         if (positionRef.current >= 1 || rivalsRef.current.length === 0) { setPhase('win'); }
         if (t - startTimeRef.current > RACE_DURATION_MS && rivalsRef.current.length > 0) { setPhase('lose'); }
       }
 
-      // Motion-blur stamp (low-alpha previous-frame trail)
+      
       if (!reducedMotionRef.current && phaseRef.current === 'playing') {
         motionTrail(ctx, W, H, 0.25, '#06051a');
       } else {
@@ -280,7 +270,7 @@ export default function VoidlineGP( ){
       ctx.save();
       shakeRef.current.apply(ctx, reducedMotionRef.current ? 0.2 : 1);
 
-      // Three-layer parallax starfield (warpy, scroll-by-position)
+      
       const scrollSpeed = 60 + positionRef.current * 220;
       for (const s of starsRef.current) {
         const speed = scrollSpeed * (s.layer === 0 ? 0.4 : s.layer === 1 ? 1 : 1.8);
@@ -288,18 +278,18 @@ export default function VoidlineGP( ){
         const size = s.layer === 0 ? 1 : s.layer === 1 ? 1.5 : 2;
         const a = s.layer === 0 ? 0.4 : s.layer === 1 ? 0.7 : 1;
         ctx.fillStyle = `rgba(180,200,255,${a})`;
-        // Streak the closest layer for warp feel
+        
         if (s.layer === 2 && positionRef.current > 0.3) ctx.fillRect(s.x, s.y, size, size + 6);
         else ctx.fillRect(s.x, s.y, size, size);
       }
 
-      // Track
+      
       ctx.fillStyle = COL.track;
       ctx.fillRect((W - TRACK_W) / 2, 0, TRACK_W, H);
 
-      // Pseudo-Mode-7 receding poly-lines for the corridor walls
+      
       const horizonY = 60;
-      const vp = W / 2; // vanishing point x
+      const vp = W / 2; 
       ctx.strokeStyle = COL.trackEdge;
       ctx.lineWidth = 2;
       for (let i = 0; i < 14; i++) {
@@ -310,7 +300,7 @@ export default function VoidlineGP( ){
         ctx.beginPath(); ctx.moveTo((W - TRACK_W) / 2, H); ctx.lineTo(farXl, farY); ctx.stroke();
         ctx.beginPath(); ctx.moveTo((W + TRACK_W) / 2, H); ctx.lineTo(farXr, farY); ctx.stroke();
       }
-      // Lane markers
+      
       const scroll = (t / 4) % 60;
       ctx.strokeStyle = 'rgba(255,106,61,0.3)';
       ctx.lineWidth = 2;
@@ -323,13 +313,13 @@ export default function VoidlineGP( ){
       ctx.strokeStyle = COL.trackEdge; ctx.lineWidth = 4;
       ctx.strokeRect((W - TRACK_W) / 2, 0, TRACK_W, H);
 
-      // Asteroids
+      
       for (const a of asteroidsRef.current) {
         ctx.fillStyle = '#3d2a1a'; ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = COL.neon; ctx.lineWidth = 1.5; ctx.stroke();
       }
 
-      // Rivals
+      
       for (const r of rivalsRef.current) {
         ctx.fillStyle = r.hp > 3 ? COL.hot : '#88aaff';
         ctx.beginPath();
@@ -337,20 +327,20 @@ export default function VoidlineGP( ){
         ctx.closePath(); ctx.fill();
       }
 
-      // Particles below ship for exhaust glow
+      
       particlesRef.current.draw(ctx);
 
-      // Bullets
+      
       ctx.fillStyle = COL.cool;
       for (const b of bulletsRef.current) {
         ctx.fillRect(b.x - 2, b.y - 8, 4, 12);
       }
 
-      // Ship
+      
       ctx.save();
       ctx.translate(shipXRef.current, shipYRef.current);
       ctx.rotate(shipVxRef.current * 0.001);
-      // Beat-pulse bloom on ship
+      
       const beatBloom = 1 - beatPhaseRef.current;
       ctx.fillStyle = COL.neon;
       ctx.shadowColor = COL.neon; ctx.shadowBlur = 16 + beatBloom * 14;
@@ -359,15 +349,15 @@ export default function VoidlineGP( ){
       ctx.fillStyle = COL.cool; ctx.fillRect(-3, -6, 6, 14);
       ctx.restore();
 
-      // Scanlines (CRT)
+      
       ctx.fillStyle = 'rgba(0,0,0,0.12)';
       for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
 
       ctx.restore();
 
-      // Beat-window indicator: closing bar around ship area shows when to fire
+      
       const beatPhase = beatPhaseRef.current;
-      // window opens near beat boundaries (offset≈0 or offset≈1)
+      
       const offsetMs = Math.min(beatPhase, 1 - beatPhase) * BEAT_MS;
       if (offsetMs < HIT_WINDOW) {
         const fill = 1 - offsetMs / HIT_WINDOW;
@@ -378,19 +368,19 @@ export default function VoidlineGP( ){
         ctx.arc(shipXRef.current, shipYRef.current, 32 + (1 - fill) * 18, 0, Math.PI * 2 * fill);
         ctx.stroke();
       }
-      // Resonance arc top-right
+      
       const cx = W - 56, cy = 52;
       ctx.strokeStyle = 'rgba(255,231,107,0.2)';
       ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.stroke();
       ctx.strokeStyle = COL.perfect;
       ctx.beginPath(); ctx.arc(cx, cy, 22, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * resoRef.current); ctx.stroke();
-      // Lap pip top-left
+      
       ctx.fillStyle = COL.neon;
       ctx.fillRect(20, 20, 60 * positionRef.current, 4);
       ctx.strokeStyle = 'rgba(255,106,61,0.3)';
       ctx.lineWidth = 1;
       ctx.strokeRect(20, 20, 60, 4);
-      // Tiny chain-meter under it
+      
       if (chainRef.current > 0.05) {
         ctx.fillStyle = COL.cool; ctx.fillRect(20, 28, 60 * chainRef.current, 2);
       }
@@ -401,7 +391,7 @@ export default function VoidlineGP( ){
     return () => cancelAnimationFrame(raf);
   }, [phaseRef, setPhase]);
 
-  // Push HUD updates once per ~100ms (cheap)
+  
   useEffect(() => {
     if (phase !== 'playing') return;
     const iv = setInterval(() => setHud((h) => ({

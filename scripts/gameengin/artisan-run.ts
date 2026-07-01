@@ -1,16 +1,4 @@
-/**
- * scripts/gameengin/artisan-run.ts
- *
- * Artisan visual asset agent. Spec: GameENGINspec.md §3.3, §5.1, §5.2.
- *
- * Real local work:
- *   - Reads `visual-bible/characters/<cartridge>.md` and palette directives.
- *   - Records prompt manifests (deterministic, ready to feed Replicate/ComfyUI).
- * Remote work (only when REPLICATE_API_TOKEN present):
- *   - Submits an SDXL prediction for cover art and saves the URL into the
- *     output manifest. (Image download + Basis encoding requires GPU tooling
- *     not assumed here; the spec marks Basis encode as Mechanic post-process.)
- */
+
 
 import { createHash } from 'node:crypto';
 import * as fs from 'node:fs';
@@ -41,7 +29,7 @@ function buildPromptForCover(cartridgeId: string): PromptManifest {
   const envPath = path.join(BRAIN_ROOT, 'visual-bible', 'environments', 'neon-wasteland.md');
   const environment = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf-8') : '';
 
-  // Pull a couple of techniques + recipes that apply to a cover-art task.
+  
   const techniques = listTechniques();
   const lighting = techniques.find((t) => t.category === 'lighting');
   const modeling = techniques.find((t) => t.category === 'modeling');
@@ -84,7 +72,7 @@ async function maybeReplicate(prompt: PromptManifest): Promise<{ url: string } |
         authorization: `Token ${token}`,
       },
       body: JSON.stringify({
-        version: process.env.ARTISAN_MODEL ?? '7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc', // sdxl
+        version: process.env.ARTISAN_MODEL ?? '7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc', 
         input: { prompt: prompt.prompt, negative_prompt: prompt.negative_prompt, seed: prompt.seed },
       }),
     });

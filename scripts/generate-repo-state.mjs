@@ -903,7 +903,7 @@ function loadTsconfigPaths() {
         for (const targetPattern of targets) mappings.push({ aliasPattern, targetPattern, baseUrl });
       }
     } catch {
-      // Keep repo-state generation alive even if a tsconfig variant is malformed.
+      
     }
   }
 

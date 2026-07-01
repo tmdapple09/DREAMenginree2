@@ -1,25 +1,4 @@
-/**
- * scripts/gameengin/upgrader-run.ts
- *
- * Upgrader maintenance agent. Spec: GameENGINspec.md §6 (Agent Profile).
- *
- * Purpose
- *   Revisit an existing cartridge and decide which dimensions need refresh
- *   (mechanics / visuals / narrative / tuning) based on:
- *     - days since each agent last touched the cartridge
- *     - current mechanic-library / technique-library size vs. references
- *       baked into the cartridge artefacts
- *     - cartridge tier (flagship / active / maintenance / archived)
- *
- * Output
- *   - .gameengin-upgrader-output.json (machine-readable plan)
- *   - brain/upgrade-history/<cartridge_id>/<date>-<stamp>.json
- *
- * Backward compatibility
- *   Upgrader does not mutate compiled artefacts. It only emits a dispatch
- *   plan. Save/level format checks are recorded so future migrations can be
- *   gated.
- */
+
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -85,7 +64,7 @@ function planFor(cartridgeId: string, manifest: ManifestLite | null): UpgradePla
   const lastWriter   = getLastTouched(cartridgeId, 'writer');
   const lastProphet  = getLastTouched(cartridgeId, 'prophet');
 
-  // Drift = how far the cartridge's references lag behind the brain.
+  
   const totalMechanics = listMechanics().length;
   const refMechanics = manifest?.ai?.mechanics?.length ?? 0;
   const mechanicDrift = totalMechanics === 0 ? 0 : Math.max(0, 1 - refMechanics / totalMechanics);
@@ -99,7 +78,7 @@ function planFor(cartridgeId: string, manifest: ManifestLite | null): UpgradePla
   function score(daysAgo: number, drift: number, dimension: keyof typeof cooldown): number {
     const cooledDown = daysAgo >= (cooldown[dimension] ?? 0);
     if (!cooledDown) return 0;
-    const ageNorm = Math.min(1, daysAgo / 30); // saturate at 30d
+    const ageNorm = Math.min(1, daysAgo / 30); 
     return tierMul * (
       w.days_since_last_touch * ageNorm +
       (dimension === 'mechanics' ? w.mechanic_library_drift * drift : 0) +

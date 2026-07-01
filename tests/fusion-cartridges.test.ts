@@ -1,8 +1,4 @@
-/**
- * Sanity coverage for the 9 fusion cartridges that replaced 25 source games.
- * Asserts each cartridge file exists, default-exports a React component, and
- * contains its title-card lore string + game-engin score wiring.
- */
+
 
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';

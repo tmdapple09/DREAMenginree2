@@ -1,18 +1,4 @@
-/**
- * lib/h265-encoder.ts
- *
- * Two complementary video encoding APIs:
- *
- * 1. H265Encoder — low-level WebCodecs VideoEncoder wrapper.
- *    Produces raw H.265/H.264/VP9 NAL-unit packets.
- *    Useful for streaming, WebRTC, or custom muxing pipelines.
- *    Falls back to a WASM stub backend when WebCodecs is unavailable.
- *
- * 2. GameCapture — practical game recording using canvas.captureStream()
- *    and MediaRecorder. Handles muxing automatically. Produces a Blob
- *    ready for download or upload. Works across all browsers.
- *    Codec priority: H.265 MP4 → H.264 MP4 → VP9 WebM → H.264 WebM.
- */
+
 
 export type H265Preset = 'speed' | 'balanced' | 'quality';
 export type PixelFormat = 'rgba8' | 'bgra8' | 'nv12' | 'i420';
@@ -175,7 +161,7 @@ export class H265Encoder {
     this.initialized = true;
   }
 
-  // WebCodecs has no dynamic reconfigure path; destroy and reinit.
+  
   private async reconfigure(): Promise<void> {
     if (!this.initialized) return;
     await this.backend.destroy();
@@ -350,13 +336,13 @@ class WasmFallbackBackend implements IEncoderBackend {
   }
 }
 
-//
-// Practical game-session recorder. Uses canvas.captureStream() + MediaRecorder
-// so the browser handles muxing. Produces a Blob (MP4 or WebM) that can be
-// downloaded or uploaded to Supabase Storage.
-//
-// Codec priority (highest quality supported wins):
-//   H.265 MP4  → H.264 MP4  → H.264 WebM  → VP9 WebM  → WebM generic
+
+
+
+
+
+
+
 
 export interface CaptureResult {
   blob: Blob;
@@ -373,26 +359,21 @@ export class GameCapture {
   private mimeType = '';
   private startTime = 0;
 
-  /** Detect the best supported MIME type for recording. */
+  
   static detectMimeType(): string {
     if (typeof MediaRecorder === 'undefined') return '';
     const candidates = [
-      'video/mp4;codecs=hvc1',        // H.265 — Safari 16.4+
-      'video/mp4;codecs=avc1.42E01E', // H.264 — Chrome/Edge
-      'video/mp4',                    // Generic MP4
-      'video/webm;codecs=vp9',        // VP9 — Chrome/Firefox
-      'video/webm;codecs=h264',       // H.264 in WebM — Chrome
-      'video/webm',                   // Fallback
+      'video/mp4;codecs=hvc1',        
+      'video/mp4;codecs=avc1.42E01E', 
+      'video/mp4',                    
+      'video/webm;codecs=vp9',        
+      'video/webm;codecs=h264',       
+      'video/webm',                   
     ];
     return candidates.find((t) => MediaRecorder.isTypeSupported(t)) ?? 'video/webm';
   }
 
-  /**
-   * Start recording from a canvas element.
-   * @param canvas  The game canvas (must have preserveDrawingBuffer=true for WebGL/WebGPU).
-   * @param fps     Capture frame rate. Default 30.
-   * @param bitrate Target bitrate in bits/sec. Default 8 Mbps.
-   */
+  
   start(canvas: HTMLCanvasElement, fps = 30, bitrate = 8_000_000): void {
     if (this.recorder) throw new Error('GameCapture already recording');
     this.chunks = [];
@@ -407,11 +388,11 @@ export class GameCapture {
     this.recorder.ondataavailable = (e: BlobEvent) => {
       if (e.data.size > 0) this.chunks.push(e.data);
     };
-    this.recorder.start(200); // flush a chunk every 200 ms
+    this.recorder.start(200); 
     this.startTime = performance.now();
   }
 
-  /** Stop recording and return the muxed video blob. */
+  
   async stop(canvas: HTMLCanvasElement): Promise<CaptureResult> {
     if (!this.recorder) throw new Error('GameCapture not recording');
     const durationMs = performance.now() - this.startTime;
@@ -440,10 +421,7 @@ export class GameCapture {
     return performance.now() - this.startTime;
   }
 
-  /**
-   * Trigger a browser download of a CaptureResult blob.
-   * Uses the same anchor-click pattern as ContentEngin and StarMakerEngin.
-   */
+  
   static download(result: CaptureResult, filename?: string): void {
     const ext = result.mimeType.startsWith('video/mp4') ? 'mp4' : 'webm';
     const name = filename ?? `gameplay-${Date.now()}.${ext}`;

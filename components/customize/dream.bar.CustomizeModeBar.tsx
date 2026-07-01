@@ -2,10 +2,7 @@
 
 import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 
-/**
- * CustomizeModeBar — fixed top banner shown when customize mode is active.
- * Matches the "CUSTOMIZE MODE | Done" design from the product spec.
- */
+
 export default function CustomizeModeBar( ){
   const { isCustomizeMode, activePage, exitCustomizeMode, saveSkin } = useCustomizeMode();
 
@@ -34,7 +31,7 @@ export default function CustomizeModeBar( ){
         boxShadow: '0 2px 16px rgba(58,111,216,0.4)',
       }}
     >
-      {/* Cancel */}
+      
       <button
         type="button"
         onClick={exitCustomizeMode}
@@ -55,7 +52,7 @@ export default function CustomizeModeBar( ){
         Cancel
       </button>
 
-      {/* Title */}
+      
       <div style={{
         color: '#fff',
         fontSize: 12,
@@ -67,7 +64,7 @@ export default function CustomizeModeBar( ){
         Customize {pageLabel}
       </div>
 
-      {/* Done */}
+      
       <button
         type="button"
         onClick={saveSkin}

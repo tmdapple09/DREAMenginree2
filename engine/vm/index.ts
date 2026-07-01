@@ -1,8 +1,4 @@
-/**
- * lib/vm/index.ts — WASM+GPU VM Public API
- *
- * Barrel export for the WASM+GPU Virtual Machine implementation.
- */
+
 
 export {
     detectWasmFeatures,

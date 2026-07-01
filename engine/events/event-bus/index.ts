@@ -1,40 +1,23 @@
-/**
- * Local Event Bus — No Global Bridge
- *
- * Each engine assembly gets its own createEventBus() instance.
- * Modules communicate only when explicitly wired inside that engine.
- * The bus is passed to modules via dependency injection.
- *
- * Feature 42: Dual runtime hub creates a second bus and forwards
- * messages between sides.
- */
+
 
 export type EventHandler<T = unknown> = (payload: T) => void;
 
 export interface EventBus<Events extends Record<string, unknown> = Record<string, unknown>> {
-  /** Emit an event with a typed payload */
+  
   emit<K extends keyof Events>(event: K, payload: Events[K]): void;
-  /** Subscribe to an event */
+  
   on<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
-  /** Unsubscribe from an event */
+  
   off<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
-  /** Subscribe once — automatically removed after first call */
+  
   once<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
-  /** Remove all listeners for an event, or all listeners if no event given */
+  
   clear(event?: keyof Events): void;
-  /** List all active event names */
+  
   events(): Array<keyof Events>;
 }
 
-/**
- * Factory — creates an isolated event bus instance.
- * Pass the returned bus to modules via dependency injection.
- *
- * @example
- * const bus = createEventBus<{ 'audio:play': { trackId: string }; 'audio:stop': void }>();
- * bus.on('audio:play', ({ trackId }) => console.log(trackId));
- * bus.emit('audio:play', { trackId: 'abc' });
- */
+
 export function createEventBus<
   Events extends Record<string, unknown> = Record<string, unknown>,
 >(): EventBus<Events> {
@@ -89,18 +72,13 @@ export function createEventBus<
   };
 }
 
-/**
- * Dual Runtime Hub bridge — forwards events from busA to busB and vice versa.
- * Used by the "Dual Runtime Hub" piece in Engin Forge assemblies.
- *
- * Returns a dispose function that tears down the forwarding.
- */
+
 export function bridgeBuses(
   busA: EventBus,
   busB: EventBus,
-  /** Events to forward from A → B */
+  
   aToB: string[],
-  /** Events to forward from B → A */
+  
   bToA: string[],
 ): () => void {
   const forwardersAtoB = new Map<string, EventHandler<unknown>>();

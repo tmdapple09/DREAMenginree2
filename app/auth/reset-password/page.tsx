@@ -5,7 +5,7 @@ import { buildAuthCallbackUrl } from "@/supabase/config";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-// SURFACE: dreamsurface.AuthResetPassword  (framework-mandated basename: page.tsx)
+
 
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
@@ -53,7 +53,7 @@ export default function ResetPasswordPage( ){
       className="min-h-screen flex flex-col items-center justify-center px-4 py-10"
       style={{ background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)' }}
     >
-      {/* Ambient glow — SICC enhanced */}
+      
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div style={{
           position: 'absolute', top: '-100px', right: '-80px',
@@ -79,7 +79,7 @@ export default function ResetPasswordPage( ){
         }} />
       </div>
 
-      {/* Wordmark — SICC premium */}
+      
       <div className="sicc-soft-float" style={{ marginBottom: 32, textAlign: "center", position: 'relative' }}>
         <div style={{
           fontFamily: 'var(--font-cormorant, Georgia, serif)',
@@ -108,7 +108,7 @@ export default function ResetPasswordPage( ){
           position: 'relative',
         }}
       >
-        {/* Card top accent */}
+        
         <div style={{ height: 2, background: 'linear-gradient(90deg, transparent, rgba(200,152,26,0.55) 40%, rgba(56,189,248,0.35) 70%, transparent)' }} aria-hidden="true" />
 
         <div style={{ padding: '24px' }}>

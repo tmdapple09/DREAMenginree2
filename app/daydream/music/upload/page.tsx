@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-// SURFACE: dreamsurface.MusicUpload  (framework-mandated basename: page.tsx)
+
 
 export default function UploadMusicPage( ){
   const [title, setTitle] = useState('');
@@ -31,7 +31,7 @@ export default function UploadMusicPage( ){
         return;
       }
 
-      // Convert YouTube/Spotify URLs to embed format
+      
       let finalEmbedUrl = embedUrl;
       if (embedUrl.includes('youtube.com/watch')) {
         const videoId = embedUrl.split('v=')[1]?.split('&')[0];
@@ -65,7 +65,7 @@ export default function UploadMusicPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/daydream/music" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -79,12 +79,12 @@ export default function UploadMusicPage( ){
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* Track details widget */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Track Details</span></div>
             <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-              {/* Title */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Track Title</span>
                 <input
@@ -97,7 +97,7 @@ export default function UploadMusicPage( ){
                 />
               </label>
 
-              {/* Embed URL */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>YouTube or Spotify Link</span>
                 <input
@@ -113,7 +113,7 @@ export default function UploadMusicPage( ){
                 </div>
               </label>
 
-              {/* Visibility */}
+              
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Visibility</span>
                 <div style={{ display: 'flex', gap: 8 }}>
@@ -136,7 +136,7 @@ export default function UploadMusicPage( ){
                 </div>
               </div>
 
-              {/* Preview */}
+              
               {embedUrl && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Preview</span>
@@ -187,7 +187,7 @@ export default function UploadMusicPage( ){
           </div>
         </form>
 
-        {/* Supported Platforms */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Supported Platforms</span></div>
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

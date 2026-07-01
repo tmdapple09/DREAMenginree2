@@ -1,19 +1,19 @@
-// Tailwind 4 legacy config — loaded via @config in globals.css.
-// Content paths are auto-detected in TW4; the content array is unused.
+
+
 
 const config = {
   theme: {
     extend: {
-      // Space-dark palette (HomeDream + dark-UI components).
-      // CSS variables in globals.css provide the Dream-Ice light-mode palette.
+      
+      
       colors: {
         'de-sky':         '#7DD3FC',
         'de-sky-dark':    '#0EA5E9',
         'de-gold':        '#F59E0B',
         'de-gold-light':  '#FCD34D',
-        // Gilded Ghost palette (v2.2)
-        'de-gold-true':   '#D4AF37',  // True jeweller's gold
-        'midnight':       '#050505',  // Pure Midnight base surface
+        
+        'de-gold-true':   '#D4AF37',  
+        'midnight':       '#050505',  
         'de-navy':        '#0F172A',
         'de-sheet':       '#0C1A2E',
         'de-card':        '#111D30',
@@ -26,13 +26,13 @@ const config = {
         sans: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
-      // Premium radii: docs/ARCHITECTURE.md §8 — radius family
+      
       borderRadius: {
         'premium': '20px',
         'pill':    '9999px',
         'card':    '16px',
       },
-      // Spring + expo easing for native-feel motion
+      
       transitionTimingFunction: {
         'spring':    'cubic-bezier(0.34, 1.56, 0.64, 1)',
         'expo-out':  'cubic-bezier(0.16, 1, 0.3, 1)',
@@ -54,7 +54,7 @@ const config = {
         'glass-elevated':  '0 2px 40px rgba(0,0,0,0.4), 0 0 80px rgba(125,211,252,0.05)',
         'btn-primary':     '0 4px 24px rgba(14,165,233,0.4)',
         'btn-primary-hov': '0 8px 32px rgba(14,165,233,0.6)',
-        // Neumorphic Midnight shadows (Gilded Ghost v2.2)
+        
         'neu-raise':  '1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8)',
         'neu-inset':  'inset 1px 1px 8px rgba(0,0,0,0.7), inset -1px -1px 6px rgba(125,211,252,0.04)',
         'neu-gold':   '1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8), 0 0 16px rgba(212,175,55,0.20)',

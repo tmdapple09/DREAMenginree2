@@ -1,15 +1,15 @@
 import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
 import { NextResponse } from 'next/server';
 
-// app/api/ai/boogieman/status/route.ts
-// TheBoogieMan.Ai — policy health endpoint (req 65).
-// Dr. Eams queries this to surface enforcement status to users (req 66, 67).
-// Public-read: returns ok/degraded/offline + current policy version.
+
+
+
+
 
 export async function GET( ): Promise<NextResponse> {
   const simulationMode = process.env.BOOGIE_SIMULATION_MODE === 'true';
 
-  // In production, Boogie is always "ok" unless an env flag marks it degraded.
+  
   const forceDegraded = process.env.BOOGIE_DEGRADED === 'true';
   const forceOffline = process.env.BOOGIE_OFFLINE === 'true';
 

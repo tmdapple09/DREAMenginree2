@@ -18,7 +18,7 @@ const MAX_SEGMENT_CHARS = Number(process.env.CODEENGIN_MAX_SEGMENT_CHARS ?? 96);
 
 export function getCodeEnginWorkspacesRoot(): string {
   const configuredRoot = process.env.CODEENGIN_WORKSPACES_ROOT?.trim();
-  if (configuredRoot) return path.resolve(/*turbopackIgnore: true*/ configuredRoot);
+  if (configuredRoot) return path.resolve( configuredRoot);
   return path.join(process.cwd(), '.codeengin-workspaces');
 }
 

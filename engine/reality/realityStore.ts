@@ -9,28 +9,13 @@ import type {
     RealitySnapshot,
 } from './types';
 
-/**
- * lib/reality/realityStore.ts
- *
- * DB layer for Persistent Collaborative Realities.
- *
- * All writes use `upsert` / `insert` with RLS-enforced server-side checks.
- * Client-side user_id filters are defence-in-depth (AXIOM 4).
- *
- * Tables used:
- *   collaborative_realities       — identity, config, mode
- *   reality_members               — membership + roles
- *   reality_state_snapshots       — point-in-time Engin state merges
- *   reality_activity_log          — persistent timeline
- *
- * See: supabase/migrations/20260516000200_collaborative_realities.sql
- */
+
 
 function buildChannelId(realityId: string): string {
   return `reality:${realityId}`;
 }
 
-/** Load a single Reality by ID. Returns null if not found. */
+
 export async function getRealityById(
   supabase: SupabaseClient,
   realityId: string,
@@ -46,7 +31,7 @@ export async function getRealityById(
   return rowToReality(data);
 }
 
-/** List realities the current user is a member of. */
+
 export async function listMyRealities(
   supabase: SupabaseClient,
   userId: string,
@@ -62,7 +47,7 @@ export async function listMyRealities(
   return data.map(rowToReality);
 }
 
-/** Create a new Reality. The creator is automatically added as host. */
+
 export async function createReality(
   supabase: SupabaseClient,
   userId: string,
@@ -91,16 +76,16 @@ export async function createReality(
 
   const reality = rowToReality(data);
 
-  // Auto-join as host
+  
   await joinReality(supabase, userId, reality.id, 'host');
 
-  // Log creation
+  
   await appendActivity(supabase, reality.id, userId, 'reality_created', `Reality "${reality.name}" created`);
 
   return reality;
 }
 
-/** Update the engin slots array (used when activating/deactivating an Engin). */
+
 export async function updateEnginSlots(
   supabase: SupabaseClient,
   realityId: string,
@@ -112,7 +97,7 @@ export async function updateEnginSlots(
     .eq('id', realityId);
 }
 
-/** Update last_activity_at. Called whenever anything happens in the Reality. */
+
 export async function touchReality(
   supabase: SupabaseClient,
   realityId: string,
@@ -123,7 +108,7 @@ export async function touchReality(
     .eq('id', realityId);
 }
 
-/** Join a Reality. Upserts the membership row (idempotent). */
+
 export async function joinReality(
   supabase: SupabaseClient,
   userId: string,
@@ -142,7 +127,7 @@ export async function joinReality(
   );
 }
 
-/** Update the member's last_seen_at (call on heartbeat / reconnect). */
+
 export async function touchMembership(
   supabase: SupabaseClient,
   userId: string,
@@ -155,7 +140,7 @@ export async function touchMembership(
     .eq('user_id', userId);
 }
 
-/** List all members of a Reality (including offline). */
+
 export async function listMembers(
   supabase: SupabaseClient,
   realityId: string,
@@ -168,7 +153,7 @@ export async function listMembers(
 
   if (error || !data) return [];
 
-  const cutoff = Date.now() - 5 * 60 * 1000; // 5 min → online
+  const cutoff = Date.now() - 5 * 60 * 1000; 
   return data.map((row): RealityMember => ({
     realityId: row.reality_id as string,
     userId: row.user_id as string,
@@ -181,10 +166,7 @@ export async function listMembers(
   }));
 }
 
-/**
- * Save a Reality state snapshot.
- * enginStates is a map of { instanceId → stateBlob }.
- */
+
 export async function saveSnapshot(
   supabase: SupabaseClient,
   realityId: string,
@@ -203,7 +185,7 @@ export async function saveSnapshot(
 
   if (error || !data) return null;
 
-  // Increment activity_count
+  
   await supabase.rpc('increment_reality_activity', { p_reality_id: realityId });
 
   return {
@@ -215,7 +197,7 @@ export async function saveSnapshot(
   };
 }
 
-/** Load the most recent snapshot for a Reality. */
+
 export async function loadLatestSnapshot(
   supabase: SupabaseClient,
   realityId: string,
@@ -239,7 +221,7 @@ export async function loadLatestSnapshot(
   };
 }
 
-/** Append an activity entry to the Reality's timeline. */
+
 export async function appendActivity(
   supabase: SupabaseClient,
   realityId: string,
@@ -256,7 +238,7 @@ export async function appendActivity(
     meta,
   });
 
-  // Bump last_activity_at on the reality itself
+  
   await supabase
     .from('collaborative_realities')
     .update({
@@ -266,7 +248,7 @@ export async function appendActivity(
     .eq('id', realityId);
 }
 
-/** Load recent activity for a Reality (most-recent first). */
+
 export async function loadActivity(
   supabase: SupabaseClient,
   realityId: string,

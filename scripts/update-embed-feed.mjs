@@ -1,36 +1,5 @@
 #!/usr/bin/env node
-/**
- * scripts/update-embed-feed.mjs
- *
- * GitHub Actions embed-feed update script for DREAMengin.
- *
- * Fetches the latest YouTube videos (and optionally Instagram posts) using
- * server-side API keys, applies an algorithm filter, then:
- *   1. Upserts the filtered items into Supabase `embed_feed_items` table
- *      (if NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY are provided).
- *   2. Bakes embed-code output to public/feeds/embed-feed.json as a static
- *      fallback so the site works even if the DB is unreachable.
- *
- * The workflow (update-embed-feed.yml) commits the JSON file back to the repo.
- *
- * Algorithm filters (configurable via env vars):
- *   FEED_MIN_VIEW_COUNT        — skip videos with fewer views (default: 0)
- *   FEED_REQUIRED_TAGS         — comma-separated tags; item must match ≥1
- *                                (default: empty — no tag filter)
- *   FEED_MAX_ITEMS             — maximum embed items to keep (default: 20)
- *   FEED_SOURCES               — comma-separated: youtube,instagram (default: youtube)
- *   YOUTUBEAPI                  — YouTube Data API v3 key (public data, no OAuth)
- *   INSTAGRAM_ACCESS_TOKEN     — Instagram Basic Display API long-lived token
- *   NEXT_PUBLIC_SUPABASE_URL   — Project URL
- *   SUPABASE_SERVICE_ROLE_KEY  — Service-role secret (bypasses RLS for CI writes)
- *
- * Architecture justification: render-on-demand / static bake pattern from
- * docs/ARCHITECTURE.md §10 — heavy API work happens in CI, not on each request.
- *
- * Performance impact: reduces per-request latency; eliminates live social API
- * calls from the production runtime. Supabase provides a durable store so the
- * feed survives branch resets and is accessible outside the static JSON path.
- */
+
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -40,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT   = join(__dirname, '..');
 const OUTPUT_PATH = join(REPO_ROOT, 'public', 'feeds', 'embed-feed.json');
 
-// ── Config from environment / CLI ─────────────────────────────────────────────
+
 
 const MIN_VIEW_COUNT   = parseInt(process.env.FEED_MIN_VIEW_COUNT  ?? '0',  10);
 const MAX_ITEMS        = parseInt(process.env.FEED_MAX_ITEMS        ?? '20', 10);
@@ -56,29 +25,13 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
 
 const YT_API = 'https://www.googleapis.com/youtube/v3';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 
-/**
- * A single embed item — provider-agnostic shape written to embed-feed.json.
- * @property {string}   id          — stable external ID (videoId, media id, …)
- * @property {string}   provider    — 'youtube' | 'instagram'
- * @property {string}   title       — human-readable title / caption
- * @property {string}   permalink   — link to original post
- * @property {string}   published_at — ISO timestamp
- * @property {number}   view_count  — platform view / play count (0 if unavailable)
- * @property {string[]} tags        — normalised lower-case tags / hashtags
- * @property {string}   embed_html  — ready-to-use iframe / blockquote embed code
- * @property {string}   thumbnail_url — preview image URL (may be empty)
- * @property {string}   channel_title — author / channel name
- */
 
-// ── YouTube ───────────────────────────────────────────────────────────────────
 
-/**
- * Fetches up to `maxResults` videos from the YouTube Data API v3.
- * Uses the mostPopular chart (public data — no OAuth required).
- * Also fetches the `statistics` part so we can apply the view-count filter.
- */
+
+
+
+
 async function fetchYouTubeVideos(apiKey, maxResults = 50) {
   const url =
     `${YT_API}/videos` +
@@ -95,11 +48,7 @@ async function fetchYouTubeVideos(apiKey, maxResults = 50) {
   return data.items ?? [];
 }
 
-/**
- * Searches YouTube for videos matching a query string using the Data API v3.
- * Uses an API key (no OAuth required — public data only).
- * Falls back to the mostPopular chart when query is empty.
- */
+
 async function fetchYouTubeSearchVideos(apiKey, query, maxResults = 50) {
   if (!query) return fetchYouTubeVideos(apiKey, maxResults);
 
@@ -118,9 +67,9 @@ async function fetchYouTubeSearchVideos(apiKey, query, maxResults = 50) {
     throw new Error(`YouTube search API error ${res.status}: ${await res.text()}`);
   }
   const data = await res.json();
-  // Search results use a different shape (id.videoId) than the videos list
-  // endpoint (id = string). Normalise to the same structure normaliseYouTubeItem
-  // expects so the pipeline is uniform.
+  
+  
+  
   return (data.items ?? []).map((item) => ({
     id: item.id?.videoId ?? '',
     snippet: item.snippet ?? {},
@@ -128,7 +77,7 @@ async function fetchYouTubeSearchVideos(apiKey, query, maxResults = 50) {
   }));
 }
 
-/** Maps a raw YouTube video object → EmbedItem. */
+
 function normaliseYouTubeItem(item) {
   const id          = item.id ?? '';
   const snippet     = item.snippet ?? {};
@@ -164,13 +113,9 @@ function normaliseYouTubeItem(item) {
   };
 }
 
-// ── Instagram ─────────────────────────────────────────────────────────────────
 
-/**
- * Fetches the user's recent media from the Instagram Basic Display API.
- * Requires a valid user access token.
- * Returns an empty array when no token is configured.
- */
+
+
 async function fetchInstagramPosts(accessToken, maxItems = 20) {
   if (!accessToken) return [];
 
@@ -189,7 +134,7 @@ async function fetchInstagramPosts(accessToken, maxItems = 20) {
   return data.data ?? [];
 }
 
-/** Maps a raw Instagram media object → EmbedItem. */
+
 function normaliseInstagramItem(item) {
   const id          = item.id ?? '';
   const caption     = item.caption ?? '';
@@ -197,10 +142,10 @@ function normaliseInstagramItem(item) {
   const publishedAt = item.timestamp ?? new Date().toISOString();
   const thumbnail   = item.thumbnail_url ?? item.media_url ?? '';
 
-  // Extract hashtags from the caption
+  
   const tags = (caption.match(/#\w+/g) ?? []).map((t) => t.slice(1).toLowerCase());
 
-  // Instagram oEmbed-style blockquote (works without extra API call)
+  
   const embedHtml =
     `<blockquote class="instagram-media" ` +
     `data-instgrm-permalink="${permalink}" ` +
@@ -214,7 +159,7 @@ function normaliseInstagramItem(item) {
     title: caption.slice(0, 120),
     permalink,
     published_at: publishedAt,
-    view_count: 0,        // Basic Display API does not expose view counts
+    view_count: 0,        
     tags,
     embed_html: embedHtml,
     thumbnail_url: thumbnail,
@@ -222,15 +167,9 @@ function normaliseInstagramItem(item) {
   };
 }
 
-// ── Algorithm filter ──────────────────────────────────────────────────────────
 
-/**
- * Applies the configured algorithm filters to a list of embed items.
- *
- * Rules (all must pass):
- *   1. view_count >= MIN_VIEW_COUNT
- *   2. If REQUIRED_TAGS is non-empty, at least one tag must match
- */
+
+
 function applyAlgorithm(items) {
   return items.filter((item) => {
     if (item.view_count < MIN_VIEW_COUNT) return false;
@@ -247,16 +186,9 @@ function applyAlgorithm(items) {
   });
 }
 
-// ── Supabase persist ──────────────────────────────────────────────────────────
 
-/**
- * Upserts embed items into the `embed_feed_items` Supabase table.
- * Uses the REST API directly (no SDK dependency needed in a plain .mjs script).
- * On conflict (provider, external_id) it updates the row — this keeps view
- * counts and titles fresh on each run.
- *
- * Silently skips if NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY are not set.
- */
+
+
 async function persistToSupabase(items, generatedAt) {
   if (!NEXT_PUBLIC_SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     console.warn('⚠️  NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set — skipping DB persist.');
@@ -285,7 +217,7 @@ async function persistToSupabase(items, generatedAt) {
       'Content-Type':  'application/json',
       'apikey':        SUPABASE_SERVICE_ROLE_KEY,
       'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-      // PostgREST upsert: on conflict update all columns
+      
       'Prefer':        'resolution=merge-duplicates,return=minimal',
     },
     body: JSON.stringify(rows),
@@ -299,7 +231,7 @@ async function persistToSupabase(items, generatedAt) {
   return { stored: rows.length, skipped: false };
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+
 
 async function main() {
   console.log('DREAMengin embed-feed updater');
@@ -311,7 +243,7 @@ async function main() {
 
   const raw = [];
 
-  // YouTube
+  
   if (SOURCES.includes('youtube')) {
     if (!YOUTUBEAPI) {
       console.warn('⚠️  YOUTUBEAPI is not set — skipping YouTube source.');
@@ -324,7 +256,7 @@ async function main() {
     }
   }
 
-  // Instagram
+  
   if (SOURCES.includes('instagram')) {
     if (!IG_ACCESS_TOKEN) {
       console.warn('⚠️  INSTAGRAM_ACCESS_TOKEN is not set — skipping Instagram source.');
@@ -341,7 +273,7 @@ async function main() {
     console.warn('⚠️  No items fetched from any source. Writing empty feed.');
   }
 
-  // Apply algorithm filters and cap
+  
   const filtered = applyAlgorithm(raw)
     .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
     .slice(0, MAX_ITEMS);
@@ -350,7 +282,7 @@ async function main() {
 
   const now = new Date().toISOString();
 
-  // Build output object
+  
   const output = {
     generated_at: now,
     algorithm: {
@@ -362,7 +294,7 @@ async function main() {
     items: filtered,
   };
 
-  // 1. Persist to Supabase embed_feed_items table
+  
   try {
     const { stored, skipped } = await persistToSupabase(filtered, now);
     if (!skipped) {
@@ -370,18 +302,18 @@ async function main() {
     }
   } catch (err) {
     console.error(`\n❌ Supabase persist error: ${err.message}`);
-    // Non-fatal: continue to write the JSON fallback
+    
   }
 
-  // 2. Write baked JSON fallback
-  // Ensure output directory exists
+  
+  
   mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
 
-  // Write JSON
+  
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n', 'utf8');
   console.log(`✅ Wrote ${filtered.length} embed items → ${OUTPUT_PATH}`);
 
-  // Print a summary of what was written
+  
   if (filtered.length > 0) {
     console.log('\nEmbed feed preview (first 5 items):');
     filtered.slice(0, 5).forEach((item, i) => {

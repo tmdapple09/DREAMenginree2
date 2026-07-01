@@ -1,21 +1,5 @@
 #!/usr/bin/env node
-/**
- * sync-build-memory.mjs
- *
- * Scans the DREAMengin repo and writes five machine-readable JSON files
- * to /build-memory/:
- *
- *   actions.json    — server actions (files with "use server")
- *   routes.json     — app/api route.ts endpoints with HTTP methods
- *   schema.json     — Supabase table names + columns from types/supabase.ts
- *   events.json     — CustomEvent / dispatchEvent names & payload types
- *   ui-surfaces.json— major page/layout components and their owning files
- *
- * Run:
- *   node scripts/sync-build-memory.mjs
- *
- * CI auto-runs this via .github/workflows/sync-build-memory.yml
- */
+
 
 import fs   from 'node:fs';
 import path from 'node:path';
@@ -26,7 +10,7 @@ const META  = { generated_at: new Date().toISOString(), generator: 'scripts/sync
 
 fs.mkdirSync(OUT, { recursive: true });
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
+
 
 function walk(dir, ext = ['.ts', '.tsx']) {
   const results = [];
@@ -62,7 +46,7 @@ function write(name, data, force = false) {
         return;
       }
     } catch {
-      // Fall through and rewrite invalid JSON files.
+      
     }
   }
 
@@ -111,7 +95,7 @@ function stripGeneratedAt(value) {
   return value;
 }
 
-// ─── 1. actions.json — "use server" files + API route handlers ───────────────
+
 
 function scanActions() {
   const files = walk(ROOT);
@@ -126,11 +110,11 @@ function scanActions() {
 
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
-    // Collect all exported function names
+    
     const fnMatches = [...src.matchAll(/export\s+(?:async\s+)?function\s+(\w+)\s*\(/g)];
     let fns = fnMatches.map((m) => m[1]);
 
-    // Collect named exports via export { ... }
+    
     const namedMatches = [...src.matchAll(/export\s*\{([^}]+)\}/g)];
     for (const m of namedMatches) {
       m[1].split(',').forEach((n) => {
@@ -139,7 +123,7 @@ function scanActions() {
       });
     }
 
-    // Collect const exports: export const GET = ...
+    
     const constMatches = [...src.matchAll(/export\s+const\s+(\w+)\s*=/g)];
     for (const m of constMatches) {
       if (!fns.includes(m[1])) fns.push(m[1]);
@@ -160,7 +144,7 @@ function scanActions() {
   return { ...META, count: actions.length, actions };
 }
 
-// ─── 2. routes.json — app/api route.ts files ─────────────────────────────────
+
 
 function scanRoutes() {
   const apiDir = path.join(ROOT, 'app', 'api');
@@ -176,7 +160,7 @@ function scanRoutes() {
       new RegExp(`export\\s+const\\s+${m}\\s*=`).test(src)
     );
 
-    // Derive URL path from filesystem
+    
     const relPath = rel(f);
     const urlPath = relPath
       .replace(/^app/, '')
@@ -190,7 +174,7 @@ function scanRoutes() {
   return { ...META, count: routes.length, routes };
 }
 
-// ─── 3. schema.json — tables from types/supabase.ts + migrations ─────────────
+
 
 function scanSchema() {
   const supabaseTypes = path.join(ROOT, 'types', 'supabase.ts');
@@ -198,7 +182,7 @@ function scanSchema() {
   const tables = [];
   const tableNames = new Set();
 
-  // ── A. Parse types/supabase.ts (public.Tables block) ──────────────────────
+  
   if (!src) {
     console.warn('  ⚠  types/supabase.ts not found — will use migrations only');
   } else {
@@ -260,7 +244,7 @@ function scanSchema() {
     }
   }
 
-  // ── B. Supplement from migration SQL files ─────────────────────────────────
+  
   const migrationsDir = path.join(ROOT, 'supabase', 'migrations');
   if (fs.existsSync(migrationsDir)) {
     const sqlFiles = fs.readdirSync(migrationsDir)
@@ -269,7 +253,7 @@ function scanSchema() {
 
     for (const sqlFile of sqlFiles) {
       const sqlSrc = readFile(sqlFile);
-      // CREATE TABLE [IF NOT EXISTS] [public.]table_name (
+      
       const createRe = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:public\.)?([a-z][a-z0-9_]*)\s*\(/gi;
       let m;
       while ((m = createRe.exec(sqlSrc)) !== null) {
@@ -277,7 +261,7 @@ function scanSchema() {
         if (tableNames.has(tbl) || ['is', 'if'].includes(tbl)) continue;
         tableNames.add(tbl);
 
-        // Extract column definitions from CREATE TABLE block
+        
         const start  = m.index + m[0].length;
         let depth2   = 1, pos = start;
         let blockEnd = start;
@@ -303,7 +287,7 @@ function scanSchema() {
     }
   }
 
-  // ── C. Supplement with code-only tables (queried in source but not in DB files) ─
+  
   const allFiles = walk(ROOT);
   for (const f of allFiles) {
     const codeSrc = readFile(f);
@@ -358,7 +342,7 @@ function scanEvents() {
       }
     }
 
-    // Also scan exported EVENT_NAME constants
+    
     const re3 = /(?:const|let)\s+EVENT_NAME\s*=\s*['"`]([^'"`]+)['"`]/g;
     while ((m = re3.exec(src)) !== null) {
       const name = m[1];

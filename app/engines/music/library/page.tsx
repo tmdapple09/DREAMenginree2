@@ -6,7 +6,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.EnginesMusicLibrary  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Preset Library – StarMakerEngin', description: 'Browse presets and templates.' };
 

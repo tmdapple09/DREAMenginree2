@@ -33,59 +33,38 @@ import { createScanLineTexture, makeDetailMat, type ScanLineTexture } from './ma
 import type { CoinDef, EnemyDef, HazardDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef } from './types';
 import { createMadmaxiVfx, type VfxKit, type VfxTier } from './vfx';
 
-/**
- * BabylonSideScroller — MADMAXI · Babylon.js 3-D side-scrolling platformer.
- *
- * MADMAXI is the DREAMengin robot hero (inspired by the landing-page Dr. Eams
- * character: gold metallic body, cyan visor, animated arms & legs).
- *
- * Mechanics:
- *  • Collect 9 SILVER coins + 1 GOLD coin (the Dream Star) to clear each level.
- *  • When the 9th silver coin is collected the camera zooms toward the Gold Star.
- *  • Stomp enemies (or boss) to earn combo multipliers.
- *  • Double-jump, coyote-time, dash with i-frames.
- *
- * Level structure:
- *  • The first two levels of every 10-level zone band are authored set-pieces.
- *  • The remaining non-boss levels in that band resume procedural generation.
- *  • Every 10th level is a boss arena (15 unique bosses, 15 themed zones).
- *  • Session-seeded RNG — unique each run, same layout on level retry.
- *
- * Tech:
- *  • Babylon.js @babylonjs/core v8 — glow, PBR, shadows, bloom post-process.
- *  • Shared GameRemote CustomEvent bridge (de-game-input).
- */
 
-// Side-effect import: registers the glTF/GLB loader on Babylon's SceneLoader so
-// the MADMAXI authored hero mesh (`/models/madmaxi.glb`) can be imported at runtime.
 
-const GW = 800; // logical canvas width
-const GH = 480; // logical canvas height
-const GRAV          = 0.048;   // units / frame² (upward phase)
-const FALL_GRAV_MUL = 3.0;    // max gravity multiplier at terminal velocity (fall phase)
-const MAX_FALL      = 0.95;    // terminal velocity (positive = down in BJS Y-up is handled)
-const JUMP_VY       = 0.936;   // +20% jump reach — jet-like upward burst
-const WALK_SPD      = 0.2088;  // +20% horizontal speed — brisk robot run
-// Visual offset to raise the player rig so boots sit on the platform surface
-// (the detailed rig geometry extends further below the hitbox centre than the
-//  32-px hitbox half-height, causing an apparent 2 BU sink without the lift).
-const PLAYER_RIG_Y_OFFSET = 2.0; // Babylon units upward from hitbox centre
-const COYOTE_MS  = 8;       // extra frames to jump after leaving ledge
-const JBUF_MS    = 6;       // frames to buffer a jump before landing
-const DASH_SPD   = 0.357;   // player dash speed (reduced ~15%, still ≈ 3.6× walk)
-const DASH_DUR   = 10;      // dash duration in frames
-const DASH_COOL  = 45;      // frames between dashes
-const PROJ_SPD   = 4.5;     // boss projectile speed (px/frame)
-const PROJ_LIFE  = 120;     // frames before projectile despawns
-const COMBO_WIN  = 1500;    // ms window to chain a combo kill
 
-// World scale: all Babylon geometry is WORLD_SCALE× larger than before.
-// The camera is pulled back by the same factor so the viewport looks identical,
-// but every mesh has 2.5× more geometric space → higher tessellation pays off.
+
+
+const GW = 800; 
+const GH = 480; 
+const GRAV          = 0.048;   
+const FALL_GRAV_MUL = 3.0;    
+const MAX_FALL      = 0.95;    
+const JUMP_VY       = 0.936;   
+const WALK_SPD      = 0.2088;  
+
+
+
+const PLAYER_RIG_Y_OFFSET = 2.0; 
+const COYOTE_MS  = 8;       
+const JBUF_MS    = 6;       
+const DASH_SPD   = 0.357;   
+const DASH_DUR   = 10;      
+const DASH_COOL  = 45;      
+const PROJ_SPD   = 4.5;     
+const PROJ_LIFE  = 120;     
+const COMBO_WIN  = 1500;    
+
+
+
+
 const WORLD_SCALE = 2.5;
 
-// Babylon render-unit scale: 1 BU ≈ 40 / WORLD_SCALE logical px
-const PX_PER_BU = 40 / WORLD_SCALE; // = 16
+
+const PX_PER_BU = 40 / WORLD_SCALE; 
 
 const SESSION_SEED: number =
   typeof window !== 'undefined' ? (Math.floor(Math.random() * 2147483647) || 1) : 1;
@@ -103,7 +82,7 @@ export default function BabylonSideScroller( ){
     try { return parseInt(localStorage.getItem('madmaxi_best') ?? '0', 10); }
     catch { return 0; }
   });
-  // Ref mirrors bestScore so callbacks can read the latest value without stale closures
+  
   const bestScoreRef = useRef((() => {
     try { return parseInt(localStorage.getItem('madmaxi_best') ?? '0', 10); }
     catch { return 0; }
@@ -111,20 +90,20 @@ export default function BabylonSideScroller( ){
   const [progress, setProgress] = useState(0);
   const [isNewBest, setIsNewBest] = useState(false);
 
-  // Coin counter — 9 silver + 1 gold per level
+  
   const [coinCount,    setCoinCount]    = useState(0);
-  const [coinTotal,    setCoinTotal]    = useState(9); // total regular coins in current level
+  const [coinTotal,    setCoinTotal]    = useState(9); 
 
-  // Session seed — module-level so it's set once per page load (not per render).
-  // Every playthrough gets a unique seed; retrying a level uses the same one.
+  
+  
   const sessionSeedRef = useRef(SESSION_SEED);
 
-  // Boss state
+  
   const [bossHp,    setBossHp]    = useState(0);
   const [bossMaxHp, setBossMaxHp] = useState(0);
   const [bossName,  setBossName]  = useState('');
 
-  // Combat feedback
+  
   const [comboCount, setComboCount] = useState(0);
   const [dashReady,  setDashReady]  = useState(true);
   const [noDeathStreak, setNoDeathStreak] = useState(0);
@@ -136,16 +115,16 @@ export default function BabylonSideScroller( ){
     giant: 0,
   });
 
-  // Zone / story
+  
   const [zoneName,   setZoneName]   = useState('');
   const [zoneStory,  setZoneStory]  = useState('');
   const [encounterName, setEncounterName] = useState('');
   const [audioTheme, setAudioTheme] = useState('');
   const [vfxTheme, setVfxTheme] = useState('');
   const [isAuthoredStage, setIsAuthoredStage] = useState(false);
-  const [wasABoss,   setWasABoss]   = useState(false); // was the level we just finished a boss?
+  const [wasABoss,   setWasABoss]   = useState(false); 
 
-  // Submit final score when game truly ends (win = all 150 levels, or dead with 0 lives)
+  
   const submitScore = useSubmitScore('platformer');
   useEffect(() => {
     if (status === 'win') submitScore(score, level - 1);
@@ -157,7 +136,7 @@ export default function BabylonSideScroller( ){
     if (!canvas) return;
     gameRef.current?.destroy();
 
-    // Derive zone/boss/authored metadata for this level
+    
     const zIdx = getZoneIdx(lv);
     const levelDef = getMadmaxiLevelDefinition(lv, sessionSeedRef.current);
     const isBoss = isBossLevel(lv);
@@ -182,7 +161,7 @@ export default function BabylonSideScroller( ){
           setBestScore(s);
           setIsNewBest(true);
           if (typeof window !== 'undefined') {
-            try { localStorage.setItem('madmaxi_best', String(s)); } catch { /* quota/private */ }
+            try { localStorage.setItem('madmaxi_best', String(s)); } catch {  }
           }
         }
       },
@@ -241,7 +220,7 @@ export default function BabylonSideScroller( ){
       if ((e.code === 'Space' || e.code === 'Enter') && status === 'title') {
         startGame(1, 0, 3);
       }
-      // Arrow keys / space — prevent page scroll only when game is running
+      
       if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) {
         e.preventDefault();
       }
@@ -250,7 +229,7 @@ export default function BabylonSideScroller( ){
         vpadRef.current = vp;
         gameRef.current?.setVpad(vp);
       }
-      // Shift = dash
+      
       if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
         const vp = { ...vpadRef.current, dash: true };
         vpadRef.current = vp;
@@ -313,7 +292,7 @@ export default function BabylonSideScroller( ){
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: immersive ? 0 : 8, alignItems: 'center', width: '100%', height: immersive ? '100%' : undefined }}>
-      {/* ── Canvas ── */}
+      
       <div style={{ position: 'relative', width: '100%', maxWidth: immersive ? 'none' : GW, height: immersive ? '100%' : undefined }}>
         <canvas
           ref={canvasRef}
@@ -324,7 +303,7 @@ export default function BabylonSideScroller( ){
           onClick={() => { if (status === 'title') startGame(1, 0, 3); }}
         />
 
-        {/* ── Overlay: title ── */}
+        
         {status === 'title' && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
@@ -332,7 +311,7 @@ export default function BabylonSideScroller( ){
             background: 'linear-gradient(180deg,rgba(4,8,28,0.90),rgba(8,4,22,0.95))',
             borderRadius: 12,
           }}>
-            {/* Robot silhouette decoration */}
+            
             <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 4, filter: 'drop-shadow(0 0 18px #0af) drop-shadow(0 0 6px #c8981a)' }}>🤖</div>
             <div style={{ fontSize: 10, fontWeight: 700, color: '#0af', letterSpacing: '0.22em',
                           textTransform: 'uppercase', marginBottom: 6 }}>
@@ -368,7 +347,7 @@ export default function BabylonSideScroller( ){
           </div>
         )}
 
-        {/* ── Overlay: dead ── */}
+        
         {status === 'dead' && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
@@ -399,7 +378,7 @@ export default function BabylonSideScroller( ){
           </div>
         )}
 
-        {/* ── Overlay: level complete ── */}
+        
         {status === 'complete' && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
@@ -438,7 +417,7 @@ export default function BabylonSideScroller( ){
           </div>
         )}
 
-        {/* ── Overlay: victory ── */}
+        
         {status === 'win' && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
@@ -475,7 +454,7 @@ export default function BabylonSideScroller( ){
           </div>
         )}
 
-        {/* ── HUD ── */}
+        
         {status === 'playing' && (
           <>
             <div style={{ position: 'absolute', top: 10, left: 12, right: 12,
@@ -497,7 +476,7 @@ export default function BabylonSideScroller( ){
               </div>
             </div>
 
-            {/* ── Coin counter HUD (9 silver + 1 gold Dream Star) ── */}
+            
             {bossMaxHp === 0 && (
               <div style={{
                 position: 'absolute', top: 42, left: 12, pointerEvents: 'none',
@@ -515,7 +494,7 @@ export default function BabylonSideScroller( ){
                       transition: 'filter 0.15s',
                     }}
                   >
-                    {/* last coin is gold Dream Star */}
+                    
                     {i === coinTotal - 1 ? '⭐' : '🪙'}
                   </span>
                 ))}
@@ -525,7 +504,7 @@ export default function BabylonSideScroller( ){
               </div>
             )}
 
-            {/* Boss health bar */}
+            
             {bossMaxHp > 0 && (
               <div style={{ position: 'absolute', top: 42, left: 12, right: 12, pointerEvents: 'none' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#fa0', textAlign: 'center',
@@ -545,7 +524,7 @@ export default function BabylonSideScroller( ){
               </div>
             )}
 
-            {/* Combo + Dash indicators */}
+            
             <div style={{
               position: 'absolute', top: bossMaxHp > 0 ? 80 : 42,
               right: 12, pointerEvents: 'none',
@@ -604,7 +583,7 @@ export default function BabylonSideScroller( ){
               )}
             </div>
 
-            {/* Progress bar (hidden during boss fights — no scrolling world) */}
+            
             {bossMaxHp === 0 && (
               <div style={{ position: 'absolute', bottom: 8, left: 12, right: 12,
                             background: 'rgba(0,0,0,0.35)', borderRadius: 4, height: 5,
@@ -634,7 +613,7 @@ interface GameCallbacks {
   onBossHp?:    (current: number) => void;
   onCombo?:     (count: number) => void;
   onDash?:      () => void;
-  /** Reports coin collection: collected regular coins, total regular coins. */
+  
   onCoinCount?: (collected: number, total: number) => void;
   onRuntime?:   (runtime: {
     superSeconds: number;
@@ -678,25 +657,25 @@ class GameCore {
   private vpad: VPad = { left: false, right: false, jump: false, dash: false, shoot: false, sprint: false };
   private godTier = new DreamEngineGodTierSystem();
 
-  // physics state (logical pixels, Y-down)
-  private px   = 60; // player x (left edge)
-  private py   = 350; // player y (top edge)
+  
+  private px   = 60; 
+  private py   = 350; 
   private pvx  = 0;
   private pvy  = 0;
   private onGround   = false;
-  private jumpCount  = 0; // 0 = no jump used, 1 = single, 2 = double
-  private coyoteFr   = 0; // coyote-time frames remaining
-  private jBufFr     = 0; // jump-buffer frames remaining
+  private jumpCount  = 0; 
+  private coyoteFr   = 0; 
+  private jBufFr     = 0; 
   private prevJump   = false;
   private facingR    = true;
-  private invincible = 0; // frames
+  private invincible = 0; 
 
-  private dashFrames = 0;   // frames of active dash remaining
-  private dashCool   = 0;   // cooldown frames remaining
-  private dashDir    = 1;   // direction (+1 or -1)
+  private dashFrames = 0;   
+  private dashCool   = 0;   
+  private dashDir    = 1;   
 
-  private comboCount     = 0;       // consecutive kills in window
-  private comboTimestamp = 0;       // ms timestamp of last kill
+  private comboCount     = 0;       
+  private comboTimestamp = 0;       
 
   private projectiles: {
     x: number; y: number;
@@ -724,32 +703,32 @@ class GameCore {
   private sessionSeed: number;
   private audio = new MadmaxiAudioController();
 
-  // Babylon
+  
   private engine: import('@babylonjs/core').AbstractEngine | null = null;
   private scene:  import('@babylonjs/core').Scene  | null = null;
-  // Cached BJS module reference (set once in initBabylon)
+  
   private bjs: typeof import('@babylonjs/core') | null = null;
 
-  // Babylon mesh refs
+  
   private playerRig: MadmaxiPlayerRig | null = null;
   private platMeshes:  import('@babylonjs/core').Mesh[] = [];
   private coinMeshes:  (import('@babylonjs/core').Mesh | null)[] = [];
   private enemyMeshes: (import('@babylonjs/core').Mesh | null)[] = [];
   private bgPlane:     import('@babylonjs/core').Mesh | null = null;
 
-  // Goal star meshes
+  
   private goalMesh:    import('@babylonjs/core').Mesh | null = null;
   private goalRing:    import('@babylonjs/core').Mesh | null = null;
   private goalIdx:     number = -1;
   private hazardMeshes: (import('@babylonjs/core').Mesh | null)[] = [];
   private powerUpMeshes: (import('@babylonjs/core').Mesh | null)[] = [];
 
-  private totalRegularCoins  = 0;   // number of non-goal coins in this level
-  private collectedRegularCoins = 0; // coins picked up so far
-  // Camera zoom toward goal after 9th coin
-  private coinFlashFrames    = 0;   // countdown for zoom-out animation
-  private coinFlashDir       = 1;   // +1 = goal is to the right, -1 = to the left
-  private camZoomOffset      = 0;   // extra cam height during coin zoom
+  private totalRegularCoins  = 0;   
+  private collectedRegularCoins = 0; 
+  
+  private coinFlashFrames    = 0;   
+  private coinFlashDir       = 1;   
+  private camZoomOffset      = 0;   
   private shootCool          = 0;
   private shieldFrames       = 0;
   private highJumpFrames     = 0;
@@ -757,18 +736,18 @@ class GameCore {
   private giantFrames        = 0;
   private superFrames        = 0;
 
-  // Parallax background stars
+  
   private bgStars: { mesh: import('@babylonjs/core').Mesh; baseX: number; parallax: number }[] = [];
   private skylineBands: { mesh: import('@babylonjs/core').Mesh; baseX: number; parallax: number; pulseOffset: number }[] = [];
-  // Zone-themed building/mountain silhouettes — 3D meshes with per-layer parallax.
-  // Different baseY (fixed) and parallax rates create a strong sense of depth.
+  
+  
   private silhouettes: { mesh: import('@babylonjs/core').Mesh; baseX: number; parallax: number }[] = [];
   private shadowGen: import('@babylonjs/core').ShadowGenerator | null = null;
 
-  // camera ref
+  
   private camMesh: import('@babylonjs/core').FreeCamera | null = null;
 
-  // particles
+  
   private dustPS: import('@babylonjs/core').ParticleSystem | null = null;
   private vfx: VfxKit | null = null;
   private visorScanLine: ScanLineTexture | null = null;
@@ -784,13 +763,13 @@ class GameCore {
   private nextEyeBlinkTick = 180;
   private eyeBlinkFrames = 0;
   private justLanded = false;
-  // Cached normalized speed for per-frame chromatic aberration scaling.
+  
   private speedT = 0;
 
-  // anim
+  
   private animTick = 0;
 
-  // guard: prevent multiple onDie calls before React re-renders
+  
   private dying = false;
 
   constructor(
@@ -811,15 +790,7 @@ class GameCore {
     this.initBabylon(canvas);
   }
 
-  /**
-   * Build a composite "monster" rig for one enemy.
-   *
-   * The returned mesh is the SAME primitive shape & size as the legacy
-   * single-mesh enemy (so AABB collision, scaling pulses, and rotation tweens
-   * in the render loop continue to work without modification). Decoration
-   * meshes — eyes, fangs, horns, wings, spikes, mandibles, thrusters, etc. —
-   * are parented to it and inherit transform writes for free.
-   */
+  
   private buildEnemyRig(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -918,8 +889,8 @@ class GameCore {
       parentMat.clearCoat.roughness  = 0.14;
     }
     parent.material = parentMat;
-    // Brushed-metal micro-variation on the enemy parent body — matches the
-    // 2020 console-platformer look across all enemy archetypes.
+    
+    
     {
       const noiseTex = (parentMat as unknown as { _madmaxiBumpAdded?: boolean })._madmaxiBumpAdded;
       if (!noiseTex) {
@@ -936,14 +907,14 @@ class GameCore {
           noiseStrength: 0.28,
         });
         parentMat.bumpTexture = detail.bumpTexture;
-        // Detail material no longer needed once we steal its bump map.
+        
         detail.dispose();
         (parentMat as unknown as { _madmaxiBumpAdded?: boolean })._madmaxiBumpAdded = true;
       }
     }
 
-    // Boss panel-line decals — thin emissive strips parented to the body that
-    // read as armor seams under bloom + IBL.
+    
+    
     if (isBoss) {
       const accent: [number, number, number] = en.bossEmissive
         ? [en.bossEmissive[0], en.bossEmissive[1], en.bossEmissive[2]]
@@ -978,18 +949,18 @@ class GameCore {
       if (addToGlow) glow.addIncludedOnlyMesh(child);
     };
 
-    // Eye material (shared template) — bright white-yellow LED
+    
     const eyeMat = (rgb: [number, number, number]) =>
       emissiveMat(`eye_${ei}_${rgb.join('_')}`, rgb, 1.4, 0.0, 0.25, 0.0);
 
     if (isBoss) {
-      // ── BOSS RIG ─ horns, glowing eyes, arm cannons, crown spikes ────────
+      
       const bossSize = (en.size ?? 1.8) * 0.85 * W;
       const bossTint: [number, number, number] = en.bossEmissive
         ? [en.bossEmissive[0] * 1.3, en.bossEmissive[1] * 1.3, en.bossEmissive[2] * 1.3]
         : [1.0, 0.25, 0.25];
 
-      // Glowing eyes (two)
+      
       const eyeR = bossSize * 0.10;
       for (const sx of [-1, 1] as const) {
         const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_eye_${sx}`, { diameter: eyeR * 2, segments: 12 }, scene);
@@ -997,7 +968,7 @@ class GameCore {
         attach(eye, eyeMat([1.0, 0.95, 0.45]));
       }
 
-      // Twin horns
+      
       for (const sx of [-1, 1] as const) {
         const horn = BJS.MeshBuilder.CreateCylinder(`enemy_${ei}_horn_${sx}`, {
           diameterTop: 0.0, diameterBottom: bossSize * 0.16, height: bossSize * 0.55, tessellation: 10,
@@ -1007,7 +978,7 @@ class GameCore {
         attach(horn, emissiveMat(`horn_${ei}_${sx}`, bossTint, 0.45, 0.92, 0.12, 0.85), false);
       }
 
-      // Crown spikes (3 across the top)
+      
       for (const ox of [-0.18, 0, 0.18] as const) {
         const spike = BJS.MeshBuilder.CreateCylinder(`enemy_${ei}_crown_${ox}`, {
           diameterTop: 0.0, diameterBottom: bossSize * 0.10, height: bossSize * 0.35, tessellation: 8,
@@ -1016,7 +987,7 @@ class GameCore {
         attach(spike, emissiveMat(`crown_${ei}_${ox}`, bossTint, 0.6, 0.90, 0.10, 0.85));
       }
 
-      // Twin arm cannons
+      
       for (const sx of [-1, 1] as const) {
         const cannon = BJS.MeshBuilder.CreateCylinder(`enemy_${ei}_cannon_${sx}`, {
           diameter: bossSize * 0.18, height: bossSize * 0.55, tessellation: 12,
@@ -1024,7 +995,7 @@ class GameCore {
         cannon.position.set(sx * bossSize * 0.55, -bossSize * 0.10, -bossSize * 0.30);
         cannon.rotation.x = Math.PI / 2;
         attach(cannon, emissiveMat(`cannon_${ei}_${sx}`, bossTint, 0.35, 0.95, 0.08, 0.90), false);
-        // Cannon muzzle glow
+        
         const muzzle = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_muzzle_${sx}`, { diameter: bossSize * 0.16, segments: 12 }, scene);
         muzzle.position.set(sx * bossSize * 0.55, -bossSize * 0.10, -bossSize * 0.58);
         attach(muzzle, eyeMat([1.0, 0.4, 0.3]));
@@ -1035,7 +1006,7 @@ class GameCore {
     const kind = en.kind ?? 'runner';
     switch (kind) {
       case 'runner': {
-        // Glowing yellow eyes + 2 fangs + 2 shoulder spikes
+        
         for (const sx of [-1, 1] as const) {
           const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_eye_${sx}`, { diameter: 0.14 * W, segments: 10 }, scene);
           eye.position.set(sx * 0.18 * W, 0.10 * W, -0.26 * W);
@@ -1059,7 +1030,7 @@ class GameCore {
         break;
       }
       case 'charger': {
-        // Bull horns + visor band + chest plate
+        
         for (const sx of [-1, 1] as const) {
           const horn = BJS.MeshBuilder.CreateCylinder(`enemy_${ei}_bullhorn_${sx}`, {
             diameterTop: 0.0, diameterBottom: 0.10 * W, height: 0.32 * W, tessellation: 8,
@@ -1077,7 +1048,7 @@ class GameCore {
         break;
       }
       case 'hopper': {
-        // Slime body: 2 eyes + antenna + drippy bottom bulge
+        
         for (const sx of [-1, 1] as const) {
           const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_eye_${sx}`, { diameter: 0.16 * W, segments: 12 }, scene);
           eye.position.set(sx * 0.16 * W, 0.10 * W, -0.32 * W);
@@ -1097,7 +1068,7 @@ class GameCore {
         break;
       }
       case 'flyer': {
-        // Saucer: central glowing eye + 2 wings + 2 rear thrusters
+        
         const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_centraleye`, { diameter: 0.22 * W, segments: 14 }, scene);
         eye.position.set(0, -0.05 * W, -0.30 * W);
         attach(eye, eyeMat([0.30, 1.0, 0.95]));
@@ -1115,7 +1086,7 @@ class GameCore {
         break;
       }
       case 'zigzag': {
-        // Torus + 4 emissive prongs + electrified core
+        
         const core = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_core`, { diameter: 0.28 * W, segments: 14 }, scene);
         attach(core, eyeMat([1.0, 0.55, 1.0]));
         const prongAngles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
@@ -1130,8 +1101,8 @@ class GameCore {
         break;
       }
       case 'orbiter': {
-        // 3 satellite micro-spheres orbiting via offset positions (rotation
-        // animates parent → satellites swing around for free)
+        
+        
         const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_eye`, { diameter: 0.14 * W, segments: 10 }, scene);
         eye.position.set(0, 0, -0.28 * W);
         attach(eye, eyeMat([0.55, 0.80, 1.0]));
@@ -1144,7 +1115,7 @@ class GameCore {
         break;
       }
       case 'sniper': {
-        // Turret body + barrel + scope + red eye
+        
         const barrel = BJS.MeshBuilder.CreateCylinder(`enemy_${ei}_barrel`, {
           diameter: 0.16 * W, height: 0.55 * W, tessellation: 12,
         }, scene);
@@ -1160,7 +1131,7 @@ class GameCore {
         break;
       }
       case 'burrower': {
-        // Body + 2 mandibles + 2 small eyes
+        
         for (const sx of [-1, 1] as const) {
           const eye = BJS.MeshBuilder.CreateSphere(`enemy_${ei}_eye_${sx}`, { diameter: 0.10 * W, segments: 10 }, scene);
           eye.position.set(sx * 0.14 * W, 0.10 * W, -0.32 * W);
@@ -1177,7 +1148,7 @@ class GameCore {
         break;
       }
       case 'spiker': {
-        // Glowing emissive spike-tip caps at each polyhedron vertex direction
+        
         const tipDirs: [number, number, number][] = [
           [ 0.30,  0.30,  0.30], [-0.30,  0.30,  0.30], [ 0.30, -0.30,  0.30], [-0.30, -0.30,  0.30],
           [ 0.30,  0.30, -0.30], [-0.30,  0.30, -0.30],
@@ -1193,7 +1164,7 @@ class GameCore {
       }
       case 'shadow':
       default: {
-        // Slit glowing eyes + faint wispy ring
+        
         for (const sx of [-1, 1] as const) {
           const eye = BJS.MeshBuilder.CreateBox(`enemy_${ei}_slit_${sx}`, { width: 0.10 * W, height: 0.03 * W, depth: 0.02 * W }, scene);
           eye.position.set(sx * 0.10 * W, 0.20 * W, -0.24 * W);
@@ -1226,8 +1197,8 @@ class GameCore {
       return mesh;
     };
 
-    // Brushed-metal helmet via the shared detail-mat helper — adds noise-driven
-    // roughness micro-variation + clearCoat for the 2020 console-platformer look.
+    
+    
     const helmetMat = makeDetailMat(BJS, scene, 'player_helmet_mat', {
       baseColor: [0.08, 0.10, 0.14],
       metallic: 0.9,
@@ -1282,7 +1253,7 @@ class GameCore {
     visorMat.clearCoat.intensity = 1.0;
     visorMat.clearCoat.roughness = 0.01;
     visorMat.backFaceCulling = false;
-    // Animated scan-line emissive — sells the visor as a live HUD panel.
+    
     const visorScan = createScanLineTexture(BJS, scene, 'player_visor_scan', [0.20, 0.85, 1.0]);
     visorMat.emissiveTexture = visorScan.texture;
     this.visorScanLine = visorScan;
@@ -1465,8 +1436,8 @@ class GameCore {
     eyeCyanCore.position = new BJS.Vector3(0.10 * WORLD_SCALE, 0.05 * WORLD_SCALE, 0.37 * WORLD_SCALE);
     eyeCyanCore.parent = headNode;
 
-    // Glowing cyan antenna on top of the head — cylinder shaft + sphere tip.
-    // Inherits headNode transform so it bobs/rotates with the head.
+    
+    
     const antennaShaft = addShadowCaster(BJS.MeshBuilder.CreateCylinder('player_antenna_shaft', {
       diameterTop: 0.04 * WORLD_SCALE, diameterBottom: 0.05 * WORLD_SCALE,
       height: 0.32 * WORLD_SCALE, tessellation: 12,
@@ -1592,15 +1563,7 @@ class GameCore {
     };
   }
 
-  /**
-   * Asynchronously imports the authored MADMAXI hero mesh from
-   * `/models/madmaxi.glb` and grafts it onto the procedural rig root, so the
-   * GLB inherits movement, facing, jump/dash visibility, and per-frame scale
-   * pulses without any animation rewrite. The procedural visible meshes are
-   * hidden on success (their TransformNodes are kept alive so the existing
-   * rig animation code keeps running harmlessly). On any failure we leave the
-   * procedural rig fully visible.
-   */
+  
   private async loadMadmaxiGlbAsync(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1611,14 +1574,14 @@ class GameCore {
     try {
       const result = await BJS.SceneLoader.ImportMeshAsync('', '/models/', 'madmaxi.glb', scene);
       if (this.disposed || !this.playerRig) {
-        // Scene was torn down while loading — clean up to avoid leaks.
+        
         for (const m of result.meshes) m.dispose();
         return;
       }
 
-      // Collect importer-created top-level nodes so we can parent + scale them
-      // as a unit. Babylon's GLTF loader injects a "__root__" TransformNode
-      // that already groups everything; reparent it under the rig root.
+      
+      
+      
       const importedRoot = (result.meshes.find((m) => m.name === '__root__')
         ?? result.transformNodes.find((n) => n.name === '__root__')
         ?? null) as import('@babylonjs/core').TransformNode | null;
@@ -1627,8 +1590,8 @@ class GameCore {
         (m): m is import('@babylonjs/core').AbstractMesh => m.name !== '__root__',
       );
 
-      // Compute bounds in pre-parenting world space, then size the GLB so it
-      // matches the procedural rig (~2.4 Babylon units tall at scale=1).
+      
+      
       const TARGET_HEIGHT = 2.4;
       let minY = Number.POSITIVE_INFINITY;
       let maxY = Number.NEGATIVE_INFINITY;
@@ -1641,12 +1604,12 @@ class GameCore {
       const currentHeight = Math.max(maxY - minY, 0.0001);
       const fitScale = TARGET_HEIGHT / currentHeight;
 
-      // Wrap the imported hierarchy in our own group so we don't fight the
-      // GLTF loader's coordinate-frame conventions on the rig root itself.
+      
+      
       const glbGroup = new BJS.TransformNode('madmaxi_glb_group', scene);
       glbGroup.parent = rig.root;
       glbGroup.scaling = new BJS.Vector3(fitScale, fitScale, fitScale);
-      // Drop the model so its feet sit at rig root y=0 (matches procedural rig).
+      
       glbGroup.position = new BJS.Vector3(0, -minY * fitScale, 0);
 
       if (importedRoot) {
@@ -1663,14 +1626,14 @@ class GameCore {
         try {
           shadowGen.addShadowCaster(m, true);
         } catch {
-          // Some imported nodes (e.g. instanced/cloned helpers) may reject
-          // shadow casting; ignore — they still render.
+          
+          
         }
       }
 
-      // Hide the procedural visible meshes now that the authored hero is
-      // showing. We leave TransformNodes (root/headNode/shoulders/hips) alone
-      // so the rig animation code continues to drive root position/facing.
+      
+      
+      
       const proceduralMeshes: import('@babylonjs/core').Mesh[] = [
         rig.torso, rig.coatShell, rig.coatFront,
         rig.headShell, rig.visorShell, rig.screen,
@@ -1681,12 +1644,12 @@ class GameCore {
       for (const m of proceduralMeshes) {
         m.isVisible = false;
       }
-      // Recursively hide any other procedural children parented to root
-      // (limbs, accessories) so only the GLB renders.
+      
+      
       const stack: import('@babylonjs/core').Node[] = [rig.root];
       while (stack.length) {
         const n = stack.pop()!;
-        // Skip the GLB group and its descendants.
+        
         if (n === glbGroup) continue;
         const asMesh = n as unknown as import('@babylonjs/core').AbstractMesh;
         if (typeof (asMesh as { isVisible?: boolean }).isVisible === 'boolean') {
@@ -1697,16 +1660,12 @@ class GameCore {
         }
       }
     } catch (err: unknown) {
-      // Asset missing or malformed — keep the procedural rig as the fallback.
+      
       console.warn('[MADMAXI] GLB hero load failed; using procedural rig.', err);
     }
   }
 
-  /**
-   * Build a CSP-safe fallback environment texture by drawing a vertical
-   * gradient into a DynamicTexture and binding it as an EquirectangularReflection
-   * source. Used only when the prefiltered Studio.env CDN fails to load.
-   */
+  
   private buildFallbackEnvironmentTexture(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1730,7 +1689,7 @@ class GameCore {
     return tex;
   }
 
-  /** Inverted sphere skydome with a vertical zone-tinted gradient. */
+  
   private buildSkydome(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1766,11 +1725,7 @@ class GameCore {
     return dome;
   }
 
-  /**
-   * Distant mountain silhouettes via low-poly extruded ribbons. Two layers
-   * with different parallax for atmospheric perspective. Tinted toward the
-   * sky so they read as silhouettes haloed by the dome gradient.
-   */
+  
   private buildMountainBands(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1819,10 +1774,7 @@ class GameCore {
     }
   }
 
-  /**
-   * Mid-ground neon billboards/towers. Boxes with animated emissive UV scrolling
-   * — they read as distant city signage / arcade-marquee lighting.
-   */
+  
   private buildNeonBillboards(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1835,8 +1787,8 @@ class GameCore {
     let s = seed >>> 0;
     const rand = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
 
-    // One shared emissive scrolling texture re-used across all billboards
-    // (Babylon allows the same DynamicTexture in multiple materials).
+    
+    
     const TX = 32, TY = 96;
     const tex = new BJS.DynamicTexture('madmaxi_neon_tex', { width: TX, height: TY }, scene, false);
     const ctx = tex.getContext() as CanvasRenderingContext2D;
@@ -1881,7 +1833,7 @@ class GameCore {
     }
   }
 
-  /** Foreground floating debris — small instanced motes drifting across the camera. */
+  
   private buildDebrisMotes(
     BJS: typeof import('@babylonjs/core'),
     scene: import('@babylonjs/core').Scene,
@@ -1893,7 +1845,7 @@ class GameCore {
     let s = seed >>> 0;
     const rand = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
 
-    // Single source mesh + N instances → cheap on low-end GPUs.
+    
     const src = BJS.MeshBuilder.CreateBox('madmaxi_debris_src',
       { width: 0.10 * WORLD_SCALE, height: 0.10 * WORLD_SCALE, depth: 0.10 * WORLD_SCALE }, scene);
     const mat = new BJS.PBRMaterial('madmaxi_debris_mat', scene);
@@ -1902,7 +1854,7 @@ class GameCore {
     mat.metallic = 0.4;
     mat.roughness = 0.6;
     src.material = mat;
-    src.isVisible = false; // master not rendered — only instances
+    src.isVisible = false; 
     glow.addIncludedOnlyMesh(src);
 
     for (let i = 0; i < COUNT; i++) {
@@ -1919,11 +1871,7 @@ class GameCore {
     }
   }
 
-  /**
-   * Apply per-tier guardrails: disable expensive post FX on low tier so the
-   * game stays smooth on lower-end mobile devices. Called from the same
-   * 3-second poll that drives `applyGodTierToBabylon`.
-   */
+  
   private applyQualityTier(gt: { renderPlan: { allowSSAO: boolean; allowChromaticAberration: boolean; allowFilmGrain: boolean; allowBloom: boolean }; algorithmLevel: number }) {
     const allowSSAO = gt.renderPlan.allowSSAO && gt.algorithmLevel >= 4;
     if (this.ssaoPipeline && this.scene) {
@@ -1937,7 +1885,7 @@ class GameCore {
             'madmaxi-ssao', this.camMesh!,
           );
         }
-      } catch { /* tolerate already-detached state */ }
+      } catch {  }
     }
     if (this.pipeline) {
       this.pipeline.chromaticAberrationEnabled = gt.renderPlan.allowChromaticAberration && gt.algorithmLevel >= 3;
@@ -1946,7 +1894,7 @@ class GameCore {
     }
     const tier: VfxTier = gt.algorithmLevel >= 4 ? 'high' : gt.algorithmLevel >= 2 ? 'mid' : 'low';
     this.vfx?.setTier(tier);
-    // Hide the heaviest parallax decoration tier on low devices.
+    
     if (gt.algorithmLevel <= 1) {
       for (const d of this.debrisMotes) d.mesh.setEnabled(false);
       for (const n of this.neonBillboards) n.mesh.setEnabled(false);
@@ -1979,12 +1927,12 @@ class GameCore {
       fallVy: 0,
     }));
     this.powerUps = (def.powerUps ?? []).map((p) => ({ ...p, collected: false }));
-    // Count regular (non-goal) coins for HUD
+    
     this.totalRegularCoins      = def.coins.filter((c) => !c.isGoal).length;
     this.collectedRegularCoins  = 0;
     this.coinFlashFrames        = 0;
     this.camZoomOffset          = 0;
-    // Track max boss HP for health-bar percentage calculations
+    
     const bossEnemy = def.enemies.find((e) => e.boss);
     this.bossHitsMax = bossEnemy?.hitsLeft ?? 0;
     this.px    = 60;
@@ -2000,13 +1948,13 @@ class GameCore {
     this.invincible = 0;
     this.dying  = false;
     this.goalIdx = -1;
-    // Reset combat state
+    
     this.dashFrames = 0;
     this.dashCool   = 0;
     this.comboCount = 0;
     this.comboTimestamp = 0;
     this.shootCool = 0;
-    // Dispose any live projectiles
+    
     for (const p of this.projectiles) p.mesh?.dispose();
     this.projectiles = [];
     this.cbs.onRuntime?.({
@@ -2026,9 +1974,9 @@ class GameCore {
         preserveDrawingBuffer: true,
         stencil: true,
         antialias: true,
-        // MADMAXI now launches through the shared WebGPU-first Babylon factory.
-        // The factory performs async adapter/device negotiation and falls back to
-        // WebGL2 with a reported reason if WebGPU initialization degrades.
+        
+        
+        
         preferWebGPU: true,
       }),
       import('@babylonjs/core'),
@@ -2041,25 +1989,25 @@ class GameCore {
     this.scene   = scene;
     this.bjs     = BJS;
 
-    // Sky gradient — zone-themed
+    
     const zone = ZONES[getZoneIdx(this.level)];
     scene.clearColor = new BJS.Color4(zone.sky[0], zone.sky[1], zone.sky[2], 1);
 
-    // Pulled back WORLD_SCALE× so the on-screen appearance is unchanged despite
-    // the world being 2.5× physically larger in Babylon units.
+    
+    
     const cam = new BJS.FreeCamera('cam', new BJS.Vector3(0, 5.25 * WORLD_SCALE, -28 * WORLD_SCALE), scene);
     cam.setTarget(new BJS.Vector3(0, 4.8 * WORLD_SCALE, 0));
-    cam.fov = 0.85; // Mario 64-like wider FOV for more visible 3D depth
+    cam.fov = 0.85; 
     this.camMesh = cam;
 
-    // Hemispherical fill — matches landing hero hemi.intensity
+    
     const ambient = new BJS.HemisphericLight('amb', new BJS.Vector3(0, 1, 0), scene);
     ambient.intensity  = 1.08;
     ambient.diffuse    = new BJS.Color3(0.74, 0.92, 1.0);
     ambient.specular   = new BJS.Color3(0.12, 0.14, 0.18);
     ambient.groundColor= new BJS.Color3(0.04, 0.05, 0.09);
 
-    // Key light — matches landing hero key.intensity 2.7
+    
     const sun = new BJS.DirectionalLight('sun', new BJS.Vector3(-0.3, -0.8, 0.5), scene);
     sun.position  = new BJS.Vector3(3 * WORLD_SCALE, 6 * WORLD_SCALE, -4 * WORLD_SCALE);
     sun.intensity = 2.7;
@@ -2068,14 +2016,14 @@ class GameCore {
     sun.shadowMinZ = 0.5;
     sun.shadowMaxZ = 80 * WORLD_SCALE;
 
-    // Fill light — matches landing hero fill.intensity 1.45
+    
     const fillLight = new BJS.DirectionalLight('fill', new BJS.Vector3(0.6, -0.25, -0.5), scene);
     fillLight.position  = new BJS.Vector3(-4 * WORLD_SCALE, 3 * WORLD_SCALE, 2 * WORLD_SCALE);
     fillLight.intensity = 1.45;
     fillLight.diffuse   = new BJS.Color3(0.44, 0.80, 1.0);
     fillLight.specular  = new BJS.Color3(0.22, 0.40, 0.70);
 
-    // Rim/back light — matches landing hero rim.intensity 1.05
+    
     const rimLight = new BJS.DirectionalLight('rim', new BJS.Vector3(-0.5, -0.3, -0.8), scene);
     rimLight.position  = new BJS.Vector3(0, 3 * WORLD_SCALE, 5 * WORLD_SCALE);
     rimLight.intensity = 1.05;
@@ -2092,10 +2040,10 @@ class GameCore {
     shadowGen.transparencyShadow = true;
     this.shadowGen = shadowGen;
 
-    // Studio.env is the same prefiltered HDR used by DrEamsBabylonHero; this is
-    // the single largest quality delta between the landing page and the game.
-    // If the CDN is blocked (CSP / offline), fall back to a synthesized
-    // equirectangular gradient so PBR materials still receive IBL reflections.
+    
+    
+    
+    
     const envTex = BJS.CubeTexture.CreateFromPrefilteredData(
       'https://assets.babylonjs.com/environments/Studio.env',
       scene,
@@ -2103,11 +2051,11 @@ class GameCore {
     scene.environmentTexture = envTex;
     scene.environmentIntensity = 1.55;
     const fallbackEnv = this.buildFallbackEnvironmentTexture(BJS, scene, zone);
-    // Babylon raises an onLoadObservable error when the prefiltered data fails.
+    
     if (envTex.onLoadObservable) {
-      envTex.onLoadObservable.addOnce(() => { /* loaded OK */ });
+      envTex.onLoadObservable.addOnce(() => {  });
     }
-    // Use a CSP-safe replacement after a short wait if the original never resolves.
+    
     setTimeout(() => {
       if (this.disposed || !this.scene) return;
       if (!envTex.isReady()) {
@@ -2118,8 +2066,8 @@ class GameCore {
       }
     }, 4500);
 
-    // Exponential-squared falloff gives a soft, painterly haze that flatters
-    // the skyline bands and adds depth cueing without a custom shader.
+    
+    
     scene.fogMode = BJS.Scene.FOGMODE_EXP2;
     scene.fogColor = new BJS.Color3(zone.sky[0] * 0.7, zone.sky[1] * 0.7, zone.sky[2] * 0.85);
     this.fogBaseDensity = 0.012;
@@ -2134,36 +2082,36 @@ class GameCore {
     pipeline.fxaaEnabled = true;
     pipeline.imageProcessingEnabled = true;
 
-    // ACES filmic tone mapping — identical to landing hero
+    
     pipeline.imageProcessing.toneMappingEnabled = true;
-    pipeline.imageProcessing.toneMappingType = 1; // ACES
+    pipeline.imageProcessing.toneMappingType = 1; 
     pipeline.imageProcessing.contrast = 1.18;
-    // Per-zone exposure: brighten cooler zones, dim hot/desert zones for filmic balance.
+    
     const zoneSkyLuma = zone.sky[0] * 0.299 + zone.sky[1] * 0.587 + zone.sky[2] * 0.114;
     pipeline.imageProcessing.exposure = 1.12 + (0.5 - zoneSkyLuma) * 0.18;
 
-    // Vignette — gentle, cinematic
+    
     pipeline.imageProcessing.vignetteEnabled = true;
     pipeline.imageProcessing.vignetteWeight = 2.8;
     pipeline.imageProcessing.vignetteCameraFov = 0.5;
 
-    // Bloom — stronger than before to show metallic micro-highlights
+    
     pipeline.bloomEnabled = true;
     pipeline.bloomThreshold = 0.45;
     pipeline.bloomWeight = 0.55;
     pipeline.bloomKernel = 96;
     pipeline.bloomScale = 0.6;
 
-    // Sharpen — recover crisp edges
+    
     pipeline.sharpenEnabled = true;
     pipeline.sharpen.edgeAmount = 0.25;
     pipeline.sharpen.colorAmount = 1.0;
 
-    // Chromatic aberration — subtle
+    
     pipeline.chromaticAberrationEnabled = true;
     pipeline.chromaticAberration.aberrationAmount = 6;
 
-    // Film grain — very light
+    
     pipeline.grainEnabled = true;
     pipeline.grain.intensity = 3;
     pipeline.grain.animated = true;
@@ -2177,9 +2125,9 @@ class GameCore {
       ssao.expensiveBlur = true;
       scene.postProcessRenderPipelineManager.attachCamerasToRenderPipeline('madmaxi-ssao', cam);
       this.ssaoPipeline = ssao;
-    } catch { /* SSAO graceful fallback */ }
+    } catch {  }
 
-    // Deep background wash — wide PBR emissive plane behind everything
+    
     const bg = BJS.MeshBuilder.CreatePlane('bg', { width: 160 * WORLD_SCALE, height: 60 * WORLD_SCALE }, scene);
     bg.position = new BJS.Vector3(0, 8 * WORLD_SCALE, 16 * WORLD_SCALE);
     const bgMat = new BJS.PBRMaterial('bgMat', scene);
@@ -2191,7 +2139,7 @@ class GameCore {
     bg.material = bgMat;
     this.bgPlane = bg;
 
-    // Aurora/nebula bands — 5 layers with varying parallax, alpha, and accent tint
+    
     const skylineLayers: [number, number, number, number, boolean][] = [
       [0.04, 14, 0.28, 0.18, false],
       [0.06, 12, 0.22, 0.22, true],
@@ -2216,20 +2164,20 @@ class GameCore {
       this.skylineBands.push({ mesh: band, baseX: 0, parallax, pulseOffset: idx * 1.8 });
     });
 
-    // Uses a DynamicTexture rather than a custom shader so it remains
-    // CSP/asset-free and identical across every Babylon backend.
+    
+    
     this.skyDome = this.buildSkydome(BJS, scene, zone);
 
-    // Distant mountain silhouettes — low-poly extruded ribbons. Behind the
-    // bands, in front of the dome. Tinted toward the sky so they read as
-    // "atmospheric perspective" silhouettes rather than solid geometry.
+    
+    
+    
     this.buildMountainBands(BJS, scene, zone);
-    // Mid-ground neon billboards/towers — boxes with animated emissive UVs.
+    
     this.buildNeonBillboards(BJS, scene, glow, zone);
-    // Foreground floating debris — tiny instanced motes drifting horizontally.
+    
     this.buildDebrisMotes(BJS, scene, glow, zone);
 
-    // Parallax star layers — higher brightness and more stars; positions scale with world
+    
     const rng = seededRng(this.level * STAR_SEED_PRIME + STAR_SEED_OFFSET);
     const starLayers: [number, number, number, number][] = [
       [0.04, 15, 32, 0.07 * WORLD_SCALE],
@@ -2303,8 +2251,8 @@ class GameCore {
       shadowGen.addShadowCaster(mesh, false);
       this.platMeshes.push(mesh);
 
-      // Thin glowing strip along the top face — adds architectural definition
-      // and makes platforms read like floating tech panels instead of slabs.
+      
+      
       if (p.type !== 'goal' && p.y !== 400) {
         const trim = BJS.MeshBuilder.CreateBox(`plat_trim_${p.x}`, {
           width: bw * 0.96, height: 0.06 * WORLD_SCALE, depth: 1.82 * WORLD_SCALE,
@@ -2343,25 +2291,25 @@ class GameCore {
       const c = this.coins[i];
       if (c.isGoal) {
         this.goalIdx = i;
-        // Central star body — scaled up for detail
+        
         const star = BJS.MeshBuilder.CreateSphere(`goal_body`, { diameter: 0.88 * WORLD_SCALE, segments: 24 }, scene);
         star.material = goalMat;
         shadowGen.addShadowCaster(star, false);
         glow.addIncludedOnlyMesh(star);
         this.goalMesh = star;
-        // Orbiting torus ring
+        
         const ring = BJS.MeshBuilder.CreateTorus(`goal_ring`,
           { diameter: 1.5 * WORLD_SCALE, thickness: 0.10 * WORLD_SCALE, tessellation: 40 }, scene);
         ring.material = goalMat;
         shadowGen.addShadowCaster(ring, false);
         glow.addIncludedOnlyMesh(ring);
         this.goalRing = ring;
-        this.coinMeshes.push(null); // keep index aligned with this.coins[] for collision detection
+        this.coinMeshes.push(null); 
       } else {
         const mesh = BJS.MeshBuilder.CreateSphere(`coin_${c.x}_${c.y}`,
           { diameter: 0.42 * WORLD_SCALE, segments: 20 }, scene);
         const mat  = new BJS.PBRMaterial(`cmat_${c.x}`, scene);
-        // SILVER coins — polished chrome with clearCoat like landing hero badge
+        
         mat.albedoColor  = new BJS.Color3(0.85, 0.87, 0.92);
         mat.metallic     = 1.0;
         mat.roughness    = 0.06;
@@ -2439,30 +2387,30 @@ class GameCore {
       this.powerUpMeshes.push(mesh);
     }
 
-    // Composite "monster" rigs: the original primitive (sized to match the
-    // hitbox) is the PARENT mesh. Decoration meshes (eyes, fangs, horns, wings,
-    // spikes, mandibles, thrusters, …) are parented to it so they inherit
-    // position/scaling/rotation writes from the render loop with zero changes
-    // to physics, AI, or collision math.
+    
+    
+    
+    
+    
     for (let ei = 0; ei < this.enemies.length; ei++) {
       const en = this.enemies[ei];
       const isBoss = !!en.boss;
       const parent = this.buildEnemyRig(BJS, scene, glow, ei, en);
-      shadowGen.addShadowCaster(parent, true); // includeChildren so decoration casts shadows too
+      shadowGen.addShadowCaster(parent, true); 
       glow.addIncludedOnlyMesh(parent);
       this.enemyMeshes.push(parent);
-      void isBoss; // (kept for future per-boss tweaks; visual handled inside builder)
+      void isBoss; 
     }
 
     this.buildLandingGradePlayerRig(BJS, scene, shadowGen, glow);
-    // Fire-and-forget upgrade: try to import the authored MADMAXI GLB and
-    // parent it under the procedural rig root. Falls back silently to the
-    // procedural rig on any failure (404, parse error, etc.) so gameplay is
-    // never blocked on a network asset.
+    
+    
+    
+    
     void this.loadMadmaxiGlbAsync(BJS, scene, shadowGen);
 
     const dust = new BJS.ParticleSystem('dust', 60, scene);
-    // Use a 1x1 white data-URI texture for cross-origin-safe particles
+    
     dust.particleTexture  = new BJS.Texture(
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg==',
       scene,
@@ -2491,7 +2439,7 @@ class GameCore {
       if (this.disposed) return;
       this.tick();
       scene.render();
-      // God Tier hardware scaling — check every 3000ms
+      
       const now = performance.now();
       if (now - lastGtMs > 3000) {
         lastGtMs = now;
@@ -2620,7 +2568,7 @@ class GameCore {
     if (this.shootCool > 0) this.shootCool--;
     if (this.animTick % 15 === 0) this.emitRuntime();
 
-    // Jump buffer — remember a fresh jump press for JBUF_MS frames
+    
     const freshJump = isJump && !this.prevJump;
     if (freshJump) this.jBufFr = JBUF_MS;
     if (this.jBufFr > 0) this.jBufFr--;
@@ -2633,14 +2581,14 @@ class GameCore {
       this.dashDir    = this.facingR ? 1 : -1;
       this.dashFrames = DASH_DUR;
       this.dashCool   = DASH_COOL;
-      this.invincible = Math.max(this.invincible, DASH_DUR + 2); // i-frames during dash
+      this.invincible = Math.max(this.invincible, DASH_DUR + 2); 
       this.cbs.onDash?.();
     }
 
     if (this.dashFrames > 0) {
       this.pvx = this.dashDir * DASH_SPD * PX_PER_BU;
       this.dashFrames--;
-      // Emissive dash trail at the player's centre — drops off the moment dashFrames hits 0.
+      
       const dashColor: [number, number, number] = this.superFrames > 0
         ? [1.0, 0.85, 0.18]
         : [0.0, 0.85, 1.0];
@@ -2656,27 +2604,27 @@ class GameCore {
     if (isRight) this.facingR = true;
     if (isLeft)  this.facingR = false;
 
-    // Gravity — jet upward, fast fall toward terminal velocity
-    // On the way UP (pvy < 0) or in super-hover: light gravity.
-    // On the way DOWN (pvy > 0): gravity scales up progressively toward FALL_GRAV_MUL
-    // the closer pvy gets to MAX_FALL, giving a satisfying "weight" to the descent.
+    
+    
+    
+    
     let gravityMul = 1.0;
     if (this.superFrames > 0 && isJump && this.pvy > 0) {
-      gravityMul = 0.18; // super hover — nearly float
+      gravityMul = 0.18; 
     } else if (this.pvy > 0) {
-      // Falling phase: ramp gravity from 1× at lift-off to FALL_GRAV_MUL near terminal
+      
       const fallProgress = Math.min(1, this.pvy / (MAX_FALL * PX_PER_BU));
       gravityMul = 1.0 + fallProgress * (FALL_GRAV_MUL - 1.0);
     }
     this.pvy += GRAV * gravityMul * PX_PER_BU;
     if (this.pvy > MAX_FALL * PX_PER_BU) this.pvy = MAX_FALL * PX_PER_BU;
 
-    // Move
+    
     this.px += this.pvx;
-    const prevPy = this.py; // capture py BEFORE this frame's vertical motion
+    const prevPy = this.py; 
     this.py += this.pvy;
 
-    // World bounds (clamp left, don't scroll past right until goal)
+    
     if (this.px < 0) { this.px = 0; this.pvx = 0; }
 
     const wasOnGround = this.onGround;
@@ -2688,7 +2636,7 @@ class GameCore {
 
     for (let i = 0; i < this.platforms.length; i++) {
       const p = this.platforms[i];
-      // Update moving platform
+      
       if (p.type === 'moving' && p.moveRange && p.moveSpd) {
         p.curX += p.moveSpd * p.moveDir;
         if (p.curX > p.x + p.moveRange || p.curX < p.x - p.moveRange)
@@ -2697,17 +2645,17 @@ class GameCore {
         p.curX = p.x;
       }
 
-      // Swept-Y pre-check (anti-tunneling): when the player's per-frame fall
-      // distance exceeds the platform thickness (e.g. 38px/frame vs h=20),
-      // the AABB picks `overlapB` (ceiling) as the smallest axis and pushes
-      // the player UP through the platform instead of landing them on top.
-      // Detect "player bottom crossed platform top this frame" and snap to
-      // the surface before the AABB resolution runs.
+      
+      
+      
+      
+      
+      
       if (
         this.pvy > 0 &&
         this.px + PW > p.curX && this.px < p.curX + p.w &&
-        prevPy + PH <= p.y &&        // was at/above the platform top last frame
-        this.py + PH > p.y           // is below the top this frame
+        prevPy + PH <= p.y &&        
+        this.py + PH > p.y           
       ) {
         this.py = p.y - PH;
         this.pvy = 0;
@@ -2717,7 +2665,7 @@ class GameCore {
         continue;
       }
 
-      // AABB collision (player bottom vs platform top)
+      
       const px2 = this.px + PW, py2 = this.py + PH;
       const tx2 = p.curX + p.w,  ty2 = p.y + p.h;
       const tx  = p.curX,         ty  = p.y;
@@ -2730,15 +2678,15 @@ class GameCore {
         const minOv    = Math.min(overlapT, overlapB, overlapL, overlapR);
 
         if (minOv === overlapT && this.pvy >= 0) {
-          // Land on top
+          
           this.py = ty - PH;
           this.pvy = 0;
           this.onGround = true;
           this.jumpCount = 0;
-          // Moving platform drag
+          
           if (p.type === 'moving') this.px += (p.moveSpd ?? 0) * p.moveDir;
         } else if (minOv === overlapB && this.pvy < 0) {
-          // Hit ceiling
+          
           this.py = ty2;
           this.pvy = 0;
         } else if (minOv === overlapL) {
@@ -2751,14 +2699,14 @@ class GameCore {
       }
     }
 
-    // Coyote time
+    
     if (wasOnGround && !this.onGround) {
       this.coyoteFr = COYOTE_MS;
     }
     if (this.onGround) this.coyoteFr = 0;
     if (this.coyoteFr > 0) this.coyoteFr--;
 
-    // Landing ring VFX — fired once on the rising edge of `onGround` after a fall.
+    
     this.justLanded = !wasOnGround && this.onGround;
     if (this.justLanded && this.vfx) {
       const bx = (this.px + 14 - this.camX - GW / 2) / PX_PER_BU;
@@ -2766,7 +2714,7 @@ class GameCore {
       this.vfx.landingRing(new (this.bjs!.Vector3)(bx, by + 0.05, 0.1 * WORLD_SCALE));
     }
 
-    // Jump: ground jump, coyote jump, or double-jump
+    
     const canJump = this.onGround || this.coyoteFr > 0;
     if (this.jBufFr > 0) {
       if (canJump && this.jumpCount === 0) {
@@ -2778,7 +2726,7 @@ class GameCore {
         this.emitDust();
         this.audio.playCue('jump');
       } else if (!canJump && this.jumpCount === 1) {
-        // Double-jump
+        
         const jumpPower = this.highJumpFrames > 0 || this.superFrames > 0 ? JUMP_VY * 1.10 : JUMP_VY * 0.85;
         this.pvy       = -jumpPower * PX_PER_BU;
         this.jumpCount = 2;
@@ -2788,7 +2736,7 @@ class GameCore {
       }
     }
 
-    // Fell off screen — die
+    
     if (this.py > GH + 60) {
       this.dying = true;
       this.lives--;
@@ -2797,7 +2745,7 @@ class GameCore {
       return;
     }
 
-    // Emit progress (every 15 frames to avoid excessive re-renders)
+    
     if (this.animTick % 15 === 0) {
       this.cbs.onProgress?.(Math.min(100, Math.round((this.px / this.worldW) * 100)));
     }
@@ -2810,7 +2758,7 @@ class GameCore {
       if (Math.abs(PCX - cx) < CW + 8 && Math.abs(PCY - cy) < CW + 8) {
         c.collected = true;
         if (c.isGoal) {
-          // Gold Dream Star collected → level complete
+          
           this.goalMesh?.setEnabled(false);
           this.goalMesh = null;
           this.goalRing?.setEnabled(false);
@@ -2827,7 +2775,7 @@ class GameCore {
           this.cbs.onComplete(this.level + 1);
           return;
         } else {
-          // Silver coin collected
+          
           if (this.coinMeshes[i]) {
             this.coinMeshes[i]!.setEnabled(false);
             this.coinMeshes[i] = null;
@@ -2838,18 +2786,18 @@ class GameCore {
           this.audio.playCue('coin');
           this.cbs.onCoinCount?.(this.collectedRegularCoins, this.totalRegularCoins);
 
-          // Star-burst VFX at the coin's old screen position.
+          
           if (this.vfx && this.bjs) {
             const bx = (c.x + 9 - this.camX - GW / 2) / PX_PER_BU;
             const by = -(c.y + 9 - GH / 2) / PX_PER_BU;
             this.vfx.coinStarburst(new this.bjs.Vector3(bx, by, 0.2 * WORLD_SCALE), [0.92, 0.95, 1.0]);
           }
 
-          // All 9 silver coins collected → camera zoom toward the Gold Dream Star
+          
           if (this.collectedRegularCoins >= this.totalRegularCoins && this.goalIdx >= 0) {
             const goal = this.coins[this.goalIdx];
             this.coinFlashDir    = goal.x > this.px ? 1 : -1;
-            this.coinFlashFrames = 70; // 70-frame zoom animation
+            this.coinFlashFrames = 70; 
           }
         }
       }
@@ -2894,10 +2842,10 @@ class GameCore {
       const en = this.enemies[i];
       if (!en.alive) continue;
 
-      // Boss enrages at ≤50% HP — speed multiplied by 1.5
+      
       const enrageMultiplier = (en.boss && this.bossHitsMax > 0 && en.hitsLeft / this.bossHitsMax <= BOSS_ENRAGE_THRESHOLD) ? BOSS_ENRAGE_MULTIPLIER : 1.0;
 
-      // Move enemy
+      
       if (en.boss) {
         en.curX += en.vx * enrageMultiplier;
       } else {
@@ -2958,11 +2906,11 @@ class GameCore {
             break;
         }
       }
-      // Reverse at world edges
+      
       const groundPlat = this.platforms.find((p) => p.y === 400);
       const gLeft  = groundPlat ? groundPlat.x : 0;
       const gRight = gLeft + (groundPlat ? groundPlat.w : this.worldW);
-      // Boss uses scaled hitbox
+      
       const eSize = en.boss ? Math.round((en.size ?? 1.8) * 32) : 32;
       if (en.curX < gLeft || en.curX > gRight - eSize) en.vx *= -1;
 
@@ -2973,10 +2921,10 @@ class GameCore {
         const stompThreshold = en.boss ? (en.size ?? 1.8) * 30 : (this.giantFrames > 0 || this.superFrames > 0 ? 40 : 30);
         const stompOv = py2e - en.curY;
         if (stompOv < stompThreshold && this.pvy > 0) {
-          // Stomp hit!
+          
           en.hitsLeft--;
           this.pvy = -JUMP_VY * 0.7 * PX_PER_BU;
-          // Spark burst at the impact point — orange for boss, cyan for grunts.
+          
           if (this.vfx && this.bjs) {
             const sparkColor: [number, number, number] = en.boss ? [1.0, 0.5, 0.1] : [0.4, 0.85, 1.0];
             const bx = (en.curX + (en.boss ? (en.size ?? 1.8) * 16 : 16) - this.camX - GW / 2) / PX_PER_BU;
@@ -2984,10 +2932,10 @@ class GameCore {
             this.vfx.spark(new this.bjs.Vector3(bx, by, 0), sparkColor);
           }
           if (en.boss) {
-            // Report boss HP update before checking for death
+            
             this.cbs.onBossHp?.(en.hitsLeft);
             if (en.hitsLeft <= 0) {
-              // Boss defeated — boss level victory
+              
               en.alive = false;
               if (this.enemyMeshes[i]) {
                 this.enemyMeshes[i]!.setEnabled(false);
@@ -3000,7 +2948,7 @@ class GameCore {
               this.cbs.onComplete(this.level + 1);
               return;
             }
-            // Boss still alive — bounce player higher for drama
+            
             this.audio.playCue('boss-hit');
             this.pvy = -JUMP_VY * 0.9 * PX_PER_BU;
           } else {
@@ -3009,7 +2957,7 @@ class GameCore {
               this.enemyMeshes[i]!.setEnabled(false);
               this.enemyMeshes[i] = null;
             }
-            // Combo kill scoring
+            
             const now = Date.now();
             if (now - this.comboTimestamp < COMBO_WIN) {
               this.comboCount++;
@@ -3023,14 +2971,14 @@ class GameCore {
             this.cbs.onCombo?.(this.comboCount);
           }
         } else if (this.invincible === 0) {
-          // Hit by enemy
+          
           this.absorbOrDie();
           if (this.dying) return;
         }
       }
 
       if ((en.boss && en.alive && this.animTick % 80 === 0) || (en.kind === 'sniper' && en.alive && this.animTick % 130 === 0)) {
-        // Boss or sniper fires a projectile toward the player
+        
         const PW2 = 28;
         const bCX = en.curX + (en.size ?? 1.8) * 32 / 2;
         const bCY = en.curY + (en.size ?? 1.8) * 32 / 2;
@@ -3042,7 +2990,7 @@ class GameCore {
         const projMesh = (this.scene && this.bjs) ? ((): import('@babylonjs/core').Mesh | null => {
           try {
             const BJS = this.bjs!;
-            // Core energy bolt — small bright PBR sphere
+            
             const m = BJS.MeshBuilder.CreateSphere('proj_' + Date.now(),
               { diameter: 0.32 * WORLD_SCALE, segments: 12 }, this.scene!);
             const coreRGB: [number, number, number] = en.boss
@@ -3058,7 +3006,7 @@ class GameCore {
             mat.clearCoat.intensity  = 0.85;
             mat.clearCoat.roughness  = 0.05;
             m.material = mat;
-            // Halo shell — translucent emissive sphere parented to core
+            
             const halo = BJS.MeshBuilder.CreateSphere('proj_halo_' + Date.now(),
               { diameter: 0.62 * WORLD_SCALE, segments: 12 }, this.scene!);
             const haloMat = new BJS.PBRMaterial('projHaloMat', this.scene!);
@@ -3096,13 +3044,13 @@ class GameCore {
       proj.x += proj.vx;
       proj.y += proj.vy;
 
-      // Update mesh position
+      
       if (proj.mesh) {
         proj.mesh.position.x = (proj.x - this.camX - GW / 2) / PX_PER_BU;
         proj.mesh.position.y = -(proj.y - GH / 2) / PX_PER_BU;
       }
 
-      // Expire
+      
       if (proj.life <= 0 || proj.y > GH + 20) {
         proj.mesh?.dispose();
         this.projectiles.splice(p, 1);
@@ -3177,7 +3125,7 @@ class GameCore {
       by: -(ly + lh / 2 - GH / 2) / PX_PER_BU,
     });
 
-    // Platforms
+    
     for (let i = 0; i < this.platMeshes.length; i++) {
       const p = this.platforms[i];
       const { bx, by } = toB(p.curX, p.y, p.w, p.h);
@@ -3186,8 +3134,8 @@ class GameCore {
       this.platMeshes[i].position.z = 0;
     }
 
-    // Coins (regular only — goal coin handled separately below)
-    const coinY = Math.sin(this.animTick * 0.05) * 0.1 * WORLD_SCALE; // bob animation
+    
+    const coinY = Math.sin(this.animTick * 0.05) * 0.1 * WORLD_SCALE; 
     for (let i = 0; i < this.coinMeshes.length; i++) {
       const m = this.coinMeshes[i];
       if (!m) continue;
@@ -3199,7 +3147,7 @@ class GameCore {
       m.rotation.y = this.animTick * 0.04;
     }
 
-    // Goal star (sphere + orbiting torus ring)
+    
     if (this.goalMesh && this.goalIdx >= 0) {
       const gc = this.coins[this.goalIdx];
       if (!gc.collected) {
@@ -3218,7 +3166,7 @@ class GameCore {
       }
     }
 
-    // Hazards
+    
     for (let i = 0; i < this.hazardMeshes.length; i++) {
       const mesh = this.hazardMeshes[i];
       if (!mesh) continue;
@@ -3235,7 +3183,7 @@ class GameCore {
       }
     }
 
-    // Power-ups
+    
     for (let i = 0; i < this.powerUpMeshes.length; i++) {
       const mesh = this.powerUpMeshes[i];
       if (!mesh) continue;
@@ -3251,7 +3199,7 @@ class GameCore {
       mesh.rotation.y += 0.04;
     }
 
-    // Enemies
+    
     for (let i = 0; i < this.enemyMeshes.length; i++) {
       const m = this.enemyMeshes[i];
       if (!m) continue;
@@ -3262,21 +3210,21 @@ class GameCore {
       m.position.y = by;
       m.position.z = 0;
       if (en.boss) {
-        // Boss visual: shrinks as it loses HP; pulses faster when enraged
+        
         const hpRatio     = this.bossHitsMax > 0 ? en.hitsLeft / this.bossHitsMax : 1;
         const enraged     = hpRatio <= BOSS_ENRAGE_THRESHOLD;
         const pulseSpeed  = enraged ? 0.18 : 0.08;
         const pulse       = 1 + Math.sin(this.animTick * pulseSpeed) * 0.07;
-        const healthScale = 0.70 + hpRatio * 0.30; // 1.0 full HP → 0.70 at last hit
+        const healthScale = 0.70 + hpRatio * 0.30; 
         m.scaling.setAll(healthScale * pulse);
-        // Rising-ember stream when enraged; stops the moment HP recovers (won't happen
-        // in normal play, but keeps the API symmetric).
+        
+        
         if (this.vfx && this.bjs) {
           if (enraged && en.alive) {
             const eb = new this.bjs.Vector3(bx, by - 0.6, 0);
             this.vfx.setEmbers(eb, [1.0, 0.45, 0.1]);
           } else if (i === this.enemies.findIndex((x) => x.boss)) {
-            // Only the canonical boss controls the embers stream.
+            
             this.vfx.setEmbers(null, [1, 1, 1]);
           }
         }
@@ -3314,11 +3262,11 @@ class GameCore {
     const { bx: pbx, by: pby } = toB(this.px, this.py, PW, PH);
     const isMoving  = Math.abs(this.pvx) > 0.5;
     const isVisible = this.invincible === 0 || (this.animTick & 4) !== 0;
-    // Walk cycle: swings arms+legs 180° out of phase
+    
     const walkPhase  = isMoving ? this.animTick * 0.32 : 0;
-    const legSwing   = isMoving ? Math.sin(walkPhase) * 0.30 : 0; // radians
+    const legSwing   = isMoving ? Math.sin(walkPhase) * 0.30 : 0; 
     const armSwing   = isMoving ? -Math.sin(walkPhase) * 0.28 : 0;
-    // Squash-stretch on body
+    
     const giantMul = this.giantFrames > 0 ? 1.45 : 1;
     const superPulse = this.superFrames > 0 ? 1 + Math.sin(this.animTick * 0.18) * 0.08 : 1;
     const bodyScaleX = (this.onGround ? 1.12 : 0.90) * giantMul * superPulse;
@@ -3396,8 +3344,8 @@ class GameCore {
 
     if (this.coinFlashFrames > 0) {
       this.coinFlashFrames--;
-      // First 30 frames: zoom out (camera moves up by up to 3.5×WORLD_SCALE BU)
-      // Next 40 frames: zoom back in
+      
+      
       if (this.coinFlashFrames > 40) {
         this.camZoomOffset = ((70 - this.coinFlashFrames) / 30) * 3.5 * WORLD_SCALE;
       } else {
@@ -3405,12 +3353,12 @@ class GameCore {
       }
     }
 
-    // Parallax background plane
+    
     if (this.bgPlane) {
       this.bgPlane.position.x = this.camX / PX_PER_BU * 0.2;
     }
 
-    // Parallax star layers — each layer scrolls at its own rate
+    
     const camBX = this.camX / PX_PER_BU;
     for (const { mesh, baseX, parallax } of this.bgStars) {
       mesh.position.x = baseX - camBX * parallax;
@@ -3421,7 +3369,7 @@ class GameCore {
       skyline.mesh.position.x = skyline.baseX - camBX * skyline.parallax;
       skyline.mesh.position.y = 10 * WORLD_SCALE + Math.sin(this.animTick * 0.01 + skyline.pulseOffset) * 0.9 * WORLD_SCALE;
     }
-    // Zone silhouette parallax — X only; Y stays anchored to the horizon.
+    
     for (const sil of this.silhouettes) {
       sil.mesh.position.x = sil.baseX - camBX * sil.parallax;
     }
@@ -3431,23 +3379,23 @@ class GameCore {
     }
     for (const nb of this.neonBillboards) {
       nb.mesh.position.x = nb.baseX - camBX * nb.parallax;
-      // Animated emissive scroll on the shared neon texture is global per-tex,
-      // but per-billboard phase modulation comes from a sin on the emissive intensity.
+      
+      
       const flicker = 1 + Math.sin(this.animTick * 0.07 + nb.phase) * 0.18;
       nb.mat.emissiveIntensity = flicker;
     }
     for (const dm of this.debrisMotes) {
-      // Debris drifts horizontally and bobs vertically — modulo SPAN to wrap.
+      
       const SPAN = 90 * WORLD_SCALE;
       const drift = (this.animTick * 0.0035 * dm.speed) * WORLD_SCALE;
       const x = dm.baseX - camBX * dm.parallax + drift;
-      // wrap to keep on-screen
+      
       const wrapped = ((x + SPAN / 2) % SPAN + SPAN) % SPAN - SPAN / 2;
       dm.mesh.position.x = wrapped;
       dm.mesh.position.y = dm.baseY + Math.sin(this.animTick * 0.04 + dm.phase) * 0.25 * WORLD_SCALE;
     }
     if (this.skyDome && this.camMesh) {
-      // Lock dome to the camera so it appears infinitely far.
+      
       this.skyDome.position.x = this.camMesh.position.x;
       this.skyDome.position.y = this.camMesh.position.y;
       this.skyDome.position.z = this.camMesh.position.z;
@@ -3456,7 +3404,7 @@ class GameCore {
     this.visorScanLine?.advance(this.animTick);
     this.screenScanLine?.advance(this.animTick);
     if (this.playerRig) {
-      // Eye blink — every ~3s squash the eye discs vertically for ~6 frames.
+      
       if (this.animTick >= this.nextEyeBlinkTick && this.eyeBlinkFrames === 0) {
         this.eyeBlinkFrames = 6;
         this.nextEyeBlinkTick = this.animTick + 180 + Math.floor(Math.random() * 90);
@@ -3467,7 +3415,7 @@ class GameCore {
         this.playerRig.eyeGoldCore.scaling.y *= blink;
         this.playerRig.eyeCyanCore.scaling.y *= blink;
       }
-      // Chest-core emissive intensity sin-pulse for a "living tech" feel.
+      
       const chestCoreMat2 = this.playerRig.chestCore.material as import('@babylonjs/core').PBRMaterial | null;
       if (chestCoreMat2) {
         chestCoreMat2.emissiveIntensity = 1.0 + Math.sin(this.animTick * 0.12) * 0.35
@@ -3483,10 +3431,10 @@ class GameCore {
 
     this.vfx?.tick();
 
-    // Camera follows player smoothly in X; zooms up on coin flash
+    
     if (this.camMesh) {
       this.camMesh.position.x = 0;
-      // Smooth cam Y toward target (normally camY = 5.25×WORLD_SCALE BU, zoomed out when flash active)
+      
       const targetCamY = 5.25 * WORLD_SCALE + this.camZoomOffset;
       this.camMesh.position.y += (targetCamY - this.camMesh.position.y) * 0.10;
       this.camMesh.setTarget(new (this.bjs!.Vector3)(0, this.camMesh.position.y - 0.5 * WORLD_SCALE, 0));
@@ -3499,7 +3447,7 @@ class GameCore {
     this.dustPS?.stop();
     this.vfx?.dispose();
     this.vfx = null;
-    // Clean up projectile meshes
+    
     for (const proj of this.projectiles) proj.mesh?.dispose();
     this.projectiles = [];
     this.scene?.dispose();
@@ -3509,7 +3457,7 @@ class GameCore {
     this.engine = null;
     this.scene  = null;
     this.bjs    = null;
-    // Nullify robot refs (already disposed via scene.dispose)
+    
     this.playerRig = null;
   }
 }

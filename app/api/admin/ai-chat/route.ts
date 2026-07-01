@@ -9,29 +9,19 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextResponse } from 'next/server';
 
-/**
- * /api/admin/ai-chat
- *
- * Owner-only endpoint that lets the authenticated admin chat with
- * IDARi (debugger/overseer) or BoogieMan (policy/enforcement) AI.
- *
- * Security layers (same as /api/admin/code-files):
- *  1. Supabase session must match OWNER_EMAIL
- *  2. Admin password must match IDARI_PASSWORD
- *  3. One wrong password → permanent lockout via shared lockout module
- */
+
 
 function deny(msg: string, status: number) {
   return NextResponse.json({ error: msg }, { status });
 }
 
-// IDARi speaks in actionable engineering terms: cause → impact → fix → verification.
-// It outputs patch plans (file list + minimal diffs), not vague advice.
-// It always recommends the smallest safe change first.
-// It includes rollback steps for risky changes.
-// It treats "jank", "unbounded re-renders", and "random animation generators" as bugs.
-// It enforces separation of concerns and reduces TypeScript `any` usage.
-// It keeps API calls server-side and blocks secret leakage to the client.
+
+
+
+
+
+
+
 const IDARI_SYSTEM = `You are IDARi, the admin-tier AI for Dreamengin.
 Your roles: bug fixer, optimizer, data compressor, and maintenance brain.
 
@@ -66,12 +56,12 @@ You flag policy risks (privacy, abuse vectors) proactively.
 Be clear, fair, and thorough. The person you are speaking with is the owner/admin of the platform.`;
 
 export async function POST(request: Request ): Promise<NextResponse> {
-  // 1. Check permanent lockout (isAdminLocked is async)
+  
   if (await isAdminLocked()) {
     return deny('Access permanently locked. Edit repository configuration to reset.', 403);
   }
 
-  // 2. Verify Supabase session — must be owner email
+  
   try {
     const supabase = await createServerClient();
     const user = await safeGetUser(supabase);
@@ -82,7 +72,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
     return deny('Authentication error.', 401);
   }
 
-  // 3. Parse body
+  
   let body: { password?: string; agent?: string; message?: string };
   try {
     body = await request.json();
@@ -90,7 +80,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
     return deny('Invalid request body.', 400);
   }
 
-  // 4. Password check — one wrong attempt = permanent lockout
+  
   const adminPw = process.env.IDARI_PASSWORD;
   if (!adminPw) {
     return deny('Admin feature not configured on this server.', 503);
@@ -100,7 +90,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
     return deny('Incorrect password.', 401);
   }
 
-  // 5. Validate agent + message
+  
   const agent = body.agent;
   if (agent !== 'idari' && agent !== 'boogieman') {
     return deny('agent must be "idari" or "boogieman".', 400);
@@ -111,7 +101,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
     return deny('message is required.', 400);
   }
 
-  // 6. Call the appropriate AI
+  
   const systemPrompt = agent === 'idari' ? IDARI_SYSTEM : BOOGIEMAN_SYSTEM;
   const primaryModel = agent === 'idari' ? AI_MODELS.IDARI_PRIMARY : AI_MODELS.BOOGIE;
   const fallbackModel = agent === 'idari' ? AI_MODELS.IDARI_FALLBACK : AI_MODELS.EAMS_FALLBACK;

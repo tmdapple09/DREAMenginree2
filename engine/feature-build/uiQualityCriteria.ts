@@ -1,15 +1,4 @@
-/**
- * lib/feature-build/uiQualityCriteria.ts
- *
- * SICC — the four UI quality dimensions pursued in the REFINE phase:
- *   Synchronized — real-time coordination across runtimes, shared state, and immediate feedback
- *   Intuitive    — discoverable interactions, clear affordances, accessible
- *   Cohesive     — surfaces feel unified; shared color, spacing, and motion
- *   Coherent     — naming, copy, and structure match platform vocabulary
- *
- * Each criterion has a grep detectPattern so the build-cycle workflow can
- * scan the codebase and report pass/fail per check.
- */
+
 
 export type SICCDimension = 'synchronized' | 'intuitive' | 'cohesive' | 'coherent';
 
@@ -18,16 +7,14 @@ export interface UIQualityCheck {
   dimension: SICCDimension;
   label: string;
   description: string;
-  /**
-   * grep-compatible pattern. Empty string = manual review only (no auto-scan).
-   */
+  
   detectPattern: string;
-  /** Repo-relative paths to search. Empty = whole repo. */
+  
   detectPaths: string[];
 }
 
 export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
-  // ── Synchronized ──────────────────────────────────────────────────────────
+  
   {
     id: 'design-tokens',
     dimension: 'synchronized',
@@ -129,12 +116,12 @@ export const SICC_GLOBAL_CRITERIA: readonly UIQualityCheck[] = [
   },
 ] as const;
 
-/** Filter global criteria to a single SICC dimension. */
+
 export function getCriteriaForDimension(dim: SICCDimension): UIQualityCheck[] {
   return SICC_GLOBAL_CRITERIA.filter((c) => c.dimension === dim);
 }
 
-/** All four SICC dimension labels in display order. */
+
 export const SICC_DIMENSIONS: readonly { id: SICCDimension; label: string; emoji: string }[] = [
   { id: 'synchronized', label: 'Synchronized', emoji: '✦' },
   { id: 'intuitive', label: 'Intuitive', emoji: '◈' },

@@ -1,21 +1,4 @@
-/**
- * tests/dreamr-algorithm.test.ts
- *
- * Full unit-test coverage for lib/dreamr/dreamrAlgorithm.ts.
- *
- * All functions under test are pure — no I/O, no mocks needed.
- *
- * Coverage:
- *  A. scoreContentDepth   — crafted-writing curve
- *  B. scoreOriginalMedia  — original vs. connector media
- *  C. scoreDreamenginMade — platform-native content boost
- *  D. scoreTextRichness   — real words vs. hashtag/emoji spam
- *  E. scoreFreshness      — gentle recency curve
- *  F. scoreTrendImpact    — sqrt-capped engagement signal
- *  G. scoreDreamRPost     — composite scorer + signal breakdown
- *  H. rankFeed            — sorting + creator-diversity pass
- *  I. DREAMR_WEIGHTS      — sum must equal 1.0
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -31,19 +14,19 @@ import {
   type ScoredPost,
 } from '@/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm';
 
-// ── Helper ────────────────────────────────────────────────────────────────────
+
 
 function makePost(overrides: Partial<ScoredPost> = {}): ScoredPost {
   return {
     id:         'test-id',
     content:    'A genuinely thoughtful piece of writing.',
-    created_at: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago
+    created_at: new Date(Date.now() - 3_600_000).toISOString(), 
     profiles: { handle: 'creator', display_name: 'Creator', avatar_url: null },
     ...overrides,
   };
 }
 
-// ── A. scoreContentDepth ─────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreContentDepth', () => {
   it('returns 0 for empty string', () => {
@@ -55,7 +38,7 @@ describe('DreamR — scoreContentDepth', () => {
   });
 
   it('returns 0 for single-character tokens', () => {
-    // All single chars are filtered out (length > 1 required)
+    
     expect(scoreContentDepth('a b c')).toBe(0);
   });
 
@@ -93,7 +76,7 @@ describe('DreamR — scoreContentDepth', () => {
   });
 });
 
-// ── B. scoreOriginalMedia ────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreOriginalMedia', () => {
   it('returns 0 when no media_url', () => {
@@ -119,7 +102,7 @@ describe('DreamR — scoreOriginalMedia', () => {
   });
 });
 
-// ── C. scoreDreamenginMade ───────────────────────────────────────────────────
+
 
 describe('DreamR — scoreDreamenginMade', () => {
   it('returns 1.0 for a native dreamengin post', () => {
@@ -149,7 +132,7 @@ describe('DreamR — scoreDreamenginMade', () => {
   });
 });
 
-// ── D. scoreTextRichness ─────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreTextRichness', () => {
   it('returns 0 for empty / whitespace', () => {
@@ -166,7 +149,7 @@ describe('DreamR — scoreTextRichness', () => {
   });
 
   it('returns a high score for genuine prose', () => {
-    // Uses long words exclusively to avoid short-word drag on the ratio
+    
     const prose = 'Genuine thoughtful reflection creativity human expression depth knowledge craft mastery';
     expect(scoreTextRichness(prose)).toBeGreaterThan(0.7);
   });
@@ -199,7 +182,7 @@ describe('DreamR — scoreTextRichness', () => {
   });
 });
 
-// ── E. scoreFreshness ────────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreFreshness', () => {
   function hoursAgo(h: number): string {
@@ -207,16 +190,16 @@ describe('DreamR — scoreFreshness', () => {
   }
 
   it('returns a score in the peak window (1–8 h) of 0.85–1.0', () => {
-    // At 2h the peak ramp-up reaches 1.0
+    
     expect(scoreFreshness(hoursAgo(2))).toBeCloseTo(1.0, 1);
-    // 5h is well inside the peak plateau
+    
     expect(scoreFreshness(hoursAgo(5))).toBe(1.0);
-    // 8h is the last second of the peak window
+    
     expect(scoreFreshness(hoursAgo(8))).toBeCloseTo(1.0, 1);
   });
 
   it('gives a high score to very fresh posts (< 2 h)', () => {
-    // Fresh post (just now) starts at 0.85 and ramps up
+    
     expect(scoreFreshness(hoursAgo(0))).toBeGreaterThanOrEqual(0.85);
   });
 
@@ -229,7 +212,7 @@ describe('DreamR — scoreFreshness', () => {
   });
 
   it('never drops below 0.05 (old masterpieces can still surface)', () => {
-    const veryOld = scoreFreshness(hoursAgo(24 * 180)); // 180 days old
+    const veryOld = scoreFreshness(hoursAgo(24 * 180)); 
     expect(veryOld).toBeGreaterThanOrEqual(0.05);
   });
 
@@ -248,7 +231,7 @@ describe('DreamR — scoreFreshness', () => {
   });
 });
 
-// ── F. scoreTrendImpact ──────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreTrendImpact', () => {
   it('returns 0 for a post with no engagement', () => {
@@ -295,7 +278,7 @@ describe('DreamR — scoreTrendImpact', () => {
   });
 });
 
-// ── G. scoreDreamRPost ───────────────────────────────────────────────────────
+
 
 describe('DreamR — scoreDreamRPost', () => {
   it('returns a numeric score between 0 and 100', () => {
@@ -328,7 +311,7 @@ describe('DreamR — scoreDreamRPost', () => {
       source:   'post',
       provider: 'dreamengin',
       media_url: 'https://cdn.example.com/art.jpg',
-      created_at: new Date(Date.now() - 2 * 3_600_000).toISOString(), // 2h ago (peak)
+      created_at: new Date(Date.now() - 2 * 3_600_000).toISOString(), 
     });
 
     const connectorSpam = makePost({
@@ -336,7 +319,7 @@ describe('DreamR — scoreDreamRPost', () => {
       content:  '#follow #like #viral #trending #share #repost',
       source:   'connector',
       provider: 'twitter',
-      created_at: new Date(Date.now() - 7 * 24 * 3_600_000).toISOString(), // 7 days old
+      created_at: new Date(Date.now() - 7 * 24 * 3_600_000).toISOString(), 
     });
 
     const { score: richScore } = scoreDreamRPost(richNative);
@@ -365,7 +348,7 @@ describe('DreamR — scoreDreamRPost', () => {
   });
 });
 
-// ── H. rankFeed ──────────────────────────────────────────────────────────────
+
 
 describe('DreamR — rankFeed', () => {
   it('returns an empty array for empty input', () => {
@@ -404,7 +387,7 @@ describe('DreamR — rankFeed', () => {
   });
 
   it('applies creator-diversity penalty for back-to-back same-creator posts', () => {
-    // Three posts from same creator — the later ones should be penalised
+    
     const now = Date.now();
     const posts: ScoredPost[] = [
       makePost({ id: '1', profiles: { handle: 'alice', display_name: 'Alice', avatar_url: null }, created_at: new Date(now - 1_000_000).toISOString() }),
@@ -412,14 +395,14 @@ describe('DreamR — rankFeed', () => {
       makePost({ id: '3', profiles: { handle: 'bob',   display_name: 'Bob',   avatar_url: null }, created_at: new Date(now - 3_000_000).toISOString() }),
     ];
 
-    // We give alice's posts identical raw content so they'd score equally
-    // Without diversity, both alice posts would be #1 and #2.
-    // With diversity, bob's post should displace alice's second post.
+    
+    
+    
     const ranked = rankFeed(posts);
 
-    // At minimum the output has all 3 posts
+    
     expect(ranked).toHaveLength(3);
-    // dreamr_score should have been modified (may differ from original raw score)
+    
     const alicePosts = ranked.filter((p) => p.profiles.handle === 'alice');
     expect(alicePosts).toHaveLength(2);
   });
@@ -443,12 +426,12 @@ describe('DreamR — rankFeed', () => {
   });
 });
 
-// ── I. DREAMR_WEIGHTS ────────────────────────────────────────────────────────
+
 
 describe('DreamR — DREAMR_WEIGHTS', () => {
   it('weights sum to exactly 1.0', () => {
     const total = Object.values(DREAMR_WEIGHTS).reduce((a, b) => a + b, 0);
-    // Use rounding to avoid floating-point epsilon issues
+    
     expect(Math.round(total * 1000) / 1000).toBe(1.0);
   });
 

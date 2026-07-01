@@ -1,19 +1,8 @@
-/**
- * tests/universal-asset-registry.test.ts
- *
- * Tests for the Universal Asset Registry component:
- *   - Type metadata resolution
- *   - Timestamp formatting
- *   - Export surface validation
- *   - Enrichment logic
- *   - Props interface
- *
- * These are unit tests — no live DB or DOM required.
- */
+
 
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-// ── Mock Supabase ──────────────────────────────────────────────────────────────
+
 const mockSubscribe = vi.fn().mockReturnValue({ unsubscribe: vi.fn() });
 const mockOn = vi.fn().mockReturnValue({ subscribe: mockSubscribe });
 const mockChannel = vi.fn().mockReturnValue({ on: mockOn });
@@ -53,9 +42,9 @@ vi.mock('@/engins/forgeengin/forge/useForgeActivity', () => ({
   useForgeActivity: () => ({ record: vi.fn() }),
 }));
 
-// ── Import types and module ────────────────────────────────────────────────────
 
-// Type-level import — verifies the component's exported types compile
+
+
 import type {
   RegistryEntry,
   GameAssetRow,
@@ -64,7 +53,7 @@ import type {
   UniversalAssetRegistryProps,
 } from '@/components/dream.universal_asset_registry';
 
-// ── Type validation tests ──────────────────────────────────────────────────────
+
 
 describe('UniversalAssetRegistry types', () => {
   it('RegistryEntry has all required fields', () => {
@@ -201,7 +190,7 @@ describe('UniversalAssetRegistry types', () => {
   });
 });
 
-// ── Known object types ─────────────────────────────────────────────────────────
+
 
 describe('Known object types', () => {
   const KNOWN_TYPES = [
@@ -210,8 +199,8 @@ describe('Known object types', () => {
   ];
 
   it('recognises all documented GAL object types', () => {
-    // These are the types registered across the platform —
-    // the UAR should have visual metadata for each.
+    
+    
     for (const type of KNOWN_TYPES) {
       expect(type).toBeTruthy();
     }
@@ -219,12 +208,12 @@ describe('Known object types', () => {
   });
 
   it('game_asset is the primary enriched type', () => {
-    // Only game_asset entries get enriched with game_assets + control_mappings data
+    
     expect(KNOWN_TYPES).toContain('game_asset');
   });
 });
 
-// ── Component props ────────────────────────────────────────────────────────────
+
 
 describe('UniversalAssetRegistry props interface', () => {
   it('accepts compact mode', () => {
@@ -251,12 +240,12 @@ describe('UniversalAssetRegistry props interface', () => {
   });
 });
 
-// ── Enrichment logic ───────────────────────────────────────────────────────────
+
 
 describe('enrichment logic', () => {
   it('game_asset entries should receive gameAsset and bindings enrichment', () => {
-    // When a registry entry has object_type === 'game_asset', the component
-    // should fetch from game_assets and control_mappings tables to enrich it.
+    
+    
     const registryEntry: RegistryEntry = {
       id: 'reg-1',
       object_type: 'game_asset',
@@ -288,7 +277,7 @@ describe('enrichment logic', () => {
       },
     ];
 
-    // Build enriched entry the same way the component does
+    
     const enriched: EnrichedEntry = {
       ...registryEntry,
       gameAsset: registryEntry.object_type === 'game_asset' ? gameAsset : undefined,
@@ -321,11 +310,11 @@ describe('enrichment logic', () => {
   });
 });
 
-// ── GAL API route contract ─────────────────────────────────────────────────────
+
 
 describe('GAL API contract', () => {
   it('register endpoint expects type, internalId, label', () => {
-    // The component calls POST /api/gal with this body shape
+    
     const body = {
       type: 'game_asset',
       internalId: 'uuid-123',
@@ -352,12 +341,12 @@ describe('GAL API contract', () => {
   });
 });
 
-// ── Mesh size estimation ───────────────────────────────────────────────────────
+
 
 describe('mesh data size estimation', () => {
   it('computes approximate KB from base64 length', () => {
-    // The component shows mesh/rig size as: Math.ceil(base64.length * 0.75 / 1024)
-    const base64Data = 'A'.repeat(4096); // 4096 base64 chars = ~3072 bytes = ~3 KB
+    
+    const base64Data = 'A'.repeat(4096); 
     const estimatedKB = Math.ceil(base64Data.length * 0.75 / 1024);
     expect(estimatedKB).toBe(3);
   });
@@ -369,13 +358,13 @@ describe('mesh data size estimation', () => {
   });
 
   it('handles small mesh data', () => {
-    const small = 'AAAA'; // 4 base64 chars = 3 bytes
+    const small = 'AAAA'; 
     const estimatedKB = Math.ceil(small.length * 0.75 / 1024);
-    expect(estimatedKB).toBe(1); // Rounds up
+    expect(estimatedKB).toBe(1); 
   });
 });
 
-// ── Sort logic ─────────────────────────────────────────────────────────────────
+
 
 describe('sort modes', () => {
   const entries: RegistryEntry[] = [
@@ -415,7 +404,7 @@ describe('sort modes', () => {
   });
 });
 
-// ── Filter logic ───────────────────────────────────────────────────────────────
+
 
 describe('filter logic', () => {
   const entries: RegistryEntry[] = [
@@ -455,7 +444,7 @@ describe('filter logic', () => {
       e.object_type.toLowerCase().includes(q) ||
       e.internal_id.toLowerCase().includes(q)
     );
-    // 'c' matches internal_id 'c' and label 'Mech Bot' (ch), 'Beat Track' (ck)
+    
     expect(filtered.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -478,7 +467,7 @@ describe('filter logic', () => {
   });
 });
 
-// ── Stats computation ──────────────────────────────────────────────────────────
+
 
 describe('stats computation', () => {
   it('counts total entries', () => {
@@ -524,7 +513,7 @@ describe('stats computation', () => {
   });
 });
 
-// ── Export surface ──────────────────────────────────────────────────────────────
+
 
 describe('module exports', () => {
   it('exports the default component', async () => {

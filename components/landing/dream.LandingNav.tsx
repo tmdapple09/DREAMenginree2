@@ -2,10 +2,7 @@
 
 import Link from 'next/link';
 
-/**
- * LandingNav — minimal top bar for the landing page.
- * Wordmark on the left, Sign In on the right. No mid-nav links.
- */
+
 export default function LandingNav( ){
   return (
     <nav

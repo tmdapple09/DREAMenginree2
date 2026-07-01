@@ -1,12 +1,12 @@
-// types/widgets.ts
 
-// Presentation modes for gesture-driven navigation
+
+
 export type WidgetPresentationMode = "FLOATING" | "DOCKED" | "FULL";
 
-// Widget visibility states
+
 export type WidgetVisibilityState = "ACTIVE" | "BACKGROUND" | "PARKED";
 
-// Transform state for spatial positioning
+
 export interface WidgetTransformState {
   x: number;
   y: number;
@@ -14,7 +14,7 @@ export interface WidgetTransformState {
   rotation: number;
 }
 
-// The core capabilities every widget can optionally support.
+
 export interface WidgetCapabilities {
   canOpenFull?: boolean;
   canPreview?: boolean;
@@ -25,14 +25,14 @@ export interface WidgetCapabilities {
   canRemoveFromFeed?: boolean;
 }
 
-// Optional widget-specific actions
+
 export interface WidgetAction {
   id: string;
   label: string;
   icon?: string;
 }
 
-// Open-ended widget types (future-proof)
+
 export type WidgetType =
   | "feed"
   | "text"
@@ -52,21 +52,21 @@ export type WidgetType =
   | "custom"
   | (string & {});
 
-// Canonical widget shape (tolerant of old + new schemas)
+
 export interface WidgetInstance {
   id: string;
 
-  // ownership (either may exist)
+  
   owner_id?: string;
   user_id?: string;
 
   title?: string;
 
-  // type (either may exist)
+  
   type?: WidgetType | string;
   widget_type?: WidgetType | string;
 
-  // config (either may exist)
+  
   config?: Record<string, unknown>;
   config_json?: Record<string, unknown>;
 
@@ -80,7 +80,7 @@ export interface WidgetInstance {
   layers?: WidgetLayer[];
   sub_widgets?: SubWidgetRef[];
 
-  // Gesture-driven navigation properties
+  
   presentation?: WidgetPresentationMode;
   transformState?: WidgetTransformState;
   zIndex?: number;
@@ -89,11 +89,11 @@ export interface WidgetInstance {
   created_at?: string;
   updated_at?: string;
 
-  // allow extra joined fields without breaking TS
+  
   [key: string]: unknown;
 }
 
-// Layer kinds per Section 11: Widget Architecture
+
 export type WidgetLayerKind = "ui" | "data" | "ai" | "commerce";
 
 export interface WidgetLayer {
@@ -106,7 +106,7 @@ export interface WidgetLayer {
   opacity?: number;
 }
 
-// Sub-widget reference (widgets can spawn sub-widgets)
+
 export interface SubWidgetRef {
   id: string;
   parent_id: string;

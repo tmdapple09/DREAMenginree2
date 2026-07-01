@@ -7,21 +7,7 @@ import {
 } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/youtube.ts
- *
- * YouTube provider for DREAMengin connectors.
- *
- * Current implementation uses a user-supplied OAuth access token with the
- * `https://www.googleapis.com/auth/youtube.readonly` scope.
- *
- * This fits the repo's existing connector architecture immediately:
- * - Connect via credential modal
- * - Verify token live
- * - Sync subscriptions / watch history / watch later
- *
- * No DB calls here. No React imports. Pure provider integration only.
- */
+
 
 const YT_API = 'https://www.googleapis.com/youtube/v3';
 const GOOGLE_USERINFO_API = 'https://www.googleapis.com/oauth2/v2/userinfo';
@@ -135,10 +121,7 @@ async function fetchYouTubePublicJson<T>(url: string, apiKey: string): Promise<T
   return await res.json() as T;
 }
 
-/**
- * Verifies the token by calling Google's userinfo endpoint.
- * Returns a human-readable identifier on success.
- */
+
 export async function youtubeVerify(creds: YouTubeCredentials): Promise<string> {
   const user = await fetchYouTubeJson<GoogleUserInfo>(GOOGLE_USERINFO_API, creds.access_token);
   return user.email ?? user.name ?? user.id ?? 'youtube-user';
@@ -237,16 +220,7 @@ function shuffleItems<T>(items: T[]): T[] {
   return shuffled;
 }
 
-/**
- * Searches YouTube for videos matching the given query string.
- * Uses an API key (no OAuth required — public data only).
- * Results are normalised to UnifiedFeedItem and can be used to populate
- * any connector feed surface.
- *
- * @param apiKey  YouTube Data API v3 key
- * @param query   Free-text search query (e.g. "lo-fi beats", "game dev tips")
- * @param max     Maximum number of results to return (1–50, default 20)
- */
+
 export async function youtubeSearchByQuery(
   apiKey: string,
   query: string,
@@ -274,14 +248,7 @@ export async function youtubeDiscovery(apiKey: string, max: number): Promise<Uni
   return shuffleItems(deduplicateFeedItems([...trending, ...news])).slice(0, safeMax);
 }
 
-/**
- * Sync strategy:
- * - subscriptions feed
- * - watch history
- * - watch later
- *
- * Results are normalised and sorted newest-first.
- */
+
 export async function youtubeSync(creds: YouTubeCredentials): Promise<UnifiedFeedItem[]> {
   await youtubeVerify(creds);
 

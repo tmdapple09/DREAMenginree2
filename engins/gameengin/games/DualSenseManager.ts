@@ -2,30 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-/**
- * lib/games/DualSenseManager.ts
- *
- * PS5 DualSense controller integration for DREAMengin with mobile Bluetooth support.
- *
- * Key features (March 2026 browser capabilities):
- *   - Bluetooth pairing: Android 12+ Chrome, iOS 14.5+ Safari
- *   - Standard gamepad input: sticks, buttons, triggers, D-pad
- *   - Gyro/accelerometer: Excellent for mobile steering/aiming (phone tilt)
- *   - Basic vibration/haptics: Works on Android Chrome (limited on iOS)
- *   - Adaptive triggers: Desktop-only via WebHID (not available in mobile browsers)
- *   - LED/Touchpad: Limited browser support — use in-game visual feedback
- *
- * Pairing instructions:
- *   1. Hold PS button + Create button until light bar flashes blue
- *   2. Pair in phone/tablet Bluetooth settings
- *   3. Open DREAMengin in browser → controller auto-detected
- *
- * Integration:
- *   - Works with existing `de-game-input` CustomEvent protocol
- *   - Complements useGamepad hook for standard input
- *   - Adds DualSense-specific features (gyro, haptics)
- *   - Maintains compatibility with DualRuntimeContainer and spatial multitasking
- */
+
 
 export interface DualSenseState {
   connected: boolean;
@@ -34,20 +11,20 @@ export interface DualSenseState {
   triggers: { l2: number; r2: number };
   gyro: { x: number; y: number; z: number };
   buttons: {
-    cross: boolean;      // × button
-    circle: boolean;     // ○ button
-    square: boolean;     // □ button
-    triangle: boolean;   // △ button
+    cross: boolean;      
+    circle: boolean;     
+    square: boolean;     
+    triangle: boolean;   
     l1: boolean;
     r1: boolean;
-    l2Button: boolean;   // L2 as digital button
-    r2Button: boolean;   // R2 as digital button
-    l3: boolean;         // Left stick press
-    r3: boolean;         // Right stick press
-    share: boolean;      // Share/Create button
-    options: boolean;    // Options button
-    ps: boolean;         // PS button
-    touchpad: boolean;   // Touchpad press
+    l2Button: boolean;   
+    r2Button: boolean;   
+    l3: boolean;         
+    r3: boolean;         
+    share: boolean;      
+    options: boolean;    
+    ps: boolean;         
+    touchpad: boolean;   
     dpadUp: boolean;
     dpadDown: boolean;
     dpadLeft: boolean;
@@ -56,13 +33,13 @@ export interface DualSenseState {
 }
 
 export interface DualSenseConfig {
-  /** Enable gyroscope input (mobile tilt steering/aiming) */
+  
   enableGyro?: boolean;
-  /** Enable haptic feedback (rumble) */
+  
   enableHaptics?: boolean;
-  /** Dead zone for analog sticks (0-1) */
+  
   deadZone?: number;
-  /** Enable debug logging */
+  
   debug?: boolean;
 }
 
@@ -110,7 +87,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
     const id = gamepad.id.toLowerCase();
     return (
       id.includes('dualsense') ||
-      id.includes('054c') || // Sony vendor ID
+      id.includes('054c') || 
       id.includes('wireless controller') ||
       id.includes('ps5')
     );
@@ -118,7 +95,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
 
   const applyDeadZone = (value: number): number => {
     if (Math.abs(value) < deadZone) return 0;
-    // Scale remaining range to 0-1
+    
     const sign = value < 0 ? -1 : 1;
     return sign * ((Math.abs(value) - deadZone) / (1 - deadZone));
   };
@@ -128,7 +105,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
       return { x: 0, y: 0, z: 0 };
     }
 
-    // Try to read angular velocity from gamepad extension
+    
     const gp = gamepad as Gamepad & { angularVelocity?: number[]; hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator };
     if (gp.angularVelocity && Array.isArray(gp.angularVelocity)) {
       return {
@@ -208,7 +185,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
 
     if (!gamepad) return;
 
-    // Haptic Actuator API (supported on Android Chrome)
+    
     const actuators = (gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator }).hapticActuators || (gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator }).vibrationActuator;
     if (actuators && actuators.length > 0) {
       const clampedIntensity = Math.max(0, Math.min(1, intensity));
@@ -216,7 +193,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
       return;
     }
 
-    // Fallback to Vibration API (deprecated but still works on some devices)
+    
     if ('vibrate' in navigator) {
       navigator.vibrate(duration);
     }
@@ -226,8 +203,8 @@ export function useDualSense(config: DualSenseConfig = {}) {
     if (debug) {
       console.debug(`[DualSense] Visual feedback: ${color} (${pattern}) - LED control limited on mobile`);
     }
-    // Real LED control requires WebHID (desktop only)
-    // Emit custom event for in-game visual feedback
+    
+    
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('de-dualsense-feedback', {
         detail: { color, pattern },
@@ -253,7 +230,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
         );
       }
 
-      // Start polling
+      
       if (rafRef.current === null) {
         rafRef.current = requestAnimationFrame(poll);
       }
@@ -268,7 +245,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
           console.debug('🎮 DualSense disconnected');
         }
 
-        // Stop polling
+        
         if (rafRef.current !== null) {
           cancelAnimationFrame(rafRef.current);
           rafRef.current = null;
@@ -279,7 +256,7 @@ export function useDualSense(config: DualSenseConfig = {}) {
     window.addEventListener('gamepadconnected', onConnect as EventListener);
     window.addEventListener('gamepaddisconnected', onDisconnect as EventListener);
 
-    // Check for already-connected DualSense (page reload / remount)
+    
     if (navigator.getGamepads) {
       const gamepads = Array.from(navigator.getGamepads()).filter(Boolean) as Gamepad[];
       const dualsense = gamepads.find((gp) => isDualSense(gp));
@@ -362,7 +339,7 @@ export class DualSenseManager {
     window.addEventListener('gamepadconnected', this.onConnect as EventListener);
     window.addEventListener('gamepaddisconnected', this.onDisconnect as EventListener);
 
-    // Check for already-connected DualSense
+    
     if (navigator.getGamepads) {
       const gamepads = Array.from(navigator.getGamepads()).filter(Boolean) as Gamepad[];
       const dualsense = gamepads.find((gp) => this.isDualSense(gp));

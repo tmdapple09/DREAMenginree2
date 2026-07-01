@@ -1,23 +1,12 @@
-/**
- * tests/rate-limiting.test.ts
- *
- * Tests for post creation rate limiting (spec §4):
- *   - Public posts: max 10 per 5-minute window.
- *   - Close-friends posts: max 50 per 5-minute window.
- */
+
 
 import { describe, expect, it } from 'vitest';
 
-// ── Pure rate-limit logic (extracted for testability) ──────────────────────────
 
-const WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 
-/**
- * Returns whether a new post should be blocked by the rate limiter.
- *
- * @param recentCount  — number of posts by this user in the last 5 minutes
- * @param postVisibility — 'public' or 'close_friends'
- */
+const WINDOW_MS = 5 * 60 * 1000; 
+
+
 function isRateLimited(
   recentCount: number,
   postVisibility: 'public' | 'close_friends',
@@ -26,14 +15,12 @@ function isRateLimited(
   return recentCount >= limit;
 }
 
-/**
- * Computes the window start timestamp (ISO string) for a rate-limit query.
- */
+
 function windowStart(now = Date.now()): string {
   return new Date(now - WINDOW_MS).toISOString();
 }
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
+
 
 describe('Rate limiting: public posts (10 per 5 min)', () => {
   it('allows posting when under the limit', () => {

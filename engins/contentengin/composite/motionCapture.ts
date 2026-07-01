@@ -1,50 +1,34 @@
-/**
- * motionCapture – BVH motion capture data model and parser.
- *
- * Inspired by Autodesk MotionBuilder's core data representation.
- * Supports the BVH (Biovision Hierarchy) file format, the universal
- * interchange format for motion-capture data.
- *
- * Features:
- *   - parseBVH        – parse a BVH string into a MocapClip
- *   - getFramePose    – extract joint transforms for a specific frame
- *   - retargetClip    – proportional bone-length retargeting
- *   - exportBVH       – round-trip back to BVH text
- *   - clipSummary     – human-readable clip metadata
- */
+
 
 export interface Joint {
   name: string;
-  /** Local offset from parent joint in rest pose (cm) */
+  
   offset: [number, number, number];
-  /** Channel order e.g. ['Xposition','Yposition','Zposition','Zrotation','Xrotation','Yrotation'] */
+  
   channels: string[];
   children: Joint[];
 }
 
 export interface MocapClip {
-  /** Root joint (skeleton hierarchy) */
+  
   root: Joint;
-  /** Total number of frames */
+  
   frameCount: number;
-  /** Duration of each frame in seconds */
+  
   frameTime: number;
-  /**
-   * Motion data flat array.
-   * Frame F, channel C is at: F * channelCount + channelOffsets[joint] + c
-   */
+  
   motion: number[];
-  /** Total number of channels per frame */
+  
   channelCount: number;
-  /** Map from joint name → starting channel index within a single frame slice */
+  
   channelOffsets: Map<string, number>;
 }
 
 export interface JointTransform {
   jointName: string;
-  /** Translation (X, Y, Z) in cm */
+  
   translation: [number, number, number];
-  /** Euler rotation in degrees */
+  
   rotation: [number, number, number];
 }
 
@@ -62,12 +46,9 @@ export interface ClipSummary {
   jointNames: string[];
 }
 
-// Public API
 
-/**
- * Parse a BVH file string into a MocapClip.
- * Throws a descriptive error on malformed input.
- */
+
+
 export function parseBVH(bvhText: string): MocapClip {
   const lines = bvhText.replace(/\r\n/g, '\n').split('\n').map((l) => l.trim()).filter(Boolean);
   let i = 0;
@@ -102,16 +83,16 @@ export function parseBVH(bvhText: string): MocapClip {
       } else if (upper.startsWith('JOINT')) {
         children.push(parseJoint(false));
       } else if (upper.startsWith('END')) {
-        // "End Site" block
+        
         i++;
         consume('{');
         while (i < lines.length && !lines[i].startsWith('}')) i++;
-        i++; // consume '}'
+        i++; 
       } else {
         i++;
       }
     }
-    i++; // consume '}'
+    i++; 
 
     return { name, offset, channels, children };
   }
@@ -126,7 +107,7 @@ export function parseBVH(bvhText: string): MocapClip {
   const frameCount = parseInt(lines[i++].split(/\s+/)[1], 10);
   const frameTime = parseFloat(lines[i++].split(/\s+/)[2]);
 
-  // Build channel offset map (joint name → index within a single frame)
+  
   const channelOffsets = new Map<string, number>();
   let channelCount = 0;
   function indexJoint(j: Joint ){
@@ -136,7 +117,7 @@ export function parseBVH(bvhText: string): MocapClip {
   }
   indexJoint(root);
 
-  // Parse frame data
+  
   const motion: number[] = [];
   for (let f = 0; f < frameCount && i < lines.length; f++, i++) {
     const values = lines[i].split(/\s+/).map(Number);
@@ -146,9 +127,7 @@ export function parseBVH(bvhText: string): MocapClip {
   return { root, frameCount, frameTime, motion, channelCount, channelOffsets };
 }
 
-/**
- * Extract all joint transforms for a given frame index.
- */
+
 export function getFramePose(clip: MocapClip, frame: number): FramePose {
   const f = Math.max(0, Math.min(frame, clip.frameCount - 1));
   const frameStart = f * clip.channelCount;
@@ -174,11 +153,7 @@ export function getFramePose(clip: MocapClip, frame: number): FramePose {
   return { frame: f, joints };
 }
 
-/**
- * Proportional retargeting: scale all positional channels by `scaleFactor`.
- *
- * Example: apply a 180 cm capture to a 90 cm character with scaleFactor = 0.5.
- */
+
 export function retargetClip(clip: MocapClip, scaleFactor: number): MocapClip {
   const scaled = Float64Array.from(clip.motion);
 
@@ -199,9 +174,7 @@ export function retargetClip(clip: MocapClip, scaleFactor: number): MocapClip {
   return { ...clip, motion: Array.from(scaled) };
 }
 
-/**
- * Re-export a MocapClip to BVH text (round-trip).
- */
+
 export function exportBVH(clip: MocapClip): string {
   const out: string[] = ['HIERARCHY'];
 
@@ -234,9 +207,7 @@ export function exportBVH(clip: MocapClip): string {
   return out.join('\n');
 }
 
-/**
- * Return a human-readable summary of the clip.
- */
+
 export function clipSummary(clip: MocapClip): ClipSummary {
   const jointNames: string[] = [];
   function collect(j: Joint ){ jointNames.push(j.name); j.children.forEach(collect); }
@@ -251,7 +222,7 @@ export function clipSummary(clip: MocapClip): ClipSummary {
   };
 }
 
-// Internal
+
 
 export function findJoint(root: Joint, name: string): Joint | null {
   if (root.name === name) return root;

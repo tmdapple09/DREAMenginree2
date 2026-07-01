@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Onboarding  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Welcome – Dreamengin' };
 
@@ -71,7 +71,7 @@ export default async function OnboardingPage( ){
       className="min-h-screen"
       style={{ background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)' }}
     >
-      {/* Ambient glow — SICC enhanced */}
+      
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div style={{
           position: 'absolute', top: '-100px', right: '-80px',
@@ -120,7 +120,7 @@ export default async function OnboardingPage( ){
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Wordmark hero — SICC premium */}
+        
         <div className="sicc-soft-float" style={{ textAlign: 'center', paddingBottom: 16, paddingTop: 8 }}>
           <div style={{
             fontFamily: 'var(--font-cormorant, Georgia, serif)',
@@ -153,7 +153,7 @@ export default async function OnboardingPage( ){
           >
             <div style={{ padding: '16px 18px' }}>
               <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                {/* Step icon */}
+                
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: `${tip.color}18`, border: `1.5px solid ${tip.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0, position: 'relative' }}>
                   {tip.icon}
                   <div style={{ position: 'absolute', top: -6, right: -6, width: 18, height: 18, borderRadius: '50%', background: tip.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 800, color: 'white' }}>

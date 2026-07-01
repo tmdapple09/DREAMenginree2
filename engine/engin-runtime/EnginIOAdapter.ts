@@ -1,50 +1,30 @@
 import type { EnginBaseState, JsonValue } from './EnginBaseState';
 import type { PremiumRuntimeQuality } from './PremiumRuntimeQuality';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginIOAdapter.ts.
 
-/**
- * lib/engin-runtime/EnginIOAdapter.ts
- *
- * I/O persistence layer for Engin state.
- *
- * Provides two concrete adapters:
- *   - LocalStorageAdapter — client-side, zero-latency default
- *   - MemoryAdapter — test / SSR fallback
- *
- * All adapters share the EnginIOAdapter interface so the runtime stays
- * storage-agnostic. Rule-sets never call I/O directly.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface EnginIOAdapter {
-  /**
-   * Persist a serialisable value under a namespaced key.
-   * Returns true on success, false on failure (never throws).
-   */
+  
   save<TValue extends JsonValue>(key: string, value: TValue): Promise<boolean>;
 
-  /**
-   * Retrieve a previously persisted value.
-   * Returns null if the key is not found or if deserialization fails.
-   */
+  
   load<TValue extends JsonValue>(key: string): Promise<TValue | null>;
 
-  /**
-   * Remove a persisted value.
-   * Returns true on success, false if the key did not exist.
-   */
+  
   remove(key: string): Promise<boolean>;
 }
 
@@ -70,19 +50,14 @@ export interface EnginSyncTransport<TSnapshot extends EnginBaseState = EnginBase
   ): () => void;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/** Produce the localStorage / storage key for an engin + domain key. */
+
+
 export function enginStorageKey(enginId: string, key: string): string {
   return `de:engin:${enginId}:${key}`;
 }
 
-/**
- * LocalStorageAdapter
- *
- * Client-only, synchronous storage surfaced as an async adapter.
- * Silently no-ops in SSR environments.
- */
+
 export class LocalStorageAdapter implements EnginIOAdapter {
   private readonly prefix: string;
 
@@ -131,12 +106,7 @@ export class LocalStorageAdapter implements EnginIOAdapter {
   }
 }
 
-/**
- * MemoryAdapter
- *
- * In-process Map-backed adapter. Useful for tests and for server-side rendering
- * where localStorage is unavailable.
- */
+
 export class MemoryAdapter implements EnginIOAdapter {
   private readonly store = new Map<string, string>();
 
@@ -206,8 +176,8 @@ export class MemorySyncTransport<TSnapshot extends EnginBaseState = EnginBaseSta
   }
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

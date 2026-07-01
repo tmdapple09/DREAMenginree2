@@ -1,9 +1,4 @@
-/**
- * tests/spec37-torridity.test.ts
- *
- * §37 Torridity Physics Constants
- * Tests the spec-exact formulas added to lib/torridity.ts.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -22,7 +17,7 @@ import {
   type ContentItem,
 } from '@/dreamr/torridity';
 
-// ─── §37 Constants ────────────────────────────────────────────────────────────
+
 
 describe('§37 Torridity constants', () => {
   it('n = 2.1', () => expect(TORRIDITY_N).toBe(2.1));
@@ -36,7 +31,7 @@ describe('§37 Torridity constants', () => {
   });
 });
 
-// ─── §37 Interpolation function μ ────────────────────────────────────────────
+
 
 describe('§37 μ(x) interpolation function', () => {
   it('μ(0) = 0', () => expect(mu(0)).toBe(0));
@@ -49,7 +44,7 @@ describe('§37 μ(x) interpolation function', () => {
     expect(mu(1000)).toBeLessThan(1);
   });
   it('deep-MOND: μ(x) ≈ x for small x', () => {
-    // For x ≪ 1: μ(x) ≈ x / (1 + x^n)^(1/n) ≈ x
+    
     expect(mu(0.001)).toBeCloseTo(0.001, 3);
   });
   it('μ is monotonically increasing', () => {
@@ -63,7 +58,7 @@ describe('§37 μ(x) interpolation function', () => {
   });
 });
 
-// ─── §37 Content mass ────────────────────────────────────────────────────────
+
 
 describe('§37 contentMass', () => {
   it('M = log(1 + buildTime·0.5 + uniqueAssets·2)', () => {
@@ -76,14 +71,14 @@ describe('§37 contentMass', () => {
   });
 });
 
-// ─── §37 torridityRankSpec ────────────────────────────────────────────────────
+
 
 describe('§37 torridityRankSpec (spec-exact)', () => {
   it('returns 0 for zero mass', () => {
     expect(torridityRankSpec(100, 0)).toBe(0);
   });
   it('returns near-zero for zero views (log1p(1)/4 is small but nonzero)', () => {
-    // V = a0 * log1p(0+1) / 4 = 0.05 * ln(2) / 4 ≈ 0.0087 — small but > 0
+    
     const r = torridityRankSpec(0, 1);
     expect(r).toBeGreaterThan(0);
     expect(r).toBeLessThan(0.02);
@@ -105,7 +100,7 @@ describe('§37 torridityRankSpec (spec-exact)', () => {
   });
 });
 
-// ─── §37 Content decay ───────────────────────────────────────────────────────
+
 
 describe('§37 contentDecayFactor', () => {
   it('decay_factor = μ(age_hours / 24)', () => {
@@ -123,7 +118,7 @@ describe('§37 contentDecayFactor', () => {
   });
 });
 
-// ─── §37 decayedRank ─────────────────────────────────────────────────────────
+
 
 describe('§37 decayedRank', () => {
   it('fresh content (ageHours=0) has maximum rank', () => {
@@ -136,7 +131,7 @@ describe('§37 decayedRank', () => {
   });
 });
 
-// ─── §37 Throttling gate ─────────────────────────────────────────────────────
+
 
 describe('§37 throttledVisibility', () => {
   it('caps low-mass content to 10% of feed slots (ΔP = 0.1)', () => {
@@ -151,7 +146,7 @@ describe('§37 throttledVisibility', () => {
   });
 });
 
-// ─── §37 rankFeed ────────────────────────────────────────────────────────────
+
 
 describe('§37 rankFeed', () => {
   const items: ContentItem[] = [

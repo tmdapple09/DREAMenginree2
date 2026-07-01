@@ -18,26 +18,21 @@ import {
     type SessionRole,
 } from '@/engine/collaboration/index';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/sharedDream.ts.
 
-/**
- * lib/sharedDream.ts
- *
- * Backward-compatible facade over the canonical collaboration engine
- * in lib/collaboration.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export type SharedDreamSession = CollabSession;
 
@@ -58,7 +53,7 @@ export interface SharedDreamSessionOptions {
   mode?: CollabMode;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 async function connectSharedDream(
   channelId: string,
@@ -155,11 +150,11 @@ export async function leaveSharedDreamSession(session: SharedDreamSession): Prom
   await session.leave();
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+
 
 export {
     useSharedDreamSession, type SharedDreamActivityEntry, type SharedDreamMember, type UseSharedDreamSessionOptions,

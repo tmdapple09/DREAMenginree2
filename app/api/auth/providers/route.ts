@@ -1,15 +1,7 @@
 import { SUPABASE_CONFIG } from "@/supabase/config";
 import { NextResponse } from "next/server";
 
-/**
- * GET /api/auth/providers
- *
- * Returns which OAuth providers are currently enabled in this Supabase project
- * by querying the public GoTrue /auth/v1/settings endpoint.
- *
- * Used by the login and join pages to disable OAuth buttons before
- * attempting a redirect that Google/GitHub would reject with invalid_client.
- */
+
 interface SupabaseAuthSettings {
   external?: Record<string, boolean>;
 }

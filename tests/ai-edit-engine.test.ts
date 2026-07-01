@@ -1,21 +1,4 @@
-/**
- * tests/ai-edit-engine.test.ts
- *
- * Unit tests for lib/diff/aiEditEngine — CodeEngin Trust Layer core logic.
- *
- * Coverage:
- *   1. parseAiInstruction  — instruction → AiSuggestion
- *   2. wordBoundsAt        — word boundary detection
- *   3. lineBoundsAt        — line boundary detection
- *   4. blockBoundsAt       — block boundary detection
- *   5. functionBoundsAt    — function boundary detection
- *   6. buildEditPreview    — scope matching + diff generation
- *   7. applyMatchesForCell — right-to-left replacement
- *   8. applyEdit           — multi-cell apply + undo snapshot
- *   9. undoEdit            — snapshot restore
- *  10. generateDiffLines   — line-level diff
- *  11. SCOPE_RISK / CONFIRMATION_REQUIRED
- */
+
 
 import { describe, it, expect } from 'vitest';
 
@@ -40,7 +23,7 @@ import {
   type EditPreview,
 } from '@/engins/codeengin/diff/aiEditEngine';
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
+
 
 const CELL_A: EditableCell = {
   id: 'cell-a',
@@ -63,11 +46,11 @@ const CELL_B: EditableCell = {
 
 const CELLS = [CELL_A, CELL_B];
 
-// Cursor positioned on "name" in line 1 of CELL_A
-// "function greet(name) {" — 'n' is at index 16
-const CURSOR_ON_NAME = 18; // inside "name" in "greet(name)"
 
-// ─── escapeRegex ──────────────────────────────────────────────────────────────
+
+const CURSOR_ON_NAME = 18; 
+
+
 
 describe('escapeRegex', () => {
   it('escapes dot', () => expect(escapeRegex('a.b')).toBe('a\\.b'));
@@ -75,7 +58,7 @@ describe('escapeRegex', () => {
   it('escapes nothing for simple word', () => expect(escapeRegex('hello')).toBe('hello'));
 });
 
-// ─── parseAiInstruction ───────────────────────────────────────────────────────
+
 
 describe('parseAiInstruction', () => {
   it('detects rename … to … → word-in-file scope', () => {
@@ -132,7 +115,7 @@ describe('parseAiInstruction', () => {
     expect(s.scopeRationale.length).toBeGreaterThan(0);
   });
 
-  // ── Fix 2: new patterns ───────────────────────────────────────────────────────
+  
 
   it('detects swap X with Y → word-in-file scope, high confidence', () => {
     const s = parseAiInstruction('swap oldName with newName');
@@ -165,7 +148,7 @@ describe('parseAiInstruction', () => {
     expect(s.confidence).toBe('medium');
   });
 
-  // ── Fix 2: confidence field ───────────────────────────────────────────────────
+  
 
   it('rename/replace/swap/delete give high confidence', () => {
     expect(parseAiInstruction('rename foo to bar').confidence).toBe('high');
@@ -200,7 +183,7 @@ describe('parseAiInstruction', () => {
     }
   });
 
-  // ── Fix 2: backtick-quoted targets ───────────────────────────────────────────
+  
 
   it('handles backtick-quoted target in rename', () => {
     const s = parseAiInstruction('rename `oldFn` to `newFn`');
@@ -214,7 +197,7 @@ describe('parseAiInstruction', () => {
     expect(s.replacement).toBe('total');
   });
 
-  // ── Fix 1: "all cells" keyword triggers all-cells scope ──────────────────────
+  
 
   it('"all cells" keyword triggers word-in-codebase scope', () => {
     const s = parseAiInstruction('rename foo to bar in all cells');
@@ -227,7 +210,7 @@ describe('parseAiInstruction', () => {
   });
 });
 
-// ─── wordBoundsAt ─────────────────────────────────────────────────────────────
+
 
 describe('wordBoundsAt', () => {
   const code = 'const greeting = "hello";';
@@ -244,17 +227,17 @@ describe('wordBoundsAt', () => {
   });
 
   it('returns empty range when cursor is just past a word (on a space)', () => {
-    // cursor at 5 is the space after "const"; wordBoundsAt walks BACKWARD into "const"
-    // so start will equal 0 (start of "const"), not 5
+    
+    
     const b = wordBoundsAt(code, 5);
-    // The key invariant: whatever bounds are returned, slicing gives a word (or empty)
+    
     const sliced = code.slice(b.start, b.end);
-    // Either we're still inside "const" (non-empty) or exactly at boundary (empty)
+    
     expect(typeof sliced).toBe('string');
   });
 });
 
-// ─── lineBoundsAt ─────────────────────────────────────────────────────────────
+
 
 describe('lineBoundsAt', () => {
   const code = 'line one\nline two\nline three';
@@ -275,7 +258,7 @@ describe('lineBoundsAt', () => {
   });
 });
 
-// ─── blockBoundsAt ────────────────────────────────────────────────────────────
+
 
 describe('blockBoundsAt', () => {
   const code = 'if (x) { doSomething(); }';
@@ -285,7 +268,7 @@ describe('blockBoundsAt', () => {
     const b = blockBoundsAt(code, cursor);
     expect(b).not.toBeNull();
     expect(b!.start).toBe(code.indexOf('{'));
-    expect(b!.end).toBe(code.length); // after '}'
+    expect(b!.end).toBe(code.length); 
   });
 
   it('returns null when no enclosing block', () => {
@@ -293,17 +276,17 @@ describe('blockBoundsAt', () => {
     expect(blockBoundsAt(noBlock, 5)).toBeNull();
   });
 
-  // ── Fix 3: string/comment masking ────────────────────────────────────────────
+  
 
   it('ignores { } inside a string literal', () => {
-    // The real block is the if-body; the string "{ fake }" must not confuse it
+    
     const code2 = 'if (x) { const s = "{ fake }"; doSomething(); }';
     const cursor2 = code2.indexOf('doSomething') + 3;
     const b = blockBoundsAt(code2, cursor2);
     expect(b).not.toBeNull();
-    // Should find the outer { } — NOT the fake braces inside the string
+    
     expect(b!.start).toBe(code2.indexOf('{'));
-    expect(b!.end).toBe(code2.length); // closing } at end
+    expect(b!.end).toBe(code2.length); 
   });
 
   it('ignores { } after a // comment on the same line', () => {
@@ -315,7 +298,7 @@ describe('blockBoundsAt', () => {
     expect(b!.end).toBe(code3.length);
   });
 
-  // ── Fix 3: fallback to [ ] and ( ) ───────────────────────────────────────────
+  
 
   it('falls back to [ ] when no { } enclosing block', () => {
     const arr = 'const items = [1, 2, 3];';
@@ -334,7 +317,7 @@ describe('blockBoundsAt', () => {
   });
 });
 
-// ─── functionBoundsAt ────────────────────────────────────────────────────────
+
 
 describe('functionBoundsAt', () => {
   const code = 'function add(a, b) { return a + b; }';
@@ -352,7 +335,7 @@ describe('functionBoundsAt', () => {
   });
 });
 
-// ─── buildEditPreview — scope: word ──────────────────────────────────────────
+
 
 describe('buildEditPreview — word scope', () => {
   it('returns one match for the word under cursor', () => {
@@ -377,7 +360,7 @@ describe('buildEditPreview — word scope', () => {
   });
 });
 
-// ─── buildEditPreview — scope: line ──────────────────────────────────────────
+
 
 describe('buildEditPreview — line scope', () => {
   it('matches the full line the cursor is on', () => {
@@ -391,7 +374,7 @@ describe('buildEditPreview — line scope', () => {
   });
 });
 
-// ─── buildEditPreview — scope: block ─────────────────────────────────────────
+
 
 describe('buildEditPreview — block scope', () => {
   it('matches the enclosing block', () => {
@@ -406,7 +389,7 @@ describe('buildEditPreview — block scope', () => {
   });
 });
 
-// ─── buildEditPreview — scope: file ──────────────────────────────────────────
+
 
 describe('buildEditPreview — file scope', () => {
   it('matches the entire cell', () => {
@@ -421,7 +404,7 @@ describe('buildEditPreview — file scope', () => {
   });
 });
 
-// ─── buildEditPreview — scope: word-in-file ──────────────────────────────────
+
 
 describe('buildEditPreview — word-in-file scope', () => {
   it('finds all occurrences in the active cell only', () => {
@@ -430,7 +413,7 @@ describe('buildEditPreview — word-in-file scope', () => {
       cursorOffset: 0,
       scope: 'word-in-file', target: 'msg', replacement: 'message',
     });
-    // CELL_A has "msg" three times: "const msg", "console.log(msg)", "return msg"
+    
     expect(preview.matchCount).toBe(3);
     expect(preview.affectedCellCount).toBe(1);
   });
@@ -441,13 +424,13 @@ describe('buildEditPreview — word-in-file scope', () => {
       cursorOffset: 0,
       scope: 'word-in-file', target: 'name', replacement: 'username',
     });
-    // Only cell-a has "name" (in the function signature)
+    
     const cellIds = new Set(preview.matches.map((m) => m.cellId));
     expect(cellIds.has('cell-b')).toBe(false);
   });
 });
 
-// ─── buildEditPreview — scope: word-in-codebase ──────────────────────────────
+
 
 describe('buildEditPreview — word-in-codebase scope', () => {
   it('finds matches across all cells', () => {
@@ -456,7 +439,7 @@ describe('buildEditPreview — word-in-codebase scope', () => {
       cursorOffset: 0,
       scope: 'word-in-codebase', target: 'name', replacement: 'username',
     });
-    // "name" appears in cell-a (function param) and cell-b (const name + greet(name))
+    
     expect(preview.matchCount).toBeGreaterThanOrEqual(2);
     expect(preview.affectedCellCount).toBe(2);
   });
@@ -471,7 +454,7 @@ describe('buildEditPreview — word-in-codebase scope', () => {
   });
 });
 
-// ─── buildEditPreview — risk & confirmation ───────────────────────────────────
+
 
 describe('buildEditPreview — risk levels', () => {
   it('word scope is low risk', () => {
@@ -502,7 +485,7 @@ describe('buildEditPreview — risk levels', () => {
   });
 });
 
-// ─── applyMatchesForCell ──────────────────────────────────────────────────────
+
 
 describe('applyMatchesForCell', () => {
   it('replaces a single match correctly', () => {
@@ -513,7 +496,7 @@ describe('applyMatchesForCell', () => {
 
   it('replaces multiple matches right-to-left without offset corruption', () => {
     const code = 'foo + foo + foo';
-    // All occurrences of "foo" (word-in-file)
+    
     const matches = [...code.matchAll(/\bfoo\b/g)].map((m) => ({
       cellId: 'x', start: m.index!, end: m.index! + 3, matched: 'foo', lineNo: 1,
     }));
@@ -527,7 +510,7 @@ describe('applyMatchesForCell', () => {
   });
 });
 
-// ─── applyEdit ────────────────────────────────────────────────────────────────
+
 
 describe('applyEdit', () => {
   it('updates only cells that contain matches', () => {
@@ -560,7 +543,7 @@ describe('applyEdit', () => {
   });
 });
 
-// ─── undoEdit ─────────────────────────────────────────────────────────────────
+
 
 describe('undoEdit', () => {
   it('restores cells to their pre-edit state', () => {
@@ -569,22 +552,22 @@ describe('undoEdit', () => {
       scope: 'word-in-file', target: 'msg', replacement: 'message',
     });
     const { cells: updated, undo } = applyEdit(CELLS, preview);
-    // Verify the change was applied
+    
     expect(updated.find((c) => c.id === 'cell-a')!.code).toContain('message');
-    // Undo it
+    
     const restored = undoEdit(updated, undo);
     expect(restored.find((c) => c.id === 'cell-a')!.code).toBe(CELL_A.code);
   });
 
   it('does not affect cells that were not in the snapshot', () => {
     const snapshot = { cells: [{ id: 'cell-a', code: 'original' }], description: 'test' };
-    // cell-b is not in the snapshot → should be unchanged
+    
     const result = undoEdit(CELLS, snapshot);
     expect(result.find((c) => c.id === 'cell-b')!.code).toBe(CELL_B.code);
   });
 });
 
-// ─── generateDiffLines ────────────────────────────────────────────────────────
+
 
 describe('generateDiffLines', () => {
   it('returns only context lines when before === after', () => {
@@ -608,15 +591,15 @@ describe('generateDiffLines', () => {
   });
 
   it('returns an empty array when both inputs are empty strings', () => {
-    // empty.split('\n') = [''] — one empty context line; trimContextLines reduces to minimal context
+    
     const lines = generateDiffLines('', '');
-    // No changed lines means this is all context — may be [] or a single empty-context line
+    
     const changed = lines.filter((l) => l.type !== 'context');
     expect(changed).toHaveLength(0);
   });
 });
 
-// ─── SCOPE constants ──────────────────────────────────────────────────────────
+
 
 describe('SCOPE_ORDER', () => {
   it('contains all 7 scopes', () => {
@@ -639,12 +622,12 @@ describe('SCOPE_LABEL', () => {
     }
   });
 
-  // Fix 1: label must NOT say "codebase" (misleads users into thinking filesystem search)
+  
   it('word-in-codebase label does not contain the word "codebase"', () => {
     expect(SCOPE_LABEL['word-in-codebase'].toLowerCase()).not.toContain('codebase');
   });
 
-  // Fix 1: description must mention "cells" or "notebook" to set accurate expectations
+  
   it('word-in-codebase description clarifies in-memory cells only', () => {
     const desc = SCOPE_DESCRIPTION['word-in-codebase'].toLowerCase();
     expect(desc.includes('cell') || desc.includes('notebook') || desc.includes('memory')).toBe(true);

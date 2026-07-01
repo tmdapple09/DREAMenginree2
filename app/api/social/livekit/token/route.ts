@@ -4,16 +4,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * POST /api/social/livekit/token
- *
- * Server-side LiveKit token generation. Validates the Supabase session,
- * then calls `lib/social/livekit.generateServerToken` which proxies to
- * the backend livekitService or the LiveKit server SDK.
- *
- * Body: { roomName: string; identity: string }
- * Response: { token: string; wsUrl: string; roomName: string; identity: string }
- */
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -39,7 +30,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Use the user's Supabase ID as the identity if none is supplied.
+  
   const resolvedIdentity = identity ?? user.id;
 
   try {

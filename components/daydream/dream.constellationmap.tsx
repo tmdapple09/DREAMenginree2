@@ -3,17 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * DreamConstellationMap
- *
- * A full-screen interactive 2-D node-link graph showing all 7 Daydream
- * surfaces connected by animated arcs.  Hovering a node brightens it and
- * its edges.  Clicking navigates directly to that surface.
- *
- * Rendering: canvas 2-D API + requestAnimationFrame.
- * No external deps beyond framer-motion (already in bundle).
- * Battery-safe: pauses when tab is hidden.
- */
+
 
 const NODES = [
   { id: 'music',     emoji: '🎵', label: 'Music',     href: '/daydream/music',     r: 200, g:  88, b: 212, cx: 0.20, cy: 0.32 },
@@ -161,7 +151,7 @@ export default function DreamConstellationMap( ){
         const pulse = 0.28 + 0.18 * Math.sin(s.t * 1.4);
         const alpha = isHot ? 0.70 : pulse;
 
-        // Animated arc offset
+        
         const mx = (pa.x + pb.x) / 2 + Math.sin(s.t * 0.7 + a.cx * 5) * 22;
         const my = (pa.y + pb.y) / 2 + Math.cos(s.t * 0.9 + b.cy * 5) * 18;
 
@@ -176,7 +166,7 @@ export default function DreamConstellationMap( ){
         ctx.lineWidth   = isHot ? 2.2 : 1.1;
         ctx.stroke();
 
-        // Traveling spark on each edge — with fading ghost trail
+        
         const progress = ((s.t * 0.5 + EDGES.indexOf([aid, bid] as [NodeId, NodeId])) % 1 + 1) % 1;
         for (let ti = 3; ti >= 0; ti--) {
           const tp  = (progress - ti * 0.022 + 1) % 1;
@@ -219,7 +209,7 @@ export default function DreamConstellationMap( ){
         ctx.fillStyle = halo;
         ctx.fill();
 
-        // Node disc
+        
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${n.r},${n.g},${n.b},${isHot ? 0.46 : 0.24})`;
@@ -228,14 +218,14 @@ export default function DreamConstellationMap( ){
         ctx.lineWidth   = isHot ? 3.0 : 2.0;
         ctx.stroke();
 
-        // Specular ring
+        
         ctx.beginPath();
         ctx.arc(x, y, size * 0.65, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(255,255,255,${isHot ? 0.28 : 0.10})`;
         ctx.lineWidth   = 1;
         ctx.stroke();
 
-        // Emoji + label via DOM (avoids measureText complexity)
+        
         ctx.font        = `${isHot ? 26 : 22}px serif`;
         ctx.textAlign   = 'center';
         ctx.textBaseline = 'middle';
@@ -253,7 +243,7 @@ export default function DreamConstellationMap( ){
 
     stateRef.current.raf = requestAnimationFrame(render);
 
-    // Mouse / touch interaction
+    
     const onMove = (e: MouseEvent) => {
       const s = stateRef.current;
       if (!s) return;
@@ -272,7 +262,7 @@ export default function DreamConstellationMap( ){
     canvas.addEventListener('mousemove', onMove);
     canvas.addEventListener('click',     onClick);
 
-    // Touch support
+    
     const onTouchMove = (e: TouchEvent) => {
       const st = stateRef.current;
       if (!st || !e.touches[0]) return;
@@ -322,7 +312,7 @@ export default function DreamConstellationMap( ){
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
 
-      {/* Hover tooltip */}
+      
       {hovered && (() => {
         const n = NODES.find((x) => x.id === hovered)!;
         return (

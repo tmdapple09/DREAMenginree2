@@ -1,17 +1,4 @@
-/**
- * tests/journey-insights.test.ts
- *
- * Unit tests for lib/journey/journeyInsights — the derived signal layer.
- *
- * All functions under test are pure — no DOM, no network, no React.
- *
- * Coverage:
- *   findFirstOccurrenceIds    — mark the earliest dot per kind
- *   computeCurrentStreak      — consecutive-day streak from today
- *   computeWeeklyFrequency    — count per kind in 7-day rolling window
- *   detectReturnGaps          — detect gaps ≥ RETURN_GAP_DAYS
- *   annotateDotsWithInsights  — full annotation pass (integration)
- */
+
 
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import type { JourneyDot } from '@/types/journey';
@@ -24,7 +11,7 @@ import {
   RETURN_GAP_DAYS,
 } from '@/engine/journey/journeyInsights';
 
-// ── Fixture helpers ───────────────────────────────────────────────────────────
+
 
 let nextId = 1;
 function makeDot(overrides: Partial<JourneyDot> = {}): JourneyDot {
@@ -42,7 +29,7 @@ function makeDot(overrides: Partial<JourneyDot> = {}): JourneyDot {
   };
 }
 
-/** Return an ISO timestamp N days ago from now. */
+
 function daysAgo(n: number, offsetMs = 0): string {
   return new Date(Date.now() - n * 86_400_000 - offsetMs).toISOString();
 }
@@ -52,7 +39,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// ─── findFirstOccurrenceIds ───────────────────────────────────────────────────
+
 
 describe('findFirstOccurrenceIds()', () => {
   it('returns empty set for empty input', () => {
@@ -65,11 +52,11 @@ describe('findFirstOccurrenceIds()', () => {
   });
 
   it('marks only the oldest dot of each kind as first (newest-first API order)', () => {
-    // API returns newest first
+    
     const newerDot = makeDot({ id: 'new', kind: 'surface_first_entry', created_at: daysAgo(1) });
     const olderDot = makeDot({ id: 'old', kind: 'surface_first_entry', created_at: daysAgo(5) });
-    const ids = findFirstOccurrenceIds([newerDot, olderDot]); // newest first
-    expect(ids).toContain('old');   // oldest = "first ever"
+    const ids = findFirstOccurrenceIds([newerDot, olderDot]); 
+    expect(ids).toContain('old');   
     expect(ids).not.toContain('new');
   });
 
@@ -79,14 +66,14 @@ describe('findFirstOccurrenceIds()', () => {
       makeDot({ id: 'b', kind: 'surface_first_entry',  created_at: daysAgo(2) }),
       makeDot({ id: 'c', kind: 'runtime_first_entry',  created_at: daysAgo(1) }),
     ];
-    const ids = findFirstOccurrenceIds([dots[2], dots[1], dots[0]]); // newest first
+    const ids = findFirstOccurrenceIds([dots[2], dots[1], dots[0]]); 
     expect(ids.size).toBe(2);
-    expect(ids).toContain('a'); // oldest runtime_first_entry
-    expect(ids).toContain('b'); // only surface_first_entry
+    expect(ids).toContain('a'); 
+    expect(ids).toContain('b'); 
   });
 });
 
-// ─── computeCurrentStreak ─────────────────────────────────────────────────────
+
 
 describe('computeCurrentStreak()', () => {
   it('returns 0 for empty dot list', () => {
@@ -99,40 +86,40 @@ describe('computeCurrentStreak()', () => {
   });
 
   it('returns 1 when there is only activity today', () => {
-    const dots = [makeDot({ created_at: daysAgo(0, 60_000) })]; // now - 1 min
+    const dots = [makeDot({ created_at: daysAgo(0, 60_000) })]; 
     expect(computeCurrentStreak(dots)).toBe(1);
   });
 
   it('returns 3 for three consecutive days ending today', () => {
     const dots = [
-      makeDot({ created_at: daysAgo(0, 60_000) }),  // today
-      makeDot({ created_at: daysAgo(1) }),           // yesterday
-      makeDot({ created_at: daysAgo(2) }),           // day before
+      makeDot({ created_at: daysAgo(0, 60_000) }),  
+      makeDot({ created_at: daysAgo(1) }),           
+      makeDot({ created_at: daysAgo(2) }),           
     ];
     expect(computeCurrentStreak(dots)).toBe(3);
   });
 
   it('stops at a gap — returns streak up to the gap', () => {
     const dots = [
-      makeDot({ created_at: daysAgo(0, 60_000) }),  // today
-      makeDot({ created_at: daysAgo(1) }),           // yesterday
-      // gap: no activity on day 2
-      makeDot({ created_at: daysAgo(3) }),           // 3 days ago
+      makeDot({ created_at: daysAgo(0, 60_000) }),  
+      makeDot({ created_at: daysAgo(1) }),           
+      
+      makeDot({ created_at: daysAgo(3) }),           
     ];
-    expect(computeCurrentStreak(dots)).toBe(2); // today + yesterday only
+    expect(computeCurrentStreak(dots)).toBe(2); 
   });
 
   it('counts multiple dots on the same day as one streak-day', () => {
     const dots = [
       makeDot({ id: 'a1', created_at: daysAgo(0, 1_000) }),
-      makeDot({ id: 'a2', created_at: daysAgo(0, 2_000) }),  // same day
+      makeDot({ id: 'a2', created_at: daysAgo(0, 2_000) }),  
       makeDot({ id: 'b',  created_at: daysAgo(1) }),
     ];
     expect(computeCurrentStreak(dots)).toBe(2);
   });
 });
 
-// ─── computeWeeklyFrequency ───────────────────────────────────────────────────
+
 
 describe('computeWeeklyFrequency()', () => {
   it('returns empty map for empty input', () => {
@@ -157,9 +144,9 @@ describe('computeWeeklyFrequency()', () => {
     const recent = makeDot({ id: 'r', kind: 'content_first_created', created_at: daysAgo(1) });
     const old    = makeDot({ id: 'o', kind: 'content_first_created', created_at: daysAgo(10) });
     const freq = computeWeeklyFrequency([recent, old]);
-    // 'recent' only has 1 occurrence in its 7-day window (old is outside)
+    
     expect(freq.has(recent.id)).toBe(false);
-    // 'old' has 1 occurrence in its 7-day window
+    
     expect(freq.has(old.id)).toBe(false);
   });
 
@@ -170,12 +157,12 @@ describe('computeWeeklyFrequency()', () => {
       makeDot({ id: 'c', kind: 'dream_window_first_mount', created_at: daysAgo(3) }),
     ];
     const freq = computeWeeklyFrequency(dots);
-    // Each dot's 7-day window includes all three
+    
     expect(freq.get('a')).toBe(3);
   });
 });
 
-// ─── detectReturnGaps ─────────────────────────────────────────────────────────
+
 
 describe('detectReturnGaps()', () => {
   it('returns empty map for empty input', () => {
@@ -188,15 +175,15 @@ describe('detectReturnGaps()', () => {
   });
 
   it('does not flag a return when gap is less than RETURN_GAP_DAYS', () => {
-    // RETURN_GAP_DAYS = 3; gap of 2 days should not flag
+    
     const older  = makeDot({ id: 'old', kind: 'surface_first_entry', surface: 'Music', created_at: daysAgo(3) });
     const newer  = makeDot({ id: 'new', kind: 'surface_first_entry', surface: 'Music', created_at: daysAgo(1) });
-    const gaps = detectReturnGaps([newer, older]); // newest first
+    const gaps = detectReturnGaps([newer, older]); 
     expect(gaps.has('new')).toBe(false);
   });
 
   it(`flags a return when gap is ≥ RETURN_GAP_DAYS (${RETURN_GAP_DAYS} days)`, () => {
-    const gap = RETURN_GAP_DAYS + 2; // comfortably over threshold
+    const gap = RETURN_GAP_DAYS + 2; 
     const older = makeDot({ id: 'old', kind: 'surface_first_entry', surface: 'Music', created_at: daysAgo(gap + 1) });
     const newer = makeDot({ id: 'new', kind: 'surface_first_entry', surface: 'Music', created_at: daysAgo(1) });
     const gaps = detectReturnGaps([newer, older]);
@@ -212,7 +199,7 @@ describe('detectReturnGaps()', () => {
   });
 });
 
-// ─── annotateDotsWithInsights ─────────────────────────────────────────────────
+
 
 describe('annotateDotsWithInsights()', () => {
   it('returns empty array for empty input', () => {

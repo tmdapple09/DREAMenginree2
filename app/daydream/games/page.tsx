@@ -15,10 +15,10 @@ import { GAME_QUALITY_PILLARS } from '@/engins/gameengin/games/quality-plan';
 import dynamic from 'next/dynamic';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamGames  (framework-mandated basename: page.tsx)
 
-// Stream 8.3 — Bundle split: GameEngin (Babylon.js) only loads when Side B mounts.
-// docs/ARCHITECTURE.md §10 — render-on-demand, minimal initial bundle.
+
+
+
 const GameEngin = dynamic(() => import('@/engins/engin.GameEngin'), {
   loading: () => (
     <div className="flex items-center justify-center h-64">

@@ -77,19 +77,7 @@ import {
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-/**
- * ForgeEngin — The Meta-Creation Engine
- *
- * A unified launch deck and status matrix for all 8 creative engines.
- * Shows activity pulses, last-opened timestamps, cross-engine linkages,
- * and provides one-tap launch into any engine's Side B.
- *
- * Design: Dark command-center aesthetic. Status cards glow based on
- * activity heat. The grid breathes — hotter engines pulse brighter.
- *
- * Architecture: Follows the same pattern as GameEngin, StarMakerEngin etc.
- * Receives an `onBack` callback to flip back to Side A.
- */
+
 
 const FORGE = {
   bg:     '#0a0a0f',
@@ -102,8 +90,8 @@ const FORGE = {
   glow:   'rgba(239,68,68,0.18)',
 } as const;
 
-// All typed events per channel — used for exhaustive bridge subscription.
-// ForgeEngin is the meta-layer; it watches every event on every channel.
+
+
 const ALL_CHANNEL_EVENTS: Record<DualRuntimeChannel, string[]> = {
   music:   ['music:track-released', 'music:bpm-changed', 'music:stem-ready', 'music:upload-complete'],
   games:   ['games:score-submitted', 'games:session-started', 'games:session-ended', 'games:achievement-unlocked', 'games:asset-exported'],
@@ -114,7 +102,7 @@ const ALL_CHANNEL_EVENTS: Record<DualRuntimeChannel, string[]> = {
   create:  ['create:draft-saved', 'create:published', 'create:export-asset', 'create:queue-updated', 'create:calendar-event'],
   content: [],
   compute: ['vm:initialized', 'vm:workload-submitted', 'vm:inter-vm-message', 'vm:error', 'vm:dispatch-workload'],
-  shared_dream: [], // <-- Added missing property
+  shared_dream: [], 
 };
 
 interface BridgeEvent {
@@ -144,12 +132,12 @@ export default function ForgeEngin({ onBack }: Props) {
   const [nexus, setNexus] = useState<NexusSnapshot | null>(null);
   const [rituals, setRituals] = useState<RitualSnapshot | null>(null);
 
-  // Forge activity pulse — record when this engine is used
+  
   const { record: forgeRecord } = useForgeActivity({ enginId: 'forge' });
 
-  // Subscribe to ALL 6 channels for the live Pulse Monitor event feed.
-  // Uses a cast because ForgeEngin is the meta-layer that monitors every channel
-  // generically — it doesn't need the typed payloads, only channel + event name.
+  
+  
+  
   useEffect(() => {
     const unsubs: (() => void)[] = [];
     const castSubscribe = bridge.subscribe as unknown as (
@@ -162,7 +150,7 @@ export default function ForgeEngin({ onBack }: Props) {
           castSubscribe(channel, event, () => {
             setBridgeEvents((prev) => {
               const next = [{ channel, event, timestamp: Date.now() }, ...prev];
-              return next.slice(0, 20); // keep last 20
+              return next.slice(0, 20); 
             });
           }),
         );
@@ -172,7 +160,7 @@ export default function ForgeEngin({ onBack }: Props) {
     return () => { unsubs.forEach((fn) => fn()); };
   }, []);
 
-  // Refresh all forge data every 10s
+  
   useEffect(() => {
     const refresh = () => {
       const act = readForgeActivity();
@@ -182,7 +170,7 @@ export default function ForgeEngin({ onBack }: Props) {
       setCustomWorkflows(readCustomWorkflows());
       setWorkflowRun(getActiveWorkflowRun());
 
-      // Generate suggestions from last activity
+      
       const sorted = [...act].sort((a, b) =>
         new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime(),
       );
@@ -191,7 +179,7 @@ export default function ForgeEngin({ onBack }: Props) {
         setSuggestions(generateSuggestions({ enginId: last.enginId, label: last.label }));
       }
 
-      // Compute Forge evolution systems
+      
       setMomentum(computeMomentum());
       setNexus(computeNexus());
       setRituals(computeRituals());
@@ -213,10 +201,10 @@ export default function ForgeEngin({ onBack }: Props) {
   const totalHeat = activity.reduce((sum, a) => sum + a.heat, 0);
   const activeCount = activity.filter((a) => a.heat > 0.1).length;
 
-  // All workflows = built-in + custom
+  
   const allWorkflows = useMemo(() => [...FORGE_WORKFLOWS, ...customWorkflows], [customWorkflows]);
 
-  // Goal → workflow handler
+  
   const handleGoalSubmit = useCallback(() => {
     if (!goalInput.trim()) return;
     const wf = parseGoalToWorkflow(goalInput);
@@ -224,7 +212,7 @@ export default function ForgeEngin({ onBack }: Props) {
     forgeRecord('Generated workflow suggestion');
   }, [goalInput, forgeRecord]);
 
-  // Save generated or custom workflow
+  
   const handleSaveWorkflow = useCallback((wf: ForgeWorkflow) => {
     saveCustomWorkflow(wf);
     setCustomWorkflows(readCustomWorkflows());
@@ -232,28 +220,28 @@ export default function ForgeEngin({ onBack }: Props) {
     setGoalInput('');
   }, []);
 
-  // Delete custom workflow
+  
   const handleDeleteWorkflow = useCallback((id: string) => {
     deleteCustomWorkflow(id);
     setCustomWorkflows(readCustomWorkflows());
   }, []);
 
-  // Start a workflow run
+  
   const handleStartRun = useCallback((wf: ForgeWorkflow) => {
     const run = startWorkflowRun(wf.id, wf.steps.length);
     setWorkflowRun(run);
     forgeRecord('Started workflow run');
   }, [forgeRecord]);
 
-  // Complete a workflow step
+  
   const handleCompleteStep = useCallback((stepIndex: number) => {
     const run = updateWorkflowStep(stepIndex, 'complete');
     setWorkflowRun(run);
     forgeRecord('Completed workflow step');
 
-    // Emit to the relevant engine's channel when a step completes.
-    // Map step index → engine id from the active workflow, then emit
-    // on that channel. Uses cast because 'forge' is not a typed channel.
+    
+    
+    
     if (run) {
       const wf = allWorkflows.find((w) => w.id === run.workflowId);
       const engineId = wf?.engines[stepIndex];
@@ -270,19 +258,19 @@ export default function ForgeEngin({ onBack }: Props) {
     }
   }, [allWorkflows, forgeRecord]);
 
-  // Fail a workflow step
+  
   const handleFailStep = useCallback((stepIndex: number) => {
     const run = updateWorkflowStep(stepIndex, 'failed', 'Manual failure report');
     setWorkflowRun(run);
   }, []);
 
-  // Dismiss workflow run
+  
   const handleDismissRun = useCallback(() => {
     clearWorkflowRun();
     setWorkflowRun(null);
   }, []);
 
-  // Custom workflow builder
+  
   const handleSaveCustom = useCallback(() => {
     if (!builderTitle.trim() || builderEngines.length === 0) return;
     const wf: ForgeWorkflow = {
@@ -313,7 +301,7 @@ export default function ForgeEngin({ onBack }: Props) {
   return (
     <ArtifactSlot artifactId="engin:forge">
     <div style={{ minHeight: '100vh', background: FORGE.bg, color: FORGE.text }}>
-      {/* ── Header ── */}
+      
       <header
         style={{
           position: 'sticky',
@@ -374,7 +362,7 @@ export default function ForgeEngin({ onBack }: Props) {
 
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '20px 16px 40px' }}>
 
-        {/* ── ⚡ AI Anything Builder Banner ── */}
+        
         <div style={{ marginBottom: 20 }}>
           <motion.button
             type="button"
@@ -429,7 +417,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </AnimatePresence>
         </div>
 
-        {/* ── System Pulse Overview ── */}
+        
         <div style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: FORGE.accent, marginBottom: 10 }}>
             SYSTEM PULSE
@@ -456,7 +444,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* ── 🚀 Creative Momentum ── */}
+        
         {momentum && (
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -474,7 +462,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </span>
             </div>
 
-            {/* Composite score ring */}
+            
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -540,7 +528,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── Engine Status Matrix ── */}
+        
         <div style={{ marginBottom: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 className="w-4 h-4" style={{ color: FORGE.gold }} />
@@ -560,7 +548,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* ── Selected Engine Detail ── */}
+        
         <AnimatePresence mode="wait">
           {selectedEngine && (
             <EngineDetailPanel
@@ -573,7 +561,7 @@ export default function ForgeEngin({ onBack }: Props) {
           )}
         </AnimatePresence>
 
-        {/* ── 🕸️ Engine Nexus (Connection Graph) ── */}
+        
         {nexus && nexus.totalTransitions > 0 && (
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -590,7 +578,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </span>
             </div>
 
-            {/* Connection strength grid */}
+            
             <div style={{
               padding: '16px',
               borderRadius: 16,
@@ -644,7 +632,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </div>
             </div>
 
-            {/* Engine centrality */}
+            
             <div style={{
               padding: '16px',
               borderRadius: 16,
@@ -682,7 +670,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </div>
             </div>
 
-            {/* Dominant pipeline */}
+            
             {nexus.dominantPipeline.length >= 2 && (
               <div style={{
                 padding: '14px 16px',
@@ -723,7 +711,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </div>
             )}
 
-            {/* Affinity clusters */}
+            
             {nexus.clusters.length > 0 && (
               <div style={{
                 padding: '14px 16px',
@@ -760,7 +748,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── 🧠 Predictive Suggestions (Intelligence Layer) ── */}
+        
         {suggestions.length > 0 && (
           <div style={{ marginTop: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -784,7 +772,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── 🎯 Natural Language Goal Input ── */}
+        
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <Wand2 className="w-4 h-4" style={{ color: '#22d3ee' }} />
@@ -837,7 +825,7 @@ export default function ForgeEngin({ onBack }: Props) {
               </button>
             </div>
 
-            {/* Generated workflow preview */}
+            
             <AnimatePresence>
               {generatedWorkflow && (
                 <motion.div
@@ -939,7 +927,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* ── 🔄 Active Workflow Run (step tracker + failure recovery) ── */}
+        
         {workflowRun && (
           <ActiveWorkflowPanel
             run={workflowRun}
@@ -950,7 +938,7 @@ export default function ForgeEngin({ onBack }: Props) {
           />
         )}
 
-        {/* ── Cross-Engine Linkage Map ── */}
+        
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <Zap className="w-4 h-4" style={{ color: '#a855f7' }} />
@@ -997,7 +985,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* ── Workflow Launcher (built-in + custom + builder) ── */}
+        
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <Workflow className="w-4 h-4" style={{ color: FORGE.gold }} />
@@ -1013,14 +1001,14 @@ export default function ForgeEngin({ onBack }: Props) {
             </span>
           </div>
 
-          {/* Built-in workflows */}
+          
           <div style={{ display: 'grid', gap: 10 }}>
             {FORGE_WORKFLOWS.map((wf) => (
               <WorkflowCard key={wf.id} workflow={wf} onStart={() => handleStartRun(wf)} />
             ))}
           </div>
 
-          {/* Custom workflows */}
+          
           {customWorkflows.length > 0 && (
             <div style={{ marginTop: 14 }}>
               <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: FORGE.dim, marginBottom: 8 }}>
@@ -1040,7 +1028,7 @@ export default function ForgeEngin({ onBack }: Props) {
             </div>
           )}
 
-          {/* Workflow builder toggle */}
+          
           <button
             type="button"
             onClick={() => setShowWorkflowBuilder(!showWorkflowBuilder)}
@@ -1064,7 +1052,7 @@ export default function ForgeEngin({ onBack }: Props) {
             <Plus className="w-3.5 h-3.5" /> Create Custom Workflow
           </button>
 
-          {/* Workflow builder */}
+          
           <AnimatePresence>
             {showWorkflowBuilder && (
               <motion.div
@@ -1186,7 +1174,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </AnimatePresence>
         </div>
 
-        {/* ── Transfer Log ── */}
+        
         {transfers.length > 0 && (
           <div style={{ marginTop: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -1236,7 +1224,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── Activity Timeline (full history) ── */}
+        
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <Clock className="w-4 h-4" style={{ color: '#38bdf8' }} />
@@ -1307,7 +1295,7 @@ export default function ForgeEngin({ onBack }: Props) {
           )}
         </div>
 
-        {/* ── 🔮 Forge Rituals (Auto-Detected Patterns) ── */}
+        
         {rituals && rituals.rituals.length > 0 && (
           <div style={{ marginTop: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -1369,7 +1357,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── Forge Philosophy ── */}
+        
         <div style={{
           marginTop: 24,
           padding: '16px 18px',
@@ -1387,7 +1375,7 @@ export default function ForgeEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* ── Journey Trail ── */}
+        
         <div style={{ marginTop: 24 }}>
           <JourneyTrail compact />
         </div>
@@ -1451,7 +1439,7 @@ function EngineStatusCard({ engine, heat, lastActive, isSelected, onSelect }: { 
         </div>
       </div>
 
-      {/* Heat bar */}
+      
       <div style={{ width: '100%', height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.06)' }}>
         <motion.div
           initial={{ width: 0 }}
@@ -1523,7 +1511,7 @@ function EngineDetailPanel({ engine, heat, lastActive, activity }: { engine: Eng
         </div>
       </div>
 
-      {/* Capabilities */}
+      
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
         {engine.capabilities.map((cap) => (
           <span
@@ -1538,7 +1526,7 @@ function EngineDetailPanel({ engine, heat, lastActive, activity }: { engine: Eng
         ))}
       </div>
 
-      {/* Action buttons */}
+      
       <div style={{ display: 'flex', gap: 10 }}>
         <Link
           href={engine.daydreamHref}
@@ -1761,7 +1749,7 @@ function ActiveWorkflowPanel({ run, allWorkflows, onCompleteStep, onFailStep, on
           ))}
         </div>
 
-        {/* Failure recovery suggestions */}
+        
         {recoverySuggestions.length > 0 && (
           <div style={{ marginTop: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
@@ -1875,7 +1863,7 @@ function WorkflowCard({ workflow, onStart, onDelete, isCustom }: { workflow: For
                 </div>
               ))}
 
-              {/* Launch first engine */}
+              
               <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
                 <Link
                   href={ENGIN_REGISTRY.find((e) => e.id === workflow.engines[0])?.daydreamHref ?? '/daydream/forge'}

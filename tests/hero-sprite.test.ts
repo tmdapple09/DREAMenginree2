@@ -1,13 +1,13 @@
-// tests/hero-sprite.test.ts
-// Unit tests for HeroSprite touch-zone detection logic.
-// The hitZone helper is exported from the component so it can be tested
-// without a browser / canvas environment.
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import { hitZone, ZONE_QUOTES, pickZoneQuote } from '@/components/dream.HeroSprite';
 
 describe('HeroSprite hitZone', () => {
-  const H = 288; // representative canvas height
+  const H = 288; 
 
   it('returns "head" for the top 30% of the canvas', () => {
     expect(hitZone(0,         H)).toBe('head');
@@ -32,10 +32,10 @@ describe('HeroSprite hitZone', () => {
   });
 
   it('maps Enter → head, Space → torso, ArrowDown → legs zones correctly', () => {
-    // Keyboard mapping mirrors: Enter=head (y=0), Space=torso (y=50%), ArrowDown=legs (y=100%)
-    expect(hitZone(0,         H)).toBe('head');   // Enter fires head reaction
-    expect(hitZone(H * 0.50,  H)).toBe('torso');  // Space fires torso reaction
-    expect(hitZone(H,          H)).toBe('legs');  // ArrowDown fires legs reaction
+    
+    expect(hitZone(0,         H)).toBe('head');   
+    expect(hitZone(H * 0.50,  H)).toBe('torso');  
+    expect(hitZone(H,          H)).toBe('legs');  
   });
 });
 
@@ -76,7 +76,7 @@ describe('pickZoneQuote', () => {
   it('returns different quotes over multiple picks (randomness check)', () => {
     const results = new Set<string>();
     for (let i = 0; i < 60; i++) results.add(pickZoneQuote('head'));
-    // With 6 quotes and 60 picks, expect at least 4 unique results
+    
     expect(results.size).toBeGreaterThanOrEqual(4);
   });
 });

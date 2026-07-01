@@ -4,16 +4,7 @@ import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 import React, { useCallback, useState } from 'react';
 import { useTapHoldMove, type Position } from './useTapHoldMove';
 
-/**
- * components/universal-editor/dream.UniversalEditorWrapper.tsx — §39
- *
- * Wraps any module with always-active tap-hold-move behaviour.
- * No edit-mode toggle — drag mode is always available via tap-hold.
- *
- * Visual feedback:
- *   - Slight scale-up + violet ring during drag
- *   - Ghost cursor indicator at drag position
- */
+
 
 export interface UniversalEditorWrapperProps {
   manifest:    ModuleManifest;
@@ -81,12 +72,12 @@ export function UniversalEditorWrapper({
       >
         {children}
 
-        {/* Drag indicator overlay */}
+        
         {isDragging && (
           <div className="absolute inset-0 rounded-lg pointer-events-none bg-violet-500/10 border border-violet-500/30" />
         )}
 
-        {/* Transfer hint badge */}
+        
         {transferHint && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg pointer-events-none">
             <span className="px-3 py-1 rounded-full bg-violet-700/90 text-white text-xs font-bold shadow-lg">
@@ -96,7 +87,7 @@ export function UniversalEditorWrapper({
         )}
       </div>
 
-      {/* Floating drag ghost at cursor position */}
+      
       {isDragging && dragPos && (
         <div
           className="fixed z-[9999] pointer-events-none"

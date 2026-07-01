@@ -2,27 +2,13 @@ import { normaliseDevto } from '@/engine/connectors/normalise';
 import { devtoUserRssUrl, parseRssFeed } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/devto.ts
- *
- * Dev.to provider (Tier 1) — RSS-based, no OAuth required.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { username: string }
- *
- * Dev.to exposes public RSS feeds at: https://dev.to/feed/username
- * No access token required for public profile feeds.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface DevtoCredentials {
   username: string;
 }
 
-/**
- * Verify by checking that the RSS feed is accessible.
- */
+
 export async function devtoVerify(creds: DevtoCredentials): Promise<string> {
   if (!creds.username || creds.username.trim().length === 0) {
     throw new Error('Dev.to username is required.');
@@ -35,9 +21,7 @@ export async function devtoVerify(creds: DevtoCredentials): Promise<string> {
   return creds.username.trim();
 }
 
-/**
- * Fetch and normalise the user's Dev.to article feed.
- */
+
 export async function devtoSync(creds: DevtoCredentials): Promise<UnifiedFeedItem[]> {
   const username = creds.username.trim();
   const url = devtoUserRssUrl(username);

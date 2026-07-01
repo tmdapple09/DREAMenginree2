@@ -1,9 +1,4 @@
-/**
- * Component Inventory
- *
- * Full typed inventory of 120+ atomic pieces across 11 categories.
- * Used by Engin Forge and ForgeDreamCanvas for the piece palette.
- */
+
 
 export type ComponentCategory =
   | 'Audio & Music'
@@ -26,7 +21,7 @@ export interface AtomicComponent {
 }
 
 export const COMPONENT_INVENTORY: AtomicComponent[] = [
-  // ── Audio & Music (23) ────────────────────────────────────────────────────
+  
   { id: 'am-01', name: 'AudioBuffer Loader',       category: 'Audio & Music', description: 'Loads and decodes audio files into an AudioBuffer.' },
   { id: 'am-02', name: 'FFT Analyser',             category: 'Audio & Music', description: 'Computes real-time frequency spectrum via AnalyserNode.' },
   { id: 'am-03', name: 'Peak Map Builder',         category: 'Audio & Music', description: 'Extracts constellation peak maps from AudioBuffers.' },
@@ -165,20 +160,12 @@ export const COMPONENT_INVENTORY: AtomicComponent[] = [
   { id: 'sci-06', name: 'Signal Processor',        category: 'Science & Simulation', description: 'DSP pipeline: filter, FFT, convolution, envelope.' },
 ];
 
-/**
- * getByCategory(category)
- *
- * Returns all components in a given category.
- */
+
 export function getByCategory(category: ComponentCategory): AtomicComponent[] {
   return COMPONENT_INVENTORY.filter((c) => c.category === category);
 }
 
-/**
- * searchComponents(query)
- *
- * Case-insensitive search across id, name, and description.
- */
+
 export function searchComponents(query: string): AtomicComponent[] {
   const q = query.toLowerCase();
   return COMPONENT_INVENTORY.filter(
@@ -189,7 +176,7 @@ export function searchComponents(query: string): AtomicComponent[] {
   );
 }
 
-/** All unique categories in the inventory. */
+
 export const ALL_CATEGORIES: ComponentCategory[] = [
   'Audio & Music',
   'Games & Play',

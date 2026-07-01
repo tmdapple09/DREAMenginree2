@@ -1,18 +1,8 @@
-/**
- * lib/gameengin/index.ts
- *
- * DREAMengin Elite Game Engine — Public API
- *
- * Single import surface for all elite engine capabilities:
- *   import { EliteGameEngine, AIDirector, PostFXManager } from '@/engins/gameengin/index';
- *
- * Power Systems (20 advanced subsystems):
- *   import { RollbackNetcode, ComputeShaderPipeline, AdvancedPhysicsWorld, ... } from '@/engins/gameengin/index';
- */
 
-// This is the public machine-readable spine for the GameEngin work packet.
-// It gives pages, Daydreams, agents, and CI one place to see the canonical
-// runtime lanes without hard-coding folder assumptions.
+
+
+
+
 export const GAMEENGIN_CAPABILITY_LANES = {
   orchestrator: {
     entry: 'engins/engin.GameEngin.tsx',
@@ -42,10 +32,10 @@ export const GAMEENGIN_CAPABILITY_LANES = {
 
 export type GameEnginCapabilityLane = keyof typeof GAMEENGIN_CAPABILITY_LANES;
 
-// Generated from the source-read GameEngin CSV wiring plan. This makes every
-// file in the GameEngin work packet addressable by contract instead of by
-// folder guesswork. Agents, CI, and runtime tooling can use this to see the
-// intended lane for each path without reopening the whole repository.
+
+
+
+
 export const GAMEENGIN_WORK_PACKET = [
   {
     "path": "app/api/gameengin/crash-report/route.ts",

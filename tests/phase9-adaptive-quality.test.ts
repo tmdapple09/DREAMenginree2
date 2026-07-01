@@ -1,9 +1,4 @@
-/**
- * tests/phase9-adaptive-quality.test.ts
- *
- * Tests for lib/webgpu/adaptiveQuality.ts — battery/framerate-aware
- * adaptive quality scaling.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -14,7 +9,7 @@ import {
   type QualityTier,
 } from '@/engine/rendering/webgpu/adaptiveQuality';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function makeSignals(overrides?: Partial<DeviceSignals>): DeviceSignals {
   return {
@@ -26,7 +21,7 @@ function makeSignals(overrides?: Partial<DeviceSignals>): DeviceSignals {
   };
 }
 
-// ─── resolveQualityTier ───────────────────────────────────────────────────────
+
 
 describe('Adaptive Quality — resolveQualityTier', () => {
   it('returns ultra when no pressure and no battery constraint', () => {
@@ -68,7 +63,7 @@ describe('Adaptive Quality — resolveQualityTier', () => {
   });
 
   it('battery constraint takes priority over pressure', () => {
-    // Battery < 15% → low, even if pressure is 0
+    
     expect(resolveQualityTier(makeSignals({
       battery: { level: 0.05, charging: false },
       pressure: 0,
@@ -76,7 +71,7 @@ describe('Adaptive Quality — resolveQualityTier', () => {
   });
 });
 
-// ─── getQualityProfile ────────────────────────────────────────────────────────
+
 
 describe('Adaptive Quality — getQualityProfile', () => {
   it('returns correct profiles for each tier', () => {
@@ -106,7 +101,7 @@ describe('Adaptive Quality — getQualityProfile', () => {
   });
 });
 
-// ─── AdaptiveQualityController ────────────────────────────────────────────────
+
 
 describe('Adaptive Quality — AdaptiveQualityController', () => {
   it('starts at ultra tier', () => {
@@ -122,11 +117,11 @@ describe('Adaptive Quality — AdaptiveQualityController', () => {
 
   it('does not upgrade immediately', () => {
     const ctrl = new AdaptiveQualityController({ upgradeFrames: 5 });
-    // Force downgrade first
+    
     ctrl.update(makeSignals({ pressure: 3 }));
     expect(ctrl.getTier()).toBe('low');
 
-    // Now signal ultra — should not upgrade immediately
+    
     ctrl.update(makeSignals({ pressure: 0 }));
     expect(ctrl.getTier()).toBe('low');
   });
@@ -136,7 +131,7 @@ describe('Adaptive Quality — AdaptiveQualityController', () => {
     ctrl.update(makeSignals({ pressure: 3 }));
     expect(ctrl.getTier()).toBe('low');
 
-    // 3 frames at pressure 0 should trigger upgrade
+    
     ctrl.update(makeSignals({ pressure: 0 }));
     ctrl.update(makeSignals({ pressure: 0 }));
     ctrl.update(makeSignals({ pressure: 0 }));
@@ -148,15 +143,15 @@ describe('Adaptive Quality — AdaptiveQualityController', () => {
     ctrl.update(makeSignals({ pressure: 3 }));
     expect(ctrl.getTier()).toBe('low');
 
-    // Start upgrading
+    
     ctrl.update(makeSignals({ pressure: 0 }));
     ctrl.update(makeSignals({ pressure: 0 }));
-    // Interrupt with pressure
+    
     ctrl.update(makeSignals({ pressure: 2 }));
-    // Should not have upgraded to ultra, but downgrade is ignored since
-    // medium > low. It should now be at medium actually.
-    // pressure 2 = medium, which is > low, so it starts upgrade process
-    expect(ctrl.getTier()).toBe('low'); // still at low, needs sustained frames
+    
+    
+    
+    expect(ctrl.getTier()).toBe('low'); 
   });
 
   it('update returns a quality profile', () => {

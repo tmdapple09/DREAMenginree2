@@ -73,7 +73,7 @@ function writeStoredIntents(intents: readonly RenderServiceIntentEnvelope[]): vo
   try {
     window.localStorage.setItem(RENDER_SERVICE_STORAGE_KEY, JSON.stringify(intents.slice(-MAX_STORED_RENDER_INTENTS)));
   } catch {
-    // Large direct asset payloads can exceed localStorage. Runtime event dispatch still carries the handoff in-memory.
+    
   }
 }
 

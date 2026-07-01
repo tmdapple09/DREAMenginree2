@@ -1,29 +1,24 @@
-/**
- * lib/vm/resource-quota.ts — Per-VM Resource Quota Types and Enforcement
- *
- * Defines the ResourceQuota interface and enforceQuota() helper for
- * hard-limiting GPU buffer allocation, VRAM usage, and compute time.
- */
+
 
 export interface ResourceQuota {
-  /** Maximum number of live GPU buffers. */
+  
   maxGpuBuffers: number;
-  /** Maximum size of a single GPU buffer in bytes. */
+  
   maxBufferSize: bigint;
-  /** Maximum total VRAM allocation in bytes. */
+  
   maxVram: bigint;
-  /** Maximum compute dispatch time in milliseconds. */
+  
   maxComputeMs: number;
 }
 
 export interface ResourceUsage {
-  /** Current live GPU buffer count. */
+  
   gpuBufferCount: number;
-  /** Largest single buffer size allocated (bytes). */
+  
   maxSingleBufferSize: bigint;
-  /** Total VRAM in use (bytes). */
+  
   totalVram: bigint;
-  /** Elapsed compute time for current dispatch (ms). */
+  
   computeMs: number;
 }
 
@@ -48,17 +43,12 @@ export class QuotaExceededError extends Error {
 
 export const DEFAULT_RESOURCE_QUOTA: ResourceQuota = {
   maxGpuBuffers:   2048,
-  maxBufferSize:   256n * 1024n * 1024n,  // 256 MiB
-  maxVram:         1024n * 1024n * 1024n, // 1 GiB
+  maxBufferSize:   256n * 1024n * 1024n,  
+  maxVram:         1024n * 1024n * 1024n, 
   maxComputeMs:    100,
 };
 
-/**
- * enforceQuota(quota, usage)
- *
- * Validates current resource usage against the provided quota.
- * Throws QuotaExceededError listing all violations if any limit is exceeded.
- */
+
 export function enforceQuota(quota: ResourceQuota, usage: ResourceUsage): void {
   const violations: QuotaViolation[] = [];
 
@@ -103,11 +93,7 @@ export function enforceQuota(quota: ResourceQuota, usage: ResourceUsage): void {
   }
 }
 
-/**
- * withinQuota(quota, usage)
- *
- * Non-throwing variant. Returns true if all limits are satisfied.
- */
+
 export function withinQuota(quota: ResourceQuota, usage: ResourceUsage): boolean {
   try {
     enforceQuota(quota, usage);

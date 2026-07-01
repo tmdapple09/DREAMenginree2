@@ -1,7 +1,7 @@
-// tests/warp-engine.test.ts
-// Unit tests for the WarpEngine — the browser-native scaled-down NVIDIA Warp
-// implementation.  All tests run in the Node environment (no DOM needed)
-// because the engine itself has zero browser dependencies.
+
+
+
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -20,9 +20,9 @@ import {
   wrapBoundaryKernel,
 } from '@/engine/rendering/warp/warpEngine';
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 function makeParticle(overrides: Partial<WarpParticle> = {}): WarpParticle {
   return {
@@ -47,9 +47,9 @@ function makeCtx(overrides: Partial<WarpContext> = {}): WarpContext {
   };
 }
 
-// ---------------------------------------------------------------------------
-// integrateKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('integrateKernel', () => {
   it('advances position by velocity * dt', () => {
@@ -75,9 +75,9 @@ describe('integrateKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// decayKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('decayKernel', () => {
   it('reduces life by decay * dt', () => {
@@ -100,9 +100,9 @@ describe('decayKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// gravityKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('gravityKernel', () => {
   it('increases vy (downward)', () => {
@@ -118,9 +118,9 @@ describe('gravityKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// turbulenceKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('turbulenceKernel', () => {
   it('changes velocity in both axes', () => {
@@ -130,32 +130,32 @@ describe('turbulenceKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// spiralKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('spiralKernel', () => {
   it('applies a velocity change toward the centre', () => {
-    // Particle far to the left of centre — vx should increase (pull right)
+    
     const p   = makeParticle({ pos: { x: 0, y: 300 }, vel: { x: 0, y: 0 } });
     const ctx = makeCtx({ width: 800, height: 600, dt: 1 });
     spiralKernel(p, ctx);
-    // x-component should be positive (pull toward cx=400)
+    
     expect(p.vel.x).toBeGreaterThan(0);
   });
 
   it('does not affect a particle exactly at centre (near-zero force)', () => {
     const p   = makeParticle({ pos: { x: 400, y: 300 }, vel: { x: 0, y: 0 } });
     spiralKernel(p, makeCtx({ dt: 1 }));
-    // Force is ~0 at centre but not exactly 0 due to tangential component
+    
     expect(isFinite(p.vel.x)).toBe(true);
     expect(isFinite(p.vel.y)).toBe(true);
   });
 });
 
-// ---------------------------------------------------------------------------
-// expansionKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('expansionKernel', () => {
   it('pushes a right-of-centre particle further right', () => {
@@ -171,9 +171,9 @@ describe('expansionKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// flowKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('flowKernel', () => {
   it('changes particle velocity (field is nonzero at arbitrary positions)', () => {
@@ -184,9 +184,9 @@ describe('flowKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// dampingKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('dampingKernel', () => {
   it('reduces velocity magnitude', () => {
@@ -204,9 +204,9 @@ describe('dampingKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// wrapBoundaryKernel
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('wrapBoundaryKernel', () => {
   const ctx = makeCtx({ width: 800, height: 600 });
@@ -243,9 +243,9 @@ describe('wrapBoundaryKernel', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// spawnParticle
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('spawnParticle', () => {
   it.each(['particles', 'field', 'flow', 'orbit'] as const)(
@@ -262,7 +262,7 @@ describe('spawnParticle', () => {
   );
 
   it('emits "particles" from the top edge (y ≈ -4)', () => {
-    // Run many times so we're confident it's always near the top
+    
     for (let i = 0; i < 20; i++) {
       const p = spawnParticle('particles', 800, 600);
       expect(p.pos.y).toBeCloseTo(-4);
@@ -278,9 +278,9 @@ describe('spawnParticle', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// WarpEngine class
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('WarpEngine', () => {
   let engine: WarpEngine;
@@ -311,7 +311,7 @@ describe('WarpEngine', () => {
   });
 
   it('reaps dead particles over time', () => {
-    // Seed with high-decay particles and run long enough to kill them
+    
     const highDecay = new WarpEngine({ maxParticles: 10, spawnRate: 0, effect: 'flow' });
     highDecay.resize(800, 600);
     highDecay.particles = Array.from({ length: 10 }, () =>
@@ -335,7 +335,7 @@ describe('WarpEngine', () => {
 
   it('resize() updates simulation domain', () => {
     engine.resize(1920, 1080);
-    // Step and check particles are spawned within the new domain
+    
     engine.step(0.1);
     for (const p of engine.particles) {
       expect(isFinite(p.pos.x)).toBe(true);
@@ -359,7 +359,7 @@ describe('WarpEngine', () => {
       extraKernels: [() => { kernelCalled = true; }],
     });
     trackerEngine.resize(800, 600);
-    // Pre-seed one particle so the kernel loop has something to iterate over
+    
     trackerEngine.particles = [makeParticle()];
     trackerEngine.step(0.016);
     expect(kernelCalled).toBe(true);

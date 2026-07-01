@@ -3,30 +3,30 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// Note: This API supports liking various content types: posts, music, projects
-// The likes are stored in a generic likes table with content_type and content_id
 
-// GET - Check if user has liked content or get like count
+
+
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
   const { searchParams } = new URL(req.url);
-  const contentType = searchParams.get('content_type'); // 'post', 'music', 'project'
+  const contentType = searchParams.get('content_type'); 
   const contentId = searchParams.get('content_id');
 
   if (!contentType || !contentId) {
     return NextResponse.json({ error: 'content_type and content_id required' }, { status: 400 });
   }
 
-  // Get like count (works without auth)
+  
   const { count: likeCount } = await supabase
     .from('likes')
     .select('*', { count: 'exact', head: true })
     .eq('content_type', contentType)
     .eq('content_id', contentId);
 
-  // Check if current user has liked (only if authenticated)
+  
   let hasLiked = false;
   if (user) {
     const { data: like } = await supabase
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   });
 }
 
-// POST - Like content
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'content_type and content_id required' }, { status: 400 });
   }
 
-  // Check if already liked
+  
   const { data: existing } = await supabase
     .from('likes')
     .select('user_id, content_type, content_id')
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Already liked' }, { status: 400 });
   }
 
-  // Create like
+  
   const { error } = await supabase
     .from('likes')
     .insert({
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Get new count
+  
   const { count: newCount } = await supabase
     .from('likes')
     .select('*', { count: 'exact', head: true })
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }, { status: 201 });
 }
 
-// DELETE - Unlike content
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -141,7 +141,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Get new count
+  
   const { count: newCount } = await supabase
     .from('likes')
     .select('*', { count: 'exact', head: true })

@@ -8,16 +8,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-// app/api/account/delete-dream/route.ts
-// "Delete My Dream" (delete account) endpoint.
-// Deletes all user data including profile, then the auth identity.
-//
-// Phase 8 §H Point 69: runTriadConsensus gates this critical system-level action.
-// All three AI agents must approve before deletion proceeds.
-//
-// NOTE: Deleting the auth user requires the Supabase service role key
-// (SUPABASE_SERVICE_ROLE_KEY). createServiceClient() uses it when configured.
-// Without it, data rows are still removed but the auth identity persists.
+
+
+
+
+
+
+
+
+
+
 
 const DeleteDreamBodySchema = z.object({
   confirm: z.literal('DELETE_MY_DREAM'),
@@ -51,8 +51,8 @@ export async function POST(req: NextRequest ): Promise<Response> {
   const deleted: string[] = [];
   const errors: string[] = [];
 
-  // Account deletion is a major irreversible system action. All three agents
-  // must approve before any data is removed.
+  
+  
   const consensus = await runTriadConsensus({
     message: `User ${user.id} is requesting permanent account deletion. Reason: ${reason ?? 'none provided'}. This will remove all user data and auth identity.`,
     actorEmail: user.email,
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
     return jsonApiError(403, 'TRIAD_BLOCKED', blockReason);
   }
 
-  // Run all independent table deletes in parallel (dependency-safe: none reference each other)
+  
 
   const supabaseAny = supabase as SupabaseClient;
   const tableResults = await Promise.all([
@@ -96,13 +96,13 @@ export async function POST(req: NextRequest ): Promise<Response> {
     }
   }
 
-  // Profiles table may use 'id' instead of 'user_id' — try user_id first, then id
+  
   const { error: profileUserIdErr } = await supabaseAny
     .from('profiles')
     .delete()
     .eq('user_id', user.id);
   if (profileUserIdErr) {
-    // Fallback: try deleting by id
+    
     const { error: profileIdErr } = await supabase
       .from('profiles')
       .delete()
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest ): Promise<Response> {
     deleted.push('profiles');
   }
 
-  // Delete auth identity using service role client
+  
   let authDeleted = false;
   try {
     const serviceClient = await createServiceClient();

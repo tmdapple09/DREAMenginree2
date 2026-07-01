@@ -12,24 +12,24 @@ import type {
 } from '@/types/user-sim';
 import { v4 as uuidv4 } from 'uuid';
 
-// lib/user-sim/userSimAgent.ts
-// User Sim AI — simulates real user personas navigating the DREAMengin product.
-//
-// The agent has four systems:
-//   1. Persona Brain   — models how different people think and behave
-//   2. Perception      — reads a PerceptionFrame (screenshot + DOM signals)
-//   3. Behaviour Policy — picks the next AgentAction from signals + persona
-//   4. Audit Judge     — writes AuditFinding entries after each step / journey
-//
-// Persona-driven behaviour includes intentional randomness (e.g. distracted multitasker
-// pausing unpredictably) — mock Math.random in tests when you need reproducibility.
-// No network calls, no DB access.
 
-// ============================================================================
-// 1. PERSONA BRAIN
-// ============================================================================
 
-/** Canonical registry of all supported personas. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const PERSONAS: Record<PersonaType, Persona> = {
   impatient_first_time_user: {
     type: 'impatient_first_time_user',
@@ -133,22 +133,19 @@ export const PERSONAS: Record<PersonaType, Persona> = {
   },
 };
 
-// ============================================================================
-// 2. PERCEPTION — derive BehaviorSignals from a PerceptionFrame
-// ============================================================================
 
-/** Minimum recommended tap-target size in CSS pixels (WCAG 2.5.5). */
+
+
+
+
 const MIN_TAP_TARGET_PX = 44;
 
-/**
- * Analyse a PerceptionFrame and return quantified BehaviorSignals.
- * All calculations are deterministic so they can be unit-tested.
- */
+
 export function perceive(frame: PerceptionFrame): BehaviorSignals {
   const elements = frame.visible_elements;
   const total = elements.length;
 
-  // Elevated by: no CTAs, small tap-targets, missing labels.
+  
   const ctaCount = elements.filter((e) => e.is_cta).length;
   const smallTargets = elements.filter(
     (e) => e.tap_target_px !== null && e.tap_target_px < MIN_TAP_TARGET_PX,
@@ -164,17 +161,17 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   ];
   const friction = clamp01(frictionFactors.reduce((a, b) => a + b, 0));
 
-  // Elevated by: multiple competing CTAs (> 3), very high element density.
+  
   const competingCtas = Math.max(0, ctaCount - 3);
   const densityFactor = total > 30 ? 0.3 : total > 15 ? 0.15 : 0;
   const confusion = clamp01(competingCtas * 0.1 + densityFactor);
 
-  // Inverse of confusion plus a bonus for labelled CTAs.
+  
   const labelledCtas = elements.filter((e) => e.is_cta && e.label).length;
   const clarityBonus = ctaCount > 0 ? (labelledCtas / ctaCount) * 0.4 : 0;
   const layout_clarity = clamp01(1 - confusion + clarityBonus - friction * 0.3);
 
-  // Proxy: HTTPS in URL + presence of terms/privacy/security text in element labels.
+  
   const httpsPresent = frame.url.startsWith('https://') ? 0.4 : 0;
   const trustKeywords = ['privacy', 'secure', 'verified', 'trusted', 'policy'];
   const trustHits = elements.filter((e) =>
@@ -182,9 +179,9 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   ).length;
   const trust_signals = clamp01(httpsPresent + Math.min(trustHits * 0.15, 0.6));
 
-  // Simplistic model: if viewport width ≤ 480 (mobile), check whether CTAs
-  // are in the bottom 40% of the viewport (thumb zone).  Without positional
-  // data we use tap-target size as a proxy.
+  
+  
+  
   const isMobile = frame.viewport.width <= 480;
   const reachableCtas = elements.filter(
     (e) => e.is_cta && e.tap_target_px !== null && e.tap_target_px >= MIN_TAP_TARGET_PX,
@@ -215,28 +212,17 @@ export function perceive(frame: PerceptionFrame): BehaviorSignals {
   };
 }
 
-// ============================================================================
-// 3. BEHAVIOUR POLICY — choose the next AgentAction
-// ============================================================================
 
-/**
- * Decide what the agent should do next given the persona and current signals.
- *
- * Priority order:
- *   1. Abandon if patience is exhausted by friction.
- *   2. Abandon if UI appears broken and persona has low patience.
- *   3. Inspect when confusion is high and persona pays attention.
- *   4. Click the primary CTA when layout is clear.
- *   5. Scroll to look for CTA when none is visible.
- *   6. Wait when distracted.
- *   7. Default: click first available interactive element.
- */
+
+
+
+
 export function decideAction(
   persona: Persona,
   signals: BehaviorSignals,
   frame: PerceptionFrame,
 ): AgentAction {
-  // 1. Abandon — patience exhausted by friction
+  
   if (signals.friction > 1 - persona.patience) {
     return {
       type: 'abandon',
@@ -244,7 +230,7 @@ export function decideAction(
     };
   }
 
-  // 2. Abandon — broken UI with low-patience persona
+  
   if (signals.ui_appears_broken && persona.patience < 0.4) {
     return {
       type: 'abandon',
@@ -252,7 +238,7 @@ export function decideAction(
     };
   }
 
-  // 3. Inspect — high confusion + attentive persona
+  
   if (signals.confusion > 0.5 && persona.attention > 0.6) {
     return {
       type: 'inspect',
@@ -260,7 +246,7 @@ export function decideAction(
     };
   }
 
-  // 4. Click primary CTA when layout is clear
+  
   const primaryCta = frame.visible_elements.find((e) => e.is_cta && e.label);
   if (primaryCta && signals.layout_clarity > 0.5) {
     return {
@@ -270,7 +256,7 @@ export function decideAction(
     };
   }
 
-  // 5. Scroll to search for CTA
+  
   if (!primaryCta) {
     return {
       type: 'scroll',
@@ -278,7 +264,7 @@ export function decideAction(
     };
   }
 
-  // 6. Distracted persona randomly pauses (30 % chance) — realistic multi-tasker behaviour
+  
   if (persona.distracted && Math.random() < 0.3) {
     return {
       type: 'wait',
@@ -286,7 +272,7 @@ export function decideAction(
     };
   }
 
-  // 7. Click first available interactive element
+  
   const interactive = frame.visible_elements.find(
     (e) => e.tag === 'button' || e.tag === 'a' || e.tag === 'input',
   );
@@ -298,18 +284,18 @@ export function decideAction(
     };
   }
 
-  // Fallback
+  
   return {
     type: 'wait',
     rationale: 'No actionable element found; waiting for page to load.',
   };
 }
 
-// ============================================================================
-// 4. AUDIT JUDGE — issue findings after each step and for the journey summary
-// ============================================================================
 
-/** Spec rules that the audit judge checks against. */
+
+
+
+
 export const SPEC_RULES = {
   CTA_VISIBLE: 'Every screen must have at least one clearly labelled primary CTA.',
   TAP_TARGET_SIZE: `All interactive elements must meet the minimum tap-target size of ${MIN_TAP_TARGET_PX}px (WCAG 2.5.5).`,
@@ -325,10 +311,7 @@ export const SPEC_RULES = {
 
 export type SpecRuleKey = keyof typeof SPEC_RULES;
 
-/**
- * Analyse the current step and emit zero or more AuditFinding objects.
- * Each finding includes the violated spec rule, severity, confidence, and a fix.
- */
+
 export function judgeStep(
   step: number,
   persona: Persona,
@@ -477,9 +460,9 @@ export function judgeStep(
   return findings;
 }
 
-// ============================================================================
-// JOURNEY RUNNER — orchestrates perception → policy → audit for a sequence
-// ============================================================================
+
+
+
 
 export interface JourneyRunnerInput {
   journey_id?: string;
@@ -487,13 +470,7 @@ export interface JourneyRunnerInput {
   frames: PerceptionFrame[];
 }
 
-/**
- * Run a complete simulated user journey over a sequence of PerceptionFrames.
- *
- * The caller is responsible for providing frames (typically from a headless
- * browser or mock).  The runner drives the agent through each frame in order,
- * stops early on `abandon`, and returns the full SimJourneyResult.
- */
+
 export function runJourney(input: JourneyRunnerInput): SimJourneyResult {
   const { frames, persona_type } = input;
   const journey_id = input.journey_id ?? uuidv4();
@@ -518,7 +495,7 @@ export function runJourney(input: JourneyRunnerInput): SimJourneyResult {
     }
   }
 
-  // Journey-level summary findings (end-of-journey judge pass)
+  
   const summaryFindings = judgeJourney(persona, steps, allFindings);
   allFindings.push(...summaryFindings);
 
@@ -552,14 +529,11 @@ export function runJourney(input: JourneyRunnerInput): SimJourneyResult {
   };
 }
 
-// ============================================================================
-// JOURNEY-LEVEL AUDIT JUDGE
-// ============================================================================
 
-/**
- * Produce end-of-journey findings that span multiple steps.
- * These are separate from per-step findings and catch systemic issues.
- */
+
+
+
+
 export function judgeJourney(
   persona: Persona,
   steps: SimStep[],
@@ -568,12 +542,12 @@ export function judgeJourney(
   const findings: AuditFinding[] = [];
   const stepCount = steps.length;
 
-  // Recurring friction pattern — same issue type in ≥ 50% of steps
+  
   const recurringIssues = findRecurringIssues(stepFindings, stepCount);
   for (const issue of recurringIssues) {
     findings.push({
       finding_id: uuidv4(),
-      step: -1, // journey-level, not step-specific
+      step: -1, 
       persona: persona.type,
       issue: `Recurring issue across ${issue.count}/${stepCount} steps: ${issue.issue}`,
       evidence: `First seen at step ${issue.firstStep}. Pattern suggests a systemic design problem rather than a one-off.`,
@@ -584,7 +558,7 @@ export function judgeJourney(
     });
   }
 
-  // Journey abandonment
+  
   const lastStep = steps[steps.length - 1];
   if (lastStep?.action.type === 'abandon') {
     findings.push({
@@ -604,9 +578,9 @@ export function judgeJourney(
   return findings;
 }
 
-// ============================================================================
-// HELPERS
-// ============================================================================
+
+
+
 
 function clamp01(v: number): number {
   return Math.max(0, Math.min(1, v));
@@ -641,10 +615,10 @@ function findRecurringIssues(
 ): RecurringIssue[] {
   if (stepCount === 0) return [];
 
-  // Group by violated_spec_rule
+  
   const groups = new Map<string, { findings: AuditFinding[]; rule: string }>();
   for (const f of findings) {
-    if (f.step < 0) continue; // skip journey-level findings
+    if (f.step < 0) continue; 
     const key = f.violated_spec_rule;
     if (!groups.has(key)) groups.set(key, { findings: [], rule: key });
     groups.get(key)!.findings.push(f);

@@ -1,7 +1,4 @@
-/**
- * tests/data-transform-extended.test.ts
- * Tests for improvements 1-5 in lib/data-transform.ts
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -12,7 +9,7 @@ import {
   zscore,
 } from '../lib/data-transform';
 
-// ── Improvement 93 tests — encodeToLedger NaN/Infinity guard ─────────────────
+
 describe('encodeToLedger (improvement 1)', () => {
   it('handles NaN inputs with zero output', () => {
     expect(encodeToLedger([NaN])).toEqual([0]);
@@ -30,7 +27,7 @@ describe('encodeToLedger (improvement 1)', () => {
   });
 });
 
-// ── Improvement 94 tests — decodeFromLedger NaN/Infinity guard ───────────────
+
 describe('decodeFromLedger (improvement 2)', () => {
   it('handles NaN inputs with zero output', () => {
     expect(decodeFromLedger([NaN])).toEqual([0]);
@@ -48,7 +45,7 @@ describe('decodeFromLedger (improvement 2)', () => {
   });
 });
 
-// ── Improvement 95 tests — normalizeBuffer ────────────────────────────────────
+
 describe('normalizeBuffer (improvement 3)', () => {
   it('normalizes to [0, 1]', () => {
     const result = normalizeBuffer([0, 5, 10]);
@@ -66,7 +63,7 @@ describe('normalizeBuffer (improvement 3)', () => {
   });
 });
 
-// ── Improvement 96 tests — computeBufferStats ─────────────────────────────────
+
 describe('computeBufferStats (improvement 4)', () => {
   it('computes correct stats', () => {
     const stats = computeBufferStats([2, 4, 4, 4, 5, 5, 7, 9]);
@@ -91,7 +88,7 @@ describe('computeBufferStats (improvement 4)', () => {
   });
 });
 
-// ── Improvement 97 tests — zscore ─────────────────────────────────────────────
+
 describe('zscore (improvement 5)', () => {
   it('z-scores sum to approximately 0', () => {
     const scores = zscore([2, 4, 4, 4, 5, 5, 7, 9]);

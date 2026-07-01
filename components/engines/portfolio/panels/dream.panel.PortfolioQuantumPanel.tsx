@@ -3,12 +3,7 @@
 import { Info, Play, RotateCcw, Zap } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-/**
- * PortfolioQuantumPanel — Quantum circuit designer tuned for portfolio optimization.
- *
- * Gate canvas with QAOA / VQE context. Simulates asset-selection bitstrings.
- * Lives at /engines/portfolio/quantum.
- */
+
 
 const ACCENT = '#2a8ab8';
 const PURPLE = '#8b5cf6';
@@ -40,7 +35,7 @@ const GATE_DEFS: GateDef[] = [
   { type: 'M',    label: '⊗',  color: '#64748b', description: 'Measure — collapse to asset bitstring' },
 ];
 
-const QUBITS = 4; // 4 qubits → 4 assets
+const QUBITS = 4; 
 const COLS   = 8;
 
 function gateDef(type: GateType ){
@@ -114,7 +109,7 @@ export default function PortfolioQuantumPanel( ){
           </p>
         </div>
 
-        {/* Gate palette */}
+        
         <div className="flex flex-wrap gap-2 mb-5 p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
           <span className="text-xs text-white/30 self-center mr-1">Gate:</span>
           {GATE_DEFS.map((gd) => (
@@ -140,7 +135,7 @@ export default function PortfolioQuantumPanel( ){
           ))}
         </div>
 
-        {/* Qubit labels */}
+        
         <div className="flex gap-2 mb-2 px-1">
           {Array.from({ length: QUBITS }, (_, q: number) => (
             <div
@@ -153,7 +148,7 @@ export default function PortfolioQuantumPanel( ){
           ))}
         </div>
 
-        {/* Circuit grid */}
+        
         <div className="rounded-xl overflow-hidden border border-white/10 bg-black/30 mb-4">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
@@ -206,7 +201,7 @@ export default function PortfolioQuantumPanel( ){
           Click a cell to place the selected gate · click a gate to remove it
         </div>
 
-        {/* Actions */}
+        
         <div className="flex gap-3">
           <button
             onClick={measure}
@@ -226,7 +221,7 @@ export default function PortfolioQuantumPanel( ){
           </button>
         </div>
 
-        {/* Measurement output */}
+        
         {result && (
           <div className="mt-5 rounded-xl border p-4" style={{ background: `${ACCENT}08`, borderColor: `${ACCENT}30` }}>
             <div className="flex items-center justify-between mb-3">

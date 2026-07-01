@@ -3,19 +3,7 @@
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useEffect } from 'react';
 
-/**
- * DreamRCore — the "Brain" reactor for the DreamR remote-control architecture.
- *
- * Lives inside the DreamR surface. Listens for DR_ACTION events emitted
- * by HomeDream (the "Remote") over the Dual Runtime Bridge, then executes
- * ledger logic: discovery check → tally update.
- *
- * Architecture: Remote-Control pattern (docs/ARCHITECTURE.md §1)
- *   HomeDream  = touch interface (emits DR_ACTION)
- *   DreamRCore = logic reactor   (receives DR_ACTION, writes to ledger)
- *
- * Privacy: no raw user data in bridge payloads — only IDs (AXIOM 4).
- */
+
 
 interface Props {
   sharerId: string;
@@ -23,7 +11,7 @@ interface Props {
 
 export default function DreamRCore({ sharerId }: Props) {
   useEffect(() => {
-    // bridge.subscribe(channel, event, handler) → returns UnsubscribeFn
+    
     const subs = [
       bridge.subscribe('create', 'create:published', (payload) => {
         const contentId = typeof payload['contentId'] === 'string' ? payload['contentId'] : '';
@@ -32,7 +20,7 @@ export default function DreamRCore({ sharerId }: Props) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ contentId, sharerId }),
-        }).catch(() => {/* non-fatal */});
+        }).catch(() => );
       }),
 
       bridge.subscribe('games', 'games:achievement-unlocked', (payload) => {
@@ -49,6 +37,6 @@ export default function DreamRCore({ sharerId }: Props) {
     return () => subs.forEach((u) => u());
   }, [sharerId]);
 
-  // Logic-only component — renders nothing
+  
   return null;
 }

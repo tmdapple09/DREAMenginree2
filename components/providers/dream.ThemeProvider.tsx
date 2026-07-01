@@ -32,7 +32,7 @@ export default function ThemeProvider({ children }: {children: React.ReactNode})
   const [overrides, setOverridesState] = useState<UserOverrides>(DEFAULT_OVERRIDES);
   const [mounted, setMounted] = useState(false);
 
-  // Load stored theme on mount
+  
   useEffect(() => {
     const stored = loadStoredTheme();
     setPresetIdState(stored.presetId);
@@ -72,7 +72,7 @@ export default function ThemeProvider({ children }: {children: React.ReactNode})
     [presetId, overrides, setPreset, setOverrides, resetOverrides, starfieldStyle],
   );
 
-  // Apply default theme immediately on SSR to prevent flash
+  
   if (!mounted) {
     return (
       <ThemeContext.Provider value={value}>

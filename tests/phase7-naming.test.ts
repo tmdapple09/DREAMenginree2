@@ -1,9 +1,9 @@
-// tests/phase7-naming.test.ts
-// Phase 7 — Naming Authority validation tests
-//
-// These tests verify that the canonical-names library correctly identifies
-// valid names, rejects invalid names, and enforces the rules defined in
-// docs/NAMING_AUTHORITY.md (including the OS-Layer Naming Model extension).
+
+
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -54,9 +54,9 @@ import {
   isRouteLawPreferredName,
 } from '@/engine/identity/canonical-names';
 
-// ---------------------------------------------------------------------------
-// Platform name
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Platform name authority', () => {
   it('canonical platform name is DREAMengin', () => {
@@ -88,9 +88,9 @@ describe('Platform name authority', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Core surface names
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Core surface names', () => {
   it('HomeDream is the canonical home surface name', () => {
@@ -148,9 +148,9 @@ describe('README §5 Global Product Architecture', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Route law naming preferences (README Section 2)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Route law naming preferences', () => {
   it('contains the exact eight preferred names from the route law', () => {
@@ -180,9 +180,9 @@ describe('Route law naming preferences', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Daydream domain names (Side A)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Daydream domain names (Side A)', () => {
   it('six canonical Daydream domains exist', () => {
@@ -212,9 +212,9 @@ describe('Daydream domain names (Side A)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Engin surface names (Side B) — Rule: only "Engin" suffix, not "Engine"
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Engin control surface names (Side B)', () => {
   it('six canonical Engin surfaces exist', () => {
@@ -285,9 +285,9 @@ describe('Engin control surface names (Side B)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Daydream → Engin mapping
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Daydream to Engin mapping', () => {
   it('every canonical Daydream maps to a canonical Engin', () => {
@@ -313,9 +313,9 @@ describe('Daydream to Engin mapping', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Platform module names
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Platform module names', () => {
   it('six canonical platform modules exist', () => {
@@ -366,9 +366,9 @@ describe('Platform module names', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// AI agent names
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('AI agent names', () => {
   it('three AI agents exist', () => {
@@ -388,9 +388,9 @@ describe('AI agent names', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// validateName — combined violation checker
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('validateName — naming authority validator', () => {
   it('returns no violations for a fresh unrelated name', () => {
@@ -430,9 +430,9 @@ describe('validateName — naming authority validator', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// ALL_CANONICAL_NAMES — completeness check
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('ALL_CANONICAL_NAMES registry', () => {
   it('platform entry is DREAMengin', () => {
@@ -456,9 +456,9 @@ describe('ALL_CANONICAL_NAMES registry', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: product description
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('OS-layer product description', () => {
   it('canonical product description contains "dual-runtime"', () => {
@@ -474,9 +474,9 @@ describe('OS-layer product description', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: runtime regions
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Runtime regions', () => {
   it('Surface Space is the upper active runtime region', () => {
@@ -513,9 +513,9 @@ describe('Runtime regions', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: Surface names (with "Surface" suffix)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Canonical Surface names', () => {
   it('HomeDream Surface is the canonical main surface name', () => {
@@ -551,9 +551,9 @@ describe('Canonical Surface names', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: Dream Windows
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Dream Windows (modular runtime containers)', () => {
   it('canonical term for modular runtime containers is Dream Window', () => {
@@ -599,9 +599,9 @@ describe('Dream Windows (modular runtime containers)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: connection language
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Connection language', () => {
   it('seven canonical connection verbs exist', () => {
@@ -655,9 +655,9 @@ describe('Connection language', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: rejected UI terms
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Rejected OS-layer UI terms', () => {
   it('isRejectedOsTerm returns true for all rejected OS terms', () => {
@@ -708,9 +708,9 @@ describe('Rejected OS-layer UI terms', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// OS-Layer: multi-surface connection network counts
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('Multi-surface connection network', () => {
   it('there are 6 Daydream Surfaces in the network', () => {

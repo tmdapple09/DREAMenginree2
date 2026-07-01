@@ -1,15 +1,4 @@
-/**
- * DREAM_ENGINE_GOD_TIER_SYSTEM
- *
- * Built to maximize:
- * - perceived speed
- * - scene richness
- * - visual hierarchy
- * - motion quality
- * - input feel
- * - route transition dominance
- * - aggressive speculative loading
- */
+
 
 export type QualityMode = 'GOD_TIER';
 export type SceneMode = 'DOMINANT';
@@ -66,11 +55,11 @@ export type MeshSnapshot = {
   distanceToCamera: number;
   transformDelta: number;
   materialChanged: boolean;
-  screenCoverage: number;   // 0..1
-  semanticWeight: number;   // 0..1
-  motionWeight: number;     // 0..1
-  detailWeight: number;     // 0..1
-  heroWeight: number;       // 0..1
+  screenCoverage: number;   
+  semanticWeight: number;   
+  motionWeight: number;     
+  detailWeight: number;     
+  heroWeight: number;       
   occluded: boolean;
 };
 
@@ -81,8 +70,8 @@ export type UIElementSnapshot = {
   blocksProgress: boolean;
   visible: boolean;
   inViewport: boolean;
-  interactionWeight: number; // 0..1
-  semanticWeight: number;    // 0..1
+  interactionWeight: number; 
+  semanticWeight: number;    
 };
 
 export type PrefetchRequest = {
@@ -168,19 +157,15 @@ export type PredictedIntent = {
   optimisticFeedback: boolean;
 };
 
-/** 1 = survival/minimal · 5 = GOD_TIER full power */
+
 export type AlgorithmLevel = 1 | 2 | 3 | 4 | 5;
 
 export type ChildContentFilter = {
-  /** True when child-safety mode is active. */
+  
   enabled: boolean;
-  /**
-   * Content-rating gate applied to every feed item.
-   * 'strict'  — family-safe only (G/PG)
-   * 'standard' — default platform rules
-   */
+  
   ageGating: 'strict' | 'standard';
-  /** Labels that are always blocked when enabled. */
+  
   blockedLabels: string[];
 };
 
@@ -195,21 +180,21 @@ export type GodTierState = {
   uiHierarchy: UIHierarchyDecision[];
   frictionOverrides: string[];
   globalIntensity: number;
-  /** Current quality tier — auto-boosted from 1 → 5 when detected. */
+  
   algorithmLevel: AlgorithmLevel;
-  /** Child-safety content filter state. */
+  
   childContentFilter: ChildContentFilter;
 };
 
 export class RingAverage {
-  // Float32Array gives typed, cache-friendly storage for the ring buffer
-  // with no boxing overhead — values are always numeric (frame times in ms).
+  
+  
   private values: Float32Array;
   private index = 0;
   private filled = false;
 
   constructor(private readonly size: number) {
-    this.values = new Float32Array(size); // pre-zeroed, typed
+    this.values = new Float32Array(size); 
   }
 
   push(v: number) {
@@ -227,13 +212,7 @@ export class RingAverage {
   }
 }
 
-/* =========================================================
-   ALGORITHM LEVEL COMPUTER
-   Maps (globalIntensity, pressureLevel) → 1..5 scale.
-   Level 1 = survival mode. Level 5 = GOD_TIER full power.
-   Auto-boost: if level 1 is detected, the orchestrator bumps
-   the render plan aggressively on the next update cycle.
-   ========================================================= */
+
 export function computeAlgorithmLevel(
   globalIntensity: number,
   pressureLevel: number,
@@ -245,12 +224,7 @@ export function computeAlgorithmLevel(
   return 5;
 }
 
-/* =========================================================
-   CHILD CONTENT FILTER BUILDER
-   Produces the ChildContentFilter for a given run.
-   When childSafetyMode = true, all adult-rated labels are
-   blocked and ageGating is set to 'strict'.
-   ========================================================= */
+
 export function buildChildContentFilter(childSafetyMode: boolean): ChildContentFilter {
   if (!childSafetyMode) {
     return { enabled: false, ageGating: 'standard', blockedLabels: [] };
@@ -273,10 +247,7 @@ export function buildChildContentFilter(childSafetyMode: boolean): ChildContentF
   };
 }
 
-/* =========================================================
-   1) MAX ASSUMPTION BOOT
-   Start above normal. Downgrade late.
-   ========================================================= */
+
 export function maxAssumptionBoot(device: DeviceSignals ){
   const veryHighDensity = device.dpr >= 3;
   const largeCanvas = Math.max(device.width, device.height) >= 900;
@@ -295,10 +266,7 @@ export function maxAssumptionBoot(device: DeviceSignals ){
   };
 }
 
-/* =========================================================
-   2) FRAME PRESSURE SHIELD
-   Protects the premium feel without flattening the system.
-   ========================================================= */
+
 export function framePressureShield(runtime: RuntimeMetrics ){
   const mild   = runtime.avgFrameMs > 15.8 || runtime.droppedFrameRatio > 0.05;
   const medium = runtime.avgFrameMs > 18   || runtime.droppedFrameRatio > 0.09;
@@ -314,10 +282,7 @@ export function framePressureShield(runtime: RuntimeMetrics ){
   };
 }
 
-/* =========================================================
-   3) FIDELITY SCALER
-   Drops slower than normal systems. Climbs fast when stable.
-   ========================================================= */
+
 export function fidelityScaler(runtime: RuntimeMetrics, baseScale: number): number {
   let scale = baseScale;
 
@@ -329,10 +294,7 @@ export function fidelityScaler(runtime: RuntimeMetrics, baseScale: number): numb
   return Math.max(0.88, Math.min(1.3, Number(scale.toFixed(2))));
 }
 
-/* =========================================================
-   4) HERO OBJECT IMPORTANCE SOLVER
-   Scores what deserves resources.
-   ========================================================= */
+
 export function heroObjectImportance(mesh: MeshSnapshot, route: RouteSignals): number {
   let score = 0;
 
@@ -359,10 +321,7 @@ export function heroObjectImportance(mesh: MeshSnapshot, route: RouteSignals): n
   return Math.max(0, Math.min(100, score));
 }
 
-/* =========================================================
-   5) ELITE MESH POLICY
-   Freeze almost nothing unless it is truly dead.
-   ========================================================= */
+
 export function eliteMeshPolicy(
   mesh: MeshSnapshot,
   importance: number,
@@ -392,10 +351,7 @@ export function eliteMeshPolicy(
   };
 }
 
-/* =========================================================
-   6) CINEMATIC MOTION STACK
-   Strong motion language. Route transitions dominate.
-   ========================================================= */
+
 export function cinematicMotionStack(runtime: RuntimeMetrics, reducedMotion = false): MotionPlan {
   if (reducedMotion) {
     return {
@@ -434,10 +390,7 @@ export function cinematicMotionStack(runtime: RuntimeMetrics, reducedMotion = fa
   };
 }
 
-/* =========================================================
-   7) VISUAL DOMINANCE ENGINE
-   Strong hierarchy. Strong edges. Strong primary CTA ownership.
-   ========================================================= */
+
 export function visualDominanceEngine(route: RouteSignals, ux: UXSignals): VisualPlan {
   const friction =
     ux.repeatTapCount +
@@ -465,10 +418,7 @@ export function visualDominanceEngine(route: RouteSignals, ux: UXSignals): Visua
   };
 }
 
-/* =========================================================
-   8) INTENT PREDICTION CORE
-   Aggressive speculation.
-   ========================================================= */
+
 export function predictIntent(
   route: RouteSignals,
   runtime: RuntimeMetrics,
@@ -516,9 +466,7 @@ export function predictIntent(
   };
 }
 
-/* =========================================================
-   9) SPECULATIVE PREFETCH ENGINE
-   ========================================================= */
+
 export function speculativePrefetchEngine(
   route: RouteSignals,
   intent: PredictedIntent,
@@ -582,10 +530,7 @@ export function speculativePrefetchEngine(
   return plan.sort((a, b) => b.priority - a.priority);
 }
 
-/* =========================================================
-   10) FRICTION OVERRIDE
-   When the user struggles, clarity gets stronger, not weaker.
-   ========================================================= */
+
 export function frictionOverride(ux: UXSignals, route: RouteSignals): string[] {
   const out: string[] = [];
 
@@ -621,10 +566,7 @@ export function frictionOverride(ux: UXSignals, route: RouteSignals): string[] {
   return [...new Set(out)];
 }
 
-/* =========================================================
-   11) UI PRIORITY SOLVER
-   Gives the UI an actual dominance order.
-   ========================================================= */
+
 export function uiPrioritySolver(
   elements: UIElementSnapshot[],
   ux: UXSignals,
@@ -667,21 +609,15 @@ export function uiPrioritySolver(
   return scored.map((item, index: number) => ({ ...item, priorityRank: index + 1 }));
 }
 
-/* =========================================================
-   12) GOD-TIER ORCHESTRATOR
-   ========================================================= */
+
 export class DreamEngineGodTierSystem {
   private resolutionScale = 1.2;
   private frameHistory = new RingAverage(24);
-  /** Tracks consecutive level-1 frames so we can fire the auto-boost. */
+  
   private level1FrameCount = 0;
-  /**
-   * Timestamp of the last fidelity-scale adaptation (ms).
-   * Prevents rapid scale jitter by enforcing a minimum interval between
-   * consecutive changes — mirrors the rAF cadence in the calling render loop.
-   */
+  
   private lastAdaptMs: number = -Infinity;
-  /** Minimum wall-clock interval between resolution-scale adaptations (ms). */
+  
   private static readonly MIN_ADAPT_INTERVAL_MS = 100;
 
   update(params: {
@@ -691,7 +627,7 @@ export class DreamEngineGodTierSystem {
     route: RouteSignals;
     meshes: MeshSnapshot[];
     ui: UIElementSnapshot[];
-    /** Enable child-safety content filtering. Default: false. */
+    
     childSafetyMode?: boolean;
   }): GodTierState {
     const { device, runtime, ux, route, meshes, ui, childSafetyMode = false } = params;
@@ -701,8 +637,8 @@ export class DreamEngineGodTierSystem {
     const boot     = maxAssumptionBoot(device);
     const pressure = framePressureShield(runtime);
 
-    //    forcibly reset the resolution scale to base maximum so the engine
-    //    climbs back to level 5.
+    
+    
     const rawLevel = computeAlgorithmLevel(boot.globalIntensity, pressure.pressureLevel);
     if (rawLevel === 1) {
       this.level1FrameCount += 1;
@@ -711,17 +647,17 @@ export class DreamEngineGodTierSystem {
     }
     const autoBoostActive = this.level1FrameCount >= 10;
 
-    // Use performance.now() to rate-limit scale adaptation so rapid successive
-    // update() calls (e.g. during a burst of short frames) don't jitter the
-    // hardware scaling level every frame — changes are batched to at most once
-    // per MIN_ADAPT_INTERVAL_MS, matching the rAF evaluation cadence.
+    
+    
+    
+    
     const nowMs = typeof performance !== 'undefined' ? performance.now() : Date.now();
     const canAdapt = nowMs - this.lastAdaptMs >= DreamEngineGodTierSystem.MIN_ADAPT_INTERVAL_MS;
 
     if (autoBoostActive) {
-      // Reset scale to maximum base — fidelityScaler will climb from here.
-      // Reset lastAdaptMs to -Infinity so the frame immediately AFTER the
-      // boost deactivates is not held back by the rate limiter.
+      
+      
+      
       this.resolutionScale = boot.baseResolutionScale;
       this.level1FrameCount = 0;
       this.lastAdaptMs = -Infinity;
@@ -729,7 +665,7 @@ export class DreamEngineGodTierSystem {
       this.resolutionScale = fidelityScaler(runtime, boot.baseResolutionScale);
       this.lastAdaptMs = nowMs;
     }
-    // else: keep existing scale — not enough time has elapsed to adapt
+    
 
     const meshDecisions = meshes.map((mesh) => {
       const importance = heroObjectImportance(mesh, route);
@@ -743,7 +679,7 @@ export class DreamEngineGodTierSystem {
     const frictionOverrides = frictionOverride(ux, route);
     const uiHierarchy       = uiPrioritySolver(ui, ux);
 
-    // When auto-boost fires, override pressure gates to restore full quality
+    
     const effectivePressure = autoBoostActive ? 0 : pressure.pressureLevel;
 
     const renderPlan: RenderPlan = {
@@ -799,9 +735,7 @@ export class DreamEngineGodTierSystem {
   }
 }
 
-/* =========================================================
-   BABYLON APPLICATION LAYER
-   ========================================================= */
+
 
 export type BabylonEngineLike = {
   setHardwareScalingLevel: (level: number) => void;
@@ -862,9 +796,7 @@ export function applyGodTierToBabylon(
   }
 }
 
-/* =========================================================
-   UI TOKEN OUTPUT
-   ========================================================= */
+
 export function getGodTierUiTokens(state: GodTierState ){
   return {
     classes: [
@@ -898,9 +830,7 @@ export function getGodTierUiTokens(state: GodTierState ){
   };
 }
 
-/* =========================================================
-   SINGLETON + CONVENIENCE EXPORT
-   ========================================================= */
+
 export const godTierSystem = new DreamEngineGodTierSystem();
 
 export function runDreamEngineGodTier(input: {
@@ -915,7 +845,7 @@ export function runDreamEngineGodTier(input: {
   return godTierSystem.update(input);
 }
 
-/** Default device signals — safe to call in SSR (falls back gracefully). */
+
 export function defaultDeviceSignals(): DeviceSignals {
   if (typeof window === 'undefined') {
     return { dpr: 1, width: 390, height: 844, refreshRate: 60, prefersReducedMotion: false };
@@ -965,12 +895,7 @@ export function defaultRouteSignals(route: string = '/'): RouteSignals {
   };
 }
 
-/* =========================================================
-   WEBGPU DIRECTOR BRIDGE
-   Re-export the pass-based WebGPU Director so any module
-   that imports from godTierEngine can also reach the
-   DREAM_ENGINE_WEBGPU_DIRECTOR without a second import path.
-   ========================================================= */
+
 
 export {
     WebGPUDirector, applyDirectorFrame,

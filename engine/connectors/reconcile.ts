@@ -5,30 +5,12 @@ import { deduplicateFeedItems } from './normalise';
 import { dispatchSync } from './syncDispatch';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/reconcile.ts
- *
- * Shared connector reconciliation — the full sync pipeline in one function:
- *   1. dispatchSync  → fetch provider items via token_blob credentials
- *   2. deduplicateFeedItems → in-memory dedup by (provider, external_id)
- *   3. Upsert connector_feed_items in DB
- *   4. Update connector_accounts.last_synced_at / last_sync_count / last_error
- *
- * Caller provides an already-constructed Supabase client, allowing both:
- *   - Cookie-session client (user-triggered sync route)
- *   - Service-role client (cron fallback route)
- *
- * AXIOM 4 — Security by Default:
- *   - token_blob is never present in ReconcileResult
- *   - This module is server-only; never import from client code
- *
- * ARCHITECTURE.md §3 — Logic layer (lib/connectors)
- */
+
 
 export interface ReconcileResult {
   ok: boolean;
   provider: string;
-  /** Internal-only owner id used for DB metadata updates. Do not expose in public API responses. */
+  
   userId: string;
   fetched: number;
   stored: number;
@@ -51,23 +33,7 @@ function isConnectorAuthError(message: string): boolean {
   );
 }
 
-/**
- * Reconcile a single connector account through the full sync pipeline.
- *
- * On provider auth error (401 / "unauthori" / "token" in message):
- *   Sets connector_accounts.status = 'needs_reauth' so the user is prompted
- *   to reconnect. Does NOT throw — returns ok:false with the error.
- *
- * On upsert error:
- *   Returns ok:false with the DB error message. Does NOT throw.
- *
- * Never exposes token_blob in the return value.
- *
- * @param db        - Supabase client (cookie-session or service-role)
- * @param userId    - The owner's user UUID
- * @param provider  - Provider id (e.g. 'mastodon', 'youtube')
- * @param tokenBlob - Parsed token_blob from connector_accounts (server-only)
- */
+
 export async function reconcileConnector(
   db: SupabaseClient<Database>,
   userId: string,

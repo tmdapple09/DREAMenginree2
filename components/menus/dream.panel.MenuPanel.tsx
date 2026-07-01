@@ -15,13 +15,9 @@ type Props = {
   items: MenuItem[];
   onClose: () => void;
   title: string;
-  /** Accent color for the panel header dot and border */
+  
   accent?: 'blue' | 'gold';
-  /**
-   * Side placement for when both menus are shown simultaneously (SPEC §3.1).
-   * 'center' (default) = standard centered overlay.
-   * 'left' | 'right'   = positioned to that side for side-by-side display.
-   */
+  
   side?: 'left' | 'right' | 'center';
 };
 
@@ -59,7 +55,7 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
       ? { position: 'fixed', right: SIDE_MENU_CIRCLE_SIDE_OFFSET, bottom: SIDE_MENU_CIRCLE_BOTTOM_OFFSET }
       : { position: 'relative', top: '8vh' };
 
-  // Close on Escape
+  
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -67,7 +63,7 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
     return () => document.removeEventListener('keydown', handler);
   }, [open, onClose]);
 
-  // Dismiss on any pointer down outside the panel
+  
   const handleOverlayPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
       onClose();
@@ -85,7 +81,7 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
        style={{
          position: 'fixed',
          inset: 0,
-         // Keep side menus below the fixed home button (z-index 60), but above core content.
+         
          zIndex: sideMode ? SIDE_MENU_LAYER_Z_INDEX : 70,
          background: sideMode ? 'transparent' : 'rgba(2,8,24,0.55)',
          backdropFilter: sideMode ? 'none' : 'blur(10px)',
@@ -123,7 +119,7 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
          }}
          onPointerDown={(e) => e.stopPropagation()}
        >
-         {/* Header */}
+         
          <div
            style={{
              display: 'flex',
@@ -183,7 +179,7 @@ export default function MenuPanel({ open, items, onClose, title, accent = 'blue'
            </button>
          </div>
 
-         {/* Item list */}
+         
          <div style={{ padding: sideMode ? (side === 'left' ? SIDE_MENU_ITEMS_PADDING_LEFT : SIDE_MENU_ITEMS_PADDING_RIGHT) : '6px 0 8px' }}>
            {items.map((item, idx: number) => (
               <button

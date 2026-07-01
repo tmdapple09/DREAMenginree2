@@ -1,8 +1,4 @@
-/**
- * tests/phase9-cross-post.test.ts
- *
- * Tests for lib/social/crossPost.ts — cross-posting to external platforms.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -12,7 +8,7 @@ import {
   type DreamSharePayload,
 } from '@/engine/social/crossPost';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function makePayload(overrides?: Partial<DreamSharePayload>): DreamSharePayload {
   return {
@@ -23,14 +19,14 @@ function makePayload(overrides?: Partial<DreamSharePayload>): DreamSharePayload 
   };
 }
 
-// ─── buildCrossPostTargets ────────────────────────────────────────────────────
+
 
 describe('Cross-Post — buildCrossPostTargets', () => {
   it('returns targets for share-capable platforms', () => {
     const targets = buildCrossPostTargets(makePayload());
     expect(targets.length).toBeGreaterThan(0);
 
-    // Should include Twitter (X)
+    
     const twitter = targets.find((t) => t.platformId === 'twitter');
     expect(twitter).toBeDefined();
     expect(twitter!.shareUrl).toContain('twitter.com/intent/tweet');
@@ -61,7 +57,7 @@ describe('Cross-Post — buildCrossPostTargets', () => {
   });
 });
 
-// ─── formatShareText ──────────────────────────────────────────────────────────
+
 
 describe('Cross-Post — formatShareText', () => {
   it('includes title', () => {
@@ -93,13 +89,13 @@ describe('Cross-Post — formatShareText', () => {
   it('limits to 5 hashtags', () => {
     const tags = Array.from({ length: 10 }, (_, i) => `tag${i}`);
     const text = formatShareText(makePayload({ tags }));
-    // Count the # symbols
+    
     const hashCount = (text.match(/#/g) || []).length;
     expect(hashCount).toBeLessThanOrEqual(5);
   });
 });
 
-// ─── buildDreamOgMeta ─────────────────────────────────────────────────────────
+
 
 describe('Cross-Post — buildDreamOgMeta', () => {
   it('includes basic OG tags', () => {
@@ -137,7 +133,7 @@ describe('Cross-Post — buildDreamOgMeta', () => {
   });
 });
 
-// ─── Mastodon in platforms registry ───────────────────────────────────────────
+
 
 describe('Cross-Post — Mastodon platform', () => {
   it('mastodon is in SOCIAL_PLATFORMS', async () => {

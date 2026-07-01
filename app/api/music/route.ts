@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// GET - Fetch music releases
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ releases });
 }
 
-// POST - Upload/create a music release
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ release }, { status: 201 });
 }
 
-// DELETE - Remove a music release
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);

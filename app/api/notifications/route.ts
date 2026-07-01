@@ -3,7 +3,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// GET - Fetch notifications
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     query = query.eq('read', false);
   }
 
-  // Fetch notifications and unread count in parallel
+  
   const [{ data: notifications, error }, { count: unreadCount }] = await Promise.all([
     query,
     supabase
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   });
 }
 
-// PUT - Mark notifications as read
+
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -60,7 +60,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   const { notification_ids, mark_all } = body;
 
   if (mark_all) {
-    // Mark all as read
+    
     const { error } = await supabase
       .from('notifications')
       .update({ read: true })
@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ success: true });
 }
 
-// DELETE - Delete notifications
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

@@ -16,9 +16,9 @@ const PostScoreSchema = z.object({
   level: z.number().int().min(1).optional(),
 });
 
-// GET /api/game-scores?game=<name>&limit=<n>
-// Returns top N scores for a cartridge id.
-// GET /api/game-scores?mine=1&limit=<n> returns the signed-in user's GameEngin scores.
+
+
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const game = searchParams.get('game');
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Fetch top scores for the game
+  
   const { data: scores, error: scoresError } = await supabase
     .from('game_scores')
     .select('id, user_id, game, score, level, achieved_at')
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ data: [], error: null });
   }
 
-  // Fetch profile data for all score holders
+  
   const userIds = [...new Set(scores.map((s) => s.user_id))];
   const { data: profiles } = await supabase
     .from('profiles')
@@ -85,7 +85,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     (profiles || []).map((p) => [p.id, p])
   );
 
-  // Merge profile data into each score entry and add rank
+  
   const enriched = scores.map((s, index: number) => ({
     ...s,
     rank: index + 1,
@@ -95,8 +95,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ data: enriched, error: null });
 }
 
-// PATCH /api/game-scores
-// Body: { id, shared } — auth required. Used by GameEngin score sharing UI.
+
+
 export async function PATCH(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -137,8 +137,8 @@ export async function PATCH(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ data, error: null });
 }
 
-// POST /api/game-scores
-// Body: { game, score, level? } — auth required
+
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

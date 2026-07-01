@@ -7,16 +7,16 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/skip-credits/earn/route.ts
-// Phase 9 — Earn Skip Credits Endpoint
-//
-// Awards skip credits for watching ads.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
+
+
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
 
-  // Auth required
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const body = (await req.json()) as EarnSkipCreditsRequest;
     const { ad_view_id } = body;
 
-    // Verify ad view exists and is verified
+    
     const { data: adView } = await (supabase as SupabaseClient)
       .from('ad_views')
       .select('*')
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Check if already rewarded
+    
     if (adView.watched_pct < 95) {
       return NextResponse.json(
         { error: 'Ad not watched sufficiently' },
@@ -50,10 +50,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Calculate credits earned
+    
     const creditsEarned = adView.ad_type === 'rewarded' ? 3 : 1;
 
-    // Get or create skip_credits record
+    
     const { data: existingCredits } = await (supabase as SupabaseClient)
       .from('skip_credits')
       .select('*')
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     let skipCredit;
     if (existingCredits) {
-      // Update existing
+      
       const { data, error } = await (supabase as SupabaseClient)
         .from('skip_credits')
         .update({
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
       skipCredit = data;
     } else {
-      // Create new
+      
       const { data, error } = await (supabase as SupabaseClient)
         .from('skip_credits')
         .insert({

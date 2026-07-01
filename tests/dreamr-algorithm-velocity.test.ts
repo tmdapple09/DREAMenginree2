@@ -1,17 +1,4 @@
-/**
- * tests/dreamr-algorithm-velocity.test.ts
- *
- * Tests for the DreamR engine upgrades layered on top of the existing
- * humanistic algorithm (without breaking any of its public contracts):
- *
- *   • computeViewVelocity   — views/hour, age-floored
- *   • scoreViewVelocity     — sqrt-cap to 1.0 around 50 v/h
- *   • dominantSignal        — picks max-weighted contribution
- *   • DREAMR_REASONS        — short phrasing for each signal
- *   • scoreDreamRPost       — exposes viewVelocity, dominantSignal, reason
- *   • rankFeed              — attaches view_velocity / dominant_signal /
- *                              dreamr_reason to every post
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -40,7 +27,7 @@ function makePost(overrides: Partial<ScoredPost> = {}): ScoredPost {
   };
 }
 
-// ── computeViewVelocity ──────────────────────────────────────────────────────
+
 
 describe('computeViewVelocity', () => {
   it('returns 0 for zero or undefined views', () => {
@@ -53,7 +40,7 @@ describe('computeViewVelocity', () => {
   });
 
   it('floors age at 0.25h to prevent runaway velocity on fresh posts', () => {
-    // A 1-second-old post with 50 views must NOT report 180,000 v/h.
+    
     const v = computeViewVelocity(50, new Date(Date.now() - 1000).toISOString());
     expect(v).toBeLessThanOrEqual(50 / 0.25 + 0.01);
   });
@@ -70,14 +57,14 @@ describe('computeViewVelocity', () => {
   });
 });
 
-// ── scoreViewVelocity ────────────────────────────────────────────────────────
+
 
 describe('scoreViewVelocity', () => {
   it('returns 0 for zero / negative / non-finite velocity', () => {
     expect(scoreViewVelocity(0)).toBe(0);
     expect(scoreViewVelocity(-1)).toBe(0);
     expect(scoreViewVelocity(NaN)).toBe(0);
-    // Infinity is treated as non-finite (defensive — never trust the caller).
+    
     expect(scoreViewVelocity(Infinity)).toBe(0);
   });
 
@@ -87,7 +74,7 @@ describe('scoreViewVelocity', () => {
     const c = scoreViewVelocity(50);
     expect(b).toBeGreaterThan(a);
     expect(c).toBeGreaterThan(b);
-    // 4× velocity should be ~2× score, not 4×
+    
     expect(b).toBeLessThan(a * 3);
   });
 
@@ -105,7 +92,7 @@ describe('scoreViewVelocity', () => {
   });
 });
 
-// ── dominantSignal ───────────────────────────────────────────────────────────
+
 
 describe('dominantSignal', () => {
   function sig(overrides: Partial<DreamRSignals>): DreamRSignals {
@@ -129,15 +116,15 @@ describe('dominantSignal', () => {
   });
 
   it('uses weighted contribution, not raw value', () => {
-    // freshness has weight 0.13, originalMedia 0.22.
-    // Equal raw values → originalMedia wins.
+    
+    
     expect(dominantSignal(sig({ originalMedia: 0.5, freshness: 0.5 }))).toBe('originalMedia');
   });
 
   it('a tiny but well-weighted signal can beat a smaller-weighted one', () => {
-    // contentDepth weight = 0.22, trendImpact = 0.10
-    // contentDepth 0.6 * 0.22 = 0.132
-    // trendImpact  1.0 * 0.10 = 0.100
+    
+    
+    
     expect(dominantSignal(sig({ contentDepth: 0.6, trendImpact: 1 }))).toBe('contentDepth');
   });
 
@@ -150,7 +137,7 @@ describe('dominantSignal', () => {
   });
 });
 
-// ── DREAMR_REASONS ───────────────────────────────────────────────────────────
+
 
 describe('DREAMR_REASONS', () => {
   it('has a phrase for every signal in DREAMR_WEIGHTS', () => {
@@ -168,7 +155,7 @@ describe('DREAMR_REASONS', () => {
   });
 });
 
-// ── scoreDreamRPost — new outputs ────────────────────────────────────────────
+
 
 describe('scoreDreamRPost — transparency outputs', () => {
   it('returns viewVelocity, dominantSignal and reason', () => {
@@ -210,8 +197,8 @@ describe('scoreDreamRPost — transparency outputs', () => {
   });
 
   it('velocity bonus is bounded — does not overpower core signals', () => {
-    // A spam post with massive velocity must not outrank a deeply human post
-    // with negligible velocity.
+    
+    
     const spammyButViral = makePost({
       id:        'spam',
       content:   '#like #follow #share',
@@ -237,12 +224,12 @@ describe('scoreDreamRPost — transparency outputs', () => {
   it('overall score still in [0, 100]-ish range (with small bonus)', () => {
     const out = scoreDreamRPost(makePost({ views_count: 9999, created_at: hoursAgo(0.5) }));
     expect(out.score).toBeGreaterThanOrEqual(0);
-    // baseScore*0.8 ≤ 80, torridityRank*20 ≤ 20, velocityBonus ≤ 2.5
+    
     expect(out.score).toBeLessThanOrEqual(102.5);
   });
 });
 
-// ── rankFeed — attaches new fields ───────────────────────────────────────────
+
 
 describe('rankFeed — attaches transparency fields', () => {
   it('every post has dominant_signal, dreamr_reason and view_velocity', () => {

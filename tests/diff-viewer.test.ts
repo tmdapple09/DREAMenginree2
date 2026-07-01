@@ -1,8 +1,4 @@
-/**
- * tests/diff-viewer.test.ts
- *
- * Unit tests for lib/diff/diffUtils — diff parsing, navigation, and scroll marker helpers.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -15,7 +11,7 @@ import {
   DEMO_DIFF,
 } from '@/engins/codeengin/diff/diffUtils';
 
-// ─── Sample diffs ─────────────────────────────────────────────────────────────
+
 
 const SIMPLE_DIFF = `--- a/src/foo.ts
 +++ b/src/foo.ts
@@ -46,7 +42,7 @@ const TWO_HUNK_DIFF = `--- a/src/bar.ts
  const z = 5;
 `;
 
-// ─── parseUnifiedDiff ─────────────────────────────────────────────────────────
+
 
 describe('parseUnifiedDiff', () => {
   it('returns an empty array for empty input', () => {
@@ -102,12 +98,12 @@ describe('parseUnifiedDiff', () => {
   });
 });
 
-// ─── buildFullFileLines ───────────────────────────────────────────────────────
+
 
 describe('buildFullFileLines', () => {
   it('returns an empty array for a file with no hunks', () => {
     const emptyFile = parseUnifiedDiff('')[0];
-    // Guard: if there are no files, skip
+    
     if (!emptyFile) return;
     expect(buildFullFileLines(emptyFile, false)).toEqual([]);
   });
@@ -116,7 +112,7 @@ describe('buildFullFileLines', () => {
     const [file] = parseUnifiedDiff(TWO_HUNK_DIFF);
     const lines = buildFullFileLines(file, false);
     const collapsed = lines.filter((l) => l.collapsed);
-    // Expanded mode should not have any collapsed lines
+    
     expect(collapsed).toHaveLength(0);
   });
 
@@ -144,7 +140,7 @@ describe('buildFullFileLines', () => {
   });
 });
 
-// ─── Navigation helpers ───────────────────────────────────────────────────────
+
 
 describe('firstHunkIndex', () => {
   it('returns 0 for a file with hunks', () => {
@@ -187,7 +183,7 @@ describe('prevHunkIndex', () => {
   });
 });
 
-// ─── buildScrollMarkers ───────────────────────────────────────────────────────
+
 
 describe('buildScrollMarkers', () => {
   it('returns an empty array for a file with no hunks', () => {

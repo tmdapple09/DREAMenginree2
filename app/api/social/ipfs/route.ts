@@ -2,16 +2,7 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * /api/social/ipfs — IPFS backend proxy
- *
- * POST /api/social/ipfs/upload  – upload content or file to IPFS
- * GET  /api/social/ipfs/content/[cid] – retrieve content by CID
- * POST /api/social/ipfs/pin     – pin a CID
- *
- * Proxies to the backend ipfsService so IPFS credentials never reach
- * the browser bundle. All routes require a valid Supabase session.
- */
+
 
 const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000';
 
@@ -27,7 +18,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const pathname = req.nextUrl.pathname;
 
-  // POST /api/social/ipfs/pin
+  
   if (pathname.endsWith('/pin')) {
     let body: unknown;
     try {
@@ -52,11 +43,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // POST /api/social/ipfs/upload
+  
   const contentType = req.headers.get('content-type') ?? '';
 
   if (contentType.includes('multipart/form-data')) {
-    // File upload
+    
     const formData = await req.formData();
     const backendForm = new FormData();
     const file = formData.get('file');
@@ -82,7 +73,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // JSON content upload
+  
   let body: unknown;
   try {
     body = await req.json();
@@ -117,7 +108,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const user = await requireUser(req);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  // Extract CID from path: /api/social/ipfs/content/[cid]
+  
   const segments = req.nextUrl.pathname.split('/');
   const contentIdx = segments.indexOf('content');
   const cid = contentIdx >= 0 ? segments[contentIdx + 1] : null;

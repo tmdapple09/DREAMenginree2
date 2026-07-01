@@ -1,18 +1,4 @@
-/**
- * DREAMengin Creative Optimizero Algorithm
- *
- * Purpose:
- * Generate interesting options first, then keep only the ones that do not break the system.
- *
- * Core Philosophy:
- * - Explore wildly
- * - Reject breakage
- * - Rank by interestingness + usefulness
- *
- * Formula:
- * final_score = (w_novelty * novelty) + (w_usefulness * usefulness) + (w_delight * delight)
- *             + (w_fit * fit) - (w_cost * cost) - (w_risk * risk)
- */
+
 
 export interface CreativeCandidate<T = any> {
   id: string;
@@ -58,9 +44,7 @@ export interface OptimizeroResult<T = any> {
 export type HardFailCheck<T = any> = (candidate: CreativeCandidate<T>) => string | null;
 export type ScoreFunction<T = any> = (candidate: CreativeCandidate<T>) => number;
 
-/**
- * Recommended weights for balanced exploration
- */
+
 export const DEFAULT_WEIGHTS: OptimizeroWeights = {
   w_novelty: 0.30,
   w_usefulness: 0.25,
@@ -70,9 +54,7 @@ export const DEFAULT_WEIGHTS: OptimizeroWeights = {
   w_risk: 0.05,
 };
 
-/**
- * Weights for more chaos - increased novelty and delight
- */
+
 export const CHAOS_WEIGHTS: OptimizeroWeights = {
   w_novelty: 0.40,
   w_usefulness: 0.15,
@@ -82,9 +64,7 @@ export const CHAOS_WEIGHTS: OptimizeroWeights = {
   w_risk: 0.02,
 };
 
-/**
- * Weights for more stability - increased fit and risk consideration
- */
+
 export const STABLE_WEIGHTS: OptimizeroWeights = {
   w_novelty: 0.15,
   w_usefulness: 0.30,
@@ -94,11 +74,7 @@ export const STABLE_WEIGHTS: OptimizeroWeights = {
   w_risk: 0.10,
 };
 
-/**
- * Creative Optimizero Algorithm
- *
- * Generates interesting options first, then filters out anything that breaks the system.
- */
+
 export class CreativeOptimizero<T = any> {
   private weights: OptimizeroWeights;
   private hardChecks: HardFailCheck<T>[];
@@ -128,29 +104,23 @@ export class CreativeOptimizero<T = any> {
     this.hardChecks = hardChecks;
   }
 
-  /**
-   * Add a hard fail check to the algorithm
-   */
+  
   addHardCheck(check: HardFailCheck<T>): void {
     this.hardChecks.push(check);
   }
 
-  /**
-   * Update weights (useful for runtime tuning)
-   */
+  
   updateWeights(weights: Partial<OptimizeroWeights>): void {
     this.weights = { ...this.weights, ...weights };
   }
 
-  /**
-   * Run the Creative Optimizero algorithm
-   */
+  
   optimize(candidates: CreativeCandidate<T>[]): OptimizeroResult<T> {
     const scored: ScoredCandidate<T>[] = [];
     const rejected: ScoredCandidate<T>[] = [];
     const rejectionReasons: Record<string, string[]> = {};
 
-    // Step 1-4: Score each candidate
+    
     for (const candidate of candidates) {
       const scoredCandidate: ScoredCandidate<T> = {
         ...candidate,
@@ -165,7 +135,7 @@ export class CreativeOptimizero<T = any> {
         rejection_reasons: [],
       };
 
-      // Step 5: Apply hard safety checks
+      
       const failures = this.runHardChecks(candidate);
       if (failures.length > 0) {
         scoredCandidate.valid = false;
@@ -175,7 +145,7 @@ export class CreativeOptimizero<T = any> {
         continue;
       }
 
-      // Calculate final score using the formula
+      
       scoredCandidate.final_score =
         this.weights.w_novelty * scoredCandidate.novelty +
         this.weights.w_usefulness * scoredCandidate.usefulness +
@@ -187,10 +157,10 @@ export class CreativeOptimizero<T = any> {
       scored.push(scoredCandidate);
     }
 
-    // Step 7: Rank remaining options by final_score (descending)
+    
     scored.sort((a, b) => b.final_score - a.final_score);
 
-    // Step 8: Return best option + top alternatives
+    
     const best = scored.length > 0 ? scored[0] : null;
 
     return {
@@ -208,10 +178,7 @@ export class CreativeOptimizero<T = any> {
     };
   }
 
-  /**
-   * Run all hard safety checks on a candidate
-   * Returns array of failure reasons (empty if all checks pass)
-   */
+  
   private runHardChecks(candidate: CreativeCandidate<T>): string[] {
     const failures: string[] = [];
     for (const check of this.hardChecks) {
@@ -223,23 +190,17 @@ export class CreativeOptimizero<T = any> {
     return failures;
   }
 
-  /**
-   * Clamp score to 0-1 range
-   */
+  
   private clampScore(score: number): number {
     return Math.max(0, Math.min(1, score));
   }
 
-  /**
-   * Get top N candidates (useful for "top 3 for review" rule)
-   */
+  
   getTopN(result: OptimizeroResult<T>, n: number): ScoredCandidate<T>[] {
     return result.ranked_candidates.slice(0, n);
   }
 
-  /**
-   * Check if top scores are too close (for "keep top 3 for review" rule)
-   */
+  
   areTopScoresClose(result: OptimizeroResult<T>, threshold: number = 0.05): boolean {
     if (result.ranked_candidates.length < 2) return false;
     const top = result.ranked_candidates[0];
@@ -248,11 +209,9 @@ export class CreativeOptimizero<T = any> {
   }
 }
 
-/**
- * Standard hard fail checks for UI rendering
- */
+
 export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
-  // Check for infinite loops
+  
   (candidate) => {
     if (candidate.metadata?.hasInfiniteLoop) {
       return 'infinite loops detected';
@@ -260,7 +219,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for invalid TypeScript
+  
   (candidate) => {
     if (candidate.metadata?.hasTypeErrors) {
       return 'invalid TypeScript';
@@ -268,7 +227,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for invalid imports
+  
   (candidate) => {
     if (candidate.metadata?.hasInvalidImports) {
       return 'invalid imports';
@@ -276,7 +235,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for severe performance regression
+  
   (candidate) => {
     if (candidate.metadata?.performanceDegradation && (candidate.metadata.performanceDegradation as number) > 0.5) {
       return 'severe performance regression';
@@ -284,7 +243,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for privacy violations
+  
   (candidate) => {
     if (candidate.metadata?.breaksPrivacy) {
       return 'breaks privacy';
@@ -292,7 +251,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for navigation continuity
+  
   (candidate) => {
     if (candidate.metadata?.breaksNavigation) {
       return 'breaks navigation continuity';
@@ -300,7 +259,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
     return null;
   },
 
-  // Check for fake actions
+  
   (candidate) => {
     if (candidate.metadata?.isFakeAction) {
       return 'fake action';
@@ -309,9 +268,7 @@ export const STANDARD_UI_HARD_CHECKS: HardFailCheck[] = [
   },
 ];
 
-/**
- * Helper function to create a basic optimizero with default UI checks
- */
+
 export function createUIOptimizero<T = any>(
   scorers: {
     novelty: ScoreFunction<T>;

@@ -8,9 +8,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-// SURFACE: dreamsurface.Join  (framework-mandated basename: page.tsx)
 
-// Shared input style — matches the de-widget design system
+
+
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   padding: "11px 14px",
@@ -109,7 +109,7 @@ export default function JoinPage( ){
         window.localStorage.removeItem("rememberedEmail");
       }
 
-      // New users go through onboarding before HomeDream
+      
       router.replace("/onboarding");
     } finally {
       setBusy(false);
@@ -119,8 +119,8 @@ export default function JoinPage( ){
   async function oauth(provider: "google" | "github" ){
     setError(null);
 
-    // Guard: if we know this provider is not configured, show a friendly message
-    // instead of sending the user to an OAuth page that will reject them.
+    
+    
     if (oauthProviders?.[provider] === false) {
       setError(
         `${provider === "google" ? "Google" : "GitHub"} sign-in is not configured on this server. Please use email/password or contact support.`,
@@ -136,7 +136,7 @@ export default function JoinPage( ){
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          // New users coming from /join get onboarding after OAuth callback
+          
           redirectTo: onboardingRedirectTo,
         },
       });
@@ -153,7 +153,7 @@ export default function JoinPage( ){
         background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)',
       }}
     >
-      {/* Ambient glow — SICC enhanced */}
+      
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div style={{
           position: 'absolute', top: '-100px', right: '-80px',
@@ -179,9 +179,9 @@ export default function JoinPage( ){
         }} />
       </div>
 
-      {/* Header wordmark — SICC premium */}
+      
       <div className="sicc-soft-float" style={{ marginBottom: 32, textAlign: "center", position: 'relative' }}>
-        {/* Brand logo */}
+        
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
           <Image
             src="/images/logo1.PNG"
@@ -217,7 +217,7 @@ export default function JoinPage( ){
           position: 'relative',
         }}
       >
-        {/* Card top accent line */}
+        
         <div style={{
           height: 2,
           background: 'linear-gradient(90deg, transparent, rgba(200,152,26,0.6) 40%, rgba(56,189,248,0.4) 70%, transparent)',
@@ -316,7 +316,7 @@ export default function JoinPage( ){
             </button>
           </form>
 
-          {/* Divider */}
+          
           <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "18px 0" }}>
             <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
             <span style={{ fontSize: 11, color: "rgba(140,170,220,0.45)" }}>or continue with</span>

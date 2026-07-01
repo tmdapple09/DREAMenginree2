@@ -11,11 +11,11 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/ads/view/route.ts
-// Phase 9 — Track Ad View Endpoint
-//
-// Records verified ad views for CPV (Cost Per View) billing.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
+
+
+
+
+
 
 type ActivitySupabaseClient = {
   rpc: <T>(
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const db = supabase as unknown as ActivitySupabaseClient;
 
-  // Auth required
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const body = (await req.json()) as TrackAdViewRequest;
     const { ad_id, ad_type, view_duration, watched_pct, post_id } = body;
 
-    // Validate watched percentage
+    
     if (watched_pct < 0 || watched_pct > 100) {
       return NextResponse.json(
         { error: 'Invalid watched_pct' },
@@ -73,14 +73,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Verify ad view using database function
+    
     const { data: verified } = await db.rpc<boolean>('verify_ad_view', {
       p_ad_id: ad_id,
       p_viewer_id: user.id,
       p_watched_pct: watched_pct,
     });
 
-    // Determine CPV tier
+    
     let cpvTier: CPVTier = CPVTier.STANDARD;
     if (verified) {
       const isPremium = await qualifiesForPremiumCPV(user.id);
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const split = calculateActivityRevenueSplit(cpvAmount);
 
-    // Record ad view
+    
     const { data: adView, error: adViewError } = await db
       .from('ad_views')
       .insert({

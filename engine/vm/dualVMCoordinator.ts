@@ -1,18 +1,12 @@
 import { bridge, type VMRegion, type VMWorkload } from '@/engine/runtime/dualRuntimeBridge';
 
-/**
- * lib/vm/dualVMCoordinator.ts
- *
- * Dual VM coordination is now built directly into DualRuntimeBridge.
- * This file is a thin backwards-compat proxy so existing imports keep working.
- * All real logic lives in lib/runtime/dualRuntimeBridge.ts.
- */
+
 
 export interface DualVMConfig {
   enableInterVMCommunication?: boolean;
 }
 
-// Stable proxy object — same reference every call, satisfies `=== coordinator` checks.
+
 const _coordinator = {
   getStats: () => bridge.getVMStats() ?? { left: null, right: null, activeWorkloads: [] },
   submitWorkload: (w: VMWorkload) => bridge.submitVMWorkload(w),

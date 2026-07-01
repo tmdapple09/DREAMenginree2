@@ -5,33 +5,9 @@ import { ExternalLink, Eye, Hash, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * components/feeds/dream.widget.EmbedFeedWidget.tsx
- *
- * Renders the baked social embed feed populated by the GitHub Actions
- * `update-embed-feed` workflow.
- *
- * Data source: GET /api/embed-feed (Supabase `embed_feed_items` → JSON fallback)
- *
- * Features:
- *   • Provider filter tabs (All / YouTube / Instagram)
- *   • YouTube iframes (16:9 aspect-ratio, lazy-load)
- *   • Instagram oEmbed blockquotes with embed.js loader
- *   • Thumbnail fallback for items with no embed support
- *   • View count, tags, channel name, relative time
- *   • Loading skeleton + empty state
- *   • Refresh button to re-fetch without page reload
- *
- * Props:
- *   defaultProvider — initial provider tab ('all' | 'youtube' | 'instagram')
- *   limit           — max items to load (default 20)
- *   className       — optional wrapper class
- *
- * AXIOMS.md §3 — Every visible action does something real (Refresh calls the API).
- * ARCHITECTURE.md §3 — Component layer; no DB calls; fetches from /api/embed-feed.
- */
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+
+
 
 type Provider = 'all' | 'youtube' | 'instagram';
 
@@ -72,7 +48,7 @@ function useInstagramEmbedScript(hasInstagram: boolean ){
   useEffect(() => {
     if (!hasInstagram) return;
     if (document.querySelector('script[src*="instagram.com/embed.js"]')) {
-      // Already loaded — trigger re-process for new blockquotes
+      
       if (typeof window !== 'undefined' && (window as unknown as any).instgrm) {
         ((window as unknown as any).instgrm as { Embeds: { process: () => void } })
           .Embeds.process();
@@ -110,7 +86,7 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
   const isYouTube   = item.provider === 'youtube';
   const isInstagram = item.provider === 'instagram';
 
-  // Extract YouTube video ID for a proper iframe
+  
   const ytId = isYouTube ? item.id : null;
 
   return (
@@ -120,7 +96,7 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
       border: '1px solid rgba(160,195,240,0.14)',
       display: 'flex', flexDirection: 'column',
     }}>
-      {/* ── Embed area ── */}
+      
       <div style={{ position: 'relative', width: '100%' }}>
         {isYouTube && ytId ? (
           <div style={{ position: 'relative', paddingTop: '56.25%', background: '#000' }}>
@@ -169,9 +145,9 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
         ) : null}
       </div>
 
-      {/* ── Meta ── */}
+      
       <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {/* Title */}
+        
         <a
           href={item.permalink}
           target="_blank"
@@ -189,7 +165,7 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
           {item.title || item.permalink}
         </a>
 
-        {/* Channel + views + time */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
           {item.channel_title && (
             <span style={{ fontSize: 11, color: 'var(--de-text-dim)', fontWeight: 500 }}>
@@ -217,7 +193,7 @@ function EmbedCard({ item }: {item: EmbedFeedItem}) {
           </a>
         </div>
 
-        {/* Tags */}
+        
         {item.tags.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 2 }}>
             {item.tags.slice(0, 4).map((tag) => (
@@ -299,7 +275,7 @@ export default function EmbedFeedWidget({
 
   return (
     <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {/* Header */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{ flex: 1, display: 'flex', gap: 4 }}>
           {tabs.map((tab) => (
@@ -347,14 +323,14 @@ export default function EmbedFeedWidget({
         </button>
       </div>
 
-      {/* Generated-at timestamp */}
+      
       {state.generatedAt && !state.loading && (
         <div style={{ fontSize: 10, color: 'var(--de-text-dim)', opacity: 0.7 }}>
           Feed updated {relativeTime(state.generatedAt)}
         </div>
       )}
 
-      {/* Error */}
+      
       {state.error && (
         <div style={{
           padding: '10px 14px', borderRadius: 8,
@@ -365,7 +341,7 @@ export default function EmbedFeedWidget({
         </div>
       )}
 
-      {/* Loading skeletons */}
+      
       {state.loading && (
         <div style={{
           display: 'grid',
@@ -376,7 +352,7 @@ export default function EmbedFeedWidget({
         </div>
       )}
 
-      {/* Empty state */}
+      
       {!state.loading && !state.error && state.items.length === 0 && (
         <div style={{
           padding: '32px 16px', textAlign: 'center',
@@ -396,7 +372,7 @@ export default function EmbedFeedWidget({
         </div>
       )}
 
-      {/* Feed grid */}
+      
       {!state.loading && state.items.length > 0 && (
         <div style={{
           display: 'grid',

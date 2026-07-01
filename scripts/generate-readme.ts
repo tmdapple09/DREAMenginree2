@@ -33,7 +33,7 @@ function parseArg(name: string): string | undefined {
 }
 
 function normalizePath(filePath: string): string {
-  return filePath.replace(/\\/g, '/').replace(/^\.\//, '').replace(/^\/+/, '');
+  return filePath.replace(/\\/g, '/').replace(/^\.\
 }
 
 function readList(path?: string): string[] {
@@ -119,7 +119,7 @@ function buildFrontDoor(files: string[]): string {
   const hasTypecheck = Boolean(scripts.typecheck || scripts['type-check']);
   const appRoutes = files.filter((file) => /^app\/.+\/page\.tsx?$/.test(file)).length;
   const apiRoutes = files.filter((file) => /^app\/api\/.+\/route\.tsx?$/.test(file)).length;
-  const enginFiles = files.filter((file) => /^engins\//.test(file)).length;
+  const enginFiles = files.filter((file) => /^engins\
 
   return [
     `# ${name}`,

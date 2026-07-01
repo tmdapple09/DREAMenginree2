@@ -13,10 +13,7 @@ const ACTIONS: Action[] = [
 
 type Step = { node: Node; via: Action | null; prev: Node | null };
 
-/**
- * Find a short deterministic action sequence using τ only.
- * Graph is tiny, so BFS is fine.
- */
+
 export function findTauPath(start: Node, goal: Node): Action[] {
   if (start === goal) return [];
 
@@ -45,7 +42,7 @@ export function findTauPath(start: Node, goal: Node): Action[] {
     }
   }
 
-  // Unreachable should never happen given our connected graph.
+  
   return [];
 }
 

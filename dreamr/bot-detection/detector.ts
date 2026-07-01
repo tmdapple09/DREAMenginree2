@@ -7,16 +7,7 @@ import {
     type Path,
 } from './swipe-physics';
 
-/**
- * lib/bot-detection/detector.ts — §36 BotDetector Class
- *
- * Combines all five physics metrics plus the Perfect Line Trap to
- * produce a BotScore for a user session.
- *
- * §36.3 Perfect Line Trap:
- *   If mean deviation < 1.5 px → freeze UI 3–5 s.
- *   Second consecutive perfect swipe → flag as bot.
- */
+
 
 export interface SwipeRecord {
   path:       Path;
@@ -25,7 +16,7 @@ export interface SwipeRecord {
 
 export interface BotScore {
   isBot:      boolean;
-  confidence: number;   // 0–1
+  confidence: number;   
   flags:      string[];
 }
 
@@ -44,7 +35,7 @@ export class BotDetector {
   private perfectLineStreak    = 0;
   private frozenUntilMs        = 0;
 
-  /** Add a swipe to the history. Also runs the Perfect Line Trap. */
+  
   recordSwipe(path: Path, timestamps: number[]): 'ok' | 'freeze' | 'block' {
     const record: SwipeRecord = { path, timestamps };
     this.history.push(record);
@@ -66,7 +57,7 @@ export class BotDetector {
     return 'ok';
   }
 
-  /** Analyse accumulated history and return a BotScore. */
+  
   analyze(): BotScore {
     if (this.history.length === 0) {
       return { isBot: false, confidence: 0, flags: [] };
@@ -76,7 +67,7 @@ export class BotDetector {
     let botSignals = 0;
     const totalMetrics = 5;
 
-    // 1. Mean perpendicular deviation
+    
     const allPaths = this.history.map((r) => r.path);
     const avgDev   = allPaths.reduce((s, p) => s + perpendicularDeviation(p), 0) / allPaths.length;
     if (avgDev < BOT_DEVIATION_PX) {
@@ -84,14 +75,14 @@ export class BotDetector {
       flags.push(`Low deviation: ${avgDev.toFixed(2)} px (bot < ${BOT_DEVIATION_PX})`);
     }
 
-    // 2. Cross-swipe similarity
+    
     const crossSim = crossSwipeSimilarity(allPaths);
     if (crossSim > BOT_CROSS_SIM) {
       botSignals++;
       flags.push(`High cross-similarity: ${crossSim.toFixed(3)} (bot > ${BOT_CROSS_SIM})`);
     }
 
-    // 3. Coarse-grain invariance (use most recent path)
+    
     const latestPath = this.history[this.history.length - 1].path;
     const cgInv = coarseGrainInvariance(latestPath);
     if (cgInv < 1 - BOT_COARSE_GRAIN) {
@@ -99,14 +90,14 @@ export class BotDetector {
       flags.push(`Low coarse-grain diff: ${cgInv.toFixed(3)}`);
     }
 
-    // 4. Deviation entropy
+    
     const entropy = deviationEntropy(latestPath);
     if (entropy < BOT_ENTROPY) {
       botSignals++;
       flags.push(`Low entropy: ${entropy.toFixed(3)} (bot < ${BOT_ENTROPY})`);
     }
 
-    // 5. Velocity variance + jerk
+    
     const latest     = this.history[this.history.length - 1];
     const { variance } = velocityVarianceJerk(latest.path, latest.timestamps);
     if (variance < BOT_VEL_VARIANCE) {
@@ -114,7 +105,7 @@ export class BotDetector {
       flags.push(`Low velocity variance: ${variance.toFixed(3)} (bot < ${BOT_VEL_VARIANCE})`);
     }
 
-    // Perfect Line Trap override
+    
     if (this.isFrozen() || this.perfectLineStreak >= 2) {
       flags.push('Perfect Line Trap triggered');
       return { isBot: true, confidence: 1, flags };
@@ -128,17 +119,17 @@ export class BotDetector {
     };
   }
 
-  /** Whether the session is currently frozen due to the Perfect Line Trap. */
+  
   isFrozen(): boolean {
     return Date.now() < this.frozenUntilMs;
   }
 
-  /** Remaining freeze time in ms (0 if not frozen). */
+  
   freezeRemainingMs(): number {
     return Math.max(0, this.frozenUntilMs - Date.now());
   }
 
-  /** Reset all state (new session). */
+  
   reset(): void {
     this.history.length      = 0;
     this.perfectLineStreak   = 0;

@@ -14,19 +14,7 @@ import type {
     EnginRuleSetParams,
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
-/**
- * lib/engins/music/starMakerEnginRuleSet.ts
- *
- * StarMakerEngin Rule-Set — the ONLY place StarMakerEngin domain logic lives.
- *
- * Domain: music production (BPM, key, stems, releases, playback).
- * Handoff kinds: music:stem-ready → ContentEngin, music:brand-audio-brief → BrandingEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
+
 
 export type PlaybackQualityMode = 'normal' | 'hq' | 'offline';
 

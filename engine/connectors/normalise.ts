@@ -1,21 +1,6 @@
 import type { FeedItemMedia, UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/normalise.ts
- *
- * Phase 5 — Feed & Friends Connections
- * Feed item normalisation utilities.
- *
- * Converts provider-native API responses into the UnifiedFeedItem shape
- * so every provider's content looks the same to the rest of the system.
- *
- * Rules:
- * - Pure functions only — no side effects, no DB calls, no fetch
- * - Every function is independently unit-testable
- * - If a field is missing in the provider response, use a safe default
- *
- * ARCHITECTURE.md §3 — Logic layer (lib/)
- */
+
 
 interface MastodonMediaAttachment {
   type: string;
@@ -43,7 +28,7 @@ export function normaliseMastodon(
   status: MastodonStatus,
   instanceUrl: string,
 ): UnifiedFeedItem {
-  // If this is a reblog (boost), normalise the inner status
+  
   const s = status.reblog ?? status;
 
   const media: FeedItemMedia[] = (s.media_attachments ?? []).map((m) => ({
@@ -244,9 +229,9 @@ interface NostrEvent {
   content?: string;
   created_at?: number;
   tags?: string[][];
-  /** Resolved display name from kind-0 profile (caller provides) */
+  
   authorName?: string;
-  /** Resolved NIP-19 npub (caller provides) */
+  
   npub?: string;
 }
 
@@ -488,10 +473,7 @@ export function normaliseTwitter(item: GenericRssItem, username: string): Unifie
   return normaliseGenericRssItem('twitter', item, `@${username}`, `@${username}`);
 }
 
-/**
- * Deduplicates a list of UnifiedFeedItems by (provider, external_id).
- * The first occurrence wins; duplicates are dropped.
- */
+
 export function deduplicateFeedItems(items: UnifiedFeedItem[]): UnifiedFeedItem[] {
   const seen = new Set<string>();
   return items.filter((item) => {
@@ -502,7 +484,7 @@ export function deduplicateFeedItems(items: UnifiedFeedItem[]): UnifiedFeedItem[
   });
 }
 
-/** Strip HTML tags from a string, returning plain text. */
+
 export function stripHtml(html: string): string {
   return html
     .replace(/<[^>]*>/g, ' ')
@@ -515,7 +497,7 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
-/** Extract hostname from a URL, falling back to the raw string on failure. */
+
 export function hostFromUrl(url: string): string {
   try {
     return new URL(url).hostname;
@@ -524,9 +506,9 @@ export function hostFromUrl(url: string): string {
   }
 }
 
-/** Convert an AT Protocol URI (at://did:plc:.../app.bsky.feed.post/...) to an https URL. */
+
 export function atUriToHttps(atUri: string, handle: string): string {
-  // at://did:plc:xxx/app.bsky.feed.post/yyy → https://bsky.app/profile/{handle}/post/yyy
+  
   const parts = atUri.split('/');
   const rkey = parts[parts.length - 1];
   return `https://bsky.app/profile/${handle}/post/${rkey}`;

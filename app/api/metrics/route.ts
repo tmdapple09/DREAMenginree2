@@ -2,28 +2,28 @@ import { getPrometheusMetrics } from '@/engine/observability/otel';
 import { initOtelBridge } from '@/engine/observability/otelBridge';
 import { NextRequest, NextResponse, connection } from 'next/server';
 
-// app/api/metrics/route.ts
-//
-// Prometheus-compatible /metrics endpoint.
-//
-// Returns OpenTelemetry-collected metrics in Prometheus exposition format.
-// Protected by an optional Bearer token (METRICS_BEARER_TOKEN env var).
-//
-// When METRICS_BEARER_TOKEN is set:
-//   Prometheus scrape config must include:
-//     authorization:
-//       credentials: <your-token>
-//
-// When METRICS_BEARER_TOKEN is unset (local dev / backwards compat):
-//   The endpoint is open — acceptable only on localhost or Vercel IP-allowlisted deployments.
-//
-// This endpoint exposes ONLY system/service metrics — never user data, PII, or secrets.
 
-// Ensure the OTel bridge is active so all collector events are mirrored.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 initOtelBridge();
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  // ── Optional Bearer token gate ───────────────────────────────────────────
+  
   const expectedToken = process.env.METRICS_BEARER_TOKEN;
   if (expectedToken) {
     const authHeader = req.headers.get('authorization') ?? '';
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // Opt into dynamic rendering — metrics must be fresh on every scrape.
+  
   await connection();
 
   const body = await getPrometheusMetrics();

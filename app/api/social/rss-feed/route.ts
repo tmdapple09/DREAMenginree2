@@ -25,49 +25,9 @@ import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/social/rss-feed/route.ts
- *
- * GET /api/social/rss-feed
- *
- * Public RSS feed proxy. Fetches any supported public RSS/Atom feed and
- * returns normalised UnifiedFeedItem[] — no authentication required because
- * these are all public feeds.
- *
- * Supported query parameters:
- *
- *   provider (required) — one of: youtube, reddit, mastodon, github, nostr,
- *                                   medium, devto, substack, hackernews, podcast
- *
- *   Provider-specific params:
- *     youtube:    channel_id=... OR playlist_id=...
- *     reddit:     subreddit=...  OR username=...
- *     mastodon:   instance_url=...  handle=...
- *     github:     username=...
- *     nostr:      pubkey=...
- *     medium:     username=...
- *     devto:      username=...
- *     substack:   publication=... (subdomain or full URL)
- *     hackernews: feed_type=best|newest|ask|show|jobs  [username=...]
- *     podcast:    feed_url=...  (any public RSS/Atom URL)
- *
- *   limit (optional) — number of items to return (default 25, max 100)
- *
- * Responses:
- *   200  { ok: true, provider, feed_url, items: UnifiedFeedItem[] }
- *   400  { ok: false, error: '...' }
- *   502  { ok: false, error: '...' }   — upstream RSS fetch failed
- *
- * Security:
- *   - No auth required (feeds are public).
- *   - SSRF protection: only http/https URLs accepted; private IP ranges blocked.
- *   - Rate limiting is handled by Next.js edge middleware (not this route).
- *   - feed_url is validated against a blocklist of private IP ranges.
- *
- * ARCHITECTURE.md §3 — Logic layer (lib/social) used here; no direct DB writes.
- */
 
-// ── SSRF guard ────────────────────────────────────────────────────────────
+
+
 
 const BLOCKED_HOST_PATTERNS = [
   /^localhost$/i,
@@ -77,9 +37,9 @@ const BLOCKED_HOST_PATTERNS = [
   /^192\.168\./,
   /^::1$/,
   /^0\.0\.0\.0$/,
-  /^169\.254\./,           // link-local
-  /^fc00:/i,               // IPv6 ULA
-  /^fd[0-9a-f]{2}:/i,      // IPv6 ULA
+  /^169\.254\./,           
+  /^fc00:/i,               
+  /^fd[0-9a-f]{2}:/i,      
   /metadata\.google\.internal/i,
   /instance-data\.ec2\.internal/i,
 ];
@@ -90,7 +50,7 @@ function isBlockedHost(urlStr: string): boolean {
     if (protocol !== 'http:' && protocol !== 'https:') return true;
     return BLOCKED_HOST_PATTERNS.some((re) => re.test(hostname));
   } catch {
-    return true; // unparseable → block
+    return true; 
   }
 }
 
@@ -232,7 +192,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: urlError ?? 'Could not resolve feed URL' }, { status: 400 });
   }
 
-  // SSRF guard — block private/internal IPs
+  
   if (isBlockedHost(feedUrl)) {
     return NextResponse.json(
       { ok: false, error: 'Feed URL is not allowed (blocked host).' },
@@ -245,7 +205,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     items = await parseRssFeed({ provider, feedUrl }, limit);
   } catch (err: unknown) {
     const message = err instanceof Error ? toErrorMessage(err) : String(err);
-    // Surface a clear public-vs-private message for auth failures
+    
     const isAuthError = /401|403|unauthori|forbidden|private|login/i.test(message);
     return NextResponse.json(
       {
@@ -268,7 +228,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     },
     {
       headers: {
-        // Cache for 5 minutes — feeds don't change faster than that
+        
         'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
       },
     },

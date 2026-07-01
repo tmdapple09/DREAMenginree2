@@ -5,17 +5,7 @@ import { ChevronLeft, X } from 'lucide-react';
 import Link from 'next/link';
 import { type ReactNode, useEffect, useRef } from 'react';
 
-/**
- * EnginAppShell — Full-screen immersive shell for all six DREAMengin engines.
- *
- * Each engine is a standalone app-within-the-app: full viewport, dedicated nav,
- * isolated context, escape hatch back to the main platform.
- *
- * Design tokens:
- *   accentColor  → used for the top accent stripe, active links, glow effects
- *   engineName   → displayed in the header bar
- *   engineEmoji  → visual identity in the header
- */
+
 
 export interface EnginAppShellProps {
   engineName: string;
@@ -40,7 +30,7 @@ export default function EnginAppShell({
 }: EnginAppShellProps) {
   const shellRef = useRef<HTMLDivElement>(null);
 
-  // Suppress main app scroll / footer while engine is mounted
+  
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -64,13 +54,13 @@ export default function EnginAppShell({
         className={`fixed inset-0 z-[200] flex flex-col bg-[#0a0a0f] text-white ${className}`}
         style={{ '--engin-accent': accentColor } as React.CSSProperties}
       >
-        {/* Accent stripe */}
+        
         <div
           className="absolute top-0 left-0 right-0 h-[2px]"
           style={{ background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }}
         />
 
-        {/* Top bar */}
+        
         <header className="de-engin-shell-header relative z-10 flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-[#0e0e18]/90 backdrop-blur-sm">
           <Link
             href={backHref}
@@ -103,7 +93,7 @@ export default function EnginAppShell({
           </div>
         </header>
 
-        {/* Engine content */}
+        
         <main className="relative flex-1 overflow-hidden">
           {children}
         </main>

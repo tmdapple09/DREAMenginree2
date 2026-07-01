@@ -6,23 +6,7 @@ import type { ConnectorSyncResponse } from '@/types/connector';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/connectors/[provider]/sync/route.ts
- *
- * Phase 5 — POST /api/connectors/{provider}/sync
- *
- * User-triggered sync: authenticates the requesting user, fetches the stored
- * connector credentials, and delegates the full sync pipeline to
- * lib/connectors/reconcile.ts (shared with the cron fallback route).
- *
- * Supported providers: mastodon, bluesky, github, reddit, nostr, youtube, instagram.
- * Instagram syncs own-media only (Basic Display API) — no follower feed.
- *
- * Never returns token_blob to the client.
- *
- * AXIOM 4 — Security by Default: provider tokens never leave the server.
- * ARCHITECTURE.md §3 — Logic layer (lib/connectors) handles provider calls.
- */
+
 
 export async function POST(
   _req: NextRequest,
@@ -41,7 +25,7 @@ export async function POST(
     );
   }
 
-  // Guard: provider must be in the dispatch set before hitting the DB.
+  
   if (!(DISPATCH_SUPPORTED_PROVIDERS as readonly string[]).includes(provider)) {
     return NextResponse.json(
       { ok: false, fetched: 0, stored: 0, last_synced_at: '', error: `Provider "${provider}" sync not supported.` },
@@ -49,8 +33,8 @@ export async function POST(
     );
   }
 
-  // Fetch stored credentials (token_blob — server-side only).
-  // db cast to `any` because connector_accounts is not in the generated Supabase types.
+  
+  
   const { data: account, error: fetchError } = await db
     .from('connector_accounts')
     .select('status, token_blob')
@@ -72,7 +56,7 @@ export async function POST(
     }, { status: 409 });
   }
 
-  // Delegate the full fetch → dedup → upsert pipeline to the shared reconcile module.
+  
   const result = await reconcileConnector(
     db,
     user.id,

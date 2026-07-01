@@ -1,21 +1,9 @@
-/**
- * tests/phase8a.test.ts
- *
- * Phase 8 Section A regression tests — HomeDream Surface: Real Feed &
- * Real Customization (Points 1–10).
- *
- * Architecture justification:
- *   - docs/dreamengin_phase8.md §A: HomeDream Surface spec
- *   - docs/ARCHITECTURE.md §3: user settings live in Supabase
- *   - docs/AXIOMS.md Axiom 5: Privacy by Design
- *   - docs/LAW.md Product law 3: every action does something real
- *   - docs/SECURITY.md: feed_items user-scoped via RLS
- */
+
 
 import { describe, expect, it } from 'vitest';
 import { CANONICAL_NAV_ROUTES } from '@/dr-eams/ai/triad';
 
-// ── Point 9: Canonical route set validation ───────────────────────────────────
+
 
 describe('Phase 8 §A Point 9 — Dr. Eams canonical routes', () => {
   it('exports a non-empty set of canonical routes', () => {
@@ -81,7 +69,7 @@ describe('Phase 8 §A Point 9 — Dr. Eams canonical routes', () => {
   });
 });
 
-// ── Point 3: Feed preferences schema validation ───────────────────────────────
+
 
 const ALLOWED_FEED_PREF_KEYS = new Set([
   'showDreamenginUpdates',
@@ -127,7 +115,7 @@ describe('Phase 8 §A Point 3 — Feed preferences schema', () => {
   });
 });
 
-// ── Point 4: Home layout slot validation ─────────────────────────────────────
+
 
 interface LayoutSlot {
   id: string;
@@ -189,7 +177,7 @@ describe('Phase 8 §A Point 4 — Home layout slot validation', () => {
   });
 });
 
-// ── Point 1 & 2: Unified feed entry shape ────────────────────────────────────
+
 
 interface UnifiedFeedEntry {
   id: string;
@@ -276,13 +264,13 @@ describe('Phase 8 §A Points 1 & 2 — Unified feed entry schema', () => {
   });
 });
 
-// ── Point 6: Feed privacy model ───────────────────────────────────────────────
+
 
 describe('Phase 8 §A Point 6 — Feed content private by default', () => {
   it('feed_items are user-scoped (RLS enforcement documented)', () => {
-    // This test validates the documented RLS model for feed_items.
-    // In the live system, only auth.uid() = user_id can SELECT or INSERT.
-    // The migration (20260310000004_feed_items.sql) enforces this at the DB layer.
+    
+    
+    
     const rlsPolicy = {
       table: 'feed_items',
       policies: [
@@ -290,7 +278,7 @@ describe('Phase 8 §A Point 6 — Feed content private by default', () => {
         { name: 'feed_items_insert_own', with_check: 'auth.uid() = user_id' },
         { name: 'feed_items_delete_own', using: 'auth.uid() = user_id' },
       ],
-      no_update_policy: true, // feed items are immutable once stored
+      no_update_policy: true, 
     };
     expect(rlsPolicy.table).toBe('feed_items');
     expect(rlsPolicy.policies).toHaveLength(3);
@@ -298,11 +286,11 @@ describe('Phase 8 §A Point 6 — Feed content private by default', () => {
   });
 
   it('connector feed items do not expose cross-user data', () => {
-    // A user can only see their own connector feed items.
-    // This is a policy contract test — the actual enforcement is in Supabase.
+    
+    
     const userId = 'user-a';
     const anotherUserId = 'user-b';
-    // Simulate the filter: only return items where user_id === requestingUserId
+    
     const allItems = [
       { id: '1', user_id: userId,        provider: 'mastodon' },
       { id: '2', user_id: anotherUserId, provider: 'github'   },

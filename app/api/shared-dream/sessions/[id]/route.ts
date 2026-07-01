@@ -4,11 +4,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
-// app/api/shared-dream/sessions/[id]/route.ts
-// GET   — load session + members + recent activity (securely checked)
-// PATCH — save merged engin state (called by useSharedDreamSession.flushBuffer)
 
-// Escape hatch for missing database types to prevent "Type instantiation is excessively deep"
+
+
+
+
 
 type AnyClient = SupabaseClient;
 
@@ -44,10 +44,10 @@ export async function GET(
   const user = await safeGetUser(supabase);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  // Use the casted client to bypass the TypeScript recursion issue
+  
   const db = supabase as AnyClient;
 
-  // 1. Auth Guard: Ensure the user is actually a member of this session
+  
   const { data: membership, error: memberCheckError } = await db
     .from('shared_dream_members')
     .select('user_id')
@@ -59,7 +59,7 @@ export async function GET(
     return NextResponse.json({ error: 'Forbidden: Not a member' }, { status: 403 });
   }
 
-  // 2. Fetch primary session data
+  
   const { data: session, error: sessionError }: SupabaseRow<SharedDreamSession> = await db
     .from('shared_dream_sessions')
     .select('id, name, channel_id, owner_id, engin_state, active_engins, session_count, last_active_at, created_at')
@@ -68,7 +68,7 @@ export async function GET(
 
   if (sessionError || !session) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-  // 3. Fetch related members and activity
+  
   const { data: members } = await db
     .from('shared_dream_members')
     .select('user_id, role, joined_at, last_seen_at')
@@ -82,7 +82,7 @@ export async function GET(
     .order('created_at', { ascending: false })
     .limit(30);
 
-  // 4. Update user's last seen heartbeat safely using update (avoids upsert constraints)
+  
   await db
     .from('shared_dream_members')
     .update({ last_seen_at: new Date().toISOString() })
@@ -104,7 +104,7 @@ export async function PATCH(
 
   const db = supabase as AnyClient;
 
-  // Verify membership before allowing edits
+  
   const { data: membership }: SupabaseRow<{ user_id: string }> = await db
     .from('shared_dream_members')
     .select('user_id')

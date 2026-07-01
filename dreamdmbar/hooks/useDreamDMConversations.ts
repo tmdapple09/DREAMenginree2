@@ -5,16 +5,7 @@ import { createClient } from '@/supabase/client/client';
 import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * useDreamDMConversations — fetch and subscribe to the current user's DreamDM
- * conversation list.
- *
- * Architecture note: lives in lib/ (Logic layer) per GENERATION_LAW §3.1.
- * Privacy: reads only conversations where auth.uid() is a participant (RLS
- * enforced at the database layer; client filter is defence-in-depth).
- *
- * docs/dreamdm_bar_pass2.md §4 — Hook layer
- */
+
 
 
 export interface DMConversation {
@@ -92,10 +83,10 @@ export function useDreamDMConversations(userId: string, initial: DMConversation[
   useEffect(() => {
     if (!userId) return;
 
-    // Load conversations immediately on mount (and whenever userId changes)
+    
     load();
 
-    // Subscribe to conversations updates for this user
+    
     const supabase = createClient();
     const channel = supabase
       .channel(`conversations:${userId}`)

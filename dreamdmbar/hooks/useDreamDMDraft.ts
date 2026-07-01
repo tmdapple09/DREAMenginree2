@@ -3,24 +3,7 @@
 import { deleteOfflineRecord, getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * useDreamDMDraft — localStorage-backed draft persistence for DreamDM.
- *
- * Saves the in-progress message body and subject for a conversation to
- * localStorage. Drafts survive page refresh and surface navigation.
- *
- * Key scheme:  de-dm-draft:{conversationId}
- * Value:       JSON { subject: string, body: string, savedAt: number }
- *
- * Draft body is silently truncated to MAX_DRAFT_CHARS (4999) before save to
- * avoid localStorage quota errors.
- *
- * Privacy: drafts are stored client-side only in Pass 2. They are never sent
- * to the server here. The `drafts` Supabase table is provisioned but not
- * written by this hook (reserved for Pass 3 cross-device sync).
- *
- * docs/dreamdm_bar_pass2.md §2.2 — Draft Persistence
- */
+
 
 
 const MAX_DRAFT_CHARS = 4999;
@@ -29,21 +12,20 @@ const STORAGE_PREFIX = 'de-dm-draft:';
 export interface DraftPayload {
   subject: string;
   body: string;
-  /** ── Improvement 81: savedAt timestamp ──────────────────────────────────
-   * Epoch ms when this draft was last saved. Used by cleanupStaleDrafts(). */
+  
   savedAt?: number;
 }
 
 interface UseDreamDMDraftReturn {
-  /** Current draft for the active conversation (null until first restore) */
+  
   draft: DraftPayload | null;
-  /** Save the current draft; debounced 500 ms */
+  
   saveDraft: (payload: DraftPayload) => void;
-  /** Remove the draft for the given conversation (call on successful send) */
+  
   clearDraft: (conversationId: string) => void;
-  /** Whether a draft was restored for the current conversation */
+  
   draftRestored: boolean;
-  /** ── Improvement 84: age of the current draft in ms (null if none) ───── */
+  
   draftAgeMs: number | null;
 }
 
@@ -73,15 +55,12 @@ function writeDraft(conversationId: string, payload: DraftPayload): void {
     localStorage.setItem(buildKey(conversationId), JSON.stringify(truncated));
     void putOfflineRecord({ namespace: 'dreamdm-drafts', id: conversationId, value: truncated });
   } catch (err: unknown) {
-    // ── Improvement 83: log storage quota errors instead of silently swallowing ──
+    
     console.warn('[DreamDMDraft] Failed to persist draft', { conversationId, err });
   }
 }
 
-/**
- * Return the conversation IDs of all drafts currently in localStorage.
- * Useful for rendering a "You have unsent drafts" indicator or a draft manager UI.
- */
+
 export function listAllDraftIds(): string[] {
   if (typeof window === 'undefined') return [];
   const ids: string[] = [];
@@ -94,11 +73,7 @@ export function listAllDraftIds(): string[] {
   return ids;
 }
 
-/**
- * Remove draft entries older than `maxAgeDays` days from localStorage.
- * Drafts without a `savedAt` timestamp are also removed (legacy entries).
- * Returns the array of conversation IDs that were removed.
- */
+
 export function cleanupStaleDrafts(maxAgeDays: number): string[] {
   if (typeof window === 'undefined') return [];
   const cutoff = Date.now() - maxAgeDays * 86_400_000;
@@ -114,10 +89,7 @@ export function cleanupStaleDrafts(maxAgeDays: number): string[] {
   return removed;
 }
 
-/**
- * Return how old the draft for a conversation is in milliseconds, or null
- * if no draft exists. Useful for UI indicators like "Draft saved 3h ago".
- */
+
 export function getDraftAge(conversationId: string): number | null {
   const draft = readDraft(conversationId);
   if (!draft || !draft.savedAt) return null;
@@ -129,7 +101,7 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
   const [draftRestored, setDraftRestored] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Restore draft whenever conversationId changes
+  
   useEffect(() => {
     if (!conversationId) {
       setDraft(null);
@@ -148,7 +120,7 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
         window.setTimeout(() => setDraftRestored(false), 2000);
       }
     });
-    // Show "Draft restored" indicator briefly if a non-empty draft was found
+    
     if (saved && (saved.body.trim() || saved.subject.trim())) {
       setDraftRestored(true);
       const timer = setTimeout(() => setDraftRestored(false), 2000);
@@ -182,7 +154,7 @@ export function useDreamDMDraft(conversationId: string | null): UseDreamDMDraftR
     }
   }, [conversationId]);
 
-  // Clear debounce on unmount
+  
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);

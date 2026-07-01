@@ -2,13 +2,13 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-// ─── Named constants ────────────────────────────────────────────────────────
+
 const OUTPUT_PATH = path.resolve(process.cwd(), 'docs/mobile-nextgen-web-gaming-engine-spec.md');
 const SNIPPET_MAX_CHARS = 1800;
 const COVERAGE_STRONG_PCT = 75;
 const COVERAGE_PARTIAL_PCT = 40;
 
-// ─── Research sources (next-gen / beyond-PS5 web platform) ───────────────────
+
 const researchSources = [
   { area: 'rendering', title: 'WebGPU Compute Shaders (W3C)', url: 'https://www.w3.org/TR/webgpu/' },
   { area: 'rendering', title: 'WebGPU Best Practices (Toji)', url: 'https://toji.dev/webgpu-best-practices/' },
@@ -27,10 +27,10 @@ const researchSources = [
   { area: 'accessibility', title: 'MDN: Accessibility on the Web', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility' },
 ];
 
-// ─── Next-Gen capability pillars (BEYOND PS5) ────────────────────────────────
-// Each pillar starts mostly UNIMPLEMENTED so the spec has runway to evolve.
-// As DREAMengin adds the listed files/symbols, pillars flip to ✅ and the
-// workflow eventually reaches its endpoint and stops committing.
+
+
+
+
 const capabilityChecklist = [
   {
     name: 'Real-Time Path Tracing & Global Illumination',
@@ -171,7 +171,7 @@ const capabilityChecklist = [
   },
 ];
 
-// ─── Repo-based completion check ──────────────────────────────────────────────
+
 async function checkCompletion() {
   const results = [];
   for (const capability of capabilityChecklist) {
@@ -194,7 +194,7 @@ async function checkCompletion() {
   return results;
 }
 
-// ─── Source fetching ───────────────────────────────────────────────────────────
+
 function stripHtml(input) {
   return input
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
@@ -273,7 +273,7 @@ function scoreWebCoverage(capability, research) {
   };
 }
 
-// ─── Spec markdown builder ─────────────────────────────────────────────────────
+
 function buildSpecMarkdown(research, completionResults) {
   const successful = research.filter((item) => item.ok);
   const failed = research.filter((item) => !item.ok);
@@ -305,7 +305,7 @@ function buildSpecMarkdown(research, completionResults) {
     lines.push('');
   }
 
-  // ── 1. Requirements List ──────────────────────────────────────────────────────
+  
   lines.push('## Next-Gen Mobile Web Gaming Engine Requirements List');
   lines.push('');
   lines.push('What must be true for a mobile web game engine to qualify as "next-gen / beyond PS5":');
@@ -322,7 +322,7 @@ function buildSpecMarkdown(research, completionResults) {
   lines.push('10. **Accessibility AI** — Realtime captions, adaptive motion reduction, per-user color-vision adaptation.');
   lines.push('');
 
-  // ── 2. End-point definition ───────────────────────────────────────────────────
+  
   lines.push('## End-Point Definition (When the upgrade is complete)');
   lines.push('');
   lines.push('The next-gen spec workflow reaches its endpoint when **every upgrade pillar** below shows ✅ in "Repo Status".');
@@ -330,7 +330,7 @@ function buildSpecMarkdown(research, completionResults) {
   lines.push('mirroring the behavior of the PS5-tier spec evolver.');
   lines.push('');
 
-  // ── 3. Capability pillars ─────────────────────────────────────────────────────
+  
   lines.push('## Upgrade Pillars — Detailed Spec');
   lines.push('');
 

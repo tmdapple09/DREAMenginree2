@@ -1,23 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 
-/**
- * components/gameengin/input/DualSenseManager.ts
- *
- * DualSense controller integration for mobile Bluetooth and desktop USB.
- *
- * Key features (March 2026):
- * - Bluetooth pairing to phone (Android Chrome best, iOS Safari decent)
- * - Gamepad API: Sticks, buttons, triggers, D-pad, gyro
- * - Haptics/Rumble: Basic vibration on Android Chrome
- * - Adaptive triggers: Limited on mobile (WebHID is desktop-only)
- * - LED/Touchpad: Limited on mobile - use in-game visual feedback
- *
- * Pairing: Hold PS button + Create button until light bar flashes blue
- * → pair in phone Bluetooth settings. Works on Android 12+ and iOS 14.5+.
- *
- * Architecture: Integrates with existing dual-runtime, DreamDM Bar drag,
- * and spatial multitasking (game keeps rendering while messaging/resizing).
- */
+
 
 export interface DualSenseState {
   leftStick: { x: number; y: number };
@@ -68,7 +51,7 @@ export class DualSenseManager {
   }
 
   async init() {
-    // Listen for Bluetooth pairing on phone
+    
     window.addEventListener('gamepadconnected', (e: GamepadEvent) => {
       const gp = e.gamepad;
       if (
@@ -80,7 +63,7 @@ export class DualSenseManager {
         const mode = this.isMobile ? 'phone Bluetooth' : 'USB/desktop';
         console.debug(`🎮 PS5 DualSense connected via ${mode}`);
 
-        // Mobile-friendly status
+        
         if (this.isMobile) {
           const status = 'DualSense ready — gyro steering + basic rumble active';
           console.debug('📱 Mobile mode: Gyro steering/aim + basic rumble active. Adaptive triggers limited.');
@@ -96,7 +79,7 @@ export class DualSenseManager {
       this.onStatusChange?.('DualSense disconnected');
     });
 
-    // Poll in render loop for smooth input
+    
     this.scene.onBeforeRenderObservable.add(() => this.update());
   }
 
@@ -104,8 +87,8 @@ export class DualSenseManager {
     const gp = navigator.getGamepads()[this.gamepadIndex];
     if (!gp) return;
 
-    // Core mapping (works on phone Bluetooth) - handled in getState()
-    // This update loop is for future frame-by-frame processing if needed
+    
+    
   }
 
   getState(): DualSenseState {
@@ -135,7 +118,7 @@ export class DualSenseManager {
       };
     }
 
-    // Gyro is great on mobile for natural steering/aim (phone tilt)
+    
     const gyro = this.isMobile
       ? {
           x: (gp as Gamepad & { angularVelocity?: number[]; hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator }).angularVelocity?.[0] || 0,
@@ -179,7 +162,7 @@ export class DualSenseManager {
     }
   }
 
-  // Optional: Visual LED feedback in-game (since real LED control is desktop/WebHID only)
+  
   showFeedback(color: string = 'neon') {
     console.debug(`Visual feedback: ${color} (real LED limited on mobile)`);
   }
@@ -189,7 +172,7 @@ export class DualSenseManager {
   }
 
   dispose() {
-    // Cleanup if needed
+    
     this.gamepadIndex = -1;
   }
 }

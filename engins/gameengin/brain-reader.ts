@@ -2,15 +2,7 @@ import { createHash } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-/**
- * lib/gameengin/brain-reader.ts
- *
- * Read / write API for the file-based knowledge brain.
- * Spec: GameENGINspec.md §2.3
- *
- * Used by the autonomous studio agent scripts under scripts/gameengin/.
- * Server-only — uses node:fs / node:path / node:crypto.
- */
+
 
 export const BRAIN_ROOT = path.join(process.cwd(), 'lib', 'gameengin', 'brain');
 
@@ -29,19 +21,13 @@ export interface GenreDNA {
   player_motivation: string;
   essential_feel: Record<string, unknown>;
   pacing_profile: { early: string; mid: string; late: string };
-  /**
-   * Modern game-structure descriptor. Optional only because legacy genre
-   * files predate the field; new genres MUST include it.
-   */
+  
   progression_model?: ProgressionModel;
   canonical_examples: unknown[];
   anti_patterns: string[];
 }
 
-/**
- * Modern game-structure types the studio understands. These are how the
- * game is actually shaped, not its art-style label.
- */
+
 export type StructureType =
   | 'linear'
   | 'open-world'
@@ -63,11 +49,11 @@ export const STRUCTURE_TYPES: readonly StructureType[] = [
 
 export interface ProgressionModel {
   structure_type: StructureType;
-  /** What stops the player from accessing everything immediately. */
+  
   progression_gates: string[];
-  /** What "finished" means for this structure. */
+  
   completion_definition: string;
-  /** How often new content appears (per run, per ability, per season, …). */
+  
   content_cadence: string;
 }
 
@@ -75,7 +61,7 @@ export function readGenreDNA(genre: string): GenreDNA {
   return readJSON<GenreDNA>(path.join(BRAIN_ROOT, 'genre-dna', `${genre}.json`));
 }
 
-/** Returns every genre slug present in the brain (excluding `template`). */
+
 export function listGenres(): string[] {
   const dir = path.join(BRAIN_ROOT, 'genre-dna');
   if (!fs.existsSync(dir)) return [];
@@ -124,11 +110,7 @@ export function listMechanics(category?: string): MechanicEntry[] {
   return out;
 }
 
-/**
- * Structural mechanics define the *shape* of the game (gating,
- * persistence, generation, streaming). Distinct from movement/combat
- * mechanics which define moment-to-moment feel.
- */
+
 export interface StructuralMechanic extends MechanicEntry {
   structural_role: string;
   applies_to_structures: StructureType[];
@@ -146,10 +128,7 @@ export function readPrinciple(slug: string): string {
   return fs.readFileSync(path.join(BRAIN_ROOT, 'principles', `${slug}.md`), 'utf-8');
 }
 
-/**
- * Deterministic mechanic-combo signature hash (spec §4.4).
- * `genre + sorted(mechanic ids)` joined by `+` then sha256-prefixed.
- */
+
 export function signatureHash(genre: string, mechanicIds: string[]): string {
   const sorted = [...mechanicIds].map((m) => m.trim().toLowerCase()).sort();
   const payload = [genre.trim().toLowerCase(), ...sorted].join('+');
@@ -177,7 +156,7 @@ export function readOriginalityRegistry(): OriginalityRegistry {
   );
 }
 
-/** Spec §4.4: returns true when the combo is novel enough to register. */
+
 export function isOriginal(hash: string, minNoveltyScore = 0.3): boolean {
   const reg = readOriginalityRegistry();
   const existing = reg.signatures.find((s) => s.hash === hash);
@@ -185,7 +164,7 @@ export function isOriginal(hash: string, minNoveltyScore = 0.3): boolean {
   return existing.novelty_score >= minNoveltyScore;
 }
 
-/** Spec §2.3 — Prophet logging research session (JSON, not the bare MD example in spec). */
+
 export function logRDSession(agent: string, topic: string, findings: unknown): string {
   const now = new Date();
   const date = now.toISOString().slice(0, 10);
@@ -212,7 +191,7 @@ export function logRDSession(agent: string, topic: string, findings: unknown): s
   return filePath;
 }
 
-// v2 — Expanded agent profiles (Maestro / Artisan / Mechanic / Writer / Upgrader)
+
 
 const CARTRIDGES_ROOT = path.join(process.cwd(), 'public', 'cartridges');
 
@@ -226,7 +205,7 @@ function ensureDir(p: string): void {
   fs.mkdirSync(p, { recursive: true });
 }
 
-/** Lists every cartridge id present under `public/cartridges/` (must contain MANIFEST.json). */
+
 export function listCartridges(): string[] {
   if (!fs.existsSync(CARTRIDGES_ROOT)) return [];
   return fs
@@ -424,10 +403,7 @@ export function recordAssignments(entries: AssignmentLogEntry[], cartridgesSurve
   return filePath;
 }
 
-/**
- * Returns the most recent ISO timestamp at which `agent` touched `cartridgeId`,
- * by scanning `rd-sessions/`. Returns `null` if never touched.
- */
+
 export function getLastTouched(cartridgeId: string, agent: AgentName): string | null {
   const dir = path.join(BRAIN_ROOT, 'rd-sessions');
   if (!fs.existsSync(dir)) return null;
@@ -490,7 +466,7 @@ export interface ActiveProjectSlot {
 }
 
 export interface ActiveProjects {
-  /** Hard cap on concurrent projects (Two-Project Rule from the directive). */
+  
   max_slots: number;
   slots: ActiveProjectSlot[];
 }
@@ -508,14 +484,7 @@ export function readActiveProjects(): ActiveProjects {
   };
 }
 
-/**
- * Replace the active-projects list. Enforces:
- *   - at most `max_slots` (2) entries,
- *   - no duplicate cartridge_ids,
- *   - cartridge_id is a non-empty slug-safe string.
- * Throws on violation; the caller (Maestro / operator UI) decides how to
- * surface the error.
- */
+
 export function setActiveProjects(next: ActiveProjects): void {
   const cap = next.max_slots ?? 2;
   if (next.slots.length > cap) {
@@ -550,11 +519,7 @@ export interface CrashReportEntry extends CrashReportInput {
   received_at: string;
 }
 
-/**
- * Maximum size of a single stored crash report (16 KB serialised). Mirrors
- * the API limit so the on-disk file can never exceed it even if a future
- * caller bypasses the route handler.
- */
+
 export const CRASH_REPORT_MAX_BYTES = 16 * 1024;
 
 export function recordCrashReport(input: CrashReportInput): string {
@@ -637,13 +602,13 @@ export interface VisionStatement {
   protagonist: { role: string; motivation: string };
   genre: string;
   subgenre?: string;
-  /** 2–4 mechanic ids that define gameplay. */
+  
   core_mechanics: string[];
   scope: {
     mode: VisionStatementMode;
-    /** Player-facing length, in minutes. */
+    
     estimated_player_minutes: number;
-    /** How long the autonomous studio needs to build it. Capped at 24h (one studio-day). */
+    
     studio_build_budget_hours: number;
   };
   patterns_used?: { setting?: string; protagonist?: string; scope_formula?: string };
@@ -654,9 +619,9 @@ export interface VisionStatement {
   notes?: string;
 }
 
-/** Maximum on-disk size of a single vision statement (8 KB serialised). */
+
 export const VISION_STATEMENT_MAX_BYTES = 8 * 1024;
-/** One studio-day cap from the directive. */
+
 export const VISION_BUDGET_MAX_HOURS = 24;
 
 export function recordVisionStatement(v: VisionStatement): string {
@@ -730,11 +695,7 @@ function readManifestRaw(cartridgeId: string): CartridgeManifestRaw | null {
   return JSON.parse(fs.readFileSync(p, 'utf-8')) as CartridgeManifestRaw;
 }
 
-/**
- * Returns the cartridge's declared status. Defaults to `improving` for any
- * cartridge whose MANIFEST omits the field — every cartridge counts as
- * backlog by default per the directive.
- */
+
 export function readCartridgeStatus(cartridgeId: string): CartridgeStatus {
   const m = readManifestRaw(cartridgeId);
   const s = m?.status;
@@ -759,19 +720,19 @@ export function listCartridgesByStatus(status: CartridgeStatus): string[] {
 export interface ProgressionStateInput {
   cartridge_id: string;
   structure_type: StructureType;
-  /** 0..1 — open-world / metroidvania map coverage. */
+  
   world_map_completion_pct?: number;
-  /** Ability ids the player has unlocked. */
+  
   ability_unlocks?: string[];
-  /** Sequence-break tags the player has triggered (metroidvania flavour). */
+  
   sequence_breaks?: string[];
-  /** Run count for run-based games. */
+  
   run_count?: number;
-  /** Meta-currency wallet. */
+  
   meta_currency?: Record<string, number>;
-  /** Live-service season identifier ("season-3-mid"). */
+  
   season_phase?: string;
-  /** Live-service active limited-time event ids. */
+  
   active_events?: string[];
 }
 

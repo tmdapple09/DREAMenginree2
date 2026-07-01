@@ -46,7 +46,7 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
   const os = useOS();
   const [assetTick, setAssetTick] = useState(0);
   useEffect(() => {
-    // Re-read ledger whenever a new asset is stored.
+    
     const handleLedgerAssetNew = () => setAssetTick((n) => n + 1);
     os.bus.on('ledger:asset:new', handleLedgerAssetNew);
     return () => os.bus.off('ledger:asset:new', handleLedgerAssetNew);
@@ -122,7 +122,7 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
         boxShadow: '0 18px 40px rgba(0,0,0,0.18)',
       }}
     >
-      {/* ── Shared Asset Ledger Grid ───────────────────────────────────────── */}
+      
       {ledgerAssets.length > 0 && (
         <div>
           <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 8 }}>
@@ -178,7 +178,7 @@ export default function DreamSpace({ initialAccountId }: DreamSpaceProps) {
         </div>
       )}
 
-      {/* ── Asset Preview Modal ────────────────────────────────────────────── */}
+      
       {previewAsset && (
         <div
           role="dialog"

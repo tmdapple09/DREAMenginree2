@@ -4,16 +4,7 @@ import GameRemote from '@/components/games/dream.remote.GameRemote';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
-/**
- * GameHUD — Floating translucent controller overlay for ImmersiveGameShell.
- *
- * Sits fixed at the bottom of the screen (z-index 50), overlaid on top of the
- * game viewport.  Two states:
- *   Collapsed — 44 px strip: game name · expand button · EXIT
- *   Expanded  — slides up to reveal the full embedded GameRemote
- *
- * EXIT always navigates to /daydream/games via Next.js router.
- */
+
 
 interface GameHUDProps {
   gameLabel: string;
@@ -48,12 +39,12 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
         WebkitBackdropFilter: 'blur(20px)',
         borderTop: '1px solid rgba(125, 211, 252, 0.15)',
         overflow: 'hidden',
-        /* height is driven by maxHeight so the transition is smooth */
+        
         maxHeight: expanded ? 560 : 44,
         transition: 'max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
-      {/* ── Collapsed strip ── always visible at the top of the HUD ── */}
+      
       <div
         style={{
           height: 44,
@@ -64,7 +55,7 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
           flexShrink: 0,
         }}
       >
-        {/* Left: emoji + game name */}
+        
         <div
           style={{
             display: 'flex',
@@ -89,7 +80,7 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
           </span>
         </div>
 
-        {/* Center: expand / collapse button */}
+        
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
@@ -114,7 +105,7 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
           {expanded ? '⊟' : '⊞'}
         </button>
 
-        {/* Right: EXIT button */}
+        
         <button
           type="button"
           onClick={handleExit}
@@ -135,16 +126,16 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
         </button>
       </div>
 
-      {/* ── Expanded panel — always mounted so transition is smooth ── */}
+      
       <div
         style={{
-          /* pointer-events off when visually hidden to avoid ghost interactions */
+          
           pointerEvents: expanded ? 'auto' : 'none',
           opacity: expanded ? 1 : 0,
           transition: 'opacity 0.2s ease',
         }}
       >
-        {/* Close-remote button at the top of the expanded area */}
+        
         <div
           style={{
             display: 'flex',
@@ -173,7 +164,7 @@ export default function GameHUD({ gameLabel, gameEmoji, playHref }: GameHUDProps
           </button>
         </div>
 
-        {/* Embedded GameRemote */}
+        
         <GameRemote
           embedded
           gameLabel={gameLabel}

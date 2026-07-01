@@ -10,33 +10,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-// app/api/ai/boogieman/route.ts
-// TheBoogieMan.Ai policy endpoint — admin-only system overwatch.
-// Runs both LLM policy check (boogiePolicyCheck) and rule engine (boogieEvaluate).
-// Every audit log entry carries policy_version + rule_code (req 3, 18).
-//
-//
-// TheBoogieMan enforces policy in two complementary layers:
-//
-//   Layer 1 — LLM policy check (boogiePolicyCheck):
-//     Evaluates the free-text `message` against the product policy rules
-//     (privacy, safety, content). Returns hard_block=true if the message
-//     violates policy. The LLM analysis is deterministic per message content.
-//
-//   Layer 2 — Rule engine (boogieEvaluate):
-//     Evaluates structured intents + actor role + current RPM. For raw message
-//     calls (no intents), this checks global guards only (e.g. rate limits).
-//     Returns global.hard_block=true if system-level guards trip.
-//
-//   Trigger conditions that set hard_block=true:
-//     - Message content violates product safety/privacy policy (Layer 1)
-//     - Actor is not admin or owner (gate check — returns 403 before evaluation)
-//     - Rate limit exceeded: > 20 req/min per user (Layer 2 global guard)
-//     - Both layers are OR'd: either alone can trigger a hard block
-//
-//   Audit log: every request — allowed or blocked — is written to ai_audit_log
-//   with policy_version, request_id, user_id, latency_ms, and block reason.
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const BoogieRequestSchema = z.object({
   message: z.string().min(1).max(4000),
@@ -109,14 +109,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // LLM policy check
+  
   const policyResult = await boogiePolicyCheck({
     actorRole,
     actorEmail: user.email,
     message: request.message,
   });
 
-  // Intent-level rule engine evaluation (no intents for a raw message — zero-intent check)
+  
   const ruleResult = boogieEvaluate({
     actorRole: 'admin',
     rateRpm: 0,

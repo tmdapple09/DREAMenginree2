@@ -74,11 +74,11 @@ async function mirrorConversationParticipants(
         { onConflict: 'conversation_id,user_id', ignoreDuplicates: true },
       );
   } catch {
-    // Optional mirror table. conversations.participant1_id/participant2_id remain canonical.
+    
   }
 }
 
-// GET - Fetch conversations or messages for one conversation.
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -131,7 +131,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ conversations: conversations ?? [] });
 }
 
-// POST - Send a message. Creates a two-person conversation when recipient_id is provided.
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

@@ -27,7 +27,7 @@ export interface RenderEnginTextureAtlasAllocation {
 }
 
 export interface RenderEnginGpuTexture {
-  /** Standalone texture is optional in resident mode; atlas-backed textures avoid duplicate VRAM. */
+  
   readonly texture?: GPUTexture;
   readonly view?: GPUTextureView;
   readonly sampler?: GPUSampler;
@@ -52,7 +52,7 @@ interface AtlasFreeRect {
 }
 
 export interface RenderEnginGpuMesh {
-  /** Legacy per-mesh buffers are optional; resident mode renders from the mesh arena. */
+  
   readonly vertexBuffer?: GPUBuffer;
   readonly indexBuffer?: GPUBuffer;
   readonly indexCount: number;
@@ -82,11 +82,11 @@ export interface RenderGpuMaterial {
 export interface RenderEnginSceneObject {
   readonly mesh: RenderEnginGpuMesh;
   readonly albedoTexture: RenderEnginGpuTexture;
-  /** Stable object ID used by GPU picking and Dream-level hit routing. Defaults to scene index. */
+  
   readonly objectId?: number;
-  /** Optional logical layer/z-index. Scene order remains the authoritative painter order. */
+  
   readonly zIndex?: number;
-  /** Legacy fields are optional; the resident path does not allocate per-object GPU uniforms/bind groups. */
+  
   readonly uniformBuffer?: GPUBuffer;
   readonly bindGroup?: GPUBindGroup;
   modelMatrix?: Mat4;
@@ -112,7 +112,7 @@ export interface RenderEnginLifecycleHooks {
   onDeviceRestored?(): void;
 }
 
-export const SHADER = /* wgsl */ `
+export const SHADER =  `
 struct Uniforms {
   model : mat4x4<f32>,
   view : mat4x4<f32>,
@@ -232,7 +232,7 @@ fn fsMain(input : VertexOutput) -> @location(0) vec4<f32> {
 }
 `;
 
-export const BATCH_SHADER = /* wgsl */ `
+export const BATCH_SHADER =  `
 struct BatchScene {
   view : mat4x4<f32>,
   projection : mat4x4<f32>,
@@ -457,7 +457,7 @@ export interface RenderGpuPickResult {
   readonly objectId: number;
 }
 
-const FLAG_CULL_SHADER = /* wgsl */ `
+const FLAG_CULL_SHADER =  `
 struct InstanceData {
   model : mat4x4<f32>,
   albedo : vec4<f32>,
@@ -548,7 +548,7 @@ fn main(
 }
 `;
 
-const PREFIX_SCAN_SHADER = /* wgsl */ `
+const PREFIX_SCAN_SHADER =  `
 struct CullingParams {
   count : u32,
   blockCount : u32,
@@ -592,7 +592,7 @@ fn main(@builtin(local_invocation_id) localId : vec3<u32>) {
 }
 `;
 
-const SCATTER_CULL_SHADER = /* wgsl */ `
+const SCATTER_CULL_SHADER =  `
 struct InstanceData {
   model : mat4x4<f32>,
   albedo : vec4<f32>,
@@ -700,7 +700,7 @@ fn main(@builtin(global_invocation_id) id : vec3<u32>) {
 }
 `;
 
-const KEEP_ALIVE_SHADER = /* wgsl */ `
+const KEEP_ALIVE_SHADER =  `
 @group(0) @binding(0) var<storage, read_write> keepAlive : array<u32>;
 @compute @workgroup_size(32)
 fn main(@builtin(global_invocation_id) id : vec3<u32>) {
@@ -711,7 +711,7 @@ fn main(@builtin(global_invocation_id) id : vec3<u32>) {
 `;
 
 
-const PICK_SHADER = /* wgsl */ `
+const PICK_SHADER =  `
 struct InstanceData {
   model : mat4x4<f32>,
   albedo : vec4<f32>,
@@ -946,13 +946,7 @@ async function createSharedRenderGpuDevice(): Promise<RenderEnginGpuDeviceLease>
   return lease;
 }
 
-/**
- * Returns DREAMengin's shared RenderEngin WebGPU device.
- *
- * ContentEngin, GameEngin, LabEngin, DreamSpace, and diagnostics should all
- * request GPU access through this facade so the app does not create separate
- * renderer identities or one GPUDevice per surface.
- */
+
 export async function requestWebGpuDevice(): Promise<RenderEnginGpuDeviceLease> {
   if (sharedRenderGpuDevice) return sharedRenderGpuDevice;
   if (!sharedRenderGpuDevicePromise) {
@@ -1530,8 +1524,8 @@ export class WebGpuRenderEngin {
       indexFormat: mesh.indexFormat,
       arena: { vertexOffset, indexOffset, indexCount },
       dispose: () => {
-        // Arena allocations are append-only for deterministic residency.
-        // Reclamation/compaction belongs to an explicit arena rebuild, not per-mesh dispose.
+        
+        
       },
     };
   }
@@ -1570,10 +1564,7 @@ export class WebGpuRenderEngin {
     this.uploadResidentScene(this.residentSceneObjects.length);
   }
 
-  /**
-   * Delta update for resident scene state. Use this for window moves, Engin swaps, hover,
-   * material changes, and cull-bound updates without rewriting the full OS buffer.
-   */
+  
   updateSceneObject(index: number, object: RenderEnginSceneObject): void {
     if (index < 0 || index >= this.scene.objects.length) throw new Error(`Scene object index ${index} is out of range.`);
     if (!object.mesh.arena) throw new Error('Delta scene object must use a mesh-arena backed mesh.');
@@ -1738,8 +1729,8 @@ export class WebGpuRenderEngin {
       return this.lastVisibilityState;
     }
 
-    // Total residency steady state: per frame only camera/frustum params and indirect counters are reset.
-    // Scene object data remains resident in visibilityInputRingBuffer until setScene/updateSceneObject changes it.
+    
+    
     this.writeVisibilityFrameParams(objectCount);
 
     let pass = encoder.beginComputePass();
@@ -1787,13 +1778,7 @@ export class WebGpuRenderEngin {
   }
 
 
-  /**
-   * GPU-resident pointer picking. The CPU writes only the normalized touch point;
-   * the GPU scans resident instance bounds and returns the topmost scene-order hit.
-   *
-   * ndcX/ndcY are WebGPU NDC coordinates: x [-1, 1], y [-1, 1].
-   * radiusNdc is a conservative touch radius in NDC units.
-   */
+  
   async pickResidentObject(request: RenderGpuPickRequest): Promise<RenderGpuPickResult> {
     if (!this.residentSceneReady || this.residentSceneObjectCount === 0) {
       return { hit: false, objectIndex: -1, objectId: 0 };
@@ -1967,9 +1952,9 @@ export class WebGpuRenderEngin {
   }
 
   disposeScene(): void {
-    // Resident mode does not give scene objects ownership of GPU buffers/textures.
-    // Mesh arena and texture atlas allocations are renderer-level resources; callers
-    // may keep uploaded assets alive across Engin/window swaps and dispose them explicitly.
+    
+    
+    
     this.residentSceneObjects = [];
     this.scene = { ...this.scene, objects: this.residentSceneObjects };
     this.residentSceneReady = false;
@@ -1983,9 +1968,9 @@ export class WebGpuRenderEngin {
   }
 
   resetDynamicPreviewResidency(): void {
-    // Dedicated edit/preview surfaces can recycle the append-only mesh arena each time
-    // their working mesh changes. Shared service scenes should use disposeScene/setScene
-    // instead so long-lived uploaded assets remain resident.
+    
+    
+    
     this.disposeScene();
     this.arenaVertexCursor = 0;
     this.arenaIndexCursor = 0;

@@ -5,17 +5,17 @@ import { AlertTriangle, ExternalLink, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-// components/dream.BoogieWarningBanner.tsx
-// Warning UI component used whenever TheBoogieMan.AI issues an enforcement action.
-// Includes "Why was I warned?" (req 12) and "Appeal" (req 13) links.
-// Uses factual, calm tone (req H64). Never reveals internals (req H63).
+
+
+
+
 
 interface BoogieWarningBannerProps {
-  /** The PolicyResult that triggered this warning. */
+  
   result: PolicyResult;
-  /** Allow dismissing low-severity (S0/S1) banners. High severity banners are not dismissible. */
+  
   dismissible?: boolean;
-  /** Optional class name for the outer container. */
+  
   className?: string;
 }
 
@@ -58,16 +58,7 @@ const SEVERITY_STYLES: Record<string, { border: string; icon: string; badge: str
   },
 };
 
-/**
- * BoogieWarningBanner
- *
- * Renders a policy enforcement banner with:
- * - What happened (plain language)
- * - Why (rule/category)
- * - "Why was I warned?" link → /policy (req 12)
- * - "Appeal" link → /policy#appeals (req 13)
- * - Expiry countdown if applicable
- */
+
 export default function BoogieWarningBanner({
   result,
   dismissible = true,
@@ -145,7 +136,7 @@ export default function BoogieWarningBanner({
       </div>
 
       <div className="de-widget-actions" style={{ gap: 8 }}>
-        {/* "Why was I warned?" link (req 12) */}
+        
         <Link
           href="/policy"
           className="de-btn de-btn-ghost text-xs"
@@ -155,7 +146,7 @@ export default function BoogieWarningBanner({
           Why was I warned?
         </Link>
 
-        {/* "Appeal" link → /policy#appeals (req 13) */}
+        
         {isAppealable && (
           <Link
             href="/policy#appeals"

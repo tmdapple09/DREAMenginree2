@@ -4,20 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-/**
- * app/api/drafts/[id]/route.ts
- *
- * DELETE /api/drafts/:id   — delete a single draft by id
- * PATCH  /api/drafts/:id   — update an existing draft (content, scheduled_at, etc.)
- *
- * Security rules (AXIOM 4 — Security by Default, ARCHITECTURE.md §5):
- *   - Requires authenticated user via supabase.auth.getUser()
- *   - Verifies ownership: draft.user_id === auth user id before delete/update
- *   - Returns 404 for not-found OR not-owned rows (avoid leaking existence)
- *
- * LAW.md §3 — every visible action must do something real.
- * ACTION_AUDIT.md — was labelled 🟡 fake-wired (no backend for drafts).
- */
+
 
 const CONTENT_TYPES = [
   'post', 'video', 'story', 'thread',
@@ -46,7 +33,7 @@ export async function DELETE(
 
   const db = supabase as SupabaseClient;
 
-  // Verify ownership before deleting
+  
   const { data: draft, error: fetchError } = await db
     .from('content_drafts')
     .select('id, user_id')
@@ -61,7 +48,7 @@ export async function DELETE(
     .from('content_drafts')
     .delete()
     .eq('id', id)
-    .eq('user_id', user.id); // belt-and-suspenders
+    .eq('user_id', user.id); 
 
   if (deleteError) {
     return NextResponse.json({ error: deleteError.message }, { status: 500 });
@@ -100,7 +87,7 @@ export async function PATCH(
 
   const db = supabase as SupabaseClient;
 
-  // Verify ownership before updating
+  
   const { data: existing, error: fetchError } = await db
     .from('content_drafts')
     .select('id, user_id')

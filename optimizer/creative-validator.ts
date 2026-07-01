@@ -4,20 +4,15 @@ import type {
     HardFailureReason,
 } from './types';
 
-/**
- * Creative Option Validation
- * Hard safety checks to filter out options that break the system
- */
 
-/**
- * Validate a creative option against hard failure rules
- */
+
+
 export function validateCreativeOption(
   option: CreativeOption
 ): CreativeValidationResult {
   const failures: HardFailureReason[] = [];
 
-  // Check for various hard failure conditions
+  
   if (checkBreaksBuild(option)) {
     failures.push({
       type: 'breaks_build',
@@ -87,12 +82,12 @@ export function validateCreativeOption(
   };
 }
 
-// Individual validation functions
+
 
 function checkBreaksBuild(option: CreativeOption): boolean {
   const content = option.content.toLowerCase();
 
-  // Check for patterns that would break the build
+  
   const breakPatterns = [
     /syntax\s+error/i,
     /cannot\s+find\s+module/i,
@@ -100,7 +95,7 @@ function checkBreaksBuild(option: CreativeOption): boolean {
     /build\s+failed/i,
   ];
 
-  // Check if metadata indicates build issues
+  
   if (option.metadata?.breaksBuild === true) {
     return true;
   }
@@ -111,7 +106,7 @@ function checkBreaksBuild(option: CreativeOption): boolean {
 function checkBreaksVercel(option: CreativeOption): boolean {
   const content = option.content.toLowerCase();
 
-  // Check for patterns that would break Vercel
+  
   const vercelBreakPatterns = [
     /serverless\s+function\s+timeout/i,
     /exceeds\s+50mb/i,
@@ -128,7 +123,7 @@ function checkBreaksVercel(option: CreativeOption): boolean {
 function checkBreaksPrivacy(option: CreativeOption): boolean {
   const content = option.content.toLowerCase();
 
-  // Check for privacy violations
+  
   const privacyViolations = [
     /expose\s+user\s+data/i,
     /leak\s+credentials/i,
@@ -148,7 +143,7 @@ function checkBreaksPrivacy(option: CreativeOption): boolean {
 function checkBreaksNavigation(option: CreativeOption): boolean {
   const content = option.content.toLowerCase();
 
-  // Check for navigation breaks
+  
   const navBreakPatterns = [
     /broken\s+link/i,
     /404\s+error/i,
@@ -166,7 +161,7 @@ function checkBreaksNavigation(option: CreativeOption): boolean {
 function checkFakeAction(option: CreativeOption): boolean {
   const content = option.content.toLowerCase();
 
-  // Check for fake actions
+  
   const fakeActionPatterns = [
     /console\.log.*instead\s+of/i,
     /mock\s+implementation/i,
@@ -184,9 +179,9 @@ function checkFakeAction(option: CreativeOption): boolean {
 function checkInvalidTypeScript(option: CreativeOption): boolean {
   const content = option.content;
 
-  // Basic TypeScript syntax checks
+  
   const invalidTsPatterns = [
-    /\bany\b.*=.*undefined.*as\s+string/i, // Unsafe type casting
+    /\bany\b.*=.*undefined.*as\s+string/i, 
     /\bimport\s+\*\s+from\s+['"]['"]/i, // Empty import
     /\bexport\s+\{[\s,]*\}/i, // Empty export
   ];

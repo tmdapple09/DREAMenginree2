@@ -1,7 +1,4 @@
-/**
- * tests/utils-extended.test.ts
- * Tests for improvements 6-15 in lib/utils.ts
- */
+
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
@@ -17,7 +14,7 @@ import {
   assert,
 } from '../lib/utils';
 
-// ── Improvement 81 tests — debounce (improvements 6) ─────────────────────────
+
 describe('debounce', () => {
   beforeEach(() => { vi.useFakeTimers(); });
   afterEach(() => { vi.useRealTimers(); });
@@ -53,7 +50,7 @@ describe('debounce', () => {
   });
 });
 
-// ── Improvement 82 tests — throttle (improvement 7) ───────────────────────────
+
 describe('throttle', () => {
   beforeEach(() => { vi.useFakeTimers(); });
   afterEach(() => { vi.useRealTimers(); });
@@ -72,18 +69,18 @@ describe('throttle', () => {
     throttled();
     throttled();
     vi.advanceTimersByTime(300);
-    expect(fn).toHaveBeenCalledTimes(2); // immediate + trailing
+    expect(fn).toHaveBeenCalledTimes(2); 
   });
 });
 
-// ── Improvement 83 tests — clamp (improvement 8) ─────────────────────────────
+
 describe('clamp', () => {
   it('constrains below min', () => { expect(clamp(-5, 0, 10)).toBe(0); });
   it('constrains above max', () => { expect(clamp(20, 0, 10)).toBe(10); });
   it('passes through in-range values', () => { expect(clamp(5, 0, 10)).toBe(5); });
 });
 
-// ── Improvement 84 tests — truncate (improvement 9) ──────────────────────────
+
 describe('truncate', () => {
   it('returns short strings unchanged', () => {
     expect(truncate('hello', 10)).toBe('hello');
@@ -96,7 +93,7 @@ describe('truncate', () => {
   });
 });
 
-// ── Improvement 85 tests — retry (improvement 10) ────────────────────────────
+
 describe('retry', () => {
   it('resolves on first success', async () => {
     const result = await retry(() => Promise.resolve(42));
@@ -121,7 +118,7 @@ describe('retry', () => {
   });
 });
 
-// ── Improvement 86 tests — sleep (improvement 11) ────────────────────────────
+
 describe('sleep', () => {
   beforeEach(() => { vi.useFakeTimers(); });
   afterEach(() => { vi.useRealTimers(); });
@@ -136,18 +133,18 @@ describe('sleep', () => {
   });
 });
 
-// ── Improvement 87 tests — deepClone (improvement 12) ────────────────────────
+
 describe('deepClone', () => {
   it('clones nested objects', () => {
     const original = { a: { b: { c: 42 } }, arr: [1, 2, 3] };
     const clone = deepClone(original);
     expect(clone).toEqual(original);
     clone.a.b.c = 99;
-    expect(original.a.b.c).toBe(42); // original unchanged
+    expect(original.a.b.c).toBe(42); 
   });
 });
 
-// ── Improvement 88 tests — groupBy (improvement 13) ──────────────────────────
+
 describe('groupBy', () => {
   it('groups by key function', () => {
     const arr = [{ type: 'a' }, { type: 'b' }, { type: 'a' }];
@@ -157,7 +154,7 @@ describe('groupBy', () => {
   });
 });
 
-// ── Improvement 89 tests — unique (improvement 14) ───────────────────────────
+
 describe('unique', () => {
   it('removes duplicates', () => {
     expect(unique([1, 2, 2, 3, 1])).toEqual([1, 2, 3]);
@@ -167,7 +164,7 @@ describe('unique', () => {
   });
 });
 
-// ── Improvement 90 tests — assert (improvement 15) ───────────────────────────
+
 describe('assert', () => {
   it('passes for truthy values', () => {
     expect(() => assert(true, 'should not throw')).not.toThrow();

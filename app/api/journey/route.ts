@@ -4,21 +4,21 @@ import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/journey/route.ts
-// Journey Trail API — private, owner-only reads and writes.
-//
-// Architecture:
-//   docs/LAW.md §2 — nothing public by default.
-//   docs/AXIOMS.md §4 — security by default (fail-closed on auth failure).
-//   docs/ARCHITECTURE.md §10 — render on demand, not real-time push.
-//
-// Endpoints:
-//   GET  /api/journey               → list the authenticated user's journey dots (newest first)
-//   GET  /api/journey?kind=X&check=1 → existence check for deduplication
-//   GET  /api/journey?limit=N       → cap results (default 100, max 200)
-//   POST /api/journey               → insert a new journey dot (owner-only via RLS)
 
-// ── GET ───────────────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const check = searchParams.get('check') === '1';
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '100', 10), 200);
 
-  // Existence check — used by hasJourneyDot() to avoid duplicate first-ever dots
+  
   if (check && kind) {
     let countQuery = supabase
       .from('journey_dots')
@@ -38,8 +38,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .eq('user_id', user.id)
       .eq('kind', kind);
 
-    // When a surface is specified, scope the check to kind+surface together.
-    // This enables per-surface deduplication of the same kind (e.g. surface_first_entry).
+    
+    
     const surface = searchParams.get('surface');
     if (surface) countQuery = countQuery.eq('surface', surface);
 
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ exists: (count ?? 0) > 0 });
   }
 
-  // Build query — owner-filtered at query level (defense-in-depth alongside RLS)
+  
   let query = supabase
     .from('journey_dots')
     .select('*')
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  // Required-field validation
+  
   if (!body.kind || typeof body.kind !== 'string') {
     return NextResponse.json({ error: 'kind is required and must be a string' }, { status: 400 });
   }
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'label is required and must be a string' }, { status: 400 });
   }
 
-  // Validate significance range if provided
+  
   const sig = body.significance !== undefined ? Number(body.significance) : 0.5;
   if (isNaN(sig) || sig < 0 || sig > 1) {
     return NextResponse.json({ error: 'significance must be a number between 0 and 1' }, { status: 400 });

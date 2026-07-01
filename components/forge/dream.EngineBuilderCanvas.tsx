@@ -31,28 +31,7 @@ import {
 } from 'lucide-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-/**
- * components/forge/dream.EngineBuilderCanvas.tsx — §41 Engin Forge (NGN Engin)
- *
- * Visual engine builder as described in spec §41.
- *
- * §41.1 Layout:
- *   - Left sidebar: 120+ atomic pieces (from componentInventory) by category
- *   - Central canvas: drag pieces, connect input/output ports
- *   - Each piece has a manifest and a local event bus
- *
- * §41.2 Rules:
- *   - Minimum 3 pieces (source + processor + output), max 30
- *   - Test in sandbox (isolated component)
- *   - Save assembly as JSON, share/publish to DreamMarketplace
- *
- * §41.3 Dual Runtime Hub:
- *   - "Dual Runtime Hub" piece enables cross-side communication
- *
- * §42 Local Event Bus:
- *   - Each assembly gets its own createEventBus() instance
- *   - Modules communicate only when explicitly wired
- */
+
 
 const C = {
   bg:       '#0a0a0f',
@@ -62,14 +41,14 @@ const C = {
   border2:  'rgba(255,255,255,0.14)',
   text:     'rgba(255,255,255,0.88)',
   dim:      'rgba(255,255,255,0.45)',
-  accent:   '#6366f1',    // indigo
+  accent:   '#6366f1',    
   success:  '#22c55e',
   warning:  '#f59e0b',
   error:    '#ef4444',
-  source:   '#3b82f6',    // blue
-  processor:'#8b5cf6',   // purple
-  output:   '#ec4899',   // pink
-  hub:      '#f97316',   // orange — dual runtime hub
+  source:   '#3b82f6',    
+  processor:'#8b5cf6',   
+  output:   '#ec4899',   
+  hub:      '#f97316',   
 } as const;
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -108,9 +87,9 @@ const DUAL_RUNTIME_HUB: AtomicComponent = {
 };
 
 export interface EngineBuilderCanvasProps {
-  /** Called with the JSON-serialised assembly when the user saves. */
+  
   onSave?: (json: string) => void;
-  /** Pre-load a serialised assembly. */
+  
   initialJson?: string;
 }
 
@@ -118,7 +97,7 @@ export default function EngineBuilderCanvas({
   onSave,
   initialJson,
 }: EngineBuilderCanvasProps) {
-  // ── Sidebar state ──────────────────────────────────────────────────────────
+  
 
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(['Audio & Music']),
@@ -271,7 +250,7 @@ export default function EngineBuilderCanvas({
     }
     const json = serializeAssembly(assembly);
     onSave?.(json);
-    // Also trigger download
+    
     const blob = new Blob([json], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -371,7 +350,7 @@ export default function EngineBuilderCanvas({
         border: `1px solid ${C.border2}`,
       }}
     >
-      {/* ── Left Sidebar: Piece Palette ─────────────────────────────────── */}
+      
       <div
         style={{
           width: 260,
@@ -383,7 +362,7 @@ export default function EngineBuilderCanvas({
           gap: 0,
         }}
       >
-        {/* Header */}
+        
         <div style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: C.accent, marginBottom: 8 }}>
             PIECES  <span style={{ color: C.dim, fontWeight: 400 }}>
@@ -408,7 +387,7 @@ export default function EngineBuilderCanvas({
           />
         </div>
 
-        {/* Category groups */}
+        
         {(searchQuery ? ['Search Results' as ComponentCategory] : categories).map((cat) => {
           const items = searchQuery
             ? filteredInventory
@@ -497,9 +476,9 @@ export default function EngineBuilderCanvas({
         })}
       </div>
 
-      {/* ── Central Canvas ─────────────────────────────────────────────── */}
+      
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {/* Toolbar */}
+        
         <div
           style={{
             display: 'flex',
@@ -514,7 +493,7 @@ export default function EngineBuilderCanvas({
             {pieces.length}/30 pieces · {wires.length} wires
           </span>
 
-          {/* Validation indicator */}
+          
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
             {validation.valid ? (
               <CheckCircle2 size={14} color={C.success} />
@@ -528,7 +507,7 @@ export default function EngineBuilderCanvas({
 
           <div style={{ flex: 1 }} />
 
-          {/* Action buttons */}
+          
           <ToolbarBtn icon={<Trash2 size={13} />} label="Clear" danger onClick={() => {
             setPieces([]); setWires([]); setAssembly(null);
           }} />
@@ -549,7 +528,7 @@ export default function EngineBuilderCanvas({
           <ToolbarBtn icon={<Save size={13} />} label="Save JSON" accent={C.success} onClick={saveAssembly} />
         </div>
 
-        {/* SVG canvas */}
+        
         <svg
           ref={canvasRef}
           style={{ flex: 1, background: 'transparent', userSelect: 'none', cursor: dragPieceId ? 'grabbing' : 'default' }}
@@ -557,7 +536,7 @@ export default function EngineBuilderCanvas({
           onPointerUp={onCanvasPointerUp}
           onClick={() => setSelectedPiece(null)}
         >
-          {/* Wire connections */}
+          
           {wires.map((wire) => {
             const fromPiece = pieces.find((p) => p.id === wire.fromPieceId);
             const toPiece   = pieces.find((p) => p.id === wire.toPieceId);
@@ -574,7 +553,7 @@ export default function EngineBuilderCanvas({
                   fill="none"
                   opacity={0.7}
                 />
-                {/* Delete wire on click */}
+                
                 <path
                   d={`M ${from.x} ${from.y} C ${cx} ${from.y} ${cx} ${to.y} ${to.x} ${to.y}`}
                   stroke="transparent"
@@ -590,7 +569,7 @@ export default function EngineBuilderCanvas({
             );
           })}
 
-          {/* In-progress wire */}
+          
           {wireInProgress && (
             <path
               d={`M ${wireInProgress.fromX} ${wireInProgress.fromY} C ${
@@ -606,14 +585,14 @@ export default function EngineBuilderCanvas({
             />
           )}
 
-          {/* Pieces */}
+          
           {pieces.map((piece) => {
             const pc    = portColor(piece.role);
             const isDef = selectedPiece === piece.id;
 
             return (
               <g key={piece.id}>
-                {/* Piece card */}
+                
                 <foreignObject
                   x={piece.x}
                   y={piece.y}
@@ -639,7 +618,7 @@ export default function EngineBuilderCanvas({
                     }}
                     onClick={(e) => { e.stopPropagation(); setSelectedPiece(piece.id); }}
                   >
-                    {/* Role badge */}
+                    
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, justifyContent: 'space-between' }}>
                       <span style={{
                         fontSize: 9,
@@ -666,7 +645,7 @@ export default function EngineBuilderCanvas({
                         <X size={10} />
                       </button>
                     </div>
-                    {/* Name */}
+                    
                     <span style={{
                       fontSize: 11,
                       fontWeight: 600,
@@ -677,14 +656,14 @@ export default function EngineBuilderCanvas({
                     }}>
                       {piece.name}
                     </span>
-                    {/* Category */}
+                    
                     <span style={{ fontSize: 10, color: C.dim, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {piece.category}
                     </span>
                   </div>
                 </foreignObject>
 
-                {/* Input ports (left side) */}
+                
                 {piece.inputPorts.map((port) => {
                   const { x, y } = piecePortPos(piece, port.id, true);
                   return (
@@ -706,7 +685,7 @@ export default function EngineBuilderCanvas({
                   );
                 })}
 
-                {/* Output ports (right side) */}
+                
                 {piece.outputPorts.map((port) => {
                   const { x, y } = piecePortPos(piece, port.id, false);
                   return (
@@ -731,7 +710,7 @@ export default function EngineBuilderCanvas({
             );
           })}
 
-          {/* Empty state */}
+          
           {pieces.length === 0 && (
             <text
               x="50%"
@@ -747,7 +726,7 @@ export default function EngineBuilderCanvas({
         </svg>
       </div>
 
-      {/* ── Toast ──────────────────────────────────────────────────────── */}
+      
       <AnimatePresence>
         {toast && (
           <motion.div

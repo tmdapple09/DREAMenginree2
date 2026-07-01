@@ -24,7 +24,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 interface ActiveModuleSurfaceProps {
   accountId?: string | null;
-  /** Canonical dual-runtime region that owns the mounted window placement. */
+  
   runtimeRegion?: RuntimeRegionKey;
 }
 

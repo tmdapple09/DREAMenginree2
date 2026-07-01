@@ -7,16 +7,16 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/skip-credits/use/route.ts
-// Phase 9 — Use Skip Credits Endpoint
-//
-// Spends skip credits to skip ads.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
+
+
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
 
-  // Auth required
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const body = (await req.json()) as UseSkipCreditsRequest;
     const { ad_id } = body;
 
-    // Get current credits
+    
     const { data: credits } = await (supabase as SupabaseClient)
       .from('skip_credits')
       .select('*')
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Spend 1 credit
+    
     const { data: updatedCredits, error: updateError } = await (supabase as SupabaseClient)
       .from('skip_credits')
       .update({

@@ -1,16 +1,4 @@
-/**
- * tests/game-engin-ruleset.test.ts
- *
- * Unit tests for the GameEngin rule-set:
- *   - Layout parameters
- *   - Session start/end transforms
- *   - Score progression (add, share, load)
- *   - World builder (save)
- *   - Physics config apply
- *   - Script save
- *   - Constraints (invalid session, negative score, bad physics)
- *   - deriveState projection
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { createBaseState } from '@/engine/engin-runtime/EnginBaseState';
@@ -34,7 +22,7 @@ function check(state: EnginBaseState, action: GameEnginAction) {
   return { valid: true };
 }
 
-// ─── Parameters ───────────────────────────────────────────────────────────────
+
 
 describe('GAME_ENGIN_RULE_SET parameters', () => {
   it('enginId is "games"', () => {
@@ -58,7 +46,7 @@ describe('GAME_ENGIN_RULE_SET parameters', () => {
   });
 });
 
-// ─── GRAVITY_VALUES ───────────────────────────────────────────────────────────
+
 
 describe('GRAVITY_VALUES', () => {
   it('exports gravity multipliers for all four presets', () => {
@@ -69,7 +57,7 @@ describe('GRAVITY_VALUES', () => {
   });
 });
 
-// ─── Session start / end ──────────────────────────────────────────────────────
+
 
 describe('session transforms', () => {
   it('game:session-start sets activeGame and transitions to running', () => {
@@ -100,7 +88,7 @@ describe('session transforms', () => {
   });
 });
 
-// ─── Score progression ────────────────────────────────────────────────────────
+
 
 describe('score transforms', () => {
   const testScore: GameScore = {
@@ -161,7 +149,7 @@ describe('score transforms', () => {
   });
 });
 
-// ─── World Builder ────────────────────────────────────────────────────────────
+
 
 describe('world builder transform', () => {
   it('game:world-save persists the world', () => {
@@ -172,7 +160,7 @@ describe('world builder transform', () => {
   });
 });
 
-// ─── Physics Config ───────────────────────────────────────────────────────────
+
 
 describe('physics config transform', () => {
   it('game:physics-apply updates physicsConfig', () => {
@@ -200,7 +188,7 @@ describe('physics config transform', () => {
   });
 });
 
-// ─── Script save ──────────────────────────────────────────────────────────────
+
 
 describe('script save transform', () => {
   it('game:script-save persists code and language', () => {
@@ -211,7 +199,7 @@ describe('script save transform', () => {
   });
 });
 
-// ─── Control profile ──────────────────────────────────────────────────────────
+
 
 describe('control profile transform', () => {
   it('game:control-profile updates controlProfile', () => {
@@ -220,7 +208,7 @@ describe('control profile transform', () => {
   });
 });
 
-// ─── Immersive toggle ─────────────────────────────────────────────────────────
+
 
 describe('immersive toggle', () => {
   it('game:immersive-toggle sets isImmersive', () => {
@@ -229,7 +217,7 @@ describe('immersive toggle', () => {
   });
 });
 
-// ─── deriveState defaults ─────────────────────────────────────────────────────
+
 
 describe('deriveState defaults', () => {
   it('returns safe defaults on empty domain', () => {

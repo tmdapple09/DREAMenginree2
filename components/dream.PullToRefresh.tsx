@@ -48,7 +48,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       if (pullDistance >= threshold && !isRefreshing) {
         setIsRefreshing(true);
 
-        // Haptic feedback
+        
         if ('vibrate' in navigator) {
           navigator.vibrate([10, 50, 10]);
         }
@@ -88,7 +88,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
 
   return (
     <div ref={containerRef} className="relative">
-      {/* Pull indicator */}
+      
       <div
         className="fixed top-0 left-0 right-0 z-30 flex justify-center pt-safe pointer-events-none"
         style={{
@@ -116,7 +116,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
         </div>
       </div>
 
-      {/* Content */}
+      
       <div
         style={{
           transform: `translateY(${pullDistance}px)`,

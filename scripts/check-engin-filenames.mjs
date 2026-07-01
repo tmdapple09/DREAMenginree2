@@ -1,23 +1,5 @@
 #!/usr/bin/env node
-/**
- * Engin / Dream / Surface filename grammar enforcement.
- *
- * Implements the rule locked in docs/NAMING_AUTHORITY.md §14:
- *   - `engin.<Name>.tsx`        — exactly the 6 canonical Engin runtimes
- *   - `dream.<Name>.tsx`        — anything user-facing that composes an Engin
- *   - `dreamsurface.<Name>.tsx` — Surfaces that Engins / Dreams live on
- *
- * Per §14.8, when a `dream.` or `dreamsurface.` file uses a second dotted
- * segment (`dream.<sub>.<Name>.tsx` / `dreamsurface.<sub>.<Name>.tsx`), that
- * `<sub>` must come from the closed approved list. Bare two-segment forms
- * (`dream.<Name>.tsx`) remain the fallback and are unaffected.
- *
- * Per §14.6 ("Migration Status") this is an additive guard: it blocks new
- * violations and currently-renamed files, but does not retroactively block
- * the migration backlog (duplicate Engin shells, hand-written cartridges,
- * remaining Surfaces). Each follow-up PR is expected to remove items from
- * MIGRATION_BACKLOG_ALLOWED below as those files are renamed.
- */
+
 import { readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
@@ -26,9 +8,9 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// §14.2 — the only valid `engin.*.tsx` filenames.
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 const CANONICAL_ENGIN_FILENAMES = new Set([
   'engin.StarMakerEngin.tsx',
   'engin.GameEngin.tsx',
@@ -38,7 +20,7 @@ const CANONICAL_ENGIN_FILENAMES = new Set([
   'engin.ContentEngin.tsx',
 ]);
 
-// The canonical 6 Engin base names (without the `engin.` prefix).
+
 const CANONICAL_ENGIN_BASENAMES = new Set([
   'StarMakerEngin',
   'GameEngin',
@@ -48,13 +30,13 @@ const CANONICAL_ENGIN_BASENAMES = new Set([
   'ContentEngin',
 ]);
 
-// Directories that are explicitly the home of canonical Engin files.
-// Any canonical-named Engin .tsx directly inside one of these MUST use the
-// `engin.` prefix.
+
+
+
 const ENGIN_HOME_DIRS = ['engins'];
 
-// Directories we walk for the global pattern checks (§14.5 — rejected
-// filename patterns). Skip node_modules, build outputs, archives, etc.
+
+
 const SCAN_DIRS = [
   'app',
   'components',
@@ -76,12 +58,12 @@ const SKIP_DIRECTORY_NAMES = new Set([
   'archive',
 ]);
 
-// Files that the migration backlog (§14.6) has not yet reached. Listed here
-// to keep the check additive instead of retroactive. Entries should be
-// REMOVED — never added — as follow-up PRs rename them.
+
+
+
 const MIGRATION_BACKLOG_ALLOWED = new Set([
-  // §14.6 — duplicate Engin shells in components/daydream/ that get
-  // consolidated into the canonical engin.*.tsx in a follow-up PR.
+  
+  
   'engins/engin.StarMakerEngin.tsx',
   'engins/engin.GameEngin.tsx',
   'engins/engin.LabEngin.tsx',
@@ -90,12 +72,12 @@ const MIGRATION_BACKLOG_ALLOWED = new Set([
   'engins/engin.ContentEngin.tsx',
 ]);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// §14.8 — approved sub-prefixes for `dream.<sub>.<Name>.tsx` and
-// `dreamsurface.<sub>.<Name>.tsx`. Any other `<sub>` segment is a violation.
-// Bare two-segment forms (`dream.<Name>.tsx`) are the fallback and are NOT
-// validated against these sets.
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
+
+
+
 const APPROVED_DREAM_SUBPREFIXES = new Set([
   'cartridge',
   'panel',
@@ -116,9 +98,9 @@ const APPROVED_DREAMSURFACE_SUBPREFIXES = new Set([
   'module',
 ]);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Walk
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 async function* walk(dir) {
   let entries;
   try {
@@ -151,10 +133,10 @@ for (const rel of SCAN_DIRS) {
     const base = path.basename(file);
     const relFromRoot = path.relative(ROOT, file).split(path.sep).join('/');
 
-    // Only enforce on .tsx files.
+    
     if (!base.endsWith('.tsx')) continue;
 
-    // §14.2 — any file starting with `engin.` MUST be one of the canonical 6.
+    
     if (base.startsWith('engin.') && !CANONICAL_ENGIN_FILENAMES.has(base)) {
       violations.push(
         `${relFromRoot} — uses the \`engin.\` prefix but is not one of the 6 canonical Engin filenames (NAMING_AUTHORITY.md §14.2).`,
@@ -162,7 +144,7 @@ for (const rel of SCAN_DIRS) {
       continue;
     }
 
-    // §14.5 — rejected prefix variants (case / separator).
+    
     if (/^Engin\./.test(base)) {
       violations.push(
         `${relFromRoot} — \`Engin.\` prefix must be lowercase \`engin.\` (NAMING_AUTHORITY.md §14.5).`,
@@ -184,10 +166,10 @@ for (const rel of SCAN_DIRS) {
       );
     }
 
-    // §14.8 — sub-prefix vocabulary. A file shaped like
-    // `dream.<sub>.<Name>.tsx` (3+ dot-segments before `.tsx`) must use a
-    // `<sub>` from the approved list; same for `dreamsurface.<sub>.<Name>.tsx`.
-    // Two-segment forms (`dream.<Name>.tsx`) are the fallback and skipped.
+    
+    
+    
+    
     const segments = base.slice(0, -'.tsx'.length).split('.');
     if (segments[0] === 'dream' && segments.length >= 3) {
       const sub = segments[1];
@@ -206,8 +188,8 @@ for (const rel of SCAN_DIRS) {
       }
     }
 
-    // §14.2 / §14.6 — canonical Engin name in an Engin home dir without the
-    // `engin.` prefix. Skip files in MIGRATION_BACKLOG_ALLOWED.
+    
+    
     const stem = base.slice(0, -'.tsx'.length);
     const inEnginHome = ENGIN_HOME_DIRS.some(
       (home) =>

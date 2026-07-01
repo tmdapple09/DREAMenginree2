@@ -1,22 +1,11 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
-/**
- * lib/dream-docs/embed.ts
- * Server-side helper to generate and upsert a pgvector embedding for a
- * dream_doc_sections row whenever its content is saved.
- *
- * Uses the same OpenAI-compatible embedding endpoint pattern as the rest of
- * the codebase (lib/supabase/vector.ts).
- */
+
 
 const EMBEDDING_MODEL = 'text-embedding-3-small';
 const EMBEDDING_DIMENSIONS = 1536;
 
-/**
- * Fetch a 1536-dimension embedding vector from the OpenAI embeddings API.
- * Falls back gracefully when the API key is absent (e.g. CI / local dev
- * without credentials).
- */
+
 async function fetchEmbedding(text: string): Promise<number[] | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -49,13 +38,7 @@ async function fetchEmbedding(text: string): Promise<number[] | null> {
   return json.data[0]?.embedding ?? null;
 }
 
-/**
- * Generate an embedding for the given content string and persist it on the
- * `dream_doc_sections` row identified by `sectionId`.
- *
- * Silently no-ops if the OPENAI_API_KEY is absent so that local dev / CI
- * environments don't break.
- */
+
 export async function embedDocSection(sectionId: number, content: string): Promise<void> {
   const embedding = await fetchEmbedding(content);
   if (!embedding) return;

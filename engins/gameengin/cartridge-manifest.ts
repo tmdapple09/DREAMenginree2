@@ -1,16 +1,8 @@
 import { z } from 'zod';
 
-/**
- * lib/gameengin/cartridge-manifest.ts
- *
- * MANIFEST.json schema and validator for the `.dreamr` binary cartridge format.
- * Spec: GameENGINspec.md §1.3
- *
- * Server-safe (no React, no DOM) so it can be consumed by tests, the packager
- * script, and the runtime loader.
- */
 
-/** Magic bytes "DRMR" at the start of the decompressed TAR — spec §1.1 */
+
+
 export const CARTRIDGE_MAGIC = new Uint8Array([0x44, 0x52, 0x4d, 0x52]);
 
 export const CARTRIDGE_MIME = 'application/vnd.dreamengin.cartridge';
@@ -48,12 +40,12 @@ export const CartridgeManifestSchema = z.object({
 
 export type CartridgeManifest = z.infer<typeof CartridgeManifestSchema>;
 
-/** Validate a parsed JSON manifest object. Throws ZodError on failure. */
+
 export function validateManifest(input: unknown): CartridgeManifest {
   return CartridgeManifestSchema.parse(input);
 }
 
-/** True if the first 4 bytes of `buf` match `DRMR`. */
+
 export function hasCartridgeMagic(buf: Uint8Array | ArrayBuffer): boolean {
   const view = buf instanceof ArrayBuffer ? new Uint8Array(buf) : buf;
   if (view.length < 4) return false;

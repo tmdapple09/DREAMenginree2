@@ -1,22 +1,4 @@
-/**
- * lib/dream-window — Phase 7 Dream Window + Runtime System
- *
- * Single barrel export for the complete Dream Window system logic:
- *
- *   DreamWindowLifecycle  — state machine (Unbound → Bound → Mounted → Collapsed)
- *   connectionVerbs       — canonical connection verb dispatch
- *   runtimeRegion         — dual-runtime spatial model (Surface Space / DreamSpace)
- *   enginConnectionNetwork — 11-path multi-surface Engin connection network
- *
- * Usage:
- *   import { DreamWindowInstance, bindDreamWindow, mountDreamWindow } from '@/engine/dream-window';
- *   import { dispatch, createBindAction } from '@/engine/dream-window';
- *   import { DEFAULT_RUNTIME_REGION_STATE, activateSurface } from '@/engine/dream-window';
- *   import { ALL_CONNECTION_PATHS, getPathsForDomain } from '@/engine/dream-window';
- *
- * Architecture: docs/ARCHITECTURE.md §4
- * Naming authority: lib/identity/canonical-names.ts
- */
+
 
 export type {
     DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize

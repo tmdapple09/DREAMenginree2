@@ -1,22 +1,14 @@
 import type { QuantumComputeResult } from './dualRuntimeBridge';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/quantumCircuit.ts.
 
-/**
- * lib/runtime/quantumCircuit.ts
- *
- * Pure complex-number state-vector quantum circuit simulator.
- * Supports QAOA, VQE (efficient_su2), and a default real-amplitudes ansatz.
- * No canvas, no components, no side-effects — safe to run anywhere (SSR, workers).
- *
- * Consumed by dualRuntimeBridge when it receives a 'lab:quantum:run' event.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const INV_SQRT2 = 1 / Math.SQRT2;
 
@@ -31,11 +23,11 @@ const ASSET_SIGMA   = [0.20, 0.15, 0.25];
 
 const ASSET_CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]] as const;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 type Complex = [number, number];
 
@@ -45,7 +37,7 @@ type StateVector = Complex[];
 
 type CircuitOp = { kind: string; q?: number; ctrl?: number; tgt?: number; theta?: number };
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function gateRx(theta: number): Gate2x2 {
   const c = Math.cos(theta / 2), s = Math.sin(theta / 2);
@@ -142,7 +134,7 @@ function buildCircuit(n: number, algo: string, ansatz: string): CircuitOp[] {
     for (let q = 0; q < n; q++) ops.push({ kind: 'Ry', q, theta: p[q + 2 * n] ?? Math.PI / 4 });
     for (let q = 0; q < n; q++) ops.push({ kind: 'Rz', q, theta: p[q + 3 * n] ?? Math.PI / 4 });
   } else {
-    // default: real_amplitudes
+    
     const t1 = [Math.PI / 3, Math.PI / 4, Math.PI / 5];
     const t2 = [Math.PI / 6, Math.PI / 4, Math.PI / 3];
     for (let q = 0; q < n; q++) ops.push({ kind: 'H', q });
@@ -154,13 +146,7 @@ function buildCircuit(n: number, algo: string, ansatz: string): CircuitOp[] {
   return ops;
 }
 
-/**
- * Run a quantum circuit simulation and return the measurement result.
- *
- * @param numQubits - Number of qubits (typically 3).
- * @param algo      - Circuit algorithm: 'qaoa' | 'vqe' (anything else → default ansatz).
- * @param ansatz    - Ansatz variant for VQE: 'efficient_su2' | 'real_amplitudes'.
- */
+
 export function runQuantumCircuit(
   numQubits: number,
   algo: string,
@@ -206,10 +192,10 @@ export function runQuantumCircuit(
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+
 
 export type { QuantumComputeResult } from './dualRuntimeBridge';

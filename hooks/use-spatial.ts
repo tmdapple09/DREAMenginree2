@@ -17,9 +17,9 @@ import type {
 import { useCallback, useMemo, useState } from "react";
 import useSWR, { mutate } from "swr";
 
-// =============================================================================
-// FETCHERS
-// =============================================================================
+
+
+
 
 const fetcher = async (key: string) => {
   const supabase = createClient();
@@ -68,7 +68,7 @@ const fetcher = async (key: string) => {
       const { data, error } = await supabase
         .from("dream_content")
         .select("*, content_objects(*)")
-        .eq("widget_id", userId) // userId is actually widget_id here
+        .eq("widget_id", userId) 
         .order("order");
 
       if (error) throw error;
@@ -80,13 +80,11 @@ const fetcher = async (key: string) => {
   }
 };
 
-// =============================================================================
-// HOOKS
-// =============================================================================
 
-/**
- * Hook for managing spatial navigation state
- */
+
+
+
+
 export function useSpatialNavigation(initialSpace: SpaceType = 'home') {
   const [navigation, setNavigation] = useState<NavigationState>({
     space: initialSpace,
@@ -149,9 +147,7 @@ export function useSpatialNavigation(initialSpace: SpaceType = 'home') {
   };
 }
 
-/**
- * Hook for managing widgets
- */
+
 
 type WidgetSpace = string;
 
@@ -257,9 +253,7 @@ export function useWidgets(userId: string, space?: string): UseWidgetsResult {
   };
 }
 
-/**
- * Hook for managing content objects (HOME content archive)
- */
+
 export function useContent(userId: string ){
   const key = `content/${userId}`;
   const { data: content, error, isLoading } = useSWR<ContentObject[]>(key, fetcher);
@@ -271,7 +265,7 @@ export function useContent(userId: string ){
         .from("content_objects")
         .insert({
           ...input,
-          visibility: input.visibility || "private", // Always private by default
+          visibility: input.visibility || "private", 
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
@@ -319,7 +313,7 @@ export function useContent(userId: string ){
     [key]
   );
 
-  // Separate private and shared content
+  
   const privateContent = useMemo(
     () => content?.filter((c: ContentObject) => c.visibility === "private") || [],
     [content]
@@ -342,9 +336,7 @@ export function useContent(userId: string ){
   };
 }
 
-/**
- * Hook for managing albums
- */
+
 export function useAlbums(userId: string ){
   const key = `albums/${userId}`;
   const { data: albums, error, isLoading } = useSWR<Album[]>(key, fetcher);
@@ -356,7 +348,7 @@ export function useAlbums(userId: string ){
         .from("albums")
         .insert({
           ...input,
-          is_shared: input.is_shared || false, // Never shared by default
+          is_shared: input.is_shared || false, 
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
@@ -374,7 +366,7 @@ export function useAlbums(userId: string ){
     async (albumId: string, contentIds: string[]) => {
       const supabase = createClient();
 
-      // Get current max order
+      
       const { data: existing } = await supabase
         .from("album_content")
         .select("order")
@@ -424,9 +416,7 @@ export function useAlbums(userId: string ){
   };
 }
 
-/**
- * Hook for sharing content from HOME to PROFILE
- */
+
 export function useShareToProfile(userId: string ){
   const [isSharing, setIsSharing] = useState(false);
 
@@ -436,7 +426,7 @@ export function useShareToProfile(userId: string ){
       try {
         const supabase = createClient();
 
-        // Mark content as shared
+        
         if (intent.content_ids?.length) {
           const { error: contentError } = await supabase
             .from("content_objects")
@@ -449,7 +439,7 @@ export function useShareToProfile(userId: string ){
           if (contentError) throw contentError;
         }
 
-        // Mark album as shared if applicable
+        
         if (intent.album_id) {
           const { error: albumError } = await supabase
             .from("albums")
@@ -463,7 +453,7 @@ export function useShareToProfile(userId: string ){
           if (albumError) throw albumError;
         }
 
-        // Create or update PROFILE widget
+        
         let widgetId = intent.target_widget_id;
 
         if (intent.create_new_widget) {
@@ -482,7 +472,7 @@ export function useShareToProfile(userId: string ){
                 source_album_id: intent.album_id,
                 created_at: new Date().toISOString(),
               },
-              order: 999, // Will be reordered
+              order: 999, 
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
             })
@@ -492,7 +482,7 @@ export function useShareToProfile(userId: string ){
           if (widgetError) throw widgetError;
           widgetId = newWidget.id;
         } else if (widgetId) {
-          // Update existing widget's overlap
+          
           const { error: updateError } = await supabase
             .from("widgets")
             .update({
@@ -509,7 +499,7 @@ export function useShareToProfile(userId: string ){
           if (updateError) throw updateError;
         }
 
-        // Add content references to widget
+        
         if (widgetId && intent.content_ids?.length) {
           const contentRefs = intent.content_ids.map((contentId, index: number) => ({
             widget_id: widgetId,
@@ -525,7 +515,7 @@ export function useShareToProfile(userId: string ){
           if (refError) throw refError;
         }
 
-        // Invalidate caches
+        
         mutate(`widgets/${userId}/profile`);
         mutate(`content/${userId}`);
         mutate(`albums/${userId}`);
@@ -545,7 +535,7 @@ export function useShareToProfile(userId: string ){
     async (contentIds: string[]) => {
       const supabase = createClient();
 
-      // Mark content as private again
+      
       const { error } = await supabase
         .from("content_objects")
         .update({
@@ -556,7 +546,7 @@ export function useShareToProfile(userId: string ){
 
       if (error) throw error;
 
-      // Remove from dream_content
+      
       const { error: refError } = await supabase
         .from("dream_content")
         .delete()
@@ -564,7 +554,7 @@ export function useShareToProfile(userId: string ){
 
       if (refError) throw refError;
 
-      // Invalidate caches
+      
       mutate(`content/${userId}`);
       mutate(`widgets/${userId}/profile`);
     },

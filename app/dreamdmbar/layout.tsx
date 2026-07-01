@@ -167,7 +167,7 @@ export default async function DreamDMBarLayout({ children }: {children: React.Re
       );
       posts = allEntries;
     } catch {
-      // Non-fatal: render shell with available data.
+      
     }
   }
 

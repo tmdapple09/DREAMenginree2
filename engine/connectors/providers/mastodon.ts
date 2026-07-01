@@ -1,18 +1,7 @@
 import { normaliseMastodon } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/mastodon.ts
- *
- * Phase 5 — Mastodon provider (Tier 1)
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { instance_url: string, access_token: string }
- *
- * No environment variables required — user provides their own token.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface MastodonCredentials {
   instance_url: string;
@@ -69,11 +58,7 @@ function getValidatedMastodonBaseUrl(instanceUrl: string): string {
   return url.origin;
 }
 
-/**
- * Verify that the stored credentials are still valid.
- * Calls GET /api/v1/accounts/verify_credentials
- * Returns the account display name on success, or throws.
- */
+
 export async function mastodonVerify(creds: MastodonCredentials): Promise<string> {
   const base = getValidatedMastodonBaseUrl(creds.instance_url);
   const res = await fetch(`${base}/api/v1/accounts/verify_credentials`, {
@@ -86,10 +71,7 @@ export async function mastodonVerify(creds: MastodonCredentials): Promise<string
     ?? 'Unknown';
 }
 
-/**
- * Fetch the home timeline and return normalised feed items.
- * Calls GET /api/v1/timelines/home?limit=40
- */
+
 export async function mastodonSync(creds: MastodonCredentials): Promise<UnifiedFeedItem[]> {
   const base = getValidatedMastodonBaseUrl(creds.instance_url);
   const res = await fetch(`${base}/api/v1/timelines/home?limit=40`, {

@@ -1,17 +1,4 @@
-/**
- * lib/gestures/touchGestures.ts
- *
- * Phase 9 §6: Touch gesture library — built-in support for pinch-to-zoom,
- * two-finger rotate, and three-finger swipe, integrated with the dual runtime.
- *
- * Pure, framework-agnostic gesture recognition engine. The React hook
- * (useTouchGestures) wraps this for component usage.
- *
- * Architecture justification:
- *   - docs/ARCHITECTURE.md §10: render-on-demand. Gesture handlers only
- *     fire callbacks — they never start render loops.
- *   - Pure logic module — no React, no DOM globals in the core recogniser.
- */
+
 
 export interface Vec2 {
   x: number;
@@ -31,19 +18,19 @@ export type GestureType =
 
 export interface GestureEvent {
   type: GestureType;
-  /** Number of fingers involved */
+  
   fingers: number;
-  /** Center point of the gesture (viewport coords) */
+  
   center: Vec2;
-  /** For pinch: scale factor (1.0 = no change) */
+  
   scale?: number;
-  /** For rotate: rotation angle in radians */
+  
   rotation?: number;
-  /** For swipe: velocity in px/ms */
+  
   velocity?: Vec2;
-  /** For pan: delta from start */
+  
   delta?: Vec2;
-  /** Raw timestamp */
+  
   timestamp: number;
 }
 
@@ -57,19 +44,19 @@ export interface GestureCallbacks {
 }
 
 export interface GestureConfig {
-  /** Minimum distance (px) to recognise a swipe */
+  
   swipeThreshold?: number;
-  /** Minimum velocity (px/ms) to recognise a swipe */
+  
   swipeVelocity?: number;
-  /** Long-press duration (ms) */
+  
   longPressMs?: number;
-  /** Minimum pinch delta to fire (prevents jitter) */
+  
   pinchThreshold?: number;
-  /** Minimum rotation angle (radians) to fire */
+  
   rotateThreshold?: number;
-  /** Maximum single-finger drift before a tap/long-press is cancelled */
+  
   tapMaxMovement?: number;
-  /** Minimum single-finger movement before pan starts */
+  
   panThreshold?: number;
 }
 
@@ -139,7 +126,7 @@ export class GestureRecogniser {
   private config: Required<GestureConfig>;
   private element: HTMLElement | null = null;
 
-  // Touch tracking state
+  
   private startTouches: TrackedTouch[] = [];
   private startTime = 0;
   private lastCenter: Vec2 = { x: 0, y: 0 };
@@ -153,7 +140,7 @@ export class GestureRecogniser {
     this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
-  /** Attach to a DOM element. Returns a detach function. */
+  
   attach(el: HTMLElement): () => void {
     this.element = el;
 
@@ -192,7 +179,7 @@ export class GestureRecogniser {
     this.gestureStarted = false;
 
     if (touches.length === 1) {
-      // Potential tap or long-press
+      
       this.clearLongPress();
       const center = touchToVec2(touches[0]);
       this.longPressTimer = setTimeout(() => {
@@ -267,7 +254,7 @@ export class GestureRecogniser {
       const ang = angle(a, b);
       const center = midpoint(a, b);
 
-      // Pinch
+      
       if (this.lastDist > 0) {
         const scale = dist / this.lastDist;
         if (Math.abs(scale - 1.0) > this.config.pinchThreshold) {
@@ -282,7 +269,7 @@ export class GestureRecogniser {
         }
       }
 
-      // Rotate
+      
       const dAngle = angleDelta(this.lastAngle, ang);
       if (Math.abs(dAngle) > this.config.rotateThreshold) {
         this.gestureStarted = true;
@@ -302,7 +289,7 @@ export class GestureRecogniser {
 
     if (touches.length >= 3) {
       e.preventDefault();
-      // Three-finger movement tracked for swipe detection on end
+      
       this.lastCenter = centroid(touches);
     }
   }
@@ -312,7 +299,7 @@ export class GestureRecogniser {
     const now = Date.now();
     const dt = now - this.startTime;
 
-    // Single-finger tap detection
+    
     if (
       !this.gestureStarted &&
       e.touches.length === 0 &&
@@ -338,7 +325,7 @@ export class GestureRecogniser {
       return;
     }
 
-    // Three-finger swipe detection
+    
     if (
       this.startTouches.length >= 3 &&
       e.touches.length === 0 &&
@@ -377,7 +364,7 @@ export class GestureRecogniser {
       }
     }
 
-    // Reset state when all fingers lifted
+    
     if (e.touches.length === 0) {
       this.resetGestureState();
     }

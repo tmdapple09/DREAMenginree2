@@ -4,35 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import type { BarIntentMode } from '@/dreamdmbar/runtime/DreamSystemContext';
 
-/**
- * useDreamBarContext — detects the active surface from the current pathname
- * and returns the appropriate dream-bar behaviour for that context.
- *
- * Architecture: Logic layer (lib/) — no UI, no DB access.
- *
- * The dream bar is a universal input; its meaning changes with the active
- * surface (CONSTITUTION Art. I — "one coherent living interface").
- *
- * Surface map
- * ──────────────────────────────────────────────────────────────────────
- *  messages   /messages/**         → send a direct message
- *  feed       /homedream /home /    → create a feed post
- *  code       /codespace /daydream/code /daydream/lab
- *                                  → open code snippet composer
- *  dreams     /dreamengin          → send to Dr. Eams as chat
- *  music      /music /daydream/music
- *                                  → open music context
- *  create     /daydream/create /create
- *                                  → open content composer
- *  discover   /discover /analytics → search / explore
- *  general    (everything else)    → open messages compose fallback
- *
- * Intent override (BarIntentMode)
- * ──────────────────────────────────────────────────────────────────────
- *  When a BarIntent is active (search / message / dreams / comment),
- *  the resolved context overrides the surface-detected defaults so the
- *  bar input, placeholder, and action button match the user's chosen mode.
- */
+
 
 export type DreamBarSurface =
   | 'messages'
@@ -45,18 +17,15 @@ export type DreamBarSurface =
   | 'general';
 
 export interface DreamBarContext {
-  /** Detected surface for the active pathname */
+  
   surface: DreamBarSurface;
-  /** Placeholder text for the dream bar input */
+  
   placeholder: string;
-  /** Short verb label shown next to the input (e.g. "Post", "Send") */
+  
   actionLabel: string;
-  /** Aria-label for the send/action button */
+  
   actionAriaLabel: string;
-  /**
-   * Icon name hint — the UI layer maps this to an actual icon.
-   * Using a string keeps this module free of React/lucide imports.
-   */
+  
   iconHint: 'send' | 'pen-line' | 'code' | 'bot' | 'music' | 'sparkles' | 'search' | 'message-circle';
 }
 
@@ -125,10 +94,7 @@ const CONTEXT_MAP: Record<DreamBarSurface, Omit<DreamBarContext, 'surface'>> = {
   },
 };
 
-/**
- * Resolves bar context overrides when a BarIntentMode is active.
- * Returns undefined for 'default' (no override — use surface context).
- */
+
 export function resolveIntentOverride(
   intentMode: BarIntentMode,
   targetLabel?: string,

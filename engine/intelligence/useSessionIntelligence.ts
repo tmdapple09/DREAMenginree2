@@ -5,51 +5,23 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SessionContinuity, type SessionDiff, type SessionSummary } from './sessionContinuity';
 import { SessionPatternEngine, type PatternEngineState, type PredictedNext } from './sessionPatternEngine';
 
-/**
- * lib/intelligence/useSessionIntelligence.ts
- *
- * USE SESSION INTELLIGENCE — 2026
- *
- * React hook that wires the Session Pattern Engine and Session Continuity
- * Engine together. Provides components with:
- *
- *   predictions     — top-3 "what you'll open next" based on your current path
- *   lastSessionSummary — what you were doing in your previous session
- *   sessionDiff     — how today's session compares to last time
- *   currentSessionSummary — live summary of the current session
- *   isLearning      — whether the engine has enough data to predict reliably
- *   tfReady         — whether TF.js is active for enhanced predictions
- *
- * This hook also handles:
- *   - Auto-subscribing to the dreamOSBus for artifact updates AND subsystem
- *     navigation events — no explicit currentSubsystemId prop required.
- *   - Persisting the pattern matrix and session across page hide / beforeunload.
- *   - Restoring the pattern matrix from the previous session on mount.
- *   - Feeding subsystem activations to the pattern engine.
- *
- * Usage:
- *   // Auto-wired via dreamOSBus (recommended):
- *   const { predictions, sessionDiff } = useSessionIntelligence();
- *
- *   // Or with an explicit subsystem override:
- *   const { predictions } = useSessionIntelligence('CodeEngin');
- */
 
-/** localStorage key used to persist the bigram transition matrix across sessions. */
+
+
 export const PATTERN_MATRIX_LS_KEY = 'dreamengin-pattern-matrix';
 
 export interface SessionIntelligence {
-  /** Top-N predictions for the next subsystem you're likely to open. */
+  
   predictions: PredictedNext[];
-  /** Summary of the last completed session (null on first ever session). */
+  
   lastSessionSummary: SessionSummary | null;
-  /** Diff between current and last session (null on first ever session). */
+  
   sessionDiff: SessionDiff | null;
-  /** Live summary of the current session. */
+  
   currentSessionSummary: SessionSummary;
-  /** True once the pattern engine has ≥ 3 learned transitions this session. */
+  
   isLearning: boolean;
-  /** True if TF.js softmax is active for enhanced normalisation. */
+  
   tfReady: boolean;
 }
 
@@ -65,13 +37,7 @@ const EMPTY_SUMMARY: SessionSummary = {
   lastArtifactTitle: null,
 };
 
-/**
- * Returns live session intelligence, optionally scoped to a specific subsystem.
- *
- * @param currentSubsystemId — Optional override for the current subsystem.
- *   When omitted the hook auto-ingests from the dreamOSBus runtimeContexts.
- * @param topN — Number of predictions to return (default: 3).
- */
+
 export function useSessionIntelligence(
   currentSubsystemId?: string | null,
   topN = 3,
@@ -90,7 +56,7 @@ export function useSessionIntelligence(
   const [sessionDiff, setSessionDiff] = useState<SessionDiff | null>(null);
   const [currentSessionSummary, setCurrentSessionSummary] = useState<SessionSummary>(EMPTY_SUMMARY);
 
-  // Initialise both engines once on mount.
+  
   useEffect(() => {
     const pattern = new SessionPatternEngine();
     const continuity = new SessionContinuity();
@@ -104,7 +70,7 @@ export function useSessionIntelligence(
       await Promise.all([pattern.init(), continuity.init()]);
       if (cancelled) return;
 
-      // Restore persisted bigram matrix from previous session.
+      
       if (typeof localStorage !== 'undefined') {
         try {
           const raw = localStorage.getItem(PATTERN_MATRIX_LS_KEY);
@@ -113,7 +79,7 @@ export function useSessionIntelligence(
             pattern.importMatrix(saved);
           }
         } catch {
-          // Corrupt or absent matrix — start fresh.
+          
         }
       }
 
@@ -130,7 +96,7 @@ export function useSessionIntelligence(
     };
   }, []);
 
-  // Shared ingest helper used by both bus-auto-ingest and prop-based paths.
+  
   const prevBusSubsystemRef = useRef<string | null>(null);
   const ingestSubsystem = useCallback(
     (subsystemId: string, prevRef: React.MutableRefObject<string | null>) => {
@@ -156,12 +122,12 @@ export function useSessionIntelligence(
     [topN],
   );
 
-  // Subscribe to dreamOSBus for artifact updates AND automatic subsystem ingest.
+  
   useEffect(() => {
     const unsubscribe = dreamOSBus.subscribe((snapshot) => {
       const continuity = continuityRef.current;
 
-      // Artifact snapshot → update continuity engine.
+      
       if (continuity) {
         const lastArtifact = snapshot.artifacts[0] ?? null;
         continuity.updateArtifacts(
@@ -173,7 +139,7 @@ export function useSessionIntelligence(
         setSessionDiff(continuity.getSessionDiff());
       }
 
-      // runtimeContexts → auto-ingest the dominant subsystem.
+      
       const dominant = snapshot.runtimeContexts.find((ctx) => ctx.dominant)
         ?? snapshot.runtimeContexts[0];
       if (dominant?.subsystemId) {
@@ -184,7 +150,7 @@ export function useSessionIntelligence(
     return unsubscribe;
   }, [ingestSubsystem]);
 
-  // Ingest subsystem activations when the explicit prop changes (override path).
+  
   const prevPropSubsystemRef = useRef<string | null>(null);
   useEffect(() => {
     const prev = prevPropSubsystemRef.current;
@@ -196,7 +162,7 @@ export function useSessionIntelligence(
     ingestSubsystem(currentSubsystemId, prevPropSubsystemRef);
   }, [currentSubsystemId, ingestSubsystem]);
 
-  // Persist session + matrix on page hide / beforeunload.
+  
   const persistSession = useCallback(() => {
     const continuity = continuityRef.current;
     if (continuity) {
@@ -207,7 +173,7 @@ export function useSessionIntelligence(
       try {
         localStorage.setItem(PATTERN_MATRIX_LS_KEY, JSON.stringify(pattern.exportMatrix()));
       } catch {
-        // Quota exceeded — silently ignore.
+        
       }
     }
   }, []);

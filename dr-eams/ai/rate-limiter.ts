@@ -1,11 +1,11 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
-// lib/ai/rate-limiter.ts
-// Rate Limiting Service
 
-// ============================================================================
-// RATE LIMIT CHECK
-// ============================================================================
+
+
+
+
+
 
 export interface RateLimitConfig {
   maxRequests: number;
@@ -47,7 +47,7 @@ export async function checkRateLimit(
 
   const supabase = await createServerClient();
 
-  // Call DB function to check rate limit
+  
   const { data, error } = await supabase.rpc('check_ai_rate_limit', {
     p_user_id: userId,
     p_endpoint: endpoint,
@@ -57,20 +57,20 @@ export async function checkRateLimit(
 
   if (error) {
     console.error('Rate limit check error:', error);
-    // Fail-closed per spec §8: any error returns { allowed: false, rpm: 0 }
+    
     return { allowed: false, rpm: 0 };
   }
 
   const result = normalizeRateLimitPayload(data);
   const allowed = result?.allowed === true;
 
-  // Calculate reset time
+  
   const now = new Date();
   const resetAt = new Date(
     now.getTime() + config.windowMinutes * 60 * 1000
   );
 
-  // Get current request count (approximate)
+  
   const { data: rateLimitData } = await supabase
     .from('ai_rate_limits')
     .select('request_count')
@@ -85,9 +85,9 @@ export async function checkRateLimit(
   return { allowed, rpm, resetAt };
 }
 
-// ============================================================================
-// GET CURRENT RPM (for Boogie signals)
-// ============================================================================
+
+
+
 
 export async function getCurrentRPM(userId: string, endpoint: string): Promise<number> {
   const supabase = await createServerClient();

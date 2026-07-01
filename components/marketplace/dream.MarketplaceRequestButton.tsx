@@ -5,15 +5,7 @@ import { useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
-/**
- * components/marketplace/dream.MarketplaceRequestButton.tsx
- *
- * Client component that POSTs to /api/marketplace/request — Point 46.
- * This makes the "Request" CTA a real system action rather than a placeholder.
- *
- * Architecture: client component with server fetch; no secrets in bundle.
- * Phase 8 §E:   Point 46 — contact/request flow routes to real system action
- */
+
 
 type Props = {
   itemId:    string;
@@ -128,7 +120,7 @@ export default function MarketplaceRequestButton({ itemId, itemTitle }: Props) {
       style={{ width: '100%', gap: 8 }}
     >
       <Send className="w-4 h-4" />
-      {/* Point 46 CTA label */}
+      
       Request / Contact Seller
     </button>
   );

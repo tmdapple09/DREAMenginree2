@@ -12,7 +12,7 @@ import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 const SHOP_SELL_DRAFT_KEY = 'de:shop:sell-draft';
 
-// SURFACE: dreamsurface.ShopSell  (framework-mandated basename: page.tsx)
+
 
 export default function SellItemPage( ){
   const [title, setTitle] = useState('');
@@ -31,11 +31,11 @@ export default function SellItemPage( ){
       if (draft.price) setPrice(draft.price);
       if (draft.stock) setStock(draft.stock);
       if (draft.imageUrl) setImageUrl(draft.imageUrl);
-    } catch { /* ignore corrupt draft */ }
+    } catch {  }
   }, []);
 
   useEffect(() => {
-    try { localStorage.setItem(SHOP_SELL_DRAFT_KEY, JSON.stringify({ title, description, price, stock, imageUrl, updatedAt: new Date().toISOString() })); } catch { /* local draft best effort */ }
+    try { localStorage.setItem(SHOP_SELL_DRAFT_KEY, JSON.stringify({ title, description, price, stock, imageUrl, updatedAt: new Date().toISOString() })); } catch {  }
   }, [title, description, price, stock, imageUrl]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -48,8 +48,8 @@ export default function SellItemPage( ){
     setIsLoading(true);
 
     try {
-      // Point 45: sell flow goes through the real API route so we get
-      // a real API response (including the new item record) confirming success.
+      
+      
       const user = await safeGetUser(supabase);
       if (!user) {
         router.push('/login');
@@ -87,7 +87,7 @@ export default function SellItemPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/shop" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -104,7 +104,7 @@ export default function SellItemPage( ){
             <div className="de-widget-header"><span className="de-widget-title">Listing Details</span></div>
             <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-              {/* Title */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Item Title</span>
                 <input
@@ -117,7 +117,7 @@ export default function SellItemPage( ){
                 />
               </label>
 
-              {/* Description */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Description</span>
                 <textarea
@@ -129,7 +129,7 @@ export default function SellItemPage( ){
                 />
               </label>
 
-              {/* Price and Stock */}
+              
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Price ($)</span>
@@ -157,7 +157,7 @@ export default function SellItemPage( ){
                 </label>
               </div>
 
-              {/* Image URL */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Image URL (optional)</span>
                 <div style={{ position: 'relative' }}>
@@ -171,7 +171,7 @@ export default function SellItemPage( ){
                 </div>
               </label>
 
-              {/* Image Preview */}
+              
               {imageUrl && (
                 <div style={{ position: 'relative', height: 192, borderRadius: 10, overflow: 'hidden', border: '1px solid var(--de-border)' }}>
                   <NextImage
@@ -196,7 +196,7 @@ export default function SellItemPage( ){
             </div>
           </div>
 
-          {/* Tips */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Tips for a great listing</span></div>
             <div className="de-widget-body">

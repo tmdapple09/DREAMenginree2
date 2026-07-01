@@ -15,32 +15,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 type Post = { id: string; content?: string; created_at?: string; [key: string]: unknown };
 
-/**
- * PersistentDreamBar — Shell-First DreamDMBar wrapper and home container.
- *
- * Also exported as `DreamDMContainer` for architectural clarity.
- * PersistentDreamBar IS the DreamDM Container: the always-mounted shell that
- * owns the dual-runtime split (HomeDream Surface + DreamSpace) and mounts the
- * complete DreamDMBar exchange capability between them.
- *
- * The DreamDMBar IS home. It is never unmounted during navigation and always
- * holds both runtime regions in React's tree:
- *   • HomeDream Surface (top) — shrinks when bar is dragged up
- *   • DreamSpace        (bottom) — shrinks when bar is dragged down
- *
- * VISIBILITY RULE:
- *   Both regions are always MOUNTED (React tree stays alive, state preserved).
- *   They are only VISIBLE + INTERACTIVE when DreamBarDataBridge is active
- *   (i.e. on /homedream). On all other routes they are hidden via display:none
- *   so they never cover page content, but their React state is preserved so
- *   returning to /homedream is instant with no re-mount.
- *
- * BAR MINIMIZE RULE (Bar Ownership Law §0):
- *   Hiding the bar collapses ONLY the bar UI (DIVIDER_H → 0px). Both runtime
- *   regions stay at exactly the split position they held — they do not move.
- *
- * Hidden on public / pre-login routes only.
- */
+
 
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
 
@@ -177,20 +152,20 @@ export default function PersistentDreamBar( ){
       });
   }, [layout.dreamspace.dreams, layout.hidden, layout.home.dreams, os.bus, updateDreamLayout]);
 
-  // Hide on public / pre-login surfaces only
+  
   if (isPublicSurfacePath(pathname)) {
     return null;
   }
 
-  // isHomeActive: DreamBarDataBridge is mounted → regions visible + bar in divider mode.
-  // When false: regions are display:none (mounted but invisible) + bar is nav-rail mode.
-  //
-  // On `/homedream` and `/dreamdmbar` we MUST show the home runtime even before the client-side
-  // DreamBarDataBridge has finished registering callbacks, otherwise the page
-  // appears blank (just the themed background) post-login. The bridge runs in
-  // a useEffect, so on a fresh load there is a window where runtimeCallbacks
-  // is still null and homeData hasn't been pushed yet — without this guarantee
-  // users see "an orange page... that's all that loads after I login".
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const isHomeRoute =
     pathname === '/homedream' ||
     pathname.startsWith('/homedream/') ||
@@ -198,10 +173,10 @@ export default function PersistentDreamBar( ){
     pathname.startsWith('/dreamdmbar/');
   const isHomeActive = runtimeCallbacks !== null || isHomeRoute;
 
-  //
-  // Bar minimize rule: collapsing the bar means DIVIDER_H → 0. The region
-  // CSS heights still reference splitRatio so both runtimes stay at their
-  // exact positions. Only the bar strip itself disappears.
+  
+  
+  
+  
   const dividerHeight   = isBarMinimized ? 0 : DIVIDER_H;
   const runtimeSplitRatio = splitRatio;
   const topHeight       = `calc((100% - ${dividerHeight}px) * ${runtimeSplitRatio})`;
@@ -215,9 +190,7 @@ export default function PersistentDreamBar( ){
     <>
       <NeuralSeamCanvas active={isHomeActive} splitRatio={splitRatio} />
 
-      {/* ── HomeDream Surface (top runtime) ──────────────────────────────────
-          Always MOUNTED in React. display:none when not on /homedream so it
-          never covers page content. State preserved across navigation. */}
+      
       <div
         style={{
           display: isHomeActive ? 'block' : 'none',
@@ -255,9 +228,7 @@ export default function PersistentDreamBar( ){
         )}
       </div>
 
-      {/* ── Divider zone fill ────────────────────────────────────────────────
-          The DreamDM seam owns only its visible 2px divider reservation so the
-          two runtimes stay tight without a dead band between them. */}
+      
       {isHomeActive && !isBarMinimized && (
         <div
           aria-hidden="true"
@@ -274,10 +245,7 @@ export default function PersistentDreamBar( ){
         />
       )}
 
-      {/* ── DreamDMBar exchange capability ────────────────────────────────────
-          Messaging, search, notifications, Dr. Eams, navigation, contextual
-          actions, and surface exchange stay mounted as one capability. Split
-          props only enable its divider interaction mode while home is active. */}
+      
       <DreamDMBar
         onBothMenus={openBothMenus}
         splitRatio={isHomeActive ? splitRatio : undefined}
@@ -286,8 +254,7 @@ export default function PersistentDreamBar( ){
         onSwapRuntimes={isHomeActive ? swapDreamRuntimes : undefined}
       />
 
-      {/* ── DreamSpace (bottom runtime) ──────────────────────────────────────
-          Always MOUNTED in React. display:none when not on /homedream. */}
+      
       <div
         style={{
           display: isHomeActive ? 'block' : 'none',
@@ -328,17 +295,5 @@ export default function PersistentDreamBar( ){
   );
 }
 
-/**
- * DreamDMContainer — canonical architectural alias for PersistentDreamBar.
- *
- * PersistentDreamBar is the implementation name; DreamDMContainer is the
- * architectural name used in diagrams and specs. Both refer to the same
- * always-mounted shell component that owns the dual-runtime split and the
- * complete DreamDMBar exchange capability.
- *
- * Usage:
- *   import PersistentDreamBar from '@/components/home/dream.bar.PersistentDreamBar';
- *   // or (named import)
- *   import { DreamDMContainer } from '@/components/home/dream.bar.PersistentDreamBar';
- */
+
 export const DreamDMContainer = PersistentDreamBar;

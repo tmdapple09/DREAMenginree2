@@ -4,15 +4,7 @@ import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameeng
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
 
-/**
- * SERPENT SIEGE — fusion of snake + tower-defense + RTS.
- *
- * You pilot the head of an ever-growing serpent across a hex-style grid.
- * Each body segment becomes a static tower whose damage type is set by the
- * terrain beneath it (forest=arrow, ruins=mortar, water=slow). Enemy waves
- * funnel down lanes from the north toward the Mother Egg. You can re-route
- * mid-wave but cannot cross your own body. Defend or the brood dies.
- */
+
 
 const COLS = 22;
 const ROWS = 16;
@@ -46,14 +38,14 @@ const COL = {
 
 function genTerrain(): Terrain[][] {
   const t: Terrain[][] = Array.from({ length: ROWS }, () => Array<Terrain>(COLS).fill('plain'));
-  // sprinkle biomes
+  
   for (let i = 0; i < 38; i++) {
     const r = Math.floor(Math.random() * ROWS);
     const c = Math.floor(Math.random() * COLS);
     const k: Terrain[] = ['forest', 'forest', 'ruins', 'water'];
     t[r][c] = k[Math.floor(Math.random() * k.length)];
   }
-  // Mother Egg area (bottom-center) is always plain
+  
   for (let r = ROWS - 3; r < ROWS; r++) for (let c = COLS / 2 - 2; c < COLS / 2 + 2; c++) t[r]![c | 0] = 'plain';
   return t;
 }
@@ -66,8 +58,8 @@ export default function SerpentSiege( ){
   const [phase, phaseRef, setPhase] = useGamePhase<Phase>('menu');
   const terrainRef = useRef<Terrain[][]>(genTerrain());
   const headRef = useRef<Pt>({ x: 5, y: ROWS - 2 });
-  const headAngleRef = useRef<number>(0);          // radians, target angle
-  const headAngVelRef = useRef<number>(0);         // angular velocity for accel
+  const headAngleRef = useRef<number>(0);          
+  const headAngVelRef = useRef<number>(0);         
   const dirRef = useRef<Pt>({ x: 1, y: 0 });
   const nextDirRef = useRef<Pt>({ x: 1, y: 0 });
   const segmentsRef = useRef<Segment[]>([]);
@@ -103,7 +95,7 @@ export default function SerpentSiege( ){
   useEffect(() => { reducedMotionRef.current = prefersReducedMotion(); }, []);
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(scoreRef.current); }, [phase, submit]);
 
-  // Input
+  
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       const d = dirRef.current;
@@ -117,7 +109,7 @@ export default function SerpentSiege( ){
     return () => window.removeEventListener('keydown', down);
   }, []);
 
-  // Game loop
+  
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
@@ -127,20 +119,20 @@ export default function SerpentSiege( ){
       const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
 
       if (phaseRef.current === 'playing') {
-        // Move serpent on a tick
+        
         moveAccumRef.current += dt;
         const tick = 0.18;
         if (moveAccumRef.current >= tick) {
           moveAccumRef.current = 0;
           dirRef.current = nextDirRef.current;
           const newHead: Pt = { x: headRef.current.x + dirRef.current.x, y: headRef.current.y + dirRef.current.y };
-          // Boundary check + self-collision
+          
           const oob = newHead.x < 0 || newHead.x >= COLS || newHead.y < 0 || newHead.y >= ROWS;
           const onSelf = segmentsRef.current.some((s) => s.x === newHead.x && s.y === newHead.y);
           if (oob || onSelf) {
-            // can't move; stay still — serpent is stuck (penalty)
+            
           } else {
-            // Drop a segment behind head if there's energy or if we're growing first time
+            
             const grow = energyRef.current >= 1 || segmentsRef.current.length < 4;
             if (grow) energyRef.current = Math.max(0, energyRef.current - 1);
             const oldHead = headRef.current;
@@ -149,7 +141,7 @@ export default function SerpentSiege( ){
             if (grow) {
               segmentsRef.current.unshift(seg);
             } else {
-              // shift body forward
+              
               if (segmentsRef.current.length > 0) {
                 segmentsRef.current.pop();
                 segmentsRef.current.unshift(seg);
@@ -159,13 +151,13 @@ export default function SerpentSiege( ){
           }
         }
 
-        // Wave management — wave 5 is the BOSS wave (large multi-phase HP unit)
+        
         const waveElapsed = (t - waveStartRef.current) / 1000;
         if (enemiesRef.current.length === 0 && waveElapsed > 4 && waveRef.current > 0) {
           waveRef.current += 1; waveStartRef.current = t;
           if (waveRef.current > 5) { setPhase('victory'); }
           else if (waveRef.current === 5) {
-            // Spawn the boss
+            
             const bossHp = 220;
             enemiesRef.current.push({
               x: COLS / 2, y: 0, hp: bossHp, maxHp: bossHp,
@@ -175,13 +167,13 @@ export default function SerpentSiege( ){
         } else if (waveRef.current === 0 && waveElapsed > 3) {
           waveRef.current = 1; waveStartRef.current = t;
         }
-        // Spawn enemies (skip on boss wave — boss spawned once above)
+        
         const spawnRate = 0.6 + waveRef.current * 0.25;
         if (waveRef.current > 0 && waveRef.current < 5 && Math.random() < dt * spawnRate) {
           const lane = Math.floor(Math.random() * COLS);
           const roll = Math.random();
           let kind: EnemyKind = 'grunt';
-          // Wave 2+ unlocks shielded; wave 3+ unlocks scout
+          
           if (waveRef.current >= 3 && roll < 0.18) kind = 'scout';
           else if (waveRef.current >= 2 && roll < 0.36) kind = 'shielded';
           const baseHp = 6 + waveRef.current * 4;
@@ -189,13 +181,13 @@ export default function SerpentSiege( ){
           const speed = kind === 'shielded' ? 0.55 + waveRef.current * 0.08 : kind === 'scout' ? 1.4 + waveRef.current * 0.18 : 0.8 + waveRef.current * 0.15;
           enemiesRef.current.push({ x: lane, y: 0, hp, maxHp: hp, speed, slow: 0, kind, phase: 0 });
         }
-        // Move enemies with separation steering (scouts ignore slow fields)
+        
         for (let i = 0; i < enemiesRef.current.length; i++) {
           const e = enemiesRef.current[i];
           const slowFactor = e.kind === 'scout' ? 1 : (1 - e.slow * 0.6);
           const sp = e.speed * slowFactor;
           e.slow = Math.max(0, e.slow - dt);
-          // Separation: nudge away from any neighbor closer than 0.9 cells
+          
           let sepX = 0, sepY = 0;
           for (let j = 0; j < enemiesRef.current.length; j++) {
             if (i === j) continue;
@@ -204,13 +196,13 @@ export default function SerpentSiege( ){
             const d = Math.hypot(dx, dy);
             if (d > 0 && d < 0.9) { sepX += dx / d / d * 0.6; sepY += dy / d / d * 0.6; }
           }
-          // Greedy descent toward egg with separation modulation
+          
           const tdx = Math.sign(eggRef.current.x - e.x);
           const advance = (Math.random() < 0.6 ? { vx: 0, vy: sp } : { vx: tdx * sp, vy: 0 });
           e.x += (advance.vx + sepX) * dt;
           e.y += (advance.vy + sepY) * dt;
           e.y = Math.min(e.y, ROWS - 0.5);
-          // Boss multi-phase: at 50% HP it speeds up + summons reinforcement
+          
           if (e.kind === 'boss' && e.phase === 0 && e.hp < e.maxHp / 2) {
             e.phase = 1; e.speed *= 1.5;
             for (let s = 0; s < 4; s++) {
@@ -218,7 +210,7 @@ export default function SerpentSiege( ){
               enemiesRef.current.push({ x: e.x + (Math.random() - 0.5) * 2, y: e.y, hp: baseHp, maxHp: baseHp, speed: 1.1, slow: 0, kind: 'grunt', phase: 0 });
             }
           }
-          // Damage egg when reaching
+          
           if (Math.abs(e.x - eggRef.current.x) < 1 && Math.abs(e.y - eggRef.current.y) < 1) {
             eggHpRef.current -= e.kind === 'boss' ? 5 : 1;
             shakeRef.current.kick(e.kind === 'boss' ? 12 : 4);
@@ -226,7 +218,7 @@ export default function SerpentSiege( ){
           }
         }
 
-        // Towers fire — projectiles use ballistic trajectories
+        
         for (const s of segmentsRef.current) {
           if (!s.kind) continue;
           s.cooldown -= dt;
@@ -234,25 +226,25 @@ export default function SerpentSiege( ){
           const range = s.kind === 'mortar' ? 6 : 4;
           let target: Enemy | null = null; let bestD = Infinity;
           for (const e of enemiesRef.current) {
-            // shielded enemies take less damage at range — towers may seek easier prey
+            
             const d = Math.hypot(e.x - s.x, e.y - s.y);
             if (d < range && d < bestD) { bestD = d; target = e; }
           }
           if (target) {
             const dx = target.x - s.x, dy = target.y - s.y;
             const dist = Math.hypot(dx, dy);
-            // Mortar: arcs (lobs); arrow/slow: straight
+            
             const flightSpeed = s.kind === 'mortar' ? 6 : 12;
             const ttl = dist / flightSpeed;
-            const vx = dx / ttl, vy = dy / ttl - (s.kind === 'mortar' ? 6 : 0);  // initial upward for arc
+            const vx = dx / ttl, vy = dy / ttl - (s.kind === 'mortar' ? 6 : 0);  
             projsRef.current.push({ x: s.x, y: s.y, vx, vy, tx: target.x, ty: target.y, kind: s.kind, ttl });
             s.cooldown = s.kind === 'arrow' ? 0.6 : s.kind === 'mortar' ? 1.4 : 1.0;
           }
         }
-        // Update projectiles with gravity for mortar; resolve on impact
+        
         for (const p of projsRef.current) {
           p.x += p.vx * dt;
-          if (p.kind === 'mortar') p.vy += 12 * dt;     // gravity in cells/s²
+          if (p.kind === 'mortar') p.vy += 12 * dt;     
           p.y += p.vy * dt;
           p.ttl -= dt;
         }
@@ -271,7 +263,7 @@ export default function SerpentSiege( ){
         }
         projsRef.current = projsRef.current.filter((p) => p.ttl > 0);
 
-        // Tower terrain particles (occasional ambient flecks tinted by terrain)
+        
         if (Math.random() < dt * 6) {
           const seg = segmentsRef.current[Math.floor(Math.random() * segmentsRef.current.length)];
           if (seg && seg.kind) {
@@ -283,7 +275,7 @@ export default function SerpentSiege( ){
         particlesRef.current.step(dt);
         shakeRef.current.step(dt);
 
-        // Award energy + score on kills
+        
         for (const e of enemiesRef.current) if (e.hp <= 0) {
           energyRef.current += e.kind === 'boss' ? 8 : e.kind === 'shielded' ? 3 : 1;
           scoreRef.current += e.kind === 'boss' ? 600 : e.kind === 'shielded' ? 60 : 25;
@@ -294,7 +286,7 @@ export default function SerpentSiege( ){
         if (eggHpRef.current <= 0) setPhase('defeat');
       }
 
-      // Update head angular velocity toward intended direction (no instant 90° snap)
+      
       const targetAngle = Math.atan2(nextDirRef.current.y, nextDirRef.current.x);
       let dAng = targetAngle - headAngleRef.current;
       while (dAng > Math.PI) dAng -= Math.PI * 2;
@@ -307,30 +299,30 @@ export default function SerpentSiege( ){
       shakeRef.current.apply(ctx, reducedMotionRef.current ? 0.2 : 1);
 
       ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
-      // Terrain — with hex-style bevel + drop-shadow per tile
+      
       for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
         const ter = terrainRef.current[r][c];
         const base = ter === 'forest' ? COL.forest : ter === 'ruins' ? COL.ruins : ter === 'water' ? COL.water : COL.plain;
         ctx.fillStyle = base;
         ctx.fillRect(c * CELL, r * CELL, CELL - 1, CELL - 1);
-        // top bevel highlight
+        
         ctx.fillStyle = 'rgba(255,255,255,0.06)';
         ctx.fillRect(c * CELL, r * CELL, CELL - 1, 1);
         ctx.fillRect(c * CELL, r * CELL, 1, CELL - 1);
-        // bottom shadow
+        
         ctx.fillStyle = 'rgba(0,0,0,0.22)';
         ctx.fillRect(c * CELL, r * CELL + CELL - 2, CELL - 1, 1);
         ctx.fillRect(c * CELL + CELL - 2, r * CELL, 1, CELL - 1);
       }
-      // Egg
+      
       ctx.fillStyle = COL.egg; ctx.shadowColor = COL.egg; ctx.shadowBlur = 14;
       ctx.beginPath(); ctx.ellipse(eggRef.current.x * CELL + CELL / 2, eggRef.current.y * CELL + CELL / 2, CELL * 0.7, CELL * 0.85, 0, 0, Math.PI * 2); ctx.fill();
       ctx.shadowBlur = 0;
-      // egg HP bar
+      
       ctx.fillStyle = '#000'; ctx.fillRect(eggRef.current.x * CELL - 8, eggRef.current.y * CELL - 12, 44, 5);
       ctx.fillStyle = COL.egg; ctx.fillRect(eggRef.current.x * CELL - 8, eggRef.current.y * CELL - 12, 44 * (eggHpRef.current / 10), 5);
 
-      // Serpent body segments (chained sprites with rim-light)
+      
       for (const s of segmentsRef.current) {
         const base = s.kind === 'arrow' ? COL.arrow : s.kind === 'mortar' ? COL.mortar : s.kind === 'slow' ? COL.slow : COL.serpentTail;
         ctx.fillStyle = base;
@@ -338,21 +330,21 @@ export default function SerpentSiege( ){
         ctx.fillStyle = 'rgba(255,255,255,0.18)';
         ctx.fillRect(s.x * CELL + 3, s.y * CELL + 3, CELL - 6, 2);
       }
-      // Head — rotated by angular velocity, with heat-haze shimmer behind
+      
       const hx = headRef.current.x * CELL + CELL / 2, hy = headRef.current.y * CELL + CELL / 2;
-      // Shimmer: dithered glow trailing the head
+      
       ctx.save();
       ctx.translate(hx, hy);
       ctx.rotate(headAngleRef.current);
       ctx.fillStyle = COL.serpent; ctx.shadowColor = COL.serpent; ctx.shadowBlur = 14;
       ctx.fillRect(-CELL / 2 + 2, -CELL / 2 + 2, CELL - 4, CELL - 4);
       ctx.shadowBlur = 0;
-      // Eye
+      
       ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(CELL / 4, -3, 4, 4);
       ctx.restore();
 
-      // Enemies
+      
       for (const e of enemiesRef.current) {
         const ecx = e.x * CELL + CELL / 2, ecy = e.y * CELL + CELL / 2;
         if (e.kind === 'boss') {
@@ -376,13 +368,13 @@ export default function SerpentSiege( ){
           ctx.fillStyle = COL.enemy;
           ctx.beginPath(); ctx.arc(ecx, ecy, CELL * 0.35, 0, Math.PI * 2); ctx.fill();
         }
-        // hp bar
+        
         const w = e.kind === 'boss' ? CELL * 2 : CELL;
         ctx.fillStyle = '#000'; ctx.fillRect(ecx - w / 2, ecy - (e.kind === 'boss' ? CELL : 18), w, 3);
         ctx.fillStyle = COL.enemy; ctx.fillRect(ecx - w / 2, ecy - (e.kind === 'boss' ? CELL : 18), w * (e.hp / e.maxHp), 3);
       }
 
-      // Projectiles
+      
       for (const p of projsRef.current) {
         ctx.strokeStyle = p.kind === 'arrow' ? COL.arrow : p.kind === 'mortar' ? COL.mortar : COL.slow;
         ctx.lineWidth = 2;
@@ -400,7 +392,7 @@ export default function SerpentSiege( ){
     return () => cancelAnimationFrame(raf);
   }, [phaseRef, setPhase]);
 
-  // HUD pump
+  
   useEffect(() => {
     if (phase !== 'playing') return;
     const iv = setInterval(() => setHud({

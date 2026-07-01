@@ -36,7 +36,7 @@ import {
 } from '@/engine/connectors/normalise';
 import { isValidNostrPubkey } from '@/engine/connectors/providers/nostr';
 
-// ── A. ConnectorRegistry ──────────────────────────────────────────────────
+
 
 describe('CONNECTOR_REGISTRY', () => {
   it('has at least 6 tier-1 connectors', () => {
@@ -104,7 +104,7 @@ describe('CONNECTOR_REGISTRY', () => {
   });
 });
 
-// ── B. Status truthfulness ────────────────────────────────────────────────
+
 
 describe('Status truthfulness', () => {
   it('no connector starts as "connected" in the registry defaultStatus', () => {
@@ -122,7 +122,7 @@ describe('Status truthfulness', () => {
   });
 });
 
-// ── C. Normalisation utilities ────────────────────────────────────────────
+
 
 describe('stripHtml', () => {
   it('strips basic tags', () => {
@@ -164,7 +164,7 @@ describe('atUriToHttps', () => {
   });
 });
 
-// ── D. Provider normalisation ─────────────────────────────────────────────
+
 
 describe('normaliseMastodon', () => {
   it('normalises a basic status', () => {
@@ -272,7 +272,7 @@ describe('normaliseReddit', () => {
         author: 'alice',
         subreddit_name_prefixed: 'r/test',
         permalink: '/r/test/comments/abc123/my_first_post/',
-        created_utc: 1704067200, // 2024-01-01 00:00:00 UTC
+        created_utc: 1704067200, 
       },
     };
     const item = normaliseReddit(post);
@@ -377,7 +377,7 @@ describe('normaliseTwitter', () => {
   });
 });
 
-// ── E. Deduplication ──────────────────────────────────────────────────────
+
 
 describe('deduplicateFeedItems', () => {
   it('removes duplicate (provider, external_id) pairs', () => {
@@ -406,7 +406,7 @@ describe('deduplicateFeedItems', () => {
   });
 });
 
-// ── F. Nostr pubkey validation ────────────────────────────────────────────
+
 
 describe('isValidNostrPubkey', () => {
   it('accepts 64-char hex', () => {

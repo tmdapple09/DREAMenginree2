@@ -7,13 +7,10 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { Json } from '@/types/supabase';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/actions/dream-docs.ts
- * Admin-only server actions for creating, publishing, and managing DreamDocs.
- */
 
-// ---------------------------------------------------------------------------
-// Helpers
+
+
+
 
 async function requireAdmin(): Promise<{ userId: string }> {
   const supabase = await createServerClient();
@@ -43,7 +40,7 @@ async function requireAdmin(): Promise<{ userId: string }> {
   return { userId: user.id };
 }
 
-// Types
+
 
 export interface CreateDreamDocInput {
   path: string;
@@ -60,14 +57,11 @@ export interface UpsertDocSectionInput {
   heading?: string;
   slug?: string;
   chunkIndex?: number;
-  /** When true, triggers async embedding generation after upsert. */
+  
   generateEmbedding?: boolean;
 }
 
-/**
- * Create a new DreamDoc (top-level document).
- * Requires admin role.
- */
+
 export async function createDreamDoc(
   input: CreateDreamDocInput,
 ): Promise<{ id: number | null; error: string | null }> {
@@ -102,10 +96,7 @@ export async function createDreamDoc(
   }
 }
 
-/**
- * Publish or unpublish a DreamDoc.
- * Requires admin role.
- */
+
 export async function publishDreamDoc(
   id: number,
   published = true,
@@ -131,12 +122,7 @@ export async function publishDreamDoc(
   }
 }
 
-/**
- * Upsert a content section for a DreamDoc.
- * If `generateEmbedding` is true, the section's content is vectorised and
- * the resulting embedding is persisted on the row.
- * Requires admin role.
- */
+
 export async function upsertDocSection(
   input: UpsertDocSectionInput,
 ): Promise<{ id: number | null; error: string | null }> {

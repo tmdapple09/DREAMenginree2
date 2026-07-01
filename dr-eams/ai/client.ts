@@ -1,13 +1,4 @@
-/**
- * AI provider wrapper — server-side only.
- *
- * Environment variables (set in Vercel / .env.local):
- *   AI_PROVIDER          – "openai" | "anthropic" | "mock"  (default "mock")
- *   AI_API_KEY           – API key for the chosen provider
- *   AI_MODEL_EAMS        – model for Dr. Eams  (optional override)
- *   AI_MODEL_IDARI       – model for IDARi     (optional override)
- *   AI_MODEL_BOOGIEMAN   – model for TheBoogieMan (optional override)
- */
+
 
 export type AiAgent = "eams" | "idari" | "boogieman";
 
@@ -36,7 +27,7 @@ export interface AiResponse {
   model: string;
 }
 
-/** Send messages to the specified AI agent and return the reply. */
+
 export async function callAi(
   agent: AiAgent,
   messages: AiMessage[]

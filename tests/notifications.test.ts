@@ -1,20 +1,4 @@
-/**
- * tests/notifications.test.ts
- *
- * Unit tests for lib/notifications/notificationHelpers.ts — the pure logic
- * layer for the notification system.
- *
- * Architecture justification:
- *   - docs/AXIOMS.md: every visible action must do something real. The
- *     notification bell in HomeDreamSurface showed a fake static dot.
- *     These helpers drive the real wiring.
- *   - docs/ARCHITECTURE.md §8: Gold = save/confirm/action; Light Blue =
- *     live state/signal state. A live notification count is exactly the
- *     "signal state" the design system intends.
- *   - docs/LAW.md §3: every visible action must do something real.
- *
- * All functions under test are pure — no DOM, no network, no React needed.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -32,7 +16,7 @@ import {
   type UiNotification,
 } from '@/dreamdmbar/notifications/notificationHelpers';
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
+
 
 function makeRow(overrides: Partial<DbNotificationRow> = {}): DbNotificationRow {
   return {
@@ -57,7 +41,7 @@ function makeUiNotif(overrides: Partial<UiNotification> = {}): UiNotification {
   };
 }
 
-// ── mapNotificationType ────────────────────────────────────────────────────────
+
 
 describe('mapNotificationType', () => {
   it('maps known types exactly', () => {
@@ -88,7 +72,7 @@ describe('mapNotificationType', () => {
   });
 });
 
-// ── getNotificationTitle ───────────────────────────────────────────────────────
+
 
 describe('getNotificationTitle', () => {
   it('returns a non-empty string for every known type', () => {
@@ -108,7 +92,7 @@ describe('getNotificationTitle', () => {
   });
 });
 
-// ── getNotificationActionUrl ───────────────────────────────────────────────────
+
 
 describe('getNotificationActionUrl', () => {
   it('returns /messages?conversation_id=... for message type with conversation_id', () => {
@@ -161,7 +145,7 @@ describe('getNotificationActionUrl', () => {
   });
 });
 
-// ── extractNotificationMessage ─────────────────────────────────────────────────
+
 
 describe('extractNotificationMessage', () => {
   it('prefers an explicit "message" field in content', () => {
@@ -201,7 +185,7 @@ describe('extractNotificationMessage', () => {
   });
 });
 
-// ── normalizeDbRow ─────────────────────────────────────────────────────────────
+
 
 describe('normalizeDbRow', () => {
   it('produces a UiNotification with correct shape', () => {
@@ -258,7 +242,7 @@ describe('normalizeDbRow', () => {
   });
 });
 
-// ── getUnreadCount ─────────────────────────────────────────────────────────────
+
 
 describe('getUnreadCount', () => {
   it('returns 0 for an empty list', () => {
@@ -283,7 +267,7 @@ describe('getUnreadCount', () => {
   });
 });
 
-// ── sortByRecent ───────────────────────────────────────────────────────────────
+
 
 describe('sortByRecent', () => {
   it('sorts newest-first', () => {
@@ -302,7 +286,7 @@ describe('sortByRecent', () => {
     const b = makeUiNotif({ id: '2', timestamp: new Date('2025-06-01') });
     const original = [a, b];
     sortByRecent(original);
-    expect(original[0].id).toBe('1'); // unchanged
+    expect(original[0].id).toBe('1'); 
   });
 
   it('handles empty array', () => {
@@ -316,7 +300,7 @@ describe('sortByRecent', () => {
   });
 });
 
-// ── applyOptimisticRead ────────────────────────────────────────────────────────
+
 
 describe('applyOptimisticRead', () => {
   it('marks the target notification as read', () => {
@@ -348,7 +332,7 @@ describe('applyOptimisticRead', () => {
   });
 });
 
-// ── applyOptimisticMarkAll ─────────────────────────────────────────────────────
+
 
 describe('applyOptimisticMarkAll', () => {
   it('marks all notifications as read', () => {
@@ -372,7 +356,7 @@ describe('applyOptimisticMarkAll', () => {
   });
 });
 
-// ── applyOptimisticDelete ──────────────────────────────────────────────────────
+
 
 describe('applyOptimisticDelete', () => {
   it('removes the notification with the matching id', () => {
@@ -402,7 +386,7 @@ describe('applyOptimisticDelete', () => {
   });
 });
 
-// ── Integration: normalizeDbRow + getUnreadCount ───────────────────────────────
+
 
 describe('integration: normalise + aggregate', () => {
   it('normalising a batch of rows then counting unread gives correct result', () => {

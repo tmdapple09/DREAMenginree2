@@ -1,20 +1,4 @@
-/**
- * tests/seam-clipboard.test.ts
- *
- * Unit tests for the cross-engin seam workflow system.
- *
- * Covers:
- *  - enginWorkflowRegistry: findWorkflows, findWorkflowById, allWorkflows,
- *    executeWorkflow
- *  - executeWorkflow: calls bridge.emitDurable with correct channel + event
- *  - seamClipboard.setWithEngins: routes to correct workflows, returns IDs
- *  - seamClipboard.subscribe: receives payload from set()
- *  - seamClipboard.set with 'application/x-dream-artifact' MIME type triggers
- *    workflow routing
- *
- * Pure Node.js tests — no browser APIs, no React, no DOM.
- * Spies on bridge.emitDurable using vi.spyOn.
- */
+
 
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
@@ -31,12 +15,12 @@ import {
   type SeamClipboardPayload,
 } from '@/engine/runtime/seamClipboard';
 
-// ── Shared fixtures ────────────────────────────────────────────────────────────
+
 
 const SURFACE_REGION = 'Surface Space' as const;
 const DREAM_REGION = 'DreamSpace' as const;
 
-// ── Setup / teardown ───────────────────────────────────────────────────────────
+
 
 beforeEach(() => {
   bridge.clearAll();
@@ -49,13 +33,13 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// ══════════════════════════════════════════════════════════════════════════════
-// enginWorkflowRegistry
-// ══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('enginWorkflowRegistry', () => {
 
-  // ── ENGIN_KEYS ──────────────────────────────────────────────────────────────
+  
 
   describe('ENGIN_KEYS', () => {
     it('contains all 7 expected keys', () => {
@@ -67,7 +51,7 @@ describe('enginWorkflowRegistry', () => {
     });
   });
 
-  // ── allWorkflows ─────────────────────────────────────────────────────────────
+  
 
   describe('allWorkflows()', () => {
     it('returns a non-empty readonly array', () => {
@@ -109,7 +93,7 @@ describe('enginWorkflowRegistry', () => {
     });
   });
 
-  // ── findWorkflows ────────────────────────────────────────────────────────────
+  
 
   describe('findWorkflows(from, to)', () => {
     it('returns starmaker→lab workflows (2 in 2026: stem-analyze + audio-analysis)', () => {
@@ -180,19 +164,19 @@ describe('enginWorkflowRegistry', () => {
     });
 
     it('returns an empty array for an undefined Engin pair', () => {
-      // lab→starmaker exists, but starmaker→forge does not
+      
       const results = findWorkflows('starmaker', 'forge');
       expect(results).toHaveLength(0);
     });
 
     it('is commutative only where both directions are defined', () => {
-      // brand→content and content→brand are both registered
+      
       expect(findWorkflows('brand', 'content').length).toBeGreaterThan(0);
       expect(findWorkflows('content', 'brand').length).toBeGreaterThan(0);
     });
   });
 
-  // ── findWorkflowById ─────────────────────────────────────────────────────────
+  
 
   describe('findWorkflowById(id)', () => {
     it('returns the correct workflow for a known id', () => {
@@ -221,7 +205,7 @@ describe('enginWorkflowRegistry', () => {
     it('returns the correct workflow for lab-to-forge:generate-3d', () => {
       const workflow = findWorkflowById('lab-to-forge:generate-3d');
       expect(workflow).toBeDefined();
-      // This routes through the 'code' channel per spec
+      
       expect(workflow?.bridgeChannel).toBe('code');
       expect(workflow?.bridgeEvent).toBe('code:lab-to-forge-requested');
     });
@@ -235,7 +219,7 @@ describe('enginWorkflowRegistry', () => {
     });
   });
 
-  // ── executeWorkflow ──────────────────────────────────────────────────────────
+  
 
   describe('executeWorkflow(id, payload)', () => {
     it('returns false for an unknown workflow id', () => {
@@ -336,13 +320,13 @@ describe('enginWorkflowRegistry', () => {
     });
   });
 
-  // ── Workflow-level bridgeEvent naming convention ──────────────────────────────
+  
 
   describe('bridgeEvent naming convention', () => {
     it("every bridgeEvent starts with its bridgeChannel prefix", () => {
       for (const w of allWorkflows()) {
-        // e.g. channel 'lab', event 'lab:stem-visualization-requested' ✓
-        // exception: lab-to-forge uses 'code' channel (per spec)
+        
+        
         const eventPrefix = w.bridgeEvent.split(':')[0];
         expect(eventPrefix).toBe(w.bridgeChannel);
       }
@@ -350,13 +334,13 @@ describe('enginWorkflowRegistry', () => {
   });
 });
 
-// ══════════════════════════════════════════════════════════════════════════════
-// seamClipboard
-// ══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('seamClipboard', () => {
 
-  // ── subscribe ────────────────────────────────────────────────────────────────
+  
 
   describe('subscribe(handler)', () => {
     it('delivers the payload to the subscriber when set() is called', () => {
@@ -421,11 +405,11 @@ describe('seamClipboard', () => {
     });
   });
 
-  // ── get ──────────────────────────────────────────────────────────────────────
+  
 
   describe('get()', () => {
     it('returns null before any set() call', () => {
-      // beforeEach calls seamClipboard.clear() so the singleton starts fresh.
+      
       expect(seamClipboard.get()).toBeNull();
     });
 
@@ -458,7 +442,7 @@ describe('seamClipboard', () => {
     });
   });
 
-  // ── set() with application/x-dream-artifact ──────────────────────────────────
+  
 
   describe('set() with application/x-dream-artifact MIME type', () => {
     it('routes to the correct workflow and fires bridge.emitDurable', () => {
@@ -481,7 +465,7 @@ describe('seamClipboard', () => {
         targetRegion: DREAM_REGION,
       });
 
-      // Should have fired: workflow emit + seam:drop fallback emit
+      
       const workflowCall = spy.mock.calls.find(
         ([, event]) => event === 'lab:stem-visualization-requested',
       );
@@ -546,7 +530,7 @@ describe('seamClipboard', () => {
         targetRegion: DREAM_REGION,
       });
 
-      // starmaker→content: 'create:music-attached'
+      
       const call = spy.mock.calls.find(([, ev]) => ev === 'create:music-attached');
       expect(call).toBeDefined();
     });
@@ -581,7 +565,7 @@ describe('seamClipboard', () => {
         });
       }).not.toThrow();
 
-      // Fallback seam:drop should still fire
+      
       const seamDrop = spy.mock.calls.find(([ch, ev]) => ch === 'seam' && ev === 'drop');
       expect(seamDrop).toBeDefined();
     });
@@ -590,16 +574,16 @@ describe('seamClipboard', () => {
       const spy = vi.spyOn(bridge, 'emitDurable');
 
       seamClipboard.set({
-        content: JSON.stringify({ someData: 42 }), // no engin / targetEngin
+        content: JSON.stringify({ someData: 42 }), 
         mimeType: 'application/x-dream-artifact',
         sourceRegion: SURFACE_REGION,
         targetRegion: DREAM_REGION,
       });
 
-      // Only the fallback seam:drop should fire — no workflow emissions
+      
       const seamDrop = spy.mock.calls.find(([ch, ev]) => ch === 'seam' && ev === 'drop');
       expect(seamDrop).toBeDefined();
-      // No other durable channels should have fired
+      
       const workflowCalls = spy.mock.calls.filter(([ch]) => ch !== 'seam');
       expect(workflowCalls).toHaveLength(0);
     });
@@ -621,7 +605,7 @@ describe('seamClipboard', () => {
     });
   });
 
-  // ── setWithEngins ─────────────────────────────────────────────────────────────
+  
 
   describe('setWithEngins(from, to, artifact)', () => {
     it('returns the workflow IDs that fired for starmaker→lab', () => {
@@ -633,7 +617,7 @@ describe('seamClipboard', () => {
         bpm: 130,
         trackTitle: 'Drums Only',
       });
-      // 2026: Now 2 workflows fire for starmaker→lab (stem-analyze + audio-analysis for 'stem' artifacts)
+      
       expect(ids).toEqual(['starmaker-to-lab:stem-analyze', 'starmaker-to-lab:audio-analysis']);
       expect(spy).toHaveBeenCalledTimes(2);
       spy.mockRestore();
@@ -679,7 +663,7 @@ describe('seamClipboard', () => {
       const [, , payload] = spy.mock.calls[0] as [string, string, Record<string, unknown>];
       expect(payload.assetId).toBe('asset-forge-1');
       expect(payload.assetName).toBe('Knight');
-      // _seamTimestamp is injected by setWithEngins
+      
       expect(typeof payload._seamTimestamp).toBe('number');
     });
 
@@ -691,8 +675,8 @@ describe('seamClipboard', () => {
     });
 
     it('returns multiple IDs when multiple workflows exist for the same pair', () => {
-      // Currently every pair has at most 1 workflow, but test the general contract:
-      // brand→game has 1 workflow
+      
+      
       const ids = seamClipboard.setWithEngins('brand', 'game', {
         campaignId: 'camp-1',
         colors: ['#ff0'],
@@ -711,7 +695,7 @@ describe('seamClipboard', () => {
         mediaUrl: 'https://cdn.example.com/img.jpg',
         platform: 'dreamr',
       });
-      // No seam:drop call
+      
       const seamDrop = spy.mock.calls.find(([ch, ev]) => ch === 'seam' && ev === 'drop');
       expect(seamDrop).toBeUndefined();
     });
@@ -739,7 +723,7 @@ describe('seamClipboard', () => {
         url: 'https://cdn.example.com/data.csv',
       });
 
-      // Late subscriber comes online
+      
       const replayed: Array<Record<string, unknown>> = [];
       bridge.subscribe('code', 'code:lab-dataset-received', (p) => {
         replayed.push(p);
@@ -760,7 +744,7 @@ describe('seamClipboard', () => {
     });
   });
 
-  // ── set() emits to bridge (seam:drop fallback) ────────────────────────────────
+  
 
   describe('set() emits seam:drop on the bridge', () => {
     it('the bridge durable queue contains the seam:drop event after set()', () => {

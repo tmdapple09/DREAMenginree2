@@ -10,11 +10,7 @@ import { toErrorMessage } from '@/utils/index';
 import { type NextRequest, NextResponse } from 'next/server';
 import { rankFeed, type ScoredPost } from '../algorithms/dreamrAlgorithm';
 
-/**
- * app/dreamdmbar/_components/dreamr/api/feedHandler.ts
- *
- * Shared DreamR feed handler logic.
- */
+
 
 const FALLBACK_CREATED_AT = '1970-01-01T00:00:00.000Z';
 

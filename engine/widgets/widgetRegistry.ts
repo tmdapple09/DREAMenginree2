@@ -1,6 +1,6 @@
-// lib/widgets/widgetRegistry.ts
-// Single source of truth for all widget types (req 41-50)
-// Stable IDs; no duplicated strings sprinkled across code (req 43)
+
+
+
 
 export type ConnectorRequirement = 'none' | 'optional' | 'required';
 
@@ -11,27 +11,27 @@ export interface WidgetPermissions {
 }
 
 export interface WidgetTypeDef {
-  /** Stable, never-changed ID (req 43) */
+  
   id: string;
-  /** Human-readable title */
+  
   title: string;
-  /** Emoji or icon identifier */
+  
   icon: string;
-  /** Short description for Add Widgets library */
+  
   description: string;
-  /** Default config applied when shell is created (req 44) */
+  
   defaultConfig: Record<string, unknown>;
-  /** Permission requirements (req 44) */
+  
   permissions: WidgetPermissions;
-  /** Connector dependency (req 44-45) */
+  
   connectorDependency: ConnectorRequirement;
-  /** Connector ID that satisfies this widget's dependency (req 45) */
+  
   connectorId?: string;
-  /** Library category */
+  
   category: 'Feed' | 'Media' | 'Social' | 'Utilities' | 'Work' | 'Shop';
 }
 
-// All widget types with stable IDs (req 41-43)
+
 export const WIDGET_REGISTRY: ReadonlyArray<WidgetTypeDef> = [
   {
     id: 'feed-main',
@@ -208,18 +208,15 @@ export function getWidgetTypeDef(id: string): WidgetTypeDef | undefined {
   return WIDGET_REGISTRY.find((w) => w.id === id);
 }
 
-/** All widget types that belong to a given connector (req 45) */
+
 export function getWidgetTypesForConnector(connectorId: string): WidgetTypeDef[] {
   return WIDGET_REGISTRY.filter((w) => w.connectorId === connectorId);
 }
 
-/** Connector status used to determine what CTA to show (req 46-48) */
+
 export type ConnectorState = 'connected' | 'not_connected' | 'expired' | 'not_required';
 
-/**
- * Determine the connector state for a given widget type
- * given a map of currently-connected connector IDs (req 46-50).
- */
+
 export function resolveConnectorState(
   widgetId: string,
   connectedIds: Set<string>,

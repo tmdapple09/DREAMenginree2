@@ -1,10 +1,4 @@
-/**
- * tests/landing-calibration.test.ts
- *
- * Asserts that LandingHero wires the calibrateDevice sequence so that
- * "Humanity" calibration samples are collected from the very first
- * pointer interactions a visitor makes on the landing page.
- */
+
 
 import { readFileSync } from 'fs';
 import { join } from 'path';

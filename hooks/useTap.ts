@@ -2,36 +2,19 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 
-/**
- * useTap — canonical single-tap hook.
- *
- * SYSTEM-WIDE TAP DISCIPLINE
- * --------------------------
- * Every interactive surface in DREAMengin responds to a single tap. The user
- * has explicitly banned double-tap as a UI affordance ("we feel like the
- * system is not working") *everywhere except the home / gold particle*.
- *
- *   - `useTap`              → single-tap only. Use this for all new code.
- *   - `useHomeParticleTap`  → the SOLE site allowed to expose double-tap.
- *                             Reserved for the gold particle / home button.
- *
- * If you find yourself reaching for `onDoubleClick` or implementing a tap
- * counter outside the home particle, stop — it is a contract violation.
- */
+
 
 export interface UseTapOptions {
-  /** Disable the handler without unmounting it. */
+  
   disabled?: boolean;
 }
 
 export interface UseTapResult {
-  /** Fire on every press release. Single tap, every time. */
+  
   onTap: (event?: unknown) => void;
 }
 
-/**
- * Single-tap. No timers, no double-tap window, no surprise.
- */
+
 export function useTap(
   handler: (event?: unknown) => void,
   options: UseTapOptions = {},
@@ -52,31 +35,17 @@ export function useTap(
 }
 
 export interface UseHomeParticleTapOptions {
-  /**
-   * Window (ms) within which two taps register as a double-tap.
-   * The default matches the existing gold-particle constant so behaviour
-   * is consistent with the bar's `DOUBLE_TAP_WINDOW_MS`.
-   */
+  
   doubleTapWindowMs?: number;
   disabled?: boolean;
 }
 
 export interface UseHomeParticleTapResult {
-  /** Fires once on the trailing edge of a single tap (after the window closes). */
+  
   onTap: () => void;
 }
 
-/**
- * Home-particle tap router — the only place in the system where double-tap
- * is a sanctioned UI affordance.
- *
- *   single tap → `onSingleTap`
- *   double tap → `onDoubleTap`
- *
- * Single-tap firing is delayed by the double-tap window so a follow-up tap
- * can override and promote the gesture to a double-tap (matching the
- * existing dreamdmbar gold-particle behaviour).
- */
+
 export function useHomeParticleTap(
   onSingleTap: () => void,
   onDoubleTap: () => void,

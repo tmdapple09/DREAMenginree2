@@ -24,21 +24,21 @@ const TOUCH_FEEDBACK_DECAY_MS = 1200;
 const HUD_CLEARANCE_BASE = 28;
 const DEFAULT_REMOTE_OFFSET_Y = 26;
 
-// Fraction of dock radius within which a touch claims the right joystick
+
 const RIGHT_JOY_ZONE = 0.40;
-// Fraction of dock width used as the joystick travel radius (how far stick can move)
+
 const JOYSTICK_TRAVEL_RATIO = 0.65;
 
 function loadPersisted(key: string, fallback: number, min?: number, max?: number): number {
   try {
     const v = parseFloat(localStorage.getItem(key) ?? '');
     if (!isNaN(v) && (min === undefined || v >= min) && (max === undefined || v <= max)) return v;
-  } catch { /* ignore */ }
+  } catch {  }
   return fallback;
 }
 
 function savePersisted(key: string, value: number): void {
-  try { localStorage.setItem(key, String(value)); } catch { /* ignore */ }
+  try { localStorage.setItem(key, String(value)); } catch {  }
 }
 
 interface MobileGameHUDProps {
@@ -97,7 +97,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
   const activeMoveActionRef = useRef<ReturnType<typeof getRemoteMoveAction>>(null);
   const touchFadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragStartRef = useRef<{ y: number; baseOffsetY: number } | null>(null);
-  /** Tracks start position of the right joystick touch for tap detection */
+  
   const rightJoyTapRef = useRef<{ startX: number; startY: number; startAt: number } | null>(null);
 
   const [leftVector, setLeftVector] = useState(ZERO_VECTOR);
@@ -287,7 +287,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     if (touchId === rightJoyTouchIdRef.current) {
       rightJoyTouchIdRef.current = null;
       updateRightVector(ZERO_VECTOR);
-      // Tap detection: short touch (< 280ms) with minimal movement (< 12px) = jump
+      
       const tap = rightJoyTapRef.current;
       if (tap && clientX !== undefined && clientY !== undefined) {
         const moved = Math.hypot(clientX - tap.startX, clientY - tap.startY);
@@ -410,7 +410,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
     >
       <div className={styles.hudBadge}>{gameEmoji ? `${gameEmoji} ` : ''}{gameLabel} · instant touch HUD</div>
 
-      {/* ── Left joystick (MOVE) ── */}
+      
       <div
         ref={leftDockRef}
         className={clsx(styles.joystickDock, styles.leftDock)}
@@ -431,7 +431,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
         </div>
       </div>
 
-      {/* ── Center: pause/exit + size control + drag handle ── */}
+      
       <div className={styles.centerGroup}>
         <div className={styles.centerPills}>
           <button
@@ -469,7 +469,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
           </button>
         </div>
 
-        {/* +/- size control — dismissable */}
+        
         {!sizeControlHidden ? (
           <div className={styles.sizeControl}>
             <button
@@ -518,7 +518,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
           </button>
         )}
 
-        {/* Drag handle for repositioning — tap toggles size control */}
+        
         <div
           className={styles.dragHandle}
           onPointerDown={(e) => {
@@ -532,7 +532,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
             const moved = start ? Math.abs(e.clientY - start.y) : 0;
             dragStartRef.current = null;
             markTouchEnd();
-            // If pointer barely moved, treat as a tap → toggle size control
+            
             if (moved < 6) setSizeControlHidden((v) => !v);
           }}
           onPointerCancel={handleDragEnd}
@@ -542,7 +542,7 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
         </div>
       </div>
 
-      {/* ── Right dock — button ring around an embedded joystick (LOOK) ── */}
+      
       <div
         ref={rightDockRef}
         className={clsx(styles.joystickDock, styles.rightDock)}
@@ -554,14 +554,14 @@ export default function MobileGameHUD({ gameLabel, gameEmoji, mode, onExit }: Mo
         <div className={styles.readout}>{formatVectorLabel(rightVector, 'LOOK')}</div>
         <div className={styles.buttonCluster}>
           <div className={styles.clusterRing} />
-          {/* Central joystick embedded in the hub */}
+          
           <div className={styles.clusterHub} />
           <div
             ref={rightCapRef}
             className={clsx(styles.joystickCap, styles.rightJoyCap, rightJoyTouchIdRef.current === null && styles.joystickCapReset)}
             style={{ transform: getStickTransform(rightVector) }}
           />
-          {/* Ring buttons — hidden in joystick-only mode */}
+          
           {mode !== 'joystick' && MOBILE_HUD_BUTTON_RING.map((button) => (
             <div
               key={button.id}

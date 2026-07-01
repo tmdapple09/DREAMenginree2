@@ -1,12 +1,4 @@
-/**
- * tests/phase8e-orders.test.ts
- *
- * Phase 8 §E — DreamShop orders migration and marketplace slot detail.
- * Tests verify the orders table migration SQL is well-formed and the
- * marketplace [id] page structure is spec-compliant.
- *
- * These are structural/contract tests — they don't require a live DB.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';

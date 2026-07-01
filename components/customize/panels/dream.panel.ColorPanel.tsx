@@ -28,9 +28,7 @@ const ACCENT_COLORS = [
   { color: '#ef4444', label: 'Red'    },
 ];
 
-/**
- * ColorPanel — slide-up sheet for background gradient + accent colour.
- */
+
 export default function ColorPanel( ){
   const { activePanel, closePanel, draftSkin, updateDraft } = useCustomizeMode();
   const [tab, setTab] = useState<'gradient' | 'accent' | 'presets'>('gradient');
@@ -39,7 +37,7 @@ export default function ColorPanel( ){
 
   return (
     <SlidePanel title="Color" onClose={closePanel}>
-      {/* Tabs */}
+      
       <div style={{ display: 'flex', gap: 6, marginBottom: 16 }}>
         {(['gradient', 'accent', 'presets'] as const).map((t) => (
           <button
@@ -85,7 +83,7 @@ export default function ColorPanel( ){
               </button>
             );
           })}
-          {/* Custom gradient */}
+          
           <div style={{ gridColumn: '1 / -1' }}>
             <div style={{ fontSize: 11, color: 'var(--de-text-dim)', marginBottom: 6, fontWeight: 600 }}>
               Custom gradient angle: {draftSkin.bgAngle}°
@@ -189,7 +187,7 @@ export function SlidePanel({
 }) {
   return (
     <>
-      {/* Backdrop */}
+      
       <div
         aria-hidden="true"
         onClick={onClose}
@@ -199,14 +197,14 @@ export function SlidePanel({
           background: 'rgba(0,0,0,0.18)',
         }}
       />
-      {/* Sheet */}
+      
       <div
         role="dialog"
         aria-label={`${title} customization`}
         style={{
           position: 'fixed',
           left: 0, right: 0,
-          bottom: 68,   // sit above the toolbar
+          bottom: 68,   
           zIndex: 9991,
           background: 'rgba(248,250,254,0.97)',
           backdropFilter: 'blur(32px)',
@@ -219,7 +217,7 @@ export function SlidePanel({
           padding: '20px 18px 24px',
         }}
       >
-        {/* Drag handle */}
+        
         <div style={{ textAlign: 'center', marginBottom: 14 }}>
           <div style={{ display: 'inline-block', width: 36, height: 4, borderRadius: 2, background: 'rgba(180,185,200,0.55)' }} />
         </div>

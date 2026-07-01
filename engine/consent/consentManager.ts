@@ -1,30 +1,12 @@
-/**
- * lib/consent/consentManager.ts — Pass 7
- *
- * Consent + Settings + Audit layer.
- *
- * Three tables (Supabase migrations in supabase/migrations/):
- *   dream_consent   — per-user content/network consent decisions
- *   dream_settings  — per-user feature settings (key/value)
- *   dream_audit_log — immutable log of consent changes and co-op actions
- *
- * Client-side layer (this file):
- *   - ConsentManager class: in-memory cache + LocalStorage persistence.
- *   - acceptIncoming policy (decision #7 from COOP_AND_SOLO_ROADMAP.md):
- *       auto-accept for session participants, prompt outside-session.
- *   - Graceful degradation: all methods work without Supabase; they fall back
- *     to LocalStorage + in-memory state.
- *
- * Architecture: docs/ARCHITECTURE.md §7 (Pass 7 — consent + settings + audit).
- */
+
 
 export type ConsentDomain =
-  | 'network:coop'        // participate in co-op sessions
-  | 'network:realtime'    // use Supabase Realtime channels
-  | 'network:webrtc'      // use WebRTC data channels
-  | 'content:incoming'    // accept incoming module drops
-  | 'content:recording'   // allow audio/video capture
-  | 'analytics'           // anonymous usage analytics
+  | 'network:coop'        
+  | 'network:realtime'    
+  | 'network:webrtc'      
+  | 'content:incoming'    
+  | 'content:recording'   
+  | 'analytics'           
   | (string & {});
 
 export type ConsentDecision = 'granted' | 'denied' | 'prompt';
@@ -32,9 +14,9 @@ export type ConsentDecision = 'granted' | 'denied' | 'prompt';
 export interface ConsentEntry {
   domain: ConsentDomain;
   decision: ConsentDecision;
-  /** ISO 8601 timestamp of the decision. */
+  
   decidedAt: string;
-  /** Session ID during which the decision was made (if applicable). */
+  
   sessionId?: string;
 }
 
@@ -48,11 +30,7 @@ export interface AuditEntry {
   timestamp: string;
 }
 
-/**
- * Returns the effective accept-incoming decision for a source peer.
- *
- * Decision #7: auto-accept for in-session peers, prompt for outside-session.
- */
+
 export function resolveAcceptPolicy(
   inSession: boolean,
   userOverride?: ConsentDecision,
@@ -106,7 +84,7 @@ export class ConsentManager {
     this._loadFromLocalStorage();
   }
 
-  /** Attach the active session ID so consent entries can reference it. */
+  
   setSessionId(id: string): void {
     this._sessionId = id;
   }
@@ -115,12 +93,12 @@ export class ConsentManager {
     this._sessionId = null;
   }
 
-  /** Return the cached decision for a domain. Defaults to 'prompt'. */
+  
   get(domain: ConsentDomain): ConsentDecision {
     return this._cache.get(domain)?.decision ?? 'prompt';
   }
 
-  /** Record a consent decision (in-memory + LocalStorage). */
+  
   set(domain: ConsentDomain, decision: ConsentDecision): void {
     const previous = this._cache.get(domain)?.decision;
     const entry: ConsentEntry = {
@@ -142,17 +120,17 @@ export class ConsentManager {
     });
   }
 
-  /** Bulk-grant a list of domains at once. */
+  
   grantAll(domains: ConsentDomain[]): void {
     for (const d of domains) this.set(d, 'granted');
   }
 
-  /** Check if a domain is granted. */
+  
   isGranted(domain: ConsentDomain): boolean {
     return this.get(domain) === 'granted';
   }
 
-  /** Return all consent entries as an array snapshot. */
+  
   getAllEntries(): ConsentEntry[] {
     return Array.from(this._cache.values());
   }
@@ -181,7 +159,7 @@ export class ConsentManager {
     return obj;
   }
 
-  /** Append an arbitrary audit entry (e.g. co-op transfer, module drop). */
+  
   audit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): void {
     this._appendAudit({
       ...entry,
@@ -190,17 +168,17 @@ export class ConsentManager {
     });
   }
 
-  /** Return a snapshot of the audit log (newest last). */
+  
   getAuditLog(): readonly AuditEntry[] {
     return [...this._auditLog];
   }
 
-  /** Clear the in-memory audit log (does not affect Supabase rows). */
+  
   clearAuditLog(): void {
     this._auditLog.length = 0;
   }
 
-  /** Load persisted consent rows from Supabase when auth is available. */
+  
   async hydrateFromSupabase(userId: string): Promise<void> {
     try {
       const { createClient } = await import('@/supabase/client/client');
@@ -226,11 +204,11 @@ export class ConsentManager {
       }
       this._persistToLocalStorage();
     } catch {
-      // Offline/local mode is fully supported.
+      
     }
   }
 
-  /** Flush local consent/settings/audit decisions into the RLS-protected tables. */
+  
   async flushToSupabase(userId: string): Promise<void> {
     try {
       const { createClient } = await import('@/supabase/client/client');
@@ -287,7 +265,7 @@ export class ConsentManager {
 
   private _appendAudit(entry: AuditEntry): void {
     this._auditLog.push(entry);
-    // Cap in-memory log at 500 entries (oldest first out).
+    
     if (this._auditLog.length > 500) {
       this._auditLog.splice(0, this._auditLog.length - 500);
     }
@@ -308,21 +286,21 @@ export class ConsentManager {
         const obj = JSON.parse(settingsRaw) as Record<string, string>;
         for (const [k, v] of Object.entries(obj)) this._settings.set(k, v);
       }
-    } catch { /* malformed or unavailable */ }
+    } catch {  }
   }
 
   private _persistToLocalStorage(): void {
     try {
       if (typeof localStorage === 'undefined') return;
       localStorage.setItem(LS_KEY, JSON.stringify(this.getAllEntries()));
-    } catch { /* storage unavailable */ }
+    } catch {  }
   }
 
   private _persistSettings(): void {
     try {
       if (typeof localStorage === 'undefined') return;
       localStorage.setItem(SETTINGS_LS_KEY, JSON.stringify(this.getAllSettings()));
-    } catch { /* storage unavailable */ }
+    } catch {  }
   }
 
   private _uid(): string {
@@ -331,5 +309,5 @@ export class ConsentManager {
   }
 }
 
-/** Process-wide singleton. */
+
 export const consentManager = new ConsentManager();

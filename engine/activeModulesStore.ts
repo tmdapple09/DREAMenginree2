@@ -47,7 +47,7 @@ export function saveActiveModules(accountId: string, instances: ActiveModuleInst
   writeInstances(accountId, instances);
 }
 
-/** Replace one runtime region without overwriting modules mounted in the other. */
+
 export function saveActiveModulesForRegion(
   accountId: string,
   runtimeRegion: RuntimeRegionKey,
@@ -59,7 +59,7 @@ export function saveActiveModulesForRegion(
   writeInstances(accountId, [...retained, ...instances]);
 }
 
-/** Move one live module between the canonical dual-runtime regions. */
+
 export function transferActiveModuleRegion(
   accountId: string,
   instanceId: string,

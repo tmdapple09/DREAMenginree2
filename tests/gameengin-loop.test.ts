@@ -1,12 +1,4 @@
-/**
- * tests/gameengin-loop.test.ts
- *
- * Locks the Brain feedback loop pieces added per the "Brain — what it really
- * is" directive:
- *   - Two-Project Rule (active-projects.json + setActiveProjects validation)
- *   - Crash Report → Brain Project History (recordCrashReport + listCrashReports)
- *   - /api/gameengin/crash-report endpoint contract
- */
+
 
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import * as fs from 'node:fs';
@@ -42,7 +34,7 @@ beforeEach(() => {
 
 afterEach(() => {
   fs.writeFileSync(ACTIVE_PATH, originalActive);
-  // Clean up any reports written during a test for the synthetic test cartridge.
+  
   const testDir = path.join(CRASH_DIR, 'test-loop-cartridge');
   if (fs.existsSync(testDir)) fs.rmSync(testDir, { recursive: true, force: true });
 });
@@ -141,7 +133,7 @@ describe('Brain — /api/gameengin/crash-report endpoint', () => {
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.ok).toBe(true);
-    expect(body.stored).toMatch(/^crash-reports\/test-loop-cartridge\//);
+    expect(body.stored).toMatch(/^crash-reports\/test-loop-cartridge\
   });
 
   it('returns 404 for an inactive / unknown cartridge', async () => {

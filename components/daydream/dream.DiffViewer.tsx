@@ -14,18 +14,7 @@ import {
 import { ChevronDown, ChevronsUpDown, ChevronUp, Minimize2 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
-/**
- * components/daydream/dream.DiffViewer.tsx
- *
- * A full-featured inline diff viewer for the CodeEngin tab.
- *
- * Features:
- *   1. Full-file mode (default) — entire file visible with change highlights.
- *   2. Collapsed mode — unchanged regions folded; click "Expand all" to restore.
- *   3. Jump navigation — ‹ prev / next › buttons move between diff hunks.
- *   4. Auto-scroll to first diff when switching from collapsed → expanded.
- *   5. Scroll-margin minimap — right-side strip showing diff hunk positions.
- */
+
 
 const ACCENT = '#3b7dd8';
 const ADD_BG  = 'rgba(34,197,94,0.13)';
@@ -34,13 +23,13 @@ const ADD_FG  = '#16a34a';
 const DEL_FG  = '#dc2626';
 const CTX_FG  = 'var(--de-text-dim)';
 const COLLAPSED_BG = 'rgba(100,116,139,0.08)';
-const MINIMAP_W = 10;         // px width of scroll-margin minimap strip
-const LINE_H    = 20;         // approximate rendered line height in px
+const MINIMAP_W = 10;         
+const LINE_H    = 20;         
 
 interface DiffViewerProps {
-  /** Raw unified diff text.  Defaults to the built-in demo diff. */
+  
   diffText?: string;
-  /** Initial mode: true = show full file, false = show hunks only */
+  
   defaultFullFile?: boolean;
 }
 
@@ -69,11 +58,11 @@ export default function DiffViewer({
   diffText = DEMO_DIFF,
   defaultFullFile = true,
 }: DiffViewerProps) {
-  // ── Parse diff ──────────────────────────────────────────────────────────────
+  
   const files: DiffFile[] = useMemo(() => parseUnifiedDiff(diffText), [diffText]);
   const file = files[0] ?? null;
 
-  // fullFile=true means "expand all lines" (no collapsed placeholders)
+  
   const [fullFile, setFullFile] = useState(defaultFullFile);
 
   const [activeHunk, setActiveHunk] = useState(0);
@@ -102,7 +91,7 @@ export default function DiffViewer({
     const lineIdx = hunkLineIndex[hunkIdx] ?? 0;
     const container = scrollRef.current;
     if (!container) return;
-    const top = lineIdx * LINE_H - 60;   // 60px offset so header is visible
+    const top = lineIdx * LINE_H - 60;   
     container.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }, [hunkLineIndex]);
 
@@ -110,7 +99,7 @@ export default function DiffViewer({
     if (fullFile && file && file.hunks.length > 0) {
       scrollToHunk(firstHunkIndex(file));
     }
-  // Run only when fullFile transitions true (expand)
+  
 
   }, [fullFile]);
 
@@ -160,7 +149,7 @@ export default function DiffViewer({
         fontFamily: '"JetBrains Mono","Fira Code",Consolas,monospace',
       }}
     >
-      {/* ── Toolbar ── */}
+      
       <div
         style={{
           display: 'flex',
@@ -172,7 +161,7 @@ export default function DiffViewer({
           flexWrap: 'wrap',
         }}
       >
-        {/* File path */}
+        
         <span
           style={{
             flex: 1, fontWeight: 600, color: 'var(--de-heading)',
@@ -183,7 +172,7 @@ export default function DiffViewer({
           {file.path}
         </span>
 
-        {/* Change stats */}
+        
         <span style={{ color: ADD_FG, fontWeight: 700, fontSize: 11 }}>
           +{file.addedCount}
         </span>
@@ -191,7 +180,7 @@ export default function DiffViewer({
           −{file.removedCount}
         </span>
 
-        {/* Prev / Next hunk */}
+        
         <button
           type="button"
           onClick={handlePrev}
@@ -216,7 +205,7 @@ export default function DiffViewer({
           <ChevronDown size={13} />
         </button>
 
-        {/* Expand / Collapse toggle */}
+        
         <button
           type="button"
           onClick={toggleFullFile}
@@ -236,9 +225,9 @@ export default function DiffViewer({
         </button>
       </div>
 
-      {/* ── Diff body + minimap ── */}
+      
       <div style={{ display: 'flex', position: 'relative', minHeight: 0 }}>
-        {/* Scrollable diff lines */}
+        
         <div
           ref={scrollRef}
           style={{
@@ -269,7 +258,7 @@ export default function DiffViewer({
                   wordBreak: 'keep-all',
                 }}
               >
-                {/* Line numbers */}
+                
                 <span
                   style={{
                     width: 32, flexShrink: 0, textAlign: 'right',
@@ -280,7 +269,7 @@ export default function DiffViewer({
                   {line.collapsed ? '' : (line.newLineNo ?? line.oldLineNo ?? '')}
                 </span>
 
-                {/* +/- prefix */}
+                
                 <span
                   style={{
                     width: 14, flexShrink: 0,
@@ -291,7 +280,7 @@ export default function DiffViewer({
                   {linePrefix(line)}
                 </span>
 
-                {/* Content */}
+                
                 <span style={{ color: lineFg(line), flex: 1 }}>
                   {line.content}
                 </span>
@@ -300,7 +289,7 @@ export default function DiffViewer({
           })}
         </div>
 
-        {/* ── Scroll-margin minimap ── */}
+        
         <div
           aria-hidden="true"
           style={{

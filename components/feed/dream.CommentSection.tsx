@@ -68,7 +68,7 @@ export default function CommentSection({ postId }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Skip fetching for demo posts
+  
   const isDemo = postId.startsWith('demo-');
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function CommentSection({ postId }: Props) {
   }, [postId, isDemo]);
 
   const handleDelete = async (commentId: string) => {
-    // Optimistic remove
+    
     setComments((prev) => prev.filter((c) => c.id !== commentId));
     try {
       const res = await fetch('/api/comments', {
@@ -109,13 +109,13 @@ export default function CommentSection({ postId }: Props) {
         body: JSON.stringify({ comment_id: commentId }),
       });
       if (!res.ok) {
-        // Reload comments if delete failed
+        
         const r = await fetch(`/api/comments?post_id=${encodeURIComponent(postId)}`);
         const { data } = await r.json();
         if (data) setComments(data);
       }
     } catch {
-      // Reload to restore state
+      
       fetch(`/api/comments?post_id=${encodeURIComponent(postId)}`)
         .then((r) => r.json())
         .then(({ data }) => { if (data) setComments(data); })
@@ -130,7 +130,7 @@ export default function CommentSection({ postId }: Props) {
     setSubmitError(null);
     setSubmitting(true);
 
-    // Optimistic insertion — comment appears instantly
+    
     const optimisticId = `opt-${Date.now()}`;
     const optimistic: Comment = {
       id: optimisticId,
@@ -151,7 +151,7 @@ export default function CommentSection({ postId }: Props) {
         body: JSON.stringify({ post_id: postId, content: text }),
       });
 
-      // Parse body once — needed whether success or error
+      
       const body = await res.json().catch(() => ({})) as { data?: Comment; error?: string };
 
       if (!res.ok) {
@@ -160,16 +160,16 @@ export default function CommentSection({ postId }: Props) {
 
       const saved = body.data;
 
-      // Replace optimistic entry with the real one from the server
+      
       setComments((prev) =>
         prev.map((c) => (c.id === optimisticId && saved ? { ...saved, optimistic: false } : c)),
       );
     } catch (e: unknown) {
       const msg = e instanceof Error ? (e as Error).message : 'Something went wrong';
       setSubmitError(msg);
-      // Remove the failed optimistic entry
+      
       setComments((prev) => prev.filter((c) => c.id !== optimisticId));
-      // Restore the draft so the user can retry
+      
       setDraft(text);
     } finally {
       setSubmitting(false);
@@ -192,7 +192,7 @@ export default function CommentSection({ postId }: Props) {
         borderColor: 'rgba(160,195,240,0.25)',
       }}
     >
-      {/* Comment list */}
+      
       <div className="px-4 pt-3 pb-2 space-y-3 max-h-72 overflow-y-auto">
         {loading && (
           <div className="flex items-center justify-center py-6 gap-2" style={{ color: 'var(--de-text-dim)' }}>
@@ -267,7 +267,7 @@ export default function CommentSection({ postId }: Props) {
           ))}
       </div>
 
-      {/* Inline comment input */}
+      
       <div
         className="px-4 pb-4 pt-2 border-t"
         style={{ borderColor: 'rgba(160,195,240,0.2)' }}

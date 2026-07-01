@@ -5,11 +5,11 @@ import { ActivityTier, type GetUserMetricsResponse, type UserMetrics } from '@/d
 import { useEffect, useState } from 'react';
 import { TierBadge } from './dream.TierBadge';
 
-// components/activity/dream.ActivityProfile.tsx
-// Phase 9 — Activity Profile Display
-//
-// Displays user activity metrics: Views, AQS, Real Shit Rate, Activity Points.
-// Per ACTIVITY_FIRST_PROTOCOL.md §IV (User Metrics)
+
+
+
+
+
 
 
 interface ActivityProfileProps {
@@ -64,7 +64,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
 
   return (
     <div className="space-y-4">
-      {/* Primary Stats */}
+      
       <div className="flex flex-wrap items-center gap-3">
         <TierBadge
           tier={metrics.current_tier_30d ?? ActivityTier.PASSIVE}
@@ -77,7 +77,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {/* Total Views */}
+        
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             👁️ {metrics.total_views.toLocaleString()}
@@ -87,7 +87,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
           </div>
         </div>
 
-        {/* Activity Points */}
+        
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             ⭐ {metrics.activity_points_30d.toLocaleString()}
@@ -97,7 +97,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
           </div>
         </div>
 
-        {/* Activity Quality Score */}
+        
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <div className={`text-2xl font-bold ${aqsColor}`}>
             📈 {formatAQS(metrics.aqs)}
@@ -107,7 +107,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
           </div>
         </div>
 
-        {/* Real Shit Rate */}
+        
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             🔥 {formatRealShitRate(metrics.real_shit_rate)}
@@ -118,7 +118,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
         </div>
       </div>
 
-      {/* Full Stats (optional) */}
+      
       {showFullStats && (
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-3">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -172,7 +172,7 @@ export function ActivityProfile({ userId, showFullStats = true }: ActivityProfil
         </div>
       )}
 
-      {/* AQS Explanation */}
+      
       <div className="text-xs text-gray-500 dark:text-gray-400">
         <strong>AQS</strong> = (Activity Points × Views per Post) ÷ Days Active
         <br />

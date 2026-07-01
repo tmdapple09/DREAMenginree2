@@ -11,9 +11,9 @@ const TAU = Math.PI * 2;
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const LIGHT_PRESSURE_COEFF = 0.00000045;
 
-// TORRIDITY PHYSICS – Your exact functions
-const a0 = 1.2e-10; // m/s^2 – critical acceleration
-const n = MOND_N;   // 2.1
+
+const a0 = 1.2e-10; 
+const n = MOND_N;   
 
 function nu_T(y: number): number {
   if (y <= 0) return 1;
@@ -28,7 +28,7 @@ function torridityAccel(gN: number): number {
   return gN * nu_T(y);
 }
 
-// COSMOLOGY FROM YOUR CHARGE‑FLIP THEORY
+
 const H0 = 67.4;
 const Omega_m0 = 0.315;
 
@@ -93,7 +93,7 @@ function getScaleFactor(ageYears: number): number {
   return a0 + (a1 - a0) * ((ageYears - t0) / (t1 - t0));
 }
 
-// COMPONENT
+
 export interface UniverseFieldProps {
   scaled?: boolean;
 }
@@ -321,12 +321,12 @@ export default function UniverseField(_props: UniverseFieldProps ){
     raf = requestAnimationFrame(frame);
     window.addEventListener('resize', resize);
 
-    // CRITICAL FIX: Properly return cleanup function and close the hook
+    
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
     };
-  }, []); // Added dependency array to run only once on component mount
+  }, []); 
 
   return (
     <canvas

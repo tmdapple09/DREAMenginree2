@@ -1,11 +1,4 @@
-/**
- * lib/vm/inter-vm-messaging.ts — SharedArrayBuffer-backed inter-VM message queue
- *
- * InterVMChannel: lock-free ring-buffer for passing VMEvent messages
- * between TOO_VM and BOTTOM_VM with demand-driven draining. Fixed-shape runtime
- * events use a compact binary slot; open-ended custom/stats events fall back to
- * JSON in the same transport slot so behavior remains ruleset-owned.
- */
+
 
 export type VMEvent =
   | { type: 'workload-submitted'; workloadId: string; region: 'top' | 'bottom'; timestamp: number }
@@ -191,7 +184,7 @@ export class InterVMChannel {
     let msg: VMEvent | null;
     while ((msg = this.recv()) !== null) {
       for (const cb of this.subscribers) {
-        try { cb(msg); } catch { /* subscriber errors must not crash the channel */ }
+        try { cb(msg); } catch {  }
       }
     }
   }

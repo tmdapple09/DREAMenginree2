@@ -5,9 +5,7 @@ export interface ItemProfile {
   vector: Float32Array;
 }
 
-/**
- * Returns ranked item IDs based on vector correlation to user history.
- */
+
 export async function recommendItems(
   userHistory: Float32Array,
   itemProfiles: ItemProfile[],

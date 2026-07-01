@@ -1,9 +1,4 @@
-/**
- * tests/phase9-hashtags.test.ts
- *
- * Tests for lib/feed/hashtags.ts — hashtag extraction, validation,
- * trending calculation, and text segmentation.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -16,7 +11,7 @@ import {
   MAX_TAG_LENGTH,
 } from '@/dreamr/feed/hashtags';
 
-// ─── extractHashtags ──────────────────────────────────────────────────────────
+
 
 describe('Hashtags — extractHashtags', () => {
   it('extracts simple hashtags', () => {
@@ -68,7 +63,7 @@ describe('Hashtags — extractHashtags', () => {
   });
 });
 
-// ─── validateTag ──────────────────────────────────────────────────────────────
+
 
 describe('Hashtags — validateTag', () => {
   it('validates simple tags', () => {
@@ -106,7 +101,7 @@ describe('Hashtags — validateTag', () => {
   });
 });
 
-// ─── calculateTrending ───────────────────────────────────────────────────────
+
 
 describe('Hashtags — calculateTrending', () => {
   const NOW = Date.now();
@@ -148,7 +143,7 @@ describe('Hashtags — calculateTrending', () => {
   });
 });
 
-// ─── formatTag ────────────────────────────────────────────────────────────────
+
 
 describe('Hashtags — formatTag', () => {
   it('prepends #', () => {
@@ -157,7 +152,7 @@ describe('Hashtags — formatTag', () => {
   });
 });
 
-// ─── segmentText ──────────────────────────────────────────────────────────────
+
 
 describe('Hashtags — segmentText', () => {
   it('splits text and hashtags into segments', () => {

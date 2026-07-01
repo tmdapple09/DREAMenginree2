@@ -6,12 +6,7 @@ import QuantumCircuitCanvas, {
 import { Activity, Cpu, Loader2, ShieldCheck, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * OptimizePanel — Algorithm configuration + quantum run for the Portfolio Engine.
- *
- * Full Markowitz / QUBO optimization runner with algorithm, backend, and ansatz
- * pickers. Lives at /engines/portfolio/optimize.
- */
+
 
 type Algorithm = 'vqe' | 'qaoa';
 type Backend   = 'local_simulator' | 'ibm_quantum';
@@ -89,7 +84,7 @@ export default function OptimizePanel( ){
           <p className="text-sm text-white/50">Configure algorithm · run Markowitz / QUBO optimization</p>
         </div>
 
-        {/* Algorithm */}
+        
         <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] mb-4 overflow-hidden">
           <div className="px-4 py-3 border-b border-white/[0.06] text-xs font-semibold text-white/40 uppercase tracking-wider">
             Algorithm
@@ -116,7 +111,7 @@ export default function OptimizePanel( ){
           </div>
         </div>
 
-        {/* Backend */}
+        
         <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] mb-4 overflow-hidden">
           <div className="px-4 py-3 border-b border-white/[0.06] text-xs font-semibold text-white/40 uppercase tracking-wider">
             Backend
@@ -144,7 +139,7 @@ export default function OptimizePanel( ){
           </div>
         </div>
 
-        {/* Ansatz */}
+        
         <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] mb-4 overflow-hidden">
           <div className="px-4 py-3 border-b border-white/[0.06] text-xs font-semibold text-white/40 uppercase tracking-wider">
             Ansatz
@@ -172,7 +167,7 @@ export default function OptimizePanel( ){
           </div>
         </div>
 
-        {/* Active features */}
+        
         <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] mb-4 p-4">
           <div className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Active Features</div>
           <div className="flex flex-wrap gap-2">
@@ -193,7 +188,7 @@ export default function OptimizePanel( ){
           </p>
         </div>
 
-        {/* Quantum circuit preview */}
+        
         <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] mb-4 overflow-hidden">
           <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
             <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Quantum Circuit</span>
@@ -218,7 +213,7 @@ export default function OptimizePanel( ){
           </div>
         </div>
 
-        {/* Run button */}
+        
         <button
           onClick={handleRun}
           disabled={running}
@@ -235,14 +230,14 @@ export default function OptimizePanel( ){
           }
         </button>
 
-        {/* Error */}
+        
         {error && (
           <div className="rounded-xl p-4 mb-4 bg-red-500/10 border border-red-500/20">
             <p className="text-xs text-red-400">{error}</p>
           </div>
         )}
 
-        {/* Results */}
+        
         {result && (
           <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden">
             <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
@@ -269,7 +264,7 @@ export default function OptimizePanel( ){
           </div>
         )}
 
-        {/* Quantum result detail */}
+        
         {quantumResult && (
           <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden mt-4">
             <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">

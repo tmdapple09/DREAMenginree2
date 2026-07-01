@@ -24,43 +24,25 @@ import {
 import { createSaveAPI } from './cartridges/saveState';
 import { createGameEnginExecutionKernel, type GameEnginExecutionKernel } from './executionWiring';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/gameengin/GameRuntime.tsx.
 
-/**
- * lib/gameengin/GameRuntime.tsx
- *
- * The Shared Engine Runtime Host — the console's heartbeat.
- *
- * Responsibilities:
- *   - Owns ONE single requestAnimationFrame loop (fixed 60fps timestep)
- *   - Builds and provides the complete GameEngineAPI to whatever cartridge is loaded
- *   - Wires physicsConfig from GameEngin's existing state
- *   - Handles cartridge hot-swap (unmount old, mount new) without page reload
- *   - Samples frame pacing internally without exposing architecture telemetry in the player UI
- *
- * HUD layer contract:
- *   - ENGINE services (this file): frame sampling stays internal and never renders UI chrome
- *   - GAME chrome: score/lives/level — rendered by the cartridge inside its own container
- *   - SHELL chrome: mobile controls — rendered by ImmersiveGameShell outside this component
- *
- * These three layers never overlap. Do not add score/lives/game info here.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-/** Fixed timestep target: 60fps = 16.667ms per tick */
+
+
+
+
+
+
 const FIXED_DT = 1000 / 60;
 
-/** Maximum frames to accumulate before capping (prevents spiral of death) */
+
 const MAX_ACCUMULATED_FRAMES = 5;
 
 const MAX_ACCUMULATOR = FIXED_DT * MAX_ACCUMULATED_FRAMES;
 
-/** Cap sampled FPS before forwarding optional internal diagnostics. */
+
 const MAX_DISPLAY_FPS = 999;
 
 const FRAME_SAMPLE_CAPACITY = 120;
@@ -74,11 +56,11 @@ function appendFrameSample(samples: number[], value: number, cursorRef: { curren
   cursorRef.current = (cursorRef.current + 1) % FRAME_SAMPLE_CAPACITY;
 }
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export interface GameRuntimeCrash {
   name?: string;
@@ -91,18 +73,18 @@ export interface GameRuntimeProps {
   cartridge: GameCartridge | null;
   physicsConfig: { gravity: GravityPreset; friction: number } | null;
   onFrame?: (fps: number) => void;
-  /** Optional crash bridge used by GameEngin and cartridge routes to open the Brain crash report flow. */
+  
   onCrash?: (crash: GameRuntimeCrash) => void;
-  /** Backend/warmup diagnostics negotiated by the launch shell before mount. */
+  
   bootstrapDiagnostics?: RuntimeBackendDiagnostics;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash, bootstrapDiagnostics }: GameRuntimeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mutable refs for RAF loop state
+  
   const tickCallbacksRef   = useRef<Set<(dt: number, elapsed: number) => void>>(new Set());
   const renderCallbacksRef = useRef<Set<(dt: number) => void>>(new Set());
   const keysDownRef        = useRef<Set<string>>(new Set());
@@ -137,7 +119,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     executionKernelRef.current = createGameEnginExecutionKernel();
   }
 
-  // Keep refs in sync
+  
   physicsRef.current  = physicsConfig;
   onFrameRef.current  = onFrame;
   onCrashRef.current  = onCrash;
@@ -147,7 +129,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     const cartridgeId  = forCartridge.id;
     const capabilities = new Set(forCartridge.capabilities ?? []);
 
-    // Save state — real implementation when capability is declared
+    
     const saveAPI = capabilities.has('save-state')
       ? createSaveAPI(cartridgeId)
       : {
@@ -158,10 +140,10 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
           async autoSave()    {},
         };
 
-    // Achievements — real implementation when capability is declared
+    
     const achievementsAPI = capabilities.has('achievements')
       ? createAchievementsAPI(cartridgeId, [], (def: AchievementDefinition) => {
-          // Emit to dreamOSBus so the shell can show a pop-up
+          
           dreamOSBus.emit('game:achievement-unlocked' as Parameters<typeof dreamOSBus.emit>[0], {
             cartridgeId,
             id: def.id,
@@ -230,7 +212,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
               }),
             });
           } catch {
-            // best-effort — 401 for unauthenticated users is expected
+            
           }
         },
       },
@@ -313,7 +295,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     const inputListeners = inputListenersRef.current;
 
     const dispatch = (type: 'keydown' | 'keyup', e: KeyboardEvent) => {
-      // Create the payload without explicit type so TS infers exact keydown/keyup shape
+      
       const payload = {
         key: e.key,
         type,
@@ -323,11 +305,11 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
 
       const listeners = inputListeners.get(type);
       if (listeners) {
-        // Cast here since the listeners expect the wider union type
+        
         for (const cb of listeners) cb(payload as CartridgeInputEvent);
       }
 
-      // Successfully emits the narrower keyboard type
+      
       dreamOSBus.emit('game:input', payload);
       executionKernelRef.current?.onInput(payload as CartridgeInputEvent);
     };
@@ -343,9 +325,9 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     };
   }, []);
 
-  // GameRemote already emits `de-game-input`; normalize that event into the
-  // GameRuntime API so cartridges can subscribe through `api.input.on()` instead
-  // of each game wiring a separate window listener.
+  
+  
+  
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -393,10 +375,10 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       lastTimeRef.current = now;
       const frameStart  = performance.now();
 
-      // Accumulate delta, cap to prevent spiral of death
+      
       accumulatorRef.current = Math.min(accumulatorRef.current + rawDt, MAX_ACCUMULATOR);
 
-      // Fixed-timestep ticks
+      
       while (accumulatorRef.current >= FIXED_DT) {
         accumulatorRef.current -= FIXED_DT;
         elapsedRef.current     += FIXED_DT;
@@ -410,7 +392,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
         }
       }
 
-      // Render pass (once per frame)
+      
       const renderDt = rawDt / 1000;
       try {
         dreamOSBus.emit('engine:render', { dt: renderDt });
@@ -428,7 +410,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
 
     rafIdRef.current = requestAnimationFrame(loop);
 
-    // Internal frame-pacing sample interval
+    
     fpsIntervalRef.current = window.setInterval(() => {
       const times = frameTimesRef.current;
       if (times.length > 0) {
@@ -448,7 +430,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
     const container = containerRef.current;
     if (!container || !cartridge) return;
 
-    // Unmount previous cartridge
+    
     if (cleanupRef.current) {
       if (mountedCartridgeRef.current) persistCartridgeSnapshot(mountedCartridgeRef.current);
       cleanupRef.current();
@@ -456,13 +438,13 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
       mountedCartridgeRef.current = null;
     }
 
-    // Clear callbacks from previous cartridge
+    
     tickCallbacksRef.current.clear();
     renderCallbacksRef.current.clear();
     inputListenersRef.current.clear();
 
-    // Build a fresh API scoped to this cartridge and mount. Route mount failures
-    // into the same crash flow as async runtime failures.
+    
+    
     try {
       if (cartridge.minEngineVersion && !engineSatisfies(cartridge.minEngineVersion)) {
         throw new Error(`Cartridge ${cartridge.id} requires GameEngin ${cartridge.minEngineVersion}, but runtime is ${ENGINE_VERSION}.`);
@@ -501,7 +483,7 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* ── Game container — cartridges mount into this div ── */}
+      
       <div
         ref={containerRef}
         style={{ width: '100%', height: '100%', position: 'relative' }}
@@ -510,8 +492,8 @@ export default function GameRuntime({ cartridge, physicsConfig, onFrame, onCrash
   );
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

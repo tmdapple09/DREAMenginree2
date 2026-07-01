@@ -15,32 +15,32 @@ import React, {
 } from 'react';
 
 export interface CustomizeModeContextValue {
-  /** Whether the user is currently in customize mode */
+  
   isCustomizeMode: boolean;
-  /** Which page is being customized */
+  
   activePage: SkinPage | null;
-  /** Which bottom panel is open */
+  
   activePanel: 'color' | 'font' | 'layout' | 'effects' | null;
-  /** The live (unsaved) skin being edited */
+  
   draftSkin: SkinData;
-  /** All persisted page skins */
+  
   allSkins: AllPageSkins;
 
-  /** Enter customize mode for a specific page */
+  
   enterCustomizeMode: (page: SkinPage) => void;
-  /** Exit without saving */
+  
   exitCustomizeMode: () => void;
-  /** Open a customization panel */
+  
   openPanel: (panel: 'color' | 'font' | 'layout' | 'effects') => void;
-  /** Close the open panel */
+  
   closePanel: () => void;
-  /** Update draft skin (live preview) */
+  
   updateDraft: (partial: Partial<SkinData>) => void;
-  /** Save the current draft and exit customize mode */
+  
   saveSkin: () => void;
-  /** Reset the current page skin to the global default */
+  
   resetPageSkin: () => void;
-  /** Apply a full preset */
+  
   applyPreset: (skin: SkinData) => void;
 }
 
@@ -58,7 +58,7 @@ export function CustomizeModeProvider({ children }: {children: React.ReactNode})
   const [activePanel, setActivePanel] = useState<'color' | 'font' | 'layout' | 'effects' | null>(null);
   const [allSkins, setAllSkins] = useState<AllPageSkins>(() => {
     const saved = loadAllSkins();
-    // Apply the global skin on mount
+    
     applySkin(saved.global ?? DEFAULT_SKIN);
     return saved;
   });
@@ -74,7 +74,7 @@ export function CustomizeModeProvider({ children }: {children: React.ReactNode})
   }, []);
 
   const exitCustomizeMode = useCallback(() => {
-    // Restore the saved skin (discard draft)
+    
     const effective = resolveSkin(allSkins, activePage ?? 'global');
     applySkin(effective);
     setIsCustomizeMode(false);
@@ -91,7 +91,7 @@ export function CustomizeModeProvider({ children }: {children: React.ReactNode})
   const updateDraft = useCallback((partial: Partial<SkinData>) => {
     setDraftSkin((prev) => {
       const next = { ...prev, ...partial };
-      // Live preview
+      
       applySkin(next);
       return next;
     });

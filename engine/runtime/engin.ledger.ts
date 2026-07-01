@@ -1,6 +1,6 @@
-// engin.ledger — immutable infrastructure
-// Tracks active game sessions, frame indices, and delta history.
-// No game-specific logic. No dream.* imports.
+
+
+
 
 export interface LedgerEntry {
   timestamp: number;

@@ -1,18 +1,7 @@
 import type { SupabaseClient } from '@/engine/io';
 import type { Fingerprint, PeakMap } from '@/engins/starmakerengin/audioFingerprint';
 
-/**
- * Ledger — Universal Metadata Store
- *
- * In-memory ledger with optional Supabase persistence.
- * Stores: audio peak maps, reference fingerprints, extracted sample
- * metadata, and torridity rank data.
- *
- * Usage:
- *   const ledger = createLedger();
- *   storePeakMap(ledger, 'song-1', peakMap);
- *   const entry = getLedgerEntry(ledger, 'song-1');
- */
+
 
 export interface PeakMapEntry {
   kind: 'peakMap';
@@ -56,10 +45,10 @@ export interface TorridityEntry {
   createdAt: string;
 }
 
-/** Supported asset types in the shared asset ledger (visualised file system). */
+
 export type AssetType = 'audio' | 'image' | '3d' | 'code';
 
-/** Optional manifest describing an asset's capabilities and metadata. */
+
 export interface AssetManifest {
   title?: string;
   description?: string;
@@ -70,10 +59,7 @@ export interface AssetManifest {
   [key: string]: unknown;
 }
 
-/**
- * AssetEntry — a shared asset in the visualised file system.
- * Fields: id, type, url, manifest, owner.
- */
+
 export interface AssetEntry {
   kind: 'asset';
   id: string;
@@ -84,7 +70,7 @@ export interface AssetEntry {
   createdAt: string;
 }
 
-/** Union of all ledger entry types. */
+
 export type LedgerEntry =
   | PeakMapEntry
   | FingerprintEntry
@@ -95,17 +81,11 @@ export type LedgerEntry =
 export interface Ledger {
   entries: Map<string, LedgerEntry>;
   supabase?: SupabaseClient;
-  /** Table name for Supabase persistence (default: 'ledger_entries'). */
+  
   tableName: string;
 }
 
-/**
- * createLedger(supabase?, tableName?)
- *
- * Creates a new in-memory ledger.  Pass a Supabase client to enable
- * async persistence — writes are fire-and-forget and never block
- * the in-memory store.
- */
+
 export function createLedger(
   supabase?: SupabaseClient,
   tableName = 'ledger_entries'
@@ -127,7 +107,7 @@ async function persist(ledger: Ledger, entry: LedgerEntry): Promise<void> {
       created_at: entry.createdAt,
     });
   } catch {
-    // Non-blocking — in-memory store is always the source of truth
+    
   }
 }
 
@@ -148,11 +128,7 @@ export function getAllByKind<K extends LedgerEntry['kind']>(
   return results;
 }
 
-/**
- * storePeakMap(ledger, songId, peakMap)
- *
- * Stores a PeakMap under the given songId.  Returns the entry id.
- */
+
 export function storePeakMap(
   ledger: Ledger,
   songId: string,
@@ -165,9 +141,7 @@ export function storePeakMap(
   return id;
 }
 
-/**
- * storeFingerprint(ledger, fingerprintId, fingerprint)
- */
+
 export function storeFingerprint(
   ledger: Ledger,
   fingerprintId: string,
@@ -186,9 +160,7 @@ export function storeFingerprint(
   return id;
 }
 
-/**
- * storeSampleMetadata(ledger, sampleId, meta)
- */
+
 export function storeSampleMetadata(
   ledger: Ledger,
   sampleId: string,
@@ -207,9 +179,7 @@ export function storeSampleMetadata(
   return id;
 }
 
-/**
- * storeTorridityRank(ledger, contentId, views, mass, rank)
- */
+
 export function storeTorridityRank(
   ledger: Ledger,
   contentId: string,
@@ -232,12 +202,7 @@ export function storeTorridityRank(
   return id;
 }
 
-/**
- * storeAsset(ledger, fields)
- *
- * Stores a shared asset (audio, image, 3D, or code) in the ledger.
- * Returns the generated entry id.
- */
+
 export function storeAsset(
   ledger: Ledger,
   fields: {
@@ -268,12 +233,7 @@ export function storeAsset(
   return id;
 }
 
-/**
- * recordView(ledger, contentId)
- *
- * Increments the view count for a torridity entry, or creates one with
- * default values if it does not yet exist.
- */
+
 export function recordView(ledger: Ledger, contentId: string): void {
   const id = `tr_${contentId}`;
   const existing = ledger.entries.get(id);

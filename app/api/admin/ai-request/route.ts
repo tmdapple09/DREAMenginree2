@@ -14,7 +14,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
   const formData = await request.formData();
   const prompt = formData.get('prompt') as string;
 
-  // Log the request
+  
   await supabase
     .from('admin_audit_log')
     .insert({

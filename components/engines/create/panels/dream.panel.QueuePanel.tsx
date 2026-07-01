@@ -3,12 +3,7 @@
 import { AlertCircle, CheckCircle, Clock, Loader2, Plus, Send, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * QueuePanel — Publishing queue for the Content Engine app.
- *
- * Manage scheduled items, publish immediately, or remove from queue.
- * Lives at /engines/create/queue.
- */
+
 
 type ContentType = 'Post' | 'Video' | 'Story' | 'Thread';
 type ItemStatus = 'scheduled' | 'publishing' | 'published' | 'failed';
@@ -105,7 +100,7 @@ export default function QueuePanel( ){
           </button>
         </div>
 
-        {/* Add form */}
+        
         {showAdd && (
           <div className="mb-5 flex gap-2 flex-wrap p-3 rounded-xl bg-white/[0.04] border border-[#fb923c]/20">
             <select
@@ -135,7 +130,7 @@ export default function QueuePanel( ){
           </div>
         )}
 
-        {/* Queue */}
+        
         <div className="space-y-2">
           {items.map((item) => {
             const accent = TYPE_COLORS[item.type];

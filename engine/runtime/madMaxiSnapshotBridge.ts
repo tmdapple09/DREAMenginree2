@@ -1,18 +1,18 @@
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/madMaxiSnapshotBridge.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
 
 let madMaxiExportsPromise: Promise<MadMaxiWasmExports | null> | null = null;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 type MadMaxiWasmExports = {
   memory: WebAssembly.Memory;
@@ -21,7 +21,7 @@ type MadMaxiWasmExports = {
   loadSnapshot: (ptr: number) => void;
 };
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 async function loadMadMaxiExports(): Promise<MadMaxiWasmExports | null> {
   if (madMaxiExportsPromise) return madMaxiExportsPromise;
@@ -31,7 +31,7 @@ async function loadMadMaxiExports(): Promise<MadMaxiWasmExports | null> {
         ? `${process.cwd()}/public/cartridges/mad-maxi/logic/main.wasm`
         : '/cartridges/mad-maxi/logic/main.wasm';
       const bytes = typeof window === 'undefined'
-        ? await (await import(/* webpackIgnore: true */ 'fs/promises')).readFile(wasmPath)
+        ? await (await import( 'fs/promises')).readFile(wasmPath)
         : new Uint8Array(await (await fetch(wasmPath)).arrayBuffer());
       const { instance } = await WebAssembly.instantiate(bytes as BufferSource, {});
       return instance.exports as unknown as MadMaxiWasmExports;
@@ -59,8 +59,8 @@ export async function invokeMadMaxiSnapshotTransfer(): Promise<void> {
   exp.loadSnapshot(ptr);
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -4,7 +4,7 @@ import { GameCapture, type CaptureResult } from '@/engins/contentengin/media/h26
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Props {
-  /** The overlay container — canvas is queried from this element on record start. */
+  
   containerRef: React.RefObject<HTMLElement | null>;
 }
 
@@ -37,7 +37,7 @@ export default function RecordingControls({ containerRef }: Props) {
         setElapsed(capture.current.elapsedMs);
       }, 500);
     } catch {
-      // canvas.captureStream not available — silently skip
+      
     }
   }, [getCanvas]);
 
@@ -55,7 +55,7 @@ export default function RecordingControls({ containerRef }: Props) {
     }
   }, [getCanvas]);
 
-  // Clean up timer on unmount
+  
   useEffect(() => {
     return () => {
       if (tickRef.current) clearInterval(tickRef.current);

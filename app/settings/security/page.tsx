@@ -16,18 +16,9 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 import { toErrorMessage } from "@/utils/index";
 
-// SURFACE: dreamsurface.SettingsSecurity  (framework-mandated basename: page.tsx)
 
-/**
- * Security Settings page.
- *
- * - Change Password → triggers Supabase password reset email (real action)
- * - Two-Factor Authentication → informational state, Supabase MFA enrollment
- * - Recovery Keys → informational, links to Supabase support
- *
- * Architecture justification: Constitution Rule 6-7 (every visible action must
- * do something real). No fake demo sessions shown.
- */
+
+
 
 export default function SecuritySettingsPage() {
   const [pwLoading, setPwLoading] = useState(false);
@@ -73,7 +64,7 @@ export default function SecuritySettingsPage() {
       />
 
       <div className="de-auth-content space-y-4">
-        {/* Password */}
+        
         <div className="de-widget">
           <div className="de-widget-body">
             <div
@@ -154,7 +145,7 @@ export default function SecuritySettingsPage() {
           </div>
         </div>
 
-        {/* Two-Factor Authentication — informational */}
+        
         <div className="de-widget">
           <div className="de-widget-body">
             <div className="de-row" style={{ borderBottom: "none" }}>
@@ -183,7 +174,7 @@ export default function SecuritySettingsPage() {
           </div>
         </div>
 
-        {/* Account access */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Shield
@@ -221,7 +212,7 @@ export default function SecuritySettingsPage() {
           </div>
         </div>
 
-        {/* Security Tip */}
+        
         <div
           className="de-widget"
           style={{ borderColor: "rgba(200,152,26,0.3)" }}

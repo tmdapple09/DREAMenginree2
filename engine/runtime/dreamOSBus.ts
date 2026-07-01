@@ -29,13 +29,13 @@ import {
   type DomainCapability,
 } from '@/engine/engin-runtime/EnginCapabilities';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/dreamOSBus.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
 
 const MAX_ARTIFACTS = 48;
 const DREAM_OS_BUS_CACHE_KEY = 'de:dream-os-bus:snapshot';
@@ -48,12 +48,7 @@ const INTENT_BUS_COHERENCE_CAPACITY = createCoherenceCapacity({
   maxUnresolvedIntents: 6,
 });
 
-/**
- * DreamDMBar is the permanent exchange capability, not merely its divider seam.
- * These descriptors expose the behavior that already lives in the existing bar
- * surface so the orchestrator can discover it by meaning without importing UI
- * files or creating a second DreamDMBar registry.
- */
+
 const DREAMDM_BAR_CAPABILITIES: readonly CapabilityDescriptor[] = [
   { id: 'DreamDMBar', domains: ['communication', 'identity', 'logic', 'memory'], kind: 'orchestrator' },
   { id: 'DreamDMBar.messaging', domains: ['communication', 'identity'], kind: 'service', parentId: 'DreamDMBar' },
@@ -67,7 +62,7 @@ const DREAMDM_BAR_CAPABILITIES: readonly CapabilityDescriptor[] = [
 
 const informationDomainSet = new Set<string>(INFORMATION_DOMAINS);
 
-/** Existing capabilities classified by the information they already work with. */
+
 export const CAPABILITY_DESCRIPTORS: readonly CapabilityDescriptor[] = [
   ...ENGIN_REGISTRY.map(({ name: id, domains }) => ({ id, domains, kind: 'engin' as const })),
   ...DREAMDM_BAR_CAPABILITIES,
@@ -105,15 +100,15 @@ const channelCapabilityIds: Record<DualRuntimeChannel, string> = {
   shared_dream: 'SharedDreamRuntime',
 };
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type IntentPriority = 'low' | 'normal' | 'high' | 'system';
 
-/** Intents use the same explicit ownership envelope as every domain object. */
+
 export type IntentEnvelope<
   TType extends string = string,
   TPayload extends JsonValue = JsonObject,
@@ -124,7 +119,7 @@ export type IntentEnvelope<
     targetRuntimeId?: string;
     actorId: string;
     capability: DomainCapability;
-    /** Semantic concerns route intent handling by meaning, never by file path. */
+    
     domains: readonly InformationDomain[];
     priority: IntentPriority;
     payload: TPayload;
@@ -155,16 +150,13 @@ export interface DreamOSSharedArtifact {
   sourceSubsystem: string;
   sourceRegion?: RuntimeRegion;
   relatedSubsystems: readonly string[];
-  /** Meaning carried by this artifact; Centers are descriptions, not runtimes. */
+  
   domains?: readonly InformationDomain[];
   payload: Record<string, unknown>;
   updatedAt: number;
 }
 
-/**
- * RuntimeContext — generic term for the fixed engine/runtime infrastructure
- * currently active in a region.
- */
+
 export interface RuntimeContext {
   region: RuntimeRegion;
   world: RuntimeWorld;
@@ -213,17 +205,17 @@ export type CapabilityKind =
   | 'agent';
 
 export interface CapabilityDescriptor {
-  /** Stable semantic identifier used by the orchestrator, never a file path. */
+  
   id: string;
-  /** Information concerns handled by this already-existing capability. */
+  
   domains: readonly InformationDomain[];
-  /** What kind of existing product capability this descriptor documents. */
+  
   kind: CapabilityKind;
-  /** Parent capability when this is one discoverable facet of a larger capability. */
+  
   parentId?: string;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function decayIntentLoad(load: RuntimeLoad): RuntimeLoad {
   return createRuntimeLoad({
@@ -450,7 +442,7 @@ class DreamOSBusImpl {
     try {
       localStorage.setItem(DREAM_OS_BUS_CACHE_KEY, JSON.stringify(this.getSnapshot()));
     } catch {
-      // Runtime continuity is best-effort; in-memory bus remains authoritative for the live session.
+      
     }
   }
 
@@ -461,7 +453,7 @@ class DreamOSBusImpl {
     });
   }
 
-  /** Register the single deterministic handler for an intent type. */
+  
   registerIntent(
     type: string,
     validate: IntentValidator,
@@ -481,7 +473,7 @@ class DreamOSBusImpl {
     };
   }
 
-  /** Route behavior requests through the OS intent seam; repeated IDs replay idempotently. */
+  
   async dispatchIntent(
     intent: IntentEnvelope,
     context: DomainAuthorizationContext,
@@ -579,18 +571,12 @@ class DreamOSBusImpl {
     this.persistOfflineSnapshot();
   }
 
-  /**
-   * O(1) lookup of an artifact by its ID.
-   * Returns null when the artifact is not in the bus.
-   */
+  
   getArtifact(id: string): DreamOSSharedArtifact | null {
     return this.artifacts.get(id) ?? null;
   }
 
-  /**
-   * Remove a specific artifact from the bus and notify subscribers.
-   * No-op when the ID is not present.
-   */
+  
   removeArtifact(id: string): void {
     if (!this.artifacts.has(id)) return;
     this.artifacts.delete(id);
@@ -598,42 +584,26 @@ class DreamOSBusImpl {
     this.persistOfflineSnapshot();
   }
 
-  /**
-   * Remove all artifacts without touching runtime contexts.
-   * Useful for resetting content between test cases or user sessions.
-   */
+  
   clearArtifacts(): void {
     this.artifacts.clear();
     this.notify();
     this.persistOfflineSnapshot();
   }
 
-  /**
-   * Return all artifacts with the given kind, sorted newest-first.
-   * Avoids subscribing to the full snapshot when only one kind is needed.
-   */
+  
   getArtifactsByKind(kind: DreamOSArtifactKind): DreamOSSharedArtifact[] {
     return Array.from(this.artifacts.values())
       .filter((a) => a.kind === kind)
       .sort((a, b) => b.updatedAt - a.updatedAt);
   }
 
-  /**
-   * Return the number of artifacts currently in the bus.
-   * Cheaper than getSnapshot().artifacts.length — no array allocation.
-   */
+  
   getArtifactCount(): number {
     return this.artifacts.size;
   }
 
-  /**
-   * Subscribe to changes on a single artifact by ID.
-   * The callback fires whenever upsertArtifact() is called with this ID.
-   * Returns an unsubscribe function.
-   *
-   * Unlike the full snapshot listener, this avoids re-rendering when
-   * unrelated artifacts change.
-   */
+  
   watchArtifact(
     id: string,
     callback: (artifact: DreamOSSharedArtifact | null) => void,
@@ -642,7 +612,7 @@ class DreamOSBusImpl {
       callback(this.artifacts.get(id) ?? null);
     };
     this.listeners.add(listener);
-    // Immediately deliver the current value.
+    
     callback(this.artifacts.get(id) ?? null);
     return () => {
       this.listeners.delete(listener);
@@ -822,13 +792,13 @@ class DreamOSBusImpl {
 
 export const dreamOSBus = new DreamOSBusImpl();
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
 
-/** Centers are semantic descriptions of existing capabilities, never new systems. */
+
+
+
+
 
 export { INFORMATION_DOMAINS };
 export type { InformationDomain };

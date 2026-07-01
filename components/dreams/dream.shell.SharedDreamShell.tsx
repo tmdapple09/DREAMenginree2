@@ -12,31 +12,18 @@ import React, {
 } from "react";
 import { toErrorMessage } from "@/utils/index";
 
-/**
- * SharedDreamShell — Real-time collaborative Engin wrapper
- *
- * Wraps any Engin/content with a Supabase Realtime broadcast session.
- * Layout:
- *   • Session banner (peers, audio call, invite link, exit)
- *   • Shared view   (top half — read-only projection for collaborators)
- *   • Your controls (bottom half — live interactive controls)
- *   • Peer cursor overlays
- *
- * Architecture: docs/LAW.md §15 (Shared Dream Collaboration)
- * Uses: hooks/useSharedDream → lib/sharedDream (Supabase Realtime broadcast)
- * Audio call: WebRTC getUserMedia — microphone only, no server relay.
- */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
+
 
 export interface SharedDreamShellProps {
-  /** Realtime channel ID. Share this ID via the invite link. */
+  
   channelId: string;
-  /** The Engin or content to collaborate on. */
+  
   children: ReactNode;
-  /** Optional title shown in the session banner. */
+  
   title?: string;
-  /** Called when the user exits the shared session. */
+  
   onExit?: () => void;
 }
 
@@ -174,7 +161,7 @@ export function SharedDreamShell({
     };
   }, []);
 
-  // Suppress unused-variable warning; session is used for presence awareness
+  
   void session;
 
   return (
@@ -187,7 +174,7 @@ export function SharedDreamShell({
         overflow: "hidden",
       }}
     >
-      {/* ── Session banner ── */}
+      
       <div
         style={{
           display: "flex",
@@ -212,7 +199,7 @@ export function SharedDreamShell({
         >
           {title ?? "Shared Dream"}
         </span>
-        {/* Audio call toggle */}
+        
         <button
           type="button"
           onClick={() => void toggleAudio()}
@@ -241,7 +228,7 @@ export function SharedDreamShell({
           {isAudioActive ? "Leave" : "Call"}
         </button>
 
-        {/* Invite link */}
+        
         <button
           type="button"
           title="Copy invite link"
@@ -261,7 +248,7 @@ export function SharedDreamShell({
           {inviteCopied ? "✓ Copied" : "🔗 Invite"}
         </button>
 
-        {/* Exit */}
+        
         {onExit && (
           <button
             type="button"
@@ -283,7 +270,7 @@ export function SharedDreamShell({
         )}
       </div>
 
-      {/* Microphone error */}
+      
       {audioError && (
         <div
           style={{
@@ -299,14 +286,14 @@ export function SharedDreamShell({
         </div>
       )}
 
-      {/* ── Two-pane canvas ── */}
+      
       <div
         ref={shellRef}
         className="relative flex-1 flex flex-col overflow-hidden"
         style={{ minHeight: 0 }}
         onMouseMove={handleMouseMove}
       >
-        {/* Peer cursor overlays */}
+        
         {Object.values(peerCursors).map((cursor) => (
           <div
             key={cursor.peerId}
@@ -333,7 +320,7 @@ export function SharedDreamShell({
           </div>
         ))}
 
-        {/* Top half — shared view (pointer-events disabled so it's read-only) */}
+        
         <div
           style={{
             flex: 1,
@@ -365,7 +352,7 @@ export function SharedDreamShell({
           </div>
         </div>
 
-        {/* Bottom half — private interactive controls */}
+        
         <div
           style={{
             flex: 1,

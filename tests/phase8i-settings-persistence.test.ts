@@ -1,15 +1,4 @@
-/**
- * tests/phase8i-settings-persistence.test.ts
- *
- * Phase 8 §I — Data Integrity, RLS & Settings.
- *
- * Points covered:
- *   83 — Appearance settings save to DB via /api/settings/appearance
- *   84 — Privacy settings save to DB via /api/settings/privacy
- *   86 — Data export works (route exists and is auth-gated)
- *   87 — Account deletion works (delete-dream route exists)
- *   88 — All toggles persist through Supabase
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
@@ -90,7 +79,7 @@ describe('Phase 8 §I — Privacy settings DB persistence (Point 84)', () => {
       join(root, 'app/settings/privacy/dream.PrivacyClient.tsx'),
       'utf-8',
     );
-    // The toggle function should POST to the settings endpoint
+    
     expect(src).toContain('/api/settings/privacy');
   });
 });

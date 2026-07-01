@@ -1,18 +1,9 @@
-/**
- * tests/admin-lockout.test.ts
- *
- * Unit tests for the pure, synchronous utility functions exported from
- * lib/admin/lockout.ts — isOwner() and isDomainBlocked().
- *
- * The async Supabase-backed isAdminLocked() / triggerAdminLockout()
- * functions require a live service-role client and are covered by
- * integration / e2e tests.
- */
+
 
 import { describe, it, expect, vi } from 'vitest';
 
-// lib/supabase/server.ts carries `import 'server-only'` which throws
-// outside the Next.js server runtime.  Mock both to keep tests in the
+
+
 // plain Node.js vitest environment.
 vi.mock('server-only', () => ({}));
 vi.mock('@/supabase/server/serverClient', () => ({
@@ -21,7 +12,7 @@ vi.mock('@/supabase/server/serverClient', () => ({
 }));
 import { isOwner, isDomainBlocked, OWNER_EMAIL } from '@/engine/admin/lockout';
 
-// ── isOwner ───────────────────────────────────────────────────────────────────
+
 
 describe('isOwner', () => {
   it('returns true for the exact owner email', () => {
@@ -50,12 +41,12 @@ describe('isOwner', () => {
   });
 });
 
-// ── isDomainBlocked ───────────────────────────────────────────────────────────
-// NOTE: theboogieman.ai is blocked at the edge via the Host-header check in
-// middleware.ts, NOT via BLOCKED_DOMAINS in lockout.ts (which the owner
-// intentionally left empty so they can reach this API from their BoogieMan AI
-// app without being blocked by Origin/Referer checks).
-// These tests cover the lockout.ts utility function specifically.
+
+
+
+
+
+
 
 function makeRequest(headers: Record<string, string>): Request {
   return new Request('https://dreamengin.vercel.app/api/admin/code-files', {

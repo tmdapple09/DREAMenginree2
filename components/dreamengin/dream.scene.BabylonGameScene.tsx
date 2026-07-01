@@ -17,10 +17,10 @@ import {
 } from '@/engine/rendering/webgpu/director';
 import { useEffect, useRef } from 'react';
 
-// components/dreamengin/dream.scene.BabylonGameScene.tsx
-// Babylon.js v8 real-time 3D scene for the GameEngin.
-// God Tier Engine integrated — hardware scaling, image processing, mesh policy.
-// WebGPU Director integrated — per-object LOD, shadow, and freeze decisions.
+
+
+
+
 
 'use client';
 
@@ -31,9 +31,9 @@ interface BabylonGameSceneProps {
 export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps) {
   const canvasRef   = useRef<HTMLCanvasElement>(null);
   const engineRef   = useRef<import('@babylonjs/core').AbstractEngine | null>(null);
-  // God Tier system instance — persists for this scene's lifetime
+  
   const godTierRef  = useRef(new DreamEngineGodTierSystem());
-  // WebGPU Director — per-object quality decisions (LOD, shadow, freeze)
+  
   const directorRef = useRef(new WebGPUDirector());
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
 
     let disposed = false;
 
-    // WebGPU-first engine creation with WebGL fallback, then dynamic import of scene helpers
+    
     Promise.all([
       createBabylonEngine(canvas, { preserveDrawingBuffer: true, stencil: true, antialias: true }),
       import('@babylonjs/core'),
@@ -62,7 +62,7 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       const scene = new Scene(engine);
       scene.clearColor = new (scene.clearColor.constructor as new (r: number, g: number, b: number, a: number) => typeof scene.clearColor)(0.05, 0.07, 0.12, 1);
 
-      // Apply God Tier hardware scaling on scene creation
+      
       const initialState = godTierRef.current.update({
         device:  defaultDeviceSignals(),
         runtime: defaultRuntimeMetrics(),
@@ -73,19 +73,19 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       });
       applyGodTierToBabylon(engine, { meshes: [] }, initialState, window.devicePixelRatio ?? 1);
 
-      // Camera — orbiting the game hub
+      
       const camera = new ArcRotateCamera('cam', -Math.PI / 2, Math.PI / 3.5, 18, Vector3.Zero(), scene);
       camera.attachControl(canvas, true);
       camera.lowerRadiusLimit = 6;
       camera.upperRadiusLimit = 30;
       camera.upperBetaLimit = Math.PI / 2.2;
 
-      // Lighting
+      
       const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
       light.intensity = 0.9;
       light.groundColor = new Color3(0.1, 0.1, 0.3);
 
-      // Ground platform
+      
       const ground = MeshBuilder.CreateCylinder('ground', { diameter: 16, height: 0.3, tessellation: 64 }, scene);
       const groundMat = new StandardMaterial('groundMat', scene);
       groundMat.diffuseColor = new Color3(0.08, 0.12, 0.22);
@@ -93,14 +93,14 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       ground.material = groundMat;
       ground.isPickable = false;
 
-      // Center hub sphere
+      
       const hub = MeshBuilder.CreateSphere('hub', { diameter: 2.2, segments: 32 }, scene);
       const hubMat = new StandardMaterial('hubMat', scene);
       hubMat.diffuseColor = new Color3(0.16, 0.54, 0.72);
       hubMat.emissiveColor = new Color3(0.04, 0.12, 0.2);
       hub.material = hubMat;
 
-      // Hub pulse animation
+      
       const pulseAnim = new Animation('pulse', 'scaling', 30, Animation.ANIMATIONTYPE_VECTOR3, Animation.ANIMATIONLOOPMODE_CYCLE);
       pulseAnim.setKeys([
         { frame: 0, value: new Vector3(1, 1, 1) },
@@ -110,16 +110,16 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       hub.animations = [pulseAnim];
       scene.beginAnimation(hub, 0, 60, true);
 
-      // Game orbs — 8 surrounding game icons in a ring
+      
       const GAME_COLORS: [number, number, number][] = [
-        [0.93, 0.26, 0.26], // Red — RTS
-        [0.23, 0.72, 0.38], // Green — Tower Defense
-        [0.37, 0.51, 0.95], // Blue — Space Shooter
-        [0.93, 0.62, 0.13], // Orange — Match-3
-        [0.55, 0.33, 0.95], // Purple — Tetris
-        [0.93, 0.33, 0.60], // Pink — Rhythm
-        [0.16, 0.74, 0.72], // Teal — Racing
-        [0.92, 0.85, 0.26], // Gold — RPG
+        [0.93, 0.26, 0.26], 
+        [0.23, 0.72, 0.38], 
+        [0.37, 0.51, 0.95], 
+        [0.93, 0.62, 0.13], 
+        [0.55, 0.33, 0.95], 
+        [0.93, 0.33, 0.60], 
+        [0.16, 0.74, 0.72], 
+        [0.92, 0.85, 0.26], 
       ];
 
       const GAME_IDS = ['null-cathedral', 'voidline-gp', 'serpent-siege', 'glassfall', 'avenue-of-mirrors', 'engin-fracture', 'nite-flyer-solar-hymn', 'lexicon-solitaire'];
@@ -137,7 +137,7 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
         orb.isPickable = true;
         orb.metadata = { gameId: GAME_IDS[i] };
 
-        // Orbit animation
+        
         const orbitAnim = new Animation(`orbit_${i}`, 'position.y', 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
         const phaseOffset = (i / 8) * 60;
         orbitAnim.setKeys([
@@ -149,7 +149,7 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
         scene.beginAnimation(orb, 0, 60, true);
       }
 
-      // Outer ring decoration
+      
       const ring = MeshBuilder.CreateTorus('ring', { diameter: 13, thickness: 0.08, tessellation: 80 }, scene);
       ring.rotation.x = Math.PI / 2;
       const ringMat = new StandardMaterial('ringMat', scene);
@@ -157,15 +157,15 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       ringMat.emissiveColor = new Color3(0.04, 0.18, 0.3);
       ring.material = ringMat;
 
-      // Ring rotation
+      
       scene.registerBeforeRender(() => {
         ring.rotation.z += 0.003;
         hub.rotation.y += 0.008;
       });
 
-      // Click handler for game orbs
+      
       scene.onPointerObservable.add((pointerInfo) => {
-        // PointerEventTypes.POINTERTAP = 4 (from @babylonjs/core)
+        
         if (pointerInfo.type === 4 && pointerInfo.pickInfo?.hit) {
           const mesh = pointerInfo.pickInfo.pickedMesh;
           if (mesh?.metadata?.gameId && onGameSelect) {
@@ -174,14 +174,14 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
         }
       });
 
-      // Render loop — God Tier drives hardware scaling; Director drives per-object quality
+      
       let lastGodTierMs = 0;
-      // Track last-frame visibility for Director temporal stability
+      
       let lastVisibleIds = new Set<string>(scene.meshes.map((m) => m.id));
 
       engine.runRenderLoop(() => {
         scene.render();
-        // Re-evaluate both systems ~every 250ms for faster quality adaptation
+        
         const now = performance.now();
         if (now - lastGodTierMs > 250) {
           lastGodTierMs = now;
@@ -252,7 +252,7 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
             window.devicePixelRatio ?? 1,
           );
 
-          // Update last-frame visibility set for next tick
+          
           lastVisibleIds = new Set(scene.meshes.filter((m) => m.isVisible).map((m) => m.id));
         }
       });
@@ -260,11 +260,11 @@ export default function BabylonGameScene({ onGameSelect }: BabylonGameSceneProps
       const onResize = () => engine.resize();
       window.addEventListener('resize', onResize);
 
-      // Initial static mesh freeze — God Tier will manage ongoing policy
+      
       ground.freezeWorldMatrix();
       ring.freezeWorldMatrix();
     }).catch(() => {
-      // Babylon.js failed to load — graceful fallback handled by parent
+      
     });
 
     return () => {

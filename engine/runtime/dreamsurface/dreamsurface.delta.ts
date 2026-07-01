@@ -1,5 +1,5 @@
-// dreamsurface.delta — delta computation utilities
-// Bridges state transitions between dream.* and engin.core.*.
+
+
 
 export interface StateDelta<T> {
   previous: T;

@@ -1,55 +1,19 @@
-/**
- * lib/connectors/deliveryStrategy.ts
- *
- * Strategy matrix: how each DREAMengin connector receives updates.
- *
- * Delivery methods:
- *   webhook       → provider pushes events to DREAMengin in real-time
- *   poll          → DREAMengin polls the provider API on a cron schedule
- *   webhook+poll  → webhooks for real-time delivery + cron poll as fallback/catch-up
- *   unsupported   → no programmatic delivery is technically available
- *
- * Used by:
- *   - app/api/connectors/cron/route.ts           (cron fallback dispatcher)
- *   - app/api/connectors/webhooks/[provider]/    (webhook receiver gate)
- *   - tests/connector-delivery.test.ts
- *
- * Pure module — no side effects, no server-only, no DB/network calls.
- * Safe to import in tests.
- */
+
 
 export type DeliveryMethod = 'webhook' | 'poll' | 'webhook+poll' | 'unsupported';
 
 export interface ConnectorDeliveryStrategy {
-  /** Provider id matching ConnectorDef.id */
+  
   provider: string;
-  /**
-   * Primary delivery method for this provider.
-   */
+  
   delivery: DeliveryMethod;
-  /**
-   * True if this provider supports a webhook subscription verification flow
-   * (YouTube WebSub GET challenge, or Meta hub.mode=subscribe GET challenge).
-   * When true, GET /api/connectors/webhooks/{provider} will respond to the
-   * verification handshake.
-   */
+  
   webhookVerifiable: boolean;
-  /**
-   * Human-readable note about delivery constraints or trade-offs.
-   */
+  
   note?: string;
 }
 
-/**
- * Canonical delivery strategy matrix for all known DREAMengin connectors.
- *
- * Truthfulness rules:
- *   - A connector with delivery:'webhook' means the provider supports push;
- *     it does NOT mean DREAMengin has completed full WebSub/webhook ingestion.
- *   - A connector with delivery:'poll' means cron polling is the only reliable path.
- *   - webhook+poll means both are used: real-time push for new items +
- *     cron catch-up for gaps/reliability.
- */
+
 export const DELIVERY_STRATEGY_MATRIX: ReadonlyArray<ConnectorDeliveryStrategy> = [
   {
     provider: 'youtube',
@@ -136,43 +100,29 @@ export const DELIVERY_STRATEGY_MATRIX: ReadonlyArray<ConnectorDeliveryStrategy> 
   },
 ];
 
-/**
- * Look up the delivery strategy for a provider.
- * Returns undefined if the provider is not in the matrix.
- */
+
 export function getDeliveryStrategy(provider: string): ConnectorDeliveryStrategy | undefined {
   return DELIVERY_STRATEGY_MATRIX.find((s) => s.provider === provider);
 }
 
-/**
- * Returns true if the provider has any webhook-based delivery
- * (either 'webhook' or 'webhook+poll').
- */
+
 export function supportsWebhook(provider: string): boolean {
   const s = getDeliveryStrategy(provider);
   return s?.delivery === 'webhook' || s?.delivery === 'webhook+poll';
 }
 
-/**
- * Returns true if the provider supports poll-based delivery
- * (either 'poll' or 'webhook+poll').
- */
+
 export function supportsPoll(provider: string): boolean {
   const s = getDeliveryStrategy(provider);
   return s?.delivery === 'poll' || s?.delivery === 'webhook+poll';
 }
 
-/**
- * Returns true if the provider supports a webhook verification
- * challenge (YouTube WebSub or Meta hub.mode=subscribe handshake).
- */
+
 export function supportsWebhookVerification(provider: string): boolean {
   return getDeliveryStrategy(provider)?.webhookVerifiable ?? false;
 }
 
-/**
- * All provider ids that appear in the delivery strategy matrix.
- */
+
 export function knownDeliveryProviders(): string[] {
   return DELIVERY_STRATEGY_MATRIX.map((s) => s.provider);
 }

@@ -55,17 +55,7 @@ type SupabaseDb = {
 
 const ELEVEN_BASE = 'https://api.elevenlabs.io/v1';
 
-/**
- * POST /api/content/voice-clone
- *
- * Supports four actions:
- *  - "clone"  – upload a voice sample to ElevenLabs and create a cloned voice.
- *  - "tts"    – generate speech from text using a cloned voice.
- *  - "list"   – list all cloned voice profiles for the current user.
- *  - "delete" – delete a cloned voice profile by ID.
- *
- * Requires ELEVENLABS_API_KEY. Falls back to graceful stubs when the key is absent.
- */
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -142,7 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
     }
 
-    // Dev stub — no API key configured
+    
     const idSuffix = typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID().replace(/-/g, '').slice(0, 8)
       : Date.now().toString(36);
@@ -280,7 +270,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // Dev stub — no API key configured
+  
   const durationSeconds = estimateDurationSeconds(text);
   return NextResponse.json({
     audioBase64: '',

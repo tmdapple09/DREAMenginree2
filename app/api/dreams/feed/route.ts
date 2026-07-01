@@ -5,24 +5,24 @@ import { HostKind, type DreamDefinition, type DreamInstance, type FeedHostConfig
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
 
-// =====================================================
-// Dream Feed Resolver API Route
-// Resolves feed data for dream instances
-// =====================================================
 
-// Type for joined query result
+
+
+
+
+
 type DreamInstanceWithDefinition = DreamInstance & {
   dream_definitions: DreamDefinition;
 };
 
-// Shared helper function to resolve feed for a dream instance
+
 async function resolveFeedForInstance(
   instanceId: string,
   userId: string
 ) {
   const supabase = await createServerClient();
 
-  // Fetch dream instance and definition
+  
   const { data: instance, error: instanceError } = await (supabase as SupabaseClient)
     .from('dream_instances')
     .select(`
@@ -40,11 +40,11 @@ async function resolveFeedForInstance(
     };
   }
 
-  // Proper type assertion for joined data
+  
   const instanceWithDef = instance as unknown as DreamInstanceWithDefinition;
   const definition = instanceWithDef.dream_definitions;
 
-  // Only handle feed dreams
+  
   if (definition.host_kind !== HostKind.HOST_FEED_VIEW) {
     return {
       error: 'Not a feed Dream',
@@ -52,7 +52,7 @@ async function resolveFeedForInstance(
     };
   }
 
-  // Resolve feed
+  
   const hostConfig = definition.host_config as FeedHostConfig;
   const resolved = await resolveFeedHost(userId, hostConfig);
 
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest ): Promise<NextResponse> {
   try {
     const supabase = await createServerClient();
 
-    // Get authenticated user
+    
     const user = await safeGetUser(supabase);
 
     if (!user) {
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest ): Promise<NextResponse> {
   try {
     const supabase = await createServerClient();
 
-    // Get authenticated user
+    
     const user = await safeGetUser(supabase);
 
     if (!user) {

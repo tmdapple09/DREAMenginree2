@@ -1,14 +1,4 @@
-/**
- * tests/feature-build.test.ts
- *
- * Unit tests for lib/feature-build — the feature build progression system.
- *
- * Coverage:
- *   1. featureManifest   — all 6 manifests load, domains/engins are canonical, maxFeatures consistent
- *   2. buildCycle        — getBuildPhase, calculateProgress, computeBuildCycleState, countUsableFeatures,
- *                          allPairsInRefinePhase, allPairsMovingForward
- *   3. uiQualityCriteria — SICC_GLOBAL_CRITERIA structure, dimension filtering, SICC_DIMENSIONS
- */
+
 
 import { describe, it, expect } from 'vitest';
 
@@ -43,7 +33,7 @@ import {
 const VALID_DAYDREAM_DOMAINS = Object.values(DAYDREAM_DOMAINS);
 const VALID_ENGIN_SURFACES   = Object.values(ENGIN_SURFACES);
 
-// ─── 1. featureManifest ───────────────────────────────────────────────────────
+
 
 describe('FEATURE_MANIFESTS', () => {
   it('contains exactly 6 manifests (one per canonical Daydream+Engin pair)', () => {
@@ -156,26 +146,26 @@ describe('getManifest()', () => {
   });
 });
 
-// ─── 2. buildCycle ────────────────────────────────────────────────────────────
+
 
 describe('getBuildPhase()', () => {
-  // getBuildPhase(featuresUsable, featuresImplemented, maxFeatures, refineThreshold)
+  
 
   it('returns BUILD when usable fraction is below refineThreshold', () => {
-    // 4 usable / 10 max = 40% < 60% threshold
+    
     expect(getBuildPhase(4, 4, 10, 0.6)).toBe('BUILD');
     expect(getBuildPhase(0, 0, 10, 0.6)).toBe('BUILD');
   });
 
   it('returns UPGRADE when usable fraction meets threshold but not all implemented', () => {
-    // 6 usable (4 implemented + 2 active) / 10 max = 60% ≥ 60% threshold, not fully implemented
+    
     expect(getBuildPhase(6, 4, 10, 0.6)).toBe('UPGRADE');
-    // 8 usable / 10 = 80% ≥ 60%, 8 implemented < 10 max
+    
     expect(getBuildPhase(8, 8, 10, 0.6)).toBe('UPGRADE');
   });
 
   it('returns UPGRADE at exactly the refineThreshold', () => {
-    // 6 / 10 = 0.6 exactly
+    
     expect(getBuildPhase(6, 5, 10, 0.6)).toBe('UPGRADE');
   });
 
@@ -193,7 +183,7 @@ describe('getBuildPhase()', () => {
   });
 
   it('a higher threshold keeps pair in BUILD longer', () => {
-    // 7 usable / 10 = 70% — passes 60% but not 80%
+    
     expect(getBuildPhase(7, 5, 10, 0.6)).toBe('UPGRADE');
     expect(getBuildPhase(7, 5, 10, 0.8)).toBe('BUILD');
   });
@@ -221,7 +211,7 @@ describe('calculateProgress()', () => {
   });
 
   it('rounds to nearest integer', () => {
-    // 1/3 ≈ 33.33 → 33
+    
     expect(calculateProgress(1, 3)).toBe(33);
   });
 });
@@ -407,7 +397,7 @@ describe('allPairsMovingForward()', () => {
   });
 });
 
-// ─── 3. uiQualityCriteria ─────────────────────────────────────────────────────
+
 
 describe('SICC_GLOBAL_CRITERIA', () => {
   it('contains at least one criterion per SICC dimension', () => {

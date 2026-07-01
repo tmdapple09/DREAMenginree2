@@ -1,8 +1,4 @@
-/**
- * tests/enginpipe/tiers.test.ts
- *
- * Unit tests for the generic capability → quality-tier resolver.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {

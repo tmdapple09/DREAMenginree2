@@ -4,23 +4,23 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/settings/feed/route.ts
-// Phase 8 §A — Feed preference settings persisted to the database.
-//
-// GET  /api/settings/feed  — Returns the authenticated user's feed preferences
-// POST /api/settings/feed  — Upserts feed preferences into profiles.feed_preferences
-//
-// Architecture: docs/ARCHITECTURE.md §3 — user settings live in Supabase.
-// Privacy (AXIOM 5): feed_preferences is user-scoped; RLS prevents cross-user reads.
-//
-// Preferences shape:
-//   {
-//     showDreamenginUpdates?: boolean,
-//     autoRefresh?: boolean,
-//     showEmptyStateGuides?: boolean,
-//     enabledProviders?: string[],   -- connector provider IDs to show in feed
-//     sortOrder?: "recent" | "trending"
-//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Preferences must be a JSON object' }, { status: 400 });
   }
 
-  // Allowlist: only persist known preference keys
+  
   const allowed = new Set([
     'showDreamenginUpdates',
     'autoRefresh',

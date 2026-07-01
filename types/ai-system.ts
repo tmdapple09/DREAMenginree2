@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-// types/ai-system.ts
-// DREAMENGIN AI SYSTEM v2026.0 - Core Type Definitions
-// Strict TypeScript types for the three-agent AI system
 
-// ============================================================================
-// ACTOR CONTEXT (SERVER-OWNED)
-// ============================================================================
+
+
+
+
+
+
 
 export const UserRole = z.enum(['user', 'admin', 'system']);
 export type UserRole = z.infer<typeof UserRole>;
@@ -20,9 +20,9 @@ export const ActorContextSchema = z.object({
 });
 export type ActorContext = z.infer<typeof ActorContextSchema>;
 
-// ============================================================================
-// UI CONTEXT (SAFE SUBSET)
-// ============================================================================
+
+
+
 
 export const HomeAnchorState = z.union([z.literal(0), z.literal(1), z.literal(2)]);
 export type HomeAnchorState = z.infer<typeof HomeAnchorState>;
@@ -98,11 +98,11 @@ export const UIContextSchema = z.object({
 });
 export type UIContext = z.infer<typeof UIContextSchema>;
 
-// ============================================================================
-// INTENT SYSTEM (THE ONLY EXECUTABLE LANGUAGE)
-// ============================================================================
 
-// Dr. Eams Intent Types (user-facing)
+
+
+
+
 export const DrEamsIntentType = z.enum([
   'NAV_DELTA',
   'HOME_ANCHOR_SET_STATE',
@@ -121,7 +121,7 @@ export const DrEamsIntentType = z.enum([
 ]);
 export type DrEamsIntentType = z.infer<typeof DrEamsIntentType>;
 
-// iDari Intent Types (admin-only)
+
 export const IDariIntentType = z.enum([
   'DIAG_SCHEMA_SNAPSHOT',
   'DIAG_RLS_SNAPSHOT',
@@ -136,7 +136,7 @@ export type IDariIntentType = z.infer<typeof IDariIntentType>;
 export const IntentType = z.union([DrEamsIntentType, IDariIntentType]);
 export type IntentType = z.infer<typeof IntentType>;
 
-// Base Intent
+
 export const IntentSchema = z.object({
   intent_id: z.string().uuid(),
   type: IntentType,
@@ -148,11 +148,11 @@ export const IntentSchema = z.object({
 });
 export type Intent = z.infer<typeof IntentSchema>;
 
-// Agent Types
+
 export const AgentType = z.enum(['dr_eams', 'idari']);
 export type AgentType = z.infer<typeof AgentType>;
 
-// Intent Envelope (JSON-only model output)
+
 export const IntentEnvelopeSchema = z.object({
   request_id: z.string().uuid(),
   agent: AgentType,
@@ -172,11 +172,11 @@ export const IntentEnvelopeSchema = z.object({
 });
 export type IntentEnvelope = z.infer<typeof IntentEnvelopeSchema>;
 
-// ============================================================================
-// SPECIFIC INTENT PAYLOAD SCHEMAS
-// ============================================================================
 
-// Navigation intents
+
+
+
+
 export const NavDeltaPayload = z.object({
   delta_route: z.string().optional(),
   delta_nav: z.record(z.string(), z.unknown()).optional(),
@@ -188,7 +188,7 @@ export const HomeAnchorSetStatePayload = z.object({
 
 export const HomeMenuOpenPayload = z.object({});
 
-// Dream intents
+
 export const DreamPreviewPayload = z.object({
   dream_id: z.string().uuid(),
 });
@@ -215,7 +215,7 @@ export const DreamRemovePayload = z.object({
   dream_id: z.string().uuid(),
 });
 
-// Post intents
+
 export const PostCreatePayload = z.object({
   content: z.string(),
   media_json: z.record(z.string(), z.unknown()).optional(),
@@ -226,25 +226,25 @@ export const PostLikePayload = z.object({
   post_id: z.string().uuid(),
 });
 
-// Social intents
+
 export const FollowUserPayload = z.object({
   user_id: z.string().uuid(),
 });
 
-// Search intent
+
 export const SearchPayload = z.object({
   query: z.string(),
   scope: z.enum(['posts', 'users', 'dreams', 'all']).optional(),
 });
 
-// Draft intent
+
 export const DraftSavePayload = z.object({
   draft_id: z.string().uuid().optional(),
   content: z.string(),
   context: z.record(z.string(), z.unknown()).optional(),
 });
 
-// Admin/diagnostic intents
+
 export const DiagSchemaSnapshotPayload = z.object({
   include_policies: z.boolean().optional(),
 });
@@ -278,9 +278,9 @@ export const ModerationFlagContentPayload = z.object({
   severity: z.enum(['low', 'medium', 'high']).optional(),
 });
 
-// ============================================================================
-// PAYLOAD TYPE EXPORTS (z.infer aliases for use as TypeScript types)
-// ============================================================================
+
+
+
 
 export type NavDeltaPayload = z.infer<typeof NavDeltaPayload>;
 export type HomeAnchorSetStatePayload = z.infer<typeof HomeAnchorSetStatePayload>;
@@ -296,9 +296,9 @@ export type FollowUserPayload = z.infer<typeof FollowUserPayload>;
 export type SearchPayload = z.infer<typeof SearchPayload>;
 export type DraftSavePayload = z.infer<typeof DraftSavePayload>;
 
-// ============================================================================
-// BOOGIE MAN (VERIFIER) TYPES
-// ============================================================================
+
+
+
 
 export const BoogieDecision = z.enum(['ALLOW', 'DENY', 'CONFIRM', 'MODIFY']);
 export type BoogieDecision = z.infer<typeof BoogieDecision>;
@@ -384,9 +384,9 @@ export const BoogieSignals = z.object({
 });
 export type BoogieSignals = z.infer<typeof BoogieSignals>;
 
-// ============================================================================
-// TOOL HANDLER TYPES
-// ============================================================================
+
+
+
 
 export const UIToast = z.object({
   kind: z.enum(['success', 'error', 'info', 'warning']),
@@ -416,11 +416,11 @@ export const ToolResult = z.object({
 });
 export type ToolResult = z.infer<typeof ToolResult>;
 
-// ============================================================================
-// API REQUEST/RESPONSE TYPES
-// ============================================================================
 
-// Dr. Eams Run Request
+
+
+
+
 export const DrEamsRunRequest = z.object({
   message: z.string(),
   ui: UIContextSchema,
@@ -429,7 +429,7 @@ export const DrEamsRunRequest = z.object({
 });
 export type DrEamsRunRequest = z.infer<typeof DrEamsRunRequest>;
 
-// Dr. Eams Run Response
+
 export const DrEamsRunResponse = z.object({
   response_text: z.string(),
   proposed_intents: z.array(IntentSchema),
@@ -438,7 +438,7 @@ export const DrEamsRunResponse = z.object({
 });
 export type DrEamsRunResponse = z.infer<typeof DrEamsRunResponse>;
 
-// iDari Run Request
+
 export const IDariRunRequest = z.object({
   message: z.string(),
   ui: UIContextSchema,
@@ -447,7 +447,7 @@ export const IDariRunRequest = z.object({
 });
 export type IDariRunRequest = z.infer<typeof IDariRunRequest>;
 
-// iDari Run Response
+
 export const IDariRunResponse = z.object({
   response_text: z.string(),
   proposed_intents: z.array(IntentSchema),
@@ -455,7 +455,7 @@ export const IDariRunResponse = z.object({
 });
 export type IDariRunResponse = z.infer<typeof IDariRunResponse>;
 
-// Execute Request
+
 export const ExecuteRequest = z.object({
   request_id: z.string().uuid(),
   intent_ids: z.array(z.string().uuid()),
@@ -464,7 +464,7 @@ export const ExecuteRequest = z.object({
 });
 export type ExecuteRequest = z.infer<typeof ExecuteRequest>;
 
-// Execute Response
+
 export const ExecuteResponse = z.object({
   tool_results: z.array(ToolResult),
   ui_deltas: z.array(UIDelta),
@@ -472,9 +472,9 @@ export const ExecuteResponse = z.object({
 });
 export type ExecuteResponse = z.infer<typeof ExecuteResponse>;
 
-// ============================================================================
-// MEMORY TYPES
-// ============================================================================
+
+
+
 
 export const MemoryScope = z.enum(['preferences', 'nav_habits', 'drafts']);
 export type MemoryScope = z.infer<typeof MemoryScope>;
@@ -491,9 +491,9 @@ export const AIMemory = z.object({
 });
 export type AIMemory = z.infer<typeof AIMemory>;
 
-// ============================================================================
-// AUDIT TYPES
-// ============================================================================
+
+
+
 
 export const AuditEntry = z.object({
   id: z.string().uuid(),

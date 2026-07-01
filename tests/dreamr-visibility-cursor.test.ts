@@ -1,16 +1,4 @@
-/**
- * tests/dreamr-visibility-cursor.test.ts
- *
- * Tests for the two new server-side helpers wired into the DreamR feed
- * routes:
- *
- *   • filterByCloseFriends   — pure visibility filter for the new
- *                              `post_visibility` column
- *   • parseFeedParams        — pagination param parser (limit / offset /
- *                              before / seen) with sane defaults & clamps
- *   • deriveNextCursor       — stable cursor for the next page, anchored
- *                              on the oldest created_at returned
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -22,7 +10,7 @@ import {
   MAX_SEEN_IDS,
 } from '@/dreamr/runtime/feedCursor';
 
-// ── filterByCloseFriends ─────────────────────────────────────────────────────
+
 
 describe('filterByCloseFriends', () => {
   const posts = [
@@ -30,7 +18,7 @@ describe('filterByCloseFriends', () => {
     { id: 'p2', user_id: 'bob',   post_visibility: 'close_friends' },
     { id: 'p3', user_id: 'carol', post_visibility: 'close_friends' },
     { id: 'p4', user_id: 'dave',  post_visibility: 'public' },
-    { id: 'p5', user_id: 'eve',   post_visibility: null },          // null defaults public
+    { id: 'p5', user_id: 'eve',   post_visibility: null },          
     { id: 'p6', user_id: 'eve',   post_visibility: 'close_friends' },
   ];
 
@@ -55,13 +43,13 @@ describe('filterByCloseFriends', () => {
     const ids = out.map((p) => p.id);
     expect(ids).toContain('p2');
     expect(ids).toContain('p6');
-    expect(ids).not.toContain('p3'); // carol didn't add mallory
+    expect(ids).not.toContain('p3'); 
   });
 
   it('always shows a viewer their own close_friends posts', () => {
     const out = filterByCloseFriends(posts, 'bob', new Set());
     const ids = out.map((p) => p.id);
-    expect(ids).toContain('p2'); // bob's own CF post
+    expect(ids).toContain('p2'); 
   });
 
   it('treats missing post_visibility as public (DB default)', () => {
@@ -90,7 +78,7 @@ describe('filterByCloseFriends', () => {
   });
 });
 
-// ── parseFeedParams ──────────────────────────────────────────────────────────
+
 
 describe('parseFeedParams', () => {
   it('returns sensible defaults for empty input', () => {
@@ -105,7 +93,7 @@ describe('parseFeedParams', () => {
   it('clamps limit to maxLimit (default 40)', () => {
     const p = parseFeedParams(new URLSearchParams('limit=99'));
     expect(p.limit).toBe(40);
-    // fetchLimit caps at poolCap (default 120)
+    
     expect(p.fetchLimit).toBeLessThanOrEqual(120);
   });
 
@@ -151,7 +139,7 @@ describe('parseFeedParams', () => {
   });
 });
 
-// ── deriveNextCursor ─────────────────────────────────────────────────────────
+
 
 describe('deriveNextCursor', () => {
   it('returns null when fewer rows than fetchLimit (end of pool)', () => {

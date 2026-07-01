@@ -9,14 +9,14 @@ export default function PositionIndicatorToggle( ){
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved !== null) return saved !== 'false';
-    } catch { /* noop */ }
+    } catch {  }
     return true;
   });
 
   const toggle = () => {
     const next = !enabled;
     setEnabled(next);
-    try { localStorage.setItem(STORAGE_KEY, String(next)); } catch { /* noop */ }
+    try { localStorage.setItem(STORAGE_KEY, String(next)); } catch {  }
   };
 
   return (

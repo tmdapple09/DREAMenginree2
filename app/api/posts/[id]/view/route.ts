@@ -3,15 +3,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * POST /api/posts/[id]/view
- *
- * Canonical view tracking for the current app schema.
- *
- * The generated Supabase types expose app_posts.view_count, but do not expose
- * the older post_views table. This endpoint therefore updates the root post's
- * view_count directly instead of writing to a missing ledger table.
- */
+
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },

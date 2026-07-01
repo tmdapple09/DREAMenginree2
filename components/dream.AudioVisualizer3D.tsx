@@ -8,27 +8,18 @@ import {
     recordReferenceFingerprint,
 } from '@/engins/starmakerengin/audioFingerprint';
 
-/**
- * AudioVisualizer3D — Babylon.js 3D audio visualiser
- *
- * - FFT bars rendered as 3D cylinders in Babylon.js scene
- * - Real-time update from Web Audio AnalyserNode
- * - Tap a bar → apply BiquadFilterNode (bandpass) on that frequency
- * - Optional MediaRecorder capture of filtered output
- * - Hotspot overlay from peak map fingerprint data
- * - Tap hotspot → matchFingerprint + extractAudioChunks → emit stem event
- */
+
 
 export interface AudioVisualizer3DProps {
-  /** Connected AnalyserNode for real-time FFT data. */
+  
   analyser: AnalyserNode;
-  /** Optional peak map for hotspot overlays. */
+  
   peakMap?: PeakMap;
-  /** Called when a stem has been extracted from a hotspot tap. */
+  
   onStemExtracted?: (stem: AudioBuffer, matches: MatchResult[]) => void;
-  /** Source AudioBuffer for stem extraction (needed for extractAudioChunks). */
+  
   sourceBuffer?: AudioBuffer;
-  /** Number of FFT bars to display (default 64). */
+  
   barCount?: number;
   className?: string;
 }
@@ -37,7 +28,7 @@ interface Hotspot {
   frequencyHz: number;
   binIndex: number;
   timeSlice: number;
-  x: number;   // canvas % position
+  x: number;   
   y: number;
 }
 
@@ -65,7 +56,7 @@ export function AudioVisualizer3D({
 
   useEffect(() => {
     if (!peakMap) { setHotspots([]); return; }
-    // Show top-20 peaks as hotspots
+    
     const sorted = [...peakMap.peaks].sort((a, b) => b.magnitude - a.magnitude).slice(0, 20);
     const spots: Hotspot[] = sorted.map((p) => ({
       frequencyHz: p.frequencyHz,
@@ -84,7 +75,7 @@ export function AudioVisualizer3D({
       const canvas = canvasRef.current;
       if (!canvas || !mounted) return;
 
-      // Dynamic import to keep initial bundle lean
+      
       const { Engine, Scene, HemisphericLight, Vector3, MeshBuilder,
               StandardMaterial, Color3, ArcRotateCamera } =
         await import('@babylonjs/core');
@@ -93,16 +84,16 @@ export function AudioVisualizer3D({
       const scene  = new Scene(engine);
       scene.clearColor = { r: 0.05, g: 0.05, b: 0.1, a: 1 } as unknown as import('@babylonjs/core').Color4;
 
-      // Camera
+      
       const camera = new ArcRotateCamera('cam', -Math.PI / 2, Math.PI / 3, 30, Vector3.Zero(), scene);
       camera.lowerRadiusLimit = 10;
       camera.upperRadiusLimit = 80;
       camera.attachControl(canvas, true);
 
-      // Light
+      
       new HemisphericLight('light', new Vector3(0, 1, 0), scene);
 
-      // Build bars
+      
       const bars: import('@babylonjs/core').Mesh[] = [];
       const spacing = 0.6;
       const totalW  = barCount * spacing;
@@ -121,8 +112,8 @@ export function AudioVisualizer3D({
         mat.diffuseColor = Color3.FromHSV(hue, 0.9, 0.95);
         bar.material     = mat;
 
-        // Tap to filter
-        bar.actionManager = null; // Pointer events handled via canvas click below
+        
+        bar.actionManager = null; 
         bars.push(bar);
       }
 
@@ -181,7 +172,7 @@ export function AudioVisualizer3D({
       const nyquist  = analyser.context.sampleRate / 2;
       const freqHz   = (binIdx / barCount) * nyquist;
 
-      // Create / update BiquadFilterNode
+      
       const ctx      = analyser.context;
       const oldFilter = babylonRef.current.filterNode;
       if (oldFilter) oldFilter.disconnect();
@@ -229,7 +220,7 @@ export function AudioVisualizer3D({
     async (hotspot: Hotspot) => {
       if (!peakMap || !sourceBuffer) return;
       const startTime  = hotspot.timeSlice * peakMap.sliceDurationSec;
-      const endTime    = startTime + 2; // 2-second window
+      const endTime    = startTime + 2; 
       const fingerprint: Fingerprint = recordReferenceFingerprint(peakMap, startTime, endTime);
       const matches    = matchFingerprint(fingerprint, peakMap, 0.75);
       const stem       = extractAudioChunks(sourceBuffer, matches);
@@ -240,7 +231,7 @@ export function AudioVisualizer3D({
 
   return (
     <div className={`relative w-full h-full ${className}`} style={{ minHeight: 320 }}>
-      {/* Babylon canvas */}
+      
       <canvas
         ref={canvasRef}
         className="w-full h-full block"
@@ -248,7 +239,7 @@ export function AudioVisualizer3D({
         style={{ background: '#0d0d1a', borderRadius: 12 }}
       />
 
-      {/* Hotspot overlay */}
+      
       {hotspots.map((hs, i: number) => (
         <button
           key={i}
@@ -271,7 +262,7 @@ export function AudioVisualizer3D({
         />
       ))}
 
-      {/* Controls bar */}
+      
       <div className="absolute bottom-2 left-2 right-2 flex items-center gap-3 px-3 py-2 rounded-lg"
            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)' }}>
         <span className="text-xs text-white/70 flex-1">

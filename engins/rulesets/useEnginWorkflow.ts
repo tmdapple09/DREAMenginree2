@@ -16,23 +16,7 @@ import {
     HANDOFF_PATHS,
 } from './workflowEngine';
 
-/**
- * lib/engins/useEnginWorkflow.ts
- *
- * React hook — manages one EnginWorkflow instance per Engin per user.
- *
- * Spec: docs/engin_workflows.md §7
- *
- * I/O contract:
- *   - localStorage: primary persistence (zero-latency restore)
- *   - bridge.emit: emitted on handoff (fire-and-forget)
- *   - logJourneyDot: emitted on milestone stage transitions (fire-and-forget)
- *
- * Rules:
- *   - Stage transitions require explicit user calls — never auto-advance.
- *   - Handoffs only emit when stage === 'export'.
- *   - localStorage key: `engin_workflow:<workflowId>`
- */
+
 
 function storageKey(workflowId: string): string {
   return `engin_workflow:${workflowId}`;
@@ -54,7 +38,7 @@ function saveToStorage(workflow: EnginWorkflow): void {
     if (typeof window === 'undefined') return;
     window.localStorage.setItem(storageKey(workflow.id), JSON.stringify(workflow));
   } catch {
-    // Best-effort — never throw from storage writes.
+    
   }
 }
 
@@ -94,33 +78,27 @@ function emitMilestone(
 }
 
 export interface EnginWorkflowHook {
-  /** Current workflow state. null = no workflow loaded. */
+  
   workflow: EnginWorkflow | null;
-  /** Load (or restore) a workflow by catalog ID. Creates fresh if not found in storage. */
+  
   loadWorkflow: (workflowId: string) => void;
-  /** Advance to the next stage. No-op if transition is invalid. */
+  
   advance: (to: WorkflowStage) => void;
-  /** Abandon the current workflow. */
+  
   abandon: () => void;
-  /** Emit a cross-Engin handoff event. No-op if workflow is not in export stage. */
+  
   emitHandoff: (kind: HandoffKind, payload?: Record<string, unknown>) => void;
-  /** Human-readable status string for UI display. */
+  
   statusLabel: string;
 }
 
-/**
- * Manages one workflow instance per workflowId.
- *
- * @example
- * const { workflow, loadWorkflow, advance, emitHandoff } = useEnginWorkflow();
- * useEffect(() => { loadWorkflow('music:beat-composition'); }, [loadWorkflow]);
- */
+
 export function useEnginWorkflow(): EnginWorkflowHook {
   const [workflow, setWorkflow] = useState<EnginWorkflow | null>(null);
 
-  // On mount: restore last active workflow from storage (no-op if nothing stored)
+  
   useEffect(() => {
-    // Intentionally passive — caller must call loadWorkflow() explicitly.
+    
   }, []);
 
   const loadWorkflow = useCallback((workflowId: string) => {
@@ -129,7 +107,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
       setWorkflow(stored);
       return;
     }
-    // Create fresh — throws if workflowId is not in catalog (surfaces as console error)
+    
     try {
       const fresh = createWorkflow(workflowId);
       saveToStorage(fresh);
@@ -144,7 +122,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
       if (!prev) return prev;
       const result = advanceStage(prev, to);
       if (!result.ok) {
-        // Non-fatal — log only in dev
+        
         if (process.env.NODE_ENV !== 'production') {
           const reason = result.ok === false ? result.reason : '';
           console.warn('[useEnginWorkflow] advance rejected:', reason);
@@ -183,7 +161,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
         }
         return;
       }
-      // Verify this kind is registered for the current workflow
+      
       const def = findWorkflowDef(workflow.id);
       if (!def || !(def.handoffKinds as readonly string[]).includes(kind)) {
         if (process.env.NODE_ENV !== 'production') {
@@ -192,7 +170,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
         return;
       }
 
-      // Emit on the bridge — channel matches HandoffKind prefix
+      
       const channel = kind.split(':')[0] as Parameters<typeof bridge.emit>[0];
       bridge.emit(channel, kind, {
         workflowId: workflow.id,
@@ -202,7 +180,7 @@ export function useEnginWorkflow(): EnginWorkflowHook {
         ...payload,
       });
 
-      // Journey Trail — first handoff milestone
+      
       logJourneyDot({
         kind: 'workflow_first_handoff',
         surface: `${workflow.name} (${workflow.enginId})`,

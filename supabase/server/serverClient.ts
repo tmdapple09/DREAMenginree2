@@ -18,19 +18,7 @@ type DisabledSupabaseClient = {
   }
 }
 
-/**
- * Chainable, thenable query-builder stub used by the disabled client.
- *
- * Why: real PostgREST queries look like
- *   `await supabase.from('t').select('*').eq('user_id', id).order(...).limit(N)`
- * and callers always destructure `{ data, error }`. When Supabase is not
- * configured we MUST NOT throw from these calls — that would crash the SSR
- * stream for every PPR page in the app and the server would close the socket
- * before sending any body bytes (manifesting as `IncompleteRead(0 bytes read)`
- * to clients). Instead the proxy:
- *   - returns itself for any method access (so chains keep building),
- *   - is awaitable (a thenable) and resolves to a Supabase-shaped error result.
- */
+
 type DisabledQueryResult = {
   data: null
   error: { message: string; code: string; details: null; hint: null }
@@ -54,21 +42,15 @@ type DisabledStorageBucket = {
 
 export type SupabaseCookieStore = Pick<Awaited<ReturnType<typeof cookies>>, 'getAll' | 'set'>
 
-/**
- * Supabase SSR client factory.
- *
- * - Does not crash builds when env vars are missing.
- * - When unconfigured, falls back to canonical project config.
- * - Env vars resolved by lib/supabase/config.ts.
- */
+
 
 function createDisabledClient(reason: string): SupabaseClient<Database> {
   const authError = new Error(reason)
 
-  // Proxy that satisfies the postgrest query-builder shape: every method
-  // returns the same proxy (so `.from('x').select().eq().order().limit()`
-  // keeps chaining), and the proxy is awaitable, resolving to an error
-  // result that matches PostgREST's `{ data, error, count, status }` shape.
+  
+  
+  
+  
   const buildDisabledQueryBuilder = (): DisabledQueryBuilder => {
     const result: DisabledQueryResult = {
       data: null,
@@ -94,12 +76,12 @@ function createDisabledClient(reason: string): SupabaseClient<Database> {
         if (prop === 'then') {
           return obj.then
         }
-        // Async iterator support for `for await (...)` consumers.
+        
         if (prop === Symbol.asyncIterator || prop === Symbol.iterator) {
           return undefined
         }
-        // Any other property — including unknown PostgREST builder methods —
-        // returns a callable that yields the same chainable builder.
+        
+        
         return (..._args: unknown[]) => buildDisabledQueryBuilder()
       },
     }) as DisabledQueryBuilder
@@ -146,7 +128,7 @@ export function createServerClientWithCookies(
         try {
           cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
         } catch {
-          // Called from a Server Component. Ignore if middleware refreshes sessions.
+          
         }
       },
     },
@@ -182,7 +164,7 @@ export async function createServiceClient(): Promise<SupabaseClient<Database>> {
         return []
       },
       setAll() {
-        // no-op
+        
       },
     },
   })

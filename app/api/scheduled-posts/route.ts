@@ -4,35 +4,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * /api/scheduled-posts
- *
- * CRUD for the ContentScheduler surface.
- *
- * Architecture justification:
- *   docs/AXIOMS.md §3 — every visible action must do something real.
- *   ContentScheduler previously had a "Schedule" button with no handler.
- *   This route backs real creation, listing, updating, and deletion of
- *   scheduled posts.
- *
- *   docs/LAW.md §2 — nothing is public by default.
- *   All rows are private to the authenticated owner (enforced by RLS +
- *   server-side auth check).
- *
- * GET    ?limit=&offset=  — list the caller's scheduled posts
- * POST                    — create a new scheduled post
- * PUT                     — update an existing scheduled post (body: {id, ...fields})
- * DELETE ?id=             — delete one scheduled post
- *
- * Note: `scheduled_posts` exists in migration 20260320000000_scheduled_posts.sql
- * but may not yet appear in the generated SupabaseClient types. We cast to `any`
- * (same pattern used in messages/route.ts and others) until the type snapshot
- * is regenerated.
- */
+
 
 type AnyClient = SupabaseClient;
 
-// GET — list scheduled posts
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -53,7 +29,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ posts: data ?? [] });
 }
 
-// POST — create a scheduled post
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -86,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ post: data }, { status: 201 });
 }
 
-// PUT — update an existing scheduled post
+
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -96,7 +72,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   const { id, ...rest } = body;
   if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
 
-  // Only allow safe fields to be updated
+  
   const allowed: Record<string, unknown> = {};
   if (rest.title         !== undefined) allowed.title         = String(rest.title).trim();
   if (rest.content       !== undefined) allowed.content       = String(rest.content).trim();
@@ -108,7 +84,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     .from('scheduled_posts')
     .update(allowed)
     .eq('id', String(id))
-    .eq('user_id', user.id)      // RLS double-guard
+    .eq('user_id', user.id)      
     .select()
     .single();
 
@@ -116,7 +92,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ post: data });
 }
 
-// DELETE — remove a scheduled post
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -130,7 +106,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .from('scheduled_posts')
     .delete()
     .eq('id', id)
-    .eq('user_id', user.id);   // RLS double-guard
+    .eq('user_id', user.id);   
 
   if (error) return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   return NextResponse.json({ success: true });

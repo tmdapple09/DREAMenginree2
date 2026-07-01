@@ -15,21 +15,7 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-/**
- * components/connectors/dream.ConnectorRow.tsx
- *
- * Phase 5 — Truthful connector status row.
- * Never fakes "Connected" via a setTimeout.
- * Calls /api/connectors/{provider}/connect and reflects real server response.
- * Providers with oauthStartUrl use OAuth redirect — no raw token paste.
- *
- * Status badges use the DREAMengin palette (gold / light-blue / muted).
- * No traffic-light (red/yellow/green) colors.
- *
- * ARCHITECTURE.md §3 — Component layer; no DB calls.
- * ARCHITECTURE.md §8 — Gold / light blue / white design system.
- * AXIOMS.md §3 — Every visible action must do something real.
- */
+
 
 function StatusBadge({ status }: { status: ConnectorStatus }) {
   const map: Record<
@@ -321,7 +307,7 @@ function getCredentialFields(provider: string): CredentialField[] {
 export interface ConnectorRowProps {
   connector: ConnectorDef;
   status: ConnectorStatus;
-  /** Called after a real successful connection — triggers toast + prompt */
+  
   onConnectSuccess: (connectorId: string, connectorName: string) => void;
 }
 
@@ -401,7 +387,7 @@ export default function ConnectorRow({
         ? (connector.requirements ?? connector.description)
         : (connector.whatYouGet ?? connector.description);
 
-  /** Connectors with oauthStartUrl use browser redirect, not the credential modal. */
+  
   const usesOAuth = !!connector.oauthStartUrl;
 
   function handleConnectClick() {

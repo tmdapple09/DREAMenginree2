@@ -7,7 +7,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.EnginesGamesLibrary  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Game Library – GameEngin', description: 'Browse all available games.' };
 
@@ -32,7 +32,7 @@ export default async function GamesLibraryPage(props?: GamesLibraryPageProps ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect(buildLoginRedirectPath('/engines/games/library', currentSearchParams));
 
   return (

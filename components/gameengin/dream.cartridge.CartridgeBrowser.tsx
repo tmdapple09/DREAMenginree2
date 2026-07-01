@@ -8,13 +8,7 @@ import {
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-/**
- * components/gameengin/dream.cartridge.CartridgeBrowser.tsx
- *
- * Browsable cartridge catalogue rendered at /gameengin/cartridges.
- * Lists every game in `CARTRIDGE_MANIFEST` with search, category, and tier
- * filters, and a launch link straight into `/gameengin/cartridges/[id]`.
- */
+
 
 const ALL = "All";
 const TIER_ORDER = ["flagship", "advanced", "classic", "casual"] as const;
@@ -26,7 +20,7 @@ const TIER_LABEL: Record<(typeof TIER_ORDER)[number], string> = {
 };
 
 export interface CartridgeBrowserProps {
-  /** Optional preset category (e.g. "Strategy") to seed the filter. */
+  
   initialCategory?: string;
 }
 
@@ -75,7 +69,7 @@ export default function CartridgeBrowser({
       <div
         style={{ maxWidth: 1180, margin: "0 auto", padding: "32px 20px 80px" }}
       >
-        {/* Header */}
+        
         <header style={{ marginBottom: 22 }}>
           <div
             style={{
@@ -115,7 +109,7 @@ export default function CartridgeBrowser({
           </p>
         </header>
 
-        {/* Toolbar */}
+        
         <div
           style={{
             display: "flex",
@@ -161,7 +155,7 @@ export default function CartridgeBrowser({
           />
         </div>
 
-        {/* Counts */}
+        
         <div
           style={{
             fontSize: 11,
@@ -174,7 +168,7 @@ export default function CartridgeBrowser({
           {CARTRIDGE_MANIFEST.length === 1 ? "" : "s"}
         </div>
 
-        {/* Grid grouped by tier */}
+        
         {filtered.length === 0 ? (
           <div
             style={{

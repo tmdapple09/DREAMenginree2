@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-// lib/ai/schemas.ts
-// Zod 4 schemas for tri-agent AI system
 
-// ============================================================================
-// AGENT & UI CONTEXT SCHEMAS
-// ============================================================================
+
+
+
+
+
 
 export const AgentSchema = z.enum(['dr_eams', 'idari', 'boogieman']);
 export type Agent = z.infer<typeof AgentSchema>;
@@ -35,9 +35,9 @@ export const UIContextSchema = z.object({
 });
 export type UIContext = z.infer<typeof UIContextSchema>;
 
-// ============================================================================
-// INTENT SCHEMAS
-// ============================================================================
+
+
+
 
 export const IntentTypeSchema = z.enum([
   'NAV_DELTA',
@@ -76,21 +76,17 @@ export const IntentEnvelopeSchema = z.object({
 });
 export type IntentEnvelope = z.infer<typeof IntentEnvelopeSchema>;
 
-// ============================================================================
-// DR. EAMS RUN REQUEST/RESPONSE
-// ============================================================================
 
-/**
- * Optional code context attached when Dr. Eams is called from inside CodeEngin.
- * Only the selected snippet (≤ 2 000 chars) is ever sent — never the full
- * notebook or multi-file codebase (privacy boundary, AXIOM 5).
- */
+
+
+
+
 export const CodeContextSchema = z.object({
-  /** Programming language of the active cell. */
+  
   language: z.enum(['python', 'javascript', 'typescript', 'bash']),
-  /** Selected code or active cell content — max 2 000 chars. */
+  
   selected_code: z.string().max(2000),
-  /** 1-based line number of the cursor position (optional). */
+  
   cursor_line: z.number().int().positive().optional(),
 });
 export type CodeContext = z.infer<typeof CodeContextSchema>;
@@ -99,10 +95,7 @@ export const DrEamsRunBodySchema = z.object({
   message: z.string().min(1).max(4000),
   ui: UIContextSchema,
   client_session_id: z.string().optional(),
-  /**
-   * When set, Dr. Eams switches to code-assist mode: vocabulary lookup,
-   * natural-language-to-code, and explain/refactor/debug flows.
-   */
+  
   code_context: CodeContextSchema.optional(),
 });
 export type DrEamsRunBody = z.infer<typeof DrEamsRunBodySchema>;
@@ -120,14 +113,14 @@ export const DrEamsRunResponseSchema = z.object({
 });
 export type DrEamsRunResponse = z.infer<typeof DrEamsRunResponseSchema>;
 
-// ============================================================================
-// EXECUTE REQUEST/RESPONSE
-// ============================================================================
+
+
+
 
 export const ExecuteBodySchema = z.object({
   request_id: z.string().uuid(),
   intent_ids: z.array(z.string().uuid()).min(1).max(3),
-  /** Full intent objects the client received from /api/ai/eams — required for dispatch */
+  
   intents: z.array(IntentSchema).max(3).optional(),
   confirm_token: z.string().optional(),
   ui: UIContextSchema,
@@ -139,7 +132,7 @@ export const ExecuteResponseSchema = z.object({
   results: z.array(z.object({
     intent_id: z.string().uuid(),
     executed: z.boolean(),
-    /** Client-side action to carry out after execution */
+    
     action_type: z.string().optional(),
     action_payload: z.record(z.string(), z.unknown()).optional(),
     error: z.string().optional(),
@@ -151,9 +144,9 @@ export const ExecuteResponseSchema = z.object({
 });
 export type ExecuteResponse = z.infer<typeof ExecuteResponseSchema>;
 
-// ============================================================================
-// BOOGIE MAN SCHEMAS
-// ============================================================================
+
+
+
 
 export const BoogieDecisionSchema = z.enum(['ALLOW', 'DENY', 'CONFIRM', 'MODIFY']);
 export type BoogieDecision = z.infer<typeof BoogieDecisionSchema>;
@@ -178,12 +171,12 @@ export const BoogieOutputSchema = z.object({
 });
 export type BoogieOutput = z.infer<typeof BoogieOutputSchema>;
 
-// ============================================================================
-// THEBOOGIEMAN.AI — ENFORCEMENT SCHEMAS (req 16–50, 96–100)
-// Every enforcement event has two outputs: user-safe explanation + audit event.
-// ============================================================================
 
-// Action types ordered least → most force (req 36)
+
+
+
+
+
 export const EnforcementActionSchema = z.enum([
   'NUDGE',
   'WARN',
@@ -196,7 +189,7 @@ export const EnforcementActionSchema = z.enum([
 ]);
 export type EnforcementAction = z.infer<typeof EnforcementActionSchema>;
 
-// Per-surface enforcement scopes (req 46)
+
 export const EnforcementScopeSchema = z.enum([
   'POSTING',
   'MESSAGING',
@@ -206,11 +199,11 @@ export const EnforcementScopeSchema = z.enum([
 ]);
 export type EnforcementScope = z.infer<typeof EnforcementScopeSchema>;
 
-// Strike severity levels (req 46)
+
 export const StrikeSeveritySchema = z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']);
 export type StrikeSeverity = z.infer<typeof StrikeSeveritySchema>;
 
-// Strike ledger entry (req 27)
+
 export const StrikeEntrySchema = z.object({
   strike_id: z.string().uuid(),
   rule_code: z.string(),
@@ -223,7 +216,7 @@ export const StrikeEntrySchema = z.object({
 });
 export type StrikeEntry = z.infer<typeof StrikeEntrySchema>;
 
-// User-safe explanation payload (req 17)
+
 export const UserSafeExplanationSchema = z.object({
   what_happened: z.string(),
   why: z.string(),
@@ -238,7 +231,7 @@ export const UserSafeExplanationSchema = z.object({
 });
 export type UserSafeExplanation = z.infer<typeof UserSafeExplanationSchema>;
 
-// Internal audit event payload (req 18, 19, 20)
+
 export const InternalAuditEventSchema = z.object({
   event_id: z.string().uuid(),
   user_id: z.string(),
@@ -251,21 +244,21 @@ export const InternalAuditEventSchema = z.object({
   scopes_restricted: z.array(EnforcementScopeSchema),
   timestamp: z.string().datetime(),
   expiry: z.string().datetime().nullable(),
-  evidence_refs: z.array(z.string()),          // hashes/IDs only, never raw content (req 19)
-  prior_event_id: z.string().uuid().nullable(), // append-only corrections (req 20)
-  simulation: z.boolean(),                      // true when BOOGIE_SIMULATION_MODE=true (req 61)
+  evidence_refs: z.array(z.string()),          
+  prior_event_id: z.string().uuid().nullable(), 
+  simulation: z.boolean(),                      
 });
 export type InternalAuditEvent = z.infer<typeof InternalAuditEventSchema>;
 
-// Dual-output enforcement result (req 16)
+
 export const BoogieEnforceOutputSchema = z.object({
   user_explanation: UserSafeExplanationSchema,
   audit_event: InternalAuditEventSchema,
   action: EnforcementActionSchema,
   should_escalate: z.boolean(),
   simulation: z.boolean(),
-  blast_radius: z.number().int().min(0).optional(), // req 25: users affected
-  idari_telemetry: z.object({                        // req 69: summary for IDARi
+  blast_radius: z.number().int().min(0).optional(), 
+  idari_telemetry: z.object({                        
     rule_code: z.string(),
     action: EnforcementActionSchema,
     confidence: z.number(),
@@ -277,7 +270,7 @@ export const BoogieEnforceOutputSchema = z.object({
 });
 export type BoogieEnforceOutput = z.infer<typeof BoogieEnforceOutputSchema>;
 
-// Appeal request (req 44, 75)
+
 export const AppealRequestSchema = z.object({
   user_id: z.string(),
   strike_id: z.string().uuid().optional(),
@@ -287,7 +280,7 @@ export const AppealRequestSchema = z.object({
 });
 export type AppealRequest = z.infer<typeof AppealRequestSchema>;
 
-// Appeal queue entry
+
 export const AppealEntrySchema = z.object({
   appeal_id: z.string().uuid(),
   user_id: z.string(),
@@ -302,7 +295,7 @@ export const AppealEntrySchema = z.object({
 });
 export type AppealEntry = z.infer<typeof AppealEntrySchema>;
 
-// Policy health status (req 65)
+
 export const PolicyHealthSchema = z.object({
   status: z.enum(['ok', 'degraded', 'offline']),
   policy_version: z.string(),

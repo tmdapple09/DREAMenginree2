@@ -65,7 +65,7 @@ describe('decideBarRelease', () => {
   it('still snaps to top when the bar is already nearly pinned to the screen top', () => {
     const action = decideBarRelease({
       screenH,
-      dragH: screenH - 4, // barTop = 4 → within BAR_SNAP_TO_TOP_THRESHOLD_PX
+      dragH: screenH - 4, 
       barH,
       velocityPxPerMs: 0,
     });

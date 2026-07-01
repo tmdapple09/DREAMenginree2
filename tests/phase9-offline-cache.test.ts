@@ -1,13 +1,4 @@
-/**
- * tests/phase9-offline-cache.test.ts
- *
- * Tests for lib/offline/offlineCache.ts — IndexedDB-based offline asset & scene
- * cache with sync queue.
- *
- * Since IndexedDB is not available in the Node test environment, these tests
- * validate the pure logic and type contracts. The IndexedDB operations are
- * tested via structural assertions and mock-based verification.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import type {
@@ -18,7 +9,7 @@ import type {
   SyncQueueEntry,
 } from '@/engine/offline/offlineCache';
 
-// ─── Type contract tests ──────────────────────────────────────────────────────
+
 
 describe('Offline Cache — type contracts', () => {
   it('CachedAsset has required fields', () => {
@@ -94,12 +85,12 @@ describe('Offline Cache — type contracts', () => {
   });
 });
 
-// ─── Connectivity helpers ─────────────────────────────────────────────────────
+
 
 describe('Offline Cache — connectivity', () => {
   it('isOnline returns boolean', async () => {
     const { isOnline } = await import('@/engine/offline/offlineCache');
-    // In Node, navigator.onLine may be undefined — isOnline defaults to true
+    
     expect(typeof isOnline()).toBe('boolean');
   });
 
@@ -107,11 +98,11 @@ describe('Offline Cache — connectivity', () => {
     const { onConnectivityChange } = await import('@/engine/offline/offlineCache');
     const unsub = onConnectivityChange(() => {});
     expect(typeof unsub).toBe('function');
-    unsub(); // should not throw
+    unsub(); 
   });
 });
 
-// ─── DB constants ─────────────────────────────────────────────────────────────
+
 
 describe('Offline Cache — constants', () => {
   it('exports DB_NAME and store names', async () => {

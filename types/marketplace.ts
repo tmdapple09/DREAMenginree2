@@ -1,6 +1,6 @@
-// types/marketplace.ts
-// Section 12: Marketplace System
-// Users can sell: Widgets, Games, Beats, AI Agents, Workflows, Templates
+
+
+
 
 export type MarketplaceCategory =
   | "widget"
@@ -22,9 +22,9 @@ export interface MarketplaceListing {
   currency?: string;
   image_url?: string;
   preview_url?: string;
-  // Where the store lives
+  
   surface: MarketplaceStoreSurface;
-  // Category-specific payload
+  
   payload?: Record<string, unknown>;
   tags?: string[];
   downloads?: number;

@@ -4,11 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * GET    /api/close-friends          — list the caller's close friends
- * POST   /api/close-friends          — add a user to close friends (body: { friend_id })
- * DELETE /api/close-friends?friend_id — remove a user from close friends
- */
+
 
 export async function GET(_req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

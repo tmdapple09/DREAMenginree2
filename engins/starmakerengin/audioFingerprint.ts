@@ -1,53 +1,41 @@
 import { TORRIDITY_DP, TORRIDITY_N } from '@/dreamr/torridity';
 
-/**
- * Audio Fingerprint — Fingerprint-Based Sound Isolation
- *
- * Builds constellation peak-maps from AudioBuffers, records reference
- * fingerprints, matches them against a live signal, and extracts
- * isolated audio stems.
- *
- * Torridity constants (n=2.1, ΔP=0.1) are used to filter low-energy
- * peaks below a dynamic threshold.
- */
 
-/** A single frequency peak. */
+
+
 export interface Peak {
-  /** Frequency bin index. */
+  
   binIndex: number;
-  /** Approximate frequency in Hz (binIndex * sampleRate / fftSize). */
+  
   frequencyHz: number;
-  /** Peak magnitude (linear). */
+  
   magnitude: number;
-  /** Time slice index. */
+  
   timeSlice: number;
 }
 
-/**
- * PeakMap: sparse constellation of the top-K peaks per time slice.
- * Designed to be ~200 KB for a 3-minute song at default settings.
- */
+
 export interface PeakMap {
   songId?: string;
-  /** FFT size used during analysis. */
+  
   fftSize: number;
-  /** Sample rate of the source audio. */
+  
   sampleRate: number;
-  /** Duration of each time slice in seconds. */
+  
   sliceDurationSec: number;
-  /** All peaks across all time slices. */
+  
   peaks: Peak[];
-  /** Total number of time slices. */
+  
   totalSlices: number;
 }
 
-/** A reference fingerprint anchored to a specific time window. */
+
 export interface Fingerprint {
   id: string;
-  startTime: number;   // seconds
-  endTime: number;     // seconds
+  startTime: number;   
+  endTime: number;     
   peakMap: PeakMap;
-  /** Normalised signature vector for fast cosine matching. */
+  
   signature: number[];
 }
 
@@ -59,41 +47,29 @@ export interface MatchResult {
 }
 
 const DEFAULT_FFT_SIZE        = 2048;
-const DEFAULT_SLICE_DURATION  = 0.1;   // 100 ms per slice
+const DEFAULT_SLICE_DURATION  = 0.1;   
 const DEFAULT_TOP_K           = 5;
 
-/**
- * Peak-energy threshold derived from torridity:
- *   threshold = ΔP * n   (0.1 * 2.1 = 0.21 of max magnitude)
- */
-const PEAK_THRESHOLD_FRACTION = TORRIDITY_DP * TORRIDITY_N; // 0.21
 
-/**
- * buildPeakMap(audioBuffer, topK)
- *
- * Analyses an AudioBuffer by time-slicing and running a simple FFT
- * approximation to extract the topK frequency peaks per slice.
- *
- * NOTE: Full FFT requires OfflineAudioContext which is browser-only.
- * We use a DFT-based approach here that works in both browser and
- * server environments (for testing).
- */
+const PEAK_THRESHOLD_FRACTION = TORRIDITY_DP * TORRIDITY_N; 
+
+
 export function buildPeakMap(audioBuffer: AudioBuffer, topK = DEFAULT_TOP_K): PeakMap {
   const sampleRate      = audioBuffer.sampleRate;
   const fftSize         = DEFAULT_FFT_SIZE;
   const sliceSamples    = Math.floor(sampleRate * DEFAULT_SLICE_DURATION);
-  const channelData     = audioBuffer.getChannelData(0); // mono
+  const channelData     = audioBuffer.getChannelData(0); 
   const totalSlices     = Math.floor(channelData.length / sliceSamples);
   const peaks: Peak[]   = [];
 
-  const maxMagnitude    = 1.0; // linear scale
+  const maxMagnitude    = 1.0; 
   const energyThreshold = maxMagnitude * PEAK_THRESHOLD_FRACTION;
 
   for (let slice = 0; slice < totalSlices; slice++) {
     const offset   = slice * sliceSamples;
     const window   = channelData.slice(offset, offset + sliceSamples);
 
-    // Simple magnitude spectrum via DFT (only up to fftSize/2 bins)
+    
     const halfBins = Math.min(fftSize / 2, sliceSamples / 2);
     const magnitudes: { bin: number; mag: number }[] = [];
 
@@ -110,7 +86,7 @@ export function buildPeakMap(audioBuffer: AudioBuffer, topK = DEFAULT_TOP_K): Pe
       }
     }
 
-    // Sort descending by magnitude and take topK
+    
     magnitudes.sort((a, b) => b.mag - a.mag);
     for (let k = 0; k < Math.min(topK, magnitudes.length); k++) {
       const { bin, mag } = magnitudes[k];
@@ -148,17 +124,12 @@ function buildSignature(peaks: Peak[], fftSize: number): number[] {
       vec[p.binIndex] = Math.max(vec[p.binIndex], p.magnitude);
     }
   }
-  // Normalise to unit length
+  
   const norm = Math.sqrt(vec.reduce((a, v: number) => a + v * v, 0));
   return norm > 0 ? vec.map((v) => v / norm) : vec;
 }
 
-/**
- * recordReferenceFingerprint(peakMap, startTime, endTime)
- *
- * Extracts peaks from the specified time window and builds a
- * normalised signature vector for fast matching.
- */
+
 export function recordReferenceFingerprint(
   peakMap: PeakMap,
   startTime: number,
@@ -170,13 +141,7 @@ export function recordReferenceFingerprint(
   return { id, startTime, endTime, peakMap: { ...peakMap, peaks: windowPeaks }, signature };
 }
 
-/**
- * matchFingerprint(fingerprint, candidatePeakMap, threshold)
- *
- * Slides the fingerprint signature over each time slice in
- * candidatePeakMap, returning slices whose cosine similarity
- * exceeds the threshold.
- */
+
 export function matchFingerprint(
   fingerprint: Fingerprint,
   candidatePeakMap: PeakMap,
@@ -192,7 +157,7 @@ export function matchFingerprint(
     const windowPeaks = peaksInWindow(candidatePeakMap, startSec, endSec);
     const candidateSig = buildSignature(windowPeaks, candidatePeakMap.fftSize);
 
-    // Cosine similarity
+    
     let dot = 0;
     const len = Math.min(fingerprint.signature.length, candidateSig.length);
     for (let i = 0; i < len; i++) dot += fingerprint.signature[i] * candidateSig[i];
@@ -205,42 +170,23 @@ export function matchFingerprint(
   return results;
 }
 
-/**
- * createFingerprintIsolator()
- *
- * Returns a stateful isolator object that lets the user:
- *   1. Record a reference fingerprint from a visual tap (recordReference).
- *   2. Match that fingerprint against the full song peak map and extract
- *      isolated audio chunks (isolate).
- *
- * Uses constellation peak-map technique described in docs/LAW.md §17.
- * No AI model required — pure signal fingerprinting.
- */
+
 export function createFingerprintIsolator( ){
   let _reference: Fingerprint | null = null;
 
   return {
-    /** True once a reference fingerprint has been recorded. */
+    
     get hasReference() {
       return _reference !== null;
     },
 
-    /**
-     * Record a reference fingerprint from a time window in the peak map.
-     * Typically called when the user taps a frequency hotspot in the 3D
-     * visualizer.
-     */
+    
     recordReference(peakMap: PeakMap, startTime: number, endTime: number): Fingerprint {
       _reference = recordReferenceFingerprint(peakMap, startTime, endTime);
       return _reference;
     },
 
-    /**
-     * Match the reference fingerprint against candidatePeakMap and extract
-     * matching audio chunks from sourceBuffer as an isolated stem AudioBuffer.
-     *
-     * Returns null if no reference fingerprint has been recorded.
-     */
+    
     isolate(
       candidatePeakMap: PeakMap,
       sourceBuffer: AudioBuffer,
@@ -251,27 +197,20 @@ export function createFingerprintIsolator( ){
       return extractAudioChunks(sourceBuffer, matches);
     },
 
-    /** Clear the stored reference fingerprint. */
+    
     clear() {
       _reference = null;
     },
   };
 }
 
-/**
- * extractAudioChunks(audioBuffer, timeSlices)
- *
- * Stitches the matched time slices from the source AudioBuffer into a
- * new AudioBuffer (isolated stem).
- *
- * Requires browser AudioContext.
- */
+
 export function extractAudioChunks(
   audioBuffer: AudioBuffer,
   timeSlices: MatchResult[]
 ): AudioBuffer {
   if (timeSlices.length === 0) {
-    // Return a 1-sample silent buffer
+    
     const ctx   = new AudioContext();
     const empty = ctx.createBuffer(audioBuffer.numberOfChannels, 1, audioBuffer.sampleRate);
     return empty;
@@ -281,7 +220,7 @@ export function extractAudioChunks(
   const numChannels  = audioBuffer.numberOfChannels;
   const ctx          = new AudioContext();
 
-  // Total sample count needed
+  
   const totalSamples = timeSlices.reduce(
     (acc, s) => acc + Math.floor((s.endTimeSec - s.startTimeSec) * sampleRate),
     0

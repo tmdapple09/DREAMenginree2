@@ -124,19 +124,19 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
   return (
     <div style={{ maxWidth: 640, margin: '0 auto', padding: '16px 16px 100px', display: 'flex', flexDirection: 'column', gap: 14 }}>
 
-      {/* ── Profile Card — inline editable MySpace-style ── */}
+      
       <div className="de-widget" style={{
         background: 'linear-gradient(160deg, rgba(200,152,26,0.06) 0%, rgba(42,138,184,0.06) 100%)',
         borderColor: 'rgba(42,138,184,0.22)',
         overflow: 'hidden',
       }}>
-        {/* Gradient banner strip */}
+        
         <div style={{
           height: 72,
           background: 'linear-gradient(135deg, var(--de-theme-from, #c8dff5) 0%, var(--de-theme-mid, #d8eaf8) 50%, var(--de-theme-to, #f5e8c4) 100%)',
           position: 'relative',
         }}>
-          {/* Avatar */}
+          
           <div style={{ position: 'absolute', bottom: -30, left: 16 }}>
             <div style={{
               width: 64, height: 64, borderRadius: '50%',
@@ -153,7 +153,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
               {!profile.avatar_url && (displayName[0] || '∞').toUpperCase()}
             </div>
           </div>
-          {/* Visitor View shortcut */}
+          
           <div style={{ position: 'absolute', top: 8, right: 10 }}>
             <Link
               href={`/profile/${handle}`}
@@ -200,7 +200,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
                 {profile.website && (
                   <a href={profile.website} target="_blank" rel="noopener noreferrer"
                     style={{ fontSize: 12, color: 'var(--de-accent)', textDecoration: 'none' }}>
-                    🔗 {profile.website.replace(/^https?:\/\//, '')}
+                    🔗 {profile.website.replace(/^https?:\/\
                   </a>
                 )}
               </div>
@@ -212,7 +212,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
               )}
             </div>
           ) : (
-            /* Edit mode */
+            
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-heading)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
@@ -262,7 +262,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
         </div>
       </div>
 
-      {/* ── Widget Canvas — pick what visitors see ── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">Profile Canvas</span>
@@ -288,7 +288,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Icon className="w-4 h-4" style={{ color: on ? color : 'var(--de-text-dim)' }} />
-                    {/* Mini toggle */}
+                    
                     <div style={{ width: 28, height: 16, borderRadius: 99, background: on ? color : 'rgba(160,195,240,0.3)', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
                       <div style={{ position: 'absolute', top: 2, left: on ? 14 : 2, width: 12, height: 12, borderRadius: '50%', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.18s' }} />
                     </div>
@@ -307,7 +307,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
         </div>
       </div>
 
-      {/* ── Share Profile ── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Share2 className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />

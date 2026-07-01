@@ -1,11 +1,4 @@
-/**
- * DREAMengin app-wide offline substrate.
- *
- * This module keeps the older asset/scene cache API intact while adding the
- * cache-first records, HTTP snapshots, and sync queue primitives needed by the
- * shell, DreamDMBar, DreamR, messages, notifications, artifacts, active
- * modules, and Engins.
- */
+
 
 export const DB_NAME = 'dreamengin-offline';
 export const DB_VERSION = 2;
@@ -165,7 +158,7 @@ function fallbackList<T>(store: string, predicate?: (value: T) => boolean): T[] 
       const parsed = JSON.parse(raw) as T;
       if (!predicate || predicate(parsed)) out.push(parsed);
     } catch {
-      // Ignore corrupt fallback entries; IndexedDB remains canonical when available.
+      
     }
   }
   return out;

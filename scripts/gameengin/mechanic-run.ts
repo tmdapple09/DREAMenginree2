@@ -1,14 +1,4 @@
-/**
- * scripts/gameengin/mechanic-run.ts
- *
- * Mechanic agent. Spec: GameENGINspec.md §3.4, §5.3.
- *
- * Local work: reads tuning.json from the target cartridge, validates ranges
- * against the brain mechanic-library, optionally compiles
- * `assembly/<cartridge_id>-player.ts` to wasm via `asc` when the `asc` binary
- * is installed (it is, via devDependency assemblyscript), and verifies the
- * resulting wasm is < 500 KB per spec §1.5.
- */
+
 
 import { execFileSync } from 'node:child_process';
 import * as fs from 'node:fs';

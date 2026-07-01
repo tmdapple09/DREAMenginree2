@@ -1,17 +1,6 @@
 import type * as BJSNS from '@babylonjs/core';
 
-/**
- * MADMAXI · materials.ts
- *
- * Reusable PBR material helpers for the MADMAXI side-scroller. These keep the
- * 2020-fidelity look (brushed-metal micro-variation, fresnel rim emissive,
- * scrolling scan-line emissive) without pulling in any new Babylon.js
- * sub-packages — every helper uses only `@babylonjs/core` primitives.
- *
- * The helpers are intentionally lazy: shared procedural textures are created
- * on first request via `getSharedNoiseTexture` and re-used across all
- * materials. Disposing the scene disposes the textures automatically.
- */
+
 
 type BJS = typeof BJSNS;
 type Scene = BJSNS.Scene;
@@ -23,11 +12,7 @@ const SCANLINE_TEX_KEY_PREFIX = '__madmaxi_scanline_tex__';
 
 type SceneAny = Scene & Record<string, unknown>;
 
-/**
- * One shared 256×256 grey-scale value-noise texture, used as a roughness
- * micro-variation map. Re-used by every detail material in the scene to
- * avoid texture allocation pressure on low-tier devices.
- */
+
 export function getSharedNoiseTexture(BJS: BJS, scene: Scene): DynamicTexture {
   const cached = (scene as SceneAny)[NOISE_TEX_KEY] as DynamicTexture | undefined;
   if (cached) return cached;
@@ -42,7 +27,7 @@ export function getSharedNoiseTexture(BJS: BJS, scene: Scene): DynamicTexture {
   const ctx = tex.getContext() as CanvasRenderingContext2D;
   const img = ctx.createImageData(SIZE, SIZE);
 
-  // Two-octave value noise — cheap, deterministic, no dependencies.
+  
   const hash = (x: number, y: number) => {
     const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
     return n - Math.floor(n);
@@ -85,33 +70,28 @@ export function getSharedNoiseTexture(BJS: BJS, scene: Scene): DynamicTexture {
 }
 
 export interface DetailMatOpts {
-  /** Linear-space base albedo. */
+  
   baseColor: [number, number, number];
   metallic: number;
   roughness: number;
   emissive?: [number, number, number];
-  /** Emissive intensity multiplier (added to baseline). */
+  
   emissiveBoost?: number;
   envIntensity?: number;
   clearCoat?: { intensity: number; roughness?: number };
-  /** Tile count for noise micro-variation (higher = finer grain). */
+  
   noiseTile?: number;
-  /** Strength of micro-variation [0..1]. 0 disables the noise lookup. */
+  
   noiseStrength?: number;
-  /** Add a subtle directional emissive fresnel "rim" in this colour. */
+  
   rimColor?: [number, number, number];
   rimPower?: number;
-  /** Allow material alpha < 1 (used for visor glass). */
+  
   alpha?: number;
   backFaceCulling?: boolean;
 }
 
-/**
- * Build a 2020-grade PBR material with brushed-metal micro-variation,
- * optional clear-coat, and optional emissive fresnel rim. The procedural
- * noise is mixed in via the metallic map so existing emissive/albedo logic
- * keeps working unchanged on the calling site.
- */
+
 export function makeDetailMat(
   BJS: BJS,
   scene: Scene,
@@ -141,37 +121,37 @@ export function makeDetailMat(
     m.clearCoat.roughness = opts.clearCoat.roughness ?? 0.08;
   }
 
-  // Roughness micro-variation via a shared noise texture on the
-  // metallic-roughness channel. The noise modulates roughness in [-strength..+strength]
-  // so flat metals read as brushed/anodised rather than plastic.
+  
+  
+  
   const strength = opts.noiseStrength ?? 0.35;
   if (strength > 0) {
     const noise = getSharedNoiseTexture(BJS, scene);
-    // Babylon reads roughness from green channel of metallic texture, metallic from blue.
-    // Use the noise as a metallic texture only for `useRoughnessFromMetallicTextureGreen`
-    // — but we don't want to override the scalar metallic value. Cheaper: assign as a
-    // bumpTexture with very small strength to perturb the normal.
+    
+    
+    
+    
     const bump = noise.clone() as DynamicTexture;
     bump.uScale = opts.noiseTile ?? 4;
     bump.vScale = opts.noiseTile ?? 4;
-    bump.level = strength * 0.6; // bump amplitude
+    bump.level = strength * 0.6; 
     m.bumpTexture = bump;
     m.invertNormalMapX = false;
     m.invertNormalMapY = false;
     m.useParallax = false;
   }
 
-  // Subtle directional rim — implemented via emissive fresnel parameters.
-  // The fresnel terms on PBRMaterial are gated on emissiveColor being set, so
-  // we only enable when a rimColor is provided.
+  
+  
+  
   if (opts.rimColor) {
     const rim = opts.rimColor;
     const power = opts.rimPower ?? 2.4;
-    // PBRMaterial doesn't ship a builtin emissive fresnel like StandardMaterial,
-    // but `useEmissiveAsIllumination` + a fresnel-driven emissiveIntensity is
-    // approximated by combining a faint base emissive with a glow-layer-friendly
-    // emissive boost. We add the rim colour into the existing emissive at half
-    // strength so it shows up as a soft rim under the directional/HDR lighting.
+    
+    
+    
+    
+    
     const baseE = m.emissiveColor ?? new BJS.Color3(0, 0, 0);
     m.emissiveColor = new BJS.Color3(
       Math.min(1, baseE.r + rim[0] * 0.18),
@@ -184,11 +164,7 @@ export function makeDetailMat(
   return m;
 }
 
-/**
- * A small dynamic texture filled with horizontal scan-lines, designed for
- * use as the emissive texture on the player's visor / screen. Call
- * `advance(animTick)` once per render frame to scroll the lines.
- */
+
 export interface ScanLineTexture {
   texture: DynamicTexture;
   advance(animTick: number): void;
@@ -219,7 +195,7 @@ export function createScanLineTexture(
       ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
       ctx.fillRect(0, y, W, 2);
     }
-    // A few flickering data-bars to feel alive
+    
     ctx.fillStyle = `rgba(${r},${g},${b},0.85)`;
     ctx.fillRect(6, 24, 18, 3);
     ctx.fillRect(8, 60, 26, 3);
@@ -235,7 +211,7 @@ export function createScanLineTexture(
   const out: ScanLineTexture = {
     texture: tex,
     advance(animTick: number) {
-      // Scroll vertically; phase-shift colour every ~2s for a "living" panel feel.
+      
       tex.vOffset = (animTick * 0.012) % 1;
       tex.uOffset = (animTick * 0.0006) % 1;
     },

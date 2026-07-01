@@ -1,24 +1,12 @@
-/**
- * lib/marketplace/listings.ts
- *
- * DreamMarketplace listing business logic — pure functions, no DB calls.
- *
- * Used by:
- *   - app/api/marketplace/route.ts
- *   - app/marketplace/[id]/page.tsx
- *   - tests/phase8e-shop-marketplace.test.ts
- *
- * Architecture: docs/ARCHITECTURE.md §10 — business logic lives in lib/
- * Phase 8 §E:   Points 42, 43, 44
- */
 
-/** Canonical Supabase table name for DreamMarketplace listings. */
+
+
 export const MARKETPLACE_TABLE = 'marketplace_items' as const;
 
-/** Canonical Supabase table name for marketplace contact requests. */
+
 export const MARKETPLACE_CONTACT_TABLE = 'marketplace_contact_requests' as const;
 
-/** Valid listing categories. */
+
 export const VALID_MARKETPLACE_CATEGORIES = [
   'widget',
   'theme',
@@ -28,13 +16,13 @@ export const VALID_MARKETPLACE_CATEGORIES = [
 
 export type MarketplaceCategory = typeof VALID_MARKETPLACE_CATEGORIES[number];
 
-/** Maximum title length. */
+
 export const MARKETPLACE_TITLE_MAX = 120;
 
-/** Maximum tags per listing. */
+
 export const MARKETPLACE_TAGS_MAX = 10;
 
-/** Maximum tag character length. */
+
 export const MARKETPLACE_TAG_MAX_LENGTH = 40;
 
 export type MarketplaceListingInput = {
@@ -53,7 +41,7 @@ export type MarketplaceListingRecord = {
   category:     MarketplaceCategory;
   price_cents:  number;
   tags:         string[];
-  is_published: false;    // always starts unpublished (LAW.md §2)
+  is_published: false;    
 };
 
 export type ValidationResult = {
@@ -61,9 +49,7 @@ export type ValidationResult = {
   errors: string[];
 };
 
-/**
- * Validates raw inbound body for a new marketplace listing.
- */
+
 export function validateMarketplaceListing(body: unknown): ValidationResult {
   const errors: string[] = [];
 
@@ -106,11 +92,7 @@ export function validateMarketplaceListing(body: unknown): ValidationResult {
   return { valid: errors.length === 0, errors };
 }
 
-/**
- * Maps validated client body to a DB-ready insert payload.
- * Price stored as integer cents (no float rounding issues).
- * is_published is always false (LAW.md §2: nothing public by default).
- */
+
 export function normalizeMarketplaceListing(
   sellerId: string,
   input: MarketplaceListingInput,
@@ -134,19 +116,12 @@ export function normalizeMarketplaceListing(
   };
 }
 
-/**
- * Returns the canonical detail route for a marketplace listing.
- * Used in MarketplaceListingCard and marketplace/[id]/page.tsx.
- * Point 43: navigation link from listing resolves to real data.
- */
+
 export function marketplaceDetailRoute(itemId: string): string {
   return `/marketplace/${itemId}`;
 }
 
-/**
- * Formats price_cents for display.
- * Returns 'Free' for zero-price items.
- */
+
 export function formatMarketplacePrice(priceCents: number): string {
   if (priceCents === 0) return 'Free';
   return `$${(priceCents / 100).toFixed(2)}`;

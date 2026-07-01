@@ -2,21 +2,10 @@
 
 import React from 'react';
 
-/**
- * InfinityIcon — SVG brand infinity mark for DREAMengin.
- *
- * variant:
- *   'flat'      — just the symbol, aspect-ratio ~2:1 (width = 2 × size)
- *   'circle'    — circular badge container of size × size
- *   'squircle'  — iOS-style rounded-square badge of size × size
- *
- * colorScheme:
- *   'gold'      — gold left lobe + cyan right lobe (brand colours, image 2)
- *   'dark'      — white/silver symbol for use on dark/gold backgrounds (image 1)
- */
 
-// Lemniscate ribbon path in a 100 × 50 viewBox.
-// The bezier ribbon weaves through the centre creating the X-crossing effect.
+
+
+
 const PATH =
   'M10,25 C10,12 18,4 28,4 C38,4 44,16 50,24 ' +
   'C56,32 62,46 72,46 C82,46 90,38 90,25 ' +
@@ -27,10 +16,7 @@ export type InfinityVariant = 'flat' | 'circle' | 'squircle';
 export type InfinityColorScheme = 'gold' | 'dark';
 
 export interface InfinityIconProps {
-  /**
-   * For 'flat': height in px (rendered width = 2 × size).
-   * For 'circle' / 'squircle': container side length in px.
-   */
+  
   size?: number;
   variant?: InfinityVariant;
   colorScheme?: InfinityColorScheme;
@@ -49,7 +35,7 @@ export default function InfinityIcon({
 }: InfinityIconProps) {
   const isFlat = variant === 'flat';
 
-  // Scale SVG to fit its context
+  
   const svgW = isFlat ? size * 2 : Math.round(size * 0.80);
   const svgH = isFlat ? size      : Math.round(size * 0.40);
 

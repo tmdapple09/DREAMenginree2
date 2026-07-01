@@ -31,7 +31,7 @@ export default function ProfileWidgetBlock({
         transition: 'transform 0.18s ease, box-shadow 0.18s ease',
       }}
     >
-      {/* Widget header */}
+      
       <div
         style={{
           display: 'flex',
@@ -93,7 +93,7 @@ export default function ProfileWidgetBlock({
         )}
       </div>
 
-      {/* Widget content */}
+      
       <div>{children}</div>
     </div>
   );

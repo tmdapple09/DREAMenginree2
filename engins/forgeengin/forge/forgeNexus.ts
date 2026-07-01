@@ -1,77 +1,64 @@
 import { CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY } from './forgeRegistry';
 
-/**
- * Forge Nexus — Engine Connection Graph & Flow Analysis
- *
- * Builds a directed graph of engine-to-engine transitions from activity history.
- * Computes connection strengths, identifies dominant flows, and detects
- * engine "affinity clusters" — groups of engines that are frequently used together.
- *
- * The Nexus graph is the relational intelligence layer of the Forge:
- * - Which engines do you naturally pair?
- * - What's your strongest creative pipeline?
- * - Which engines are isolated (never connected to others)?
- *
- * Architecture: Pure computation from Forge history. No Supabase writes.
- */
+
 
 export interface NexusEdge {
-  /** Source engine id */
+  
   from: string;
-  /** Target engine id */
+  
   to: string;
-  /** Number of observed transitions */
+  
   weight: number;
-  /** Normalised strength 0–1 (relative to max edge in the graph) */
+  
   strength: number;
-  /** Display label (e.g. "🎵 → 🎮") */
+  
   label: string;
 }
 
 export interface NexusNode {
-  /** Engine id */
+  
   id: string;
-  /** Engine name */
+  
   name: string;
-  /** Emoji */
+  
   emoji: string;
-  /** Accent colour */
+  
   accent: string;
-  /** Total inbound transitions */
+  
   inbound: number;
-  /** Total outbound transitions */
+  
   outbound: number;
-  /** Degree centrality (inbound + outbound, normalised 0–1) */
+  
   centrality: number;
-  /** Whether this engine is "isolated" (zero connections) */
+  
   isolated: boolean;
 }
 
 export interface AffinityCluster {
-  /** Cluster id */
+  
   id: string;
-  /** Engine ids in this cluster */
+  
   engines: string[];
-  /** Total edge weight within the cluster */
+  
   internalWeight: number;
-  /** Display label */
+  
   label: string;
-  /** Accent (from the highest-centrality engine) */
+  
   accent: string;
 }
 
 export interface NexusSnapshot {
-  /** All edges (transitions) with weight > 0 */
+  
   edges: NexusEdge[];
-  /** All engine nodes with computed metrics */
+  
   nodes: NexusNode[];
-  /** Detected affinity clusters */
+  
   clusters: AffinityCluster[];
-  /** The single strongest pipeline (sequence of engines) */
+  
   dominantPipeline: string[];
-  /** Total transitions observed */
+  
   totalTransitions: number;
-  /** Timestamp of computation */
+  
   computedAt: string;
 }
 
@@ -81,9 +68,7 @@ interface HistoryEntry {
   timestamp: string;
 }
 
-/**
- * Read history entries from localStorage.
- */
+
 function readHistory(): HistoryEntry[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -95,10 +80,7 @@ function readHistory(): HistoryEntry[] {
   }
 }
 
-/**
- * Build a directed transition map from history.
- * Key: "from→to", Value: count
- */
+
 export function buildTransitionMap(history: HistoryEntry[]): Map<string, number> {
   const map = new Map<string, number>();
   for (let i = 1; i < history.length; i++) {
@@ -111,9 +93,7 @@ export function buildTransitionMap(history: HistoryEntry[]): Map<string, number>
   return map;
 }
 
-/**
- * Compute all edges from a transition map.
- */
+
 export function computeEdges(transitions: Map<string, number>): NexusEdge[] {
   if (transitions.size === 0) return [];
 
@@ -138,9 +118,7 @@ export function computeEdges(transitions: Map<string, number>): NexusEdge[] {
   return edges.sort((a, b) => b.weight - a.weight);
 }
 
-/**
- * Compute node metrics from edges.
- */
+
 export function computeNodes(edges: NexusEdge[]): NexusNode[] {
   const inbound = new Map<string, number>();
   const outbound = new Map<string, number>();
@@ -173,13 +151,9 @@ export function computeNodes(edges: NexusEdge[]): NexusNode[] {
   });
 }
 
-/**
- * Detect affinity clusters — groups of engines that are mutually connected.
- * Uses a simple greedy approach: find pairs with bidirectional edges,
- * then merge overlapping pairs.
- */
+
 export function detectClusters(edges: NexusEdge[]): AffinityCluster[] {
-  // Find bidirectional pairs
+  
   const pairs: Array<[string, string, number]> = [];
   const edgeMap = new Map<string, number>();
   for (const edge of edges) {
@@ -199,7 +173,7 @@ export function detectClusters(edges: NexusEdge[]): AffinityCluster[] {
 
   if (pairs.length === 0) return [];
 
-  // Merge overlapping pairs into clusters
+  
   const clusters: Set<string>[] = [];
   const weights: number[] = [];
 
@@ -222,7 +196,7 @@ export function detectClusters(edges: NexusEdge[]): AffinityCluster[] {
 
   return clusters.map((engineSet, i: number) => {
     const engineIds = [...engineSet];
-    // Pick accent from highest-centrality engine
+    
     const primary = ENGIN_REGISTRY.find((e) => e.id === engineIds[0]);
     const emojis = engineIds
       .map((id) => ENGIN_REGISTRY.find((e) => e.id === id)?.emoji ?? '?')
@@ -238,14 +212,11 @@ export function detectClusters(edges: NexusEdge[]): AffinityCluster[] {
   });
 }
 
-/**
- * Find the dominant pipeline — the longest frequently-used chain of engines.
- * Uses greedy path extension from the most-used starting engine.
- */
+
 export function findDominantPipeline(edges: NexusEdge[]): string[] {
   if (edges.length === 0) return [];
 
-  // Build adjacency: for each engine, find the strongest outbound edge
+  
   const bestNext = new Map<string, { to: string; weight: number }>();
   for (const edge of edges) {
     const current = bestNext.get(edge.from);
@@ -254,7 +225,7 @@ export function findDominantPipeline(edges: NexusEdge[]): string[] {
     }
   }
 
-  // Start from the engine with the most outbound weight
+  
   const outWeights = new Map<string, number>();
   for (const edge of edges) {
     outWeights.set(edge.from, (outWeights.get(edge.from) ?? 0) + edge.weight);
@@ -271,7 +242,7 @@ export function findDominantPipeline(edges: NexusEdge[]): string[] {
 
   if (!startEngine) return [];
 
-  // Greedy walk, avoiding cycles
+  
   const pipeline: string[] = [startEngine];
   const visited = new Set<string>([startEngine]);
   let current = startEngine;
@@ -287,9 +258,7 @@ export function findDominantPipeline(edges: NexusEdge[]): string[] {
   return pipeline;
 }
 
-/**
- * Compute a full Nexus snapshot from current history data.
- */
+
 export function computeNexus(historyOverride?: HistoryEntry[]): NexusSnapshot {
   const history = historyOverride ?? readHistory();
   const transitions = buildTransitionMap(history);

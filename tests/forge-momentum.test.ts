@@ -1,13 +1,8 @@
-/**
- * Forge Momentum Tests
- *
- * Tests for the creative momentum scoring system:
- * velocity, diversity, streak, depth, composite, and level.
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// ── Mock localStorage ────────────────────────────────────────────────────────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -33,7 +28,7 @@ import {
 
 import { FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function makeEntry(enginId: string, label: string, hoursAgo: number) {
   return {
@@ -55,7 +50,7 @@ function seedHistory(entries: Array<{ enginId: string; label: string; timestamp:
   localStorage.setItem(FORGE_HISTORY_KEY, JSON.stringify(entries));
 }
 
-// ── Tests ────────────────────────────────────────────────────────────────────
+
 
 describe('Forge Momentum', () => {
   beforeEach(() => {
@@ -94,7 +89,7 @@ describe('Forge Momentum', () => {
     });
 
     it('caps at 100', () => {
-      // 20 actions in the last hour → 20 actions/hour → should cap at 100
+      
       const history = Array.from({ length: 20 }, (_, i) =>
         makeEntry('games', `action-${i}`, i * 0.01),
       );
@@ -109,7 +104,7 @@ describe('Forge Momentum', () => {
 
     it('returns ~17 for 1 engine used (1/6)', () => {
       const history = [makeEntry('games', 'test', 1)];
-      expect(computeDiversity(history)).toBe(17); // Math.round(1/6 * 100)
+      expect(computeDiversity(history)).toBe(17); 
     });
 
     it('returns 100 when all 6 engines used', () => {
@@ -125,7 +120,7 @@ describe('Forge Momentum', () => {
     });
 
     it('ignores entries older than 7 days', () => {
-      const history = [makeEntry('games', 'test', 170)]; // ~7.08 days ago
+      const history = [makeEntry('games', 'test', 170)]; 
       expect(computeDiversity(history)).toBe(0);
     });
   });

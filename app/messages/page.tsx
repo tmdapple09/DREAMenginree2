@@ -4,7 +4,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Messages  (framework-mandated basename: page.tsx)
+
 
 interface MessagesPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -19,7 +19,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
     redirect('/login');
   }
 
-  // Read URL params — supports from=dr-eams&q=<query> routing from DrEamsSearchBar
+  
   const params = searchParams ? await searchParams : {};
   const fromDrEams = params.from === 'dr-eams';
   const initialQuery = typeof params.q === 'string' ? params.q : '';
@@ -30,7 +30,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
       : undefined;
   const initialCompose = typeof params.compose === 'string' ? params.compose : '';
 
-  // Fetch conversations
+  
   const { data: conversations } = await supabase
     .from('conversations')
     .select(`
@@ -41,7 +41,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
     .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`)
     .order('updated_at', { ascending: false });
 
-  // Get the other participant for each conversation
+  
   const formattedConversations = (conversations || []).map((conv) => {
     const otherParticipant = conv.participant1_id === user.id
       ? conv.participant2

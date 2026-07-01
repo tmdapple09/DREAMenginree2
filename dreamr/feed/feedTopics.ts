@@ -1,14 +1,6 @@
 'use client';
 
-/**
- * lib/feed/feedTopics.ts
- *
- * Canonical list of 30 feed topics users can toggle in FeedSettingsPanel.
- * Default active set: world news, neil degrasse tyson, tech news.
- *
- * Topics are stored in localStorage under FEED_TOPICS_KEY as a JSON
- * string[] of active topic ids.
- */
+
 
 export interface FeedTopic {
   id: string;
@@ -57,7 +49,7 @@ export const DEFAULT_TOPIC_IDS: string[] = [
 
 export const FEED_TOPICS_KEY = 'de-feed-topics';
 
-/** Load active topic ids from localStorage (falls back to defaults). */
+
 export function loadActiveTopicIds(): string[] {
   if (typeof window === 'undefined') return DEFAULT_TOPIC_IDS;
   try {
@@ -66,11 +58,11 @@ export function loadActiveTopicIds(): string[] {
       const parsed = JSON.parse(raw) as unknown;
       if (Array.isArray(parsed) && parsed.length > 0) return parsed as string[];
     }
-  } catch { /* ignore */ }
+  } catch {  }
   return DEFAULT_TOPIC_IDS;
 }
 
-/** Resolve active topic ids → query strings for YouTube API. */
+
 export function topicIdsToQueries(ids: string[]): string[] {
   const idSet = new Set(ids);
   return ALL_TOPICS

@@ -28,7 +28,7 @@ import {
   isCronAuthorised,
 } from '@/engine/connectors/webhookVerification';
 
-// ── A. deliveryStrategy ───────────────────────────────────────────────────────
+
 
 describe('DELIVERY_STRATEGY_MATRIX', () => {
   it('has at least 7 entries covering all Tier-1 sync providers', () => {
@@ -158,7 +158,7 @@ describe('knownDeliveryProviders', () => {
   });
 });
 
-// ── B. YouTube WebSub challenge extraction ────────────────────────────────────
+
 
 describe('extractYouTubeWebSubChallenge', () => {
   it('returns challenge for hub.mode=subscribe', () => {
@@ -202,7 +202,7 @@ describe('extractYouTubeWebSubChallenge', () => {
   });
 });
 
-// ── C. Meta webhook challenge extraction ──────────────────────────────────────
+
 
 describe('extractMetaWebhookChallenge', () => {
   const EXPECTED = 'my-secret-verify-token';
@@ -243,7 +243,7 @@ describe('extractMetaWebhookChallenge', () => {
   });
 
   it('returns null when expectedToken is empty string', () => {
-    // Empty expectedToken means env var is not configured — should not verify.
+    
     const params = new URLSearchParams({
       'hub.mode': 'subscribe',
       'hub.verify_token': '',
@@ -266,7 +266,7 @@ describe('extractMetaWebhookChallenge', () => {
   });
 });
 
-// ── D. isCronAuthorised ───────────────────────────────────────────────────────
+
 
 describe('isCronAuthorised', () => {
   it('allows when secret matches Authorization header', () => {
@@ -290,7 +290,7 @@ describe('isCronAuthorised', () => {
   });
 
   it('denies in production when secret is empty string and no header', () => {
-    // Empty string is falsy — same branch as undefined
+    
     expect(isCronAuthorised(null, '', 'production')).toBe(false);
   });
 

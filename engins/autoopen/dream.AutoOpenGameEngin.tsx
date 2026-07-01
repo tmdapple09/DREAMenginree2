@@ -5,10 +5,7 @@ import { useSharedEnginChannel } from '@/engine/runtime/useSharedEnginChannel';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-/**
- * Automatically opens GameEngin Side B when the games surface is entered with
- * `?openEngin=1`.
- */
+
 export default function AutoOpenGameEngin( ){
   const searchParams = useSearchParams();
   const instanceId = searchParams.get('instanceId') ?? 'autoopen';

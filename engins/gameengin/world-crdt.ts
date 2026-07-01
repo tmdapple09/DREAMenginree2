@@ -1,26 +1,14 @@
-/**
- * lib/gameengin/world-crdt.ts
- *
- * NEXT-GEN — Persistent, eventually-consistent shared world state via CRDTs
- * over WebTransport.
- *
- *  - WorldStateCRDT             — LWW-element-set CRDT for world entities
- *  - EventualConsistencyBridge  — WebTransport-style transport bridge with
- *                                  backpressure-safe partial replicas.
- */
+
 
 export interface CRDTRecord<T> {
   id: string;
   value: T;
-  /** Hybrid logical clock: (wall-clock ms, replica id, counter). */
+  
   ts: { wallMs: number; replica: string; ctr: number };
   tombstone: boolean;
 }
 
-/**
- * Last-Writer-Wins element set CRDT, keyed by record id. Compares hybrid
- * logical timestamps to deterministically resolve concurrent writes.
- */
+
 export class WorldStateCRDT<T> {
   private readonly replica: string;
   private counter = 0;
@@ -60,7 +48,7 @@ export class WorldStateCRDT<T> {
     return out;
   }
 
-  /** Merge a remote record. Returns true when local state changed. */
+  
   merge(remote: CRDTRecord<T>): boolean {
     const local = this.records.get(remote.id);
     if (!local || compareTs(remote.ts, local.ts) > 0) {
@@ -70,12 +58,12 @@ export class WorldStateCRDT<T> {
     return false;
   }
 
-  /** Snapshot all records for transport. */
+  
   snapshot(): CRDTRecord<T>[] {
     return Array.from(this.records.values());
   }
 
-  /** Compact tombstones older than `maxAgeMs`. */
+  
   compact(maxAgeMs: number, now = Date.now()): number {
     let removed = 0;
     for (const [id, rec] of this.records) {
@@ -111,24 +99,20 @@ function compareTs(a: CRDTRecord<unknown>['ts'], b: CRDTRecord<unknown>['ts']): 
 
 export interface BridgeTransport<T> {
   send(records: CRDTRecord<T>[]): Promise<void>;
-  /** Caller invokes this when remote records arrive. */
+  
   onReceive(cb: (records: CRDTRecord<T>[]) => void): () => void;
 }
 
 export interface BridgeConfig {
-  /** Max in-flight bytes before we coalesce / drop low-priority updates. */
+  
   maxInflightBytes?: number;
-  /** Send batch every N ms. */
+  
   flushIntervalMs?: number;
-  /** Hard queue cap; oldest pending records are compacted when exceeded. */
+  
   maxQueuedRecords?: number;
 }
 
-/**
- * Bridges a `WorldStateCRDT` over an arbitrary transport (WebTransport,
- * WebSocket, or postMessage). Batches sends, applies backpressure, and
- * supports partial replicas via an inclusion predicate.
- */
+
 export class EventualConsistencyBridge<T> {
   private readonly crdt: WorldStateCRDT<T>;
   private readonly transport: BridgeTransport<T>;
@@ -190,7 +174,7 @@ export class EventualConsistencyBridge<T> {
     try {
       await this.transport.send(batch);
     } catch {
-      // Preserve transport order: failed records remain ahead of newer records.
+      
       this.outbox = this.capQueuedRecords(batch.concat(this.outbox));
       this.inflightBytes = this.sumEstimatedBytes(this.outbox);
     }

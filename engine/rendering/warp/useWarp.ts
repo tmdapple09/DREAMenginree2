@@ -3,31 +3,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { WarpEffect, WarpEngine, WarpEngineOptions } from './warpEngine';
 
-/**
- * useWarp — React hook that drives a WarpEngine on an HTML5 Canvas.
- *
- * Usage:
- *   const { canvasRef, isRunning, toggle, setEffect } = useWarp({ effect: 'flow' });
- *   return <canvas ref={canvasRef} />;
- */
 
-// Passive 30 fps cap (≈33.33 ms/frame). Keeps the ambient effect smooth
-// while ~halving CPU/GPU/battery cost on mobile vs. an uncapped rAF loop.
+
+
+
 const FRAME_INTERVAL_MS = 1000 / 30;
 
 export interface UseWarpOptions extends WarpEngineOptions {
-  /** Start running immediately. Default: true. */
+  
   autoStart?: boolean;
 }
 
 export interface UseWarpReturn {
-  /** Attach this to the <canvas> element. */
+  
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  /** Whether the animation loop is currently running. */
+  
   isRunning: boolean;
-  /** Start / pause the animation. */
+  
   toggle: () => void;
-  /** Switch effect preset on the fly. */
+  
   setEffect: (effect: WarpEffect) => void;
 }
 
@@ -42,13 +36,13 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
 
   const [isRunning, setIsRunning] = useState(autoStart);
 
-  // Initialise engine once
+  
   useEffect(() => {
     engineRef.current = new WarpEngine(engineOpts);
 
   }, []);
 
-  // Resize handler
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -61,7 +55,7 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
     });
     observer.observe(canvas);
 
-    // Initial size
+    
     const dpr = window.devicePixelRatio ?? 1;
     canvas.width  = canvas.clientWidth  * dpr;
     canvas.height = canvas.clientHeight * dpr;
@@ -70,7 +64,7 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
     return () => observer.disconnect();
   }, []);
 
-  // Animation loop
+  
   const loop = useCallback((ts: number) => {
     const canvas = canvasRef.current;
     const engine = engineRef.current;
@@ -78,22 +72,22 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
 
     const elapsed = ts - lastTsRef.current;
     if (elapsed < FRAME_INTERVAL_MS) {
-      // Skip this frame to honour the 30 fps passive cap.
+      
       if (runningRef.current) {
         rafRef.current = requestAnimationFrame(loop);
       }
       return;
     }
 
-    const dt = Math.min(elapsed / 1000, 0.05); // cap at 50 ms
+    const dt = Math.min(elapsed / 1000, 0.05); 
     lastTsRef.current = ts;
 
     const dpr = window.devicePixelRatio ?? 1;
 
-    // Step simulation
+    
     engine.step(dt);
 
-    // Render
+    
     const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -106,7 +100,7 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.opacity * 0.7;
         ctx.fill();
-        // Soft glow
+        
         ctx.beginPath();
         ctx.arc(p.pos.x, p.pos.y, p.radius * 2.5, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
@@ -122,9 +116,9 @@ export function useWarp(opts: UseWarpOptions = {}): UseWarpReturn {
     }
   }, []);
 
-  // Start / stop, also bound to document visibility and prefers-reduced-motion
-  // so the ambient effect does not burn CPU/GPU/battery in background tabs
-  // or for users who have requested reduced motion.
+  
+  
+  
   useEffect(() => {
     if (typeof window === 'undefined') return;
 

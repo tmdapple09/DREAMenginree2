@@ -9,68 +9,31 @@ import { useCallback, useEffect, useState } from 'react';
 import { DREAM_WINDOW_STATES } from './DreamWindowLifecycle';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/dream-window/useDreamWindowActions.ts
- *
- * React hook wrapping all Dream Window API calls.
- *
- * Exposes:
- *   { dreamWindows, bindWindow, mountWindow, collapseWindow, activateWindow,
- *     unbindWindow, removeWindow, addWindow, isLoading }
- *
- * Every action writes to the database via the canonical API routes:
- *   POST   /api/dream-windows          — add / create
- *   PATCH  /api/dream-windows/[id]     — bind, mount, collapse, activate, unbind
- *   DELETE /api/dream-windows/[id]     — remove (atomic delete)
- *
- * Architecture: docs/ARCHITECTURE.md §4 (Universal Dream Window model)
- * Phase 8 Section B: Point 16 — all actions write to DB.
- */
 
-// ---------------------------------------------------------------------------
-// Types
+
+
+
 
 export interface UseDreamWindowActionsReturn {
-  /** Current list of Dream Window records for the authenticated user */
+  
   dreamWindows: DreamWindowRecord[];
-  /** True while any API call is in flight */
+  
   isLoading: boolean;
-  /** Last error message, or null if no error */
+  
   error: string | null;
-  /**
-   * Add a new Dream Window — POST /api/dream-windows
-   * Transition: creates new record in Unbound state
-   */
+  
   addWindow: (body: CreateDreamWindowBody) => Promise<DreamWindowRecord | null>;
-  /**
-   * Remove a Dream Window — DELETE /api/dream-windows/[id]
-   * Transition: atomic delete of record + visibility mappings + projections
-   */
+  
   removeWindow: (id: string) => Promise<boolean>;
-  /**
-   * Bind a Dream Window — PATCH active_state → 'Bound Dream Window'
-   * Transition: Unbound → Bound
-   */
+  
   bindWindow: (id: string) => Promise<DreamWindowRecord | null>;
-  /**
-   * Mount a Dream Window — PATCH active_state → 'Mounted Dream Window'
-   * Transition: Bound → Mounted
-   */
+  
   mountWindow: (id: string) => Promise<DreamWindowRecord | null>;
-  /**
-   * Collapse a Dream Window — PATCH active_state → 'Collapsed Dream Window'
-   * Transition: Mounted → Collapsed
-   */
+  
   collapseWindow: (id: string) => Promise<DreamWindowRecord | null>;
-  /**
-   * Activate a Dream Window — PATCH active_state → 'Mounted Dream Window'
-   * Transition: Collapsed → Mounted (re-expand)
-   */
+  
   activateWindow: (id: string) => Promise<DreamWindowRecord | null>;
-  /**
-   * Unbind a Dream Window — PATCH active_state → 'Unbound Dream Window'
-   * Transition: Bound → Unbound
-   */
+  
   unbindWindow: (id: string) => Promise<DreamWindowRecord | null>;
   updateWindow: (id: string, patch: PatchDreamWindowBody) => Promise<DreamWindowRecord | null>;
 }
@@ -122,7 +85,7 @@ export async function patchDreamWindow(
   return result.ok ? result.data : null;
 }
 
-// Hook implementation
+
 
 export function useDreamWindowActions(): UseDreamWindowActionsReturn {
   const [dreamWindows, setDreamWindows] = useState<DreamWindowRecord[]>([]);

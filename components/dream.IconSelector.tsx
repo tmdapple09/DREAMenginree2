@@ -3,11 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-/**
- * IconSelector - A selector switch component using SVG icons
- *
- * Allows users to switch between different icon options (file, globe, window)
- */
+
 
 type IconOption = {
   name: string;

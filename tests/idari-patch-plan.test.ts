@@ -1,13 +1,4 @@
-/**
- * tests/idari-patch-plan.test.ts
- *
- * Unit tests for the pure helper functions exported from lib/agents/idari.ts:
- *   - createPatchPlan (req #11, #12, #13)
- *   - createKnownIssue (req #23)
- *   - updateKnownIssueStatus (req #23)
- *   - evaluateSpecRequirements (spec-check before any build/upgrade cycle)
- *   - createVercelBuildResult (Vercel-compatible build verification)
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -24,7 +15,7 @@ import {
   type SpecRequirement,
 } from '@/engine/agents/idari';
 
-// ── createPatchPlan ───────────────────────────────────────────────────────────
+
 
 describe('createPatchPlan', () => {
   const base: Omit<PatchPlan, 'created_at'> = {
@@ -80,7 +71,7 @@ describe('createPatchPlan', () => {
   });
 });
 
-// ── createKnownIssue ─────────────────────────────────────────────────────────
+
 
 describe('createKnownIssue', () => {
   const base: Omit<KnownIssue, 'status' | 'created_at' | 'updated_at'> = {
@@ -113,7 +104,7 @@ describe('createKnownIssue', () => {
   });
 });
 
-// ── updateKnownIssueStatus ───────────────────────────────────────────────────
+
 
 describe('updateKnownIssueStatus', () => {
   const now = new Date().toISOString();
@@ -159,7 +150,7 @@ describe('updateKnownIssueStatus', () => {
   });
 });
 
-// ── evaluateSpecRequirements ─────────────────────────────────────────────────
+
 
 describe('evaluateSpecRequirements', () => {
   const makeReq = (
@@ -239,7 +230,7 @@ describe('evaluateSpecRequirements', () => {
   });
 });
 
-// ── createVercelBuildResult ───────────────────────────────────────────────────
+
 
 describe('createVercelBuildResult', () => {
   it('accepts a passing build meeting the 2026 runtime targets', () => {
@@ -270,7 +261,7 @@ describe('createVercelBuildResult', () => {
   it('throws when node version is below the 2026 minimum (Node 24)', () => {
     expect(() =>
       createVercelBuildResult({
-        node_version: '20',   // below Node 24 minimum
+        node_version: '20',   
         pnpm_version: '10.30.0',
         nextjs_version: '16',
         build_passed: true,
@@ -307,7 +298,7 @@ describe('createVercelBuildResult', () => {
   });
 });
 
-// ── Generation Law scope enforcement ──────────────────────────────────────────
+
 
 describe('assessGenerationLawScope', () => {
   it('returns CREATE for a small single-task request', () => {

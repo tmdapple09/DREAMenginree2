@@ -12,19 +12,7 @@ import {
 import { ChevronDown, ChevronUp, Piano } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-/**
- * PianoRollPanel — FL Studio / Logic Pro style MIDI note editor.
- *
- * Features:
- *  - 88-key piano keyboard on left side (white/black keys)
- *  - Horizontal note grid with beat ruler
- *  - Click empty cell to add note
- *  - Click existing note to remove it
- *  - Velocity bars at bottom strip
- *  - Quantize picker (1/4, 1/8, 1/16, 1/32)
- *  - Octave scroll (−/+ buttons)
- *  - Note count and range readout
- */
+
 
 const T = {
   bg:          '#0d0f17',
@@ -42,9 +30,9 @@ const T = {
 } as const;
 
 const QUANTIZE_OPTIONS: PianoRollQuantize[] = ['1/1', '1/2', '1/4', '1/8', '1/16', '1/32'];
-const PITCH_ROW_H = 12;   // px per pitch row
-const BEAT_COL_W = 32;    // px per beat column
-const KEY_W = 52;         // px for piano keyboard strip
+const PITCH_ROW_H = 12;   
+const BEAT_COL_W = 32;    
+const KEY_W = 52;         
 
 interface PianoRollPanelProps {
   state: PianoRollState;
@@ -86,13 +74,13 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
 
   const { notes, totalBeats, quantize, viewBottomPitch, viewPitchRange } = state;
 
-  // Derived pitch range visible on screen
+  
   const visiblePitches: number[] = Array.from(
     { length: viewPitchRange },
     (_, i) => viewBottomPitch + viewPitchRange - 1 - i,
   );
 
-  // Beat columns
+  
   const quantizeDivisions: Record<PianoRollQuantize, number> = {
     '1/1': 1, '1/2': 0.5, '1/4': 0.25, '1/8': 0.125, '1/16': 0.0625, '1/32': 0.03125,
   };
@@ -100,7 +88,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
   const totalCols = Math.round(totalBeats / div);
   const beats: number[] = Array.from({ length: totalCols }, (_, i: number ) => i * div);
 
-  // Lookup: does a note occupy (pitch, beat)?
+  
   function noteAt(pitch: number, beat: number): MidiNote | undefined {
     return notes.find((n) =>
       n.pitch === pitch &&
@@ -112,10 +100,10 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
   const handleCellClick = useCallback((pitch: number, beat: number) => {
     const existing = noteAt(pitch, beat);
     if (existing) {
-      // Remove note
+      
       onStateChange({ ...state, notes: notes.filter((n) => n.id !== existing.id) });
     } else {
-      // Add note
+      
       const snapped = snapToGrid(beat, quantize);
       const newNote = createMidiNote(pitch, snapped, div);
       onStateChange({ ...state, notes: [...notes, newNote] });
@@ -154,9 +142,9 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
 
       {isOpen && (
         <div style={{ padding: '12px 12px 8px' }}>
-          {/* ── Toolbar ── */}
+          
           <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
-            {/* Quantize */}
+            
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: T.dim, letterSpacing: '0.06em' }}>QUANTIZE</span>
               {QUANTIZE_OPTIONS.map((q) => (
@@ -175,7 +163,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
               ))}
             </div>
 
-            {/* Length control */}
+            
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto' }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: T.dim }}>BARS</span>
               {[4, 8, 16, 32].map((bars) => (
@@ -195,11 +183,11 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
             </div>
           </div>
 
-          {/* ── Grid ── */}
+          
           <div style={{ display: 'flex', border: `1px solid ${T.border}`, borderRadius: 8, overflow: 'hidden' }}>
-            {/* Piano keyboard strip */}
+            
             <div style={{ width: KEY_W, flexShrink: 0 }}>
-              {/* Octave scroll */}
+              
               <div style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 padding: '4px 0', borderBottom: `1px solid ${T.border}`,
@@ -216,7 +204,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
                 </button>
               </div>
 
-              {/* Keys */}
+              
               {visiblePitches.map((pitch) => {
                 const isBlack = isBlackKey(pitch);
                 const isC = pitch % 12 === 0;
@@ -245,9 +233,9 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
               })}
             </div>
 
-            {/* Note grid */}
+            
             <div style={{ flex: 1, overflowX: 'auto' }}>
-              {/* Beat ruler */}
+              
               <div style={{
                 display: 'flex', height: 18, background: '#0f1118',
                 borderBottom: `1px solid ${T.border}`,
@@ -273,7 +261,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
                 ))}
               </div>
 
-              {/* Note rows */}
+              
               <div style={{ minWidth: gridWidthPx }}>
                 {visiblePitches.map((pitch) => {
                   const isBlack = isBlackKey(pitch);
@@ -331,7 +319,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
             </div>
           </div>
 
-          {/* ── Velocity strip ── */}
+          
           {notes.length > 0 && (
             <div style={{ marginTop: 8 }}>
               <div style={{ fontSize: 9, fontWeight: 700, color: T.dim, letterSpacing: '0.08em', marginBottom: 4 }}>
@@ -359,7 +347,7 @@ export default function PianoRollPanel({ state, bpm, onStateChange }: PianoRollP
             </div>
           )}
 
-          {/* ── Info row ── */}
+          
           <div style={{ marginTop: 8, display: 'flex', gap: 12, fontSize: 9, color: T.dim }}>
             <span>
               {notes.length > 0

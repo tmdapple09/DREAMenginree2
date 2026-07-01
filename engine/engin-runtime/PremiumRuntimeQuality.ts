@@ -1,13 +1,13 @@
 import { type EnginBaseState, type JsonObject } from './EnginBaseState';
 import type { EnginRuntimeFeature } from './EnginRuleSetContract';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/PremiumRuntimeQuality.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
 
 const VERSION_RE = /^\d+\.\d+\.\d+$/;
 
@@ -21,11 +21,11 @@ const MATERIALS: readonly PremiumRuntimeMaterial[] = [
   'cinematic-glass-chrome-glow',
 ];
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type PremiumLayerTier = 'standard' | 'premium' | 'cinematic';
 
@@ -57,7 +57,7 @@ export interface PremiumRuntimeQualityValidation {
   reason?: string;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function tierForSnapshotCount(snapshotCount: number): PremiumLayerTier {
   if (snapshotCount >= 12) return 'cinematic';
@@ -103,14 +103,7 @@ export function createPremiumRuntimeQuality(
   };
 }
 
-/**
- * Runtime policy check for sync-frame quality data.
- *
- * Quality metadata is not decoration: incoming sync frames are accepted only
- * when this policy matches the fingerprint/manifest/revision already proven by
- * the engine. This prevents a frame from claiming premium/cinematic runtime
- * status while carrying stale, corrupted, or incompatible state.
- */
+
 export function validatePremiumRuntimeQuality(
   quality: unknown,
   expected: {
@@ -165,8 +158,8 @@ export function validatePremiumRuntimeQuality(
   return { valid: true };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

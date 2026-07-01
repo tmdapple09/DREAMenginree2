@@ -3,8 +3,8 @@ import { codeEnginHostTools } from '@/engine/agentOS/hostTools';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-// Supabase service-role client for server-side session persistence.
-// Falls back to in-memory map when Supabase is not configured (local dev).
+
+
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
@@ -17,9 +17,9 @@ function getServiceClient( ){
   });
 }
 
-// Fallback in-memory map for local dev (no Supabase configured)
+
 const devSessions = new Map<string, { id: string; createdAt: number }>();
-const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000; 
 
 async function persistSession(sessionId: string, userId: string | null): Promise<void> {
   const db = getServiceClient();
@@ -67,7 +67,7 @@ async function deleteSession(sessionId: string): Promise<void> {
   await db.from('agent_sessions').delete().eq('id', sessionId);
 }
 
-// Route handler
+
 
 export async function POST(req: Request ): Promise<NextResponse> {
   const body = (await req.json()) as {

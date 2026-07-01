@@ -1,20 +1,4 @@
-/**
- * tests/tech-foundation.test.ts — Technical Foundation validation suite.
- *
- * Validates that every pillar of the DREAMengin technical foundation spec
- * is implemented and properly wired:
- *
- *  1. Next.js 16+ with PPR enabled
- *  2. Dual-runtime spatial environment
- *  3. TypeScript strict mode
- *  4. Tailwind tokenized design system (Neumorphic Dark)
- *  5. Framer Motion for DreamDM Bar physics
- *  6. Babylon.js WebGPU-native engine factory
- *  7. WebAssembly SIMD (physics + audio)
- *  8. Dream Window lifecycle (Unbound → Bound → Mounted → Collapsed)
- *  9. Supabase Postgres RLS + Realtime + pgvector
- * 10. Client-heavy rendering strategy
- */
+
 
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
@@ -22,7 +6,7 @@ import path from 'path';
 
 const ROOT = path.resolve(__dirname, '..');
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+
 
 function readFile(relPath: string): string {
   return fs.readFileSync(path.join(ROOT, relPath), 'utf-8');
@@ -32,22 +16,22 @@ function fileExists(relPath: string): boolean {
   return fs.existsSync(path.join(ROOT, relPath));
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 1. Next.js 16+ with PPR
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Next.js 16+ with PPR', () => {
   it('uses Next.js 16+ in package.json', () => {
     const pkg = JSON.parse(readFile('package.json'));
     const nextVersion = pkg.dependencies?.next ?? '';
-    // Accept ^16, ~16, >=16, or literal 16.x
+    
     expect(nextVersion).toMatch(/16/);
   });
 
   it('has PPR enabled via cacheComponents in next.config.mjs', () => {
     const config = readFile('next.config.mjs');
-    // Next.js 16+ uses cacheComponents: true for PPR.
-    // Routes use connection() from next/server instead of dynamic = 'force-dynamic'.
+    
+    
     expect(config).toContain('cacheComponents');
     expect(config).toContain('Partial Prerendering');
   });
@@ -58,9 +42,9 @@ describe('Next.js 16+ with PPR', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 2. Dual-runtime spatial environment
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Dual-runtime spatial environment', () => {
   it('has dual runtime bridge module', () => {
@@ -80,9 +64,9 @@ describe('Dual-runtime spatial environment', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 3. TypeScript strict mode
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('TypeScript strict mode', () => {
   it('has strict: true in tsconfig.json', () => {
@@ -97,9 +81,9 @@ describe('TypeScript strict mode', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 4. Tailwind tokenized design system (Neumorphic Dark)
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Tailwind tokenized design system (Neumorphic Dark)', () => {
   it('uses Tailwind CSS 4.x', () => {
@@ -135,9 +119,9 @@ describe('Tailwind tokenized design system (Neumorphic Dark)', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 5. Framer Motion for DreamDM Bar
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Framer Motion for DreamDM Bar', () => {
   it('has framer-motion dependency', () => {
@@ -154,9 +138,9 @@ describe('Framer Motion for DreamDM Bar', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 6. Babylon.js WebGPU-native engine
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Babylon.js WebGPU-native engine', () => {
   it('has @babylonjs/core dependency', () => {
@@ -178,9 +162,9 @@ describe('Babylon.js WebGPU-native engine', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 7. WebAssembly SIMD
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('WebAssembly SIMD', () => {
   it('has AssemblyScript source with SIMD physics', () => {
@@ -218,9 +202,9 @@ describe('WebAssembly SIMD', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 8. Dream Window lifecycle
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Dream Window lifecycle (Unbound → Bound → Mounted → Collapsed)', () => {
   it('has DreamWindowLifecycle module', () => {
@@ -249,9 +233,9 @@ describe('Dream Window lifecycle (Unbound → Bound → Mounted → Collapsed)',
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 9. Supabase: Postgres RLS + Realtime + pgvector
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Supabase Postgres with RLS', () => {
   it('has RLS migration enabling row-level security', () => {
@@ -343,9 +327,9 @@ describe('Supabase pgvector (Dr. Eams discovery)', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 10. Client-heavy rendering & WebGPU/WASM
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('Client-heavy rendering strategy', () => {
   it('has WGSL shaders for WebGPU renderer', () => {
@@ -388,24 +372,24 @@ describe('Client-heavy rendering strategy', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Bonus: AI Triad consensus logic
-// ═══════════════════════════════════════════════════════════════════════════
+
+
+
 
 describe('AI Triad consensus derivation', () => {
   it('correctly derives consensus from votes', async () => {
     const { deriveConsensus } = await import('../lib/supabase/vector');
 
-    // 2+ approve → approved
+    
     expect(deriveConsensus('approve', 'approve', 'reject')).toBe('approved');
     expect(deriveConsensus('approve', 'approve', 'approve')).toBe('approved');
     expect(deriveConsensus('approve', 'approve', 'abstain')).toBe('approved');
 
-    // 2+ reject → rejected
+    
     expect(deriveConsensus('reject', 'reject', 'approve')).toBe('rejected');
     expect(deriveConsensus('reject', 'reject', 'abstain')).toBe('rejected');
 
-    // No majority → escalated
+    
     expect(deriveConsensus('approve', 'reject', 'abstain')).toBe('escalated');
     expect(deriveConsensus('abstain', 'abstain', 'abstain')).toBe('escalated');
     expect(deriveConsensus('approve', 'reject', 'reject')).toBe('rejected');

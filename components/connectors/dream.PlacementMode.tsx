@@ -4,14 +4,14 @@ import { handlePlacementCancel, handlePlacementDone } from '@/engine/connectors/
 import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { useCallback, useEffect, useState } from 'react';
 
-// components/connectors/dream.PlacementMode.tsx
-// Short placement mode overlay (req 36-40)
-//
-// • Clear Done / Cancel controls (req 36)
-// • Reversible via Undo (req 37)
-// • Does NOT change navigation mode — UI-local (req 38)
-// • Respects scroll, does not steal gestures from feeds (req 39)
-// • Exits to LOCKED safe mode (req 40)
+
+
+
+
+
+
+
+
 
 export interface PlacedWidget {
   widgetId: string;
@@ -24,7 +24,7 @@ export interface PlacementModeProps {
   filledSlots: Set<number>;
   onDone: (placement: PlacedWidget) => void;
   onCancel: () => void;
-  /** Called when auto-lock fires (req 40) */
+  
   onAutoLock: () => void;
 }
 
@@ -37,7 +37,7 @@ export default function PlacementMode({
   onAutoLock,
 }: PlacementModeProps) {
   const [chosen, setChosen] = useState<number | null>(null);
-  const [history, setHistory] = useState<number[]>([]); // for Undo (req 37)
+  const [history, setHistory] = useState<number[]>([]); 
 
   function handleSlotTap(slot: number ){
     if (filledSlots.has(slot)) return;
@@ -56,16 +56,16 @@ export default function PlacementMode({
 
   function handleDone( ){
     if (chosen === null) return;
-    handlePlacementDone(onAutoLock); // req 40: return to LOCKED
+    handlePlacementDone(onAutoLock); 
     onDone({ widgetId: widget.id, slot: chosen });
   }
 
   function handleCancel( ){
-    handlePlacementCancel(onAutoLock); // req 40
+    handlePlacementCancel(onAutoLock); 
     onCancel();
   }
 
-  // Keyboard: Escape cancels (req 36)
+  
   useEffect(() => {
     function onKey(e: KeyboardEvent ){
       if (e.key === 'Escape') handleCancel();
@@ -76,15 +76,15 @@ export default function PlacementMode({
   }, []);
 
   return (
-    // Note: overlay uses pointer-events only on the bar — does NOT block scroll (req 39)
+    
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 60,
-        // Transparent overlay — scroll and gestures pass through (req 39)
+        
         pointerEvents: 'none',
       }}
     >
-      {/* Slot grid — only the slot buttons have pointer-events */}
+      
       <div style={{
         position: 'absolute', inset: 0,
         display: 'grid',
@@ -128,7 +128,7 @@ export default function PlacementMode({
         })}
       </div>
 
-      {/* Control bar — fixed at top, pointer-events auto (req 36) */}
+      
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0,
         zIndex: 61,

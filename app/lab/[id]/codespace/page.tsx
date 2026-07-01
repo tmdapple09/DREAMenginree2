@@ -4,7 +4,7 @@ import { ArrowLeft, Check, Copy, Download, ExternalLink, RefreshCw, Terminal, Up
 import Link from 'next/link';
 import { use, useCallback, useRef, useState } from 'react';
 
-// SURFACE: dreamsurface.LabIdCodespace  (framework-mandated basename: page.tsx)
+
 
 type Language = 'html' | 'css' | 'js' | 'python';
 
@@ -60,7 +60,7 @@ export default function CodeSpacePage({ params }: Props) {
     const end = ta.selectionEnd;
     const newCode = code.substring(0, start) + snippet + code.substring(end);
     setCode(newCode);
-    // Restore cursor after snippet
+    
     requestAnimationFrame(() => {
       ta.focus();
       ta.setSelectionRange(start + snippet.length, start + snippet.length);
@@ -71,7 +71,7 @@ export default function CodeSpacePage({ params }: Props) {
     try {
       await navigator.clipboard.writeText(code);
     } catch {
-      // ignore
+      
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
@@ -143,7 +143,7 @@ export default function CodeSpacePage({ params }: Props) {
         background: '#0d0d1a',
       }}
     >
-      {/* ── Top bar ── */}
+      
       <header
         style={{
           display: 'flex',
@@ -197,7 +197,7 @@ export default function CodeSpacePage({ params }: Props) {
         </div>
       </header>
 
-      {/* ── Preview Panel (~35vh) ── */}
+      
       <div style={{ height: '35vh', display: 'flex', flexDirection: 'column', borderBottom: '2px solid #6366f1' }}>
         <div style={panelHeaderStyle}>
           <span style={panelLabelStyle}>Preview</span>
@@ -238,12 +238,12 @@ export default function CodeSpacePage({ params }: Props) {
         />
       </div>
 
-      {/* ── Editor Panel (~35vh) ── */}
+      
       <div style={{ height: '35vh', display: 'flex', flexDirection: 'column', borderBottom: '2px solid #8b5cf6' }}>
         <div style={panelHeaderStyle}>
           <span style={panelLabelStyle}>Editor</span>
           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-            {/* Language selector */}
+            
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
@@ -304,12 +304,12 @@ export default function CodeSpacePage({ params }: Props) {
         />
       </div>
 
-      {/* ── Snippets + Actions Panel (~30vh) ── */}
+      
       <div style={{ flex: 1, minHeight: '30vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={panelHeaderStyle}>
           <span style={panelLabelStyle}>Quick Snippets</span>
           <div style={{ display: 'flex', gap: 6 }}>
-            {/* File upload */}
+            
             <label
               style={{ ...iconBtnStyle, cursor: 'pointer' }}
               title="Upload file"
@@ -333,7 +333,7 @@ export default function CodeSpacePage({ params }: Props) {
           </div>
         </div>
 
-        {/* Snippet buttons */}
+        
         <div
           style={{
             padding: '10px 10px 6px',
@@ -366,7 +366,7 @@ export default function CodeSpacePage({ params }: Props) {
           ))}
         </div>
 
-        {/* Open in Preview full-width button */}
+        
         <div style={{ padding: '8px 10px 12px', marginTop: 'auto' }}>
           <button
             type="button"

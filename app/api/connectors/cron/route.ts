@@ -7,26 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/connectors/cron/route.ts
- *
- * Cron fallback endpoint — reconciles all connected connector accounts
- * for every user, using the shared reconcile pipeline.
- *
- * Invoked by Vercel cron (configured in vercel.json) and can also be
- * triggered manually in development for testing.
- *
- * Security:
- *   - Requires `Authorization: Bearer <CRON_SECRET>` when CRON_SECRET is set.
- *   - In production without CRON_SECRET: always rejected (no open cron endpoints).
- *   - In non-production without CRON_SECRET: allowed for dev convenience.
- *
- * Uses the Supabase service-role client to bypass RLS and iterate all users.
- * token_blob is NEVER returned in the response.
- *
- * AXIOM 4 — Security by Default.
- * ARCHITECTURE.md §3 — Logic layer (lib/connectors) handles provider calls.
- */
+
 
 const DEFAULT_BATCH_SIZE = 50;
 const MAX_BATCH_SIZE = 100;
@@ -53,7 +34,7 @@ function getCronBatchSize(): number {
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | { error: string }>> {
-  // ── Authorisation ────────────────────────────────────────────────────────
+  
   if (
     !isCronAuthorised(
       req.headers.get('authorization'),
@@ -101,7 +82,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
     });
   }
 
-  // Process sequentially to avoid stampeding provider APIs.
+  
   const results: ReconcileResult[] = [];
   for (const account of accounts) {
     const result = await reconcileConnector(
@@ -121,7 +102,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<CronSummary | 
     processed: results.length,
     succeeded,
     failed: results.length - succeeded,
-    // Never include userId or token data in the output; only safe summary fields.
+    
     results: results.map((r) => ({
       provider: r.provider,
       ok: r.ok,

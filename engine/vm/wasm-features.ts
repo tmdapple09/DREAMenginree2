@@ -1,25 +1,19 @@
-/**
- * lib/vm/wasm-features.ts — WebAssembly 2.0 Feature Detection
- *
- * Detects runtime support for WASM proposals:
- *   SIMD, threads (SharedArrayBuffer), bulk-memory,
- *   multi-memory, exceptions, tail-call, reference-types.
- */
+
 
 export interface WasmFeatureSet {
-  /** WASM SIMD (128-bit vector operations). */
+  
   simd: boolean;
-  /** Threads proposal — requires SharedArrayBuffer. */
+  
   threads: boolean;
-  /** Bulk-memory operations (memory.copy / memory.fill). */
+  
   bulkMemory: boolean;
-  /** Multi-memory proposal (>1 memory per module). */
+  
   multiMemory: boolean;
-  /** Exception-handling proposal. */
+  
   exceptions: boolean;
-  /** Tail-call proposal (return_call). */
+  
   tailCall: boolean;
-  /** Reference-types proposal (externref / funcref). */
+  
   referenceTypes: boolean;
 }
 
@@ -32,8 +26,8 @@ function tryValidate(bytes: number[]): boolean {
 }
 
 function detectSIMD(): boolean {
-  // Minimal module: one function returning v128 via i32x4.splat
-  // magic + version + type(()->v128) + func + code(i32.const 0; i32x4.splat; drop; end)
+  
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x01, 0x05, 0x01, 0x60, 0x00, 0x01, 0x7b,
@@ -48,7 +42,7 @@ function detectThreads(): boolean {
 }
 
 function detectBulkMemory(): boolean {
-  // memory.copy: 0xfc 0x0a 0x00 0x00
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x01, 0x04, 0x01, 0x60, 0x00, 0x00,
@@ -62,7 +56,7 @@ function detectBulkMemory(): boolean {
 }
 
 function detectMultiMemory(): boolean {
-  // Module with 2 memory entries (multi-memory proposal)
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x05, 0x05, 0x02,
@@ -72,7 +66,7 @@ function detectMultiMemory(): boolean {
 }
 
 function detectExceptions(): boolean {
-  // Exception proposal: tag section (0x0d)
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x01, 0x04, 0x01, 0x60, 0x00, 0x00,
@@ -84,7 +78,7 @@ function detectExceptions(): boolean {
 }
 
 function detectTailCall(): boolean {
-  // return_call 0 (opcode 0x12)
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x01, 0x04, 0x01, 0x60, 0x00, 0x00,
@@ -96,7 +90,7 @@ function detectTailCall(): boolean {
 }
 
 function detectReferenceTypes(): boolean {
-  // Table of externref (0x6f)
+  
   return tryValidate([
     0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
     0x01, 0x04, 0x01, 0x60, 0x00, 0x00,
@@ -108,12 +102,7 @@ function detectReferenceTypes(): boolean {
 
 let _cached: WasmFeatureSet | null = null;
 
-/**
- * detectWasmFeatures()
- *
- * Probes the current JS engine for WebAssembly 2.0 proposal support.
- * Results are cached after the first call.
- */
+
 export function detectWasmFeatures(): WasmFeatureSet {
   if (_cached) return _cached;
 
@@ -130,7 +119,7 @@ export function detectWasmFeatures(): WasmFeatureSet {
   return _cached;
 }
 
-/** Reset the feature detection cache (useful in tests). */
+
 export function resetWasmFeatureCache(): void {
   _cached = null;
 }

@@ -3,9 +3,7 @@
 import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 import { SlidePanel } from './dream.panel.ColorPanel';
 
-/**
- * EffectsPanel — control glass blur, brightness, saturation, and widget opacity.
- */
+
 export default function EffectsPanel( ){
   const { activePanel, closePanel, draftSkin, updateDraft } = useCustomizeMode();
 
@@ -15,7 +13,7 @@ export default function EffectsPanel( ){
     <SlidePanel title="Effects" onClose={closePanel}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-        {/* Widget Opacity */}
+        
         <SliderRow
           label="Widget Opacity"
           value={Math.round(draftSkin.widgetOpacity * 100)}
@@ -27,7 +25,7 @@ export default function EffectsPanel( ){
           rightLabel="Solid"
         />
 
-        {/* Glass Blur */}
+        
         <SliderRow
           label="Glass Blur"
           value={draftSkin.glassBlur}
@@ -39,7 +37,7 @@ export default function EffectsPanel( ){
           rightLabel="Frosted"
         />
 
-        {/* Brightness */}
+        
         <SliderRow
           label="Brightness"
           value={Math.round(draftSkin.brightness * 100)}
@@ -51,7 +49,7 @@ export default function EffectsPanel( ){
           rightLabel="Bright"
         />
 
-        {/* Saturation */}
+        
         <SliderRow
           label="Saturation"
           value={Math.round(draftSkin.saturation * 100)}

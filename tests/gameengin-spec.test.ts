@@ -1,12 +1,4 @@
-/**
- * tests/gameengin-spec.test.ts
- *
- * Validates the foundational deliverables of GameENGINspec.md:
- *   §1.3 cartridge MANIFEST.json schema
- *   §2   Brain substrate integrity
- *   §4.4 Originality registry uniqueness + scoring
- *   §5.5 Cartridge packager round-trip + magic-byte validator
- */
+
 
 import { describe, it, expect } from 'vitest';
 import * as fs from 'node:fs';
@@ -151,9 +143,9 @@ describe('GameEngin spec — TAR + magic bytes (§1.1, §5.5)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// v2 — Expanded agent profiles
-// ---------------------------------------------------------------------------
+
+
+
 
 import {
   listCartridges,
@@ -271,7 +263,7 @@ describe('GameEngin spec v2 — Maestro / Mechanic / Upgrader operational memory
     });
     expect(fs.existsSync(upPath)).toBe(true);
 
-    // Cleanup test artefacts to keep the brain tidy across runs.
+    
     fs.rmSync(buildPath, { force: true });
     fs.rmSync(assetPath, { force: true });
     fs.rmSync(wqPath, { force: true });

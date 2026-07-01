@@ -2,13 +2,11 @@ import { GCTEngine, Template, type GCTMatch } from './gct-engine';
 
 export interface ImageSearchItem {
   id: string;
-  /** Flattened normalized grayscale pixels. */
+  
   data: Float32Array;
 }
 
-/**
- * Search for images that best correlate with a query vector.
- */
+
 export async function findSimilarImages(
   queryImage: Float32Array,
   imageDatabase: ImageSearchItem[],

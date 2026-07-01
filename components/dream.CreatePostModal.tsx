@@ -39,14 +39,14 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
     if (files.length === 0) return;
 
     for (const file of files) {
-      // Validate file size (50MB max)
+      
       const maxSize = 50 * 1024 * 1024;
       if (file.size > maxSize) {
         alert(`File ${file.name} must be smaller than 50MB`);
         continue;
       }
 
-      // Create preview URL
+      
       const previewUrl = URL.createObjectURL(file);
 
       setUploadedMedia((prev) => [...prev, {
@@ -56,7 +56,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
       }]);
     }
 
-    // Reset input
+    
     if (e.target) e.target.value = '';
   };
 
@@ -103,7 +103,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
     setUploadProgress('');
 
     try {
-      // Upload all media files
+      
       const mediaUrls: Record<string, string[]> = {
         images: [],
         videos: [],
@@ -179,7 +179,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
             className="w-full h-32 p-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder:text-slate-500"
           />
 
-          {/* Media Preview */}
+          
           {uploadedMedia.length > 0 && (
             <div className="grid grid-cols-2 gap-2">
               {uploadedMedia.map((media, index: number) => (
@@ -210,7 +210,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
             </div>
           )}
 
-          {/* Upload Progress */}
+          
           {uploadProgress && (
             <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -218,7 +218,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
             </div>
           )}
 
-          {/* Hidden File Inputs */}
+          
           <input
             ref={imageInputRef}
             type="file"
@@ -244,7 +244,7 @@ export default function CreatePostModal({ onClose, userId }: CreatePostModalProp
             className="hidden"
           />
 
-          {/* Action Buttons */}
+          
           <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2">
               <button

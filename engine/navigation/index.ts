@@ -1,14 +1,14 @@
-// Index file for navigation module
 
-// StructureLedger — precomputed conserved navigation structure
 
-// Quaternion Math (Section 3)
 
-// Manifold Smoothing (Section 4)
 
-// Physics Model (Section 5)
 
-// Home Anchor Field (Section 8)
+
+
+
+
+
+
 
 export { AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK } from './AnchorStateBuffer';
 export { AnchorWidgetStorage } from './AnchorWidgetStorage';

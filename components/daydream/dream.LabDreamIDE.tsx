@@ -161,17 +161,17 @@ export default function LabDreamIDE() {
   const [vizSeed, setVizSeed] = useState(42);
   const outputRef = useRef<HTMLDivElement>(null);
 
-  // Swap & live-mode state
+  
   const [swapped, setSwapped] = useState(false);
   const [liveMode, setLiveMode] = useState(false);
   const liveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Load swap preference from localStorage on mount (client-only)
+  
   useEffect(() => {
     setSwapped(getSwap("lab"));
   }, []);
 
-  // Auto-scroll output
+  
   useEffect(() => {
     if (outputRef.current) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
@@ -190,7 +190,7 @@ export default function LabDreamIDE() {
     setStatus("running");
     setLines([]);
 
-    // Emit lab:run so LabEngin / any other subscriber can react
+    
     dualRuntimeBridge.emit("lab", "lab:run", { language, code, simId });
 
     const mockLines = getMockOutput(language, simId);
@@ -202,7 +202,7 @@ export default function LabDreamIDE() {
             if (i === mockLines.length - 1) {
               setStatus("done");
               setVizSeed((s) => s + 7);
-              // Emit completed result
+              
               dualRuntimeBridge.emit("lab", "lab:result", {
                 lines: next,
                 status: "done",
@@ -216,7 +216,7 @@ export default function LabDreamIDE() {
     });
   }, [status, language, simId, code]);
 
-  // Ref to always call the latest version of handleRun from the live-mode effect
+  
   const handleRunRef = useRef(handleRun);
 
   const handleStop = useCallback(() => {
@@ -234,15 +234,15 @@ export default function LabDreamIDE() {
     });
   }, []);
 
-  // Toggle swap — persists to localStorage
+  
   const handleSwap = useCallback(() => {
     const next = toggleSwap("lab");
     setSwapped(next);
   }, []);
 
-  // Live mode — debounce code changes and auto-run (300 ms)
-  // Use a ref so the effect always calls the latest handleRun without
-  // needing to list all of its own dependencies (avoids stale closures).
+  
+  
+  
   useEffect(() => {
     handleRunRef.current = handleRun;
   }, [handleRun]);
@@ -261,7 +261,7 @@ export default function LabDreamIDE() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      {/* ── Simulation Selector ───────────────────────────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
         <div className="de-widget-header">
           <FlaskConical className="w-4 h-4" style={{ color: ACCENT }} />
@@ -317,7 +317,7 @@ export default function LabDreamIDE() {
         </div>
       </div>
 
-      {/* ── IDE Split: input left + output right ──────────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
         <div className="de-widget-header" style={{ gap: 8, flexWrap: "wrap" }}>
           <Activity className="w-4 h-4" style={{ color: ACCENT }} />
@@ -348,7 +348,7 @@ export default function LabDreamIDE() {
             ))}
           </div>
 
-          {/* Auto / Manual mode toggle */}
+          
           <button
             type="button"
             onClick={() => setLiveMode((m) => !m)}
@@ -386,7 +386,7 @@ export default function LabDreamIDE() {
             )}
           </button>
 
-          {/* Swap button */}
+          
           <button
             type="button"
             onClick={handleSwap}
@@ -423,7 +423,7 @@ export default function LabDreamIDE() {
             minHeight: 320,
           }}
         >
-          {/* ── OUTPUT panel — left when swapped ── */}
+          
           {swapped && (
             <div
               style={{
@@ -537,7 +537,7 @@ export default function LabDreamIDE() {
             </div>
           )}
 
-          {/* ── INPUT panel (editor) — left when not swapped, right when swapped ── */}
+          
           {!swapped && (
             <div
               style={{
@@ -706,7 +706,7 @@ export default function LabDreamIDE() {
             </div>
           )}
 
-          {/* ── OUTPUT panel — right when not swapped ── */}
+          
           {!swapped && (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -814,7 +814,7 @@ export default function LabDreamIDE() {
             </div>
           )}
 
-          {/* ── INPUT panel (editor) — right when swapped ── */}
+          
           {swapped && (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -979,7 +979,7 @@ export default function LabDreamIDE() {
         </div>
       </div>
 
-      {/* ── Visualization Panel: 3 high-density maps ─────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
         <div className="de-widget-header">
           <BarChart2 className="w-4 h-4" style={{ color: ACCENT }} />
@@ -1010,7 +1010,7 @@ export default function LabDreamIDE() {
         </div>
 
         <div className="de-widget-body">
-          {/* Three side-by-side visualizations */}
+          
           <div
             style={{
               display: "grid",
@@ -1018,7 +1018,7 @@ export default function LabDreamIDE() {
               gap: 10,
             }}
           >
-            {/* Viz 1 — always show full heatmap */}
+            
             <div
               style={{
                 padding: "8px 10px",
@@ -1063,7 +1063,7 @@ export default function LabDreamIDE() {
               </div>
             </div>
 
-            {/* Viz 2 — density field */}
+            
             <div
               style={{
                 padding: "8px 10px",
@@ -1108,7 +1108,7 @@ export default function LabDreamIDE() {
               </div>
             </div>
 
-            {/* Viz 3 — neural activation */}
+            
             <div
               style={{
                 padding: "8px 10px",
@@ -1154,7 +1154,7 @@ export default function LabDreamIDE() {
             </div>
           </div>
 
-          {/* Refresh viz button */}
+          
           <div style={{ textAlign: "right", marginTop: 8 }}>
             <button
               type="button"
@@ -1185,20 +1185,7 @@ export default function LabDreamIDE() {
   );
 }
 
-/**
- * LabDreamIDE — Split input/output IDE for the Lab Daydream (Side A).
- *
- * Layout:
- *   [ Sim selector strip ]
- *   [ Language bar ]
- *   [ Script editor (left) | Results output + visualizations (right) ]
- *   [ Visualization panel: heatmap · density · neural activation ]
- *
- * Python/JS/Bash input on the left; real-time streaming results
- * + 3 high-density visualizations on the right.
- *
- * No eval — all execution is simulated on the client.
- */
+
 
 type Language = "python" | "javascript" | "bash";
 type SimId = "particle" | "fluid" | "quantum" | "neural" | "none";

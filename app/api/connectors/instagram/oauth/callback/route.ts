@@ -4,27 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/connectors/instagram/oauth/callback/route.ts
- *
- * GET /api/connectors/instagram/oauth/callback
- *
- * Instagram Basic Display API OAuth 2.0 callback.
- *
- * 1. Validates the `state` parameter against the CSRF cookie.
- * 2. Exchanges the short-lived authorization `code` for a short-lived token.
- * 3. Exchanges the short-lived token for a long-lived token (60-day TTL).
- * 4. Upserts the long-lived token into `connector_accounts.token_blob`.
- * 5. Redirects back to the connectors page.
- *
- * Required env vars:
- *   INSTAGRAM_CLIENT_ID      — App ID from Meta for Developers
- *   INSTAGRAM_CLIENT_SECRET  — App Secret (server-only)
- *   NEXT_PUBLIC_SITE_URL     — Canonical app URL
- *
- * AXIOM 4 — Security by Default: token never returned to the browser.
- * ARCHITECTURE.md §3 — All OAuth token exchange is server-side.
- */
+
 
 const IG_TOKEN_URL      = 'https://api.instagram.com/oauth/access_token';
 const IG_LONG_TOKEN_URL = 'https://graph.instagram.com/access_token';
@@ -112,7 +92,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   let longToken: string;
-  let expiresIn = 5184000; // 60 days default
+  let expiresIn = 5184000; 
   try {
     const params = new URLSearchParams({
       grant_type:    'ig_exchange_token',
@@ -127,7 +107,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     longToken = data.access_token;
     if (data.expires_in) expiresIn = data.expires_in;
   } catch {
-    // If long-lived exchange fails, fall back to short-lived token
+    
     longToken = shortToken;
   }
 

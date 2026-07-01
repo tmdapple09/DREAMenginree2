@@ -1,14 +1,8 @@
-/**
- * Tests for lib/babylon/createEngine.ts — WebGPU-first engine factory.
- *
- * These tests run in Node (no DOM / WebGPU available) so they verify
- * the factory falls back gracefully to the WebGL path when WebGPU is
- * not present.  They also verify the module shape and option defaults.
- */
+
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// ── Minimal Babylon.js stubs ──────────────────────────────────────────────────
+
 
 const mockWebGLEngine = {
   setHardwareScalingLevel: vi.fn(),
@@ -41,14 +35,14 @@ vi.mock('@babylonjs/core', () => ({
   WebGPUEngine: MockWebGPUEngine,
 }));
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
+
 
 describe('createBabylonEngine', () => {
   const canvas = {} as HTMLCanvasElement;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // Default: WebGPU not supported
+    
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(false);
   });
 
@@ -105,7 +99,7 @@ describe('createBabylonEngine', () => {
     const result = await createBabylonEngine(canvas);
     expect(result.isWebGPU).toBe(false);
     expect(MockEngine).toHaveBeenCalled();
-    // Restore
+    
     MockWebGPUEngine.CreateAsync = vi.fn().mockResolvedValue(mockWebGPUEngine);
   });
 
@@ -114,7 +108,7 @@ describe('createBabylonEngine', () => {
     const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(canvas);
     expect(result.isWebGPU).toBe(false);
-    // Restore
+    
     MockWebGPUEngine.IsSupportedAsync = Promise.resolve(false);
   });
 

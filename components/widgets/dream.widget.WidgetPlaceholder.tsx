@@ -2,25 +2,25 @@
 
 import React from 'react';
 
-// components/widgets/dream.widget.WidgetPlaceholder.tsx
-// Empty slot placeholder (req 64-70)
-//
-// • Big plus icon + "Add" label (req 65)
-// • Opens Dream Library on tap (req 66)
-// • Premium look — not a blank rectangle (req 64)
-// • Does not appear in public profile unless user publishes it (req 68)
-//   (parent must pass isPublicView and not render this component if true)
-// • Does not block navigation or scroll (req 69-70) — pointer-events only on card
-// • Can be removed in Edit Layout (req 67) — parent passes onRemove
+
+
+
+
+
+
+
+
+
+
 
 export interface WidgetPlaceholderProps {
-  /** Called when user taps the placeholder — should open Dream Library (req 66) */
+  
   onOpenLibrary: () => void;
-  /** Called when user removes placeholder in Edit Layout (req 67) */
+  
   onRemove?: () => void;
-  /** Whether the layout is in edit mode (shows remove button) */
+  
   isEditing?: boolean;
-  /** Slot index, used as aria-label */
+  
   slot?: number;
   style?: React.CSSProperties;
 }
@@ -36,7 +36,7 @@ export default function WidgetPlaceholder({
     <div
       style={{
         position: 'relative',
-        // Placeholder must NOT block scroll — no fixed/sticky that intercepts events (req 70)
+        
         ...style,
       }}
     >
@@ -67,7 +67,7 @@ export default function WidgetPlaceholder({
           (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(42,138,184,0.35)';
         }}
       >
-        {/* Big plus icon (req 65) */}
+        
         <div style={{
           width: 44, height: 44, borderRadius: 12,
           background: 'rgba(42,138,184,0.10)',
@@ -81,7 +81,7 @@ export default function WidgetPlaceholder({
         <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-accent)' }}>Add</span>
       </button>
 
-      {/* Remove in Edit Layout (req 67) */}
+      
       {isEditing && onRemove && (
         <button
           type="button"

@@ -10,38 +10,9 @@ import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/connectors/webhooks/[provider]/route.ts
- *
- * Generalised webhook receiver for all DREAMengin connectors.
- *
- * GET  — Webhook subscription verification (YouTube WebSub, Meta/Instagram)
- * POST — Webhook payload ingestion (YouTube Atom XML, Instagram JSON)
- *
- * Verification (GET):
- *   YouTube WebSub:  Responds to hub.mode=subscribe/unsubscribe with hub.challenge.
- *   Meta/Instagram:  Verifies hub.verify_token matches WEBHOOK_VERIFY_TOKEN env var,
- *                    then echoes hub.challenge.
- *   Other providers: Returns 400 — webhook verification not supported.
- *
- * Ingestion (POST):
- *   YouTube: Parses Atom XML notification, looks up the connected user by channel ID,
- *            upserts a connector_feed_items row.
- *   Instagram: Parses Meta webhook JSON, looks up the connected user by Instagram
- *              account ID, upserts connector_feed_items rows for each media change event.
- *   Unsupported providers: Returns 400.
- *
- * AXIOM 4 — Security by Default:
- *   - Verify token is read from env, never from query params.
- *   - Instagram payloads verified via X-Hub-Signature-256 HMAC.
- *   - Service-role client used for DB writes — RLS bypassed intentionally
- *     because webhooks arrive without a user session.
- *   - No provider secrets are logged.
- *
- * ARCHITECTURE.md §3 — Logic layer helpers are in lib/connectors/webhookVerification.ts
- */
 
-// ── Service-role client (bypasses RLS for server-side webhook writes) ─────────
+
+
 
 function createServiceClient( ){
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -69,7 +40,7 @@ function parseYouTubeAtom(xml: string): YouTubeWebhookEntry | null {
     return m ? m[1] : '';
   };
 
-  // YouTube WebSub Atom: <yt:videoId>, <yt:channelId>, <title>, <link href>, <published>
+  
   const videoId = get('yt:videoId');
   const channelId = get('yt:channelId');
   const title = get('title');
@@ -95,7 +66,7 @@ interface InstagramChange {
 }
 
 interface InstagramWebhookEntry {
-  id: string;            // Instagram account ID
+  id: string;            
   time: number;
   changes: InstagramChange[];
 }
@@ -198,7 +169,7 @@ export async function POST(
   if (provider === 'youtube') {
     const entry = parseYouTubeAtom(rawBody);
     if (!entry) {
-      // Not a video notification (e.g. deletion pings or malformed) — acknowledge silently.
+      
       return NextResponse.json({ ok: true, provider, note: 'No actionable entry in payload.' });
     }
 
@@ -207,7 +178,7 @@ export async function POST(
       return NextResponse.json({ ok: true, provider, note: 'DB not configured — acknowledged.' });
     }
 
-    // Find the user whose YouTube connector account has this channelId in token_blob.
+    
     const { data: accounts } = await db
       .from('connector_accounts')
       .select('user_id, token_blob')
@@ -351,7 +322,7 @@ export async function POST(
     return NextResponse.json({ ok: true, provider, ingested: totalIngested });
   }
 
-  // Supported for delivery but no specific ingestion handler yet
+  
   return NextResponse.json(
     { ok: true, provider, note: 'Received and acknowledged.' },
     { status: 200 },

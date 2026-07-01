@@ -1,12 +1,4 @@
-/**
- * tests/phase8g-dual-runtime-persistence.test.ts
- *
- * Phase 8 §G Point 63 — Dual runtime state persists to localStorage and
- * restores on reload.
- *
- * Tests the useDualRuntimePersistence hook logic (pure unit test of
- * serialize/deserialize helpers without React rendering).
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
@@ -74,10 +66,10 @@ describe('Phase 8 §G — dualRuntimeBridge cross-Engin bus (Point 66)', () => {
       join(root, 'engins/engin.ContentEngin.tsx'),
       'utf-8',
     );
-    // ContentEngin subscribes to StarMakerEngin's music:stem-ready event either:
-    // a) directly via bridge.subscribe('music', ...) in the component, OR
-    // b) via the useContentEnginBridge() hook which internally calls bridge.subscribe('music', ...)
-    // Check the canonical component file + the bridge hook file
+    
+    
+    
+    
     const hookSrc = readFileSync(join(root, 'lib/runtime/useEnginBridge.ts'), 'utf-8');
     const hasDirectSubscription = src.includes("bridge.subscribe('music'");
     const hasHookSubscription = src.includes('useContentEnginBridge') && hookSrc.includes("bridge.subscribe('music'");

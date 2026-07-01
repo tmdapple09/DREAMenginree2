@@ -1,17 +1,4 @@
-/**
- * tests/rss-feed.test.ts
- *
- * Unit tests for lib/social/rss-feed.ts
- *
- * Coverage:
- *  A. URL builders — correct feed URL construction per provider
- *  B. stripHtml    — HTML stripping + entity decoding
- *  C. extractFirstImage — image extraction from rss-parser items
- *  D. normaliseRssItem — full item normalisation to UnifiedFeedItem
- *  E. parseRssFeed (mocked) — integration smoke test without network
- *
- * No network calls — rss-parser.parseURL is mocked.
- */
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
@@ -29,7 +16,7 @@ import {
   type RssFeedConfig,
 } from '@/engine/social/rss-feed';
 
-// ── A. URL builders ───────────────────────────────────────────────────────
+
 
 describe('youtubeChannelRssUrl', () => {
   it('builds the correct YouTube channel feed URL', () => {
@@ -123,7 +110,7 @@ describe('nostrGatewayRssUrl', () => {
   });
 });
 
-// ── B. stripHtml ──────────────────────────────────────────────────────────
+
 
 describe('stripHtml', () => {
   it('removes HTML tags', () => {
@@ -157,7 +144,7 @@ describe('stripHtml', () => {
   });
 });
 
-// ── C. extractFirstImage ──────────────────────────────────────────────────
+
 
 describe('extractFirstImage', () => {
   it('returns enclosure.url when present and image-like', () => {
@@ -207,7 +194,7 @@ describe('extractFirstImage', () => {
   });
 });
 
-// ── D. normaliseRssItem ───────────────────────────────────────────────────
+
 
 describe('normaliseRssItem', () => {
   const config: RssFeedConfig = {
@@ -304,7 +291,7 @@ describe('normaliseRssItem', () => {
   });
 });
 
-// ── E. parseRssFeed (mocked) ──────────────────────────────────────────────
+
 
 describe('parseRssFeed', () => {
   beforeEach(() => {
@@ -312,7 +299,7 @@ describe('parseRssFeed', () => {
   });
 
   it('returns normalised items from a mocked feed', async () => {
-    // Mock rss-parser's parseURL
+    
     const mockFeed = {
       title: 'DREAMengin Test Channel',
       items: [
@@ -333,7 +320,7 @@ describe('parseRssFeed', () => {
       ],
     };
 
-    // Patch the singleton parser via module-level mock
+    
      
     const ParserModule = await import('rss-parser');
     const ParserClass = (ParserModule as { default: typeof import('rss-parser') }).default;

@@ -4,11 +4,7 @@ import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * PrivacyPanel — Privacy settings rendered in Surface Space.
- * Real toggles persisted to localStorage. Real appeal API call.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 const STORAGE_KEY = 'de-privacy-settings';
 
@@ -40,13 +36,13 @@ export default function PrivacyPanel( ){
   const [showAppeal, setShowAppeal]     = useState(false);
 
   useEffect(() => {
-    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) setSettings((p) => ({ ...p, ...JSON.parse(raw) })); } catch { /* ignore */ }
+    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) setSettings((p) => ({ ...p, ...JSON.parse(raw) })); } catch {  }
   }, []);
 
   const toggle = useCallback((key: keyof PrivacySettings) => {
     setSettings((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {  }
       return next;
     });
     setSaved(true); setTimeout(() => setSaved(false), 1800);

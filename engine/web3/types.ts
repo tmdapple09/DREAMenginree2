@@ -1,24 +1,14 @@
-/**
- * lib/web3/types.ts
- *
- * Type definitions for DREAMengin's Web3 layer — wallet connection,
- * on-chain engagement tracking, and IPFS content addressing.
- *
- * These types form the contract between the on-chain backend, the IPFS
- * content store, and the DREAMengin feed system. They are intentionally
- * provider-agnostic so the implementation can swap between ethers / viem /
- * wagmi without touching callers.
- */
+
 
 export type WalletProvider = 'metamask' | 'walletconnect' | 'coinbase' | 'injected';
 
 export interface WalletAccount {
   address: string;
-  /** Checksummed EIP-55 address */
+  
   checksumAddress: string;
-  /** ENS name if resolved, otherwise null */
+  
   ensName: string | null;
-  /** Chain ID the wallet is connected to */
+  
   chainId: number;
   provider: WalletProvider;
 }
@@ -45,17 +35,17 @@ export class Web3Error extends Error {
   }
 }
 
-/** Mirrors the backend engagementController shape */
+
 export interface EngagementPayload {
   contentId: string;
-  /** CID on IPFS if the content is stored decentrally */
+  
   contentCid?: string;
   type: 'like' | 'repost' | 'comment';
-  /** Wallet address of the engaging user */
+  
   actor: string;
-  /** ISO timestamp — defaults to now */
+  
   timestamp?: string;
-  /** EVM transaction hash once the engagement is settled on-chain */
+  
   txHash?: string;
 }
 
@@ -64,28 +54,28 @@ export interface EngagementStats {
   likes: number;
   reposts: number;
   comments: number;
-  /** Chain-verified engagement count (may lag behind optimistic count) */
+  
   verifiedLikes: number;
-  /** Whether the current wallet has liked this content */
+  
   hasLiked: boolean;
 }
 
 export interface IpfsUploadResult {
-  /** v1 CID string */
+  
   cid: string;
-  /** Full ipfs:// URI */
+  
   uri: string;
-  /** Public HTTP gateway URL for in-browser preview */
+  
   gatewayUrl: string;
-  /** Size in bytes */
+  
   size: number;
 }
 
 export interface IpfsContent {
   cid: string;
-  /** Decoded UTF-8 string content */
+  
   content: string;
-  /** MIME type if determinable, otherwise null */
+  
   mimeType: string | null;
 }
 
@@ -95,7 +85,7 @@ export interface ChainConfig {
   rpcUrl: string;
   blockExplorerUrl: string;
   nativeCurrency: { name: string; symbol: string; decimals: number };
-  /** DREAMengin engagement contract address on this chain */
+  
   engagementContractAddress: string | null;
 }
 
@@ -106,7 +96,7 @@ export const SUPPORTED_CHAINS: Record<number, ChainConfig> = {
     rpcUrl: 'https://mainnet.infura.io/v3/',
     blockExplorerUrl: 'https://etherscan.io',
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-    engagementContractAddress: null, // set when contract is deployed
+    engagementContractAddress: null, 
   },
   137: {
     chainId: 137,
@@ -126,4 +116,4 @@ export const SUPPORTED_CHAINS: Record<number, ChainConfig> = {
   },
 };
 
-export const DEFAULT_CHAIN_ID = 137; // Polygon — low gas, high throughput
+export const DEFAULT_CHAIN_ID = 137; 

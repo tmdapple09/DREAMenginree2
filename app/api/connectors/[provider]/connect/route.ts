@@ -11,19 +11,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/connectors/[provider]/connect/route.ts
- *
- * Phase 5 — POST /api/connectors/{provider}/connect
- *
- * Stores credentials for a connector and runs an immediate verify call.
- * Only sets status = 'connected' if verify succeeds.
- * Never returns token_blob to the client.
- *
- * AXIOM 4 — Security by Default: secrets stay server-side only.
- * AXIOM 5 — Privacy by Design: owner-only via RLS.
- * ARCHITECTURE.md §5 — Privacy and projection boundaries.
- */
+
 
 export async function POST(
   req: NextRequest,
@@ -34,7 +22,7 @@ export async function POST(
 
   const db = supabase as SupabaseClient;
 
-  // Auth check — only authenticated users may connect
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ ok: false, status: 'error', message: 'Unauthorised' }, { status: 401 });
@@ -97,9 +85,9 @@ export async function POST(
     status = 'error';
   }
 
-  // token_blob stores credentials server-side only.
-  // We never return token_blob in the response.
-  // db is cast to `any` because connector_accounts is a new table not yet in the generated Supabase types.
+  
+  
+  
   const { error: dbError } = await db
     .from('connector_accounts')
     .upsert(
@@ -116,7 +104,7 @@ export async function POST(
     );
 
   if (dbError) {
-    // DB error — return partial success (credentials verified but not saved)
+    
     return NextResponse.json(
       {
         ok: false,

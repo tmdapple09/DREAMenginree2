@@ -1,25 +1,7 @@
 import { normaliseReddit } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/reddit.ts
- *
- * Phase 5 — Reddit provider (Tier 1)
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { access_token: string }
- *
- * OAuth2 flow: redirect user to Reddit authorisation, then exchange code
- * for an access_token. The connect API route handles the exchange.
- *
- * Required scopes: identity, read, mysubreddits, save
- *
- * No required environment variables for reading — optional client_id/secret
- * for OAuth (set as REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET in env).
- * If not configured, the connector shows 'needs_admin_setup'.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 const REDDIT_API = 'https://oauth.reddit.com';
 
@@ -31,10 +13,7 @@ interface RedditUser {
   name: string;
 }
 
-/**
- * Verify credentials by calling GET /api/v1/me
- * Returns the authenticated username on success.
- */
+
 export async function redditVerify(creds: RedditCredentials): Promise<string> {
   const res = await fetch(`${REDDIT_API}/api/v1/me`, {
     headers: {
@@ -47,10 +26,7 @@ export async function redditVerify(creds: RedditCredentials): Promise<string> {
   return user.name;
 }
 
-/**
- * Fetch the user's home feed and return normalised items.
- * Calls GET /best or / (personalised frontpage when authenticated).
- */
+
 export async function redditSync(creds: RedditCredentials): Promise<UnifiedFeedItem[]> {
   const res = await fetch(`${REDDIT_API}/?limit=40`, {
     headers: {
@@ -64,9 +40,7 @@ export async function redditSync(creds: RedditCredentials): Promise<UnifiedFeedI
   return (posts as Parameters<typeof normaliseReddit>[0][]).map(normaliseReddit);
 }
 
-/**
- * Fetch the user's saved posts.
- */
+
 export async function redditSyncSaved(creds: RedditCredentials): Promise<UnifiedFeedItem[]> {
   const username = await redditVerify(creds);
   const res = await fetch(`${REDDIT_API}/user/${username}/saved?limit=40`, {

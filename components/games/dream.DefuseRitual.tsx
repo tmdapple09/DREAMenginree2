@@ -3,14 +3,7 @@
 import { useGameAutoStart, useSubmitScore } from '@/engins/gameengin/games/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * DEFUSE RITUAL — fusion of speed-tap + minesweeper.
- *
- * Nine seconds. A 6×6 grid. Around the chamber walls, candle-numbers tell you
- * how many mines hide in each row and column. The wall above the grid shows
- * the safe glyph order — tap them in sequence. Hit a mine → lose 2 seconds
- * AND the brand on your hand grows. Clear all safe tiles before time burns out.
- */
+
 
 const N = 6;
 const TOTAL_TILES = N * N;
@@ -24,20 +17,20 @@ interface Tile { mine: boolean; glyph: string; revealed: boolean; mineHit: boole
 
 function makeBoard(): { tiles: Tile[]; rowHints: number[]; colHints: number[]; safeOrder: number[]; safeGlyphs: string[] } {
   const tiles: Tile[] = Array.from({ length: TOTAL_TILES }, () => ({ mine: false, glyph: GLYPHS[Math.floor(Math.random() * GLYPHS.length)], revealed: false, mineHit: false }));
-  // Plant mines
+  
   let placed = 0;
   while (placed < MINE_COUNT) {
     const i = Math.floor(Math.random() * TOTAL_TILES);
     if (!tiles[i].mine) { tiles[i].mine = true; placed++; }
   }
-  // Hints
+  
   const rowHints = new Array(N).fill(0);
   const colHints = new Array(N).fill(0);
   for (let i = 0; i < TOTAL_TILES; i++) if (tiles[i].mine) {
     rowHints[Math.floor(i / N)]++;
     colHints[i % N]++;
   }
-  // Safe-glyph order: pick 5 safe tiles in random order; their glyphs are the wall sigils
+  
   const safeIdx = tiles.map((t, i: number) => ({ t, i })).filter(({ t }) => !t.mine).map(({ i }) => i);
   for (let i = safeIdx.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [safeIdx[i], safeIdx[j]] = [safeIdx[j], safeIdx[i]]; }
   const safeOrder = safeIdx.slice(0, 5);
@@ -85,7 +78,7 @@ export default function DefuseRitual( ){
       const tiles = b.tiles.map((t) => ({ ...t }));
       const t = tiles[i];
       if (t.revealed) return b;
-      // Mine tap?
+      
       if (t.mine) {
         t.revealed = true; t.mineHit = true;
         setEndsAt((e: number) => e - 2_000);
@@ -94,7 +87,7 @@ export default function DefuseRitual( ){
         if (brand + 1 >= 3) setPhase('lost');
         return { ...b, tiles };
       }
-      // Glyph order check
+      
       const expected = b.safeGlyphs[step];
       if (expected && t.glyph === expected) {
         t.revealed = true;
@@ -102,12 +95,12 @@ export default function DefuseRitual( ){
         setStep(newStep);
         setScore((s) => s + 50 + Math.floor((endsAt - performance.now()) / 100));
         if (newStep >= b.safeGlyphs.length) {
-          // Reveal remaining safe tiles automatically
+          
           for (let k = 0; k < tiles.length; k++) if (!tiles[k].mine) tiles[k].revealed = true;
           setPhase('won');
         }
       } else {
-        // Out-of-order safe tap — small penalty
+        
         setEndsAt((e: number) => e - 600);
         setScore((s) => Math.max(0, Number(s) - 5));
       }
@@ -139,7 +132,7 @@ export default function DefuseRitual( ){
 
         {(phase === 'playing' || phase === 'won' || phase === 'lost') && (
           <>
-            {/* Wall sigil sequence */}
+            
             <div className="flex justify-center gap-2 mb-3">
               {board.safeGlyphs.map((g, i: number) => (
                 <div key={i} className="w-9 h-9 flex items-center justify-center rounded text-xl"
@@ -152,14 +145,14 @@ export default function DefuseRitual( ){
               ))}
             </div>
 
-            {/* Time bar */}
+            
             <div className="mb-3 h-2 bg-black rounded">
               <div className="h-2 rounded transition-all"
                 style={{ width: `${(remaining / (TIME_BUDGET_MS / 1000)) * 100}%`, background: remaining < 3 ? '#aa3a3a' : '#f0c674' }} />
             </div>
             <div className="text-center text-xs mb-2 opacity-70">{remaining.toFixed(1)}s · seek glyph: <span style={{ color: '#f0c674' }}>{expectedGlyph ?? '—'}</span></div>
 
-            {/* Grid with edge hints */}
+            
             <div className="grid" style={{ gridTemplateColumns: `28px repeat(${N}, 1fr)`, gap: 6 }}>
               <div></div>
               {board.colHints.map((h, i: number) => (
@@ -180,7 +173,7 @@ export default function DefuseRitual( ){
                     {t.revealed ? (t.mine ? '✸' : t.glyph) : t.glyph}
                   </button>
                 );
-                // Insert row hint at start of each row
+                
                 if (c === 0) return [
                   <div key={`rh${r}`} className="text-xs text-center opacity-60 self-center">{board.rowHints[r]}</div>,
                   cell,

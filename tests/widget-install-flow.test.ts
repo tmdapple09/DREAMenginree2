@@ -1,5 +1,5 @@
-// tests/widget-install-flow.test.ts
-// Unit tests for the Connect → Widget Install flow (req 1-100)
+
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
@@ -30,12 +30,12 @@ import {
   CONNECTOR_REGISTRY,
 } from '@/engine/connectors/connectorRegistry';
 
-// Reset in-memory state before each test that touches the store
+
 function resetStore() {
   _resetInstallFlowState();
 }
 
-// ── Req 43: All widget type IDs are stable strings (no raw duplicates) ──────
+
 describe('WIDGET_REGISTRY — stable IDs (req 43)', () => {
   it('has no duplicate IDs', () => {
     const ids = WIDGET_REGISTRY.map((w) => w.id);
@@ -64,7 +64,7 @@ describe('WIDGET_REGISTRY — stable IDs (req 43)', () => {
   });
 });
 
-// ── Req 43: Connector registry stable IDs ────────────────────────────────
+
 describe('CONNECTOR_REGISTRY — stable IDs (req 43)', () => {
   it('has no duplicate IDs', () => {
     const ids = CONNECTOR_REGISTRY.map((c) => c.id);
@@ -79,7 +79,7 @@ describe('CONNECTOR_REGISTRY — stable IDs (req 43)', () => {
   });
 });
 
-// ── Req 46-48: Connector state resolution ─────────────────────────────────
+
 describe('resolveConnectorState (req 46-48)', () => {
   it('returns not_required for widgets with no connector dependency (req 46)', () => {
     const state = resolveConnectorState('feed-main', new Set(), new Set());
@@ -102,12 +102,12 @@ describe('resolveConnectorState (req 46-48)', () => {
   });
 });
 
-// ── Req 32: Slot detection — nearest to centre ────────────────────────────
+
 describe('findBestSlot (req 31-33)', () => {
   it('returns the slot nearest to center when multiple empty slots exist (req 32)', () => {
     const grid: SlotGrid = { totalSlots: 5, filledSlots: new Set([0, 1]) };
     const slot = findBestSlot(grid);
-    // Center = (5-1)/2 = 2; slot 2 is empty and nearest
+    
     expect(slot).toBe(2);
   });
 
@@ -122,14 +122,14 @@ describe('findBestSlot (req 31-33)', () => {
   });
 
   it('prefers the centermost of ties', () => {
-    // 4 slots, all empty: center = 1.5; slots 1 and 2 tie — picks whichever sort puts first
+    
     const grid: SlotGrid = { totalSlots: 4, filledSlots: new Set() };
     const slot = findBestSlot(grid);
-    expect([1, 2]).toContain(slot); // either central slot is acceptable
+    expect([1, 2]).toContain(slot); 
   });
 });
 
-// ── Req 5, 11-20: handleConnectSuccess ────────────────────────────────────
+
 describe('handleConnectSuccess (req 11-20)', () => {
   it('returns shouldShowPromptNow=true when nothing is blocking (req 5)', () => {
     const result = handleConnectSuccess('youtube', 'YouTube');
@@ -162,7 +162,7 @@ describe('handleConnectSuccess (req 11-20)', () => {
   });
 });
 
-// ── Req 16-17: Deferred prompt queue ──────────────────────────────────────
+
 describe('deferred prompt (req 16-17)', () => {
   it('stores and consumes a deferred prompt', () => {
     deferPrompt('github', 'GitHub');
@@ -176,7 +176,7 @@ describe('deferred prompt (req 16-17)', () => {
   });
 });
 
-// ── Req 7-10: Suggested Widgets store ─────────────────────────────────────
+
 describe('SuggestedWidgets store (req 7-10, 34-35)', () => {
   beforeEach(() => {
     resetStore();
@@ -209,7 +209,7 @@ describe('SuggestedWidgets store (req 7-10, 34-35)', () => {
   });
 });
 
-// ── Req 21-25: handleAddWidget ─────────────────────────────────────────────
+
 describe('handleAddWidget (req 21-30)', () => {
   it('returns a valid slot when one is available (req 21, 31)', () => {
     const grid: SlotGrid = { totalSlots: 4, filledSlots: new Set([0, 1]) };
@@ -230,7 +230,7 @@ describe('handleAddWidget (req 21-30)', () => {
   });
 });
 
-// ── Req 84-89: scheduleAutoLock ────────────────────────────────────────────
+
 describe('scheduleAutoLock (req 84-89)', () => {
   it('does not trigger during drag (req 85)', () => {
     vi.useFakeTimers();
@@ -270,7 +270,7 @@ describe('scheduleAutoLock (req 84-89)', () => {
   });
 });
 
-// ── Req 45: getWidgetTypesForConnector ────────────────────────────────────
+
 describe('getWidgetTypesForConnector (req 45)', () => {
   it('returns only widgets that require youtube', () => {
     const types = getWidgetTypesForConnector('youtube');
@@ -283,7 +283,7 @@ describe('getWidgetTypesForConnector (req 45)', () => {
   });
 });
 
-// ── Req 43: Lookup by stable ID ───────────────────────────────────────────
+
 describe('getWidgetTypeDef / getConnectorDef (req 43)', () => {
   it('resolves a widget by stable ID', () => {
     const def = getWidgetTypeDef('yt-channel');
@@ -302,7 +302,7 @@ describe('getWidgetTypeDef / getConnectorDef (req 43)', () => {
   });
 });
 
-// ── Req 34: handlePlaceLater queues in Suggested ──────────────────────────
+
 describe('handlePlaceLater (req 34)', () => {
   beforeEach(() => {
     resetStore();

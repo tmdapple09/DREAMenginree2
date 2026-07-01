@@ -1,11 +1,4 @@
-/**
- * tests/lab-dream-split.test.ts
- *
- * Unit tests for the pure helper utilities that power the Lab Dream
- * split-view IDE (input left, results right).
- *
- * All functions are deterministic and pure — no DOM, no network.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -15,9 +8,9 @@ import {
   parseCodeResponse,
 } from '@/engins/codeengin/ai/drEamsCodeAssist';
 
-// ─── Simulation result helpers ────────────────────────────────────────────────
 
-/** Mirrors the SIMS constant used in LabEngin and the Lab Dream split IDE. */
+
+
 const LAB_SIMS = [
   { id: 'particle', name: 'Particle Physics', emoji: '⚛️', result: '1024 particles simulated, avg velocity: 12.4m/s'      },
   { id: 'fluid',    name: 'Fluid Dynamics',   emoji: '🌊', result: 'Flow stable at Re=4200'                               },
@@ -62,12 +55,12 @@ describe('LAB_SIMS', () => {
   });
 });
 
-// ─── Mock script execution (deterministic) ────────────────────────────────────
 
-/** Mirrors getLabMockOutput used in the Lab Dream split IDE. */
+
+
 function getLabMockOutput(language: 'python' | 'javascript' | 'bash', script: string): string {
   if (!script.trim()) return '';
-  // Route to sim if script hints at simulation
+  
   if (/\bparticle\b/i.test(script)) return getSimResult('particle');
   if (/\bfluid\b/i.test(script))    return getSimResult('fluid');
   if (/\bquantum\b/i.test(script))  return getSimResult('quantum');
@@ -128,9 +121,9 @@ describe('getLabMockOutput', () => {
   });
 });
 
-// ─── Visualization types ──────────────────────────────────────────────────────
 
-/** Mirrors VIZ_TYPES used in LabEngin's visualization tab. */
+
+
 const VIZ_TYPES = [
   { id: 'heatmap',    label: 'Heatmap',              desc: 'High-density data distribution map'      },
   { id: 'density',    label: 'Simulation Density',   desc: 'Particle / fluid density field'         },
@@ -158,9 +151,9 @@ describe('VIZ_TYPES', () => {
   });
 });
 
-// ─── ASCII heatmap rendering ──────────────────────────────────────────────────
 
-/** Mirrors the ASCII heatmap generator used in LabEngin's viz panel. */
+
+
 function renderAsciiHeatmap(rows: number, cols: number, seed = 42): string {
   const chars = ['░', '▒', '▓', '█'];
   let out = '';
@@ -206,7 +199,7 @@ describe('renderAsciiHeatmap', () => {
   });
 });
 
-// ─── Lab language detection ───────────────────────────────────────────────────
+
 
 describe('detectLanguageFromCode (lab context)', () => {
   it('detects Python data science code', () => {
@@ -220,7 +213,7 @@ describe('detectLanguageFromCode (lab context)', () => {
   });
 });
 
-// ─── Lab NL command detection ─────────────────────────────────────────────────
+
 
 describe('detectNLCommand (lab context)', () => {
   it('detects create class for experiment runner', () => {
@@ -241,7 +234,7 @@ describe('detectNLCommand (lab context)', () => {
   });
 });
 
-// ─── Code generation for lab context ─────────────────────────────────────────
+
 
 describe('generateCodeFromCommand (lab context)', () => {
   it('generates Python Experiment class', () => {
@@ -258,7 +251,7 @@ describe('generateCodeFromCommand (lab context)', () => {
   });
 });
 
-// ─── parseCodeResponse (lab IDE context) ─────────────────────────────────────
+
 
 describe('parseCodeResponse (lab IDE)', () => {
   it('extracts Python code blocks from a Dr. Eams data science answer', () => {

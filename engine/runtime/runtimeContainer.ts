@@ -7,13 +7,13 @@ import {
   type RuntimeLoad,
 } from '@/engine/engin-runtime/EnginBaseState';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/runtimeContainer.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
 
 const RUNTIME_CONTAINER_COHERENCE_CAPACITY = createCoherenceCapacity({
   maxEventPressure: 42,
@@ -22,11 +22,11 @@ const RUNTIME_CONTAINER_COHERENCE_CAPACITY = createCoherenceCapacity({
   maxInvalidMutations: 2,
 });
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type RuntimeStrategy<State, Input> = (state: State, input: Input) => State;
 
@@ -34,7 +34,7 @@ export interface RuntimeContainerOptions {
   coherenceCapacity?: Partial<CoherenceCapacity>;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function decayContainerLoad(load: RuntimeLoad): RuntimeLoad {
   return createRuntimeLoad({
@@ -59,10 +59,7 @@ function mergeContainerLoad(current: RuntimeLoad, patch: Partial<RuntimeLoad>): 
   });
 }
 
-/**
- * Strategy-based runtime container.
- * Infrastructure owns state progression; business logic is injected.
- */
+
 export class RuntimeContainer<State, Input> {
   private state: State;
   private readonly strategy: RuntimeStrategy<State, Input>;
@@ -150,8 +147,8 @@ export class RuntimeContainer<State, Input> {
   }
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

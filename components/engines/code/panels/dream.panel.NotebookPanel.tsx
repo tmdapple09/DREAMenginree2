@@ -3,12 +3,7 @@
 import { Code2, Play, Plus, TerminalSquare, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
 
-/**
- * NotebookPanel — Live interactive notebook for the Code Engine app.
- *
- * Python-rival cell-by-cell execution with simulated output.
- * Lives at /engines/code/notebook.
- */
+
 
 type CellType = "code" | "markdown";
 type CellStatus = "idle" | "running" | "done" | "error";

@@ -2,22 +2,22 @@ import { groqChat, type GroqMessage } from '@/dr-eams/ai/groq';
 import { IntentSchema, type Intent, type IntentType } from '@/dr-eams/ai/schemas';
 import { v4 as uuidv4 } from 'uuid';
 
-// lib/ai/triad.ts
-// Dr. Eams (user AI) + Idari (builder AI) + Boogie (policy AI)
-//
-// This module intentionally keeps the orchestration server-side.
-// The UI should only ever talk to Dr. Eams endpoints.
+
+
+
+
+
 
 export const AI_MODELS = {
-  // User-facing agent — override via GROQ_MODEL_EAMS_FAST / GROQ_MODEL_EAMS_HEAVY
+  
   EAMS_PRIMARY: process.env.GROQ_MODEL_EAMS_FAST || 'meta-llama/llama-4-scout-17b-16e-instruct',
   EAMS_FALLBACK: process.env.GROQ_MODEL_EAMS_HEAVY || 'llama-3.3-70b-versatile',
 
-  // Builder / maintainer — override via GROQ_MODEL_IDARI_FAST / GROQ_MODEL_IDARI_HEAVY
+  
   IDARI_PRIMARY: process.env.GROQ_MODEL_IDARI_FAST || 'moonshotai/kimi-k2-instruct-0905',
   IDARI_FALLBACK: process.env.GROQ_MODEL_IDARI_HEAVY || 'openai/gpt-oss-120b',
 
-  // Policy / safety — override via GROQ_MODEL_BOOGIE
+  
   BOOGIE: process.env.GROQ_MODEL_BOOGIE || 'openai/gpt-oss-safeguard-20b',
 };
 
@@ -38,7 +38,7 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
   try {
     return JSON.parse(text);
   } catch {
-    // Try to recover JSON from a fenced block
+    
     const match = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/```\s*([\s\S]*?)```/);
     if (match?.[1]) {
       try {
@@ -51,18 +51,18 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
   }
 }
 
-// Phase 8 §A — Canonical routes for Dr. Eams navigation resolution (Point 9).
-// These are the only valid NAV_DELTA route values Dr. Eams may propose.
-// Any route not in this list is rejected at the intent-validation layer.
+
+
+
 
 export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
-  // Core surfaces
+  
   '/homedream',
   '/home',
   '/edit-profiledream',
   '/edit-profile',
   '/view-profile',
-  // Daydream surfaces
+  
   '/daydream/music',
   '/daydream/games',
   '/daydream/lab',
@@ -70,7 +70,7 @@ export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
   '/daydream/brand',
   '/daydream/create',
   '/daydream/analytics',
-  // Platform modules
+  
   '/messages',
   '/shop',
   '/marketplace',
@@ -88,10 +88,10 @@ export const CANONICAL_NAV_ROUTES: ReadonlySet<string> = new Set([
   '/onboarding',
 ]);
 
-// Dr. Eams: create a concise reply + up to 3 JSON intents.
 
-// Subset of CODE_VOCABULARY terms inlined so triad.ts remains self-contained.
-// Full vocabulary lives in lib/code/drEamsCodeAssist.ts.
+
+
+
 const CODE_VOCAB_SNAPSHOT = [
   'variable, constant, function, class, loop, recursion, closure, async/await, callback, promise',
   'inheritance, polymorphism, encapsulation, abstraction, singleton, decorator',
@@ -110,13 +110,9 @@ export async function planWithEams(input: {
   actorEmail?: string | null;
   actorRole: 'user' | 'admin' | 'owner';
   uiRoute?: string;
-  /** Optional: real content context fetched from Supabase (Phase 8 §A Point 10) */
+  
   contentContext?: string;
-  /**
-   * When provided, Dr. Eams operates in code-assist mode: vocabulary lookup,
-   * NL→code generation, explain/refactor/debug flows.
-   * Privacy: only selected_code (≤ 2 000 chars) is ever included.
-   */
+  
   codeContext?: {
     language: 'python' | 'javascript' | 'typescript' | 'bash';
     selected_code: string;
@@ -125,7 +121,7 @@ export async function planWithEams(input: {
 }): Promise<EamsPlan> {
   const canonicalRouteList = Array.from(CANONICAL_NAV_ROUTES).join(', ');
 
-  // Build the code-assist section of the system prompt when codeContext present.
+  
   const codeAssistSection = input.codeContext
     ? `\nCODE ASSIST MODE — ACTIVE:\n` +
       `Language: ${input.codeContext.language}\n` +
@@ -211,13 +207,13 @@ export async function planWithEams(input: {
           };
           return base;
         })
-        // Phase 8 §A Point 9: validate NAV_DELTA payloads contain real canonical routes
+        
         .filter((intent) => {
           if (!IntentSchema.safeParse(intent).success) return false;
           if (intent.type === 'NAV_DELTA') {
             const route = (intent.payload as any)?.route;
             if (typeof route === 'string' && route.length > 0) {
-              // Accept canonical routes exactly; also accept /profile/[handle] patterns
+              
               return CANONICAL_NAV_ROUTES.has(route) || /^\/profile\/[^/]+$/.test(route);
             }
             return false;
@@ -235,7 +231,7 @@ export async function planWithEams(input: {
     }
   }
 
-  // Hard fallback
+  
   return {
     response_text: `I'm having trouble reaching my brain right now. Try again in a moment.`,
     intents: [],
@@ -243,9 +239,9 @@ export async function planWithEams(input: {
   };
 }
 
-// Idari: sanity-check / shrink / normalize. (LLM optional; rule-based default)
 
-// User-facing intents — safe for any authenticated actor.
+
+
 const USER_ALLOWED_INTENT_TYPES: IntentType[] = [
   'NAV_DELTA',
   'HOME_MENU_OPEN',
@@ -253,21 +249,15 @@ const USER_ALLOWED_INTENT_TYPES: IntentType[] = [
   'POST_CREATE',
 ];
 
-// Admin-context intents — Idari builder/diagnostics only.
-// Extends user-allowed list with admin-tier diagnostic types.
+
+
 const ADMIN_ALLOWED_INTENT_TYPES: IntentType[] = [
   ...USER_ALLOWED_INTENT_TYPES,
   'DIAG_SCHEMA_SNAPSHOT',
   'DIAG_RLS_SNAPSHOT',
 ];
 
-/**
- * Validate and filter intents produced by an AI planner.
- *
- * @param intents  Raw intents from the planner.
- * @param context  'user' (default) — restricts to safe UI intents only.
- *                 'admin' — also permits Idari diagnostic intent types.
- */
+
 export function validateWithIdari(
   intents: Intent[],
   context: 'user' | 'admin' = 'user'
@@ -284,7 +274,7 @@ export function validateWithIdari(
   return { intents: filtered, notes };
 }
 
-// Boogie: policy layer. Use existing rule engine elsewhere; this is LLM helper.
+
 
 export async function boogiePolicyCheck(input: {
   actorRole: 'user' | 'admin' | 'owner';
@@ -322,7 +312,7 @@ export async function boogiePolicyCheck(input: {
       reason: parsed.reason ? String(parsed.reason) : undefined,
     };
   } catch {
-    // If Boogie model isn't available, fail open here; the rule engine will still run.
+    
     return { hard_block: false };
   }
 }

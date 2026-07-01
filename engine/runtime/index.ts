@@ -1,7 +1,7 @@
 import baseStateSeed from '@/engine/state/base.json';
 import { createClient as createSupabaseClient } from '@/supabase/client/client';
 
-// engine/runtime/index.ts
+
 
 export type RegistrySlot =
   | 'surface'

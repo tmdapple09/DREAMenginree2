@@ -3,33 +3,15 @@ import { parseRssFeed, pinterestRssUrl } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/providers/pinterest.ts
- *
- * Pinterest provider (Tier 1) — public board RSS.
- *
- * Pinterest exposes RSS feeds for public boards and public profiles.
- * No API key or OAuth required — just public content.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { username: string, board?: string }
- *
- * ⚠️  YOUR PINTEREST PROFILE AND BOARDS MUST BE SET TO PUBLIC.
- *     Go to Pinterest Settings → Privacy and data → set "Profile privacy" to Public.
- *     Individual boards must also be set to Public (not Secret).
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface PinterestCredentials {
   username: string;
-  /** Optional specific board slug. If omitted, fetches all public pins. */
+  
   board?: string;
 }
 
-/**
- * Verify that the Pinterest RSS feed is accessible.
- */
+
 export async function pinterestVerify(creds: PinterestCredentials): Promise<string> {
   const username = (creds.username ?? '').replace(/^@/, '').trim();
   if (!username) throw new Error('Pinterest username is required.');
@@ -58,9 +40,7 @@ export async function pinterestVerify(creds: PinterestCredentials): Promise<stri
   return username;
 }
 
-/**
- * Fetch and normalise public Pinterest board/profile pins.
- */
+
 export async function pinterestSync(creds: PinterestCredentials): Promise<UnifiedFeedItem[]> {
   const username = (creds.username ?? '').replace(/^@/, '').trim();
   const url = pinterestRssUrl(username, creds.board);

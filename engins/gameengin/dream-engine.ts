@@ -5,23 +5,9 @@ import { createClient } from '@/supabase/client/client';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/gameengin/dream-engine.ts
- *
- * DREAMengin Core Bridge — connects the controller layer to Asset DNA.
- *
- * Four capabilities:
- *   saveScannedAsset    — persists a Wasm-generated 3D mesh + rig + DNA blob
- *   bindExistingController — upserts a joystick/button → asset command mapping
- *   syncController      — opens a Realtime channel for live control updates
- *   fetchEverything     — reads the global_registry for DreamDMBar
- *
- * Architecture: lives in lib/ (Logic layer) per GENERATION_LAW §3.1.
- * Security: owner_id set from auth.getUser(); RLS enforces server-side.
- *   Client-side uid filtering is defence-in-depth (AXIOM 4 / SECURITY.md).
- */
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+
+
 
 export interface GameAsset {
   id: string;
@@ -52,11 +38,7 @@ export interface WasmOutput {
 }
 
 export const DreamEngine = {
-  /**
-   * ASSET BUILDER — saves the Wasm-generated 3D mesh & rig (moving parts).
-   * Use when a user "scans" an image in Create Daydream.
-   * The SQL trigger on game_assets auto-registers the entry in global_registry.
-   */
+  
   async saveScannedAsset(
     label: string,
     imageUrl: string,
@@ -89,11 +71,7 @@ export const DreamEngine = {
     return data as GameAsset;
   },
 
-  /**
-   * CONTROLLER BRIDGE — links an existing joystick/button input to an asset.
-   * Upserts so calling it again updates the binding rather than duplicating.
-   * Run once when you "possess" a 3D model in the game.
-   */
+  
   async bindExistingController(
     assetId: string,
     inputSource: string,
@@ -118,14 +96,7 @@ export const DreamEngine = {
     if (error) throw new Error(`Binding Failed: ${toErrorMessage(error)}`);
   },
 
-  /**
-   * REALTIME SYNC — subscribes to control_mappings UPDATE events for an asset.
-   * Drop the returned channel into a useEffect cleanup to unsubscribe on unmount.
-   *
-   * @example
-   * const channel = DreamEngine.syncController(assetId, (payload) => { ... });
-   * return () => { channel.unsubscribe(); };
-   */
+  
   syncController(assetId: string, onUpdate: (payload: Record<string, unknown>) => void) {
     const supabase = createClient();
     return supabase
@@ -143,10 +114,7 @@ export const DreamEngine = {
       .subscribe();
   },
 
-  /**
-   * GLOBAL REGISTRY — fetches all platform objects (posts, assets, ads, …)
-   * ordered newest-first. Used by DreamDMBar and the GAL discovery layer.
-   */
+  
   async fetchEverything(): Promise<GlobalRegistryEntry[]> {
     const supabase = createClient();
     const { data, error } = await supabase

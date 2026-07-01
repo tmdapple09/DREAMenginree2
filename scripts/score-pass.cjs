@@ -34,7 +34,7 @@ const changedFiles = changed
   .map((s) => s.trim())
   .filter(Boolean);
 
-const T = Math.max(1, Math.ceil(changedFiles.length / 5)); // crude task proxy
+const T = Math.max(1, Math.ceil(changedFiles.length / 5)); 
 const F = changedFiles.length;
 
 const depFiles = [
@@ -56,7 +56,7 @@ if (changedFiles.some((f) => f.includes("/components/") || f.startsWith("compone
 if (changedFiles.some((f) => f.includes("/lib/") || f.startsWith("lib/") || f.includes("/src/"))) A += 1;
 if (changedFiles.some((f) => f.includes("supabase") || f.includes("schema") || f.includes("migrations"))) A += 1;
 
-const U = 0; // set >0 later if you add ambiguity parser
+const U = 0; 
 
 const weights = { T: 1, F: 0.35, D: 2, A: 1.5, U: 2 };
 const chi = +(weights.T * T + weights.F * F + weights.D * D + weights.A * A + weights.U * U).toFixed(2);
@@ -67,7 +67,7 @@ else if (chi >= 4) mode = "conform";
 
 let allowed = "true";
 
-// hard guardrails from your Generation Law
+
 if (mode === "patch") {
   const badPatch = changedFiles.some((f) =>
     f.includes("package.json") ||

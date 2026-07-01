@@ -1,17 +1,4 @@
-/**
- * tests/instance-manager.test.ts — Pass 4
- *
- * Unit tests for lib/runtime/instanceManager.ts
- *
- * Verifies:
- *   - spawn creates instances keyed by enginName:instanceId
- *   - duplicate spawns return the existing instance
- *   - destroy cleans up and releases the channel
- *   - getInstancesForEngin / getInstancesForRegion filter correctly
- *   - promoteToCoOp swaps the channel and mode
- *   - buildInstanceKey helper
- *   - spawnDualInstances creates two instances in different regions
- */
+
 
 import { describe, expect, it, beforeEach } from 'vitest';
 
@@ -91,7 +78,7 @@ describe('instanceManager — logic validation', () => {
     const a = spawn('LabEngin', 'test-dup', 'homedream', 'solo');
     const b = spawn('LabEngin', 'test-dup', 'dreamspace', 'coop');
     expect(a.key).toBe(b.key);
-    // First registration wins
+    
     expect(a.region).toBe('homedream');
   });
 

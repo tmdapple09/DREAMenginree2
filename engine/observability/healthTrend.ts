@@ -1,17 +1,6 @@
 import type { LoopIteration, LoopStatus } from '@/engine/agents/idariLoop';
 
-/**
- * lib/observability/healthTrend.ts
- *
- * Rolling health trend analysis for the IDARi observability loop.
- *
- * Improvements 76-80:
- *  76. updateHealthTrend   — push a health status into a rolling window
- *  77. getHealthTrend      — 'improving' | 'stable' | 'degrading'
- *  78. getHealthScore      — 0-100 score from recent iterations
- *  79. getMTTR             — mean time to recovery (failed → resolved)
- *  80. exportHealthReport  — structured report for export / dashboards
- */
+
 
 export type HealthStatus = 'healthy' | 'degraded' | 'critical';
 
@@ -23,10 +12,7 @@ export interface HealthDataPoint {
 const MAX_TREND_WINDOW = 100;
 const _trendBuffer: HealthDataPoint[] = [];
 
-/**
- * Push a health status data point into the rolling trend window.
- * At most MAX_TREND_WINDOW points are kept; oldest are evicted first.
- */
+
 export function updateHealthTrend(status: HealthStatus): void {
   _trendBuffer.push({ status, timestamp: Date.now() });
   if (_trendBuffer.length > MAX_TREND_WINDOW) {
@@ -34,21 +20,14 @@ export function updateHealthTrend(status: HealthStatus): void {
   }
 }
 
-/** Reset the trend buffer — for tests and explicit resets. */
+
 export function clearHealthTrend(): void {
   _trendBuffer.length = 0;
 }
 
 export type HealthTrend = 'improving' | 'stable' | 'degrading';
 
-/**
- * Compute a trend from the last `windowSize` data points.
- * Compares the error rate of the first half vs the second half of the window.
- *
- * - 'improving': fewer unhealthy statuses in the second half
- * - 'degrading': more unhealthy statuses in the second half
- * - 'stable': no significant change
- */
+
 export function getHealthTrend(windowSize = 20): HealthTrend {
   const recent = _trendBuffer.slice(-Math.min(windowSize, _trendBuffer.length));
   if (recent.length < 4) return 'stable';
@@ -69,18 +48,14 @@ export function getHealthTrend(windowSize = 20): HealthTrend {
   return 'stable';
 }
 
-/**
- * Compute a 0-100 health score from recent loop iterations.
- * 100 = all iterations resolved, 0 = all iterations failed.
- * Score is weighted toward recency (more recent iterations count more).
- */
+
 export function getHealthScore(iterations: readonly LoopIteration[]): number {
-  if (iterations.length === 0) return 100; // no data = assume healthy
-  const recent = iterations.slice(-20); // use at most last 20 iterations
+  if (iterations.length === 0) return 100; 
+  const recent = iterations.slice(-20); 
   let weightedSum = 0;
   let totalWeight = 0;
   for (let i = 0; i < recent.length; i++) {
-    const weight = i + 1; // more recent = higher weight
+    const weight = i + 1; 
     const score = recent[i].status === 'resolved' ? 100 : recent[i].status === 'failed' ? 0 : 50;
     weightedSum += score * weight;
     totalWeight += weight;
@@ -88,12 +63,7 @@ export function getHealthScore(iterations: readonly LoopIteration[]): number {
   return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 100;
 }
 
-/**
- * Compute the Mean Time To Recovery (MTTR) in milliseconds.
- *
- * MTTR is defined as the average time between a 'failed' iteration and the
- * next 'resolved' iteration. Returns null when there are no recovery events.
- */
+
 export function getMTTR(iterations: readonly LoopIteration[]): number | null {
   const recoveryTimes: number[] = [];
 
@@ -126,16 +96,13 @@ export interface HealthReport {
   topAnomalies: string[];
 }
 
-/**
- * Produce a structured health report from recent loop iterations.
- * Suitable for export to a monitoring dashboard or log aggregation system.
- */
+
 export function exportHealthReport(iterations: readonly LoopIteration[]): HealthReport {
   const resolved = iterations.filter((i: LoopIteration) => i.status === 'resolved').length;
   const failed = iterations.filter((i: LoopIteration) => i.status === 'failed').length;
   const lastStatus = iterations.length > 0 ? iterations[iterations.length - 1].status : null;
 
-  // Collect the most common anomaly types across all iterations
+  
   const anomalyCounts = new Map<string, number>();
   for (const iter of iterations) {
     for (const anomaly of iter.correlation.anomalies) {

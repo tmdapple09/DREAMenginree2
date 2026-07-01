@@ -4,12 +4,7 @@ import { AlertCircle, Mic, Play, Square, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * StudioPanel — Recording studio panel for the Music Engine app.
- *
- * Provides a clean UI for recording audio, viewing waveform previews,
- * and loading recordings into the DAW. Lives at /engines/music/studio.
- */
+
 
 type RecordState = 'idle' | 'recording' | 'stopped';
 
@@ -105,7 +100,7 @@ export default function StudioPanel( ){
           <p className="text-sm text-white/50">Capture takes · load directly into the DAW</p>
         </div>
 
-        {/* Record control */}
+        
         <div className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-white/[0.04] border border-white/10 mb-6">
           {state === 'recording' && (
             <div className="text-3xl font-mono font-bold tabular-nums" style={{ color: '#a855f7' }}>
@@ -141,7 +136,7 @@ export default function StudioPanel( ){
           )}
         </div>
 
-        {/* Recordings list */}
+        
         {recordings.length > 0 && (
           <div>
             <h2 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Takes</h2>

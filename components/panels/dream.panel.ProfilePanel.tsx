@@ -7,11 +7,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { Eye, Loader2, Share2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * ProfilePanel — inline Edit ProfileDream panel.
- * Same logic as app/edit-profiledream/page.tsx but rendered within PanelHost.
- * No page chrome (no min-h-screen, no sticky header with back Links).
- */
+
 
 type Profile = {
   display_name: string;
@@ -63,12 +59,12 @@ export default function ProfilePanel( ){
           try {
             const saved = localStorage.getItem('de-profile-widget-order');
             if (saved) loadedDreams = JSON.parse(saved);
-          } catch { /* noop */ }
+          } catch {  }
         }
         setWidgets(loadedDreams);
         setInitialProfile(loaded);
         setInitialWidgets(loadedDreams);
-      } catch { /* auth/network failure — stay in loading=false state */ }
+      } catch {  }
       finally { setIsLoading(false); }
     })();
 
@@ -170,7 +166,7 @@ export default function ProfilePanel( ){
   return (
     <div style={{ paddingBottom: 100 }}>
 
-      {/* ── Action bar (save / publish / preview) ── */}
+      
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '10px 16px',
@@ -207,7 +203,7 @@ export default function ProfilePanel( ){
         </button>
       </div>
 
-      {/* ── Tabs ── */}
+      
       <div style={{ display: 'flex', borderBottom: '1px solid rgba(160,195,240,0.2)' }}>
         {(['widgets', 'info'] as const).map((tab) => (
           <button key={tab} type="button" onClick={() => setActiveTab(tab)} style={{
@@ -222,7 +218,7 @@ export default function ProfilePanel( ){
         ))}
       </div>
 
-      {/* ── Errors / success ── */}
+      
       {saveError && (
         <div style={{ margin: '12px 16px 0', padding: '10px 14px', borderRadius: 12,
           background: 'rgba(220,60,60,0.08)', border: '1px solid rgba(220,60,60,0.2)',
@@ -236,7 +232,7 @@ export default function ProfilePanel( ){
         </div>
       )}
 
-      {/* ── Widgets tab ── */}
+      
       {activeTab === 'widgets' && (
         <div style={{ padding: '16px 14px' }}>
           <ProfileWidgetGrid
@@ -248,10 +244,10 @@ export default function ProfilePanel( ){
         </div>
       )}
 
-      {/* ── Info tab ── */}
+      
       {activeTab === 'info' && (
         <div style={{ padding: '16px 14px' }}>
-          {/* Avatar row */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.70)', backdropFilter: 'blur(20px)',
             borderRadius: 22, padding: '20px 16px', marginBottom: 14,
@@ -283,7 +279,7 @@ export default function ProfilePanel( ){
             </div>
           </div>
 
-          {/* Fields */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.70)', backdropFilter: 'blur(20px)',
             borderRadius: 22, padding: '18px 16px',

@@ -1,80 +1,77 @@
-// types/journey.ts
-// Journey Trail types — private data model for the user's creative course through DREAMengin.
-// "Every thing becomes data and those data points track your course.
-//  They are the very dots that connect looking backwards." — DREAMengin product vision
-//
-// CONSTITUTION Art. I Rule 1: all dots are private by default.
-// Projection to View Profile Surface requires explicit per-dot user confirmation.
 
-/** Every meaningful threshold-crossing event that becomes a dot on the trail. */
+
+
+
+
+
+
+
+
 export type JourneyDotKind =
-  // ── Surface / runtime movement ──────────────────────────────────────────
-  | 'surface_first_entry'        // first-ever entry into a Daydream Surface (once per surface)
-  | 'engin_first_activated'      // first activation of an Engin runtime
-  | 'surface_milestone_visit'    // 10th, 50th, 100th visit to a surface
+  
+  | 'surface_first_entry'        
+  | 'engin_first_activated'      
+  | 'surface_milestone_visit'    
 
-  | 'dream_window_first_mount'   // first Dream Window mounted on any surface
-  | 'dream_window_bound'         // Dream Window bound to an external source
+  | 'dream_window_first_mount'   
+  | 'dream_window_bound'         
 
-  | 'content_first_created'      // first piece of content created (per domain)
-  | 'content_shared'             // user explicitly shared / projected content
-  | 'creative_streak'            // N consecutive days of creative activity
+  | 'content_first_created'      
+  | 'content_shared'             
+  | 'creative_streak'            
 
-  | 'connector_linked'           // external service connected (Spotify, YouTube, GitHub…)
-  | 'connector_first_sync'       // first data sync from a connected service
+  | 'connector_linked'           
+  | 'connector_first_sync'       
 
-  | 'profile_first_projected'    // first time user projects to View Profile Surface
-  | 'profile_section_added'      // new section added in Edit ProfileDream Surface
+  | 'profile_first_projected'    
+  | 'profile_section_added'      
 
-  | 'first_follower'             // first follower received
-  | 'follower_milestone'         // 10, 25, 50, 100, 500, 1 000 followers
-  | 'first_dm_sent'              // first DreamDM conversation initiated
-  | 'first_dm_received'          // first DreamDM message received
+  | 'first_follower'             
+  | 'follower_milestone'         
+  | 'first_dm_sent'              
+  | 'first_dm_received'          
 
-  | 'shop_item_first_listed'     // first item listed in DreamShop Surface
-  | 'marketplace_item_first_listed' // first item listed in DreamMarketplace Surface
-  | 'first_sale'                 // first successful sale
-  | 'ad_slot_first_created'      // first DreamAds slot created
+  | 'shop_item_first_listed'     
+  | 'marketplace_item_first_listed' 
+  | 'first_sale'                 
+  | 'ad_slot_first_created'      
 
-  | 'workflow_first_activation'  // first time a workflow transitions draft → active
-  | 'workflow_first_export'      // first time a workflow transitions review → export
-  | 'workflow_first_handoff'     // first cross-Engin handoff emitted from a workflow
+  | 'workflow_first_activation'  
+  | 'workflow_first_export'      
+  | 'workflow_first_handoff'     
 
-  | 'runtime_first_entry'        // first-ever entry into DREAMengin (once, ever)
-  | 'dreamspace_first_open';     // first time DreamSpace is opened from DreamDM Bar
+  | 'runtime_first_entry'        
+  | 'dreamspace_first_open';     
 
-/** A single persisted dot on the user's Journey Trail. */
+
 export interface JourneyDot {
   id: string;
   user_id: string;
   kind: JourneyDotKind;
-  /** Canonical surface label, e.g. 'Music Daydream Surface'. Empty string if not surface-specific. */
+  
   surface: string;
-  /** Human-readable sentence shown on the trail, e.g. 'You entered the Music Daydream Surface'. */
+  
   label: string;
-  /** 0.0–1.0 — drives dot size and visual weight in the visualization. */
+  
   significance: number;
-  /** Hex color from JOURNEY_DOMAIN_COLORS for the surface that produced this dot. */
+  
   domain_color: string;
-  /** Arbitrary extra data, e.g. { connector: 'spotify', milestone_n: 10 }. */
+  
   metadata: Record<string, unknown>;
-  // visibility is always private — enforced at DB layer via RLS, not by convention alone.
+  
   created_at: string;
 }
 
-/** Input type for logging a new dot — user_id and id are resolved server-side. */
+
 export type LogJourneyDotInput = Omit<JourneyDot, 'id' | 'user_id' | 'created_at'>;
 
-/** Time-grouped structure for the visualization — newest group first. */
+
 export interface JourneyTimeGroup {
-  label: string;     // 'Today' | 'This Week' | 'This Month' | 'Earlier'
+  label: string;     
   dots: JourneyDot[];
 }
 
-/**
- * Domain color map — single source of truth for trail dot colors.
- * Keyed by canonical surface name (README §1).
- */
+
 export const JOURNEY_DOMAIN_COLORS: Record<string, string> = {
   'HomeDream Surface':           '#c8981a',
   'Music Daydream Surface':      '#8b5cf6',

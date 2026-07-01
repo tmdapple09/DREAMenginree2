@@ -6,7 +6,7 @@ import { Cpu } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.SettingsAlgorithm  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'My Algorithm – Dreamengin',

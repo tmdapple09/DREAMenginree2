@@ -1,12 +1,4 @@
-/**
- * lib/social/normalizers.ts
- *
- * Social feed normalizers — converts Mastodon, Nostr, and Bluesky posts
- * into the unified FeedPost format used by DREAMengin's feed system.
- *
- * Architecture: adapters from the backend social aggregators into the
- * frontend connector/feed pipeline.
- */
+
 
 export interface NormalizedPost {
   id: string;
@@ -62,7 +54,7 @@ export interface NostrEvent {
   id: string;
   pubkey: string;
   content: string;
-  created_at: number; // unix seconds
+  created_at: number; 
   tags: string[][];
 }
 

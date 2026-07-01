@@ -2,9 +2,9 @@
 
 import React, { Component, useEffect, useRef, useState } from 'react';
 
-// components/dreams/dreamsurface.shell.tsx
-// Canonical Layer 1 shell — the real implementation per docs/ARCHITECTURE.md §4.
-// DreamShell is the source of truth; WidgetShell is the backward-compat shim.
+
+
+
 
 interface EBState { hasError: boolean; }
 class DreamErrorBoundary extends Component<{ children: React.ReactNode; title: string }, EBState> {
@@ -53,27 +53,27 @@ function SkeletonRow({ width = '100%' }: {width?: string}) {
 export type DreamDataState = 'loading' | 'ready' | 'error' | 'reconnect_required';
 
 export interface DreamShellProps {
-  /** Stable Dream type ID */
+  
   widgetId: string;
-  /** Display title (shown immediately) */
+  
   title: string;
-  /** Service/type icon (shown immediately) */
+  
   icon: string;
-  /** Current data state */
+  
   dataState: DreamDataState;
-  /** Child content rendered when dataState === 'ready' */
+  
   children?: React.ReactNode;
-  /** Called when user taps Retry */
+  
   onRetry?: () => void;
-  /** Called when user taps Reconnect */
+  
   onReconnect?: () => void;
-  /** Called when user taps Hide */
+  
   onHide?: () => void;
-  /** Called when user taps Remove */
+  
   onRemove?: () => void;
-  /** Called when user taps Configure */
+  
   onConfigure?: () => void;
-  /** Fixed content height reservation to prevent layout shift */
+  
   minContentHeight?: number;
   className?: string;
   style?: React.CSSProperties;
@@ -114,7 +114,7 @@ export default function DreamShell({
       className={`de-widget dream-shell-content${className ? ` ${className}` : ''}`}
       style={{ position: 'relative', containerType: 'inline-size', ...style }}
     >
-      {/* ── Header ── */}
+      
       <div className="de-widget-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 18 }}>{icon}</span>
@@ -132,7 +132,7 @@ export default function DreamShell({
           )}
         </div>
 
-        {/* Overflow menu "…" */}
+        
         <div ref={menuRef} style={{ position: 'relative' }}>
           <button
             type="button"
@@ -186,7 +186,7 @@ export default function DreamShell({
         </div>
       </div>
 
-      {/* ── Body ── */}
+      
       <div
         className="de-widget-body"
         style={{ minHeight: minContentHeight, position: 'relative' }}

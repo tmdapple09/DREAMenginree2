@@ -12,16 +12,7 @@ import { useCallback, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/forge/useForgeBuild.ts
- *
- * React hook for the ForgeEngin AI Anything Builder.
- * Streams from /api/forge/build, parses SSE events, enforces the daily
- * rate limit, and stages generated artifacts into the target Engin's
- * localStorage slot before the user navigates.
- *
- * Architecture: client-side only ('use client'). All AI calls are server-side.
- */
+
 
 export interface UseForgeBuildReturn {
   state: import('@/engins/forgeengin/forge/forgeBuild').ForgeBuildState;
@@ -32,7 +23,7 @@ export interface UseForgeBuildReturn {
   rateLimitError: string | null;
 }
 
-/** Map enginId → ForgeArtifactType */
+
 const ARTIFACT_TYPE_MAP: Record<string, ForgeArtifactType> = {
   games:  'game-level',
   music:  'midi-pattern',
@@ -45,7 +36,7 @@ const ARTIFACT_TYPE_MAP: Record<string, ForgeArtifactType> = {
 type CodeEvent = Extract<ForgeLogEvent, { type: 'code' }>;
 type ResultEvent = Extract<ForgeLogEvent, { type: 'result' }>;
 
-/** Build a ForgeArtifact from a code SSE event + the resolved enginId */
+
 function buildArtifact(codeEvent: CodeEvent, enginId: string): ForgeArtifact {
   return {
     type: ARTIFACT_TYPE_MAP[enginId] ?? 'content-draft',
@@ -62,7 +53,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
   const [result, setResult] = useState<ForgeBuildRecord | null>(null);
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
 
-  // Keep a ref to abort the stream mid-flight if reset() is called
+  
   const abortRef = useRef<AbortController | null>(null);
 
   const reset = useCallback(() => {
@@ -77,7 +68,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
   const submit = useCallback((prompt: string) => {
     if (!prompt.trim()) return;
 
-    // Client-side daily rate limit
+    
     if (!canBuildToday()) {
       setRateLimitError(
         'You\'ve already built today. Daily limit: 1 build per day. Come back tomorrow! 🌙'
@@ -98,7 +89,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
     abortRef.current = controller;
 
     (async () => {
-      // Track the code event so we can build the artifact on done
+      
       let pendingCodeEvent: CodeEvent | null = null;
 
       try {
@@ -137,7 +128,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
 
           buffer += decoder.decode(value, { stream: true });
 
-          // SSE format: lines starting with "data: " followed by \n\n
+          
           const lines = buffer.split('\n');
           buffer = lines.pop() ?? '';
 
@@ -157,7 +148,7 @@ export function useForgeBuild(): UseForgeBuildReturn {
 
             const event = parsed as ForgeLogEvent;
 
-            // Track code events for artifact staging
+            
             if (event.type === 'code') {
               pendingCodeEvent = event as CodeEvent;
             }
@@ -166,17 +157,17 @@ export function useForgeBuild(): UseForgeBuildReturn {
             setLogs((prev) => [...prev, event]);
 
             if (event.type === 'done') {
-              // Find result event
+              
               const resultEvent = collectedLogs.find((e) => e.type === 'result') as
                 ResultEvent | undefined;
 
-              // Build artifact if we have code content and a resolved enginId
+              
               const artifact =
                 pendingCodeEvent && resultEvent
                   ? buildArtifact(pendingCodeEvent, resultEvent.enginId)
                   : undefined;
 
-              // Stage artifact into Engin's localStorage slot before navigation
+              
               if (artifact) {
                 stageForgeArtifact(artifact);
               }
@@ -201,15 +192,15 @@ export function useForgeBuild(): UseForgeBuildReturn {
 
             if (event.type === 'error') {
               setState('error');
-              // Don't return — continue reading until 'done'
+              
             }
           }
         }
 
-        // Stream ended without 'done' event
+        
         setState('done');
       } catch (err: unknown) {
-        if ((err as Error)?.name === 'AbortError') return; // reset() was called
+        if ((err as Error)?.name === 'AbortError') return; 
         const errEvent: ForgeLogEvent = {
           type: 'error',
           message: `Network error: ${err instanceof Error ? toErrorMessage(err) : String(err)}`,
@@ -221,10 +212,10 @@ export function useForgeBuild(): UseForgeBuildReturn {
       }
     })();
 
-  // Intentionally empty: `submit` is a stable function closure that captures the
-  // latest `prompt` and `state` values at call time via functional setState patterns.
-  // Adding them as dependencies would cause an infinite re-render loop because
-  // `submit` is also declared via useCallback in this same hook.
+  
+  
+  
+  
   }, []);
 
   return { state, logs, result, submit, reset, rateLimitError };

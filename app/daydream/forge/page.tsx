@@ -13,7 +13,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
-// SURFACE: dreamsurface.DaydreamForge  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: "Forge Daydream – DREAMengin",
@@ -76,7 +76,7 @@ export default async function ForgeDaydreamPage() {
   try {
     user = await safeGetUser(supabase);
   } catch {
-    /* Supabase not configured — treat as unauthenticated */
+    
   }
   if (!user && !isDevBypassActive()) redirect("/login");
 
@@ -101,7 +101,7 @@ export default async function ForgeDaydreamPage() {
         />
 
         <div className="de-auth-content space-y-4">
-          {/* Hero card */}
+          
           <div
             className="de-auth-hero"
             style={{
@@ -153,7 +153,7 @@ export default async function ForgeDaydreamPage() {
             </div>
           </div>
 
-          {/* Momentum Widget */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <TrendingUp className="w-4 h-4" style={{ color: "#ef4444" }} />
@@ -164,7 +164,7 @@ export default async function ForgeDaydreamPage() {
             </div>
           </div>
 
-          {/* Engine Quick Cards */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <Activity className="w-4 h-4" style={{ color: "#ef4444" }} />
@@ -240,7 +240,7 @@ export default async function ForgeDaydreamPage() {
             </div>
           </div>
 
-          {/* Cross-engine concept */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <Zap className="w-4 h-4" style={{ color: "#a855f7" }} />
@@ -276,7 +276,7 @@ export default async function ForgeDaydreamPage() {
             </div>
           </div>
 
-          {/* System architecture */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <Layers className="w-4 h-4" style={{ color: "#c8981a" }} />

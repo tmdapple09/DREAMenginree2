@@ -9,9 +9,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 
-// SURFACE: dreamsurface.Login  (framework-mandated basename: page.tsx)
 
-// Shared input style — matches the rest of the de-widget design system
+
+
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   padding: "11px 14px",
@@ -38,8 +38,8 @@ function LoginPageInner( ){
   const [oauthProviders, setOauthProviders] = useState<{ google: boolean | null; github: boolean | null } | null>(null);
   const nextPath = useMemo(() => resolveSafeNextPath(searchParams.get("next")), [searchParams]);
 
-  // Show errors from OAuth callback (e.g. Google auth redirect mismatch)
-  // Preflight: check which OAuth providers are configured in Supabase
+  
+  
   useEffect(() => {
     fetch("/api/auth/providers")
       .then((r) => {
@@ -57,12 +57,12 @@ function LoginPageInner( ){
       const friendlyErrors: Record<string, string> = {
         access_denied: "Sign-in was cancelled. Please try again.",
         exchange_failed: "Authentication failed. Please try again.",
-        // Google returns these when the redirect URI is not in the allowed list
+        
         redirect_uri_mismatch:
           "Google sign-in is misconfigured (redirect URI mismatch). Please use email/password or contact support.",
         invalid_client:
           "Google sign-in is misconfigured (invalid client). Please use email/password or contact support.",
-        // Supabase / generic OAuth errors
+        
         server_error: "A server error occurred during sign-in. Please try again.",
         temporarily_unavailable:
           "The sign-in service is temporarily unavailable. Please try again shortly.",
@@ -114,8 +114,8 @@ function LoginPageInner( ){
   const oauth = async (provider: "google" | "github") => {
     setError(null);
 
-    // Guard: if we know this provider is not configured, show a friendly message
-    // instead of sending the user to an OAuth page that will reject them.
+    
+    
     if (oauthProviders?.[provider] === false) {
       setError(
         `${provider === "google" ? "Google" : "GitHub"} sign-in is not configured on this server. Please use email/password or contact support.`,
@@ -143,7 +143,7 @@ function LoginPageInner( ){
           background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)',
         }}
       >
-       {/* Ambient glow — SICC enhanced */}
+       
        <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
          <div style={{
            position: 'absolute', top: '-100px', right: '-80px',
@@ -159,7 +159,7 @@ function LoginPageInner( ){
            filter: 'blur(56px)',
            animation: 'sicc-soft-float 6s ease-in-out infinite reverse',
          }} />
-        {/* SICC tertiary glow — center */}
+        
         <div style={{
           position: 'absolute', top: '30%', left: '50%',
            transform: 'translateX(-50%)',
@@ -170,9 +170,9 @@ function LoginPageInner( ){
          }} />
        </div>
 
-      {/* Wordmark — SICC premium */}
+      
       <div className="sicc-soft-float" style={{ marginBottom: 32, textAlign: "center", position: 'relative' }}>
-        {/* Brand logo */}
+        
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
           <Image
             src="/images/logo1.PNG"
@@ -197,7 +197,7 @@ function LoginPageInner( ){
         </div>
       </div>
 
-      {/* Form card — SICC dark glass */}
+      
       <div
         className="w-full max-w-md sicc-glass-in"
         style={{
@@ -211,7 +211,7 @@ function LoginPageInner( ){
           position: 'relative',
         }}
       >
-        {/* Card top accent line */}
+        
         <div style={{
           height: 2,
           background: 'linear-gradient(90deg, transparent, rgba(200,152,26,0.6) 40%, rgba(56,189,248,0.4) 70%, transparent)',
@@ -297,7 +297,7 @@ function LoginPageInner( ){
             </button>
           </form>
 
-          {/* Divider */}
+          
           <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "18px 0" }}>
             <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
             <span style={{ fontSize: 11, color: "rgba(140,170,220,0.45)" }}>or continue with</span>

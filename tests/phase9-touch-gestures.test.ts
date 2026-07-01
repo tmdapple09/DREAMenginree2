@@ -1,8 +1,4 @@
-/**
- * tests/phase9-touch-gestures.test.ts
- *
- * Tests for lib/gestures/touchGestures.ts — the pure gesture recognition engine.
- */
+
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
@@ -36,7 +32,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// ─── Constructor and basic API ────────────────────────────────────────────────
+
 
 describe('Touch Gestures — GestureRecogniser', () => {
   it('can be instantiated with callbacks', () => {
@@ -58,7 +54,7 @@ describe('Touch Gestures — GestureRecogniser', () => {
     const callbacks: GestureCallbacks = {};
     const recogniser = new GestureRecogniser(callbacks);
 
-    // Create a minimal mock element
+    
     const listeners = new Map<string, EventListenerOrEventListenerObject>();
     const el = {
       addEventListener: (type: string, listener: EventListenerOrEventListenerObject) => {
@@ -72,12 +68,12 @@ describe('Touch Gestures — GestureRecogniser', () => {
     const detach = recogniser.attach(el);
     expect(typeof detach).toBe('function');
 
-    // Should have added touch listeners
+    
     expect(listeners.has('touchstart')).toBe(true);
     expect(listeners.has('touchmove')).toBe(true);
     expect(listeners.has('touchend')).toBe(true);
 
-    // Detach should remove them
+    
     detach();
     expect(listeners.has('touchstart')).toBe(false);
     expect(listeners.has('touchmove')).toBe(false);
@@ -85,7 +81,7 @@ describe('Touch Gestures — GestureRecogniser', () => {
   });
 });
 
-// ─── GestureEvent type contracts ──────────────────────────────────────────────
+
 
 describe('Touch Gestures — event types', () => {
   it('GestureEvent has correct shape for pinch', () => {

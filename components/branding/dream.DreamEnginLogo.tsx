@@ -4,38 +4,14 @@ import { useDreamLogoScene, type DreamLogoSceneOptions } from "@/engine/renderin
 import { useRef } from "react";
 
 interface DreamEnginLogoProps extends DreamLogoSceneOptions {
-  /** Canvas width in CSS pixels (default 320) */
+  
   width?: number;
-  /** Canvas height in CSS pixels (default 160) */
+  
   height?: number;
   className?: string;
 }
 
-/**
- * DreamEnginLogo
- * ──────────────
- * Renders the animated DREAMengin logo inside a Babylon.js WebGL canvas.
- *
- * Usage
- * -----
- * ```tsx
- * import { DreamEnginLogo } from "@/components/DreamEnginLogo";
- *
- * export default function LandingPage() {
- *   return (
- *     <main>
- *       <DreamEnginLogo width={480} height={240} />
- *     </main>
- *   );
- * }
- * ```
- *
- * Texture notes
- * -------------
- * Textures are loaded with NEAREST sampling so crisp pixel art / vector
- * exports stay sharp at any canvas size. Babylon does NOT apply bilinear
- * blur when this mode is set.
- */
+
 export function DreamEnginLogo({
   width = 320,
   height = 160,

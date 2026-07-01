@@ -1,20 +1,12 @@
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginCapabilityTargets.ts.
 
-/**
- * lib/engin-runtime/EnginCapabilityTargets.ts
- *
- * Internal capability target planner for every canonical Engin.
- *
- * These targets are not UI copy. They are architectural guardrails used by
- * rule-sets and the fixed runtime to choose budgets, offload boundaries, and
- * degradation levers without exposing raw performance targets to users.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const MINIMUM_PROGRESS = 0.8;
 
@@ -152,11 +144,11 @@ export const CANONICAL_ENGIN_ALIASES: Readonly<
   render: Object.freeze(["render", "RenderEngin", "renderengin"]),
 });
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type CanonicalEnginId =
   | "code"
@@ -218,7 +210,7 @@ export interface EnginCapabilityTarget {
   readonly direction: CapabilityTargetDirection;
   readonly target: number;
   readonly unit: CapabilityTargetUnit;
-  /** Minimum normalized progress that counts as acceptable. */
+  
   readonly minimumProgress: number;
   readonly preferredTarget?: number;
 }
@@ -226,7 +218,7 @@ export interface EnginCapabilityTarget {
 export interface EnginCapabilityProfile {
   readonly enginId: EnginProfileId;
   readonly targets: ReadonlyArray<EnginCapabilityTarget>;
-  /** Architecture decisions the Engin must honor to move toward the targets. */
+  
   readonly levers: ReadonlyArray<string>;
 }
 
@@ -242,7 +234,7 @@ export interface CapabilityProfileValidation {
   readonly reason?: string;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function atMost(
   dimension: CapabilityTargetDimension,
@@ -465,8 +457,8 @@ export function validateCanonicalEnginCapabilityProfiles(): CapabilityProfileVal
   );
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

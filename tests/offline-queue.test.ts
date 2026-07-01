@@ -1,7 +1,4 @@
-/**
- * tests/offline-queue.test.ts
- * Tests for improvements 88-92 in lib/runtime/offlineQueue.ts
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
@@ -12,7 +9,7 @@ import {
   isOnline,
 } from '../lib/runtime/offlineQueue';
 
-// Stub localStorage for Node test environment
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -29,7 +26,7 @@ beforeEach(() => {
   localStorageMock.clear();
 });
 
-// ── Improvement 88: enqueue ───────────────────────────────────────────────────
+
 describe('enqueue', () => {
   it('returns an ID on success', () => {
     const id = enqueue('message:send', { body: 'hello' });
@@ -52,7 +49,7 @@ describe('enqueue', () => {
   });
 });
 
-// ── Improvement 89: dequeue ───────────────────────────────────────────────────
+
 describe('dequeue', () => {
   it('removes the action by id', () => {
     const id = enqueue('message:send', { body: 'test' })!;
@@ -68,7 +65,7 @@ describe('dequeue', () => {
   });
 });
 
-// ── Improvement 90: flushQueue ────────────────────────────────────────────────
+
 describe('flushQueue', () => {
   it('calls executor for each pending action', async () => {
     enqueue('message:send', { body: 'a' });
@@ -91,12 +88,12 @@ describe('flushQueue', () => {
     expect(result.failed).toBe(1);
     expect(result.succeeded).toBe(0);
     const status = getQueueStatus();
-    // Still in queue (not yet exhausted max attempts)
+    
     expect(status.total).toBe(1);
   });
 });
 
-// ── Improvement 91: getQueueStatus ────────────────────────────────────────────
+
 describe('getQueueStatus', () => {
   it('returns zeroed status when queue is empty', () => {
     const status = getQueueStatus();
@@ -119,7 +116,7 @@ describe('getQueueStatus', () => {
   });
 });
 
-// ── Improvement 92: isOnline ──────────────────────────────────────────────────
+
 describe('isOnline', () => {
   it('returns true in test environment (no navigator.onLine = false)', () => {
     // In vitest jsdom environment, navigator.onLine defaults to true

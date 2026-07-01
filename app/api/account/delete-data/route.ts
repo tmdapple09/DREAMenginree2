@@ -8,10 +8,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/account/delete-data/route.ts
-// "Delete My Data" endpoint.
-// Removes feed_rules, dream_instances, connector_configs, page configs.
-// Preserves auth identity and profile handle.
+
+
+
+
 
 const DeleteDataBodySchema = z.object({
   confirm: z.literal('DELETE_MY_DATA'),
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const deleted: string[] = [];
   const errors: string[] = [];
 
-  // Run all independent deletes in parallel
+  
 
   const supabaseAny = supabase as SupabaseClient;
   const [feedResult, widgetResult, connectorResult, pageResult] = await Promise.all([

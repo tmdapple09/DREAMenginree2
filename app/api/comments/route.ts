@@ -19,8 +19,8 @@ const DeleteCommentSchema = z.object({
   comment_id: z.string().uuid({ message: 'comment_id must be a valid UUID' }),
 });
 
-// GET /api/comments?post_id=<uuid>
-// Returns comments for a post joined with profile display_name + avatar_url, ordered ASC
+
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const postId = searchParams.get('post_id');
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const supabase = await createServerClient();
 
-  // Fetch comments for the post ordered by created_at ASC
+  
   const { data: comments, error: commentsError } = await supabase
     .from('comments')
     .select('id, post_id, user_id, content, created_at')
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ data: [], error: null });
   }
 
-  // Fetch profile data for all comment authors in one query
+  
   const userIds = [...new Set(comments.map((c) => c.user_id))];
   const { data: profiles } = await supabase
     .from('profiles')
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     (profiles || []).map((p) => [p.id, p])
   );
 
-  // Merge profile data into each comment
+  
   const enriched = comments.map((c) => ({
     ...c,
     profile: profilesMap[c.user_id] ?? null,
@@ -72,8 +72,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ data: enriched, error: null });
 }
 
-// POST /api/comments
-// Body: { post_id, content } — auth required
+
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 451 },
     );
   }
-  // ─────────────────────────────────────────────────────────────────────────
+  
 
   const { data: comment, error } = await supabase
     .from('comments')
@@ -136,7 +136,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .update({ comments_count: commentCount || 0 })
     .eq('id', post_id);
 
-  // Enrich with profile
+  
   const { data: profile } = await supabase
     .from('profiles')
     .select('id, display_name, avatar_url, handle')
@@ -149,8 +149,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 }
 
-// DELETE /api/comments
-// Body: { comment_id } — auth required; user can only delete own comments
+
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -181,7 +181,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  // RLS enforces user_id = auth.uid() for delete, but we also check explicitly
+  
   const { error } = await supabase
     .from('comments')
     .delete()

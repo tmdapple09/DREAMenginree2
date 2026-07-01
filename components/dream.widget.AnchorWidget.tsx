@@ -7,9 +7,9 @@ import { ReturnStack } from '@/engine/navigation/ReturnStack';
 import { WidgetInstanceMemory } from '@/engine/navigation/WidgetInstanceMemory';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-// Constants
-const TAP_SLOP = 10; // pixels
-const HOLD_THRESHOLD_MS = 420; // milliseconds
+
+const TAP_SLOP = 10; 
+const HOLD_THRESHOLD_MS = 420; 
 
 interface AnchorWidgetProps {
   navStateBuffer: NavStateBuffer;
@@ -19,10 +19,7 @@ interface AnchorWidgetProps {
   onRectUpdate?: (rect: { x0: number; y0: number; x1: number; y1: number }) => void;
 }
 
-/**
- * AnchorWidget - Single persistent widget controlling Home/Profile/Shrunk modes
- * Exists exactly once, never unmounted after auth
- */
+
 export function AnchorWidget({
   navStateBuffer,
   returnStack,
@@ -30,15 +27,15 @@ export function AnchorWidget({
   onDreamSelectorOpen,
   onRectUpdate
 }: AnchorWidgetProps) {
-  // Persistent state buffers (outside React)
+  
   const anchorStateRef = useRef<AnchorStateBuffer>(new AnchorStateBuffer());
   const anchorState = anchorStateRef.current;
 
-  // Hit target rect (cached)
+  
   const hitRectRef = useRef({ x0: 0, y0: 0, x1: 0, y1: 0 });
   const dropRectRef = useRef({ x0: 0, y0: 0, x1: 0, y1: 0 });
 
-  // Gesture state
+  
   const gestureStateRef = useRef({
     isActive: false,
     startX: 0,
@@ -47,16 +44,14 @@ export function AnchorWidget({
     pointerId: -1
   });
 
-  // Force re-render when state changes
+  
   const [, forceUpdate] = useState(0);
   const triggerUpdate = useCallback(() => forceUpdate((v) => v + 1), []);
 
-  // Container ref
+  
   const containerRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Update cached rects on mount and resize
-   */
+  
   const updateCachedRects = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -68,7 +63,7 @@ export function AnchorWidget({
       y1: rect.bottom
     };
 
-    // Drop rect is slightly larger for easier targeting
+    
     const padding = 20;
     dropRectRef.current = {
       x0: rect.left - padding,
@@ -77,21 +72,19 @@ export function AnchorWidget({
       y1: rect.bottom + padding
     };
 
-    // Notify parent of rect update
+    
     onRectUpdate?.(dropRectRef.current);
   }, [onRectUpdate]);
 
-  /**
-   * Handle tap behavior
-   */
+  
   const handleTap = useCallback(() => {
     const mode = anchorState.mode;
 
     if (mode === MODE_HOME) {
-      // Open Home and return to HOME-safe state
+      
       anchorState.isOpen = true;
 
-      // Pop ReturnStack until HOME-safe
+      
       const snapshot = returnStack.popUntilLayer(LAYER_HOME);
       if (snapshot) {
         navStateBuffer.restore(snapshot);
@@ -99,18 +92,18 @@ export function AnchorWidget({
         navStateBuffer.depth = 0;
       }
     } else if (mode === MODE_PROFILE) {
-      // Open Profile and ensure correct layer/depth
+      
       anchorState.isOpen = true;
       if (navStateBuffer.layer !== LAYER_PROFILE || navStateBuffer.depth !== PROFILE_DEPTH) {
         navStateBuffer.layer = LAYER_PROFILE;
         navStateBuffer.depth = PROFILE_DEPTH;
       }
     } else if (mode === MODE_SHRUNK) {
-      // Restore previous mode
+      
       anchorState.restoreFromShrunk();
       anchorState.isOpen = true;
 
-      // If restoring to PROFILE, ensure correct NavState
+      
       if (anchorState.mode === MODE_PROFILE) {
         navStateBuffer.layer = LAYER_PROFILE;
         navStateBuffer.depth = PROFILE_DEPTH;
@@ -120,23 +113,19 @@ export function AnchorWidget({
     triggerUpdate();
   }, [anchorState, navStateBuffer, returnStack, triggerUpdate]);
 
-  /**
-   * Handle hold behavior (Dream selector)
-   */
+  
   const handleHold = useCallback(() => {
-    if (anchorState.isOpen) return; // Only fire when closed
+    if (anchorState.isOpen) return; 
 
     anchorState.holdLatch = HOLD_FIRED;
 
-    // Open Dream selector overlay
+    
     onDreamSelectorOpen?.();
 
     triggerUpdate();
   }, [anchorState, onDreamSelectorOpen, triggerUpdate]);
 
-  /**
-   * Pointer down handler
-   */
+  
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
 
@@ -147,30 +136,28 @@ export function AnchorWidget({
     gesture.startTime = Date.now();
     gesture.pointerId = e.pointerId;
 
-    // Capture pointer
+    
     if (containerRef.current) {
       containerRef.current.setPointerCapture(e.pointerId);
     }
 
-    // Start hold detection
+    
     anchorState.holdLatch = HOLD_HOLDING;
 
-    // Check for hold after threshold
+    
     setTimeout(() => {
       const elapsed = Date.now() - gesture.startTime;
       if (gesture.isActive && elapsed >= HOLD_THRESHOLD_MS) {
-        // Check if pointer hasn't moved much from start position
-        // Note: We use the start position as reference since we don't track
-        // every move event (to avoid allocations). The hold is recognized
-        // if the pointer is released without significant movement.
+        
+        
+        
+        
         handleHold();
       }
     }, HOLD_THRESHOLD_MS);
   }, [anchorState, handleHold]);
 
-  /**
-   * Pointer up handler
-   */
+  
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     const gesture = gestureStateRef.current;
     if (!gesture.isActive || gesture.pointerId !== e.pointerId) return;
@@ -179,10 +166,10 @@ export function AnchorWidget({
     const dy = Math.abs(e.clientY - gesture.startY);
     const elapsed = Date.now() - gesture.startTime;
 
-    // Recognize tap if:
-    // - holdLatch is not FIRED
-    // - movement within TAP_SLOP
-    // - duration under HOLD_THRESHOLD_MS
+    
+    
+    
+    
     if (
       anchorState.holdLatch !== HOLD_FIRED &&
       dx < TAP_SLOP &&
@@ -192,7 +179,7 @@ export function AnchorWidget({
       handleTap();
     }
 
-    // Reset gesture state
+    
     gesture.isActive = false;
     anchorState.holdLatch = HOLD_IDLE;
 
@@ -201,9 +188,7 @@ export function AnchorWidget({
     }
   }, [anchorState, handleTap]);
 
-  /**
-   * Pointer cancel handler
-   */
+  
   const handlePointerCancel = useCallback((e: React.PointerEvent) => {
     const gesture = gestureStateRef.current;
     if (gesture.pointerId !== e.pointerId) return;
@@ -216,9 +201,7 @@ export function AnchorWidget({
     }
   }, [anchorState]);
 
-  /**
-   * Load persisted state on mount
-   */
+  
   useEffect(() => {
     const loadState = async () => {
       const stored = await AnchorWidgetStorage.load();
@@ -238,9 +221,7 @@ export function AnchorWidget({
     loadState();
   }, [anchorState, navStateBuffer, triggerUpdate]);
 
-  /**
-   * Update rects on mount and resize
-   */
+  
   useEffect(() => {
     updateCachedRects();
 
@@ -257,9 +238,7 @@ export function AnchorWidget({
     };
   }, [updateCachedRects]);
 
-  /**
-   * Persist state on changes (idle callback)
-   */
+  
   useEffect(() => {
     const saveState = async () => {
       const state = await AnchorWidgetStorage.load() || AnchorWidgetStorage.createInitialState();
@@ -274,7 +253,7 @@ export function AnchorWidget({
     saveState();
   }, [anchorState.mode, anchorState.prevMode, anchorState.isOpen, navStateBuffer]);
 
-  // Render based on current mode
+  
   const modeNames = ['HOME', 'PROFILE', 'SHRUNK'];
   const currentModeName = modeNames[anchorState.mode] || 'UNKNOWN';
 

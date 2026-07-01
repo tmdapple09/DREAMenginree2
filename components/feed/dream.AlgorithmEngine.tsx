@@ -4,25 +4,21 @@ import { Check, ChevronRight, Edit3, Plus, Share2, Shield, ShieldCheck, Shuffle,
 import Link from 'next/link';
 import { useCallback, useId, useState } from 'react';
 
-/* ─────────────────────────────────────────────
-   Types
-───────────────────────────────────────────── */
+
 export type FeedPreset = {
   id: string;
   name: string;
   emoji: string;
   description: string;
-  sources: string[];       // handles, topics, or category slugs
-  frequency: string;       // 'all' | 'highlights' | 'daily' | etc.
+  sources: string[];       
+  frequency: string;       
   isPublic: boolean;
   createdAt: string;
 };
 
 type AlgoMode = 'mine' | 'dream';
 
-/* ─────────────────────────────────────────────
-   localStorage helpers
-───────────────────────────────────────────── */
+
 function loadMode(): AlgoMode {
   if (typeof window === 'undefined') return 'mine';
   return (localStorage.getItem('de-algo-mode') as AlgoMode) || 'mine';
@@ -51,9 +47,7 @@ function loadChildSafety(): boolean {
 }
 function saveChildSafety(v: boolean ){ localStorage.setItem('de-child-safety', String(v)); }
 
-/* ─────────────────────────────────────────────
-   Follow settings reader (for display)
-───────────────────────────────────────────── */
+
 type FollowSetting = { handle: string; displayName: string; frequency: string };
 function loadFollows(): FollowSetting[] {
   try {
@@ -62,9 +56,7 @@ function loadFollows(): FollowSetting[] {
   } catch { return []; }
 }
 
-/* ─────────────────────────────────────────────
-   Preset Creator sub-component
-───────────────────────────────────────────── */
+
 const FREQ_OPTIONS = [
   { id: 'all',       label: '📡 Everything',   desc: 'All posts in real time'          },
   { id: 'highlights',label: '✨ Highlights',    desc: 'Best posts auto-selected'        },
@@ -131,7 +123,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         </button>
       </div>
 
-      {/* Emoji picker */}
+      
       <div>
         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6 }}>Icon</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -147,7 +139,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         </div>
       </div>
 
-      {/* Name */}
+      
       <div>
         <label htmlFor={uid + '-name'} style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Name</label>
         <input id={uid + '-name'} type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Sunday Football, Close Friends, Chill Vibes"
@@ -155,7 +147,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         />
       </div>
 
-      {/* Description */}
+      
       <div>
         <label htmlFor={uid + '-desc'} style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Description <span style={{ fontWeight: 400, textTransform: 'none' }}>(optional)</span></label>
         <input id={uid + '-desc'} type="text" value={desc} onChange={e => setDesc(e.target.value)} placeholder="Short description for sharing"
@@ -163,7 +155,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         />
       </div>
 
-      {/* Topics */}
+      
       <div>
         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>Topics &amp; Sources</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
@@ -184,7 +176,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         </div>
       </div>
 
-      {/* Frequency */}
+      
       <div>
         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--de-text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>How Often</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -204,7 +196,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         </div>
       </div>
 
-      {/* Public toggle */}
+      
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: 12, background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(160,195,240,0.25)' }}>
         <div>
           <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--de-heading)' }}>Share this setup</div>
@@ -217,7 +209,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
         </button>
       </div>
 
-      {/* Save */}
+      
       <button type="button" onClick={submit} disabled={!name.trim()} className="de-btn de-btn-primary" style={{ gap: 6 }}>
         <Check className="w-4 h-4" /> {editing ? 'Save Changes' : 'Create Setup'}
       </button>
@@ -225,9 +217,7 @@ function PresetCreator({ onSave, onCancel, editing }: { onSave: (p: FeedPreset) 
   );
 }
 
-/* ─────────────────────────────────────────────
-   Main AlgorithmEngine
-───────────────────────────────────────────── */
+
 export default function AlgorithmEngine( ){
   const [mode,        setMode]        = useState<AlgoMode>(loadMode);
   const [presets,     setPresets]     = useState<FeedPreset[]>(loadPresets);
@@ -285,7 +275,7 @@ export default function AlgorithmEngine( ){
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
-      {/* ── Algorithm Power Level ── */}
+      
       <div className="de-widget" style={{ background: 'linear-gradient(135deg, rgba(42,138,184,0.10), rgba(200,152,26,0.08))' }}>
         <div className="de-widget-header">
           <Zap className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
@@ -306,7 +296,7 @@ export default function AlgorithmEngine( ){
         </div>
       </div>
 
-      {/* ── Child Safety ── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           {childSafety
@@ -339,7 +329,7 @@ export default function AlgorithmEngine( ){
         </div>
       </div>
 
-      {/* ── Algorithm Mode Toggle ── */}
+      
       <div className="de-widget" style={{ background: 'linear-gradient(135deg, rgba(42,138,184,0.08), rgba(200,152,26,0.06))' }}>
         <div className="de-widget-header">
           <span className="de-widget-title">Who Controls Your Feed?</span>
@@ -384,7 +374,7 @@ export default function AlgorithmEngine( ){
         </div>
       </div>
 
-      {/* ── Your Setups ── */}
+      
       {mode === 'mine' && (
         <div className="de-widget">
           <div className="de-widget-header">
@@ -396,7 +386,7 @@ export default function AlgorithmEngine( ){
           </div>
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
 
-            {/* Creator / Editor */}
+            
             {(creating || editing) && (
               <div style={{ padding: '14px', borderRadius: 14, background: 'rgba(255,255,255,0.7)', border: '1.5px solid rgba(42,138,184,0.2)' }}>
                 <PresetCreator
@@ -407,7 +397,7 @@ export default function AlgorithmEngine( ){
               </div>
             )}
 
-            {/* "Everything" default */}
+            
             <PresetRow
               emoji="📡" name="Everything" desc="All content, no filters"
               isActive={activeId === 'all' && !mixOn}
@@ -417,7 +407,7 @@ export default function AlgorithmEngine( ){
               onMixToggle={() => toggleMix('all')}
             />
 
-            {/* User-created presets */}
+            
             {presets.map((p) => (
               <PresetRow
                 key={p.id}
@@ -443,7 +433,7 @@ export default function AlgorithmEngine( ){
         </div>
       )}
 
-      {/* ── Mix Mode ── */}
+      
       {mode === 'mine' && presets.length > 0 && (
         <div className="de-widget">
           <div className="de-widget-header">
@@ -486,7 +476,7 @@ export default function AlgorithmEngine( ){
         </div>
       )}
 
-      {/* ── Who You Follow + Their Settings ── */}
+      
       {follows.length > 0 && (
         <div className="de-widget">
           <div className="de-widget-header">
@@ -515,7 +505,7 @@ export default function AlgorithmEngine( ){
         </div>
       )}
 
-      {/* ── Share Alert ── */}
+      
       {shareAlert && (
         <div style={{ padding: '12px 16px', borderRadius: 14, background: 'rgba(42,138,184,0.1)', border: '1px solid rgba(42,138,184,0.2)', fontSize: 13, fontWeight: 600, color: 'var(--de-accent)', display: 'flex', alignItems: 'center', gap: 8 }}>
           <Check className="w-4 h-4" /> {shareAlert}
@@ -523,7 +513,7 @@ export default function AlgorithmEngine( ){
         </div>
       )}
 
-      {/* ── Discover public setups ── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Zap className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
@@ -547,9 +537,7 @@ export default function AlgorithmEngine( ){
   );
 }
 
-/* ─────────────────────────────────────────────
-   Preset Row sub-component
-───────────────────────────────────────────── */
+
 function PresetRow({ emoji, name, desc, isActive, isMixed, mixOn, onActivate, onMixToggle, onEdit, onDelete, onShare, isPublic }: { emoji: string; name: string; desc: string; isActive: boolean; isMixed: boolean; mixOn: boolean; onActivate: () => void; onMixToggle: () => void; onEdit?: () => void; onDelete?: () => void; onShare?: () => void; isPublic?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
@@ -564,7 +552,7 @@ function PresetRow({ emoji, name, desc, isActive, isMixed, mixOn, onActivate, on
           <div style={{ fontSize: 10, color: 'var(--de-text-dim)', marginTop: 1 }}>{desc}</div>
         </div>
 
-        {/* Mix checkbox or Activate */}
+        
         {mixOn ? (
           <button type="button" onClick={onMixToggle} style={{ width: 24, height: 24, borderRadius: 6, border: isMixed ? 'none' : '1.5px solid rgba(160,195,240,0.4)', background: isMixed ? 'var(--de-gold)' : 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
             {isMixed && <Check className="w-3 h-3 text-white" />}
@@ -575,7 +563,7 @@ function PresetRow({ emoji, name, desc, isActive, isMixed, mixOn, onActivate, on
           </button>
         )}
 
-        {/* Menu */}
+        
         {(onEdit || onDelete || onShare) && (
           <button type="button" onClick={() => setOpen((v) => !v)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px', color: 'var(--de-text-dim)', fontSize: 16, lineHeight: 1 }}>
             ···
@@ -583,7 +571,7 @@ function PresetRow({ emoji, name, desc, isActive, isMixed, mixOn, onActivate, on
         )}
       </div>
 
-      {/* Actions menu */}
+      
       {open && (
         <div style={{ display: 'flex', gap: 6, marginTop: 8, paddingTop: 8, borderTop: '1px solid rgba(160,195,240,0.2)', flexWrap: 'wrap' }}>
           {onEdit   && <button type="button" onClick={() => { onEdit(); setOpen(false); }} className="de-btn de-btn-ghost" style={{ fontSize: 11, gap: 4 }}><Edit3 className="w-3 h-3" /> Edit</button>}

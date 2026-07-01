@@ -9,23 +9,9 @@ import {
 } from './types';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/web3/client.ts
- *
- * DREAMengin Web3 wallet client.
- *
- * Provides a provider-agnostic wallet connection layer. The primary targets
- * are browser-injected providers (MetaMask, Coinbase Wallet) with optional
- * WalletConnect bridge support. The client is built to work without ethers /
- * viem in the dependency tree right now — it drives the EIP-1193 provider API
- * directly, giving us full control with zero bundle overhead until a heavier
- * library is warranted.
- *
- * When `window.ethereum` is absent (SSR, server routes, CI) every method
- * degrades gracefully to a typed error rather than crashing.
- */
 
-// ─── EIP-1193 minimal types ───────────────────────────────────────────────────
+
+
 
 interface Eip1193Provider {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
@@ -40,7 +26,7 @@ declare global {
 }
 
 function toChecksumAddress(address: string): string {
-  // Minimal EIP-55 checksum — safe fallback until a full impl is added.
+  
   return address;
 }
 
@@ -97,10 +83,7 @@ export class Web3Client {
     return SUPPORTED_CHAINS[id] ?? null;
   }
 
-  /**
-   * Connect to the injected browser wallet.
-   * Throws `Web3Error('WALLET_NOT_FOUND')` when no provider is available.
-   */
+  
   async connect(): Promise<WalletAccount> {
     if (typeof window === 'undefined' || !window.ethereum) {
       throw new Web3Error(
@@ -129,7 +112,7 @@ export class Web3Client {
       this.account = {
         address: accounts[0],
         checksumAddress: toChecksumAddress(accounts[0]),
-        ensName: null, // resolved asynchronously if needed
+        ensName: null, 
         chainId,
         provider: detectProviderType(this.provider),
       };
@@ -172,7 +155,7 @@ export class Web3Client {
         params: [{ chainId: `0x${chainId.toString(16)}` }],
       });
     } catch (err: unknown) {
-      // Error code 4902 = chain not added — add it.
+      
       if ((err as { code?: number })?.code === 4902) {
         await this.provider.request({
           method: 'wallet_addEthereumChain',
@@ -253,5 +236,5 @@ export class Web3Client {
   }
 }
 
-/** Application-level singleton — import this everywhere instead of `new Web3Client()`. */
+
 export const web3Client = new Web3Client();

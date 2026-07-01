@@ -2,18 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-/**
- * DaydreamPulseStrip
- *
- * Clean navigation grid for all Daydream surfaces.
- * No squiggly lines, no pulse rings — just a polished glass nav strip
- * with real links that go to real surfaces.
- *
- * Architecture justification:
- *   - docs/ARCHITECTURE.md §8  — Gold / light-blue / white premium palette.
- *   - docs/AXIOMS.md Axiom 4   — "Synchronized — premium, intentional, designed."
- *   - docs/LAW.md Product law 3 — Every visible action does something real.
- */
+
 
 const DAYDREAMS = [
   { id: 'music',     emoji: '🎵', label: 'Music',     href: '/daydream/music',     accent: '#8b5cf6' },
@@ -54,7 +43,7 @@ export default function DaydreamPulseStrip({ onOpenDaydream }: DaydreamPulseStri
         marginBottom: 16,
       }}
     >
-      {/* ── Header ── */}
+      
       <div
         style={{
           display: 'flex',
@@ -94,7 +83,7 @@ export default function DaydreamPulseStrip({ onOpenDaydream }: DaydreamPulseStri
         </div>
       </div>
 
-      {/* ── Nav grid ── */}
+      
       <div
         style={{
           display: 'grid',

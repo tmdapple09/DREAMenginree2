@@ -1,6 +1,6 @@
-/** @type {import('next').NextConfig} */
 
-// Safely extract the hostname for Next.js Image Optimization
+
+
 const getSupabaseHostname = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url) return "localhost";
@@ -8,7 +8,7 @@ const getSupabaseHostname = () => {
     const absoluteUrl = url.startsWith("http") ? url : `https://${url}`;
     return new URL(absoluteUrl).hostname;
   } catch (e) {
-    return "supabase.co"; // Graceful fallback to prevent build crashes
+    return "supabase.co"; 
   }
 };
 
@@ -19,12 +19,12 @@ const nextConfig = {
   serverExternalPackages: ["@supabase/supabase-js"],
   productionBrowserSourceMaps: false,
 
-  // Next.js 16+ native Partial Prerendering (PPR) model (replaces experimental.ppr and dynamicIO)
+  
   cacheComponents: true,
 
   experimental: {},
 
-  // Exclude build tooling from route tracing zips
+  
   outputFileTracingExcludes: {
     "/api/agent/session": [
       "./next.config.mjs",
@@ -83,12 +83,12 @@ const nextConfig = {
       },
       {
         source: "/homedream",
-        destination: "/dreamdmbar/homedream", // Fixed infinite loop
+        destination: "/dreamdmbar/homedream", 
         permanent: false,
       },
       {
         source: "/homedream/:path*",
-        destination: "/dreamdmbar/homedream/:path*", // Preserved path parameters
+        destination: "/dreamdmbar/homedream/:path*", 
         permanent: false,
       },
       {
@@ -140,11 +140,11 @@ const nextConfig = {
         key: "Content-Security-Policy",
         value: [
           "default-src 'self'",
-          "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'", // Crucial for WASM/Next streaming
+          "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'", 
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com",
           `img-src 'self' data: blob: ${supabaseUrl} https://*.googleapis.com https://*.gstatic.com https://i.ytimg.com https://*.scdn.co`,
-          `connect-src 'self' ${supabaseUrl} ${supabaseWss} https://*.googleusercontent.com https://api.spotify.com https://api.github.com https://assets.babylonjs.com`, // Fixed mangled domains
+          `connect-src 'self' ${supabaseUrl} ${supabaseWss} https://*.googleusercontent.com https://api.spotify.com https://api.github.com https://assets.babylonjs.com`, 
           `media-src 'self' blob: ${supabaseUrl}`,
           "worker-src 'self' blob:",
           "frame-ancestors 'self'",

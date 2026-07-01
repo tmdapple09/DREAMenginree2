@@ -4,13 +4,13 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/*  Lightning Wing Shader                                              */
-/*                                                                    */
-/*  Generates animated electric / lightning arcs that form a wing-like */
-/*  shape.  Everything runs in GLSL on the GPU – no video files.       */
-/* ------------------------------------------------------------------ */
 
-const vertexShader = /* glsl */ `
+
+
+
+
+
+const vertexShader =  `
   varying vec2 vUv;
   void main() {
     vUv = uv;
@@ -18,7 +18,7 @@ const vertexShader = /* glsl */ `
   }
 `;
 
-const fragmentShader = /* glsl */ `
+const fragmentShader =  `
   uniform float uTime;
   uniform vec3  uColor;
   uniform float uIntensity;

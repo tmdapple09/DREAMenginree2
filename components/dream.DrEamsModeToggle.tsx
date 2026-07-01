@@ -18,7 +18,7 @@ export default function DrEamsModeToggle( ){
     const next = !enabled
     setEnabled(next)
     setDrEamsMode(next)
-    // First-time coaching: explain what this toggle does.
+    
     emitTeach({
       featureId: 'drEamsMode',
       title: 'Dr. Eams Full Experience',

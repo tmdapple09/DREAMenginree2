@@ -3,12 +3,7 @@
 import { Layers, Minus, Pause, Play, Plus, SkipBack } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * ArrangePanel — Arrangement overview for the Music Engine app.
- *
- * Shows a visual timeline of the current project's clips, tempo map,
- * and structure sections. Lives at /engines/music/arrange.
- */
+
 
 interface Section {
   id: string;
@@ -65,7 +60,7 @@ export default function ArrangePanel( ){
             <p className="text-sm text-white/50">Structure your project · {TOTAL_BARS} bars</p>
           </div>
 
-          {/* Transport */}
+          
           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
             <button
               onClick={() => setPlayhead(1)}
@@ -94,7 +89,7 @@ export default function ArrangePanel( ){
           </div>
         </div>
 
-        {/* Section map */}
+        
         <div className="mb-4 rounded-xl overflow-hidden border border-white/10 bg-white/[0.02]">
           <div className="px-3 py-2 border-b border-white/10 flex items-center justify-between">
             <span className="text-xs font-semibold text-white/40 uppercase tracking-wider flex items-center gap-1.5">
@@ -125,13 +120,13 @@ export default function ArrangePanel( ){
                   {sec.label}
                 </div>
               ))}
-              {/* Playhead */}
+              
               <div
                 className="absolute top-0 h-full w-0.5 bg-white/80"
                 style={{ left: `${((playhead - 1) / TOTAL_BARS) * 100}%` }}
               />
             </div>
-            {/* Bar ruler */}
+            
             <div className="relative w-full h-5 mt-1">
               {Array.from({ length: TOTAL_BARS + 1 }, (_, i: number ) => i + 1)
                 .filter((b) => b % 4 === 1)
@@ -148,7 +143,7 @@ export default function ArrangePanel( ){
           </div>
         </div>
 
-        {/* Track lanes */}
+        
         <div className="space-y-2">
           {TRACKS.map((track) => (
             <div key={track.id} className="flex items-center gap-3">

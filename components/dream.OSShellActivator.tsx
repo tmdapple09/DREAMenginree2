@@ -10,40 +10,11 @@ import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
-/**
- * OSShellActivator — global, route-aware DreamDM Bar activator.
- *
- * Background
- * ──────────
- * The DREAMengin OS shell (DreamDM Bar + dual runtime regions) lives in
- * `app/layout.tsx` via the persistent Dream Bar shell component. Its visibility / seam-mode
- * gate is `isHomeActive = runtimeCallbacks !== null`.
- *
- * Until now, only `app/homedream/page.tsx` mounted the DreamBarDataBridge bridge,
- * which is the only thing that ever called `registerRuntimeCallbacks(...)`.
- * That left every other authenticated route stuck with the bar in nav-rail
- * mode and the runtime regions hidden, even though `DreamSystemContext`
- * already bootstraps `homeData` for any authenticated user.
- *
- * What this does
- * ──────────────
- * Mounted once globally (from `app/layout.tsx`), this component registers
- * the same runtime callbacks `DreamBarDataBridge` registers, on every
- * authenticated route. It deliberately does NOT touch `homeData` — that
- * stays bootstrapped by `DreamSystemProvider` and enriched by
- * `DreamBarDataBridge` on `/homedream`.
- *
- * Skip rules
- * ──────────
- *   • Pre-login / public routes (`/`, `/login`, `/join`, `/policy`,
- *     `/about`, `/auth/*`) — leave the shell completely off.
- *   • `/homedream` — DreamBarDataBridge is mounted there with richer data;
- *     this activator stays out of the way to avoid double-registration.
- */
+
 
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
 
-/** No route owns a special bridge; shell callbacks are global from root layout. */
+
 const OWN_BRIDGE_ROUTES = new Set<string>();
 
 export default function OSShellActivator( ){
@@ -66,8 +37,8 @@ export default function OSShellActivator( ){
     OWN_BRIDGE_ROUTES.has(pathname ?? '') ||
     !homeData?.userId;
 
-  // Mirrors DreamBarDataBridge so the bar/menus behave identically on every
-  // authenticated route. No homeData mutation here.
+  
+  
 
   const revealSplitRuntime = useCallback(
     (nextRatio = DEFAULT_WORKFLOW_SPLIT) => {
@@ -128,7 +99,7 @@ export default function OSShellActivator( ){
     unregisterRuntimeCallbacks,
   ]);
 
-  // Dominant-region effect — keep DualRuntime state in sync with the seam.
+  
   useEffect(() => {
     if (skip) return;
     if (splitRatio >= 0.55) {
@@ -140,7 +111,7 @@ export default function OSShellActivator( ){
     }
   }, [skip, dualRuntime, splitRatio]);
 
-  // Publish runtime context to the dreamOSBus so other surfaces can react.
+  
   useEffect(() => {
     if (skip) return;
     dreamOSBus.publishRuntimeContext({
@@ -163,7 +134,7 @@ export default function OSShellActivator( ){
     splitRatio,
   ]);
 
-  // Seam-Y dispatcher — keep EnginDispatcher in sync with the seam position.
+  
   useEffect(() => {
     if (skip) return;
     const dispatcher = EnginDispatcher.getInstance();

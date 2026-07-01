@@ -1,20 +1,14 @@
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamMediaVault  (framework-mandated basename: page.tsx)
 
-/**
- * Legacy media-vault daydream route — repurposed to the Create Daydream.
- *
- * Media management is a capability of ContentEngin (Create Daydream Side B).
- * Per docs/ARCHITECTURE.md §9, this legacy route is kept as a redirect and
- * forwards traffic to /daydream/create.
- */
+
+
 export const metadata = { title: 'Media Vault – Dreamengin', description: 'Your private media library.' };
 
 export default async function MediaVaultLegacyPage( ){
   await connection();
-  // Media Vault is part of ContentEngin (README §13 — media composition,
-  // mixed-content authoring). Redirect to Create Daydream.
+  
+  
   redirect('/daydream/create');
 }

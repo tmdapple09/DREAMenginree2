@@ -1,6 +1,6 @@
 export function extractPnpmVersion(packageManager) {
   if (typeof packageManager !== 'string') return undefined;
-  // Accept pnpm@MAJOR, pnpm@MAJOR.MINOR, or pnpm@MAJOR.MINOR.PATCH.
+  
   const match = packageManager.match(/^pnpm@([0-9]+(?:\.[0-9]+){0,2})$/);
   return match?.[1];
 }
@@ -16,9 +16,9 @@ export function refreshCurrentImplementationStatusSection(doc, options) {
   const sectionStart = doc.indexOf(heading);
   const lastUpdatedItalicLine =
     `_Last updated: ${options.utcDate} — \`${options.sha}\` by ${options.actor}_`;
-  // Matches a single `_Last updated: ..._` line (italic form used under the H1
-  // when no `## Current Implementation Status` section exists).  Used to avoid
-  // stacking a new line on every run when the heading is absent.
+  
+  
+  
   const italicLastUpdatedRe = /^_Last updated:[^\n]*_\n?/gm;
 
   if (sectionStart === -1) {
@@ -26,11 +26,11 @@ export function refreshCurrentImplementationStatusSection(doc, options) {
     const head = doc.slice(0, h1end);
     let rest = doc.slice(h1end);
 
-    // Strip ALL existing `_Last updated: ..._` lines plus any blank lines
-    // immediately following them, so repeated runs don't accumulate.
+    
+    
     rest = rest.replace(/(?:^_Last updated:[^\n]*_\n(?:\n)?)+/m, '');
 
-    // Also strip any stray italic last-updated lines elsewhere near the top.
+    
     const headerEnd = rest.search(/\n#{1,6} |\n<!--/);
     if (headerEnd !== -1) {
       const top = rest.slice(0, headerEnd).replace(italicLastUpdatedRe, '');

@@ -26,7 +26,7 @@ export default function MarketplaceListingCard({ item }: {item: MarketplaceListi
 
   return (
     <div className="de-surface" style={{ padding: '14px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {/* Preview */}
+      
       <div style={{
         height: 80, borderRadius: 12, overflow: 'hidden',
         background: 'linear-gradient(135deg, rgba(42,138,184,0.1), rgba(200,152,26,0.08))',
@@ -38,7 +38,7 @@ export default function MarketplaceListingCard({ item }: {item: MarketplaceListi
           ? <img src={item.preview_url} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : emoji}
       </div>
-      {/* Info */}
+      
       <div>
         <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--de-heading)', lineHeight: 1.3, marginBottom: 4 }}>
           {item.title}
@@ -52,7 +52,7 @@ export default function MarketplaceListingCard({ item }: {item: MarketplaceListi
           </div>
         )}
       </div>
-      {/* Footer */}
+      
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
         <span style={{
           fontSize: 10, fontWeight: 700, color: 'var(--de-gold)',

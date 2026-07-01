@@ -32,7 +32,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
     }
 
-    // Create a new board
+    
     if (action === 'create_board') {
       const parse = BoardSchema.safeParse(body);
       if (!parse.success) {
@@ -51,14 +51,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ id: data.id }, { status: 201 });
     }
 
-    // Default: create a board post
+    
     const parse = PostSchema.safeParse(body);
     if (!parse.success) {
       return NextResponse.json({ error: 'Invalid body', details: parse.error.flatten() }, { status: 400 });
     }
     const { board_id, content } = parse.data;
 
-    // Verify access: owner or public board
+    
     const { data: board } = await supabase
       .from('boards')
       .select('owner_id, is_public')

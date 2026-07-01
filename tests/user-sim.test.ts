@@ -1,15 +1,15 @@
-// tests/user-sim.test.ts
-//
-// Unit tests for lib/user-sim/userSimAgent.ts
-//
-// Coverage:
-//   PERSONAS registry        — all 10 personas present and valid
-//   perceive()               — BehaviorSignals derived from PerceptionFrame
-//   decideAction()           — policy picks correct AgentAction
-//   judgeStep()              — AuditFinding emitted for each spec violation
-//   judgeJourney()           — journey-level findings (recurring + abandon)
-//   runJourney()             — end-to-end journey orchestration
-//   SPEC_RULES               — all 10 rules present
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import type { PerceptionFrame, VisibleElement } from '@/types/user-sim';
@@ -23,7 +23,7 @@ import {
   runJourney,
 } from '@/engine/user-sim/userSimAgent';
 
-// ── Fixture helpers ───────────────────────────────────────────────────────────
+
 
 let _stepCounter = 0;
 
@@ -57,9 +57,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// ============================================================================
-// PERSONAS REGISTRY
-// ============================================================================
+
+
+
 
 describe('PERSONAS registry', () => {
   const EXPECTED_TYPES = [
@@ -120,9 +120,9 @@ describe('PERSONAS registry', () => {
   });
 });
 
-// ============================================================================
-// SPEC_RULES
-// ============================================================================
+
+
+
 
 describe('SPEC_RULES', () => {
   const EXPECTED_KEYS = [
@@ -148,9 +148,9 @@ describe('SPEC_RULES', () => {
   });
 });
 
-// ============================================================================
-// perceive() — BehaviorSignals
-// ============================================================================
+
+
+
 
 describe('perceive()', () => {
   it('returns all required signal fields', () => {
@@ -251,13 +251,13 @@ describe('perceive()', () => {
   });
 });
 
-// ============================================================================
-// decideAction() — Behaviour Policy
-// ============================================================================
+
+
+
 
 describe('decideAction()', () => {
   it('abandons when friction exceeds patience threshold', () => {
-    const persona = PERSONAS.impatient_first_time_user; // patience=0.1
+    const persona = PERSONAS.impatient_first_time_user; 
     const signals = {
       friction: 0.95,
       confusion: 0.0,
@@ -272,7 +272,7 @@ describe('decideAction()', () => {
   });
 
   it('abandons broken UI for low-patience persona', () => {
-    const persona = PERSONAS.frustrated_user_after_failure; // patience=0.15
+    const persona = PERSONAS.frustrated_user_after_failure; 
     const signals = {
       friction: 0.0,
       confusion: 0.0,
@@ -287,7 +287,7 @@ describe('decideAction()', () => {
   });
 
   it('does NOT abandon broken UI for high-patience persona', () => {
-    const persona = PERSONAS.power_user; // patience=0.9
+    const persona = PERSONAS.power_user; 
     const signals = {
       friction: 0.0,
       confusion: 0.0,
@@ -302,7 +302,7 @@ describe('decideAction()', () => {
   });
 
   it('returns inspect when confusion is high and persona is attentive', () => {
-    const persona = PERSONAS.power_user; // attention=0.95
+    const persona = PERSONAS.power_user; 
     const signals = {
       friction: 0.0,
       confusion: 0.7,
@@ -361,9 +361,9 @@ describe('decideAction()', () => {
   });
 });
 
-// ============================================================================
-// judgeStep() — Audit Judge (per-step)
-// ============================================================================
+
+
+
 
 describe('judgeStep()', () => {
   it('emits no findings for a clean frame', () => {
@@ -426,9 +426,9 @@ describe('judgeStep()', () => {
   });
 
   it('flags low trust signals for trust-seeking persona', () => {
-    const persona = PERSONAS.trust_seeking_user; // trust_threshold=0.9
+    const persona = PERSONAS.trust_seeking_user; 
     const frame = makeFrame({
-      url: 'http://dreamengin.com/', // no HTTPS → low trust score
+      url: 'http://dreamengin.com/', 
       visible_elements: [makeElement()],
     });
     const signals = perceive(frame);
@@ -504,9 +504,9 @@ describe('judgeStep()', () => {
   });
 });
 
-// ============================================================================
-// judgeJourney() — Audit Judge (journey-level)
-// ============================================================================
+
+
+
 
 describe('judgeJourney()', () => {
   it('returns empty array for a clean journey with no step findings', () => {
@@ -560,9 +560,9 @@ describe('judgeJourney()', () => {
   });
 });
 
-// ============================================================================
-// runJourney() — End-to-end orchestration
-// ============================================================================
+
+
+
 
 describe('runJourney()', () => {
   it('returns a SimJourneyResult with all required fields', () => {
@@ -600,7 +600,7 @@ describe('runJourney()', () => {
   });
 
   it('stops early and marks outcome as abandoned when persona abandons', () => {
-    // Impatient persona (patience=0.2) encounters max friction frames
+    
     const highFrictionFrame = (step: number): PerceptionFrame => ({
       step,
       page_title: 'Overloaded Page',

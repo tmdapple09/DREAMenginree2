@@ -16,52 +16,39 @@ import {
     type UXSignals,
 } from './godTierEngine';
 
-/**
- * useGodTier — React hook that drives the DreamEngineGodTierSystem.
- *
- * Collects real device / runtime / UX signals and runs the orchestrator
- * every animation frame, injecting CSS custom properties onto the root
- * element so every component can respond to the current GodTierState.
- *
- * Usage:
- *   const { state, uiTokens } = useGodTier({ route: '/showcase', activeTask: 'hero_showcase' });
- */
+
 
 export interface UseGodTierOptions {
-  /** Current route path, e.g. '/showcase'. */
+  
   route?: string;
-  /** Active task label, e.g. 'hero_showcase_detail'. */
+  
   activeTask?: string;
-  /** Primary user intent description. */
+  
   primaryIntent?: string;
-  /** Next likely routes for speculative prefetch. */
+  
   nextLikelyRoutes?: string[];
-  /** Babylon mesh snapshots for this scene (optional). */
+  
   meshes?: MeshSnapshot[];
-  /** UI element snapshots for hierarchy scoring (optional). */
+  
   ui?: UIElementSnapshot[];
-  /** How often (ms) to re-run the orchestrator. Default: every rAF (~16ms). */
+  
   tickMs?: number;
-  /**
-   * Enable child-safety content filtering.
-   * When true the algorithm blocks adult-rated content labels.
-   * Default: false.
-   */
+  
   childSafetyMode?: boolean;
 }
 
 export interface UseGodTierReturn {
-  /** Latest computed GodTierState. null until first tick. */
+  
   state: GodTierState | null;
-  /** CSS classes and CSS vars from getGodTierUiTokens(). */
+  
   uiTokens: ReturnType<typeof getGodTierUiTokens> | null;
-  /** Record a pointer/tap event — updates UX signals. */
+  
   recordTap: (kind: 'normal' | 'repeat' | 'rage' | 'dead') => void;
-  /** Record a hesitation duration in ms. */
+  
   recordHesitation: (ms: number) => void;
-  /** Record a backtrack (user went back). */
+  
   recordBacktrack: () => void;
-  /** Record a correction (e.g. typo fix). */
+  
   recordCorrection: () => void;
 }
 
@@ -90,18 +77,18 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
   const [state, setState] = useState<GodTierState | null>(null);
   const [uiTokens, setUiTokens] = useState<ReturnType<typeof getGodTierUiTokens> | null>(null);
 
-  // Setting CSS custom properties on <html> invalidates style for the entire
-  // document, so we run the orchestrator at most every UPDATE_INTERVAL_MS
-  // (≈4 Hz) instead of every animation frame, and only call setProperty for
-  // vars whose values actually changed since the last write.
+  
+  
+  
+  
   const lastOrchTsRef = useRef<number>(0);
   const lastVarsRef = useRef<Record<string, string>>({});
   const UPDATE_INTERVAL_MS = 250;
   const lastReactUpdateRef = useRef<number>(0);
 
-  // Without this, `tick` (and the rAF effect that depends on it) re-creates
-  // whenever a parent passes a new `nextLikelyRoutes`/`meshes`/`ui` array
-  // literal — which silently cancels and reschedules the loop on every render.
+  
+  
+  
   const inputsRef = useRef({
     route, activeTask, primaryIntent, nextLikelyRoutes, meshes, ui, childSafetyMode,
   });
@@ -112,7 +99,7 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
   const rafRef = useRef<number | null>(null);
 
   const tick = useCallback((ts: number) => {
-    // Always measure frame time (cheap; needed for adaptive quality).
+    
     const frameMs = frameTsRef.current === 0 ? 16.6 : ts - frameTsRef.current;
     frameTsRef.current = ts;
 
@@ -134,7 +121,7 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
       interactionBurst: runtimeRef.current.interactionBurst,
     };
 
-    // Run the orchestrator + CSS-var write at most every UPDATE_INTERVAL_MS.
+    
     if (ts - lastOrchTsRef.current >= UPDATE_INTERVAL_MS) {
       lastOrchTsRef.current = ts;
 
@@ -158,11 +145,11 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
 
       const tokens = getGodTierUiTokens(next);
 
-      // Diff-then-set: only call setProperty for vars whose value changed.
-      // This avoids invalidating <html> style when nothing actually moved.
-      // `tokens.vars` is a plain string→string map by construction
-      // (see getGodTierUiTokens in godTierEngine.ts), so Object.entries is
-      // safe and avoids a type assertion.
+      
+      
+      
+      
+      
       if (typeof document !== 'undefined') {
         const root = document.documentElement;
         const prev = lastVarsRef.current;
@@ -176,7 +163,7 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
         lastVarsRef.current = nextVars;
       }
 
-      // React state at the same cadence — no extra re-renders.
+      
       if (ts - lastReactUpdateRef.current >= UPDATE_INTERVAL_MS) {
         lastReactUpdateRef.current = ts;
         setState(next);
@@ -227,13 +214,13 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
   }, []);
 
   useEffect(() => {
-    // Refresh device signals on mount
+    
     deviceRef.current = defaultDeviceSignals();
 
     const start = () => {
       if (rafRef.current === null) {
-        // Reset frame timer so the first measured frame after a pause/resume
-        // doesn't get attributed a multi-second delta.
+        
+        
         frameTsRef.current = 0;
         rafRef.current = requestAnimationFrame(tick);
       }
@@ -245,7 +232,7 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
       }
     };
 
-    // Pause when the tab is backgrounded — battery discipline.
+    
     const onVisibility = () => {
       if (document.hidden) stop();
       else start();
@@ -269,7 +256,7 @@ export function useGodTier(opts: UseGodTierOptions = {}): UseGodTierReturn {
     if (kind === 'repeat') ux.repeatTapCount += 1;
     else if (kind === 'rage') ux.rageTapCount += 1;
     else if (kind === 'dead') ux.deadTapCount += 1;
-    // Decay after a short window to avoid permanently penalising UX score
+    
     setTimeout(() => {
       if (kind === 'repeat' && ux.repeatTapCount > 0) ux.repeatTapCount -= 1;
       if (kind === 'rage'   && ux.rageTapCount   > 0) ux.rageTapCount   -= 1;

@@ -17,7 +17,7 @@ import {
 const NOW = '2026-04-12T08:00:00.000Z';
 const LATER = '2026-04-12T09:00:00.000Z';
 
-// ─── Catalog invariants ───────────────────────────────────────────────────────
+
 
 describe('WORKFLOW_CATALOG', () => {
   it('every entry has a unique id', () => {
@@ -59,7 +59,7 @@ describe('HANDOFF_PATHS', () => {
   });
 });
 
-// ─── Stage model ──────────────────────────────────────────────────────────────
+
 
 describe('isValidTransition', () => {
   it('allows draft → active', () => expect(isValidTransition('draft', 'active')).toBe(true));
@@ -79,7 +79,7 @@ describe('STAGE_LABELS', () => {
   });
 });
 
-// ─── createWorkflow ───────────────────────────────────────────────────────────
+
 
 describe('createWorkflow', () => {
   it('creates a workflow in draft stage', () => {
@@ -98,7 +98,7 @@ describe('createWorkflow', () => {
   });
 });
 
-// ─── advanceStage ─────────────────────────────────────────────────────────────
+
 
 describe('advanceStage', () => {
   it('advances draft → active', () => {
@@ -170,20 +170,20 @@ describe('advanceStage', () => {
       const r = advanceStage(w, stage, LATER);
       if (r.ok) w = r.workflow;
     }
-    // First re-activation
+    
     const r1 = advanceStage(w, 'active', LATER);
     if (r1.ok) w = r1.workflow;
-    // Must advance to review again before trying
+    
     const r2 = advanceStage(w, 'review', LATER);
     if (r2.ok) w = r2.workflow;
-    // Second re-activation attempt
+    
     const r3 = advanceStage(w, 'active', LATER);
     expect(r3.ok).toBe(false);
     if (!r3.ok) expect(r3.reason).toContain('re-activated');
   });
 });
 
-// ─── abandonWorkflow ──────────────────────────────────────────────────────────
+
 
 describe('abandonWorkflow', () => {
   it('marks the workflow as abandoned', () => {
@@ -200,7 +200,7 @@ describe('abandonWorkflow', () => {
   });
 });
 
-// ─── checkHandoffEligibility ─────────────────────────────────────────────────
+
 
 describe('checkHandoffEligibility', () => {
   it('returns ineligible for non-export stage', () => {
@@ -238,7 +238,7 @@ describe('checkHandoffEligibility', () => {
   });
 });
 
-// ─── describeWorkflow ─────────────────────────────────────────────────────────
+
 
 describe('describeWorkflow', () => {
   it('includes name and stage label', () => {
@@ -253,7 +253,7 @@ describe('describeWorkflow', () => {
   });
 });
 
-// ─── workflowsForEngin / handoffsFrom / findWorkflowDef ──────────────────────
+
 
 describe('workflowsForEngin', () => {
   it('returns only workflows for the given engin', () => {

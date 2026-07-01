@@ -1,14 +1,4 @@
-/**
- * tests/conform-memory-map.test.ts
- *
- * Unit tests for the DREAMengin Shared Memory Map (Conform Mode).
- * Validates lib/runtime/memory.ts:
- *   - 16 MB SharedArrayBuffer allocation
- *   - 64-byte cache-line alignment of all SoA array offsets
- *   - SoA layout (PosX, PosY, VelX, VelY) for 10,000 entities
- *   - DreamDM Bar Seam Logic (writeBarSeam / readBarSeam via Atomics)
- *   - TheBoogieMan.Ai memory policy guard (HomeDream private region protection)
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
@@ -37,7 +27,7 @@ beforeEach(() => {
   _resetConformMemoryMap();
 });
 
-// ── Buffer sizing and alignment ───────────────────────────────────────────────
+
 
 describe('Conform Mode — SharedArrayBuffer allocation', () => {
   it('allocates exactly 16 MB', () => {
@@ -64,7 +54,7 @@ describe('Conform Mode — SharedArrayBuffer allocation', () => {
   });
 });
 
-// ── Cache-line alignment ──────────────────────────────────────────────────────
+
 
 describe('SoA array offsets — 64-byte cache-line alignment', () => {
   it('CACHE_LINE is 64 bytes', () => {
@@ -101,7 +91,7 @@ describe('SoA array offsets — 64-byte cache-line alignment', () => {
   });
 });
 
-// ── SoA layout for 10,000 entities ───────────────────────────────────────────
+
 
 describe('Conform Mode — SoA entity layout', () => {
   it('ENTITY_COUNT is 10,000', () => {
@@ -129,7 +119,7 @@ describe('Conform Mode — SoA entity layout', () => {
   });
 
   it('SoA arrays point to non-overlapping regions', () => {
-    // Each array occupies ENTITY_COUNT * 4 bytes; verify their byte offsets are sequential
+    
     expect(SOA_POSY_OFFSET).toBe(SOA_POSX_OFFSET + ENTITY_COUNT * 4);
     expect(SOA_POSZ_OFFSET).toBe(SOA_POSY_OFFSET + ENTITY_COUNT * 4);
     expect(SOA_VELX_OFFSET).toBe(SOA_POSZ_OFFSET + ENTITY_COUNT * 4);
@@ -161,7 +151,7 @@ describe('Conform Mode — SoA entity layout', () => {
   });
 });
 
-// ── Control region ────────────────────────────────────────────────────────────
+
 
 describe('Conform Mode — control region', () => {
   it('control view is an Int32Array', () => {
@@ -180,7 +170,7 @@ describe('Conform Mode — control region', () => {
   });
 });
 
-// ── DreamDM Bar Seam Logic ────────────────────────────────────────────────────
+
 
 describe('DreamDM Bar Seam Logic — writeBarSeam / readBarSeam', () => {
   it('writes 0.9 (Surface-focus) and reads it back', () => {
@@ -204,7 +194,7 @@ describe('DreamDM Bar Seam Logic — writeBarSeam / readBarSeam', () => {
   });
 
   it('defaults to 0.0 before any write', () => {
-    // SharedArrayBuffer is zero-initialized
+    
     expect(readBarSeam()).toBe(0);
   });
 
@@ -226,7 +216,7 @@ describe('DreamDM Bar Seam Logic — writeBarSeam / readBarSeam', () => {
   });
 });
 
-// ── TheBoogieMan.Ai policy guard ──────────────────────────────────────────────
+
 
 describe('boogieMemoryGuard — HomeDream private region protection', () => {
   it('allows access at offset 0 for any consumer', () => {
@@ -245,7 +235,7 @@ describe('boogieMemoryGuard — HomeDream private region protection', () => {
   });
 
   it('HOMEDREAM_PRIVATE_OFFSET is beyond all SoA data', () => {
-    const soaEndOffset = SOA_VELZ_OFFSET + ENTITY_COUNT * 4; // 240,064
+    const soaEndOffset = SOA_VELZ_OFFSET + ENTITY_COUNT * 4; 
     expect(HOMEDREAM_PRIVATE_OFFSET).toBeGreaterThanOrEqual(soaEndOffset);
   });
 

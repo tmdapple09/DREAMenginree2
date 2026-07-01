@@ -20,14 +20,14 @@ interface AppPostFeedRow {
   post_visibility?: string | null;
   created_at: string;
 }
-// =====================================================
-// Feed Host Resolver
-// Resolves feed data for widgets with SELF/FOLLOW scopes
-// =====================================================
 
-// =====================================================
-// 1. FEED RESOLVER
-// =====================================================
+
+
+
+
+
+
+
 
 export async function resolveFeedHost(
   ownerId: string,
@@ -36,7 +36,7 @@ export async function resolveFeedHost(
   const supabase = await createServerClient();
 
   try {
-    // Verify scope and permissions
+    
     const scopeValid = await verifyScopePermissions(supabase, ownerId, hostConfig);
     if (!scopeValid) {
       return {
@@ -46,7 +46,7 @@ export async function resolveFeedHost(
       };
     }
 
-    // Determine target user ID based on scope
+    
     const targetUserId =
       hostConfig.scope === FeedScope.SELF ? ownerId : hostConfig.target_user_id;
 
@@ -58,8 +58,8 @@ export async function resolveFeedHost(
       };
     }
 
-    // Build query from app_posts. The live feed_items table is widget-shaped,
-    // not user-scoped social content, so user feeds resolve from app_posts.
+    
+    
     let query = (supabase as SupabaseClient)
       .from('app_posts')
       .select('id, user_id, content, media_url, media_urls, media_json, visibility, post_visibility, created_at')
@@ -124,11 +124,11 @@ export async function resolveFeedHost(
   }
 }
 
-// =====================================================
-// 2. SCOPE VERIFICATION
-// =====================================================
 
-// Type alias for Supabase client
+
+
+
+
 type SupabaseClient = Awaited<ReturnType<typeof createServerClient>>;
 
 async function verifyScopePermissions(
@@ -136,12 +136,12 @@ async function verifyScopePermissions(
   ownerId: string,
   hostConfig: FeedHostConfig
 ): Promise<boolean> {
-  // SELF scope: always allowed
+  
   if (hostConfig.scope === FeedScope.SELF) {
     return true;
   }
 
-  // FOLLOW scope: verify relationship
+  
   if (hostConfig.scope === FeedScope.FOLLOW) {
     const targetUserId = hostConfig.target_user_id;
 
@@ -149,12 +149,12 @@ async function verifyScopePermissions(
       return false;
     }
 
-    // User can always view their own feed
+    
     if (ownerId === targetUserId) {
       return true;
     }
 
-    // Verify follow relationship exists
+    
     const { data, error } = await supabase
       .from('follows')
       .select('follower_id')
@@ -172,9 +172,9 @@ async function verifyScopePermissions(
   return false;
 }
 
-// =====================================================
-// 3. HELPERS
-// =====================================================
+
+
+
 
 function extractMediaPreviewUrl(mediaJson: unknown): string | undefined {
   if (!mediaJson || typeof mediaJson !== 'object') {
@@ -183,7 +183,7 @@ function extractMediaPreviewUrl(mediaJson: unknown): string | undefined {
 
   const media = mediaJson as any;
 
-  // Try to extract first image/video URL
+  
   if (Array.isArray(media.images) && media.images.length > 0) {
     return media.images[0];
   }
@@ -200,7 +200,7 @@ function extractMediaPreviewUrl(mediaJson: unknown): string | undefined {
 }
 
 function generateETag(items: FeedItemSummary[]): string {
-  // Simple ETag based on item count and last updated timestamp
+  
   if (items.length === 0) {
     return `"empty-${Date.now()}"`;
   }
@@ -209,19 +209,11 @@ function generateETag(items: FeedItemSummary[]): string {
   return `"${items.length}-${lastUpdated}"`;
 }
 
-// =====================================================
-// 4. APP_POSTS RESOLVER (real user-created posts)
-// =====================================================
 
-/**
- * Resolves public posts from the `app_posts` table.
- *
- * Architecture justification: ARCHITECTURE.md §8.1 — server components fetch
- * feed data with visibility constraints.  Only `visibility = 'public'` rows are
- * returned so private content is never leaked (AXIOM 4 + AXIOM 5).
- *
- * @param limit - Maximum number of posts to return (default 20).
- */
+
+
+
+
 export async function resolvePublicAppPosts(limit: number = 20): Promise<HostResolved> {
   const supabase = await createServerClient();
 
@@ -270,15 +262,7 @@ export async function resolvePublicAppPosts(limit: number = 20): Promise<HostRes
   }
 }
 
-/**
- * Subscribes to realtime inserts / updates on `app_posts` (public only).
- *
- * Feed updates are dispatched via `requestIdleCallback` (with a `setTimeout`
- * fallback) so they never block the main thread — per Widget System V2 spec
- * and ARCHITECTURE.md §11 battery / performance rules.
- *
- * @returns An unsubscribe function — call it to tear down the channel.
- */
+
 export async function subscribeAppPostsRealtime(
   onUpdate: (items: FeedItemSummary[]) => void
 ): Promise<() => void> {
@@ -297,9 +281,9 @@ export async function subscribeAppPostsRealtime(
       async () => {
         const resolved = await resolvePublicAppPosts();
         if (resolved.status === HostResolvedStatus.OK && resolved.items) {
-          // Defer the callback to idle time so it never jank the active frame.
-          // Falls back to setTimeout(0) in environments that lack the API
-          // (e.g. Node.js server-side, older browsers).
+          
+          
+          
           if (typeof requestIdleCallback !== 'undefined') {
             requestIdleCallback(() => onUpdate(resolved.items!));
           } else {
@@ -315,9 +299,9 @@ export async function subscribeAppPostsRealtime(
   };
 }
 
-// =====================================================
-// 6. APP_POSTS REALTIME SUBSCRIPTION HELPERS (Widget System V2)
-// =====================================================
+
+
+
 
 export function getFeedChannelKey(scope: FeedScope, userId: string): string {
   return scope === FeedScope.SELF
@@ -351,11 +335,11 @@ export async function subscribeFeedRealtime(
         filter: `user_id=eq.${targetUserId}`, 
       },
       async () => {
-        // Debounce updates
-        // Re-resolve feed on change
+        
+        
         const resolved = await resolveFeedHost(ownerId, hostConfig);
         if (resolved.status === HostResolvedStatus.OK && resolved.items) {
-          // Use requestIdleCallback or setTimeout to avoid blocking
+          
           if (typeof requestIdleCallback !== 'undefined') {
             requestIdleCallback(() => onUpdate(resolved.items!));
           } else {
@@ -366,7 +350,7 @@ export async function subscribeFeedRealtime(
     )
     .subscribe();
 
-  // Return unsubscribe function
+  
   return () => {
     supabase.removeChannel(channel);
   };

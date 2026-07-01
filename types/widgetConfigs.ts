@@ -1,5 +1,5 @@
-// types/widgetConfigs.ts
-// Canonical widget config contracts. Use these instead of `unknown` at usage sites.
+
+
 
 export type SocialProvider =
   | 'youtube'
@@ -15,7 +15,7 @@ export type SocialProvider =
   | 'website';
 
 export interface YouTubeWidgetConfig {
-  videoId: string; // REQUIRED
+  videoId: string; 
   startSeconds?: number;
   autoplay?: boolean;
   muted?: boolean;
@@ -36,7 +36,7 @@ export interface SocialProfileWidgetConfig {
 
 export interface SocialEmbedWidgetConfig {
   provider: SocialProvider;
-  url: string; // REQUIRED
+  url: string; 
   mode?: 'embed' | 'preview';
   allowTracking?: boolean;
   sandbox?: boolean;
@@ -53,17 +53,14 @@ export interface SocialFeedWidgetConfig {
   maxItems?: number;
   ranking?: 'chronological' | 'source_order';
 
-  /**
-   * Optional filters applied before ranking.
-   * Keep this shape stable because runtime parsing depends on it.
-   */
+  
   filter?: {
     includeKinds?: string[];
     excludeKeywords?: string[];
   };
 }
 
-// Dreamengin widget typing helpers used by lib/widgets/parse.ts
+
 
 export type DreamenginWidgetType =
   | 'youtube'

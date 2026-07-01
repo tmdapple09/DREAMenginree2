@@ -11,20 +11,16 @@ import {
 } from '@/components/icons/sheet';
 
 type Props = {
-  /** Registered icon name. Falls back to "dot" if unrecognised. */
+  
   name: string;
-  /** Display size in px (square). Defaults to FRAME_W (96). */
+  
   size?: number;
-  /** Accessible label. Omit for purely decorative icons. */
+  
   ariaLabel?: string;
   className?: string;
 };
 
-/**
- * Renders a single icon from /public/images/iconslist.png via CSS
- * background-position.  No <img> tag — no layout shift, no extra request
- * once the sheet is cached.
- */
+
 export default function SheetIcon({
   name,
   size = FRAME_W,
@@ -51,7 +47,7 @@ export default function SheetIcon({
         flexShrink: 0,
         backgroundImage: `url(${SHEET_PATH})`,
         backgroundRepeat: 'no-repeat',
-        /* Scale sheet so every cell is exactly size × size */
+        
         backgroundSize: `${COLS * size}px ${ROWS * size}px`,
         backgroundPosition: `${-(col * size)}px ${-(row * size)}px`,
       }}

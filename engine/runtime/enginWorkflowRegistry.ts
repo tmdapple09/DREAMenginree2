@@ -1,32 +1,14 @@
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/enginWorkflowRegistry.ts.
 
-/**
- * lib/runtime/enginWorkflowRegistry.ts
- *
- * Cross-Engin Workflow Registry
- *
- * Every meaningful drag through the seam bar maps to one or more entries here.
- * Each WorkflowDefinition declares EXACTLY:
- *   - which Engin pair it connects (from / to)
- *   - which bridge channel fires and what event name
- *   - an execute() that calls bridge.emitDurable so the target Engin receives
- *     the payload even if it comes online after the drag.
- *
- * No UI concerns live here — this is pure data routing.
- *
- * Architecture: lib/runtime/dualRuntimeBridge.ts — 6-channel virtual bus.
- * Circular import rule: this file imports ONLY bridge. It must never import
- * seamClipboard.ts or dreamOSBus.ts (those import this file).
- * Privacy: only IDs / primitives cross Engin boundaries (AXIOM 4).
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 export const ENGIN_KEYS = [
   'starmaker',
@@ -445,11 +427,11 @@ const WORKFLOWS: readonly WorkflowDefinition[] = [
   }),
 ];
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type EnginKey = (typeof ENGIN_KEYS)[number];
 
@@ -466,26 +448,23 @@ export type WorkflowArtifactType =
   | 'any';
 
 export interface WorkflowDefinition {
-  /** Unique workflow identifier — used for targeted execution and UI labelling. */
+  
   id: string;
-  /** Source Engin key. */
+  
   from: EnginKey;
-  /** Target Engin key. */
+  
   to: EnginKey;
-  /** Short human-readable name shown in seam UI. */
+  
   label: string;
-  /** What actually happens when this workflow fires. */
+  
   description: string;
-  /** Artifact types that trigger this workflow. */
+  
   artifactTypes: readonly WorkflowArtifactType[];
-  /** Bridge channel the event fires on (e.g. 'lab', 'games', 'music'). */
+  
   bridgeChannel: string;
-  /** Exact event name emitted on the bridge (e.g. 'lab:stem-visualization-requested'). */
+  
   bridgeEvent: string;
-  /**
-   * Execute the workflow by firing bridge.emitDurable on the target channel.
-   * The durable queue ensures delivery even if the target Engin is offline.
-   */
+  
   execute(payload: Record<string, unknown>): void;
 }
 
@@ -496,7 +475,7 @@ export interface WorkflowStats {
   byArtifactType: Record<string, number>;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function defineWorkflow(
   spec: Omit<WorkflowDefinition, 'execute'>,
@@ -509,30 +488,17 @@ function defineWorkflow(
   };
 }
 
-/**
- * Find all workflows that connect a given source Engin to a target Engin.
- * Returns an empty array when no workflow is defined for that pair.
- */
+
 export function findWorkflows(from: EnginKey, to: EnginKey): WorkflowDefinition[] {
   return WORKFLOWS.filter((w) => w.from === from && w.to === to);
 }
 
-/**
- * Find a single workflow by its unique ID.
- * Returns undefined if no workflow with that ID is registered.
- */
+
 export function findWorkflowById(id: string): WorkflowDefinition | undefined {
   return WORKFLOWS.find((w) => w.id === id);
 }
 
-/**
- * Execute a workflow by ID with the given payload.
- * Fires bridge.emitDurable on the workflow's channel and event.
- * ── Improvement 47: wrapped in try/catch so one bad workflow never
- *    prevents the caller from continuing.
- *
- * @returns true if the workflow was found and executed; false if the ID is unknown.
- */
+
 export function executeWorkflow(id: string, payload: Record<string, unknown>): boolean {
   const workflow = findWorkflowById(id);
   if (!workflow) return false;
@@ -545,28 +511,19 @@ export function executeWorkflow(id: string, payload: Record<string, unknown>): b
   return true;
 }
 
-/**
- * Return a readonly snapshot of every registered workflow.
- * Useful for building seam UI menus or debugging the registry.
- */
+
 export function allWorkflows(): readonly WorkflowDefinition[] {
   return WORKFLOWS;
 }
 
-/**
- * Return all workflows that accept the given artifact type (or 'any').
- * Useful when the drag payload has a known type but the target Engin is unknown.
- */
+
 export function getWorkflowsByArtifactType(type: WorkflowArtifactType): WorkflowDefinition[] {
   return WORKFLOWS.filter(
     (w) => w.artifactTypes.includes(type) || w.artifactTypes.includes('any'),
   );
 }
 
-/**
- * Return aggregate statistics about the registered workflow set.
- * Useful for analytics and debugging the seam configuration.
- */
+
 export function getWorkflowStats(): WorkflowStats {
   const bySource: Record<string, number> = {};
   const byTarget: Record<string, number> = {};
@@ -583,16 +540,13 @@ export function getWorkflowStats(): WorkflowStats {
   return { total: WORKFLOWS.length, bySource, byTarget, byArtifactType };
 }
 
-/**
- * Returns true when a workflow with the given ID is registered.
- * Slightly faster than findWorkflowById(id) !== undefined for boolean checks.
- */
+
 export function workflowExists(id: string): boolean {
   return WORKFLOWS.some((w) => w.id === id);
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

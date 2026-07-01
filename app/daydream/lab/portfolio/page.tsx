@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamLabPortfolio  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'Optimizero – DREAMengin',
@@ -32,7 +32,7 @@ export default async function OptimizeroPage( ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (
@@ -45,7 +45,7 @@ export default async function OptimizeroPage( ){
     >
       <div className="de-sky-bg min-h-screen">
 
-        {/* ── Sticky header ──────────────────────────────── */}
+        
         <header
           className="sticky top-0 z-30 backdrop-blur-xl"
           style={{ background: 'rgba(255,255,255,0.85)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}
@@ -76,10 +76,10 @@ export default async function OptimizeroPage( ){
           </div>
         </header>
 
-        {/* ── Main content ───────────────────────────────── */}
+        
         <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-          {/* Hero intro card */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.75)',
             backdropFilter: 'blur(20px)',
@@ -98,7 +98,7 @@ export default async function OptimizeroPage( ){
             </p>
           </div>
 
-          {/* Capabilities grid */}
+          
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
             {[
               { emoji: '⚛️', label: 'VQE',           sub: 'Variational Quantum\nEigensolver',           color: ACCENT        },
@@ -128,7 +128,7 @@ export default async function OptimizeroPage( ){
             ))}
           </div>
 
-          {/* Spec strip */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.6)',
             backdropFilter: 'blur(16px)',
@@ -165,7 +165,7 @@ export default async function OptimizeroPage( ){
             </div>
           </div>
 
-          {/* PortfolioEngin hint */}
+          
           <div style={{
             background: `${ACCENT}08`,
             borderRadius: 14,

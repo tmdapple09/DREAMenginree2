@@ -131,7 +131,7 @@ export default function PixiPhysicsLayer({ worldWidth, worldHeight, onTransform 
       try {
         app.destroy(true, { children: true, texture: true });
       } catch {
-        // ignore
+        
       }
     };
   }, [worldWidth, worldHeight, onTransform]);

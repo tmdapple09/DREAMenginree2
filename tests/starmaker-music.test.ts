@@ -223,24 +223,24 @@ describe('StarMaker sample editor advanced workflow', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// starmakerDaw data model helpers
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('midiPitchToName', () => {
   it('converts standard MIDI pitch numbers to note names', () => {
-    expect(midiPitchToName(60)).toBe('C3');   // middle C
-    expect(midiPitchToName(69)).toBe('A3');   // concert A
-    expect(midiPitchToName(0)).toBe('C-2');   // lowest MIDI
+    expect(midiPitchToName(60)).toBe('C3');   
+    expect(midiPitchToName(69)).toBe('A3');   
+    expect(midiPitchToName(0)).toBe('C-2');   
   });
 });
 
 describe('isBlackKey', () => {
   it('identifies sharps/flats as black keys', () => {
-    expect(isBlackKey(61)).toBe(true);   // C#3
-    expect(isBlackKey(60)).toBe(false);  // C3
-    expect(isBlackKey(64)).toBe(false);  // E3
-    expect(isBlackKey(66)).toBe(true);   // F#3
+    expect(isBlackKey(61)).toBe(true);   
+    expect(isBlackKey(60)).toBe(false);  
+    expect(isBlackKey(64)).toBe(false);  
+    expect(isBlackKey(66)).toBe(true);   
   });
 });
 
@@ -308,7 +308,7 @@ describe('createInitialWarpState + computeWarpPlaybackRate', () => {
     expect(computeWarpPlaybackRate(120, 120)).toBe(1);
     expect(computeWarpPlaybackRate(100, 120)).toBeCloseTo(1.2, 5);
     expect(computeWarpPlaybackRate(140, 70)).toBeCloseTo(0.5, 5);
-    expect(computeWarpPlaybackRate(0, 120)).toBe(1); // safe: avoids divide-by-zero
+    expect(computeWarpPlaybackRate(0, 120)).toBe(1); 
   });
 });
 
@@ -336,9 +336,9 @@ describe('PIANO_ROLL_DEFAULTS', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Industry-standard DAW panels — structural tests
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('PianoRollPanel', () => {
   it('renders a piano keyboard strip with beat ruler', () => {

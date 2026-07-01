@@ -1,23 +1,7 @@
-/**
- * lib/platform/index.ts
- *
- * DREAMengin Platform Utilities — public API surface.
- *
- * Re-exports utilities from the platform sub-modules so consumers can import
- * from a single, stable path.
- *
- * Server-side operations (financial, registry sync) are exposed as typed
- * fetch helpers that delegate to the appropriate API routes; they must never
- * call Supabase directly from the browser for those operations.
- *
- * Browser-safe operations (e.g. physics telemetry, social feed) may use the
- * Supabase browser client because RLS enforces the auth boundary.
- *
- * Architecture: docs/ARCHITECTURE.md §3 — logic layer (lib/).
- */
 
-// The canonical feed lives in app/api/feed/route.ts.
-// This helper fetches from that route so callers don't need the URL.
+
+
+
 
 export type FeedEntry = {
   id: string;
@@ -31,10 +15,7 @@ export type FeedEntry = {
   likes_count?: number;
 };
 
-/**
- * Fetches the unified HomeDream feed from the server-side API route.
- * Returns an empty array on error.
- */
+
 export async function getFeed(opts?: {
   limit?: number;
   before?: string;
@@ -67,14 +48,7 @@ export type RegistryEntry = {
   created_at: string;
 };
 
-/**
- * Registers a platform object in the global_registry ("Everything to Everything").
- * Delegates to POST /api/gal which enforces authentication server-side.
- *
- * @param type       - Object type (e.g. 'post', 'experiment', 'music')
- * @param internalId - UUID of the object in its native table
- * @param label      - Human-readable label (handle, title, etc.)
- */
+
 export async function syncToGlobalRegistry(
   type: string,
   internalId: string,
@@ -107,14 +81,7 @@ export type AdOrderResult = {
   status: string;
 };
 
-/**
- * Creates an ad order with the 10% platform / 90% creator revenue split.
- * Delegates to POST /api/ads/orders which enforces authentication server-side
- * and calculates the split — never trust client-supplied financial values.
- *
- * @param listingId   - UUID of the ad_listings record
- * @param grossAmount - Total gross revenue for this order (in dollars)
- */
+
 export async function processAdOrder(
   listingId: string,
   grossAmount: number,

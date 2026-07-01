@@ -1,12 +1,12 @@
 import type { LogEntry, MetricPoint, TelemetrySnapshot, TraceSpan } from './collector';
 
-// lib/observability/correlator.ts
-//
-// Signal correlator — analyses a TelemetrySnapshot and produces a ranked list
-// of anomaly signals plus an overall health verdict.
-//
-// Three detectors run independently; their results are merged and sorted by
-// severity before being returned as a CorrelationResult.
+
+
+
+
+
+
+
 
 export type AnomalySeverity = 'low' | 'medium' | 'high';
 export type AnomalyType =
@@ -19,31 +19,29 @@ export interface AnomalySignal {
   type: AnomalyType;
   severity: AnomalySeverity;
   description: string;
-  /** ISO timestamp of the earliest data point in the anomalous window. */
+  
   window_start: string;
-  /** Up to 5 human-readable evidence strings. */
+  
   evidence: string[];
 }
 
 export interface CorrelationResult {
-  /** ISO timestamp when the correlation was computed. */
+  
   timestamp: string;
   anomalies: AnomalySignal[];
   health: 'healthy' | 'degraded' | 'critical';
-  /** One-line summary — injected verbatim into the IDARi prompt. */
+  
   summary: string;
 }
 
 const SEVERITY_ORDER: Record<AnomalySeverity, number> = { high: 0, medium: 1, low: 2 };
 
-/**
- * Detect 30-second windows where 3 or more errors/warnings cluster together.
- */
+
 export function detectErrorSpikes(logs: LogEntry[]): AnomalySignal[] {
   const problematic = logs.filter((l) => l.level === 'error' || l.level === 'warn');
   if (problematic.length < 3) return [];
 
-  // Bucket into 30-second windows keyed by epoch-bucket (ms)
+  
   const windows = new Map<number, LogEntry[]>();
   for (const e of problematic) {
     const bucket = Math.floor(new Date(e.timestamp).getTime() / 30_000) * 30_000;
@@ -66,10 +64,7 @@ export function detectErrorSpikes(logs: LogEntry[]): AnomalySignal[] {
   return signals;
 }
 
-/**
- * Per span name: flag when p95 latency is >3× the p50 AND absolute p95 > 1 s,
- * or when any spans carry an error/timeout status.
- */
+
 export function detectLatencySpikes(traces: TraceSpan[]): AnomalySignal[] {
   if (traces.length < 2) return [];
 
@@ -114,11 +109,7 @@ export function detectLatencySpikes(traces: TraceSpan[]): AnomalySignal[] {
   return signals;
 }
 
-/**
- * For each metric name, flag outliers that deviate more than 2.5 standard
- * deviations from the mean — provided the stddev is itself large relative to
- * the mean (noisy series).
- */
+
 export function detectMetricAnomalies(metrics: MetricPoint[]): AnomalySignal[] {
   const byName = new Map<string, MetricPoint[]>();
   for (const m of metrics) {
@@ -134,7 +125,7 @@ export function detectMetricAnomalies(metrics: MetricPoint[]): AnomalySignal[] {
     if (mean === 0) continue;
     const variance = values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length;
     const stddev = Math.sqrt(variance);
-    if (stddev < mean * 0.3) continue; // series is too stable to trigger
+    if (stddev < mean * 0.3) continue; 
 
     const outliers = points.filter((p) => Math.abs(p.value - mean) > 2.5 * stddev);
     if (outliers.length === 0) continue;
@@ -153,23 +144,13 @@ export function detectMetricAnomalies(metrics: MetricPoint[]): AnomalySignal[] {
 }
 
 export interface CorrelateOptions {
-  /**
-   * Minimum number of error/warn entries in a 30-second window to count as a
-   * spike. Default: 3.
-   */
+  
   errorSpikeThreshold?: number;
-  /**
-   * Minimum fraction of logs that must be errors/warnings before the
-   * sustained-error-rate detector fires. Default: 0.4 (40%).
-   */
+  
   sustainedErrorRateThreshold?: number;
 }
 
-/**
- * Fire a 'high' severity signal when the error+warn fraction across the
- * entire snapshot window exceeds `threshold` (default 40%).
- * This catches gradual degradation that wouldn't cluster into 30-second spikes.
- */
+
 export function detectSustainedErrorRate(
   logs: LogEntry[],
   threshold = 0.4,
@@ -192,12 +173,8 @@ export function detectSustainedErrorRate(
   ];
 }
 
-/**
- * Correlate all signals from a TelemetrySnapshot.
- * Returns a CorrelationResult with ranked anomalies and an overall health verdict.
- * Pass `options` to tune detection thresholds.
- */
-// ── Improvement 28: correlate accepts options ─────────────────────────────────
+
+
 export function correlate(snapshot: TelemetrySnapshot, options: CorrelateOptions = {}): CorrelationResult {
   const {
     errorSpikeThreshold,
@@ -205,7 +182,7 @@ export function correlate(snapshot: TelemetrySnapshot, options: CorrelateOptions
   } = options;
 
   const spikeSignals = errorSpikeThreshold !== undefined
-    ? detectErrorSpikes(snapshot.logs).filter(() => true) // allow internal threshold override if needed
+    ? detectErrorSpikes(snapshot.logs).filter(() => true) 
     : detectErrorSpikes(snapshot.logs);
 
   const anomalies: AnomalySignal[] = [

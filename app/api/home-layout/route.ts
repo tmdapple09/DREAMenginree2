@@ -4,25 +4,25 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/home-layout/route.ts
-// Phase 8 §A Point 4 — Dream Window layout configuration for HomeDream Surface.
-//
-// GET  /api/home-layout  — Returns the authenticated user's HomeDream layout
-// POST /api/home-layout  — Persists HomeDream Dream Window layout to DB
-//
-// Layout shape stored in profiles.home_layout:
-//   {
-//     slots: Array<{
-//       id: string,
-//       type: string,
-//       title?: string,
-//       position: number,
-//       config?: Record<string, unknown>
-//     }>
-//   }
-//
-// Architecture: docs/ARCHITECTURE.md §3 — layout config in Supabase.
-// Privacy (AXIOM 5): layout is user-scoped; RLS prevents cross-user reads.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface LayoutSlot {
   id: string;

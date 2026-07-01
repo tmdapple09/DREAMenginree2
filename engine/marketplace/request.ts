@@ -1,19 +1,8 @@
 import { MARKETPLACE_CONTACT_TABLE } from './listings';
 
-/**
- * lib/marketplace/request.ts
- *
- * DreamMarketplace contact-request business logic — pure functions.
- *
- * Used by:
- *   - app/api/marketplace/request/route.ts
- *   - tests/phase8e-shop-marketplace.test.ts
- *
- * Architecture: docs/ARCHITECTURE.md §10
- * Phase 8 §E:   Point 46 — "Request" contact flow routes to real system action
- */
 
-// Re-export so callers can import from a single file
+
+
 
 export type ContactRequestInput = {
   item_id:  string;
@@ -33,14 +22,10 @@ export type ContactRequestValidationResult = {
   errors: string[];
 };
 
-/** Maximum message length for a contact request. */
+
 export const CONTACT_REQUEST_MESSAGE_MAX = 1000;
 
-/**
- * Validates the raw body of a contact-request POST.
- * Caller is responsible for providing the authenticated user id
- * and the seller_id looked up from the listing record.
- */
+
 export function validateContactRequest(body: unknown): ContactRequestValidationResult {
   const errors: string[] = [];
 
@@ -65,11 +50,7 @@ export function validateContactRequest(body: unknown): ContactRequestValidationR
   return { valid: errors.length === 0, errors };
 }
 
-/**
- * Builds the DB-ready contact request record.
- * seller_id must be resolved by the API handler from the listing record
- * before calling this function.
- */
+
 export function buildContactRequestRecord(
   requesterId: string,
   sellerId:    string,

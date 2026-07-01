@@ -4,31 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/gal/route.ts
- *
- * POST /api/gal — Global Association Layer (GAL) registry sync.
- *
- * Ensures every new platform object is registered in the global_registry
- * table — the "Everything to Everything" hub that lets any object be
- * associated with any other object.
- *
- * Security (AXIOM 4):
- *   - Requires authentication; returns 401 otherwise.
- *   - owner_id is always resolved from the session — never from the request body.
- *   - Uses UPSERT so re-registering the same (type, internal_id) is idempotent.
- *
- * Architecture: docs/ARCHITECTURE.md §3 — server route in app/api/.
- *
- * Body (JSON):
- *   { type: string, internalId: string, label: string }
- *
- * Response:
- *   200  { data: GlobalRegistryRow }  (upserted or pre-existing)
- *   400  { error: string }
- *   401  { error: "Unauthorized" }
- *   500  { error: string }
- */
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

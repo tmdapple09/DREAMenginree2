@@ -1,18 +1,7 @@
-/**
- * compositor – Node-based compositing layer model.
- *
- * Inspired by Foundry Nuke's node graph architecture.
- *
- * A Comp is a directed acyclic graph (DAG) of CompNodes. Each node
- * represents an operation (MediaIn, Over, Merge, ColorCorrect, Transform,
- * Output). Nodes are connected via named inputs/outputs.
- *
- * This module is a pure data/logic layer — it does not render to a canvas.
- * For actual rendering, connect it to a WebGL or Canvas2D renderer.
- */
+
 
 export type BlendMode =
-  | 'over'    // alpha compositing (Porter-Duff Over)
+  | 'over'    
   | 'add'
   | 'multiply'
   | 'screen'
@@ -24,15 +13,15 @@ export type BlendMode =
   | 'softlight';
 
 export type NodeType =
-  | 'MediaIn'       // source: video / image / 3D render layer
-  | 'Over'          // A over B compositing
-  | 'Merge'         // flexible blend merge
-  | 'ColorCorrect'  // gain, gamma, lift, offset
-  | 'Transform'     // translate, rotate, scale
-  | 'Roto'          // roto mask input
-  | 'MotionBlur'    // velocity-based blur
-  | 'Keyer'         // chroma / luma key
-  | 'Output';       // final composite output
+  | 'MediaIn'       
+  | 'Over'          
+  | 'Merge'         
+  | 'ColorCorrect'  
+  | 'Transform'     
+  | 'Roto'          
+  | 'MotionBlur'    
+  | 'Keyer'         
+  | 'Output';       
 
 export interface NodeParam {
   name: string;
@@ -40,20 +29,20 @@ export interface NodeParam {
   value: number | number[] | string | boolean;
   min?: number;
   max?: number;
-  options?: string[]; // for enum type
+  options?: string[]; 
 }
 
 export interface CompNode {
   id: string;
   type: NodeType;
   label: string;
-  /** Named input sockets: input name → connected node id (or null if unconnected) */
+  
   inputs: Record<string, string | null>;
-  /** User-editable parameters */
+  
   params: NodeParam[];
-  /** Position in the node graph canvas (for UI layout) */
+  
   position: { x: number; y: number };
-  /** Whether this node is enabled */
+  
   enabled: boolean;
 }
 
@@ -61,11 +50,11 @@ export interface CompGraph {
   id: string;
   name: string;
   nodes: CompNode[];
-  /** Ordered list of node IDs from sources to output */
+  
   evaluationOrder: string[];
 }
 
-// Default parameter sets per node type
+
 
 const DEFAULT_PARAMS: Record<NodeType, NodeParam[]> = {
   MediaIn: [
@@ -101,7 +90,7 @@ const DEFAULT_PARAMS: Record<NodeType, NodeParam[]> = {
   ],
   Keyer: [
     { name: 'mode', type: 'enum', value: 'chroma', options: ['chroma', 'luma', 'difference'] },
-    { name: 'keyColor', type: 'vec4', value: [0, 1, 0, 1] }, // green by default
+    { name: 'keyColor', type: 'vec4', value: [0, 1, 0, 1] }, 
     { name: 'tolerance', type: 'float', value: 0.1, min: 0, max: 1 },
     { name: 'despill', type: 'boolean', value: true },
   ],
@@ -123,16 +112,14 @@ const DEFAULT_INPUTS: Record<NodeType, string[]> = {
   Output:       ['input'],
 };
 
-// Public API
+
 
 let _nodeIdSeq = 1;
 function nextNodeId(type: NodeType): string {
   return `${type}_${_nodeIdSeq++}`;
 }
 
-/**
- * Create a new CompNode with default parameters for the given type.
- */
+
 export function createNode(
   type: NodeType,
   label?: string,
@@ -153,16 +140,12 @@ export function createNode(
   };
 }
 
-/**
- * Create an empty CompGraph.
- */
+
 export function createGraph(name: string = 'Untitled Comp'): CompGraph {
   return { id: `graph_${Date.now()}`, name, nodes: [], evaluationOrder: [] };
 }
 
-/**
- * Add a node to a graph. Returns the updated graph (immutable).
- */
+
 export function addNode(graph: CompGraph, node: CompNode): CompGraph {
   return {
     ...graph,
@@ -171,14 +154,7 @@ export function addNode(graph: CompGraph, node: CompNode): CompGraph {
   };
 }
 
-/**
- * Connect an output node → input socket of a downstream node.
- *
- * @param graph      Graph to update.
- * @param fromNodeId Source node id.
- * @param toNodeId   Destination node id.
- * @param inputName  Input socket name on the destination node.
- */
+
 export function connectNodes(
   graph: CompGraph,
   fromNodeId: string,
@@ -192,9 +168,7 @@ export function connectNodes(
   return { ...graph, nodes, evaluationOrder: topologicalSort(nodes) };
 }
 
-/**
- * Disconnect an input socket.
- */
+
 export function disconnectInput(
   graph: CompGraph,
   nodeId: string,
@@ -207,9 +181,7 @@ export function disconnectInput(
   return { ...graph, nodes, evaluationOrder: topologicalSort(nodes) };
 }
 
-/**
- * Update a parameter value on a node.
- */
+
 export function setParam(
   graph: CompGraph,
   nodeId: string,
@@ -226,17 +198,12 @@ export function setParam(
   return { ...graph, nodes };
 }
 
-/**
- * Return the node for a given id, or undefined.
- */
+
 export function findNode(graph: CompGraph, nodeId: string): CompNode | undefined {
   return graph.nodes.find((n) => n.id === nodeId);
 }
 
-/**
- * Return a simple topological sort of nodes (Kahn's algorithm).
- * Cycles are broken by insertion order.
- */
+
 export function topologicalSort(nodes: CompNode[]): string[] {
   const idSet = new Set(nodes.map((n) => n.id));
   const inDeg = new Map<string, number>();
@@ -267,7 +234,7 @@ export function topologicalSort(nodes: CompNode[]): string[] {
     }
   }
 
-  // Add any remaining (cycle members) in insertion order
+  
   for (const n of nodes) {
     if (!order.includes(n.id)) order.push(n.id);
   }
@@ -275,9 +242,7 @@ export function topologicalSort(nodes: CompNode[]): string[] {
   return order;
 }
 
-/**
- * Return a human-readable summary of the graph.
- */
+
 export function graphSummary(graph: CompGraph): string {
   const counts: Partial<Record<NodeType, number>> = {};
   for (const n of graph.nodes) counts[n.type] = (counts[n.type] ?? 0) + 1;

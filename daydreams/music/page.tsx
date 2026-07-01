@@ -92,7 +92,7 @@ export default async function MusicArtistHubPage( ){
       sideBComponent={StarMakerEngin}
     >
       <div style={{ background: '#0d0f17', minHeight: '100vh', color: '#e2e5ee' }}>
-        {/* Header */}
+        
         <AuthenticatedPageHeader
           backHref="/homedream"
           title="Artist Hub"
@@ -104,7 +104,7 @@ export default async function MusicArtistHubPage( ){
 
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '20px 16px 120px', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-          {/* ── Hero CTA ── */}
+          
           <div style={{
             padding: '20px 24px', borderRadius: 16,
             background: 'linear-gradient(135deg, rgba(0,208,240,0.14) 0%, rgba(168,85,247,0.12) 100%)',
@@ -139,12 +139,12 @@ export default async function MusicArtistHubPage( ){
             </div>
           </div>
 
-          {/* ── Sound Recorder (quick capture) ── */}
+          
           <Section title="Quick Capture" icon={<Sparkles className="w-3.5 h-3.5" />} badge="Live Rec" badgeColor="#ef4444">
             <SoundRecorder />
           </Section>
 
-          {/* ── Release Pipeline ── */}
+          
           <Section title="Release Pipeline" icon={<Zap className="w-3.5 h-3.5" />} badge="6 stages" badgeColor="#00bcd4">
             <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4 }}>
               {PIPELINE_STAGES.map((stage, i: number) => (
@@ -156,7 +156,7 @@ export default async function MusicArtistHubPage( ){
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
                   position: 'relative',
                 }}>
-                  {/* Arrow connector */}
+                  
                   {i < PIPELINE_STAGES.length - 1 && (
                     <div style={{
                       position: 'absolute', right: -12, top: '50%', transform: 'translateY(-50%)',
@@ -176,7 +176,7 @@ export default async function MusicArtistHubPage( ){
             </p>
           </Section>
 
-          {/* ── Distribution Readiness ── */}
+          
           <Section title="Distribution Readiness" icon={<Globe className="w-3.5 h-3.5" />}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
               {DIST_PLATFORMS.map((p) => (
@@ -217,7 +217,7 @@ export default async function MusicArtistHubPage( ){
             </Link>
           </Section>
 
-          {/* ── Audience Insights ── */}
+          
           <Section title="Audience Insights" icon={<BarChart3 className="w-3.5 h-3.5" />} badge="Analytics" badgeColor="#a855f7">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 12 }}>
               {[
@@ -249,7 +249,7 @@ export default async function MusicArtistHubPage( ){
             </Link>
           </Section>
 
-          {/* ── Monetization Tracker ── */}
+          
           <Section title="Monetization Tracker" icon={<DollarSign className="w-3.5 h-3.5" />} badge="Revenue" badgeColor="#f59e0b">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
               {MONETIZE_ITEMS.map((item) => (
@@ -274,7 +274,7 @@ export default async function MusicArtistHubPage( ){
             </div>
           </Section>
 
-          {/* ── Promotion Scheduler ── */}
+          
           <Section title="Promotion Scheduler" icon={<Clock className="w-3.5 h-3.5" />} badge="Timeline" badgeColor="#ec4899">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {PROMO_TIMELINE.map((item) => (
@@ -310,7 +310,7 @@ export default async function MusicArtistHubPage( ){
             </p>
           </Section>
 
-          {/* ── My Releases quick view ── */}
+          
           <Section title="Label & Releases" icon={<DiscAlbum className="w-3.5 h-3.5" />}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 12 }}>
               {[
@@ -361,7 +361,7 @@ function Section({
       border: '1px solid rgba(255,255,255,0.07)',
       borderRadius: 14, overflow: 'hidden',
     }}>
-      {/* Section header */}
+      
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '9px 14px',

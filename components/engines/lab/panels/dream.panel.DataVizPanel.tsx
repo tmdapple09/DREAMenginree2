@@ -3,12 +3,7 @@
 import { BarChart2, Download, Layers, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * DataVizPanel — Data visualization panel for the Lab Engine app.
- *
- * ASCII chart previews with chart type selector and CSV export.
- * Lives at /engines/lab/data.
- */
+
 
 type ChartType = 'bar' | 'line' | 'scatter';
 
@@ -123,7 +118,7 @@ export default function DataVizPanel( ){
           </button>
         </div>
 
-        {/* Dataset selector */}
+        
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
           {DEMO_DATASETS.map((ds) => (
             <button
@@ -141,7 +136,7 @@ export default function DataVizPanel( ){
           ))}
         </div>
 
-        {/* Chart type */}
+        
         <div className="flex gap-2 mb-5">
           {CHART_TYPES.map(({ id, label, icon: Icon}) => (
             <button
@@ -160,7 +155,7 @@ export default function DataVizPanel( ){
           ))}
         </div>
 
-        {/* Chart output */}
+        
         <div className="rounded-xl bg-black/40 border border-white/[0.06] p-4 overflow-x-auto">
           <div className="text-xs text-white/30 mb-3 font-medium">{dataset.label}</div>
           <pre className="text-xs font-mono text-[#10b981] whitespace-pre leading-relaxed">
@@ -168,7 +163,7 @@ export default function DataVizPanel( ){
           </pre>
         </div>
 
-        {/* Stats */}
+        
         <div className="grid grid-cols-4 gap-2 mt-4">
           {[
             { label: 'Min',  value: Math.min(...dataset.values).toFixed(1) },

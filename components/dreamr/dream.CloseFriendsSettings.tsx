@@ -4,15 +4,7 @@ import { Loader2, Search, UserMinus, UserPlus, Users, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * CloseFriendsSettings — manage the Close Friends list (spec §4).
- *
- * Allows the user to search for other users by handle, add them to
- * Close Friends, and remove existing entries.
- *
- * Close-friends posts are only visible to users in this list; they bypass
- * the public rate limit (50/5 min vs 10/5 min for public posts).
- */
+
 
 interface Friend {
   friend_id: string;
@@ -124,7 +116,7 @@ export default function CloseFriendsSettings( ){
 
   return (
     <div className="flex flex-col gap-6 p-4 rounded-xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
-      {/* Header */}
+      
       <div className="flex items-center gap-3">
         <Users className="w-5 h-5" style={{ color: ACCENT }} />
         <div>
@@ -145,7 +137,7 @@ export default function CloseFriendsSettings( ){
         </div>
       )}
 
-      {/* Search */}
+      
       <div className="relative">
         <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2">
           <Search className="w-4 h-4 text-zinc-400 shrink-0" />
@@ -198,7 +190,7 @@ export default function CloseFriendsSettings( ){
         )}
       </div>
 
-      {/* Current list */}
+      
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="w-5 h-5 text-zinc-500 animate-spin" />

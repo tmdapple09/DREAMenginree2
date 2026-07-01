@@ -14,39 +14,26 @@ import {
     PARTICLE_VERT_WGSL,
 } from './shaders';
 
-/**
- * WebGPURenderer — legacy WebGPU effect renderer backed by RenderEngin device ownership.
- *
- * Pipeline order per frame:
- *   1. Compute pass  — particle attractor physics (2048 particles, GPU-only)
- *   2. Scene pass    — lemniscate ribbon + particle quads → HDR rgba16float
- *   3. Bright pass   — luminance threshold extract → bloomTex0
- *   4. Blur H pass   — horizontal Gaussian → bloomTex1
- *   5. Blur V pass   — vertical   Gaussian → bloomTex0
- *   6. Composite     — scene + bloom, ACES tone-map, chrom-ab, vignette → canvas
- *
- * The blur direction buffers are written ONCE at init (constant), avoiding
- * any per-frame CPU→GPU overhead beyond the 16-byte uniform update.
- */
+
 
 const HDR_FMT: GPUTextureFormat = 'rgba16float';
-const PARTICLE_STRIDE = 32; // 8 × f32
+const PARTICLE_STRIDE = 32; 
 
 type NavWithGPU = Navigator & { readonly gpu: GPU };
 
 export class WebGPURenderer {
-  // core
+  
   private dev!: GPUDevice;
   private ctx!: GPUCanvasContext;
   private fmt!: GPUTextureFormat;
 
-  // buffers
-  private uBuf!: GPUBuffer;       // uniform  (time, dt, w, h)
-  private pBuf!: GPUBuffer;       // particle storage
-  private blurHBuf!: GPUBuffer;   // blur dir (1,0) — constant
-  private blurVBuf!: GPUBuffer;   // blur dir (0,1) — constant
+  
+  private uBuf!: GPUBuffer;       
+  private pBuf!: GPUBuffer;       
+  private blurHBuf!: GPUBuffer;   
+  private blurVBuf!: GPUBuffer;   
 
-  // pipelines
+  
   private pipelineCache = new Map<string, GPUComputePipeline | GPURenderPipeline>();
   private cpPipe!: GPUComputePipeline;
   private lemnPipe!: GPURenderPipeline;
@@ -55,13 +42,13 @@ export class WebGPURenderer {
   private blurPipe!: GPURenderPipeline;
   private compPipe!: GPURenderPipeline;
 
-  // textures
+  
   private hdrTex!: GPUTexture;
   private bloomTex0!: GPUTexture;
   private bloomTex1!: GPUTexture;
   private sampler!: GPUSampler;
 
-  // bind groups (rebuilt on resize)
+  
   private cpBG!: GPUBindGroup;
   private lemnBG!: GPUBindGroup;
   private partBG!: GPUBindGroup;
@@ -114,7 +101,7 @@ export class WebGPURenderer {
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    // Blur direction buffers — written once, never changed
+    
     const mkDirBuf = (x: number, y: number) => {
       const buf = d.createBuffer({
         size: 16,
@@ -284,21 +271,21 @@ export class WebGPURenderer {
       { binding: 1, resource: this.sampler },
     ]);
 
-    // blur H: reads bloom0 → writes bloom1
+    
     this.blurHBG = bg(this.blurPipe, [
       { binding: 0, resource: this.bloomTex0.createView() },
       { binding: 1, resource: this.sampler },
       { binding: 2, resource: { buffer: this.blurHBuf } },
     ]);
 
-    // blur V: reads bloom1 → writes bloom0
+    
     this.blurVBG = bg(this.blurPipe, [
       { binding: 0, resource: this.bloomTex1.createView() },
       { binding: 1, resource: this.sampler },
       { binding: 2, resource: { buffer: this.blurVBuf } },
     ]);
 
-    // composite: scene (hdr) + bloom (bloom0)
+    
     this.compBG = bg(this.compPipe, [
       { binding: 0, resource: this.hdrTex.createView() },
       { binding: 1, resource: this.bloomTex0.createView() },
@@ -310,7 +297,7 @@ export class WebGPURenderer {
     this.time += dt;
     const d = this.dev;
 
-    // Update per-frame uniform (16 bytes)
+    
     d.queue.writeBuffer(this.uBuf, 0, new Float32Array([this.time, dt, this.w, this.h]));
 
     const enc = d.createCommandEncoder({ label: 'frame' });

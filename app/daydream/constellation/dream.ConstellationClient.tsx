@@ -16,7 +16,7 @@ export default function ConstellationClient( ){
         overflow:   'hidden',
       }}
     >
-      {/* ── Top bar ── */}
+      
       <div
         style={{
           position:       'relative',
@@ -55,7 +55,7 @@ export default function ConstellationClient( ){
 
         <div style={{ flex: 1 }} />
 
-        {/* Title */}
+        
         <div style={{ textAlign: 'center' }}>
           <div
             style={{
@@ -86,7 +86,7 @@ export default function ConstellationClient( ){
 
         <div style={{ flex: 1 }} />
 
-        {/* Hint badge */}
+        
         <div
           style={{
             fontSize:      10,
@@ -104,7 +104,7 @@ export default function ConstellationClient( ){
         </div>
       </div>
 
-      {/* ── Canvas fills remaining space ── */}
+      
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         <DreamConstellationMap />
       </div>

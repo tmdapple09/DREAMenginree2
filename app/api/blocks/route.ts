@@ -5,16 +5,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/blocks/route.ts
-// Block / unblock users and retrieve the caller's block list.
-// RLS on user_blocks enforces owner-only access at the DB layer.
-// Constitution Art. I Rule 1 — privacy by default; blocks are private.
+
+
+
+
 
 const BlockBodySchema = z.object({
   blocked_id: z.string().uuid(),
 });
 
-/** GET /api/blocks — return the caller's current block list */
+
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -30,7 +30,7 @@ export async function GET( ): Promise<NextResponse> {
   return NextResponse.json({ blocks: data ?? [] });
 }
 
-/** POST /api/blocks — block a user */
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ ok: true, block: data }, { status: 201 });
 }
 
-/** DELETE /api/blocks?blocked_id=<uuid> — unblock a user */
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

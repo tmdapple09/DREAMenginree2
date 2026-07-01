@@ -1,25 +1,12 @@
-/**
- * tests/live-feed.test.ts
- *
- * Unit tests for lib/feed/useLiveFeed.ts — the Supabase Realtime-powered
- * HomeDream feed hook.
- *
- * These tests validate the pure-logic aspects of the hook contract:
- * queuing, flushing, deduplication, post state manipulation, and the
- * connector-badge shape — all without needing a live Supabase connection.
- *
- * Architecture:
- *   - docs/ARCHITECTURE.md §10 — no polling/timers
- *   - docs/AXIOMS.md Axiom 5 — connector items user-scoped by RLS
- */
+
 
 import { describe, expect, it } from 'vitest';
 import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
 
-// ── Helpers / shared fixtures ─────────────────────────────────────────────────
+
 
 function makePost(id: string, overrides: Partial<FeedPost> = {}): FeedPost {
-  const offset = Math.abs(id.charCodeAt(0) - 48) * 1000; // stable non-negative offset
+  const offset = Math.abs(id.charCodeAt(0) - 48) * 1000; 
   return {
     id,
     content:    `Post content #${id}`,
@@ -57,12 +44,12 @@ function makeConnectorEntry(id: string, provider: string): FeedPost {
   };
 }
 
-// ── Deduplication logic ───────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — deduplication', () => {
   it('does not prepend a post that already exists in the visible feed', () => {
     const posts: FeedPost[] = [makePost('1'), makePost('2')];
-    const incoming = makePost('1'); // duplicate of posts[0]
+    const incoming = makePost('1'); 
 
     const dedupedPrependPost = (prev: FeedPost[], post: FeedPost): FeedPost[] => {
       if (prev.some((p) => p.id === post.id)) return prev;
@@ -71,7 +58,7 @@ describe('useLiveFeed — deduplication', () => {
 
     const result = dedupedPrependPost(posts, incoming);
     expect(result).toHaveLength(2);
-    expect(result[0].id).toBe('1'); // unchanged
+    expect(result[0].id).toBe('1'); 
   });
 
   it('prepends a genuinely new post', () => {
@@ -102,14 +89,14 @@ describe('useLiveFeed — deduplication', () => {
   });
 });
 
-// ── Queue / flush mechanics ───────────────────────────────────────────────────
+
 
 describe('useLiveFeed — flush', () => {
   it('flushNew merges queued posts in front of visible posts', () => {
     const visible: FeedPost[] = [makePost('1'), makePost('2')];
     const queued:  FeedPost[] = [makePost('3'), makePost('4')];
 
-    // simulate flushNew: dedup queued against visible, prepend
+    
     const ids = new Set(visible.map((p) => p.id));
     const fresh = queued.filter((p) => !ids.has(p.id));
     const merged = [...fresh, ...visible];
@@ -121,13 +108,13 @@ describe('useLiveFeed — flush', () => {
 
   it('flushNew deduplicates against existing visible posts', () => {
     const visible: FeedPost[] = [makePost('1'), makePost('2')];
-    const queued:  FeedPost[] = [makePost('1'), makePost('5')]; // '1' already visible
+    const queued:  FeedPost[] = [makePost('1'), makePost('5')]; 
 
     const ids = new Set(visible.map((p) => p.id));
     const fresh = queued.filter((p) => !ids.has(p.id));
     const merged = [...fresh, ...visible];
 
-    expect(merged).toHaveLength(3); // only '5' was genuinely new
+    expect(merged).toHaveLength(3); 
     expect(merged[0].id).toBe('5');
   });
 
@@ -140,11 +127,11 @@ describe('useLiveFeed — flush', () => {
     const merged = fresh.length === 0 ? visible : [...fresh, ...visible];
 
     expect(merged).toHaveLength(1);
-    expect(merged).toBe(visible); // exact reference — no array allocation
+    expect(merged).toBe(visible); 
   });
 });
 
-// ── updatePost (in-place patching) ────────────────────────────────────────────
+
 
 describe('useLiveFeed — updatePost', () => {
   it('patches likes_count in place without touching other posts', () => {
@@ -174,25 +161,25 @@ describe('useLiveFeed — updatePost', () => {
   });
 });
 
-// ── replacePosts ──────────────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — replacePosts', () => {
   it('replaces visible posts with new array', () => {
     const oldPosts: FeedPost[] = [makePost('1'), makePost('2')];
     const newPosts: FeedPost[] = [makePost('10'), makePost('11'), makePost('12')];
 
-    // replacePosts sets posts = next and clears queue
+    
     const posts = newPosts;
     const queued: FeedPost[] = [];
 
     expect(posts).toHaveLength(3);
     expect(queued).toHaveLength(0);
     expect(posts[0].id).toBe('10');
-    void oldPosts; // silence unused warning
+    void oldPosts; 
   });
 });
 
-// ── Connector items ───────────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — connector items', () => {
   it('connector items have source=connector and a provider', () => {
@@ -202,11 +189,11 @@ describe('useLiveFeed — connector items', () => {
   });
 
   it('connector items always go to the queue, never to visible feed directly', () => {
-    // Simulate the hook handler: connector items always setQueued, not setPosts
+    
     const queued: FeedPost[] = [];
     const newEntry = makeConnectorEntry('ci-2', 'github');
 
-    // The queue logic used in useLiveFeed
+    
     const enqueue = (prev: FeedPost[], post: FeedPost) => {
       if (prev.some((q) => q.id === post.id)) return prev;
       return [post, ...prev];
@@ -218,14 +205,14 @@ describe('useLiveFeed — connector items', () => {
   });
 
   it('own posts go to visible feed immediately, not the queue', () => {
-    // The hook checks authorId === userId to decide prepend vs queue
+    
     const userId = 'user-abc';
     const ownPost: FeedPost = makePost('self-1', { source: 'post' });
-    const authorId = userId; // own post
+    const authorId = userId; 
 
     const isOwnPost = authorId === userId;
     expect(isOwnPost).toBe(true);
-    // isOwnPost → prependPost; otherwise → enqueue
+    
   });
 
   it('other users\' posts go to the queue, not the visible feed', () => {
@@ -233,11 +220,11 @@ describe('useLiveFeed — connector items', () => {
     const otherUserId = 'user-xyz';
     const isOwnPost = otherUserId === userId;
     expect(isOwnPost).toBe(false);
-    // !isOwnPost → enqueue
+    
   });
 });
 
-// ── isLive indicator ──────────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — live status', () => {
   it('isLive becomes true when status === SUBSCRIBED', () => {
@@ -254,7 +241,7 @@ describe('useLiveFeed — live status', () => {
   });
 });
 
-// ── Banner count logic ────────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — newCount banner', () => {
   it('newCount equals the number of queued posts', () => {
@@ -280,7 +267,7 @@ describe('useLiveFeed — newCount banner', () => {
   });
 });
 
-// ── Sort order ────────────────────────────────────────────────────────────────
+
 
 describe('useLiveFeed — sort order', () => {
   it('initial posts from the server arrive newest-first', () => {
@@ -294,7 +281,7 @@ describe('useLiveFeed — sort order', () => {
       created_at: new Date(now - i * 60_000).toISOString(),
     }));
 
-    // Verify: first post is the newest
+    
     expect(new Date(posts[0].created_at).getTime()).toBeGreaterThan(
       new Date(posts[1].created_at).getTime()
     );

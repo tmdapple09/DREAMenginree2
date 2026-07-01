@@ -2,55 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * lib/games/useGamepad.ts
- *
- * HTML5 Gamepad API hook for DREAMengin.
- *
- * Bridges the browser Gamepad API (works on PS5's hidden browser, Chrome,
- * Firefox, Safari) into the existing `de-game-input` CustomEvent protocol
- * so every game that already listens for remote / touch events gets
- * DualSense / Xbox / generic gamepad input for free.
- *
- * DualSense standard button layout (matches W3C Gamepad mapping):
- *   0  Cross (×)      → jump
- *   1  Circle (○)     → shoot
- *   2  Square (□)     → spin
- *   3  Triangle (△)   → duck
- *   4  L1             → jump-spin
- *   5  R1             → r1 (dash)
- *   6  L2             → l2
- *   7  R2             → jump-shoot
- *   8  Share / Create → (ignored)
- *   9  Options        → pause
- *   10 L3             → l3
- *   11 R3             → r3
- *   12 D-Pad Up       → jump
- *   13 D-Pad Down     → duck
- *   14 D-Pad Left     → move-left
- *   15 D-Pad Right    → move-right
- *
- * Left analog stick (axes 0, 1):
- *   axis 0 < -DEAD   → move-left
- *   axis 0 > +DEAD   → move-right
- *   axis 1 < -DEAD   → move-up   (i.e. jump)
- *
- * DualSense-specific features (March 2026):
- *   - Haptic feedback: Works on Android Chrome, desktop browsers
- *   - Bluetooth pairing: Android 12+, iOS 14.5+
- *   - Mobile support: Auto-detected via vendor ID (054c) or name
- *
- * Usage:
- *   const { connected, gamepadName, isDualSense, rumble } = useGamepad();
- *   // Trigger haptic feedback:
- *   rumble(0.5, 100); // 50% intensity, 100ms duration
- *
- * When `connected` is true the hook is actively polling and firing
- * `de-game-input` events on `window` — any game listening for those events
- * will respond immediately.
- */
 
-/** Subset of GameInputAction that this hook can emit. */
+
+
 type GameAction =
   | 'move-left' | 'move-right' | 'move-up' | 'move-down'
   | 'move-stop'
@@ -59,41 +13,37 @@ type GameAction =
   | 'pause';
 
 export interface GamepadStatus {
-  /** Whether at least one gamepad is currently connected. */
+  
   connected: boolean;
-  /** Human-readable name of the first connected gamepad (e.g. "DualSense"). */
+  
   gamepadName: string;
-  /** Whether the connected gamepad is a DualSense controller. */
+  
   isDualSense: boolean;
-  /** Rumble/haptic feedback function (intensity: 0-1, duration in ms). */
+  
   rumble: (intensity: number, duration?: number) => void;
 }
 
-/** Analog stick dead-zone — inputs below this are ignored. */
+
 const DEAD = 0.25;
 
-/**
- * Standard Gamepad API button → game action mapping.
- * Indices matching the W3C "standard" gamepad layout (DualSense / Xbox).
- * `null` means the button is captured but has no mapped action.
- */
+
 const BUTTON_MAP: (GameAction | null)[] = [
-  'jump',       // 0  Cross / A
-  'shoot',      // 1  Circle / B
-  'spin',       // 2  Square / X
-  'duck',       // 3  Triangle / Y
-  'jump-spin',  // 4  L1 / LB
-  'r1',         // 5  R1 / RB
-  'l2',         // 6  L2 / LT
-  'jump-shoot', // 7  R2 / RT
-  null,         // 8  Share / Back
-  'pause',      // 9  Options / Start
-  'l3',         // 10 L3
-  'r3',         // 11 R3
-  'jump',       // 12 D-Pad Up
-  'duck',       // 13 D-Pad Down
-  'move-left',  // 14 D-Pad Left
-  'move-right', // 15 D-Pad Right
+  'jump',       
+  'shoot',      
+  'spin',       
+  'duck',       
+  'jump-spin',  
+  'r1',         
+  'l2',         
+  'jump-shoot', 
+  null,         
+  'pause',      
+  'l3',         
+  'r3',         
+  'jump',       
+  'duck',       
+  'move-left',  
+  'move-right', 
 ];
 
 function fire(action: GameAction, active: boolean): boolean | undefined {
@@ -105,7 +55,7 @@ function checkIsDualSense(gamepadId: string): boolean {
   const id = gamepadId.toLowerCase();
   return (
     id.includes('dualsense') ||
-    id.includes('054c') || // Sony vendor ID
+    id.includes('054c') || 
     id.includes('wireless controller') ||
     id.includes('ps5')
   );
@@ -116,25 +66,22 @@ export function useGamepad(): GamepadStatus {
     connected: false,
     gamepadName: '',
     isDualSense: false,
-    rumble: () => {}, // no-op until connected
+    rumble: () => {}, 
   });
 
-  /**
-   * Previous button-pressed state: `buttonState[i]` is true when button i
-   * was pressed in the last poll frame.  Initialised lazily on first connect.
-   */
+  
   const buttonState = useRef<boolean[]>([]);
 
-  /** Previous axis directions for the left stick. */
+  
   const axisState = useRef({ left: false, right: false, up: false });
 
-  /** rAF handle so we can cancel the poll loop on cleanup. */
+  
   const rafRef = useRef<number | null>(null);
 
-  /** Whether the poll loop is running. */
+  
   const polling = useRef(false);
 
-  /** Current gamepad index for haptic feedback. */
+  
   const gamepadIndexRef = useRef(-1);
 
   const rumble = useCallback((intensity: number, duration: number = 100) => {
@@ -145,7 +92,7 @@ export function useGamepad(): GamepadStatus {
 
     if (!gamepad) return;
 
-    // Haptic Actuator API (supported on Android Chrome, desktop browsers)
+    
     const haptics = gamepad as Gamepad & { hapticActuators?: GamepadHapticActuator[]; vibrationActuator?: GamepadHapticActuator };
     const actuator = haptics.hapticActuators?.[0] ?? haptics.vibrationActuator;
     const pulseActuator = actuator as (GamepadHapticActuator & { pulse?: (value: number, duration: number) => Promise<boolean> }) | undefined;
@@ -155,7 +102,7 @@ export function useGamepad(): GamepadStatus {
       return;
     }
 
-    // Fallback to Vibration API (works on some mobile devices)
+    
     if ('vibrate' in navigator) {
       navigator.vibrate(duration);
     }
@@ -188,8 +135,8 @@ export function useGamepad(): GamepadStatus {
         }
       }
 
-      const ax = gp.axes[0] ?? 0; // X
-      const ay = gp.axes[1] ?? 0; // Y
+      const ax = gp.axes[0] ?? 0; 
+      const ay = gp.axes[1] ?? 0; 
 
       const nowLeft  = ax < -DEAD;
       const nowRight = ax >  DEAD;
@@ -226,7 +173,7 @@ export function useGamepad(): GamepadStatus {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
-      // Release any stuck buttons / axes when disconnecting
+      
       buttonState.current.forEach((was, i: number) => {
         if (was) {
           buttonState.current[i] = false;
@@ -258,7 +205,7 @@ export function useGamepad(): GamepadStatus {
     const onDisconnect = () => {
       stopPolling();
       gamepadIndexRef.current = -1;
-      // Check if any other gamepads remain
+      
       if (typeof navigator !== 'undefined' && navigator.getGamepads) {
         const remaining = Array.from(navigator.getGamepads()).filter(Boolean);
         if (remaining.length > 0 && remaining[0]) {
@@ -278,14 +225,14 @@ export function useGamepad(): GamepadStatus {
         connected: false,
         gamepadName: '',
         isDualSense: false,
-        rumble: () => {}, // no-op when disconnected
+        rumble: () => {}, 
       });
     };
 
     window.addEventListener('gamepadconnected',    onConnect    as EventListener);
     window.addEventListener('gamepaddisconnected', onDisconnect as EventListener);
 
-    // Resume polling if a gamepad is already connected (page reload / remount)
+    
     if (navigator.getGamepads) {
       const initial = Array.from(navigator.getGamepads()).filter(Boolean);
       if (initial.length > 0 && initial[0]) {
@@ -306,7 +253,7 @@ export function useGamepad(): GamepadStatus {
       window.removeEventListener('gamepaddisconnected', onDisconnect as EventListener);
       stopPolling();
     };
-  }, []); // empty deps — all mutable state is in refs
+  }, []); 
 
   return status;
 }

@@ -11,20 +11,14 @@ type Props = {
   className?: string;
 };
 
-/**
- * BrandLogo — renders one of the three brand logos, chosen once per page load.
- *
- * SSR always renders the first logo (stable placeholder) so there is no
- * hydration mismatch. The client picks the randomised logo on mount.
- * Fixed width/height prevent layout shift.
- */
+
 export default function BrandLogo({
   width = 40,
   height = 40,
   alt = 'Dreamengin',
   className = '',
 }: Props) {
-  // Stable SSR value – avoids hydration mismatch.
+  
   const [src, setSrc] = useState<string>(LOGO_PATHS[0]);
 
   useEffect(() => {

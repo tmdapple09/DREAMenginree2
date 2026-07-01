@@ -1,19 +1,4 @@
-/**
- * tests/universal-visual-modularity.test.ts
- *
- * Universal Visual Modularity Law — enforcement tests.
- *
- * Verifies that:
- *   1. All canonical drag wrapper implementations are present and export
- *      the correct API surface.
- *   2. The ModuleManifest type includes all required fields.
- *   3. The moduleRegistry implements the full transfer contract.
- *   4. The dropTargetRegistry routes across all canonical runtimes.
- *   5. Key visual containers use the modular drag pattern.
- *   6. The MODULARITY_VIOLATION_LOG.md document is present and non-empty.
- *
- * Architecture: docs/MODULARITY_VIOLATION_LOG.md — Universal Modularity Law.
- */
+
 
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -27,7 +12,7 @@ function read(relPath: string): string {
   return readFileSync(fullPath, 'utf-8');
 }
 
-// ── Source snapshots ──────────────────────────────────────────────────────────
+
 
 const draggableModuleSrc      = read('components/draggable/dream.DraggableModule.tsx');
 const universalEditorSrc      = read('components/universal-editor/dream.UniversalEditorWrapper.tsx');
@@ -40,7 +25,7 @@ const manifestTypeSrc         = read('types/module-manifest.ts');
 const violationLogSrc         = read('docs/MODULARITY_VIOLATION_LOG.md');
 const universalEditorIndexSrc = read('components/universal-editor/index.ts');
 
-// ── 1. Drag wrapper implementations ──────────────────────────────────────────
+
 
 describe('DraggableModule — universal drag wrapper', () => {
   it('exports a default DraggableModule component', () => {
@@ -55,7 +40,7 @@ describe('DraggableModule — universal drag wrapper', () => {
   });
 
   it('implements tap-hold delay before drag activates', () => {
-    // Must gate drag on a hold timer — prevents accidental drags on tap
+    
     expect(draggableModuleSrc).toMatch(/HOLD_MS\s*=\s*[0-9]+/);
   });
 
@@ -87,7 +72,7 @@ describe('DraggableModule — universal drag wrapper', () => {
   });
 });
 
-// ── 2. DreamWindowShell ───────────────────────────────────────────────────────
+
 
 describe('DreamWindowShell — tap-hold drag for Dream Windows', () => {
   it('uses useTapHoldMove to enable drag', () => {
@@ -114,7 +99,7 @@ describe('DreamWindowShell — tap-hold drag for Dream Windows', () => {
   });
 });
 
-// ── 3. UniversalEditorWrapper ─────────────────────────────────────────────────
+
 
 describe('UniversalEditorWrapper — always-on drag wrapper', () => {
   it('exports UniversalEditorWrapper component', () => {
@@ -140,7 +125,7 @@ describe('UniversalEditorWrapper — always-on drag wrapper', () => {
   });
 });
 
-// ── 4. useTapHoldMove ─────────────────────────────────────────────────────────
+
 
 describe('useTapHoldMove — core tap-hold-drag hook', () => {
   it('is present in both hooks/ and components/universal-editor/', () => {
@@ -173,7 +158,7 @@ describe('useTapHoldMove — core tap-hold-drag hook', () => {
   });
 });
 
-// ── 5. ModuleManifest type ────────────────────────────────────────────────────
+
 
 describe('ModuleManifest type — complete shape for transferable modules', () => {
   it('declares all required fields', () => {
@@ -196,7 +181,7 @@ describe('ModuleManifest type — complete shape for transferable modules', () =
   });
 });
 
-// ── 6. moduleRegistry — transfer contract ────────────────────────────────────
+
 
 describe('moduleRegistry — cross-runtime transfer contract', () => {
   it('exports useModuleRegistry Zustand store', () => {
@@ -228,7 +213,7 @@ describe('moduleRegistry — cross-runtime transfer contract', () => {
   });
 });
 
-// ── 7. dropTargetRegistry — multi-region routing ─────────────────────────────
+
 
 describe('dropTargetRegistry — multi-runtime drop routing', () => {
   it('exports dropTargetRegistry singleton', () => {
@@ -254,7 +239,7 @@ describe('dropTargetRegistry — multi-runtime drop routing', () => {
   });
 });
 
-// ── 8. MODULARITY_VIOLATION_LOG.md — required governance document ─────────────
+
 
 describe('MODULARITY_VIOLATION_LOG.md — governance document', () => {
   it('exists at docs/MODULARITY_VIOLATION_LOG.md', () => {
@@ -282,7 +267,7 @@ describe('MODULARITY_VIOLATION_LOG.md — governance document', () => {
   });
 });
 
-// ── 10. README — hard warning is present ─────────────────────────────────────
+
 
 describe('README — modularity hard warning', () => {
   const readme = read('README.md');

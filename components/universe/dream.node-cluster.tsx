@@ -33,7 +33,7 @@ export function NodeCluster({
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [nodePositions, setNodePositions] = useState<Map<string, { x: number; y: number }>>(new Map());
 
-  // Calculate positions for radial layout
+  
   useEffect(() => {
     if (layout !== 'radial' || !containerRef.current) return;
 
@@ -92,13 +92,13 @@ export function NodeCluster({
     );
   }
 
-  // Radial layout
+  
   return (
     <div
       ref={containerRef}
       className={cn('relative w-full aspect-square max-w-md mx-auto', className)}
     >
-      {/* Connection lines */}
+      
       {showConnections && (
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           {nodes.map((node) => {
@@ -129,7 +129,7 @@ export function NodeCluster({
         </svg>
       )}
 
-      {/* Center hub */}
+      
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                    w-12 h-12 rounded-full bg-primary/20 border border-primary/40
@@ -141,7 +141,7 @@ export function NodeCluster({
         <div className="w-4 h-4 rounded-full bg-primary animate-pulse-glow" />
       </div>
 
-      {/* Nodes */}
+      
       {nodes.map((node) => {
         const pos = nodePositions.get(node.id);
         if (!pos) return null;
@@ -169,7 +169,7 @@ export function NodeCluster({
   );
 }
 
-// Individual node components
+
 
 function NodeGridItem({
   node,
@@ -200,19 +200,19 @@ function NodeGridItem({
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      {/* Active indicator */}
+      
       {node.active && (
         <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-node-active animate-pulse" />
       )}
 
-      {/* Badge */}
+      
       {node.badge && (
         <span className="absolute -top-2 -right-2 px-2 py-0.5 text-xs font-medium rounded-full bg-accent text-accent-foreground">
           {node.badge}
         </span>
       )}
 
-      {/* Icon with glow */}
+      
       <div
         className={cn(
           'relative p-3 rounded-full mb-3 transition-all duration-300',
@@ -236,7 +236,7 @@ function NodeGridItem({
         />
       </div>
 
-      {/* Label */}
+      
       <span
         className={cn(
           'text-sm font-medium text-center transition-colors duration-300',
@@ -246,7 +246,7 @@ function NodeGridItem({
         {node.label}
       </span>
 
-      {/* Description on hover */}
+      
       {node.description && isHovered && (
         <p className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-muted-foreground whitespace-nowrap">
           {node.description}
@@ -353,7 +353,7 @@ function NodeRadialItem({
           node.active && 'border-primary/50'
         )}
       >
-        {/* Glow effect */}
+        
         {(isHovered || node.active) && (
           <div
             className="absolute inset-0 rounded-full"

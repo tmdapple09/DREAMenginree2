@@ -73,7 +73,7 @@ export default function PhysicsLab( ){
     }
     setIsSaving(true);
     try {
-      // Persist experiment summary to localStorage (offline-first persistence)
+      
       let savedExps: unknown[] = [];
       try { savedExps = JSON.parse(localStorage.getItem('de-physics-experiments') || '[]'); } catch { savedExps = []; }
       const summary = experiments.slice(0, 5).map((e) => ({
@@ -119,7 +119,7 @@ export default function PhysicsLab( ){
 
     setExperiments((prev) => [newRun, ...prev]);
 
-    // Simulate CCC calculation
+    
     setTimeout(() => {
       const coherenceScore = calculateCoherence(cccParams);
       const entropyChange = calculateEntropyChange(cccParams);
@@ -152,9 +152,9 @@ export default function PhysicsLab( ){
     }, 3000);
   };
 
-  // CCC calculation functions
+  
   const calculateCoherence = (params: CCCParameters): number => {
-    // Simplified coherence calculation across 99 layers
+    
     const layerCoherence = params.layers / 99;
     const thresholdFactor = params.coherenceThreshold;
     const transferImpact = params.transferCoefficient;
@@ -163,7 +163,7 @@ export default function PhysicsLab( ){
   };
 
   const calculateEntropyChange = (params: CCCParameters): number => {
-    // CCC treats entropy as redistribution, not loss
+    
     const boundaryEffect = params.boundaryCondition === 'closed' ? 1.0 : 0.8;
     const budgetUtilization = params.entropyBudget;
 
@@ -171,7 +171,7 @@ export default function PhysicsLab( ){
   };
 
   const calculateInformationFlow = (params: CCCParameters): number => {
-    // Information flows through layers with transfer coefficient
+    
     const flowRate = params.transferCoefficient;
     const layerResistance = 1 / params.layers;
 
@@ -179,7 +179,7 @@ export default function PhysicsLab( ){
   };
 
   const calculateBoundaryRecord = (params: CCCParameters): number => {
-    // Boundary records increase as information reaches junction
+    
     const junctionStrength = params.boundaryCondition === 'closed' ? 1.0 : 0.6;
     const recordingFidelity = params.spectralWindowWidth;
 
@@ -212,7 +212,7 @@ export default function PhysicsLab( ){
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-blue-950 dark:to-purple-950 p-6">
-      {/* Header */}
+      
       <div className="max-w-7xl mx-auto mb-8">
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
           <div className="flex items-center justify-between">
@@ -260,7 +260,7 @@ export default function PhysicsLab( ){
         </div>
       </div>
 
-      {/* Tabs */}
+      
       <div className="max-w-7xl mx-auto mb-6">
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-2 flex gap-2">
           {(['design', 'run', 'analyze', 'collaborate'] as const).map((tab) => (
@@ -279,10 +279,10 @@ export default function PhysicsLab( ){
         </div>
       </div>
 
-      {/* Main Content */}
+      
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Panel - Controls */}
+          
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
               <div className="flex items-center gap-3 mb-6">
@@ -293,7 +293,7 @@ export default function PhysicsLab( ){
               </div>
 
               <div className="space-y-6">
-                {/* Layers */}
+                
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     <Layers className="w-4 h-4" />
@@ -317,7 +317,7 @@ export default function PhysicsLab( ){
                   </p>
                 </div>
 
-                {/* Coherence Threshold */}
+                
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     <Sparkles className="w-4 h-4" />
@@ -339,7 +339,7 @@ export default function PhysicsLab( ){
                   </div>
                 </div>
 
-                {/* Entropy Budget */}
+                
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     <Zap className="w-4 h-4" />
@@ -361,7 +361,7 @@ export default function PhysicsLab( ){
                   </div>
                 </div>
 
-                {/* Boundary Condition */}
+                
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                     Boundary Condition
@@ -380,7 +380,7 @@ export default function PhysicsLab( ){
                   </p>
                 </div>
 
-                {/* Transfer Coefficient */}
+                
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     <Binary className="w-4 h-4" />
@@ -403,7 +403,7 @@ export default function PhysicsLab( ){
                 </div>
               </div>
 
-              {/* Run Button */}
+              
               <button
                 onClick={runExperiment}
                 disabled={isRunning}
@@ -427,7 +427,7 @@ export default function PhysicsLab( ){
               </button>
             </div>
 
-            {/* Hypothesis & Methodology */}
+            
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
               <div className="flex items-center gap-3 mb-4">
                 <FileText className="w-5 h-5 text-purple-600" />
@@ -466,9 +466,9 @@ export default function PhysicsLab( ){
             </div>
           </div>
 
-          {/* Right Panel - Results */}
+          
           <div className="lg:col-span-2 space-y-6">
-            {/* Current Metrics */}
+            
             {experiments.length > 0 && experiments[0].metrics && (
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
@@ -492,7 +492,7 @@ export default function PhysicsLab( ){
               </div>
             )}
 
-            {/* Visualization Area */}
+            
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
               <div className="flex items-center gap-3 mb-6">
                 <LineChart className="w-5 h-5 text-blue-600" />
@@ -517,7 +517,7 @@ export default function PhysicsLab( ){
               </div>
             </div>
 
-            {/* Experiment History */}
+            
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
                 Experiment History

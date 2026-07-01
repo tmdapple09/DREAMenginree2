@@ -1,6 +1,4 @@
-/**
- * DREAMengin Optimizer Tests
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { ConstraintSolver } from '@/optimizer/constraint-solver';
@@ -42,7 +40,7 @@ describe('ConstraintSolver', () => {
 
     expect(result).toHaveLength(3);
     expect(result[0].rank).toBe(1);
-    expect(result[0].item.id).toBe('3'); // Best quality, lowest cost
+    expect(result[0].item.id).toBe('3'); 
     expect(result[2].rank).toBe(3);
   });
 
@@ -61,7 +59,7 @@ describe('ConstraintSolver', () => {
 
     const result = solver.solve(items, constraints);
 
-    // Item with higher safety should rank first despite lower quality
+    
     expect(result[0].item.id).toBe('1');
   });
 
@@ -190,7 +188,7 @@ describe('DreamOptimizer', () => {
         {
           id: '2',
           content: 'Post 2',
-          timestamp: new Date(Date.now() - 86400000), // 1 day ago
+          timestamp: new Date(Date.now() - 86400000), 
           source: 'user2',
           is_favorite: false,
           engagement: { likes: 50, comments: 20, shares: 10 },
@@ -198,7 +196,7 @@ describe('DreamOptimizer', () => {
         {
           id: '3',
           content: 'Post 3',
-          timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+          timestamp: new Date(Date.now() - 3600000), 
           source: 'user3',
           is_favorite: false,
           engagement: { likes: 5, comments: 1, shares: 0 },
@@ -247,7 +245,7 @@ describe('DreamOptimizer', () => {
 
       expect(result).toHaveLength(3);
       expect(result[0].rank).toBe(1);
-      // Widget with highest interaction frequency should rank first
+      
       expect(result[0].item.widget_id).toBe('widget2');
     });
   });
@@ -281,7 +279,7 @@ describe('DreamOptimizer', () => {
 
       expect(result).toHaveLength(3);
       expect(result[0].rank).toBe(1);
-      // Highest relevance with surface type should rank high
+      
       expect(result[0].score).toBeGreaterThan(0.5);
     });
   });
@@ -315,7 +313,7 @@ describe('DreamOptimizer', () => {
 
       expect(result).toHaveLength(3);
       expect(result[0].rank).toBe(1);
-      // Critical urgency should rank first
+      
       expect(result[0].item.id).toBe('notif1');
     });
   });
@@ -352,7 +350,7 @@ describe('DreamOptimizer', () => {
 
       expect(result).toHaveLength(3);
       expect(result[0].rank).toBe(1);
-      // Small, high-priority, in-viewport assets should rank first
+      
       expect(result[0].item.in_viewport).toBe(true);
     });
   });
@@ -392,7 +390,7 @@ describe('DreamOptimizer', () => {
 
       expect(result).toHaveLength(3);
       expect(result[0].rank).toBe(1);
-      // High priority, recent, small actions with no failures should rank first
+      
       expect(result[0].item.failure_count).toBe(0);
     });
   });
@@ -624,7 +622,7 @@ describe('Creative Optimizer', () => {
 
       const result = optimizer.optimizeCreativeOptions(candidates);
 
-      // The experimental option should score higher on novelty
+      
       const opt2 = result.ranked_candidates.find((c) => c.id === 'opt2');
       expect(opt2?.scores.novelty).toBeGreaterThan(0.5);
     });
@@ -857,18 +855,18 @@ describe('Creative Optimizer', () => {
   });
 });
 
-// =============================================================================
-// RuntimeContext-aware optimizer tests (P-003 — IDARi daily improvement cycle)
-//
-// Architecture justification: docs/ARCHITECTURE.md §10 — performance systems
-// must stay adaptive.  These tests verify that injecting a RuntimeContext
-// actually changes ranking behaviour (docs/BUGS.md TODO items resolved).
-// =============================================================================
+
+
+
+
+
+
+
 
 import type { RuntimeContext } from '@/optimizer/types';
 
 describe('DreamOptimizer — RuntimeContext injection', () => {
-  /** Minimal config that enables feed + widget + notification ranking. */
+  
   const baseConfig = (): OptimizerConfig => ({
     version: '1.0.0',
     optimizer: { algorithm: 'constraint-solver', max_iterations: 100, convergence_threshold: 0.001 },
@@ -904,7 +902,7 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
     logging: { enabled: false, level: 'info', log_optimizations: false, log_constraint_violations: false, output_path: '' },
   });
 
-  // ── Feed: sourcePreferences ──────────────────────────────────────────────
+  
 
   describe('Feed — sourcePreferences', () => {
     const items: FeedItem[] = [
@@ -916,9 +914,9 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
     it('without context, all sources score the same neutral fallback', () => {
       const opt = new DreamOptimizer(baseConfig());
       const result = opt.optimizeFeed(items);
-      // All user_selected_sources should be equal (0.5 default), so relative
-      // ordering is determined by other factors; scores must be defined and
-      // in [0, 1].
+      
+      
+      
       for (const r of result) {
         expect(r.score).toBeGreaterThanOrEqual(0);
         expect(r.score).toBeLessThanOrEqual(1);
@@ -944,7 +942,7 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
     });
   });
 
-  // ── Widget: device-context scores ────────────────────────────────────────
+  
 
   describe('Widget — device / layout context', () => {
     const widgets: WidgetPriority[] = [
@@ -957,9 +955,9 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
       const mobile  = new DreamOptimizer(baseConfig(), { deviceType: 'mobile',  viewportWidth: 375 });
       const desktopResult = desktop.optimizeWidgets(widgets);
       const mobileResult  = mobile.optimizeWidgets(widgets);
-      // All widgets identical — scores may differ between desktop and mobile
-      // because screen_size and device_type weights are large (0.3 + 0.3).
-      // Desktop composite score must be ≥ mobile composite score.
+      
+      
+      
       expect(desktopResult[0].score).toBeGreaterThanOrEqual(mobileResult[0].score);
     });
 
@@ -978,7 +976,7 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
 
     it('resolveScreenSizeScore breakpoints match spec values', () => {
       const make = (w: number) => new DreamOptimizer(baseConfig(), { viewportWidth: w });
-      // Verify breakpoint ordering: wider = higher score
+      
       const s375  = make(375).optimizeWidgets(widgets)[0].score;
       const s768  = make(768).optimizeWidgets(widgets)[0].score;
       const s1024 = make(1024).optimizeWidgets(widgets)[0].score;
@@ -989,7 +987,7 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
     });
   });
 
-  // ── Notifications: senderPriorities ─────────────────────────────────────
+  
 
   describe('Notifications — senderPriorities', () => {
     const notifications: Notification[] = [
@@ -1000,7 +998,7 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
     it('without context, sender_priority is the same 0.7 fallback for both', () => {
       const opt = new DreamOptimizer(baseConfig());
       const result = opt.optimizeNotifications(notifications);
-      // Scores should be valid; no crash
+      
       for (const r of result) expect(r.score).toBeGreaterThanOrEqual(0);
     });
 
@@ -1015,10 +1013,10 @@ describe('DreamOptimizer — RuntimeContext injection', () => {
 
     it('context with unknown sender_id falls back to 0.7 gracefully', () => {
       const context: RuntimeContext = {
-        senderPriorities: { carol: 1.0 }, // neither alice nor bob
+        senderPriorities: { carol: 1.0 }, 
       };
       const opt = new DreamOptimizer(baseConfig(), context);
-      // Should not throw; both get 0.7 fallback
+      
       expect(() => opt.optimizeNotifications(notifications)).not.toThrow();
     });
   });

@@ -9,7 +9,7 @@ import { Palette } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamBrand  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Brand Daydream – Dreamengin', description: 'Build and manage your personal brand identity.' };
 
@@ -31,7 +31,7 @@ export default async function BrandDaydreamPage( ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (

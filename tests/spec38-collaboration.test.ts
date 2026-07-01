@@ -1,9 +1,4 @@
-/**
- * tests/spec38-collaboration.test.ts
- *
- * §38 Shared Dream Collaboration
- * Tests the lib/collaboration/ module (non-browser parts).
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -21,7 +16,7 @@ import {
   type CollabPayload,
 } from '@/engine/collaboration/index';
 
-// ─── §38.2 Invite link ───────────────────────────────────────────────────────
+
 
 describe('§38.2 Invite link helpers', () => {
   it('generateInviteLink embeds channelId as ?shared-dream=', () => {
@@ -49,11 +44,11 @@ describe('§38.2 Invite link helpers', () => {
   });
 });
 
-// ─── §38.1 Transport types ───────────────────────────────────────────────────
+
 
 describe('§38.1 CollabTransport types', () => {
   it('WebRTCCollabSession has transport="webrtc"', () => {
-    // We don't instantiate RTCPeerConnection in node; test the type guard only
+    
     const session = new WebRTCCollabSession('test-ch', 'peer-1');
     expect(session.transport).toBe('webrtc');
   });
@@ -71,14 +66,14 @@ describe('§38.1 CollabTransport types', () => {
   });
 });
 
-// ─── §38 onMessage / send ────────────────────────────────────────────────────
+
 
 describe('§38 WebRTCCollabSession onMessage/send (mock channel)', () => {
   it('onMessage returns an unsubscribe function', () => {
     const session = new WebRTCCollabSession('ch', 'peer');
     const unsub   = session.onMessage(() => {});
     expect(typeof unsub).toBe('function');
-    unsub(); // should not throw
+    unsub(); 
   });
 
   it('calling unsubscribe removes the handler', () => {
@@ -86,13 +81,13 @@ describe('§38 WebRTCCollabSession onMessage/send (mock channel)', () => {
     let count = 0;
     const unsub = session.onMessage(() => { count++; });
     unsub();
-    // Manually fire internal handler via the exposed peer list
-    // (No data channels in node — just ensure no error)
+    
+    
     expect(count).toBe(0);
   });
 });
 
-// ─── Production fallback ─────────────────────────────────────────────────────
+
 
 describe('§38 production transport fallback', () => {
   it('createCollabSession falls back to a local session when Supabase is absent', async () => {
@@ -206,7 +201,7 @@ describe('§38 JAMM-N roles, modes, and event families', () => {
   });
 });
 
-// ─── CollabPayload shape ─────────────────────────────────────────────────────
+
 
 describe('§38 CollabPayload types', () => {
   it('cursor payload has type="cursor"', () => {

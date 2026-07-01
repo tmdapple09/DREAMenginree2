@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Lab  (framework-mandated basename: page.tsx)
 
-// No demo projects - users see their actual projects only
+
+
 
 type ProjectCard = {
   id: string;
@@ -94,14 +94,14 @@ export default async function LabPage( ){
     redirect('/login');
   }
 
-  // Fetch user's projects
+  
   const { data: myProjectsData } = await db
     .from('projects')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  // Fetch public projects
+  
   const { data: publicProjectsData } = await db
     .from('projects')
     .select(`
@@ -121,7 +121,7 @@ export default async function LabPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Sticky Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.85)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
           <FlaskConical className="w-5 h-5" style={{ color: 'var(--de-accent)' }} />
@@ -135,7 +135,7 @@ export default async function LabPage( ){
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
 
-        {/* My Projects */}
+        
         <section>
           <div className="de-widget">
             <div className="de-widget-header">
@@ -157,7 +157,7 @@ export default async function LabPage( ){
           </div>
         </section>
 
-        {/* Featured Renders - hidden when no featured renders available */}
+        
         {featuredRenders.length > 0 && (
           <section>
             <div className="de-widget">
@@ -190,7 +190,7 @@ export default async function LabPage( ){
           </section>
         )}
 
-        {/* Public Projects */}
+        
         {publicProjects.length > 0 && (
           <section>
             <div className="de-widget">

@@ -1,16 +1,4 @@
-/**
- * tests/dr-eams-search-bar.test.ts
- *
- * Unit tests for lib/dreamengin/drEamsSearch.ts — the pure helper layer
- * powering the Dr. Eams HomeDream search bar.
- *
- * Architecture justification:
- *   - docs/FEATURE_STATUS.md Phase 6 item #4: Dr. Eams as HomeDream search
- *     bar with send-to-DreamDM routing.
- *   - docs/AXIOMS.md: every visible action must do something real.
- *
- * All functions are pure — no Next.js, no DOM, no network needed.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -22,7 +10,7 @@ import {
   truncatePreview,
 } from '@/dr-eams/search/drEamsSearch';
 
-// ── matchNavSuggestions ────────────────────────────────────────────────────────
+
 
 describe('matchNavSuggestions', () => {
   it('returns empty array for empty query', () => {
@@ -60,7 +48,7 @@ describe('matchNavSuggestions', () => {
   });
 
   it('respects the default limit of 5', () => {
-    // "dream" matches many labels — result must not exceed 5
+    
     const results = matchNavSuggestions('dream');
     expect(results.length).toBeLessThanOrEqual(5);
   });
@@ -90,7 +78,7 @@ describe('matchNavSuggestions', () => {
   });
 });
 
-// ── buildDrEamsRequest ─────────────────────────────────────────────────────────
+
 
 describe('buildDrEamsRequest', () => {
   it('trims whitespace from the message', () => {
@@ -122,7 +110,7 @@ describe('buildDrEamsRequest', () => {
   });
 });
 
-// ── parseDrEamsReply ───────────────────────────────────────────────────────────
+
 
 describe('parseDrEamsReply', () => {
   it('extracts response_text from a normal reply', () => {
@@ -168,7 +156,7 @@ describe('parseDrEamsReply', () => {
   it('returns safe fallback when response_text is empty string', () => {
     const data = { response_text: '   ' };
     const result = parseDrEamsReply(data);
-    // Empty response_text → falls through to fallback
+    
     expect(typeof result.text).toBe('string');
     expect(result.text.length).toBeGreaterThan(0);
   });
@@ -190,7 +178,7 @@ describe('parseDrEamsReply', () => {
   });
 });
 
-// ── buildDreamDMUrl ────────────────────────────────────────────────────────────
+
 
 describe('buildDreamDMUrl', () => {
   it('always starts with /messages', () => {
@@ -205,7 +193,7 @@ describe('buildDreamDMUrl', () => {
   it('includes the query as the q param', () => {
     const url = buildDreamDMUrl('how do I add music?');
     expect(url).toContain('q=');
-    // URLSearchParams encodes spaces as '+'; use URL API to properly decode
+    
     const full = new URL(`http://localhost${url}`);
     expect(full.searchParams.get('q')).toBe('how do I add music?');
   });
@@ -217,12 +205,12 @@ describe('buildDreamDMUrl', () => {
 
   it('URL-encodes special characters', () => {
     const url = buildDreamDMUrl('music & games?');
-    // Should not throw and should be a valid URL segment
+    
     expect(() => new URL(`http://localhost${url}`)).not.toThrow();
   });
 });
 
-// ── truncatePreview ────────────────────────────────────────────────────────────
+
 
 describe('truncatePreview', () => {
   it('returns short strings unchanged', () => {
@@ -232,7 +220,7 @@ describe('truncatePreview', () => {
   it('truncates long strings and appends …', () => {
     const result = truncatePreview('a'.repeat(40), 36);
     expect(result.endsWith('…')).toBe(true);
-    expect(result.length).toBeLessThanOrEqual(37); // 36 chars + ellipsis
+    expect(result.length).toBeLessThanOrEqual(37); 
   });
 
   it('defaults maxChars to 36', () => {
@@ -247,7 +235,7 @@ describe('truncatePreview', () => {
   });
 });
 
-// ── NAV_SUGGESTIONS catalogue integrity ───────────────────────────────────────
+
 
 describe('NAV_SUGGESTIONS catalogue', () => {
   it('contains all six Daydream pairs', () => {

@@ -16,23 +16,23 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-// app/api/ai/idari/route.ts
-// IDARi — admin-tier AI operator for DREAMengin.
-// Access: admin and owner only. Regular users are rejected with 403.
-//
-// Per docs/IDARI_CONTRACT.md: "admin-only, server-side only."
-// Per docs/dreamengin_phase6.md points 5–6:
-//   "No IDARi endpoint may be surfaced through any standard user-accessible UI path."
-//   "IDARi must be protected by an admin-guard check even when
-//    NEXT_PUBLIC_DEV_BYPASS_AUTH is active."
-//
-// Role capabilities:
-//   admin → diagnostics, feed config, system status, DIAG_SCHEMA_SNAPSHOT
-//   owner → all admin + RLS inspection, infrastructure checks, DIAG_RLS_SNAPSHOT
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 type ActorRole = 'admin' | 'owner';
 
-// Rate limits per role (requests per 60 seconds)
+
 const RATE_LIMITS: Record<ActorRole, number> = {
   admin: 40,
   owner: 60,
@@ -86,7 +86,7 @@ function buildSystemPrompt(
       `Be direct, technical, and precise. Include rollback steps for risky suggestions.`;
   }
 
-  // admin (default)
+  
   return base +
     `Actor role: ADMIN — platform management access.\n` +
     `Allowed intents: DIAG_SCHEMA_SNAPSHOT, SEARCH.\n` +
@@ -128,7 +128,7 @@ async function idariPlanner(
     } catch {
       const match = raw.match(/```json\s*([\s\S]*?)```/i) || raw.match(/```\s*([\s\S]*?)```/);
       if (match?.[1]) {
-        try { parsed = JSON.parse(match[1]); } catch { /* ignore */ }
+        try { parsed = JSON.parse(match[1]); } catch {  }
       }
     }
 
@@ -166,10 +166,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
   const request_id = uuidv4();
 
-  // If IDARI_PASSWORD is not configured in the environment, the service cannot
-  // be safely operated. Return 503 rather than silently accepting requests.
-  // This check runs before any auth/body parsing so unauthenticated callers
-  // still receive a safe error without leaking system details.
+  
+  
+  
+  
   if (!process.env.IDARI_PASSWORD) {
     return jsonApiError(
       503,
@@ -192,14 +192,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const request = parseResult.data;
 
-  // Authenticate — server-side only, no dev-bypass exemption (Phase 6 spec point 6).
+  
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
   if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to access IDARi.');
   }
 
-  // Determine role — admin/owner only gate (IDARI_CONTRACT.md, Phase 6 point 5).
+  
 
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
@@ -211,7 +211,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const dbRole = (roleData as { role?: string } | null)?.role;
   const isAdmin = isOwner || dbRole === 'admin';
 
-  // Hard admin gate — IDARi is never accessible to regular users.
+  
   if (!isAdmin) {
     await writeAuditLog({
       request_id,
@@ -226,7 +226,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const actorRole: ActorRole = isOwner ? 'owner' : 'admin';
 
-  // Rate limit (per-role)
+  
   const rateOk = await checkRateLimit(user.id, '/api/ai/idari', RATE_LIMITS[actorRole], 60);
   if (!rateOk.allowed) {
     await writeAuditLog({

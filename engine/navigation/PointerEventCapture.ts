@@ -1,8 +1,8 @@
-// PointerEventCapture - Document-level pointer/touch event capture
-// Mobile-optimized: handles both pointer and touch events
+
+
 
 export interface PointerState {
-  // Active pointer data (max 2 pointers)
+  
   p0x: number;
   p0y: number;
   p0t: number;
@@ -14,15 +14,10 @@ export interface PointerState {
 
 export type PointerEventCallback = (state: PointerState) => void;
 
-/**
- * PointerEventCapture manages low-level pointer/touch events
- * - setPointerCapture on pointerdown
- * - preventDefault on all events
- * - max 2 active pointers
- */
+
 export class PointerEventCapture {
   private state: PointerState;
-  private activePointers: Map<number, number>; // pointerId -> index (0 or 1)
+  private activePointers: Map<number, number>; 
   private element: HTMLElement | Document;
   private onMove: PointerEventCallback | null;
   private onEnd: PointerEventCallback | null;
@@ -48,7 +43,7 @@ export class PointerEventCapture {
     this.handlePointerCancel = this.handlePointerCancel.bind(this);
   }
 
-  // Start capturing events
+  
   start(onMove: PointerEventCallback, onEnd: PointerEventCallback): void {
     this.onMove = onMove;
     this.onEnd = onEnd;
@@ -59,7 +54,7 @@ export class PointerEventCapture {
     this.element.addEventListener('pointercancel', this.handlePointerCancel as EventListener);
   }
 
-  // Stop capturing events
+  
   stop(): void {
     this.element.removeEventListener('pointerdown', this.handlePointerDown as EventListener);
     this.element.removeEventListener('pointermove', this.handlePointerMove as EventListener);
@@ -73,12 +68,12 @@ export class PointerEventCapture {
   private handlePointerDown(e: PointerEvent): void {
     e.preventDefault();
 
-    // Max 2 active pointers
+    
     if (this.activePointers.size >= 2) {
       return;
     }
 
-    // Set pointer capture for smooth tracking
+    
     if ('setPointerCapture' in e.target!) {
       (e.target as Element).setPointerCapture(e.pointerId);
     }
@@ -151,9 +146,9 @@ export class PointerEventCapture {
 
     this.activePointers.delete(pointerId);
 
-    // If we removed pointer 0 and pointer 1 exists, swap them
+    
     if (index === 0 && this.activePointers.size === 1) {
-      // Find the remaining pointer
+      
       for (const [id, idx] of this.activePointers.entries()) {
         if (idx === 1) {
           this.activePointers.set(id, 0);
@@ -168,7 +163,7 @@ export class PointerEventCapture {
     this.state.activeCount = this.activePointers.size;
   }
 
-  // Get current pointer state
+  
   getState(): PointerState {
     return { ...this.state };
   }

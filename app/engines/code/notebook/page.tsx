@@ -6,7 +6,7 @@ import { safeGetUser } from "@/supabase/client/safeGetUser";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
-// SURFACE: dreamsurface.EnginesCodeNotebook  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: "Notebook – CodeEngin",

@@ -47,7 +47,7 @@ function compensatedDot4(a0: number, a1: number, a2: number, a3: number, b0: num
 }
 
 function splitFloat64(value: number): readonly [number, number] {
-  const splitter = 134_217_729; // 2^27 + 1, Dekker split for IEEE doubles.
+  const splitter = 134_217_729; 
   const c = splitter * value;
   const high = c - (c - value);
   return [high, value - high];

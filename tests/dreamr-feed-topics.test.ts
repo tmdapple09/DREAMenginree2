@@ -1,24 +1,12 @@
-/**
- * tests/dreamr-feed-topics.test.ts
- *
- * Unit tests for DreamR feed topic channel data and YouTube channel API response typing.
- * These tests verify:
- *   1. DREAMR_TOPICS structure — 11 topics (including "All"), correct fields
- *   2. All topic IDs are unique
- *   3. Non-"All" topics have YouTube search queries
- *   4. Topic emoji and label presence
- *   5. ytItemToFeedPost shape (via the exported helper logic)
- *   6. YouTubeChannelResponse typing matches expected shape
- *   7. Swipe-left routing logic (YouTube vs native post detection)
- */
+
 
 import { describe, it, expect } from 'vitest';
 
-// ── Import topic data directly ─────────────────────────────────────────────────
+
 
 import { DREAMR_TOPICS } from '@/app/dreamdmbar/_components/dreamr/dream.DreamRFeed';
 
-// ── Topic structure tests ──────────────────────────────────────────────────────
+
 
 describe('DREAMR_TOPICS', () => {
   it('has at least 11 entries including "All"', () => {
@@ -85,9 +73,9 @@ describe('DREAMR_TOPICS', () => {
   });
 });
 
-// ── ytItemToFeedPost contract ─────────────────────────────────────────────────
-// We test the mapping logic directly — no need to import the private helper;
-// instead we inline the same transformation to verify expected output shape.
+
+
+
 
 function ytItemToFeedPostLocal(item: {
   external_id: string;
@@ -173,8 +161,8 @@ describe('ytItemToFeedPost mapping', () => {
   });
 });
 
-// ── Swipe-left routing logic ──────────────────────────────────────────────────
-// isYouTube(post) → true for YouTube provider or youtube permalink
+
+
 
 function isYouTubeLocal(post: { provider?: string; source?: string; permalink?: string | null }): boolean {
   return post.provider === 'youtube' || !!(post.permalink?.includes('youtu'));
@@ -206,7 +194,7 @@ describe('isYouTube routing', () => {
   });
 });
 
-// ── YouTubeChannelResponse shape ──────────────────────────────────────────────
+
 
 describe('YouTubeChannelResponse typing', () => {
   it('has the expected shape', () => {

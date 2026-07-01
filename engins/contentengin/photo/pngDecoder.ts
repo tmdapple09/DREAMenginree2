@@ -3,7 +3,7 @@ import { inflateSync } from 'zlib';
 export interface DecodedPng { width: number; height: number; rgba: Uint8Array }
 
 const PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
-const MAX_PNG_PIXELS = 4_194_304; // 2048 x 2048 mobile-safe local analysis ceiling.
+const MAX_PNG_PIXELS = 4_194_304; 
 const MAX_IDAT_BYTES = 8 * 1024 * 1024;
 const MAX_INFLATED_BYTES = MAX_PNG_PIXELS * 4 + 4096;
 
@@ -41,7 +41,7 @@ export function decodePng(bytes: Uint8Array): DecodedPng {
     const type = Buffer.from(bytes.buffer, bytes.byteOffset + offset, 4).toString('ascii');
     offset += 4;
     const data = Buffer.from(bytes.buffer, bytes.byteOffset + offset, len);
-    offset += len + 4; // skip data + CRC
+    offset += len + 4; 
 
     if (type === 'IHDR') {
       width = data.readUInt32BE(0);

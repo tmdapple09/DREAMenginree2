@@ -1,52 +1,30 @@
-/**
- * lib/feed/hashtags.ts
- *
- * Phase 9 §17: Hashtag & topic system — users can tag Dreams with #tags;
- * browse by trending tags (momentum-weighted).
- *
- * Pure, side-effect-free helpers for hashtag extraction, validation, and
- * trending calculation.
- *
- * Architecture justification:
- *   - docs/LAW.md §3: every visible action must do something real. Tags
- *     are stored, indexed, and queryable — not decorative.
- *   - docs/ARCHITECTURE.md §8: Gold accent for actions, blue for state.
- *     Tag pills use the blue "live state" colour.
- */
 
-/** Maximum number of tags per post */
+
+
 export const MAX_TAGS_PER_POST = 10;
 
-/** Maximum tag length (excluding #) */
+
 export const MAX_TAG_LENGTH = 32;
 
-/** Regex for a valid tag body (no # prefix) */
+
 const TAG_BODY_RE = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
 
 export interface Hashtag {
-  /** Tag text without the # prefix, lowercased */
+  
   tag: string;
-  /** Display-friendly version (original casing preserved) */
+  
   display: string;
 }
 
 export interface TrendingTag {
   tag: string;
-  /** Number of posts using this tag in the window */
+  
   count: number;
-  /** Momentum-weighted score (recent usage counts more) */
+  
   momentum: number;
 }
 
-/**
- * Extract hashtags from a text string.
- *
- * Rules:
- *   - Tags start with # followed by [a-zA-Z0-9][a-zA-Z0-9_-]*
- *   - Max MAX_TAG_LENGTH characters after the #
- *   - Duplicates (case-insensitive) are removed; first occurrence wins display
- *   - At most MAX_TAGS_PER_POST tags returned
- */
+
 export function extractHashtags(text: string): Hashtag[] {
   if (!text) return [];
 
@@ -57,7 +35,7 @@ export function extractHashtags(text: string): Hashtag[] {
   const tags: Hashtag[] = [];
 
   for (const match of matches) {
-    const body = match.slice(1); // remove #
+    const body = match.slice(1); 
     if (body.length > MAX_TAG_LENGTH) continue;
 
     const normalised = body.toLowerCase();
@@ -71,10 +49,7 @@ export function extractHashtags(text: string): Hashtag[] {
   return tags;
 }
 
-/**
- * Validate a single tag string (without # prefix).
- * Returns the normalised (lowercased) tag or null if invalid.
- */
+
 export function validateTag(raw: string): string | null {
   const trimmed = raw.trim().replace(/^#/, '');
   if (!trimmed) return null;
@@ -85,20 +60,10 @@ export function validateTag(raw: string): string | null {
 
 interface TagUsage {
   tag: string;
-  timestamp: number; // epoch ms
+  timestamp: number; 
 }
 
-/**
- * Calculate trending tags from a list of tag usage records.
- *
- * Momentum formula: each usage contributes `1 / (1 + ageHours * decay)`.
- * Recent posts contribute more; older posts decay exponentially.
- *
- * @param usages - all tag usage records in the window
- * @param now - current timestamp (ms), defaults to Date.now()
- * @param decay - decay rate per hour (higher = faster decay)
- * @param limit - max number of trending tags to return
- */
+
 export function calculateTrending(
   usages: TagUsage[],
   now?: number,
@@ -124,24 +89,18 @@ export function calculateTrending(
     }),
   );
 
-  // Sort by momentum descending
+  
   results.sort((a, b) => b.momentum - a.momentum);
 
   return results.slice(0, limit);
 }
 
-/**
- * Format a tag for display with # prefix.
- */
+
 export function formatTag(tag: string): string {
   return `#${tag}`;
 }
 
-/**
- * Convert post text to rich segments, splitting out hashtags for styling.
- *
- * Returns an array of { type: 'text' | 'hashtag', value: string } segments.
- */
+
 export function segmentText(
   text: string,
 ): Array<{ type: 'text' | 'hashtag'; value: string }> {

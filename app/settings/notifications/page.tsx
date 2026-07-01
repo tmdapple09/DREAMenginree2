@@ -4,7 +4,7 @@ import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHead
 import { Bell, Check, DollarSign, Heart, Loader2, MessageSquare, Sparkles, Users } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// SURFACE: dreamsurface.SettingsNotifications  (framework-mandated basename: page.tsx)
+
 
 const STORAGE_KEY = 'de-notification-settings';
 
@@ -40,9 +40,9 @@ export default function NotificationSettingsPage( ){
     };
   }, []);
 
-  // Load settings on mount — try DB first, fall back to localStorage cache
+  
   useEffect(() => {
-    // Immediately apply localStorage cache for fast paint
+    
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setSettings((p) => ({ ...p, ...(JSON.parse(raw) as Partial<NotificationSettings>) }));
@@ -50,7 +50,7 @@ export default function NotificationSettingsPage( ){
       console.warn('[NotificationSettings] Failed to load from localStorage:', err);
     }
 
-    // Then fetch real stored settings from Supabase
+    
     fetch('/api/settings/notifications')
       .then((r) => r.json())
       .then((data: { ok: boolean; notifications: Partial<NotificationSettings> | null }) => {
@@ -73,13 +73,13 @@ export default function NotificationSettingsPage( ){
   const handleSave = useCallback(async () => {
     setSaving(true);
     try {
-      // Persist to Supabase
+      
       await fetch('/api/settings/notifications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settings),
       });
-      // Update localStorage cache
+      
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(settings)); } catch (err) {
         console.warn('[NotificationSettings] Failed to persist to localStorage:', err);
       }
@@ -87,7 +87,7 @@ export default function NotificationSettingsPage( ){
       if (savedTimerRef.current !== null) clearTimeout(savedTimerRef.current);
       savedTimerRef.current = setTimeout(() => setSaved(false), 2000);
     } catch (err) {
-      // Network failed — fall back to localStorage only
+      
       console.warn('[NotificationSettings] Save to server failed, falling back to localStorage:', err);
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(settings)); } catch (lsErr) {
         console.warn('[NotificationSettings] localStorage fallback also failed:', lsErr);
@@ -121,7 +121,7 @@ export default function NotificationSettingsPage( ){
       />
 
       <div className="de-auth-content space-y-4">
-        {/* Push Notifications */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Push Notifications</span></div>
           <div className="de-widget-body" style={{ padding: 0 }}>
@@ -157,7 +157,7 @@ export default function NotificationSettingsPage( ){
           </div>
         </div>
 
-        {/* Email Preferences */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Email Preferences</span></div>
           <div className="de-widget-body">

@@ -1,6 +1,6 @@
-// Button interaction state machine for the DREAMengin Game Controller.
-// Handles tap, hold, double-tap, long-press, tap-and-hold, and release
-// for all eight controller buttons.
+
+
+
 
 export type ControllerButton =
   | 'x'
@@ -21,16 +21,16 @@ export type ButtonInteraction =
   | 'tap-and-hold'
   | 'release';
 
-/** Short press must be shorter than this to be classified as a tap. */
+
 export const BTN_TAP_MAX_MS = 250;
 
-/** Threshold for classifying a press as a long-press. */
+
 export const BTN_LONG_PRESS_MS = 600;
 
-/** Two taps within this window = double-tap. */
+
 export const BTN_DOUBLE_TAP_MAX_MS = 400;
 
-/** A tap followed by a press within this window = tap-and-hold. */
+
 export const BTN_TAP_AND_HOLD_WINDOW_MS = 300;
 
 export const CONTROLLER_BUTTONS: readonly ControllerButton[] = [
@@ -95,19 +95,7 @@ function freshState(): ButtonState {
   };
 }
 
-/**
- * Manages touch-gesture state for all eight controller buttons simultaneously.
- *
- * Usage:
- *   const mgr = new ButtonInteractionManager();
- *   mgr.subscribe(({ button, interaction }) => { ... });
- *   // On touchstart for a button:
- *   mgr.pressStart('circle', touch.identifier);
- *   // On touchend for a button:
- *   mgr.pressEnd('circle', touch.identifier);
- *   // Clean up timers when unmounting:
- *   mgr.destroy();
- */
+
 export class ButtonInteractionManager {
   private readonly states = new Map<ControllerButton, ButtonState>();
   private readonly listeners = new Set<(e: ButtonInteractionEvent) => void>();
@@ -118,7 +106,7 @@ export class ButtonInteractionManager {
     }
   }
 
-  /** Register a listener; returns an unsubscribe function. */
+  
   subscribe(fn: (e: ButtonInteractionEvent) => void) {
     this.listeners.add(fn);
     return () => { this.listeners.delete(fn); };
@@ -129,10 +117,7 @@ export class ButtonInteractionManager {
     this.listeners.forEach((fn) => fn({ button, interaction }));
   }
 
-  /**
-   * Call when a touch begins on a button.
-   * `now` defaults to `Date.now()` and is exposed for testing.
-   */
+  
   pressStart(button: ControllerButton, touchId: number, now = Date.now()) {
     const s = this.states.get(button);
     if (!s || s.touchId !== null) return;
@@ -140,8 +125,8 @@ export class ButtonInteractionManager {
     s.pressStart = now;
     s.longPressDidFire = false;
 
-    // Check for tap-and-hold candidate: a re-press that arrives quickly after a prior tap.
-    // We don't fire 'tap-and-hold' yet — we wait to see if the second press is held or short.
+    
+    
     const sinceLastTap = now - s.lastTapAt;
     s.isTapAndHoldCandidate =
       s.lastTapAt > 0 && sinceLastTap <= BTN_TAP_AND_HOLD_WINDOW_MS;
@@ -151,7 +136,7 @@ export class ButtonInteractionManager {
 
     this.fire(button, 'hold-start');
 
-    // Schedule long-press detection.
+    
     s.longPressTimer = setTimeout(() => {
       if (s.touchId === touchId) {
         s.longPressDidFire = true;
@@ -160,10 +145,7 @@ export class ButtonInteractionManager {
     }, BTN_LONG_PRESS_MS);
   }
 
-  /**
-   * Call when a touch ends on a button.
-   * `now` defaults to `Date.now()` and is exposed for testing.
-   */
+  
   pressEnd(button: ControllerButton, touchId: number, now = Date.now()) {
     const s = this.states.get(button);
     if (!s || s.touchId !== touchId) return;
@@ -177,7 +159,7 @@ export class ButtonInteractionManager {
     const prevTapAt = s.lastTapAt;
     s.touchId = null;
 
-    // Always fire release.
+    
     this.fire(button, 'release');
 
     if (s.longPressDidFire) {
@@ -187,7 +169,7 @@ export class ButtonInteractionManager {
     }
 
     if (s.isTapAndHoldCandidate) {
-      // Second press after a tap: short → double-tap, held → tap-and-hold.
+      
       if (duration <= BTN_TAP_MAX_MS) {
         this.fire(button, 'double-tap');
       } else {
@@ -197,7 +179,7 @@ export class ButtonInteractionManager {
     }
 
     if (duration <= BTN_TAP_MAX_MS) {
-      // Short press — check for double-tap (wider window, no overlap with tap-and-hold here).
+      
       const sinceLastTap = now - prevTapAt;
       if (prevTapAt > 0 && sinceLastTap <= BTN_DOUBLE_TAP_MAX_MS) {
         s.lastTapAt = 0;
@@ -207,13 +189,13 @@ export class ButtonInteractionManager {
         this.fire(button, 'tap');
       }
     } else {
-      // Medium-length hold.
+      
       s.lastTapAt = 0;
       this.fire(button, 'hold-end');
     }
   }
 
-  /** Release all active touches — call on unmount or focus loss. */
+  
   destroy() {
     for (const s of this.states.values()) {
       if (s.longPressTimer !== null) {

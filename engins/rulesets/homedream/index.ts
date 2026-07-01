@@ -1,5 +1,5 @@
-// engins/rulesets/homedream/index.ts — barrel for HomeDream ruleset
-// Exports constants, transforms, physics params. No engin imports.
+
+
 
 export {
     HOMEDREAM_FRAME_BUDGET_MS, HOMEDREAM_GRAVITY,

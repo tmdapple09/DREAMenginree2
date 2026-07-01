@@ -1,20 +1,17 @@
-// WidgetEventBus - In-memory pub/sub for widget-to-widget communication
-// Zero allocations per frame, asynchronous dispatch outside gesture frames
+
+
 
 export interface WidgetMsg {
   fromInstanceId: string;
   toWidgetId: string;
-  type: number; // uint16 represented as number
+  type: number; 
   payload: unknown;
   timestamp: number;
 }
 
 export type WidgetMsgCallback = (msg: WidgetMsg) => void;
 
-/**
- * WidgetEventBus handles widget-to-widget messaging
- * Messages are enqueued synchronously, processed asynchronously
- */
+
 export class WidgetEventBus {
   private listeners: Map<string, WidgetMsgCallback[]>;
   private messageQueue: WidgetMsg[];
@@ -26,9 +23,7 @@ export class WidgetEventBus {
     this.isProcessing = false;
   }
 
-  /**
-   * Subscribe to messages for a specific widget
-   */
+  
   subscribe(widgetId: string, callback: WidgetMsgCallback): () => void {
     if (!this.listeners.has(widgetId)) {
       this.listeners.set(widgetId, []);
@@ -37,7 +32,7 @@ export class WidgetEventBus {
     const callbacks = this.listeners.get(widgetId)!;
     callbacks.push(callback);
 
-    // Return unsubscribe function
+    
     return () => {
       const index = callbacks.indexOf(callback);
       if (index !== -1) {
@@ -46,21 +41,17 @@ export class WidgetEventBus {
     };
   }
 
-  /**
-   * Emit a message (synchronous enqueue, asynchronous processing)
-   */
+  
   emit(msg: WidgetMsg): void {
     this.messageQueue.push(msg);
 
-    // Schedule processing outside gesture frames
+    
     if (!this.isProcessing) {
       this.scheduleProcessing();
     }
   }
 
-  /**
-   * Send a message from one widget to another
-   */
+  
   send(
     fromInstanceId: string,
     toWidgetId: string,
@@ -76,30 +67,25 @@ export class WidgetEventBus {
     });
   }
 
-  /**
-   * Schedule message processing outside gesture frames
-   * Prefers requestIdleCallback for non-urgent messages to avoid blocking
-   */
+  
   private scheduleProcessing(): void {
     this.isProcessing = true;
 
-    // Use requestIdleCallback for idle processing (preferred for non-urgent messages)
+    
     if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(() => this.processMessages());
     } else if (typeof queueMicrotask !== 'undefined') {
-      // Fallback to microtask
+      
       queueMicrotask(() => this.processMessages());
     } else {
-      // Fallback to setTimeout
+      
       setTimeout(() => this.processMessages(), 0);
     }
   }
 
-  /**
-   * Process queued messages
-   */
+  
   private processMessages(): void {
-    // Process all queued messages
+    
     while (this.messageQueue.length > 0) {
       const msg = this.messageQueue.shift()!;
       const callbacks = this.listeners.get(msg.toWidgetId);
@@ -118,22 +104,18 @@ export class WidgetEventBus {
     this.isProcessing = false;
   }
 
-  /**
-   * Clear all listeners (for cleanup)
-   */
+  
   clear(): void {
     this.listeners.clear();
     this.messageQueue = [];
     this.isProcessing = false;
   }
 
-  /**
-   * Get queue size (for debugging)
-   */
+  
   getQueueSize(): number {
     return this.messageQueue.length;
   }
 }
 
-// Singleton instance
+
 export const widgetEventBus = new WidgetEventBus();

@@ -3,15 +3,7 @@
 import { makeEnginApp } from '@/components/engines/shared';
 import CodeEngin from '@/engins/engin.CodeEngin';
 
-/**
- * CodeEnginApp — Full-screen app shell for the Code Engine.
- *
- * Routes:
- *   /engines/code           → full CodeEngin IDE
- *   /engines/code/notebook  → live Python-style notebook
- *   /engines/code/projects  → project manager
- *   /engines/code/ai        → AI code assistant
- */
+
 
 export default makeEnginApp({
   id: 'code',

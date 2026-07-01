@@ -1,13 +1,13 @@
-// types/ccc.ts
-// Section 14: CCC Metaphor — Connected Chaos Core
-//
-// System mirrors CCC Physics:
-//   - Information flows
-//   - Memory persists
-//   - No loss, no breaks, only transformations
-//
-// UI behaves like nested cubes / nested fields / nested realities
-// Like spacetime navigation.
+
+
+
+
+
+
+
+
+
+
 
 export interface CCCNode {
   id: string;
@@ -20,7 +20,7 @@ export interface CCCNode {
 export interface CCCField {
   id: string;
   nodes: CCCNode[];
-  // Information flows: every transformation is recorded
+  
   transformations: CCCTransformation[];
 }
 
@@ -32,7 +32,7 @@ export interface CCCTransformation {
   timestamp: string;
 }
 
-// Nested reality layer (cube-within-cube metaphor)
+
 export interface CCCLayer {
   id: string;
   depth: number;

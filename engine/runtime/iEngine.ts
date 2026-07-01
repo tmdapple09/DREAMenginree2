@@ -99,12 +99,7 @@ export interface SpatialRuntimeCoreOptions<TState> {
   lifecycle?: RuntimeLifecycleHooks<TState>;
 }
 
-/**
- * SpatialRuntimeCore is the ι-Engine enforcement seam for modules that need to
- * be better than platform silos: one state owner, one active rule-set, strict
- * intent ingress, lifecycle hooks, sync abstraction, deterministic snapshots,
- * and manifest compatibility negotiation before anything can run.
- */
+
 export class SpatialRuntimeCore<TState> {
   private readonly bus: IntentBus<TState>;
   private state: TState;

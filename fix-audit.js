@@ -29,7 +29,7 @@ const files = walk(process.cwd());
 for (const filePath of files) {
   let text = fs.readFileSync(filePath, "utf8");
 
-  // Fix duplicate Database imports
+  
   text = text.replace(
     /import\s+type\s+\{\s*Database\s*\}\s+from\s+['"][^'"]+['"];?\n/g,
     (match, offset, full) => {
@@ -38,31 +38,31 @@ for (const filePath of files) {
     }
   );
 
-  // Replace unknown catch types
+  
   text = text.replace(
     /catch\s*\(\s*([a-zA-Z0-9_]+)\s*\)\s*\{/g,
     "catch ($1: any) {"
   );
 
-  // Fix NextResponse typing
+  
   text = text.replace(
     /:\s*NextResponse<unknown>/g,
     ": Response"
   );
 
-  // Add any fallback for unknown
+  
   text = text.replace(
     /Object is of type 'unknown'/g,
     "any"
   );
 
-  // Fix common Supabase insert typing failures
+  
   text = text.replace(
     /\.insert\(\s*\{/g,
     ".insert({\n      // @ts-ignore"
   );
 
-  // Missing icon imports
+  
   if (
     text.includes("DatabaseIcon") &&
     !text.includes("DatabaseIcon")

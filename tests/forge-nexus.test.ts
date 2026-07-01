@@ -1,13 +1,8 @@
-/**
- * Forge Nexus Tests
- *
- * Tests for the engine connection graph, flow analysis,
- * cluster detection, and dominant pipeline finding.
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// ── Mock localStorage ────────────────────────────────────────────────────────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -29,7 +24,7 @@ import {
 
 import { CREATIVE_ENGINES, FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function makeEntry(enginId: string, label: string, hoursAgo: number) {
   return {
@@ -43,7 +38,7 @@ function seedHistory(entries: Array<{ enginId: string; label: string; timestamp:
   localStorage.setItem(FORGE_HISTORY_KEY, JSON.stringify(entries));
 }
 
-// ── Tests ────────────────────────────────────────────────────────────────────
+
 
 describe('Forge Nexus', () => {
   beforeEach(() => {
@@ -99,11 +94,11 @@ describe('Forge Nexus', () => {
       const edges = computeEdges(map);
       expect(edges).toHaveLength(3);
 
-      // Strongest edge should have strength 1.0
+      
       expect(edges[0].weight).toBe(4);
       expect(edges[0].strength).toBe(1.0);
 
-      // Weakest edge
+      
       const weakest = edges.find((e) => e.from === 'games' && e.to === 'code');
       expect(weakest!.strength).toBe(0.25);
     });
@@ -168,7 +163,7 @@ describe('Forge Nexus', () => {
         expect(node.centrality).toBeLessThanOrEqual(1);
       }
 
-      // games and music should both have centrality 1.0
+      
       const games = nodes.find((n) => n.id === 'games')!;
       const music = nodes.find((n) => n.id === 'music')!;
       expect(games.centrality).toBe(1);
@@ -210,7 +205,7 @@ describe('Forge Nexus', () => {
         ['code→music', 2],
       ]));
       const clusters = detectClusters(edges);
-      // games-music and music-code should merge into one cluster
+      
       expect(clusters.length).toBeLessThanOrEqual(2);
       const allEngines = clusters.flatMap((c) => c.engines);
       expect(allEngines).toContain('games');
@@ -239,7 +234,7 @@ describe('Forge Nexus', () => {
     it('does not revisit engines (no cycles)', () => {
       const edges = computeEdges(new Map([
         ['games→music', 5],
-        ['music→games', 4], // cycle
+        ['music→games', 4], 
         ['games→code', 3],
       ]));
       const pipeline = findDominantPipeline(edges);

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-// components/ads/dream.SkipCreditBalance.tsx
-// Phase 9 — Skip Credit Balance Display
-//
-// Shows user's skip credit balance in header/nav.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Skip Reward System)
+
+
+
+
+
 
 
 export function SkipCreditBalance( ){
@@ -30,7 +30,7 @@ export function SkipCreditBalance( ){
 
     loadBalance();
 
-    // Refresh every 30 seconds
+    
     const interval = setInterval(loadBalance, 30000);
     return () => clearInterval(interval);
   }, []);

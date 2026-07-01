@@ -11,7 +11,7 @@ import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
 const ADS_CREATE_DRAFT_KEY = 'de:ads:create-draft';
 
-// SURFACE: dreamsurface.AdsCreate  (framework-mandated basename: page.tsx)
+
 
 export default function CreateAdSlotPage( ){
   const [placement, setPlacement] = useState('sidebar_banner');
@@ -28,11 +28,11 @@ export default function CreateAdSlotPage( ){
       if (draft.placement) setPlacement(draft.placement);
       if (draft.priceDay) setPriceDay(draft.priceDay);
       if (draft.priceWeek) setPriceWeek(draft.priceWeek);
-    } catch { /* ignore corrupt draft */ }
+    } catch {  }
   }, []);
 
   useEffect(() => {
-    try { localStorage.setItem(ADS_CREATE_DRAFT_KEY, JSON.stringify({ placement, priceDay, priceWeek, updatedAt: new Date().toISOString() })); } catch { /* local draft best effort */ }
+    try { localStorage.setItem(ADS_CREATE_DRAFT_KEY, JSON.stringify({ placement, priceDay, priceWeek, updatedAt: new Date().toISOString() })); } catch {  }
   }, [placement, priceDay, priceWeek]);
   const supabase = createClient();
   const router = useRouter();
@@ -103,7 +103,7 @@ export default function CreateAdSlotPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/ads" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -117,7 +117,7 @@ export default function CreateAdSlotPage( ){
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* Placement */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Placement Location</span></div>
             <div className="de-widget-body" style={{ padding: 0 }}>
@@ -150,7 +150,7 @@ export default function CreateAdSlotPage( ){
             </div>
           </div>
 
-          {/* Pricing */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Pricing</span></div>
             <div className="de-widget-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -179,7 +179,7 @@ export default function CreateAdSlotPage( ){
             </div>
           </div>
 
-          {/* Info notice */}
+          
           <div className="de-notice">
             <Info className="w-4 h-4 flex-shrink-0" style={{ marginTop: 1, color: 'var(--de-gold)' }} />
             <p>Once created, your ad slot will be available for purchase in the marketplace. You will receive payment when someone books your slot.</p>
@@ -187,7 +187,7 @@ export default function CreateAdSlotPage( ){
 
           {error && <div className="de-notice error">{error}</div>}
 
-          {/* Submit */}
+          
           <button
             type="submit"
             disabled={isLoading}
@@ -202,7 +202,7 @@ export default function CreateAdSlotPage( ){
           </button>
         </form>
 
-        {/* Estimated Earnings */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Estimated Earnings</span></div>
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

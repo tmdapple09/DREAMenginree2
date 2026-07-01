@@ -49,23 +49,9 @@ import {
 } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * NGNEngin — Visual Engine Builder (Engin Forge)
- *
- * Repurposed from ForgeEngin concept: a drag-and-drop visual builder
- * where users compose engines from 120+ atomic pieces, connect ports,
- * test in sandbox, and publish to DreamMarketplace.
- *
- * Rules:
- *  - Min 3 pieces (source + processor + output)
- *  - Max 30 pieces per engine
- *  - Each assembly has its own local event bus
- *  - "Dual Runtime Hub" piece enables cross-side communication
- *
- * Feature 41.
- */
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
+
+
 
 const T = {
   bg:       '#09090f',
@@ -129,7 +115,7 @@ export default function NGNEngin({ onBack }: Props) {
   const canvasRef                         = useRef<HTMLDivElement>(null);
   const busRef                            = useRef(createEventBus());
 
-  // Wire dual-runtime hub if present
+  
   useEffect(() => {
     const hasDualHub = assembly.pieces.some((p) => p.pieceId === 'runtime.dual-hub');
     if (!hasDualHub) return;
@@ -220,10 +206,10 @@ export default function NGNEngin({ onBack }: Props) {
   return (
     <div style={{ display: 'flex', height: '100%', background: T.bg, color: T.text, fontFamily: 'inherit', overflow: 'hidden' }}>
 
-      {/* ── Sidebar ──────────────────────────────────────────────────────────── */}
+      
       <aside style={{ width: 240, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', background: T.sidebar, flexShrink: 0 }}>
 
-        {/* Header */}
+        
         <div style={{ padding: '14px 16px', borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
           <Boxes size={16} color={T.accent} />
           <span style={{ fontSize: 13, fontWeight: 600 }}>Pieces</span>
@@ -235,7 +221,7 @@ export default function NGNEngin({ onBack }: Props) {
           )}
         </div>
 
-        {/* Search */}
+        
         <div style={{ padding: '8px 12px', borderBottom: `1px solid ${T.border}` }}>
           <input
             value={search}
@@ -245,7 +231,7 @@ export default function NGNEngin({ onBack }: Props) {
           />
         </div>
 
-        {/* Category list */}
+        
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {PIECE_CATEGORIES.map((cat) => {
             const items = filteredPieces(cat);
@@ -292,7 +278,7 @@ export default function NGNEngin({ onBack }: Props) {
           })}
         </div>
 
-        {/* Legend */}
+        
         <div style={{ padding: '10px 14px', borderTop: `1px solid ${T.border}`, fontSize: 10, color: T.muted, display: 'flex', flexDirection: 'column', gap: 3 }}>
           {(['source', 'processor', 'output'] as const).map((role) => (
             <div key={role} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -303,10 +289,10 @@ export default function NGNEngin({ onBack }: Props) {
         </div>
       </aside>
 
-      {/* ── Main ─────────────────────────────────────────────────────────────── */}
+      
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-        {/* Toolbar */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', borderBottom: `1px solid ${T.border}`, background: T.sidebar, flexShrink: 0 }}>
           <Zap size={16} color={T.accent} />
           <input
@@ -316,7 +302,7 @@ export default function NGNEngin({ onBack }: Props) {
           />
 
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
-            {/* Validation badge */}
+            
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: valid ? T.success : T.error }}>
               {valid ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />}
               {valid ? 'Valid' : `${errors.length} error${errors.length > 1 ? 's' : ''}`}
@@ -348,7 +334,7 @@ export default function NGNEngin({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Validation errors */}
+        
         <AnimatePresence>
           {errors.length > 0 && (
             <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} style={{ overflow: 'hidden', flexShrink: 0 }}>
@@ -361,7 +347,7 @@ export default function NGNEngin({ onBack }: Props) {
           )}
         </AnimatePresence>
 
-        {/* Canvas */}
+        
         <div
           ref={canvasRef}
           style={{ flex: 1, position: 'relative', overflow: 'hidden', background: T.canvas, backgroundImage: 'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)', backgroundSize: '24px 24px', cursor: draggingId ? 'grabbing' : 'default' }}
@@ -371,7 +357,7 @@ export default function NGNEngin({ onBack }: Props) {
           onMouseUp={handleCanvasMouseUp}
           onMouseLeave={handleCanvasMouseUp}
         >
-          {/* SVG connection lines */}
+          
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
             {assembly.connections.map((conn) => {
               const from = assembly.pieces.find((p) => p.instanceId === conn.fromInstanceId);
@@ -393,7 +379,7 @@ export default function NGNEngin({ onBack }: Props) {
             })}
           </svg>
 
-          {/* Placed pieces */}
+          
           {assembly.pieces.map((placed) => (
             <PlacedPieceCard
               key={placed.instanceId}
@@ -405,7 +391,7 @@ export default function NGNEngin({ onBack }: Props) {
             />
           ))}
 
-          {/* Empty state */}
+          
           {assembly.pieces.length === 0 && (
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
               <div style={{ textAlign: 'center', color: T.muted }}>
@@ -418,7 +404,7 @@ export default function NGNEngin({ onBack }: Props) {
         </div>
       </div>
 
-      {/* ── Sandbox overlay ──────────────────────────────────────────────────── */}
+      
       <AnimatePresence>
         {sandboxOpen && (
           <motion.div
@@ -448,7 +434,7 @@ export default function NGNEngin({ onBack }: Props) {
         )}
       </AnimatePresence>
 
-      {/* ── Share URL modal ──────────────────────────────────────────────────── */}
+      
       <AnimatePresence>
         {shareUrl && (
           <motion.div
@@ -548,7 +534,7 @@ function PlacedPieceCard({ placed, pending, onMouseDown, onRemove, onPortClick }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Header */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 8px', borderBottom: `1px solid ${T2.border}` }}>
         <span style={{ width: 6, height: 6, borderRadius: '50%', background: roleColor, flexShrink: 0 }} />
         <span style={{ fontSize: 10, fontWeight: 600, color: catColor, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{manifest.label}</span>
@@ -561,9 +547,9 @@ function PlacedPieceCard({ placed, pending, onMouseDown, onRemove, onPortClick }
         </button>
       </div>
 
-      {/* Ports */}
+      
       <div style={{ display: 'flex', padding: '4px 0' }}>
-        {/* Input ports */}
+        
         <div style={{ flex: 1 }}>
           {manifest.inputPorts.map((port: Port) => (
             <div
@@ -578,7 +564,7 @@ function PlacedPieceCard({ placed, pending, onMouseDown, onRemove, onPortClick }
             </div>
           ))}
         </div>
-        {/* Output ports */}
+        
         <div style={{ flex: 1, alignItems: 'flex-end', display: 'flex', flexDirection: 'column' }}>
           {manifest.outputPorts.map((port: Port) => (
             <div

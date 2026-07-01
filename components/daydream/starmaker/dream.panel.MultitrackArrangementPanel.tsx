@@ -10,14 +10,7 @@ import {
     type ArrangementTrackState,
 } from '@/engins/starmakerengin/music/starmakerArrangement';
 
-/**
- * Scope note for reviewers:
- * This extracted panel intentionally covers the current shipped arrangement scope:
- * source-rack capture, lane placement, clip edits, and arrangement preview.
- * A reviewer may expect full DAW-grade arrangement editing: drag-and-drop clips,
- * overlap handling, per-clip trim offsets, offline bounce, and persistent project storage.
- * Those are future-scope upgrades, not missing wiring in this file-structure refactor.
- */
+
 
 const THEME = {
   surfaceHi: '#1c2030',

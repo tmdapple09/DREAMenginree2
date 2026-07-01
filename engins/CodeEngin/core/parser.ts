@@ -1,15 +1,4 @@
-/**
- * CodeEngin core — pure code parsing helpers.
- *
- * Stateless, side-effect-free utilities that operate on source code strings.
- * No UI, no AI, no network calls live here.
- *
- * Strategy: lightweight regex-based analysis that works in any JS environment
- * (browser, Node, edge) without external dependencies. This covers the 80 %
- * use-case: syntax validation hints, symbol extraction, and structure checks.
- * For full AST work (refactoring, type-aware edits) the AI co-pilot route
- * delegates to the server-side Groq/Claude models instead.
- */
+
 
 export interface ParseError {
   line: number;
@@ -25,16 +14,16 @@ export interface ParsedSymbol {
 }
 
 export interface ParseResult {
-  /** Always null — reserved for future full-AST integration. */
+  
   ast: null;
   errors: ParseError[];
   warnings: ParseError[];
   symbols: ParsedSymbol[];
-  /** Detected language (normalised), e.g. 'typescript', 'python'. */
+  
   language: string;
-  /** Line count. */
+  
   lineCount: number;
-  /** True when the parser found no structural errors it could detect. */
+  
   structurallyValid: boolean;
 }
 

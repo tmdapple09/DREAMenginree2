@@ -1,9 +1,9 @@
 import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
 import { createServerClient } from '@/supabase/server/serverClient';
 
-// lib/ai/audit.ts
-// Audit log writer for admin_audit_log table.
-// Enforcement events are append-only; corrections are new events referencing prior events (req 20).
+
+
+
 
 interface WriteAuditLogInput {
   request_id: string;
@@ -18,10 +18,7 @@ interface WriteAuditLogInput {
   payload?: Record<string, unknown>;
 }
 
-/**
- * Write to admin_audit_log table.
- * policy_version is always stamped so every row is traceable to a published rule (req 3, 18).
- */
+
 export async function writeAuditLog(input: WriteAuditLogInput): Promise<void> {
   try {
     const supabase = await createServerClient();
@@ -43,7 +40,7 @@ export async function writeAuditLog(input: WriteAuditLogInput): Promise<void> {
 
     if (error) {
       console.error('[audit] Failed to write audit log:', error);
-      // Don't throw — audit failure must not break the request
+      
     }
   } catch (error: unknown) {
     console.error('[audit] Unexpected error writing audit log:', error);

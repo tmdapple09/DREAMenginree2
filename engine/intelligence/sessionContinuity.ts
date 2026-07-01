@@ -1,42 +1,19 @@
-/**
- * lib/intelligence/sessionContinuity.ts
- *
- * SESSION CONTINUITY ENGINE — 2026
- *
- * Gives DREAMengin a persistent memory across browser sessions.
- *
- * Each session's artifact trail is persisted to IndexedDB (localStorage
- * fallback for environments without IDB). On the next launch the OS knows:
- *   - Which subsystems you visited and in what order
- *   - What the last artifact was
- *   - How today's session differs from last time (SessionDiff)
- *
- * This is the feature that turns a series of browser tabs into a real OS
- * context — "you were working on a game in LabEngin, want to pick back up?"
- *
- * Privacy: all data stays in the user's browser. Nothing is sent off-device.
- *
- * Design:
- *   - IDB store: "dreamengin-continuity" / "sessions"
- *   - Keeps the last MAX_STORED_SESSIONS sessions (rolling eviction)
- *   - Session records are intentionally minimal (no full payload blobs)
- *   - Storage backend is injectable for testability
- */
+
 
 export interface StoredSession {
-  /** Random unique session ID. */
+  
   id: string;
-  /** Unix ms when this session started. */
+  
   startedAt: number;
-  /** Unix ms when this session was last persisted (end-of-session or periodic). */
+  
   endedAt: number;
-  /** Ordered subsystem activation IDs (one entry per recordActivation() call). */
+  
   activations: string[];
-  /** Unique artifact kinds observed during the session. */
+  
   artifactKinds: string[];
-  /** Title of the most recent artifact at persist time (for continuity hints). */
+  
   lastArtifactTitle: string | null;
-  /** Total artifact count at persist time. */
+  
   artifactCount: number;
 }
 
@@ -44,11 +21,11 @@ export interface SessionSummary {
   sessionId: string;
   startedAt: number;
   endedAt: number;
-  /** Unique subsystems visited, ordered by first appearance. */
+  
   subsystemsVisited: string[];
-  /** Total activation transitions (N - 1 for N activations). */
+  
   subsystemActivationCount: number;
-  /** Subsystem visited most frequently. */
+  
   primarySubsystem: string | null;
   artifactCount: number;
   artifactKinds: string[];
@@ -56,17 +33,17 @@ export interface SessionSummary {
 }
 
 export interface SessionDiff {
-  /** Subsystems active today but absent last session. */
+  
   newSubsystems: string[];
-  /** Subsystems from last session not yet visited today. */
+  
   droppedSubsystems: string[];
-  /** The last subsystem you were in at the end of the previous session. */
+  
   continueFrom: string | null;
-  /** Human-readable OS-level recommendation string. */
+  
   recommendation: string;
 }
 
-/** Storage backend interface — injectable for testability. */
+
 export interface SessionStorageBackend {
   read(): Promise<StoredSession[]>;
   write(sessions: StoredSession[]): Promise<void>;
@@ -192,7 +169,7 @@ function createLSBackend(): SessionStorageBackend {
       try {
         localStorage.setItem(LS_KEY, JSON.stringify(sessions.slice(0, MAX_STORED_SESSIONS)));
       } catch {
-        // Quota exceeded or private browsing — silently ignore.
+        
       }
     },
   };
@@ -201,16 +178,11 @@ function createLSBackend(): SessionStorageBackend {
 function createMemoryBackend(): SessionStorageBackend {
   return {
     async read(): Promise<StoredSession[]> { return []; },
-    async write(): Promise<void> { /* no-op */ },
+    async write(): Promise<void> {  },
   };
 }
 
-/**
- * Manages cross-session persistence for DREAMengin.
- *
- * Accepts an optional `backend` for testability. When omitted, the backend
- * is resolved automatically: IndexedDB → localStorage → in-memory.
- */
+
 export class SessionContinuity {
   private backend: SessionStorageBackend | null;
   private readonly currentSession: StoredSession;
@@ -251,7 +223,7 @@ export class SessionContinuity {
       try {
         return await createIDBBackend();
       } catch {
-        // IDB failed — fall through to localStorage.
+        
       }
     }
     if (typeof localStorage !== 'undefined') {
@@ -260,22 +232,19 @@ export class SessionContinuity {
     return createMemoryBackend();
   }
 
-  /** Record a subsystem activation into the current session. */
+  
   recordActivation(subsystemId: string): void {
     this.currentSession.activations.push(subsystemId);
   }
 
-  /** Update the current session's artifact snapshot. */
+  
   updateArtifacts(count: number, kinds: string[], lastTitle: string | null): void {
     this.currentSession.artifactCount = count;
     this.currentSession.artifactKinds = [...new Set(kinds)];
     this.currentSession.lastArtifactTitle = lastTitle;
   }
 
-  /**
-   * Persist the current session state. Call periodically (e.g. on blur,
-   * visibility change) and on page unload.
-   */
+  
   async persist(): Promise<void> {
     if (!this.backend) return;
     this.currentSession.endedAt = Date.now();
@@ -283,48 +252,45 @@ export class SessionContinuity {
       const all = [{ ...this.currentSession }, ...this.pastSessions];
       await this.backend.write(all);
     } catch {
-      // Persistence failure is non-fatal.
+      
     }
   }
 
-  /** Returns the last completed session (the one before the current one). */
+  
   getLastSession(): StoredSession | null {
     return this.pastSessions[0] ?? null;
   }
 
-  /** Returns a summary of the last session, or null if none exists. */
+  
   getLastSessionSummary(): SessionSummary | null {
     const last = this.getLastSession();
     return last ? summariseSession(last) : null;
   }
 
-  /** Returns a summary of the current (live) session. */
+  
   getCurrentSessionSummary(): SessionSummary {
     return summariseSession({ ...this.currentSession, endedAt: Date.now() });
   }
 
-  /**
-   * Returns a diff between the current session and the last one.
-   * Returns null if there is no previous session to compare against.
-   */
+  
   getSessionDiff(): SessionDiff | null {
     const last = this.getLastSession();
     if (!last) return null;
     return buildDiff(last, this.currentSession);
   }
 
-  /** Whether init() has completed. */
+  
   isReady(): boolean {
     return this.ready;
   }
 
-  /** All past sessions (most recent first). */
+  
   getPastSessions(): readonly StoredSession[] {
     return this.pastSessions;
   }
 }
 
-// Module-level singleton — one engine per app lifetime.
+
 export const sessionContinuity = typeof window !== 'undefined'
   ? new SessionContinuity()
   : null;

@@ -1,35 +1,14 @@
 import { normaliseNostr } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/nostr.ts
- *
- * Phase 5 — Nostr provider (Tier 1)
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { pubkey: string, relays: string[] }
- *
- * pubkey is the user's Nostr public key in hex or npub format.
- * relays is a list of WebSocket relay URLs (e.g. wss://relay.damus.io).
- *
- * No environment variables required — user provides their own key + relays.
- *
- * Implementation note: Nostr uses WebSockets (the Relay Protocol).
- * In a server-side context (API routes) we use a lightweight ws-based
- * approach. In environments without ws, we degrade gracefully.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface NostrCredentials {
   pubkey: string;
   relays: string[];
 }
 
-/**
- * Validate the pubkey format.
- * Accepts 64-char hex or npub1... bech32.
- */
+
 export function isValidNostrPubkey(pubkey: string): boolean {
   if (!pubkey) return false;
   if (/^[0-9a-f]{64}$/i.test(pubkey)) return true;
@@ -37,11 +16,7 @@ export function isValidNostrPubkey(pubkey: string): boolean {
   return false;
 }
 
-/**
- * Verify that the pubkey is structurally valid and at least one relay URL
- * is a valid WebSocket URL.
- * Does NOT connect to a relay — pure validation only (for environments without ws).
- */
+
 export async function nostrVerify(creds: NostrCredentials): Promise<string> {
   if (!isValidNostrPubkey(creds.pubkey)) {
     throw new Error('Invalid Nostr public key. Provide a 64-char hex key or npub1... key.');
@@ -67,25 +42,17 @@ interface NostrEvent {
   tags?: string[][];
 }
 
-/**
- * Fetch the following feed from Nostr relays.
- *
- * Server-side: attempts a raw WebSocket connection to the first available relay
- * using Node's built-in WebSocket (Node 22+) or gracefully returns empty if
- * WebSocket is unavailable in this environment.
- *
- * Returns normalised feed items.
- */
+
 export async function nostrSync(creds: NostrCredentials): Promise<UnifiedFeedItem[]> {
   if (!isValidNostrPubkey(creds.pubkey)) {
     throw new Error('Invalid Nostr public key.');
   }
 
-  // Try to use native WebSocket (Node 22+) or fall back to empty
-  // This avoids requiring an external ws package.
+  
+  
   const WSClass = typeof WebSocket !== 'undefined' ? WebSocket : null;
   if (!WSClass) {
-    // WebSocket not available in this environment — return empty gracefully
+    
     return [];
   }
 
@@ -134,7 +101,7 @@ async function fetchNostrEvents(
           resolve(events);
         }
       } catch {
-        // Ignore parse errors
+        
       }
     };
 
@@ -146,18 +113,18 @@ async function fetchNostrEvents(
   });
 }
 
-/** Minimal bech32 npub decoder — converts npub1... to 64-char hex pubkey. */
+
 function npubToHex(npub: string): string {
-  // We only need the data part after the hrp (npub1)
+  
   const CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-  const data = npub.slice(5); // strip 'npub1'
+  const data = npub.slice(5); 
   const decoded: number[] = [];
   for (const c of data) {
     const v = CHARSET.indexOf(c);
     if (v < 0) break;
     decoded.push(v);
   }
-  // Convert from 5-bit groups to 8-bit bytes
+  
   const bytes: number[] = [];
   let acc = 0;
   let bits = 0;

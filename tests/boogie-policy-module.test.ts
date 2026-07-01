@@ -1,7 +1,7 @@
-// tests/boogie-policy-module.test.ts
-// Unit tests for lib/policy/boogiePolicy.ts (req 100)
-// Validates: category enums, severity ladder, boogieEvaluate(), emitBoogieManEvent(),
-// and enforcement anchor linking.
+
+
+
+
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
@@ -14,9 +14,9 @@ import {
 } from '@/engine/policy/boogiePolicy';
 import type { PolicyResult } from '@/engine/policy/boogiePolicy';
 
-// ============================================================================
-// boogieEvaluate — PolicyResult shape (req 98)
-// ============================================================================
+
+
+
 
 describe('boogieEvaluate — PolicyResult schema', () => {
   it('returns all required PolicyResult fields', () => {
@@ -77,9 +77,9 @@ describe('boogieEvaluate — PolicyResult schema', () => {
   });
 });
 
-// ============================================================================
-// boogieEvaluate — allowed flag (req 97)
-// ============================================================================
+
+
+
 
 describe('boogieEvaluate — allowed flag', () => {
   it('allowed=true for NONE category + very low severity', () => {
@@ -100,13 +100,13 @@ describe('boogieEvaluate — allowed flag', () => {
   });
 });
 
-// ============================================================================
-// boogieEvaluate — enforcement ladder (req 73–79)
-// ============================================================================
+
+
+
 
 describe('boogieEvaluate — enforcement ladder (S0–S5)', () => {
   it('S0 for very low severity first offense (req 83)', () => {
-    // C28_SPAM at very low severity (0.05) on first offense should generate a notice
+    
     const result = boogieEvaluate({ policy_ref: 'C28_SPAM', severity: 0.05, confidence: 0.8, strike_count: 0 });
     expect(result.severity).toBe(PolicySeverity.S0_NOTICE);
     expect(result.actions).toContain('NUDGE');
@@ -145,15 +145,15 @@ describe('boogieEvaluate — enforcement ladder (S0–S5)', () => {
   it('escalates severity on repeat offense (req 81)', () => {
     const firstOffense = boogieEvaluate({ policy_ref: 'C28_SPAM', severity: 0.3, confidence: 0.9, strike_count: 0 });
     const repeatOffense = boogieEvaluate({ policy_ref: 'C28_SPAM', severity: 0.3, confidence: 0.9, strike_count: 2 });
-    // Repeat offense must be at least as severe as first offense
+    
     const order = Object.values(PolicySeverity);
     expect(order.indexOf(repeatOffense.severity)).toBeGreaterThanOrEqual(order.indexOf(firstOffense.severity));
   });
 });
 
-// ============================================================================
-// boogieEvaluate — reason messaging (req 95 — factual, calm, no shaming)
-// ============================================================================
+
+
+
 
 describe('boogieEvaluate — reason messaging (req 95)', () => {
   it('provides a non-empty, human-readable reason for every flagged category', () => {
@@ -166,9 +166,9 @@ describe('boogieEvaluate — reason messaging (req 95)', () => {
   });
 });
 
-// ============================================================================
-// boogieEvaluate — policy_ref / policy page link (req 94)
-// ============================================================================
+
+
+
 
 describe('boogieEvaluate — policy_ref link (req 94)', () => {
   it('policy_ref is set on every result', () => {
@@ -180,9 +180,9 @@ describe('boogieEvaluate — policy_ref link (req 94)', () => {
   });
 });
 
-// ============================================================================
-// emitBoogieManEvent + onBoogieManEvent (req 99)
-// ============================================================================
+
+
+
 
 describe('emitBoogieManEvent + onBoogieManEvent (req 99)', () => {
   let cleanup: (() => void) | undefined;
@@ -191,7 +191,7 @@ describe('emitBoogieManEvent + onBoogieManEvent (req 99)', () => {
   const listeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
 
   beforeEach(() => {
-    // Simulate a minimal window with EventTarget in node environment
+    
     originalWindow = (globalThis as Record<string, unknown>).window as (Window & typeof globalThis) | undefined;
     const et = new EventTarget();
      
@@ -256,9 +256,9 @@ describe('emitBoogieManEvent + onBoogieManEvent (req 99)', () => {
   });
 });
 
-// ============================================================================
-// BOOGIE_POLICY_VERSION re-export (req 96)
-// ============================================================================
+
+
+
 
 describe('BOOGIE_POLICY_VERSION re-exported (req 96)', () => {
   it('exports a non-empty policy version string', () => {

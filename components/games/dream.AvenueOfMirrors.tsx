@@ -1,13 +1,6 @@
 'use client';
 
-/**
- * AVENUE OF MIRRORS — fusion of lucid-avenue + maze + memory-grid.
- *
- * First-person dream-walk. The maze rebuilds itself the moment you stop
- * looking. You only navigate by glyph-grids you must memorize at each Mirror,
- * then recall at the next gate. Watchers cannot be killed; lose them by
- * deliberately disorienting yourself.
- */
+
 
 import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
 import { useGameEngineAPI } from '@/engins/gameengin/cartridges/reactCartridge';

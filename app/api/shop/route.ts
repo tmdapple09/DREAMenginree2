@@ -6,7 +6,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// GET - Fetch merch items
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ items });
 }
 
-// POST - Create a merch listing
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -73,13 +73,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Valid price is required' }, { status: 400 });
   }
 
-  // Validate using lib/shop/listings
+  
   const validation = validateShopListing({ title, price });
   if (!validation.valid) {
     return NextResponse.json({ error: validation.errors[0] }, { status: 400 });
   }
 
-  // Normalize to DB record shape
+  
   const record = normalizeShopListing(user.id, {
     title: title!,
     description,
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ item }, { status: 201 });
 }
 
-// PUT - Update a merch listing
+
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -150,7 +150,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ item });
 }
 
-// DELETE - Remove a merch listing
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);

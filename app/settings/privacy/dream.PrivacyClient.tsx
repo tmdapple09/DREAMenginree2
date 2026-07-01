@@ -5,17 +5,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
-/**
- * PrivacyClient — interactive privacy settings persisted to Supabase.
- *
- * Settings are read from and written to /api/settings/privacy (which
- * upserts into the `settings` table under the `privacy` JSONB key).
- * localStorage is used as a fast-load cache only; the source of truth
- * is always the database.
- *
- * Architecture justification: ARCHITECTURE.md §10 (client-side preference
- * state), CONSTITUTION.md Rule 6 (every visible action does something real).
- */
+
 
 const STORAGE_KEY = 'de-privacy-settings';
 
@@ -90,14 +80,14 @@ export default function PrivacyClient( ){
   const [appealMsg, setAppealMsg] = useState('');
   const [showAppealForm, setShowAppealForm] = useState(false);
 
-  // Block list state
+  
   interface BlockEntry { id: string; blocked_id: string; created_at: string; }
   const [blocks, setBlocks] = useState<BlockEntry[]>([]);
   const [blockInput, setBlockInput] = useState('');
   const [blockLoading, setBlockLoading] = useState(false);
   const [blockError, setBlockError] = useState('');
 
-  // Load block list
+  
   useEffect(() => {
     fetch('/api/blocks')
       .then((r) => r.json())
@@ -136,41 +126,41 @@ export default function PrivacyClient( ){
     });
   };
 
-  // Load settings on mount — try DB first, fall back to localStorage cache
+  
   useEffect(() => {
-    // Immediately apply localStorage cache for fast paint
+    
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<PrivacySettings>;
         setSettings((prev) => ({ ...prev, ...parsed }));
       }
-    } catch { /* ignore */ }
+    } catch {  }
 
-    // Then fetch the real stored settings from Supabase
+    
     fetch('/api/settings/privacy')
       .then((r) => r.json())
       .then((data: { ok: boolean; privacy: Partial<PrivacySettings> | null }) => {
         if (data.ok && data.privacy) {
           setSettings((prev) => ({ ...prev, ...data.privacy }));
-          // Update cache
-          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...DEFAULT_SETTINGS, ...data.privacy })); } catch { /* ignore */ }
+          
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...DEFAULT_SETTINGS, ...data.privacy })); } catch {  }
         }
       })
-      .catch(() => { /* keep localStorage values */ });
+      .catch(() => {  });
   }, []);
 
   const toggle = useCallback((key: keyof PrivacySettings) => {
     setSettings((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      // Update localStorage cache immediately for fast re-render
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {  }
       void queueLocalFirstMutation('privacy-settings', next, { url: '/api/settings/privacy', method: 'POST' });
       fetch('/api/settings/privacy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(next),
-      }).catch(() => { /* local privacy setting is already effective and queued */ });
+      }).catch(() => {  });
       return next;
     });
     setSaved(true);
@@ -278,7 +268,7 @@ export default function PrivacyClient( ){
             <span className="de-widget-title">Blocked Users</span>
           </div>
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {/* Block input */}
+            
             <div style={{ display: 'flex', gap: 6 }}>
               <input
                 type="text"
@@ -305,7 +295,7 @@ export default function PrivacyClient( ){
             </div>
             {blockError && <p style={{ fontSize: 11, color: '#dc4444' }}>{blockError}</p>}
 
-            {/* Block list */}
+            
             {blocks.length === 0 ? (
               <p style={{ fontSize: 12, color: 'var(--de-text-dim)', textAlign: 'center', padding: '8px 0' }}>
                 No blocked users.

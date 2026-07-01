@@ -1,14 +1,4 @@
-/**
- * tests/dreamdm-bar-wild.test.ts
- *
- * Tests for the 6 wild DreamDM Bar features:
- *   1. Mood Aura System (time-of-day + surface-aware ambient theming)
- *   2. Slash Commands (inline command palette)
- *   3. Gold Button Long-Press Particle Fountain
- *   4. Typing Rhythm Visualizer
- *   5. Dream Streak Counter
- *   6. Quick React Emoji Row
- */
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -34,7 +24,7 @@ import {
   type StreakTier,
 } from '@/dreamdmbar/runtime/barInteractions';
 
-// ── Mood Aura System ─────────────────────────────────────────────────────────
+
 
 describe('getMoodPeriod', () => {
   it('returns dawn for hours 5–7', () => {
@@ -67,13 +57,13 @@ describe('getMoodPeriod', () => {
   });
 
   it('handles negative hours via modulo wrap', () => {
-    expect(getMoodPeriod(-1)).toBe('night'); // wraps to 23
-    expect(getMoodPeriod(-6)).toBe('dusk');  // wraps to 18
+    expect(getMoodPeriod(-1)).toBe('night'); 
+    expect(getMoodPeriod(-6)).toBe('dusk');  
   });
 
   it('handles hours ≥ 24 via modulo wrap', () => {
-    expect(getMoodPeriod(26)).toBe('night'); // wraps to 2
-    expect(getMoodPeriod(32)).toBe('morning'); // wraps to 8
+    expect(getMoodPeriod(26)).toBe('night'); 
+    expect(getMoodPeriod(32)).toBe('morning'); 
   });
 });
 
@@ -111,7 +101,7 @@ describe('Surface accent colors', () => {
   });
 });
 
-// ── Slash Commands ──────────────────────────────────────────────────────────
+
 
 describe('SLASH_COMMANDS', () => {
   it('has at least 10 commands', () => {
@@ -179,7 +169,7 @@ describe('filterSlashCommands', () => {
   });
 });
 
-// ── Typing Rhythm Visualizer ─────────────────────────────────────────────────
+
 
 describe('computeTypingRhythm', () => {
   it('returns 0 for fewer than 2 keystrokes', () => {
@@ -192,7 +182,7 @@ describe('computeTypingRhythm', () => {
   });
 
   it('returns high intensity for fast typing (short intervals)', () => {
-    // 10 keystrokes at 60ms intervals = fast
+    
     const times = [1000, 1060, 1120, 1180, 1240, 1300, 1360, 1420, 1480, 1540];
     const result = computeTypingRhythm(times, 1550);
     expect(result).toBeGreaterThan(0.7);
@@ -205,7 +195,7 @@ describe('computeTypingRhythm', () => {
   });
 
   it('returns value clamped between 0 and 1', () => {
-    // Even with extremely fast typing
+    
     const times = [1000, 1010, 1020, 1030, 1040, 1050];
     const result = computeTypingRhythm(times, 1055);
     expect(result).toBeGreaterThanOrEqual(0);
@@ -227,7 +217,7 @@ describe('rhythmToHandleScale', () => {
   });
 });
 
-// ── Dream Streak Counter ────────────────────────────────────────────────────
+
 
 describe('todayDateString', () => {
   it('returns an ISO date string in YYYY-MM-DD format', () => {
@@ -304,7 +294,7 @@ describe('STREAK_STORAGE_KEY', () => {
   });
 });
 
-// ── Quick React Emoji Row ──────────────────────────────────────────────────
+
 
 describe('QUICK_REACTIONS', () => {
   it('has at least 5 reactions', () => {
@@ -326,7 +316,7 @@ describe('QUICK_REACTIONS', () => {
   });
 });
 
-// ── Gold Button Long-Press ──────────────────────────────────────────────────
+
 
 describe('GOLD_LONG_PRESS_MS', () => {
   it('is 800ms', () => {
@@ -349,7 +339,7 @@ describe('generateParticles', () => {
       expect(typeof p.y).toBe('number');
       expect(typeof p.vx).toBe('number');
       expect(typeof p.vy).toBe('number');
-      expect(p.vy).toBeLessThan(0); // particles fly upward
+      expect(p.vy).toBeLessThan(0); 
       expect(p.size).toBeGreaterThan(0);
       expect(p.color).toBeTruthy();
       expect(p.life).toBe(1);
@@ -366,7 +356,7 @@ describe('generateParticles', () => {
   it('particles have varied velocities (not all identical)', () => {
     const particles = generateParticles(10);
     const vxSet = new Set(particles.map((p) => p.vx));
-    // With randomness, extremely unlikely all 10 have the same vx
+    
     expect(vxSet.size).toBeGreaterThan(1);
   });
 });

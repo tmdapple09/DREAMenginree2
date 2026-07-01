@@ -10,12 +10,12 @@ import type { Json } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/ai/execute/route.ts
-// Execute validated intents after confirmation.
-// Maps each IntentType to a real server-side action or client-side dispatch payload.
 
-// ---------------------------------------------------------------------------
-// Intent dispatch table
+
+
+
+
+
 
 type DispatchResult = {
   executed: boolean;
@@ -52,7 +52,7 @@ async function dispatchIntent(
   const { type, payload } = intent;
 
   switch (type) {
-    // ── Navigation intent: return a route for the client to navigate to ──
+    
     case 'NAV_DELTA': {
       const raw = typeof payload.route === 'string' ? payload.route : '';
       const route = ROUTE_MAP[raw] ?? (raw.startsWith('/') ? raw : '/dreamdmbar');
@@ -79,7 +79,7 @@ async function dispatchIntent(
       const dream_id = typeof payload.dream_id === 'string' ? payload.dream_id : null;
       if (!dream_id) return { executed: false, error: 'dream_id required for DREAM_CONFIG_PATCH' };
       const patch = payload.patch && typeof payload.patch === 'object' ? payload.patch : {};
-      // Store the patch in the config JSONB field (dream_instances schema)
+      
       const { error } = await supabase
         .from('dream_instances')
         .update({ config: patch as Json })
@@ -118,7 +118,7 @@ async function dispatchIntent(
       if (actorRole !== 'admin' && actorRole !== 'owner') {
         return { executed: false, error: 'Admin role required for DIAG_SCHEMA_SNAPSHOT' };
       }
-      // Return the list of known public tables from the type-safe schema
+      
       const knownTables = [
         'profiles', 'boards', 'dream_instances', 'app_posts', 'conversations',
         'messages', 'merch', 'ad_listings', 'follows', 'journey_dots',
@@ -139,12 +139,12 @@ async function dispatchIntent(
   }
 }
 
-// Route handler
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
 
-  // Parse and validate request
+  
   let body: unknown;
   try {
     body = await req.json();
@@ -159,7 +159,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const request = parseResult.data;
 
-  // Authenticate
+  
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
@@ -167,7 +167,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 
-  // Get user role
+  
   const { data: roleData } = await supabase
     .from('user_roles')
     .select('role')
@@ -176,18 +176,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const actorRole = (roleData as { role?: string } | null)?.role ?? 'user';
 
-  // Rate limit
+  
   const rateLimitCheck = await checkRateLimit(user.id, '/api/ai/execute', 30, 60);
   if (!rateLimitCheck.allowed) {
     return jsonApiError(429, 'RATE_LIMIT', 'Too many requests.');
   }
 
-  // Confirm token required
+  
   if (!request.confirm_token) {
     return jsonApiError(403, 'CONFIRMATION_REQUIRED', 'Confirmation token required.');
   }
 
-  // Verify confirmation token
+  
   const tokenValid = verifyConfirmToken({
     token: request.confirm_token,
     requestId: request.request_id,
@@ -206,21 +206,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(403, 'INVALID_TOKEN', 'Confirmation token is invalid or expired.');
   }
 
-  // Resolve the intents to dispatch: client sends full intent objects back
-  // (intent_ids used for cross-reference / audit; intents used for dispatch)
+  
+  
   const candidateIntents = request.intents?.filter((i) => request.intent_ids.includes(i.intent_id)) ?? [];
 
   if (candidateIntents.length === 0) {
     return jsonApiError(400, 'NO_INTENTS', 'No resolvable intents found. Please include the full intents array.');
   }
 
-  // Re-validate through IDARi before executing
+  
   const { intents: safeIntents } = validateWithIdari(
     candidateIntents,
     actorRole === 'admin' || actorRole === 'owner' ? 'admin' : 'user',
   );
 
-  // Dispatch each intent
+  
   const results = await Promise.all(
     safeIntents.map(async (intent) => {
       const result = await dispatchIntent(intent, user.id, actorRole, supabase);

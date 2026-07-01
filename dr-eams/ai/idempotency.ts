@@ -1,7 +1,7 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
-// lib/ai/idempotency.ts
-// Idempotency key checker to prevent duplicate intent execution
+
+
 
 interface CheckIdempotencyInput {
   key: string;
@@ -14,10 +14,7 @@ interface CheckIdempotencyResult {
   isReplay: boolean;
 }
 
-/**
- * Check and insert idempotency key
- * Returns { allowed: false, isReplay: true } if key already exists (replay attack)
- */
+
 export async function checkIdempotency(
   input: CheckIdempotencyInput
 ): Promise<CheckIdempotencyResult> {
@@ -33,20 +30,20 @@ export async function checkIdempotency(
       });
 
     if (error) {
-      // Check if it's a unique constraint violation (replay)
+      
       if (error.code === '23505') {
         return { allowed: false, isReplay: true };
       }
 
       console.error('[idempotency] Error inserting key:', error);
-      // Fail-closed: if we can't verify idempotency, deny
+      
       return { allowed: false, isReplay: false };
     }
 
     return { allowed: true, isReplay: false };
   } catch (error: unknown) {
     console.error('[idempotency] Unexpected error:', error);
-    // Fail-closed
+    
     return { allowed: false, isReplay: false };
   }
 }

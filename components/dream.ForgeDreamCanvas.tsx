@@ -26,18 +26,9 @@ import {
 } from '@/engins/forgeengin/forge/engineForge';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * ForgeDreamCanvas — Visual Assembly Builder
- *
- * - Left sidebar: component inventory grouped by category
- * - Central canvas: draggable piece boxes with input/output ports
- * - Wiring: click output port → drag to input port → wire created
- * - Test button: runAssembly via sandbox
- * - Save: serializeAssembly → JSON download
- * - Uses local event bus, NOT global bridge
- */
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
+
 
 interface PlacedPiece {
   piece: AtomicPiece;
@@ -48,7 +39,7 @@ interface PlacedPiece {
 interface PendingWire {
   fromPieceId: string;
   fromPortId:  string;
-  /** Mouse position while drawing */
+  
   mx: number;
   my: number;
 }
@@ -70,10 +61,10 @@ export function ForgeDreamCanvas( ){
   const dragOffset  = useRef({ dx: 0, dy: 0 });
   const canvasRef   = useRef<HTMLDivElement>(null);
 
-  // Local bus — scoped to this assembly, NOT global
+  
   const busRef = useRef(createEventBus());
 
-  // Listen to bus events
+  
   useEffect(() => {
     const bus = busRef.current;
     const handleExec = (payload: unknown) => {
@@ -136,7 +127,7 @@ export function ForgeDreamCanvas( ){
 
   const onMouseUp = useCallback(() => {
     setDraggingId(null);
-    // Pending wire dropped on empty space → cancel
+    
     if (pendingWire) setPendingWire(null);
   }, [pendingWire]);
 
@@ -185,7 +176,7 @@ export function ForgeDreamCanvas( ){
     const pieces = placed.map((p) => p.piece);
     try {
       const assembly = createAssembly(pieces, wires);
-      // Swap the assembly's bus events to our local bus
+      
       assembly.bus.on('executed', payload => busRef.current.emit('executed', payload));
       assembly.bus.on('error', payload => setRunResult(`Error: ${(payload as { message: string }).message}`));
       runAssembly(assembly, DEFAULT_SANDBOX);
@@ -247,9 +238,9 @@ export function ForgeDreamCanvas( ){
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#0a0a14] text-white font-sans select-none">
 
-      {/* ── Left sidebar ── */}
+      
       <aside className="w-64 flex-shrink-0 flex flex-col border-r border-white/10 overflow-hidden">
-        {/* Category tabs */}
+        
         <div className="overflow-y-auto flex-shrink-0 border-b border-white/10">
           {ALL_CATEGORIES.map((cat) => (
             <button
@@ -266,7 +257,7 @@ export function ForgeDreamCanvas( ){
           ))}
         </div>
 
-        {/* Piece list */}
+        
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {categoryPieces.map((comp) => (
             <button
@@ -280,7 +271,7 @@ export function ForgeDreamCanvas( ){
           ))}
         </div>
 
-        {/* Action bar */}
+        
         <div className="border-t border-white/10 p-2 space-y-1">
           <button onClick={validate} className="w-full py-1.5 rounded text-xs bg-sky-600 hover:bg-sky-500 transition-colors">Validate</button>
           <button onClick={run}      className="w-full py-1.5 rounded text-xs bg-green-700 hover:bg-green-600 transition-colors">▶ Run</button>
@@ -291,9 +282,9 @@ export function ForgeDreamCanvas( ){
         </div>
       </aside>
 
-      {/* ── Central canvas ── */}
+      
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Canvas area */}
+        
         <div
           ref={canvasRef}
           className="flex-1 relative overflow-hidden"
@@ -301,7 +292,7 @@ export function ForgeDreamCanvas( ){
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
         >
-          {/* Grid dots */}
+          
           <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
             <defs>
               <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -311,7 +302,7 @@ export function ForgeDreamCanvas( ){
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
 
-          {/* Wires */}
+          
           <svg className="absolute inset-0 w-full h-full pointer-events-none">
             {wires.map((wire) => {
               const from = placed.find((p) => p.piece.id === wire.fromPieceId);
@@ -329,7 +320,7 @@ export function ForgeDreamCanvas( ){
               );
             })}
 
-            {/* Pending wire */}
+            
             {pendingWire && (() => {
               const from = placed.find((p) => p.piece.id === pendingWire.fromPieceId);
               if (!from) return null;
@@ -344,13 +335,13 @@ export function ForgeDreamCanvas( ){
             })()}
           </svg>
 
-          {/* Placed pieces */}
+          
           {placed.map(({ piece, x, y }) => (
             <div
               key={piece.id}
               style={{ position: 'absolute', left: x, top: y, width: 180, zIndex: draggingId === piece.id ? 100 : 1 }}
             >
-              {/* Header (drag handle) */}
+              
               <div
                 onMouseDown={(e) => startDrag(e, piece.id)}
                 className="cursor-grab active:cursor-grabbing px-2 py-1 rounded-t text-xs font-semibold truncate"
@@ -361,10 +352,10 @@ export function ForgeDreamCanvas( ){
                 <span className="ml-1 text-[10px] text-white/40">{piece.category}</span>
               </div>
 
-              {/* Ports */}
+              
               <div className="flex justify-between px-0 py-1 rounded-b text-[10px]"
                    style={{ background: '#0f172a', border: '1px solid #1e293b', borderTop: 'none' }}>
-                {/* Input ports */}
+                
                 <div className="flex flex-col gap-1 pl-1">
                   {piece.inputPorts.map((port) => (
                     <div
@@ -378,7 +369,7 @@ export function ForgeDreamCanvas( ){
                   ))}
                 </div>
 
-                {/* Output ports */}
+                
                 <div className="flex flex-col gap-1 pr-1 items-end">
                   {piece.outputPorts.map((port) => (
                     <div
@@ -395,7 +386,7 @@ export function ForgeDreamCanvas( ){
             </div>
           ))}
 
-          {/* Empty state */}
+          
           {placed.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <p className="text-white/20 text-sm">Double-click pieces in the sidebar to add them here</p>
@@ -403,7 +394,7 @@ export function ForgeDreamCanvas( ){
           )}
         </div>
 
-        {/* Output bar */}
+        
         {(runResult || validationMsg) && (
           <div className="border-t border-white/10 p-3 max-h-32 overflow-y-auto">
             {validationMsg && (

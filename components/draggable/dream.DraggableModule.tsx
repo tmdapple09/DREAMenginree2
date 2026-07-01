@@ -4,43 +4,22 @@ import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * components/draggable/dream.DraggableModule.tsx
- *
- * Wraps any Dream Window (child) with tap-hold drag, edge detection, and
- * cross-runtime transfer behaviour — the core of the Universal Editor.
- *
- * Interaction contract (no toggles):
- *   - Single tap/click  → passes through to children normally
- *   - Tap-hold ≥300ms   → lifts module (scale 1.05, gold shadow), enables drag
- *   - Drag              → translate3d follows pointer; no repaints
- *   - Drag to edge      → after 500ms at edge, fires transfer attempt
- *   - Release           → cancels drag; module snaps back (unless transferred)
- *   - Ctrl/Cmd+Arrow    → keyboard transfer (accessibility)
- *
- * Architecture justification:
- *   - docs/ARCHITECTURE.md §8  — Gold=action, Sky-blue=live/connected
- *   - docs/ARCHITECTURE.md §10 — render-on-demand, transform:translate3d only
- *   - docs/LAW.md §3           — every visible action must do something real
- *
- * Performance impact: GPU-composited transform; no layout thrashing; edge
- * detection batched via requestAnimationFrame.
- */
 
-/** Hold duration before drag mode activates (ms). */
+
+
 const HOLD_MS = 300;
-/** Pixels from screen edge that triggers an edge-transfer zone. */
+
 const EDGE_THRESHOLD = 50;
-/** How long pointer must hover at edge before transfer fires (ms). */
+
 const EDGE_HOLD_MS = 500;
-/** Pixels of movement before hold is cancelled (prevents accidental lifts). */
+
 const MOVE_CANCEL_PX = 8;
 
 interface DraggableModuleProps {
   manifest: ModuleManifest;
   children: React.ReactNode;
   className?: string;
-  /** Called when a transfer completes successfully. */
+  
   onTransfer?: (manifest: ModuleManifest, targetRuntime: RuntimeId) => void;
 }
 
@@ -50,7 +29,7 @@ export default function DraggableModule({
   className,
   onTransfer,
 }: DraggableModuleProps) {
-  // ── State ──────────────────────────────────────────────────────────────────
+  
   const [lifted, setLifted] = useState(false);
   const [transferring, setTransferring] = useState(false);
   const [edgeSide, setEdgeSide] = useState<'left' | 'right' | null>(null);
@@ -85,7 +64,7 @@ export default function DraggableModule({
       try {
         rootRef.current.releasePointerCapture(capturedPointerId.current);
       } catch {
-        // pointer may already be gone
+        
       }
       capturedPointerId.current = null;
     }
@@ -101,12 +80,12 @@ export default function DraggableModule({
   const resolveTargetRuntime = useCallback(
     (clientX: number): RuntimeId | null => {
       if (clientX < EDGE_THRESHOLD) {
-        // Left edge: opposite of current runtime
+        
         if (manifest.sourceRuntime === 'dreamspace') return 'homedream';
         return 'dreamspace';
       }
       if (typeof window !== 'undefined' && clientX > window.innerWidth - EDGE_THRESHOLD) {
-        // Right edge: opposite of current runtime
+        
         if (manifest.sourceRuntime === 'homedream') return 'dreamspace';
         return 'homedream';
       }
@@ -118,7 +97,7 @@ export default function DraggableModule({
   const performTransfer = useCallback(
     (targetRuntime: RuntimeId) => {
       if (!manifest.compatibleRuntimes.includes(targetRuntime)) {
-        // Incompatible — dispatch a toast and cancel
+        
         window.dispatchEvent(
           new CustomEvent('dream:toast', {
             detail: {
@@ -142,7 +121,7 @@ export default function DraggableModule({
 
       onTransfer?.(manifest, targetRuntime);
 
-      // Give the transfer animation 350 ms then clean up
+      
       setTimeout(() => {
         setTransferring(false);
         cancelDrag();
@@ -154,7 +133,7 @@ export default function DraggableModule({
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!manifest.ui.movable) return;
-      // Only primary button for mouse; any touch
+      
       if (e.pointerType === 'mouse' && e.button !== 0) return;
 
       startPos.current = { x: e.clientX, y: e.clientY };
@@ -167,7 +146,7 @@ export default function DraggableModule({
         try {
           rootRef.current?.setPointerCapture(e.pointerId);
         } catch {
-          // ignore — not all browsers support capture for all pointer types
+          
         }
       }, HOLD_MS);
     },
@@ -179,7 +158,7 @@ export default function DraggableModule({
       const dx = e.clientX - startPos.current.x;
       const dy = e.clientY - startPos.current.y;
 
-      // If not yet lifted, cancel hold timer on significant movement (scroll intent)
+      
       if (!isDragging.current) {
         if (Math.sqrt(dx * dx + dy * dy) > MOVE_CANCEL_PX) {
           cancelHoldTimer();
@@ -187,10 +166,10 @@ export default function DraggableModule({
         return;
       }
 
-      // GPU-composited translate — no layout reads
+      
       setTranslate({ x: dx, y: dy });
 
-      // Edge detection via rAF — batches with the browser paint
+      
       if (rafHandle.current !== null) cancelAnimationFrame(rafHandle.current);
       rafHandle.current = requestAnimationFrame(() => {
         rafHandle.current = null;
@@ -215,7 +194,7 @@ export default function DraggableModule({
   const handlePointerUp = useCallback(
     (_e: React.PointerEvent<HTMLDivElement>) => {
       cancelHoldTimer();
-      if (!isDragging.current) return; // was a tap — let children handle it
+      if (!isDragging.current) return; 
       cancelDrag();
     },
     [cancelHoldTimer, cancelDrag],
@@ -291,7 +270,7 @@ export default function DraggableModule({
       >
         {children}
 
-        {/* Lifted lift-indicator border — gold ring */}
+        
         {lifted && (
           <div
             aria-hidden="true"
@@ -307,10 +286,10 @@ export default function DraggableModule({
         )}
       </div>
 
-      {/* Screen-edge glow overlays — fixed to viewport, rendered outside the module */}
+      
       {lifted && (
         <>
-          {/* Left edge glow */}
+          
           <div
             aria-hidden="true"
             style={{
@@ -327,7 +306,7 @@ export default function DraggableModule({
               transition: 'opacity 0.2s ease',
             }}
           />
-          {/* Right edge glow */}
+          
           <div
             aria-hidden="true"
             style={{
@@ -347,7 +326,7 @@ export default function DraggableModule({
         </>
       )}
 
-      {/* Screen-reader announcement for edge proximity */}
+      
       {edgeLabel && (
         <div role="status" aria-live="polite" className="sr-only">
           {edgeLabel}

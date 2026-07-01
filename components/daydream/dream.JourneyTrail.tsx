@@ -9,26 +9,7 @@ import type { JourneyDot, JourneyTimeGroup } from '@/types/journey';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * JourneyTrail — dot-map visualization of the user's creative course through DREAMengin.
- *
- * "Every thing becomes data and those data points track your course.
- *  They are the very dots that connect looking backwards."
- *
- * Design principles:
- *   - Always newest-first ("looking backwards" canonical direction).
- *   - Time-grouped: Today / This Week / This Month / Earlier.
- *   - Dot size maps to significance (0.0–1.0).
- *   - Domain-color-coded by surface.
- *   - Insight badges: ✦ First time · 🔁 N times this week · ↩ Return after N days.
- *   - Tap/click a dot to expand the timestamp and surface context.
- *   - Empty state explains honestly what the feature does.
- *   - Privacy: all data fetched from /api/journey (owner-only, RLS-enforced).
- *
- * Props:
- *   limit   — max dots to display (default 50).
- *   compact — smaller layout for Dream Window mounting (default false).
- */
+
 
 interface Props {
   limit?: number;
@@ -57,14 +38,14 @@ function groupDotsByTime(dots: JourneyDot[]): JourneyTimeGroup[] {
   return groups.filter((g) => g.dots.length > 0);
 }
 
-/** Map significance (0–1) to dot radius in px. */
+
 function dotRadius(significance: number): number {
   if (significance >= 0.9) return 8;
   if (significance >= 0.6) return 6;
   return 4;
 }
 
-/** Compute last-7-day activity bucket counts from a dots array (index 0 = oldest, 6 = today). */
+
 function computeSparkline(dots: JourneyDot[]): number[] {
   const now = Date.now();
   const DAY = 86_400_000;
@@ -76,7 +57,7 @@ function computeSparkline(dots: JourneyDot[]): number[] {
   return buckets;
 }
 
-/** Mini 7-day sparkline bar chart shown beneath the streak banner. */
+
 function SparklineBar({ dots }: {dots: JourneyDot[]}) {
   const data = computeSparkline(dots);
   const max  = Math.max(...data, 1);
@@ -125,7 +106,7 @@ export default function JourneyTrail({ limit = 50, compact = false }: Props) {
         setStreak(computeCurrentStreak(raw));
       }
     } catch {
-      // Best-effort — if offline or unauthenticated, show empty state gracefully.
+      
     } finally {
       setLoading(false);
     }
@@ -161,7 +142,7 @@ export default function JourneyTrail({ limit = 50, compact = false }: Props) {
 
   return (
     <div style={{ position: 'relative', paddingLeft }}>
-      {/* Vertical thread — gradient from gold at top to dim at bottom */}
+      
       <div style={{
         position: 'absolute',
         left:     threadLeft,
@@ -172,7 +153,7 @@ export default function JourneyTrail({ limit = 50, compact = false }: Props) {
         pointerEvents: 'none',
       }} />
 
-      {/* ── Streak banner (shown when streak ≥ 2) ── */}
+      
       {streak >= 2 && (
         <div style={{
           marginBottom: 16,

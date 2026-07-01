@@ -1,12 +1,4 @@
-/**
- * lib/vm/bus-events.ts — Dream OS Bus Event Payloads for the VM subsystem
- *
- * Four events wired into DualRuntime:
- *   vm:workload-submitted  — a workload was queued to a VM region
- *   vm:compute-complete    — a workload finished successfully
- *   vm:error               — a workload (or VM) raised an error
- *   vm:stats-update        — periodic VM telemetry snapshot
- */
+
 
 export interface VMWorkloadSubmittedPayload {
   workloadId:  string;

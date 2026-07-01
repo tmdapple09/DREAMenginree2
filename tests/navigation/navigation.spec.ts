@@ -5,15 +5,15 @@ test.describe('Gesture-Driven Navigation Engine', () => {
     await page.goto('/');
     
     const initState = await page.evaluate(() => {
-      // Mock the module since it's client-side only
+      
       class NavStateBuffer {
         private buffer: Int32Array;
         constructor() {
           this.buffer = new Int32Array(4);
-          this.buffer[0] = 0; // layer
-          this.buffer[1] = 0; // face
-          this.buffer[2] = -1; // slot
-          this.buffer[3] = 0; // depth
+          this.buffer[0] = 0; 
+          this.buffer[1] = 0; 
+          this.buffer[2] = -1; 
+          this.buffer[3] = 0; 
         }
         get layer() { return this.buffer[0]; }
         get face() { return this.buffer[1]; }
@@ -81,7 +81,7 @@ test.describe('Gesture-Driven Navigation Engine', () => {
         private buffer: Int32Array;
         constructor() {
           this.buffer = new Int32Array(4);
-          this.buffer[1] = 0; // face
+          this.buffer[1] = 0; 
         }
         get face() { return this.buffer[1]; }
         rotateFace(delta: number) {
@@ -92,17 +92,17 @@ test.describe('Gesture-Driven Navigation Engine', () => {
       const buffer = new NavStateBuffer();
       buffer.rotateFace(1);
       const f1 = buffer.face;
-      buffer.rotateFace(5); // Should wrap to 0
+      buffer.rotateFace(5); 
       const f2 = buffer.face;
-      buffer.rotateFace(-1); // Should wrap to 5
+      buffer.rotateFace(-1); 
       const f3 = buffer.face;
       
       return { f1, f2, f3 };
     });
     
     expect(faceTest.f1).toBe(1);
-    expect(faceTest.f2).toBe(0); // (1 + 5) % 6 = 0
-    expect(faceTest.f3).toBe(5); // (0 - 1 + 6) % 6 = 5
+    expect(faceTest.f2).toBe(0); 
+    expect(faceTest.f3).toBe(5); 
   });
 });
 

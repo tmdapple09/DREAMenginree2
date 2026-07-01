@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers – minimal BVH fixture
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 function makeBVH(frames = 3): string {
-  // Root has 6 channels (3 pos + 3 rot), Spine has 3 channels (3 rot).
-  // Total = 9 values per frame.
+  
+  
   const frameData = Array.from({ length: frames }, (_, f) =>
     `${f * 2} ${f} ${-f} ${f * 5} ${-f * 3} 0  ${f} ${-f} 0`
   ).join('\n');
@@ -31,9 +31,9 @@ Frame Time: 0.033333
 ${frameData}`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Motion Capture – parseBVH
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('motionCapture – parseBVH', () => {
   it('parses a valid BVH string into a MocapClip', async () => {
     const { parseBVH } = await import('../lib/composite/motionCapture');
@@ -41,7 +41,7 @@ describe('motionCapture – parseBVH', () => {
     expect(clip.root.name).toBe('Hips');
     expect(clip.frameCount).toBe(3);
     expect(clip.frameTime).toBeCloseTo(0.0333, 2);
-    expect(clip.channelCount).toBe(9); // 6 root + 3 spine
+    expect(clip.channelCount).toBe(9); 
     expect(clip.root.children).toHaveLength(1);
     expect(clip.root.children[0].name).toBe('Spine');
   });
@@ -59,9 +59,9 @@ describe('motionCapture – parseBVH', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Motion Capture – getFramePose
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('motionCapture – getFramePose', () => {
   it('extracts correct transforms for frame 0', async () => {
     const { parseBVH, getFramePose } = await import('../lib/composite/motionCapture');
@@ -78,7 +78,7 @@ describe('motionCapture – getFramePose', () => {
     const p2 = getFramePose(clip, 2);
     const t0 = p0.joints.find((j) => j.jointName === 'Hips')!.translation;
     const t2 = p2.joints.find((j) => j.jointName === 'Hips')!.translation;
-    // Frame 0: [0,0,0], Frame 2: [4,2,-2] — at least one axis must differ
+    
     const differs = t0.some((v, i) => v !== t2[i]);
     expect(differs).toBe(true);
   });
@@ -94,13 +94,13 @@ describe('motionCapture – getFramePose', () => {
     const { parseBVH, getFramePose } = await import('../lib/composite/motionCapture');
     const clip = parseBVH(makeBVH(2));
     const pose = getFramePose(clip, 0);
-    expect(pose.joints).toHaveLength(2); // Hips + Spine
+    expect(pose.joints).toHaveLength(2); 
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Motion Capture – retargetClip + exportBVH + clipSummary
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('motionCapture – retargetClip', () => {
   it('scales positional channels proportionally', async () => {
     const { parseBVH, getFramePose, retargetClip } = await import('../lib/composite/motionCapture');
@@ -152,9 +152,9 @@ describe('motionCapture – clipSummary', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Compositor – node graph
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('compositor – node graph', () => {
   it('creates a node with correct defaults', async () => {
     const { createNode } = await import('../lib/composite/compositor');
@@ -225,9 +225,9 @@ describe('compositor – node graph', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Rotoscope
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('rotoscope', () => {
   it('createProject returns empty layer list', async () => {
     const { createProject } = await import('../lib/composite/rotoscope');
@@ -317,9 +317,9 @@ describe('rotoscope', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FX Simulation
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('fxSimulation', () => {
   it('FX_PRESETS covers all 6 categories', async () => {
     const { allCategories, FX_PRESETS } = await import('../lib/composite/fxSimulation');
@@ -376,9 +376,9 @@ describe('fxSimulation', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Matchmover
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('matchmover', () => {
   it('createTrack returns empty unsolved track', async () => {
     const { createTrack } = await import('../lib/composite/matchmover');
@@ -402,7 +402,7 @@ describe('matchmover', () => {
     const id = t.trackPoints[0].id;
     t = addSample(t, id, { frame: 10, x: 0.5, y: 0.3, confidence: 0.9 });
     t = addSample(t, id, { frame: 0, x: 0.4, y: 0.2, confidence: 0.95 });
-    expect(t.trackPoints[0].samples[0].frame).toBe(0); // sorted
+    expect(t.trackPoints[0].samples[0].frame).toBe(0); 
   });
 
   it('estimateCameraMotion returns motion estimates for tracked points', async () => {
@@ -444,7 +444,7 @@ describe('matchmover', () => {
     ];
     const H = computeHomography(src, dst);
     expect(H).toHaveLength(9);
-    // Bottom-right element of a normalised homography is 1
+    
     expect(H[8]).toBeCloseTo(1, 1);
   });
 });

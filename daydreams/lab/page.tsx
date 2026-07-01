@@ -48,7 +48,7 @@ export default async function LabDaydreamPage( ){
         />
 
         <div className="de-auth-content space-y-4">
-          {/* Intro */}
+          
           <div className="de-auth-hero">
             <div style={{ position: 'relative', zIndex: 1 }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--de-heading)', marginBottom: 6 }}>Experiment Vault</h2>
@@ -58,7 +58,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Experiment Vault: Saved Experiments Browser ── */}
+          
           <div className="de-widget" style={{ borderColor: 'rgba(34,197,94,0.25)' }}>
             <div className="de-widget-header">
               <FlaskConical className="w-4 h-4" style={{ color: '#22c55e' }} />
@@ -100,7 +100,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 1: Quick Action Cards ── */}
+          
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
             {[
               { emoji: '🧪', label: 'New Experiment', href: '/engines/lab/experiments', color: '#22c55e' },
@@ -117,7 +117,7 @@ export default async function LabDaydreamPage( ){
             ))}
           </div>
 
-          {/* ── Feature 2: Simulation Status ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span style={{ fontSize: 16 }}>⚡</span>
@@ -144,7 +144,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 3: Active Experiments ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🧪 Active Experiments</span>
@@ -157,7 +157,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 4: Resource Monitor ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">Resource Monitor</span>
@@ -181,7 +181,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 5: WebGPU Monitor ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">⚡ WebGPU Compute</span>
@@ -203,7 +203,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 6: Benchmark Suite ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">Benchmark Suite</span>
@@ -225,7 +225,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 7: Feature Flags ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🏁 Feature Flags</span>
@@ -245,7 +245,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 8: Hypothesis Tracker ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔬 Hypothesis Tracker</span>
@@ -264,7 +264,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 9: Neural Network Visualizer ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🧠 Neural Network</span>
@@ -287,7 +287,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 10: Dataset Browser ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📂 Dataset Browser</span>
@@ -308,7 +308,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 11: Parameter Sweep ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔢 Parameter Sweep</span>
@@ -332,7 +332,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 12: Version Control ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">Experiment Versions</span>
@@ -352,7 +352,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 13: Collab Lab ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">👥 Collab Lab</span>
@@ -367,7 +367,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 14: Quantum Circuit ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">⚛️ Quantum Circuit</span>
@@ -389,7 +389,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 15: CI/CD Status ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">CI/CD Status</span>
@@ -408,7 +408,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 16: Physics Lab Direct Link ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🌊 Physics Lab</span>
@@ -423,7 +423,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 17: Published Results ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📊 Published Results</span>
@@ -436,7 +436,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 18: AI Hypothesis Generator ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🤖 AI Hypothesis Generator</span>
@@ -451,7 +451,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 19: Molecule Viewer ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔬 Molecule Viewer</span>
@@ -469,7 +469,7 @@ export default async function LabDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 20: LabEngin Info ── */}
+          
           <div style={{ background: 'rgba(34,197,94,0.06)', borderRadius: 14, padding: '14px 16px', border: '1px solid rgba(34,197,94,0.15)' }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: '#22c55e', marginBottom: 4 }}>LabEngin — 20 Features on Side B</div>
             <p style={{ fontSize: 11, color: 'var(--de-text-dim)', lineHeight: 1.5, margin: 0 }}>

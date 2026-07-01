@@ -1,20 +1,4 @@
-/**
- * scripts/gameengin/package-cartridge.ts
- *
- * Build a `.dreamr` cartridge from a directory.
- * Spec: GameENGINspec.md §1.1, §5.5.
- *
- *   pnpm tsx scripts/gameengin/package-cartridge.ts <cartridge-dir> [--out <file>]
- *
- * Layout of the produced file (decompressed view):
- *   [magic "DRMR" 4 bytes] [POSIX ustar TAR archive]
- *
- * Compression: zstd level 19 when the system `zstd` binary is available
- * (spec-preferred); otherwise gzip level 9 fallback so the script never
- * silently fails in environments without zstd. The chosen codec is recorded
- * inside the produced filename suffix (`.dreamr` always; an adjacent
- * `.dreamr.codec` file records `zstd` or `gzip`).
- */
+
 
 import { execFileSync } from 'node:child_process';
 import * as fs from 'node:fs';
@@ -92,7 +76,7 @@ export function packageCartridge(cartridgeDir: string, outFile?: string): PackRe
   return { cartridgeId: manifest.cartridge_id, outFile: out, bytes: data.length, codec, fileCount: files.length };
 }
 
-// ─── CLI ─────────────────────────────────────────────────────────────────────
+
 function isMain(): boolean {
   return import.meta.url === `file://${process.argv[1]}` ||
          import.meta.url === `file:///${process.argv[1]?.replace(/\\/g, '/')}`;

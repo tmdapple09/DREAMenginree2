@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.MessagesBoards  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Boards – Dreamengin' };
 
@@ -88,7 +88,7 @@ export default async function BoardsPage( ){
       </header>
 
       <div style={{ maxWidth: 600, margin: '0 auto', padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {/* My Boards */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">My Boards</span>
@@ -103,7 +103,7 @@ export default async function BoardsPage( ){
           </div>
         </div>
 
-        {/* Public boards from others */}
+        
         {(publicBoards ?? []).length > 0 && (
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Discover Boards</span></div>

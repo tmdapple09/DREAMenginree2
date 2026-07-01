@@ -78,7 +78,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
 
   return (
     <div style={{ padding: '0 0 24px' }}>
-      {/* Back button */}
+      
       <button
         type="button"
         onClick={onToggleFace}
@@ -92,7 +92,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
         ← Home
       </button>
 
-      {/* Avatar + info */}
+      
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, marginBottom: 22 }}>
         <div style={{
           width: 80, height: 80, borderRadius: '50%',
@@ -107,7 +107,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
           <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--de-heading)' }}>{name}</div>
           <div style={{ fontSize: 14, color: 'var(--de-text-dim)' }}>@{handle}</div>
         </div>
-        {/* Profile action buttons */}
+        
         <div style={{ display: 'flex', gap: 10 }}>
           <Link
             href="/edit-profiledream"
@@ -136,7 +136,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
         </div>
       </div>
 
-      {/* Stats grid */}
+      
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
         {[
           { label: 'Photos',       value: '637'           },
@@ -165,7 +165,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
         ))}
       </div>
 
-      {/* Social widgets row */}
+      
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
         <div style={{ background: 'rgba(255,255,255,0.88)', borderRadius: 16, boxShadow: '0 1px 8px rgba(0,0,0,0.05)', padding: 14 }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 8 }}>TikTok</div>
@@ -179,7 +179,7 @@ function ProfileFace({ profile, onToggleFace }: {profile: Props['profile']; onTo
         </div>
       </div>
 
-      {/* Bottom row */}
+      
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
         {[
           { label: 'YouTube', value: '95k views'   },
@@ -218,7 +218,7 @@ function WallBanner( ){
     reader.onload = (ev: ProgressEvent<FileReader>) => {
       const url = (ev.target as FileReader).result as string;
       setWallImage(url);
-      try { localStorage.setItem('dreamengin:wall:image', url); } catch { /* noop */ }
+      try { localStorage.setItem('dreamengin:wall:image', url); } catch {  }
     };
     reader.readAsDataURL(file);
   };
@@ -271,7 +271,7 @@ export default function CoreDream({ face, isOpen, onToggleFace, onClose: _onClos
     );
   }
 
-  // Home face — HomeDreamSurface is full-screen, owns its own header + layout
+  
   return (
     <div style={{ width: '100%', minHeight: '100svh' }}>
       <HomeFace onOpenDrEams={onOpenDrEams} onOpenDreamSpace={onOpenDreamSpace} profile={profile} posts={posts} isAdmin={isAdmin} />

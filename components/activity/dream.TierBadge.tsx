@@ -3,11 +3,11 @@
 import { getTierDescription, getTierDisplayName } from '@/dreamr/activity/scoring';
 import { ActivityTier } from '@/dreamr/activity/types';
 
-// components/activity/dream.TierBadge.tsx
-// Phase 9 — Activity Tier Badge
-//
-// Displays activity tier classification (0-6) as a badge.
-// Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
+
+
+
+
+
 
 
 interface TierBadgeProps {
@@ -20,7 +20,7 @@ export function TierBadge({ tier, showDescription = false, size = 'md' }: TierBa
   const name = getTierDisplayName(tier);
   const description = getTierDescription(tier);
 
-  // Tier colors
+  
   const colorClasses = {
     [ActivityTier.PASSIVE]: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
     [ActivityTier.REFLECTION]: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
@@ -31,7 +31,7 @@ export function TierBadge({ tier, showDescription = false, size = 'md' }: TierBa
     [ActivityTier.NEVER_DONE_BEFORE]: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
   };
 
-  // Size classes
+  
   const sizeClasses = {
     sm: 'text-xs px-2 py-0.5',
     md: 'text-sm px-3 py-1',

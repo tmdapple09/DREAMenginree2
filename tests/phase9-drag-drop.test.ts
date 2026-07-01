@@ -1,9 +1,4 @@
-/**
- * tests/phase9-drag-drop.test.ts
- *
- * Tests for components/dreamengin/dream.CanvasDropZone.tsx — drag-and-drop
- * asset import with file classification.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -13,7 +8,7 @@ import {
   type AssetCategory,
 } from '@/components/dreamengin/dream.CanvasDropZone';
 
-// ─── classifyFile ─────────────────────────────────────────────────────────────
+
 
 describe('CanvasDropZone — classifyFile', () => {
   it('classifies image files', () => {
@@ -50,7 +45,7 @@ describe('CanvasDropZone — classifyFile', () => {
   });
 });
 
-// ─── isAcceptedFile ───────────────────────────────────────────────────────────
+
 
 describe('CanvasDropZone — isAcceptedFile', () => {
   it('accepts supported image formats', () => {
@@ -75,7 +70,7 @@ describe('CanvasDropZone — isAcceptedFile', () => {
   });
 });
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+
 
 describe('CanvasDropZone — constants', () => {
   it('exports the asset import event name', () => {

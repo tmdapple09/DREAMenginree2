@@ -8,20 +8,14 @@ interface UniverseShellProps {
   className?: string;
 }
 
-/**
- * UniverseShell — neutral surface wrapper for universe-mode pages.
- *
- * The starfield background was deliberately removed: only the public landing
- * page renders the universe field (see components/landing/dream.scene.UniverseField.tsx).
- * Inner surfaces stay quiet so user content reads cleanly.
- */
+
 export function UniverseShell({
   children,
   className,
 }: UniverseShellProps) {
   return (
     <div className={cn('relative min-h-screen', className)}>
-      {/* Subtle grid pattern */}
+      
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.02] dark:opacity-[0.03]"
         style={{
@@ -33,7 +27,7 @@ export function UniverseShell({
         }}
       />
 
-      {/* Content */}
+      
       <div className="relative z-10">
         {children}
       </div>

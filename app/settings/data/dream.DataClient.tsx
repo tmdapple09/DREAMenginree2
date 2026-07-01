@@ -4,12 +4,7 @@ import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } 
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
-/**
- * DataClient — wires the "Request Data Export" button to the real API.
- *
- * Constitution Rule 6-7: every visible button must do something real.
- * GET /api/account/export-data returns a JSON snapshot that the browser saves.
- */
+
 
 export default function DataClient( ){
   const [exporting, setExporting] = useState(false);
@@ -26,7 +21,7 @@ export default function DataClient( ){
         return;
       }
       const data = await res.json();
-      // Trigger browser download of the JSON snapshot
+      
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -58,7 +53,7 @@ export default function DataClient( ){
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Export */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Export Your Data</span></div>
           <div className="de-widget-body">
@@ -86,7 +81,7 @@ export default function DataClient( ){
           </div>
         </div>
 
-        {/* Delete My Data */}
+        
         <div className="de-widget" style={{ border: '1px solid rgba(245,158,11,0.3)' }}>
           <div className="de-widget-header" style={{ background: 'rgba(245,158,11,0.05)' }}>
             <AlertTriangle className="w-4 h-4 mr-2" style={{ color: '#f59e0b' }} />
@@ -110,7 +105,7 @@ export default function DataClient( ){
           </div>
         </div>
 
-        {/* Delete Account */}
+        
         <div className="de-widget" style={{ border: '1px solid rgba(220,68,68,0.3)' }}>
           <div className="de-widget-header" style={{ background: 'rgba(220,68,68,0.05)' }}>
             <Trash2 className="w-4 h-4 mr-2" style={{ color: '#dc4444' }} />

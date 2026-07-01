@@ -18,25 +18,9 @@ import {
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-/**
- * NotificationCenter — wired to the real /api/notifications backend.
- *
- * Architecture justification:
- *   - docs/AXIOMS.md: every visible action must do something real.
- *     This component previously showed five hardcoded demo notifications.
- *     It now renders live data from lib/notifications/useNotifications.ts.
- *   - docs/ARCHITECTURE.md §8: Gold / light-blue design system; badge uses
- *     the canonical gold accent to signal an actionable live state.
- *   - docs/LAW.md §3: every visible action must do something real.
- *
- * Can be used standalone (renders its own trigger bell) or in controlled
- * mode when `isOpen` + `onClose` are provided by a parent (e.g.
- * HomeDreamSurface, which controls its own Bell button and badge).
- *
- * Performance: render-on-demand; no render loops. The hook polls every 30 s.
- */
 
-// Icon map
+
+
 
 function NotifIcon({ type }: {type: UiNotificationType}) {
   switch (type) {
@@ -51,7 +35,7 @@ function NotifIcon({ type }: {type: UiNotificationType}) {
   }
 }
 
-// Timestamp formatter
+
 
 function formatTs(ts: Date): string {
   const diff = Date.now() - ts.getTime();
@@ -64,7 +48,7 @@ function formatTs(ts: Date): string {
   return `${d}d ago`;
 }
 
-// Single notification row
+
 
 interface NotifRowProps {
   n: UiNotification;
@@ -89,12 +73,12 @@ function NotifRow({ n, onRead, onDelete }: NotifRowProps) {
       className={`notif-card${!n.read ? ' unread' : ''}`}
       data-type={n.type}
     >
-      {/* Type icon container */}
+      
       <div className="notif-icon" data-type={n.type} style={{ marginTop: 1 }}>
         <NotifIcon type={n.type} />
       </div>
 
-      {/* Body */}
+      
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{
           display: 'flex',
@@ -113,7 +97,7 @@ function NotifRow({ n, onRead, onDelete }: NotifRowProps) {
           }}>
             {n.title}
           </span>
-          {/* Unread dot */}
+          
           {!n.read && (
             <div style={{
               width: 6, height: 6, borderRadius: '50%',
@@ -138,7 +122,7 @@ function NotifRow({ n, onRead, onDelete }: NotifRowProps) {
         </span>
       </div>
 
-      {/* Dismiss button */}
+      
       <button
         type="button"
         aria-label="Dismiss notification"
@@ -170,21 +154,18 @@ function NotifRow({ n, onRead, onDelete }: NotifRowProps) {
   );
 }
 
-// Props
+
 
 interface NotificationCenterProps {
-  /**
-   * Controlled mode: when provided, the component renders only the panel
-   * (no trigger bell). The parent is responsible for showing/hiding.
-   */
+  
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-// Main component
+
 
 export default function NotificationCenter({ isOpen: controlledOpen, onClose }: NotificationCenterProps) {
-  // Self-contained open/close when not controlled externally
+  
   const [selfOpen, setSelfOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
   const open         = isControlled ? controlledOpen : selfOpen;
@@ -202,11 +183,11 @@ export default function NotificationCenter({ isOpen: controlledOpen, onClose }: 
 
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Render
+  
 
   const panel = open && (
     <>
-      {/* Backdrop (only in uncontrolled / standalone mode) */}
+      
       {!isControlled && (
         <div
           aria-hidden="true"
@@ -247,7 +228,7 @@ export default function NotificationCenter({ isOpen: controlledOpen, onClose }: 
           }
         `}</style>
 
-        {/* ── Header ── */}
+        
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -302,7 +283,7 @@ export default function NotificationCenter({ isOpen: controlledOpen, onClose }: 
           </button>
         </div>
 
-        {/* ── Mark all as read ── */}
+        
         {unreadCount > 0 && (
           <button
             type="button"
@@ -328,7 +309,7 @@ export default function NotificationCenter({ isOpen: controlledOpen, onClose }: 
           </button>
         )}
 
-        {/* ── List ── */}
+        
         <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
           {isLoading && (
             <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>

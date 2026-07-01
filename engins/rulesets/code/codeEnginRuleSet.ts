@@ -14,13 +14,7 @@ import type {
     EnginRuleSetParams,
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
-/**
- * CodeEngin Rule-Set
- *
- * Domain behavior for the CodeEngin workspace lives here: editable source files,
- * open tabs, diagnostics, terminal records, notebook cells, CI/security state,
- * and cross-Engin handoff state. Infrastructure still stays outside this file.
- */
+
 
 export type CellLanguage = 'python' | 'javascript' | 'typescript' | 'bash';
 export type CellStatus = 'idle' | 'running' | 'done' | 'error';

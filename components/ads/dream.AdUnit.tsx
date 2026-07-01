@@ -4,11 +4,11 @@ import { AdType } from '@/dreamr/activity/types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-// components/ads/dream.AdUnit.tsx
-// Phase 9 — Ad Unit Component
-//
-// Displays ads with skip credit system and AD badge.
-// Per ACTIVITY_FIRST_PROTOCOL.md §V (Ad System)
+
+
+
+
+
 
 
 interface AdUnitProps {
@@ -49,7 +49,7 @@ export function AdUnit({
       const elapsed = Math.floor((Date.now() - watchStartTime) / 1000);
       setWatchedSeconds(elapsed);
 
-      // Auto-complete when duration reached
+      
       if (elapsed >= duration) {
         handleComplete();
       }
@@ -66,7 +66,7 @@ export function AdUnit({
     if (!canSkip) return;
 
     try {
-      // Call skip credits API
+      
       const res = await fetch('/api/skip-credits/use', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,7 +88,7 @@ export function AdUnit({
     const watchedPct = Math.min(Math.round((watchedSeconds / duration) * 100), 100);
 
     try {
-      // Track ad view
+      
       const res = await fetch('/api/ads/view', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -104,7 +104,7 @@ export function AdUnit({
       if (res.ok) {
         const data = await res.json();
 
-        // Earn skip credits if verified
+        
         if (data.verified && data.ad_view?.id) {
           await fetch('/api/skip-credits/earn', {
             method: 'POST',
@@ -143,7 +143,7 @@ export function AdUnit({
 
   return (
     <div className="bg-white dark:bg-gray-900 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg p-6 space-y-4">
-      {/* AD Badge */}
+      
       <div className="flex items-center justify-between">
         <span className="bg-yellow-400 text-black font-bold px-3 py-1 rounded text-sm">
           AD
@@ -155,7 +155,7 @@ export function AdUnit({
         )}
       </div>
 
-      {/* Ad Content */}
+      
       {adContent.imageUrl && (
         <div className="relative h-48 w-full overflow-hidden rounded">
           <Image
@@ -177,7 +177,7 @@ export function AdUnit({
         </p>
       </div>
 
-      {/* Actions */}
+      
       <div className="flex gap-3">
         {!watchStartTime ? (
           <>
@@ -217,7 +217,7 @@ export function AdUnit({
         )}
       </div>
 
-      {/* Type Label */}
+      
       <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
         {adType === 'rewarded' && 'Rewarded Ad - Earn 3 credits'}
         {adType === 'pre_roll' && 'Pre-Roll Ad - Earn 1 credit'}

@@ -1,56 +1,31 @@
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/channelMetrics.ts.
 
-/**
- * lib/runtime/channelMetrics.ts
- *
- * Per-channel emission and error metrics for the DualRuntimeBridge.
- *
- * Improvements 68-72:
- *  68. recordEmission  — track emission count + optional latency per channel
- *  69. recordError     — track errors per channel
- *  70. getChannelMetrics — returns stats for one channel
- *  71. getAllChannelMetrics — snapshot of all channels
- *  72. resetChannelMetrics — for testing
- *
- * Usage:
- *   import { recordEmission, getChannelMetrics } from '@/engine/runtime/channelMetrics';
- *
- *   // In the bridge emit path:
- *   recordEmission('music', 12);
- *
- *   // In a health dashboard:
- *   const stats = getChannelMetrics('music');
- *   // { emissionCount: 1, errorCount: 0, avgLatencyMs: 12, lastActivityAt: ... }
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const _state = new Map<string, _ChannelState>();
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export interface ChannelMetrics {
-  /** Channel identifier. */
+  
   channel: string;
-  /** Total number of emissions recorded. */
+  
   emissionCount: number;
-  /** Total number of errors recorded on this channel. */
+  
   errorCount: number;
-  /**
-   * Running average of emission latency in ms.
-   * Only meaningful when latency values are passed to recordEmission().
-   * Returns 0 when no latency data has been recorded.
-   */
+  
   avgLatencyMs: number;
-  /** Epoch ms of the last recordEmission or recordError call, or null. */
+  
   lastActivityAt: number | null;
 }
 
@@ -62,7 +37,7 @@ interface _ChannelState {
   lastActivityAt: number | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function _ensure(channel: string): _ChannelState {
   let s = _state.get(channel);
@@ -73,10 +48,7 @@ function _ensure(channel: string): _ChannelState {
   return s;
 }
 
-/**
- * Record an emission on `channel`.
- * Optionally provide a latency measurement in ms to track average latency.
- */
+
 export function recordEmission(channel: string, latencyMs?: number): void {
   const s = _ensure(channel);
   s.emissionCount++;
@@ -87,20 +59,14 @@ export function recordEmission(channel: string, latencyMs?: number): void {
   }
 }
 
-/**
- * Record an error on `channel`.
- * Increments both the error count and the last-activity timestamp.
- */
+
 export function recordError(channel: string): void {
   const s = _ensure(channel);
   s.errorCount++;
   s.lastActivityAt = Date.now();
 }
 
-/**
- * Return the current metrics for a single channel.
- * Returns zeroed metrics when the channel has never been used.
- */
+
 export function getChannelMetrics(channel: string): ChannelMetrics {
   const s = _state.get(channel);
   if (!s) {
@@ -115,26 +81,20 @@ export function getChannelMetrics(channel: string): ChannelMetrics {
   };
 }
 
-/**
- * Return a snapshot of metrics for every channel that has been used.
- * Sorted by emission count descending (most active first).
- */
+
 export function getAllChannelMetrics(): ChannelMetrics[] {
   return Array.from(_state.keys())
     .map(getChannelMetrics)
     .sort((a, b) => b.emissionCount - a.emissionCount);
 }
 
-/**
- * Clear all recorded metrics.
- * Intended for test teardown and explicit reset scenarios.
- */
+
 export function resetChannelMetrics(): void {
   _state.clear();
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

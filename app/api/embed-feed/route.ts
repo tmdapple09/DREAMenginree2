@@ -4,28 +4,7 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/embed-feed/route.ts
- *
- * GET /api/embed-feed
- *
- * Returns the baked embed feed from Supabase `embed_feed_items`, falling back
- * to the static public/feeds/embed-feed.json if the DB is unavailable.
- *
- * Query params:
- *   provider  — filter by provider ('youtube' | 'instagram', default: all)
- *   limit     — max items to return (default 20, max 50)
- *
- * Response: { ok: true, items: EmbedFeedItem[], generated_at: string }
- *
- * No authentication required — the embed feed contains public social content.
- *
- * Architecture justification: render-on-demand bake pattern —
- * docs/ARCHITECTURE.md §10. The CI workflow populates Supabase; this route
- * reads pre-fetched rows with near-zero latency.
- *
- * AXIOM 4 — Security by Default: no secrets are returned in the response.
- */
+
 
 export interface EmbedFeedResponse {
   ok: boolean;
@@ -81,7 +60,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<EmbedFeedRespo
       });
     }
   } catch {
-    // Fall through to JSON fallback
+    
   }
 
   const feed = loadEmbedFeed();

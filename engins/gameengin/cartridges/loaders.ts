@@ -6,12 +6,7 @@ import { CARTRIDGE_MANIFEST, getCartridgeManifest } from './manifest';
 import { defineReactCartridgeLoader } from './reactCartridge';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/gameengin/cartridges/loaders.ts
- *
- * Client-side loader registry — one async loader per cartridge in the
- * repository. Keep in sync with `./manifest.ts`.
- */
+
 
 export interface LoadedCartridgeBundle {
   cartridge: GameCartridge;
@@ -26,7 +21,7 @@ export type CartridgeLoader = () => Promise<GameCartridge>;
 const load = defineReactCartridgeLoader;
 
 export const CARTRIDGE_LOADERS: Readonly<Record<string, CartridgeLoader>> = {
-  // ── Legacy flagships kept ─────────────────────────────────────────────────
+  
   'platformer':            load('platformer',            () => import('@/components/games/madmaxi')),
   'neon-drift':            load('neon-drift',            () => import('@/components/games/dream.NeonDrift')),
   'echo-arena':            load('echo-arena',            () => import('@/components/games/dream.EchoArena')),

@@ -193,7 +193,7 @@ export async function loadRenderWasmAcceleration(
       const { instance } = await WebAssembly.instantiate(binary, {
         env: {
           memory,
-          abort: () => { /* Optional accelerator fallback handles failed modules. */ },
+          abort: () => {  },
         },
       });
 

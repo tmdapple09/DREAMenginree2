@@ -5,7 +5,7 @@ import { Bot, Maximize2, Mic, MicOff, Minimize2, Radio, Send, Sparkles, Volume2,
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-// Browser Speech API type declarations
+
 type SpeechRecognition = {
   continuous: boolean;
   interimResults: boolean;
@@ -75,10 +75,10 @@ export default function DrEamsVoiceAssistant( ){
     scrollToBottom();
   }, [messages]);
 
-  // Listen for iDari activity and surface it inside Dr. Eams chat
+  
   useEffect(() => {
     const unsubscribe = onIdariEvent((evt) => {
-      // Avoid spamming: only surface status + errors, and occasional key logs
+      
       const shouldSurface =
         evt.type === 'idari:status' ||
         evt.status === 'error' ||
@@ -97,13 +97,13 @@ export default function DrEamsVoiceAssistant( ){
     return () => unsubscribe();
   }, []);
 
-  // Initialize speech recognition
+  
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const SpeechRecognitionImpl = ((window as unknown as Record<string, unknown>).SpeechRecognition || (window as unknown as Record<string, unknown>).webkitSpeechRecognition) as (new () => SpeechRecognition) | undefined;
 
-    // Detect browser support once
+    
     setSpeechSupported(!!SpeechRecognitionImpl);
 
     if (SpeechRecognitionImpl) {
@@ -129,12 +129,12 @@ export default function DrEamsVoiceAssistant( ){
         const fullTranscript = (finalTranscript + interimTranscript).toLowerCase();
         setTranscriptBuffer(fullTranscript);
 
-        // Check for wake word
+        
         if (!isListening && (fullTranscript.includes('hey doc') || fullTranscript.includes('hey doctor'))) {
           handleWakeWord();
           setTranscriptBuffer('');
         }
-        // Process command if actively listening
+        
         else if (isListening && finalTranscript.trim()) {
           processVoiceCommand(finalTranscript.trim());
           setTranscriptBuffer('');
@@ -145,7 +145,7 @@ export default function DrEamsVoiceAssistant( ){
         const srEvent = event as Event & { error?: string };
         console.error('Speech recognition error:', srEvent.error);
         if (srEvent.error === 'no-speech') {
-          // Restart recognition if no speech detected
+          
           if (voiceEnabled && !isListening) {
             setTimeout(() => recognition.start(), 100);
           }
@@ -153,7 +153,7 @@ export default function DrEamsVoiceAssistant( ){
       };
 
       recognition.onend = () => {
-        // Auto-restart for wake word detection
+        
         if (voiceEnabled && !isListening) {
           setTimeout(() => {
             try {
@@ -183,7 +183,7 @@ export default function DrEamsVoiceAssistant( ){
     setIsMinimized(false);
     speak('Yes? How can I help you?');
 
-    // Haptic feedback
+    
     if ('vibrate' in navigator) {
       navigator.vibrate([50, 100, 50]);
     }
@@ -224,7 +224,7 @@ export default function DrEamsVoiceAssistant( ){
   const speak = (text: string) => {
     if (!speechEnabled || !synthRef.current) return;
 
-    // Cancel any ongoing speech
+    
     synthRef.current.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
@@ -232,7 +232,7 @@ export default function DrEamsVoiceAssistant( ){
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
-    // Try to use a male voice for Dr. Eams
+    
     const voices = synthRef.current.getVoices();
 
     const maleVoice = voices.find((voice: SpeechSynthesisVoice) =>
@@ -261,7 +261,7 @@ export default function DrEamsVoiceAssistant( ){
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
-    // Execute navigation or action commands
+    
     const response = await executeCommand(command);
 
     const aiMessage: Message = {
@@ -276,7 +276,7 @@ export default function DrEamsVoiceAssistant( ){
     speak(response);
     setIsLoading(false);
 
-    // Stop listening after command execution
+    
     setTimeout(() => {
       setIsListening(false);
     }, 2000);
@@ -315,12 +315,12 @@ export default function DrEamsVoiceAssistant( ){
   const executeCommand = async (command: string): Promise<string> => {
     const lower = command.toLowerCase();
 
-    // iDari command bridge (admin auto-updater / bug monitor)
+    
     if (lower.includes('idari') || lower.includes('inner dreams')) {
       if (lower.includes('bug') || lower.includes('check')) {
         return await callIdari('bug-check');
       }
-      // Everything else treated as an update request
+      
       const cleaned = command
         .replace(/inner\s*dreams\s*[:\-]?/i, '')
         .replace(/please\s+/i, '')
@@ -328,12 +328,12 @@ export default function DrEamsVoiceAssistant( ){
       return await callIdari('update', cleaned || 'Run a safe maintenance update.');
     }
 
-    // Natural-language handoff: "fix the site", "fix a bug", "update the homepage"
+    
     if (/(fix|patch|repair|hotfix|update)\b/.test(lower) && /(bug|error|crash|build|deploy|vercel|site|homepage)/.test(lower)) {
       return await callIdari('update', command);
     }
 
-    // Navigation commands
+    
     if (lower.includes('go to home') || lower.includes('open home') || lower.includes('home page')) {
       router.push('/dreamdmbar');
       return 'Navigating to your home feed now.';
@@ -371,7 +371,7 @@ export default function DrEamsVoiceAssistant( ){
       return 'Opening your profile editor.';
     }
 
-    // Action commands
+    
     if (lower.includes('create post') || lower.includes('new post') || lower.includes('make a post')) {
       return 'To create a post, click the Create button in the navigation bar, or use the floating action button in the corner. What would you like to post about?';
     }
@@ -392,7 +392,7 @@ export default function DrEamsVoiceAssistant( ){
       return 'Refreshing the page now.';
     }
 
-    // Information queries
+    
     if (lower.includes('where am i') || lower.includes('current page') || lower.includes('what page')) {
       const pageName = pathname.split('/').pop() || 'home';
       return `You're currently on the ${pageName} page.`;
@@ -401,7 +401,7 @@ export default function DrEamsVoiceAssistant( ){
       return 'I can help you navigate anywhere on Dreamengin. Try saying "go to home", "open messages", "show analytics", or "go to settings". I can also scroll pages, go back, refresh, and answer questions about the platform. What would you like to do?';
     }
 
-    // Default: call the real Dr. Eams API
+    
     try {
       const res = await fetch('/api/dr-eams/hf', {
         method: 'POST',
@@ -452,7 +452,7 @@ export default function DrEamsVoiceAssistant( ){
   if (!isOpen) {
     return (
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-3">
-        {/* Voice status indicator */}
+        
         {voiceEnabled && (
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full px-4 py-2 shadow-lg flex items-center space-x-2 animate-in slide-in-from-bottom-2">
             <Radio className={`w-4 h-4 ${isListening ? 'text-red-500 animate-pulse' : 'text-green-500'}`} />
@@ -462,7 +462,7 @@ export default function DrEamsVoiceAssistant( ){
           </div>
         )}
 
-        {/* Main button */}
+        
         <button
           onClick={() => setIsOpen(true)}
           className="relative bg-gradient-to-r from-slate-700 to-slate-900 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
@@ -481,7 +481,7 @@ export default function DrEamsVoiceAssistant( ){
     <div className={`fixed bottom-6 right-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl z-50 transition-all ${
       isMinimized ? 'w-80 h-16' : 'w-96 h-[600px]'
     }`}>
-      {/* Header */}
+      
       <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-t-2xl">
         <div className="flex items-center gap-2">
           <Bot className="w-5 h-5" />
@@ -528,7 +528,7 @@ export default function DrEamsVoiceAssistant( ){
 
       {!isMinimized && (
         <>
-          {/* Voice status banner */}
+          
           {voiceEnabled && (
             <div className={`px-4 py-2 text-center text-sm border-b border-slate-200 dark:border-slate-700 ${
               isListening

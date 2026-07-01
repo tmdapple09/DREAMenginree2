@@ -22,34 +22,7 @@ import {
     WorkerJobSystem,
 } from './power-systems';
 
-/**
- * lib/gameengin/core.ts
- *
- * ELITE GAME ENGINE CORE — 2026+
- *
- * DREAMengin's web-native game runtime combining:
- *  • WebGPU-first rendering with Babylon.js 8+
- *  • ECS (Entity-Component-System) architecture
- *  • Adaptive performance budget (60 fps target, scales to 30 gracefully)
- *  • Built-in post-processing pipeline (bloom, motion blur, chromatic aberration)
- *  • Real-time telemetry and thermal throttling detection
- *  • Physics-ready (Babylon.js HavokPlugin + Ammo.js fallback)
- *  • 20 integrated power systems: rollback netcode, GPU compute, advanced physics,
- *    BVH spatial partitioning, worker job system, procedural generation,
- *    spatial audio DSP, deterministic replay, behavior trees, GPU profiler,
- *    typed event bus, animation state machine, LOD, client-side prediction,
- *    resource pools, WGSL shader manager, terrain engine, GI probes,
- *    asset streaming, and physics materials.
- *  • Designed to be a drop-in engine beneath any game component.
- *
- * Usage:
- *   const elite = new EliteGameEngine(canvas);
- *   await elite.init();
- *   elite.onFrame((dt) => { ... });
- *   elite.start();
- *   // cleanup:
- *   elite.dispose();
- */
+
 
 export type EntityId = number;
 
@@ -59,7 +32,7 @@ export interface Component {
 
 export interface System {
   readonly name: string;
-  /** Called every frame. `dt` is milliseconds since last frame. */
+  
   update(world: ECSWorld, dt: number): void;
 }
 
@@ -97,7 +70,7 @@ export class ECSWorld {
     return this._components.get(entity)?.has(type) ?? false;
   }
 
-  /** Returns all entity IDs that have ALL the listed component types. */
+  
   query(...types: string[]): EntityId[] {
     const result: EntityId[] = [];
     for (const id of this._entities) {
@@ -134,23 +107,23 @@ export interface PerformanceBudget {
   postFxEnabled: boolean;
   maxParticles: number;
   lodBias: number;
-  /** Shadow map resolution (px). Default 2048. */
+  
   shadowMapSize?: number;
-  /** MSAA sample count for the DefaultRenderingPipeline. */
+  
   msaaSamples?: number;
-  /** Enable Screen-Space Ambient Occlusion. */
+  
   ssaoEnabled?: boolean;
-  /** SSAO sample radius. */
+  
   ssaoRadius?: number;
-  /** Enable Depth-of-Field (bokeh). */
+  
   dofEnabled?: boolean;
-  /** Enable Screen-Space Reflections. */
+  
   ssrEnabled?: boolean;
-  /** Enable image-sharpening post-process pass. */
+  
   sharpenEnabled?: boolean;
-  /** PBR environment reflection intensity multiplier. */
+  
   environmentIntensity?: number;
-  /** Enable physically-based materials (PBR) when available. */
+  
   pbrEnabled?: boolean;
 }
 
@@ -245,45 +218,45 @@ export type QualityChangeCallback = (budget: PerformanceBudget) => void;
 export class EliteGameEngine {
   readonly world = new ECSWorld();
 
-  /** System 1: Deterministic rollback netcode for lag-free multiplayer. */
+  
   readonly netcode = new RollbackNetcode({ maxRollbackFrames: 8, tickRateHz: 60 });
-  /** System 2: WebGPU compute shader pipeline (physics/particles on GPU). */
+  
   readonly gpuCompute = new ComputeShaderPipeline();
-  /** System 3: Advanced rigid-body physics with continuous collision detection. */
+  
   readonly physics = new AdvancedPhysicsWorld();
-  /** System 4: Octree/BVH spatial partitioning — sub-ms broad-phase queries. */
+  
   readonly spatialIndex = new OctreeBVH({ min: [-2048, -512, -2048], max: [2048, 512, 2048] });
-  /** System 5: Parallel job scheduler — offloads AI/pathfinding from main thread. */
+  
   readonly jobs = new WorkerJobSystem(4);
-  /** System 6: Seeded Simplex-noise procedural world generation. */
+  
   readonly worldGen = new ProceduralWorldGen({ seed: 0xDEADB33F, width: 64, depth: 64 });
-  /** System 7: HRTF spatial audio DSP with convolution reverb + Doppler. */
+  
   readonly audioDSP = new SpatialAudioDSP();
-  /** System 8: Deterministic input replay buffer (ghost/anti-cheat). */
+  
   readonly replay = new ReplayBuffer();
-  /** System 9: Behavior tree engine for advanced NPC AI. */
+  
   readonly behaviorTrees = new BehaviorTreeEngine();
-  /** System 10: GPU/CPU profiler with flame-graph ring buffer. */
+  
   readonly profiler = new GPUProfiler(120);
-  /** System 11: Strongly-typed event bus with history replay. */
+  
   readonly events = new TypedEventBus(512);
-  /** System 12: Animation state machine with blend-tree + IK interface. */
+  
   readonly animSM = new AnimationStateMachine();
-  /** System 13: Distance-based LOD manager with hysteresis. */
+  
   readonly lod = new LODSystem();
-  /** System 14: Client-side prediction with server reconciliation. */
+  
   readonly prediction = new ClientSidePrediction(64);
-  /** System 15: Zero-allocation resource pools (bullets, particles, fx). */
+  
   readonly pools: Map<string, ResourcePool<object>> = new Map();
-  /** System 16: WGSL shader hot-reload and variant compilation cache. */
+  
   readonly shaders = new WGSLShaderManager();
-  /** System 17: Heightmap clipmap LOD terrain engine. */
+  
   readonly terrain = new TerrainEngine(9, 6);
-  /** System 18: Spherical-harmonics GI light probes. */
+  
   readonly giProbes = new GlobalIllumProbes();
-  /** System 19: Priority-queue progressive LOD asset streaming. */
+  
   readonly assets = new AssetStreamManager(4, 256);
-  /** System 20: Physics surface material table (friction/restitution/sound). */
+  
   readonly materials = new PhysicsMaterialSystem();
 
   private canvas: HTMLCanvasElement;
@@ -295,7 +268,7 @@ export class EliteGameEngine {
   private qualityCallbacks: QualityChangeCallback[] = [];
   private currentBudget: PerformanceBudget = { ...QUALITY_PRESETS.high };
 
-  // Frame timing
+  
   private frameCount = 0;
   private droppedFrames = 0;
   private lastFrameTime = 0;
@@ -307,7 +280,7 @@ export class EliteGameEngine {
     this.canvas = canvas;
   }
 
-  /** Full async init — creates WebGPU or WebGL engine + scene. */
+  
   async init(): Promise<void> {
     const { createBabylonEngine } = await import('@/engine/rendering/babylon/createEngine');
     const result = await createBabylonEngine(this.canvas, {
@@ -320,7 +293,7 @@ export class EliteGameEngine {
     const { Scene } = await import('@babylonjs/core');
     this.scene = new Scene(this.engine);
 
-    // Adaptive hardware scaling
+    
     this.engine.setHardwareScalingLevel(1 / this.currentBudget.resolutionScale);
 
     this.setupRenderLoop();
@@ -342,7 +315,7 @@ export class EliteGameEngine {
     return () => { this.qualityCallbacks = this.qualityCallbacks.filter((f) => f !== cb); };
   }
 
-  /** Force quality tier immediately (useful for testing or user setting). */
+  
   setQuality(tier: QualityTier): void {
     this.applyQuality(QUALITY_PRESETS[tier]);
   }
@@ -368,7 +341,7 @@ export class EliteGameEngine {
       const dt = this.lastFrameTime > 0 ? now - this.lastFrameTime : 16.67;
       this.lastFrameTime = now;
 
-      // Track FPS
+      
       const fps = dt > 0 ? 1000 / dt : 60;
       this.fpsHistory.push(fps);
       if (this.fpsHistory.length > 90) this.fpsHistory.shift();
@@ -379,17 +352,17 @@ export class EliteGameEngine {
         this.droppedFrames++;
       }
 
-      // Adaptive quality every 120 frames
+      
       this.qualityCheckTick++;
       if (this.qualityCheckTick >= 120) {
         this.qualityCheckTick = 0;
         this.adaptQuality();
       }
 
-      // ECS tick
+      
       this.world.tick(dt);
 
-      // Frame callbacks
+      
       const telemetry = this.buildTelemetry(fps, dt);
       for (const cb of this.frameCallbacks) cb(dt, telemetry);
 
@@ -445,14 +418,14 @@ export class EliteGameEngine {
   }
 
   start(): void {
-    // Engine runs render loop from init(); start() is a no-op hook
-    // for future hot-reload / pause-resume cycles.
-    // Initialise async power systems (GPU compute + audio) non-blocking.
-    this.gpuCompute.init().catch(() => { /* graceful no-op */ });
+    
+    
+    
+    this.gpuCompute.init().catch(() => {  });
     this.terrain.attachGenerator(this.worldGen);
   }
 
-  /** Aggregate telemetry from all power systems. */
+  
   get powerSystemStats() {
     return {
       netcode:    this.netcode.stats,
@@ -480,7 +453,7 @@ export class EliteGameEngine {
     this.frameCallbacks = [];
     this.qualityCallbacks = [];
     this.world.clear();
-    // Dispose power systems
+    
     this.gpuCompute.dispose();
     this.physics.dispose();
     this.audioDSP.dispose();

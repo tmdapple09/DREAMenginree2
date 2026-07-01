@@ -1,6 +1,6 @@
-/* HomeDream Surface — supplemental styles for the premium home surface */
 
-/* ── Root surface ──────────────────────────────────────────────────────────── */
+
+
 .home-dream-surface {
   position: relative;
   min-height: 100vh;
@@ -26,7 +26,7 @@
   z-index: 1;
 }
 
-/* ── Widget card base ──────────────────────────────────────────────────────── */
+
 .dream-widget-card {
   position: relative;
   background: rgba(17, 29, 48, 0.82);
@@ -49,7 +49,7 @@
   box-shadow: 0 0 0 2px rgba(125, 211, 252, 0.5);
 }
 
-/* ── Widget empty state ────────────────────────────────────────────────────── */
+
 .dream-widget-empty {
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
   min-height: 100px;
 }
 
-/* ── Gold button (persistent nav) ─────────────────────────────────────────── */
+
 .gold-button {
   position: fixed;
   bottom: 28px;
@@ -98,7 +98,7 @@
   transform: translateX(-50%) scale(0.92);
 }
 
-/* Pulse ring on the gold button wrapper when menus are closed */
+
 .gold-button-pulse::after {
   content: '';
   position: absolute;
@@ -114,7 +114,7 @@
   100% { transform: scale(1.55); opacity: 0; }
 }
 
-/* ── Feed onboarding banner ────────────────────────────────────────────────── */
+
 .feed-banner {
   position: sticky;
   top: 0;
@@ -138,7 +138,7 @@
   }
 }
 
-/* ── Daydream dual-menu overlay ────────────────────────────────────────────── */
+
 .daydream-menu-overlay {
   position: fixed;
   inset: 0;
@@ -148,7 +148,7 @@
   -webkit-backdrop-filter: blur(6px);
 }
 
-/* ── Daydream menu panels (left / right) ───────────────────────────────────── */
+
 .daydream-menu-panel {
   position: fixed;
   bottom: 0;
@@ -175,8 +175,8 @@
   border-radius: 20px 0 0 0;
 }
 
-/* ── Dream Rail (v2) — replaces legacy widget-rail from v1-ui ──────────────── */
-/* Previously: components/v1-ui/widget-feed-screen.css .widget-rail            */
+
+
 .dream-rail {
   position: relative;
   background: linear-gradient(
@@ -196,7 +196,7 @@
   border-left: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* ── Dream Rail Icon (v2) — replaces legacy widget-icon from v1-ui ────────── */
+
 .dream-rail-icon {
   transition: all 0.2s ease-in-out;
   touch-action: manipulation;
@@ -208,7 +208,7 @@
   transform: scale(0.95);
 }
 
-/* ── Dream Feed Transition (v2) — replaces legacy feed-area-transition ──────── */
+
 .dream-feed-transition {
   animation: dreamFadeSlide 300ms ease-in-out;
 }

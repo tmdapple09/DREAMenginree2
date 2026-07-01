@@ -28,7 +28,7 @@ function formatSeconds(sec: number ){
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-/** Detect the best supported MIME type — handles Safari (mp4/aac) and other browsers. */
+
 function getBestMimeType(): string {
   const preferred = [
     'audio/mp4;codecs=aac',
@@ -44,7 +44,7 @@ function getBestMimeType(): string {
   }) ?? '';
 }
 
-/** Guess extension from mime type */
+
 function extFromMime(mime: string ){
   if (mime.includes('mp4')) return 'mp4';
   if (mime.includes('webm')) return 'webm';
@@ -71,7 +71,7 @@ export default function SoundRecorder( ){
   const audioElsRef  = useRef<Map<number, HTMLAudioElement>>(new Map());
   const playRafRef   = useRef<number>(0);
 
-  /* draw live waveform */
+  
   const drawWave = useCallback(() => {
     const canvas = canvasRef.current;
     const analyser = analyserRef.current;
@@ -97,7 +97,7 @@ export default function SoundRecorder( ){
     animFrameRef.current = requestAnimationFrame(drawWave);
   }, []);
 
-  /* start recording */
+  
   const startRecording = useCallback(async () => {
     setError(null);
     setPlayError(null);
@@ -132,7 +132,7 @@ export default function SoundRecorder( ){
         setState('recorded');
         if (timerRef.current) clearInterval(timerRef.current);
         cancelAnimationFrame(animFrameRef.current);
-        // draw idle flat line
+        
         const canvas = canvasRef.current;
         if (canvas) {
           const ctx = canvas.getContext('2d');
@@ -167,12 +167,12 @@ export default function SoundRecorder( ){
     }
   }, [drawWave]);
 
-  /* stop recording */
+  
   const stopRecording = useCallback(() => {
     mediaRecRef.current?.stop();
   }, []);
 
-  /* animate playback position */
+  
   const animatePlayback = useCallback((idx: number) => {
     const el = audioElsRef.current.get(idx);
     if (!el) return;
@@ -185,7 +185,7 @@ export default function SoundRecorder( ){
     playRafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  /* play / pause */
+  
   const togglePlay = useCallback((idx: number, rec: Recording) => {
     setPlayError(null);
     if (playingIdx === idx) {
@@ -194,7 +194,7 @@ export default function SoundRecorder( ){
       cancelAnimationFrame(playRafRef.current);
       return;
     }
-    // Pause any currently playing
+    
     audioElsRef.current.forEach((el) => el.pause());
     cancelAnimationFrame(playRafRef.current);
     setPlayingIdx(null);
@@ -231,7 +231,7 @@ export default function SoundRecorder( ){
     });
   }, [playingIdx, animatePlayback]);
 
-  /* seek by clicking on progress bar */
+  
   const handleSeek = useCallback((idx: number, e: React.MouseEvent<HTMLDivElement>) => {
     const el = audioElsRef.current.get(idx);
     if (!el || !el.duration) return;
@@ -241,7 +241,7 @@ export default function SoundRecorder( ){
     setPlayPosition((prev) => ({ ...prev, [idx]: pct }));
   }, []);
 
-  /* delete */
+  
   const deleteRecording = useCallback((idx: number) => {
     setRecordings((prev) => {
       const next = [...prev];
@@ -255,7 +255,7 @@ export default function SoundRecorder( ){
     setPlayPosition((prev) => { const n = { ...prev }; delete n[idx]; return n; });
   }, [playingIdx]);
 
-  /* download */
+  
   const download = useCallback((rec: Recording) => {
     const a = document.createElement('a');
     a.href = rec.url;
@@ -264,18 +264,18 @@ export default function SoundRecorder( ){
     a.click();
   }, []);
 
-  /* send to StarMakerEngin DAW Editor via CustomEvent */
+  
   const sendToEditor = useCallback((rec: Recording) => {
     if (typeof window === 'undefined') return;
     window.dispatchEvent(new CustomEvent('starmaker:load-recording', {
       detail: { blob: rec.blob, name: rec.name, mimeType: rec.mimeType },
     }));
-    // Brief visual confirm — show as toast or just rely on Side B UI changing
+    
   }, []);
 
-  /* cleanup on unmount */
+  
   useEffect(() => {
-    // Capture current recordings in closure for cleanup
+    
     const urlsToRevoke = recordings.map((r) => r.url);
     return () => {
       cancelAnimationFrame(animFrameRef.current);
@@ -289,7 +289,7 @@ export default function SoundRecorder( ){
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-      {/* Record / Stop button */}
+      
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
         {state === 'recording' ? (
           <button type="button" onClick={stopRecording}
@@ -318,14 +318,14 @@ export default function SoundRecorder( ){
         </p>
       </div>
 
-      {/* Live waveform canvas */}
+      
       <canvas ref={canvasRef} width={320} height={48} style={{
         width: '100%', height: 48,
         background: 'rgba(160,195,240,0.07)', borderRadius: 10,
         border: '1px solid rgba(160,195,240,0.2)', display: 'block',
       }} />
 
-      {/* Recording error */}
+      
       {error && (
         <div style={{
           padding: '10px 14px', borderRadius: 10, fontSize: 12, fontWeight: 600,
@@ -336,7 +336,7 @@ export default function SoundRecorder( ){
         </div>
       )}
 
-      {/* Playback error */}
+      
       {playError && (
         <div style={{
           padding: '10px 14px', borderRadius: 10, fontSize: 12, fontWeight: 600,
@@ -347,7 +347,7 @@ export default function SoundRecorder( ){
         </div>
       )}
 
-      {/* Recordings list */}
+      
       {recordings.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{
@@ -372,9 +372,9 @@ export default function SoundRecorder( ){
                 border: `1px solid ${isPlaying ? 'rgba(42,138,184,0.5)' : 'rgba(160,195,240,0.2)'}`,
                 transition: 'border-color 0.2s',
               }}>
-                {/* Top row: play + info + actions */}
+                
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  {/* Play/Pause button */}
+                  
                   <button type="button" onClick={() => togglePlay(idx, rec)}
                     style={{
                       width: 36, height: 36, borderRadius: '50%', border: 'none',
@@ -390,7 +390,7 @@ export default function SoundRecorder( ){
                     }
                   </button>
 
-                  {/* Name + duration */}
+                  
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--de-heading)' }}>{rec.name}</div>
                     <div style={{ fontSize: 11, color: 'var(--de-text-dim)', display: 'flex', gap: 8 }}>
@@ -403,7 +403,7 @@ export default function SoundRecorder( ){
                     </div>
                   </div>
 
-                  {/* Send to Editor */}
+                  
                   <button type="button" onClick={() => sendToEditor(rec)}
                     title="Send to DAW Editor (Side B)"
                     style={{
@@ -415,14 +415,14 @@ export default function SoundRecorder( ){
                     <Zap className="w-3 h-3" /> DAW
                   </button>
 
-                  {/* Download */}
+                  
                   <button type="button" onClick={() => download(rec)}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6 }}
                     aria-label="Download recording">
                     <Download className="w-4 h-4" style={{ color: 'var(--de-accent)' }} />
                   </button>
 
-                  {/* Delete */}
+                  
                   <button type="button" onClick={() => deleteRecording(idx)}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6 }}
                     aria-label="Delete recording">
@@ -430,7 +430,7 @@ export default function SoundRecorder( ){
                   </button>
                 </div>
 
-                {/* Scrubable progress bar */}
+                
                 <div
                   role="slider"
                   aria-label={`Playback position for ${rec.name}`}

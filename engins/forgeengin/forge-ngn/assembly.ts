@@ -1,25 +1,14 @@
 import type { PieceManifest } from './piece-registry';
 import { getPiece } from './piece-registry';
 
-/**
- * NGN Engin — Engine Assembly
- *
- * EngineAssembly CRUD helpers + JSON serialization.
- * An assembly is the JSON blueprint saved by the visual builder.
- *
- * Rules:
- *  - Minimum 3 pieces (at least one source, one processor, one output)
- *  - Maximum 30 pieces per engine
- *
- * Feature 41.
- */
+
 
 export interface PlacedPiece {
-  /** Unique instance id (UUID) */
+  
   instanceId: string;
-  /** Piece manifest id, e.g. 'audio.waveform-zoom' */
+  
   pieceId: string;
-  /** Canvas position */
+  
   x: number;
   y: number;
 }

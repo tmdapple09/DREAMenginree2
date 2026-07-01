@@ -3,31 +3,20 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * components/gameengin/dream.CrashReportModal.tsx
- *
- * Player-facing crash window described in the Brain directive:
- *   "When a cartridge crashes or hits a critical bug, a window opens. The
- *    player can send a statement directly to Maestro describing what happened.
- *    That feedback goes straight into the Brain — into the Project History
- *    for that cartridge."
- *
- * Posts to POST /api/gameengin/crash-report. The endpoint enforces the
- * Two-Project Rule (only active cartridges accepted) and the 16 KB cap.
- */
 
-/** Mirrors `CRASH_REPORT_MAX_BYTES` in lib/gameengin/brain-reader.ts. */
+
+
 export const CRASH_REPORT_MAX_BYTES = 16 * 1024;
-/** Hard cap on the textarea so the player can't paste a megabyte of text. */
+
 const STATEMENT_MAX_CHARS = 4000;
 
 export interface CrashContext {
   cartridgeId: string;
   cartridgeLabel?: string;
   version?: string;
-  /** Captured at the moment the modal opened. */
+  
   error?: { name?: string; message?: string; stack?: string };
-  /** Free-form gameplay context (current scene, last input, backend, save schema, recent spans, etc). */
+  
   gameplay?: Record<string, unknown>;
 }
 
@@ -35,9 +24,9 @@ export interface CrashReportModalProps {
   open: boolean;
   context: CrashContext | null;
   onClose: () => void;
-  /** Override the POST target — primarily for tests. */
+  
   endpoint?: string;
-  /** Override fetch — primarily for tests. */
+  
   fetcher?: typeof fetch;
 }
 
@@ -59,18 +48,18 @@ export default function CrashReportModal({
   const headingId = useId();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // Reset whenever the modal is freshly opened so a previous "sent" state
-  // doesn't leak into the next crash.
+  
+  
   useEffect(() => {
     if (open) {
       setStatement('');
       setSend({ kind: 'idle' });
-      // Defer focus until the textarea is mounted.
+      
       requestAnimationFrame(() => textareaRef.current?.focus());
     }
   }, [open]);
 
-  // Esc to close.
+  
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent ){
@@ -115,7 +104,7 @@ export default function CrashReportModal({
       try {
         const j = await res.json() as { error?: string };
         if (j.error) msg = j.error;
-      } catch { /* keep default */ }
+      } catch {  }
       setSend({ kind: 'error', message: msg });
     } catch (err: unknown) {
       setSend({

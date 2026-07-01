@@ -35,7 +35,7 @@ type RuntimeState = {
   reaction: number;
 };
 
-const DR_EAMS_HEIGHT = 0.9144; // 3 feet
+const DR_EAMS_HEIGHT = 0.9144; 
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -179,7 +179,7 @@ async function buildDrEams(scene: Scene, canvas: HTMLCanvasElement): Promise<{ d
   const scaledBounds = getBounds(meshes);
   root.position.y -= scaledBounds.min.y;
 
-  // Cache the floor Y offset so getBounds is not called every frame.
+  
   const floorYOffset = root.position.y;
 
   const fakeGlow = createFakeVisorGlow(root, scene);
@@ -227,7 +227,7 @@ async function buildDrEams(scene: Scene, canvas: HTMLCanvasElement): Promise<{ d
     root.rotation.x += ((idlePitch + state.targetPitch) - root.rotation.x) * Math.min(1, dt * 3.5);
     root.rotation.z += (bodyRoll - root.rotation.z) * Math.min(1, dt * 3.5);
 
-    // Use the pre-computed floor offset instead of recalculating bounds every frame.
+    
     root.position.y = floorYOffset + bodyBob;
 
     if (state.reaction > 0) {
@@ -332,7 +332,7 @@ export default function DrEamsScene( ){
           console.error('Failed to load Dr. Eams GLB:', error);
         });
 
-      // Apply God Tier settings once scene is ready
+      
       const gtInit = godTierRef.current.update({
         device:  defaultDeviceSignals(),
         runtime: defaultRuntimeMetrics(),
@@ -363,7 +363,7 @@ export default function DrEamsScene( ){
         }
       });
     }).catch(() => {
-      // Engine creation failed — canvas stays blank; no crash.
+      
     });
 
     return () => {

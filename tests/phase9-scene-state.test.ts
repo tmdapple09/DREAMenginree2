@@ -1,8 +1,4 @@
-/**
- * tests/phase9-scene-state.test.ts
- *
- * Tests for lib/scene/sceneState.ts — persistent scene state.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -11,7 +7,7 @@ import {
   type SceneSnapshot,
 } from '@/engine/scene/sceneState';
 
-// ─── Default snapshot ─────────────────────────────────────────────────────────
+
 
 describe('Scene State — createDefaultSnapshot', () => {
   it('returns a valid default snapshot', () => {
@@ -25,7 +21,7 @@ describe('Scene State — createDefaultSnapshot', () => {
   });
 });
 
-// ─── Scene diffing ────────────────────────────────────────────────────────────
+
 
 describe('Scene State — scenesAreDifferent', () => {
   const makeSnapshot = (overrides?: Partial<SceneSnapshot>): SceneSnapshot => ({

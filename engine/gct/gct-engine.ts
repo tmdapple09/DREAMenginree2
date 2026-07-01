@@ -1,24 +1,24 @@
 export interface GCTConfig {
-  /** Use WebGPU if available (falls back to CPU). */
+  
   preferGPU?: boolean;
-  /** Block size for GPU kernels (default 256). */
+  
   blockSize?: number;
-  /** Number of parallel templates to search. */
+  
   numTemplates?: number;
 }
 
 export interface Template {
   id: string;
-  /** Flattened vector values. */
+  
   data: Float32Array;
   metadata?: Record<string, unknown>;
 }
 
 export interface GCTMatch {
   templateId: string;
-  /** Index in data where match was found. */
+  
   position: number;
-  /** Similarity score in [0..1]. */
+  
   correlation: number;
 }
 
@@ -28,9 +28,7 @@ type PreparedInput = {
   threshold: number;
 };
 
-/**
- * GPU-accelerated Global Correlation Transform (GCT) engine for Web apps.
- */
+
 export class GCTEngine {
   private config: Required<GCTConfig>;
   private gpuAvailable = false;
@@ -46,7 +44,7 @@ export class GCTEngine {
     };
   }
 
-  /** Detect and initialize WebGPU, if available. */
+  
   async init(): Promise<void> {
     if (!this.config.preferGPU || typeof navigator === 'undefined' || !("gpu" in navigator)) {
       this.gpuAvailable = false;
@@ -76,9 +74,7 @@ export class GCTEngine {
     }
   }
 
-  /**
-   * Search data for template matches with normalized cross-correlation.
-   */
+  
   async search(data: Float32Array, templates: Template[], threshold = 0.8): Promise<GCTMatch[]> {
     const prepared = this.prepareInputs(data, templates, threshold);
     if (!prepared) return [];
@@ -87,7 +83,7 @@ export class GCTEngine {
       try {
         return await this.searchGPU(data, prepared.templates, prepared.templateLength, prepared.threshold);
       } catch {
-        // Transparent fallback if WebGPU path fails at runtime.
+        
         return this.searchCPU(data, prepared.templates, prepared.templateLength, prepared.threshold);
       }
     }

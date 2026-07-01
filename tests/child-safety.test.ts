@@ -1,14 +1,14 @@
-// tests/child-safety.test.ts
-// Unit tests for lib/child-safety/childSafetyDetector.ts
-// Validates: CSAM text detection, grooming/predator detection, hash matching,
-// zero-tolerance logic, and clean content pass-through.
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import { scanContent, isZeroTolerance } from '@/engine/safety/child-safety/childSafetyDetector';
 
-// ============================================================================
-// CLEAN CONTENT — should never flag innocent text
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — clean content', () => {
   it('returns clean result for ordinary post text', () => {
@@ -37,15 +37,15 @@ describe('childSafetyDetector — clean content', () => {
   });
 
   it('returns clean result for a normal question about age in professional context', () => {
-    // "How old is the company?" — should not trigger generic age probe since it lacks minor context
+    
     const result = scanContent({ text: 'How old is this startup?' });
     expect(result.flagged).toBe(false);
   });
 });
 
-// ============================================================================
-// CSAM TEXT DETECTION — rule C22_CSAM
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — CSAM text signals', () => {
   it('flags explicit CSAM keyword', () => {
@@ -91,9 +91,9 @@ describe('childSafetyDetector — CSAM text signals', () => {
   });
 });
 
-// ============================================================================
-// GROOMING / PREDATOR DETECTION — rule C31_GROOMING
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — grooming / predator signals', () => {
   it('flags secrecy coercion', () => {
@@ -171,18 +171,18 @@ describe('childSafetyDetector — grooming / predator signals', () => {
 
   it('single low-confidence grooming signal is flagged but not necessarily zero-tolerance', () => {
     const result = scanContent({ text: "How old are you?" });
-    // Should flag (grooming signal) but confidence may be below zero-tolerance threshold
+    
     expect(result.flagged).toBe(true);
     expect(result.rule_code).toBe('C31_GROOMING');
-    // Zero-tolerance requires confidence >= 0.85 for grooming
+    
     expect(result.confidence).toBeLessThan(0.85);
     expect(isZeroTolerance(result)).toBe(false);
   });
 });
 
-// ============================================================================
-// CSAM takes precedence over GROOMING when both are detected
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — CSAM takes precedence', () => {
   it('returns C22_CSAM even when grooming signals are also present', () => {
@@ -194,9 +194,9 @@ describe('childSafetyDetector — CSAM takes precedence', () => {
   });
 });
 
-// ============================================================================
-// HASH-BASED CSAM DETECTION
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — hash matching', () => {
   const knownBadHashes = new Set([
@@ -269,9 +269,9 @@ describe('childSafetyDetector — hash matching', () => {
   });
 });
 
-// ============================================================================
-// isZeroTolerance
-// ============================================================================
+
+
+
 
 describe('isZeroTolerance', () => {
   it('returns false for clean result', () => {
@@ -295,9 +295,9 @@ describe('isZeroTolerance', () => {
   });
 });
 
-// ============================================================================
-// LAYER 4 — LLM image classification integration in scanContent
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — Layer 4 LLM image classification', () => {
   it('passes through clean result when imageClassification is absent', () => {
@@ -369,16 +369,16 @@ describe('childSafetyDetector — Layer 4 LLM image classification', () => {
   });
 });
 
-// ============================================================================
-// imageClassifier — parseVerdict / classifyImage (pure logic tests, no API)
-// ============================================================================
+
+
+
 
 import { classifyImage } from '@/engine/safety/child-safety/imageClassifier';
 
 describe('imageClassifier — classifyImage graceful degradation', () => {
   it('returns skipped result when GROQ_API_KEY is missing', async () => {
-    // In the test environment GROQ_API_KEY is not set
-    const result = await classifyImage('dGVzdA=='); // base64 "test"
+    
+    const result = await classifyImage('dGVzdA=='); 
     expect(result.skipped).toBe(true);
     expect(result.flagged).toBe(false);
   });
@@ -397,13 +397,13 @@ describe('imageClassifier — classifyImage graceful degradation', () => {
   });
 });
 
-// ============================================================================
-// scanMediaUrlsForChildSafety — real-time URL scanner (no network calls)
-// ============================================================================
+
+
+
 
 import { scanMediaUrlsForChildSafety, isImageUrl } from '@/engine/safety/child-safety/scanMediaUrls';
 
-// Minimal fake Supabase client that returns an empty hash registry
+
 const emptySupabase = {
   from: (_table: string) => ({
     select: (_cols: string) => ({ data: [], error: null }),
@@ -418,7 +418,7 @@ describe('scanMediaUrlsForChildSafety — no-op cases', () => {
   });
 
   it('returns CLEAN when all URLs fail to fetch (graceful degradation)', async () => {
-    // These will fail to fetch (no real network in test) — should never block
+    
     const result = await scanMediaUrlsForChildSafety({
       urls: ['https://example.invalid/photo.jpg'],
       supabase: emptySupabase,
@@ -438,7 +438,7 @@ describe('scanMediaUrlsForChildSafety — no-op cases', () => {
 
 describe('scanMediaUrlsForChildSafety — hash registry check', () => {
   it('returns CSAM when image hash is in the known-bad registry', async () => {
-    // Use a fake hash that matches what sha256('') would produce
+    
     const emptyBufHash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
     const supabaseWithHash = {
       from: (_table: string) => ({
@@ -449,11 +449,11 @@ describe('scanMediaUrlsForChildSafety — hash registry check', () => {
       }),
     };
 
-    // Serve a tiny valid JPEG (1-pixel) from a data URL via a local mock
-    // Since we can't make real HTTP requests in tests, we verify the hash
-    // path by checking that scanContent propagates hash match properly.
-    // The integration is covered by the Layer 1 tests in childSafetyDetector.
-    // Here we verify the supabase client is wired correctly:
+    
+    
+    
+    
+    
     const { scanContent: sc } = await import('@/engine/safety/child-safety/childSafetyDetector');
     const result = sc({
       mediaHashes: [emptyBufHash],
@@ -474,9 +474,9 @@ describe('isImageUrl', () => {
   it('returns false for malformed url', () => expect(isImageUrl('not-a-url')).toBe(false));
 });
 
-// ============================================================================
-// C32_MINOR_IMAGE — Layer 0: minor-to-adult image blocking
-// ============================================================================
+
+
+
 
 describe('childSafetyDetector — C32_MINOR_IMAGE (minor-to-adult image blocking)', () => {
   it('blocks image from 15-year-old to 25-year-old adult', () => {
@@ -557,7 +557,7 @@ describe('childSafetyDetector — C32_MINOR_IMAGE (minor-to-adult image blocking
   });
 
   it('Layer 0 (minor image) takes precedence over all other layers', () => {
-    // Even if the text also has CSAM signals, Layer 0 fires first
+    
     const knownBadHashes = new Set(['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']);
     const result = scanContent({
       text: 'I have csam to share',
@@ -567,7 +567,7 @@ describe('childSafetyDetector — C32_MINOR_IMAGE (minor-to-adult image blocking
       mediaHashes: ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'],
       knownBadHashes,
     });
-    // Layer 0 fires first
+    
     expect(result.rule_code).toBe('C32_MINOR_IMAGE');
     expect(result.category).toBe('MINOR_IMAGE');
   });
@@ -585,16 +585,16 @@ describe('childSafetyDetector — C32_MINOR_IMAGE (minor-to-adult image blocking
     const result = scanContent({
       text: 'Here is my photo',
       hasImageAttachment: true,
-      // no senderAge or recipientAge
+      
     });
-    // Without age info, cannot block on age grounds
+    
     expect(result.flagged).toBe(false);
   });
 });
 
-// ============================================================================
-// messageContextChecker — minor-adult conversation context evaluation
-// ============================================================================
+
+
+
 
 import { evaluateMessageContext } from '@/engine/safety/child-safety/messageContextChecker';
 
@@ -685,7 +685,7 @@ describe('messageContextChecker — suspicious / inappropriate contexts', () => 
   });
 
   it('returns safe when suspicious signal present but strong safe context', () => {
-    // A coach saying "just between us" about team strategy is monitored, not blocked
+    
     const result = evaluateMessageContext({
       minorAge: 16,
       adultAge: 35,
@@ -695,14 +695,14 @@ describe('messageContextChecker — suspicious / inappropriate contexts', () => 
         { senderIsMinor: true, text: 'Got it coach, thanks for the tip.' },
       ],
     });
-    // Should be monitor (context is safe — coach + minor suspicious signal)
+    
     expect(['safe', 'monitor']).toContain(result.verdict);
     expect(result.adultPermanentBanRecommended).toBe(false);
   });
 
   it('returns safe when context is not a minor-adult pair', () => {
     const result = evaluateMessageContext({
-      minorAge: 25, // Not a minor
+      minorAge: 25, 
       adultAge: 30,
       recentMessages: [{ senderIsMinor: false, text: 'Hello' }],
     });
@@ -733,7 +733,7 @@ describe('messageContextChecker — repeat adult offender stricter treatment', (
       ],
     });
 
-    // With prior flags, should be more severe or equal
+    
     const verdictSeverity = (v: string) =>
       v === 'block' ? 3 : v === 'flag' ? 2 : v === 'monitor' ? 1 : 0;
     expect(verdictSeverity(priorFlagsResult.verdict)).toBeGreaterThanOrEqual(

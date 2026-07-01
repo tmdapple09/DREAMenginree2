@@ -1,20 +1,16 @@
 import { getWidgetTypesForConnector } from '@/engine/widgets/widgetRegistry';
 
-// lib/connectors/installFlow.ts
-// Core logic for the Connect → Widget Install flow (req 1-40, 71-90)
-//
-// This module is pure (no React, no DOM) so it is fully unit-testable.
+
+
+
+
 
 export interface SlotGrid {
   totalSlots: number;
   filledSlots: Set<number>;
 }
 
-/**
- * Find the best empty slot for a new widget.
- * Priority: nearest to centre (req 32).
- * Returns -1 if no empty slot exists (req 33).
- */
+
 export function findBestSlot(grid: SlotGrid): number {
   const { totalSlots, filledSlots } = grid;
   const empty: number[] = [];
@@ -23,15 +19,15 @@ export function findBestSlot(grid: SlotGrid): number {
   }
   if (empty.length === 0) return -1;
 
-  // "Center" is (totalSlots - 1) / 2
+  
   const centre = (totalSlots - 1) / 2;
   empty.sort((a, b) => Math.abs(a - centre) - Math.abs(b - centre));
   return empty[0];
 }
 
-// In-memory store used as primary; persisted to localStorage when available.
 
-const SESSION_DISMISSED = new Set<string>(); // req 10: no repeats in same session
+
+const SESSION_DISMISSED = new Set<string>(); 
 
 function suggestedKey(): string {
   return 'de_suggested_widgets';
@@ -47,7 +43,7 @@ export interface SuggestedWidget {
   addedAt: number;
 }
 
-// In-memory stores (primary — always authoritative; localStorage is a mirror)
+
 const _suggestedInMemory: SuggestedWidget[] = [];
 const _permanentlyDismissedInMemory = new Set<string>();
 
@@ -63,7 +59,7 @@ function loadSuggested(): SuggestedWidget[] {
   if (!hasLocalStorage()) return [..._suggestedInMemory];
   try {
     const persisted: SuggestedWidget[] = JSON.parse(localStorage.getItem(suggestedKey()) ?? '[]');
-    // Merge persisted into in-memory (de-dup)
+    
     for (const p of persisted) {
       if (!_suggestedInMemory.some((s) => s.widgetId === p.widgetId && s.connectorId === p.connectorId)) {
         _suggestedInMemory.push(p);
@@ -76,13 +72,13 @@ function loadSuggested(): SuggestedWidget[] {
 }
 
 function saveSuggested(items: SuggestedWidget[]): void {
-  // Always keep in-memory store in sync
+  
   _suggestedInMemory.length = 0;
   _suggestedInMemory.push(...items);
   if (!hasLocalStorage()) return;
   try {
     localStorage.setItem(suggestedKey(), JSON.stringify(items));
-  } catch { /* quota exceeded or private mode */ }
+  } catch {  }
 }
 
 function loadPermanentlyDismissed(): Set<string> {
@@ -102,10 +98,10 @@ function savePermanentlyDismissed(ids: Set<string>): void {
   if (!hasLocalStorage()) return;
   try {
     localStorage.setItem(permanentDismissKey(), JSON.stringify([...ids]));
-  } catch { /* ignore */ }
+  } catch {  }
 }
 
-/** Queue a widget in "Suggested Widgets" (req 8, 34-35) */
+
 export function queueSuggestedWidget(
   widgetId: string,
   connectorId: string,
@@ -117,16 +113,16 @@ export function queueSuggestedWidget(
     items.push({ widgetId, connectorId, connectorName, addedAt: Date.now() });
     saveSuggested(items);
   }
-  SESSION_DISMISSED.add(widgetId); // req 10: don't show again this session
+  SESSION_DISMISSED.add(widgetId); 
 }
 
-/** Get all currently queued suggestions (req 35) */
+
 export function getSuggestedWidgets(): SuggestedWidget[] {
   const dismissed = loadPermanentlyDismissed();
   return loadSuggested().filter((s) => !dismissed.has(s.widgetId));
 }
 
-/** Permanently dismiss a suggestion (req 9) */
+
 export function dismissSuggestedWidget(widgetId: string): void {
   const dismissed = loadPermanentlyDismissed();
   dismissed.add(widgetId);
@@ -137,21 +133,18 @@ export function dismissSuggestedWidget(widgetId: string): void {
   saveSuggested(items);
 }
 
-/** Remove a widget from the suggested queue (after it has been installed) */
+
 export function removeSuggestedWidget(widgetId: string): void {
   const items = loadSuggested().filter((s) => s.widgetId !== widgetId);
   saveSuggested(items);
 }
 
-/** Whether this widget has been shown/dismissed in the current session (req 10) */
+
 export function isSessionDismissed(widgetId: string): boolean {
   return SESSION_DISMISSED.has(widgetId);
 }
 
-/**
- * Reset all in-memory state — for use in tests only.
- * @internal
- */
+
 export function _resetInstallFlowState(): void {
   _suggestedInMemory.length = 0;
   _permanentlyDismissedInMemory.clear();
@@ -161,7 +154,7 @@ export function _resetInstallFlowState(): void {
   if (_autoLockTimer !== null) { clearTimeout(_autoLockTimer); _autoLockTimer = null; }
 }
 
-// Prompts deferred because a menu / popup is open are queued here.
+
 
 interface DeferredPrompt {
   connectorId: string;
@@ -198,19 +191,16 @@ export function peekPlacementQueue(): QueuedPlacement[] {
   return [..._placementQueue];
 }
 
-const AUTO_LOCK_DELAY_MS = 1200; // req 88: consistent 1.2s
+const AUTO_LOCK_DELAY_MS = 1200; 
 
 let _autoLockTimer: ReturnType<typeof setTimeout> | null = null;
 
-/**
- * Schedule auto-lock to LOCKED / safe mode after 1.2 s.
- * Cancelled if called during drag, menu-animation, or keyboard (req 85-87).
- */
+
 export function scheduleAutoLock(
   onLock: () => void,
   opts: { isDragging?: boolean; isMenuAnimating?: boolean; isKeyboardOpen?: boolean } = {},
 ): void {
-  if (opts.isDragging || opts.isMenuAnimating || opts.isKeyboardOpen) return; // req 85-87
+  if (opts.isDragging || opts.isMenuAnimating || opts.isKeyboardOpen) return; 
 
   if (_autoLockTimer !== null) clearTimeout(_autoLockTimer);
   _autoLockTimer = setTimeout(() => {
@@ -227,30 +217,26 @@ export function cancelAutoLock(): void {
 }
 
 export interface ConnectSuccessOptions {
-  /** Whether a menu is currently open (req 16) */
+  
   isMenuOpen?: boolean;
-  /** Whether a popup (Messaging/DrEams) is open (req 17) */
+  
   isPopupOpen?: boolean;
-  /** Whether a prompt is already visible (req 18) */
+  
   isPromptVisible?: boolean;
-  /** Whether user is in NAV mode (req 15) */
+  
   isNavMode?: boolean;
 }
 
 export interface ConnectSuccessResult {
-  /** Widget types associated with this connector (req 5, 12) */
+  
   suggestedWidgetTypes: ReturnType<typeof getWidgetTypesForConnector>;
-  /** Whether the prompt should be shown now or deferred */
+  
   shouldShowPromptNow: boolean;
-  /** Whether the prompt was deferred */
+  
   deferred: boolean;
 }
 
-/**
- * Called when a connector reports a successful auth.
- * Decides whether to show the install prompt immediately or defer it (req 11-20).
- * Caller must separately trigger the "Connected to {Service}" toast (req 11).
- */
+
 export function handleConnectSuccess(
   connectorId: string,
   connectorName: string,
@@ -259,14 +245,14 @@ export function handleConnectSuccess(
 
   const suggestedWidgetTypes = getWidgetTypesForConnector(connectorId);
 
-  // req 16: defer if menu open
-  // req 17: defer if popup open
+  
+  
   if (opts.isMenuOpen || opts.isPopupOpen) {
     deferPrompt(connectorId, connectorName);
     return { suggestedWidgetTypes, shouldShowPromptNow: false, deferred: true };
   }
 
-  // req 18: only one prompt at a time
+  
   if (opts.isPromptVisible) {
     deferPrompt(connectorId, connectorName);
     return { suggestedWidgetTypes, shouldShowPromptNow: false, deferred: true };
@@ -275,19 +261,12 @@ export function handleConnectSuccess(
   return { suggestedWidgetTypes, shouldShowPromptNow: true, deferred: false };
 }
 
-/**
- * Called when the user taps "Not now" on the install prompt (req 7-8).
- * Adds to Suggested Widgets so nothing is lost; never nags again this session.
- */
+
 export function handleDismissPrompt(widgetId: string, connectorId: string, connectorName: string): void {
   queueSuggestedWidget(widgetId, connectorId, connectorName);
 }
 
-/**
- * Called when the user taps "Add" (req 21).
- * Returns the slot to place into, or -1 if no slots available.
- * Schedules auto-lock after installation (req 83).
- */
+
 export function handleAddWidget(
   widgetId: string,
   connectorId: string,
@@ -299,36 +278,28 @@ export function handleAddWidget(
   removeSuggestedWidget(widgetId);
 
   const slot = findBestSlot(grid);
-  const needsPlacementMode = slot === -1; // req 33
+  const needsPlacementMode = slot === -1; 
 
   if (needsPlacementMode) {
     enqueueForPlacement(widgetId, connectorId, connectorName);
   } else {
-    scheduleAutoLock(onAutoLock, opts); // req 83
+    scheduleAutoLock(onAutoLock, opts); 
   }
 
   return { slot, needsPlacementMode };
 }
 
-/**
- * Called when the user selects "Later" in the no-slots flow (req 34).
- */
+
 export function handlePlaceLater(widgetId: string, connectorId: string, connectorName: string): void {
   queueSuggestedWidget(widgetId, connectorId, connectorName);
 }
 
-/**
- * Called when the user finishes placement mode (Done) (req 36-40).
- * scheduleAutoLock to LOCKED (req 40).
- */
+
 export function handlePlacementDone(onAutoLock: () => void, opts: Parameters<typeof scheduleAutoLock>[1] = {}): void {
   scheduleAutoLock(onAutoLock, opts);
 }
 
-/**
- * Called when the user cancels placement mode (req 37).
- * Returns to LOCKED mode (req 40).
- */
+
 export function handlePlacementCancel(onAutoLock: () => void): void {
   scheduleAutoLock(onAutoLock);
 }

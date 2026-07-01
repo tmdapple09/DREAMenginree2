@@ -48,7 +48,7 @@ export default async function CodeDaydreamPage( ){
         />
 
         <div className="de-auth-content space-y-4">
-          {/* Intro */}
+          
           <div className="de-auth-hero">
             <div style={{ position: 'relative', zIndex: 1 }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--de-heading)', marginBottom: 6 }}>Code Vault</h2>
@@ -58,7 +58,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Code Vault: Project & File Browser ── */}
+          
           <div className="de-widget" style={{ borderColor: 'rgba(99,102,241,0.25)' }}>
             <div className="de-widget-header">
               <FolderOpen className="w-4 h-4" style={{ color: '#6366f1' }} />
@@ -69,7 +69,7 @@ export default async function CodeDaydreamPage( ){
               <div style={{ fontSize: 12, color: 'var(--de-text-dim)', lineHeight: 1.6, marginBottom: 12 }}>
                 Your saved code projects live here. Click any project to open it in CodeEngin for editing, running, and previewing.
               </div>
-              {/* Example saved projects — these load from CodeEngin on Side B */}
+              
               {[
                 { emoji: '🎮', name: 'game-engine-mod',    lang: 'TypeScript', updated: 'Today',      preview: 'game'   },
                 { emoji: '🌐', name: 'personal-site',      lang: 'JavaScript', updated: 'Yesterday',  preview: 'webapp' },
@@ -101,7 +101,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Zip / File Import ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <Upload className="w-4 h-4" style={{ color: '#6366f1' }} />
@@ -126,7 +126,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Preview Types ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <FileCode2 className="w-4 h-4" style={{ color: '#6366f1' }} />
@@ -156,7 +156,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 1: Quick Links ── */}
+          
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
             {[
               { emoji: '💻', label: 'Open Codespace',  href: '/codespace',   color: '#6366f1' },
@@ -173,7 +173,7 @@ export default async function CodeDaydreamPage( ){
             ))}
           </div>
 
-          {/* ── Feature 2: CI/CD Pipeline ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">CI/CD Pipeline</span>
@@ -197,7 +197,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 3: Security Scanner ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔐 Security Scanner</span>
@@ -221,7 +221,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 4: Performance Profiler ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📊 Performance Profiler</span>
@@ -240,7 +240,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 5: Package Manager ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📦 Package Manager</span>
@@ -263,7 +263,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 6: Database Browser ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🗄 Database Browser</span>
@@ -284,7 +284,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 7: Environment Manager ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🌍 Environment Manager</span>
@@ -304,7 +304,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 8: AI Code Assist ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🤖 AI Code Assist</span>
@@ -321,7 +321,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 9: Pair Programming ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">👥 Pair Programming</span>
@@ -338,7 +338,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 10: Snippet Library ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📚 Snippet Library</span>
@@ -358,7 +358,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 11: API Inspector ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔌 API Inspector</span>
@@ -370,12 +370,12 @@ export default async function CodeDaydreamPage( ){
                 ))}
               </div>
               <div style={{ padding: '6px 10px', borderRadius: 8, background: 'rgba(0,0,0,0.05)', fontFamily: 'monospace', fontSize: 11, color: '#6366f1' }}>
-                https://api.dreamengin.app/v1/games/scores
+                https:
               </div>
             </div>
           </div>
 
-          {/* ── Feature 12: Deployment Console ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🚀 Deployment Console</span>
@@ -398,7 +398,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 13: GitHub Integration ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">GitHub Integration</span>
@@ -419,7 +419,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 14: Diff Viewer ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">Diff Viewer</span>
@@ -433,7 +433,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 15: ShellHub Terminal ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">Shell Terminal</span>
@@ -448,7 +448,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 16: Live Notebook ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📓 Live Notebook</span>
@@ -461,7 +461,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 17: Cross-Engin Connections ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🔗 Cross-Engin Sync</span>
@@ -483,7 +483,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 18: Projects ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">📁 Projects</span>
@@ -496,7 +496,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 19: Trust Layer ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🛡 AI Trust Layer</span>
@@ -513,7 +513,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── Feature 20: Game Engine Code Integration ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header">
               <span className="de-widget-title">🎮 Game Engine Integration</span>
@@ -528,7 +528,7 @@ export default async function CodeDaydreamPage( ){
             </div>
           </div>
 
-          {/* ── CodeEngin Info ── */}
+          
           <div style={{ background: 'rgba(99,102,241,0.06)', borderRadius: 14, padding: '14px 16px', border: '1px solid rgba(99,102,241,0.15)' }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: '#6366f1', marginBottom: 4 }}>CodeEngin — 20 Features on Side B</div>
             <p style={{ fontSize: 11, color: 'var(--de-text-dim)', lineHeight: 1.5, margin: 0 }}>

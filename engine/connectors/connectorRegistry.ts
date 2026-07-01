@@ -1,17 +1,7 @@
-// lib/connectors/connectorRegistry.ts
-// Connector definitions — single source of truth (req 41-43, 50)
 
-/**
- * Canonical connector statuses — never use local/timeout fakes.
- *
- * not_connected     → no credentials stored
- * connected         → credentials verified successfully (last_verified_at is recent)
- * needs_reauth      → credentials expired / revoked; user must re-auth
- * requires_approval → provider requires app approval before access is granted
- * unsupported       → technically impossible via official APIs (e.g. IG follower list)
- * error             → transient API error; user may retry
- * needs_admin_setup → optional env vars not configured; admin must set up
- */
+
+
+
 export type ConnectorStatus =
   | 'connected'
   | 'not_connected'
@@ -23,16 +13,16 @@ export type ConnectorStatus =
 
 export type ConnectorCategory = 'Social' | 'Music' | 'Video' | 'Utilities';
 
-/** What tier of API access a connector requires */
+
 export type ConnectorTier = 'tier1' | 'tier2' | 'tier3';
 
-/** Human-readable explanation of access limitations */
+
 export interface ConnectorLimitation {
-  /** What data is accessible */
+  
   available: string;
-  /** What data is NOT available */
+  
   unavailable?: string;
-  /** Any approvals / paid plans needed */
+  
   requirements?: string;
 }
 
@@ -43,63 +33,32 @@ export interface SliceTypeDef {
 }
 
 export interface ConnectorDef {
-  /** Stable ID (req 43) */
+  
   id: string;
   name: string;
   icon: string;
   description: string;
   category: ConnectorCategory;
-  /**
-   * API access tier.
-   * tier1 → fully supported; connect → verify → sync works end-to-end.
-   * tier2 → supported but gated (needs approval, paid plan, or partner status).
-   * tier3 → explicitly unsupported; shown as unsupported with explanation.
-   */
+  
   tier: ConnectorTier;
-  /**
-   * One-line summary of what you get when connected.
-   * Shown in the connector card.
-   */
+  
   whatYouGet: string;
-  /**
-   * One-line summary of requirements / limitations.
-   * Shown in the connector card before connecting.
-   */
+  
   requirements?: string;
-  /**
-   * One-line summary of what is NOT available (tier3 only).
-   * Shown instead of requirements for unsupported connectors.
-   */
+  
   unavailable?: string;
-  /**
-   * Initial status shown before the user ever connects.
-   * tier1 → 'not_connected'
-   * tier2 → 'requires_approval' or 'needs_admin_setup'
-   * tier3 → 'unsupported'
-   */
+  
   defaultStatus: ConnectorStatus;
-  /**
-   * The widget type this connector maps to in the profile grid.
-   * When this widget type is already in the grid, this connector is disabled
-   * in the ConnectorWidgetPicker (HARD RULE — S.I.C.C.).
-   */
+  
   widgetTypeId?: string;
-  /**
-   * Feed slice types offered when this connector is connected (req 51-60).
-   * Min 2, max 5 (req 56).
-   */
+  
   sliceTypes: SliceTypeDef[];
-  /**
-   * Optional OAuth redirect URL for providers that use a browser-based
-   * OAuth flow instead of a credential paste form (e.g. YouTube, Instagram).
-   * When set, ConnectorRow shows a "Connect with {provider}" redirect button
-   * instead of the credential form.
-   */
+  
   oauthStartUrl?: string;
 }
 
 export const CONNECTOR_REGISTRY: ReadonlyArray<ConnectorDef> = [
-  // ── TIER 1: Fully supported ────────────────────────────────────────────
+  
   {
     id: 'mastodon',
     name: 'Mastodon',
@@ -513,7 +472,7 @@ export const CONNECTOR_REGISTRY: ReadonlyArray<ConnectorDef> = [
   },
 ] as const;
 
-/** Look up a connector definition by stable ID (req 43) */
+
 export function getConnectorDef(id: string): ConnectorDef | undefined {
   return CONNECTOR_REGISTRY.find((c) => c.id === id);
 }

@@ -8,10 +8,10 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.SettingsSafety  (framework-mandated basename: page.tsx)
-// app/settings/safety/page.tsx
-// "Policy & Safety" settings page (req 11, 14, 90–91).
-// Shows the user's safety log, appeal options, and a link to the policy.
+
+
+
+
 
 export const metadata = { title: 'Policy & Safety – Dreamengin Settings' };
 
@@ -31,8 +31,8 @@ export default async function SafetySettingsPage( ){
   const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
-  // policy_events is not yet in the generated Supabase schema types;
-  // cast to any until the table is added to the type generation pipeline.
+  
+  
 
   const { data: logData } = await (supabase as SupabaseClient)
     .from('policy_events')
@@ -55,7 +55,7 @@ export default async function SafetySettingsPage( ){
 
       <div className="de-auth-content space-y-4">
 
-        {/* Quick links */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">Community Policy</span>
@@ -84,7 +84,7 @@ export default async function SafetySettingsPage( ){
           </div>
         </div>
 
-        {/* My Safety Log (req 14, 90) */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Shield className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -138,7 +138,7 @@ export default async function SafetySettingsPage( ){
               </table>
             )}
           </div>
-          {/* Download policy log (req 91) */}
+          
           {log.length > 0 && (
             <div className="de-widget-actions">
               <a
@@ -154,7 +154,7 @@ export default async function SafetySettingsPage( ){
           )}
         </div>
 
-        {/* About TheBoogieMan.AI */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">About TheBoogieMan.AI</span>

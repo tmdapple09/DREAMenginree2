@@ -5,24 +5,10 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/dream-windows/route.ts
- *
- * GET  /api/dream-windows  — list Dream Windows for the authenticated user
- *                            (own records + shared/public from followed users)
- * POST /api/dream-windows  — create a Dream Window record with full 10-field
- *                            validation (Phase 8 §B Point 12)
- *
- * Every write persists the lifecycle state to the database (Point 11).
- * owner_id is enforced at insert — only the authenticated user's own id is
- * accepted (Point 15).
- *
- * Architecture: docs/ARCHITECTURE.md §4
- * Privacy: visibility defaults to 'private' (docs/AXIOMS.md §product integrity)
- */
 
-// ---------------------------------------------------------------------------
-// The 10 required fields (Phase 8 §B Point 12)
+
+
+
 
 const REQUIRED_FIELDS = [
   'id',
@@ -48,20 +34,9 @@ function validateRequiredFields(
   });
 }
 
-// GET — list Dream Windows
 
-/**
- * GET /api/dream-windows
- *
- * Returns:
- *   - All Dream Windows owned by the authenticated user
- *   - Shared Dream Windows from users the authenticated user follows
- *   - Public Dream Windows from all users
- *
- * RLS on the dream_windows table enforces these rules at the DB layer.
- * This route only returns records the RLS policy already permits.
- * Private records from other users are never returned (Point 15).
- */
+
+
 export async function GET(_req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -70,7 +45,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // RLS enforces visibility rules — the DB will only return permitted rows.
+  
 
   const { data: dreamWindows, error } = await (supabase as SupabaseClient)
     .from('dream_windows')
@@ -84,25 +59,9 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
   return NextResponse.json({ dreamWindows: dreamWindows ?? [] });
 }
 
-// POST — create Dream Window
 
-/**
- * POST /api/dream-windows
- *
- * Body (all 10 fields required — returns 422 if any are missing):
- *   id             string (UUID — must be provided by client)
- *   type           string
- *   owner_id       string (must equal auth.uid() — returns 403 otherwise)
- *   config         object
- *   size           { width: number; height: number }
- *   position       { x: number; y: number }
- *   visibility     'private' | 'shared' | 'public'
- *   sourceBindings string[]
- *   destinationRules  object[]
- *   activeState    canonical lifecycle state string
- *
- * Persists to dream_windows table on every call (Point 11, 16).
- */
+
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

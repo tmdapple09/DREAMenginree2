@@ -21,7 +21,7 @@ async function mirrorConversationParticipants(
         { onConflict: 'conversation_id,user_id', ignoreDuplicates: true },
       );
   } catch {
-    // Optional mirror table. conversations.participant1_id/participant2_id remain canonical.
+    
   }
 }
 

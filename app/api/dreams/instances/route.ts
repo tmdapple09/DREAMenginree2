@@ -4,17 +4,17 @@ import { Surface } from '@/types/widget-system-v2';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
-// app/api/dreams/instances/route.ts
-// Dream System V2 — surface instance listing
+
+
 
 type SurfaceName = 'HOME' | 'FACE' | 'PROFILE' | 'DOCK';
 
 const QuerySchema = z.object({
-  // Preferred (v2):
+  
   surface: z.enum(['HOME', 'FACE', 'PROFILE', 'DOCK']).optional(),
   surface_key: z.coerce.number().int().optional(),
 
-  // Legacy (v1):
+  
   space: z.enum(['home', 'profile']).optional(),
 });
 
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const q = parseResult.data;
 
-    // Resolve (surface, key) with legacy compatibility.
+    
     let surfaceName: SurfaceName = 'HOME';
     let surfaceKey = 0;
 

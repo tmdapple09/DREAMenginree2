@@ -13,11 +13,11 @@ export default function OnboardingTip( ){
         const t = setTimeout(() => setShow(true), 4000);
         return () => clearTimeout(t);
       }
-    } catch { /* noop */ }
+    } catch {  }
   }, []);
 
   const dismiss = () => {
-    try { localStorage.setItem(TIP_KEY, '1'); } catch { /* noop */ }
+    try { localStorage.setItem(TIP_KEY, '1'); } catch {  }
     setShow(false);
   };
 
@@ -46,7 +46,7 @@ export default function OnboardingTip( ){
         overflow: 'hidden',
       }}
     >
-      {/* Gold accent top */}
+      
       <div
         style={{
           position: 'absolute',

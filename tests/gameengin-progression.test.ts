@@ -1,14 +1,4 @@
-/**
- * tests/gameengin-progression.test.ts
- *
- * Locks the Modern Game Structures directive:
- *   - every Genre Profile carries a `progression_model` block
- *   - the four new structure-type genres (open-world / live-service /
- *     sandbox / episodic) are present and well-formed
- *   - the Mechanic Catalog includes the new `structural` category and
- *     surfaces it via listStructuralMechanics()
- *   - per-cartridge progression-state ledger round-trips and validates
- */
+
 
 import { describe, it, expect, afterEach } from 'vitest';
 import * as fs from 'node:fs';
@@ -94,7 +84,7 @@ describe('Progression State ledger', () => {
     const file = recordProgressionState({
       cartridge_id: 'test-progression-cartridge',
       structure_type: 'open-world',
-      world_map_completion_pct: 1.42, // out of range — should clamp
+      world_map_completion_pct: 1.42, 
       ability_unlocks: ['dash', '  glide  ', ''],
     });
     expect(fs.existsSync(file)).toBe(true);
@@ -109,7 +99,7 @@ describe('Progression State ledger', () => {
     recordProgressionState({
       cartridge_id: 'test-progression-cartridge',
       structure_type: 'run-based',
-      run_count: 17.9,            // floors to 17
+      run_count: 17.9,            
       meta_currency: { shard: 120, prism: 4 },
     });
     const back = readProgressionState('test-progression-cartridge');

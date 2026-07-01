@@ -1,21 +1,6 @@
 import Parser from "rss-parser";
 
-/**
- * lib/social-feed.ts
- *
- * Lightweight social feed aggregator for DREAMengin Dream Windows.
- *
- * Fetches and normalises public RSS / Atom feeds from four social sources
- * (Instagram, X / Twitter, TikTok, YouTube) into a flat SocialFeedItem[]
- * ready for rendering in a social_feed Dream Window.
- *
- * Rules:
- *  - Pure parser layer — no DB calls, no React imports
- *  - Server-safe (uses `rss-parser`)
- *  - Gracefully handles missing / malformed fields
- *
- * ARCHITECTURE.md §3 — Logic layer (lib/)
- */
+
 
 export type SocialSource = "instagram" | "x" | "tiktok" | "youtube";
 
@@ -48,22 +33,22 @@ export function stripHtml(input?: string | null ){
 }
 
 export function extractFirstImage(item: Record<string, any>): string | null {
-  // 1) enclosure
+  
   if (item.enclosure?.url) return item.enclosure.url;
 
-  // 2) media:content
+  
   if (Array.isArray(item.mediaContent)) {
     const mediaUrl = (item.mediaContent.find((x: Record<string, unknown>) => (x?.$ as { url?: string } | undefined)?.url)?.$ as { url?: string } | undefined)?.url;
     if (mediaUrl) return mediaUrl;
   }
 
-  // 3) media:thumbnail
+  
   if (Array.isArray(item.mediaThumbnail)) {
     const thumbUrl = (item.mediaThumbnail.find((x: Record<string, unknown>) => (x?.$ as { url?: string } | undefined)?.url)?.$ as { url?: string } | undefined)?.url;
     if (thumbUrl) return thumbUrl;
   }
 
-  // 4) image inside html description/content
+  
   const html =
     item["content:encoded"] ||
     item.contentEncoded ||
@@ -76,13 +61,7 @@ export function extractFirstImage(item: Record<string, any>): string | null {
   return null;
 }
 
-/**
- * Fetches a public RSS / Atom feed and returns normalised SocialFeedItems.
- *
- * @param feedUrl - Full public RSS / Atom URL to fetch
- * @param source  - Which social source this feed belongs to
- * @param limit   - Maximum number of items to return (default 25)
- */
+
 export async function fetchSocialFeed(
   feedUrl: string,
   source: SocialSource,

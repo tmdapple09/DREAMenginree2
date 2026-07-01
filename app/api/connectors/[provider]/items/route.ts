@@ -4,11 +4,7 @@ import { toErrorMessage } from '@/utils/index';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * Read connector-synced items for a user/provider.
- * Connector storage lives in connector_feed_items because public.feed_items is
- * widget-shaped in the live DB and cannot store provider payloads.
- */
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },

@@ -41,14 +41,14 @@ export default function AIAssistant( ){
     scrollToBottom();
   }, [messages]);
 
-  // Dr. Eams Full Experience mode (guidance + safe UI actions)
+  
   useEffect(() => {
     setFullExperience(getDrEamsMode());
     const off = onDrEamsModeChange((v) => setFullExperience(v));
     return () => off();
   }, []);
 
-  // Teach-on-first-use: UI can emit teach events; Dr. Eams explains once.
+  
   useEffect(() => {
     const off = onTeach((evt) => {
       if (!fullExperience) return;
@@ -67,7 +67,7 @@ export default function AIAssistant( ){
     return () => off();
   }, [fullExperience]);
 
-  // Surface iDari activity inside this assistant as well
+  
   useEffect(() => {
     const unsubscribe = onIdariEvent((evt) => {
       const shouldSurface =
@@ -143,14 +143,14 @@ export default function AIAssistant( ){
 
     const lower = userText.toLowerCase();
 
-    // Capability discovery
+    
     if (/\b(what can you do|help|capabilities|commands)\b/.test(lower)) {
       addAssistantMessage(getUiCapabilities());
       setIsLoading(false);
       return;
     }
 
-    // UI Actions: Dr. Eams can run safe UI operations when Full Experience is ON.
+    
     if (fullExperience) {
       const ui = executeUiAction(userText, {
         navigate: (path) => router.push(path),
@@ -162,7 +162,7 @@ export default function AIAssistant( ){
       }
     }
 
-    // iDari bridge: let Dr. Eams hand tasks to the admin auto-updater
+    
     if (
       lower.includes('idari') ||
       lower.includes('inner dreams') ||
@@ -176,7 +176,7 @@ export default function AIAssistant( ){
       return;
     }
 
-    // Fallback: simple smart canned guidance
+    
     addAssistantMessage(getSmartResponse(userText));
     setIsLoading(false);
   };

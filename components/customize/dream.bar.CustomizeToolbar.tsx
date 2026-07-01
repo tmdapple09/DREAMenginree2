@@ -2,10 +2,7 @@
 
 import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 
-/**
- * CustomizeToolbar — fixed bottom toolbar shown in customize mode.
- * Tabs: Color | Font | Layout | Effects | Save
- */
+
 export default function CustomizeToolbar( ){
   const { isCustomizeMode, activePanel, openPanel, saveSkin } = useCustomizeMode();
 
@@ -73,7 +70,7 @@ export default function CustomizeToolbar( ){
         );
       })}
 
-      {/* Save button — always visible */}
+      
       <button
         type="button"
         onClick={saveSkin}

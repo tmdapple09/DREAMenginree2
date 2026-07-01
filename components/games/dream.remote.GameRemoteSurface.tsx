@@ -4,13 +4,7 @@ import { broadcastGameInput } from '@/engins/gameengin/games/useRemoteChannel';
 import { ButtonInteractionManager, type ControllerButton } from '@/engins/gameengin/games/gameControllerButtons';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * GameRemote — single shared controller surface for GameEngin cartridges.
- *
- * The remote stays independent of any one cartridge: it emits the existing
- * GameEngin input actions while preserving the eight physical controller
- * button identities through the controller-button interaction manager.
- */
+
 
 export type GameInputAction =
   | 'move-up' | 'move-down' | 'move-left' | 'move-right'
@@ -84,10 +78,10 @@ const RIGHT_MAP: Record<Dir8, { action: GameInputAction; label: string }> = {
 };
 
 const RING_BUTTONS: readonly RingButtonSpec[] = [
-  // Even 45° radial map around the right joystick:
-  // top: X, upper-right: R1, right: Circle, lower-right: R2,
-  // bottom: Triangle, lower-left: L2, left: Square, upper-left: L1.
-  // `button` is the physical controller identity. `action` keeps the existing working GameEngin route.
+  
+  
+  
+  
   { sym: '×',  label: 'X',        button: 'x',        action: 'jump',       color: '#38bdf8', angle: -90 },
   { sym: 'R1', label: 'R1',       button: 'r1',       action: 'r1',         color: '#93c5fd', angle: -45 },
   { sym: '○',  label: 'Circle',   button: 'circle',   action: 'shoot',      color: '#f87171', angle: 0 },

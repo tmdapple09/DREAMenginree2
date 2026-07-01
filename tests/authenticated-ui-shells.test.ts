@@ -65,7 +65,7 @@ describe('authenticated UI shell upgrade rollout', () => {
 
     expect(daydreamShell).toContain('BrandLogo');
     expect(daydreamShell).toContain('accentColor');
-    // EnginSurface now uses a dark premium hero block (no longer de-auth-hero)
+    
     expect(dashboard).toContain('de-auth-hero');
     expect(dashboard).toContain('BrandLogo');
     expect(dashboard).toContain('DaydreamPulseStrip');

@@ -3,24 +3,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/connectors/[provider]/disconnect/route.ts
- *
- * DELETE /api/connectors/:provider/disconnect
- *
- * Removes a connector account for the authenticated user.
- * Clears the token_blob and sets status = 'disconnected' in connector_accounts.
- *
- * Security rules (AXIOM 4 — Security by Default, ARCHITECTURE.md §5):
- *   - Requires authenticated user via supabase.auth.getUser()
- *   - Only deletes the row where user_id matches the auth user — no admin bypass
- *   - token_blob is wiped server-side; never returned to client
- *   - Returns 204 No Content on success
- *   - Returns 404 if no connector account found for this user+provider combo
- *
- * LAW.md §3 — every visible action must do something real.
- * ACTION_AUDIT.md — was labelled 🟠 drifted (disconnect handler not confirmed).
- */
+
 
 export async function DELETE(
   _req: NextRequest,
@@ -41,7 +24,7 @@ export async function DELETE(
 
   const db = supabase as SupabaseClient;
 
-  // Verify the connector account exists for this user before attempting delete
+  
   const { data: existing, error: fetchError } = await db
     .from('connector_accounts')
     .select('id')
@@ -53,9 +36,9 @@ export async function DELETE(
     return NextResponse.json({ ok: false, error: 'Connector not found' }, { status: 404 });
   }
 
-  // Hard delete — removes credentials and token_blob entirely.
-  // Using both user_id + provider in the WHERE clause as belt-and-suspenders
-  // so RLS + application code both enforce ownership.
+  
+  
+  
   const { error: deleteError } = await db
     .from('connector_accounts')
     .delete()
@@ -66,6 +49,6 @@ export async function DELETE(
     return NextResponse.json({ ok: false, error: deleteError.message }, { status: 500 });
   }
 
-  // 204 No Content — successful disconnect
+  
   return new NextResponse(null, { status: 204 });
 }

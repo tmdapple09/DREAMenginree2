@@ -6,23 +6,7 @@ import {
 import { NextResponse, type NextRequest } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/gameengin/crash-report/route.ts
- *
- * Crash-report ingest endpoint for the Brain feedback loop described in the
- * directive: "When a cartridge crashes or hits a critical bug, a window
- * opens. The player can send a statement directly to Maestro describing
- * what happened. That feedback goes straight into the Brain — into the
- * Project History for that cartridge."
- *
- * Server-only; writes to lib/gameengin/brain/crash-reports/<cartridge_id>/.
- *
- * Hard-rules:
- *   - Reports are accepted only for cartridges in active-projects.json
- *     (the Two-Project Rule). Inactive cartridges → 404 (Upgrader's domain).
- *   - 16 KB payload cap, enforced before disk write.
- *   - cartridge_id must be a slug; player_statement must be non-empty.
- */
+
 
 const ALLOWED_KEYS = new Set([
   'cartridge_id',

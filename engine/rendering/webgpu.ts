@@ -6,13 +6,7 @@ import {
   type RenderEnginScene,
 } from '@/engins/renderengin/webgpu';
 
-/**
- * Public DREAMengin graphics probe.
- *
- * WebGPU is not a separate creative engine here. WebGPU is the GPU backend
- * owned by RenderEngin and consumed by ContentEngin, GameEngin, LabEngin,
- * Daydreams, DreamSpace, and shell surfaces through one rendering path.
- */
+
 export type RenderEnginGraphicsBackend = 'webgpu' | 'webgl2' | 'webgl' | 'canvas2d';
 
 export interface WebGPURuntimeInitialization {

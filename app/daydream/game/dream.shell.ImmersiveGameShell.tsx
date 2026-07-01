@@ -14,29 +14,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * ImmersiveGameShell — True full-screen game launcher with PS5-style boot
- * sequence and the separate shared GameRemote control capability.
- *
- * All games run through the GameEngin cartridge system via GameRuntime.
- * No game component is ever mounted directly here.
- *
- * Runtime layer contract (three clean layers, no overlap):
- *   SHELL:  Boot sequence overlay + separate shared GameRemote (this file)
- *   ENGINE: frame pacing and services remain internal to GameRuntime
- *   GAME:   Score / lives / level (inside each cartridge's container)
- *
- * Boot phases:
- *   1 (0 – 800 ms)     Black screen · pulsing ⬡ hex logo in game accent colour
- *   2 (800 – 2200 ms)  "GAMEENGIN" sweeps in from the right · "by DREAMengin" · game emoji
- *   3 (2200 – 3400 ms) Game title card · category badge · "Press any button to start"
- *   4 (3400 ms+)       Waiting for user input → fade out → game revealed
- *
- * Skip button is available from phase 1.
- * After boot dismissal: the cartridge renders its HUD and GameRemote stays separate.
- */
 
-// ── Boot-sequence keyframe CSS ────────────────────────────────────────────────
+
+
 
 const BOOT_KEYFRAMES = `
 @keyframes de-hex-pulse {
@@ -178,7 +158,7 @@ export default function ImmersiveGameShell() {
       if (!document.fullscreenElement && 'requestFullscreen' in target) {
         await target.requestFullscreen();
       }
-    } catch { /* fullscreen denied — continue */ }
+    } catch {  }
     dismissTimer.current = setTimeout(() => setBootDone(true), 500);
   }, [fadingOut, bootDone]);
 
@@ -188,7 +168,7 @@ export default function ImmersiveGameShell() {
     router.push('/daydream/games');
   }, [router]);
 
-  // "Press any key" from phase 4
+  
   useEffect(() => {
     if (bootPhase < 4 || bootDone || fadingOut) return undefined;
     const handler = () => { dismissBoot(); };
@@ -208,7 +188,7 @@ export default function ImmersiveGameShell() {
       ref={rootRef}
       style={{ position: 'fixed', inset: 0, width: '100vw', height: '100dvh', overflow: 'hidden', background: '#000' }}
     >
-      {/* ── SHELL layer 1: Game viewport (GameRuntime runs all cartridges) ── */}
+      
       <div
         className="de-immersive-game-stage"
         style={{
@@ -231,9 +211,9 @@ export default function ImmersiveGameShell() {
             </div>
           </div>
         ) : (
-          // GameRuntime is the ONLY place games are mounted.
-          // It provides internal frame pacing and all engine services without exposing architecture chrome.
-          // The game renders its own HUD (score/lives) inside its container.
+          
+          
+          
           <GameRuntime
             cartridge={cartridge}
             physicsConfig={physicsConfig}
@@ -241,7 +221,7 @@ export default function ImmersiveGameShell() {
         )}
       </div>
 
-      {/* ── SHELL layer 2: PS5-style boot overlay ── */}
+      
       {!bootDone && (
         <div
           role="presentation"
@@ -254,7 +234,7 @@ export default function ImmersiveGameShell() {
             animation: fadingOut ? 'de-boot-fade-out 0.5s ease forwards' : undefined,
           }}
         >
-          {/* Phase 1: pulsing hex logo */}
+          
           {bootPhase === 1 && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, animation: 'de-fade-in 0.4s ease forwards' }}>
               <div style={{ position: 'relative', width: 130, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -265,7 +245,7 @@ export default function ImmersiveGameShell() {
             </div>
           )}
 
-          {/* Phase 2: GAMEENGIN text + game emoji */}
+          
           {bootPhase === 2 && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, textAlign: 'center' }}>
               <div style={{ fontSize: 56, lineHeight: 1, animation: 'de-emoji-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards' }}>{game.emoji}</div>
@@ -274,7 +254,7 @@ export default function ImmersiveGameShell() {
             </div>
           )}
 
-          {/* Phase 3 + 4: game title card */}
+          
           {(bootPhase === 3 || bootPhase === 4) && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, textAlign: 'center', padding: '0 28px', animation: 'de-fade-in 0.4s ease forwards' }}>
               <div style={{ fontSize: 52, lineHeight: 1 }}>{game.emoji}</div>
@@ -290,7 +270,7 @@ export default function ImmersiveGameShell() {
             </div>
           )}
 
-          {/* Skip button — always visible during boot */}
+          
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); dismissBoot(); }}
@@ -307,13 +287,13 @@ export default function ImmersiveGameShell() {
         </div>
       )}
 
-      {/* Landscape black strip below game stage */}
+      
       {isLandscape && (
         <div aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: LANDSCAPE_MIN_STAGE_BOTTOM, background: '#000', zIndex: 0 }} />
       )}
 
-      {/* ── SHELL layer 3: shared remote — mounted only after boot ── */}
-      {/* The cartridge owns its visual HUD; GameRemote is a separate control capability. */}
+      
+      
       {bootDone && (
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 50 }}>
           <GameRemote

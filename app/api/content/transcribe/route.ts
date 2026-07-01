@@ -5,16 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const TranscribeSchema = z.object({
-  /** Raw SRT or VTT content uploaded by the user */
+  
   subtitleContent: z.string().min(1).max(500_000).optional(),
-  /** Format of the uploaded subtitle file */
+  
   format: z.enum(['srt', 'vtt']).optional(),
-  /**
-   * For future use: base64-encoded audio/video to transcribe via
-   * a speech-to-text model. Accepts up to ~5 MB base64 payload.
-   */
+  
   audioBase64: z.string().max(7_000_000).optional(),
-  /** Language hint (BCP-47) for transcription */
+  
   language: z.string().max(10).optional(),
 });
 
@@ -45,7 +42,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { subtitleContent, format, audioBase64 } = parsed.data;
 
   if (subtitleContent) {
-    // Parse the file server-side to return metadata alongside raw content.
+    
     const detectedFormat = format ?? 'srt';
     let segments: ReturnType<typeof parseSRT> = [];
     try {
@@ -53,7 +50,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ? parseVTT(subtitleContent)
         : parseSRT(subtitleContent);
     } catch {
-      // Parsing errors are non-fatal — still return raw content
+      
     }
 
     const wordCount = segments.flatMap((s) => s.words).length;
@@ -71,7 +68,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   if (audioBase64) {
-    // In production: call Whisper / Deepgram here with the decoded audio.
+    
     return NextResponse.json({
       source: 'audio',
       rawContent: '',

@@ -1,13 +1,4 @@
-/**
- * tests/phase8h-triad-consensus.test.ts
- *
- * Phase 8 §H — AI Triad: Consensus, Real Results & Security.
- *
- * Points covered:
- *   69 — runTriadConsensus used in account delete endpoint
- *   74 — No AI API key in NEXT_PUBLIC_ variables
- *   75 — No legacy rate_limit_hit or rate_limit_counters references
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
@@ -30,7 +21,7 @@ describe('Phase 8 §H — Triad consensus gate on account delete (Point 69)', ()
       join(root, 'app/api/account/delete-dream/route.ts'),
       'utf-8',
     );
-    // consensus check must appear before any table delete
+    
     const consensusPos  = src.indexOf('runTriadConsensus');
     const deletionPos   = src.indexOf('.delete()');
     expect(consensusPos).toBeGreaterThanOrEqual(0);
@@ -49,8 +40,8 @@ describe('Phase 8 §H — Triad consensus gate on account delete (Point 69)', ()
 
 describe('Phase 8 §H — No API key in NEXT_PUBLIC_ (Point 74)', () => {
   it('no AI provider key is exposed via NEXT_PUBLIC_', () => {
-    // Specifically check that AI provider secret keys are never in NEXT_PUBLIC_
-    // URLs and site vars are fine in NEXT_PUBLIC_; only secrets are forbidden.
+    
+    
     const AI_KEY_PATTERNS = [
       'NEXT_PUBLIC_GROQ',
       'NEXT_PUBLIC_OPENAI',
@@ -75,7 +66,7 @@ describe('Phase 8 §H — No API key in NEXT_PUBLIC_ (Point 74)', () => {
     const lines = output.split('\n').filter(Boolean);
     for (const line of lines) {
       const codePart = line.split(':').slice(2).join(':').trimStart();
-      // Skip comment lines
+      
       if (codePart.startsWith('*') || codePart.startsWith('//')) continue;
 
       const match = codePart.match(/NEXT_PUBLIC_[A-Z0-9_]+/g) ?? [];
@@ -97,7 +88,7 @@ describe('Phase 8 §H — No legacy rate limit references (Point 75)', () => {
       '--exclude-dir=node_modules --exclude-dir=.next 2>/dev/null || true',
       { cwd: root, encoding: 'utf-8' },
     );
-    // Only comments or test files are allowed
+    
     const activeRefs = output
       .split('\n')
       .filter(Boolean)

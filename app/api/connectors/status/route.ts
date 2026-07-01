@@ -4,23 +4,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-/**
- * app/api/connectors/status/route.ts
- *
- * GET /api/connectors/status
- *
- * Returns the real connector statuses for the authenticated user from the
- * connector_accounts table. Never returns token_blob.
- *
- * Used by ConnectorsClient on mount to show real connected/disconnected state
- * instead of the registry defaultStatus values.
- *
- * Security (AXIOM 4 — Security by Default):
- *   - Requires authenticated user via supabase.auth.getUser()
- *   - RLS on connector_accounts enforces user_id = auth.uid() at DB layer
- *   - Returns 401 for unauthenticated requests
- *   - token_blob is never selected
- */
+
 
 export interface ConnectorStatusEntry {
   status: ConnectorStatus;
@@ -39,7 +23,7 @@ export async function GET( ): Promise<NextResponse> {
 
   const { data, error } = await db
     .from('connector_accounts')
-    .select('provider, status, last_synced_at')   // NEVER select token_blob
+    .select('provider, status, last_synced_at')   
     .eq('user_id', user.id);
 
   if (error) {

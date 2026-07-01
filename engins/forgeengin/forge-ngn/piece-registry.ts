@@ -1,11 +1,4 @@
-/**
- * NGN Engin — Piece Registry
- *
- * 120+ atomic pieces for the visual engine builder (Engin Forge / NGN Engin).
- * Each piece has a PieceManifest describing its category, ports, and metadata.
- *
- * Feature 41.
- */
+
 
 export type PieceCategory =
   | 'Audio'
@@ -25,17 +18,17 @@ export interface Port {
 }
 
 export interface PieceManifest {
-  /** Unique stable identifier */
+  
   id: string;
-  /** Display label */
+  
   label: string;
   category: PieceCategory;
   description: string;
-  /** Input ports */
+  
   inputPorts: Port[];
-  /** Output ports */
+  
   outputPorts: Port[];
-  /** 'source' | 'processor' | 'output' — for min-3 validation */
+  
   role: 'source' | 'processor' | 'output';
 }
 
@@ -287,17 +280,17 @@ export const PIECE_REGISTRY: PieceManifest[] = [
   ...RUNTIME_PIECES,
 ];
 
-/** Look up a piece by id */
+
 export function getPiece(id: string): PieceManifest | undefined {
   return PIECE_REGISTRY.find((p) => p.id === id);
 }
 
-/** All pieces in a given category */
+
 export function getPiecesByCategory(category: PieceCategory): PieceManifest[] {
   return PIECE_REGISTRY.filter((p) => p.category === category);
 }
 
-/** All distinct categories */
+
 export const PIECE_CATEGORIES: PieceCategory[] = [
   'Audio', 'Visual', 'AI', 'Game', 'Social', 'Utility', 'Runtime',
 ];

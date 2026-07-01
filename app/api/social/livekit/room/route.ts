@@ -3,13 +3,7 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * GET /api/social/livekit/room?roomName=<name>
- *
- * Fetches current participant list for a LiveKit room from the backend service.
- * Returns 404 with an empty participant list when the room doesn't exist yet
- * so callers can treat "no room" as zero participants rather than an error.
- */
+
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -55,7 +49,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const data = await res.json();
     return NextResponse.json(data);
   } catch {
-    // Backend unreachable — return empty room so UI degrades gracefully.
+    
     const empty: LiveKitRoomInfo = {
       roomName,
       participantCount: 0,

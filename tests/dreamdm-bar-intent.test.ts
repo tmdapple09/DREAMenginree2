@@ -1,21 +1,4 @@
-/**
- * tests/dreamdm-bar-intent.test.ts
- *
- * Unit tests for the DreamDM Bar intent system — the context-aware mode
- * switching that lets users type in a single input bar and choose whether
- * to search, message, comment, or ask Dr. Eams.
- *
- * Tests:
- *   - resolveIntentOverride: pure function that maps BarIntentMode to context
- *   - detectSurface: unchanged, but re-validated for completeness
- *   - DEFAULT_BAR_INTENT: structural contract
- *   - BarIntentMode type coverage
- *
- * Architecture justification: docs/ARCHITECTURE.md §1 — DreamDM Bar is the
- * Runtime Seam / Persistent Interaction Rail.
- *
- * Performance impact: none (pure tests, no runtime).
- */
+
 
 import { describe, it, expect } from 'vitest';
 
@@ -30,7 +13,7 @@ import {
   type BarIntent,
 } from '@/dreamdmbar/runtime/DreamSystemContext';
 
-// ── DEFAULT_BAR_INTENT ────────────────────────────────────────────────────────
+
 
 describe('DEFAULT_BAR_INTENT', () => {
   it('defaults to "default" mode', () => {
@@ -46,7 +29,7 @@ describe('DEFAULT_BAR_INTENT', () => {
   });
 });
 
-// ── resolveIntentOverride ─────────────────────────────────────────────────────
+
 
 describe('resolveIntentOverride', () => {
   it('returns undefined for "default" mode (no override)', () => {
@@ -108,7 +91,7 @@ describe('resolveIntentOverride', () => {
   });
 });
 
-// ── detectSurface with intent mode combinations ──────────────────────────────
+
 
 describe('detectSurface (baseline re-validation)', () => {
   it('detects /homedream as feed', () => {
@@ -128,7 +111,7 @@ describe('detectSurface (baseline re-validation)', () => {
   });
 });
 
-// ── BarIntent shape contract ─────────────────────────────────────────────────
+
 
 describe('BarIntent shape contract', () => {
   it('comment intent includes targetPostId', () => {

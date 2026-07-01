@@ -1,18 +1,8 @@
-/**
- * tests/platform-utils.test.ts
- *
- * Tests for the DREAMengin platform utility modules:
- *   - lib/platform/lab.ts          (logPhysicsExperiment)
- *   - app/api/ads/orders/route.ts  (processAdOrder server route)
- *   - app/api/gal/route.ts         (syncToGlobalRegistry server route)
- *   - lib/platform/index.ts        (public API surface)
- *
- * These are unit tests — no live DB required.
- */
+
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-// ── Mock Supabase clients ─────────────────────────────────────────────────────
+
 
 const createBrowserClient = vi.fn();
 const createServerClient  = vi.fn();
@@ -20,7 +10,7 @@ const createServerClient  = vi.fn();
 vi.mock('@/supabase/client/client', () => ({ createClient: createBrowserClient }));
 vi.mock('@/supabase/server/serverClient', () => ({ createServerClient }));
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 function makeUpdateMock(result: object) {
   const eqFn  = vi.fn().mockResolvedValue(result);
@@ -42,7 +32,7 @@ function makeUpsertMock(result: object) {
   return { upsert, select, single };
 }
 
-// ── lib/platform/lab.ts ───────────────────────────────────────────────────────
+
 
 describe('logPhysicsExperiment', () => {
   afterEach(() => vi.clearAllMocks());
@@ -79,7 +69,7 @@ describe('logPhysicsExperiment', () => {
   });
 });
 
-// ── app/api/ads/orders/route.ts ───────────────────────────────────────────────
+
 
 describe('POST /api/ads/orders', () => {
   afterEach(() => vi.clearAllMocks());
@@ -143,7 +133,7 @@ describe('POST /api/ads/orders', () => {
   });
 });
 
-// ── app/api/gal/route.ts ──────────────────────────────────────────────────────
+
 
 describe('POST /api/gal', () => {
   afterEach(() => vi.clearAllMocks());
@@ -203,7 +193,7 @@ describe('POST /api/gal', () => {
   });
 });
 
-// ── lib/platform/index.ts — revenue split constants ──────────────────────────
+
 
 describe('platform index revenue split', () => {
   it('exports logPhysicsExperiment', async () => {

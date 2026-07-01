@@ -1,15 +1,8 @@
-/**
- * Tests for components/dreamengin/dream.DREAMenginOS.tsx
- *
- * Runs in Node (no WebGPU/canvas) so we verify:
- *   - Module exports the component as default
- *   - Props type-shape is correct
- *   - Babylon engine factory is invoked via createBabylonEngine
- */
+
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// ── Stubs ─────────────────────────────────────────────────────────────────────
+
 
 const mockEngine = {
   runRenderLoop: vi.fn(),
@@ -52,7 +45,7 @@ vi.mock('@babylonjs/havok', () => ({
   default: vi.fn().mockResolvedValue({}),
 }));
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
+
 
 describe('DREAMenginOS', () => {
   beforeEach(() => {
@@ -70,7 +63,7 @@ describe('DREAMenginOS', () => {
   });
 
   it('exports DREAMenginOSProps type (module shape check)', async () => {
-    // TypeScript-only check — if this compiles, the type exists
+    
     const mod = await import('@/components/dreamengin/dream.DREAMenginOS');
     expect(mod.default.name).toBe('DREAMenginOS');
   });

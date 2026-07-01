@@ -45,7 +45,7 @@ export function UniverseCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Spotlight effect */}
+      
       {interactive && (
         <div
           className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
@@ -56,7 +56,7 @@ export function UniverseCard({
         />
       )}
 
-      {/* Border glow on hover */}
+      
       {glowOnHover && (
         <div
           className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
@@ -67,13 +67,13 @@ export function UniverseCard({
         />
       )}
 
-      {/* Content */}
+      
       <div className="relative z-10">{children}</div>
     </div>
   );
 }
 
-// Header variant
+
 export function UniverseCardHeader({
   children,
   className,
@@ -88,7 +88,7 @@ export function UniverseCardHeader({
   );
 }
 
-// Content variant
+
 export function UniverseCardContent({
   children,
   className,
@@ -99,7 +99,7 @@ export function UniverseCardContent({
   return <div className={cn('p-6', className)}>{children}</div>;
 }
 
-// Footer variant
+
 export function UniverseCardFooter({
   children,
   className,

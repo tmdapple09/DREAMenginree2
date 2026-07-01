@@ -11,9 +11,9 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-// app/api/ai/eams/route.ts
-// Canonical Dr. Eams endpoint — user-facing AI agent.
-// AI keys are server-side only (Vercel env vars, never client).
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -33,21 +33,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const request = parseResult.data;
 
-  // Authenticate
+  
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
   if (!user) {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 
-  // Rate limit
+  
   const rateOk = await checkRateLimit(user.id, '/api/ai/eams', 30, 60);
   if (!rateOk.allowed) {
     return jsonApiError(429, 'RATE_LIMIT', 'Too many requests. Please slow down.');
   }
   const rateRpm = await getCurrentRPM(user.id, '/api/ai/eams');
 
-  // Determine actor role
+  
 
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ? 'owner'
     : ((roleData as { role?: string } | null)?.role === 'admin' ? 'admin' : 'user');
 
-  // BoogieMan policy gate — check message before planning
+  
   const boogiePolicy = await boogiePolicyCheck({
     actorRole,
     actorEmail: user.email,
@@ -68,9 +68,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(403, 'POLICY_BLOCKED', boogiePolicy.reason ?? 'Request blocked by policy.');
   }
 
-  // Phase 8 §A Point 10: optionally enrich with real Supabase content context.
-  // Detect if the user is asking about content (posts, profiles, connectors).
-  // If so, query the DB and include a summary in the system prompt.
+  
+  
+  
   let contentContext: string | undefined;
   try {
     const lowerMsg = request.message.toLowerCase();
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       lowerMsg.includes('follow');
 
     if (isContentQuery) {
-      // Fetch the user's recent posts as context
+      
       const { data: recentPosts } = await supabase
         .from('app_posts')
         .select('id, content, visibility, created_at')
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         contentContext = `User's recent posts:\n${postsText}`;
       }
 
-      // Also fetch follower/following counts
+      
 
       const { count: followersCount } = await supabase
         .from('follows')
@@ -115,10 +115,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       contentContext = contentContext ? `${contentContext}\n${statsText}` : statsText;
     }
   } catch {
-    // Non-critical — proceed without content context
+    
   }
 
-  // Plan with Dr. Eams
+  
   let plan: Awaited<ReturnType<typeof planWithEams>>;
   try {
     plan = await planWithEams({
@@ -127,8 +127,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       actorRole,
       uiRoute: request.ui?.route,
       contentContext,
-      // Code-assist mode: forward sanitised code context when present.
-      // selected_code is already capped at 2 000 chars by the Zod schema.
+      
+      
       codeContext: request.code_context
         ? {
             language:     request.code_context.language,
@@ -141,18 +141,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     plan = { response_text: "I'm here to help! What would you like to do?", intents: [] };
   }
 
-  // Idari sanity check (synchronous rule-based)
+  
   const idariResult = validateWithIdari(plan.intents);
   const validatedIntents = idariResult.intents;
 
-  // BoogieMan rule-engine evaluation
+  
   const boogieResult = boogieEvaluate({
     actorRole: actorRole === 'owner' ? 'admin' : actorRole,
     rateRpm,
     intents: validatedIntents,
   });
 
-  // Filter to ALLOW and CONFIRM intents
+  
   const allowedIntents = validatedIntents.filter((_, i: number) => {
     const d = boogieResult.per_intent[i];
     return d && (d.decision === 'ALLOW' || d.decision === 'CONFIRM');
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (d) => d.decision === 'ALLOW' || d.decision === 'CONFIRM'
   );
 
-  // Generate confirm token if any intent needs confirmation
+  
   let confirm_token: string | undefined;
   if (allowedDecisions.some((d) => d.decision === 'CONFIRM')) {
     confirm_token = makeConfirmToken({ requestId: request_id, userId: user.id, ttlSeconds: 300 });

@@ -4,58 +4,21 @@ import { createClient } from '@/supabase/client/client';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/sharedDream/useSharedDreamSession.ts.
 
-/**
- * lib/sharedDream/useSharedDreamSession.ts
- *
- * Persistent collaborative reality hook.
- *
- * What this actually does:
- *   1. Loads or creates a named `shared_dream_sessions` row from Supabase.
- *   2. Returns the stable `channelId` from that row — pass this into
- *      `SharedDreamProvider` so all users land in the same Realtime channel.
- *   3. Exposes `savedEnginState` so each Engin can hydrate from the last
- *      snapshot (same pattern as `useDaydreamPersistence`).
- *   4. Exposes `saveEnginState(enginKey, state)` — debounced write to DB.
- *      Call this in each Engin's `stateSnapshot` callback, identically to how
- *      `persistState` works in useDaydreamPersistence.
- *   5. On unmount (user leaves / closes tab) flushes a final save.
- *   6. Writes to `shared_dream_activity` when user joins/leaves.
- *   7. Reads `shared_dream_members` to show who has been here.
- *
- * Pattern: wraps the same DB patterns as useDaydreamPersistence but keyed
- * to a session ID instead of a user+daydreamType pair, so ALL users in the
- * session share the same state row.
- *
- * Usage (inside dualruntime page or any SharedDream host):
- *
- *   const { channelId, savedEnginState, saveEnginState, members, activity, isLoading } =
- *     useSharedDreamSession({ sessionId: 'my-session-id' });
- *
- *   // Then in each Engin's coopStateSnapshot:
- *   stateSnapshot: () => {
- *     const snap = { type: 'game:state', selectedGame, score };
- *     saveEnginState('engin:game', snap);  // ← persists to DB
- *     return snap;
- *   }
- *
- *   // And hydrate on mount:
- *   const saved = savedEnginState['engin:game'];
- *   if (saved?.selectedGame) setSelectedGame(saved.selectedGame as string);
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface SharedDreamMember {
   userId: string;
@@ -73,50 +36,37 @@ export interface SharedDreamActivityEntry {
 }
 
 export interface UseSharedDreamSessionOptions {
-  /**
-   * The UUID of the shared_dream_sessions row.
-   * If not provided, a new session is created automatically.
-   */
+  
   sessionId?: string;
-  /**
-   * Name shown in the UI when creating a new session.
-   * Ignored if sessionId is provided.
-   */
+  
   name?: string;
 }
 
 export interface UseSharedDreamSessionResult {
-  /** Supabase Realtime channel ID — pass as `channelId` to SharedDreamProvider. */
+  
   channelId: string | null;
-  /** The session UUID from shared_dream_sessions.id */
+  
   sessionId: string | null;
-  /** True while loading from DB. */
+  
   isLoading: boolean;
-  /**
-   * Last saved engin states keyed by engin slot name.
-   * e.g. { 'engin:game': { selectedGame: 'tetris', score: 400 } }
-   * Hydrate each Engin from this on mount (check isLoading first).
-   */
+  
   savedEnginState: Record<string, Record<string, unknown>>;
-  /**
-   * Save this engin's state snapshot to DB (debounced 1 s).
-   * Call from inside stateSnapshot() in useEnginCoopSync.
-   */
+  
   saveEnginState: (enginKey: string, state: Record<string, unknown>) => void;
-  /** Members who have joined this session at least once. */
+  
   members: readonly SharedDreamMember[];
-  /** Most recent activity entries (newest first). */
+  
   activity: readonly SharedDreamActivityEntry[];
-  /** Manually append an activity entry (e.g. 'engin_restored'). */
+  
   logActivity: (kind: string, label: string, meta?: Record<string, unknown>) => void;
 }
 
-// In-memory merge buffer so multiple Engins can call saveEnginState without
-// triggering N separate DB writes. All updates are merged and written as one
-// JSONB patch after the debounce settles.
+
+
+
 type EnginStateBuffer = Record<string, Record<string, unknown>>;
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export function useSharedDreamSession({
   sessionId: propSessionId,
@@ -129,7 +79,7 @@ export function useSharedDreamSession({
   const [members, setMembers] = useState<SharedDreamMember[]>([]);
   const [activity, setActivity] = useState<SharedDreamActivityEntry[]>([]);
 
-  // Merge buffer: accumulates partial Engin state updates before the DB write
+  
   const bufferRef = useRef<EnginStateBuffer>({});
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const userIdRef = useRef<string | null>(null);
@@ -148,7 +98,7 @@ export function useSharedDreamSession({
       let cid: string | null = null;
 
       if (sid) {
-        // Load existing session
+        
         const { data } = await supabase
           .from('shared_dream_sessions')
           .select('id, channel_id, engin_state, active_engins')
@@ -161,7 +111,7 @@ export function useSharedDreamSession({
           bufferRef.current = (data.engin_state as EnginStateBuffer) ?? {};
         }
       } else {
-        // Create new session
+        
         const newChannelId = `shared-dream:${crypto.randomUUID()}`;
         const { data } = await supabase
           .from('shared_dream_sessions')
@@ -186,16 +136,16 @@ export function useSharedDreamSession({
         setSessionId(sid);
         setChannelId(cid);
 
-        // Join as member
+        
         await supabase.from('shared_dream_members').upsert(
           { session_id: sid, user_id: user.id, last_seen_at: new Date().toISOString() },
           { onConflict: 'session_id,user_id' },
         );
 
-        // Touch session
+        
         await supabase.rpc('touch_shared_dream_session', { p_session_id: sid });
 
-        // Log join activity
+        
         await supabase.from('shared_dream_activity').insert({
           session_id: sid,
           user_id: user.id,
@@ -203,7 +153,7 @@ export function useSharedDreamSession({
           label: 'Someone joined the shared dream',
         });
 
-        // Load members
+        
         const { data: mData } = await supabase
           .from('shared_dream_members')
           .select('user_id, role, joined_at, last_seen_at')
@@ -219,7 +169,7 @@ export function useSharedDreamSession({
           })));
         }
 
-        // Load recent activity
+        
         const { data: aData } = await supabase
           .from('shared_dream_activity')
           .select('id, user_id, kind, label, created_at')
@@ -292,7 +242,7 @@ export function useSharedDreamSession({
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
-      // Best-effort flush — navigator.sendBeacon would be ideal but this is close enough
+      
       void flushBuffer();
       const sid = sessionIdRef.current;
       const uid = userIdRef.current;
@@ -320,8 +270,8 @@ export function useSharedDreamSession({
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

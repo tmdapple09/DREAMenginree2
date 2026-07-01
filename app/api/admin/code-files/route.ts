@@ -10,9 +10,9 @@ import fs from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 
-// fs/path require Node.js runtime (the default in Next.js 16+).
-// NOTE: Do not add `export const runtime = 'nodejs'` here — it is incompatible
-// with nextConfig.cacheComponents (Turbopack build error in Next.js 16+).
+
+
+
 
 const ALLOWED_TOP_DIRS = ['app', 'components', 'lib', 'hooks', 'types', 'styles'] as const;
 type AllowedTopDir = (typeof ALLOWED_TOP_DIRS)[number];
@@ -37,7 +37,7 @@ async function buildTree(absDir: string, root: string, depth = 0): Promise<FileN
   const nodes: FileNode[] = [];
   for (const e of entries) {
     if (e.name.startsWith('.') || BLOCKED_SEGMENTS.has(e.name)) continue;
-    const abs = path.join(/*turbopackIgnore: true*/ absDir, e.name);
+    const abs = path.join( absDir, e.name);
     const rel = path.relative(root, abs);
     if (e.isDirectory()) {
       nodes.push({ name: e.name, type: 'dir', path: rel, children: await buildTree(abs, root, depth + 1) });
@@ -54,17 +54,17 @@ async function buildTree(absDir: string, root: string, depth = 0): Promise<FileN
 function allowedRoot(topDir: AllowedTopDir): string {
   switch (topDir) {
     case 'app':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'app');
+      return path.join( process.cwd(), 'app');
     case 'components':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'components');
+      return path.join( process.cwd(), 'components');
     case 'lib':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'lib');
+      return path.join( process.cwd(), 'lib');
     case 'hooks':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'hooks');
+      return path.join( process.cwd(), 'hooks');
     case 'types':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'types');
+      return path.join( process.cwd(), 'types');
     case 'styles':
-      return path.join(/*turbopackIgnore: true*/ process.cwd(), 'styles');
+      return path.join( process.cwd(), 'styles');
   }
 }
 
@@ -90,30 +90,30 @@ function deny(msg: string, status: number): NextResponse {
 }
 
 export async function POST(request: Request ): Promise<NextResponse> {
-  // 1. Block blacklisted domains immediately — no information leakage
+  
   if (isDomainBlocked(request)) {
     return deny('Access denied.', 403);
   }
 
-  // 2. Check permanent lockout (durable Supabase-backed check)
+  
   if (await isAdminLocked()) {
     return deny('Access permanently locked. Edit repository configuration to reset.', 403);
   }
 
-  // 3. Verify Supabase session — must be owner email
+  
   try {
     const supabase = await createServerClient();
     const user = await safeGetUser(supabase);
     const email = user?.email ?? '';
     if (!isOwner(email)) {
-      // Do not trigger lockout for wrong user — just deny silently
+      
       return deny('Access denied.', 403);
     }
   } catch {
     return deny('Authentication error.', 401);
   }
 
-  // 4. Parse body
+  
   let body: { password?: string; action?: string; filePath?: string };
   try {
     body = await request.json();
@@ -121,21 +121,21 @@ export async function POST(request: Request ): Promise<NextResponse> {
     return deny('Invalid request body.', 400);
   }
 
-  // 5. Password check — ONE wrong attempt = permanent lockout
+  
   const adminPw = process.env.IDARI_PASSWORD;
   if (!adminPw) {
     return deny('Admin feature not configured on this server.', 503);
   }
   if (!body.password || body.password !== adminPw) {
-    // Trigger permanent lockout immediately
+    
     await triggerAdminLockout();
-    // Subtle error — do not reveal that a lockout occurred
+    
     return deny('Incorrect password.', 401);
   }
 
   const root = process.cwd();
 
-  // 6. Action: tree
+  
   if (body.action === 'tree') {
     const tree: FileNode[] = [];
     for (const dir of ALLOWED_TOP_DIRS) {
@@ -144,13 +144,13 @@ export async function POST(request: Request ): Promise<NextResponse> {
         await fs.access(abs);
         tree.push({ name: dir, type: 'dir', path: dir, children: await buildTree(abs, root) });
       } catch {
-        /* skip missing directories */
+        
       }
     }
     return NextResponse.json({ tree });
   }
 
-  // 7. Action: read
+  
   if (body.action === 'read' && body.filePath) {
     const safeFile = resolveAllowedFile(body.filePath);
     if (!safeFile) {

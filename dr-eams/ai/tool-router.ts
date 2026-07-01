@@ -9,31 +9,31 @@ import {
 import { writeAuditLog } from './audit';
 import { toErrorMessage } from '@/utils/index';
 
-// lib/ai/tool-router.ts
-// Tool Router - Dispatch Intents to Typed Handlers
 
-// ============================================================================
-// HANDLER CONTEXT
-// ============================================================================
+
+
+
+
+
 
 export interface HandlerContext {
   actor: ActorContext;
   ui: UIContext;
   intent: Intent;
   supabase: SupabaseClient;
-  now: string; // ISO8601
+  now: string; 
   request_id: string;
 }
 
-// ============================================================================
-// HANDLER INTERFACE
-// ============================================================================
+
+
+
 
 export type ToolHandler = (ctx: HandlerContext) => Promise<ToolResult>;
 
-// ============================================================================
-// HANDLER REGISTRY
-// ============================================================================
+
+
+
 
 const handlerRegistry = new Map<IntentType, ToolHandler>();
 
@@ -45,9 +45,9 @@ export function getHandler(intentType: IntentType): ToolHandler | undefined {
   return handlerRegistry.get(intentType);
 }
 
-// ============================================================================
-// ROUTE INTENT TO HANDLER
-// ============================================================================
+
+
+
 
 export async function executeIntent(
   intent: Intent,
@@ -69,12 +69,12 @@ export async function executeIntent(
       },
     };
 
-    // Audit the failure
+    
     await writeAuditLog({
       request_id,
       intent_id: intent.intent_id,
       user_id: actor.user_id,
-      agent: 'dr_eams', // Will be corrected by caller
+      agent: 'dr_eams', 
       intent_type: intent.type,
       payload: intent.payload,
       ok: false,
@@ -111,12 +111,12 @@ export async function executeIntent(
     };
   }
 
-  // Audit the execution
+  
   await writeAuditLog({
     request_id,
     intent_id: intent.intent_id,
     user_id: actor.user_id,
-    agent: 'dr_eams', // Will be corrected by caller
+    agent: 'dr_eams', 
     intent_type: intent.type,
     payload: intent.payload,
     ok: result.ok,
@@ -127,9 +127,9 @@ export async function executeIntent(
   return result;
 }
 
-// ============================================================================
-// BATCH EXECUTION
-// ============================================================================
+
+
+
 
 export async function executeIntents(
   intents: Intent[],
@@ -140,12 +140,12 @@ export async function executeIntents(
 ): Promise<ToolResult[]> {
   const results: ToolResult[] = [];
 
-  // Execute sequentially to maintain order and handle dependencies
+  
   for (const intent of intents) {
     const result = await executeIntent(intent, actor, ui, supabase, request_id);
     results.push(result);
 
-    // Stop on first error if it's critical
+    
     if (!result.ok && result.error?.code === 'CRITICAL') {
       break;
     }

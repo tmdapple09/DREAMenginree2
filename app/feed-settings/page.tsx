@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import FeedSettingsClient from './dream.FeedSettingsClient';
 
-// SURFACE: dreamsurface.FeedSettings  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Feed Settings – Dreamengin' };
 

@@ -62,31 +62,15 @@ import {
   type EnginRuleSetContract,
 } from "./EnginRuleSetContract";
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginRuntime.ts.
 
-/**
- * lib/engin-runtime/EnginRuntime.ts
- *
- * EnginRuntime — the ONE fixed engine that never changes.
- *
- * Responsibilities:
- *   1. Holds base state and a reference to the active rule-set.
- *   2. Processes actions: checks capabilities → runs constraints → applies transform.
- *   3. Emits lifecycle + state-change events via the scoped event bus.
- *   4. Delegates all persistence to the injected I/O adapter.
- *   5. Exposes getDerivedState() so the UI can read the projected state.
- *
- * The engine itself has NO knowledge of game scores, music stems, world
- * tiles, or another domain concept. All of that lives in rule-sets.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 export const ENGIN_RUNTIME_VERSION = "1.0.0";
 
@@ -113,11 +97,11 @@ const LIFECYCLE_TRANSITIONS: Readonly<
   stopped: [],
 };
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export interface EnginRuntimeOptions {
   capabilities?: EnginCapabilityMap;
@@ -150,7 +134,7 @@ export interface RuntimeWorkFlushResult {
     | "manual";
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function cloneState(state: EnginBaseState): EnginBaseState {
   if (!isEnginBaseState(state)) {
@@ -1074,8 +1058,8 @@ export class EnginRuntime<
   }
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -3,20 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * KonamiDream — Global easter egg that activates HYPER DREAM MODE.
- *
- * Activation sequence: ↑ ↑ ↓ ↓ ← → ← → b a
- * On activation:
- *  1. Plays a quick screen flash sequence
- *  2. Shows a full-screen "HYPER DREAM MODE ACTIVATED" overlay
- *  3. Adds `body.hyper-dream` CSS class for 18 seconds — triggers
- *     extra SICC animation overrides defined in globals.css
- *  4. Auto-dismisses; user can also tap/press Esc to close early
- *
- * Architecture: Zero dependencies beyond React + framer-motion
- * (both already in the bundle). No audio, no heavy assets.
- */
+
 
 const KONAMI = [
   'ArrowUp', 'ArrowUp',
@@ -44,15 +31,15 @@ export default function KonamiDream( ){
     setActive(true);
     setMsgIdx(Math.floor(Math.random() * MESSAGES.length));
 
-    // Apply body class for SICC hyper cascade
+    
     document.body.classList.add('hyper-dream');
 
-    // Remove body class after HYPER_DURATION_MS
+    
     const bodyTimer = window.setTimeout(() => {
       document.body.classList.remove('hyper-dream');
     }, HYPER_DURATION_MS);
 
-    // Auto-close overlay
+    
     const overlayTimer = window.setTimeout(() => {
       setActive(false);
     }, OVERLAY_DURATION_MS);
@@ -63,7 +50,7 @@ export default function KonamiDream( ){
     };
   }, []);
 
-  // Konami sequence detection
+  
   useEffect(() => {
     let pos = 0;
 
@@ -75,7 +62,7 @@ export default function KonamiDream( ){
           activate();
         }
       } else {
-        // Reset on mismatch (allow restart from beginning if first key matches)
+        
         pos = e.key === KONAMI[0] ? 1 : 0;
       }
     };
@@ -88,7 +75,7 @@ export default function KonamiDream( ){
     setActive(false);
   }, []);
 
-  // Esc to dismiss
+  
   useEffect(() => {
     if (!active) return;
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') dismiss(); };
@@ -98,7 +85,7 @@ export default function KonamiDream( ){
 
   return (
     <>
-      {/* Inline keyframes — hyper-dream mode animations */}
+      
       <style>{`
         @keyframes hd-glitch-h {
           0%,100% { clip-path: inset(0 0 95% 0); transform: translateX(0);   }
@@ -155,7 +142,7 @@ export default function KonamiDream( ){
               overflow:        'hidden',
             }}
           >
-            {/* Scanline sweep */}
+            
             <div
               aria-hidden="true"
               style={{
@@ -170,7 +157,7 @@ export default function KonamiDream( ){
               }}
             />
 
-            {/* Screen flash */}
+            
             <div
               aria-hidden="true"
               style={{
@@ -183,7 +170,7 @@ export default function KonamiDream( ){
               }}
             />
 
-            {/* Rainbow border */}
+            
             <div
               aria-hidden="true"
               style={{
@@ -201,7 +188,7 @@ export default function KonamiDream( ){
               }}
             />
 
-            {/* Neon grid */}
+            
             <div
               aria-hidden="true"
               style={{
@@ -214,7 +201,7 @@ export default function KonamiDream( ){
               }}
             />
 
-            {/* Main text */}
+            
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -226,7 +213,7 @@ export default function KonamiDream( ){
                 padding:     '0 24px',
               }}
             >
-              {/* Small eyebrow */}
+              
               <div
                 style={{
                   fontSize:      11,
@@ -241,7 +228,7 @@ export default function KonamiDream( ){
                 secret sequence detected
               </div>
 
-              {/* Glitchy main headline */}
+              
               <div
                 style={{
                   position: 'relative',
@@ -265,7 +252,7 @@ export default function KonamiDream( ){
                   {MESSAGES[msgIdx]}
                 </h1>
 
-                {/* Glitch layer 1 */}
+                
                 <h1
                   aria-hidden="true"
                   style={{
@@ -284,7 +271,7 @@ export default function KonamiDream( ){
                   {MESSAGES[msgIdx]}
                 </h1>
 
-                {/* Glitch layer 2 */}
+                
                 <h1
                   aria-hidden="true"
                   style={{
@@ -304,7 +291,7 @@ export default function KonamiDream( ){
                 </h1>
               </div>
 
-              {/* Sub-line */}
+              
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -322,7 +309,7 @@ export default function KonamiDream( ){
                 All SICC animations running at hyperspeed · tap anywhere to close
               </motion.p>
 
-              {/* Progress bar */}
+              
               <motion.div
                 style={{
                   marginTop:   20,
@@ -348,7 +335,7 @@ export default function KonamiDream( ){
               </motion.div>
             </motion.div>
 
-            {/* Corner ✦ decorations */}
+            
             {(['tl', 'tr', 'bl', 'br'] as const).map((corner) => (
               <div
                 key={corner}

@@ -7,21 +7,7 @@ import {
     Web3Error,
 } from './types';
 
-/**
- * lib/web3/engagement.ts
- *
- * On-chain engagement tracking for DREAMengin's decentralized feed.
- *
- * Mirrors the backend engagementController.js contract but adds:
- *   – Optimistic local state (immediate UI feedback before chain confirmation)
- *   – Deduplication against the Supabase engagement record (avoid double-charging)
- *   – Graceful degradation: if the wallet isn't connected the action falls back
- *     to the off-chain Supabase record so the feed still works for all users.
- *
- * Chain writes go to the engagementContractAddress defined in SUPPORTED_CHAINS.
- * Until that address is populated, all writes fall through to the backend HTTP
- * endpoint instead and the tx is recorded as "off-chain".
- */
+
 
 const BACKEND_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api';
 
@@ -65,10 +51,7 @@ async function fetchStatsOffChain(contentId: string): Promise<EngagementStats> {
   };
 }
 
-/**
- * Emit an engagement event to the on-chain contract.
- * Returns the tx hash on success or null if no contract is configured.
- */
+
 async function trackOnChain(
   payload: EngagementPayload
 ): Promise<string | null> {
@@ -77,45 +60,38 @@ async function trackOnChain(
 
   const chain = SUPPORTED_CHAINS[account.chainId ?? DEFAULT_CHAIN_ID];
   if (!chain?.engagementContractAddress) {
-    // Contract not deployed on this chain yet — fall through to off-chain.
+    
     return null;
   }
 
-  // When the contract ABI is available, replace this block with an ethers /
-  // viem contract call. The shape will be:
-  //
-  //   const contract = new ethers.Contract(
-  //     chain.engagementContractAddress,
-  //     ENGAGEMENT_ABI,
-  //     provider.getSigner()
-  //   );
-  //   const tx = await contract.trackEngagement(
-  //     payload.contentId,
-  //     payload.type,
-  //     payload.contentCid ?? ''
-  //   );
-  //   await tx.wait();
-  //   return tx.hash;
-  //
-  // For now, indicate the on-chain path is not yet active.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   void payload;
   return null;
 }
 
-/**
- * Record an engagement action (like, repost, comment) for `contentId`.
- *
- * Strategy:
- *   1. Try on-chain write if wallet is connected and contract is deployed.
- *   2. Always write to off-chain backend (source of truth for display counts).
- *   3. Return the tx hash if on-chain write succeeded, otherwise null.
- */
+
 export async function trackEngagement(
   contentId: string,
   type: EngagementPayload['type'],
   options: {
     contentCid?: string;
-    /** Skip on-chain write even when a contract address is configured */
+    
     offChainOnly?: boolean;
   } = {}
 ): Promise<{ txHash: string | null; offChain: boolean }> {
@@ -140,21 +116,14 @@ export async function trackEngagement(
   return { txHash, offChain: txHash === null };
 }
 
-/**
- * Fetch engagement statistics for a piece of content.
- * Returns verifiedLikes sourced from the chain when available, otherwise
- * falls back to the backend off-chain count.
- */
+
 export async function getEngagementStats(
   contentId: string
 ): Promise<EngagementStats> {
   return fetchStatsOffChain(contentId);
 }
 
-/**
- * In-memory optimistic cache used by `useEngagement` to provide instant
- * UI feedback while the async write settles.
- */
+
 const optimisticCache = new Map<
   string,
   { delta: Partial<Record<EngagementPayload['type'], number>>; hasLiked: boolean }

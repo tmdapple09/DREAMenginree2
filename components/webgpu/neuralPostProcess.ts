@@ -1,35 +1,9 @@
-/**
- * components/webgpu/neuralPostProcess.ts — Neural Post-Processing WGSL shader.
- *
- * Implements a GPU-accelerated neural denoising / upscaling post-process pass
- * inspired by NVIDIA's NIS (Neural Image Scaling) and AMD FSR techniques.
- *
- * Pipeline position: runs AFTER the standard composite pass as an optional
- * quality enhancement when the WebGPU Director determines there is GPU headroom.
- *
- * Features:
- *  - Edge-aware sharpening with gold/light-blue colour bias
- *  - Adaptive noise reduction (temporal neighbourhood sampling)
- *  - Luminance-preserving upscale for sub-native resolution rendering
- *  - Neumorphic vignette overlay (soft dark-edge glow matching the design system)
- *
- * Architecture: docs/ARCHITECTURE.md §10 (render-on-demand, performance-first).
- * The shader is written in WGSL and designed for WebGPU-native execution.
- */
 
-// Neural Post-Process shader (WGSL)
 
-/**
- * Uniforms for the neural post-process pass.
- *
- * - `resolution`: viewport width/height in pixels
- * - `sharpness`: edge sharpening strength (0.0 = off, 1.0 = max)
- * - `denoiseStrength`: temporal noise reduction (0.0 = off, 1.0 = aggressive)
- * - `time`: elapsed time for animated effects (vignette pulse)
- * - `goldBias`: amount of gold tint in highlight reconstruction (0.0–1.0)
- * - `skyBias`: amount of light-blue tint in shadow lifting (0.0–1.0)
- */
-export const NEURAL_POST_PROCESS_WGSL = /* wgsl */`
+
+
+
+export const NEURAL_POST_PROCESS_WGSL = `
 struct NeuralUniforms {
   resolution      : vec2<f32>,
   sharpness       : f32,
@@ -188,14 +162,12 @@ fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
 }
 `;
 
-// Neural Post-Process uniform buffer layout
 
-/** Byte layout of the NeuralUniforms struct (32 bytes, 16-byte aligned). */
+
+
 export const NEURAL_UNIFORM_SIZE = 32;
 
-/**
- * Create a Float32Array for the neural post-process uniform buffer.
- */
+
 export function createNeuralUniforms(params: {
   width: number;
   height: number;
@@ -213,18 +185,13 @@ export function createNeuralUniforms(params: {
     params.time ?? 0,
     params.goldBias ?? 0.25,
     params.skyBias ?? 0.15,
-    0, // padding
+    0, 
   ]);
 }
 
-// Pipeline builder
 
-/**
- * Create the neural post-processing compute pipeline.
- *
- * Call once at init time.  The returned pipeline + bind group layout are
- * reused every frame; only the uniform buffer needs updating.
- */
+
+
 export async function createNeuralPostProcessPipeline(
   device: GPUDevice,
 ): Promise<{
@@ -273,12 +240,7 @@ export async function createNeuralPostProcessPipeline(
   return { pipeline, bindGroupLayout };
 }
 
-/**
- * Dispatch the neural post-process compute pass.
- *
- * Reads from `inputTexture`, writes to `outputTexture`, using the provided
- * uniform buffer.  Both textures must be the same dimensions.
- */
+
 export function dispatchNeuralPostProcess(
   encoder: GPUCommandEncoder,
   pipeline: GPUComputePipeline,

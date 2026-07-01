@@ -2,13 +2,13 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-// ─── Named constants ────────────────────────────────────────────────────────
+
 const OUTPUT_PATH = path.resolve(process.cwd(), 'docs/mobile-ps5-web-gaming-engine-spec.md');
 const SNIPPET_MAX_CHARS = 1800;
 const COVERAGE_STRONG_PCT = 75;
 const COVERAGE_PARTIAL_PCT = 40;
 
-// ─── Research sources ────────────────────────────────────────────────────────
+
 const researchSources = [
   { area: 'rendering', title: 'WebGPU API (MDN)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API' },
   { area: 'rendering', title: 'WebGPU Fundamentals', url: 'https://webgpufundamentals.org/' },
@@ -27,12 +27,12 @@ const researchSources = [
   { area: 'quality', title: 'MDN: Performance API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API' },
 ];
 
-// ─── PS5-level capability pillars ─────────────────────────────────────────────
-// Each pillar has:
-//  - requiredSpecArtifacts: what must be documented/designed
-//  - completionChecks: repo file + grep-symbol pairs. ALL must exist for the
-//    pillar to be considered IMPLEMENTED. When every pillar is IMPLEMENTED,
-//    the spec reaches its endpoint and the workflow stops committing.
+
+
+
+
+
+
 const capabilityChecklist = [
   {
     name: 'Graphics & Rendering',
@@ -160,7 +160,7 @@ const capabilityChecklist = [
   },
 ];
 
-// ─── Repo-based completion check ──────────────────────────────────────────────
+
 async function checkCompletion() {
   const results = [];
   for (const capability of capabilityChecklist) {
@@ -183,7 +183,7 @@ async function checkCompletion() {
   return results;
 }
 
-// ─── Source fetching ───────────────────────────────────────────────────────────
+
 function stripHtml(input) {
   return input
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
@@ -261,7 +261,7 @@ function scoreWebCoverage(capability, research) {
   };
 }
 
-// ─── Spec markdown builder ─────────────────────────────────────────────────────
+
 function buildSpecMarkdown(research, completionResults) {
   const successful = research.filter((item) => item.ok);
   const failed = research.filter((item) => !item.ok);
@@ -292,7 +292,7 @@ function buildSpecMarkdown(research, completionResults) {
     lines.push('');
   }
 
-  // ── 1. Requirements List ──────────────────────────────────────────────────────
+  
   lines.push('## PS5-Level Gaming Engine Requirements List');
   lines.push('');
   lines.push('What must be true for a mobile web game engine to qualify as "PS5-level":');
@@ -308,14 +308,14 @@ function buildSpecMarkdown(research, completionResults) {
   lines.push('9. **Quality engineering** — Live GPU/CPU telemetry, FPS + frame-pacing KPIs, device coverage matrix, automated regression gates, auto-rollback on quality regression.');
   lines.push('');
 
-  // ── 2. End-point definition ───────────────────────────────────────────────────
+  
   lines.push('## End-Point Definition (When the mission is complete)');
   lines.push('');
   lines.push('The spec workflow reaches its endpoint when **every capability pillar** below shows ✅ in "Repo Status".');
   lines.push('At that point the spec file no longer changes and the 15-minute job becomes a no-op commit-free run.');
   lines.push('');
 
-  // ── 3. Capability pillars ─────────────────────────────────────────────────────
+  
   lines.push('## Capability Pillars — Detailed Spec');
   lines.push('');
 

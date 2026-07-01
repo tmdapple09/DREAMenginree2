@@ -1,20 +1,8 @@
-/**
- * tests/phase8b-dream-windows.test.ts
- *
- * Phase 8 Section B regression tests — Dream Window System: Full Lifecycle
- * Activation (Points 11–22).
- *
- * Architecture justification:
- *   - docs/dreamengin_phase8.md §B: Dream Window System spec
- *   - docs/ARCHITECTURE.md §4: Universal Dream Window model
- *   - docs/AXIOMS.md Axiom 5: Privacy by Design (private by default)
- *   - docs/LAW.md Product law 3: every action does something real
- *   - docs/SECURITY.md: RLS on all user tables
- */
+
 
 import { describe, it, expect } from 'vitest';
 
-// ── System under test ─────────────────────────────────────────────────────────
+
 
 import {
   DREAM_WINDOW_STATES,
@@ -31,7 +19,7 @@ import {
   type DreamWindowLayerValidationResult,
 } from '@/engine/dream-window/DreamWindowLifecycle';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 function makeInstance(overrides?: Partial<DreamWindowInstance>): DreamWindowInstance {
   return createDreamWindowInstance({
@@ -47,7 +35,7 @@ function makeInstance(overrides?: Partial<DreamWindowInstance>): DreamWindowInst
   });
 }
 
-// ── Point 11 — Lifecycle state machine (DB-persisted transitions) ──────────────
+
 
 describe('Phase 8 §B Point 11 — Dream Window lifecycle state machine', () => {
   it('creates a Dream Window in Unbound state by default', () => {
@@ -102,7 +90,7 @@ describe('Phase 8 §B Point 11 — Dream Window lifecycle state machine', () => 
   });
 });
 
-// ── Point 12 — 10-field validation ────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 12 — 10-field Dream Window validation', () => {
   const REQUIRED_FIELDS = [
@@ -136,7 +124,7 @@ describe('Phase 8 §B Point 12 — 10-field Dream Window validation', () => {
     const instance = makeInstance();
     expect(instance.id).toBeDefined();
     expect(instance.type).toBeDefined();
-    expect(instance.owner).toBeDefined(); // owner in model = owner_id in DB
+    expect(instance.owner).toBeDefined(); 
     expect(instance.config).toBeDefined();
     expect(instance.size).toBeDefined();
     expect(instance.position).toBeDefined();
@@ -147,7 +135,7 @@ describe('Phase 8 §B Point 12 — 10-field Dream Window validation', () => {
   });
 });
 
-// ── Point 13 — Spatial data ───────────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 13 — Spatial data (position and size)', () => {
   it('createDreamWindowInstance preserves position', () => {
@@ -173,7 +161,7 @@ describe('Phase 8 §B Point 13 — Spatial data (position and size)', () => {
   });
 });
 
-// ── Point 14 — Visibility defaults ────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 14 — Visibility defaults to private', () => {
   it('new Dream Window is private by default', () => {
@@ -201,7 +189,7 @@ describe('Phase 8 §B Point 14 — Visibility defaults to private', () => {
   });
 });
 
-// ── Point 15 — owner field ────────────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 15 — owner_id enforcement', () => {
   it('every Dream Window has an owner', () => {
@@ -218,7 +206,7 @@ describe('Phase 8 §B Point 15 — owner_id enforcement', () => {
   });
 });
 
-// ── Point 16 — useDreamWindowActions hook contract ────────────────────────────
+
 
 describe('Phase 8 §B Point 16 — useDreamWindowActions hook contract', () => {
   it('exports useDreamWindowActions from canonical path', async () => {
@@ -227,7 +215,7 @@ describe('Phase 8 §B Point 16 — useDreamWindowActions hook contract', () => {
   });
 });
 
-// ── Point 17 — SuperDreamWidget ───────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 17 — SuperDreamWidget real composition', () => {
   it('SuperDreamWidget module exports a default component', async () => {
@@ -236,13 +224,13 @@ describe('Phase 8 §B Point 17 — SuperDreamWidget real composition', () => {
   });
 });
 
-// ── Point 18 — Widget shims ───────────────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 18 — widget shims forward to Dream Window equivalents', () => {
   it('WidgetShell re-exports from DreamShell', async () => {
     const widgetShell = await import('@/components/widgets/dream.widget.WidgetShell');
     const dreamShell = await import('@/components/dreams/dreamsurface.shell');
-    // Both should export a default function
+    
     expect(typeof widgetShell.default).toBe('function');
     expect(typeof dreamShell.default).toBe('function');
   });
@@ -270,11 +258,11 @@ describe('Phase 8 §B Point 18 — widget shims forward to Dream Window equivale
   });
 });
 
-// ── Point 19 — types/dream-window.ts canonical type authority ─────────────────
+
 
 describe('Phase 8 §B Point 19 — canonical Dream Window types', () => {
   it('types/dream-window.ts exports DreamWindowRecord', async () => {
-    // If this import works, the type file exists
+    
     const types = await import('@/types/dream-window');
     expect(types.DREAM_WINDOW_STATES).toBeDefined();
   });
@@ -288,7 +276,7 @@ describe('Phase 8 §B Point 19 — canonical Dream Window types', () => {
   });
 });
 
-// ── Point 20 — validateDreamWindowLayers ─────────────────────────────────────
+
 
 describe('Phase 8 §B Point 20 — Shell→Connector→Feature→Output layer validation', () => {
   it('DREAM_WINDOW_REQUIRED_LAYERS has exactly 4 layers', () => {
@@ -359,7 +347,7 @@ describe('Phase 8 §B Point 20 — Shell→Connector→Feature→Output layer va
   });
 });
 
-// ── Point 21 — View Profile visibility enforcement ────────────────────────────
+
 
 describe('Phase 8 §B Point 21 — View Profile visibility enforcement', () => {
   it('private Dream Windows are excluded from public view', () => {
@@ -369,7 +357,7 @@ describe('Phase 8 §B Point 21 — View Profile visibility enforcement', () => {
       { id: '3', visibility: 'public' },
     ];
 
-    // Simulate the non-owner filter applied in view-profile/page.tsx
+    
     const visible = windows.filter(
       (w) => w.visibility === 'shared' || w.visibility === 'public',
     );
@@ -391,12 +379,12 @@ describe('Phase 8 §B Point 21 — View Profile visibility enforcement', () => {
   });
 });
 
-// ── Point 22 — Atomic delete contract ────────────────────────────────────────
+
 
 describe('Phase 8 §B Point 22 — Atomic delete route contract', () => {
   it('DELETE route file exists at canonical path', async () => {
     // Check the route file exists — we can't import server-only routes in vitest
-    // so we verify the module resolution path via the filesystem
+    
     const { existsSync } = await import('node:fs');
     const { resolve } = await import('node:path');
     const routePath = resolve(
@@ -448,7 +436,7 @@ describe('Phase 8 §B Point 22 — Atomic delete route contract', () => {
   });
 });
 
-// ── Integration: DREAM_WINDOW_STATES constants ────────────────────────────────
+
 
 describe('Phase 8 §B — DREAM_WINDOW_STATES canonical constants', () => {
   it('has exactly 4 canonical states', () => {

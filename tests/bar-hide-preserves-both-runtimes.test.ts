@@ -1,22 +1,12 @@
-/**
- * bar-hide-preserves-both-runtimes.test.ts
- *
- * Asserts that hiding the DreamDM Bar does NOT collapse either runtime region
- * and does NOT force splitRatio to 1. Both HomeDream Surface and DreamSpace
- * must remain rendered and independently scrollable when isBarMinimized is true.
- *
- * Per Bar Ownership Law §0 (docs/LAW.md):
- *   "Hiding the bar removes only the bar's own UI. Both HomeDream and DreamSpace
- *   remain rendered at whatever split they held the moment the bar disappeared."
- */
+
 
 import { describe, expect, it } from 'vitest';
 import { DIVIDER_H } from '@/dreamdmbar/runtime/barInteractions';
 
-// ---------------------------------------------------------------------------
-// Pure layout helpers — extracted from HomeSystem render logic so we can test
-// the layout math without mounting React components.
-// ---------------------------------------------------------------------------
+
+
+
+
 
 interface RegionLayout {
   topHeight: string;
@@ -25,18 +15,11 @@ interface RegionLayout {
   runtimeSplitRatio: number;
 }
 
-/**
- * Compute the CSS layout strings that HomeSystem derives from the current
- * splitRatio and isBarMinimized values.
- *
- * This mirrors the exact calculation in
- * app/dreamdmbar/_components/DreamBarDataBridge.tsx — intentionally kept
- * in sync so a future change to the component must also update this test.
- */
+
 function computeRegionLayout(splitRatio: number, isBarMinimized: boolean): RegionLayout {
   const dividerHeight = isBarMinimized ? 0 : DIVIDER_H;
 
-  // Bar Ownership Law §0: hiding the bar must NOT change the split ratio.
+  
   const runtimeSplitRatio = splitRatio;
 
   const topHeight = `calc((100% - ${dividerHeight}px) * ${runtimeSplitRatio})`;
@@ -46,18 +29,12 @@ function computeRegionLayout(splitRatio: number, isBarMinimized: boolean): Regio
   return { topHeight, bottomHeight, bottomRegionTop, runtimeSplitRatio };
 }
 
-/**
- * Evaluate a CSS calc() expression against a given viewport height.
- * Supports the subset of calc() used by HomeSystem:
- *   calc((100% - Xpx) * R)
- *   calc(A + Bpx)
- *   calc(100% - A)
- */
+
 function evalCssCalc(expr: string, viewportHeight: number): number {
-  // Strip "calc(" … ")"
+  
   const inner = expr.replace(/^calc\(/, '').replace(/\)$/, '');
 
-  // Pattern: (100% - Dpx) * R  →  (vh - D) * R
+  
   const topMatch = inner.match(/^\(100% - ([\d.]+)px\) \* ([\d.]+)$/);
   if (topMatch) {
     const divH = parseFloat(topMatch[1]);
@@ -65,13 +42,13 @@ function evalCssCalc(expr: string, viewportHeight: number): number {
     return (viewportHeight - divH) * ratio;
   }
 
-  // Pattern: EXPR + Dpx
+  
   const addMatch = inner.match(/^(.+) \+ ([\d.]+)px$/);
   if (addMatch) {
     return evalCssCalc(addMatch[1], viewportHeight) + parseFloat(addMatch[2]);
   }
 
-  // Pattern: 100% - EXPR
+  
   const subMatch = inner.match(/^100% - (.+)$/);
   if (subMatch) {
     return viewportHeight - evalCssCalc(subMatch[1], viewportHeight);
@@ -80,9 +57,9 @@ function evalCssCalc(expr: string, viewportHeight: number): number {
   throw new Error(`evalCssCalc: unrecognized expression: "${expr}"`);
 }
 
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
+
+
+
 
 const VIEWPORT_H = 800;
 const SPLIT_RATIO = 0.6;
@@ -135,7 +112,7 @@ describe('Bar Ownership Law §0 — bar-hide preserves both runtimes', () => {
     });
 
     it('top + bottom sums to the full viewport (no divider when bar is hidden)', () => {
-      // When the bar is hidden dividerHeight = 0, so top + bottom = 100%
+      
       const sum = topPx + bottomPx;
       expect(sum).toBeCloseTo(VIEWPORT_H, 1);
     });
@@ -145,7 +122,7 @@ describe('Bar Ownership Law §0 — bar-hide preserves both runtimes', () => {
     it('splitRatio is unchanged when bar becomes visible again', () => {
       const hidden = computeRegionLayout(SPLIT_RATIO, true);
       const shown = computeRegionLayout(SPLIT_RATIO, false);
-      // Both must use the original splitRatio — bar hide/show must not drift it
+      
       expect(hidden.runtimeSplitRatio).toBe(SPLIT_RATIO);
       expect(shown.runtimeSplitRatio).toBe(SPLIT_RATIO);
     });

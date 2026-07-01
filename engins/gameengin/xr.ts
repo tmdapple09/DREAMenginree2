@@ -1,14 +1,4 @@
-/**
- * lib/gameengin/xr.ts
- *
- * NEXT-GEN — WebXR / spatial reality parity.
- *
- *  - WebXRSession         — Session lifecycle wrapper (immersive-vr / immersive-ar)
- *  - HandTrackingInput    — Hand tracking → unified input bridge
- *  - PassthroughComposite — Passthrough AR + spatial anchor composer
- *
- * SSR-safe: navigator.xr is feature-detected before any access.
- */
+
 
 export type XRMode = 'immersive-vr' | 'immersive-ar' | 'inline';
 
@@ -28,9 +18,7 @@ function getXRSystem(): XRSystemLike | null {
   return xr ?? null;
 }
 
-/**
- * Wraps an XRSession's lifecycle with safe creation, end, and 2D-fallback hooks.
- */
+
 export class WebXRSession {
   private readonly mode: XRMode;
   private session: XRSessionLike | null = null;
@@ -41,7 +29,7 @@ export class WebXRSession {
     this.mode = mode;
   }
 
-  /** Returns true when the requested mode is supported by the device. */
+  
   async isSupported(): Promise<boolean> {
     const xr = getXRSystem();
     if (!xr) return false;
@@ -52,7 +40,7 @@ export class WebXRSession {
     }
   }
 
-  /** Begin the XR session. Returns false on failure (caller should fall back). */
+  
   async begin(init?: unknown): Promise<boolean> {
     const xr = getXRSystem();
     if (!xr) { this.fallbackInvoked = true; return false; }
@@ -75,7 +63,7 @@ export class WebXRSession {
     const s = this.session;
     if (!s) return;
     this.session = null;
-    try { await s.end(); } catch { /* swallow — session may already be gone */ }
+    try { await s.end(); } catch {  }
   }
 
   get isActive(): boolean { return this.session !== null; }
@@ -95,10 +83,7 @@ export interface HandPose {
 
 export type UnifiedAction = 'select' | 'cancel' | 'menu' | 'pinch' | 'grab' | 'point';
 
-/**
- * Maps hand-tracking poses to the same UnifiedAction set used by gamepad and
- * touch input, so gameplay code can treat all input modalities equivalently.
- */
+
 export class HandTrackingInput {
   private subscribers: Array<(side: 'left' | 'right', action: UnifiedAction) => void> = [];
   private lastPinch = { left: false, right: false };
@@ -108,7 +93,7 @@ export class HandTrackingInput {
     return () => { this.subscribers = this.subscribers.filter((s) => s !== cb); };
   }
 
-  /** Feed a pose snapshot; emits actions on rising edges. */
+  
   ingest(pose: HandPose): void {
     const thumb = pose.joints['thumb-tip'];
     const index = pose.joints['index-tip'];
@@ -133,14 +118,11 @@ export interface SpatialAnchor {
   id: string;
   position: [number, number, number];
   rotation: [number, number, number, number];
-  /** Whether the anchor has been persisted across sessions. */
+  
   persistent: boolean;
 }
 
-/**
- * Composes passthrough AR camera output with the engine's rendered overlay,
- * and tracks spatial anchors that persist across XR sessions.
- */
+
 export class PassthroughComposite {
   private anchors = new Map<string, SpatialAnchor>();
   private passthroughEnabled = false;
@@ -156,7 +138,7 @@ export class PassthroughComposite {
   listAnchors(): SpatialAnchor[] { return Array.from(this.anchors.values()); }
   getAnchor(id: string): SpatialAnchor | undefined { return this.anchors.get(id); }
 
-  /** Compositing recipe consumed by the renderer. */
+  
   compositeRecipe(): { passthrough: boolean; opacity: number; anchorCount: number } {
     return {
       passthrough: this.passthroughEnabled,

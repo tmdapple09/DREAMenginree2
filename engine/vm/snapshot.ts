@@ -10,20 +10,13 @@ import type {
 } from './types';
 import type { WasmGpuVM } from './wasmGpuVM';
 
-/**
- * lib/vm/snapshot.ts — VM State Serialization and Snapshot Management
- *
- * Implements the binary snapshot format from the spec for VM state migration,
- * checkpointing, and debugging.
- */
+
 
 const SNAPSHOT_MAGIC = 'VMSN';
 const SNAPSHOT_VERSION = 1;
 
 export class SnapshotManager {
-  /**
-   * Create a snapshot of the current VM state.
-   */
+  
   static async createSnapshot(vm: WasmGpuVM): Promise<VMSnapshot> {
     const state = (vm as unknown as {state: {
       wasmMemories: Map<number, {id: number; memory: WebAssembly.Memory; shared: boolean; pages: number}>;
@@ -37,7 +30,7 @@ export class SnapshotManager {
       config: {quotas: unknown};
     }}).state;
 
-    // Snapshot WASM memories
+    
     const wasmMemories: WasmMemorySnapshot[] = [];
     for (const memory of state.wasmMemories.values()) {
       const data = new Uint8Array(memory.memory.buffer);
@@ -49,7 +42,7 @@ export class SnapshotManager {
       });
     }
 
-    // Snapshot GPU buffers
+    
     const gpuBuffers: GPUBufferSnapshot[] = [];
     for (const descriptor of state.buffers.values()) {
       const data = await this.readBufferData(descriptor.buffer, descriptor.size, state.device);
@@ -61,18 +54,18 @@ export class SnapshotManager {
       });
     }
 
-    // Snapshot pipelines
+    
     const pipelines: PipelineSnapshot[] = [];
     for (const descriptor of state.pipelines.values()) {
       const hashBytes = this.hexToBytes(descriptor.sourceHash);
       pipelines.push({
         sourceHash: hashBytes,
         wgslSource: descriptor.wgslSource,
-        pipelineBlob: null, // WebGPU doesn't support binary pipeline serialization yet
+        pipelineBlob: null, 
       });
     }
 
-    // Snapshot handle tables
+    
     const handleState: HandleTableSnapshot = {
       nextFreeBuffer: state.nextBufferHandle,
       nextFreePipeline: state.nextPipelineHandle,
@@ -93,18 +86,16 @@ export class SnapshotManager {
     };
   }
 
-  /**
-   * Serialize a snapshot to binary format.
-   */
+  
   static serializeSnapshot(snapshot: VMSnapshot): Uint8Array {
     const parts: Uint8Array[] = [];
 
-    // Header
+    
     parts.push(this.encodeString(SNAPSHOT_MAGIC));
     parts.push(this.encodeU32(snapshot.version));
     parts.push(this.encodeU64(BigInt(snapshot.timestamp)));
 
-    // WASM memories
+    
     parts.push(this.encodeU32(snapshot.wasmMemories.length));
     for (const memory of snapshot.wasmMemories) {
       parts.push(this.encodeU32(memory.id));
@@ -114,7 +105,7 @@ export class SnapshotManager {
       parts.push(memory.data);
     }
 
-    // GPU buffers
+    
     parts.push(this.encodeU32(snapshot.gpuBuffers.length));
     for (const buffer of snapshot.gpuBuffers) {
       parts.push(this.encodeU32(buffer.handle));
@@ -124,10 +115,10 @@ export class SnapshotManager {
       parts.push(buffer.data);
     }
 
-    // Pipelines
+    
     parts.push(this.encodeU32(snapshot.pipelines.length));
     for (const pipeline of snapshot.pipelines) {
-      parts.push(pipeline.sourceHash); // 32 bytes
+      parts.push(pipeline.sourceHash); 
       const wgslBytes = new TextEncoder().encode(pipeline.wgslSource);
       parts.push(this.encodeU32(wgslBytes.byteLength));
       parts.push(wgslBytes);
@@ -137,7 +128,7 @@ export class SnapshotManager {
       }
     }
 
-    // Handle table state
+    
     parts.push(this.encodeU32(snapshot.handleState.nextFreeBuffer));
     parts.push(this.encodeU32(snapshot.handleState.nextFreePipeline));
     parts.push(this.encodeU32(snapshot.handleState.nextFreeBindGroup));
@@ -150,13 +141,13 @@ export class SnapshotManager {
       parts.push(this.encodeU32(handle));
     }
 
-    // Quotas
+    
     const quotasJson = JSON.stringify(snapshot.quotas ?? {});
     const quotasBytes = new TextEncoder().encode(quotasJson);
     parts.push(this.encodeU32(quotasBytes.byteLength));
     parts.push(quotasBytes);
 
-    // Combine all parts
+    
     const totalSize = parts.reduce((sum, part) => sum + part.byteLength, 0);
     const result = new Uint8Array(totalSize);
     let offset = 0;
@@ -168,13 +159,11 @@ export class SnapshotManager {
     return result;
   }
 
-  /**
-   * Deserialize a snapshot from binary format.
-   */
+  
   static deserializeSnapshot(data: Uint8Array): VMSnapshot {
     let offset = 0;
 
-    // Helper to read bytes
+    
     const read = (count: number): Uint8Array => {
       const slice = data.slice(offset, offset + count);
       offset += count;
@@ -185,7 +174,7 @@ export class SnapshotManager {
     const readU32 = (): number => new DataView(read(4).buffer).getUint32(0, true);
     const readU64 = (): bigint => new DataView(read(8).buffer).getBigUint64(0, true);
 
-    // Header
+    
     const magic = new TextDecoder().decode(read(4));
     if (magic !== SNAPSHOT_MAGIC) {
       throw new Error(`Invalid snapshot magic: ${magic}`);
@@ -198,7 +187,7 @@ export class SnapshotManager {
 
     const timestamp = Number(readU64());
 
-    // WASM memories
+    
     const wasmMemoriesCount = readU32();
     const wasmMemories: WasmMemorySnapshot[] = [];
     for (let i = 0; i < wasmMemoriesCount; i++) {
@@ -210,7 +199,7 @@ export class SnapshotManager {
       wasmMemories.push({ id, size, shared, data });
     }
 
-    // GPU buffers
+    
     const gpuBuffersCount = readU32();
     const gpuBuffers: GPUBufferSnapshot[] = [];
     for (let i = 0; i < gpuBuffersCount; i++) {
@@ -222,7 +211,7 @@ export class SnapshotManager {
       gpuBuffers.push({ handle, size, usage, data });
     }
 
-    // Pipelines
+    
     const pipelinesCount = readU32();
     const pipelines: PipelineSnapshot[] = [];
     for (let i = 0; i < pipelinesCount; i++) {
@@ -235,7 +224,7 @@ export class SnapshotManager {
       pipelines.push({ sourceHash, wgslSource, pipelineBlob });
     }
 
-    // Handle table state
+    
     const nextFreeBuffer = readU32();
     const nextFreePipeline = readU32();
     const nextFreeBindGroup = readU32();
@@ -276,9 +265,7 @@ export class SnapshotManager {
     };
   }
 
-  /**
-   * Read all data from a GPU buffer.
-   */
+  
   private static async readBufferData(
     buffer: GPUBuffer,
     size: bigint,
@@ -298,7 +285,7 @@ export class SnapshotManager {
       stagingBuffer.destroy();
       return result;
     } catch {
-      // Fallback: return zeroed buffer if GPU read fails
+      
       return new Uint8Array(Number(size));
     }
   }

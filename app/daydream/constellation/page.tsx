@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import ConstellationClient from './dream.ConstellationClient';
 
-// SURFACE: dreamsurface.DaydreamConstellation  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'Dream Constellation — DREAMengin',
@@ -18,7 +18,7 @@ export default async function ConstellationPage( ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return <ConstellationClient />;

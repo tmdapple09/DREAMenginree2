@@ -156,7 +156,7 @@ export default function CommandPalette( ){
       action: () => router.push('/daydream/forge'),
       category: 'Daydreams',
     },
-    // ── Engine Apps (standalone full-screen shells) ─────────────────────────
+    
     {
       id: 'engines-hub',
       label: 'Engines Hub',
@@ -349,7 +349,7 @@ export default function CommandPalette( ){
 
   return (
     <>
-      {/* Mobile floating search button — visible on touch, always mounted */}
+      
       <button
         type="button"
         className="de-cmd-fab"
@@ -360,12 +360,12 @@ export default function CommandPalette( ){
         <Search style={{ width: 20, height: 20 }} />
       </button>
 
-      {/* Command palette backdrop — only when open */}
+      
       {isOpen && (
     <div className="cmd-backdrop" onClick={() => setIsOpen(false)}>
-      {/* Modal — stop propagation so clicks inside don't close */}
+      
       <div className="cmd-modal" onClick={e => e.stopPropagation()} role="dialog" aria-label="Command palette" aria-modal="true">
-        {/* ── Search row ── */}
+        
         <div className="cmd-search-row">
           <Search className="cmd-search-icon" style={{ width: 18, height: 18 }} />
           <input
@@ -381,7 +381,7 @@ export default function CommandPalette( ){
           <span className="cmd-kbd">ESC</span>
         </div>
 
-        {/* ── Results ── */}
+        
         <div className="cmd-results" ref={listRef}>
           {filteredCommands.length === 0 ? (
             <div className="cmd-empty">
@@ -432,7 +432,7 @@ export default function CommandPalette( ){
           )}
         </div>
 
-        {/* ── Footer ── */}
+        
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -460,11 +460,7 @@ export default function CommandPalette( ){
   );
 }
 
-/**
- * MobileCmdFab — floating search button visible only on touch devices.
- * Renders a Search icon fixed at bottom-left above the DreamDM bar.
- * Exported so CommandPalette can render it alongside the backdrop.
- */
+
 export function MobileCmdFab({ onClick }: {onClick: () => void}) {
   return (
     <button

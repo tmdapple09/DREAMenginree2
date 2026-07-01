@@ -5,21 +5,14 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Discover  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'Discover – DREAMengin',
   description: 'Explore Daydream surfaces, find people, and discover what DREAMengin has to offer.',
 };
 
-/**
- * The 6 canonical Daydream surfaces — surfaced here so Discover is a true
- * gateway into the platform, not just a people-search box.
- *
- * Architecture: docs/ARCHITECTURE.md §3 (Daydream Surface Network) — every
- * Daydream surface has a canonical route and real capability; linking to them
- * here satisfies AXIOMS.md §3 ("every visible action must do something real").
- */
+
 const DAYDREAMS = [
   {
     id: 'music',
@@ -85,7 +78,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
   let suggestedProfiles: Profile[] = [];
 
   if (q && q.trim().length > 0) {
-    // Escape special PostgREST/ilike characters to prevent filter injection
+    
     const safe = q.trim().replace(/[%_\\]/g, c => `\\${c}`);
     const { data } = await supabase
       .from('profiles')
@@ -94,7 +87,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
       .limit(20);
     profiles = data || [];
   } else {
-    // Fetch real suggested profiles ordered by most recently joined, limit 20
+    
     const { data } = await supabase
       .from('profiles')
       .select('id, handle, display_name, bio, avatar_url')
@@ -117,8 +110,8 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-6">
 
-        {/* ── Brand tagline ────────────────────────────────────────────────── */}
-        {/* Only shown when there is no active search query */}
+        
+        
         {(!q || q.trim().length === 0) && (
           <div style={{ textAlign: 'center', paddingBottom: 4 }}>
             <p
@@ -131,11 +124,8 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           </div>
         )}
 
-        {/* ── Daydream Explorer ────────────────────────────────────────────── */}
-        {/* Shown when there is no active search query so users can explore the
-            6 canonical Daydream surfaces directly from this surface.
-            Architecture: docs/ARCHITECTURE.md §3 — Daydream Surface Network.
-            Every tile links to a real canonical route (AXIOMS.md §3). */}
+        
+        
         {(!q || q.trim().length === 0) && (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -169,7 +159,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
                     transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                   }}
                 >
-                  {/* Daydream icon tile */}
+                  
                   <div
                     aria-hidden="true"
                     style={{
@@ -210,7 +200,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           </div>
         )}
 
-        {/* ── DreamR direct surface ───────────────────────────────────────── */}
+        
         {(!q || q.trim().length === 0) && (
           <Link
             href="/dreamr"
@@ -260,7 +250,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           </Link>
         )}
 
-        {/* ── Search form ──────────────────────────────────────────────────── */}
+        
         <form method="GET" action="/discover">
           <div style={{ display: 'flex', gap: 8 }}>
             <div style={{ position: 'relative', flex: 1 }}>
@@ -288,7 +278,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           </div>
         </form>
 
-        {/* Results */}
+        
         {q && q.trim().length > 0 && (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -322,7 +312,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           </div>
         )}
 
-        {/* Default state — Suggested Dreamers */}
+        
         {(!q || q.trim().length === 0) && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div className="de-widget">

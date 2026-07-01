@@ -1,26 +1,5 @@
 #!/usr/bin/env node
-/**
- * scripts/feature-build/generate-features.mjs
- *
- * Called by .github/workflows/daydream-engin-build-cycle.yml during the BUILD phase.
- *
- * For each Daydream+Engin pair:
- *   1. Reads the Engin component file
- *   2. Checks which planned features are absent (via grep of detectPattern)
- *   3. Injects state + JSX + sub-component code for every missing feature
- *   4. Writes the updated file back
- *   5. Updates lib/feature-build/featureManifest.ts — marks newly-built
- *      features as 'implemented' and updates the matrix counts in the workflow
- *
- * Usage:
- *   node scripts/feature-build/generate-features.mjs [domain]
- *
- *   domain — optional: music|games|lab|code|brand|create  (default: all)
- *
- * Exit codes:
- *   0 — success (all features already implemented OR new ones injected)
- *   1 — unrecoverable error (e.g. file not found)
- */
+
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
@@ -29,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 
-// ─── Pair registry ────────────────────────────────────────────────────────────
+
 
 const PAIRS = [
   { domain: 'music',  engin: 'StarMakerEngin', file: 'components/daydream/StarMakerEngin.tsx' },
@@ -40,42 +19,42 @@ const PAIRS = [
   { domain: 'create', engin: 'ContentEngin',     file: 'components/daydream/ContentEngin.tsx'     },
 ];
 
-// ─── Feature detect patterns ─────────────────────────────────────────────────
-// Keyed by featureId → pattern to grep in the Engin file.
-// If the pattern is NOT found, the feature is missing and will be injected.
+
+
+
 
 const DETECT = {
-  // Music
+  
   'waveform-viz':        'WaveformVisualizer',
   'chord-builder':       'ChordBuilder',
   'ai-melody':           'AiMelodySuggestions',
   'collab-studio':       'CollabStudio',
   'playlist-manager':    'PlaylistManager',
-  // Games
+  
   'multiplayer-lobby':   'MultiplayerLobby',
   'tournament-mode':     'TournamentMode',
   'game-analytics':      'GameAnalytics',
   'replay-system':       'ReplaySystem',
   'social-challenges':   'SocialChallenge',
-  // Lab
+  
   'collab-lab':          'CollabLab',
   'ai-hypothesis':       'AiHypothesisGenerator',
   'molecule-viewer':     'MoleculeViewer',
   'dataset-browser':     'DatasetBrowser',
   'published-results':   'PublishedResults',
-  // Code
+  
   'ai-code-assist':      'AiCodeAssist',
   'live-pair-programming':'PairProgramming',
   'deployment-console':  'DeploymentConsole',
   'api-inspector':       'ApiInspector',
   'snippet-library':     'SnippetLibrary',
-  // Brand
+  
   'content-calendar-link':'ContentCalendarLink',
   'audience-segments':   'AudienceSegment',
   'brand-voice-ai':      'BrandVoiceAi',
   'competitor-watch':    'CompetitorWatch',
   'asset-library':       'AssetLibrary',
-  // Create
+  
   'media-vault-link':    'media-vault',
   'ai-caption':          'AiCaption',
   'collab-drafts':       'CollabDraft',
@@ -85,7 +64,7 @@ const DETECT = {
   'hashtag-optimizer':   'HashtagOptimizer',
 };
 
-// ─── Domain → planned feature ids ─────────────────────────────────────────────
+
 
 const PLANNED_BY_DOMAIN = {
   music:  ['waveform-viz','chord-builder','ai-melody','collab-studio','playlist-manager'],
@@ -96,7 +75,7 @@ const PLANNED_BY_DOMAIN = {
   create: ['media-vault-link','ai-caption','collab-drafts','content-analytics','template-gallery','short-video-editor','hashtag-optimizer'],
 };
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function readFile(rel) {
   const abs = resolve(ROOT, rel);
@@ -114,13 +93,9 @@ function isMissing(fileContent, featureId) {
   return !fileContent.includes(pattern);
 }
 
-/**
- * Find the last widget-list closing sequence and return its index.
- * We look for the last occurrence of `\n      </div>\n    </div>\n  );\n}`
- * which is the standard close for all 6 Engin main components.
- */
+
 function findWidgetListInsertionPoint(content) {
-  // Try most-specific first, fall back to looser patterns
+  
   const patterns = [
     '\n\n        </div>\n      </div>\n    </div>\n  );\n}',
     '\n        </div>\n\n      </div>\n    </div>\n  );\n}',
@@ -134,20 +109,13 @@ function findWidgetListInsertionPoint(content) {
   return null;
 }
 
-// ─── Code injection ───────────────────────────────────────────────────────────
 
-/**
- * Inject a new widget JSX block + optional state + optional sub-component.
- *
- * @param {string} content  — current file content
- * @param {string} widgetJsx — JSX to inject inside the widget list
- * @param {string} [stateCode] — state declarations to inject before `// ── Render`
- * @param {string} [componentCode] — sub-component function to append at EOF
- */
+
+
 function injectFeature(content, widgetJsx, stateCode, componentCode) {
   let result = content;
 
-  // 1. Inject state just before // ── Render
+  
   if (stateCode) {
     const renderMarker = '// ── Render ──';
     const renderIdx = result.indexOf(renderMarker);
@@ -156,17 +124,17 @@ function injectFeature(content, widgetJsx, stateCode, componentCode) {
     }
   }
 
-  // 2. Inject JSX widget in widget list
+  
   const point = findWidgetListInsertionPoint(result);
   if (point) {
     const { idx, closeSeq } = point;
     result = result.slice(0, idx) + '\n\n' + widgetJsx + closeSeq + result.slice(idx + closeSeq.length);
   } else {
-    // Fallback: append before final closing brace of file
+    
     result = result.trimEnd() + '\n\n' + widgetJsx + '\n';
   }
 
-  // 3. Append sub-component at EOF
+  
   if (componentCode) {
     result = result.trimEnd() + '\n\n' + componentCode + '\n';
   }
@@ -174,13 +142,13 @@ function injectFeature(content, widgetJsx, stateCode, componentCode) {
   return result;
 }
 
-// ─── Per-domain feature implementations ──────────────────────────────────────
-// Each entry: { stateCode?, widgetJsx, componentCode? }
-// These are only injected if the feature's detectPattern is absent from the file.
+
+
+
 
 const FEATURE_IMPLS = {
 
-  // ── Music ──────────────────────────────────────────────────────────────────
+  
 
   'waveform-viz': {
     stateCode: `  // ── Waveform Visualizer state ──
@@ -532,15 +500,15 @@ function PlaylistManager({ playlist, onMoveUp, onMoveDown, onSave }: ) {
   },
 };
 
-// ─── Domain config for injection ─────────────────────────────────────────────
+
 
 const DOMAIN_FEATURES = {
   music: ['waveform-viz', 'chord-builder', 'ai-melody', 'collab-studio', 'playlist-manager'],
-  // Other domains already have feature implementations defined in the agent-generated code.
-  // The generator checks detectPattern and skips already-implemented features.
+  
+  
 };
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+
 
 const targetDomain = process.argv[2] || 'all';
 
@@ -563,13 +531,13 @@ for (const { domain, engin, file } of PAIRS) {
     const pattern = DETECT[featureId];
     if (!pattern) continue;
 
-    // Already implemented — skip
+    
     if (content.includes(pattern)) {
       console.log(`[${domain}] ✓ ${featureId} — already implemented`);
       continue;
     }
 
-    // Inject if we have an implementation template
+    
     const impl = FEATURE_IMPLS[featureId];
     if (!impl) {
       console.log(`[${domain}] ⚠ ${featureId} — no template in generator, skipping`);

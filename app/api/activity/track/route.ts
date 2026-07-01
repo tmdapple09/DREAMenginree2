@@ -10,16 +10,16 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/activity/track/route.ts
-// Phase 9 — Track Activity Endpoint
-//
-// Records user activity with tier classification and optional verification.
-// Awards activity points based on tier per ACTIVITY_FIRST_PROTOCOL.md §II
+
+
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
 
-  // Auth check
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -37,16 +37,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       evidence_metadata,
     } = body;
 
-    // Validate tier
+    
     if (tier < 0 || tier > 6) {
       return NextResponse.json({ error: 'Invalid tier' }, { status: 400 });
     }
 
-    // Calculate points
+    
     const points = calculateActivityPoints(tier);
     const decayTimestamp = calculateDecayDate();
 
-    // Create verification record if evidence provided
+    
     let verificationId: string | undefined;
     let verification: ActivityVerification | undefined = undefined;
 
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           verification_strength: verificationStrength,
           evidence_url,
           evidence_metadata: evidence_metadata ?? {},
-          verified: verification_method === 'on_platform', // Auto-verify on-platform
+          verified: verification_method === 'on_platform', 
           verified_at: verification_method === 'on_platform' ? new Date().toISOString() : null,
           verified_by: verification_method === 'on_platform' ? 'auto' : null,
         })
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
     }
 
-    // Create activity point record
+    
     const activityResult = await (supabase as SupabaseClient)
       .from('activity_points')
       .insert({
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Return response
+    
     const response: TrackActivityResponse = {
       activity_point: activityResult.data!,
       verification,

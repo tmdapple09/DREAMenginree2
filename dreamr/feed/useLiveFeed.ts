@@ -6,36 +6,10 @@ import { createClient } from '@/supabase/client/client';
 import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * lib/feed/useLiveFeed.ts
- *
- * Live HomeDream feed hook.
- *
- * Subscribes to two Supabase Realtime channels:
- *   1. `homedream-posts:{userId}` — INSERT + UPDATE on app_posts (visibility=public)
- *   2. `homedream-items:{userId}` — INSERT on connector_feed_items (user_id=eq.{userId})
- *
- * New posts from OTHER users are queued (not auto-prepended) so the user
- * doesn't lose their scroll position. A "N new posts" tap-to-show banner
- * signals them. Own posts are prepended immediately (matches the optimistic
- * composer flow so dedup is seamless). Connector items are queued.
- *
- * Like/unlike counts propagate via UPDATE events without any re-fetch.
- *
- * Architecture:
- *   - lib/ Logic layer per GENERATION_LAW §3.1
- *   - Same Realtime pattern as useDreamDMMessages (lib/dreamdm/)
- *   - docs/ARCHITECTURE.md §10 — no JS timers; events drive everything
- *   - docs/AXIOMS.md Axiom 5 — connector_feed_items scoped to user_id via RLS
- *
- * Performance:
- *   - INSERT handler does one single-row SELECT to hydrate the profile join.
- *   - UPDATE handler is zero-fetch: updates in place from the payload.
- *   - Both channels are torn down cleanly on unmount.
- */
 
 
-/** Unified feed post shape used by HomeFeed and the realtime hook. */
+
+
 export interface FeedPost {
   id: string;
   content: string;
@@ -47,29 +21,25 @@ export interface FeedPost {
     display_name: string | null;
     avatar_url: string | null;
   };
-  /**
-   * View count — the ONLY public metric on DreamR.
-   * Displayed on feed cards in place of a like count.
-   * Will be populated once a views table/column is added to the DB.
-   */
+  
   views_count?: number;
-  /** Private — never rendered publicly. Creator-only Signal tab only. */
+  
   likes_count?: number;
-  /** Private — never rendered publicly. Creator-only Signal tab only. */
+  
   comments_count?: number;
-  /** 'post' = platform post | 'connector' = external feed item | 'share' = reshared content */
+  
   source?: 'post' | 'connector' | 'share';
-  /** Connector provider id (mastodon, github, bluesky, …) */
+  
   provider?: string;
-  /** Original post URL for connector items (mastodon, youtube, …) */
+  
   permalink?: string;
 
-  // Populated by the DreamR feed routes (rankFeed → ScoredPost). All optional
-  // because connector items, realtime-arrival posts, and pre-DreamR feeds may
-  // not carry them.
-  /** Composite humanistic score 0-100. */
+  
+  
+  
+  
   dreamr_score?: number;
-  /** Per-signal 0-1 breakdown — see DreamR algorithm. */
+  
   dreamr_signals?: {
     contentDepth:   number;
     originalMedia:  number;
@@ -78,38 +48,38 @@ export interface FeedPost {
     freshness:      number;
     trendImpact:    number;
   };
-  /** Which signal dominated the rank — used by the "why am I seeing this?" chip. */
+  
   dominant_signal?: string;
-  /** Human phrasing of dominant_signal (e.g. "crafted writing"). */
+  
   dreamr_reason?: string;
-  /** Public views per hour since posted. */
+  
   view_velocity?: number;
 }
 
 export interface UseLiveFeedReturn {
-  /** Visible feed posts, newest-first */
+  
   posts: FeedPost[];
-  /** How many new posts are queued behind the banner */
+  
   newCount: number;
-  /** Prepend queued posts — call when user taps the banner */
+  
   flushNew: () => void;
-  /** true when the Realtime channel reports SUBSCRIBED */
+  
   isLive: boolean;
-  /** Replace the entire post list (used by tab switches) */
+  
   replacePosts: (next: FeedPost[]) => void;
-  /** Prepend a single post (used by the composer for its own optimistic post) */
+  
   prependPost: (post: FeedPost) => void;
-  /** Patch a post in place (likes_count, comments_count, etc.) */
+  
   updatePost: (id: string, changes: Partial<FeedPost>) => void;
 }
 
 export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFeedReturn {
   const [posts, setPosts] = useState<FeedPost[]>(initialPosts);
-  // Posts from other users held in a queue until the user taps the banner
+  
   const [queued, setQueued] = useState<FeedPost[]>([]);
   const [isLive, setIsLive] = useState(false);
 
-  // Keep a stable ref to the channel so we can tear it down cleanly
+  
   const postsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
   const itemsChannelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
 
@@ -135,7 +105,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
     setQueued((prev) => {
       if (prev.length === 0) return prev;
       setPosts((cur) => {
-        // Merge queued items in, deduplicating against current feed
+        
         const ids = new Set(cur.map((p) => p.id));
         const fresh = prev.filter((p) => !ids.has(p.id));
         return [...fresh, ...cur];
@@ -173,7 +143,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           event: 'INSERT',
           schema: 'public',
           table: 'app_posts',
-          // Base public filter. Close-friends posts are skipped below unless self-authored.
+          
           filter: 'visibility=eq.public',
         },
         async (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
@@ -181,8 +151,8 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           const postId  = raw.id       as string;
           const authorId = (raw.user_id ?? raw.author_id) as string;
 
-          // Hydrate the profile join with a single-row fetch
-          // (the realtime payload does not include joined columns)
+          
+          
             const { data } = await supabase
               .from('app_posts')
               .select('id, user_id, content, visibility, post_visibility, media_url, media_urls, media_json, created_at, likes_count, comments_count, profiles!app_posts_user_id_fkey(handle, display_name, avatar_url)')
@@ -211,13 +181,13 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
           };
 
           if (authorId === userId) {
-            // Own post — prepend immediately (dedup with optimistic insert)
+            
             setPosts((prev) => {
               if (prev.some((p) => p.id === postId)) return prev;
               return [newPost, ...prev];
             });
           } else {
-            // Someone else's post — queue behind the banner
+            
             setQueued((prev) => {
               if (prev.some((p) => p.id === postId)) return prev;
               return [newPost, ...prev];
@@ -234,7 +204,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
         },
         (payload: RealtimePostgresInsertPayload<Record<string, unknown>>) => {
           const raw = payload.new as any;
-          // Sync like/comment counts in place — zero re-fetch
+          
           setPosts((prev) =>
             prev.map((p) =>
               p.id === raw.id
@@ -287,7 +257,7 @@ export function useLiveFeed(userId: string, initialPosts: FeedPost[]): UseLiveFe
             provider: (raw.provider ?? 'connector') as string,
           };
 
-          // Connector items always queue — they are from external services
+          
           setQueued((prev) => {
             if (prev.some((q) => q.id === newEntry.id)) return prev;
             return [newEntry, ...prev];

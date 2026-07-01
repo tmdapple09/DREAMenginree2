@@ -6,7 +6,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.EnginesGames  (framework-mandated basename: page.tsx)
+
 
 interface GamesEnginAppPageProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -20,7 +20,7 @@ export default async function GamesEnginAppPage(props?: GamesEnginAppPageProps )
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect(buildLoginRedirectPath('/engines/games', currentSearchParams));
   return <GameEnginApp />;
 }

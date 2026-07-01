@@ -1,33 +1,26 @@
-/**
- * DREAMenginOS — Core Upgrade Layer
- *
- * Exports all atomic OS capabilities and provides upgradeEngine() so
- * any engine becomes a thin shell that calls into the OS layer.
- *
- * The existing DREAMenginOS.tsx visual dashboard is untouched.
- */
 
-// slog transform
 
-// Torridity physics
 
-// Generation Law ι-Engine
 
-// Local Event Bus
 
-// Ledger
 
-// Universal Editor
 
-// Bot Detection
 
-// Audio Fingerprint
 
-// Component Inventory
 
-// Forge
 
-// GameEngin Runtime
+
+
+
+
+
+
+
+
+
+
+
+
 
 export type OSFeature = 'ledger' | 'bridge' | 'aiTriad' | 'telemetry';
 
@@ -49,15 +42,7 @@ export interface UpgradedEngine<T extends EngineBase = EngineBase> {
   };
 }
 
-/**
- * upgradeEngine(engine, features)
- *
- * Adds OS capabilities to any engine object:
- *  - 'ledger'    → attaches an in-memory Ledger
- *  - 'bridge'    → creates a local EventBus
- *  - 'aiTriad'   → documents AI triad presence (Dr. Eams, IDARi, Boogie)
- *  - 'telemetry' → lightweight frame counter + log
- */
+
 export async function upgradeEngine<T extends EngineBase>(
   engine: T,
   features: OSFeature[]
@@ -85,8 +70,8 @@ export async function upgradeEngine<T extends EngineBase>(
     };
   }
 
-  // 'aiTriad' is documented — the three agents are platform-level services
-  // and don't need runtime attachment here.
+  
+  
 
   return upgraded;
 }

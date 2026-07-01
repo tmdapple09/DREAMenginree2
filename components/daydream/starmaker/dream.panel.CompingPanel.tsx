@@ -10,17 +10,7 @@ import {
 import { Mic2, Plus, Star, Trash2, Wand2 } from 'lucide-react';
 import { type CSSProperties, useCallback, useState } from 'react';
 
-/**
- * CompingPanel — Pro Tools-style comping / takes manager.
- *
- * Features:
- *  - Multiple audio take lanes with waveform display
- *  - Star ratings per take (0–3 stars)
- *  - Active / inactive toggle to include take in comp
- *  - Comp region bar showing which take provides each segment
- *  - Add new demo take / remove selected take
- *  - "Auto Comp" button that picks the highest-rated active takes
- */
+
 
 const T = {
   bg:          '#0d0f17',
@@ -117,7 +107,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
   }
 
   function handleAutoComp( ){
-    // Mark highest-rated take(s) as active, others inactive
+    
     const maxRating = Math.max(...takes.map((t) => t.rating));
     onStateChange({
       ...state,
@@ -130,7 +120,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
 
   return (
     <div style={{ background: T.surface, borderBottom: `1px solid ${T.border}` }}>
-      {/* Header */}
+      
       <div style={sectionHeaderStyle}>
         <Mic2 className="w-3 h-3" style={{ color: T.accent }} />
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: T.dim }}>
@@ -158,7 +148,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
 
       {isOpen && (
         <div style={{ padding: '12px' }}>
-          {/* Toolbar */}
+          
           <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
             <button
               type="button"
@@ -205,7 +195,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
             </div>
           </div>
 
-          {/* Take lanes */}
+          
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             {takes.length === 0 && (
               <div style={{
@@ -230,17 +220,17 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
                     background: isSelected ? `${take.color}08` : T.surfaceHi,
                     transition: 'all 0.12s',
                   }}>
-                  {/* Left color stripe */}
+                  
                   <div style={{ width: 4, flexShrink: 0, background: take.active ? take.color : `${take.color}40` }} />
 
-                  {/* Take header */}
+                  
                   <div style={{
                     width: 140, flexShrink: 0, padding: '6px 8px',
                     borderRight: `1px solid ${T.border}`,
                     display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3,
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {/* Active toggle */}
+                      
                       <button
                         type="button"
                         onClick={e => { e.stopPropagation(); updateTake(take.id, { active: !take.active }); }}
@@ -270,7 +260,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
                     <span style={{ fontSize: 9, color: T.dim }}>{fmtTimestamp(take.recordedAt)}</span>
                   </div>
 
-                  {/* Waveform */}
+                  
                   <div style={{
                     flex: 1, display: 'flex', alignItems: 'center',
                     gap: 1, padding: '6px 8px', background: take.active ? `${take.color}06` : 'transparent',
@@ -291,7 +281,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
                     ))}
                   </div>
 
-                  {/* Duration badge */}
+                  
                   <div style={{
                     padding: '0 10px', display: 'flex', alignItems: 'center',
                     borderLeft: `1px solid ${T.border}`,
@@ -305,7 +295,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
             })}
           </div>
 
-          {/* Comp summary */}
+          
           {activeTakes.length > 0 && (
             <div style={{
               marginTop: 12, padding: '10px 12px', borderRadius: 8,
@@ -333,7 +323,7 @@ export default function CompingPanel({ state, onStateChange }: CompingPanelProps
             </div>
           )}
 
-          {/* Hint */}
+          
           <div style={{ marginTop: 10, fontSize: 9, color: T.dim, lineHeight: 1.6 }}>
             Click a take row to select · ✓ checkbox to include in comp · ★ to rate ·{' '}
             <span style={{ color: T.purple }}>Auto Comp</span> promotes highest-rated takes ·

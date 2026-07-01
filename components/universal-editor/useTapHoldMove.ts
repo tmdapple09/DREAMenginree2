@@ -3,16 +3,7 @@
 import type { ModuleManifest, RuntimeId } from '@/types/module-manifest';
 import { useCallback, useEffect, useRef } from 'react';
 
-/**
- * components/universal-editor/useTapHoldMove.ts — §39 Tap-Hold-Move hook
- *
- * Detects:
- *   - Tap-hold ≥ 300 ms  → enters drag mode (onDragStart)
- *   - Drag movement       → fires onMove(manifest, position)
- *   - Drag to screen edge (within 40 px) → fires onTransfer(manifest, targetRuntime)
- *
- * Works with touch and mouse events.
- */
+
 
 const TAP_HOLD_MS  = 300;
 const EDGE_PX      = 40;

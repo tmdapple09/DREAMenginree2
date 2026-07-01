@@ -1,17 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { isAuthRelatedError } from '@/engine/runtime/isAuthRelatedError';
 
-/**
- * Tests for isAuthRelatedError — the classifier that determines whether the
- * root error boundary (app/error.tsx) should force a sign-out + redirect or
- * simply let the user "Try again" without destroying their session.
- *
- * Root cause: the "cracked dream error" was triggered by app/error.tsx
- * unconditionally calling sb.auth.signOut() for ALL route errors, including
- * transient render/network errors that are not auth-related.
- */
+
 describe('isAuthRelatedError', () => {
-  // ── Auth / session errors → should force sign-out ────────────────────────
+  
 
   it('returns true for "Unauthorized" errors', () => {
     expect(isAuthRelatedError(new Error('Unauthorized'))).toBe(true);
@@ -59,7 +51,7 @@ describe('isAuthRelatedError', () => {
     expect(isAuthRelatedError(new Error('sign in required'))).toBe(true);
   });
 
-  // ── Non-auth / transient errors → must NOT force sign-out ────────────────
+  
 
   it('returns false for generic render errors', () => {
     expect(isAuthRelatedError(new Error('Cannot read properties of undefined'))).toBe(false);

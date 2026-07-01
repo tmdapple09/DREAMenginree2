@@ -1,23 +1,8 @@
-/**
- * tests/dream-window-system.test.ts
- *
- * Comprehensive test suite for Phase 7 Dream Window + Runtime System integration.
- *
- * Coverage:
- *   1. DreamWindowLifecycle — valid/invalid state machine transitions
- *   2. connectionVerbs      — all 7 canonical verbs, rejection of invalid verbs
- *   3. runtimeRegion        — surface activation, mount/dismount, seam clamping, dominance
- *   4. enginConnectionNetwork — 11 paths, domain queries, engin queries, hasConnectionPath
- *   5. dualRuntime          — canonical field names, all functions, worldsEqual
- *
- * Architecture justification: docs/ARCHITECTURE.md §4 (Universal Dream Window model),
- *   §1 (Runtime regions, Daydream Surface Network).
- * Naming: all canonical strings sourced from lib/identity/canonical-names.ts.
- */
+
 
 import { describe, it, expect } from 'vitest';
 
-// ── System under test ─────────────────────────────────────────────────────────
+
 
 import {
   DREAM_WINDOW_STATES,
@@ -80,7 +65,7 @@ import {
   SURFACE_NAMES as CANONICAL_SURFACE_NAMES,
 } from '@/engine/identity/canonical-names';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 function makeUnbound(overrides: Partial<DreamWindowInstance> = {}): DreamWindowInstance {
   return createDreamWindowInstance({
@@ -96,12 +81,12 @@ function makeUnbound(overrides: Partial<DreamWindowInstance> = {}): DreamWindowI
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 1. DreamWindowLifecycle
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('DreamWindowLifecycle', () => {
-  // ── createDreamWindowInstance ──────────────────────────────────────────────
+  
 
   describe('createDreamWindowInstance', () => {
     it('creates an instance in Unbound state by default', () => {
@@ -128,7 +113,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── bindDreamWindow ────────────────────────────────────────────────────────
+  
 
   describe('bindDreamWindow', () => {
     it('transitions Unbound → Bound when sourceBindings is non-empty', () => {
@@ -170,7 +155,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── mountDreamWindow ───────────────────────────────────────────────────────
+  
 
   describe('mountDreamWindow', () => {
     it('transitions Bound → Mounted', () => {
@@ -196,7 +181,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── collapseDreamWindow ────────────────────────────────────────────────────
+  
 
   describe('collapseDreamWindow', () => {
     it('transitions Mounted → Collapsed', () => {
@@ -220,7 +205,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── activateDreamWindow ────────────────────────────────────────────────────
+  
 
   describe('activateDreamWindow', () => {
     it('transitions Collapsed → Mounted', () => {
@@ -244,7 +229,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── unmountDreamWindow ─────────────────────────────────────────────────────
+  
 
   describe('unmountDreamWindow', () => {
     it('transitions Mounted → Bound', () => {
@@ -263,7 +248,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── unbindDreamWindow ──────────────────────────────────────────────────────
+  
 
   describe('unbindDreamWindow', () => {
     it('transitions Bound → Unbound', () => {
@@ -283,7 +268,7 @@ describe('DreamWindowLifecycle', () => {
     });
   });
 
-  // ── Full lifecycle round-trip ──────────────────────────────────────────────
+  
 
   describe('full lifecycle round-trip', () => {
     it('can traverse the complete lifecycle: Unbound→Bound→Mounted→Collapsed→Mounted→Bound→Unbound', () => {
@@ -320,12 +305,12 @@ describe('DreamWindowLifecycle', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2. connectionVerbs
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('connectionVerbs', () => {
-  // ── Factory functions ──────────────────────────────────────────────────────
+  
 
   describe('action factories', () => {
     it('createBindAction produces verb: bind', () => {
@@ -370,7 +355,7 @@ describe('connectionVerbs', () => {
     });
   });
 
-  // ── dispatch — valid verbs ─────────────────────────────────────────────────
+  
 
   describe('dispatch — all 7 canonical verbs succeed', () => {
     const validFactories = [
@@ -384,7 +369,7 @@ describe('connectionVerbs', () => {
     ] as const;
 
     it.each(CONNECTION_VERBS)('dispatches verb "%s" successfully', (verb) => {
-      // Find the matching factory
+      
       const factory = validFactories.find((f) => f('s', 't').verb === verb);
       expect(factory).toBeDefined();
       const action = factory!('window-a', 'engin-b');
@@ -403,7 +388,7 @@ describe('connectionVerbs', () => {
     });
   });
 
-  // ── dispatch — invalid/rejected verbs throw ────────────────────────────────
+  
 
   describe('dispatch — invalid verbs throw with helpful error', () => {
     const rejectedVerbs = ['link widget', 'open page', 'go to tab', 'launch card'] as const;
@@ -421,7 +406,7 @@ describe('connectionVerbs', () => {
       } catch (e: unknown) {
         const msg = (e as Error).message;
         expect(msg).toContain('link widget');
-        // Should list at least some valid verbs
+        
         expect(msg).toContain('bind');
         expect(msg).toContain('mount');
       }
@@ -444,12 +429,12 @@ describe('connectionVerbs', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 3. runtimeRegion
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('runtimeRegion', () => {
-  // ── Default state ──────────────────────────────────────────────────────────
+  
 
   describe('DEFAULT_RUNTIME_REGION_STATE', () => {
     it('Surface Space is dominant by default', () => {
@@ -484,7 +469,7 @@ describe('runtimeRegion', () => {
     });
   });
 
-  // ── activateSurface ────────────────────────────────────────────────────────
+  
 
   describe('activateSurface', () => {
     it('updates the active surface name', () => {
@@ -512,7 +497,7 @@ describe('runtimeRegion', () => {
     });
   });
 
-  // ── mountWindowInDreamSpace ────────────────────────────────────────────────
+  
 
   describe('mountWindowInDreamSpace', () => {
     it('adds a Dream Window ref to DreamSpace', () => {
@@ -543,7 +528,7 @@ describe('runtimeRegion', () => {
     });
   });
 
-  // ── dismountWindowFromDreamSpace ───────────────────────────────────────────
+  
 
   describe('dismountWindowFromDreamSpace', () => {
     it('removes a mounted window by ID', () => {
@@ -570,7 +555,7 @@ describe('runtimeRegion', () => {
     });
   });
 
-  // ── setSeamPosition ────────────────────────────────────────────────────────
+  
 
   describe('setSeamPosition', () => {
     it('sets seam position to provided value', () => {
@@ -610,7 +595,7 @@ describe('runtimeRegion', () => {
     });
   });
 
-  // ── isDreamSpaceDominant ───────────────────────────────────────────────────
+  
 
   describe('isDreamSpaceDominant', () => {
     it('returns false for default state', () => {
@@ -624,12 +609,12 @@ describe('runtimeRegion', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. enginConnectionNetwork
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('enginConnectionNetwork', () => {
-  // ── Path count validation ──────────────────────────────────────────────────
+  
 
   it(`has exactly ${NETWORK_COUNTS.CONNECTION_PATHS} connection paths`, () => {
     expect(ALL_CONNECTION_PATHS.length).toBe(NETWORK_COUNTS.CONNECTION_PATHS);
@@ -662,7 +647,7 @@ describe('enginConnectionNetwork', () => {
     }
   });
 
-  // ── Expected paths per domain ──────────────────────────────────────────────
+  
 
   describe('getPathsForDomain', () => {
     it('Music has 3 paths', () => {
@@ -672,9 +657,9 @@ describe('enginConnectionNetwork', () => {
     it('Music paths target StarMakerEngin, LabEngin, CodeEngin', () => {
       const paths = getPathsForDomain(DAYDREAM_DOMAINS.MUSIC);
       const engins = paths.map((p) => p.enginRuntime);
-      expect(engins).toContain(ENGIN_SURFACES.MUSIC);   // StarMakerEngin
-      expect(engins).toContain(ENGIN_SURFACES.LAB);     // LabEngin
-      expect(engins).toContain(ENGIN_SURFACES.CODE);    // CodeEngin
+      expect(engins).toContain(ENGIN_SURFACES.MUSIC);   
+      expect(engins).toContain(ENGIN_SURFACES.LAB);     
+      expect(engins).toContain(ENGIN_SURFACES.CODE);    
     });
 
     it('Music→StarMakerEngin verb is bind', () => {
@@ -761,7 +746,7 @@ describe('enginConnectionNetwork', () => {
     });
   });
 
-  // ── getPathsForEngin ───────────────────────────────────────────────────────
+  
 
   describe('getPathsForEngin', () => {
     it('LabEngin receives paths from Music, Games, Brand, and Lab (4 total)', () => {
@@ -796,7 +781,7 @@ describe('enginConnectionNetwork', () => {
     });
   });
 
-  // ── hasConnectionPath ──────────────────────────────────────────────────────
+  
 
   describe('hasConnectionPath', () => {
     it('Music → StarMakerEngin: true', () => {
@@ -877,12 +862,12 @@ describe('enginConnectionNetwork', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 5. dualRuntime
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('dualRuntime', () => {
-  // ── DEFAULT_DUAL_RUNTIME ───────────────────────────────────────────────────
+  
 
   describe('DEFAULT_DUAL_RUNTIME', () => {
     it('surfaceSpaceWorld is HomeDream Surface (canonical)', () => {
@@ -907,7 +892,7 @@ describe('dualRuntime', () => {
     });
 
     it('does NOT have legacy field "topRuntime"', () => {
-      // TypeScript enforces this at compile time; ensure at runtime too
+      
       expect('topRuntime' in DEFAULT_DUAL_RUNTIME).toBe(false);
     });
 
@@ -920,7 +905,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── setRuntimeWorld ────────────────────────────────────────────────────────
+  
 
   describe('setRuntimeWorld', () => {
     it('sets surfaceSpaceWorld when runtime is "top"', () => {
@@ -956,7 +941,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── swapDominantRuntime ────────────────────────────────────────────────────
+  
 
   describe('swapDominantRuntime', () => {
     it('swaps Surface Space → DreamSpace', () => {
@@ -977,7 +962,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── makeHomeDreamSpaceActive ───────────────────────────────────────────────
+  
 
   describe('makeHomeDreamSpaceActive', () => {
     it('sets dreamSpaceWorld to HomeDream Surface', () => {
@@ -1002,7 +987,7 @@ describe('dualRuntime', () => {
     });
 
     it('enables dual-home state: both regions show HomeDream Surface', () => {
-      // Start with default (Surface Space shows HomeDream Surface)
+      
       const dualHome = makeHomeDreamSpaceActive(DEFAULT_DUAL_RUNTIME);
       expect(dualHome.surfaceSpaceWorld).toBe('HomeDream Surface');
       expect(dualHome.dreamSpaceWorld).toBe('HomeDream Surface');
@@ -1014,7 +999,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── makeHomeActiveTop ──────────────────────────────────────────────────────
+  
 
   describe('makeHomeActiveTop', () => {
     it('sets surfaceSpaceWorld to HomeDream Surface', () => {
@@ -1040,7 +1025,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── isHomeActiveTop ────────────────────────────────────────────────────────
+  
 
   describe('isHomeActiveTop', () => {
     it('returns true when surfaceSpaceWorld is HomeDream Surface and dominantRegion is Surface Space', () => {
@@ -1070,7 +1055,7 @@ describe('dualRuntime', () => {
     });
   });
 
-  // ── worldsEqual ────────────────────────────────────────────────────────────
+  
 
   describe('worldsEqual', () => {
     it('two identical canonical string worlds are equal', () => {

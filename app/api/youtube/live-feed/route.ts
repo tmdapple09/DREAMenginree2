@@ -4,24 +4,7 @@ import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/youtube/live-feed/route.ts
- *
- * GET /api/youtube/live-feed
- *
- * Searches YouTube for videos matching a free-text query using the
- * server-side YOUTUBEAPI. Consumed by useYouTubeLiveFeed to
- * populate the HomeFeed sliding window without exposing the API key.
- *
- * Query params:
- *   query  — search term, e.g. "weed" | "world news" | "neil degrasse tyson"
- *            (default: "world news")
- *   max    — items to return (default 5, capped at 20)
- *
- * Response: { ok: true, items: UnifiedFeedItem[], fetched: number, query: string }
- *
- * AXIOM 4 — Security by Default: API key stays server-side; never echoed.
- */
+
 
 
 const FALLBACK_CHANNELS: Record<string, string[]> = {

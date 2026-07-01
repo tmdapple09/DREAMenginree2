@@ -4,23 +4,7 @@ import type {
     CartridgeAchievementsAPI,
 } from '../cartridge';
 
-/**
- * lib/gameengin/cartridges/achievementEngine.ts
- *
- * Per-cartridge achievement engine.
- *
- * Achievements are defined by each cartridge via its AchievementDefinition[].
- * Progress and unlock state is persisted in localStorage under a namespaced key.
- * The runtime exposes this as CartridgeAchievementsAPI in the GameEngineAPI.
- *
- * Features:
- *  - Binary (unlock) and progress (incremental) achievements
- *  - Persistent unlock/progress state per cartridge
- *  - Event emission for unlock notifications (HUD pop-ups)
- *  - Offline-first: all state in localStorage, syncs to Supabase when online
- *
- * Storage key: dreamge:ach:<cartridgeId>
- */
+
 
 const PREFIX = 'dreamge:ach';
 
@@ -48,19 +32,13 @@ function writeState(cartridgeId: string, state: PersistedState): void {
   try {
     localStorage.setItem(storeKey(cartridgeId), JSON.stringify(state));
   } catch {
-    // Non-fatal
+    
   }
 }
 
 export type AchievementUnlockListener = (achievement: AchievementDefinition) => void;
 
-/**
- * Create a CartridgeAchievementsAPI bound to a cartridge.
- *
- * @param cartridgeId  - The cartridge's unique id (namespace key)
- * @param definitions  - The achievement registry declared by the cartridge
- * @param onUnlock     - Callback fired when an achievement is first unlocked (for HUD pop-ups)
- */
+
 export function createAchievementsAPI(
   cartridgeId: string,
   definitions: AchievementDefinition[],
@@ -73,7 +51,7 @@ export function createAchievementsAPI(
       const def = defMap.get(id);
       if (!def) return;
       const state = readState(cartridgeId);
-      if (state[id]?.unlocked) return; // already unlocked
+      if (state[id]?.unlocked) return; 
       state[id] = { ...state[id], unlocked: true, unlockedAt: Date.now() };
       writeState(cartridgeId, state);
       onUnlock(def);
@@ -83,7 +61,7 @@ export function createAchievementsAPI(
       const def = defMap.get(id);
       if (!def || !def.total) return;
       const state = readState(cartridgeId);
-      if (state[id]?.unlocked) return; // already done
+      if (state[id]?.unlocked) return; 
       const current = state[id]?.progress ?? 0;
       const next = Math.min(current + increment, def.total);
       state[id] = { ...state[id], progress: next, unlocked: false };
@@ -113,12 +91,12 @@ export function createAchievementsAPI(
   };
 }
 
-/** Wipe all achievement state for a cartridge. */
+
 export function purgeCartridgeAchievements(cartridgeId: string): void {
   localStorage.removeItem(storeKey(cartridgeId));
 }
 
-/** Return count of unlocked achievements for a cartridge (without full API). */
+
 export function getUnlockedCount(cartridgeId: string): number {
   const state = readState(cartridgeId);
   return Object.values(state).filter((s) => s.unlocked).length;

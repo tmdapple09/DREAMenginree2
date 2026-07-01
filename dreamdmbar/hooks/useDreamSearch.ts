@@ -4,30 +4,7 @@ import { USER_FACING_ENGINES } from '@/engins/forgeengin/forge/forgeRegistry';
 import { createClient } from '@/supabase/client/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * useDreamSearch — universal search hook shared by DreamDMessaging and DreamDM Bar.
- *
- * Searches multiple object types:
- *   - people / friends / pages  (profiles table)
- *   - conversations              (conversations table)
- *   - boards                     (message_boards table, if present)
- *   - topics                     (board_topics table, if present)
- *
- * Also manages the Dr. Eams mode toggle (persisted to localStorage).
- *
- * Rules (spec §31–50):
- *   - Standard search is the default mode.
- *   - Dr. Eams mode is optional and must be explicitly toggled by the user.
- *   - Switching must be clear and intentional (persisted preference).
- *   - Results are returned as typed SearchResult objects for use in both
- *     compact (DreamDM Bar) and expanded (DreamDMessaging) suggestion lists.
- *   - No false results for unsupported object types (spec §90).
- *
- * Architecture: Logic layer (lib/) — no UI, no direct component imports.
- * Privacy: queries restricted to public or participant-accessible data via RLS.
- *
- * docs/dreamdm_messaging_phase2.md §3 — useDreamSearch
- */
+
 
 export type SearchResultType =
   | 'person'
@@ -40,27 +17,27 @@ export type SearchResultType =
 export interface SearchResult {
   id: string;
   type: SearchResultType;
-  /** Primary display label */
+  
   label: string;
-  /** Secondary display label (e.g. @handle, board name) */
+  
   sublabel?: string;
   avatarUrl?: string | null;
-  /** Navigation href for board / topic / profile results */
+  
   href?: string;
-  /** Conversation or user ID used to initiate/open a message flow */
+  
   targetId?: string;
 }
 
 export interface UseDreamSearchReturn {
-  /** Current search results — up to 8 items, mixed types */
+  
   results: SearchResult[];
-  /** True while an async search is in flight */
+  
   isSearching: boolean;
-  /** Whether Dr. Eams mode is active (spec §40–45) */
+  
   drEamsMode: boolean;
-  /** Toggle Dr. Eams mode on/off (persists to localStorage) */
+  
   toggleDrEams: () => void;
-  /** Clear current results (call when user closes suggestion list) */
+  
   clearResults: () => void;
 }
 
@@ -102,13 +79,13 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
       if (localStorage.getItem(DR_EAMS_KEY) === 'true') {
         setDrEamsMode(true);
       }
-    } catch { /* SSR or private-browse — ignore */ }
+    } catch {  }
   }, []);
 
   const toggleDrEams = useCallback(() => {
     setDrEamsMode((prev) => {
       const next = !prev;
-      try { localStorage.setItem(DR_EAMS_KEY, String(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(DR_EAMS_KEY, String(next)); } catch {  }
       return next;
     });
   }, []);
@@ -124,7 +101,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
     }
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    // Named destinations are local and should feel instantaneous like device search.
+    
     setResults(getLocalSearchResults(trimmed).slice(0, MAX_RESULTS));
 
     debounceRef.current = setTimeout(async () => {
@@ -161,7 +138,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
             participant1:profiles!participant1_id(id, handle, display_name, avatar_url),
             participant2:profiles!participant2_id(id, handle, display_name, avatar_url)
           `)
-          .limit(PER_TYPE * 2); // over-fetch, filter client-side
+          .limit(PER_TYPE * 2); 
 
         if (convs) {
           for (const conv of convs) {
@@ -174,7 +151,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
                 p?.display_name?.toLowerCase().includes(q),
             );
             if (match) {
-              // Avoid duplicate if same person already in people results
+              
               const alreadyAdded = combined.some(
                 (r) => r.type === 'conversation' && r.id === conv.id,
               );
@@ -193,7 +170,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
           }
         }
 
-        // Query board titles if the table exists (graceful failure otherwise)
+        
         try {
           const { data: boards } = await supabase
             .from('message_boards')
@@ -212,7 +189,7 @@ export function useDreamSearch(query: string): UseDreamSearchReturn {
               });
             }
           }
-        } catch { /* table may not exist yet — skip silently */ }
+        } catch {  }
 
         setResults(combined.slice(0, MAX_RESULTS));
       } catch (err: unknown) {

@@ -5,21 +5,15 @@ import {
   type EnginProfileId,
 } from "./EnginCapabilityTargets";
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginCapabilityExecution.ts.
 
-/**
- * lib/engin-runtime/EnginCapabilityExecution.ts
- *
- * Concrete execution fast paths for canonical Engins. The profiles say what
- * each Engin must chase; this file owns the hot-path machinery that makes the
- * runtime move toward those targets without putting raw metrics in UI copy.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> =
   Object.freeze({
@@ -135,11 +129,11 @@ const EXECUTION_PLANS: Readonly<Record<CanonicalEnginId, EnginExecutionPlan>> =
     }),
   });
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type ExecutionSubsystem =
   | "coalesced-runtime-work"
@@ -205,7 +199,7 @@ export interface RayHit {
   readonly distance: number;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function executionPlan(plan: EnginExecutionPlan): EnginExecutionPlan {
   return Object.freeze({
@@ -294,14 +288,7 @@ export class GeometryBatcher {
   }
 }
 
-/**
- * Deterministic AABB scanner used by ray tests and CPU fallback paths.
- *
- * This class intentionally does not claim to be a BVH, spatial grid, or
- * WebGPU accelerator: it keeps a flat ordered box list and returns the nearest
- * AABB hit by scanning that list. Keep the historical class name to avoid
- * rippling public imports while making the actual execution model explicit.
- */
+
 export class RayGridAccelerator {
   private boxes: RayBox[] = [];
 
@@ -507,8 +494,8 @@ export function createEnginCapabilityExecutionKernel(
   return new EnginCapabilityExecutionKernel(profile);
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

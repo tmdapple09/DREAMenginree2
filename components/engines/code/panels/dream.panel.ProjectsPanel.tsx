@@ -7,12 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * ProjectsPanel — Project manager for the Code Engine app.
- *
- * Lists Supabase projects, create new, open in codespace.
- * Lives at /engines/code/projects.
- */
+
 
 interface Project {
   id: string;
@@ -110,7 +105,7 @@ export default function ProjectsPanel( ){
           </div>
         </div>
 
-        {/* New project form */}
+        
         {showForm && (
           <div className="mb-5 p-4 rounded-xl bg-white/[0.04] border border-[#22d3ee]/20">
             <h3 className="text-sm font-semibold text-white mb-3">New Project</h3>

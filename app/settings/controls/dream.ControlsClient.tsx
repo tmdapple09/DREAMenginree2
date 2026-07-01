@@ -6,10 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 import PositionIndicatorToggle from './dream.PositionIndicatorToggle';
 
-/**
- * ControlsClient — interactive home button behavior settings.
- * Persists to localStorage. Constitution Rule 6-7.
- */
+
 
 type TimeoutHandle = ReturnType<typeof setTimeout>;
 

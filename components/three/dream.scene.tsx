@@ -8,8 +8,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useRef } from 'react';
 import * as THREE from 'three';
 
-/*  Slowly rotating group used as a scene container                    */
-/* ------------------------------------------------------------------ */
+
+
 function RotatingGroup({ children }: {children: React.ReactNode}) {
   const group = useRef<THREE.Group>(null);
 
@@ -22,10 +22,10 @@ function RotatingGroup({ children }: {children: React.ReactNode}) {
   return <group ref={group}>{children}</group>;
 }
 
-/*  OrbitalStar — a small glowing sphere that orbits the crystal       */
-/*  using Drei's <Float> for a gentle hover and <Trail> for a comet    */
-/*  tail effect.                                                        */
-/* ------------------------------------------------------------------ */
+
+
+
+
 interface OrbitalStarProps {
   radius: number;
   speed: number;
@@ -59,17 +59,17 @@ function OrbitalStar({ radius, speed, offset, color }: OrbitalStarProps) {
   );
 }
 
-/*  DreamScene                                                         */
-/*                                                                    */
-/*  A self-contained React Three Fiber canvas showcasing:              */
-/*    • Neon glow shader                                               */
-/*    • Lightning wing shader                                          */
-/*    • Refractor shader (glass / crystal distortion)                  */
-/*    • Starfield via drei Stars                                        */
-/*    • Drei Float — gentle hover animation on the crystal              */
-/*    • Drei Sparkles — ambient gold particle field                    */
-/*    • Drei Trail + OrbitalStar — comet-tail orbiting spheres         */
-/* ------------------------------------------------------------------ */
+
+
+
+
+
+
+
+
+
+
+
 
 export interface DreamSceneProps {
   className?: string;
@@ -84,16 +84,16 @@ export function DreamScene({ className }: DreamSceneProps) {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          {/* Ambient + point lights */}
+          
           <ambientLight intensity={0.2} />
           <pointLight position={[5, 5, 5]} intensity={0.8} color="#88ccff" />
           <pointLight position={[-5, -3, 3]} intensity={0.4} color="#ff44aa" />
           <pointLight position={[0, 3, 0]} intensity={0.3} color="#c8981a" />
 
-          {/* Background stars */}
+          
           <Stars radius={50} depth={40} count={1500} factor={3} fade speed={0.5} />
 
-          {/* Ambient gold sparkle field — uses Drei Sparkles */}
+          
           <Sparkles
             count={60}
             scale={[8, 5, 5]}
@@ -102,7 +102,7 @@ export function DreamScene({ className }: DreamSceneProps) {
             opacity={0.55}
             color="#c8981a"
           />
-          {/* Cyan/blue secondary sparkles for depth */}
+          
           <Sparkles
             count={40}
             scale={[6, 4, 4]}
@@ -112,15 +112,15 @@ export function DreamScene({ className }: DreamSceneProps) {
             color="#38bdf8"
           />
 
-          {/* Orbital comet stars circling the crystal */}
+          
           <OrbitalStar radius={2.2} speed={0.55} offset={0}            color="#c8981a" />
           <OrbitalStar radius={2.6} speed={0.38} offset={Math.PI}      color="#38bdf8" />
           <OrbitalStar radius={1.9} speed={0.72} offset={Math.PI / 2}  color="#a78bfa" />
 
-          {/* Crystal group — wrapped in Float for organic hover */}
+          
           <Float speed={1.4} rotationIntensity={0.12} floatIntensity={0.4}>
             <RotatingGroup>
-              {/* Central refractor crystal */}
+              
               <Refractor
                 position={[0, 0, 0]}
                 scale={1.2}
@@ -130,7 +130,7 @@ export function DreamScene({ className }: DreamSceneProps) {
                 fresnelPower={2.5}
               />
 
-              {/* Neon glow behind the crystal */}
+              
               <NeonGlow
                 position={[0, 0, -0.5]}
                 color="#00ffff"
@@ -139,7 +139,7 @@ export function DreamScene({ className }: DreamSceneProps) {
                 scale={3}
               />
 
-              {/* Right lightning wing */}
+              
               <LightningWing
                 position={[2.2, 0, 0]}
                 scale={[2.5, 1.2, 1]}
@@ -148,7 +148,7 @@ export function DreamScene({ className }: DreamSceneProps) {
                 branchCount={5}
               />
 
-              {/* Left lightning wing (mirrored) */}
+              
               <LightningWing
                 position={[-2.2, 0, 0]}
                 scale={[2.5, 1.2, 1]}

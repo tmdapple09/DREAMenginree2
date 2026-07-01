@@ -57,7 +57,7 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
         </button>
       }
     >
-      {/* Now Playing */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
         <div style={{ width: 52, height: 52, borderRadius: 12, background: 'rgba(42,138,184,0.12)', border: '1px solid rgba(42,138,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
           🎵
@@ -72,7 +72,7 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
         </div>
       </div>
 
-      {/* Controls */}
+      
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 14 }}>
         <button type="button" className="de-icon-btn" onClick={prev} disabled={currentIndex === null || currentIndex === 0} aria-label="Previous">⏮</button>
         <button
@@ -93,7 +93,7 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
         <button type="button" className="de-icon-btn" onClick={next} disabled={currentIndex === null || currentIndex >= tracks.length - 1} aria-label="Next">⏭</button>
       </div>
 
-      {/* Audio element (native iOS-compatible) */}
+      
       {currentTrack?.url && (
         <audio
           ref={audioRef}
@@ -103,7 +103,7 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
         />
       )}
 
-      {/* Queue */}
+      
       {showQueue && (
         <div style={{ borderTop: '1px solid rgba(160,195,240,0.2)', paddingTop: 10 }}>
           {tracks.length === 0 ? (
@@ -139,7 +139,7 @@ export default function PlayMediaWidget({ tracks = [], title = 'Play Media' }: P
         </div>
       )}
 
-      {/* Add to Feed / Profile */}
+      
       <div style={{ display: 'flex', gap: 6, paddingTop: 8, borderTop: '1px solid rgba(160,195,240,0.15)', marginTop: 4 }}>
         <button type="button" className="de-btn de-btn-ghost" style={{ fontSize: 10, padding: '5px 10px' }}>❤️ Favorite</button>
         <button type="button" className="de-btn de-btn-ghost" style={{ fontSize: 10, padding: '5px 10px' }}>+ Add to Feed</button>

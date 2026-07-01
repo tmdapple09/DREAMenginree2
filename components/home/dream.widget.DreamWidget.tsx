@@ -84,10 +84,10 @@ export default function DreamWidget({
       tabIndex={onOpen ? 0 : undefined}
       onKeyDown={onOpen ? (e) => e.key === 'Enter' && onOpen() : undefined}
     >
-      {/* Hover gradient overlay */}
+      
       <div className="absolute inset-0 bg-gradient-to-br from-de-sky/5 via-transparent to-de-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
 
-      {/* Main content */}
+      
       <div className="relative z-10">
         <div className="flex items-start gap-3">
           {icon && (
@@ -108,7 +108,7 @@ export default function DreamWidget({
         )}
       </div>
 
-      {/* Decorative corner accent — gold/sky gradient, bottom-right */}
+      
       <div className="absolute bottom-0 right-0 w-14 h-14 bg-gradient-to-tl from-de-gold/10 via-de-sky/5 to-transparent rounded-tl-3xl pointer-events-none" />
     </motion.div>
   );

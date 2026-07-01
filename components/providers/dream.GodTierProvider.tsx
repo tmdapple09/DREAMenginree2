@@ -3,18 +3,12 @@
 import { useGodTier } from '@/engine/rendering/god-tier/useGodTier';
 import { usePathname } from 'next/navigation';
 
-/**
- * GodTierProvider — mounts the useGodTier hook at the app root.
- *
- * This client component injects God Tier CSS custom properties onto :root
- * every animation frame, making all --gt-* tokens live everywhere in the app.
- * It has no visible UI of its own; it is purely a side-effect provider.
- */
+
 
 export default function GodTierProvider( ){
   const pathname = usePathname();
 
-  // Derive activeTask from route for richer signals
+  
   const activeTask =
     pathname.startsWith('/game')       ? 'game_session' :
     pathname.startsWith('/showcase')   ? 'hero_showcase' :
@@ -23,7 +17,7 @@ export default function GodTierProvider( ){
     pathname.startsWith('/dream')      ? 'dream_browse' :
     'browse';
 
-  // Run the god tier hook — CSS vars are injected onto :root inside the hook
+  
   useGodTier({
     route: pathname,
     activeTask,
@@ -31,6 +25,6 @@ export default function GodTierProvider( ){
     nextLikelyRoutes: [],
   });
 
-  // No visible output — pure side-effect
+  
   return null;
 }

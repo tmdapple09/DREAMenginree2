@@ -1,5 +1,5 @@
-// lib/activity/revenueSplit.ts
-// Activity-First Protocol revenue split helpers.
+
+
 
 export const ACTIVITY_REVENUE_SPLIT = {
   platform: 0.3,

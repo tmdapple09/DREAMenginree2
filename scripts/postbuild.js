@@ -1,18 +1,8 @@
-/**
- * Postbuild enforcement (Node runnable) — v2.0.0
- *
- * We keep this tiny and dependency-free so it runs in any CI/CD without ts-node.
- *
- * v2.0.0: updated REQUIRED_PATHS from legacy widget-era files (WheelLayout,
- * WidgetEngine, WidgetBus, useWidget) to canonical v2 runtime files.
- */
+
 const { existsSync, readFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 
-/**
- * v2.0.0 canonical required paths.
- * These are the structural invariants for DREAMengin v2.0.0.
- */
+
 const REQUIRED_PATHS = [
   "types/dream-window.ts",
   "lib/identity/canonical-names.ts",

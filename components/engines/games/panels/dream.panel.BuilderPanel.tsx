@@ -4,12 +4,7 @@ import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Info, Save, Sparkles, Trash2 } from 'lucide-react';
 import { useCallback, useState, type KeyboardEvent } from 'react';
 
-/**
- * BuilderPanel — Visual Character Builder tool for the Games Engine app.
- *
- * 32×32 pixel graph editor with paint mode, color palette, and save-to-state.
- * Lives at /engines/games/builder.
- */
+
 
 const GRID_SIZE = 32;
 

@@ -3,14 +3,7 @@
 import { makeEnginApp } from '@/components/engines/shared';
 import BrandingEngin from '@/engins/engin.BrandingEngin';
 
-/**
- * BrandEnginApp — Full-screen app shell for the Brand Engine.
- *
- * Routes:
- *   /engines/brand            → full BrandingEngin hub
- *   /engines/brand/identity   → brand identity editor
- *   /engines/brand/campaigns  → campaign ROI calculator
- */
+
 
 export default makeEnginApp({
   id: 'brand',

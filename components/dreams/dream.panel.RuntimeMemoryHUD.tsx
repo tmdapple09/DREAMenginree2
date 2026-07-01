@@ -7,39 +7,25 @@ import {
 import { dreamOSBus, type DreamOSSnapshot } from "@/engine/runtime/dreamOSBus";
 import { useEffect, useState } from "react";
 
-// Framework directives stay physically first when required.
 
-// Runtime file: components/dreams/dream.panel.RuntimeMemoryHUD.tsx.
 
-/**
- * components/dreams/dream.panel.RuntimeMemoryHUD.tsx
- *
- * RUNTIME MEMORY HUD — Dream Continuity Spine (2026)
- *
- * Subscribes to dreamOSBus and renders two panels:
- *   1. Recent Work — the last N creative outputs without exposing runtime internals.
- *
- * Visual treatment: Midnight Glass — matches existing DreamSpace style.
- * No network calls, no Supabase reads — 100% client-local bus data.
- *
- * Architecture: component/ layer per GENERATION_LAW §3.1.
- *   All logic is in lib/intelligence/continuityHelpers.ts (pure).
- *   dreamOSBus subscription follows the same pattern as ActiveModuleSurface.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const MAX_ARTIFACTS = 5;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
 
-// Runtime functions, classes, handlers, and state transitions.
+
+
+
+
 
 export default function RuntimeMemoryHUD() {
   const [snapshot, setSnapshot] = useState<DreamOSSnapshot>({
@@ -47,7 +33,7 @@ export default function RuntimeMemoryHUD() {
     runtimeContexts: [],
   });
 
-  // Subscribe to the bus — re-render whenever anything changes.
+  
   useEffect(() => {
     const unsub = dreamOSBus.subscribe((next) => setSnapshot(next));
     return unsub;
@@ -57,8 +43,8 @@ export default function RuntimeMemoryHUD() {
 
   const trail = artifacts.slice(0, MAX_ARTIFACTS);
 
-  // Nothing to show yet — render nothing (the section just won't appear until
-  // the user opens an Engin and events start flowing).
+  
+  
   if (trail.length === 0) return null;
 
   return (
@@ -75,7 +61,7 @@ export default function RuntimeMemoryHUD() {
         WebkitBackdropFilter: "blur(32px) saturate(160%)",
       }}
     >
-      {/* Section label */}
+      
       <div
         style={{
           fontSize: 10,
@@ -89,7 +75,7 @@ export default function RuntimeMemoryHUD() {
         Recent Work
       </div>
 
-      {/* Artifact trail */}
+      
       {trail.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {trail.map((artifact) => {
@@ -108,7 +94,7 @@ export default function RuntimeMemoryHUD() {
                   border: `1px solid ${accent}22`,
                 }}
               >
-                {/* Kind badge */}
+                
                 <span
                   style={{
                     fontSize: 9,
@@ -127,7 +113,7 @@ export default function RuntimeMemoryHUD() {
                   {badge}
                 </span>
 
-                {/* Title */}
+                
                 <span
                   style={{
                     flex: 1,
@@ -150,8 +136,8 @@ export default function RuntimeMemoryHUD() {
   );
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

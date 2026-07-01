@@ -6,20 +6,12 @@ import {
 } from '@/engins/gameengin/cartridges/manifest';
 import Link from 'next/link';
 
-/**
- * components/gameengin/dream.cartridge.FeaturedCartridges.tsx
- *
- * Compact "Featured Cartridges" widget for HomeDream.
- * Spec: GameENGINspec.md §7.4.
- *
- * Pulls from the existing CARTRIDGE_MANIFEST. Pure presentation; the full
- * filterable browser lives in `CartridgeBrowser.tsx`.
- */
+
 
 export interface FeaturedCartridgesProps {
-  /** Explicit cartridge ids to feature, in order. Defaults to flagship tier. */
+  
   featured?: string[];
-  /** Hard limit on rendered cards. */
+  
   limit?: number;
 }
 

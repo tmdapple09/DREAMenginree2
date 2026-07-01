@@ -8,17 +8,17 @@ import {
 } from '@/types/ai-system';
 import { ToolHandler } from '../tool-router';
 
-// lib/ai/handlers/dreams.ts
-// Dream Management Intent Handlers
 
-// ============================================================================
-// DREAM_PREVIEW Handler
-// ============================================================================
+
+
+
+
+
 
 export const handleDreamPreview: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamPreviewPayload;
 
-  // Fetch dream metadata
+  
   const { data: dream, error } = await ctx.supabase
     .from('dream_instances')
     .select('*')
@@ -48,9 +48,9 @@ export const handleDreamPreview: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DREAM_OPEN Handler
-// ============================================================================
+
+
+
 
 export const handleDreamOpen: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamOpenPayload;
@@ -70,14 +70,14 @@ export const handleDreamOpen: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DREAM_CONFIG_PATCH Handler
-// ============================================================================
+
+
+
 
 export const handleDreamConfigPatch: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamConfigPatchPayload;
 
-  // Get existing dream
+  
   const { data: existing, error: fetchError } = await ctx.supabase
     .from('dream_instances')
     .select('config_json, user_id')
@@ -94,7 +94,7 @@ export const handleDreamConfigPatch: ToolHandler = async (ctx) => {
     };
   }
 
-  // Check ownership (redundant with capability gate, but defense in depth)
+  
   if (existing.user_id !== ctx.actor.user_id && ctx.actor.role !== 'admin') {
     return {
       ok: false,
@@ -105,13 +105,13 @@ export const handleDreamConfigPatch: ToolHandler = async (ctx) => {
     };
   }
 
-  // Merge config
+  
   const newConfig = {
     ...(existing.config_json as any),
     ...payload.config_patch,
   };
 
-  // Update dream
+  
   const { data: updated, error: updateError } = await ctx.supabase
     .from('dream_instances')
     .update({ config_json: newConfig })
@@ -142,20 +142,20 @@ export const handleDreamConfigPatch: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DREAM_REORDER Handler
-// ============================================================================
+
+
+
 
 export const handleDreamReorder: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamReorderPayload;
 
-  // Update order for each dream
+  
   for (let i = 0; i < payload.dream_ids.length; i++) {
     await ctx.supabase
       .from('dream_instances')
       .update({ order: i })
       .eq('id', payload.dream_ids[i])
-      .eq('user_id', ctx.actor.user_id); // Ensure ownership
+      .eq('user_id', ctx.actor.user_id); 
   }
 
   return {
@@ -170,14 +170,14 @@ export const handleDreamReorder: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DREAM_ADD_FROM_PRESET Handler
-// ============================================================================
+
+
+
 
 export const handleDreamAddFromPreset: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamAddFromPresetPayload;
 
-  // Get max order
+  
   const { data: maxOrderRow } = await ctx.supabase
     .from('dream_instances')
     .select('order')
@@ -188,7 +188,7 @@ export const handleDreamAddFromPreset: ToolHandler = async (ctx) => {
 
   const nextOrder = payload.position ?? ((maxOrderRow?.order ?? -1) + 1);
 
-  // Create new dream from preset
+  
   const { data: newDream, error } = await ctx.supabase
     .from('dream_instances')
     .insert({
@@ -224,14 +224,14 @@ export const handleDreamAddFromPreset: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DREAM_REMOVE Handler
-// ============================================================================
+
+
+
 
 export const handleDreamRemove: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DreamRemovePayload;
 
-  // Double-check ownership
+  
   const { data: dream, error: fetchError } = await ctx.supabase
     .from('dream_instances')
     .select('user_id')
@@ -258,7 +258,7 @@ export const handleDreamRemove: ToolHandler = async (ctx) => {
     };
   }
 
-  // Delete dream
+  
   const { error: deleteError } = await ctx.supabase
     .from('dream_instances')
     .delete()

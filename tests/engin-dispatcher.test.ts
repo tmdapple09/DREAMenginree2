@@ -54,7 +54,7 @@ import { EnginDispatcher } from '@/engine/runtime/EnginDispatcher';
 
 const root = process.cwd();
 
-// ─── SAB layout ───────────────────────────────────────────────────────────────
+
 
 describe('EnginMemory — SAB layout constants', () => {
   it('ENTITY_COUNT is 10 000', () => {
@@ -66,7 +66,7 @@ describe('EnginMemory — SAB layout constants', () => {
   });
 
   it('SoA channels start at correct byte offsets', () => {
-    const F = ENTITY_COUNT * 4; // 40 000 bytes per f32 channel
+    const F = ENTITY_COUNT * 4; 
     expect(OFFSET_POS_X).toBe(0);
     expect(OFFSET_POS_Y).toBe(F);
     expect(OFFSET_POS_Z).toBe(F * 2);
@@ -96,7 +96,7 @@ describe('EnginMemory — SAB layout constants', () => {
   });
 
   it('LOCKED_STATE is 4-byte aligned and follows the telemetry zone', () => {
-    const telemetryEnd = OFFSET_TELEMETRY + MAX_WORKERS * 8; // 250,520
+    const telemetryEnd = OFFSET_TELEMETRY + MAX_WORKERS * 8; 
     expect(OFFSET_LOCKED_STATE).toBe(250_520);
     expect(OFFSET_LOCKED_STATE).toBe(telemetryEnd);
     expect(OFFSET_LOCKED_STATE % 4).toBe(0);
@@ -109,8 +109,8 @@ describe('EnginMemory — SAB layout constants', () => {
   });
 
   it('SAB_BYTES covers all zones without overlap', () => {
-    expect(SAB_BYTES).toBe(OFFSET_AXIS_STATE + 4); // 250,528
-    // Verify no overlap between zones
+    expect(SAB_BYTES).toBe(OFFSET_AXIS_STATE + 4); 
+    
     expect(OFFSET_DREAMDM_BAR_Y).toBeGreaterThan(OFFSET_DAYDREAM_TYPE);
     expect(OFFSET_DREAMDM_BAR_X).toBeGreaterThan(OFFSET_DREAMDM_BAR_Y);
     expect(OFFSET_TELEMETRY).toBeGreaterThan(OFFSET_DREAMDM_BAR_X);
@@ -123,12 +123,12 @@ describe('EnginMemory — SAB layout constants', () => {
   });
 });
 
-// ─── SAB factory ─────────────────────────────────────────────────────────────
+
 
 describe('createEnginSAB', () => {
   it('creates a SharedArrayBuffer of exactly SAB_BYTES', () => {
     if (typeof SharedArrayBuffer === 'undefined') {
-      // Node without --experimental-shared-memory
+      
       console.warn('SharedArrayBuffer unavailable — skipping factory test');
       return;
     }
@@ -145,7 +145,7 @@ describe('createEnginSAB', () => {
   });
 });
 
-// ─── Typed-array view helpers ─────────────────────────────────────────────────
+
 
 describe('SAB view helpers', () => {
   it('f32Channel returns Float32Array of length ENTITY_COUNT', () => {
@@ -188,7 +188,7 @@ describe('SAB view helpers', () => {
     expect(v).toBeInstanceOf(Int32Array);
     expect(v.length).toBe(1);
     expect(OFFSET_DREAMDM_BAR_X % 4).toBe(0);
-    // Writes to barX should not affect barY
+    
     Atomics.store(v, 0, 77);
     expect(Atomics.load(int32DreamDMBarY(sab), 0)).toBe(0);
   });
@@ -240,11 +240,11 @@ describe('SAB view helpers', () => {
     const px = f32Channel(sab, OFFSET_POS_X);
     const py = f32Channel(sab, OFFSET_POS_Y);
     px[0] = 42;
-    expect(py[0]).toBe(0); // POS_Y should not see POS_X write
+    expect(py[0]).toBe(0); 
   });
 });
 
-// ─── Workgroup partitioning ───────────────────────────────────────────────────
+
 
 describe('buildWorkgroups', () => {
   it('throws for workerCount < 1', () => {
@@ -264,7 +264,7 @@ describe('buildWorkgroups', () => {
     const indices = new Set<number>();
     for (const wg of wgs) {
       for (let i = wg.startIndex; i < wg.endIndex; i++) {
-        expect(indices.has(i)).toBe(false); // no duplicates
+        expect(indices.has(i)).toBe(false); 
         indices.add(i);
       }
     }
@@ -302,7 +302,7 @@ describe('buildWorkgroups', () => {
   });
 });
 
-// ─── Bounds guard ─────────────────────────────────────────────────────────────
+
 
 describe('isIndexInBounds', () => {
   const wg = { workerIndex: 1, startIndex: 2500, endIndex: 5000 };
@@ -333,7 +333,7 @@ describe('isIndexInBounds', () => {
   });
 });
 
-// ─── EnginDispatcher singleton ────────────────────────────────────────────────
+
 
 describe('EnginDispatcher singleton', () => {
   beforeEach(() => {
@@ -357,7 +357,7 @@ describe('EnginDispatcher singleton', () => {
 
   it('init() is a no-op in Node (no Worker global)', () => {
     const d = EnginDispatcher.getInstance();
-    // Worker is not defined in Node — init should not throw
+    
     expect(() => d.init()).not.toThrow();
   });
 
@@ -405,7 +405,7 @@ describe('EnginDispatcher singleton', () => {
   });
 });
 
-// ─── Dual-Runtime Seam — DreamDM Bar y-offset ────────────────────────────────
+
 
 describe('EnginDispatcher — Dual-Runtime Seam (DreamDM Bar y-offset)', () => {
   afterEach(() => {
@@ -416,8 +416,8 @@ describe('EnginDispatcher — Dual-Runtime Seam (DreamDM Bar y-offset)', () => {
     if (typeof SharedArrayBuffer === 'undefined') return;
 
     const d = EnginDispatcher.getInstance();
-    // Manually inject a SAB to test the seam without spawning workers
-    // Access private field via type cast for testing purposes
+    
+    
     (d as any as { _sab: SharedArrayBuffer })._sab = createEnginSAB();
 
     d.setDreamDMBarY(128.5);
@@ -443,7 +443,7 @@ describe('EnginDispatcher — Dual-Runtime Seam (DreamDM Bar y-offset)', () => {
 
     d.setDreamDMBarY(200);
     d.setDreamDMBarY(NaN);
-    // NaN is rejected; stored value remains 200
+    
     expect(d.getDreamDMBarY()).toBeCloseTo(200, 2);
   });
 
@@ -479,7 +479,7 @@ describe('EnginDispatcher — Dual-Runtime Seam (DreamDM Bar y-offset)', () => {
   });
 });
 
-// ─── Seam control — updateSeamOffset / locked / axis ─────────────────────────
+
 
 describe('EnginDispatcher — Seam Control (updateSeamOffset / locked / axis)', () => {
   afterEach(() => {
@@ -494,7 +494,7 @@ describe('EnginDispatcher — Seam Control (updateSeamOffset / locked / axis)', 
 
     d.updateSeamOffset(0.75, 'Y');
     expect(d.getSeamOffset('Y')).toBeCloseTo(0.75, 2);
-    // X slot should remain 0
+    
     expect(d.getSeamOffset('X')).toBe(0);
   });
 
@@ -506,7 +506,7 @@ describe('EnginDispatcher — Seam Control (updateSeamOffset / locked / axis)', 
 
     d.updateSeamOffset(0.3, 'X');
     expect(d.getSeamOffset('X')).toBeCloseTo(0.3, 2);
-    // Y slot should remain 0
+    
     expect(d.getSeamOffset('Y')).toBe(0);
   });
 
@@ -609,7 +609,7 @@ describe('EnginDispatcher — Seam Control (updateSeamOffset / locked / axis)', 
     d.setLockedState(true);
     d.setAxisState('X');
 
-    // Each slot must retain its own value
+    
     expect(d.getSeamOffset('Y')).toBeCloseTo(0.4, 2);
     expect(d.getSeamOffset('X')).toBeCloseTo(0.6, 2);
     expect(d.getLockedState()).toBe(true);
@@ -617,7 +617,7 @@ describe('EnginDispatcher — Seam Control (updateSeamOffset / locked / axis)', 
   });
 });
 
-// ─── Elite-Runtime Telemetry ──────────────────────────────────────────────────
+
 
 describe('EnginDispatcher — Elite-Runtime Telemetry', () => {
   afterEach(() => {
@@ -630,13 +630,13 @@ describe('EnginDispatcher — Elite-Runtime Telemetry', () => {
     const d = EnginDispatcher.getInstance();
     const sab = createEnginSAB();
     (d as any as { _sab: SharedArrayBuffer })._sab = sab;
-    // Simulate 2 workers
+    
     (d as any as { _workers: unknown[] })._workers = [null, null];
 
-    // Write synthetic telemetry values into the SAB
+    
     const tel = f64Telemetry(sab);
-    tel[0] = 250;   // worker 0: 250 µs/tick
-    tel[1] = 1_800; // worker 1: 1800 µs/tick
+    tel[0] = 250;   
+    tel[1] = 1_800; 
 
     const stats = d.stats;
     expect(stats.workerCount).toBe(2);
@@ -645,7 +645,7 @@ describe('EnginDispatcher — Elite-Runtime Telemetry', () => {
   });
 });
 
-// ─── Worker source-level contract ────────────────────────────────────────────
+
 
 describe('engin-shader.worker.ts — source contract', () => {
   const workerSrc = readFileSync(
@@ -668,8 +668,8 @@ describe('engin-shader.worker.ts — source contract', () => {
   it('reads DreamDM Bar seam offset atomically (Dual-Runtime Seam)', () => {
     expect(workerSrc).toContain('OFFSET_DREAMDM_BAR_Y');
     expect(workerSrc).toContain('OFFSET_DREAMDM_BAR_X');
-    // Bug C: non-atomic Float32 read replaced with Atomics.load on Int32;
-    // axis is selected at runtime via axisState flag.
+    
+    
     expect(workerSrc).toContain('Atomics.load(activeBar, 0)');
     expect(workerSrc).toContain('Atomics.load(axisState, 0)');
     expect(workerSrc).toContain('BAR_Y_SCALE');
@@ -716,7 +716,7 @@ describe('engin-shader.worker.ts — source contract', () => {
   });
 
   it('mirror constants match lib/runtime/memory.ts values', () => {
-    // Verify the worker's local constants are in sync with memory.ts
+    
     expect(workerSrc).toContain('const ENTITY_COUNT      = 10_000');
     expect(workerSrc).toContain('const OFFSET_DREAMDM_BAR_Y = 250_000');
     expect(workerSrc).toContain('const OFFSET_DREAMDM_BAR_X = 250_004');
@@ -726,7 +726,7 @@ describe('engin-shader.worker.ts — source contract', () => {
   });
 });
 
-// ─── IDARi/TheBoogieMan audit integrity ───────────────────────────────────────
+
 
 describe('Audit — no worker writes outside assigned range', () => {
   it('workgroups from buildWorkgroups have non-overlapping ranges', () => {
@@ -745,7 +745,7 @@ describe('Audit — no worker writes outside assigned range', () => {
 
   it('isIndexInBounds rejects indices belonging to a different worker', () => {
     const wgs = buildWorkgroups(4);
-    // Worker 0's range should reject an index from worker 2's range
+    
     const wg0 = wgs[0];
     const wg2 = wgs[2];
     const midWg2 = Math.floor((wg2.startIndex + wg2.endIndex) / 2);

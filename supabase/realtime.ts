@@ -1,60 +1,36 @@
 import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 
-/**
- * lib/supabase/realtime.ts — Supabase Realtime integration for DREAMengin.
- *
- * Provides typed helpers for:
- *  1. **DreamR Human Media Pulse** — a live presence/activity feed that broadcasts
- *     user reactions, voice pings, and micro-interactions to followers in real-time.
- *  2. **Live Messaging Channels** — typed wrappers around Supabase Realtime channels
- *     for DreamDM conversations, board threads, and ephemeral rooms.
- *  3. **Presence** — lightweight online/typing indicators for DreamDM.
- *
- * All channel names are prefixed with `de:` (DREAMengin namespace) to avoid
- * collisions with any Supabase-internal channels.
- *
- * Privacy: Channels require an authenticated user.  No data is broadcast
- * to unauthenticated listeners.  See docs/AXIOMS.md §4 (data sovereignty).
- *
- * Architecture justification: docs/ARCHITECTURE.md §6 (Realtime layer).
- */
 
-// DreamR Pulse — live human media heartbeat
 
-/** A single DreamR pulse event broadcast to followers. */
+
+
+
 export interface DreamRPulse {
-  /** Sender user ID */
+  
   userId: string;
-  /** Display handle (cached for instant render; authoritative source is `profiles`). */
+  
   handle: string;
-  /** Pulse type */
+  
   kind: 'reaction' | 'voice-ping' | 'vibe-check' | 'now-playing' | 'achievement';
-  /** Arbitrary payload — shape depends on `kind`. */
+  
   payload: Record<string, unknown>;
-  /** ISO-8601 timestamp set by the sender. */
+  
   sentAt: string;
 }
 
-/** Options for subscribing to DreamR pulses. */
+
 export interface DreamRSubscribeOptions {
-  /** The Supabase client (must be authenticated). */
+  
   client: SupabaseClient;
-  /** Room / topic ID — typically the user's own profile ID or a group ID. */
+  
   roomId: string;
-  /** Callback invoked for every incoming pulse. */
+  
   onPulse: (pulse: DreamRPulse) => void;
-  /** Optional callback when presence state changes (user joined / left). */
+  
   onPresence?: (state: PresenceState[]) => void;
 }
 
-/**
- * Subscribe to the DreamR pulse channel for a given room.
- *
- * Returns an object with:
- *  - `channel` — the underlying `RealtimeChannel` for low-level access.
- *  - `sendPulse(pulse)` — broadcast a pulse to the room.
- *  - `unsubscribe()` — cleanly tear down the subscription.
- */
+
 export function subscribeDreamR({
   client,
   roomId,
@@ -67,12 +43,12 @@ export function subscribeDreamR({
     config: { broadcast: { self: false } },
   });
 
-  // Broadcast listener — incoming pulses from other users.
+  
   channel.on('broadcast', { event: 'pulse' }, ({ payload }) => {
     onPulse(payload as DreamRPulse);
   });
 
-  // Presence listener (optional).
+  
   if (onPresence) {
     channel.on('presence', { event: 'sync' }, () => {
       const raw = channel.presenceState<PresencePayload>();
@@ -106,15 +82,15 @@ export interface DreamRHandle {
   unsubscribe: () => void;
 }
 
-// Live Messaging — DreamDM conversations
 
-/** A typed DreamDM message sent over the realtime channel. */
+
+
 export interface LiveMessage {
   id: string;
   conversationId: string;
   senderId: string;
   body: string;
-  /** Optional attachment URLs (images, audio clips, etc.). */
+  
   attachments?: string[];
   sentAt: string;
 }
@@ -127,11 +103,7 @@ export interface LiveMessageSubscribeOptions {
   onPresence?: (state: PresenceState[]) => void;
 }
 
-/**
- * Subscribe to a DreamDM conversation's live message channel.
- *
- * Returns a handle with `send`, `setTyping`, and `unsubscribe`.
- */
+
 export function subscribeLiveMessages({
   client,
   conversationId,
@@ -193,7 +165,7 @@ export interface LiveMessageHandle {
   unsubscribe: () => void;
 }
 
-// Presence types
+
 
 export type PresenceStatus = 'online' | 'away' | 'typing' | 'offline';
 
@@ -212,14 +184,9 @@ export interface PresenceState {
   lastSeen: string;
 }
 
-// Presence tracking helper
 
-/**
- * Track a user's presence in a channel (typing, online/away).
- *
- * Call `updatePresence` when the user's status changes.
- * Call `untrack` on component unmount.
- */
+
+
 export function trackPresence(
   client: SupabaseClient,
   channelName: string,

@@ -17,11 +17,7 @@ import dynamicImport from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * GamesHub — Client-side games collection showcasing the playable catalog.
- * Lazy-loads each game component to keep the initial bundle small.
- * Every finished game is wired here immediately after completion.
- */
+
 
 const Loading = () => (
   <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--de-text-dim)', fontSize: 13 }}>
@@ -32,7 +28,7 @@ const Loading = () => (
 const MadmaxiGame          = dynamicImport(() => import('@/components/games/madmaxi'),                   { ssr: false, loading: Loading });
 const NeonDrift           = dynamicImport(() => import('@/components/games/dream.NeonDrift'),           { ssr: false, loading: Loading });
 const EchoArena           = dynamicImport(() => import('@/components/games/dream.EchoArena'),           { ssr: false, loading: Loading });
-// ── Fusion cartridges — replace 25 source games ─────────────────────────────
+
 const NullCathedral       = dynamicImport(() => import('@/components/games/dream.NullCathedral'),       { ssr: false, loading: Loading });
 const VoidlineGP          = dynamicImport(() => import('@/components/games/dream.VoidlineGP'),          { ssr: false, loading: Loading });
 const SerpentSiege        = dynamicImport(() => import('@/components/games/dream.SerpentSiege'),        { ssr: false, loading: Loading });
@@ -44,7 +40,7 @@ const LexiconSolitaire    = dynamicImport(() => import('@/components/games/dream
 const DefuseRitual        = dynamicImport(() => import('@/components/games/dream.DefuseRitual'),        { ssr: false, loading: Loading });
 
 export interface GameDef extends GameCatalogEntry {
-  /** Render inline inside the hub. Mutually exclusive with `href`. */
+  
   component?: React.ComponentType;
 }
 
@@ -77,8 +73,8 @@ const ENGINE_CAPABILITY_CHIPS = [
   'Powered by DREAMengin',
 ] as const;
 
-// Extracted as a proper component so `useMotionTilt` (a hook) can be called
-// once per card — hooks cannot be called inside a .map() callback.
+
+
 
 interface TiltGameCardProps {
   game: GameDef;
@@ -93,9 +89,9 @@ function TiltGameCard({ game, isSaved, onPlay, hasAvatar, onPlayAsMe }: TiltGame
 
   const cardContent = (
     <>
-      {/* Glare overlay — moves with the cursor */}
+      
       <motion.div style={{ ...glareStyle }} aria-hidden="true" />
-      {/* Cover Art Banner */}
+      
       <div style={{
         borderRadius: '16px 16px 0 0',
         background: `linear-gradient(145deg, rgba(5,10,24,0.96) 0%, ${game.color}33 56%, rgba(15,23,42,0.88) 100%)`,
@@ -239,11 +235,11 @@ export default function GamesHub( ){
   const searchParams = useSearchParams();
   const initializedLaunchRef = useRef(false);
 
-  // GSAP stagger entrance for the game card grid — replays on every filter change
+  
   const gridRef = useRef<HTMLDivElement>(null);
   useGsapEntrance(gridRef, [filter, query], { stagger: 0.035, y: 18, duration: 0.32 });
 
-  // Scroll-reveal for the featured section and category strip
+  
   const featuredRef = useGsapScrollReveal<HTMLDivElement>({ direction: 'up', stagger: 0.07, duration: 0.42 });
   const categoryRef = useGsapScrollReveal<HTMLDivElement>({ direction: 'left', stagger: 0.03, duration: 0.3, threshold: 0.05 });
 
@@ -317,7 +313,7 @@ export default function GamesHub( ){
     }
     setSavedSessions(restoredSessions);
 
-    // Restore last selected game from URL or storage (used for deep-link awareness only)
+    
     const storedSelection = window.localStorage.getItem(GAME_LIBRARY_SELECTION_STORAGE_KEY)
       ?? window.localStorage.getItem('de:games:last-launch')
       ?? GAMES[0]?.id
@@ -328,7 +324,7 @@ export default function GamesHub( ){
     }
   }, [searchParams]);
 
-  // Load avatar from localStorage on mount and re-check on focus
+  
   useEffect(() => {
     const load = () => setAvatarDataUrl(getAvatarDataUrl());
     load();
@@ -551,7 +547,7 @@ export default function GamesHub( ){
         </div>
       </div>
 
-      {/* Category filter pills — GSAP scroll-reveal on first viewport entry */}
+      
       <div ref={categoryRef} style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
         {categories.map((cat) => (
           <button
@@ -571,7 +567,7 @@ export default function GamesHub( ){
         ))}
       </div>
 
-      {/* Game card grid — AnimatePresence for smooth filter transitions + 3-D tilt cards */}
+      
       <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 10 }}>
         <AnimatePresence mode="popLayout">
           {filtered.map((game) => {

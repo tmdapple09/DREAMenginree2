@@ -53,7 +53,7 @@ describe('DualRuntimeBridge – durable delivery', () => {
       const id = bridge.emitDurable('code', 'build-success', { buildId: 'b2' });
       bridge.ack(id);
       const ackedAt = bridge.getDurableQueue().find((e) => e.id === id)?.ackedAt;
-      bridge.ack(id); // second call
+      bridge.ack(id); 
       const ackedAt2 = bridge.getDurableQueue().find((e) => e.id === id)?.ackedAt;
       expect(ackedAt2).toBe(ackedAt);
     });
@@ -67,10 +67,10 @@ describe('DualRuntimeBridge – durable delivery', () => {
     it('re-delivers all pending events to current subscribers', () => {
       const received: string[] = [];
 
-      // Emit durably BEFORE subscriber is registered
+      
       const id = bridge.emitDurable('lab', 'result-ready', { resultId: 'r1' });
 
-      // Subscriber comes online later
+      
       bridge.subscribe('lab', 'result-ready', (p) => {
         received.push((p as { resultId: string }).resultId);
       });
@@ -78,7 +78,7 @@ describe('DualRuntimeBridge – durable delivery', () => {
       bridge.replayPending();
 
       expect(received).toContain('r1');
-      // Should still be pending (replay does not auto-ack)
+      
       const entry = bridge.getDurableQueue().find((e) => e.id === id);
       expect(entry?.status).toBe('pending');
     });
@@ -103,7 +103,7 @@ describe('DualRuntimeBridge – durable delivery', () => {
       bridge.emitDurable('music', 'stem-ready', { stemUrl: 'u' });
       bridge.emitDurable('code', 'build-success', { buildId: 'b3' });
 
-      // Clear the initial-emit records so only replays show
+      
       received.length = 0;
 
       bridge.replayPending('music');
@@ -116,7 +116,7 @@ describe('DualRuntimeBridge – durable delivery', () => {
     it('skips entries whose TTL has expired (marks them as "dropped")', () => {
       vi.useFakeTimers();
       const id = bridge.emitDurable('content', 'preset-applied', { preset: 'p1' }, 1_000);
-      // Advance past TTL
+      
       vi.advanceTimersByTime(2_000);
 
       const received: unknown[] = [];

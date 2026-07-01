@@ -63,7 +63,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
   const mediaUrl = typeof item.url === 'string' ? item.url : undefined;
   const mediaProvider = inferProviderFromUrl(mediaUrl);
 
-  // Fetch initial like status
+  
   useEffect(() => {
     if (isDemo || !userId) return;
 
@@ -144,7 +144,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
   const authorName = item.profiles?.display_name || item.profiles?.handle || 'Anonymous';
   const authorInitial = authorName[0]?.toUpperCase() ?? 'U';
 
-  // Close menu when clicking outside
+  
   useEffect(() => {
     if (!showMenu) return;
     const handler = (e: MouseEvent) => {
@@ -167,7 +167,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
         setCopyDone(true);
         setTimeout(() => setCopyDone(false), 2000);
       }
-    } catch { /* user cancelled */ }
+    } catch {  }
   };
 
   const handleSave = async () => {
@@ -181,7 +181,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
         await fetch(`/api/posts/${item.id}/save`, { method: 'POST' });
       }
     } catch {
-      setIsSaved(wasAlreadySaved); // Roll back
+      setIsSaved(wasAlreadySaved); 
     }
   };
 
@@ -194,7 +194,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reason: 'user_report' }),
       });
-    } catch { /* silent */ }
+    } catch {  }
   };
 
   return (
@@ -205,7 +205,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
           data-source={source}
           style={{ position: 'relative' }}
         >
-          {/* ── Source accent left bar ── */}
+          
           <div style={{
             position: 'absolute',
             left: 0, top: 0, bottom: 0,
@@ -215,9 +215,9 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
           }} />
 
           <div style={{ padding: '14px 16px 14px 20px' }}>
-            {/* ── Author row ── */}
+            
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              {/* Avatar with gradient ring */}
+              
               <span className="avatar-ring" style={{ flexShrink: 0 }}>
                 {item.profiles?.avatar_url ? (
                   <Image
@@ -240,7 +240,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
                 )}
               </span>
 
-              {/* Name + handle + time */}
+              
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
                   {item.profiles && (
@@ -259,7 +259,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
                 </div>
               </div>
 
-              {/* Source badge + more */}
+              
               <div ref={menuRef} style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, position: 'relative' }}>
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: 4,
@@ -288,7 +288,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
                   <MoreHorizontal style={{ width: 14, height: 14 }} />
                 </button>
 
-                {/* Context menu */}
+                
                 {showMenu && (
                   <div
                     style={{
@@ -330,7 +330,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
               </div>
             </div>
 
-            {/* ── Title ── */}
+            
             {displayTitle && (
               <h3 style={{
                 fontSize: 15, fontWeight: 800, color: 'var(--de-heading)',
@@ -341,7 +341,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
               </h3>
             )}
 
-            {/* ── Content ── */}
+            
             {displayContent && (
               <p style={{
                 fontSize: 13, color: 'var(--de-text-dim)',
@@ -355,7 +355,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
               </p>
             )}
 
-            {/* ── Media ── */}
+            
             {(() => {
               const thumbnail =
                 (item.media_json && typeof item.media_json === 'object' && !Array.isArray(item.media_json) &&
@@ -407,7 +407,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
               return null;
             })()}
 
-            {/* ── Actions ── */}
+            
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               paddingTop: 10, borderTop: '1px solid rgba(160,195,240,0.15)',
@@ -460,7 +460,7 @@ export default memo(function FeedCard({ item, userId }: FeedCardProps) {
             </div>
           </div>
 
-          {/* Collapsible comment section */}
+          
           {showComments && (
             <div style={{ borderTop: '1px solid rgba(160,195,240,0.14)', padding: '0 16px 16px 20px' }}>
               <CommentSection postId={item.id} />

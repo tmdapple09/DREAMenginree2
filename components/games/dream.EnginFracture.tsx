@@ -3,16 +3,7 @@
 import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameengin/games/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * ENGIN: FRACTURE — fusion of engin-battle + dreamwars + avatar-maker.
- *
- * Pilot Vesh, defected from the Lattice. Build your engin in a parts-based
- * creator (chassis, weapon arm, leg type) — every choice is real frame data
- * (HP, dmg, speed, special). Fight a 90-second 1v1 duel against the next
- * faction champion. Wins compound into a faction-war meta tracker.
- *
- * Render: 2-D canvas, OS-scaffolding arena, Dreamcast-saturation grid floor.
- */
+
 
 type Phase = 'menu' | 'build' | 'fight' | 'victory' | 'defeat';
 type Faction = 'lattice' | 'choir' | 'kindling';
@@ -76,7 +67,7 @@ export default function EnginFracture( ){
 
   const startFight = useCallback(() => {
     playerRef.current = buildMech(build, 'p');
-    // Enemy chooses a counter-build
+    
     const enemyBuild: Build = {
       chassis: build.chassis === 'wraith' ? 'bastion' : build.chassis === 'bastion' ? 'lance' : 'wraith',
       arm: build.arm === 'beam' ? 'cannon' : 'pulse',
@@ -92,7 +83,7 @@ export default function EnginFracture( ){
   useGameAutoStart(phase === 'menu' ? start : null);
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(scoreRef.current); }, [phase, submit]);
 
-  // Input
+  
   useEffect(() => {
     const down = (e: KeyboardEvent) => { keysRef.current.add(e.key); if (e.key === ' ' || e.key.startsWith('Arrow')) e.preventDefault(); };
     const up = (e: KeyboardEvent) => keysRef.current.delete(e.key);
@@ -100,7 +91,7 @@ export default function EnginFracture( ){
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); };
   }, []);
 
-  // Loop
+  
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
@@ -113,7 +104,7 @@ export default function EnginFracture( ){
         const p = playerRef.current!, e = enemyRef.current!;
         timerRef.current -= dt;
 
-        // Player input
+        
         const k = keysRef.current;
         const c = CHASSIS[p.build.chassis]; const a = ARMS[p.build.arm]; const l = LEGS[p.build.leg];
         const left = k.has('ArrowLeft') || k.has('a') || k.has('A');
@@ -133,7 +124,7 @@ export default function EnginFracture( ){
           p.cooldown = a.cd;
         }
 
-        // Enemy AI — close to optimal range, fire when in range
+        
         const eA = ARMS[e.build.arm]; const eC = CHASSIS[e.build.chassis]; const eL = LEGS[e.build.leg];
         const dx = p.x - e.x;
         const targetDist = eA.range * 0.7;
@@ -151,9 +142,9 @@ export default function EnginFracture( ){
           e.cooldown = eA.cd;
         }
 
-        // Bullets
+        
         for (const b of bulletsRef.current) { b.x += b.vx * dt; b.ttl -= dt; }
-        // Resolve hits
+        
         for (const b of bulletsRef.current) {
           const target = b.from === 'p' ? e : p;
           if (Math.abs(b.x - target.x) < 26 && Math.abs(b.y - (target.y - 32)) < 28) {
@@ -163,7 +154,7 @@ export default function EnginFracture( ){
         }
         bulletsRef.current = bulletsRef.current.filter((b) => b.ttl > 0);
 
-        // End conditions
+        
         if (p.hp <= 0) setPhase('defeat');
         else if (e.hp <= 0) { scoreRef.current += Math.floor(timerRef.current * 5); setPhase('victory'); }
         else if (timerRef.current <= 0) {
@@ -171,18 +162,18 @@ export default function EnginFracture( ){
         }
       }
 
-      // Saturation grid floor
+      
       ctx.fillStyle = '#0a0d1c'; ctx.fillRect(0, 0, W, H);
       const grad = ctx.createLinearGradient(0, GROUND, 0, H);
       grad.addColorStop(0, '#1a1f3a'); grad.addColorStop(1, '#0a0d1c');
       ctx.fillStyle = grad; ctx.fillRect(0, GROUND, W, H - GROUND);
-      // Grid lines
+      
       ctx.strokeStyle = 'rgba(122,130,210,0.35)'; ctx.lineWidth = 1;
       for (let i = 0; i < 12; i++) {
         const y = GROUND + (i * i) * 1.0;
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
       }
-      // Floating menu-bar platforms
+      
       ctx.fillStyle = 'rgba(138,169,255,0.2)';
       ctx.fillRect(120, 220, 120, 8); ctx.fillRect(W - 240, 220, 120, 8); ctx.fillRect(W / 2 - 60, 170, 120, 8);
 
@@ -192,18 +183,18 @@ export default function EnginFracture( ){
           ctx.save();
           ctx.translate(m.x, m.y);
           ctx.scale(m.facing, 1);
-          // legs
+          
           ctx.fillStyle = '#3a3a52'; ctx.fillRect(-12, -16, 24, 16);
-          // chassis
+          
           ctx.fillStyle = c.color; ctx.shadowColor = c.color; ctx.shadowBlur = 10;
           ctx.fillRect(-14, -42, 28, 28);
-          // arm
+          
           ctx.fillStyle = a.color; ctx.fillRect(10, -36, 22, 8);
-          // head visor
+          
           ctx.fillStyle = '#fff'; ctx.shadowBlur = 0;
           ctx.fillRect(-6, -52, 12, 8);
           ctx.restore();
-          // HP bar
+          
           ctx.fillStyle = '#000'; ctx.fillRect(m.x - 28, m.y - 60, 56, 5);
           ctx.fillStyle = m.side === 'p' ? '#7be7ff' : '#ff6a8a';
           ctx.fillRect(m.x - 28, m.y - 60, 56 * (m.hp / m.maxHp), 5);
@@ -215,7 +206,7 @@ export default function EnginFracture( ){
           ctx.fillRect(b.x - 4, b.y - 2, 8, 4);
           ctx.shadowBlur = 0;
         }
-        // HUD
+        
         ctx.fillStyle = '#fff'; ctx.font = 'bold 18px monospace'; ctx.textAlign = 'center';
         ctx.fillText(`${Math.max(0, Math.ceil(timerRef.current))}`, W / 2, 30);
         ctx.font = '11px monospace';

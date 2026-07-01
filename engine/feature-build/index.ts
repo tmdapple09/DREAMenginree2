@@ -1,11 +1,4 @@
-/**
- * lib/feature-build/index.ts
- *
- * Barrel export for the feature-build module.
- *
- * Usage:
- *   import { FEATURE_MANIFESTS, computeBuildCycleState, SICC_DIMENSIONS } from '@/engine/feature-build/index';
- */
+
 
 export { FEATURE_MANIFESTS, getManifest } from './featureManifest';
 export type { DaydreamEnginManifest, FeatureEntry, FeatureStatus } from './featureManifest';

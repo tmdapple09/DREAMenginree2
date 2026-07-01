@@ -14,57 +14,53 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-// app/api/ai/boogieman/child-safety/route.ts
-// TheBoogieMan.Ai — Child Safety Scan Endpoint
-//
-// POST /api/ai/boogieman/child-safety
-//
-// Accepts content (text + optional media hashes) and runs the child safety
-// detector. If a violation is detected:
-//   1. Calls boogieEnforce to produce the enforcement decision (zero-tolerance).
-//   2. Writes to child_safety_incidents via ncmecReporter.
-//   3. Reports to NCMEC CyberTipline.
-//   4. Returns enforcement result to the caller.
-//
-// Access: admin + service-role. End-user surfaces call this internally
-// (posts route, messages route, upload route) — never directly.
-//
-// Rate limit: 120 req/min (automated callers need higher budget).
 
-// ============================================================================
-// REQUEST SCHEMA
-// ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const ChildSafetyScanBodySchema = z.object({
-  /** Text content to scan (post body, DM text, comment, profile bio, etc.) */
+  
   text: z.string().max(10_000).optional(),
-  /** SHA-256 hex hashes of any attached media files */
+  
   mediaHashes: z.array(z.string().regex(/^[0-9a-f]{64}$/i)).max(20).optional(),
-  /**
-   * Base64-encoded image data for LLM classification (Layer 4).
-   * Max 5 MB base64 (~3.75 MB decoded). MIME type defaults to image/jpeg.
-   * Omit for text-only scans.
-   */
+  
   imageBase64: z.string().max(5_100_000).optional(),
-  /** MIME type of the imageBase64 payload (default: image/jpeg) */
+  
   imageMime: z.enum(['image/jpeg', 'image/png', 'image/webp', 'image/gif']).optional(),
-  /** Platform surface where the content was found */
+  
   surface: z.enum(['post', 'message', 'comment', 'profile', 'upload']),
-  /** Opaque content reference (post_id, message_id, etc.) */
+  
   contentRef: z.string().max(128),
-  /** User ID of the account that created the content */
+  
   reportedUserId: z.string().uuid(),
-  /** User ID of the account that triggered the scan (null = automated) */
+  
   reporterUserId: z.string().uuid().optional(),
 });
 
 type ChildSafetyScanBody = z.infer<typeof ChildSafetyScanBodySchema>;
 
-// ============================================================================
-// LOAD KNOWN-BAD HASHES FROM DB
-// Returns a Set of lowercase SHA-256 hashes from child_safety_hash_registry.
-// The Set is returned empty (not null) on error — scan proceeds without hash matching.
-// ============================================================================
+
+
+
+
+
 
 async function loadKnownBadHashes(supabase: Awaited<ReturnType<typeof createServerClient>>): Promise<Set<string>> {
   try {
@@ -81,9 +77,9 @@ async function loadKnownBadHashes(supabase: Awaited<ReturnType<typeof createServ
   }
 }
 
-// ============================================================================
-// POST — scan handler
-// ============================================================================
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -109,7 +105,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in.');
   }
 
-  // Access control: admin or owner only
+  
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
     .select('role')
@@ -123,7 +119,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(403, 'FORBIDDEN', 'Admin access required.');
   }
 
-  // Rate limit: 120/min for automated scanning callers
+  
   const rateOk = await checkRateLimit(user.id, '/api/ai/boogieman/child-safety', 120, 60);
   if (!rateOk.allowed) {
     return jsonApiError(429, 'RATE_LIMIT', 'Too many requests.', {
@@ -133,7 +129,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const knownBadHashes = await loadKnownBadHashes(supabase);
 
-  // classifyImage is async so we run it here and pass the result into scanContent.
+  
   let imageClassification: import('@/engine/safety/child-safety/imageClassifier').ImageClassificationResult | undefined;
   if (request.imageBase64) {
     imageClassification = await classifyImage(
@@ -168,7 +164,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ruleCode: detection.rule_code!,
     severity: detection.severity,
     confidence: detection.confidence,
-    strikeCount: 0, // zero-tolerance: strike count doesn't soften CSAM/grooming
+    strikeCount: 0, 
     blastRadius: 1,
   });
 
@@ -182,7 +178,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let incidentResult: { incidentId: string; ncmecSubmitted: boolean; ncmecReportId?: string; ncmecError?: string } | null = null;
 
-  // Report for CSAM or zero-tolerance grooming
+  
   if (isZeroTolerance(detection)) {
     incidentResult = await reportChildSafetyIncident({
       reportedUserId: request.reportedUserId,
@@ -195,7 +191,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       clientIp,
     });
   } else {
-    // Lower-confidence grooming: write to DB for review but don't auto-submit to NCMEC
+    
     incidentResult = await reportChildSafetyIncident({
       reportedUserId: request.reportedUserId,
       reporterUserId: request.reporterUserId ?? null,

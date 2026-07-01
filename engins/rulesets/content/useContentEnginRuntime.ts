@@ -7,30 +7,21 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ContentEnginAction, ContentEnginDerivedState } from './contentEnginRuleSet';
 import { CONTENT_ENGIN_RULE_SET } from './contentEnginRuleSet';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engins/content/useContentEnginRuntime.ts.
 
-/**
- * lib/engins/content/useContentEnginRuntime.ts
- *
- * React hook — wires the universal EnginRuntime + ContentEngin rule-set into
- * React's lifecycle so the component can dispatch actions and read derived state.
- *
- * Usage:
- *   const { state, dispatch } = useContentEnginRuntime();
- *   dispatch({ type: 'content:creativity-set', payload: { level: 75 } });
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface UseContentEnginRuntimeOptions
   extends Omit<EnginRuntimeOptions, 'ioAdapter'> {
@@ -44,7 +35,7 @@ export interface UseContentEnginRuntimeResult {
   hardwareAcceleration: EnginHardwareAccelerationState | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export function useContentEnginRuntime(
   options: UseContentEnginRuntimeOptions = {},
@@ -101,8 +92,8 @@ export function useContentEnginRuntime(
   return { state: derivedState, dispatch, ready, hardwareAcceleration };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

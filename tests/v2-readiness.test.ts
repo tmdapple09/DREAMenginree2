@@ -1,10 +1,10 @@
-// tests/v2-readiness.test.ts
-// v2.0.0 Readiness validation tests
-//
-// Validates that all v2.0.0 structural requirements are met:
-// - Version constants are declared and correct
-// - v1-ui CSS classes are no longer used by active surfaces (canonical classes used instead)
-// - Canonical naming authority is in place
+
+
+
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -16,9 +16,9 @@ import {
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-// ---------------------------------------------------------------------------
-// Version
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — version declaration', () => {
   it('canonical-names exports PRODUCT_VERSION as 2.0.0', () => {
@@ -35,9 +35,9 @@ describe('DREAMengin v2.0.0 — version declaration', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// v1-ui subordination
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — v1-ui layer subordinated', () => {
   it('global layout.tsx does not import v1-ui CSS', () => {
@@ -53,9 +53,9 @@ describe('DREAMengin v2.0.0 — v1-ui layer subordinated', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Canonical routing
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — canonical routes', () => {
   const nextConfig = readFileSync(resolve(__dirname, '../next.config.mjs'), 'utf8');
@@ -89,9 +89,9 @@ describe('DREAMengin v2.0.0 — canonical routes', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// CHANGELOG presence
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — release documentation', () => {
   it('CHANGELOG.md exists and documents 2.0.0', () => {
@@ -101,9 +101,9 @@ describe('DREAMengin v2.0.0 — release documentation', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Legacy route subordination — competing shells removed
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — legacy route subordination', () => {
   const nextConfig = readFileSync(resolve(__dirname, '../next.config.mjs'), 'utf8');
@@ -127,9 +127,9 @@ describe('DREAMengin v2.0.0 — legacy route subordination', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// DreamDMBar — canonical routing (no legacy shell refs)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — DreamDMBar routing clean', () => {
   const bar = readFileSync(
@@ -152,15 +152,15 @@ describe('DREAMengin v2.0.0 — DreamDMBar routing clean', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Onboarding flow — new users see onboarding
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — onboarding flow', () => {
   it('/join redirects new email signups to /onboarding (not /homedream)', () => {
     const join = readFileSync(resolve(__dirname, '../app/join/page.tsx'), 'utf8');
     expect(join).toContain('/onboarding');
-    // The router.replace after signup must go to onboarding
+    
     expect(join).toContain('router.replace("/onboarding")');
   });
 
@@ -180,9 +180,9 @@ describe('DREAMengin v2.0.0 — onboarding flow', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Build enforcement — adari.ts canonical REQUIRED_PATHS
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — build enforcement updated', () => {
   it('lib/adari.ts does not require legacy WheelLayout', () => {
@@ -217,9 +217,9 @@ describe('DREAMengin v2.0.0 — build enforcement updated', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// HomeDreamSurface — canonical surface names in UI
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('DREAMengin v2.0.0 — HomeDreamSurface surface labels', () => {
   const dashboard = readFileSync(
@@ -228,7 +228,7 @@ describe('DREAMengin v2.0.0 — HomeDreamSurface surface labels', () => {
   );
 
   it('HomeDreamSurface does not use confusing "Your Dreams" label for view-profile', () => {
-    // "Your Dreams" was misleading — should be "View Profile" per LAW.md
+    
     expect(dashboard).not.toContain("label: 'Your Dreams'");
     expect(dashboard).not.toContain('label: "Your Dreams"');
   });

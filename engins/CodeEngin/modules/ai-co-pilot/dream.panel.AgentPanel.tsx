@@ -3,13 +3,7 @@
 import { useState } from 'react';
 import { useAgentSession } from './useAgentSession';
 
-/**
- * AgentPanel – AI Co‑pilot panel for CodeEngin.
- *
- * Renders a "Start AI Co‑pilot" button when no session is active, and a
- * full chat interface once a session is running.  All communication happens
- * via /api/agent/session so no agent-os imports are needed on the client.
- */
+
 export function AgentPanel( ){
   const {
     messages,

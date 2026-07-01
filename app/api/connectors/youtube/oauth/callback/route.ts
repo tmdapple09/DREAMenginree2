@@ -4,26 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/connectors/youtube/oauth/callback/route.ts
- *
- * GET /api/connectors/youtube/oauth/callback
- *
- * Google OAuth 2.0 callback for the YouTube connector.
- *
- * 1. Validates the `state` parameter against the CSRF cookie set by /start.
- * 2. Exchanges the authorization `code` for access_token + refresh_token.
- * 3. Upserts the token pair into `connector_accounts` (token_blob — server only).
- * 4. Redirects back to the connectors page with a success or error indicator.
- *
- * Required env vars:
- *   GOOGLE_CLIENT_ID      — OAuth 2.0 client ID
- *   GOOGLE_CLIENT_SECRET  — OAuth 2.0 client secret (server-only, never sent to browser)
- *   NEXT_PUBLIC_SITE_URL  — Canonical app URL (must match registered redirect_uri)
- *
- * AXIOM 4 — Security by Default: token_blob never returned to the browser.
- * ARCHITECTURE.md §3 — All OAuth token exchange happens server-side.
- */
+
 
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
@@ -112,7 +93,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const tokenBlob: Record<string, string> = {
     access_token: tokenData.access_token,
   };
-  // Persist refresh_token when provided (offline access)
+  
   if (tokenData.refresh_token) {
     tokenBlob.refresh_token = tokenData.refresh_token;
   }

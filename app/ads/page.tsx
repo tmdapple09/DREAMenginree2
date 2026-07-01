@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Ads  (framework-mandated basename: page.tsx)
+
 
 export default async function AdsPage( ){
   await connection();
@@ -20,15 +20,15 @@ export default async function AdsPage( ){
     redirect('/login');
   }
 
-  // Fetch user's ad slots
+  
   const { data: mySlotsData } = await db
     .from('ad_slots')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  // Fetch available listings — split into user DreamAds vs platform promotions.
-  // Per Phase 6 item 11 / ARCHITECTURE.md §7: these must remain separate.
+  
+  
   const { data: marketplaceData } = await db
     .from('ad_listings')
     .select(`
@@ -36,7 +36,7 @@ export default async function AdsPage( ){
       ad_slots!inner(*)
     `);
 
-  // Fetch user's orders
+  
   const { data: myOrdersData } = await db
     .from('ad_orders')
     .select(`
@@ -45,7 +45,7 @@ export default async function AdsPage( ){
     `)
     .eq('buyer_id', user.id);
 
-  // Final product: no demo data. Empty arrays render explicit empty states.
+  
   const mySlots: AdSlot[] = (mySlotsData as unknown as AdSlot[] | null) ?? [];
   const allListings: AdListing[] = (marketplaceData as unknown as AdListing[] | null) ?? [];
   const myOrders: AdOrder[] = (myOrdersData as unknown as AdOrder[] | null) ?? [];
@@ -64,7 +64,7 @@ export default async function AdsPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(245,243,238,0.92)', borderBottom: '1px solid rgba(200,165,80,0.18)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/homedream" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(200,152,26,0.10)' }}>
@@ -81,7 +81,7 @@ export default async function AdsPage( ){
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Revenue Summary */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <BarChart3 className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
@@ -103,7 +103,7 @@ export default async function AdsPage( ){
           </div>
         </div>
 
-        {/* My Slots */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">My Ad Slots</span>
@@ -150,7 +150,7 @@ export default async function AdsPage( ){
           )}
         </div>
 
-        {/* My DreamAds (user-owned slots available in marketplace) */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <ShoppingCart className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -196,7 +196,7 @@ export default async function AdsPage( ){
           </div>
         </div>
 
-        {/* Platform Promotions (separate from user DreamAds — ARCHITECTURE.md §7) */}
+        
         {platformPromotions.length > 0 && (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -234,7 +234,7 @@ export default async function AdsPage( ){
           </div>
         )}
 
-        {/* My Orders */}
+        
         {myOrders.length > 0 && (
           <div className="de-widget">
             <div className="de-widget-header">

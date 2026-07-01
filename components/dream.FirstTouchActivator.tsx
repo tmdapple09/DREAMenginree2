@@ -128,17 +128,7 @@ function movedTooFar(start: PendingTouch, event: PointerEvent): boolean {
   return Math.hypot(event.clientX - start.x, event.clientY - start.y) > TAP_SLOP_PX;
 }
 
-/**
- * Root-level mobile first-touch rescue.
- *
- * DREAMengin has several nested runtime/scroll/overlay surfaces. On mobile,
- * those layers can consume the first tap before React's delegated `onClick`
- * sees it, which makes ordinary controls miss the first activation.
- *
- * This component only runs for coarse pointers and only for native interactive
- * controls. It dispatches the intended click on the first completed tap, then
- * suppresses the browser's follow-up native click so handlers do not double-run.
- */
+
 export default function FirstTouchActivator() {
   useEffect(() => {
     let pending: PendingTouch | null = null;

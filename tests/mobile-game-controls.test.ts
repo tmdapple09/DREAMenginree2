@@ -58,11 +58,11 @@ describe('shared mobile game controls', () => {
     expect(hudSrc).toContain('rightCapRef.current');
     expect(hudSrc).toContain('function getStickTransform(vector: MobileControlVector)');
     expect(hudSrc).toContain("loadPersisted('de:hud:offsetY', DEFAULT_REMOTE_OFFSET_Y");
-    // Left dock is smaller; right dock is larger to fit button ring + joystick
+    
     expect(hudCss).toContain('--dock-size: clamp(102px, 27vw, 136px);');
     expect(hudCss).toContain('--dock-size: clamp(180px, 46vw, 252px);');
     expect(hudCss).toContain("bottom: calc(env(safe-area-inset-bottom, 0px) + 26px);");
-    // Right dock has both button ring slots and embedded joystick cap
+    
     expect(hudCss).toContain('buttonCluster');
     expect(hudCss).toContain('rightJoyCap');
     expect(hudCss).toContain('will-change: transform;');

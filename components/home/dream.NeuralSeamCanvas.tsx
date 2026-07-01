@@ -11,47 +11,21 @@ import {
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useCallback, useEffect, useRef } from 'react';
 
-/**
- * components/home/dream.NeuralSeamCanvas.tsx
- *
- * NEURAL SEAM CANVAS — Living Runtime Bridge Visualization
- *
- * This component renders a full-width Canvas overlay positioned at the
- * DreamDMBar seam (the split-screen divider between Surface Space and
- * DreamSpace). It subscribes to the live dualRuntimeBridge emission stream
- * and renders each cross-Engin event as a glowing particle flowing across the
- * spatial boundary between the two runtimes.
- *
- * The result: the invisible OS data bus becomes physically visible matter.
- * Users can watch code emissions, music events, and game state transitions
- * streak across the seam in their canonical colors.
- *
- * Architecture:
- *   - `position: fixed`, `pointer-events: none`, `z-index: 99`
- *     (sits just BELOW the DreamDMBar pill at z-index 100)
- *   - Canvas spans 100vw × (DIVIDER_H + BLEED_PX * 2) with vertical bleed
- *     so glow effects bloom naturally above and below the seam
- *   - Pure Canvas 2D API — no Three.js / Babylon dependency
- *   - requestAnimationFrame loop: ~60fps, pauses when tab hidden
- *   - Bridge subscription: each emission spawns one SeamParticle
- *   - Idle particles: 3 slow ambient drifters keep the seam alive at rest
- *
- * Only active when `active` prop is true (i.e. HomeSystem divider mode).
- */
 
-// Extra canvas height above/below the seam line for glow bleed.
+
+
 const BLEED_PX = 28;
 
-// How many idle ambient particles to maintain when nothing is firing.
+
 const IDLE_PARTICLE_TARGET = 3;
 
-// Minimum ms between idle particle spawns.
+
 const IDLE_SPAWN_INTERVAL_MS = 2200;
 
 interface NeuralSeamCanvasProps {
-  /** Whether the canvas should render (true when divider mode is active). */
+  
   active: boolean;
-  /** Current split ratio from DreamSystemContext (0..1). */
+  
   splitRatio: number;
 }
 
@@ -90,14 +64,14 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const dt = Math.min(now - (lastFrameAt.current || now), 64); // cap at 64ms
+    const dt = Math.min(now - (lastFrameAt.current || now), 64); 
     lastFrameAt.current = now;
 
     const W = canvas.width / (window.devicePixelRatio || 1);
     const H = DIVIDER_H + BLEED_PX * 2;
     const centerY = H / 2;
 
-    // Clear
+    
     ctx.clearRect(0, 0, W, H);
 
     const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
@@ -115,7 +89,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
     const gridLines = [0.2, 0.35, 0.5, 0.65, 0.8];
     for (const frac of gridLines) {
       const y = frac * H;
-      const dist = Math.abs(frac - 0.5); // 0 at center, 0.5 at edges
+      const dist = Math.abs(frac - 0.5); 
       const opacity = 0.06 - dist * 0.08;
       if (opacity <= 0) continue;
       ctx.strokeStyle = `rgba(125,211,252,${opacity.toFixed(3)})`;
@@ -146,7 +120,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
     const now2 = now;
     const hasEnoughIdle = particlesRef.current.filter((p) => p.isIdle).length >= IDLE_PARTICLE_TARGET;
     if (!hasEnoughIdle && now2 - lastIdleSpawnAt.current > IDLE_SPAWN_INTERVAL_MS) {
-      const startX = Math.random() * 0.3; // always start near left edge
+      const startX = Math.random() * 0.3; 
       particlesRef.current.push(createIdleParticle(startX));
       lastIdleSpawnAt.current = now2;
     }
@@ -162,7 +136,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
       ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha));
 
       if (!p.isIdle && p.glow > 0.8) {
-        // Glow halo for emission particles
+        
         const glowRadius = p.size * p.glow * 5;
         const glowGrad = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
         glowGrad.addColorStop(0, p.color + 'cc');
@@ -174,7 +148,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
         ctx.fill();
       }
 
-      // Core particle
+      
       ctx.shadowBlur = p.isIdle ? 4 : p.size * p.glow * 3;
       ctx.shadowColor = p.color;
       ctx.fillStyle = p.color;
@@ -213,7 +187,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
     window.addEventListener('resize', onResize);
     window.addEventListener('orientationchange', onResize);
 
-    // Pause when tab is hidden (battery-safe).
+    
     const onVisibility = () => {
       if (document.hidden) {
         stopLoop();
@@ -236,9 +210,9 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
 
     const unsub = bridge.subscribeEventActivity((emission) => {
       particlesRef.current.push(createSeamParticle(emission.channel));
-      // Cap total live particles to prevent runaway allocations.
+      
       if (particlesRef.current.length > 80) {
-        // Remove oldest non-idle particles first.
+        
         const oldest = particlesRef.current.find((p) => !p.isIdle);
         if (oldest) {
           particlesRef.current = particlesRef.current.filter((p) => p.id !== oldest.id);
@@ -266,7 +240,7 @@ export default function NeuralSeamCanvas({ active, splitRatio }: NeuralSeamCanva
         height: DIVIDER_H + BLEED_PX * 2,
         zIndex: 99,
         pointerEvents: 'none',
-        // Soft fade at top/bottom edges so it doesn't hard-clip the glow.
+        
         maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
       }}

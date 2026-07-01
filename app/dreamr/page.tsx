@@ -7,7 +7,7 @@ import { Radio } from "lucide-react";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
-// SURFACE: dreamsurface.DreamR  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: "DreamR – DREAMengin",

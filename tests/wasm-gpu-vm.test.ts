@@ -1,12 +1,8 @@
-/**
- * tests/wasm-gpu-vm.test.ts — WASM+GPU VM Integration Tests
- *
- * Comprehensive test suite for the dual WASM+GPU virtual machine.
- */
+
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-// Mock WebGPU API for testing
+
 const mockDevice = {
   createBuffer: vi.fn(() => ({
     destroy: vi.fn(),
@@ -48,7 +44,7 @@ const mockGPU = {
   requestAdapter: vi.fn(() => Promise.resolve(mockAdapter)),
 };
 
-// Mock global navigator.gpu
+
 vi.stubGlobal('navigator', { gpu: mockGPU });
 
 describe('WASM+GPU VM Core', () => {
@@ -104,14 +100,14 @@ describe('WASM+GPU VM Core', () => {
 
       const manager = new BufferManager(mockDevice as never, quotas, counters);
 
-      const handle1 = manager.create(1, 1024n); // STORAGE
+      const handle1 = manager.create(1, 1024n); 
       expect(handle1).toBeGreaterThanOrEqual(1);
 
       const handle2 = manager.create(1, 1024n);
       expect(handle2).toBeGreaterThanOrEqual(1);
 
       const handle3 = manager.create(1, 1024n);
-      expect(handle3).toBe(5); // RESOURCE_LIMIT_EXCEEDED
+      expect(handle3).toBe(5); 
     });
 
     it('should track total GPU memory usage', async () => {
@@ -150,7 +146,7 @@ describe('WASM+GPU VM Core', () => {
       expect(manager.getTotalMemoryUsed()).toBe(1536n);
 
       const handle3 = manager.create(1, 1024n);
-      expect(handle3).toBe(1); // OUT_OF_MEMORY
+      expect(handle3).toBe(1); 
     });
   });
 
@@ -217,17 +213,17 @@ describe('Dual VM Coordinator', () => {
     const { initializeDualVMCoordinator, getDualVMCoordinator, destroyDualVMCoordinator } =
       await import('@/engine/vm/dualVMCoordinator');
 
-    // Initially no coordinator
+    
     expect(getDualVMCoordinator()).toBeNull();
 
-    // Initialize creates coordinator
+    
     const coordinator = await initializeDualVMCoordinator({
-      enableInterVMCommunication: false, // Disable for testing
+      enableInterVMCommunication: false, 
     });
     expect(coordinator).toBeDefined();
     expect(getDualVMCoordinator()).toBe(coordinator);
 
-    // Destroy clears coordinator
+    
     destroyDualVMCoordinator();
     expect(getDualVMCoordinator()).toBeNull();
   });
@@ -258,7 +254,7 @@ describe('Integration: VM Specification Compliance', () => {
 
     const syscalls = vm.getSyscalls();
 
-    // Check all syscalls exist
+    
     expect(syscalls.vm_buffer_create).toBeInstanceOf(Function);
     expect(syscalls.vm_buffer_destroy).toBeInstanceOf(Function);
     expect(syscalls.vm_buffer_write).toBeInstanceOf(Function);

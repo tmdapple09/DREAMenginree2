@@ -3,14 +3,7 @@
 import { applyVoidTheme, isVoidThemeActive } from '@/components/dream.ThemeApplicator';
 import { useEffect, useState } from 'react';
 
-/**
- * VoidThemeToggle — floating pill to switch between the default Sky & Gold
- * light theme and the VOID / OLED dark theme (README §28: Gold=action,
- * Sky-blue=connected, White=clarity).
- *
- * Respects the de-theme-mode localStorage key persisted by ThemeApplicator.
- * Dispatches de-theme-mode-changed so other components can sync.
- */
+
 
 export default function VoidThemeToggle( ){
   const [isVoid, setIsVoid] = useState(false);

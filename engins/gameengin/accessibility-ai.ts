@@ -1,32 +1,20 @@
-/**
- * lib/gameengin/accessibility-ai.ts
- *
- * NEXT-GEN — Real-time accessibility AI.
- *
- *  - RealtimeCaptioner    — On-device speech-to-caption with hard latency budget
- *  - MotionReductionAI    — Adaptive vestibular-safety motion governor
- *  - ColorVisionAdapter   — Per-user color-vision adapter (protan/deutan/tritan)
- */
+
 
 export interface CaptionLine {
   speaker?: string;
   text: string;
-  /** Wall-clock ms when produced. */
+  
   t: number;
 }
 
 export interface CaptionerConfig {
-  /** Hard latency budget per chunk in ms. */
+  
   latencyBudgetMs?: number;
-  /** Maximum captions retained for replay. */
+  
   historySize?: number;
 }
 
-/**
- * Real-time captioner. Wraps an injected speech-to-text engine; falls back to
- * a simple energy-based "speech detected" placeholder so the UI still shows
- * activity when no model is wired.
- */
+
 export class RealtimeCaptioner {
   private readonly latencyBudgetMs: number;
   private readonly historySize: number;
@@ -76,7 +64,7 @@ export class RealtimeCaptioner {
         return null;
       }
     }
-    // Fallback: emit "[speech]" when energy is above noise floor.
+    
     let energy = 0;
     for (let i = 0; i < pcm.length; i++) energy += pcm[i] * pcm[i];
     const rms = Math.sqrt(energy / Math.max(1, pcm.length));
@@ -95,13 +83,13 @@ export class RealtimeCaptioner {
 }
 
 export interface MotionMetrics {
-  /** Average angular velocity (rad/s) over the recent window. */
+  
   angularVelocity: number;
-  /** Camera shake intensity 0..1. */
+  
   shake: number;
-  /** Field-of-view degrees. */
+  
   fovDeg: number;
-  /** Heuristic motion-sickness reports per minute. */
+  
   reportsPerMinute: number;
 }
 
@@ -109,20 +97,16 @@ export interface MotionPolicy {
   maxAngularVelocity: number;
   maxShake: number;
   maxFovDeg: number;
-  /** Suggested vignette opacity in 0..1. */
+  
   vignette: number;
 }
 
 export interface MotionReductionConfig {
-  /** User opt-in level: off / mild / strict. */
+  
   level?: 'off' | 'mild' | 'strict';
 }
 
-/**
- * Adaptive motion-reduction governor. Given runtime metrics and user prefs,
- * proposes per-frame caps the renderer must respect. Inspired by W3C
- * `prefers-reduced-motion` and vestibular-safety guidance.
- */
+
 export class MotionReductionAI {
   private level: 'off' | 'mild' | 'strict';
   private appliedReductions = 0;
@@ -157,11 +141,7 @@ export class MotionReductionAI {
 
 export type ColorVisionType = 'normal' | 'protan' | 'deutan' | 'tritan';
 
-/**
- * Per-user color-vision adapter. Provides a 3x3 RGB transform matrix that
- * post-processing can sample to remap colours for the user's vision profile.
- * Matrices follow Brettel/Vienot/Mollon daltonization references.
- */
+
 export class ColorVisionAdapter {
   private profile: ColorVisionType = 'normal';
   private severity = 1;
@@ -191,7 +171,7 @@ export class ColorVisionAdapter {
   get currentProfile(): ColorVisionType { return this.profile; }
   get currentSeverity(): number { return this.severity; }
 
-  // Brettel-style daltonization simulation matrices (sRGB linear).
+  
   private static readonly MATRICES: Record<Exclude<ColorVisionType, 'normal'>, number[]> = {
     protan: [0.567, 0.433, 0.000,  0.558, 0.442, 0.000,  0.000, 0.242, 0.758],
     deutan: [0.625, 0.375, 0.000,  0.700, 0.300, 0.000,  0.000, 0.300, 0.700],

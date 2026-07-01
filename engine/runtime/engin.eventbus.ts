@@ -1,5 +1,5 @@
-// engin.eventbus — event-bus synchronization
-// Typed pub/sub. No dream.* imports.
+
+
 
 export type EnginEvent = {
   type: string;

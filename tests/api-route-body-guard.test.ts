@@ -1,18 +1,4 @@
-/**
- * api-route-body-guard.test.ts
- *
- * Ensures that all user-facing API routes guard `req.json()` with a `.catch()`
- * so a missing or malformed request body returns a 400 instead of crashing
- * with a 500 (SyntaxError: Unexpected end of JSON input).
- *
- * Pattern: `await req.json().catch(() => ({}))`  ← safe
- * Anti-pattern: `await req.json()` outside any try/catch  ← crashes on empty body
- *
- * Regression test for the runtime error fix in:
- *   app/api/{likes,follow,profile,music,notifications,messages,posts,projects,
- *           shop,favorites,scheduled-posts,close-friends}/route.ts
- *   components/panels/dream.panel.ProfilePanel.tsx
- */
+
 
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'fs';
@@ -24,11 +10,7 @@ function readRoute(rel: string) {
   return readFileSync(join(root, rel), 'utf-8');
 }
 
-/**
- * Returns true when every occurrence of `req.json()` in the source is either:
- * a) immediately followed by `.catch` on the same line, OR
- * b) preceded by `try {` within the previous 8 lines (let body; try { body = … })
- */
+
 function allJsonCallsAreGuarded(source: string): { ok: boolean; unguarded: string[] } {
   const lines = source.split('\n');
   const unguarded: string[] = [];
@@ -36,9 +18,9 @@ function allJsonCallsAreGuarded(source: string): { ok: boolean; unguarded: strin
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (!line.includes('req.json()')) continue;
-    // Safe: .catch() is on the same line
+    
     if (line.includes('.catch(')) continue;
-    // Safe: inside a try block opened within the previous 8 lines
+    
     const window = lines.slice(Math.max(0, i - 8), i + 1);
     const inTry = window.some((l) => /try\s*\{/.test(l));
     if (!inTry) {
@@ -75,7 +57,7 @@ describe('API route req.json() body guard', () => {
 
   it('ProfilePanel useEffect has try/catch so loading spinner always resolves', () => {
     const source = readRoute('components/panels/dream.panel.ProfilePanel.tsx');
-    // The useEffect must have a try block and a finally (may be on its own line)
+    
     expect(source).toContain('try {');
     expect(source).toMatch(/finally\s*\{/);
     expect(source).toContain('setIsLoading(false)');
@@ -83,7 +65,7 @@ describe('API route req.json() body guard', () => {
 
   it('scheduled-posts POST guards body parse with .catch', () => {
     const source = readRoute('app/api/scheduled-posts/route.ts');
-    // Both POST (create) and PUT (update) should use .catch on req.json()
+    
     const matches = [...source.matchAll(/req\.json\(\)/g)];
     for (const match of matches) {
       const pos = match.index ?? 0;

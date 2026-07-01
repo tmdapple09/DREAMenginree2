@@ -4,29 +4,16 @@ import { PROFILE_SHARE_PLATFORMS, type SocialPlatform } from '@/engine/social/pl
 import { Check, Copy, ExternalLink, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * SocialShareSheet
- *
- * A bottom-sheet that lets users share a URL + optional text to social
- * platforms or copy the link to clipboard.
- *
- * Usage:
- *   <SocialShareSheet
- *     open={open}
- *     onClose={() => setOpen(false)}
- *     url="https://dreamengin.app/u/somehandle"
- *     text="Check out this profile on DREAMengin"
- *   />
- */
+
 
 interface SocialShareSheetProps {
   open: boolean;
   onClose: () => void;
-  /** The URL to share */
+  
   url: string;
-  /** Optional text / caption to accompany the share */
+  
   text?: string;
-  /** Override the list of platforms shown (defaults to PROFILE_SHARE_PLATFORMS) */
+  
   platforms?: SocialPlatform[];
 }
 
@@ -40,7 +27,7 @@ export default function SocialShareSheet({
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
 
-  // Close on Escape key
+  
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -67,7 +54,7 @@ export default function SocialShareSheet({
   if (!open) return null;
 
   return (
-    /* Backdrop */
+    
     <div
       role="dialog"
       aria-modal="true"
@@ -85,7 +72,7 @@ export default function SocialShareSheet({
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      {/* Sheet */}
+      
       <div
         style={{
           width: '100%',
@@ -99,12 +86,12 @@ export default function SocialShareSheet({
           animation: 'de-slide-up 0.28s cubic-bezier(0,0.55,0.45,1)',
         }}
       >
-        {/* Handle bar */}
+        
         <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 0' }}>
           <div style={{ width: 40, height: 4, borderRadius: 2, background: 'rgba(160,195,240,0.5)' }} />
         </div>
 
-        {/* Header */}
+        
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -133,7 +120,7 @@ export default function SocialShareSheet({
           </button>
         </div>
 
-        {/* URL preview */}
+        
         <div style={{ padding: '4px 20px 14px' }}>
           <div style={{
             display: 'flex',
@@ -190,7 +177,7 @@ export default function SocialShareSheet({
           </div>
         </div>
 
-        {/* Platform grid */}
+        
         <div style={{ padding: '0 20px 8px' }}>
           <p style={{ fontSize: 11, color: 'var(--de-muted, #888)', marginBottom: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Share to
@@ -227,7 +214,7 @@ export default function SocialShareSheet({
                   (e.currentTarget as HTMLButtonElement).style.boxShadow = '';
                 }}
               >
-                {/* Coloured circle with emoji */}
+                
                 <span style={{
                   width: 42,
                   height: 42,

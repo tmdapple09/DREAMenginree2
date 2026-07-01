@@ -3,23 +3,7 @@ import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/youtube/discovery/route.ts
- *
- * GET /api/youtube/discovery
- *
- * Returns a randomly shuffled mix of globally trending YouTube videos and
- * world news videos, powered by the server-side YOUTUBEAPI env var.
- *
- * No user authentication required — entirely public data.
- *
- * Query params:
- *   max    — number of items to return (default 30, max 50)
- *
- * Response: { ok: true, items: UnifiedFeedItem[], fetched: number }
- *
- * AXIOM 4 — Security by Default: API key stays server-side; never returned.
- */
+
 
 export interface YouTubeDiscoveryResponse {
   ok: boolean;
@@ -31,8 +15,8 @@ export interface YouTubeDiscoveryResponse {
 export async function GET(req: NextRequest): Promise<NextResponse<YouTubeDiscoveryResponse>> {
   const apiKey = getYouTubeApiKey();
   if (!apiKey) {
-    // Optional integration not configured — graceful degradation, not an outage.
-    // Consumers branch on `ok`; emitting 5xx here would create false monitoring alarms.
+    
+    
     return NextResponse.json(
       { ok: false, items: [], fetched: 0, error: 'YOUTUBEAPI is not configured.' },
       { status: 200 },

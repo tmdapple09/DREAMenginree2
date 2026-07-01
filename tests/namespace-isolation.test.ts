@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
-// Walk all .ts/.tsx files under a directory
+
 function walkFiles(dir: string, ext = ['.ts', '.tsx']): string[] {
   const results: string[] = [];
   let dirEntries: ReturnType<typeof readdirSync>;
@@ -32,7 +32,7 @@ describe('Namespace Isolation Gate (Rule 5)', () => {
     const violations: string[] = [];
     for (const file of dreamFiles) {
       const content = readFileSync(file, 'utf-8');
-      // Match any import that resolves to engine/runtime (relative or alias)
+      
       if (
         /from\s+['"][^'"]*engin[\\/]core[^'"]*['"]/.test(content) ||
         /from\s+['"]@\/engin\/core[^'"]*['"]/.test(content)

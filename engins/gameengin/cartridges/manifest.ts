@@ -1,15 +1,6 @@
 import type { CartridgeInputProfile, CartridgeOrientationPreference, CartridgeQualityDefaults, CartridgeRendererFamily, CartridgeWarmupPlan, CartridgeWorkerEntry, RendererBackendId } from '../cartridge';
 
-/**
- * lib/gameengin/cartridges/manifest.ts
- *
- * Server-safe catalog of every game in the repository, packaged as a
- * GameEngin cartridge entry. Pure data — no React, no client-only imports.
- *
- * This manifest is the source for the shared game catalog, cartridge browser,
- * loader registry, and GameEngin runtime shelf. The synchronisation is enforced
- * by `tests/gameengin-cartridges.test.ts`.
- */
+
 
 export type CartridgeRenderMode = 'canvas' | 'webgpu' | 'babylon' | 'dom';
 
@@ -108,12 +99,9 @@ function cartridge(entry: Omit<CartridgeManifestEntry, 'launch'>): CartridgeMani
   return { ...entry, launch: launchFor(entry.id, entry.renderMode, entry.tier) };
 }
 
-/**
- * Cartridge bay — three flagship browser titles plus the nine fusion
- * cartridges that replaced 25 source games.
- */
+
 export const CARTRIDGE_MANIFEST: readonly CartridgeManifestEntry[] = [
-  // ── Flagship — Babylon.js / WebGPU / deep-systems ────────────────────────
+  
   cartridge({ id: 'platformer', label: 'MADMAXI', emoji: '🏎', category: 'Platformer', color: '#c8981a', renderMode: 'babylon', tier: 'flagship',
     subtitle: 'MADMAXI · Landing-grade robot hero',
     description: '150 levels · 15 zones · boss every 10 levels · unique each run — Babylon.js side-scroller rebuilt around the DREAMengin landing robot' }),
@@ -155,12 +143,12 @@ export const CARTRIDGE_MANIFEST: readonly CartridgeManifestEntry[] = [
     description: 'Nine seconds. A minesweeper grid overlays a candle-lit temple floor. Tap only the safe tiles in the glyph-order shown on the wall — mistakes shorten the timer and brand your hand' }),
 ];
 
-/** Quick lookup by id. Returns undefined if no cartridge with that id exists. */
+
 export function getCartridgeManifest(id: string): CartridgeManifestEntry | undefined {
   return CARTRIDGE_MANIFEST.find((c) => c.id === id);
 }
 
-/** Distinct categories preserved in manifest order. */
+
 export function getCartridgeCategories(): string[] {
   const seen = new Set<string>();
   const out: string[] = [];

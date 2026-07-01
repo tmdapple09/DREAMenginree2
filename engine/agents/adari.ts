@@ -1,16 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-/**
- * Adari build enforcement utilities — v2.0.0
- *
- * This module is intentionally dependency-free and Node-only. It is used by
- * `scripts/postbuild` to verify the repo matches the v2.0.0 spec invariants.
- *
- * v2.0.0: required paths updated from legacy widget-era files to canonical
- * v2 runtime files. WheelLayout / WidgetEngine / WidgetBus / useWidget were
- * v1-era enforcement targets; they are now legacy archives, not required files.
- */
+
 
 export type AdariCheck = {
   id: string;
@@ -23,18 +14,15 @@ export type AdariReport = {
   checks: AdariCheck[];
 };
 
-/**
- * v2.0.0 required paths — canonical runtime files that must exist.
- * Replaces the v1-era check (WheelLayout, WidgetEngine, WidgetBus, useWidget).
- */
+
 const REQUIRED_PATHS = [
-  // Canonical type authority (replaces widget-system-v2.ts)
+  
   "types/dream-window.ts",
-  // Canonical naming authority
+  
   "lib/identity/canonical-names.ts",
-  // Dream Window lifecycle
+  
   "lib/dream-window/useDreamWindowActions.ts",
-  // Dual runtime persistence
+  
   "lib/runtime/useDualRuntimePersistence.ts",
 ] as const;
 

@@ -3,11 +3,11 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import type { Database } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/metrics/user/[userId]/route.ts
-// Phase 9 — Get User Metrics Endpoint
-//
-// Retrieves aggregated user metrics including AQS, Real Shit Rate, views.
-// Per ACTIVITY_FIRST_PROTOCOL.md §IV (Metrics & Measurement)
+
+
+
+
+
 
 function toNumber(value: number | string | null | undefined): number {
   const parsed = typeof value === 'string' ? Number(value) : value;
@@ -41,7 +41,7 @@ export async function GET(
       currentTier30d = ActivityTier.PASSIVE;
     }
 
-    // Get metrics using database function
+    
     const { data, error } = await supabase.rpc(
       'get_user_metrics' as unknown as keyof Database['public']['Functions'],
       { p_user_id: userId } as Database['public']['Functions']['get_user_metrics']['Args'],
@@ -55,7 +55,7 @@ export async function GET(
       );
     }
 
-    // If no metrics, return defaults
+    
     const rawMetrics = (
       data && typeof data === 'object' && !Array.isArray(data)
         ? data
@@ -105,7 +105,7 @@ export async function GET(
     };
 
     return NextResponse.json(response, {
-      headers: { 'Cache-Control': 'public, max-age=300' }, // Cache for 5 min
+      headers: { 'Cache-Control': 'public, max-age=300' }, 
     });
   } catch (err: unknown) {
     console.error('[GetUserMetrics] Exception:', err);

@@ -8,11 +8,7 @@ import { DEFAULT_OVERRIDES, THEME_PRESETS } from '@/components/ui-system/theme-e
 import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * AppearancePanel — Theme & Appearance settings rendered in Surface Space.
- * Real functionality: gradient themes, preset cards, custom adjustments.
- * Back button calls openInSurface('settings') — no routing.
- */
+
 
 function GradientThemePicker( ){
   const [active, setActive] = useState('default');
@@ -20,7 +16,7 @@ function GradientThemePicker( ){
     try {
       const raw = localStorage.getItem('de-theme');
       if (raw) { const s = JSON.parse(raw) as DeTheme & { id?: string }; if (s.id) setActive(s.id); }
-    } catch { /* ignore */ }
+    } catch {  }
   }, []);
   const select = (id: string) => {
     const preset = GRADIENT_PRESETS[id];
@@ -96,7 +92,7 @@ export default function AppearancePanel( ){
 
   return (
     <div style={{ paddingBottom: 100 }}>
-      {/* Header */}
+      
       <header style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(244,248,253,0.92)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(160,195,240,0.2)', padding: '0 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 52 }}>
           <button type="button" onClick={() => openInSurface('settings')} style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(160,195,240,0.15)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -108,7 +104,7 @@ export default function AppearancePanel( ){
 
       <div style={{ padding: '20px 16px', maxWidth: 520, margin: '0 auto' }}>
 
-        {/* Customize mode entry */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 4 }}>Customize Your Space</div>
           <div style={{ fontSize: 12, color: 'var(--de-text-dim)', marginBottom: 12 }}>Personalize each region with your own colors, fonts, and effects.</div>
@@ -134,7 +130,7 @@ export default function AppearancePanel( ){
 
         <GradientThemePicker />
 
-        {/* Theme presets */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 12 }}>Theme Presets</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
@@ -144,7 +140,7 @@ export default function AppearancePanel( ){
           </div>
         </section>
 
-        {/* Custom adjustments */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
             <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)' }}>Custom Adjustments</div>

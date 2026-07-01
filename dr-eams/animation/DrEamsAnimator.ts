@@ -1,7 +1,7 @@
-// DrEamsAnimator.ts
-// Battery-aware sprite animator + interaction zones (head/stomach/feet)
-// Works with a 24-frame sprite sheet arranged in a grid (cols x rows).
-// Use in Next.js (App Router) with a <canvas>.
+
+
+
+
 
 export type DrEamsAction = "idle" | "scan" | "fall" | "jump";
 
@@ -11,23 +11,23 @@ type SpriteSheet = {
   frameH: number;
   cols: number;
   rows: number;
-  totalFrames: number; // e.g. 24
+  totalFrames: number; 
 };
 
 type ActionDef = {
   name: DrEamsAction;
-  frames: number[];      // ordered indices into the sheet (0..totalFrames-1)
-  fps: number;           // target fps for this action
+  frames: number[];      
+  fps: number;           
   loop: boolean;
-  // optional easing between frames (micro-hold) for character feel:
+  
   holdLastFrameMs?: number;
 };
 
 type AnimatorOptions = {
   canvas: HTMLCanvasElement;
-  // ideal on iOS: render on demand, avoid continuous RAF when idle.
+  
   renderOnlyWhenDirty?: boolean;
-  // scale: 1 = native pixel size; set 2 for retina if needed (but battery cost)
+  
   devicePixelRatio?: number;
 };
 
@@ -48,7 +48,7 @@ export class DrEamsAnimator {
   private dpr: number;
   private renderOnlyWhenDirty: boolean;
 
-  // Optional: "passive 30fps / active 60fps" policy
+  
   private activeUntilTs = 0;
 
   constructor(sheet: SpriteSheet, actions: Record<DrEamsAction, ActionDef>, opts: AnimatorOptions) {
@@ -63,11 +63,11 @@ export class DrEamsAnimator {
     this.dpr = opts.devicePixelRatio ?? (typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1);
 
     this.configureCanvas(opts.canvas);
-    this.draw(); // initial
+    this.draw(); 
   }
 
   private configureCanvas(canvas: HTMLCanvasElement) {
-    // keep canvas CSS size as-is; set internal bitmap size for crispness
+    
     const rect = canvas.getBoundingClientRect();
     canvas.width = Math.max(1, Math.floor(rect.width * this.dpr));
     canvas.height = Math.max(1, Math.floor(rect.height * this.dpr));
@@ -75,7 +75,7 @@ export class DrEamsAnimator {
     this.dirty = true;
   }
 
-  // Call on resize/orientation change
+  
   public resize() {
     this.configureCanvas(this.ctx.canvas);
     this.requestDraw();
@@ -85,7 +85,7 @@ export class DrEamsAnimator {
     const next = this.actions[name];
     if (!next) return;
 
-    // If already in that action and looping, ignore
+    
     if (this.current.name === name && this.current.loop) return;
 
     this.current = next;
@@ -110,13 +110,13 @@ export class DrEamsAnimator {
   }
 
   private markActive() {
-    // treat input as "active interaction" for ~1.2s => 60fps
+    
     this.activeUntilTs = performance.now() + 1200;
   }
 
   private getTargetFps() {
     const now = performance.now();
-    // Active interactions at full fps; passive falls back to 30
+    
     return now < this.activeUntilTs ? 60 : 30;
   }
 
@@ -127,8 +127,8 @@ export class DrEamsAnimator {
     const dt = ts - this.lastTs;
     this.lastTs = ts;
 
-    // throttle animation time to policy fps (helps battery)
-    // We still RAF, but we only advance frames when enough time passes.
+    
+    
     const policyFps = this.getTargetFps();
     const dtCap = 1000 / policyFps;
 
@@ -143,9 +143,9 @@ export class DrEamsAnimator {
       this.dirty = false;
     }
 
-    // If idle and renderOnlyWhenDirty, we can stop RAF after a frame
+    
     if (this.renderOnlyWhenDirty && this.current.name === "idle") {
-      // keep a tiny micro-loop if idle wants it, otherwise stop after drawn once
+      
       if (!this.current.loop) this.stop();
     } else {
       this.rafId = requestAnimationFrame(this.tick);
@@ -157,14 +157,14 @@ export class DrEamsAnimator {
 
     const frameTime = 1000 / fps;
 
-    // advance one frame per step, but you can also do time-based stepping.
-    // Here we do controlled stepping via dtCap, so just increment by 1.
+    
+    
     const atLast = this.frameIdx >= frames.length - 1;
 
     if (atLast) {
       if (holdLastFrameMs && holdLastFrameMs > 0) {
-        // crude hold: use accumulator debt by not advancing for a bit
-        // (Good enough for sprite “settle” moments)
+        
+        
         this.acc -= Math.min(this.acc, holdLastFrameMs);
       }
 
@@ -172,7 +172,7 @@ export class DrEamsAnimator {
         this.frameIdx = 0;
         this.requestDraw();
       } else {
-        // finish action -> return to idle
+        
         if (this.current.name !== "idle") {
           this.setAction("idle");
         } else {
@@ -182,13 +182,13 @@ export class DrEamsAnimator {
       return;
     }
 
-    // only advance if enough time would pass at action fps
-    // (dtCap already policy-throttled; this is extra for per-action fps)
-    // We use a simple fractional gate by comparing dtCap to frameTime:
-    // If action fps is lower, we skip some steps.
+    
+    
+    
+    
     const gate = frameTime / (1000 / this.getTargetFps());
-    // gate ~ 2 means "advance every 2 policy steps"
-    // We'll approximate using modulo logic:
+    
+    
     const stepNumber = Math.floor(performance.now() / (1000 / this.getTargetFps()));
     const shouldAdvance = gate <= 1 ? true : (stepNumber % Math.round(gate) === 0);
 
@@ -214,7 +214,7 @@ export class DrEamsAnimator {
     const sx = (frame % this.sheet.cols) * this.sheet.frameW;
     const sy = Math.floor(frame / this.sheet.cols) * this.sheet.frameH;
 
-    // Fit sprite centered, preserving aspect
+    
     const scale = Math.min(w / this.sheet.frameW, h / this.sheet.frameH);
     const dw = this.sheet.frameW * scale;
     const dh = this.sheet.frameH * scale;
@@ -229,14 +229,14 @@ export class DrEamsAnimator {
     );
   }
 
-  // You can tune these numbers to match your character.
+  
   public handlePointer(xPx: number, yPx: number) {
     this.markActive();
 
     const rect = this.ctx.canvas.getBoundingClientRect();
     const y = (yPx - rect.top) / rect.height;
 
-    // Zones: head (top 0.00-0.35), stomach (0.35-0.70), feet (0.70-1.00)
+    
     if (y < 0.35) {
       this.setAction("scan");
       return;

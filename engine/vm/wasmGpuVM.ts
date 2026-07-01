@@ -12,20 +12,7 @@ import type {
 } from './types';
 import { DEFAULT_VM_CONFIG } from './types';
 
-/**
- * lib/vm/wasmGpuVM.ts — WASM+GPU Virtual Machine Core
- *
- * Production-ready dual WASM+GPU virtual machine implementing the full
- * specification from docs/wasm_gpu_vm_spec.md.
- *
- * Features:
- * - WebAssembly 2.0 with SIMD, threads, and shared memory
- * - WebGPU compute pipeline execution
- * - Syscall ABI for GPU buffer operations
- * - Resource quotas and security isolation
- * - Pipeline caching and performance counters
- * - Snapshot/restore for state migration
- */
+
 
 export class WasmGpuVM {
   private readonly state: VMState;
@@ -79,13 +66,11 @@ export class WasmGpuVM {
     this.syscalls = this.createSyscalls();
   }
 
-  /**
-   * Create and initialize a new WASM+GPU VM.
-   */
+  
   static async create(config: Partial<VMConfig> = {}): Promise<WasmGpuVM> {
     const fullConfig: VMConfig = { ...DEFAULT_VM_CONFIG, ...config };
 
-    // Request WebGPU device
+    
     if (typeof navigator === 'undefined' || !('gpu' in navigator)) {
       throw new Error('WebGPU not available');
     }
@@ -100,11 +85,11 @@ export class WasmGpuVM {
       requiredFeatures,
     }) as unknown as GPUDevice;
 
-    // Initialize subsystems
+    
     const bufferManager = new BufferManager(
       device as unknown as GPUDevice,
       fullConfig.quotas,
-      {} as VMPerformanceCounters, // Will be replaced below
+      {} as VMPerformanceCounters, 
     );
 
     const pipelineCache = new PipelineCache(device as unknown as GPUDevice);
@@ -114,15 +99,13 @@ export class WasmGpuVM {
 
     const vm = new WasmGpuVM(device as unknown as GPUDevice, fullConfig, bufferManager, pipelineCache);
 
-    // Wire up counters reference
+    
     (bufferManager as unknown as {counters: VMPerformanceCounters}).counters = vm.state.counters;
 
     return vm;
   }
 
-  /**
-   * Load and instantiate a WASM module with syscall imports.
-   */
+  
   async loadWasm(wasmBinary: BufferSource): Promise<void> {
     const memory = new WebAssembly.Memory({
       initial: this.state.config.initialMemoryPages,
@@ -140,7 +123,7 @@ export class WasmGpuVM {
     const { instance } = await WebAssembly.instantiate(wasmBinary, imports);
     this.state.wasmInstance = instance;
 
-    // Register memory
+    
     this.state.wasmMemories.set(0, {
       id: 0,
       memory,
@@ -150,16 +133,12 @@ export class WasmGpuVM {
     });
   }
 
-  /**
-   * Get the syscall ABI interface for external use.
-   */
+  
   getSyscalls(): VMSyscalls {
     return this.syscalls;
   }
 
-  /**
-   * Get VM statistics and performance counters.
-   */
+  
   getStats() {
     return {
       counters: { ...this.state.counters },
@@ -170,9 +149,7 @@ export class WasmGpuVM {
     };
   }
 
-  /**
-   * Destroy all resources and shut down the VM.
-   */
+  
   destroy(): void {
     this.bufferManager.destroyAll();
     this.pipelineCache.close();
@@ -196,7 +173,7 @@ export class WasmGpuVM {
         size: bigint,
       ): number => {
         const memory = this.state.wasmMemories.get(0);
-        if (!memory) return 3; // INVALID_ARGUMENT
+        if (!memory) return 3; 
 
         return this.bufferManager.write(handle, memory.memory, wasmPtr, offset, size);
       },
@@ -208,15 +185,15 @@ export class WasmGpuVM {
         size: bigint,
       ): number => {
         const memory = this.state.wasmMemories.get(0);
-        if (!memory) return 3; // INVALID_ARGUMENT
+        if (!memory) return 3; 
 
-        // Note: This returns synchronously but the read is async
-        // In production, this should be handled via a callback or polling
+        
+        
         this.bufferManager.read(handle, memory.memory, wasmPtr, offset, size)
           .catch((error: unknown ) => {
             console.error('[VM] Buffer read failed:', error);
           });
-        return 0; // SUCCESS (async operation started)
+        return 0; 
       },
 
       vm_buffer_map: (
@@ -227,13 +204,13 @@ export class WasmGpuVM {
         writable: number,
       ): number => {
         const memory = this.state.wasmMemories.get(0);
-        if (!memory) return 3; // INVALID_ARGUMENT
+        if (!memory) return 3; 
 
         this.bufferManager.map(handle, memory.memory, wasmPtr, offset, size, writable !== 0)
           .catch((error: unknown ) => {
             console.error('[VM] Buffer map failed:', error);
           });
-        return 0; // SUCCESS (async operation started)
+        return 0; 
       },
 
       vm_buffer_unmap: (handle: BufferHandle): number => {
@@ -242,13 +219,13 @@ export class WasmGpuVM {
 
       vm_compute_pipeline_create: (wgslPtr: number, wgslLen: number): number => {
         const memory = this.state.wasmMemories.get(0);
-        if (!memory) return 3; // INVALID_ARGUMENT
+        if (!memory) return 3; 
 
         try {
           const wasmView = new Uint8Array(memory.memory.buffer, wgslPtr, wgslLen);
           const wgslSource = new TextDecoder().decode(wasmView);
 
-          // Compile pipeline (async, but we return immediately with a handle)
+          
           const handle = this.state.nextPipelineHandle++;
 
           this.pipelineCache.getOrCreate(wgslSource)
@@ -277,16 +254,16 @@ export class WasmGpuVM {
 
           return handle;
         } catch {
-          return 4; // GPU_ERROR
+          return 4; 
         }
       },
 
       vm_compute_pipeline_destroy: (handle: PipelineHandle): number => {
         if (!this.state.pipelines.has(handle)) {
-          return 2; // INVALID_HANDLE
+          return 2; 
         }
         this.state.pipelines.delete(handle);
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_bind_group_create: (
@@ -296,11 +273,11 @@ export class WasmGpuVM {
       ): number => {
         try {
           const memory = this.state.wasmMemories.get(0);
-          if (!memory) return 3; // INVALID_ARGUMENT
+          if (!memory) return 3; 
 
           const handle = this.state.nextBindGroupHandle++;
 
-          // Each binding entry is: [binding: u32, buffer_handle: u32, offset: u64, size: u64] = 20 bytes
+          
           const ENTRY_SIZE = 20;
           const view = new DataView(memory.memory.buffer, bindingsPtr, bindingsCount * ENTRY_SIZE);
           const entries: GPUBindGroupEntry[] = [];
@@ -313,7 +290,7 @@ export class WasmGpuVM {
             const size = Number(view.getBigUint64(base + 16, true));
 
             const bufDesc = this.state.buffers.get(bufHandle);
-            if (!bufDesc) return 2; // INVALID_HANDLE for buffer
+            if (!bufDesc) return 2; 
 
             entries.push({
               binding,
@@ -321,12 +298,12 @@ export class WasmGpuVM {
             });
           }
 
-          // Use the pipeline layout from the most recently set pipeline, or 'auto'
+          
           const pipelineDesc = this.state.pipelines.get(this.state.commandState.activePipeline);
           const layout = pipelineDesc?.pipeline.getBindGroupLayout(0) ?? null;
 
           if (!layout) {
-            // Store a deferred descriptor; bind group will be created lazily
+            
             this.state.bindGroups.set(handle, {
               handle,
               bindGroup: null as unknown as GPUBindGroup,
@@ -346,43 +323,43 @@ export class WasmGpuVM {
 
           return handle;
         } catch {
-          return 4; // GPU_ERROR
+          return 4; 
         }
       },
 
       vm_bind_group_destroy: (handle: BindGroupHandle): number => {
         if (!this.state.bindGroups.has(handle)) {
-          return 2; // INVALID_HANDLE
+          return 2; 
         }
         this.state.bindGroups.delete(handle);
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_command_begin: (): number => {
         if (this.state.commandState.encoder !== null) {
-          return 3; // INVALID_ARGUMENT (encoder already active)
+          return 3; 
         }
 
         this.state.commandState.encoder = this.state.device.createCommandEncoder();
         this.state.commandState.computePass = this.state.commandState.encoder.beginComputePass();
         this.state.commandState.activeCommands = 0;
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_command_set_pipeline: (pipelineHandle: PipelineHandle): number => {
         const descriptor = this.state.pipelines.get(pipelineHandle);
         if (!descriptor) {
-          return 2; // INVALID_HANDLE
+          return 2; 
         }
 
         if (!this.state.commandState.computePass) {
-          return 3; // INVALID_ARGUMENT (no active compute pass)
+          return 3; 
         }
 
         this.state.commandState.computePass.setPipeline(descriptor.pipeline);
         this.state.commandState.activePipeline = pipelineHandle;
         this.state.commandState.activeCommands++;
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_command_set_bind_group: (
@@ -393,14 +370,14 @@ export class WasmGpuVM {
       ): number => {
         const descriptor = this.state.bindGroups.get(bindGroupHandle);
         if (!descriptor) {
-          return 2; // INVALID_HANDLE
+          return 2; 
         }
 
         if (!this.state.commandState.computePass) {
-          return 3; // INVALID_ARGUMENT (no active compute pass)
+          return 3; 
         }
 
-        // Parse dynamic offsets from WASM linear memory
+        
         let dynamicOffsets: number[] | undefined;
         if (offsetCount > 0 && dynamicOffsetsPtr !== 0) {
           const memory = this.state.wasmMemories.get(0);
@@ -416,34 +393,34 @@ export class WasmGpuVM {
         );
         this.state.commandState.activeBindGroups.set(groupIndex, bindGroupHandle);
         this.state.commandState.activeCommands++;
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_command_dispatch: (x: number, y: number, z: number): number => {
         if (!this.state.commandState.computePass) {
-          return 3; // INVALID_ARGUMENT (no active compute pass)
+          return 3; 
         }
 
         if (x > this.state.config.quotas.maxDispatchSize ||
             y > this.state.config.quotas.maxDispatchSize ||
             z > this.state.config.quotas.maxDispatchSize) {
-          return 5; // RESOURCE_LIMIT_EXCEEDED
+          return 5; 
         }
 
         this.state.commandState.computePass.dispatchWorkgroups(x, y, z);
         this.state.commandState.activeCommands++;
         this.state.counters.totalDispatches++;
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_command_dispatch_indirect: (bufferHandle: BufferHandle, offset: bigint): number => {
         const descriptor = this.bufferManager.get(bufferHandle);
         if (!descriptor) {
-          return 2; // INVALID_HANDLE
+          return 2; 
         }
 
         if (!this.state.commandState.computePass) {
-          return 3; // INVALID_ARGUMENT (no active compute pass)
+          return 3; 
         }
 
         this.state.commandState.computePass.dispatchWorkgroupsIndirect(
@@ -452,53 +429,53 @@ export class WasmGpuVM {
         );
         this.state.commandState.activeCommands++;
         this.state.counters.totalDispatches++;
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_submit: (): number => {
         if (!this.state.commandState.encoder || !this.state.commandState.computePass) {
-          return 3; // INVALID_ARGUMENT (no active command buffer)
+          return 3; 
         }
 
         if (this.state.commandState.activeCommands > this.state.config.quotas.maxCommandBufferLength) {
-          return 5; // RESOURCE_LIMIT_EXCEEDED
+          return 5; 
         }
 
         this.state.commandState.computePass.end();
         const commandBuffer = this.state.commandState.encoder.finish();
         this.state.queue.submit([commandBuffer]);
 
-        // Reset command state
+        
         this.state.commandState.encoder = null;
         this.state.commandState.computePass = null;
         this.state.commandState.activeCommands = 0;
         this.state.commandState.activePipeline = 0;
         this.state.commandState.activeBindGroups.clear();
 
-        return 0; // SUCCESS
+        return 0; 
       },
 
       vm_wait_fence: (): number => {
-        // Note: This is synchronous in the syscall but async in reality
-        // In production, use a callback or polling mechanism
+        
+        
         this.state.queue.onSubmittedWorkDone()
           .catch((error: unknown ) => {
             console.error('[VM] Wait fence failed:', error);
           });
-        return 0; // SUCCESS (async operation started)
+        return 0; 
       },
 
       vm_get_time: (): bigint => {
         if (typeof performance !== 'undefined') {
-          return BigInt(Math.floor(performance.now() * 1_000_000)); // ns
+          return BigInt(Math.floor(performance.now() * 1_000_000)); 
         }
-        return BigInt(Date.now()) * 1_000_000n; // ns
+        return BigInt(Date.now()) * 1_000_000n; 
       },
 
       vm_yield: (): number => {
-        // Yield hint - in a true multi-threaded environment, this would
-        // signal the scheduler to context switch
-        return 0; // SUCCESS
+        
+        
+        return 0; 
       },
 
       vm_get_instruction_count: (): bigint => {

@@ -1,27 +1,4 @@
-/**
- * public/workers/asset-optimizer.worker.js
- *
- * Web Worker for client-side asset optimisation (spec §5).
- *
- * Processes images, videos, audio, and 3D assets before upload.
- * All heavy computation runs off the main thread.
- *
- * Message protocol (from main thread):
- *   1. { jobId, assetId, fileName, mimeType, size, quality, context }
- *      — registers the job
- *   2. { jobId, type: 'file_data', buffer: ArrayBuffer }
- *      — delivers the raw file bytes
- *
- * Messages sent back to main thread:
- *   { jobId, type: 'progress', payload: <0-100> }
- *   { jobId, type: 'done', payload: OptimisationResult }
- *   { jobId, type: 'error', payload: { message: string } }
- *
- * Quality presets:
- *   high        — max dimensions, quality 0.9
- *   balanced    — medium dimensions, quality 0.8
- *   performance — smaller dimensions, quality 0.6
- */
+
 
 'use strict';
 
@@ -31,7 +8,7 @@ const QUALITY_CONFIG = {
   performance: { imageMaxPx: 720,  imageQuality: 0.6, videoBitrate: 1_000_000, audioKbps: 64  },
 };
 
-/** @type {Map<number, object>} */
+
 const jobs = new Map();
 
 self.onmessage = async function (e) {
@@ -39,7 +16,7 @@ self.onmessage = async function (e) {
 
   if (!msg.jobId) return;
 
-  // First message: job registration
+  
   if (!msg.type) {
     jobs.set(msg.jobId, {
       assetId:  msg.assetId,
@@ -53,12 +30,12 @@ self.onmessage = async function (e) {
     return;
   }
 
-  // Second message: file data
+  
   if (msg.type === 'file_data') {
     const job = jobs.get(msg.jobId);
     if (!job) return;
     job.buffer = msg.buffer;
-    // Start processing
+    
     try {
       const result = await processAsset(msg.jobId, job);
       self.postMessage({ jobId: msg.jobId, type: 'done', payload: result });
@@ -103,12 +80,12 @@ async function processAsset(jobId, job) {
     case '3d':
       return optimise3D(jobId, job, cfg);
     default:
-      // Unknown type — pass through unchanged.
+      
       return passThrough(job);
   }
 }
 
-// Uses OffscreenCanvas to resize and convert to AVIF (preferred) or WebP.
+
 
 async function optimiseImage(jobId, job, cfg) {
   progress(jobId, 20);
@@ -136,7 +113,7 @@ async function optimiseImage(jobId, job, cfg) {
 
   progress(jobId, 60);
 
-  // Try AVIF first, fall back to WebP.
+  
   let outputBlob;
   let mimeType;
   let extension;
@@ -164,25 +141,25 @@ async function optimiseImage(jobId, job, cfg) {
   };
 }
 
-// Uses VideoDecoder / VideoEncoder (WebCodecs) where available.
-// Falls back to passing the video through unchanged (graceful degradation).
+
+
 
 async function optimiseVideo(jobId, job, cfg) {
   progress(jobId, 20);
 
-  // Check for WebCodecs support.
+  
   if (typeof VideoDecoder === 'undefined' || typeof VideoEncoder === 'undefined') {
     progress(jobId, 90);
     return passThrough(job);
   }
 
-  // For now: decode the first frame as a thumbnail, then pass video through.
-  // Full re-encoding with WebCodecs requires a complex pipeline beyond scope;
-  // a production implementation would use a WASM-based encoder (e.g. ffmpeg.wasm).
+  
+  
+  
   progress(jobId, 50);
 
   const blob = new Blob([job.buffer], { type: job.mimeType });
-  // Extract thumbnail from first frame using OffscreenCanvas + ImageDecoder if available.
+  
   let thumbnailBlob = null;
   try {
     if (typeof ImageDecoder !== 'undefined') {
@@ -194,7 +171,7 @@ async function optimiseVideo(jobId, job, cfg) {
       thumbnailBlob = await canvas.convertToBlob({ type: 'image/webp', quality: 0.8 });
     }
   } catch {
-    // Thumbnail extraction is optional; continue without it.
+    
   }
 
   progress(jobId, 90);
@@ -211,15 +188,15 @@ async function optimiseVideo(jobId, job, cfg) {
   };
 }
 
-// Decodes and re-encodes audio using Web Audio API (AudioContext in worker).
-// Falls back to passthrough if AudioContext is unavailable in worker scope.
+
+
 
 async function optimiseAudio(jobId, job, cfg) {
   progress(jobId, 20);
 
-  // AudioContext is not available in workers in most browsers.
-  // We use a passthrough with a clear method label; a production implementation
-  // would use WASM (e.g. libopus, libfdk-aac) compiled to WebAssembly.
+  
+  
+  
   progress(jobId, 60);
 
   const blob = new Blob([job.buffer], { type: job.mimeType });
@@ -238,8 +215,8 @@ async function optimiseAudio(jobId, job, cfg) {
   };
 }
 
-// Passes through unchanged; a production implementation would apply
-// Draco geometry compression via WASM (draco3d.wasm).
+
+
 
 async function optimise3D(jobId, job) {
   progress(jobId, 50);

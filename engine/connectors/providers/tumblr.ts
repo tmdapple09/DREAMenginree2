@@ -3,44 +3,24 @@ import { parseRssFeed, tumblrRssUrl } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/providers/tumblr.ts
- *
- * Tumblr provider (Tier 1) — public blog RSS.
- *
- * Every public Tumblr blog exposes an RSS feed at:
- *   https://{username}.tumblr.com/rss
- *
- * No API key or OAuth required — purely public.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { username: string }  — Tumblr blog username or full URL
- *
- * ⚠️  YOUR TUMBLR BLOG MUST BE SET TO PUBLIC (not password-protected).
- *     Go to your blog's Settings → scroll to "Visibility" → make sure it is not
- *     set to "Password protected". Private blogs cannot be read via RSS.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface TumblrCredentials {
-  /** Tumblr blog username (e.g. "myblog") or full URL (e.g. "https://myblog.tumblr.com") */
+  
   username: string;
 }
 
-/** Extract just the blog slug for display. */
+
 function extractSlug(username: string): string {
   const slug = username.trim();
   if (slug.includes('tumblr.com')) {
     const match = slug.match(/([^/.]+)\.tumblr\.com/);
     return match?.[1] ?? slug;
   }
-  return slug.replace(/^https?:\/\//, '').split('.')[0];
+  return slug.replace(/^https?:\/\
 }
 
-/**
- * Verify that the Tumblr RSS feed is accessible.
- */
+
 export async function tumblrVerify(creds: TumblrCredentials): Promise<string> {
   const username = (creds.username ?? '').trim();
   if (!username) throw new Error('Tumblr username or URL is required.');
@@ -69,9 +49,7 @@ export async function tumblrVerify(creds: TumblrCredentials): Promise<string> {
   return extractSlug(username);
 }
 
-/**
- * Fetch and normalise a public Tumblr blog RSS feed.
- */
+
 export async function tumblrSync(creds: TumblrCredentials): Promise<UnifiedFeedItem[]> {
   const username = (creds.username ?? '').trim();
   const slug = extractSlug(username);

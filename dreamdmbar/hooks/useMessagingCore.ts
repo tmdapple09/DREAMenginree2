@@ -6,30 +6,13 @@ import { useCallback, useState } from 'react';
 import type { DMMessage } from './useDreamDMMessages';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * useMessagingCore — shared message send / attachment logic for DreamDM.
- *
- * Encapsulates:
- *   - File validation (type + size)
- *   - File upload to Supabase Storage
- *   - Optimistic message management (add / replace / remove)
- *   - REST POST to /api/messages
- *   - isSending / sendError state
- *
- * Used by both DreamDMessaging (full surface) and DreamDM Bar (compact surface)
- * so that send behaviour is identical on both surfaces (spec §21–23, §72–74).
- *
- * Architecture: Logic layer (lib/) — no UI, no component imports.
- * Privacy: media stored under userId prefix; RLS enforced at DB/storage layer.
- *
- * docs/dreamdm_messaging_phase2.md §4 — useMessagingCore
- */
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+
+
 
 export type MediaType = 'image' | 'video' | 'audio' | 'file';
 
-const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_FILE_BYTES = 50 * 1024 * 1024; 
 
 const BUCKET_MAP: Record<MediaType, string> = {
   image: 'images',
@@ -41,9 +24,9 @@ const BUCKET_MAP: Record<MediaType, string> = {
 export interface SendMessageParams {
   conversationId: string;
   recipientId:    string;
-  /** Fully-formatted message content (body, optionally with subject header) */
+  
   content:        string;
-  /** Optional attachment to upload alongside the message */
+  
   file?:          File | null;
   userId:         string;
 }
@@ -51,24 +34,21 @@ export interface SendMessageParams {
 export interface UseMessagingCoreReturn {
   isSending: boolean;
   sendError: string | null;
-  /** Validate a file before attaching; returns an error string or null */
+  
   validateFile: (file: File) => string | null;
-  /** Derive MediaType from a File's MIME type */
+  
   getFileType:  (file: File) => MediaType;
-  /**
-   * Send a message — handles optimistic insert, upload, API call, and cleanup.
-   * Returns the confirmed DMMessage on success, null on failure.
-   */
+  
   sendMessage:    (params: SendMessageParams) => Promise<DMMessage | null>;
   clearSendError: () => void;
 }
 
 export function useMessagingCore(
-  /** Called immediately with an optimistic message before server confirmation */
+  
   onOptimistic?: (msg: DMMessage) => void,
-  /** Called when the server confirms the message (replaces the optimistic one) */
+  
   onReplace?:    (tempId: string, real: DMMessage) => void,
-  /** Called if the send fails (should remove the optimistic message) */
+  
   onRemove?:     (tempId: string) => void,
 ): UseMessagingCoreReturn {
   const [isSending, setIsSending] = useState(false);
@@ -132,14 +112,14 @@ export function useMessagingCore(
       let mediaType: MediaType | undefined;
 
       try {
-        // Upload attachment if provided
+        
         if (file) {
           const uploaded = await uploadFile(file, userId);
           mediaUrl  = uploaded.url;
           mediaType = uploaded.type;
         }
 
-        // Add optimistic message immediately
+        
         const optimistic: DMMessage = {
           id:         tempId,
           sender_id:  userId,
@@ -150,7 +130,7 @@ export function useMessagingCore(
         };
         onOptimistic?.(optimistic);
 
-        // POST to API — snake_case field names required by the backend schema
+        
         const res  = await fetch('/api/messages', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },

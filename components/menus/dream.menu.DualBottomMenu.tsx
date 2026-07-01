@@ -3,15 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-/**
- * DualBottomMenu — slides up from the bottom as two side-by-side panels.
- *
- * Left panel:  6 Daydream navigation (per spec §17.2 / §4.2)
- * Right panel: System menu + Dr. Eams Chat (per spec §17.3 / §4.2)
- *
- * Single-tap the gold button → open both radial menus.
- * Tap the dim backdrop or any item → closes.
- */
+
 
 export type SystemMenuAction =
   | 'profiles'
@@ -33,7 +25,7 @@ type Props = {
   onOpenDaydream?: (route: string) => void;
 };
 
-/** Left panel: the 6 Daydreams (spec §7.2 domain list) */
+
 const DAYDREAM_ITEMS: Array<{ icon: string; label: string; route: string; color: string }> = [
   { icon: '🎵', label: 'Music',  route: '/daydream/music',  color: '#ec4899' },
   { icon: '🎮', label: 'Games',  route: '/daydream/games',  color: '#6366f1' },
@@ -43,7 +35,7 @@ const DAYDREAM_ITEMS: Array<{ icon: string; label: string; route: string; color:
   { icon: '✨', label: 'Create', route: '/daydream/create', color: '#f97316' },
 ];
 
-/** Right panel: standard app menu functions + Dr. Eams (spec §17.3) */
+
 const SYSTEM_ITEMS: Array<{ id: SystemMenuAction; icon: string; label: string }> = [
   { id: 'dr-eams',       icon: '∞',  label: 'Dr. Eams'     },
   { id: 'go-home',       icon: '⌂',  label: 'Home'         },
@@ -72,14 +64,14 @@ function PanelItem({
     <button
       type="button"
       onClick={(e) => {
-        // Make sure pointerdown on the backdrop doesn't preempt this click,
-        // and don't let the bar's whole-surface drag detector see it.
+        
+        
         e.stopPropagation();
         onClick();
       }}
       onPointerDown={(e) => {
-        // Stop the backdrop's pointerdown handler from closing the menu
-        // before our click fires (iOS/Android pointer→click race).
+        
+        
         e.stopPropagation();
         (e.currentTarget as HTMLButtonElement).style.background = dotColor ? `${dotColor}14` : 'rgba(42,138,184,0.10)';
         (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.975)';
@@ -104,7 +96,7 @@ function PanelItem({
       onPointerUp={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.32)'; (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)'; }}
       onPointerLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.32)'; (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)'; }}
     >
-      {/* Accent dot for daydream items */}
+      
       {dotColor && (
         <span
           aria-hidden="true"
@@ -144,7 +136,7 @@ function Panel({
       }}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      {/* Panel title */}
+      
       <div style={{
         padding: '14px 18px 10px',
         borderBottom: `1px solid rgba(${accent ? accent + ',0.15' : '160,195,240,0.22'})`,
@@ -164,7 +156,7 @@ function Panel({
         </div>
       </div>
 
-      {/* Items */}
+      
       <div style={{ padding: '6px 6px 10px' }}>
         {children}
       </div>
@@ -175,7 +167,7 @@ function Panel({
 export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDaydream }: Props) {
   const router = useRouter();
 
-  // Close on Escape
+  
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -186,7 +178,7 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
   if (!open) return null;
 
   return (
-    /* Backdrop */
+    
     <div
       role="dialog"
       aria-modal="true"
@@ -202,12 +194,12 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        padding: '0 12px 96px',          /* 96px leaves room for the gold ball */
+        padding: '0 12px 96px',          
         animation: 'de-menu-overlay-in 0.18s ease-out',
       }}
-      // Close on pointer-up of the backdrop only when both down and up landed on the
-      // backdrop itself (not on a panel). Closing on pointer-down would race with
-      // child clicks on iOS / Android and swallow them.
+      
+      
+      
       onPointerDown={(e) => {
         if (e.target === e.currentTarget) {
           (e.currentTarget as HTMLDivElement).dataset.deDownOnBackdrop = '1';
@@ -219,7 +211,7 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
         if (wasDown && e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Two-panel row */}
+      
       <div
         style={{
           display: 'flex',
@@ -229,7 +221,7 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
           animation: 'de-dual-menu-up 0.30s cubic-bezier(0.34,1.22,0.64,1)',
         }}
       >
-        {/* Daydreams panel — LEFT (spec §17.2 / §4.2) */}
+        
         <Panel
           title="Daydreams"
           subtitle="Launch the creative surfaces without leaving the system shell."
@@ -242,8 +234,8 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
               label={item.label}
               dotColor={item.color}
               onClick={() => {
-                // Navigate first; defer the menu close to the next frame so the
-                // unmount can't race the click that triggered it.
+                
+                
                 if (onOpenDaydream) onOpenDaydream(item.route);
                 else router.push(item.route);
                 requestAnimationFrame(onClose);
@@ -252,7 +244,7 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
           ))}
         </Panel>
 
-        {/* System panel — RIGHT with Dr. Eams at top (spec §17.3 / §4.2) */}
+        
         <Panel
           title="DreamMenu"
           subtitle="Profile, settings, AI, and platform controls stay one move away."
@@ -265,7 +257,7 @@ export default function DualBottomMenu({ open, onClose, onSystemAction, onOpenDa
               label={item.label}
               accent={item.id === 'dr-eams' ? 'var(--de-gold)' : undefined}
               onClick={() => {
-                // Fire the action first; defer close so it can't race the click.
+                
                 onSystemAction(item.id);
                 requestAnimationFrame(onClose);
               }}

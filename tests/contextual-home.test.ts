@@ -62,12 +62,12 @@ describe('runHomeAction', () => {
   });
 
   it('falls back to the only available callback when the targeted one is missing', () => {
-    // Bar at bottom → wants returnHome, but only returnDreamSpace is registered
+    
     const returnDreamSpace = vi.fn();
     expect(runHomeAction(1.0, { returnDreamSpace })).toBe(true);
     expect(returnDreamSpace).toHaveBeenCalledOnce();
 
-    // Bar at top → wants returnDreamSpace, but only returnHome is registered
+    
     const returnHome = vi.fn();
     expect(runHomeAction(0.0, { returnHome })).toBe(true);
     expect(returnHome).toHaveBeenCalledOnce();

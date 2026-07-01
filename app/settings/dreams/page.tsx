@@ -3,7 +3,7 @@ import { LayoutGrid, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import DreamsLayoutEditor from './dreams-layout-editor';
 
-// SURFACE: dreamsurface.SettingsDreams
+
 
 export const metadata = { title: 'Dreams – DREAMengin Settings' };
 

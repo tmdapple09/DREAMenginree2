@@ -1,89 +1,40 @@
 import type { DaydreamDomain, EnginSurface } from '@/engine/identity/canonical-names';
 
-/**
- * lib/feature-build/featureManifest.ts
- *
- * Source-of-truth for the feature build manifest across all 6 Daydream+Engin pairs.
- *
- * Each pair has:
- *   - A list of market-leading features to integrate (status: implemented | active | planned)
- *   - A max feature count (maxFeatures) — phase switches from BUILD → UPGRADE → REFINE
- *   - A refineThreshold (0–1) — fraction of usable (implemented + active) features required
- *     to enter UPGRADE phase. Removes the perfection gate; SICC work begins at threshold.
- *   - UI quality refinements to pursue in UPGRADE and REFINE phases (SICC criteria)
- *
- * Phase rules:
- *   BUILD   — building core capabilities; usable fraction below refineThreshold.
- *   UPGRADE — enough is live for users to act on; concurrent build + SICC refinement.
- *             "UPGRADE! REFINE! we don't stop, we continue forward."
- *   REFINE  — all maxFeatures fully implemented; pure SICC polish.
- *
- * Architecture: docs/ARCHITECTURE.md §1 (Daydream pair system).
- * Naming: lib/identity/canonical-names.ts (DaydreamDomain, EnginSurface).
- */
 
-/**
- * implemented — fully built, tested, stable.
- * active      — built, user-facing, and user-adjustable right now; not yet perfect.
- *               "Things simplify in a way that allow the user to adjust when necessary."
- * planned     — not yet built.
- */
+
+
 export type FeatureStatus = 'implemented' | 'active' | 'planned';
 
 export interface FeatureEntry {
-  /** Stable identifier — used by CI grep scan */
+  
   id: string;
-  /** Human-readable label */
+  
   label: string;
-  /** Brief description for job summaries */
+  
   description: string;
-  /** Current implementation status */
+  
   status: FeatureStatus;
-  /**
-   * grep pattern used by the build-cycle workflow to verify implementation.
-   * Empty string = skip code scan (manual milestone only).
-   */
+  
   detectPattern: string;
-  /** Relative repo paths to search for detectPattern (empty = whole repo) */
+  
   detectPaths: string[];
 }
 
 export interface DaydreamEnginManifest {
   domain: DaydreamDomain;
   engin: EnginSurface;
-  /** CSS hex accent colour for this pair */
+  
   accentColor: string;
   features: FeatureEntry[];
-  /**
-   * Target feature count before switching to REFINE phase.
-   * Must equal features.length.
-   */
+  
   maxFeatures: number;
-  /**
-   * Fraction of maxFeatures (0–1) that must be usable (implemented + active)
-   * before the pair enters UPGRADE phase. Default: 0.6
-   * Removes the 100% perfection gate — SICC refinement work starts at threshold.
-   */
+  
   refineThreshold: number;
-  /** UI refinements to pursue in UPGRADE and REFINE phases */
+  
   uiRefinements: string[];
-  /**
-   * Solo-parity flag (Pass 5 — Shared Runtime).
-   * When `true` (default for new Engins), the Engin is fully usable by a
-   * single user with no co-op peers and no network channel. Solo and co-op
-   * share the exact same React tree — only the runtimeChannel adapter
-   * differs (`LocalChannel` vs `RealtimeChannel`).
-   */
+  
   solo?: boolean;
-  /**
-   * Co-op declaration (Pass 8 — Co-op Pack).
-   * `false` (or omitted) → Engin is solo-only, cannot be mounted on the
-   * shared top runtime.
-   * `true`              → Engin opts into the default co-op affordances
-   * (presence, broadcast, hand-off).
-   * `{ affordances }`   → Engin opts into a specific list of co-op
-   * affordances. Unknown affordances must be ignored by the host.
-   */
+  
   coop?: boolean | { affordances: string[] };
 }
 
@@ -115,8 +66,8 @@ const MUSIC_MANIFEST: DaydreamEnginManifest = {
     'Accessible: ARIA labels on all interactive controls',
     'Dark/light mode token parity',
   ],
-  // Pass 3 (COOP_AND_SOLO_ROADMAP.md decision #3): same identity in both modes.
-  // Pass 8 (Co-op pack): StarMakerEngin is the first Engin in the co-op pack.
+  
+  
   solo: true,
   coop: {
     affordances: ['presence', 'broadcast', 'hand-off'],
@@ -249,8 +200,8 @@ const CREATE_MANIFEST: DaydreamEnginManifest = {
   engin: 'ContentEngin',
   accentColor: '#f59e0b',
   maxFeatures: 12,
-  // Threshold at 0.5: 6 usable / 12 max = 50% ≥ 50% → UPGRADE phase.
-  // All 6 Daydream+Engin pairs now return allPairsMovingForward=true.
+  
+  
   refineThreshold: 0.5,
   features: [
     { id: 'recent-drafts',       label: 'Recent Drafts',        description: 'Latest 5 rows from notes table',             status: 'implemented', detectPattern: 'Note',                  detectPaths: ['engins/engin.ContentEngin.tsx'] },
@@ -279,7 +230,7 @@ const CREATE_MANIFEST: DaydreamEnginManifest = {
   },
 };
 
-/** All 6 Daydream+Engin pair manifests in canonical domain order. */
+
 export const FEATURE_MANIFESTS: readonly DaydreamEnginManifest[] = [
   MUSIC_MANIFEST,
   GAMES_MANIFEST,
@@ -289,7 +240,7 @@ export const FEATURE_MANIFESTS: readonly DaydreamEnginManifest[] = [
   CREATE_MANIFEST,
 ] as const;
 
-/** Look up the manifest for a specific domain. */
+
 export function getManifest(domain: DaydreamDomain): DaydreamEnginManifest {
   const manifest = FEATURE_MANIFESTS.find((m) => m.domain === domain);
   if (!manifest) {

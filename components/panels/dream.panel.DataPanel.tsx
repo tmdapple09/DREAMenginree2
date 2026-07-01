@@ -5,11 +5,7 @@ import { createClient } from '@/supabase/client/client';
 import { AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-/**
- * DataPanel — Data & Privacy settings rendered in Surface Space.
- * Real export API call and account deletion flow.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 export default function DataPanel( ){
   const { openInSurface } = useDreamSystem();
@@ -59,7 +55,7 @@ export default function DataPanel( ){
         </div>
       </header>
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
-        {/* ── System Critical: Volatile Asset Export ── */}
+        
         <div
           className="de-system-critical-modal de-ghost-volatile"
           style={{ padding: '0', overflow: 'hidden' }}

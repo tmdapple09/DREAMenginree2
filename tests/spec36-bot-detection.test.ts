@@ -1,9 +1,4 @@
-/**
- * tests/spec36-bot-detection.test.ts
- *
- * §36 Bot Detection & Physical Turing Test
- * Tests the structured lib/bot-detection/ module.
- */
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
@@ -19,7 +14,7 @@ import {
 } from '@/dreamr/bot-detection/index';
 import { analyzeSwipe, tallyView } from '@/dreamr/botDetection';
 
-// ─── §36.2 View timer ────────────────────────────────────────────────────────
+
 
 describe('§36.2 createViewTimer', () => {
   beforeEach(() => { vi.useFakeTimers(); });
@@ -57,7 +52,7 @@ describe('§36.2 createViewTimer', () => {
   });
 });
 
-// ─── §36.3 PerfectLineTrap ───────────────────────────────────────────────────
+
 
 describe('§36.3 PerfectLineTrap', () => {
   it('returns "ok" for high-deviation swipes', () => {
@@ -67,7 +62,7 @@ describe('§36.3 PerfectLineTrap', () => {
 
   it('returns "freeze" on first perfect-line swipe', () => {
     const trap = new PerfectLineTrap();
-    const result = trap.record(0.5); // < 1.5 px threshold
+    const result = trap.record(0.5); 
     expect(result).toBe('freeze');
     expect(trap.frozen).toBe(true);
     expect(trap.frozenRemainingMs).toBeGreaterThanOrEqual(FREEZE_MIN_MS - 50);
@@ -76,8 +71,8 @@ describe('§36.3 PerfectLineTrap', () => {
 
   it('returns "block" when session is frozen', () => {
     const trap = new PerfectLineTrap();
-    trap.record(0.5); // freeze
-    expect(trap.record(5.0)).toBe('block'); // still frozen
+    trap.record(0.5); 
+    expect(trap.record(5.0)).toBe('block'); 
   });
 
   it('resets streak and freeze on reset()', () => {
@@ -93,7 +88,7 @@ describe('§36.3 PerfectLineTrap', () => {
   });
 });
 
-// ─── §36 Detection thresholds ────────────────────────────────────────────────
+
 
 describe('§36.1 Detection threshold constants', () => {
   it('human min deviation is 1.5 px', () => {
@@ -105,7 +100,7 @@ describe('§36.1 Detection threshold constants', () => {
   });
 });
 
-// ─── §36 BotSessionTracker ───────────────────────────────────────────────────
+
 
 describe('§36 BotSessionTracker', () => {
   function straightLinePoints(n = 6) {
@@ -139,7 +134,7 @@ describe('§36 BotSessionTracker', () => {
   });
 });
 
-// ─── §36.2 tallyView passthrough ────────────────────────────────────────────
+
 
 describe('§36.2 tallyView', () => {
   it('counts views ≥ 4 000 ms', () => {

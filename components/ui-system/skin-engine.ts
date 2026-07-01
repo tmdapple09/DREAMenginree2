@@ -1,49 +1,41 @@
-/**
- * DREAMengin Skin Engine
- * User-facing customization layer: background gradient, widget style,
- * typography, and effects. Applied on top of the base theme engine.
- *
- * Skins are per-page (profile | home | dreamspace | feed) with a
- * global fallback. All presets are included and available to every user
- * — no tier gating, no locks, no "coming soon" placeholders.
- */
+
 
 export type SkinPage = 'home' | 'profile' | 'dreamspace' | 'feed' | 'global';
 
 export type SkinShadow = 'none' | 'soft' | 'medium' | 'strong';
 
 export type SkinFont =
-  | 'space-grotesk'   // default UI sans
-  | 'cormorant'       // editorial serif
-  | 'system'          // native system font
-  | 'mono';           // monospace
+  | 'space-grotesk'   
+  | 'cormorant'       
+  | 'system'          
+  | 'mono';           
 
 export type SkinLayout = 'card' | 'minimal' | 'compact';
 
 export interface SkinData {
-  /** Background gradient stops */
+  
   bgFrom:   string;
   bgMid:    string;
   bgTo:     string;
-  bgAngle:  number;   // degrees
+  bgAngle:  number;   
 
-  /** Widget appearance */
-  widgetOpacity: number;  // 0.1 – 1.0
-  widgetRadius:  number;  // px (4 – 32)
+  
+  widgetOpacity: number;  
+  widgetRadius:  number;  
   widgetShadow:  SkinShadow;
 
-  /** Typography */
+  
   fontFamily: SkinFont;
 
-  /** Visual effects */
-  glassBlur:   number;  // px (4 – 48)
-  brightness:  number;  // 0.6 – 1.4
-  saturation:  number;  // 0.0 – 2.0
+  
+  glassBlur:   number;  
+  brightness:  number;  
+  saturation:  number;  
 
-  /** Accent colour */
+  
   accentColor: string;
 
-  /** Layout density */
+  
   layout: SkinLayout;
 }
 
@@ -67,7 +59,7 @@ export interface SkinPreset {
   id:       string;
   label:    string;
   emoji:    string;
-  /** All skins are 'free' — no tier gating in production. Field retained for type compat. */
+  
   tier:     'free' | 'premium';
   skin:     SkinData;
 }
@@ -155,7 +147,7 @@ export const SKIN_PRESETS: SkinPreset[] = [
       accentColor: '#0aa880',
     },
   },
-  // ── All skins available — no tier gating in production ───────────────────
+  
   {
     id: 'neon-grid',
     label: 'Neon Grid',
@@ -225,34 +217,34 @@ export function applySkin(skin: SkinData): void {
   if (typeof document === 'undefined') return;
   const el = document.documentElement;
 
-  // Background gradient (reuse ThemeApplicator slots)
+  
   el.style.setProperty('--de-theme-from',  skin.bgFrom);
   el.style.setProperty('--de-theme-mid',   skin.bgMid);
   el.style.setProperty('--de-theme-to',    skin.bgTo);
   el.style.setProperty('--de-theme-angle', `${skin.bgAngle}deg`);
 
-  // Widget style
+  
   el.style.setProperty('--skin-widget-opacity', String(skin.widgetOpacity));
   el.style.setProperty('--skin-widget-radius',  `${skin.widgetRadius}px`);
   el.style.setProperty('--skin-widget-shadow',  SHADOW_MAP[skin.widgetShadow]);
 
-  // Typography
+  
   el.style.setProperty('--skin-font', FONT_MAP[skin.fontFamily]);
 
-  // Effects (reuse existing theme-engine override slots)
+  
   el.style.setProperty('--user-blur',        `${skin.glassBlur}px`);
   el.style.setProperty('--user-brightness',  String(skin.brightness));
   el.style.setProperty('--user-saturation',  String(skin.saturation));
 
-  // Accent
+  
   el.style.setProperty('--skin-accent-color', skin.accentColor);
   el.style.setProperty('--de-gold', skin.accentColor);
   el.style.setProperty('--de-theme-btn-from', skin.accentColor);
 
-  // Layout density class
+  
   el.setAttribute('data-skin-layout', skin.layout);
 
-  // Notify listeners
+  
   window.dispatchEvent(new Event('de-skin-changed'));
 }
 
@@ -273,7 +265,7 @@ export function loadAllSkins(): AllPageSkins {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw) as AllPageSkins;
-  } catch { /* ignore */ }
+  } catch {  }
   return { global: DEFAULT_SKIN, home: null, profile: null, dreamspace: null, feed: null };
 }
 
@@ -282,7 +274,7 @@ export function saveAllSkins(skins: AllPageSkins): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(skins));
 }
 
-/** Resolve the effective skin for a page: page-specific → global → default */
+
 export function resolveSkin(skins: AllPageSkins, page: SkinPage): SkinData {
   if (page !== 'global' && skins[page]) return skins[page]!;
   return skins.global ?? DEFAULT_SKIN;

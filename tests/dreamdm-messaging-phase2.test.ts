@@ -1,20 +1,8 @@
-/**
- * tests/dreamdm-messaging-phase2.test.ts
- *
- * Unit tests for Phase 2 shared messaging/search hooks.
- *
- * Validates:
- *   - useDreamSearch: Dr. Eams localStorage key and toggle behaviour (pure logic)
- *   - useMessagingCore: file validation logic
- *   - SearchResult shape contract
- *   - dr-eams-mode localStorage key contract
- *
- * docs/dreamdm_messaging_phase2.md §6 — Testing
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// ── Mock localStorage ─────────────────────────────────────────────────────────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem:    (key: string)              => localStorageStore[key] ?? null,
@@ -24,9 +12,9 @@ const localStorageMock = {
 };
 vi.stubGlobal('localStorage', localStorageMock);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Dr. Eams toggle — pure logic extracted from useDreamSearch for testing
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 const DR_EAMS_KEY = 'de-dreams-mode';
 
@@ -76,9 +64,9 @@ describe('Dr. Eams toggle — localStorage contract', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SearchResult shape contract
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 type SearchResultType = 'person' | 'conversation' | 'board' | 'topic';
 
@@ -141,9 +129,9 @@ describe('SearchResult type contract', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// File validation — logic extracted from useMessagingCore
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
 
@@ -170,7 +158,7 @@ describe('File validation — useMessagingCore parity', () => {
   });
 
   it('rejects files exactly at the limit', () => {
-    // MAX_FILE_BYTES is the exclusive upper bound
+    
     expect(validateFile({ size: MAX_FILE_BYTES + 1 })).not.toBeNull();
   });
 
@@ -203,14 +191,14 @@ describe('getFileType — MIME type mapping', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Feature parity assertion: shared hooks must cover both surfaces
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 describe('Phase 2 feature parity contract', () => {
   it('DreamDMessaging and DreamDM Bar share the same DR_EAMS_KEY', () => {
-    // Both surfaces use the same localStorage key so toggling on one surface
-    // is reflected on the other (spec §78).
+    
+    
     expect(DR_EAMS_KEY).toBe('de-dreams-mode');
   });
 

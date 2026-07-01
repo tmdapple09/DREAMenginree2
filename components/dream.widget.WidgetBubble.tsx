@@ -30,8 +30,8 @@ export default function WidgetBubble({ widget }: WidgetBubbleProps) {
     }),
   });
 
-  // React 19 + react-dnd types: ConnectDragSource isn't a valid DOM ref type.
-  // Use a callback ref that calls `drag(node)` and returns void (what React expects).
+  
+  
   const dragRef = useCallback((node: HTMLDivElement | null) => {
     drag(node);
   }, [drag]);

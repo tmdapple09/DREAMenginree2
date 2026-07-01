@@ -8,11 +8,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { ArrowLeft, ChevronRight, FileText, Loader2, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-/**
- * SafetyPanel — Policy & Safety rendered in Surface Space.
- * Fetches real policy_events from Supabase client-side.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 interface PolicyEvent {
   event_id: string; timestamp: string; action: string;
@@ -38,7 +34,7 @@ export default function SafetyPanel( ){
           .order('timestamp', { ascending: false })
           .limit(20);
         setLog(data ?? []);
-      } catch { /* noop */ }
+      } catch {  }
       finally { setLoading(false); }
     })();
   }, []);

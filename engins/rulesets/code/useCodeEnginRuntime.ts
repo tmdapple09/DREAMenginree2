@@ -7,30 +7,21 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CodeEnginAction, CodeEnginDerivedState } from './codeEnginRuleSet';
 import { CODE_ENGIN_RULE_SET } from './codeEnginRuleSet';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engins/code/useCodeEnginRuntime.ts.
 
-/**
- * lib/engins/code/useCodeEnginRuntime.ts
- *
- * React hook — wires the universal EnginRuntime + CodeEngin rule-set into
- * React's lifecycle so the component can dispatch actions and read derived state.
- *
- * Usage:
- *   const { state, dispatch } = useCodeEnginRuntime();
- *   dispatch({ type: 'code:ci-start', payload: {} });
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface UseCodeEnginRuntimeOptions
   extends Omit<EnginRuntimeOptions, 'ioAdapter'> {
@@ -44,7 +35,7 @@ export interface UseCodeEnginRuntimeResult {
   hardwareAcceleration: EnginHardwareAccelerationState | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export function useCodeEnginRuntime(
   options: UseCodeEnginRuntimeOptions = {},
@@ -101,8 +92,8 @@ export function useCodeEnginRuntime(
   return { state: derivedState, dispatch, ready, hardwareAcceleration };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -1,19 +1,8 @@
 import { isJsonSerializable } from '@/engine/engin-runtime/EnginBaseState';
 
-/**
- * types/module-manifest.ts
- *
- * ModuleManifest — the canonical shape for a transferable Dream Window module.
- *
- * Every Dream Window that participates in the Universal Editor (drag, transfer,
- * spatial layout) must carry a ModuleManifest so the DraggableModule wrapper
- * knows how to handle it.
- *
- * Architecture: docs/ARCHITECTURE.md §4 — Universal Dream Window model.
- * Naming: uses canonical 'runtime' vocabulary per docs/LAW.md route law.
- */
 
-/** All runtimes a module may declare as source or target. */
+
+
 export type RuntimeId =
   | 'homedream'
   | 'dreamspace'
@@ -31,7 +20,7 @@ export type RuntimeId =
   | 'engin:content'
   | (string & {});
 
-/** Module types matching Dream Window categories. */
+
 export type ModuleType =
   | 'feed'
   | 'music-player'
@@ -41,29 +30,21 @@ export type ModuleType =
   | 'custom'
   | (string & {});
 
-/**
- * The manifest that every transferable Dream Window carries.
- *
- * The `content` field must be JSON-serialisable — it is the state snapshot
- * sent via the bridge when a module is transferred to another runtime.
- */
+
 export interface ModuleManifest {
-  /** Stable unique ID — matches the widget/Dream Window ID in the database. */
+  
   id: string;
-  /** Semantic category for this module. */
+  
   type: ModuleType;
-  /** Which runtime this module currently lives in. */
+  
   sourceRuntime: RuntimeId;
-  /**
-   * Runtimes this module is allowed to be transferred to.
-   * An empty array means the module is not transferable.
-   */
+  
   compatibleRuntimes: RuntimeId[];
-  /** JSON-serialisable state snapshot — persisted across transfers. */
+  
   content: unknown;
-  /** Runtime API and feature requirements negotiated before activation. */
+  
   compatibility?: ModuleCompatibility;
-  /** UI constraints used by DraggableModule and SpatialSurface. */
+  
   ui: {
     defaultSize: { width: number; height: number };
     resizable: boolean;
@@ -71,13 +52,13 @@ export interface ModuleManifest {
   };
 }
 
-/** Runtime capabilities used to negotiate safe module activation. */
+
 export interface RuntimeCompatibility {
   apiVersion: string;
   features: ReadonlyArray<string>;
 }
 
-/** Optional manifest requirements; absent requirements preserve existing modules. */
+
 export interface ModuleCompatibility {
   apiVersion: string;
   requiredFeatures: ReadonlyArray<string>;

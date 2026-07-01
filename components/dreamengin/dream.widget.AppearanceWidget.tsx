@@ -132,7 +132,7 @@ export default function AppearanceWidget({ onClose }: {onClose: () => void}) {
         onPointerDown={(e) => e.stopPropagation()}
         data-scrollable="y"
       >
-        {/* Header */}
+        
         <div className="flex justify-between items-center" style={{ marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--de-text-dim)' }}>
@@ -155,7 +155,7 @@ export default function AppearanceWidget({ onClose }: {onClose: () => void}) {
           </button>
         </div>
 
-        {/* Theme Presets */}
+        
         <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 10 }}>
           Theme Presets
         </div>
@@ -170,7 +170,7 @@ export default function AppearanceWidget({ onClose }: {onClose: () => void}) {
           ))}
         </div>
 
-        {/* Custom Adjustments */}
+        
         <div className="flex justify-between items-center" style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--de-heading)' }}>
             Custom Adjustments
@@ -216,7 +216,7 @@ export default function AppearanceWidget({ onClose }: {onClose: () => void}) {
           />
         </div>
 
-        {/* Live Preview */}
+        
         <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 10 }}>
           Live Preview
         </div>
@@ -253,7 +253,7 @@ export default function AppearanceWidget({ onClose }: {onClose: () => void}) {
           </div>
         </div>
 
-        {/* Current Values */}
+        
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 14, textAlign: 'center' }}>
           <div>
             <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--de-heading)' }}>

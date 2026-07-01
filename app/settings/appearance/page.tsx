@@ -8,7 +8,7 @@ import { ArrowLeft, Check, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// SURFACE: dreamsurface.SettingsAppearance  (framework-mandated basename: page.tsx)
+
 
 function VoidThemeSection( ){
   const [isVoid, setIsVoid] = useState(false);
@@ -77,7 +77,7 @@ function VoidThemeSection( ){
           </span>
         </div>
 
-        {/* Toggle pill */}
+        
         <div style={{
           width: 48, height: 28, borderRadius: 99, padding: 3, flexShrink: 0,
           background: isVoid ? '#0ea5e9' : 'rgba(160,195,240,0.30)',
@@ -106,7 +106,7 @@ function GradientThemePicker( ){
         const saved = JSON.parse(raw) as DeTheme & { id?: string };
         if (saved.id) return saved.id;
       }
-    } catch { /* ignore */ }
+    } catch {  }
     return 'default';
   });
 
@@ -146,7 +146,7 @@ function GradientThemePicker( ){
               }}
               aria-pressed={isActive}
             >
-              {/* Gradient swatch */}
+              
               <div style={{
                 width: '100%', height: 36, borderRadius: 10,
                 background: `linear-gradient(135deg, ${theme.from}, ${theme.mid}, ${theme.to})`,
@@ -244,7 +244,7 @@ function PresetCard({
         gap: 8,
       }}
     >
-      {/* Mini gradient swatch */}
+      
       <div
         style={{
           width: 48, height: 24, borderRadius: 8,
@@ -392,11 +392,11 @@ export default function AppearanceSettingsPage( ){
           if (data.appearance.overrides) setOverrides(data.appearance.overrides);
         }
       })
-      .catch(() => { /* localStorage values remain */ });
+      .catch(() => {  });
 
   }, []);
 
-  // Debounce to avoid rapid writes during slider drags
+  
   const debounceSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (debounceSaveTimerRef.current) clearTimeout(debounceSaveTimerRef.current);
@@ -405,7 +405,7 @@ export default function AppearanceSettingsPage( ){
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ presetId, overrides }),
-      }).catch(() => { /* localStorage cache remains */ });
+      }).catch(() => {  });
     }, 800);
     return () => { if (debounceSaveTimerRef.current) clearTimeout(debounceSaveTimerRef.current); };
 
@@ -417,7 +417,7 @@ export default function AppearanceSettingsPage( ){
 
   return (
     <div className="min-h-screen dream-bg">
-      {/* Header */}
+      
       <header
         className="sticky top-0 z-30 de-glass"
         style={{ borderRadius: 0, borderLeft: 'none', borderRight: 'none', borderTop: 'none' }}
@@ -439,7 +439,7 @@ export default function AppearanceSettingsPage( ){
 
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '20px 16px' }}>
 
-        {/* ── Customize Mode entry points ── */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 4 }}>
             Customize Your Space
@@ -477,13 +477,13 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* ── VOID / OLED Dark Mode ── */}
+        
         <VoidThemeSection />
 
-        {/* ── Gradient Theme — user-editable sky+gold ── */}
+        
         <GradientThemePicker />
 
-        {/* Theme Presets */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 12 }}>
             Theme Presets
@@ -500,7 +500,7 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* Custom Adjustments */}
+        
         <section style={{ marginBottom: 24 }}>
           <div className="flex justify-between items-center" style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)' }}>
@@ -550,7 +550,7 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* Accent Color */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 12 }}>
             Accent Color
@@ -614,7 +614,7 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* Background Style */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 12 }}>
             Background Style
@@ -667,7 +667,7 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* Live Preview */}
+        
         <section style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--de-heading)', marginBottom: 12 }}>
             Live Preview
@@ -712,10 +712,10 @@ export default function AppearanceSettingsPage( ){
           </div>
         </section>
 
-        {/* Background Image */}
+        
         <BgImageSection />
 
-        {/* Current Values Debug */}
+        
         <section style={{ marginBottom: 24 }}>
           <div className="de-widget-tile" style={{ padding: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>

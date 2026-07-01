@@ -61,56 +61,30 @@ import { uploadBlobToLedgerStorage } from '@/engins/contentengin/media/ledger';
 import { getPreferredViewportHeight, isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
 import { formatRelativeTime } from '@/utils/index';
 
-/**
- * DreamDMBar — Pass 3 (Window Model) — CORRECTED GOLD PARTICLE SPEC
- *
- * DreamDMBar is a draggable window, not a thin rail.
- *
- * GOLD PARTICLE ATTACHMENT RULE (CORRECTED):
- *   1. The Gold Particle is attached to the TOP of the DreamDM Bar by default
- *   2. It stays attached while the bar is visible and on screen
- *   3. It detaches ONLY when dragging the bar upward causes the button's
- *      normal attached position to go off the top of the screen
- *   4. When detached, the Gold Particle locks to the SCREEN/viewport (not the bar)
- *   5. It does NOT move with page scroll when screen-locked
- *   6. It does NOT detach for typing, keyboard, or compose state
- *   7. When the bar is dragged back down and the top-of-box position is back
- *      on screen, the Gold Particle unlocks and reattaches to the TOP of the bar
- *
- * Behaviour:
- *   - Rests at the bottom as a thick bar (BAR_H = 80 px)
- *   - Gold Particle attached to the top edge of the bar
- *   - Drag UP → bar expands from bottom; HomeDream content revealed above
- *   - Past threshold (bar top < 40% from screen top) → snaps to top as panel
- *   - If button's attached position goes off-screen → button screen-locks at top
- *   - Swipe DOWN on bar or gold → bar returns to bottom, gold re-attaches
- *   - All Phase-2 messaging / search / Dr. Eams capability preserved
- *
- * Architecture: drag state lives here; messaging logic in lib/dreamdm/ hooks.
- */
 
-/** Thick bar height when locked at the bottom */
+
+
 export const BAR_H = 80;
-/** Panel height when locked at the top (expanded) */
+
 const TOP_H        = 340;
-/** Compact nav-bar height when locked at the top (collapsed/nav-bar mode) */
+
 export const NAV_H = 52;
-/** Gold Particle diameter (full / revealed) */
+
 const GOLD_SZ      = 60;
 const GOLD_MIN_H   = 8;
-/** Snap to bottom when dragged down this many px from top */
+
 const SNAP_DOWN_PX = 88;
-/** Drag distance to expand compact nav bar into full panel */
+
 const EXPAND_THRESHOLD = 80;
-/** Spring animation string */
+
 const SPRING       = '0.46s cubic-bezier(0.34,1.22,0.64,1)';
-/** Minimum pointer movement (px) to switch from tap to drag on minimized orb */
+
 const ORB_DRAG_SLOP = 6;
-/** Thickness of the divider bar in its resting "seam" state (px) */
+
 const SEAM_H = 2;
-/** Diameter of the divider bar in particle / MANIPULATE state (px) */
+
 const PARTICLE_D = 12;
-/** Movement slop (px) before a seam touch is treated as a drag vs a tap */
+
 const SEAM_DRAG_SLOP = 4;
 
 function AvatarChip({ name, url, size = 28 }: {name: string; url?: string | null; size?: number}) {
@@ -139,7 +113,7 @@ function AvatarChip({ name, url, size = 28 }: {name: string; url?: string | null
   );
 }
 
-// ContextIcon — maps DreamBarContext iconHint to a Lucide icon
+
 function ContextIcon({ ctx, size }: {ctx: DreamBarContext; size: number}) {
   const props = { size, 'aria-hidden': true as const, style: { color: 'var(--de-blue)' } as React.CSSProperties };
   switch (ctx.iconHint) {
@@ -155,55 +129,37 @@ function ContextIcon({ ctx, size }: {ctx: DreamBarContext; size: number}) {
   }
 }
 
-// ParticleFountain — renders animated particles from Gold Particle long-press
+
 
 interface DreamDMBarProps {
-  /**
-   * Menu button opens both radial menus (Daydreams + System).
-   */
+  
   onBothMenus: () => void;
-  /** Bridge bar state to the dual-runtime host */
+  
   onRuntimeModeChange?: (mode: 'home' | 'blend' | 'dreamspace') => void;
-  /** 0..1 blend for dragging second runtime from off-screen */
+  
   onRuntimeBlendChange?: (value: number) => void;
-  /**
-   * Reports the safe-area insets the runtime regions should reserve so that
-   * content never hides behind the bar.
-   *   top:    pixels to inset from the top of the viewport (bar is at the top)
-   *   bottom: pixels to inset from the bottom of the viewport (bar is at the bottom)
-   */
+  
   onBarInsets?: (top: number, bottom: number) => void;
-  /**
-   * Split-screen divider mode.
-   *
-   * When provided, the bar operates as a persistent spatial divider between
-   * Surface Space (top) and DreamSpace (bottom).
-   *
-   *   0.0 = DreamSpace fills the entire viewport (Surface collapsed)
-   *   0.5 = 50 / 50 balanced split
-   *   1.0 = Surface Space fills the entire viewport (DreamSpace collapsed)
-   *
-   * Default snap positions: 0.9 (Surface focus), 0.5 (balanced), 0.1 (Dream focus).
-   */
+  
   splitRatio?: number;
-  /** Called continuously while the user drags the divider. Emits the new 0..1 ratio. */
+  
   onSplitChange?: (ratio: number) => void;
-  /** Reports whether the DreamDM Bar is hidden so the host can hide DreamSpace with it. */
+  
   onMinimizedChange?: (isMinimized: boolean) => void;
-  /** Double-tap/hold gesture: swap HomeDream and DreamSpace Dream surfaces. */
+  
   onSwapRuntimes?: () => void;
 }
 
-// Main component
+
 export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntimeBlendChange, onBarInsets, splitRatio, onSplitChange, onMinimizedChange, onSwapRuntimes }: DreamDMBarProps) {
   const isGameImmersive = useImmersiveGameLayout();
-  /** Gold Particle diameter — shrinks when a game overlay is active so it stays out of the way */
+  
   const goldSz = isGameImmersive ? 36 : GOLD_SZ;
   const goldR  = goldSz / 2;
-  // ── Screen geometry + keyboard tracking ───────────────────────────────────
+  
   const [screenH, setScreenH] = useState(900);
   const [screenW, setScreenW] = useState(1440);
-  /** px the keyboard pushes the visual viewport up from the bottom (0 when hidden) */
+  
   const [keyboardOffsetPx, setKeyboardOffsetPx] = useState(0);
   const [safeAreaBottomPx, setSafeAreaBottomPx] = useState(0);
   useEffect(() => {
@@ -225,7 +181,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       setScreenH(getPreferredViewportHeight(innerH, vvH));
       setScreenW(window.visualViewport?.width ?? window.innerWidth);
       setSafeAreaBottomPx(readSafeAreaBottom());
-      // Keyboard offset = layout height minus (visual height + viewport scrolled-up amount)
+      
       const kbOffset = Math.max(0, innerH - vvH - vvOff);
       setKeyboardOffsetPx(kbOffset);
     };
@@ -242,20 +198,17 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     };
   }, []);
 
-  /** Whether bar is snapped to top (nav-bar or panel mode) */
+  
   const [isTop,         setIsTop]         = useState(false);
-  /**
-   * Whether the top-locked bar is in full-panel mode.
-   * false = compact nav-bar (NAV_H); true = expanded panel (TOP_H).
-   */
+  
   const [isTopExpanded, setIsTopExpanded] = useState(false);
-  /** Current bar height while dragging from bottom (px). Rests at BAR_H. */
+  
   const [dragH,    setDragH]    = useState(BAR_H);
-  /** How far bar has slid down from the top during a top-expanded→bottom drag (px) */
+  
   const [slideDown, setSlideDown] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Whole-bar touch drag: startY, startTarget, didDrag, tapCount, tapTimer
+  
   const barTouchRef = useRef<{
     active: boolean;
     startY: number;
@@ -290,10 +243,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     holdFired: false,
   });
 
-  /**
-   * When minimized, the bar disappears and a gold glowing orb appears.
-   * Tap the orb to restore the bar. Drag it to reposition out of the way.
-   */
+  
   const [isMinimized, setIsMinimized] = useState(false);
   const [minOrbPos, setMinOrbPos] = useState<{ x: number; y: number } | null>(null);
   const minOrbDragRef = useRef<{ active: boolean; startX: number; startY: number; startPosX: number; startPosY: number; moved: boolean } | null>(null);
@@ -302,27 +252,17 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     onMinimizedChange?.(isMinimized);
   }, [isMinimized, onMinimizedChange]);
 
-  /** Position of the minimized orb (CSS right/bottom offsets from viewport edges) */
+  
   const [orbPos, setOrbPos] = useState<{ x: number; y: number }>({ x: 20, y: 20 });
   const orbDragRef = useRef({ active: false, startX: 0, startY: 0, startOrbX: 0, startOrbY: 0, moved: false });
   const ORB_TAP_SLOP = ORB_TAP_SLOP_CONST;
 
-  /**
-   * The bar is fully transparent when not in use. It becomes opaque when the
-   * user touches it and fades back after 3 seconds of inactivity.
-   */
+  
   const [barTouched, setBarTouched] = useState(false);
   const barTouchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /**
-   * Pointer position during an active divider drag that started from seam mode.
-   * Drives the particle (12px circle) position on screen.
-   * null = not in particle mode.
-   */
+  
   const [particlePos, setParticlePos] = useState<{ x: number; y: number } | null>(null);
-  /**
-   * Ref mirror of isSeamMode (computed in render) so event callbacks can read it
-   * without being stale — avoids adding isSeamMode to every useCallback dep array.
-   */
+  
   const isSeamModeRef = useRef(false);
   const [pendingCommandDockOpen, setPendingCommandDockOpen] = useState(false);
   const revealBar = useCallback(() => {
@@ -337,14 +277,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const recordKeystroke = useCallback(() => {
     const now = Date.now();
     keystrokeTimesRef.current.push(now);
-    // Keep only last 20 keystrokes
+    
     if (keystrokeTimesRef.current.length > 20) {
       keystrokeTimesRef.current = keystrokeTimesRef.current.slice(-20);
     }
     setTypingRhythm(computeTypingRhythm(keystrokeTimesRef.current, now));
   }, []);
 
-  // Decay rhythm when idle
+  
   useEffect(() => {
     if (typingRhythm <= 0) return;
     const decay = setInterval(() => {
@@ -374,7 +314,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     setIsTopExpanded(false);
     setDragH(BAR_H);
     setSlideDown(0);
-    // NOTE: intentionally do NOT reset splitRatio — runtimes preserve their layout
+    
   }, []);
 
   const handleDragStart = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
@@ -400,18 +340,18 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     dragRef.current.velocity = calculatePointerVelocity(dragRef.current.lastY, e.clientY, dragRef.current.lastAt, now);
     dragRef.current.lastY = e.clientY;
     dragRef.current.lastAt = now;
-    const dy = e.clientY - dragRef.current.startY; // positive = dragging DOWN
+    const dy = e.clientY - dragRef.current.startY; 
 
     if (!dragRef.current.fromTop) {
-      // Expanding from bottom: dragging UP increases bar height
+      
       const newH = Math.max(BAR_H, Math.min(screenH * 0.85, dragRef.current.startH - dy));
       setDragH(newH);
     } else if (!dragRef.current.fromTopExpanded) {
-      // Top-compact → dragging DOWN expands the panel downward (grow height)
+      
       const newH = Math.max(NAV_H, Math.min(TOP_H, dragRef.current.startH + dy));
       setDragH(newH);
     } else {
-      // Top-expanded → dragging DOWN slides the bar away from the top edge
+      
       const newSlide = Math.max(0, Math.min(screenH * 0.5, dragRef.current.startSlide + dy));
       setSlideDown(newSlide);
     }
@@ -421,7 +361,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (!dragRef.current.active) return;
     const now = performance.now();
     const releaseVelocity = calculatePointerVelocity(dragRef.current.lastY, e.clientY, dragRef.current.lastAt, now);
-    // If the release lands without a usable fresh sample, keep the last measured move velocity.
+    
     const velocity = Number.isFinite(releaseVelocity)
       ? releaseVelocity
       : dragRef.current.velocity;
@@ -429,14 +369,14 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     setIsDragging(false);
 
     if (!dragRef.current.fromTop) {
-      // Bottom-origin release. Three outcomes (see decideBarRelease):
-      //   • snap-top    — already pinned at top, or upward fling past the
-      //                   invisible 2/5 line.
-      //   • snap-bottom — downward fling near/below the line.
-      //   • park        — slow drag — leave the bar exactly where the user
-      //                   let go. No forced snap to BAR_H. This is the
-      //                   "drag with intention" behaviour the user asked
-      //                   to bring back.
+      
+      
+      
+      
+      
+      
+      
+      
       const action = decideBarRelease({
         screenH,
         dragH,
@@ -448,17 +388,17 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       } else if (action === 'snap-bottom') {
         setDragH(BAR_H);
       }
-      // 'park' → intentionally do nothing; current dragH is preserved.
+      
     } else if (!dragRef.current.fromTopExpanded) {
-      // Top-compact: decide whether to expand to full panel or snap back to compact
+      
       const dy = e.clientY - dragRef.current.startY;
       if (dy > EXPAND_THRESHOLD || dragH > NAV_H + EXPAND_THRESHOLD) {
         setIsTopExpanded(true); setDragH(BAR_H); setSlideDown(0);
       } else {
-        setDragH(NAV_H); // snap back to compact nav-bar
+        setDragH(NAV_H); 
       }
     } else {
-      // Top-expanded: decide whether to collapse to bottom or spring back to panel
+      
       const dy = e.clientY - dragRef.current.startY;
       if (shouldCollapseTopExpandedDrag({
         dy,
@@ -468,7 +408,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       })) {
         setIsTop(false); setIsTopExpanded(false); setDragH(BAR_H); setSlideDown(0);
       } else {
-        setSlideDown(0); // spring back to expanded panel
+        setSlideDown(0); 
       }
     }
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
@@ -476,20 +416,20 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     }
   }, [dragH, screenH, slideDown]);
 
-  // When onSplitChange is provided, the bar operates as a true spatial divider.
-  // Dragging the handle resizes both regions in real time; releasing snaps to
-  // the closest of the three canonical split points (0.1 / 0.5 / 0.9).
-  //
-  // Structural transformation:
-  //   Resting (seam)  → 2px horizontal line spanning full width
-  //   Dragging (particle) → 12px circle following the pointer, detached from flow
+  
+  
+  
+  
+  
+  
+  
   const dividerDragRef = useRef({
     active: false,
     lastY: 0, lastAt: 0, velocity: 0,
     startX: 0, startY: 0,
-    /** true once pointer has moved past SEAM_DRAG_SLOP — lets us distinguish tap vs drag */
+    
     hasMovedPastSlop: false,
-    /** true when the drag originated from seam mode (triggers particle transformation) */
+    
     startedFromSeam: false,
   });
 
@@ -506,8 +446,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       hasMovedPastSlop: false,
       startedFromSeam,
     };
-    // In expanded divider mode (bar already revealed), enter dragging state immediately.
-    // In seam mode, defer until the pointer moves past SEAM_DRAG_SLOP so a tap stays a tap.
+    
+    
     if (!startedFromSeam) {
       setIsDragging(true);
     }
@@ -522,26 +462,26 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     dividerDragRef.current.lastY = e.clientY;
     dividerDragRef.current.lastAt = now;
 
-    // Resolve drag intent — seam drags check slop before entering particle mode.
+    
     if (!dividerDragRef.current.hasMovedPastSlop) {
       if (dividerDragRef.current.startedFromSeam) {
         const dx = e.clientX - dividerDragRef.current.startX;
         const dy = e.clientY - dividerDragRef.current.startY;
-        if (Math.hypot(dx, dy) < SEAM_DRAG_SLOP) return; // below slop → ignore movement
+        if (Math.hypot(dx, dy) < SEAM_DRAG_SLOP) return; 
         dividerDragRef.current.hasMovedPastSlop = true;
-        setIsDragging(true); // NOW enter dragging/particle state
+        setIsDragging(true); 
       } else {
-        // Expanded-mode drag: no slop needed, mark immediately
+        
         dividerDragRef.current.hasMovedPastSlop = true;
       }
     }
 
-    // Track pointer for the particle element position (seam-started drags only)
+    
     if (dividerDragRef.current.startedFromSeam) {
       setParticlePos({ x: e.clientX, y: e.clientY });
     }
 
-    // Bar top = clientY - DIVIDER_H/2 so the grab point stays under the pointer.
+    
     const availH = screenH - DIVIDER_H;
     const newRatio = availH > 0
       ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (e.clientY - DIVIDER_H / 2) / availH))
@@ -552,11 +492,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const handleDividerDragEnd = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!dividerDragRef.current.active || !onSplitChange) return;
 
-    // Tap (pointer released before moving past slop) → expand bar into compose view
+    
     if (dividerDragRef.current.startedFromSeam && !dividerDragRef.current.hasMovedPastSlop) {
       dividerDragRef.current.active = false;
-      revealBar(); // barTouched = true → isSeamMode = false → bar expands
-      setPendingCommandDockOpen(true); // a seam tap must reveal the full DreamDM command dock, not just the line
+      revealBar(); 
+      setPendingCommandDockOpen(true); 
       if (e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
       }
@@ -570,7 +510,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     const velocity = Number.isFinite(vel) ? vel : dividerDragRef.current.velocity;
     dividerDragRef.current.active = false;
     setIsDragging(false);
-    setParticlePos(null); // exit particle mode
+    setParticlePos(null); 
     const availH = screenH - DIVIDER_H;
     const rawRatio = availH > 0
       ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (e.clientY - DIVIDER_H / 2) / availH))
@@ -588,8 +528,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   const [mounted,        setMounted]        = useState(false);
   const [composeFocused, setComposeFocused] = useState(false);
-  // Bloom: true when the input overlay is open in seam / divider mode.
-  // In non-divider (nav-rail) mode this is always false.
+  
+  
   const [isBloom, setIsBloom] = useState(false);
 
   useEffect(() => {
@@ -603,7 +543,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           setFirstTimeLight(false);
         }, 3000);
       }
-    } catch { /* ignore */ }
+    } catch {  }
     return () => {
       if (lightTooltipTimerRef.current) clearTimeout(lightTooltipTimerRef.current);
     };
@@ -617,20 +557,20 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     };
   }, []);
 
-  // The entire bar surface is draggable.
-  // Exception: when textarea is focused AND touch started inside the textarea.
+  
+  
 
   const handleBarTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    // In seam mode the bar uses pointer events for drag/tap — skip touch handling
-    // here to avoid double-firing revealBar on the same gesture.
+    
+    
     if (isSeamModeRef.current) return;
     revealBar();
     const touch = e.touches[0];
     if (!touch) return;
     const target = e.target as HTMLElement;
-    // Ignore touches that originated inside an overlay (DualBottomMenu,
-    // DrEams panel, lightbox, etc.). The bar's drag detector
-    // would otherwise swallow taps on overlay buttons.
+    
+    
+    
     if (target.closest('[data-de-overlay]')) return;
     const isInTextarea = target.tagName === 'TEXTAREA' || target.closest('textarea') !== null;
     const ref = barTouchRef.current;
@@ -658,7 +598,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const handleBarTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const ref = barTouchRef.current;
     if (!ref.active) return;
-    // Block drag if user started touch inside focused textarea
+    
     if (ref.textareaFocused && ref.touchStartedInTextarea) return;
 
     const touch = e.touches[0];
@@ -669,11 +609,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     }
     if (!ref.didDrag) return;
 
-    // Prevent page scroll while dragging bar
+    
     e.preventDefault();
 
     if (onSplitChange) {
-      // Seam / divider mode: touch drag moves the seam line
+      
       const availH = screenH - DIVIDER_H;
       const newRatio = availH > 0
         ? Math.max(SPLIT_RATIO_MIN, Math.min(SPLIT_RATIO_MAX, (touch.clientY - DIVIDER_H / 2) / availH))
@@ -683,7 +623,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       return;
     }
 
-    // Legacy bottom-bar drag: bar grows upward from the bottom
+    
     const newDragH = Math.max(BAR_H, Math.min(screenH * 0.85, screenH - touch.clientY + BAR_H / 2));
     setDragH(newDragH);
     setIsTop(false);
@@ -700,7 +640,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
     if (ref.didDrag) {
       if (onSplitChange) {
-        // Divider mode: snap to nearest canonical split point on release
+        
         const touch = e.changedTouches[0];
         if (touch) {
           const availH = screenH - DIVIDER_H;
@@ -710,13 +650,13 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           onSplitChange(snapSplitRatioOnRelease(rawRatio, 0));
         }
       } else {
-        // Legacy mode: snap bar back to rest height
+        
         setDragH(BAR_H);
       }
       return;
     }
 
-    // It was a tap — the light's touch handlers manage the tap separately
+    
   }, [onSplitChange, screenH, splitRatio]);
 
   const openDreamDMInput = useCallback(() => {
@@ -740,7 +680,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     openDreamDMCommandDock();
   }, [openDreamDMCommandDock, pendingCommandDockOpen]);
 
-  // Double tap opens the DreamDM command dock; tap-and-hold reveals message input.
+  
 
   const handleLightTap = useCallback(() => {
     const ref = lightPressRef.current;
@@ -788,8 +728,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   const handleLightTouchEnd = useCallback((e: React.TouchEvent<HTMLSpanElement>) => {
     e.stopPropagation();
-    // Suppress the synthetic mouse/click that follows touchend so we don't
-    // double-count the tap on iOS / Android.
+    
+    
     e.preventDefault();
     const pressRef = lightPressRef.current;
     if (pressRef.holdTimer) {
@@ -803,8 +743,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   const handleLightClick = useCallback((e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
-    // touchend already handled the tap on touch devices (it called preventDefault),
-    // so this only fires for real mouse clicks.
+    
+    
     handleLightTap();
   }, [handleLightTap]);
   const [userId,         setUserId]         = useState('');
@@ -818,11 +758,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const [lightboxUrl,    setLightboxUrl]    = useState<string | null>(null);
   const quickFileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // Canvas ref for the animated seam line + gold particle in divider mode
+  
   const seamCanvasRef = useRef<HTMLCanvasElement>(null);
-  // Measured height of a single empty line — captured on first resize
+  
   const singleLineHRef = useRef(0);
-  // Extra height the compose bubble adds above the fixed bar (divider mode only)
+  
   const [composeExtraH, setComposeExtraH] = useState(0);
 
   const closeToParticleLine = useCallback(() => {
@@ -921,21 +861,21 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const { results: recipientResults, isSearching: isSearchingRecipients, clearResults: clearRecipientResults } =
     useDreamSearch(recipientQuery);
 
-  // Restore draft on conversation change
+  
   useEffect(() => {
     setMessageBody(draft?.body ?? '');
 
   }, [selectedConv?.id]);
 
-  // Scroll to bottom
+  
   useEffect(() => {
     msgsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Uses Canvas 2D API (same pattern as NeuralSeamCanvas). The canvas is
-  // pointer-events: none; the GlowingLight renders on top as the touch target.
-  // Use props directly (splitRatio / onSplitChange) to avoid referencing the
-  // derived `isDividerMode` const that is declared later in the render body.
+  
+  
+  
+  
   const _inDividerMode = typeof splitRatio === 'number' && typeof onSplitChange === 'function';
   useEffect(() => {
     if (!_inDividerMode) return;
@@ -959,9 +899,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       const cx = W / 2;
       const cy = H / 2;
 
-      // Slow breathe pulse for the particle (0 → 1 period ~3 s)
+      
       const breathe = 0.5 + 0.5 * Math.sin((elapsed / 3000) * Math.PI * 2);
-      // Subtle shimmer travelling along the line
+      
       const shimmerX = (elapsed / 2000 % 1) * W;
 
       const lineGrad = ctx.createLinearGradient(0, cy, W, cy);
@@ -1023,11 +963,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   }, [_inDividerMode]);
 
-  // Any component in the app can dispatch:
-  //   window.dispatchEvent(new CustomEvent('de:input-intent', {
-  //     detail: { mode: 'comment'|'message'|'search', targetPostId?, targetLabel? }
-  //   }))
-  // to open the bar bloom with that context pre-selected.
+  
+  
+  
+  
+  
   useEffect(() => {
     const handler = (e: Event) => {
       const det = (e as CustomEvent<{ mode?: BarIntentMode; targetPostId?: string; targetLabel?: string }>).detail ?? {};
@@ -1064,9 +1004,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         });
         if (mode === 'search') setSearchQuery(target.value);
       } else {
-        // Plain page text inputs should inherit the current surface action
-        // (feed → Post, discover → Search, etc.) instead of being forced into
-        // DM mode with no recipient. That forced-message state made Send a no-op.
+        
+        
+        
         clearBarIntent();
       }
 
@@ -1083,7 +1023,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     };
   }, [setBarIntent, clearBarIntent]);
 
-  // Resolve userId
+  
   useEffect(() => {
     setMounted(true);
     import('@/supabase/client/client')
@@ -1093,11 +1033,11 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         })
       )
       .catch(() => {
-        // Supabase may be unconfigured or temporarily unavailable. The bar must
-        // still render and not surface this as an unhandledRejection — that
-        // would propagate to error.tsx and replace the entire UI with an error
-        // screen (themed by --de-theme-*, which appears as a solid orange page
-        // for users on the sunset/sunrise theme).
+        
+        
+        
+        
+        
       });
   }, []);
 
@@ -1107,7 +1047,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
     if (newFiles.length === 0) return;
 
-    // Create previews
+    
     const newPreviews: string[] = [];
     newFiles.forEach((file) => {
       if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
@@ -1118,7 +1058,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     setQuickDraftFiles((prev) => [...prev, ...newFiles]);
     setQuickDraftPreviews((prev) => [...prev, ...newPreviews]);
 
-    // Auto-expand the bar when files are attached so user can see the thumbnail
+    
     if (typeof splitRatio !== 'number' || typeof onSplitChange !== 'function') {
       const expandH = Math.min(screenH * 0.55, Math.max(BAR_H, 280));
       setDragH(expandH);
@@ -1127,7 +1067,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       setSlideDown(0);
     }
 
-    // Reset input
+    
     if (quickFileInputRef.current) quickFileInputRef.current.value = '';
   }, [quickDraftFiles.length, splitRatio, onSplitChange, screenH]);
 
@@ -1135,24 +1075,24 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     setQuickDraftFiles((prev) => prev.filter((_, i: number) => i !== index));
     setQuickDraftPreviews((prev) => {
       const updated = prev.filter((_, i: number) => i !== index);
-      // Revoke the URL to free memory
+      
       if (prev[index]) URL.revokeObjectURL(prev[index]);
       return updated;
     });
   }, []);
 
-  // Auto-resize textarea — bubble expansion
+  
   useEffect(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
 
-    // Reset height to get accurate scrollHeight
+    
     textarea.style.height = 'auto';
-    // Allow up to 240px (~8 lines) — much more room than the old 120px cap
+    
     const newHeight = Math.min(textarea.scrollHeight, 240);
     textarea.style.height = `${newHeight}px`;
 
-    // Capture the single-line height the first time (when textarea is empty or one line)
+    
     if (singleLineHRef.current === 0 || quickDraft === '') {
       singleLineHRef.current = newHeight;
     }
@@ -1167,7 +1107,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     if (barIntent.mode === 'comment' && barIntent.targetPostId) {
       setCommentSending(true);
       try {
-        // Upload any attached media files first
+        
         const mediaUrls: string[] = [];
         if (quickDraftFiles.length > 0) {
           const { createClient } = await import('@/supabase/client/client');
@@ -1250,7 +1190,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       return;
     }
 
-    // Messages surface: send as DM (existing behaviour)
+    
     if (barCtx.surface === 'messages') {
       if (selectedConv) {
         await sendMessage({ conversationId: selectedConv.id, recipientId: selectedConv.otherUser.id, content: text, userId });
@@ -1262,10 +1202,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       return;
     }
 
-    // Feed / home surface: create a post via POST /api/posts
+    
     if (barCtx.surface === 'feed') {
       try {
-        // Upload media files if any
+        
         const mediaUrls: string[] = [];
         if (quickDraftFiles.length > 0) {
           const { createClient } = await import('@/supabase/client/client');
@@ -1305,7 +1245,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         });
         if (res.ok) {
           setQuickDraft('');
-          // Clean up files and previews
+          
           quickDraftPreviews.forEach((url) => URL.revokeObjectURL(url));
           setQuickDraftFiles([]);
           setQuickDraftPreviews([]);
@@ -1321,42 +1261,42 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       return;
     }
 
-    // Code surface: open Code Daydream (v2 canonical route)
+    
     if (barCtx.surface === 'code') {
       window.location.href = `/daydream/code`;
       setQuickDraft('');
       return;
     }
 
-    // Dreams / Dr. Eams surface: open Dr. Eams chat panel (v2 — stays in HomeDream)
+    
     if (barCtx.surface === 'dreams') {
       toggleDrEams();
       setQuickDraft('');
       return;
     }
 
-    // Music surface: open Music Daydream (v2 canonical route)
+    
     if (barCtx.surface === 'music') {
       window.location.href = `/daydream/music`;
       setQuickDraft('');
       return;
     }
 
-    // Create surface: open content composer
+    
     if (barCtx.surface === 'create') {
       window.location.href = `/daydream/create?content=${encodeURIComponent(text)}`;
       setQuickDraft('');
       return;
     }
 
-    // Discover / search surface
+    
     if (barCtx.surface === 'discover') {
       window.location.href = `/discover?q=${encodeURIComponent(text)}`;
       setQuickDraft('');
       return;
     }
 
-    // General / fallback: compose a message
+    
     window.location.href = `/messages?compose=${encodeURIComponent(text)}`;
     setQuickDraft('');
   }, [quickDraft, quickDraftFiles, quickDraftPreviews, selectedConv, sendMessage, clearDraft, userId, barCtx.surface, barIntent, clearBarIntent, toggleDrEams, selectedRecipient, searchResults, openInDominant, clearResults]);
@@ -1435,7 +1375,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
       return;
     }
     if (isTop && !isTopExpanded) {
-      // Compact nav-bar at top: blend proportional to how far the user is dragging it open
+      
       const maxExpand = TOP_H - NAV_H;
       const expand = Math.max(0, dragH - NAV_H);
       const blend = maxExpand > 0 ? Math.max(0, Math.min(1, expand / maxExpand)) : 0;
@@ -1448,18 +1388,18 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     onRuntimeBlendChange(blend);
   }, [dragH, isTop, isTopExpanded, onRuntimeBlendChange, screenH]);
 
-  // top:    runtime content must not start until this many px from the screen top
-  // bottom: runtime content must not extend past this many px from the screen bottom
+  
+  
   useEffect(() => {
     if (!onBarInsets) return;
     if (isTop) {
-      // Bar is at the top; bottom of bar = slideDown (offset) + barH
+      
       const barH = isTopExpanded ? TOP_H : dragH;
       const barTop = isTopExpanded ? slideDown : 0;
       onBarInsets(barTop + barH, 0);
     } else {
-      // Bar is at the bottom; include the iOS safe-area so the resting bar
-      // clears the home-indicator region instead of overlapping it.
+      
+      
       onBarInsets(0, dragH + safeAreaBottomPx);
     }
   }, [isTop, isTopExpanded, dragH, safeAreaBottomPx, slideDown, onBarInsets]);
@@ -1471,13 +1411,13 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     ? Math.round((splitRatio as number) * (screenH - DIVIDER_H))
     : 0;
 
-  // Bar geometry (legacy window mode)
-  // - Bottom mode:       grows upward from the screen bottom (dragH)
-  // - Top-compact mode:  thin nav bar at top (NAV_H), drag handle below
-  // - Top-expanded mode: full panel at top (TOP_H), can slide away from top
-  //
-  // In divider mode, the bar grows upward into Surface Space as the user types
-  // (composeExtraH > 0), keeping the divider line anchored at its split position.
+  
+  
+  
+  
+  
+  
+  
   const barH: number    = isDividerMode
     ? DIVIDER_H + composeExtraH
     : (isTop ? (isTopExpanded ? TOP_H : dragH) : dragH + safeAreaBottomPx);
@@ -1485,37 +1425,37 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     ? Math.max(8, dividerBarTop - composeExtraH)
     : (isTop ? (isTopExpanded ? slideDown : 0) : (screenH - dragH - safeAreaBottomPx));
 
-  // showFull: whether to render the expanded tab panel instead of the compact bar
+  
   const showFull: boolean = !isDividerMode && (isTopExpanded || dragH > 180);
 
-  // Gold Particle geometry:
-  // - Divider mode: gold sits centered on the divider bar (vertically centered)
-  // - Bottom mode: gold sits on the BAR's top edge  (center = barTop)
-  // - Top modes:   gold hangs from the BAR's bottom edge (center = barTop + barH)
+  
+  
+  
+  
   const attachedGoldTop: number = isDividerMode
-    ? (barTop + DIVIDER_H / 2 - goldR)  // centered on the divider
+    ? (barTop + DIVIDER_H / 2 - goldR)  
     : (isTop
-      ? (barTop + barH - goldR)  // bottom edge of the top bar / panel
-      : (barTop - goldR));       // top edge of the bottom bar
+      ? (barTop + barH - goldR)  
+      : (barTop - goldR));       
   const isGoldOffScreen: boolean = !isDividerMode && !isTop && (barTop - goldR < 0);
   const goldTopPx: number = isGoldOffScreen ? 10 : attachedGoldTop;
 
-  // Track if button is in screen-locked mode (for styling/behavior)
+  
   const isCompactViewport = isCompactRuntimeViewport(screenW);
 
-  // When minimized, the capsule is centered on the same Y axis as the full button
-  // but only GOLD_MIN_H tall and GOLD_MIN_W wide (a subtle gold pill indicator).
-  // The "top" for the capsule should align its center with goldTopPx + goldR.
+  
+  
+  
   const goldCenterY = goldTopPx + goldR;
 
-  // Bar is "resting" when: at bottom (not top), not dragging, not composeFocused,
-  // at default height (BAR_H), not in divider mode, and no active intent,
-  // and the user has not recently touched it.
+  
+  
+  
   const isResting = !isDividerMode && !isTop && !isDragging && !composeFocused
     && dragH <= BAR_H && barIntent.mode === 'default' && !barTouched;
 
-  // When the user is composing and the keyboard is visible, translate the bar
-  // upward so it floats just above the keyboard instead of being hidden behind it.
+  
+  
   const keyboardTranslateY = !isDividerMode && composeFocused && keyboardOffsetPx > 0
     ? -keyboardOffsetPx
     : 0;
@@ -1523,21 +1463,21 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
   const surfaceAccent = SURFACE_ACCENT_COLORS[(barCtx.surface as SurfaceAccent)] ?? SURFACE_ACCENT_COLORS.general;
   const handleScale = rhythmToHandleScale(typingRhythm);
 
-  //
-  // The DreamDMBar IS the divider line — not a separate object on top of it.
-  // The element transforms its DOM geometry based on two states:
-  //
-  //   SEAM (NAV)        → 2px horizontal line spanning full viewport width.
-  //                        Tapping it expands to the compose view; dragging
-  //                        immediately enters PARTICLE mode.
-  //
-  //   PARTICLE (MANIPULATE) → 12px circle at the pointer, detached from flow.
-  //                            The bar collapses to a single node that can
-  //                            slide freely to reposition the split point.
-  //
-  // isSeamMode:   bar is at rest as a thin line
-  // isParticleMode: bar has been grabbed and is a 12px node following the pointer
-  //
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const isSeamMode = isDividerMode && !isDragging && !barTouched
     && !composeFocused && composeExtraH === 0;
   const isParticleMode = isDividerMode && isDragging && particlePos !== null;
@@ -1549,7 +1489,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     8,
     Math.min(Math.max(8, screenH - 96), screenH - barTop + keyboardOffsetPx + 8),
   );
-  // Keep isSeamModeRef in sync so event callbacks can read it without staleness.
+  
   isSeamModeRef.current = isSeamMode;
 
   if (isMinimized) {
@@ -1594,7 +1534,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           const wasDragged = drag.moved;
           minOrbDragRef.current = null;
           if (!wasDragged) {
-            // Restore bar without resetting positions — runtimes stay exactly as they were
+            
             setIsMinimized(false);
             revealBar();
           }
@@ -1614,9 +1554,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
 
   return (
     <>
-      {/* ── Seam bloom overlay — divider mode only ───────────────────────────── */}
-      {/* Floats above the seam line when the user taps the gold particle.       */}
-      {/* In divider mode this IS the input surface — the bar body is hidden.    */}
+      
+      
+      
       {isDividerMode && isBloom && (
         <div
           data-de-overlay
@@ -1624,7 +1564,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             position: 'fixed',
             left: 12,
             right: 12,
-            // Position bottom edge just above the seam (barTop), accounting for keyboard
+            
             bottom: bloomBottomPx,
             maxHeight: `calc(100dvh - ${bloomBottomPx + 12}px)`,
             overflowY: 'auto',
@@ -1639,7 +1579,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             animation: 'sicc-bloom-in 0.22s cubic-bezier(0.34,1.22,0.64,1) both',
           }}
         >
-          {/* Close button */}
+          
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
             {barIntent.mode !== 'default' && (
               <div style={{
@@ -1671,7 +1611,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             </button>
           </div>
 
-          {/* Mode picker — the DreamDMBar is a command dock, not just a seam. */}
+          
           {barIntent.mode === 'default' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8, paddingBottom: 2 }}>
               <button
@@ -1771,7 +1711,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             </div>
           )}
 
-          {/* Compose row — shown when mode is selected */}
+          
           {barIntent.mode !== 'default' && (
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
               <textarea
@@ -1846,16 +1786,16 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         </div>
       )}
 
-      {/* ── DreamDM window ───────────────────────────────────────────────────── */}
+      
       <div
         aria-label="DreamDM Bar"
         className="sicc-bar-edge de-dreamdmbar-material de-runtime-seam"
         data-bar-state={isParticleMode ? 'particle' : isSeamMode ? 'seam' : 'normal'}
-        // ── Pointer routing ──────────────────────────────────────────────────
-        // seam mode:    whole 2px line is the drag/tap target → divider handlers
-        // particle mode: bar IS the 12px circle, keep divider move/up wired
-        // expanded divider: inner GlowingLight wrapper owns drag → bar just reveals
-        // legacy window: whole-bar drag handled by handleDragStart/Move/End
+        
+        
+        
+        
+        
         onPointerDown={
           isSeamMode
             ? handleDividerDragStart
@@ -1880,10 +1820,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         onTouchMove={handleBarTouchMove}
         onTouchEnd={handleBarTouchEnd}
         style={(() => {
-          // ── Structural geometry ─────────────────────────────────────────────
-          // Particle mode: 12px circle at pointer position, detached from layout flow
-          // Seam mode:     2px full-width horizontal line (portrait)
-          // Normal modes:  existing pill/panel geometry
+          
+          
+          
+          
           let geo: React.CSSProperties;
           if (isParticleMode && particlePos) {
             geo = {
@@ -1916,7 +1856,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             ...geo,
             zIndex: 100,
             pointerEvents: 'auto',
-            // particle: visible; seam: visible so GlowingLight overflows the 2px line; normal: clip
+            
             overflow: (isParticleMode || isSeamMode) ? 'visible' : 'hidden',
             touchAction: isSeamMode || isParticleMode ? 'none' : 'manipulation',
             borderRadius: isParticleMode
@@ -1929,12 +1869,12 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             transform: keyboardTranslateY !== 0 ? `translateY(${keyboardTranslateY}px)` : undefined,
             display: 'flex',
             flexDirection: isDividerMode ? 'column' : (isTop ? 'column-reverse' : 'column'),
-            // ── Background ───────────────────────────────────────────────────
+            
             background: isParticleMode
-              // Particle: gold radial glow — no hard border, just light
+              
               ? 'radial-gradient(circle at center, rgba(255,223,64,0.98) 0%, rgba(232,184,48,0.85) 45%, rgba(200,152,26,0.55) 75%, transparent 100%)'
               : (isSeamMode
-                // Seam: transparent — the ::before pseudo-element provides the glow line
+                
                 ? 'transparent'
                 : (isDividerMode
                   ? 'rgba(255,255,255,0.92)'
@@ -1947,7 +1887,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               : (isDividerMode ? 'blur(48px) saturate(200%)' : (isResting ? 'none' : 'blur(32px) saturate(160%)')),
             opacity: isResting ? 0 : 1,
             border: isParticleMode || isSeamMode ? 'none' : (isDividerMode ? '1px solid rgba(0,0,0,0.07)' : 'none'),
-            // ── Shadow / glow ─────────────────────────────────────────────────
+            
             boxShadow: isParticleMode
               ? `0 0 16px 8px rgba(255,215,64,0.72), 0 0 32px 14px rgba(200,152,26,0.48), 0 0 2px rgba(255,248,180,0.95)`
               : (isSeamMode
@@ -1966,7 +1906,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                       : `0 -6px 32px rgba(0,0,0,0.10), 0 -1px 0 rgba(200,152,26,0.15),
                          inset 0 1px 0 rgba(255,255,255,0.45),
                          0 -8px 32px rgba(125,211,252,0.18), 0 -1px 0 rgba(125,211,252,0.25)`)))),
-            // Particle breathing animation via inline style (refs CSS @keyframes)
+            
             animation: isParticleMode
               ? 'sicc-bar-particle-glow 1.0s ease-in-out infinite'
               : 'none',
@@ -1986,10 +1926,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           />
         )}
 
-        {/* ── Drag handle / Glowing Light ──────────────────────────────────── */}
-        {/* In particle mode the bar IS the 12px circle — hide the handle. */}
-        {/* In seam mode the handle overflows the 2px line so the gold particle */}
-        {/* remains visible and tappable (the only affordance in seam state).   */}
+        
+        
+        
+        
         <div
           role="separator" aria-label="Drag to resize DreamDM"
           style={{
@@ -2017,10 +1957,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
             touchAction: 'none',
           }}>
             <div
-              // In non-divider mode the wrapper owns the pointer drag so the
-              // *whole* bar is the drag handle. We leave the light's inner box
-              // free of pointer-drag wiring there to avoid double-firing.
-              // In divider mode (expanded, not seam/particle), inner div handles divider drag.
+              
+              
+              
+              
               onPointerDown={isDividerMode ? handleDividerDragStart : undefined}
               onPointerMove={isDividerMode ? handleDividerDragMove : undefined}
               onPointerUp={isDividerMode ? handleDividerDragEnd : undefined}
@@ -2035,7 +1975,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 zIndex: 0,
               }}
             />
-            {/* Gold particle — touch target + drag handle, centered on seam */}
+            
             <div
               style={{
                 position: 'absolute',
@@ -2066,7 +2006,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
           </>
         )}
 
-        {/* ── Legacy drag handle / Glowing Light — non-divider mode only ─── */}
+        
         {!isDividerMode && (
           <>
           <div
@@ -2085,9 +2025,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               alignItems: 'center',
               justifyContent: 'center',
               gap: 2,
-              // NOTE: Expression kept as-is for home-feed-home.test.ts contract
-              // (the string "width: isDividerMode ? 112 : '100%'" is asserted by
-              // a live test to verify the drag-capture guard remains in the file).
+              
+              
+              
               width: isDividerMode ? 112 : '100%',
               maxWidth: isDividerMode ? 112 : 164,
               height: '100%',
@@ -2116,7 +2056,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               </div>
             </div>
           </div>
-          {/* Typing-rhythm handle: pulses wider as the user types faster */}
+          
           {typingRhythm > 0 && (
             <div
               aria-hidden
@@ -2138,13 +2078,13 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         )}
         </div>
 
-        {/* ── Bar body ─────────────────────────────────────────────────────── */}
-        {/* Hidden in seam and particle modes — the bar is purely structural in those states */}
+        
+        
         <div style={{ flex: 1, minHeight: 0, display: isSeamMode || isParticleMode ? 'none' : 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {showFull ? (
-            /* Expanded panel — Messages */
+            
             <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-              {/* Minimize header */}
+              
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '6px 12px 4px', flexShrink: 0,
@@ -2220,15 +2160,15 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
               />
             </div>
           ) : (
-            /* Compact bar — quick compose + mode buttons + notifications */
+            
             <div style={{
               flex: 1, display: 'flex', flexDirection: 'column',
               gap: isCompactViewport ? 3 : 4, paddingTop: 0, paddingRight: isCompactViewport ? 8 : 12, paddingLeft: isCompactViewport ? 10 : 14,
               paddingBottom: isDividerMode ? 6 : 'env(safe-area-inset-bottom, 0px)',
               justifyContent: 'flex-end',
             }}>
-              {/* ── Top accessory row: Bell + Comment indicator + Mode buttons ── */}
-              {/* Slides out of the way when composing multi-line */}
+              
+              
               <div style={{
                 display: 'flex', alignItems: 'center', gap: isCompactViewport ? 5 : 4,
                 overflow: 'hidden',
@@ -2236,7 +2176,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 opacity: composeExtraH > 20 ? 0 : 1,
                 transition: 'max-height 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease',
               }}>
-                {/* Notification bell + unread badge */}
+                
                 <div style={{ position: 'relative', flexShrink: 0 }}>
                   <Bell size={16} aria-hidden style={{
                     color: unreadCount > 0 ? 'var(--de-gold)' : 'var(--de-text-dim)',
@@ -2268,7 +2208,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   compact={isCompactViewport}
                 />
 
-                {/* Comment mode indicator */}
+                
                 {barIntent.mode === 'comment' && (
                   <div style={{
                     display: 'flex', alignItems: 'center', gap: 4,
@@ -2291,10 +2231,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   </div>
                 )}
 
-                {/* Spacer pushes mode buttons to the right */}
+                
                 <div style={{ flex: 1 }} />
 
-                {/* Expand button: first press grows the bar/input, second opens Dr. Eams */}
+                
                 <button
                   type="button"
                   aria-label={expandTapCount === 0 ? 'Expand DreamDM bar' : 'Open Dr. Eams window'}
@@ -2318,7 +2258,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   <Maximize2 size={13} aria-hidden />
                 </button>
 
-                {/* Mode buttons: Search · Message · Dr. Eams */}
+                
                 <ModeButton
                   mode="search"
                   icon={<Search size={13} aria-hidden />}
@@ -2344,7 +2284,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   compact={isCompactViewport}
                 />
 
-                {/* Close (X) button — divider mode returns to particle + line */}
+                
                 <button
                   type="button"
                   aria-label="Close DreamDM Bar"
@@ -2368,7 +2308,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 </button>
               </div>
 
-              {/* 😀 Quick React emoji row — appears in comment mode */}
+              
               {barIntent.mode === 'comment' && (
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: isCompactViewport ? 6 : 4,
@@ -2384,9 +2324,9 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                       className="sicc-react-pop"
                       onPointerDown={(e) => e.stopPropagation()}
                       onClick={() => {
-                        // Insert emoji into the quick draft
+                        
                         setQuickDraft((prev) => prev + reaction.emoji);
-                        // Haptic feedback
+                        
                         if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(3);
                       }}
                       style={{
@@ -2410,7 +2350,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 </div>
               )}
 
-              {/* Media previews - shown when files are selected */}
+              
               {quickDraftFiles.length > 0 && (
                 <div style={{
                   display: 'flex', gap: 6, overflowX: 'auto', padding: '4px 0',
@@ -2485,10 +2425,10 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                 </div>
               )}
 
-              {/* ── Compose row: [Camera] [Bubble textarea] [Send] ───────────── */}
-              {/* Bottom-aligned so buttons anchor to the baseline as the bubble grows */}
+              
+              
               <div style={{ display: 'flex', alignItems: 'flex-end', gap: isCompactViewport ? 6 : 5 }}>
-                {/* Media picker button - hidden file input */}
+                
                 <input
                   ref={quickFileInputRef}
                   type="file"
@@ -2523,7 +2463,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   <ImageIcon size={13} aria-hidden />
                 </button>
 
-                {/* Quick compose — bubble textarea */}
+                
                 <textarea
                   ref={textareaRef}
                   data-dreamdm-compose
@@ -2538,7 +2478,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                   onBlur={() => {
                     setComposeFocused(false);
                     setTimeout(() => {
-                        // Collapse bloom if user left the field empty
+                        
                       if (onSplitChange && !quickDraft.trim() && quickDraftFiles.length === 0) {
                         setIsBloom(false);
                       }
@@ -2565,7 +2505,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                       : barIntent.mode !== 'default'
                         ? '1.5px solid rgba(42,138,184,0.50)'
                         : '1px solid rgba(180,185,200,0.35)',
-                    // Pill when single-line; relax to speech-bubble radius as it grows
+                    
                     borderRadius: composeExtraH > 20 ? 20 : 999,
                     padding: isCompactViewport ? '9px 16px' : '8px 16px',
                     fontSize: isCompactViewport ? 16 : 14,
@@ -2577,13 +2517,13 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                       : 'inset 0 1px 0 rgba(255,255,255,0.35)',
                     lineHeight: 1.4,
                     fontFamily: 'inherit',
-                    // Truncate placeholder on single line
+                    
                     textOverflow: composeExtraH > 0 ? 'unset' : 'ellipsis',
                     whiteSpace: composeExtraH > 0 ? 'pre-wrap' : 'nowrap',
                   }}
                 />
 
-                {/* Send / action button — SICC premium gradient with shimmer */}
+                
                 {(quickDraft.trim() || quickDraftFiles.length > 0) ? (
                   <button
                     type="button" onClick={() => { void handleQuickSend(); }}
@@ -2608,7 +2548,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
                       : <ContextIcon ctx={barCtx} size={15} />}
                   </button>
                 ) : (
-                  /* Placeholder spacer keeps layout stable when send button is hidden */
+                  
                   <div style={{ width: isCompactViewport ? 36 : 32, flexShrink: 0 }} />
                 )}
               </div>
@@ -2617,7 +2557,7 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
         </div>
       </div>
 
-      {/* ── Media lightbox overlay ─────────────────────────────────────────── */}
+      
       {lightboxUrl && (
         <div
           role="dialog"
@@ -2666,8 +2606,8 @@ export default function DreamDMBar({ onBothMenus, onRuntimeModeChange, onRuntime
     </>
   );
 }
-// ─────────────────────────────────────────────────────────────────────────────
-// CompactNotificationStrip — live notification previews for the compact bar.
+
+
 
 function CompactNotificationStrip({
   notifications,
@@ -2774,8 +2714,8 @@ function CompactNotificationStrip({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ModeButton — compact pill for switching bar intent mode
+
+
 
 function ModeButton({
   mode,
@@ -2830,7 +2770,7 @@ function ModeButton({
   );
 }
 
-// DreamSpaceMessaging
+
 
 interface DreamSpaceMessagingProps {
   conversations:       DMConversation[];
@@ -2876,10 +2816,10 @@ function DreamSpaceMessaging({
   return (
     <div style={{ display: 'flex', height: '100%', minHeight: 0 }}>
 
-      {/* ── Compact conversation list ──────────────────────────────────────── */}
+      
       <div style={{ width: 200, flexShrink: 0, borderRight: '1px solid rgba(180,185,200,0.20)', overflowY: 'auto', overscrollBehavior: 'contain', display: 'flex', flexDirection: 'column' }}>
 
-        {/* Search + Dr. Eams toggle */}
+        
         <div style={{ padding: '10px 10px 6px', borderBottom: '1px solid rgba(180,185,200,0.15)' }}>
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Search size={12} aria-hidden style={{ color: 'var(--de-text-dim)', position: 'absolute', left: 8, pointerEvents: 'none', zIndex: 1 }} />
@@ -2920,7 +2860,7 @@ function DreamSpaceMessaging({
           )}
         </div>
 
-        {/* Search suggestions */}
+        
         {showSearch && (searchQuery.trim() || isSearching) && (
           <div role="listbox" aria-label="Search suggestions" style={{ background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid rgba(180,185,200,0.18)', maxHeight: 180, overflowY: 'auto', overscrollBehavior: 'contain' }}>
             {isSearching && (
@@ -2956,7 +2896,7 @@ function DreamSpaceMessaging({
           </div>
         )}
 
-        {/* Conversation list */}
+        
         <div style={{ flex: 1, overflowY: 'auto', overscrollBehavior: 'contain' }}>
           {conversations.map((conv) => (
             <button
@@ -2984,11 +2924,11 @@ function DreamSpaceMessaging({
         </div>
       </div>
 
-      {/* ── Message panel ──────────────────────────────────────────────────── */}
+      
       <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
         {selectedConv ? (
           <>
-            {/* Header */}
+            
             <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(180,185,200,0.18)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <AvatarChip name={selectedConv.otherUser.display_name || selectedConv.otherUser.handle || 'U'} url={selectedConv.otherUser.avatar_url} size={26} />
               <div>
@@ -2997,7 +2937,7 @@ function DreamSpaceMessaging({
               </div>
             </div>
 
-            {/* Messages */}
+            
             <div style={{ flex: 1, overflowY: 'auto', overscrollBehavior: 'contain', padding: '12px 12px 0' }}>
               {msgsLoading ? (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 60 }}>
@@ -3029,7 +2969,7 @@ function DreamSpaceMessaging({
               <div ref={msgsEndRef} />
             </div>
 
-            {/* Compose */}
+            
             <form onSubmit={(e) => { e.preventDefault(); onPanelSend(); }} style={{ padding: '8px 10px', borderTop: '1px solid rgba(180,185,200,0.18)', flexShrink: 0 }}>
               {sendError && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>

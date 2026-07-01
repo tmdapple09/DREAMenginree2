@@ -1,16 +1,4 @@
-/**
- * Local Event Bus
- *
- * NOT a global singleton — each call to createEventBus() returns a
- * completely independent bus.  Engine assemblies receive their bus
- * via dependency injection.
- *
- * Usage:
- *   const bus = createEventBus<MyEvents>();
- *   bus.on('move', (pos) => console.log(pos));
- *   bus.emit('move', { x: 1, y: 2 });
- *   bus.destroy(); // clears all handlers
- */
+
 
 export type EventHandler<T = unknown> = (payload: T) => void;
 
@@ -18,18 +6,13 @@ export interface EventBus<Events extends Record<string, unknown> = Record<string
   on<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
   off<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
   emit<K extends keyof Events>(event: K, payload: Events[K]): void;
-  /** Remove all listeners and mark bus as destroyed. */
+  
   destroy(): void;
-  /** Whether destroy() has been called. */
+  
   readonly destroyed: boolean;
 }
 
-/**
- * createEventBus<T>()
- *
- * Creates a new, scoped event bus.  Generic parameter T constrains
- * the event map so callers get typed payloads.
- */
+
 export function createEventBus<
   Events extends Record<string, unknown> = Record<string, unknown>
 >(): EventBus<Events> {
@@ -67,22 +50,14 @@ export function createEventBus<
   };
 }
 
-/**
- * createDualRuntimeHub(busA, busB)
- *
- * Creates an optional bridge that forwards every event emitted on
- * busA to busB and vice-versa (under a namespaced key to prevent
- * infinite loops).
- *
- * Returns a { stop() } handle to tear down the bridge.
- */
+
 export function createDualRuntimeHub(
   busA: EventBus<Record<string, unknown>>,
   busB: EventBus<Record<string, unknown>>
 ): { stop(): void } {
-  // We use a simple bridging pattern via a shared relay function.
-  // Events forwarded across the bridge are tagged with `__bridged`
-  // to prevent infinite re-forwarding.
+  
+  
+  
 
   const bridgedKey = '__bridged';
 

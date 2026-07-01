@@ -9,10 +9,7 @@ import {
 import { Check } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * FeedSettingsPanel — inline feed preferences, extracted from FeedSettingsClient.
- * Same logic, no page chrome (no min-h-screen, no header with back Links).
- */
+
 
 const STORAGE_KEY = 'de-feed-settings';
 
@@ -55,14 +52,14 @@ export default function FeedSettingsPanel( ){
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setPrefs((p) => ({ ...p, ...JSON.parse(raw) }));
-    } catch { /* ignore */ }
+    } catch {  }
     setActiveTopics(new Set(loadActiveTopicIds()));
   }, []);
 
   const toggle = useCallback((key: keyof FeedPreferences) => {
     setPrefs((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {  }
       return next;
     });
     setSaved(true);
@@ -77,7 +74,7 @@ export default function FeedSettingsPanel( ){
       } else {
         next.add(id);
       }
-      try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(Array.from(next))); } catch { /* ignore */ }
+      try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(Array.from(next))); } catch {  }
       return next;
     });
     setSaved(true);
@@ -87,7 +84,7 @@ export default function FeedSettingsPanel( ){
   const selectAll = useCallback(() => {
     const all = new Set(ALL_TOPICS.map((t) => t.id));
     setActiveTopics(all);
-    try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(Array.from(all))); } catch { /* ignore */ }
+    try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(Array.from(all))); } catch {  }
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);
   }, []);
@@ -95,7 +92,7 @@ export default function FeedSettingsPanel( ){
   const resetDefaults = useCallback(() => {
     const def = new Set(DEFAULT_TOPIC_IDS);
     setActiveTopics(def);
-    try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(DEFAULT_TOPIC_IDS)); } catch { /* ignore */ }
+    try { localStorage.setItem(FEED_TOPICS_KEY, JSON.stringify(DEFAULT_TOPIC_IDS)); } catch {  }
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);
   }, []);
@@ -121,7 +118,7 @@ export default function FeedSettingsPanel( ){
         </div>
       )}
 
-      {/* ── Feed Topics ─────────────────────────────────────────────────── */}
+      
       <div className="de-widget" style={{ margin: '0 16px 16px', background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
         <div className="de-widget-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span className="de-widget-title">Feed Topics</span>
@@ -167,7 +164,7 @@ export default function FeedSettingsPanel( ){
         </div>
       </div>
 
-      {/* ── General Preferences ─────────────────────────────────────────── */}
+      
       <div className="de-widget" style={{ margin: '0 16px', background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
         <div className="de-widget-header"><span className="de-widget-title">Feed Preferences</span></div>
         <div className="de-widget-body" style={{ padding: '4px 6px' }}>

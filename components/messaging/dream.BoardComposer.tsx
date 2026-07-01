@@ -8,7 +8,7 @@ export default function BoardComposer({ boardId, userId }: {boardId: string; use
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
-  // Suppress unused var warning — userId may be needed for optimistic UI in future
+  
   void userId;
 
   const handleSubmit = async () => {
@@ -28,7 +28,7 @@ export default function BoardComposer({ boardId, userId }: {boardId: string; use
       setContent('');
       setSent(true);
       setTimeout(() => setSent(false), 2500);
-      // Reload posts — simplest way in a server component page is a full reload
+      
       window.location.reload();
     } catch {
       setError('Network error. Please try again.');

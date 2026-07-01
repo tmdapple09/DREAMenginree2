@@ -16,24 +16,12 @@ import { getWidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 import { RefreshCw } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-/**
- * app/connectors/dream.ConnectorsClient.tsx
- *
- * Phase 5 — Client-side connector manager.
- * Loads real connector statuses from /api/connectors/status on mount so
- * previously connected services show their actual state from connector_accounts.
- * Shows Sync Now button for connected tier-1 providers.
- *
- * Groups: Tier 1 (Supported), Tier 2 (Requires Approval / Setup), Tier 3 (Unsupported).
- *
- * ARCHITECTURE.md §3 — Component layer; logic lives in lib/ and API routes.
- * AXIOMS.md §3 — Every visible action does something real.
- */
 
-// Demo initial grid: 6 slots, all empty
+
+
 const DEMO_GRID: SlotGrid = { totalSlots: 6, filledSlots: new Set() };
 
-// Registry defaults — used as the initial value before real DB statuses load
+
 const DEFAULT_STATUSES: Record<string, ConnectorStatus> = Object.fromEntries(
   CONNECTOR_REGISTRY.map((c) => [c.id, c.defaultStatus]),
 );
@@ -102,12 +90,12 @@ export default function ConnectorsClient( ){
     widgetId: string; dataState: WidgetDataState;
   }>>([]);
   const [grid, setGrid] = useState<SlotGrid>(DEMO_GRID);
-  // Live statuses from connector_accounts — seeded with registry defaults until the fetch resolves
+  
   const [statuses, setStatuses] = useState<Record<string, ConnectorStatus>>(DEFAULT_STATUSES);
-  // Track which tier-1 connectors are connected (for showing Sync Now)
+  
   const [connectedIds, setConnectedIds] = useState<Set<string>>(new Set());
 
-  // Load real connector statuses from the DB on mount
+  
   useEffect(() => {
     fetch('/api/connectors/status')
       .then((r) => r.json())
@@ -120,7 +108,7 @@ export default function ConnectorsClient( ){
           }
           return next;
         });
-        // Seed connectedIds from real DB state
+        
         const tier1Connected = new Set(
           Object.entries(data.statuses)
             .filter(([id, entry]) => entry.status === 'connected' && TIER1_IDS.has(id))
@@ -128,11 +116,11 @@ export default function ConnectorsClient( ){
         );
         setConnectedIds(tier1Connected);
       })
-      .catch(() => { /* keep registry defaults on network error */ });
+      .catch(() => {  });
   }, []);
 
   function handleAutoLock( ){
-    // Caller is responsible for locking to LOCKED / safe mode
+    
   }
 
   const flow = useConnectorInstallFlow({
@@ -166,7 +154,7 @@ export default function ConnectorsClient( ){
   }
 
   function handleConnectSuccess(connectorId: string, connectorName: string): void {
-    // Add to connected set so Sync Now button appears
+    
     if (TIER1_IDS.has(connectorId)) {
       setConnectedIds((prev) => new Set([...prev, connectorId]));
     }
@@ -185,14 +173,14 @@ export default function ConnectorsClient( ){
 
   }, [flow.placementRequest?.widgetId, flow.placementRequest?.noSlotAvailable]);
 
-  // Group connectors by tier for display
+  
   const tier1 = CONNECTOR_REGISTRY.filter((c) => c.tier === 'tier1');
   const tier2 = CONNECTOR_REGISTRY.filter((c) => c.tier === 'tier2');
   const tier3 = CONNECTOR_REGISTRY.filter((c) => c.tier === 'tier3');
 
   return (
     <>
-      {/* ── Tier 1: Fully supported ──────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">✅ Active System Integrations</span>
@@ -213,7 +201,7 @@ export default function ConnectorsClient( ){
         </div>
       </div>
 
-      {/* ── Tier 2: Gated (requires approval or admin setup) ─────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">⚙️ Requires Approval or Admin Setup</span>
@@ -230,7 +218,7 @@ export default function ConnectorsClient( ){
         </div>
       </div>
 
-      {/* ── Tier 3: Unsupported ──────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">🚫 Not Available via Official API</span>
@@ -253,7 +241,7 @@ export default function ConnectorsClient( ){
         </div>
       </div>
 
-      {/* ── Installed widget shells ──────────────────────────────────── */}
+      
       {installedWidgets.length > 0 && (
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Your Widgets</span></div>
@@ -289,7 +277,7 @@ export default function ConnectorsClient( ){
         </div>
       )}
 
-      {/* ── Toast ────────────────────────────────────────────────────── */}
+      
       {flow.toastMessage && (
         <div
           role="status"
@@ -311,7 +299,7 @@ export default function ConnectorsClient( ){
         </div>
       )}
 
-      {/* ── Widget install prompt ─────────────────────────────────────── */}
+      
       {flow.prompt && (
         <ConnectWidgetPrompt
           connectorId={flow.prompt.connectorId}
@@ -324,7 +312,7 @@ export default function ConnectorsClient( ){
         />
       )}
 
-      {/* ── No-slot dialog ────────────────────────────────────────────── */}
+      
       {flow.placementRequest?.noSlotAvailable && (() => {
         const def = getWidgetTypeDef(flow.placementRequest.widgetId);
         if (!def) return null;
@@ -337,7 +325,7 @@ export default function ConnectorsClient( ){
         );
       })()}
 
-      {/* ── Placement mode ────────────────────────────────────────────── */}
+      
       {flow.placementRequest && !flow.placementRequest.noSlotAvailable && (() => {
         const def = getWidgetTypeDef(flow.placementRequest.widgetId);
         if (!def) return null;
@@ -353,7 +341,7 @@ export default function ConnectorsClient( ){
         );
       })()}
 
-      {/* ── Feed slice sheet ──────────────────────────────────────────── */}
+      
       {flow.sliceSheetConnectorId && (() => {
         const connDef = getConnectorDef(flow.sliceSheetConnectorId);
         if (!connDef) return null;

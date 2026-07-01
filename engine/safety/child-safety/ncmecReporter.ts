@@ -3,64 +3,64 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { ChildSafetyResult } from './childSafetyDetector';
 import { toErrorMessage } from '@/utils/index';
 
-// lib/child-safety/ncmecReporter.ts
-// NCMEC CyberTipline Reporter
-//
-// Reports confirmed CSAM and child predator incidents to the National Center
-// for Missing & Exploited Children (NCMEC) CyberTipline as required by US
-// federal law (18 U.S.C. § 2258A).
-//
-// Every confirmed C22_CSAM, C32_MINOR_IMAGE, C33_SOLICITING_IMAGES, or high-confidence
-// C31_GROOMING detection MUST be reported via this module.
-//
-// The DB record is always written first. The external API call is best-effort —
-// if it fails, the incident remains in child_safety_incidents for admin follow-up
-// and retry.
-//
-// Set environment variables:
-//   NCMEC_API_KEY    — your NCMEC CyberTipline API key
-//   NCMEC_ORG_ID     — your registered ESP organisation ID
-//   NCMEC_API_URL    — API base URL (default: https://api.missingkids.org/cybertip)
-//
-// See: https://www.missingkids.org/gethelpnow/cybertipline/esp
 
-// ============================================================================
-// TYPES
-// ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export interface NcmecIncidentInput {
-  /** Internal platform user ID of the account that posted/sent the content */
+  
   reportedUserId: string;
-  /** Platform user ID of the account that reported the content (null = auto-detected) */
+  
   reporterUserId?: string | null;
-  /** Rule code: C22_CSAM | C31_GROOMING | C32_MINOR_IMAGE | C33_SOLICITING_IMAGES */
+  
   ruleCode: string;
-  /** Detection result from childSafetyDetector */
+  
   detectionResult: ChildSafetyResult;
-  /** Surface where the content was found: 'post' | 'message' | 'comment' | 'profile' | 'upload' */
+  
   surface: string;
-  /** Opaque content reference (post_id, message_id, etc.) — never the raw content */
+  
   contentRef: string;
-  /** SHA-256 hash of the offending text/file (to avoid storing raw content) */
+  
   contentHash?: string;
-  /** IP address of the submitting client (optional, for NCMEC report) */
+  
   clientIp?: string;
 }
 
 export interface NcmecReportResult {
-  /** DB row ID of the child_safety_incidents record */
+  
   incidentId: string;
-  /** Whether a CyberTipline submission was attempted */
+  
   ncmecSubmitted: boolean;
-  /** NCMEC report ID returned by the CyberTipline API (if available) */
+  
   ncmecReportId?: string;
-  /** Any error that occurred during NCMEC submission (for admin alert) */
+  
   ncmecError?: string;
 }
 
-// ============================================================================
-// NCMEC CYBERTIPLINE PAYLOAD (simplified — extend per full API spec)
-// ============================================================================
+
+
+
 
 interface NcmecPayload {
   orgId: string;
@@ -79,9 +79,9 @@ interface NcmecPayload {
   additionalInfo?: string;
 }
 
-// ============================================================================
-// DB WRITER (always runs — NCMEC submission is best-effort on top)
-// ============================================================================
+
+
+
 
 async function writeIncidentToDB(input: NcmecIncidentInput): Promise<string> {
   const supabase = await createServerClient();
@@ -113,9 +113,9 @@ async function writeIncidentToDB(input: NcmecIncidentInput): Promise<string> {
   return (data as { id: string }).id;
 }
 
-// ============================================================================
-// NCMEC CYBERTIPLINE SUBMISSION (best-effort)
-// ============================================================================
+
+
+
 
 async function submitToNcmec(
   incidentId: string,
@@ -173,9 +173,9 @@ async function submitToNcmec(
   }
 }
 
-// ============================================================================
-// UPDATE INCIDENT STATUS IN DB
-// ============================================================================
+
+
+
 
 async function updateIncidentStatus(
   incidentId: string,
@@ -199,25 +199,17 @@ async function updateIncidentStatus(
   }
 }
 
-// ============================================================================
-// PUBLIC API
-// ============================================================================
 
-/**
- * reportChildSafetyIncident — the single public API for NCMEC reporting.
- *
- * 1. Writes the incident to child_safety_incidents (always, before network call).
- * 2. Submits to NCMEC CyberTipline (best-effort).
- * 3. Updates the incident record with the NCMEC result.
- *
- * Never throws — all errors are returned in the result for admin alerting.
- */
+
+
+
+
 export async function reportChildSafetyIncident(
   input: NcmecIncidentInput,
 ): Promise<NcmecReportResult> {
   let incidentId: string;
 
-  // Step 1 — Write to DB (required before any NCMEC API call)
+  
   try {
     incidentId = await writeIncidentToDB(input);
   } catch (err: unknown) {
@@ -229,10 +221,10 @@ export async function reportChildSafetyIncident(
     };
   }
 
-  // Step 2 — Submit to NCMEC
+  
   const { reportId, error: ncmecError } = await submitToNcmec(incidentId, input);
 
-  // Step 3 — Update DB status
+  
   const status = ncmecError ? 'NCMEC_SUBMISSION_FAILED' : 'NCMEC_SUBMITTED';
   await updateIncidentStatus(incidentId, status, reportId, ncmecError);
 

@@ -23,10 +23,7 @@ export interface SetupCheckSummary {
   missingOptional: SetupCheck[];
 }
 
-/**
- * Reports whether required env vars are resolved — does NOT return values.
- * Uses the centralised lib/supabase/config.ts resolver.
- */
+
 export function getSetupChecks(env: NodeJS.ProcessEnv = process.env): SetupCheck[] {
   return [
     {

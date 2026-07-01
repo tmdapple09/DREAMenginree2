@@ -1,20 +1,11 @@
 import type { Action } from './delta';
 
 type Options = {
-  /**
-   * If provided, vertical swipes will only emit when this returns true.
-   * (Used to avoid stealing vertical scroll inside scrollable surfaces.)
-   */
+  
   canEmitVertical?: () => boolean;
 };
 
-/**
- * Input mapping:
- * - 1-finger swipe => swipe_left/right/up/down
- *
- * Depth gestures (depth_in/depth_out) are handled separately (pinch / wheel)
- * by the surface, to avoid double-firing when users pinch with two touches.
- */
+
 export function createGestureArbiter(emit: (a: Action) => void, opts: Options = {}) {
   const SWIPE_TH = 70;
 
@@ -39,7 +30,7 @@ export function createGestureArbiter(emit: (a: Action) => void, opts: Options = 
     const was = pointers.size;
     pointers.delete(e.pointerId);
 
-    // Only one-finger swipes are interpreted here.
+    
     if (was !== 1) return;
 
     const dx = e.clientX - startX;
@@ -54,7 +45,7 @@ export function createGestureArbiter(emit: (a: Action) => void, opts: Options = 
       return;
     }
 
-    // Vertical swipe gating
+    
     if (opts.canEmitVertical && !opts.canEmitVertical()) return;
     emit(dy < 0 ? 'swipe_up' : 'swipe_down');
   };

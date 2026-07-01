@@ -4,25 +4,10 @@ import type { NormalizedPost } from '@/engine/social/normalizers';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/social/useSocialData.ts
- *
- * React hook for aggregated decentralized social feed data.
- *
- * Fetches from the backend social aggregator service (Mastodon, Nostr,
- * Bluesky) and merges with the DREAMengin-native feed so components get
- * a unified, consistently typed post list they can render without caring
- * about the origin platform.
- *
- * Architecture notes (AGENTS.md engine law):
- *   – State flows one way: fetch → normalise → hook state → component.
- *   – Each platform fetch is a separate settled promise so one failure
- *     never blocks the others.
- *   – The hook is SSR-safe: it performs no fetches on the server.
- */
 
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
+
 
 export type SocialPlatformFilter = 'all' | 'mastodon' | 'nostr' | 'bluesky';
 
@@ -30,20 +15,20 @@ export interface SocialDataState {
   posts: NormalizedPost[];
   isLoading: boolean;
   error: string | null;
-  /** Platform → post count breakdown for the current window */
+  
   breakdown: Record<SocialPlatformFilter, number>;
-  /** ISO timestamp of the last successful fetch */
+  
   lastFetchedAt: string | null;
-  /** Trigger a manual refresh */
+  
   refresh: () => void;
-  /** Filter to a single platform (sets `platform` and re-fetches) */
+  
   setPlatform: (platform: SocialPlatformFilter) => void;
   currentPlatform: SocialPlatformFilter;
 }
 
 const BACKEND_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/social';
 const DEFAULT_LIMIT = 30;
-const POLL_INTERVAL_MS = 60_000; // refresh every 60 s in the background
+const POLL_INTERVAL_MS = 60_000; 
 
 async function fetchPlatformFeed(
   platform: SocialPlatformFilter,
@@ -59,9 +44,9 @@ async function fetchPlatformFeed(
 
   const raw = (await res.json()) as unknown[];
 
-  // Normalise the backend's raw posts (mastodon/nostr/bluesky shape) into the
-  // NormalizedPost interface. The backend already returns a partially normalised
-  // shape from its aggregators; we cast + fill defaults here.
+  
+  
+  
   return (raw as unknown[]).map((rawItem: unknown): NormalizedPost => {
   const item = rawItem as Record<string, unknown>;
   return ({
@@ -90,7 +75,7 @@ async function fetchPlatformFeed(
 });
 }
 
-/** Derive source from an id string prefixed by platform name */
+
 function deriveSource(id: string): NormalizedPost['source'] {
   if (id.startsWith('mastodon_')) return 'mastodon';
   if (id.startsWith('nostr_')) return 'nostr';
@@ -98,7 +83,7 @@ function deriveSource(id: string): NormalizedPost['source'] {
   return 'connector';
 }
 
-/** Strip basic HTML tags from Mastodon status content */
+
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/gi, '\n')
@@ -128,14 +113,7 @@ function countByPlatform(
   );
 }
 
-/**
- * Aggregated decentralized social feed hook.
- *
- * @example
- * ```tsx
- * const { posts, isLoading, setPlatform } = useSocialData();
- * ```
- */
+
 export function useSocialData(
   initialPlatform: SocialPlatformFilter = 'all',
   limit: number = DEFAULT_LIMIT
@@ -173,12 +151,12 @@ export function useSocialData(
     [limit]
   );
 
-  // Initial load + platform change
+  
   useEffect(() => {
     void load(platform);
   }, [platform, load]);
 
-  // Background polling
+  
   useEffect(() => {
     pollRef.current = setInterval(() => void load(platform), POLL_INTERVAL_MS);
     return () => {
@@ -186,7 +164,7 @@ export function useSocialData(
     };
   }, [platform, load]);
 
-  // Cleanup on unmount
+  
   useEffect(() => {
     isMounted.current = true;
     return () => {

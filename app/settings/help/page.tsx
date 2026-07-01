@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.SettingsHelp  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Help – Dreamengin Settings' };
 

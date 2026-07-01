@@ -5,16 +5,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
-/**
- * FeedSettingsClient — interactive feed preference toggles with database persistence.
- *
- * Phase 8 §A Point 3: Feed algorithm and source selection controls save their
- * settings to the database and restore on session load.
- *
- * Constitution Rule 6-7: every visible toggle must do something real.
- * Settings are persisted to /api/settings/feed (profiles.feed_preferences column).
- * localStorage is used only as a write-through cache for instant UI responsiveness.
- */
+
 
 const STORAGE_KEY = 'de-feed-settings';
 
@@ -55,12 +46,12 @@ function Toggle({ value, onToggle, label }: {value: boolean; onToggle: () => voi
 }
 
 export default function FeedSettingsClient( ){
-  // Initialize with localStorage value to avoid setState in effect
+  
   const [prefs, setPrefs] = useState<FeedPreferences>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
-    } catch { /* ignore */ }
+    } catch {  }
     return DEFAULT_PREFS;
   });
   const [saved, setSaved] = useState(false);
@@ -68,21 +59,21 @@ export default function FeedSettingsClient( ){
   const [connectedNames, setConnectedNames] = useState<string[]>([]);
 
   useEffect(() => {
-    // Phase 8 §A Point 3: load preferences from DB (canonical source of truth)
+    
     fetch('/api/settings/feed')
       .then((r) => r.json())
       .then((data: { ok: boolean; preferences?: Partial<FeedPreferences> }) => {
         if (data.ok && data.preferences && Object.keys(data.preferences).length > 0) {
           const merged = { ...DEFAULT_PREFS, ...data.preferences };
           setPrefs(merged);
-          // Keep localStorage in sync as write-through cache
-          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch { /* ignore */ }
+          
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {  }
         }
       })
-      .catch(() => { /* fall back to localStorage values already applied */ })
+      .catch(() => {  })
       .finally(() => setLoading(false));
 
-    // Load real connected connectors to show in Active Slices section
+    
     fetch('/api/connectors/status')
       .then((r) => r.json())
       .then((data: { ok: boolean; statuses: Record<string, { status: string }> }) => {
@@ -92,20 +83,20 @@ export default function FeedSettingsClient( ){
           .map(([provider]) => provider.charAt(0).toUpperCase() + provider.slice(1));
         setConnectedNames(names);
       })
-      .catch(() => { /* keep empty */ });
+      .catch(() => {  });
   }, []);
 
   const toggle = useCallback((key: keyof FeedPreferences) => {
     setPrefs((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      // Write-through to localStorage for instant feedback
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {  }
       void queueLocalFirstMutation('feed-settings', next, { url: '/api/settings/feed', method: 'POST' });
       fetch('/api/settings/feed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(next),
-      }).catch(() => { /* local setting is already effective and queued */ });
+      }).catch(() => {  });
       return next;
     });
     setSaved(true);

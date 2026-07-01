@@ -9,21 +9,21 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/admin/observability/route.ts
-//
-// Admin-only endpoint that returns the current telemetry snapshot and
-// correlation result from the IDARi observability collector.
-//
-// Security:
-//   - Requires an active Supabase session.
-//   - Requires the user to be an admin or owner (same gate as /api/ai/idari).
-//   - IDARI_PASSWORD must be set in the environment.
-//
-// Intended usage: IDariPanel polls this endpoint to display the live
-// observability dashboard in the admin UI.
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  // Service availability guard — matches /api/ai/idari
+  
   if (!process.env.IDARI_PASSWORD) {
     return jsonApiError(
       503,
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Auth check
+  
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(401, 'NOT_AUTHENTICATED', 'You must be signed in to access observability data.');
   }
 
-  // Admin/owner gate
+  
 
   const { data: roleData } = await (supabase as SupabaseClient)
     .from('user_roles')
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return jsonApiError(403, 'FORBIDDEN', 'Observability data is admin-only.');
   }
 
-  // Parse optional window_ms query param (default: 5 minutes)
+  
   const url = new URL(req.url);
   const rawWindow = url.searchParams.get('window_ms');
   const windowMs = rawWindow

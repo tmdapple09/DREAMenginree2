@@ -3,17 +3,10 @@
 import { useCallback, useState } from "react";
 import { useSharedDream } from "./dream.SharedDreamProvider";
 
-/**
- * components/shared-dream/dream.InviteFlow.tsx — §38 Invite Flow
- *
- * "Launch Shared Dream" button:
- *   1. Generates an invite link
- *   2. Opens a modal displaying the link with copy-to-clipboard
- *   3. Accept flow initialises sync automatically (handled via URL param)
- */
+
 
 export interface InviteFlowProps {
-  /** Optional className for the trigger button. */
+  
   className?: string;
 }
 
@@ -41,7 +34,7 @@ export function InviteFlow({ className = "" }: InviteFlowProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback: select the input
+      
       const input = document.getElementById(
         "sd-invite-input",
       ) as HTMLInputElement | null;
@@ -51,7 +44,7 @@ export function InviteFlow({ className = "" }: InviteFlowProps) {
 
   return (
     <>
-      {/* ── Trigger button ─────────────────────────────────────────────────── */}
+      
       <button
         onClick={handleOpen}
         disabled={!connected}
@@ -67,21 +60,21 @@ export function InviteFlow({ className = "" }: InviteFlowProps) {
         Launch Shared Dream
       </button>
 
-      {/* ── Modal ─────────────────────────────────────────────────────────── */}
+      
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           onClick={handleClose}
         >
-          {/* Backdrop */}
+          
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
-          {/* Dialog */}
+          
           <div
             className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-neutral-900 p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
+            
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-white">
                 Shared Dream Invite
@@ -94,7 +87,7 @@ export function InviteFlow({ className = "" }: InviteFlowProps) {
               </button>
             </div>
 
-            {/* Invite link */}
+            
             <p className="text-xs text-white/40 mb-1">Invite link</p>
             <div className="flex gap-2 mb-4">
               <input
@@ -120,7 +113,7 @@ export function InviteFlow({ className = "" }: InviteFlowProps) {
               </button>
             </div>
 
-            {/* Instructions */}
+            
             <p className="text-[11px] text-white/30 leading-relaxed">
               Share this link with collaborators. Opening it starts the shared
               workspace.

@@ -39,7 +39,7 @@
   pointer-events: auto;
 }
 
-/* ── Joystick dock (shared base) ────────────────────────────────────────── */
+
 
 .joystickDock {
   position: absolute;
@@ -62,13 +62,13 @@
 
 .rightDock {
   right: clamp(16px, 5vw, 28px);
-  /* Larger than the left stick so the button ring + joystick fit comfortably */
+  
   --dock-size: clamp(180px, 46vw, 252px);
   transform: translateY(calc(-1 * var(--remote-offset-y, 0px))) scale(var(--remote-scale, 1));
   transform-origin: right bottom;
 }
 
-/* ── Left joystick visuals ───────────────────────────────────────────────── */
+
 
 .joystickShell {
   position: relative;
@@ -130,10 +130,10 @@
   transition: transform 0.1s ease-out;
 }
 
-/* ── Right joystick cap embedded inside the button cluster hub ───────────── */
+
 
 .rightJoyCap {
-  /* Override to sit at cluster center (same absolute centering, z on top) */
+  
   position: absolute;
   width: 26%;
   height: 26%;
@@ -142,7 +142,7 @@
   z-index: 2;
 }
 
-/* ── Readout label ───────────────────────────────────────────────────────── */
+
 
 .readout {
   position: absolute;
@@ -164,7 +164,7 @@
   white-space: nowrap;
 }
 
-/* ── Center group (pause/exit + size + drag) ─────────────────────────────── */
+
 
 .centerGroup {
   position: absolute;
@@ -218,7 +218,7 @@
   transform: scale(0.97);
 }
 
-/* +/- size control */
+
 
 .sizeControl {
   display: flex;
@@ -263,7 +263,7 @@
   text-align: center;
 }
 
-/* Drag handle */
+
 
 .dragHandle {
   font-size: 16px;
@@ -284,7 +284,7 @@
   border-color: rgba(125, 211, 252, 0.22);
 }
 
-/* ── Right dock: button cluster (ring buttons + embedded joystick) ─────── */
+
 
 .buttonCluster {
   position: relative;
@@ -375,7 +375,7 @@
   color: rgba(226, 232, 240, 0.58);
 }
 
-/* Ring button slot positions */
+
 
 .slotL1 {
   left: 16%;
@@ -419,7 +419,7 @@
   top: 39%;
 }
 
-/* ── HUD badge ──────────────────────────────────────────────────────────── */
+
 
 .hudBadge {
   position: absolute;
@@ -437,7 +437,7 @@
   text-transform: uppercase;
 }
 
-/* ── iPad / large-tablet overrides (coarse touch, ≥768px on both axes) ─── */
+
 
 @media (pointer: coarse) and (min-width: 768px) and (min-height: 768px) {
   .leftDock {
@@ -466,7 +466,7 @@
   }
 }
 
-/* ── Landscape overrides ────────────────────────────────────────────────── */
+
 
 @media (orientation: landscape) and (max-height: 500px) {
   .joystickDock {

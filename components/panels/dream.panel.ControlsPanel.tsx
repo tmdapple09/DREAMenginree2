@@ -5,11 +5,7 @@ import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Check, Sliders } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * ControlsPanel — Home button behavior settings rendered in Surface Space.
- * Same real localStorage-persisted logic as ControlsClient.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 const STORAGE_KEY = 'de-controls-settings';
 
@@ -36,13 +32,13 @@ export default function ControlsPanel( ){
   const [saved, setSaved]       = useState(false);
 
   useEffect(() => {
-    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) setSettings((p) => ({ ...p, ...JSON.parse(raw) })); } catch { /* ignore */ }
+    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) setSettings((p) => ({ ...p, ...JSON.parse(raw) })); } catch {  }
   }, []);
 
   const toggle = useCallback((key: keyof ControlsSettings) => {
     setSettings((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {  }
       return next;
     });
     setSaved(true); setTimeout(() => setSaved(false), 1800);

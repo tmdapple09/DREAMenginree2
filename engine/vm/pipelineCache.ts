@@ -1,9 +1,4 @@
-/**
- * lib/vm/pipelineCache.ts — GPU Compute Pipeline Cache
- *
- * Caches compiled WGSL shaders using IndexedDB to avoid re-compilation.
- * Keyed by SHA-256 hash of source + device features.
- */
+
 
 export class PipelineCache {
   private readonly memoryCache = new Map<string, GPUComputePipeline>();
@@ -13,9 +8,7 @@ export class PipelineCache {
 
   constructor(private readonly device: GPUDevice) {}
 
-  /**
-   * Initialize IndexedDB connection.
-   */
+  
   async init(): Promise<void> {
     if (typeof indexedDB === 'undefined') {
       console.warn('[PipelineCache] IndexedDB not available, cache disabled');
@@ -44,11 +37,7 @@ export class PipelineCache {
     });
   }
 
-  /**
-   * Get or create a compute pipeline.
-   *
-   * First checks memory cache, then IndexedDB, then compiles from source.
-   */
+  
   async getOrCreate(
     wgslSource: string,
     layout?: GPUPipelineLayout,
@@ -59,20 +48,20 @@ export class PipelineCache {
   }> {
     const sourceHash = await this.hashSource(wgslSource);
 
-    // Check memory cache
+    
     const cached = this.memoryCache.get(sourceHash);
     if (cached) {
       return { pipeline: cached, sourceHash, cacheHit: true };
     }
 
-    // Check IndexedDB cache
+    
     const diskCached = await this.loadFromDisk(sourceHash);
     if (diskCached) {
       this.memoryCache.set(sourceHash, diskCached);
       return { pipeline: diskCached, sourceHash, cacheHit: true };
     }
 
-    // Compile from source
+    
     const pipeline = await this.compile(wgslSource, layout);
     this.memoryCache.set(sourceHash, pipeline);
     await this.saveToDisk(sourceHash, wgslSource);
@@ -80,9 +69,7 @@ export class PipelineCache {
     return { pipeline, sourceHash, cacheHit: false };
   }
 
-  /**
-   * Compile WGSL source to a compute pipeline.
-   */
+  
   private async compile(
     wgslSource: string,
     layout?: GPUPipelineLayout,
@@ -91,7 +78,7 @@ export class PipelineCache {
       code: wgslSource,
     });
 
-    // Check for compilation errors
+    
     const compilationInfo = await shaderModule.getCompilationInfo();
     const errors = compilationInfo.messages.filter((m) => m.type === 'error');
     if (errors.length > 0) {
@@ -110,16 +97,14 @@ export class PipelineCache {
     return pipeline;
   }
 
-  /**
-   * Compute SHA-256 hash of WGSL source + device features.
-   */
+  
   private async hashSource(wgslSource: string): Promise<string> {
-    // Include device features in hash to invalidate cache on device change
+    
     const features = Array.from(this.device.features).sort().join(',');
     const input = `${wgslSource}|${features}`;
 
     if (typeof crypto === 'undefined' || !crypto.subtle) {
-      // Fallback for environments without crypto.subtle
+      
       return this.simpleHash(input);
     }
 
@@ -130,22 +115,18 @@ export class PipelineCache {
     return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
   }
 
-  /**
-   * Simple non-cryptographic hash for fallback.
-   */
+  
   private simpleHash(input: string): string {
     let hash = 0;
     for (let i = 0; i < input.length; i++) {
       const char = input.charCodeAt(i);
       hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32-bit integer
+      hash = hash & hash; 
     }
     return Math.abs(hash).toString(16).padStart(8, '0');
   }
 
-  /**
-   * Load pipeline from IndexedDB.
-   */
+  
   private async loadFromDisk(hash: string): Promise<GPUComputePipeline | null> {
     if (!this.db) return null;
 
@@ -162,10 +143,10 @@ export class PipelineCache {
         }
 
         try {
-          // Re-compile from cached source
-          // Note: WebGPU doesn't support binary pipeline serialization yet,
-          // so we cache the source and re-compile. This still saves the
-          // parsing/validation overhead.
+          
+          
+          
+          
           const pipeline = await this.compile(record.source);
           resolve(pipeline);
         } catch {
@@ -179,9 +160,7 @@ export class PipelineCache {
     });
   }
 
-  /**
-   * Save pipeline metadata to IndexedDB.
-   */
+  
   private async saveToDisk(hash: string, source: string): Promise<void> {
     if (!this.db) return;
 
@@ -203,14 +182,12 @@ export class PipelineCache {
 
       request.onerror = () => {
         console.error('[PipelineCache] Failed to save to disk');
-        resolve(); // Don't fail if cache save fails
+        resolve(); 
       };
     });
   }
 
-  /**
-   * Clear all cached pipelines.
-   */
+  
   async clear(): Promise<void> {
     this.memoryCache.clear();
 
@@ -232,9 +209,7 @@ export class PipelineCache {
     });
   }
 
-  /**
-   * Get cache statistics.
-   */
+  
   async getStats(): Promise<{
     memoryCacheSize: number;
     diskCacheSize: number;
@@ -262,9 +237,7 @@ export class PipelineCache {
     return { memoryCacheSize, diskCacheSize };
   }
 
-  /**
-   * Close IndexedDB connection.
-   */
+  
   close(): void {
     if (this.db) {
       this.db.close();

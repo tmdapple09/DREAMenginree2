@@ -4,11 +4,7 @@ import AlgorithmEngine from '@/components/feed/dream.AlgorithmEngine';
 import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Cpu } from 'lucide-react';
 
-/**
- * AlgorithmPanel — My Algorithm settings rendered in Surface Space.
- * Wraps the real AlgorithmEngine component.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 export default function AlgorithmPanel( ){
   const { openInSurface } = useDreamSystem();

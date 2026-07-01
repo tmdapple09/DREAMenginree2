@@ -8,12 +8,12 @@ import {
 import { randomUUID } from 'crypto';
 import { ToolHandler } from '../tool-router';
 
-// lib/ai/handlers/social.ts
-// Social and Content Intent Handlers
 
-// ============================================================================
-// POST_CREATE Handler
-// ============================================================================
+
+
+
+
+
 
 export const handlePostCreate: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as PostCreatePayload;
@@ -52,14 +52,14 @@ export const handlePostCreate: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// POST_LIKE Handler
-// ============================================================================
+
+
+
 
 export const handlePostLike: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as PostLikePayload;
 
-  // Check if already liked (idempotent)
+  
   const { data: existing } = await ctx.supabase
     .from('likes')
     .select('id')
@@ -80,7 +80,7 @@ export const handlePostLike: ToolHandler = async (ctx) => {
     };
   }
 
-  // Create like
+  
   const { error } = await ctx.supabase.from('likes').insert({
     user_id: ctx.actor.user_id,
     post_id: payload.post_id,
@@ -109,14 +109,14 @@ export const handlePostLike: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// FOLLOW_USER Handler
-// ============================================================================
+
+
+
 
 export const handleFollowUser: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as FollowUserPayload;
 
-  // Check if already following (idempotent)
+  
   const { data: existing } = await ctx.supabase
     .from('follows')
     .select('*')
@@ -137,7 +137,7 @@ export const handleFollowUser: ToolHandler = async (ctx) => {
     };
   }
 
-  // Create follow
+  
   const { error } = await ctx.supabase.from('follows').insert({
     follower_id: ctx.actor.user_id,
     followed_id: payload.user_id,
@@ -166,9 +166,9 @@ export const handleFollowUser: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// SEARCH Handler
-// ============================================================================
+
+
+
 
 export const handleSearch: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as SearchPayload;
@@ -176,7 +176,7 @@ export const handleSearch: ToolHandler = async (ctx) => {
 
   const results: Record<string, unknown[]> = {};
 
-  // Search posts
+  
   if (scope === 'posts' || scope === 'all') {
     const { data: posts } = await ctx.supabase
       .from('app_posts')
@@ -187,7 +187,7 @@ export const handleSearch: ToolHandler = async (ctx) => {
     results.posts = posts ?? [];
   }
 
-  // Search users
+  
   if (scope === 'users' || scope === 'all') {
     const { data: users } = await ctx.supabase
       .from('profiles')
@@ -204,14 +204,14 @@ export const handleSearch: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// DRAFT_SAVE Handler
-// ============================================================================
+
+
+
 
 export const handleDraftSave: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as DraftSavePayload;
 
-  // Store draft in ai_memories
+  
   const draftId = payload.draft_id ?? randomUUID();
 
   const { error } = await ctx.supabase.from('ai_memories').upsert({

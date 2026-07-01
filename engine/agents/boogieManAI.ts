@@ -1,10 +1,10 @@
 import type { BoogieManAgent } from "@/types/ai";
 
-// lib/agents/boogieManAI.ts
-// Section 13: BoogieManAI — Policy / Enforcement
-//
-// BoogieManAI enforces platform policies.
-// It lives inside widgets, not above the system.
+
+
+
+
+
 
 export const BOOGIEMAN_EVENT = "dreamengin:boogieman";
 
@@ -36,8 +36,8 @@ export function createBoogieManAgent(widgetId?: string): BoogieManAgent {
 }
 
 export function checkPolicy(check: PolicyCheck): PolicyResult {
-  // Default-allow: concrete enforcement rules are registered per-deployment.
-  // Callers should layer additional checks on top of this baseline.
+  
+  
   return { verdict: "allow" };
 }
 

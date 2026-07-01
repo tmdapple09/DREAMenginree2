@@ -3,12 +3,7 @@
 import { computeMomentum, getLevelColor, getLevelEmoji, type MomentumSnapshot } from '@/engins/forgeengin/forge/forgeMomentum';
 import { useEffect, useState } from 'react';
 
-/**
- * ForgeMomentumWidget — Client-side momentum score display for Side A.
- *
- * Reads Forge activity history from localStorage and renders a compact
- * creative momentum overview. Refreshes every 15 seconds.
- */
+
 
 export default function ForgeMomentumWidget( ){
   const [snap, setSnap] = useState<MomentumSnapshot | null>(null);
@@ -35,7 +30,7 @@ export default function ForgeMomentumWidget( ){
       background: `${color}06`,
       border: `1px solid ${color}20`,
     }}>
-      {/* Mini score ring */}
+      
       <div style={{ position: 'relative', width: 48, height: 48, flexShrink: 0 }}>
         <svg viewBox="0 0 48 48" style={{ width: 48, height: 48, transform: 'rotate(-90deg)' }}>
           <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="4" />
@@ -64,7 +59,7 @@ export default function ForgeMomentumWidget( ){
         <div style={{ fontSize: 11, color: 'var(--de-text-dim)', lineHeight: 1.5, marginTop: 2 }}>
           {snap.actionsToday} actions today · {snap.streakDays}d streak · {snap.enginesUsedToday.length} engine{snap.enginesUsedToday.length !== 1 ? 's' : ''} active
         </div>
-        {/* Dimension bars */}
+        
         <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
           {snap.dimensions.map((dim) => (
             <div key={dim.name} style={{ flex: 1 }} title={`${dim.name}: ${dim.score}`}>

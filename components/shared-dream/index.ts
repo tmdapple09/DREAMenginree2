@@ -1,8 +1,4 @@
-/**
- * components/shared-dream/index.ts — §38 Shared Dream Collaboration
- *
- * Re-exports all shared-dream components and hooks.
- */
+
 
 export {
     SharedDreamProvider,

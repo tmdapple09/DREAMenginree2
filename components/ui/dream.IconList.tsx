@@ -8,21 +8,18 @@ export type IconListItem = {
   label: string;
   href: string;
   description?: string;
-  /** Opens in a new tab with rel="noreferrer". */
+  
   external?: boolean;
 };
 
 type Props = {
   items: IconListItem[];
-  /** px size for each icon. Defaults to 32. */
+  
   iconSize?: number;
   className?: string;
 };
 
-/**
- * Renders a vertical list of icon + label navigation links.
- * Each row uses the .pillBtn glass-capsule style from globals.css.
- */
+
 export default function IconList({ items, iconSize = 32, className = '' }: Props) {
   return (
     <ul
@@ -49,7 +46,7 @@ export default function IconList({ items, iconSize = 32, className = '' }: Props
                 </span>
               )}
             </span>
-            {/* chevron */}
+            
             <svg
               aria-hidden="true"
               width="14"

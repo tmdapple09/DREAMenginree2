@@ -16,11 +16,11 @@ export interface HumanityPath {
 }
 
 export interface OriginalityMeta {
-  /** Unique words / total words in content (0–1). */
+  
   uniqueWordRatio: number;
-  /** True if the post contains original (non-aggregated) media. */
+  
   hasOriginalMedia: boolean;
-  /** Maximum cosine similarity to any known/syndicated content (0–1). */
+  
   maxSimilarity: number;
 }
 
@@ -53,13 +53,7 @@ export interface TorridityPostLike {
   views_count?: number;
 }
 
-/**
- * slog — signed logarithmic transform (natural ledger coordinate system).
- * slog(x) = sign(x) · ln(1 + |x|)
- *
- * Preserves sign, compresses large values, and is scale-invariant.
- * Applied to all deviations, velocities, and engagement metrics.
- */
+
 export function slog(x: number): number {
   return Math.sign(x) * Math.log(1 + Math.abs(x));
 }
@@ -131,13 +125,7 @@ export function derivePostMassMeta(post: TorridityPostLike): PostMassMeta {
   };
 }
 
-/**
- * Originality score — measures genuine creative effort.
- *
- * score = 0.4·slog(uniqueWordRatio) + 0.3·hasOriginalMedia + 0.3·slog(1 − maxSimilarity)
- *
- * Range is approximately 0–0.79 (not normalized to 1).
- */
+
 export function calculateOriginality(meta: OriginalityMeta): number {
   const { uniqueWordRatio, hasOriginalMedia, maxSimilarity } = meta;
   return (
@@ -158,7 +146,7 @@ export function resolveSwipeRelease(
   }: SwipeReleaseSample,
   profile: CalibrationProfile = getActiveProfile(),
 ): SwipeReleaseResult {
-  // Prefer the per-call override; fall back to the device-calibrated threshold.
+  
   const threshold = triggerThresholdPx ?? profile.triggerThresholdPx;
   const interactionDelta = getInteractionDelta(pixelDelta);
   const releaseVelocity = getDeceleration(pixelDelta / Math.max(durationMs, 1));

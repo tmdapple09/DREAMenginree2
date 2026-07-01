@@ -7,7 +7,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.EnginesGamesScores  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Scores – GameEngin', description: 'Your personal best scores.' };
 
@@ -32,7 +32,7 @@ export default async function GamesScoresPage(props?: GamesScoresPageProps ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect(buildLoginRedirectPath('/engines/games/scores', currentSearchParams));
 
   return (

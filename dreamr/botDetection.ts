@@ -1,46 +1,36 @@
 import { slog, slogEntropy, slogVariance } from '@/engine/slog';
 
-/**
- * Bot Detection — Physical Turing Test
- *
- * Analyses swipe paths and view durations to discriminate human from
- * bot interaction using slog-transformed physics metrics.
- *
- * Exported API:
- *   analyzeSwipe(points)      → SwipeAnalysis
- *   tallyView(durationMs)     → ViewTally
- *   isBotSession(history)     → BotSessionResult
- */
+
 
 export interface Point {
   x: number;
   y: number;
-  /** Timestamp in ms (relative to swipe start). */
+  
   t: number;
 }
 
 export interface SwipeAnalysis {
-  /** Mean perpendicular deviation from best-fit line (px). */
+  
   meanDeviation: number;
-  /** slog-transformed velocity variance. */
+  
   slogVelocityVariance: number;
-  /** slog-transformed jerk (rate of acceleration change). */
+  
   slogJerk: number;
-  /** Shannon entropy of deviations (higher = more human). */
+  
   deviationEntropy: number;
-  /** Cross-path similarity against stored reference paths [0,1]. */
+  
   crossSimilarity: number;
-  /** Coarse-graining invariance: |mean_dev_first_half − mean_dev_second_half|. */
+  
   coarseGrainDiff: number;
-  /** Likely bot flag based on this single swipe. */
+  
   likelyBot: boolean;
-  /** Reason string for debugging. */
+  
   reason: string;
 }
 
 export interface ViewTally {
   durationMs: number;
-  /** True if the view lasted ≥ 4 000 ms without early leave. */
+  
   counted: boolean;
 }
 
@@ -50,14 +40,14 @@ export interface BotSessionResult {
   signals: string[];
 }
 
-/** Fit a line y = mx + b through the first and last point. */
+
 function fitLine(points: Point[]): { m: number; b: number } {
   const first = points[0];
   const last  = points[points.length - 1];
   const dx    = last.x - first.x;
   const dy    = last.y - first.y;
   if (Math.abs(dx) < 1e-6) {
-    // Vertical line — use x-deviation instead
+    
     return { m: Infinity, b: first.x };
   }
   const m = dy / dx;
@@ -65,7 +55,7 @@ function fitLine(points: Point[]): { m: number; b: number } {
   return { m, b };
 }
 
-/** Perpendicular distance from point to line ax + by + c = 0. */
+
 function perpDistance(
   p: Point,
   m: number,
@@ -74,11 +64,11 @@ function perpDistance(
   lineX: number
 ): number {
   if (vertical) return Math.abs(p.x - lineX);
-  // Line: mx - y + b = 0
+  
   return Math.abs(m * p.x - p.y + b) / Math.sqrt(m * m + 1);
 }
 
-/** Cosine similarity between two normalised path vectors. */
+
 function cosineSimilarity(a: number[], b: number[]): number {
   const len = Math.min(a.length, b.length);
   if (len === 0) return 0;
@@ -92,7 +82,7 @@ function cosineSimilarity(a: number[], b: number[]): number {
   return dot / (Math.sqrt(na) * Math.sqrt(nb));
 }
 
-/** Resample a path to N evenly-spaced deviation values. */
+
 function normalisePath(deviations: number[], n = 20): number[] {
   if (deviations.length === 0) return new Array(n).fill(0);
   const result: number[] = [];
@@ -112,13 +102,9 @@ function updateHistory(normPath: number[] ){
 }
 
 let perfectLineStreak = 0;
-let frozenUntil       = 0; // timestamp (Date.now())
+let frozenUntil       = 0; 
 
-/**
- * analyzeSwipe(points)
- *
- * Analyses a single swipe gesture for bot-like characteristics.
- */
+
 export function analyzeSwipe(points: Point[]): SwipeAnalysis {
   if (points.length < 3) {
     return {
@@ -135,7 +121,7 @@ export function analyzeSwipe(points: Point[]): SwipeAnalysis {
 
   const { m, b } = fitLine(points);
   const vertical = m === Infinity;
-  const lineX    = b; // reused as lineX when vertical
+  const lineX    = b; 
 
   const deviations = points.map((p) => perpDistance(p, m, b, vertical, lineX));
   const meanDev    = deviations.reduce((a, c) => a + c, 0) / deviations.length;
@@ -191,7 +177,7 @@ export function analyzeSwipe(points: Point[]): SwipeAnalysis {
   if (meanDev < 1.5) {
     perfectLineStreak++;
     if (perfectLineStreak >= 2) {
-      // Freeze for 3–5 s
+      
       frozenUntil = now + 3000 + Math.random() * 2000;
       return {
         meanDeviation: meanDev,
@@ -233,13 +219,7 @@ export function analyzeSwipe(points: Point[]): SwipeAnalysis {
   };
 }
 
-/**
- * tallyView(durationMs)
- *
- * Returns whether a card view counts as a genuine engagement.
- * 4 000 ms minimum — timer should be cancelled by the caller if user
- * navigates away before calling tallyView.
- */
+
 export function tallyView(durationMs: number): ViewTally {
   return {
     durationMs,
@@ -252,12 +232,7 @@ export interface SwipeRecord {
   viewTally?: ViewTally;
 }
 
-/**
- * isBotSession(history)
- *
- * Aggregates a session's swipe + view history to produce a final
- * bot-probability estimate.
- */
+
 export function isBotSession(history: SwipeRecord[]): BotSessionResult {
   if (history.length === 0) {
     return { isBot: false, confidence: 0, signals: ['No history.'] };

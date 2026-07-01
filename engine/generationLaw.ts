@@ -1,43 +1,29 @@
-/**
- * Generation Law — ι-Engine
- *
- * Implements the GENERATION_LAW.md specification exactly.
- *
- * Formula:
- *   ι = ΔP × ( n·1 + a·λ + s·λ² + v·λ³ + xi·λ⁴ )
- *
- * where ΔP = 0.1, λ = 1.71
- *
- * Protocols:
- *   ι < 2.88         → FLOW      (throttle / skip)
- *   2.88 ≤ ι < 9.59  → SYNTHESIZE
- *   ι ≥ 9.59         → MANIFEST  (build immediately)
- */
+
 
 export const DELTA_P = 0.1;
 export const LAMBDA   = 2.1;
 
-/** Maximum theoretical ι: ΔP × (10·Σ λ^k, k=0..4) */
+
 export const IOTA_MAX = DELTA_P * (10 * (1 + LAMBDA + LAMBDA ** 2 + LAMBDA ** 3 + LAMBDA ** 4));
 
-/** Protocol thresholds (15 % and 30 % of IOTA_MAX ≈ 19.18) */
-export const THRESHOLD_FLOW      = IOTA_MAX * 0.15;  // ≈ 2.88
-export const THRESHOLD_SYNTHESIZE = IOTA_MAX * 0.30; // ≈ 5.76
+
+export const THRESHOLD_FLOW      = IOTA_MAX * 0.15;  
+export const THRESHOLD_SYNTHESIZE = IOTA_MAX * 0.30; 
 
 export interface CreativePass {
-  /** Pass identifier / name */
+  
   id: string;
-  /** Description of what is being built */
+  
   description: string;
-  /** Novelty (0–10) */
+  
   n: number;
-  /** Autonomy (0–10) */
+  
   a: number;
-  /** Synthesis (0–10) */
+  
   s: number;
-  /** Vision alignment (0–10) */
+  
   v: number;
-  /** Chaos / weirdness (0–10) */
+  
   xi: number;
 }
 
@@ -66,11 +52,7 @@ export interface PrePassChecklist {
   reason: string;
 }
 
-/**
- * calculateInventionForce(pass)
- *
- * Computes ι for a creative pass using the weighted formula.
- */
+
 export function calculateInventionForce(pass: CreativePass): InventionResult {
   const { n, a, s, v, xi } = pass;
   const rawSum =
@@ -86,24 +68,14 @@ export function calculateInventionForce(pass: CreativePass): InventionResult {
   return { iota, protocol, rawSum };
 }
 
-/**
- * getPassProtocol(iota)
- *
- * Maps an ι value to its creative protocol.
- */
+
 export function getPassProtocol(iota: number): Protocol {
   if (iota >= THRESHOLD_SYNTHESIZE) return 'MANIFEST';
   if (iota >= THRESHOLD_FLOW)       return 'SYNTHESIZE';
   return 'FLOW';
 }
 
-/**
- * runPrePassChecklist(pass)
- *
- * Validates a creative pass before execution.
- * MANIFEST passes are always approved.
- * FLOW passes are flagged but not blocked.
- */
+
 export function runPrePassChecklist(pass: CreativePass): PrePassChecklist {
   const { iota, protocol } = calculateInventionForce(pass);
 
@@ -112,7 +84,7 @@ export function runPrePassChecklist(pass: CreativePass): PrePassChecklist {
 
   if (protocol === 'FLOW') {
     reason = `Low ι (${iota.toFixed(3)}) — consider throttling or skipping.`;
-    // Not blocked per law §4: residuals are observations, not obstacles
+    
   }
 
   if (protocol === 'SYNTHESIZE') {
@@ -134,14 +106,10 @@ export function runPrePassChecklist(pass: CreativePass): PrePassChecklist {
   };
 }
 
-/** In-memory residual log. Non-blocking — per law §5. */
+
 export const BUGS_LOG: ResidualClass[] = [];
 
-/**
- * logResidual(residual)
- *
- * Records a residual observation.  Does NOT stop execution.
- */
+
 export function logResidual(
   residual: Omit<ResidualClass, 'timestamp'>
 ): void {
@@ -151,11 +119,7 @@ export function logResidual(
   });
 }
 
-/**
- * auditPostPass(passId)
- *
- * Returns all residuals recorded for a given pass.
- */
+
 export function auditPostPass(passId: string): ResidualClass[] {
   return BUGS_LOG.filter((r) => r.passId === passId);
 }

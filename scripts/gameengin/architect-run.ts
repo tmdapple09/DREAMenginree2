@@ -1,25 +1,4 @@
-/**
- * scripts/gameengin/architect-run.ts
- *
- * Game Architect — the visionary. Generates a Vision Statement and stores
- * it in the Brain's Concept Library so Maestro can promote it later.
- *
- * Inputs (all from the Brain — no internet required for the deterministic
- * default; `--scrape` is reserved for future trend ingestion):
- *   - genre-dna/<genre>.json
- *   - mechanic-library/<category>/<id>.json
- *   - emotional-tones/<tone>.json
- *   - concept-patterns/{settings,protagonists,scope-formulas}/*.json
- *   - originality-registry/signatures.json (for novelty check)
- *
- * Output:
- *   - lib/gameengin/brain/concept-library/<vision_id>.json
- *   - one R&D session entry under brain/rd-sessions/
- *
- * Env / args:
- *   ARCHITECT_VISION_ID, ARCHITECT_GENRE, ARCHITECT_TITLE
- *   ARCHITECT_DRY=1     → log only, do not write to the Concept Library
- */
+
 
 import {
     isOriginal,
@@ -65,9 +44,9 @@ function pickPattern<T extends ConceptPattern>(
 }
 
 function pickCoreMechanics(genre: string): string[] {
-  // Genre-tagged mechanic selection: prefer mechanics that already declare
-  // the target genre in `games_using`, fall back to the first 3 movement
-  // mechanics. Cap at 3 to stay within the 2–4 mechanic budget.
+  
+  
+  
   const all = listMechanics();
   const matched = all.filter((m) => Array.isArray(m.games_using) && m.games_using.some((g) => g.includes(genre)));
   const pool = matched.length >= 2 ? matched : all.filter((m) => m.category === 'movement');
@@ -136,7 +115,7 @@ function draftVision(inputs: ArchitectInputs): VisionStatement {
 async function main() {
   const inputs = readInputs();
 
-  // Don't clobber a hand-curated vision unless explicitly forced.
+  
   const existing = readVisionStatement(inputs.visionId);
   if (existing && process.env.ARCHITECT_FORCE !== '1') {
     console.log(`[architect] vision "${inputs.visionId}" already exists; skipping (set ARCHITECT_FORCE=1 to overwrite).`);

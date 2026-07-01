@@ -1,7 +1,7 @@
-// tests/activity-first-protocol.test.ts
-// Phase 9 — Activity-First Protocol Tests
-//
-// Tests for AQS calculation, visibility scoring, tier multipliers, and core logic.
+
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -102,8 +102,8 @@ describe('Activity-First Protocol - Decay System', () => {
   });
 
   it('should correctly identify decayed points', () => {
-    const past = new Date(Date.now() - 31 * 24 * 60 * 60 * 1000); // 31 days ago
-    const future = new Date(Date.now() + 29 * 24 * 60 * 60 * 1000); // 29 days from now
+    const past = new Date(Date.now() - 31 * 24 * 60 * 60 * 1000); 
+    const future = new Date(Date.now() + 29 * 24 * 60 * 60 * 1000); 
 
     expect(isDecayed(past)).toBe(true);
     expect(isDecayed(future)).toBe(false);
@@ -119,7 +119,7 @@ describe('Activity-First Protocol - AQS Calculation', () => {
   });
 
   it('should format Real Shit Rate correctly', () => {
-    expect(formatRealShitRate(94.5)).toBe('95%'); // Rounds to nearest
+    expect(formatRealShitRate(94.5)).toBe('95%'); 
     expect(formatRealShitRate(94.4)).toBe('94%');
     expect(formatRealShitRate(100)).toBe('100%');
     expect(formatRealShitRate(0)).toBe('0%');
@@ -141,38 +141,38 @@ describe('Activity-First Protocol - AQS Calculation', () => {
 
 describe('Activity-First Protocol - Visibility Score', () => {
   it('should estimate visibility score correctly', () => {
-    // Base case: AQS=100, Tier 0, no verification
+    
     const score1 = estimateVisibilityScore({
       aqs: 100,
       tier: ActivityTier.PASSIVE,
       verificationStrength: 0,
     });
-    expect(score1).toBe(100); // 100 * 1 + 0 + 0
+    expect(score1).toBe(100); 
 
-    // With verification: AQS=100, Tier 0, video verification
+    
     const score2 = estimateVisibilityScore({
       aqs: 100,
       tier: ActivityTier.PASSIVE,
       verificationStrength: 500,
     });
-    expect(score2).toBe(600); // 100 * 1 + 500 + 0
+    expect(score2).toBe(600); 
 
-    // Higher tier: AQS=100, Tier 3, video verification
+    
     const score3 = estimateVisibilityScore({
       aqs: 100,
       tier: ActivityTier.ON_PLATFORM_CREATION,
       verificationStrength: 500,
     });
-    expect(score3).toBe(1300); // 100 * 8 + 500 + 0
+    expect(score3).toBe(1300); 
 
-    // Innovation: AQS=100, Tier 6, video verification
+    
     const score4 = estimateVisibilityScore({
       aqs: 100,
       tier: ActivityTier.NEVER_DONE_BEFORE,
       verificationStrength: 500,
       isInnovation: true,
     });
-    expect(score4).toBe(3100); // 100 * 16 + 500 + 1000
+    expect(score4).toBe(3100); 
   });
 });
 
@@ -194,7 +194,7 @@ describe('Activity-First Protocol - CPV Pricing', () => {
 
 describe('Activity-First Protocol - Core Principles', () => {
   it('should prioritize views over likes in ranking', () => {
-    // Tier 0 with high likes should rank lower than Tier 4 with low likes
+    
     const tier0Score = estimateVisibilityScore({
       aqs: 100,
       tier: ActivityTier.PASSIVE,
@@ -211,8 +211,8 @@ describe('Activity-First Protocol - Core Principles', () => {
   });
 
   it('should not allow purchasing higher placement', () => {
-    // Points cannot be bought (tested implicitly by tier system)
-    // This test documents the principle - no paid boost in algorithm
+    
+    
     expect(true).toBe(true);
   });
 });

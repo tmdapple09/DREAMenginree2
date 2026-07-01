@@ -1,10 +1,4 @@
-/**
- * lib/enginpipe/quality/tiers.ts
- *
- * Generic adaptive quality tier resolver. Mirrors §8 ("Performance
- * Budget & Quality Tier System") of the catalog. Pure functions so it
- * can be tested without a browser and reused by every Engin runtime.
- */
+
 
 export type QualityTier = 'ultra' | 'high' | 'medium' | 'low';
 
@@ -14,7 +8,7 @@ export interface QualityTierConfig {
   target_fps: 30 | 60 | 120;
 }
 
-/** Default tier table — matches the JSON in the catalog §8. */
+
 export const DEFAULT_TIER_CONFIG: Readonly<Record<QualityTier, QualityTierConfig>> = {
   ultra:  { max_asset_size: '4K',    features: ['advanced_fx'], target_fps: 60 },
   high:   { max_asset_size: '1080p', features: ['basic_fx'],    target_fps: 60 },
@@ -22,14 +16,14 @@ export const DEFAULT_TIER_CONFIG: Readonly<Record<QualityTier, QualityTierConfig
   low:    { max_asset_size: '480p',  features: [],              target_fps: 30 },
 };
 
-/** Subset of `Navigator` we read from. Decoupled for testability. */
+
 export interface CapabilityNavigator {
   deviceMemory?: number;
   hardwareConcurrency?: number;
   userAgent?: string;
 }
 
-/** Subset of `screen` we read from. Decoupled for testability. */
+
 export interface CapabilityScreen {
   width?: number;
   height?: number;
@@ -38,19 +32,11 @@ export interface CapabilityScreen {
 export interface CapabilityInput {
   navigator?: CapabilityNavigator | null;
   screen?: CapabilityScreen | null;
-  /** Pre-computed GPU renderer string (e.g. "Apple M2", "Adreno 730"). */
+  
   gpuRenderer?: string | null;
 }
 
-/**
- * Score the device on a 0-100 scale. Higher is better.
- *
- * Weighted sum of:
- *   - deviceMemory (0-40 pts; 8GB → full marks)
- *   - hardwareConcurrency (0-30 pts; 8 cores → full marks)
- *   - screen pixels (0-15 pts; 1920×1080 → full marks)
- *   - GPU keyword bonus (0-15 pts)
- */
+
 export function scoreCapabilities(input: CapabilityInput = {}): number {
   const nav = input.navigator ?? null;
   const screen = input.screen ?? null;
@@ -80,11 +66,7 @@ export function scoreCapabilities(input: CapabilityInput = {}): number {
   return Math.round(memScore + coreScore + pixelScore + gpuScore);
 }
 
-/**
- * Map a capability score to a quality tier. Thresholds chosen so that
- * a typical desktop lands on `high`/`ultra`, mid-range mobile on
- * `medium`, and low-end mobile on `low`.
- */
+
 export function tierFromScore(score: number): QualityTier {
   if (score >= 80) return 'ultra';
   if (score >= 60) return 'high';
@@ -92,19 +74,12 @@ export function tierFromScore(score: number): QualityTier {
   return 'low';
 }
 
-/**
- * Detect the recommended quality tier for the current device.
- *
- * Pure function: pass in the bits of `navigator`/`screen` you want to
- * consider. In a browser, callers typically do:
- *
- *   detectCapabilityTier({ navigator, screen })
- */
+
 export function detectCapabilityTier(input: CapabilityInput = {}): QualityTier {
   return tierFromScore(scoreCapabilities(input));
 }
 
-/** Look up the configuration for a tier. */
+
 export function getTierConfig(tier: QualityTier): QualityTierConfig {
   return DEFAULT_TIER_CONFIG[tier];
 }

@@ -7,18 +7,16 @@ import { Layers, Monitor, Sparkles, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 
-// SURFACE: dreamsurface.DreamEffects  (framework-mandated basename: page.tsx)
 
-/* Lazy-load the R3F scene so the heavy Three.js bundle is only pulled
-   when the user actually visits this page. SSR is disabled because
-   Three.js / WebGL need the browser's <canvas>. */
+
+
 const DreamScene = dynamic(
   () => import('@/components/three/dream.scene').then((m) => m.DreamScene),
   { ssr: false },
 );
 
-/*  Feature cards shown below the 3-D scene                            */
-/* ------------------------------------------------------------------ */
+
+
 const features = [
   {
     icon: Sparkles,
@@ -42,8 +40,8 @@ const features = [
   },
 ];
 
-/*  Page component                                                     */
-/* ------------------------------------------------------------------ */
+
+
 export default function DreamEffectsPage( ){
   const cardsRef = useRef<HTMLElement | null>(null);
 
@@ -56,7 +54,7 @@ export default function DreamEffectsPage( ){
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white">
-      {/* Hero section */}
+      
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -72,7 +70,7 @@ export default function DreamEffectsPage( ){
         </p>
       </motion.header>
 
-      {/* 3-D Canvas */}
+      
       <motion.section
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -81,14 +79,14 @@ export default function DreamEffectsPage( ){
       >
         <div className="relative rounded-2xl overflow-hidden border border-gray-800 shadow-glow-lg bg-black/40 backdrop-blur-sm">
           <DreamScene className="h-[420px] md:h-[520px]" />
-          {/* Corner label */}
+          
           <div className="absolute top-3 right-3 text-[10px] font-mono text-gray-500 bg-black/60 rounded px-2 py-0.5">
             R3F + GLSL
           </div>
         </div>
       </motion.section>
 
-      {/* Feature cards */}
+      
       <section
         ref={cardsRef}
         className="max-w-5xl mx-auto px-4 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"

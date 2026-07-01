@@ -5,15 +5,7 @@ import dynamic from 'next/dynamic';
 
 const StarMakerEngin = dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false });
 
-/**
- * MusicEnginApp — Full-screen app shell for the Music Engine (StarMakerEngin).
- *
- * Routes:
- *   /engines/music          → full DAW (StarMakerEngin)
- *   /engines/music/studio   → recording studio panel
- *   /engines/music/arrange  → arrangement view
- *   /engines/music/library  → preset library
- */
+
 
 export default makeEnginApp({
   id: 'music',

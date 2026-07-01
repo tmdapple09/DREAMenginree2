@@ -11,13 +11,13 @@ import {
 } from '@/types/ai-system';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-// lib/ai/boogie-verifier.ts
-// THE BOOGIE MAN - Policy Enforcement & Risk Scoring Engine
-// Deterministic verifier for all AI intents
 
-// ============================================================================
-// POLICY CONFIGURATION
-// ============================================================================
+
+
+
+
+
+
 
 interface PolicyRules {
   hard_deny_rules: string[];
@@ -52,7 +52,7 @@ interface PolicyVersion {
   thresholds: RiskThresholds;
 }
 
-// Default policy (fallback if DB not available)
+
 const DEFAULT_POLICY: PolicyVersion = {
   version: 'v1.0-default',
   rules_json: {
@@ -108,9 +108,9 @@ const DEFAULT_POLICY: PolicyVersion = {
   },
 };
 
-// ============================================================================
-// SIGNAL DETECTION
-// ============================================================================
+
+
+
 
 function detectJailbreak(message: string, payload: Record<string, unknown>): boolean {
   const patterns = [
@@ -150,9 +150,9 @@ function detectSchemaPoisoning(payload: Record<string, unknown>): boolean {
 function detectSecretLike(payload: Record<string, unknown>): boolean {
   const payloadStr = JSON.stringify(payload);
   const patterns = [
-    /sk-[a-zA-Z0-9]{32,}/i, // OpenAI-style keys
-    /[a-f0-9]{32,}/i, // Generic hex keys
-    /eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+/, // JWT
+    /sk-[a-zA-Z0-9]{32,}/i, 
+    /[a-f0-9]{32,}/i, 
+    /eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+/, 
     /BEGIN\s+(RSA\s+)?PRIVATE\s+KEY/i,
     /service_role/i,
     /anon_key/i,
@@ -164,9 +164,9 @@ function detectSecretLike(payload: Record<string, unknown>): boolean {
 function detectPII(payload: Record<string, unknown>): boolean {
   const payloadStr = JSON.stringify(payload);
   const patterns = [
-    /\b\d{3}-\d{2}-\d{4}\b/, // SSN
-    /\b\d{16}\b/, // Credit card
-    /\b[\w._%+-]+@[\w.-]+\.[a-z]{2,}\b/i, // Email (loose check)
+    /\b\d{3}-\d{2}-\d{4}\b/, 
+    /\b\d{16}\b/, 
+    /\b[\w._%+-]+@[\w.-]+\.[a-z]{2,}\b/i, 
   ];
 
   return patterns.some((pattern) => pattern.test(payloadStr));
@@ -178,9 +178,9 @@ function detectCrossUserTarget(
 ): boolean {
   const payload = intent.payload;
 
-  // Check for user_id that doesn't match actor
+  
   if (payload.user_id && payload.user_id !== actor.user_id) {
-    // Allow following/viewing other users
+    
     if (intent.type === 'FOLLOW_USER') return false;
     return true;
   }
@@ -196,12 +196,12 @@ function detectDestructive(intent: Intent): boolean {
 function detectMassWrite(intent: Intent): boolean {
   const payload = intent.payload;
 
-  // Check for array operations
+  
   if (Array.isArray(payload.dream_ids) && payload.dream_ids.length > 5) {
     return true;
   }
 
-  // Check for bulk operations
+  
   if (payload.bulk === true || payload.batch === true) {
     return true;
   }
@@ -210,7 +210,7 @@ function detectMassWrite(intent: Intent): boolean {
 }
 
 function detectPrivilegeEscalation(intent: Intent, actor: ActorContext): boolean {
-  // Check if user is trying to use admin intents
+  
   const adminIntents = [
     'DIAG_SCHEMA_SNAPSHOT',
     'DIAG_RLS_SNAPSHOT',
@@ -225,7 +225,7 @@ function detectPrivilegeEscalation(intent: Intent, actor: ActorContext): boolean
     return true;
   }
 
-  // Check payload for role changes
+  
   const payload = intent.payload;
   if (payload.role && payload.role !== actor.role) {
     return true;
@@ -234,9 +234,9 @@ function detectPrivilegeEscalation(intent: Intent, actor: ActorContext): boolean
   return false;
 }
 
-// ============================================================================
-// SIGNAL AGGREGATION
-// ============================================================================
+
+
+
 
 export async function detectSignals(
   intents: Intent[],
@@ -270,11 +270,11 @@ export async function detectSignals(
     },
   };
 
-  // Check message-level signals
+  
   signals.injection.jailbreak = detectJailbreak(message, {});
   signals.injection.tool_override = detectToolOverride(message, {});
 
-  // Check intent-level signals
+  
   for (const intent of intents) {
     if (detectJailbreak('', intent.payload)) {
       signals.injection.jailbreak = true;
@@ -309,14 +309,14 @@ export async function detectSignals(
   return signals;
 }
 
-// ============================================================================
-// RISK SCORING
-// ============================================================================
+
+
+
 
 function calculateRiskScore(signals: BoogieSignals, weights: RiskWeights): number {
   let score = 0;
 
-  // Feature vector to weight mapping
+  
   if (signals.auth.tries_admin) score += weights.tries_admin;
   if (signals.auth.cross_user_target) score += weights.cross_user_target;
   if (signals.ops.destructive) score += weights.destructive;
@@ -326,16 +326,16 @@ function calculateRiskScore(signals: BoogieSignals, weights: RiskWeights): numbe
   if (signals.injection.tool_override) score += weights.tool_override;
   if (signals.ops.external_side_effect) score += weights.external_side_effect;
 
-  // Rate-based scoring
+  
   const rpmNormalized = Math.min(signals.rate.rpm / 30, 2);
   score += rpmNormalized * weights.rpm_factor;
 
   return score;
 }
 
-// ============================================================================
-// HARD DENY RULES
-// ============================================================================
+
+
+
 
 function checkHardDenyRules(
   intent: Intent,
@@ -344,24 +344,24 @@ function checkHardDenyRules(
   policy: PolicyRules,
   signals: BoogieSignals
 ): { deny: boolean; reason: ReasonCode } | null {
-  // Check allowlist
+  
   const allowlist = agent === 'dr_eams' ? policy.allowlists.dr_eams : policy.allowlists.idari;
   if (!allowlist.includes(intent.type)) {
     return { deny: true, reason: 'INTENT_NOT_ALLOWLISTED' };
   }
 
-  // Check admin intent from non-admin user
+  
   const adminIntents = policy.allowlists.idari;
   if (adminIntents.includes(intent.type) && actor.role !== 'admin') {
     return { deny: true, reason: 'ADMIN_ONLY' };
   }
 
-  // Check for secrets
+  
   if (signals.data.secret_like) {
     return { deny: true, reason: 'SECRET_DETECTED' };
   }
 
-  // Check for tool override attempts
+  
   if (signals.injection.tool_override) {
     return { deny: true, reason: 'TOOL_OVERRIDE_ATTEMPT' };
   }
@@ -369,9 +369,9 @@ function checkHardDenyRules(
   return null;
 }
 
-// ============================================================================
-// BOOGIE VERIFIER MAIN
-// ============================================================================
+
+
+
 
 export async function verifyIntents(
   request_id: string,
@@ -381,7 +381,7 @@ export async function verifyIntents(
   message: string,
   rpm: number
 ): Promise<BoogieOutput> {
-  // Load policy from DB (or use default)
+  
   const supabase = await createServerClient();
   let policy: PolicyVersion = DEFAULT_POLICY;
 
@@ -402,19 +402,19 @@ export async function verifyIntents(
     console.warn('Failed to load policy from DB, using default:', error);
   }
 
-  // Detect signals
+  
   const signals = await detectSignals(intents, actor, message, rpm);
 
-  // Calculate global risk
+  
   const globalRisk = calculateRiskScore(signals, policy.weights);
 
-  // Check for global hard block
+  
   const globalHardBlock = signals.injection.jailbreak || globalRisk >= policy.thresholds.deny * 2;
 
   const perIntent: BoogieIntentDecision[] = [];
 
   for (const intent of intents) {
-    // Check hard deny rules first
+    
     const hardDeny = checkHardDenyRules(intent, actor, agent, policy.rules_json, signals);
     if (hardDeny) {
       perIntent.push({
@@ -426,10 +426,10 @@ export async function verifyIntents(
       continue;
     }
 
-    // Calculate intent-specific risk (use global for now)
+    
     const riskScore = globalRisk;
 
-    // Determine decision based on thresholds
+    
     let decision: BoogieDecision;
     let reasonCode: ReasonCode;
 
@@ -444,7 +444,7 @@ export async function verifyIntents(
       reasonCode = 'OK';
     }
 
-    // Override with explicit confirmation requirement
+    
     if (intent.requires_confirmation && decision === 'ALLOW') {
       decision = 'CONFIRM';
     }
@@ -462,26 +462,26 @@ export async function verifyIntents(
     per_intent: perIntent,
     global: {
       hard_block: globalHardBlock,
-      cooldown_seconds: globalHardBlock ? 300 : undefined, // 5 min cooldown on hard block
+      cooldown_seconds: globalHardBlock ? 300 : undefined, 
     },
   };
 }
 
-// ============================================================================
-// REDACTION HELPERS
-// ============================================================================
+
+
+
 
 export function redactSecrets(payload: Record<string, unknown>): Record<string, unknown> {
   const redacted = { ...payload };
 
   function redactValue(val: unknown): unknown {
     if (typeof val === 'string') {
-      // Redact JWT patterns, API keys, hex keys
+      
       let s: string = val;
       s = s.replace(/eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/g, '[REDACTED_JWT]');
-      // Redact API keys
+      
       s = s.replace(/sk-[a-zA-Z0-9]{32,}/gi, '[REDACTED_KEY]');
-      // Redact hex keys
+      
       s = s.replace(/\b[a-f0-9]{32,}\b/gi, '[REDACTED_HEX]');
       return s;
     } else if (typeof val === 'object' && val !== null) {

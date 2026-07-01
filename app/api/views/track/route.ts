@@ -4,11 +4,11 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/views/track/route.ts
-// Canonical view tracking for the current app_posts schema.
-// The older views table is not present in the generated Supabase types, so this
-// route increments app_posts.view_count and returns a synthetic view payload for
-// callers that still expect the Activity-First response shape.
+
+
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();

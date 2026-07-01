@@ -4,31 +4,15 @@ import { isCompactRuntimeViewport, readInteractiveViewportScale, readInteractive
 import type { ApperceptiveContext } from '@/engine/runtime/apperception';
 import React, { useCallback, useEffect, useState } from 'react';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: components/runtime/dream.shell.RuntimeShell.tsx.
 
-/**
- * RuntimeShell
- *
- * A self-contained scrollable, zoomable, iframe-capable frame that wraps
- * every runtime world. Two instances run in parallel inside HomeSystem —
- * one for Surface Space, one for DreamSpace.
- *
- * Features:
- *  • Floating zoom controls (+ / %) that sit outside the scalable layer.
- *  • Inner scrollable + zoomable content via CSS transform-based viewport trick.
- *  • Iframe mode: when `iframeUrl` is set a chrome bar + `<iframe>` replace the
- *    children so the user never leaves the home surface.
- *
- * Safe-area sizing is handled by the PARENT (HomeSystem region containers) which
- * already exclude the DreamDMBar area via top/bottom CSS. RuntimeShell therefore
- * always receives a correctly-sized box and needs no internal inset clipping.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const MIN_ZOOM = 0.5;
 
@@ -37,29 +21,29 @@ const MAX_ZOOM = 2.5;
 const ZOOM_STEP = 0.15;
 const COARSE_POINTER_QUERY = '(hover: none), (pointer: coarse)';
 
-/** Height of the in-region iframe chrome bar (Back button + title) */
+
 const CHROME_BAR_H = 44;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 interface RuntimeShellProps {
-  /** World content rendered when no iframe is open */
+  
   children: React.ReactNode;
-  /** When set, displays this URL in an in-region iframe instead of children */
+  
   iframeUrl?: string | null;
-  /** Called when the user taps Back to dismiss the iframe */
+  
   onCloseIframe?: () => void;
-  /** Optional label shown in the iframe chrome bar */
+  
   iframeTitle?: string;
-  /** Runtime-owned apperception context for bus/event consumers; DOM attributes remain debug-only. */
+  
   apperception?: ApperceptiveContext;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export default function RuntimeShell({
   children,
@@ -141,7 +125,7 @@ export default function RuntimeShell({
       }}
     >
 
-      {/* ── Zoom controls — top-right of the region, never zoomed ───────── */}
+      
       {showZoomControls && (
         <div
           className="premium-card de-os-panel de-runtime-seam de-material-enter"
@@ -210,11 +194,11 @@ export default function RuntimeShell({
         </div>
       )}
 
-      {/* ── Content ─────────────────────────────────────────────────────── */}
+      
       {iframeUrl ? (
-        /* ── Iframe mode — a sub-page is open inside this region ── */
+        
         <>
-          {/* Chrome bar with back button */}
+          
           <div
             className="premium-card de-os-panel de-runtime-seam de-material-enter"
             style={{
@@ -273,7 +257,7 @@ export default function RuntimeShell({
             )}
           </div>
 
-          {/* Iframe — fills the region below the chrome bar */}
+          
           <iframe
             src={iframeUrl}
             title={iframeTitle ?? 'Page'}
@@ -291,21 +275,7 @@ export default function RuntimeShell({
           />
         </>
       ) : (
-        /*
-         * ── Normal content mode — scrollable + zoomable ──
-         *
-         * The parent container (HomeSystem region div) is already sized to
-         * exclude the DreamDMBar, so this div fills exactly the safe area.
-         *
-         * Technique: keep native scrolling on a dedicated viewport container,
-         * then size the transformed child to `100/zoom %` of that viewport.
-         * This keeps touch scrolling independent from the zoom transform and
-         * lets HomeDream and DreamSpace remain independently scrollable.
-         *
-         *   zoom=1.0 → 100% × 100% → scale(1.0)  → fills parent exactly
-         *   zoom=1.5 → 66.7% × 66.7% → scale(1.5) → fills parent exactly
-         *   zoom=0.75 → 133% × 133% → scale(0.75) → fills parent exactly
-         */
+        
         <div
           data-runtime-scroll-container
           className="de-runtime-premium-scroll"
@@ -344,8 +314,8 @@ export default function RuntimeShell({
   );
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

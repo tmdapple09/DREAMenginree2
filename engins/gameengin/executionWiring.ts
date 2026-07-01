@@ -38,15 +38,7 @@ import * as GameRuleSetIndex from '@/engins/rulesets/game';
 import * as LucidAvenueWorld from '@/engins/gameengin/games/madmaxi-wildfall-world';
 import * as UnifiedLoopHook from './useUnifiedLoop';
 
-/**
- * lib/gameengin/executionWiring.ts
- *
- * Internal execution wiring for the GameEngin packet.
- *
- * This is not a discovery registry. It is the runtime bridge that imports the
- * exported GameEngin subsystems and gives GameRuntime one callable kernel for
- * input, frame, cartridge lifecycle, crash, and capability checks.
- */
+
 
 export interface GameEnginExecutionFrame {
   dt: number;
@@ -217,7 +209,7 @@ export function createGameEnginExecutionKernel(): GameEnginExecutionKernel {
   let lastUpscaleSize = upscaler.outputSize(320, 180);
   let currentBiome = biome.sample(0, 0);
 
-  // Wire static exports into live invariants immediately.
+  
   color.setProfile('normal', 1);
   color.apply([1, 1, 1]);
   captioner.recent(1);
@@ -245,7 +237,7 @@ export function createGameEnginExecutionKernel(): GameEnginExecutionKernel {
   passthrough.enablePassthrough(false);
   RuntimeShell.canUseWebGPU();
   RuntimeShell.planRuntimeShellHandoff({ manifest: { cartridge_id: 'platformer', render_mode: 'webgpu', entry: 'main', memory_budget_mb: 64, target_frame_rate: 60 } } as unknown as Parameters<typeof RuntimeShell.planRuntimeShellHandoff>[0]);
-  try { DreamrCartridgeLoader.parseDreamrArchive(new Uint8Array()); } catch { /* invalid empty archive is expected during wiring warmup */ }
+  try { DreamrCartridgeLoader.parseDreamrArchive(new Uint8Array()); } catch {  }
   isHudElementAllowed('lives');
   FACE_BUTTONS.includes('X');
   BASE_MOVES.length + SPRINT_MOVES.length + ALL_COMBOS.length + MULTITOUCH_COMBOS.length;

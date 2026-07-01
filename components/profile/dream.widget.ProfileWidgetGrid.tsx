@@ -36,7 +36,7 @@ export type WidgetType =
   | "apple"
   | "snapchat";
 
-/** small = 1 column (half-width), large = 2 columns (full-width) */
+
 export type WidgetSize = "small" | "large";
 
 export type WidgetBgStyle = "white" | "glass" | "warm" | "tinted" | "dark";
@@ -86,9 +86,9 @@ export type DreamType = WidgetType;
 export type DreamSize = WidgetSize;
 export type DreamBgStyle = WidgetBgStyle;
 export type DreamConfig = WidgetConfig;
-/** Canonical name for Widget — preferred for new code */
+
 export type ProfileDream = Widget;
-/** Canonical name for DEFAULT_WIDGETS — preferred for new code */
+
 export const DEFAULT_DREAMS: ProfileDream[] = DEFAULT_WIDGETS;
 
 export const WIDGET_TRAY: { type: WidgetType; label: string; icon: string }[] =
@@ -153,7 +153,7 @@ function getDefaultSize(type: WidgetType): WidgetSize {
 }
 
 const MIN_SMALL_WIDGET_HEIGHT = 120;
-const BIO_SMALL_TRUNCATE = 35; // chars shown in compact bio
+const BIO_SMALL_TRUNCATE = 35; 
 const BIO_LARGE_TRUNCATE = 55;
 
 function getCardBg(style: WidgetBgStyle, accent: string): React.CSSProperties {
@@ -332,7 +332,7 @@ function WidgetConfigSheet({
 
   return (
     <>
-      {/* Backdrop */}
+      
       <div
         onClick={onClose}
         style={{
@@ -344,7 +344,7 @@ function WidgetConfigSheet({
         }}
       />
 
-      {/* Sheet */}
+      
       <div
         style={{
           position: "fixed",
@@ -360,7 +360,7 @@ function WidgetConfigSheet({
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 20px)",
         }}
       >
-        {/* Handle bar */}
+        
         <div
           style={{ display: "flex", justifyContent: "center", paddingTop: 12 }}
         >
@@ -374,7 +374,7 @@ function WidgetConfigSheet({
           />
         </div>
 
-        {/* Header */}
+        
         <div
           style={{
             display: "flex",
@@ -410,7 +410,7 @@ function WidgetConfigSheet({
         </div>
 
         <div style={{ padding: "0 18px 8px" }}>
-          {/* ── Widget Size ── */}
+          
           <label style={sectionLabel}>Size</label>
           <div
             style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}
@@ -437,7 +437,7 @@ function WidgetConfigSheet({
                   gap: 6,
                 }}
               >
-                {/* Mini size preview */}
+                
                 <div
                   style={{
                     display: "grid",
@@ -463,7 +463,7 @@ function WidgetConfigSheet({
             ))}
           </div>
 
-          {/* ── Accent Color ── */}
+          
           <label style={sectionLabel}>Accent Color</label>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {COLOR_SWATCHES.map(({ color: c, label }) => (
@@ -489,7 +489,7 @@ function WidgetConfigSheet({
             ))}
           </div>
 
-          {/* ── Background Style ── */}
+          
           <label style={sectionLabel}>Background</label>
           <div style={{ display: "flex", gap: 8 }}>
             {BG_STYLES.map(({ value, label }) => (
@@ -520,7 +520,7 @@ function WidgetConfigSheet({
             ))}
           </div>
 
-          {/* ── Visibility ── */}
+          
           <label style={sectionLabel}>Visibility</label>
           <div
             style={{
@@ -571,7 +571,7 @@ function WidgetConfigSheet({
             ))}
           </div>
 
-          {/* ── Widget-specific options ── */}
+          
           {widget.type === "quote" && (
             <>
               <label style={sectionLabel}>Quote Text</label>
@@ -675,7 +675,7 @@ function WidgetConfigSheet({
             </>
           )}
 
-          {/* ── Apply ── */}
+          
           <button
             onClick={() => {
               onSave(
@@ -887,7 +887,7 @@ function WidgetContent(p: WidgetContentProps) {
   );
 
   switch (type) {
-    // ── Bio ──────────────────────────────────────────────────────────────────
+    
     case "bio": {
       if (!isLarge) {
         return (
@@ -961,7 +961,7 @@ function WidgetContent(p: WidgetContentProps) {
           </div>
         );
       }
-      // large
+      
       return (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -1727,7 +1727,7 @@ export default function ProfileWidgetGrid({
   const dragSrc = useRef<number | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
-  // Drag-and-drop
+  
   const onDragStart = (i: number) => {
     dragSrc.current = i;
   };
@@ -1763,7 +1763,7 @@ export default function ProfileWidgetGrid({
     onSave?.(next);
   };
 
-  /** Save config, size, and visibility from the config sheet */
+  
   const saveWidget = (
     widgetId: string,
     cfg: WidgetConfig,
@@ -1777,7 +1777,7 @@ export default function ProfileWidgetGrid({
     onSave?.(next);
   };
 
-  /** Quick toggle between small and large directly on the card */
+  
   const toggleSize = (widgetId: string) => {
     const next = widgets.map((w) => {
       if (w.id !== widgetId) return w;
@@ -1841,7 +1841,7 @@ export default function ProfileWidgetGrid({
     likes,
   });
 
-  // Profile strength
+  
   const totalAvailable = WIDGET_TRAY.length + TOP_10_CONNECTORS.length;
   const remaining = totalAvailable - widgets.length;
   const strengthPct = Math.round((widgets.length / totalAvailable) * 100);
@@ -1852,7 +1852,7 @@ export default function ProfileWidgetGrid({
 
   return (
     <div style={{ paddingBottom: isEditing ? 96 : 0 }}>
-      {/* ── Profile Strength bar (edit mode only) ── */}
+      
       {isEditing && (
         <div
           style={{
@@ -1906,7 +1906,7 @@ export default function ProfileWidgetGrid({
         </div>
       )}
 
-      {/* ── Unified 2-col widget grid ── */}
+      
       <div
         style={{
           display: "grid",
@@ -1928,10 +1928,10 @@ export default function ProfileWidgetGrid({
             onDragLeave={() => setDragOverIdx(null)}
             onDrop={() => onDrop(idx)}
           >
-            {/* Edit-mode controls */}
+            
             {isEditing && (
               <>
-                {/* Remove — top left */}
+                
                 <button
                   onClick={() => removeWidget(w.id)}
                   style={{
@@ -1955,7 +1955,7 @@ export default function ProfileWidgetGrid({
                   <X size={10} style={{ color: "#fff" }} />
                 </button>
 
-                {/* Size toggle + settings — top right */}
+                
                 <div
                   style={{
                     position: "absolute",
@@ -1967,7 +1967,7 @@ export default function ProfileWidgetGrid({
                     gap: 4,
                   }}
                 >
-                  {/* Visibility badge */}
+                  
                   <div
                     title={`Visibility: ${w.visibility ?? "private"}`}
                     style={{
@@ -2049,7 +2049,7 @@ export default function ProfileWidgetGrid({
               </>
             )}
 
-            {/* Content — pad top in edit mode to clear the controls */}
+            
             <div style={{ paddingTop: isEditing ? 18 : 0 }}>
               <WidgetContent {...contentProps(w)} />
             </div>
@@ -2057,7 +2057,7 @@ export default function ProfileWidgetGrid({
         ))}
       </div>
 
-      {/* ── ∞ gold button ── */}
+      
       <div style={{ textAlign: "center", marginTop: 28 }}>
         <div
           style={{
@@ -2079,7 +2079,7 @@ export default function ProfileWidgetGrid({
         </div>
       </div>
 
-      {/* ── Fixed bottom widget chip strip (edit mode only) ── */}
+      
       {isEditing && (
         <div
           style={{
@@ -2184,7 +2184,7 @@ export default function ProfileWidgetGrid({
         </div>
       )}
 
-      {/* Widget config sheet */}
+      
       {configWidget && (
         <WidgetConfigSheet
           widget={configWidget}
@@ -2195,7 +2195,7 @@ export default function ProfileWidgetGrid({
         />
       )}
 
-      {/* Connector widget picker */}
+      
       {isEditing && showConnectorPicker && (
         <ConnectorWidgetPicker
           activeWidgetTypes={widgets.map((w) => w.type)}

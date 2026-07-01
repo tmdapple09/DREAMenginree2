@@ -3,15 +3,7 @@
 import { makeEnginApp } from '@/components/engines/shared';
 import PortfolioEngin from '@/engins/portfolio/dream.PortfolioEngin';
 
-/**
- * PortfolioEnginApp — Full-screen app shell for the Portfolio Engine.
- *
- * Routes:
- *   /engines/portfolio          → full PortfolioEngin hub
- *   /engines/portfolio/optimize → algorithm config + quantum run
- *   /engines/portfolio/assets   → asset universe selector
- *   /engines/portfolio/quantum  → quantum circuit canvas
- */
+
 
 export default makeEnginApp({
   id: 'portfolio',

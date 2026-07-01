@@ -14,23 +14,7 @@ import type {
     EnginRuleSetParams,
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
-/**
- * engins/rulesets/game/gameEnginRuleSet.ts
- *
- * GameEngin Rule-Set — the ONLY place GameEngin domain logic lives.
- *
- * Contains:
- *   - Layout parameters (immersive vs standard)
- *   - Allowed capabilities for GameEngin
- *   - All state transforms (session start/end, score updates, world builder,
- *     physics config, script state)
- *   - deriveState() selector — projects base state into GameEnginDerivedState
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
+
 
 export type TileType = 'empty' | 'ground' | 'wall' | 'water' | 'spawn';
 
@@ -67,7 +51,7 @@ export interface ScriptState extends JsonObject {
   language: ScriptLanguage;
 }
 
-/** The domain-specific state shape exposed to GameEngin UI. */
+
 export interface GameEnginDerivedState extends JsonObject {
   lifecycle: EnginBaseState['lifecycle'];
   scores: GameScore[];

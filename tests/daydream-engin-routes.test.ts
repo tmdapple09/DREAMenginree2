@@ -47,9 +47,9 @@ describe('standalone /daydream/*/engin routes', () => {
         'utf-8'
       );
 
-      // Legacy routes now redirect to the new standalone engine apps
+      
       expect(source).toContain(`redirect('/engines/${engineSlug}')`);
-      // Must NOT redirect back to daydream (would create a loop)
+      
       expect(source).not.toContain("redirect('/daydream/");
       expect(source).not.toContain('redirect("/daydream/');
     });
@@ -60,13 +60,13 @@ describe('standalone /daydream/*/engin routes', () => {
         'utf-8'
       );
 
-      // The standalone engine page must render the engine's App component
+      
       const appComponentName = engin === 'StarMakerEngin' ? 'MusicEnginApp'
         : engin === 'BrandingEngin' ? 'BrandEnginApp'
         : engin === 'ContentEngin'  ? 'CreateEnginApp'
         : `${engin.replace('Engin', 'Engin')}App`;
 
-      // Either directly references the App or the base Engin component
+      
       const hasEngineRef = source.includes(appComponentName) || source.includes(engin);
       expect(hasEngineRef).toBe(true);
     });

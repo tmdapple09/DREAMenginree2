@@ -7,18 +7,7 @@ import type {
     CartridgeSaveAPI,
 } from '../cartridge';
 
-/**
- * lib/gameengin/cartridges/apiStubs.ts
- *
- * No-op stub implementations of every CartridgeAPI sub-interface.
- *
- * These are what GameRuntime provides when a capability is declared but the
- * full implementation has not been activated (e.g. 'spatial-audio' on a device
- * that doesn't support AudioContext, or 'multiplayer' before a session is joined).
- *
- * Stubs are safe to call — they log a development-mode warning once and return
- * sensible defaults so cartridge code never needs to null-check the api object.
- */
+
 
 function warn(capability: string, method: string): void {
   if (process.env.NODE_ENV !== 'production') {

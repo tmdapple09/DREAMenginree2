@@ -4,17 +4,7 @@ import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameeng
 import { useCallback, useEffect, useRef } from 'react';
 import { ParticlePool, ScreenShake, prefersReducedMotion } from './_fx/canvasFx';
 
-/**
- * GLASSFALL — fusion of breakout + tetris + match-3.
- *
- * Tetrominoes drift down a stained-crystal tower. A paddle below bounces a
- * shard upward to chip a single colored cell off a tetromino — that cell
- * becomes a free gem that falls and settles. Three-in-a-row clears them and
- * the surrounding row of stuck blocks. Garbage rises from the bottom on a
- * metronome. You climb the Architect's tower one floor at a time.
- *
- * Render: 2-D canvas, dithered stained-crystal sunset, pixel-rim outlines.
- */
+
 
 const COLS = 12;
 const ROWS = 18;
@@ -25,17 +15,17 @@ const H = ROWS * CELL + 80;
 type Phase = 'menu' | 'playing' | 'cleared' | 'crushed';
 type CellColor = 0 | 1 | 2 | 3 | 4;
 const COL: Record<Exclude<CellColor, 0>, string> = {
-  1: '#ff7da8', // rose
-  2: '#ffce5e', // gold
-  3: '#a78bfa', // violet
-  4: '#5fd1f0', // teal
+  1: '#ff7da8', 
+  2: '#ffce5e', 
+  3: '#a78bfa', 
+  4: '#5fd1f0', 
 };
 const TETROMINOES: Array<Array<[number, number]>> = [
-  [[0, 0], [0, 1], [0, 2], [0, 3]],   // I
-  [[0, 0], [0, 1], [1, 0], [1, 1]],   // O
-  [[0, 1], [1, 0], [1, 1], [1, 2]],   // T
-  [[0, 0], [1, 0], [1, 1], [1, 2]],   // J
-  [[0, 2], [1, 0], [1, 1], [1, 2]],   // L
+  [[0, 0], [0, 1], [0, 2], [0, 3]],   
+  [[0, 0], [0, 1], [1, 0], [1, 1]],   
+  [[0, 1], [1, 0], [1, 1], [1, 2]],   
+  [[0, 0], [1, 0], [1, 1], [1, 2]],   
+  [[0, 2], [1, 0], [1, 1], [1, 2]],   
 ];
 
 interface ShardState { x: number; y: number; vx: number; vy: number; color: Exclude<CellColor, 0>; }
@@ -49,7 +39,7 @@ export default function Glassfall( ){
   const shardRef = useRef<ShardState | null>(null);
   const paddleXRef = useRef(W / 2);
   const PADDLE_W = 80;
-  const PADDLE_CURVATURE = 0.35;   // 0 = flat, 1 = strong dome
+  const PADDLE_CURVATURE = 0.35;   
   const particlesRef = useRef(new ParticlePool(220));
   const shakeRef = useRef(new ScreenShake(6));
   const reducedMotionRef = useRef(false);
@@ -57,11 +47,11 @@ export default function Glassfall( ){
   const lastGarbageRef = useRef(0);
   const scoreRef = useRef(0);
   const floorRef = useRef(1);
-  const garbageMeterRef = useRef(0);            // 0..1, time since last garbage rise
+  const garbageMeterRef = useRef(0);            
   const keysRef = useRef<Set<string>>(new Set());
   const submit = useSubmitScore('glassfall');
 
-  /** Rotate a tetromino 90° clockwise around its bounding box. */
+  
   const rotateCells = useCallback((cells: Array<[number, number]>): Array<[number, number]> => {
     let maxC = 0;
     for (const [, c] of cells) if (c > maxC) maxC = c;
@@ -71,7 +61,7 @@ export default function Glassfall( ){
   const tryRotate = useCallback(() => {
     const p = pieceRef.current; if (!p) return;
     const next = rotateCells(p.cells);
-    // Validate against grid + bounds
+    
     for (const [dr, dc] of next) {
       const r = p.cy + dr, c = p.cx + dc;
       if (c < 0 || c >= COLS || r >= ROWS) return;
@@ -115,17 +105,17 @@ export default function Glassfall( ){
   }, [launchShard, tryRotate]);
   useEffect(() => { reducedMotionRef.current = prefersReducedMotion(); }, []);
 
-  // Settle gems via gravity + cluster sweep (any orthogonal cluster ≥3 same color)
+  
   const settleAndMatch = useCallback(() => {
     const g = gridRef.current;
-    // gravity pass — drop free cells
+    
     for (let c = 0; c < COLS; c++) {
       let writeR = ROWS - 1;
       for (let r = ROWS - 1; r >= 0; r--) {
         if (g[r][c] !== 0) { const v = g[r][c]; g[r][c] = 0; g[writeR][c] = v; writeR--; }
       }
     }
-    // detect orthogonal clusters via flood-fill — clusters of size ≥3 are removed
+    
     const remove: boolean[][] = Array.from({ length: ROWS }, () => Array<boolean>(COLS).fill(false));
     const seen: boolean[][] = Array.from({ length: ROWS }, () => Array<boolean>(COLS).fill(false));
     for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
@@ -152,7 +142,7 @@ export default function Glassfall( ){
     if (cleared > 0) {
       scoreRef.current += cleared * 25;
       shakeRef.current.kick(cleared >= 6 ? 6 : 3);
-      // Rainbow shatter burst per cleared cell
+      
       for (const [r, c, col] of burstSpots) {
         particlesRef.current.burst(c * CELL + CELL / 2, r * CELL + CELL / 2, 6, { color: COL[col], speed: 130, size: 1.6, maxLife: 0.5, drag: 0.9, gravity: 240 });
       }
@@ -165,7 +155,7 @@ export default function Glassfall( ){
     }
   }, [setPhase]);
 
-  // Loop
+  
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
@@ -186,18 +176,18 @@ export default function Glassfall( ){
       const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
 
       if (phaseRef.current === 'playing') {
-        // paddle
+        
         const k = keysRef.current;
         if (k.has('ArrowLeft') || k.has('a')) paddleXRef.current -= 320 * dt;
         if (k.has('ArrowRight') || k.has('d')) paddleXRef.current += 320 * dt;
         paddleXRef.current = Math.max(40, Math.min(W - 40, paddleXRef.current));
 
-        // Falling tetromino
+        
         if (t - lastFallRef.current > 700) {
           lastFallRef.current = t;
           const p = pieceRef.current;
           if (p) {
-            // Try descend
+            
             let collide = false;
             for (const [dr, dc] of p.cells) {
               const nr = p.cy + dr + 1, nc = p.cx + dc;
@@ -208,46 +198,46 @@ export default function Glassfall( ){
           }
         }
 
-        // Garbage rises every 8s (and fill the meter that ticks toward it)
+        
         garbageMeterRef.current = Math.min(1, ((t - lastGarbageRef.current) % 8000) / 8000);
         if (t - lastGarbageRef.current > 8_000 && lastGarbageRef.current > 0) {
           lastGarbageRef.current = t;
-          // shift up
+          
           for (let r = 0; r < ROWS - 1; r++) gridRef.current[r] = gridRef.current[r + 1];
           gridRef.current[ROWS - 1] = Array.from({ length: COLS }, () => (Math.random() < 0.6 ? (1 + Math.floor(Math.random() * 4)) : 0) as CellColor);
         } else if (lastGarbageRef.current === 0) lastGarbageRef.current = t;
 
-        // Shard with curved-paddle reflection (real angle of incidence)
+        
         const s = shardRef.current;
         if (s) {
-          // Apply gravity for free travel
+          
           s.vy += 80 * dt;
           s.x += s.vx * dt; s.y += s.vy * dt;
           if (s.x < 8) { s.x = 8; s.vx = -s.vx * 0.95; }
           if (s.x > W - 8) { s.x = W - 8; s.vx = -s.vx * 0.95; }
-          // Curved paddle: surface y is offset by curvature based on horizontal distance from center.
-          // Treat the paddle as a circular arc whose center is below the visible bar.
+          
+          
           const px = paddleXRef.current;
           if (s.y > H - 100 && s.y < H - 78 && Math.abs(s.x - px) < PADDLE_W / 2 + 6) {
-            // Local x position relative to paddle center, in [-1..1]
+            
             const u = (s.x - px) / (PADDLE_W / 2);
-            // Surface tangent slope at u (curve depth proportional to PADDLE_CURVATURE)
-            // Approximate normal with angle = u * tilt
+            
+            
             const tilt = PADDLE_CURVATURE * 1.1;
-            const normAng = u * tilt;            // radians, normal tilts away from center
-            // Reflect velocity around the surface normal
+            const normAng = u * tilt;            
+            
             const nx = Math.sin(normAng), ny = -Math.cos(normAng);
             const dot = s.vx * nx + s.vy * ny;
             s.vx = s.vx - 2 * dot * nx;
             s.vy = s.vy - 2 * dot * ny;
-            // Slight speed-up
+            
             s.vx *= 1.04; s.vy *= 1.04;
-            // Push out of paddle
+            
             s.y = H - 100;
-            // Sparkle dimming trail
+            
             particlesRef.current.burst(s.x, s.y, 6, { color: '#ffe8c0', speed: 80, size: 1.4, maxLife: 0.4, drag: 0.9 });
           }
-          // Hit grid cell — chip & free as gem
+          
           const gr = Math.floor(s.y / CELL);
           const gc = Math.floor(s.x / CELL);
           if (gr >= 0 && gr < ROWS && gc >= 0 && gc < COLS && gridRef.current[gr][gc] !== 0) {
@@ -258,7 +248,7 @@ export default function Glassfall( ){
             particlesRef.current.burst(gc * CELL + CELL / 2, gr * CELL + CELL / 2, 8, { color: COL[s.color], speed: 110, size: 1.5, maxLife: 0.4, drag: 0.9, gravity: 200 });
             settleAndMatch();
           }
-          // Hit falling piece — chip
+          
           const pp = pieceRef.current;
           if (pp) {
             for (const [dr, dc] of pp.cells) {
@@ -275,24 +265,24 @@ export default function Glassfall( ){
               }
             }
           }
-          // Sparkle dimming trail every frame
+          
           if (Math.random() < 0.5) particlesRef.current.emit({ x: s.x, y: s.y, vx: 0, vy: 20, color: COL[s.color], size: 1.2, maxLife: 0.25, drag: 0.92 });
           if (s.y > H - 50) shardRef.current = null;
         }
 
-        // Step shared FX
+        
         particlesRef.current.step(dt);
         shakeRef.current.step(dt);
       }
 
-      // Sunset gradient (with sun-disc + cloud silhouettes parallax)
+      
       const grad = ctx.createLinearGradient(0, 0, 0, H);
       grad.addColorStop(0, '#411541'); grad.addColorStop(0.6, '#a3346e'); grad.addColorStop(1, '#1a0c1a');
       ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
-      // Sun disc
+      
       ctx.fillStyle = 'rgba(255,206,94,0.45)'; ctx.shadowColor = '#ffce5e'; ctx.shadowBlur = 30;
       ctx.beginPath(); ctx.arc(W * 0.5, H * 0.32, 50, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
-      // Cloud silhouettes
+      
       ctx.fillStyle = 'rgba(20,8,26,0.55)';
       const drift = reducedMotionRef.current ? 0 : (t / 80) % (W + 200);
       for (let i = 0; i < 4; i++) {
@@ -300,15 +290,15 @@ export default function Glassfall( ){
         const cy = 80 + i * 30;
         ctx.beginPath(); ctx.ellipse(cx, cy, 70, 14, 0, 0, Math.PI * 2); ctx.fill();
       }
-      // Dither bands
+      
       for (let y = 0; y < H; y += 4) { ctx.fillStyle = `rgba(0,0,0,${(y % 8 === 0) ? 0.06 : 0})`; ctx.fillRect(0, y, W, 2); }
 
       ctx.save();
       shakeRef.current.apply(ctx, reducedMotionRef.current ? 0.2 : 1);
-      // Grid backdrop
+      
       ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0, 0, W, ROWS * CELL);
 
-      // Cells
+      
       for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
         const v = gridRef.current[r][c]; if (v === 0) continue;
         ctx.fillStyle = COL[v as Exclude<CellColor, 0>];
@@ -316,10 +306,10 @@ export default function Glassfall( ){
         ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1;
         ctx.strokeRect(c * CELL + 1, r * CELL + 1, CELL - 2, CELL - 2);
       }
-      // Falling piece (with chromatic-aberration tint)
+      
       const p = pieceRef.current;
       if (p) {
-        // Subtle CA shadow offset behind
+        
         ctx.fillStyle = 'rgba(127,209,240,0.25)';
         for (const [dr, dc] of p.cells) ctx.fillRect((p.cx + dc) * CELL + 4, (p.cy + dr) * CELL + 2, CELL - 4, CELL - 4);
         ctx.fillStyle = 'rgba(255,125,168,0.25)';
@@ -328,12 +318,12 @@ export default function Glassfall( ){
         for (const [dr, dc] of p.cells) ctx.fillRect((p.cx + dc) * CELL + 2, (p.cy + dr) * CELL + 2, CELL - 4, CELL - 4);
         ctx.shadowBlur = 0;
       }
-      // Curved paddle (anisotropic specular streak)
+      
       const px = paddleXRef.current;
       ctx.fillStyle = '#ffe8c0';
       ctx.beginPath();
       ctx.moveTo(px - PADDLE_W / 2, H - 90);
-      // top arc — curved upward
+      
       const segs = 12;
       for (let i = 0; i <= segs; i++) {
         const u = (i / segs) * 2 - 1;
@@ -345,11 +335,11 @@ export default function Glassfall( ){
       ctx.lineTo(px - PADDLE_W / 2, H - 80);
       ctx.closePath();
       ctx.fill();
-      // Spec streak
+      
       ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(px - PADDLE_W / 2 + 6, H - 88); ctx.lineTo(px + PADDLE_W / 2 - 6, H - 88); ctx.stroke();
 
-      // Shard
+      
       const s = shardRef.current;
       if (s) {
         ctx.fillStyle = COL[s.color]; ctx.shadowColor = COL[s.color]; ctx.shadowBlur = 12;
@@ -357,20 +347,20 @@ export default function Glassfall( ){
         ctx.shadowBlur = 0;
       }
 
-      // Particles
+      
       particlesRef.current.draw(ctx);
       ctx.restore();
 
-      // Score chip
+      
       ctx.fillStyle = 'rgba(0,0,0,0.5)';
       ctx.fillRect(W - 88, 6, 82, 18);
       ctx.fillStyle = '#ffe8c0'; ctx.font = 'bold 12px monospace'; ctx.textAlign = 'right';
       ctx.fillText(String(scoreRef.current), W - 12, 19);
-      // Garbage-rise meter on left edge
+      
       const meterH = ROWS * CELL;
       ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(0, 0, 4, meterH);
       ctx.fillStyle = '#ff7da8'; ctx.fillRect(0, meterH * (1 - garbageMeterRef.current), 4, meterH * garbageMeterRef.current);
-      // Tiny floor pip top-left
+      
       for (let i = 0; i < 5; i++) {
         ctx.fillStyle = i < floorRef.current ? '#ffce5e' : 'rgba(255,206,94,0.2)';
         ctx.fillRect(10 + i * 8, 10, 5, 5);

@@ -14,7 +14,7 @@ type Profile = {
 type FollowersRow = { follower: Profile | null };
 type FollowingRow = { following: Profile | null };
 
-// GET - Check follow status or get followers/following
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -25,10 +25,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const { searchParams } = new URL(req.url);
   const targetId = searchParams.get('target_id');
-  const type = searchParams.get('type'); // 'followers' | 'following' | 'check'
+  const type = searchParams.get('type'); 
 
   if (type === 'check' && targetId) {
-    // Check if current user follows target
+    
     const { data: follow } = await supabase
       .from('follows')
       .select('follower_id, following_id')
@@ -48,10 +48,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         follower:profiles!follower_id(id, handle, display_name, avatar_url)
       `)
       .eq('following_id', userId);
-      // NOTE: We avoid `.returns<T>()` here because in some build environments
-      // the Supabase client can degrade to `any`, and TypeScript will fail the
-      // build with: "Untyped function calls may not accept type arguments."
-      // The cast below preserves runtime behavior while keeping the build green.
+      
+      
+      
+      
 
     if (error) {
       return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         following:profiles!following_id(id, handle, display_name, avatar_url)
       `)
       .eq('follower_id', userId);
-      // See NOTE above re: `.returns<T>()`.
+      
 
     if (error) {
       return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // Get counts in parallel
+  
   const [{ count: followersCount }, { count: followingCount }] = await Promise.all([
     supabase
       .from('follows')
@@ -102,7 +102,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   });
 }
 
-// POST - Follow a user
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Cannot follow yourself' }, { status: 400 });
   }
 
-  // Check if already following
+  
   const { data: existing } = await supabase
     .from('follows')
     .select('follower_id, following_id')
@@ -145,9 +145,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
   }
 
-  // Create notification — message + data must match the live notifications schema
-  // so that NotificationCenter can derive actor name and action URL.
-  // Cast to `any` because the generated TS types may lag behind the actual schema.
+  
+  
+  
   const { data: followerProfile } = await supabase
     .from('profiles')
     .select('handle, display_name')
@@ -168,7 +168,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ success: true }, { status: 201 });
 }
 
-// DELETE - Unfollow a user
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);

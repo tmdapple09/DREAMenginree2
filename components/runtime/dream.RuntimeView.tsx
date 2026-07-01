@@ -27,15 +27,15 @@ import { getDreamComponent } from '@/engine/dreams/DreamRegistry';
 import { buildApperceptiveContext } from '@/engine/runtime/apperception';
 import type { SystemPanelId } from '@/components/panels/panelTypes';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: components/runtime/dream.RuntimeView.tsx.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-/** Existing Engin capabilities mounted directly inside recursive runtime surfaces. */
+
+
+
+
+
 const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
   StarMakerEngin: dynamic(() => import('@/engins/engin.StarMakerEngin'), { ssr: false }),
   GameEngin: dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false }),
@@ -46,26 +46,13 @@ const ENGIN_SURFACES: Record<string, React.ComponentType<EnginSurfaceProps>> = {
   ForgeEngin: dynamic(() => import('@/engins/dream.ForgeEngin'), { ssr: false }),
 };
 
-// Imports and external modules this runtime file depends on.
 
-/**
- * RuntimeView
- *
- * Renders the content for a single runtime view based on the RuntimeWorld.
- * Used by both Surface Space (top) and DreamSpace (bottom) regions.
- *
- * Every world type is now wrapped in RuntimeShell, which provides:
- *  • A constrained scrollable + zoomable viewport (never the full page).
- *  • Zoom in / zoom out controls.
- *  • In-region iframe loading so app/engin navigation never leaves the home surface.
- *
- * Panel worlds — { type: 'panel'; name: SystemPanelId } — render the system
- * feature component directly inside the region. No routing. No overlays.
- */
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
 
 interface Post {
   id: string;
@@ -89,13 +76,13 @@ interface RuntimeViewProps {
   isAdmin?: boolean;
   onOpenDrEams: () => void;
   onOpenDreamSpace?: () => void;
-  /** Open a path contained inside this region (iframe), instead of full-page navigation */
+  
   onOpenInRegion?: (path: string) => void;
-  /** Load an existing Engin capability directly inside this runtime region. */
+  
   onOpenEngin?: (enginName: string) => void;
-  /** Stable runtime identity keeps duplicate Engin mounts independent. */
+  
   runtimeId: 'homedream' | 'dreamspace';
-  /** Return to the default world for this region (close iframe) */
+  
   onBackFromRegion?: () => void;
   seamOffsetPx?: number;
   splitRatio?: number;
@@ -103,10 +90,10 @@ interface RuntimeViewProps {
   dominantRegion?: RuntimeRegion;
 }
 
-/** Engin name → canonical daydream route */
+
 type EnginSurfaceProps = { onBack: () => void; instanceId?: string };
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function getEnginFallbackRoute(name: string): string {
   const entry = getEnginByName(name);
@@ -128,7 +115,7 @@ export default function RuntimeView({
   runtimeId,
   dominantRegion,
 }: RuntimeViewProps) {
-  /* ── In-region iframe state ─────────────────────────────────────────────── */
+  
   const moduleRuntimeRegion: RuntimeRegionKey = runtimeId === 'homedream' ? 'surface' : 'dream';
   const [iframeUrl,   setIframeUrl]   = useState<string | null>(null);
   const [iframeTitle, setIframeTitle] = useState<string>('');
@@ -162,7 +149,7 @@ export default function RuntimeView({
     setIframeTitle('');
   }, []);
 
-  // Reset iframe whenever the world changes so stale pages don't linger.
+  
 
   useEffect(() => { setIframeUrl(null); setIframeTitle(''); }, [world]);
 
@@ -266,7 +253,7 @@ export default function RuntimeView({
         </div>
       );
     }
-    // Fallback when profile data is not yet available
+    
     return (
       <div style={outerStyle} {...apperceptionProps}>
         <RuntimeShell
@@ -420,12 +407,12 @@ export default function RuntimeView({
     );
   }
 
-  // Fallback
+  
   return null;
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

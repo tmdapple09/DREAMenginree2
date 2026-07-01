@@ -5,32 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/drafts/route.ts
- *
- * GET  /api/drafts          — fetch all drafts for the authenticated user
- * POST /api/drafts          — create or update a draft
- *
- * Draft schema (content_drafts table):
- *   id            uuid PK
- *   user_id       uuid FK → auth.users
- *   content       text        — draft body / text
- *   content_type  text        — 'post' | 'video' | 'story' | 'thread' | 'caption' | 'tweet_thread' | 'bio' | 'script'
- *   title         text        — optional human-readable label
- *   scheduled_at  timestamptz — null = no schedule; set = scheduled for future publish
- *   created_at    timestamptz
- *   updated_at    timestamptz
- *
- * Security rules (AXIOM 4 — Security by Default, ARCHITECTURE.md §5):
- *   - Requires authenticated user via supabase.auth.getUser()
- *   - user_id is always set from auth, never from the request body
- *   - Drafts are private by default (LAW.md §2 — nothing is public by default)
- *
- * LAW.md §3 — every visible action must do something real.
- * ACTION_AUDIT.md — was labelled 🟡 fake-wired (drafts written to local state only).
- */
 
-// ── Validation ──────────────────────────────────────────────────────────────
+
+
 
 const CONTENT_TYPES = [
   'post', 'video', 'story', 'thread',
@@ -99,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { data: draft, error } = await db
     .from('content_drafts')
     .insert({
-      user_id: user.id,            // always from auth — never from body
+      user_id: user.id,            
       content,
       content_type,
       title: title ?? null,

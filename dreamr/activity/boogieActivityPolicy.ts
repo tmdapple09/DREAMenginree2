@@ -22,12 +22,12 @@ const BLOCKED_FOR_MINORS = new Set<string>([
   PolicyCategory.MINORS,
 ]);
 
-// Check-ins more than a 5km neighborhood-to-neighborhood jump from trusted
-// context are treated as impossible until Boogie receives stronger evidence.
+
+
 const IMPOSSIBLE_CHECK_IN_METERS = 5000;
 
-// A 25% bot-view share is high enough to indicate coordinated view fraud while
-// leaving room for noisy anonymous traffic before enforcement.
+
+
 const BOT_VIEW_SPIKE_RATE = 0.25;
 
 export function resolveActivityFeedTreatment(signals: BoogieActivitySignals): ActivityFeedTreatment {

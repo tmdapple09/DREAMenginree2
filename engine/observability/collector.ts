@@ -1,12 +1,12 @@
-// lib/observability/collector.ts
-//
-// In-process telemetry collector for the IDARi observability loop.
-//
-// Maintains three ring buffers (logs, metrics, traces) capped at MAX_ENTRIES
-// each. Safe to call from any server or browser context.
-//
-// Part of the AI-assisted observability and remediation loop described in
-// docs/ARCHITECTURE.md §13 and the IDARi system spec.
+
+
+
+
+
+
+
+
+
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -15,29 +15,29 @@ export interface LogEntry {
   timestamp: string;
   level: LogLevel;
   message: string;
-  /** Structured context — never contains secrets. */
+  
   context?: Record<string, unknown>;
-  /** Source component or file path hint. */
+  
   source?: string;
 }
 
 export interface MetricPoint {
   id: string;
   timestamp: string;
-  /** Metric name, e.g. 'api_latency_ms' or 'render_count'. */
+  
   name: string;
   value: number;
-  /** Optional label dimensions, e.g. { route: '/api/ai/idari' }. */
+  
   labels?: Record<string, string>;
   unit?: string;
 }
 
 export interface TraceSpan {
   id: string;
-  /** Groups related spans for one logical request. */
+  
   trace_id: string;
   timestamp: string;
-  /** Human-readable span name, e.g. 'POST /api/ai/idari'. */
+  
   name: string;
   duration_ms: number;
   status: 'ok' | 'error' | 'timeout';
@@ -48,13 +48,13 @@ export interface TelemetrySnapshot {
   logs: LogEntry[];
   metrics: MetricPoint[];
   traces: TraceSpan[];
-  /** ISO timestamp when the snapshot was taken. */
+  
   collected_at: string;
 }
 
 const MAX_ENTRIES = 500;
 
-/** Module-level singletons — one collector per process. */
+
 const logBuffer: LogEntry[] = [];
 const metricBuffer: MetricPoint[] = [];
 const traceBuffer: TraceSpan[] = [];
@@ -75,15 +75,12 @@ function pushCapped<T>(buffer: T[], entry: T): void {
 
 let _otelBridge: typeof import('./otelBridge') | null = null;
 
-/**
- * Lazily load the OTel bridge module. Returns null in browser or when the
- * bridge module cannot be loaded (e.g. missing OTel deps in a test env).
- */
+
 function getOtelBridge(): typeof import('./otelBridge') | null {
   if (_otelBridge !== undefined && _otelBridge !== null) return _otelBridge;
-  if (typeof window !== 'undefined') return null; // browser — skip
+  if (typeof window !== 'undefined') return null; 
   try {
-    // Dynamic require so the browser bundle never includes OTel SDK code
+    
 
     _otelBridge = require('./otelBridge') as typeof import('./otelBridge');
   } catch {
@@ -92,11 +89,7 @@ function getOtelBridge(): typeof import('./otelBridge') | null {
   return _otelBridge;
 }
 
-/**
- * Record a log entry in the observability collector.
- * Level 'error' and 'warn' entries are used by the correlator for anomaly detection.
- * Also forwards log-level counts to OTel (never the message itself — no PII leak).
- */
+
 export function collectLog(
   level: LogLevel,
   message: string,
@@ -114,11 +107,7 @@ export function collectLog(
   getOtelBridge()?.otelRecordLog(level, source);
 }
 
-/**
- * Record a numeric metric data point.
- * Used by the correlator to detect anomalies (sudden spikes / drops).
- * Also forwarded to OTel meters for Prometheus export.
- */
+
 export function collectMetric(
   name: string,
   value: number,
@@ -136,11 +125,7 @@ export function collectMetric(
   getOtelBridge()?.otelRecordMetric(name, value, labels);
 }
 
-/**
- * Record a completed trace span.
- * The correlator uses span duration and status to detect latency regressions.
- * Also forwarded to OTel tracer/histogram for Prometheus + OTLP export.
- */
+
 export function collectTrace(
   name: string,
   duration_ms: number,
@@ -160,10 +145,7 @@ export function collectTrace(
   getOtelBridge()?.otelRecordTrace(name, duration_ms, status, tags);
 }
 
-/**
- * Return a snapshot of all telemetry within the last `windowMs` milliseconds.
- * Defaults to the last 5 minutes.
- */
+
 export function getSnapshot(windowMs: number = 5 * 60 * 1000): TelemetrySnapshot {
   const cutoff = new Date(Date.now() - windowMs).toISOString();
   return {
@@ -174,7 +156,7 @@ export function getSnapshot(windowMs: number = 5 * 60 * 1000): TelemetrySnapshot
   };
 }
 
-/** Return current buffer sizes (total, not windowed). */
+
 export function getBufferStats(): { logs: number; metrics: number; traces: number } {
   return {
     logs: logBuffer.length,
@@ -183,7 +165,7 @@ export function getBufferStats(): { logs: number; metrics: number; traces: numbe
   };
 }
 
-/** Flush all buffers — used in tests and manual resets. */
+
 export function clearBuffers(): void {
   logBuffer.length = 0;
   metricBuffer.length = 0;
@@ -191,10 +173,7 @@ export function clearBuffers(): void {
   _counter = 0;
 }
 
-/**
- * Push multiple log entries in one call — useful when replaying buffered
- * server-side logs client-side after hydration.
- */
+
 export function collectBatchLogs(
   entries: ReadonlyArray<{ level: LogLevel; message: string; context?: Record<string, unknown>; source?: string }>,
 ): void {
@@ -203,10 +182,7 @@ export function collectBatchLogs(
   }
 }
 
-/**
- * Compute errors-per-minute within the given window.
- * Returns 0 when the window contains no data.
- */
+
 export function getErrorRate(windowMs: number = 5 * 60 * 1000): number {
   const cutoff = new Date(Date.now() - windowMs).toISOString();
   const errorCount = logBuffer.filter(
@@ -216,10 +192,7 @@ export function getErrorRate(windowMs: number = 5 * 60 * 1000): number {
   return windowMinutes > 0 ? errorCount / windowMinutes : 0;
 }
 
-/**
- * Return the P95 latency (ms) across all trace spans in the given window.
- * Returns 0 when no traces are present.
- */
+
 export function getP95Latency(windowMs: number = 5 * 60 * 1000): number {
   const cutoff = new Date(Date.now() - windowMs).toISOString();
   const durations = traceBuffer
@@ -231,10 +204,7 @@ export function getP95Latency(windowMs: number = 5 * 60 * 1000): number {
   return durations[Math.min(idx, durations.length - 1)];
 }
 
-/**
- * Group trace spans by their `trace_id` for distributed request tracing.
- * Returns a Map keyed by trace_id, each value being the spans in arrival order.
- */
+
 export function groupTracesByTraceId(windowMs: number = 5 * 60 * 1000): Map<string, TraceSpan[]> {
   const cutoff = new Date(Date.now() - windowMs).toISOString();
   const result = new Map<string, TraceSpan[]>();
@@ -254,9 +224,7 @@ export interface LogSeverityCounts {
   error: number;
 }
 
-/**
- * Return the count of log entries at each severity level within the window.
- */
+
 export function getLogCountsBySeverity(windowMs: number = 5 * 60 * 1000): LogSeverityCounts {
   const cutoff = new Date(Date.now() - windowMs).toISOString();
   const counts: LogSeverityCounts = { debug: 0, info: 0, warn: 0, error: 0 };

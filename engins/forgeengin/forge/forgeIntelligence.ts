@@ -7,56 +7,35 @@ import {
     type ForgeWorkflow,
 } from './forgeRegistry';
 
-/**
- * Forge Intelligence — Predictive Next-Step Engine
- *
- * Analyses recent activity history and suggests contextual next workflows.
- * Implements pattern detection: when an action is recorded in engine X,
- * the intelligence layer checks which engines historically follow X and
- * suggests the most likely next step.
- *
- * Architecture justification: docs/ARCHITECTURE.md §1 — Forge is the
- * meta-creation orchestration layer; cross-engine linkage is its purpose.
- * No Supabase writes — local intelligence only (no privacy impact).
- *
- * Performance impact: pure in-memory pattern matching — no network, no render loops.
- */
+
 
 export interface ForgeHistoryEntry {
-  /** Engine id */
+  
   enginId: string;
-  /** Human-readable label */
+  
   label: string;
-  /** ISO timestamp */
+  
   timestamp: string;
 }
 
 const HISTORY_STORAGE_KEY = FORGE_HISTORY_KEY;
 const MAX_HISTORY_ENTRIES = 100;
 
-/**
- * Append an entry to the persistent activity history log.
- * Keeps the last MAX_HISTORY_ENTRIES entries to prevent unbounded growth.
- *
- * Note: recordForgeActivity in forgeRegistry.ts also writes to this key inline
- * to avoid circular imports.  This function is the canonical API for direct writes.
- */
+
 export function appendForgeHistory(enginId: string, label: string): void {
   if (typeof window === 'undefined') return;
   try {
     const history = readForgeHistory();
     history.push({ enginId, label, timestamp: new Date().toISOString() });
-    // Trim to max size (keep most recent)
+    
     const trimmed = history.slice(-MAX_HISTORY_ENTRIES);
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(trimmed));
   } catch {
-    // localStorage unavailable — silent
+    
   }
 }
 
-/**
- * Read the full activity history log.
- */
+
 export function readForgeHistory(): ForgeHistoryEntry[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -68,34 +47,26 @@ export function readForgeHistory(): ForgeHistoryEntry[] {
   }
 }
 
-/**
- * Clear all history (for testing / reset).
- */
+
 export function clearForgeHistory(): void {
   if (typeof window === 'undefined') return;
-  try { localStorage.removeItem(HISTORY_STORAGE_KEY); } catch { /* silent */ }
+  try { localStorage.removeItem(HISTORY_STORAGE_KEY); } catch {  }
 }
 
-/**
- * Transition map: tracks how often engine A is followed by engine B.
- * Key: "fromId→toId", Value: count
- */
+
 function buildTransitionMap(history: ForgeHistoryEntry[]): Map<string, number> {
   const map = new Map<string, number>();
   for (let i = 1; i < history.length; i++) {
     const from = history[i - 1].enginId;
     const to = history[i].enginId;
-    if (from === to) continue; // skip same-engine sequential
+    if (from === to) continue; 
     const key = `${from}→${to}`;
     map.set(key, (map.get(key) ?? 0) + 1);
   }
   return map;
 }
 
-/**
- * Given the most recent engine action, predict which engines the user
- * is likely to use next, based on historical transition patterns.
- */
+
 export function predictNextEngines(
   currentEnginId: string,
   history: ForgeHistoryEntry[],
@@ -113,7 +84,7 @@ export function predictNextEngines(
     }
   }
 
-  // Sort by frequency, descending
+  
   candidates.sort((a, b) => b.count - a.count);
 
   const totalOutgoing = candidates.reduce((s, c) => s + c.count, 0);
@@ -124,29 +95,23 @@ export function predictNextEngines(
 }
 
 export interface ForgeSuggestion {
-  /** What type of suggestion */
+  
   type: 'workflow' | 'next-engine' | 'transfer';
-  /** Display title */
+  
   title: string;
-  /** Short reason */
+  
   reason: string;
-  /** Accent colour */
+  
   accent: string;
-  /** Emoji */
+  
   emoji: string;
-  /** Route to navigate to (if applicable) */
+  
   href?: string;
-  /** Workflow id (if type is 'workflow') */
+  
   workflowId?: string;
 }
 
-/**
- * Given the most recent activity, generate contextual suggestions.
- * Combines:
- *  1. Pattern-based next-engine predictions
- *  2. Workflow recommendations based on current engine
- *  3. Cross-engine transfer suggestions
- */
+
 export function generateSuggestions(
   lastAction: { enginId: string; label: string } | null,
 ): ForgeSuggestion[] {
@@ -154,7 +119,7 @@ export function generateSuggestions(
   const { enginId, label } = lastAction;
   const suggestions: ForgeSuggestion[] = [];
 
-  // 1. Match workflows that start with or include the current engine
+  
   const matchingWorkflows = FORGE_WORKFLOWS.filter(
     wf => wf.engines[0] === enginId || wf.engines.includes(enginId),
   );
@@ -177,7 +142,7 @@ export function generateSuggestions(
     });
   }
 
-  // 2. Pattern-based predictions from history
+  
   const history = readForgeHistory();
   const predicted = predictNextEngines(enginId, history, 2);
   for (const { engine, confidence } of predicted) {
@@ -191,7 +156,7 @@ export function generateSuggestions(
     });
   }
 
-  // 3. Contextual transfer suggestions based on action keywords
+  
   const actionLower = label.toLowerCase();
   if (actionLower.includes('publish') || actionLower.includes('release')) {
     suggestions.push({
@@ -226,9 +191,7 @@ export function generateSuggestions(
   return suggestions;
 }
 
-/**
- * Keyword-to-engine mapping for natural language goal parsing.
- */
+
 const ENGINE_KEYWORDS: Record<string, string[]> = {
   games: ['game', 'play', 'world', 'level', 'character', 'quest', 'adventure', 'rpg', 'platformer', 'build a game', 'multiplayer'],
   music: ['music', 'beat', 'track', 'song', 'mix', 'record', 'audio', 'sound', 'synthesizer', 'melody', 'rhythm', 'album', 'stem'],
@@ -238,14 +201,7 @@ const ENGINE_KEYWORDS: Record<string, string[]> = {
   create:['content', 'post', 'publish', 'video', 'article', 'blog', 'draft', 'schedule', 'calendar', 'story', 'share'],
 };
 
-/**
- * Parse a natural-language goal into a generated workflow.
- * Returns null if no engines match the goal.
- *
- * Example: "Make a short game with music and publish it"
- * → matches: games, music, create
- * → generates steps based on engine capabilities
- */
+
 export function parseGoalToWorkflow(goal: string): ForgeWorkflow | null {
   if (!goal.trim()) return null;
 
@@ -262,18 +218,18 @@ export function parseGoalToWorkflow(goal: string): ForgeWorkflow | null {
 
   if (matched.length === 0) return null;
 
-  // Sort by relevance score
+  
   matched.sort((a, b) => b.score - a.score);
   const engineIds = matched.map((m) => m.id);
 
-  // Generate steps based on matched engines
+  
   const steps = engineIds.map((eid) => {
     const engine = ENGIN_REGISTRY.find((e) => e.id === eid);
     if (!engine) return '';
     return `Open ${engine.name} → ${generateStepDescription(eid, goalLower)}`;
   }).filter(Boolean);
 
-  // If "publish" or "share" appears, ensure ContentEngin is last
+  
   if (goalLower.includes('publish') || goalLower.includes('share')) {
     if (!engineIds.includes('create')) {
       engineIds.push('create');
@@ -326,30 +282,28 @@ function generateStepDescription(engineId: string, goal: string): string {
 }
 
 export interface ForgeTransferEntry {
-  /** Unique transfer id */
+  
   id: string;
-  /** Source engine */
+  
   fromEnginId: string;
-  /** Target engine */
+  
   toEnginId: string;
-  /** Asset type descriptor */
+  
   assetType: string;
-  /** Human-readable label */
+  
   label: string;
-  /** ISO timestamp */
+  
   timestamp: string;
-  /** Transfer status */
+  
   status: 'pending' | 'complete' | 'failed';
-  /** Optional metadata */
+  
   metadata?: Record<string, unknown>;
 }
 
 const TRANSFER_STORAGE_KEY = 'de:forge:transfers';
 const MAX_TRANSFERS = 50;
 
-/**
- * Record a cross-engine asset transfer.
- */
+
 export function recordForgeTransfer(
   fromEnginId: string,
   toEnginId: string,
@@ -375,14 +329,12 @@ export function recordForgeTransfer(
     const trimmed = transfers.slice(-MAX_TRANSFERS);
     localStorage.setItem(TRANSFER_STORAGE_KEY, JSON.stringify(trimmed));
   } catch {
-    // localStorage unavailable — silent
+    
   }
   return entry;
 }
 
-/**
- * Read all recorded transfers.
- */
+
 export function readForgeTransfers(): ForgeTransferEntry[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -394,35 +346,29 @@ export function readForgeTransfers(): ForgeTransferEntry[] {
   }
 }
 
-/**
- * Clear all transfers (for testing / reset).
- */
+
 export function clearForgeTransfers(): void {
   if (typeof window === 'undefined') return;
-  try { localStorage.removeItem(TRANSFER_STORAGE_KEY); } catch { /* silent */ }
+  try { localStorage.removeItem(TRANSFER_STORAGE_KEY); } catch {  }
 }
 
 const CUSTOM_WORKFLOWS_KEY = 'de:forge:custom-workflows';
 
-/**
- * Save a user-created workflow.
- */
+
 export function saveCustomWorkflow(workflow: ForgeWorkflow): void {
   if (typeof window === 'undefined') return;
   try {
     const existing = readCustomWorkflows();
-    // Replace if same id exists
+    
     const updated = existing.filter((w) => w.id !== workflow.id);
     updated.push(workflow);
     localStorage.setItem(CUSTOM_WORKFLOWS_KEY, JSON.stringify(updated));
   } catch {
-    // localStorage unavailable — silent
+    
   }
 }
 
-/**
- * Read all user-created workflows.
- */
+
 export function readCustomWorkflows(): ForgeWorkflow[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -434,9 +380,7 @@ export function readCustomWorkflows(): ForgeWorkflow[] {
   }
 }
 
-/**
- * Delete a user-created workflow by id.
- */
+
 export function deleteCustomWorkflow(workflowId: string): void {
   if (typeof window === 'undefined') return;
   try {
@@ -444,16 +388,14 @@ export function deleteCustomWorkflow(workflowId: string): void {
     const filtered = existing.filter((w) => w.id !== workflowId);
     localStorage.setItem(CUSTOM_WORKFLOWS_KEY, JSON.stringify(filtered));
   } catch {
-    // localStorage unavailable — silent
+    
   }
 }
 
-/**
- * Clear all custom workflows (for testing / reset).
- */
+
 export function clearCustomWorkflows(): void {
   if (typeof window === 'undefined') return;
-  try { localStorage.removeItem(CUSTOM_WORKFLOWS_KEY); } catch { /* silent */ }
+  try { localStorage.removeItem(CUSTOM_WORKFLOWS_KEY); } catch {  }
 }
 
 export interface WorkflowStepStatus {
@@ -474,9 +416,7 @@ export interface WorkflowRunState {
 
 const WORKFLOW_RUNS_KEY = 'de:forge:workflow-runs';
 
-/**
- * Start a new workflow run, initialising all steps to 'pending'.
- */
+
 export function startWorkflowRun(workflowId: string, stepCount: number): WorkflowRunState {
   const run: WorkflowRunState = {
     workflowId,
@@ -493,14 +433,12 @@ export function startWorkflowRun(workflowId: string, stepCount: number): Workflo
   if (typeof window !== 'undefined') {
     try {
       localStorage.setItem(WORKFLOW_RUNS_KEY, JSON.stringify(run));
-    } catch { /* silent */ }
+    } catch {  }
   }
   return run;
 }
 
-/**
- * Update a step's status in the active workflow run.
- */
+
 export function updateWorkflowStep(
   stepIndex: number,
   status: 'complete' | 'failed',
@@ -516,13 +454,13 @@ export function updateWorkflowStep(
   step.completedAt = new Date().toISOString();
   if (failureReason) step.failureReason = failureReason;
 
-  // Activate next step if current completed
+  
   if (status === 'complete' && stepIndex + 1 < run.steps.length) {
     run.steps[stepIndex + 1].status = 'active';
     run.steps[stepIndex + 1].startedAt = new Date().toISOString();
   }
 
-  // Check if all steps are done
+  
   const allDone = run.steps.every((s) => s.status === 'complete' || s.status === 'failed');
   if (allDone) {
     run.status = run.steps.some((s) => s.status === 'failed') ? 'failed' : 'complete';
@@ -531,14 +469,12 @@ export function updateWorkflowStep(
   if (typeof window !== 'undefined') {
     try {
       localStorage.setItem(WORKFLOW_RUNS_KEY, JSON.stringify(run));
-    } catch { /* silent */ }
+    } catch {  }
   }
   return run;
 }
 
-/**
- * Read the active workflow run, if any.
- */
+
 export function getActiveWorkflowRun(): WorkflowRunState | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -550,17 +486,13 @@ export function getActiveWorkflowRun(): WorkflowRunState | null {
   }
 }
 
-/**
- * Clear the active workflow run.
- */
+
 export function clearWorkflowRun(): void {
   if (typeof window === 'undefined') return;
-  try { localStorage.removeItem(WORKFLOW_RUNS_KEY); } catch { /* silent */ }
+  try { localStorage.removeItem(WORKFLOW_RUNS_KEY); } catch {  }
 }
 
-/**
- * Generate recovery suggestions for a failed workflow step.
- */
+
 export function getFailureRecovery(
   failedStep: WorkflowStepStatus,
   workflow: ForgeWorkflow,
@@ -571,7 +503,7 @@ export function getFailureRecovery(
 
   if (!engine) return suggestions;
 
-  // Suggest retry
+  
   suggestions.push({
     type: 'workflow',
     title: `Retry: ${engine.name}`,
@@ -581,7 +513,7 @@ export function getFailureRecovery(
     href: engine.daydreamHref,
   });
 
-  // Suggest skipping to next step
+  
   if (failedStep.stepIndex < workflow.steps.length - 1) {
     const nextEngine = ENGIN_REGISTRY.find((e) => e.id === workflow.engines[failedStep.stepIndex + 1]);
     if (nextEngine) {
@@ -596,7 +528,7 @@ export function getFailureRecovery(
     }
   }
 
-  // Suggest alternative engine for similar capability
+  
   const alternatives = CREATIVE_ENGINES.filter(
     e => e.id !== engineId && e.capabilities.some(
       cap => engine.capabilities.includes(cap),

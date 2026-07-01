@@ -6,9 +6,7 @@ export interface AnomalyDetectionResult {
   matches: GCTMatch[];
 }
 
-/**
- * If no normal pattern strongly correlates with recent data, mark as anomalous.
- */
+
 export async function detectAnomalies(
   recentData: Float32Array,
   normalPatterns: Float32Array[],

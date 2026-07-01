@@ -1,16 +1,6 @@
 import type * as BJSNS from '@babylonjs/core';
 
-/**
- * MADMAXI · vfx.ts
- *
- * Lightweight pooled visual-effects kit for the MADMAXI side-scroller.
- * Every effect is a pre-allocated `ParticleSystem` (or `Mesh`) that re-uses
- * the same texture pool — manual emit counts are tuned per device tier so
- * the effect stays cheap on low-end hardware and rich on high-end devices.
- *
- * No new external assets are added; particle textures are 1×1 PNG data URIs
- * coloured at runtime via Babylon's `colorGradients` API.
- */
+
 
 type BJS = typeof BJSNS;
 type Scene = BJSNS.Scene;
@@ -22,19 +12,19 @@ type GlowLayer = BJSNS.GlowLayer;
 export type VfxTier = 'low' | 'mid' | 'high';
 
 export interface VfxKit {
-  /** Spark burst when an enemy is stomped or a boss takes a hit. */
+  
   spark(at: Vector3, color: [number, number, number]): void;
-  /** Begin/extend the player's dash trail at the given world position. */
+  
   dashTrail(at: Vector3, color: [number, number, number]): void;
-  /** Show the expanding ground-impact ring at the player's feet. */
+  
   landingRing(at: Vector3): void;
-  /** Star-burst on coin pickup (works for silver and gold). */
+  
   coinStarburst(at: Vector3, color: [number, number, number]): void;
-  /** Toggle the boss-enrage rising-ember stream. Pass `at=null` to stop. */
+  
   setEmbers(at: Vector3 | null, color: [number, number, number]): void;
-  /** Per-frame update — drives the landing-ring fade and dash-trail decay. */
+  
   tick(): void;
-  /** Clamp particle counts and disable the heaviest effects on low-tier devices. */
+  
   setTier(tier: VfxTier): void;
   dispose(): void;
 }
@@ -75,7 +65,7 @@ function makePS(BJS: BJS, scene: Scene, name: string, cfg: PSConfig): ParticleSy
 }
 
 export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null): VfxKit {
-  // ─── Sparks ────────────────────────────────────────────────────────────
+  
   const sparks = makePS(BJS, scene, 'madmaxi_sparks', {
     capacity: 80,
     minSize: 0.06, maxSize: 0.18,
@@ -115,8 +105,8 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
     dir1: [-0.5, 0.4, -0.3], dir2: [0.5, 1.6, 0.3],
   });
 
-  // A flat disc that expands and fades. Lives outside the particle system so
-  // we can give it a precise pop-in/pop-out animation curve.
+  
+  
   const ringDiameter = 0.6;
   const ring: Mesh = BJS.MeshBuilder.CreateDisc(
     'madmaxi_landing_ring',
@@ -190,7 +180,7 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
     tick() {
       if (ringFrame > 0) {
         ringFrame--;
-        const t = 1 - ringFrame / RING_LIFETIME; // 0 → 1
+        const t = 1 - ringFrame / RING_LIFETIME; 
         ring.scaling.setAll(0.4 + t * 2.6);
         ringMat.alpha = (1 - t) * 0.85;
         if (ringFrame === 0) ring.setEnabled(false);
@@ -198,7 +188,7 @@ export function createMadmaxiVfx(BJS: BJS, scene: Scene, glow: GlowLayer | null)
     },
     setTier(next) {
       tier = next;
-      // Re-cap pool sizes so we don't waste GPU memory on low-tier devices.
+      
       if (next === 'low') {
         dashTrail.stop();
         embers.stop();

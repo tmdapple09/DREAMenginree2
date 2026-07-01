@@ -1,30 +1,20 @@
 import type { TelemetrySnapshot } from '@/engine/observability/collector';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/snapshotFingerprint.ts.
 
-/**
- * lib/runtime/snapshotFingerprint.ts
- *
- * Lightweight fingerprinting for TelemetrySnapshot objects so the IDARi loop
- * can skip redundant AI calls when nothing has changed.
- *
- * Improvements 73-75:
- *  73. fingerprintSnapshot  — produces a short stable string from key stats
- *  74. snapshotsAreEquivalent — compare two fingerprints
- *  75. createFingerprintCache — LRU-style cache for fingerprint → analysis reuse
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface FingerprintCacheEntry<T> {
   fingerprint: string;
@@ -33,28 +23,21 @@ export interface FingerprintCacheEntry<T> {
 }
 
 export interface FingerprintCache<T> {
-  /** Store a value keyed by fingerprint. Evicts oldest when full. */
+  
   set(fingerprint: string, value: T): void;
-  /** Return the cached value for a fingerprint, or undefined on miss. */
+  
   get(fingerprint: string): T | undefined;
-  /** Return true when the fingerprint is in the cache. */
+  
   has(fingerprint: string): boolean;
-  /** Clear all cached entries. */
+  
   clear(): void;
-  /** Current number of entries. */
+  
   readonly size: number;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/**
- * Produce a short stable fingerprint string from the key dimensions of a
- * TelemetrySnapshot. Two snapshots with the same counts and the same set of
- * error messages are considered equivalent for the purposes of AI-call dedup.
- *
- * Format: `logs:metrics:traces:errors:<errorDigest>`
- * Where errorDigest is a simple checksum of the first 5 error messages.
- */
+
+
 export function fingerprintSnapshot(snapshot: TelemetrySnapshot): string {
   const errorMessages = snapshot.logs
     .filter((l) => l.level === 'error')
@@ -62,11 +45,11 @@ export function fingerprintSnapshot(snapshot: TelemetrySnapshot): string {
     .map((l) => l.message)
     .join('|');
 
-  // Simple djb2-style hash of the error messages string
+  
   let hash = 5381;
   for (let i = 0; i < errorMessages.length; i++) {
     hash = ((hash << 5) + hash) ^ errorMessages.charCodeAt(i);
-    hash = hash >>> 0; // keep as unsigned 32-bit
+    hash = hash >>> 0; 
   }
 
   return `${snapshot.logs.length}:${snapshot.metrics.length}:${snapshot.traces.length}:${
@@ -74,38 +57,24 @@ export function fingerprintSnapshot(snapshot: TelemetrySnapshot): string {
   }:${hash.toString(16)}`;
 }
 
-/**
- * Return true when two fingerprints represent equivalent snapshots.
- * A pure string equality check — the caller is responsible for producing
- * fingerprints via fingerprintSnapshot().
- */
+
 export function snapshotsAreEquivalent(a: string, b: string): boolean {
   return a === b;
 }
 
-/**
- * Create a simple LRU-style fingerprint cache.
- *
- * When the cache reaches `maxSize` entries, the oldest entry (by creation
- * timestamp) is evicted to make room for the new entry.
- *
- * Typical usage: cache AI analysis results keyed by snapshot fingerprint so
- * repeated identical snapshots skip the AI call entirely.
- *
- * @param maxSize Maximum number of entries. Default: 20.
- */
+
 export function createFingerprintCache<T>(maxSize = 20): FingerprintCache<T> {
   const store = new Map<string, FingerprintCacheEntry<T>>();
 
   return {
     set(fingerprint: string, value: T): void {
       if (store.has(fingerprint)) {
-        // Update in-place (refresh timestamp)
+        
         store.set(fingerprint, { fingerprint, value, createdAt: Date.now() });
         return;
       }
       if (store.size >= maxSize) {
-        // Evict the oldest entry
+        
         let oldestKey: string | null = null;
         let oldestTime = Infinity;
         for (const [key, entry] of store) {
@@ -137,8 +106,8 @@ export function createFingerprintCache<T>(maxSize = 20): FingerprintCache<T> {
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

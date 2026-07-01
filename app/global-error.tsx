@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-// SURFACE: dream.overlay.GlobalError  (framework-mandated basename: global-error.tsx)
+
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
             position: 'relative',
           }}
         >
-          {/* Top accent bar */}
+          
           <div
             style={{
               height: 2,
@@ -48,7 +48,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           />
 
           <div style={{ padding: '28px 24px 8px' }}>
-            {/* Error icon */}
+            
             <div
               style={{
                 width: 44,

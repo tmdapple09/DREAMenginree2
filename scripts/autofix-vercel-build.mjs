@@ -1,15 +1,4 @@
-/**
- * autofix-vercel-build.mjs
- *
- * Attempts a `next build` and, on failure, parses the error output to detect
- * missing npm/pnpm packages.  For each missing package it adds the latest
- * version to package.json (dependencies) and re-runs `pnpm install`.
- * The loop repeats up to MAX_ATTEMPTS times.
- *
- * Exit codes:
- *   0 – build succeeded (possibly after fixes)
- *   1 – build still failing after exhausting attempts
- */
+
 
 import { execSync, spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -23,7 +12,7 @@ function run(cmd, opts = ){}) {
 }
 
 function latestVersion(pkg: string): string | null {
-  // Validate package name before passing to shell
+  
   if (!/^(?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(pkg)) {
     console.warn(`⚠  Skipping unsafe package name: ${pkg}`);
     return null;
@@ -39,12 +28,12 @@ function parseMissingModules(output) {
   let m;
   while ((m = re.exec(output)) !== null) {
     const mod = m[1];
-    // Ignore relative imports and built-in node modules
+    
     if (!/^[./]|^node:/.test(mod)) {
-      // Normalise to package name (strip sub-path e.g. "pkg/sub" → "pkg", "@scope/pkg/sub" → "@scope/pkg")
+      
       const parts = mod.split("/");
       const pkgName = mod.startsWith("@") ? `${parts[0]}/${parts[1]}` : parts[0];
-      // Skip if derived package name looks unsafe
+      
       if (/^[a-z0-9@]/.test(pkgName)) {
         missing.add(pkgName);
       }

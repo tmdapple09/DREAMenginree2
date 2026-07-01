@@ -4,14 +4,14 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/*  Neon Glow Shader Material                                         */
-/*                                                                    */
-/*  A custom ShaderMaterial that produces a pulsating neon glow        */
-/*  entirely on the GPU via GLSL.  It renders a radial gradient with   */
-/*  configurable colour, intensity and pulse speed.                    */
-/* ------------------------------------------------------------------ */
 
-const vertexShader = /* glsl */ `
+
+
+
+
+
+
+const vertexShader =  `
   varying vec2 vUv;
   void main() {
     vUv = uv;
@@ -19,7 +19,7 @@ const vertexShader = /* glsl */ `
   }
 `;
 
-const fragmentShader = /* glsl */ `
+const fragmentShader =  `
   uniform float uTime;
   uniform vec3  uColor;
   uniform float uIntensity;

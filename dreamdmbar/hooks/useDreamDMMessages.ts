@@ -5,21 +5,7 @@ import { createClient } from '@/supabase/client/client';
 import { getOfflineRecord, putOfflineRecord } from '@/engine/offline/offlineCache';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * useDreamDMMessages — fetch and subscribe to messages for a DreamDM conversation.
- *
- * Establishes a Supabase Realtime channel for the given conversationId so new
- * messages appear instantly without polling. The channel is torn down when the
- * conversationId changes or the component unmounts.
- *
- * Deduplication: incoming realtime events are merged by `id` so optimistic
- * messages are replaced cleanly without duplication.
- *
- * Architecture note: lives in lib/ (Logic layer) per GENERATION_LAW §3.1.
- * Privacy: RLS on messages enforces participant-only access at the DB layer.
- *
- * docs/dreamdm_bar_pass2.md §2.1 — Realtime Messaging
- */
+
 
 
 export interface DMMessage {
@@ -42,11 +28,11 @@ export interface DMMessage {
 interface UseMessagesReturn {
   messages: DMMessage[];
   isLoading: boolean;
-  /** Append an optimistic message before the server confirms it */
+  
   addOptimistic: (msg: DMMessage) => void;
-  /** Replace an optimistic message once the real one arrives */
+  
   replaceOptimistic: (tempId: string, real: DMMessage) => void;
-  /** Remove an optimistic message (on send failure) */
+  
   removeOptimistic: (tempId: string) => void;
 }
 
@@ -89,7 +75,7 @@ export function useDreamDMMessages(
       return;
     }
 
-    // Demo conversations are handled separately — no realtime subscription
+    
     if (isDemoConversation) return;
 
     const supabase = createClient();
@@ -119,7 +105,7 @@ export function useDreamDMMessages(
 
     void fetchMessages();
 
-    // Subscribe to new messages on this conversation
+    
     const channel = supabase
       .channel(`messages:${conversationId}`)
       .on(
@@ -133,7 +119,7 @@ export function useDreamDMMessages(
         (payload: RealtimePostgresInsertPayload<DMMessage>) => {
           const newMsg = payload.new as DMMessage;
           setMessages((prev) => {
-            // Avoid duplicate if already present (e.g., from optimistic insert)
+            
             const exists = prev.some((m) => m.id === newMsg.id);
             if (exists) return prev;
             const next = [...prev, { ...newMsg, pending: false }];
@@ -152,12 +138,12 @@ export function useDreamDMMessages(
     };
   }, [conversationId, isDemoConversation]);
 
-  // Populate demo messages when a demo conversation is selected
+  
   useEffect(() => {
     if (isDemoConversation && conversationId) {
       setMessages(demoMessages);
     }
-  // demoMessages is defined outside the component (stable reference)
+  
 
   }, [conversationId, isDemoConversation]);
 

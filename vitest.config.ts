@@ -12,7 +12,7 @@ export default defineConfig({
       '**/node_modules/**',
       '**/dist/**',
       '**/e2e/**',
-      '**/*.spec.ts', // Exclude playwright specs
+      '**/*.spec.ts', 
       '**/tests/example.spec.ts',
       '**/tests/navigation/**',
       'exports/**',

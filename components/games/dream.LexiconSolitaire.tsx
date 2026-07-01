@@ -3,16 +3,7 @@
 import { useGameAutoStart, useSubmitScore } from '@/engins/gameengin/games/hooks';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * LEXICON SOLITAIRE — fusion of solitaire + word-sprint + trivia.
- *
- * Lin Argo enters the Library That Forgot Itself. Lay a Klondike-lite cascade
- * of letter-cards. Spell words from any visible card chain — long words deal
- * damage to the page-shaped boss. When stuck, answer a library trivia card
- * to draw 3 relic letters. Burn the Redactor's manuscript.
- *
- * Render: DOM (Tailwind), parchment palette, library candle gold.
- */
+
 
 interface Card { letter: string; id: string; }
 type Phase = 'menu' | 'playing' | 'victory' | 'defeat';
@@ -36,7 +27,7 @@ function makeDeck(): Card[] {
 }
 
 function isReasonableWord(w: string): boolean {
-  // Heuristic: ≥3 letters, contains a vowel, not all same letter
+  
   if (w.length < 3) return false;
   if (!/[AEIOU]/.test(w)) return false;
   if (new Set(w).size === 1) return false;
@@ -47,7 +38,7 @@ export default function LexiconSolitaire( ){
   const [phase, setPhase] = useState<Phase>('menu');
   const [columns, setColumns] = useState<Card[][]>([]);
   const [hand, setHand] = useState<Card[]>([]);
-  const [picked, setPicked] = useState<string[]>([]); // card ids in spell order
+  const [picked, setPicked] = useState<string[]>([]); 
   const [bossHp, setBossHp] = useState(100);
   const [playerHp, setPlayerHp] = useState(20);
   const [score, setScore] = useState(0);
@@ -73,7 +64,7 @@ export default function LexiconSolitaire( ){
   useGameAutoStart(phase === 'menu' ? start : null);
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(score); }, [phase, score, submit]);
 
-  // Resolve picked cards as a spell when the player presses CAST
+  
   const cast = useCallback(() => {
     if (picked.length === 0) return;
     const all: Card[] = [...columns.flat(), ...hand];
@@ -99,19 +90,19 @@ export default function LexiconSolitaire( ){
     });
     setScore((s) => s + dmg * 3);
     setLog((l) => [`Cast "${word}" — ${dmg} dmg.`, ...l].slice(0, 8));
-    // Remove used cards; redeal from hand
+    
     const used = new Set(picked);
     setColumns((cols) => cols.map((col) => col.filter((c) => !used.has(c.id))));
     setHand((h) => h.filter((c) => !used.has(c.id)));
-    // Draw 2
+    
     setHand((h) => [...h, ...makeDeck().slice(0, 2)]);
     setPicked([]);
-    // Boss counter-strike
+    
     setTimeout(() => setPlayerHp((p) => p - 2), 400);
     setLog((l) => [`Redactor strikes — -2 HP.`, ...l.slice(0, 7)]);
   }, [picked, columns, hand, chapter, setPhase]);
 
-  // Trivia
+  
   const askTrivia = useCallback(() => {
     const t = LIBRARY_TRIVIA[Math.floor(Math.random() * LIBRARY_TRIVIA.length)];
     setTrivia(t);

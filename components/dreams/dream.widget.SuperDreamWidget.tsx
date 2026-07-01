@@ -5,34 +5,11 @@ import { useDreamWindowActions } from '@/engine/dream-window/useDreamWindowActio
 import type { CreateDreamWindowBody, DreamWindowRecord } from '@/types/dream-window';
 import { useCallback, useMemo, useState } from 'react';
 
-/**
- * components/dreams/dream.widget.SuperDreamWidget.tsx
- *
- * Real composition component for the SuperDreamWidget.
- *
- * Phase 8 Section B — Point 17:
- *   - Loads Dream Windows from the database via useDreamWindowActions
- *   - Auto-composes compatible Dream Windows into named clusters
- *     (e.g. music + star = StarMaker cluster)
- *   - Renders them in the correct layout (stack/grid based on count +
- *     compatibility)
- *   - Has real add/remove/configure actions wired to the API
- *
- * Architecture: docs/ARCHITECTURE.md §4 (Universal Dream Window model)
- * Architecture: docs/ARCHITECTURE.md §6 (Combined profile output)
- * Privacy: all windows filtered by visibility before rendering (Point 21).
- */
 
-// Compatibility cluster definitions
 
-/**
- * Auto-composition compatibility rules.
- * When two or more Dream Windows share a cluster key, they can be grouped
- * into a named "Super Dream" composition.
- *
- * Architecture: docs/ARCHITECTURE.md §6 (Compatible Dream Windows may combine
- * into automatic profile output blocks.)
- */
+
+
+
 const COMPATIBILITY_CLUSTERS: Record<string, { label: string; clusterKey: string }> = {
   music:   { label: 'StarMaker', clusterKey: 'starmaker' },
   star:    { label: 'StarMaker', clusterKey: 'starmaker' },
@@ -72,7 +49,7 @@ function groupIntoClusters(windows: DreamWindowRecord[]): ClusterGroup[] {
   return Array.from(groups.values());
 }
 
-// Sub-components
+
 
 function DreamWindowTile({
   window: w,
@@ -210,12 +187,12 @@ function ClusterCard({ group, onRemove, onBind, onCollapse }: { group: ClusterGr
   );
 }
 
-// Main component
+
 
 export interface SuperDreamWidgetProps {
-  /** Optional filter: only show Dream Windows of these types */
+  
   types?: string[];
-  /** Optional title override */
+  
   title?: string;
 }
 
@@ -236,7 +213,7 @@ export default function SuperDreamWidget({
   const [adding, setAdding] = useState(false);
   const [newType, setNewType] = useState('');
 
-  // Filter by requested types if supplied
+  
   const filtered = useMemo(
     () =>
       types && types.length > 0
@@ -252,7 +229,7 @@ export default function SuperDreamWidget({
     const body: CreateDreamWindowBody = {
       id: crypto.randomUUID(),
       type: newType.trim(),
-      owner_id: '', // filled at API layer from auth session
+      owner_id: '', 
       config: { label: newType.trim() },
       size: { width: 320, height: 240 },
       position: { x: 0, y: 0 },

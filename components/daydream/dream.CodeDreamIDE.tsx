@@ -19,19 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-/**
- * CodeDreamIDE — Code Workspace split view for the Code Daydream (Side A).
- *
- * Layout:
- *   [ Engine strip ]
- *   [ Language / mode bar ]
- *   [ Code editor (left) | Live preview / output (right) ]
- *   [ Dr. Eams quick assist bar ]
- *
- * Follows the existing DREAMengin coding patterns (no eval, simulation only).
- * All engine outputs are simulated; the Dr. Eams call uses /api/ai/eams
- * with code_context so that the backend AI can respond in code-assist mode.
- */
+
 
 type Language = "python" | "javascript" | "typescript" | "bash";
 type EngineId = "game" | "lab" | "sim" | "asset" | "none";
@@ -175,7 +163,7 @@ function getMockOutput(
 ): string[] {
   const ts = () => new Date().toISOString().slice(11, 19);
 
-  // Scan code for sim keywords to enrich output
+  
   const hasParticle = /particle/i.test(code);
   const hasFluid = /fluid/i.test(code);
   const hasNeural = /neural|train/i.test(code);
@@ -240,7 +228,7 @@ function getMockOutput(
     ];
   }
 
-  // Standalone
+  
   switch (language) {
     case "python":
       return [
@@ -370,29 +358,29 @@ export default function CodeDreamIDE() {
   const [outputLines, setOutputLines] = useState<string[]>([]);
   const outputRef = useRef<HTMLDivElement>(null);
 
-  // Swap & live-mode state
+  
   const [swapped, setSwapped] = useState(false);
   const [liveMode, setLiveMode] = useState(false);
   const liveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Load swap preference from localStorage on mount (client-only)
+  
   useEffect(() => {
     setSwapped(getSwap("code"));
   }, []);
 
-  // Dr. Eams quick assist
+  
   const [eamsPrompt, setEamsPrompt] = useState("");
   const [eamsReply, setEamsReply] = useState("");
   const [eamsLoading, setEamsLoading] = useState(false);
 
-  // Auto-scroll output
+  
   useEffect(() => {
     if (outputRef.current) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
   }, [outputLines]);
 
-  // Reset code when language changes
+  
   const handleLanguageChange = useCallback((lang: Language) => {
     setLanguage(lang);
     setCode(DEMO_CODE[lang]);
@@ -400,13 +388,13 @@ export default function CodeDreamIDE() {
     setStatus("idle");
   }, []);
 
-  // Simulate run — streams output lines with a stagger
+  
   const handleRun = useCallback(() => {
     if (status === "running") return;
     setStatus("running");
     setOutputLines([]);
 
-    // Emit code:run so CodeEngin / any other subscriber can react
+    
     dualRuntimeBridge.emit("code", "code:run", { language, code, engine });
 
     const lines = getMockOutput(language, engine, code);
@@ -417,7 +405,7 @@ export default function CodeDreamIDE() {
             const next = [...prev, line];
             if (i === lines.length - 1) {
               setStatus("done");
-              // Emit completed output
+              
               dualRuntimeBridge.emit("code", "code:output", {
                 lines: next,
                 status: "done",
@@ -431,7 +419,7 @@ export default function CodeDreamIDE() {
     });
   }, [status, language, engine, code]);
 
-  // Ref to always call the latest version of handleRun from the live-mode effect
+  
   const handleRunRef = useRef(handleRun);
 
   const handleStop = useCallback(() => {
@@ -449,15 +437,15 @@ export default function CodeDreamIDE() {
     });
   }, []);
 
-  // Toggle swap — persists to localStorage
+  
   const handleSwap = useCallback(() => {
     const next = toggleSwap("code");
     setSwapped(next);
   }, []);
 
-  // Live mode — debounce code changes and auto-run (300 ms)
-  // Use a ref so the effect always calls the latest handleRun without
-  // needing to list all of its own dependencies (avoids stale closures).
+  
+  
+  
   useEffect(() => {
     handleRunRef.current = handleRun;
   }, [handleRun]);
@@ -472,7 +460,7 @@ export default function CodeDreamIDE() {
     };
   }, [code, liveMode]);
 
-  // Dr. Eams quick assist — calls /api/ai/eams with code_context
+  
   const handleEamsAssist = useCallback(async () => {
     if (!eamsPrompt.trim() || eamsLoading) return;
     setEamsLoading(true);
@@ -506,7 +494,7 @@ export default function CodeDreamIDE() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      {/* ── Engine Connection Strip ───────────────────────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
         <div className="de-widget-header">
           <span className="de-widget-title">🔌 Engine Connection</span>
@@ -580,11 +568,11 @@ export default function CodeDreamIDE() {
         </div>
       </div>
 
-      {/* ── IDE Split: code left + preview right ─────────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
-        {/* Split header */}
+        
         <div className="de-widget-header" style={{ gap: 8, flexWrap: "wrap" }}>
-          {/* Language selector */}
+          
           <span className="de-widget-title">Code Workspace</span>
           <div style={{ display: "flex", gap: 4 }}>
             {LANGUAGES.map((lang) => (
@@ -612,7 +600,7 @@ export default function CodeDreamIDE() {
             ))}
           </div>
 
-          {/* Auto / Manual mode toggle */}
+          
           <button
             type="button"
             onClick={() => setLiveMode((m) => !m)}
@@ -650,7 +638,7 @@ export default function CodeDreamIDE() {
             )}
           </button>
 
-          {/* Swap button */}
+          
           <button
             type="button"
             onClick={handleSwap}
@@ -678,7 +666,7 @@ export default function CodeDreamIDE() {
             <ArrowLeftRight className="w-3 h-3" /> Swap
           </button>
 
-          {/* Preview mode */}
+          
           <div style={{ display: "flex", gap: 4, marginLeft: "auto" }}>
             {PREVIEW_MODES.map((m) => (
               <button
@@ -706,7 +694,7 @@ export default function CodeDreamIDE() {
           </div>
         </div>
 
-        {/* Split body — order controlled by `swapped` flag */}
+        
         <div
           style={{
             display: "grid",
@@ -715,9 +703,9 @@ export default function CodeDreamIDE() {
             minHeight: 320,
           }}
         >
-          {/* Editor panel — rendered first when not swapped, second when swapped */}
+          
           {swapped && (
-            /* ── SWAPPED LEFT: Preview ── */
+            
             <div
               style={{
                 borderRight: "1px solid rgba(160,195,240,0.15)",
@@ -973,7 +961,7 @@ export default function CodeDreamIDE() {
             </div>
           )}
 
-          {/* ── Editor panel (left when not swapped) ── */}
+          
           {!swapped && (
             <div
               style={{
@@ -1029,7 +1017,7 @@ export default function CodeDreamIDE() {
                   overflowX: "auto",
                 }}
               />
-              {/* Run / Stop bar */}
+              
               <div
                 style={{
                   padding: "8px 12px",
@@ -1154,7 +1142,7 @@ export default function CodeDreamIDE() {
             </div>
           )}
 
-          {/* ── Preview panel — rendered second when not swapped, first when swapped ── */}
+          
           {!swapped && (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -1213,7 +1201,7 @@ export default function CodeDreamIDE() {
                   padding: "12px 14px",
                 }}
               >
-                {/* Mode: terminal */}
+                
                 {previewMode === "terminal" && (
                   <div
                     style={{ display: "flex", flexDirection: "column", gap: 1 }}
@@ -1268,7 +1256,7 @@ export default function CodeDreamIDE() {
                   </div>
                 )}
 
-                {/* Mode: data */}
+                
                 {previewMode === "data" && (
                   <div style={{ padding: 4 }}>
                     <div
@@ -1307,7 +1295,7 @@ export default function CodeDreamIDE() {
                   </div>
                 )}
 
-                {/* Mode: game */}
+                
                 {previewMode === "game" && (
                   <div style={{ padding: 4 }}>
                     <div
@@ -1363,7 +1351,7 @@ export default function CodeDreamIDE() {
                   </div>
                 )}
 
-                {/* Mode: canvas */}
+                
                 {previewMode === "canvas" && (
                   <div style={{ padding: 4 }}>
                     <div
@@ -1396,7 +1384,7 @@ export default function CodeDreamIDE() {
                 )}
               </div>
 
-              {/* Output engine label footer */}
+              
               <div
                 style={{
                   padding: "6px 12px",
@@ -1417,7 +1405,7 @@ export default function CodeDreamIDE() {
             </div>
           )}
 
-          {/* When swapped, render editor on the right side */}
+          
           {swapped && (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -1590,7 +1578,7 @@ export default function CodeDreamIDE() {
         </div>
       </div>
 
-      {/* ── Dr. Eams Quick Assist ─────────────────────────────── */}
+      
       <div className="de-widget" style={{ marginBottom: 12 }}>
         <div className="de-widget-header">
           <Bot className="w-4 h-4" style={{ color: "#a78bfa" }} />
@@ -1623,7 +1611,7 @@ export default function CodeDreamIDE() {
             .
           </p>
 
-          {/* Input row */}
+          
           <div style={{ display: "flex", gap: 8 }}>
             <input
               type="text"
@@ -1678,7 +1666,7 @@ export default function CodeDreamIDE() {
             </button>
           </div>
 
-          {/* Reply */}
+          
           {eamsReply && (
             <div
               style={{

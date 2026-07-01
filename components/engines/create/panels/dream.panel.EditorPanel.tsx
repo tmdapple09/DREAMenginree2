@@ -3,12 +3,7 @@
 import { Bold, Hash, Italic, Link2, List, Save, Sparkles } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-/**
- * EditorPanel — Rich content editor for the Content Engine app.
- *
- * Template-based draft generator with formatting toolbar.
- * Lives at /engines/create/editor.
- */
+
 
 type ContentType = 'Post' | 'Thread' | 'Story' | 'Video';
 
@@ -90,7 +85,7 @@ export default function EditorPanel( ){
           <p className="text-sm text-white/50">Draft · format · save to queue</p>
         </div>
 
-        {/* Content type selector */}
+        
         <div className="flex gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10 mb-5">
           {CONTENT_TYPES.map((type) => (
             <button
@@ -108,7 +103,7 @@ export default function EditorPanel( ){
           ))}
         </div>
 
-        {/* Formatting toolbar */}
+        
         <div className="flex items-center gap-1 p-2 rounded-xl bg-white/[0.04] border border-white/10 mb-3 flex-wrap">
           {[
             { icon: Bold,    fn: () => insertFormat('**', '**'), title: 'Bold' },
@@ -137,7 +132,7 @@ export default function EditorPanel( ){
           </div>
         </div>
 
-        {/* Editor */}
+        
         <textarea
           ref={textRef}
           value={draft}
@@ -147,7 +142,7 @@ export default function EditorPanel( ){
           className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-xl text-sm text-white placeholder-white/25 resize-none focus:outline-none focus:border-[#fb923c]/50 font-sans leading-relaxed"
         />
 
-        {/* Footer */}
+        
         <div className="flex items-center justify-between mt-3">
           <span
             className="text-xs"

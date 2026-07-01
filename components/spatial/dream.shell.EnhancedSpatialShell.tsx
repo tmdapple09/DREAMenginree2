@@ -17,10 +17,7 @@ interface EnhancedSpatialShellProps {
   initialWidgets?: WidgetInstanceRecord[];
 }
 
-/**
- * EnhancedSpatialShell - Gesture-driven navigation shell
- * Replaces traditional nav bar with gesture-based spatial navigation
- */
+
 export default function EnhancedSpatialShell({
   userId,
   handle,
@@ -34,13 +31,13 @@ export default function EnhancedSpatialShell({
   const [navState, setNavState] = useState({ layer: 0, face: 0, slot: -1, depth: 0 });
   const [activeWidgets, setActiveWidgets] = useState<WidgetInstanceRecord[]>([]);
 
-  // Memoize widgets to prevent reinitialization
+  
   const widgets = useMemo(() => {
     if (initialWidgets.length > 0) {
       return initialWidgets;
     }
 
-    // Create default widgets
+    
     return [
       {
         instanceId: 'home-feed',
@@ -69,7 +66,7 @@ export default function EnhancedSpatialShell({
     ];
   }, [userId, handle, displayName, avatarUrl, bio, initialWidgets]);
 
-  // Initialize engine
+  
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -78,10 +75,10 @@ export default function EnhancedSpatialShell({
       enablePersistence: true,
     });
 
-    // Initialize with widgets
+    
     engine.getWidgetMemory().initialize(widgets);
 
-    // Listen to navigation changes
+    
     const handleNavChange = (data: unknown) => {
       const snapshot = (data as { state: Int32Array }).state;
       setNavState({
@@ -91,7 +88,7 @@ export default function EnhancedSpatialShell({
         depth: snapshot[3],
       });
 
-      // Update active widgets based on layer
+      
       if (snapshot[0] === LAYER_HOME) {
         engine.getWidgetMemory().switchToHome();
       } else if (snapshot[0] === LAYER_PROFILE) {
@@ -136,7 +133,7 @@ export default function EnhancedSpatialShell({
         >
           <div className="relative w-full h-full">
             {navState.layer === LAYER_PROFILE ? (
-              /* ── Profile layer: delegate to ProfileSpace widget canvas ── */
+              
               <ProfileSpace
                 widgets={activeWidgets.filter((w) => w.context === 'PROFILE')}
               />

@@ -3,36 +3,15 @@ import { DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl } from '@/en
 import type { UnifiedFeedItem } from '@/types/connector';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/providers/twitter.ts
- *
- * Twitter / X provider (Tier 1) — public profile RSS via Nitter.
- *
- * Nitter is an open-source, privacy-respecting Twitter frontend that exposes
- * RSS feeds for any PUBLIC Twitter/X profile without requiring API access.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { username: string, nitter_instance?: string }
- *
- * ⚠️  YOUR TWITTER/X ACCOUNT MUST BE SET TO PUBLIC.
- *     Protected (private) accounts cannot be read via Nitter.
- *     Go to Settings → Privacy and safety → set "Protect your posts" OFF.
- *
- * No API key or OAuth required — Nitter reads public profile data.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface TwitterCredentials {
   username: string;
-  /** Optional Nitter instance URL. Defaults to https://nitter.net */
+  
   nitter_instance?: string;
 }
 
-/**
- * Verify by checking that the Nitter RSS feed URL is reachable.
- * The account MUST be public — protected accounts return a 404 or redirect.
- */
+
 export async function twitterVerify(creds: TwitterCredentials): Promise<string> {
   const username = creds.username.replace(/^@/, '').trim();
   if (!username) throw new Error('Twitter/X username is required.');
@@ -71,9 +50,7 @@ export async function twitterVerify(creds: TwitterCredentials): Promise<string> 
   return `@${username}`;
 }
 
-/**
- * Fetch and normalise the public Twitter/X profile feed via Nitter RSS.
- */
+
 export async function twitterSync(creds: TwitterCredentials): Promise<UnifiedFeedItem[]> {
   const username = creds.username.replace(/^@/, '').trim();
   const instance = (creds.nitter_instance || DEFAULT_NITTER_INSTANCE).trim();

@@ -1,7 +1,7 @@
 import type { PointerState } from './PointerEventCapture';
 
-// GestureFrameComputer - Per-frame gesture computation
-// Mobile-optimized: scalar values only, zero allocation
+
+
 
 export interface GestureFrame {
   centroidX: number;
@@ -13,12 +13,7 @@ export interface GestureFrame {
   distance: number;
 }
 
-/**
- * GestureFrameComputer computes gesture metrics every animation frame
- * - Centroid tracking
- * - Delta computation
- * - Pinch detection
- */
+
 export class GestureFrameComputer {
   private lastCentroidX: number;
   private lastCentroidY: number;
@@ -32,11 +27,9 @@ export class GestureFrameComputer {
     this.lastFrameTime = 0;
   }
 
-  /**
-   * Compute gesture frame from pointer state
-   */
+  
   compute(state: PointerState, now: number): GestureFrame {
-    // Centroid computation
+    
     let centroidX: number;
     let centroidY: number;
 
@@ -51,12 +44,12 @@ export class GestureFrameComputer {
       centroidY = (state.p0y + state.p1y) / 2;
     }
 
-    // Delta computation
+    
     const dx = centroidX - this.lastCentroidX;
     const dy = centroidY - this.lastCentroidY;
     const dt = now - this.lastFrameTime;
 
-    // Pinch distance (only if 2 active pointers)
+    
     let distance = 0;
     let pinchDelta = 0;
 
@@ -70,7 +63,7 @@ export class GestureFrameComputer {
       this.lastDist = 0;
     }
 
-    // Update last values for next frame
+    
     this.lastCentroidX = centroidX;
     this.lastCentroidY = centroidY;
     this.lastFrameTime = now;
@@ -86,9 +79,7 @@ export class GestureFrameComputer {
     };
   }
 
-  /**
-   * Reset state (call when gesture ends)
-   */
+  
   reset(): void {
     this.lastCentroidX = 0;
     this.lastCentroidY = 0;

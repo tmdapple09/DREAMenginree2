@@ -1,22 +1,6 @@
 import type { CartridgeSaveAPI, CartridgeSaveSlot } from '../cartridge';
 
-/**
- * lib/gameengin/cartridges/saveState.ts
- *
- * Per-cartridge isolated save state engine.
- *
- * Each cartridge gets its own localStorage namespace so save data can never
- * bleed between games. Multiple save slots (0 = auto-save, 1–N = manual) are
- * supported. Slot metadata is indexed in a lightweight catalog entry so the
- * UI can list saves without deserializing every slot.
- *
- * Namespace format:  dreamge:save:<cartridgeId>:<slot>
- * Catalog format:    dreamge:save:<cartridgeId>:catalog
- *
- * All I/O is synchronous under the hood (localStorage) but wrapped in async
- * to match the CartridgeSaveAPI contract and allow future migration to
- * IndexedDB without changing cartridge code.
- */
+
 
 const PREFIX = 'dreamge:save';
 const MAX_SLOTS = 8;
@@ -46,7 +30,7 @@ function writeCatalog(
   try {
     localStorage.setItem(catalogKey(cartridgeId), JSON.stringify(catalog));
   } catch {
-    // Storage quota — non-fatal
+    
   }
 }
 
@@ -57,10 +41,7 @@ function autoLabel(slot: number): string {
   return slot === 0 ? `Auto · ${date} ${time}` : `Slot ${slot} · ${date} ${time}`;
 }
 
-/**
- * Create a CartridgeSaveAPI instance bound to a specific cartridge id.
- * Called once by the GameRuntime when building the GameEngineAPI for a mount.
- */
+
 export function createSaveAPI(cartridgeId: string): CartridgeSaveAPI {
   return {
     async list(): Promise<CartridgeSaveSlot[]> {
@@ -74,7 +55,7 @@ export function createSaveAPI(cartridgeId: string): CartridgeSaveAPI {
           const data = JSON.parse(rawData) as any;
           slots.push({ slot, timestamp: meta.timestamp, label: meta.label, data });
         } catch {
-          // Corrupted slot — skip
+          
         }
       }
       return slots.sort((a, b) => a.slot - b.slot);
@@ -123,7 +104,7 @@ export function createSaveAPI(cartridgeId: string): CartridgeSaveAPI {
   };
 }
 
-/** Wipe ALL save data for a cartridge. Used when the user uninstalls a game. */
+
 export function purgeCartridgeSaves(cartridgeId: string): void {
   for (let i = 0; i < MAX_SLOTS; i++) {
     localStorage.removeItem(slotKey(cartridgeId, i));
@@ -131,12 +112,12 @@ export function purgeCartridgeSaves(cartridgeId: string): void {
   localStorage.removeItem(catalogKey(cartridgeId));
 }
 
-/** Total bytes used by a cartridge's save data (approximate). */
+
 export function getSaveStorageBytes(cartridgeId: string): number {
   let bytes = 0;
   for (let i = 0; i < MAX_SLOTS; i++) {
     const raw = localStorage.getItem(slotKey(cartridgeId, i));
-    if (raw) bytes += raw.length * 2; // UTF-16
+    if (raw) bytes += raw.length * 2; 
   }
   const cat = localStorage.getItem(catalogKey(cartridgeId));
   if (cat) bytes += cat.length * 2;

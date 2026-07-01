@@ -4,24 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/settings/appearance/route.ts
- *
- * GET  /api/settings/appearance  — Returns the authenticated user's appearance settings
- * POST /api/settings/appearance  — Upserts appearance settings into the settings table
- *
- * Data is stored in the JSONB `data` column under the `appearance` key in the
- * existing `settings` table (same pattern as /api/settings/privacy).
- *
- * Phase 8 §I Point 83: Appearance settings (theme, palette preferences) save to
- * the database and restore on session load.
- *
- * Security (AXIOM 4):
- *   - auth.uid() = user_id enforced by RLS on the settings table
- *   - Requires authenticated user; returns 401 otherwise
- *
- * Architecture: ARCHITECTURE.md §10 (App Router, Supabase SSR client).
- */
+
 
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -66,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const db = supabase as SupabaseClient;
 
-  // Read existing settings first to merge (don't overwrite other keys like privacy)
+  
   const { data: existing } = await db
     .from('settings')
     .select('data')

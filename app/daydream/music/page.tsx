@@ -9,8 +9,8 @@ import AuthenticatedPageHeader from '@/components/ui/dream.AuthenticatedPageHead
 import dynamic from 'next/dynamic';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamMusic  (framework-mandated basename: page.tsx)
-// Stream 8.3 — Bundle split: StarMakerEngin only loads when Side B mounts.
+
+
 const StarMakerEngin = dynamic(() => import('@/engins/engin.StarMakerEngin'), {
   loading: () => (
     <div className="flex items-center justify-center h-64">
@@ -39,7 +39,7 @@ export default async function MusicArtistHubPage( ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (
@@ -66,7 +66,7 @@ export default async function MusicArtistHubPage( ){
             Manage your music here on Side A. Open StarMakerEngin (Side B) for production tools.
           </p>
 
-          {/* Quick Sound Recorder */}
+          
           <div className="de-widget" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 100%)', backdropFilter: 'blur(20px)', boxShadow: '0 8px 32px rgba(168,85,247,0.12)' }}>
             <div className="de-widget-header">
               <Sparkles className="w-4 h-4" style={{ color: '#a855f7' }} />

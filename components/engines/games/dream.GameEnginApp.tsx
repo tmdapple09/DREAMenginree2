@@ -5,15 +5,7 @@ import dynamic from 'next/dynamic';
 
 const GameEngin = dynamic(() => import('@/engins/engin.GameEngin'), { ssr: false });
 
-/**
- * GameEnginApp — Full-screen app shell for the Games Engine.
- *
- * Routes:
- *   /engines/games          → main GameEngin hub
- *   /engines/games/library  → game library browser
- *   /engines/games/scores   → scores & leaderboard
- *   /engines/games/builder  → world builder tool
- */
+
 
 export default makeEnginApp({
   id: 'games',

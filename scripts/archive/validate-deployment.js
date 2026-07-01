@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 
-/**
- * DREAMengin Enhancement Pre-Deployment Validation Script
- * 
- * This script validates that all enhancements are properly configured
- * and ready for production deployment.
- */
+
 
 const fs = require('fs');
 const path = require('path');
@@ -64,7 +59,7 @@ function main() {
     integration: 0,
   };
 
-  // Check Enhanced Components
+  
   log('Checking Enhanced Components...', 'blue');
   const components = [
     ['components/SkeletonLoaders.tsx', 'Skeleton Loading System'],
@@ -77,7 +72,7 @@ function main() {
     else allPassed = false;
   });
 
-  // Check Configuration Files
+  
   log('\nChecking Configuration Files...', 'blue');
   const configs = [
     ['package.json', 'Package Configuration'],
@@ -92,7 +87,7 @@ function main() {
     else allPassed = false;
   });
 
-  // Check Documentation
+  
   log('\nChecking Documentation...', 'blue');
   const docs = [
     ['ENHANCEMENT_DOCUMENTATION.md', 'Enhancement Documentation'],
@@ -105,10 +100,10 @@ function main() {
     else allPassed = false;
   });
 
-  // Check Integration Points
+  
   log('\nChecking Integration Points...', 'blue');
   
-  // Check if animations are in CSS (either the default or enhanced global stylesheet)
+  
   const hasKeyframesInDefault = checkFileContent(
     'app/globals.css',
     '@keyframes',
@@ -127,7 +122,7 @@ function main() {
     log('  → Add keyframes to globals.css or use globals-enhanced.css', 'yellow');
   }
 
-  // Check package.json scripts
+  
   const checkScripts = [
     ['package.json', '"build"', 'Build script configured'],
     ['package.json', '"dev"', 'Dev script configured'],
@@ -142,7 +137,7 @@ function main() {
     }
   });
 
-  // Summary
+  
   log('\n========================================', 'cyan');
   log('Validation Summary', 'cyan');
   log('========================================\n', 'cyan');

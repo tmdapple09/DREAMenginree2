@@ -3,12 +3,7 @@
 import { ChevronRight, Drum, FolderOpen, Music2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * MusicLibraryPanel — Preset & sample library for the Music Engine app.
- *
- * Browse genre presets, instrument kits, and project templates.
- * Lives at /engines/music/library.
- */
+
 
 interface LibraryItem {
   id: string;
@@ -64,7 +59,7 @@ export default function MusicLibraryPanel( ){
           <p className="text-sm text-white/50">Beats · instruments · project templates</p>
         </div>
 
-        {/* Tabs */}
+        
         <div className="flex gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10 mb-6">
           {TABS.map(({ id, label, icon: Icon}) => (
             <button
@@ -83,7 +78,7 @@ export default function MusicLibraryPanel( ){
           ))}
         </div>
 
-        {/* Items */}
+        
         <div className="space-y-2">
           {items.map((item) => (
             <button

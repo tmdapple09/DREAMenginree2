@@ -1,26 +1,15 @@
-/**
- * tests/drop-target-registry.test.ts — Pass 6
- *
- * Unit tests for lib/runtime/dropTargetRegistry.ts
- *
- * Verifies:
- *   - register / unregister lifecycle
- *   - route delivers to the best-matching target
- *   - priority ordering works
- *   - accepts filter is respected
- *   - getTargetsForRegion filtering
- */
+
 
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { dropTargetRegistry } from '../lib/runtime/dropTargetRegistry';
 import type { DreamDrop } from '../lib/runtime/coercionTable';
 
-// Helper to build a minimal DreamDrop
+
 function makeDrop(type: DreamDrop['type'] = 'image'): DreamDrop {
   return { type, content: 'test', timestamp: Date.now() };
 }
 
-// Clean up between tests by unregistering targets added during each test
+
 const registeredIds: string[] = [];
 
 beforeEach(() => {

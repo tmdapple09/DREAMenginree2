@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * check-build-memory-drift.mjs
- *
- * Compares the current repo state against the committed build-memory/*.json
- * and exits with a non-zero status if drift is detected.
- *
- * Checks performed:
- *   1. Routes   — every app/api route.ts must be in build-memory/routes.json
- *   2. Actions  — every API route handler must be in build-memory/actions.json
- *   3. Schema   — every table in types/supabase.ts must be in build-memory/schema.json
- *   4. Events   — every CustomEvent name in source must be in build-memory/events.json
- *   5. Schema usage — column names used in source code must exist in build-memory/schema.json
- *
- * Run:
- *   node scripts/check-build-memory-drift.mjs
- *
- * Exit codes:
- *   0 — no drift
- *   1 — drift detected (details printed to stdout)
- */
+
 
 import fs   from 'node:fs';
 import path from 'node:path';
@@ -26,7 +7,7 @@ import path from 'node:path';
 const ROOT = path.resolve(process.cwd());
 const MEM  = path.join(ROOT, 'build-memory');
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
+
 
 function rel(p) { return path.relative(ROOT, p); }
 
@@ -69,7 +50,7 @@ function fail(message) {
   console.error(`❌ FATAL: ${message}`);
 }
 
-// ─── check 1: routes ─────────────────────────────────────────────────────────
+
 
 function checkRoutes(mem) {
   if (!mem) return;
@@ -89,7 +70,7 @@ function checkRoutes(mem) {
     }
   }
 
-  // Check for routes in memory that no longer exist
+  
   for (const route of mem.routes) {
     const filePath = path.join(ROOT, route.file);
     if (!fs.existsSync(filePath)) {
@@ -98,7 +79,7 @@ function checkRoutes(mem) {
   }
 }
 
-// ─── check 2: actions ─────────────────────────────────────────────────────────
+
 
 function checkActions(mem) {
   if (!mem) return;
@@ -113,7 +94,7 @@ function checkActions(mem) {
     }
   }
 
-  // Check that http_handlers in memory match what's actually exported
+  
   const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
   for (const action of mem.actions) {
     if (action.type !== 'api-route-handler') continue;
@@ -135,7 +116,7 @@ function checkActions(mem) {
   }
 }
 
-// ─── check 3: schema ─────────────────────────────────────────────────────────
+
 
 function checkSchema(mem) {
   if (!mem) return;
@@ -145,7 +126,7 @@ function checkSchema(mem) {
   const src = readFile(supabaseTypes);
   if (!src) return;
 
-  // Extract table names from the public.Tables block
+  
   const lines = src.split('\n');
   let inTables = false, depth = 0;
   const liveTablesFromTypes = new Set();
@@ -165,7 +146,7 @@ function checkSchema(mem) {
     if (depth <= 0) break;
   }
 
-  // Collect tables from migration CREATE TABLE statements
+  
   const liveTablesFromMigrations = new Set();
   const migrationsDir = path.join(ROOT, 'supabase', 'migrations');
   if (fs.existsSync(migrationsDir)) {
@@ -182,16 +163,16 @@ function checkSchema(mem) {
 
   const allLive = new Set([...liveTablesFromTypes, ...liveTablesFromMigrations]);
 
-  // Tables in types but not in memory
+  
   for (const t of liveTablesFromTypes) {
     if (!memTables.has(t)) {
       drift('schema', `Table "${t}" exists in types/supabase.ts but is missing from build-memory/schema.json`);
     }
   }
 
-  // Tables in memory but not in any live source
+  
   for (const table of mem.tables) {
-    // code-only entries are by definition not in types or migrations
+    
     if (table.source === 'code-only') continue;
     if (!allLive.has(table.table)) {
       drift('schema', `build-memory/schema.json references table "${table.table}" which no longer exists in types/supabase.ts or any migration`);
@@ -199,7 +180,7 @@ function checkSchema(mem) {
   }
 }
 
-// ─── check 4: events ─────────────────────────────────────────────────────────
+
 
 function checkEvents(mem) {
   if (!mem) return;
@@ -209,7 +190,7 @@ function checkEvents(mem) {
   for (const f of files) {
     const src = readFile(f);
 
-    // Find CustomEvent instantiations
+    
     const re1 = /new\s+CustomEvent[<(]\s*[^,)>]*?\s*[>)]?\s*\(\s*['"`]([^'"`]+)['"`]/g;
     let m;
     while ((m = re1.exec(src)) !== null) {
@@ -254,7 +235,7 @@ function checkSchemaUsage(mem) {
   }
 }
 
-// ─── main ─────────────────────────────────────────────────────────────────────
+
 
 console.log('🔍  Checking build-memory drift...\n');
 

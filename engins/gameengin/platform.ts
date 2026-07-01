@@ -5,72 +5,37 @@ import { GRAVITY_VALUES } from './cartridge';
 import { EliteGameEngine, type FrameTelemetry, type PerformanceBudget, type QualityTier } from './core';
 import { PostFXManager } from './post-fx';
 
-/**
- * lib/gameengin/platform.ts
- *
- * GameEngin Platform — the single, canonical, console-class facade.
- *
- * GameEngin is no longer a "library each game wires up itself" — it is a
- * **next-gen home-console-class browser platform** that every registered
- * cartridge runs on. This module is the one coherent surface that ties the
- * existing pieces together:
- *
- *   • Renderer         — EliteGameEngine (WebGPU-first, ECS, adaptive budget)
- *   • AI               — AIDirector (TF.js adaptive difficulty, on-device)
- *   • Post-FX          — PostFXManager (bloom, glow, CA, vignette, grain)
- *   • Power Systems   — 20 systems (rollback netcode, GPU compute, BVH,
- *                        worker jobs, terrain, GI probes, asset streaming…)
- *   • Cartridge bay   — GameCartridge / GameRuntime host
- *   • Input           — Gamepad API + DualSense (Bluetooth/USB/HID)
- *   • Persistence     — quick-resume snapshot/restore via window.localStorage
- *   • Telemetry       — frame budget + capability report
- *
- * Goals:
- *   1. **One coherent platform** — every game launches the same way:
- *        const platform = await GameEnginPlatform.boot(canvas);
- *        await platform.loadCartridge(MyCartridge);
- *   2. **Console feel** — quick resume, controllers, premium FX, AI Director.
- *   3. **Registered cartridge contract** — games enter through the manifest,
- *      loader registry, and GameRuntime host instead of private launch paths.
- *   4. **Game-agnostic** — the platform itself never assumes "what game" is
- *      running. It is the OS layer; cartridges are the apps.
- */
 
-/**
- * Snapshot of what the host browser/device can do for the platform.
- * Used by cartridges to gate features (compute shaders, controllers, etc.).
- */
+
+
 export interface PlatformCapabilities {
-  /** Browser exposes navigator.gpu (WebGPU). */
+  
   webgpu: boolean;
-  /** WebGL2 is available as a fallback renderer. */
+  
   webgl2: boolean;
-  /** Standard Gamepad API present. */
+  
   gamepad: boolean;
-  /** Experimental WebHID — required for full DualSense (rumble, lights). */
+  
   webhid: boolean;
-  /** Web Bluetooth — alternative DualSense pairing on mobile. */
+  
   webBluetooth: boolean;
-  /** Touch input present (mobile / tablet / hybrid). */
+  
   touch: boolean;
-  /** Coarse pointer (e.g. touch / TV remote). */
+  
   coarsePointer: boolean;
-  /** Pointer Lock available — first-person / cursor-capture games. */
+  
   pointerLock: boolean;
-  /** Page is currently in the foreground (visibilitychange tracked). */
+  
   foreground: boolean;
-  /** Approximate device tier picked from `navigator.hardwareConcurrency` + memory. */
+  
   deviceTier: 'ultra' | 'high' | 'medium' | 'low';
-  /** Logical CPU cores. */
+  
   cpuCores: number;
-  /** Approx device memory in GB (Chrome only, falls back to 4). */
+  
   deviceMemoryGb: number;
 }
 
-/**
- * Detect the runtime capabilities of the current host. Safe in SSR — returns a
- * conservative all-false snapshot when `window` / `navigator` are missing.
- */
+
 export function detectCapabilities(): PlatformCapabilities {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') {
     return {
@@ -117,7 +82,7 @@ export function detectCapabilities(): PlatformCapabilities {
 
 const QUICK_RESUME_PREFIX = 'gameengin:quick-resume:';
 
-/** Generic shape for quick-resume payloads. Cartridges define their own data. */
+
 export interface QuickResumeEntry<T = unknown> {
   cartridgeId: string;
   savedAt: number;
@@ -125,25 +90,17 @@ export interface QuickResumeEntry<T = unknown> {
 }
 
 export interface PlatformBootOptions {
-  /** Enable the AI Director (loads TF.js lazily). Default: true. */
+  
   enableAIDirector?: boolean;
-  /** Enable the Post-FX pipeline (bloom, glow, CA, vignette). Default: true. */
+  
   enablePostFX?: boolean;
-  /** Initial gravity preset for cartridges that read api.physics.gravity. */
+  
   gravity?: keyof typeof GRAVITY_VALUES;
-  /** Initial 0–1 friction value for cartridges. */
+  
   friction?: number;
 }
 
-/**
- * The console-class GameEngin Platform. One instance per page.
- *
- * Lifecycle:
- *   const p = await GameEnginPlatform.boot(canvas);
- *   await p.loadCartridge(cartridge);   // mount a game
- *   p.unloadCartridge();                // exit to the platform shell
- *   p.dispose();                        // tear everything down
- */
+
 export class GameEnginPlatform {
   readonly engine: EliteGameEngine;
   readonly capabilities: PlatformCapabilities;
@@ -185,10 +142,7 @@ export class GameEnginPlatform {
     this._friction = options.friction ?? 0.5;
   }
 
-  /**
-   * Boot the platform. Lazy-initialises the renderer and (optionally) the
-   * AI Director and Post-FX pipeline. Safe to call exactly once per canvas.
-   */
+  
   static async boot(
     canvas: HTMLCanvasElement,
     options: PlatformBootOptions = {},
@@ -201,14 +155,14 @@ export class GameEnginPlatform {
         platform.director = new AIDirector();
         await platform.director.init();
       } catch {
-        // AIDirector falls back to a heuristic internally; keep platform usable.
+        
         platform.director = null;
       }
     }
 
     if (options.enablePostFX !== false) {
-      // PostFX requires a Babylon Scene + Camera; cartridges that need it
-      // construct their own scene then call platform.attachPostFX(scene, camera).
+      
+      
       platform.postFx = null;
     }
 
@@ -227,7 +181,7 @@ export class GameEnginPlatform {
     return platform;
   }
 
-  /** Attach a Babylon Scene + Camera to the post-FX pipeline (opt-in). */
+  
   async attachPostFX(scene: Scene, camera: Camera): Promise<PostFXManager> {
     const fx = new PostFXManager(scene, camera);
     await fx.init();
@@ -236,37 +190,32 @@ export class GameEnginPlatform {
     return fx;
   }
 
-  /** Current adaptive performance budget (for cartridges that branch on it). */
+  
   currentBudget(): PerformanceBudget {
     return this.engine.budget;
   }
 
-  /** Current quality tier (ultra/high/medium/low). */
+  
   qualityTier(): QualityTier {
     return this.engine.budget.tier;
   }
 
-  /** Latest frame telemetry, or null before the first frame. */
+  
   telemetry(): FrameTelemetry | null {
     return this._telemetry;
   }
 
-  /** Update the gravity exposed to cartridges via api.physics.gravity. */
+  
   setGravity(preset: keyof typeof GRAVITY_VALUES): void {
     this._gravity = GRAVITY_VALUES[preset];
   }
 
-  /** Update the friction exposed to cartridges via api.physics.friction. */
+  
   setFriction(value01: number): void {
     this._friction = Math.max(0, Math.min(1, value01));
   }
 
-  /**
-   * Mount a cartridge into the platform. The platform supplies a container
-   * div automatically (sibling to the canvas) and a fully-wired GameEngineAPI.
-   * Calling this while another cartridge is active will unload the previous
-   * one first.
-   */
+  
   async loadCartridge(cartridge: GameCartridge, container?: HTMLDivElement): Promise<void> {
     this.unloadCartridge();
     let host = container ?? null;
@@ -282,10 +231,10 @@ export class GameEnginPlatform {
     this._activeCleanup = cartridge.mount(host, this._buildCartridgeApi());
   }
 
-  /** Unmount the currently active cartridge (if any). */
+  
   unloadCartridge(): void {
     if (this._activeCleanup) {
-      try { this._activeCleanup(); } catch { /* swallow cartridge errors */ }
+      try { this._activeCleanup(); } catch {  }
     }
     this._activeCleanup = null;
     if (this._activeContainer && this._activeContainer.parentElement) {
@@ -299,15 +248,12 @@ export class GameEnginPlatform {
     this._heldKeys.clear();
   }
 
-  /** Identifier of the active cartridge, or null. */
+  
   activeCartridgeId(): string | null {
     return this._activeCartridge?.id ?? null;
   }
 
-  /**
-   * Save a quick-resume snapshot for the active (or named) cartridge. The
-   * platform handles storage; cartridges stay focused on data shape.
-   */
+  
   saveQuickResume<T>(data: T, cartridgeId?: string): void {
     if (typeof window === 'undefined') return;
     const id = cartridgeId ?? this.activeCartridgeId();
@@ -316,11 +262,11 @@ export class GameEnginPlatform {
     try {
       window.localStorage.setItem(QUICK_RESUME_PREFIX + id, JSON.stringify(entry));
     } catch {
-      /* quota / private mode */
+      
     }
   }
 
-  /** Restore the most recent quick-resume snapshot for a cartridge. */
+  
   loadQuickResume<T = unknown>(cartridgeId: string): QuickResumeEntry<T> | null {
     if (typeof window === 'undefined') return null;
     try {
@@ -332,11 +278,11 @@ export class GameEnginPlatform {
     }
   }
 
-  /** Delete a quick-resume entry (after a clean save / new game). */
+  
   clearQuickResume(cartridgeId: string): void {
     if (typeof window === 'undefined') return;
     try { window.localStorage.removeItem(QUICK_RESUME_PREFIX + cartridgeId); } catch {
-      /* ignore */
+      
     }
   }
 
@@ -348,7 +294,7 @@ export class GameEnginPlatform {
       window.removeEventListener('keydown', this._onKeyDown);
       window.removeEventListener('keyup', this._onKeyUp);
     }
-    try { this.engine.dispose?.(); } catch { /* engine teardown is best-effort */ }
+    try { this.engine.dispose?.(); } catch {  }
     this.director = null;
     this.postFx = null;
   }
@@ -439,18 +385,18 @@ export class GameEnginPlatform {
               body: JSON.stringify({ gameId, value, level }),
             });
           } catch {
-            /* score submission is best-effort */
+            
           }
         },
       },
 
       pool: {
         acquire: <T,>(factory: () => T) => factory(),
-        release: () => { /* no-op default */ },
+        release: () => {  },
       },
 
       telemetry: {
-        reportFrame: () => { /* engine drives telemetry */ },
+        reportFrame: () => {  },
       },
     } as unknown as GameEngineAPI;
   }

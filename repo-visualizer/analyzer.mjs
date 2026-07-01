@@ -542,7 +542,7 @@ function buildFileLevelSection(nodes, edges) {
 }
 
 function buildFileLevelGraphs(nodes, edges) {
-  // Group files by top-level folder (only source dirs)
+  
   const byFolder = new Map();
   for (const node of nodes) {
     if (!node.id.startsWith('file:')) continue;
@@ -552,7 +552,7 @@ function buildFileLevelGraphs(nodes, edges) {
     byFolder.get(topFolder).push(node.path);
   }
 
-  // Sort folders by file count ascending (smaller = renderable first)
+  
   const sortedFolders = [...byFolder.entries()].sort((a, b) => a[1].length - b[1].length);
 
   const lines = ['#### File-Level Graphs by Folder', ''];
@@ -568,8 +568,8 @@ function buildFileLevelGraphs(nodes, edges) {
     if (count > 60) {
       lines.push(`_File-level graph omitted: ${count} files exceeds Mermaid render budget. See table above._`);
     } else {
-      const nodeDefs = new Map(); // nodeId → label
-      const graphEdges = new Set(); // "  srcId --> tgtId"
+      const nodeDefs = new Map(); 
+      const graphEdges = new Set(); 
 
       for (const edge of edges) {
         if (!edge.source.startsWith('file:') || !edge.target.startsWith('file:')) continue;
@@ -585,7 +585,7 @@ function buildFileLevelGraphs(nodes, edges) {
         graphEdges.add(`  ${srcId} --> ${tgtId}`);
       }
 
-      // Add isolated nodes from this folder (no outgoing edges captured)
+      
       for (const p of folderFilePaths) {
         const id = toNodeId(p);
         if (!nodeDefs.has(id)) nodeDefs.set(id, p.split('/').pop());

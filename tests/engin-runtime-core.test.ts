@@ -1,15 +1,4 @@
-/**
- * tests/engin-runtime-core.test.ts
- *
- * Unit tests for the universal Engin Runtime Engine:
- *   - Base state creation and patching
- *   - Capability gating
- *   - Rule-set constraint enforcement
- *   - Transform application
- *   - Event bus emissions
- *   - Persistence adapter (MemoryAdapter)
- *   - EnginRuntime lifecycle
- */
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
@@ -37,7 +26,7 @@ import type {
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 import type { EnginBaseState } from '@/engine/engin-runtime/EnginBaseState';
 
-// ─── Minimal stub rule-set for testing ───────────────────────────────────────
+
 
 type CounterAction =
   | EnginAction<'counter:increment', { by: number }>
@@ -113,7 +102,7 @@ const counterRuleSet: EnginRuleSetContract<CounterAction> = {
   },
 };
 
-// ─── EnginBaseState ───────────────────────────────────────────────────────────
+
 
 describe('EnginBaseState', () => {
   it('createBaseState returns correct initial values', () => {
@@ -148,7 +137,7 @@ describe('EnginBaseState', () => {
   });
 });
 
-// ─── Capability gating ────────────────────────────────────────────────────────
+
 
 describe('EnginCapabilities', () => {
   it('gateCapability: grants permitted capabilities', () => {
@@ -177,7 +166,7 @@ describe('EnginCapabilities', () => {
   });
 });
 
-// ─── EnginIOAdapter — MemoryAdapter ──────────────────────────────────────────
+
 
 describe('MemoryAdapter', () => {
   let adapter: MemoryAdapter;
@@ -210,7 +199,7 @@ describe('MemoryAdapter', () => {
   });
 });
 
-// ─── enginStorageKey helper ───────────────────────────────────────────────────
+
 
 describe('enginStorageKey', () => {
   it('namespaces key correctly', () => {
@@ -220,7 +209,7 @@ describe('enginStorageKey', () => {
   });
 });
 
-// ─── Event bus ────────────────────────────────────────────────────────────────
+
 
 describe('EnginEventBus', () => {
   it('emits and receives lifecycle events', () => {
@@ -248,7 +237,7 @@ describe('EnginEventBus', () => {
   });
 });
 
-// ─── EnginRuntime ─────────────────────────────────────────────────────────────
+
 
 describe('EnginRuntime', () => {
   let runtime: EnginRuntime<CounterAction>;
@@ -337,10 +326,10 @@ describe('EnginRuntime', () => {
 
   it('persist and restore round-trips domain state', async () => {
     runtime.dispatch({ type: 'counter:increment', payload: { by: 42 } });
-    // Allow the async persist to settle
+    
     await new Promise((r) => setTimeout(r, 10));
 
-    // Create a new runtime with the same adapter (shared MemoryAdapter)
+    
     const adapter = new MemoryAdapter();
     await adapter.save('state', runtime.state.domain);
     const runtime2 = createEnginRuntime(counterRuleSet, {
@@ -366,7 +355,7 @@ describe('EnginRuntime', () => {
     expect(result).toBe(false);
   });
 });
-// ─── Universal envelope, authorization, lifecycle hooks, snapshots ───────────
+
 
 describe('universal domain object contract', () => {
   it('creates an explicitly owned and visible domain envelope', async () => {

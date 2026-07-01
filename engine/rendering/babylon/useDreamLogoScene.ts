@@ -1,4 +1,4 @@
-// Babylon.js dependency removed — logo now uses CSS animations via LogoHero component
+
 export interface DreamLogoSceneOptions {
   dreamSrc?: string
   enginSrc?: string

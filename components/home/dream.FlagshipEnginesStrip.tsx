@@ -4,32 +4,16 @@ import { getEnginById } from '@/engins/forgeengin/forge/forgeRegistry';
 import { ChevronRight, Flame, Gamepad2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-/**
- * FlagshipEnginesStrip — Two flagship engins on the HomeDream Surface.
- *
- * The HomeDream is the front door of the platform. The two finished products
- * the user wants to ship as flagship are:
- *   - GameEngin   — playable engine + cartridge runtime  (/daydream/games)
- *   - ForgeEngin  — meta-creation command center         (/daydream/forge)
- *
- * Each card carries a shiny gold/blue decal, a one-line tagline and a single
- * launch action that opens the engin in-region (no full-page navigation when
- * the dual runtime is active).
- *
- * Architecture justification:
- *   - docs/AXIOMS.md §3 — every visible action does something real.
- *   - docs/ARCHITECTURE.md §8 — gold / blue / white premium palette.
- *   - docs/PRODUCT_DEFINITION.md — flagship engins surface on HomeDream.
- */
+
 
 interface FlagshipEnginesStripProps {
-  /** Compact viewport flag (mobile / narrow). */
+  
   isCompactViewport?: boolean;
-  /** Mount the existing capability inside the active recursive runtime region. */
+  
   onOpenEngin?: (enginName: string) => void;
 }
 
-/** Polished gold/blue gradient used for the decal trim on flagship cards. */
+
 const SHINY_GOLD =
   'linear-gradient(135deg, #f6d27a 0%, #c8981a 38%, #e8b830 65%, #87CEEB 100%)';
 
@@ -61,7 +45,7 @@ export default function FlagshipEnginesStrip({
       style={{
         marginBottom: 16,
         borderRadius: isCompactViewport ? 20 : 24,
-        // Subtle premium glass surface — the shiny decals do the heavy lift
+        
         background:
           'linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(245,250,255,0.82) 100%)',
         border: '1.5px solid rgba(200,152,26,0.28)',
@@ -70,7 +54,7 @@ export default function FlagshipEnginesStrip({
         overflow: 'hidden',
       }}
     >
-      {/* ── Header ── */}
+      
       <div
         style={{
           display: 'flex',
@@ -145,7 +129,7 @@ export default function FlagshipEnginesStrip({
         </button>
       </div>
 
-      {/* ── Flagship cards ── */}
+      
       <div
         style={{
           display: 'grid',
@@ -181,7 +165,7 @@ export default function FlagshipEnginesStrip({
                   'transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
               }}
             >
-              {/* Shiny gold decal stripe along the top edge */}
+              
               <span
                 aria-hidden="true"
                 style={{

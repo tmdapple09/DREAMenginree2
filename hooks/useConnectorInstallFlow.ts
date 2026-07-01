@@ -16,27 +16,27 @@ import { readOfflineCache, writeOfflineCache } from '@/engine/offline/offlineCac
 
 const CONNECTOR_INSTALL_STATE_KEY = 'connector:install-flow';
 
-// hooks/useConnectorInstallFlow.ts
-// React hook that orchestrates the full Connect → Widget Install flow (req 1-100)
-//
-// Usage:
-//   const flow = useConnectorInstallFlow({ onAutoLock, grid, isMenuOpen, isPopupOpen });
-//   // After connector auth succeeds:
-//   flow.onConnectSuccess('youtube', 'YouTube');
+
+
+
+
+
+
+
 
 
 export interface ConnectorInstallFlowOptions {
-  /** Live slot grid — used for slot detection (req 31-33) */
+  
   grid: SlotGrid;
-  /** Called when auto-lock fires (req 84-90) */
+  
   onAutoLock: () => void;
-  /** Whether any menu is currently open (req 16) */
+  
   isMenuOpen?: boolean;
-  /** Whether a popup (Messaging / DrEams) is open (req 17) */
+  
   isPopupOpen?: boolean;
-  /** Whether user is in NAV mode (req 15) */
+  
   isNavMode?: boolean;
-  /** Whether any prompt is already visible — enforced outside if multiple connectors connect (req 18) */
+  
   isDragging?: boolean;
   isMenuAnimating?: boolean;
   isKeyboardOpen?: boolean;
@@ -57,38 +57,38 @@ export interface PlacementRequest {
 }
 
 export interface ConnectorInstallFlowState {
-  /** Toast message to display (req 11) */
+  
   toastMessage: string | null;
-  /** Active install prompt (req 12-20) */
+  
   prompt: ActivePrompt | null;
-  /** Placement mode request (req 33-40) */
+  
   placementRequest: PlacementRequest | null;
-  /** Slice sheet request (req 51-60) */
+  
   sliceSheetConnectorId: string | null;
 }
 
 export interface ConnectorInstallFlowActions {
-  /** Call after a connector auth succeeds */
+  
   onConnectSuccess: (connectorId: string, connectorName: string) => void;
-  /** Call when user taps "Add" on the prompt */
+  
   onPromptAdd: (widgetId: string) => void;
-  /** Call when user taps "Not now" on the prompt */
+  
   onPromptDismiss: (widgetId: string) => void;
-  /** Call when user taps "Add as Feed Slice" */
+  
   onPromptAddSlice: (connectorId: string) => void;
-  /** Call when placement mode finishes (Done) */
+  
   onPlacementDone: (slot: number) => void;
-  /** Call when placement mode is cancelled */
+  
   onPlacementCancel: () => void;
-  /** Call when no-slot dialog: user chooses "Place now" */
+  
   onPlaceNow: (widgetId: string) => void;
-  /** Call when no-slot dialog: user chooses "Later" */
+  
   onPlaceLater: (widgetId: string, connectorId: string, connectorName: string) => void;
-  /** Dismiss the current toast */
+  
   clearToast: () => void;
-  /** Call when a menu closes — checks for deferred prompt (req 16) */
+  
   onMenuClose: () => void;
-  /** Call when a popup closes — checks for deferred prompt (req 17) */
+  
   onPopupClose: () => void;
 }
 
@@ -156,7 +156,7 @@ export function useConnectorInstallFlow(
       isPopupOpen,
       isPromptVisible: prompt !== null,
     });
-    if (!result.shouldShowPromptNow) return; // deferred or blocked
+    if (!result.shouldShowPromptNow) return; 
 
     const connDef = getConnectorDef(connectorId);
     if (!result.suggestedWidgetTypes.length) return;
@@ -170,8 +170,8 @@ export function useConnectorInstallFlow(
   }, [isMenuOpen, isPopupOpen, prompt]);
 
   const onConnectSuccess = useCallback((connectorId: string, connectorName: string) => {
-    showToast(`Connected to ${connectorName}`); // req 11
-    showPrompt(connectorId, connectorName);     // req 5
+    showToast(`Connected to ${connectorName}`); 
+    showPrompt(connectorId, connectorName);     
   }, [showToast, showPrompt]);
 
   const onPromptAdd = useCallback((widgetId: string) => {
@@ -188,7 +188,7 @@ export function useConnectorInstallFlow(
     setPrompt(null);
 
     if (needsPlacementMode) {
-      // No empty slot → ask Place now / Later (req 33)
+      
       setPlacementRequest({
         widgetId,
         connectorId: prompt.connectorId,
@@ -196,7 +196,7 @@ export function useConnectorInstallFlow(
         noSlotAvailable: true,
       });
     } else {
-      // Widget placed immediately — slot returned to caller via state
+      
       setPlacementRequest({
         widgetId,
         connectorId: prompt.connectorId,
@@ -204,7 +204,7 @@ export function useConnectorInstallFlow(
         noSlotAvailable: false,
       });
     }
-    void def; // used by parent to render WidgetShell
+    void def; 
   }, [prompt, grid, onAutoLock, isDragging, isMenuAnimating, isKeyboardOpen]);
 
   const onPromptDismiss = useCallback((widgetId: string) => {
@@ -215,18 +215,18 @@ export function useConnectorInstallFlow(
 
   const onPromptAddSlice = useCallback((connectorId: string) => {
     setPrompt(null);
-    setSliceSheetConnectorId(connectorId); // req 51
+    setSliceSheetConnectorId(connectorId); 
   }, []);
 
   const onPlacementDone = useCallback(() => {
     if (!placementRequest) return;
     setPlacementRequest(null);
-    onAutoLock(); // req 40, 83
+    onAutoLock(); 
   }, [placementRequest, onAutoLock]);
 
   const onPlacementCancel = useCallback(() => {
     setPlacementRequest(null);
-    onAutoLock(); // req 40
+    onAutoLock(); 
   }, [onAutoLock]);
 
   const onPlaceNow = useCallback((widgetId: string) => {
@@ -235,12 +235,12 @@ export function useConnectorInstallFlow(
       widgetId,
       connectorId: placementRequest.connectorId,
       connectorName: placementRequest.connectorName,
-      noSlotAvailable: false, // enter placement mode UI (req 36)
+      noSlotAvailable: false, 
     });
   }, [placementRequest]);
 
   const onPlaceLater = useCallback((widgetId: string, connectorId: string, connectorName: string) => {
-    handlePlaceLater(widgetId, connectorId, connectorName); // queued in Suggested (req 34)
+    handlePlaceLater(widgetId, connectorId, connectorName); 
     setPlacementRequest(null);
   }, []);
 

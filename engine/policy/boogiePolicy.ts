@@ -1,18 +1,18 @@
-// lib/policy/boogiePolicy.ts
-// TheBoogieMan.AI — centralized policy module (req 96–100).
-// Single source of truth for category enums, severity enums, thresholds,
-// action durations, user-facing copy keys, and the PolicyResult type.
-//
-// Policy document: docs/BOOGIEMAN_POLICY.md
-// Public page: /policy
 
-// Re-export all constants from the core policy file so callers can import
-// from either location without duplication.
 
-// ============================================================================
-// POLICY CATEGORY ENUM (req 24–25)
-// Short labels matching docs/BOOGIEMAN_POLICY.md taxonomy.
-// ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const PolicyCategory = {
   SPAM_SCAMS:     'SPAM/SCAMS',
@@ -33,9 +33,9 @@ export const PolicyCategory = {
 
 export type PolicyCategoryValue = typeof PolicyCategory[keyof typeof PolicyCategory];
 
-// ============================================================================
-// ENFORCEMENT SEVERITY LEVELS (req 73) — S0 (least) → S5 (most)
-// ============================================================================
+
+
+
 
 export const PolicySeverity = {
   S0_NOTICE:       'S0_NOTICE',
@@ -48,31 +48,31 @@ export const PolicySeverity = {
 
 export type PolicySeverityLevel = typeof PolicySeverity[keyof typeof PolicySeverity];
 
-// ============================================================================
-// POLICY RESULT (req 98)
-// The canonical result type returned by boogieEvaluate() and emitted as events.
-// ============================================================================
+
+
+
+
 
 export interface PolicyResult {
-  /** Whether the content/action is allowed. */
+  
   allowed: boolean;
-  /** Which policy category triggered this result. */
+  
   category: PolicyCategoryValue;
-  /** Enforcement severity level (S0–S5). */
+  
   severity: PolicySeverityLevel;
-  /** Ordered list of enforcement actions applied (least → most force). */
+  
   actions: string[];
-  /** Plain-language reason shown to the user (never reveals internals). */
+  
   reason: string;
-  /** Reference to the specific policy rule that was applied, e.g. "C28_SPAM". */
+  
   policy_ref: string;
-  /** ISO timestamp when the restriction expires, or null if no expiry. */
+  
   expires_at: string | null;
 }
 
-// ============================================================================
-// RULE CODE → PolicyCategory mapping (req 26)
-// ============================================================================
+
+
+
 
 const RULE_TO_CATEGORY: Record<string, PolicyCategoryValue> = {
   C21_HARASSMENT: PolicyCategory.HARASSMENT,
@@ -85,20 +85,20 @@ const RULE_TO_CATEGORY: Record<string, PolicyCategoryValue> = {
   C28_SPAM:       PolicyCategory.SPAM_SCAMS,
   C29_PRIVACY:    PolicyCategory.PRIVACY,
   C30_MALWARE:    PolicyCategory.MALWARE_ABUSE,
-  C31_GROOMING:   PolicyCategory.MINORS,  // child predator grooming → MINORS category
+  C31_GROOMING:   PolicyCategory.MINORS,  
   CAT_HATE:       PolicyCategory.HATE,
   CAT_MISINFO:    PolicyCategory.MISINFO,
   CAT_EVASION:    PolicyCategory.EVASION,
 };
 
-// ============================================================================
-// RULE CODE → PolicySeverity mapping (req 73–79)
-// ============================================================================
+
+
+
 
 const RULE_TO_SEVERITY: Record<string, PolicySeverityLevel> = {
-  C22_CSAM:    PolicySeverity.S5_PERM_BAN,   // one-strike (req 82)
-  C30_MALWARE: PolicySeverity.S5_PERM_BAN,   // one-strike
-  C31_GROOMING:PolicySeverity.S5_PERM_BAN,   // one-strike: zero-tolerance for child predators
+  C22_CSAM:    PolicySeverity.S5_PERM_BAN,   
+  C30_MALWARE: PolicySeverity.S5_PERM_BAN,   
+  C31_GROOMING:PolicySeverity.S5_PERM_BAN,   
   C24_VIOLENCE:PolicySeverity.S4_TEMP_BAN,
   C25_SELF_HARM:PolicySeverity.S4_TEMP_BAN,
   C21_HARASSMENT:PolicySeverity.S3_FEATURE_LOCK,
@@ -109,9 +109,9 @@ const RULE_TO_SEVERITY: Record<string, PolicySeverityLevel> = {
   C28_SPAM:    PolicySeverity.S1_SOFT_WARN,
 };
 
-// ============================================================================
-// USER-FACING REASON MESSAGES per category (req 95 — factual, calm, no shaming)
-// ============================================================================
+
+
+
 
 const CATEGORY_REASON: Record<PolicyCategoryValue, string> = {
   [PolicyCategory.SPAM_SCAMS]:    'Your activity was flagged for spam or scam patterns.',
@@ -130,35 +130,27 @@ const CATEGORY_REASON: Record<PolicyCategoryValue, string> = {
   [PolicyCategory.NONE]:          'No issues found.',
 };
 
-// ============================================================================
-// boogieEvaluate — single public API (req 97)
-// Accepts flexible input, returns a deterministic PolicyResult.
-// ============================================================================
+
+
+
+
 
 export interface BoogieEvaluateInput {
-  /** Rule code from docs/BOOGIEMAN_POLICY.md (e.g. "C28_SPAM"). Required. */
+  
   policy_ref: string;
-  /** Numeric severity 0–1. */
+  
   severity?: number;
-  /** Confidence in the detection 0–1. */
+  
   confidence?: number;
-  /** Number of prior active strikes for this user. */
+  
   strike_count?: number;
-  /** ISO timestamp when any applied restriction should expire, if known. */
+  
   expires_at?: string | null;
-  /** Override the resolved category. */
+  
   category?: PolicyCategoryValue;
 }
 
-/**
- * boogieEvaluate — the single enforcement evaluation function (req 97).
- *
- * Returns a PolicyResult that:
- *  - maps the rule code to its category + default severity
- *  - picks the least-force action matching the severity level (req 22)
- *  - includes the policy_ref so every result links back to a written rule (req 94)
- *  - never reveals internals (req 95)
- */
+
 export function boogieEvaluate(input: BoogieEvaluateInput): PolicyResult {
   const {
     policy_ref,
@@ -174,7 +166,7 @@ export function boogieEvaluate(input: BoogieEvaluateInput): PolicyResult {
 
   const allowed = category === PolicyCategory.NONE && severity < 0.1;
 
-  // Select severity level (req 73–79)
+  
   const severityLevel: PolicySeverityLevel = selectPolicySeverity(
     policy_ref,
     severity,
@@ -196,9 +188,9 @@ export function boogieEvaluate(input: BoogieEvaluateInput): PolicyResult {
   };
 }
 
-// ============================================================================
-// HELPERS (internal — not exported to prevent internal signal leakage, req H63)
-// ============================================================================
+
+
+
 
 function selectPolicySeverity(
   ruleCode: string,
@@ -206,27 +198,27 @@ function selectPolicySeverity(
   confidence: number,
   strikeCount: number,
 ): PolicySeverityLevel {
-  // One-strike rules: immediate highest severity regardless of confidence (req 82)
+  
   if (ruleCode === 'C22_CSAM' || ruleCode === 'C30_MALWARE' || ruleCode === 'C31_GROOMING') {
     return PolicySeverity.S5_PERM_BAN;
   }
 
-  // Low severity + first offense + decent confidence → notice only (req 83)
+  
   if (severity < 0.1 && strikeCount === 0 && confidence >= 0.6) {
     return PolicySeverity.S0_NOTICE;
   }
 
-  // Use rule-specific mapping if available
+  
   const mapped = RULE_TO_SEVERITY[ruleCode];
   if (mapped) {
-    // Scale up if repeat offender (req 81)
+    
     if (strikeCount > 1 && mapped < PolicySeverity.S4_TEMP_BAN) {
       return escalateSeverity(mapped);
     }
     return mapped;
   }
 
-  // Fallback: derive from numeric severity score (req 73–79)
+  
   if (severity >= 0.9) return PolicySeverity.S4_TEMP_BAN;
   if (severity >= 0.7) return PolicySeverity.S3_FEATURE_LOCK;
   if (severity >= 0.4) return PolicySeverity.S2_HARD_WARN;
@@ -259,10 +251,10 @@ function selectPolicyActions(level: PolicySeverityLevel, _allowed: boolean): str
   }
 }
 
-// ============================================================================
-// emitBoogieManEvent — client-side event bus (req 99)
-// Dispatches a CustomEvent so any UI component can respond consistently.
-// ============================================================================
+
+
+
+
 
 export function emitBoogieManEvent(result: PolicyResult): void {
   if (typeof window === 'undefined') return;

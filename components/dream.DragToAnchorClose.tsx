@@ -8,10 +8,7 @@ interface DragToAnchorCloseProps {
   children: React.ReactNode;
 }
 
-/**
- * DragToAnchorClose - Enables closing widgets by dragging to anchor
- * Implements the drag-to-anchor close contract
- */
+
 export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAnchorCloseProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isOverAnchor, setIsOverAnchor] = useState(false);
@@ -22,9 +19,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     element: null as HTMLElement | null
   });
 
-  /**
-   * Check if pointer is over anchor drop zone
-   */
+  
   const checkOverAnchor = useCallback((x: number, y: number): boolean => {
     return (
       x >= anchorRect.x0 &&
@@ -34,12 +29,10 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     );
   }, [anchorRect]);
 
-  /**
-   * Handle pointer down - start drag
-   */
+  
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    // Only allow drag from specific handle (e.g., top bar)
-    // Note: Using e.target to check the actual clicked element
+    
+    
     const target = e.target as HTMLElement;
     if (!target.classList.contains('drag-handle')) {
       return;
@@ -51,7 +44,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     dragState.startX = e.clientX;
     dragState.startY = e.clientY;
     dragState.pointerId = e.pointerId;
-    // Store the draggable container (currentTarget) for transform updates
+    
     dragState.element = e.currentTarget as HTMLElement;
 
     setIsDragging(true);
@@ -61,9 +54,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     }
   }, []);
 
-  /**
-   * Handle pointer move - track drag
-   */
+  
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return;
 
@@ -73,39 +64,37 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     const dx = e.clientX - dragState.startX;
     const dy = e.clientY - dragState.startY;
 
-    // Update element position
+    
     if (dragState.element) {
       dragState.element.style.transform = `translate(${dx}px, ${dy}px)`;
     }
 
-    // Check if over anchor
+    
     const overAnchor = checkOverAnchor(e.clientX, e.clientY);
     setIsOverAnchor(overAnchor);
   }, [isDragging, checkOverAnchor]);
 
-  /**
-   * Handle pointer up - complete drag or close
-   */
+  
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     if (!isDragging) return;
 
     const dragState = dragStateRef.current;
     if (dragState.pointerId !== e.pointerId) return;
 
-    // Check if released over anchor
+    
     const overAnchor = checkOverAnchor(e.clientX, e.clientY);
 
     if (overAnchor) {
-      // Close widget
+      
       onClose();
     } else {
-      // Reset position
+      
       if (dragState.element) {
         dragState.element.style.transform = '';
       }
     }
 
-    // Reset state
+    
     setIsDragging(false);
     setIsOverAnchor(false);
 
@@ -114,14 +103,12 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     }
   }, [isDragging, checkOverAnchor, onClose]);
 
-  /**
-   * Handle pointer cancel
-   */
+  
   const handlePointerCancel = useCallback((e: React.PointerEvent) => {
     const dragState = dragStateRef.current;
     if (dragState.pointerId !== e.pointerId) return;
 
-    // Reset position
+    
     if (dragState.element) {
       dragState.element.style.transform = '';
     }
@@ -149,7 +136,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
     >
       {children}
 
-      {/* Visual feedback when over anchor */}
+      
       {isOverAnchor && (
         <div className="fixed inset-0 bg-purple-500 bg-opacity-20 pointer-events-none animate-pulse" />
       )}
@@ -157,9 +144,7 @@ export function DragToAnchorClose({ anchorRect, onClose, children }: DragToAncho
   );
 }
 
-/**
- * DragHandle - Component to mark draggable area
- */
+
 export function DragHandle({ children, className = '' }: {children?: React.ReactNode; className?: string}) {
   return (
     <div className={`drag-handle ${className}`}>

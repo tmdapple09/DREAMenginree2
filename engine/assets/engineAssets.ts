@@ -2,14 +2,7 @@ import { encodeUint8ArrayToLedgerString } from '@/engins/contentengin/media/ledg
 import { createClient } from '@/supabase/client/client';
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 
-/**
- * THE FLOW:
- * 1. UI sends Image to Wasm Engine
- * 2. Wasm Engine generates Mesh + Rig (Moving Parts)
- * 3. This function saves those Binary Blobs to Supabase
- *
- * Note: The global_registry entry is created AUTOMATICALLY by the SQL trigger.
- */
+
 export const saveEngineAsset = async (
   label: string,
   image_url: string,
@@ -28,7 +21,7 @@ export const saveEngineAsset = async (
     fileName: `${label}-rig.bin`,
   });
 
-  // 1. Save the Asset + Moving Parts (Binary)
+  
   const { data: asset, error } = await supabase
     .from('game_assets')
     .insert([{

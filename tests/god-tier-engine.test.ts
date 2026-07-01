@@ -1,6 +1,4 @@
-/**
- * Tests for DreamEngineGodTierSystem and its helper functions.
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -36,7 +34,7 @@ import {
   type BabylonSceneLike,
 } from '@/engine/rendering/god-tier/godTierEngine';
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
+
 
 const makeMesh = (overrides: Partial<MeshSnapshot> = {}): MeshSnapshot => ({
   id: 'test-mesh',
@@ -103,7 +101,7 @@ const device: DeviceSignals = {
   prefersReducedMotion: false,
 };
 
-// ─── RingAverage ──────────────────────────────────────────────────────────────
+
 
 describe('RingAverage', () => {
   it('returns 0 on empty ring', () => {
@@ -123,15 +121,15 @@ describe('RingAverage', () => {
     r.push(10);
     r.push(20);
     r.push(30);
-    // Ring full: avg = 20
+    
     expect(r.avg()).toBe(20);
-    // Push 40 — oldest (10) evicted
+    
     r.push(40);
     expect(r.avg()).toBeCloseTo((20 + 30 + 40) / 3);
   });
 });
 
-// ─── maxAssumptionBoot ────────────────────────────────────────────────────────
+
 
 describe('maxAssumptionBoot', () => {
   it('returns GOD_TIER mode', () => {
@@ -156,7 +154,7 @@ describe('maxAssumptionBoot', () => {
   });
 });
 
-// ─── framePressureShield ──────────────────────────────────────────────────────
+
 
 describe('framePressureShield', () => {
   it('returns pressureLevel 0 for fast frames', () => {
@@ -182,7 +180,7 @@ describe('framePressureShield', () => {
   });
 });
 
-// ─── fidelityScaler ───────────────────────────────────────────────────────────
+
 
 describe('fidelityScaler', () => {
   it('reduces scale under high frame pressure', () => {
@@ -203,7 +201,7 @@ describe('fidelityScaler', () => {
   });
 });
 
-// ─── heroObjectImportance ─────────────────────────────────────────────────────
+
 
 describe('heroObjectImportance', () => {
   it('gives high score to visible interactive mesh near camera', () => {
@@ -225,13 +223,13 @@ describe('heroObjectImportance', () => {
   });
 });
 
-// ─── eliteMeshPolicy ─────────────────────────────────────────────────────────
+
 
 describe('eliteMeshPolicy', () => {
   it('freezes truly dead meshes', () => {
     const decision = eliteMeshPolicy(
       makeMesh({ visible: false, interactive: false, nearPointer: false, transformDelta: 0.000001, materialChanged: false }),
-      0, // importance < 10
+      0, 
       0,
     );
     expect(decision.freeze).toBe(true);
@@ -255,7 +253,7 @@ describe('eliteMeshPolicy', () => {
   });
 });
 
-// ─── cinematicMotionStack ─────────────────────────────────────────────────────
+
 
 describe('cinematicMotionStack', () => {
   it('returns reduced-motion plan when reducedMotion=true', () => {
@@ -281,7 +279,7 @@ describe('cinematicMotionStack', () => {
   });
 });
 
-// ─── visualDominanceEngine ────────────────────────────────────────────────────
+
 
 describe('visualDominanceEngine', () => {
   it('boosts primary contrast when user is struggling', () => {
@@ -303,12 +301,12 @@ describe('visualDominanceEngine', () => {
   });
 });
 
-// ─── predictIntent ────────────────────────────────────────────────────────────
+
 
 describe('predictIntent', () => {
   it('predicts navigate_route when next routes are provided', () => {
     const intent = predictIntent(route, runtime, ux);
-    expect(intent.type).toBe('open_detail'); // primaryIntent='open_detail' overrides
+    expect(intent.type).toBe('open_detail'); 
     expect(intent.confidence).toBeGreaterThan(0.6);
   });
 
@@ -333,7 +331,7 @@ describe('predictIntent', () => {
   });
 });
 
-// ─── speculativePrefetchEngine ────────────────────────────────────────────────
+
 
 describe('speculativePrefetchEngine', () => {
   it('always includes critical prefetch for current route', () => {
@@ -359,7 +357,7 @@ describe('speculativePrefetchEngine', () => {
   });
 });
 
-// ─── frictionOverride ─────────────────────────────────────────────────────────
+
 
 describe('frictionOverride', () => {
   it('returns empty array when there is no friction', () => {
@@ -390,7 +388,7 @@ describe('frictionOverride', () => {
   });
 });
 
-// ─── uiPrioritySolver ─────────────────────────────────────────────────────────
+
 
 describe('uiPrioritySolver', () => {
   it('ranks primary CTAs first', () => {
@@ -424,7 +422,7 @@ describe('uiPrioritySolver', () => {
   });
 });
 
-// ─── applyGodTierToBabylon ────────────────────────────────────────────────────
+
 
 describe('applyGodTierToBabylon', () => {
   it('sets hardware scaling level on the engine', () => {
@@ -515,7 +513,7 @@ describe('applyGodTierToBabylon', () => {
   });
 });
 
-// ─── getGodTierUiTokens ───────────────────────────────────────────────────────
+
 
 describe('getGodTierUiTokens', () => {
   it('returns classes string including god-tier-ui', () => {
@@ -548,7 +546,7 @@ describe('getGodTierUiTokens', () => {
   });
 });
 
-// ─── DreamEngineGodTierSystem (full orchestrator) ─────────────────────────────
+
 
 describe('DreamEngineGodTierSystem', () => {
   let system: DreamEngineGodTierSystem;
@@ -601,7 +599,7 @@ describe('DreamEngineGodTierSystem', () => {
   });
 });
 
-// ─── defaultSignals ───────────────────────────────────────────────────────────
+
 
 describe('default signal helpers', () => {
   it('defaultDeviceSignals returns valid structure in non-browser', () => {
@@ -627,7 +625,7 @@ describe('default signal helpers', () => {
   });
 });
 
-// ─── computeAlgorithmLevel ────────────────────────────────────────────────────
+
 
 describe('computeAlgorithmLevel', () => {
   it('returns 5 at full intensity with no pressure', () => {
@@ -655,7 +653,7 @@ describe('computeAlgorithmLevel', () => {
   });
 });
 
-// ─── buildChildContentFilter ──────────────────────────────────────────────────
+
 
 describe('buildChildContentFilter', () => {
   it('returns disabled filter when childSafetyMode is false', () => {
@@ -676,7 +674,7 @@ describe('buildChildContentFilter', () => {
   });
 });
 
-// ─── DreamEngineGodTierSystem — level + child safety ─────────────────────────
+
 
 describe('DreamEngineGodTierSystem algorithmLevel and childContentFilter', () => {
   let system: DreamEngineGodTierSystem;

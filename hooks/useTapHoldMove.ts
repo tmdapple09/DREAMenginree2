@@ -4,19 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import type { ModuleManifest, RuntimeId } from '@/engine/editor/universalEditor';
 import { canTransfer } from '@/engine/editor/universalEditor';
 
-/**
- * useTapHoldMove — Tap / Hold / Drag-to-Edge transfer hook
- *
- * Detects a ≥ 300ms hold on any DOM element, then enables dragging.
- * When the element is dragged near a screen edge, onTransfer is called
- * with the module manifest and the target runtime inferred from the edge.
- *
- * Edge → Runtime mapping:
- *   left edge  → homedream
- *   right edge → dreamspace
- *   top edge   → daydream:create
- *   bottom edge → engin:content
- */
+
 
 const HOLD_DURATION_MS    = 300;
 const EDGE_THRESHOLD_PX   = 60;
@@ -34,9 +22,9 @@ function detectEdgeRuntime(
 }
 
 export interface UseTapHoldMoveOptions {
-  /** The module manifest for this draggable element. */
+  
   manifest: ModuleManifest;
-  /** Called when the user drags the element to a compatible runtime edge. */
+  
   onTransfer(manifest: ModuleManifest, targetRuntime: RuntimeId): void;
 }
 
@@ -76,7 +64,7 @@ export function useTapHoldMove(
       if (!dragging.current) return;
       const target = detectEdgeRuntime(e.clientX, e.clientY);
       if (target && canTransfer(manifest, target)) {
-        el.style.outline = '2px solid #fbbf24'; // gold highlight
+        el.style.outline = '2px solid #fbbf24'; 
       } else {
         el.style.outline = '';
       }

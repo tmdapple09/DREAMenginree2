@@ -8,18 +8,10 @@ import type {
 } from './creative-optimizero';
 import { CreativeOptimizero, DEFAULT_WEIGHTS } from './creative-optimizero';
 
-/**
- * DREAMengin Babylon.js + Creative Optimizero Integration
- *
- * Purpose:
- * Apply Creative Optimizero algorithm to Babylon.js scene rendering and layout decisions.
- * Determines how UI elements should render and move around in 3D space.
- */
 
 
-/**
- * Represents a 3D UI element candidate in Babylon.js space
- */
+
+
 export interface BabylonUICandidate {
   id: string;
   type: 'mesh' | 'ui-panel' | 'widget' | 'particle-system' | 'effect';
@@ -45,34 +37,30 @@ export interface BabylonUICandidate {
   metadata?: Record<string, unknown>;
 }
 
-/**
- * Scoring functions for Babylon.js UI elements
- */
+
 export class BabylonOptimizeroScorers {
-  /**
-   * Score novelty - how unique/interesting is this UI element?
-   */
+  
   static novelty(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let score = 0.5; // base score
+    let score = 0.5; 
 
-    // Novel material types get bonus points
+    
     if (element.material?.type === 'holographic' || element.material?.type === 'glass') {
       score += 0.2;
     }
 
-    // Novel animation types get bonus
+    
     if (element.animation?.type === 'orbit' || element.animation?.type === 'float') {
       score += 0.15;
     }
 
-    // Unusual positioning (not on standard grid) gets bonus
+    
     const isOnGrid = Math.abs(element.position.x % 1) < 0.01 && Math.abs(element.position.z % 1) < 0.01;
     if (!isOnGrid) {
       score += 0.1;
     }
 
-    // Particle systems are visually novel
+    
     if (element.type === 'particle-system') {
       score += 0.15;
     }
@@ -80,14 +68,12 @@ export class BabylonOptimizeroScorers {
     return score;
   }
 
-  /**
-   * Score usefulness - does this element serve a clear purpose?
-   */
+  
   static usefulness(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let score = 0.3; // base score
+    let score = 0.3; 
 
-    // Interactive elements are more useful
+    
     if (element.interaction?.clickable) {
       score += 0.3;
     }
@@ -98,12 +84,12 @@ export class BabylonOptimizeroScorers {
       score += 0.2;
     }
 
-    // UI panels and widgets are inherently useful
+    
     if (element.type === 'ui-panel' || element.type === 'widget') {
       score += 0.2;
     }
 
-    // Elements with callbacks are actionable
+    
     if (element.interaction?.callback) {
       score += 0.1;
     }
@@ -111,35 +97,33 @@ export class BabylonOptimizeroScorers {
     return score;
   }
 
-  /**
-   * Score delight - visual impact and aesthetic appeal
-   */
+  
   static delight(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let score = 0.4; // base score
+    let score = 0.4; 
 
-    // Animated elements create delight
+    
     if (element.animation) {
       score += 0.2;
-      // Smooth animations are more delightful
+      
       if (element.animation.easing) {
         score += 0.05;
       }
     }
 
-    // Color vibrancy contributes to delight
+    
     if (element.color) {
       const { r, g, b } = element.color;
       const vibrancy = Math.max(r, g, b) - Math.min(r, g, b);
       score += vibrancy * 0.15;
     }
 
-    // Special materials add visual appeal
+    
     if (element.material?.type === 'glow' || element.material?.type === 'holographic') {
       score += 0.15;
     }
 
-    // Effects are inherently delightful
+    
     if (element.type === 'effect' || element.type === 'particle-system') {
       score += 0.1;
     }
@@ -147,32 +131,30 @@ export class BabylonOptimizeroScorers {
     return score;
   }
 
-  /**
-   * Score fit - how well does this element fit the context?
-   */
+  
   static fit(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let score = 0.5; // base score
+    let score = 0.5; 
 
-    // Check if element is within reasonable bounds
+    
     const { x, y, z } = element.position;
     const distance = Math.sqrt(x * x + y * y + z * z);
     if (distance > 100) {
-      score -= 0.3; // Too far from origin
+      score -= 0.3; 
     } else if (distance > 50) {
       score -= 0.15;
     }
 
-    // Check scale reasonableness
+    
     if (element.scale) {
       const { x: sx, y: sy, z: sz } = element.scale;
       const avgScale = (sx + sy + sz) / 3;
       if (avgScale > 10 || avgScale < 0.1) {
-        score -= 0.2; // Extreme scales don't fit well
+        score -= 0.2; 
       }
     }
 
-    // Elements with appropriate type for context
+    
     if (candidate.metadata?.contextType === 'game-hub' && element.type === 'mesh') {
       score += 0.2;
     }
@@ -183,29 +165,27 @@ export class BabylonOptimizeroScorers {
     return score;
   }
 
-  /**
-   * Score cost - computational/performance cost
-   */
+  
   static cost(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let cost = 0.1; // base cost
+    let cost = 0.1; 
 
-    // Particle systems are expensive
+    
     if (element.type === 'particle-system') {
       cost += 0.4;
     }
 
-    // Complex materials are expensive
+    
     if (element.material?.type === 'pbr' || element.material?.type === 'holographic') {
       cost += 0.2;
     }
 
-    // Continuous animations have ongoing cost
+    
     if (element.animation) {
       cost += 0.15;
     }
 
-    // Transparent/glass materials require additional passes
+    
     if (element.color?.a !== undefined && element.color.a < 1) {
       cost += 0.1;
     }
@@ -216,14 +196,12 @@ export class BabylonOptimizeroScorers {
     return cost;
   }
 
-  /**
-   * Score risk - potential for breaking things
-   */
+  
   static risk(candidate: CreativeCandidate<BabylonUICandidate>): number {
     const element = candidate.data;
-    let risk = 0.1; // base risk
+    let risk = 0.1; 
 
-    // Very large elements might obscure important UI
+    
     if (element.scale) {
       const { x, y, z } = element.scale;
       const maxScale = Math.max(x, y, z);
@@ -232,17 +210,17 @@ export class BabylonOptimizeroScorers {
       }
     }
 
-    // Elements too close to camera are risky
+    
     if (Math.abs(element.position.z) < 2 && element.position.y < 3) {
       risk += 0.2;
     }
 
-    // Too many particles could cause performance issues
+    
     if (element.type === 'particle-system' && (element.metadata?.particleCount as number) > 1000) {
       risk += 0.3;
     }
 
-    // Complex interactions might have edge cases
+    
     if (element.interaction?.draggable) {
       risk += 0.1;
     }
@@ -251,11 +229,9 @@ export class BabylonOptimizeroScorers {
   }
 }
 
-/**
- * Babylon-specific hard checks
- */
+
 export const BABYLON_HARD_CHECKS = [
-  // Check for NaN positions
+  
   (candidate: CreativeCandidate<BabylonUICandidate>) => {
     const { x, y, z } = candidate.data.position;
     if (isNaN(x) || isNaN(y) || isNaN(z)) {
@@ -264,7 +240,7 @@ export const BABYLON_HARD_CHECKS = [
     return null;
   },
 
-  // Check for extreme positions that would break rendering
+  
   (candidate: CreativeCandidate<BabylonUICandidate>) => {
     const { x, y, z } = candidate.data.position;
     const distance = Math.sqrt(x * x + y * y + z * z);
@@ -274,7 +250,7 @@ export const BABYLON_HARD_CHECKS = [
     return null;
   },
 
-  // Check for invalid scales
+  
   (candidate: CreativeCandidate<BabylonUICandidate>) => {
     if (candidate.data.scale) {
       const { x, y, z } = candidate.data.scale;
@@ -285,7 +261,7 @@ export const BABYLON_HARD_CHECKS = [
     return null;
   },
 
-  // Check for invalid colors
+  
   (candidate: CreativeCandidate<BabylonUICandidate>) => {
     if (candidate.data.color) {
       const { r, g, b, a } = candidate.data.color;
@@ -299,7 +275,7 @@ export const BABYLON_HARD_CHECKS = [
     return null;
   },
 
-  // Check for excessive particle counts
+  
   (candidate: CreativeCandidate<BabylonUICandidate>) => {
     if (candidate.data.type === 'particle-system') {
       const count = (candidate.data.metadata?.['particleCount'] as number | undefined) || 0;
@@ -311,11 +287,7 @@ export const BABYLON_HARD_CHECKS = [
   },
 ];
 
-/**
- * Babylon.js UI Optimizero
- *
- * Specialization of Creative Optimizero for Babylon.js rendering decisions
- */
+
 export class BabylonUIOptimizero extends CreativeOptimizero<BabylonUICandidate> {
   constructor(weights: OptimizeroWeights = DEFAULT_WEIGHTS) {
     super(
@@ -332,9 +304,7 @@ export class BabylonUIOptimizero extends CreativeOptimizero<BabylonUICandidate> 
     );
   }
 
-  /**
-   * Optimize UI element placement in a Babylon scene
-   */
+  
   optimizeUILayout(
     candidates: BabylonUICandidate[],
     context?: Record<string, unknown>
@@ -350,9 +320,7 @@ export class BabylonUIOptimizero extends CreativeOptimizero<BabylonUICandidate> 
     return this.optimize(wrappedCandidates);
   }
 
-  /**
-   * Filter candidates to only those suitable for current performance budget
-   */
+  
   filterByPerformanceBudget(
     result: OptimizeroResult<BabylonUICandidate>,
     maxCost: number
@@ -360,9 +328,7 @@ export class BabylonUIOptimizero extends CreativeOptimizero<BabylonUICandidate> 
     return result.ranked_candidates.filter((candidate) => candidate.cost <= maxCost);
   }
 
-  /**
-   * Get candidates grouped by type
-   */
+  
   groupByType(
     result: OptimizeroResult<BabylonUICandidate>
   ): Record<string, ScoredCandidate<BabylonUICandidate>[]> {
@@ -380,13 +346,9 @@ export class BabylonUIOptimizero extends CreativeOptimizero<BabylonUICandidate> 
   }
 }
 
-/**
- * Helper to create common UI element candidates
- */
+
 export class BabylonUIGenerator {
-  /**
-   * Generate a game orb candidate (like in BabylonGameScene)
-   */
+  
   static createGameOrb(
     id: string,
     position: { x: number; y: number; z: number },
@@ -423,9 +385,7 @@ export class BabylonUIGenerator {
     };
   }
 
-  /**
-   * Generate a UI panel candidate
-   */
+  
   static createUIPanel(
     id: string,
     position: { x: number; y: number; z: number },
@@ -455,9 +415,7 @@ export class BabylonUIGenerator {
     };
   }
 
-  /**
-   * Generate a holographic effect candidate
-   */
+  
   static createHolographicEffect(
     id: string,
     position: { x: number; y: number; z: number }

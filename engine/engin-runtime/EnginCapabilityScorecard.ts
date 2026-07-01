@@ -7,19 +7,19 @@ import {
   type EnginCapabilityProfile,
 } from './EnginCapabilityTargets';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginCapabilityScorecard.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
 
 export type MetricStatus = 'pass' | 'fail' | 'unsupported' | 'hardware-dependent' | 'blocked';
 
@@ -56,7 +56,7 @@ export interface EnginCapabilityScorecard extends JsonObject {
   blocked: number;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function measuredPasses(target: CapabilityTargetEvaluation, measured: number): boolean {
   return target.direction === 'at-least'
@@ -114,8 +114,8 @@ export function createEnginCapabilityScorecard(
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

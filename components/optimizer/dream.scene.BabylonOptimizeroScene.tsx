@@ -18,12 +18,7 @@ import {
 import { CHAOS_WEIGHTS, DEFAULT_WEIGHTS, STABLE_WEIGHTS, type OptimizeroResult, type OptimizeroWeights } from '@/optimizer/creative-optimizero';
 import { useEffect, useRef, useState } from 'react';
 
-/**
- * DREAMengin Babylon Creative Optimizero Demo
- *
- * Demonstrates the Creative Optimizero algorithm applied to Babylon.js UI rendering.
- * Shows how different UI elements are scored, ranked, and selected based on the algorithm.
- */
+
 
 'use client';
 
@@ -46,18 +41,18 @@ export default function BabylonOptimizeroScene({
   const [optimizationResult, setOptimizationResult] = useState<OptimizeroResult<BabylonUICandidate> | null>(null);
   const [showControls, setShowControls] = useState(true);
 
-  // Generate candidate UI elements
+  
   const generateCandidates = (): BabylonUICandidate[] => {
     const candidates: BabylonUICandidate[] = [];
 
-    // Game orbs in a circle (like the original BabylonGameScene)
+    
     const COLORS = [
-      { r: 0.93, g: 0.26, b: 0.26 }, // Red
-      { r: 0.23, g: 0.72, b: 0.38 }, // Green
-      { r: 0.37, g: 0.51, b: 0.95 }, // Blue
-      { r: 0.93, g: 0.62, b: 0.13 }, // Orange
-      { r: 0.55, g: 0.33, b: 0.95 }, // Purple
-      { r: 0.93, g: 0.33, b: 0.60 }, // Pink
+      { r: 0.93, g: 0.26, b: 0.26 }, 
+      { r: 0.23, g: 0.72, b: 0.38 }, 
+      { r: 0.37, g: 0.51, b: 0.95 }, 
+      { r: 0.93, g: 0.62, b: 0.13 }, 
+      { r: 0.55, g: 0.33, b: 0.95 }, 
+      { r: 0.93, g: 0.33, b: 0.60 }, 
     ];
 
     const GAME_IDS = ['game1', 'game2', 'game3', 'game4', 'game5', 'game6'];
@@ -75,7 +70,7 @@ export default function BabylonOptimizeroScene({
       );
     }
 
-    // Add some UI panels
+    
     candidates.push(
       BabylonUIGenerator.createUIPanel('panel-1', { x: -8, y: 3, z: 0 }, { width: 3, height: 4 })
     );
@@ -83,12 +78,12 @@ export default function BabylonOptimizeroScene({
       BabylonUIGenerator.createUIPanel('panel-2', { x: 8, y: 3, z: 0 }, { width: 3, height: 4 })
     );
 
-    // Add holographic effects
+    
     candidates.push(
       BabylonUIGenerator.createHolographicEffect('holo-1', { x: 0, y: 5, z: 0 })
     );
 
-    // Add some "bad" candidates that should be rejected
+    
     candidates.push({
       id: 'bad-nan',
       type: 'mesh',
@@ -106,7 +101,7 @@ export default function BabylonOptimizeroScene({
     return candidates;
   };
 
-  // Run optimization
+  
   const runOptimization = () => {
     const candidates = generateCandidates();
 
@@ -138,10 +133,10 @@ export default function BabylonOptimizeroScene({
 
     let disposed = false;
 
-    // Run initial optimization
+    
     const result = runOptimization();
 
-    // WebGPU-first engine creation, then dynamic import of scene helpers
+    
     Promise.all([
       createBabylonEngine(canvas, { preserveDrawingBuffer: true, stencil: true, antialias: true }),
       import('@babylonjs/core'),
@@ -162,25 +157,25 @@ export default function BabylonOptimizeroScene({
       const scene = new Scene(engine);
       scene.clearColor = new Color4(0.05, 0.07, 0.12, 1);
 
-      // Camera
+      
       const camera = new ArcRotateCamera('cam', -Math.PI / 2, Math.PI / 3, 20, Vector3.Zero(), scene);
       camera.attachControl(canvas, true);
       camera.lowerRadiusLimit = 8;
       camera.upperRadiusLimit = 40;
 
-      // Lighting
+      
       const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
       light.intensity = 0.9;
       light.groundColor = new Color3(0.1, 0.1, 0.3);
 
-      // Ground
+      
       const ground = MeshBuilder.CreateCylinder('ground', { diameter: 20, height: 0.3, tessellation: 64 }, scene);
       const groundMat = new StandardMaterial('groundMat', scene);
       groundMat.diffuseColor = new Color3(0.08, 0.12, 0.22);
       ground.material = groundMat;
       ground.isPickable = false;
 
-      // Render only valid candidates from optimization result
+      
       if (result.ranked_candidates.length > 0) {
         result.ranked_candidates.forEach((scoredCandidate, index: number) => {
           const candidate = scoredCandidate.data;
@@ -212,7 +207,7 @@ export default function BabylonOptimizeroScene({
               mesh.material = mat;
             }
 
-            // Add ranking indicator (smaller sphere on top)
+            
             const rankSphere = MeshBuilder.CreateSphere(
               `${candidate.id}-rank`,
               { diameter: 0.3, segments: 8 },
@@ -227,7 +222,7 @@ export default function BabylonOptimizeroScene({
             rankMat.emissiveColor = new Color3(1, 1, 0);
             rankSphere.material = rankMat;
 
-            // Animation
+            
             if (candidate.animation?.type === 'float') {
               const floatAnim = new Animation(
                 `${candidate.id}-float`,
@@ -250,10 +245,10 @@ export default function BabylonOptimizeroScene({
           }
         });
 
-        // Show rejected candidates as red X marks
+        
         result.rejected_candidates.forEach((scoredCandidate) => {
           const candidate = scoredCandidate.data;
-          // Only show if position is valid (not NaN or too far)
+          
           const { x, y, z } = candidate.position;
           if (!isNaN(x) && !isNaN(y) && !isNaN(z) && Math.sqrt(x*x + y*y + z*z) < 100) {
             const xMesh = MeshBuilder.CreateBox(`${candidate.id}-rejected`, { size: 0.5 }, scene);
@@ -266,7 +261,7 @@ export default function BabylonOptimizeroScene({
         });
       }
 
-      // Click handler
+      
       scene.onPointerObservable.add((pointerInfo) => {
         if (pointerInfo.type === 4 && pointerInfo.pickInfo?.hit) {
           const mesh = pointerInfo.pickInfo.pickedMesh;
@@ -276,7 +271,7 @@ export default function BabylonOptimizeroScene({
         }
       });
 
-      // Apply God Tier at scene start
+      
       const gtInit = godTierRef.current.update({
         device:  defaultDeviceSignals(),
         runtime: defaultRuntimeMetrics(),
@@ -287,7 +282,7 @@ export default function BabylonOptimizeroScene({
       });
       applyGodTierToBabylon(engine, { meshes: [] }, gtInit, window.devicePixelRatio ?? 1);
 
-      // Render loop — God Tier periodic update
+      
       let lastGtMs = 0;
       engine.runRenderLoop(() => {
         scene.render();
@@ -311,7 +306,7 @@ export default function BabylonOptimizeroScene({
       const onResize = () => engine.resize();
       window.addEventListener('resize', onResize);
     }).catch(() => {
-      // Babylon.js failed to load
+      
     });
 
     return () => {

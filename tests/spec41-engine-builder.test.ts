@@ -1,9 +1,4 @@
-/**
- * tests/spec41-engine-builder.test.ts
- *
- * §41 Engin Forge (NGN Engin) + §42 Local Event Bus
- * Tests lib/forge/engineForge.ts and lib/eventBus.ts.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -19,7 +14,7 @@ import {
 import { COMPONENT_INVENTORY } from '@/engins/forgeengin/componentInventory';
 import { createEventBus, createDualRuntimeHub } from '@/engine/events/eventBus';
 
-// ─── §41 Atomic piece catalog ─────────────────────────────────────────────────
+
 
 describe('§41 Component Inventory', () => {
   it('has 120+ atomic pieces', () => {
@@ -43,7 +38,7 @@ describe('§41 Component Inventory', () => {
   });
 });
 
-// ─── §41 Assembly validation (min 3, max 30) ─────────────────────────────────
+
 
 describe('§41.2 Assembly validation', () => {
   function makePiece(role: AtomicPiece['role'], suffix = ''): AtomicPiece {
@@ -90,7 +85,7 @@ describe('§41.2 Assembly validation', () => {
   });
 });
 
-// ─── §41 createAssembly ──────────────────────────────────────────────────────
+
 
 describe('§41 createAssembly', () => {
   function minimal3Pieces(): AtomicPiece[] {
@@ -113,7 +108,7 @@ describe('§41 createAssembly', () => {
   });
 });
 
-// ─── §41 Serialize/deserialize ───────────────────────────────────────────────
+
 
 describe('§41 Assembly JSON serialization', () => {
   const pieces: AtomicPiece[] = [
@@ -133,7 +128,7 @@ describe('§41 Assembly JSON serialization', () => {
   });
 });
 
-// ─── §41 atomicPieceFromComponent ────────────────────────────────────────────
+
 
 describe('§41 atomicPieceFromComponent', () => {
   it('converts an inventory component to an AtomicPiece', () => {
@@ -146,7 +141,7 @@ describe('§41 atomicPieceFromComponent', () => {
   });
 });
 
-// ─── §42 Local Event Bus ─────────────────────────────────────────────────────
+
 
 describe('§42 createEventBus', () => {
   it('creates independent buses — emitting on one does not affect the other', () => {
@@ -180,7 +175,7 @@ describe('§42 createEventBus', () => {
   });
 });
 
-// ─── §42 createDualRuntimeHub ────────────────────────────────────────────────
+
 
 describe('§42 createDualRuntimeHub', () => {
   it('forwards __bridge messages between busA and busB', () => {
@@ -192,19 +187,19 @@ describe('§42 createDualRuntimeHub', () => {
     busB.on('__bridge', (p) => receivedB.push(p));
 
     busA.emit('__bridge', { msg: 'hello' });
-    // The hub relays __bridge from A → B
-    expect(receivedB.length).toBeGreaterThanOrEqual(0); // relay fires
+    
+    expect(receivedB.length).toBeGreaterThanOrEqual(0); 
   });
 
   it('stop() tears down the bridge', () => {
     const busA = createEventBus<Record<string, unknown>>();
     const busB = createEventBus<Record<string, unknown>>();
     const hub  = createDualRuntimeHub(busA, busB);
-    hub.stop(); // should not throw
+    hub.stop(); 
   });
 });
 
-// ─── §41 runAssembly ────────────────────────────────────────────────────────
+
 
 describe('§41 runAssembly', () => {
   it('executes pieces in topological order', () => {

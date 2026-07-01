@@ -1,18 +1,10 @@
-/**
- * Integration Tests — Cross-engine wiring, Command Palette, DaydreamPulseStrip.
- *
- * Verifies that the integration layer properly connects:
- *   1. CommandPalette is mounted globally and contains all engines
- *   2. DaydreamPulseStrip includes Forge surface
- *   3. Root layout mounts CommandPalette
- *   4. HomeDream surface does NOT use localStorage
- */
+
 
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect, vi } from 'vitest';
 
-// ── Mock localStorage ────────────────────────────────────────────────────────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -28,7 +20,7 @@ import {
   CREATIVE_ENGINES,
 } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── Source file reads for structural assertions ─────────────────────────────
+
 
 const commandPaletteSrc = readFileSync(
   resolve(__dirname, '../components/dream.CommandPalette.tsx'),
@@ -50,7 +42,7 @@ const workspaceDashboardSrc = readFileSync(
   'utf8',
 );
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
+
 
 describe('Global Integration — CommandPalette', () => {
   it('root layout imports and mounts CommandPalette', () => {
@@ -135,8 +127,8 @@ describe('Global Integration — HomeDream surface', () => {
 describe('Global Integration — ENGIN_REGISTRY consistency', () => {
   it('every engine in ENGIN_REGISTRY has both daydreamHref and enginHref', () => {
     for (const entry of ENGIN_REGISTRY) {
-      expect(entry.daydreamHref).toMatch(/^\//);
-      expect(entry.enginHref).toMatch(/^\//);
+      expect(entry.daydreamHref).toMatch(/^\
+      expect(entry.enginHref).toMatch(/^\
     }
   });
 

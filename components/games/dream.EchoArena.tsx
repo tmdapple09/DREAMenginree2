@@ -10,15 +10,7 @@ import {
 import * as BABYLON from '@babylonjs/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * EchoArena — WebGPU-powered top-down arena shooter
- * Category: Shooter / Arcade
- *
- * High-performance WebGPU rendering with Babylon.js
- * DualSense controller support (Bluetooth mobile + USB desktop)
- * Gyroscope aiming for natural mobile gameplay
- * Haptic rumble feedback on shooting
- */
+
 
 type Phase = 'menu' | 'playing' | 'gameover';
 
@@ -36,7 +28,7 @@ export default function EchoArena( ){
   const lastShotRef = useRef(0);
   const mobileMoveRef = useRef({ x: 0, y: 0 });
   const mobileLookRef = useRef({ x: 0, y: 0 });
-  const remoteMoveRef = useRef({ x: 0, y: 0 }); // tracks GameRemote / keyboard-bridge directional input
+  const remoteMoveRef = useRef({ x: 0, y: 0 }); 
   const submitScore = useSubmitScore('echo-arena');
 
   useEffect(() => {
@@ -61,7 +53,7 @@ export default function EchoArena( ){
     },
   });
 
-  // Listen for game input events (GameRemote + keyboard bridge fallback)
+  
   useEffect(() => {
     if (phase !== 'playing') return;
 
@@ -93,7 +85,7 @@ export default function EchoArena( ){
     return () => window.removeEventListener('de-game-input', handler);
   }, [phase]);
 
-  // Initialize WebGPU/WebGL engine
+  
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -109,7 +101,7 @@ export default function EchoArena( ){
       if (!canvasRef.current) return;
 
       try {
-        // WebGPU-first with WebGL fallback
+        
         const { WebGPUEngine, Engine } = await import('@babylonjs/core/Engines');
 
         let webGPUSupported = false;
@@ -126,7 +118,7 @@ export default function EchoArena( ){
           });
           await (engine as BABYLON.WebGPUEngine).initAsync();
 
-          // Snapshot rendering for optimal performance
+          
           (engine as BABYLON.WebGPUEngine).snapshotRendering = true;
           (engine as BABYLON.WebGPUEngine).snapshotRenderingMode = BABYLON.Constants.SNAPSHOTRENDERING_FAST;
 
@@ -144,7 +136,7 @@ export default function EchoArena( ){
         sceneRef.current = scene;
         scene.clearColor = new BABYLON.Color4(0.05, 0.05, 0.15, 1);
 
-        // Camera (top-down view)
+        
         const camera = new BABYLON.ArcRotateCamera('cam', 0, 0.5, 40, BABYLON.Vector3.Zero(), scene);
         camera.attachControl(canvasRef.current, true);
 
@@ -154,29 +146,29 @@ export default function EchoArena( ){
         hemiLight.specular = new BABYLON.Color3(0.1, 0.15, 0.3);
         hemiLight.groundColor = new BABYLON.Color3(0.05, 0.05, 0.12);
 
-        // Directional light for shadows
+        
         const dirLight = new BABYLON.DirectionalLight('dirLight',
           new BABYLON.Vector3(0.3, -1, 0.4), scene);
         dirLight.intensity = 0.8;
         dirLight.diffuse = new BABYLON.Color3(0.6, 0.7, 1.0);
         dirLight.specular = new BABYLON.Color3(0.5, 0.6, 0.9);
 
-        // Shadow generator
+        
         const shadowGen = new BABYLON.ShadowGenerator(2048, dirLight);
         shadowGen.usePercentageCloserFiltering = true;
         shadowGen.filteringQuality = BABYLON.ShadowGenerator.QUALITY_HIGH;
         shadowGen.bias = 0.0006;
         shadowGen.darkness = 0.35;
 
-        // Point light for arena center accent
+        
         const centerLight = new BABYLON.PointLight('center',
           new BABYLON.Vector3(0, 8, 0), scene);
         centerLight.diffuse = new BABYLON.Color3(0.3, 0.9, 0.7);
         centerLight.intensity = 1.5;
         centerLight.range = 35;
 
-        // Environment for PBR reflections
-        try { scene.createDefaultEnvironment({ createGround: false, createSkybox: false }); } catch { /* graceful */ }
+        
+        try { scene.createDefaultEnvironment({ createGround: false, createSkybox: false }); } catch {  }
         scene.environmentIntensity = 0.6;
 
         floor = BABYLON.MeshBuilder.CreateGround('arena', { width: 50, height: 50 }, scene);
@@ -188,7 +180,7 @@ export default function EchoArena( ){
         floor.material = floorMat;
         floor.receiveShadows = true;
 
-        // Player — PBR with clear-coat for glass-like surface
+        
         player = BABYLON.MeshBuilder.CreateSphere('player', { diameter: 2.5 }, scene);
         player.position.y = 1.5;
         const playerMat = new BABYLON.PBRMaterial('playerMat', scene);
@@ -208,7 +200,7 @@ export default function EchoArena( ){
           pipeline.fxaaEnabled = true;
           pipeline.imageProcessingEnabled = true;
           pipeline.imageProcessing.toneMappingEnabled = true;
-          pipeline.imageProcessing.toneMappingType = 1; // ACES
+          pipeline.imageProcessing.toneMappingType = 1; 
           pipeline.imageProcessing.contrast = 1.1;
           pipeline.imageProcessing.exposure = 1.05;
           pipeline.imageProcessing.vignetteEnabled = true;
@@ -220,10 +212,10 @@ export default function EchoArena( ){
           pipeline.sharpenEnabled = true;
           pipeline.sharpen.edgeAmount = 0.2;
 
-          // Glow layer for emissive objects
+          
           const glow = new BABYLON.GlowLayer('echoGlow', scene, { mainTextureFixedSize: 256, blurKernelSize: 32 });
           glow.intensity = 0.65;
-        } catch { /* post-fx optional */ }
+        } catch {  }
 
         try {
           const ssao = new BABYLON.SSAO2RenderingPipeline('echo-ssao', scene, { ssaoRatio: 0.5, blurRatio: 1.0 });
@@ -233,19 +225,19 @@ export default function EchoArena( ){
           ssao.maxZ = 60;
           ssao.expensiveBlur = true;
           scene.postProcessRenderPipelineManager.attachCamerasToRenderPipeline('echo-ssao', camera);
-        } catch { /* SSAO graceful fallback */ }
+        } catch {  }
 
-        // DualSense controller
+        
         dualSense = new DualSenseManager(scene, engine, setStatus);
         dualSenseRef.current = dualSense;
         await dualSense.init();
 
-        // Game loop
+        
         scene.onBeforeRenderObservable.add(() => {
           const frameNow = performance.now();
           const sample = frameSampler.pushFrame(frameNow);
-          // Quarter-second publishing keeps the shared shell overlay current
-          // without spamming React/event updates on every rendered frame.
+          
+          
           if (sample && frameNow - lastPerformancePublish >= PERFORMANCE_PUBLISH_INTERVAL_MS) {
             lastPerformancePublish = frameNow;
             publishGamePerformanceBaseline({
@@ -262,18 +254,18 @@ export default function EchoArena( ){
 
           const input = dualSense.getState();
 
-          // Movement with left stick
+          
           const moveSpeed = 0.15;
           const moveX = Math.max(-1, Math.min(1, input.leftStick.x + mobileMoveRef.current.x + remoteMoveRef.current.x));
           const moveY = Math.max(-1, Math.min(1, input.leftStick.y + mobileMoveRef.current.y + remoteMoveRef.current.y));
           player.position.x += moveX * moveSpeed;
           player.position.z += moveY * moveSpeed;
 
-          // Keep player in bounds
+          
           player.position.x = Math.max(-23, Math.min(23, player.position.x));
           player.position.z = Math.max(-23, Math.min(23, player.position.z));
 
-          // Aim with right stick + gyro + shared mobile look joystick
+          
           const mobileLook = mobileLookRef.current;
           const aimX = input.rightStick.x + input.gyro.x + mobileLook.x;
           const aimY = input.rightStick.y + mobileLook.y;
@@ -282,7 +274,7 @@ export default function EchoArena( ){
             player.rotation.y = Math.atan2(aimX, aimY === 0 ? 0.0001 : aimY);
           }
 
-          // Shoot with R2 trigger or strong mobile aim hold (with cooldown)
+          
           const shotNow = Date.now();
           if ((input.triggers.r2 > 0.6 || lookMagnitude > 0.72) && shotNow - lastShotRef.current > 300) {
             dualSense.rumble(0.5, 40);
@@ -292,19 +284,19 @@ export default function EchoArena( ){
             if (lookMagnitude > 0.72) {
               setStatus('Mobile aim burst');
             }
-            // In full version: spawn projectile
+            
           }
 
-          // Demo: end after 1000 points
+          
           if (scoreRef.current >= 1000) {
             setPhase('gameover');
           }
         });
 
-        // Render loop
+        
         engine.runRenderLoop(() => scene?.render());
 
-        // Responsive resize
+        
         const parentElement = canvasRef.current.parentElement;
         if (parentElement) {
           const resizeObserver = new ResizeObserver(() => engine?.resize());

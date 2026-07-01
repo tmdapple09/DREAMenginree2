@@ -1,13 +1,4 @@
-/**
- * tests/gameengin-remote.test.ts
- *
- * Locks the GameEngin Standard Remote contract:
- *   - Layout invariants (portrait 70/30, landscape 15/70/15, R3 = L × 1.10).
- *   - HUD whitelist (lives, points, timer, streak, branding only).
- *   - Every named base / sprint / multi-touch combo from the directive.
- *   - SprintDetector double-tap+hold-and-move semantics.
- *   - ComboMachine sequence + multi-touch + sprint-variant precedence.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -145,7 +136,7 @@ describe('GameEngin standard remote — SprintDetector', () => {
     const det = new SprintDetector();
     det.onTouchStart(0);
     det.onTouchEnd(50);
-    det.onTouchStart(100); // within window
+    det.onTouchStart(100); 
     det.onMove(110, 0.8);
     expect(det.isSprinting()).toBe(true);
   });
@@ -155,7 +146,7 @@ describe('GameEngin standard remote — SprintDetector', () => {
     det.onTouchStart(0);
     det.onTouchEnd(50);
     det.onTouchStart(100);
-    det.onMove(110, 0.05); // below threshold
+    det.onMove(110, 0.05); 
     expect(det.isSprinting()).toBe(false);
   });
 
@@ -243,7 +234,7 @@ describe('GameEngin standard remote — ComboMachine', () => {
     m.press('X', 0);
     m.reset();
     const r = m.press('TRIANGLE', 50);
-    // Without the X in buffer, △ alone is not a combo.
+    
     expect(r).toBeNull();
   });
 });

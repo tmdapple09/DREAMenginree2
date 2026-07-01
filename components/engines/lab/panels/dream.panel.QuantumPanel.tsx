@@ -3,12 +3,7 @@
 import { Info, Play, RotateCcw, Zap } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-/**
- * QuantumPanel — Quantum circuit designer for the Lab Engine app.
- *
- * Drag-and-drop gate canvas with live measurement simulation.
- * Lives at /engines/lab/quantum.
- */
+
 
 type GateType = 'H' | 'X' | 'Y' | 'Z' | 'CNOT' | 'T' | 'S' | 'M';
 
@@ -68,7 +63,7 @@ export default function QuantumPanel( ){
 
   const placeGate = useCallback((qubit: number, col: number) => {
     setGates((prev) => {
-      // Replace existing gate at same position
+      
       const filtered = prev.filter((g) => !(g.qubit === qubit && g.col === col));
       return [...filtered, { id: `${qubit}-${col}-${Date.now()}`, type: selectedGate, qubit, col }];
     });
@@ -97,7 +92,7 @@ export default function QuantumPanel( ){
           <p className="text-sm text-white/50">Design circuits · simulate measurements</p>
         </div>
 
-        {/* Gate palette */}
+        
         <div className="flex flex-wrap gap-2 mb-5 p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
           <span className="text-xs text-white/30 self-center mr-1">Gate:</span>
           {GATE_DEFS.map((gd) => (
@@ -123,7 +118,7 @@ export default function QuantumPanel( ){
           ))}
         </div>
 
-        {/* Circuit grid */}
+        
         <div className="rounded-xl overflow-hidden border border-white/10 bg-black/30 mb-4">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
@@ -150,7 +145,7 @@ export default function QuantumPanel( ){
                           onClick={() => gate ? removeGate(gate.id) : placeGate(q, col)}
                           title={gate ? `${gate.type} — click to remove` : `Place ${selectedGate} gate`}
                         >
-                          {/* Wire */}
+                          
                           <div className="absolute top-1/2 left-0 right-0 h-px bg-white/10 -translate-y-1/2 pointer-events-none" />
                           {gate && def && (
                             <span
@@ -175,7 +170,7 @@ export default function QuantumPanel( ){
           Click a cell to place the selected gate · click a gate to remove it
         </div>
 
-        {/* Actions */}
+        
         <div className="flex gap-3">
           <button
             onClick={measure}
@@ -194,7 +189,7 @@ export default function QuantumPanel( ){
           </button>
         </div>
 
-        {/* Measurement output */}
+        
         {result && (
           <div className="mt-5 rounded-xl bg-black/40 border border-[#10b981]/20 p-4">
             <div className="flex items-center gap-2 mb-2">

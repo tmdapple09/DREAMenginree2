@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-// GET - Fetch projects
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const visibility = searchParams.get('visibility') || 'all';
   const projectId = searchParams.get('id');
 
-  // Fetch single project
+  
   if (projectId) {
     const { data: project, error } = await supabase
       .from('projects')
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: toErrorMessage(error) }, { status: 500 });
     }
 
-    // Check access
+    
     if (project.visibility !== 'public' && project.user_id !== user.id) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ project });
   }
 
-  // Fetch multiple projects
+  
   let query = supabase
     .from('projects')
     .select(`
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ projects });
 }
 
-// POST - Create a new project
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ project }, { status: 201 });
 }
 
-// PUT - Update a project
+
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -157,7 +157,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ project });
 }
 
-// DELETE - Remove a project
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);

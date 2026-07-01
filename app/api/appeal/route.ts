@@ -7,13 +7,13 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-// app/api/appeal/route.ts
-// TheBoogieMan.Ai — appeal queue endpoint (req 44, 53, 75).
-//
-// - Records the appeal with status "received"
-// - Pauses escalation (req 45) by flagging the event for review
-// - Notifies Dr. Eams bridge so users see "under review" status (req 74, 75)
-// - Every appeal entry carries policy_version for traceability (req 3, 18)
+
+
+
+
+
+
+
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const requestStart = Date.now();
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const appeal = parseResult.data;
   const now = new Date().toISOString();
 
-  // Write the appeal entry into the audit log as an append-only event (req 20, F53)
+  
   await writeAuditLog({
     request_id,
     user_id: user.id,

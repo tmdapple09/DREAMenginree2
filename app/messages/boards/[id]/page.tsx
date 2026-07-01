@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.MessagesBoardsId  (framework-mandated basename: page.tsx)
+
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -25,7 +25,7 @@ export default async function BoardDetailPage({ params }: Props) {
 
   if (!board) notFound();
 
-  // Check visibility: owner always can see; non-owner only if public
+  
   if (board.owner_id !== user.id && !board.is_public) {
     redirect('/messages/boards');
   }
@@ -170,7 +170,7 @@ export default async function BoardDetailPage({ params }: Props) {
         })}
       </div>
 
-      {/* Composer — always show (board owner + any board member can post) */}
+      
       <BoardComposer boardId={id} userId={user.id} />
     </div>
   );

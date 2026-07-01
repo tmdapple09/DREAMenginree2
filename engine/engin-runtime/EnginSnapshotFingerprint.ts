@@ -1,32 +1,26 @@
 import type { EnginBaseState, JsonValue } from './EnginBaseState';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginSnapshotFingerprint.ts.
 
-/**
- * Deterministic Engin snapshot fingerprinting.
- *
- * TypeScript owns canonical JSON ordering; AssemblyScript owns the matching
- * low-level byte hash in assembly/index.ts for runtime hosts that can hand the
- * bytes to WASM memory.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface WasmFingerprintExports {
   hashBytesFNV1A(ptr: number, count: number): number;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function stableJson(value: JsonValue): string {
   if (value === null) return 'null';
@@ -82,8 +76,8 @@ export function fingerprintBytesWithWasm(
     .padStart(8, '0');
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

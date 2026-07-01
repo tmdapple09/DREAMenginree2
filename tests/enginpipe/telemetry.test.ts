@@ -1,10 +1,4 @@
-/**
- * tests/enginpipe/telemetry.test.ts
- *
- * Unit tests for the generic Engin telemetry event schema and Supabase
- * client wrapper. The client uses a hand-rolled fake Supabase that
- * records inserted rows so we don't need a live database.
- */
+
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { describe, it, expect, vi } from 'vitest';
@@ -104,7 +98,7 @@ describe('enginpipe / telemetry client', () => {
     const tele = createTelemetryClient({ supabase: client });
 
     const result = await tele.record({
-      // missing required artifact_id
+      
       event_type: 'session_start',
     } as never);
 

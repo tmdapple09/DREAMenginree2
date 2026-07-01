@@ -4,20 +4,20 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/account/export-data/route.ts
-// "Export My Data" endpoint — GDPR/privacy-by-design export (AXIOM 5).
-//
-// GET /api/account/export-data
-//   Returns a JSON snapshot of all user-owned data rows across known tables.
-//   Any table that doesn't exist yet (or errors) is skipped gracefully — the
-//   export never fails hard because of a missing table.
-//
-// Architecture justification:
-//   AXIOM 5 (Privacy by Design) — users must be able to retrieve their data.
-//   LAW.md §2 — nothing is exposed without auth; this route is auth-gated.
-//   ARCHITECTURE.md §10 — Next.js App Router, Supabase SSR client.
 
-// Tables to export, each with the column name that identifies the owner.
+
+
+
+
+
+
+
+
+
+
+
+
+
 const EXPORT_TARGETS: Array<{ table: string; ownerCol: string }> = [
   { table: 'profiles',           ownerCol: 'id' },
   { table: 'dream_instances',   ownerCol: 'user_id' },
@@ -42,7 +42,7 @@ export async function GET(_req: NextRequest ): Promise<Response> {
   const exportData: Record<string, unknown[] | null> = {};
   const skipped: string[] = [];
 
-  // Fetch all tables concurrently; skip any that fail (table may not exist yet).
+  
   await Promise.all(
     EXPORT_TARGETS.map(async ({ table, ownerCol }) => {
       try {
@@ -52,7 +52,7 @@ export async function GET(_req: NextRequest ): Promise<Response> {
           .eq(ownerCol, user.id);
 
         if (error) {
-          // Gracefully skip — table might not exist in this deployment yet.
+          
           skipped.push(table);
           exportData[table] = null;
         } else {

@@ -45,17 +45,17 @@ describe('Swipe Calibration', () => {
     });
 
     it('widens the slope window for a high-jitter device (devScale > 1)', () => {
-      // Observed deviation 3 px >> canonical 1.5 px → devScale = 2 → wider window
+      
       const wide = calibrateDevice([
         { observedDeviationPx: 3.0, travelPx: 100, durationMs: 200 },
       ]);
-      const factoryWidth = 0.85 - 0.6; // 0.25
+      const factoryWidth = 0.85 - 0.6; 
       const calibratedWidth = wide.slopeMax - wide.slopeMin;
       expect(calibratedWidth).toBeGreaterThan(factoryWidth);
     });
 
     it('narrows the slope window for a low-jitter / stylus device (devScale < 1)', () => {
-      // Observed deviation 0.75 px < 1.5 px → devScale = 0.5 → narrower window
+      
       const narrow = calibrateDevice([
         { observedDeviationPx: 0.75, travelPx: 80, durationMs: 200 },
       ]);
@@ -65,7 +65,7 @@ describe('Swipe Calibration', () => {
     });
 
     it('clamps triggerThresholdPx between 20 and 120 px', () => {
-      // Very high deviation → devScale = 2 → raw threshold = 110 (still ≤ 120)
+      
       const profile = calibrateDevice([
         { observedDeviationPx: 10, travelPx: 200, durationMs: 200 },
       ]);
@@ -81,7 +81,7 @@ describe('Swipe Calibration', () => {
       const profileSingle = calibrateDevice([
         { observedDeviationPx: 2.0, travelPx: 80, durationMs: 200 },
       ]);
-      // Both should produce the same result (mean dev=2.0, mean dur=200)
+      
       expect(profileMulti.slopeMin).toBeCloseTo(profileSingle.slopeMin, 5);
       expect(profileMulti.slopeMax).toBeCloseTo(profileSingle.slopeMax, 5);
     });
@@ -107,7 +107,7 @@ describe('Swipe Calibration', () => {
         calibratedAt: '2026-01-01T00:00:00.000Z',
       };
       setActiveProfile(custom);
-      getActiveProfile(); // access does not modify
+      getActiveProfile(); 
       expect(custom.slopeMin).toBe(0.3);
     });
   });

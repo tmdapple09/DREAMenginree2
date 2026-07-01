@@ -1,31 +1,19 @@
-/**
- * lib/shop/listings.ts
- *
- * DreamShop listing business logic — pure functions, no DB calls.
- *
- * Used by:
- *   - app/api/shop/route.ts (POST handler)
- *   - tests/phase8e-shop-marketplace.test.ts
- *
- * Architecture: docs/ARCHITECTURE.md §10 — business logic lives in lib/
- * Security:     docs/SECURITY.md — server-side validation before any DB write
- * Phase 8 §E:   Points 39, 40, 44, 45
- */
 
-/** Canonical Supabase table name for DreamShop listings. */
+
+
 export const SHOP_TABLE = 'merch' as const;
 
-/** Minimum required fields that every shop listing must carry. */
+
 export const SHOP_LISTING_REQUIRED_FIELDS = ['name', 'price', 'user_id'] as const;
 
-/** Maximum title length enforced by the API layer (not only DB). */
+
 export const SHOP_TITLE_MAX_LENGTH = 200;
 
-/** Minimum valid price (0 = free is allowed). */
+
 export const SHOP_PRICE_MIN = 0;
 
 export type ShopListingInput = {
-  title: string;          // inbound field name from form / client body
+  title: string;          
   description?: string;
   price: number | string;
   stock?: number | string;
@@ -35,7 +23,7 @@ export type ShopListingInput = {
 
 export type ShopListingRecord = {
   user_id: string;
-  name: string;           // DB column name
+  name: string;           
   description: string | null;
   price: number;
   image_url: string | null;
@@ -46,10 +34,7 @@ export type ValidationResult = {
   errors: string[];
 };
 
-/**
- * Validates raw inbound body for a new shop listing.
- * Returns `valid: true` only when all business rules pass.
- */
+
 export function validateShopListing(body: unknown): ValidationResult {
   const errors: string[] = [];
 
@@ -59,7 +44,7 @@ export function validateShopListing(body: unknown): ValidationResult {
 
   const b = body as Record<string, unknown>;
 
-  // Title / name
+  
   const titleRaw = (b.title ?? b.name ?? '') as string;
   const title = String(titleRaw).trim();
   if (!title) {
@@ -68,7 +53,7 @@ export function validateShopListing(body: unknown): ValidationResult {
     errors.push(`Title must be ${SHOP_TITLE_MAX_LENGTH} characters or fewer.`);
   }
 
-  // Price
+  
   const priceRaw = b.price;
   if (priceRaw === undefined || priceRaw === null || priceRaw === '') {
     errors.push('Price is required.');
@@ -82,10 +67,7 @@ export function validateShopListing(body: unknown): ValidationResult {
   return { valid: errors.length === 0, errors };
 }
 
-/**
- * Maps validated client body to a DB-ready insert payload.
- * Caller is responsible for running validateShopListing first.
- */
+
 export function normalizeShopListing(
   userId: string,
   input: ShopListingInput,
@@ -102,19 +84,13 @@ export function normalizeShopListing(
   };
 }
 
-/** Canonical table name for DreamShop order history. */
+
 export const SHOP_ORDERS_TABLE = 'shop_orders' as const;
 
-/**
- * Fields in shop_orders that are NEVER exposed outside owner-scoped reads.
- * Referenced in RLS policies and API serialization.
- */
+
 export const SHOP_ORDERS_PRIVATE_FIELDS = ['seller_notes'] as const;
 
-/**
- * Returns true if the given userId is the buyer OR seller for an order record.
- * Used as the application-layer guard that mirrors the RLS policy.
- */
+
 export function isOrderOwner(
   userId: string,
   order: { buyer_id: string; seller_id: string },

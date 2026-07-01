@@ -22,34 +22,7 @@ import {
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-/**
- * BrandDaydreamDashboard — Side A interactive dashboard for the Brand Daydream.
- *
- * Features (20 widgets):
- *  1. Profile Card          – real Supabase profile + follower count
- *  2. Brand Health Score    – animated gauge, per-dimension breakdown
- *  3. Quick Analytics       – 4 refreshable metrics with trend icons
- *  4. Color Palette         – tap-to-copy hex swatches
- *  5. A/B Tests             – status chip, link to BrandingEngin
- *  6. Campaign ROI          – live CPM / CPC / ROI display
- *  7. Audience Segments     – visual percentage bars
- *  8. Brand Voice           – tone pills
- *  9. Competitor Watch      – mini list
- * 10. Typography Kit        – live font preview
- * 11. Mood Board            – colour-block grid
- * 12. Sponsorship Pitch     – preview + one-tap clipboard copy
- * 13. Press Kit             – checklist items
- * 14. Bio Optimizer         – platform bios with copy
- * 15. Target Persona        – primary persona card
- * 16. Brand Story Timeline  – milestone ticks
- * 17. Revenue Tracker       – income source breakdown with bars
- * 18. Game Engine Presets   – read-only preview (edit in BrandingEngin)
- * 19. Content Theme Planner – upcoming monthly themes
- * 20. Shop Integration      – direct links
- *
- * Data: profile + follower_count live from Supabase.
- * Connected to dual-runtime bridge and Forge intelligence.
- */
+
 
 const ACCENT = '#ec4899';
 
@@ -221,7 +194,7 @@ export default function BrandDaydream( ){
   return (
     <div className="de-auth-content space-y-4">
 
-      {/* ── 1. Profile Card ─────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header"><span className="de-widget-title">Profile Card</span></div>
         <div className="de-widget-body">
@@ -252,7 +225,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 2. Brand Health Score ───────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span style={{ fontSize: 16 }}>💪</span>
@@ -283,7 +256,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 3. Quick Analytics ──────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <BarChart2 className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -310,7 +283,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 4. Brand Color Palette ──────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Palette className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -342,7 +315,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 5. A/B Tests ────────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">Active A/B Tests</span>
@@ -358,7 +331,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 6. Campaign ROI ─────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <DollarSign className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -383,7 +356,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 7. Audience Segments ────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Users className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -405,7 +378,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 8. Brand Voice ──────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">🎯 Brand Voice</span>
@@ -424,7 +397,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 9. Competitor Watch ─────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Eye className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -448,7 +421,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 10. Typography Kit ──────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <BookOpen className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -470,7 +443,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 11. Mood Board ──────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">🎨 Mood Board</span>
@@ -489,7 +462,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 12. Sponsorship Pitch ───────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Megaphone className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -511,7 +484,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 13. Press Kit ───────────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Layers className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -536,7 +509,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 14. Bio Optimizer ───────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Share2 className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -558,7 +531,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 15. Target Persona ──────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <Users className="w-4 h-4 mr-1" style={{ color: ACCENT }} />
@@ -579,7 +552,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 16. Brand Story Timeline ────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">Brand Story Timeline</span>
@@ -600,7 +573,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 17. Revenue Tracker ─────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">💰 Revenue Tracker</span>
@@ -623,7 +596,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 18. Game Engine Visual Presets ──────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span style={{ fontSize: 15 }}>🎮</span>
@@ -647,7 +620,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 19. Content Theme Planner ───────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">📅 Content Theme Planner</span>
@@ -662,7 +635,7 @@ export default function BrandDaydream( ){
         </div>
       </div>
 
-      {/* ── 20. Shop Integration ────────────────────────────────────────── */}
+      
       <div className="de-widget">
         <div className="de-widget-header">
           <span className="de-widget-title">🛍 Shop Integration</span>

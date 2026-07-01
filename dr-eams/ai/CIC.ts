@@ -1,4 +1,4 @@
-// lib/ai/CIC.ts
+
 type CICInput = {
   userId: string
   widgetType?: string

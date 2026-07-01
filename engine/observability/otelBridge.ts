@@ -2,16 +2,16 @@ import type { Counter, Histogram, UpDownCounter } from '@opentelemetry/api';
 import { SpanStatusCode, type Span } from '@opentelemetry/api';
 import { getMeter, getTracer } from './otel';
 
-// lib/observability/otelBridge.ts
-//
-// Bridges the in-process collector (ring buffers) to OpenTelemetry exporters.
-//
-// Call `initOtelBridge()` once at app startup (e.g. in instrumentation.ts or
-// a top-level server module) to wire the existing collectMetric / collectLog /
-// collectTrace calls to real OTel meters and spans so every signal is both
-// kept in-process (for the IDARi correlator) and exported to Prometheus / OTLP.
-//
-// This module records **only** system-level signals — no PII, no user content.
+
+
+
+
+
+
+
+
+
+
 
 let _bridgeReady = false;
 
@@ -50,7 +50,7 @@ function ensureInstruments(): void {
     unit: '1',
   });
 
-  // Process-level metrics (heap, uptime)
+  
   const processUptime = meter.createObservableGauge('dreamengin_process_uptime_seconds', {
     description: 'Process uptime in seconds',
     unit: 's',
@@ -92,7 +92,7 @@ function ensureInstruments(): void {
     const now = Date.now();
     const lag = now - _lastCheck - 1000;
     _lastCheck = now;
-    // Store lag for the next observation
+    
     (globalThis as any).__dreamengin_otel_event_loop_lag = Math.max(0, lag);
   }, 1000);
   if (_lagInterval.unref) _lagInterval.unref();
@@ -102,11 +102,7 @@ function ensureInstruments(): void {
   });
 }
 
-/**
- * Forward a log entry to OTel metrics.
- * We record log counts by level as a counter — actual log content is NOT
- * exported to avoid leaking PII into the telemetry pipeline.
- */
+
 export function otelRecordLog(level: string, source?: string): void {
   if (!_bridgeReady) return;
   ensureInstruments();
@@ -116,11 +112,7 @@ export function otelRecordLog(level: string, source?: string): void {
   if (level === 'error') _errorCounter!.add(1, attrs);
 }
 
-/**
- * Forward a numeric metric to OTel.
- * The metric name and value are exported; labels are forwarded as-is
- * (callers are responsible for never passing PII as a label value).
- */
+
 export function otelRecordMetric(
   name: string,
   value: number,
@@ -131,10 +123,7 @@ export function otelRecordMetric(
   _metricGauge!.record(value, { metric_name: name, ...labels });
 }
 
-/**
- * Forward a completed trace span to OTel.
- * Creates a real OTel span with the correct duration and status.
- */
+
 export function otelRecordTrace(
   name: string,
   durationMs: number,
@@ -144,10 +133,10 @@ export function otelRecordTrace(
   if (!_bridgeReady) return;
   ensureInstruments();
 
-  // Record as a histogram for Prometheus
+  
   _traceHistogram!.record(durationMs, { span_name: name, status, ...tags });
 
-  // Also create a real OTel span so traces export via OTLP
+  
   const tracer = getTracer();
   const span: Span = tracer.startSpan(name, {
     startTime: new Date(Date.now() - durationMs),
@@ -163,25 +152,21 @@ export function otelRecordTrace(
   span.end();
 }
 
-/** Increment the active request counter (call from middleware). */
+
 export function otelRequestStart(): void {
   if (!_bridgeReady) return;
   ensureInstruments();
   _activeRequests!.add(1);
 }
 
-/** Decrement the active request counter (call from middleware). */
+
 export function otelRequestEnd(): void {
   if (!_bridgeReady) return;
   ensureInstruments();
   _activeRequests!.add(-1);
 }
 
-/**
- * Activate the OTel bridge. Safe to call multiple times — only the first
- * call has an effect. After this, every collectLog / collectMetric /
- * collectTrace call in the collector will also emit OTel signals.
- */
+
 export function initOtelBridge(): void {
   if (_bridgeReady) return;
   ensureInstruments();

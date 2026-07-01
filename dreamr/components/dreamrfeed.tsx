@@ -39,39 +39,7 @@ import {
     useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 
-/**
- * DreamRFeed — the DreamR Human Media Platform feed.
- *
- * UX architecture (the algorithm made tangible):
- *   SCROLL UP/DOWN   → everyone gets their moment — new post, new voice,
- *                      ranked by creativity/originality/artistry not clout
- *   SWIPE LEFT       → you choose to go deeper into one creator's world
- *                      • DreamR post   → DreamRCreatorPanel (creator's posts + socials)
- *                      • YouTube card  → DreamRChannelPanel (more from channel + similar)
- *   SWIPE RIGHT      → see less from that creator/content type; the card is
- *                      recycled locally without earning a real view here
- *
- * Topic channels:
- *   A horizontal scrollable strip lets users switch between topics.
- *   Selecting a topic fetches YouTube videos for that topic (live, auto-refreshing)
- *   and interleaves them (1 every 3 native posts) into the snap-scroll feed.
- *
- * Video cards:
- *   YouTube posts show a thumbnail with a play button.
- *   Tap → inline embed (autoplay). ⤢ → fullscreen overlay.
- *
- * Feed composition (every ~4 posts):
- *   3 regular/video posts — DreamR-algorithm-ranked
- *   1 YouTube video card  — from active topic
- *
- * Privacy model:
- *   VIEWS   — only public metric shown (eye chip on each card)
- *   LIKES   — interactive heart, zero count shown publicly
- *   COMMENTS — button accessible, no count shown
- *   All other metrics — creator Signal tab only
- *
- * Visual: DreamR neomorphism, Handcrafted Expresso Beans, pearl-sky base.
- */
+
 
 const DR = {
   bg:          '#e8eff6',
@@ -85,9 +53,9 @@ const DR = {
   shadowDark:  'rgba(163,189,218,0.45)',
 } as const;
 
-// Match the shared view-counter contract: a post needs 3s of dwell to earn a view.
+
 const DWELL_VIEW_THRESHOLD_MS = 3000;
-// Long enough to read once on mobile, short enough not to cover the next card.
+
 const REDISTRIBUTION_NOTICE_DURATION_MS = 4200;
 const RIGHT_SWIPE_SCROLL_BUFFER_CARDS = 2;
 const REDISTRIBUTION_EXPLANATION =
@@ -139,8 +107,8 @@ function redistributionMessage(creator: string, type: string): string {
   return `Showing you less ${type} from ${creator}; ${REDISTRIBUTION_EXPLANATION}`;
 }
 
-// Featured top-10 topics for the DreamR channel strip (plus "All").
-// Each maps to a YouTube search query.
+
+
 
 export const DREAMR_TOPICS: Array<{ id: string; label: string; emoji: string; query: string }> = [
   { id: 'all',          label: 'All',           emoji: '◈',  query: '' },
@@ -156,7 +124,7 @@ export const DREAMR_TOPICS: Array<{ id: string; label: string; emoji: string; qu
   { id: 'space',        label: 'Space',         emoji: '🚀', query: 'space exploration 2026' },
 ];
 
-// Extract YouTube video ID from permalink
+
 function ytVideoId(post: FeedPost): string | null {
   const src = post.permalink ?? null;
   if (!src) return null;
@@ -164,7 +132,7 @@ function ytVideoId(post: FeedPost): string | null {
     const u = new URL(src);
     if (u.hostname === 'youtu.be') return u.pathname.slice(1).split('?')[0] ?? null;
     const v = u.searchParams.get('v'); if (v) return v;
-  } catch { /* fall through */ }
+  } catch {  }
   const m = src.match(/youtube\.com\/embed\/([^/?#]+)/i);
   return m?.[1] ?? null;
 }
@@ -174,7 +142,7 @@ function ytEmbedUrl(post: FeedPost): string | null {
   return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
 }
 
-// Convert a UnifiedFeedItem to FeedPost (for YouTube topic items)
+
 function ytItemToFeedPost(item: UnifiedFeedItem): FeedPost {
   const thumbnail = item.media[0]?.thumbnail_url ?? item.media[0]?.url ?? null;
   return {
@@ -256,10 +224,10 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
         if (rightRelease.shouldTrigger) onSwipeRight();
       }}
     >
-      {/* Active stripe */}
+      
       {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, zIndex: 20, background: 'linear-gradient(90deg,#ef4444,#ff7043 50%,#ef4444)' }} />}
 
-      {/* Video player / thumbnail */}
+      
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         {isPlaying && embedSrc ? (
           <iframe
@@ -275,10 +243,10 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
               /* eslint-disable-next-line @next/next/no-img-element */
               <img src={thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.78 }} />
             )}
-            {/* Dark gradient overlays */}
+            
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,rgba(0,0,0,0.22) 0%,rgba(0,0,0,0.05) 45%,rgba(0,0,0,0.70) 100%)' }} />
 
-            {/* Center play button */}
+            
             {embedSrc && (
               <button
                 type="button"
@@ -295,14 +263,14 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
         )}
       </div>
 
-      {/* Top bar: YT badge + fullscreen/expand */}
+      
       <div style={{ position: 'absolute', top: 14, left: 14, right: 14, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* YouTube badge */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(0,0,0,0.62)', backdropFilter: 'blur(10px)', borderRadius: 8, padding: '5px 10px' }}>
           <Youtube size={13} color="#ef4444" />
           <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', letterSpacing: '0.05em' }}>YouTube</span>
         </div>
-        {/* Expand to fullscreen */}
+        
         {embedSrc && (
           <button type="button" onClick={() => setIsExpanded(true)} aria-label="Expand video"
             style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(0,0,0,0.62)', backdropFilter: 'blur(10px)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
@@ -311,7 +279,7 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
         )}
       </div>
 
-      {/* Right action buttons */}
+      
       {!isPlaying && (
         <div style={{ position: 'absolute', right: 12, bottom: 138, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
           <ActionBtn dark active={liked} ariaLabel={liked ? 'Unlike' : 'Like'}
@@ -325,10 +293,10 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
         </div>
       )}
 
-      {/* Bottom info (hidden while playing to not block video controls) */}
+      
       {!isPlaying && (
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 54, zIndex: 10, padding: '0 14px 18px' }}>
-          {/* Channel chip */}
+          
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 8, background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(14px)', borderRadius: 99, padding: '6px 12px 6px 6px' }}>
             <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'linear-gradient(135deg,#ef4444,#ff7043)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
               {channelName[0]?.toUpperCase() ?? 'Y'}
@@ -338,18 +306,18 @@ function VideoPostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, like
               <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>YouTube · {relTime(post.created_at)}</div>
             </div>
           </div>
-          {/* Title */}
+          
           <p style={{ margin: '0 0 8px', fontSize: 13, color: 'rgba(255,255,255,0.92)', lineHeight: 1.45, fontWeight: 500, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {post.content}
           </p>
-          {/* Swipe hint */}
+          
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)' }}>
             ← more channel · less like this →
           </div>
         </div>
       )}
 
-      {/* Fullscreen modal */}
+      
       {isExpanded && embedSrc && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.97)', display: 'flex', flexDirection: 'column' }} role="dialog" aria-modal="true" aria-label="Fullscreen video">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', flexShrink: 0 }}>
@@ -446,24 +414,24 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
         if (rightRelease.shouldTrigger) onSwipeRight();
       }}
     >
-      {/* Background */}
+      
       {isImage(post.media_url) && (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img src={post.media_url!} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
       )}
       {hasDark && <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(180deg,rgba(0,0,0,0.06) 0%,rgba(0,0,0,0.20) 38%,rgba(0,0,0,0.78) 100%)' }} />}
 
-      {/* Active bar */}
+      
       {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, zIndex: 20, background: `linear-gradient(90deg,${DR.skyLight},${DR.sky} 50%,${DR.gold})` }} />}
 
-      {/* Source badge */}
+      
       {(post.provider || post.source) && post.provider !== 'dreamengin' && (
         <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 10, background: hasDark ? 'rgba(255,255,255,0.13)' : DR.bg, boxShadow: hasDark ? 'none' : nmR(2), backdropFilter: hasDark ? 'blur(12px)' : 'none', borderRadius: 99, padding: '4px 11px', fontSize: 9, fontWeight: 800, letterSpacing: '0.10em', textTransform: 'uppercase', color: hasDark ? 'rgba(255,255,255,0.70)' : DR.sky }}>
           {post.provider ?? post.source}
         </div>
       )}
 
-      {/* Text-only body */}
+      
       {!hasDark && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '28px 20px 150px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
@@ -485,7 +453,7 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
         </div>
       )}
 
-      {/* Right actions */}
+      
       <div style={{ position: 'absolute', right: 12, bottom: 138, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
         <ActionBtn dark={hasDark} active={liked} ariaLabel={liked ? 'Unlike' : 'Like'}
           icon={<Heart size={21} fill={liked ? '#ef4444' : 'none'} color={liked ? '#ef4444' : (hasDark ? 'rgba(255,255,255,0.88)' : DR.text)} strokeWidth={liked ? 0 : 1.8} />}
@@ -502,9 +470,9 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
         </div>
       </div>
 
-      {/* Bottom overlay */}
+      
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 54, zIndex: 10, padding: '0 14px 18px', background: hasDark ? 'linear-gradient(0deg,rgba(0,0,0,0.68) 0%,transparent 100%)' : 'none' }}>
-        {/* Creator chip */}
+        
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, marginBottom: 8, background: hasDark ? 'rgba(255,255,255,0.10)' : DR.bg, boxShadow: hasDark ? 'none' : nmR(3), backdropFilter: hasDark ? 'blur(14px)' : 'none', borderRadius: 99, padding: '6px 12px 6px 6px' }}>
           {post.profiles?.avatar_url ? (
             <Image src={post.profiles.avatar_url} alt="" width={26} height={26} style={{ width: 26, height: 26, borderRadius: '50%', objectFit: 'cover' }} />
@@ -537,7 +505,7 @@ function PostCard({ post, isActive, onSwipeLeft, onSwipeRight, onLike, liked, sa
           </div>
         )}
 
-        {/* Views — the public metric */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: hasDark ? 'rgba(255,255,255,0.10)' : DR.bg, boxShadow: hasDark ? 'none' : nmR(2), backdropFilter: hasDark ? 'blur(12px)' : 'none', borderRadius: 99, padding: '5px 11px' }}>
             <Eye size={12} color={hasDark ? 'rgba(255,255,255,0.70)' : DR.sky} />
@@ -587,7 +555,7 @@ function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPo
         if (rightRelease.shouldTrigger) onSwipeRight();
       }}
     >
-      {/* Label */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 24 }}>
         <div style={{ width: 30, height: 30, borderRadius: 9, background: `linear-gradient(135deg,${DR.skyLight},${DR.sky} 55%,${DR.gold})`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: nmR(3) }}>
           <Sparkles size={14} color="#fff" />
@@ -595,9 +563,9 @@ function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPo
         <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: DR.sky }}>You might love this</span>
       </div>
 
-      {/* Card */}
+      
       <div style={{ width: '100%', background: DR.bg, borderRadius: 22, boxShadow: nmR(8), padding: 20 }}>
-        {/* Creator row */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
           {post.profiles?.avatar_url ? (
             <Image src={post.profiles.avatar_url} alt="" width={40} height={40} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', boxShadow: nmR(3) }} />
@@ -612,7 +580,7 @@ function SuggestedContentCard({ post, onSwipeLeft, onSwipeRight }: {post: FeedPo
           </div>
         </div>
 
-        {/* Media preview */}
+        
         {isImage(post.media_url) && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={post.media_url!} alt="" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: 12, display: 'block', marginBottom: 12, boxShadow: nmR(3) }} />
@@ -636,13 +604,13 @@ function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
     setFollowing(true);
     try {
       await fetch('/api/follow', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ target_id: creator.id }) });
-    } catch { /* non-critical */ }
+    } catch {  }
   };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', scrollSnapAlign: 'start', overflow: 'hidden', flexShrink: 0, background: DR.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', fontFamily: DR.font }}>
 
-      {/* Label */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 24 }}>
         <div style={{ width: 30, height: 30, borderRadius: 9, background: `linear-gradient(135deg,${DR.skyLight},${DR.sky} 55%,${DR.gold})`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: nmR(3) }}>
           <UserPlus size={14} color="#fff" />
@@ -650,7 +618,7 @@ function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
         <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: DR.sky }}>Connect with</span>
       </div>
 
-      {/* Creator card */}
+      
       <div style={{ width: '100%', background: DR.bg, borderRadius: 22, boxShadow: nmR(8), padding: 24, textAlign: 'center' }}>
         {creator.avatar_url ? (
           <Image src={creator.avatar_url} alt="" width={72} height={72} style={{ width: 72, height: 72, borderRadius: '50%', objectFit: 'cover', margin: '0 auto 12px', display: 'block', boxShadow: nmR(5) }} />
@@ -684,15 +652,15 @@ function SuggestedCreatorCard({ creator }: {creator: SuggestedCreator}) {
 }
 
 export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
-  // ── State ─────────────────────────────────────────────────────────────────
+  
   const [posts,         setPosts]       = useState<FeedPost[]>(initialPosts);
   const [sugContent,    setSugContent]  = useState<FeedPost[]>([]);
   const [sugCreators,   setSugCreators] = useState<SuggestedCreator[]>([]);
   const [likedPosts,    setLikedPosts]  = useState<Set<string>>(new Set());
   const [savedPosts,    setSavedPosts]  = useState<Set<string>>(new Set());
   const [activeIdx,     setActiveIdx]   = useState(0);
-  const [creatorPost,   setCreatorPost] = useState<FeedPost | null>(null);    // DreamR creator panel
-  const [channelPost,   setChannelPost] = useState<FeedPost | null>(null);    // YouTube channel panel
+  const [creatorPost,   setCreatorPost] = useState<FeedPost | null>(null);    
+  const [channelPost,   setChannelPost] = useState<FeedPost | null>(null);    
   const [newCount,      setNewCount]    = useState(0);
   const [isLive,        setIsLive]      = useState(false);
   const [loadingMore,   setLoadingMore] = useState(false);
@@ -700,10 +668,10 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   const [hasMore,       setHasMore]     = useState(true);
   const [swipePrefs,    setSwipePrefs]  = useState(emptyDreamRSwipePreferences);
   const [redistributionNotice, setRedistributionNotice] = useState<string | null>(null);
-  // ── Topic channels ────────────────────────────────────────────────────────
-  // Start on World News (first topic with a query) so YouTube content is immediately visible.
-  // DREAMR_TOPICS is a module-level constant so it is always non-empty; the
-  // non-null assertion on the fallback is safe by construction.
+  
+  
+  
+  
   const [activeTopic,   setActiveTopic] = useState<(typeof DREAMR_TOPICS)[number]>(
     DREAMR_TOPICS.find((t) => t.query) ?? DREAMR_TOPICS[0]!,
   );
@@ -786,7 +754,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     try {
       let url: string;
       if (!topic.query) {
-        // "All" topic: use discovery (trending + world news mix)
+        
         url = '/api/youtube/discovery?max=20';
       } else {
         url = `/api/youtube/live-feed?query=${encodeURIComponent(topic.query)}&max=20`;
@@ -798,16 +766,16 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       if (!d.ok || !d.items) return;
       const newPosts = d.items.map(ytItemToFeedPost);
       setYtTopicPosts(newPosts);
-    } catch { /* silent */ }
+    } catch {  }
     finally {
       if (mountedRef.current) { setYtLoading(false); setYtRefreshing(false); }
     }
   }, []);
 
-  // Fetch on topic change
+  
   useEffect(() => { void fetchYtTopic(activeTopic); }, [activeTopic, fetchYtTopic]);
 
-  // Auto-refresh YouTube feed every 30 s
+  
   useEffect(() => {
     if (!activeTopic.query) return;
     const timer = setInterval(() => { void fetchYtTopic(activeTopic, true); }, 30_000);
@@ -845,7 +813,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     void loadDreamRPage('append');
   }, [hasMore, loadDreamRPage, loadingMore, userId]);
 
-  // Pattern: 3 native posts → 1 YouTube video, then periodically a suggested card
+  
   const feedItems = useMemo((): FeedItem[] => {
     const items: FeedItem[] = [];
     let ytIdx = 0;
@@ -856,12 +824,12 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     for (let i = 0; i < posts.length; i++) {
       items.push({ kind: 'post', post: posts[i]! });
 
-      // Every 3 native posts → inject 1 YouTube video
+      
       if ((i + 1) % 3 === 0 && ytIdx < ytTopicPosts.length) {
         items.push({ kind: 'post', post: ytTopicPosts[ytIdx++]! });
       }
 
-      // Every 8 posts → inject a suggested card
+      
       if ((i + 1) % 8 === 0) {
         if (sugToggle === 0 && sugContentIdx < sugContent.length) {
           items.push({ kind: 'content', post: sugContent[sugContentIdx++]! });
@@ -873,7 +841,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       }
     }
 
-    // Append remaining YouTube videos when native posts run out
+    
     while (ytIdx < ytTopicPosts.length) {
       items.push({ kind: 'post', post: ytTopicPosts[ytIdx++]! });
     }
@@ -893,8 +861,8 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
   }, [personalizedFeedItems.length, loadMore]);
 
   const recordDreamRView = useCallback((post: FeedPost, intent: 'left' | 'up') => {
-    // Native DreamR posts use /api/posts/[id]/view; YouTube maintains its own
-    // analytics inside the embedded provider/channel flow and does not hit it.
+    
+    
     if (!canRecordDreamRView(post, intent, countedViewIdsRef.current)) return;
     countedViewIdsRef.current.add(post.id);
     fetch(`/api/posts/${post.id}/view`, { method: 'POST' }).catch(() => {});
@@ -946,7 +914,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     const wasLiked = likedPosts.has(id);
     setLikedPosts((prev) => { const n = new Set(prev); wasLiked ? n.delete(id) : n.add(id); return n; });
     try { await fetch('/api/likes', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ content_type: 'post', content_id: id }) }); }
-    catch { /* non-critical */ }
+    catch {  }
   }, [likedPosts]);
 
   const handleSave = useCallback((id: string) => {
@@ -961,16 +929,16 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
       } else {
         await navigator.clipboard.writeText(url);
       }
-    } catch { /* user cancelled or clipboard blocked — silent fail */ }
+    } catch {  }
   }, []);
 
   const handleComment = useCallback((id: string) => {
-    // Scroll to the post's comment section if it exists, or open the post detail
+    
     const el = document.getElementById(`comments-${id}`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // Navigate to post detail where comments are shown
+      
       window.location.href = `/post/${id}#comments`;
     }
   }, []);
@@ -997,8 +965,8 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
     requestAnimationFrame(() => {
       const el = scrollRef.current;
       if (!el) return;
-      // The swiped card will be gone on the next render, so this pre-render
-      // length minus removed-card + zero-based offsets lands on a safe index.
+      
+      
       const next = Math.min(activeIdx, Math.max(0, personalizedFeedItems.length - RIGHT_SWIPE_SCROLL_BUFFER_CARDS));
       el.scrollTo({ top: next * el.clientHeight, behavior: 'smooth' });
     });
@@ -1052,7 +1020,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         </button>
       )}
 
-      {/* ── Topic channel strip ──────────────────────────────────────────── */}
+      
       <div
         style={{
           position: 'absolute', top: 0, left: 0, right: 0, zIndex: 25,
@@ -1105,7 +1073,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         </div>
       </div>
 
-      {/* ── New posts banner ────────────────────────────────────────────── */}
+      
       {newCount > 0 && (
         <button type="button" onClick={flushNew}
           style={{ position: 'absolute', top: 58, left: '50%', transform: 'translateX(-50%)', zIndex: 30, display: 'flex', alignItems: 'center', gap: 7, background: DR.bg, boxShadow: nmR(5), border: 'none', borderRadius: 99, padding: '9px 20px', fontSize: 12, fontWeight: 700, color: DR.sky, cursor: 'pointer', fontFamily: DR.font, whiteSpace: 'nowrap' }}>
@@ -1129,26 +1097,26 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         </div>
       )}
 
-      {/* ── Live dot (top-right) ─────────────────────────────────────────── */}
+      
       {isLive && (
         <div style={{ position: 'absolute', top: 14, right: 14, zIndex: 30, display: 'flex', alignItems: 'center', gap: 5, background: DR.bg, boxShadow: nmR(2), borderRadius: 99, padding: '4px 10px', fontSize: 9, fontWeight: 800, color: DR.sky, letterSpacing: '0.10em', textTransform: 'uppercase', fontFamily: DR.font }}>
           <Wifi size={9} /> Live
         </div>
       )}
 
-      {/* ── Loading spinner for YouTube topic ───────────────────────────── */}
+      
       {ytLoading && personalizedFeedItems.length === 0 && (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', background: DR.bg }}>
           <Loader2 size={28} style={{ color: DR.sky, animation: 'dr-spin 0.8s linear infinite' }} />
         </div>
       )}
 
-      {/* ── Scroll-snap container ────────────────────────────────────────── */}
+      
       <div
         ref={scrollRef} onScroll={handleScroll}
         style={{ width: '100%', height: '100%', overflowY: 'scroll', overflowX: 'hidden', scrollSnapType: 'y mandatory', scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
       >
-        {/* Spacer for topic strip */}
+        
         <div style={{ height: 54, flexShrink: 0, scrollSnapAlign: 'none' }} />
 
         {personalizedFeedItems.map((item, i: number) => (
@@ -1178,7 +1146,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
           </div>
         ))}
 
-        {/* Load-more sentinel */}
+        
         {hasMore && (
           <div style={{ width: '100%', height: '75%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: DR.bg, flexShrink: 0, scrollSnapAlign: 'start' }}>
             {loadingMore ? (
@@ -1192,7 +1160,7 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         )}
       </div>
 
-      {/* ── Scroll nudge ─────────────────────────────────────────────────── */}
+      
       {activeIdx === 0 && personalizedFeedItems.length > 1 && (
         <div style={{ position: 'absolute', bottom: 72, left: '50%', transform: 'translateX(-50%)', zIndex: 15, pointerEvents: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, animation: 'dr-nudge 2s ease-in-out infinite' }}>
           <div style={{ background: DR.bg, boxShadow: nmR(3), borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -1202,14 +1170,14 @@ export default function DreamRFeed({ userId, initialPosts }: DreamRFeedProps) {
         </div>
       )}
 
-      {/* ── DreamR creator panel (swipe left on native posts) ──────────── */}
+      
       {creatorPost && (
         <div style={{ position: 'absolute', inset: 0, zIndex: 40 }}>
           <DreamRCreatorPanel post={creatorPost} onClose={() => setCreatorPost(null)} />
         </div>
       )}
 
-      {/* ── YouTube channel panel (swipe left on YouTube cards) ─────────── */}
+      
       {channelPost && (
         <div style={{ position: 'absolute', inset: 0, zIndex: 40 }}>
           <DreamRChannelPanel

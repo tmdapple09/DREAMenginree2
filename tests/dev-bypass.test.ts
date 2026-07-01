@@ -1,19 +1,12 @@
-/**
- * tests/dev-bypass.test.ts
- *
- * Unit tests for the dev-auth-bypass helpers in lib/dev-bypass.ts (req #31–33).
- *
- * Both helpers read server-only env vars (DEV_BYPASS_AUTH, DEV_ADMIN) that are
- * never NEXT_PUBLIC_ and are hard-blocked when NODE_ENV === 'production'.
- */
+
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-// We need to control process.env values per test.
+
 const originalEnv = { ...process.env };
 
 afterEach(() => {
-  // Restore original env after each test.
+  
   for (const key of Object.keys(process.env)) {
     if (!(key in originalEnv)) delete process.env[key];
   }

@@ -1,21 +1,7 @@
 import { normaliseBluesky } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/bluesky.ts
- *
- * Phase 5 — Bluesky (AT Protocol) provider (Tier 1)
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { handle: string, app_password: string }
- *
- * App passwords are created at: https://bsky.app → Settings → App Passwords
- * They are NOT the user's main password.
- *
- * No environment variables required — user provides their own app password.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 const BSKY_PDS = 'https://bsky.social';
 
@@ -31,10 +17,7 @@ interface BlueskySession {
   did: string;
 }
 
-/**
- * Create a session using the AT Protocol createSession XRPC.
- * Returns the session object including accessJwt.
- */
+
 async function createSession(creds: BlueskyCredentials): Promise<BlueskySession> {
   const res = await fetch(`${BSKY_PDS}/xrpc/com.atproto.server.createSession`, {
     method: 'POST',
@@ -50,19 +33,13 @@ async function createSession(creds: BlueskyCredentials): Promise<BlueskySession>
   return res.json() as Promise<BlueskySession>;
 }
 
-/**
- * Verify credentials by creating a session.
- * Returns the user's handle on success.
- */
+
 export async function blueskyVerify(creds: BlueskyCredentials): Promise<string> {
   const session = await createSession(creds);
   return session.handle;
 }
 
-/**
- * Fetch the home feed (following feed) and return normalised items.
- * Uses app.bsky.feed.getTimeline XRPC.
- */
+
 export async function blueskySync(creds: BlueskyCredentials): Promise<UnifiedFeedItem[]> {
   const session = await createSession(creds);
   const res = await fetch(`${BSKY_PDS}/xrpc/app.bsky.feed.getTimeline?limit=40`, {

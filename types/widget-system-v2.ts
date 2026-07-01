@@ -1,44 +1,33 @@
-/**
- * @deprecated Deprecated: use types/dream-window.ts instead.
- * Will be removed in Phase 8 completion.
- *
- * The canonical Dream Window types are in types/dream-window.ts.
- * Widget System V2 types are preserved here for backward compatibility
- * with existing code that imports from this module. Do not add new
- * code that imports from this file.
- *
- * Architecture: docs/ARCHITECTURE.md §4 (Universal Dream Window model)
- * Phase 8 Section B: Point 19.
- */
-// =====================================================
-// Widget System V2 - Maximum Technical Hosting Spec
-// Type definitions for the widget system
-// =====================================================
 
-// =====================================================
-// 1. HOST KIND REGISTRY
-// =====================================================
+
+
+
+
+
+
+
+
 
 export enum HostKind {
   HOST_FEED_VIEW = 1,
   HOST_COMPOSITE = 2,
-  // Additional host kinds can be added here
+  
 }
 
-// =====================================================
-// 2. SURFACE ENUM
-// =====================================================
 
-// Canonical surface names — preferred over Surface enum for new code
+
+
+
+
 export const DreamSurface = {
-  HOMEDREAM:          0, // was Surface.HOME
-  EDIT_PROFILE_DREAM: 2, // was Surface.PROFILE
-  VIEW_PROFILE:       2, // public-safe projection of EDIT_PROFILE_DREAM
-  DOCK:               3, // was Surface.DOCK
+  HOMEDREAM:          0, 
+  EDIT_PROFILE_DREAM: 2, 
+  VIEW_PROFILE:       2, 
+  DOCK:               3, 
 } as const;
 export type DreamSurfaceKey = keyof typeof DreamSurface;
 
-/** @deprecated Use DreamSurface constants instead */
+
 export enum Surface {
   HOME = 0,
   FACE = 1,
@@ -46,9 +35,9 @@ export enum Surface {
   DOCK = 3,
 }
 
-// =====================================================
-// 3. PRESENTATION MODES
-// =====================================================
+
+
+
 
 export enum PresentationMode {
   TILE = 0,
@@ -57,18 +46,18 @@ export enum PresentationMode {
   FULL = 3,
 }
 
-// =====================================================
-// 4. FEED SCOPE
-// =====================================================
+
+
+
 
 export enum FeedScope {
   SELF = 0,
   FOLLOW = 1,
 }
 
-// =====================================================
-// 5. FEED SORT
-// =====================================================
+
+
+
 
 export enum FeedSort {
   RECENT = 0,
@@ -76,9 +65,9 @@ export enum FeedSort {
   TOP = 2,
 }
 
-// =====================================================
-// 6. POLICY BITS
-// =====================================================
+
+
+
 
 export enum PolicyBits {
   USER_ONLY = 1 << 0,
@@ -86,9 +75,9 @@ export enum PolicyBits {
   PUBLIC_PREVIEW_ALLOWED = 1 << 2,
 }
 
-// =====================================================
-// 7. TRANSFORM STATE (Float32Array[5])
-// =====================================================
+
+
+
 
 export interface WidgetTransform {
   x: number;
@@ -98,7 +87,7 @@ export interface WidgetTransform {
   opacity: number;
 }
 
-// Convert to/from Float32Array for performance
+
 export function transformToArray(t: WidgetTransform): Float32Array {
   return new Float32Array([t.x, t.y, t.scale, t.rotation, t.opacity]);
 }
@@ -113,27 +102,27 @@ export function transformFromArray(arr: Float32Array): WidgetTransform {
   };
 }
 
-// =====================================================
-// 8. FEED HOST CONFIG
-// =====================================================
+
+
+
 
 export interface FeedHostConfig {
   scope: FeedScope;
-  target_user_id: string | null; // Required if scope === FOLLOW, null if SELF
+  target_user_id: string | null; 
   filters: {
     tags?: string[];
     content_type?: string[];
     project_id?: string;
-    [key: string]: unknown; // Allow additional filters
+    [key: string]: unknown; 
   };
   sort: FeedSort;
-  limit: number; // Clamped 5-200
+  limit: number; 
   realtime: boolean;
   include_media: boolean;
   include_reposts: boolean;
 }
 
-// Default feed host config (SELF scope)
+
 export const DEFAULT_FEED_HOST_CONFIG: FeedHostConfig = {
   scope: FeedScope.SELF,
   target_user_id: null,
@@ -145,9 +134,9 @@ export const DEFAULT_FEED_HOST_CONFIG: FeedHostConfig = {
   include_reposts: false,
 };
 
-// =====================================================
-// 9. COMPOSITE HOST CONFIG
-// =====================================================
+
+
+
 
 export interface CompositePane {
   pane_id: string;
@@ -164,15 +153,15 @@ export interface CompositeHostConfig {
   layout_mode: 'tabs' | 'split' | 'stack';
 }
 
-// =====================================================
-// 10. HOST CONFIG UNION
-// =====================================================
+
+
+
 
 export type HostConfig = FeedHostConfig | CompositeHostConfig | Record<string, unknown>;
 
-// =====================================================
-// 11. WIDGET DEFINITION (immutable identity + bindable behavior)
-// =====================================================
+
+
+
 
 export interface DreamDefinition {
   widget_id: string;
@@ -181,26 +170,26 @@ export interface DreamDefinition {
   host_kind: HostKind;
   host_config: HostConfig;
   settings: Record<string, unknown>;
-  policy: number; // uint32 flags
+  policy: number; 
   created_at: string;
   updated_at: string;
 }
 
-// =====================================================
-// 12. WIDGET INSTANCE (placement + transform + presentation)
-// =====================================================
+
+
+
 
 export interface DreamInstance {
   instance_id: string;
   widget_id: string;
   owner_id: string;
 
-  // Surface placement
+  
   surface: Surface;
-  surface_key: number; // faceIndex or profileSpaceId or 0 for home
-  slot_index: number; // 0..7 for slotted surfaces, -1 for free placement
+  surface_key: number; 
+  slot_index: number; 
 
-  // Presentation and transform
+  
   presentation: PresentationMode;
   transform_x: number;
   transform_y: number;
@@ -208,18 +197,18 @@ export interface DreamInstance {
   transform_rotation: number;
   transform_opacity: number;
 
-  // Z-ordering and focus
+  
   z_index: number;
   focus_rank: number;
 
-  // Runtime state
-  runtime_flags: number; // uint32
+  
+  runtime_flags: number; 
 
   created_at: string;
   updated_at: string;
 }
 
-// Helper to get transform from instance
+
 export type WidgetDefinition = DreamDefinition;
 export type WidgetInstance = DreamInstance;
 
@@ -233,7 +222,7 @@ export function getInstanceTransform(instance: DreamInstance): WidgetTransform {
   };
 }
 
-// Helper to update instance with transform
+
 export function setInstanceTransform(
   instance: WidgetInstance,
   transform: WidgetTransform
@@ -248,9 +237,9 @@ export function setInstanceTransform(
   };
 }
 
-// =====================================================
-// 13. HOST RESOLVED STATUS
-// =====================================================
+
+
+
 
 export enum HostResolvedStatus {
   OK = 'OK',
@@ -258,9 +247,9 @@ export enum HostResolvedStatus {
   ERROR = 'ERROR',
 }
 
-// =====================================================
-// 14. FEED ITEM SUMMARY
-// =====================================================
+
+
+
 
 export interface FeedItemSummary {
   item_id: string;
@@ -276,9 +265,9 @@ export interface FeedItemSummary {
   visibility: 'public' | 'followers' | 'private';
 }
 
-// =====================================================
-// 15. HOST RESOLVED PAYLOAD
-// =====================================================
+
+
+
 
 export interface HostResolved {
   kind: HostKind;
@@ -290,9 +279,9 @@ export interface HostResolved {
   error_message?: string;
 }
 
-// =====================================================
-// 16. WIDGET ACTION SHEET COMMANDS
-// =====================================================
+
+
+
 
 export enum WidgetActionCommand {
   REBIND_SCOPE = 'REBIND_SCOPE',
@@ -311,26 +300,26 @@ export interface WidgetAction {
   params?: Record<string, unknown>;
 }
 
-// =====================================================
-// 17. WIDGET ENGINE STATE
-// =====================================================
+
+
+
 
 export interface WidgetEngineState {
   instances: Map<string, WidgetInstance>;
   definitions: Map<string, WidgetDefinition>;
   resolved: Map<string, HostResolved>;
 
-  // Active gesture state
+  
   activeGesture: boolean;
 
-  // Current surface
+  
   currentSurface: Surface;
   currentSurfaceKey: number;
 }
 
-// =====================================================
-// 18. TYPE GUARDS
-// =====================================================
+
+
+
 
 export function isFeedHostConfig(config: HostConfig): config is FeedHostConfig {
   return 'scope' in config && typeof config.scope === 'number';
@@ -340,9 +329,9 @@ export function isCompositeHostConfig(config: HostConfig): config is CompositeHo
   return 'panes' in config && Array.isArray(config.panes);
 }
 
-// =====================================================
-// 19. VALIDATION HELPERS
-// =====================================================
+
+
+
 
 export function validateFeedHostConfig(config: Partial<FeedHostConfig>): FeedHostConfig {
   const scope = config.scope ?? FeedScope.SELF;

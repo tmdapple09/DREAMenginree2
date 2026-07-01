@@ -1,19 +1,4 @@
-/**
- * scripts/gameengin/prophet-run.ts
- *
- * Prophet R&D agent. Spec: GameENGINspec.md §3.2, §4.
- *
- * Real local work performed every run:
- *   - Reads genre DNA from brain.
- *   - Reads mechanic-library catalogue.
- *   - Computes a candidate mechanic combo + originality signature.
- *   - Logs an R&D session to brain/rd-sessions/.
- *   - Writes `.gameengin-prophet-output.json` with proposed design rules.
- *
- * Optional remote work (only when ANTHROPIC_API_KEY or OPENROUTER_API_KEY is
- * set): synthesises a 1-paragraph design rationale via the configured LLM and
- * appends it to the output. No silent placeholder writes.
- */
+
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';

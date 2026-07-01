@@ -11,22 +11,9 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/connectors/[provider]/verify/route.ts
- *
- * Phase 5 — GET /api/connectors/{provider}/verify
- *
- * Re-verifies stored credentials with the provider.
- * Updates last_verified_at and status in connector_accounts.
- * Caches result for 5 minutes — avoids excessive provider API calls.
- *
- * Never returns token_blob to the client.
- *
- * AXIOM 4 — Security by Default: secrets stay server-side only.
- * ARCHITECTURE.md §3 — Logic layer (lib/) handles provider calls.
- */
 
-const VERIFY_CACHE_MS = 5 * 60 * 1000; // 5 minutes
+
+const VERIFY_CACHE_MS = 5 * 60 * 1000; 
 
 export async function GET(
   _req: NextRequest,
@@ -45,8 +32,8 @@ export async function GET(
     );
   }
 
-  // Fetch stored account (including token_blob — server-side only)
-  // db is cast to `any` because connector_accounts is a new table not in the generated Supabase types.
+  
+  
   const { data: account, error: fetchError } = await db
     .from('connector_accounts')
     .select('status, token_blob, last_verified_at, last_error')
@@ -63,7 +50,7 @@ export async function GET(
     });
   }
 
-  // Cache check — if verified recently, return cached status
+  
   if (account.last_verified_at) {
     const age = Date.now() - new Date(account.last_verified_at as string).getTime();
     if (age < VERIFY_CACHE_MS && account.status === 'connected') {
@@ -123,7 +110,7 @@ export async function GET(
     newStatus = 'needs_reauth';
   }
 
-  // Update status in DB
+  
   await db
     .from('connector_accounts')
     .update({

@@ -1,18 +1,10 @@
-/**
- * tests/asset-optimizer.test.ts
- *
- * Tests for the asset optimisation pipeline (spec §5):
- *   - registryTagsForContext: correct folder/source metadata per upload context.
- *   - IndexedDB store sentinel logic (mocked).
- *   - Browser-clear detection (checkSentinels).
- *   - Quality config presence.
- */
+
 
 import type { Database } from '@/types/supabase';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-// ── Mock IndexedDB ─────────────────────────────────────────────────────────────
-// jsdom does not include IndexedDB; we provide a minimal stub.
+
+
 
 const idbStore = new Map<string, unknown>();
 
@@ -28,7 +20,7 @@ const mockIDB = {
           }),
           get: vi.fn().mockImplementation((key: string) => {
             const req = { onsuccess: null as ((e: Event) => void) | null, onerror: null, result: idbStore.get(key) ?? undefined };
-            // Immediately call onsuccess
+            
             Promise.resolve().then(() => req.onsuccess?.({ target: req } as any as Event));
             return req;
           }),
@@ -47,16 +39,16 @@ const mockIDB = {
       onerror: null,
       onupgradeneeded: null,
     };
-    // Immediately call onsuccess
+    
     Promise.resolve().then(() => req.onsuccess?.({ target: req } as any as Event));
     return req;
   }),
 };
 
-// Patch global indexedDB
+
 Object.defineProperty(globalThis, 'indexedDB', { value: mockIDB, writable: true });
 
-// ── Mock localStorage ──────────────────────────────────────────────────────────
+
 
 const localStorageData = new Map<string, string>();
 const mockLocalStorage = {
@@ -69,11 +61,11 @@ const mockLocalStorage = {
 };
 Object.defineProperty(globalThis, 'localStorage', { value: mockLocalStorage, writable: true });
 
-// ── Import modules under test ──────────────────────────────────────────────────
+
 
 import { registryTagsForContext } from '@/engins/contentengin/assets/assetOptimizer';
 
-// ── registryTagsForContext tests ───────────────────────────────────────────────
+
 
 describe('registryTagsForContext', () => {
   it('returns dreamr_feed folder/source for dreamr_feed context', () => {
@@ -101,7 +93,7 @@ describe('registryTagsForContext', () => {
   });
 });
 
-// ── Sentinel / browser-clear detection tests ──────────────────────────────────
+
 
 describe('IndexedDB sentinel detection', () => {
   beforeEach(() => {
@@ -118,7 +110,7 @@ describe('IndexedDB sentinel detection', () => {
     const assetId = 'asset-sentinel-test-001';
     const expectedKey = `${prefix}${assetId}`;
 
-    // Simulate what storeOriginal does: write sentinel to localStorage.
+    
     const sentinel = { assetId, storedAt: Date.now() };
     localStorageData.set(expectedKey, JSON.stringify(sentinel));
 

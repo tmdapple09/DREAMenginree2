@@ -3,36 +3,15 @@ import { parseRssFeed, tiktokProfileRssUrl } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * lib/connectors/providers/tiktok.ts
- *
- * TikTok provider (Tier 1) — public profile feed via RSSHub.
- *
- * TikTok has no official RSS API. RSSHub is a community-run open-source
- * RSS bridge that generates RSS feeds from public TikTok profiles.
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { username: string, rsshub_instance?: string }
- *
- * ⚠️  YOUR TIKTOK ACCOUNT MUST BE SET TO PUBLIC.
- *     Go to TikTok → Profile → Settings → Privacy → turn "Private account" OFF.
- *     Private accounts cannot be read by DREAMengin.
- *
- * RSSHub is at https://rsshub.app (free, community-run) or you can
- * self-host your own instance for better reliability.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export interface TikTokCredentials {
   username: string;
-  /** Optional RSSHub instance URL. Defaults to https://rsshub.app */
+  
   rsshub_instance?: string;
 }
 
-/**
- * Verify by checking the RSSHub TikTok URL is reachable.
- */
+
 export async function tiktokVerify(creds: TikTokCredentials): Promise<string> {
   const username = (creds.username ?? '').replace(/^@/, '').trim();
   if (!username) throw new Error('TikTok username is required.');
@@ -65,9 +44,7 @@ export async function tiktokVerify(creds: TikTokCredentials): Promise<string> {
   return `@${username}`;
 }
 
-/**
- * Fetch and normalise a public TikTok profile feed via RSSHub.
- */
+
 export async function tiktokSync(creds: TikTokCredentials): Promise<UnifiedFeedItem[]> {
   const username = (creds.username ?? '').replace(/^@/, '').trim();
   const rsshubBase = (creds.rsshub_instance || 'https://rsshub.app').trim();

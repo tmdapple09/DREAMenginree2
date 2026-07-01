@@ -4,12 +4,7 @@ import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { Hash, Palette, Save, Type } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * IdentityPanel — Brand identity editor for the Brand Engine app.
- *
- * Set brand name, tagline, accent colors, and logo emoji.
- * Lives at /engines/brand/identity.
- */
+
 
 const PRESET_PALETTES = [
   { name: 'Electric',  colors: ['#f472b6', '#a855f7', '#22d3ee'] },
@@ -65,7 +60,7 @@ export default function IdentityPanel( ){
           <p className="text-sm text-white/50">Set your brand name, tagline, colors, and icon</p>
         </div>
 
-        {/* Live preview */}
+        
         <div
           className="rounded-2xl p-6 mb-6 flex items-center gap-4 border"
           style={{
@@ -97,7 +92,7 @@ export default function IdentityPanel( ){
           </div>
         </div>
 
-        {/* Form */}
+        
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-white/50 mb-1.5">
@@ -127,7 +122,7 @@ export default function IdentityPanel( ){
             />
           </div>
 
-          {/* Logo emoji */}
+          
           <div>
             <label className="block text-xs font-medium text-white/50 mb-1.5">Logo Icon</label>
             <div className="flex flex-wrap gap-2">
@@ -148,7 +143,7 @@ export default function IdentityPanel( ){
             </div>
           </div>
 
-          {/* Color palettes */}
+          
           <div>
             <label className="block text-xs font-medium text-white/50 mb-1.5">
               <Palette size={11} className="inline mr-1" />

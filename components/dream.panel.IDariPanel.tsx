@@ -13,20 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * IDariPanel — admin control panel for the IDARi AI system.
- *
- * Tabs:
- *   1. Control — existing auto-update / bug-check loop.
- *   2. Observability — AI-assisted observability and remediation loop
- *      (collect → correlate → diagnose → patch plan).
- *
- * All API calls go to the real /api/ai/idari endpoint (Groq-backed, admin-only).
- * Observability data is fetched from /api/admin/observability (admin-only).
- *
- * ARCHITECTURE.md §3 — Component layer.
- * IDARI_CONTRACT.md — admin-only; never surfaced to regular users.
- */
+
 
 interface IdariLog {
   timestamp: Date;
@@ -40,13 +27,10 @@ interface IDariPanelProps {
   isAdmin: boolean;
 }
 
-/** Minimal valid UIContext for admin panel calls */
+
 const ADMIN_UI = { route: '/idari-console' };
 
-/**
- * Call the real IDARi endpoint and return the AI response text.
- * Throws on network/auth error so callers can log the failure.
- */
+
 async function callIdari(message: string): Promise<string> {
   const res = await fetch('/api/ai/idari', {
     method: 'POST',
@@ -61,12 +45,12 @@ async function callIdari(message: string): Promise<string> {
 }
 
 export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps) {
-  // ── Control tab state ────────────────────────────────────────────────────────
+  
   const [isRunning, setIsRunning] = useState(true);
   const [logs, setLogs] = useState<IdariLog[]>([]);
   const [prompt, setPrompt] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  // autoRefresh defaults to false — only fires when the tab is visible (ARCH §10)
+  
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState(30000);
   const [bugCheckEnabled, setBugCheckEnabled] = useState(true);
@@ -82,7 +66,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
           bugCheckEnabled?: boolean;
         };
         setIsRunning(state.isRunning !== false);
-        setAutoRefresh(state.autoRefresh === true); // default off
+        setAutoRefresh(state.autoRefresh === true); 
         setRefreshInterval(typeof state.refreshInterval === 'number' ? Math.max(state.refreshInterval, 30000) : 30000);
         setBugCheckEnabled(state.bugCheckEnabled !== false);
       } catch (e: unknown) {
@@ -100,8 +84,8 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
     }));
   }, [isRunning, autoRefresh, refreshInterval, bugCheckEnabled]);
 
-  // Visibility-gated polling — only runs when the page is in the foreground
-  // and autoRefresh is on. Never fires in background tabs (ARCH §10).
+  
+  
   useEffect(() => {
     if (!autoRefresh || !isRunning) return;
 
@@ -163,7 +147,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
       const responseText = await callIdari(
         'Run a diagnostic check on the DREAMengin platform. Identify any bugs, errors, broken flows, or system health issues. Report your findings clearly.',
       );
-      // Heuristic: if the response mentions errors/bugs/issues, flag as error; otherwise success
+      
       const looksLikeIssues = /error|bug|issue|broken|fail|problem/i.test(responseText);
       addLog(
         looksLikeIssues ? 'IDARi found potential issues' : 'Diagnostic complete — no issues found',
@@ -217,7 +201,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
 
   return (
     <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl border-2 border-purple-200 dark:border-purple-700 p-6">
-      {/* Header */}
+      
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg">
@@ -241,9 +225,9 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
         </button>
       </div>
 
-      {/* ── Control ──────────────────────────────────────────────────────── */}
+      
       <>
-        {/* Status Indicators */}
+        
           <div className="grid grid-cols-3 gap-3 mb-6">
             <div className={`p-3 rounded-lg border-2 ${
               isRunning
@@ -288,7 +272,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
             </div>
           </div>
 
-          {/* Controls */}
+          
           <div className="space-y-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
@@ -336,7 +320,7 @@ export default function IDariPanel({ userId: _userId, isAdmin }: IDariPanelProps
             </div>
           </div>
 
-          {/* Activity Log */}
+          
           <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
             <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">IDARi Activity Log</h4>
             <div className="space-y-2 max-h-64 overflow-y-auto">

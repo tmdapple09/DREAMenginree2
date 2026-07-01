@@ -1,13 +1,8 @@
-/**
- * Forge Rituals Tests
- *
- * Tests for the auto-detected recurring workflow patterns:
- * time patterns, sequence patterns, session patterns, and affinity patterns.
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// ── Mock localStorage ────────────────────────────────────────────────────────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -29,7 +24,7 @@ import {
 
 import { FORGE_HISTORY_KEY } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+
 
 function makeEntry(enginId: string, label: string, hoursAgo: number) {
   return {
@@ -54,7 +49,7 @@ function seedHistory(entries: Array<{ enginId: string; label: string; timestamp:
   localStorage.setItem(FORGE_HISTORY_KEY, JSON.stringify(entries));
 }
 
-// ── Tests ────────────────────────────────────────────────────────────────────
+
 
 describe('Forge Rituals', () => {
   beforeEach(() => {
@@ -98,7 +93,7 @@ describe('Forge Rituals', () => {
     });
 
     it('detects dominant time-of-day pattern', () => {
-      // All music usage in the evening
+      
       const history = [
         makeEntryAtHour('music', 'a', 18, 0),
         makeEntryAtHour('music', 'b', 19, 1),
@@ -113,13 +108,13 @@ describe('Forge Rituals', () => {
 
     it('does not flag evenly distributed usage', () => {
       const history = [
-        makeEntryAtHour('games', 'a', 8),   // morning
-        makeEntryAtHour('games', 'b', 14),  // afternoon
-        makeEntryAtHour('games', 'c', 18),  // evening
-        makeEntryAtHour('games', 'd', 22),  // night
+        makeEntryAtHour('games', 'a', 8),   
+        makeEntryAtHour('games', 'b', 14),  
+        makeEntryAtHour('games', 'c', 18),  
+        makeEntryAtHour('games', 'd', 22),  
       ];
       const rituals = detectTimePatterns(history);
-      // No single bucket should dominate (all 25%)
+      
       expect(rituals).toEqual([]);
     });
   });
@@ -146,7 +141,7 @@ describe('Forge Rituals', () => {
       const bigrams = rituals.filter((r) => r.id.startsWith('seq2'));
       expect(bigrams.length).toBeGreaterThan(0);
 
-      // music→games should appear (2 times)
+      
       const musicToGames = bigrams.find((r) => 
         r.engines[0] === 'music' && r.engines[1] === 'games'
       );
@@ -168,7 +163,7 @@ describe('Forge Rituals', () => {
       const trigrams = rituals.filter((r) => r.id.startsWith('seq3'));
       expect(trigrams.length).toBeGreaterThan(0);
 
-      // music→games→code should appear (2 times)
+      
       const mgc = trigrams.find((r) =>
         r.engines[0] === 'music' && r.engines[1] === 'games' && r.engines[2] === 'code'
       );
@@ -179,7 +174,7 @@ describe('Forge Rituals', () => {
     it('collapses consecutive same-engine entries', () => {
       const history = [
         makeEntry('games', 'a', 5),
-        makeEntry('games', 'b', 4), // should be collapsed
+        makeEntry('games', 'b', 4), 
         makeEntry('music', 'c', 3),
         makeEntry('games', 'd', 2),
         makeEntry('music', 'e', 1),
@@ -204,13 +199,13 @@ describe('Forge Rituals', () => {
     });
 
     it('detects multi-engine sessions', () => {
-      // Two sessions, each using 3 engines, within 30min gaps
+      
       const now = Date.now();
       const history = [
         { enginId: 'games', label: 'a', timestamp: new Date(now - 120 * 60_000).toISOString() },
         { enginId: 'music', label: 'b', timestamp: new Date(now - 115 * 60_000).toISOString() },
         { enginId: 'code',  label: 'c', timestamp: new Date(now - 110 * 60_000).toISOString() },
-        // gap > 30 min → new session
+        
         { enginId: 'lab',   label: 'd', timestamp: new Date(now - 20 * 60_000).toISOString() },
         { enginId: 'brand', label: 'e', timestamp: new Date(now - 15 * 60_000).toISOString() },
         { enginId: 'create', label: 'f', timestamp: new Date(now - 10 * 60_000).toISOString() },
@@ -250,7 +245,7 @@ describe('Forge Rituals', () => {
       const unexplored = rituals.find((r) => r.id === 'affinity-unexplored');
       expect(unexplored).toBeDefined();
       expect(unexplored!.engines.length).toBeGreaterThan(0);
-      // Should not include games or music
+      
       expect(unexplored!.engines).not.toContain('games');
       expect(unexplored!.engines).not.toContain('music');
     });

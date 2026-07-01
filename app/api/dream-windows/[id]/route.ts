@@ -5,30 +5,11 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * app/api/dream-windows/[id]/route.ts
- *
- * GET    /api/dream-windows/[id]  — fetch one Dream Window
- * PATCH  /api/dream-windows/[id]  — update active_state, position, size,
- *                                   visibility, config (Points 11, 13, 16)
- * DELETE /api/dream-windows/[id]  — atomic delete: dream_window row +
- *                                   visibility_mappings + projections (Point 22)
- *
- * All mutations enforce owner_id === auth.uid() and return 403 for
- * non-owners (Point 15).
- *
- * Architecture: docs/ARCHITECTURE.md §4
- * Privacy: visibility defaults to 'private' (docs/AXIOMS.md §product integrity)
- */
 
-// GET — fetch single Dream Window
 
-/**
- * GET /api/dream-windows/[id]
- *
- * Returns the Dream Window record if the caller is the owner or the record
- * is shared/public. Returns 404 if not found or not accessible.
- */
+
+
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -41,8 +22,8 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // RLS on dream_windows table enforces visibility — this query will return
-  // null/empty if the record is private and the caller is not the owner.
+  
+  
 
   const { data: dreamWindow, error } = await (supabase as SupabaseClient)
     .from('dream_windows')
@@ -57,24 +38,9 @@ export async function GET(
   return NextResponse.json({ dreamWindow });
 }
 
-// PATCH — update Dream Window fields
 
-/**
- * PATCH /api/dream-windows/[id]
- *
- * Accepted fields (all optional — only supplied fields are updated):
- *   active_state      — lifecycle state transition (Points 11, 16)
- *   position          — { x: number; y: number } spatial persistence (Point 13)
- *   size              — { width: number; height: number } spatial persistence (Point 13)
- *   visibility        — 'private' | 'shared' | 'public' (Point 14)
- *   config            — configuration bag
- *   source_bindings   — string[]
- *   destination_rules — object[]
- *
- * Owner enforcement: only the owner may PATCH (Point 15).
- * Layer validation: if active_state transitions to 'Mounted Dream Window',
- *   the config.layers field is validated against all 4 required layers (Point 20).
- */
+
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -170,13 +136,13 @@ export async function PATCH(
   }
 
   if (update.active_state === DREAM_WINDOW_STATES.MOUNTED) {
-    // Merge existing config with any config update to get the effective config
+    
     const effectiveConfig = {
       ...(existing.config ?? {}),
       ...(update.config ? (update.config as Record<string, unknown>) : {}),
     };
 
-    // Build a minimal DreamWindowInstance for layer validation
+    
     const instanceForValidation: DreamWindowInstance = {
       id: existing.id as string,
       type: existing.type as string,
@@ -192,11 +158,11 @@ export async function PATCH(
 
     const layerValidation = validateDreamWindowLayers(instanceForValidation);
     if (!layerValidation.valid) {
-      // Layer validation failure blocks the mount — not a hard error for
-      // Dream Windows that intentionally skip layers (e.g. simple info windows).
-      // We log the validation result in the response but allow the transition.
-      // Production hardening: change to return 422 when all Dream Windows
-      // supply the config.layers field.
+      
+      
+      
+      
+      
       update._layer_validation_warning = layerValidation.error;
     }
   }
@@ -219,25 +185,9 @@ export async function PATCH(
   return NextResponse.json({ dreamWindow });
 }
 
-// DELETE — atomic Dream Window removal (Point 22)
 
-/**
- * DELETE /api/dream-windows/[id]
- *
- * Atomically removes:
- *   1. The dream_windows row (dream_window_projections cascade via FK)
- *   2. visibility_mappings rows WHERE content_id = id
- *
- * The dream_window_projections rows are removed via ON DELETE CASCADE on the
- * source_id foreign key in the migration, so step 1 covers step 3.
- *
- * Owner enforcement: only the owner may DELETE (Point 15).
- *
- * Error rollback semantics:
- *   If the visibility_mappings delete fails after the main row is already
- *   deleted, we log the error but still return success (the main record is
- *   gone). This is a best-effort cleanup.
- */
+
+
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -267,7 +217,7 @@ export async function DELETE(
     );
   }
 
-  // dream_window_projections are removed via ON DELETE CASCADE (FK: source_id).
+  
 
   const { error: deleteError } = await (supabase as SupabaseClient)
     .from('dream_windows')
@@ -278,7 +228,7 @@ export async function DELETE(
     return NextResponse.json({ error: deleteError.message }, { status: 500 });
   }
 
-  // Best-effort cleanup — the main record is already gone.
+  
 
   const { error: visError } = await (supabase as SupabaseClient)
     .from('visibility_mappings')

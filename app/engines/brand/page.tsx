@@ -5,7 +5,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.EnginesBrand  (framework-mandated basename: page.tsx)
+
 export default async function BrandEnginAppPage( ){
   await connection();
   const supabase = await createServerClient();

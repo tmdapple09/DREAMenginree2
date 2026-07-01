@@ -4,19 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/settings/notifications/route.ts
- *
- * GET  /api/settings/notifications  — Returns the authenticated user's notification settings
- * POST /api/settings/notifications  — Upserts notification settings into the settings table
- *
- * Data is stored in the JSONB `data` column under the `notifications` key in
- * the existing `settings` table (initial schema migration, user_id PK + RLS).
- *
- * Security (AXIOM 4):
- *   - auth.uid() = user_id enforced by RLS on the settings table
- *   - Requires authenticated user; returns 401 otherwise
- */
+
 
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -61,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const db2 = supabase as SupabaseClient;
 
-  // Fetch existing settings first to merge
+  
   const { data: existing } = await db2
     .from('settings')
     .select('data')

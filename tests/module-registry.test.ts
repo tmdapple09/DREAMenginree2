@@ -1,12 +1,4 @@
-/**
- * tests/module-registry.test.ts
- *
- * Unit tests for lib/runtime/moduleRegistry.ts
- *
- * These are source-level checks — they verify the module registry
- * exports the required API surface and implements the transfer contract
- * described in the Universal Editor spec.
- */
+
 
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -64,7 +56,7 @@ describe('moduleRegistry exports', () => {
 
   it('rejects incompatible target runtimes', () => {
     expect(registrySrc).toContain('compatibleRuntimes.includes(targetRuntime)');
-    // returns false when incompatible
+    
     expect(registrySrc).toContain('return false');
   });
 

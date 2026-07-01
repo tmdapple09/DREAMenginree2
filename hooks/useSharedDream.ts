@@ -22,19 +22,19 @@ import {
 import { createClient } from '@/supabase/client/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: hooks/useSharedDream.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
 
 export interface PeerState {
   peerId: string;
@@ -65,7 +65,7 @@ export interface UseSharedDreamReturn {
   onEvent(handler: DreamEventHandler): () => void;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function getSupabase( ){
   return createClient();
@@ -262,8 +262,8 @@ export function useSharedDream(channelId: string): UseSharedDreamReturn {
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

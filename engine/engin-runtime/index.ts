@@ -2,37 +2,25 @@ import type { EnginAction, EnginRuleSetContract } from './EnginRuleSetContract';
 import type { EnginRuntimeOptions } from './EnginRuntime';
 import { EnginRuntime } from './EnginRuntime';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/index.ts.
 
-/**
- * lib/engin-runtime/index.ts
- *
- * Barrel export for the universal Engin Runtime Engine.
- *
- * Usage:
- *   import { EnginRuntime, createEnginRuntime } from '@/engine/engin-runtime';
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/**
- * createEnginRuntime(ruleSet, options?)
- *
- * Convenience factory — identical to `new EnginRuntime(...)` but avoids
- * callers needing to import the class directly.
- */
+
+
+
+
+
+
+
+
+
+
 export function createEnginRuntime<
   A extends EnginAction = EnginAction,
   DomainEvents extends Record<string, object> = Record<string, object>,
@@ -43,11 +31,11 @@ export function createEnginRuntime<
   return new EnginRuntime<A, DomainEvents>(ruleSet, options);
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+
 
 export {
   attachCoherenceReport,

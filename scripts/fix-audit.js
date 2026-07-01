@@ -22,11 +22,7 @@ function patch(file, fn) {
   }
 }
 
-/*
-========================================
-1. Fix NextResponse<unknown>
-========================================
-*/
+
 
 glob.sync("**/*.{ts,tsx}", {
   ignore: ["node_modules/**", ".next/**"],
@@ -39,11 +35,7 @@ glob.sync("**/*.{ts,tsx}", {
   });
 });
 
-/*
-========================================
-2. Fix catch(err) unknown typing
-========================================
-*/
+
 
 glob.sync("**/*.{ts,tsx}", {
   ignore: ["node_modules/**", ".next/**"],
@@ -56,11 +48,7 @@ glob.sync("**/*.{ts,tsx}", {
   });
 });
 
-/*
-========================================
-3. Fix missing DatabaseIcon import
-========================================
-*/
+
 
 glob.sync("**/*.{ts,tsx}", {
   ignore: ["node_modules/**", ".next/**"],
@@ -77,11 +65,7 @@ glob.sync("**/*.{ts,tsx}", {
   });
 });
 
-/*
-========================================
-4. Fix unknown[] -> Post[]
-========================================
-*/
+
 
 [
   "components/core/dream.CoreDream.tsx",
@@ -95,11 +79,7 @@ glob.sync("**/*.{ts,tsx}", {
   });
 });
 
-/*
-========================================
-5. Fix reduce callback typing
-========================================
-*/
+
 
 patch(
   "components/daydream/dreamsurface.daydream.BrandDaydream.tsx",
@@ -111,11 +91,7 @@ patch(
   }
 );
 
-/*
-========================================
-6. Fix Supabase insert typing
-========================================
-*/
+
 
 [
   "app/api/posts/route.ts",
@@ -129,11 +105,7 @@ patch(
   });
 });
 
-/*
-========================================
-7. Babylon scene typing fixes
-========================================
-*/
+
 
 patch(
   "components/dreamengin/dream.scene.DrEamsScene.tsx",
@@ -145,11 +117,7 @@ patch(
   }
 );
 
-/*
-========================================
-8. CodeEngin parser typing fixes
-========================================
-*/
+
 
 [
   "engins/codeengin-ui/core/parser.ts",
@@ -162,11 +130,7 @@ patch(
   });
 });
 
-/*
-========================================
-9. Remove empty exports
-========================================
-*/
+
 
 glob.sync("**/*.{ts,tsx}", {
   ignore: ["node_modules/**", ".next/**"],

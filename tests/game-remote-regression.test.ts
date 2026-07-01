@@ -72,9 +72,9 @@ describe('existing PS5 remote usage', () => {
   });
 
   it('removes per-game on-screen remote pads in favor of the shared GameRemote', () => {
-    // Source-game files that previously hosted their own touch pads have been
-    // removed in the fusion-cartridge migration. The only remaining source file to
-    // assert against is BabylonSideScroller (kept as MADMAXI flagship).
+    
+    
+    
     const babylon = readFileSync(join(REPO_ROOT, 'components/games/dream.BabylonSideScroller.tsx'), 'utf8');
 
     expect(babylon).not.toContain('Virtual D-Pad');
@@ -83,7 +83,7 @@ describe('existing PS5 remote usage', () => {
 
   it('keeps the new Voidline GP rhythm-fusion playable through shared remote-compatible inputs', () => {
     const src = readFileSync(join(REPO_ROOT, 'components/games/dream.VoidlineGP.tsx'), 'utf8');
-    // Voidline GP listens for both keyboard and remote-compatible Arrow keys.
+    
     expect(src).toContain('ArrowLeft');
     expect(src).toContain('ArrowRight');
   });

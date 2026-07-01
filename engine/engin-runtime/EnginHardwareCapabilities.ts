@@ -1,18 +1,18 @@
 import type { JsonObject } from './EnginBaseState';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginHardwareCapabilities.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
 
 export interface EnginHardwareCapabilities extends JsonObject {
   webgpu: boolean;
@@ -29,11 +29,11 @@ export interface EnginHardwareCapabilities extends JsonObject {
 
 type NavigatorWithDeviceMemory = Navigator & { deviceMemory?: number };
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export async function detectWasmSimdSupport(): Promise<boolean> {
   if (typeof WebAssembly === 'undefined') return false;
-  // Minimal SIMD feature probe module.
+  
   const simdProbe = new Uint8Array([
     0, 97, 115, 109, 1, 0, 0, 0, 1, 4, 1, 96, 0, 0,
     3, 2, 1, 0, 10, 9, 1, 7, 0, 253, 15, 253, 98, 11,
@@ -88,8 +88,8 @@ export function fallbackEnginHardwareCapabilities(): EnginHardwareCapabilities {
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -75,10 +75,7 @@ function computeState(nextNode: DreamNode): DreamState {
   };
 }
 
-/**
- * Build the DreamState for any node without requiring a prior state.
- * Used by StructureLedger to precompute the conserved state table.
- */
+
 export function getStateForNode(node: DreamNode): DreamState {
   return computeState(node);
 }
@@ -109,11 +106,11 @@ export function move(state: DreamState, direction: MoveDirection): DreamState {
     return computeState(currentOuter ? (currentBase as DreamNode) : '0');
   }
 
-  // Cross-axis move from non-home must collapse inward first (no teleport).
+  
   return computeState('0');
 }
 
-/** Z transition keeps Z context (example: 6b -> zoomIn -> 6). */
+
 export function zoom(state: DreamState, direction: 'in' | 'out'): DreamState {
   return move(state, direction === 'in' ? 'zoomIn' : 'zoomOut');
 }

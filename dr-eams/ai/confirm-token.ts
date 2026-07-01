@@ -2,12 +2,12 @@ import { createServerClient } from '@/supabase/server/serverClient';
 import { UIContext } from '@/types/ai-system';
 import { createHmac } from 'crypto';
 
-// lib/ai/confirm-token.ts
-// Two-Phase Commit - Confirm Token Service
 
-// ============================================================================
-// GENERATE CONFIRM TOKEN
-// ============================================================================
+
+
+
+
+
 
 const SERVER_SECRET = process.env.AI_CONFIRM_SECRET ?? 'default-secret-change-in-production';
 
@@ -23,15 +23,15 @@ export function generateConfirmToken(
   hmac.update(payload);
   const signature = hmac.digest('hex');
 
-  // Token format: base64(payload|signature)
+  
   const token = Buffer.from(`${payload}|${signature}`).toString('base64url');
 
   return token;
 }
 
-// ============================================================================
-// VERIFY CONFIRM TOKEN
-// ============================================================================
+
+
+
 
 export function verifyConfirmToken(
   token: string,
@@ -48,12 +48,12 @@ export function verifyConfirmToken(
 
     const [tokenRequestId, tokenUserId, expiryTsStr, providedSignature] = parts;
 
-    // Verify request ID and user ID match
+    
     if (tokenRequestId !== requestId || tokenUserId !== userId) {
       return { valid: false };
     }
 
-    // Verify signature
+    
     const payload = `${tokenRequestId}|${tokenUserId}|${expiryTsStr}`;
     const hmac = createHmac('sha256', SERVER_SECRET);
     hmac.update(payload);
@@ -63,7 +63,7 @@ export function verifyConfirmToken(
       return { valid: false };
     }
 
-    // Check expiry
+    
     const expiryTs = parseInt(expiryTsStr, 10);
     if (Date.now() > expiryTs) {
       return { valid: false, expired: true };
@@ -76,9 +76,9 @@ export function verifyConfirmToken(
   }
 }
 
-// ============================================================================
-// STORE CONFIRM TOKEN IN DB
-// ============================================================================
+
+
+
 
 export async function storeConfirmToken(
   token: string,
@@ -104,9 +104,9 @@ export async function storeConfirmToken(
   return !error;
 }
 
-// ============================================================================
-// CHECK AND MARK TOKEN AS USED
-// ============================================================================
+
+
+
 
 export async function consumeConfirmToken(
   token: string,
@@ -119,7 +119,7 @@ export async function consumeConfirmToken(
 }> {
   const supabase = await createServerClient();
 
-  // Get token from DB
+  
   const { data, error } = await supabase
     .from('confirm_tokens')
     .select('*')
@@ -131,17 +131,17 @@ export async function consumeConfirmToken(
     return { valid: false };
   }
 
-  // Check if already used
+  
   if (data.used) {
     return { valid: false };
   }
 
-  // Check expiry
+  
   if (new Date(data.expires_at) < new Date()) {
     return { valid: false };
   }
 
-  // Mark as used
+  
   await supabase
     .from('confirm_tokens')
     .update({ used: true, used_at: new Date().toISOString() })

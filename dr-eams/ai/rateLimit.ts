@@ -1,7 +1,7 @@
 import { createServerClient } from '@/supabase/server/serverClient';
 
-// lib/ai/rateLimit.ts
-// Rate limiter using Supabase RPC function
+
+
 
 type RateLimitRpcPayload = {
   allowed?: boolean;
@@ -21,10 +21,7 @@ export interface RateLimitResult {
   retry_after_seconds?: number;
 }
 
-/**
- * Check rate limit using Supabase RPC check_ai_rate_limit.
- * Fail-closed: if RPC errors or returns invalid data, deny the request.
- */
+
 export async function checkRateLimit(
   userId: string,
   endpoint: string,
@@ -44,7 +41,7 @@ export async function checkRateLimit(
 
     if (error) {
       console.error('[rateLimit] RPC error:', error);
-      // Fail-closed
+      
       return {
         allowed: false,
         rpm: 0,
@@ -74,7 +71,7 @@ export async function checkRateLimit(
     };
   } catch (error: unknown) {
     console.error('[rateLimit] Unexpected error:', error);
-    // Fail-closed
+    
     return {
       allowed: false,
       rpm: 0,
@@ -83,10 +80,7 @@ export async function checkRateLimit(
   }
 }
 
-/**
- * Get current RPM for boogie evaluation (read-only, no increment).
- * Reads from ai_rate_limits by user_id + endpoint, using the latest window.
- */
+
 export async function getCurrentRPM(userId: string, endpoint: string): Promise<number> {
   try {
     const supabase = await createServerClient();
@@ -108,7 +102,7 @@ export async function getCurrentRPM(userId: string, endpoint: string): Promise<n
       return 0;
     }
 
-    // Check if window is still within the last 60 seconds
+    
     const windowStart = new Date(data.window_start).getTime();
     const windowAge = (Date.now() - windowStart) / 1000;
 
@@ -116,7 +110,7 @@ export async function getCurrentRPM(userId: string, endpoint: string): Promise<n
       return 0;
     }
 
-    // Compute RPM from request_count and elapsed window time
+    
     return Math.round(((data.request_count ?? 0) / Math.max(1, windowAge)) * 60);
   } catch {
     return 0;

@@ -4,11 +4,11 @@ import type { GetPlatformMetricsResponse } from '@/dreamr/activity/types';
 import { PLATFORM_HEALTH_TARGETS } from '@/dreamr/activity/types';
 import { useEffect, useState } from 'react';
 
-// components/idari/dream.PlatformHealth.tsx
-// Phase 9 — IDARi Platform Health Dashboard
-//
-// Displays platform health metrics and targets.
-// Per ACTIVITY_FIRST_PROTOCOL.md §IV (Platform Health Metrics) & §IX (Success Conditions)
+
+
+
+
+
 
 
 export function PlatformHealth( ){
@@ -32,7 +32,7 @@ export function PlatformHealth( ){
 
     loadMetrics();
 
-    // Refresh every 5 minutes
+    
     const interval = setInterval(loadMetrics, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -120,7 +120,7 @@ export function PlatformHealth( ){
         </div>
       </div>
 
-      {/* Health Cards */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {healthCards.map((card) => {
           const isHealthy =
@@ -171,7 +171,7 @@ export function PlatformHealth( ){
                   {card.unit}
                 </div>
 
-                {/* Progress Bar */}
+                
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full transition-all ${
@@ -190,7 +190,7 @@ export function PlatformHealth( ){
         })}
       </div>
 
-      {/* Platform Stats */}
+      
       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           Platform Statistics
@@ -213,7 +213,7 @@ export function PlatformHealth( ){
         </div>
       </div>
 
-      {/* Success Conditions */}
+      
       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
           Success Conditions (per ACTIVITY_FIRST_PROTOCOL.md §IX)

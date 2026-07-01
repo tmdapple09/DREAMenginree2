@@ -1,14 +1,14 @@
-// types/experience.ts
-// Section 15: User Experience Summary
-//
-// User always has:
-//   - Home Anchor
-//   - 48 Widgets
-//   - Home Dreams
-//   - Work Dreams
-//   - Infinite Loops
 
-// Hard limit: each user space supports up to 48 widget slots.
+
+
+
+
+
+
+
+
+
+
 export const MAX_WIDGETS = 48;
 
 export type DreamKind = "home" | "work";
@@ -39,7 +39,7 @@ export interface InfiniteLoop {
   created_at: string;
 }
 
-// Actions a user can always perform
+
 export type UserAction =
   | "create"
   | "work"

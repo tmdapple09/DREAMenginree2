@@ -7,18 +7,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-/**
- * FeedVideoCard — In-feed video player card.
- *
- * Features:
- *  - Shows a YouTube thumbnail with a play-button overlay.
- *  - Tapping "Play" embeds the YouTube iframe inline with autoplay.
- *  - Expand button (⤢) opens a fullscreen modal overlay with the video.
- *  - Swipe left/right on the card navigates to the next/prev YouTube video
- *    in the current feed context WITHOUT scrolling the page (the touchmove
- *    listener is registered as non-passive so it can call preventDefault).
- *  - Works for both YouTube videos and user-posted video URLs.
- */
+
 
 function extractYouTubeId(url: string): string | null {
   try {
@@ -28,8 +17,8 @@ function extractYouTubeId(url: string): string | null {
     }
     const v = u.searchParams.get('v');
     if (v) return v;
-  } catch { /* fall through */ }
-  // Short-circuit for embed URLs: youtube.com/embed/<id>
+  } catch {  }
+  
   const embedMatch = url.match(/youtube\.com\/embed\/([^/?#]+)/i);
   if (embedMatch?.[1]) return embedMatch[1];
   return null;
@@ -40,7 +29,7 @@ function buildEmbedUrl(post: FeedPost): string | null {
   if (!src) return null;
   const vid = extractYouTubeId(src);
   if (vid) return `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
-  // If it's a direct video file URL, return as-is for <video> element
+  
   if (/\.(mp4|webm|ogg|mov)(\?|$)/i.test(src)) return src;
   return null;
 }
@@ -50,17 +39,11 @@ function isDirectVideo(url: string): boolean {
 }
 
 export interface FeedVideoCardProps {
-  /** The video post this card is anchored to in the feed. */
+  
   post: FeedPost;
-  /**
-   * All video posts in the current feed context (i.e. all ytPosts).
-   * Used to navigate between videos on swipe.
-   */
+  
   allVideos: FeedPost[];
-  /**
-   * Index of `post` within `allVideos`. Navigation starts here and allows
-   * the user to swipe forward/back through the whole context.
-   */
+  
   videoIndex: number;
 }
 
@@ -69,13 +52,13 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Keep index in sync when the parent list changes (e.g. ytPosts slide-window
-  // rotation adds a new item and indices shift).
+  
+  
   useEffect(() => {
     setCurrentIndex(videoIndex);
   }, [videoIndex]);
 
-  // Reset playing when the current video changes so the new thumbnail shows.
+  
   useEffect(() => {
     setIsPlaying(false);
   }, [currentIndex]);
@@ -87,9 +70,9 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allVideos.length - 1;
 
-  // We attach the touchmove listener with { passive: false } so we can call
-  // preventDefault and stop the page from scrolling while the user is doing a
-  // horizontal swipe across the card.
+  
+  
+  
 
   const containerRef = useRef<HTMLDivElement>(null);
   const swipeState = useRef<{
@@ -115,14 +98,14 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       const dx = Math.abs(t.clientX - swipeState.current.startX);
       const dy = Math.abs(t.clientY - swipeState.current.startY);
 
-      // Determine direction on first significant move
+      
       if (swipeState.current.isHorizontal === null && (dx > 4 || dy > 4)) {
         swipeState.current.isHorizontal = dx >= dy;
       }
 
       if (swipeState.current.isHorizontal) {
-        // Prevent the outer scroll container from scrolling while we handle
-        // the horizontal swipe ourselves.
+        
+        
         e.preventDefault();
       }
     };
@@ -136,14 +119,14 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       if (!t) return;
       const dx = t.clientX - state.startX;
 
-      // Require a minimum 40 px travel to count as a swipe
+      
       if (Math.abs(dx) < 40) return;
 
       if (dx < 0 && hasNext) {
-        // Swipe left → next video
+        
         setCurrentIndex((prev) => Math.min(prev + 1, allVideos.length - 1));
       } else if (dx > 0 && hasPrev) {
-        // Swipe right → previous video
+        
         setCurrentIndex((prev) => Math.max(prev - 1, 0));
       }
     };
@@ -180,7 +163,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
     if (isPlaying && embedUrl) {
       const direct = isDirectVideo(embedUrl);
       return direct ? (
-        /* User-posted direct video */
+        
         <video
           src={embedUrl}
           autoPlay
@@ -218,7 +201,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
             borderRadius: r,
           }} />
         )}
-        {/* Play overlay */}
+        
         <button
           type="button"
           onClick={() => setIsPlaying(true)}
@@ -231,7 +214,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
         >
           <PlayButton size={fullscreen ? 64 : 52} />
         </button>
-        {/* YouTube badge */}
+        
         {(currentPost.provider === 'youtube' || currentPost.permalink?.includes('youtu')) && (
           <div style={{
             position: 'absolute', top: 8, right: 8,
@@ -277,7 +260,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
           {dark ? 'Prev' : 'Prev'}
         </button>
 
-        {/* Dot strip — shows up to 5 dots centred on the current index */}
+        
         <div style={{
           flex: 1, display: 'flex', alignItems: 'center',
           justifyContent: 'center', gap: 4, overflow: 'hidden',
@@ -331,7 +314,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
   if (isExpanded) {
     return (
       <>
-        {/* In-feed placeholder keeps layout space while modal is open */}
+        
         <div
           ref={containerRef}
           style={{ marginBottom: 12, userSelect: 'none' }}
@@ -352,7 +335,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
           </div>
         </div>
 
-        {/* Fullscreen overlay */}
+        
         <div
           style={{
             position: 'fixed', inset: 0, zIndex: 9999,
@@ -363,7 +346,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
           aria-modal="true"
           aria-label="Fullscreen video player"
         >
-          {/* Header bar */}
+          
           <div style={{
             display: 'flex', alignItems: 'center',
             justifyContent: 'space-between',
@@ -401,7 +384,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
             </button>
           </div>
 
-          {/* Video area */}
+          
           <div style={{
             flex: 1, minHeight: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -418,7 +401,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
             </div>
           </div>
 
-          {/* Navigation */}
+          
           <div style={{ padding: '0 16px 24px', flexShrink: 0 }}>
             <NavControls dark />
             <p style={{
@@ -439,7 +422,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       ref={containerRef}
       style={{ marginBottom: 12, userSelect: 'none' }}
     >
-      {/* Video viewport */}
+      
       <div style={{
         width: '100%', aspectRatio: '16/9',
         background: '#000',
@@ -449,7 +432,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
       }}>
         <VideoEmbed />
 
-        {/* Expand button */}
+        
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
@@ -467,7 +450,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
           <Maximize2 size={14} />
         </button>
 
-        {/* Swipe hint — only when not playing and there are neighbours */}
+        
         {!isPlaying && allVideos.length > 1 && (
           <div style={{
             position: 'absolute', bottom: 10, left: '50%',
@@ -486,7 +469,7 @@ export default function FeedVideoCard({ post, allVideos, videoIndex }: FeedVideo
         )}
       </div>
 
-      {/* Navigation controls */}
+      
       <NavControls />
     </div>
   );

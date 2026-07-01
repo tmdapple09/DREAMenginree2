@@ -1,27 +1,14 @@
-/**
- * lib/gameengin/neural-render.ts
- *
- * NEXT-GEN — Neural rendering pipeline (upscaling, neural texture compression,
- * frame generation). Targets on-device WebNN/WebGPU execution.
- *
- *  - NeuralUpscaler            — DLSS-class temporal neural upscaler
- *  - NeuralTextureCompression  — Neural texture compression decoder
- *  - FrameGenerator            — Motion-vector-based interpolated frame generator
- */
+
 
 export type UpscaleRatio = 1.5 | 2 | 3;
 
 export interface UpscalerConfig {
   ratio?: UpscaleRatio;
-  /** Use temporal motion vectors when available. */
+  
   temporal?: boolean;
 }
 
-/**
- * Neural temporal upscaler. Produces a higher-resolution output buffer from a
- * lower-resolution colour buffer + motion vectors + depth. Falls back to a
- * fast Lanczos-3 spatial filter when the neural backend is unavailable.
- */
+
 export class NeuralUpscaler {
   private readonly ratio: UpscaleRatio;
   private readonly temporal: boolean;
@@ -42,7 +29,7 @@ export class NeuralUpscaler {
     };
   }
 
-  /** Lanczos-3 fallback (single channel, single-frame). */
+  
   spatialFallback(input: Float32Array, width: number, height: number): Float32Array {
     const out = this.outputSize(width, height);
     const dst = new Float32Array(out.width * out.height);
@@ -80,17 +67,13 @@ export class NeuralUpscaler {
 }
 
 export interface NTCBlock {
-  /** Latent vector (typically 8–16 floats) representing the texture block. */
+  
   latent: Float32Array;
   width: number;
   height: number;
 }
 
-/**
- * Neural Texture Compression decoder.
- * Stores textures as small latent vectors and reconstructs RGBA tiles on demand
- * via a tiny MLP. Falls back to nearest-neighbour expansion when no model is set.
- */
+
 export class NeuralTextureCompression {
   private readonly tileSize: number;
   private readonly latentDim: number;
@@ -102,12 +85,12 @@ export class NeuralTextureCompression {
     this.latentDim = Math.max(4, opts.latentDim ?? 12);
   }
 
-  /** Wire a custom decoder (e.g. WebNN-backed MLP). */
+  
   setDecoder(decoder: (latent: Float32Array) => Uint8ClampedArray): void {
     this.decoder = decoder;
   }
 
-  /** Encode a raw RGBA tile by averaging into a latent vector (placeholder). */
+  
   encode(id: string, rgba: Uint8ClampedArray, width: number, height: number): void {
     const latent = new Float32Array(this.latentDim);
     const stride = Math.max(1, Math.floor((rgba.length / 4) / this.latentDim));
@@ -118,7 +101,7 @@ export class NeuralTextureCompression {
     this.blocks.set(id, { latent, width, height });
   }
 
-  /** Decode a previously stored block to an RGBA tile. */
+  
   decode(id: string): Uint8ClampedArray | null {
     const block = this.blocks.get(id);
     if (!block) return null;
@@ -139,14 +122,11 @@ export class NeuralTextureCompression {
 }
 
 export interface FrameGenConfig {
-  /** Target multiplier (2 = generate 1 in-between frame; 3 = generate 2). */
+  
   multiplier?: 2 | 3;
 }
 
-/**
- * Motion-vector-based frame generator. Given two adjacent rendered frames and
- * a motion-vector buffer, produces interpolated frames to raise effective FPS.
- */
+
 export class FrameGenerator {
   private readonly multiplier: 2 | 3;
   private generatedThisSecond = 0;
@@ -156,13 +136,10 @@ export class FrameGenerator {
     this.multiplier = config.multiplier ?? 2;
   }
 
-  /** Number of in-between frames per real frame. */
+  
   get interpolatedPerReal(): number { return this.multiplier - 1; }
 
-  /**
-   * Linear interpolation between two RGBA frames using motion vectors.
-   * Caller passes per-pixel uv offsets in `motion` (vec2 per pixel, half-res ok).
-   */
+  
   interpolate(
     prev: Uint8ClampedArray,
     next: Uint8ClampedArray,

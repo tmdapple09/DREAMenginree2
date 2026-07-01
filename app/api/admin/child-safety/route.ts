@@ -7,14 +7,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { toErrorMessage } from '@/utils/index';
 
-// app/api/admin/child-safety/route.ts
-// Admin endpoint for child safety incident review queue and hash registry management.
-//
-// GET  /api/admin/child-safety?status=PENDING_REVIEW   — fetch incident queue
-// POST /api/admin/child-safety/review                  — update incident status
-// POST /api/admin/child-safety/hashes                  — add known-bad hashes to registry
-//
-// Access: admin + owner only.
+
+
+
+
+
+
+
+
 
 const VALID_STATUSES = [
   'PENDING_REVIEW',
@@ -24,9 +24,9 @@ const VALID_STATUSES = [
   'REVIEWED_DISMISSED',
 ] as const;
 
-// ============================================================================
-// GET — fetch incident review queue
-// ============================================================================
+
+
+
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -59,9 +59,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   );
 }
 
-// ============================================================================
-// POST — review incident OR add hashes (discriminated by action field)
-// ============================================================================
+
+
+
 
 const ReviewBodySchema = z.object({
   action: z.literal('review'),

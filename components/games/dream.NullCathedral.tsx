@@ -4,18 +4,7 @@ import { useGameAutoStart, useGamePhase, useSubmitScore } from '@/engins/gameeng
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ParticlePool, ScreenShake, drawDitherFog, prefersReducedMotion } from './_fx/canvasFx';
 
-/**
- * NULL CATHEDRAL — fusion of chess + RPG + minesweeper.
- *
- * Iren Vespa descends the Cathedral of Null to find her sister before CASTLE
- * defrags her. Every battle is a chess match played on an 8×8 board where
- * unseen "mnemic mines" lie buried under random tiles. Detonating a mine
- * destroys the piece that stepped on it. Edge-tile glyphs show how many
- * mines border each row/column — your only deductive lever.
- *
- * Render: 2-D canvas (no external deps), candle-gold + stained-glass cyan/violet
- * on near-black, dithered shadows. Real menu → play → victory/defeat states.
- */
+
 
 type PieceKind = 'P' | 'N' | 'B' | 'R' | 'Q' | 'K';
 type Side = 'iren' | 'castle';
@@ -25,8 +14,8 @@ type Cell = Piece | null;
 type Phase = 'menu' | 'playing' | 'victory' | 'defeat';
 
 const N = 8;
-const CELL = 56;        // px
-const SIZE = N * CELL;  // canvas pixel size of board
+const CELL = 56;        
+const SIZE = N * CELL;  
 const MINE_COUNT = 7;
 
 const COL = {
@@ -48,7 +37,7 @@ const PIECE_GLYPH: Record<PieceKind, string> = {
 
 function startBoard(): Cell[][] {
   const b: Cell[][] = Array.from({ length: N }, () => Array<Cell>(N).fill(null));
-  // Iren (bottom)
+  
   b[7][0] = { kind: 'R', side: 'iren' };
   b[7][1] = { kind: 'N', side: 'iren' };
   b[7][2] = { kind: 'B', side: 'iren' };
@@ -58,7 +47,7 @@ function startBoard(): Cell[][] {
   b[7][6] = { kind: 'N', side: 'iren' };
   b[7][7] = { kind: 'R', side: 'iren' };
   for (let c = 0; c < N; c++) b[6][c] = { kind: 'P', side: 'iren' };
-  // CASTLE (top) — limited dream-warden composition
+  
   b[0][3] = { kind: 'K', side: 'castle' };
   b[0][4] = { kind: 'Q', side: 'castle' };
   b[0][0] = { kind: 'R', side: 'castle' };
@@ -80,7 +69,7 @@ function plantMines(): { mines: boolean[][]; kinds: (MineKind | null)[][] } {
     const c = Math.floor(Math.random() * N);
     if (!m[r][c]) {
       m[r][c] = true;
-      // 60% standard, 25% spread (chains to neighbors), 15% time (fires next turn)
+      
       const roll = Math.random();
       k[r][c] = roll < 0.6 ? 'standard' : roll < 0.85 ? 'spread' : 'time';
       placed++;
@@ -89,12 +78,12 @@ function plantMines(): { mines: boolean[][]; kinds: (MineKind | null)[][] } {
   return { mines: m, kinds: k };
 }
 
-/** True if `side`'s king at (kr,kc) would be attacked by any opponent piece on `b`. */
+
 function squareAttacked(b: Cell[][], kr: number, kc: number, byOpp: Side): boolean {
   for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
     const p = b[r][c];
     if (!p || p.side !== byOpp) continue;
-    // Pawns attack diagonally only — legalMoves() returns forward step too which we don't want here
+    
     if (p.kind === 'P') {
       const dir = byOpp === 'iren' ? -1 : 1;
       if (r + dir === kr && Math.abs(c - kc) === 1) return true;
@@ -105,9 +94,9 @@ function squareAttacked(b: Cell[][], kr: number, kc: number, byOpp: Side): boole
   return false;
 }
 
-// Simplified legal moves — pawns single-step + diagonal capture, knights L-shape,
-// bishops/rooks/queens slide, king 1-step. No castling, no en-passant. This is
-// enough to make the deductive-sacrifice loop legible.
+
+
+
 function legalMoves(b: Cell[][], r: number, c: number): Array<[number, number]> {
   const piece = b[r][c]; if (!piece) return [];
   const out: Array<[number, number]> = [];
@@ -199,7 +188,7 @@ export default function NullCathedral( ){
   useGameAutoStart(phase === 'menu' ? start : null);
   useEffect(() => { reducedMotionRef.current = prefersReducedMotion(); }, []);
 
-  // Submit on terminal phase
+  
   useEffect(() => { if (phase === 'victory' || phase === 'defeat') submit(score); }, [phase, score, submit]);
 
   useEffect(() => {
@@ -210,10 +199,10 @@ export default function NullCathedral( ){
       const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
       const reduced = reducedMotionRef.current;
 
-      // Step physics
+      
       particlesRef.current.step(dt);
       shakeRef.current.step(dt);
-      // Animate moving piece
+      
       if (animRef.current) {
         animRef.current.t = Math.min(1, animRef.current.t + dt * 6);
         if (animRef.current.t >= 1) animRef.current = null;
@@ -222,12 +211,12 @@ export default function NullCathedral( ){
       ctx.save();
       shakeRef.current.apply(ctx, reduced ? 0.2 : 1);
 
-      // Background gradient
+      
       const g = ctx.createLinearGradient(0, 0, 0, SIZE);
       g.addColorStop(0, COL.bgTop); g.addColorStop(1, COL.bgBot);
       ctx.fillStyle = g; ctx.fillRect(0, 0, SIZE, SIZE);
 
-      // Parallax nave — three receding arch layers (slow drift)
+      
       const drift = reduced ? 0 : t / 4000;
       for (let layer = 0; layer < 3; layer++) {
         const y = SIZE * (0.18 + layer * 0.22);
@@ -242,31 +231,31 @@ export default function NullCathedral( ){
         ctx.stroke();
       }
 
-      // Board squares + per-cell stained-glass rim-light
+      
       for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
         const base = (r + c) % 2 === 0 ? COL.light : COL.dark;
         ctx.fillStyle = base;
         ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
-        // Rim-light: thin top/left bevel
+        
         ctx.fillStyle = 'rgba(243,196,105,0.06)';
         ctx.fillRect(c * CELL, r * CELL, CELL, 1);
         ctx.fillRect(c * CELL, r * CELL, 1, CELL);
         ctx.fillStyle = 'rgba(0,0,0,0.18)';
         ctx.fillRect(c * CELL, r * CELL + CELL - 1, CELL, 1);
-        // Dithered candle bloom (rolling)
+        
         if ((r + c + Math.floor(t / 200)) % 7 === 0) {
           ctx.fillStyle = 'rgba(243,196,105,0.05)';
           ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
         }
       }
 
-      // Dithered cathedral fog band rolling across the board
+      
       if (!reduced) {
         const bandY = ((t / 30) % (SIZE + 80)) - 40;
         drawDitherFog(ctx, 0, bandY, SIZE, 50, 'rgba(243,196,105,0.18)', 0.5, 4);
       }
 
-      // Edge mine hints
+      
       ctx.fillStyle = COL.glyph; ctx.font = '14px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       const rh = rowMineHints(minesRef.current);
       const ch = colMineHints(minesRef.current);
@@ -275,7 +264,7 @@ export default function NullCathedral( ){
         ctx.fillText(String(ch[i]), i * CELL + CELL / 2, 10);
       }
 
-      // Triggered mines (visible craters) + ink-bloom for time mines about to fire
+      
       for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (triggeredRef.current[r][c]) {
         ctx.fillStyle = 'rgba(226,91,91,0.25)';
         ctx.fillRect(c * CELL + 4, r * CELL + 4, CELL - 8, CELL - 8);
@@ -289,7 +278,7 @@ export default function NullCathedral( ){
         ctx.beginPath(); ctx.arc(cx, cy, 18 + pulse * 4, 0, Math.PI * 2); ctx.stroke();
       }
 
-      // Highlight selected & legal moves
+      
       if (selected) {
         ctx.strokeStyle = COL.candle; ctx.lineWidth = 2;
         ctx.strokeRect(selected.c * CELL + 2, selected.r * CELL + 2, CELL - 4, CELL - 4);
@@ -301,12 +290,12 @@ export default function NullCathedral( ){
         }
       }
 
-      // Pieces (with eased animation for the mover)
+      
       ctx.font = `${Math.floor(CELL * 0.7)}px serif`;
       const anim = animRef.current;
       for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
         const p = boardRef.current[r][c]; if (!p) continue;
-        // skip drawing the moving piece at its destination — we'll draw the lerped sprite below
+        
         if (anim && anim.tr === r && anim.tc === c) continue;
         ctx.fillStyle = p.side === 'iren' ? COL.iren : COL.castle;
         ctx.shadowColor = p.side === 'iren' ? COL.iren : COL.castle;
@@ -325,12 +314,12 @@ export default function NullCathedral( ){
         ctx.shadowBlur = 0;
       }
 
-      // Particles on top
+      
       particlesRef.current.draw(ctx);
 
       ctx.restore();
 
-      // Diegetic candle-flame turn indicator (top-right corner of canvas)
+      
       const flameX = SIZE - 22, flameY = 22;
       const flick = 1 + Math.sin(t / 90) * 0.15;
       ctx.fillStyle = turn === 'iren' ? COL.iren : COL.castle;
@@ -365,7 +354,7 @@ export default function NullCathedral( ){
       }
     }
     if (p && p.side === 'iren') {
-      // Filter: king cannot move into a square attacked next half-move (basic check detection)
+      
       const raw = legalMoves(boardRef.current, r, c);
       let filtered = raw;
       if (p.kind === 'K') {
@@ -383,7 +372,7 @@ export default function NullCathedral( ){
     }
   }, [moves, selected, turn, phaseRef]);
 
-  // Move a piece, handle mine + capture, then trigger CASTLE turn.
+  
   const movePiece = (fr: number, fc: number, tr: number, tc: number, side: Side) => {
     const b = boardRef.current.map((row) => row.slice());
     const moved = b[fr][fc]!; const captured = b[tr][tc];
@@ -395,7 +384,7 @@ export default function NullCathedral( ){
     if (captured) {
       pts += captured.kind === 'K' ? 500 : 30;
       logEntry += ` · captures ${PIECE_GLYPH[captured.kind]}`;
-      // Candle-flame burst on capture
+      
       const px = tc * CELL + CELL / 2, py = tr * CELL + CELL / 2;
       particlesRef.current.burst(px, py, 14, { color: COL.candle, speed: 90, size: 1.6, maxLife: 0.7, gravity: -40, drag: 0.94 });
       shakeRef.current.kick(2);
@@ -415,11 +404,11 @@ export default function NullCathedral( ){
       }
     }
 
-    // Mine check — three archetypes
+    
     if (minesRef.current[tr][tc] && !triggeredRef.current[tr][tc]) {
       const kind = mineKindsRef.current[tr][tc] ?? 'standard';
       triggeredRef.current[tr][tc] = true;
-      // Real radial shock + ink-bloom particles
+      
       const px = tc * CELL + CELL / 2, py = tr * CELL + CELL / 2;
       particlesRef.current.burst(px, py, 26, { color: COL.mine, speed: 220, size: 2, maxLife: 0.8, drag: 0.9 });
       particlesRef.current.burst(px, py, 18, { color: '#1c0608', speed: 90, size: 3, maxLife: 1.1, drag: 0.85 });
@@ -430,7 +419,7 @@ export default function NullCathedral( ){
         logEntry += ' · MNEMIC MINE — piece scarred';
         pts += 5;
       } else if (kind === 'spread') {
-        // Detonates this tile + 4 cardinal neighbors (any pieces vaporized)
+        
         b[tr][tc] = null;
         for (const [dr, dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
           const nr = tr + dr, nc = tc + dc;
@@ -441,7 +430,7 @@ export default function NullCathedral( ){
         logEntry += ' · SPREAD-MINE chains the cross';
         pts += 10;
       } else {
-        // Time-mine: arms a fuse that fires after the opponent's turn
+        
         b[tr][tc] = null;
         timeMineFusesRef.current.push({ r: tr, c: tc, turnsLeft: 1 });
         logEntry += ' · TIME-MINE armed';
@@ -457,11 +446,11 @@ export default function NullCathedral( ){
 
     boardRef.current = b;
 
-    // Tick time-mine fuses (fire when reaching 0)
+    
     const surviving: Array<{ r: number; c: number; turnsLeft: number }> = [];
     for (const fuse of timeMineFusesRef.current) {
       if (fuse.turnsLeft <= 0) {
-        // Detonate now — clear any piece sitting on this tile
+        
         const px = fuse.c * CELL + CELL / 2, py = fuse.r * CELL + CELL / 2;
         particlesRef.current.burst(px, py, 22, { color: COL.mine, speed: 200, size: 2, maxLife: 0.7, drag: 0.9 });
         shakeRef.current.kick(6);
@@ -485,7 +474,7 @@ export default function NullCathedral( ){
     setTurn(side === 'iren' ? 'castle' : 'iren');
   };
 
-  // CASTLE AI: pick a random legal move (prefers captures)
+  
   useEffect(() => {
     if (phase !== 'playing' || turn !== 'castle') return;
     const t = setTimeout(() => {

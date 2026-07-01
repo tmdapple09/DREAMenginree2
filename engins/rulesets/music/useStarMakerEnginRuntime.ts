@@ -7,30 +7,21 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { StarMakerEnginAction, StarMakerEnginDerivedState } from './starMakerEnginRuleSet';
 import { STAR_MAKER_ENGIN_RULE_SET } from './starMakerEnginRuleSet';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engins/music/useStarMakerEnginRuntime.ts.
 
-/**
- * lib/engins/music/useStarMakerEnginRuntime.ts
- *
- * React hook — wires the universal EnginRuntime + StarMakerEngin rule-set into
- * React's lifecycle so the component can dispatch actions and read derived state.
- *
- * Usage:
- *   const { state, dispatch } = useStarMakerEnginRuntime();
- *   dispatch({ type: 'music:bpm-set', payload: { bpm: 140 } });
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface UseStarMakerEnginRuntimeOptions
   extends Omit<EnginRuntimeOptions, 'ioAdapter'> {
@@ -44,7 +35,7 @@ export interface UseStarMakerEnginRuntimeResult {
   hardwareAcceleration: EnginHardwareAccelerationState | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export function useStarMakerEnginRuntime(
   options: UseStarMakerEnginRuntimeOptions = {},
@@ -101,8 +92,8 @@ export function useStarMakerEnginRuntime(
   return { state: derivedState, dispatch, ready, hardwareAcceleration };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

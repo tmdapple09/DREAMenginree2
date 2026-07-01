@@ -18,17 +18,7 @@ type ProfileLike = {
 
 const DEFAULT_WORKFLOW_SPLIT = 0.5;
 
-/**
- * DreamBarDataBridge — pure data/callback provider for the DreamDM Bar.
- *
- * Runs on the /homedream route. Pushes server-fetched homeData into
- * DreamSystemContext so PersistentDreamBar (the true home container in
- * layout.tsx) can render the Surface Space / DreamSpace region divs.
- * Returns null — no layout output of its own.
- *
- * Per Bar Ownership Law §0 (docs/LAW.md): the DreamDM Bar IS home.
- * This component is purely a data bridge — it has no UI of its own.
- */
+
 export default function DreamBarDataBridge({
   userId,
   profile,
@@ -53,13 +43,13 @@ export default function DreamBarDataBridge({
     setHomeData,
   } = useDreamSystem();
 
-  // Push server-fetched data into context so PersistentDreamBar can render it.
+  
   useEffect(() => {
     setHomeData({ userId, profile: profile ?? null, initialPosts, isAdmin: isAdmin ?? false });
     return () => setHomeData(null);
   }, [userId, profile, initialPosts, isAdmin, setHomeData]);
 
-  // Auth listener — redirect on sign-out
+  
   useEffect(() => {
     const sb = createClient();
     let subscription: { unsubscribe: () => void } | null = null;
@@ -71,10 +61,10 @@ export default function DreamBarDataBridge({
       });
       subscription = result?.data?.subscription ?? null;
     } catch {
-      // Supabase not configured / unavailable — skip the listener rather than
-      // letting the throw bubble to error.tsx (which would replace the whole
-      // post-login UI with the themed error page, appearing as a solid orange
-      // screen on sunset/sunrise themes).
+      
+      
+      
+      
     }
     return () => subscription?.unsubscribe();
   }, []);
@@ -101,12 +91,7 @@ export default function DreamBarDataBridge({
     revealSplitRuntime(DEFAULT_WORKFLOW_SPLIT);
   }, [dualRuntime, revealSplitRuntime]);
 
-  /**
-   * Smart-Home counterpart: make DreamSpace the dominant runtime.
-   * Bound to the Home action when the DreamDM Bar is dragged toward the top
-   * (DreamSpace dominant). Resets DreamSpace world to its default panel and
-   * forces the dominance flag so the user always lands on the dreams home.
-   */
+  
   const returnDreamSpace = useCallback(() => {
     dualRuntime.setBottomRuntime('DreamSpace');
     dualRuntime.setDominantRuntime('DreamSpace');
@@ -143,7 +128,7 @@ export default function DreamBarDataBridge({
     return unregisterRuntimeCallbacks;
   }, [openHomeDreamSpace, openInDominant, openInSurface, registerRuntimeCallbacks, returnDreamSpace, returnHome, unregisterRuntimeCallbacks]);
 
-  // Dominant-region effect — keeps DualRuntime state in sync with the seam position
+  
   useEffect(() => {
     if (splitRatio >= 0.55) {
       dualRuntime.setDominantRuntime('Surface Space');
@@ -154,7 +139,7 @@ export default function DreamBarDataBridge({
     }
   }, [dualRuntime, splitRatio]);
 
-  // Publish runtime context to the dreamOSBus so other surfaces can react
+  
   useEffect(() => {
     dreamOSBus.publishRuntimeContext({
       region: 'Surface Space',
@@ -175,7 +160,7 @@ export default function DreamBarDataBridge({
     splitRatio,
   ]);
 
-  // Seam-Y dispatcher — keeps EnginDispatcher in sync with the seam position
+  
   useEffect(() => {
     const dispatcher = EnginDispatcher.getInstance();
     const updateSeam = () => {

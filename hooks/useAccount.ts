@@ -22,13 +22,13 @@ export function useAccount(initialAccountId?: string | null ){
         setAccountId(data.user?.id ?? null);
       })
       .catch(() => {
-        // Supabase unavailable / unconfigured — leave accountId as-is.
+        
       });
 
-    // onAuthStateChange may throw or return a rejected proxy when Supabase
-    // isn't configured. Guard so the host component never crashes (which
-    // bubbles to error.tsx and replaces the entire UI with the themed error
-    // screen — appears as a solid orange page on sunset/sunrise themes).
+    
+    
+    
+    
     let subscription: { unsubscribe: () => void } | null = null;
     try {
       const result = supabase.auth.onAuthStateChange(
@@ -39,7 +39,7 @@ export function useAccount(initialAccountId?: string | null ){
       );
       subscription = result?.data?.subscription ?? null;
     } catch {
-      // ignore — auth state changes simply won't be observed
+      
     }
 
     return () => {

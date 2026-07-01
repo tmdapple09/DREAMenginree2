@@ -6,21 +6,7 @@ import {
 } from '@/engine/social/rss-feed';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/hackernews.ts
- *
- * Hacker News provider (Tier 1) — RSS-based via hnrss.org, no auth required.
- *
- * Credentials (stored in connector_accounts.token_blob):
- *   { feed_type: 'best' | 'newest' | 'ask' | 'show' | 'jobs', username?: string }
- *
- * If username is provided, fetches that user's submissions.
- * Otherwise fetches the selected curated feed (default: 'best').
- *
- * No API key required — hnrss.org is a free public RSS bridge for HN.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 export type HNFeedType = 'best' | 'newest' | 'ask' | 'show' | 'jobs';
 
@@ -29,9 +15,7 @@ export interface HackerNewsCredentials {
   username?: string;
 }
 
-/**
- * Verify by checking hnrss.org is reachable.
- */
+
 export async function hackernewsVerify(creds: HackerNewsCredentials): Promise<string> {
   const url = creds.username
     ? hackerNewsUserRssUrl(creds.username.trim())
@@ -43,9 +27,7 @@ export async function hackernewsVerify(creds: HackerNewsCredentials): Promise<st
   return creds.username ? `user:${creds.username}` : (creds.feed_type ?? 'best');
 }
 
-/**
- * Fetch and normalise HN items.
- */
+
 export async function hackernewsSync(creds: HackerNewsCredentials): Promise<UnifiedFeedItem[]> {
   const url = creds.username
     ? hackerNewsUserRssUrl(creds.username.trim())

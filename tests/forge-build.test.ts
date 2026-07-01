@@ -1,17 +1,10 @@
-/**
- * tests/forge-build.test.ts
- *
- * Vitest tests for the ForgeEngin AI Anything Builder.
- * Covers: types, localStorage helpers, rate-limit logic, type guard,
- *         ForgeArtifact types, stageForgeArtifact, hook exports,
- *         component export, and API route existence.
- */
+
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 
-// ── Mock localStorage (node environment — no browser globals) ────────────────
+
 const store: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => store[key] ?? null,
@@ -22,7 +15,7 @@ const localStorageMock = {
 vi.stubGlobal('localStorage', localStorageMock);
 vi.stubGlobal('window', { localStorage: localStorageMock });
 
-// Now import after global stubs are in place
+
 import {
   saveForgeBuild,
   readForgeBuilds,
@@ -38,7 +31,7 @@ import {
   type ForgeArtifactType,
 } from '@/engins/forgeengin/forge/forgeBuild';
 
-// ── Helper: minimal valid ForgeBuildRecord ───────────────────────────────────
+
 function makeBuildRecord(overrides: Partial<ForgeBuildRecord> = {}): ForgeBuildRecord {
   return {
     id: 'test-id-123',
@@ -52,7 +45,7 @@ function makeBuildRecord(overrides: Partial<ForgeBuildRecord> = {}): ForgeBuildR
   };
 }
 
-// ── Helper: minimal valid ForgeArtifact ──────────────────────────────────────
+
 function makeArtifact(overrides: Partial<ForgeArtifact> = {}): ForgeArtifact {
   return {
     type: 'code-cells',
@@ -64,7 +57,7 @@ function makeArtifact(overrides: Partial<ForgeArtifact> = {}): ForgeArtifact {
   };
 }
 
-// ── ForgeBuildRecord type shape ───────────────────────────────────────────────
+
 
 describe('ForgeBuildRecord type shape', () => {
   it('has all required fields', () => {
@@ -99,7 +92,7 @@ describe('ForgeBuildRecord type shape', () => {
   });
 });
 
-// ── ForgeArtifact type shape ──────────────────────────────────────────────────
+
 
 describe('ForgeArtifact type shape', () => {
   it('has all required fields', () => {
@@ -154,7 +147,7 @@ describe('ForgeArtifact type shape', () => {
   });
 });
 
-// ── stageForgeArtifact ────────────────────────────────────────────────────────
+
 
 describe('stageForgeArtifact', () => {
   beforeEach(() => {
@@ -177,7 +170,7 @@ describe('stageForgeArtifact', () => {
     expect(stored[0].language).toBe('typescript');
     expect(typeof stored[0].id).toBe('string');
     expect(stored[0].id.length).toBeGreaterThan(0);
-    // Existing cell preserved
+    
     expect(stored[1].id).toBe('old-cell-1');
   });
 
@@ -226,7 +219,7 @@ describe('stageForgeArtifact', () => {
   });
 
   it('is safe to call in SSR (window undefined) — no-op', () => {
-    // Simulate SSR: temporarily hide window
+    
     const savedWindow = globalThis.window;
     // @ts-expect-error - testing SSR condition
     delete globalThis.window;
@@ -235,7 +228,7 @@ describe('stageForgeArtifact', () => {
   });
 });
 
-// ── saveForgeBuild / readForgeBuilds ─────────────────────────────────────────
+
 
 describe('saveForgeBuild / readForgeBuilds', () => {
   beforeEach(() => {
@@ -286,7 +279,7 @@ describe('saveForgeBuild / readForgeBuilds', () => {
   });
 });
 
-// ── clearForgeBuilds ──────────────────────────────────────────────────────────
+
 
 describe('clearForgeBuilds', () => {
   beforeEach(() => {
@@ -305,7 +298,7 @@ describe('clearForgeBuilds', () => {
   });
 });
 
-// ── canBuildToday / recordBuildToday ─────────────────────────────────────────
+
 
 describe('canBuildToday / recordBuildToday', () => {
   beforeEach(() => {
@@ -337,7 +330,7 @@ describe('canBuildToday / recordBuildToday', () => {
   });
 });
 
-// ── isForgeLogEvent type guard ────────────────────────────────────────────────
+
 
 describe('isForgeLogEvent type guard', () => {
   it('accepts valid agent event', () => {
@@ -480,7 +473,7 @@ describe('isForgeLogEvent type guard', () => {
   });
 });
 
-// ── ForgeLogEvent discriminated union ────────────────────────────────────────
+
 
 describe('ForgeLogEvent discriminated union exhaustiveness', () => {
   it('all 7 event types are represented', () => {
@@ -521,7 +514,7 @@ describe('ForgeLogEvent discriminated union exhaustiveness', () => {
   });
 });
 
-// ── AIBuilderPanel default export existence ───────────────────────────────────
+
 
 describe('AIBuilderPanel', () => {
   it('default export exists at expected path', async () => {
@@ -568,7 +561,7 @@ describe('AIBuilderPanel', () => {
   });
 });
 
-// ── useForgeBuild hook exports ────────────────────────────────────────────────
+
 
 describe('useForgeBuild hook', () => {
   it('hook file exists at expected path', () => {
@@ -598,7 +591,7 @@ describe('useForgeBuild hook', () => {
   });
 });
 
-// ── API route file existence ──────────────────────────────────────────────────
+
 
 describe('API route /api/forge/build', () => {
   it('route file exists at app/api/forge/build/route.ts', () => {
@@ -661,7 +654,7 @@ describe('API route /api/forge/build', () => {
   });
 });
 
-// ── forgeBuild.ts lib file ────────────────────────────────────────────────────
+
 
 describe('forgeBuild lib module', () => {
   it('lib file exists', () => {

@@ -1,13 +1,4 @@
-/**
- * fxSimulation – VFX simulation preset catalogue.
- *
- * Inspired by Houdini's simulation shelf: fire, water, destruction,
- * smoke/particles, and fabric dynamics.
- *
- * Each preset defines the parameters that drive a simulation.
- * Parameters are structured so they can be mapped directly to
- * Three.js / Babylon.js particle systems or a GPU compute shader.
- */
+
 
 export type FxCategory = 'fire' | 'water' | 'destruction' | 'smoke' | 'particles' | 'fabric';
 
@@ -29,7 +20,7 @@ export interface FxPreset {
   category: FxCategory;
   emoji: string;
   description: string;
-  /** Display tags for the UI filter bar */
+  
   tags: string[];
   params: FxParam[];
 }
@@ -38,22 +29,22 @@ export interface FxSimulation {
   id: string;
   presetId: string;
   name: string;
-  /** User-overridden parameter values */
+  
   overrides: Record<string, FxParam['value']>;
-  /** Current simulation state */
+  
   state: 'idle' | 'running' | 'paused' | 'complete';
-  /** Elapsed simulation time in seconds */
+  
   elapsedSeconds: number;
-  /** Total requested duration */
+  
   durationSeconds: number;
-  /** Frame rate for caching */
+  
   fps: number;
 }
 
-// Preset catalogue
+
 
 export const FX_PRESETS: FxPreset[] = [
-  // ── Fire ──────────────────────────────────────────────────────────────────
+  
   {
     id: 'fire_campfire',
     name: 'Campfire',
@@ -86,7 +77,7 @@ export const FX_PRESETS: FxPreset[] = [
       { name: 'intensity', label: 'Light Intensity', type: 'float', value: 1.0, min: 0, max: 2, step: 0.05, description: 'Dynamic light cast by the explosion' },
     ],
   },
-  // ── Water ─────────────────────────────────────────────────────────────────
+  
   {
     id: 'water_ocean',
     name: 'Ocean Surface',
@@ -117,7 +108,7 @@ export const FX_PRESETS: FxPreset[] = [
       { name: 'foamRing', label: 'Foam Ring', type: 'boolean', value: true, description: 'Spawn a foam ring on impact' },
     ],
   },
-  // ── Destruction ───────────────────────────────────────────────────────────
+  
   {
     id: 'destruction_concrete',
     name: 'Concrete Fracture',
@@ -147,7 +138,7 @@ export const FX_PRESETS: FxPreset[] = [
       { name: 'crackPropagation', label: 'Crack Spread Speed', type: 'float', value: 0.8, min: 0, max: 1, step: 0.01, description: 'How fast cracks spread outward' },
     ],
   },
-  // ── Smoke ─────────────────────────────────────────────────────────────────
+  
   {
     id: 'smoke_wisp',
     name: 'Thin Wisp',
@@ -162,7 +153,7 @@ export const FX_PRESETS: FxPreset[] = [
       { name: 'color', label: 'Smoke Color', type: 'color', value: [0.85, 0.85, 0.85], description: 'Base scattering color of smoke' },
     ],
   },
-  // ── Particles ─────────────────────────────────────────────────────────────
+  
   {
     id: 'particles_sparkle',
     name: 'Magic Sparkle',
@@ -180,7 +171,7 @@ export const FX_PRESETS: FxPreset[] = [
       { name: 'glowIntensity', label: 'Glow', type: 'float', value: 1.5, min: 0, max: 5, step: 0.1, description: 'Additive bloom/glow multiplier' },
     ],
   },
-  // ── Fabric ────────────────────────────────────────────────────────────────
+  
   {
     id: 'fabric_cloth',
     name: 'Cloth Drape',
@@ -198,25 +189,19 @@ export const FX_PRESETS: FxPreset[] = [
   },
 ];
 
-// Public API
 
-/**
- * Get a preset by id. Returns undefined if not found.
- */
+
+
 export function getPreset(id: string): FxPreset | undefined {
   return FX_PRESETS.find((p) => p.id === id);
 }
 
-/**
- * Filter presets by category.
- */
+
 export function presetsByCategory(category: FxCategory): FxPreset[] {
   return FX_PRESETS.filter((p) => p.category === category);
 }
 
-/**
- * Create a new FxSimulation from a preset id.
- */
+
 export function createSimulation(
   presetId: string,
   name?: string,
@@ -238,9 +223,7 @@ export function createSimulation(
   };
 }
 
-/**
- * Apply a parameter override to a simulation.
- */
+
 export function setSimParam(
   sim: FxSimulation,
   paramName: string,
@@ -249,25 +232,19 @@ export function setSimParam(
   return { ...sim, overrides: { ...sim.overrides, [paramName]: value } };
 }
 
-/**
- * Get the effective parameter value (override if set, else preset default).
- */
+
 export function getSimParam(sim: FxSimulation, paramName: string): FxParam['value'] | undefined {
   if (paramName in sim.overrides) return sim.overrides[paramName];
   const preset = getPreset(sim.presetId);
   return preset?.params.find((p) => p.name === paramName)?.value;
 }
 
-/**
- * Reset all parameter overrides to preset defaults.
- */
+
 export function resetSimParams(sim: FxSimulation): FxSimulation {
   return { ...sim, overrides: {} };
 }
 
-/**
- * Return all unique categories present in the preset catalogue.
- */
+
 export function allCategories(): FxCategory[] {
   return [...new Set(FX_PRESETS.map((p) => p.category))];
 }

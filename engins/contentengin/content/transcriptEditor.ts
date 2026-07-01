@@ -1,24 +1,11 @@
-/**
- * transcriptEditor – transcript ↔ timeline mapping logic.
- *
- * Parses SRT/VTT subtitle files, maps transcript words to timeline segments,
- * and produces edit-cut instructions when the user deletes/inserts words.
- *
- * Features:
- *   - parseSRT / parseVTT  – ingest subtitle files
- *   - computeCuts          – word-level delete → timeline cut list
- *   - applyEditsToSegments – produce a new segment list with deleted words removed
- *   - exportSRT            – re-export the (possibly edited) segments as SRT text
- *   - searchTranscript     – full-text search with result highlighting
- *   - segmentsToPlainText  – flat text dump
- */
+
 
 export interface TranscriptWord {
   index: number;
   word: string;
   startMs: number;
   endMs: number;
-  /** True when this word was matched by a search query */
+  
   isSearchMatch?: boolean;
 }
 
@@ -31,11 +18,11 @@ export interface TranscriptSegment {
 }
 
 export interface TimelineCut {
-  /** Start time in ms to remove from the timeline */
+  
   cutStartMs: number;
-  /** End time in ms to remove */
+  
   cutEndMs: number;
-  /** Optional replacement text (for insert operations) */
+  
   replacement?: string;
 }
 
@@ -45,13 +32,13 @@ export interface SearchResult {
   word: string;
   startMs: number;
   endMs: number;
-  /** Character offset of the match within the segment text */
+  
   charOffset: number;
 }
 
-// Parsers
 
-/** Parse an SRT string into transcript segments. */
+
+
 export function parseSRT(srt: string): TranscriptSegment[] {
   const blocks = srt.trim().split(/\n\s*\n/);
   const segments: TranscriptSegment[] = [];
@@ -79,14 +66,14 @@ export function parseSRT(srt: string): TranscriptSegment[] {
   return segments;
 }
 
-/** Parse a WebVTT string into transcript segments. */
+
 export function parseVTT(vtt: string): TranscriptSegment[] {
   const lines = vtt.replace(/\r\n/g, '\n').split('\n');
   const segments: TranscriptSegment[] = [];
   let id = 1;
   let i = 0;
 
-  // skip WEBVTT header
+  
   while (i < lines.length && !lines[i].includes('-->')) i++;
 
   while (i < lines.length) {
@@ -117,15 +104,9 @@ export function parseVTT(vtt: string): TranscriptSegment[] {
   return segments;
 }
 
-// Editing
 
-/**
- * Compute timeline cuts when words are deleted from the transcript.
- *
- * @param segments   All transcript segments.
- * @param deletedIdx Set of word indices to delete.
- * @returns Merged list of TimelineCut operations.
- */
+
+
 export function computeCuts(
   segments: TranscriptSegment[],
   deletedIdx: Set<number>
@@ -141,7 +122,7 @@ export function computeCuts(
   for (let i = 1; i < sorted.length; i++) {
     const w = sorted[i];
     if (w.startMs <= cur.cutEndMs + 50) {
-      // merge — allow 50 ms gap
+      
       cur.cutEndMs = Math.max(cur.cutEndMs, w.endMs);
     } else {
       cuts.push(cur);
@@ -152,14 +133,7 @@ export function computeCuts(
   return cuts;
 }
 
-/**
- * Apply word deletions to produce a new segment list with those words removed.
- *
- * Words marked as deleted are stripped from each segment's word list
- * and the segment text is reconstructed. Segments that become empty are
- * dropped. Remaining word indices are NOT re-numbered so that `computeCuts`
- * stays consistent with any stale `deletedIdx` sets.
- */
+
 export function applyEditsToSegments(
   segments: TranscriptSegment[],
   deletedIdx: Set<number>
@@ -172,7 +146,7 @@ export function applyEditsToSegments(
       ...seg,
       text: kept.map((w) => w.word).join(' '),
       words: kept,
-      // Tighten segment bounds to first/last kept word
+      
       startMs: kept[0].startMs,
       endMs: kept[kept.length - 1].endMs,
     });
@@ -180,14 +154,9 @@ export function applyEditsToSegments(
   return result;
 }
 
-// Export
 
-/**
- * Export segments back to SRT format.
- *
- * Pass the result of `applyEditsToSegments` to export a trimmed transcript,
- * or the original segments to round-trip the file.
- */
+
+
 export function exportSRT(segments: TranscriptSegment[]): string {
   return segments
     .map((seg, idx: number) => {
@@ -198,15 +167,9 @@ export function exportSRT(segments: TranscriptSegment[]): string {
     .join('\n\n');
 }
 
-// Search
 
-/**
- * Full-text search across all transcript words.
- *
- * @param segments  Transcript to search.
- * @param query     Search string (case-insensitive).
- * @returns Array of SearchResult entries, one per matching word.
- */
+
+
 export function searchTranscript(
   segments: TranscriptSegment[],
   query: string
@@ -228,16 +191,13 @@ export function searchTranscript(
           charOffset,
         });
       }
-      charOffset += w.word.length + 1; // +1 for space
+      charOffset += w.word.length + 1; 
     }
   }
   return results;
 }
 
-/**
- * Annotate segments with `isSearchMatch` flags based on a query.
- * Returns a new segment array; original is not mutated.
- */
+
 export function annotateSearchMatches(
   segments: TranscriptSegment[],
   query: string
@@ -253,24 +213,20 @@ export function annotateSearchMatches(
   }));
 }
 
-// Utilities
 
-/**
- * Flatten all segments back to plain text for display.
- */
+
+
 export function segmentsToPlainText(segments: TranscriptSegment[]): string {
   return segments.map((s) => s.text).join(' ');
 }
 
-/**
- * Compute total duration in milliseconds across all segments.
- */
+
 export function totalDurationMs(segments: TranscriptSegment[]): number {
   if (segments.length === 0) return 0;
   return segments[segments.length - 1].endMs - segments[0].startMs;
 }
 
-// Internal helpers
+
 
 function srtTimeToMs(h: string, m: string, s: string, ms: string): number {
   return (
@@ -292,12 +248,7 @@ function msToSrtTime(ms: number): string {
 function pad2(n: number): string { return String(n).padStart(2, '0'); }
 function pad3(n: number): string { return String(n).padStart(3, '0'); }
 
-/**
- * Syllable-proportional word timing.
- *
- * Longer (more-syllable) words get proportionally more of the segment time,
- * producing more accurate per-word timestamps than linear interpolation.
- */
+
 function syllableProportionalWords(
   text: string,
   startMs: number,

@@ -14,14 +14,14 @@ import { notFound } from 'next/navigation';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
 
-// SURFACE: dreamsurface.ProfileHandle  (framework-mandated basename: page.tsx)
-// This route is dynamically rendered in a PPR-compatible way.
-//
-// Dynamic rendering is achieved via `connection()` from 'next/server' in
-// generateMetadata, which establishes the dynamic context before
-// Next.js MetadataOutlet executes (required in Next.js 16.2.4+).
 
-// Extended profile type
+
+
+
+
+
+
+
 type Profile = {
   id: string;
   handle: string;
@@ -39,30 +39,30 @@ interface ProfilePageProps {
   params: Promise<{ handle: string }>;
 }
 
-// Static metadata is provided by the parent /profile route layout.
-// We deliberately omit `generateMetadata` here, because exporting one
-// forces Next.js 16 Cache Components to prerender a metadata shell for
-// the dynamic [handle] segment, which re-triggers the
-// next-prerender-random violation surfaced from `Next.MetadataOutlet`
-// when client components below are dragged into SSR.
+
+
+
+
+
+
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-  // Mark this render as request-only so the strict Cache-Components
-  // prerender check is bypassed for the (Math.random-using) client
-  // subtree below. generateMetadata above already awaits connection()
-  // for its own MetadataOutlet, but Next.js 16.2.4 also requires the
-  // page render itself to establish the dynamic context.
+  
+  
+  
+  
+  
   await connection();
   const { handle } = await params;
   const supabase = await createServerClient();
 
-  // Gracefully handle Supabase being unavailable (no configured env vars)
+  
   let currentUser: { id: string } | null = null;
   try {
     const user = await safeGetUser(supabase);
     currentUser = user;
   } catch {
-    // Supabase not configured — treat as anonymous visitor
+    
   }
 
   let rawProfile: Record<string, unknown> | null = null;
@@ -74,7 +74,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       .single();
     rawProfile = data;
   } catch {
-    // Supabase unavailable
+    
   }
 
   if (!rawProfile) notFound();
@@ -83,9 +83,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const isOwner = currentUser?.id === profile.id;
   const displayName = profile.display_name || profile.handle;
 
-  // Non-owners ONLY receive records with visibility = 'shared' or 'public'.
-  // The query never includes 'private' records for non-owners.
-  // RLS policies on dream_windows enforce this at the DB layer as well.
+  
+  
+  
   let dreamWindowRecords: Array<{
     id: string;
     type: string;
@@ -99,7 +99,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       .select('id, type, config, size, position, visibility, active_state')
       .eq('owner_id', profile.id);
 
-    // Owner sees all their dream_windows; visitors only see shared/public
+    
     const { data } = await (
       isOwner
         ? dreamWindowQuery
@@ -107,26 +107,26 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     );
     dreamWindowRecords = data;
   } catch {
-    // dream_windows table may not exist yet — fall back to profile_dream_widgets
+    
   }
 
-  // Log dream_windows count for observability (non-blocking)
+  
   const dreamWindowCount = dreamWindowRecords?.length ?? 0;
 
-  // Load only publicly-visible profile widgets (per ARCHITECTURE.md §5 privacy rules)
-  // Owner sees all their widgets; visitors only see public/shared/followers widgets
-  // Phase 8 §B Point 21: never include 'private' visibility Dream Windows for non-owners
+  
+  
+  
   const allDreams: ProfileDream[] =
     Array.isArray(profile.profile_dream_widgets) && profile.profile_dream_widgets.length > 0
       ? profile.profile_dream_widgets
       : DEFAULT_DREAMS;
 
   const visibleDreams = isOwner
-    ? allDreams // Owner preview: show everything
+    ? allDreams 
     : allDreams.filter((w) => {
         const vis = (w.visibility ?? 'private') as string;
-        // Strict enforcement: only shared/public/followers — never private
-        // Note: new dream_windows records use 'shared'; legacy ProfileDream uses 'followers'
+        
+        
         return vis === 'public' || vis === 'shared' || vis === 'followers';
       });
 
@@ -139,14 +139,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       overflow: 'hidden',
     }}>
 
-      {/* WebGPU 2026 atmospheric layers */}
+      
       <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-80px', right: '-60px', width: '660px', height: '660px', background: 'radial-gradient(circle, rgba(56,189,248,0.10) 0%, rgba(14,165,233,0.04) 45%, transparent 70%)', filter: 'blur(60px)' }} />
         <div style={{ position: 'absolute', bottom: '-60px', left: '-40px', width: '540px', height: '540px', background: 'radial-gradient(circle, rgba(200,152,26,0.10) 0%, rgba(245,158,11,0.04) 50%, transparent 70%)', filter: 'blur(72px)' }} />
         <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%, -50%)', width: '900px', height: '600px', background: 'radial-gradient(ellipse, rgba(30,80,180,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
       </div>
 
-      {/* ── Owner preview banner ── */}
+      
       {isOwner && (
         <div style={{
           background: 'rgba(200,152,26,0.10)',
@@ -164,14 +164,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
       )}
 
-      {/* ── dreamengin brand header ── */}
+      
       <div style={{ paddingTop: 18, paddingBottom: 2, textAlign: 'center', position: 'relative', zIndex: 10 }}>
         <span className="de-wordmark" style={{ fontSize: 28, background: 'linear-gradient(135deg, #e8d090 0%, #c8981a 60%, #a07820 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
           <DreamWord />engin
         </span>
       </div>
 
-      {/* ── "My Profile" row ── */}
+      
       <div style={{
         maxWidth: 520, margin: '0 auto',
         padding: '8px 16px 16px',
@@ -209,14 +209,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── Activity Profile (Phase 9 Activity-First metrics) ── */}
+      
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '8px 16px 0', position: 'relative', zIndex: 10 }}>
         <Suspense fallback={<div className="h-24 animate-pulse bg-white/5 rounded-lg" />}>
           <ActivityProfile userId={profile.id} />
         </Suspense>
       </div>
 
-      {/* ── Widget grid ── */}
+      
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '0 16px', position: 'relative', zIndex: 10 }}>
         <ProfileWidgetGrid
           displayName={displayName}
@@ -233,7 +233,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         />
       </div>
 
-      {/* ── Gold infinity button — WebGPU 2026 glow ── */}
+      
       <div style={{ textAlign: 'center', marginTop: 32, position: 'relative', zIndex: 10 }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',

@@ -5,35 +5,35 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/feed/route.ts
-// Phase 8 §A — Unified HomeDream feed resolver.
-// Phase 9 — Updated to use Activity-First Protocol visibility score ranking
-//
-// Merges two source streams:
-//   1. feed_items  — connector-synced items (Mastodon, Bluesky, GitHub,
-//                    Reddit, Nostr, Spotify, YouTube, etc.)
-//   2. app_posts   — platform posts from accounts the user follows +
-//                    the user's own public posts
-//
-// Privacy (AXIOM 5 / SECURITY.md):
-//   feed_items are user-scoped via RLS (only owner can read their items).
-//   app_posts are filtered to public posts from followed users + own posts.
-//   No cross-user data leakage is possible through this route.
-//
-// Architecture: docs/ARCHITECTURE.md §3 — all feed data from Supabase.
-//               No static arrays. No mock content.
-//
-// Query params:
-//   limit    — max items to return (default: 30, max: 100)
-//   before   — ISO timestamp cursor for pagination
-//   provider — filter connector items to a specific provider
-//   sort     — "activity" (default, Phase 9: by visibility_score) | "recent" | "trending"
 
-// Unified feed item shape returned by this route.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export interface UnifiedFeedEntry {
   id: string;
   source: 'connector' | 'post' | 'system';
-  provider?: string;          // connector provider id (mastodon, github, etc.)
+  provider?: string;          
   author_handle?: string;
   author_name?: string;
   author_avatar?: string | null;
@@ -45,9 +45,9 @@ export interface UnifiedFeedEntry {
   created_at: string;
   likes_count?: number;
   comments_count?: number;
-  views_count?: number;        // Phase 9: View count (primary metric)
-  visibility_score?: number;   // Phase 9: For activity-based ranking
-  // original payload preserved for connector items
+  views_count?: number;        
+  visibility_score?: number;   
+  
   raw?: Record<string, unknown>;
 }
 
@@ -61,8 +61,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const { searchParams } = new URL(req.url);
   const limit    = Math.min(parseInt(searchParams.get('limit') ?? '30', 10), 100);
-  const before   = searchParams.get('before');   // ISO date cursor
-  const provider = searchParams.get('provider'); // optional provider filter
+  const before   = searchParams.get('before');   
+  const provider = searchParams.get('provider'); 
   const sort     = searchParams.get('sort') ?? 'activity';
 
   const entries: UnifiedFeedEntry[] = [];
@@ -112,7 +112,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   {
-    // Collect followed user IDs
+    
 
     const db = supabase as SupabaseClient;
     const { data: follows, error: followsError } = await supabase
@@ -191,15 +191,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           created_at:    p.created_at,
           likes_count:   p.likes_count ?? 0,
           comments_count: p.comments_count ?? 0,
-          views_count:   p.view_count ?? 0,  // app_posts.view_count is the canonical view metric
+          views_count:   p.view_count ?? 0,  
         });
       }
     }
   }
 
-  // Phase 9: Activity-First Protocol — sort by visibility_score when sort=activity
+  
   if (sort === 'activity') {
-    // Use visibility score algorithm (AQS-based ranking)
+    
     const rankedEntries = await sortByVisibilityScore(entries);
     const page = rankedEntries.slice(0, limit);
 
@@ -209,10 +209,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Legacy sorting (for backward compatibility)
+  
   entries.sort((a, b) => {
     if (sort === 'trending') {
-      // trending: posts with most likes first, then by date
+      
       const aLikes = a.likes_count ?? 0;
       const bLikes = b.likes_count ?? 0;
       if (bLikes !== aLikes) return bLikes - aLikes;

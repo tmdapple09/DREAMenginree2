@@ -1,4 +1,4 @@
-/* DREAMengin Game Controller — full-screen floating-stick overlay */
+
 
 .overlay {
   position: fixed;
@@ -10,7 +10,7 @@
   -webkit-touch-callout: none;
 }
 
-/* ─── Touch zones ─────────────────────────────────────────────────────────── */
+
 
 .leftZone {
   position: absolute;
@@ -32,7 +32,7 @@
   touch-action: none;
 }
 
-/* Subtle full-zone hint shown when no stick is active */
+
 .zoneHint {
   position: absolute;
   left: 50%;
@@ -48,11 +48,11 @@
   line-height: 1.6;
 }
 
-/* ─── Floating stick ──────────────────────────────────────────────────────── */
+
 
 .floatingStick {
   position: absolute;
-  /* Size; origin is set to the touch point so we offset by half */
+  
   --stick-size: clamp(120px, 29vw, 148px);
   width: var(--stick-size);
   height: var(--stick-size);
@@ -99,7 +99,7 @@
   transition: transform 0.07s linear;
 }
 
-/* ─── Shoulder buttons ────────────────────────────────────────────────────── */
+
 
 .shoulderGroup {
   position: absolute;
@@ -114,11 +114,11 @@
 .shoulderGroupLeft  { left:  clamp(10px, 3vw, 22px); }
 .shoulderGroupRight { right: clamp(10px, 3vw, 22px); }
 
-/* ─── Face button cluster ─────────────────────────────────────────────────── */
+
 
 .faceCluster {
   position: absolute;
-  /* Positioned within the right zone, lower-right area */
+  
   right: clamp(14px, 4vw, 28px);
   bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(80px, 22vw, 116px));
   width: clamp(110px, 26vw, 140px);
@@ -127,7 +127,7 @@
   touch-action: none;
 }
 
-/* ─── Shared button styles ────────────────────────────────────────────────── */
+
 
 .ctrlBtn {
   width: clamp(42px, 10vw, 52px);
@@ -164,13 +164,13 @@
   line-height: 1;
 }
 
-/* Face button positions within faceCluster */
+
 .faceTriangle {
   position: absolute;
   left: 50%;
   top: 0;
   transform: translateX(-50%);
-  color: #86efac; /* green */
+  color: #86efac; 
   border-color: rgba(134, 239, 172, 0.22);
 }
 
@@ -179,7 +179,7 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  color: #f9a8d4; /* pink */
+  color: #f9a8d4; 
   border-color: rgba(249, 168, 212, 0.22);
 }
 
@@ -188,7 +188,7 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  color: #fca5a5; /* red */
+  color: #fca5a5; 
   border-color: rgba(252, 165, 165, 0.22);
 }
 
@@ -197,11 +197,11 @@
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-  color: #93c5fd; /* blue */
+  color: #93c5fd; 
   border-color: rgba(147, 197, 253, 0.22);
 }
 
-/* ─── Center pills (Pause / Exit) ─────────────────────────────────────────── */
+
 
 .centerPills {
   position: absolute;
@@ -238,7 +238,7 @@
   transform: scale(0.98);
 }
 
-/* ─── HUD badge ───────────────────────────────────────────────────────────── */
+
 
 .hudBadge {
   position: absolute;
@@ -257,7 +257,7 @@
   pointer-events: none;
 }
 
-/* ─── Shoot flash ─────────────────────────────────────────────────────────── */
+
 
 .shootFlash {
   position: absolute;

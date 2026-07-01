@@ -2,29 +2,29 @@ import type { PatchRisk } from '@/engine/agents/idari';
 import type { TelemetrySnapshot } from './collector';
 import type { AnomalySignal } from './correlator';
 
-// lib/observability/rootCauseAnalyzer.ts
-//
-// Pattern-matched root cause inference for the IDARi observability loop.
-//
-// Strategy: match the combined evidence text (from anomaly signals + error log
-// messages) against a priority-ordered list of known error patterns. The first
-// matching pattern wins and provides a ready-made recommended_action. When no
-// pattern matches, the top anomaly signal drives a generic fallback analysis.
+
+
+
+
+
+
+
+
 
 export type RootCauseConfidence = 'high' | 'medium' | 'low';
 
 export interface RootCauseAnalysis {
-  /** ISO timestamp when the analysis was computed. */
+  
   timestamp: string;
-  /** One-sentence cause description injected into the IDARi prompt. */
+  
   likely_cause: string;
   confidence: RootCauseConfidence;
-  /** Architectural layer affected — used to pick the right fix strategy. */
+  
   affected_area: string;
   risk: PatchRisk;
-  /** The recommended smallest safe fix. */
+  
   recommended_action: string;
-  /** Up to 5 evidence strings surfaced from the telemetry. */
+  
   evidence_summary: string[];
 }
 
@@ -149,13 +149,7 @@ const KNOWN_PATTERNS: KnownPattern[] = [
   },
 ];
 
-/**
- * Infer the most likely root cause from anomaly signals and raw log messages.
- *
- * Pattern matching runs against the concatenated evidence string; the first
- * matching pattern is returned with 'high' confidence. If no pattern matches,
- * the top anomaly drives a generic 'low'-confidence fallback.
- */
+
 export function inferRootCause(
   anomalies: AnomalySignal[],
   snapshot: TelemetrySnapshot,
@@ -171,7 +165,7 @@ export function inferRootCause(
 
   const evidenceText = allEvidence.join(' ');
 
-  // Pattern matching
+  
   for (const p of KNOWN_PATTERNS) {
     if (p.pattern.test(evidenceText)) {
       return {
@@ -186,7 +180,7 @@ export function inferRootCause(
     }
   }
 
-  // No pattern — healthy system
+  
   if (anomalies.length === 0) {
     return {
       timestamp: new Date().toISOString(),
@@ -199,7 +193,7 @@ export function inferRootCause(
     };
   }
 
-  // No pattern but anomalies present — generic fallback
+  
   const top = anomalies[0];
   const fallbackRisk: PatchRisk =
     top.severity === 'high' ? 'high' : top.severity === 'medium' ? 'medium' : 'low';

@@ -1,24 +1,6 @@
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/instagram.ts
- *
- * Instagram connector for DREAMengin.
- *
- * Uses the Instagram Basic Display API to access a user's own media posts.
- * Requires an Instagram Basic Display app and a long-lived access token
- * obtained through the OAuth 2.0 redirect flow at:
- *   GET /api/connectors/instagram/oauth/start  → Instagram auth page
- *   GET /api/connectors/instagram/oauth/callback → exchange code + store token
- *
- * Environment variables required:
- *   INSTAGRAM_CLIENT_ID      — App ID from Meta developers console
- *   INSTAGRAM_CLIENT_SECRET  — App Secret (server-only, never exposed)
- *
- * No DB calls here. No React imports. Pure provider integration only.
- * AXIOM 4 — Security by Default: secrets stay server-side.
- * ARCHITECTURE.md §3 — Logic layer; no React imports.
- */
+
 
 const IG_API = 'https://graph.instagram.com';
 
@@ -76,10 +58,7 @@ function normaliseInstagramMedia(item: InstagramMedia): UnifiedFeedItem {
   };
 }
 
-/**
- * Verifies Instagram credentials by calling /me.
- * Returns the Instagram username on success.
- */
+
 export async function instagramVerify(creds: InstagramCredentials): Promise<string> {
   const user = await fetchInstagramJson<InstagramUser>(
     '/me?fields=id,username',
@@ -88,10 +67,7 @@ export async function instagramVerify(creds: InstagramCredentials): Promise<stri
   return user.username ?? user.id ?? 'instagram-user';
 }
 
-/**
- * Fetches the authenticated user's recent media posts.
- * Returns up to 25 normalised UnifiedFeedItems sorted newest first.
- */
+
 export async function instagramSync(creds: InstagramCredentials): Promise<UnifiedFeedItem[]> {
   const data = await fetchInstagramJson<InstagramMediaListResponse>(
     '/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,username&limit=25',
@@ -103,10 +79,7 @@ export async function instagramSync(creds: InstagramCredentials): Promise<Unifie
     .sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at));
 }
 
-/**
- * Returns the configured Instagram App credentials from the environment.
- * Server-only — never exposed to the browser.
- */
+
 export function getInstagramOAuthConfig( ){
   return {
     clientId:     process.env.INSTAGRAM_CLIENT_ID     ?? '',
@@ -114,11 +87,7 @@ export function getInstagramOAuthConfig( ){
   };
 }
 
-/**
- * Returns the credential fields definition used by ConnectorRow for
- * the manual-token fallback path (power users who already have a long-lived
- * token can paste it directly without going through the redirect flow).
- */
+
 export const INSTAGRAM_CREDENTIAL_FIELDS = [
   {
     key:         'access_token',

@@ -20,15 +20,12 @@ import type {
     HardFailureReason,
 } from './types';
 
-/**
- * DREAMengin Optimization Framework
- * Main optimizer interface for all DREAMengin modules
- */
+
 
 export class DreamOptimizer {
   private solver: ConstraintSolver;
   private config: OptimizerConfig;
-  /** Optional caller-provided runtime signals (device, user prefs, social graph). */
+  
   private context: RuntimeContext;
 
   constructor(config: OptimizerConfig, context: RuntimeContext = {}) {
@@ -41,9 +38,7 @@ export class DreamOptimizer {
     });
   }
 
-  /**
-   * Feed Selection - Choose which posts appear first on HomeDream
-   */
+  
   optimizeFeed(feedItems: FeedItem[]): RankedItem<FeedItem>[] {
     if (!this.config.feed_selection?.enabled) {
       return feedItems.map((item, index: number) => ({
@@ -79,9 +74,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Search Ranking - When Dr. Eams searches the system
-   */
+  
   optimizeSearch(
     searchResults: SearchResult[],
     userPermissions: string[]
@@ -121,9 +114,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Widget Priority - Choose which Dreams appear most prominently
-   */
+  
   optimizeWidgets(widgets: WidgetPriority[]): RankedItem<WidgetPriority>[] {
     if (!this.config.widget_priority?.enabled) {
       return widgets.map((item, index: number) => ({
@@ -157,9 +148,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Asset Loading Priority - Decide which assets load first
-   */
+  
   optimizeAssetLoading(assets: Asset[]): RankedItem<Asset>[] {
     if (!this.config.asset_loading?.enabled) {
       return assets.map((item, index: number) => ({
@@ -193,9 +182,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Notification Priority - Order notifications in DreamDM Bar
-   */
+  
   optimizeNotifications(
     notifications: Notification[]
   ): RankedItem<Notification>[] {
@@ -231,9 +218,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Offline Queue Order - When connection returns, choose sync order
-   */
+  
   optimizeOfflineQueue(
     queuedActions: QueuedAction[]
   ): RankedItem<QueuedAction>[] {
@@ -251,8 +236,8 @@ export class DreamOptimizer {
       metadata: {
         action_priority: action.priority,
         timestamp: this.calculateRecency(action.timestamp),
-        data_size: 1 - Math.min(1, action.data_size_bytes / 10000000), // Prefer smaller first
-        failure_count: Math.max(0, 1 - action.failure_count * 0.2), // Penalize failures
+        data_size: 1 - Math.min(1, action.data_size_bytes / 10000000), 
+        failure_count: Math.max(0, 1 - action.failure_count * 0.2), 
       },
     }));
 
@@ -269,25 +254,7 @@ export class DreamOptimizer {
     }));
   }
 
-  /**
-   * Creative Options Optimizer - CREATIVE OPTIMIZERO Algorithm
-   *
-   * Purpose: Generate interesting options first, then keep only the ones that do not break the system.
-   *
-   * Steps:
-   * 1. Generate candidate options
-   * 2. Score each option for novelty
-   * 3. Score each option for usefulness
-   * 4. Score each option for delight / visual impact
-   * 5. Apply hard safety checks
-   * 6. Remove anything that fails
-   * 7. Rank remaining options
-   * 8. Return best option + top alternatives
-   *
-   * Formula:
-   * final_score = (w_novelty * novelty) + (w_usefulness * usefulness) +
-   *               (w_delight * delight) + (w_fit * fit) - (w_cost * cost) - (w_risk * risk)
-   */
+  
   optimizeCreativeOptions(
     candidates: CreativeOption[],
     context?: CreativeContext
@@ -306,15 +273,15 @@ export class DreamOptimizer {
       scores: CreativeScore;
     }> = [];
 
-    // Step 1-4: Score each candidate and validate
+    
     for (const candidate of candidates) {
-      // Score for novelty, usefulness, delight, fit, cost, risk
+      
       const scores = this.scoreCreativeOption(candidate, context);
 
-      // Step 5: Apply hard safety checks
+      
       const validation = validateCreativeOption(candidate);
 
-      // Step 6: Remove anything that fails
+      
       if (!validation.valid) {
         rejected.push({
           option: candidate,
@@ -323,14 +290,14 @@ export class DreamOptimizer {
         continue;
       }
 
-      // Add to valid candidates
+      
       validCandidates.push({
         option: candidate,
         scores,
       });
     }
 
-    // Step 7: Rank remaining options
+    
     const constraints = this.config.creative_options.constraints;
     const rankedOptions: RankedCreativeOption[] = validCandidates.map(
       ({ option, scores }) => {
@@ -339,21 +306,21 @@ export class DreamOptimizer {
           ...option,
           scores,
           final_score,
-          rank: 0, // Will be set after sorting
+          rank: 0, 
           validation: { valid: true },
         };
       }
     );
 
-    // Sort by final score descending
+    
     rankedOptions.sort((a, b) => b.final_score - a.final_score);
 
-    // Assign ranks
+    
     rankedOptions.forEach((option, index: number) => {
       option.rank = index + 1;
     });
 
-    // Step 8: Return best option + top alternatives
+    
     const best_candidate = rankedOptions.length > 0 ? rankedOptions[0] : null;
 
     return {
@@ -363,9 +330,7 @@ export class DreamOptimizer {
     };
   }
 
-  /**
-   * Score a creative option across all dimensions
-   */
+  
   private scoreCreativeOption(
     option: CreativeOption,
     context?: CreativeContext
@@ -380,9 +345,7 @@ export class DreamOptimizer {
     };
   }
 
-  /**
-   * Calculate final score using weighted formula
-   */
+  
   private calculateCreativeFinalScore(
     scores: CreativeScore,
     constraints: Constraint[]
@@ -394,7 +357,7 @@ export class DreamOptimizer {
       const priorityMultiplier = this.getWeightMultiplier(constraint.priority);
       const scoreValue = (scores as unknown as Record<string, number>)[constraint.name] || 0;
 
-      // Negative weights for cost and risk (we want to minimize these)
+      
       if (constraint.name === 'cost' || constraint.name === 'risk') {
         totalScore -= scoreValue * weight * priorityMultiplier;
       } else {
@@ -402,22 +365,20 @@ export class DreamOptimizer {
       }
     }
 
-    // Normalize to 0-1 range
+    
     return Math.max(0, Math.min(1, totalScore));
   }
 
-  /**
-   * Score novelty - how unique and interesting is this option?
-   */
+  
   private scoreNovelty(option: CreativeOption, context?: CreativeContext): number {
-    let score = 0.5; // Default neutral
+    let score = 0.5; 
 
-    // Check for novel patterns in content
+    
     if (option.variant_type && option.variant_type !== 'standard') {
       score += 0.2;
     }
 
-    // Check metadata for novelty indicators
+    
     if (option.metadata?.isUnique === true) {
       score += 0.2;
     }
@@ -426,7 +387,7 @@ export class DreamOptimizer {
       score += Number(option.metadata.innovationScore) * 0.2;
     }
 
-    // Novel tone or style
+    
     const uncommonTones = ['experimental', 'avant-garde', 'unconventional', 'playful'];
     if (option.tone && uncommonTones.includes(option.tone.toLowerCase())) {
       score += 0.1;
@@ -435,28 +396,26 @@ export class DreamOptimizer {
     return Math.min(1, score);
   }
 
-  /**
-   * Score usefulness - how practical and valuable is this option?
-   */
+  
   private scoreUsefulness(option: CreativeOption, context?: CreativeContext): number {
-    let score = 0.5; // Default neutral
+    let score = 0.5; 
 
-    // Check for usefulness indicators in metadata
+    
     if (option.metadata?.practicalityScore) {
       score += Number(option.metadata.practicalityScore) * 0.3;
     }
 
-    // Content length can indicate thoroughness
+    
     if (option.content.length > 100) {
       score += 0.1;
     }
 
-    // Context fit
+    
     if (context?.topic && option.content.toLowerCase().includes(context.topic.toLowerCase())) {
       score += 0.2;
     }
 
-    // Check for actionable content
+    
     const actionablePatterns = [
       /\bcan\b/i,
       /\bwill\b/i,
@@ -471,18 +430,16 @@ export class DreamOptimizer {
     return Math.min(1, score);
   }
 
-  /**
-   * Score delight - how visually appealing and emotionally engaging is this option?
-   */
+  
   private scoreDelight(option: CreativeOption, context?: CreativeContext): number {
-    let score = 0.5; // Default neutral
+    let score = 0.5; 
 
-    // Check for delight indicators in metadata
+    
     if (option.metadata?.visualImpact) {
       score += Number(option.metadata.visualImpact) * 0.3;
     }
 
-    // Emotional language
+    
     const delightfulWords = [
       'beautiful', 'elegant', 'stunning', 'amazing', 'wonderful',
       'delightful', 'charming', 'vibrant', 'exciting', 'inspiring'
@@ -492,12 +449,12 @@ export class DreamOptimizer {
     ).length;
     score += Math.min(0.2, wordCount * 0.05);
 
-    // Style considerations
+    
     if (option.style === 'elegant' || option.style === 'vibrant') {
       score += 0.1;
     }
 
-    // Tone considerations
+    
     if (option.tone === 'enthusiastic' || option.tone === 'playful') {
       score += 0.1;
     }
@@ -505,27 +462,25 @@ export class DreamOptimizer {
     return Math.min(1, score);
   }
 
-  /**
-   * Score fit - how well does this option fit the context?
-   */
+  
   private scoreFit(option: CreativeOption, context?: CreativeContext): number {
-    let score = 0.5; // Default neutral
+    let score = 0.5; 
 
     if (!context) {
       return score;
     }
 
-    // Check topic alignment
+    
     if (context.topic && option.content.toLowerCase().includes(context.topic.toLowerCase())) {
       score += 0.2;
     }
 
-    // Check style guide compliance
+    
     if (context.style_guide && option.style === context.style_guide) {
       score += 0.2;
     }
 
-    // Check user preferences
+    
     if (context.user_preferences) {
       const prefKeys = Object.keys(context.user_preferences);
       const matchingPrefs = prefKeys.filter((key) => {
@@ -535,7 +490,7 @@ export class DreamOptimizer {
       score += Math.min(0.3, matchingPrefs * 0.1);
     }
 
-    // Check constraint compliance
+    
     if (context.constraints) {
       const violations = context.constraints.filter((constraint) =>
         option.content.toLowerCase().includes(constraint.toLowerCase())
@@ -546,17 +501,15 @@ export class DreamOptimizer {
     return Math.max(0, Math.min(1, score));
   }
 
-  /**
-   * Score cost - what is the implementation/maintenance cost?
-   */
+  
   private scoreCost(option: CreativeOption, context?: CreativeContext): number {
-    let cost = 0.3; // Default low-medium cost
+    let cost = 0.3; 
 
-    // Check for cost indicators in metadata
+    
     if (option.metadata?.implementationCost) {
       cost = Number(option.metadata.implementationCost);
     } else {
-      // Estimate based on content complexity
+      
       const contentLength = option.content.length;
       if (contentLength > 1000) {
         cost += 0.2;
@@ -564,7 +517,7 @@ export class DreamOptimizer {
         cost += 0.1;
       }
 
-      // Check for expensive patterns
+      
       const expensivePatterns = [
         /complex\s+algorithm/i,
         /requires\s+migration/i,
@@ -579,17 +532,15 @@ export class DreamOptimizer {
     return Math.min(1, cost);
   }
 
-  /**
-   * Score risk - what are the potential downsides?
-   */
+  
   private scoreRisk(option: CreativeOption, context?: CreativeContext): number {
-    let risk = 0.2; // Default low risk
+    let risk = 0.2; 
 
-    // Check for risk indicators in metadata
+    
     if (option.metadata?.riskLevel) {
       risk = Number(option.metadata.riskLevel);
     } else {
-      // Check for risky patterns
+      
       const riskyPatterns = [
         /experimental/i,
         /untested/i,
@@ -601,7 +552,7 @@ export class DreamOptimizer {
         risk += 0.2;
       }
 
-      // Novel options carry some risk
+      
       if (option.variant_type === 'experimental') {
         risk += 0.1;
       }
@@ -610,9 +561,7 @@ export class DreamOptimizer {
     return Math.min(1, risk);
   }
 
-  /**
-   * Get weight multiplier based on priority (from constraint solver)
-   */
+  
   private getWeightMultiplier(priority: string): number {
     switch (priority) {
       case 'critical':
@@ -628,27 +577,18 @@ export class DreamOptimizer {
     }
   }
 
-  // Helper methods for score calculation
+  
 
   private calculateSourcePreference(source: string): number {
-    // Use caller-supplied preference weight when available; neutral 0.7 otherwise.
+    
     return this.context.sourcePreferences?.[source] ?? 0.7;
   }
 
-  // RuntimeContext helpers — derive normalised 0–1 scores from the injected
-  // signals.  Each method documents its fallback so callers know what value
-  // to expect when the corresponding RuntimeContext field is absent.
+  
+  
+  
 
-  /**
-   * Screen-size score derived from `viewportWidth`.
-   * Larger viewports can surface more Dream Windows, so they score higher.
-   *
-   * Breakpoints (CSS px):
-   *   ≥ 1440 → 1.0  (wide desktop)
-   *   ≥ 1024 → 0.85 (standard desktop / landscape tablet)
-   *   ≥ 768  → 0.7  (portrait tablet) ← fallback when width unknown
-   *    < 768  → 0.5  (mobile)
-   */
+  
   private resolveScreenSizeScore(): number {
     if (this.context.viewportWidth === undefined) return 0.7;
     if (this.context.viewportWidth >= 1440) return 1.0;
@@ -657,14 +597,7 @@ export class DreamOptimizer {
     return 0.5;
   }
 
-  /**
-   * Device-type score derived from `deviceType`.
-   * Desktop sessions can render the most Dream Windows concurrently.
-   *
-   *   'desktop' → 1.0
-   *   'tablet'  → 0.8  ← fallback when deviceType unknown
-   *   'mobile'  → 0.5
-   */
+  
   private resolveDeviceTypeScore(): number {
     switch (this.context.deviceType) {
       case 'desktop': return 1.0;
@@ -674,15 +607,7 @@ export class DreamOptimizer {
     }
   }
 
-  /**
-   * Layout-density score derived from `dreamWindowCount`.
-   * More Dream Windows in the layout means less room per window → lower score.
-   *
-   * Formula: max(0.2, 1 - (count - 1) × 0.1)
-   *   count 1 → 1.0, count 4 → 0.7, count 9 → 0.2
-   *
-   * Fallback when dreamWindowCount is absent or 0: 0.6.
-   */
+  
   private resolveLayoutDensityScore(): number {
     const count = this.context.dreamWindowCount;
     if (count == null) return 0.6;
@@ -694,16 +619,16 @@ export class DreamOptimizer {
     const ageMs = now.getTime() - new Date(timestamp).getTime();
     const ageHours = ageMs / (1000 * 60 * 60);
 
-    // Exponential decay: 1.0 for now, 0.5 for 24h, 0.1 for 1 week
+    
     return Math.exp(-ageHours / 24);
   }
 
   private calculatePrivacyScore(
     privacyLevel?: 'public' | 'followers' | 'private'
   ): number {
-    // Always respect privacy - this is critical
+    
     if (!privacyLevel) return 0;
-    return 1; // If item is visible, it passes privacy check
+    return 1; 
   }
 
   private calculateEngagementScore(engagement?: {
@@ -721,7 +646,7 @@ export class DreamOptimizer {
     result: SearchResult,
     userPermissions: string[]
   ): number {
-    // Always return 1 for now - proper permission check is critical
+    
     return 1;
   }
 
@@ -740,7 +665,7 @@ export class DreamOptimizer {
   }
 
   private calculateBandwidthScore(sizeBytes: number): number {
-    // Prefer smaller assets
+    
     return Math.max(0, 1 - sizeBytes / 10000000);
   }
 

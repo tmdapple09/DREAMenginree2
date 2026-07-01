@@ -21,17 +21,7 @@ import {
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-/**
- * components/forge/dream.panel.AIBuilderPanel.tsx
- *
- * ForgeEngin — AI Anything Builder UI panel.
- *
- * Self-contained React component that renders the "AI Anything Builder" UI.
- * Matches the ForgeEngin dark command-center aesthetic exactly.
- *
- * Architecture: 'use client' component. Communicates with /api/forge/build
- * via the useForgeBuild hook only. No direct server calls from this file.
- */
+
 
 const FORGE = {
   bg:     '#0a0a0f',
@@ -46,7 +36,7 @@ const FORGE = {
   green:  '#22c55e',
 } as const;
 
-// Agent color map
+
 const AGENT_COLORS: Record<string, string> = {
   'Dr. Eams':          '#a855f7',
   'IDARi':             '#22d3ee',
@@ -157,7 +147,7 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
       await navigator.clipboard.writeText(event.content);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch { /* clipboard unavailable */ }
+    } catch {  }
   }, [event.content]);
 
   return (
@@ -172,7 +162,7 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
         background: '#0d1117',
       }}
     >
-      {/* Filename header tab */}
+      
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '6px 10px',
@@ -186,7 +176,7 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {/* Language badge */}
+          
           <span style={{
             fontSize: 9, fontWeight: 700,
             padding: '2px 7px', borderRadius: 999,
@@ -198,7 +188,7 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
           }}>
             {event.language}
           </span>
-          {/* Copy button */}
+          
           <button
             type="button"
             onClick={handleCopy}
@@ -220,7 +210,7 @@ function CodeBlock({ event }: {event: CodeLogEvent}) {
           </button>
         </div>
       </div>
-      {/* Scrollable code content */}
+      
       <div style={{
         padding: '10px 12px',
         overflowX: 'auto',
@@ -310,7 +300,7 @@ function LogEntry({
 }) {
   const time = formatTimestamp(event.ts);
 
-  // code event → full code block
+  
   if (event.type === 'code') {
     return <CodeBlock event={event as CodeLogEvent} />;
   }
@@ -324,7 +314,7 @@ function LogEntry({
         animate={{ opacity: 1, x: 0 }}
         style={{ display: 'flex', gap: 10, padding: '8px 0', borderBottom: `1px solid ${FORGE.border}` }}
       >
-        {/* Agent badge */}
+        
         <div style={{
           flexShrink: 0,
           width: 28, height: 28,
@@ -409,7 +399,7 @@ function LogEntry({
       );
     }
 
-    // Regular step (non-PHASE)
+    
     return (
       <motion.div
         initial={{ opacity: 0, x: -6 }}
@@ -509,7 +499,7 @@ function LogEntry({
     );
   }
 
-  // done — handled externally
+  
   return null;
 }
 
@@ -571,18 +561,18 @@ export default function AIBuilderPanel( ){
 
   const logEndRef = useRef<HTMLDivElement>(null);
 
-  // Check daily limit on mount
+  
   useEffect(() => {
     setDailyLimitHit(!canBuildToday());
     setBuildHistory(readForgeBuilds());
   }, []);
 
-  // Auto-scroll log viewer
+  
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
-  // Refresh daily limit after successful build
+  
   useEffect(() => {
     if (state === 'done') {
       setDailyLimitHit(!canBuildToday());
@@ -590,7 +580,7 @@ export default function AIBuilderPanel( ){
     }
   }, [state]);
 
-  // Active phase (from PHASE: step events)
+  
   const activePhase = useMemo(() => {
     let phase = -1;
     for (const log of logs) {
@@ -602,7 +592,7 @@ export default function AIBuilderPanel( ){
     return phase;
   }, [logs]);
 
-  // Current phase label shown in the Forge button while running
+  
   const currentPhaseLabel = useMemo(() => {
     const phaseSteps = logs.filter((l) => l.type === 'step' && l.step.startsWith('PHASE:'));
     if (!phaseSteps.length) return null;
@@ -610,7 +600,7 @@ export default function AIBuilderPanel( ){
     return last.step.replace('PHASE: ', '').replace(' 🎉', '');
   }, [logs]);
 
-  // Visible logs (exclude done event) + last-agent index for typing cursor
+  
   const visibleLogs = useMemo(() => logs.filter((e) => e.type !== 'done'), [logs]);
   const lastAgentVisibleIdx = useMemo(() => {
     if (state !== 'running') return -1;
@@ -636,7 +626,7 @@ export default function AIBuilderPanel( ){
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch {
-      // Clipboard not available
+      
     }
   }, [logs, prompt]);
 
@@ -662,7 +652,7 @@ export default function AIBuilderPanel( ){
       border: `1px solid ${FORGE.border}`,
       overflow: 'hidden',
     }}>
-      {/* ── Agent persona badges ── */}
+      
       <div style={{
         padding: '14px 18px',
         borderBottom: `1px solid ${FORGE.border}`,
@@ -694,7 +684,7 @@ export default function AIBuilderPanel( ){
       </div>
 
       <div style={{ padding: '18px 18px 0' }}>
-        {/* ── Rate limit banner ── */}
+        
         <AnimatePresence>
           {isLimitHit && (
             <motion.div
@@ -718,7 +708,7 @@ export default function AIBuilderPanel( ){
           )}
         </AnimatePresence>
 
-        {/* ── Prompt textarea ── */}
+        
         <div style={{ marginBottom: 10 }}>
           <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: FORGE.dim, marginBottom: 6, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Describe what you want to build
@@ -748,7 +738,7 @@ export default function AIBuilderPanel( ){
                 transition: 'border-color 0.2s, opacity 0.2s',
               }}
             />
-            {/* Character counter */}
+            
             <div style={{
               position: 'absolute', bottom: 8, right: 10,
               display: 'flex', alignItems: 'center', gap: 5,
@@ -774,7 +764,7 @@ export default function AIBuilderPanel( ){
           </div>
         </div>
 
-        {/* ── Example chips ── */}
+        
         {!isRunning && !isDone && !logs.length && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
             {EXAMPLE_CHIPS.map((chip) => (
@@ -804,7 +794,7 @@ export default function AIBuilderPanel( ){
           </div>
         )}
 
-        {/* ── Action buttons row: [Forge It] [Reset] [Share Log] ── */}
+        
         <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
           <motion.button
             type="button"
@@ -906,7 +896,7 @@ export default function AIBuilderPanel( ){
           )}
         </div>
 
-        {/* ── Launch Result — full-width below action row ── */}
+        
         <AnimatePresence>
           {isDone && result && (
             <motion.div
@@ -966,7 +956,7 @@ export default function AIBuilderPanel( ){
                   </motion.span>
                 )}
               </div>
-              {/* Phase progress bar — visible once first PHASE event arrives */}
+              
               {activePhase >= 0 && <PhaseBar activePhase={activePhase} />}
               <div style={{
                 maxHeight: 420,
@@ -992,7 +982,7 @@ export default function AIBuilderPanel( ){
         </AnimatePresence>
       </div>
 
-      {/* ── Build History ── */}
+      
       <div style={{
         borderTop: `1px solid ${FORGE.border}`,
       }}>

@@ -5,39 +5,9 @@ import EnginNavBar from './dream.bar.EnginNavBar';
 import type { EnginRuleSet } from './dream.EnginRuleSet';
 import EnginAppShell from './dream.shell.EnginAppShell';
 
-/**
- * dream.makeEnginApp.tsx
- *
- * makeEnginApp — factory that converts an EnginRuleSet into a complete,
- * production-ready engine app component.
- *
- * Every Engin app is structurally identical: an EnginAppShell wrapping an
- * EnginNavBar and the domain-specific engin component. This factory owns
- * that structure once so individual engine files contain only their config.
- *
- * Usage:
- *   import { makeEnginApp } from '@/components/engines/shared';
- *   import StarMakerEngin from '@/engins/engin.StarMakerEngin';
- *
- *   export default makeEnginApp({
- *     id: 'music',
- *     name: 'StarMakerEngin',
- *     emoji: '🎵',
- *     accentColor: '#a855f7',
- *     backHref: '/daydream/music',
- *     backLabel: 'Music Daydream',
- *     nav: [...],
- *     EnginComponent: StarMakerEngin,
- *   });
- *
- * Architecture: docs/ARCHITECTURE.md §0 — stable core + swappable rule-sets.
- */
 
-/**
- * Returns a React component that renders the full Engin shell for the given
- * ruleset. The returned component has no required props — all configuration
- * lives in the ruleset.
- */
+
+
 export function makeEnginApp(ruleset: EnginRuleSet): () => React.JSX.Element {
   function EnginApp( ){
     const router = useRouter();

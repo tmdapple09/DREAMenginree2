@@ -5,9 +5,9 @@ import {
   type StoredSession,
 } from '@/engine/intelligence/sessionContinuity';
 
-// ── In-memory test backend ────────────────────────────────────────────────────
-// Injected via the constructor so tests run in any environment (node or jsdom)
-// without needing IndexedDB or localStorage at all.
+
+
+
 
 function makeMemoryBackend(initial: StoredSession[] = []): SessionStorageBackend {
   let store: StoredSession[] = [...initial];
@@ -17,7 +17,7 @@ function makeMemoryBackend(initial: StoredSession[] = []): SessionStorageBackend
   };
 }
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
+
 
 describe('SessionContinuity', () => {
   let backend: SessionStorageBackend;
@@ -84,7 +84,7 @@ describe('SessionContinuity', () => {
     const c = new SessionContinuity(makeMemoryBackend([pastSession]));
     await c.init();
 
-    // LabEngin is new; GameEngin is dropped.
+    
     c.recordActivation('LabEngin');
     c.recordActivation('CodeEngin');
 
@@ -173,7 +173,7 @@ describe('SessionContinuity', () => {
       lastArtifactTitle: null,
       artifactCount: 2,
     };
-    // Backend returns most-recent first (as real backends do).
+    
     const c = new SessionContinuity(makeMemoryBackend([newer, older]));
     await c.init();
 

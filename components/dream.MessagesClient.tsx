@@ -30,36 +30,30 @@ interface Conversation {
 interface MessagesClientProps {
   userId: string;
   initialConversations: Conversation[];
-  /**
-   * True when the user arrived via the DrEamsSearchBar "Send to DreamDM" action.
-   * Activates Dr. Eams mode and shows a context banner.
-   */
+  
   fromDrEams?: boolean;
-  /**
-   * Original query from the Dr. Eams exchange — pre-filled into the search
-   * input and shown in the context banner.
-   */
+  
   initialDrEamsQuery?: string;
-  /** Conversation selected by /messages?conversation_id=... or /messages/new redirect. */
+  
   initialSelectedConversationId?: string;
-  /** Draft body passed by /messages?compose=... or /messages/new redirect. */
+  
   initialCompose?: string;
 }
 
-/** Parse a subject line from message content formatted as "**Subject:** [subject]\n\n[body]" */
+
 function parseSubject(content: string): { subject: string | null; body: string } {
   const match = content.match(/^\*\*Subject:\*\* (.+?)\n\n([\s\S]*)$/);
   if (match) return { subject: match[1].trim(), body: match[2].trimStart() };
   return { subject: null, body: content };
 }
 
-/** Format a message with an optional subject */
+
 function formatMessageContent(subject: string, body: string): string {
   if (subject.trim()) return `**Subject:** ${subject.trim()}\n\n${body}`;
   return body;
 }
 
-/** Render message content with optional subject heading */
+
 function MessageContent({ content, isMe }: {content: string; isMe: boolean}) {
   const { subject, body } = parseSubject(content);
   return (
@@ -74,14 +68,13 @@ function MessageContent({ content, isMe }: {content: string; isMe: boolean}) {
   );
 }
 
-/** Get a preview string for a conversation list item */
+
 function getConversationPreview(lastMessage: string): string {
   const { subject, body } = parseSubject(lastMessage);
   return subject ? `Re: ${subject}` : body;
 }
 
-/** Delay in ms before hiding the suggestion dropdown after input blur.
- *  Must be long enough for a mousedown on a suggestion to fire before blur hides the list. */
+
 const SUGGESTIONS_CLOSE_DELAY_MS = 200;
 
 export default function MessagesClient({
@@ -121,12 +114,12 @@ export default function MessagesClient({
   const [newSubject, setNewSubject] = useState('');
   const [showSubjectField, setShowSubjectField] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  // Pre-populate search query from Dr. Eams routing if present
+  
   const [searchQuery,   setSearchQuery]   = useState(initialDrEamsQuery);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
-  // Dr. Eams context banner — shown when arriving from the HomeDream search bar
+  
   const [showDrEamsBanner, setShowDrEamsBanner] = useState(fromDrEams && !!initialDrEamsQuery);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -137,17 +130,17 @@ export default function MessagesClient({
   const { results: searchSuggestions, isSearching: isSuggesting, drEamsMode, toggleDrEams, clearResults: clearSuggestions } =
     useDreamSearch(searchQuery);
 
-  // Realtime messages via hook
+  
   const { messages, isLoading, addOptimistic, replaceOptimistic, removeOptimistic } = useDreamDMMessages(
     selectedConv?.id ?? null,
     false,
     [],
   );
 
-  // Draft persistence via hook
+  
   const { draft, saveDraft, clearDraft, draftRestored } = useDreamDMDraft(selectedConv?.id ?? null);
 
-  // Restore draft when conversation changes
+  
   useEffect(() => {
     if (draft) {
       setNewMessage(draft.body);
@@ -164,9 +157,9 @@ export default function MessagesClient({
       setNewSubject('');
       setShowSubjectField(false);
     }
-  // Only re-run when conversation changes. `draft` is intentionally excluded:
-  // we read it once on conversation select; subsequent draft changes are driven
-  // by user input via handleMessageChange/handleSubjectChange.
+  
+  
+  
 
   }, [selectedConv?.id]);
 
@@ -273,7 +266,7 @@ export default function MessagesClient({
       };
       addOptimistic(optimisticMessage);
 
-      // Clear draft optimistically on send
+      
       clearDraft(selectedConv.id);
 
       const res = await fetch('/api/messages', {
@@ -297,7 +290,7 @@ export default function MessagesClient({
       }
 
       replaceOptimistic(optimisticMessage!.id, data.message);
-      // Update conversation list updated_at
+      
       setConversations((prev) =>
         prev.map((c) =>
           c.id === selectedConv.id
@@ -354,14 +347,14 @@ export default function MessagesClient({
 
   return (
     <div className="min-h-screen de-sky-bg">
-      {/* DM / Boards tab bar */}
+      
       <div style={{
         display: 'flex', borderBottom: '1px solid rgba(160,195,240,0.25)',
         background: 'rgba(255,255,255,0.7)',
         position: 'sticky', top: 0, zIndex: 31,
       }}>
         <button
-          onClick={() => { /* stay on DMs */ }}
+          onClick={() => {  }}
           style={{
             flex: 1, padding: '12px 0', background: 'none', border: 'none', cursor: 'pointer',
             fontSize: 13, fontWeight: 700, color: 'var(--de-heading)',
@@ -382,7 +375,7 @@ export default function MessagesClient({
         </button>
       </div>
 
-      {/* Mobile Header */}
+      
       <header className="md:hidden sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(255,255,255,0.85)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="px-4 py-3 flex items-center gap-3">
           <Link href="/homedream" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.12)' }} aria-label="Go home">
@@ -393,7 +386,7 @@ export default function MessagesClient({
       </header>
 
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8">
-        {/* Desktop Header */}
+        
         <div className="hidden md:flex items-center justify-between mb-6">
           <div className="flex items-center">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center mr-3" style={{ background: 'rgba(42,138,184,0.1)' }}>
@@ -411,7 +404,7 @@ export default function MessagesClient({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-0 rounded-2xl overflow-hidden min-h-[70vh]" style={{ background: 'rgba(255,255,255,0.93)', border: '1px solid rgba(160,195,240,0.3)', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-          {/* ── Dr. Eams context banner ── shown when arriving via "Send to DreamDM" */}
+          
           {showDrEamsBanner && initialDrEamsQuery && (
             <div
               className="md:col-span-12"
@@ -426,7 +419,7 @@ export default function MessagesClient({
                 borderBottom: '1px solid rgba(74,144,217,0.18)',
               }}
             >
-              {/* Dr. Eams badge */}
+              
               <div style={{
                 width: 26, height: 26, borderRadius: '50%',
                 background: 'linear-gradient(135deg, #4A90D9 0%, #2a8ab8 100%)',
@@ -460,10 +453,10 @@ export default function MessagesClient({
             </div>
           )}
 
-          {/* Conversations List */}
+          
           <div className="md:col-span-4" style={{ borderBottom: '1px solid rgba(160,195,240,0.2)' }}>
             <div className="p-4" style={{ borderBottom: '1px solid rgba(160,195,240,0.2)' }}>
-              {/* Search bar with Dr. Eams toggle */}
+              
               <div className="relative flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--de-text-dim)' }} />
@@ -483,7 +476,7 @@ export default function MessagesClient({
                     }}
                   />
                 </div>
-                {/* Dr. Eams toggle button */}
+                
                 <button
                   type="button"
                   onClick={toggleDrEams}
@@ -503,14 +496,14 @@ export default function MessagesClient({
                 </button>
               </div>
 
-              {/* Dr. Eams mode indicator */}
+              
               {drEamsMode && (
                 <p className="text-xs mt-1 text-center" style={{ color: 'var(--de-gold)' }}>
                   Dr. Eams mode active
                 </p>
               )}
 
-              {/* Search suggestions dropdown */}
+              
               {showSuggestions && (searchQuery.trim() || isSuggesting) && (
                 <div
                   role="listbox"
@@ -534,7 +527,7 @@ export default function MessagesClient({
                       aria-selected={false}
                       type="button"
                       onMouseDown={(e) => {
-                        e.preventDefault(); // prevent blur from firing first
+                        e.preventDefault(); 
                         clearSuggestions();
                         setShowSuggestions(false);
                         if (result.type === 'conversation' && result.targetId) {
@@ -629,11 +622,11 @@ export default function MessagesClient({
             </div>
           </div>
 
-          {/* Message Area */}
+          
           <div className="md:col-span-8 flex flex-col">
             {selectedConv ? (
               <>
-                {/* Chat Header */}
+                
                 <div className="p-4" style={{ borderBottom: '1px solid rgba(160,195,240,0.2)' }}>
                   <div className="flex items-center gap-3">
                     {selectedConv.otherUser.avatar_url ? (
@@ -662,7 +655,7 @@ export default function MessagesClient({
                   </div>
                 </div>
 
-                {/* Messages */}
+                
                 <div className="flex-1 p-4 overflow-y-auto min-h-[40vh]">
                   {isLoading ? (
                     <div className="flex items-center justify-center h-full">
@@ -751,9 +744,9 @@ export default function MessagesClient({
                   )}
                 </div>
 
-                {/* Message Input */}
+                
                 <form onSubmit={sendMessage} className="p-4" style={{ borderTop: '1px solid rgba(160,195,240,0.2)' }}>
-                  {/* Draft restored indicator */}
+                  
                   {draftRestored && (
                     <p
                       className="text-xs mb-2"
@@ -764,7 +757,7 @@ export default function MessagesClient({
                     </p>
                   )}
 
-                  {/* Subject field (email-style, toggleable) */}
+                  
                   {showSubjectField && (
                     <div className="mb-2">
                       <input
@@ -778,7 +771,7 @@ export default function MessagesClient({
                     </div>
                   )}
 
-                  {/* File Preview */}
+                  
                   {selectedFile && filePreviewUrl && (
                     <div className="mb-3 relative inline-block">
                       <div className="relative rounded-lg p-2 max-w-xs" style={{ background: 'rgba(160,195,240,0.12)' }}>
@@ -813,7 +806,7 @@ export default function MessagesClient({
                   )}
 
                   <div className="flex items-center gap-2">
-                    {/* Hidden File Input */}
+                    
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -823,7 +816,7 @@ export default function MessagesClient({
                       className="hidden"
                     />
 
-                    {/* Email-compose toggle */}
+                    
                     <button
                       type="button"
                       onClick={() => setShowSubjectField((v) => !v)}
@@ -835,7 +828,7 @@ export default function MessagesClient({
                       <Mail className="w-5 h-5" />
                     </button>
 
-                    {/* File Upload Button */}
+                    
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}

@@ -4,11 +4,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse, connection } from 'next/server';
 import { z } from 'zod';
 
-// app/api/shared-dream/sessions/route.ts
-// GET  — list sessions the current user is a member of
-// POST — create a new named session
 
-// Escape hatch for missing database types to prevent "Type instantiation is excessively deep"
+
+
+
+
 
 type AnyClient = SupabaseClient;
 
@@ -22,7 +22,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
   const user = await safeGetUser(supabase);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  // Cast client to bypass the TypeScript compiler infinite loop
+  
   const db = supabase as AnyClient;
 
   const { data, error: dbError } = await db
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const channelId = `shared-dream:${crypto.randomUUID()}`;
 
-  // Cast client to bypass the TypeScript compiler infinite loop
+  
   const db = supabase as AnyClient;
 
   const { data: session, error: insertError } = await db
@@ -72,14 +72,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: insertError?.message ?? 'Insert failed' }, { status: 500 });
   }
 
-  // Auto-join as host using the safe client
+  
   await db.from('shared_dream_members').insert({
     session_id: session.id,
     user_id: user.id,
     role: 'host',
   });
 
-  // Log creation activity using the safe client
+  
   await db.from('shared_dream_activity').insert({
     session_id: session.id,
     user_id: user.id,

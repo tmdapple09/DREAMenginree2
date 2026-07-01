@@ -9,15 +9,15 @@ import { useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 import { queueLocalFirstMutation } from '@/engine/offline/offlineCache';
 
-// SURFACE: dreamsurface.MarketplaceSell  (framework-mandated basename: page.tsx)
-// app/marketplace/sell/page.tsx
-// DreamMarketplace — List an Item form.
-//
-// Auth-gated: redirects to /login if no session (AXIOM 4).
-// POSTs to /api/marketplace which stores price_cents and sets
-// is_published = false (LAW.md §2: nothing public by default).
-//
-// Pattern mirrors app/shop/sell/page.tsx for consistency.
+
+
+
+
+
+
+
+
+
 
 
 const MARKETPLACE_SELL_DRAFT_KEY = 'de:marketplace:sell-draft';
@@ -39,7 +39,7 @@ export default function MarketplaceSellPage( ){
       if (!user) router.replace('/login');
     };
     void checkAuth();
-  // supabase and router are stable; eslint wants them but they never change
+  
 
   }, []);
 
@@ -59,12 +59,12 @@ export default function MarketplaceSellPage( ){
       if (draft.category) setCategory(draft.category);
       if (draft.price) setPrice(draft.price);
       if (draft.tags) setTags(draft.tags);
-    } catch { /* ignore corrupt draft */ }
+    } catch {  }
   }, []);
 
   useEffect(() => {
     const draft = { title, description, category, price, tags, updatedAt: new Date().toISOString() };
-    try { localStorage.setItem(MARKETPLACE_SELL_DRAFT_KEY, JSON.stringify(draft)); } catch { /* local draft best effort */ }
+    try { localStorage.setItem(MARKETPLACE_SELL_DRAFT_KEY, JSON.stringify(draft)); } catch {  }
   }, [title, description, category, price, tags]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +96,7 @@ export default function MarketplaceSellPage( ){
       }
 
       setSuccess(true);
-      // Small delay so the success state is visible before redirect
+      
       setTimeout(() => router.push('/marketplace'), 1400);
     } catch (err: unknown) {
       const message = toErrorMessage(err);
@@ -125,7 +125,7 @@ export default function MarketplaceSellPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* ── Header ── */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/marketplace" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -139,12 +139,12 @@ export default function MarketplaceSellPage( ){
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24">
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* ── Listing details ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Listing Details</span></div>
             <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-              {/* Title */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Title *</span>
                 <input
@@ -159,7 +159,7 @@ export default function MarketplaceSellPage( ){
                 <span style={{ fontSize: 11, color: 'var(--de-text-dim)', textAlign: 'right' }}>{title.length}/120</span>
               </label>
 
-              {/* Description */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Description</span>
                 <textarea
@@ -171,7 +171,7 @@ export default function MarketplaceSellPage( ){
                 />
               </label>
 
-              {/* Category */}
+              
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Category *</span>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
@@ -199,7 +199,7 @@ export default function MarketplaceSellPage( ){
                 </div>
               </div>
 
-              {/* Price */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                   Price (USD) — set 0 for free
@@ -222,7 +222,7 @@ export default function MarketplaceSellPage( ){
                 </span>
               </label>
 
-              {/* Tags */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                   Tags <span style={{ fontWeight: 400 }}>(comma-separated, optional)</span>
@@ -239,7 +239,7 @@ export default function MarketplaceSellPage( ){
                 </div>
               </label>
 
-              {/* Error */}
+              
               {error && (
                 <div className="de-notice" style={{ background: 'rgba(220,68,68,0.08)', borderColor: 'rgba(220,68,68,0.25)', color: '#dc4444' }}>
                   {error}
@@ -247,7 +247,7 @@ export default function MarketplaceSellPage( ){
               )}
             </div>
 
-            {/* Submit */}
+            
             <div className="de-widget-actions">
               <button
                 type="submit"
@@ -262,12 +262,12 @@ export default function MarketplaceSellPage( ){
             </div>
           </div>
 
-          {/* ── Info ── */}
+          
           <div className="de-notice" style={{ lineHeight: 1.6 }}>
             Items are reviewed before they go live. By submitting you confirm you own the rights to this content.
           </div>
 
-          {/* ── Tips ── */}
+          
           <div className="de-widget">
             <div className="de-widget-header"><span className="de-widget-title">Tips for a great listing</span></div>
             <div className="de-widget-body">

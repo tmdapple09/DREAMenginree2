@@ -25,30 +25,16 @@ export type DaydreamWidget = {
 
 type Props = {
   title: string;
-  /** The Side B engine name, e.g. "StarMakerEngin", "GameEngin" (spec §7.2) */
+  
   enginName: string;
   accentColor: string;
   widgets: DaydreamWidget[];
   children: React.ReactNode;
-  /**
-   * Canonical daydream type identifier for Supabase state persistence.
-   * One of: 'music' | 'games' | 'lab' | 'code' | 'brand' | 'create'.
-   * When provided, visit timestamps are recorded via useDaydreamState.
-   */
+  
   daydreamType?: string;
-  /**
-   * Optional custom Side B component. When provided, renders instead of
-   * the built-in sideBVariant logic. Receives an `onBack` callback prop.
-   * Use this to inject a domain-specific Engin (e.g. GameEngin, StarMakerEngin).
-   * Takes precedence over sideBVariant when provided.
-   * (spec §7.2 / Phase 4 / Phase 6, point 35 — docs/dreamengin_phase6.md)
-   */
+  
   sideBComponent?: React.ComponentType<{ onBack: () => void }>;
-  /**
-   * Controls which UI renders on Side B when sideBComponent is not provided.
-   *   'widgets'     (default) — the standard marble widget tray
-   *   'game-remote' — dual analog-stick game controller (legacy fallback)
-   */
+  
   sideBVariant?: 'widgets' | 'game-remote';
 };
 
@@ -56,29 +42,29 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
   const [side, setSide] = useState<'A' | 'B'>('A');
   const searchParams = useSearchParams();
 
-  // GSAP-powered A↔B flip transition (replaces CSS keyframe approach)
+  
   const { containerRef, flip: gsapFlip } = useGsapFlip();
 
-  // Persist visit state to Supabase (Phase 6 pt 42 — no creative work silently discarded)
+  
   useDaydreamState({
     daydreamType: daydreamType ?? title.split(' ')[0].toLowerCase(),
     side,
   });
 
-  // Record Forge activity pulse when entering this Daydream surface
+  
   const resolvedEnginId = daydreamType ?? title.split(' ')[0].toLowerCase();
   const { record: recordForge } = useForgeActivity({ enginId: resolvedEnginId });
 
   const flip = useCallback(() => {
     gsapFlip(() => setSide((s) => {
       const next = s === 'A' ? 'B' : 'A';
-      // Record forge pulse on Side B (Engin) activation
+      
       if (next === 'B') recordForge(`Activated ${enginName}`);
       return next;
     }));
   }, [gsapFlip, recordForge, enginName]);
 
-  // Alt + F = flip (keyboard shortcut)
+  
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.altKey && e.key === 'f') { e.preventDefault(); flip(); } };
     window.addEventListener('keydown', h);
@@ -93,8 +79,8 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
     return () => window.removeEventListener('de:open-side-b', openSideB);
   }, [flip, side]);
 
-  // Auto-open Side B (Engin) when ?openEngin=1 is present.
-  // This remains as a legacy deep-link path for explicit Side B entry points.
+  
+  
   useEffect(() => {
     if (searchParams.get('openEngin') === '1' && side === 'A') {
       const timer = window.setTimeout(() => flip(), 80);
@@ -103,8 +89,8 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
 
   }, []);
 
-  // Fires once the first time this surface is ever visited by the user.
-  // Deduplicated by kind + surface together so each surface produces exactly one dot.
+  
+  
   useEffect(() => {
     const surface = `${title} Daydream Surface`;
     void (async () => {
@@ -125,7 +111,7 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
 
   return (
     <>
-      {/* Animated content — swaps between Side A (daydream) and Side B (engin) */}
+      
       <div ref={containerRef} style={contentStyle}>
         {side === 'A'
           ? children
@@ -140,7 +126,7 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
         }
       </div>
 
-      {/* ── Side A only: corner fold tab → opens Side B (Engin) ── */}
+      
       {side === 'A' && (
         <>
           <motion.button
@@ -192,7 +178,7 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
             ENGIN →
           </div>
 
-          {/* ── Mobile: prominent bottom-center ENGIN pill button ── */}
+          
           <motion.button
             type="button"
             onClick={flip}
@@ -237,7 +223,7 @@ export default function DaydreamShell({ title, enginName, accentColor, widgets, 
 function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { enginName: string; title: string; accentColor: string; widgets: DaydreamWidget[]; onBack: () => void }) {
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(155deg, #050508 0%, #08101e 45%, #0a0f1c 75%, #050508 100%)', position: 'relative', overflow: 'hidden' }}>
-      {/* Accent glow halo */}
+      
       <div
         aria-hidden="true"
         style={{
@@ -261,7 +247,7 @@ function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { engi
           boxShadow: `0 1px 0 ${accentColor}18`,
         }}
       >
-        {/* Accent top stripe */}
+        
         <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${accentColor}90, rgba(200,152,26,0.6), transparent)` }} />
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <motion.button
@@ -299,7 +285,7 @@ function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { engi
       </header>
 
       <div style={{ position: 'relative', zIndex: 1, maxWidth: 680, margin: '0 auto', padding: '24px 16px 80px' }}>
-        {/* Hero block */}
+        
         <div
           style={{
             background: 'rgba(255,255,255,0.04)',
@@ -327,10 +313,10 @@ function EnginSurface({ enginName, title, accentColor, widgets, onBack }: { engi
           </div>
         </div>
 
-        {/* Engin pill dual-button controls (spec §7.1 / §14.3) */}
+        
         <EnginPillControls enginName={enginName} accentColor={accentColor} onBack={onBack} />
 
-        {/* Marble widget grid */}
+        
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginTop: 20 }}>
           {widgets.map((w) => <MarbleWidget key={w.id} w={w} />)}
         </div>
@@ -404,7 +390,7 @@ function MarbleWidget({ w }: {w: DaydreamWidget}) {
     <div
       className="premium-shimmer"
       style={{
-        /* Deeper marble: brighter white core, richer color saturation */
+        
         background: `radial-gradient(ellipse at 28% 20%, rgba(255,255,255,0.92) 0%, ${w.color}22 45%, ${w.color}0c 100%)`,
         backdropFilter: 'blur(28px) saturate(240%)',
         WebkitBackdropFilter: 'blur(28px) saturate(240%)',
@@ -435,7 +421,7 @@ function MarbleWidget({ w }: {w: DaydreamWidget}) {
         (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
       }}
     >
-      {/* Specular highlight overlay */}
+      
       <div style={{
         position: 'absolute',
         top: 0, left: 0, right: 0,

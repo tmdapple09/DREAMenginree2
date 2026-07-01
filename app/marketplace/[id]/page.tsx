@@ -8,20 +8,8 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.MarketplaceId  (framework-mandated basename: page.tsx)
-/**
- * DreamMarketplace slot detail surface — /marketplace/[id]
- *
- * Renders a real marketplace item from a database record (marketplace_items table).
- * "Request" / contact flow routes to DreamDM compose — no placeholder handler.
- *
- * Phase 8 §E:
- *   Point 43 — DreamMarketplace slot detail surface renders from a real DB record.
- *   Point 46 — "Request" contact flow routes to DreamDM (real system action).
- *
- * Security: authenticated users only; item must be published OR owned by the viewer.
- * Architecture: ARCHITECTURE.md §5 (projection boundaries), LAW.md §2 (nothing public by default).
- */
+
+
 
 const CATEGORY_EMOJI: Record<string, string> = {
   theme: '🎨', themes: '🎨',
@@ -42,7 +30,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
   const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
-  // Fetch the item — must be published OR owned by the current viewer
+  
 
   const db = supabase as SupabaseClient;
   const { data: item, error } = await db
@@ -66,7 +54,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
     notFound();
   }
 
-  // Enforce: only published items visible to non-owners
+  
   if (!item.is_published && item.seller_id !== user.id) {
     notFound();
   }
@@ -76,7 +64,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
   const price = isFree ? 'Free' : `$${(item.price_cents / 100).toFixed(2)}`;
   const isOwner = item.seller_id === user.id;
 
-  // Fetch seller profile
+  
   const { data: sellerProfile } = await supabase
     .from('profiles')
     .select('handle, display_name, avatar_url')
@@ -99,7 +87,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Preview */}
+        
         <div className="de-widget" style={{ overflow: 'hidden' }}>
           <div style={{
             height: 200,
@@ -112,11 +100,11 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
           </div>
         </div>
 
-        {/* Details */}
+        
         <div className="de-widget">
           <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
-            {/* Title + price */}
+            
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
               <div style={{ flex: 1 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--de-heading)', lineHeight: 1.25, marginBottom: 4 }}>
@@ -135,14 +123,14 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
               </div>
             </div>
 
-            {/* Description */}
+            
             {item.description && (
               <p style={{ fontSize: 13, color: 'var(--de-text)', lineHeight: 1.6 }}>
                 {item.description}
               </p>
             )}
 
-            {/* Tags */}
+            
             {item.tags && item.tags.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {(item.tags as string[]).map((tag) => (
@@ -157,7 +145,7 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
               </div>
             )}
 
-            {/* Seller info */}
+            
             <div className="de-row" style={{ borderBottom: 'none' }}>
               <div style={{
                 width: 36, height: 36, borderRadius: 10, flexShrink: 0,
@@ -177,8 +165,8 @@ export default async function MarketplaceItemPage({ params }: {params: Promise<P
             </div>
           </div>
 
-          {/* CTA — Point 46: real request action via MarketplaceRequestButton */}
-          {/* Contact flow also routes to DreamDM (/messages) for direct seller messaging */}
+          
+          
           {!isOwner && (
             <div className="de-widget-actions">
               <MarketplaceRequestButton itemId={item.id} itemTitle={item.title} />

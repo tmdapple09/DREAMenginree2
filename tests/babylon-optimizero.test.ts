@@ -1,6 +1,4 @@
-/**
- * Tests for Babylon.js Creative Optimizero Integration
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -71,7 +69,7 @@ describe('BabylonUIOptimizero', () => {
       const staticScore = BabylonOptimizeroScorers.usefulness(static_el);
 
       expect(interactiveScore).toBeGreaterThan(staticScore);
-      expect(interactiveScore).toBeGreaterThan(0.7); // Should be quite high
+      expect(interactiveScore).toBeGreaterThan(0.7); 
     });
 
     it('should score delight based on animations and visuals', () => {
@@ -81,7 +79,7 @@ describe('BabylonUIOptimizero', () => {
           id: 'delightful',
           type: 'particle-system',
           position: { x: 0, y: 0, z: 0 },
-          color: { r: 1, g: 0, b: 1, a: 1 }, // Vibrant magenta
+          color: { r: 1, g: 0, b: 1, a: 1 }, 
           material: { type: 'glow', properties: {} },
           animation: { type: 'float', duration: 2000, easing: 'easeInOut' },
         },
@@ -93,7 +91,7 @@ describe('BabylonUIOptimizero', () => {
           id: 'boring',
           type: 'mesh',
           position: { x: 0, y: 0, z: 0 },
-          color: { r: 0.5, g: 0.5, b: 0.5 }, // Grey
+          color: { r: 0.5, g: 0.5, b: 0.5 }, 
         },
       };
 
@@ -120,8 +118,8 @@ describe('BabylonUIOptimizero', () => {
         data: {
           id: 'poor',
           type: 'mesh',
-          position: { x: 80, y: 50, z: 80 }, // Too far
-          scale: { x: 20, y: 20, z: 20 }, // Too large
+          position: { x: 80, y: 50, z: 80 }, 
+          scale: { x: 20, y: 20, z: 20 }, 
         },
       };
 
@@ -166,8 +164,8 @@ describe('BabylonUIOptimizero', () => {
         data: {
           id: 'risky',
           type: 'particle-system',
-          position: { x: 0, y: 1, z: 1 }, // Close to camera
-          scale: { x: 10, y: 10, z: 10 }, // Very large
+          position: { x: 0, y: 1, z: 1 }, 
+          scale: { x: 10, y: 10, z: 10 }, 
           interaction: { clickable: false, hoverable: false, draggable: true },
         },
         metadata: { particleCount: 5000 },
@@ -334,7 +332,7 @@ describe('BabylonUIOptimizero', () => {
       const result = optimizero.optimizeUILayout(candidates);
       const lowBudget = optimizero.filterByPerformanceBudget(result, 0.3);
 
-      // Should only include cheaper candidates
+      
       expect(lowBudget.length).toBeLessThan(result.ranked_candidates.length);
       expect(lowBudget.every((c) => c.cost <= 0.3)).toBe(true);
     });
@@ -421,8 +419,8 @@ describe('BabylonUIOptimizero', () => {
       const defaultResult = defaultOptimizero.optimizeUILayout(candidates);
       const chaosResult = chaosOptimizero.optimizeUILayout(candidates);
 
-      // Different weights may produce different rankings
-      // At minimum, both should have valid results
+      
+      
       expect(defaultResult.best_candidate).toBeDefined();
       expect(chaosResult.best_candidate).toBeDefined();
       expect(defaultResult.ranked_candidates.length).toBe(3);
@@ -434,10 +432,10 @@ describe('BabylonUIOptimizero', () => {
     it('should optimize a game hub scene layout', () => {
       const optimizero = new BabylonUIOptimizero(DEFAULT_WEIGHTS);
 
-      // Simulate a game hub with multiple elements
+      
       const candidates: BabylonUICandidate[] = [];
 
-      // 6 game orbs in a circle
+      
       for (let i = 0; i < 6; i++) {
         const angle = (i / 6) * Math.PI * 2;
         const radius = 5;
@@ -451,7 +449,7 @@ describe('BabylonUIOptimizero', () => {
         );
       }
 
-      // UI panels
+      
       candidates.push(
         BabylonUIGenerator.createUIPanel('left-panel', { x: -8, y: 3, z: 0 }, { width: 3, height: 4 })
       );
@@ -459,10 +457,10 @@ describe('BabylonUIOptimizero', () => {
         BabylonUIGenerator.createUIPanel('right-panel', { x: 8, y: 3, z: 0 }, { width: 3, height: 4 })
       );
 
-      // Central holographic effect
+      
       candidates.push(BabylonUIGenerator.createHolographicEffect('center-holo', { x: 0, y: 5, z: 0 }));
 
-      // Some invalid candidates
+      
       candidates.push({
         id: 'bad-position',
         type: 'mesh',
@@ -477,15 +475,15 @@ describe('BabylonUIOptimizero', () => {
 
       const result = optimizero.optimizeUILayout(candidates, { contextType: 'game-hub' });
 
-      // Should have valid and rejected candidates
+      
       expect(result.ranked_candidates.length).toBeGreaterThan(0);
-      expect(result.rejected_candidates.length).toBe(2); // The two invalid ones
+      expect(result.rejected_candidates.length).toBe(2); 
       expect(result.best_candidate).toBeDefined();
 
-      // Best candidate should have a reasonable score
+      
       expect(result.best_candidate!.final_score).toBeGreaterThan(0);
 
-      // All valid candidates should have scored dimensions
+      
       for (const candidate of result.ranked_candidates) {
         expect(candidate.novelty).toBeGreaterThanOrEqual(0);
         expect(candidate.novelty).toBeLessThanOrEqual(1);

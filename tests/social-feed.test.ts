@@ -1,13 +1,4 @@
-/**
- * tests/social-feed.test.ts
- *
- * Unit tests for lib/social-feed.ts
- *
- * Coverage:
- *  A. stripHtml — HTML stripping
- *  B. extractFirstImage — image extraction from rss-parser items
- *  C. fetchSocialFeed (mocked) — normalisation to SocialFeedItem
- */
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
@@ -17,7 +8,7 @@ import {
   type SocialFeedItem,
 } from '@/dreamr/social-feed';
 
-// ── A. stripHtml ──────────────────────────────────────────────────────────
+
 
 describe('social-feed stripHtml', () => {
   it('removes HTML tags', () => {
@@ -35,7 +26,7 @@ describe('social-feed stripHtml', () => {
   });
 });
 
-// ── B. extractFirstImage ──────────────────────────────────────────────────
+
 
 describe('social-feed extractFirstImage', () => {
   it('returns enclosure.url when present', () => {
@@ -85,7 +76,7 @@ describe('social-feed extractFirstImage', () => {
   });
 });
 
-// ── C. fetchSocialFeed (mocked) ───────────────────────────────────────────
+
 
 describe('fetchSocialFeed', () => {
   beforeEach(() => {

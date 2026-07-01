@@ -14,20 +14,7 @@ import type {
     EnginRuleSetParams,
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
-/**
- * lib/engins/lab/labEnginRuleSet.ts
- *
- * LabEngin Rule-Set — the ONLY place LabEngin domain logic lives.
- *
- * Domain: physics experiments, simulation runner, quantum circuits,
- * data visualization, and cross-Engin dataset/research exports.
- * Handoff kinds: lab:dataset-export → CodeEngin, lab:research-export → ContentEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
+
 
 export type SimulationKind = 'particle' | 'fluid' | 'quantum' | 'neural';
 export type SimState = 'idle' | 'running' | 'complete';

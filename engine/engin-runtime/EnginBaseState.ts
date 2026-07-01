@@ -1,22 +1,12 @@
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginBaseState.ts.
 
-/**
- * lib/engin-runtime/EnginBaseState.ts
- *
- * Base state model shared by every Engin.
- *
- * The engine holds a BaseState and a RuleSet. The RuleSet's transform
- * function maps (BaseState, EnginAction) → BaseState; the engine then
- * derives the UI-facing DerivedState by running registered selectors.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Kernel owns state.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const DOMAIN_OBJECT_KEYS = new Set([
   'id',
@@ -30,11 +20,11 @@ const DOMAIN_OBJECT_KEYS = new Set([
   'data',
 ]);
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type EnginLifecycle =
   | 'idle'
@@ -98,13 +88,10 @@ export interface RuntimeCoherenceReport {
 
 type RuntimeInspectableValue = unknown;
 
-/** Explicit visibility for every runtime-owned domain object. */
+
 export type DomainVisibility = 'local' | 'shared' | 'global';
 
-/**
- * Canonical envelope shared by Dreams, DreamSpaces, Engins, Rulesets, Intents,
- * Memories, Agents, Windows, and Assets. UI placement never implies ownership.
- */
+
 export type DomainObject<TType extends string, TData extends JsonValue> = {
   id: string;
   type: TType;
@@ -130,28 +117,23 @@ export interface CreateDomainObjectInput<
   now?: string;
 }
 
-/**
- * EnginBaseState — the immutable core state owned by every engine instance.
- *
- * The engine never exposes this directly; the active rule-set transforms it
- * into a domain-specific DerivedState.
- */
+
 export interface EnginBaseState<TDomain extends JsonObject = JsonObject> {
-  /** Canonical engine identifier (e.g. 'games', 'music', 'code'). */
+  
   readonly enginId: string;
-  /** Current lifecycle stage. */
+  
   readonly lifecycle: EnginLifecycle;
-  /** ISO-8601 timestamp of the last state mutation. */
+  
   readonly updatedAt: string;
-  /** Monotonically increasing action counter (for optimistic-UI purposes). */
+  
   readonly revision: number;
-  /** Runtime coherence under load; rule-sets read it but never manufacture it. */
+  
   readonly coherence?: RuntimeCoherenceReport;
-  /** Arbitrary key-value bag owned by the active rule-set. */
+  
   readonly domain: Readonly<TDomain>;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function isNonEmptyString(value: RuntimeInspectableValue): value is string {
   return typeof value === 'string' && value.trim().length > 0;
@@ -247,7 +229,7 @@ export function isRuntimeCoherenceReport(
   );
 }
 
-/** Return whether a value can cross persistence and transport boundaries without loss. */
+
 export function isJsonSerializable(
   value: RuntimeInspectableValue,
   seen = new Set<object>(),
@@ -460,7 +442,7 @@ export function attachCoherenceReport<TDomain extends JsonObject = JsonObject>(
   return { ...state, coherence };
 }
 
-/** Create the initial base state for an engine. */
+
 export function createBaseState(enginId: string): EnginBaseState {
   return {
     enginId,
@@ -471,10 +453,7 @@ export function createBaseState(enginId: string): EnginBaseState {
   };
 }
 
-/**
- * Produce a new EnginBaseState by merging a partial domain update.
- * The engine calls this internally — rule-sets must not mutate state directly.
- */
+
 export function patchBaseState<TDomain extends JsonObject = JsonObject>(
   prev: EnginBaseState,
   patch: Partial<Omit<EnginBaseState<TDomain>, 'enginId' | 'revision' | 'updatedAt'>>,
@@ -488,8 +467,8 @@ export function patchBaseState<TDomain extends JsonObject = JsonObject>(
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

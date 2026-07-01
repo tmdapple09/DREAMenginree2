@@ -6,12 +6,7 @@ import { Filter, Play, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-/**
- * LibraryPanel — Standalone Game Library browser for the Games Engine app.
- *
- * Surfaces all available games with category filters, quick-launch buttons,
- * and a recent sessions list. Lives at /engines/games/library.
- */
+
 
 const CATEGORIES = ['All', ...Array.from(new Set(GAME_CATALOG.map((g) => g.category ?? 'Other')))];
 
@@ -31,13 +26,13 @@ export default function LibraryPanel( ){
   return (
     <div className="h-full overflow-y-auto p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+        
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-white mb-1">Game Library</h1>
           <p className="text-sm text-white/50">{GAME_CATALOG.length} cartridges · browse, filter, launch</p>
         </div>
 
-        {/* Search + Filter row */}
+        
         <div className="flex flex-wrap gap-3 mb-6">
           <div className="relative flex-1 min-w-[200px]">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
@@ -68,7 +63,7 @@ export default function LibraryPanel( ){
           </div>
         </div>
 
-        {/* Game grid */}
+        
         {filtered.length === 0 ? (
           <p className="text-center text-white/30 text-sm py-12">No games match your search.</p>
         ) : (

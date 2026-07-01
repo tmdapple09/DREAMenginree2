@@ -7,25 +7,7 @@ import {
     type MultiTouchCombo,
 } from './moves';
 
-/**
- * lib/gameengin/remote/comboMachine.ts
- *
- * Pure combo recogniser for the GameEngin standard remote.
- *
- * Recognises:
- *   - Sequential combos (BASE_COMBOS, SPRINT_COMBOS) within a configurable
- *     time window between consecutive inputs.
- *   - Multi-touch combos (MULTITOUCH_COMBOS) when ≥ 2 face buttons are
- *     simultaneously pressed inside MULTITOUCH_WINDOW_MS.
- *
- * Sprint state is supplied externally (e.g. by SprintDetector). When sprint
- * is active and the current sequence matches both a base and a sprint
- * variant, the sprint variant wins.
- *
- * The machine does NOT debounce game logic — consumers should treat each
- * `consume()` result as the highest-priority combo recognised at that
- * instant. Returning a combo also resets the sequence buffer.
- */
+
 
 export const COMBO_WINDOW_MS = 350;
 export const MULTITOUCH_WINDOW_MS = 60;
@@ -52,7 +34,7 @@ export interface ComboMachineOptions {
   multiTouchWindowMs?: number;
   combos?: readonly Combo[];
   multiTouchCombos?: readonly MultiTouchCombo[];
-  /** External sprint flag; queried on every press. */
+  
   isSprinting?: () => boolean;
 }
 
@@ -74,16 +56,13 @@ export class ComboMachine {
     this.isSprinting = opts.isSprinting ?? (() => false);
   }
 
-  /**
-   * Record a press and return the highest-priority match recognised at this
-   * instant, if any. Returning a match clears the buffer.
-   */
+  
   press(button: FaceButton, nowMs: number): RemoteMatch | null {
-    // Drop expired presses from buffer head.
+    
     this.buffer = this.buffer.filter((r) => nowMs - r.at <= this.comboWindowMs);
     this.buffer.push({ button, at: nowMs });
 
-    // 1. Multi-touch wins if ≥ 2 distinct buttons inside multi-touch window.
+    
     const recent = this.buffer.filter((r) => nowMs - r.at <= this.multiTouchWindowMs);
     if (recent.length >= 2) {
       const distinct = Array.from(new Set(recent.map((r) => r.button)));
@@ -96,7 +75,7 @@ export class ComboMachine {
       }
     }
 
-    // 2. Sequential combo. Try longest suffix down to length 2.
+    
     const sequence = this.buffer.map((r) => r.button);
     const sprint = this.isSprinting();
     for (let len = Math.min(sequence.length, this.maxLen); len >= 2; len--) {
@@ -108,12 +87,12 @@ export class ComboMachine {
       }
     }
 
-    // Trim buffer to maxLen for memory.
+    
     if (this.buffer.length > this.maxLen) this.buffer = this.buffer.slice(-this.maxLen);
     return null;
   }
 
-  /** Forget any pending sequence (e.g. on level reset). */
+  
   reset(): void {
     this.buffer = [];
   }
@@ -123,7 +102,7 @@ export class ComboMachine {
   }
 
   private matchSequence(suffix: FaceButton[], sprint: boolean): Combo | null {
-    // Prefer sprint variants when sprint is active.
+    
     if (sprint) {
       const sprintMatch = this.combos.find(
         (c) => c.sprint && sequenceEquals(c.sequence, suffix),

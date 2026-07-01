@@ -2,17 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
-/**
- * EnginProvider — Lightweight context provider for an engine app.
- *
- * Surfaces:
- *   - engineId    : slug identifying which engine (games | music | code | lab | brand | create)
- *   - accentColor : CSS hex color for this engine
- *   - isReady     : true once the shell has mounted
- *
- * Usage: wrap the engine's layout with <EnginProvider> so all child panels
- * can call useEngin() to read shared state without prop-drilling.
- */
+
 
 export type EngineId = 'games' | 'music' | 'code' | 'lab' | 'brand' | 'create' | 'portfolio' | 'render';
 
@@ -34,7 +24,7 @@ export function EnginProvider({ engineId, accentColor, children }: EnginProvider
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Brief mount delay for smooth entrance animation
+    
     const t = setTimeout(() => setIsReady(true), 80);
     return () => clearTimeout(t);
   }, []);

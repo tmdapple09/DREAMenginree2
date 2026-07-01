@@ -1,18 +1,8 @@
 import type { CodeEnginHostTools } from '@/engine/agentOS/hostTools';
 
-/**
- * AgentOS singleton – local implementation.
- *
- * Provides the same API surface as @rivet-dev/agent-os without requiring that
- * package to be installed.  Calls the Anthropic Messages API directly using
- * the standard fetch() available in Node 18+/Next.js edge/server runtimes.
- *
- * Set ANTHROPIC_API_KEY in .env.local to enable real AI responses.
- * All other agent-os semantics (session isolation, host tools, software packs)
- * are faithfully mirrored at the interface level.
- */
 
-// Internal types
+
+
 
 interface SessionOptions {
   hostTools?: Partial<CodeEnginHostTools>;
@@ -85,7 +75,7 @@ class AgentSession {
   }
 }
 
-// AgentOS manager
+
 
 class AgentOsManager {
   private sessions = new Map<string, AgentSession>();
@@ -111,14 +101,11 @@ class AgentOsManager {
   }
 }
 
-// Singleton
+
 
 let vm: AgentOsManager | null = null;
 
-/**
- * Returns the singleton AgentOS manager, creating it on first call.
- * The manager is shared across all agent sessions in a single server process.
- */
+
 export async function getAgentOS(): Promise<AgentOsManager> {
   if (!vm) {
     vm = new AgentOsManager();

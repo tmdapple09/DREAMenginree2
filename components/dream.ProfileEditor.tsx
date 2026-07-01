@@ -47,13 +47,13 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
+    
     if (!file.type.startsWith('image/')) {
       alert('Please upload an image file');
       return;
     }
 
-    // Validate file size (5MB max)
+    
     if (file.size > 5 * 1024 * 1024) {
       alert('Image must be smaller than 5MB');
       return;
@@ -62,7 +62,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
     setUploadingAvatar(true);
 
     try {
-      // Generate unique filename
+      
       const ext = file.name.split('.').pop();
       const filename = `${profile.id}/${Date.now()}.${ext}.ledger`;
 
@@ -74,7 +74,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
         mimeType: file.type,
       });
 
-      // Update profile in database
+      
       const { error: updateError } = await supabase
         .from('profiles')
         .update({
@@ -85,7 +85,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
 
       if (updateError) throw updateError;
 
-      // Update local state
+      
       setFormData((prev) => ({ ...prev, avatar_url: mediaUrl }));
 
       alert('Avatar updated successfully!');
@@ -184,13 +184,13 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
     setLinks(links.filter((_, i: number) => i !== index));
   };
 
-  /** Auto-detect platform from a pasted URL; always updates when a known platform is detected. */
+  
   const handleUrlChange = useCallback((index: number, value: string) => {
     const newLinks = [...links];
     newLinks[index].url = value;
     if (value) {
       const detected = detectPlatform(value);
-      // Update if: no platform set, or the detected platform differs from the current one
+      
       if (detected && detected.id !== newLinks[index].platform) {
         newLinks[index].platform = detected.id;
       }
@@ -210,9 +210,9 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-blue-950 dark:to-purple-950">
-      {/* Mobile-optimized layout */}
+      
       <div className="max-w-2xl mx-auto">
-        {/* Cover Image Section */}
+        
         <div className="relative h-48 md:h-64 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 overflow-hidden">
           {formData.cover_image_url ? (
             <Image
@@ -250,7 +250,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
           />
         </div>
 
-        {/* Avatar Section */}
+        
         <div className="px-4 sm:px-6 -mt-16 relative z-10 mb-6">
           <div className="flex items-end gap-4">
             <div className="relative">
@@ -301,9 +301,9 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
           </div>
         </div>
 
-        {/* Form Sections */}
+        
         <div className="px-4 sm:px-6 space-y-6 pb-24">
-          {/* Basic Info */}
+          
           <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center gap-3 mb-6">
               <User className="w-5 h-5 text-indigo-600" />
@@ -344,7 +344,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
             </div>
           </div>
 
-          {/* Links */}
+          
           <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -400,7 +400,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
             </div>
           </div>
 
-          {/* Customize Profile Skin */}
+          
           <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center gap-3 mb-4">
               <Palette className="w-5 h-5 text-pink-600" />
@@ -429,7 +429,7 @@ export default function ProfileEditor({ profile }: {profile: ProfileData}) {
         </div>
       </div>
 
-      {/* Floating Save Button (Mobile-Optimized) */}
+      
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 shadow-2xl z-50">
         <div className="max-w-2xl mx-auto">
           <button

@@ -3,30 +3,21 @@
 import { bridge } from '@/engine/runtime/dualRuntimeBridge';
 import { useEffect, useState } from 'react';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/useEnginBridge.ts.
 
-/**
- * useEnginBridge — per-Engin React hooks that wire real bridge.subscribe calls.
- *
- * Each hook subscribes to the 5 channels that are NOT its own and returns
- * live state derived from incoming events. All subscriptions are cleaned up
- * on unmount via the unsubscribe functions returned by bridge.subscribe.
- *
- * Architecture: lib/runtime/dualRuntimeBridge.ts — all 6 typed channels.
- * Privacy: only IDs / primitives cross Engin boundaries (AXIOM 4).
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface CodeEnginBridgeState {
   lastBpm: number | null;
@@ -34,11 +25,11 @@ export interface CodeEnginBridgeState {
   lastLabResult: string | null;
   lastCreatePublish: string | null;
   lastBrandCampaign: string | null;
-  /** Seam workflow: game script imported from GameEngin for editing. */
+  
   lastGameScript: string | null;
-  /** Seam workflow: lab dataset received from LabEngin for code analysis. */
+  
   lastLabDataset: string | null;
-  /** Seam workflow: lab-to-forge 3D generation request received. */
+  
   lastForgeRequest: string | null;
   connectionStatus: {
     music: string;
@@ -57,15 +48,15 @@ export interface GameEnginBridgeState {
   lastLabResult: string | null;
   lastCreateAsset: string | null;
   lastBrandSegment: string | null;
-  /** Seam workflow: adaptive soundtrack requested from StarMakerEngin. */
+  
   lastSoundtrack: string | null;
-  /** Seam workflow: script deployed from CodeEngin as game logic. */
+  
   lastScriptDeploy: string | null;
-  /** Seam workflow: 3D asset imported from ForgeEngin into scene. */
+  
   lastAssetImport: string | null;
-  /** Seam workflow: lore content received from ContentEngin. */
+  
   lastLoreContent: string | null;
-  /** Seam workflow: brand skin applied from BrandingEngin. */
+  
   lastBrandSkin: string | null;
   connectionStatus: {
     music: string;
@@ -83,9 +74,9 @@ export interface StarMakerEnginBridgeState {
   lastLabExport: string | null;
   lastCreateDraft: string | null;
   lastBrandAsset: string | null;
-  /** Seam workflow: 3D visualizer scene requested from ForgeEngin. */
+  
   lastVisualizerScene: string | null;
-  /** Seam workflow: sonification requested from LabEngin dataset. */
+  
   lastSonification: string | null;
   connectionStatus: {
     games: string;
@@ -103,11 +94,11 @@ export interface LabEnginBridgeState {
   lastCodeCell: string | null;
   lastCreatePublish: string | null;
   lastBrandSnapshot: string | null;
-  /** Seam workflow: stem visualization requested from StarMakerEngin. */
+  
   lastStemVisualization: string | null;
-  /** Seam workflow: code cell sent for lab experiment execution. */
+  
   lastCodeExperiment: string | null;
-  /** Seam workflow: 3D asset sent for physics/material simulation. */
+  
   lastAssetSimulation: string | null;
   connectionStatus: {
     music: string;
@@ -125,11 +116,11 @@ export interface BrandingEnginBridgeState {
   lastCodeDeploy: string | null;
   lastLabSim: string | null;
   lastPublish: string | null;
-  /** Seam workflow: music release campaign requested from StarMakerEngin. */
+  
   lastMusicRelease: string | null;
-  /** Seam workflow: achievement campaign requested from GameEngin. */
+  
   lastAchievementCampaign: string | null;
-  /** Seam workflow: content post sent for brand campaign wrapping. */
+  
   lastContentCampaign: string | null;
   connectionStatus: {
     music: string;
@@ -148,15 +139,15 @@ export interface ContentEnginBridgeState {
   lastNotebook: string | null;
   lastLabExport: string | null;
   lastBrandAsset: string | null;
-  /** Seam workflow: music track/stem attached from StarMakerEngin. */
+  
   lastMusicAttached: string | null;
-  /** Seam workflow: notebook publish requested from CodeEngin. */
+  
   lastNotebookPublish: string | null;
-  /** Seam workflow: 3D asset embedded from ForgeEngin. */
+  
   lastAssetEmbedded: string | null;
-  /** Seam workflow: game clip embedded from GameEngin. */
+  
   lastGameClip: string | null;
-  /** Seam workflow: brand kit applied from BrandingEngin. */
+  
   lastBrandKitApplied: string | null;
   connectionStatus: {
     music: string;
@@ -168,7 +159,7 @@ export interface ContentEnginBridgeState {
   };
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function ts( ){
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -214,7 +205,7 @@ export function useCodeEnginBridge(): CodeEnginBridgeState {
         setLastBrandCampaign(p.title as string | null);
         setStatus((s) => ({ ...s, brand: `Campaign: ${p.title} · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('code', 'code:game-script-imported', p => {
         setLastGameScript(p.gameTitle as string | null);
         setStatus((s) => ({ ...s, seam: `Game script: ${p.gameTitle} · ${ts()}` }));
@@ -288,7 +279,7 @@ export function useGameEnginBridge(): GameEnginBridgeState {
         setLastBrandSegment(p.name as string | null);
         setStatus((s) => ({ ...s, brand: `Segment: ${p.name} · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('games', 'games:soundtrack-requested', p => {
         setLastSoundtrack(p.trackId as string | null);
         setStatus((s) => ({ ...s, seam: `Soundtrack: ${p.trackTitle} · ${ts()}` }));
@@ -368,7 +359,7 @@ export function useStarMakerEnginBridge(): StarMakerEnginBridgeState {
         setLastBrandAsset(p.assetType as string | null);
         setStatus((s) => ({ ...s, brand: `Asset: ${p.assetType} · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('music', 'music:visualizer-scene-requested', p => {
         setLastVisualizerScene(p.assetId as string | null);
         setStatus((s) => ({ ...s, seam: `Visualizer scene: ${p.assetName} · ${ts()}` }));
@@ -433,7 +424,7 @@ export function useLabEnginBridge(): LabEnginBridgeState {
         setLastBrandSnapshot(p.snapshotId as string | null);
         setStatus((s) => ({ ...s, brand: `Snapshot ready · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('lab', 'lab:stem-visualization-requested', p => {
         setLastStemVisualization(p.stemType as string | null);
         setStatus((s) => ({ ...s, seam: `Stem viz: ${p.stemType} · ${ts()}` }));
@@ -503,7 +494,7 @@ export function useBrandingEnginBridge(): BrandingEnginBridgeState {
         setLastPublish(p.contentId as string | null);
         setStatus((s) => ({ ...s, create: `Published · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('brand', 'brand:music-release-requested', p => {
         setLastMusicRelease(p.trackId as string | null);
         setStatus((s) => ({ ...s, seam: `Release: ${p.trackTitle} · ${ts()}` }));
@@ -577,7 +568,7 @@ export function useContentEnginBridge(): ContentEnginBridgeState {
         setLastBrandAsset(p.assetType as string | null);
         setStatus((s) => ({ ...s, brand: `Asset: ${p.assetType} · ${ts()}` }));
       }),
-      // ── Seam workflow events ─────────────────────────────────────────────────
+      
       bridge.subscribe('create', 'create:music-attached', p => {
         setLastMusicAttached(p.trackId as string | null);
         setStatus((s) => ({ ...s, seam: `Music: ${p.trackTitle} · ${ts()}` }));
@@ -618,8 +609,8 @@ export function useContentEnginBridge(): ContentEnginBridgeState {
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

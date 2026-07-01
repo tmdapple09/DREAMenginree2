@@ -1,22 +1,11 @@
-/**
- * seoScorer – real-time SEO / content performance scoring logic.
- *
- * Pure-function scoring that runs client-side for instant feedback,
- * with an optional server round-trip for persistence (via /api/content/intelligence).
- *
- * Dimensions scored:
- *   Title      – length, power words, numbers, reader-address, keyword presence
- *   Body       – word count, headings, keyword density, list usage
- *   Engagement – emotional words, CTAs, questions, social proof signals
- *   Accessibility – short sentences, passive-voice avoidance, jargon density
- */
+
 
 export interface SeoScoreInput {
-  /** Title or headline text */
+  
   title?: string;
-  /** Body / description text */
+  
   body?: string;
-  /** Target keyword(s) */
+  
   keywords?: string[];
 }
 
@@ -28,16 +17,16 @@ export interface SeoScoreDimension {
 }
 
 export interface SeoScoreResult {
-  /** Overall score 0–100 */
+  
   overall: number;
   dimensions: SeoScoreDimension[];
-  /** Plain-text suggestions ordered by impact */
+  
   topSuggestions: string[];
-  /** Readability grade (Flesch-Kincaid rough estimate) */
+  
   readabilityGrade: string;
-  /** Engagement signals count (emotional words, CTAs, etc.) */
+  
   engagementSignals: number;
-  /** Estimated accessibility level */
+  
   accessibilityLevel: 'High' | 'Medium' | 'Low';
 }
 
@@ -47,7 +36,7 @@ export interface SeoReport {
   generatedAt: string;
 }
 
-// Word lists
+
 
 const POWER_WORDS = /\b(how|why|what|guide|best|tips|ultimate|secret|top|proven|free|new|exclusive|boost|unlock|master|discover|transform|instantly|guaranteed|\d+\s+ways|\d+\s+steps|\d+\s+tips)/i;
 
@@ -59,7 +48,7 @@ const PASSIVE_VOICE = /\b(is|are|was|were|be|been|being)\s+\w+ed\b/gi;
 
 const JARGON_WORDS = /\b(synergy|leverage|paradigm|holistic|scalable|agile|disruptive|pivot|bandwidth|actionable|deliverable|ecosystem|ideate|verticals|stakeholder|roi|kpi|b2b|b2c|saas|cpc|ctr|seo|sem|crm|erp|api|ux|ui|sdk|ide)\b/gi;
 
-// Dimension scorers
+
 
 function scoreTitle(title: string, keywords: string[]): SeoScoreDimension {
   let score = 0;
@@ -99,7 +88,7 @@ function scoreTitle(title: string, keywords: string[]): SeoScoreDimension {
   } else if (keywords.length > 0) {
     suggestions.push('Place your primary keyword near the start of the title.');
   } else {
-    score += 5; // no keyword specified — neutral bonus
+    score += 5; 
   }
 
   return {
@@ -151,7 +140,7 @@ function scoreBody(body: string, keywords: string[]): SeoScoreDimension {
       : 0;
 
   if (keywords.length === 0) {
-    score += 10; // no target kw — neutral
+    score += 10; 
   } else if (kwDensity >= 0.01 && kwDensity <= 0.03) {
     score += 15;
   } else if (kwDensity < 0.01) {
@@ -258,7 +247,7 @@ function scoreAccessibility(body: string): SeoScoreDimension & { level: 'High' |
   };
 }
 
-// Readability
+
 
 function roughFleschGrade(text: string): string {
   const sentences = text.split(/[.!?]+/).filter((s) => s.trim().length > 0).length || 1;
@@ -284,13 +273,9 @@ function countSyllables(word: string): number {
   return Math.max(1, matches?.length ?? 1);
 }
 
-// Public API
 
-/**
- * Score content client-side with zero latency.
- *
- * Returns scores across four dimensions: Title, Body, Engagement, Accessibility.
- */
+
+
 export function scoreContent(input: SeoScoreInput): SeoScoreResult {
   const title = input.title ?? '';
   const body = input.body ?? '';
@@ -339,10 +324,7 @@ export function scoreContent(input: SeoScoreInput): SeoScoreResult {
   return { overall, dimensions, topSuggestions, readabilityGrade, engagementSignals, accessibilityLevel };
 }
 
-/**
- * Generate a full JSON report for the scored content.
- * Useful for saving to Supabase or exporting as a file.
- */
+
 export function generateReport(input: SeoScoreInput): SeoReport {
   return {
     input,

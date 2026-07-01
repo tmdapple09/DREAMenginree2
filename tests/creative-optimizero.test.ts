@@ -1,6 +1,4 @@
-/**
- * Tests for Creative Optimizero Algorithm
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -16,7 +14,7 @@ import {
 } from '@/optimizer/creative-optimizero';
 
 describe('CreativeOptimizero', () => {
-  // Simple scorers for testing
+  
   const scorers = {
     novelty: ((c) => c.metadata?.novelty || 0.5) as ScoreFunction,
     usefulness: ((c) => c.metadata?.usefulness || 0.5) as ScoreFunction,
@@ -77,8 +75,8 @@ describe('CreativeOptimizero', () => {
       const result = optimizero.optimize([candidate]);
       const scored = result.ranked_candidates[0];
 
-      // Formula: w_novelty * novelty + w_usefulness * usefulness + w_delight * delight
-      //        + w_fit * fit - w_cost * cost - w_risk * risk
+      
+      
       const expectedScore =
         DEFAULT_WEIGHTS.w_novelty * 0.8 +
         DEFAULT_WEIGHTS.w_usefulness * 0.6 +
@@ -161,7 +159,7 @@ describe('CreativeOptimizero', () => {
 
       const result = chaosOptimizero.optimize(candidates);
 
-      // With chaos weights (novelty: 0.40, delight: 0.30), 'novel' should win
+      
       expect(result.best_candidate?.id).toBe('novel');
     });
 
@@ -183,7 +181,7 @@ describe('CreativeOptimizero', () => {
 
       const result = stableOptimizero.optimize(candidates);
 
-      // With stable weights (usefulness: 0.30, fit: 0.30), 'stable' should win
+      
       expect(result.best_candidate?.id).toBe('stable');
     });
   });
@@ -191,8 +189,8 @@ describe('CreativeOptimizero', () => {
   describe('Score Clamping', () => {
     it('should clamp scores to 0-1 range', () => {
       const extremeScorers = {
-        novelty: (() => 2.0) as ScoreFunction, // Too high
-        usefulness: (() => -0.5) as ScoreFunction, // Too low
+        novelty: (() => 2.0) as ScoreFunction, 
+        usefulness: (() => -0.5) as ScoreFunction, 
         delight: (() => 0.5) as ScoreFunction,
         fit: (() => 0.5) as ScoreFunction,
         cost: (() => 0.2) as ScoreFunction,
@@ -204,8 +202,8 @@ describe('CreativeOptimizero', () => {
       const result = optimizero.optimize([{ id: 'test', data: {} }]);
       const scored = result.ranked_candidates[0];
 
-      expect(scored.novelty).toBe(1.0); // Clamped from 2.0
-      expect(scored.usefulness).toBe(0.0); // Clamped from -0.5
+      expect(scored.novelty).toBe(1.0); 
+      expect(scored.usefulness).toBe(0.0); 
     });
   });
 
@@ -279,7 +277,7 @@ describe('CreativeOptimizero', () => {
       const top3 = optimizero.getTopN(result, 3);
 
       expect(top3).toHaveLength(3);
-      expect(top3[0].id).toBe('item-9'); // Highest score
+      expect(top3[0].id).toBe('item-9'); 
     });
 
     it('should detect when top scores are close', () => {
@@ -316,7 +314,7 @@ describe('CreativeOptimizero', () => {
 
       const result = optimizero.optimize(candidates);
 
-      // After weight update, novelty is heavily weighted
+      
       expect(result.best_candidate?.id).toBe('novel');
     });
   });

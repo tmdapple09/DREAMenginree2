@@ -1,11 +1,4 @@
-/**
- * lib/vm/security.ts — VM Security Primitives
- *
- * checkBounds(ptr, len, max)  — hard memory-bounds check
- * SYSCALL_ALLOWLIST            — safe syscall set
- * isSyscallAllowed()           — allowlist gate
- * GPUTimeSlicer                — per-VM GPU time budget allocator
- */
+
 
 export class MemoryBoundsError extends Error {
   constructor(ptr: number, len: number, max: number) {
@@ -16,18 +9,13 @@ export class MemoryBoundsError extends Error {
   }
 }
 
-/**
- * checkBounds(ptr, len, max)
- *
- * Verifies that the half-open byte range [ptr, ptr+len) lies entirely
- * within [0, max).  Throws MemoryBoundsError on any violation.
- */
+
 export function checkBounds(ptr: number, len: number, max: number): void {
   if (
     ptr < 0       ||
     len < 0       ||
     ptr + len > max ||
-    ptr + len < ptr  // integer overflow guard
+    ptr + len < ptr  
   ) {
     throw new MemoryBoundsError(ptr, len, max);
   }
@@ -58,12 +46,7 @@ export const SYSCALL_ALLOWLIST = [
 
 export type AllowedSyscall = (typeof SYSCALL_ALLOWLIST)[number];
 
-/**
- * isSyscallAllowed(syscall, allowList)
- *
- * Returns true when syscall is present in allowList.
- * Pass null for allowList to permit all syscalls (dev mode only).
- */
+
 export function isSyscallAllowed(
   syscall: string,
   allowList: readonly string[] | null = SYSCALL_ALLOWLIST,
@@ -79,13 +62,7 @@ export interface TimeBudget {
   active:     boolean;
 }
 
-/**
- * GPUTimeSlicer
- *
- * Tracks per-VM GPU time budgets within a fixed frame window (default 16 ms).
- * Each VM receives at most requestedMs, capped by whatever remains of the
- * frame budget after prior allocations.
- */
+
 export class GPUTimeSlicer {
   private readonly frameBudgetMs: number;
   private readonly budgets = new Map<string, TimeBudget>();
@@ -94,12 +71,7 @@ export class GPUTimeSlicer {
     this.frameBudgetMs = frameBudgetMs;
   }
 
-  /**
-   * allocate(vmId, requestedMs)
-   *
-   * Grant a time slice to vmId.  The actual budget is
-   * min(requestedMs, availableFrameTime).
-   */
+  
   allocate(vmId: string, requestedMs: number): TimeBudget {
     const usedMs = Array.from(this.budgets.values())
       .filter((b) => b.active)
@@ -116,24 +88,20 @@ export class GPUTimeSlicer {
     return budget;
   }
 
-  /** Release the time slice for vmId (makes its ms available again). */
+  
   release(vmId: string): void {
     const budget = this.budgets.get(vmId);
     if (budget) budget.active = false;
   }
 
-  /**
-   * isOverBudget(vmId)
-   *
-   * Returns true if vmId has been active longer than its allocated budget.
-   */
+  
   isOverBudget(vmId: string): boolean {
     const budget = this.budgets.get(vmId);
     if (!budget || !budget.active) return false;
     return Date.now() - budget.startedAt > budget.budgetMs;
   }
 
-  /** Clear all allocations (call at the start of each frame). */
+  
   reset(): void {
     this.budgets.clear();
   }

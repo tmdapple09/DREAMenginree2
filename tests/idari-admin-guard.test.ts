@@ -1,28 +1,11 @@
-/**
- * tests/idari-admin-guard.test.ts
- *
- * Phase 6 item #6 — IDARi admin-guard contract tests.
- *
- * Validates the guard logic extracted from app/api/ai/idari/route.ts:
- *   - IDARI_PASSWORD env var check (503 when absent)
- *   - Admin-only gate: blocks regular users even under dev bypass
- *   - Owner/admin role resolution
- *   - No IDARi access to non-admin roles
- *
- * Architecture justification:
- *   - docs/IDARI_CONTRACT.md: "admin-only, server-side only; must remain guarded
- *     even when dev bypass tools exist elsewhere in the repo"
- *   - docs/dreamengin_phase6.md point 6: "IDARi must be protected by an admin-guard
- *     check even when DEV_BYPASS_AUTH is active."
- *   - docs/AXIOMS.md: Security by Default
- */
+
 
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 
-// ── IDARI_PASSWORD env guard contract ─────────────────────────────────────────
-//
-// Mirrors the guard at the top of the POST handler in route.ts.
-// If IDARI_PASSWORD is not set, the service must return 503.
+
+
+
+
 
 describe('IDARI_PASSWORD service-availability guard', () => {
   const original = process.env.IDARI_PASSWORD;
@@ -51,14 +34,14 @@ describe('IDARI_PASSWORD service-availability guard', () => {
 
   it('service is unavailable when IDARI_PASSWORD is an empty string', () => {
     process.env.IDARI_PASSWORD = '';
-    // Boolean('') === false, so empty string means unavailable
+    
     expect(isServiceAvailable()).toBe(false);
   });
 });
 
-// ── Admin role resolution ─────────────────────────────────────────────────────
-//
-// Mirrors resolveActorRole logic in the IDARi route handler.
+
+
+
 
 type ActorRole = 'admin' | 'owner';
 
@@ -101,14 +84,14 @@ describe('IDARi admin gate (Phase 6 spec point 5, 6)', () => {
   });
 });
 
-// ── Dev bypass must NOT exempt IDARi (Phase 6 spec point 6) ──────────────────
-//
-// DEV_BYPASS_AUTH=true skips auth for user-facing surfaces.
-// IDARi must remain guarded regardless.
-//
-// The IDARi route uses supabase.auth.getUser() directly and never calls
-// isDevBypassActive() or isDevAdminBypassActive(). This test validates
-// that the guard logic is independent of the dev bypass flag.
+
+
+
+
+
+
+
+
 
 describe('IDARi ignores dev bypass flags (Phase 6 spec point 6)', () => {
   const originalBypass = process.env.DEV_BYPASS_AUTH;
@@ -127,20 +110,20 @@ describe('IDARi ignores dev bypass flags (Phase 6 spec point 6)', () => {
   });
 
   it('even with DEV_ADMIN=true, a regular user is still denied (role-gate runs regardless)', () => {
-    // The IDARi gate uses resolveActorRole based on DB/owner-email, not env bypass.
-    // Simulating: dev bypass is active but user has no admin role.
+    
+    
     const devBypassActive = process.env.DEV_BYPASS_AUTH === 'true';
     const devAdminActive = process.env.DEV_ADMIN === 'true';
 
-    // Even with both bypass flags on, resolveActorRole returns null for a regular user.
+    
     const role = resolveActorRole(false, null);
     expect(role).toBeNull();
 
-    // The bypass flags are on — but the IDARi gate does NOT use them.
-    // This test confirms the logic separation.
+    
+    
     expect(devBypassActive).toBe(true);
     expect(devAdminActive).toBe(true);
-    expect(role).toBeNull(); // still denied
+    expect(role).toBeNull(); 
   });
 
   it('admin role is still granted when bypass flags are active (bypass does not negate real roles)', () => {
@@ -149,7 +132,7 @@ describe('IDARi ignores dev bypass flags (Phase 6 spec point 6)', () => {
   });
 });
 
-// ── Rate limits per role ──────────────────────────────────────────────────────
+
 
 describe('IDARi rate limits by role', () => {
   const RATE_LIMITS: Record<ActorRole, number> = {

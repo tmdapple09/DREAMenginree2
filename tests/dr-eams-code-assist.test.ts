@@ -1,11 +1,4 @@
-/**
- * tests/dr-eams-code-assist.test.ts
- *
- * Unit tests for lib/code/drEamsCodeAssist.ts — the pure helper layer
- * powering the Dr. Eams code-assist feature inside CodeEngin.
- *
- * All functions under test are deterministic and pure — no network, no DOM.
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -22,7 +15,7 @@ import {
   type CellLanguage,
 } from '@/engins/codeengin/ai/drEamsCodeAssist';
 
-// ── VOCAB_TERMS sanity check ───────────────────────────────────────────────────
+
 
 describe('VOCAB_TERMS', () => {
   it('contains expected core terms', () => {
@@ -40,7 +33,7 @@ describe('VOCAB_TERMS', () => {
   });
 });
 
-// ── CODE_VOCABULARY shape ─────────────────────────────────────────────────────
+
 
 describe('CODE_VOCABULARY', () => {
   it('every entry has term, category, definition and example', () => {
@@ -70,7 +63,7 @@ describe('CODE_VOCABULARY', () => {
   });
 });
 
-// ── matchCodeVocabulary ────────────────────────────────────────────────────────
+
 
 describe('matchCodeVocabulary', () => {
   it('returns empty array for empty query', () => {
@@ -108,7 +101,7 @@ describe('matchCodeVocabulary', () => {
   });
 });
 
-// ── detectLanguageFromCode ────────────────────────────────────────────────────
+
 
 describe('detectLanguageFromCode', () => {
   it('returns python for blank input', () => {
@@ -144,7 +137,7 @@ describe('detectLanguageFromCode', () => {
   });
 });
 
-// ── classifyQuery ─────────────────────────────────────────────────────────────
+
 
 describe('classifyQuery', () => {
   it('returns general for empty query', () => {
@@ -153,8 +146,8 @@ describe('classifyQuery', () => {
 
   it('classifies explain queries', () => {
     expect(classifyQuery('explain this code')).toBe('explain');
-    // When a known vocab term appears with an explain trigger, the intent is 'vocabulary'
-    // (vocabulary is a specialised explain — this is the correct/expected behaviour)
+    
+    
     expect(classifyQuery('what does this function do?')).toBe('vocabulary');
     expect(classifyQuery('how does recursion work?')).toBe('vocabulary');
   });
@@ -181,7 +174,7 @@ describe('classifyQuery', () => {
   });
 });
 
-// ── detectNLCommand ───────────────────────────────────────────────────────────
+
 
 describe('detectNLCommand', () => {
   it('returns null for unrecognised input', () => {
@@ -228,7 +221,7 @@ describe('detectNLCommand', () => {
   });
 });
 
-// ── generateCodeFromCommand ───────────────────────────────────────────────────
+
 
 describe('generateCodeFromCommand', () => {
   it('generates Python class scaffold', () => {
@@ -278,7 +271,7 @@ describe('generateCodeFromCommand', () => {
   });
 });
 
-// ── parseCodeResponse ─────────────────────────────────────────────────────────
+
 
 describe('parseCodeResponse', () => {
   it('parses response with no code blocks', () => {
@@ -320,7 +313,7 @@ describe('parseCodeResponse', () => {
   });
 });
 
-// ── buildCodeSystemPrompt ─────────────────────────────────────────────────────
+
 
 describe('buildCodeSystemPrompt', () => {
   it('includes language in prompt', () => {
@@ -340,13 +333,13 @@ describe('buildCodeSystemPrompt', () => {
   });
 
   it('caps selected code at 2000 chars', () => {
-    const longCode = 'x = 1\n'.repeat(400); // > 2000 chars
+    const longCode = 'x = 1\n'.repeat(400); 
     const prompt = buildCodeSystemPrompt({ language: 'python', selectedCode: longCode });
-    // The snippet in the prompt should be truncated to ≤ 2000 chars
+    
     const snippetStart = prompt.indexOf('```python');
     const snippetEnd = prompt.lastIndexOf('```');
     const snippet = prompt.slice(snippetStart, snippetEnd);
-    expect(snippet.length).toBeLessThanOrEqual(2200); // fence + 2000 + small overhead
+    expect(snippet.length).toBeLessThanOrEqual(2200); 
   });
 
   it('includes privacy notice', () => {

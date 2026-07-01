@@ -4,19 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * app/api/settings/privacy/route.ts
- *
- * GET  /api/settings/privacy  — Returns the authenticated user's privacy settings
- * POST /api/settings/privacy  — Upserts privacy settings into the settings table
- *
- * Data is stored in the JSONB `data` column under the `privacy` key in the
- * existing `settings` table (initial schema migration, user_id PK + RLS).
- *
- * Security (AXIOM 4):
- *   - auth.uid() = user_id enforced by RLS on the settings table
- *   - Requires authenticated user; returns 401 otherwise
- */
+
 
 export async function GET( ): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -61,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const db2 = supabase as SupabaseClient;
 
-  // Fetch existing settings first to merge
+  
   const { data: existing } = await db2
     .from('settings')
     .select('data')

@@ -128,9 +128,9 @@ export function compressData(encodedBuffer: number[]): number[] {
   return encodedBuffer.filter((dataPoint) => {
     const x = Math.abs(dataPoint) / DATA_PHYSICS.a0;
     const expected = x / Math.pow(1 + Math.pow(x, DATA_PHYSICS.n), 1 / DATA_PHYSICS.n);
-    // The per-point filter uses 0.1% of the participation constant, matching the
-    // repo request for "human signal" detection. The broader black-hole throttle
-    // below separately activates when the resulting signal ratio reaches 10%.
+    
+    
+    
     return Math.abs(dataPoint - expected) > SIGNAL_DELTA_THRESHOLD;
   });
 }

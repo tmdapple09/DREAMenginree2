@@ -1,17 +1,4 @@
-/**
- * tests/canonical-naming-enforcement.test.ts
- *
- * Canonical Naming Authority enforcement.
- *
- * Enforces that banned names (Dashboard, Workspace, TopBar, sparkle decoratives,
- * shims, and other NAMING_AUTHORITY violations) do not re-enter the codebase as
- * component exports or file names.
- *
- * Authority: docs/NAMING_AUTHORITY.md, docs/CONSTITUTION.md (AP-2: Naming Drift),
- *            docs/LAW.md §3 (every visible element must do something real).
- *
- * If any of these tests fail, a banned name has re-appeared. Delete or rename it.
- */
+
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -19,7 +6,7 @@ import { describe, it, expect } from 'vitest';
 
 const ROOT = join(__dirname, '..');
 
-/** Recursively collect all .tsx / .ts files under a directory, excluding node_modules and .git */
+
 function collectFiles(dir: string, ext: string[] = ['.tsx', '.ts']): string[] {
   const results: string[] = [];
   let entries: string[];
@@ -46,15 +33,7 @@ function collectFiles(dir: string, ext: string[] = ['.tsx', '.ts']): string[] {
   return results;
 }
 
-/**
- * Banned file name fragments — if any .tsx file's base name contains one of these
- * strings, the test fails.
- *
- * "Dashboard" — banned by NAMING_AUTHORITY and CONSTITUTION AP-2.
- * "Workspace" — banned by NAMING_AUTHORITY.
- * "TopBar"    — violates one-bar rule; DREAMengin has ONE bar: the DreamDM Bar.
- * "-shim"     — shim = wrapper leech; always an anti-pattern in this codebase.
- */
+
 const BANNED_FILE_FRAGMENTS = [
   'Dashboard',
   'Workspace',
@@ -62,24 +41,14 @@ const BANNED_FILE_FRAGMENTS = [
   '-shim',
 ];
 
-/**
- * Banned export/function name fragments — if any .tsx file exports a symbol
- * whose name contains one of these strings, the test fails.
- *
- * "WorkspaceDashboard" — the original banned export.
- * "Dashboard"          — banned word in any export name.
- */
+
 const BANNED_EXPORT_PATTERNS = [
   /export\s+default\s+function\s+WorkspaceDashboard/,
   /export\s+default\s+function\s+\w*Dashboard\w*/,
   /export\s+(default\s+)?class\s+\w*Dashboard\w*/,
 ];
 
-/**
- * Directories to scan for banned names.
- * Excludes test files, docs, and scripts (which may legitimately reference banned
- * names in strings for enforcement checks like this file).
- */
+
 const SCAN_DIRS = [
   join(ROOT, 'components'),
   join(ROOT, 'dreamdmbar'),
@@ -148,8 +117,8 @@ describe('Canonical Naming Authority — one DreamDM Bar rule', () => {
     const outsideFiles = collectFiles(join(ROOT, 'components'), ['.tsx']).filter(
       (f) => !f.includes('/home/') || f.includes('dream.bar.'),
     );
-    // The only allowed bar files are under components/home/ (PersistentDreamBar, GlobalDreamBar)
-    // and dreamdmbar/ itself. We check that no NEW bar files appear with generic names.
+    
+    
     const violations = outsideFiles.filter((f) => {
       const base = f.split('/').pop() ?? '';
       return base === 'dream.bar.TopBar.tsx' || base === 'dream.bar.BottomBar.tsx';

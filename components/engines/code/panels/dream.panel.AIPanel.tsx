@@ -4,13 +4,7 @@ import { Bot, CheckCheck, Copy, Loader2, Send, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 
-/**
- * AIPanel — AI code assistant panel for the Code Engine app.
- *
- * Chat-style interface for AI-assisted code generation, explanation,
- * refactoring suggestions, and debugging help.
- * Lives at /engines/code/ai.
- */
+
 
 interface Message {
   id: string;
@@ -116,7 +110,7 @@ export default function AIPanel( ){
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header */}
+      
       <div className="px-4 py-3 border-b border-white/10 bg-black/20 flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-[#22d3ee]/20 flex items-center justify-center">
@@ -128,7 +122,7 @@ export default function AIPanel( ){
           </div>
         </div>
 
-        {/* Quick prompts */}
+        
         <div className="flex flex-wrap gap-1.5 mt-3">
           {QUICK_PROMPTS.map((p) => (
             <button
@@ -142,7 +136,7 @@ export default function AIPanel( ){
         </div>
       </div>
 
-      {/* Messages */}
+      
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -186,7 +180,7 @@ export default function AIPanel( ){
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
+      
       <div className="flex-shrink-0 px-4 py-3 border-t border-white/10 bg-black/20">
         <div className="flex gap-2">
           <textarea

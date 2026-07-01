@@ -1,8 +1,4 @@
-/**
- * components/universal-editor/index.ts — §39 Universal Editor
- *
- * Re-exports all universal editor components and hooks.
- */
+
 
 export {
     useTapHoldMove, type Position, type TapHoldMoveBindings, type TapHoldMoveOptions

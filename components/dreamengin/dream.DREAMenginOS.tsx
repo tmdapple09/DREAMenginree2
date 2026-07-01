@@ -125,7 +125,7 @@ export default function DREAMenginOS({
     readonly RuntimeContext[]
   >([]);
 
-  // Session intelligence — auto-wired to dreamOSBus; no prop needed.
+  
   const { predictions, isLearning, sessionDiff } = useSessionIntelligence();
 
   const onSelectSubsystemRef = useRef(onSelectSubsystem);
@@ -428,7 +428,7 @@ export default function DREAMenginOS({
             height: 18,
           }}
         >
-          {/* Expanding pulse ring */}
+          
           <span
             style={{
               position: "absolute",
@@ -846,7 +846,7 @@ export default function DREAMenginOS({
         </div>
       </div>
 
-      {/* ── Dr. Eams — session intelligence panel ─────────────────────────── */}
+      
       {predictions.length > 0 ? (
         <div
           style={{

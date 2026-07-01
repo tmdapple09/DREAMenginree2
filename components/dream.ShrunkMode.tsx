@@ -7,12 +7,9 @@ interface ShrunkModeProps {
   onWidgetSelect?: (widgetId: string) => void;
 }
 
-/**
- * ShrunkMode - 12 priority widget launchers
- * Displays most recently used or pinned widgets for quick access
- */
+
 export function ShrunkMode({ priorityWidgets, onWidgetSelect }: ShrunkModeProps) {
-  // Display up to 12 widgets
+  
   const displayWidgets = priorityWidgets.slice(0, 12);
 
   return (
@@ -27,7 +24,7 @@ export function ShrunkMode({ priorityWidgets, onWidgetSelect }: ShrunkModeProps)
             />
           ))}
 
-          {/* Fill empty slots */}
+          
           {Array.from({ length: Math.max(0, 12 - displayWidgets.length) }).map((_, index: number) => (
             <div
               key={`empty-${index}`}

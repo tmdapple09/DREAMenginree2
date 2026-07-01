@@ -2,18 +2,18 @@ import { BOOGIE_POLICY_VERSION } from '@/dr-eams/ai/boogie-policy';
 import { AlertTriangle, ArrowLeft, ArrowUpRight, Bell, BookOpen, ChevronRight, Eye, FileText, Info, Scale, Shield } from 'lucide-react';
 import Link from 'next/link';
 
-// SURFACE: dreamsurface.Policy  (framework-mandated basename: page.tsx)
-// app/policy/page.tsx
-// TheBoogieMan.Ai — public policy page (req 6–15, K99).
-// Readable, versioned, accessible without login, linked from footer + Settings.
-// Source of truth: docs/BOOGIEMAN_POLICY.md — this page mirrors it.
+
+
+
+
+
 
 export const metadata = {
   title: 'Community + Safety Policy – Dreamengin',
   description: 'TheBoogieMan.AI community and safety policy. Every rule is versioned and every enforcement action traces back to this page.',
 };
 
-// Changelog entries (req K100, 94, 95)
+
 const CHANGELOG = [
   {
     date: '2026-02-27',
@@ -22,7 +22,7 @@ const CHANGELOG = [
   },
 ];
 
-// Policy categories for the table of contents
+
 const CATEGORIES = [
   { id: 'summary',     label: 'Policy Summary',                icon: Info },
   { id: 'scope',       label: 'A — Scope & mission',           icon: BookOpen },
@@ -59,7 +59,7 @@ export default function PolicyPage( ){
 
       <div className="max-w-3xl mx-auto px-4 py-6 pb-24 space-y-6">
 
-        {/* Intro */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Shield className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -83,7 +83,7 @@ export default function PolicyPage( ){
           </div>
         </div>
 
-        {/* Policy Summary (req 8) */}
+        
         <section id="summary" className="de-widget" style={{ borderColor: 'rgba(42,138,184,0.3)' }}>
           <div className="de-widget-header">
             <Info className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -105,7 +105,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* Table of contents */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">On this page</span>
@@ -129,7 +129,7 @@ export default function PolicyPage( ){
           </div>
         </div>
 
-        {/* A — Scope */}
+        
         <section id="scope" className="de-widget">
           <div className="de-widget-header">
             <BookOpen className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -151,7 +151,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* C — Violations */}
+        
         <section id="violations" className="de-widget">
           <div className="de-widget-header">
             <AlertTriangle className="w-4 h-4 mr-2" style={{ color: '#f59e0b' }} />
@@ -173,7 +173,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* D — Allowed */}
+        
         <section id="allowed" className="de-widget">
           <div className="de-widget-header">
             <Scale className="w-4 h-4 mr-2" style={{ color: '#22c55e' }} />
@@ -190,7 +190,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* E — Enforcement ladder */}
+        
         <section id="ladder" className="de-widget">
           <div className="de-widget-header">
             <ArrowUpRight className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -218,7 +218,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* F — Strikes */}
+        
         <section id="strikes" className="de-widget">
           <div className="de-widget-header">
             <Shield className="w-4 h-4 mr-2" style={{ color: '#f59e0b' }} />
@@ -243,7 +243,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* G — Confidence */}
+        
         <section id="confidence" className="de-widget">
           <div className="de-widget-header">
             <Eye className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -263,7 +263,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* H — Messaging */}
+        
         <section id="messaging" className="de-widget">
           <div className="de-widget-header">
             <Bell className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -285,7 +285,7 @@ export default function PolicyPage( ){
           </div>
         </section>
 
-        {/* Appeal (req 13, req 85–89) */}
+        
         <div id="appeals" className="de-widget" style={{ borderColor: 'rgba(42,138,184,0.25)' }}>
           <div className="de-widget-header">
             <Scale className="w-4 h-4 mr-2" style={{ color: 'var(--de-accent)' }} />
@@ -310,7 +310,7 @@ export default function PolicyPage( ){
           </div>
         </div>
 
-        {/* Changelog */}
+        
         <section className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">Changelog</span>

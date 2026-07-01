@@ -7,7 +7,7 @@ type TimeoutHandle = ReturnType<typeof setTimeout>;
 
 type ModalType = 'delete-data' | 'delete-account' | null;
 
-/** Premium in-app confirmation modal — replaces browser `window.confirm/prompt` */
+
 function ConfirmModal({
   type,
   onClose,
@@ -74,7 +74,7 @@ function ConfirmModal({
   }
 
   return (
-    /* Backdrop */
+    
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 9000,
@@ -86,7 +86,7 @@ function ConfirmModal({
       }}
       onClick={(e) => { if (e.target === e.currentTarget && !pending) onClose(); }}
     >
-      {/* Sheet */}
+      
       <div
         style={{
           width: '100%',
@@ -99,7 +99,7 @@ function ConfirmModal({
           display: 'flex', flexDirection: 'column', gap: 20,
         }}
       >
-        {/* Header row */}
+        
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
           <div style={{
             width: 52, height: 52, borderRadius: 16, flexShrink: 0,
@@ -137,7 +137,7 @@ function ConfirmModal({
           </button>
         </div>
 
-        {/* Warning callout */}
+        
         <div style={{
           background: isAccount ? 'rgba(220,68,68,0.06)' : 'rgba(245,158,11,0.06)',
           border: `1px solid ${isAccount ? 'rgba(220,68,68,0.20)' : 'rgba(245,158,11,0.20)'}`,
@@ -152,7 +152,7 @@ function ConfirmModal({
           </p>
         </div>
 
-        {/* Confirmation input */}
+        
         {!done ? (
           <>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -190,7 +190,7 @@ function ConfirmModal({
               )}
             </div>
 
-            {/* Action buttons */}
+            
             <div style={{ display: 'flex', gap: 10 }}>
               <button
                 type="button"
@@ -233,7 +233,7 @@ function ConfirmModal({
             </div>
           </>
         ) : (
-          /* Success / done state */
+          
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
             padding: '8px 0 4px',

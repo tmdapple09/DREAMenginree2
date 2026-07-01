@@ -24,7 +24,7 @@ function walk(dir='.', out=[]){
   const full = abs(dir);
   for (const entry of fs.readdirSync(full, { withFileTypes: true })){
     if (entry.isDirectory() && IGNORE.has(entry.name)) continue;
-    const p = rel(path.join(dir, entry.name)).replace(/^\.\//, '');
+    const p = rel(path.join(dir, entry.name)).replace(/^\.\
     if (entry.isDirectory()) walk(p, out);
     else out.push(p);
   }

@@ -1,25 +1,19 @@
 import type { RuntimeCoherenceReport } from './EnginBaseState';
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginEventBus.ts.
 
-/**
- * lib/engin-runtime/EnginEventBus.ts
- *
- * Client-safe event bus abstraction for Engin-internal events.
- * Each EnginRuntime creates exactly one bus; buses are never shared between
- * engines and never carry domain behavior.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface EnginLifecycleEvents extends Record<string, object> {
   'engin:started': { enginId: string };
@@ -58,14 +52,9 @@ export interface EnginEventBus<
   readonly destroyed: boolean;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/**
- * createEnginEventBus<DomainEvents>()
- *
- * Returns a new, scoped event bus for a single engine instance.
- * MUST NOT be shared across multiple engines.
- */
+
+
 export function createEnginEventBus<
   DomainEvents extends Record<string, object> = Record<string, object>,
 >(): EnginEventBus<DomainEvents> {
@@ -115,8 +104,8 @@ export function createEnginEventBus<
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

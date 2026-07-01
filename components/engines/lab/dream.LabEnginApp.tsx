@@ -3,15 +3,7 @@
 import { makeEnginApp } from '@/components/engines/shared';
 import LabEngin from '@/engins/engin.LabEngin';
 
-/**
- * LabEnginApp — Full-screen app shell for the Lab Engine.
- *
- * Routes:
- *   /engines/lab             → full LabEngin hub
- *   /engines/lab/experiments → experiments runner
- *   /engines/lab/data        → data visualization
- *   /engines/lab/quantum     → quantum circuit canvas
- */
+
 
 export default makeEnginApp({
   id: 'lab',

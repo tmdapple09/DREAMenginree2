@@ -4,14 +4,14 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-/*  Refractor Shader                                                   */
-/*                                                                    */
-/*  A GPU-driven refraction / distortion post-effect that bends and    */
-/*  warps the scene behind it, simulating glass or crystal refractive  */
-/*  surfaces.  Uses GLSL noise for animated chromatic distortion.      */
-/* ------------------------------------------------------------------ */
 
-const vertexShader = /* glsl */ `
+
+
+
+
+
+
+const vertexShader =  `
   varying vec2 vUv;
   varying vec3 vWorldPosition;
   varying vec3 vNormal;
@@ -25,7 +25,7 @@ const vertexShader = /* glsl */ `
   }
 `;
 
-const fragmentShader = /* glsl */ `
+const fragmentShader =  `
   uniform float uTime;
   uniform vec3  uColor;
   uniform float uRefractionStrength;

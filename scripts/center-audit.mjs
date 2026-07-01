@@ -1,16 +1,5 @@
 #!/usr/bin/env node
-/**
- * DREAMengin Center Audit
- *
- * Scan the repository and generate:
- * - JSON index with categories, imports, exports, and orphan flags
- * - Markdown summary report
- * - CSV matrix for spreadsheet review
- * - Implementation recommendations for the current vision
- *
- * Run:
- *   node scripts/center-audit.mjs
- */
+
 
 import fs from "node:fs";
 import path from "node:path";
@@ -233,7 +222,7 @@ function normalizeSlashes(p) {
 
 function stripComments(code) {
   return code
-    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\/\*[\s\S]*?\*\
     .replace(/\/\/.*$/gm, "");
 }
 

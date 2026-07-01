@@ -3,13 +3,7 @@
 import { CheckCircle2, Circle, RefreshCw, TrendingDown, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * AssetsPanel — Asset universe selector for the Portfolio Engine.
- *
- * Browse and toggle assets across market sectors. Selected assets
- * feed into the Optimize panel's QUBO formulation.
- * Lives at /engines/portfolio/assets.
- */
+
 
 const ACCENT = '#2a8ab8';
 
@@ -18,7 +12,7 @@ interface Asset {
   name:   string;
   sector: string;
   price:  number;
-  change: number; // percentage
+  change: number; 
 }
 
 const UNIVERSE: Asset[] = [
@@ -73,7 +67,7 @@ export default function AssetsPanel( ){
   return (
     <div className="h-full overflow-y-auto p-4 md:p-6">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
+        
         <div className="flex items-center justify-between mb-5">
           <div>
             <h1 className="text-2xl font-bold text-white mb-1">Asset Universe</h1>
@@ -88,7 +82,7 @@ export default function AssetsPanel( ){
           </button>
         </div>
 
-        {/* Selected count */}
+        
         <div
           className="flex items-center justify-between px-4 py-2.5 rounded-lg mb-4"
           style={{ background: `${ACCENT}12`, border: `1px solid ${ACCENT}30` }}
@@ -109,7 +103,7 @@ export default function AssetsPanel( ){
           </div>
         </div>
 
-        {/* Sector filter */}
+        
         <div className="flex flex-wrap gap-2 mb-4">
           {SECTORS.map((s) => (
             <button
@@ -127,7 +121,7 @@ export default function AssetsPanel( ){
           ))}
         </div>
 
-        {/* Asset list */}
+        
         <div className="space-y-2">
           {filtered.map((asset) => {
             const isSelected  = selected.has(asset.ticker);
@@ -147,13 +141,13 @@ export default function AssetsPanel( ){
                   cursor:      isMaxed ? 'not-allowed' : 'pointer',
                 }}
               >
-                {/* Checkbox */}
+                
                 {isSelected
                   ? <CheckCircle2 size={16} style={{ color: ACCENT, flexShrink: 0 }} />
                   : <Circle       size={16} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
                 }
 
-                {/* Ticker + name */}
+                
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-bold text-white">{asset.ticker}</span>
@@ -167,7 +161,7 @@ export default function AssetsPanel( ){
                   </span>
                 </div>
 
-                {/* Price + change */}
+                
                 <div className="text-right flex-shrink-0">
                   <div className="text-sm font-bold text-white">
                     ${asset.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

@@ -4,25 +4,7 @@ import { cacheAsset, enqueueSyncAction } from '@/engine/offline/offlineCache';
 import { useCallback, useState, type ReactNode } from 'react';
 import { v4 as uuid } from 'uuid';
 
-/**
- * components/dreamengin/dream.CanvasDropZone.tsx
- *
- * Phase 9 §5: Drag-and-drop asset import — drag any image, audio, or 3D
- * file from your desktop or phone storage directly onto the DREAMenginOS
- * canvas. The component wraps children with a drop zone overlay.
- *
- * Supported file types:
- *   - Images: png, jpg, jpeg, webp, gif, svg
- *   - Audio:  mp3, wav, ogg, m4a, flac, aac
- *   - 3D:    glb, gltf, obj, fbx, stl
- *
- * Architecture justification:
- *   - docs/LAW.md §3: every visible action must do something real.
- *     Dropped files are cached to IndexedDB via the offline cache and
- *     dispatched as a CustomEvent for the active Engin to handle.
- *   - docs/ARCHITECTURE.md §8: Gold/blue design system.
- *     The drop overlay uses the canonical gold accent.
- */
+
 
 export type AssetCategory = 'image' | 'audio' | '3d' | 'unknown';
 
@@ -72,19 +54,16 @@ export interface AssetImportPayload {
   size: number;
 }
 
-/**
- * Custom event dispatched when an asset is imported via drag-and-drop.
- * Engins listen for this to add the asset to the active scene.
- */
+
 export const ASSET_IMPORT_EVENT = 'dreamengin:asset-import';
 
 interface CanvasDropZoneProps {
   children: ReactNode;
-  /** Called after each file is cached and the event is dispatched */
+  
   onImport?: (payload: AssetImportPayload) => void;
-  /** Custom className for the wrapper */
+  
   className?: string;
-  /** Disable the drop zone */
+  
   disabled?: boolean;
 }
 
@@ -119,7 +98,7 @@ export default function CanvasDropZone({
     (e: React.DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      // Only deactivate when leaving the container itself
+      
       if (e.currentTarget === e.target) {
         setDragActive(false);
       }
@@ -145,7 +124,7 @@ export default function CanvasDropZone({
         const data = await file.arrayBuffer();
         const now = new Date().toISOString();
 
-        // Cache to IndexedDB
+        
         await cacheAsset({
           id,
           mimeType,
@@ -160,7 +139,7 @@ export default function CanvasDropZone({
           },
         });
 
-        // Queue for server sync
+        
         await enqueueSyncAction({
           entityType: 'asset',
           entityId: id,
@@ -176,7 +155,7 @@ export default function CanvasDropZone({
           size: file.size,
         };
 
-        // Dispatch custom event for Engins to handle
+        
         if (typeof window !== 'undefined') {
           window.dispatchEvent(
             new CustomEvent(ASSET_IMPORT_EVENT, { detail: payload }),
@@ -200,7 +179,7 @@ export default function CanvasDropZone({
     >
       {children}
 
-      {/* Drop overlay */}
+      
       {dragActive && (
         <div
           style={{

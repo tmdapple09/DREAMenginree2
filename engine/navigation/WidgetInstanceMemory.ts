@@ -1,5 +1,5 @@
-// WidgetInstanceMemory - Pre-allocated widget instances
-// Mobile-optimized: no allocation, no destruction, O(1) switching
+
+
 
 export enum WidgetPresentation {
   FLOATING = 'FLOATING',
@@ -39,16 +39,13 @@ export interface WidgetInstanceRecord {
   internalState: Record<string, unknown>;
 }
 
-/**
- * WidgetInstanceMemory manages pre-allocated widget instances
- * All widgets exist for entire session - never created or destroyed
- */
+
 export class WidgetInstanceMemory {
   private instances: WidgetInstanceRecord[];
   private homeIndices: number[];
   private profileIndices: number[];
-  private activeIndicesPointer: number[]; // Points to either home or profile
-  private sortedCache: WidgetInstanceRecord[] | null; // Cache for sorted widgets
+  private activeIndicesPointer: number[]; 
+  private sortedCache: WidgetInstanceRecord[] | null; 
   private sortedCacheDirty: boolean;
 
   constructor() {
@@ -60,13 +57,11 @@ export class WidgetInstanceMemory {
     this.sortedCacheDirty = true;
   }
 
-  /**
-   * Initialize with widget instances
-   */
+  
   initialize(instances: WidgetInstanceRecord[]): void {
     this.instances = instances;
 
-    // Build index lists
+    
     this.homeIndices = [];
     this.profileIndices = [];
 
@@ -78,43 +73,33 @@ export class WidgetInstanceMemory {
       }
     });
 
-    // Default to home
+    
     this.activeIndicesPointer = this.homeIndices;
   }
 
-  /**
-   * Switch to Profile context (O(1) pointer swap)
-   */
+  
   switchToProfile(): void {
     this.activeIndicesPointer = this.profileIndices;
     this.sortedCacheDirty = true;
   }
 
-  /**
-   * Switch to Home context (O(1) pointer swap)
-   */
+  
   switchToHome(): void {
     this.activeIndicesPointer = this.homeIndices;
     this.sortedCacheDirty = true;
   }
 
-  /**
-   * Get active widget instances
-   */
+  
   getActiveWidgets(): WidgetInstanceRecord[] {
     return this.activeIndicesPointer.map((index) => this.instances[index]);
   }
 
-  /**
-   * Get widget by instance ID
-   */
+  
   getWidget(instanceId: string): WidgetInstanceRecord | undefined {
     return this.instances.find((w) => w.instanceId === instanceId);
   }
 
-  /**
-   * Update widget transform state
-   */
+  
   updateTransform(instanceId: string, transform: Partial<WidgetTransformState>): void {
     const widget = this.getWidget(instanceId);
     if (widget) {
@@ -123,9 +108,7 @@ export class WidgetInstanceMemory {
     }
   }
 
-  /**
-   * Update widget presentation mode
-   */
+  
   updatePresentation(instanceId: string, presentation: WidgetPresentation): void {
     const widget = this.getWidget(instanceId);
     if (widget) {
@@ -134,9 +117,7 @@ export class WidgetInstanceMemory {
     }
   }
 
-  /**
-   * Get widgets sorted by z-index (cached)
-   */
+  
   getActiveWidgetsSorted(): WidgetInstanceRecord[] {
     if (!this.sortedCacheDirty && this.sortedCache) {
       return this.sortedCache;
@@ -148,9 +129,7 @@ export class WidgetInstanceMemory {
     return this.sortedCache;
   }
 
-  /**
-   * Remove widget from active indices (for DOCKED presentation)
-   */
+  
   removeFromActive(instanceId: string): void {
     const widgetIndex = this.instances.findIndex((w) => w.instanceId === instanceId);
     if (widgetIndex === -1) return;
@@ -162,9 +141,7 @@ export class WidgetInstanceMemory {
     }
   }
 
-  /**
-   * Add widget to active indices
-   */
+  
   addToActive(instanceId: string): void {
     const widgetIndex = this.instances.findIndex((w) => w.instanceId === instanceId);
     if (widgetIndex === -1) return;

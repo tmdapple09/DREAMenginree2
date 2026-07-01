@@ -1,11 +1,4 @@
-/**
- * Ambient type declarations for @rivet-dev/agent-os packages.
- *
- * These packages are not yet available on npm. The declarations here ensure
- * the project type-checks and builds while the real packages are unavailable.
- * When the packages are published, remove these declarations and install the
- * real npm packages instead.
- */
+
 
 declare module '@rivet-dev/agent-os' {
   export interface AgentOsOptions {

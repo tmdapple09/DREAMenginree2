@@ -1,15 +1,6 @@
-/**
- * ForgeEngin — Registry & Status System
- *
- * Tracks the live state of every Engin in DREAMengin. Each Engin registers
- * its existence here, and the ForgeEngin reads from this registry to build
- * the unified status matrix.
- *
- * Architecture: Extends the StandaloneEnginSurface pattern from
- * components/daydream/dream.StandaloneEnginSurface.tsx
- */
 
-/** Centers describe information concerns; they are not services or runtimes. */
+
+
 export const INFORMATION_DOMAINS = [
   'audio',
   'visual',
@@ -23,34 +14,31 @@ export const INFORMATION_DOMAINS = [
 export type InformationDomain = (typeof INFORMATION_DOMAINS)[number];
 
 export interface EnginEntry {
-  /** Canonical machine id, e.g. 'games', 'music', 'code' */
+  
   id: string;
-  /** Display name, e.g. 'GameEngin', 'StarMakerEngin' */
+  
   name: string;
-  /** Emoji icon */
+  
   emoji: string;
-  /** Accent colour (CSS hex) */
+  
   accent: string;
-  /** Description line */
+  
   desc: string;
-  /** Daydream surface route */
+  
   daydreamHref: string;
-  /** Standalone engin route */
+  
   enginHref: string;
-  /** Semantic information domains used by the existing orchestrator. */
+  
   domains: readonly InformationDomain[];
-  /** Capability tags */
+  
   capabilities: readonly string[];
-  /** User-facing creative/tool surfaces may appear in launchers and search. */
+  
   userFacing: boolean;
-  /** Registry kind separates creative Engins from shared infrastructure and internal experiments. */
+  
   kind: 'creative' | 'orchestrator' | 'service' | 'experimental';
 }
 
-/**
- * Canonical registry for creative Engins, orchestrators, shared services,
- * and internal/experimental Engin entries.
- */
+
 export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   {
     id: 'games',
@@ -58,7 +46,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     userFacing: true,
     name: 'GameEngin',
     emoji: '🎮',
-    accent: '#3b82f6', // 2026 updated
+    accent: '#3b82f6', 
     desc: 'Play, compete, build worlds. Babylon.js + WebGPU + ray-tracing.',
     daydreamHref: '/daydream/games',
     enginHref: '/engines/games',
@@ -84,7 +72,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
     userFacing: true,
     name: 'CodeEngin',
     emoji: '💻',
-    accent: '#38bdf8', // 2026 updated
+    accent: '#38bdf8', 
     desc: 'IDE · AI copilot 2026 · multi-cursor · live preview.',
     daydreamHref: '/daydream/code',
     enginHref: '/engines/code',
@@ -159,7 +147,7 @@ export const ENGIN_REGISTRY: readonly EnginEntry[] = [
   },
 ] as const;
 
-/** Just creative Engins. Shared services such as Render are intentionally not listed here. */
+
 export const USER_FACING_ENGINES = ENGIN_REGISTRY.filter((e) => e.userFacing);
 export const CREATIVE_ENGINES = ENGIN_REGISTRY.filter((e) => e.kind === 'creative' && e.userFacing);
 export const INTERNAL_SERVICE_ENGINES = ENGIN_REGISTRY.filter((e) => e.kind === 'service');
@@ -178,24 +166,18 @@ export function getEnginByName(name: string): EnginEntry | null {
 
 export interface ForgeActivityPulse {
   enginId: string;
-  /** ISO timestamp of last activity */
+  
   lastActive: string;
-  /** 0–1 heat intensity (decays over time) */
+  
   heat: number;
-  /** Human-readable label */
+  
   label: string;
 }
 
-/**
- * Storage key for forge activity data in localStorage.
- */
+
 const FORGE_STORAGE_KEY = 'de:forge:activity';
 
-/**
- * Record an activity pulse for a given engin.
- * Persists to localStorage so the forge dashboard survives page reload.
- * Also appends to the intelligence history log for pattern detection.
- */
+
 export function recordForgeActivity(enginId: string, label: string): void {
   if (typeof window === 'undefined') return;
   try {
@@ -208,22 +190,17 @@ export function recordForgeActivity(enginId: string, label: string): void {
       label,
     };
     localStorage.setItem(FORGE_STORAGE_KEY, JSON.stringify(data));
-    // Also feed the history log for intelligence pattern detection
+    
     appendToHistory(enginId, label);
   } catch {
-    // localStorage unavailable — silent
+    
   }
 }
 
-/**
- * Storage key for forge activity history — shared with forgeIntelligence.ts.
- * Both files write to this key; this is the single source-of-truth constant.
- */
+
 export const FORGE_HISTORY_KEY = 'de:forge:history';
 
-/**
- * Internal: append to the history log inline (avoids circular import with forgeIntelligence).
- */
+
 const MAX_HISTORY = 100;
 
 function appendToHistory(enginId: string, label: string): void {
@@ -234,13 +211,11 @@ function appendToHistory(enginId: string, label: string): void {
     if (history.length > MAX_HISTORY) history.splice(0, history.length - MAX_HISTORY);
     localStorage.setItem(FORGE_HISTORY_KEY, JSON.stringify(history));
   } catch {
-    // silent
+    
   }
 }
 
-/**
- * Read all forge activity pulses. Heat decays based on time elapsed.
- */
+
 export function readForgeActivity(): ForgeActivityPulse[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -250,7 +225,7 @@ export function readForgeActivity(): ForgeActivityPulse[] {
     const now = Date.now();
     return Object.values(data).map((pulse) => {
       const elapsed = now - new Date(pulse.lastActive).getTime();
-      // Heat decays to 0 over 30 minutes
+      
       const decay = Math.max(0, 1 - elapsed / (30 * 60 * 1000));
       return { ...pulse, heat: decay };
     });
@@ -259,17 +234,13 @@ export function readForgeActivity(): ForgeActivityPulse[] {
   }
 }
 
-/**
- * Get the forge activity pulse for a specific engin, or null if never used.
- */
+
 export function getForgeHeat(enginId: string): ForgeActivityPulse | null {
   const all = readForgeActivity();
   return all.find((p) => p.enginId === enginId) ?? null;
 }
 
-/**
- * Format a relative time string from an ISO timestamp.
- */
+
 export function formatRelativeTime(isoStr: string): string {
   const elapsed = Date.now() - new Date(isoStr).getTime();
   if (elapsed < 60_000) return 'just now';
@@ -279,26 +250,23 @@ export function formatRelativeTime(isoStr: string): string {
 }
 
 export interface ForgeWorkflow {
-  /** Unique workflow id */
+  
   id: string;
-  /** Display title */
+  
   title: string;
-  /** Emoji icon */
+  
   emoji: string;
-  /** Accent colour */
+  
   accent: string;
-  /** Short description */
+  
   desc: string;
-  /** Ordered engine ids used in this workflow */
+  
   engines: readonly string[];
-  /** Steps the user walks through */
+  
   steps: readonly string[];
 }
 
-/**
- * Pre-built cross-engine workflow templates.  Each describes a multi-engine
- * creative pipeline the user can launch from the Forge dashboard.
- */
+
 export const FORGE_WORKFLOWS: readonly ForgeWorkflow[] = [
   {
     id: 'music-video',

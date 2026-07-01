@@ -3,18 +3,7 @@
 import React, { useCallback } from "react";
 import { useSharedDream } from "./dream.SharedDreamProvider";
 
-/**
- * components/shared-dream/dream.SharedDreamCanvas.tsx — §38 Shared Dream Canvas
- *
- * Split-view canvas:
- *   Top half  — shared view visible to ALL participants
- *   Bottom half — private controls, per-user only
- *
- * Props:
- *   componentId — unique ID for this canvas instance
- *   children    — rendered inside the private (bottom) section
- *   sharedContent — rendered inside the shared (top) section
- */
+
 
 export interface SharedDreamCanvasProps {
   componentId: string;
@@ -44,12 +33,12 @@ export function SharedDreamCanvas({
       data-component-id={componentId}
       className={`flex flex-col w-full h-full overflow-hidden rounded-xl border border-white/10 ${className}`}
     >
-      {/* ── Shared view (top) ─────────────────────────────────────────────── */}
+      
       <div
         className="relative flex-1 min-h-0 bg-black/40 border-b border-white/10 overflow-hidden"
         onPointerMove={handlePointerMove}
       >
-        {/* Shared content */}
+        
         <div className="w-full h-full">
           {sharedContent ?? (
             <div className="flex items-center justify-center h-full text-white/20 text-sm">
@@ -58,7 +47,7 @@ export function SharedDreamCanvas({
           )}
         </div>
 
-        {/* Remote cursors */}
+        
         {cursors.map((c) => (
           <div
             key={c.peerId}
@@ -70,7 +59,7 @@ export function SharedDreamCanvas({
         ))}
       </div>
 
-      {/* ── Private controls (bottom) ─────────────────────────────────────── */}
+      
       <div className="relative flex-shrink-0 min-h-[80px] bg-black/60 overflow-auto">
         <div className="absolute right-2 top-1 text-[9px] text-white/20 font-mono pointer-events-none select-none">
           private

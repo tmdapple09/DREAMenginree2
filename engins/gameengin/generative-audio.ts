@@ -1,23 +1,16 @@
-/**
- * lib/gameengin/generative-audio.ts
- *
- * NEXT-GEN — Generative + adaptive audio.
- *
- *  - AdaptiveMusicEngine — Tension-driven adaptive music graph
- *  - NeuralFoley         — On-device neural foley synthesizer
- */
+
 
 export interface MusicNode {
   id: string;
   loopUrl: string;
-  /** Suggested tension band [min, max] in 0..1. */
+  
   tensionRange: [number, number];
 }
 
 export interface MusicEdge {
   from: string;
   to: string;
-  /** Allowed transition condition. */
+  
   condition?: (tension: number) => boolean;
   crossfadeMs: number;
 }
@@ -28,10 +21,7 @@ export interface MusicConfig {
   startNodeId: string;
 }
 
-/**
- * Adaptive music graph. Caller updates the tension scalar; engine selects the
- * appropriate node and emits transition events with crossfade duration.
- */
+
 export class AdaptiveMusicEngine {
   private readonly nodes: Map<string, MusicNode>;
   private readonly outgoing: Map<string, MusicEdge[]>;
@@ -87,11 +77,11 @@ export type FoleyCategory = 'footstep' | 'impact' | 'rustle' | 'whoosh' | 'splas
 
 export interface FoleyParams {
   category: FoleyCategory;
-  /** Surface or material (e.g. "wood", "metal", "water"). */
+  
   surface: string;
-  /** Velocity / intensity in 0..1. */
+  
   intensity: number;
-  /** Optional seed for deterministic synthesis. */
+  
   seed?: number;
 }
 
@@ -101,11 +91,7 @@ export interface FoleyResult {
   ms: number;
 }
 
-/**
- * Lightweight on-device foley synthesizer. Produces a short PCM buffer per
- * request; uses a deterministic procedural model when no neural backend is
- * attached, so it works fully offline and SSR-safe.
- */
+
 export class NeuralFoley {
   private readonly sampleRate: number;
   private backend: ((p: FoleyParams) => Promise<FoleyResult>) | null = null;

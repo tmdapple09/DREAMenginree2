@@ -1,10 +1,6 @@
 import type { SupabaseClient } from '@/engine/io';
 
-/**
- * lib/collaboration/index.ts — §38 Shared Dream Collaboration
- *
- * Canonical JAMM-N web session model for DREAMengin.
- */
+
 
 export type CollabTransport = 'supabase' | 'webrtc' | 'local';
 
@@ -24,7 +20,7 @@ export type CollabMode =
   | 'collaborative_editor';
 
 export type CollabEventType =
-  // canonical families
+  
   | 'peer_join'
   | 'peer_leave'
   | 'presence_update'
@@ -35,7 +31,7 @@ export type CollabEventType =
   | 'data_packet'
   | 'control_signal'
   | 'mode_change'
-  // backward-compatible
+  
   | 'playhead'
   | 'audio_offer'
   | 'audio_answer'

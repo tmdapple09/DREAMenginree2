@@ -1,7 +1,4 @@
-/**
- * AgentOS host tools are intentionally NOT bound to the deployed DREAMengin source tree.
- * Public CodeEngin sessions must use /api/codeengin/* with an owned workspaceId.
- */
+
 export const codeEnginHostTools = {
   getFileContent: async (): Promise<string> => 'CodeEngin AgentOS file access requires an explicit user workspaceId. The platform source tree is not exposed.',
   writeFile: async (): Promise<string> => 'CodeEngin AgentOS writes are disabled until an owned user workspace is bound.',

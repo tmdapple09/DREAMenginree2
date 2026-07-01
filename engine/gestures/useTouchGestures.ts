@@ -7,40 +7,17 @@ import {
     type GestureConfig,
 } from './touchGestures';
 
-/**
- * lib/gestures/useTouchGestures.ts
- *
- * Phase 9 §6: React hook for the touch gesture library.
- *
- * Provides pinch-to-zoom, two-finger rotate, and three-finger swipe
- * detection on any element ref, integrated with the dual runtime.
- *
- * Usage:
- *   const ref = useRef<HTMLDivElement>(null);
- *   useTouchGestures(ref, {
- *     onPinch: (e) => console.log('pinch scale:', e.scale),
- *     onRotate: (e) => console.log('rotation:', e.rotation),
- *     onSwipe: (e) => {
- *       if (e.type === 'swipe-left' && e.fingers >= 3) switchEngin('next');
- *     },
- *   });
- */
 
-/**
- * useTouchGestures — attach gesture recognition to a DOM element.
- *
- * @param ref - React ref to the target element
- * @param callbacks - gesture event handlers
- * @param config - optional tuning parameters
- */
+
+
 export function useTouchGestures(
   ref: RefObject<HTMLElement | null>,
   callbacks: GestureCallbacks,
   config?: GestureConfig,
 ): void {
-  // Stabilise callbacks across renders without requiring the consumer to
-  // memoise. We store the latest callbacks in a ref and forward through a
-  // stable wrapper object so the GestureRecogniser never re-binds.
+  
+  
+  
   const cbRef = useRef(callbacks);
   cbRef.current = callbacks;
 

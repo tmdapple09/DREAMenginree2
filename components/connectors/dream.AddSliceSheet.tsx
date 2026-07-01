@@ -3,13 +3,13 @@
 import type { ConnectorDef, SliceTypeDef } from '@/engine/connectors/connectorRegistry';
 import { useState } from 'react';
 
-// components/connectors/dream.AddSliceSheet.tsx
-// "Add as Feed Slice" flow (req 51-60)
-//
-// Steps: service → slice type → preview → add (req 55)
-// Max 5 slice types shown (req 56)
-// Preview shows exactly what will appear (req 57)
-// Removing a slice does NOT disconnect the connector (req 60)
+
+
+
+
+
+
+
 
 export interface FeedSlice {
   id: string;
@@ -37,7 +37,7 @@ export default function AddSliceSheet({
   const [step, setStep] = useState<Step>('pick');
   const [selected, setSelected] = useState<SliceTypeDef | null>(null);
 
-  // Limit to 5 slice types (req 56)
+  
   const available = connector.sliceTypes.slice(0, 5);
 
   function handlePick(st: SliceTypeDef ){
@@ -71,7 +71,7 @@ export default function AddSliceSheet({
         style={{ width: '100%', maxWidth: 540, padding: '20px 16px 36px' }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {step === 'preview' && (
@@ -99,7 +99,7 @@ export default function AddSliceSheet({
           </button>
         </div>
 
-        {/* Pick step */}
+        
         {step === 'pick' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {available.map((st) => {
@@ -132,10 +132,10 @@ export default function AddSliceSheet({
           </div>
         )}
 
-        {/* Preview step (req 57 — shows exactly what will appear) */}
+        
         {step === 'preview' && selected && (
           <div>
-            {/* Preview card (req 57) */}
+            
             <div style={{
               padding: 16, borderRadius: 16,
               border: '1.5px solid rgba(42,138,184,0.3)',
@@ -151,7 +151,7 @@ export default function AddSliceSheet({
                   <div style={{ fontSize: 11, color: 'var(--de-text-dim)' }}>Feed slice</div>
                 </div>
               </div>
-              {/* Skeleton preview rows to show the shape of content */}
+              
               {[80, 100, 65].map((w, i: number) => (
                 <div key={i} style={{
                   height: 10, borderRadius: 5, marginBottom: 6,

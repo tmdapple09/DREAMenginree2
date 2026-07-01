@@ -3,12 +3,7 @@
 import { Calculator, DollarSign, Plus, Trash2, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * CampaignsPanel — Campaign ROI calculator and manager for the Brand Engine app.
- *
- * Live CPM/CPC/ROI calculations, campaign list management.
- * Lives at /engines/brand/campaigns.
- */
+
 
 interface Campaign {
   id: string;
@@ -90,7 +85,7 @@ export default function CampaignsPanel( ){
           </div>
         </div>
 
-        {/* ROI Calculator */}
+        
         {showCalc && (
           <div className="mb-6 p-4 rounded-xl bg-white/[0.04] border border-[#f472b6]/20">
             <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
@@ -140,7 +135,7 @@ export default function CampaignsPanel( ){
           </div>
         )}
 
-        {/* New campaign form */}
+        
         {showNew && (
           <div className="mb-5 p-4 rounded-xl bg-white/[0.04] border border-[#f472b6]/20 flex gap-3">
             <input
@@ -160,7 +155,7 @@ export default function CampaignsPanel( ){
           </div>
         )}
 
-        {/* Campaign list */}
+        
         <div className="space-y-3">
           {campaigns.map((c) => {
             const m = calcMetrics(c);

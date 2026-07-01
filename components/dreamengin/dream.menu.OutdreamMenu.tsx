@@ -8,7 +8,7 @@ interface OutdreamMenuProps {
   onClose: () => void;
 }
 
-// OutdreamMenu: the Daydreams navigation menu for outer-shell node navigation.
+
 export default function OutdreamMenu({ onClose }: OutdreamMenuProps) {
   const { node, dispatch } = useDreamNav();
 
@@ -19,7 +19,7 @@ export default function OutdreamMenu({ onClose }: OutdreamMenuProps) {
   };
 
   const dayDreams = [
-    // Map day dreams to outer-shell nodes. Navigation is generated from τ.
+    
     { id: 'music', label: 'Music Studio / Releases', node: '1b' as const },
     { id: 'lab', label: 'Lab: Notes / Simulator', node: '2b' as const },
     { id: 'games', label: 'Games: Library / Play', node: '5b' as const },

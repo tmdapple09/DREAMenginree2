@@ -2,20 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-/**
- * PortfolioOptimizationScene
- *
- * Canvas 2D background animation for the landing page.
- * Visualises a Markowitz / QUBO portfolio optimisation as an orbital
- * node-graph: a central QPO hub surrounded by labelled asset nodes on
- * elliptical orbits, connected by animated quantum-circuit traces and
- * flowing data-particles.
- *
- * Architecture justification: render-on-demand RAF loop, no setInterval,
- * cleanup on unmount — docs/ARCHITECTURE.md §10.
- * Performance impact: ~55 lightweight 2-D draw calls per frame, GPU-idle
- * between frames.  Freezes when tab is backgrounded (RAF auto-throttles).
- */
+
 
 const BLUE    = '#2a8ab8';
 const GOLD    = '#c8981a';
@@ -34,7 +21,7 @@ interface AssetNode {
   orbitRadius: number;
   orbitSpeed:  number;
   orbitAngle:  number;
-  tiltY:       number;   // y-compression for ellipse (0–1)
+  tiltY:       number;   
   color:       string;
   ticker:      string;
   pulsePhase:  number;
@@ -44,8 +31,8 @@ interface AssetNode {
 }
 
 interface DataParticle {
-  from:     number;   // index into nodes[]  (or -1 = hub)
-  to:       number;   // index into nodes[]  (or -1 = hub)
+  from:     number;   
+  to:       number;   
   progress: number;
   speed:    number;
   color:    string;
@@ -158,7 +145,7 @@ export default function PortfolioOptimizationScene( ){
         ctx.stroke();
       }
 
-      // Soft aurora centre glow
+      
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, base * 0.55);
       grd.addColorStop(0,   'rgba(42,138,184,0.06)');
       grd.addColorStop(0.5, 'rgba(139,92,246,0.04)');
@@ -180,7 +167,7 @@ export default function PortfolioOptimizationScene( ){
       ctx.fillStyle = grd;
       ctx.fill();
 
-      // White disc
+      
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.fillStyle   = 'rgba(255,255,255,0.95)';
@@ -189,7 +176,7 @@ export default function PortfolioOptimizationScene( ){
       ctx.lineWidth   = 2;
       ctx.stroke();
 
-      // Labels
+      
       ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
       ctx.font         = `bold ${Math.round(r * 0.46)}px system-ui,sans-serif`;
@@ -263,7 +250,7 @@ export default function PortfolioOptimizationScene( ){
         ctx.fillStyle = hex2rgba(p.color, alpha);
         ctx.fill();
 
-        // Trailing glow
+        
         const tgrd = ctx.createRadialGradient(px, py, 0, px, py, 5);
         tgrd.addColorStop(0,   hex2rgba(p.color, 0.25));
         tgrd.addColorStop(1,   hex2rgba(p.color, 0.00));
@@ -275,7 +262,7 @@ export default function PortfolioOptimizationScene( ){
         p.progress += p.speed;
         if (p.progress >= 1) {
           p.progress = 0;
-          // Reverse direction
+          
           const tmp = p.from;
           p.from = p.to;
           p.to   = tmp;
@@ -292,7 +279,7 @@ export default function PortfolioOptimizationScene( ){
       const pulse  = 1 + 0.10 * Math.sin(time * 1.1 + n.pulsePhase);
       const r      = n.nodeSize * pulse;
 
-      // Outer glow
+      
       const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 3.2);
       grd.addColorStop(0,   hex2rgba(n.color, 0.45));
       grd.addColorStop(0.5, hex2rgba(n.color, 0.12));
@@ -302,7 +289,7 @@ export default function PortfolioOptimizationScene( ){
       ctx.fillStyle = grd;
       ctx.fill();
 
-      // White disc
+      
       ctx.beginPath();
       ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
       ctx.fillStyle   = 'rgba(255,255,255,0.95)';
@@ -311,7 +298,7 @@ export default function PortfolioOptimizationScene( ){
       ctx.lineWidth   = 1.6;
       ctx.stroke();
 
-      // Ticker
+      
       const fs = Math.max(6, Math.round(r * 0.78));
       ctx.font         = `bold ${fs}px system-ui,sans-serif`;
       ctx.fillStyle    = n.color;

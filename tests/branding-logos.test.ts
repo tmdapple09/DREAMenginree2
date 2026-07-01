@@ -20,13 +20,13 @@ describe('getRandomLogo', () => {
   });
 
   it('can return a different value after cache reset', () => {
-    // Run multiple resets to give the random a chance to differ
+    
     const seen = new Set<string>();
     for (let i = 0; i < 30; i++) {
       resetLogoCache();
       seen.add(getRandomLogo());
     }
-    // With 30 trials over 3 logos the probability of seeing only 1 is (1/3)^29 ≈ 0
+    
     expect(seen.size).toBeGreaterThan(1);
   });
 

@@ -33,26 +33,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/**
- * DreamRSection — The DreamR Station inside HomeDream.
- *
- * Five neomorphic tabs, each surfacing a real dreamengin capability under
- * the DreamR "Human Media Platform" brand:
- *
- *  📡 Feed     — Vertical snap-scroll DreamRFeed (swipe-left for creator panel)
- *  ✦  Create   — Cross-platform post composer (text, image, video, audio)
- *  🧬 Platform — Unified creator identity: profile card + all connected networks
- *  📊 Signal   — Real analytics (views, likes, followers, comments) + time range
- *  🌟 Journey  — Creative dot-trail: your history across dreamengin surfaces
- *
- * The Journey tab is the uniquely dreamengin feature: no other social platform
- * shows you the creative history BEHIND your content. Your music sessions, game
- * sessions, lab experiments, code commits — all dots on your DreamR timeline.
- *
- * Visual language: neomorphism on pearl-sky base (#e8eff6),
- * sky-blue (#5ba8d4) and gold (#c8981a) accents,
- * Plus Jakarta Sans (--font-dreamr) throughout.
- */
+
 
 const DR = {
   bg: "#e8eff6",
@@ -106,7 +87,7 @@ interface AnalyticsData {
 }
 
 interface DreamRSectionProps {
-  /** Authenticated account identity is authoritative even when profile hydration is delayed. */
+  
   userId?: string;
   profile: ProfileLike | null;
   initialPosts: FeedPost[];
@@ -121,7 +102,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "journey", label: "Journey", icon: <MapPin size={16} /> },
 ];
 
-// Known connector platform metadata for the Platform tab
+
 const PLATFORM_META: Record<
   string,
   { emoji: string; label: string; color: string }
@@ -192,7 +173,7 @@ function CreateTab({
     setSending(true);
     try {
       let mediaUrl: string | null = null;
-      // Upload media if present (image/video takes precedence over audio)
+      
       const uploadTarget = mediaFile ?? audioFile;
       if (uploadTarget) {
         const bucket = uploadTarget.type.startsWith("image/")
@@ -228,7 +209,7 @@ function CreateTab({
       setAudioFile(null);
       setTimeout(() => setSent(false), 2500);
     } catch {
-      /* non-critical */
+      
     } finally {
       setSending(false);
     }
@@ -251,7 +232,7 @@ function CreateTab({
         fontFamily: DR.font,
       }}
     >
-      {/* Header */}
+      
       <div
         style={{
           display: "flex",
@@ -305,7 +286,7 @@ function CreateTab({
         </div>
       </div>
 
-      {/* Text area */}
+      
       <div
         style={{
           background: DR.bg,
@@ -356,7 +337,7 @@ function CreateTab({
         </div>
       </div>
 
-      {/* Media preview */}
+      
       {mediaPreview && (
         <div
           style={{
@@ -405,7 +386,7 @@ function CreateTab({
         </div>
       )}
 
-      {/* Audio attachment preview */}
+      
       {audioFile && (
         <div
           style={{
@@ -466,7 +447,7 @@ function CreateTab({
         </div>
       )}
 
-      {/* Toolbar row */}
+      
       <div
         style={{
           display: "flex",
@@ -475,7 +456,7 @@ function CreateTab({
           flexWrap: "wrap",
         }}
       >
-        {/* Media buttons */}
+        
         {[
           {
             ref: imgRef,
@@ -524,7 +505,7 @@ function CreateTab({
           </button>
         ))}
 
-        {/* Audio button — for StarMaker tracks */}
+        
         <button
           type="button"
           onClick={() => audioRef.current?.click()}
@@ -559,7 +540,7 @@ function CreateTab({
           />
         </button>
 
-        {/* Visibility */}
+        
         <select
           value={vis}
           onChange={(e) => setVis(e.target.value as typeof vis)}
@@ -584,7 +565,7 @@ function CreateTab({
         </select>
       </div>
 
-      {/* Post button */}
+      
       <button
         type="button"
         onClick={handlePost}
@@ -632,7 +613,7 @@ function CreateTab({
         )}
       </button>
 
-      {/* Cross-platform note */}
+      
       <div
         style={{
           textAlign: "center",
@@ -699,7 +680,7 @@ function PlatformTab({
         fontFamily: DR.font,
       }}
     >
-      {/* Profile identity card */}
+      
       <div
         style={{
           background: DR.bg,
@@ -787,7 +768,7 @@ function PlatformTab({
           </div>
         </div>
 
-        {/* Stats row */}
+        
         <div
           style={{
             display: "grid",
@@ -836,7 +817,7 @@ function PlatformTab({
           ))}
         </div>
 
-        {/* Action buttons */}
+        
         <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
           <button
             type="button"
@@ -879,7 +860,7 @@ function PlatformTab({
         </div>
       </div>
 
-      {/* Connected platforms */}
+      
       <div>
         <div
           style={{
@@ -1003,7 +984,7 @@ function PlatformTab({
         )}
       </div>
 
-      {/* Suggested to connect */}
+      
       {notConnected.length > 0 && (
         <div>
           <div
@@ -1075,10 +1056,10 @@ function PlatformTab({
   );
 }
 
-// Privacy model:
-//   VIEWS   = the only public metric, shown on feed cards.
-//   All other metrics (likes, comments, followers) = private to this tab only.
-//   No setting to make them public. No count displayed anywhere else.
+
+
+
+
 
 function SignalTab() {
   type Range = "7d" | "30d" | "90d";
@@ -1099,8 +1080,8 @@ function SignalTab() {
     load(range);
   }, [range, load]);
 
-  // Views is the public metric — shown first, full-width, distinct styling.
-  // Likes / Comments / Followers are private — shown below with a lock badge.
+  
+  
   const privateMetrics = data
     ? [
         {
@@ -1127,7 +1108,7 @@ function SignalTab() {
       ]
     : [];
 
-  // Engagement rate (likes + comments / views * 100)
+  
   const engRate =
     data && data.total_views > 0
       ? (
@@ -1146,7 +1127,7 @@ function SignalTab() {
         fontFamily: DR.font,
       }}
     >
-      {/* Header + range switcher */}
+      
       <div
         style={{
           display: "flex",
@@ -1208,7 +1189,7 @@ function SignalTab() {
         </div>
       </div>
 
-      {/* ── VIEWS — the public metric, featured full-width ── */}
+      
       {loading ? (
         <div
           style={{
@@ -1304,7 +1285,7 @@ function SignalTab() {
         </div>
       ) : null}
 
-      {/* ── Engagement rate ── */}
+      
       {engRate !== null && (
         <div
           style={{
@@ -1371,9 +1352,9 @@ function SignalTab() {
         </div>
       )}
 
-      {/* ── Private metrics — creator-only section ── */}
+      
       <div>
-        {/* Section header with lock */}
+        
         <div
           style={{
             display: "flex",
@@ -1505,7 +1486,7 @@ function SignalTab() {
         )}
       </div>
 
-      {/* Refresh */}
+      
       <button
         type="button"
         onClick={() => load(range)}
@@ -1529,7 +1510,7 @@ function SignalTab() {
         <RefreshCw size={13} /> Refresh Signal
       </button>
 
-      {/* ── How DreamR decides what you see ── */}
+      
       <div
         style={{
           background: DR.bg,

@@ -1,5 +1,5 @@
-// lib/ai/groq.ts
-// Minimal Groq (OpenAI-compatible) chat client for server-side use.
+
+
 
 export type GroqRole = 'system' | 'user' | 'assistant';
 
@@ -15,7 +15,7 @@ export interface GroqChatOptions {
   max_tokens?: number;
 }
 
-// Typed shape of a successful Groq API response.
+
 interface GroqResponse {
   choices: Array<{
     message: {
@@ -44,7 +44,7 @@ function parseGroqResponse(json: unknown): string {
 export async function groqChat(opts: GroqChatOptions): Promise<string> {
   const apiKey = process.env.GROQ_API_KEY;
 
-  // Never throw at import time (breaks builds). If missing, fail softly.
+  
   if (!apiKey) {
     throw new Error('GROQ_API_KEY is not set');
   }
@@ -72,11 +72,7 @@ export async function groqChat(opts: GroqChatOptions): Promise<string> {
   return parseGroqResponse(json);
 }
 
-/**
- * Health-check ping — returns true when the Groq API is reachable and the
- * key is valid, false otherwise.  Never throws.  Used by IDARi's health
- * monitor (req #86).
- */
+
 export async function groqHealthCheck(): Promise<boolean> {
   try {
     await groqChat({

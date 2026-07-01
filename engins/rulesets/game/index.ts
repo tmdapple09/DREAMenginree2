@@ -1,8 +1,4 @@
-/**
- * lib/engins/game/index.ts
- *
- * Barrel export for the GameEngin rule-set.
- */
+
 
 export {
     GAME_ENGIN_RULE_SET,

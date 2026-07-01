@@ -1,16 +1,4 @@
-/**
- * tests/coercion-table.test.ts — Pass 6
- *
- * Unit tests for lib/runtime/coercionTable.ts
- *
- * Verifies:
- *   - coerceRawPayload handles all starter types
- *   - MIME type → DreamDropType mapping is correct
- *   - URL detection works
- *   - engin-state shape is recognised
- *   - classifyDrop returns human-readable labels
- *   - DreamDrop timestamps are set
- */
+
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -55,7 +43,7 @@ describe('coerceRawPayload', () => {
 
   it('coerces null/undefined to unknown', () => {
     const result = coerceRawPayload(null);
-    expect(result.type).toBe('text/code'); // '' → not a URL → text/code
+    expect(result.type).toBe('text/code'); 
   });
 
   it('coerces an unknown object shape to unknown', () => {

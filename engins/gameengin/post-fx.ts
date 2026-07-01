@@ -1,41 +1,15 @@
 import type { Camera, Scene } from '@babylonjs/core';
 import type { PerformanceBudget } from './core';
 
-/**
- * lib/gameengin/post-fx.ts
- *
- * POST-PROCESSING PIPELINE — 2026 REALISTIC GRAPHICS UPGRADE
- *
- * Drop-in post-FX manager for Babylon.js scenes.
- * Provides the signature visual quality of an elite game engine:
- *
- *  • Neon bloom / glow layer     — gorgeous for neon/sci-fi aesthetics
- *  • SSAO (Screen-Space AO)      — realistic contact shadows and depth
- *  • Depth of Field (bokeh)      — cinematic focus pull
- *  • Screen-Space Reflections    — real-time reflection on PBR surfaces
- *  • Sharpen pass                — crisp detail recovery after TAA/FXAA
- *  • Motion blur                 — sells speed effortlessly
- *  • Vignette + colour grading   — cinematic depth
- *  • Tone mapping (ACES)         — physically-accurate HDR to LDR
- *  • Chromatic aberration pass   — adds subpixel fringe to glow sources
- *  • Scan-lines overlay          — retro-futurist CRT filter (optional)
- *
- * Usage:
- *   const fx = new PostFXManager(scene, camera);
- *   await fx.init();
- *   fx.enableBloom(0.5, 0.3, 64);
- *   fx.enableSSAO();
- *   fx.applyBudget(budget);
- *   fx.dispose();
- */
+
 
 export class PostFXManager {
   private scene: Scene;
   private camera: Camera;
-  private pipeline: unknown = null; // DefaultRenderingPipeline
-  private glowLayer: unknown = null; // GlowLayer
-  private ssaoPipeline: unknown = null; // SSAO2RenderingPipeline
-  private ssrPipeline: unknown = null; // SSRRenderingPipeline
+  private pipeline: unknown = null; 
+  private glowLayer: unknown = null; 
+  private ssaoPipeline: unknown = null; 
+  private ssrPipeline: unknown = null; 
   private disposed = false;
 
   constructor(scene: Scene, camera: Camera) {
@@ -43,75 +17,72 @@ export class PostFXManager {
     this.camera = camera;
   }
 
-  /**
-   * Initialise the full Babylon.js DefaultRenderingPipeline.
-   * This is async because it needs dynamic imports (SSR safety).
-   */
+  
   async init(): Promise<void> {
     try {
       const { DefaultRenderingPipeline } = await import('@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline');
       const pipe = new DefaultRenderingPipeline(
         'dreamEnginPipeline',
-        true,   // HDR
+        true,   
         this.scene,
         [this.camera],
       );
       this.pipeline = pipe;
 
-      // MSAA anti-aliasing (4x default for crisp edges)
+      
       pipe.samples = 4;
       pipe.fxaaEnabled = true;
 
-      // Bloom defaults — beautiful neon glow
+      
       pipe.bloomEnabled = true;
       pipe.bloomWeight = 0.4;
       pipe.bloomKernel = 64;
       pipe.bloomScale = 0.5;
       pipe.bloomThreshold = 0.2;
 
-      // Vignette
+      
       pipe.imageProcessingEnabled = true;
       pipe.imageProcessing.vignetteEnabled = true;
       pipe.imageProcessing.vignetteWeight = 4;
       pipe.imageProcessing.vignetteCameraFov = 0.5;
-      pipe.imageProcessing.vignetteBlendMode = 1; // multiply
+      pipe.imageProcessing.vignetteBlendMode = 1; 
       pipe.imageProcessing.vignetteColor = new (await import('@babylonjs/core')).Color4(0, 0, 0, 0);
 
-      // Tone mapping — ACES filmic for realistic HDR
+      
       pipe.imageProcessing.toneMappingEnabled = true;
-      pipe.imageProcessing.toneMappingType = 1; // ACES
+      pipe.imageProcessing.toneMappingType = 1; 
 
-      // Colour grading — slight cool tint for cinematic feel
+      
       pipe.imageProcessing.contrast = 1.15;
       pipe.imageProcessing.exposure = 1.05;
 
-      // Chromatic aberration
+      
       pipe.chromaticAberrationEnabled = true;
       pipe.chromaticAberration.aberrationAmount = 15;
 
-      // Grain (very light)
+      
       pipe.grainEnabled = true;
       pipe.grain.intensity = 6;
       pipe.grain.animated = true;
 
-      // Sharpen pass — recover detail after FXAA/bloom softening
+      
       pipe.sharpenEnabled = true;
       pipe.sharpen.edgeAmount = 0.25;
       pipe.sharpen.colorAmount = 1.0;
 
-      // Depth of field — off by default, enabled in ultra tier
+      
       pipe.depthOfFieldEnabled = false;
-      pipe.depthOfFieldBlurLevel = 1; // low blur level by default
+      pipe.depthOfFieldBlurLevel = 1; 
       pipe.depthOfField.focalLength = 85;
       pipe.depthOfField.fStop = 2.8;
       pipe.depthOfField.focusDistance = 2000;
     } catch (err: unknown) {
-      // Babylon post-process not available (SSR or old browser) — degrade gracefully
+      
       console.warn('[PostFX] DefaultRenderingPipeline unavailable:', err);
     }
   }
 
-  /** Enable SSAO2 (Screen-Space Ambient Occlusion) for realistic contact shadows. */
+  
   async enableSSAO(radius = 2.0, totalStrength = 1.2, samples = 16): Promise<void> {
     try {
       const { SSAO2RenderingPipeline } = await import('@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssao2RenderingPipeline');
@@ -132,7 +103,7 @@ export class PostFXManager {
     }
   }
 
-  /** Enable Screen-Space Reflections for realistic PBR surface reflections. */
+  
   async enableSSR(strength = 1.0, reflectionSpecularFalloffExponent = 3): Promise<void> {
     try {
       const { SSRRenderingPipeline } = await import('@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline');
@@ -151,7 +122,7 @@ export class PostFXManager {
     }
   }
 
-  /** Add a glow layer (separate from bloom pipeline — stacks nicely for neon). */
+  
   async enableGlow(intensity = 0.7, blurKernelSize = 32): Promise<void> {
     try {
       const { GlowLayer } = await import('@babylonjs/core/Layers/glowLayer');
@@ -207,10 +178,7 @@ export class PostFXManager {
     if (pipe && 'samples' in pipe) pipe.samples = samples;
   }
 
-  /**
-   * Adapt post-FX quality to the current engine performance budget.
-   * Called by the engine when the adaptive quality tier changes.
-   */
+  
   applyBudget(budget: PerformanceBudget): void {
     if (this.disposed) return;
     const enabled = budget.postFxEnabled;
@@ -251,7 +219,7 @@ export class PostFXManager {
       }
     }
 
-    // SSAO quality scaling
+    
     const ssao = this.ssaoPipeline as { radius?: number; totalStrength?: number; samples?: number } | null;
     if (ssao) {
       if (budget.ssaoEnabled) {
@@ -263,7 +231,7 @@ export class PostFXManager {
       }
     }
 
-    // SSR quality scaling
+    
     const ssr = this.ssrPipeline as { strength?: number; maxSteps?: number } | null;
     if (ssr) {
       if (budget.ssrEnabled) {

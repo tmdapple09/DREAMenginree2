@@ -29,7 +29,7 @@ export default function EditProfileDreamPage( ){
   const [initialWidgets, setInitialWidgets] = useState<ProfileDream[]>(DEFAULT_DREAMS);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  // isPublishing tracks the explicit share/publish action (distinct from private save)
+  
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [publishSuccess, setPublishSuccess] = useState(false);
@@ -55,8 +55,8 @@ export default function EditProfileDreamPage( ){
         };
         setProfile(loadedProfile);
 
-        // Load Dream projection from Supabase (server-persisted projection state)
-        // Fall back to localStorage for migration compatibility, then DEFAULT_DREAMS
+        
+        
         let loadedDreams: ProfileDream[] = DEFAULT_DREAMS;
         if (data?.profile_dream_widgets && Array.isArray(data.profile_dream_widgets) && data.profile_dream_widgets.length > 0) {
           loadedDreams = data.profile_dream_widgets as ProfileDream[];
@@ -64,7 +64,7 @@ export default function EditProfileDreamPage( ){
           try {
             const saved = localStorage.getItem('de-profile-widget-order');
             if (saved) loadedDreams = JSON.parse(saved);
-          } catch { /* noop */ }
+          } catch {  }
         }
 
         setWidgets(loadedDreams);
@@ -72,7 +72,7 @@ export default function EditProfileDreamPage( ){
         setInitialWidgets(loadedDreams);
         setIsLoading(false);
       } catch {
-        // Supabase unavailable or auth error — redirect to login
+        
         router.push('/login');
       }
     })();
@@ -84,12 +84,7 @@ export default function EditProfileDreamPage( ){
     JSON.stringify(widgets) !== JSON.stringify(initialWidgets)
   );
 
-  /**
-   * Private save — persists profile and Dream Window config to the database
-   * WITHOUT changing any visibility records. This is a draft save only.
-   * Per Phase 6 spec points 14–15: draft state must never appear on ViewProfile
-   * before the user saves AND explicitly chooses to share.
-   */
+  
   const handleSave = useCallback(async () => {
     setIsSaving(true); setSaveError(''); setPublishSuccess(false);
     try {
@@ -112,7 +107,7 @@ export default function EditProfileDreamPage( ){
         setSaveError((data as { error?: string }).error || 'Failed to save.');
         return;
       }
-      // Persist widget config to profile (widget_config column) and localStorage as backup
+      
       await fetch('/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -120,9 +115,9 @@ export default function EditProfileDreamPage( ){
       });
       localStorage.setItem('de-profile-widget-order', JSON.stringify(widgets));
 
-      // On a private save, detect Dream Windows whose visibility changed and log
-      // VISIBILITY_CHANGE events (no update_mapping — draft not yet published).
-      // Per dreamengin_phase6.md point 7: log ALL privacy-adjacent decisions.
+      
+      
+      
       if (initialWidgets.length > 0) {
         const changedWidgets = widgets.filter((w) => {
           const prev = initialWidgets.find((iw) => iw.id === w.id);
@@ -141,7 +136,7 @@ export default function EditProfileDreamPage( ){
                   content_type: 'dream_window',
                   from_visibility: prev?.visibility ?? 'private',
                   to_visibility: w.visibility ?? 'private',
-                  update_mapping: false, // draft save — not yet published
+                  update_mapping: false, 
                 }),
               });
             })
@@ -151,27 +146,22 @@ export default function EditProfileDreamPage( ){
 
       setInitialProfile(profile);
       setInitialWidgets(widgets);
-      // Private save — stay on EditProfileDream, not navigate to ViewProfile.
-      // The user must explicitly publish to update their public profile.
+      
+      
     } catch {
       setSaveError('Network error. Please try again.');
     } finally {
       setIsSaving(false);
     }
-  // Note: initialWidgets is reset to `widgets` after each save (line ~150),
-  // so the next diff always computes changes relative to the last saved snapshot.
+  
+  
   }, [profile, widgets, initialWidgets]);
 
-  /**
-   * Explicit publish — saves the profile AND logs a BoogieMan privacy event
-   * to update the visibility_mappings for publicly visible Dream Windows.
-   * Per Phase 6 spec points 15, 17: only an explicit share action updates
-   * the public projection. This is the "Publish to Profile" action.
-   */
+  
   const handlePublish = useCallback(async () => {
     setIsPublishing(true); setSaveError(''); setPublishSuccess(false);
     try {
-      // Step 1: Save the draft first (private save).
+      
       const saveRes = await fetch('/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -193,13 +183,13 @@ export default function EditProfileDreamPage( ){
         return;
       }
 
-      // Step 2: Log the PROFILE_PUBLISH event through TheBoogieMan privacy-event endpoint.
-      // This updates visibility_mappings for all publicly-visible Dream Windows.
+      
+      
       const publicWidgets = widgets.filter(
         (w) => w.visibility != null && (w.visibility === 'public' || w.visibility === 'followers')
       );
 
-      // Log a single PROFILE_PUBLISH event for the profile itself.
+      
       await fetch('/api/ai/boogieman/privacy-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -212,7 +202,7 @@ export default function EditProfileDreamPage( ){
         }),
       });
 
-      // Log EXPLICIT_SHARE events for each publicly visible Dream Window.
+      
       await Promise.allSettled(
         publicWidgets.map((w) =>
           fetch('/api/ai/boogieman/privacy-event', {
@@ -233,7 +223,7 @@ export default function EditProfileDreamPage( ){
       setInitialProfile(profile);
       setInitialWidgets(widgets);
       setPublishSuccess(true);
-      // Navigate to ViewProfile to confirm the published output.
+      
       router.push('/view-profile');
     } catch {
       setSaveError('Network error during publish. Please try again.');
@@ -266,8 +256,8 @@ export default function EditProfileDreamPage( ){
     );
   }
 
-  // Info tab renders on light glass cards (#fff at 70% opacity), so inputs need
-  // dark text to be readable against that background.
+  
+  
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 14px', borderRadius: 12,
     background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.12)',
@@ -286,7 +276,7 @@ export default function EditProfileDreamPage( ){
       paddingBottom: 100,
       position: 'relative',
     }}>
-      {/* ── Inline header (not sticky — DreamDMBar is the persistent navigation) ── */}
+      
       <header style={{
         background: 'rgba(7,14,28,0.85)',
         backdropFilter: 'blur(24px)',
@@ -316,7 +306,7 @@ export default function EditProfileDreamPage( ){
               Arrange Dreams and choose what View Profile exposes
             </p>
           </div>
-          {/* View Profile preview button — private builder previews public output */}
+          
           {profile.handle && (
             <Link
               href="/view-profile"
@@ -336,7 +326,7 @@ export default function EditProfileDreamPage( ){
             </Link>
           )}
 
-          {/* Save Draft — private save only, no visibility change (Phase 6 §15) */}
+          
           <button
             onClick={handleSave}
             disabled={isSaving || isPublishing || !isDirty}
@@ -355,7 +345,7 @@ export default function EditProfileDreamPage( ){
             {isDirty ? 'Save Draft' : 'Saved'}
           </button>
 
-          {/* Update Public View — explicit share action, updates visibility_mappings */}
+          
           <button
             onClick={handlePublish}
             disabled={isSaving || isPublishing}
@@ -377,7 +367,7 @@ export default function EditProfileDreamPage( ){
           </button>
         </div>
 
-        {/* Tab bar — inline, scrolls with page */}
+        
         <div style={{ display: 'flex', gap: 0, paddingBottom: 2 }}>
           {(['widgets', 'info'] as const).map((tab) => (
             <button
@@ -407,7 +397,7 @@ export default function EditProfileDreamPage( ){
         </div>
       )}
 
-      {/* Publish success banner — shown briefly after explicit publish */}
+      
       {publishSuccess && (
         <div style={{ margin: '12px 16px 0', padding: '10px 14px', borderRadius: 12,
           background: 'rgba(200,152,26,0.10)', border: '1px solid rgba(200,152,26,0.30)',
@@ -418,7 +408,7 @@ export default function EditProfileDreamPage( ){
         </div>
       )}
 
-      {/* ── Widgets tab ── */}
+      
       {activeTab === 'widgets' && (
         <div style={{ padding: '16px 14px' }}>
           <ProfileWidgetGrid
@@ -434,11 +424,11 @@ export default function EditProfileDreamPage( ){
         </div>
       )}
 
-      {/* ── Info tab ── */}
+      
       {activeTab === 'info' && (
         <div style={{ padding: '16px 14px' }}>
 
-          {/* Avatar row */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.70)',
             backdropFilter: 'blur(20px)',
@@ -483,7 +473,7 @@ export default function EditProfileDreamPage( ){
             </div>
           </div>
 
-          {/* Fields panel */}
+          
           <div style={{
             background: 'rgba(255,255,255,0.70)',
             backdropFilter: 'blur(20px)',

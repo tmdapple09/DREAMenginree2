@@ -1,21 +1,7 @@
 import { normaliseGitHub } from '@/engine/connectors/normalise';
 import type { UnifiedFeedItem } from '@/types/connector';
 
-/**
- * lib/connectors/providers/github.ts
- *
- * Phase 5 — GitHub provider (Tier 1)
- *
- * Required credentials (stored in connector_accounts.token_blob):
- *   { access_token: string }
- *
- * The access_token is a GitHub Personal Access Token (classic or fine-grained)
- * with at minimum `read:user` scope.
- *
- * No environment variables required — user provides their own PAT.
- *
- * ARCHITECTURE.md §3 — Logic layer; no DB calls, no React imports.
- */
+
 
 const GH_API = 'https://api.github.com';
 
@@ -28,10 +14,7 @@ interface GitHubUser {
   name?: string;
 }
 
-/**
- * Verify credentials by calling GET /user.
- * Returns the authenticated user's login on success.
- */
+
 export async function githubVerify(creds: GitHubCredentials): Promise<string> {
   const res = await fetch(`${GH_API}/user`, {
     headers: {
@@ -45,12 +28,9 @@ export async function githubVerify(creds: GitHubCredentials): Promise<string> {
   return user.login;
 }
 
-/**
- * Fetch the authenticated user's public events feed and return normalised items.
- * Calls GET /users/{login}/events?per_page=40
- */
+
 export async function githubSync(creds: GitHubCredentials): Promise<UnifiedFeedItem[]> {
-  // First get the login
+  
   const login = await githubVerify(creds);
 
   const res = await fetch(`${GH_API}/users/${login}/events?per_page=40`, {

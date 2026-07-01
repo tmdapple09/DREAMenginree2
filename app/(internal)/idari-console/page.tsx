@@ -22,7 +22,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Admin  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Admin – Dreamengin' };
 
@@ -37,9 +37,9 @@ export default async function AdminPage( ){
   let isAdmin = false;
   let authWarning: string | null = null;
 
-  // Dev admin bypass: when DEV_ADMIN=true the page renders without a real
-  // Supabase session so the admin UI can be inspected in dev (req #31–33).
-  // IDARi API endpoints remain password-protected regardless.
+  
+  
+  
   const devAdmin = isDevAdminBypassActive();
 
   if (!devAdmin) {
@@ -59,8 +59,8 @@ export default async function AdminPage( ){
         .single();
       profile = profileData;
 
-      // Primary check: owner email match (canonical admin authority)
-      // Fallback: user_roles table or legacy metadata/handle check
+      
+      
       if (isOwnerEmail(user.email)) {
         isAdmin = true;
       } else {
@@ -136,7 +136,7 @@ export default async function AdminPage( ){
 
       <div className="max-w-4xl mx-auto px-4 py-6 pb-24 space-y-5">
 
-        {/* System health */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Activity className="w-4 h-4 mr-2" style={{ color: '#22c55e' }} />
@@ -165,14 +165,14 @@ export default async function AdminPage( ){
           </div>
         </div>
 
-        {/* AI Triad consensus gating */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <span className="de-widget-title">AI Triad · Proposal Gating</span>
             <span style={{ fontSize: 11, color: 'var(--de-text-dim)', marginLeft: 8 }}>All 3 must approve for major updates</span>
           </div>
           <div className="de-widget-body">
-            {/* Triad status */}
+            
             <div className="grid grid-cols-3 gap-3 mb-4">
                 {[
                   { name: 'Dr. Eams',  role: 'User Impact',        color: '#0ea5e9', icon: '🧠', desc: 'Evaluates user experience impact' },
@@ -188,7 +188,7 @@ export default async function AdminPage( ){
               ))}
             </div>
 
-            {/* Proposals */}
+            
             {readiness.proposals.map((p) => {
               const allApproved = [p.idari, p.boogieman, p.dreams].every((s) => s.status === 'approved');
               const anyRejected = [p.idari, p.boogieman, p.dreams].some((s) => s.status === 'rejected');
@@ -254,7 +254,7 @@ export default async function AdminPage( ){
           </div>
         </div>
 
-        {/* Upgrade blockers */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Shield className="w-4 h-4 mr-2" style={{ color: '#f59e0b' }} />
@@ -279,7 +279,7 @@ export default async function AdminPage( ){
           </div>
         </div>
 
-        {/* iDari AI Console */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Bot className="w-4 h-4 mr-2" style={{ color: '#8b5cf6' }} />
@@ -290,7 +290,7 @@ export default async function AdminPage( ){
           </div>
         </div>
 
-        {/* Child Safety Console */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Shield className="w-4 h-4 mr-2" style={{ color: '#dc2626' }} />

@@ -1,21 +1,4 @@
-/**
- * DREAM_ENGINE_WEBGPU_DIRECTOR
- *
- * Engine-style WebGPU quality pipeline.
- * This is the version closer to Unreal thinking:
- * - pass-based
- * - budget-driven
- * - temporally stable
- * - hero-object privileged
- * - camera-state aware
- *
- * This is architecture code, not adapter-specific boilerplate.
- *
- * Architecture justification: docs/ARCHITECTURE.md §10 — render-on-demand,
- * hardware scaling, performance-first.  The Director replaces ad-hoc quality
- * toggles spread across scenes with a single authoritative decision tree that
- * every renderer consults before touching the GPU.
- */
+
 
 export type CameraState =
   | "hero"
@@ -24,10 +7,10 @@ export type CameraState =
   | "transition"
   | "utility";
 
-/** Thermal / frame-pressure tier.  0 = no pressure; 3 = critical. */
+
 export type Pressure = 0 | 1 | 2 | 3;
 
-/** Per-object rendering privilege class. */
+
 export type QualityClass =
   | "hero"
   | "primary"
@@ -35,7 +18,7 @@ export type QualityClass =
   | "background"
   | "culled";
 
-/** Every render pass the Director knows about. */
+
 export type PassName =
   | "depth_prepass"
   | "shadow_pass"
@@ -71,16 +54,16 @@ export type SceneObject = {
   occluded: boolean;
   transparent: boolean;
   skinned: boolean;
-  screenCoverage: number;    // 0..1
+  screenCoverage: number;    
   distance: number;
-  heroWeight: number;        // 0..1
-  semanticWeight: number;    // 0..1
-  motionWeight: number;      // 0..1
-  interactionWeight: number; // 0..1
-  materialCost: number;      // 0..1
-  shadowCost: number;        // 0..1
-  geometryCost: number;      // 0..1
-  textureCost: number;       // 0..1
+  heroWeight: number;        
+  semanticWeight: number;    
+  motionWeight: number;      
+  interactionWeight: number; 
+  materialCost: number;      
+  shadowCost: number;        
+  geometryCost: number;      
+  textureCost: number;       
   lastFrameVisible: boolean;
 };
 
@@ -106,24 +89,24 @@ export type PassConfig = {
 export type PassPlan = Record<PassName, PassConfig>;
 
 export type FrameBudget = {
-  /** GPU budget in milliseconds per frame. */
+  
   gpuBudgetMs: number;
-  /** CPU budget in milliseconds per frame. */
+  
   cpuBudgetMs: number;
-  /** Upload budget in milliseconds per frame. */
+  
   uploadBudgetMs: number;
-  /** Whether we are currently inside budget. */
+  
   withinBudget: boolean;
 };
 
 export type TemporalState = {
-  /** Enable TAA accumulation. */
+  
   taaEnabled: boolean;
-  /** Number of frames to accumulate for TAA. */
+  
   taaFrameCount: 2 | 4 | 8;
-  /** Jitter pattern size in pixels. */
+  
   jitterScale: number;
-  /** Discard temporal history on camera cut. */
+  
   historyInvalidated: boolean;
 };
 
@@ -136,11 +119,7 @@ export type DirectorFrame = {
   resolutionScale: number;
 };
 
-/**
- * Classify the current GPU/CPU pressure into a 0–3 tier.
- *
- * Downgrade is eager; upgrade is conservative (hysteresis).
- */
+
 export function classifyPressure(metrics: RuntimeMetrics): Pressure {
   const { avgFrameMs, droppedFrameRatio, gpuMs } = metrics;
 
@@ -154,13 +133,7 @@ const FULL_RES  = 1.0;
 const HALF_RES  = 0.5;
 const QUART_RES = 0.25;
 
-/**
- * Build a complete PassPlan driven by pressure and camera state.
- *
- * Hero camera → full quality.
- * Browse camera → reduce post-process cost.
- * Utility camera → strip to the minimum viable set.
- */
+
 export function buildPassPlan(
   pressure: Pressure,
   camera: CameraSignals,
@@ -197,8 +170,8 @@ export function buildPassPlan(
       resolutionScale: FULL_RES,
     },
     ssao: {
-      // Transitions are fast camera moves — SSAO would ghost and is wasteful.
-      // Utility cameras skip SSAO entirely (low-fi view).
+      
+      
       enabled: (isHero || isDetail) && p1 && !isTransition && !isUtility,
       resolutionScale: HALF_RES,
     },
@@ -225,50 +198,42 @@ export function buildPassPlan(
   };
 }
 
-/**
- * Score a single scene object on a 0–100 scale.
- *
- * Higher score = more resources allocated.
- *
- * Distance falloff uses a squared (quadratic) curve so that close-range objects
- * are heavily favoured over far ones — this mirrors human visual perception and
- * produces tighter resource budgets than a linear ramp.
- */
+
 export function scoreObject(obj: SceneObject, camera: CameraSignals): number {
   if (!obj.visible || obj.occluded) return 0;
 
   let score = 0;
 
-  // Visibility primitives
+  
   score += obj.screenCoverage * 30;
 
-  // Squared distance falloff — perceptually accurate (near objects matter much
-  // more than linearly, far objects diminish quickly past a visibility horizon).
+  
+  
   const distNorm = 1 - Math.min(obj.distance / 20, 1);
   score += distNorm * distNorm * 20;
 
-  // Semantic signals
+  
   score += obj.heroWeight        * 20;
   score += obj.semanticWeight    * 12;
   score += obj.motionWeight      * 8;
   score += obj.interactionWeight * 6;
 
-  // Camera affinity bonus
+  
   if (camera.focusTargetId === obj.id)                    score += 18;
   if (camera.state === "hero"   && obj.heroWeight    > 0.7) score += 10;
   if (camera.state === "detail" && obj.semanticWeight > 0.5) score += 6;
 
-  // Cost penalty — expensive objects need to earn their resources.
-  // The penalty is capped relative to the object's base importance so that
-  // high-value objects (hero-weighted) are not unfairly penalised.
+  
+  
+  
   const totalCost =
     obj.materialCost + obj.shadowCost + obj.geometryCost + obj.textureCost;
   const basePre = score;
   score -= totalCost * 4;
-  // Prevent cost penalty from taking more than 30 % of base importance
+  
   score = Math.max(score, basePre * 0.7);
 
-  // Temporal stability bonus (was visible last frame → no stutter risk)
+  
   if (obj.lastFrameVisible) score += 4;
 
   return Math.max(0, Math.min(100, score));
@@ -288,8 +253,8 @@ function snapUpdateHz(
   pressure:     Pressure,
   motionWeight: number,
 ): 15 | 30 | 60 {
-  // Objects in significant motion must not drop below 30 Hz — doing so causes
-  // visible positional stuttering that breaks temporal stability.
+  
+  
   const minHz: 15 | 30 = motionWeight >= 0.5 ? 30 : 15;
 
   if (pressure === 3)  return importance >= 72 ? 30 : minHz;
@@ -311,9 +276,7 @@ function snapMipBias(importance: number, pressure: Pressure): 0 | 1 | 2 {
   return 0;
 }
 
-/**
- * Produce a full ObjectDecision for a single scene object.
- */
+
 export function decideObject(
   obj: SceneObject,
   camera: CameraSignals,
@@ -342,16 +305,12 @@ export function decideObject(
   };
 }
 
-/**
- * Resolve a per-frame budget and check whether the current metrics are on track.
- *
- * Target: 60 fps → 16.6 ms total.  GPU gets 60 %, CPU 25 %, upload 15 %.
- */
+
 export function resolveFrameBudget(
   metrics: RuntimeMetrics,
   pressure: Pressure,
 ): FrameBudget {
-  // Reduce budget at high pressure to give breathing room
+  
   const targetMs    = pressure === 3 ? 20 : pressure === 2 ? 18 : 16.6;
   const gpuBudgetMs    = targetMs * 0.60;
   const cpuBudgetMs    = targetMs * 0.25;
@@ -364,12 +323,7 @@ export function resolveFrameBudget(
   return { gpuBudgetMs, cpuBudgetMs, uploadBudgetMs, withinBudget };
 }
 
-/**
- * Resolve TAA and jitter settings for the current frame.
- *
- * Camera cuts must invalidate temporal history to prevent ghosting.
- * High velocity reduces TAA accumulation to prevent blur.
- */
+
 export function resolveTemporalState(
   camera: CameraSignals,
   pressure: Pressure,
@@ -387,17 +341,7 @@ export function resolveTemporalState(
   return { taaEnabled, taaFrameCount, jitterScale, historyInvalidated };
 }
 
-/**
- * Choose a global internal resolution scale.
- *
- * Starts at 1.0 and steps down conservatively under pressure.
- * Never goes below 0.67 to preserve readability.
- *
- * When `metrics` are provided, the actual GPU time is compared against the
- * pressure-tier budget.  If the GPU is already over budget (or within 10 % of
- * it), the scale is tightened immediately — this closes the feedback loop
- * faster than waiting for the pressure classifier to ratchet up.
- */
+
 export function resolveResolutionScale(
   pressure:  Pressure,
   camera:    CameraSignals,
@@ -411,13 +355,13 @@ export function resolveResolutionScale(
     pressure === 1 ? 0.93 :
     1.0;
 
-  // Transitions tolerate slightly lower resolution
+  
   let scale = camera.state === "transition"
     ? Math.max(0.67, base - 0.05)
     : base;
 
-  // Budget-derived micro-adjustment: if the GPU is running hot relative to the
-  // per-pressure target, knock 5 % off the scale for immediate relief.
+  
+  
   if (metrics) {
     const targetMs = pressure === 3 ? 20 : pressure === 2 ? 18 : 16.6;
     const gpuBudget = targetMs * 0.60;
@@ -429,31 +373,12 @@ export function resolveResolutionScale(
   return scale;
 }
 
-/**
- * WebGPU Director — the single authoritative source for all rendering decisions.
- *
- * Call `update()` once per frame with the current metrics, camera signals, and
- * list of scene objects.  Consume the returned `DirectorFrame` to configure
- * the GPU pipeline, LODs, shadow pass, TAA, etc.
- *
- * ```ts
- * const director = new WebGPUDirector();
- *
- * // inside the render loop
- * const frame = director.update({ metrics, camera, objects });
- * applyDirectorFrame(engine, scene, frame);
- * ```
- */
+
 export class WebGPUDirector {
   private _lastPressure: Pressure = 0;
-  /**
-   * Wall-clock timestamp (ms) of the last pressure downgrade.
-   * Upgrade decisions are held until at least HYSTERESIS_MS have elapsed
-   * after a downgrade — time-based hysteresis is smoother than frame-counting
-   * because it remains stable across variable frame-rate scenarios.
-   */
+  
   private _lastPressureDowngradeMs: number = -Infinity;
-  /** Minimum ms of sustained improvement before a quality upgrade fires. */
+  
   private readonly HYSTERESIS_MS = 200;
 
   update(input: {
@@ -463,23 +388,23 @@ export class WebGPUDirector {
   }): DirectorFrame {
     const { metrics, camera, objects } = input;
 
-    // Pressure — downgrade immediately, upgrade after HYSTERESIS_MS of
-    // sustained improvement.  Time-based hysteresis avoids the frame-count
-    // drift that occurs at variable frame rates.
+    
+    
+    
     const rawPressure = classifyPressure(metrics);
     const nowMs = typeof performance !== 'undefined' ? performance.now() : Date.now();
     let pressure: Pressure;
 
     if (rawPressure > this._lastPressure) {
-      // Downgrade is instant — record the timestamp so the upgrade gate knows
-      // when consistent improvement began.
+      
+      
       pressure                       = rawPressure;
       this._lastPressureDowngradeMs  = nowMs;
     } else if (rawPressure < this._lastPressure) {
-      // Upgrade waits HYSTERESIS_MS of sustained low pressure before firing.
-      // Do NOT update _lastPressureDowngradeMs here — that timestamp marks the
-      // last downgrade and must remain stable so subsequent upgrade checks keep
-      // counting from the same reference point.
+      
+      
+      
+      
       if (nowMs - this._lastPressureDowngradeMs >= this.HYSTERESIS_MS) {
         pressure = rawPressure;
       } else {
@@ -531,26 +456,21 @@ export type DirectorBabylonScene = {
   };
 };
 
-/**
- * Apply a DirectorFrame to a live Babylon.js engine and scene.
- *
- * This is the bridge between the Director's abstract decisions and the
- * Babylon.js API.  Call once per frame after `director.update()`.
- */
+
 export function applyDirectorFrame(
   engine: DirectorBabylonEngine,
   scene:  DirectorBabylonScene,
   frame:  DirectorFrame,
   devicePixelRatio = 1,
 ): void {
-  // Resolution — cap at 1.0 so we never render below the canvas buffer resolution.
-  // Values > 1 cause Babylon to render at a fraction of the canvas size then
-  // upscale, producing visible blur.  Values ≤ 1 are fine: 1 = native canvas
-  // resolution; < 1 = super-sampling (sharper, costs more GPU).
+  
+  
+  
+  
   const hwScale = Math.min(1.0, devicePixelRatio / frame.resolutionScale);
   engine.setHardwareScalingLevel(hwScale);
 
-  // Mesh decisions
+  
   const decisionMap = new Map(frame.objectDecisions.map((d) => [d.id, d]));
   for (const mesh of scene.meshes) {
     const d = decisionMap.get(mesh.id);
@@ -565,7 +485,7 @@ export function applyDirectorFrame(
     }
   }
 
-  // Image processing
+  
   if (scene.imageProcessingConfiguration) {
     const ipc = scene.imageProcessingConfiguration;
     ipc.contrast           = 1.1;
@@ -577,7 +497,7 @@ export function applyDirectorFrame(
 
 export const webGPUDirector = new WebGPUDirector();
 
-/** Safe default metrics for SSR or pre-warm frames. */
+
 export function defaultDirectorMetrics(): RuntimeMetrics {
   return {
     frameMs:           16.6,
@@ -589,57 +509,36 @@ export function defaultDirectorMetrics(): RuntimeMetrics {
   };
 }
 
-/** Safe default camera signals. */
+
 export function defaultCameraSignals(state: CameraState = "browse"): CameraSignals {
   return { state, velocity: 0, cutActive: false };
 }
 
-/**
- * Per-mesh metadata hints that callers can supply to `babylonMeshToSceneObject`.
- *
- * All fields are optional.  If omitted, sensible conservative defaults are used
- * so static/background meshes are treated as low-importance objects.
- */
+
 export type MeshHints = {
-  /** Fraction of the viewport the mesh occupies.  0..1. Default 0.05. */
+  
   screenCoverage?:    number;
-  /** Camera distance in world units.  Default 10. */
+  
   distance?:          number;
-  /** Is this the hero / protagonist mesh?  0..1. Default 0. */
+  
   heroWeight?:        number;
-  /** Semantic importance (labels, key props).  0..1. Default 0.3. */
+  
   semanticWeight?:    number;
-  /** How much this mesh moves this frame.  0..1. Default 0. */
+  
   motionWeight?:      number;
-  /** Interaction affordance (button, pickable).  0..1. Default 0. */
+  
   interactionWeight?: number;
-  /** Does the mesh use a heavy PBR/custom material?  0..1. Default 0.3. */
+  
   materialCost?:      number;
-  /** Does the mesh cast expensive shadows?  0..1. Default 0.2. */
+  
   shadowCost?:        number;
-  /** High poly / subdivision surface?  0..1. Default 0.2. */
+  
   geometryCost?:      number;
-  /** High-res or many textures?  0..1. Default 0.2. */
+  
   textureCost?:       number;
 };
 
-/**
- * Convert a `DirectorBabylonMesh` (the thin structural type already known to
- * the Director) into a full `SceneObject` ready for `director.update()`.
- *
- * Call this inside a render loop to build the objects array without manually
- * spelling out every field per-scene.
- *
- * ```ts
- * const objects = scene.meshes.map((m) =>
- *   babylonMeshToSceneObject(m, {
- *     heroWeight: m.id === 'player' ? 1 : 0,
- *     motionWeight: m.id === 'player' ? 1 : 0,
- *   })
- * );
- * const frame = director.update({ metrics, camera, objects });
- * ```
- */
+
 export function babylonMeshToSceneObject(
   mesh:         DirectorBabylonMesh,
   hints:        MeshHints = {},
@@ -665,17 +564,7 @@ export function babylonMeshToSceneObject(
   };
 }
 
-/**
- * Build a `SceneObject[]` from an entire Babylon scene mesh list using a
- * per-mesh hints resolver callback.
- *
- * ```ts
- * const objects = buildSceneObjects(scene.meshes, (mesh) => ({
- *   heroWeight: mesh.id === 'hero' ? 1 : 0,
- *   motionWeight: activeMeshIds.has(mesh.id) ? 0.8 : 0,
- * }));
- * ```
- */
+
 export function buildSceneObjects(
   meshes:        DirectorBabylonMesh[],
   hintsResolver: (mesh: DirectorBabylonMesh) => MeshHints = () => ({}),

@@ -20,10 +20,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-/**
- * SettingsPanel — inline settings navigation panel.
- * Opens sub-panels via openPanel() — no routing whatsoever.
- */
+
 
 const NAV_GROUPS: Array<{
   heading: string;
@@ -74,7 +71,7 @@ export default function SettingsPanel( ){
         if (!user) return;
         const { data: profile } = await sb.from('profiles').select('handle').eq('id', user.id).single();
         setIsAdmin(user.user_metadata?.role === 'admin' || profile?.handle === 'admin');
-      } catch { /* noop */ }
+      } catch {  }
     })();
   }, []);
 
@@ -85,7 +82,7 @@ export default function SettingsPanel( ){
   return (
     <div style={{ padding: '12px 0 100px' }}>
 
-      {/* Admin section */}
+      
       {isAdmin && (
         <div className="de-widget" style={{
           margin: '0 16px 12px',
@@ -117,7 +114,7 @@ export default function SettingsPanel( ){
         </div>
       )}
 
-      {/* Navigation groups */}
+      
       {NAV_GROUPS.map((group) => (
         <div key={group.heading} className="de-widget" style={{
           margin: '0 16px 12px',
@@ -158,7 +155,7 @@ export default function SettingsPanel( ){
         </div>
       ))}
 
-      {/* Sign out */}
+      
       <div className="de-widget" style={{
         margin: '0 16px 12px',
         background: 'rgba(255,255,255,0.95)',

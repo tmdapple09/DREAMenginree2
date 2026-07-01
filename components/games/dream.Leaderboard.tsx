@@ -55,7 +55,7 @@ export default function Leaderboard({ game }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Reset states when game changes
+    
     let cancelled = false;
 
     setLoading(true);
@@ -132,12 +132,12 @@ export default function Leaderboard({ game }: Props) {
                 : 'transparent',
             }}
           >
-            {/* Rank */}
+            
             <div className="w-7 flex items-center justify-center flex-shrink-0">
               <RankBadge rank={entry.rank} />
             </div>
 
-            {/* Player handle */}
+            
             <div className="flex-1 min-w-0">
               <span
                 className="text-sm font-semibold truncate block"
@@ -152,7 +152,7 @@ export default function Leaderboard({ game }: Props) {
               )}
             </div>
 
-            {/* Score */}
+            
             <span
               className="text-sm font-bold tabular-nums flex-shrink-0"
               style={{ color: isFirst ? 'var(--de-gold)' : 'var(--de-accent)' }}

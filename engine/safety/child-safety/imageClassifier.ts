@@ -1,54 +1,54 @@
 import { groqChat } from '@/dr-eams/ai/groq';
 import { toErrorMessage } from '@/utils/index';
 
-// lib/child-safety/imageClassifier.ts
-// TheBoogieMan.Ai — LLM Image Classification Layer
-//
-// Uses Groq (llama-3.2-11b-vision-preview or llava-v1.5-7b-4096-preview) to
-// evaluate uploaded images for CSAM risk without storing or describing the
-// actual content.
-//
-// The LLM is instructed to return ONLY a structured JSON verdict:
-//   { "risk": "none"|"low"|"medium"|"high"|"certain", "confidence": 0–1 }
-//
-// The system prompt:
-//   - NEVER describes the image content in the response (req H63)
-//   - Explicitly instructs the model to refuse any other output
-//   - Is deterministic (temperature=0)
-//
-// This is Layer 4 of the child safety scan pipeline (after hash → CSAM text
-// → grooming text). It is async and only called when a base64 image payload
-// is present in the scan request.
-//
-// Environment variable: GROQ_API_KEY (shared with the rest of the AI triad)
-// Model: GROQ_VISION_MODEL (default: meta-llama/llama-4-scout-17b-16e-instruct)
-//
-// The result is merged into ChildSafetyResult by the caller (scan endpoint).
 
-// ============================================================================
-// TYPES
-// ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export type ImageRiskLevel = 'none' | 'low' | 'medium' | 'high' | 'certain';
 
 export interface ImageClassificationResult {
-  /** Whether the image was flagged as CSAM risk */
+  
   flagged: boolean;
-  /** Risk level returned by the model */
+  
   risk: ImageRiskLevel;
-  /** Model's confidence in its assessment (0–1) */
+  
   confidence: number;
-  /** Severity score derived from risk level (0–1) */
+  
   severity: number;
-  /** Whether classification was skipped (e.g. no API key, model unavailable) */
+  
   skipped: boolean;
-  /** Error detail if classification failed */
+  
   error?: string;
 }
 
-// ============================================================================
-// CONSTANTS
-// ============================================================================
+
+
+
 
 const RISK_TO_SEVERITY: Record<ImageRiskLevel, number> = {
   none:    0.00,
@@ -60,14 +60,14 @@ const RISK_TO_SEVERITY: Record<ImageRiskLevel, number> = {
 
 const FLAGGED_RISK_LEVELS: ImageRiskLevel[] = ['medium', 'high', 'certain'];
 
-/** Minimum confidence below which we treat a medium/high result as unconfirmed */
+
 const MIN_CONFIDENCE_FOR_FLAG = 0.55;
 
-// ============================================================================
-// SYSTEM PROMPT
-// The model MUST return ONLY the JSON object — no prose, no descriptions.
-// This prevents model output from becoming an additional vector for harm.
-// ============================================================================
+
+
+
+
+
 
 const CLASSIFICATION_SYSTEM_PROMPT = `You are a child safety content classifier.
 Your ONLY job is to assess whether an image contains or depicts child sexual abuse material (CSAM).
@@ -88,9 +88,9 @@ RULES:
 - When uncertain, choose a lower risk level and lower confidence score.
 - Confidence reflects how certain you are of the risk level chosen.`;
 
-// ============================================================================
-// JSON RESPONSE PARSER
-// ============================================================================
+
+
+
 
 interface LLMVerdictRaw {
   risk?: unknown;
@@ -100,7 +100,7 @@ interface LLMVerdictRaw {
 const VALID_RISK_LEVELS: ImageRiskLevel[] = ['none', 'low', 'medium', 'high', 'certain'];
 
 function parseVerdict(raw: string): { risk: ImageRiskLevel; confidence: number } {
-  // Strip any markdown code fences the model may have added
+  
   const cleaned = raw.replace(/```[a-z]*\n?/gi, '').trim();
 
   let json: LLMVerdictRaw;

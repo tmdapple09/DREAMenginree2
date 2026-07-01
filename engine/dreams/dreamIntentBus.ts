@@ -8,13 +8,7 @@ import type { InformationDomain, IntentEnvelope } from '@/engine/runtime/dreamOS
 import { dreamOSBus } from '@/engine/runtime/dreamOSBus';
 import type { DrEamsIntentType } from './types';
 
-/**
- * lib/dreams/dreamIntentBus.ts
- *
- * Typed Dream intents routed through the existing dreamOSBus. This file is a
- * typed seam, not a second bus: dispatch and handler registration both delegate
- * to dreamOSBus.dispatchIntent/registerIntent.
- */
+
 
 const INTENT_CAPABILITY_MAP: Record<DrEamsIntentType['type'], DomainCapability> = {
   'dream:open':        'read',
@@ -89,13 +83,13 @@ function createDreamIntentId(
 }
 
 export interface DreamIntentContext {
-  /** The authenticated user performing the action. */
+  
   actorId: string;
-  /** The runtime region where the action originates. */
+  
   runtimeId: string;
-  /** All runtime regions currently active (for cross-surface transfer). */
+  
   surfaceRuntimeIds: string[];
-  /** Whether the actor has admin capability. */
+  
   admin?: boolean;
 }
 
@@ -104,7 +98,7 @@ export interface DreamIntentResult {
   replayed: boolean;
 }
 
-/** Route a typed Dream intent through the existing dreamOSBus dispatch path. */
+
 export async function dispatchDreamIntent(
   intent: DrEamsIntentType,
   context: DreamIntentContext,
@@ -154,7 +148,7 @@ type DreamIntentHandler<T extends DrEamsIntentType['type']> = (
   envelope: IntentEnvelope<T, JsonObject>,
 ) => void | Promise<void>;
 
-/** Register a typed handler on the existing dreamOSBus. */
+
 export function registerDreamIntentHandler<T extends DrEamsIntentType['type']>(
   intentType: T,
   handler: DreamIntentHandler<T>,

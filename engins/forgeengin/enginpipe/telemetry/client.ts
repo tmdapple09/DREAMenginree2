@@ -3,20 +3,9 @@ import {
     type TelemetryEvent,
 } from './events';
 
-/**
- * lib/enginpipe/telemetry/client.ts
- *
- * Thin, artifact-agnostic wrapper that writes generic Engin Pipe
- * telemetry events into the existing Supabase `gameengin_telemetry`
- * table. The table schema (cartridge_id, event_type, payload, ...)
- * already matches the generic event shape, so no migration is needed
- * to start sharing it across Engins.
- *
- * Failure mode: the client never throws. Errors are returned in the
- * result object so callers can decide whether to log or retry.
- */
 
-/** Minimal Supabase client shape we depend on. */
+
+
 export interface TelemetrySupabaseClient {
   from(table: string): {
     insert(rows: unknown): Promise<{ error: unknown | null }>;
@@ -24,19 +13,15 @@ export interface TelemetrySupabaseClient {
 }
 
 export interface TelemetryClientOptions {
-  /** Supabase client (browser or service role). */
+  
   supabase: TelemetrySupabaseClient;
-  /**
-   * Override the destination table. Defaults to `gameengin_telemetry`,
-   * which is the existing hypertable created by the GameEngin migration
-   * and is the shared substrate for all Engins.
-   */
+  
   table?: string;
-  /** Max records held before an immediate batch flush. */
+  
   maxBatchSize?: number;
-  /** Best-effort flush cadence for low-volume telemetry. */
+  
   flushIntervalMs?: number;
-  /** Register page/process lifecycle hooks that force a final best-effort flush. */
+  
   autoFlushOnLifecycle?: boolean;
 }
 
@@ -72,9 +57,7 @@ function getProcessLifecycleTarget(): ProcessLifecycleTarget | null {
   return process;
 }
 
-/**
- * Create a telemetry client bound to a Supabase instance.
- */
+
 export function createTelemetryClient(opts: TelemetryClientOptions ){
   const table = opts.table ?? DEFAULT_TABLE;
   const maxBatchSize = Math.max(1, opts.maxBatchSize ?? DEFAULT_MAX_BATCH_SIZE);
@@ -154,10 +137,7 @@ export function createTelemetryClient(opts: TelemetryClientOptions ){
   if (opts.autoFlushOnLifecycle ?? true) installLifecycleFlush();
 
   return {
-    /**
-     * Record a single Engin telemetry event. The engine batches rows behind
-     * this intent seam so Engins do not own persistence transport behavior.
-     */
+    
     async record(event: TelemetryEvent): Promise<TelemetryRecordResult> {
       let validated: TelemetryEvent;
       try {

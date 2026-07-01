@@ -1,29 +1,8 @@
 import type { TimeSlice } from './fingerprint';
 
-/**
- * lib/audio-fingerprint/stem-extractor.ts — §40 Stem Extractor
- *
- * Stitches matching time-slices from a source AudioBuffer into a new
- * AudioBuffer containing only those segments, in order.
- *
- * Two modes:
- *   extractStem()      — synchronous copy-paste (no re-rendering).
- *                        Safe in all environments including SSR.  Returned
- *                        buffer may have tiny amplitude seams at splice points
- *                        but is correct for fingerprinting purposes.
- *
- *   extractStemAsync() — async OfflineAudioContext render (best quality).
- *                        Applies a 5 ms fade-in/out at each splice to remove
- *                        clicks.  Falls back to extractStem() when
- *                        OfflineAudioContext is unavailable (SSR / old browsers).
- */
 
-/**
- * extractStem — synchronous slice stitcher.
- *
- * Copies PCM sample ranges from `audioBuffer` for each slice and
- * concatenates them into a fresh AudioBuffer.  No async required.
- */
+
+
 export function extractStem(audioBuffer: AudioBuffer, slices: TimeSlice[]): AudioBuffer {
   if (slices.length === 0) return audioBuffer;
 
@@ -60,25 +39,16 @@ export function extractStem(audioBuffer: AudioBuffer, slices: TimeSlice[]): Audi
   return output;
 }
 
-const FADE_SAMPLES = 220; // ~5 ms at 44100 Hz
+const FADE_SAMPLES = 220; 
 
-/**
- * extractStemAsync — async stem extractor with crossfade splices.
- *
- * Uses OfflineAudioContext to render the stitched buffer at full quality.
- * Each splice point gets a short linear fade-out / fade-in to eliminate
- * click artefacts.
- *
- * Falls back silently to the synchronous version when OfflineAudioContext is
- * unavailable (SSR, old browsers, unit-test environments).
- */
+
 export async function extractStemAsync(
   audioBuffer: AudioBuffer,
   slices: TimeSlice[],
 ): Promise<AudioBuffer> {
   if (slices.length === 0) return audioBuffer;
 
-  // SSR / environment guard
+  
   if (typeof OfflineAudioContext === 'undefined') {
     return extractStem(audioBuffer, slices);
   }
@@ -103,21 +73,21 @@ export async function extractStemAsync(
       const len = Math.max(0, endSample - startSample);
       if (len === 0) continue;
 
-      // Slice the source into a mini AudioBuffer
+      
       const sliceBuf = new AudioBuffer({ numberOfChannels, length: len, sampleRate });
       for (let ch = 0; ch < numberOfChannels; ch++) {
         const src = audioBuffer.getChannelData(ch).subarray(startSample, endSample);
         sliceBuf.getChannelData(ch).set(src);
       }
 
-      // Apply fade-in at start, fade-out at end
+      
       const fadeSamples = Math.min(FADE_SAMPLES, Math.floor(len / 4));
       for (let ch = 0; ch < numberOfChannels; ch++) {
         const data = sliceBuf.getChannelData(ch);
         for (let i = 0; i < fadeSamples; i++) {
           const t = i / fadeSamples;
-          data[i] *= t;                         // fade-in
-          data[len - 1 - i] *= t;              // fade-out
+          data[i] *= t;                         
+          data[len - 1 - i] *= t;              
         }
       }
 
@@ -131,7 +101,7 @@ export async function extractStemAsync(
 
     return await ctx.startRendering();
   } catch {
-    // OfflineAudioContext failed (quota, permission) — fall back
+    
     return extractStem(audioBuffer, slices);
   }
 }

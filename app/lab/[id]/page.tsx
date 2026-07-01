@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.LabId  (framework-mandated basename: page.tsx)
+
 
 interface LabProjectPageProps {
   params: Promise<{ id: string }>;
@@ -48,8 +48,8 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
   const supabase = await createServerClient();
   const user = await safeGetUser(supabase);
 
-  // NOTE: Notebooks aren't set up yet, so we do NOT query them here.
-  // This prevents runtime/db errors while you're still building the feature.
+  
+  
   const { data: projectRaw, error } = await supabase
     .from('projects')
     .select(
@@ -76,8 +76,8 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
 
   const isOwner = user?.id === project.owner_id;
 
-  // Simple access rule until members table exists:
-  // owner can view anything, others only public projects
+  
+  
   const hasAccess = isOwner || project.visibility === 'public';
 
   if (!hasAccess) {
@@ -86,7 +86,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Sticky Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.85)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/lab" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -126,10 +126,10 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="grid grid-cols-12 gap-6">
 
-          {/* Main Content */}
+          
           <div className="col-span-12 md:col-span-8 space-y-6">
 
-            {/* Renders & Simulations */}
+            
             <div className="de-widget">
               <div className="de-widget-header">
                 <span className="de-widget-title flex items-center gap-2">
@@ -166,7 +166,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
               </div>
             </div>
 
-            {/* Notebooks */}
+            
             <div className="de-widget">
               <div className="de-widget-header">
                 <span className="de-widget-title flex items-center gap-2">
@@ -189,10 +189,10 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
             </div>
           </div>
 
-          {/* Sidebar */}
+          
           <div className="col-span-12 md:col-span-4 space-y-6">
 
-            {/* Attachments */}
+            
             <div className="de-widget">
               <div className="de-widget-header">
                 <span className="de-widget-title flex items-center gap-2">
@@ -221,7 +221,7 @@ export default async function LabProjectPage({ params }: LabProjectPageProps) {
               </div>
             </div>
 
-            {/* Project Info */}
+            
             <div className="de-widget">
               <div className="de-widget-header">
                 <span className="de-widget-title">Project Info</span>

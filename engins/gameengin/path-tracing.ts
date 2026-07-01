@@ -1,22 +1,11 @@
-/**
- * lib/gameengin/path-tracing.ts
- *
- * NEXT-GEN — Real-time path tracing & global illumination for mobile WebGPU.
- *
- * Subsystems:
- *  - PathTracer       — WebGPU compute path tracer with BVH acceleration
- *  - RestirGI         — Spatiotemporal reservoir resampling for global illumination
- *  - NeuralDenoiser   — Neural denoiser for sparse-sampled path-traced output
- *
- * SSR-safe: all browser/WebGPU access is feature-detected before use.
- */
+
 
 export interface PathTraceConfig {
-  /** Maximum rays cast per pixel per frame. */
+  
   raysPerPixel?: number;
-  /** Maximum bounce depth per ray. */
+  
   maxBounces?: number;
-  /** Internal render scale (0.5 = quarter-res, upscaled later). */
+  
   renderScale?: number;
 }
 
@@ -28,10 +17,7 @@ export interface BVHNode {
   readonly primitiveIndex: number;
 }
 
-/**
- * WebGPU compute path tracer. Builds a flat BVH on the CPU and dispatches
- * a compute pipeline per frame to trace primary + indirect rays.
- */
+
 export class PathTracer {
   private readonly raysPerPixel: number;
   private readonly maxBounces: number;
@@ -47,14 +33,14 @@ export class PathTracer {
     this.renderScale  = Math.min(1, Math.max(0.25, config.renderScale ?? 0.5));
   }
 
-  /** Initialize against a WebGPU device. Returns false when unsupported. */
+  
   initialize(device: GPUDevice | null): boolean {
     if (!device) return false;
     this.device = device;
     return true;
   }
 
-  /** Build a binary BVH over a list of primitive AABBs. O(n log n). */
+  
   buildBVH(primitives: Array<{ min: [number, number, number]; max: [number, number, number] }>): number {
     this.bvh = [];
     const indices = primitives.map((_, i: number) => i);
@@ -102,7 +88,7 @@ export class PathTracer {
     return buildNode(indices);
   }
 
-  /** Estimate the number of compute dispatches required for a target resolution. */
+  
   estimateDispatches(width: number, height: number): number {
     const w = Math.ceil(width  * this.renderScale);
     const h = Math.ceil(height * this.renderScale);
@@ -110,7 +96,7 @@ export class PathTracer {
     return tiles * this.raysPerPixel * this.maxBounces;
   }
 
-  /** Advance one frame — caller is responsible for actual GPU command encoding. */
+  
   beginFrame(): number {
     this.frameIndex += 1;
     return this.frameIndex;
@@ -121,17 +107,13 @@ export class PathTracer {
 }
 
 export interface Reservoir {
-  sample: number;       // sampled light index
-  weightSum: number;    // sum of resampling weights
-  count: number;        // number of candidates seen (M)
-  targetPdf: number;    // unbiased target PDF
+  sample: number;       
+  weightSum: number;    
+  count: number;        
+  targetPdf: number;    
 }
 
-/**
- * ReSTIR — Reservoir-based Spatiotemporal Importance Resampling for GI.
- * Maintains per-pixel reservoirs across frames and reuses neighbour reservoirs
- * to amortize the cost of high-quality importance sampling.
- */
+
 export class RestirGI {
   private readonly capacity: number;
   private readonly spatialRadius: number;
@@ -142,14 +124,14 @@ export class RestirGI {
     this.spatialRadius = Math.max(1, opts.spatialRadius ?? 3);
   }
 
-  /** Resize the reservoir buffer for a given pixel count. */
+  
   resize(pixelCount: number): void {
     this.reservoirs = new Array(pixelCount).fill(null).map(() => ({
       sample: -1, weightSum: 0, count: 0, targetPdf: 0,
     }));
   }
 
-  /** Reservoir sampling update for a single pixel. */
+  
   update(pixelIndex: number, candidate: number, weight: number, targetPdf: number, rng: () => number): void {
     const r = this.reservoirs[pixelIndex];
     if (!r) return;
@@ -162,7 +144,7 @@ export class RestirGI {
     }
   }
 
-  /** Combine the reservoir at `pixelIndex` with a spatial neighbour. */
+  
   combineSpatial(pixelIndex: number, neighbourIndex: number, rng: () => number): void {
     const a = this.reservoirs[pixelIndex];
     const b = this.reservoirs[neighbourIndex];
@@ -185,18 +167,13 @@ export class RestirGI {
 }
 
 export interface DenoiserConfig {
-  /** Target latency budget in milliseconds. Higher allows bigger model. */
+  
   latencyBudgetMs?: number;
-  /** Use temporal accumulation (requires motion vectors). */
+  
   temporal?: boolean;
 }
 
-/**
- * Neural denoiser for sparse path-traced output.
- *
- * Uses a small U-Net-style architecture; runs on WebGPU when available and
- * falls back to a fast bilateral filter when the model cannot be loaded.
- */
+
 export class NeuralDenoiser {
   private readonly latencyBudgetMs: number;
   private readonly temporal: boolean;
@@ -208,16 +185,16 @@ export class NeuralDenoiser {
     this.temporal = config.temporal ?? true;
   }
 
-  /** Mark the model as loaded (caller wires the actual WebNN/WebGPU pipeline). */
+  
   markModelLoaded(): void { this.modelLoaded = true; }
 
-  /** Returns the recommended sample count given the latency budget. */
+  
   recommendedSamplesPerPixel(): number {
     if (!this.modelLoaded) return 16;
     return this.latencyBudgetMs >= 8 ? 1 : 2;
   }
 
-  /** Bilateral fallback used when the neural model is unavailable. */
+  
   bilateralFallback(input: Float32Array, width: number, height: number, sigma = 1.5): Float32Array {
     const out = new Float32Array(input.length);
     const r = Math.max(1, Math.round(sigma * 2));
@@ -242,7 +219,7 @@ export class NeuralDenoiser {
     return out;
   }
 
-  /** Update temporal accumulation counter. */
+  
   tick(): void {
     if (this.temporal) this.warmFrames = Math.min(this.warmFrames + 1, 64);
   }

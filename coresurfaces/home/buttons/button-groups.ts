@@ -1,4 +1,4 @@
-// Proper Button List (NO utility buttons)
+
 
 export const BUTTON_GROUPS = {
   auth: [

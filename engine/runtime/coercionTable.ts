@@ -1,36 +1,20 @@
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/coercionTable.ts.
 
-/**
- * lib/runtime/coercionTable.ts — Pass 6
- *
- * Universal Drag/Drop Coercion Table
- *
- * When content is dragged into any runtime region, the raw DataTransfer or
- * custom payload is coerced into a typed DreamDrop before being routed to the
- * Universal Editor or the seam clipboard.
- *
- * Starter types (decision #4 from COOP_AND_SOLO_ROADMAP.md):
- *   image, video, audio, text/code, url, engin-state
- *
- * Everything outside this list is routed through the 'unknown' fallback which
- * surfaces it as a raw text/JSON payload in the Universal Editor.
- *
- * Architecture: docs/ARCHITECTURE.md §6 (Pass 6 — Universal drag/drop).
- */
 
-/** The canonical payload types recognised by the Universal Editor. */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-/** Maps known MIME type prefixes/exact values to canonical DreamDropTypes. */
+
+
+
+
+
+
+
 const MIME_MAP: Array<[pattern: RegExp, type: DreamDropType]> = [
-  [/^image\//,           'image'],
-  [/^video\//,           'video'],
-  [/^audio\//,           'audio'],
+  [/^image\
+  [/^video\
+  [/^audio\
   [/^text\/html$/,       'text/code'],
   [/^text\/css$/,        'text/code'],
   [/^text\/javascript$/, 'text/code'],
@@ -48,11 +32,11 @@ const EXT_MAP: Record<string, DreamDropType> = {
   txt: 'text/code',
 };
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type DreamDropType =
   | 'image'
@@ -63,21 +47,21 @@ export type DreamDropType =
   | 'engin-state'
   | 'unknown';
 
-/** A fully coerced drop payload — safe to hand to the Universal Editor. */
+
 export interface DreamDrop {
-  /** Canonical type used for routing. */
+  
   type: DreamDropType;
-  /** Raw content: URL for media/url types, text for text/code, JSON string for engin-state. */
+  
   content: string;
-  /** Original MIME type from the DataTransfer, if available. */
+  
   mimeType?: string;
-  /** Source filename if the drop originated from the file system. */
+  
   filename?: string;
-  /** Wall-clock ms when the drop was received. */
+  
   timestamp: number;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function mimeToDropType(mime: string): DreamDropType {
   for (const [pattern, type] of MIME_MAP) {
@@ -100,16 +84,11 @@ function isUrl(value: string): boolean {
   }
 }
 
-/**
- * coerceDataTransfer(dt)
- *
- * Coerce a browser DataTransfer object into a DreamDrop.
- * Inspects items, files, and text in priority order.
- */
+
 export function coerceDataTransfer(dt: DataTransfer): DreamDrop {
   const ts = Date.now();
 
-  // 1. File drop — inspect first file's MIME type.
+  
   if (dt.files.length > 0) {
     const file = dt.files[0];
     if (file) {
@@ -124,18 +103,18 @@ export function coerceDataTransfer(dt: DataTransfer): DreamDrop {
     }
   }
 
-  // 2. Typed items — walk in priority order (application types first).
+  
   for (const item of Array.from(dt.items)) {
     if (item.kind !== 'string') continue;
     const dropType = mimeToDropType(item.type);
     if (dropType !== 'unknown') {
-      // We can only read string items synchronously via getData.
+      
       const content = dt.getData(item.type);
       return { type: dropType, content, mimeType: item.type, timestamp: ts };
     }
   }
 
-  // 3. Plain text — check if it looks like a URL.
+  
   const plainText = dt.getData('text/plain');
   if (plainText) {
     if (isUrl(plainText)) {
@@ -147,12 +126,7 @@ export function coerceDataTransfer(dt: DataTransfer): DreamDrop {
   return { type: 'unknown', content: '', timestamp: ts };
 }
 
-/**
- * coerceRawPayload(payload)
- *
- * Coerce an arbitrary object (e.g. from a cross-runtime bridge event or the
- * seam clipboard) into a DreamDrop.
- */
+
 export function coerceRawPayload(payload: unknown): DreamDrop {
   const ts = Date.now();
 
@@ -167,30 +141,26 @@ export function coerceRawPayload(payload: unknown): DreamDrop {
 
   const p = payload as Record<string, unknown>;
 
-  // Already a DreamDrop — pass through.
+  
   if (typeof p['type'] === 'string' && typeof p['content'] === 'string' && p['timestamp']) {
     return p as unknown as DreamDrop;
   }
 
-  // engin-state shape.
+  
   if (typeof p['engin'] === 'string' || typeof p['enginState'] === 'string') {
     return { type: 'engin-state', content: JSON.stringify(payload), timestamp: ts };
   }
 
-  // URL shape.
+  
   if (typeof p['url'] === 'string') {
     return { type: 'url', content: p['url'], timestamp: ts };
   }
 
-  // Fallback: serialise as JSON for the Universal Editor.
+  
   return { type: 'unknown', content: JSON.stringify(payload), timestamp: ts };
 }
 
-/**
- * classifyDrop(drop)
- *
- * Returns a human-readable label for a DreamDrop type. Used in UI affordances.
- */
+
 export function classifyDrop(drop: DreamDrop): string {
   const labels: Record<DreamDropType, string> = {
     'image':       'Image',
@@ -204,8 +174,8 @@ export function classifyDrop(drop: DreamDrop): string {
   return labels[drop.type] ?? 'Unknown';
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

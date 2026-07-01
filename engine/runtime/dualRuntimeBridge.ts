@@ -3,13 +3,13 @@
 import { invokeMadMaxiSnapshotTransfer } from '@/engine/runtime/madMaxiSnapshotBridge';
 import { EventEmitter } from 'events';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/dualRuntimeBridge.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
 
 const _IS2 = 1 / Math.SQRT2;
 
@@ -23,37 +23,36 @@ const VM_QUEUE_CAPACITY = 256;
 
 const VM_MESSAGE_SIZE   = 1024;
 
-const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; // +8 for producer/consumer indices
+const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; 
 
-const ENTRY_WORDS = 4; // channel:event, payloadPtr, payloadLen, reserved
+const ENTRY_WORDS = 4; 
 
 const ENTRY_BYTES = ENTRY_WORDS * 4;
 
-const PAYLOAD_PREFIX_BYTES = 4; // length prefix stored before JSON payload
+const PAYLOAD_PREFIX_BYTES = 4; 
 
-const DEFAULT_ALLOC_START = 1 * 1024 * 1024; // 1 MB offset to avoid clobbering static data
+const DEFAULT_ALLOC_START = 1 * 1024 * 1024; 
 
 const DURABLE_BRIDGE_QUEUE_KEY = 'de:dual-runtime-bridge:durable-queue';
 
-const POLL_INTERVAL_MS = 0; // as fast as possible; the timer is coalesced by the browser/event loop
+const POLL_INTERVAL_MS = 0; 
 
 const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
 
-/** Maximum number of entries kept in the durable queue. Oldest dropped entries
- *  are purged first when the limit is exceeded to prevent unbounded memory growth. */
+
 const MAX_DURABLE_QUEUE_SIZE = 200;
 
-/** Monotonically increasing count of all emissions (emit + emitDurable). */
+
 let _totalEmissions = 0;
 
-/** Run eviction every N emissions to avoid the per-emit overhead on busy buses. */
+
 const EVICT_EVERY_N = 50;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type DualRuntimeChannel =
   | 'code'
@@ -89,8 +88,8 @@ export interface VMWorkload {
   priority: number;
 }
 
-// Pure complex-number state vector simulation; no canvas, no components.
-// Dispatched automatically on bridge.emit('lab', 'quantum:run', payload).
+
+
 
 type _C = [number, number];
 
@@ -121,21 +120,18 @@ export interface AnyBridgeEmission {
   emittedAt: number;
 }
 
-/** Lifecycle of a durable emission. */
+
 export type AckStatus = 'pending' | 'acked' | 'dropped';
 
-/**
- * An emission that requires delivery acknowledgement.
- * Stored in the bridge's durable queue until acked or explicitly dropped.
- */
+
 export interface QueuedEmission extends AnyBridgeEmission {
-  /** Unique ID for this emission — returned by emitDurable. */
+  
   id: string;
   status: AckStatus;
   enqueuedAt: number;
-  /** Timestamp at which ack() was called, if status is 'acked'. */
+  
   ackedAt?: number;
-  /** Time-to-live in ms. After this the entry is eligible for cleanup. */
+  
   ttlMs: number;
 }
 
@@ -146,7 +142,7 @@ type WasmExports = {
   __heap_base?: WebAssembly.Global;
 };
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function _gateRx(t: number): _Gate { const c=Math.cos(t/2),s=Math.sin(t/2); return [[c,0],[0,-s],[0,-s],[c,0]]; }
 
@@ -249,7 +245,7 @@ class DualRuntimeBridge extends EventEmitter {
   private readonly peers: Map<string, PeerState> = new Map();
   private readonly peerListeners: Set<(peers: readonly PeerState[]) => void> = new Set();
   private readonly emissionListeners: Set<(emission: AnyBridgeEmission) => void> = new Set();
-  /** Durable queue — keyed by emission id. */
+  
   private readonly durableQueue: Map<string, QueuedEmission> = new Map();
 
   private memory: WebAssembly.Memory | null = null;
@@ -277,17 +273,17 @@ class DualRuntimeBridge extends EventEmitter {
     this.setMaxListeners(100);
     this.restoreDurableQueue();
     void this.initWasm();
-    // ── Quantum compute handler ───────────────────────────────────────────
-    // bridge.emit('lab', 'quantum:run', {algorithm, ansatz, numQubits?})
-    // → runs QAOA/VQE state-vector simulation inline
-    // → emits 'lab:quantum:result' which dreamOSBus auto-ingests as lab-result
+    
+    
+    
+    
     this.subscribe('lab', 'quantum:run', payload => {
       const algo      = (payload['algorithm']  as string) ?? 'vqe';
       const ansatz    = (payload['ansatz']     as string) ?? 'real_amplitudes';
       const numQubits = (payload['numQubits']  as number) ?? 3;
       const result    = _runCircuit(numQubits, algo, ansatz);
       this.emit('lab', 'quantum:result', result as unknown as any);
-      // Write result to inter-VM ring buffer if available so both VMs see it
+      
       if (this._vmInterQueue) {
         this._writeInterVMMessage(new TextEncoder().encode(JSON.stringify(result)));
       }
@@ -318,7 +314,7 @@ class DualRuntimeBridge extends EventEmitter {
     try {
       localStorage.setItem(DURABLE_BRIDGE_QUEUE_KEY, JSON.stringify(Array.from(this.durableQueue.values())));
     } catch {
-      // Durable bridge state is best-effort; active runtime delivery remains in memory.
+      
     }
   }
 
@@ -326,8 +322,8 @@ class DualRuntimeBridge extends EventEmitter {
     if (this.busOnline) return;
     try {
       const memory = new WebAssembly.Memory({
-        initial: 8, // 8 pages = 512 KB (must satisfy the module's minimum of 4)
-        maximum: 64, // align with the compiled maximum
+        initial: 8, 
+        maximum: 64, 
         shared: true,
       });
 
@@ -335,7 +331,7 @@ class DualRuntimeBridge extends EventEmitter {
       const imports = {
         env: {
           memory,
-          // AssemblyScript expects abort to exist; no-op for our use-case.
+          
           abort: () => {},
         },
       };
@@ -371,28 +367,28 @@ class DualRuntimeBridge extends EventEmitter {
     if (heapBase && typeof heapBase.value === 'number') {
       return heapBase.value;
     }
-    // AssemblyScript sometimes exposes __heap_base as a number instead of a WebAssembly.Global
+    
     const maybeNumber = (heapBase as unknown) as number | undefined;
     return typeof maybeNumber === 'number' ? maybeNumber : null;
   }
 
   private async loadWasmBinary(): Promise<ArrayBuffer> {
-    // Browser / worker path: fetch the emitted asset URL.
+    
     if (typeof window !== 'undefined' && typeof fetch === 'function') {
       return fetch(BUS_WASM_URL).then((r) => r.arrayBuffer());
     }
 
-    // Node / Vitest path: read directly from the filesystem to avoid file:// fetch limitations.
+    
     const [{ readFile }, { fileURLToPath }, { resolve }] = await Promise.all([
-      // webpackIgnore: true — Node built-ins; bundlers must skip static analysis of these imports.
-      import(/* webpackIgnore: true */ 'fs/promises'),
-      import(/* webpackIgnore: true */ 'url'),
-      import(/* webpackIgnore: true */ 'path'),
+      
+      import( 'fs/promises'),
+      import( 'url'),
+      import( 'path'),
     ]);
-    // BUS_WASM_URL is a file:// URL in dev/Vitest, but Next.js server bundles replace
-    // import.meta.url with a webpack asset path (/_next/static/…). fileURLToPath only
-    // accepts file:// URLs and throws ERR_INVALID_URL for asset paths, so we fall back
-    // to resolving relative to process.cwd() (the project root in all deployment targets).
+    
+    
+    
+    
     const wasmUrlStr = BUS_WASM_URL.toString();
     const wasmPath = wasmUrlStr.startsWith('file://')
       ? fileURLToPath(wasmUrlStr)
@@ -480,18 +476,18 @@ class DualRuntimeBridge extends EventEmitter {
       return false;
     }
 
-    // Drain immediately for same-thread delivery; poller covers cross-thread delivery.
+    
     this.drainQueue();
     return true;
   }
 
-  /** Emit an event on a named channel. Primary public API for cross-Engin events. */
+  
   emit(channel: string, event: string, payload: Record<string, unknown>): boolean {
     this.enqueueEnvelope(channel, event, payload);
     return true;
   }
 
-  /** Legacy: emit a bulk update to a channel (used by connectors & adapters). */
+  
   emitToChannel(channel: string, data: unknown) {
     this.channelState.set(channel, data);
     super.emit(`channel:${channel}`, data);
@@ -503,7 +499,7 @@ class DualRuntimeBridge extends EventEmitter {
     return this.channelState.get(channel) ?? null;
   }
 
-  /** Subscribe to a specific channel:event. Returns an unsubscribe function. */
+  
   subscribe(
     channel: string,
     event: string,
@@ -518,38 +514,25 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  /** Subscribe to peer-activity changes. Returns an unsubscribe function. */
+  
   subscribePeerActivity(callback: (peers: ReadonlyArray<PeerState>) => void): UnsubscribeFn {
     this.peerListeners.add(callback);
     callback(this.getPeers());
     return () => { this.peerListeners.delete(callback); };
   }
 
-  /** Return a snapshot of all peer states. */
+  
   getPeers(): ReadonlyArray<PeerState> {
     return Array.from(this.peers.values());
   }
 
-  /** Subscribe to all bridge emissions (any channel/event). Used by dreamOSBus. */
+  
   subscribeEventActivity(callback: (emission: AnyBridgeEmission) => void): UnsubscribeFn {
     this.emissionListeners.add(callback);
     return () => { this.emissionListeners.delete(callback); };
   }
 
-  /**
-   * Emit a cross-Engin event that requires delivery acknowledgement.
-   *
-   * The event is emitted immediately (same as `emit`) **and** stored in the
-   * durable queue with status 'pending'.  Call `ack(id)` once the subscriber
-   * has processed it.  Use `replayPending()` to re-deliver after a subscriber
-   * comes back online.
-   *
-   * @param channel  Target channel (e.g. 'music').
-   * @param event    Event name (e.g. 'stem-ready').
-   * @param payload  Serialisable event payload.
-   * @param ttlMs    Time-to-live in ms before the entry is dropped (default 60 s).
-   * @returns        The unique emission ID — pass this to `ack()`.
-   */
+  
   emitDurable(
     channel: string,
     event: string,
@@ -580,10 +563,7 @@ class DualRuntimeBridge extends EventEmitter {
     return id;
   }
 
-  /**
-   * Acknowledge delivery of a durable emission.
-   * The queue entry transitions from 'pending' → 'acked'.
-   */
+  
   ack(id: string): void {
     const entry = this.durableQueue.get(id);
     if (!entry || entry.status !== 'pending') return;
@@ -591,11 +571,7 @@ class DualRuntimeBridge extends EventEmitter {
     this.persistDurableQueue();
   }
 
-  /**
-   * Explicitly drop a pending durable emission by ID.
-   * Useful when the caller knows the receiver will never come online.
-   * No-op when the ID is unknown or the entry is already acked/dropped.
-   */
+  
   drop(id: string): void {
     const entry = this.durableQueue.get(id);
     if (!entry || entry.status !== 'pending') return;
@@ -603,10 +579,7 @@ class DualRuntimeBridge extends EventEmitter {
     this.persistDurableQueue();
   }
 
-  /**
-   * Re-emit all 'pending' durable events, optionally filtered to one channel.
-   * Call this when an Engin comes (back) online to receive events it missed.
-   */
+  
   replayPending(channel?: string): void {
     this._evictExpired();
     for (const entry of this.durableQueue.values()) {
@@ -616,15 +589,12 @@ class DualRuntimeBridge extends EventEmitter {
     }
   }
 
-  /** Return a snapshot of the durable queue (all statuses). */
+  
   getDurableQueue(): readonly QueuedEmission[] {
     return Array.from(this.durableQueue.values());
   }
 
-  /**
-   * Return a point-in-time snapshot of bridge statistics.
-   * Useful for health-check endpoints and performance dashboards.
-   */
+  
   getStats(): {
     totalEmissions: number;
     queueDepth: number;
@@ -653,19 +623,12 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  /**
-   * Returns true when at least one subscriber is active on the given channel.
-   * Avoids firing expensive computations when no one is listening.
-   */
+  
   hasSubscribers(channel: string): boolean {
     return (this.peers.get(channel)?.subscriberCount ?? 0) > 0;
   }
 
-  /**
-   * Initialize the top and bottom WASM+GPU VMs plus the inter-VM
-   * SharedArrayBuffer ring buffer.  Dynamically imports WasmGpuVM so
-   * this module stays loadable in test/SSR environments without WebGPU.
-   */
+  
   async initVMs(config: { enableInterVMCommunication?: boolean } = {}): Promise<void> {
     if (this._vmTop && this._vmBottom) return;
     try {
@@ -680,7 +643,7 @@ class DualRuntimeBridge extends EventEmitter {
         Atomics.store(consumerIndex, 0, 0);
         this._vmInterQueue = { buffer, producerIndex, consumerIndex };
       }
-      // Workload dispatch: compute:vm:dispatch-workload → submitVMWorkload
+      
       this.subscribe('compute', 'vm:dispatch-workload', p => {
         void this._handleVMWorkload(p);
       });
@@ -694,7 +657,7 @@ class DualRuntimeBridge extends EventEmitter {
     }
   }
 
-  /** Destroy both VMs and release the inter-VM ring buffer. */
+  
   destroyVMs(): void {
     (this._vmTop    as { destroy?(): void } | null)?.destroy?.();
     (this._vmBottom as { destroy?(): void } | null)?.destroy?.();
@@ -705,10 +668,7 @@ class DualRuntimeBridge extends EventEmitter {
     this._vmActiveWorkloads.clear();
   }
 
-  /**
-   * Send a raw byte message from one VM to the other through the shared
-   * ring buffer.  Returns true when the message was enqueued.
-   */
+  
   sendInterVMMessage(from: VMRegion, to: VMRegion, message: Uint8Array): boolean {
     if (!this._vmInterQueue) return false;
     const written = this._writeInterVMMessage(message);
@@ -718,10 +678,7 @@ class DualRuntimeBridge extends EventEmitter {
     return written;
   }
 
-  /**
-   * Submit a WASM workload to the top or bottom VM.
-   * The workload result is emitted on the given channel.
-   */
+  
   async submitVMWorkload(workload: VMWorkload): Promise<void> {
     const vm = workload.region === 'top' ? this._vmTop : this._vmBottom;
     if (!vm) throw new Error(`VM not initialized: ${workload.region}`);
@@ -732,10 +689,7 @@ class DualRuntimeBridge extends EventEmitter {
     });
   }
 
-  /**
-   * Return VM stats (counters, active workloads) or null if VMs are not
-   * yet initialized.
-   */
+  
   getVMStats(): {
     top:    Record<string, unknown> | null;
     bottom: Record<string, unknown> | null;
@@ -749,10 +703,7 @@ class DualRuntimeBridge extends EventEmitter {
     };
   }
 
-  /**
-   * Remove all listeners, peers, channel state, and durable queue entries.
-   * Intended for test teardown only — do not call in production code.
-   */
+  
   clearAll(): void {
     this.removeAllListeners();
     this.channelState.clear();
@@ -764,7 +715,7 @@ class DualRuntimeBridge extends EventEmitter {
     if (this.wasm?.reset) this.wasm.reset();
   }
 
-  /** Remove durable queue entries that have exceeded their TTL. */
+  
   private _evictExpired(): void {
     const now = Date.now();
     let changed = false;
@@ -777,16 +728,13 @@ class DualRuntimeBridge extends EventEmitter {
     if (changed) this.persistDurableQueue();
   }
 
-  /**
-   * Trim the durable queue to MAX_DURABLE_QUEUE_SIZE by removing the oldest
-   * non-pending (dropped/acked) entries first, then oldest pending entries.
-   */
+  
   private _trimQueue(): void {
     if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) return;
     let changed = false;
     const entries = Array.from(this.durableQueue.entries())
       .sort(([, a], [, b]) => a.enqueuedAt - b.enqueuedAt);
-    // Remove non-pending first
+    
     for (const [id, entry] of entries) {
       if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
       if (entry.status !== 'pending') {
@@ -794,7 +742,7 @@ class DualRuntimeBridge extends EventEmitter {
         changed = true;
       }
     }
-    // If still over limit, remove oldest pending
+    
     for (const [id] of entries) {
       if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
       this.durableQueue.delete(id);
@@ -872,7 +820,7 @@ class DualRuntimeBridge extends EventEmitter {
     return h >>> 0;
   }
 
-  /** Write a byte message into the inter-VM ring buffer. */
+  
   private _writeInterVMMessage(message: Uint8Array): boolean {
     if (!this._vmInterQueue) return false;
     const { buffer, producerIndex, consumerIndex } = this._vmInterQueue;
@@ -889,7 +837,7 @@ class DualRuntimeBridge extends EventEmitter {
     return true;
   }
 
-  /** Internal handler for compute:vm:dispatch-workload bridge events. */
+  
   private async _handleVMWorkload(payload: Record<string, unknown>): Promise<void> {
     const { workloadId, region, wasmBinary, channel, priority } = payload as {
       workloadId: string; region: VMRegion; wasmBinary: ArrayBuffer;
@@ -905,11 +853,11 @@ class DualRuntimeBridge extends EventEmitter {
 
 export const enginBridge = new DualRuntimeBridge();
 
-/** Canonical alias used throughout the codebase. */
+
 export const bridge = enginBridge;
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -14,20 +14,7 @@ import type {
     EnginRuleSetParams,
 } from '@/engine/engin-runtime/EnginRuleSetContract';
 
-/**
- * lib/engins/brand/brandEnginRuleSet.ts
- *
- * BrandingEngin Rule-Set — the ONLY place BrandingEngin domain logic lives.
- *
- * Domain: brand kit, analytics, A/B testing, campaign ROI, audience,
- * and cross-Engin campaign/audio brief handoffs.
- * Handoff kinds: brand:campaign-draft → ContentEngin, brand:audio-brief → StarMakerEngin.
- *
- * ZERO infrastructure here: no fetch, no Supabase, no localStorage.
- * The EnginRuntime handles all of that.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
+
 
 export interface BrandProfile extends JsonObject {
   handle: string;

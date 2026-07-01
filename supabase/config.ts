@@ -7,7 +7,7 @@ export const SUPABASE_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   CANONICAL_SUPABASE_PUBLISHABLE_KEY;
-export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY; // server-only
+export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY; 
 
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   throw new Error("Supabase env not configured");
@@ -34,7 +34,7 @@ export function getServerSiteOrigin(requestOrigin?: string): string {
     try {
       return new URL(configured).origin;
     } catch {
-      // fall through
+      
     }
   }
 

@@ -23,7 +23,7 @@ function normalizeHandle(value: string): string {
   return value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 32);
 }
 
-// GET - Fetch profile
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -91,7 +91,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   });
 }
 
-// PUT - Update profile
+
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);

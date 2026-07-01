@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function LandingProductStatement() {
   return (
     <div className="flex w-full min-w-0 max-w-[36rem] flex-col items-center text-center lg:items-start lg:text-left lg:max-w-[52%] lg:py-16">
-      {/* Brand kicker */}
+      
       <div
         className="de-kicker mb-6"
         style={{ color: '#d4a832' }}
@@ -14,7 +14,7 @@ export default function LandingProductStatement() {
         A new kind of creative home
       </div>
 
-      {/* Headline */}
+      
       <h1
         id="hero-heading"
         className="font-bold tracking-tight leading-[1.04] mb-5"
@@ -37,7 +37,7 @@ export default function LandingProductStatement() {
         </span>
       </h1>
 
-      {/* Product statement */}
+      
       <p
         className="text-base md:text-lg leading-relaxed mb-8 max-w-md"
         style={{ color: 'rgba(165,195,235,0.78)' }}
@@ -47,7 +47,7 @@ export default function LandingProductStatement() {
         connected instead of scattered across a dozen apps.
       </p>
 
-      {/* DREAMengin Engins */}
+      
       <div className="de-premium-stack" aria-label="DREAMengin Engins">
         <article className="de-premium-layer-card">
           <span className="de-premium-layer-label">CodeEngin</span>
@@ -98,13 +98,13 @@ export default function LandingProductStatement() {
         </article>
       </div>
 
-      {/* DreamR statement */}
+      
       <Link href="/mission" className="de-landing-mission-link mt-4 mb-6 block">
         DreamR is the social side of DREAMengin — a place for your work, your people, and your story.{' '}
         <span>Learn more →</span>
       </Link>
 
-      {/* CTAs */}
+      
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xs sm:max-w-none lg:justify-start">
         <Link
           href="/join"

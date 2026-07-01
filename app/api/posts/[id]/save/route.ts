@@ -4,18 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * POST /api/posts/[id]/save
- * DELETE /api/posts/[id]/save
- *
- * Saves or unsaves a post to/from the calling user's profile (spec §2).
- *
- * FIFO queue: the user may have at most 25 saved posts.
- * When a 26th post is saved, the oldest saved post is automatically deleted
- * before inserting the new one.
- *
- * DELETE removes the post from saved_posts for this user.
- */
+
 
 const MAX_SAVED_POSTS = 25;
 
@@ -33,7 +22,7 @@ export async function POST(
 
   const db = supabase as SupabaseClient;
 
-  // Verify the post exists.
+  
   const { data: post } = await db
     .from('app_posts')
     .select('id')
@@ -44,7 +33,7 @@ export async function POST(
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  // Check if already saved.
+  
   const { data: existing } = await db
     .from('saved_posts')
     .select('id')
@@ -62,7 +51,7 @@ export async function POST(
     .eq('user_id', user.id);
 
   if (typeof savedCount === 'number' && savedCount >= MAX_SAVED_POSTS) {
-    // Find the oldest saved post and delete it.
+    
     const { data: oldest } = await db
       .from('saved_posts')
       .select('id')

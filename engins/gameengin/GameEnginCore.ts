@@ -2,34 +2,13 @@ import type { QualityTier } from '@/engins/gameengin/core';
 import { EliteGameEngine } from '@/engins/gameengin/core';
 import { GameEnginRuntime } from '@/engins/gameengin/gameEnginRuntime';
 
-/**
- * src/core/GameEnginCore.ts
- *
- * DREAMengin — Unified GameEnginCore
- *
- * Orchestrates all PS5-level subsystems into a single cohesive runtime:
- *
- *  • Graphics & Rendering     → EliteGameEngine (lib/gameengin/core.ts)
- *  • WebGPU / game loading    → GameEnginRuntime (lib/gameengin/gameEnginRuntime.ts)
- *  • 20 Power Systems         → power-systems.ts (physics, netcode, audio, AI, …)
- *
- * Usage (server-safe — no DOM access in constructor):
- *
- *   const core = new GameEnginCore();
- *   await core.start(canvas, demoGameConfig);
- *   // …
- *   core.stop();
- *
- * Validation fires synchronously inside `start()` and throws a descriptive
- * `GameEnginConfigError` on misconfigured parameters before any subsystem
- * initialises.
- */
+
 
 export interface AssetEntry {
   id: string;
   path: string;
   priority: number;
-  /** Explicit asset type.  When omitted the launcher infers from file extension. */
+  
   type?: 'mesh' | 'texture' | 'audio' | 'shader' | 'script';
 }
 
@@ -157,7 +136,7 @@ export interface GameEnginSnapshot {
   };
 }
 
-/** Complete configuration object passed to `GameEnginCore.start()`. */
+
 export interface GameConfig {
   id: string;
   name: string;
@@ -189,7 +168,7 @@ function inferAssetType(
   if (AUDIO_EXTS.has(ext))   return 'audio';
   if (SHADER_EXTS.has(ext))  return 'shader';
   if (ext === '.js' || ext === '.ts' || ext === '.wasm') return 'script';
-  // Unknown extension — default to mesh (most common streamed asset type)
+  
   return 'mesh';
 }
 
@@ -204,12 +183,7 @@ const VALID_QUALITY_TIERS: QualityTier[] = ['ultra', 'high', 'medium', 'low'];
 const VALID_TRANSPORTS = ['WebSocket', 'WebRTC', 'WebTransport'] as const;
 const GAMEENGIN_CORE_VERSION = '1.1.0';
 
-/**
- * validateConfig
- *
- * Checks for misconfigured parameters and throws `GameEnginConfigError` on
- * the first violation found.  Called synchronously before any subsystem init.
- */
+
 export function validateConfig(config: GameConfig): void {
   if (!config.id || config.id.trim() === '') {
     throw new GameEnginConfigError('`id` must be a non-empty string.');
@@ -286,17 +260,7 @@ export function validateConfig(config: GameConfig): void {
   }
 }
 
-/**
- * GameEnginCore
- *
- * The single entry-point for bootstrapping the DREAMengin runtime.
- * Holds references to every subsystem and drives the main game loop.
- *
- * Lifecycle:
- *   new GameEnginCore()        → safe to construct anywhere (no browser APIs)
- *   await core.start(…)        → validates config, inits all subsystems, starts loop
- *   core.stop()                → halts the loop and disposes all subsystems
- */
+
 export class GameEnginCore {
   private eliteEngine: EliteGameEngine | null = null;
   private runtime: GameEnginRuntime | null = null;
@@ -414,22 +378,14 @@ export class GameEnginCore {
     }
   }
 
-  /**
-   * start(canvas, config)
-   *
-   * Validates `config`, initialises all subsystems, then begins the
-   * main render and simulation loop.
-   *
-   * @param canvas  The HTMLCanvasElement to render into.
-   * @param config  Game-specific configuration (see `GameConfig`).
-   */
+  
   async start(canvas: HTMLCanvasElement, config: GameConfig): Promise<void> {
     if (this.running) {
       console.warn('[GameEnginCore] start() called while already running — ignoring.');
       return;
     }
 
-    // 1. Validate before touching any subsystem
+    
     this.emitLifecycle('before-validate');
     validateConfig(config);
     this.negotiateCompatibility(config);
@@ -441,24 +397,24 @@ export class GameEnginCore {
       `[GameEnginCore] Initialising "${config.name}" v${config.version} …`
     );
 
-    // 2. Boot EliteGameEngine (Babylon.js + 20 power systems)
+    
     this.eliteEngine = new EliteGameEngine(canvas);
     await this.eliteEngine.init();
 
-    // 3. Apply graphics quality tier from config
+    
     this.eliteEngine.setQuality(config.graphics.qualityTier);
 
-    // 4. Networking config is informational at this stage: the EliteGameEngine
-    //    constructs RollbackNetcode and ClientSidePrediction at field-init time
-    //    using its own defaults (maxRollbackFrames: 8, tickRateHz: 60).
-    //    Future versions may accept an EliteGameEngine factory so callers can
-    //    pass custom netcode params at construction time.
+    
+    
+    
+    
+    
 
-    // 5. Seed world generator if simulation config provides gravity/entities
+    
     if (config.simulation) {
       const { gravity, replayEnabled } = config.simulation;
       if (gravity) {
-        // setGravity accepts a [x, y, z] tuple
+        
         this.eliteEngine.physics.setGravity(gravity);
       }
       if (replayEnabled) {
@@ -471,12 +427,12 @@ export class GameEnginCore {
       }
     }
 
-    // 6. Register and request assets through the streaming manager.
-    //    Note: the memory budget (maxCacheMB) is fixed at EliteGameEngine
-    //    construction time; override by constructing GameEnginCore with a
-    //    custom engine if a different budget is needed.
+    
+    
+    
+    
     if (config.assets) {
-      // Register preload assets (highest priority, LOD 0)
+      
       for (const entry of config.assets.preload ?? []) {
         this.eliteEngine.assets.register({
           id:       entry.id,
@@ -487,7 +443,7 @@ export class GameEnginCore {
         });
         this.eliteEngine.assets.request(entry.id);
       }
-      // Register streaming assets at their declared priority
+      
       for (const entry of config.assets.stream ?? []) {
         this.eliteEngine.assets.register({
           id:       entry.id,
@@ -500,7 +456,7 @@ export class GameEnginCore {
       }
     }
 
-    // 7. Enable telemetry / profiler
+    
     if (config.telemetry?.enabled) {
       this.eliteEngine.onFrame((_dt, telemetry) => {
         const minFps = config.telemetry?.minAcceptableFps ?? 25;
@@ -513,24 +469,24 @@ export class GameEnginCore {
       });
     }
 
-    // 8. Boot GameEnginRuntime (WebGPU device + input routing)
+    
     this.emitLifecycle('before-runtime');
     this.runtime = new GameEnginRuntime();
     await this.runtime.initWebGPU(canvas);
 
-    // 9. Register input handlers based on input config
+    
     const inputCfg = config.input ?? {};
     if (inputCfg.touch)    this.runtime.registerInputHandler('touch',    () => {});
     if (inputCfg.keyboard) this.runtime.registerInputHandler('keyboard', () => {});
     if (inputCfg.gamepad)  this.runtime.registerInputHandler('gamepad',  () => {});
     if (inputCfg.dualSense) this.runtime.registerInputHandler('dualsense', () => {});
 
-    // 10. Forward runtime errors to console
+    
     this.runtime.bus.on('error', ({ message }) => {
       console.error(`[GameEnginCore] Runtime error: ${message}`);
     });
 
-    // 11. Kick off the render + power-system loop
+    
     this.eliteEngine.start();
 
     this.running = true;
@@ -539,12 +495,7 @@ export class GameEnginCore {
     console.debug(`[GameEnginCore] ✅ "${config.name}" is running.`);
   }
 
-  /**
-   * stop()
-   *
-   * Halts the runtime loop and disposes all subsystems.
-   * Safe to call multiple times.
-   */
+  
   stop(): void {
     if (!this.running) return;
 
@@ -564,17 +515,17 @@ export class GameEnginCore {
     console.debug('[GameEnginCore] Engine stopped.');
   }
 
-  /** True while the engine is running. */
+  
   get isRunning(): boolean {
     return this.running;
   }
 
-  /** Direct access to the underlying EliteGameEngine (power systems, ECS, etc.). */
+  
   get engine(): EliteGameEngine | null {
     return this.eliteEngine;
   }
 
-  /** Direct access to the underlying GameEnginRuntime (WebGPU device, bus). */
+  
   get gameRuntime(): GameEnginRuntime | null {
     return this.runtime;
   }

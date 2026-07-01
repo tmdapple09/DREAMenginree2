@@ -5,11 +5,11 @@ import { ActivityTier, VerificationMethod } from '@/dreamr/activity/types';
 import { useState } from 'react';
 import { TierBadge } from './dream.TierBadge';
 
-// components/activity/dream.ActivityPostForm.tsx
-// Phase 9 — Activity Post Form
-//
-// Form for creating posts with activity tier classification and verification.
-// Per ACTIVITY_FIRST_PROTOCOL.md §II (Activity Types and Tiers)
+
+
+
+
+
 
 
 interface ActivityPostFormProps {
@@ -56,7 +56,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         media_url: mediaUrl.trim() || undefined,
       });
 
-      // Reset form
+      
       setContent('');
       setActivityType('');
       setEvidenceUrl('');
@@ -71,7 +71,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Content */}
+      
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           What did you do? *
@@ -86,7 +86,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         />
       </div>
 
-      {/* Activity Type */}
+      
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Activity Type *
@@ -101,7 +101,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         />
       </div>
 
-      {/* Tier Selection */}
+      
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Activity Tier * (Will earn {pointsEstimate} points)
@@ -136,7 +136,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         </div>
       </div>
 
-      {/* Verification Method */}
+      
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Verification Method
@@ -154,7 +154,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         </select>
       </div>
 
-      {/* Evidence URL */}
+      
       {verificationMethod !== VerificationMethod.TEXT && (
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -170,7 +170,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         </div>
       )}
 
-      {/* Media URL (optional) */}
+      
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Media URL (optional)
@@ -184,7 +184,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         />
       </div>
 
-      {/* Actions */}
+      
       <div className="flex gap-3">
         <button
           type="submit"
@@ -205,7 +205,7 @@ export function ActivityPostForm({ onSubmit, onCancel }: ActivityPostFormProps) 
         )}
       </div>
 
-      {/* Info */}
+      
       <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
         <p>
           <strong>Tier {tier}</strong> will earn <strong>{pointsEstimate} points</strong> (decay in 30 days)

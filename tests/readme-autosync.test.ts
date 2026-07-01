@@ -1,24 +1,4 @@
-/**
- * tests/readme-autosync.test.ts  (repurposed)
- *
- * Previously: tested a readme-autosync script that no longer exists.
- *
- * Now: tests the Dream universal object model and DrEamsIntentType system —
- * the engine underneath DREAMengin. Validates that:
- *
- *   1. The Dream model (lib/dreams/types.ts) satisfies the architecture contract:
- *      one model, many surfaces. DreamKind · DreamRenderMode · DreamPermissions.
- *
- *   2. DrEamsIntentType covers all Dream mutation paths (open, close, move,
- *      resize, share, clone, delete, post, attach, transfer, state-patch).
- *
- *   3. createDream / isDream / dreamCan factory helpers work correctly.
- *
- *   4. Permission presets (OWNER_PERMISSIONS, VIEWER_PERMISSIONS, NO_PERMISSIONS)
- *      satisfy the architecture's declared permission set.
- *
- * Architecture: ARCHITECTURE.md §10 (Dreams) + §14 (Runtime Modules)
- */
+
 
 import { describe, expect, it } from 'vitest';
 import { buildAutosyncSummary, computeAffected, replaceSection } from '../scripts/readme-autosync';
@@ -38,7 +18,7 @@ import {
   type DrEamsIntentType,
 } from '../lib/dreams/types';
 
-// ─── 1. Dream model completeness ──────────────────────────────────────────────
+
 
 describe('Dream model — architecture contract', () => {
   it('covers every DreamKind the architecture defines', () => {
@@ -47,8 +27,8 @@ describe('Dream model — architecture contract', () => {
       'profile', 'world', 'ruleset', 'simulation', 'environment',
       'app', 'connector', 'artifact', 'collection', 'stream',
     ];
-    // TypeScript proves this at compile time; this test proves it at runtime
-    // so regressions surface immediately rather than silently breaking types.
+    
+    
     for (const kind of requiredKinds) {
       const d = createDream({ id: `test-${kind}`, label: kind, kind, ownerId: 'u1' });
       expect(d.kind).toBe(kind);
@@ -103,7 +83,7 @@ describe('Dream model — architecture contract', () => {
   });
 });
 
-// ─── 2. DrEamsIntentType coverage ─────────────────────────────────────────────
+
 
 describe('DrEamsIntentType — all Dream mutation paths covered', () => {
   const allIntentTypes: DrEamsIntentType['type'][] = [
@@ -114,7 +94,7 @@ describe('DrEamsIntentType — all Dream mutation paths covered', () => {
   ];
 
   it('defines an intent for every Dream mutation action', () => {
-    // Every action in the architecture must have a typed intent
+    
     expect(allIntentTypes.length).toBeGreaterThanOrEqual(15);
   });
 
@@ -159,7 +139,7 @@ describe('DrEamsIntentType — all Dream mutation paths covered', () => {
   });
 });
 
-// ─── 3. createDream factory ────────────────────────────────────────────────────
+
 
 describe('createDream — factory produces valid Dreams', () => {
   it('creates a Dream with required fields and correct defaults', () => {
@@ -212,7 +192,7 @@ describe('createDream — factory produces valid Dreams', () => {
   });
 });
 
-// ─── 4. isDream type guard ─────────────────────────────────────────────────────
+
 
 describe('isDream — type guard', () => {
   it('returns true for a valid Dream', () => {
@@ -242,7 +222,7 @@ describe('isDream — type guard', () => {
   });
 });
 
-// ─── 5. dreamCan permission helper ────────────────────────────────────────────
+
 
 describe('dreamCan — permission helper', () => {
   it('returns true for granted permissions', () => {
@@ -265,7 +245,7 @@ describe('dreamCan — permission helper', () => {
   });
 });
 
-// ─── 6. Permission presets ────────────────────────────────────────────────────
+
 
 describe('Permission presets — architecture contract', () => {
   it('OWNER_PERMISSIONS grants all capabilities', () => {
@@ -293,7 +273,7 @@ describe('Permission presets — architecture contract', () => {
   });
 });
 
-// ─── 7. Dream one-model-many-surfaces contract ────────────────────────────────
+
 
 describe('Dream — one model many surfaces', () => {
   it('the same Dream can be projected onto different surfaces via surfaceAdapters', () => {
@@ -344,13 +324,13 @@ describe('Dream — one model many surfaces', () => {
 
   it('a Game Dream can render as Widget on HomeDream and Fullscreen on GameEngin', () => {
     const gameDream = createDream({ id: 'mad-maxi', label: 'Mad Maxi', kind: 'game', ownerId: 'u1' });
-    // Same Dream, different render mode per surface — no duplicate architecture
+    
     const homeMode: DreamRenderMode = 'widget';
     const gameMode: DreamRenderMode = 'fullscreen';
     expect(gameDream.kind).toBe('game');
-    // The Dream's identity does not change between surfaces
+    
     expect(gameDream.id).toBe('mad-maxi');
-    // Render mode is a surface decision, not the Dream's identity
+    
     expect(homeMode).not.toBe(gameMode);
   });
 });

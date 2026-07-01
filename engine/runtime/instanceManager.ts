@@ -3,37 +3,15 @@ import { createLocalChannel, createRuntimeChannel } from '@/engine/runtime/runti
 import type { RuntimeId } from '@/types/module-manifest';
 import { create } from 'zustand';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/instanceManager.ts.
 
-/**
- * lib/runtime/instanceManager.ts — Pass 4
- *
- * Multi-instance Engin manager.
- *
- * Supports running the same Engin in two independent RuntimeView regions
- * simultaneously (e.g. StarMakerEngin in Surface Space AND DreamSpace).
- * Each instance is keyed by `${enginName}:${instanceId}` and carries its own
- * runtimeChannel adapter — solo instances use a LocalChannel, co-op instances
- * use a RealtimeChannel — but the component tree never changes (guardrail #1
- * from COOP_AND_SOLO_ROADMAP.md).
- *
- * Identity rule (decision #3 from COOP_AND_SOLO_ROADMAP.md):
- *   - One Supabase identity, always.
- *   - "Player 2" emerges from the runtimeChannel, not from a second auth session.
- *
- * Persistence:
- *   - Instance list is kept in memory (Zustand).
- *   - For full Supabase persistence, callers may read/write `engin_instances`
- *     rows using the instanceId as the primary key.
- *
- * Architecture: docs/ARCHITECTURE.md §4 (Pass 4 — multi-instance Engin manager).
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const LS_KEY = 'dreamengin:engin-instances';
 
@@ -73,7 +51,7 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
     const instance = instances[key];
     if (!instance) return;
 
-    // Async close — fire and forget; no await in Zustand action.
+    
     instance.channel.close().catch(() => {});
 
     set((state) => {
@@ -97,7 +75,7 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
     const instance = instances[key];
     if (!instance) return;
 
-    // Close the old local channel silently.
+    
     instance.channel.close().catch(() => {});
 
     set((state) => ({
@@ -114,7 +92,7 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
       if (typeof localStorage === 'undefined') return;
       localStorage.setItem(LS_KEY, JSON.stringify(serializeInstances(get().instances)));
     } catch {
-      // Storage can be unavailable in tests/private mode.
+      
     }
   },
 
@@ -134,16 +112,16 @@ export const useInstanceManager = create<InstanceManagerState>((set, get) => ({
       }
       set({ instances: restored });
     } catch {
-      // Ignore corrupted local mirrors.
+      
     }
   },
 }));
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 export type EnginName =
   | 'StarMakerEngin'
@@ -157,31 +135,28 @@ export type EnginName =
 
 export type InstanceMode = 'solo' | 'coop';
 
-/** A single managed Engin instance. */
+
 export interface EnginInstance {
-  /** Unique key: `${enginName}:${instanceId}` */
+  
   key: string;
-  /** Which Engin this is. */
+  
   enginName: EnginName;
-  /** Short stable instance ID (uuid or user-supplied). */
+  
   instanceId: string;
-  /** Which runtime region this instance lives in. */
+  
   region: RuntimeId;
-  /** Collaboration mode for this instance. */
+  
   mode: InstanceMode;
-  /** Channel for inter-instance communication (same-Engin co-op). */
+  
   channel: RuntimeChannel;
-  /** Wall-clock ms when this instance was created. */
+  
   createdAt: number;
 }
 
 interface InstanceManagerState {
-  /** All active instances, keyed by instance key. */
+  
   instances: Record<string, EnginInstance>;
-  /**
-   * Spawn a new Engin instance.
-   * Returns the existing instance if the key is already registered.
-   */
+  
   spawn: (
     enginName: EnginName,
     instanceId: string,
@@ -194,20 +169,13 @@ interface InstanceManagerState {
     region: RuntimeId;
     mode?: InstanceMode;
   }) => EnginInstance;
-  /**
-   * Destroy an instance and release its channel.
-   * No-op if the instance doesn't exist.
-   */
+  
   destroy: (key: string) => void;
-  /** Return all instances for a given Engin name. */
+  
   getInstancesForEngin: (enginName: EnginName) => EnginInstance[];
-  /** Return all instances in a given runtime region. */
+  
   getInstancesForRegion: (region: RuntimeId) => EnginInstance[];
-  /**
-   * Promote a solo instance to co-op by swapping its LocalChannel for a
-   * RealtimeChannel. The caller is responsible for providing the new channel
-   * (use createRealtimeChannel from runtimeChannel.ts).
-   */
+  
   promoteToCoOp: (key: string, channel: RuntimeChannel) => void;
   persistLocal: () => void;
   restoreLocal: () => void;
@@ -215,7 +183,7 @@ interface InstanceManagerState {
 
 type PersistedInstance = Omit<EnginInstance, 'channel'>;
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function serializeInstances(instances: Record<string, EnginInstance>): PersistedInstance[] {
   return Object.values(instances).map((instance) => ({
@@ -228,12 +196,7 @@ function serializeInstances(instances: Record<string, EnginInstance>): Persisted
   }));
 }
 
-/**
- * buildInstanceKey(enginName, instanceId)
- *
- * Returns the canonical key used throughout the instance manager.
- * Exported so consumers can construct keys without instantiating the store.
- */
+
 export function buildInstanceKey(enginName: EnginName, instanceId: string): string {
   return `${enginName}:${instanceId}`;
 }
@@ -283,13 +246,7 @@ export async function persistInstanceList(userId: string): Promise<void> {
   }
 }
 
-/**
- * spawnDualInstances(enginName, regionA, regionB)
- *
- * Convenience helper for the Pass 4 use-case: same Engin in two regions.
- * Spawns two solo instances with auto-generated instance IDs and returns them.
- * Callers can later call promoteToCoOp() on either to link them via a shared channel.
- */
+
 export function spawnDualInstances(
   enginName: EnginName,
   regionA: RuntimeId,
@@ -310,8 +267,8 @@ export function spawnDualInstances(
   return [a, b];
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-// ─── Supabase mock ────────────────────────────────────────────────────────────
+
 const createServerClient = vi.fn();
 
 vi.mock('@/supabase/server/serverClient', () => ({
@@ -32,9 +32,9 @@ afterEach(() => {
   vi.resetModules();
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – parseSRT
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – parseSRT', () => {
   it('parses a basic SRT file into segments', async () => {
     const { parseSRT } = await import('../lib/content/transcriptEditor');
@@ -79,9 +79,9 @@ describe('transcriptEditor – parseSRT', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – parseVTT
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – parseVTT', () => {
   it('parses a WebVTT file into segments', async () => {
     const { parseVTT } = await import('../lib/content/transcriptEditor');
@@ -102,9 +102,9 @@ describe('transcriptEditor – parseVTT', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – computeCuts
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – computeCuts', () => {
   it('returns empty cuts when no words are deleted', async () => {
     const { parseSRT, computeCuts } = await import('../lib/content/transcriptEditor');
@@ -132,20 +132,20 @@ describe('transcriptEditor – computeCuts', () => {
     const { parseSRT, computeCuts } = await import('../lib/content/transcriptEditor');
     const segs = parseSRT(`1\n00:00:00,000 --> 00:01:00,000\nA B C D E F G\n`);
     const words = segs[0].words;
-    // Delete first and last word — far apart
+    
     const cuts = computeCuts(segs, new Set([words[0].index, words[words.length - 1].index]));
     expect(cuts).toHaveLength(2);
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – applyEditsToSegments
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – applyEditsToSegments', () => {
   it('removes deleted words from segment text', async () => {
     const { parseSRT, applyEditsToSegments } = await import('../lib/content/transcriptEditor');
     const segs = parseSRT(`1\n00:00:00,000 --> 00:00:03,000\nHello world foo\n`);
-    const toDelete = new Set([segs[0].words[1].index]); // delete "world"
+    const toDelete = new Set([segs[0].words[1].index]); 
     const result = applyEditsToSegments(segs, toDelete);
     expect(result[0].text).toBe('Hello foo');
     expect(result[0].words).toHaveLength(2);
@@ -169,9 +169,9 @@ describe('transcriptEditor – applyEditsToSegments', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – exportSRT
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – exportSRT', () => {
   it('produces valid SRT text that can be re-parsed', async () => {
     const { parseSRT, exportSRT } = await import('../lib/content/transcriptEditor');
@@ -198,9 +198,9 @@ describe('transcriptEditor – exportSRT', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – searchTranscript
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – searchTranscript', () => {
   it('returns matching word entries', async () => {
     const { parseSRT, searchTranscript } = await import('../lib/content/transcriptEditor');
@@ -224,9 +224,9 @@ describe('transcriptEditor – searchTranscript', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcript Editor – utilities
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('transcriptEditor – utilities', () => {
   it('segmentsToPlainText joins segment texts with spaces', async () => {
     const { parseSRT, segmentsToPlainText } = await import('../lib/content/transcriptEditor');
@@ -237,7 +237,7 @@ describe('transcriptEditor – utilities', () => {
   it('totalDurationMs returns end minus start of first/last segment', async () => {
     const { parseSRT, totalDurationMs } = await import('../lib/content/transcriptEditor');
     const segs = parseSRT(`1\n00:00:01,000 --> 00:00:03,000\nHello world\n`);
-    // duration = endMs(3000) - startMs(1000) = 2000
+    
     expect(totalDurationMs(segs)).toBe(2000);
   });
 
@@ -247,9 +247,9 @@ describe('transcriptEditor – utilities', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SEO Scorer
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('seoScorer – scoreContent', () => {
   it('returns overall score between 0 and 100', async () => {
     const { scoreContent } = await import('../lib/content/seoScorer');
@@ -341,9 +341,9 @@ describe('seoScorer – generateReport', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// voiceClone lib – estimateDurationSeconds
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('voiceClone – estimateDurationSeconds', () => {
   it('returns positive duration for non-empty text', async () => {
     const { estimateDurationSeconds } = await import('../lib/content/voiceClone');
@@ -363,9 +363,9 @@ describe('voiceClone – estimateDurationSeconds', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Transcribe API route
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('/api/content/transcribe', () => {
   it('rejects unauthenticated requests with 401', async () => {
     createServerClient.mockResolvedValue(makeUnauthSupabase());
@@ -441,9 +441,9 @@ describe('/api/content/transcribe', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Generative Fill API route
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('/api/content/generative-fill', () => {
   it('rejects unauthenticated requests with 401', async () => {
     createServerClient.mockResolvedValue(makeUnauthSupabase());
@@ -526,9 +526,9 @@ describe('/api/content/generative-fill', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Voice Clone API route
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('/api/content/voice-clone', () => {
   it('rejects unauthenticated clone requests with 401', async () => {
     createServerClient.mockResolvedValue(makeUnauthSupabase());
@@ -564,7 +564,7 @@ describe('/api/content/voice-clone', () => {
     delete process.env.ELEVENLABS_API_KEY;
     createServerClient.mockResolvedValue(makeAuthedSupabase());
     const { POST } = await import('../app/api/content/voice-clone/route');
-    // 6 words at 150 wpm = 6/2.5 = 2.4 seconds
+    
     const req = new Request('https://dreamengin.app/api/content/voice-clone', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

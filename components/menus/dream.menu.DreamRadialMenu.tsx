@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import MenuPanel, { type MenuItem } from './dream.panel.MenuPanel';
 
-// Stream 5.4 — Popover API type augmentation
-// Extends React's HTMLAttributes to include the 'popover' attribute.
-// The DOM lib already declares 'hint' as a valid value; we match that here.
+
+
+
 declare module 'react' {
   interface HTMLAttributes<T> {
     popover?: 'auto' | 'hint' | 'manual' | '';
@@ -20,7 +20,7 @@ type Props = {
   side?: 'left' | 'right' | 'center';
 };
 
-// Six fixed Daydream apps (spec §7.2) + Analytics + Marketplace + Shop (accessible from Gold Button nav §4.2)
+
 const DREAM_ITEMS = [
   { id: 'music',       label: 'Music',       icon: '🎵', route: '/daydream/music'       },
   { id: 'games',       label: 'Games',       icon: '🎮', route: '/daydream/games'       },
@@ -36,8 +36,8 @@ const DREAM_ITEMS = [
 export default function DreamRadialMenu({ open, onClose, onSelectNode, side }: Props) {
   const router = useRouter();
 
-  // Stream 5.4 — Popover API support
-  // Uses native top-layer rendering when available; z-index fallback otherwise.
+  
+  
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const supportsPopover = typeof window !== 'undefined' && 'popover' in HTMLElement.prototype;
 
@@ -51,7 +51,7 @@ export default function DreamRadialMenu({ open, onClose, onSelectNode, side }: P
         (el as HTMLDivElement & { hidePopover?: () => void }).hidePopover?.();
       }
     } catch {
-      // Ignore — some browsers throw if popover state already matches
+      
     }
   }, [open, supportsPopover]);
 
@@ -66,8 +66,8 @@ export default function DreamRadialMenu({ open, onClose, onSelectNode, side }: P
     },
   }));
 
-  // When Popover API is available, wrap in a popover container for top-layer rendering.
-  // The inner MenuPanel still manages its own open/close visual state (fallback).
+  
+  
   if (supportsPopover) {
     return (
       <div

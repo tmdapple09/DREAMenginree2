@@ -10,25 +10,7 @@ type Particle = {
   size: number;
 };
 
-/**
- * HeroSprite – Dr. Eams assembled from real body-part assets, always animating.
- *
- * Parts loaded from /public/:
- *   head_transparent.png  (702 × 560 natural px)
- *   coat_transparent.png  (662 × 781 natural px)  — torso
- *   arm1_transparent.png  (245 × 683 natural px)  — back arm
- *   arm2_transparent.png  (374 × 529 natural px)  — front arm
- *   shoe1_transparent.png (295 × 362 natural px)  — back leg/shoe
- *   shoe2_transparent.png (295 × 416 natural px)  — front leg/shoe
- *
- * Touch / pointer zones (based on y position relative to canvas height):
- *   head  → top 30%     → head wobbles / bounces
- *   torso → mid 38%     → arms wave
- *   legs  → bottom 32%  → legs kick
- *
- * The animation never stops — idle loop runs between reactions.
- * After a reaction the loop returns to idle automatically.
- */
+
 
 const NAT = {
   head:  { w: 702, h: 560 },
@@ -39,27 +21,23 @@ const NAT = {
   shoe2: { w: 295, h: 416 },
 } as const;
 
-// Draw scale — character total visual height ≈ 416 px inside a 576 px canvas
+
 const S = 0.35;
 
 const DIM = {
-  head:  { w: Math.round(NAT.head.w  * S), h: Math.round(NAT.head.h  * S) }, // 183 × 146
-  coat:  { w: Math.round(NAT.coat.w  * S), h: Math.round(NAT.coat.h  * S) }, // 162 × 193
-  arm1:  { w: Math.round(NAT.arm1.w  * S), h: Math.round(NAT.arm1.h  * S) }, // 64 × 178
-  arm2:  { w: Math.round(NAT.arm2.w  * S), h: Math.round(NAT.arm2.h  * S) }, // 97 × 138
-  shoe1: { w: Math.round(NAT.shoe1.w * S), h: Math.round(NAT.shoe1.h * S) }, // 77 × 94
-  shoe2: { w: Math.round(NAT.shoe2.w * S), h: Math.round(NAT.shoe2.h * S) }, // 77 × 108
+  head:  { w: Math.round(NAT.head.w  * S), h: Math.round(NAT.head.h  * S) }, 
+  coat:  { w: Math.round(NAT.coat.w  * S), h: Math.round(NAT.coat.h  * S) }, 
+  arm1:  { w: Math.round(NAT.arm1.w  * S), h: Math.round(NAT.arm1.h  * S) }, 
+  arm2:  { w: Math.round(NAT.arm2.w  * S), h: Math.round(NAT.arm2.h  * S) }, 
+  shoe1: { w: Math.round(NAT.shoe1.w * S), h: Math.round(NAT.shoe1.h * S) }, 
+  shoe2: { w: Math.round(NAT.shoe2.w * S), h: Math.round(NAT.shoe2.h * S) }, 
 } as const;
 
 type Zone = 'idle' | 'head' | 'torso' | 'legs';
 
-const REACT_MS = 2300; // ms before returning to idle
+const REACT_MS = 2300; 
 
-/**
- * Funny random quotes per interaction zone.
- * Parts correctly referenced: head · arms · shoes.
- * Exported so unit tests can verify pool contents.
- */
+
 export const ZONE_QUOTES: Record<Exclude<Zone, 'idle'>, string[]> = {
   head: [
     "SCAN COMPLET. Cheese Balls. ",
@@ -88,13 +66,13 @@ export const ZONE_QUOTES: Record<Exclude<Zone, 'idle'>, string[]> = {
   ],
 };
 
-/** Pick a random funny line for the given zone. Exported for unit tests. */
+
 export function pickZoneQuote(zone: Exclude<Zone, 'idle'>): string {
   const pool = ZONE_QUOTES[zone];
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/** Exported for unit tests */
+
 export function hitZone(offsetY: number, displayH: number): Zone {
   const rel = offsetY / displayH;
   if (rel < 0.30) return 'head';
@@ -115,7 +93,7 @@ function loadImg(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload  = () => resolve(img);
-    img.onerror = () => resolve(img); // guard: null-check before drawImage
+    img.onerror = () => resolve(img); 
     img.src = src;
   });
 }
@@ -142,7 +120,7 @@ export default function HeroSprite({
 
   const [hint, setHint] = useState<{ label: string; key: number } | null>(null);
 
-  // Load body-part images once on mount
+  
   useEffect(() => {
     Promise.all([
       loadImg('/head_transparent.png'),
@@ -156,7 +134,7 @@ export default function HeroSprite({
     });
   }, []);
 
-  // Emit PBR-themed particles from the touch point
+  
   const emitParticlesAt = useCallback((x: number, y: number, zone: Zone) => {
     if (zone === 'idle') return;
     const palettes: Record<Exclude<Zone, 'idle'>, string[]> = {
@@ -203,7 +181,7 @@ export default function HeroSprite({
     if (e.key === 'ArrowDown') triggerZone('legs');
   }, [triggerZone]);
 
-  // rAF draw loop
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -220,7 +198,7 @@ export default function HeroSprite({
     let stopped = false;
     const startTime = performance.now();
 
-    /** Draw one body part with pivot + rotation, optionally flipped. */
+    
     function drawPart(
       img: HTMLImageElement | null,
       pw: number, ph: number,
@@ -236,7 +214,7 @@ export default function HeroSprite({
       ctx.restore();
     }
 
-    // Pause on hidden tab (ARCHITECTURE.md §17.3 — battery-aware)
+    
     function onVisibility( ){
       if (!document.hidden) rafId = requestAnimationFrame(tick);
     }
@@ -245,49 +223,49 @@ export default function HeroSprite({
     function tick(now: number ){
       if (stopped) return;
 
-      // Skip draw while tab is hidden — rAF won't fire anyway, but guard is cheap
+      
       if (document.hidden) { rafId = requestAnimationFrame(tick); return; }
 
-      // Expire reaction → return to idle
+      
       if (zoneRef.current !== 'idle' && now >= reactUntil.current) {
         zoneRef.current = 'idle';
       }
 
       const zone = zoneRef.current;
-      const t    = (now - startTime) / 1000; // elapsed seconds
+      const t    = (now - startTime) / 1000; 
       const imgs = imgsRef.current;
 
       ctx.clearRect(0, 0, width, height);
 
-      const idleBob   = Math.sin(t * 1.6) * 3;                     // gentle vertical float
-      const idleArm   = 0.65 + Math.sin(t * 1.6) * 0.08;          // left arm raised outward
-      const idleWave  = -0.40 + Math.sin(t * 2.0) * 0.10;         // right arm peace-sign pose, gentle sway
-      const idleLeg   = Math.sin(t * 1.6) * 0.06;                  // subtle leg sway
-      const idleHead  = Math.sin(t * 0.9) * 0.04;                  // gentle head tilt
+      const idleBob   = Math.sin(t * 1.6) * 3;                     
+      const idleArm   = 0.65 + Math.sin(t * 1.6) * 0.08;          
+      const idleWave  = -0.40 + Math.sin(t * 2.0) * 0.10;         
+      const idleLeg   = Math.sin(t * 1.6) * 0.06;                  
+      const idleHead  = Math.sin(t * 0.9) * 0.04;                  
 
       let headAngle  = idleHead;
       let headBounce = 0;
-      let armAngle   = idleArm;       // back arm (arm1)
-      let arm2Angle  = idleWave;      // front/right arm — waves by default
+      let armAngle   = idleArm;       
+      let arm2Angle  = idleWave;      
       let legAngle   = idleLeg;
       let bodyBob    = idleBob;
 
       if (zone !== 'idle') {
-        // progress 0 → 1 over the reaction window
+        
         const elapsed  = now - (reactUntil.current - REACT_MS);
         const progress = Math.min(elapsed / REACT_MS, 1);
 
         if (zone === 'head') {
-          // Head wobbles rapidly left-right, bounces up
+          
           headAngle  = Math.sin(progress * Math.PI * 10) * 0.45 * (1 - progress);
           headBounce = Math.sin(progress * Math.PI * 5)  * -12  * (1 - progress);
         } else if (zone === 'torso') {
-          // Both arms wave in large arcs during torso reaction
+          
           armAngle  = Math.sin(progress * Math.PI * 7) * 0.95* (1 - progress * 0.4);
           arm2Angle = Math.sin(progress * Math.PI * 7) * 0.95* (1 - progress * 0.4);
           bodyBob   = Math.sin(progress * Math.PI * 4) * 5;
         } else if (zone === 'legs') {
-          // Legs kick, body hops
+          
           legAngle = Math.sin(progress * Math.PI * 8) * 0.65 * (1 - progress * 0.3);
           bodyBob  = Math.abs(Math.sin(progress * Math.PI * 3)) * -10 * (1 - progress);
         }
@@ -296,69 +274,69 @@ export default function HeroSprite({
       const cx        = width / 2;
       const feetY     = height - 22 + bodyBob;
       const shoeTopY  = feetY  - DIM.shoe1.h;
-      const coatBotY  = feetY  - DIM.shoe1.h + 4;   // coat overlaps shoe top
+      const coatBotY  = feetY  - DIM.shoe1.h + 4;   
       const coatTopY  = coatBotY - DIM.coat.h;
-      const headTopY  = coatTopY - DIM.head.h + 8 + headBounce; // head overlaps coat top
-      const shoulderY = coatTopY + 6;                // arm pivot near coat top
+      const headTopY  = coatTopY - DIM.head.h + 8 + headBounce; 
+      const shoulderY = coatTopY + 6;                
 
-      // Shoulder joints: 44% of half-coat-width from center ≈ at the coat's shoulder seam.
-      // DIM.coat.w = 81 → shoulders at cx ± 36 (coat edge is cx ± 40.5).
-      const shoulderXR = cx - Math.round(DIM.coat.w * 0.44); // right shoulder ≈ cx - 36
-      const shoulderXL = cx + Math.round(DIM.coat.w * 0.44); // left  shoulder ≈ cx + 36
+      
+      
+      const shoulderXR = cx - Math.round(DIM.coat.w * 0.44); 
+      const shoulderXL = cx + Math.round(DIM.coat.w * 0.44); 
 
-      // Hip/leg pivots: 20% of half-coat-width from center ≈ natural hip separation.
-      const hipXR = cx + Math.round(DIM.coat.w * 0.20); // right hip ≈ cx + 16
-      const hipXL = cx - Math.round(DIM.coat.w * 0.20); // left  hip ≈ cx - 16
+      
+      const hipXR = cx + Math.round(DIM.coat.w * 0.20); 
+      const hipXL = cx - Math.round(DIM.coat.w * 0.20); 
 
-      // Shadow underfoot
+      
       ctx.fillStyle = 'rgba(0,0,0,0.20)';
       ctx.beginPath();
       ctx.ellipse(cx, feetY + 5, 24, 6, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // 1. Back arm (arm1, LEFT arm) — drawn behind torso.
-      //    Pivot = left shoulder (shoulderXL).
-      //    Shoulder ball sits at ~87% from left / ~4% from top of the arm1 image.
+      
+      
+      
       drawPart(
         imgs.arm2, DIM.arm2.w, DIM.arm2.h,
         shoulderXL - Math.round(DIM.arm2.w * 0.87), shoulderY - Math.round(DIM.arm2.h * 0.04),
-        shoulderXL, shoulderY,                 // pivot: left shoulder joint
+        shoulderXL, shoulderY,                 
         -armAngle,
       );
 
-      // 2. Back shoe / left leg
+      
       drawPart(
         imgs.shoe1, DIM.shoe1.w, DIM.shoe1.h,
-        hipXL - Math.round(DIM.shoe1.w / 2), shoeTopY,   // dx: centered on left hip
-        hipXL, shoeTopY,                                   // pivot: left hip
+        hipXL - Math.round(DIM.shoe1.w / 2), shoeTopY,   
+        hipXL, shoeTopY,                                   
         -legAngle,
       );
 
-      // 3. Coat / torso — always upright
+      
       if (imgs.coat?.complete && imgs.coat.naturalWidth) {
         ctx.drawImage(imgs.coat, cx - DIM.coat.w / 2, coatTopY, DIM.coat.w, DIM.coat.h);
       }
 
-      // 4. Front shoe / right leg
+      
       drawPart(
         imgs.shoe2, DIM.shoe2.w, DIM.shoe2.h,
-        hipXR - Math.round(DIM.shoe2.w / 2), shoeTopY,   // dx: centered on right hip
-        hipXR, shoeTopY,                                   // pivot: right hip
+        hipXR - Math.round(DIM.shoe2.w / 2), shoeTopY,   
+        hipXR, shoeTopY,                                   
         legAngle,
       );
 
-      // 5. Front arm (arm2, RIGHT arm) — swings in natural opposition to arm1.
-      //    Pivot = right shoulder (shoulderXR).
-      //    Shoulder socket sits at ~88% from left / ~10% from top of the arm2 image,
-      //    so the arm hangs DOWN from the shoulder in its natural resting position.
+      
+      
+      
+      
       drawPart(
         imgs.arm1, DIM.arm1.w, DIM.arm1.h,
         shoulderXR - Math.round(DIM.arm1.w * 0.88), shoulderY - Math.round(DIM.arm1.h * 0.10),
-        shoulderXR, shoulderY,                 // pivot: right shoulder joint
+        shoulderXR, shoulderY,                 
         arm2Angle,
       );
 
-      // 6. Head — pivots around its vertical centre, drawn last so it always appears on top.
+      
       if (imgs.head?.complete && imgs.head.naturalWidth) {
         ctx.save();
         ctx.translate(cx, headTopY + DIM.head.h / 2);
@@ -367,7 +345,7 @@ export default function HeroSprite({
         ctx.restore();
       }
 
-      // 7. Glowing ∞ symbol on the helmet face screen (yellow left lobe, cyan right lobe).
+      
       {
         const symX  = cx;
         const symY  = headTopY + Math.round(DIM.head.h * 0.54) + headBounce;
@@ -377,7 +355,7 @@ export default function HeroSprite({
         ctx.font          = `bold ${fsize}px "Arial Unicode MS","Segoe UI Symbol","Helvetica","DejaVu Sans",sans-serif`;
         ctx.textAlign     = 'center';
         ctx.textBaseline  = 'middle';
-        // yellow — left half
+        
         ctx.save();
         ctx.beginPath();
         ctx.rect(0, symY - fsize, symX, fsize * 2);
@@ -387,7 +365,7 @@ export default function HeroSprite({
         ctx.shadowBlur  = glow;
         ctx.fillText('∞', symX, symY);
         ctx.restore();
-        // cyan — right half
+        
         ctx.save();
         ctx.beginPath();
         ctx.rect(symX, symY - fsize, width, fsize * 2);
@@ -400,14 +378,14 @@ export default function HeroSprite({
         ctx.restore();
       }
 
-      // 8. Particles — PBR-themed burst on touch
+      
       {
         const live: Particle[] = [];
         for (const p of particlesRef.current) {
           p.x  += p.vx;
           p.y  += p.vy;
-          p.vy += 0.14;   // gravity
-          p.vx *= 0.96;   // air friction
+          p.vy += 0.14;   
+          p.vx *= 0.96;   
           p.life -= 0.025;
           if (p.life > 0) {
             live.push(p);

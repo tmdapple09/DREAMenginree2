@@ -1,17 +1,4 @@
-/**
- * tests/phase8f-daydream-activation.test.ts
- *
- * Phase 8 §F — Daydream Surface Network: Deep Activation.
- * Structural tests verifying each Engin has Supabase persistence wired in.
- *
- * Points covered:
- *   51 — StarMakerEngin persists creative state to daydream_states
- *   54 — CodeEngin persists editor state
- *   55 — BrandingEngin persists brand kit assets
- *   56 — ContentEngin saves drafts via /api/drafts
- *   57 — ContentEngin subscribes to music:stem-ready (multi-connection)
- *   58 — all 6 Daydream routes are live (DreamsSpacePanel verified separately)
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
@@ -20,7 +7,7 @@ import { join } from 'path';
 const root = process.cwd();
 
 function readComp(name: string) {
-  // Map old components/daydream/ names to new canonical engins/engin.*.tsx locations
+  
   const canonical: Record<string, string> = {
     'StarMakerEngin.tsx': 'engins/engin.StarMakerEngin.tsx',
     'CodeEngin.tsx':      'engins/engin.CodeEngin.tsx',
@@ -82,15 +69,15 @@ describe('Phase 8 §F — ContentEngin (Point 56 + 57)', () => {
 
   it('subscribes to music:stem-ready for multi-connection (Point 57)', () => {
     const src = readComp('ContentEngin.tsx');
-    // ContentEngin wires music:stem-ready subscription via useContentEnginBridge hook.
-    // The hook internally calls bridge.subscribe('music', 'music:stem-ready', ...).
-    // We verify either the component has it directly, or delegates to the bridge hook.
+    
+    
+    
     const hookSrc = readFileSync(join(root, 'lib/runtime/useEnginBridge.ts'), 'utf-8');
     const hasDirectStemReady = src.includes("'music:stem-ready'");
     const hasBridgeSubscribe = src.includes('bridge.subscribe');
     const hookHasMusicStemReady = hookSrc.includes("'music:stem-ready'");
     const hookHasBridgeSubscribe = hookSrc.includes("bridge.subscribe('music'");
-    // Either direct in component OR delegated to hook (both must be present together)
+    
     expect(
       (hasDirectStemReady && hasBridgeSubscribe) ||
       (src.includes('useContentEnginBridge') && hookHasMusicStemReady && hookHasBridgeSubscribe)

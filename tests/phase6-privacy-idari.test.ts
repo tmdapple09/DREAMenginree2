@@ -1,21 +1,11 @@
-/**
- * tests/phase6-privacy-idari.test.ts
- *
- * Phase 6 regression tests — IDARi admin guard + BoogieMan privacy event
- * endpoint contract validation.
- *
- * Architecture justification:
- *   - docs/dreamengin_phase6.md points 5, 6, 7, 8 (Phase 6 obligations)
- *   - docs/IDARI_CONTRACT.md: admin-only, server-side only
- *   - docs/AXIOMS.md: Privacy by Design, Security by Default
- */
+
 
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 
-// ── PrivacyEventSchema contract ───────────────────────────────────────────────
-// We re-define the schema locally to test its contract without importing
-// the route handler (which has Next.js dependencies).
+
+
+
 
 const PrivacyEventSchema = z.object({
   event_type: z.enum([
@@ -31,7 +21,7 @@ const PrivacyEventSchema = z.object({
   update_mapping: z.boolean().optional().default(false),
 });
 
-// ── Privacy event schema validation ──────────────────────────────────────────
+
 
 describe('BoogieMan PrivacyEventSchema', () => {
   it('accepts a valid VISIBILITY_CHANGE event', () => {
@@ -94,7 +84,7 @@ describe('BoogieMan PrivacyEventSchema', () => {
     const result = PrivacyEventSchema.safeParse({
       event_type: 'EXPLICIT_SHARE',
       content_id: 'abc',
-      content_type: 'widget',   // legacy name — must use 'dream_window'
+      content_type: 'widget',   
       to_visibility: 'public',
     });
     expect(result.success).toBe(false);
@@ -105,7 +95,7 @@ describe('BoogieMan PrivacyEventSchema', () => {
       event_type: 'VISIBILITY_CHANGE',
       content_id: 'abc',
       content_type: 'dream_window',
-      to_visibility: 'everyone',  // invalid
+      to_visibility: 'everyone',  
     });
     expect(result.success).toBe(false);
   });
@@ -120,14 +110,10 @@ describe('BoogieMan PrivacyEventSchema', () => {
   });
 });
 
-// ── Privacy exposure policy guard (Phase 6 spec point 8) ─────────────────────
+
 
 describe('Privacy exposure policy guard', () => {
-  /**
-   * The policy: if to_visibility is 'public' or 'followers',
-   * the event_type must be an explicit action.
-   * Non-explicit types (only VISIBILITY_REVOKE — reverting to private) are safe.
-   */
+  
   function checkExposurePolicy(event_type: string, to_visibility: string): boolean {
     const isExposing = to_visibility === 'public' || to_visibility === 'followers';
     const isExplicit = ['EXPLICIT_SHARE', 'VISIBILITY_CHANGE', 'PROFILE_PUBLISH'].includes(event_type);
@@ -156,22 +142,19 @@ describe('Privacy exposure policy guard', () => {
   });
 });
 
-// ── IDARi admin-only guard contract ──────────────────────────────────────────
+
 
 describe('IDARi admin gate', () => {
   type ActorRole = 'admin' | 'owner';
 
-  /**
-   * Simulate the IDARi role-check logic extracted from route.ts.
-   * A regular user (no admin/owner) should be rejected.
-   */
+  
   function resolveActorRole(
     isOwner: boolean,
     dbRole: string | null
   ): ActorRole | null {
     if (isOwner) return 'owner';
     if (dbRole === 'admin') return 'admin';
-    return null; // null = not authorized
+    return null; 
   }
 
   it('resolves owner email to owner role', () => {
@@ -200,11 +183,11 @@ describe('IDARi admin gate', () => {
   });
 });
 
-// ── visibility_mappings default (Privacy by Design) ──────────────────────────
+
 
 describe('visibility_mappings privacy defaults', () => {
   it('new records default to private (nothing public by default)', () => {
-    // Simulates the SQL DEFAULT 'private' constraint
+    
     const defaultVisibility = 'private';
     expect(['private', 'followers', 'public']).toContain(defaultVisibility);
     expect(defaultVisibility).toBe('private');

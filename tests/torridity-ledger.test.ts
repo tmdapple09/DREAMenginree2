@@ -86,11 +86,11 @@ describe('Torridity Ledger', () => {
     expect(slog(0)).toBe(0);
     expect(slog(1)).toBeCloseTo(Math.log(2), 10);
     expect(slog(-1)).toBeCloseTo(-Math.log(2), 10);
-    // Compression: slog(x) < x for all x > 0
+    
     expect(slog(100)).toBeLessThan(100);
-    // Backward-compat: getInteractionDelta delegates to slog
+    
     expect(getInteractionDelta(42)).toBeCloseTo(slog(42), 10);
-    // Config constants are present
+    
     expect(TORRIDITY_LEDGER_CONFIG.crossSimThreshold).toBe(0.95);
     expect(TORRIDITY_LEDGER_CONFIG.botScoreThreshold).toBe(0.55);
   });
@@ -107,7 +107,7 @@ describe('Torridity Ledger', () => {
       maxSimilarity: 0.9,
     });
     expect(highOriginality).toBeGreaterThan(lowOriginality);
-    // Zero media and identical content → near-zero score
+    
     expect(
       calculateOriginality({ uniqueWordRatio: 0, hasOriginalMedia: false, maxSimilarity: 1 }),
     ).toBe(0);

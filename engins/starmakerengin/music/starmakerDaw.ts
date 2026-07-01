@@ -1,28 +1,17 @@
-/**
- * lib/music/starmakerDaw.ts — Extended DAW data models for StarMakerEngin.
- *
- * Covers the industry-standard feature set inspired by:
- *  - Pro Tools : Comping / Playlist / Takes management
- *  - Ableton Live : Session View (clip launcher)
- *  - FL Studio / Logic Pro : Piano Roll MIDI editor
- *  - Cubase / Logic : Automation lanes
- *  - All DAWs : Audio warp markers / time-stretch
- *
- * Pure data types & helpers — no side effects, safe for SSR and workers.
- */
 
-/** Standard MIDI note (0 = C-2, 60 = C4, 127 = G9). */
+
+
 export interface MidiNote {
   id: string;
-  /** MIDI pitch 0-127. */
+  
   pitch: number;
-  /** Start position in beats from the beginning of the pattern. */
+  
   startBeat: number;
-  /** Duration in beats. */
+  
   durationBeats: number;
-  /** Velocity 1-127. */
+  
   velocity: number;
-  /** MIDI channel 0-15. */
+  
   channel: number;
 }
 
@@ -32,9 +21,9 @@ export interface PianoRollState {
   notes: MidiNote[];
   totalBeats: number;
   quantize: PianoRollQuantize;
-  /** Lowest visible MIDI pitch. */
+  
   viewBottomPitch: number;
-  /** Number of pitches visible vertically. */
+  
   viewPitchRange: number;
 }
 
@@ -42,11 +31,11 @@ export const PIANO_ROLL_DEFAULTS: PianoRollState = {
   notes: [],
   totalBeats: 16,
   quantize: "1/8",
-  viewBottomPitch: 48, // C3
+  viewBottomPitch: 48, 
   viewPitchRange: 24,
 };
 
-/** Semitone name for display in the piano keyboard. */
+
 const NOTE_NAMES = [
   "C",
   "C#",
@@ -62,19 +51,19 @@ const NOTE_NAMES = [
   "B",
 ] as const;
 
-/** Return the note name + octave for a MIDI pitch number (C3 = 60). */
+
 export function midiPitchToName(pitch: number): string {
   const name = NOTE_NAMES[pitch % 12];
   const octave = Math.floor(pitch / 12) - 2;
   return `${name}${octave}`;
 }
 
-/** Return true if the pitch is a black key. */
+
 export function isBlackKey(pitch: number): boolean {
   return [1, 3, 6, 8, 10].includes(pitch % 12);
 }
 
-/** Create an empty piano roll MIDI note. */
+
 export function createMidiNote(
   pitch: number,
   startBeat: number,
@@ -91,7 +80,7 @@ export function createMidiNote(
   };
 }
 
-/** Snap a beat value to the nearest quantize grid position. */
+
 export function snapToGrid(beat: number, quantize: PianoRollQuantize): number {
   const divisions: Record<PianoRollQuantize, number> = {
     "1/1": 1,
@@ -107,37 +96,37 @@ export function snapToGrid(beat: number, quantize: PianoRollQuantize): number {
 
 export type TakeRating = 0 | 1 | 2 | 3;
 
-/** A single recorded audio take for a track or vocal line. */
+
 export interface AudioTake {
   id: string;
   name: string;
-  /** Unix timestamp (ms). */
+  
   recordedAt: number;
   durationSec: number;
-  /** Simplified waveform amplitude bars for visual display. */
+  
   waveform: number[];
-  /** Whether this take contributes to the current comp. */
+  
   active: boolean;
-  /** Star rating (0 = unrated, 1-3 = stars). */
+  
   rating: TakeRating;
   color: string;
 }
 
-/** A comp region maps a time span to a specific take. */
+
 export interface CompRegion {
   id: string;
-  /** Start in seconds from the top of the record. */
+  
   startSec: number;
-  /** End in seconds from the top of the record. */
+  
   endSec: number;
-  /** Which take to use for this region. */
+  
   takeId: string;
 }
 
 export interface CompingState {
   takes: AudioTake[];
   compRegions: CompRegion[];
-  /** Length of the full comp (driven by longest take). */
+  
   totalDurationSec: number;
 }
 
@@ -151,7 +140,7 @@ export const TAKE_COLORS = [
   "#facc15",
 ] as const;
 
-/** Create a demo take with a synthetic waveform. */
+
 export function createDemoTake(
   index: number,
   durationSec: number = 6,
@@ -178,7 +167,7 @@ export function createDemoTake(
   };
 }
 
-/** Build an initial comping state with demo takes. */
+
 export function createInitialCompingState(takeCount: number = 3): CompingState {
   const takes = Array.from({ length: takeCount }, (_, i: number) =>
     createDemoTake(i),
@@ -194,12 +183,12 @@ export interface SessionClip {
   id: string;
   name: string;
   color: string;
-  /** Number of bars in the clip (for loop display). */
+  
   durationBars: number;
   looping: boolean;
-  /** Whether this clip is currently playing in the Session View. */
+  
   playing: boolean;
-  /** An empty slot — can be recorded into. */
+  
   isEmpty: boolean;
 }
 
@@ -207,12 +196,12 @@ export interface SessionTrack {
   id: string;
   name: string;
   color: string;
-  /** Arm for recording. */
+  
   armed: boolean;
   muted: boolean;
   solo: boolean;
   volume: number;
-  /** Ordered clip slots (one per scene row). */
+  
   clips: SessionClip[];
 }
 
@@ -225,11 +214,11 @@ export interface SessionScene {
 export interface SessionViewState {
   tracks: SessionTrack[];
   scenes: SessionScene[];
-  /** Track id of the currently solo'd track, or null. */
+  
   soloTrackId: string | null;
 }
 
-/** Create an empty session clip slot. */
+
 export function createEmptyClip(
   trackId: string,
   sceneIndex: number,
@@ -266,7 +255,7 @@ const SESSION_SCENE_DEFAULTS = [
   "Outro",
 ];
 
-/** Demo clip content per track × scene. Empty = unfilled slot. */
+
 const SESSION_DEMO_CLIPS: Record<
   string,
   Record<number, Partial<SessionClip>>
@@ -294,7 +283,7 @@ const SESSION_DEMO_CLIPS: Record<
   },
 };
 
-/** Build a default Session View with demo content. */
+
 export function createInitialSessionView(): SessionViewState {
   const scenes: SessionScene[] = SESSION_SCENE_DEFAULTS.map(
     (name, i: number) => ({
@@ -324,9 +313,9 @@ export function createInitialSessionView(): SessionViewState {
 }
 
 export interface AutomationPoint {
-  /** Beat position. */
+  
   beat: number;
-  /** Normalized 0-1 value. */
+  
   value: number;
 }
 
@@ -355,7 +344,7 @@ export const AUTOMATABLE_PARAMS = [
   { id: "send.delay", label: "Delay Send", color: "#00d0f0" },
 ] as const;
 
-/** Create a default automation state with a volume lane. */
+
 export function createInitialAutomationState(): AutomationState {
   const vocalsLane: AutomationLane = {
     id: "lane-vocals",
@@ -375,24 +364,24 @@ export function createInitialAutomationState(): AutomationState {
 
 export interface WarpMarker {
   id: string;
-  /** Sample position in the original audio (0-1 normalized). */
+  
   samplePos: number;
-  /** Beat position in the project. */
+  
   beatPos: number;
-  /** Whether this marker is locked (cannot be moved). */
+  
   locked: boolean;
 }
 
 export interface WarpState {
   enabled: boolean;
   markers: WarpMarker[];
-  /** 'complex' (best quality), 'beats' (rhythmic content), 'tones' (melodic content), 'texture' (ambient). */
+  
   warpMode: "complex" | "beats" | "tones" | "texture";
-  /** Target BPM after warp (0 = use project BPM). */
+  
   warpBpm: number;
-  /** Pitch shift in semitones independent of tempo stretch. */
+  
   pitchShift: number;
-  /** Formant preservation (0-1) for vocal content. */
+  
   formantPreservation: number;
 }
 
@@ -410,7 +399,7 @@ export function createInitialWarpState(projectBpm: number = 120): WarpState {
   };
 }
 
-/** Compute the playback rate multiplier needed to stretch original audio to target BPM. */
+
 export function computeWarpPlaybackRate(
   originalBpm: number,
   targetBpm: number,
@@ -425,9 +414,9 @@ export type SampleRateHz = 44100 | 48000 | 88200 | 96000 | 176400 | 192000;
 export interface AudioQualityConfig {
   bitDepth: BitDepth;
   sampleRate: SampleRateHz;
-  /** Dithering algorithm for bit-depth reduction. */
+  
   dither: "none" | "triangular" | "shaped";
-  /** Whether to enable noise shaping on export. */
+  
   noiseShaping: boolean;
 }
 
@@ -464,7 +453,7 @@ export const AUDIO_QUALITY_PRESETS: Record<string, AudioQualityConfig> = {
   },
 };
 
-/** Human-readable label for a quality config. */
+
 export function audioQualityLabel(cfg: AudioQualityConfig): string {
   return `${cfg.bitDepth}-bit / ${cfg.sampleRate >= 1000 ? `${cfg.sampleRate / 1000}kHz` : `${cfg.sampleRate}Hz`}`;
 }

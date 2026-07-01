@@ -1,13 +1,4 @@
-/**
- * tests/gameengin-power-systems.test.ts
- *
- * Unit tests for lib/gameengin/power-systems.ts
- *
- * 20 systems, each with a focused test suite covering:
- *  • Core API behaviour
- *  • Edge cases and boundary conditions
- *  • Graceful degradation in Node (no WebGPU / AudioContext)
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -39,9 +30,9 @@ import type {
   LODLevel,
 } from '../lib/gameengin/power-systems';
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  1. ROLLBACK NETCODE
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('RollbackNetcode', () => {
   let net: RollbackNetcode;
   beforeEach(() => { net = new RollbackNetcode({ maxRollbackFrames: 4, tickRateHz: 60 }); });
@@ -52,7 +43,7 @@ describe('RollbackNetcode', () => {
 
   it('records input and returns a stamped NetInput', () => {
     const input = net.recordInput({ playerId: 'p1', actions: new Uint8Array([1, 0]), checksum: 42 });
-    expect(input.tick).toBe(2); // inputDelay = 2
+    expect(input.tick).toBe(2); 
     expect(input.playerId).toBe('p1');
   });
 
@@ -90,9 +81,9 @@ describe('RollbackNetcode', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  2. GPU COMPUTE PIPELINE
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('ComputeShaderPipeline', () => {
   it('init returns false in Node (no WebGPU)', async () => {
     const pipeline = new ComputeShaderPipeline();
@@ -124,9 +115,9 @@ describe('ComputeShaderPipeline', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  3. ADVANCED PHYSICS WORLD
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('AdvancedPhysicsWorld', () => {
   let world: AdvancedPhysicsWorld;
   beforeEach(() => { world = new AdvancedPhysicsWorld(); });
@@ -190,9 +181,9 @@ describe('AdvancedPhysicsWorld', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  4. OCTREE / BVH
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('OctreeBVH', () => {
   const WORLD = { min: [-100, -100, -100] as [number,number,number], max: [100, 100, 100] as [number,number,number] };
   let tree: OctreeBVH;
@@ -231,16 +222,16 @@ describe('OctreeBVH', () => {
       tree.insert({ id: `e${i}`, aabb: { min: [i, 0, 0], max: [i + 1, 1, 1] } });
     }
     const results = tree.queryAABB({ min: [-1, -1, -1], max: [200, 2, 2] });
-    // Octree may return duplicate refs when entries span multiple child nodes;
-    // unique IDs should equal 100.
+    
+    
     const uniqueIds = new Set(results.map((r) => r.id));
     expect(uniqueIds.size).toBe(100);
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  5. WORKER JOB SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('WorkerJobSystem', () => {
   let jobs: WorkerJobSystem;
   beforeEach(() => { jobs = new WorkerJobSystem(2); });
@@ -257,7 +248,7 @@ describe('WorkerJobSystem', () => {
   });
 
   it('higher priority job is sorted first in queue before dispatch', async () => {
-    // Use a single-slot system so queue order = execution order.
+    
     const serial = new WorkerJobSystem(1);
     let blocker: (() => void) | null = null;
     const blockPromise = serial.enqueue({
@@ -265,15 +256,15 @@ describe('WorkerJobSystem', () => {
       fn: () => new Promise<void>((r) => { blocker = r; }),
     });
 
-    // Wait one microtask tick so the blocker fn is invoked and `blocker` is set.
+    
     await new Promise((r) => setTimeout(r, 0));
 
-    // Slot is now occupied; enqueue low first, high second.
+    
     const order: string[] = [];
     const p1 = serial.enqueue({ id: 'low',  priority: 'low',  fn: () => { order.push('low');  return 0; } });
     const p2 = serial.enqueue({ id: 'high', priority: 'high', fn: () => { order.push('high'); return 1; } });
 
-    // Release the blocker so the queue can drain.
+    
     blocker!();
     await Promise.all([blockPromise, p1, p2]);
     expect(order[0]).toBe('high');
@@ -291,9 +282,9 @@ describe('WorkerJobSystem', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  6. PROCEDURAL WORLD GENERATOR
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('ProceduralWorldGen', () => {
   let gen: ProceduralWorldGen;
   beforeEach(() => { gen = new ProceduralWorldGen({ seed: 12345, width: 16, depth: 16 }); });
@@ -330,7 +321,7 @@ describe('ProceduralWorldGen', () => {
     gen.generateChunk(1, 1);
     expect(gen.cachedChunks).toBe(1);
     gen.generateChunk(1, 1);
-    expect(gen.cachedChunks).toBe(1); // no new cache entry
+    expect(gen.cachedChunks).toBe(1); 
   });
 
   it('evictChunk removes from cache', () => {
@@ -346,9 +337,9 @@ describe('ProceduralWorldGen', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  8. REPLAY BUFFER
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('ReplayBuffer', () => {
   let buf: ReplayBuffer;
   beforeEach(() => { buf = new ReplayBuffer(); });
@@ -395,9 +386,9 @@ describe('ReplayBuffer', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  9. BEHAVIOR TREE ENGINE
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('BehaviorTreeEngine', () => {
   let engine: BehaviorTreeEngine;
   let ctx: BTContext;
@@ -479,9 +470,9 @@ describe('BehaviorTreeEngine', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  10. GPU PROFILER
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('GPUProfiler', () => {
   let profiler: GPUProfiler;
   beforeEach(() => { profiler = new GPUProfiler(10); });
@@ -523,9 +514,9 @@ describe('GPUProfiler', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  11. TYPED EVENT BUS
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('TypedEventBus', () => {
   interface Events { score: number; death: { reason: string } }
   let bus: TypedEventBus<Events>;
@@ -586,9 +577,9 @@ describe('TypedEventBus', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  12. ANIMATION STATE MACHINE
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('AnimationStateMachine', () => {
   let asm: AnimationStateMachine;
   const idle: AnimationClip = { id: 'idle', durationFrames: 30, looping: true, frameRate: 30 };
@@ -608,7 +599,7 @@ describe('AnimationStateMachine', () => {
   });
 
   it('ticks advance the frame', () => {
-    asm.tick('npc', 33); // one frame at 30fps
+    asm.tick('npc', 33); 
     const s = asm.getState('npc')!;
     expect(s.frame).toBeGreaterThan(0);
   });
@@ -631,9 +622,9 @@ describe('AnimationStateMachine', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  13. LOD SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('LODSystem', () => {
   let lod: LODSystem;
 
@@ -654,11 +645,11 @@ describe('LODSystem', () => {
 
   it('selects high LOD when camera is close', () => {
     const changes = lod.update([10, 0, 0]);
-    expect(changes.has('tree1')).toBe(false); // already at level 0
+    expect(changes.has('tree1')).toBe(false); 
   });
 
   it('downgrades LOD when camera moves far', () => {
-    lod.update([200, 0, 0]); // should downgrade
+    lod.update([200, 0, 0]); 
     const s = lod.stats;
     expect(s.updateCount).toBe(1);
   });
@@ -667,7 +658,7 @@ describe('LODSystem', () => {
     const objForced: LODObject = { ...obj, id: 'tree2', forceLevel: 2, currentLevel: 0 };
     lod.register(objForced);
     lod.update([0, 0, 0]);
-    // After update, currentLevel should be 2
+    
     expect(objForced.currentLevel).toBe(2);
   });
 
@@ -677,9 +668,9 @@ describe('LODSystem', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  14. CLIENT-SIDE PREDICTION
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('ClientSidePrediction', () => {
   let csp: ClientSidePrediction;
   beforeEach(() => { csp = new ClientSidePrediction(8); });
@@ -719,9 +710,9 @@ describe('ClientSidePrediction', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  15. RESOURCE POOL
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('ResourcePool', () => {
   interface Bullet { x: number; reset?: () => void; }
   let pool: ResourcePool<Bullet>;
@@ -763,9 +754,9 @@ describe('ResourcePool', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  16. WGSL SHADER MANAGER
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('WGSLShaderManager', () => {
   let sm: WGSLShaderManager;
   beforeEach(() => { sm = new WGSLShaderManager(); });
@@ -807,9 +798,9 @@ describe('WGSLShaderManager', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  17. TERRAIN ENGINE
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('TerrainEngine', () => {
   let terrain: TerrainEngine;
   beforeEach(() => {
@@ -848,9 +839,9 @@ describe('TerrainEngine', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  18. GLOBAL ILLUMINATION PROBES
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('GlobalIllumProbes', () => {
   let gi: GlobalIllumProbes;
   beforeEach(() => { gi = new GlobalIllumProbes(); });
@@ -890,9 +881,9 @@ describe('GlobalIllumProbes', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  19. ASSET STREAM MANAGER
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('AssetStreamManager', () => {
   let mgr: AssetStreamManager;
   beforeEach(() => { mgr = new AssetStreamManager(2, 16); });
@@ -906,14 +897,14 @@ describe('AssetStreamManager', () => {
   it('request queues an asset for loading', () => {
     mgr.register({ id: 'tex1', url: '/textures/a.png', type: 'texture', priority: 3, lod: 0 });
     mgr.request('tex1');
-    // In Node fetch will fail, but state should have been queued/loading/error
+    
     const h = mgr.get('tex1')!;
     expect(['queued', 'loading', 'error']).toContain(h.state);
   });
 
   it('cancel reverts state to unloaded', () => {
     mgr.register({ id: 'audio1', url: '/audio/a.mp3', type: 'audio', priority: 1, lod: 0 });
-    // Manually set to queued to test cancel
+    
     const h = mgr.get('audio1')!;
     h.state = 'queued';
     (mgr as any as { queue: typeof h[] }).queue.push(h);
@@ -928,9 +919,9 @@ describe('AssetStreamManager', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  20. PHYSICS MATERIAL SYSTEM
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 describe('PhysicsMaterialSystem', () => {
   let mats: PhysicsMaterialSystem;
   beforeEach(() => { mats = new PhysicsMaterialSystem(); });

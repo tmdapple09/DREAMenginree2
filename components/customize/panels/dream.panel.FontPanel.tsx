@@ -38,9 +38,7 @@ const FONT_CSS: Record<SkinFont, string> = {
   'mono':          '"JetBrains Mono", "Fira Mono", monospace',
 };
 
-/**
- * FontPanel — choose the UI typeface for the current page skin.
- */
+
 export default function FontPanel( ){
   const { activePanel, closePanel, draftSkin, updateDraft } = useCustomizeMode();
 
@@ -72,7 +70,7 @@ export default function FontPanel( ){
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
-              {/* Preview */}
+              
               <div style={{
                 fontSize: 22,
                 fontWeight: 700,
@@ -83,12 +81,12 @@ export default function FontPanel( ){
               }}>
                 {preview}
               </div>
-              {/* Info */}
+              
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--de-heading)' }}>{label}</div>
                 <div style={{ fontSize: 11, color: 'var(--de-text-dim)', marginTop: 2 }}>{desc}</div>
               </div>
-              {/* Selected indicator */}
+              
               {isActive && (
                 <div style={{
                   width: 18, height: 18, borderRadius: '50%',

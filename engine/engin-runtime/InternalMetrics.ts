@@ -1,20 +1,20 @@
 import type { EnginCapabilityScorecard } from './EnginCapabilityScorecard';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/InternalMetrics.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
 
-// Runtime functions, classes, handlers, and state transitions.
+
+
+
+
+
+
+
+
 
 export class InternalOnlyMetricStore {
   private readonly scorecards = new Map<string, EnginCapabilityScorecard>();
@@ -39,8 +39,8 @@ export class DevOnlyBenchmarkRunner {
   results(): EnginCapabilityScorecard[] { return this.store.all(); }
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

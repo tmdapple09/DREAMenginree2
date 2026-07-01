@@ -3,11 +3,7 @@
 import { DrEamsAnimator, type DrEamsAction } from '@/dr-eams/animation/DrEamsAnimator';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-/**
- * DrEamsCanvas -- renders the Dr. Eams mascot as an animated sprite canvas.
- * Uses the idle sprite sheet (4 cols x 4 rows = 16 frames) by default.
- * Tap zones: head = scan, stomach = fall, feet = jump.
- */
+
 
 type Props = {
   width?: number;
@@ -99,7 +95,7 @@ export default function DrEamsCanvas({
     animatorRef.current?.handlePointer(e.clientX, e.clientY);
   }, []);
 
-  // Handle resize
+  
   useEffect(() => {
     const handleResize = () => animatorRef.current?.resize();
     window.addEventListener('resize', handleResize);

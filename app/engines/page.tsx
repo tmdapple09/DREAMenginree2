@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import { USER_FACING_ENGINES } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// SURFACE: dreamsurface.Engines  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'Engines – DREAMengin',
@@ -32,7 +32,7 @@ export default async function EnginesHubPage( ){
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-amber-50 text-slate-950 p-6 md:p-10">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
+        
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-3">
             <Link href="/homedream" className="text-xs text-sky-700 hover:text-sky-950 transition-colors">
@@ -50,7 +50,7 @@ export default async function EnginesHubPage( ){
           </p>
         </div>
 
-        {/* Engine cards */}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {ENGINES.map((engine) => (
             <Link
@@ -59,13 +59,13 @@ export default async function EnginesHubPage( ){
               className="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white/85 border border-sky-100 hover:border-opacity-60 transition-all hover:bg-sky-50/80 shadow-sm overflow-hidden"
               style={{ '--accent': engine.accent } as React.CSSProperties}
             >
-              {/* Glow on hover */}
+              
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"
                 style={{ background: `radial-gradient(ellipse at 50% 0%, ${engine.accent}18, transparent 70%)` }}
               />
 
-              {/* Top accent line */}
+              
               <div
                 className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ background: `linear-gradient(90deg, transparent, ${engine.accent}, transparent)` }}
@@ -90,7 +90,7 @@ export default async function EnginesHubPage( ){
                 <p className="text-sm text-slate-600">{engine.description}</p>
               </div>
 
-              {/* Sub-routes */}
+              
               <div className="relative flex flex-wrap gap-1.5">
                 {engine.subroutes.map((route) => (
                   <span
@@ -103,7 +103,7 @@ export default async function EnginesHubPage( ){
                 ))}
               </div>
 
-              {/* Open indicator */}
+              
               <div
                 className="relative flex items-center justify-between pt-2 border-t border-white/[0.06]"
               >
@@ -119,7 +119,7 @@ export default async function EnginesHubPage( ){
           ))}
         </div>
 
-        {/* Footer note */}
+        
         <p className="text-center text-slate-400 text-xs mt-10">
           Creative Engins are production tools; Render is the shared service layer behind visual previews and snapshots.
         </p>

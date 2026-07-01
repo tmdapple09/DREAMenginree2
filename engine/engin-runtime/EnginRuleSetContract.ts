@@ -7,39 +7,25 @@ import {
 import type { EnginCapability } from './EnginCapabilities';
 import type { EnginCapabilityProfile } from './EnginCapabilityTargets';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/engin-runtime/EnginRuleSetContract.ts.
 
-/**
- * lib/engin-runtime/EnginRuleSetContract.ts
- *
- * EnginRuleSetContract — the interface every rule-set must implement.
- *
- * A rule-set is a PURE, STATELESS collection of:
- *   - parameters  : static configuration (layout, accent, names, etc.)
- *   - constraints : validation functions applied to actions before they execute
- *   - transforms  : (state, action) → state — the only way state changes
- *
- * Rule-sets contain ZERO infrastructure (no fetch, no I/O, no hooks).
- * All effects are handled by the EnginRuntime.
- *
- * Architecture: docs/AGENT_PLAYBOOK.md §1 — Foundation.Ruleset.
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const VERSION_RE = /^\d+\.\d+\.\d+$/;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
 
-/** Discriminated union describing every action a rule-set can handle. */
+
+
+
+
 export interface EnginAction<
   Type extends string = string,
   Payload extends JsonValue = JsonObject,
@@ -58,22 +44,22 @@ export type EnginRuntimeFeature =
   | 'coherence-under-load';
 
 export interface EnginCompatibilityRange {
-  /** Minimum ι-Engine runtime version this ruleset can run on. */
+  
   minRuntimeVersion: string;
-  /** Optional maximum ι-Engine runtime version this ruleset has explicitly accepted. */
+  
   maxRuntimeVersion?: string;
-  /** Runtime features the ruleset requires before it may start. */
+  
   requiredFeatures: ReadonlyArray<EnginRuntimeFeature>;
 }
 
 export interface EnginRuleSetSchema<A extends EnginAction = EnginAction> {
-  /** Exhaustive action type allow-list. Undeclared actions are rejected by the fixed engine. */
+  
   actionTypes: ReadonlyArray<A['type']>;
-  /** Domain schema version stored in snapshots and sync frames. */
+  
   domainVersion: number;
-  /** Optional domain-state validator owned by the ruleset, not the engine. */
+  
   validateDomain?: (domain: Readonly<JsonObject>) => ConstraintResult;
-  /** Optional action payload validator owned by the ruleset, not the engine. */
+  
   validateAction?: (action: A) => ConstraintResult;
 }
 
@@ -93,92 +79,61 @@ export interface CompatibilityNegotiationResult {
 }
 
 export interface EnginRuleSetParams {
-  /** Canonical engine identifier. Must match the shell EngineId. */
+  
   enginId: string;
-  /** Display name (e.g. "GameEngin"). */
+  
   name: string;
-  /** Layout mode — immersive (full canvas) or standard (panelled). */
+  
   layoutMode: 'immersive' | 'standard';
-  /** CSS hex accent color. */
+  
   accentColor: string;
-  /** Any additional static config the rule-set needs. */
+  
   [key: string]: JsonValue;
 }
 
 export interface ConstraintResult {
   valid: boolean;
-  /** Populated when valid === false. */
+  
   reason?: string;
 }
 
-/** A constraint function: returns valid or invalid + reason. */
+
 export type EnginConstraint<A extends EnginAction = EnginAction> = (
   state: EnginBaseState,
   action: A,
 ) => ConstraintResult;
 
-/**
- * A transform function: pure mapping from current state + action to next state.
- * MUST NOT cause side-effects.
- */
+
 export type EnginTransform<A extends EnginAction = EnginAction> = (
   state: EnginBaseState,
   action: A,
 ) => EnginBaseState;
 
-/**
- * EnginRuleSetContract<A>
- *
- * A rule-set is the ONLY thing that knows about domain logic.
- * It never imports infrastructure (Supabase, fetch, localStorage).
- *
- * @template A — the union of all action types this rule-set handles.
- */
+
 export interface EnginRuleSetContract<A extends EnginAction = EnginAction> {
-  /** Versioned manifest that lets the fixed engine validate schema and compatibility before start. */
+  
   readonly manifest: EnginRuleSetManifest<A>;
 
-  /** Static parameters for this rule-set. */
+  
   readonly params: EnginRuleSetParams;
 
-  /**
-   * Capabilities required for this rule-set to operate correctly.
-   * The engine will warn if these capabilities are not granted.
-   */
+  
   readonly requiredCapabilities: ReadonlyArray<EnginCapability>;
 
-  /**
-   * Internal capability targets that shape architecture decisions for this Engin.
-   * These are runtime guardrails, not UI content.
-   */
+  
   readonly capabilityTargets: EnginCapabilityProfile;
 
-  /**
-   * constraints
-   *
-   * Called before every transform.  If a constraint returns invalid,
-   * the action is rejected and the state is NOT updated.
-   */
+  
   readonly constraints: ReadonlyArray<EnginConstraint<A>>;
 
-  /**
-   * transform(state, action) → nextState
-   *
-   * Applies the action to the current state and returns a new state.
-   * The default implementation returns state unchanged (identity).
-   */
+  
   transform(state: EnginBaseState, action: A): EnginBaseState;
 
-  /**
-   * deriveState(state) → domain-specific derived object
-   *
-   * Projects the base state into whatever shape the UI needs.
-   * Called by the engine whenever state changes.
-   */
+  
   deriveState(state: EnginBaseState): JsonObject;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function parseVersion(version: string): [number, number, number] | null {
   if (!VERSION_RE.test(version)) return null;
@@ -278,8 +233,8 @@ export function validateRuleSetState<A extends EnginAction>(
   return schema.validateDomain?.(state.domain) ?? { valid: true };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

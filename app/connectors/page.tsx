@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import ConnectorsClient from './dream.ConnectorsClient';
 
-// SURFACE: dreamsurface.Connectors  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'System Integrations – Dreamengin', description: 'Connect and configure your system integrations.' };
 
@@ -37,7 +37,7 @@ export default async function ConnectorsPage( ){
           </span>
         </div>
 
-        {/* Interactive connector rows + install flow (req 1-100) */}
+        
         <ConnectorsClient />
 
         <div className="de-widget">

@@ -50,19 +50,7 @@ import {
 } from "react";
 import { toErrorMessage } from "@/utils/index";
 
-/**
- * HomeFeed — Live feed component for the HomeDream Surface.
- *
- * Phase 8 §A: Upgraded from static on-mount fetch to full Supabase Realtime
- * push-based live feed via useLiveFeed (lib/feed/useLiveFeed.ts).
- *
- * New behaviour:
- *   - Realtime channel subscribes to app_posts INSERT/UPDATE + feed_items INSERT
- *   - A green live dot in the tab bar shows the channel is connected
- *   - When other users post, a "N new posts" banner appears; tap to flush
- *   - Own posts prepend immediately (seamless with optimistic insert)
- *   - Like/comment counts sync via UPDATE events (no re-fetch)
- */
+
 
 function feedCacheId(tab: string, userId: string): string {
   return `${tab}:${userId}`;
@@ -136,7 +124,7 @@ export default function HomeFeed({
   >([]);
   const [viewportWidth, setViewportWidth] = useState(1280);
   const imageInputRef = useRef<HTMLInputElement>(null);
-  // ── Inline comments state ─────────────────────────────────────────────────
+  
   const [expandedComments, setExpandedComments] = useState<Set<string>>(
     new Set(),
   );
@@ -200,7 +188,7 @@ export default function HomeFeed({
 
   const loadComments = useCallback(
     async (postId: string) => {
-      if (commentsMap[postId]) return; // already loaded
+      if (commentsMap[postId]) return; 
       setCommentLoadingSet((prev) => new Set(prev).add(postId));
       try {
         const res = await fetch(
@@ -211,7 +199,7 @@ export default function HomeFeed({
           setCommentsMap((prev) => ({ ...prev, [postId]: data.data ?? [] }));
         }
       } catch {
-        /* silent */
+        
       } finally {
         setCommentLoadingSet((prev) => {
           const s = new Set(prev);
@@ -329,7 +317,7 @@ export default function HomeFeed({
   const handleImageSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = Array.from(e.target.files || []);
-      const maxSize = 50 * 1024 * 1024; // 50 MB
+      const maxSize = 50 * 1024 * 1024; 
       for (const file of files) {
         if (file.size > maxSize) continue;
         if (!file.type.startsWith("image/")) continue;
@@ -359,7 +347,7 @@ export default function HomeFeed({
     setIsPosting(true);
     setPostError(null);
     try {
-      // Upload images to Supabase storage
+      
       const mediaUrls: string[] = [];
       if (selectedImages.length > 0) {
         const supabase = createClient();
@@ -533,9 +521,9 @@ export default function HomeFeed({
 
   const isCompactEmbedded = embedded && isCompactRuntimeViewport(viewportWidth);
 
-  // Insert 1 YouTube card after every 3 platform posts; remaining yt items
-  // append at the end. YouTube items are stable across renders — only
-  // ytPosts reference changes when the sliding window updates.
+  
+  
+  
   const displayPosts = useMemo<FeedPost[]>(() => {
     if (ytPosts.length === 0) return posts;
     const result: FeedPost[] = [];
@@ -550,8 +538,8 @@ export default function HomeFeed({
     return result;
   }, [posts, ytPosts]);
 
-  // Build a stable id→index map over ytPosts so FeedVideoCard knows where each
-  // video sits in the context for swipe navigation.
+  
+  
   const ytIndexMap = useMemo<Map<string, number>>(() => {
     const m = new Map<string, number>();
     ytPosts.forEach((p, i: number) => m.set(p.id, i));
@@ -585,7 +573,7 @@ export default function HomeFeed({
               : undefined
           }
         >
-          {/* Feed tabs */}
+          
           <div
             className="flex items-center gap-1 mb-6 bg-card rounded-2xl border border-border p-1"
             style={embedded ? { flexShrink: 0 } : undefined}
@@ -614,7 +602,7 @@ export default function HomeFeed({
             ))}
           </div>
 
-          {/* ── YouTube feed refresh button ───────────────────────── */}
+          
           <div
             style={{
               display: "flex",
@@ -673,7 +661,7 @@ export default function HomeFeed({
             </div>
           )}
 
-          {/* New-posts banner */}
+          
           {newCount > 0 && (
             <button
               type="button"
@@ -698,7 +686,7 @@ export default function HomeFeed({
             </button>
           )}
 
-          {/* Composer */}
+          
           <div
             className="bg-card rounded-2xl border border-border p-4 mb-6"
             style={embedded ? { flexShrink: 0 } : undefined}
@@ -754,7 +742,7 @@ export default function HomeFeed({
                     />
                   </div>
                 </div>
-                {/* Image previews */}
+                
                 {selectedImages.length > 0 && (
                   <div className="flex gap-2 flex-wrap">
                     {selectedImages.map((img, idx: number) => (
@@ -860,7 +848,7 @@ export default function HomeFeed({
             )}
           </div>
 
-          {/* Posts — scrollable context box */}
+          
           <div
             style={{
               background: "var(--de-card, rgba(255,255,255,0.92))",
@@ -930,7 +918,7 @@ export default function HomeFeed({
                           : undefined,
                       }}
                     >
-                      {/* Content type badge — always visible */}
+                      
                       <div
                         style={{
                           display: "flex",
@@ -1099,7 +1087,7 @@ export default function HomeFeed({
                         post.permalink &&
                         (post.permalink.includes("youtube") ||
                           post.permalink.includes("youtu.be"))) ? (
-                        /* FeedVideoCard — inline playback + expand + swipe navigation */
+                        
                         <FeedVideoCard
                           post={post}
                           allVideos={ytPosts}
@@ -1175,7 +1163,7 @@ export default function HomeFeed({
                           </button>
                         </div>
                       )}
-                      {/* ── Inline comment thread ─────────────────────────────────────── */}
+                      
                       {expandedComments.has(post.id) && (
                         <div
                           style={{
@@ -1287,7 +1275,7 @@ export default function HomeFeed({
                                   ))
                                 )}
                               </div>
-                              {/* DreamBar comment prompt */}
+                              
                               <button
                                 type="button"
                                 onClick={() => handleCommentFromBar(post)}
@@ -1342,7 +1330,7 @@ export default function HomeFeed({
                         </div>
                       )}
                     </article>
-                    {/* Phase 9 — AdUnit after every 5th post (Activity-First Protocol §V) */}
+                    
                     {(postIdx + 1) % 5 === 0 && (
                       <div style={{ margin: "8px 0" }}>
                         <AdUnit

@@ -27,7 +27,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
           });
         }
       } catch {
-          // Non-JSON line in pnpm audit output — skip silently
+          
         }
     }
     const summary = {
@@ -40,7 +40,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
   } catch (_err: unknown) {
     const error = _err as Record<string, unknown> & { message?: string };
     if (error.stdout) {
-      // pnpm audit exits with non‑zero when vulnerabilities found, but stdout still contains JSON
+      
       const advisories = [];
       for (const line of (error.stdout as string).split('\n').filter((l: string) => l.trim())) {
         try {
@@ -55,7 +55,7 @@ export async function POST(request: Request ): Promise<NextResponse> {
             });
           }
         } catch {
-          // Non-JSON line in pnpm audit output — skip silently
+          
         }
       }
       const summary = {

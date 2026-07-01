@@ -7,10 +7,7 @@ import { createClient } from '@/supabase/client/client';
 import { Loader2, PlusCircle, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-/**
- * MarketplacePanel — inline marketplace, client-side Supabase fetch.
- * No routing. No server components. Everything renders here.
- */
+
 
 type Listing = {
   id: string;
@@ -45,7 +42,7 @@ export default function MarketplacePanel( ){
           .order('created_at', { ascending: false })
           .limit(24);
         setListings(data ?? []);
-      } catch { /* noop */ }
+      } catch {  }
       finally { setLoading(false); }
     })();
   }, []);
@@ -53,7 +50,7 @@ export default function MarketplacePanel( ){
   return (
     <div style={{ padding: '12px 0 100px' }}>
 
-      {/* Hero */}
+      
       <div className="de-widget" style={{
         margin: '0 16px 12px',
         background: 'linear-gradient(135deg, rgba(42,138,184,0.1), rgba(200,152,26,0.08))',
@@ -78,7 +75,7 @@ export default function MarketplacePanel( ){
         </div>
       </div>
 
-      {/* Listings or fallback */}
+      
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: 32 }}>
           <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--de-accent)' }} />
@@ -114,7 +111,7 @@ export default function MarketplacePanel( ){
         </div>
       )}
 
-      {/* Your shop */}
+      
       <div className="de-widget" style={{ margin: '0 16px 12px', background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
         <div className="de-widget-body" style={{ padding: '4px 6px' }}>
           <button

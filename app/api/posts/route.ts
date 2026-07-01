@@ -51,12 +51,12 @@ function filterVisiblePosts(posts: PostRow[], viewerId: string, closeFriendPoste
   });
 }
 
-// GET - Fetch posts for feed
-// Query params:
-//   feed   — 'following' to show only posts from users the caller follows
-//   sort   — 'trending' to order by likes_count DESC (fallback: created_at DESC)
-//   limit  — number of posts to return (default 20, max 500 for following, max 50 otherwise)
-//   offset — pagination offset
+
+
+
+
+
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);
@@ -123,7 +123,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ posts: posts.map((post) => normalizePostMedia(post)) });
 }
 
-// POST - Create a new post
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const supabase = (await createServerClient()) as SupabaseClient<Database>;
   const user = await safeGetUser(supabase);

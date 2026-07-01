@@ -32,9 +32,7 @@ const SHADOWS: { id: SkinShadow; label: string; desc: string }[] = [
   { id: 'strong', label: 'Strong', desc: 'Deep shadow' },
 ];
 
-/**
- * LayoutPanel — choose the widget layout density and shadow depth.
- */
+
 export default function LayoutPanel( ){
   const { activePanel, closePanel, draftSkin, updateDraft } = useCustomizeMode();
 
@@ -42,7 +40,7 @@ export default function LayoutPanel( ){
 
   return (
     <SlidePanel title="Layout" onClose={closePanel}>
-      {/* Layout density */}
+      
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-text-dim)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           Layout Style
@@ -77,7 +75,7 @@ export default function LayoutPanel( ){
         </div>
       </div>
 
-      {/* Widget border radius */}
+      
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-text-dim)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
@@ -100,7 +98,7 @@ export default function LayoutPanel( ){
         </div>
       </div>
 
-      {/* Shadow */}
+      
       <div>
         <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--de-text-dim)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           Shadow

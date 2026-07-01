@@ -17,27 +17,11 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * ChildSafetyPanel — Admin UI for the child safety enforcement system.
- *
- * Surfaces:
- *   1. Stats bar     — live incident counts by status
- *   2. Incident queue — paginated list of PENDING_REVIEW incidents
- *   3. Hash upload   — paste or upload known-bad SHA-256 hashes
- *
- * Tabs:
- *   • Queue   — review pending incidents
- *   • Hashes  — manage known-bad hash registry
- *
- * All API calls go to /api/admin/child-safety (admin-only).
- * Incidents contain no raw content — only metadata (severity, surface, rule).
- *
- * Architecture: AXIOM 4 Security by Default — no end-user access; admin only.
- */
 
-// ============================================================================
-// TYPES (mirroring the DB schema — no raw content fields)
-// ============================================================================
+
+
+
+
 
 interface ChildSafetyIncident {
   id: string;
@@ -65,9 +49,9 @@ interface IncidentCounts {
   dismissed: number;
 }
 
-// ============================================================================
-// STATUS CONFIG
-// ============================================================================
+
+
+
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; Icon: typeof Clock }> = {
   PENDING_REVIEW:           { label: 'Pending Review',   color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',   Icon: Clock },
@@ -82,9 +66,9 @@ const RULE_CONFIG: Record<string, { label: string; color: string; emoji: string 
   C31_GROOMING:{ label: 'Grooming', color: '#dc4444', emoji: '⚠️' },
 };
 
-// ============================================================================
-// HELPERS
-// ============================================================================
+
+
+
 
 function severityBar(severity: number ){
   const pct = Math.round(severity * 100);
@@ -109,9 +93,9 @@ function relativeTime(iso: string): string {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-// ============================================================================
-// COMPONENT
-// ============================================================================
+
+
+
 
 interface ChildSafetyPanelProps {
   isAdmin: boolean;
@@ -242,7 +226,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
 
   return (
     <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border-2 border-red-200 dark:border-red-800 p-6">
-      {/* ── Header ───────────────────────────────────────────────────────── */}
+      
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-red-600 to-orange-500 rounded-lg">
@@ -263,7 +247,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
         </button>
       </div>
 
-      {/* ── Stats bar ─────────────────────────────────────────────────────── */}
+      
       <div className="grid grid-cols-5 gap-2 mb-5">
         {([
           { label: 'Pending',   value: counts.pending,   color: '#f59e0b', status: 'PENDING_REVIEW' },
@@ -288,7 +272,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
         ))}
       </div>
 
-      {/* ── Tab bar ───────────────────────────────────────────────────────── */}
+      
       <div className="flex gap-1 mb-5 bg-white/60 dark:bg-slate-800/60 rounded-lg p-1">
         {([
           { id: 'queue',  label: 'Incident Queue', icon: Activity },
@@ -310,7 +294,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
         ))}
       </div>
 
-      {/* ── Global error ─────────────────────────────────────────────────── */}
+      
       {error && (
         <div className="flex items-center gap-2 mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg text-sm text-red-700 dark:text-red-400">
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
@@ -318,10 +302,10 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
         </div>
       )}
 
-      {/* ── Tab: Queue ───────────────────────────────────────────────────── */}
+      
       {activeTab === 'queue' && (
         <div>
-          {/* Status filter pill */}
+          
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xs text-slate-500 dark:text-slate-400">Showing:</span>
             {(() => {
@@ -341,7 +325,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
             <span className="text-xs text-slate-400">({incidents.length})</span>
           </div>
 
-          {/* Incident list */}
+          
           {loadingQueue ? (
             <div className="flex items-center justify-center py-12 text-slate-400">
               <RefreshCw className="w-5 h-5 animate-spin mr-2" />
@@ -366,10 +350,10 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
                     key={inc.id}
                     className="bg-white/70 dark:bg-slate-800/70 rounded-lg border border-red-100 dark:border-red-900/40 overflow-hidden"
                   >
-                    {/* Row */}
+                    
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-3">
-                        {/* Left: rule + surface + time */}
+                        
                         <div className="flex items-start gap-3 min-w-0">
                           <span className="text-lg flex-shrink-0" aria-hidden>{ruleConf.emoji}</span>
                           <div className="min-w-0">
@@ -397,7 +381,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
                           </div>
                         </div>
 
-                        {/* Right: status + expand */}
+                        
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <span
                             className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-semibold"
@@ -420,7 +404,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
                         </div>
                       </div>
 
-                      {/* NCMEC result */}
+                      
                       {inc.ncmec_report_id && (
                         <div className="mt-2 text-xs text-green-600 dark:text-green-400">
                           NCMEC Report ID: <code className="font-mono">{inc.ncmec_report_id}</code>
@@ -433,7 +417,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
                       )}
                     </div>
 
-                    {/* Expanded review panel */}
+                    
                     {isExpanded && (
                       <div className="border-t border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10 p-4">
                         <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Admin Review Notes (optional)</p>
@@ -485,7 +469,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
         </div>
       )}
 
-      {/* ── Tab: Hash Registry ───────────────────────────────────────────── */}
+      
       {activeTab === 'hashes' && (
         <div>
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-4 mb-5">
@@ -500,7 +484,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
           </div>
 
           <div className="space-y-4">
-            {/* Source selector */}
+            
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hash Source</label>
               <div className="flex gap-2 flex-wrap">
@@ -521,7 +505,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
               </div>
             </div>
 
-            {/* Hash input */}
+            
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                 SHA-256 Hashes
@@ -541,7 +525,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
               </div>
             </div>
 
-            {/* Upload button */}
+            
             <button
               onClick={uploadHashes}
               disabled={uploadingHashes || !hashInput.trim()}
@@ -551,7 +535,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
               {uploadingHashes ? 'Uploading…' : 'Add to Registry'}
             </button>
 
-            {/* Result / Error */}
+            
             {hashUploadResult && (
               <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg text-sm text-green-700 dark:text-green-400">
                 <CheckCircle className="w-4 h-4 flex-shrink-0" />
@@ -566,7 +550,7 @@ export default function ChildSafetyPanel({ isAdmin }: ChildSafetyPanelProps) {
               </div>
             )}
 
-            {/* Clear button */}
+            
             {hashInput.trim() && (
               <button
                 type="button"

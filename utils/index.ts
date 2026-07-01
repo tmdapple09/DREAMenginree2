@@ -42,11 +42,7 @@ export function generateDedupeHash(userId: string, source: string, externalId: s
 
 type AnyFn = (...args: unknown[]) => void;
 
-/**
- * Returns a debounced version of `fn` that fires only after `delayMs` ms of
- * silence. The returned function also exposes `.cancel()` to abort a pending
- * call and `.flush()` to invoke it immediately.
- */
+
 export function debounce<T extends AnyFn>(
   fn: T,
   delayMs: number,
@@ -79,11 +75,7 @@ export function debounce<T extends AnyFn>(
   return debounced as T & { cancel: () => void; flush: (...args: Parameters<T>) => void }
 }
 
-/**
- * Returns a throttled version of `fn` that fires at most once every
- * `intervalMs` ms regardless of how many times it is called.
- * The trailing call within the interval is always delivered.
- */
+
 export function throttle<T extends AnyFn>(
   fn: T,
   intervalMs: number,
@@ -114,29 +106,18 @@ export function throttle<T extends AnyFn>(
   return throttled as T & { cancel: () => void }
 }
 
-/** Constrain `value` to the inclusive range [min, max]. */
+
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max)
 }
 
-/**
- * Truncate `str` to at most `maxLen` characters (including the suffix).
- * Default suffix is '…'.
- */
+
 export function truncate(str: string, maxLen: number, suffix = '…'): string {
   if (str.length <= maxLen) return str
   return str.slice(0, Math.max(0, maxLen - suffix.length)) + suffix
 }
 
-/**
- * Retry an async function up to `maxAttempts` times using exponential backoff.
- * Throws the last error when all attempts are exhausted.
- *
- * @param fn          Async function to retry.
- * @param maxAttempts Maximum number of attempts (default 3).
- * @param baseDelayMs Initial delay before the second attempt (default 200 ms).
- *                    Each subsequent attempt doubles the delay.
- */
+
 export async function retry<T>(
   fn: () => Promise<T>,
   maxAttempts = 3,
@@ -156,26 +137,18 @@ export async function retry<T>(
   throw lastError
 }
 
-/** Return a Promise that resolves after `ms` milliseconds. */
+
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-/**
- * Deep-clone a value using `structuredClone` when available, falling back to
- * JSON round-trip for environments that don't support it.
- * Functions, Symbols, and circular references survive `structuredClone` but
- * are silently dropped by the JSON fallback.
- */
+
 export function deepClone<T>(value: T): T {
   if (typeof structuredClone === 'function') return structuredClone(value)
   return JSON.parse(JSON.stringify(value)) as T
 }
 
-/**
- * Group an array by a derived key.
- * Returns a `Map<K, T[]>` preserving insertion order of first-seen keys.
- */
+
 export function groupBy<T, K>(arr: readonly T[], keyFn: (item: T) => K): Map<K, T[]> {
   const map = new Map<K, T[]>()
   for (const item of arr) {
@@ -187,26 +160,17 @@ export function groupBy<T, K>(arr: readonly T[], keyFn: (item: T) => K): Map<K, 
   return map
 }
 
-/**
- * Return a new array with duplicate values removed (identity comparison).
- * Preserves the order of first occurrence.
- */
+
 export function unique<T>(arr: readonly T[]): T[] {
   return [...new Set(arr)]
 }
 
-/**
- * Assert that `condition` is truthy, throwing an `Error` with `message` when
- * it is not. TypeScript narrows the type of `condition` to `true` after this.
- */
+
 export function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`Assertion failed: ${message}`)
 }
 
-/**
- * Extract a human-readable message from an unknown thrown value.
- * Covers Error instances, objects with a message property, and primitives.
- */
+
 export function toErrorMessage(err: unknown): string {
   if (err instanceof Error) return err.message;
   if (typeof err === 'object' && err !== null && 'message' in err) {
@@ -216,9 +180,7 @@ export function toErrorMessage(err: unknown): string {
   return String(err);
 }
 
-/**
- * Type-guard: true if value is an Error instance.
- */
+
 export function isError(value: unknown): value is Error {
   return value instanceof Error;
 }

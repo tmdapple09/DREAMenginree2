@@ -2,10 +2,7 @@
 
 import { useCustomizeMode } from '@/components/ui-system/CustomizeModeContext';
 
-/**
- * ProfileCustomizeButton — small client button that enters customize mode
- * for the profile page. Used in the server-rendered profile/[handle]/page.tsx.
- */
+
 export default function ProfileCustomizeButton( ){
   const { enterCustomizeMode } = useCustomizeMode();
   return (

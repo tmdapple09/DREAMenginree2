@@ -2,9 +2,9 @@
 
 import InfinityIcon from '@/components/ui/dream.InfinityIcon';
 
-// components/dreamengin/dream.HomeControls.tsx
-// ONE gold button. Always has been. Always will be.
-//   • Single tap → open dual menus
+
+
+
 
 
 interface HomeControlsProps {

@@ -13,29 +13,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * GET /api/dreamr/suggested
- *
- * Returns two kinds of suggestions, both powered by the DreamR algorithm:
- *
- *  ?type=content  — posts from creators the caller does NOT yet follow,
- *                   scored and ranked by the humanistic algorithm. The full
- *                   transparency payload (dreamr_signals, dominant_signal,
- *                   dreamr_reason, view_velocity) is included on every post.
- *
- *  ?type=creators — profiles of creators the caller does NOT yet follow,
- *                   ranked by the *quality* of their recent work — i.e. the
- *                   average DreamR score of their last few public posts —
- *                   tempered by recency. We never use follower count.
- *
- * Query params:
- *   type   — 'content' | 'creators'  (default 'content')
- *   limit  — results to return       (default 5, max 10)
- *
- * Visibility:
- *   close_friends posts are filtered out using the same helper as the main
- *   feed route, so suggested-content can never leak past the poster's CF wall.
- */
+
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const supabase = await createServerClient();
@@ -56,12 +34,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const followedIds: string[] = followsError
     ? []
     : (follows ?? []).map((f: { following_id: string }) => f.following_id);
-  // Always exclude self
+  
   const excludeIds = [...followedIds, user.id];
   const circle = await loadVisibilityCircle(user.id);
 
   if (type === 'content') {
-    // NOTE: DB column is `view_count` (singular); algorithm field is `views_count`.
+    
     const { data: rows } = await db
       .from('app_posts')
       .select('id, user_id, content, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!inner(handle, display_name, avatar_url)')
@@ -105,9 +83,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   if (type === 'creators') {
-    // Pull a wider pool of recent public posts so we can score the body of
-    // each creator's recent work, not just count them. We need content +
-    // media so the DreamR algorithm has the same inputs it uses on the feed.
+    
+    
+    
     const { data: rows } = await db
       .from('app_posts')
       .select('id, user_id, content, post_visibility, media_url, media_urls, media_json, created_at, view_count, likes_count, comments_count, profiles!inner(id, handle, display_name, avatar_url, bio)')
@@ -137,9 +115,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const creatorMap = new Map<string, CreatorAgg>();
 
-    // Cap per-creator scoring work at 5 most-recent posts so the algorithm
-    // measures *current* output, not a long tail. Posts arrive newest-first
-    // already, so we just count.
+    
+    
+    
     const SCORE_PER_CREATOR_CAP = 5;
     const scoredCount = new Map<string, number>();
 
@@ -192,16 +170,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         });
         entry.score_sum += scored.score;
         entry.score_n   += 1;
-        if (used === 0) entry.best_reason = scored.reason; // newest-post reason
+        if (used === 0) entry.best_reason = scored.reason; 
         scoredCount.set(uid, used + 1);
       }
     }
 
-    // Activity-tempered quality ranking:
-    //   creator_score = avgDreamR * recencyBoost * activityBoost
-    //   recencyBoost  = 1 / (1 + age_hours/72)   — half-life ≈ 3 days
-    //   activityBoost = sqrt(min(post_count, 10)) / sqrt(10)  — modest
-    // Quality dominates; recency and activity are tie-breakers.
+    
+    
+    
+    
+    
     const ranked = [...creatorMap.values()]
       .map((c) => {
         const ageHours = (Date.now() - new Date(c.latest_post_at).getTime()) / 3_600_000;
@@ -216,11 +194,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           avatar_url:     c.avatar_url,
           bio:            c.bio,
           post_count:     c.post_count,
-          /** Average DreamR score over the creator's last few posts (0-100). */
+          
           avg_dreamr_score: Math.round(avgQuality * 10) / 10,
-          /** Composite suggested-creator rank (not surfaced to UI by default). */
+          
           creator_score:    Math.round(creatorScore * 10) / 10,
-          /** Dominant signal of their newest post — small UX hint. */
+          
           dreamr_reason:    c.best_reason,
         };
       })

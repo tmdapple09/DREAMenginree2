@@ -1,55 +1,34 @@
-/**
- * lib/intelligence/sessionPatternEngine.ts
- *
- * SESSION PATTERN ENGINE — 2026
- *
- * Learns your DREAMengin usage patterns in real-time from the dreamOSBus
- * artifact stream. Uses a bigram Markov chain over subsystem activations
- * with TF.js tensor normalisation for fast probability computation.
- *
- * Runs entirely in-browser: privacy-first, zero server round-trips.
- *
- * After as few as 3 transitions it begins making useful predictions.
- * TF.js enhances normalisation — graceful pure-math fallback if unavailable.
- *
- * Usage:
- *   const engine = new SessionPatternEngine();
- *   await engine.init();
- *   engine.ingest('CodeEngin');
- *   engine.ingest('LabEngin');
- *   const [next] = engine.predict('LabEngin');
- *   // { subsystemId: 'GameEngin', confidence: 0.72, label: '🎮 GameEngin' }
- */
+
 
 export interface PredictedNext {
-  /** Canonical subsystem ID as used in dreamOSBus artifacts. */
+  
   subsystemId: string;
-  /** Normalised probability (0–1). */
+  
   confidence: number;
-  /** Emoji-prefixed human-readable label. */
+  
   label: string;
 }
 
 export interface PatternEngineState {
-  /** Total transitions ingested this session. */
+  
   transitionCount: number;
-  /** Unique subsystems seen this session, ordered by first appearance. */
+  
   subsystemsSeen: readonly string[];
-  /** Whether the engine has enough data to produce reliable predictions. */
+  
   isReady: boolean;
-  /** Whether TF.js is active for enhanced normalisation. */
+  
   tfReady: boolean;
 }
 
-// Minimum transitions before predictions are considered reliable.
+
 const MIN_TRANSITIONS = 3;
 
-// Transition count above which cold-start weights are no longer blended in.
+
 const COLD_START_THRESHOLD = 10;
 
-// Pre-defined common path weights used as warm defaults until the engine has
-// accumulated enough transitions to rely solely on learned data.
-// Each entry lists [destinationSubsystemId, defaultWeight] pairs (weights sum to 1).
+
+
+
 const COLD_START_WEIGHTS: Record<string, [string, number][]> = {
   home:           [['CodeEngin', 0.35], ['LabEngin', 0.25], ['GameEngin', 0.20], ['ContentEngin', 0.20]],
   profile:        [['home', 0.50], ['CodeEngin', 0.30], ['LabEngin', 0.20]],
@@ -63,7 +42,7 @@ const COLD_START_WEIGHTS: Record<string, [string, number][]> = {
   'Dr. Eams':     [['home', 0.35], ['CodeEngin', 0.35], ['LabEngin', 0.30]],
 };
 
-// Fallback cold-start weights for any subsystem not in COLD_START_WEIGHTS.
+
 const DEFAULT_COLD_START: [string, number][] = [
   ['CodeEngin', 0.35],
   ['LabEngin', 0.30],
@@ -71,7 +50,7 @@ const DEFAULT_COLD_START: [string, number][] = [
   ['ContentEngin', 0.15],
 ];
 
-// Known subsystem display labels.
+
 const SUBSYSTEM_LABELS: Record<string, string> = {
   CodeEngin: '💻 CodeEngin',
   LabEngin: '🧪 LabEngin',
@@ -90,11 +69,11 @@ function labelFor(subsystemId: string): string {
 }
 
 export class SessionPatternEngine {
-  /** Bigram counts: transitions[from][to] = count */
+  
   private readonly transitions = new Map<string, Map<string, number>>();
-  /** Ordered activation sequence for this session. */
+  
   private readonly activationSequence: string[] = [];
-  /** Unique subsystems seen, ordered by first appearance. */
+  
   private readonly subsystemsSeen: string[] = [];
 
   private tfReady = false;
@@ -115,14 +94,11 @@ export class SessionPatternEngine {
       await tf.ready();
       this.tfReady = true;
     } catch {
-      // TF.js not available; use normalised counts directly.
+      
     }
   }
 
-  /**
-   * Ingest a subsystem activation event.
-   * Call whenever a new subsystem becomes the focus (route change, engin open, etc.).
-   */
+  
   ingest(subsystemId: string): void {
     const prev = this.activationSequence[this.activationSequence.length - 1];
     this.activationSequence.push(subsystemId);
@@ -141,21 +117,13 @@ export class SessionPatternEngine {
     }
   }
 
-  /**
-   * Predict the top-N most likely next subsystem activations given the current
-   * active subsystem.
-   *
-   * Before the engine has learned transitions from this subsystem, returns
-   * cold-start defaults. Between MIN_TRANSITIONS and COLD_START_THRESHOLD,
-   * blends cold-start defaults with learned weights. Above COLD_START_THRESHOLD,
-   * uses purely learned weights.
-   */
+  
   predict(currentSubsystemId: string, topN = 3): PredictedNext[] {
     const transitionCount = Math.max(0, this.activationSequence.length - 1);
     const fromMap = this.transitions.get(currentSubsystemId);
     const hasLearned = fromMap !== undefined && fromMap.size > 0;
 
-    // No learned data for this subsystem → pure cold-start.
+    
     if (!hasLearned) {
       return this.coldStartPredictions(currentSubsystemId, topN);
     }
@@ -173,9 +141,9 @@ export class SessionPatternEngine {
       }));
     }
 
-    // Blend cold-start defaults with learned weights in the warm-up window.
+    
     if (transitionCount <= COLD_START_THRESHOLD) {
-      // Guard: if the two thresholds are equal (misconfiguration) treat as pure learned.
+      
       const blendRange = COLD_START_THRESHOLD - MIN_TRANSITIONS;
       const learnWeight = blendRange > 0
         ? Math.max(0, transitionCount - MIN_TRANSITIONS) / blendRange
@@ -203,7 +171,7 @@ export class SessionPatternEngine {
         }));
     }
 
-    // Pure learned (transitionCount > COLD_START_THRESHOLD).
+    
     return learnedNorm
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, topN)
@@ -214,9 +182,7 @@ export class SessionPatternEngine {
       }));
   }
 
-  /**
-   * Returns the engine's current observable state.
-   */
+  
   getState(): PatternEngineState {
     return {
       transitionCount: Math.max(0, this.activationSequence.length - 1),
@@ -226,27 +192,19 @@ export class SessionPatternEngine {
     };
   }
 
-  /**
-   * Returns the raw activation sequence for the current session.
-   */
+  
   getActivationSequence(): readonly string[] {
     return this.activationSequence;
   }
 
-  /**
-   * Wipes all accumulated transitions (used when starting a fresh session).
-   */
+  
   reset(): void {
     this.transitions.clear();
     this.activationSequence.length = 0;
     this.subsystemsSeen.length = 0;
   }
 
-  /**
-   * Exports the learned bigram transition matrix as a plain JSON-serialisable
-   * object. Use together with importMatrix() to persist the engine across
-   * browser sessions.
-   */
+  
   exportMatrix(): Record<string, Record<string, number>> {
     const result: Record<string, Record<string, number>> = {};
     for (const [from, toMap] of this.transitions) {
@@ -255,11 +213,7 @@ export class SessionPatternEngine {
     return result;
   }
 
-  /**
-   * Restores the bigram transition matrix from a previously exported object.
-   * Does not touch the activation sequence or seen-list — those remain
-   * session-local.
-   */
+  
   importMatrix(data: Record<string, Record<string, number>>): void {
     this.transitions.clear();
     for (const [from, toObj] of Object.entries(data)) {
@@ -287,19 +241,15 @@ export class SessionPatternEngine {
       }));
   }
 
-  /**
-   * Uses TF.js softmax-like normalisation for sharper probability separation
-   * compared to raw frequency division.
-   * Falls back to raw ratio on any TF error.
-   */
+  
   private normaliseWithTF(
     entries: [string, number][],
     total: number,
   ): { subsystemId: string; confidence: number }[] {
     try {
-      // Lazy require — tf is already loaded at this point.
-      // Dynamic require is intentional: avoids top-level TF.js import
-      // which would cause SSR issues in Next.js.
+      
+      
+      
 
       const tf = require('@tensorflow/tfjs') as typeof import('@tensorflow/tfjs');
 

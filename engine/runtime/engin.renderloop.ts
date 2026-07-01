@@ -1,5 +1,5 @@
-// engin.renderloop — primary rendering loop controller
-// Frame scheduling. No game logic. No dream.* imports.
+
+
 
 export interface RenderFrame {
   index: number;

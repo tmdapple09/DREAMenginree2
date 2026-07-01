@@ -6,62 +6,52 @@ import { dropTargetRegistry } from '@/engine/runtime/dropTargetRegistry';
 import type { RuntimeId } from '@/types/module-manifest';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/useDragSurface.ts.
 
-/**
- * lib/runtime/useDragSurface.ts — Pass 6
- *
- * Universal drag/drop surface hook.
- *
- * Attach to any container element to make it a drop target for DreamDrops.
- * Works with native HTML5 drag-and-drop AND custom module transfer payloads
- * from DraggableModule/useTapHoldMove.
- *
- * Architecture: docs/ARCHITECTURE.md §6 (Pass 6 — Universal drag/drop).
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export interface UseDragSurfaceOptions {
-  /** The runtime region this surface belongs to. */
+  
   region: RuntimeId;
-  /** Drop types this surface accepts. Empty = accept all. */
+  
   accepts?: DreamDropType[];
-  /** Priority among targets in the same region (higher wins). Default: 0. */
+  
   priority?: number;
-  /** Stable ID for the drop target registration. Auto-generated if omitted. */
+  
   id?: string;
-  /** Called when a coerced drop is routed here. */
+  
   onDrop?: (drop: DreamDrop) => void;
-  /** Called when a native drop is valid but no registered target consumes it. */
+  
   onUnhandledDrop?: (drop: DreamDrop) => void;
 }
 
 export interface UseDragSurfaceResult {
-  /** Spread these onto the container div. */
+  
   dragProps: {
     onDragOver:  React.DragEventHandler;
     onDragEnter: React.DragEventHandler;
     onDragLeave: React.DragEventHandler;
     onDrop:      React.DragEventHandler;
   };
-  /** True while a drag is hovering over this surface. */
+  
   isOver: boolean;
-  /** The most recent drop received by this surface (null until first drop). */
+  
   lastDrop: DreamDrop | null;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 export function useDragSurface({
   region,
@@ -152,8 +142,8 @@ export function useDragSurface({
   };
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

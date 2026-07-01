@@ -4,18 +4,18 @@ import {
 } from '@/types/ai-system';
 import { ToolHandler } from '../tool-router';
 
-// lib/ai/handlers/navigation.ts
-// Navigation Intent Handlers
 
-// ============================================================================
-// NAV_DELTA Handler
-// ============================================================================
+
+
+
+
+
 
 export const handleNavDelta: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as NavDeltaPayload;
 
-  // Navigation changes are UI-only, no DB writes
-  // Return UI delta with navigation patch
+  
+  
   return {
     ok: true,
     data: {
@@ -40,9 +40,9 @@ export const handleNavDelta: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// HOME_ANCHOR_SET_STATE Handler
-// ============================================================================
+
+
+
 
 export const handleHomeAnchorSetState: ToolHandler = async (ctx) => {
   const payload = ctx.intent.payload as unknown as HomeAnchorSetStatePayload;
@@ -64,9 +64,9 @@ export const handleHomeAnchorSetState: ToolHandler = async (ctx) => {
   };
 };
 
-// ============================================================================
-// HOME_MENU_OPEN Handler
-// ============================================================================
+
+
+
 
 export const handleHomeMenuOpen: ToolHandler = async () => {
   return {

@@ -9,37 +9,21 @@ import type {
 } from './bus-events';
 import { InterVMChannel, type VMEvent } from './inter-vm-messaging';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/vm/dual-runtime.ts.
 
-/**
- * lib/vm/dual-runtime.ts — DualRuntime Orchestrator
- *
- * Manages two independent VM regions:
- *   TOO_VM    — primary / HomeDream Surface region
- *   BOTTOM_VM — secondary / DreamSpace region
- *
- * When TOO_VM accumulates errors it becomes unhealthy and BOTTOM_VM
- * takes over as the primary dispatch target (automatic failover).
- * The primary VM can be restored via recoverVM('TOO_VM').
- *
- * Dream OS bus events emitted:
- *   vm:workload-submitted  — workload queued
- *   vm:compute-complete    — workload finished
- *   vm:error               — VM or workload error
- *   vm:stats-update        — periodic telemetry
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
+
+
+
+
+
 
 export type VMId = 'TOO_VM' | 'BOTTOM_VM';
 
@@ -62,7 +46,7 @@ export interface VMRuntimeStats {
 
 type BusHandler<K extends VMBusEventName> = (payload: VMBusEventMap[K]) => void;
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 class VMRuntime {
   readonly id:          VMId;
@@ -133,10 +117,7 @@ export class DualRuntime {
   get primaryVmId(): VMId        { return this._primary.id; }
   get isFailoverActive(): boolean { return this._failoverActive; }
 
-  /**
-   * Submit a workload to the current primary VM.
-   * Fires vm:workload-submitted immediately, vm:compute-complete on next tick.
-   */
+  
   submitWorkload(spec: VMWorkloadSpec): string {
     const vm      = this._primary;
     const region: 'top' | 'bottom' = vm.id === 'TOO_VM' ? 'top' : 'bottom';
@@ -220,7 +201,7 @@ export class DualRuntime {
     const set = this.busListeners.get(event);
     if (!set) return;
     for (const h of set) {
-      try { (h as BusHandler<K>)(payload); } catch { /* ignore */ }
+      try { (h as BusHandler<K>)(payload); } catch {  }
     }
   }
 
@@ -251,8 +232,8 @@ export class DualRuntime {
 
 export const dualRuntime = new DualRuntime();
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

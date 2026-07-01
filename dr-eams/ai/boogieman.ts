@@ -16,45 +16,45 @@ import type {
     EnforcementScope, Intent
 } from './schemas';
 
-// lib/ai/boogieman.ts
-// TheBoogieMan.Ai — deterministic policy engine.
-//
-// Every enforcement decision:
-//   1. References a rule_code defined in docs/policy/theboogie.md
-//   2. Carries BOOGIE_POLICY_VERSION so events are traceable to a published rule
-//   3. Produces DUAL OUTPUT: user-safe explanation + internal audit event (req 16)
-//   4. Uses the least-force action that reduces risk below threshold (req 37)
-//   5. Never issues a permanent ban autonomously (req 9, 43)
-//
-// Simulation mode: set BOOGIE_SIMULATION_MODE=true to produce audit events and
-// UI banners without actually restricting accounts (req 61, 62).
 
-// ============================================================================
-// SIMULATION MODE (req 61, 62) — never enable in production
-// ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function isSimulationMode(): boolean {
   return process.env.BOOGIE_SIMULATION_MODE === 'true';
 }
 
-// ============================================================================
-// BLAST RADIUS THRESHOLD (req 25)
-// Actions at or above this severity level are considered "containment-grade".
-// Wide-impact incidents (blastRadius >= BLAST_RADIUS_ESCALATION_THRESHOLD) that
-// have not yet reached containment severity are upgraded to QUARANTINE.
-// ============================================================================
+
+
+
+
+
+
 
 export const BLAST_RADIUS_ESCALATION_THRESHOLD = 10;
-// Actions that already constitute meaningful containment (no further upgrade needed).
+
 export const CONTAINMENT_ACTIONS: EnforcementAction[] = [
   'QUARANTINE', 'FEATURE_LOCK', 'TEMP_SUSPEND', 'TEMP_BAN', 'ESCALATE',
 ];
 
-// ============================================================================
-// RISK SCORING (req 21, 22)
-// risk_score = severity × confidence × history_multiplier
-// history_multiplier scales up when multiple strikes occur in rolling 7-day window (req 30)
-// ============================================================================
+
+
+
+
+
 
 export function computeRiskScore(
   severity: number,
@@ -64,10 +64,10 @@ export function computeRiskScore(
   return Math.min(1.0, severity * confidence * historyMultiplier);
 }
 
-// ============================================================================
-// LEAST-FORCE ACTION SELECTION (req 7, 37)
-// Given risk score and severity, return the smallest action that is warranted.
-// ============================================================================
+
+
+
+
 
 export function selectAction(params: {
   riskScore: number;
@@ -78,22 +78,22 @@ export function selectAction(params: {
 }): EnforcementAction {
   const { riskScore, severityLevel, confidence, isFirstOffense } = params;
 
-  // CRITICAL severity → immediate escalation/quarantine regardless of confidence (req 24, 42)
+  
   if (severityLevel === 'CRITICAL') {
     return confidence >= THRESHOLDS.MIN_CONFIDENCE_FOR_BAN ? 'TEMP_SUSPEND' : 'ESCALATE';
   }
 
-  // Below minimum confidence for ban → max is FEATURE_LOCK + escalate (req 23, 57)
+  
   if (confidence < THRESHOLDS.MIN_CONFIDENCE_FOR_BAN) {
     return riskScore > 0.4 ? 'FEATURE_LOCK' : 'WARN';
   }
 
-  // Education-first for first-time LOW violations (req 31)
+  
   if (isFirstOffense && severityLevel === 'LOW') {
     return 'NUDGE';
   }
 
-  // Graduated selection based on risk score (req 36, 37)
+  
   if (riskScore >= 0.85) return 'TEMP_BAN';
   if (riskScore >= 0.70) return 'TEMP_SUSPEND';
   if (riskScore >= 0.55) return 'QUARANTINE';
@@ -103,9 +103,9 @@ export function selectAction(params: {
   return 'NUDGE';
 }
 
-// ============================================================================
-// EXPIRY CALCULATION (req 39, 41, 44)
-// ============================================================================
+
+
+
 
 function computeExpiryISO(action: EnforcementAction, strikeCount = 1): string | null {
   const now = Date.now();
@@ -136,16 +136,16 @@ function computeExpiryISO(action: EnforcementAction, strikeCount = 1): string | 
   return new Date(now + durationSeconds * 1000).toISOString();
 }
 
-// ============================================================================
-// SCOPE SELECTION (req 47, 48) — prefer surface-specific lock over blanket
-// ============================================================================
+
+
+
 
 function selectScopes(ruleCode: string, action: EnforcementAction): PolicyScope[] {
-  // For blanket actions, restrict all scopes
+  
   if (action === 'TEMP_BAN' || action === 'TEMP_SUSPEND') {
     return ['POSTING', 'MESSAGING', 'LINKING', 'MARKETPLACE', 'TEMPLATE_SHARE'];
   }
-  // Map rule codes to affected scopes (req 47 — feature-specific preferred)
+  
   const map: Partial<Record<string, PolicyScope[]>> = {
     C28_SPAM:       ['POSTING', 'MESSAGING'],
     C21_HARASSMENT: ['MESSAGING', 'POSTING'],
@@ -157,10 +157,10 @@ function selectScopes(ruleCode: string, action: EnforcementAction): PolicyScope[
   return map[ruleCode] ?? ['POSTING'];
 }
 
-// ============================================================================
-// USER-SAFE EXPLANATION BUILDER (req 17, 61–70)
-// Must not reveal internal signals or thresholds (req 11, 63)
-// ============================================================================
+
+
+
+
 
 function buildUserExplanation(params: {
   action: EnforcementAction;
@@ -203,10 +203,10 @@ function buildUserExplanation(params: {
   };
 }
 
-// ============================================================================
-// INTERNAL AUDIT EVENT BUILDER (req 18, 19, 20, K91)
-// evidence_refs = hashes/IDs only, never raw private content (req 19)
-// ============================================================================
+
+
+
+
 
 function buildAuditEvent(params: {
   userId: string;
@@ -239,22 +239,22 @@ function buildAuditEvent(params: {
   };
 }
 
-// ============================================================================
-// boogieEnforce — main public API (req 16)
-// Produces dual output for every content/behavior enforcement decision.
-// ============================================================================
+
+
+
+
 
 export interface BoogieEnforceInput {
   userId: string;
-  ruleCode: string;           // must be a code from docs/policy/theboogie.md
-  severity: number;           // 0–1
-  confidence: number;         // 0–1
-  evidenceRefs?: string[];    // hashes or content IDs only (req 19)
-  strikeCount?: number;       // number of prior active strikes for this user
-  historyMultiplier?: number; // > 1.0 if multiple strikes in rolling 7-day window (req 30)
+  ruleCode: string;           
+  severity: number;           
+  confidence: number;         
+  evidenceRefs?: string[];    
+  strikeCount?: number;       
+  historyMultiplier?: number; 
   priorEventId?: string;
-  scopes?: PolicyScope[];     // override scope selection
-  blastRadius?: number;       // req 25: number of users potentially affected
+  scopes?: PolicyScope[];     
+  blastRadius?: number;       
 }
 
 export function boogieEnforce(input: BoogieEnforceInput): BoogieEnforceOutput {
@@ -273,8 +273,8 @@ export function boogieEnforce(input: BoogieEnforceInput): BoogieEnforceOutput {
 
   const simulation = isSimulationMode();
 
-  // Validate rule code is from the published policy (req 2, 92)
-  // If unknown, default to least restrictive + escalate (req 4, 5, 99)
+  
+  
   const knownCodes = new Set(Object.values(RULE_CODES));
   const resolvedCode = knownCodes.has(ruleCode) ? ruleCode : RULE_CODES.A3_CONSERVATIVE;
   const escalateForUnknown = !knownCodes.has(ruleCode);
@@ -286,22 +286,22 @@ export function boogieEnforce(input: BoogieEnforceInput): BoogieEnforceOutput {
 
   let action = selectAction({ riskScore, severityLevel, confidence, isFirstOffense, isRepeatOffense });
 
-  // Wide-impact incidents escalate faster (req 25): blast radius ≥ threshold raises to at least QUARANTINE
+  
   if (blastRadius >= BLAST_RADIUS_ESCALATION_THRESHOLD && !CONTAINMENT_ACTIONS.includes(action)) {
     action = 'QUARANTINE';
   }
 
-  // Never issue permanent ban autonomously (req 9, 43)
-  // Cap at TEMP_BAN; escalate for human review
+  
+  
   const shouldEscalate =
     escalateForUnknown ||
-    severityLevel === 'CRITICAL' ||          // req 71, F50
-    confidence < THRESHOLDS.MIN_CONFIDENCE_FOR_BAN || // req 23, G57
-    action === 'TEMP_BAN' ||                 // req 80, I80 — always escalate with temp bans
-    blastRadius >= BLAST_RADIUS_ESCALATION_THRESHOLD; // req 25 — wide-impact incidents always escalate
+    severityLevel === 'CRITICAL' ||          
+    confidence < THRESHOLDS.MIN_CONFIDENCE_FOR_BAN || 
+    action === 'TEMP_BAN' ||                 
+    blastRadius >= BLAST_RADIUS_ESCALATION_THRESHOLD; 
 
   if (shouldEscalate && !['NUDGE', 'WARN'].includes(action)) {
-    // Keep the restriction, but also flag for human review (req 73)
+    
     action = action === 'TEMP_BAN' ? 'TEMP_BAN' : action;
   }
 
@@ -330,7 +330,7 @@ export function boogieEnforce(input: BoogieEnforceInput): BoogieEnforceOutput {
     isSimulation: simulation,
   });
 
-  // IDARi telemetry summary (req 69) — rate, blast radius, performance notes
+  
   const idariTelemetry = {
     rule_code: resolvedCode,
     action,
@@ -352,9 +352,9 @@ export function boogieEnforce(input: BoogieEnforceInput): BoogieEnforceOutput {
   };
 }
 
-// ============================================================================
-// HELPERS
-// ============================================================================
+
+
+
 
 function mapToStrikeSeverity(severity: number): StrikeSeverityLevel {
   if (severity >= THRESHOLDS.CRITICAL_SEVERITY) return 'CRITICAL';
@@ -371,11 +371,11 @@ export function getStrikeExpiryDays(level: StrikeSeverityLevel): number {
   return STRIKE_EXPIRY_DAYS[level];
 }
 
-// ============================================================================
-// boogieEvaluate — legacy intent-gate (kept for backwards compat)
-// Evaluates AI intents against the access-control rules.
-// Now includes policy_version in every result (req 3, 4).
-// ============================================================================
+
+
+
+
+
 
 interface BoogieEvaluateInput {
   actorRole: 'user' | 'admin';
@@ -394,7 +394,7 @@ export function boogieEvaluate(input: BoogieEvaluateInput): BoogieOutput {
   let globalHardBlock = false;
   let cooldownSeconds = 0;
 
-  // Rate limiting check (req C28_SPAM, E38_FRICTION)
+  
   if (rateRpm > THRESHOLDS.HARD_BLOCK_RPM) {
     globalHardBlock = true;
     cooldownSeconds = 60;
@@ -405,37 +405,37 @@ export function boogieEvaluate(input: BoogieEvaluateInput): BoogieOutput {
     let riskScore = 0.1;
     let reasonCode = RULE_CODES.OK;
 
-    // Rule: Unknown intent types → DENY
+    
     if (!intent.type || intent.type.length === 0) {
       decision = 'DENY';
       riskScore = 1.0;
       reasonCode = RULE_CODES.UNKNOWN_INTENT_TYPE;
     }
-    // Rule: Admin-only intents for non-admin → DENY (J81_TRIAD_ROLES)
+    
     else if (ADMIN_ONLY_INTENTS.includes(intent.type) && actorRole !== 'admin') {
       decision = 'DENY';
       riskScore = 1.0;
       reasonCode = RULE_CODES.ADMIN_REQUIRED;
     }
-    // Rule: High-risk intents → CONFIRM
+    
     else if (HIGH_RISK_INTENTS.includes(intent.type)) {
       decision = 'CONFIRM';
       riskScore = 0.7;
       reasonCode = RULE_CODES.HIGH_RISK;
     }
-    // Rule: Write operations + high RPM → CONFIRM
+    
     else if (WRITE_INTENTS.includes(intent.type) && rateRpm > THRESHOLDS.HIGH_RPM_WRITE) {
       decision = 'CONFIRM';
       riskScore = 0.6;
       reasonCode = RULE_CODES.HIGH_RPM_WRITE;
     }
-    // Rule: Intent requires confirmation
+    
     else if (intent.requires_confirmation) {
       decision = 'CONFIRM';
       riskScore = 0.5;
       reasonCode = RULE_CODES.USER_CONFIRM;
     }
-    // Rule: Low confidence → DENY (G57_LOW_CONFIDENCE)
+    
     else if (intent.confidence < 0.5) {
       decision = 'DENY';
       riskScore = 0.8;

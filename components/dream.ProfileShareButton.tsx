@@ -5,9 +5,9 @@ import { Share2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
 interface ProfileShareButtonProps {
-  /** The URL to share. Defaults to the current page URL. */
+  
   url?: string;
-  /** Optional text / caption */
+  
   text?: string;
 }
 
@@ -17,7 +17,7 @@ export default function ProfileShareButton({ url, text }: ProfileShareButtonProp
   const shareUrl = url ?? (typeof window !== 'undefined' ? window.location.href : '');
 
   const handleShare = useCallback(async () => {
-    // Try the native Web Share API first (mobile / supported browsers)
+    
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
@@ -27,10 +27,10 @@ export default function ProfileShareButton({ url, text }: ProfileShareButtonProp
         });
         return;
       } catch {
-        // User cancelled or share failed — fall through to sheet
+        
       }
     }
-    // Fallback: open the platform share sheet
+    
     setSheetOpen(true);
   }, [shareUrl, text]);
 

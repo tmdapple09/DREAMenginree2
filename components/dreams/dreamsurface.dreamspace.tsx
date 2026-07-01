@@ -29,40 +29,16 @@ import { useRouter } from 'next/navigation';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * components/dreams/dreamsurface.dreamspace.tsx
- *
- * Dreams Space — the DreamSpace world panel.
- *
- * Rendered whenever a runtime region's world is set to 'DreamSpace'.
- * Either the Surface Space or the DreamSpace region can load this world,
- * allowing two independent DreamSpace sessions simultaneously (e.g. two
- * Daydreams or Engins open at the same time in separate runtime regions).
- *
- * Each mounted instance maintains its own independent navigation state
- * (active service, detail URL, etc.) — opening content in one region does
- * not affect the other.
- *
- * Pinned apps + feeds across the dual runtime.
- *
- * Permanent iOS-style app windows are the priority content of the Dreams Space.
- * The 6 Daydream surfaces plus Engin apps (Shop, Marketplace, Ads, Links) are
- * pinned as permanent windows, organized like an iOS home screen, and remain
- * in place until the user changes them.
- *
- * Architecture note (docs/AXIOMS.md §3 — every visible action must do
- * something real): app icons now navigate to the real canonical routes via
- * router.push() instead of embedding them in dead-end iframes.
- */
 
-/** Called to open a URL inside the runtime region (no full-page navigation). */
+
+
 type OpenUrlFn = (url: string, title?: string) => void;
 
 type ServiceType = 'youtube' | 'github' | 'spotify' | null;
-/** Top-level view for the Dreams Space panel: Apps home screen (priority), connector Feeds, or Profile. */
+
 type DreamsSpaceView = 'apps' | 'feeds' | 'profile';
 
-/** The 6 canonical Daydream surfaces — permanent windows from DreamSpace. */
+
 const DAYDREAMS = [
   { id: 'music',     label: 'Music',     icon: '🎵', route: '/daydream/music',      color: 'linear-gradient(135deg,#7c3aed,#a855f7)' },
   { id: 'games',     label: 'Games',     icon: '🎮', route: '/daydream/games',      color: 'linear-gradient(135deg,#059669,#10b981)' },
@@ -72,10 +48,7 @@ const DAYDREAMS = [
   { id: 'create',    label: 'Create',    icon: '✏️', route: '/daydream/create',     color: 'linear-gradient(135deg,#be185d,#ec4899)' },
 ] as const;
 
-/**
- * Permanent Engin app windows — Shop, Marketplace, Ads, and Links (Connectors).
- * These are always pinned in the DreamSpace alongside the Daydream windows.
- */
+
 const ENGIN_APPS = [
   { id: 'shop',        label: 'Shop',      icon: '🛍️', route: '/shop',        color: 'linear-gradient(135deg,#065f46,#059669)' },
   { id: 'marketplace', label: 'Market',    icon: '🏪', route: '/marketplace', color: 'linear-gradient(135deg,#581c87,#9333ea)' },
@@ -92,7 +65,7 @@ const SERVICE_TABS: { id: ServiceType; label: string; icon: string }[] = [
   { id: 'spotify', label: 'Spotify', icon: '🎵' },
 ];
 
-// iOS-style app icon layout constants
+
 const ICON_SIZE = 54;
 const ICON_RADIUS = 14;
 const ICON_FONT = 26;
@@ -154,10 +127,7 @@ export function buildRecentDestinations(
   });
 }
 
-/**
- * iOS-style squircle app icon.
- * Clicking navigates to the canonical surface route — no iframe dead-ends.
- */
+
 function AppIcon({ icon, label, color, onClick }: { icon: string; label: string; color: string; onClick: () => void }) {
   const [pressed, setPressed] = useState(false);
   const press   = () => setPressed(true);
@@ -189,7 +159,7 @@ function AppIcon({ icon, label, color, onClick }: { icon: string; label: string;
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      {/* Squircle icon — iOS-style rounded square with gradient background */}
+      
       <div style={{
         width: ICON_SIZE,
         height: ICON_SIZE,
@@ -205,7 +175,7 @@ function AppIcon({ icon, label, color, onClick }: { icon: string; label: string;
       }}>
         {icon}
       </div>
-      {/* App label */}
+      
       <span style={{
         fontSize: LABEL_FONT,
         fontWeight: 600,
@@ -224,7 +194,7 @@ function AppIcon({ icon, label, color, onClick }: { icon: string; label: string;
   );
 }
 
-/** Mini animated horizontal bar chart for recent creative energy. */
+
 function EngineBarChart({ engines }: { engines: string[] }) {
   const counts = engines.reduce<Record<string, number>>((acc, e) => {
     acc[e] = (acc[e] ?? 0) + 1;
@@ -273,7 +243,7 @@ export default function DreamsSpacePanel({
 }: {
   onOpenUrl?: OpenUrlFn;
   onOpenInRegion?: (path: string) => void;
-  /** Mount an existing capability inside whichever recursive runtime owns this panel. */
+  
   onOpenEngin?: (enginName: string) => void;
   accountId?: string | null;
   runtimeRegion?: RuntimeRegionKey;
@@ -293,10 +263,10 @@ export default function DreamsSpacePanel({
   const [activity, setActivity] = useState<ForgeActivityPulse[]>([]);
   const [suggestions, setSuggestions] = useState<ForgeSuggestion[]>([]);
 
-  // Session intelligence — powers the Resume Dream affordance and Artifact Trail.
+  
   const { sessionDiff } = useSessionIntelligence();
 
-  /** Navigate to a route: use in-region iframe when available, else full navigation. */
+  
   const navigate = (route: string, title?: string) => {
     if (onOpenUrl) {
       onOpenUrl(route, title);
@@ -307,7 +277,7 @@ export default function DreamsSpacePanel({
     }
   };
 
-  // Apps home screen is the priority tab — permanent windows shown by default.
+  
   const [view, setView] = useState<DreamsSpaceView>('apps');
 
   const refreshDreamSpace = useCallback(() => {
@@ -337,18 +307,18 @@ export default function DreamsSpacePanel({
   const recentHistory = history.slice().reverse().slice(0, 3);
   const recentDestinations = buildRecentDestinations(recentHistory, activity);
 
-  // Resume Dream: prefer the subsystem you left off in last session, then the
-  // hottest live activity pulse, then fall back to the lead Forge suggestion.
+  
+  
   const resumeDest = resolveResumeDest(sessionDiff?.continueFrom ?? null, activity);
   const resumeHref  = resumeDest?.href  ?? leadSuggestion?.href  ?? '/daydream/create';
   const resumeLabel = resumeDest?.label ?? leadSuggestion?.title ?? null;
   const resumeEmoji = resumeDest?.emoji ?? leadSuggestion?.emoji ?? '🚀';
 
-  // Feed view — main dreams space content
+  
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       <ActiveModuleSurface accountId={accountId} runtimeRegion={runtimeRegion} />
-      {/* Header */}
+      
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '12px 14px 8px',
@@ -380,7 +350,7 @@ export default function DreamsSpacePanel({
         </span>
       </div>
 
-      {/* Primary tab bar — Apps home screen first (priority), Explore second, Profile third */}
+      
       <div style={{
         display: 'flex', gap: 0, padding: '0 10px 6px',
         flexShrink: 0,
@@ -420,7 +390,7 @@ export default function DreamsSpacePanel({
 
       <AnimatePresence mode="wait" initial={false}>
         {view === 'apps' ? (
-        /* ── Permanent iOS-style app home screen ─────────────────────────────── */
+        
         <motion.div
           key="apps"
           style={{ flex: 1, overflowY: 'auto', padding: '12px 10px 20px' }}
@@ -659,7 +629,7 @@ export default function DreamsSpacePanel({
             </div>
           </div>
 
-          {/* Section: Daydreams */}
+          
           <div style={{
             marginBottom:         16,
             background:           'rgba(8,16,38,0.48)',
@@ -698,7 +668,7 @@ export default function DreamsSpacePanel({
             </div>
           </div>
 
-          {/* Section: Engin capabilities — load directly into this recursive runtime. */}
+          
           {onOpenEngin && (
             <div style={{
               marginBottom:         16,
@@ -739,7 +709,7 @@ export default function DreamsSpacePanel({
             </div>
           )}
 
-          {/* Section: More apps — Shop, Marketplace, Ads, Links */}
+          
           <div style={{
             background:           'rgba(8,16,38,0.48)',
             borderRadius:         22,
@@ -779,7 +749,7 @@ export default function DreamsSpacePanel({
 
         </motion.div>
       ) : view === 'feeds' ? (
-        /* ── Feeds — connector content ── */
+        
         <motion.div
           key="feeds"
           style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
@@ -788,7 +758,7 @@ export default function DreamsSpacePanel({
           exit={{ opacity: 0, x: -12 }}
           transition={{ duration: 0.18, ease: 'easeOut' }}
         >
-          {/* Service tabs */}
+          
           <div style={{
             display: 'flex', gap: 4, padding: '6px 10px 8px',
             overflowX: 'auto', flexShrink: 0,
@@ -824,7 +794,7 @@ export default function DreamsSpacePanel({
             })}
           </div>
 
-          {/* Widget content */}
+          
           <div style={{
             flex: 1,
             overflowY: 'auto',
@@ -834,13 +804,13 @@ export default function DreamsSpacePanel({
             gap: 10,
           }}>
             {state.activeService === null ? (
-              // All services
+              
               <>
                 <UniversalWidget service="youtube" sliceName="Subscriptions" />
                 <UniversalWidget service="github" sliceName="Activity" />
               </>
             ) : (
-              // Single service
+              
               <UniversalWidget
                 service={state.activeService as ServiceType}
                 sliceName={
@@ -854,7 +824,7 @@ export default function DreamsSpacePanel({
           </div>
         </motion.div>
       ) : (
-        /* ── Profile — DreamSpace spatial profile surface ── */
+        
         <motion.div
           key="profile"
           style={{ flex: 1, overflow: 'hidden' }}

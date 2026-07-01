@@ -3,11 +3,11 @@ import { createServerClient, createServiceClient } from '@/supabase/server/serve
 import { safeGetUser } from '@/supabase/client/safeGetUser';
 import { NextRequest, NextResponse } from 'next/server';
 
-// app/api/metrics/platform/route.ts
-// Phase 9 — Get Platform Health Metrics Endpoint
-//
-// Retrieves platform-wide health metrics for IDARi dashboard.
-// Per ACTIVITY_FIRST_PROTOCOL.md §IV (Platform Health Metrics)
+
+
+
+
+
 
 type UserMetricAggregateRow = {
   user_id: string | null;
@@ -35,7 +35,7 @@ function average(values: number[]): number {
 export async function GET(_req: NextRequest ): Promise<NextResponse> {
   const supabase = await createServerClient();
 
-  // Auth required (admin only)
+  
   const user = await safeGetUser(supabase);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -90,7 +90,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     const verifiedAdViews = (recentAdViews ?? []).filter((row) => row.verified === true).length;
     const totalAdViews = recentAdViews?.length ?? 0;
 
-    // Total verified views
+    
     const { count: totalVerifiedViews, error: verifiedViewsError } = await (serviceSupabase
       .from('views' as never)
       .select('id', { count: 'exact', head: true })
@@ -103,8 +103,8 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
       throw new Error(`Failed to load verified views: ${verifiedViewsError.message}`);
     }
 
-    // creation_to_consumption_ratio: tier >= 3 rows (on-platform creation) vs all rows
-    // outside_activity_rate: tier === 4 rows (real-world action) vs all rows
+    
+    
     type ActivityTierRow = { tier: number | null };
     const { data: activityRows, error: activityErr } = await (serviceSupabase
       .from('activity_points' as never)
@@ -126,7 +126,7 @@ export async function GET(_req: NextRequest ): Promise<NextResponse> {
     const outside_activity_rate =
       totalActivityRows > 0 ? outsideRows / totalActivityRows : 0;
 
-    // harmful_content_rate: HARMFUL_CONTENT BoogieMan events vs total posts in last 30 days
+    
     const { count: harmfulCount, error: harmfulErr } = await (serviceSupabase
       .from('boogieman_events' as never)
       .select('id', { count: 'exact', head: true })

@@ -1,30 +1,9 @@
-/**
- * tests/games-daydream-page-auth.test.ts
- *
- * Regression guard for the Games Daydream page SSR crash.
- *
- * Root cause: `supabase.auth.getUser()` throws when Supabase is not
- * configured (disabled client returns an async thrower). Without a try/catch
- * or the `safeGetUser` helper the unhandled error propagates to Next.js and
- * produces "An error occurred in the Server Components render", showing the
- * error boundary "Something cracked in the dream."
- *
- * Fix: switched to `safeGetUser()` which wraps the call in try/catch and
- * adds a 2500 ms timeout, matching the pattern used by homedream and dreamr.
- *
- * This test verifies:
- *  1. The page redirects to /login when there is no authenticated user.
- *  2. The page renders (does not throw) when safeGetUser returns null AND
- *     dev-bypass is active.
- *  3. The page renders the DaydreamShell when a user IS present.
- *  4. The page does NOT crash when safeGetUser rejects (simulates the
- *     disabled-client scenario that caused the production SSR crash).
- */
+
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// ── hoisted mocks (must be declared before any imports that trigger module
-//    evaluation, because vi.mock() is hoisted to the top of the file) ────────
+
+
 
 const redirectMock = vi.hoisted(() =>
   vi.fn((path: string) => {
@@ -76,14 +55,14 @@ vi.mock('lucide-react', () => ({
   Zap: vi.fn(() => null),
 }));
 
-// ── tests ────────────────────────────────────────────────────────────────────
+
 
 describe('app/daydream/games/page auth gating', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
 
-    // Default: unauthenticated user, Supabase client available.
+    
     createServerClientMock.mockResolvedValue({});
     safeGetUserMock.mockResolvedValue(null);
     isDevBypassActiveMock.mockReturnValue(false);
@@ -97,25 +76,25 @@ describe('app/daydream/games/page auth gating', () => {
   });
 
   it('does NOT crash and renders the shell in dev-bypass mode (simulates unconfigured Supabase)', async () => {
-    // When Supabase is not configured safeGetUser returns null — which is
-    // exactly what happens when the disabled client throws internally.
+    
+    
     isDevBypassActiveMock.mockReturnValue(true);
     safeGetUserMock.mockResolvedValue(null);
 
     const { default: GamesDaydreamPage } = await import('@/app/daydream/games/page');
-    // Must not throw at all
+    
     await expect(GamesDaydreamPage()).resolves.not.toThrow();
     expect(redirectMock).not.toHaveBeenCalled();
   });
 
   it('does NOT crash when safeGetUser returns null (disabled-client / unconfigured-Supabase scenario)', async () => {
-    // Regression: before the fix, the page called auth.getUser() directly.
-    // The disabled client throws, which propagated to Next.js and crashed the
-    // Server Component render ("Something cracked in the dream.").
-    //
-    // After the fix, safeGetUser() absorbs any internal throw and returns null.
-    // The page must handle that null gracefully — redirecting to login or
-    // rendering normally when dev-bypass is active.
+    
+    
+    
+    
+    
+    
+    
     safeGetUserMock.mockResolvedValue(null);
     isDevBypassActiveMock.mockReturnValue(true);
 
@@ -132,7 +111,7 @@ describe('app/daydream/games/page auth gating', () => {
     const result = await GamesDaydreamPage();
 
     expect(redirectMock).not.toHaveBeenCalled();
-    // The page returns a React element whose type is the mocked DaydreamShell
+    
     expect(result).toMatchObject({ type: daydreamShellMock });
   });
 

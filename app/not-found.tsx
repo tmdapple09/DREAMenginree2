@@ -1,6 +1,6 @@
 import RootStatusScreen from '@/components/overlays/dream.RootStatusScreen';
 
-// SURFACE: dream.overlay.RootNotFound  (framework-mandated basename: not-found.tsx)
+
 
 export default function NotFound( ){
   return (

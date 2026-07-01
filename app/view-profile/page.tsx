@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
 
-// SURFACE: dreamsurface.ViewProfile  (framework-mandated basename: page.tsx)
+
 
 export const metadata = {
   title: 'ViewProfile – DREAMengin',
@@ -31,31 +31,17 @@ type Profile = {
   profile_dream_widgets?: ProfileDream[] | null;
 };
 
-/**
- * ViewProfile — canonical public-profile preview surface (README §6).
- *
- * Renders the authenticated user's own profile exactly as an outside visitor
- * would see it, using only saved/public output (DreamOutputLayer projection
- * model). This is the "preview before share" surface (README §6.4).
- *
- * Privacy: auth-gated (owners only). Mirrors public /profile/[handle] rendering
- * so owners can verify their public output before sharing the link.
- *
- * Phase 8 §B Point 21: Dream Windows render only from DB records with
- * visibility = 'shared' OR visibility = 'public'. The query never includes
- * visibility = 'private' records. This is enforced at both the query level
- * (explicit filter) and the RLS level (dream_windows table policies).
- */
+
 export default async function ViewProfilePage( ){
   await connection();
   const supabase = await createServerClient();
 
-  // Gracefully handle Supabase being unavailable (no configured env vars)
+  
   let user: { id: string } | null = null;
   try {
     user = await safeGetUser(supabase);
   } catch {
-    // Supabase not configured — redirect to login
+    
   }
 
   if (!user) redirect('/login');
@@ -69,12 +55,12 @@ export default async function ViewProfilePage( ){
       .single();
     rawProfile = data;
   } catch {
-    // Supabase unavailable
+    
   }
 
-  // If the user exists but has no handle yet, render a setup prompt instead of
-  // redirecting to /edit-profiledream — that creates an infinite redirect loop
-  // because edit-profiledream's back button goes to /view-profile.
+  
+  
+  
   if (!rawProfile?.handle) {
     return (
       <div style={{
@@ -115,8 +101,8 @@ export default async function ViewProfilePage( ){
 
   const profile = rawProfile as unknown as Profile;
 
-  // Only shared/public records are fetched. The query NEVER includes private records.
-  // RLS policies on dream_windows enforce this at the DB layer as well.
+  
+  
   let dreamWindowRecords: Array<{
     id: string; type: string; config: Record<string, unknown>;
     size: { width: number; height: number }; position: { x: number; y: number };
@@ -130,14 +116,14 @@ export default async function ViewProfilePage( ){
       .in('visibility', ['shared', 'public']);
     dreamWindowRecords = data;
   } catch {
-    // dream_windows table may not exist yet
+    
   }
 
-  // Per dreamengin_phase6.md point 13: the visibility_mappings table must be
-  // consulted before any content is rendered on ViewProfile.
-  // If the table has records for this user, they override the widget's own
-  // visibility field. If no mapping exists for a widget, fall back to the
-  // widget's own visibility (private by default — LAW.md §2).
+  
+  
+  
+  
+  
   type VisibilityMappingRow = { content_id: string; visibility: string };
   let mappingsData: VisibilityMappingRow[] | null = null;
   try {
@@ -147,34 +133,34 @@ export default async function ViewProfilePage( ){
       .eq('user_id', user.id);
     mappingsData = data;
   } catch {
-    // visibility_mappings table may not exist yet
+    
   }
 
-  // Build a lookup: content_id → visibility
+  
   const mappingLookup = new Map<string, string>(
     (mappingsData ?? []).map((m) => [m.content_id, m.visibility])
   );
 
-  // Use server-persisted widget projection (falls back to defaults if not set)
+  
   const allSavedDreams: ProfileDream[] =
     Array.isArray(profile.profile_dream_widgets) && profile.profile_dream_widgets.length > 0
       ? profile.profile_dream_widgets
       : DEFAULT_DREAMS;
 
-  // Filter to only publicly visible widgets — owner preview mirrors what visitors see.
-  // Per ARCHITECTURE.md §5: ViewProfile renders only saved/shared output.
-  // Consult visibility_mappings first (authoritative); fall back to widget.visibility.
-  // Widgets with no visibility set default to 'private' (nothing public by default).
-  // Phase 8 §B Point 21: never include 'private' visibility Dream Windows.
+  
+  
+  
+  
+  
   const savedDreams = allSavedDreams.filter((w) => {
-    // Use visibility_mappings record if one exists for this widget
+    
     const mappedVisibility = mappingLookup.get(w.id);
     const effectiveVisibility = mappedVisibility ?? w.visibility ?? 'private';
-    // Strict enforcement: only 'shared' or 'public' — never 'private'
+    
     return effectiveVisibility === 'public' || effectiveVisibility === 'shared' || effectiveVisibility === 'followers';
   });
 
-  // Count Dream Windows from the dream_windows table (new Phase 8 §B records)
+  
   const dreamWindowCount = dreamWindowRecords?.length ?? 0;
 
   const displayName = profile.display_name || profile.handle;
@@ -188,7 +174,7 @@ export default async function ViewProfilePage( ){
         paddingBottom: 100,
       }}
     >
-      {/* ── Preview mode banner ── */}
+      
       <div
         style={{
           background: 'linear-gradient(90deg, rgba(200,152,26,0.12), rgba(42,138,184,0.10))',
@@ -207,7 +193,7 @@ export default async function ViewProfilePage( ){
         </span>
       </div>
 
-      {/* ── dreamengin brand header ── */}
+      
       <div style={{ paddingTop: 18, paddingBottom: 2, textAlign: 'center' }}>
         <span
           className="de-wordmark"
@@ -217,7 +203,7 @@ export default async function ViewProfilePage( ){
         </span>
       </div>
 
-      {/* ── Profile header row ── */}
+      
       <div
         style={{
           maxWidth: 520,
@@ -256,14 +242,14 @@ export default async function ViewProfilePage( ){
         </div>
       </div>
 
-      {/* ── Activity Profile (Phase 9 Activity-First metrics) ── */}
+      
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '8px 16px 0' }}>
         <Suspense fallback={<div className="h-24 animate-pulse bg-white/5 rounded-lg" />}>
           <ActivityProfile userId={user.id} />
         </Suspense>
       </div>
 
-      {/* ── Widget grid (saved output only) ── */}
+      
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '0 16px' }}>
         {savedDreams.length === 0 ? (
           <div style={{
@@ -312,7 +298,7 @@ export default async function ViewProfilePage( ){
         )}
       </div>
 
-      {/* ── Return to EditProfileDream CTA ── */}
+      
       <div style={{ textAlign: 'center', marginTop: 32, padding: '0 16px' }}>
         <Link
           href="/edit-profiledream"
@@ -335,7 +321,7 @@ export default async function ViewProfilePage( ){
         </Link>
       </div>
 
-      {/* ── Gold infinity button ── */}
+      
       <div style={{ textAlign: 'center', marginTop: 24 }}>
         <Link href="/homedream" style={{ textDecoration: 'none' }}>
           <div

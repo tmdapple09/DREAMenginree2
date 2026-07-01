@@ -1,25 +1,13 @@
-/**
- * WGSL shader sources for the DREAMengin WebGPU renderer.
- *
- * Pipeline:
- *   1. Compute  — particle physics (attractor toward lemniscate, drag, respawn)
- *   2. Render   — scene to HDR rgba16float texture
- *                  a. Lemniscate ribbon (triangle-strip, thick stroke)
- *                  b. Particles (triangle quads, additive blend)
- *   3. Bright   — luminance threshold → bloom texture
- *   4. Blur H   — horizontal 9-tap Gaussian
- *   5. Blur V   — vertical   9-tap Gaussian
- *   6. Composite— scene + bloom, ACES tone-map, chromatic aberration, vignette, γ
- */
+
 
 export const N_PARTICLES  = 2048;
 export const N_LEMN_SEGS  = 512;
-/** Vertices for closed triangle-strip ribbon: (N+1) pairs. */
+
 export const N_LEMN_VERTS = (N_LEMN_SEGS + 1) * 2;
-/** Vertices for particle quads: 6 verts each (2 triangles). */
+
 export const N_PARTICLE_VERTS = N_PARTICLES * 6;
 
-const STRUCTS = /* wgsl */`
+const STRUCTS = `
 struct Uniforms {
   time   : f32,
   dt     : f32,
@@ -37,7 +25,7 @@ struct Particle {
 }
 `;
 
-const LEMN = /* wgsl */`
+const LEMN = `
 fn lemn(t: f32) -> vec2<f32> {
   let d = 1.0 + sin(t) * sin(t);
   return vec2<f32>(0.65 * cos(t) / d, 0.65 * sin(t) * cos(t) / d);
@@ -47,11 +35,11 @@ fn lemn_tan(t: f32) -> vec2<f32> {
 }
 `;
 
-const HASH = /* wgsl */`
+const HASH = `
 fn hash(n: f32) -> f32 { return fract(sin(n) * 43758.5453); }
 `;
 
-export const COMPUTE_WGSL = /* wgsl */`
+export const COMPUTE_WGSL = `
 ${STRUCTS}
 ${LEMN}
 ${HASH}
@@ -95,7 +83,7 @@ fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
 }
 `;
 
-export const LEMN_VERT_WGSL = /* wgsl */`
+export const LEMN_VERT_WGSL = `
 ${STRUCTS}
 ${LEMN}
 
@@ -133,7 +121,7 @@ fn vs_main(@builtin(vertex_index) vi : u32) -> VSOut {
 }
 `;
 
-export const LEMN_FRAG_WGSL = /* wgsl */`
+export const LEMN_FRAG_WGSL = `
 struct VSOut {
   @builtin(position) clip   : vec4<f32>,
   @location(0)       t_norm : f32,
@@ -153,7 +141,7 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
 }
 `;
 
-export const PARTICLE_VERT_WGSL = /* wgsl */`
+export const PARTICLE_VERT_WGSL = `
 ${STRUCTS}
 
 @group(0) @binding(0) var<storage, read> particles : array<Particle>;
@@ -201,7 +189,7 @@ fn vs_main(@builtin(vertex_index) vi : u32) -> VSOut {
 }
 `;
 
-export const PARTICLE_FRAG_WGSL = /* wgsl */`
+export const PARTICLE_FRAG_WGSL = `
 struct VSOut {
   @builtin(position) clip : vec4<f32>,
   @location(0)       life : f32,
@@ -223,7 +211,7 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
 }
 `;
 
-export const FS_VERT_WGSL = /* wgsl */`
+export const FS_VERT_WGSL = `
 struct VSOut {
   @builtin(position) clip : vec4<f32>,
   @location(0)       uv  : vec2<f32>,
@@ -240,7 +228,7 @@ fn vs_main(@builtin(vertex_index) vi : u32) -> VSOut {
 }
 `;
 
-export const BRIGHT_FRAG_WGSL = /* wgsl */`
+export const BRIGHT_FRAG_WGSL = `
 @group(0) @binding(0) var tex : texture_2d<f32>;
 @group(0) @binding(1) var smp : sampler;
 
@@ -258,7 +246,7 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
 }
 `;
 
-export const BLUR_FRAG_WGSL = /* wgsl */`
+export const BLUR_FRAG_WGSL = `
 struct BlurDir { dir : vec2<f32>, _p : vec2<f32>, }
 
 @group(0) @binding(0) var tex : texture_2d<f32>;
@@ -286,7 +274,7 @@ fn fs_main(in: VSOut) -> @location(0) vec4<f32> {
 }
 `;
 
-export const COMPOSITE_FRAG_WGSL = /* wgsl */`
+export const COMPOSITE_FRAG_WGSL = `
 @group(0) @binding(0) var scene_tex : texture_2d<f32>;
 @group(0) @binding(1) var bloom_tex : texture_2d<f32>;
 @group(0) @binding(2) var smp       : sampler;

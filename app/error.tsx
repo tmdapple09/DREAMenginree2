@@ -5,26 +5,26 @@ import { isAuthRelatedError } from '@/engine/runtime/isAuthRelatedError';
 import { createClient } from '@/supabase/client/client';
 import { useEffect } from 'react';
 
-// SURFACE: dream.overlay.RootError  (framework-mandated basename: error.tsx)
+
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error('Route error:', error)
 
-    // Only force sign-out when the error is genuinely session/auth-related
-    // (e.g. invalid JWT, expired token, 401/403 from the server).
-    // Transient render errors, network blips, or component crashes should
-    // NOT destroy the user session — the "Try again" button lets them recover
-    // without losing context.
-    //
-    // Build-memory ref — event "error":
-    //   components/dreams/dream.PlatformErrorReporter.tsx
-    //   components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx
-    //   engins/engin.CodeEngin.tsx
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (!isAuthRelatedError(error)) return;
 
     const sb = createClient();
-    sb.auth.signOut().catch(() => { /* best-effort */ }).finally(() => {
+    sb.auth.signOut().catch(() => {  }).finally(() => {
       (window.top ?? window).location.href = '/login';
     });
   }, [error])

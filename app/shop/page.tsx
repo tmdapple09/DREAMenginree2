@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Shop  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'DreamShop – Dreamengin', description: 'Sell and discover digital products.' };
 
@@ -16,14 +16,14 @@ export default async function ShopPage( ){
   const user = await safeGetUser(supabase);
   if (!user) redirect('/login');
 
-  // Fetch this user's listings
+  
   const { data: myItems } = await supabase
     .from('merch')
     .select('id, name, description, price, image_url')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  // Fetch all other listings for browsing
+  
   const { data: allItems } = await supabase
     .from('merch')
     .select('id, name, description, price, image_url, user_id')
@@ -48,7 +48,7 @@ export default async function ShopPage( ){
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* ── Your Listings ── */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <Package className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
@@ -86,7 +86,7 @@ export default async function ShopPage( ){
           )}
         </div>
 
-        {/* ── Browse ── */}
+        
         {allItems && allItems.length > 0 && (
           <div className="de-widget">
             <div className="de-widget-header">

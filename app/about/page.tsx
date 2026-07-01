@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-// SURFACE: dreamsurface.About  (framework-mandated basename: page.tsx)
+
 
 export default function AboutPage( ){
 
@@ -108,13 +108,13 @@ export default function AboutPage( ){
       className="min-h-screen"
       style={{ background: 'linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%)' }}
     >
-      {/* Ambient glow */}
+      
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div style={{ position: 'absolute', top: '-80px', right: '-60px', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(56,189,248,0.10) 0%, transparent 65%)', filter: 'blur(60px)' }} />
         <div style={{ position: 'absolute', bottom: '-40px', left: '-40px', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(200,152,26,0.09) 0%, transparent 65%)', filter: 'blur(60px)' }} />
       </div>
 
-      {/* Header */}
+      
       <header
         className="sticky top-0 z-30"
         style={{
@@ -143,10 +143,10 @@ export default function AboutPage( ){
         </div>
       </header>
 
-      {/* Content */}
+      
       <main className="max-w-4xl mx-auto px-4 py-8 pb-20">
 
-        {/* Hero Section */}
+        
         <section className="text-center mb-14">
           <div className="flex justify-center mb-6">
             <div style={{
@@ -166,7 +166,7 @@ export default function AboutPage( ){
           </p>
         </section>
 
-        {/* ── Meet Dr. Eams ── */}
+        
         <section className="mb-12">
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
             <div className="de-widget-body" style={{ padding: '24px 20px' }}>
@@ -184,7 +184,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* ── Meet Boogie ── */}
+        
         <section className="mb-12">
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
             <div className="de-widget-body" style={{ padding: '24px 20px' }}>
@@ -202,7 +202,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* ── Meet Idari ── */}
+        
         <section className="mb-12">
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
             <div className="de-widget-body" style={{ padding: '24px 20px' }}>
@@ -220,7 +220,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Unified Interface Vision */}
+        
         <section className="mb-12">
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>How it feels to use</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
@@ -235,7 +235,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Widget System */}
+        
         <section className="mb-12">
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Tools that fit your space</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
@@ -250,7 +250,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Core Features */}
+        
         <section className="mb-12">
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>What makes DREAMengin different</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
@@ -268,7 +268,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Pages Overview */}
+        
         <section className="mb-12">
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 20, textAlign: 'center' }}>Explore the main spaces</h2>
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
@@ -288,7 +288,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Privacy Commitment */}
+        
         <section className="mb-12">
           <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 20, boxShadow: "0 4px 32px rgba(0,0,0,0.3)", overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px 10px", borderBottom: "1px solid rgba(16,185,129,0.2)", background: 'rgba(16,185,129,0.05)' }}>
@@ -316,7 +316,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* Connect Everything */}
+        
         <section className="mb-12" style={{ textAlign: 'center' }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Connect Everything</h2>
           <p style={{ fontSize: 13, color: 'rgba(165,195,235,0.65)', marginBottom: 20 }}>Bring the places you already use closer to the work you are building.</p>
@@ -342,7 +342,7 @@ export default function AboutPage( ){
           </div>
         </section>
 
-        {/* CTA */}
+        
         <section style={{ textAlign: 'center', marginBottom: 48 }}>
           <h2 style={{ fontSize: 24, fontWeight: 800, color: 'rgba(220,235,255,0.95)', marginBottom: 8 }}>Ready to build your Dream?</h2>
           <p style={{ fontSize: 14, color: 'rgba(165,195,235,0.65)', marginBottom: 24, lineHeight: 1.6 }}>Start with your own space, then add the people, tools, projects, and ideas that matter to you.</p>
@@ -352,7 +352,7 @@ export default function AboutPage( ){
           </Link>
         </section>
 
-        {/* Footer */}
+        
         <footer style={{ paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 12 }}>
             <div style={{ width: 32, height: 32, borderRadius: 10, background: 'linear-gradient(135deg, rgba(42,138,184,0.2), rgba(200,152,26,0.15))', border: '1.5px solid rgba(42,138,184,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>∞</div>

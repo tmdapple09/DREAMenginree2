@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import PrivacyClient from './dream.PrivacyClient';
 
-// SURFACE: dreamsurface.SettingsPrivacy  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Privacy – Dreamengin Settings' };
 

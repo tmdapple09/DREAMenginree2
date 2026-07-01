@@ -1,18 +1,4 @@
-/**
- * lib/social/livekit.ts
- *
- * DREAMengin frontend LiveKit adapter.
- *
- * Mirrors the backend livekitService.js contract but wired for the Next.js
- * frontend: token generation is always server-side (via /api/social/livekit);
- * this module only handles client-side room state, participant management, and
- * the event surface consumed by UI hooks.
- *
- * Design rules (AGENTS.md engine law):
- *   – No hard dependency on livekit-server-sdk in the browser bundle.
- *   – Room state flows one direction: server → context → hook → component.
- *   – Auth errors are surfaced as typed LiveKitError — callers decide UX.
- */
+
 
 export type LiveKitConnectionState =
   | 'disconnected'
@@ -60,10 +46,7 @@ export class LiveKitError extends Error {
   }
 }
 
-/**
- * Request a LiveKit access token for `roomName` from the Next.js API.
- * The server validates the session and calls the backend livekitService.
- */
+
 export async function fetchLiveKitToken(
   roomName: string,
   identity: string
@@ -88,11 +71,7 @@ export async function fetchLiveKitToken(
   return res.json() as Promise<LiveKitTokenResponse>;
 }
 
-/**
- * Fetch current room participant list from the Next.js API.
- * Returns an empty list when the room doesn't exist yet rather than throwing,
- * so callers can treat "no room" as zero participants gracefully.
- */
+
 export async function fetchRoomInfo(
   roomName: string
 ): Promise<LiveKitRoomInfo> {
@@ -126,14 +105,7 @@ type RoomEventType =
 
 type RoomEventListener<T = unknown> = (payload: T) => void;
 
-/**
- * Lightweight room state manager used when the full LiveKit SDK is not
- * bundled. Tracks participants and connection state received via server-sent
- * events or polling; emits typed events that `useLiveKit` subscribes to.
- *
- * When the project adds `@livekit/client` to package.json, replace the
- * internal state here with the SDK's `Room` instance.
- */
+
 export class LiveKitRoomManager {
   private state: LiveKitRoomInfo;
   private listeners = new Map<RoomEventType, Set<RoomEventListener>>();
@@ -167,8 +139,8 @@ export class LiveKitRoomManager {
     this.setConnectionState('connecting');
     try {
       const tokenRes = await fetchLiveKitToken(this.state.roomName, identity);
-      // Real SDK integration point: pass tokenRes.token + tokenRes.wsUrl to
-      // new Room().connect(wsUrl, token) when @livekit/client is available.
+      
+      
       void tokenRes;
       await this.refresh();
       this.setConnectionState('connected');
@@ -220,7 +192,7 @@ export class LiveKitRoomManager {
         participantCount: info.participantCount,
       };
     } catch {
-      // Degrade silently — connection state already reflects real status.
+      
     }
   }
 
@@ -237,11 +209,7 @@ export class LiveKitRoomManager {
   }
 }
 
-/**
- * Generate a LiveKit token on the server.
- * Import in `app/api/social/livekit/token/route.ts` — never call from
- * the browser bundle.
- */
+
 export async function generateServerToken(
   roomName: string,
   participantIdentity: string
@@ -256,13 +224,13 @@ export async function generateServerToken(
     );
   }
 
-  // When @livekit/server-sdk is available, replace this with:
-  //   const at = new AccessToken(apiKey, apiSecret, { identity: participantIdentity });
-  //   at.addGrant({ roomJoin: true, room: roomName });
-  //   return at.toJwt();
-  //
-  // Until then, calls the backend livekitService via HTTP so the Node.js
-  // dependency stays contained in the Express backend.
+  
+  
+  
+  
+  
+  
+  
   const backendUrl = process.env.BACKEND_URL ?? 'http://localhost:4000';
   const res = await fetch(`${backendUrl}/api/livekit/token`, {
     method: 'POST',

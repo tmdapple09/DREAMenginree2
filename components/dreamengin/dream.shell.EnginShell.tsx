@@ -5,7 +5,7 @@ import React from 'react';
 export default function EnginShell({ children }: {children: React.ReactNode}) {
   return (
     <main className="min-h-screen bg-[#050A14] text-[#E0F7FA] selection:bg-[#FFD700] selection:text-black">
-      {/* The Glass Header */}
+      
       <nav className="sticky top-0 z-50 p-4 backdrop-blur-md bg-black/20 border-b border-white/5">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
           <h1 className="text-xl font-black tracking-tighter text-[#FFD700]">DREAMENGIN<span className="text-white">OS</span></h1>

@@ -1,14 +1,14 @@
-// tests/boogieman.test.ts
-// Unit tests for TheBoogieMan.Ai policy gate
+
+
 
 import { describe, it, expect } from 'vitest';
 import { boogieEvaluate, boogieEnforce, computeRiskScore, selectAction, BOOGIE_POLICY_VERSION, CONTAINMENT_ACTIONS, BLAST_RADIUS_ESCALATION_THRESHOLD } from '@/dr-eams/ai/boogieman';
 import { RULE_CODES, THRESHOLDS } from '@/dr-eams/ai/boogie-policy';
 import type { Intent } from '@/dr-eams/ai/schemas';
 
-// ---------------------------------------------------------------------------
-// boogieEvaluate — intent-gate (backwards compat + policy_version stamping)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('BoogieMan — boogieEvaluate (intent gate)', () => {
   it('should deny admin intent for non-admin user', () => {
@@ -111,9 +111,9 @@ describe('BoogieMan — boogieEvaluate (intent gate)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// computeRiskScore (req 22)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('computeRiskScore', () => {
   it('computes severity × confidence × multiplier', () => {
@@ -126,9 +126,9 @@ describe('computeRiskScore', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// selectAction — least-force selection (req 7, 37)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('selectAction', () => {
   it('returns NUDGE for first-time LOW offense', () => {
@@ -152,9 +152,9 @@ describe('selectAction', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// boogieEnforce — dual output (req 16–20)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('boogieEnforce — dual output', () => {
   const baseInput = {
@@ -186,7 +186,7 @@ describe('boogieEnforce — dual output', () => {
   });
 
   it('never produces autonomous perm ban — escalates instead (req 9, 43)', () => {
-    // Even at max severity+confidence, should be TEMP_BAN not permanent
+    
     const result = boogieEnforce({
       userId: '123e4567-e89b-12d3-a456-426614174888',
       ruleCode: RULE_CODES.C22_CSAM,
@@ -194,9 +194,9 @@ describe('boogieEnforce — dual output', () => {
       confidence: 0.99,
       strikeCount: 5,
     });
-    // Must escalate for critical severity (req 71)
+    
     expect(result.should_escalate).toBe(true);
-    // Action must not be a permanent ban — max is TEMP_BAN (req 42, 43)
+    
     expect(['TEMP_BAN', 'TEMP_SUSPEND', 'ESCALATE']).toContain(result.action);
   });
 
@@ -207,9 +207,9 @@ describe('boogieEnforce — dual output', () => {
       severity: 0.2,
       confidence: 0.7,
     });
-    // Should escalate because rule is unknown (req 5)
+    
     expect(result.should_escalate).toBe(true);
-    // Should use conservative default, not invented rule
+    
     expect(result.audit_event.rule_code).toBe(RULE_CODES.A3_CONSERVATIVE);
   });
 
@@ -249,9 +249,9 @@ describe('boogieEnforce — dual output', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// blast_radius — wide-impact escalation (req 25)
-// ---------------------------------------------------------------------------
+
+
+
 
 describe('boogieEnforce — blast_radius (req 25)', () => {
   it('escalates and upgrades action when blast_radius >= 10', () => {
@@ -265,7 +265,7 @@ describe('boogieEnforce — blast_radius (req 25)', () => {
     });
     expect(result.should_escalate).toBe(true);
     expect(result.blast_radius).toBe(BLAST_RADIUS_ESCALATION_THRESHOLD);
-    // Action must be at least containment-grade for wide-impact incidents
+    
     expect(CONTAINMENT_ACTIONS).toContain(result.action);
   });
 
@@ -279,7 +279,7 @@ describe('boogieEnforce — blast_radius (req 25)', () => {
       blastRadius: 1,
     });
     expect(result.blast_radius).toBe(1);
-    // Should still be NUDGE or WARN (no forced upgrade)
+    
     expect(['NUDGE', 'WARN']).toContain(result.action);
   });
 

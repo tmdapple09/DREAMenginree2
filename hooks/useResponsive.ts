@@ -13,13 +13,7 @@ import {
 } from '../ui/responsive';
 import { readInteractiveViewportHeight, readInteractiveViewportWidth } from '@/components/ui-system/runtimeViewport';
 
-/**
- * React hooks for DREAMengin's shared responsive system.
- *
- * Pair with `lib/ui/responsive.ts` (pure utilities). These hooks are the
- * recommended way to make any client component adaptable / dynamic /
- * scalable without ad-hoc `window.innerWidth` listeners.
- */
+
 
 type Listener = () => void;
 
@@ -84,54 +78,46 @@ function getServerSnapshot(): ViewportSnapshot {
   return SSR_SNAPSHOT;
 }
 
-/**
- * Subscribe to live viewport width/height updates. SSR-safe: returns desktop
- * defaults during server render and hydrates to real values on mount.
- */
+
 export function useViewport(): ViewportSnapshot {
   return useSyncExternalStore(subscribe, ensureSnapshot, getServerSnapshot);
 }
 
-/** Current named breakpoint, updated on resize. */
+
 export function useBreakpoint(): Breakpoint {
   const { width } = useViewport();
   return getBreakpoint(width);
 }
 
-/** True when the viewport is at least the given breakpoint. */
+
 export function useIsAtLeast(bp: Breakpoint): boolean {
   const { width } = useViewport();
   return isAtLeast(width, bp);
 }
 
-/** True when the viewport is below the given breakpoint. */
+
 export function useIsBelow(bp: Breakpoint): boolean {
   const { width } = useViewport();
   return isBelow(width, bp);
 }
 
-/** Convenience: true on phone-sized viewports (`< md`). */
+
 export function useIsMobile(): boolean {
   return useIsBelow('md');
 }
 
-/** Convenience: true on tablet-sized viewports (`md` ≤ width < `lg`). */
+
 export function useIsTablet(): boolean {
   const { width } = useViewport();
   return isAtLeast(width, 'md') && isBelow(width, 'lg');
 }
 
-/** Convenience: true on desktop-sized viewports (`>= lg`). */
+
 export function useIsDesktop(): boolean {
   return useIsAtLeast('lg');
 }
 
-/**
- * Pick a value from a partial breakpoint-keyed map, reactively.
- *
- * @example
- *   const cols = useBreakpointValue({ xs: 1, md: 2, xl: 4 }, 1);
- */
+
 export function useBreakpointValue<T>(
   values: Partial<Record<Breakpoint, T>>,
   fallback: T,
@@ -140,11 +126,7 @@ export function useBreakpointValue<T>(
   return pickByBreakpoint(width, values, fallback);
 }
 
-/**
- * Compute a fluid numeric value (e.g. padding, font-size) that re-evaluates
- * on resize. Prefer `cssClamp()` in inline styles when possible to avoid
- * re-renders; use this hook when JS needs the actual number.
- */
+
 export function useFluid(
   options: {
     min: number;
@@ -157,12 +139,7 @@ export function useFluid(
   return fluid(width, options);
 }
 
-/**
- * Subscribe to an arbitrary CSS media query. Returns `false` during SSR.
- *
- * @example
- *   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
- */
+
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState<boolean>(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -184,7 +161,7 @@ export function useMediaQuery(query: string): boolean {
       mql.addEventListener('change', handler as (e: MediaQueryListEvent) => void);
       return () => mql.removeEventListener('change', handler as (e: MediaQueryListEvent) => void);
     }
-    // Safari < 14 fallback.
+    
     mql.addListener(handler as (e: MediaQueryListEvent) => void);
     return () => mql.removeListener(handler as (e: MediaQueryListEvent) => void);
   }, [query]);
@@ -192,7 +169,7 @@ export function useMediaQuery(query: string): boolean {
   return matches;
 }
 
-/** Read once, non-reactive. Useful for initial-render decisions. */
+
 export function getCurrentViewportWidth(): number {
   return readViewportWidth();
 }

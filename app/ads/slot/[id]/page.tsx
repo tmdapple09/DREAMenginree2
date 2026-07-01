@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.AdsSlotId  (framework-mandated basename: page.tsx)
+
 
 export default async function AdSlotPage({ params }: { params: Promise<{ id: string }> }) {
   await connection();
@@ -17,7 +17,7 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
     redirect('/login');
   }
 
-  // Fetch slot and ensure ownership (or show not found)
+  
   const { data, error } = await supabase
     .from('ad_slots')
     .select('*')
@@ -73,7 +73,7 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/ads" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -86,7 +86,7 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Slot Details */}
+        
         <div className="de-widget">
           <div className="de-widget-header">
             <LayoutGrid className="w-4 h-4 mr-2" style={{ color: 'var(--de-gold)' }} />
@@ -119,7 +119,7 @@ export default async function AdSlotPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        {/* Management notice */}
+        
         <div className="de-notice">
           <p>Full slot management controls (pricing changes, activation toggle, order management) will appear here when payment integration is complete.</p>
         </div>

@@ -7,35 +7,15 @@ import { InviteFlow } from "./dream.InviteFlow";
 import { SharedDreamCanvas } from "./dream.SharedDreamCanvas";
 import { SharedDreamProvider } from "./dream.SharedDreamProvider";
 
-// Framework directives stay physically first when required.
 
-// Runtime file: components/shared-dream/dream.SharedDreamRuntime.tsx.
 
-/**
- * components/shared-dream/dream.SharedDreamRuntime.tsx
- *
- * The actual UI that renders when a user is in a persistent SharedDream session.
- *
- * Used by: app/dreamdmbar/dualruntime/page.tsx
- *
- * What it renders:
- *   - SharedDreamProvider wrapping everything (gives all children the Realtime channel)
- *   - SharedDreamCanvas split: top = shared engin state grid, bottom = invite + activity
- *   - Each active Engin shows its last saved state as a tappable card
- *   - Participant cursors on the shared canvas (already built into SharedDreamCanvas)
- *   - Invite button from InviteFlow
- *   - User-facing activity timeline without peer counts or runtime IDs
- *
- * State continuity:
- *   - channelId from useSharedDreamSession → passed to SharedDreamProvider
- *     → all users on same Supabase Realtime channel
- *   - savedEnginState → shown as "last state" cards, user can tap to restore
- *   - saveEnginState called when Engin publishes via useEnginCoopSync
- */
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
+
+
+
+
+
 
 const ENGIN_SLOTS = [
   {
@@ -76,17 +56,17 @@ const ENGIN_SLOTS = [
   },
 ] as const;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
+
+
+
 
 type EnginKey = (typeof ENGIN_SLOTS)[number]["key"];
 
 interface InnerProps {
   savedEnginState: Record<string, Record<string, unknown>>;
-  // FIX: Explicitly set array values to readonly to match state hooks
+  
   activity: readonly {
     id: string;
     kind: string;
@@ -101,13 +81,13 @@ interface InnerProps {
 }
 
 export interface SharedDreamRuntimeProps {
-  /** UUID of an existing shared_dream_sessions row. Omit to create a new session. */
+  
   sessionId?: string;
-  /** Called with the new session ID once a fresh session is created. */
+  
   onSessionCreated?: (sessionId: string) => void;
 }
 
-// Runtime functions, classes, handlers, and state transitions.
+
 
 function timeAgo(iso: string): string {
   const ms = Date.now() - new Date(iso).getTime();
@@ -145,7 +125,7 @@ function SharedDreamRuntimeInner({
     return saved;
   });
 
-  // When an Engin publishes via the bridge, mark it active and log activity
+  
   useEffect(() => {
     const unsubs = ENGIN_SLOTS.map((slot) =>
       bridge.subscribe("shared_dream", `${slot.key}:state`, (payload) => {
@@ -158,7 +138,7 @@ function SharedDreamRuntimeInner({
           });
           return next;
         });
-        // Forward to the shared_dream channel so all peers see it
+        
         void bridge.emitDurable(
           "shared_dream",
           `${slot.key}:state`,
@@ -172,13 +152,13 @@ function SharedDreamRuntimeInner({
   const handleOpenEngin = useCallback(
     (route: string, label: string, enginKey: EnginKey) => {
       logActivity("engin_activated", `${label} opened`, { enginKey });
-      // Open in the bottom runtime region via the bridge
+      
       bridge.emit("shared_dream", "open:engin", { route, enginKey });
     },
     [logActivity],
   );
 
-  // Shared view: the engin state grid
+  
   const sharedContent = (
     <div
       style={{
@@ -260,7 +240,7 @@ function SharedDreamRuntimeInner({
     </div>
   );
 
-  // Private view: invite + activity
+  
   const privateContent = (
     <div
       style={{
@@ -270,7 +250,7 @@ function SharedDreamRuntimeInner({
         gap: 10,
       }}
     >
-      {/* Invite row */}
+      
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
@@ -295,7 +275,7 @@ function SharedDreamRuntimeInner({
         <InviteFlow />
       </div>
 
-      {/* Activity timeline */}
+      
       {activity.length > 0 && (
         <div
           style={{
@@ -364,7 +344,7 @@ export default function SharedDreamRuntime({
     logActivity,
   } = useSharedDreamSession({ sessionId: propSessionId });
 
-  // Notify parent when a brand-new session is auto-created
+  
   const prevSidRef = React.useRef<string | null>(null);
   React.useEffect(() => {
     if (sessionId && !propSessionId && sessionId !== prevSidRef.current) {
@@ -414,8 +394,8 @@ export default function SharedDreamRuntime({
   );
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

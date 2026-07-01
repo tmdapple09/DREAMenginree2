@@ -10,8 +10,8 @@ import type {
     YouTubeWidgetConfig,
 } from '@/types/widgetConfigs';
 
-// lib/widgets/parse.ts
-// No zod dependency: manual runtime validation + safe defaults.
+
+
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -42,7 +42,7 @@ function asProvider(v: unknown): SocialProvider | undefined {
 export function parseYouTubeConfig(raw: unknown): YouTubeWidgetConfig {
   if (!isRecord(raw)) throw new Error('youtube config must be an object');
 
-  // accept either videoId or full url
+  
   const videoId = asString(raw.videoId) ?? extractYouTubeVideoId(asString(raw.url));
   if (!videoId) throw new Error('youtube config requires videoId (or url containing video id)');
 
@@ -68,7 +68,7 @@ function extractYouTubeVideoId(url?: string): string | undefined {
     if (u.hostname.includes('youtube.com')) {
       const v = u.searchParams.get('v');
       if (v) return v;
-      // /embed/ID
+      
       const parts = u.pathname.split('/').filter(Boolean);
       const embedIndex = parts.indexOf('embed');
       if (embedIndex >= 0 && parts[embedIndex + 1]) return parts[embedIndex + 1];

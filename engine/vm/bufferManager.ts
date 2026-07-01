@@ -1,12 +1,7 @@
 import type { BufferHandle, GPUBufferDescriptor, VMPerformanceCounters, VMResourceQuotas } from './types';
 import { GPUBufferUsageFlags, VMErrorCode } from './types';
 
-/**
- * lib/vm/bufferManager.ts — GPU Buffer Management
- *
- * Manages GPUBuffer allocation, mapping, and lifecycle for the WASM+GPU VM.
- * Enforces resource quotas and tracks memory usage.
- */
+
 
 export class BufferManager {
   private readonly buffers = new Map<BufferHandle, GPUBufferDescriptor>();
@@ -19,13 +14,9 @@ export class BufferManager {
     private readonly counters: VMPerformanceCounters,
   ) {}
 
-  /**
-   * Allocate a new GPU buffer.
-   *
-   * @returns BufferHandle on success, or VMErrorCode on failure.
-   */
+  
   create(usage: number, size: bigint): BufferHandle | VMErrorCode {
-    // Quota checks
+    
     if (this.buffers.size >= this.quotas.maxGPUBufferCount) {
       return VMErrorCode.RESOURCE_LIMIT_EXCEEDED;
     }
@@ -36,7 +27,7 @@ export class BufferManager {
       return VMErrorCode.OUT_OF_MEMORY;
     }
 
-    // Validate usage flags
+    
     if (!this.validateUsage(usage)) {
       return VMErrorCode.INVALID_ARGUMENT;
     }
@@ -65,9 +56,7 @@ export class BufferManager {
     }
   }
 
-  /**
-   * Destroy a GPU buffer and reclaim its memory.
-   */
+  
   destroy(handle: BufferHandle): VMErrorCode {
     const descriptor = this.buffers.get(handle);
     if (!descriptor) {
@@ -80,22 +69,12 @@ export class BufferManager {
     return VMErrorCode.SUCCESS;
   }
 
-  /**
-   * Get buffer descriptor by handle.
-   */
+  
   get(handle: BufferHandle): GPUBufferDescriptor | null {
     return this.buffers.get(handle) ?? null;
   }
 
-  /**
-   * Write data from WASM linear memory to GPU buffer.
-   *
-   * @param handle Target buffer handle.
-   * @param wasmMemory WASM linear memory instance.
-   * @param wasmPtr Pointer in WASM memory.
-   * @param offset Byte offset in GPU buffer.
-   * @param size Number of bytes to copy.
-   */
+  
   write(
     handle: BufferHandle,
     wasmMemory: WebAssembly.Memory,
@@ -105,11 +84,11 @@ export class BufferManager {
   ): VMErrorCode {
     const descriptor = this.buffers.get(handle);
     if (!descriptor) {
-      return 2; // INVALID_HANDLE
+      return 2; 
     }
 
     if (offset + size > descriptor.size) {
-      return 3; // INVALID_ARGUMENT
+      return 3; 
     }
 
     try {
@@ -124,22 +103,14 @@ export class BufferManager {
 
       this.counters.totalBufferWrites++;
       this.counters.totalBytesWritten += size;
-      return 0; // SUCCESS
+      return 0; 
     } catch (error: unknown) {
       console.error('[BufferManager] Write failed:', error);
-      return 4; // GPU_ERROR
+      return 4; 
     }
   }
 
-  /**
-   * Read data from GPU buffer to WASM linear memory.
-   *
-   * @param handle Source buffer handle.
-   * @param wasmMemory WASM linear memory instance.
-   * @param wasmPtr Pointer in WASM memory.
-   * @param offset Byte offset in GPU buffer.
-   * @param size Number of bytes to copy.
-   */
+  
   async read(
     handle: BufferHandle,
     wasmMemory: WebAssembly.Memory,
@@ -149,21 +120,21 @@ export class BufferManager {
   ): Promise<VMErrorCode> {
     const descriptor = this.buffers.get(handle);
     if (!descriptor) {
-      return 2; // INVALID_HANDLE
+      return 2; 
     }
 
     if (offset + size > descriptor.size) {
-      return 3; // INVALID_ARGUMENT
+      return 3; 
     }
 
-    // Create staging buffer for reading
+    
     const stagingBuffer = this.device.createBuffer({
       size: Number(size),
       usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
     });
 
     try {
-      // Copy GPU buffer → staging buffer
+      
       const encoder = this.device.createCommandEncoder();
       encoder.copyBufferToBuffer(
         descriptor.buffer,
@@ -174,7 +145,7 @@ export class BufferManager {
       );
       this.device.queue.submit([encoder.finish()]);
 
-      // Map staging buffer and copy to WASM memory
+      
       await stagingBuffer.mapAsync(GPUMapMode.READ);
       const mappedRange = stagingBuffer.getMappedRange();
       const wasmView = new Uint8Array(wasmMemory.buffer, wasmPtr, Number(size));
@@ -184,20 +155,15 @@ export class BufferManager {
 
       this.counters.totalBufferReads++;
       this.counters.totalBytesRead += size;
-      return 0; // SUCCESS
+      return 0; 
     } catch (error: unknown) {
       console.error('[BufferManager] Read failed:', error);
       stagingBuffer.destroy();
-      return 4; // GPU_ERROR
+      return 4; 
     }
   }
 
-  /**
-   * Map a GPU buffer range into WASM linear memory (zero-copy).
-   *
-   * WARNING: This is an advanced operation that requires careful synchronization.
-   * The buffer must have MAP_READ or MAP_WRITE usage.
-   */
+  
   async map(
     handle: BufferHandle,
     wasmMemory: WebAssembly.Memory,
@@ -208,78 +174,70 @@ export class BufferManager {
   ): Promise<VMErrorCode> {
     const descriptor = this.buffers.get(handle);
     if (!descriptor) {
-      return 2; // INVALID_HANDLE
+      return 2; 
     }
 
     if (offset + size > descriptor.size) {
-      return 3; // INVALID_ARGUMENT
+      return 3; 
     }
 
     const mode = writable ? GPUMapMode.WRITE : GPUMapMode.READ;
-    const requiredUsage = writable ? 1 << 5 : 1 << 4; // MAP_WRITE or MAP_READ
+    const requiredUsage = writable ? 1 << 5 : 1 << 4; 
 
     if ((descriptor.usage & requiredUsage) === 0) {
-      return 3; // INVALID_ARGUMENT (buffer not mappable)
+      return 3; 
     }
 
     try {
       await descriptor.buffer.mapAsync(mode, Number(offset), Number(size));
       const mappedRange = descriptor.buffer.getMappedRange(Number(offset), Number(size));
 
-      // Store mapped range for unmap operation
+      
       descriptor.mappedRange = mappedRange;
 
-      // Copy mapped data into WASM memory
+      
       const wasmView = new Uint8Array(wasmMemory.buffer, wasmPtr, Number(size));
       wasmView.set(new Uint8Array(mappedRange));
 
-      return 0; // SUCCESS
+      return 0; 
     } catch (error: unknown) {
       console.error('[BufferManager] Map failed:', error);
-      return 4; // GPU_ERROR
+      return 4; 
     }
   }
 
-  /**
-   * Unmap a previously mapped buffer.
-   */
+  
   unmap(handle: BufferHandle): VMErrorCode {
     const descriptor = this.buffers.get(handle);
     if (!descriptor) {
-      return 2; // INVALID_HANDLE
+      return 2; 
     }
 
     if (!descriptor.mappedRange) {
-      return 3; // INVALID_ARGUMENT (buffer not mapped)
+      return 3; 
     }
 
     try {
       descriptor.buffer.unmap();
       descriptor.mappedRange = null;
-      return 0; // SUCCESS
+      return 0; 
     } catch (error: unknown) {
       console.error('[BufferManager] Unmap failed:', error);
-      return 4; // GPU_ERROR
+      return 4; 
     }
   }
 
-  /**
-   * Get total GPU memory used by all buffers.
-   */
+  
   getTotalMemoryUsed(): bigint {
     return this.totalMemoryUsed;
   }
 
-  /**
-   * Get number of allocated buffers.
-   */
+  
   getBufferCount(): number {
     return this.buffers.size;
   }
 
-  /**
-   * Destroy all buffers and reset state.
-   */
+  
   destroyAll(): void {
     for (const descriptor of this.buffers.values()) {
       descriptor.buffer.destroy();
@@ -289,9 +247,7 @@ export class BufferManager {
     this.nextHandle = 1;
   }
 
-  /**
-   * Convert usage flags bitmask to GPUBufferUsageFlags.
-   */
+  
   private usageFlagsToGPU(usage: number): GPUBufferUsageFlags {
     const usageMap = typeof GPUBufferUsage === 'undefined' ? GPUBufferUsageFlags : GPUBufferUsage;
     let gpuUsage = 0;
@@ -307,19 +263,17 @@ export class BufferManager {
     return gpuUsage;
   }
 
-  /**
-   * Validate that usage flags are reasonable.
-   */
+  
   private validateUsage(usage: number): boolean {
-    // Cannot combine MAP_READ with MAP_WRITE
+    
     const hasMapRead = (usage & (1 << 4)) !== 0;
     const hasMapWrite = (usage & (1 << 5)) !== 0;
     if (hasMapRead && hasMapWrite) return false;
 
-    // Must have at least one usage flag
+    
     if (usage === 0) return false;
 
-    // No invalid bits set
+    
     if (usage > 0b111111111) return false;
 
     return true;

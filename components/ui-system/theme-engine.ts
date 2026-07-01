@@ -1,8 +1,4 @@
-/**
- * DREAMengin Theme Engine
- * Manages theme presets + user customization (brightness, saturation, blur, accent, gradient).
- * All values are applied via CSS custom properties on <html>.
- */
+
 
 export interface ThemePreset {
   id: string;
@@ -11,16 +7,16 @@ export interface ThemePreset {
 }
 
 export interface ThemeTokens {
-  /** Background gradient stops */
+  
   bgStart: string;
   bgMid: string;
   bgEnd: string;
-  /** Glassmorphism */
+  
   glass: string;
   glass2: string;
   glassBorder: string;
   glassBorderGold: string;
-  /** Core colors */
+  
   text: string;
   textDim: string;
   heading: string;
@@ -33,12 +29,12 @@ export interface ThemeTokens {
   deep: string;
   mist: string;
   red: string;
-  /** Widget surfaces */
+  
   widgetBg: string;
   widgetBorder: string;
   outerShellBg: string;
   outerShellBorder: string;
-  /** Shadcn HSL overrides */
+  
   hslBackground: string;
   hslForeground: string;
   hslCard: string;
@@ -50,24 +46,24 @@ export interface ThemeTokens {
   hslBorder: string;
   hslAccent: string;
   hslAccentForeground: string;
-  /** Starfield style */
+  
   starfieldStyle: 'dark' | 'light';
 }
 
 export interface UserOverrides {
-  brightness: number;    // 0.5 – 1.5, default 1
-  saturation: number;    // 0.0 – 2.0, default 1
-  blur: number;          // 8 – 40, default 24
-  glassOpacity: number;  // 0.1 – 0.9, default varies
-  accentHue: number;     // 0 – 360, -1 = use preset default
+  brightness: number;    
+  saturation: number;    
+  blur: number;          
+  glassOpacity: number;  
+  accentHue: number;     
 }
 
 export const DEFAULT_OVERRIDES: UserOverrides = {
   brightness: 1,
   saturation: 1,
   blur: 24,
-  glassOpacity: -1, // use preset default
-  accentHue: -1,    // use preset default
+  glassOpacity: -1, 
+  accentHue: -1,    
 };
 
 const DREAM_ICE: ThemeTokens = {
@@ -208,7 +204,7 @@ export function applyTheme(presetId: string, overrides: UserOverrides = DEFAULT_
 
   el.setAttribute('data-theme', presetId);
 
-  // DREAMengin tokens
+  
   el.style.setProperty('--de-navy', t.navy);
   el.style.setProperty('--de-deep', t.deep);
   el.style.setProperty('--de-accent', t.accent);
@@ -232,7 +228,7 @@ export function applyTheme(presetId: string, overrides: UserOverrides = DEFAULT_
   el.style.setProperty('--de-widget-border', t.widgetBorder);
   el.style.setProperty('--de-heading', t.heading);
 
-  // Shadcn HSL
+  
   el.style.setProperty('--background', t.hslBackground);
   el.style.setProperty('--foreground', t.hslForeground);
   el.style.setProperty('--card', t.hslCard);
@@ -245,7 +241,7 @@ export function applyTheme(presetId: string, overrides: UserOverrides = DEFAULT_
   el.style.setProperty('--accent', t.hslAccent);
   el.style.setProperty('--accent-foreground', t.hslAccentForeground);
 
-  // User overrides
+  
   const blur = overrides.blur > 0 ? overrides.blur : 24;
   el.style.setProperty('--user-brightness', String(overrides.brightness));
   el.style.setProperty('--user-saturation', String(overrides.saturation));
@@ -268,7 +264,7 @@ export function loadStoredTheme(): StoredTheme {
       const parsed = JSON.parse(raw) as StoredTheme;
       return parsed;
     }
-  } catch { /* ignore */ }
+  } catch {  }
   return { presetId: 'dream-ice', overrides: DEFAULT_OVERRIDES };
 }
 

@@ -10,19 +10,12 @@ interface ProfileSpaceProps {
   anchorRect?: { x0: number; y0: number; x1: number; y1: number };
 }
 
-/**
- * Profile Dream slot surface used by EditProfileDream and ViewProfile.
- * "ProfileSpace" is the legacy internal name; the spec surfaces are
- * EditProfileDream (editing=true) and ViewProfile (editing=false).
- *
- * ProfileSpace - Freeform widget instance space for PROFILE mode
- * Widgets use continuous transform coordinates, z-order sorted
- */
+
 export function ProfileSpace({ widgets, onWidgetFocus, onWidgetClose, anchorRect }: ProfileSpaceProps) {
-  // Sort widgets by z-index
+  
   const sortedWidgets = [...widgets].sort((a, b) => a.zIndex - b.zIndex);
 
-  // Default anchor rect if not provided
+  
   const defaultAnchorRect = anchorRect || { x0: 0, y0: 0, x1: 100, y1: 100 };
 
   return (
@@ -60,7 +53,7 @@ interface ProfileWidgetProps {
 function ProfileWidget({ widget, onFocus, onClose, anchorRect }: ProfileWidgetProps) {
   const { transformState, visibility, presentation } = widget;
 
-  // Hide if not active
+  
   if (visibility !== 'ACTIVE') return null;
 
   const widgetContent = (

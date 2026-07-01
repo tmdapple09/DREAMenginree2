@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toErrorMessage } from '@/utils/index';
 
-// SURFACE: dreamsurface.LabNew  (framework-mandated basename: page.tsx)
+
 
 export default function NewProjectPage( ){
   const [title, setTitle] = useState('');
@@ -53,7 +53,7 @@ export default function NewProjectPage( ){
     }
   };
 
-  // Template suggestions
+  
   const templates = [
     { name: 'Physics Simulation', icon: '🔬', description: 'Interactive physics experiments' },
     { name: 'Data Visualization', icon: '📊', description: 'Charts and data analysis' },
@@ -63,7 +63,7 @@ export default function NewProjectPage( ){
 
   return (
     <div className="de-sky-bg min-h-screen">
-      {/* Header */}
+      
       <header className="sticky top-0 z-30 backdrop-blur-xl" style={{ background: 'rgba(220,232,248,0.88)', borderBottom: '1px solid rgba(160,195,240,0.3)' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/lab" className="p-2 -ml-2 rounded-full" style={{ background: 'rgba(160,195,240,0.15)' }}>
@@ -76,7 +76,7 @@ export default function NewProjectPage( ){
 
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-4">
 
-        {/* Quick Start Templates */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Quick Start Templates</span></div>
           <div className="de-widget-body">
@@ -106,20 +106,20 @@ export default function NewProjectPage( ){
           </div>
         </div>
 
-        {/* Divider */}
+        
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: 1, height: 1, background: 'var(--de-border)' }} />
           <span style={{ padding: '0 12px', fontSize: 12, color: 'var(--de-text-dim)' }}>or create from scratch</span>
           <div style={{ flex: 1, height: 1, background: 'var(--de-border)' }} />
         </div>
 
-        {/* Create from scratch form */}
+        
         <div className="de-widget">
           <div className="de-widget-header"><span className="de-widget-title">Project Details</span></div>
           <form onSubmit={handleSubmit}>
             <div className="de-widget-body" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-              {/* Title */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Project Title</span>
                 <input
@@ -132,7 +132,7 @@ export default function NewProjectPage( ){
                 />
               </label>
 
-              {/* Description */}
+              
               <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Description</span>
                 <textarea
@@ -144,7 +144,7 @@ export default function NewProjectPage( ){
                 />
               </label>
 
-              {/* Visibility */}
+              
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--de-text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Visibility</span>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -198,7 +198,7 @@ export default function NewProjectPage( ){
           </form>
         </div>
 
-        {/* Info */}
+        
         <div className="de-widget">
           <div className="de-widget-body">
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>

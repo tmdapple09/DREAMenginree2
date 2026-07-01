@@ -15,31 +15,9 @@ import {
     type RuntimeMetrics,
 } from './director';
 
-/**
- * useWebGPUDirector — React hook that drives the DREAM_ENGINE_WEBGPU_DIRECTOR.
- *
- * Reads real frame-time data from a Babylon.js engine's performance monitor
- * and feeds it to a `WebGPUDirector` instance every `tickMs` milliseconds.
- * Returns the latest `DirectorFrame` so components and scenes can consume
- * per-object quality decisions, pass configs, and temporal settings without
- * hand-rolling their own signal collection.
- *
- * Architecture justification: docs/ARCHITECTURE.md §10 — render-on-demand,
- * hardware scaling, performance-first.
- *
- * Usage:
- * ```tsx
- * const engineRef = useRef<AbstractEngine | null>(null);
- * const { frame } = useWebGPUDirector({ engineRef, cameraState: 'hero' });
- *
- * useEffect(() => {
- *   if (!frame) return;
- *   applyDirectorFrame(engineRef.current!, sceneRef.current!, frame, devicePixelRatio);
- * }, [frame]);
- * ```
- */
 
-// We keep these as duck types so the hook does not hard-depend on @babylonjs/core.
+
+
 
 type BabylonPerformanceMonitor = {
   averageFrameTime: number;
@@ -54,68 +32,42 @@ type BabylonSceneWithMeshes = DirectorBabylonScene & {
 };
 
 export interface UseWebGPUDirectorOptions {
-  /** Ref to the live Babylon engine (may be null until the canvas is ready). */
+  
   engineRef: React.RefObject<BabylonEngineWithMonitor | null>;
 
-  /** Ref to the live Babylon scene (may be null until the scene is ready). */
+  
   sceneRef?: React.RefObject<BabylonSceneWithMeshes | null>;
 
-  /**
-   * Logical camera state.  Typically driven by route or scene mode.
-   * Defaults to `'browse'`.
-   */
+  
   cameraState?: CameraState;
 
-  /**
-   * Camera velocity in normalised units (0 = static, 1 = fast pan/cut).
-   * Defaults to `0`.
-   */
+  
   cameraVelocity?: number;
 
-  /**
-   * Whether a camera cut just occurred.  Set to `true` for one frame after a
-   * hard transition to discard TAA history and prevent ghosting.
-   */
+  
   cutActive?: boolean;
 
-  /**
-   * ID of the object currently in focus (for camera affinity bonus).
-   */
+  
   focusTargetId?: string;
 
-  /**
-   * Per-mesh hints resolver.  Called for every mesh in `scene.meshes` each
-   * tick so the caller can supply semantic weights without manually building
-   * the full SceneObject array.
-   */
+  
   hintsResolver?: (mesh: DirectorBabylonMesh) => MeshHints;
 
-  /**
-   * How often (ms) to re-run the Director.  Default: `500`.
-   * Lower values react faster to pressure changes but add CPU overhead.
-   */
+  
   tickMs?: number;
 
-  /**
-   * When `true`, automatically calls `applyDirectorFrame` after each update
-   * so hardware scaling and mesh decisions are applied without extra code in
-   * the caller.  Default: `false`.
-   */
+  
   autoApply?: boolean;
 
-  /** Device pixel ratio used by `applyDirectorFrame`. Defaults to `1`. */
+  
   devicePixelRatio?: number;
 }
 
 export interface UseWebGPUDirectorReturn {
-  /** Latest DirectorFrame. `null` until the first tick completes. */
+  
   frame: DirectorFrame | null;
 
-  /**
-   * Manually trigger an immediate Director update.
-   * Useful when you know something significant changed (e.g. the user focused
-   * on a hero object) and you don't want to wait for the next tick.
-   */
+  
   tick: () => void;
 }
 
@@ -143,7 +95,7 @@ export function useWebGPUDirector(
     const engine = engineRef.current;
     if (!engine) return;
 
-    // Collect runtime metrics from the engine performance monitor
+    
     const perf = (engine as BabylonEngineWithMonitor).performanceMonitor;
     const avgFrameMs = perf?.averageFrameTime ?? 16.6;
 
@@ -156,7 +108,7 @@ export function useWebGPUDirector(
       uploadMs:          avgFrameMs * 0.10,
     };
 
-    // Camera signals
+    
     const camera: CameraSignals = {
       state:         cameraState,
       velocity:      cameraVelocity,
@@ -164,7 +116,7 @@ export function useWebGPUDirector(
       focusTargetId,
     };
 
-    // Scene objects — build from scene.meshes if a sceneRef was provided
+    
     const scene  = sceneRef?.current;
     const meshes = scene?.meshes ?? [];
 
@@ -174,7 +126,7 @@ export function useWebGPUDirector(
       lastVisibleSetRef.current,
     );
 
-    // Record which meshes are visible this tick so next tick has lastFrameVisible
+    
     lastVisibleSetRef.current = new Set(
       meshes.filter((m) => m.isVisible).map((m) => m.id),
     );
@@ -182,7 +134,7 @@ export function useWebGPUDirector(
     const newFrame = directorRef.current.update({ metrics, camera, objects });
     setFrame(newFrame);
 
-    // Auto-apply Director decisions to Babylon if requested
+    
     if (autoApply && scene) {
       applyDirectorFrame(engine, scene, newFrame, devicePixelRatio);
     }
@@ -192,9 +144,9 @@ export function useWebGPUDirector(
     hintsResolver, autoApply, devicePixelRatio,
   ]);
 
-  // Periodic tick
+  
   useEffect(() => {
-    // Run immediately so we have a frame before the first interval fires
+    
     runTick();
 
     const id = window.setInterval(runTick, tickMs);

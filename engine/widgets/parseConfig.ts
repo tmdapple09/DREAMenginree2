@@ -6,7 +6,7 @@ import type {
     YouTubeWidgetConfig,
 } from '@/types/widgetConfigs';
 
-// lib/widgets/parseConfig.ts
+
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return !!v && typeof v === 'object' && !Array.isArray(v);

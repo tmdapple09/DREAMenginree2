@@ -1,7 +1,4 @@
-/**
- * tests/collector-extended.test.ts
- * Tests for improvements 21-25 in lib/observability/collector.ts
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -17,7 +14,7 @@ import {
 
 beforeEach(() => { clearBuffers(); });
 
-// ── Improvement 91: collectBatchLogs ─────────────────────────────────────────
+
 describe('collectBatchLogs', () => {
   it('pushes multiple log entries atomically', () => {
     collectBatchLogs([
@@ -36,7 +33,7 @@ describe('collectBatchLogs', () => {
   });
 });
 
-// ── Improvement 92: getErrorRate ──────────────────────────────────────────────
+
 describe('getErrorRate', () => {
   it('returns 0 when no logs', () => {
     expect(getErrorRate()).toBe(0);
@@ -46,30 +43,30 @@ describe('getErrorRate', () => {
     collectLog('error', 'e1');
     collectLog('error', 'e2');
     collectLog('info', 'i1');
-    // 2 errors in default 5-min window = 0.4 errors/min
+    
     expect(getErrorRate()).toBeCloseTo(0.4, 1);
   });
 });
 
-// ── Improvement 93: getP95Latency ─────────────────────────────────────────────
+
 describe('getP95Latency', () => {
   it('returns 0 when no traces', () => {
     expect(getP95Latency()).toBe(0);
   });
 
   it('computes P95 correctly', () => {
-    // 10 traces: 1ms–10ms
+    
     for (let i = 1; i <= 10; i++) {
       collectTrace(`op${i}`, i, 'ok');
     }
-    // P95 of [1..10] sorted = index 9 (floor(10*0.95)=9) → value 10
+    
     const p95 = getP95Latency();
     expect(p95).toBeGreaterThanOrEqual(9);
     expect(p95).toBeLessThanOrEqual(10);
   });
 });
 
-// ── Improvement 94: groupTracesByTraceId ──────────────────────────────────────
+
 describe('groupTracesByTraceId', () => {
   it('groups spans by trace_id', () => {
     collectTrace('span-a', 10, 'ok', undefined, 'trace-1');
@@ -86,7 +83,7 @@ describe('groupTracesByTraceId', () => {
   });
 });
 
-// ── Improvement 95: getLogCountsBySeverity ────────────────────────────────────
+
 describe('getLogCountsBySeverity', () => {
   it('returns zeroed counts when no logs', () => {
     const counts = getLogCountsBySeverity();

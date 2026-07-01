@@ -2,17 +2,17 @@ import { widgetEventBus, type WidgetMsg } from './WidgetEventBus';
 import { WidgetLinkGraph } from './WidgetLinkGraph';
 import { toErrorMessage } from '@/utils/index';
 
-// CrossWidgetPosting - Server-validated cross-widget posting system
-// Implements POST_REQUEST validation and platform publishing
 
-// Message types
+
+
+
 export const MSG_TYPE_POST_REQUEST = 1;
 export const MSG_TYPE_POST_RESULT = 2;
 export const MSG_TYPE_FOCUS_REQUEST = 3;
 export const MSG_TYPE_SEND_TEXT = 4;
 export const MSG_TYPE_SEND_MEDIA = 5;
 
-// Widget capabilities
+
 export interface WidgetCapabilityConfig {
   canSendPost: boolean;
   canReceivePost: boolean;
@@ -21,7 +21,7 @@ export interface WidgetCapabilityConfig {
   canRequestFocus: boolean;
 }
 
-// Post request payload
+
 export interface PostRequestPayload {
   text?: string;
   mediaIds?: string[];
@@ -29,16 +29,14 @@ export interface PostRequestPayload {
   options?: Record<string, unknown>;
 }
 
-// Post result payload
+
 export interface PostResultPayload {
   success: boolean;
   postId?: string;
   error?: string;
 }
 
-/**
- * CrossWidgetPostingEngine validates and routes posting requests
- */
+
 export class CrossWidgetPostingEngine {
   private linkGraph: WidgetLinkGraph;
   private widgetCapabilities: Map<string, WidgetCapabilityConfig>;
@@ -48,21 +46,17 @@ export class CrossWidgetPostingEngine {
     this.widgetCapabilities = new Map();
   }
 
-  /**
-   * Register widget capabilities
-   */
+  
   registerWidget(widgetId: string, capabilities: WidgetCapabilityConfig): void {
     this.widgetCapabilities.set(widgetId, capabilities);
   }
 
-  /**
-   * Validate a POST_REQUEST message
-   */
+  
   validatePostRequest(
     sourceWidgetId: string,
     targetWidgetId: string
   ): { valid: boolean; reason?: string } {
-    // Check if link exists
+    
     if (!this.linkGraph.hasCapability(sourceWidgetId, targetWidgetId, 'CAN_SEND_POST')) {
       return {
         valid: false,
@@ -70,7 +64,7 @@ export class CrossWidgetPostingEngine {
       };
     }
 
-    // Check if target supports POST_SINK
+    
     const targetCapabilities = this.widgetCapabilities.get(targetWidgetId);
     if (!targetCapabilities?.canReceivePost) {
       return {
@@ -82,18 +76,16 @@ export class CrossWidgetPostingEngine {
     return { valid: true };
   }
 
-  /**
-   * Handle a POST_REQUEST message
-   */
+  
   async handlePostRequest(msg: WidgetMsg): Promise<void> {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
     const payload = msg.payload as PostRequestPayload;
 
-    // Validate request
+    
     const validation = this.validatePostRequest(sourceWidgetId, targetWidgetId);
     if (!validation.valid) {
-      // Send failure result back
+      
       this.sendPostResult(targetWidgetId, sourceWidgetId, {
         success: false,
         error: validation.reason
@@ -101,8 +93,8 @@ export class CrossWidgetPostingEngine {
       return;
     }
 
-    // Call server-validated publish API — auth session, rate limits, and audit
-    // logging are all enforced server-side in POST /api/posts.
+    
+    
     try {
       const res = await fetch('/api/posts', {
         method: 'POST',
@@ -138,9 +130,7 @@ export class CrossWidgetPostingEngine {
     }
   }
 
-  /**
-   * Send POST_RESULT message
-   */
+  
   private sendPostResult(
     fromWidgetId: string,
     toWidgetId: string,
@@ -154,9 +144,7 @@ export class CrossWidgetPostingEngine {
     );
   }
 
-  /**
-   * Handle incoming messages
-   */
+  
   handleMessage(msg: WidgetMsg): void {
     switch (msg.type) {
       case MSG_TYPE_POST_REQUEST:
@@ -176,9 +164,7 @@ export class CrossWidgetPostingEngine {
     }
   }
 
-  /**
-   * Handle SEND_TEXT message
-   */
+  
   private handleSendText(msg: WidgetMsg): void {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
@@ -195,9 +181,7 @@ export class CrossWidgetPostingEngine {
     });
   }
 
-  /**
-   * Handle SEND_MEDIA message
-   */
+  
   private handleSendMedia(msg: WidgetMsg): void {
     const sourceWidgetId = msg.fromInstanceId;
     const targetWidgetId = msg.toWidgetId;
@@ -214,9 +198,7 @@ export class CrossWidgetPostingEngine {
     });
   }
 
-  /**
-   * Create a posting link between widgets
-   */
+  
   createPostingLink(
     sourceWidgetId: string,
     targetWidgetId: string,

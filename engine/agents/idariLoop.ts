@@ -9,19 +9,19 @@ import { inferRootCause, type RootCauseAnalysis } from '@/engine/observability/r
 import { v4 as uuidv4 } from 'uuid';
 import { toErrorMessage } from '@/utils/index';
 
-// lib/agents/idariLoop.ts
-//
-// IDARi Observability Remediation Loop
-//
-// Implements the AI-assisted feedback loop described in PR #254:
-//
-//   collect → correlate → infer root cause → build IDARi prompt →
-//   call /api/ai/idari → parse patch plan → report → iterate
-//
-// The loop can run client-side (browser) or server-side.
-// Pure functions at the bottom are unit-testable without any HTTP calls.
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+
+
+
+
+
 
 export type LoopStatus =
   | 'idle'
@@ -52,55 +52,44 @@ export interface LoopIteration {
   correlation: CorrelationResult;
   root_cause: RootCauseAnalysis;
   immediate_action?: ImmediateRemediationAction;
-  /** Patch plan from the AI (or deterministic fallback). */
+  
   patch_plan?: PatchPlan;
-  /** Raw AI response text (available when AI was called). */
+  
   ai_response?: string;
-  /** Error message when the iteration failed unexpectedly. */
+  
   error?: string;
-  /** Duration of the iteration in milliseconds. */
+  
   duration_ms?: number;
 }
 
 export interface RemediationLoopOptions {
-  /** Telemetry look-back window in ms. Default: 5 min. */
+  
   windowMs?: number;
-  /** Maximum number of iterations. Default: 1 (single-shot). */
+  
   maxIterations?: number;
-  /** Called after each completed iteration. */
+  
   onIteration?: (iteration: LoopIteration) => void;
-  /** When true, stop after the first healthy snapshot. Default: true. */
+  
   stopOnHealthy?: boolean;
-  /**
-   * Optional async function that calls the IDARi AI endpoint.
-   * Signature matches the callIdari helper used in IDariPanel.
-   * When omitted, the loop uses the deterministic fallback patch plan.
-   */
+  
   callAi?: (message: string) => Promise<string>;
-  // ── Improvement 56: AbortSignal support ────────────────────────────────────
-  /** AbortSignal to stop the loop between iterations (prevents memory leaks). */
+  
+  
   signal?: AbortSignal;
-  // ── Improvement 57: iteration timeout ─────────────────────────────────────
-  /** Maximum time in ms for a single iteration (including AI call). Default: 30 s. */
+  
+  
   iterationTimeoutMs?: number;
-  // ── Improvement 58: AI retry ──────────────────────────────────────────────
-  /** Number of times to retry a failed AI call before using the fallback. Default: 2. */
+  
+  
   aiRetryAttempts?: number;
-  /** Base delay in ms for AI retry backoff. Default: 500 ms. */
+  
   aiRetryBaseDelayMs?: number;
-  // ── Improvement 59: snapshot diffing ──────────────────────────────────────
-  /** When true, skip AI call if the snapshot fingerprint is unchanged from the
-   *  previous iteration. Default: true. */
+  
+  
   skipUnchangedSnapshots?: boolean;
 }
 
-/**
- * Build a context-enriched IDARi prompt that injects the telemetry summary,
- * anomaly list, and root cause analysis into the message.
- *
- * The prompt follows the IDARi output contract:
- *   cause → impact → smallest safe fix → verification steps.
- */
+
 export function buildIdariPrompt(
   snapshot: TelemetrySnapshot,
   correlation: CorrelationResult,
@@ -156,13 +145,7 @@ export function buildIdariPrompt(
   return lines.join('\n');
 }
 
-/**
- * Build a deterministic PatchPlan from the root cause analysis.
- * Used when the AI is unavailable or when the system is degraded but not
- * critical enough to warrant an AI call.
- *
- * Returns undefined when the system is healthy (no patch needed).
- */
+
 export function buildFallbackPatchPlan(
   rootCause: RootCauseAnalysis,
   iterationId: string,
@@ -238,14 +221,7 @@ function _withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
   });
 }
 
-/**
- * Execute one iteration of the IDARi remediation loop.
- *
- * This is the core synchronous path — it reads the current telemetry state,
- * correlates signals, infers the root cause, and builds a patch plan.
- * When a `callAi` function is provided (and anomalies are detected), the AI
- * is called asynchronously for a deeper diagnosis.
- */
+
 export async function runLoopIteration(
   iterationNumber: number,
   options: RemediationLoopOptions = {},
@@ -255,7 +231,7 @@ export async function runLoopIteration(
   return iteration;
 }
 
-// Internal version that also returns the fingerprint for loop diffing.
+
 async function _runLoopIterationInternal(
   iterationNumber: number,
   options: RemediationLoopOptions = {},
@@ -288,7 +264,7 @@ async function _runLoopIterationInternal(
         window_ms: windowMs,
       };
 
-      // Healthy and no AI needed
+      
       if (correlation.health === 'healthy') {
         const iteration: LoopIteration = {
           id,
@@ -314,10 +290,10 @@ async function _runLoopIterationInternal(
       if (callAi && patch_plan && snapshotChanged) {
         try {
           const prompt = buildIdariPrompt(snapshot, correlation, rootCause);
-          // ── Improvement 58: retry with backoff ────────────────────────────
+          
           ai_response = await _callAiWithRetry(callAi, prompt, aiRetryAttempts + 1, aiRetryBaseDelayMs);
         } catch {
-          // AI exhausted retries — the deterministic patch plan is still used
+          
         }
       }
 
@@ -371,17 +347,8 @@ async function _runLoopIterationInternal(
   return _withTimeout(doIteration(), iterationTimeoutMs);
 }
 
-/**
- * Run the IDARi remediation loop for up to `maxIterations` iterations.
- *
- * The loop exits early when:
- * - The system is healthy and `stopOnHealthy` is true (default).
- * - `maxIterations` is reached.
- * - The provided `signal` is aborted.
- *
- * Each completed iteration is passed to `options.onIteration` if provided.
- */
-// ── Improvement 56: AbortSignal support ──────────────────────────────────────
+
+
 export async function runRemediationLoop(
   options: RemediationLoopOptions = {},
 ): Promise<LoopIteration[]> {
@@ -396,7 +363,7 @@ export async function runRemediationLoop(
   let prevFingerprint: string | undefined;
 
   for (let i = 0; i < maxIterations; i++) {
-    // ── Improvement 56: check abort signal ─────────────────────────────────
+    
     if (signal?.aborted) break;
 
     const { iteration, fingerprint } = await _runLoopIterationInternal(i + 1, options, prevFingerprint);
@@ -421,10 +388,7 @@ export interface LoopHealthSummary {
   lastStatus: LoopStatus | null;
 }
 
-/**
- * Compute a health summary from a completed set of loop iterations.
- * Useful for dashboards and log aggregation.
- */
+
 export function getLoopHealthSummary(iterations: readonly LoopIteration[]): LoopHealthSummary {
   if (iterations.length === 0) {
     return { total: 0, resolved: 0, failed: 0, successRate: 0, avgDurationMs: 0, lastStatus: null };

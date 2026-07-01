@@ -1,22 +1,4 @@
-/**
- * scripts/gameengin/maestro-analyze.ts
- *
- * Maestro orchestrator. Spec: GameENGINspec.md §3.1 + Agent Profile §1.
- *
- * V2 behaviour (per expanded agent profile):
- *   1. Surveys EVERY cartridge under public/cartridges/ (not just one target).
- *   2. For each cartridge, computes last-touched timestamp per agent type
- *      from rd-sessions/, then makes a per-agent dispatch decision based on
- *      cooldown rules + (when present) live telemetry from Supabase.
- *   3. Records the full assignment plan to brain/work-queue/<date>-<stamp>.json
- *      (the studio activity log).
- *   4. Dispatches via `gh workflow run` only when GH_ACTIONS_DISPATCH=1 and
- *      GITHUB_TOKEN is present; otherwise runs in dry mode.
- *
- * Cooldowns (days; can be overridden via env MAESTRO_COOLDOWN_<AGENT>_DAYS):
- *   prophet  = 3   artisan  = 7   mechanic = 3
- *   writer   = 2   upgrader = 5
- */
+
 
 import { execSync } from 'node:child_process';
 import * as fs from 'node:fs';
@@ -116,14 +98,14 @@ function decisionsFor(
     let reason: string | null = null;
 
     if (!cooledDown) {
-      // Within cooldown — never dispatch unless telemetry forces it.
+      
     } else if (last === null) {
       reason = `never touched by ${agent}`;
     } else {
       reason = `last ${agent} run ${ageDays!.toFixed(1)}d ago (cooldown ${cooldown}d)`;
     }
 
-    // Telemetry overrides — stronger signals than cooldowns.
+    
     if (metrics) {
       if (agent === 'prophet' && (metrics.death ?? 0) > t.deathsPerLevelMax) {
         reason = `deaths=${metrics.death} > ${t.deathsPerLevelMax}`;
@@ -170,9 +152,9 @@ async function main() {
     cartridges = restrictTo ? [restrictTo] : ['mad-maxi'];
   }
 
-  // Cartridge Status System (directive): `stable` cartridges are off-limits
-  // to Maestro entirely — Upgrader may still polish them. `active` and
-  // `improving` both stay in the survey.
+  
+  
+  
   const statuses: Record<string, CartridgeStatus> = {};
   const skipped: string[] = [];
   cartridges = cartridges.filter((id) => {

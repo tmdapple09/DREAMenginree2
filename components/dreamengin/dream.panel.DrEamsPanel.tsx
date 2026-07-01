@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-// DrEamsPanel.tsx — Dr. Eams user-facing AI chat panel.
-// Available to ALL authenticated users — connects to /api/ai/eams.
-// Dr. Eams is the friendly user companion in the AI triad.
+
+
+
 
 
 interface DrEamsPanelProps {
@@ -13,7 +13,7 @@ interface DrEamsPanelProps {
 
 type Message = { role: 'user' | 'ai'; text: string };
 
-// Quick-action chips — shown before the first user message
+
 const QUICK_ACTIONS = [
   { label: '✨ Tour the app', prompt: 'What is Dreamengin and where should I start?' },
   { label: '🏠 HomeDream vs DreamSpace', prompt: 'How do HomeDream and DreamSpace work?' },
@@ -111,16 +111,16 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
   const inputRef  = useRef<HTMLInputElement>(null);
 
   const canSend = useMemo(() => input.trim().length > 0 && !loading, [input, loading]);
-  const showChips = messages.length === 1; // only before first user msg
+  const showChips = messages.length === 1; 
 
-  // Auto-scroll on new messages
+  
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, loading]);
 
-  // Focus input on open
+  
   useEffect(() => {
     const t = setTimeout(() => inputRef.current?.focus(), 180);
     return () => clearTimeout(t);
@@ -149,8 +149,8 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
 
       const data = await res.json().catch(() => ({}));
 
-      // Dr. Eams returns { response_text, proposed_intents, boogie_decisions }
-      // or { ok: false, error: { code, message } }
+      
+      
       const reply =
         (data?.response_text && typeof data.response_text === 'string')
           ? data.response_text
@@ -168,7 +168,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
 
   return (
     <>
-      {/* Keyframes injected inline once */}
+      
       <style>{`
         @keyframes dreams-dot {
           0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
@@ -176,14 +176,14 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
         }
       `}</style>
 
-      {/* Backdrop */}
+      
       <div
         className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
         style={{ background: 'rgba(8,20,50,0.32)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
         onPointerDown={onClose}
         data-de-overlay="dr-eams-panel"
       >
-        {/* Panel */}
+        
         <div
           role="dialog"
           aria-modal="true"
@@ -204,7 +204,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
           }}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          {/* ── Header ── */}
+          
           <div style={{
             padding: '16px 20px 12px',
             display: 'flex', alignItems: 'center', gap: 12,
@@ -231,7 +231,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
             </button>
           </div>
 
-          {/* ── Messages ── */}
+          
           <div
             ref={scrollRef}
             style={{
@@ -285,7 +285,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
             )}
           </div>
 
-          {/* ── Quick-action chips ── */}
+          
           {showChips && (
             <div style={{ padding: '2px 16px 6px', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {QUICK_ACTIONS.map((qa) => (
@@ -308,7 +308,7 @@ export default function DrEamsPanel({ onClose }: DrEamsPanelProps) {
             </div>
           )}
 
-          {/* ── Input bar ── */}
+          
           <div style={{
             padding: '10px 14px 14px',
             display: 'flex', gap: 10, alignItems: 'center',

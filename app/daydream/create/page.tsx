@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.DaydreamCreate  (framework-mandated basename: page.tsx)
+
 
 const WIDGETS: DaydreamWidget[] = [
   { id: 'note',      emoji: '📝', label: 'Quick Note',   desc: 'Capture a thought instantly',  color: '#f59e0b', href: '/engines/create/editor' },
@@ -33,7 +33,7 @@ export default async function CreateDaydreamPage( ){
   let user = null;
   try {
     user = await safeGetUser(supabase);
-  } catch { /* Supabase not configured — treat as unauthenticated */ }
+  } catch {  }
   if (!user && !isDevBypassActive()) redirect('/login');
 
   return (
@@ -82,7 +82,7 @@ export default async function CreateDaydreamPage( ){
           </div>
         ))}
 
-        {/* ── Open ContentEngin CTA ── */}
+        
         <div className="de-widget" style={{ borderColor: 'rgba(245,158,11,0.3)', background: 'linear-gradient(135deg, rgba(245,158,11,0.06), rgba(251,191,36,0.04))' }}>
           <div className="de-widget-header">
             <Sparkles className="w-4 h-4" style={{ color: ACCENT }} />

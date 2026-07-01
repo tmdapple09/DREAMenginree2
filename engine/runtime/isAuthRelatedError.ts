@@ -1,37 +1,17 @@
 import { toErrorMessage } from '@/utils/index';
 
-// Framework directives stay physically first when required.
 
-// Runtime file: lib/runtime/isAuthRelatedError.ts.
 
-// Runtime law comments and invariants stay attached to the code they govern.
 
-// Module-owned constants, caches, refs, and mutable runtime memory.
 
-/**
- * lib/runtime/isAuthRelatedError.ts
- *
- * Classifies whether a caught Error originates from an auth/session failure
- * versus a generic runtime or render error.
- *
- * Used by the root error boundary (app/error.tsx) to decide whether to force
- * a sign-out + redirect (session corruption) or simply let the user "Try again"
- * without destroying their session.
- *
- * Build-memory mapping
- * ──────────────────────────────────────────────────────────────────────────
- * Event: "error"
- *   → components/dreams/dream.PlatformErrorReporter.tsx
- *   → components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx
- *   → engins/engin.CodeEngin.tsx
- *
- * Follows the same heuristic used in:
- *   lib/connectors/reconcile.ts  — isConnectorAuthError()
- *   app/api/social/rss-feed/route.ts — inline isAuthError pattern
- */
+
+
+
+
+
 
 const AUTH_ERROR_PATTERNS = [
-  /\bauth/i,            // AuthError, authentication, authorization, auth token…
+  /\bauth/i,            
   /\bjwt\b/i,
   /\btoken\b/i,
   /\bsession\b/i,
@@ -45,20 +25,15 @@ const AUTH_ERROR_PATTERNS = [
   /\b403\b/,
 ] as const;
 
-// Imports and external modules this runtime file depends on.
 
-// Top-level runtime registration and connection seams.
 
-// Types, interfaces, and schemas accepted or provided by this file.
 
-// Runtime functions, classes, handlers, and state transitions.
 
-/**
- * Returns `true` when the error message or name suggests a session / auth
- * failure that warrants a forced sign-out.  Returns `false` for all other
- * transient / runtime errors so the user can recover without losing their
- * session.
- */
+
+
+
+
+
 export function isAuthRelatedError(error: unknown): boolean {
   if (!error) return false;
 
@@ -71,8 +46,8 @@ export function isAuthRelatedError(error: unknown): boolean {
   return AUTH_ERROR_PATTERNS.some((pattern) => pattern.test(haystack));
 }
 
-// Return values, render surfaces, emitted packets, and snapshots are produced inside actions.
 
-// Teardown remains paired inside the lifecycle actions that allocate resources.
 
-// Exported declarations and re-export barrels are this file's public surface.
+
+
+

@@ -1,15 +1,4 @@
-/**
- * tests/gameengin-cartridges.test.ts
- *
- * Guarantees the GameEngin cartridge bay stays in sync with the rest of the
- * platform:
- *   1. Every entry in `CARTRIDGE_MANIFEST` has a matching dynamic loader.
- *   2. Every loader has a matching manifest entry (no orphans).
- *   3. Every manifest id feeds the shared game catalog so users can launch
- *      every game from `/gameengin/cartridges/[id]` and GameEngin.
- *   4. Manifest ids are unique and URL-safe.
- *   5. The new `/gameengin/cartridges` route file exists and exports default.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';

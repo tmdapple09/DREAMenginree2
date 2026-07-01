@@ -7,22 +7,22 @@ import { BatchSpanProcessor, NodeTracerProvider } from '@opentelemetry/sdk-trace
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
-// lib/observability/otel.ts
-//
-// Production-grade OpenTelemetry initialisation for DREAMengin.
-//
-// Runs server-side only. Lazily initialised on first import so it is safe
-// to import in any API route / middleware without double-init risk.
-//
-// Exports:
-//   – getMeter()              → OTel Meter for custom metric instruments
-//   – getTracer()             → OTel Tracer for custom spans
-//   – getPrometheusMetrics()  → Prometheus exposition text for /api/metrics
-//
-// Environment knobs (all optional):
-//   OTEL_SERVICE_NAME              – defaults to 'dreamengin'
-//   OTEL_EXPORTER_OTLP_ENDPOINT   – if set, traces export via OTLP/HTTP
-//   OTEL_METRICS_EXPORTER          – 'prometheus' (default) | 'none'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let _initialised = false;
 let _promExporter: PrometheusExporter | null = null;
@@ -45,7 +45,7 @@ function ensureInit(): void {
 
   if (metricsExporterEnv !== 'none') {
     _promExporter = new PrometheusExporter({
-      preventServerStart: true, // we serve /api/metrics ourselves
+      preventServerStart: true, 
     });
     const meterProvider = new MeterProvider({
       resource,
@@ -69,25 +69,19 @@ function ensureInit(): void {
   _tracer = trace.getTracer(SERVICE_NAME, SERVICE_VERSION);
 }
 
-/** Return the global OTel Meter (creates instruments lazily). */
+
 export function getMeter(): Meter {
   ensureInit();
   return _meter!;
 }
 
-/** Return the global OTel Tracer (creates spans lazily). */
+
 export function getTracer(): Tracer {
   ensureInit();
   return _tracer!;
 }
 
-/**
- * Collect Prometheus exposition text from the in-process exporter.
- * Returns an empty string when the Prometheus exporter is disabled.
- *
- * Uses the PrometheusExporter's built-in HTTP handler with a mock
- * request/response pair to capture the serialised metric text.
- */
+
 export async function getPrometheusMetrics(): Promise<string> {
   ensureInit();
   if (!_promExporter) return '';

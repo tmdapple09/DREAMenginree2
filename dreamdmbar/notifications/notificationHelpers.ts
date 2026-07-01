@@ -1,23 +1,6 @@
-/**
- * lib/notifications/notificationHelpers.ts
- *
- * Pure, side-effect-free helpers for the notification system.
- *
- * Architecture justification:
- *   - docs/AXIOMS.md: every visible action must do something real. The
- *     notification bell in HomeDreamSurface currently shows a fake static
- *     dot. These helpers are the pure logic layer that drives the real wiring.
- *   - docs/ARCHITECTURE.md §8: Gold = save/confirm/action; Light Blue = live
- *     state/connected state/signal state. A live notification count is exactly
- *     the "signal state" the design system intends.
- *   - docs/LAW.md §3: every visible action must do something real. A bell
- *     with a fake badge dot is not honesty-compliant.
- *
- * All functions in this file are pure (no side effects, no imports from
- * React, Next.js, or Supabase) so they can be unit-tested in isolation.
- */
 
-// DB row shape (mirrors what /api/notifications returns)
+
+
 
 export type DbNotificationContent = Record<string, unknown>;
 
@@ -25,22 +8,19 @@ export interface DbNotificationRow {
   id: string;
   user_id?: string;
   type: string;
-  /** Free-form JSON content — legacy name */
+  
   content?: DbNotificationContent | null;
-  /** Free-form JSON payload — current notifications table column */
+  
   data?: DbNotificationContent | null;
-  /** Current notifications table text column */
+  
   message?: string | null;
   read: boolean;
   created_at: string;
 }
 
-// UI notification shape (what the NotificationCenter consumes)
 
-/**
- * Canonical UI notification types that map to the design system icons.
- * 'other' is the safe fallback for any DB type not explicitly mapped.
- */
+
+
 export type UiNotificationType =
   | 'like'
   | 'comment'
@@ -62,9 +42,9 @@ export interface UiNotification {
   actionUrl?: string;
 }
 
-// Type mapping
 
-/** Map a raw DB type string to a canonical UI type. */
+
+
 export function mapNotificationType(dbType: string): UiNotificationType {
   const t = dbType.toLowerCase().trim();
   if (t === 'like')      return 'like';
@@ -78,9 +58,9 @@ export function mapNotificationType(dbType: string): UiNotificationType {
   return 'other';
 }
 
-// Title derivation
 
-/** Return a short, human-readable title for each notification type. */
+
+
 export function getNotificationTitle(type: UiNotificationType): string {
   switch (type) {
     case 'like':     return 'New Like';
@@ -95,18 +75,14 @@ export function getNotificationTitle(type: UiNotificationType): string {
   }
 }
 
-// Action URL derivation
 
-/**
- * Derive a navigation URL for a notification based on its type and content.
- * Returns `undefined` when no meaningful URL can be formed — callers must
- * guard against this before navigating.
- */
+
+
 export function getNotificationActionUrl(
   type: UiNotificationType,
   content: DbNotificationContent | null,
 ): string | undefined {
-  // Revenue always routes to /ads regardless of content
+  
   if (type === 'revenue') return '/ads';
 
   if (!content) return undefined;
@@ -136,7 +112,7 @@ export function getNotificationActionUrl(
       return undefined;
     }
     case 'remix': {
-      // Phase 9 §22: asset-aware notification — link to the remix in its Engin
+      
       const enginName = content.engin_name ?? content.engin;
       const assetId = content.asset_id ?? content.remix_id;
       if (typeof enginName === 'string' && enginName.trim() && typeof assetId === 'string' && assetId.trim()) {
@@ -160,22 +136,19 @@ export function getNotificationActionUrl(
   }
 }
 
-// Message text extraction
 
-/**
- * Extract a human-readable message string from a DB notification row.
- * Falls back gracefully when content is missing or malformed.
- */
+
+
 export function extractNotificationMessage(
   type: UiNotificationType,
   content: DbNotificationContent | null,
 ): string {
   if (content) {
-    // Prefer an explicit "message" field in the content blob
+    
     if (typeof content.message === 'string' && content.message.trim()) {
       return content.message.trim();
     }
-    // Derive a sensible fallback per type
+    
     const actor = content.actor_display_name ?? content.from_display_name ?? content.actor_handle ?? content.from_handle;
     const actorStr = typeof actor === 'string' && actor.trim() ? actor.trim() : 'Someone';
 
@@ -192,16 +165,13 @@ export function extractNotificationMessage(
     }
   }
 
-  // No content at all — absolute fallback
+  
   return 'You have a new notification.';
 }
 
-// Row → UI normalisation
 
-/**
- * Convert a raw Supabase `notifications` row into a typed `UiNotification`
- * ready for consumption by the NotificationCenter component.
- */
+
+
 export function normalizeDbRow(row: DbNotificationRow): UiNotification {
   const uiType   = mapNotificationType(row.type);
   const content: DbNotificationContent | null = row.data ?? row.content ?? (row.message ? { message: row.message } : null);
@@ -220,24 +190,21 @@ export function normalizeDbRow(row: DbNotificationRow): UiNotification {
   };
 }
 
-// Aggregate helpers
 
-/** Count unread notifications in a list. */
+
+
 export function getUnreadCount(notifications: UiNotification[]): number {
   return notifications.filter((n) => !n.read).length;
 }
 
-/** Sort notifications newest-first. Mutates a copy, does not mutate input. */
+
 export function sortByRecent(notifications: UiNotification[]): UiNotification[] {
   return [...notifications].sort(
     (a, b) => b.timestamp.getTime() - a.timestamp.getTime(),
   );
 }
 
-/**
- * Apply an optimistic read update — mark one notification as read locally.
- * Used by the hook before the API call resolves so the UI feels instant.
- */
+
 export function applyOptimisticRead(
   notifications: UiNotification[],
   id: string,
@@ -245,18 +212,14 @@ export function applyOptimisticRead(
   return notifications.map((n) => (n.id === id ? { ...n, read: true } : n));
 }
 
-/**
- * Apply an optimistic "mark all read" update.
- */
+
 export function applyOptimisticMarkAll(
   notifications: UiNotification[],
 ): UiNotification[] {
   return notifications.map((n) => ({ ...n, read: true }));
 }
 
-/**
- * Remove one notification by id (optimistic delete).
- */
+
 export function applyOptimisticDelete(
   notifications: UiNotification[],
   id: string,

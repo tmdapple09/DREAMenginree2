@@ -1,5 +1,5 @@
-// engin.auth — security/auth module
-// Real interface and type exports. No dream.* imports.
+
+
 
 export interface EnginSession {
   userId: string | null;

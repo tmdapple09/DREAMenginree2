@@ -5,11 +5,7 @@ import { useDreamSystem } from '@/dreamdmbar/runtime/DreamSystemContext';
 import { ArrowLeft, Eye, EyeOff, LayoutGrid, Loader2, Pin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-/**
- * WidgetsPanel — Dream widget management rendered in Surface Space.
- * Real client-side state with Supabase fetch for persisted widget config.
- * Back → openInSurface('settings'). No routing.
- */
+
 
 interface WidgetEntry { name: string; pinned: boolean; visible: boolean; }
 
@@ -40,7 +36,7 @@ export default function WidgetsPanel( ){
         }
       }
     } catch {
-      // use defaults
+      
     } finally {
       setLoading(false);
     }

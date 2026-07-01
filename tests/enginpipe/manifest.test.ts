@@ -1,8 +1,4 @@
-/**
- * tests/enginpipe/manifest.test.ts
- *
- * Unit tests for the generic Engin artifact manifest schema.
- */
+
 
 import { describe, it, expect } from 'vitest';
 import {

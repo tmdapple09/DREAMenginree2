@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Settings  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'Settings – Dreamengin' };
 
@@ -94,7 +94,7 @@ export default async function SettingsPage( ){
           <div style={{ flex: 1 }}>
             <h1 className="text-lg font-bold" style={{ color: 'var(--de-heading)', letterSpacing: '-0.02em' }}>Settings</h1>
           </div>
-          {/* Subtle brand wordmark */}
+          
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--de-gold)', opacity: 0.65 }}>DREAM</span>
         </div>
       </header>
@@ -108,7 +108,7 @@ export default async function SettingsPage( ){
           </div>
         )}
 
-        {/* Admin section */}
+        
         {isAdmin && (
           <div className="de-widget" style={{ background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(139,92,246,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
             <div className="de-widget-header" style={{ background: 'rgba(139,92,246,0.05)' }}>
@@ -130,7 +130,7 @@ export default async function SettingsPage( ){
           </div>
         )}
 
-        {/* Navigation groups */}
+        
         {NAV_GROUPS.map((group) => (
           <div key={group.heading} className="de-widget" style={{ background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(160,195,240,0.22)' }}>
             <div className="de-widget-header">
@@ -153,7 +153,7 @@ export default async function SettingsPage( ){
           </div>
         ))}
 
-        {/* Logout */}
+        
         <div className="de-widget" style={{ background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(220,68,68,0.15)' }}>
           <div className="de-widget-body" style={{ padding: '4px 6px' }}>
             <Link href="/api/auth/logout" className="de-row" style={{ borderRadius: 14, minHeight: 60 }}>

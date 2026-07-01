@@ -3,19 +3,7 @@ import { safeGetUser } from '@/supabase/client/safeGetUser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { type NextRequest, NextResponse } from 'next/server';
 
-/**
- * GET /api/posts/profile/[userId]
- *
- * Profile feed — returns up to 50 posts for a given user profile (spec §2).
- *
- * Composition:
- *   1. Up to 25 saved posts (permanent, user-curated), ordered by save date DESC.
- *   2. Remaining slots (up to 50 - saved_count) filled with the user's most
- *      recent ephemeral posts, excluding any already present in the saved set.
- *
- * Visibility rules: if the requesting viewer is NOT in the profile owner's
- * close-friends list, close_friends posts are hidden.
- */
+
 
 export async function GET(
   _request: NextRequest,
@@ -57,7 +45,7 @@ export async function GET(
     const postRaw = row.app_posts;
     const post = (Array.isArray(postRaw) ? postRaw[0] : postRaw) as PostJoin | null;
     if (!post) continue;
-    // Apply visibility filter
+    
     if (post.post_visibility === 'close_friends' && !isOwner && !isCloseFriend) continue;
     savedSet.add(String(post.id));
     savedPosts.push({ ...post, is_saved: true });
@@ -72,7 +60,7 @@ export async function GET(
       .select('*, profiles!inner(id, handle, display_name, avatar_url)')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
-      .limit(ephemeralSlots + savedSet.size); // over-fetch to account for exclusions
+      .limit(ephemeralSlots + savedSet.size); 
 
     for (const post of ephemeralRows ?? []) {
       if (savedSet.has(post.id)) continue;

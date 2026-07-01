@@ -2,9 +2,9 @@
 
 import type { WidgetTypeDef } from '@/engine/widgets/widgetRegistry';
 
-// components/connectors/dream.NoSlotDialog.tsx
-// When no empty slot is available: "Place now" vs "Later" (req 33)
-// No forced edit mode (req 33)
+
+
+
 
 export interface NoSlotDialogProps {
   widget: WidgetTypeDef;

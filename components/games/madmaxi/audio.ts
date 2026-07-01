@@ -37,16 +37,16 @@ const CUE_SHAPES: Record<MadmaxiAudioCue, { offset: number; duration: number; sl
   hurt: { offset: -15, duration: 0.16, slide: 0.82, volumeScale: 1.3 },
 };
 
-// Each zone theme drives a layered synth loop: bass drone, arpeggio, and rhythm.
-// The sequence repeats every 4 bars (≈ 8 s at 120 BPM).
-const BGM_BPM = 120;
-const BGM_BAR_SECONDS = (60 / BGM_BPM) * 4; // 4 beats per bar = 2 s
-const BGM_LOOP_BARS = 4;                     // 4 bars per loop cycle
-const BGM_LOOP_SECONDS = BGM_BAR_SECONDS * BGM_LOOP_BARS; // 8 s
 
-/** Semitone offsets for the arpeggio pattern (minor-feel sequence) */
+
+const BGM_BPM = 120;
+const BGM_BAR_SECONDS = (60 / BGM_BPM) * 4; 
+const BGM_LOOP_BARS = 4;                     
+const BGM_LOOP_SECONDS = BGM_BAR_SECONDS * BGM_LOOP_BARS; 
+
+
 const ARP_PATTERN = [0, 3, 7, 12, 7, 3, 0, -5];
-/** Rhythm hits per bar: indices (0-7) within 8 sub-divisions */
+
 const RHYTHM_HITS = [0, 2, 3, 5, 6];
 
 export class MadmaxiAudioController {
@@ -58,7 +58,7 @@ export class MadmaxiAudioController {
 
   setTheme(theme: string | undefined) {
     if (theme && AUDIO_PROFILES[theme]) this.theme = theme;
-    // If BGM is already running, the new theme will take effect on the next loop
+    
   }
 
   dispose() {
@@ -74,11 +74,11 @@ export class MadmaxiAudioController {
 
     this.bgmGain = this.ctx.createGain();
     this.bgmGain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
-    // Fade in over 1 s
+    
     this.bgmGain.gain.exponentialRampToValueAtTime(1, this.ctx.currentTime + 1);
     this.bgmGain.connect(this.ctx.destination);
 
-    // Schedule the first loop immediately, then repeat
+    
     this.scheduleBGMLoop();
     this.bgmTimer = setInterval(() => {
       if (!this.bgmActive) return;
@@ -97,7 +97,7 @@ export class MadmaxiAudioController {
         const now = this.ctx.currentTime;
         this.bgmGain.gain.setValueAtTime(this.bgmGain.gain.value, now);
         this.bgmGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
-      } catch { /* ok */ }
+      } catch {  }
     }
     this.bgmGain = null;
   }
@@ -111,7 +111,7 @@ export class MadmaxiAudioController {
       if (this.ctx.state === 'suspended') {
         void this.ctx.resume().catch(() => undefined);
       }
-    } catch { /* ignore */ }
+    } catch {  }
   }
 
   private scheduleBGMLoop() {
@@ -128,7 +128,7 @@ export class MadmaxiAudioController {
       slide: 1.002,
     });
 
-    const eighthNote = BGM_BAR_SECONDS / 2; // duration of an 8th note
+    const eighthNote = BGM_BAR_SECONDS / 2; 
     for (let bar = 0; bar < BGM_LOOP_BARS; bar++) {
       for (let step = 0; step < ARP_PATTERN.length; step++) {
         const semitone = ARP_PATTERN[step];
@@ -188,7 +188,7 @@ export class MadmaxiAudioController {
       gain.connect(this.bgmGain);
       osc.start(opts.startTime);
       osc.stop(opts.startTime + opts.duration + 0.02);
-    } catch { /* ignore */ }
+    } catch {  }
   }
 
   playCue(cue: MadmaxiAudioCue) {
@@ -217,7 +217,7 @@ export class MadmaxiAudioController {
       osc.start(now);
       osc.stop(now + shape.duration + 0.02);
     } catch {
-      // Ignore browsers that reject autoplay or audio context creation.
+      
     }
   }
 }

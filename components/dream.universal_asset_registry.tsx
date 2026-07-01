@@ -39,40 +39,11 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toErrorMessage } from "@/utils/index";
 
-/**
- * UniversalAssetRegistry — Platform-wide asset discovery and management surface.
- *
- * The Universal Asset Registry (UAR) is the single UI surface for viewing,
- * searching, filtering, managing, and inspecting every object registered in
- * the Global Association Layer (GAL) — the "Everything to Everything" hub.
- *
- * Data sources:
- *   - global_registry  — the GAL hub (object_type, internal_id, label, owner_id)
- *   - game_assets      — enriched data for game_asset entries (mesh, rig, DNA)
- *   - control_mappings — input bindings attached to assets
- *
- * Capabilities:
- *   1. Dashboard — aggregate counts by object type, total assets, recent activity
- *   2. Search & Filter — full-text search + category tabs + sort options
- *   3. Asset Grid — type-aware cards with icons, labels, timestamps
- *   4. Detail Panel — expandable per-asset: DNA viewer, bindings, image, metadata
- *   5. CRUD — register new assets via GAL API, edit labels, delete entries
- *   6. Control Mapping Viewer — shows joystick/button bindings per game_asset
- *   7. Realtime — Supabase channel subscription for live registry updates
- *   8. Forge Integration — records activity pulses for the Forge dashboard
- *
- * Security:
- *   - All queries filter by auth.uid() (defence-in-depth on top of RLS).
- *   - owner_id is never accepted from client input for writes.
- *   - GAL sync delegates to POST /api/gal which resolves owner from session.
- *
- * Architecture: docs/ARCHITECTURE.md §3 — component layer.
- * Naming: docs/NAMING_AUTHORITY.md — uses canonical vocabulary throughout.
- */
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 
-/** A row from the global_registry table (GAL hub). */
+
+
+
 export interface RegistryEntry {
   id: string;
   object_type: string;
@@ -82,7 +53,7 @@ export interface RegistryEntry {
   created_at: string;
 }
 
-/** A row from game_assets — enriched asset data. */
+
 export interface GameAssetRow {
   id: string;
   owner_id: string;
@@ -96,7 +67,7 @@ export interface GameAssetRow {
   updated_at: string;
 }
 
-/** A row from control_mappings — input bindings. */
+
 export interface ControlMapping {
   id: string;
   asset_id: string;
@@ -108,21 +79,21 @@ export interface ControlMapping {
   updated_at: string;
 }
 
-/** Enriched registry entry with optional game_asset detail and bindings. */
+
 export interface EnrichedEntry extends RegistryEntry {
   gameAsset?: GameAssetRow;
   bindings?: ControlMapping[];
 }
 
-/** Sort options for the registry list. */
+
 type SortMode = "newest" | "oldest" | "alphabetical" | "type";
 
-/** View mode for the asset grid. */
+
 type ViewMode = "grid" | "list";
 
-const ACCENT = "#c8981a"; // Gold — canonical DREAMengin premium accent
+const ACCENT = "#c8981a"; 
 
-/** Known object types and their visual metadata. */
+
 const TYPE_META: Record<
   string,
   { icon: React.ReactNode; color: string; label: string }
@@ -202,11 +173,11 @@ function formatTimestamp(iso: string): string {
 }
 
 export interface UniversalAssetRegistryProps {
-  /** Optional compact mode — hides the header and reduces padding. */
+  
   compact?: boolean;
-  /** Optional accent color override. */
+  
   accentColor?: string;
-  /** Optional callback when an asset is selected (for embedding in other surfaces). */
+  
   onSelectAsset?: (entry: EnrichedEntry) => void;
 }
 
@@ -260,7 +231,7 @@ export default function UniversalAssetRegistry({
         return;
       }
 
-      // Fetch all registry entries for this user
+      
       const { data: registryData, error: registryError } = await supabase
         .from("global_registry")
         .select("*")
@@ -276,7 +247,7 @@ export default function UniversalAssetRegistry({
 
       const raw = (registryData ?? []) as RegistryEntry[];
 
-      // Fetch game_assets for enrichment (only for game_asset type entries)
+      
       const gameAssetIds = raw
         .filter((e) => e.object_type === "game_asset")
         .map((e) => e.internal_id);
@@ -294,7 +265,7 @@ export default function UniversalAssetRegistry({
         }
       }
 
-      // Fetch control_mappings for game_assets
+      
       const bindingsMap: Record<string, ControlMapping[]> = {};
       if (gameAssetIds.length > 0) {
         const { data: cmData } = await supabase
@@ -310,7 +281,7 @@ export default function UniversalAssetRegistry({
         }
       }
 
-      // Enrich entries
+      
       const enriched: EnrichedEntry[] = raw.map((entry) => ({
         ...entry,
         gameAsset:
@@ -346,7 +317,7 @@ export default function UniversalAssetRegistry({
         "postgres_changes",
         { event: "*", schema: "public", table: "global_registry" },
         () => {
-          // Re-fetch on any registry change for this session
+          
           fetchRegistry(true);
         },
       )
@@ -371,12 +342,12 @@ export default function UniversalAssetRegistry({
   const filteredEntries = useMemo(() => {
     let result = entries;
 
-    // Category filter
+    
     if (activeCategory) {
       result = result.filter((e) => e.object_type === activeCategory);
     }
 
-    // Search filter
+    
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -387,7 +358,7 @@ export default function UniversalAssetRegistry({
       );
     }
 
-    // Sort
+    
     switch (sortMode) {
       case "newest":
         result = [...result].sort(
@@ -609,7 +580,7 @@ export default function UniversalAssetRegistry({
           boxShadow: isExpanded ? `0 4px 24px ${meta.color}12` : "none",
         }}
       >
-        {/* Card header */}
+        
         <div
           style={{
             padding: "14px 16px",
@@ -633,7 +604,7 @@ export default function UniversalAssetRegistry({
             }
           }}
         >
-          {/* Type icon */}
+          
           <div
             style={{
               width: 40,
@@ -651,7 +622,7 @@ export default function UniversalAssetRegistry({
             {meta.icon}
           </div>
 
-          {/* Label / editing */}
+          
           <div style={{ flex: 1, minWidth: 0 }}>
             {isEditing ? (
               <div
@@ -780,7 +751,7 @@ export default function UniversalAssetRegistry({
             )}
           </div>
 
-          {/* Actions */}
+          
           <div
             style={{ display: "flex", gap: 4, flexShrink: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -855,7 +826,7 @@ export default function UniversalAssetRegistry({
           </div>
         </div>
 
-        {/* Expanded detail panel */}
+        
         {isExpanded && (
           <div
             style={{
@@ -863,7 +834,7 @@ export default function UniversalAssetRegistry({
               borderTop: `1px solid ${meta.color}15`,
             }}
           >
-            {/* Metadata grid */}
+            
             <div
               style={{
                 display: "grid",
@@ -872,7 +843,7 @@ export default function UniversalAssetRegistry({
                 marginTop: 14,
               }}
             >
-              {/* ID */}
+              
               <div style={detailFieldStyle}>
                 <div style={detailLabelStyle}>
                   <Hash className="w-3 h-3" /> Registry ID
@@ -882,7 +853,7 @@ export default function UniversalAssetRegistry({
                 </div>
               </div>
 
-              {/* Internal ID */}
+              
               <div style={detailFieldStyle}>
                 <div style={detailLabelStyle}>
                   <DatabaseIcon className="w-3 h-3" /> Internal ID
@@ -892,7 +863,7 @@ export default function UniversalAssetRegistry({
                 </div>
               </div>
 
-              {/* Object Type */}
+              
               <div style={detailFieldStyle}>
                 <div style={detailLabelStyle}>
                   <Tag className="w-3 h-3" /> Type
@@ -900,7 +871,7 @@ export default function UniversalAssetRegistry({
                 <div style={detailValueStyle}>{entry.object_type}</div>
               </div>
 
-              {/* Created */}
+              
               <div style={detailFieldStyle}>
                 <div style={detailLabelStyle}>
                   <Clock className="w-3 h-3" /> Registered
@@ -917,7 +888,7 @@ export default function UniversalAssetRegistry({
               </div>
             </div>
 
-            {/* Game Asset enrichment */}
+            
             {entry.gameAsset && (
               <div style={{ marginTop: 14 }}>
                 <div
@@ -1004,7 +975,7 @@ export default function UniversalAssetRegistry({
                   </div>
                 </div>
 
-                {/* DNA Viewer */}
+                
                 {entry.gameAsset.config_dna != null && (
                   <div style={{ marginTop: 10 }}>
                     <div
@@ -1046,7 +1017,7 @@ export default function UniversalAssetRegistry({
               </div>
             )}
 
-            {/* Control Mappings */}
+            
             {entry.bindings && entry.bindings.length > 0 && (
               <div style={{ marginTop: 14 }}>
                 <div
@@ -1148,7 +1119,7 @@ export default function UniversalAssetRegistry({
         margin: "0 auto",
       }}
     >
-      {/* ── Header ────────────────────────────────────────────────────────── */}
+      
       {!compact && (
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -1194,7 +1165,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Error banner ──────────────────────────────────────────────────── */}
+      
       {error && (
         <div
           style={{
@@ -1229,7 +1200,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Stats dashboard ───────────────────────────────────────────────── */}
+      
       {!loading && entries.length > 0 && (
         <div
           style={{
@@ -1278,7 +1249,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Toolbar: Search + Filter + Actions ────────────────────────────── */}
+      
       <div
         style={{
           display: "flex",
@@ -1288,7 +1259,7 @@ export default function UniversalAssetRegistry({
           alignItems: "center",
         }}
       >
-        {/* Search */}
+        
         <div
           style={{
             flex: "1 1 220px",
@@ -1336,7 +1307,7 @@ export default function UniversalAssetRegistry({
           )}
         </div>
 
-        {/* Sort selector */}
+        
         <select
           value={sortMode}
           onChange={(e) => setSortMode(e.target.value as SortMode)}
@@ -1358,7 +1329,7 @@ export default function UniversalAssetRegistry({
           <option value="type">By Type</option>
         </select>
 
-        {/* View toggle */}
+        
         <div
           style={{
             display: "flex",
@@ -1408,7 +1379,7 @@ export default function UniversalAssetRegistry({
           </button>
         </div>
 
-        {/* Filter toggle */}
+        
         <button
           onClick={() => setShowFilters(!showFilters)}
           style={{
@@ -1431,7 +1402,7 @@ export default function UniversalAssetRegistry({
           <Filter className="w-3.5 h-3.5" /> Filter
         </button>
 
-        {/* Refresh */}
+        
         <button
           onClick={() => fetchRegistry(true)}
           disabled={refreshing}
@@ -1455,7 +1426,7 @@ export default function UniversalAssetRegistry({
           />
         </button>
 
-        {/* Register new */}
+        
         <button
           onClick={() => {
             setShowRegister(!showRegister);
@@ -1480,7 +1451,7 @@ export default function UniversalAssetRegistry({
         </button>
       </div>
 
-      {/* ── Category tabs ─────────────────────────────────────────────────── */}
+      
       {showFilters && categories.length > 0 && (
         <div
           style={{
@@ -1494,7 +1465,7 @@ export default function UniversalAssetRegistry({
             border: "1px solid var(--de-border, rgba(0,0,0,0.08))",
           }}
         >
-          {/* All */}
+          
           <button
             onClick={() => setActiveCategory(null)}
             style={{
@@ -1545,7 +1516,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Register new asset form ───────────────────────────────────────── */}
+      
       {showRegister && (
         <div
           style={{
@@ -1676,7 +1647,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Loading state ─────────────────────────────────────────────────── */}
+      
       {loading && (
         <div
           style={{
@@ -1704,7 +1675,7 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Empty state ───────────────────────────────────────────────────── */}
+      
       {!loading && filteredEntries.length === 0 && (
         <div
           style={{
@@ -1770,10 +1741,10 @@ export default function UniversalAssetRegistry({
         </div>
       )}
 
-      {/* ── Asset grid / list ─────────────────────────────────────────────── */}
+      
       {!loading && filteredEntries.length > 0 && (
         <>
-          {/* Result count */}
+          
           <div
             style={{
               fontSize: 11,

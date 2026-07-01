@@ -1,11 +1,4 @@
-/**
- * tests/neural-seam-flow.test.ts
- *
- * Unit tests for lib/dreamdm/bridgeSeamFlow.ts
- *
- * All functions are pure (no browser APIs, no React), so these run
- * in the standard Vitest Node environment without any mocks.
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -25,7 +18,7 @@ beforeEach(() => {
   _resetIdCounter();
 });
 
-// ── channelColor ──────────────────────────────────────────────────────────────
+
 
 describe('channelColor()', () => {
   it('returns the canonical hex for known channels', () => {
@@ -49,7 +42,7 @@ describe('channelColor()', () => {
   });
 });
 
-// ── createSeamParticle ────────────────────────────────────────────────────────
+
 
 describe('createSeamParticle()', () => {
   it('assigns the correct color for the channel', () => {
@@ -69,7 +62,7 @@ describe('createSeamParticle()', () => {
   });
 
   it('starts within the middle horizontal zone (x ∈ [0.2, 0.8])', () => {
-    // Run many times to statistically confirm.
+    
     for (let i = 0; i < 50; i++) {
       const p = createSeamParticle('lab');
       expect(p.x).toBeGreaterThanOrEqual(0.2);
@@ -83,7 +76,7 @@ describe('createSeamParticle()', () => {
   });
 
   it('assigns a positive horizontal velocity', () => {
-    // vx must be nonzero (moves left or right).
+    
     for (let i = 0; i < 20; i++) {
       const p = createSeamParticle('code');
       expect(Math.abs(p.vx)).toBeGreaterThan(0);
@@ -105,7 +98,7 @@ describe('createSeamParticle()', () => {
   });
 });
 
-// ── createIdleParticle ────────────────────────────────────────────────────────
+
 
 describe('createIdleParticle()', () => {
   it('starts at the given x position', () => {
@@ -138,7 +131,7 @@ describe('createIdleParticle()', () => {
   });
 });
 
-// ── tickParticles ─────────────────────────────────────────────────────────────
+
 
 describe('tickParticles()', () => {
   it('advances age proportionally to dt / lifespanMs', () => {
@@ -167,13 +160,13 @@ describe('tickParticles()', () => {
     p.age = 1;
     const startX = p.x;
     tickParticles([p], 200);
-    // x should not change when age is already 1
+    
     expect(p.x).toBe(startX);
   });
 
   it('reduces alpha in the last 40% of life', () => {
     const p = createSeamParticle('brand');
-    // Set age to 80% → in the fade window.
+    
     p.age = 0;
     tickParticles([p], p.lifespanMs * 0.8);
     expect(p.alpha).toBeLessThan(1);
@@ -184,13 +177,13 @@ describe('tickParticles()', () => {
     const particles: SeamParticle[] = [createSeamParticle('code'), createSeamParticle('music')];
     const refs = particles.map((p) => p);
     tickParticles(particles, 16);
-    // Same object references.
+    
     expect(particles[0]).toBe(refs[0]);
     expect(particles[1]).toBe(refs[1]);
   });
 });
 
-// ── isParticleDead ────────────────────────────────────────────────────────────
+
 
 describe('isParticleDead()', () => {
   it('returns false for a fresh particle', () => {
@@ -223,13 +216,13 @@ describe('isParticleDead()', () => {
   });
 });
 
-// ── evictDeadParticles ────────────────────────────────────────────────────────
+
 
 describe('evictDeadParticles()', () => {
   it('removes expired particles', () => {
     const a = createSeamParticle('code');
     const b = createSeamParticle('music');
-    b.age = 1; // dead
+    b.age = 1; 
     const result = evictDeadParticles([a, b]);
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe(a.id);

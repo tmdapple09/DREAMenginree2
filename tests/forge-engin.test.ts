@@ -1,13 +1,8 @@
-/**
- * ForgeEngin Tests
- *
- * Tests for the ForgeEngin meta-creation engine registry, activity pulse system,
- * and integration wiring.
- */
+
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
-// ── Mock localStorage (test environment is 'node', no browser globals) ───────
+
 const localStorageStore: Record<string, string> = {};
 const localStorageMock = {
   getItem: (key: string) => localStorageStore[key] ?? null,
@@ -30,7 +25,7 @@ import {
   type ForgeActivityPulse,
 } from '@/engins/forgeengin/forge/forgeRegistry';
 
-// ── Registry tests ────────────────────────────────────────────────────────────
+
 
 describe('ENGIN_REGISTRY', () => {
   it('contains 7 entries (6 creative + forge)', () => {
@@ -51,8 +46,8 @@ describe('ENGIN_REGISTRY', () => {
       expect(entry.emoji).toBeTruthy();
       expect(entry.accent).toMatch(/^#/);
       expect(entry.desc).toBeTruthy();
-      expect(entry.daydreamHref).toMatch(/^\//);
-      expect(entry.enginHref).toMatch(/^\//);
+      expect(entry.daydreamHref).toMatch(/^\
+      expect(entry.enginHref).toMatch(/^\
       expect(entry.capabilities.length).toBeGreaterThan(0);
     }
   });
@@ -88,11 +83,11 @@ describe('CREATIVE_ENGINES', () => {
   });
 });
 
-// ── Activity Pulse tests ──────────────────────────────────────────────────────
+
 
 describe('Forge Activity Pulse', () => {
   beforeEach(() => {
-    // Clear localStorage before each test
+    
     localStorage.clear();
   });
 
@@ -125,20 +120,20 @@ describe('Forge Activity Pulse', () => {
   });
 
   it('heat decays over time', () => {
-    // Record activity in the past
-    const pastTime = new Date(Date.now() - 15 * 60 * 1000).toISOString(); // 15 min ago
+    
+    const pastTime = new Date(Date.now() - 15 * 60 * 1000).toISOString(); 
     localStorage.setItem('de:forge:activity', JSON.stringify({
       games: { enginId: 'games', lastActive: pastTime, heat: 1.0, label: 'test' },
     }));
     const activity = readForgeActivity();
     expect(activity[0].heat).toBeGreaterThan(0);
     expect(activity[0].heat).toBeLessThan(1);
-    // 15 min = half of 30 min decay → heat should be ~0.5
+    
     expect(activity[0].heat).toBeCloseTo(0.5, 1);
   });
 
   it('heat reaches 0 after 30 minutes', () => {
-    const pastTime = new Date(Date.now() - 31 * 60 * 1000).toISOString(); // 31 min ago
+    const pastTime = new Date(Date.now() - 31 * 60 * 1000).toISOString(); 
     localStorage.setItem('de:forge:activity', JSON.stringify({
       games: { enginId: 'games', lastActive: pastTime, heat: 1.0, label: 'test' },
     }));
@@ -149,7 +144,7 @@ describe('Forge Activity Pulse', () => {
   it('fresh activity has heat 1.0', () => {
     recordForgeActivity('music', 'Beat drop');
     const activity = readForgeActivity();
-    // Heat should be very close to 1.0 (just recorded)
+    
     expect(activity[0].heat).toBeGreaterThan(0.99);
   });
 });
@@ -171,7 +166,7 @@ describe('getForgeHeat', () => {
   });
 });
 
-// ── formatRelativeTime tests ──────────────────────────────────────────────────
+
 
 describe('formatRelativeTime', () => {
   it('returns "just now" for recent timestamps', () => {
@@ -195,7 +190,7 @@ describe('formatRelativeTime', () => {
   });
 });
 
-// ── Integration wiring tests ──────────────────────────────────────────────────
+
 
 describe('ForgeEngin integration wiring', () => {
   it('ForgeEngin is listed in ENGIN_REGISTRY with correct accent', () => {
@@ -211,8 +206,8 @@ describe('ForgeEngin integration wiring', () => {
 
   it('every creative engine has daydream and engin routes', () => {
     for (const engine of CREATIVE_ENGINES) {
-      expect(engine.daydreamHref).toMatch(/^\/daydream\//);
-      expect(engine.enginHref).toMatch(/^\/engines\//);
+      expect(engine.daydreamHref).toMatch(/^\/daydream\
+      expect(engine.enginHref).toMatch(/^\/engines\
     }
   });
 
@@ -223,7 +218,7 @@ describe('ForgeEngin integration wiring', () => {
   });
 });
 
-// ── FORGE_WORKFLOWS tests ─────────────────────────────────────────────────────
+
 
 describe('FORGE_WORKFLOWS', () => {
   it('has at least 3 workflows', () => {
@@ -263,7 +258,7 @@ describe('FORGE_WORKFLOWS', () => {
   });
 });
 
-// ── useForgeActivity hook unit test (non-React) ───────────────────────────────
+
 
 describe('useForgeActivity integration', () => {
   beforeEach(() => {
@@ -290,7 +285,7 @@ describe('useForgeActivity integration', () => {
   });
 });
 
-// ── Forge Intelligence Tests ──────────────────────────────────────────────────
+
 
 import {
   appendForgeHistory,
@@ -371,7 +366,7 @@ describe('Pattern Prediction', () => {
     const predicted = predictNextEngines('music', history);
     expect(predicted.length).toBeGreaterThan(0);
     expect(predicted[0].engine.id).toBe('create');
-    expect(predicted[0].confidence).toBe(1); // 100% music→create
+    expect(predicted[0].confidence).toBe(1); 
   });
 
   it('predictNextEngines ranks by frequency', () => {
@@ -597,10 +592,10 @@ describe('Failure Recovery', () => {
     const workflow = FORGE_WORKFLOWS.find((w) => w.id === 'music-video')!;
     const recovery = getFailureRecovery(failedStep, workflow);
     expect(recovery.length).toBeGreaterThan(0);
-    // Should have retry suggestion
+    
     const retry = recovery.find((s) => s.title.includes('Retry'));
     expect(retry).toBeDefined();
-    // Should have skip suggestion (if not last step)
+    
     if (workflow.steps.length > 1) {
       const skip = recovery.find((s) => s.title.includes('Skip'));
       expect(skip).toBeDefined();
@@ -608,7 +603,7 @@ describe('Failure Recovery', () => {
   });
 });
 
-// ── Cross-Engine Transfer Integration Tests ──────────────────────────────────
+
 
 describe('Cross-Engine Transfer System', () => {
   beforeEach(() => localStorage.clear());
@@ -692,7 +687,7 @@ describe('Cross-Engine Transfer System', () => {
   });
 });
 
-// ── Forge Activity Coverage Tests ─────────────────────────────────────────────
+
 
 describe('Forge Activity Coverage — all engines record activity', () => {
   beforeEach(() => localStorage.clear());
@@ -714,11 +709,11 @@ describe('Forge Activity Coverage — all engines record activity', () => {
     recordForgeActivity('games', 'Saved script');
     recordForgeActivity('games', 'Shared score');
     recordForgeActivity('games', 'Created room');
-    // Pulse: only latest
+    
     const pulse = readForgeActivity();
     expect(pulse).toHaveLength(1);
     expect(pulse[0].label).toBe('Created room');
-    // History: all 4
+    
     const history = readForgeHistory();
     expect(history.length).toBe(4);
     expect(history.map((h) => h.label)).toEqual([
@@ -759,7 +754,7 @@ describe('Forge Activity Coverage — all engines record activity', () => {
   });
 
   it('cross-engine flow: music export → game usage appears in suggestions', () => {
-    // Simulate music→games flow
+    
     recordForgeActivity('music', 'Exported stems');
     recordForgeActivity('games', 'Started lobby game');
     recordForgeActivity('music', 'Exported stems');
@@ -770,7 +765,7 @@ describe('Forge Activity Coverage — all engines record activity', () => {
     const predicted = predictNextEngines('music', history);
     expect(predicted.length).toBeGreaterThan(0);
     expect(predicted[0].engine.id).toBe('games');
-    expect(predicted[0].confidence).toBe(1); // 100% music→games
+    expect(predicted[0].confidence).toBe(1); 
   });
 
   it('cross-engine flow: lab export → code appears in predictions', () => {

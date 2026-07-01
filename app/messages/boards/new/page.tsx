@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-// SURFACE: dreamsurface.MessagesBoardsNew  (framework-mandated basename: page.tsx)
+
 
 export default function NewBoardPage( ){
   const [title, setTitle] = useState('');

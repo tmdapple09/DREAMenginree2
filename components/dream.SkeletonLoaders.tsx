@@ -1,11 +1,6 @@
 'use client';
 
-/**
- * SkeletonLoaders — branded shimmer skeletons matching DREAMengin glass design system.
- *
- * Uses CSS-only shimmer via the de-skeleton class defined in styles/globals.css.
- * Architecture: THEME.md (Gold=action · Sky-blue=connected · White=clarity)
- */
+
 
 export function FeedCardSkeleton( ){
   return (
@@ -21,7 +16,7 @@ export function FeedCardSkeleton( ){
       }}
     >
       <div style={{ padding: '20px' }}>
-        {/* Author row skeleton */}
+        
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
           <div
             className="de-skeleton"
@@ -39,14 +34,14 @@ export function FeedCardSkeleton( ){
           </div>
         </div>
 
-        {/* Content skeleton */}
+        
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
           <div className="de-skeleton" style={{ width: '100%', height: 12, borderRadius: 6 }} />
           <div className="de-skeleton" style={{ width: '85%', height: 12, borderRadius: 6 }} />
           <div className="de-skeleton" style={{ width: '65%', height: 12, borderRadius: 6 }} />
         </div>
 
-        {/* Image skeleton */}
+        
         <div
           className="de-skeleton"
           style={{
@@ -57,7 +52,7 @@ export function FeedCardSkeleton( ){
           }}
         />
 
-        {/* Action buttons skeleton */}
+        
         <div style={{ display: 'flex', gap: 12 }}>
           <div className="de-skeleton" style={{ width: 72, height: 32, borderRadius: 999 }} />
           <div className="de-skeleton" style={{ width: 72, height: 32, borderRadius: 999 }} />

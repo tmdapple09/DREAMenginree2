@@ -3,21 +3,7 @@ import type { UnifiedFeedItem } from '@/types/connector';
 import { NextRequest, NextResponse } from 'next/server';
 import { toErrorMessage } from '@/utils/index';
 
-/**
- * GET /api/youtube/channel
- *
- * Returns more videos from a YouTube channel (by channel name) and/or
- * similar videos on a topic. Powers the DreamRChannelPanel swipe-left surface.
- *
- * Query params:
- *   channel  — channel display name / title to search for (required)
- *   topic    — optional topic query to also include (e.g. "world news")
- *   max      — items per bucket (default 8, capped at 15)
- *
- * Response: { ok: true, channelVideos: UnifiedFeedItem[], similarVideos: UnifiedFeedItem[] }
- *
- * AXIOM 4 — Security by Default: API key stays server-side; never returned.
- */
+
 
 export interface YouTubeChannelResponse {
   ok: boolean;
@@ -31,8 +17,8 @@ export interface YouTubeChannelResponse {
 export async function GET(req: NextRequest): Promise<NextResponse<YouTubeChannelResponse>> {
   const apiKey = getYouTubeApiKey();
   if (!apiKey) {
-    // Optional integration not configured — graceful degradation, not an outage.
-    // Consumers branch on `ok`; emitting 5xx here would create false monitoring alarms.
+    
+    
     return NextResponse.json(
       { ok: false, channelVideos: [], similarVideos: [], channel: '', topic: '', error: 'YOUTUBEAPI is not configured.' },
       { status: 200 },
@@ -53,13 +39,13 @@ export async function GET(req: NextRequest): Promise<NextResponse<YouTubeChannel
   }
 
   try {
-    // Fetch in parallel: more from same channel + similar topic
+    
     const [channelVideos, similarVideos] = await Promise.all([
       channel ? youtubeSearchByQuery(apiKey, channel, max) : Promise.resolve<UnifiedFeedItem[]>([]),
       topic   ? youtubeSearchByQuery(apiKey, topic,   max) : Promise.resolve<UnifiedFeedItem[]>([]),
     ]);
 
-    // Deduplicate similarVideos against channelVideos
+    
     const channelIds = new Set(channelVideos.map((v) => v.external_id));
     const uniqueSimilar = similarVideos.filter((v) => !channelIds.has(v.external_id));
 

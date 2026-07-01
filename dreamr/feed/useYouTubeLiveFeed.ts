@@ -5,44 +5,20 @@ import type { FeedPost } from '@/dreamr/feed/useLiveFeed';
 import type { UnifiedFeedItem } from '@/types/connector';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * lib/feed/useYouTubeLiveFeed.ts
- *
- * Sliding-window YouTube live feed for the HomeFeed.
- *
- * Behaviour:
- *  - On mount: fetches 7 videos from each of 3 curated queries in parallel
- *    ('weed', 'world news', 'neil degrasse tyson'), interleaves and deduplicates
- *    them, then caps to 20 items.
- *  - Every 15 seconds (auto, always on): rotates to the next query, fetches up
- *    to 3 new videos, prepends the first unseen one, and drops the oldest item
- *    to keep the list at ≤ 20.
- *  - refresh() triggers an immediate fetch cycle outside the normal schedule.
- *  - nextRefreshIn counts down 15 → 0, resetting after each refresh.
- *
- * Architecture:
- *  - lib/ layer only — no DB calls; YouTube API proxied through
- *    /api/youtube/live-feed so the API key stays server-side.
- *  - Returns FeedPost[] matching the connector item contract already used by
- *    HomeFeed so YouTube cards render with zero additional template code.
- */
+
 
 const FEED_MAX = 30;
 const REFRESH_INTERVAL_DEFAULT_S = 15;
 const REFRESH_INTERVAL_ALL_S = 10;
 
-/**
- * These queries are always fetched on init regardless of the user's saved
- * topic settings, so world news (English), popular videos, and music are
- * always represented in the feed.
- */
+
 const ENRICHMENT_QUERIES: string[] = [
   'world news today',
   'popular music videos 2024',
   'trending videos',
 ];
 
-/** Convert a UnifiedFeedItem (YouTube) → FeedPost so HomeFeed can render it. */
+
 function ytItemToFeedPost(item: UnifiedFeedItem): FeedPost {
   const thumbnail =
     item.media.length > 0
@@ -95,8 +71,8 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
   const [ytPosts, setYtPosts] = useState<FeedPost[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Read active topic queries from localStorage on mount; re-read on each cycle
-  // so settings changes propagate without a full page reload.
+  
+  
   const getQueries = useCallback((): string[] => {
     const ids = loadActiveTopicIds();
     const queries = topicIdsToQueries(ids);
@@ -121,8 +97,8 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
       setIsRefreshing(true);
       try {
         const queries = getQueries();
-        // Always include enrichment queries (world news, popular videos, music)
-        // so they appear regardless of user topic settings; dedup later.
+        
+        
         const allQueries = [
           ...queries,
           ...ENRICHMENT_QUERIES.filter((q) => !queries.includes(q)),
@@ -132,7 +108,7 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
         );
         if (!mountedRef.current) return;
 
-        // Interleave: take 1 from each batch in turn so all queries appear early
+        
         const interleaved: UnifiedFeedItem[] = [];
         const maxLen = Math.max(...results.map((r) => r.length));
         for (let i = 0; i < maxLen; i++) {
@@ -141,7 +117,7 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
           }
         }
 
-        // Deduplicate and cap
+        
         const posts: FeedPost[] = [];
         const seen = new Set<string>();
         for (const item of interleaved) {
@@ -154,7 +130,7 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
 
         setYtPosts(posts);
       } catch {
-        // Graceful degradation — no API key or network error
+        
       } finally {
         if (mountedRef.current) setIsRefreshing(false);
       }
@@ -179,7 +155,7 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
 
       const items = await fetchYtQuery(query, 3);
 
-      // Find the first video we haven't shown yet
+      
       const newItem = items.find((it) => !seenIdsRef.current.has(it.external_id));
       if (!newItem) return;
 
@@ -190,16 +166,16 @@ export function useYouTubeLiveFeed(): UseYouTubeLiveFeedReturn {
         setYtPosts((prev) => {
           const next = [newPost, ...prev];
           if (next.length > FEED_MAX) {
-            // Drop oldest and un-mark it so it can re-appear later
+            
             const dropped = next[next.length - 1];
             next.splice(next.length - 1, 1);
-            if (dropped) seenIdsRef.current.delete(dropped.id.slice(3)); // strip 'yt:' prefix
+            if (dropped) seenIdsRef.current.delete(dropped.id.slice(3)); 
           }
           return next;
         });
       }
     } catch {
-      // Silent
+      
     } finally {
       refreshingRef.current = false;
       if (mountedRef.current) setIsRefreshing(false);

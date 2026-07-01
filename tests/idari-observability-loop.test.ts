@@ -1,12 +1,4 @@
-/**
- * tests/idari-observability-loop.test.ts
- *
- * Unit tests for the IDARi observability and remediation loop:
- *   - lib/observability/collector.ts  (ring buffer + collection API)
- *   - lib/observability/correlator.ts (anomaly detection + correlation)
- *   - lib/observability/rootCauseAnalyzer.ts (pattern-matched root cause)
- *   - lib/agents/idariLoop.ts         (prompt builder, fallback plan, loop iteration)
- */
+
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -38,7 +30,7 @@ import type { TelemetrySnapshot } from '@/engine/observability/collector';
 import type { CorrelationResult } from '@/engine/observability/correlator';
 import type { RootCauseAnalysis } from '@/engine/observability/rootCauseAnalyzer';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 function makeLog(
   level: LogEntry['level'],
@@ -103,7 +95,7 @@ function makeRootCause(area = 'none'): RootCauseAnalysis {
   };
 }
 
-// ── collector ─────────────────────────────────────────────────────────────────
+
 
 describe('collector — collectLog', () => {
   beforeEach(() => clearBuffers());
@@ -139,10 +131,10 @@ describe('collector — collectLog', () => {
   it('includes entries within the window and excludes truly old ones', () => {
     clearBuffers();
     collectLog('error', 'Recent error');
-    // A very large window (1 hour) must include the just-collected entry
+    
     const snapLarge = getSnapshot(60 * 60 * 1000);
     expect(snapLarge.logs.length).toBeGreaterThanOrEqual(1);
-    // A negative window creates a future cutoff — nothing should match
+    
     const snapFuture = getSnapshot(-1000);
     expect(snapFuture.logs).toHaveLength(0);
   });
@@ -215,7 +207,7 @@ describe('collector — clearBuffers', () => {
   });
 });
 
-// ── correlator — detectErrorSpikes ───────────────────────────────────────────
+
 
 describe('detectErrorSpikes', () => {
   it('returns empty array when fewer than 3 problematic entries', () => {
@@ -229,7 +221,7 @@ describe('detectErrorSpikes', () => {
   });
 
   it('detects a spike when 3+ errors cluster in one 30 s window', () => {
-    // All entries share the same timestamp → same 30 s bucket
+    
     const now = new Date().toISOString();
     const logs: LogEntry[] = [
       { id: '1', timestamp: now, level: 'error', message: 'e1' },
@@ -265,7 +257,7 @@ describe('detectErrorSpikes', () => {
   });
 });
 
-// ── correlator — detectLatencySpikes ─────────────────────────────────────────
+
 
 describe('detectLatencySpikes', () => {
   it('returns empty when fewer than 2 spans', () => {
@@ -278,7 +270,7 @@ describe('detectLatencySpikes', () => {
   });
 
   it('detects a latency spike when p95 > 3× p50 and p95 > 1000 ms', () => {
-    // p50 ≈ 100 ms, one outlier at 5000 ms → p95 >> 3× p50
+    
     const traces: TraceSpan[] = [
       ...Array.from({ length: 9 }, () => makeTrace('slow-api', 100)),
       makeTrace('slow-api', 5000),
@@ -299,7 +291,7 @@ describe('detectLatencySpikes', () => {
   });
 });
 
-// ── correlator — detectMetricAnomalies ───────────────────────────────────────
+
 
 describe('detectMetricAnomalies', () => {
   it('returns empty for fewer than 4 data points', () => {
@@ -313,7 +305,7 @@ describe('detectMetricAnomalies', () => {
   });
 
   it('detects an anomaly for a very noisy series with outliers', () => {
-    // 9 normal points at 10, one spike at 1000
+    
     const metrics: MetricPoint[] = [
       ...Array.from({ length: 9 }, () => makeMetric('latency', 10)),
       makeMetric('latency', 1000),
@@ -324,7 +316,7 @@ describe('detectMetricAnomalies', () => {
   });
 });
 
-// ── correlator — correlate ────────────────────────────────────────────────────
+
 
 describe('correlate', () => {
   it('returns health="healthy" for an empty snapshot', () => {
@@ -362,7 +354,7 @@ describe('correlate', () => {
 
   it('sorts anomalies by severity (high before medium before low)', () => {
     const now = new Date().toISOString();
-    // Create a high-severity error spike + a slow trace (low)
+    
     const snapshot: TelemetrySnapshot = {
       logs: Array.from({ length: 4 }, (_, i) => ({
         id: String(i),
@@ -384,7 +376,7 @@ describe('correlate', () => {
   });
 });
 
-// ── rootCauseAnalyzer ─────────────────────────────────────────────────────────
+
 
 describe('inferRootCause', () => {
   it('returns "healthy" analysis when no anomalies and no errors', () => {
@@ -487,7 +479,7 @@ describe('inferRootCause', () => {
   });
 });
 
-// ── idariLoop — buildIdariPrompt ─────────────────────────────────────────────
+
 
 describe('buildIdariPrompt', () => {
   it('includes the health status in the output', () => {
@@ -530,7 +522,7 @@ describe('buildIdariPrompt', () => {
   });
 });
 
-// ── idariLoop — buildFallbackPatchPlan ───────────────────────────────────────
+
 
 describe('buildFallbackPatchPlan', () => {
   it('returns undefined when affected_area is "none"', () => {
@@ -618,7 +610,7 @@ describe('buildImmediateRemediationAction', () => {
   });
 });
 
-// ── idariLoop — runLoopIteration ─────────────────────────────────────────────
+
 
 describe('runLoopIteration', () => {
   beforeEach(() => clearBuffers());
@@ -648,15 +640,15 @@ describe('runLoopIteration', () => {
   });
 
   it('returns status="patching" when anomalies are present', async () => {
-    // Inject a cluster of errors
+    
     const now = new Date().toISOString();
     for (let i = 0; i < 4; i++) {
       collectLog('error', `Crash ${i}`);
     }
-    // Make sure they all share a timestamp close enough to be in one bucket
-    // by using collectLog directly (timestamps will all be ~now)
+    
+    
     const iteration = await runLoopIteration(1, { windowMs: 60 * 60 * 1000 });
-    // Health may be critical or degraded — patch_plan should be set
+    
     if (iteration.correlation.health !== 'healthy') {
       expect(iteration.patch_plan).toBeDefined();
       expect(iteration.immediate_action).toBeDefined();
@@ -682,7 +674,7 @@ describe('runLoopIteration', () => {
       aiCalled = true;
       return 'IDARi: root cause identified — null check missing.';
     };
-    // Inject errors to trigger anomaly detection
+    
     for (let i = 0; i < 4; i++) {
       collectLog('error', `Error ${i}`);
     }
@@ -691,12 +683,12 @@ describe('runLoopIteration', () => {
       callAi,
     });
     if (iteration.correlation.health !== 'healthy') {
-      // AI is called and its response is stored in ai_response for display.
-      // The patch_plan is always built deterministically from the root cause —
-      // AI responses are informational only and not parsed into the plan.
+      
+      
+      
       expect(aiCalled).toBe(true);
       expect(iteration.ai_response).toBe('IDARi: root cause identified — null check missing.');
-      // patch_plan comes from the deterministic buildFallbackPatchPlan path
+      
       expect(iteration.patch_plan).toBeDefined();
     }
   });

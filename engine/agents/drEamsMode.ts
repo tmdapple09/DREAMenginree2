@@ -1,4 +1,4 @@
-// Client-side: stores whether Dr. Eams "full experience" (guided coaching + UI actions) is enabled.
+
 
 export const DREAMS_MODE_STORAGE_KEY = 'drEamsFullExperience'
 export const DREAMS_MODE_EVENT = 'drEams:mode'
@@ -6,7 +6,7 @@ export const DREAMS_MODE_EVENT = 'drEams:mode'
 export function getDrEamsMode(): boolean {
   if (typeof window === 'undefined') return true
   const raw = window.localStorage.getItem(DREAMS_MODE_STORAGE_KEY)
-  // Default: ON (first-run). Users can toggle OFF.
+  
   return raw !== 'false'
 }
 

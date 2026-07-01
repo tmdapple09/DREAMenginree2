@@ -1,22 +1,10 @@
-/**
- * tests/dreamr-feed-limits.test.ts
- *
- * Tests for DreamR feed query limits:
- *   - Main following feed hard cap (500 posts).
- *   - Profile feed composition (25 saved + 25 ephemeral = 50 total).
- *   - Saved-post FIFO queue (max 25, oldest evicted on 26th save).
- *   - Close-friends visibility filter in the following feed.
- */
+
 
 import { describe, expect, it } from 'vitest';
 
-// ── Helpers shared with the API logic ─────────────────────────────────────────
 
-/**
- * Simulates the profile feed composition algorithm:
- * takes up to maxSaved saved posts, then fills remaining slots with
- * ephemeral posts (excluding already-included saved post IDs).
- */
+
+
 function buildProfileFeed(
   savedPosts: Array<{ id: string; saved_at: string }>,
   ephemeralPosts: Array<{ id: string; created_at: string }>,
@@ -36,29 +24,23 @@ function buildProfileFeed(
   return included;
 }
 
-/**
- * Simulates the saved-posts FIFO queue:
- * if queue is at capacity, evict the oldest before inserting.
- */
+
 function saveFifo(
   queue: Array<{ id: string; saved_at: number }>,
   newPostId: string,
   max = 25,
 ): Array<{ id: string; saved_at: number }> {
   const updated = [...queue];
-  // Evict if at capacity
+  
   if (updated.length >= max) {
     updated.sort((a, b) => a.saved_at - b.saved_at);
-    updated.shift(); // remove oldest
+    updated.shift(); 
   }
   updated.push({ id: newPostId, saved_at: Date.now() });
   return updated;
 }
 
-/**
- * Simulates the close-friends visibility filter for the following feed.
- * Returns only posts that the viewer is allowed to see.
- */
+
 function filterCloseFriendsPosts(
   posts: Array<{ id: string; user_id: string; post_visibility: string }>,
   viewerId: string,
@@ -72,7 +54,7 @@ function filterCloseFriendsPosts(
   });
 }
 
-// ── Feed limit tests ───────────────────────────────────────────────────────────
+
 
 describe('Main feed hard cap', () => {
   it('allows requesting up to 500 posts', () => {
@@ -132,7 +114,7 @@ describe('Profile feed composition', () => {
 
   it('does not include saved posts twice in the ephemeral fill', () => {
     const saved = makePosts(5, 'x');
-    // Ephemeral list overlaps with saved IDs
+    
     const ephem = [...makePosts(5, 'x'), ...makePosts(50, 'e', 100_000)];
     const feed = buildProfileFeed(saved, ephem);
     const ids = feed.map((p) => p.id);
@@ -199,7 +181,7 @@ describe('Close friends visibility filter', () => {
   });
 
   it('shows close_friends posts if viewer is in the poster\'s CF list', () => {
-    const closeFriendPosters = new Set(['bob']); // 'eve' is in bob's CF list
+    const closeFriendPosters = new Set(['bob']); 
     const visible = filterCloseFriendsPosts(posts, 'eve', closeFriendPosters);
     expect(visible.map((p) => p.id)).toContain('2');
     expect(visible.map((p) => p.id)).not.toContain('3');

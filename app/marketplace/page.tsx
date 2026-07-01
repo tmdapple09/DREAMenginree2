@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 
-// SURFACE: dreamsurface.Marketplace  (framework-mandated basename: page.tsx)
+
 
 export const metadata = { title: 'DreamMarketplace – Dreamengin', description: 'Discover themes, Dreams, and tools from the community.' };
 
@@ -70,7 +70,7 @@ export default async function MarketplacePage( ){
           </Link>
         </div>
 
-        {/* Hero */}
+        
         <div className="de-auth-hero">
           <div className="text-center py-3" style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ fontSize: 38, marginBottom: 8 }}>∞</div>
@@ -84,7 +84,7 @@ export default async function MarketplacePage( ){
           </div>
         </div>
 
-        {/* Live listings or fallback */}
+        
         {listings.length > 0 ? (
           <div className="de-widget">
             <div className="de-widget-header">
@@ -116,7 +116,7 @@ export default async function MarketplacePage( ){
           </div>
         )}
 
-        {/* Shop link */}
+        
         <div className="de-widget">
           <div className="de-widget-body" style={{ padding: '4px 6px' }}>
             <Link href="/shop" className="de-row" style={{ borderRadius: 10 }}>
