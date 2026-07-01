@@ -1,0 +1,296 @@
+name: DREAMengin Encode Codebase
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  encode-codebase:
+    name: Encode application codebase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Encode codebase using DREAMengin dictionaries
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p artifact
+          mkdir -p artifact/encoded-codebase
+
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+          const crypto = require("crypto");
+          const { execFileSync } = require("child_process");
+
+          const ROOT = process.cwd();
+
+          const PROGRAMMING_MAP_FILE = path.join(ROOT, "deepseek_json_20260701_3ac1d7.json");
+          const DREAM_MAP_FILE = path.join(ROOT, "Dreamengin.names.json");
+
+          const OUT_DIR = path.join(ROOT, "artifact", "encoded-codebase");
+          const ZIP_FILE = path.join(ROOT, "artifact", "Dreamengin.encoded-codebase.zip");
+          const MANIFEST_FILE = path.join(ROOT, "artifact", "encoding-manifest.json");
+
+          const SOURCE_EXTS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass",
+            ".json",
+            ".md",
+            ".mdx"
+          ]);
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            "node_modules",
+            ".next",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".vercel",
+            "public",
+            "artifact"
+          ]);
+
+          const SKIP_FILES = new Set([
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "yarn.lock",
+            "bun.lockb",
+            "deepseek_json_20260701_3ac1d7.json",
+            "Dreamengin.names.json"
+          ]);
+
+          function fail(message) {
+            console.error(message);
+            process.exit(1);
+          }
+
+          function normalize(value) {
+            return String(value || "").replace(/\\/g, "/");
+          }
+
+          function relativeFile(file) {
+            return normalize(path.relative(ROOT, file));
+          }
+
+          function sha256(value) {
+            return crypto.createHash("sha256").update(value).digest("hex");
+          }
+
+          function readJson(file) {
+            if (!fs.existsSync(file)) {
+              fail(`Missing required reference JSON: ${relativeFile(file)}`);
+            }
+
+            return JSON.parse(fs.readFileSync(file, "utf8"));
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) {
+                  walk(full, out);
+                }
+                continue;
+              }
+
+              if (!entry.isFile()) continue;
+              if (SKIP_FILES.has(entry.name)) continue;
+              if (!SOURCE_EXTS.has(path.extname(entry.name))) continue;
+
+              out.push(full);
+            }
+
+            return out;
+          }
+
+          function invertCodeMap(map, prefix) {
+            const wordToCode = new Map();
+            const codeToWord = {};
+
+            for (const [code, word] of Object.entries(map)) {
+              if (code === "__legend") continue;
+              if (!code.startsWith(prefix)) continue;
+              if (typeof word !== "string") continue;
+              if (!word) continue;
+
+              codeToWord[code] = word;
+
+              if (!wordToCode.has(word)) {
+                wordToCode.set(word, code);
+              }
+            }
+
+            return { wordToCode, codeToWord };
+          }
+
+          function buildEncoder(programmingJson, dreamJson) {
+            const programming = invertCodeMap(programmingJson, "T");
+            const dream = invertCodeMap(dreamJson, "D");
+
+            const wordToCode = new Map();
+
+            // DREAMengin vocabulary wins if the same text appears in both maps.
+            for (const [word, code] of programming.wordToCode.entries()) {
+              wordToCode.set(word, code);
+            }
+
+            for (const [word, code] of dream.wordToCode.entries()) {
+              wordToCode.set(word, code);
+            }
+
+            const words = [...wordToCode.keys()]
+              .filter(Boolean)
+              .sort((a, b) =>
+                Array.from(b).length - Array.from(a).length ||
+                b.localeCompare(a)
+              );
+
+            const escaped = words.map((word) =>
+              word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+            );
+
+            const pattern = new RegExp(
+              `(?<![A-Za-z0-9_$])(${escaped.join("|")})(?![A-Za-z0-9_$])`,
+              "g"
+            );
+
+            return {
+              programmingCount: Object.keys(programming.codeToWord).length,
+              dreamCount: Object.keys(dream.codeToWord).length,
+              totalWordCount: words.length,
+              encode(text) {
+                let replacementCount = 0;
+                const used = new Map();
+
+                const encoded = String(text).replace(pattern, (match) => {
+                  const code = wordToCode.get(match);
+
+                  if (!code) {
+                    return match;
+                  }
+
+                  replacementCount += 1;
+                  used.set(code, (used.get(code) || 0) + 1);
+
+                  return code;
+                });
+
+                return {
+                  encoded,
+                  replacementCount,
+                  usedCodes: Object.fromEntries(
+                    [...used.entries()].sort(([a], [b]) =>
+                      a.localeCompare(b, undefined, { numeric: true })
+                    )
+                  )
+                };
+              }
+            };
+          }
+
+          function ensureParentDir(file) {
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+          }
+
+          const programmingJson = readJson(PROGRAMMING_MAP_FILE);
+          const dreamJson = readJson(DREAM_MAP_FILE);
+          const encoder = buildEncoder(programmingJson, dreamJson);
+
+          const files = walk(ROOT).sort();
+          const manifestFiles = [];
+
+          let totalReplacementCount = 0;
+
+          for (const file of files) {
+            const rel = relativeFile(file);
+            const original = fs.readFileSync(file, "utf8");
+
+            const result = encoder.encode(original);
+            const outFile = path.join(OUT_DIR, rel);
+
+            ensureParentDir(outFile);
+            fs.writeFileSync(outFile, result.encoded);
+
+            totalReplacementCount += result.replacementCount;
+
+            manifestFiles.push({
+              file: rel,
+              encodedFile: normalize(path.relative(ROOT, outFile)),
+              originalSha256: sha256(original),
+              encodedSha256: sha256(result.encoded),
+              originalBytes: Buffer.byteLength(original),
+              encodedBytes: Buffer.byteLength(result.encoded),
+              replacementCount: result.replacementCount,
+              usedCodes: result.usedCodes
+            });
+          }
+
+          const manifest = {
+            generatedAt: new Date().toISOString(),
+            referenceFiles: {
+              programmingMap: relativeFile(PROGRAMMING_MAP_FILE),
+              dreamMap: relativeFile(DREAM_MAP_FILE)
+            },
+            output: {
+              encodedDirectory: normalize(path.relative(ROOT, OUT_DIR)),
+              zipFile: normalize(path.relative(ROOT, ZIP_FILE))
+            },
+            counts: {
+              sourceFilesEncoded: files.length,
+              programmingReferenceTerms: encoder.programmingCount,
+              dreamReferenceTerms: encoder.dreamCount,
+              totalReferenceTerms: encoder.totalWordCount,
+              totalReplacementCount
+            },
+            files: manifestFiles
+          };
+
+          fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
+
+          execFileSync("zip", ["-qr", ZIP_FILE, "."], {
+            cwd: OUT_DIR,
+            stdio: "inherit"
+          });
+
+          console.log(`Encoded ${files.length} files.`);
+          console.log(`Total replacements: ${totalReplacementCount}`);
+          console.log(`Wrote ${normalize(path.relative(ROOT, ZIP_FILE))}`);
+          console.log(`Wrote ${normalize(path.relative(ROOT, MANIFEST_FILE))}`);
+          NODE
+
+      - name: Upload encoded codebase zip
+        uses: actions/upload-artifact@v6
+        with:
+          name: Dreamengin-encoded-codebase
+          path: artifact/Dreamengin.encoded-codebase.zip
+          if-no-files-found: error
+
+      - name: Upload encoding manifest
+        uses: actions/upload-artifact@v6
+        with:
+          name: Dreamengin-encoding-manifest
+          path: artifact/encoding-manifest.json
+          if-no-files-found: error
