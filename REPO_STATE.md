@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-06-30T08:47:59.150Z
+Generated: 2026-07-01T08:39:53.385Z
 
 Model: capability nodes + files as edges.
 
@@ -10359,6 +10359,8 @@ Legend: ! unresolved import  unused export
 +-- .env.local.example
 +-- .gitignore
 +-- .gitleaks.toml
++-- deepseek_json_20260701_3ac1d7.json
++-- Dreamengin.names.json
 +-- eslint.config.mjs
 +-- fix-audit.js
 +-- fix-repo.cjs ! unused
