@@ -1,4 +1,4 @@
-name: DREAMengin Import Taxonomy JSON
+name: DREAMengin Vocabulary JSON
 
 on:
   workflow_dispatch:
@@ -11,15 +11,15 @@ permissions:
   actions: read
 
 jobs:
-  dreamengin-import-taxonomy:
-    name: Extract DREAMengin-specific import vocabulary
+  dreamengin-vocabulary:
+    name: Generate canonical DREAMengin vocabulary map
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Generate DREAMengin import taxonomy JSON
+      - name: Generate Dreamengin.json
         shell: bash
         run: |
           set -euo pipefail
@@ -31,7 +31,7 @@ jobs:
           const path = require("path");
 
           const ROOT = process.cwd();
-          const OUT_FILE = path.join(ROOT, "artifact", "dreamengin-import-taxonomy.json");
+          const OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.json");
 
           const SOURCE_FILE_EXTENSIONS = new Set([
             ".ts",
@@ -79,14 +79,17 @@ jobs:
           const EXTERNAL_PROGRAMMING_IMPORTS = new Set([
             "typescript",
             "tslib",
+
             "react",
             "react-dom",
+
             "next",
             "next/link",
             "next/navigation",
             "next/image",
             "next/dynamic",
             "next/server",
+
             "zod",
             "lucide-react",
             "clsx",
@@ -97,6 +100,7 @@ jobs:
             "@react-three/fiber",
             "@react-three/drei",
             "@supabase/supabase-js",
+
             "fs",
             "node:fs",
             "path",
@@ -134,6 +138,7 @@ jobs:
             "@/types/",
             "@/utils/",
             "@/styles/",
+
             "app/",
             "components/",
             "engine/",
@@ -149,6 +154,10 @@ jobs:
             "utils/",
             "styles/"
           ];
+
+          function normalizePath(value) {
+            return value.replace(/\\/g, "/");
+          }
 
           function walk(dir, files = []) {
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -197,10 +206,6 @@ jobs:
             return false;
           }
 
-          function normalizeSource(source) {
-            return source.replace(/\\/g, "/");
-          }
-
           function cleanImportedName(name) {
             return name
               .replace(/^type\s+/, "")
@@ -236,11 +241,17 @@ jobs:
 
             if (cleaned.startsWith("* as ")) {
               const local = cleaned.replace("* as ", "").trim();
-              return [{ imported: "*", local }];
+              return [
+                {
+                  imported: "*",
+                  local
+                }
+              ];
             }
 
             if (cleaned.includes("{")) {
               const defaultPart = cleaned.split(",")[0].trim();
+
               if (defaultPart) {
                 names.push({
                   imported: "default",
@@ -249,6 +260,7 @@ jobs:
               }
 
               const namedMatch = cleaned.match(/\{([\s\S]*?)\}/);
+
               if (namedMatch) {
                 names.push(...splitNamedImports(namedMatch[1]));
               }
@@ -392,13 +404,20 @@ jobs:
             while ((match = importFromRegex.exec(text))) {
               const isTypeOnly = Boolean(match[1]);
               const rawImport = match[2].trim();
-              const source = normalizeSource(match[3].trim());
+              const source = normalizePath(match[3].trim());
 
               if (!isDreamenginImport(source)) continue;
-              if (isExternalPackage(source) && !source.toLowerCase().includes("dream") && !source.toLowerCase().includes("engin")) continue;
+
+              if (
+                isExternalPackage(source) &&
+                !source.toLowerCase().includes("dream") &&
+                !source.toLowerCase().includes("engin")
+              ) {
+                continue;
+              }
 
               imports.push({
-                file: normalizeSource(path.relative(ROOT, filePath)),
+                file: normalizePath(path.relative(ROOT, filePath)),
                 source,
                 importKind: isTypeOnly ? "type" : "value",
                 importedNames: extractImportNames(rawImport)
@@ -406,13 +425,20 @@ jobs:
             }
 
             while ((match = sideEffectImportRegex.exec(text))) {
-              const source = normalizeSource(match[1].trim());
+              const source = normalizePath(match[1].trim());
 
               if (!isDreamenginImport(source)) continue;
-              if (isExternalPackage(source) && !source.toLowerCase().includes("dream") && !source.toLowerCase().includes("engin")) continue;
+
+              if (
+                isExternalPackage(source) &&
+                !source.toLowerCase().includes("dream") &&
+                !source.toLowerCase().includes("engin")
+              ) {
+                continue;
+              }
 
               imports.push({
-                file: normalizeSource(path.relative(ROOT, filePath)),
+                file: normalizePath(path.relative(ROOT, filePath)),
                 source,
                 importKind: "sideEffect",
                 importedNames: []
@@ -420,6 +446,21 @@ jobs:
             }
 
             return imports;
+          }
+
+          function compareCode(a, b) {
+            return a.localeCompare(b, undefined, { numeric: true });
+          }
+
+          function sortSymbol(a, b) {
+            return (
+              a.file.localeCompare(b.file) ||
+              a.source.localeCompare(b.source) ||
+              String(a.name || "").localeCompare(String(b.name || "")) ||
+              String(a.importedName || "").localeCompare(String(b.importedName || "")) ||
+              a.importKind.localeCompare(b.importKind) ||
+              a.category.localeCompare(b.category)
+            );
           }
 
           const files = walk(ROOT).sort();
@@ -430,38 +471,18 @@ jobs:
             importRecords.push(...parseImports(file, text));
           }
 
-          const symbols = [];
-          const byCategory = {};
-          const bySource = {};
-          const byFile = {};
+          const symbolsWithoutCodes = [];
 
           for (const record of importRecords) {
-            byFile[record.file] ||= [];
-            byFile[record.file].push(record);
-
-            bySource[record.source] ||= {
-              source: record.source,
-              files: new Set(),
-              importedNames: new Set(),
-              importKinds: new Set()
-            };
-
-            bySource[record.source].files.add(record.file);
-            bySource[record.source].importKinds.add(record.importKind);
-
             if (record.importedNames.length === 0) {
-              const symbol = {
+              symbolsWithoutCodes.push({
                 name: null,
                 importedName: null,
                 category: "sideEffectImport",
                 source: record.source,
                 file: record.file,
                 importKind: record.importKind
-              };
-
-              symbols.push(symbol);
-              byCategory.sideEffectImport ||= [];
-              byCategory.sideEffectImport.push(symbol);
+              });
               continue;
             }
 
@@ -472,20 +493,56 @@ jobs:
                 record.source
               );
 
-              bySource[record.source].importedNames.add(importedName.local);
-              byCategory[category] ||= [];
-
-              const symbol = {
+              symbolsWithoutCodes.push({
                 name: importedName.local,
                 importedName: importedName.imported,
                 category,
                 source: record.source,
                 file: record.file,
                 importKind: record.importKind
-              };
+              });
+            }
+          }
 
-              symbols.push(symbol);
-              byCategory[category].push(symbol);
+          const dreamCodeList = symbolsWithoutCodes
+            .sort(sortSymbol)
+            .map((symbol, index) => ({
+              code: `D${index + 1}`,
+              ...symbol
+            }));
+
+          const dreamCodes = Object.fromEntries(
+            dreamCodeList.map((symbol) => [symbol.code, symbol])
+          );
+
+          const byCategory = {};
+          const bySource = {};
+          const byFile = {};
+          const byName = {};
+
+          for (const symbol of dreamCodeList) {
+            byCategory[symbol.category] ||= [];
+            byCategory[symbol.category].push(symbol);
+
+            byFile[symbol.file] ||= [];
+            byFile[symbol.file].push(symbol);
+
+            bySource[symbol.source] ||= {
+              source: symbol.source,
+              codes: [],
+              files: new Set(),
+              importedNames: new Set(),
+              importKinds: new Set()
+            };
+
+            bySource[symbol.source].codes.push(symbol.code);
+            bySource[symbol.source].files.add(symbol.file);
+            bySource[symbol.source].importKinds.add(symbol.importKind);
+
+            if (symbol.name) {
+              bySource[symbol.source].importedNames.add(symbol.name);
+              byName[symbol.name] ||= [];
+              byName[symbol.name].push(symbol.code);
             }
           }
 
@@ -494,11 +551,7 @@ jobs:
               .sort(([a], [b]) => a.localeCompare(b))
               .map(([category, items]) => [
                 category,
-                items.sort((a, b) =>
-                  `${a.name || ""}${a.source}${a.file}`.localeCompare(
-                    `${b.name || ""}${b.source}${b.file}`
-                  )
-                )
+                items.sort((a, b) => compareCode(a.code, b.code))
               ])
           );
 
@@ -509,6 +562,7 @@ jobs:
                 source,
                 {
                   source,
+                  codes: value.codes.sort(compareCode),
                   files: [...value.files].sort(),
                   importedNames: [...value.importedNames].sort(),
                   importKinds: [...value.importKinds].sort()
@@ -516,12 +570,41 @@ jobs:
               ])
           );
 
+          const finalByFile = Object.fromEntries(
+            Object.entries(byFile)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([file, items]) => [
+                file,
+                items.sort((a, b) => compareCode(a.code, b.code))
+              ])
+          );
+
+          const finalByName = Object.fromEntries(
+            Object.entries(byName)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([name, codes]) => [
+                name,
+                codes.sort(compareCode)
+              ])
+          );
+
           const output = {
-            schema: "dreamengin.import-taxonomy.v1",
+            schema: "dreamengin.vocabulary.v1",
             generatedAt: new Date().toISOString(),
 
             purpose:
-              "Extracts DREAMengin-owned import vocabulary and excludes TypeScript, JavaScript, React, Next, Node, asset, style, and external package imports.",
+              "Canonical DREAMengin vocabulary map generated from DREAMengin-owned import symbols. D-codes are executable references for application code.",
+
+            codeRule: {
+              format: "D<number>",
+              firstCode: "D1",
+              example: {
+                D1: "First DREAMengin-specific import symbol after deterministic sorting.",
+                D2: "Second DREAMengin-specific import symbol after deterministic sorting."
+              },
+              stability:
+                "Codes are deterministic for a given repo state. Adding, deleting, or renaming imports can change later numbers."
+            },
 
             meaning: {
               systemCall:
@@ -574,7 +657,7 @@ jobs:
             counts: {
               filesScanned: files.length,
               dreamenginImportRecords: importRecords.length,
-              dreamenginSymbols: symbols.length,
+              dreamenginCodes: dreamCodeList.length,
               sources: Object.keys(finalBySource).length,
               categories: Object.fromEntries(
                 Object.entries(finalByCategory).map(([category, items]) => [
@@ -584,22 +667,25 @@ jobs:
               )
             },
 
+            dreamCodes,
+            dreamCodeList,
             byCategory: finalByCategory,
             bySource: finalBySource,
-            byFile
+            byFile: finalByFile,
+            byName: finalByName
           };
 
           fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
 
-          console.log("DREAMengin import taxonomy JSON:");
+          console.log("Generated canonical DREAMengin vocabulary map:");
           console.log(JSON.stringify(output, null, 2));
           console.log("");
           console.log(`Wrote ${OUT_FILE}`);
           NODE
 
-      - name: Upload downloadable JSON artifact
+      - name: Upload downloadable Dreamengin.json
         uses: actions/upload-artifact@v6
         with:
-          name: dreamengin-import-taxonomy-json
-          path: artifact/dreamengin-import-taxonomy.json
+          name: Dreamengin-json
+          path: artifact/Dreamengin.json
           if-no-files-found: error
