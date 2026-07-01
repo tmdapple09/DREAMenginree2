@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T12:10:59.164Z",
+  "generatedAt": "2026-07-01T12:31:51.173Z",
   "root": ".",
   "nodes": [
     {
@@ -2702,6 +2702,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/basecode.yml",
+      "label": "basecode.yml",
+      "type": "config",
+      "path": ".github/workflows/basecode.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/bot-pr-automerge.yml",
       "label": "bot-pr-automerge.yml",
       "type": "config",
@@ -3236,16 +3246,6 @@
       "label": "orphan-guard.yml",
       "type": "config",
       "path": ".github/workflows/orphan-guard.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/portfolio-optimization.yml",
-      "label": "portfolio-optimization.yml",
-      "type": "config",
-      "path": ".github/workflows/portfolio-optimization.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
