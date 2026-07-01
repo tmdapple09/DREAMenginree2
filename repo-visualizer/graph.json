@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T02:41:14.520Z",
+  "generatedAt": "2026-07-01T03:55:40.968Z",
   "root": ".",
   "nodes": [
     {
@@ -2886,6 +2886,16 @@
       "label": "dreamengin-preflight.yml",
       "type": "config",
       "path": ".github/workflows/dreamengin-preflight.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dreamengintaxonomy.yml",
+      "label": "dreamengintaxonomy.yml",
+      "type": "config",
+      "path": ".github/workflows/dreamengintaxonomy.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
