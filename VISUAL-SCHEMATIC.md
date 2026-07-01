@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2259
-- **Total function/class nodes:** 4682
-- **Total edges:** 8489
-- **Orphan nodes:** 4067
+- **Total files:** 2242
+- **Total function/class nodes:** 4775
+- **Total edges:** 8468
+- **Orphan nodes:** 4093
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -41,21 +41,21 @@ graph LR
   app["app"] -->|703| supabase["supabase"]
   src["src"] -->|322| components["components"]
   engine["engine"] -->|314| components["components"]
-  app["app"] -->|290| components["components"]
+  app["app"] -->|289| components["components"]
   src["src"] -->|274| engins["engins"]
   src["src"] -->|271| app["app"]
   engine["engine"] -->|268| app["app"]
-  app["app"] -->|254| engine["engine"]
+  app["app"] -->|253| engine["engine"]
   engine["engine"] -->|240| engins["engins"]
   components["components"] -->|128| engine["engine"]
-  tests["tests"] -->|124| engine["engine"]
+  tests["tests"] -->|122| engine["engine"]
   app["app"] -->|120| utils["utils"]
   tests["tests"] -->|117| engins["engins"]
   app["app"] -->|110| engins["engins"]
   components["components"] -->|103| engins["engins"]
   engins["engins"] -->|102| engine["engine"]
   app["app"] -->|85| dr_eams["dr-eams"]
-  engine["engine"] -->|44| types["types"]
+  engine["engine"] -->|43| types["types"]
   app["app"] -->|42| types["types"]
   app["app"] -->|40| dreamr["dreamr"]
   engins["engins"] -->|37| components["components"]
@@ -4062,6 +4062,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `app/not-found.tsx` | tsx |
 | `Architecture Vision vs Engineering Blueprint.md` | doc |
 | `ARCHITECTURE.md` | doc |
+| `artifact/dreamengin-clean-codebase-report.json` | config |
 | `assembly/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `assembly/bus.ts` | ts |
 | `assembly/index.ts` | ts |
@@ -4390,42 +4391,23 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `LICENSE` | file |
 | `misc/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `misc/images/arm2_transparent.png` | file |
-| `misc/images/coat_transparent.png` | file |
-| `misc/images/head_transparent.png` | file |
-| `misc/images/logo_transparent.png` | file |
-| `misc/images/shoe1_transparent.png` | file |
-| `misc/images/shoe2_transparent.png` | file |
 | `next-env.d.ts` | ts |
 | `optimizer/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `optimizer/README.md` | doc |
 | `proxy.ts` | ts |
 | `public/Agents-MUST-READ-ARCHITECTURE.md` | doc |
-| `public/arm1_transparent.png` | file |
-| `public/arm2_transparent.png` | file |
 | `public/cartridges/mad-maxi/logic/main.wasm` | file |
 | `public/cartridges/mad-maxi/tuning.json` | config |
-| `public/coat_transparent.png` | file |
 | `public/dr-eams-pbr.html` | file |
 | `public/dreamengin-sw.js` | js |
 | `public/favicon.ico` | file |
 | `public/feeds/embed-feed.json` | config |
 | `public/file.svg` | file |
 | `public/globe.svg` | file |
-| `public/head_transparent.png` | file |
-| `public/images/iconslist.png` | file |
-| `public/images/logo1.PNG` | file |
-| `public/images/logo2.PNG` | file |
-| `public/images/logo3.PNG` | file |
-| `public/logo_DREAM_transparent.png` | file |
-| `public/logo_ENGIN_transparent.png` | file |
-| `public/logo-icon.png` | file |
 | `public/manifest.json` | config |
 | `public/manifest.webmanifest` | file |
 | `public/module-loader.html` | file |
 | `public/next.svg` | file |
-| `public/shoe1_transparent.png` | file |
-| `public/shoe2_transparent.png` | file |
 | `public/vercel.svg` | file |
 | `public/window.svg` | file |
 | `public/workers/asset-optimizer.worker.js` | js |
