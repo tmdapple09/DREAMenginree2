@@ -1,0 +1,194 @@
+name: Compare enCode Zip
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  application-code-zip:
+    name: Create application code zip
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create application code zip
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p artifact
+          mkdir -p artifact/application-code
+
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+          const crypto = require("crypto");
+          const { execFileSync } = require("child_process");
+
+          const ROOT = process.cwd();
+
+          const OUT_DIR = path.join(ROOT, "artifact", "application-code");
+          const ZIP_FILE = path.join(ROOT, "artifact", "Dreamengin.application-code.zip");
+          const MANIFEST_FILE = path.join(ROOT, "artifact", "application-code-manifest.json");
+
+          const SOURCE_EXTS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass",
+            ".json",
+            ".md",
+            ".mdx"
+          ]);
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            "node_modules",
+            ".next",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".vercel",
+            "public",
+            "artifact"
+          ]);
+
+          const SKIP_FILES = new Set([
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "yarn.lock",
+            "bun.lockb",
+            "deepseek_json_20260701_3ac1d7.json",
+            "Dreamengin.names.json"
+          ]);
+
+          function normalize(value) {
+            return String(value || "").replace(/\\/g, "/");
+          }
+
+          function relativeFile(file) {
+            return normalize(path.relative(ROOT, file));
+          }
+
+          function sha256(value) {
+            return crypto.createHash("sha256").update(value).digest("hex");
+          }
+
+          function shouldSkipFile(file) {
+            const rel = relativeFile(file);
+
+            if (rel.startsWith("tests/")) return true;
+            if (rel.startsWith("test/")) return true;
+            if (rel.startsWith("scripts/")) return true;
+            if (rel.includes("/__tests__/")) return true;
+            if (rel.includes("/__mocks__/")) return true;
+            if (rel.endsWith(".test.ts")) return true;
+            if (rel.endsWith(".test.tsx")) return true;
+            if (rel.endsWith(".spec.ts")) return true;
+            if (rel.endsWith(".spec.tsx")) return true;
+
+            return false;
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) {
+                  walk(full, out);
+                }
+                continue;
+              }
+
+              if (!entry.isFile()) continue;
+              if (SKIP_FILES.has(entry.name)) continue;
+              if (!SOURCE_EXTS.has(path.extname(entry.name))) continue;
+              if (shouldSkipFile(full)) continue;
+
+              out.push(full);
+            }
+
+            return out;
+          }
+
+          function ensureParentDir(file) {
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+          }
+
+          const files = walk(ROOT).sort();
+          const manifestFiles = [];
+
+          let totalBytes = 0;
+
+          for (const file of files) {
+            const rel = relativeFile(file);
+            const content = fs.readFileSync(file);
+            const target = path.join(OUT_DIR, rel);
+
+            ensureParentDir(target);
+            fs.copyFileSync(file, target);
+
+            totalBytes += content.length;
+
+            manifestFiles.push({
+              file: rel,
+              bytes: content.length,
+              sha256: sha256(content)
+            });
+          }
+
+          const manifest = {
+            generatedAt: new Date().toISOString(),
+            output: {
+              directory: normalize(path.relative(ROOT, OUT_DIR)),
+              zipFile: normalize(path.relative(ROOT, ZIP_FILE))
+            },
+            counts: {
+              filesIncluded: files.length,
+              totalBytes
+            },
+            files: manifestFiles
+          };
+
+          fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
+
+          execFileSync("zip", ["-qr", ZIP_FILE, "."], {
+            cwd: OUT_DIR,
+            stdio: "inherit"
+          });
+
+          console.log(`Included files: ${files.length}`);
+          console.log(`Total raw bytes: ${totalBytes}`);
+          console.log(`Wrote ${normalize(path.relative(ROOT, ZIP_FILE))}`);
+          console.log(`Wrote ${normalize(path.relative(ROOT, MANIFEST_FILE))}`);
+          NODE
+
+      - name: Upload application code zip
+        uses: actions/upload-artifact@v6
+        with:
+          name: Dreamengin-application-code
+          path: artifact/Dreamengin.application-code.zip
+          if-no-files-found: error
+
+      - name: Upload application code manifest
+        uses: actions/upload-artifact@v6
+        with:
+          name: Dreamengin-application-code-manifest
+          path: artifact/application-code-manifest.json
+          if-no-files-found: error
