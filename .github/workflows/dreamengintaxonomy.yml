@@ -1,4 +1,4 @@
-name: DREAMengin Export Root Map JSON
+name: DREAMengin Exports JSON
 
 on:
   workflow_dispatch:
@@ -11,15 +11,15 @@ permissions:
   actions: read
 
 jobs:
-  dreamengin-export-root-map:
-    name: Generate DREAMengin export root map
+  dreamengin-exports:
+    name: Generate Dreamengin.json
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Generate Dreamengin.json from exports
+      - name: Generate Dreamengin.json
         shell: bash
         run: |
           set -euo pipefail
@@ -33,7 +33,7 @@ jobs:
           const ROOT = process.cwd();
           const OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.json");
 
-          const SOURCE_FILE_EXTENSIONS = new Set([
+          const SOURCE_EXTS = new Set([
             ".ts",
             ".tsx",
             ".js",
@@ -55,170 +55,54 @@ jobs:
             "public"
           ]);
 
-          const DREAMENGIN_ROOTS = [
-            "app/",
-            "components/",
-            "engine/",
-            "engins/",
-            "lib/",
-            "hooks/",
-            "dreamr/",
-            "dreamdmbar/",
-            "daydreams/",
-            "coresurfaces/",
-            "assembly/",
-            "types/",
-            "utils/",
-            "styles/"
-          ];
-
-          const FRAMEWORK_PACKAGE_PREFIXES = [
-            "next",
-            "react",
-            "react-dom"
-          ];
-
-          const NODE_BUILTINS = new Set([
-            "assert",
-            "buffer",
-            "child_process",
-            "crypto",
-            "events",
-            "fs",
-            "http",
-            "https",
-            "net",
-            "os",
-            "path",
-            "process",
-            "stream",
-            "url",
-            "util",
-            "zlib",
-            "node:assert",
-            "node:buffer",
-            "node:child_process",
-            "node:crypto",
-            "node:events",
-            "node:fs",
-            "node:http",
-            "node:https",
-            "node:net",
-            "node:os",
-            "node:path",
-            "node:process",
-            "node:stream",
-            "node:url",
-            "node:util",
-            "node:zlib"
-          ]);
-
-          function normalizePath(value) {
+          function normalize(value) {
             return String(value || "").replace(/\\/g, "/");
           }
 
-          function characterCount(value) {
-            return Array.from(String(value || "")).length;
+          function relativeFile(file) {
+            return normalize(path.relative(ROOT, file));
           }
 
-          function isValidIdentifier(value) {
-            return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(String(value || ""));
-          }
-
-          function quoteSource(source) {
-            return `"${source}"`;
-          }
-
-          function walk(dir, files = []) {
+          function walk(dir, out = []) {
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
               const full = path.join(dir, entry.name);
 
               if (entry.isDirectory()) {
                 if (!SKIP_DIRS.has(entry.name)) {
-                  walk(full, files);
+                  walk(full, out);
                 }
                 continue;
               }
 
-              if (SOURCE_FILE_EXTENSIONS.has(path.extname(entry.name))) {
-                files.push(full);
+              if (SOURCE_EXTS.has(path.extname(entry.name))) {
+                out.push(full);
               }
             }
 
-            return files;
-          }
-
-          function sourceKind(source) {
-            const value = String(source || "");
-
-            if (value.startsWith("@/")) {
-              return "repoAlias";
-            }
-
-            if (value.startsWith("./") || value.startsWith("../")) {
-              return "relativeRepo";
-            }
-
-            if (DREAMENGIN_ROOTS.some((root) => value.startsWith(root))) {
-              return "repoRoot";
-            }
-
-            if (NODE_BUILTINS.has(value)) {
-              return "nodeBuiltin";
-            }
-
-            if (
-              FRAMEWORK_PACKAGE_PREFIXES.some(
-                (prefix) => value === prefix || value.startsWith(`${prefix}/`)
-              )
-            ) {
-              return "framework";
-            }
-
-            return "externalPackage";
-          }
-
-          function isRepoSource(source) {
-            const kind = sourceKind(source);
-            return kind === "repoAlias" || kind === "relativeRepo" || kind === "repoRoot";
-          }
-
-          function scrubForIdentifiers(text) {
-            return String(text || "")
-              .replace(/\/\*[\s\S]*?\*\//g, " ")
-              .replace(/\/\/.*$/gm, " ")
-              .replace(/(['"`])(?:\\[\s\S]|(?!\1)[\s\S])*?\1/g, " ");
+            return out;
           }
 
           function lineNumberAt(text, index) {
             return String(text || "").slice(0, index).split(/\r?\n/).length;
           }
 
-          function uniqueSortedArray(values) {
-            return [...new Set(values.filter((value) => value !== null && value !== undefined))]
-              .map(String)
-              .sort();
-          }
-
-          function splitTopLevelCommaList(value) {
+          function splitTopLevelComma(value) {
             const input = String(value || "");
             const parts = [];
             let current = "";
-            let depthParen = 0;
-            let depthBrace = 0;
-            let depthBracket = 0;
+            let depth = 0;
             let quote = null;
 
-            for (let index = 0; index < input.length; index += 1) {
-              const char = input[index];
-              const next = input[index + 1];
+            for (let i = 0; i < input.length; i += 1) {
+              const char = input[i];
+              const next = input[i + 1];
 
               if (quote) {
                 current += char;
 
                 if (char === "\\" && next) {
                   current += next;
-                  index += 1;
+                  i += 1;
                   continue;
                 }
 
@@ -235,20 +119,19 @@ jobs:
                 continue;
               }
 
-              if (char === "(") depthParen += 1;
-              if (char === ")") depthParen = Math.max(0, depthParen - 1);
-              if (char === "{") depthBrace += 1;
-              if (char === "}") depthBrace = Math.max(0, depthBrace - 1);
-              if (char === "[") depthBracket += 1;
-              if (char === "]") depthBracket = Math.max(0, depthBracket - 1);
+              if (char === "{" || char === "(" || char === "[") {
+                depth += 1;
+              }
 
-              if (
-                char === "," &&
-                depthParen === 0 &&
-                depthBrace === 0 &&
-                depthBracket === 0
-              ) {
-                parts.push(current.trim());
+              if (char === "}" || char === ")" || char === "]") {
+                depth = Math.max(0, depth - 1);
+              }
+
+              if (char === "," && depth === 0) {
+                if (current.trim()) {
+                  parts.push(current.trim());
+                }
+
                 current = "";
                 continue;
               }
@@ -263,1038 +146,200 @@ jobs:
             return parts;
           }
 
-          function cleanSpecifierName(value) {
+          function cleanExportName(value) {
             return String(value || "")
               .replace(/^type\s+/, "")
               .trim();
           }
 
-          function splitExportSpecifiers(block) {
-            return splitTopLevelCommaList(block)
-              .map((raw) => raw.trim())
+          function parseNamedExportBlock(block) {
+            return splitTopLevelComma(block)
+              .map((part) => cleanExportName(part))
               .filter(Boolean)
-              .map((raw) => {
-                const isTypeSpecifier = raw.startsWith("type ");
-                const cleaned = cleanSpecifierName(raw);
-                const parts = cleaned.split(/\s+as\s+/);
-
-                if (parts.length > 1) {
-                  return {
-                    importedName: parts[0].trim(),
-                    exportName: parts[1].trim(),
-                    specifierKind: isTypeSpecifier ? "type" : "value"
-                  };
-                }
-
-                return {
-                  importedName: cleaned,
-                  exportName: cleaned,
-                  specifierKind: isTypeSpecifier ? "type" : "value"
-                };
+              .map((part) => {
+                const pieces = part.split(/\s+as\s+/);
+                return (pieces[1] || pieces[0] || "").trim();
               })
-              .filter((item) => item.importedName && item.exportName);
+              .filter(Boolean);
           }
 
-          function splitImportSpecifiers(rawImport, wholeImportKind) {
-            const input = String(rawImport || "").trim();
-            const out = [];
+          function addExport(exports, name, file, line) {
+            if (!name) return;
 
-            if (!input) return out;
-
-            if (input.startsWith("{")) {
-              const named = input.replace(/^\{/, "").replace(/\}$/, "");
-
-              for (const spec of splitTopLevelCommaList(named)) {
-                const raw = spec.trim();
-                if (!raw) continue;
-
-                const isTypeSpecifier = raw.startsWith("type ");
-                const cleaned = cleanSpecifierName(raw);
-                const parts = cleaned.split(/\s+as\s+/);
-                const importedName = parts[0].trim();
-                const localName = (parts[1] || parts[0]).trim();
-
-                out.push({
-                  importShape: "named",
-                  importedName,
-                  localName,
-                  importKind: wholeImportKind === "type" || isTypeSpecifier ? "type" : "value"
-                });
-              }
-
-              return out;
-            }
-
-            if (input.startsWith("* as ")) {
-              out.push({
-                importShape: "namespace",
-                importedName: "*",
-                localName: input.replace("* as ", "").trim(),
-                importKind: wholeImportKind
-              });
-
-              return out;
-            }
-
-            if (input.includes("{")) {
-              const defaultPart = input.split(",")[0].trim();
-
-              if (defaultPart) {
-                out.push({
-                  importShape: "default",
-                  importedName: "default",
-                  localName: defaultPart,
-                  importKind: wholeImportKind
-                });
-              }
-
-              const namedMatch = input.match(/\{([\s\S]*?)\}/);
-
-              if (namedMatch) {
-                for (const spec of splitTopLevelCommaList(namedMatch[1])) {
-                  const raw = spec.trim();
-                  if (!raw) continue;
-
-                  const isTypeSpecifier = raw.startsWith("type ");
-                  const cleaned = cleanSpecifierName(raw);
-                  const parts = cleaned.split(/\s+as\s+/);
-                  const importedName = parts[0].trim();
-                  const localName = (parts[1] || parts[0]).trim();
-
-                  out.push({
-                    importShape: "named",
-                    importedName,
-                    localName,
-                    importKind: wholeImportKind === "type" || isTypeSpecifier ? "type" : "value"
-                  });
-                }
-              }
-
-              return out;
-            }
-
-            out.push({
-              importShape: "default",
-              importedName: "default",
-              localName: input,
-              importKind: wholeImportKind
-            });
-
-            return out;
-          }
-
-          function parseImports(filePath, text) {
-            const imports = new Map();
-
-            const importFromRegex =
-              /^\s*import\s+(type\s+)?([\s\S]*?)\s+from\s+["']([^"']+)["']\s*;?/gm;
-
-            let match;
-
-            while ((match = importFromRegex.exec(text))) {
-              const wholeImportKind = match[1] ? "type" : "value";
-              const rawImport = match[2].trim();
-              const source = normalizePath(match[3].trim());
-
-              for (const spec of splitImportSpecifiers(rawImport, wholeImportKind)) {
-                if (!isValidIdentifier(spec.localName)) continue;
-
-                imports.set(spec.localName, {
-                  localName: spec.localName,
-                  importedName: spec.importedName,
-                  importShape: spec.importShape,
-                  importKind: spec.importKind,
-                  source,
-                  sourceKind: sourceKind(source),
-                  file: normalizePath(path.relative(ROOT, filePath))
-                });
-              }
-            }
-
-            return imports;
-          }
-
-          function findMatchingBrace(text, openIndex) {
-            let depth = 0;
-            let quote = null;
-
-            for (let index = openIndex; index < text.length; index += 1) {
-              const char = text[index];
-              const next = text[index + 1];
-
-              if (quote) {
-                if (char === "\\" && next) {
-                  index += 1;
-                  continue;
-                }
-
-                if (char === quote) {
-                  quote = null;
-                }
-
-                continue;
-              }
-
-              if (char === "'" || char === '"' || char === "`") {
-                quote = char;
-                continue;
-              }
-
-              if (char === "{") depth += 1;
-
-              if (char === "}") {
-                depth -= 1;
-
-                if (depth === 0) {
-                  return index;
-                }
-              }
-            }
-
-            return -1;
-          }
-
-          function readFunctionBody(text, matchIndex) {
-            const openIndex = text.indexOf("{", matchIndex);
-            if (openIndex < 0) return "";
-
-            const closeIndex = findMatchingBrace(text, openIndex);
-            if (closeIndex < 0) return "";
-
-            return text.slice(openIndex + 1, closeIndex);
-          }
-
-          function readStatement(text, matchIndex) {
-            const semiIndex = text.indexOf(";", matchIndex);
-            if (semiIndex >= 0) {
-              return text.slice(matchIndex, semiIndex + 1);
-            }
-
-            const lineEnd = text.indexOf("\n", matchIndex);
-
-            if (lineEnd >= 0) {
-              return text.slice(matchIndex, lineEnd);
-            }
-
-            return text.slice(matchIndex);
-          }
-
-          function findImportDependencies(implementationText, importMap) {
-            const scrubbed = scrubForIdentifiers(implementationText);
-            const dependencies = [];
-
-            for (const [localName, info] of importMap.entries()) {
-              const escaped = localName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-              const regex = new RegExp(`\\b${escaped}\\b`, "g");
-
-              if (regex.test(scrubbed)) {
-                dependencies.push(info);
-              }
-            }
-
-            return dependencies.sort((a, b) =>
-              a.localName.localeCompare(b.localName) ||
-              a.source.localeCompare(b.source)
-            );
-          }
-
-          function detectsPassThrough(implementationText, dependencies) {
-            const body = scrubForIdentifiers(implementationText)
-              .replace(/\s+/g, " ")
-              .trim();
-
-            if (dependencies.length !== 1) {
-              return {
-                isPassThrough: false,
-                target: null,
-                reason: dependencies.length === 0
-                  ? "No imported dependency is used by the implementation."
-                  : "More than one imported dependency is used."
-              };
-            }
-
-            const dep = dependencies[0];
-            const name = dep.localName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-            const patterns = [
-              new RegExp(`^return ${name}\\s*\\([^)]*\\)\\s*;?$`),
-              new RegExp(`^${name}\\s*\\([^)]*\\)\\s*;?$`),
-              new RegExp(`^return ${name}\\s*;?$`),
-              new RegExp(`^=\\s*${name}\\s*;?$`),
-              new RegExp(`^=\\s*${name}\\s*\\([^)]*\\)\\s*;?$`)
-            ];
-
-            const isPassThrough = patterns.some((pattern) => pattern.test(body));
-
-            return {
-              isPassThrough,
-              target: isPassThrough ? dep : null,
-              reason: isPassThrough
-                ? "Implementation is only a direct return/call/reference to one dependency."
-                : "Implementation uses a dependency but is not a direct one-call pass-through."
-            };
-          }
-
-          function rootTraceForDefinition(definition, importMap, implementationText) {
-            if (definition.declarationKind === "reExport") {
-              return {
-                kind: "reExport",
-                rootSource: definition.reExportSource,
-                rootSourceKind: sourceKind(definition.reExportSource),
-                passThrough: true,
-                reason: "Export is forwarded directly from another module.",
-                dependencies: []
-              };
-            }
-
-            if (definition.declarationKind === "exportAll") {
-              return {
-                kind: "exportAll",
-                rootSource: definition.reExportSource,
-                rootSourceKind: sourceKind(definition.reExportSource),
-                passThrough: true,
-                reason: "File forwards every export from another module.",
-                dependencies: []
-              };
-            }
-
-            if (definition.declarationKind === "localExportSpecifier") {
-              const imported = importMap.get(definition.localName);
-
-              if (imported) {
-                return {
-                  kind: "importAliasExport",
-                  rootSource: imported.source,
-                  rootSourceKind: imported.sourceKind,
-                  passThrough: true,
-                  reason: "Local export forwards an imported binding.",
-                  dependencies: [imported]
-                };
-              }
-
-              return {
-                kind: "localExportSpecifier",
-                rootSource: definition.file,
-                rootSourceKind: "localFile",
-                passThrough: false,
-                reason: "Export specifier points to a local name, not an imported binding.",
-                dependencies: []
-              };
-            }
-
-            if (
-              definition.exportKind === "type" ||
-              definition.declarationKind === "type" ||
-              definition.declarationKind === "interface"
-            ) {
-              return {
-                kind: "typeDeclaration",
-                rootSource: definition.file,
-                rootSourceKind: "localFile",
-                passThrough: false,
-                reason: "Export is a type-level declaration.",
-                dependencies: []
-              };
-            }
-
-            const dependencies = findImportDependencies(implementationText, importMap);
-            const passThrough = detectsPassThrough(implementationText, dependencies);
-
-            if (passThrough.isPassThrough && passThrough.target) {
-              return {
-                kind: "passThroughDependency",
-                rootSource: passThrough.target.source,
-                rootSourceKind: passThrough.target.sourceKind,
-                passThrough: true,
-                reason: passThrough.reason,
-                dependencies
-              };
-            }
-
-            if (dependencies.length === 0) {
-              return {
-                kind: "localImplementation",
-                rootSource: definition.file,
-                rootSourceKind: "localFile",
-                passThrough: false,
-                reason: "Implementation does not directly depend on imported bindings.",
-                dependencies: []
-              };
-            }
-
-            return {
-              kind: "composedImplementation",
-              rootSource: definition.file,
-              rootSourceKind: "localFile",
-              passThrough: false,
-              reason: "Implementation combines local code with imported dependencies.",
-              dependencies
-            };
-          }
-
-          function makeDefinition({
-            file,
-            line,
-            exportName,
-            localName,
-            importedName,
-            exportKind,
-            declarationKind,
-            statement,
-            implementationText,
-            reExportSource,
-            importMap
-          }) {
-            const definition = {
+            exports.push({
+              export: name,
               file,
-              line,
-              exportName,
-              localName: localName || exportName,
-              importedName: importedName || null,
-              exportKind,
-              declarationKind,
-              reExportSource: reExportSource || null,
-              statementPreview: String(statement || "")
-                .replace(/\s+/g, " ")
-                .trim()
-                .slice(0, 240)
-            };
-
-            const rootTrace = rootTraceForDefinition(
-              definition,
-              importMap,
-              implementationText || statement || ""
-            );
-
-            return {
-              ...definition,
-              rootTrace: {
-                ...rootTrace,
-                dependencies: rootTrace.dependencies.map((dependency) => ({
-                  localName: dependency.localName,
-                  importedName: dependency.importedName,
-                  importShape: dependency.importShape,
-                  importKind: dependency.importKind,
-                  source: dependency.source,
-                  sourceKind: dependency.sourceKind
-                }))
-              }
-            };
+              line
+            });
           }
 
-          function parseExports(filePath, text, importMap) {
-            const file = normalizePath(path.relative(ROOT, filePath));
+          function parseExports(filePath) {
+            const text = fs.readFileSync(filePath, "utf8");
+            const file = relativeFile(filePath);
             const exports = [];
-            const starReExports = [];
-
-            const exportAllRegex =
-              /^\s*export\s+\*\s+from\s+["']([^"']+)["']\s*;?/gm;
-
             let match;
-
-            while ((match = exportAllRegex.exec(text))) {
-              const source = normalizePath(match[1].trim());
-
-              starReExports.push({
-                file,
-                line: lineNumberAt(text, match.index),
-                declarationKind: "exportAll",
-                reExportSource: source,
-                rootTrace: {
-                  kind: "exportAll",
-                  rootSource: source,
-                  rootSourceKind: sourceKind(source),
-                  passThrough: true,
-                  reason: "File forwards every export from another module.",
-                  dependencies: []
-                }
-              });
-            }
 
             const exportNamespaceRegex =
               /^\s*export\s+\*\s+as\s+([A-Za-z_$][A-Za-z0-9_$]*)\s+from\s+["']([^"']+)["']\s*;?/gm;
 
             while ((match = exportNamespaceRegex.exec(text))) {
-              const exportName = match[1].trim();
-              const source = normalizePath(match[2].trim());
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: "*",
-                exportKind: "value",
-                declarationKind: "reExport",
-                statement: match[0],
-                implementationText: "",
-                reExportSource: source,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const namedExportRegex =
               /^\s*export\s+(type\s+)?\{([\s\S]*?)\}\s*(?:from\s+["']([^"']+)["'])?\s*;?/gm;
 
             while ((match = namedExportRegex.exec(text))) {
-              const exportKind = match[1] ? "type" : "value";
-              const block = match[2];
-              const reExportSource = match[3] ? normalizePath(match[3].trim()) : null;
-
-              for (const specifier of splitExportSpecifiers(block)) {
-                const finalExportKind =
-                  exportKind === "type" || specifier.specifierKind === "type"
-                    ? "type"
-                    : "value";
-
-                exports.push(makeDefinition({
-                  file,
-                  line: lineNumberAt(text, match.index),
-                  exportName: specifier.exportName,
-                  localName: reExportSource ? specifier.exportName : specifier.importedName,
-                  importedName: specifier.importedName,
-                  exportKind: finalExportKind,
-                  declarationKind: reExportSource ? "reExport" : "localExportSpecifier",
-                  statement: match[0],
-                  implementationText: "",
-                  reExportSource,
-                  importMap
-                }));
+              for (const name of parseNamedExportBlock(match[2])) {
+                addExport(exports, name, file, lineNumberAt(text, match.index));
               }
             }
 
             const functionRegex =
-              /^\s*export\s+(async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(/gm;
+              /^\s*export\s+(?:declare\s+)?(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(/gm;
 
             while ((match = functionRegex.exec(text))) {
-              const exportName = match[2].trim();
-              const body = readFunctionBody(text, match.index);
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: match[1] ? "asyncFunction" : "function",
-                statement: readStatement(text, match.index),
-                implementationText: body,
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const classRegex =
-              /^\s*export\s+class\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
+              /^\s*export\s+(?:declare\s+)?(?:abstract\s+)?class\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
 
             while ((match = classRegex.exec(text))) {
-              const exportName = match[1].trim();
-              const body = readFunctionBody(text, match.index);
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: "class",
-                statement: readStatement(text, match.index),
-                implementationText: body,
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const typeRegex =
               /^\s*export\s+type\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
 
             while ((match = typeRegex.exec(text))) {
-              const exportName = match[1].trim();
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: null,
-                exportKind: "type",
-                declarationKind: "type",
-                statement: readStatement(text, match.index),
-                implementationText: "",
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const interfaceRegex =
-              /^\s*export\s+interface\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
+              /^\s*export\s+(?:declare\s+)?interface\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
 
             while ((match = interfaceRegex.exec(text))) {
-              const exportName = match[1].trim();
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: null,
-                exportKind: "type",
-                declarationKind: "interface",
-                statement: readStatement(text, match.index),
-                implementationText: "",
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const enumRegex =
-              /^\s*export\s+enum\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
+              /^\s*export\s+(?:declare\s+)?(?:const\s+)?enum\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
 
             while ((match = enumRegex.exec(text))) {
-              const exportName = match[1].trim();
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName,
-                localName: exportName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: "enum",
-                statement: readStatement(text, match.index),
-                implementationText: "",
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, match[1], file, lineNumberAt(text, match.index));
             }
 
             const variableRegex =
-              /^\s*export\s+(const|let|var)\s+([\s\S]*?)(?:;|\n)/gm;
+              /^\s*export\s+(?:declare\s+)?(?:const|let|var)\s+([\s\S]*?)(?:;|\n)/gm;
 
             while ((match = variableRegex.exec(text))) {
-              const declarationKind = match[1];
-              const declarationBlock = match[2];
+              const block = match[1];
 
-              for (const part of splitTopLevelCommaList(declarationBlock)) {
+              for (const part of splitTopLevelComma(block)) {
                 const nameMatch = part.match(/^\s*([A-Za-z_$][A-Za-z0-9_$]*)\b/);
 
                 if (!nameMatch) continue;
 
-                const exportName = nameMatch[1].trim();
-
-                exports.push(makeDefinition({
-                  file,
-                  line: lineNumberAt(text, match.index),
-                  exportName,
-                  localName: exportName,
-                  importedName: null,
-                  exportKind: "value",
-                  declarationKind,
-                  statement: `${match[1]} ${part}`,
-                  implementationText: part,
-                  reExportSource: null,
-                  importMap
-                }));
+                addExport(exports, nameMatch[1], file, lineNumberAt(text, match.index));
               }
             }
 
-            const defaultNamedFunctionRegex =
-              /^\s*export\s+default\s+(async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)?\s*\(/gm;
+            const defaultFunctionRegex =
+              /^\s*export\s+default\s+(?:async\s+)?function(?:\s+[A-Za-z_$][A-Za-z0-9_$]*)?\s*\(/gm;
 
-            while ((match = defaultNamedFunctionRegex.exec(text))) {
-              const localName = match[2] ? match[2].trim() : "default";
-              const body = readFunctionBody(text, match.index);
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName: "default",
-                localName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: match[1] ? "defaultAsyncFunction" : "defaultFunction",
-                statement: readStatement(text, match.index),
-                implementationText: body,
-                reExportSource: null,
-                importMap
-              }));
+            while ((match = defaultFunctionRegex.exec(text))) {
+              addExport(exports, "default", file, lineNumberAt(text, match.index));
             }
 
-            const defaultNamedClassRegex =
-              /^\s*export\s+default\s+class\s+([A-Za-z_$][A-Za-z0-9_$]*)?/gm;
+            const defaultClassRegex =
+              /^\s*export\s+default\s+(?:abstract\s+)?class(?:\s+[A-Za-z_$][A-Za-z0-9_$]*)?/gm;
 
-            while ((match = defaultNamedClassRegex.exec(text))) {
-              const localName = match[1] ? match[1].trim() : "default";
-              const body = readFunctionBody(text, match.index);
-
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName: "default",
-                localName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: "defaultClass",
-                statement: readStatement(text, match.index),
-                implementationText: body,
-                reExportSource: null,
-                importMap
-              }));
+            while ((match = defaultClassRegex.exec(text))) {
+              addExport(exports, "default", file, lineNumberAt(text, match.index));
             }
 
             const defaultExpressionRegex =
               /^\s*export\s+default\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*;?/gm;
 
             while ((match = defaultExpressionRegex.exec(text))) {
-              const localName = match[1].trim();
+              const local = match[1];
 
-              if (localName === "function" || localName === "class") continue;
+              if (local === "function" || local === "class") continue;
 
-              exports.push(makeDefinition({
-                file,
-                line: lineNumberAt(text, match.index),
-                exportName: "default",
-                localName,
-                importedName: null,
-                exportKind: "value",
-                declarationKind: "defaultExpression",
-                statement: match[0],
-                implementationText: localName,
-                reExportSource: null,
-                importMap
-              }));
+              addExport(exports, "default", file, lineNumberAt(text, match.index));
             }
 
-            return { exports, starReExports };
+            return exports;
           }
 
-          function compareCode(a, b) {
-            return String(a).localeCompare(String(b), undefined, { numeric: true });
-          }
+          function uniqueLocations(locations) {
+            const seen = new Set();
+            const out = [];
 
-          function compareExportEntry(a, b) {
-            return (
-              a.characterCount - b.characterCount ||
-              a.exportName.toLowerCase().localeCompare(b.exportName.toLowerCase()) ||
-              a.exportName.localeCompare(b.exportName)
+            for (const location of locations) {
+              const key = `${location.file}:${location.line}`;
+
+              if (seen.has(key)) continue;
+
+              seen.add(key);
+
+              out.push({
+                file: location.file,
+                line: location.line
+              });
+            }
+
+            return out.sort((a, b) =>
+              a.file.localeCompare(b.file) || a.line - b.line
             );
           }
 
-          function compareDefinition(a, b) {
+          function exportNameOrder(a, b) {
             return (
-              a.file.localeCompare(b.file) ||
-              a.line - b.line ||
-              a.declarationKind.localeCompare(b.declarationKind) ||
-              String(a.localName || "").localeCompare(String(b.localName || ""))
+              Array.from(a).length - Array.from(b).length ||
+              a.toLowerCase().localeCompare(b.toLowerCase()) ||
+              a.localeCompare(b)
             );
           }
 
           const files = walk(ROOT).sort();
-          const rawDefinitions = [];
-          const starReExports = [];
+          const found = [];
 
-          for (const filePath of files) {
-            const text = fs.readFileSync(filePath, "utf8");
-            const importMap = parseImports(filePath, text);
-            const parsed = parseExports(filePath, text, importMap);
-
-            rawDefinitions.push(...parsed.exports);
-            starReExports.push(...parsed.starReExports);
+          for (const file of files) {
+            found.push(...parseExports(file));
           }
 
-          const exportMap = new Map();
+          const grouped = new Map();
 
-          for (const definition of rawDefinitions) {
-            if (!definition.exportName) continue;
-
-            const key = definition.exportName;
-
-            if (!exportMap.has(key)) {
-              exportMap.set(key, {
-                exportName: key,
-                characterCount: characterCount(key),
-                definitions: []
-              });
+          for (const item of found) {
+            if (!grouped.has(item.export)) {
+              grouped.set(item.export, []);
             }
 
-            exportMap.get(key).definitions.push(definition);
+            grouped.get(item.export).push({
+              file: item.file,
+              line: item.line
+            });
           }
 
-          const sortedExports = [...exportMap.values()]
-            .map((entry) => {
-              const definitions = entry.definitions.sort(compareDefinition);
+          const output = {};
+          let index = 1;
 
-              const rootKinds = uniqueSortedArray(
-                definitions.map((definition) => definition.rootTrace.kind)
-              );
-
-              const rootSources = uniqueSortedArray(
-                definitions.map((definition) => definition.rootTrace.rootSource)
-              );
-
-              const rootSourceKinds = uniqueSortedArray(
-                definitions.map((definition) => definition.rootTrace.rootSourceKind)
-              );
-
-              const files = uniqueSortedArray(
-                definitions.map((definition) => definition.file)
-              );
-
-              const exportKinds = uniqueSortedArray(
-                definitions.map((definition) => definition.exportKind)
-              );
-
-              const declarationKinds = uniqueSortedArray(
-                definitions.map((definition) => definition.declarationKind)
-              );
-
-              const dependencySources = uniqueSortedArray(
-                definitions.flatMap((definition) =>
-                  definition.rootTrace.dependencies.map((dependency) => dependency.source)
-                )
-              );
-
-              const frameworkDependencies = uniqueSortedArray(
-                definitions.flatMap((definition) =>
-                  definition.rootTrace.dependencies
-                    .filter((dependency) => dependency.sourceKind === "framework")
-                    .map((dependency) => dependency.source)
-                )
-              );
-
-              const externalDependencies = uniqueSortedArray(
-                definitions.flatMap((definition) =>
-                  definition.rootTrace.dependencies
-                    .filter((dependency) => dependency.sourceKind === "externalPackage")
-                    .map((dependency) => dependency.source)
-                )
-              );
-
-              const repoDependencies = uniqueSortedArray(
-                definitions.flatMap((definition) =>
-                  definition.rootTrace.dependencies
-                    .filter((dependency) => isRepoSource(dependency.source))
-                    .map((dependency) => dependency.source)
-                )
-              );
-
-              return {
-                exportName: entry.exportName,
-                characterCount: entry.characterCount,
-                definitionCount: definitions.length,
-                files,
-                exportKinds,
-                declarationKinds,
-                rootKinds,
-                rootSources,
-                rootSourceKinds,
-                dependencySources,
-                repoDependencies,
-                frameworkDependencies,
-                externalDependencies,
-                hasFrameworkRoot: rootSourceKinds.includes("framework"),
-                hasExternalRoot: rootSourceKinds.includes("externalPackage"),
-                hasRepoRoot: rootSourceKinds.some((kind) =>
-                  kind === "repoAlias" || kind === "relativeRepo" || kind === "repoRoot"
-                ),
-                hasLocalRoot: rootSourceKinds.includes("localFile"),
-                passThroughDefinitionCount: definitions.filter(
-                  (definition) => definition.rootTrace.passThrough
-                ).length,
-                definitions
-              };
-            })
-            .sort(compareExportEntry);
-
-          const dreamCodeList = sortedExports.map((entry, index) => {
-            const code = `D${index + 1}`;
-            const codeCharacterCount = characterCount(code);
-            const textCharacterCount = entry.characterCount;
-            const compressionGain = textCharacterCount - codeCharacterCount;
-
-            return {
-              code,
-              identifier: code,
-              exportName: entry.exportName,
-              characterCount: entry.characterCount,
-              codeCharacterCount,
-              textCharacterCount,
-              compressionGain,
-              codeIsShorter: compressionGain > 0,
-              validCodeIdentifier: isValidIdentifier(code),
-              ...entry
+          for (const [exportName, locations] of [...grouped.entries()].sort(([a], [b]) => exportNameOrder(a, b))) {
+            output[`D${index}`] = {
+              export: exportName,
+              locations: uniqueLocations(locations)
             };
-          });
 
-          const dreamCodes = Object.fromEntries(
-            dreamCodeList.map((entry) => [entry.code, entry])
-          );
-
-          const dreamCodeText = Object.fromEntries(
-            dreamCodeList.map((entry) => [entry.code, entry.exportName])
-          );
-
-          const exportNameToCode = Object.fromEntries(
-            dreamCodeList.map((entry) => [entry.exportName, entry.code])
-          );
-
-          const byCharacterCount = {};
-          const byFile = {};
-          const byRootKind = {};
-          const byRootSource = {};
-          const byRootSourceKind = {};
-          const byExportKind = {};
-          const byDeclarationKind = {};
-          const frameworkRootCodes = [];
-          const externalRootCodes = [];
-          const repoRootCodes = [];
-          const localRootCodes = [];
-          const passThroughCodes = [];
-          const notShorterCodes = [];
-
-          for (const entry of dreamCodeList) {
-            const lengthKey = String(entry.characterCount);
-
-            byCharacterCount[lengthKey] ||= [];
-            byCharacterCount[lengthKey].push(entry.code);
-
-            for (const file of entry.files) {
-              byFile[file] ||= [];
-              byFile[file].push(entry.code);
-            }
-
-            for (const kind of entry.rootKinds) {
-              byRootKind[kind] ||= [];
-              byRootKind[kind].push(entry.code);
-            }
-
-            for (const source of entry.rootSources) {
-              byRootSource[source] ||= [];
-              byRootSource[source].push(entry.code);
-            }
-
-            for (const kind of entry.rootSourceKinds) {
-              byRootSourceKind[kind] ||= [];
-              byRootSourceKind[kind].push(entry.code);
-            }
-
-            for (const kind of entry.exportKinds) {
-              byExportKind[kind] ||= [];
-              byExportKind[kind].push(entry.code);
-            }
-
-            for (const kind of entry.declarationKinds) {
-              byDeclarationKind[kind] ||= [];
-              byDeclarationKind[kind].push(entry.code);
-            }
-
-            if (entry.hasFrameworkRoot) frameworkRootCodes.push(entry.code);
-            if (entry.hasExternalRoot) externalRootCodes.push(entry.code);
-            if (entry.hasRepoRoot) repoRootCodes.push(entry.code);
-            if (entry.hasLocalRoot) localRootCodes.push(entry.code);
-            if (entry.passThroughDefinitionCount > 0) passThroughCodes.push(entry.code);
-            if (!entry.codeIsShorter) notShorterCodes.push(entry.code);
+            index += 1;
           }
-
-          function finalizeCodeIndex(index) {
-            return Object.fromEntries(
-              Object.entries(index)
-                .sort(([a], [b]) => a.localeCompare(b))
-                .map(([key, codes]) => [key, uniqueSortedArray(codes).sort(compareCode)])
-            );
-          }
-
-          const finalByCharacterCount = Object.fromEntries(
-            Object.entries(byCharacterCount)
-              .sort(([a], [b]) => Number(a) - Number(b))
-              .map(([count, codes]) => [count, uniqueSortedArray(codes).sort(compareCode)])
-          );
-
-          const output = {
-            schema: "dreamengin.exports.rootmap.v1",
-            generatedAt: new Date().toISOString(),
-
-            purpose:
-              "Canonical DREAMengin export root map. D-codes are assigned only to exported names. Each D-code traces where the export is declared, forwarded from, or rooted through dependencies.",
-
-            codeRule: {
-              mode: "exportsOnly",
-              format: "D<number>",
-              firstCode: "D1",
-              ordering:
-                "D-codes are assigned by exported name character count ascending, then alphabetical order inside each character-count group.",
-              sourceOfTruth:
-                "Exports, not imports. Import data is used only to trace roots/dependencies behind exported declarations.",
-              rootTrace:
-                "Each definition includes rootTrace showing local implementation, re-export source, imported alias export, direct pass-through dependency, or composed implementation.",
-              noCodeRewrite:
-                "This file does not claim that D-codes are automatically available in TypeScript. It is a code map, not a compiler transform."
-            },
-
-            counts: {
-              filesScanned: files.length,
-              rawExportDefinitions: rawDefinitions.length,
-              uniqueExportNames: dreamCodeList.length,
-              starReExports: starReExports.length,
-              frameworkRootCodes: frameworkRootCodes.length,
-              externalRootCodes: externalRootCodes.length,
-              repoRootCodes: repoRootCodes.length,
-              localRootCodes: localRootCodes.length,
-              passThroughCodes: passThroughCodes.length,
-              notShorterCodes: notShorterCodes.length,
-              characterCountGroups: Object.keys(finalByCharacterCount).length
-            },
-
-            dreamCodeText,
-            exportNameToCode,
-            dreamCodes,
-            dreamCodeList,
-
-            starReExports,
-
-            passThroughCodes: passThroughCodes.sort(compareCode),
-            frameworkRootCodes: frameworkRootCodes.sort(compareCode),
-            externalRootCodes: externalRootCodes.sort(compareCode),
-            repoRootCodes: repoRootCodes.sort(compareCode),
-            localRootCodes: localRootCodes.sort(compareCode),
-            notShorterCodes: notShorterCodes.sort(compareCode),
-
-            byCharacterCount: finalByCharacterCount,
-            byFile: finalizeCodeIndex(byFile),
-            byRootKind: finalizeCodeIndex(byRootKind),
-            byRootSource: finalizeCodeIndex(byRootSource),
-            byRootSourceKind: finalizeCodeIndex(byRootSourceKind),
-            byExportKind: finalizeCodeIndex(byExportKind),
-            byDeclarationKind: finalizeCodeIndex(byDeclarationKind)
-          };
 
           fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
-
-          console.log("Generated DREAMengin export root map.");
           console.log(`Wrote ${OUT_FILE}`);
-          console.log("");
-          console.log("Summary:");
-          console.log(JSON.stringify(output.counts, null, 2));
-          console.log("");
-          console.log("First 50 D-code exports:");
-          console.log(JSON.stringify(
-            dreamCodeList.slice(0, 50).map((entry) => ({
-              code: entry.code,
-              exportName: entry.exportName,
-              characterCount: entry.characterCount,
-              rootKinds: entry.rootKinds,
-              rootSources: entry.rootSources,
-              passThroughDefinitionCount: entry.passThroughDefinitionCount,
-              files: entry.files
-            })),
-            null,
-            2
-          ));
           NODE
 
-      - name: Upload downloadable Dreamengin.json
+      - name: Upload Dreamengin.json
         uses: actions/upload-artifact@v6
         with:
           name: Dreamengin-json
