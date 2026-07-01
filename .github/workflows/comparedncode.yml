@@ -1,4 +1,4 @@
-name: Compare enCode Zip
+name: DREAMengin Application Code Zip
 
 on:
   workflow_dispatch:
@@ -89,20 +89,8 @@ jobs:
             return crypto.createHash("sha256").update(value).digest("hex");
           }
 
-          function shouldSkipFile(file) {
-            const rel = relativeFile(file);
-
-            if (rel.startsWith("tests/")) return true;
-            if (rel.startsWith("test/")) return true;
-            if (rel.startsWith("scripts/")) return true;
-            if (rel.includes("/__tests__/")) return true;
-            if (rel.includes("/__mocks__/")) return true;
-            if (rel.endsWith(".test.ts")) return true;
-            if (rel.endsWith(".test.tsx")) return true;
-            if (rel.endsWith(".spec.ts")) return true;
-            if (rel.endsWith(".spec.tsx")) return true;
-
-            return false;
+          function ensureParentDir(file) {
+            fs.mkdirSync(path.dirname(file), { recursive: true });
           }
 
           function walk(dir, out = []) {
@@ -119,16 +107,11 @@ jobs:
               if (!entry.isFile()) continue;
               if (SKIP_FILES.has(entry.name)) continue;
               if (!SOURCE_EXTS.has(path.extname(entry.name))) continue;
-              if (shouldSkipFile(full)) continue;
 
               out.push(full);
             }
 
             return out;
-          }
-
-          function ensureParentDir(file) {
-            fs.mkdirSync(path.dirname(file), { recursive: true });
           }
 
           const files = walk(ROOT).sort();
@@ -155,6 +138,11 @@ jobs:
 
           const manifest = {
             generatedAt: new Date().toISOString(),
+            filter: {
+              sourceExtensions: Array.from(SOURCE_EXTS),
+              skippedDirectories: Array.from(SKIP_DIRS),
+              skippedFiles: Array.from(SKIP_FILES)
+            },
             output: {
               directory: normalize(path.relative(ROOT, OUT_DIR)),
               zipFile: normalize(path.relative(ROOT, ZIP_FILE))
