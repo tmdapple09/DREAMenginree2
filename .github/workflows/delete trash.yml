@@ -1,0 +1,413 @@
+name: Clean Codebase
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  clean-codebase:
+    name: Remove comments and unused assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Remove comments and listed unused files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p artifact
+
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+
+          const ROOT = process.cwd();
+
+          const REPORT_FILE = path.join(ROOT, "artifact", "dreamengin-clean-codebase-report.json");
+
+          const SOURCE_EXTS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass"
+          ]);
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            "node_modules",
+            ".next",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".vercel",
+            "artifact"
+          ]);
+
+          const FILES_TO_DELETE = [
+            "public/logo-icon.png",
+            "public/images/logo1.PNG",
+            "public/images/logo2.PNG",
+            "public/images/logo3.PNG",
+            "public/arm1_transparent.png",
+            "public/arm2_transparent.png",
+            "public/coat_transparent.png",
+            "public/head_transparent.png",
+            "public/images/iconslist.png",
+            "public/shoe1_transparent.png",
+            "public/shoe2_transparent.png",
+            "misc/images/arm2_transparent.png",
+            "misc/images/coat_transparent.png",
+            "misc/images/head_transparent.png",
+            "misc/images/logo_transparent.png",
+            "public/logo_DREAM_transparent.png",
+            "public/logo_ENGIN_transparent.png",
+            "misc/images/shoe1_transparent.png",
+            "misc/images/shoe2_transparent.png"
+          ];
+
+          function normalize(value) {
+            return String(value || "").replace(/\\/g, "/");
+          }
+
+          function relativeFile(file) {
+            return normalize(path.relative(ROOT, file));
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) {
+                  walk(full, out);
+                }
+                continue;
+              }
+
+              if (!entry.isFile()) continue;
+              if (!SOURCE_EXTS.has(path.extname(entry.name))) continue;
+
+              out.push(full);
+            }
+
+            return out;
+          }
+
+          function isProtectedComment(comment) {
+            const value = String(comment || "");
+
+            return (
+              /\/\/\/\s*<reference\b/.test(value) ||
+              /\/\/[#@]\s*sourceMappingURL=/.test(value) ||
+              /\/\/[#@]\s*sourceURL=/.test(value) ||
+
+              /@ts-ignore\b/.test(value) ||
+              /@ts-expect-error\b/.test(value) ||
+              /@ts-nocheck\b/.test(value) ||
+              /@ts-check\b/.test(value) ||
+
+              /eslint-disable/.test(value) ||
+              /eslint-enable/.test(value) ||
+              /prettier-ignore/.test(value) ||
+
+              /@jsx\b/.test(value) ||
+              /@jsxRuntime\b/.test(value) ||
+              /@jsxImportSource\b/.test(value) ||
+
+              /#__PURE__/.test(value) ||
+              /@__PURE__/.test(value) ||
+
+              /istanbul/.test(value) ||
+              /c8\s+ignore/.test(value) ||
+              /vitest/.test(value) ||
+              /jest/.test(value) ||
+
+              /@license\b/i.test(value) ||
+              /@preserve\b/i.test(value) ||
+              /copyright/i.test(value)
+            );
+          }
+
+          function stripComments(text) {
+            const input = String(text || "");
+            let output = "";
+
+            let commentsRemoved = 0;
+            let commentCharsRemoved = 0;
+            let protectedCommentsKept = 0;
+
+            let i = 0;
+            let state = "normal";
+            let quote = null;
+
+            while (i < input.length) {
+              const char = input[i];
+              const next = input[i + 1];
+
+              if (state === "normal") {
+                // Exact JSX comment container: {/* ... */}
+                if (char === "{" && next === "/" && input[i + 2] === "*") {
+                  const end = input.indexOf("*/}", i + 3);
+
+                  if (end !== -1) {
+                    const whole = input.slice(i, end + 3);
+                    const comment = input.slice(i + 1, end + 2);
+
+                    if (isProtectedComment(comment)) {
+                      output += whole;
+                      protectedCommentsKept += 1;
+                    } else {
+                      commentsRemoved += 1;
+                      commentCharsRemoved += whole.length;
+                    }
+
+                    i = end + 3;
+                    continue;
+                  }
+                }
+
+                if (char === "/" && next === "/") {
+                  let end = i + 2;
+
+                  while (end < input.length && input[end] !== "\n" && input[end] !== "\r") {
+                    end += 1;
+                  }
+
+                  const comment = input.slice(i, end);
+
+                  if (isProtectedComment(comment)) {
+                    output += comment;
+                    protectedCommentsKept += 1;
+                  } else {
+                    commentsRemoved += 1;
+                    commentCharsRemoved += comment.length;
+                  }
+
+                  i = end;
+                  continue;
+                }
+
+                if (char === "/" && next === "*") {
+                  const end = input.indexOf("*/", i + 2);
+                  const comment = end === -1 ? input.slice(i) : input.slice(i, end + 2);
+
+                  if (isProtectedComment(comment)) {
+                    output += comment;
+                    protectedCommentsKept += 1;
+                  } else {
+                    commentsRemoved += 1;
+                    commentCharsRemoved += comment.length;
+                  }
+
+                  i = end === -1 ? input.length : end + 2;
+                  continue;
+                }
+
+                if (char === "'" || char === '"' || char === "`") {
+                  state = char === "`" ? "template" : "string";
+                  quote = char;
+                  output += char;
+                  i += 1;
+                  continue;
+                }
+
+                output += char;
+                i += 1;
+                continue;
+              }
+
+              if (state === "string") {
+                output += char;
+
+                if (char === "\\" && i + 1 < input.length) {
+                  output += input[i + 1];
+                  i += 2;
+                  continue;
+                }
+
+                if (char === quote) {
+                  state = "normal";
+                  quote = null;
+                }
+
+                i += 1;
+                continue;
+              }
+
+              if (state === "template") {
+                output += char;
+
+                if (char === "\\" && i + 1 < input.length) {
+                  output += input[i + 1];
+                  i += 2;
+                  continue;
+                }
+
+                if (char === "`") {
+                  state = "normal";
+                  quote = null;
+                }
+
+                i += 1;
+                continue;
+              }
+            }
+
+            return {
+              text: output,
+              commentsRemoved,
+              commentCharsRemoved,
+              protectedCommentsKept
+            };
+          }
+
+          const sourceFiles = walk(ROOT).sort();
+
+          const changedCommentFiles = [];
+          let totalCommentsRemoved = 0;
+          let totalCommentCharsRemoved = 0;
+          let totalProtectedCommentsKept = 0;
+
+          for (const file of sourceFiles) {
+            const original = fs.readFileSync(file, "utf8");
+            const cleaned = stripComments(original);
+
+            if (cleaned.text !== original) {
+              fs.writeFileSync(file, cleaned.text);
+
+              changedCommentFiles.push({
+                file: relativeFile(file),
+                commentsRemoved: cleaned.commentsRemoved,
+                commentCharsRemoved: cleaned.commentCharsRemoved,
+                protectedCommentsKept: cleaned.protectedCommentsKept
+              });
+            }
+
+            totalCommentsRemoved += cleaned.commentsRemoved;
+            totalCommentCharsRemoved += cleaned.commentCharsRemoved;
+            totalProtectedCommentsKept += cleaned.protectedCommentsKept;
+          }
+
+          const deletedFiles = [];
+          const missingFiles = [];
+
+          for (const rel of FILES_TO_DELETE) {
+            const file = path.join(ROOT, rel);
+
+            if (fs.existsSync(file) && fs.statSync(file).isFile()) {
+              const size = fs.statSync(file).size;
+              fs.unlinkSync(file);
+
+              deletedFiles.push({
+                file: normalize(rel),
+                bytesDeleted: size
+              });
+            } else {
+              missingFiles.push(normalize(rel));
+            }
+          }
+
+          const totalDeletedAssetBytes = deletedFiles.reduce((sum, item) => sum + item.bytesDeleted, 0);
+
+          const report = {
+            generatedAt: new Date().toISOString(),
+            actions: [
+              "Removed removable source/style comments",
+              "Preserved protected compiler/tooling/license comments",
+              "Deleted listed unused asset files"
+            ],
+            protectedCommentRules: [
+              "triple-slash references",
+              "sourceMappingURL/sourceURL",
+              "@ts-ignore/@ts-expect-error/@ts-nocheck/@ts-check",
+              "eslint-disable/eslint-enable",
+              "prettier-ignore",
+              "@jsx/@jsxRuntime/@jsxImportSource",
+              "@__PURE__/#__PURE__",
+              "istanbul/c8/vitest/jest comments",
+              "@license/@preserve/copyright"
+            ],
+            counts: {
+              sourceFilesScanned: sourceFiles.length,
+              sourceFilesChanged: changedCommentFiles.length,
+              commentsRemoved: totalCommentsRemoved,
+              commentCharsRemoved: totalCommentCharsRemoved,
+              protectedCommentsKept: totalProtectedCommentsKept,
+              requestedFilesToDelete: FILES_TO_DELETE.length,
+              filesDeleted: deletedFiles.length,
+              filesMissing: missingFiles.length,
+              assetBytesDeleted: totalDeletedAssetBytes
+            },
+            changedCommentFiles,
+            deletedFiles,
+            missingFiles
+          };
+
+          fs.writeFileSync(REPORT_FILE, JSON.stringify(report, null, 2));
+
+          const changed =
+            changedCommentFiles.length > 0 ||
+            deletedFiles.length > 0;
+
+          fs.appendFileSync(process.env.GITHUB_ENV, `DREAMENGIN_CHANGED=${changed ? "1" : "0"}\n`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `COMMENTS_REMOVED=${totalCommentsRemoved}\n`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `COMMENT_CHARS_REMOVED=${totalCommentCharsRemoved}\n`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `FILES_DELETED=${deletedFiles.length}\n`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `ASSET_BYTES_DELETED=${totalDeletedAssetBytes}\n`);
+
+          console.log(`Source files scanned: ${sourceFiles.length}`);
+          console.log(`Source files changed: ${changedCommentFiles.length}`);
+          console.log(`Comments removed: ${totalCommentsRemoved}`);
+          console.log(`Comment chars removed: ${totalCommentCharsRemoved}`);
+          console.log(`Protected comments kept: ${totalProtectedCommentsKept}`);
+          console.log(`Files deleted: ${deletedFiles.length}`);
+          console.log(`Missing listed files: ${missingFiles.length}`);
+          console.log(`Asset bytes deleted: ${totalDeletedAssetBytes}`);
+          console.log(`Wrote ${relativeFile(REPORT_FILE)}`);
+          NODE
+
+      - name: Upload cleanup report
+        uses: actions/upload-artifact@v6
+        with:
+          name: dreamengin-clean-codebase-report
+          path: artifact/dreamengin-clean-codebase-report.json
+          if-no-files-found: error
+
+      - name: Commit cleanup
+        if: env.DREAMENGIN_CHANGED == '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          git commit \
+            -m "Clean codebase comments and unused assets" \
+            -m "Removed ${COMMENTS_REMOVED} comments and ${FILES_DELETED} listed asset files." \
+            -m "Removed ${COMMENT_CHARS_REMOVED} comment characters and ${ASSET_BYTES_DELETED} asset bytes."
+
+          git push
+
+      - name: No changes
+        if: env.DREAMENGIN_CHANGED == '0'
+        shell: bash
+        run: |
+          echo "No removable comments or listed files found."
