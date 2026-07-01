@@ -1,4 +1,4 @@
-name: DREAMengin Application Code Zip
+name: DREAMengin Compare Code Zip
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Create application code zip
         shell: bash
@@ -156,7 +156,7 @@ jobs:
 
           fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
 
-          execFileSync("zip", ["-qr", ZIP_FILE, "."], {
+          execFileSync("zip", ["-9qr", ZIP_FILE, "."], {
             cwd: OUT_DIR,
             stdio: "inherit"
           });
