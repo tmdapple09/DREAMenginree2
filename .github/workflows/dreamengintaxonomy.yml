@@ -19,7 +19,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Generate Dreamengin.json
+      - name: Generate DREAMengin export JSON files
         shell: bash
         run: |
           set -euo pipefail
@@ -31,7 +31,9 @@ jobs:
           const path = require("path");
 
           const ROOT = process.cwd();
-          const OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.json");
+
+          const FULL_OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.json");
+          const NAMES_OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.names.json");
 
           const SOURCE_EXTS = new Set([
             ".ts",
@@ -53,6 +55,47 @@ jobs:
             ".turbo",
             ".vercel",
             "public"
+          ]);
+
+          const TS_LANGUAGE_NAMES = new Set([
+            "any",
+            "as",
+            "asserts",
+            "bigint",
+            "boolean",
+            "constructor",
+            "declare",
+            "enum",
+            "extends",
+            "false",
+            "from",
+            "implements",
+            "import",
+            "infer",
+            "interface",
+            "is",
+            "keyof",
+            "module",
+            "namespace",
+            "never",
+            "null",
+            "number",
+            "object",
+            "private",
+            "protected",
+            "public",
+            "readonly",
+            "satisfies",
+            "string",
+            "symbol",
+            "this",
+            "true",
+            "type",
+            "typeof",
+            "undefined",
+            "unique",
+            "unknown",
+            "void"
           ]);
 
           function normalize(value) {
@@ -152,6 +195,14 @@ jobs:
               .trim();
           }
 
+          function isBlockedExportName(name) {
+            return TS_LANGUAGE_NAMES.has(String(name || ""));
+          }
+
+          function isTooShortExportName(name) {
+            return Array.from(String(name || "")).length < 3;
+          }
+
           function parseNamedExportBlock(block) {
             return splitTopLevelComma(block)
               .map((part) => cleanExportName(part))
@@ -160,11 +211,15 @@ jobs:
                 const pieces = part.split(/\s+as\s+/);
                 return (pieces[1] || pieces[0] || "").trim();
               })
-              .filter(Boolean);
+              .filter(Boolean)
+              .filter((name) => !isBlockedExportName(name))
+              .filter((name) => !isTooShortExportName(name));
           }
 
           function addExport(exports, name, file, line) {
             if (!name) return;
+            if (isBlockedExportName(name)) return;
+            if (isTooShortExportName(name)) return;
 
             exports.push({
               export: name,
@@ -323,20 +378,28 @@ jobs:
             });
           }
 
-          const output = {};
+          const fullOutput = {};
+          const namesOutput = {};
           let index = 1;
 
           for (const [exportName, locations] of [...grouped.entries()].sort(([a], [b]) => exportNameOrder(a, b))) {
-            output[`D${index}`] = {
+            const code = `D${index}`;
+
+            fullOutput[code] = {
               export: exportName,
               locations: uniqueLocations(locations)
             };
 
+            namesOutput[code] = exportName;
+
             index += 1;
           }
 
-          fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
-          console.log(`Wrote ${OUT_FILE}`);
+          fs.writeFileSync(FULL_OUT_FILE, JSON.stringify(fullOutput, null, 2));
+          fs.writeFileSync(NAMES_OUT_FILE, JSON.stringify(namesOutput, null, 2));
+
+          console.log(`Wrote ${FULL_OUT_FILE}`);
+          console.log(`Wrote ${NAMES_OUT_FILE}`);
           NODE
 
       - name: Upload Dreamengin.json
@@ -344,4 +407,11 @@ jobs:
         with:
           name: Dreamengin-json
           path: artifact/Dreamengin.json
+          if-no-files-found: error
+
+      - name: Upload Dreamengin.names.json
+        uses: actions/upload-artifact@v6
+        with:
+          name: Dreamengin-names-json
+          path: artifact/Dreamengin.names.json
           if-no-files-found: error
