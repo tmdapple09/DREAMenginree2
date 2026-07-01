@@ -66,6 +66,7 @@ jobs:
 
           const SKIP_DIRS = new Set([
             ".git",
+            ".github",
             "node_modules",
             ".next",
             "dist",
@@ -156,7 +157,11 @@ jobs:
           ];
 
           function normalizePath(value) {
-            return value.replace(/\\/g, "/");
+            return String(value || "").replace(/\\/g, "/");
+          }
+
+          function characterCount(value) {
+            return Array.from(String(value || "")).length;
           }
 
           function walk(dir, files = []) {
@@ -207,14 +212,14 @@ jobs:
           }
 
           function cleanImportedName(name) {
-            return name
+            return String(name || "")
               .replace(/^type\s+/, "")
               .replace(/\s+/g, " ")
               .trim();
           }
 
           function splitNamedImports(namedBlock) {
-            return namedBlock
+            return String(namedBlock || "")
               .split(",")
               .map((item) => cleanImportedName(item))
               .filter(Boolean)
@@ -230,7 +235,7 @@ jobs:
 
           function extractImportNames(rawImport) {
             const names = [];
-            const cleaned = rawImport.trim();
+            const cleaned = String(rawImport || "").trim();
 
             if (!cleaned) return names;
 
@@ -241,6 +246,7 @@ jobs:
 
             if (cleaned.startsWith("* as ")) {
               const local = cleaned.replace("* as ", "").trim();
+
               return [
                 {
                   imported: "*",
@@ -276,12 +282,28 @@ jobs:
             ];
           }
 
-          function classifySymbol(localName, importedName, source) {
-            const name = String(localName || "");
-            const imported = String(importedName || "");
-            const value = `${name} ${imported} ${source}`.toLowerCase();
+          function canonicalVocabularyText(localName, importedName, source) {
+            const local = String(localName || "").trim();
+            const imported = String(importedName || "").trim();
 
-            if (/^(d\d+|op\d+|opcode|opcodes)$/.test(name.toLowerCase())) {
+            if (imported && imported !== "default" && imported !== "*") {
+              return imported;
+            }
+
+            if (local) {
+              return local;
+            }
+
+            return source;
+          }
+
+          function classifySymbol(vocabularyText, localName, importedName, source) {
+            const text = String(vocabularyText || "");
+            const local = String(localName || "");
+            const imported = String(importedName || "");
+            const value = `${text} ${local} ${imported} ${source}`.toLowerCase();
+
+            if (/^(d\d+|op\d+|opcode|opcodes)$/.test(text.toLowerCase())) {
               return "opCode";
             }
 
@@ -350,7 +372,7 @@ jobs:
               return "entryPoint";
             }
 
-            if (name.startsWith("use") || value.includes("hook")) {
+            if (text.startsWith("use") || value.includes("hook")) {
               return "hook";
             }
 
@@ -376,7 +398,7 @@ jobs:
             }
 
             if (
-              /^[A-Z]/.test(name) ||
+              /^[A-Z]/.test(text) ||
               value.includes("component") ||
               value.includes("panel") ||
               value.includes("view") ||
@@ -448,18 +470,19 @@ jobs:
             return imports;
           }
 
-          function compareCode(a, b) {
-            return a.localeCompare(b, undefined, { numeric: true });
+          function uniqueSortedArray(values) {
+            return [...new Set(values)].sort();
           }
 
-          function sortSymbol(a, b) {
+          function compareCode(a, b) {
+            return String(a).localeCompare(String(b), undefined, { numeric: true });
+          }
+
+          function compareVocabularyEntry(a, b) {
             return (
-              a.file.localeCompare(b.file) ||
-              a.source.localeCompare(b.source) ||
-              String(a.name || "").localeCompare(String(b.name || "")) ||
-              String(a.importedName || "").localeCompare(String(b.importedName || "")) ||
-              a.importKind.localeCompare(b.importKind) ||
-              a.category.localeCompare(b.category)
+              a.characterCount - b.characterCount ||
+              a.vocabularyText.toLowerCase().localeCompare(b.vocabularyText.toLowerCase()) ||
+              a.vocabularyText.localeCompare(b.vocabularyText)
             );
           }
 
@@ -471,139 +494,228 @@ jobs:
             importRecords.push(...parseImports(file, text));
           }
 
-          const symbolsWithoutCodes = [];
+          const vocabularyMap = new Map();
+          let rawDreamenginSymbolOccurrences = 0;
 
           for (const record of importRecords) {
             if (record.importedNames.length === 0) {
-              symbolsWithoutCodes.push({
-                name: null,
-                importedName: null,
-                category: "sideEffectImport",
-                source: record.source,
+              rawDreamenginSymbolOccurrences += 1;
+
+              const vocabularyText = record.source;
+              const category = "sideEffectImport";
+              const key = vocabularyText;
+
+              if (!vocabularyMap.has(key)) {
+                vocabularyMap.set(key, {
+                  vocabularyText,
+                  characterCount: characterCount(vocabularyText),
+                  categories: new Set(),
+                  sources: new Set(),
+                  importedNames: new Set(),
+                  localNames: new Set(),
+                  importKinds: new Set(),
+                  usedBy: new Set(),
+                  usages: [],
+                  usageCount: 0
+                });
+              }
+
+              const item = vocabularyMap.get(key);
+
+              item.categories.add(category);
+              item.sources.add(record.source);
+              item.importKinds.add(record.importKind);
+              item.usedBy.add(record.file);
+              item.usageCount += 1;
+
+              item.usages.push({
                 file: record.file,
-                importKind: record.importKind
+                source: record.source,
+                importKind: record.importKind,
+                category,
+                importedName: null,
+                localName: null
               });
+
               continue;
             }
 
             for (const importedName of record.importedNames) {
-              const category = classifySymbol(
+              rawDreamenginSymbolOccurrences += 1;
+
+              const vocabularyText = canonicalVocabularyText(
                 importedName.local,
                 importedName.imported,
                 record.source
               );
 
-              symbolsWithoutCodes.push({
-                name: importedName.local,
-                importedName: importedName.imported,
-                category,
-                source: record.source,
+              const category = classifySymbol(
+                vocabularyText,
+                importedName.local,
+                importedName.imported,
+                record.source
+              );
+
+              const key = vocabularyText;
+
+              if (!vocabularyMap.has(key)) {
+                vocabularyMap.set(key, {
+                  vocabularyText,
+                  characterCount: characterCount(vocabularyText),
+                  categories: new Set(),
+                  sources: new Set(),
+                  importedNames: new Set(),
+                  localNames: new Set(),
+                  importKinds: new Set(),
+                  usedBy: new Set(),
+                  usages: [],
+                  usageCount: 0
+                });
+              }
+
+              const item = vocabularyMap.get(key);
+
+              item.categories.add(category);
+              item.sources.add(record.source);
+              item.importedNames.add(importedName.imported);
+              item.localNames.add(importedName.local);
+              item.importKinds.add(record.importKind);
+              item.usedBy.add(record.file);
+              item.usageCount += 1;
+
+              item.usages.push({
                 file: record.file,
-                importKind: record.importKind
+                source: record.source,
+                importKind: record.importKind,
+                category,
+                importedName: importedName.imported,
+                localName: importedName.local
               });
             }
           }
 
-          const dreamCodeList = symbolsWithoutCodes
-            .sort(sortSymbol)
-            .map((symbol, index) => ({
-              code: `D${index + 1}`,
-              ...symbol
-            }));
+          const sortedVocabulary = [...vocabularyMap.values()]
+            .map((item) => ({
+              vocabularyText: item.vocabularyText,
+              characterCount: item.characterCount,
+              categories: uniqueSortedArray([...item.categories]),
+              sources: uniqueSortedArray([...item.sources]),
+              importedNames: uniqueSortedArray([...item.importedNames]),
+              localNames: uniqueSortedArray([...item.localNames]),
+              importKinds: uniqueSortedArray([...item.importKinds]),
+              usedBy: uniqueSortedArray([...item.usedBy]),
+              usageCount: item.usageCount,
+              usages: item.usages.sort((a, b) =>
+                a.file.localeCompare(b.file) ||
+                a.source.localeCompare(b.source) ||
+                String(a.localName || "").localeCompare(String(b.localName || ""))
+              )
+            }))
+            .sort(compareVocabularyEntry);
+
+          const dreamCodeList = sortedVocabulary.map((item, index) => ({
+            code: `D${index + 1}`,
+            ...item
+          }));
 
           const dreamCodes = Object.fromEntries(
-            dreamCodeList.map((symbol) => [symbol.code, symbol])
+            dreamCodeList.map((item) => [item.code, item])
           );
 
+          const dreamCodeText = Object.fromEntries(
+            dreamCodeList.map((item) => [item.code, item.vocabularyText])
+          );
+
+          const vocabularyTextToCode = Object.fromEntries(
+            dreamCodeList.map((item) => [item.vocabularyText, item.code])
+          );
+
+          const byCharacterCount = {};
           const byCategory = {};
           const bySource = {};
           const byFile = {};
-          const byName = {};
+          const byImportKind = {};
 
-          for (const symbol of dreamCodeList) {
-            byCategory[symbol.category] ||= [];
-            byCategory[symbol.category].push(symbol);
+          for (const item of dreamCodeList) {
+            const lengthKey = String(item.characterCount);
 
-            byFile[symbol.file] ||= [];
-            byFile[symbol.file].push(symbol);
+            byCharacterCount[lengthKey] ||= [];
+            byCharacterCount[lengthKey].push(item.code);
 
-            bySource[symbol.source] ||= {
-              source: symbol.source,
-              codes: [],
-              files: new Set(),
-              importedNames: new Set(),
-              importKinds: new Set()
-            };
+            for (const category of item.categories) {
+              byCategory[category] ||= [];
+              byCategory[category].push(item.code);
+            }
 
-            bySource[symbol.source].codes.push(symbol.code);
-            bySource[symbol.source].files.add(symbol.file);
-            bySource[symbol.source].importKinds.add(symbol.importKind);
+            for (const source of item.sources) {
+              bySource[source] ||= [];
+              bySource[source].push(item.code);
+            }
 
-            if (symbol.name) {
-              bySource[symbol.source].importedNames.add(symbol.name);
-              byName[symbol.name] ||= [];
-              byName[symbol.name].push(symbol.code);
+            for (const file of item.usedBy) {
+              byFile[file] ||= [];
+              byFile[file].push(item.code);
+            }
+
+            for (const importKind of item.importKinds) {
+              byImportKind[importKind] ||= [];
+              byImportKind[importKind].push(item.code);
             }
           }
+
+          const finalByCharacterCount = Object.fromEntries(
+            Object.entries(byCharacterCount)
+              .sort(([a], [b]) => Number(a) - Number(b))
+              .map(([count, codes]) => [count, codes.sort(compareCode)])
+          );
 
           const finalByCategory = Object.fromEntries(
             Object.entries(byCategory)
               .sort(([a], [b]) => a.localeCompare(b))
-              .map(([category, items]) => [
-                category,
-                items.sort((a, b) => compareCode(a.code, b.code))
-              ])
+              .map(([category, codes]) => [category, codes.sort(compareCode)])
           );
 
           const finalBySource = Object.fromEntries(
             Object.entries(bySource)
               .sort(([a], [b]) => a.localeCompare(b))
-              .map(([source, value]) => [
-                source,
-                {
-                  source,
-                  codes: value.codes.sort(compareCode),
-                  files: [...value.files].sort(),
-                  importedNames: [...value.importedNames].sort(),
-                  importKinds: [...value.importKinds].sort()
-                }
-              ])
+              .map(([source, codes]) => [source, codes.sort(compareCode)])
           );
 
           const finalByFile = Object.fromEntries(
             Object.entries(byFile)
               .sort(([a], [b]) => a.localeCompare(b))
-              .map(([file, items]) => [
-                file,
-                items.sort((a, b) => compareCode(a.code, b.code))
-              ])
+              .map(([file, codes]) => [file, codes.sort(compareCode)])
           );
 
-          const finalByName = Object.fromEntries(
-            Object.entries(byName)
+          const finalByImportKind = Object.fromEntries(
+            Object.entries(byImportKind)
               .sort(([a], [b]) => a.localeCompare(b))
-              .map(([name, codes]) => [
-                name,
-                codes.sort(compareCode)
-              ])
+              .map(([kind, codes]) => [kind, codes.sort(compareCode)])
           );
 
           const output = {
-            schema: "dreamengin.vocabulary.v1",
+            schema: "dreamengin.vocabulary.dictionary.v1",
             generatedAt: new Date().toISOString(),
 
             purpose:
-              "Canonical DREAMengin vocabulary map generated from DREAMengin-owned import symbols. D-codes are executable references for application code.",
+              "Canonical DREAMengin vocabulary dictionary generated from DREAMengin-owned import symbols. Each D-code represents one unique DREAMengin vocabulary item. Repeated usage is preserved under usedBy and usages.",
 
             codeRule: {
+              mode: "dictionary",
               format: "D<number>",
               firstCode: "D1",
+              ordering:
+                "D-codes are assigned by vocabularyText character count ascending, then alphabetical order inside each character-count group.",
+              dedupe:
+                "Enabled. Repeated imports of the same vocabularyText collapse into one D-code.",
+              usageTracking:
+                "Each D-code includes usedBy and usages so the file locations are still reachable.",
               example: {
-                D1: "First DREAMengin-specific import symbol after deterministic sorting.",
-                D2: "Second DREAMengin-specific import symbol after deterministic sorting."
+                D1: "Shortest unique DREAMengin vocabulary item.",
+                D2: "Next unique DREAMengin vocabulary item by character count, then alphabetical order."
               },
               stability:
-                "Codes are deterministic for a given repo state. Adding, deleting, or renaming imports can change later numbers."
+                "Codes are deterministic for a given repo state. Adding, deleting, or renaming vocabulary items can change later numbers."
             },
 
             meaning: {
@@ -650,37 +762,47 @@ jobs:
                 "JSON/Markdown/text imports",
                 "node_modules",
                 "build output",
-                "public assets"
+                "public assets",
+                ".github workflow files"
               ]
             },
 
             counts: {
               filesScanned: files.length,
               dreamenginImportRecords: importRecords.length,
-              dreamenginCodes: dreamCodeList.length,
-              sources: Object.keys(finalBySource).length,
+              rawDreamenginSymbolOccurrences,
+              uniqueDreamenginVocabularyCodes: dreamCodeList.length,
+              characterCountGroups: Object.keys(finalByCharacterCount).length,
               categories: Object.fromEntries(
-                Object.entries(finalByCategory).map(([category, items]) => [
+                Object.entries(finalByCategory).map(([category, codes]) => [
                   category,
-                  items.length
+                  codes.length
                 ])
               )
             },
 
+            dreamCodeText,
+            vocabularyTextToCode,
             dreamCodes,
             dreamCodeList,
+
+            byCharacterCount: finalByCharacterCount,
             byCategory: finalByCategory,
             bySource: finalBySource,
             byFile: finalByFile,
-            byName: finalByName
+            byImportKind: finalByImportKind
           };
 
           fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
 
-          console.log("Generated canonical DREAMengin vocabulary map:");
-          console.log(JSON.stringify(output, null, 2));
-          console.log("");
+          console.log("Generated canonical DREAMengin vocabulary dictionary.");
           console.log(`Wrote ${OUT_FILE}`);
+          console.log("");
+          console.log("Summary:");
+          console.log(JSON.stringify(output.counts, null, 2));
+          console.log("");
+          console.log("First 25 D-code meanings:");
+          console.log(JSON.stringify(dreamCodeList.slice(0, 25), null, 2));
           NODE
 
       - name: Upload downloadable Dreamengin.json
