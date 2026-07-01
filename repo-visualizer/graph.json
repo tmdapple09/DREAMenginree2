@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T08:44:48.169Z",
+  "generatedAt": "2026-07-01T09:09:34.639Z",
   "root": ".",
   "nodes": [
     {
@@ -2736,6 +2736,16 @@
       "label": "codeql.yml",
       "type": "config",
       "path": ".github/workflows/codeql.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/comparedncode.yml",
+      "label": "comparedncode.yml",
+      "type": "config",
+      "path": ".github/workflows/comparedncode.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
