@@ -120,6 +120,17 @@ const ROOT_ENTRY_FILES = new Set([
   "next-env.d.ts",
 ]);
 
+const SURFACE_MARKERS = {
+  page: " 👁 PAGE",
+  layout: " 🧱 LAYOUT",
+  loading: " ⏳ LOADING",
+  error: " 🚨 ERROR",
+  notFound: " 🧭 NOT_FOUND",
+  component: " 🧩 COMPONENT",
+  featureFolder: " 🗂 FEATURE_FOLDER",
+  apiRoute: " 🔌 API_ROUTE",
+};
+
 const FEATURES = [
   {
     id: "home-runtime",
@@ -902,7 +913,9 @@ function loadTsconfigPaths() {
         if (!Array.isArray(targets)) continue;
         for (const targetPattern of targets) mappings.push({ aliasPattern, targetPattern, baseUrl });
       }
-    } catch {}
+    } catch {
+      
+    }
   }
 
   if (!mappings.some((mapping) => mapping.aliasPattern === "@/*")) {
@@ -1260,6 +1273,17 @@ function matchGlobs(file, globs) {
   });
 }
 
+function groupByDir(files, depth = 3) {
+  const byDir = {};
+  for (const file of files.sort()) {
+    const parts = file.split("/");
+    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
+    if (!byDir[dir]) byDir[dir] = [];
+    byDir[dir].push(file);
+  }
+  return byDir;
+}
+
 function getFeatureFiles(feature) {
   const code = codeFiles.filter((file) => !isTestFile(file) && matchGlobs(file, feature.globs));
   const pages = code.filter(isPageFile);
@@ -1295,37 +1319,86 @@ function featureHasDetectedFiles(feature) {
   return Boolean(data.code.length || data.pages.length || data.apis.length || data.types.length || data.styles.length);
 }
 
+function detectedUserFeatures() {
+  return FEATURES.filter((feature) => feature.group === "user" && featureHasDetectedFiles(feature));
+}
+
 function isNamedUserFeatureArea(file) {
-  return FEATURES.some((feature) => feature.group === "user" && matchGlobs(file, feature.globs));
+  return detectedUserFeatures().some((feature) => matchGlobs(file, feature.globs));
+}
+
+function isNamedUserFeatureDirectory(relPath) {
+  const normalized = normalizeRel(relPath);
+
+  return detectedUserFeatures().some((feature) => {
+    return feature.globs.some((glob) => {
+      const clean = glob.endsWith("/") ? glob.slice(0, -1) : glob;
+      return normalized === clean || normalized.startsWith(`${clean}/`) || clean.startsWith(`${normalized}/`);
+    });
+  });
+}
+
+function isUserFeatureApiRoute(file) {
+  if (!isAPIRoute(file)) return false;
+
+  return detectedUserFeatures().some((feature) => {
+    return matchGlobs(file, feature.apiGlobs || []) || matchGlobs(file, feature.globs || []);
+  });
 }
 
 function isVisibleNamedComponent(file) {
-  if (!file.startsWith("components/")) return false;
+  if (isTestFile(file) || isStoryFile(file)) return false;
+
   const data = fileData[file];
   if (!data?.isReactComponent) return false;
 
-  const name = path.posix.basename(file).replace(/\.(tsx|jsx)$/, "");
-  return /^[A-Z][A-Za-z0-9]*(?:[A-Z][A-Za-z0-9]*)*$/.test(name) || name.includes(".");
+  const base = path.posix.basename(file).replace(/\.(tsx|jsx)$/, "");
+  const hasDescriptiveComponentName =
+    /^[A-Z][A-Za-z0-9]*(?:[A-Z][A-Za-z0-9]*)*$/.test(base) ||
+    base.includes(".") ||
+    base.startsWith("dream.") ||
+    base.startsWith("engin.");
+
+  if (!hasDescriptiveComponentName) return false;
+
+  return file.startsWith("components/") || file.startsWith("app/") || isNamedUserFeatureArea(file);
 }
 
-function isUserFacingFile(file) {
-  return Boolean(
-    isPageFile(file) ||
-      isRouteHandlerFile(file) ||
-      isNamedUserFeatureArea(file) ||
-      isVisibleNamedComponent(file)
-  );
-}
+function getUserSurfaceMarkers(file) {
+  const markers = [];
+  const base = path.posix.basename(file);
 
-function groupByDir(files, depth = 3) {
-  const byDir = {};
-  for (const file of files.sort()) {
-    const parts = file.split("/");
-    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
-    if (!byDir[dir]) byDir[dir] = [];
-    byDir[dir].push(file);
+  if (file.startsWith("app/")) {
+    if (["page.ts", "page.tsx", "page.js", "page.jsx"].includes(base)) {
+      markers.push(SURFACE_MARKERS.page);
+    }
+
+    if (["layout.ts", "layout.tsx", "layout.js", "layout.jsx", "template.ts", "template.tsx", "default.ts", "default.tsx"].includes(base)) {
+      markers.push(SURFACE_MARKERS.layout);
+    }
+
+    if (["loading.ts", "loading.tsx"].includes(base)) {
+      markers.push(SURFACE_MARKERS.loading);
+    }
+
+    if (["error.ts", "error.tsx", "global-error.ts", "global-error.tsx"].includes(base)) {
+      markers.push(SURFACE_MARKERS.error);
+    }
+
+    if (["not-found.ts", "not-found.tsx"].includes(base)) {
+      markers.push(SURFACE_MARKERS.notFound);
+    }
+
+    if (isUserFeatureApiRoute(file)) {
+      markers.push(SURFACE_MARKERS.apiRoute);
+    }
   }
-  return byDir;
+
+  if (isVisibleNamedComponent(file)) {
+    markers.push(SURFACE_MARKERS.component);
+  }
+
+  return uniqueSorted(markers);
 }
 
 function renderListOrEmpty(items, emptyText) {
@@ -1447,14 +1520,18 @@ function buildTreeString({ detailed = false } = {}) {
       const fullPath = path.join(dir, entry.name);
       const relPath = normalizeRel(path.relative(ROOT, fullPath));
       const childPrefix = prefix + (isLast ? "    " : "|   ");
-      const annotation = entry.isDirectory() ? getFeatureAnnotation(fullPath) : "";
+      const annotation = entry.isDirectory()
+        ? `${getFeatureAnnotation(fullPath)}${isNamedUserFeatureDirectory(relPath) ? SURFACE_MARKERS.featureFolder : ""}`
+        : "";
 
       let issueMarkers = "";
       if (!entry.isDirectory()) {
         const issues = fileIssues[relPath];
         if (issues?.hasBrokenImports) issueMarkers += " !";
-        if (issues?.hasUnusedExports) issueMarkers += " unused";
-        if (isUserFacingFile(relPath)) issueMarkers += " user-facing";
+
+        for (const marker of getUserSurfaceMarkers(relPath)) {
+          issueMarkers += marker;
+        }
       }
 
       output += `${prefix}${isLast ? "`--" : "+--"} ${entry.name}${issueMarkers}${annotation}\n`;
@@ -1466,19 +1543,16 @@ function buildTreeString({ detailed = false } = {}) {
 
       const data = fileData[relPath];
       const unresolved = unresolvedImports[relPath] || [];
-      const unused = unusedExports[relPath] || [];
       const lines = [];
 
       if (!detailed) {
         for (const item of unresolved) lines.push(`! ${item.specifier} (${item.names.join(", ")})`);
-        if (unused.length) lines.push(`unused unused: ${unused.join(", ")}`);
       } else if (data) {
         for (const record of data.resolvedImports) {
           const status = record.resolved === false ? "!" : "<-";
           lines.push(`${record.names.join(", ")}  ${status} ${record.specifier}`);
         }
         for (const exp of data.namedExports) lines.push(`-> ${exp}`);
-        if (unused.length) lines.push(`unused unused: ${unused.join(", ")}`);
       }
 
       lines.forEach((line, lineIndex) => {
@@ -1497,18 +1571,24 @@ const detectedFeatures = FEATURES.filter(featureHasDetectedFiles);
 const userFeatures = detectedFeatures.filter((feature) => feature.group === "user");
 const systemFeatures = detectedFeatures.filter((feature) => feature.group === "system");
 const unresolvedCount = Object.values(unresolvedImports).reduce((sum, items) => sum + items.length, 0);
-const unusedCount = Object.values(unusedExports).reduce((sum, items) => sum + items.length, 0);
 
 md += "# DREAMengin Repository State\n\n";
 md += `Generated: ${new Date().toISOString()}\n\n`;
 md += `Model: capability nodes + files as edges.\n\n`;
-md += "User-facing: pages, routes, named feature areas, and visible components with descriptive names. Only paths detected in the file tree are included; absent paths are not added.\n\n";
+md += "Marker guide:\n\n";
+md += "- `👁 PAGE` = A place people can visit in the app.\n";
+md += "- `🧱 LAYOUT` = The shared frame around a page, like the header, sidebar, or page wrapper.\n";
+md += "- `⏳ LOADING` = What people see while the app is waiting.\n";
+md += "- `🚨 ERROR` = What people see when something goes wrong.\n";
+md += "- `🧭 NOT_FOUND` = What people see when the app cannot find the page.\n";
+md += "- `🧩 COMPONENT` = A visible piece of the app, like a button, card, menu, form, panel, popup, or widget.\n";
+md += "- `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.\n";
+md += "- `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.\n\n";
 md += `- Capability nodes: ${capabilityNodes.size}\n`;
 md += `- File edges: ${fileEdges.length}\n`;
 md += `- Routes: ${buildRouteMap(reportFiles).length}\n`;
 md += `- Files analysed: ${codeFiles.length}\n`;
-md += `- Unresolved internal imports: ${unresolvedCount} specifiers across ${Object.keys(unresolvedImports).length} files\n`;
-md += `- Unused exports: ${unusedCount} exports across ${Object.keys(unusedExports).length} files\n\n`;
+md += `- Unresolved internal imports: ${unresolvedCount} specifiers across ${Object.keys(unresolvedImports).length} files\n\n`;
 md += "---\n\n";
 
 md += "# MASTER INDEX\n\n";
@@ -1521,7 +1601,6 @@ md += "- [Route Map](#route-map)\n";
 md += "- [Capability Nodes](#capability-nodes)\n";
 md += "- [Files as Edges](#files-as-edges)\n";
 md += "- [Unresolved Internal Imports](#unresolved-imports)\n";
-md += "- [Unused Exports](#unused-exports)\n";
 md += "- [Circular Dependencies](#circular-deps)\n";
 md += "- [Risk Files](#risk-files)\n";
 md += "- [Raw File Tree](#raw-tree)\n\n";
@@ -1577,17 +1656,6 @@ if (Object.keys(unresolvedImports).length) {
 }
 md += "\n---\n\n";
 
-md += `<a name="unused-exports"></a>\n\n`;
-md += "# Unused Exports\n\n";
-if (Object.keys(unusedExports).length) {
-  md += "| File | Exports |\n";
-  md += "|------|---------|\n";
-  for (const [file, exports] of Object.entries(unusedExports).sort()) md += `| \`${mdCell(file)}\` | ${exports.map((name) => `\`${mdCell(name)}\``).join(", ")} |\n`;
-} else {
-  md += "_No unused exports detected._\n";
-}
-md += "\n---\n\n";
-
 md += `<a name="circular-deps"></a>\n\n`;
 md += "# Circular Dependencies\n\n";
 if (circularDeps.length) {
@@ -1611,7 +1679,7 @@ md += "\n---\n\n";
 md += `<a name="raw-tree"></a>\n\n`;
 md += "# Raw File Tree\n\n";
 md += "```text\n";
-md += "Legend: ! unresolved import  unused export  user-facing page/route/feature/component\n\n";
+md += "Legend: `!` means unresolved import. Markers are explained above.\n\n";
 md += buildTreeString({ detailed: false });
 md += "```\n";
 
@@ -1621,7 +1689,16 @@ console.log("OK REPO_STATE.md written");
 let treeMd = "";
 treeMd += "# File Tree\n\n";
 treeMd += `Generated: ${new Date().toISOString()}\n\n`;
-treeMd += "Legend: ! unresolved import  unused export  user-facing page/route/feature/component\n\n";
+treeMd += "Marker guide:\n\n";
+treeMd += "- `👁 PAGE` = A place people can visit in the app.\n";
+treeMd += "- `🧱 LAYOUT` = The shared frame around a page, like the header, sidebar, or page wrapper.\n";
+treeMd += "- `⏳ LOADING` = What people see while the app is waiting.\n";
+treeMd += "- `🚨 ERROR` = What people see when something goes wrong.\n";
+treeMd += "- `🧭 NOT_FOUND` = What people see when the app cannot find the page.\n";
+treeMd += "- `🧩 COMPONENT` = A visible piece of the app, like a button, card, menu, form, panel, popup, or widget.\n";
+treeMd += "- `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.\n";
+treeMd += "- `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.\n\n";
+treeMd += "Legend: `!` means unresolved import. Markers are explained above.\n\n";
 treeMd += "```text\n";
 treeMd += buildTreeString({ detailed: true });
 treeMd += "```\n";
@@ -1634,4 +1711,3 @@ console.log(`  Capability nodes: ${capabilityNodes.size}`);
 console.log(`  File edges: ${fileEdges.length}`);
 console.log(`  Dual-runtime files: ${codeFiles.filter((file) => fileData[file].usesDualRuntime).length}`);
 console.log(`  Unresolved internal imports: ${unresolvedCount} specifiers across ${Object.keys(unresolvedImports).length} files`);
-console.log(`  Unused exports: ${unusedCount} exports across ${Object.keys(unusedExports).length} files`);
