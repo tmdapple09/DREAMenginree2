@@ -1,8 +1,10 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-02T14:48:44.096Z
+Generated: 2026-07-02T16:08:31.785Z
 
 Model: capability nodes + files as edges.
+
+User-facing: pages, routes, named feature areas, and visible components with descriptive names. Only paths detected in the file tree are included; absent paths are not added.
 
 - Capability nodes: 11581
 - File edges: 1593
@@ -7661,7 +7663,7 @@ _No circular dependencies detected._
 # Raw File Tree
 
 ```text
-Legend: ! unresolved import  unused export
+Legend: ! unresolved import  unused export  user-facing page/route/feature/component
 
 +-- .ci
 |   +-- DREAMengin CI-CD Pipeline
@@ -7674,583 +7676,583 @@ Legend: ! unresolved import  unused export
 |   +-- (internal)
 |   |   `-- idari-console
 |   |       +-- platform-errors
-|   |       |   `-- page.tsx
+|   |       |   `-- page.tsx user-facing
 |   |       +-- platform-health
-|   |       |   `-- page.tsx
-|   |       `-- page.tsx
+|   |       |   `-- page.tsx user-facing
+|   |       `-- page.tsx user-facing
 |   +-- about
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- actions
 |   |   `-- dream-docs.ts unused
 |   |       `-- unused unused: CreateDreamDocInput, UpsertDocSectionInput, createDreamDoc, publishDreamDoc, upsertDocSection
 |   +-- ads
 |   |   +-- create
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- slot
 |   |   |   `-- [id]
-|   |   |       `-- page.tsx
-|   |   `-- page.tsx
+|   |   |       `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- api  [Supabase / Database]
 |   |   +-- account  [Supabase / Database]
 |   |   |   +-- delete-data  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- delete-dream  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- export-data  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- activity  [Supabase / Database]
 |   |   |   `-- track  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- admin  [Supabase / Database]
 |   |   |   +-- ai-chat  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- ai-request  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- child-safety  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- code-files  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- observability  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- ads  [Marketplace / Shop / Ads, Supabase / Database]
 |   |   |   +-- orders  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- view  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- agent  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   `-- session  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- ai  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- boogieman  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   |   +-- child-safety  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- privacy-event  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- status  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts
-|   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- eams  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- execute  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- idari  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- appeal  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- auth  [Auth, Supabase / Database]
 |   |   |   +-- logout  [Auth, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- providers  [Auth, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- blocks  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- ci  [Supabase / Database]
 |   |   |   `-- run  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- close-friends  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- codeengin  [CodeEngin, Supabase / Database]
 |   |   |   +-- diagnostics  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- file  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- git  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- run  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- search  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- upload  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- workspace  [CodeEngin, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- comments  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- connectors  [Supabase / Database]
 |   |   |   +-- [provider]  [Supabase / Database]
 |   |   |   |   +-- connect  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- disconnect  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- items  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- sync  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   `-- verify  [Supabase / Database]
-|   |   |   |       `-- route.ts
+|   |   |   |       `-- route.ts user-facing
 |   |   |   +-- cron  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- instagram  [Supabase / Database]
 |   |   |   |   `-- oauth  [Supabase / Database]
 |   |   |   |       +-- callback  [Supabase / Database]
-|   |   |   |       |   `-- route.ts
+|   |   |   |       |   `-- route.ts user-facing
 |   |   |   |       `-- start  [Supabase / Database]
-|   |   |   |           `-- route.ts
+|   |   |   |           `-- route.ts user-facing
 |   |   |   +-- status  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- webhooks  [Supabase / Database]
 |   |   |   |   `-- [provider]  [Supabase / Database]
-|   |   |   |       `-- route.ts
+|   |   |   |       `-- route.ts user-facing
 |   |   |   `-- youtube  [Supabase / Database]
 |   |   |       `-- oauth  [Supabase / Database]
 |   |   |           +-- callback  [Supabase / Database]
-|   |   |           |   `-- route.ts
+|   |   |           |   `-- route.ts user-facing
 |   |   |           `-- start  [Supabase / Database]
-|   |   |               `-- route.ts
+|   |   |               `-- route.ts user-facing
 |   |   +-- content  [Supabase / Database]
 |   |   |   +-- generative-fill  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- intelligence  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- transcribe  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- voice-clone  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- contentengin  [Supabase / Database]
 |   |   |   +-- assets  [Supabase / Database]
 |   |   |   |   `-- [assetId]  [Supabase / Database]
 |   |   |   |       +-- export  [Supabase / Database]
 |   |   |   |       |   `-- gameengin  [Supabase / Database]
-|   |   |   |       |       `-- route.ts
-|   |   |   |       `-- route.ts
+|   |   |   |       |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts user-facing
 |   |   |   +-- jobs  [Supabase / Database]
 |   |   |   |   +-- [jobId]  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
-|   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- upload  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- dr-eams  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- hf  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- run  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- drafts  [Supabase / Database]
 |   |   |   +-- [id]  [Supabase / Database]
-|   |   |   |   `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- dream-windows  [Supabase / Database]
 |   |   |   +-- [id]  [Supabase / Database]
-|   |   |   |   `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- dreamengin  [Supabase / Database]
 |   |   |   `-- os-status  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- dreamr  [DreamR, Supabase / Database]
 |   |   |   +-- feed  [DreamR, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- suggested  [DreamR, Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- tally  [DreamR, Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- dreams  [Supabase / Database]
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- instances  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- transfer  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- embed-feed  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- favorites  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- feed  [Feed / Social, Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- follow  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- forge  [Supabase / Database]
 |   |   +-- gal  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- game-scores  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- gameengin  [Supabase / Database]
 |   |   |   `-- crash-report  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- health  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- home-layout  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- journey  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- lab  [Supabase / Database]
 |   |   |   `-- benchmarks  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- ledger-media  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- likes  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- marketplace  [Marketplace / Shop / Ads, Supabase / Database]
 |   |   |   +-- request  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   |   `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- messages  [Messages / DMs, Supabase / Database]
 |   |   |   +-- boards  [Messages / DMs, Supabase / Database]
-|   |   |   |   `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- metrics  [Supabase / Database]
 |   |   |   +-- platform  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- user  [Supabase / Database]
 |   |   |   |   `-- [userId]  [Supabase / Database]
-|   |   |   |       `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |       `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- music  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- notifications  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- platform  [Supabase / Database]
 |   |   |   `-- errors  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- posts  [Feed / Social, Supabase / Database]
 |   |   |   +-- [id]  [Feed / Social, Supabase / Database]
 |   |   |   |   +-- save  [Feed / Social, Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   +-- view  [Feed / Social, Supabase / Database]
-|   |   |   |   |   `-- route.ts
-|   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- profile  [Feed / Social, Supabase / Database]
 |   |   |   |   `-- [userId]  [Feed / Social, Supabase / Database]
-|   |   |   |       `-- route.ts
-|   |   |   `-- route.ts
+|   |   |   |       `-- route.ts user-facing
+|   |   |   `-- route.ts user-facing
 |   |   +-- profile  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- projects  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- scheduled-posts  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- security  [Supabase / Database]
 |   |   |   `-- scan  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- settings  [Supabase / Database]
 |   |   |   +-- appearance  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- notifications  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- privacy  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- setup  [Supabase / Database]
 |   |   |   +-- check  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- google-oauth  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- shared-dream  [Supabase / Database]
 |   |   |   `-- sessions  [Supabase / Database]
 |   |   |       +-- [id]  [Supabase / Database]
-|   |   |       |   `-- route.ts
-|   |   |       `-- route.ts
+|   |   |       |   `-- route.ts user-facing
+|   |   |       `-- route.ts user-facing
 |   |   +-- shellhub  [Supabase / Database]
 |   |   |   `-- devices  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- shop  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- skip-credits  [Supabase / Database]
 |   |   |   +-- balance  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- earn  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- use  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- social  [Supabase / Database]
 |   |   |   +-- ipfs  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   +-- livekit  [Supabase / Database]
 |   |   |   |   +-- room  [Supabase / Database]
-|   |   |   |   |   `-- route.ts
+|   |   |   |   |   `-- route.ts user-facing
 |   |   |   |   `-- token  [Supabase / Database]
-|   |   |   |       `-- route.ts
+|   |   |   |       `-- route.ts user-facing
 |   |   |   `-- rss-feed  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- upload  [Supabase / Database]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- user  [Supabase / Database]
 |   |   |   `-- layout  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- views  [Supabase / Database]
 |   |   |   `-- track  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   +-- widgets  [Supabase / Database]
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts
+|   |   |   |   `-- route.ts user-facing
 |   |   |   `-- instances  [Supabase / Database]
-|   |   |       `-- route.ts
+|   |   |       `-- route.ts user-facing
 |   |   `-- youtube  [Supabase / Database]
 |   |       +-- channel  [Supabase / Database]
-|   |       |   `-- route.ts
+|   |       |   `-- route.ts user-facing
 |   |       +-- discovery  [Supabase / Database]
-|   |       |   `-- route.ts
+|   |       |   `-- route.ts user-facing
 |   |       `-- live-feed  [Supabase / Database]
-|   |           `-- route.ts
+|   |           `-- route.ts user-facing
 |   +-- auth  [Auth]
 |   |   +-- callback  [Auth]
-|   |   |   `-- route.ts
+|   |   |   `-- route.ts user-facing
 |   |   +-- reset-password  [Auth]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   `-- update-password  [Auth]
-|   |       `-- page.tsx
+|   |       `-- page.tsx user-facing
 |   +-- connectors
 |   |   +-- dream.ConnectorsClient.tsx
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- daydream
 |   |   +-- brand  [BrandEngin]
 |   |   |   +-- engin  [BrandEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- code  [CodeEngin]
 |   |   |   +-- engin  [CodeEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- constellation
 |   |   |   +-- dream.ConstellationClient.tsx
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- create  [ContentEngin / CreateEngin]
 |   |   |   +-- engin  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- forge  [ForgeEngin]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- game
 |   |   |   +-- dream.GamePageClient.tsx unused
 |   |   |   |   `-- unused unused: default
 |   |   |   +-- dream.shell.ImmersiveGameShell.tsx unused
 |   |   |   |   `-- unused unused: (default)
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- games  [GameEngin]
 |   |   |   +-- engin  [GameEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- lab  [LabEngin]
 |   |   |   +-- engin  [LabEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- portfolio  [LabEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- media-vault
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- music  [StarMakerEngin]
 |   |   |   +-- engin  [StarMakerEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- upload  [StarMakerEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- play
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   `-- render  [RenderEngin]
-|   |       `-- page.tsx
+|   |       `-- page.tsx user-facing
 |   +-- discover  [Feed / Social]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- dream-effects
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs]
 |   |   +-- _components  [Home / DreamDMBar / DualRuntime, Messages / DMs]
 |   |   |   +-- dreamr  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
 |   |   |   |   +-- algorithms  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
-|   |   |   |   |   +-- botDetector.ts unused
+|   |   |   |   |   +-- botDetector.ts unused user-facing
 |   |   |   |   |   |   `-- unused unused: InteractionSignal, SwipePathScore
-|   |   |   |   |   `-- dreamrAlgorithm.ts
+|   |   |   |   |   `-- dreamrAlgorithm.ts user-facing
 |   |   |   |   +-- api  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
-|   |   |   |   |   +-- feedHandler.ts
-|   |   |   |   |   `-- route.ts
-|   |   |   |   +-- dream.DreamRCore.tsx
-|   |   |   |   +-- dream.DreamRFeed.tsx unused
+|   |   |   |   |   +-- feedHandler.ts user-facing
+|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   +-- dream.DreamRCore.tsx user-facing
+|   |   |   |   +-- dream.DreamRFeed.tsx unused user-facing
 |   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   `-- dreamsurface.dreamr.tsx
-|   |   |   +-- DreamBarDataBridge.tsx
-|   |   |   +-- DreamSpaceRegion.tsx
-|   |   |   +-- DreamWidgetGrid.tsx unused
+|   |   |   |   `-- dreamsurface.dreamr.tsx user-facing
+|   |   |   +-- DreamBarDataBridge.tsx user-facing
+|   |   |   +-- DreamSpaceRegion.tsx user-facing
+|   |   |   +-- DreamWidgetGrid.tsx unused user-facing
 |   |   |   |   `-- unused unused: (default)
-|   |   |   `-- HomeDreamRegion.tsx
+|   |   |   `-- HomeDreamRegion.tsx user-facing
 |   |   +-- dreamspace  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- dualruntime  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- homedream  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx
-|   |   +-- layout.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   +-- layout.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- dreamr  [DreamR]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- dreamspace
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- edit-profiledream  [Profile]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- engines
 |   |   +-- brand  [BrandEngin]
 |   |   |   +-- campaigns  [BrandEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- identity  [BrandEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- code  [CodeEngin]
 |   |   |   +-- ai  [CodeEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- notebook  [CodeEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- projects  [CodeEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- create  [ContentEngin / CreateEngin]
 |   |   |   +-- calendar  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- editor  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- queue  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- games  [GameEngin]
 |   |   |   +-- builder  [GameEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- library  [GameEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- scores  [GameEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- lab  [LabEngin]
 |   |   |   +-- data  [LabEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- experiments  [LabEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- quantum  [LabEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- music  [StarMakerEngin]
 |   |   |   +-- arrange  [StarMakerEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- library  [StarMakerEngin]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- studio  [StarMakerEngin]
-|   |   |   |   `-- page.tsx
-|   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- layout.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- portfolio
 |   |   |   +-- assets
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- optimize
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- quantum
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- layout.tsx
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- render  [RenderEngin]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- layout.tsx
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- feed-settings
 |   |   +-- dream.FeedSettingsClient.tsx
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- gameengin
 |   |   +-- cartridges
 |   |   |   +-- [id]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- homedream  [Home / DreamDMBar / DualRuntime]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- join  [Auth]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- lab
 |   |   +-- [id]
 |   |   |   +-- codespace
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- new
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- login  [Auth]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- marketplace  [Marketplace / Shop / Ads]
 |   |   +-- [id]  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- sell  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- messages  [Messages / DMs]
 |   |   +-- boards  [Messages / DMs]
 |   |   |   +-- [id]  [Messages / DMs]
-|   |   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
 |   |   |   +-- new  [Messages / DMs]
-|   |   |   |   `-- page.tsx
-|   |   |   `-- page.tsx
+|   |   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- new  [Messages / DMs]
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- mission
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- notes
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- onboarding  [Auth]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- policy
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- profile  [Profile]
 |   |   +-- [handle]  [Profile]
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- settings  [Settings / Customization]
 |   |   +-- account  [Settings / Customization]
-|   |   |   +-- dream.DangerZoneActions.tsx
-|   |   |   `-- page.tsx
+|   |   |   +-- dream.DangerZoneActions.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- algorithm  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- appearance  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- controls  [Settings / Customization]
-|   |   |   +-- dream.ControlsClient.tsx
-|   |   |   +-- dream.PositionIndicatorToggle.tsx
-|   |   |   `-- page.tsx
+|   |   |   +-- dream.ControlsClient.tsx user-facing
+|   |   |   +-- dream.PositionIndicatorToggle.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- data  [Settings / Customization]
-|   |   |   +-- dream.DataClient.tsx
-|   |   |   `-- page.tsx
+|   |   |   +-- dream.DataClient.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- dreams  [Settings / Customization]
-|   |   |   +-- dreams-layout-editor.tsx
-|   |   |   `-- page.tsx
+|   |   |   +-- dreams-layout-editor.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- feed  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- help  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- notifications  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- privacy  [Settings / Customization]
-|   |   |   +-- dream.PrivacyClient.tsx
-|   |   |   `-- page.tsx
+|   |   |   +-- dream.PrivacyClient.tsx user-facing
+|   |   |   `-- page.tsx user-facing
 |   |   +-- safety  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- security  [Settings / Customization]
-|   |   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
 |   |   +-- widgets  [Settings / Customization]
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- shop  [Marketplace / Shop / Ads]
 |   |   +-- sell  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx
-|   |   `-- page.tsx
+|   |   |   `-- page.tsx user-facing
+|   |   `-- page.tsx user-facing
 |   +-- u  [Profile]
 |   |   `-- [handle]  [Profile]
-|   |       `-- page.tsx
+|   |       `-- page.tsx user-facing
 |   +-- view-profile  [Profile]
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- webgpu
-|   |   `-- page.tsx
+|   |   `-- page.tsx user-facing
 |   +-- error.tsx
 |   +-- global-error.tsx
 |   +-- globals-enhanced.css
 |   +-- layout.tsx
 |   +-- loading.tsx
 |   +-- not-found.tsx
-|   `-- page.tsx
+|   `-- page.tsx user-facing
 +-- artifact
 |   `-- dreamengin-clean-codebase-report.json
 +-- assembly  [GameEngin, VM / WASM]
-|   +-- bus.ts unused
+|   +-- bus.ts unused user-facing
 |   |   `-- unused unused: QUEUE_SIZE, dequeue, enqueue, reset
-|   +-- index.ts unused
+|   +-- index.ts unused user-facing
 |   |   `-- unused unused: hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD, tickPhysicsSIMD
-|   `-- mad-maxi-player.ts unused
+|   `-- mad-maxi-player.ts unused user-facing
 |       `-- unused unused: getCoyoteTimer, getDashTimer, getJumpsUsed, getMemoryUsage, getOnGround, getSnapshotSize, getTicks, getVX, getVY, getX, getY, handleInput, init, loadSnapshot, update, writeSnapshot
 +-- build-memory  [AI / Dr. Eams / Agents]
 |   +-- typecheck  [AI / Dr. Eams / Agents]
@@ -8263,90 +8265,90 @@ Legend: ! unresolved import  unused export
 |   `-- ui-surfaces.json
 +-- components
 |   +-- activity
-|   |   +-- dream.ActivityPostForm.tsx unused
+|   |   +-- dream.ActivityPostForm.tsx unused user-facing
 |   |   |   `-- unused unused: ActivityPostData, ActivityPostForm
-|   |   +-- dream.ActivityProfile.tsx
-|   |   `-- dream.TierBadge.tsx
+|   |   +-- dream.ActivityProfile.tsx user-facing
+|   |   `-- dream.TierBadge.tsx user-facing
 |   +-- ads  [Marketplace / Shop / Ads]
-|   |   +-- dream.AdUnit.tsx
-|   |   `-- dream.SkipCreditBalance.tsx unused
+|   |   +-- dream.AdUnit.tsx user-facing
+|   |   `-- dream.SkipCreditBalance.tsx unused user-facing
 |   |       `-- unused unused: SkipCreditBalance
 |   +-- auth  [Auth]
-|   |   `-- dream.PasswordField.tsx
+|   |   `-- dream.PasswordField.tsx user-facing
 |   +-- branding
-|   |   +-- dream.DreamEnginLogo.tsx unused
+|   |   +-- dream.DreamEnginLogo.tsx unused user-facing
 |   |   |   `-- unused unused: DreamEnginLogo
-|   |   +-- dream.LogoHero.tsx unused
+|   |   +-- dream.LogoHero.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   `-- dream.Nav.tsx unused
+|   |   `-- dream.Nav.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- connectors
-|   |   +-- dream.AddSliceSheet.tsx unused
+|   |   +-- dream.AddSliceSheet.tsx unused user-facing
 |   |   |   `-- unused unused: AddSliceSheetProps
 |   |   +-- dream.ConnectDreamPrompt.tsx unused
 |   |   |   `-- unused unused: ConnectDreamPromptProps, default
-|   |   +-- dream.ConnectorRow.tsx unused
+|   |   +-- dream.ConnectorRow.tsx unused user-facing
 |   |   |   `-- unused unused: ConnectorRowProps
-|   |   +-- dream.NoSlotDialog.tsx unused
+|   |   +-- dream.NoSlotDialog.tsx unused user-facing
 |   |   |   `-- unused unused: NoSlotDialogProps
-|   |   +-- dream.PlacementMode.tsx unused
+|   |   +-- dream.PlacementMode.tsx unused user-facing
 |   |   |   `-- unused unused: PlacedWidget, PlacementModeProps
-|   |   +-- dream.widget.ConnectorWidgetPicker.tsx unused
+|   |   +-- dream.widget.ConnectorWidgetPicker.tsx unused user-facing
 |   |   |   `-- unused unused: ConnectorWidgetPickerProps
-|   |   `-- dream.widget.ConnectWidgetPrompt.tsx
+|   |   `-- dream.widget.ConnectWidgetPrompt.tsx user-facing
 |   +-- contentengin
-|   |   +-- AnimationPanel.tsx unused
+|   |   +-- AnimationPanel.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- AssetPreview3D.tsx unused
+|   |   +-- AssetPreview3D.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- ContentEnginStudio.tsx
-|   |   +-- ExportPanel.tsx unused
+|   |   +-- ContentEnginStudio.tsx user-facing
+|   |   +-- ExportPanel.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- MaterialEditor.tsx unused
+|   |   +-- MaterialEditor.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- PartTreeEditor.tsx unused
+|   |   +-- PartTreeEditor.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- PhotoReferencePanel.tsx unused
+|   |   +-- PhotoReferencePanel.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- RecipeEditor.tsx unused
+|   |   +-- RecipeEditor.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   `-- RiggingPanel.tsx unused
+|   |   `-- RiggingPanel.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- core
-|   |   `-- dream.CoreDream.tsx unused
+|   |   `-- dream.CoreDream.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- customize  [Settings / Customization]
 |   |   +-- panels  [Settings / Customization]
-|   |   |   +-- dream.panel.ColorPanel.tsx
-|   |   |   +-- dream.panel.EffectsPanel.tsx
-|   |   |   +-- dream.panel.FontPanel.tsx
-|   |   |   `-- dream.panel.LayoutPanel.tsx
-|   |   +-- dream.bar.CustomizeModeBar.tsx
-|   |   +-- dream.bar.CustomizeToolbar.tsx
-|   |   `-- dream.GlobalCustomizeUI.tsx
+|   |   |   +-- dream.panel.ColorPanel.tsx user-facing
+|   |   |   +-- dream.panel.EffectsPanel.tsx user-facing
+|   |   |   +-- dream.panel.FontPanel.tsx user-facing
+|   |   |   `-- dream.panel.LayoutPanel.tsx user-facing
+|   |   +-- dream.bar.CustomizeModeBar.tsx user-facing
+|   |   +-- dream.bar.CustomizeToolbar.tsx user-facing
+|   |   `-- dream.GlobalCustomizeUI.tsx user-facing
 |   +-- daydream
 |   |   +-- starmaker
-|   |   |   +-- dream.panel.CompingPanel.tsx
-|   |   |   +-- dream.panel.MultitrackArrangementPanel.tsx
-|   |   |   +-- dream.panel.PianoRollPanel.tsx
-|   |   |   `-- dream.panel.SessionViewPanel.tsx
-|   |   +-- dream.CodeDreamIDE.tsx unused
+|   |   |   +-- dream.panel.CompingPanel.tsx user-facing
+|   |   |   +-- dream.panel.MultitrackArrangementPanel.tsx user-facing
+|   |   |   +-- dream.panel.PianoRollPanel.tsx user-facing
+|   |   |   `-- dream.panel.SessionViewPanel.tsx user-facing
+|   |   +-- dream.CodeDreamIDE.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.constellationmap.tsx
-|   |   +-- dream.DiffViewer.tsx unused
+|   |   +-- dream.constellationmap.tsx user-facing
+|   |   +-- dream.DiffViewer.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.JourneyTrail.tsx
-|   |   +-- dream.LabDreamIDE.tsx unused
+|   |   +-- dream.JourneyTrail.tsx user-facing
+|   |   +-- dream.LabDreamIDE.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.NGNEngin.tsx unused
+|   |   +-- dream.NGNEngin.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.OpenDaydreamSideBButton.tsx
-|   |   +-- dream.shell.DaydreamShell.tsx
-|   |   +-- dream.StandaloneEnginSurface.tsx unused
+|   |   +-- dream.OpenDaydreamSideBButton.tsx user-facing
+|   |   +-- dream.shell.DaydreamShell.tsx user-facing
+|   |   +-- dream.StandaloneEnginSurface.tsx unused user-facing
 |   |   |   `-- unused unused: (default), StandaloneEnginName
-|   |   `-- dreamsurface.daydream.BrandDaydream.tsx
+|   |   `-- dreamsurface.daydream.BrandDaydream.tsx user-facing
 |   +-- draggable
-|   |   `-- dream.DraggableModule.tsx unused
+|   |   `-- dream.DraggableModule.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- dreamengin
 |   |   +-- engine
@@ -8354,334 +8356,334 @@ Legend: ! unresolved import  unused export
 |   |   |   |   `-- unused unused: clamp, unitComplexFromAngle, unitComplexRotate, wrap
 |   |   |   `-- types.ts unused
 |   |   |       `-- unused unused: Depth, EngineState, FlightMode, FlightState
-|   |   +-- dream.bar.DrEamsSearchBar.tsx unused
+|   |   +-- dream.bar.DrEamsSearchBar.tsx unused user-facing
 |   |   |   `-- unused unused: (default), DrEamsSearchBarProps
-|   |   +-- dream.CanvasDropZone.tsx
-|   |   +-- dream.DREAMenginOS.tsx
-|   |   +-- dream.DrEamsCanvas.tsx unused
+|   |   +-- dream.CanvasDropZone.tsx user-facing
+|   |   +-- dream.DREAMenginOS.tsx user-facing
+|   |   +-- dream.DrEamsCanvas.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.HomeControls.tsx
-|   |   +-- dream.menu.NexusMenu.tsx
-|   |   +-- dream.menu.OutdreamMenu.tsx
-|   |   +-- dream.overlay.ViewAllDreamsOverlay.tsx unused
+|   |   +-- dream.HomeControls.tsx user-facing
+|   |   +-- dream.menu.NexusMenu.tsx user-facing
+|   |   +-- dream.menu.OutdreamMenu.tsx user-facing
+|   |   +-- dream.overlay.ViewAllDreamsOverlay.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.panel.CrossEnginStatusPanel.tsx unused
+|   |   +-- dream.panel.CrossEnginStatusPanel.tsx unused user-facing
 |   |   |   `-- unused unused: CrossEnginStatusPanel
-|   |   +-- dream.panel.DrEamsPanel.tsx
-|   |   +-- dream.scene.BabylonGameScene.tsx unused
+|   |   +-- dream.panel.DrEamsPanel.tsx user-facing
+|   |   +-- dream.scene.BabylonGameScene.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.scene.DrEamsScene.tsx unused
+|   |   +-- dream.scene.DrEamsScene.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.scene.PortfolioOptimizationScene.tsx unused
+|   |   +-- dream.scene.PortfolioOptimizationScene.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.shell.EnginShell.tsx unused
+|   |   +-- dream.shell.EnginShell.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.AppearanceWidget.tsx unused
+|   |   +-- dream.widget.AppearanceWidget.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   `-- dreamsurface.dreamengin.tsx unused
+|   |   `-- dreamsurface.dreamengin.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- dreamnav
-|   |   +-- dream.DreamNavControls.tsx unused
+|   |   +-- dream.DreamNavControls.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   `-- dreamsurface.dreamnav.tsx
+|   |   `-- dreamsurface.dreamnav.tsx user-facing
 |   +-- dreamr  [DreamR]
-|   |   +-- dream.CloseFriendsSettings.tsx unused
+|   |   +-- dream.CloseFriendsSettings.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.panel.DreamRChannelPanel.tsx
-|   |   `-- dream.panel.DreamRCreatorPanel.tsx
+|   |   +-- dream.panel.DreamRChannelPanel.tsx user-facing
+|   |   `-- dream.panel.DreamRCreatorPanel.tsx user-facing
 |   +-- dreams
-|   |   +-- dream.connectorlayer.tsx unused
+|   |   +-- dream.connectorlayer.tsx unused user-facing
 |   |   |   `-- unused unused: (default), DreamConnectorLayerProps
-|   |   +-- dream.DraggableDream.tsx
-|   |   +-- dream.featurelayer.tsx unused
+|   |   +-- dream.DraggableDream.tsx user-facing
+|   |   +-- dream.featurelayer.tsx unused user-facing
 |   |   |   `-- unused unused: (default), DreamFeatureLayerProps
-|   |   +-- dream.GlobalDragLayer.tsx
-|   |   +-- dream.outputlayer.tsx unused
+|   |   +-- dream.GlobalDragLayer.tsx user-facing
+|   |   +-- dream.outputlayer.tsx unused user-facing
 |   |   |   `-- unused unused: (default), DreamOutputLayerProps, DreamOutputMode, DreamVisibility
-|   |   +-- dream.panel.RuntimeMemoryHUD.tsx unused
+|   |   +-- dream.panel.RuntimeMemoryHUD.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.PlatformErrorReporter.tsx
+|   |   +-- dream.PlatformErrorReporter.tsx user-facing
 |   |   +-- dream.shell.DreamShell.tsx unused
 |   |   |   `-- unused unused: DreamDataState, DreamShellProps, default
-|   |   +-- dream.shell.SharedDreamShell.tsx unused
+|   |   +-- dream.shell.SharedDreamShell.tsx unused user-facing
 |   |   |   `-- unused unused: (default), SharedDreamShell, SharedDreamShellProps
-|   |   +-- dream.SlideOverPanel.tsx unused
+|   |   +-- dream.SlideOverPanel.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.SuperDreamWidget.tsx
-|   |   +-- dream.window.JourneyDreamWindow.tsx unused
+|   |   +-- dream.widget.SuperDreamWidget.tsx user-facing
+|   |   +-- dream.window.JourneyDreamWindow.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dreamsurface.dreamspace.tsx unused
+|   |   +-- dreamsurface.dreamspace.tsx unused user-facing
 |   |   |   `-- unused unused: RecentDestination
-|   |   +-- dreamsurface.shell.tsx
-|   |   `-- dreamsurface.window.tsx unused
+|   |   +-- dreamsurface.shell.tsx user-facing
+|   |   `-- dreamsurface.window.tsx unused user-facing
 |   |       `-- unused unused: (default), DreamWindowShell, DreamWindowShellProps
 |   +-- engines
 |   |   +-- brand  [BrandEngin]
 |   |   |   +-- panels  [BrandEngin]
-|   |   |   |   +-- dream.panel.CampaignsPanel.tsx
-|   |   |   |   `-- dream.panel.IdentityPanel.tsx
-|   |   |   +-- dream.BrandEnginApp.tsx
-|   |   |   `-- index.ts
+|   |   |   |   +-- dream.panel.CampaignsPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.IdentityPanel.tsx user-facing
+|   |   |   +-- dream.BrandEnginApp.tsx user-facing
+|   |   |   `-- index.ts user-facing
 |   |   +-- code  [CodeEngin]
 |   |   |   +-- panels  [CodeEngin]
-|   |   |   |   +-- dream.panel.AIPanel.tsx unused
+|   |   |   |   +-- dream.panel.AIPanel.tsx unused user-facing
 |   |   |   |   |   `-- unused unused: processData
-|   |   |   |   +-- dream.panel.NotebookPanel.tsx
-|   |   |   |   `-- dream.panel.ProjectsPanel.tsx
-|   |   |   +-- dream.CodeEnginApp.tsx
-|   |   |   `-- index.ts
+|   |   |   |   +-- dream.panel.NotebookPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.ProjectsPanel.tsx user-facing
+|   |   |   +-- dream.CodeEnginApp.tsx user-facing
+|   |   |   `-- index.ts user-facing
 |   |   +-- create  [ContentEngin / CreateEngin]
 |   |   |   +-- panels  [ContentEngin / CreateEngin]
-|   |   |   |   +-- dream.panel.CalendarPanel.tsx unused
+|   |   |   |   +-- dream.panel.CalendarPanel.tsx unused user-facing
 |   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   +-- dream.panel.EditorPanel.tsx unused
+|   |   |   |   +-- dream.panel.EditorPanel.tsx unused user-facing
 |   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   `-- dream.panel.QueuePanel.tsx unused
+|   |   |   |   `-- dream.panel.QueuePanel.tsx unused user-facing
 |   |   |   |       `-- unused unused: (default)
-|   |   |   +-- dream.CreateEnginApp.tsx
-|   |   |   `-- index.ts
+|   |   |   +-- dream.CreateEnginApp.tsx user-facing
+|   |   |   `-- index.ts user-facing
 |   |   +-- games
 |   |   |   +-- panels
-|   |   |   |   +-- dream.panel.BuilderPanel.tsx
-|   |   |   |   +-- dream.panel.LibraryPanel.tsx
-|   |   |   |   `-- dream.panel.ScoresPanel.tsx
+|   |   |   |   +-- dream.panel.BuilderPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.LibraryPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.ScoresPanel.tsx user-facing
 |   |   |   +-- dream.GameEnginApp.tsx
 |   |   |   `-- index.ts
 |   |   +-- lab  [LabEngin]
 |   |   |   +-- panels  [LabEngin]
-|   |   |   |   +-- dream.panel.DataVizPanel.tsx
-|   |   |   |   +-- dream.panel.ExperimentsPanel.tsx
-|   |   |   |   `-- dream.panel.QuantumPanel.tsx
-|   |   |   +-- dream.LabEnginApp.tsx
-|   |   |   `-- index.ts
+|   |   |   |   +-- dream.panel.DataVizPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.ExperimentsPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.QuantumPanel.tsx user-facing
+|   |   |   +-- dream.LabEnginApp.tsx user-facing
+|   |   |   `-- index.ts user-facing
 |   |   +-- music  [StarMakerEngin]
 |   |   |   +-- panels  [StarMakerEngin]
-|   |   |   |   +-- dream.panel.ArrangePanel.tsx
-|   |   |   |   +-- dream.panel.MusicLibraryPanel.tsx
-|   |   |   |   `-- dream.panel.StudioPanel.tsx
-|   |   |   +-- dream.MusicEnginApp.tsx
-|   |   |   `-- index.ts
+|   |   |   |   +-- dream.panel.ArrangePanel.tsx user-facing
+|   |   |   |   +-- dream.panel.MusicLibraryPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.StudioPanel.tsx user-facing
+|   |   |   +-- dream.MusicEnginApp.tsx user-facing
+|   |   |   `-- index.ts user-facing
 |   |   +-- portfolio
 |   |   |   +-- panels
-|   |   |   |   +-- dream.panel.AssetsPanel.tsx
-|   |   |   |   +-- dream.panel.OptimizePanel.tsx
-|   |   |   |   `-- dream.panel.PortfolioQuantumPanel.tsx
+|   |   |   |   +-- dream.panel.AssetsPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.OptimizePanel.tsx user-facing
+|   |   |   |   `-- dream.panel.PortfolioQuantumPanel.tsx user-facing
 |   |   |   +-- dream.PortfolioEnginApp.tsx
 |   |   |   `-- index.ts
 |   |   +-- render
-|   |   |   +-- dream.RenderServiceDiagnostics.tsx unused
+|   |   |   +-- dream.RenderServiceDiagnostics.tsx unused user-facing
 |   |   |   |   `-- unused unused: (default), RenderDiagnosticsSurface
-|   |   |   +-- dream.RenderSurface.tsx unused
+|   |   |   +-- dream.RenderSurface.tsx unused user-facing
 |   |   |   |   `-- unused unused: (default)
 |   |   |   `-- index.ts
 |   |   +-- shared
-|   |   |   +-- dream.bar.EnginNavBar.tsx
-|   |   |   +-- dream.EnginProvider.tsx
+|   |   |   +-- dream.bar.EnginNavBar.tsx user-facing
+|   |   |   +-- dream.EnginProvider.tsx user-facing
 |   |   |   +-- dream.EnginRuleSet.ts
-|   |   |   +-- dream.makeEnginApp.tsx
-|   |   |   +-- dream.shell.EnginAppShell.tsx
+|   |   |   +-- dream.makeEnginApp.tsx user-facing
+|   |   |   +-- dream.shell.EnginAppShell.tsx user-facing
 |   |   |   `-- index.ts
 |   |   `-- index.ts
 |   +-- feed  [Feed / Social]
-|   |   +-- dream.AlgorithmEngine.tsx unused
+|   |   +-- dream.AlgorithmEngine.tsx unused user-facing
 |   |   |   `-- unused unused: FeedPreset
-|   |   +-- dream.CommentSection.tsx
-|   |   +-- dream.FeedVideoCard.tsx unused
+|   |   +-- dream.CommentSection.tsx user-facing
+|   |   +-- dream.FeedVideoCard.tsx unused user-facing
 |   |   |   `-- unused unused: FeedVideoCardProps
-|   |   +-- dream.FollowButton.tsx
-|   |   `-- dream.FollowOnboarding.tsx unused
+|   |   +-- dream.FollowButton.tsx user-facing
+|   |   `-- dream.FollowOnboarding.tsx unused user-facing
 |   |       `-- unused unused: FOLLOW_OPTIONS, FollowSettings, saveFollowSetting
 |   +-- feeds  [Feed / Social]
-|   |   `-- dream.widget.EmbedFeedWidget.tsx unused
+|   |   `-- dream.widget.EmbedFeedWidget.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- forge  [ForgeEngin]
-|   |   +-- dream.EngineBuilderCanvas.tsx unused
+|   |   +-- dream.EngineBuilderCanvas.tsx unused user-facing
 |   |   |   `-- unused unused: (default), EngineBuilderCanvasProps
-|   |   +-- dream.panel.AIBuilderPanel.tsx
-|   |   `-- dream.widget.ForgeMomentumWidget.tsx
+|   |   +-- dream.panel.AIBuilderPanel.tsx user-facing
+|   |   `-- dream.widget.ForgeMomentumWidget.tsx user-facing
 |   +-- gameengin  [GameEngin]
 |   |   +-- input  [GameEngin]
-|   |   |   `-- DualSenseManager.ts unused
+|   |   |   `-- DualSenseManager.ts unused user-facing
 |   |   |       `-- unused unused: DualSenseState
-|   |   +-- dream.cartridge.CartridgeBrowser.tsx unused
+|   |   +-- dream.cartridge.CartridgeBrowser.tsx unused user-facing
 |   |   |   `-- unused unused: CartridgeBrowserProps
-|   |   +-- dream.cartridge.CartridgeErrorBoundary.tsx
-|   |   +-- dream.cartridge.CartridgeLauncher.tsx
-|   |   +-- dream.cartridge.FeaturedCartridges.tsx unused
+|   |   +-- dream.cartridge.CartridgeErrorBoundary.tsx user-facing
+|   |   +-- dream.cartridge.CartridgeLauncher.tsx user-facing
+|   |   +-- dream.cartridge.FeaturedCartridges.tsx unused user-facing
 |   |   |   `-- unused unused: FeaturedCartridgesProps
-|   |   +-- dream.CartridgeRegistryBootstrap.tsx
-|   |   `-- dream.CrashReportModal.tsx unused
+|   |   +-- dream.CartridgeRegistryBootstrap.tsx user-facing
+|   |   `-- dream.CrashReportModal.tsx unused user-facing
 |   |       `-- unused unused: CrashReportModalProps
 |   +-- games  [GameEngin]
 |   |   +-- _fx  [GameEngin]
-|   |   |   `-- canvasFx.ts unused
+|   |   |   `-- canvasFx.ts unused user-facing
 |   |   |       `-- unused unused: HitStop, ParallaxLayer, ParallaxLayers, Particle, clamp, easeOutCubic, lerp
 |   |   +-- madmaxi  [GameEngin]
-|   |   |   +-- audio.ts unused
+|   |   |   +-- audio.ts unused user-facing
 |   |   |   |   `-- unused unused: MadmaxiAudioCue
-|   |   |   +-- authoredZonePacks.ts
-|   |   |   +-- config.ts unused
+|   |   |   +-- authoredZonePacks.ts user-facing
+|   |   |   +-- config.ts unused user-facing
 |   |   |   |   `-- unused unused: BOSSES
-|   |   |   +-- dream.MadmaxiGame.tsx unused
+|   |   |   +-- dream.MadmaxiGame.tsx unused user-facing
 |   |   |   |   `-- unused unused: (default)
-|   |   |   +-- index.ts
-|   |   |   +-- levels.ts
-|   |   |   +-- materials.ts unused
+|   |   |   +-- index.ts user-facing
+|   |   |   +-- levels.ts user-facing
+|   |   |   +-- materials.ts unused user-facing
 |   |   |   |   `-- unused unused: DetailMatOpts, getSharedNoiseTexture
-|   |   |   +-- types.ts unused
+|   |   |   +-- types.ts unused user-facing
 |   |   |   |   `-- unused unused: RGB
-|   |   |   `-- vfx.ts
-|   |   +-- css-modules.d.ts
-|   |   +-- dream.AvenueOfMirrors.tsx unused
+|   |   |   `-- vfx.ts user-facing
+|   |   +-- css-modules.d.ts user-facing
+|   |   +-- dream.AvenueOfMirrors.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.BabylonSideScroller.tsx unused
+|   |   +-- dream.BabylonSideScroller.tsx unused user-facing
 |   |   |   `-- unused unused: MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, getEnemyKindForIndex, getMadmaxiLevelDefinition, getPowerUpForIndex
-|   |   +-- dream.DefuseRitual.tsx
-|   |   +-- dream.EchoArena.tsx
-|   |   +-- dream.EnginFracture.tsx
-|   |   +-- dream.GameController.module.css
-|   |   +-- dream.GameController.tsx unused
+|   |   +-- dream.DefuseRitual.tsx user-facing
+|   |   +-- dream.EchoArena.tsx user-facing
+|   |   +-- dream.EnginFracture.tsx user-facing
+|   |   +-- dream.GameController.module.css user-facing
+|   |   +-- dream.GameController.tsx unused user-facing
 |   |   |   `-- unused unused: GameInputAction, default
-|   |   +-- dream.GamesHub.tsx unused
+|   |   +-- dream.GamesHub.tsx unused user-facing
 |   |   |   `-- unused unused: GameDef
-|   |   +-- dream.Glassfall.tsx
-|   |   +-- dream.hud.GameHUD.tsx unused
+|   |   +-- dream.Glassfall.tsx user-facing
+|   |   +-- dream.hud.GameHUD.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.hud.LegacyGameHUD.tsx
-|   |   +-- dream.hud.MobileGameHUD.module.css
-|   |   +-- dream.hud.MobileGameHUD.tsx
-|   |   +-- dream.Leaderboard.tsx
-|   |   +-- dream.LexiconSolitaire.tsx
-|   |   +-- dream.MadMaxiWildfall.tsx
-|   |   +-- dream.NeonDrift.tsx
-|   |   +-- dream.NiteFlyerSolarHymn.tsx
-|   |   +-- dream.NullCathedral.tsx
-|   |   +-- dream.RecordingControls.tsx unused
+|   |   +-- dream.hud.LegacyGameHUD.tsx user-facing
+|   |   +-- dream.hud.MobileGameHUD.module.css user-facing
+|   |   +-- dream.hud.MobileGameHUD.tsx user-facing
+|   |   +-- dream.Leaderboard.tsx user-facing
+|   |   +-- dream.LexiconSolitaire.tsx user-facing
+|   |   +-- dream.MadMaxiWildfall.tsx user-facing
+|   |   +-- dream.NeonDrift.tsx user-facing
+|   |   +-- dream.NiteFlyerSolarHymn.tsx user-facing
+|   |   +-- dream.NullCathedral.tsx user-facing
+|   |   +-- dream.RecordingControls.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.remote.GameRemote.tsx
-|   |   +-- dream.remote.GameRemoteSurface.tsx unused
+|   |   +-- dream.remote.GameRemote.tsx user-facing
+|   |   +-- dream.remote.GameRemoteSurface.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.remote.LegacyGameRemote.tsx unused
+|   |   +-- dream.remote.LegacyGameRemote.tsx unused user-facing
 |   |   |   `-- unused unused: GameInputAction, default
-|   |   +-- dream.SerpentSiege.tsx
-|   |   `-- dream.VoidlineGP.tsx
+|   |   +-- dream.SerpentSiege.tsx user-facing
+|   |   `-- dream.VoidlineGP.tsx user-facing
 |   +-- home  [Home / DreamDMBar / DualRuntime]
-|   |   +-- dream.ActiveModuleSurface.tsx
-|   |   +-- dream.bar.GlobalDreamBar.tsx
-|   |   +-- dream.bar.PersistentDreamBar.tsx unused
+|   |   +-- dream.ActiveModuleSurface.tsx user-facing
+|   |   +-- dream.bar.GlobalDreamBar.tsx user-facing
+|   |   +-- dream.bar.PersistentDreamBar.tsx unused user-facing
 |   |   |   `-- unused unused: DreamDMContainer
-|   |   +-- dream.DaydreamPulseStrip.tsx
-|   |   +-- dream.FlagshipEnginesStrip.tsx
-|   |   +-- dream.NeuralSeamCanvas.tsx
-|   |   `-- dream.widget.DreamWidget.tsx unused
+|   |   +-- dream.DaydreamPulseStrip.tsx user-facing
+|   |   +-- dream.FlagshipEnginesStrip.tsx user-facing
+|   |   +-- dream.NeuralSeamCanvas.tsx user-facing
+|   |   `-- dream.widget.DreamWidget.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- icons
 |   |   `-- sheet.ts unused
 |   |       `-- unused unused: SHEET_H, SHEET_W, validateIconMap
 |   +-- idari  [AI / Dr. Eams / Agents]
-|   |   `-- dream.PlatformHealth.tsx
+|   |   `-- dream.PlatformHealth.tsx user-facing
 |   +-- landing
-|   |   +-- dream.LandingNav.tsx
-|   |   +-- dream.LandingProductStatement.tsx
-|   |   `-- dream.scene.UniverseField.tsx
+|   |   +-- dream.LandingNav.tsx user-facing
+|   |   +-- dream.LandingProductStatement.tsx user-facing
+|   |   `-- dream.scene.UniverseField.tsx user-facing
 |   +-- marketplace  [Marketplace / Shop / Ads]
-|   |   +-- dream.MarketplaceListingCard.tsx
-|   |   `-- dream.MarketplaceRequestButton.tsx
+|   |   +-- dream.MarketplaceListingCard.tsx user-facing
+|   |   `-- dream.MarketplaceRequestButton.tsx user-facing
 |   +-- menus
-|   |   +-- dream.menu.DreamRadialMenu.tsx unused
+|   |   +-- dream.menu.DreamRadialMenu.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.menu.DualBottomMenu.tsx
-|   |   +-- dream.menu.RadialMenu.tsx unused
+|   |   +-- dream.menu.DualBottomMenu.tsx user-facing
+|   |   +-- dream.menu.RadialMenu.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.menu.SystemRadialMenu.tsx unused
+|   |   +-- dream.menu.SystemRadialMenu.tsx unused user-facing
 |   |   |   `-- unused unused: (default), SystemMenuAction
-|   |   `-- dream.panel.MenuPanel.tsx
+|   |   `-- dream.panel.MenuPanel.tsx user-facing
 |   +-- messaging  [Messages / DMs]
-|   |   `-- dream.BoardComposer.tsx
+|   |   `-- dream.BoardComposer.tsx user-facing
 |   +-- music
-|   |   `-- dream.SoundRecorder.tsx
+|   |   `-- dream.SoundRecorder.tsx user-facing
 |   +-- offline
-|   |   +-- dream.OfflineRuntimeBootstrap.tsx unused
+|   |   +-- dream.OfflineRuntimeBootstrap.tsx unused user-facing
 |   |   |   `-- unused unused: OfflineRuntimeState
-|   |   `-- dream.OfflineStatusPill.tsx
+|   |   `-- dream.OfflineStatusPill.tsx user-facing
 |   +-- onboarding
-|   |   `-- dream.OnboardingTip.tsx unused
+|   |   `-- dream.OnboardingTip.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- optimizer
-|   |   `-- dream.scene.BabylonOptimizeroScene.tsx unused
+|   |   `-- dream.scene.BabylonOptimizeroScene.tsx unused user-facing
 |   |       `-- unused unused: (default)
 |   +-- overlays
-|   |   `-- dream.RootStatusScreen.tsx
+|   |   `-- dream.RootStatusScreen.tsx user-facing
 |   +-- panels  [Settings / Customization]
-|   |   +-- dream.panel.AlgorithmPanel.tsx
-|   |   +-- dream.panel.AppearancePanel.tsx
-|   |   +-- dream.panel.ConnectorsPanel.tsx
-|   |   +-- dream.panel.ControlsPanel.tsx
-|   |   +-- dream.panel.DataPanel.tsx
-|   |   +-- dream.panel.FeedPanel.tsx unused
+|   |   +-- dream.panel.AlgorithmPanel.tsx user-facing
+|   |   +-- dream.panel.AppearancePanel.tsx user-facing
+|   |   +-- dream.panel.ConnectorsPanel.tsx user-facing
+|   |   +-- dream.panel.ControlsPanel.tsx user-facing
+|   |   +-- dream.panel.DataPanel.tsx user-facing
+|   |   +-- dream.panel.FeedPanel.tsx unused user-facing
 |   |   |   `-- unused unused: default
-|   |   +-- dream.panel.FeedSettingsPanel.tsx
-|   |   +-- dream.panel.HelpPanel.tsx
-|   |   +-- dream.panel.MarketplacePanel.tsx
-|   |   +-- dream.panel.PrivacyPanel.tsx
-|   |   +-- dream.panel.ProfilePanel.tsx
-|   |   +-- dream.panel.SafetyPanel.tsx
-|   |   +-- dream.panel.SettingsPanel.tsx
-|   |   +-- dream.panel.WidgetsPanel.tsx
-|   |   `-- panelTypes.ts unused
+|   |   +-- dream.panel.FeedSettingsPanel.tsx user-facing
+|   |   +-- dream.panel.HelpPanel.tsx user-facing
+|   |   +-- dream.panel.MarketplacePanel.tsx user-facing
+|   |   +-- dream.panel.PrivacyPanel.tsx user-facing
+|   |   +-- dream.panel.ProfilePanel.tsx user-facing
+|   |   +-- dream.panel.SafetyPanel.tsx user-facing
+|   |   +-- dream.panel.SettingsPanel.tsx user-facing
+|   |   +-- dream.panel.WidgetsPanel.tsx user-facing
+|   |   `-- panelTypes.ts unused user-facing
 |   |       `-- unused unused: PANEL_META, PanelMeta
 |   +-- profile  [Profile]
-|   |   +-- dream.EditableAvatar.tsx
-|   |   +-- dream.ProfileCanvas.tsx unused
+|   |   +-- dream.EditableAvatar.tsx user-facing
+|   |   +-- dream.ProfileCanvas.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.ProfileCustomizeButton.tsx
-|   |   `-- dream.widget.ProfileWidgetGrid.tsx unused
+|   |   +-- dream.ProfileCustomizeButton.tsx user-facing
+|   |   `-- dream.widget.ProfileWidgetGrid.tsx unused user-facing
 |   |       `-- unused unused: DEFAULT_CONFIG, DEFAULT_WIDGETS, DreamBgStyle, DreamConfig, DreamSize, DreamType, WIDGET_TRAY, Widget, WidgetBgStyle, WidgetConfig, WidgetSize, WidgetType
 |   +-- providers
-|   |   +-- dream.AppSurfaceShell.tsx unused
+|   |   +-- dream.AppSurfaceShell.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.GodTierProvider.tsx
-|   |   `-- dream.ThemeProvider.tsx
+|   |   +-- dream.GodTierProvider.tsx user-facing
+|   |   `-- dream.ThemeProvider.tsx user-facing
 |   +-- runtime  [Home / DreamDMBar / DualRuntime]
-|   |   +-- dream.DualRuntimeContainer.tsx
-|   |   +-- dream.RuntimeView.tsx
-|   |   `-- dream.shell.RuntimeShell.tsx
+|   |   +-- dream.DualRuntimeContainer.tsx user-facing
+|   |   +-- dream.RuntimeView.tsx user-facing
+|   |   `-- dream.shell.RuntimeShell.tsx user-facing
 |   +-- shaders
-|   |   +-- dream.LightningWing.tsx unused
+|   |   +-- dream.LightningWing.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.NeonGlow.tsx unused
+|   |   +-- dream.NeonGlow.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.Refractor.tsx unused
+|   |   +-- dream.Refractor.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
 |   |   `-- index.ts
 |   +-- shared-dream
-|   |   +-- dream.InviteFlow.tsx
-|   |   +-- dream.SharedDreamCanvas.tsx
-|   |   +-- dream.SharedDreamProvider.tsx unused
+|   |   +-- dream.InviteFlow.tsx user-facing
+|   |   +-- dream.SharedDreamCanvas.tsx user-facing
+|   |   +-- dream.SharedDreamProvider.tsx unused user-facing
 |   |   |   `-- unused unused: CursorPosition
-|   |   +-- dream.SharedDreamRuntime.tsx
+|   |   +-- dream.SharedDreamRuntime.tsx user-facing
 |   |   `-- index.ts unused
 |   |       `-- unused unused: InviteFlowProps, SharedDreamCanvas, SharedDreamCanvasProps, SharedDreamContextValue, SharedDreamProviderProps, SharedDreamRuntime, SharedDreamRuntimeProps, useSharedDream
 |   +-- spatial  [Profile]
-|   |   +-- dream.PixiPhysicsLayer.tsx unused
+|   |   +-- dream.PixiPhysicsLayer.tsx unused user-facing
 |   |   |   `-- unused unused: PixiPhysicsLayerProps
-|   |   +-- dream.ProfileSpace.tsx
-|   |   `-- dream.shell.EnhancedSpatialShell.tsx
+|   |   +-- dream.ProfileSpace.tsx user-facing
+|   |   `-- dream.shell.EnhancedSpatialShell.tsx user-facing
 |   +-- three
-|   |   +-- dream.scene.tsx
+|   |   +-- dream.scene.tsx user-facing
 |   |   `-- index.ts
 |   +-- ui
-|   |   +-- dream.AuthenticatedPageHeader.tsx
-|   |   +-- dream.DreamWord.tsx
-|   |   +-- dream.IconList.tsx unused
+|   |   +-- dream.AuthenticatedPageHeader.tsx user-facing
+|   |   +-- dream.DreamWord.tsx user-facing
+|   |   +-- dream.IconList.tsx unused user-facing
 |   |   |   `-- unused unused: (default), IconListItem
-|   |   +-- dream.InfinityIcon.tsx unused
+|   |   +-- dream.InfinityIcon.tsx unused user-facing
 |   |   |   `-- unused unused: InfinityColorScheme, InfinityIconProps, InfinityVariant
-|   |   +-- dream.PlatformBadge.tsx
-|   |   +-- dream.SheetIcon.tsx
-|   |   `-- dream.SocialShareSheet.tsx
+|   |   +-- dream.PlatformBadge.tsx user-facing
+|   |   +-- dream.SheetIcon.tsx user-facing
+|   |   `-- dream.SocialShareSheet.tsx user-facing
 |   +-- ui-system
-|   |   +-- CustomizeModeContext.tsx unused
+|   |   +-- CustomizeModeContext.tsx unused user-facing
 |   |   |   `-- unused unused: CustomizeModeContextValue
 |   |   +-- responsive.ts
 |   |   +-- runtimeViewport.ts
@@ -8691,25 +8693,25 @@ Legend: ! unresolved import  unused export
 |   |   |   `-- unused unused: StoredTheme, ThemePreset, ThemeTokens
 |   |   `-- theme.ts
 |   +-- universal-editor
-|   |   +-- dream.UniversalEditor.tsx
-|   |   +-- dream.UniversalEditorWrapper.tsx
+|   |   +-- dream.UniversalEditor.tsx user-facing
+|   |   +-- dream.UniversalEditorWrapper.tsx user-facing
 |   |   +-- index.ts unused
 |   |   |   `-- unused unused: Position, TapHoldMoveBindings, TapHoldMoveOptions, UniversalEditor, UniversalEditorProps, UniversalEditorWrapper, UniversalEditorWrapperProps, useTapHoldMove
 |   |   `-- useTapHoldMove.ts
 |   +-- universe
-|   |   +-- dream.node-cluster.tsx unused
+|   |   +-- dream.node-cluster.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.shell.universe-shell.tsx unused
+|   |   +-- dream.shell.universe-shell.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.universe-card.tsx unused
+|   |   +-- dream.universe-card.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
 |   |   `-- index.ts unused
 |   |       `-- unused unused: NodeCluster, NodeItem, UniverseCardFooter, UniverseCardHeader, UniverseShell
 |   +-- warp
-|   |   `-- dream.WarpCanvas.tsx unused
+|   |   `-- dream.WarpCanvas.tsx unused user-facing
 |   |       `-- unused unused: (default), WarpCanvasProps
 |   +-- webgpu
-|   |   +-- dream.WebGPUShowcase.tsx unused
+|   |   +-- dream.WebGPUShowcase.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
 |   |   +-- neuralPostProcess.ts unused
 |   |   |   `-- unused unused: NEURAL_POST_PROCESS_WGSL, NEURAL_UNIFORM_SIZE, createNeuralPostProcessPipeline, createNeuralUniforms, dispatchNeuralPostProcess
@@ -8718,88 +8720,88 @@ Legend: ! unresolved import  unused export
 |   |   `-- shaders.ts unused
 |   |       `-- unused unused: N_LEMN_SEGS
 |   +-- widgets
-|   |   +-- dream.AddDreamCTA.tsx unused
+|   |   +-- dream.AddDreamCTA.tsx unused user-facing
 |   |   |   `-- unused unused: (default), AddDreamCTAProps
-|   |   +-- dream.ConfigureSheet.tsx unused
+|   |   +-- dream.ConfigureSheet.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.EditModeBanner.tsx unused
+|   |   +-- dream.EditModeBanner.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.EditModeProvider.tsx unused
+|   |   +-- dream.EditModeProvider.tsx unused user-facing
 |   |   |   `-- unused unused: EditModeProvider
-|   |   +-- dream.widget.PlayMediaWidget.tsx unused
+|   |   +-- dream.widget.PlayMediaWidget.tsx unused user-facing
 |   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.UniversalWidget.tsx
-|   |   +-- dream.widget.WidgetCard.tsx
+|   |   +-- dream.widget.UniversalWidget.tsx user-facing
+|   |   +-- dream.widget.WidgetCard.tsx user-facing
 |   |   +-- dream.widget.WidgetLibrary.tsx
-|   |   +-- dream.widget.WidgetPlaceholder.tsx unused
+|   |   +-- dream.widget.WidgetPlaceholder.tsx unused user-facing
 |   |   |   `-- unused unused: (default), WidgetPlaceholderProps
 |   |   +-- dream.widget.WidgetShell.tsx
 |   |   `-- dream.widget.WidgetSurface.tsx
-|   +-- dream.AIAssistant.tsx unused
+|   +-- dream.AIAssistant.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.AudioVisualizer3D.tsx unused
+|   +-- dream.AudioVisualizer3D.tsx unused user-facing
 |   |   `-- unused unused: (default), AudioVisualizer3DProps
-|   +-- dream.BoogieWarningBanner.tsx unused
+|   +-- dream.BoogieWarningBanner.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.BrandLogo.tsx
-|   +-- dream.CommandPalette.tsx
-|   +-- dream.CommandPaletteMount.tsx
-|   +-- dream.CreatePostModal.tsx unused
+|   +-- dream.BrandLogo.tsx user-facing
+|   +-- dream.CommandPalette.tsx user-facing
+|   +-- dream.CommandPaletteMount.tsx user-facing
+|   +-- dream.CreatePostModal.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.DragToAnchorClose.tsx
-|   +-- dream.DrEamsModeToggle.tsx unused
+|   +-- dream.DragToAnchorClose.tsx user-facing
+|   +-- dream.DrEamsModeToggle.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.DrEamsVoiceAssistant.tsx unused
+|   +-- dream.DrEamsVoiceAssistant.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.FeedCard.tsx unused
+|   +-- dream.FeedCard.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.FirstTouchActivator.tsx unused
+|   +-- dream.FirstTouchActivator.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.ForgeDreamCanvas.tsx unused
+|   +-- dream.ForgeDreamCanvas.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.GlobalOverlays.tsx
-|   +-- dream.HeroSprite.tsx unused
+|   +-- dream.GlobalOverlays.tsx user-facing
+|   +-- dream.HeroSprite.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.HomeFeed.tsx
-|   +-- dream.IconSelector.tsx unused
+|   +-- dream.HomeFeed.tsx user-facing
+|   +-- dream.IconSelector.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.InnerDreamsButton.tsx unused
+|   +-- dream.InnerDreamsButton.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.KonamiDream.tsx
-|   +-- dream.LandingHero.tsx
-|   +-- dream.LedgerChart.tsx unused
+|   +-- dream.KonamiDream.tsx user-facing
+|   +-- dream.LandingHero.tsx user-facing
+|   +-- dream.LedgerChart.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.MessagesClient.tsx
-|   +-- dream.NotificationCenter.tsx
-|   +-- dream.OSShellActivator.tsx unused
+|   +-- dream.MessagesClient.tsx user-facing
+|   +-- dream.NotificationCenter.tsx user-facing
+|   +-- dream.OSShellActivator.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.panel.ChildSafetyPanel.tsx
-|   +-- dream.panel.IDariPanel.tsx
-|   +-- dream.PhysicsLab.tsx unused
+|   +-- dream.panel.ChildSafetyPanel.tsx user-facing
+|   +-- dream.panel.IDariPanel.tsx user-facing
+|   +-- dream.PhysicsLab.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.ProfileEditor.tsx unused
+|   +-- dream.ProfileEditor.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.ProfileShareButton.tsx
-|   +-- dream.ProfileSpace.tsx
-|   +-- dream.PullToRefresh.tsx unused
+|   +-- dream.ProfileShareButton.tsx user-facing
+|   +-- dream.ProfileSpace.tsx user-facing
+|   +-- dream.PullToRefresh.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.ShrunkMode.tsx unused
+|   +-- dream.ShrunkMode.tsx unused user-facing
 |   |   `-- unused unused: ShrunkMode
-|   +-- dream.SkeletonLoaders.tsx unused
+|   +-- dream.SkeletonLoaders.tsx unused user-facing
 |   |   `-- unused unused: FeedCardSkeleton, GridSkeleton, WidgetSkeleton
-|   +-- dream.ThemeApplicator.tsx
-|   +-- dream.ThemeToggle.tsx unused
+|   +-- dream.ThemeApplicator.tsx user-facing
+|   +-- dream.ThemeToggle.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.ToastSystem.tsx unused
+|   +-- dream.ToastSystem.tsx unused user-facing
 |   |   `-- unused unused: ToastProvider, useToast
-|   +-- dream.universal_asset_registry.tsx
-|   +-- dream.VoidThemeToggle.tsx unused
+|   +-- dream.universal_asset_registry.tsx user-facing
+|   +-- dream.VoidThemeToggle.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   +-- dream.widget.AnchorWidget.tsx unused
+|   +-- dream.widget.AnchorWidget.tsx unused user-facing
 |   |   `-- unused unused: AnchorWidget
-|   +-- dream.widget.ProfileWidgetBlock.tsx unused
+|   +-- dream.widget.ProfileWidgetBlock.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   `-- dream.widget.WidgetBubble.tsx unused
+|   `-- dream.widget.WidgetBubble.tsx unused user-facing
 |       `-- unused unused: (default)
 +-- config
 |   +-- advanced-game-targets.json
@@ -8808,13 +8810,13 @@ Legend: ! unresolved import  unused export
 +-- coresurfaces  [Profile]
 |   +-- home  [Profile]
 |   |   `-- buttons  [Profile]
-|   |       +-- button-groups.ts unused
+|   |       +-- button-groups.ts unused user-facing
 |   |       |   `-- unused unused: BUTTON_GROUPS, ButtonGroupName, ButtonItem
-|   |       `-- contextual-home.ts unused
+|   |       `-- contextual-home.ts unused user-facing
 |   |           `-- unused unused: HomeTarget, RuntimeHomeCallbacks
-|   +-- dreamsurface.EditProfileDream.tsx unused
+|   +-- dreamsurface.EditProfileDream.tsx unused user-facing
 |   |   `-- unused unused: (default)
-|   `-- dreamsurface.ViewProfile.tsx unused
+|   `-- dreamsurface.ViewProfile.tsx unused user-facing
 |       `-- unused unused: (default), metadata
 +-- daydreams
 |   +-- brand
@@ -8883,94 +8885,94 @@ Legend: ! unresolved import  unused export
 |       `-- unused unused: CurationAction, CurationRefreshSliceInput, DeviceMode, DrEamsActionName, DrEamsTools, NavAction, NavOpenPublicProfileInput, OnboardingAction, OnboardingExplainTermInput, OnboardingGuidedSetupInput, PolicyAction, PolicyExplainInput, PolicySuggestFixInput, PrivacyAction, PrivacyDeleteInput, SetupAction, SetupCheckInput, SystemAction, SystemBugReportInput, ToolContext, ToolRequest, ToolResult
 +-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs]
 |   +-- hooks  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- useDreamBarContext.ts
-|   |   +-- useDreamDMConversations.ts
-|   |   +-- useDreamDMDraft.ts unused
+|   |   +-- useDreamBarContext.ts user-facing
+|   |   +-- useDreamDMConversations.ts user-facing
+|   |   +-- useDreamDMDraft.ts unused user-facing
 |   |   |   `-- unused unused: DraftPayload, cleanupStaleDrafts, getDraftAge, listAllDraftIds
-|   |   +-- useDreamDMMessages.ts
-|   |   +-- useDreamSearch.ts unused
+|   |   +-- useDreamDMMessages.ts user-facing
+|   |   +-- useDreamSearch.ts unused user-facing
 |   |   |   `-- unused unused: SearchResultType, UseDreamSearchReturn
-|   |   +-- useMessagingCore.ts unused
+|   |   +-- useMessagingCore.ts unused user-facing
 |   |   |   `-- unused unused: SendMessageParams, UseMessagingCoreReturn
-|   |   +-- useModuleBarIntent.ts unused
+|   |   +-- useModuleBarIntent.ts unused user-facing
 |   |   |   `-- unused unused: UseModuleBarIntentResult, useModuleBarIntent
-|   |   `-- useNotifications.ts unused
+|   |   `-- useNotifications.ts unused user-facing
 |   |       `-- unused unused: useNotifications
 |   +-- notifications  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- notificationHelpers.ts unused
+|   |   +-- notificationHelpers.ts unused user-facing
 |   |   |   `-- unused unused: DbNotificationContent
-|   |   `-- useNotifications.ts unused
+|   |   `-- useNotifications.ts unused user-facing
 |   |       `-- unused unused: UseNotificationsReturn
 |   +-- runtime  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- barInteractions.ts unused
+|   |   +-- barInteractions.ts unused user-facing
 |   |   |   `-- unused unused: BAR_SNAP_TO_TOP_HEIGHT_RATIO, BAR_SNAP_TO_TOP_THRESHOLD_PX, BarReleaseAction, GOLD_SECOND_TAP_WINDOW_MS, LIGHT_POSITION_CYCLE, MIN_POINTER_SAMPLE_DELTA_MS, QuickReaction, SlashCommand
-|   |   +-- bridgeSeamFlow.ts
-|   |   `-- DreamSystemContext.tsx unused
+|   |   +-- bridgeSeamFlow.ts user-facing
+|   |   `-- DreamSystemContext.tsx unused user-facing
 |   |       `-- unused unused: DEFAULT_WORLD_FOCUS, HomeData, RuntimeCallbacks, WorldFocusState
-|   +-- dream.GlowingLight.tsx unused
+|   +-- dream.GlowingLight.tsx unused user-facing
 |   |   `-- unused unused: GlowingLightProps
-|   `-- dreamsurface.dreamdmbar.tsx unused
+|   `-- dreamsurface.dreamdmbar.tsx unused user-facing
 |       `-- unused unused: BAR_H, NAV_H
 +-- dreamr  [DreamR]
 |   +-- activity  [DreamR]
-|   |   +-- aqs.ts unused
+|   |   +-- aqs.ts unused user-facing
 |   |   |   `-- unused unused: calculateAQS, calculateRealShitRate, getAQS, getAQSLeaderboard, getUserMetrics
-|   |   +-- boogieActivityPolicy.ts unused
+|   |   +-- boogieActivityPolicy.ts unused user-facing
 |   |   |   `-- unused unused: ActivityFeedTreatment, BoogieActivitySignals, detectActivityFraudSignals, resolveActivityFeedTreatment, shouldExcludeFromFeed
-|   |   +-- revenueSplit.ts unused
+|   |   +-- revenueSplit.ts unused user-facing
 |   |   |   `-- unused unused: ActivityRevenueSplit
-|   |   +-- scoring.ts unused
+|   |   +-- scoring.ts unused user-facing
 |   |   |   `-- unused unused: calculateVisibilityBoost, getInnovationBonus, getTierMultiplier, getVerificationMethodDisplayName, getVerificationStrength, isDecayed, shouldPromoteActivity, validateTierForActivityType
-|   |   +-- skipCredits.ts unused
+|   |   +-- skipCredits.ts unused user-facing
 |   |   |   `-- unused unused: MIN_WATCHED_PERCENT_FOR_CREDIT, SKIP_CREDIT_SPEND_PER_AD
-|   |   +-- types.ts unused
+|   |   +-- types.ts unused user-facing
 |   |   |   `-- unused unused: SkipCredit
-|   |   `-- visibility-score.ts unused
+|   |   `-- visibility-score.ts unused user-facing
 |   |       `-- unused unused: calculateVisibilityScore, calculateVisibilityScores, estimateVisibilityScore, getVisibilityRankedFeed, shouldPromotePost
 |   +-- bot-detection  [DreamR]
-|   |   +-- detector.ts unused
+|   |   +-- detector.ts unused user-facing
 |   |   |   `-- unused unused: BotDetector, BotScore, SwipeRecord
-|   |   +-- index.ts unused
+|   |   +-- index.ts unused user-facing
 |   |   |   `-- unused unused: BOT_MAX_ENTROPY, BOT_MAX_SLOG_VEL_VAR, BOT_MIN_COARSE_GRAIN_DIFF, BOT_MIN_CROSS_SIMILARITY, BotSessionResult, HUMAN_MAX_COARSE_GRAIN_DIFF, HUMAN_MAX_CROSS_SIMILARITY, HUMAN_MIN_ENTROPY, HUMAN_MIN_SLOG_VEL_VAR, Point, SwipeAnalysis, SwipeRecord, ViewTally, analyzeSwipe, isBotSession, tallyView
-|   |   +-- swipe-physics.ts unused
+|   |   +-- swipe-physics.ts unused user-facing
 |   |   |   `-- unused unused: PathPoint, VelocityStats
-|   |   `-- view-tally.ts unused
+|   |   `-- view-tally.ts unused user-facing
 |   |       `-- unused unused: VIEW_TALLY_DURATION_MS, ViewTallyTimer, ViewTallyTracker, createViewTallyTimer
 |   +-- components  [DreamR]
-|   |   `-- dreamrfeed.tsx
+|   |   `-- dreamrfeed.tsx user-facing
 |   +-- feed  [DreamR]
-|   |   +-- feedTopics.ts unused
+|   |   +-- feedTopics.ts unused user-facing
 |   |   |   `-- unused unused: FeedTopic
-|   |   +-- hashtags.ts unused
+|   |   +-- hashtags.ts unused user-facing
 |   |   |   `-- unused unused: Hashtag, TrendingTag
-|   |   +-- useLiveFeed.ts unused
+|   |   +-- useLiveFeed.ts unused user-facing
 |   |   |   `-- unused unused: UseLiveFeedReturn
-|   |   `-- useYouTubeLiveFeed.ts unused
+|   |   `-- useYouTubeLiveFeed.ts unused user-facing
 |   |       `-- unused unused: UseYouTubeLiveFeedReturn
 |   +-- feeds  [DreamR]
-|   |   `-- embedFeedLoader.ts unused
+|   |   `-- embedFeedLoader.ts unused user-facing
 |   |       `-- unused unused: EmbedFeed, EmbedFeedAlgorithm, loadEmbedFeedByProvider
 |   +-- runtime  [DreamR]
-|   |   +-- closeFriendsVisibility.ts unused
+|   |   +-- closeFriendsVisibility.ts unused user-facing
 |   |   |   `-- unused unused: VisibilityCandidate, fetchCloseFriendsCircle
-|   |   +-- feedCursor.ts unused
+|   |   +-- feedCursor.ts unused user-facing
 |   |   |   `-- unused unused: FeedPaginationParams
-|   |   +-- socialHumanityScore.ts unused
+|   |   +-- socialHumanityScore.ts unused user-facing
 |   |   |   `-- unused unused: HumanityScore, SocialHumanityInput, computeSocialHumanityScore
-|   |   +-- swipeCalibration.ts
-|   |   +-- swipePersonalization.ts unused
+|   |   +-- swipeCalibration.ts user-facing
+|   |   +-- swipePersonalization.ts unused user-facing
 |   |   |   `-- unused unused: CREATOR_PREFERENCE_WEIGHT, DreamRSwipeIntent, DreamRSwipePreferenceSets, DreamRViewIntent, LONGFORM_CONTENT_THRESHOLD, TYPE_PREFERENCE_WEIGHT, creatorPreferenceKey
-|   |   `-- torridityLedger.ts unused
+|   |   `-- torridityLedger.ts unused user-facing
 |   |       `-- unused unused: HumanityPath, OriginalityMeta, PostMassMeta, SwipeReleaseResult, SwipeReleaseSample, TorridityPostLike, calculateSnapForce, getDeceleration, normalizeHumanViews
 |   +-- torridity  [DreamR]
-|   |   +-- constants.ts
-|   |   +-- index.ts unused
+|   |   +-- constants.ts user-facing
+|   |   +-- index.ts unused user-facing
 |   |   |   `-- unused unused: ContentItem, RankedItem, a0Perception, contentMass, decayFactor, deltaP, lambda, mu, n, rankFeed, throttlingGate, torridityRank
-|   |   `-- physics.ts
-|   +-- botDetection.ts
-|   +-- social-feed.ts unused
+|   |   `-- physics.ts user-facing
+|   +-- botDetection.ts user-facing
+|   +-- social-feed.ts unused user-facing
 |   |   `-- unused unused: SocialSource
-|   `-- torridity.ts
+|   `-- torridity.ts user-facing
 +-- engine
 |   +-- admin
 |   |   +-- lockout.ts
@@ -9003,7 +9005,7 @@ Legend: ! unresolved import  unused export
 |   |       `-- useGsapScrollReveal.ts unused
 |   |           `-- unused unused: ScrollRevealOptions
 |   +-- api
-|   |   `-- route.ts
+|   |   `-- route.ts user-facing
 |   +-- artifacts
 |   |   `-- artifactStore.ts unused
 |   |       `-- unused unused: OfflineBlobArtifactRecord, getDefaultSystemArtifacts, readOfflineBlobArtifacts, removeArtifact, saveArtifacts
@@ -9148,9 +9150,9 @@ Legend: ! unresolved import  unused export
 |   |   |   `-- unused unused: CartridgesMap
 |   |   +-- connectors.ts unused
 |   |   |   `-- unused unused: ConnectorsMap
-|   |   +-- dreamdmbar.ts unused
+|   |   +-- dreamdmbar.ts unused user-facing
 |   |   |   `-- unused unused: DreamdmbarMap
-|   |   +-- dreamr.ts unused
+|   |   +-- dreamr.ts unused user-facing
 |   |   |   `-- unused unused: DreamrMap
 |   |   +-- dreamsurfaces.ts unused
 |   |   |   `-- unused unused: DreamsurfacesMap
@@ -9295,71 +9297,71 @@ Legend: ! unresolved import  unused export
 |   |       `-- unused unused: PUBLIC_SURFACE_PREFIXES, SAB_ISOLATED_ROUTE_PREFIXES, isSabIsolatedPath
 |   +-- runtime  [Home / DreamDMBar / DualRuntime]
 |   |   +-- dreamsurface  [Home / DreamDMBar / DualRuntime]
-|   |   |   +-- dreamsurface.bridge.ts
-|   |   |   +-- dreamsurface.delta.ts
-|   |   |   `-- index.ts
-|   |   +-- apperception.ts unused
+|   |   |   +-- dreamsurface.bridge.ts user-facing
+|   |   |   +-- dreamsurface.delta.ts user-facing
+|   |   |   `-- index.ts user-facing
+|   |   +-- apperception.ts unused user-facing
 |   |   |   `-- unused unused: ApperceptiveSurface
-|   |   +-- channelMetrics.ts unused
+|   |   +-- channelMetrics.ts unused user-facing
 |   |   |   `-- unused unused: ChannelMetrics, getAllChannelMetrics, getChannelMetrics, recordError, resetChannelMetrics
-|   |   +-- coercionTable.ts unused
+|   |   +-- coercionTable.ts unused user-facing
 |   |   |   `-- unused unused: coerceRawPayload
-|   |   +-- dreamOSBus.ts unused
+|   |   +-- dreamOSBus.ts unused user-facing
 |   |   |   `-- unused unused: CAPABILITY_DESCRIPTORS, CapabilityDescriptor, CapabilityKind, DreamOSArtifactKind, DreamOSRuntimeContext, INFORMATION_DOMAINS, IntentPriority, isInformationDomain, isIntentEnvelope
-|   |   +-- dropTargetRegistry.ts unused
+|   |   +-- dropTargetRegistry.ts unused user-facing
 |   |   |   `-- unused unused: DropTarget
-|   |   +-- dualRuntime.ts unused
+|   |   +-- dualRuntime.ts unused user-facing
 |   |   |   `-- unused unused: RUNTIME_REGIONS, TORUS_DOMAINS, TORUS_FOCUS_MAP, TORUS_HEIGHT, TORUS_WIDTH, TorusDomain
-|   |   +-- dualRuntimeBridge.ts unused
+|   |   +-- dualRuntimeBridge.ts unused user-facing
 |   |   |   `-- unused unused: AckStatus, QueuedEmission
-|   |   +-- engin.auth.ts
-|   |   +-- engin.eventbus.ts
-|   |   +-- engin.ledger.ts
-|   |   +-- engin.renderloop.ts
-|   |   +-- EnginDispatcher.ts unused
+|   |   +-- engin.auth.ts user-facing
+|   |   +-- engin.eventbus.ts user-facing
+|   |   +-- engin.ledger.ts user-facing
+|   |   +-- engin.renderloop.ts user-facing
+|   |   +-- EnginDispatcher.ts unused user-facing
 |   |   |   `-- unused unused: DispatcherToWorkerMessage, WasmEngineExports, WorkerBoundsViolationMessage, WorkerInboundMessage, WorkerInitMessage, WorkerOutboundMessage, WorkerStopMessage, WorkerTickMessage, WorkerToDispatcherMessage, WorkerWasmBudgetExceededMessage, initWasmEngine
-|   |   +-- enginWorkflowRegistry.ts unused
+|   |   +-- enginWorkflowRegistry.ts unused user-facing
 |   |   |   `-- unused unused: WorkflowArtifactType, WorkflowDefinition, WorkflowStats, getWorkflowStats, getWorkflowsByArtifactType, workflowExists
-|   |   +-- iEngine.ts unused
+|   |   +-- iEngine.ts unused user-facing
 |   |   |   `-- unused unused: AuthorizationDecision, CapabilityAction, DomainObject, DomainVisibility, RuntimeLifecycleHook, RuntimeLifecycleHooks, RuntimeSnapshot, SpatialRuntimeCoreOptions, StrictIntentRoute, SyncTransport, validateManifest
-|   |   +-- index.ts unused
+|   |   +-- index.ts unused user-facing
 |   |   |   `-- unused unused: DreamLedger, EnginEvent, EnginSession, EventBus, LedgerEntry, RenderFrame, RenderLoop, appendEntry, createEventBus, createLedger, createRenderLoop, createSession, validateSession
-|   |   +-- instanceManager.ts unused
+|   |   +-- instanceManager.ts unused user-facing
 |   |   |   `-- unused unused: EnginInstance, InstanceMode, persistInstanceList, spawnDualInstances
-|   |   +-- isAuthRelatedError.ts
-|   |   +-- madMaxiSnapshotBridge.ts
-|   |   +-- memory.ts unused
+|   |   +-- isAuthRelatedError.ts user-facing
+|   |   +-- madMaxiSnapshotBridge.ts user-facing
+|   |   +-- memory.ts unused user-facing
 |   |   |   `-- unused unused: ConformMemoryMap, ENGIN_OFFSET_AXIS_STATE, ENGIN_OFFSET_DREAMDM_BAR_X, ENGIN_OFFSET_DREAMDM_BAR_Y, ENGIN_OFFSET_LOCKED_STATE, ENGIN_OFFSET_POS_X, ENGIN_OFFSET_POS_Y, ENGIN_OFFSET_POS_Z, ENGIN_OFFSET_TELEMETRY, ENGIN_OFFSET_VEL_X, ENGIN_OFFSET_VEL_Y, ENGIN_OFFSET_VEL_Z, ENGIN_SAB_SIZE, EntityBounds, MemoryPolicyResult, getEntityBounds, getWorkerCount, isSABAvailable, validateWorkgroup
-|   |   +-- moduleRegistry.ts unused
+|   |   +-- moduleRegistry.ts unused user-facing
 |   |   |   `-- unused unused: manifestFromWidget, subscribeRegistryToTransferEvents
-|   |   +-- offlineQueue.ts unused
+|   |   +-- offlineQueue.ts unused user-facing
 |   |   |   `-- unused unused: EnqueueOptions, OfflineActionStatus, OfflineActionType, OfflineReplayRequest, clearQueue, dequeue, enqueue, isOnline, listQueue
-|   |   +-- quantumCircuit.ts unused
+|   |   +-- quantumCircuit.ts unused user-facing
 |   |   |   `-- unused unused: QuantumComputeResult, runQuantumCircuit
-|   |   +-- runtimeChannel.ts unused
+|   |   +-- runtimeChannel.ts unused user-facing
 |   |   |   `-- unused unused: RealtimeChannel, RealtimeChannelOptions, RealtimeClient, RuntimeChannelOptions, createRealtimeChannel
-|   |   +-- runtimeContainer.ts unused
+|   |   +-- runtimeContainer.ts unused user-facing
 |   |   |   `-- unused unused: RuntimeContainerOptions, RuntimeStrategy
-|   |   +-- seamClipboard.ts unused
+|   |   +-- seamClipboard.ts unused user-facing
 |   |   |   `-- unused unused: SeamClipboardMimeType
-|   |   +-- sharedResourcePool.ts
-|   |   +-- snapshotFingerprint.ts unused
+|   |   +-- sharedResourcePool.ts user-facing
+|   |   +-- snapshotFingerprint.ts unused user-facing
 |   |   |   `-- unused unused: FingerprintCache, FingerprintCacheEntry, createFingerprintCache, fingerprintSnapshot, snapshotsAreEquivalent
-|   |   +-- superciliousPlatformRuntime.ts unused
+|   |   +-- superciliousPlatformRuntime.ts unused user-facing
 |   |   |   `-- unused unused: CapabilityVector, CompetingPlatform, DreamEnginSuperiorityState, PlatformCapabilityProfile, SuperciliousCapability
-|   |   +-- swapManager.ts unused
+|   |   +-- swapManager.ts unused user-facing
 |   |   |   `-- unused unused: SwapDomain, clearSwap, getAllSwapStates, resetAllSwaps, setSwap
-|   |   +-- useDragSurface.ts unused
+|   |   +-- useDragSurface.ts unused user-facing
 |   |   |   `-- unused unused: UseDragSurfaceOptions, UseDragSurfaceResult, useDragSurface
-|   |   +-- useDualRuntime.ts unused
+|   |   +-- useDualRuntime.ts unused user-facing
 |   |   |   `-- unused unused: BridgeEventHandler, ChannelEventKey, ChannelEventPayload, DualRuntimeChannel, PeerState, UnsubscribeFn, UseDualRuntimeReturn, useDualRuntime
-|   |   +-- useDualRuntimePersistence.ts unused
+|   |   +-- useDualRuntimePersistence.ts unused user-facing
 |   |   |   `-- unused unused: UseDualRuntimePersistenceReturn, useDualRuntimePersistence
-|   |   +-- useEnginBridge.ts unused
+|   |   +-- useEnginBridge.ts unused user-facing
 |   |   |   `-- unused unused: BrandingEnginBridgeState, CodeEnginBridgeState, ContentEnginBridgeState, GameEnginBridgeState, LabEnginBridgeState, StarMakerEnginBridgeState, useContentEnginBridge, useStarMakerEnginBridge
-|   |   +-- useEnginCoopSync.ts unused
+|   |   +-- useEnginCoopSync.ts unused user-facing
 |   |   |   `-- unused unused: CoopEvent, UseEnginCoopSyncOptions, UseEnginCoopSyncResult
-|   |   `-- useSharedEnginChannel.ts unused
+|   |   `-- useSharedEnginChannel.ts unused user-facing
 |   |       `-- unused unused: SharedEnginChannelOptions, SharedEnginChannelResult
 |   +-- safety
 |   |   `-- child-safety
@@ -9462,25 +9464,25 @@ Legend: ! unresolved import  unused export
 |   |           `-- unused unused: LogoPath
 |   +-- codeengin  [CodeEngin]
 |   |   +-- ai  [CodeEngin]
-|   |   |   `-- drEamsCodeAssist.ts unused
+|   |   |   `-- drEamsCodeAssist.ts unused user-facing
 |   |   |       `-- unused unused: CodeContext, ParsedCodeResponse, QueryIntent, VocabEntry, buildCodePrompt, getCodeAssistCompletion
 |   |   +-- diff  [CodeEngin]
-|   |   |   +-- aiEditEngine.ts unused
+|   |   |   +-- aiEditEngine.ts unused user-facing
 |   |   |   |   `-- unused unused: AiSuggestion, BuildPreviewOptions, CODEENGIN_PRODUCTION_MODE, EditDiffLine, EditDiffLineType, EditScope, RiskLevel, ScopeMatch, UndoSnapshot
-|   |   |   `-- diffUtils.ts
-|   |   +-- auth.ts unused
+|   |   |   `-- diffUtils.ts user-facing
+|   |   +-- auth.ts unused user-facing
 |   |   |   `-- unused unused: CodeEnginAuthenticatedUser
-|   |   +-- diagnostics.ts
-|   |   +-- git.ts
-|   |   +-- pathSafety.ts unused
+|   |   +-- diagnostics.ts user-facing
+|   |   +-- git.ts user-facing
+|   |   +-- pathSafety.ts unused user-facing
 |   |   |   `-- unused unused: CODEENGIN_ALLOWED_EXTENSIONS, CODEENGIN_ALLOWED_FILENAMES, isAllowedCodeEnginFileName
-|   |   +-- projectGraph.ts unused
+|   |   +-- projectGraph.ts unused user-facing
 |   |   |   `-- unused unused: extractImports
-|   |   +-- runner.ts
-|   |   +-- runnerCommands.ts
-|   |   +-- search.ts
-|   |   +-- types.ts
-|   |   `-- workspaceStore.ts unused
+|   |   +-- runner.ts user-facing
+|   |   +-- runnerCommands.ts user-facing
+|   |   +-- search.ts user-facing
+|   |   +-- types.ts user-facing
+|   |   `-- workspaceStore.ts unused user-facing
 |   |       `-- unused unused: (default), getWorkspaceMeta
 |   +-- CodeEngin
 |   |   +-- core
@@ -9496,425 +9498,425 @@ Legend: ! unresolved import  unused export
 |   |           `-- unused unused: (default)
 |   +-- codeengin-ui  [CodeEngin]
 |   |   +-- core  [CodeEngin]
-|   |   |   `-- parser.ts unused
+|   |   |   `-- parser.ts unused user-facing
 |   |   |       `-- unused unused: ParseResult
 |   |   +-- modules  [CodeEngin]
 |   |   |   `-- ai-co-pilot  [CodeEngin]
-|   |   |       +-- dream.panel.AgentPanel.tsx
-|   |   |       +-- index.ts
-|   |   |       `-- useAgentSession.ts
+|   |   |       +-- dream.panel.AgentPanel.tsx user-facing
+|   |   |       +-- index.ts user-facing
+|   |   |       `-- useAgentSession.ts user-facing
 |   |   `-- orchestrator  [CodeEngin]
-|   |       `-- dream.index.tsx unused
+|   |       `-- dream.index.tsx unused user-facing
 |   |           `-- unused unused: (default)
 |   +-- contentengin  [ContentEngin / CreateEngin]
 |   |   +-- assets  [ContentEngin / CreateEngin]
-|   |   |   +-- assetOptimizer.ts unused
+|   |   |   +-- assetOptimizer.ts unused user-facing
 |   |   |   |   `-- unused unused: AssetUploadContext, OptimisationQuality, OptimisationResult, OptimiseOptions, optimiseAsset
-|   |   |   +-- indexedDBStore.ts
-|   |   |   `-- localAssetLibrary.ts unused
+|   |   |   +-- indexedDBStore.ts user-facing
+|   |   |   `-- localAssetLibrary.ts unused user-facing
 |   |   |       `-- unused unused: LocalContentAssetRecord, getLocalContentAssetGlb, getLocalContentAssetObjSource, listLocalContentAssets, saveLocalContentAsset
 |   |   +-- builders  [ContentEngin / CreateEngin]
-|   |   |   +-- geometryBuilder.ts unused
+|   |   |   +-- geometryBuilder.ts unused user-facing
 |   |   |   |   `-- unused unused: MeshGeometry
-|   |   |   +-- meshBuilder.ts unused
+|   |   |   +-- meshBuilder.ts unused user-facing
 |   |   |   |   `-- unused unused: buildImplicitContentMesh, buildRegionFitContentMesh, sdfFromAlgebraicFit
-|   |   |   +-- modifiers.ts unused
+|   |   |   +-- modifiers.ts unused user-facing
 |   |   |   |   `-- unused unused: ModifierKind, ModifierSpec, applyModifierMetadata
-|   |   |   +-- primitiveBuilder.ts unused
+|   |   |   +-- primitiveBuilder.ts unused user-facing
 |   |   |   |   `-- unused unused: MeshStats
-|   |   |   +-- textureBuilder.ts
-|   |   |   `-- uvGenerator.ts
+|   |   |   +-- textureBuilder.ts user-facing
+|   |   |   `-- uvGenerator.ts user-facing
 |   |   +-- composite  [ContentEngin / CreateEngin]
-|   |   |   +-- compositor.ts unused
+|   |   |   +-- compositor.ts unused user-facing
 |   |   |   |   `-- unused unused: BlendMode, CompGraph, CompNode, NodeParam, NodeType, addNode, connectNodes, createGraph, createNode, disconnectInput, findNode, graphSummary, setParam, topologicalSort
-|   |   |   +-- fxSimulation.ts unused
+|   |   |   +-- fxSimulation.ts unused user-facing
 |   |   |   |   `-- unused unused: FX_PRESETS, FxCategory, FxParam, FxPreset, FxSimulation, allCategories, createSimulation, getPreset, getSimParam, presetsByCategory, resetSimParams, setSimParam
-|   |   |   +-- matchmover.ts unused
+|   |   |   +-- matchmover.ts unused user-facing
 |   |   |   |   `-- unused unused: CameraFrame, CameraTrack, Homography, MotionEstimate, TrackPoint, TrackSample, addSample, addTrackPoint, computeHomography, createTrack, estimateCameraMotion, exportTrackCSV, trackSummary
-|   |   |   +-- motionCapture.ts unused
+|   |   |   +-- motionCapture.ts unused user-facing
 |   |   |   |   `-- unused unused: ClipSummary, FramePose, Joint, JointTransform, MocapClip, clipSummary, exportBVH, findJoint, getFramePose, parseBVH, retargetClip
-|   |   |   `-- rotoscope.ts unused
+|   |   |   `-- rotoscope.ts unused user-facing
 |   |   |       `-- unused unused: BezierPoint, InterpolatedShape, RotoLayer, RotoProject, RotoShape, addLayer, createProject, exportFrameSVG, exportShapeSVG, interpolateShape, keyframeList, removeKeyframe, setKeyframe
 |   |   +-- content  [ContentEngin / CreateEngin]
-|   |   |   +-- generativeFill.ts unused
+|   |   |   +-- generativeFill.ts unused user-facing
 |   |   |   |   `-- unused unused: DominantColor, GenerativeFillRequest, GenerativeFillResult, ImageAnalysis, analyzeImageColors, createMaskDataUrl, fileToBase64, requestGenerativeFill
-|   |   |   +-- publishIntent.ts unused
+|   |   |   +-- publishIntent.ts unused user-facing
 |   |   |   |   `-- unused unused: PublishIntentInput, PublishToDreamRParams
-|   |   |   +-- seoScorer.ts unused
+|   |   |   +-- seoScorer.ts unused user-facing
 |   |   |   |   `-- unused unused: SeoReport, SeoScoreDimension, SeoScoreInput, SeoScoreResult, generateReport, scoreContent
-|   |   |   +-- transcriptEditor.ts unused
+|   |   |   +-- transcriptEditor.ts unused user-facing
 |   |   |   |   `-- unused unused: SearchResult, TimelineCut, TranscriptSegment, TranscriptWord, annotateSearchMatches, applyEditsToSegments, computeCuts, exportSRT, searchTranscript, segmentsToPlainText
-|   |   |   `-- voiceClone.ts unused
+|   |   |   `-- voiceClone.ts unused user-facing
 |   |   |       `-- unused unused: ListVoiceProfilesResult, TTSRequest, TTSResult, VoiceCloneRequest, VoiceCloneResult, VoiceProfile, audioFileToBase64, cloneVoice, deleteVoiceProfile, getBrowserVoices, listVoiceProfiles, speakWithBrowserTTS, textToSpeech
 |   |   +-- grammars  [ContentEngin / CreateEngin]
-|   |   |   +-- animalGrammar.ts
-|   |   |   +-- bicycleGrammar.ts
-|   |   |   +-- bridgeGrammar.ts
-|   |   |   +-- buildingGrammar.ts
-|   |   |   +-- creatureGrammar.ts unused
+|   |   |   +-- animalGrammar.ts user-facing
+|   |   |   +-- bicycleGrammar.ts user-facing
+|   |   |   +-- bridgeGrammar.ts user-facing
+|   |   |   +-- buildingGrammar.ts user-facing
+|   |   |   +-- creatureGrammar.ts unused user-facing
 |   |   |   |   `-- unused unused: buildCreatureParts
-|   |   |   +-- humanoidGrammar.ts
-|   |   |   +-- propGrammar.ts
-|   |   |   +-- roadGrammar.ts
-|   |   |   +-- shared.ts
-|   |   |   +-- terrainGrammar.ts
-|   |   |   +-- treeGrammar.ts
-|   |   |   +-- vehicleGrammar.ts
-|   |   |   `-- waterGrammar.ts
+|   |   |   +-- humanoidGrammar.ts user-facing
+|   |   |   +-- propGrammar.ts user-facing
+|   |   |   +-- roadGrammar.ts user-facing
+|   |   |   +-- shared.ts user-facing
+|   |   |   +-- terrainGrammar.ts user-facing
+|   |   |   +-- treeGrammar.ts user-facing
+|   |   |   +-- vehicleGrammar.ts user-facing
+|   |   |   `-- waterGrammar.ts user-facing
 |   |   +-- materials  [ContentEngin / CreateEngin]
-|   |   |   +-- materialTypes.ts unused
+|   |   |   +-- materialTypes.ts unused user-facing
 |   |   |   |   `-- unused unused: MaterialDef, MaterialFamily
-|   |   |   +-- paletteExtractor.ts
-|   |   |   `-- proceduralMaterials.ts unused
+|   |   |   +-- paletteExtractor.ts user-facing
+|   |   |   `-- proceduralMaterials.ts unused user-facing
 |   |   |       `-- unused unused: material
 |   |   +-- media  [ContentEngin / CreateEngin]
-|   |   |   +-- h265-encoder.ts unused
+|   |   |   +-- h265-encoder.ts unused user-facing
 |   |   |   |   `-- unused unused: BackendKind, EncodedPacket, EncoderCapabilities, EncoderOptions, H265Encoder, H265Preset, PixelFormat, VideoFrameLike
-|   |   |   +-- ledger.ts unused
+|   |   |   +-- ledger.ts unused user-facing
 |   |   |   |   `-- unused unused: LedgerBinaryHeader, LedgerDbPayload, LedgerDensityProfile, LedgerUploadResult, compressData, downloadBlobFromLedgerStorage
-|   |   |   `-- postMedia.ts
+|   |   |   `-- postMedia.ts user-facing
 |   |   +-- photo  [ContentEngin / CreateEngin]
-|   |   |   +-- colorCluster.ts unused
+|   |   |   +-- colorCluster.ts unused user-facing
 |   |   |   |   `-- unused unused: extractPalette
-|   |   |   +-- edgeDetector.ts unused
+|   |   |   +-- edgeDetector.ts unused user-facing
 |   |   |   |   `-- unused unused: buildEdgeMapFromRgba
-|   |   |   +-- imageAnalyzer.ts
-|   |   |   +-- photoToRecipe.ts unused
+|   |   |   +-- imageAnalyzer.ts user-facing
+|   |   |   +-- photoToRecipe.ts unused user-facing
 |   |   |   |   `-- unused unused: photoToRecipe
-|   |   |   +-- pngDecoder.ts unused
+|   |   |   +-- pngDecoder.ts unused user-facing
 |   |   |   |   `-- unused unused: DecodedPng
-|   |   |   `-- regionDetector.ts unused
+|   |   |   `-- regionDetector.ts unused user-facing
 |   |   |       `-- unused unused: AlgebraicFitKind, SemanticPartLabel, SemanticShapeRegion, fitAlgebraicRegion, relabelRegion
 |   |   +-- pipeline  [ContentEngin / CreateEngin]
-|   |   |   +-- build.ts
-|   |   |   +-- bundle.ts
-|   |   |   +-- exportGlb.ts unused
+|   |   |   +-- build.ts user-facing
+|   |   |   +-- bundle.ts user-facing
+|   |   |   +-- exportGlb.ts unused user-facing
 |   |   |   |   `-- unused unused: GlbInspection
-|   |   |   +-- generateCollision.ts
-|   |   |   +-- generateLods.ts
-|   |   |   +-- paths.ts
-|   |   |   +-- validate.ts
-|   |   |   `-- writeManifest.ts unused
+|   |   |   +-- generateCollision.ts user-facing
+|   |   |   +-- generateLods.ts user-facing
+|   |   |   +-- paths.ts user-facing
+|   |   |   +-- validate.ts user-facing
+|   |   |   `-- writeManifest.ts unused user-facing
 |   |   |       `-- unused unused: wrapAsset
 |   |   +-- recipes  [ContentEngin / CreateEngin]
-|   |   |   +-- recipeResolver.ts unused
+|   |   |   +-- recipeResolver.ts unused user-facing
 |   |   |   |   `-- unused unused: normalizeAssetType
-|   |   |   +-- recipeTypes.ts unused
+|   |   |   +-- recipeTypes.ts unused user-facing
 |   |   |   |   `-- unused unused: ContentRecipe, ExportProfile, SupportedAssetType
-|   |   |   `-- seededRandom.ts unused
+|   |   |   `-- seededRandom.ts unused user-facing
 |   |   |       `-- unused unused: pick
 |   |   +-- rigging  [ContentEngin / CreateEngin]
 |   |   |   +-- templates  [ContentEngin / CreateEngin]
-|   |   |   |   +-- bird_basic.json
-|   |   |   |   +-- fish_basic.json
-|   |   |   |   +-- humanoid_basic.json
-|   |   |   |   +-- quadruped_basic.json
-|   |   |   |   `-- vehicle_mechanical.json
-|   |   |   +-- fitArmature.ts
-|   |   |   +-- index.ts unused
+|   |   |   |   +-- bird_basic.json user-facing
+|   |   |   |   +-- fish_basic.json user-facing
+|   |   |   |   +-- humanoid_basic.json user-facing
+|   |   |   |   +-- quadruped_basic.json user-facing
+|   |   |   |   `-- vehicle_mechanical.json user-facing
+|   |   |   +-- fitArmature.ts user-facing
+|   |   |   +-- index.ts unused user-facing
 |   |   |   |   `-- unused unused: RigStandard, RiggingRequest
-|   |   |   +-- landmarks.ts unused
+|   |   |   +-- landmarks.ts unused user-facing
 |   |   |   |   `-- unused unused: estimateLandmarks
-|   |   |   +-- rigTypes.ts
-|   |   |   `-- rigValidator.ts
+|   |   |   +-- rigTypes.ts user-facing
+|   |   |   `-- rigValidator.ts user-facing
 |   |   +-- shaders  [ContentEngin / CreateEngin]
-|   |   |   +-- shaderRegistry.ts unused
+|   |   |   +-- shaderRegistry.ts unused user-facing
 |   |   |   |   `-- unused unused: getShader
-|   |   |   `-- shaderTypes.ts unused
+|   |   |   `-- shaderTypes.ts unused user-facing
 |   |   |       `-- unused unused: ShaderDef
-|   |   +-- assetTypes.ts unused
+|   |   +-- assetTypes.ts unused user-facing
 |   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, ContentEnginPerformancePlanSnapshot, ContentEnginRuntimeProfileSnapshot, ContentEnginUpgradeIdSnapshot, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
-|   |   +-- AssetViewport.tsx
-|   |   +-- cli.ts
-|   |   +-- ImplicitAssetWorkspace.tsx
-|   |   +-- performancePlan.ts unused
+|   |   +-- AssetViewport.tsx user-facing
+|   |   +-- cli.ts user-facing
+|   |   +-- ImplicitAssetWorkspace.tsx user-facing
+|   |   +-- performancePlan.ts unused user-facing
 |   |   |   `-- unused unused: ContentEnginPerformancePlan
-|   |   +-- runtimeProfile.ts unused
+|   |   +-- runtimeProfile.ts unused user-facing
 |   |   |   `-- unused unused: ContentEnginRuntimeTier
-|   |   +-- upgradeMatrix.ts unused
+|   |   +-- upgradeMatrix.ts unused user-facing
 |   |   |   `-- unused unused: CONTENTENGIN_2026_UPGRADES, ContentEnginUpgrade
-|   |   `-- useImplicitAssetWorkspace.ts unused
+|   |   `-- useImplicitAssetWorkspace.ts unused user-facing
 |   |       `-- unused unused: WorkspaceIntentLog
 |   +-- forgeengin  [ForgeEngin]
 |   |   +-- enginpipe  [ForgeEngin]
 |   |   |   +-- artifact  [ForgeEngin]
-|   |   |   |   `-- manifest.ts
+|   |   |   |   `-- manifest.ts user-facing
 |   |   |   +-- quality  [ForgeEngin]
-|   |   |   |   `-- tiers.ts
+|   |   |   |   `-- tiers.ts user-facing
 |   |   |   +-- shell  [ForgeEngin]
-|   |   |   |   `-- ArtifactSlot.tsx
+|   |   |   |   `-- ArtifactSlot.tsx user-facing
 |   |   |   +-- telemetry  [ForgeEngin]
-|   |   |   |   +-- client.ts
-|   |   |   |   `-- events.ts
-|   |   |   `-- index.ts unused
+|   |   |   |   +-- client.ts user-facing
+|   |   |   |   `-- events.ts user-facing
+|   |   |   `-- index.ts unused user-facing
 |   |   |       `-- unused unused: ArtifactPermission, ArtifactPermissionSchema, ArtifactSlotContextValue, ArtifactSlotProps, CapabilityInput, CapabilityNavigator, CapabilityScreen, DEFAULT_TIER_CONFIG, EnginArtifactManifest, EnginArtifactManifestSchema, QualityTier, QualityTierConfig, TelemetryClient, TelemetryClientOptions, TelemetryEvent, TelemetryEventSchema, TelemetryEventType, TelemetryEventTypeSchema, TelemetryRecordResult, TelemetrySupabaseClient, createManifest, createTelemetryClient, detectCapabilityTier, getTierConfig, parseManifest, parseTelemetryEvent, safeParseManifest, scoreCapabilities, tierFromScore, useArtifactSlot, useOptionalArtifactSlot
 |   |   +-- forge  [ForgeEngin]
-|   |   |   +-- engineForge.ts unused
+|   |   |   +-- engineForge.ts unused user-facing
 |   |   |   |   `-- unused unused: AssemblyEvents
-|   |   |   +-- forgeBuild.ts
-|   |   |   +-- forgeIntelligence.ts unused
+|   |   |   +-- forgeBuild.ts user-facing
+|   |   |   +-- forgeIntelligence.ts unused user-facing
 |   |   |   |   `-- unused unused: WorkflowStepStatus
-|   |   |   +-- forgeMomentum.ts unused
+|   |   |   +-- forgeMomentum.ts unused user-facing
 |   |   |   |   `-- unused unused: MomentumDimension
-|   |   |   +-- forgeNexus.ts unused
+|   |   |   +-- forgeNexus.ts unused user-facing
 |   |   |   |   `-- unused unused: AffinityCluster, NexusEdge, NexusNode
-|   |   |   +-- forgeRegistry.ts
-|   |   |   +-- forgeRituals.ts unused
+|   |   |   +-- forgeRegistry.ts user-facing
+|   |   |   +-- forgeRituals.ts unused user-facing
 |   |   |   |   `-- unused unused: ForgeRitual, RitualType
-|   |   |   +-- useForgeActivity.ts unused
+|   |   |   +-- useForgeActivity.ts unused user-facing
 |   |   |   |   `-- unused unused: UseForgeActivityOptions, UseForgeActivityReturn
-|   |   |   `-- useForgeBuild.ts unused
+|   |   |   `-- useForgeBuild.ts unused user-facing
 |   |   |       `-- unused unused: ForgeBuildState, UseForgeBuildReturn
 |   |   +-- forge-ngn  [ForgeEngin]
-|   |   |   +-- assembly.ts
-|   |   |   +-- index.ts
-|   |   |   `-- piece-registry.ts
-|   |   `-- componentInventory.ts
+|   |   |   +-- assembly.ts user-facing
+|   |   |   +-- index.ts user-facing
+|   |   |   `-- piece-registry.ts user-facing
+|   |   `-- componentInventory.ts user-facing
 |   +-- gameengin  [GameEngin]
 |   |   +-- assets  [GameEngin]
-|   |   |   +-- BundleCache.ts
-|   |   |   `-- BundleManifest.ts
+|   |   |   +-- BundleCache.ts user-facing
+|   |   |   `-- BundleManifest.ts user-facing
 |   |   +-- brain  [GameEngin]
 |   |   |   +-- asset-registry  [GameEngin]
 |   |   |   +-- build-history  [GameEngin]
 |   |   |   +-- character-voices  [GameEngin]
-|   |   |   |   `-- mad-maxi.json
+|   |   |   |   `-- mad-maxi.json user-facing
 |   |   |   +-- composition-principles  [GameEngin]
-|   |   |   |   +-- leading-lines-landmark.json
-|   |   |   |   `-- parallax-layers.json
+|   |   |   |   +-- leading-lines-landmark.json user-facing
+|   |   |   |   `-- parallax-layers.json user-facing
 |   |   |   +-- concept-library  [GameEngin]
-|   |   |   |   `-- neon-courier.json
+|   |   |   |   `-- neon-courier.json user-facing
 |   |   |   +-- concept-patterns  [GameEngin]
 |   |   |   |   +-- protagonists  [GameEngin]
-|   |   |   |   |   `-- reluctant-courier.json
+|   |   |   |   |   `-- reluctant-courier.json user-facing
 |   |   |   |   +-- scope-formulas  [GameEngin]
-|   |   |   |   |   `-- one-day-runner.json
+|   |   |   |   |   `-- one-day-runner.json user-facing
 |   |   |   |   `-- settings  [GameEngin]
-|   |   |   |       `-- neon-rain-megacity.json
+|   |   |   |       `-- neon-rain-megacity.json user-facing
 |   |   |   +-- crash-reports  [GameEngin]
 |   |   |   +-- dialogue-patterns  [GameEngin]
-|   |   |   |   +-- callback-anchor.json
-|   |   |   |   +-- implied-subject.json
-|   |   |   |   `-- sentence-fragment-rhythm.json
+|   |   |   |   +-- callback-anchor.json user-facing
+|   |   |   |   +-- implied-subject.json user-facing
+|   |   |   |   `-- sentence-fragment-rhythm.json user-facing
 |   |   |   +-- emotional-tones  [GameEngin]
-|   |   |   |   +-- determined.json
-|   |   |   |   +-- fierce.json
-|   |   |   |   +-- hopeful.json
-|   |   |   |   +-- reflective.json
-|   |   |   |   `-- weary.json
+|   |   |   |   +-- determined.json user-facing
+|   |   |   |   +-- fierce.json user-facing
+|   |   |   |   +-- hopeful.json user-facing
+|   |   |   |   +-- reflective.json user-facing
+|   |   |   |   `-- weary.json user-facing
 |   |   |   +-- fun-heuristics  [GameEngin]
-|   |   |   |   +-- meta-progression.json
-|   |   |   |   +-- moment-to-moment.json
-|   |   |   |   `-- session-loop.json
+|   |   |   |   +-- meta-progression.json user-facing
+|   |   |   |   +-- moment-to-moment.json user-facing
+|   |   |   |   `-- session-loop.json user-facing
 |   |   |   +-- genre-dna  [GameEngin]
-|   |   |   |   +-- action-rpg.json
-|   |   |   |   +-- episodic.json
-|   |   |   |   +-- live-service.json
-|   |   |   |   +-- metroidvania.json
-|   |   |   |   +-- open-world.json
-|   |   |   |   +-- platformer.json
-|   |   |   |   +-- puzzle.json
-|   |   |   |   +-- racing.json
-|   |   |   |   +-- roguelike.json
-|   |   |   |   +-- sandbox.json
-|   |   |   |   `-- template.json
+|   |   |   |   +-- action-rpg.json user-facing
+|   |   |   |   +-- episodic.json user-facing
+|   |   |   |   +-- live-service.json user-facing
+|   |   |   |   +-- metroidvania.json user-facing
+|   |   |   |   +-- open-world.json user-facing
+|   |   |   |   +-- platformer.json user-facing
+|   |   |   |   +-- puzzle.json user-facing
+|   |   |   |   +-- racing.json user-facing
+|   |   |   |   +-- roguelike.json user-facing
+|   |   |   |   +-- sandbox.json user-facing
+|   |   |   |   `-- template.json user-facing
 |   |   |   +-- inspiration-corpus  [GameEngin]
-|   |   |   |   +-- celeste.json
-|   |   |   |   +-- dead-cells.json
-|   |   |   |   +-- hades.json
-|   |   |   |   +-- hollow-knight.json
-|   |   |   |   `-- outer-wilds.json
+|   |   |   |   +-- celeste.json user-facing
+|   |   |   |   +-- dead-cells.json user-facing
+|   |   |   |   +-- hades.json user-facing
+|   |   |   |   +-- hollow-knight.json user-facing
+|   |   |   |   `-- outer-wilds.json user-facing
 |   |   |   +-- material-recipes  [GameEngin]
-|   |   |   |   +-- neon-glass-tube.json
-|   |   |   |   +-- rusted-iron.json
-|   |   |   |   `-- sun-bleached-sandstone.json
+|   |   |   |   +-- neon-glass-tube.json user-facing
+|   |   |   |   +-- rusted-iron.json user-facing
+|   |   |   |   `-- sun-bleached-sandstone.json user-facing
 |   |   |   +-- mechanic-library  [GameEngin]
 |   |   |   |   +-- camera  [GameEngin]
-|   |   |   |   |   +-- look-ahead.json
-|   |   |   |   |   +-- screen-shake.json
-|   |   |   |   |   `-- smooth-follow.json
+|   |   |   |   |   +-- look-ahead.json user-facing
+|   |   |   |   |   +-- screen-shake.json user-facing
+|   |   |   |   |   `-- smooth-follow.json user-facing
 |   |   |   |   +-- combat  [GameEngin]
-|   |   |   |   |   +-- combo.json
-|   |   |   |   |   +-- hit-stop.json
-|   |   |   |   |   +-- parry.json
-|   |   |   |   |   `-- ranged.json
+|   |   |   |   |   +-- combo.json user-facing
+|   |   |   |   |   +-- hit-stop.json user-facing
+|   |   |   |   |   +-- parry.json user-facing
+|   |   |   |   |   `-- ranged.json user-facing
 |   |   |   |   +-- movement  [GameEngin]
-|   |   |   |   |   +-- coyote-time.json
-|   |   |   |   |   +-- dash.json
-|   |   |   |   |   +-- double-jump.json
-|   |   |   |   |   +-- grapple.json
-|   |   |   |   |   `-- wall-slide.json
+|   |   |   |   |   +-- coyote-time.json user-facing
+|   |   |   |   |   +-- dash.json user-facing
+|   |   |   |   |   +-- double-jump.json user-facing
+|   |   |   |   |   +-- grapple.json user-facing
+|   |   |   |   |   `-- wall-slide.json user-facing
 |   |   |   |   +-- progression  [GameEngin]
-|   |   |   |   |   +-- metroidvania-gating.json
-|   |   |   |   |   +-- roguelike-perks.json
-|   |   |   |   |   `-- skill-tree.json
+|   |   |   |   |   +-- metroidvania-gating.json user-facing
+|   |   |   |   |   +-- roguelike-perks.json user-facing
+|   |   |   |   |   `-- skill-tree.json user-facing
 |   |   |   |   `-- structural  [GameEngin]
-|   |   |   |       +-- ability-gating.json
-|   |   |   |       +-- meta-progression.json
-|   |   |   |       +-- procedural-generation.json
-|   |   |   |       +-- run-persistence.json
-|   |   |   |       +-- season-pass.json
-|   |   |   |       `-- world-streaming.json
+|   |   |   |       +-- ability-gating.json user-facing
+|   |   |   |       +-- meta-progression.json user-facing
+|   |   |   |       +-- procedural-generation.json user-facing
+|   |   |   |       +-- run-persistence.json user-facing
+|   |   |   |       +-- season-pass.json user-facing
+|   |   |   |       `-- world-streaming.json user-facing
 |   |   |   +-- narrative-pacing  [GameEngin]
-|   |   |   |   `-- default.json
+|   |   |   |   `-- default.json user-facing
 |   |   |   +-- originality-registry  [GameEngin]
 |   |   |   |   +-- by-cartridge  [GameEngin]
-|   |   |   |   |   `-- mad-maxi.json
-|   |   |   |   `-- signatures.json
+|   |   |   |   |   `-- mad-maxi.json user-facing
+|   |   |   |   `-- signatures.json user-facing
 |   |   |   +-- principles  [GameEngin]
 |   |   |   +-- progression-state  [GameEngin]
 |   |   |   +-- rd-sessions  [GameEngin]
 |   |   |   +-- technique-library  [GameEngin]
 |   |   |   |   +-- lighting  [GameEngin]
-|   |   |   |   |   `-- three-point-mood.json
+|   |   |   |   |   `-- three-point-mood.json user-facing
 |   |   |   |   +-- modeling  [GameEngin]
-|   |   |   |   |   +-- edge-flow.json
-|   |   |   |   |   `-- silhouette-first.json
+|   |   |   |   |   +-- edge-flow.json user-facing
+|   |   |   |   |   `-- silhouette-first.json user-facing
 |   |   |   |   `-- optimization  [GameEngin]
-|   |   |   |       `-- texture-atlasing.json
+|   |   |   |       `-- texture-atlasing.json user-facing
 |   |   |   +-- upgrade-history  [GameEngin]
-|   |   |   |   `-- prioritization-rules.json
+|   |   |   |   `-- prioritization-rules.json user-facing
 |   |   |   +-- visual-bible  [GameEngin]
 |   |   |   |   +-- characters  [GameEngin]
 |   |   |   |   `-- environments  [GameEngin]
 |   |   |   +-- work-queue  [GameEngin]
-|   |   |   `-- active-projects.json
+|   |   |   `-- active-projects.json user-facing
 |   |   +-- cartridges  [GameEngin]
-|   |   |   +-- achievementEngine.ts unused
+|   |   |   +-- achievementEngine.ts unused user-facing
 |   |   |   |   `-- unused unused: AchievementUnlockListener, getUnlockedCount, purgeCartridgeAchievements
-|   |   |   +-- apiStubs.ts unused
+|   |   |   +-- apiStubs.ts unused user-facing
 |   |   |   |   `-- unused unused: stubAchievementsAPI, stubSaveAPI
-|   |   |   +-- index.ts
-|   |   |   +-- loaders.ts
-|   |   |   +-- manifest.ts unused
+|   |   |   +-- index.ts user-facing
+|   |   |   +-- loaders.ts user-facing
+|   |   |   +-- manifest.ts unused user-facing
 |   |   |   |   `-- unused unused: CartridgeAssetPolicy, CartridgeLaunchMetadata
-|   |   |   +-- reactCartridge.ts unused
+|   |   |   +-- reactCartridge.ts unused user-facing
 |   |   |   |   `-- unused unused: GameEngineAPIContext, createReactCartridgeHost
-|   |   |   `-- saveState.ts unused
+|   |   |   `-- saveState.ts unused user-facing
 |   |   |       `-- unused unused: getSaveStorageBytes, purgeCartridgeSaves
 |   |   +-- config  [GameEngin]
-|   |   |   `-- demoGameConfig.ts
+|   |   |   `-- demoGameConfig.ts user-facing
 |   |   +-- controls  [GameEngin]
-|   |   |   `-- control-mappings.ts
+|   |   |   `-- control-mappings.ts user-facing
 |   |   +-- games  [GameEngin]
-|   |   |   +-- avatar.ts unused
+|   |   |   +-- avatar.ts unused user-facing
 |   |   |   |   `-- unused unused: AVATAR_CREATED_KEY, AVATAR_IMAGE_KEY, AVATAR_PLAY_AS_ME_KEY, clearAvatar, hasAvatar, resizeImageToDataUrl, setAvatarDataUrl
-|   |   |   +-- catalog.ts unused
+|   |   |   +-- catalog.ts unused user-facing
 |   |   |   |   `-- unused unused: GAME_CATALOG_IDS
-|   |   |   +-- DualSenseManager.ts unused
+|   |   |   +-- DualSenseManager.ts unused user-facing
 |   |   |   |   `-- unused unused: DualSenseConfig, DualSenseManager, DualSenseState
-|   |   |   +-- gameControllerButtons.ts unused
+|   |   |   +-- gameControllerButtons.ts unused user-facing
 |   |   |   |   `-- unused unused: ButtonInteraction, ControllerButtonDef
-|   |   |   +-- gameControllerLeft.ts unused
+|   |   |   +-- gameControllerLeft.ts unused user-facing
 |   |   |   |   `-- unused unused: StickVector
-|   |   |   +-- gameControllerRight.ts unused
+|   |   |   +-- gameControllerRight.ts unused user-facing
 |   |   |   |   `-- unused unused: AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS, TapResult
-|   |   |   +-- hooks.ts unused
+|   |   |   +-- hooks.ts unused user-facing
 |   |   |   |   `-- unused unused: useGamePerformanceBaseline, useKeySet
-|   |   |   +-- library-state.ts
-|   |   |   +-- lucid-avenue-world.ts unused
+|   |   |   +-- library-state.ts user-facing
+|   |   |   +-- lucid-avenue-world.ts unused user-facing
 |   |   |   |   `-- unused unused: CachePickup, DistrictExit, DistrictId, DistrictLock, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_SHARDS, LucidAvenueMode, LucidAvenueState, LucidContractId, LucidDistrict, LucidFlag, LucidNpc, LucidTerminal, LucidVehicleId, PatrolRoute, Position, ShardPickup, calculateLucidAvenueScore, createInitialLucidAvenueState, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueCompletionPercent, getLucidAvenueDistrict, getLucidAvenueHint, getLucidAvenueMissionChecklist, getLucidAvenueObjectiveKeys, getLucidAvenuePatrolPathKeys, getLucidAvenuePatrolPositions, getLucidAvenueRouteContracts, getLucidAvenueStoryBeat, interactInLucidAvenue, isSamePosition, jamLucidAvenueGrid, moveLucidAvenuePlayer, requestLucidAvenueHint, scanLucidAvenue, waitLucidAvenueTurn
-|   |   |   +-- madmaxi-wildfall-world.ts
-|   |   |   +-- mobileControls.ts unused
+|   |   |   +-- madmaxi-wildfall-world.ts user-facing
+|   |   |   +-- mobileControls.ts unused user-facing
 |   |   |   |   `-- unused unused: GameRemoteInputAction, MobileEventDetail, MobileGameControlHandlers, MobileHudRingButtonDefinition, RemoteMoveAction, emitMobileJump, emitMobileLookDelta, emitMobileShoot, registerMobileGameControls
-|   |   |   +-- navigation.ts unused
+|   |   |   +-- navigation.ts unused user-facing
 |   |   |   |   `-- unused unused: GameLaunchOptions
-|   |   |   +-- performance-baseline.ts unused
+|   |   |   +-- performance-baseline.ts unused user-facing
 |   |   |   |   `-- unused unused: FrameBaselineSample, PerformanceBaselineSource, RendererBackend
-|   |   |   +-- quality-plan.ts unused
+|   |   |   +-- quality-plan.ts unused user-facing
 |   |   |   |   `-- unused unused: AdvancedGameTarget, GameControlProfile, GameEngineStandard, GameQualityPillar
-|   |   |   +-- useAIDirector.ts unused
+|   |   |   +-- useAIDirector.ts unused user-facing
 |   |   |   |   `-- unused unused: AIDirectorHookResult
-|   |   |   +-- useGameInputKeyboardBridge.ts
-|   |   |   +-- useGamepad.ts unused
+|   |   |   +-- useGameInputKeyboardBridge.ts user-facing
+|   |   |   +-- useGamepad.ts unused user-facing
 |   |   |   |   `-- unused unused: GamepadStatus
-|   |   |   +-- useImmersiveGameLayout.ts unused
+|   |   |   +-- useImmersiveGameLayout.ts unused user-facing
 |   |   |   |   `-- unused unused: getImmersiveCanvasStyle, getImmersiveOverlayStyle, getImmersiveStageStyle
-|   |   |   `-- useRemoteChannel.ts
+|   |   |   `-- useRemoteChannel.ts user-facing
 |   |   +-- input  [GameEngin]
-|   |   |   +-- index.ts
-|   |   |   `-- InputRouter.ts
+|   |   |   +-- index.ts user-facing
+|   |   |   `-- InputRouter.ts user-facing
 |   |   +-- remote  [GameEngin]
-|   |   |   +-- comboMachine.ts
-|   |   |   +-- index.ts
-|   |   |   +-- layout.ts
-|   |   |   +-- moves.ts
-|   |   |   `-- sprintDetector.ts
+|   |   |   +-- comboMachine.ts user-facing
+|   |   |   +-- index.ts user-facing
+|   |   |   +-- layout.ts user-facing
+|   |   |   +-- moves.ts user-facing
+|   |   |   `-- sprintDetector.ts user-facing
 |   |   +-- render  [GameEngin]
-|   |   |   `-- ShaderRegistry.ts unused
+|   |   |   `-- ShaderRegistry.ts unused user-facing
 |   |   |       `-- unused unused: GameEnginShaderCompileKey, GameEnginShaderSource, GameEnginShaderStage
 |   |   +-- runtime  [GameEngin]
-|   |   |   +-- FrameBudget.ts
-|   |   |   +-- FrameClock.ts
-|   |   |   +-- index.ts
-|   |   |   `-- RuntimeQuality.ts
+|   |   |   +-- FrameBudget.ts user-facing
+|   |   |   +-- FrameClock.ts user-facing
+|   |   |   +-- index.ts user-facing
+|   |   |   `-- RuntimeQuality.ts user-facing
 |   |   +-- systems  [GameEngin]
-|   |   |   +-- ai.ts
-|   |   |   +-- animation.ts
-|   |   |   +-- assets.ts
-|   |   |   +-- index.ts
-|   |   |   +-- lod.ts
-|   |   |   +-- network.ts
-|   |   |   +-- physics.ts
-|   |   |   +-- pooling.ts
-|   |   |   +-- rendering.ts
-|   |   |   +-- spatial.ts
-|   |   |   `-- world.ts
-|   |   +-- accessibility-ai.ts unused
+|   |   |   +-- ai.ts user-facing
+|   |   |   +-- animation.ts user-facing
+|   |   |   +-- assets.ts user-facing
+|   |   |   +-- index.ts user-facing
+|   |   |   +-- lod.ts user-facing
+|   |   |   +-- network.ts user-facing
+|   |   |   +-- physics.ts user-facing
+|   |   |   +-- pooling.ts user-facing
+|   |   |   +-- rendering.ts user-facing
+|   |   |   +-- spatial.ts user-facing
+|   |   |   `-- world.ts user-facing
+|   |   +-- accessibility-ai.ts unused user-facing
 |   |   |   `-- unused unused: CaptionLine, CaptionerConfig, ColorVisionType, MotionMetrics, MotionPolicy, MotionReductionConfig
-|   |   +-- ai-director.ts
-|   |   +-- ai-npcs.ts unused
+|   |   +-- ai-director.ts user-facing
+|   |   +-- ai-npcs.ts unused user-facing
 |   |   |   `-- unused unused: BrainConfig, DialogueLine, LLMInvoker, NPCMemory, NPCPersonality, PersonalityStoreBackend, SafetyFilter
-|   |   +-- backendNegotiator.ts
-|   |   +-- brain-reader.ts unused
+|   |   +-- backendNegotiator.ts user-facing
+|   |   +-- brain-reader.ts unused user-facing
 |   |   |   `-- unused unused: ActiveProjectSlot, AgentName, AssetRegistryEntry, AssignmentLogEntry, BuildHistoryEntry, CartridgeStatus, CharacterVoice, ConceptPattern, ConceptPatternCategory, CrashReportEntry, CrashReportInput, EmotionalTone, GenreDNA, MaterialRecipe, MechanicEntry, NarrativePacing, OriginalityRegistry, OriginalitySignature, ProgressionModel, ProgressionState, ProgressionStateInput, ProjectFocus, StructuralMechanic, TechniqueEntry, UpgradeHistoryEntry, UpgradePrioritizationRules, VisionStatementMode, VisionStatementStatus, WorkQueueEntry, logRDSession, readInspiration, readMechanic, readPrinciple
-|   |   +-- cartridge-manifest.ts unused
+|   |   +-- cartridge-manifest.ts unused user-facing
 |   |   |   `-- unused unused: CARTRIDGE_EXT, CARTRIDGE_MIME, CartridgeManifestSchema, PermissionSchema, QualityTierSchema, RenderModeSchema
-|   |   +-- cartridge.ts unused
+|   |   +-- cartridge.ts unused user-facing
 |   |   |   `-- unused unused: CartridgeBackendRequirements, CartridgeCapability, CartridgeSessionPlayer, CartridgeSoundOptions, CartridgeWarmupPipeline
-|   |   +-- cartridgeLoader.ts
-|   |   +-- cloud-compute.ts unused
+|   |   +-- cartridgeLoader.ts user-facing
+|   |   +-- cloud-compute.ts unused user-facing
 |   |   |   `-- unused unused: OffloadCandidate, OffloadDecision, RemoteRenderConfig, RouterConfig, VerificationResult
-|   |   +-- core.ts
-|   |   +-- dream-engine.ts
-|   |   +-- dreamr-loader.ts
-|   |   +-- executionWiring.ts
-|   |   +-- GameEnginCore.ts unused
+|   |   +-- core.ts user-facing
+|   |   +-- dream-engine.ts user-facing
+|   |   +-- dreamr-loader.ts user-facing
+|   |   +-- executionWiring.ts user-facing
+|   |   +-- GameEnginCore.ts unused user-facing
 |   |   |   `-- unused unused: AssetEntry, AssetsConfig, AudioConfig, GameEnginCompatibilityReport, GameEnginIntent, GameEnginIntentType, GameEnginLifecyclePhase, GameEnginManifest, GameEnginSnapshot, GraphicsConfig, InputConfig, NetworkingConfig, OfflineConfig, SecurityConfig, SimulationConfig, TelemetryConfig, validateConfig
-|   |   +-- gameEnginRuntime.ts
-|   |   +-- GameRuntime.tsx unused
+|   |   +-- gameEnginRuntime.ts user-facing
+|   |   +-- GameRuntime.tsx unused user-facing
 |   |   |   `-- unused unused: GameRuntimeCrash
-|   |   +-- generative-audio.ts unused
+|   |   +-- generative-audio.ts unused user-facing
 |   |   |   `-- unused unused: FoleyCategory, FoleyParams, FoleyResult, MusicConfig, MusicEdge, MusicNode
-|   |   +-- handlers.ts unused
+|   |   +-- handlers.ts unused user-facing
 |   |   |   `-- unused unused: GameEnginDispatch
-|   |   +-- index.ts unused
+|   |   +-- index.ts unused user-facing
 |   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EliteGameEngine, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
-|   |   +-- launcher.ts unused
+|   |   +-- launcher.ts unused user-facing
 |   |   |   `-- unused unused: launch
-|   |   +-- neural-render.ts unused
+|   |   +-- neural-render.ts unused user-facing
 |   |   |   `-- unused unused: FrameGenConfig, NTCBlock, UpscaleRatio, UpscalerConfig
-|   |   +-- path-tracing.ts unused
+|   |   +-- path-tracing.ts unused user-facing
 |   |   |   `-- unused unused: BVHNode, DenoiserConfig, PathTraceConfig, Reservoir
-|   |   +-- platform.ts
-|   |   +-- post-fx.ts
-|   |   +-- power-systems.ts unused
+|   |   +-- platform.ts user-facing
+|   |   +-- post-fx.ts user-facing
+|   |   +-- power-systems.ts unused user-facing
 |   |   |   `-- unused unused: ComputationFocus, PhysicsDensityStats
-|   |   +-- predictive-stream.ts unused
+|   |   +-- predictive-stream.ts unused user-facing
 |   |   |   `-- unused unused: BehaviorObservation, BehaviorPrediction, MLPrefetchConfig, PrefetchCandidate, PrefetchPlan
-|   |   +-- procgen.ts unused
+|   |   +-- procgen.ts unused user-facing
 |   |   |   `-- unused unused: BiomeId, BiomeSample, ChunkJob, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, DualContouringSettings, Mesh, MeshDiagnostics, SDF, SchedulerConfig, Vec3, WFCTile, createTerrainCaveSDF, generateCaveChunk, generateDestructibleWallChunk, generateMobileTerrainCaveMesh, generateRockProp, generateTerrainCutout, meshToSnapshot, runDualContouring, validateMesh
-|   |   +-- registerCartridges.ts
-|   |   +-- unifiedLoop.ts unused
+|   |   +-- registerCartridges.ts user-facing
+|   |   +-- unifiedLoop.ts unused user-facing
 |   |   |   `-- unused unused: _resetLoop
-|   |   +-- useUnifiedLoop.ts
-|   |   +-- webgpu-runtime-shell.ts
-|   |   +-- world-crdt.ts unused
+|   |   +-- useUnifiedLoop.ts user-facing
+|   |   +-- webgpu-runtime-shell.ts user-facing
+|   |   +-- world-crdt.ts unused user-facing
 |   |   |   `-- unused unused: BridgeConfig, BridgeTransport
-|   |   `-- xr.ts unused
+|   |   `-- xr.ts unused user-facing
 |   |       `-- unused unused: HandJoint, HandPose, SpatialAnchor, UnifiedAction, XRMode
 |   +-- labengin  [LabEngin]
-|   |   `-- implicitSurface.ts unused
+|   |   `-- implicitSurface.ts unused user-facing
 |   |       `-- unused unused: LabImplicitSurfacePreset, LabImplicitSurfaceRun, runLabImplicitSurface
 |   +-- portfolio
 |   |   `-- dream.PortfolioEngin.tsx
@@ -10006,32 +10008,32 @@ Legend: ! unresolved import  unused export
 |   |       `-- unused unused: EnginId, HandoffEligibility, HandoffPath, STAGE_LABELS, StageTransitionResult, WORKFLOW_CATALOG, WorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin
 |   +-- starmakerengin  [StarMakerEngin]
 |   |   +-- audio-fingerprint  [StarMakerEngin]
-|   |   |   +-- fingerprint.ts
-|   |   |   +-- index.ts
-|   |   |   +-- peak-map.ts
-|   |   |   `-- stem-extractor.ts unused
+|   |   |   +-- fingerprint.ts user-facing
+|   |   |   +-- index.ts user-facing
+|   |   |   +-- peak-map.ts user-facing
+|   |   |   `-- stem-extractor.ts unused user-facing
 |   |   |       `-- unused unused: extractStemAsync
 |   |   +-- music  [StarMakerEngin]
-|   |   |   +-- presets.ts unused
+|   |   |   +-- presets.ts unused user-facing
 |   |   |   |   `-- unused unused: findInstrumentPreset, findPreset, findProjectTemplate, getPresetsByGenre
-|   |   |   +-- starmaker.ts unused
+|   |   |   +-- starmaker.ts unused user-facing
 |   |   |   |   `-- unused unused: MelodySuggestionInput, PlaybackMixerState, PlaybackProfile, PlaybackProfileInput, ReleaseStrategy, ReleaseStrategyInput, ReleaseTarget, StemExportState
-|   |   |   +-- starmakerArrangement.ts
-|   |   |   +-- starmakerDaw.ts unused
+|   |   |   +-- starmakerArrangement.ts user-facing
+|   |   |   +-- starmakerDaw.ts unused user-facing
 |   |   |   |   `-- unused unused: AUTOMATABLE_PARAMS, AudioQualityConfig, AutomationLane, AutomationMode, AutomationPoint, AutomationState, BitDepth, CompRegion, SampleRateHz, SessionClip, SessionScene, StarMakerSequencerMixer, StarMakerSequencerQuality, StarMakerStereoPcm, WarpMarker, WarpState, createEmptyClip, createInitialAutomationState, encodeWav24Bit
-|   |   |   `-- wasmAudioBridge.ts unused
+|   |   |   `-- wasmAudioBridge.ts unused user-facing
 |   |   |       `-- unused unused: WasmAudioBridge, createWasmAudioBridge
-|   |   `-- audioFingerprint.ts
-|   +-- dream.ForgeEngin.tsx
+|   |   `-- audioFingerprint.ts user-facing
+|   +-- dream.ForgeEngin.tsx user-facing
 |   +-- dream.QuantumCircuitCanvas.tsx unused
 |   |   `-- unused unused: GateOp, QuantumCircuitCanvasProps
-|   +-- engin.BrandingEngin.tsx
-|   +-- engin.CodeEngin.tsx !
+|   +-- engin.BrandingEngin.tsx user-facing
+|   +-- engin.CodeEngin.tsx ! user-facing
 |   |   `-- ! @/components/DreamButton ((default))
-|   +-- engin.ContentEngin.tsx
+|   +-- engin.ContentEngin.tsx user-facing
 |   +-- engin.GameEngin.tsx
-|   +-- engin.LabEngin.tsx
-|   +-- engin.StarMakerEngin.tsx
+|   +-- engin.LabEngin.tsx user-facing
+|   +-- engin.StarMakerEngin.tsx user-facing
 |   +-- isosurfaceAssetPipeline.ts unused
 |   |   `-- unused unused: AssetProcessingStatus, AutoRigState, Bounds3, ColorRGB, ColoredMesh, ImplicitAssetWorkspaceData, MeshQualityLabel, RepairReport, RepairResult, SourceImageAsset, StrictMeshDiagnostics, Vec2, buildInflatedReliefMesh, buildVertexAdjacency, centerAndScaleMesh, cloneMesh, compactMesh, computePlanarUVs, computeVertexNormals, estimateMeshBytes, repairMesh, validateMesh, weldVertices
 |   `-- isosurfaceDualContouring.ts unused
@@ -10151,9 +10153,9 @@ Legend: ! unresolved import  unused export
 |           |   `-- unused unused: CartridgesMap
 |           +-- connectors.ts unused
 |           |   `-- unused unused: ConnectorsMap
-|           +-- dreamdmbar.ts unused
+|           +-- dreamdmbar.ts unused user-facing
 |           |   `-- unused unused: DreamdmbarMap
-|           +-- dreamr.ts unused
+|           +-- dreamr.ts unused user-facing
 |           |   `-- unused unused: DreamrMap
 |           +-- dreamsurfaces.ts unused
 |           |   `-- unused unused: DreamsurfacesMap
@@ -10175,11 +10177,11 @@ Legend: ! unresolved import  unused export
 |           `-- systems.ts unused
 |               `-- unused unused: SystemsMap
 +-- styles  [Settings / Customization]
-|   +-- dream-shell.css
-|   +-- globals.css
-|   +-- home-dream.css
-|   +-- theme.css
-|   `-- view-transitions.css
+|   +-- dream-shell.css user-facing
+|   +-- globals.css user-facing
+|   +-- home-dream.css user-facing
+|   +-- theme.css user-facing
+|   `-- view-transitions.css user-facing
 +-- supabase  [Supabase / Database]
 |   +-- .temp  [Supabase / Database]
 |   |   +-- cli-latest
@@ -10240,7 +10242,7 @@ Legend: ! unresolved import  unused export
 |   |   +-- 20260402000002_game_assets.sql
 |   |   +-- 20260403000001_pgvector_embeddings.sql
 |   |   +-- 20260403000002_pgvector_search_rpc.sql
-|   |   +-- 20260405000001_dreamr_feed_registry.sql
+|   |   +-- 20260405000001_dreamr_feed_registry.sql user-facing
 |   |   +-- 20260405042406_auto_scaffold.sql
 |   |   +-- 20260413000000_phase9_activity_first_protocol.sql
 |   |   +-- 20260417000000_repurpose_nods_as_dream_docs.sql
@@ -10251,7 +10253,7 @@ Legend: ! unresolved import  unused export
 |   |   +-- 20260426000100_rename_widgets_to_dreams.sql
 |   |   +-- 20260426000200_build_memory_schema_gaps.sql
 |   |   +-- 20260516000000_agent_sessions_forge_rate_limits.sql
-|   |   +-- 20260516000100_dreamr_tally.sql
+|   |   +-- 20260516000100_dreamr_tally.sql user-facing
 |   |   +-- 20260516000300_shared_dream_sessions.sql
 |   |   +-- 20260605015234_auto_scaffold.sql
 |   |   +-- 20260619000000_renderengin_assets_rls.sql
