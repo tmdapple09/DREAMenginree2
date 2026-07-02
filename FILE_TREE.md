@@ -1,8 +1,19 @@
 # File Tree
 
-Generated: 2026-07-02T16:16:02.527Z
+Generated: 2026-07-02T17:10:06.875Z
 
-Legend: ! unresolved import  unused export  user-facing page/route/feature/component
+Marker guide:
+
+- `👁 PAGE` = A place people can visit in the app.
+- `🧱 LAYOUT` = The shared frame around a page, like the header, sidebar, or page wrapper.
+- `⏳ LOADING` = What people see while the app is waiting.
+- `🚨 ERROR` = What people see when something goes wrong.
+- `🧭 NOT_FOUND` = What people see when the app cannot find the page.
+- `🧩 COMPONENT` = A visible piece of the app, like a button, card, menu, form, panel, popup, or widget.
+- `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.
+- `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.
+
+Legend: `!` means unresolved import. Markers are explained above.
 
 ```text
 +-- .ci
@@ -12,11 +23,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- humanAI  [AI / Dr. Eams / Agents]
 |   |   `-- personas  [AI / Dr. Eams / Agents]
 |   `-- .gitkeep
-+-- app
++-- app 🗂 FEATURE_FOLDER
 |   +-- (internal)
 |   |   `-- idari-console
 |   |       +-- platform-errors
-|   |       |   `-- page.tsx user-facing
+|   |       |   `-- page.tsx 👁 PAGE
 |   |       |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -25,7 +36,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |       +-- -> (default)
 |   |       |       `-- -> metadata
 |   |       +-- platform-health
-|   |       |   `-- page.tsx user-facing
+|   |       |   `-- page.tsx 👁 PAGE
 |   |       |       +-- PlatformHealth  <- @/components/idari/dream.PlatformHealth
 |   |       |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -33,7 +44,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |       +-- connection  <- next/server
 |   |       |       +-- -> (default)
 |   |       |       `-- -> metadata
-|   |       `-- page.tsx user-facing
+|   |       `-- page.tsx 👁 PAGE
 |   |           +-- (default)  <- @/components/dream.panel.ChildSafetyPanel
 |   |           +-- (default)  <- @/components/dream.panel.IDariPanel
 |   |           +-- createUpgradeReadinessSnapshot  <- @/engine/admin/upgrade-readiness
@@ -49,13 +60,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |           +-- -> (default)
 |   |           `-- -> metadata
 |   +-- about
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/ui/dream.PlatformBadge
 |   |       +-- ArrowLeft, ArrowRight, Beaker, Cpu, Heart, LayoutGrid, Lock, MessageCircle, Music, Settings, Shield, ShoppingBag, Sparkles, Twitter, Users  <- lucide-react
 |   |       +-- (default)  <- next/link
 |   |       `-- -> (default)
 |   +-- actions
-|   |   `-- dream-docs.ts unused
+|   |   `-- dream-docs.ts
 |   |       +-- isOwnerEmail  <- @/dr-eams/ai/triad
 |   |       +-- embedDocSection  <- @/docs/dream-docs/embed
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -66,11 +77,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> UpsertDocSectionInput
 |   |       +-- -> createDreamDoc
 |   |       +-- -> publishDreamDoc
-|   |       +-- -> upsertDocSection
-|   |       `-- unused unused: CreateDreamDocInput, UpsertDocSectionInput, createDreamDoc, publishDreamDoc, upsertDocSection
+|   |       `-- -> upsertDocSection
 |   +-- ads
 |   |   +-- create
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, DollarSign, Info, LayoutGrid, Loader2  <- lucide-react
@@ -82,7 +92,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> (default)
 |   |   +-- slot
 |   |   |   `-- [id]
-|   |   |       `-- page.tsx user-facing
+|   |   |       `-- page.tsx 👁 PAGE
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- AdSlot  <- @/types/ads
@@ -91,7 +101,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- redirect  <- next/navigation
 |   |   |           +-- connection  <- next/server
 |   |   |           `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/ui/dream.DreamWord
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -102,10 +112,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       `-- -> (default)
-|   +-- api  [Supabase / Database]
+|   +-- api  [Supabase / Database] 🗂 FEATURE_FOLDER
 |   |   +-- account  [Supabase / Database]
 |   |   |   +-- delete-data  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |       +-- jsonApiError  <- @/engine/api/route
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -117,7 +127,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> POST
 |   |   |   +-- delete-dream  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- runTriadConsensus  <- @/engine/agents/agentBus
 |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |       +-- jsonApiError  <- @/engine/api/route
@@ -129,7 +139,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- z  <- zod
 |   |   |   |       `-- -> POST
 |   |   |   `-- export-data  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- jsonApiError  <- @/engine/api/route
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -138,7 +148,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> GET
 |   |   +-- activity  [Supabase / Database]
 |   |   |   `-- track  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- calculateActivityPoints, calculateDecayDate  <- @/dreamr/activity/scoring
 |   |   |           +-- ActivityVerification, TrackActivityRequest, TrackActivityResponse  <- @/dreamr/activity/types
 |   |   |           +-- VERIFICATION_STRENGTH  <- @/dreamr/activity/types
@@ -149,7 +159,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- admin  [Supabase / Database]
 |   |   |   +-- ai-chat  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- isAdminLocked, isOwner, triggerAdminLockout  <- @/engine/admin/lockout
 |   |   |   |       +-- groqChat, GroqMessage  <- @/dr-eams/ai/groq
 |   |   |   |       +-- AI_MODELS  <- @/dr-eams/ai/triad
@@ -158,14 +168,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
 |   |   |   +-- ai-request  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
 |   |   |   +-- child-safety  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- isOwnerEmail  <- @/dr-eams/ai/triad
 |   |   |   |       +-- jsonApiError  <- @/engine/api/route
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -177,7 +187,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   +-- code-files  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- isAdminLocked, isDomainBlocked, isOwner, triggerAdminLockout  <- @/engine/admin/lockout
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -187,7 +197,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> FileNode
 |   |   |   |       `-- -> POST
 |   |   |   `-- observability  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- isOwnerEmail  <- @/dr-eams/ai/triad
 |   |   |           +-- jsonApiError  <- @/engine/api/route
 |   |   |           +-- getBufferStats, getSnapshot  <- @/engine/observability/collector
@@ -199,17 +209,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           `-- -> GET
-|   |   +-- ads  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   +-- orders  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- ads  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- orders  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> POST
-|   |   |   `-- view  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |   `-- view  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- qualifiesForPremiumCPV  <- @/dreamr/activity/aqs
 |   |   |           +-- calculateActivityRevenueSplit  <- @/dreamr/activity/revenueSplit
 |   |   |           +-- calculateSkipCreditsEarned  <- @/dreamr/activity/skipCredits
@@ -221,7 +231,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- agent  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   `-- session  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- getAgentOS  <- @/engine/agentOS
 |   |   |           +-- codeEnginHostTools  <- @/engine/agentOS/hostTools
 |   |   |           +-- createClient  <- @supabase/supabase-js
@@ -230,7 +240,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- ai  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- boogieman  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   |   +-- child-safety  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |   |       +-- BOOGIE_POLICY_VERSION, boogieEnforce  <- @/dr-eams/ai/boogieman
 |   |   |   |   |       +-- checkRateLimit  <- @/dr-eams/ai/rateLimit
@@ -249,7 +259,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- (dynamic import)  <- @/engine/safety/child-safety/imageClassifier
 |   |   |   |   |       `-- -> POST
 |   |   |   |   +-- privacy-event  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |   |       +-- BOOGIE_POLICY_VERSION  <- @/dr-eams/ai/boogieman
 |   |   |   |   |       +-- jsonApiError  <- @/engine/api/route
@@ -261,11 +271,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- z  <- zod
 |   |   |   |   |       `-- -> POST
 |   |   |   |   +-- status  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- BOOGIE_POLICY_VERSION  <- @/dr-eams/ai/boogie-policy
 |   |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |   |       `-- -> GET
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |       +-- BOOGIE_POLICY_VERSION, boogieEvaluate  <- @/dr-eams/ai/boogieman
 |   |   |   |       +-- checkRateLimit  <- @/dr-eams/ai/rateLimit
@@ -279,7 +289,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- z  <- zod
 |   |   |   |       `-- -> POST
 |   |   |   +-- eams  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |       +-- boogieEvaluate  <- @/dr-eams/ai/boogieman
 |   |   |   |       +-- makeConfirmToken  <- @/dr-eams/ai/confirm
@@ -294,7 +304,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- v4  <- uuid
 |   |   |   |       `-- -> POST
 |   |   |   +-- execute  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |   |       +-- verifyConfirmToken  <- @/dr-eams/ai/confirm
 |   |   |   |       +-- checkRateLimit  <- @/dr-eams/ai/rateLimit
@@ -308,7 +318,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> POST
 |   |   |   `-- idari  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- assessGenerationLawScope, formatGenerationLawLoadCheck, GenerationLawAssessment  <- @/engine/agents/idari
 |   |   |           +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |           +-- boogieEvaluate  <- @/dr-eams/ai/boogieman
@@ -324,7 +334,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- v4  <- uuid
 |   |   |           `-- -> POST
 |   |   +-- appeal  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- writeAuditLog  <- @/dr-eams/ai/audit
 |   |   |       +-- BOOGIE_POLICY_VERSION, RULE_CODES  <- @/dr-eams/ai/boogie-policy
 |   |   |       +-- AppealRequestSchema  <- @/dr-eams/ai/schemas
@@ -334,14 +344,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |       +-- v4  <- uuid
 |   |   |       `-- -> POST
-|   |   +-- auth  [Auth, Supabase / Database]
-|   |   |   +-- logout  [Auth, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- auth  [Auth, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- logout  [Auth, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> GET
-|   |   |   `-- providers  [Auth, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |   `-- providers  [Auth, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- SUPABASE_CONFIG  <- @/supabase/config
 |   |   |           +-- NextResponse  <- next/server
 |   |   |           +-- -> GET
@@ -349,7 +359,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- -> UNKNOWN_OAUTH_PROVIDERS
 |   |   |           `-- -> getOAuthProvidersResponse
 |   |   +-- blocks  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- jsonApiError  <- @/engine/api/route
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -361,12 +371,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- ci  [Supabase / Database]
 |   |   |   `-- run  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- runCiCommand  <- @/engins/codeengin/runner
 |   |   |           +-- NextResponse  <- next/server
 |   |   |           `-- -> POST
 |   |   +-- close-friends  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -375,45 +385,45 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> DELETE
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
-|   |   +-- codeengin  [CodeEngin, Supabase / Database]
-|   |   |   +-- diagnostics  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- codeengin  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- diagnostics  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |   |       +-- diagnoseFile, diagnoseWorkspace  <- @/engins/codeengin/diagnostics
 |   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   +-- file  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- file  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- createProjectFile, deleteProjectFile, moveProjectFile, readProjectFile, writeProjectFile  <- @/engins/codeengin/workspaceStore
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   +-- git  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- git  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |   |       +-- getGitDiff, getGitLog, getGitStatus  <- @/engins/codeengin/git
 |   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   +-- run  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- run  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- listRunnerCommands, runCodeEnginCommand  <- @/engins/codeengin/runner
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
-|   |   |   +-- search  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- search  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |   |       +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
 |   |   |   |       +-- searchWorkspace  <- @/engins/codeengin/search
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   +-- upload  [CodeEngin, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- upload  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- spawn  <- child_process
 |   |   |   |       +-- (default)  <- fs/promises
 |   |   |   |       +-- (default)  <- os
@@ -423,8 +433,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- createCodeEnginWorkspace, getWorkspaceOverview  <- @/engins/codeengin/workspaceStore
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   `-- workspace  [CodeEngin, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |   `-- workspace  [CodeEngin, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- assertCodeEnginAccess  <- @/engins/codeengin/auth
 |   |   |           +-- buildProjectGraph  <- @/engins/codeengin/projectGraph
 |   |   |           +-- safeErrorMessage  <- @/engins/codeengin/pathSafety
@@ -434,7 +444,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- -> GET
 |   |   |           `-- -> POST
 |   |   +-- comments  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- scanContent  <- @/engine/safety/child-safety/childSafetyDetector
 |   |   |       +-- reportChildSafetyIncident  <- @/engine/safety/child-safety/ncmecReporter
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -449,7 +459,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- connectors  [Supabase / Database]
 |   |   |   +-- [provider]  [Supabase / Database]
 |   |   |   |   +-- connect  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- blueskyVerify  <- @/engine/connectors/providers/bluesky
 |   |   |   |   |       +-- githubVerify  <- @/engine/connectors/providers/github
 |   |   |   |   |       +-- mastodonVerify  <- @/engine/connectors/providers/mastodon
@@ -464,14 +474,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |   |       `-- -> POST
 |   |   |   |   +-- disconnect  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |       `-- -> DELETE
 |   |   |   |   +-- items  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |   |       +-- toErrorMessage  <- @/utils/index
@@ -479,7 +489,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |       `-- -> GET
 |   |   |   |   +-- sync  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- reconcileConnector  <- @/engine/connectors/reconcile
 |   |   |   |   |       +-- DISPATCH_SUPPORTED_PROVIDERS  <- @/engine/connectors/syncDispatch
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -489,7 +499,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |       `-- -> POST
 |   |   |   |   `-- verify  [Supabase / Database]
-|   |   |   |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts
 |   |   |   |           +-- blueskyVerify  <- @/engine/connectors/providers/bluesky
 |   |   |   |           +-- githubVerify  <- @/engine/connectors/providers/github
 |   |   |   |           +-- mastodonVerify  <- @/engine/connectors/providers/mastodon
@@ -504,7 +514,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |   |           `-- -> GET
 |   |   |   +-- cron  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- ReconcileResult  <- @/engine/connectors/reconcile
 |   |   |   |       +-- reconcileConnector  <- @/engine/connectors/reconcile
 |   |   |   |       +-- DISPATCH_SUPPORTED_PROVIDERS  <- @/engine/connectors/syncDispatch
@@ -517,7 +527,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- instagram  [Supabase / Database]
 |   |   |   |   `-- oauth  [Supabase / Database]
 |   |   |   |       +-- callback  [Supabase / Database]
-|   |   |   |       |   `-- route.ts user-facing
+|   |   |   |       |   `-- route.ts
 |   |   |   |       |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -525,12 +535,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       |       `-- -> GET
 |   |   |   |       `-- start  [Supabase / Database]
-|   |   |   |           `-- route.ts user-facing
+|   |   |   |           `-- route.ts
 |   |   |   |               +-- cookies  <- next/headers
 |   |   |   |               +-- NextRequest, NextResponse  <- next/server
 |   |   |   |               `-- -> GET
 |   |   |   +-- status  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- ConnectorStatus  <- @/engine/connectors/connectorRegistry
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -540,7 +550,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       `-- -> GET
 |   |   |   +-- webhooks  [Supabase / Database]
 |   |   |   |   `-- [provider]  [Supabase / Database]
-|   |   |   |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts
 |   |   |   |           +-- supportsWebhook, supportsWebhookVerification  <- @/engine/connectors/deliveryStrategy
 |   |   |   |           +-- extractMetaWebhookChallenge, extractYouTubeWebSubChallenge  <- @/engine/connectors/webhookVerification
 |   |   |   |           +-- createClient  <- @supabase/supabase-js
@@ -551,7 +561,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   `-- youtube  [Supabase / Database]
 |   |   |       `-- oauth  [Supabase / Database]
 |   |   |           +-- callback  [Supabase / Database]
-|   |   |           |   `-- route.ts user-facing
+|   |   |           |   `-- route.ts
 |   |   |           |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -559,13 +569,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           |       +-- NextRequest, NextResponse  <- next/server
 |   |   |           |       `-- -> GET
 |   |   |           `-- start  [Supabase / Database]
-|   |   |               `-- route.ts user-facing
+|   |   |               `-- route.ts
 |   |   |                   +-- cookies  <- next/headers
 |   |   |                   +-- NextRequest, NextResponse  <- next/server
 |   |   |                   `-- -> GET
 |   |   +-- content  [Supabase / Database]
 |   |   |   +-- generative-fill  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
@@ -573,7 +583,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> POST
 |   |   |   +-- intelligence  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -582,7 +592,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> POST
 |   |   |   +-- transcribe  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- parseSRT, parseVTT, totalDurationMs  <- @/engins/contentengin/content/transcriptEditor
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -590,7 +600,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- z  <- zod
 |   |   |   |       `-- -> POST
 |   |   |   `-- voice-clone  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- estimateDurationSeconds  <- @/engins/contentengin/content/voiceClone
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -603,13 +613,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   `-- [assetId]  [Supabase / Database]
 |   |   |   |       +-- export  [Supabase / Database]
 |   |   |   |       |   `-- gameengin  [Supabase / Database]
-|   |   |   |       |       `-- route.ts user-facing
+|   |   |   |       |       `-- route.ts 🔌 API_ROUTE
 |   |   |   |       |           +-- safeSegment, safeUnder  <- @/engins/contentengin/pipeline/paths
 |   |   |   |       |           +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       |           +-- cp, mkdir, writeFile  <- fs/promises
 |   |   |   |       |           +-- (default)  <- path
 |   |   |   |       |           `-- -> POST
-|   |   |   |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |   |           +-- safeUnder  <- @/engins/contentengin/pipeline/paths
 |   |   |   |           +-- NextResponse  <- next/server
 |   |   |   |           +-- readFile  <- fs/promises
@@ -617,10 +627,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |           `-- -> GET
 |   |   |   +-- jobs  [Supabase / Database]
 |   |   |   |   +-- [jobId]  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |   |       `-- -> GET
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       +-- buildAsset  <- @/engins/contentengin/pipeline/build
 |   |   |   |       +-- writeAssetBundle, zipDirectory  <- @/engins/contentengin/pipeline/bundle
@@ -629,23 +639,23 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   `-- upload  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           +-- analyzeImageBytes  <- @/engins/contentengin/photo/imageAnalyzer
 |   |   |           +-- -> POST
 |   |   |           `-- -> runtime
 |   |   +-- dr-eams  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- hf  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> POST
 |   |   |   `-- run  [AI / Dr. Eams / Agents, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           `-- -> POST
 |   |   +-- drafts  [Supabase / Database]
 |   |   |   +-- [id]  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -653,7 +663,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- z  <- zod
 |   |   |   |       +-- -> DELETE
 |   |   |   |       `-- -> PATCH
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -664,7 +674,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- dream-windows  [Supabase / Database]
 |   |   |   +-- [id]  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- DreamWindowInstance  <- @/engine/dream-window/DreamWindowLifecycle
 |   |   |   |       +-- DREAM_WINDOW_STATES, validateDreamWindowLayers  <- @/engine/dream-window/DreamWindowLifecycle
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -674,7 +684,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> DELETE
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> PATCH
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- DREAM_WINDOW_STATES  <- @/engine/dream-window/DreamWindowLifecycle
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -685,19 +695,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- dreamengin  [Supabase / Database]
 |   |   |   `-- os-status  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |           +-- NextResponse  <- next/server
 |   |   |           `-- -> GET
-|   |   +-- dreamr  [DreamR, Supabase / Database]
-|   |   |   +-- feed  [DreamR, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- dreamr  [DreamR, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- feed  [DreamR, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- dreamrFeedHandler  <- @/app/dreamdmbar/_components/dreamr/api/feedHandler
 |   |   |   |       `-- -> GET
-|   |   |   +-- suggested  [DreamR, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   +-- suggested  [DreamR, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- rankFeed, scoreDreamRPost, ScoredPost  <- @/app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm
 |   |   |   |       +-- filterByCloseFriends, loadVisibilityCircle  <- @/dreamr/runtime/closeFriendsVisibility
 |   |   |   |       +-- getPrimaryPostMediaUrl  <- @/engins/contentengin/media/postMedia
@@ -706,8 +716,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> GET
-|   |   |   `-- tally  [DreamR, Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |   `-- tally  [DreamR, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -716,7 +726,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- dreams  [Supabase / Database]
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- resolveFeedHost  <- @/engine/widgets/feed-resolver
@@ -726,7 +736,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   +-- instances  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- Surface  <- @/types/widget-system-v2
@@ -734,7 +744,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- z  <- zod
 |   |   |   |       `-- -> GET
 |   |   |   `-- transfer  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -742,7 +752,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           `-- -> POST
 |   |   +-- embed-feed  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- EmbedFeedItem  <- @/dreamr/feeds/embedFeedLoader
 |   |   |       +-- loadEmbedFeed  <- @/dreamr/feeds/embedFeedLoader
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -751,7 +761,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> EmbedFeedResponse
 |   |   |       `-- -> GET
 |   |   +-- favorites  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -760,8 +770,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> DELETE
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
-|   |   +-- feed  [Feed / Social, Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   +-- feed  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- sortByVisibilityScore  <- @/dreamr/activity/visibility-score
 |   |   |       +-- getPrimaryPostMediaUrl  <- @/engins/contentengin/media/postMedia
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -771,7 +781,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GET
 |   |   |       `-- -> UnifiedFeedEntry
 |   |   +-- follow  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -782,7 +792,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- forge  [Supabase / Database]
 |   |   +-- gal  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -790,7 +800,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       `-- -> POST
 |   |   +-- game-scores  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- CARTRIDGE_MANIFEST  <- @/engins/gameengin/cartridges/manifest
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -802,17 +812,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- gameengin  [Supabase / Database]
 |   |   |   `-- crash-report  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- CRASH_REPORT_MAX_BYTES, isActiveCartridge, recordCrashReport  <- @/engins/gameengin/brain-reader
 |   |   |           +-- NextResponse, NextRequest  <- next/server
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           `-- -> POST
 |   |   +-- health  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- NextResponse  <- next/server
 |   |   |       `-- -> GET
 |   |   +-- home-layout  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -821,7 +831,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
 |   |   +-- journey  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- Json  <- @/types/supabase
@@ -831,7 +841,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- lab  [Supabase / Database]
 |   |   |   `-- benchmarks  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -839,14 +849,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           `-- -> POST
 |   |   +-- ledger-media  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- decodeLedgerBlob  <- @/engins/contentengin/media/ledger
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       `-- -> GET
 |   |   +-- likes  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- NextRequest, NextResponse  <- next/server
@@ -854,30 +864,30 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> DELETE
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
-|   |   +-- marketplace  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   +-- request  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- marketplace  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- request  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- buildContactRequestRecord, validateContactRequest  <- @/engine/marketplace/request
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> POST
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
-|   |   +-- messages  [Messages / DMs, Supabase / Database]
-|   |   |   +-- boards  [Messages / DMs, Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   +-- messages  [Messages / DMs, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- boards  [Messages / DMs, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       +-- z  <- zod
 |   |   |   |       `-- -> POST
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- scanContent  <- @/engine/safety/child-safety/childSafetyDetector
 |   |   |       +-- reportChildSafetyIncident  <- @/engine/safety/child-safety/ncmecReporter
 |   |   |       +-- scanMediaUrlsForChildSafety  <- @/engine/safety/child-safety/scanMediaUrls
@@ -891,7 +901,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- metrics  [Supabase / Database]
 |   |   |   +-- platform  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- GetPlatformMetricsResponse  <- @/dreamr/activity/types
 |   |   |   |       +-- createServerClient, createServiceClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -899,19 +909,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       `-- -> GET
 |   |   |   +-- user  [Supabase / Database]
 |   |   |   |   `-- [userId]  [Supabase / Database]
-|   |   |   |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts
 |   |   |   |           +-- ActivityTier, isValidActivityTier, GetUserMetricsResponse, UserMetrics  <- @/dreamr/activity/types
 |   |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |           +-- Database  <- @/types/supabase
 |   |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |   |           `-- -> GET
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- getPrometheusMetrics  <- @/engine/observability/otel
 |   |   |       +-- initOtelBridge  <- @/engine/observability/otelBridge
 |   |   |       +-- NextRequest, NextResponse, connection  <- next/server
 |   |   |       `-- -> GET
 |   |   +-- music  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- Database  <- @/types/supabase
@@ -922,7 +932,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
 |   |   +-- notifications  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- NextRequest, NextResponse  <- next/server
@@ -932,7 +942,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> PUT
 |   |   +-- platform  [Supabase / Database]
 |   |   |   `-- errors  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -940,10 +950,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           +-- -> GET
 |   |   |           `-- -> POST
-|   |   +-- posts  [Feed / Social, Supabase / Database]
-|   |   |   +-- [id]  [Feed / Social, Supabase / Database]
-|   |   |   |   +-- save  [Feed / Social, Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   +-- posts  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   +-- [id]  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- save  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -951,28 +961,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |   |       +-- -> DELETE
 |   |   |   |   |       `-- -> POST
-|   |   |   |   +-- view  [Feed / Social, Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   +-- view  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |       `-- -> POST
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> DELETE
-|   |   |   +-- profile  [Feed / Social, Supabase / Database]
-|   |   |   |   `-- [userId]  [Feed / Social, Supabase / Database]
-|   |   |   |       `-- route.ts user-facing
+|   |   |   +-- profile  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- [userId]  [Feed / Social, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |   |           `-- -> GET
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- scanContent  <- @/engine/safety/child-safety/childSafetyDetector
 |   |   |       +-- reportChildSafetyIncident  <- @/engine/safety/child-safety/ncmecReporter
 |   |   |       +-- scanMediaUrlsForChildSafety  <- @/engine/safety/child-safety/scanMediaUrls
@@ -987,7 +997,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GET
 |   |   |       `-- -> POST
 |   |   +-- profile  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- Database  <- @/types/supabase
@@ -997,7 +1007,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GET
 |   |   |       `-- -> PUT
 |   |   +-- projects  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- Database  <- @/types/supabase
@@ -1009,7 +1019,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> POST
 |   |   |       `-- -> PUT
 |   |   +-- scheduled-posts  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -1021,7 +1031,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> PUT
 |   |   +-- security  [Supabase / Database]
 |   |   |   `-- scan  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- exec  <- child_process
 |   |   |           +-- NextResponse  <- next/server
 |   |   |           +-- promisify  <- util
@@ -1029,7 +1039,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- settings  [Supabase / Database]
 |   |   |   +-- appearance  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -1038,7 +1048,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -1047,7 +1057,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   +-- notifications  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -1056,7 +1066,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   `-- privacy  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -1066,19 +1076,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- setup  [Supabase / Database]
 |   |   |   +-- check  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- getSetupStatus  <- @/engine/setup/checks
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> GET
 |   |   |   `-- google-oauth  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- SUPABASE_CONFIG, getServerSiteOrigin, getSupabaseAuthCallbackUrl  <- @/supabase/config
 |   |   |           +-- NextResponse  <- next/server
 |   |   |           `-- -> GET
 |   |   +-- shared-dream  [Supabase / Database]
 |   |   |   `-- sessions  [Supabase / Database]
 |   |   |       +-- [id]  [Supabase / Database]
-|   |   |       |   `-- route.ts user-facing
+|   |   |       |   `-- route.ts
 |   |   |       |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -1086,7 +1096,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       |       +-- z  <- zod
 |   |   |       |       +-- -> GET
 |   |   |       |       `-- -> PATCH
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -1096,7 +1106,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- shellhub  [Supabase / Database]
 |   |   |   `-- devices  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- SHELLHUB_DEFAULT_SERVER, shellhubListDevices, ShellHubDevice  <- @/engine/connectors/providers/shellhub
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1105,8 +1115,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           +-- -> GET
 |   |   |           `-- -> ShellHubDevicesResponse
-|   |   +-- shop  [Marketplace / Shop / Ads, Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   +-- shop  [Marketplace / Shop / Ads, Supabase / Database] 🗂 FEATURE_FOLDER
+|   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |       +-- normalizeShopListing, validateShopListing  <- @/engine/shop/listings
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1120,14 +1130,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> PUT
 |   |   +-- skip-credits  [Supabase / Database]
 |   |   |   +-- balance  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   |       +-- NextResponse  <- next/server
 |   |   |   |       `-- -> GET
 |   |   |   +-- earn  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts 🔌 API_ROUTE
 |   |   |   |       +-- EarnSkipCreditsRequest, EarnSkipCreditsResponse  <- @/dreamr/activity/types
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1135,7 +1145,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       `-- -> POST
 |   |   |   `-- use  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- UseSkipCreditsRequest, UseSkipCreditsResponse  <- @/dreamr/activity/types
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1144,7 +1154,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- social  [Supabase / Database]
 |   |   |   +-- ipfs  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
@@ -1152,14 +1162,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       `-- -> POST
 |   |   |   +-- livekit  [Supabase / Database]
 |   |   |   |   +-- room  [Supabase / Database]
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- LiveKitRoomInfo  <- @/engine/social/livekit
 |   |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |       `-- -> GET
 |   |   |   |   `-- token  [Supabase / Database]
-|   |   |   |       `-- route.ts user-facing
+|   |   |   |       `-- route.ts
 |   |   |   |           +-- generateServerToken, LiveKitError  <- @/engine/social/livekit
 |   |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1167,14 +1177,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |   |           `-- -> POST
 |   |   |   `-- rss-feed  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- DEFAULT_NITTER_INSTANCE, devtoUserRssUrl, facebookPageRssUrl, githubUserAtomUrl, hackerNewsRssUrl, hackerNewsUserRssUrl, mastodonUserRssUrl, mediumUserRssUrl, nostrGatewayRssUrl, parseRssFeed, pinterestRssUrl, podcastRssUrl, redditSubredditRssUrl, redditUserRssUrl, substackRssUrl, tiktokProfileRssUrl, tumblrRssUrl, twitterNitterRssUrl, youtubeChannelRssUrl, youtubePlaylistRssUrl, RssProvider  <- @/engine/social/rss-feed
 |   |   |           +-- UnifiedFeedItem  <- @/types/connector
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           +-- toErrorMessage  <- @/utils/index
 |   |   |           `-- -> GET
 |   |   +-- upload  [Supabase / Database]
-|   |   |   `-- route.ts user-facing
+|   |   |   `-- route.ts
 |   |   |       +-- createHash  <- crypto
 |   |   |       +-- gunzipSync, gzipSync  <- zlib
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1183,7 +1193,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> POST
 |   |   +-- user  [Supabase / Database]
 |   |   |   `-- layout  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |           +-- SupabaseClient  <- @supabase/supabase-js
@@ -1193,7 +1203,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- views  [Supabase / Database]
 |   |   |   `-- track  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- TrackViewRequest, TrackViewResponse, View  <- @/dreamr/activity/types
 |   |   |           +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |           +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1202,17 +1212,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           `-- -> POST
 |   |   +-- widgets  [Supabase / Database]
 |   |   |   +-- feed  [Supabase / Database]
-|   |   |   |   `-- route.ts user-facing
+|   |   |   |   `-- route.ts
 |   |   |   |       +-- NextRequest, NextResponse  <- next/server
 |   |   |   |       +-- -> GET
 |   |   |   |       `-- -> POST
 |   |   |   `-- instances  [Supabase / Database]
-|   |   |       `-- route.ts user-facing
+|   |   |       `-- route.ts
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           `-- -> GET
 |   |   `-- youtube  [Supabase / Database]
 |   |       +-- channel  [Supabase / Database]
-|   |       |   `-- route.ts user-facing
+|   |       |   `-- route.ts
 |   |       |       +-- getYouTubeApiKey, youtubeSearchByQuery  <- @/engine/connectors/providers/youtube
 |   |       |       +-- UnifiedFeedItem  <- @/types/connector
 |   |       |       +-- NextRequest, NextResponse  <- next/server
@@ -1220,7 +1230,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |       +-- -> GET
 |   |       |       `-- -> YouTubeChannelResponse
 |   |       +-- discovery  [Supabase / Database]
-|   |       |   `-- route.ts user-facing
+|   |       |   `-- route.ts
 |   |       |       +-- getYouTubeApiKey, youtubeDiscovery  <- @/engine/connectors/providers/youtube
 |   |       |       +-- UnifiedFeedItem  <- @/types/connector
 |   |       |       +-- NextRequest, NextResponse  <- next/server
@@ -1228,7 +1238,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |       +-- -> GET
 |   |       |       `-- -> YouTubeDiscoveryResponse
 |   |       `-- live-feed  [Supabase / Database]
-|   |           `-- route.ts user-facing
+|   |           `-- route.ts
 |   |               +-- getYouTubeApiKey, youtubeSearchByQuery  <- @/engine/connectors/providers/youtube
 |   |               +-- parseRssFeed, youtubeChannelRssUrl  <- @/engine/social/rss-feed
 |   |               +-- UnifiedFeedItem  <- @/types/connector
@@ -1236,24 +1246,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |               +-- toErrorMessage  <- @/utils/index
 |   |               +-- -> GET
 |   |               `-- -> YouTubeLiveFeedResponse
-|   +-- auth  [Auth]
-|   |   +-- callback  [Auth]
-|   |   |   `-- route.ts user-facing
+|   +-- auth  [Auth] 🗂 FEATURE_FOLDER
+|   |   +-- callback  [Auth] 🗂 FEATURE_FOLDER
+|   |   |   `-- route.ts
 |   |   |       +-- resolveSafeNextPath  <- @/supabase/auth/nextRedirect
 |   |   |       +-- SUPABASE_CONFIG  <- @/supabase/config
 |   |   |       +-- createServerClientWithCustomCookies  <- @/supabase/server/serverClient
 |   |   |       +-- cookies  <- next/headers
 |   |   |       +-- NextResponse  <- next/server
 |   |   |       `-- -> GET
-|   |   +-- reset-password  [Auth]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- reset-password  [Auth] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- buildAuthCallbackUrl  <- @/supabase/config
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- useMemo, useState  <- react
 |   |   |       `-- -> (default)
-|   |   `-- update-password  [Auth]
-|   |       `-- page.tsx user-facing
+|   |   `-- update-password  [Auth] 🗂 FEATURE_FOLDER
+|   |       `-- page.tsx 👁 PAGE
 |   |           +-- (default)  <- @/components/auth/dream.PasswordField
 |   |           +-- createClient  <- @/supabase/client/client
 |   |           +-- (default)  <- next/link
@@ -1261,7 +1271,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |           +-- useMemo, useState  <- react
 |   |           `-- -> (default)
 |   +-- connectors
-|   |   +-- dream.ConnectorsClient.tsx
+|   |   +-- dream.ConnectorsClient.tsx 🧩 COMPONENT
 |   |   |   +-- FeedSlice  <- @/components/connectors/dream.AddSliceSheet
 |   |   |   +-- (default)  <- @/components/connectors/dream.AddSliceSheet
 |   |   |   +-- (default)  <- @/components/connectors/dream.ConnectorRow
@@ -1279,7 +1289,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- ArrowLeft, Plug  <- lucide-react
@@ -1289,14 +1299,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- (default)  <- ./dream.ConnectorsClient
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- daydream
-|   |   +-- brand  [BrandEngin]
-|   |   |   +-- engin  [BrandEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   +-- daydream 🗂 FEATURE_FOLDER
+|   |   +-- brand  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- (default)  <- @/components/daydream/dreamsurface.daydream.BrandDaydream
@@ -1310,13 +1320,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- code  [CodeEngin]
-|   |   |   +-- engin  [CodeEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- code  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.OpenDaydreamSideBButton
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
@@ -1333,12 +1343,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
 |   |   +-- constellation
-|   |   |   +-- dream.ConstellationClient.tsx
+|   |   |   +-- dream.ConstellationClient.tsx 🧩 COMPONENT
 |   |   |   |   +-- (default)  <- @/components/daydream/dream.constellationmap
 |   |   |   |   +-- ArrowLeft  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1347,13 +1357,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (default)  <- ./dream.ConstellationClient
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- create  [ContentEngin / CreateEngin]
-|   |   |   +-- engin  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- create  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.OpenDaydreamSideBButton
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
@@ -1368,8 +1378,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- forge  [ForgeEngin]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- forge  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- (default)  <- @/components/forge/dream.widget.ForgeMomentumWidget
@@ -1386,11 +1396,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
 |   |   +-- game
-|   |   |   +-- dream.GamePageClient.tsx unused
+|   |   |   +-- dream.GamePageClient.tsx
 |   |   |   |   +-- default  <- @/components/games/dream.BabylonSideScroller
-|   |   |   |   +-- -> default
-|   |   |   |   `-- unused unused: default
-|   |   |   +-- dream.shell.ImmersiveGameShell.tsx unused
+|   |   |   |   `-- -> default
+|   |   |   +-- dream.shell.ImmersiveGameShell.tsx 🧩 COMPONENT
 |   |   |   |   +-- (default)  <- @/components/games/dream.remote.GameRemote
 |   |   |   |   +-- (default)  <- @/engins/gameengin/GameRuntime
 |   |   |   |   +-- GameCartridge, GravityPreset  <- @/engins/gameengin/cartridge
@@ -1400,20 +1409,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- useRouter, useSearchParams  <- next/navigation
 |   |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   |   +-- -> (default)
-|   |   |   |   `-- unused unused: (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- -> (default)
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- games  [GameEngin]
-|   |   |   +-- engin  [GameEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- games  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/games/dream.GamesHub
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1434,14 +1442,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (dynamic import)  <- @/engins/engin.GameEngin
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- lab  [LabEngin]
-|   |   |   +-- engin  [LabEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- lab  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   +-- portfolio  [LabEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- portfolio  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |   |       +-- (default)  <- @/engins/portfolio/dream.PortfolioEngin
@@ -1454,7 +1462,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1472,19 +1480,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
 |   |   +-- media-vault
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- music  [StarMakerEngin]
-|   |   |   +-- engin  [StarMakerEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- music  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engin  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   +-- upload  [StarMakerEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- upload  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- ArrowLeft, Info, Loader2, Music, Upload, Youtube  <- lucide-react
@@ -1493,7 +1501,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- useState  <- react
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |   |       +-- (default)  <- @/components/music/dream.SoundRecorder
@@ -1509,18 +1517,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
 |   |   +-- play
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- buildGameLaunchHref, DEFAULT_GAME_ID  <- @/engins/gameengin/games/navigation
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
 |   |   `-- render  [RenderEngin]
-|   |       `-- page.tsx user-facing
+|   |       `-- page.tsx 👁 PAGE
 |   |           +-- redirect  <- next/navigation
 |   |           +-- -> (default)
 |   |           `-- -> metadata
-|   +-- discover  [Feed / Social]
-|   |   `-- page.tsx user-facing
+|   +-- discover  [Feed / Social] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- ArrowLeft, Radio, Search, Users  <- lucide-react
@@ -1530,7 +1538,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> (default)
 |   |       `-- -> metadata
 |   +-- dream-effects
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- useGsapEntrance  <- @/engine/animation/gsap/useGsapEntrance
 |   |       +-- cn  <- @/utils/index
 |   |       +-- motion  <- framer-motion
@@ -1539,11 +1547,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useRef  <- react
 |   |       +-- (dynamic import)  <- @/components/three/dream.scene
 |   |       `-- -> (default)
-|   +-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- _components  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   +-- dreamr  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
-|   |   |   |   +-- algorithms  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
-|   |   |   |   |   +-- botDetector.ts unused user-facing
+|   +-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   +-- _components  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   +-- dreamr  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- algorithms  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- botDetector.ts
 |   |   |   |   |   |   +-- slog, TORRIDITY_LEDGER_CONFIG  <- @/dreamr/runtime/torridityLedger
 |   |   |   |   |   |   +-- -> InteractionSignal
 |   |   |   |   |   |   +-- -> SwipePathScore
@@ -1551,9 +1559,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |   |   +-- -> isLikelyBot
 |   |   |   |   |   |   +-- -> isSwipeBot
 |   |   |   |   |   |   +-- -> scoreBotLikelihood
-|   |   |   |   |   |   +-- -> scoreSwipePath
-|   |   |   |   |   |   `-- unused unused: InteractionSignal, SwipePathScore
-|   |   |   |   |   `-- dreamrAlgorithm.ts user-facing
+|   |   |   |   |   |   `-- -> scoreSwipePath
+|   |   |   |   |   `-- dreamrAlgorithm.ts
 |   |   |   |   |       +-- calculateRank, derivePostMassMeta, getPostMass  <- @/dreamr/runtime/torridityLedger
 |   |   |   |   |       +-- -> DREAMR_REASONS
 |   |   |   |   |       +-- -> DREAMR_WEIGHTS
@@ -1570,8 +1577,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |       +-- -> scoreTextRichness
 |   |   |   |   |       +-- -> scoreTrendImpact
 |   |   |   |   |       `-- -> scoreViewVelocity
-|   |   |   |   +-- api  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR]
-|   |   |   |   |   +-- feedHandler.ts user-facing
+|   |   |   |   +-- api  [Home / DreamDMBar / DualRuntime, Messages / DMs, DreamR] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- feedHandler.ts
 |   |   |   |   |   |   +-- filterByCloseFriends, loadVisibilityCircle  <- @/dreamr/runtime/closeFriendsVisibility
 |   |   |   |   |   |   +-- deriveNextCursor, parseFeedParams  <- @/dreamr/runtime/feedCursor
 |   |   |   |   |   |   +-- getPrimaryPostMediaUrl, PostMediaShape  <- @/engins/contentengin/media/postMedia
@@ -1581,14 +1588,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |   |   +-- NextRequest, NextResponse  <- next/server
 |   |   |   |   |   |   +-- rankFeed, ScoredPost  <- ../algorithms/dreamrAlgorithm
 |   |   |   |   |   |   `-- -> dreamrFeedHandler
-|   |   |   |   |   `-- route.ts user-facing
+|   |   |   |   |   `-- route.ts
 |   |   |   |   |       +-- dreamrFeedHandler  <- ./feedHandler
 |   |   |   |   |       `-- -> GET
-|   |   |   |   +-- dream.DreamRCore.tsx user-facing
+|   |   |   |   +-- dream.DreamRCore.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   |   |   +-- useEffect  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   +-- dream.DreamRFeed.tsx unused user-facing
+|   |   |   |   +-- dream.DreamRFeed.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Point  <- @/dreamr/botDetection
 |   |   |   |   |   +-- analyzeSwipe, tallyView  <- @/dreamr/botDetection
 |   |   |   |   |   +-- enginBridge  <- @/engine/runtime/dualRuntimeBridge
@@ -1596,9 +1603,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |   |   +-- DREAMR_TOPICS  <- @/dreamr/components/dreamrfeed
 |   |   |   |   |   +-- -> (default)
-|   |   |   |   |   +-- -> DREAMR_TOPICS
-|   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   `-- dreamsurface.dreamr.tsx user-facing
+|   |   |   |   |   `-- -> DREAMR_TOPICS
+|   |   |   |   `-- dreamsurface.dreamr.tsx 🧩 COMPONENT
 |   |   |   |       +-- (default)  <- @/app/dreamdmbar/_components/dreamr/dream.DreamRCore
 |   |   |   |       +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   |   |       +-- (default)  <- @/dreamr/components/dreamrfeed
@@ -1610,7 +1616,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- (default)  <- next/link
 |   |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |       `-- -> (default)
-|   |   |   +-- DreamBarDataBridge.tsx user-facing
+|   |   |   +-- DreamBarDataBridge.tsx 🧩 COMPONENT
 |   |   |   |   +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   |   +-- DIVIDER_H  <- @/dreamdmbar/runtime/barInteractions
@@ -1620,7 +1626,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   |   +-- useCallback, useEffect  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   +-- DreamSpaceRegion.tsx user-facing
+|   |   |   +-- DreamSpaceRegion.tsx 🧩 COMPONENT
 |   |   |   |   +-- (default)  <- @/components/dreams/dream.DraggableDream
 |   |   |   |   +-- useAccount  <- @/hooks/useAccount
 |   |   |   |   +-- listSystemArtifacts, listVisibleArtifacts, restoreArtifact, restoreArtifactsFromOfflineCache  <- @/engine/artifacts/artifactStore
@@ -1633,11 +1639,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- (default)  <- react
 |   |   |   |   +-- useCallback, useEffect, useMemo, useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   +-- DreamWidgetGrid.tsx unused user-facing
+|   |   |   +-- DreamWidgetGrid.tsx 🧩 COMPONENT
 |   |   |   |   +-- WidgetInstance  <- @/types/widgets
-|   |   |   |   +-- -> (default)
-|   |   |   |   `-- unused unused: (default)
-|   |   |   `-- HomeDreamRegion.tsx user-facing
+|   |   |   |   `-- -> (default)
+|   |   |   `-- HomeDreamRegion.tsx 🧩 COMPONENT
 |   |   |       +-- Bell, ChevronRight  <- lucide-react
 |   |   |       +-- useRouter  <- next/navigation
 |   |   |       +-- useEffect, useState  <- react
@@ -1654,25 +1659,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- cacheHttpGet  <- @/engine/offline/offlineCache
 |   |   |       +-- RuntimeRegionKey  <- @/types/dreamArtifact
 |   |   |       `-- -> (default)
-|   |   +-- dreamspace  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- dreamspace  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   |       +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |       +-- useEffect  <- react
 |   |   |       `-- -> (default)
-|   |   +-- dualruntime  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- dualruntime  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/shared-dream/dream.SharedDreamRuntime
 |   |   |       +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |       +-- useEffect, useState  <- react
 |   |   |       `-- -> (default)
-|   |   +-- homedream  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- homedream  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   |       +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |       +-- useEffect  <- react
 |   |   |       `-- -> (default)
-|   |   +-- layout.tsx user-facing
+|   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   +-- (default)  <- @/app/dreamdmbar/_components/DreamBarDataBridge
 |   |   |   +-- (default)  <- @/components/home/dream.bar.GlobalDreamBar
 |   |   |   +-- (default)  <- @/components/home/dream.bar.PersistentDreamBar
@@ -1686,11 +1691,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- connection  <- next/server
 |   |   |   +-- Suspense  <- react
 |   |   |   `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- redirect  <- next/navigation
 |   |       `-- -> (default)
-|   +-- dreamr  [DreamR]
-|   |   `-- page.tsx user-facing
+|   +-- dreamr  [DreamR] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/app/dreamdmbar/_components/dreamr/dreamsurface.dreamr
 |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1702,11 +1707,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> (default)
 |   |       `-- -> metadata
 |   +-- dreamspace
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/dreams/dreamsurface.dreamspace
 |   |       `-- -> (default)
-|   +-- edit-profiledream  [Profile]
-|   |   `-- page.tsx user-facing
+|   +-- edit-profiledream  [Profile] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- ActivityProfile  <- @/components/activity/dream.ActivityProfile
 |   |       +-- (default)  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |   |       +-- DEFAULT_DREAMS, ProfileDream  <- @/components/profile/dream.widget.ProfileWidgetGrid
@@ -1719,10 +1724,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- queueLocalFirstMutation, readOfflineCache, writeOfflineCache  <- @/engine/offline/offlineCache
 |   |       `-- -> (default)
-|   +-- engines
-|   |   +-- brand  [BrandEngin]
-|   |   |   +-- campaigns  [BrandEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   +-- engines 🗂 FEATURE_FOLDER
+|   |   +-- brand  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- campaigns  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/brand/panels/dream.panel.CampaignsPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1732,8 +1737,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- identity  [BrandEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- identity  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/brand/panels/dream.panel.IdentityPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1743,11 +1748,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/brand/dream.BrandEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1755,9 +1760,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- code  [CodeEngin]
-|   |   |   +-- ai  [CodeEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- code  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- ai  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/code/panels/dream.panel.AIPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1767,8 +1772,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- notebook  [CodeEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- notebook  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/code/panels/dream.panel.NotebookPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1778,8 +1783,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- projects  [CodeEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- projects  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/code/panels/dream.panel.ProjectsPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1789,11 +1794,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/code/dream.CodeEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1801,9 +1806,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- create  [ContentEngin / CreateEngin]
-|   |   |   +-- calendar  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- create  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- calendar  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/create/dream.CreateEnginApp
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1812,8 +1817,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- editor  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- editor  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/create/dream.CreateEnginApp
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1822,8 +1827,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- queue  [ContentEngin / CreateEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- queue  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/create/dream.CreateEnginApp
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -1832,11 +1837,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/create/dream.CreateEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1844,9 +1849,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- games  [GameEngin]
-|   |   |   +-- builder  [GameEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- games  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- builder  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/games/panels/dream.panel.BuilderPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- buildLoginRedirectPath  <- @/supabase/auth/nextRedirect
@@ -1857,8 +1862,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- library  [GameEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- library  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/games/panels/dream.panel.LibraryPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- buildLoginRedirectPath  <- @/supabase/auth/nextRedirect
@@ -1869,8 +1874,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- scores  [GameEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- scores  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/games/panels/dream.panel.ScoresPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- buildLoginRedirectPath  <- @/supabase/auth/nextRedirect
@@ -1881,11 +1886,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/games/dream.GameEnginApp
 |   |   |       +-- buildLoginRedirectPath  <- @/supabase/auth/nextRedirect
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1894,9 +1899,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- lab  [LabEngin]
-|   |   |   +-- data  [LabEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- lab  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- data  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/lab/panels/dream.panel.DataVizPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1906,8 +1911,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- experiments  [LabEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- experiments  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/lab/panels/dream.panel.ExperimentsPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1917,8 +1922,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- quantum  [LabEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- quantum  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/lab/panels/dream.panel.QuantumPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1928,11 +1933,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/lab/dream.LabEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1940,9 +1945,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- music  [StarMakerEngin]
-|   |   |   +-- arrange  [StarMakerEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   +-- music  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- arrange  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/music/panels/dream.panel.ArrangePanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1952,8 +1957,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- library  [StarMakerEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- library  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/music/panels/dream.panel.MusicLibraryPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1963,8 +1968,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- studio  [StarMakerEngin]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- studio  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/music/panels/dream.panel.StudioPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1974,11 +1979,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx user-facing
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/music/dream.MusicEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -1988,7 +1993,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> (default)
 |   |   +-- portfolio
 |   |   |   +-- assets
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/portfolio/panels/dream.panel.AssetsPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -1999,7 +2004,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
 |   |   |   +-- optimize
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/portfolio/panels/dream.panel.OptimizePanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -2010,7 +2015,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
 |   |   |   +-- quantum
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/engines/portfolio/panels/dream.panel.PortfolioQuantumPanel
 |   |   |   |       +-- EnginAppShell, EnginNavBar  <- @/components/engines/shared
 |   |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
@@ -2020,11 +2025,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       +-- -> (default)
 |   |   |   |       `-- -> metadata
-|   |   |   +-- layout.tsx
+|   |   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   |   +-- ReactNode  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> metadata
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/engines/portfolio/dream.PortfolioEnginApp
 |   |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2033,14 +2038,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
 |   |   +-- render  [RenderEngin]
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- layout.tsx
+|   |   +-- layout.tsx 🧱 LAYOUT
 |   |   |   +-- ReactNode  <- react
 |   |   |   `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2051,13 +2056,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> (default)
 |   |       `-- -> metadata
 |   +-- feed-settings
-|   |   +-- dream.FeedSettingsClient.tsx
+|   |   +-- dream.FeedSettingsClient.tsx 🧩 COMPONENT
 |   |   |   +-- ArrowLeft, Check, Loader2, Plus, Rss, Sliders  <- lucide-react
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- redirect  <- next/navigation
@@ -2068,22 +2073,22 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- gameengin
 |   |   +-- cartridges
 |   |   |   +-- [id]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/gameengin/dream.cartridge.CartridgeLauncher
 |   |   |   |       +-- getCartridgeManifest  <- @/engins/gameengin/cartridges/manifest
 |   |   |   |       +-- notFound  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/gameengin/dream.cartridge.CartridgeBrowser
 |   |   |       +-- Metadata  <- next
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- redirect  <- next/navigation
 |   |       `-- -> (default)
-|   +-- homedream  [Home / DreamDMBar / DualRuntime]
-|   |   `-- page.tsx user-facing
+|   +-- homedream  [Home / DreamDMBar / DualRuntime] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/app/dreamdmbar/_components/HomeDreamRegion
 |   |       +-- isDevBypassActive  <- @/engine/dev-bypass
 |   |       +-- FeedPost  <- @/dreamr/feed/useLiveFeed
@@ -2092,8 +2097,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       `-- -> (default)
-|   +-- join  [Auth]
-|   |   `-- page.tsx user-facing
+|   +-- join  [Auth] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/auth/dream.PasswordField
 |   |       +-- createClient  <- @/supabase/client/client
 |   |       +-- buildAuthCallbackUrl  <- @/supabase/config
@@ -2105,13 +2110,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- lab
 |   |   +-- [id]
 |   |   |   +-- codespace
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- ArrowLeft, Check, Copy, Download, ExternalLink, RefreshCw, Terminal, Upload  <- lucide-react
 |   |   |   |       +-- (default)  <- next/link
 |   |   |   |       +-- use, useCallback, useRef, useState  <- react
 |   |   |   |       +-- (side-effect)  <- , 
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, Code, Download, FileText, FlaskConical, Terminal  <- lucide-react
@@ -2120,7 +2125,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
 |   |   +-- new
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, FlaskConical, Globe, Loader2, Lock, Sparkles  <- lucide-react
@@ -2129,7 +2134,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- useState  <- react
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- SupabaseClient  <- @supabase/supabase-js
@@ -2138,8 +2143,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       `-- -> (default)
-|   +-- login  [Auth]
-|   |   `-- page.tsx user-facing
+|   +-- login  [Auth] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/auth/dream.PasswordField
 |   |       +-- resolveSafeNextPath  <- @/supabase/auth/nextRedirect
 |   |       +-- createClient  <- @/supabase/client/client
@@ -2149,9 +2154,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useRouter, useSearchParams  <- next/navigation
 |   |       +-- Suspense, useEffect, useMemo, useState  <- react
 |   |       `-- -> (default)
-|   +-- marketplace  [Marketplace / Shop / Ads]
-|   |   +-- [id]  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx user-facing
+|   +-- marketplace  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   +-- [id]  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/marketplace/dream.MarketplaceRequestButton
 |   |   |       +-- (default)  <- @/components/ui/dream.DreamWord
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2162,8 +2167,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- notFound, redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- sell  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- sell  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, DollarSign, Loader2, ShoppingBag, Tag  <- lucide-react
@@ -2173,7 +2178,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |       `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/marketplace/dream.MarketplaceListingCard
 |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |       +-- (default)  <- @/components/ui/dream.DreamWord
@@ -2185,10 +2190,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- messages  [Messages / DMs]
-|   |   +-- boards  [Messages / DMs]
-|   |   |   +-- [id]  [Messages / DMs]
-|   |   |   |   `-- page.tsx user-facing
+|   +-- messages  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   +-- boards  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   +-- [id]  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- (default)  <- @/components/messaging/dream.BoardComposer
 |   |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2197,14 +2202,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- notFound, redirect  <- next/navigation
 |   |   |   |       +-- connection  <- next/server
 |   |   |   |       `-- -> (default)
-|   |   |   +-- new  [Messages / DMs]
-|   |   |   |   `-- page.tsx user-facing
+|   |   |   +-- new  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- page.tsx 👁 PAGE
 |   |   |   |       +-- ArrowLeft, Loader2  <- lucide-react
 |   |   |   |       +-- (default)  <- next/link
 |   |   |   |       +-- useRouter  <- next/navigation
 |   |   |   |       +-- useState  <- react
 |   |   |   |       `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, Layout, Plus  <- lucide-react
@@ -2213,15 +2218,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- new  [Messages / DMs]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- new  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |       +-- redirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/dream.MessagesClient
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2229,11 +2234,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       `-- -> (default)
 |   +-- mission
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- next/link
 |   |       `-- -> (default)
 |   +-- notes
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- ArrowLeft, FileText, Plus  <- lucide-react
@@ -2242,8 +2247,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- onboarding  [Auth]
-|   |   `-- page.tsx user-facing
+|   +-- onboarding  [Auth] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- ArrowLeft, ArrowRight  <- lucide-react
@@ -2253,7 +2258,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> (default)
 |   |       `-- -> metadata
 |   +-- policy
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- BOOGIE_POLICY_VERSION  <- @/dr-eams/ai/boogie-policy
 |   |       +-- AlertTriangle, ArrowLeft, ArrowUpRight, Bell, BookOpen, ChevronRight, Eye, FileText, Info, Scale, Shield  <- lucide-react
 |   |       +-- (default)  <- next/link
@@ -2266,9 +2271,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
               [
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- profile  [Profile]
-|   |   +-- [handle]  [Profile]
-|   |   |   `-- page.tsx user-facing
+|   +-- profile  [Profile] 🗂 FEATURE_FOLDER
+|   |   +-- [handle]  [Profile] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- ActivityProfile  <- @/components/activity/dream.ActivityProfile
 |   |   |       +-- (default)  <- @/components/dream.ProfileShareButton
 |   |   |       +-- (default)  <- @/components/feed/dream.FollowButton
@@ -2286,17 +2291,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- Suspense  <- react
 |   |   |       `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       `-- -> (default)
-|   +-- settings  [Settings / Customization]
-|   |   +-- account  [Settings / Customization]
-|   |   |   +-- dream.DangerZoneActions.tsx user-facing
+|   +-- settings  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   +-- account  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dream.DangerZoneActions.tsx 🧩 COMPONENT
 |   |   |   |   +-- AlertTriangle, Loader2, ShieldAlert, Trash2, X  <- lucide-react
 |   |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, Calendar, Mail, Shield, Trash2, User  <- lucide-react
@@ -2305,8 +2310,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- (default)  <- ./dream.DangerZoneActions
 |   |   |       `-- -> (default)
-|   |   +-- algorithm  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- algorithm  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/feed/dream.AlgorithmEngine
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2316,8 +2321,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- appearance  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- appearance  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- THEME_PRESETS, applyTheme, applyVoidTheme, isVoidThemeActive, DeTheme  <- @/components/dream.ThemeApplicator
 |   |   |       +-- useTheme  <- @/components/providers/dream.ThemeProvider
 |   |   |       +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
@@ -2326,18 +2331,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       `-- -> (default)
-|   |   +-- controls  [Settings / Customization]
-|   |   |   +-- dream.ControlsClient.tsx user-facing
+|   |   +-- controls  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dream.ControlsClient.tsx 🧩 COMPONENT
 |   |   |   |   +-- ArrowLeft, Check, Sliders  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   |   +-- (default)  <- ./dream.PositionIndicatorToggle
 |   |   |   |   `-- -> (default)
-|   |   |   +-- dream.PositionIndicatorToggle.tsx user-facing
+|   |   |   +-- dream.PositionIndicatorToggle.tsx 🧩 COMPONENT
 |   |   |   |   +-- useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- redirect  <- next/navigation
@@ -2345,13 +2350,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (default)  <- ./dream.ControlsClient
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- data  [Settings / Customization]
-|   |   |   +-- dream.DataClient.tsx user-facing
+|   |   +-- data  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dream.DataClient.tsx 🧩 COMPONENT
 |   |   |   |   +-- AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- useCallback, useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- redirect  <- next/navigation
@@ -2359,26 +2364,26 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (default)  <- ./dream.DataClient
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- dreams  [Settings / Customization]
-|   |   |   +-- dreams-layout-editor.tsx user-facing
+|   |   +-- dreams  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dreams-layout-editor.tsx
 |   |   |   |   +-- (default)  <- @/components/dreams/dream.DraggableDream
 |   |   |   |   +-- useDreamLayout  <- @/hooks/useDreamLayout
 |   |   |   |   +-- Eye, EyeOff, RotateCcw  <- lucide-react
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- LayoutGrid, RotateCcw  <- lucide-react
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- (default)  <- ./dreams-layout-editor
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- feed  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- feed  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- permanentRedirect  <- next/navigation
 |   |   |       +-- connection  <- next/server
 |   |   |       `-- -> (default)
-|   |   +-- help  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- help  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2388,20 +2393,20 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- notifications  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- notifications  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- Bell, Check, DollarSign, Heart, Loader2, MessageSquare, Sparkles, Users  <- lucide-react
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       `-- -> (default)
-|   |   +-- privacy  [Settings / Customization]
-|   |   |   +-- dream.PrivacyClient.tsx user-facing
+|   |   +-- privacy  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dream.PrivacyClient.tsx 🧩 COMPONENT
 |   |   |   |   +-- ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX, X  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |   |   `-- -> (default)
-|   |   |   `-- page.tsx user-facing
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- redirect  <- next/navigation
@@ -2409,8 +2414,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- (default)  <- ./dream.PrivacyClient
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- safety  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- safety  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- BOOGIE_POLICY_VERSION  <- @/dr-eams/ai/boogie-policy
 |   |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -2422,8 +2427,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- connection  <- next/server
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   +-- security  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- security  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2433,14 +2438,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- useCallback, useState  <- react
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       `-- -> (default)
-|   |   +-- widgets  [Settings / Customization]
-|   |   |   `-- page.tsx user-facing
+|   |   +-- widgets  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- (default)  <- @/components/ui/dream.AuthenticatedPageHeader
 |   |   |       +-- LayoutGrid  <- lucide-react
 |   |   |       +-- (default)  <- next/link
 |   |   |       +-- -> (default)
 |   |   |       `-- -> metadata
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- isOwnerEmail  <- @/dr-eams/ai/triad
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2450,9 +2455,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- shop  [Marketplace / Shop / Ads]
-|   |   +-- sell  [Marketplace / Shop / Ads]
-|   |   |   `-- page.tsx user-facing
+|   +-- shop  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   +-- sell  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   |   `-- page.tsx 👁 PAGE
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- ArrowLeft, DollarSign, ImageIcon, Loader2, Package, ShoppingBag  <- lucide-react
@@ -2463,7 +2468,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |   |       `-- -> (default)
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- (default)  <- @/components/ui/dream.DreamWord
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -2473,14 +2478,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- u  [Profile]
-|   |   `-- [handle]  [Profile]
-|   |       `-- page.tsx user-facing
+|   +-- u  [Profile] 🗂 FEATURE_FOLDER
+|   |   `-- [handle]  [Profile] 🗂 FEATURE_FOLDER
+|   |       `-- page.tsx 👁 PAGE
 |   |           +-- redirect  <- next/navigation
 |   |           +-- connection  <- next/server
 |   |           `-- -> (default)
-|   +-- view-profile  [Profile]
-|   |   `-- page.tsx user-facing
+|   +-- view-profile  [Profile] 🗂 FEATURE_FOLDER
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- ActivityProfile  <- @/components/activity/dream.ActivityProfile
 |   |       +-- (default)  <- @/components/dream.ProfileShareButton
 |   |       +-- (default)  <- @/components/profile/dream.widget.ProfileWidgetGrid
@@ -2497,23 +2502,23 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> (default)
 |   |       `-- -> metadata
 |   +-- webgpu
-|   |   `-- page.tsx user-facing
+|   |   `-- page.tsx 👁 PAGE
 |   |       +-- redirect  <- next/navigation
 |   |       +-- Metadata  <- next
 |   |       +-- -> (default)
 |   |       `-- -> metadata
-|   +-- error.tsx
+|   +-- error.tsx 🚨 ERROR
 |   |   +-- (default)  <- @/components/overlays/dream.RootStatusScreen
 |   |   +-- isAuthRelatedError  <- @/engine/runtime/isAuthRelatedError
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- useEffect  <- react
 |   |   `-- -> (default)
-|   +-- global-error.tsx
+|   +-- global-error.tsx 🚨 ERROR
 |   |   +-- useEffect  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   `-- -> (default)
 |   +-- globals-enhanced.css
-|   +-- layout.tsx
+|   +-- layout.tsx 🧱 LAYOUT
 |   |   +-- (side-effect)  <- @/styles/globals.css
 |   |   +-- (side-effect)  <- @/styles/view-transitions.css
 |   |   +-- (side-effect)  <- @/styles/dream-shell.css
@@ -2536,13 +2541,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> (default)
 |   |   +-- -> metadata
 |   |   `-- -> viewport
-|   +-- loading.tsx
+|   +-- loading.tsx ⏳ LOADING
 |   |   +-- (default)  <- @/components/overlays/dream.RootStatusScreen
 |   |   `-- -> (default)
-|   +-- not-found.tsx
+|   +-- not-found.tsx 🧭 NOT_FOUND
 |   |   +-- (default)  <- @/components/overlays/dream.RootStatusScreen
 |   |   `-- -> (default)
-|   `-- page.tsx user-facing
+|   `-- page.tsx 👁 PAGE
 |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |       +-- createServerClient  <- @/supabase/server/serverClient
 |       +-- redirect  <- next/navigation
@@ -2554,20 +2559,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       `-- -> (default)
 +-- artifact
 |   `-- dreamengin-clean-codebase-report.json
-+-- assembly  [GameEngin, VM / WASM]
-|   +-- bus.ts unused user-facing
++-- assembly  [GameEngin, VM / WASM] 🗂 FEATURE_FOLDER
+|   +-- bus.ts
 |   |   +-- -> QUEUE_SIZE
 |   |   +-- -> dequeue
 |   |   +-- -> enqueue
-|   |   +-- -> reset
-|   |   `-- unused unused: QUEUE_SIZE, dequeue, enqueue, reset
-|   +-- index.ts unused user-facing
+|   |   `-- -> reset
+|   +-- index.ts
 |   |   +-- -> hashBytesFNV1A
 |   |   +-- -> processAudioBufferSIMD
 |   |   +-- -> shapeGlowFieldSIMD
-|   |   +-- -> tickPhysicsSIMD
-|   |   `-- unused unused: hashBytesFNV1A, processAudioBufferSIMD, shapeGlowFieldSIMD, tickPhysicsSIMD
-|   `-- mad-maxi-player.ts unused user-facing
+|   |   `-- -> tickPhysicsSIMD
+|   `-- mad-maxi-player.ts
 |       +-- -> getCoyoteTimer
 |       +-- -> getDashTimer
 |       +-- -> getJumpsUsed
@@ -2583,8 +2586,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> init
 |       +-- -> loadSnapshot
 |       +-- -> update
-|       +-- -> writeSnapshot
-|       `-- unused unused: getCoyoteTimer, getDashTimer, getJumpsUsed, getMemoryUsage, getOnGround, getSnapshotSize, getTicks, getVX, getVY, getX, getY, handleInput, init, loadSnapshot, update, writeSnapshot
+|       `-- -> writeSnapshot
 +-- build-memory  [AI / Dr. Eams / Agents]
 |   +-- typecheck  [AI / Dr. Eams / Agents]
 |   |   `-- error-files.txt
@@ -2594,94 +2596,84 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- routes.json
 |   +-- schema.json
 |   `-- ui-surfaces.json
-+-- components
++-- components 🗂 FEATURE_FOLDER
 |   +-- activity
-|   |   +-- dream.ActivityPostForm.tsx unused user-facing
+|   |   +-- dream.ActivityPostForm.tsx 🧩 COMPONENT
 |   |   |   +-- calculateActivityPoints, getTierDescription  <- @/dreamr/activity/scoring
 |   |   |   +-- ActivityTier, VerificationMethod  <- @/dreamr/activity/types
 |   |   |   +-- useState  <- react
 |   |   |   +-- TierBadge  <- ./dream.TierBadge
 |   |   |   +-- -> ActivityPostData
-|   |   |   +-- -> ActivityPostForm
-|   |   |   `-- unused unused: ActivityPostData, ActivityPostForm
-|   |   +-- dream.ActivityProfile.tsx user-facing
+|   |   |   `-- -> ActivityPostForm
+|   |   +-- dream.ActivityProfile.tsx 🧩 COMPONENT
 |   |   |   +-- formatAQS, formatRealShitRate, getAQSTier, getAQSTierColor  <- @/dreamr/activity/aqs
 |   |   |   +-- ActivityTier, GetUserMetricsResponse, UserMetrics  <- @/dreamr/activity/types
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   +-- TierBadge  <- ./dream.TierBadge
 |   |   |   `-- -> ActivityProfile
-|   |   `-- dream.TierBadge.tsx user-facing
+|   |   `-- dream.TierBadge.tsx 🧩 COMPONENT
 |   |       +-- getTierDescription, getTierDisplayName  <- @/dreamr/activity/scoring
 |   |       +-- ActivityTier  <- @/dreamr/activity/types
 |   |       `-- -> TierBadge
-|   +-- ads  [Marketplace / Shop / Ads]
-|   |   +-- dream.AdUnit.tsx user-facing
+|   +-- ads  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   +-- dream.AdUnit.tsx 🧩 COMPONENT
 |   |   |   +-- AdType  <- @/dreamr/activity/types
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> AdUnit
-|   |   `-- dream.SkipCreditBalance.tsx unused user-facing
+|   |   `-- dream.SkipCreditBalance.tsx 🧩 COMPONENT
 |   |       +-- useEffect, useState  <- react
-|   |       +-- -> SkipCreditBalance
-|   |       `-- unused unused: SkipCreditBalance
-|   +-- auth  [Auth]
-|   |   `-- dream.PasswordField.tsx user-facing
+|   |       `-- -> SkipCreditBalance
+|   +-- auth  [Auth] 🗂 FEATURE_FOLDER
+|   |   `-- dream.PasswordField.tsx 🧩 COMPONENT
 |   |       +-- Eye, EyeOff  <- lucide-react
 |   |       +-- useId, useState  <- react
 |   |       `-- -> (default)
 |   +-- branding
-|   |   +-- dream.DreamEnginLogo.tsx unused user-facing
+|   |   +-- dream.DreamEnginLogo.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamLogoScene, DreamLogoSceneOptions  <- @/engine/rendering/babylon/useDreamLogoScene
 |   |   |   +-- useRef  <- react
-|   |   |   +-- -> DreamEnginLogo
-|   |   |   `-- unused unused: DreamEnginLogo
-|   |   +-- dream.LogoHero.tsx unused user-facing
+|   |   |   `-- -> DreamEnginLogo
+|   |   +-- dream.LogoHero.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/image
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   `-- dream.Nav.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   `-- dream.Nav.tsx 🧩 COMPONENT
 |   |       +-- Menu, X  <- lucide-react
 |   |       +-- (default)  <- next/image
 |   |       +-- (default)  <- next/link
 |   |       +-- useState  <- react
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- connectors
-|   |   +-- dream.AddSliceSheet.tsx unused user-facing
+|   |   +-- dream.AddSliceSheet.tsx 🧩 COMPONENT
 |   |   |   +-- ConnectorDef, SliceTypeDef  <- @/engine/connectors/connectorRegistry
 |   |   |   +-- useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> AddSliceSheetProps
-|   |   |   +-- -> FeedSlice
-|   |   |   `-- unused unused: AddSliceSheetProps
-|   |   +-- dream.ConnectDreamPrompt.tsx unused
+|   |   |   `-- -> FeedSlice
+|   |   +-- dream.ConnectDreamPrompt.tsx
 |   |   |   +-- default  <- @/components/connectors/dream.widget.ConnectWidgetPrompt
 |   |   |   +-- ConnectWidgetPromptProps  <- @/components/connectors/dream.widget.ConnectWidgetPrompt
 |   |   |   +-- -> ConnectDreamPromptProps
-|   |   |   +-- -> default
-|   |   |   `-- unused unused: ConnectDreamPromptProps, default
-|   |   +-- dream.ConnectorRow.tsx unused user-facing
+|   |   |   `-- -> default
+|   |   +-- dream.ConnectorRow.tsx 🧩 COMPONENT
 |   |   |   +-- ConnectorDef, ConnectorStatus  <- @/engine/connectors/connectorRegistry
 |   |   |   +-- AlertCircle, CheckCircle, Clock, Lock, RefreshCw, Settings, XCircle  <- lucide-react
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> ConnectorRowProps
-|   |   |   `-- unused unused: ConnectorRowProps
-|   |   +-- dream.NoSlotDialog.tsx unused user-facing
+|   |   |   `-- -> ConnectorRowProps
+|   |   +-- dream.NoSlotDialog.tsx 🧩 COMPONENT
 |   |   |   +-- WidgetTypeDef  <- @/engine/widgets/widgetRegistry
 |   |   |   +-- -> (default)
-|   |   |   +-- -> NoSlotDialogProps
-|   |   |   `-- unused unused: NoSlotDialogProps
-|   |   +-- dream.PlacementMode.tsx unused user-facing
+|   |   |   `-- -> NoSlotDialogProps
+|   |   +-- dream.PlacementMode.tsx 🧩 COMPONENT
 |   |   |   +-- handlePlacementCancel, handlePlacementDone  <- @/engine/connectors/installFlow
 |   |   |   +-- WidgetTypeDef  <- @/engine/widgets/widgetRegistry
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> PlacedWidget
-|   |   |   +-- -> PlacementModeProps
-|   |   |   `-- unused unused: PlacedWidget, PlacementModeProps
-|   |   +-- dream.widget.ConnectorWidgetPicker.tsx unused user-facing
+|   |   |   `-- -> PlacementModeProps
+|   |   +-- dream.widget.ConnectorWidgetPicker.tsx 🧩 COMPONENT
 |   |   |   +-- WidgetType  <- @/types/widgets
 |   |   |   +-- ArrowRight, Check, Plug, Search, X  <- lucide-react
 |   |   |   +-- (default)  <- next/link
@@ -2689,90 +2681,80 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> (default)
 |   |   |   +-- -> ConnectorWidgetPickerProps
 |   |   |   +-- -> PickerConnector
-|   |   |   +-- -> TOP_10_CONNECTORS
-|   |   |   `-- unused unused: ConnectorWidgetPickerProps
-|   |   `-- dream.widget.ConnectWidgetPrompt.tsx user-facing
+|   |   |   `-- -> TOP_10_CONNECTORS
+|   |   `-- dream.widget.ConnectWidgetPrompt.tsx 🧩 COMPONENT
 |   |       +-- WidgetTypeDef  <- @/engine/widgets/widgetRegistry
 |   |       +-- useEffect, useRef, useState  <- react
 |   |       +-- -> (default)
 |   |       `-- -> ConnectWidgetPromptProps
 |   +-- contentengin
-|   |   +-- AnimationPanel.tsx unused user-facing
+|   |   +-- AnimationPanel.tsx 🧩 COMPONENT
 |   |   |   +-- ContentAsset  <- @/engins/contentengin/assetTypes
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- AssetPreview3D.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- AssetPreview3D.tsx 🧩 COMPONENT
 |   |   |   +-- useMemo  <- react
 |   |   |   +-- ContentAsset  <- @/engins/contentengin/assetTypes
 |   |   |   +-- (default)  <- @/engins/renderengin/RenderStage
 |   |   |   +-- createInlineRenderIntent  <- @/engins/renderengin/RenderStage
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- ContentEnginStudio.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- ContentEnginStudio.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/engins/contentengin/ImplicitAssetWorkspace
 |   |   |   `-- -> (default)
-|   |   +-- ExportPanel.tsx unused user-facing
+|   |   +-- ExportPanel.tsx 🧩 COMPONENT
 |   |   |   +-- ContentAsset  <- @/engins/contentengin/assetTypes
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- MaterialEditor.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- MaterialEditor.tsx 🧩 COMPONENT
 |   |   |   +-- MaterialDef  <- @/engins/contentengin/assetTypes
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- PartTreeEditor.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- PartTreeEditor.tsx 🧩 COMPONENT
 |   |   |   +-- PartNode  <- @/engins/contentengin/assetTypes
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- PhotoReferencePanel.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- PhotoReferencePanel.tsx 🧩 COMPONENT
 |   |   |   +-- useRef  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- RecipeEditor.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- RecipeEditor.tsx 🧩 COMPONENT
 |   |   |   +-- ContentRecipe, ExportProfile  <- @/engins/contentengin/assetTypes
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   `-- RiggingPanel.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   `-- RiggingPanel.tsx 🧩 COMPONENT
 |   |       +-- ContentAsset  <- @/engins/contentengin/assetTypes
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- core
-|   |   `-- dream.CoreDream.tsx unused user-facing
+|   |   `-- dream.CoreDream.tsx 🧩 COMPONENT
 |   |       +-- (default)  <- @/app/dreamdmbar/_components/HomeDreamRegion
 |   |       +-- (default)  <- next/link
 |   |       +-- (default)  <- react
 |   |       +-- useRef, useState  <- react
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
-|   +-- customize  [Settings / Customization]
-|   |   +-- panels  [Settings / Customization]
-|   |   |   +-- dream.panel.ColorPanel.tsx user-facing
+|   |       `-- -> (default)
+|   +-- customize  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   +-- panels  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   |   +-- dream.panel.ColorPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   |   +-- SKIN_PRESETS  <- @/components/ui-system/skin-engine
 |   |   |   |   +-- (default)  <- react
 |   |   |   |   +-- useState  <- react
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> SlidePanel
-|   |   |   +-- dream.panel.EffectsPanel.tsx user-facing
+|   |   |   +-- dream.panel.EffectsPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   |   +-- SlidePanel  <- ./dream.panel.ColorPanel
 |   |   |   |   `-- -> (default)
-|   |   |   +-- dream.panel.FontPanel.tsx user-facing
+|   |   |   +-- dream.panel.FontPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   |   +-- SkinFont  <- @/components/ui-system/skin-engine
 |   |   |   |   +-- SlidePanel  <- ./dream.panel.ColorPanel
 |   |   |   |   `-- -> (default)
-|   |   |   `-- dream.panel.LayoutPanel.tsx user-facing
+|   |   |   `-- dream.panel.LayoutPanel.tsx 🧩 COMPONENT
 |   |   |       +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |       +-- SkinLayout, SkinShadow  <- @/components/ui-system/skin-engine
 |   |   |       +-- SlidePanel  <- ./dream.panel.ColorPanel
 |   |   |       `-- -> (default)
-|   |   +-- dream.bar.CustomizeModeBar.tsx user-facing
+|   |   +-- dream.bar.CustomizeModeBar.tsx 🧩 COMPONENT
 |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   `-- -> (default)
-|   |   +-- dream.bar.CustomizeToolbar.tsx user-facing
+|   |   +-- dream.bar.CustomizeToolbar.tsx 🧩 COMPONENT
 |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   `-- -> (default)
-|   |   `-- dream.GlobalCustomizeUI.tsx user-facing
+|   |   `-- dream.GlobalCustomizeUI.tsx 🧩 COMPONENT
 |   |       +-- (default)  <- ./dream.bar.CustomizeModeBar
 |   |       +-- (default)  <- ./dream.bar.CustomizeToolbar
 |   |       +-- (default)  <- ./panels/dream.panel.ColorPanel
@@ -2782,58 +2764,55 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       `-- -> (default)
 |   +-- daydream
 |   |   +-- starmaker
-|   |   |   +-- dream.panel.CompingPanel.tsx user-facing
+|   |   |   +-- dream.panel.CompingPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- AudioTake, CompingState, TakeRating, TAKE_COLORS, createDemoTake  <- @/engins/starmakerengin/music/starmakerDaw
 |   |   |   |   +-- Mic2, Plus, Star, Trash2, Wand2  <- lucide-react
 |   |   |   |   +-- CSSProperties, useCallback, useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   +-- dream.panel.MultitrackArrangementPanel.tsx user-facing
+|   |   |   +-- dream.panel.MultitrackArrangementPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- ChevronDown, ChevronRight, Layers3, Pause, Play, Plus  <- lucide-react
 |   |   |   |   +-- useEffect, useState, CSSProperties  <- react
 |   |   |   |   +-- ARRANGEMENT_BARS, ArrangementClip, ArrangementSource, ArrangementTrackId, ArrangementTrackState  <- @/engins/starmakerengin/music/starmakerArrangement
 |   |   |   |   `-- -> (default)
-|   |   |   +-- dream.panel.PianoRollPanel.tsx user-facing
+|   |   |   +-- dream.panel.PianoRollPanel.tsx 🧩 COMPONENT
 |   |   |   |   +-- MidiNote, PianoRollQuantize, PianoRollState, createMidiNote, isBlackKey, midiPitchToName, snapToGrid  <- @/engins/starmakerengin/music/starmakerDaw
 |   |   |   |   +-- ChevronDown, ChevronUp, Piano  <- lucide-react
 |   |   |   |   +-- useCallback, useState  <- react
 |   |   |   |   `-- -> (default)
-|   |   |   `-- dream.panel.SessionViewPanel.tsx user-facing
+|   |   |   `-- dream.panel.SessionViewPanel.tsx 🧩 COMPONENT
 |   |   |       +-- SessionTrack, SessionViewState  <- @/engins/starmakerengin/music/starmakerDaw
 |   |   |       +-- Mic2, Radio, Square, StopCircle, Volume2  <- lucide-react
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       `-- -> (default)
-|   |   +-- dream.CodeDreamIDE.tsx unused user-facing
+|   |   +-- dream.CodeDreamIDE.tsx 🧩 COMPONENT
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- getSwap, toggleSwap  <- @/engine/runtime/swapManager
 |   |   |   +-- ArrowLeftRight, Bot, Box, CheckCircle, Database, FlaskConical, Gamepad2, Loader2, Monitor, MousePointerClick, Play, RefreshCw, StopCircle, Zap  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.constellationmap.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.constellationmap.tsx 🧩 COMPONENT
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.DiffViewer.tsx unused user-facing
+|   |   +-- dream.DiffViewer.tsx 🧩 COMPONENT
 |   |   |   +-- buildFullFileLines, buildScrollMarkers, DEMO_DIFF, firstHunkIndex, nextHunkIndex, parseUnifiedDiff, prevHunkIndex, DiffFile, FullFileLine  <- @/engins/codeengin/diff/diffUtils
 |   |   |   +-- ChevronDown, ChevronsUpDown, ChevronUp, Minimize2  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState, CSSProperties  <- react
 |   |   |   +-- (dynamic import)  <- @/engins/codeengin/diff/diffUtils
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.JourneyTrail.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.JourneyTrail.tsx 🧩 COMPONENT
 |   |   |   +-- annotateDotsWithInsights, computeCurrentStreak, AnnotatedDot  <- @/engine/journey/journeyInsights
 |   |   |   +-- JourneyDot, JourneyTimeGroup  <- @/types/journey
 |   |   |   +-- AnimatePresence, motion  <- framer-motion
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.LabDreamIDE.tsx unused user-facing
+|   |   +-- dream.LabDreamIDE.tsx 🧩 COMPONENT
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- getSwap, toggleSwap  <- @/engine/runtime/swapManager
 |   |   |   +-- Activity, ArrowLeftRight, BarChart2, CheckCircle, FlaskConical, Loader2, MousePointerClick, Play, RefreshCw, StopCircle, Zap  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.NGNEngin.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.NGNEngin.tsx 🧩 COMPONENT
 |   |   |   +-- bridgeBuses, createEventBus  <- @/engine/events/event-bus/index
 |   |   |   +-- addConnection, addPiece, createAssembly, movePiece, removePiece, serializeAssembly, validateAssembly, EngineAssembly, PlacedPiece  <- @/engins/forgeengin/forge-ngn/assembly
 |   |   |   +-- PIECE_CATEGORIES, PIECE_REGISTRY, getPiece, getPiecesByCategory, PieceCategory, PieceManifest, Port  <- @/engins/forgeengin/forge-ngn/piece-registry
@@ -2841,11 +2820,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- AlertCircle, Bot, Boxes, CheckCircle2, ChevronDown, ChevronRight, Cpu, Eye, Gamepad2, Music, Play, Plus, Save, Share2, Users, Wrench, X, Zap  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useRef, useState, DragEvent, MouseEvent  <- react
 |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.OpenDaydreamSideBButton.tsx user-facing
 |   |   |   `-- -> (default)
-|   |   +-- dream.shell.DaydreamShell.tsx user-facing
+|   |   +-- dream.OpenDaydreamSideBButton.tsx 🧩 COMPONENT
+|   |   |   `-- -> (default)
+|   |   +-- dream.shell.DaydreamShell.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dream.BrandLogo
 |   |   |   +-- (default)  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- useDaydreamState  <- @/daydreams/shared/useDaydreamState
@@ -2860,7 +2838,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> DaydreamWidget
-|   |   +-- dream.StandaloneEnginSurface.tsx unused user-facing
+|   |   +-- dream.StandaloneEnginSurface.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/dynamic
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- (dynamic import)  <- @/engins/dream.ForgeEngin
@@ -2871,9 +2849,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (dynamic import)  <- @/engins/engin.LabEngin
 |   |   |   +-- (dynamic import)  <- @/engins/engin.StarMakerEngin
 |   |   |   +-- -> (default)
-|   |   |   +-- -> StandaloneEnginName
-|   |   |   `-- unused unused: (default), StandaloneEnginName
-|   |   `-- dreamsurface.daydream.BrandDaydream.tsx user-facing
+|   |   |   `-- -> StandaloneEnginName
+|   |   `-- dreamsurface.daydream.BrandDaydream.tsx 🧩 COMPONENT
 |   |       +-- recordForgeTransfer  <- @/engins/forgeengin/forge/forgeIntelligence
 |   |       +-- useForgeActivity  <- @/engins/forgeengin/forge/useForgeActivity
 |   |       +-- bridge  <- @/engine/runtime/dualRuntimeBridge
@@ -2884,39 +2861,35 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- draggable
-|   |   `-- dream.DraggableModule.tsx unused user-facing
+|   |   `-- dream.DraggableModule.tsx 🧩 COMPONENT
 |   |       +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |       +-- ModuleManifest, RuntimeId  <- @/types/module-manifest
 |   |       +-- (default)  <- react
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- dreamengin
 |   |   +-- engine
-|   |   |   +-- math.ts unused
+|   |   |   +-- math.ts
 |   |   |   |   +-- -> UnitComplex
 |   |   |   |   +-- -> clamp
 |   |   |   |   +-- -> unitComplexFromAngle
 |   |   |   |   +-- -> unitComplexRotate
-|   |   |   |   +-- -> wrap
-|   |   |   |   `-- unused unused: clamp, unitComplexFromAngle, unitComplexRotate, wrap
-|   |   |   `-- types.ts unused
+|   |   |   |   `-- -> wrap
+|   |   |   `-- types.ts
 |   |   |       +-- UnitComplex  <- ./math
 |   |   |       +-- -> Depth
 |   |   |       +-- -> EngineState
 |   |   |       +-- -> FlightMode
-|   |   |       +-- -> FlightState
-|   |   |       `-- unused unused: Depth, EngineState, FlightMode, FlightState
-|   |   +-- dream.bar.DrEamsSearchBar.tsx unused user-facing
+|   |   |       `-- -> FlightState
+|   |   +-- dream.bar.DrEamsSearchBar.tsx 🧩 COMPONENT
 |   |   |   +-- buildDreamDMUrl, buildDrEamsRequest, matchNavSuggestions, parseDrEamsReply, truncatePreview, NavSuggestion  <- @/dr-eams/search/drEamsSearch
 |   |   |   +-- ArrowRight, MessageCircle, Search, Sparkles, X  <- lucide-react
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> DrEamsSearchBarProps
-|   |   |   `-- unused unused: (default), DrEamsSearchBarProps
-|   |   +-- dream.CanvasDropZone.tsx user-facing
+|   |   |   `-- -> DrEamsSearchBarProps
+|   |   +-- dream.CanvasDropZone.tsx 🧩 COMPONENT
 |   |   |   +-- cacheAsset, enqueueSyncAction  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useState, ReactNode  <- react
 |   |   |   +-- v4  <- uuid
@@ -2926,7 +2899,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> AssetImportPayload
 |   |   |   +-- -> classifyFile
 |   |   |   `-- -> isAcceptedFile
-|   |   +-- dream.DREAMenginOS.tsx user-facing
+|   |   +-- dream.DREAMenginOS.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dreamengin/dream.CanvasDropZone
 |   |   |   +-- AssetImportPayload  <- @/components/dreamengin/dream.CanvasDropZone
 |   |   |   +-- onIdariEvent, IdariEventDetail  <- @/engine/agents/agentBus
@@ -2943,40 +2916,37 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (dynamic import)  <- @babylonjs/havok
 |   |   |   +-- -> (default)
 |   |   |   `-- -> DREAMenginOSProps
-|   |   +-- dream.DrEamsCanvas.tsx unused user-facing
+|   |   +-- dream.DrEamsCanvas.tsx 🧩 COMPONENT
 |   |   |   +-- DrEamsAnimator, DrEamsAction  <- @/dr-eams/animation/DrEamsAnimator
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useRef  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.HomeControls.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.HomeControls.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/ui/dream.InfinityIcon
 |   |   |   `-- -> (default)
-|   |   +-- dream.menu.NexusMenu.tsx user-facing
+|   |   +-- dream.menu.NexusMenu.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/ui/dream.DreamWord
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   `-- -> (default)
-|   |   +-- dream.menu.OutdreamMenu.tsx user-facing
+|   |   +-- dream.menu.OutdreamMenu.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamNav  <- @/components/dreamnav/dreamsurface.dreamnav
 |   |   |   +-- Node  <- @/engine/dreamnav/delta
 |   |   |   +-- dispatchTauPath, findTauPath  <- @/engine/dreamnav/path
 |   |   |   `-- -> (default)
-|   |   +-- dream.overlay.ViewAllDreamsOverlay.tsx unused user-facing
+|   |   +-- dream.overlay.ViewAllDreamsOverlay.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamNav  <- @/components/dreamnav/dreamsurface.dreamnav
 |   |   |   +-- Node  <- @/engine/dreamnav/delta
 |   |   |   +-- dispatchTauPath, findTauPath  <- @/engine/dreamnav/path
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.panel.CrossEnginStatusPanel.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.panel.CrossEnginStatusPanel.tsx 🧩 COMPONENT
 |   |   |   +-- bridge, PeerState  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> CrossEnginStatusPanel
-|   |   |   `-- unused unused: CrossEnginStatusPanel
-|   |   +-- dream.panel.DrEamsPanel.tsx user-facing
+|   |   |   `-- -> CrossEnginStatusPanel
+|   |   +-- dream.panel.DrEamsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- useEffect, useMemo, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.scene.BabylonGameScene.tsx unused user-facing
+|   |   +-- dream.scene.BabylonGameScene.tsx 🧩 COMPONENT
 |   |   |   +-- createBabylonEngine  <- @/engine/rendering/babylon/createEngine
 |   |   |   +-- DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals  <- @/engine/rendering/god-tier/godTierEngine
 |   |   |   +-- WebGPUDirector, applyDirectorFrame, buildSceneObjects, defaultCameraSignals  <- @/engine/rendering/webgpu/director
@@ -2987,9 +2957,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/god-tier/godTierEngine
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/webgpu/director
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/webgpu/director
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.scene.DrEamsScene.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.scene.DrEamsScene.tsx 🧩 COMPONENT
 |   |   |   +-- createBabylonEngine  <- @/engine/rendering/babylon/createEngine
 |   |   |   +-- DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals, BabylonSceneLike  <- @/engine/rendering/god-tier/godTierEngine
 |   |   |   +-- Mesh, ArcRotateCamera, Color3, DirectionalLight, HemisphericLight, MeshBuilder, PBRMaterial, PointerEventTypes, Scene, SceneLoader, StandardMaterial, TransformNode, Vector3  <- @babylonjs/core
@@ -2997,23 +2966,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useEffect, useRef  <- react
 |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   +-- (dynamic import)  <- @babylonjs/core
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.scene.PortfolioOptimizationScene.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.scene.PortfolioOptimizationScene.tsx 🧩 COMPONENT
 |   |   |   +-- useEffect, useRef  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.shell.EnginShell.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.shell.EnginShell.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.AppearanceWidget.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.widget.AppearanceWidget.tsx 🧩 COMPONENT
 |   |   |   +-- useTheme  <- @/components/providers/dream.ThemeProvider
 |   |   |   +-- THEME_PRESETS  <- @/components/ui-system/theme-engine
 |   |   |   +-- useCallback  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   `-- dreamsurface.dreamengin.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   `-- dreamsurface.dreamengin.tsx 🧩 COMPONENT
 |   |       +-- DreamNavProvider  <- @/components/dreamnav/dreamsurface.dreamnav
 |   |       +-- usePathname  <- next/navigation
 |   |       +-- useCallback, useEffect, useMemo, useRef, useState  <- react
@@ -3024,34 +2989,31 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- (default)  <- ./dream.menu.NexusMenu
 |   |       +-- (default)  <- ./dream.menu.OutdreamMenu
 |   |       +-- (default)  <- ./dream.panel.DrEamsPanel
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- dreamnav
-|   |   +-- dream.DreamNavControls.tsx unused user-facing
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   `-- dreamsurface.dreamnav.tsx user-facing
+|   |   +-- dream.DreamNavControls.tsx 🧩 COMPONENT
+|   |   |   `-- -> (default)
+|   |   `-- dreamsurface.dreamnav.tsx 🧩 COMPONENT
 |   |       +-- Action, Node  <- @/engine/dreamnav/delta
 |   |       +-- DEFAULT_NAV_STATE, reduceNav  <- @/engine/dreamnav/delta
 |   |       +-- (default)  <- react
 |   |       +-- createContext, useContext, useReducer  <- react
 |   |       +-- -> DreamNavProvider
 |   |       `-- -> useDreamNav
-|   +-- dreamr  [DreamR]
-|   |   +-- dream.CloseFriendsSettings.tsx unused user-facing
+|   +-- dreamr  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- dream.CloseFriendsSettings.tsx 🧩 COMPONENT
 |   |   |   +-- Loader2, Search, UserMinus, UserPlus, Users, X  <- lucide-react
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- useCallback, useEffect, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.panel.DreamRChannelPanel.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.panel.DreamRChannelPanel.tsx 🧩 COMPONENT
 |   |   |   +-- FeedPost  <- @/dreamr/feed/useLiveFeed
 |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   +-- ChevronRight, ExternalLink, Loader2, Maximize2, Play, X, Youtube  <- lucide-react
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.panel.DreamRCreatorPanel.tsx user-facing
+|   |   `-- dream.panel.DreamRCreatorPanel.tsx 🧩 COMPONENT
 |   |       +-- FeedPost  <- @/dreamr/feed/useLiveFeed
 |   |       +-- ExternalLink, Globe, Hash, Instagram, MessageCircle, Music, Sparkles, UserCheck, UserPlus, X, Youtube  <- lucide-react
 |   |       +-- (default)  <- next/image
@@ -3059,50 +3021,45 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useEffect, useRef, useState  <- react
 |   |       `-- -> (default)
 |   +-- dreams
-|   |   +-- dream.connectorlayer.tsx unused user-facing
+|   |   +-- dream.connectorlayer.tsx 🧩 COMPONENT
 |   |   |   +-- ReactNode  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> DreamConnectorLayerProps
-|   |   |   `-- unused unused: (default), DreamConnectorLayerProps
-|   |   +-- dream.DraggableDream.tsx user-facing
+|   |   |   `-- -> DreamConnectorLayerProps
+|   |   +-- dream.DraggableDream.tsx 🧩 COMPONENT
 |   |   |   +-- DREAM_DRAG_MIME, serializeDreamDragData, DreamDragData  <- @/engine/dreams/drag
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.featurelayer.tsx unused user-facing
+|   |   +-- dream.featurelayer.tsx 🧩 COMPONENT
 |   |   |   +-- ReactNode  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> DreamFeatureLayerProps
-|   |   |   `-- unused unused: (default), DreamFeatureLayerProps
-|   |   +-- dream.GlobalDragLayer.tsx user-facing
+|   |   |   `-- -> DreamFeatureLayerProps
+|   |   +-- dream.GlobalDragLayer.tsx 🧩 COMPONENT
 |   |   |   +-- DreamDragData  <- @/engine/dreams/drag
 |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.outputlayer.tsx unused user-facing
+|   |   +-- dream.outputlayer.tsx 🧩 COMPONENT
 |   |   |   +-- canRenderProjection  <- @/engine/dreams/profileProjection
 |   |   |   +-- ReactNode  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> DreamOutputLayerProps
 |   |   |   +-- -> DreamOutputMode
-|   |   |   +-- -> DreamVisibility
-|   |   |   `-- unused unused: (default), DreamOutputLayerProps, DreamOutputMode, DreamVisibility
-|   |   +-- dream.panel.RuntimeMemoryHUD.tsx unused user-facing
+|   |   |   `-- -> DreamVisibility
+|   |   +-- dream.panel.RuntimeMemoryHUD.tsx 🧩 COMPONENT
 |   |   |   +-- formatArtifactKind, getArtifactAccent  <- @/engine/intelligence/continuityHelpers
 |   |   |   +-- dreamOSBus, DreamOSSnapshot  <- @/engine/runtime/dreamOSBus
 |   |   |   +-- useEffect, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.PlatformErrorReporter.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.PlatformErrorReporter.tsx 🧩 COMPONENT
 |   |   |   +-- useEffect  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.shell.DreamShell.tsx unused
+|   |   +-- dream.shell.DreamShell.tsx
 |   |   |   +-- default  <- @/components/dreams/dreamsurface.shell
 |   |   |   +-- DreamDataState, DreamShellProps  <- @/components/dreams/dreamsurface.shell
 |   |   |   +-- -> DreamDataState
 |   |   |   +-- -> DreamShellProps
-|   |   |   +-- -> default
-|   |   |   `-- unused unused: DreamDataState, DreamShellProps, default
-|   |   +-- dream.shell.SharedDreamShell.tsx unused user-facing
+|   |   |   `-- -> default
+|   |   +-- dream.shell.SharedDreamShell.tsx 🧩 COMPONENT
 |   |   |   +-- useSharedDream  <- @/hooks/useSharedDream
 |   |   |   +-- DreamBroadcastPayload  <- @/engine/sharedDream
 |   |   |   +-- Mic, MicOff, X  <- lucide-react
@@ -3111,26 +3068,23 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- -> (default)
 |   |   |   +-- -> SharedDreamShell
-|   |   |   +-- -> SharedDreamShellProps
-|   |   |   `-- unused unused: (default), SharedDreamShell, SharedDreamShellProps
-|   |   +-- dream.SlideOverPanel.tsx unused user-facing
+|   |   |   `-- -> SharedDreamShellProps
+|   |   +-- dream.SlideOverPanel.tsx 🧩 COMPONENT
 |   |   |   +-- AnimatePresence, motion  <- framer-motion
 |   |   |   +-- (default)  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.SuperDreamWidget.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.widget.SuperDreamWidget.tsx 🧩 COMPONENT
 |   |   |   +-- DREAM_WINDOW_STATES  <- @/engine/dream-window/DreamWindowLifecycle
 |   |   |   +-- useDreamWindowActions  <- @/engine/dream-window/useDreamWindowActions
 |   |   |   +-- CreateDreamWindowBody, DreamWindowRecord  <- @/types/dream-window
 |   |   |   +-- useCallback, useMemo, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> SuperDreamWidgetProps
-|   |   +-- dream.window.JourneyDreamWindow.tsx unused user-facing
+|   |   +-- dream.window.JourneyDreamWindow.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   |   +-- (default)  <- next/link
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dreamsurface.dreamspace.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dreamsurface.dreamspace.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/app/dreamdmbar/_components/DreamSpaceRegion
 |   |   |   +-- (default)  <- @/components/home/dream.ActiveModuleSurface
 |   |   |   +-- (default)  <- @/components/spatial/dream.ProfileSpace
@@ -3148,62 +3102,59 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> (default)
 |   |   |   +-- -> RecentDestination
 |   |   |   +-- -> buildRecentDestinations
-|   |   |   +-- -> getAppRoute
-|   |   |   `-- unused unused: RecentDestination
-|   |   +-- dreamsurface.shell.tsx user-facing
+|   |   |   `-- -> getAppRoute
+|   |   +-- dreamsurface.shell.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- Component, useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> DreamDataState
 |   |   |   `-- -> DreamShellProps
-|   |   `-- dreamsurface.window.tsx unused user-facing
+|   |   `-- dreamsurface.window.tsx 🧩 COMPONENT
 |   |       +-- useTapHoldMove  <- @/hooks/useTapHoldMove
 |   |       +-- ModuleManifest, RuntimeId  <- @/engine/editor/universalEditor
 |   |       +-- (default)  <- react
 |   |       +-- useRef  <- react
 |   |       +-- -> (default)
 |   |       +-- -> DreamWindowShell
-|   |       +-- -> DreamWindowShellProps
-|   |       `-- unused unused: (default), DreamWindowShell, DreamWindowShellProps
-|   +-- engines
-|   |   +-- brand  [BrandEngin]
-|   |   |   +-- panels  [BrandEngin]
-|   |   |   |   +-- dream.panel.CampaignsPanel.tsx user-facing
+|   |       `-- -> DreamWindowShellProps
+|   +-- engines 🗂 FEATURE_FOLDER
+|   |   +-- brand  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- panels  [BrandEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- dream.panel.CampaignsPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Calculator, DollarSign, Plus, Trash2, TrendingUp  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.IdentityPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.IdentityPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   |       +-- Hash, Palette, Save, Type  <- lucide-react
 |   |   |   |       +-- useState  <- react
 |   |   |   |       `-- -> (default)
-|   |   |   +-- dream.BrandEnginApp.tsx user-facing
+|   |   |   +-- dream.BrandEnginApp.tsx
 |   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- (default)  <- @/engins/engin.BrandingEngin
 |   |   |   |   `-- -> (default)
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.BrandEnginApp
 |   |   |       +-- default  <- ./panels/dream.panel.CampaignsPanel
 |   |   |       +-- default  <- ./panels/dream.panel.IdentityPanel
 |   |   |       +-- -> BrandEnginApp
 |   |   |       +-- -> CampaignsPanel
 |   |   |       `-- -> IdentityPanel
-|   |   +-- code  [CodeEngin]
-|   |   |   +-- panels  [CodeEngin]
-|   |   |   |   +-- dream.panel.AIPanel.tsx unused user-facing
+|   |   +-- code  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- panels  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- dream.panel.AIPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Bot, CheckCheck, Copy, Loader2, Send, Sparkles  <- lucide-react
 |   |   |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   |   |   +-- describe, it, expect, vi  <- vitest
 |   |   |   |   |   +-- -> (default)
-|   |   |   |   |   +-- -> processData
-|   |   |   |   |   `-- unused unused: processData
-|   |   |   |   +-- dream.panel.NotebookPanel.tsx user-facing
+|   |   |   |   |   `-- -> processData
+|   |   |   |   +-- dream.panel.NotebookPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Code2, Play, Plus, TerminalSquare, Trash2  <- lucide-react
 |   |   |   |   |   +-- useCallback, useState  <- react
 |   |   |   |   |   +-- (side-effect)  <- ,
     output: 
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.ProjectsPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.ProjectsPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   |       +-- Clock, ExternalLink, FolderOpen, Loader2, Plus, RefreshCw  <- lucide-react
@@ -3211,11 +3162,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- useEffect, useState  <- react
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> (default)
-|   |   |   +-- dream.CodeEnginApp.tsx user-facing
+|   |   |   +-- dream.CodeEnginApp.tsx
 |   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- (default)  <- @/engins/engin.CodeEngin
 |   |   |   |   `-- -> (default)
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.CodeEnginApp
 |   |   |       +-- default  <- ./panels/dream.panel.AIPanel
 |   |   |       +-- default  <- ./panels/dream.panel.NotebookPanel
@@ -3224,28 +3175,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> CodeEnginApp
 |   |   |       +-- -> NotebookPanel
 |   |   |       `-- -> ProjectsPanel
-|   |   +-- create  [ContentEngin / CreateEngin]
-|   |   |   +-- panels  [ContentEngin / CreateEngin]
-|   |   |   |   +-- dream.panel.CalendarPanel.tsx unused user-facing
+|   |   +-- create  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- panels  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- dream.panel.CalendarPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Calendar, ChevronLeft, ChevronRight, Clock, Plus, X  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
-|   |   |   |   |   +-- -> (default)
-|   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   +-- dream.panel.EditorPanel.tsx unused user-facing
+|   |   |   |   |   `-- -> (default)
+|   |   |   |   +-- dream.panel.EditorPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Bold, Hash, Italic, Link2, List, Save, Sparkles  <- lucide-react
 |   |   |   |   |   +-- useRef, useState  <- react
-|   |   |   |   |   +-- -> (default)
-|   |   |   |   |   `-- unused unused: (default)
-|   |   |   |   `-- dream.panel.QueuePanel.tsx unused user-facing
+|   |   |   |   |   `-- -> (default)
+|   |   |   |   `-- dream.panel.QueuePanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- AlertCircle, CheckCircle, Clock, Loader2, Plus, Send, Trash2  <- lucide-react
 |   |   |   |       +-- useState  <- react
-|   |   |   |       +-- -> (default)
-|   |   |   |       `-- unused unused: (default)
-|   |   |   +-- dream.CreateEnginApp.tsx user-facing
+|   |   |   |       `-- -> (default)
+|   |   |   +-- dream.CreateEnginApp.tsx
 |   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- (default)  <- @/engins/engin.ContentEngin
 |   |   |   |   `-- -> (default)
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.CreateEnginApp
 |   |   |       +-- default  <- ./panels/dream.panel.CalendarPanel
 |   |   |       +-- default  <- ./panels/dream.panel.EditorPanel
@@ -3256,19 +3204,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> QueuePanel
 |   |   +-- games
 |   |   |   +-- panels
-|   |   |   |   +-- dream.panel.BuilderPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.BuilderPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   |   |   +-- Info, Save, Sparkles, Trash2  <- lucide-react
 |   |   |   |   |   +-- useCallback, useState, KeyboardEvent  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   +-- dream.panel.LibraryPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.LibraryPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- GAME_CATALOG  <- @/engins/gameengin/games/catalog
 |   |   |   |   |   +-- buildGameLaunchHref  <- @/engins/gameengin/games/navigation
 |   |   |   |   |   +-- Filter, Play, Search  <- lucide-react
 |   |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.ScoresPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.ScoresPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- Loader2, RefreshCw, Share2, Trophy  <- lucide-react
 |   |   |   |       +-- useEffect, useState  <- react
 |   |   |   |       `-- -> (default)
@@ -3286,25 +3234,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> GameEnginApp
 |   |   |       +-- -> LibraryPanel
 |   |   |       `-- -> ScoresPanel
-|   |   +-- lab  [LabEngin]
-|   |   |   +-- panels  [LabEngin]
-|   |   |   |   +-- dream.panel.DataVizPanel.tsx user-facing
+|   |   +-- lab  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- panels  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- dream.panel.DataVizPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- BarChart2, Download, Layers, TrendingUp  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   +-- dream.panel.ExperimentsPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.ExperimentsPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Loader2, Play, RotateCcw  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.QuantumPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.QuantumPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- Info, Play, RotateCcw, Zap  <- lucide-react
 |   |   |   |       +-- useCallback, useState  <- react
 |   |   |   |       `-- -> (default)
-|   |   |   +-- dream.LabEnginApp.tsx user-facing
+|   |   |   +-- dream.LabEnginApp.tsx
 |   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- (default)  <- @/engins/engin.LabEngin
 |   |   |   |   `-- -> (default)
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.LabEnginApp
 |   |   |       +-- default  <- ./panels/dream.panel.DataVizPanel
 |   |   |       +-- default  <- ./panels/dream.panel.ExperimentsPanel
@@ -3313,27 +3261,27 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> ExperimentsPanel
 |   |   |       +-- -> LabEnginApp
 |   |   |       `-- -> QuantumPanel
-|   |   +-- music  [StarMakerEngin]
-|   |   |   +-- panels  [StarMakerEngin]
-|   |   |   |   +-- dream.panel.ArrangePanel.tsx user-facing
+|   |   +-- music  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- panels  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- dream.panel.ArrangePanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- Layers, Minus, Pause, Play, Plus, SkipBack  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   +-- dream.panel.MusicLibraryPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.MusicLibraryPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- ChevronRight, Drum, FolderOpen, Music2, Sparkles  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.StudioPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.StudioPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- AlertCircle, Mic, Play, Square, Upload  <- lucide-react
 |   |   |   |       +-- useEffect, useRef, useState  <- react
 |   |   |   |       +-- toErrorMessage  <- @/utils/index
 |   |   |   |       `-- -> (default)
-|   |   |   +-- dream.MusicEnginApp.tsx user-facing
+|   |   |   +-- dream.MusicEnginApp.tsx
 |   |   |   |   +-- makeEnginApp  <- @/components/engines/shared
 |   |   |   |   +-- (default)  <- next/dynamic
 |   |   |   |   +-- (dynamic import)  <- @/engins/engin.StarMakerEngin
 |   |   |   |   `-- -> (default)
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.MusicEnginApp
 |   |   |       +-- default  <- ./panels/dream.panel.ArrangePanel
 |   |   |       +-- default  <- ./panels/dream.panel.MusicLibraryPanel
@@ -3344,17 +3292,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       `-- -> StudioPanel
 |   |   +-- portfolio
 |   |   |   +-- panels
-|   |   |   |   +-- dream.panel.AssetsPanel.tsx user-facing
+|   |   |   |   +-- dream.panel.AssetsPanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- CheckCircle2, Circle, RefreshCw, TrendingDown, TrendingUp  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   +-- dream.panel.OptimizePanel.tsx user-facing
+|   |   |   |   +-- dream.panel.OptimizePanel.tsx 🧩 COMPONENT
 |   |   |   |   |   +-- (default)  <- @/engins/dream.QuantumCircuitCanvas
 |   |   |   |   |   +-- QuantumMeasurementResult  <- @/engins/dream.QuantumCircuitCanvas
 |   |   |   |   |   +-- Activity, Cpu, Loader2, ShieldCheck, TrendingUp  <- lucide-react
 |   |   |   |   |   +-- useState  <- react
 |   |   |   |   |   `-- -> (default)
-|   |   |   |   `-- dream.panel.PortfolioQuantumPanel.tsx user-facing
+|   |   |   |   `-- dream.panel.PortfolioQuantumPanel.tsx 🧩 COMPONENT
 |   |   |   |       +-- Info, Play, RotateCcw, Zap  <- lucide-react
 |   |   |   |       +-- useCallback, useState  <- react
 |   |   |   |       `-- -> (default)
@@ -3372,28 +3320,26 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> PortfolioEnginApp
 |   |   |       `-- -> PortfolioQuantumPanel
 |   |   +-- render
-|   |   |   +-- dream.RenderServiceDiagnostics.tsx unused user-facing
+|   |   |   +-- dream.RenderServiceDiagnostics.tsx 🧩 COMPONENT
 |   |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   |   |   +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
 |   |   |   |   +-- RenderEnginRuleSet, RenderEnginViewport, acknowledgeRenderServiceIntent, readRenderServiceQueue, subscribeRenderServiceIntents, RenderIntent, RenderServiceIntentEnvelope  <- @/engins/renderengin
 |   |   |   |   +-- (side-effect)  <- @/engins/renderengin/runtimeRegistration
 |   |   |   |   +-- -> (default)
-|   |   |   |   +-- -> RenderDiagnosticsSurface
-|   |   |   |   `-- unused unused: (default), RenderDiagnosticsSurface
-|   |   |   +-- dream.RenderSurface.tsx unused user-facing
+|   |   |   |   `-- -> RenderDiagnosticsSurface
+|   |   |   +-- dream.RenderSurface.tsx 🧩 COMPONENT
 |   |   |   |   +-- (default)  <- @/engins/renderengin/RenderEnginInlineSurface
-|   |   |   |   +-- -> (default)
-|   |   |   |   `-- unused unused: (default)
+|   |   |   |   `-- -> (default)
 |   |   |   `-- index.ts
 |   |   |       +-- default  <- ./dream.RenderServiceDiagnostics
 |   |   |       `-- -> RenderServiceDiagnostics
 |   |   +-- shared
-|   |   |   +-- dream.bar.EnginNavBar.tsx user-facing
+|   |   |   +-- dream.bar.EnginNavBar.tsx 🧩 COMPONENT
 |   |   |   |   +-- (default)  <- next/link
 |   |   |   |   +-- usePathname  <- next/navigation
 |   |   |   |   +-- -> (default)
 |   |   |   |   `-- -> NavItem
-|   |   |   +-- dream.EnginProvider.tsx user-facing
+|   |   |   +-- dream.EnginProvider.tsx 🧩 COMPONENT
 |   |   |   |   +-- createContext, useContext, useEffect, useState, ReactNode  <- react
 |   |   |   |   +-- -> EnginProvider
 |   |   |   |   +-- -> EngineId
@@ -3403,13 +3349,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- EngineId  <- ./dream.EnginProvider
 |   |   |   |   +-- NavItem  <- ./dream.bar.EnginNavBar
 |   |   |   |   `-- -> EnginRuleSet
-|   |   |   +-- dream.makeEnginApp.tsx user-facing
+|   |   |   +-- dream.makeEnginApp.tsx 🧩 COMPONENT
 |   |   |   |   +-- useRouter  <- next/navigation
 |   |   |   |   +-- (default)  <- ./dream.bar.EnginNavBar
 |   |   |   |   +-- EnginRuleSet  <- ./dream.EnginRuleSet
 |   |   |   |   +-- (default)  <- ./dream.shell.EnginAppShell
 |   |   |   |   `-- -> makeEnginApp
-|   |   |   +-- dream.shell.EnginAppShell.tsx user-facing
+|   |   |   +-- dream.shell.EnginAppShell.tsx 🧩 COMPONENT
 |   |   |   |   +-- InviteFlow, SharedDreamProvider  <- @/components/shared-dream
 |   |   |   |   +-- ChevronLeft, X  <- lucide-react
 |   |   |   |   +-- (default)  <- next/link
@@ -3443,52 +3389,48 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- *  <- ./lab
 |   |       +-- *  <- ./music
 |   |       `-- *  <- ./portfolio
-|   +-- feed  [Feed / Social]
-|   |   +-- dream.AlgorithmEngine.tsx unused user-facing
+|   +-- feed  [Feed / Social] 🗂 FEATURE_FOLDER
+|   |   +-- dream.AlgorithmEngine.tsx 🧩 COMPONENT
 |   |   |   +-- Check, ChevronRight, Edit3, Plus, Share2, Shield, ShieldCheck, Shuffle, Trash2, User, X, Zap  <- lucide-react
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useCallback, useId, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> FeedPreset
-|   |   |   `-- unused unused: FeedPreset
-|   |   +-- dream.CommentSection.tsx user-facing
+|   |   |   `-- -> FeedPreset
+|   |   +-- dream.CommentSection.tsx 🧩 COMPONENT
 |   |   |   +-- formatRelativeTime  <- @/utils/index
 |   |   |   +-- AlertCircle, Loader2, MessageCircle, Send  <- lucide-react
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.FeedVideoCard.tsx unused user-facing
+|   |   +-- dream.FeedVideoCard.tsx 🧩 COMPONENT
 |   |   |   +-- FeedPost  <- @/dreamr/feed/useLiveFeed
 |   |   |   +-- ChevronLeft, ChevronRight, Maximize2, Minimize2, X, Youtube  <- lucide-react
 |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> FeedVideoCardProps
-|   |   |   `-- unused unused: FeedVideoCardProps
-|   |   +-- dream.FollowButton.tsx user-facing
+|   |   |   `-- -> FeedVideoCardProps
+|   |   +-- dream.FollowButton.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/feed/dream.FollowOnboarding
 |   |   |   +-- FollowFrequency  <- @/components/feed/dream.FollowOnboarding
 |   |   |   +-- UserCheck, UserPlus  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.FollowOnboarding.tsx unused user-facing
+|   |   `-- dream.FollowOnboarding.tsx 🧩 COMPONENT
 |   |       +-- Check, X  <- lucide-react
 |   |       +-- useCallback, useState  <- react
 |   |       +-- -> (default)
 |   |       +-- -> FOLLOW_OPTIONS
 |   |       +-- -> FollowFrequency
 |   |       +-- -> FollowSettings
-|   |       +-- -> saveFollowSetting
-|   |       `-- unused unused: FOLLOW_OPTIONS, FollowSettings, saveFollowSetting
+|   |       `-- -> saveFollowSetting
 |   +-- feeds  [Feed / Social]
-|   |   `-- dream.widget.EmbedFeedWidget.tsx unused user-facing
+|   |   `-- dream.widget.EmbedFeedWidget.tsx 🧩 COMPONENT
 |   |       +-- EmbedFeedItem  <- @/dreamr/feeds/embedFeedLoader
 |   |       +-- ExternalLink, Eye, Hash, RefreshCw  <- lucide-react
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
-|   +-- forge  [ForgeEngin]
-|   |   +-- dream.EngineBuilderCanvas.tsx unused user-facing
+|   |       `-- -> (default)
+|   +-- forge  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   +-- dream.EngineBuilderCanvas.tsx 🧩 COMPONENT
 |   |   |   +-- COMPONENT_INVENTORY, AtomicComponent, ComponentCategory  <- @/engins/forgeengin/componentInventory
 |   |   |   +-- atomicPieceFromComponent, createAssembly, deserializeAssembly, serializeAssembly, validateAssembly, AtomicPiece, EngineAssembly, Wire  <- @/engins/forgeengin/forge/engineForge
 |   |   |   +-- AnimatePresence, motion  <- framer-motion
@@ -3496,9 +3438,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useMemo, useRef, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> EngineBuilderCanvasProps
-|   |   |   `-- unused unused: (default), EngineBuilderCanvasProps
-|   |   +-- dream.panel.AIBuilderPanel.tsx user-facing
+|   |   |   `-- -> EngineBuilderCanvasProps
+|   |   +-- dream.panel.AIBuilderPanel.tsx 🧩 COMPONENT
 |   |   |   +-- canBuildToday, readForgeBuilds, ForgeBuildRecord, ForgeLogEvent  <- @/engins/forgeengin/forge/forgeBuild
 |   |   |   +-- ENGIN_REGISTRY  <- @/engins/forgeengin/forge/forgeRegistry
 |   |   |   +-- useForgeBuild  <- @/engins/forgeengin/forge/useForgeBuild
@@ -3508,31 +3449,29 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.widget.ForgeMomentumWidget.tsx user-facing
+|   |   `-- dream.widget.ForgeMomentumWidget.tsx 🧩 COMPONENT
 |   |       +-- computeMomentum, getLevelColor, getLevelEmoji, MomentumSnapshot  <- @/engins/forgeengin/forge/forgeMomentum
 |   |       +-- useEffect, useState  <- react
 |   |       `-- -> (default)
-|   +-- gameengin  [GameEngin]
-|   |   +-- input  [GameEngin]
-|   |   |   `-- DualSenseManager.ts unused user-facing
+|   +-- gameengin  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   +-- input  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- DualSenseManager.ts
 |   |   |       +-- * as BABYLON  <- @babylonjs/core
 |   |   |       +-- -> DualSenseManager
-|   |   |       +-- -> DualSenseState
-|   |   |       `-- unused unused: DualSenseState
-|   |   +-- dream.cartridge.CartridgeBrowser.tsx unused user-facing
+|   |   |       `-- -> DualSenseState
+|   |   +-- dream.cartridge.CartridgeBrowser.tsx 🧩 COMPONENT
 |   |   |   +-- CARTRIDGE_MANIFEST, getCartridgeCategories, CartridgeManifestEntry  <- @/engins/gameengin/cartridges/manifest
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useMemo, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> CartridgeBrowserProps
-|   |   |   `-- unused unused: CartridgeBrowserProps
-|   |   +-- dream.cartridge.CartridgeErrorBoundary.tsx user-facing
+|   |   |   `-- -> CartridgeBrowserProps
+|   |   +-- dream.cartridge.CartridgeErrorBoundary.tsx 🧩 COMPONENT
 |   |   |   +-- Component, useEffect, ErrorInfo, ReactNode  <- react
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- -> CartridgeCrashEvent
 |   |   |   +-- -> CartridgeErrorBoundary
 |   |   |   `-- -> useGlobalCrashListener
-|   |   +-- dream.cartridge.CartridgeLauncher.tsx user-facing
+|   |   +-- dream.cartridge.CartridgeLauncher.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/engins/gameengin/GameRuntime
 |   |   |   +-- GameCartridge, GravityPreset, RuntimeBackendDiagnostics  <- @/engins/gameengin/cartridge
 |   |   |   +-- loadCartridgeBundle, LoadedCartridgeBundle  <- @/engins/gameengin/cartridges/loaders
@@ -3546,28 +3485,26 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- -> (default)
 |   |   |   `-- -> CartridgeLauncherProps
-|   |   +-- dream.cartridge.FeaturedCartridges.tsx unused user-facing
+|   |   +-- dream.cartridge.FeaturedCartridges.tsx 🧩 COMPONENT
 |   |   |   +-- CARTRIDGE_MANIFEST, CartridgeManifestEntry  <- @/engins/gameengin/cartridges/manifest
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- -> (default)
-|   |   |   +-- -> FeaturedCartridgesProps
-|   |   |   `-- unused unused: FeaturedCartridgesProps
-|   |   +-- dream.CartridgeRegistryBootstrap.tsx user-facing
+|   |   |   `-- -> FeaturedCartridgesProps
+|   |   +-- dream.CartridgeRegistryBootstrap.tsx 🧩 COMPONENT
 |   |   |   +-- registerCartridges  <- @/engins/gameengin/registerCartridges
 |   |   |   +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |   |   +-- useEffect  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.CrashReportModal.tsx unused user-facing
+|   |   `-- dream.CrashReportModal.tsx 🧩 COMPONENT
 |   |       +-- useEffect, useId, useRef, useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       +-- -> (default)
 |   |       +-- -> CRASH_REPORT_MAX_BYTES
 |   |       +-- -> CrashContext
-|   |       +-- -> CrashReportModalProps
-|   |       `-- unused unused: CrashReportModalProps
-|   +-- games  [GameEngin]
-|   |   +-- _fx  [GameEngin]
-|   |   |   `-- canvasFx.ts unused user-facing
+|   |       `-- -> CrashReportModalProps
+|   +-- games  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   +-- _fx  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- canvasFx.ts
 |   |   |       +-- -> HitStop
 |   |   |       +-- -> ParallaxLayer
 |   |   |       +-- -> ParallaxLayers
@@ -3579,19 +3516,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> easeOutCubic
 |   |   |       +-- -> lerp
 |   |   |       +-- -> motionTrail
-|   |   |       +-- -> prefersReducedMotion
-|   |   |       `-- unused unused: HitStop, ParallaxLayer, ParallaxLayers, Particle, clamp, easeOutCubic, lerp
-|   |   +-- madmaxi  [GameEngin]
-|   |   |   +-- audio.ts unused user-facing
+|   |   |       `-- -> prefersReducedMotion
+|   |   +-- madmaxi  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- audio.ts
 |   |   |   |   +-- -> MadmaxiAudioController
-|   |   |   |   +-- -> MadmaxiAudioCue
-|   |   |   |   `-- unused unused: MadmaxiAudioCue
-|   |   |   +-- authoredZonePacks.ts user-facing
+|   |   |   |   `-- -> MadmaxiAudioCue
+|   |   |   +-- authoredZonePacks.ts
 |   |   |   |   +-- getMadmaxiEnemyCount, ZONES  <- ./config
 |   |   |   |   +-- CoinDef, EnemyDef, HazardDef, LevelDef, MadmaxiEnemyKind, MadmaxiPowerUpKind, PlatDef, PowerUpDef  <- ./types
 |   |   |   |   +-- -> getAuthoredStarterLevel
 |   |   |   |   `-- -> isMadmaxiAuthoredLevel
-|   |   |   +-- config.ts unused user-facing
+|   |   |   +-- config.ts
 |   |   |   |   +-- BossMeta, MadmaxiEnemyKind, MadmaxiPowerUpKind, ZoneMeta  <- ./types
 |   |   |   |   +-- -> BOSSES
 |   |   |   |   +-- -> BOSS_ENRAGE_MULTIPLIER
@@ -3612,9 +3547,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getPowerUpForIndex
 |   |   |   |   +-- -> getZoneIdx
 |   |   |   |   +-- -> isBossLevel
-|   |   |   |   +-- -> seededRng
-|   |   |   |   `-- unused unused: BOSSES
-|   |   |   +-- dream.MadmaxiGame.tsx unused user-facing
+|   |   |   |   `-- -> seededRng
+|   |   |   +-- dream.MadmaxiGame.tsx 🧩 COMPONENT
 |   |   |   |   +-- createBabylonEngine  <- @/engine/rendering/babylon/createEngine
 |   |   |   |   +-- useGameAutoStart, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   |   +-- useImmersiveGameLayout  <- @/engins/gameengin/games/useImmersiveGameLayout
@@ -3708,9 +3642,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   |   |   +-- (dynamic import)  <- @babylonjs/core
-|   |   |   |   +-- -> (default)
-|   |   |   |   `-- unused unused: (default)
-|   |   |   +-- index.ts user-facing
+|   |   |   |   `-- -> (default)
+|   |   |   +-- index.ts
 |   |   |   |   +-- default  <- ./dream.MadmaxiGame
 |   |   |   |   +-- MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, TOTAL_LEVELS, ZONES, getEnemyKindForIndex, getMadmaxiEnemyCount, getPowerUpForIndex, getZoneIdx, isBossLevel  <- ./config
 |   |   |   |   +-- getMadmaxiLevelDefinition, isMadmaxiAuthoredLevel  <- ./levels
@@ -3728,21 +3661,20 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getZoneIdx
 |   |   |   |   +-- -> isBossLevel
 |   |   |   |   `-- -> isMadmaxiAuthoredLevel
-|   |   |   +-- levels.ts user-facing
+|   |   |   +-- levels.ts
 |   |   |   |   +-- getAuthoredStarterLevel, isMadmaxiAuthoredLevel  <- ./authoredZonePacks
 |   |   |   |   +-- EXTRA_POWERUP_EVERY_N_LEVELS, LEVEL_SEED_KEY, ZONES, getBossForLevel, getEnemyKindForIndex, getMadmaxiEnemyCount, getPowerUpForIndex, getZoneIdx, isBossLevel, seededRng  <- ./config
 |   |   |   |   +-- EnemyDef, HazardDef, LevelDef, PlatDef, PowerUpDef  <- ./types
 |   |   |   |   +-- -> getMadmaxiLevelDefinition
 |   |   |   |   `-- -> isMadmaxiAuthoredLevel
-|   |   |   +-- materials.ts unused user-facing
+|   |   |   +-- materials.ts
 |   |   |   |   +-- * as BJSNS  <- @babylonjs/core
 |   |   |   |   +-- -> DetailMatOpts
 |   |   |   |   +-- -> ScanLineTexture
 |   |   |   |   +-- -> createScanLineTexture
 |   |   |   |   +-- -> getSharedNoiseTexture
-|   |   |   |   +-- -> makeDetailMat
-|   |   |   |   `-- unused unused: DetailMatOpts, getSharedNoiseTexture
-|   |   |   +-- types.ts unused user-facing
+|   |   |   |   `-- -> makeDetailMat
+|   |   |   +-- types.ts
 |   |   |   |   +-- -> BossMeta
 |   |   |   |   +-- -> CoinDef
 |   |   |   |   +-- -> EnemyDef
@@ -3753,22 +3685,20 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> PlatDef
 |   |   |   |   +-- -> PowerUpDef
 |   |   |   |   +-- -> RGB
-|   |   |   |   +-- -> ZoneMeta
-|   |   |   |   `-- unused unused: RGB
-|   |   |   `-- vfx.ts user-facing
+|   |   |   |   `-- -> ZoneMeta
+|   |   |   `-- vfx.ts
 |   |   |       +-- * as BJSNS  <- @babylonjs/core
 |   |   |       +-- -> VfxKit
 |   |   |       +-- -> VfxTier
 |   |   |       `-- -> createMadmaxiVfx
-|   |   +-- css-modules.d.ts user-facing
+|   |   +-- css-modules.d.ts
 |   |   |   `-- -> (default)
-|   |   +-- dream.AvenueOfMirrors.tsx unused user-facing
+|   |   +-- dream.AvenueOfMirrors.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useGameEngineAPI  <- @/engins/gameengin/cartridges/reactCartridge
 |   |   |   +-- useCallback, useEffect, useRef, useState, CSSProperties, ReactNode  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.BabylonSideScroller.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.BabylonSideScroller.tsx
 |   |   |   +-- MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, default, getEnemyKindForIndex, getMadmaxiEnemyCount, getMadmaxiLevelDefinition, getPowerUpForIndex, isMadmaxiAuthoredLevel  <- ./madmaxi
 |   |   |   +-- -> MADMAXI_ENEMY_KINDS
 |   |   |   +-- -> MADMAXI_POWERUP_KINDS
@@ -3779,13 +3709,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getMadmaxiEnemyCount
 |   |   |   +-- -> getMadmaxiLevelDefinition
 |   |   |   +-- -> getPowerUpForIndex
-|   |   |   +-- -> isMadmaxiAuthoredLevel
-|   |   |   `-- unused unused: MADMAXI_ENEMY_KINDS, MADMAXI_POWERUP_KINDS, MADMAXI_SUPER_SECONDS, MADMAXI_SUPER_STREAK, getEnemyKindForIndex, getMadmaxiLevelDefinition, getPowerUpForIndex
-|   |   +-- dream.DefuseRitual.tsx user-facing
+|   |   |   `-- -> isMadmaxiAuthoredLevel
+|   |   +-- dream.DefuseRitual.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.EchoArena.tsx user-facing
+|   |   +-- dream.EchoArena.tsx 🧩 COMPONENT
 |   |   |   +-- DualSenseManager  <- @/components/gameengin/input/DualSenseManager
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useRegisterMobileGameControls  <- @/engins/gameengin/games/mobileControls
@@ -3794,18 +3723,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- (dynamic import)  <- @babylonjs/core/Engines
 |   |   |   `-- -> (default)
-|   |   +-- dream.EnginFracture.tsx user-facing
+|   |   +-- dream.EnginFracture.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.GameController.module.css user-facing
-|   |   +-- dream.GameController.tsx unused user-facing
+|   |   +-- dream.GameController.module.css
+|   |   +-- dream.GameController.tsx
 |   |   |   +-- default  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- GameInputAction  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- -> GameInputAction
-|   |   |   +-- -> default
-|   |   |   `-- unused unused: GameInputAction, default
-|   |   +-- dream.GamesHub.tsx unused user-facing
+|   |   |   `-- -> default
+|   |   +-- dream.GamesHub.tsx 🧩 COMPONENT
 |   |   |   +-- getAvatarDataUrl, setPlayAsMe  <- @/engins/gameengin/games/avatar
 |   |   |   +-- GAME_CATALOG, GameCatalogEntry  <- @/engins/gameengin/games/catalog
 |   |   |   +-- GAME_LIBRARY_SELECTION_STORAGE_KEY, GAME_LIBRARY_SESSION_STORAGE_KEY, SavedGameSession, upsertSavedGameSession  <- @/engins/gameengin/games/library-state
@@ -3831,45 +3759,43 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (dynamic import)  <- @/components/games/dream.DefuseRitual
 |   |   |   +-- -> (default)
 |   |   |   +-- -> GAMES
-|   |   |   +-- -> GameDef
-|   |   |   `-- unused unused: GameDef
-|   |   +-- dream.Glassfall.tsx user-facing
+|   |   |   `-- -> GameDef
+|   |   +-- dream.Glassfall.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   |   +-- ParticlePool, ScreenShake, prefersReducedMotion  <- ./_fx/canvasFx
 |   |   |   `-- -> (default)
-|   |   +-- dream.hud.GameHUD.tsx unused user-facing
+|   |   +-- dream.hud.GameHUD.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- MobileHudMode  <- @/engins/gameengin/games/mobileControls
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.hud.LegacyGameHUD.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.hud.LegacyGameHUD.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.hud.MobileGameHUD.module.css user-facing
-|   |   +-- dream.hud.MobileGameHUD.tsx user-facing
+|   |   +-- dream.hud.MobileGameHUD.module.css
+|   |   +-- dream.hud.MobileGameHUD.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/games/dream.hud.MobileGameHUD.module.css
 |   |   |   +-- emitMobileButton, emitMobileLook, emitMobileMove, fireGameRemoteInput, getRemoteActionForMobileButton, getRemoteMoveAction, MOBILE_HUD_BUTTON_RING, normalizeStickVector, MobileControlVector, MobileHudButton, MobileHudMode  <- @/engins/gameengin/games/mobileControls
 |   |   |   +-- (default)  <- clsx
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.Leaderboard.tsx user-facing
+|   |   +-- dream.Leaderboard.tsx 🧩 COMPONENT
 |   |   |   +-- AlertCircle, Loader2, Trophy  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.LexiconSolitaire.tsx user-facing
+|   |   +-- dream.LexiconSolitaire.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.MadMaxiWildfall.tsx user-facing
+|   |   +-- dream.MadMaxiWildfall.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useGameEngineAPI  <- @/engins/gameengin/cartridges/reactCartridge
 |   |   |   +-- WILDFALL_HEROES, WILDFALL_ZONES, activateWildfallHeroAbility, castWildfallRay, createWildfallState, currentWildfallZone, resolveWildfallMirror, stepWildfall, switchWildfallHero, wildfallBillboards, WildfallHeroId, WildfallInputFrame, WildfallState  <- @/engins/gameengin/games/madmaxi-wildfall-world
 |   |   |   +-- useCallback, useEffect, useRef, useState, CSSProperties, ReactNode  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.NeonDrift.tsx user-facing
+|   |   +-- dream.NeonDrift.tsx 🧩 COMPONENT
 |   |   |   +-- DualSenseManager  <- @/components/gameengin/input/DualSenseManager
 |   |   |   +-- EliteGameEngine  <- @/engins/gameengin/core
 |   |   |   +-- AIDirector  <- @/engins/gameengin/ai-director
@@ -3880,49 +3806,46 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   `-- -> (default)
-|   |   +-- dream.NiteFlyerSolarHymn.tsx user-facing
+|   |   +-- dream.NiteFlyerSolarHymn.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.NullCathedral.tsx user-facing
+|   |   +-- dream.NullCathedral.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- ParticlePool, ScreenShake, drawDitherFog, prefersReducedMotion  <- ./_fx/canvasFx
 |   |   |   `-- -> (default)
-|   |   +-- dream.RecordingControls.tsx unused user-facing
+|   |   +-- dream.RecordingControls.tsx 🧩 COMPONENT
 |   |   |   +-- GameCapture, CaptureResult  <- @/engins/contentengin/media/h265-encoder
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.remote.GameRemote.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.remote.GameRemote.tsx
 |   |   |   +-- default, GameInputAction  <- @/components/games/dream.remote.GameRemoteSurface
 |   |   |   +-- -> GameInputAction
 |   |   |   `-- -> default
-|   |   +-- dream.remote.GameRemoteSurface.tsx unused user-facing
+|   |   +-- dream.remote.GameRemoteSurface.tsx 🧩 COMPONENT
 |   |   |   +-- broadcastGameInput  <- @/engins/gameengin/games/useRemoteChannel
 |   |   |   +-- ButtonInteractionManager, ControllerButton  <- @/engins/gameengin/games/gameControllerButtons
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> GameInputAction
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.remote.LegacyGameRemote.tsx unused user-facing
+|   |   |   `-- -> GameInputAction
+|   |   +-- dream.remote.LegacyGameRemote.tsx
 |   |   |   +-- default  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- GameInputAction  <- @/components/games/dream.remote.GameRemote
 |   |   |   +-- -> GameInputAction
-|   |   |   +-- -> default
-|   |   |   `-- unused unused: GameInputAction, default
-|   |   +-- dream.SerpentSiege.tsx user-facing
+|   |   |   `-- -> default
+|   |   +-- dream.SerpentSiege.tsx 🧩 COMPONENT
 |   |   |   +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- ParticlePool, ScreenShake, prefersReducedMotion  <- ./_fx/canvasFx
 |   |   |   `-- -> (default)
-|   |   `-- dream.VoidlineGP.tsx user-facing
+|   |   `-- dream.VoidlineGP.tsx 🧩 COMPONENT
 |   |       +-- useGameAutoStart, useGamePhase, useSubmitScore  <- @/engins/gameengin/games/hooks
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- ParticlePool, ScreenShake, motionTrail, prefersReducedMotion  <- ./_fx/canvasFx
 |   |       `-- -> (default)
-|   +-- home  [Home / DreamDMBar / DualRuntime]
-|   |   +-- dream.ActiveModuleSurface.tsx user-facing
+|   +-- home  [Home / DreamDMBar / DualRuntime] 🗂 FEATURE_FOLDER
+|   |   +-- dream.ActiveModuleSurface.tsx 🧩 COMPONENT
 |   |   |   +-- loadActiveModules, removeActiveModule, restoreActiveModulesFromOfflineCache, saveActiveModule, saveActiveModulesForRegion, transferActiveModuleRegion  <- @/engine/activeModulesStore
 |   |   |   +-- loadArtifacts, saveArtifact  <- @/engine/artifacts/artifactStore
 |   |   |   +-- DREAM_WINDOW_STATES  <- @/engine/dream-window/DreamWindowLifecycle
@@ -3934,7 +3857,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.bar.GlobalDreamBar.tsx user-facing
+|   |   +-- dream.bar.GlobalDreamBar.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dreamengin/dream.panel.DrEamsPanel
 |   |   |   +-- (default)  <- @/components/menus/dream.menu.DualBottomMenu
 |   |   |   +-- SystemMenuAction  <- @/components/menus/dream.menu.DualBottomMenu
@@ -3944,7 +3867,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- usePathname, useRouter  <- next/navigation
 |   |   |   +-- useCallback  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.bar.PersistentDreamBar.tsx unused user-facing
+|   |   +-- dream.bar.PersistentDreamBar.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/home/dream.NeuralSeamCanvas
 |   |   |   +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   |   +-- (default)  <- @/components/runtime/dream.RuntimeView
@@ -3959,30 +3882,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> DreamDMContainer
-|   |   |   `-- unused unused: DreamDMContainer
-|   |   +-- dream.DaydreamPulseStrip.tsx user-facing
+|   |   |   `-- -> DreamDMContainer
+|   |   +-- dream.DaydreamPulseStrip.tsx 🧩 COMPONENT
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   `-- -> (default)
-|   |   +-- dream.FlagshipEnginesStrip.tsx user-facing
+|   |   +-- dream.FlagshipEnginesStrip.tsx 🧩 COMPONENT
 |   |   |   +-- getEnginById  <- @/engins/forgeengin/forge/forgeRegistry
 |   |   |   +-- ChevronRight, Flame, Gamepad2  <- lucide-react
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   `-- -> (default)
-|   |   +-- dream.NeuralSeamCanvas.tsx user-facing
+|   |   +-- dream.NeuralSeamCanvas.tsx 🧩 COMPONENT
 |   |   |   +-- DIVIDER_H  <- @/dreamdmbar/runtime/barInteractions
 |   |   |   +-- createIdleParticle, createSeamParticle, evictDeadParticles, tickParticles, SeamParticle  <- @/dreamdmbar/runtime/bridgeSeamFlow
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.widget.DreamWidget.tsx unused user-facing
+|   |   `-- dream.widget.DreamWidget.tsx 🧩 COMPONENT
 |   |       +-- cn  <- @/utils/index
 |   |       +-- motion  <- framer-motion
 |   |       +-- ReactNode, useRef  <- react
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- icons
-|   |   `-- sheet.ts unused
+|   |   `-- sheet.ts
 |   |       +-- -> COLS
 |   |       +-- -> FRAME_H
 |   |       +-- -> FRAME_W
@@ -3995,97 +3916,91 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> SHEET_W
 |   |       +-- -> getIconPos
 |   |       +-- -> hasIcon
-|   |       +-- -> validateIconMap
-|   |       `-- unused unused: SHEET_H, SHEET_W, validateIconMap
+|   |       `-- -> validateIconMap
 |   +-- idari  [AI / Dr. Eams / Agents]
-|   |   `-- dream.PlatformHealth.tsx user-facing
+|   |   `-- dream.PlatformHealth.tsx 🧩 COMPONENT
 |   |       +-- GetPlatformMetricsResponse  <- @/dreamr/activity/types
 |   |       +-- PLATFORM_HEALTH_TARGETS  <- @/dreamr/activity/types
 |   |       +-- useEffect, useState  <- react
 |   |       `-- -> PlatformHealth
 |   +-- landing
-|   |   +-- dream.LandingNav.tsx user-facing
+|   |   +-- dream.LandingNav.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/link
 |   |   |   `-- -> (default)
-|   |   +-- dream.LandingProductStatement.tsx user-facing
+|   |   +-- dream.LandingProductStatement.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/link
 |   |   |   `-- -> (default)
-|   |   `-- dream.scene.UniverseField.tsx user-facing
+|   |   `-- dream.scene.UniverseField.tsx 🧩 COMPONENT
 |   |       +-- n  <- @/dreamr/torridity/constants
 |   |       +-- useEffect, useRef  <- react
 |   |       +-- -> (default)
 |   |       `-- -> UniverseFieldProps
-|   +-- marketplace  [Marketplace / Shop / Ads]
-|   |   +-- dream.MarketplaceListingCard.tsx user-facing
+|   +-- marketplace  [Marketplace / Shop / Ads] 🗂 FEATURE_FOLDER
+|   |   +-- dream.MarketplaceListingCard.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/link
 |   |   |   `-- -> (default)
-|   |   `-- dream.MarketplaceRequestButton.tsx user-facing
+|   |   `-- dream.MarketplaceRequestButton.tsx 🧩 COMPONENT
 |   |       +-- CheckCircle, Loader2, Send  <- lucide-react
 |   |       +-- useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
 |   |       `-- -> (default)
 |   +-- menus
-|   |   +-- dream.menu.DreamRadialMenu.tsx unused user-facing
+|   |   +-- dream.menu.DreamRadialMenu.tsx 🧩 COMPONENT
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- useEffect, useRef  <- react
 |   |   |   +-- (default)  <- ./dream.panel.MenuPanel
 |   |   |   +-- MenuItem  <- ./dream.panel.MenuPanel
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.menu.DualBottomMenu.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.menu.DualBottomMenu.tsx 🧩 COMPONENT
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useEffect  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> SystemMenuAction
-|   |   +-- dream.menu.RadialMenu.tsx unused user-facing
+|   |   +-- dream.menu.RadialMenu.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useEffect, useRef  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.menu.SystemRadialMenu.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.menu.SystemRadialMenu.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- ./dream.panel.MenuPanel
 |   |   |   +-- MenuItem  <- ./dream.panel.MenuPanel
 |   |   |   +-- -> (default)
-|   |   |   +-- -> SystemMenuAction
-|   |   |   `-- unused unused: (default), SystemMenuAction
-|   |   `-- dream.panel.MenuPanel.tsx user-facing
+|   |   |   `-- -> SystemMenuAction
+|   |   `-- dream.panel.MenuPanel.tsx 🧩 COMPONENT
 |   |       +-- (default)  <- react
 |   |       +-- useEffect, useRef  <- react
 |   |       +-- -> (default)
 |   |       `-- -> MenuItem
-|   +-- messaging  [Messages / DMs]
-|   |   `-- dream.BoardComposer.tsx user-facing
+|   +-- messaging  [Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   `-- dream.BoardComposer.tsx 🧩 COMPONENT
 |   |       +-- Loader2, Send  <- lucide-react
 |   |       +-- useState  <- react
 |   |       `-- -> (default)
 |   +-- music
-|   |   `-- dream.SoundRecorder.tsx user-facing
+|   |   `-- dream.SoundRecorder.tsx 🧩 COMPONENT
 |   |       +-- recordOfflineBlobArtifact  <- @/engine/artifacts/artifactStore
 |   |       +-- Download, Mic, Pause, Play, Square, Trash2, Zap  <- lucide-react
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       `-- -> (default)
 |   +-- offline
-|   |   +-- dream.OfflineRuntimeBootstrap.tsx unused user-facing
+|   |   +-- dream.OfflineRuntimeBootstrap.tsx 🧩 COMPONENT
 |   |   |   +-- getCachedHttpGet, putOfflineRecord, onConnectivityChange  <- @/engine/offline/offlineCache
 |   |   |   +-- flushQueue, getQueueStatus, listenOnline, replayFetchMutation, subscribeQueueStatus, OfflineAction, QueueStatus  <- @/engine/runtime/offlineQueue
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> OfflineRuntimeState
-|   |   |   `-- unused unused: OfflineRuntimeState
-|   |   `-- dream.OfflineStatusPill.tsx user-facing
+|   |   |   `-- -> OfflineRuntimeState
+|   |   `-- dream.OfflineStatusPill.tsx 🧩 COMPONENT
 |   |       +-- getQueueStatus, subscribeQueueStatus, QueueStatus  <- @/engine/runtime/offlineQueue
 |   |       +-- useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- onboarding
-|   |   `-- dream.OnboardingTip.tsx unused user-facing
+|   |   `-- dream.OnboardingTip.tsx 🧩 COMPONENT
 |   |       +-- useEffect, useState  <- react
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- optimizer
-|   |   `-- dream.scene.BabylonOptimizeroScene.tsx unused user-facing
+|   |   `-- dream.scene.BabylonOptimizeroScene.tsx 🧩 COMPONENT
 |   |       +-- createBabylonEngine  <- @/engine/rendering/babylon/createEngine
 |   |       +-- DreamEngineGodTierSystem, applyGodTierToBabylon, defaultDeviceSignals, defaultRouteSignals, defaultRuntimeMetrics, defaultUXSignals, BabylonSceneLike  <- @/engine/rendering/god-tier/godTierEngine
 |   |       +-- BabylonUIGenerator, BabylonUIOptimizero, BabylonUICandidate  <- @/optimizer/babylon-optimizero
@@ -4095,19 +4010,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- (dynamic import)  <- @babylonjs/core
 |   |       +-- (dynamic import)  <- @babylonjs/core
 |   |       +-- (dynamic import)  <- @babylonjs/core
-|   |       +-- -> (default)
-|   |       `-- unused unused: (default)
+|   |       `-- -> (default)
 |   +-- overlays
-|   |   `-- dream.RootStatusScreen.tsx user-facing
+|   |   `-- dream.RootStatusScreen.tsx 🧩 COMPONENT
 |   |       +-- (default)  <- next/link
 |   |       `-- -> (default)
-|   +-- panels  [Settings / Customization]
-|   |   +-- dream.panel.AlgorithmPanel.tsx user-facing
+|   +-- panels  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   |   +-- dream.panel.AlgorithmPanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/feed/dream.AlgorithmEngine
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- ArrowLeft, Cpu  <- lucide-react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.AppearancePanel.tsx user-facing
+|   |   +-- dream.panel.AppearancePanel.tsx 🧩 COMPONENT
 |   |   |   +-- THEME_PRESETS, applyTheme, DeTheme  <- @/components/dream.ThemeApplicator
 |   |   |   +-- useTheme  <- @/components/providers/dream.ThemeProvider
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
@@ -4116,36 +4030,35 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- ArrowLeft, Check, RotateCcw  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.ConnectorsPanel.tsx user-facing
+|   |   +-- dream.panel.ConnectorsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/app/connectors/dream.ConnectorsClient
 |   |   |   +-- Plug  <- lucide-react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.ControlsPanel.tsx user-facing
+|   |   +-- dream.panel.ControlsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/app/settings/controls/dream.PositionIndicatorToggle
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- ArrowLeft, Check, Sliders  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.DataPanel.tsx user-facing
+|   |   +-- dream.panel.DataPanel.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- AlertTriangle, ArrowLeft, Check, Database, Download, Loader2, Trash2  <- lucide-react
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.FeedPanel.tsx unused user-facing
+|   |   +-- dream.panel.FeedPanel.tsx
 |   |   |   +-- default  <- @/components/panels/dream.panel.FeedSettingsPanel
-|   |   |   +-- -> default
-|   |   |   `-- unused unused: default
-|   |   +-- dream.panel.FeedSettingsPanel.tsx user-facing
+|   |   |   `-- -> default
+|   |   +-- dream.panel.FeedSettingsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- ALL_TOPICS, DEFAULT_TOPIC_IDS, FEED_TOPICS_KEY, loadActiveTopicIds  <- @/dreamr/feed/feedTopics
 |   |   |   +-- Check  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.HelpPanel.tsx user-facing
+|   |   +-- dream.panel.HelpPanel.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- ArrowLeft, BookOpen, HelpCircle, MessageCircle, Wand2  <- lucide-react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.MarketplacePanel.tsx user-facing
+|   |   +-- dream.panel.MarketplacePanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/marketplace/dream.MarketplaceListingCard
 |   |   |   +-- (default)  <- @/components/ui/dream.DreamWord
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
@@ -4153,12 +4066,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- Loader2, PlusCircle, ShoppingBag  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.PrivacyPanel.tsx user-facing
+|   |   +-- dream.panel.PrivacyPanel.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- ArrowLeft, Check, EyeOff, Flag, Loader2, Shield, UserX  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.ProfilePanel.tsx user-facing
+|   |   +-- dream.panel.ProfilePanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |   |   |   +-- DEFAULT_DREAMS, ProfileDream  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |   |   |   +-- (default)  <- @/components/ui/dream.DreamWord
@@ -4167,7 +4080,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- Eye, Loader2, Share2  <- lucide-react
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.SafetyPanel.tsx user-facing
+|   |   +-- dream.panel.SafetyPanel.tsx 🧩 COMPONENT
 |   |   |   +-- BOOGIE_POLICY_VERSION  <- @/dr-eams/ai/boogie-policy
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- createClient  <- @/supabase/client/client
@@ -4176,7 +4089,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- ArrowLeft, ChevronRight, FileText, Loader2, Shield  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.SettingsPanel.tsx user-facing
+|   |   +-- dream.panel.SettingsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |   |   +-- createClient  <- @/supabase/client/client
@@ -4184,24 +4097,23 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- Bot, ChevronRight, Cpu, Crown, Database, HelpCircle, LayoutGrid, LogOut, Palette, Plug, Rss, Shield, Sliders, User  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.panel.WidgetsPanel.tsx user-facing
+|   |   +-- dream.panel.WidgetsPanel.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/ui/dream.DreamWord
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- ArrowLeft, Eye, EyeOff, LayoutGrid, Loader2, Pin  <- lucide-react
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- panelTypes.ts unused user-facing
+|   |   `-- panelTypes.ts
 |   |       +-- -> PANEL_META
 |   |       +-- -> PanelMeta
-|   |       +-- -> SystemPanelId
-|   |       `-- unused unused: PANEL_META, PanelMeta
-|   +-- profile  [Profile]
-|   |   +-- dream.EditableAvatar.tsx user-facing
+|   |       `-- -> SystemPanelId
+|   +-- profile  [Profile] 🗂 FEATURE_FOLDER
+|   |   +-- dream.EditableAvatar.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/image
 |   |   |   +-- useRouter  <- next/navigation
 |   |   |   +-- CSSProperties, MouseEvent, ReactNode  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.ProfileCanvas.tsx unused user-facing
+|   |   +-- dream.ProfileCanvas.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/ui/dream.PlatformBadge
 |   |   |   +-- PROFILE_SHARE_PLATFORMS  <- @/engine/social/platforms
 |   |   |   +-- createClient  <- @/supabase/client/client
@@ -4210,12 +4122,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- queueLocalFirstMutation  <- @/engine/offline/offlineCache
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.ProfileCustomizeButton.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.ProfileCustomizeButton.tsx 🧩 COMPONENT
 |   |   |   +-- useCustomizeMode  <- @/components/ui-system/CustomizeModeContext
 |   |   |   `-- -> (default)
-|   |   `-- dream.widget.ProfileWidgetGrid.tsx unused user-facing
+|   |   `-- dream.widget.ProfileWidgetGrid.tsx 🧩 COMPONENT
 |   |       +-- (default)  <- @/components/connectors/dream.widget.ConnectorWidgetPicker
 |   |       +-- PickerConnector, TOP_10_CONNECTORS  <- @/components/connectors/dream.widget.ConnectorWidgetPicker
 |   |       +-- (default)  <- @/components/profile/dream.EditableAvatar
@@ -4237,10 +4148,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> WidgetBgStyle
 |   |       +-- -> WidgetConfig
 |   |       +-- -> WidgetSize
-|   |       +-- -> WidgetType
-|   |       `-- unused unused: DEFAULT_CONFIG, DEFAULT_WIDGETS, DreamBgStyle, DreamConfig, DreamSize, DreamType, WIDGET_TRAY, Widget, WidgetBgStyle, WidgetConfig, WidgetSize, WidgetType
+|   |       `-- -> WidgetType
 |   +-- providers
-|   |   +-- dream.AppSurfaceShell.tsx unused user-facing
+|   |   +-- dream.AppSurfaceShell.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dream.CommandPalette
 |   |   |   +-- (default)  <- @/components/dream.GlobalOverlays
 |   |   |   +-- (default)  <- @/components/dream.ThemeApplicator
@@ -4252,20 +4162,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- isPublicSurfacePath  <- @/engine/routing/surfaces
 |   |   |   +-- CustomizeModeProvider  <- @/components/ui-system/CustomizeModeContext
 |   |   |   +-- Suspense, useEffect, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.GodTierProvider.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.GodTierProvider.tsx 🧩 COMPONENT
 |   |   |   +-- useGodTier  <- @/engine/rendering/god-tier/useGodTier
 |   |   |   +-- usePathname  <- next/navigation
 |   |   |   `-- -> (default)
-|   |   `-- dream.ThemeProvider.tsx user-facing
+|   |   `-- dream.ThemeProvider.tsx 🧩 COMPONENT
 |   |       +-- UserOverrides, DEFAULT_OVERRIDES, applyTheme, getPreset, loadStoredTheme, saveTheme  <- @/components/ui-system/theme-engine
 |   |       +-- (default)  <- react
 |   |       +-- createContext, useCallback, useContext, useEffect, useMemo, useState  <- react
 |   |       +-- -> (default)
 |   |       `-- -> useTheme
-|   +-- runtime  [Home / DreamDMBar / DualRuntime]
-|   |   +-- dream.DualRuntimeContainer.tsx user-facing
+|   +-- runtime  [Home / DreamDMBar / DualRuntime] 🗂 FEATURE_FOLDER
+|   |   +-- dream.DualRuntimeContainer.tsx 🧩 COMPONENT
 |   |   |   +-- DualRuntimeState, RuntimeWorld, DEFAULT_DUAL_RUNTIME, isHomeActiveTop, makeDreamSpaceActiveSurface, makeHomeActiveTop, makeHomeDreamSpaceActive  <- @/engine/runtime/dualRuntime
 |   |   |   +-- IntentBus, createIntentPacket, dualRuntimeManifest, dualRuntimeRuleSet, negotiateCompatibility, ActorContext, JsonObject, JsonValue  <- @/engine/runtime/iEngine
 |   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
@@ -4273,7 +4182,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- createContext, useCallback, useContext, useEffect, useMemo, useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> useDualRuntime
-|   |   +-- dream.RuntimeView.tsx user-facing
+|   |   +-- dream.RuntimeView.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/app/dreamdmbar/_components/HomeDreamRegion
 |   |   |   +-- (default)  <- @/components/dreams/dreamsurface.dreamspace
 |   |   |   +-- (default)  <- @/components/runtime/dream.shell.RuntimeShell
@@ -4303,37 +4212,34 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |   |   +-- (dynamic import)  <- @/engins/engin.StarMakerEngin
 |   |   |   `-- -> (default)
-|   |   `-- dream.shell.RuntimeShell.tsx user-facing
+|   |   `-- dream.shell.RuntimeShell.tsx 🧩 COMPONENT
 |   |       +-- isCompactRuntimeViewport, readInteractiveViewportScale, readInteractiveViewportWidth  <- @/components/ui-system/runtimeViewport
 |   |       +-- ApperceptiveContext  <- @/engine/runtime/apperception
 |   |       +-- (default)  <- react
 |   |       +-- useCallback, useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- shaders
-|   |   +-- dream.LightningWing.tsx unused user-facing
+|   |   +-- dream.LightningWing.tsx 🧩 COMPONENT
 |   |   |   +-- useFrame  <- @react-three/fiber
 |   |   |   +-- useMemo, useRef  <- react
 |   |   |   +-- * as THREE  <- three
 |   |   |   +-- -> (default)
 |   |   |   +-- -> LightningWing
-|   |   |   +-- -> LightningWingProps
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.NeonGlow.tsx unused user-facing
+|   |   |   `-- -> LightningWingProps
+|   |   +-- dream.NeonGlow.tsx 🧩 COMPONENT
 |   |   |   +-- useFrame  <- @react-three/fiber
 |   |   |   +-- useMemo, useRef  <- react
 |   |   |   +-- * as THREE  <- three
 |   |   |   +-- -> (default)
 |   |   |   +-- -> NeonGlow
-|   |   |   +-- -> NeonGlowProps
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.Refractor.tsx unused user-facing
+|   |   |   `-- -> NeonGlowProps
+|   |   +-- dream.Refractor.tsx 🧩 COMPONENT
 |   |   |   +-- useFrame  <- @react-three/fiber
 |   |   |   +-- useMemo, useRef  <- react
 |   |   |   +-- * as THREE  <- three
 |   |   |   +-- -> (default)
 |   |   |   +-- -> Refractor
-|   |   |   +-- -> RefractorProps
-|   |   |   `-- unused unused: (default)
+|   |   |   `-- -> RefractorProps
 |   |   `-- index.ts
 |   |       +-- NeonGlow  <- ./dream.NeonGlow
 |   |       +-- NeonGlowProps  <- ./dream.NeonGlow
@@ -4348,18 +4254,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> Refractor
 |   |       `-- -> RefractorProps
 |   +-- shared-dream
-|   |   +-- dream.InviteFlow.tsx user-facing
+|   |   +-- dream.InviteFlow.tsx 🧩 COMPONENT
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   +-- useSharedDream  <- ./dream.SharedDreamProvider
 |   |   |   +-- -> InviteFlow
 |   |   |   `-- -> InviteFlowProps
-|   |   +-- dream.SharedDreamCanvas.tsx user-facing
+|   |   +-- dream.SharedDreamCanvas.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback  <- react
 |   |   |   +-- useSharedDream  <- ./dream.SharedDreamProvider
 |   |   |   +-- -> SharedDreamCanvas
 |   |   |   `-- -> SharedDreamCanvasProps
-|   |   +-- dream.SharedDreamProvider.tsx unused user-facing
+|   |   +-- dream.SharedDreamProvider.tsx 🧩 COMPONENT
 |   |   |   +-- broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession, generateInviteLink, parseInviteLink, CollabEventHandler, CollabMode, CollabPayload, CollabSession, CollabSessionOptions, PeerInfo, PresenceUpdateData, SessionRole  <- @/engine/collaboration/index
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- (default)  <- react
@@ -4368,9 +4274,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> SharedDreamContextValue
 |   |   |   +-- -> SharedDreamProvider
 |   |   |   +-- -> SharedDreamProviderProps
-|   |   |   +-- -> useSharedDream
-|   |   |   `-- unused unused: CursorPosition
-|   |   +-- dream.SharedDreamRuntime.tsx user-facing
+|   |   |   `-- -> useSharedDream
+|   |   +-- dream.SharedDreamRuntime.tsx 🧩 COMPONENT
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useSharedDreamSession  <- @/engine/sharedDream/useSharedDreamSession
 |   |   |   +-- (default)  <- react
@@ -4380,7 +4285,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- SharedDreamProvider  <- ./dream.SharedDreamProvider
 |   |   |   +-- -> (default)
 |   |   |   `-- -> SharedDreamRuntimeProps
-|   |   `-- index.ts unused
+|   |   `-- index.ts
 |   |       +-- SharedDreamProvider, useSharedDream, SharedDreamContextValue, SharedDreamProviderProps  <- ./dream.SharedDreamProvider
 |   |       +-- SharedDreamCanvas, SharedDreamCanvasProps  <- ./dream.SharedDreamCanvas
 |   |       +-- InviteFlow, InviteFlowProps  <- ./dream.InviteFlow
@@ -4394,17 +4299,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> SharedDreamProviderProps
 |   |       +-- -> SharedDreamRuntime
 |   |       +-- -> SharedDreamRuntimeProps
-|   |       +-- -> useSharedDream
-|   |       `-- unused unused: InviteFlowProps, SharedDreamCanvas, SharedDreamCanvasProps, SharedDreamContextValue, SharedDreamProviderProps, SharedDreamRuntime, SharedDreamRuntimeProps, useSharedDream
-|   +-- spatial  [Profile]
-|   |   +-- dream.PixiPhysicsLayer.tsx unused user-facing
+|   |       `-- -> useSharedDream
+|   +-- spatial  [Profile] 🗂 FEATURE_FOLDER
+|   |   +-- dream.PixiPhysicsLayer.tsx 🧩 COMPONENT
 |   |   |   +-- Viewport  <- pixi-viewport
 |   |   |   +-- * as PIXI  <- pixi.js
 |   |   |   +-- useEffect, useRef  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> PixiPhysicsLayerProps
-|   |   |   `-- unused unused: PixiPhysicsLayerProps
-|   |   +-- dream.ProfileSpace.tsx user-facing
+|   |   |   `-- -> PixiPhysicsLayerProps
+|   |   +-- dream.ProfileSpace.tsx 🧩 COMPONENT
 |   |   |   +-- useContent, useWidgets  <- @/hooks/use-spatial
 |   |   |   +-- cn  <- @/utils/index
 |   |   |   +-- ContentObject, Widget, WidgetType, WidgetVisibility  <- @/types/spatial
@@ -4413,7 +4316,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.shell.EnhancedSpatialShell.tsx user-facing
+|   |   `-- dream.shell.EnhancedSpatialShell.tsx 🧩 COMPONENT
 |   |       +-- ProfileSpace  <- @/components/dream.ProfileSpace
 |   |       +-- (default)  <- @/components/spatial/dream.PixiPhysicsLayer
 |   |       +-- LAYER_HOME, LAYER_PROFILE  <- @/engine/navigation/NavStateBuffer
@@ -4423,7 +4326,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useEffect, useMemo, useRef, useState  <- react
 |   |       `-- -> (default)
 |   +-- three
-|   |   +-- dream.scene.tsx user-facing
+|   |   +-- dream.scene.tsx 🧩 COMPONENT
 |   |   |   +-- LightningWing  <- @/components/shaders/dream.LightningWing
 |   |   |   +-- NeonGlow  <- @/components/shaders/dream.NeonGlow
 |   |   |   +-- Refractor  <- @/components/shaders/dream.Refractor
@@ -4440,50 +4343,47 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> DreamScene
 |   |       `-- -> DreamSceneProps
 |   +-- ui
-|   |   +-- dream.AuthenticatedPageHeader.tsx user-facing
+|   |   +-- dream.AuthenticatedPageHeader.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dream.BrandLogo
 |   |   |   +-- ArrowLeft  <- lucide-react
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- ReactNode  <- react
 |   |   |   `-- -> (default)
-|   |   +-- dream.DreamWord.tsx user-facing
+|   |   +-- dream.DreamWord.tsx 🧩 COMPONENT
 |   |   |   `-- -> (default)
-|   |   +-- dream.IconList.tsx unused user-facing
+|   |   +-- dream.IconList.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- (default)  <- ./dream.SheetIcon
 |   |   |   +-- -> (default)
-|   |   |   +-- -> IconListItem
-|   |   |   `-- unused unused: (default), IconListItem
-|   |   +-- dream.InfinityIcon.tsx unused user-facing
+|   |   |   `-- -> IconListItem
+|   |   +-- dream.InfinityIcon.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> InfinityColorScheme
 |   |   |   +-- -> InfinityIconProps
-|   |   |   +-- -> InfinityVariant
-|   |   |   `-- unused unused: InfinityColorScheme, InfinityIconProps, InfinityVariant
-|   |   +-- dream.PlatformBadge.tsx user-facing
+|   |   |   `-- -> InfinityVariant
+|   |   +-- dream.PlatformBadge.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/ui/dream.SheetIcon
 |   |   |   +-- hasIcon  <- @/components/icons/sheet
 |   |   |   +-- PLATFORM_MAP  <- @/engine/social/platforms
 |   |   |   +-- (default)  <- next/image
 |   |   |   `-- -> (default)
-|   |   +-- dream.SheetIcon.tsx user-facing
+|   |   +-- dream.SheetIcon.tsx 🧩 COMPONENT
 |   |   |   +-- COLS, FRAME_W, ICONS, ROWS, SHEET_PATH, hasIcon, IconName  <- @/components/icons/sheet
 |   |   |   `-- -> (default)
-|   |   `-- dream.SocialShareSheet.tsx user-facing
+|   |   `-- dream.SocialShareSheet.tsx 🧩 COMPONENT
 |   |       +-- PROFILE_SHARE_PLATFORMS, SocialPlatform  <- @/engine/social/platforms
 |   |       +-- Check, Copy, ExternalLink, X  <- lucide-react
 |   |       +-- useCallback, useEffect, useState  <- react
 |   |       `-- -> (default)
 |   +-- ui-system
-|   |   +-- CustomizeModeContext.tsx unused user-facing
+|   |   +-- CustomizeModeContext.tsx 🧩 COMPONENT
 |   |   |   +-- AllPageSkins, DEFAULT_SKIN, SkinData, SkinPage, applySkin, loadAllSkins, resolveSkin, saveAllSkins  <- @/components/ui-system/skin-engine
 |   |   |   +-- (default)  <- react
 |   |   |   +-- createContext, useCallback, useContext, useMemo, useState  <- react
 |   |   |   +-- -> CustomizeModeContextValue
 |   |   |   +-- -> CustomizeModeProvider
-|   |   |   +-- -> useCustomizeMode
-|   |   |   `-- unused unused: CustomizeModeContextValue
+|   |   |   `-- -> useCustomizeMode
 |   |   +-- responsive.ts
 |   |   |   +-- -> BREAKPOINTS
 |   |   |   +-- -> BREAKPOINT_ORDER
@@ -4504,7 +4404,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> readInteractiveViewportHeight
 |   |   |   +-- -> readInteractiveViewportScale
 |   |   |   `-- -> readInteractiveViewportWidth
-|   |   +-- skin-engine.ts unused
+|   |   +-- skin-engine.ts
 |   |   |   +-- -> AllPageSkins
 |   |   |   +-- -> DEFAULT_SKIN
 |   |   |   +-- -> SKIN_PRESETS
@@ -4518,9 +4418,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getSkinPreset
 |   |   |   +-- -> loadAllSkins
 |   |   |   +-- -> resolveSkin
-|   |   |   +-- -> saveAllSkins
-|   |   |   `-- unused unused: SkinPreset, getSkinPreset
-|   |   +-- theme-engine.ts unused
+|   |   |   `-- -> saveAllSkins
+|   |   +-- theme-engine.ts
 |   |   |   +-- -> DEFAULT_OVERRIDES
 |   |   |   +-- -> StoredTheme
 |   |   |   +-- -> THEME_PRESETS
@@ -4530,26 +4429,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> applyTheme
 |   |   |   +-- -> getPreset
 |   |   |   +-- -> loadStoredTheme
-|   |   |   +-- -> saveTheme
-|   |   |   `-- unused unused: StoredTheme, ThemePreset, ThemeTokens
+|   |   |   `-- -> saveTheme
 |   |   `-- theme.ts
 |   |       +-- -> getInitialDarkMode
 |   |       +-- -> setDarkMode
 |   |       `-- -> toggleDarkMode
 |   +-- universal-editor
-|   |   +-- dream.UniversalEditor.tsx user-facing
+|   |   +-- dream.UniversalEditor.tsx 🧩 COMPONENT
 |   |   |   +-- classifyDrop, DreamDrop  <- @/engine/runtime/coercionTable
 |   |   |   +-- useMemo, useState  <- react
 |   |   |   +-- -> UniversalEditor
 |   |   |   `-- -> UniversalEditorProps
-|   |   +-- dream.UniversalEditorWrapper.tsx user-facing
+|   |   +-- dream.UniversalEditorWrapper.tsx 🧩 COMPONENT
 |   |   |   +-- ModuleManifest, RuntimeId  <- @/types/module-manifest
 |   |   |   +-- (default)  <- react
 |   |   |   +-- useCallback, useState  <- react
 |   |   |   +-- useTapHoldMove, Position  <- ./useTapHoldMove
 |   |   |   +-- -> UniversalEditorWrapper
 |   |   |   `-- -> UniversalEditorWrapperProps
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- useTapHoldMove, Position, TapHoldMoveBindings, TapHoldMoveOptions  <- ./useTapHoldMove
 |   |   |   +-- UniversalEditorWrapper, UniversalEditorWrapperProps  <- ./dream.UniversalEditorWrapper
 |   |   |   +-- UniversalEditor, UniversalEditorProps  <- ./dream.UniversalEditor
@@ -4560,8 +4458,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> UniversalEditorProps
 |   |   |   +-- -> UniversalEditorWrapper
 |   |   |   +-- -> UniversalEditorWrapperProps
-|   |   |   +-- -> useTapHoldMove
-|   |   |   `-- unused unused: Position, TapHoldMoveBindings, TapHoldMoveOptions, UniversalEditor, UniversalEditorProps, UniversalEditorWrapper, UniversalEditorWrapperProps, useTapHoldMove
+|   |   |   `-- -> useTapHoldMove
 |   |   `-- useTapHoldMove.ts
 |   |       +-- ModuleManifest, RuntimeId  <- @/types/module-manifest
 |   |       +-- useCallback, useEffect, useRef  <- react
@@ -4570,31 +4467,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> TapHoldMoveOptions
 |   |       `-- -> useTapHoldMove
 |   +-- universe
-|   |   +-- dream.node-cluster.tsx unused user-facing
+|   |   +-- dream.node-cluster.tsx 🧩 COMPONENT
 |   |   |   +-- cn  <- @/utils/index
 |   |   |   +-- LucideIcon  <- lucide-react
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> NodeCluster
-|   |   |   +-- -> NodeItem
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.shell.universe-shell.tsx unused user-facing
+|   |   |   `-- -> NodeItem
+|   |   +-- dream.shell.universe-shell.tsx 🧩 COMPONENT
 |   |   |   +-- cn  <- @/utils/index
 |   |   |   +-- ReactNode  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> UniverseShell
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.universe-card.tsx unused user-facing
+|   |   |   `-- -> UniverseShell
+|   |   +-- dream.universe-card.tsx 🧩 COMPONENT
 |   |   |   +-- cn  <- @/utils/index
 |   |   |   +-- useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   +-- -> UniverseCard
 |   |   |   +-- -> UniverseCardContent
 |   |   |   +-- -> UniverseCardFooter
-|   |   |   +-- -> UniverseCardHeader
-|   |   |   `-- unused unused: (default)
-|   |   `-- index.ts unused
+|   |   |   `-- -> UniverseCardHeader
+|   |   `-- index.ts
 |   |       +-- NodeCluster  <- ./dream.node-cluster
 |   |       +-- NodeItem  <- ./dream.node-cluster
 |   |       +-- UniverseShell  <- ./dream.shell.universe-shell
@@ -4605,37 +4499,32 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> UniverseCardContent
 |   |       +-- -> UniverseCardFooter
 |   |       +-- -> UniverseCardHeader
-|   |       +-- -> UniverseShell
-|   |       `-- unused unused: NodeCluster, NodeItem, UniverseCardFooter, UniverseCardHeader, UniverseShell
+|   |       `-- -> UniverseShell
 |   +-- warp
-|   |   `-- dream.WarpCanvas.tsx unused user-facing
+|   |   `-- dream.WarpCanvas.tsx 🧩 COMPONENT
 |   |       +-- useWarp  <- @/engine/rendering/warp/useWarp
 |   |       +-- WarpEffect  <- @/engine/rendering/warp/warpEngine
 |   |       +-- -> (default)
-|   |       +-- -> WarpCanvasProps
-|   |       `-- unused unused: (default), WarpCanvasProps
+|   |       `-- -> WarpCanvasProps
 |   +-- webgpu
-|   |   +-- dream.WebGPUShowcase.tsx unused user-facing
+|   |   +-- dream.WebGPUShowcase.tsx 🧩 COMPONENT
 |   |   |   +-- getRendererBackend  <- @/engine/rendering/webgpu
 |   |   |   +-- (default)  <- @/engins/renderengin/RenderStage
 |   |   |   +-- createInlineRenderIntent  <- @/engins/renderengin/RenderStage
 |   |   |   +-- (default)  <- next/link
 |   |   |   +-- useEffect, useMemo, useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- neuralPostProcess.ts unused
+|   |   |   `-- -> (default)
+|   |   +-- neuralPostProcess.ts
 |   |   |   +-- -> NEURAL_POST_PROCESS_WGSL
 |   |   |   +-- -> NEURAL_UNIFORM_SIZE
 |   |   |   +-- -> createNeuralPostProcessPipeline
 |   |   |   +-- -> createNeuralUniforms
-|   |   |   +-- -> dispatchNeuralPostProcess
-|   |   |   `-- unused unused: NEURAL_POST_PROCESS_WGSL, NEURAL_UNIFORM_SIZE, createNeuralPostProcessPipeline, createNeuralUniforms, dispatchNeuralPostProcess
-|   |   +-- renderer.ts unused
+|   |   |   `-- -> dispatchNeuralPostProcess
+|   |   +-- renderer.ts
 |   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
 |   |   |   +-- BLUR_FRAG_WGSL, BRIGHT_FRAG_WGSL, COMPOSITE_FRAG_WGSL, COMPUTE_WGSL, FS_VERT_WGSL, LEMN_FRAG_WGSL, LEMN_VERT_WGSL, N_LEMN_VERTS, N_PARTICLE_VERTS, N_PARTICLES, PARTICLE_FRAG_WGSL, PARTICLE_VERT_WGSL  <- ./shaders
-|   |   |   +-- -> WebGPURenderer
-|   |   |   `-- unused unused: WebGPURenderer
-|   |   `-- shaders.ts unused
+|   |   |   `-- -> WebGPURenderer
+|   |   `-- shaders.ts
 |   |       +-- -> BLUR_FRAG_WGSL
 |   |       +-- -> BRIGHT_FRAG_WGSL
 |   |       +-- -> COMPOSITE_FRAG_WGSL
@@ -4648,37 +4537,31 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> N_PARTICLES
 |   |       +-- -> N_PARTICLE_VERTS
 |   |       +-- -> PARTICLE_FRAG_WGSL
-|   |       +-- -> PARTICLE_VERT_WGSL
-|   |       `-- unused unused: N_LEMN_SEGS
+|   |       `-- -> PARTICLE_VERT_WGSL
 |   +-- widgets
-|   |   +-- dream.AddDreamCTA.tsx unused user-facing
+|   |   +-- dream.AddDreamCTA.tsx 🧩 COMPONENT
 |   |   |   +-- -> (default)
-|   |   |   +-- -> AddDreamCTAProps
-|   |   |   `-- unused unused: (default), AddDreamCTAProps
-|   |   +-- dream.ConfigureSheet.tsx unused user-facing
+|   |   |   `-- -> AddDreamCTAProps
+|   |   +-- dream.ConfigureSheet.tsx 🧩 COMPONENT
 |   |   |   +-- useState  <- react
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.EditModeBanner.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.EditModeBanner.tsx 🧩 COMPONENT
 |   |   |   +-- useEditMode  <- ./dream.EditModeProvider
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.EditModeProvider.tsx unused user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.EditModeProvider.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- createContext, useCallback, useContext, useState  <- react
 |   |   |   +-- -> EditModeProvider
-|   |   |   +-- -> useEditMode
-|   |   |   `-- unused unused: EditModeProvider
-|   |   +-- dream.widget.PlayMediaWidget.tsx unused user-facing
+|   |   |   `-- -> useEditMode
+|   |   +-- dream.widget.PlayMediaWidget.tsx 🧩 COMPONENT
 |   |   |   +-- useRef, useState  <- react
 |   |   |   +-- (default)  <- ./dream.widget.WidgetCard
-|   |   |   +-- -> (default)
-|   |   |   `-- unused unused: (default)
-|   |   +-- dream.widget.UniversalWidget.tsx user-facing
+|   |   |   `-- -> (default)
+|   |   +-- dream.widget.UniversalWidget.tsx 🧩 COMPONENT
 |   |   |   +-- useEffect, useMemo, useState  <- react
 |   |   |   +-- (default)  <- ./dream.widget.WidgetCard
 |   |   |   `-- -> (default)
-|   |   +-- dream.widget.WidgetCard.tsx user-facing
+|   |   +-- dream.widget.WidgetCard.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/dreams/dreamsurface.shell
 |   |   |   +-- (default)  <- react
 |   |   |   +-- -> (default)
@@ -4688,11 +4571,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- SuperDreamWidgetProps  <- @/components/dreams/dream.widget.SuperDreamWidget
 |   |   |   +-- -> WidgetLibraryProps
 |   |   |   `-- -> default
-|   |   +-- dream.widget.WidgetPlaceholder.tsx unused user-facing
+|   |   +-- dream.widget.WidgetPlaceholder.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- react
 |   |   |   +-- -> (default)
-|   |   |   +-- -> WidgetPlaceholderProps
-|   |   |   `-- unused unused: (default), WidgetPlaceholderProps
+|   |   |   `-- -> WidgetPlaceholderProps
 |   |   +-- dream.widget.WidgetShell.tsx
 |   |   |   +-- default  <- @/components/dreams/dreamsurface.shell
 |   |   |   +-- DreamDataState, DreamShellProps  <- @/components/dreams/dreamsurface.shell
@@ -4704,7 +4586,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- SuperDreamWidgetProps  <- @/components/dreams/dream.widget.SuperDreamWidget
 |   |       +-- -> WidgetSurfaceProps
 |   |       `-- -> default
-|   +-- dream.AIAssistant.tsx unused user-facing
+|   +-- dream.AIAssistant.tsx 🧩 COMPONENT
 |   |   +-- Bot, Maximize2, Minimize2, Send, X  <- lucide-react
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useEffect, useRef, useState  <- react
@@ -4712,9 +4594,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- getDrEamsMode, onDrEamsModeChange  <- @/engine/agents/drEamsMode
 |   |   +-- hasTaught, markTaught, onTeach  <- @/engine/agents/teachBus
 |   |   +-- executeUiAction, getUiCapabilities  <- @/engine/agents/uiActions
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.AudioVisualizer3D.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.AudioVisualizer3D.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- react
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- Fingerprint, MatchResult, PeakMap  <- @/engins/starmakerengin/audioFingerprint
@@ -4727,59 +4608,54 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (dynamic import)  <- @babylonjs/core
 |   |   +-- -> (default)
 |   |   +-- -> AudioVisualizer3D
-|   |   +-- -> AudioVisualizer3DProps
-|   |   `-- unused unused: (default), AudioVisualizer3DProps
-|   +-- dream.BoogieWarningBanner.tsx unused user-facing
+|   |   `-- -> AudioVisualizer3DProps
+|   +-- dream.BoogieWarningBanner.tsx 🧩 COMPONENT
 |   |   +-- PolicyResult  <- @/engine/policy/boogiePolicy
 |   |   +-- AlertTriangle, ExternalLink, X  <- lucide-react
 |   |   +-- (default)  <- next/link
 |   |   +-- useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.BrandLogo.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.BrandLogo.tsx 🧩 COMPONENT
 |   |   +-- getRandomLogo, LOGO_PATHS  <- @/engins/brandingengin/identity/logos
 |   |   +-- (default)  <- next/image
 |   |   +-- useEffect, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.CommandPalette.tsx user-facing
+|   +-- dream.CommandPalette.tsx 🧩 COMPONENT
 |   |   +-- ArrowRight, Code2, Compass, Flame, FlaskConical, Gamepad2, Home, MessageSquare, Music, Palette, PenLine, Search, Settings, ShoppingBag, Stars, TrendingUp, User, Zap  <- lucide-react
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useEffect, useRef, useState  <- react
 |   |   +-- -> (default)
 |   |   `-- -> MobileCmdFab
-|   +-- dream.CommandPaletteMount.tsx user-facing
+|   +-- dream.CommandPaletteMount.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- next/dynamic
 |   |   +-- (dynamic import)  <- ./dream.CommandPalette
 |   |   `-- -> (default)
-|   +-- dream.CreatePostModal.tsx unused user-facing
+|   +-- dream.CreatePostModal.tsx 🧩 COMPONENT
 |   |   +-- uploadBlobToLedgerStorage  <- @/engins/contentengin/media/ledger
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- Image, Loader2, Music, Send, Trash2, Video, X  <- lucide-react
 |   |   +-- (default)  <- next/image
 |   |   +-- useRef, useState  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.DragToAnchorClose.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.DragToAnchorClose.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- react
 |   |   +-- useCallback, useRef, useState  <- react
 |   |   +-- -> DragHandle
 |   |   `-- -> DragToAnchorClose
-|   +-- dream.DrEamsModeToggle.tsx unused user-facing
+|   +-- dream.DrEamsModeToggle.tsx 🧩 COMPONENT
 |   |   +-- getDrEamsMode, onDrEamsModeChange, setDrEamsMode  <- @/engine/agents/drEamsMode
 |   |   +-- emitTeach  <- @/engine/agents/teachBus
 |   |   +-- Bot, BotOff  <- lucide-react
 |   |   +-- useEffect, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.DrEamsVoiceAssistant.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.DrEamsVoiceAssistant.tsx 🧩 COMPONENT
 |   |   +-- onIdariEvent  <- @/engine/agents/agentBus
 |   |   +-- Bot, Maximize2, Mic, MicOff, Minimize2, Radio, Send, Sparkles, Volume2, VolumeX, X  <- lucide-react
 |   |   +-- usePathname, useRouter  <- next/navigation
 |   |   +-- useEffect, useRef, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.FeedCard.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.FeedCard.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/feed/dream.CommentSection
 |   |   +-- UniverseCard, UniverseCardContent  <- @/components/universe
 |   |   +-- cn, formatRelativeTime  <- @/utils/index
@@ -4787,13 +4663,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- Bookmark, ExternalLink, FileText, Flag, Heart, Link2, MessageCircle, MoreHorizontal, Share2, Sparkles, Youtube  <- lucide-react
 |   |   +-- (default)  <- next/image
 |   |   +-- memo, useEffect, useMemo, useRef, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.FirstTouchActivator.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.FirstTouchActivator.tsx 🧩 COMPONENT
 |   |   +-- useEffect  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.ForgeDreamCanvas.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.ForgeDreamCanvas.tsx 🧩 COMPONENT
 |   |   +-- useCallback, useEffect, useRef, useState, MouseEvent  <- react
 |   |   +-- ALL_CATEGORIES, getByCategory, AtomicComponent, ComponentCategory  <- @/engins/forgeengin/componentInventory
 |   |   +-- createEventBus  <- @/engine/events/eventBus
@@ -4801,23 +4675,21 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   +-- (dynamic import)  <- @/supabase/client/client
 |   |   +-- -> (default)
-|   |   +-- -> ForgeDreamCanvas
-|   |   `-- unused unused: (default)
-|   +-- dream.GlobalOverlays.tsx user-facing
+|   |   `-- -> ForgeDreamCanvas
+|   +-- dream.GlobalOverlays.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- next/dynamic
 |   |   +-- (dynamic import)  <- @/components/customize/dream.GlobalCustomizeUI
 |   |   +-- (dynamic import)  <- @/components/dreams/dream.GlobalDragLayer
 |   |   +-- (dynamic import)  <- @/components/dreams/dream.PlatformErrorReporter
 |   |   +-- (dynamic import)  <- @/components/dream.KonamiDream
 |   |   `-- -> (default)
-|   +-- dream.HeroSprite.tsx unused user-facing
+|   +-- dream.HeroSprite.tsx 🧩 COMPONENT
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- -> (default)
 |   |   +-- -> ZONE_QUOTES
 |   |   +-- -> hitZone
-|   |   +-- -> pickZoneQuote
-|   |   `-- unused unused: (default)
-|   +-- dream.HomeFeed.tsx user-facing
+|   |   `-- -> pickZoneQuote
+|   +-- dream.HomeFeed.tsx 🧩 COMPONENT
 |   |   +-- AdUnit  <- @/components/ads/dream.AdUnit
 |   |   +-- (default)  <- @/components/feed/dream.FeedVideoCard
 |   |   +-- (default)  <- @/components/profile/dream.EditableAvatar
@@ -4838,32 +4710,29 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- Fragment, useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   `-- -> (default)
-|   +-- dream.IconSelector.tsx unused user-facing
+|   +-- dream.IconSelector.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- next/image
 |   |   +-- useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.InnerDreamsButton.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.InnerDreamsButton.tsx 🧩 COMPONENT
 |   |   +-- Sparkles  <- lucide-react
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.KonamiDream.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.KonamiDream.tsx 🧩 COMPONENT
 |   |   +-- AnimatePresence, motion  <- framer-motion
 |   |   +-- useCallback, useEffect, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.LandingHero.tsx user-facing
+|   +-- dream.LandingHero.tsx 🧩 COMPONENT
 |   |   +-- useEffect, useRef  <- react
 |   |   +-- calibrateDevice, CalibrationSample  <- @/dreamr/runtime/swipeCalibration
 |   |   +-- (default)  <- @/components/landing/dream.LandingProductStatement
 |   |   `-- -> (default)
-|   +-- dream.LedgerChart.tsx unused user-facing
+|   +-- dream.LedgerChart.tsx 🧩 COMPONENT
 |   |   +-- LedgerData  <- @/engine/ledger/ledger-data
 |   |   +-- useEffect, useRef  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.MessagesClient.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.MessagesClient.tsx 🧩 COMPONENT
 |   |   +-- useDreamDMDraft  <- @/dreamdmbar/hooks/useDreamDMDraft
 |   |   +-- DMMessage  <- @/dreamdmbar/hooks/useDreamDMMessages
 |   |   +-- useDreamDMMessages  <- @/dreamdmbar/hooks/useDreamDMMessages
@@ -4879,14 +4748,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useEffect, useRef, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.NotificationCenter.tsx user-facing
+|   +-- dream.NotificationCenter.tsx 🧩 COMPONENT
 |   |   +-- UiNotification, UiNotificationType  <- @/dreamdmbar/notifications/notificationHelpers
 |   |   +-- useNotifications  <- @/dreamdmbar/notifications/useNotifications
 |   |   +-- Bell, Check, DollarSign, GitBranch, Heart, Loader2, MessageCircle, MessageSquare, TrendingUp, UserPlus, X  <- lucide-react
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useRef, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.OSShellActivator.tsx unused user-facing
+|   +-- dream.OSShellActivator.tsx 🧩 COMPONENT
 |   |   +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   +-- DIVIDER_H  <- @/dreamdmbar/runtime/barInteractions
@@ -4896,26 +4765,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |   +-- usePathname  <- next/navigation
 |   |   +-- useCallback, useEffect  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.panel.ChildSafetyPanel.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.panel.ChildSafetyPanel.tsx 🧩 COMPONENT
 |   |   +-- Activity, AlertCircle, AlertTriangle, CheckCircle, ChevronRight, Clock, Eye, Hash, RefreshCw, Shield, ShieldCheck, Trash2, Upload, XCircle  <- lucide-react
 |   |   +-- useCallback, useEffect, useState  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   `-- -> (default)
-|   +-- dream.panel.IDariPanel.tsx user-facing
+|   +-- dream.panel.IDariPanel.tsx 🧩 COMPONENT
 |   |   +-- emitIdariEvent  <- @/engine/agents/agentBus
 |   |   +-- AlertCircle, CheckCircle, Pause, Play, RefreshCw, Shield, Sparkles, Zap  <- lucide-react
 |   |   +-- useEffect, useState  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   `-- -> (default)
-|   +-- dream.PhysicsLab.tsx unused user-facing
+|   +-- dream.PhysicsLab.tsx 🧩 COMPONENT
 |   |   +-- Binary, Check, FileText, FlaskConical, Layers, LineChart, Loader2, Play, Save, Settings, Share2, Sparkles, TrendingUp, Users, Zap  <- lucide-react
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useCallback, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.ProfileEditor.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.ProfileEditor.tsx 🧩 COMPONENT
 |   |   +-- uploadBlobToLedgerStorage  <- @/engins/contentengin/media/ledger
 |   |   +-- SOCIAL_PLATFORMS, detectPlatform  <- @/engine/social/platforms
 |   |   +-- createClient  <- @/supabase/client/client
@@ -4924,32 +4791,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (default)  <- next/image
 |   |   +-- useCallback, useRef, useState  <- react
 |   |   +-- toErrorMessage  <- @/utils/index
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.ProfileShareButton.tsx user-facing
+|   |   `-- -> (default)
+|   +-- dream.ProfileShareButton.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/ui/dream.SocialShareSheet
 |   |   +-- Share2  <- lucide-react
 |   |   +-- useCallback, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.ProfileSpace.tsx user-facing
+|   +-- dream.ProfileSpace.tsx 🧩 COMPONENT
 |   |   +-- WidgetInstanceRecord  <- @/engine/navigation/WidgetInstanceMemory
 |   |   +-- DragHandle, DragToAnchorClose  <- ./dream.DragToAnchorClose
 |   |   `-- -> ProfileSpace
-|   +-- dream.PullToRefresh.tsx unused user-facing
+|   +-- dream.PullToRefresh.tsx 🧩 COMPONENT
 |   |   +-- RefreshCw  <- lucide-react
 |   |   +-- ReactNode, useEffect, useRef, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.ShrunkMode.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.ShrunkMode.tsx 🧩 COMPONENT
 |   |   +-- PriorityWidget  <- @/engine/navigation/AnchorWidgetStorage
-|   |   +-- -> ShrunkMode
-|   |   `-- unused unused: ShrunkMode
-|   +-- dream.SkeletonLoaders.tsx unused user-facing
+|   |   `-- -> ShrunkMode
+|   +-- dream.SkeletonLoaders.tsx 🧩 COMPONENT
 |   |   +-- -> FeedCardSkeleton
 |   |   +-- -> GridSkeleton
-|   |   +-- -> WidgetSkeleton
-|   |   `-- unused unused: FeedCardSkeleton, GridSkeleton, WidgetSkeleton
-|   +-- dream.ThemeApplicator.tsx user-facing
+|   |   `-- -> WidgetSkeleton
+|   +-- dream.ThemeApplicator.tsx 🧩 COMPONENT
 |   |   +-- useEffect  <- react
 |   |   +-- -> (default)
 |   |   +-- -> DeTheme
@@ -4957,20 +4820,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> applyTheme
 |   |   +-- -> applyVoidTheme
 |   |   `-- -> isVoidThemeActive
-|   +-- dream.ThemeToggle.tsx unused user-facing
+|   +-- dream.ThemeToggle.tsx 🧩 COMPONENT
 |   |   +-- emitTeach  <- @/engine/agents/teachBus
 |   |   +-- getInitialDarkMode, toggleDarkMode  <- @/components/ui-system/theme
 |   |   +-- Moon, Sun  <- lucide-react
 |   |   +-- useEffect, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.ToastSystem.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.ToastSystem.tsx 🧩 COMPONENT
 |   |   +-- AlertCircle, CheckCircle, Info, X, XCircle  <- lucide-react
 |   |   +-- createContext, useContext, useState  <- react
 |   |   +-- -> ToastProvider
-|   |   +-- -> useToast
-|   |   `-- unused unused: ToastProvider, useToast
-|   +-- dream.universal_asset_registry.tsx user-facing
+|   |   `-- -> useToast
+|   +-- dream.universal_asset_registry.tsx 🧩 COMPONENT
 |   |   +-- useForgeActivity  <- @/engins/forgeengin/forge/useForgeActivity
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -4983,12 +4844,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> GameAssetRow
 |   |   +-- -> RegistryEntry
 |   |   `-- -> UniversalAssetRegistryProps
-|   +-- dream.VoidThemeToggle.tsx unused user-facing
+|   +-- dream.VoidThemeToggle.tsx 🧩 COMPONENT
 |   |   +-- applyVoidTheme, isVoidThemeActive  <- @/components/dream.ThemeApplicator
 |   |   +-- useEffect, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   +-- dream.widget.AnchorWidget.tsx unused user-facing
+|   |   `-- -> (default)
+|   +-- dream.widget.AnchorWidget.tsx 🧩 COMPONENT
 |   |   +-- AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK  <- @/engine/navigation/AnchorStateBuffer
 |   |   +-- AnchorWidgetStorage  <- @/engine/navigation/AnchorWidgetStorage
 |   |   +-- LAYER_HOME, LAYER_PROFILE, NavStateBuffer, PROFILE_DEPTH  <- @/engine/navigation/NavStateBuffer
@@ -4996,41 +4856,36 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- WidgetInstanceMemory  <- @/engine/navigation/WidgetInstanceMemory
 |   |   +-- (default)  <- react
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   +-- -> AnchorWidget
-|   |   `-- unused unused: AnchorWidget
-|   +-- dream.widget.ProfileWidgetBlock.tsx unused user-facing
+|   |   `-- -> AnchorWidget
+|   +-- dream.widget.ProfileWidgetBlock.tsx 🧩 COMPONENT
 |   |   +-- Pencil  <- lucide-react
 |   |   +-- (default)  <- next/link
 |   |   +-- ReactNode  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   `-- dream.widget.WidgetBubble.tsx unused user-facing
+|   |   `-- -> (default)
+|   `-- dream.widget.WidgetBubble.tsx 🧩 COMPONENT
 |       +-- Bell, Cpu, FlaskConical, Megaphone, MessageSquare, Play, Video  <- lucide-react
 |       +-- useCallback  <- react
 |       +-- useDrag  <- react-dnd
-|       +-- -> (default)
-|       `-- unused unused: (default)
+|       `-- -> (default)
 +-- config
 |   +-- advanced-game-targets.json
 |   +-- optimizer.yaml
 |   `-- ui-ux-spec.yaml
-+-- coresurfaces  [Profile]
-|   +-- home  [Profile]
-|   |   `-- buttons  [Profile]
-|   |       +-- button-groups.ts unused user-facing
++-- coresurfaces  [Profile] 🗂 FEATURE_FOLDER
+|   +-- home  [Profile] 🗂 FEATURE_FOLDER
+|   |   `-- buttons  [Profile] 🗂 FEATURE_FOLDER
+|   |       +-- button-groups.ts
 |   |       |   +-- -> BUTTON_GROUPS
 |   |       |   +-- -> ButtonGroupName
-|   |       |   +-- -> ButtonItem
-|   |       |   `-- unused unused: BUTTON_GROUPS, ButtonGroupName, ButtonItem
-|   |       `-- contextual-home.ts unused user-facing
+|   |       |   `-- -> ButtonItem
+|   |       `-- contextual-home.ts
 |   |           +-- -> HOME_BOTTOM_THRESHOLD
 |   |           +-- -> HOME_TOP_THRESHOLD
 |   |           +-- -> HomeTarget
 |   |           +-- -> RuntimeHomeCallbacks
 |   |           +-- -> resolveHomeTarget
-|   |           +-- -> runHomeAction
-|   |           `-- unused unused: HomeTarget, RuntimeHomeCallbacks
-|   +-- dreamsurface.EditProfileDream.tsx unused user-facing
+|   |           `-- -> runHomeAction
+|   +-- dreamsurface.EditProfileDream.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |   |   +-- DEFAULT_DREAMS, ProfileDream  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |   |   +-- (default)  <- @/components/ui/dream.DreamWord
@@ -5040,9 +4895,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (default)  <- next/link
 |   |   +-- useRouter  <- next/navigation
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
-|   |   +-- -> (default)
-|   |   `-- unused unused: (default)
-|   `-- dreamsurface.ViewProfile.tsx unused user-facing
+|   |   `-- -> (default)
+|   `-- dreamsurface.ViewProfile.tsx 🧩 COMPONENT
 |       +-- (default)  <- @/components/dream.ProfileShareButton
 |       +-- (default)  <- @/components/profile/dream.widget.ProfileWidgetGrid
 |       +-- DEFAULT_DREAMS, ProfileDream  <- @/components/profile/dream.widget.ProfileWidgetGrid
@@ -5055,11 +4909,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- redirect  <- next/navigation
 |       +-- connection  <- next/server
 |       +-- -> (default)
-|       +-- -> metadata
-|       `-- unused unused: (default), metadata
+|       `-- -> metadata
 +-- daydreams
 |   +-- brand
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- (default)  <- @/components/daydream/dreamsurface.daydream.BrandDaydream
@@ -5071,10 +4924,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   +-- code
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.OpenDaydreamSideBButton
 |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
@@ -5088,10 +4940,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- (default)  <- #86efac
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   +-- create
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.OpenDaydreamSideBButton
 |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
@@ -5104,10 +4955,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   +-- games
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/games/dream.GamesHub
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
@@ -5126,10 +4976,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- (dynamic import)  <- @/engins/engin.GameEngin
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   +-- lab
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.OpenDaydreamSideBButton
 |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
@@ -5143,10 +4992,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- connection  <- next/server
 |   |       +-- (side-effect)  <- rgba(34,197,94,0.06)
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   +-- music
-|   |   `-- page.tsx unused
+|   |   `-- page.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- DaydreamWidget  <- @/components/daydream/dream.shell.DaydreamShell
 |   |       +-- (default)  <- @/components/music/dream.SoundRecorder
@@ -5160,18 +5008,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- redirect  <- next/navigation
 |   |       +-- connection  <- next/server
 |   |       +-- -> (default)
-|   |       +-- -> metadata
-|   |       `-- unused unused: (default), metadata
+|   |       `-- -> metadata
 |   `-- shared
-|       +-- useDaydreamPersistence.ts unused
+|       +-- useDaydreamPersistence.ts
 |       |   +-- createClient  <- @/supabase/client/client
 |       |   +-- safeGetUser  <- @/supabase/client/safeGetUser
 |       |   +-- useCallback, useEffect, useRef, useState  <- react
 |       |   +-- -> UseDaydreamPersistenceOptions
 |       |   +-- -> UseDaydreamPersistenceReturn
-|       |   +-- -> useDaydreamPersistence
-|       |   `-- unused unused: UseDaydreamPersistenceOptions, UseDaydreamPersistenceReturn
-|       `-- useDaydreamState.ts unused
+|       |   `-- -> useDaydreamPersistence
+|       `-- useDaydreamState.ts
 |           +-- createClient  <- @/supabase/client/client
 |           +-- safeGetUser  <- @/supabase/client/safeGetUser
 |           +-- useCallback, useEffect, useRef  <- react
@@ -5179,8 +5025,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |           +-- -> DaydreamStatePayload
 |           +-- -> UseDaydreamStateOptions
 |           +-- -> UseDaydreamStateReturn
-|           +-- -> useDaydreamState
-|           `-- unused unused: DaydreamSide, DaydreamStatePayload, UseDaydreamStateOptions, UseDaydreamStateReturn
+|           `-- -> useDaydreamState
 +-- dr-eams  [AI / Dr. Eams / Agents]
 |   +-- ai  [AI / Dr. Eams / Agents]
 |   |   +-- handlers  [AI / Dr. Eams / Agents]
@@ -5193,13 +5038,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> handleDreamPreview
 |   |   |   |   +-- -> handleDreamRemove
 |   |   |   |   `-- -> handleDreamReorder
-|   |   |   +-- index.ts unused
+|   |   |   +-- index.ts
 |   |   |   |   +-- registerHandler  <- ../tool-router
 |   |   |   |   +-- handleHomeAnchorSetState, handleHomeMenuOpen, handleNavDelta  <- ./navigation
 |   |   |   |   +-- handleDreamAddFromPreset, handleDreamConfigPatch, handleDreamOpen, handleDreamPreview, handleDreamRemove, handleDreamReorder  <- ./dreams
 |   |   |   |   +-- handleDraftSave, handleFollowUser, handlePostCreate, handlePostLike, handleSearch  <- ./social
-|   |   |   |   +-- -> registerAllHandlers
-|   |   |   |   `-- unused unused: registerAllHandlers
+|   |   |   |   `-- -> registerAllHandlers
 |   |   |   +-- navigation.ts
 |   |   |   |   +-- HomeAnchorSetStatePayload, NavDeltaPayload  <- @/types/ai-system
 |   |   |   |   +-- ToolHandler  <- ../tool-router
@@ -5236,15 +5080,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> StrikeSeverityLevel
 |   |   |   +-- -> THRESHOLDS
 |   |   |   `-- -> USER_REASON_MESSAGES
-|   |   +-- boogie-verifier.ts unused
+|   |   +-- boogie-verifier.ts
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   +-- ActorContext, AgentType, BoogieDecision, BoogieIntentDecision, BoogieOutput, BoogieSignals, Intent, ReasonCode  <- @/types/ai-system
 |   |   |   +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   +-- -> detectSignals
 |   |   |   +-- -> redactSecrets
-|   |   |   +-- -> verifyIntents
-|   |   |   `-- unused unused: detectSignals, redactSecrets, verifyIntents
-|   |   +-- boogieman.ts unused
+|   |   |   `-- -> verifyIntents
+|   |   +-- boogieman.ts
 |   |   |   +-- v4  <- uuid
 |   |   |   +-- BOOGIE_POLICY_VERSION, DEFAULT_DURATIONS_SECONDS, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES, EnforcementScope, StrikeSeverityLevel  <- ./boogie-policy
 |   |   |   +-- BoogieEnforceOutput, BoogieOutput, BoogieResult, EnforcementAction, EnforcementScope, Intent  <- ./schemas
@@ -5257,8 +5100,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> computeRiskScore
 |   |   |   +-- -> getStrikeExpiryDays
 |   |   |   +-- -> getStrikeWeight
-|   |   |   +-- -> selectAction
-|   |   |   `-- unused unused: BoogieEnforceInput, getStrikeExpiryDays, getStrikeWeight
+|   |   |   `-- -> selectAction
 |   |   +-- capability-gate.ts
 |   |   |   +-- isOwnerEmail  <- @/dr-eams/ai/triad
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
@@ -5270,15 +5112,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getRoleRank
 |   |   |   +-- -> hasCapability
 |   |   |   `-- -> meetsMinimumRole
-|   |   +-- CIC.ts unused
-|   |   |   +-- -> CIC
-|   |   |   `-- unused unused: CIC
-|   |   +-- client.ts unused
+|   |   +-- CIC.ts
+|   |   |   `-- -> CIC
+|   |   +-- client.ts
 |   |   |   +-- -> AiAgent
 |   |   |   +-- -> AiMessage
 |   |   |   +-- -> AiResponse
-|   |   |   +-- -> callAi
-|   |   |   `-- unused unused: AiAgent, AiMessage, AiResponse, callAi
+|   |   |   `-- -> callAi
 |   |   +-- confirm-token.ts
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   +-- UIContext  <- @/types/ai-system
@@ -5291,13 +5131,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- crypto
 |   |   |   +-- -> makeConfirmToken
 |   |   |   `-- -> verifyConfirmToken
-|   |   +-- groq.ts unused
+|   |   +-- groq.ts
 |   |   |   +-- -> GroqChatOptions
 |   |   |   +-- -> GroqMessage
 |   |   |   +-- -> GroqRole
 |   |   |   +-- -> groqChat
-|   |   |   +-- -> groqHealthCheck
-|   |   |   `-- unused unused: GroqChatOptions, GroqRole, groqHealthCheck
+|   |   |   `-- -> groqHealthCheck
 |   |   +-- idempotency.ts
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   `-- -> checkIdempotency
@@ -5307,12 +5146,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> RateLimitConfig
 |   |   |   +-- -> checkRateLimit
 |   |   |   `-- -> getCurrentRPM
-|   |   +-- rateLimit.ts unused
+|   |   +-- rateLimit.ts
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   +-- -> RateLimitResult
 |   |   |   +-- -> checkRateLimit
-|   |   |   +-- -> getCurrentRPM
-|   |   |   `-- unused unused: RateLimitResult
+|   |   |   `-- -> getCurrentRPM
 |   |   +-- schemas.ts
 |   |   |   +-- z  <- zod
 |   |   |   +-- -> Agent
@@ -5361,12 +5199,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> UIContextSchema
 |   |   |   +-- -> UserSafeExplanation
 |   |   |   `-- -> UserSafeExplanationSchema
-|   |   +-- tfBackend.ts unused
+|   |   +-- tfBackend.ts
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs-backend-webgpu
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs
-|   |   |   +-- -> initTfBackend
-|   |   |   `-- unused unused: initTfBackend
-|   |   +-- tool-router.ts unused
+|   |   |   `-- -> initTfBackend
+|   |   +-- tool-router.ts
 |   |   |   +-- SupabaseClient  <- @/engine/io
 |   |   |   +-- ActorContext, Intent, IntentType, ToolResult, UIContext  <- @/types/ai-system
 |   |   |   +-- writeAuditLog  <- ./audit
@@ -5376,8 +5213,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> executeIntent
 |   |   |   +-- -> executeIntents
 |   |   |   +-- -> getHandler
-|   |   |   +-- -> registerHandler
-|   |   |   `-- unused unused: HandlerContext, executeIntent, executeIntents, getHandler
+|   |   |   `-- -> registerHandler
 |   |   `-- triad.ts
 |   |       +-- groqChat, GroqMessage  <- @/dr-eams/ai/groq
 |   |       +-- IntentSchema, Intent, IntentType  <- @/dr-eams/ai/schemas
@@ -5394,7 +5230,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> DrEamsAction
 |   |       `-- -> DrEamsAnimator
 |   +-- search  [AI / Dr. Eams / Agents]
-|   |   `-- drEamsSearch.ts unused
+|   |   `-- drEamsSearch.ts
 |   |       +-- -> DrEamsParsedReply
 |   |       +-- -> DrEamsRequestBody
 |   |       +-- -> NAV_SUGGESTIONS
@@ -5403,10 +5239,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> buildDreamDMUrl
 |   |       +-- -> matchNavSuggestions
 |   |       +-- -> parseDrEamsReply
-|   |       +-- -> truncatePreview
-|   |       `-- unused unused: DrEamsParsedReply, DrEamsRequestBody
+|   |       `-- -> truncatePreview
 |   +-- capabilities.yaml
-|   `-- tools.ts unused
+|   `-- tools.ts
 |       +-- -> CurationAction
 |       +-- -> CurationRefreshSliceInput
 |       +-- -> DeviceMode
@@ -5428,11 +5263,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> SystemBugReportInput
 |       +-- -> ToolContext
 |       +-- -> ToolRequest
-|       +-- -> ToolResult
-|       `-- unused unused: CurationAction, CurationRefreshSliceInput, DeviceMode, DrEamsActionName, DrEamsTools, NavAction, NavOpenPublicProfileInput, OnboardingAction, OnboardingExplainTermInput, OnboardingGuidedSetupInput, PolicyAction, PolicyExplainInput, PolicySuggestFixInput, PrivacyAction, PrivacyDeleteInput, SetupAction, SetupCheckInput, SystemAction, SystemBugReportInput, ToolContext, ToolRequest, ToolResult
-+-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   +-- hooks  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- useDreamBarContext.ts user-facing
+|       `-- -> ToolResult
++-- dreamdmbar  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   +-- hooks  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   +-- useDreamBarContext.ts
 |   |   |   +-- usePathname  <- next/navigation
 |   |   |   +-- useMemo  <- react
 |   |   |   +-- BarIntentMode  <- @/dreamdmbar/runtime/DreamSystemContext
@@ -5441,39 +5275,37 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> detectSurface
 |   |   |   +-- -> resolveIntentOverride
 |   |   |   `-- -> useDreamBarContext
-|   |   +-- useDreamDMConversations.ts user-facing
+|   |   +-- useDreamDMConversations.ts
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- -> DMConversation
 |   |   |   `-- -> useDreamDMConversations
-|   |   +-- useDreamDMDraft.ts unused user-facing
+|   |   +-- useDreamDMDraft.ts
 |   |   |   +-- deleteOfflineRecord, getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> DraftPayload
 |   |   |   +-- -> cleanupStaleDrafts
 |   |   |   +-- -> getDraftAge
 |   |   |   +-- -> listAllDraftIds
-|   |   |   +-- -> useDreamDMDraft
-|   |   |   `-- unused unused: DraftPayload, cleanupStaleDrafts, getDraftAge, listAllDraftIds
-|   |   +-- useDreamDMMessages.ts user-facing
+|   |   |   `-- -> useDreamDMDraft
+|   |   +-- useDreamDMMessages.ts
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> DMMessage
 |   |   |   `-- -> useDreamDMMessages
-|   |   +-- useDreamSearch.ts unused user-facing
+|   |   +-- useDreamSearch.ts
 |   |   |   +-- USER_FACING_ENGINES  <- @/engins/forgeengin/forge/forgeRegistry
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> SearchResult
 |   |   |   +-- -> SearchResultType
 |   |   |   +-- -> UseDreamSearchReturn
-|   |   |   +-- -> useDreamSearch
-|   |   |   `-- unused unused: SearchResultType, UseDreamSearchReturn
-|   |   +-- useMessagingCore.ts unused user-facing
+|   |   |   `-- -> useDreamSearch
+|   |   +-- useMessagingCore.ts
 |   |   |   +-- uploadBlobToLedgerStorage  <- @/engins/contentengin/media/ledger
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- useCallback, useState  <- react
@@ -5482,21 +5314,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> MediaType
 |   |   |   +-- -> SendMessageParams
 |   |   |   +-- -> UseMessagingCoreReturn
-|   |   |   +-- -> useMessagingCore
-|   |   |   `-- unused unused: SendMessageParams, UseMessagingCoreReturn
-|   |   +-- useModuleBarIntent.ts unused user-facing
+|   |   |   `-- -> useMessagingCore
+|   |   +-- useModuleBarIntent.ts
 |   |   |   +-- ModuleBarAction  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
 |   |   |   +-- useCallback  <- react
 |   |   |   +-- -> UseModuleBarIntentResult
-|   |   |   +-- -> useModuleBarIntent
-|   |   |   `-- unused unused: UseModuleBarIntentResult, useModuleBarIntent
-|   |   `-- useNotifications.ts unused user-facing
+|   |   |   `-- -> useModuleBarIntent
+|   |   `-- useNotifications.ts
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
-|   |       +-- -> useNotifications
-|   |       `-- unused unused: useNotifications
-|   +-- notifications  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- notificationHelpers.ts unused user-facing
+|   |       `-- -> useNotifications
+|   +-- notifications  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   +-- notificationHelpers.ts
 |   |   |   +-- -> DbNotificationContent
 |   |   |   +-- -> DbNotificationRow
 |   |   |   +-- -> UiNotification
@@ -5510,19 +5339,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getUnreadCount
 |   |   |   +-- -> mapNotificationType
 |   |   |   +-- -> normalizeDbRow
-|   |   |   +-- -> sortByRecent
-|   |   |   `-- unused unused: DbNotificationContent
-|   |   `-- useNotifications.ts unused user-facing
+|   |   |   `-- -> sortByRecent
+|   |   `-- useNotifications.ts
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- applyOptimisticDelete, applyOptimisticMarkAll, applyOptimisticRead, getUnreadCount, normalizeDbRow, sortByRecent, DbNotificationRow, UiNotification  <- ./notificationHelpers
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |       +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |       +-- -> UseNotificationsReturn
-|   |       +-- -> useNotifications
-|   |       `-- unused unused: UseNotificationsReturn
-|   +-- runtime  [Home / DreamDMBar / DualRuntime, Messages / DMs]
-|   |   +-- barInteractions.ts unused user-facing
+|   |       `-- -> useNotifications
+|   +-- runtime  [Home / DreamDMBar / DualRuntime, Messages / DMs] 🗂 FEATURE_FOLDER
+|   |   +-- barInteractions.ts
 |   |   |   +-- -> BAR_FLING_LINE_RATIO
 |   |   |   +-- -> BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS
 |   |   |   +-- -> BAR_FLING_TO_TOP_MIN_DRAG_PX
@@ -5579,9 +5406,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> shouldTreatGoldReleaseAsTap
 |   |   |   +-- -> snapSplitRatioOnRelease
 |   |   |   +-- -> snapToSplitPoint
-|   |   |   +-- -> todayDateString
-|   |   |   `-- unused unused: BAR_SNAP_TO_TOP_HEIGHT_RATIO, BAR_SNAP_TO_TOP_THRESHOLD_PX, BarReleaseAction, GOLD_SECOND_TAP_WINDOW_MS, LIGHT_POSITION_CYCLE, MIN_POINTER_SAMPLE_DELTA_MS, QuickReaction, SlashCommand
-|   |   +-- bridgeSeamFlow.ts user-facing
+|   |   |   `-- -> todayDateString
+|   |   +-- bridgeSeamFlow.ts
 |   |   |   +-- -> SEAM_CHANNEL_COLORS
 |   |   |   +-- -> SEAM_DEFAULT_COLOR
 |   |   |   +-- -> SeamParticle
@@ -5592,7 +5418,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> evictDeadParticles
 |   |   |   +-- -> isParticleDead
 |   |   |   `-- -> tickParticles
-|   |   `-- DreamSystemContext.tsx unused user-facing
+|   |   `-- DreamSystemContext.tsx 🧩 COMPONENT
 |   |       +-- DEFAULT_SPLIT_RATIO  <- @/dreamdmbar/runtime/barInteractions
 |   |       +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |       +-- moveTorus, torusFocusKey  <- @/engine/runtime/dualRuntime
@@ -5609,14 +5435,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> ModuleBarAction
 |   |       +-- -> RuntimeCallbacks
 |   |       +-- -> WorldFocusState
-|   |       +-- -> useDreamSystem
-|   |       `-- unused unused: DEFAULT_WORLD_FOCUS, HomeData, RuntimeCallbacks, WorldFocusState
-|   +-- dream.GlowingLight.tsx unused user-facing
+|   |       `-- -> useDreamSystem
+|   +-- dream.GlowingLight.tsx 🧩 COMPONENT
 |   |   +-- CSSProperties, KeyboardEvent, MouseEvent, TouchEvent  <- react
 |   |   +-- -> (default)
-|   |   +-- -> GlowingLightProps
-|   |   `-- unused unused: GlowingLightProps
-|   `-- dreamsurface.dreamdmbar.tsx unused user-facing
+|   |   `-- -> GlowingLightProps
+|   `-- dreamsurface.dreamdmbar.tsx 🧩 COMPONENT
 |       +-- Bell, Menu, Bot, Code2, FileText, ImageIcon, Loader2, Maximize2, MessageCircle, Music, Paperclip, PenLine, Search, Send, Sparkles, X  <- lucide-react
 |       +-- (default)  <- next/image
 |       +-- (default)  <- react
@@ -5643,11 +5467,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- (dynamic import)  <- @/supabase/client/client
 |       +-- -> (default)
 |       +-- -> BAR_H
-|       +-- -> NAV_H
-|       `-- unused unused: BAR_H, NAV_H
-+-- dreamr  [DreamR]
-|   +-- activity  [DreamR]
-|   |   +-- aqs.ts unused user-facing
+|       `-- -> NAV_H
++-- dreamr  [DreamR] 🗂 FEATURE_FOLDER
+|   +-- activity  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- aqs.ts
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- UserMetrics  <- ./types
 |   |   |   +-- -> calculateAQS
@@ -5659,23 +5482,20 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getAQSTier
 |   |   |   +-- -> getAQSTierColor
 |   |   |   +-- -> getUserMetrics
-|   |   |   +-- -> qualifiesForPremiumCPV
-|   |   |   `-- unused unused: calculateAQS, calculateRealShitRate, getAQS, getAQSLeaderboard, getUserMetrics
-|   |   +-- boogieActivityPolicy.ts unused user-facing
+|   |   |   `-- -> qualifiesForPremiumCPV
+|   |   +-- boogieActivityPolicy.ts
 |   |   |   +-- PolicyCategory, PolicyCategoryValue  <- @/engine/policy/boogiePolicy
 |   |   |   +-- -> ActivityFeedTreatment
 |   |   |   +-- -> BoogieActivitySignals
 |   |   |   +-- -> detectActivityFraudSignals
 |   |   |   +-- -> resolveActivityFeedTreatment
-|   |   |   +-- -> shouldExcludeFromFeed
-|   |   |   `-- unused unused: ActivityFeedTreatment, BoogieActivitySignals, detectActivityFraudSignals, resolveActivityFeedTreatment, shouldExcludeFromFeed
-|   |   +-- revenueSplit.ts unused user-facing
+|   |   |   `-- -> shouldExcludeFromFeed
+|   |   +-- revenueSplit.ts
 |   |   |   +-- -> ACTIVITY_REVENUE_SPLIT
 |   |   |   +-- -> ActivityRevenueSplit
 |   |   |   +-- -> calculateActivityRevenueSplit
-|   |   |   +-- -> validateActivityRevenueSplit
-|   |   |   `-- unused unused: ActivityRevenueSplit
-|   |   +-- scoring.ts unused user-facing
+|   |   |   `-- -> validateActivityRevenueSplit
+|   |   +-- scoring.ts
 |   |   |   +-- ActivityTier, INNOVATION_BONUS, TIER_MULTIPLIERS, VERIFICATION_STRENGTH, VerificationMethod  <- ./types
 |   |   |   +-- -> calculateActivityPoints
 |   |   |   +-- -> calculateDecayDate
@@ -5688,18 +5508,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getVerificationStrength
 |   |   |   +-- -> isDecayed
 |   |   |   +-- -> shouldPromoteActivity
-|   |   |   +-- -> validateTierForActivityType
-|   |   |   `-- unused unused: calculateVisibilityBoost, getInnovationBonus, getTierMultiplier, getVerificationMethodDisplayName, getVerificationStrength, isDecayed, shouldPromoteActivity, validateTierForActivityType
-|   |   +-- skipCredits.ts unused user-facing
+|   |   |   `-- -> validateTierForActivityType
+|   |   +-- skipCredits.ts
 |   |   |   +-- AdType, SKIP_CREDIT_REWARDS  <- ./types
 |   |   |   +-- -> MIN_WATCHED_PERCENT_FOR_CREDIT
 |   |   |   +-- -> SKIP_CREDIT_SPEND_PER_AD
 |   |   |   +-- -> addSkipCredits
 |   |   |   +-- -> calculateSkipCreditsEarned
 |   |   |   +-- -> canSpendSkipCredit
-|   |   |   +-- -> spendSkipCredit
-|   |   |   `-- unused unused: MIN_WATCHED_PERCENT_FOR_CREDIT, SKIP_CREDIT_SPEND_PER_AD
-|   |   +-- types.ts unused user-facing
+|   |   |   `-- -> spendSkipCredit
+|   |   +-- types.ts
 |   |   |   +-- -> ActivityTier
 |   |   |   +-- -> ActivityVerification
 |   |   |   +-- -> AdView
@@ -5724,9 +5542,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> UserMetrics
 |   |   |   +-- -> VERIFICATION_STRENGTH
 |   |   |   +-- -> VerificationMethod
-|   |   |   +-- -> View
-|   |   |   `-- unused unused: SkipCredit
-|   |   `-- visibility-score.ts unused user-facing
+|   |   |   `-- -> View
+|   |   `-- visibility-score.ts
 |   |       +-- createClient  <- @/supabase/client/client
 |   |       +-- ActivityTier  <- ./types
 |   |       +-- -> calculateVisibilityScore
@@ -5734,16 +5551,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> estimateVisibilityScore
 |   |       +-- -> getVisibilityRankedFeed
 |   |       +-- -> shouldPromotePost
-|   |       +-- -> sortByVisibilityScore
-|   |       `-- unused unused: calculateVisibilityScore, calculateVisibilityScores, estimateVisibilityScore, getVisibilityRankedFeed, shouldPromotePost
-|   +-- bot-detection  [DreamR]
-|   |   +-- detector.ts unused user-facing
+|   |       `-- -> sortByVisibilityScore
+|   +-- bot-detection  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- detector.ts
 |   |   |   +-- coarseGrainInvariance, crossSwipeSimilarity, deviationEntropy, perpendicularDeviation, velocityVarianceJerk, Path  <- ./swipe-physics
 |   |   |   +-- -> BotDetector
 |   |   |   +-- -> BotScore
-|   |   |   +-- -> SwipeRecord
-|   |   |   `-- unused unused: BotDetector, BotScore, SwipeRecord
-|   |   +-- index.ts unused user-facing
+|   |   |   `-- -> SwipeRecord
+|   |   +-- index.ts
 |   |   |   +-- isBotSession, BotSessionResult, SwipeRecord  <- @/dreamr/botDetection
 |   |   |   +-- analyzeSwipe, isBotSession, tallyView, BotSessionResult, Point, SwipeAnalysis, SwipeRecord, ViewTally  <- @/dreamr/botDetection
 |   |   |   +-- -> BOT_MAX_DEVIATION_PX
@@ -5770,9 +5585,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> analyzeSwipe
 |   |   |   +-- -> createViewTimer
 |   |   |   +-- -> isBotSession
-|   |   |   +-- -> tallyView
-|   |   |   `-- unused unused: BOT_MAX_ENTROPY, BOT_MAX_SLOG_VEL_VAR, BOT_MIN_COARSE_GRAIN_DIFF, BOT_MIN_CROSS_SIMILARITY, BotSessionResult, HUMAN_MAX_COARSE_GRAIN_DIFF, HUMAN_MAX_CROSS_SIMILARITY, HUMAN_MIN_ENTROPY, HUMAN_MIN_SLOG_VEL_VAR, Point, SwipeAnalysis, SwipeRecord, ViewTally, analyzeSwipe, isBotSession, tallyView
-|   |   +-- swipe-physics.ts unused user-facing
+|   |   |   `-- -> tallyView
+|   |   +-- swipe-physics.ts
 |   |   |   +-- -> Path
 |   |   |   +-- -> PathPoint
 |   |   |   +-- -> VelocityStats
@@ -5780,16 +5594,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> crossSwipeSimilarity
 |   |   |   +-- -> deviationEntropy
 |   |   |   +-- -> perpendicularDeviation
-|   |   |   +-- -> velocityVarianceJerk
-|   |   |   `-- unused unused: PathPoint, VelocityStats
-|   |   `-- view-tally.ts unused user-facing
+|   |   |   `-- -> velocityVarianceJerk
+|   |   `-- view-tally.ts
 |   |       +-- -> VIEW_TALLY_DURATION_MS
 |   |       +-- -> ViewTallyTimer
 |   |       +-- -> ViewTallyTracker
-|   |       +-- -> createViewTallyTimer
-|   |       `-- unused unused: VIEW_TALLY_DURATION_MS, ViewTallyTimer, ViewTallyTracker, createViewTallyTimer
-|   +-- components  [DreamR]
-|   |   `-- dreamrfeed.tsx user-facing
+|   |       `-- -> createViewTallyTimer
+|   +-- components  [DreamR] 🗂 FEATURE_FOLDER
+|   |   `-- dreamrfeed.tsx
 |   |       +-- (default)  <- @/components/dreamr/dream.panel.DreamRChannelPanel
 |   |       +-- (default)  <- @/components/dreamr/dream.panel.DreamRCreatorPanel
 |   |       +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
@@ -5802,16 +5614,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |       +-- -> (default)
 |   |       `-- -> DREAMR_TOPICS
-|   +-- feed  [DreamR]
-|   |   +-- feedTopics.ts unused user-facing
+|   +-- feed  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- feedTopics.ts
 |   |   |   +-- -> ALL_TOPICS
 |   |   |   +-- -> DEFAULT_TOPIC_IDS
 |   |   |   +-- -> FEED_TOPICS_KEY
 |   |   |   +-- -> FeedTopic
 |   |   |   +-- -> loadActiveTopicIds
-|   |   |   +-- -> topicIdsToQueries
-|   |   |   `-- unused unused: FeedTopic
-|   |   +-- hashtags.ts unused user-facing
+|   |   |   `-- -> topicIdsToQueries
+|   |   +-- hashtags.ts
 |   |   |   +-- -> Hashtag
 |   |   |   +-- -> MAX_TAGS_PER_POST
 |   |   |   +-- -> MAX_TAG_LENGTH
@@ -5820,9 +5631,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> extractHashtags
 |   |   |   +-- -> formatTag
 |   |   |   +-- -> segmentText
-|   |   |   +-- -> validateTag
-|   |   |   `-- unused unused: Hashtag, TrendingTag
-|   |   +-- useLiveFeed.ts unused user-facing
+|   |   |   `-- -> validateTag
+|   |   +-- useLiveFeed.ts
 |   |   |   +-- RealtimePostgresInsertPayload  <- @/engine/io
 |   |   |   +-- getPrimaryPostMediaUrl  <- @/engins/contentengin/media/postMedia
 |   |   |   +-- createClient  <- @/supabase/client/client
@@ -5830,18 +5640,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> FeedPost
 |   |   |   +-- -> UseLiveFeedReturn
-|   |   |   +-- -> useLiveFeed
-|   |   |   `-- unused unused: UseLiveFeedReturn
-|   |   `-- useYouTubeLiveFeed.ts unused user-facing
+|   |   |   `-- -> useLiveFeed
+|   |   `-- useYouTubeLiveFeed.ts
 |   |       +-- ALL_TOPICS, DEFAULT_TOPIC_IDS, loadActiveTopicIds, topicIdsToQueries  <- @/dreamr/feed/feedTopics
 |   |       +-- FeedPost  <- @/dreamr/feed/useLiveFeed
 |   |       +-- UnifiedFeedItem  <- @/types/connector
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- -> UseYouTubeLiveFeedReturn
-|   |       +-- -> useYouTubeLiveFeed
-|   |       `-- unused unused: UseYouTubeLiveFeedReturn
-|   +-- feeds  [DreamR]
-|   |   `-- embedFeedLoader.ts unused user-facing
+|   |       `-- -> useYouTubeLiveFeed
+|   +-- feeds  [DreamR] 🗂 FEATURE_FOLDER
+|   |   `-- embedFeedLoader.ts
 |   |       +-- (side-effect)  <- server-only
 |   |       +-- readFileSync  <- node:fs
 |   |       +-- join  <- node:path
@@ -5849,38 +5657,34 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> EmbedFeedAlgorithm
 |   |       +-- -> EmbedFeedItem
 |   |       +-- -> loadEmbedFeed
-|   |       +-- -> loadEmbedFeedByProvider
-|   |       `-- unused unused: EmbedFeed, EmbedFeedAlgorithm, loadEmbedFeedByProvider
-|   +-- runtime  [DreamR]
-|   |   +-- closeFriendsVisibility.ts unused user-facing
+|   |       `-- -> loadEmbedFeedByProvider
+|   +-- runtime  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- closeFriendsVisibility.ts
 |   |   |   +-- SupabaseClient  <- @/engine/io
 |   |   |   +-- (dynamic import)  <- @/supabase/server/serverClient
 |   |   |   +-- -> VisibilityCandidate
 |   |   |   +-- -> fetchCloseFriendsCircle
 |   |   |   +-- -> filterByCloseFriends
-|   |   |   +-- -> loadVisibilityCircle
-|   |   |   `-- unused unused: VisibilityCandidate, fetchCloseFriendsCircle
-|   |   +-- feedCursor.ts unused user-facing
+|   |   |   `-- -> loadVisibilityCircle
+|   |   +-- feedCursor.ts
 |   |   |   +-- -> FeedPaginationParams
 |   |   |   +-- -> MAX_SEEN_IDS
 |   |   |   +-- -> deriveNextCursor
-|   |   |   +-- -> parseFeedParams
-|   |   |   `-- unused unused: FeedPaginationParams
-|   |   +-- socialHumanityScore.ts unused user-facing
+|   |   |   `-- -> parseFeedParams
+|   |   +-- socialHumanityScore.ts
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   +-- -> HumanityScore
 |   |   |   +-- -> SocialHumanityInput
-|   |   |   +-- -> computeSocialHumanityScore
-|   |   |   `-- unused unused: HumanityScore, SocialHumanityInput, computeSocialHumanityScore
-|   |   +-- swipeCalibration.ts user-facing
+|   |   |   `-- -> computeSocialHumanityScore
+|   |   +-- swipeCalibration.ts
 |   |   |   +-- -> CalibrationProfile
 |   |   |   +-- -> CalibrationSample
 |   |   |   +-- -> calibrateDevice
 |   |   |   +-- -> getActiveProfile
 |   |   |   +-- -> resetCalibration
 |   |   |   `-- -> setActiveProfile
-|   |   +-- swipePersonalization.ts unused user-facing
+|   |   +-- swipePersonalization.ts
 |   |   |   +-- -> CREATOR_PREFERENCE_WEIGHT
 |   |   |   +-- -> DreamRSwipeIntent
 |   |   |   +-- -> DreamRSwipePost
@@ -5894,9 +5698,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> emptyDreamRSwipePreferences
 |   |   |   +-- -> nextSwipePreferences
 |   |   |   +-- -> personalizeFeedOrder
-|   |   |   +-- -> shouldRecordDreamRView
-|   |   |   `-- unused unused: CREATOR_PREFERENCE_WEIGHT, DreamRSwipeIntent, DreamRSwipePreferenceSets, DreamRViewIntent, LONGFORM_CONTENT_THRESHOLD, TYPE_PREFERENCE_WEIGHT, creatorPreferenceKey
-|   |   `-- torridityLedger.ts unused user-facing
+|   |   |   `-- -> shouldRecordDreamRView
+|   |   `-- torridityLedger.ts
 |   |       +-- getActiveProfile, CalibrationProfile  <- ./swipeCalibration
 |   |       +-- -> HumanityPath
 |   |       +-- -> OriginalityMeta
@@ -5915,15 +5718,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> normalizeHumanViews
 |   |       +-- -> resolveSwipeRelease
 |   |       +-- -> slog
-|   |       +-- -> verifyHumanity
-|   |       `-- unused unused: HumanityPath, OriginalityMeta, PostMassMeta, SwipeReleaseResult, SwipeReleaseSample, TorridityPostLike, calculateSnapForce, getDeceleration, normalizeHumanViews
-|   +-- torridity  [DreamR]
-|   |   +-- constants.ts user-facing
+|   |       `-- -> verifyHumanity
+|   +-- torridity  [DreamR] 🗂 FEATURE_FOLDER
+|   |   +-- constants.ts
 |   |   |   +-- -> a0Perception
 |   |   |   +-- -> deltaP
 |   |   |   +-- -> lambda
 |   |   |   `-- -> n
-|   |   +-- index.ts unused user-facing
+|   |   +-- index.ts
 |   |   |   +-- a0Perception, deltaP, lambda, n  <- ./constants
 |   |   |   +-- contentMass, decayFactor, mu, rankFeed, throttlingGate, torridityRank, ContentItem, RankedItem  <- ./physics
 |   |   |   +-- -> ContentItem
@@ -5937,9 +5739,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> n
 |   |   |   +-- -> rankFeed
 |   |   |   +-- -> throttlingGate
-|   |   |   +-- -> torridityRank
-|   |   |   `-- unused unused: ContentItem, RankedItem, a0Perception, contentMass, decayFactor, deltaP, lambda, mu, n, rankFeed, throttlingGate, torridityRank
-|   |   `-- physics.ts user-facing
+|   |   |   `-- -> torridityRank
+|   |   `-- physics.ts
 |   |       +-- a0Perception, deltaP, n  <- ./constants
 |   |       +-- -> ContentItem
 |   |       +-- -> RankedItem
@@ -5949,7 +5750,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> rankFeed
 |   |       +-- -> throttlingGate
 |   |       `-- -> torridityRank
-|   +-- botDetection.ts user-facing
+|   +-- botDetection.ts
 |   |   +-- slog, slogEntropy, slogVariance  <- @/engine/slog
 |   |   +-- -> BotSessionResult
 |   |   +-- -> Point
@@ -5959,15 +5760,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> analyzeSwipe
 |   |   +-- -> isBotSession
 |   |   `-- -> tallyView
-|   +-- social-feed.ts unused user-facing
+|   +-- social-feed.ts
 |   |   +-- (default)  <- rss-parser
 |   |   +-- -> SocialFeedItem
 |   |   +-- -> SocialSource
 |   |   +-- -> extractFirstImage
 |   |   +-- -> fetchSocialFeed
-|   |   +-- -> stripHtml
-|   |   `-- unused unused: SocialSource
-|   `-- torridity.ts user-facing
+|   |   `-- -> stripHtml
+|   `-- torridity.ts
 |       +-- slog  <- @/engine/slog
 |       +-- -> ContentItem
 |       +-- -> RankedItem
@@ -5983,7 +5783,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> throttledVisibility
 |       +-- -> torridityRank
 |       `-- -> torridityRankSpec
-+-- engine
++-- engine 🗂 FEATURE_FOLDER
 |   +-- admin
 |   |   +-- lockout.ts
 |   |   |   +-- createServiceClient  <- @/supabase/server/serverClient
@@ -5992,7 +5792,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> isDomainBlocked
 |   |   |   +-- -> isOwner
 |   |   |   `-- -> triggerAdminLockout
-|   |   `-- upgrade-readiness.ts unused
+|   |   `-- upgrade-readiness.ts
 |   |       +-- createPatchPlan, PatchPlan  <- @/engine/agents/idari
 |   |       +-- FEATURE_MANIFESTS, calculateProgress, computeAllBuildCycleStates, BuildCycleState, DaydreamEnginManifest, FeatureEntry  <- @/engine/feature-build/index
 |   |       +-- getSetupStatus, SetupCheckSummary  <- @/engine/setup/checks
@@ -6007,21 +5807,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> createUpgradeReadinessSnapshot
 |   |       +-- -> describeUpgradeBlockers
 |   |       +-- -> selectNextUpgradeTarget
-|   |       +-- -> summarizeBuildReadiness
-|   |       `-- unused unused: BuildReadinessSummary, UpgradeApproval, UpgradeApprovalStatus, UpgradeProposal, UpgradeReadinessSnapshot, UpgradeTarget, createUpgradeProposal, describeUpgradeBlockers
+|   |       `-- -> summarizeBuildReadiness
 |   +-- agentOS
 |   |   `-- hostTools.ts
 |   |       +-- -> CodeEnginHostTools
 |   |       `-- -> codeEnginHostTools
 |   +-- agents  [AI / Dr. Eams / Agents]
-|   |   +-- adari.ts unused
+|   |   +-- adari.ts
 |   |   |   +-- existsSync, readFileSync  <- node:fs
 |   |   |   +-- resolve  <- node:path
 |   |   |   +-- -> AdariCheck
 |   |   |   +-- -> AdariReport
 |   |   |   +-- -> assertBuildInvariants
-|   |   |   +-- -> getBuildReport
-|   |   |   `-- unused unused: AdariCheck, AdariReport, assertBuildInvariants, getBuildReport
+|   |   |   `-- -> getBuildReport
 |   |   +-- agentBus.ts
 |   |   |   +-- (dynamic import)  <- @/dr-eams/ai/schemas
 |   |   |   +-- (dynamic import)  <- @/dr-eams/ai/schemas
@@ -6050,7 +5848,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> createBoogieManAgent
 |   |   |   +-- -> emitBoogieManEvent
 |   |   |   `-- -> onBoogieManEvent
-|   |   +-- dreamengin.ts unused
+|   |   +-- dreamengin.ts
 |   |   |   +-- -> AI_TRIAD
 |   |   |   +-- -> AXIOMS
 |   |   |   +-- -> CONNECTION_PATH_COUNT
@@ -6078,16 +5876,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> validateNavigation
 |   |   |   +-- -> validatePalette
 |   |   |   +-- -> validatePrivacy
-|   |   |   +-- -> validateVocabulary
-|   |   |   `-- unused unused: AI_TRIAD, AXIOMS, CONNECTION_PATH_COUNT, CORE_SURFACES, DAYDREAM_SURFACES, DESIGN_TOKENS, DREAMDM_BAR, DREAMENGIN_EVENT, DREAM_WINDOW_STATES, DreamEnginEventDetail, DreamEnginEventType, DreamWindowState, IDENTITY, NAVIGATION_RULES, PRIVACY_RULES, PrivacyDefault, PrivacyRule, VOCABULARY, Violation, ViolationSeverity, emitDreamEnginEvent, onDreamEnginEvent, validateAction, validateCredentialSafety, validateNavigation, validatePalette, validatePrivacy, validateVocabulary
-|   |   +-- drEamsMode.ts unused
+|   |   |   `-- -> validateVocabulary
+|   |   +-- drEamsMode.ts
 |   |   |   +-- -> DREAMS_MODE_EVENT
 |   |   |   +-- -> DREAMS_MODE_STORAGE_KEY
 |   |   |   +-- -> getDrEamsMode
 |   |   |   +-- -> onDrEamsModeChange
-|   |   |   +-- -> setDrEamsMode
-|   |   |   `-- unused unused: DREAMS_MODE_EVENT, DREAMS_MODE_STORAGE_KEY
-|   |   +-- idari.ts unused
+|   |   |   `-- -> setDrEamsMode
+|   |   +-- idari.ts
 |   |   |   +-- IDARiAgent  <- @/types/ai
 |   |   |   +-- -> GENERATION_LAW_WEIGHTS
 |   |   |   +-- -> GenerationLawAssessment
@@ -6115,9 +5911,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> evaluateSpecRequirements
 |   |   |   +-- -> formatGenerationLawLoadCheck
 |   |   |   +-- -> onIDARiEvent
-|   |   |   +-- -> updateKnownIssueStatus
-|   |   |   `-- unused unused: GENERATION_LAW_WEIGHTS, GenerationLawMode, IDARI_EVENT, IDARiAction, IDARiRequest, IDARiResult, KnownIssueStatus, PatchStep, SpecCheckResult, SpecRequirementStatus, VercelBuildResult, createIDARiAgent, emitIDARiEvent, onIDARiEvent
-|   |   +-- idariLoop.ts unused
+|   |   |   `-- -> updateKnownIssueStatus
+|   |   +-- idariLoop.ts
 |   |   |   +-- createPatchPlan, PatchPlan, PatchRisk  <- @/engine/agents/idari
 |   |   |   +-- getSnapshot, TelemetrySnapshot  <- @/engine/observability/collector
 |   |   |   +-- correlate, CorrelationResult  <- @/engine/observability/correlator
@@ -6134,22 +5929,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> buildIdariPrompt
 |   |   |   +-- -> getLoopHealthSummary
 |   |   |   +-- -> runLoopIteration
-|   |   |   +-- -> runRemediationLoop
-|   |   |   `-- unused unused: LoopHealthSummary, LoopSnapshotSummary, RemediationLoopOptions, getLoopHealthSummary, runRemediationLoop
-|   |   +-- teachBus.ts unused
+|   |   |   `-- -> runRemediationLoop
+|   |   +-- teachBus.ts
 |   |   |   +-- -> TeachEvent
 |   |   |   +-- -> emitTeach
 |   |   |   +-- -> hasTaught
 |   |   |   +-- -> markTaught
-|   |   |   +-- -> onTeach
-|   |   |   `-- unused unused: TeachEvent
-|   |   `-- uiActions.ts unused
+|   |   |   `-- -> onTeach
+|   |   `-- uiActions.ts
 |   |       +-- setDarkMode  <- @/components/ui-system/theme
 |   |       +-- -> UiActionContext
 |   |       +-- -> UiActionResult
 |   |       +-- -> executeUiAction
-|   |       +-- -> getUiCapabilities
-|   |       `-- unused unused: UiActionContext, UiActionResult
+|   |       `-- -> getUiCapabilities
 |   +-- animation
 |   |   `-- gsap
 |   |       +-- gsap.ts
@@ -6164,14 +5956,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |   +-- getGsap  <- @/engine/animation/gsap/gsap
 |   |       |   +-- useCallback, useRef, useState  <- react
 |   |       |   `-- -> useGsapFlip
-|   |       `-- useGsapScrollReveal.ts unused
+|   |       `-- useGsapScrollReveal.ts
 |   |           +-- getGsap  <- @/engine/animation/gsap/gsap
 |   |           +-- useEffect, useRef  <- react
 |   |           +-- -> ScrollRevealOptions
-|   |           +-- -> useGsapScrollReveal
-|   |           `-- unused unused: ScrollRevealOptions
+|   |           `-- -> useGsapScrollReveal
 |   +-- api
-|   |   `-- route.ts user-facing
+|   |   `-- route.ts
 |   |       +-- createServerClient  <- @/supabase/server/serverClient
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |       +-- NextRequest, NextResponse  <- next/server
@@ -6185,7 +5976,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> requireUser
 |   |       `-- -> withApi
 |   +-- artifacts
-|   |   `-- artifactStore.ts unused
+|   |   `-- artifactStore.ts
 |   |       +-- DreamArtifact  <- @/types/dreamArtifact
 |   |       +-- cacheAsset, getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |       +-- -> OfflineBlobArtifactRecord
@@ -6200,17 +5991,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> restoreArtifact
 |   |       +-- -> restoreArtifactsFromOfflineCache
 |   |       +-- -> saveArtifact
-|   |       +-- -> saveArtifacts
-|   |       `-- unused unused: OfflineBlobArtifactRecord, getDefaultSystemArtifacts, readOfflineBlobArtifacts, removeArtifact, saveArtifacts
+|   |       `-- -> saveArtifacts
 |   +-- assets
-|   |   `-- engineAssets.ts unused
+|   |   `-- engineAssets.ts
 |   |       +-- encodeUint8ArrayToLedgerString  <- @/engins/contentengin/media/ledger
 |   |       +-- createClient  <- @/supabase/client/client
 |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
-|   |       +-- -> saveEngineAsset
-|   |       `-- unused unused: saveEngineAsset
+|   |       `-- -> saveEngineAsset
 |   +-- collaboration
-|   |   `-- index.ts unused
+|   |   `-- index.ts
 |   |       +-- SupabaseClient  <- @/engine/io
 |   |       +-- (dynamic import)  <- @supabase/supabase-js
 |   |       +-- -> CollabEventHandler
@@ -6241,28 +6030,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> createLocalCollabSession
 |   |       +-- -> createSupabaseCollabSession
 |   |       +-- -> generateInviteLink
-|   |       +-- -> parseInviteLink
-|   |       `-- unused unused: CollabModeRuleSet, CollabOutboundPayload, CollabTransport, MediaSyncData, broadcastPlayhead, createLocalCollabSession, createSupabaseCollabSession
+|   |       `-- -> parseInviteLink
 |   +-- connectors
 |   |   +-- providers
-|   |   |   +-- bluesky.ts unused
+|   |   |   +-- bluesky.ts
 |   |   |   |   +-- normaliseBluesky  <- @/engine/connectors/normalise
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> BlueskyCredentials
 |   |   |   |   +-- -> blueskyCredentialFields
 |   |   |   |   +-- -> blueskySync
-|   |   |   |   +-- -> blueskyVerify
-|   |   |   |   `-- unused unused: BlueskyCredentials, blueskyCredentialFields
-|   |   |   +-- devto.ts unused
+|   |   |   |   `-- -> blueskyVerify
+|   |   |   +-- devto.ts
 |   |   |   |   +-- normaliseDevto  <- @/engine/connectors/normalise
 |   |   |   |   +-- devtoUserRssUrl, parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> DevtoCredentials
 |   |   |   |   +-- -> devtoCredentialFields
 |   |   |   |   +-- -> devtoSync
-|   |   |   |   +-- -> devtoVerify
-|   |   |   |   `-- unused unused: DevtoCredentials, devtoCredentialFields, devtoSync, devtoVerify
-|   |   |   +-- facebook.ts unused
+|   |   |   |   `-- -> devtoVerify
+|   |   |   +-- facebook.ts
 |   |   |   |   +-- normaliseFacebook  <- @/engine/connectors/normalise
 |   |   |   |   +-- facebookPageRssUrl, parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6270,17 +6056,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> FacebookCredentials
 |   |   |   |   +-- -> facebookCredentialFields
 |   |   |   |   +-- -> facebookSync
-|   |   |   |   +-- -> facebookVerify
-|   |   |   |   `-- unused unused: FacebookCredentials, facebookCredentialFields, facebookSync, facebookVerify
-|   |   |   +-- github.ts unused
+|   |   |   |   `-- -> facebookVerify
+|   |   |   +-- github.ts
 |   |   |   |   +-- normaliseGitHub  <- @/engine/connectors/normalise
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> GitHubCredentials
 |   |   |   |   +-- -> githubCredentialFields
 |   |   |   |   +-- -> githubSync
-|   |   |   |   +-- -> githubVerify
-|   |   |   |   `-- unused unused: GitHubCredentials, githubCredentialFields
-|   |   |   +-- hackernews.ts unused
+|   |   |   |   `-- -> githubVerify
+|   |   |   +-- hackernews.ts
 |   |   |   |   +-- normaliseHackerNews  <- @/engine/connectors/normalise
 |   |   |   |   +-- hackerNewsRssUrl, hackerNewsUserRssUrl, parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6288,43 +6072,38 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> HackerNewsCredentials
 |   |   |   |   +-- -> hackernewsCredentialFields
 |   |   |   |   +-- -> hackernewsSync
-|   |   |   |   +-- -> hackernewsVerify
-|   |   |   |   `-- unused unused: HNFeedType, HackerNewsCredentials, hackernewsCredentialFields, hackernewsSync, hackernewsVerify
-|   |   |   +-- instagram.ts unused
+|   |   |   |   `-- -> hackernewsVerify
+|   |   |   +-- instagram.ts
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> INSTAGRAM_CREDENTIAL_FIELDS
 |   |   |   |   +-- -> InstagramCredentials
 |   |   |   |   +-- -> getInstagramOAuthConfig
 |   |   |   |   +-- -> instagramSync
-|   |   |   |   +-- -> instagramVerify
-|   |   |   |   `-- unused unused: INSTAGRAM_CREDENTIAL_FIELDS, InstagramCredentials, getInstagramOAuthConfig, instagramVerify
-|   |   |   +-- mastodon.ts unused
+|   |   |   |   `-- -> instagramVerify
+|   |   |   +-- mastodon.ts
 |   |   |   |   +-- normaliseMastodon  <- @/engine/connectors/normalise
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> MastodonCredentials
 |   |   |   |   +-- -> mastodonCredentialFields
 |   |   |   |   +-- -> mastodonSync
-|   |   |   |   +-- -> mastodonVerify
-|   |   |   |   `-- unused unused: MastodonCredentials, mastodonCredentialFields
-|   |   |   +-- medium.ts unused
+|   |   |   |   `-- -> mastodonVerify
+|   |   |   +-- medium.ts
 |   |   |   |   +-- normaliseMedium  <- @/engine/connectors/normalise
 |   |   |   |   +-- mediumUserRssUrl, parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> MediumCredentials
 |   |   |   |   +-- -> mediumCredentialFields
 |   |   |   |   +-- -> mediumSync
-|   |   |   |   +-- -> mediumVerify
-|   |   |   |   `-- unused unused: MediumCredentials, mediumCredentialFields, mediumSync, mediumVerify
-|   |   |   +-- nostr.ts unused
+|   |   |   |   `-- -> mediumVerify
+|   |   |   +-- nostr.ts
 |   |   |   |   +-- normaliseNostr  <- @/engine/connectors/normalise
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> NostrCredentials
 |   |   |   |   +-- -> isValidNostrPubkey
 |   |   |   |   +-- -> nostrCredentialFields
 |   |   |   |   +-- -> nostrSync
-|   |   |   |   +-- -> nostrVerify
-|   |   |   |   `-- unused unused: NostrCredentials, nostrCredentialFields
-|   |   |   +-- pinterest.ts unused
+|   |   |   |   `-- -> nostrVerify
+|   |   |   +-- pinterest.ts
 |   |   |   |   +-- normalisePinterest  <- @/engine/connectors/normalise
 |   |   |   |   +-- parseRssFeed, pinterestRssUrl  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6332,9 +6111,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> PinterestCredentials
 |   |   |   |   +-- -> pinterestCredentialFields
 |   |   |   |   +-- -> pinterestSync
-|   |   |   |   +-- -> pinterestVerify
-|   |   |   |   `-- unused unused: PinterestCredentials, pinterestCredentialFields, pinterestSync, pinterestVerify
-|   |   |   +-- podcast.ts unused
+|   |   |   |   `-- -> pinterestVerify
+|   |   |   +-- podcast.ts
 |   |   |   |   +-- normalisePodcast  <- @/engine/connectors/normalise
 |   |   |   |   +-- parseRssFeed  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6342,35 +6120,31 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> PodcastCredentials
 |   |   |   |   +-- -> podcastCredentialFields
 |   |   |   |   +-- -> podcastSync
-|   |   |   |   +-- -> podcastVerify
-|   |   |   |   `-- unused unused: PodcastCredentials, podcastCredentialFields, podcastSync, podcastVerify
-|   |   |   +-- reddit.ts unused
+|   |   |   |   `-- -> podcastVerify
+|   |   |   +-- reddit.ts
 |   |   |   |   +-- normaliseReddit  <- @/engine/connectors/normalise
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> RedditCredentials
 |   |   |   |   +-- -> redditCredentialFields
 |   |   |   |   +-- -> redditSync
 |   |   |   |   +-- -> redditSyncSaved
-|   |   |   |   +-- -> redditVerify
-|   |   |   |   `-- unused unused: RedditCredentials, redditCredentialFields, redditSyncSaved
-|   |   |   +-- shellhub.ts unused
+|   |   |   |   `-- -> redditVerify
+|   |   |   +-- shellhub.ts
 |   |   |   |   +-- -> SHELLHUB_DEFAULT_SERVER
 |   |   |   |   +-- -> ShellHubCredentials
 |   |   |   |   +-- -> ShellHubDevice
 |   |   |   |   +-- -> shellhubCredentialFields
 |   |   |   |   +-- -> shellhubListDevices
-|   |   |   |   +-- -> shellhubVerify
-|   |   |   |   `-- unused unused: ShellHubCredentials, shellhubCredentialFields, shellhubVerify
-|   |   |   +-- substack.ts unused
+|   |   |   |   `-- -> shellhubVerify
+|   |   |   +-- substack.ts
 |   |   |   |   +-- normaliseSubstack  <- @/engine/connectors/normalise
 |   |   |   |   +-- parseRssFeed, substackRssUrl  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
 |   |   |   |   +-- -> SubstackCredentials
 |   |   |   |   +-- -> substackCredentialFields
 |   |   |   |   +-- -> substackSync
-|   |   |   |   +-- -> substackVerify
-|   |   |   |   `-- unused unused: SubstackCredentials, substackCredentialFields, substackSync, substackVerify
-|   |   |   +-- tiktok.ts unused
+|   |   |   |   `-- -> substackVerify
+|   |   |   +-- tiktok.ts
 |   |   |   |   +-- normaliseTikTok  <- @/engine/connectors/normalise
 |   |   |   |   +-- parseRssFeed, tiktokProfileRssUrl  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6378,9 +6152,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> TikTokCredentials
 |   |   |   |   +-- -> tiktokCredentialFields
 |   |   |   |   +-- -> tiktokSync
-|   |   |   |   +-- -> tiktokVerify
-|   |   |   |   `-- unused unused: TikTokCredentials, tiktokCredentialFields, tiktokSync, tiktokVerify
-|   |   |   +-- tumblr.ts unused
+|   |   |   |   `-- -> tiktokVerify
+|   |   |   +-- tumblr.ts
 |   |   |   |   +-- normaliseTumblr  <- @/engine/connectors/normalise
 |   |   |   |   +-- parseRssFeed, tumblrRssUrl  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6388,9 +6161,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> TumblrCredentials
 |   |   |   |   +-- -> tumblrCredentialFields
 |   |   |   |   +-- -> tumblrSync
-|   |   |   |   +-- -> tumblrVerify
-|   |   |   |   `-- unused unused: TumblrCredentials, tumblrCredentialFields, tumblrSync, tumblrVerify
-|   |   |   +-- twitter.ts unused
+|   |   |   |   `-- -> tumblrVerify
+|   |   |   +-- twitter.ts
 |   |   |   |   +-- normaliseTwitter  <- @/engine/connectors/normalise
 |   |   |   |   +-- DEFAULT_NITTER_INSTANCE, parseRssFeed, twitterNitterRssUrl  <- @/engine/social/rss-feed
 |   |   |   |   +-- UnifiedFeedItem  <- @/types/connector
@@ -6398,8 +6170,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> TwitterCredentials
 |   |   |   |   +-- -> twitterCredentialFields
 |   |   |   |   +-- -> twitterSync
-|   |   |   |   +-- -> twitterVerify
-|   |   |   |   `-- unused unused: TwitterCredentials, twitterCredentialFields, twitterSync, twitterVerify
+|   |   |   |   `-- -> twitterVerify
 |   |   |   `-- youtube.ts
 |   |   |       +-- deduplicateFeedItems, normaliseYouTubePlaylistItem, normaliseYouTubeSearchResult, YouTubePlaylistItem, YouTubeSearchItem  <- @/engine/connectors/normalise
 |   |   |       +-- UnifiedFeedItem  <- @/types/connector
@@ -6410,7 +6181,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> youtubeSearchByQuery
 |   |   |       +-- -> youtubeSync
 |   |   |       `-- -> youtubeVerify
-|   |   +-- connectorRegistry.ts unused
+|   |   +-- connectorRegistry.ts
 |   |   |   +-- -> CONNECTOR_REGISTRY
 |   |   |   +-- -> ConnectorCategory
 |   |   |   +-- -> ConnectorDef
@@ -6418,9 +6189,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> ConnectorStatus
 |   |   |   +-- -> ConnectorTier
 |   |   |   +-- -> SliceTypeDef
-|   |   |   +-- -> getConnectorDef
-|   |   |   `-- unused unused: ConnectorCategory, ConnectorLimitation, ConnectorTier
-|   |   +-- deliveryStrategy.ts unused
+|   |   |   `-- -> getConnectorDef
+|   |   +-- deliveryStrategy.ts
 |   |   |   +-- -> ConnectorDeliveryStrategy
 |   |   |   +-- -> DELIVERY_STRATEGY_MATRIX
 |   |   |   +-- -> DeliveryMethod
@@ -6428,9 +6198,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> knownDeliveryProviders
 |   |   |   +-- -> supportsPoll
 |   |   |   +-- -> supportsWebhook
-|   |   |   +-- -> supportsWebhookVerification
-|   |   |   `-- unused unused: ConnectorDeliveryStrategy, DeliveryMethod
-|   |   +-- installFlow.ts unused
+|   |   |   `-- -> supportsWebhookVerification
+|   |   +-- installFlow.ts
 |   |   |   +-- getWidgetTypesForConnector  <- @/engine/widgets/widgetRegistry
 |   |   |   +-- -> ConnectSuccessOptions
 |   |   |   +-- -> ConnectSuccessResult
@@ -6455,8 +6224,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> peekPlacementQueue
 |   |   |   +-- -> queueSuggestedWidget
 |   |   |   +-- -> removeSuggestedWidget
-|   |   |   +-- -> scheduleAutoLock
-|   |   |   `-- unused unused: ConnectSuccessOptions, ConnectSuccessResult, SuggestedWidget, dequeueNextPlacement, enqueueForPlacement, peekPlacementQueue, removeSuggestedWidget
+|   |   |   `-- -> scheduleAutoLock
 |   |   +-- normalise.ts
 |   |   |   +-- FeedItemMedia, UnifiedFeedItem  <- @/types/connector
 |   |   |   +-- -> YouTubePlaylistItem
@@ -6491,7 +6259,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- -> ReconcileResult
 |   |   |   `-- -> reconcileConnector
-|   |   +-- syncDispatch.ts unused
+|   |   +-- syncDispatch.ts
 |   |   |   +-- (side-effect)  <- server-only
 |   |   |   +-- blueskySync  <- @/engine/connectors/providers/bluesky
 |   |   |   +-- githubSync  <- @/engine/connectors/providers/github
@@ -6504,21 +6272,19 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> DISPATCH_SUPPORTED_PROVIDERS
 |   |   |   +-- -> DispatchSupportedProvider
 |   |   |   +-- -> UnsupportedProviderError
-|   |   |   +-- -> dispatchSync
-|   |   |   `-- unused unused: DispatchSupportedProvider, UnsupportedProviderError
+|   |   |   `-- -> dispatchSync
 |   |   +-- webhookVerification.ts
 |   |   |   +-- (side-effect)  <- hub.mode
 |   |   |   +-- -> extractMetaWebhookChallenge
 |   |   |   +-- -> extractYouTubeWebSubChallenge
 |   |   |   `-- -> isCronAuthorised
-|   |   `-- youtube.ts unused
+|   |   `-- youtube.ts
 |   |       +-- createServiceClient  <- @/supabase/server/serverClient
 |   |       +-- SupabaseClient  <- @supabase/supabase-js
 |   |       +-- (side-effect)  <- server-only
-|   |       +-- -> pollYouTube
-|   |       `-- unused unused: pollYouTube
+|   |       `-- -> pollYouTube
 |   +-- consent
-|   |   `-- consentManager.ts unused
+|   |   `-- consentManager.ts
 |   |       +-- (dynamic import)  <- @/supabase/client/client
 |   |       +-- (dynamic import)  <- @/supabase/client/client
 |   |       +-- -> AuditEntry
@@ -6527,10 +6293,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> ConsentEntry
 |   |       +-- -> ConsentManager
 |   |       +-- -> consentManager
-|   |       +-- -> resolveAcceptPolicy
-|   |       `-- unused unused: AuditEntry, ConsentDecision, ConsentDomain, ConsentEntry, ConsentManager, consentManager, resolveAcceptPolicy
+|   |       `-- -> resolveAcceptPolicy
 |   +-- dream-window
-|   |   +-- connectionVerbs.ts unused
+|   |   +-- connectionVerbs.ts
 |   |   |   +-- CONNECTION_VERBS, isRejectedConnectionVerb, isValidConnectionVerb, REJECTED_CONNECTION_VERBS, ConnectionVerb  <- @/engine/identity/canonical-names
 |   |   |   +-- -> CONNECTION_VERBS
 |   |   |   +-- -> ConnectionAction
@@ -6545,8 +6310,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> createOpenIntoAction
 |   |   |   +-- -> createRouteIntoAction
 |   |   |   +-- -> dispatch
-|   |   |   +-- -> isValidConnectionVerb
-|   |   |   `-- unused unused: REJECTED_CONNECTION_VERBS
+|   |   |   `-- -> isValidConnectionVerb
 |   |   +-- DreamWindowLifecycle.ts
 |   |   |   +-- DREAM_WINDOW_STATES, ConnectionVerb, DreamWindowState  <- @/engine/identity/canonical-names
 |   |   |   +-- -> DREAM_WINDOW_REQUIRED_LAYERS
@@ -6574,7 +6338,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getPathsForDomain
 |   |   |   +-- -> getPathsForEngin
 |   |   |   `-- -> hasConnectionPath
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- DestinationRule, DreamWindowConfig, DreamWindowInstance, DreamWindowPosition, DreamWindowSize  <- ./DreamWindowLifecycle
 |   |   |   +-- DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, activateDreamWindow, bindDreamWindow, collapseDreamWindow, createDreamWindowInstance, mountDreamWindow, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers  <- ./DreamWindowLifecycle
 |   |   |   +-- DreamWindowLayer, DreamWindowLayerValidationResult, DreamWindowState  <- ./DreamWindowLifecycle
@@ -6633,8 +6397,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> setSeamPosition
 |   |   |   +-- -> unbindDreamWindow
 |   |   |   +-- -> unmountDreamWindow
-|   |   |   +-- -> validateDreamWindowLayers
-|   |   |   `-- unused unused: ALL_CONNECTION_PATHS, CONNECTION_VERBS, ConnectionAction, ConnectionResult, ConnectionVerb, DEFAULT_RUNTIME_REGION_STATE, DREAM_WINDOW_REQUIRED_LAYERS, DREAM_WINDOW_STATES, DestinationRule, DreamSpaceState, DreamWindowConfig, DreamWindowInstance, DreamWindowLayer, DreamWindowLayerValidationResult, DreamWindowPosition, DreamWindowRef, DreamWindowSize, DreamWindowState, EnginConnectionPath, RUNTIME_REGIONS, RuntimeRegionState, SeamState, SurfaceSpaceState, activateDreamWindow, activateSurface, bindDreamWindow, collapseDreamWindow, createActivateAction, createAttachAction, createBindAction, createConnectAcrossAction, createDreamWindowInstance, createMountAction, createOpenIntoAction, createRouteIntoAction, dismountWindowFromDreamSpace, dispatch, getPathsForDomain, getPathsForEngin, getSurfaceSpaceSurface, hasConnectionPath, isDreamSpaceDominant, isValidConnectionVerb, mountDreamWindow, mountWindowInDreamSpace, setSeamPosition, unbindDreamWindow, unmountDreamWindow, validateDreamWindowLayers
+|   |   |   `-- -> validateDreamWindowLayers
 |   |   +-- runtimeRegion.ts
 |   |   |   +-- RUNTIME_REGIONS, SURFACE_NAMES, DreamWindowState, RuntimeSeamName  <- @/engine/identity/canonical-names
 |   |   |   +-- -> DEFAULT_RUNTIME_REGION_STATE
@@ -6669,19 +6432,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> reduceNav
 |   |   |   +-- -> tau
 |   |   |   `-- -> transition
-|   |   +-- gctAssist.ts unused
+|   |   +-- gctAssist.ts
 |   |   |   +-- GCTEngine, GCTMatch, Template  <- @/engine/gct
 |   |   |   +-- Action, Node  <- ./tau
 |   |   |   +-- -> GCTDebug
 |   |   |   +-- -> GestureVector
 |   |   |   +-- -> WidgetCandidate
 |   |   |   +-- -> chooseAxisAction
-|   |   |   +-- -> chooseWidgetForSlot
-|   |   |   `-- unused unused: GCTDebug, GestureVector, WidgetCandidate, chooseAxisAction, chooseWidgetForSlot
-|   |   +-- gestures6.ts unused
+|   |   |   `-- -> chooseWidgetForSlot
+|   |   +-- gestures6.ts
 |   |   |   +-- Action  <- ./delta
-|   |   |   +-- -> createGestureArbiter
-|   |   |   `-- unused unused: createGestureArbiter
+|   |   |   `-- -> createGestureArbiter
 |   |   +-- path.ts
 |   |   |   +-- Action, Node  <- @/engine/dreamnav/delta
 |   |   |   +-- tau  <- @/engine/dreamnav/delta
@@ -6690,7 +6451,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   `-- tau.ts
 |   |       `-- *  <- ./delta
 |   +-- dreams
-|   |   +-- drag.ts unused
+|   |   +-- drag.ts
 |   |   |   +-- -> DREAM_DRAG_MIME
 |   |   |   +-- -> DreamDragData
 |   |   |   +-- -> DreamRuntime
@@ -6698,9 +6459,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> parseDreamDragData
 |   |   |   +-- -> serializeDreamDragData
 |   |   |   +-- -> surfaceForRuntime
-|   |   |   +-- -> transferDream
-|   |   |   `-- unused unused: DreamSurfaceName
-|   |   +-- dreamIntentBus.ts unused
+|   |   |   `-- -> transferDream
+|   |   +-- dreamIntentBus.ts
 |   |   |   +-- createDomainObject, JsonObject, JsonValue  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- DomainAuthorizationContext, DomainCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   +-- InformationDomain, IntentEnvelope  <- @/engine/runtime/dreamOSBus
@@ -6709,21 +6469,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> DreamIntentContext
 |   |   |   +-- -> DreamIntentResult
 |   |   |   +-- -> dispatchDreamIntent
-|   |   |   +-- -> registerDreamIntentHandler
-|   |   |   `-- unused unused: DreamIntentContext, DreamIntentResult
-|   |   +-- DreamRegistry.tsx unused
+|   |   |   `-- -> registerDreamIntentHandler
+|   |   +-- DreamRegistry.tsx
 |   |   |   +-- (default)  <- react
 |   |   |   +-- -> DreamRegistry
 |   |   |   +-- -> RegisteredDreamComponent
-|   |   |   +-- -> getDreamComponent
-|   |   |   `-- unused unused: DreamRegistry, RegisteredDreamComponent
-|   |   +-- profileProjection.ts unused
+|   |   |   `-- -> getDreamComponent
+|   |   +-- profileProjection.ts
 |   |   |   +-- DreamProjection, DreamVisibility  <- @/engine/dreams/types
 |   |   |   +-- -> CreateDreamProjectionInput
 |   |   |   +-- -> canRenderProjection
-|   |   |   +-- -> createDreamProjection
-|   |   |   `-- unused unused: CreateDreamProjectionInput, createDreamProjection
-|   |   +-- types.ts unused
+|   |   |   `-- -> createDreamProjection
+|   |   +-- types.ts
 |   |   |   +-- isJsonObject, isJsonSerializable, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- -> DREAM_KINDS
 |   |   |   +-- -> DREAM_RENDER_MODES
@@ -6748,17 +6505,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> createDream
 |   |   |   +-- -> dreamCan
 |   |   |   +-- -> isDream
-|   |   |   +-- -> resolveDreamSurfaceAdapter
-|   |   |   `-- unused unused: DREAM_KINDS, DREAM_RENDER_MODES, DREAM_SURFACES, DREAM_VISIBILITIES, DrEamsIntent, Dream, DreamCapabilityMap, DreamKind, DreamLayer, DreamPermissions, DreamPlacement, DreamRenderMode, DreamSurface, DreamSurfaceAdapter, NO_PERMISSIONS, OWNER_PERMISSIONS, VIEWER_PERMISSIONS, createDream, dreamCan, isDream, resolveDreamSurfaceAdapter
-|   |   `-- useDreamsRuntime.ts unused
+|   |   |   `-- -> resolveDreamSurfaceAdapter
+|   |   `-- useDreamsRuntime.ts
 |   |       +-- useCallback, useState  <- react
 |   |       +-- -> DreamsRuntime
 |   |       +-- -> DreamsRuntimeState
 |   |       +-- -> DreamsView
-|   |       +-- -> useDreamsRuntime
-|   |       `-- unused unused: DreamsRuntime, DreamsRuntimeState, DreamsView
+|   |       `-- -> useDreamsRuntime
 |   +-- editor
-|   |   `-- universalEditor.ts unused
+|   |   `-- universalEditor.ts
 |   |       +-- createEventBus, EventBus  <- @/engine/events/eventBus
 |   |       +-- ModuleManifest, RuntimeId  <- @/types/module-manifest
 |   |       +-- ModuleManifest, RuntimeId  <- @/types/module-manifest
@@ -6767,8 +6522,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> RuntimeId
 |   |       +-- -> canTransfer
 |   |       +-- -> createLocalEventBus
-|   |       +-- -> transferModule
-|   |       `-- unused unused: AssemblyEvents
+|   |       `-- -> transferModule
 |   +-- engin-runtime
 |   |   +-- EnginBaseState.ts
 |   |   |   +-- -> CoherenceCapacity
@@ -6842,7 +6596,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> MetricMeasurement
 |   |   |   +-- -> MetricStatus
 |   |   |   `-- -> createEnginCapabilityScorecard
-|   |   +-- EnginCapabilityTargets.ts unused
+|   |   +-- EnginCapabilityTargets.ts
 |   |   |   +-- -> CANONICAL_ENGIN_ALIASES
 |   |   |   +-- -> CANONICAL_ENGIN_IDS
 |   |   |   +-- -> CanonicalEnginId
@@ -6866,8 +6620,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> isEnginProfileId
 |   |   |   +-- -> toCustomEnginProfileId
 |   |   |   +-- -> validateCanonicalEnginCapabilityProfiles
-|   |   |   +-- -> validateEnginCapabilityProfile
-|   |   |   `-- unused unused: CANONICAL_ENGIN_ALIASES
+|   |   |   `-- -> validateEnginCapabilityProfile
 |   |   +-- EnginDomainCores.ts
 |   |   |   +-- AudioTrackMixer, MidiEventRingBuffer, ParticleSoAKernel, RayGridAccelerator, VectorPathCache, CollaborationDeltaPacker, GeometryBatcher  <- ./EnginCapabilityExecution
 |   |   |   +-- CommandRingBuffer, SnapshotCompactor, WorkerPoolRuntime, WebGPUDeviceRuntime, GpuBufferRegistry, AudioWorkletRuntime, WasmKernelRuntime  <- ./HotRuntime
@@ -6925,14 +6678,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> TransportLatencyProbe
 |   |   |   +-- -> createCanonicalScorecards
 |   |   |   `-- -> runCanonicalPerformanceBenchmarks
-|   |   +-- EnginEventBus.ts unused
+|   |   +-- EnginEventBus.ts
 |   |   |   +-- RuntimeCoherenceReport  <- ./EnginBaseState
 |   |   |   +-- -> EnginEventBus
 |   |   |   +-- -> EnginEventHandler
 |   |   |   +-- -> EnginEventMap
 |   |   |   +-- -> EnginLifecycleEvents
-|   |   |   +-- -> createEnginEventBus
-|   |   |   `-- unused unused: EnginEventHandler
+|   |   |   `-- -> createEnginEventBus
 |   |   +-- EnginHardwareCapabilities.ts
 |   |   |   +-- JsonObject  <- ./EnginBaseState
 |   |   |   +-- -> EnginHardwareCapabilities
@@ -6974,7 +6726,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> negotiateRuleSetCompatibility
 |   |   |   +-- -> validateRuleSetManifest
 |   |   |   `-- -> validateRuleSetState
-|   |   +-- EnginRuntime.ts unused
+|   |   +-- EnginRuntime.ts
 |   |   |   +-- attachCoherenceReport, createBaseState, createCoherenceCapacity, createCoherenceReport, createRuntimeLoad, isEnginBaseState, patchBaseState, CoherenceCapacity, EnginBaseState, EnginLifecycle, JsonObject, RuntimeCoherenceReport, RuntimeLoad  <- ./EnginBaseState
 |   |   |   +-- DEFAULT_USER_CAPABILITIES, gateCapability, EnginCapabilityMap  <- ./EnginCapabilities
 |   |   |   +-- createEnginEventBus, EnginEventBus, EnginLifecycleEvents  <- ./EnginEventBus
@@ -6990,17 +6742,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> EnginHardwareAccelerationState
 |   |   |   +-- -> EnginRuntime
 |   |   |   +-- -> EnginRuntimeOptions
-|   |   |   +-- -> RuntimeWorkFlushResult
-|   |   |   `-- unused unused: RuntimeWorkFlushResult
-|   |   +-- EnginRuntimeRegistry.ts unused
+|   |   |   `-- -> RuntimeWorkFlushResult
+|   |   +-- EnginRuntimeRegistry.ts
 |   |   |   +-- EnginRuleSetContract, EnginAction  <- ./EnginRuleSetContract
 |   |   |   +-- JsonObject  <- ./EnginBaseState
 |   |   |   +-- -> RuntimeEnginRegistration
 |   |   |   +-- -> getRuntimeEnginRegistration
 |   |   |   +-- -> listRuntimeEnginRegistrations
 |   |   |   +-- -> registerRuntimeEngin
-|   |   |   +-- -> resolveRuntimeCapability
-|   |   |   `-- unused unused: RuntimeEnginRegistration, listRuntimeEnginRegistrations
+|   |   |   `-- -> resolveRuntimeCapability
 |   |   +-- EnginSnapshotFingerprint.ts
 |   |   |   +-- EnginBaseState, JsonValue  <- ./EnginBaseState
 |   |   |   +-- -> WasmFingerprintExports
@@ -7008,7 +6758,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> fingerprintEnginSnapshot
 |   |   |   +-- -> hashBytesFNV1A
 |   |   |   `-- -> stableStringifySnapshot
-|   |   +-- HotRuntime.ts unused
+|   |   +-- HotRuntime.ts
 |   |   |   +-- EnginAction  <- ./EnginRuleSetContract
 |   |   |   +-- EnginExecutionPlan  <- ./EnginCapabilityExecution
 |   |   |   +-- -> AudioWorkletRuntime
@@ -7042,8 +6792,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> WebGPUInitState
 |   |   |   +-- -> WebGPUInitializationResult
 |   |   |   +-- -> WebGPUInitializeOptions
-|   |   |   +-- -> WorkerPoolRuntime
-|   |   |   `-- unused unused: CoalescedCommandQueue, HotLaneScheduler, HotRuntimePriority, MoldableModuleGpuBridge, MoldableModuleOperation, ShaderKernelDefinition, ShaderKernelRegistry
+|   |   |   `-- -> WorkerPoolRuntime
 |   |   +-- index.ts
 |   |   |   +-- EnginAction, EnginRuleSetContract  <- ./EnginRuleSetContract
 |   |   |   +-- EnginRuntimeOptions  <- ./EnginRuntime
@@ -7257,12 +7006,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       `-- -> validatePremiumRuntimeQuality
 |   +-- events
 |   |   +-- event-bus
-|   |   |   `-- index.ts unused
+|   |   |   `-- index.ts
 |   |   |       +-- -> EventBus
 |   |   |       +-- -> EventHandler
 |   |   |       +-- -> bridgeBuses
-|   |   |       +-- -> createEventBus
-|   |   |       `-- unused unused: EventBus, EventHandler
+|   |   |       `-- -> createEventBus
 |   |   `-- eventBus.ts
 |   |       +-- -> EventBus
 |   |       +-- -> EventHandler
@@ -7289,7 +7037,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> FeatureEntry
 |   |   |   +-- -> FeatureStatus
 |   |   |   `-- -> getManifest
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- FEATURE_MANIFESTS, getManifest  <- ./featureManifest
 |   |   |   +-- DaydreamEnginManifest, FeatureEntry, FeatureStatus  <- ./featureManifest
 |   |   |   +-- allPairsInRefinePhase, allPairsMovingForward, calculateProgress, computeAllBuildCycleStates, computeBuildCycleState, countFeaturesByStatus, countUsableFeatures, getBuildPhase  <- ./buildCycle
@@ -7315,8 +7063,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> countUsableFeatures
 |   |   |   +-- -> getBuildPhase
 |   |   |   +-- -> getCriteriaForDimension
-|   |   |   +-- -> getManifest
-|   |   |   `-- unused unused: BuildPhase, FeatureStatus, SICCDimension, SICC_DIMENSIONS, SICC_GLOBAL_CRITERIA, UIQualityCheck, allPairsInRefinePhase, allPairsMovingForward, computeBuildCycleState, countFeaturesByStatus, countUsableFeatures, getBuildPhase, getCriteriaForDimension, getManifest
+|   |   |   `-- -> getManifest
 |   |   `-- uiQualityCriteria.ts
 |   |       +-- -> SICCDimension
 |   |       +-- -> SICC_DIMENSIONS
@@ -7353,42 +7100,33 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> ItemProfile
 |   |       `-- -> recommendItems
 |   +-- generated
-|   |   +-- brain.ts unused
+|   |   +-- brain.ts
 |   |   |   +-- -> BrainMap
-|   |   |   +-- -> brain
-|   |   |   `-- unused unused: BrainMap
-|   |   +-- cartridges.ts unused
+|   |   |   `-- -> brain
+|   |   +-- cartridges.ts
 |   |   |   +-- -> CartridgesMap
-|   |   |   +-- -> cartridges
-|   |   |   `-- unused unused: CartridgesMap
-|   |   +-- connectors.ts unused
+|   |   |   `-- -> cartridges
+|   |   +-- connectors.ts
 |   |   |   +-- -> ConnectorsMap
-|   |   |   +-- -> connectors
-|   |   |   `-- unused unused: ConnectorsMap
-|   |   +-- dreamdmbar.ts unused user-facing
+|   |   |   `-- -> connectors
+|   |   +-- dreamdmbar.ts
 |   |   |   +-- -> DreamdmbarMap
-|   |   |   +-- -> dreamdmbar
-|   |   |   `-- unused unused: DreamdmbarMap
-|   |   +-- dreamr.ts unused user-facing
+|   |   |   `-- -> dreamdmbar
+|   |   +-- dreamr.ts
 |   |   |   +-- -> DreamrMap
-|   |   |   +-- -> dreamr
-|   |   |   `-- unused unused: DreamrMap
-|   |   +-- dreamsurfaces.ts unused
+|   |   |   `-- -> dreamr
+|   |   +-- dreamsurfaces.ts
 |   |   |   +-- -> DreamsurfacesMap
-|   |   |   +-- -> dreamsurfaces
-|   |   |   `-- unused unused: DreamsurfacesMap
-|   |   +-- engins.ts unused
+|   |   |   `-- -> dreamsurfaces
+|   |   +-- engins.ts
 |   |   |   +-- -> EnginsMap
-|   |   |   +-- -> engins
-|   |   |   `-- unused unused: EnginsMap
-|   |   +-- homedream.ts unused
+|   |   |   `-- -> engins
+|   |   +-- homedream.ts
 |   |   |   +-- -> HomedreamMap
-|   |   |   +-- -> homedream
-|   |   |   `-- unused unused: HomedreamMap
-|   |   +-- hooks.ts unused
+|   |   |   `-- -> homedream
+|   |   +-- hooks.ts
 |   |   |   +-- -> HooksMap
-|   |   |   +-- -> hooks
-|   |   |   `-- unused unused: HooksMap
+|   |   |   `-- -> hooks
 |   |   +-- index.ts
 |   |   |   +-- engins  <- ./engins
 |   |   |   +-- rulesets  <- ./rulesets
@@ -7429,38 +7167,32 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> osArchitectureStageEntries
 |   |   |   +-- -> osGeneratedRouters
 |   |   |   `-- -> osSlotCounts
-|   |   +-- personas.ts unused
+|   |   +-- personas.ts
 |   |   |   +-- -> PersonasMap
-|   |   |   +-- -> personas
-|   |   |   `-- unused unused: PersonasMap
-|   |   +-- rulesets.ts unused
+|   |   |   `-- -> personas
+|   |   +-- rulesets.ts
 |   |   |   +-- -> RulesetsMap
-|   |   |   +-- -> rulesets
-|   |   |   `-- unused unused: RulesetsMap
-|   |   +-- surfaces.ts unused
+|   |   |   `-- -> rulesets
+|   |   +-- surfaces.ts
 |   |   |   +-- -> SurfacesMap
-|   |   |   +-- -> surfaces
-|   |   |   `-- unused unused: SurfacesMap
-|   |   `-- systems.ts unused
+|   |   |   `-- -> surfaces
+|   |   `-- systems.ts
 |   |       +-- -> SystemsMap
-|   |       +-- -> systems
-|   |       `-- unused unused: SystemsMap
+|   |       `-- -> systems
 |   +-- gestures
-|   |   +-- touchGestures.ts unused
+|   |   +-- touchGestures.ts
 |   |   |   +-- -> GestureCallbacks
 |   |   |   +-- -> GestureConfig
 |   |   |   +-- -> GestureEvent
 |   |   |   +-- -> GestureRecogniser
 |   |   |   +-- -> GestureType
-|   |   |   +-- -> Vec2
-|   |   |   `-- unused unused: GestureType, Vec2
-|   |   `-- useTouchGestures.ts unused
+|   |   |   `-- -> Vec2
+|   |   `-- useTouchGestures.ts
 |   |       +-- useEffect, useRef, RefObject  <- react
 |   |       +-- GestureRecogniser, GestureCallbacks, GestureConfig  <- ./touchGestures
-|   |       +-- -> useTouchGestures
-|   |       `-- unused unused: useTouchGestures
+|   |       `-- -> useTouchGestures
 |   +-- identity
-|   |   `-- canonical-names.ts unused
+|   |   `-- canonical-names.ts
 |   |       +-- -> AIAgent
 |   |       +-- -> AI_AGENTS
 |   |       +-- -> AI_ROUTES
@@ -7522,24 +7254,21 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> isValidModuleName
 |   |       +-- -> isValidRuntimeRegion
 |   |       +-- -> isValidSurfaceName
-|   |       +-- -> validateName
-|   |       `-- unused unused: AIAgent, DAYDREAM_ROUTES, NetworkWorkType, PRODUCT_DESCRIPTION_FULL, PlatformModule, REJECTED_CORE_SURFACE_NAMES, REJECTED_MODULE_NAMES, RouteLawPreferredName, SurfaceName
+|   |       `-- -> validateName
 |   +-- intelligence
-|   |   +-- continuityHelpers.ts unused
+|   |   +-- continuityHelpers.ts
 |   |   |   +-- ENGIN_REGISTRY, EnginEntry, ForgeActivityPulse  <- @/engins/forgeengin/forge/forgeRegistry
 |   |   |   +-- -> ResumeDest
 |   |   |   +-- -> formatArtifactKind
 |   |   |   +-- -> getArtifactAccent
-|   |   |   +-- -> resolveResumeDest
-|   |   |   `-- unused unused: ResumeDest
-|   |   +-- sessionContinuity.ts unused
+|   |   |   `-- -> resolveResumeDest
+|   |   +-- sessionContinuity.ts
 |   |   |   +-- -> SessionContinuity
 |   |   |   +-- -> SessionDiff
 |   |   |   +-- -> SessionStorageBackend
 |   |   |   +-- -> SessionSummary
 |   |   |   +-- -> StoredSession
-|   |   |   +-- -> sessionContinuity
-|   |   |   `-- unused unused: sessionContinuity
+|   |   |   `-- -> sessionContinuity
 |   |   +-- sessionPatternEngine.ts
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs-backend-webgpu
@@ -7547,31 +7276,29 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> PatternEngineState
 |   |   |   +-- -> PredictedNext
 |   |   |   `-- -> SessionPatternEngine
-|   |   `-- useSessionIntelligence.ts unused
+|   |   `-- useSessionIntelligence.ts
 |   |       +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- SessionContinuity, SessionDiff, SessionSummary  <- ./sessionContinuity
 |   |       +-- SessionPatternEngine, PatternEngineState, PredictedNext  <- ./sessionPatternEngine
 |   |       +-- -> PATTERN_MATRIX_LS_KEY
 |   |       +-- -> SessionIntelligence
-|   |       +-- -> useSessionIntelligence
-|   |       `-- unused unused: PATTERN_MATRIX_LS_KEY, SessionIntelligence
+|   |       `-- -> useSessionIntelligence
 |   +-- intent
-|   |   `-- appIntentPressure.ts unused
+|   |   `-- appIntentPressure.ts
 |   |       +-- -> AppIntentMassState
 |   |       +-- -> AppIntentPoint
 |   |       +-- -> AppIntentPressure
 |   |       +-- -> AppIntentPressureField
 |   |       +-- -> AppIntentPressureFieldOptions
 |   |       +-- -> AppIntentPressureSource
-|   |       +-- -> appIntentPressureFromElementPoint
-|   |       `-- unused unused: AppIntentPressure, AppIntentPressureFieldOptions
+|   |       `-- -> appIntentPressureFromElementPoint
 |   +-- journey
 |   |   +-- journeyDots.ts
 |   |   |   +-- LogJourneyDotInput  <- @/types/journey
 |   |   |   +-- -> hasJourneyDot
 |   |   |   `-- -> logJourneyDot
-|   |   +-- journeyInsights.ts unused
+|   |   +-- journeyInsights.ts
 |   |   |   +-- JourneyDot  <- @/types/journey
 |   |   |   +-- -> AnnotatedDot
 |   |   |   +-- -> DotInsight
@@ -7581,19 +7308,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> computeCurrentStreak
 |   |   |   +-- -> computeWeeklyFrequency
 |   |   |   +-- -> detectReturnGaps
-|   |   |   +-- -> findFirstOccurrenceIds
-|   |   |   `-- unused unused: DotInsight, MS_PER_DAY
-|   |   `-- withJourney.ts unused
+|   |   |   `-- -> findFirstOccurrenceIds
+|   |   `-- withJourney.ts
 |   |       +-- logJourneyDot  <- @/engine/journey/journeyDots
 |   |       +-- JourneyDotKind  <- @/types/journey
 |   |       +-- -> JourneyMeta
-|   |       +-- -> withJourney
-|   |       `-- unused unused: JourneyMeta, withJourney
+|   |       `-- -> withJourney
 |   +-- ledger
-|   |   +-- ledger-data.ts unused
+|   |   +-- ledger-data.ts
 |   |   |   +-- -> LedgerData
-|   |   |   +-- -> ledgerData
-|   |   |   `-- unused unused: ledgerData
+|   |   |   `-- -> ledgerData
 |   |   `-- ledger.ts
 |   |       +-- SupabaseClient  <- @/engine/io
 |   |       +-- Fingerprint, PeakMap  <- @/engins/starmakerengin/audioFingerprint
@@ -7617,7 +7341,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> storeSampleMetadata
 |   |       `-- -> storeTorridityRank
 |   +-- manifests
-|   |   `-- osSubsystemManifest.ts unused
+|   |   `-- osSubsystemManifest.ts
 |   |       +-- CONNECTOR_REGISTRY  <- @/engine/connectors/connectorRegistry
 |   |       +-- EnginConnectionPath  <- @/engine/dream-window/enginConnectionNetwork
 |   |       +-- ALL_CONNECTION_PATHS  <- @/engine/dream-window/enginConnectionNetwork
@@ -7629,10 +7353,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> DreamenginOSSubsystemFamilySummary
 |   |       +-- -> DreamenginOSSubsystemManifest
 |   |       +-- -> DreamenginOSSubsystemNode
-|   |       +-- -> buildDreamenginOSSubsystemManifest
-|   |       `-- unused unused: DreamenginOSSubsystemFamily, DreamenginOSSubsystemFamilySummary, DreamenginOSSubsystemManifest
+|   |       `-- -> buildDreamenginOSSubsystemManifest
 |   +-- marketplace
-|   |   +-- listings.ts unused
+|   |   +-- listings.ts
 |   |   |   +-- -> MARKETPLACE_CONTACT_TABLE
 |   |   |   +-- -> MARKETPLACE_TABLE
 |   |   |   +-- -> MARKETPLACE_TAGS_MAX
@@ -7646,9 +7369,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> formatMarketplacePrice
 |   |   |   +-- -> marketplaceDetailRoute
 |   |   |   +-- -> normalizeMarketplaceListing
-|   |   |   +-- -> validateMarketplaceListing
-|   |   |   `-- unused unused: MarketplaceCategory, MarketplaceListingInput, MarketplaceListingRecord, ValidationResult
-|   |   `-- request.ts unused
+|   |   |   `-- -> validateMarketplaceListing
+|   |   `-- request.ts
 |   |       +-- MARKETPLACE_CONTACT_TABLE  <- ./listings
 |   |       +-- -> CONTACT_REQUEST_MESSAGE_MAX
 |   |       +-- -> ContactRequestInput
@@ -7656,8 +7378,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> ContactRequestValidationResult
 |   |       +-- -> MARKETPLACE_CONTACT_TABLE
 |   |       +-- -> buildContactRequestRecord
-|   |       +-- -> validateContactRequest
-|   |       `-- unused unused: ContactRequestInput, ContactRequestRecord, ContactRequestValidationResult, MARKETPLACE_CONTACT_TABLE
+|   |       `-- -> validateContactRequest
 |   +-- navigation
 |   |   +-- anchorField.ts
 |   |   |   +-- Vector3  <- ./manifold
@@ -7687,7 +7408,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> AnchorWidgetStorage
 |   |   |   +-- -> HomeSlotMapping
 |   |   |   `-- -> PriorityWidget
-|   |   +-- dream-state.ts unused
+|   |   +-- dream-state.ts
 |   |   |   +-- -> Axis
 |   |   |   +-- -> Depth
 |   |   |   +-- -> DreamNode
@@ -7697,13 +7418,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getStateForNode
 |   |   |   +-- -> move
 |   |   |   +-- -> returnHome
-|   |   |   +-- -> zoom
-|   |   |   `-- unused unused: Axis, Depth
+|   |   |   `-- -> zoom
 |   |   +-- GestureFrameComputer.ts
 |   |   |   +-- PointerState  <- ./PointerEventCapture
 |   |   |   +-- -> GestureFrame
 |   |   |   `-- -> GestureFrameComputer
-|   |   +-- GestureIntentResolver.ts unused
+|   |   +-- GestureIntentResolver.ts
 |   |   |   +-- GestureFrame  <- ./GestureFrameComputer
 |   |   |   +-- Quaternion  <- ./quaternion
 |   |   |   +-- fromGestureSwipe, identityQuaternion, multiply, normalize  <- ./quaternion
@@ -7713,8 +7433,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> HOLD_THRESHOLD_MS
 |   |   |   +-- -> PINCH_IN_THRESHOLD
 |   |   |   +-- -> PINCH_OUT_THRESHOLD
-|   |   |   +-- -> SWIPE_THRESHOLD
-|   |   |   `-- unused unused: GESTURE_SENSITIVITY
+|   |   |   `-- -> SWIPE_THRESHOLD
 |   |   +-- index.ts
 |   |   |   +-- AnchorStateBuffer, HOLD_FIRED, HOLD_HOLDING, HOLD_IDLE, MODE_HOME, MODE_PROFILE, MODE_SHRUNK  <- ./AnchorStateBuffer
 |   |   |   +-- AnchorWidgetStorage  <- ./AnchorWidgetStorage
@@ -7833,11 +7552,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> snapToGrid
 |   |   |   +-- -> updatePhysicsState
 |   |   |   `-- -> verletIntegration
-|   |   +-- PointerEventCapture.ts unused
+|   |   +-- PointerEventCapture.ts
 |   |   |   +-- -> PointerEventCallback
 |   |   |   +-- -> PointerEventCapture
-|   |   |   +-- -> PointerState
-|   |   |   `-- unused unused: PointerEventCallback
+|   |   |   `-- -> PointerState
 |   |   +-- quaternion.ts
 |   |   |   +-- VECTOR_ZERO_THRESHOLD  <- ./manifold
 |   |   |   +-- -> Quaternion
@@ -7926,7 +7644,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> detectLatencySpikes
 |   |   |   +-- -> detectMetricAnomalies
 |   |   |   `-- -> detectSustainedErrorRate
-|   |   +-- healthTrend.ts unused
+|   |   +-- healthTrend.ts
 |   |   |   +-- LoopIteration, LoopStatus  <- @/engine/agents/idariLoop
 |   |   |   +-- -> HealthDataPoint
 |   |   |   +-- -> HealthReport
@@ -7937,9 +7655,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getHealthScore
 |   |   |   +-- -> getHealthTrend
 |   |   |   +-- -> getMTTR
-|   |   |   +-- -> updateHealthTrend
-|   |   |   `-- unused unused: HealthDataPoint, HealthReport, HealthStatus, HealthTrend, clearHealthTrend, exportHealthReport, getHealthScore, getHealthTrend, getMTTR, updateHealthTrend
-|   |   +-- immediateAction.ts unused
+|   |   |   `-- -> updateHealthTrend
+|   |   +-- immediateAction.ts
 |   |   |   +-- RootCauseAnalysis  <- ./rootCauseAnalyzer
 |   |   |   +-- (side-effect)  <- ,
       file_hints: unique([...fileHints]),
@@ -7947,8 +7664,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> ImmediateActionKind
 |   |   |   +-- -> ImmediateActionUrgency
 |   |   |   +-- -> ImmediateRemediationAction
-|   |   |   +-- -> buildImmediateRemediationAction
-|   |   |   `-- unused unused: ImmediateActionKind, ImmediateActionUrgency
+|   |   |   `-- -> buildImmediateRemediationAction
 |   |   +-- index.ts
 |   |   |   +-- *  <- ./collector
 |   |   |   +-- *  <- ./correlator
@@ -8040,14 +7756,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> saveScene
 |   |   |   +-- -> scenesAreDifferent
 |   |   |   `-- -> writeOfflineCache
-|   |   `-- useOfflineSync.ts unused
+|   |   `-- useOfflineSync.ts
 |   |       +-- useCallback, useEffect, useState  <- react
 |   |       +-- isOnline, onConnectivityChange, processSyncQueue, SyncQueueEntry  <- ./offlineCache
 |   |       +-- -> UseOfflineSyncReturn
-|   |       +-- -> useOfflineSync
-|   |       `-- unused unused: UseOfflineSyncReturn, useOfflineSync
+|   |       `-- -> useOfflineSync
 |   +-- os
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- (dynamic import)  <- @/engine/ledger/ledger
 |   |   |   +-- (dynamic import)  <- @/engine/events/eventBus
 |   |   |   +-- (dynamic import)  <- @/engine/ledger/ledger
@@ -8179,9 +7894,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> torridityRank
 |   |   |   +-- -> transferModule
 |   |   |   +-- -> upgradeEngine
-|   |   |   +-- -> validateAssembly
-|   |   |   `-- unused unused: ALL_CATEGORIES, AssemblySandbox, AssetEntry, AssetManifest, AssetType, AtomicComponent, AtomicPiece, BUGS_LOG, BotSessionResult, COMPONENT_INVENTORY, ComponentCategory, ContentItem, CreativePass, DELTA_P, DOC_RELATIONSHIPS, DreamGameInstance, DreamGameManifest, EngineAssembly, EventBus, EventHandler, Fingerprint, FingerprintEntry, GameEnginEvents, GameEnginRuntime, IOTA_MAX, InputHandler, InputType, InventionResult, LAMBDA, Ledger, LedgerEntry, MatchResult, ModuleManifest, OSFeature, Peak, PeakMap, PeakMapEntry, Point, Port, PrePassChecklist, Protocol, RankedItem, ResidualClass, RuntimeId, SampleMetadata, SampleMetadataEntry, SwipeAnalysis, SwipeRecord, THRESHOLD_FLOW, THRESHOLD_SYNTHESIZE, TORRIDITY_A0_PERCEPTION, TORRIDITY_DP, TORRIDITY_LAMBDA, TORRIDITY_N, TorridityEntry, ValidationResult, ViewTally, Wire, analyzeSwipe, atomicPieceFromComponent, auditPostPass, buildPeakMap, calculateInventionForce, canTransfer, contentMass, createAssembly, createDualRuntimeHub, createLedger, createLocalEventBus, deserializeAssembly, extractAudioChunks, getAllByKind, getByCategory, getLedgerEntry, getPassProtocol, isBotSession, loadDreamGame, logResidual, matchFingerprint, mu, rankFeed, recordReferenceFingerprint, recordView, runAssembly, runPrePassChecklist, searchComponents, serializeAssembly, slog, slogArray, slogEntropy, slogInv, slogMean, slogVariance, storeAsset, storeFingerprint, storePeakMap, storeSampleMetadata, storeTorridityRank, tallyView, throttledVisibility, torridityRank, transferModule, validateAssembly
-|   |   `-- OSContext.tsx unused
+|   |   |   `-- -> validateAssembly
+|   |   `-- OSContext.tsx
 |   |       +-- (default)  <- react
 |   |       +-- createContext, useContext, useMemo  <- react
 |   |       +-- EventBus  <- @/engine/events/eventBus
@@ -8191,10 +7905,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- upgradeEngine  <- ./index
 |   |       +-- -> OSInstance
 |   |       +-- -> OSProvider
-|   |       +-- -> useOS
-|   |       `-- unused unused: OSInstance
+|   |       `-- -> useOS
 |   +-- platform
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- logPhysicsExperiment  <- ./lab
 |   |   |   +-- -> AdOrderResult
 |   |   |   +-- -> FeedEntry
@@ -8202,14 +7915,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getFeed
 |   |   |   +-- -> logPhysicsExperiment
 |   |   |   +-- -> processAdOrder
-|   |   |   +-- -> syncToGlobalRegistry
-|   |   |   `-- unused unused: AdOrderResult, FeedEntry, RegistryEntry, getFeed, logPhysicsExperiment, processAdOrder, syncToGlobalRegistry
+|   |   |   `-- -> syncToGlobalRegistry
 |   |   `-- lab.ts
 |   |       +-- createClient  <- @/supabase/client/client
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       `-- -> logPhysicsExperiment
 |   +-- policy
-|   |   `-- boogiePolicy.ts unused
+|   |   `-- boogiePolicy.ts
 |   |       +-- BOOGIE_POLICY_VERSION, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, RECOVER_STEPS, RULE_CODES, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, THRESHOLDS, USER_REASON_MESSAGES  <- @/dr-eams/ai/boogie-policy
 |   |       +-- BoogiePolicyVersion, EnforcementAction, EnforcementScope, RuleCode, StrikeSeverityLevel  <- @/dr-eams/ai/boogie-policy
 |   |       +-- -> BOOGIE_POLICY_VERSION
@@ -8236,10 +7948,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> USER_REASON_MESSAGES
 |   |       +-- -> boogieEvaluate
 |   |       +-- -> emitBoogieManEvent
-|   |       +-- -> onBoogieManEvent
-|   |       `-- unused unused: BoogieEvaluateInput, BoogiePolicyVersion, CATEGORY_SEVERITY, DEFAULT_DURATIONS_SECONDS, ENFORCEMENT_ACTIONS, ENFORCEMENT_SCOPES, EnforcementAction, EnforcementScope, PolicySeverityLevel, RECOVER_STEPS, RULE_CODES, RuleCode, STRIKE_EXPIRY_DAYS, STRIKE_WEIGHTS, StrikeSeverityLevel, THRESHOLDS, USER_REASON_MESSAGES
+|   |       `-- -> onBoogieManEvent
 |   +-- reality
-|   |   +-- realityStore.ts unused
+|   |   +-- realityStore.ts
 |   |   |   +-- SupabaseClient  <- @supabase/supabase-js
 |   |   |   +-- Reality, RealityActivityEntry, RealityActivityKind, RealityEnginSlot, RealityMember, RealityMode, RealitySnapshot  <- ./types
 |   |   |   +-- -> appendActivity
@@ -8254,9 +7965,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> saveSnapshot
 |   |   |   +-- -> touchMembership
 |   |   |   +-- -> touchReality
-|   |   |   +-- -> updateEnginSlots
-|   |   |   `-- unused unused: appendActivity, buildChannelId, createReality, getRealityById, joinReality, listMembers, listMyRealities, loadActivity, loadLatestSnapshot, saveSnapshot, touchMembership, touchReality, updateEnginSlots
-|   |   `-- types.ts unused
+|   |   |   `-- -> updateEnginSlots
+|   |   `-- types.ts
 |   |       +-- CollabMode, SessionRole  <- @/engine/collaboration/index
 |   |       +-- -> Reality
 |   |       +-- -> RealityActivityEntry
@@ -8265,8 +7975,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> RealityEnginSlot
 |   |       +-- -> RealityMember
 |   |       +-- -> RealityMode
-|   |       +-- -> RealitySnapshot
-|   |       `-- unused unused: RealityContextValue
+|   |       `-- -> RealitySnapshot
 |   +-- rendering
 |   |   +-- babylon
 |   |   |   +-- createEngine.ts
@@ -8275,11 +7984,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> BabylonEngineOptions
 |   |   |   |   +-- -> BabylonEngineResult
 |   |   |   |   `-- -> createBabylonEngine
-|   |   |   +-- dreamengine-hybrid.ts unused
+|   |   |   +-- dreamengine-hybrid.ts
 |   |   |   |   +-- * as BABYLON  <- @babylonjs/core
 |   |   |   |   +-- -> initHybridEngine
-|   |   |   |   +-- -> onGrab
-|   |   |   |   `-- unused unused: initHybridEngine, onGrab
+|   |   |   |   `-- -> onGrab
 |   |   |   `-- useDreamLogoScene.ts
 |   |   |       +-- -> DreamLogoSceneOptions
 |   |   |       `-- -> useDreamLogoScene
@@ -8362,13 +8070,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> uiPrioritySolver
 |   |   |   |   +-- -> visualDominanceEngine
 |   |   |   |   `-- -> webGPUDirector
-|   |   |   `-- useGodTier.ts unused
+|   |   |   `-- useGodTier.ts
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       +-- defaultDeviceSignals, defaultRuntimeMetrics, defaultUXSignals, DreamEngineGodTierSystem, getGodTierUiTokens, DeviceSignals, GodTierState, MeshSnapshot, RouteSignals, RuntimeMetrics, UIElementSnapshot, UXSignals  <- ./godTierEngine
 |   |   |       +-- -> UseGodTierOptions
 |   |   |       +-- -> UseGodTierReturn
-|   |   |       +-- -> useGodTier
-|   |   |       `-- unused unused: UseGodTierOptions, UseGodTierReturn
+|   |   |       `-- -> useGodTier
 |   |   +-- renderer
 |   |   |   +-- Canvas2DRenderer.ts
 |   |   |   |   +-- FrustumCuller, Rect  <- ./FrustumCuller
@@ -8377,7 +8084,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- FrustumCuller.ts
 |   |   |   |   +-- -> FrustumCuller
 |   |   |   |   `-- -> Rect
-|   |   |   +-- index.ts unused
+|   |   |   +-- index.ts
 |   |   |   |   +-- Canvas2DRenderer  <- ./Canvas2DRenderer
 |   |   |   |   +-- FrustumCuller  <- ./FrustumCuller
 |   |   |   |   +-- Rect  <- ./FrustumCuller
@@ -8387,20 +8094,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> IRenderer
 |   |   |   |   +-- -> Rect
 |   |   |   |   +-- -> TextStyle
-|   |   |   |   +-- -> createRenderer
-|   |   |   |   `-- unused unused: Canvas2DRenderer, FrustumCuller, IRenderer, Rect, TextStyle, createRenderer
+|   |   |   |   `-- -> createRenderer
 |   |   |   `-- IRenderer.ts
 |   |   |       +-- -> IRenderer
 |   |   |       `-- -> TextStyle
 |   |   +-- warp
-|   |   |   +-- useWarp.ts unused
+|   |   |   +-- useWarp.ts
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |   +-- WarpEffect, WarpEngine, WarpEngineOptions  <- ./warpEngine
 |   |   |   |   +-- -> UseWarpOptions
 |   |   |   |   +-- -> UseWarpReturn
-|   |   |   |   +-- -> useWarp
-|   |   |   |   `-- unused unused: UseWarpOptions, UseWarpReturn
-|   |   |   `-- warpEngine.ts unused
+|   |   |   |   `-- -> useWarp
+|   |   |   `-- warpEngine.ts
 |   |   |       +-- -> WarpContext
 |   |   |       +-- -> WarpEffect
 |   |   |       +-- -> WarpEngine
@@ -8417,10 +8122,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> spawnParticle
 |   |   |       +-- -> spiralKernel
 |   |   |       +-- -> turbulenceKernel
-|   |   |       +-- -> wrapBoundaryKernel
-|   |   |       `-- unused unused: WarpKernel, WarpVec2
+|   |   |       `-- -> wrapBoundaryKernel
 |   |   +-- webgpu
-|   |   |   +-- adaptiveQuality.ts unused
+|   |   |   +-- adaptiveQuality.ts
 |   |   |   |   +-- classifyPressure, Pressure, RuntimeMetrics  <- ./director
 |   |   |   |   +-- -> AdaptiveQualityController
 |   |   |   |   +-- -> BatteryState
@@ -8432,8 +8136,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getCoreCount
 |   |   |   |   +-- -> getDeviceMemoryGB
 |   |   |   |   +-- -> getQualityProfile
-|   |   |   |   +-- -> resolveQualityTier
-|   |   |   |   `-- unused unused: BatteryState, QualityProfile, gatherDeviceSignals, getBatteryState, getCoreCount, getDeviceMemoryGB
+|   |   |   |   `-- -> resolveQualityTier
 |   |   |   +-- director.ts
 |   |   |   |   +-- -> CameraSignals
 |   |   |   |   +-- -> CameraState
@@ -8467,7 +8170,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> resolveTemporalState
 |   |   |   |   +-- -> scoreObject
 |   |   |   |   `-- -> webGPUDirector
-|   |   |   `-- useWebGPUDirector.ts unused
+|   |   |   `-- useWebGPUDirector.ts
 |   |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |       +-- WebGPUDirector, applyDirectorFrame, buildSceneObjects, CameraSignals, CameraState, DirectorBabylonEngine, DirectorBabylonMesh, DirectorBabylonScene, DirectorFrame, MeshHints, RuntimeMetrics  <- ./director
 |   |   |       +-- WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals, defaultDirectorMetrics, CameraSignals, CameraState, DirectorFrame, MeshHints, RuntimeMetrics  <- ./director
@@ -8484,9 +8187,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> buildSceneObjects
 |   |   |       +-- -> defaultCameraSignals
 |   |   |       +-- -> defaultDirectorMetrics
-|   |   |       +-- -> useWebGPUDirector
-|   |   |       `-- unused unused: CameraSignals, CameraState, DirectorFrame, MeshHints, RuntimeMetrics, UseWebGPUDirectorOptions, UseWebGPUDirectorReturn, WebGPUDirector, applyDirectorFrame, babylonMeshToSceneObject, buildSceneObjects, defaultCameraSignals, defaultDirectorMetrics, useWebGPUDirector
-|   |   `-- webgpu.ts unused
+|   |   |       `-- -> useWebGPUDirector
+|   |   `-- webgpu.ts
 |   |       +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginFrameStats, RenderEnginLifecycleHooks, RenderEnginScene  <- @/engins/renderengin/webgpu
 |   |       +-- -> RenderEnginFrameStats
 |   |       +-- -> RenderEnginGraphicsBackend
@@ -8498,28 +8200,26 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> initializeRenderEnginGraphicsRuntime
 |   |       +-- -> initializeWebGPURuntime
 |   |       +-- -> isWebGPUAvailable
-|   |       +-- -> requestWebGpuDevice
-|   |       `-- unused unused: RenderEnginFrameStats, RenderEnginGraphicsBackend, RenderEnginLifecycleHooks, RenderEnginScene, WebGPURuntimeInitialization, WebGpuRenderEngin, initializeRenderEnginGraphicsRuntime, initializeWebGPURuntime, requestWebGpuDevice
+|   |       `-- -> requestWebGpuDevice
 |   +-- routing
-|   |   `-- surfaces.ts unused
+|   |   `-- surfaces.ts
 |   |       +-- -> PUBLIC_SURFACE_PREFIXES
 |   |       +-- -> SAB_ISOLATED_ROUTE_PREFIXES
 |   |       +-- -> isPublicSurfacePath
-|   |       +-- -> isSabIsolatedPath
-|   |       `-- unused unused: PUBLIC_SURFACE_PREFIXES, SAB_ISOLATED_ROUTE_PREFIXES, isSabIsolatedPath
-|   +-- runtime  [Home / DreamDMBar / DualRuntime]
-|   |   +-- dreamsurface  [Home / DreamDMBar / DualRuntime]
-|   |   |   +-- dreamsurface.bridge.ts user-facing
+|   |       `-- -> isSabIsolatedPath
+|   +-- runtime  [Home / DreamDMBar / DualRuntime] 🗂 FEATURE_FOLDER
+|   |   +-- dreamsurface  [Home / DreamDMBar / DualRuntime] 🗂 FEATURE_FOLDER
+|   |   |   +-- dreamsurface.bridge.ts
 |   |   |   |   +-- HomeDreamState, applyDelta  <- @/engins/rulesets/homedream/dream.homedream.transforms
 |   |   |   |   +-- EventBus  <- @/engine/runtime/engin.eventbus
 |   |   |   |   +-- DreamLedger, appendEntry  <- @/engine/runtime/engin.ledger
 |   |   |   |   +-- -> DreamSurfaceBridge
 |   |   |   |   `-- -> createBridge
-|   |   |   +-- dreamsurface.delta.ts user-facing
+|   |   |   +-- dreamsurface.delta.ts
 |   |   |   |   +-- -> StateDelta
 |   |   |   |   +-- -> computeDelta
 |   |   |   |   `-- -> mergeDelta
-|   |   |   `-- index.ts user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- createBridge  <- ./dreamsurface.bridge
 |   |   |       +-- DreamSurfaceBridge  <- ./dreamsurface.bridge
 |   |   |       +-- computeDelta, mergeDelta  <- ./dreamsurface.delta
@@ -8529,31 +8229,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> computeDelta
 |   |   |       +-- -> createBridge
 |   |   |       `-- -> mergeDelta
-|   |   +-- apperception.ts unused user-facing
+|   |   +-- apperception.ts
 |   |   |   +-- getEnginByName  <- @/engins/forgeengin/forge/forgeRegistry
 |   |   |   +-- RuntimeWorld  <- ./dualRuntime
 |   |   |   +-- RuntimeRegion  <- @/engine/identity/canonical-names
 |   |   |   +-- RuntimeRegionKey  <- @/types/dreamArtifact
 |   |   |   +-- -> ApperceptiveContext
 |   |   |   +-- -> ApperceptiveSurface
-|   |   |   +-- -> buildApperceptiveContext
-|   |   |   `-- unused unused: ApperceptiveSurface
-|   |   +-- channelMetrics.ts unused user-facing
+|   |   |   `-- -> buildApperceptiveContext
+|   |   +-- channelMetrics.ts
 |   |   |   +-- -> ChannelMetrics
 |   |   |   +-- -> getAllChannelMetrics
 |   |   |   +-- -> getChannelMetrics
 |   |   |   +-- -> recordEmission
 |   |   |   +-- -> recordError
-|   |   |   +-- -> resetChannelMetrics
-|   |   |   `-- unused unused: ChannelMetrics, getAllChannelMetrics, getChannelMetrics, recordError, resetChannelMetrics
-|   |   +-- coercionTable.ts unused user-facing
+|   |   |   `-- -> resetChannelMetrics
+|   |   +-- coercionTable.ts
 |   |   |   +-- -> DreamDrop
 |   |   |   +-- -> DreamDropType
 |   |   |   +-- -> classifyDrop
 |   |   |   +-- -> coerceDataTransfer
-|   |   |   +-- -> coerceRawPayload
-|   |   |   `-- unused unused: coerceRawPayload
-|   |   +-- dreamOSBus.ts unused user-facing
+|   |   |   `-- -> coerceRawPayload
+|   |   +-- dreamOSBus.ts
 |   |   |   +-- AI_AGENTS, RuntimeRegion  <- @/engine/identity/canonical-names
 |   |   |   +-- RuntimeWorld  <- @/engine/runtime/dualRuntime
 |   |   |   +-- bridge, AnyBridgeEmission, DualRuntimeChannel  <- @/engine/runtime/dualRuntimeBridge
@@ -8580,15 +8277,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getCapabilityChildren
 |   |   |   +-- -> getCapabilityDescriptor
 |   |   |   +-- -> isInformationDomain
-|   |   |   +-- -> isIntentEnvelope
-|   |   |   `-- unused unused: CAPABILITY_DESCRIPTORS, CapabilityDescriptor, CapabilityKind, DreamOSArtifactKind, DreamOSRuntimeContext, INFORMATION_DOMAINS, IntentPriority, isInformationDomain, isIntentEnvelope
-|   |   +-- dropTargetRegistry.ts unused user-facing
+|   |   |   `-- -> isIntentEnvelope
+|   |   +-- dropTargetRegistry.ts
 |   |   |   +-- DreamDrop, DreamDropType  <- @/engine/runtime/coercionTable
 |   |   |   +-- RuntimeId  <- @/types/module-manifest
 |   |   |   +-- -> DropTarget
-|   |   |   +-- -> dropTargetRegistry
-|   |   |   `-- unused unused: DropTarget
-|   |   +-- dualRuntime.ts unused user-facing
+|   |   |   `-- -> dropTargetRegistry
+|   |   +-- dualRuntime.ts
 |   |   |   +-- RUNTIME_REGIONS, SURFACE_NAMES  <- @/engine/identity/canonical-names
 |   |   |   +-- SystemPanelId  <- @/components/panels/panelTypes
 |   |   |   +-- -> DEFAULT_DUAL_RUNTIME
@@ -8609,9 +8304,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> setRuntimeWorld
 |   |   |   +-- -> swapDominantRuntime
 |   |   |   +-- -> torusFocusKey
-|   |   |   +-- -> worldsEqual
-|   |   |   `-- unused unused: RUNTIME_REGIONS, TORUS_DOMAINS, TORUS_FOCUS_MAP, TORUS_HEIGHT, TORUS_WIDTH, TorusDomain
-|   |   +-- dualRuntimeBridge.ts unused user-facing
+|   |   |   `-- -> worldsEqual
+|   |   +-- dualRuntimeBridge.ts
 |   |   |   +-- invokeMadMaxiSnapshotTransfer  <- @/engine/runtime/madMaxiSnapshotBridge
 |   |   |   +-- EventEmitter  <- events
 |   |   |   +-- (dynamic import)  <- fs/promises
@@ -8629,26 +8323,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> VMRegion
 |   |   |   +-- -> VMWorkload
 |   |   |   +-- -> bridge
-|   |   |   +-- -> enginBridge
-|   |   |   `-- unused unused: AckStatus, QueuedEmission
-|   |   +-- engin.auth.ts user-facing
+|   |   |   `-- -> enginBridge
+|   |   +-- engin.auth.ts
 |   |   |   +-- -> EnginSession
 |   |   |   +-- -> createSession
 |   |   |   `-- -> validateSession
-|   |   +-- engin.eventbus.ts user-facing
+|   |   +-- engin.eventbus.ts
 |   |   |   +-- -> EnginEvent
 |   |   |   +-- -> EventBus
 |   |   |   `-- -> createEventBus
-|   |   +-- engin.ledger.ts user-facing
+|   |   +-- engin.ledger.ts
 |   |   |   +-- -> DreamLedger
 |   |   |   +-- -> LedgerEntry
 |   |   |   +-- -> appendEntry
 |   |   |   `-- -> createLedger
-|   |   +-- engin.renderloop.ts user-facing
+|   |   +-- engin.renderloop.ts
 |   |   |   +-- -> RenderFrame
 |   |   |   +-- -> RenderLoop
 |   |   |   `-- -> createRenderLoop
-|   |   +-- EnginDispatcher.ts unused user-facing
+|   |   +-- EnginDispatcher.ts
 |   |   |   +-- RenderIntentType  <- @/engins/renderengin/core
 |   |   |   +-- BAR_Y_SCALE, buildWorkgroups, createEnginSAB, f64Telemetry, int32AxisState, int32DreamDMBarX, int32DreamDMBarY, int32LockedState, MAX_WORKERS, SAB_BYTES, SNAP_THRESHOLD_RATIO, Workgroup  <- ./memory
 |   |   |   +-- -> DispatcherStats
@@ -8664,9 +8357,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> WorkerTickMessage
 |   |   |   +-- -> WorkerToDispatcherMessage
 |   |   |   +-- -> WorkerWasmBudgetExceededMessage
-|   |   |   +-- -> initWasmEngine
-|   |   |   `-- unused unused: DispatcherToWorkerMessage, WasmEngineExports, WorkerBoundsViolationMessage, WorkerInboundMessage, WorkerInitMessage, WorkerOutboundMessage, WorkerStopMessage, WorkerTickMessage, WorkerToDispatcherMessage, WorkerWasmBudgetExceededMessage, initWasmEngine
-|   |   +-- enginWorkflowRegistry.ts unused user-facing
+|   |   |   `-- -> initWasmEngine
+|   |   +-- enginWorkflowRegistry.ts
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- -> ENGIN_KEYS
 |   |   |   +-- -> EnginKey
@@ -8679,9 +8371,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> findWorkflows
 |   |   |   +-- -> getWorkflowStats
 |   |   |   +-- -> getWorkflowsByArtifactType
-|   |   |   +-- -> workflowExists
-|   |   |   `-- unused unused: WorkflowArtifactType, WorkflowDefinition, WorkflowStats, getWorkflowStats, getWorkflowsByArtifactType, workflowExists
-|   |   +-- iEngine.ts unused user-facing
+|   |   |   `-- -> workflowExists
+|   |   +-- iEngine.ts
 |   |   |   +-- createDomainObject, isDomainObject, DomainObject, DomainVisibility, JsonObject, JsonValue  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- authorizeDomainCapability, DomainAuthorizationContext, DomainCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   +-- RuntimeWorld  <- @/engine/runtime/dualRuntime
@@ -8710,9 +8401,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> dualRuntimeRuleSet
 |   |   |   +-- -> negotiateCompatibility
 |   |   |   +-- -> validateDomainObject
-|   |   |   +-- -> validateManifest
-|   |   |   `-- unused unused: AuthorizationDecision, CapabilityAction, DomainObject, DomainVisibility, RuntimeLifecycleHook, RuntimeLifecycleHooks, RuntimeSnapshot, SpatialRuntimeCoreOptions, StrictIntentRoute, SyncTransport, validateManifest
-|   |   +-- index.ts unused user-facing
+|   |   |   `-- -> validateManifest
+|   |   +-- index.ts
 |   |   |   +-- (default)  <- @/engine/state/base.json
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- (dynamic import)  <- @/dr-eams/ai/capability-gate
@@ -8758,9 +8448,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> createRenderLoop
 |   |   |   +-- -> createSession
 |   |   |   +-- -> engine
-|   |   |   +-- -> validateSession
-|   |   |   `-- unused unused: DreamLedger, EnginEvent, EnginSession, EventBus, LedgerEntry, RenderFrame, RenderLoop, appendEntry, createEventBus, createLedger, createRenderLoop, createSession, validateSession
-|   |   +-- instanceManager.ts unused user-facing
+|   |   |   `-- -> validateSession
+|   |   +-- instanceManager.ts
 |   |   |   +-- RuntimeChannel  <- @/engine/runtime/runtimeChannel
 |   |   |   +-- createLocalChannel, createRuntimeChannel  <- @/engine/runtime/runtimeChannel
 |   |   |   +-- RuntimeId  <- @/types/module-manifest
@@ -8774,15 +8463,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> persistInstanceList
 |   |   |   +-- -> promoteInstanceToRealtime
 |   |   |   +-- -> spawnDualInstances
-|   |   |   +-- -> useInstanceManager
-|   |   |   `-- unused unused: EnginInstance, InstanceMode, persistInstanceList, spawnDualInstances
-|   |   +-- isAuthRelatedError.ts user-facing
+|   |   |   `-- -> useInstanceManager
+|   |   +-- isAuthRelatedError.ts
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   `-- -> isAuthRelatedError
-|   |   +-- madMaxiSnapshotBridge.ts user-facing
+|   |   +-- madMaxiSnapshotBridge.ts
 |   |   |   +-- (dynamic import)  <- fs/promises
 |   |   |   `-- -> invokeMadMaxiSnapshotTransfer
-|   |   +-- memory.ts unused user-facing
+|   |   +-- memory.ts
 |   |   |   +-- -> BAR_SEAM_ATOMICS_INDEX
 |   |   |   +-- -> BAR_SEAM_SCALE
 |   |   |   +-- -> BAR_Y_SCALE
@@ -8851,9 +8539,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> readBarSeam
 |   |   |   +-- -> u8DaydreamType
 |   |   |   +-- -> validateWorkgroup
-|   |   |   +-- -> writeBarSeam
-|   |   |   `-- unused unused: ConformMemoryMap, ENGIN_OFFSET_AXIS_STATE, ENGIN_OFFSET_DREAMDM_BAR_X, ENGIN_OFFSET_DREAMDM_BAR_Y, ENGIN_OFFSET_LOCKED_STATE, ENGIN_OFFSET_POS_X, ENGIN_OFFSET_POS_Y, ENGIN_OFFSET_POS_Z, ENGIN_OFFSET_TELEMETRY, ENGIN_OFFSET_VEL_X, ENGIN_OFFSET_VEL_Y, ENGIN_OFFSET_VEL_Z, ENGIN_SAB_SIZE, EntityBounds, MemoryPolicyResult, getEntityBounds, getWorkerCount, isSABAvailable, validateWorkgroup
-|   |   +-- moduleRegistry.ts unused user-facing
+|   |   |   `-- -> writeBarSeam
+|   |   +-- moduleRegistry.ts
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- isModuleManifest, negotiateModuleCompatibility, ModuleManifest, RuntimeCompatibility, RuntimeId  <- @/types/module-manifest
 |   |   |   +-- create  <- zustand
@@ -8862,9 +8549,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> manifestFromWidget
 |   |   |   +-- -> moduleRegistry
 |   |   |   +-- -> subscribeRegistryToTransferEvents
-|   |   |   +-- -> useModuleRegistry
-|   |   |   `-- unused unused: manifestFromWidget, subscribeRegistryToTransferEvents
-|   |   +-- offlineQueue.ts unused user-facing
+|   |   |   `-- -> useModuleRegistry
+|   |   +-- offlineQueue.ts
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   +-- -> EnqueueOptions
 |   |   |   +-- -> OfflineAction
@@ -8882,15 +8568,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> listQueue
 |   |   |   +-- -> listenOnline
 |   |   |   +-- -> replayFetchMutation
-|   |   |   +-- -> subscribeQueueStatus
-|   |   |   `-- unused unused: EnqueueOptions, OfflineActionStatus, OfflineActionType, OfflineReplayRequest, clearQueue, dequeue, enqueue, isOnline, listQueue
-|   |   +-- quantumCircuit.ts unused user-facing
+|   |   |   `-- -> subscribeQueueStatus
+|   |   +-- quantumCircuit.ts
 |   |   |   +-- QuantumComputeResult  <- ./dualRuntimeBridge
 |   |   |   +-- QuantumComputeResult  <- ./dualRuntimeBridge
 |   |   |   +-- -> QuantumComputeResult
-|   |   |   +-- -> runQuantumCircuit
-|   |   |   `-- unused unused: QuantumComputeResult, runQuantumCircuit
-|   |   +-- runtimeChannel.ts unused user-facing
+|   |   |   `-- -> runQuantumCircuit
+|   |   +-- runtimeChannel.ts
 |   |   |   +-- isJsonSerializable  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- -> RealtimeChannel
 |   |   |   +-- -> RealtimeChannelOptions
@@ -8900,35 +8584,31 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> RuntimeChannelOptions
 |   |   |   +-- -> createLocalChannel
 |   |   |   +-- -> createRealtimeChannel
-|   |   |   +-- -> createRuntimeChannel
-|   |   |   `-- unused unused: RealtimeChannel, RealtimeChannelOptions, RealtimeClient, RuntimeChannelOptions, createRealtimeChannel
-|   |   +-- runtimeContainer.ts unused user-facing
+|   |   |   `-- -> createRuntimeChannel
+|   |   +-- runtimeContainer.ts
 |   |   |   +-- createCoherenceCapacity, createCoherenceReport, createRuntimeLoad, CoherenceCapacity, RuntimeCoherenceReport, RuntimeLoad  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- -> RuntimeContainer
 |   |   |   +-- -> RuntimeContainerOptions
-|   |   |   +-- -> RuntimeStrategy
-|   |   |   `-- unused unused: RuntimeContainerOptions, RuntimeStrategy
-|   |   +-- seamClipboard.ts unused user-facing
+|   |   |   `-- -> RuntimeStrategy
+|   |   +-- seamClipboard.ts
 |   |   |   +-- RuntimeRegion  <- @/engine/identity/canonical-names
 |   |   |   +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- ENGIN_KEYS, findWorkflows, EnginKey  <- @/engine/runtime/enginWorkflowRegistry
 |   |   |   +-- -> SeamClipboardMimeType
 |   |   |   +-- -> SeamClipboardPayload
-|   |   |   +-- -> seamClipboard
-|   |   |   `-- unused unused: SeamClipboardMimeType
-|   |   +-- sharedResourcePool.ts user-facing
+|   |   |   `-- -> seamClipboard
+|   |   +-- sharedResourcePool.ts
 |   |   |   +-- -> acquireSharedResource
 |   |   |   `-- -> releaseSharedResource
-|   |   +-- snapshotFingerprint.ts unused user-facing
+|   |   +-- snapshotFingerprint.ts
 |   |   |   +-- TelemetrySnapshot  <- @/engine/observability/collector
 |   |   |   +-- -> FingerprintCache
 |   |   |   +-- -> FingerprintCacheEntry
 |   |   |   +-- -> createFingerprintCache
 |   |   |   +-- -> fingerprintSnapshot
-|   |   |   +-- -> snapshotsAreEquivalent
-|   |   |   `-- unused unused: FingerprintCache, FingerprintCacheEntry, createFingerprintCache, fingerprintSnapshot, snapshotsAreEquivalent
-|   |   +-- superciliousPlatformRuntime.ts unused user-facing
+|   |   |   `-- -> snapshotsAreEquivalent
+|   |   +-- superciliousPlatformRuntime.ts
 |   |   |   +-- createRuntimeObject, EngineManifest, IntentPacket, JsonObject, JsonValue, RuntimeRuleSet  <- @/engine/runtime/iEngine
 |   |   |   +-- -> COMPETING_PLATFORMS
 |   |   |   +-- -> CapabilityVector
@@ -8941,18 +8621,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> createCapabilityVector
 |   |   |   +-- -> createSuperciliousPlatformState
 |   |   |   +-- -> dreamEnginSuperciliousManifest
-|   |   |   +-- -> superciliousPlatformRuleSet
-|   |   |   `-- unused unused: CapabilityVector, CompetingPlatform, DreamEnginSuperiorityState, PlatformCapabilityProfile, SuperciliousCapability
-|   |   +-- swapManager.ts unused user-facing
+|   |   |   `-- -> superciliousPlatformRuleSet
+|   |   +-- swapManager.ts
 |   |   |   +-- -> SwapDomain
 |   |   |   +-- -> clearSwap
 |   |   |   +-- -> getAllSwapStates
 |   |   |   +-- -> getSwap
 |   |   |   +-- -> resetAllSwaps
 |   |   |   +-- -> setSwap
-|   |   |   +-- -> toggleSwap
-|   |   |   `-- unused unused: SwapDomain, clearSwap, getAllSwapStates, resetAllSwaps, setSwap
-|   |   +-- useDragSurface.ts unused user-facing
+|   |   |   `-- -> toggleSwap
+|   |   +-- useDragSurface.ts
 |   |   |   +-- DreamDrop, DreamDropType  <- @/engine/runtime/coercionTable
 |   |   |   +-- coerceDataTransfer  <- @/engine/runtime/coercionTable
 |   |   |   +-- dropTargetRegistry  <- @/engine/runtime/dropTargetRegistry
@@ -8960,9 +8638,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> UseDragSurfaceOptions
 |   |   |   +-- -> UseDragSurfaceResult
-|   |   |   +-- -> useDragSurface
-|   |   |   `-- unused unused: UseDragSurfaceOptions, UseDragSurfaceResult, useDragSurface
-|   |   +-- useDualRuntime.ts unused user-facing
+|   |   |   `-- -> useDragSurface
+|   |   +-- useDualRuntime.ts
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- bridge, BridgeEventHandler, ChannelEventKey, ChannelEventPayload, DualRuntimeChannel, PeerState, UnsubscribeFn  <- ./dualRuntimeBridge
 |   |   |   +-- BridgeEventHandler, ChannelEventKey, ChannelEventPayload, DualRuntimeChannel, PeerState, UnsubscribeFn  <- ./dualRuntimeBridge
@@ -8973,15 +8650,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> PeerState
 |   |   |   +-- -> UnsubscribeFn
 |   |   |   +-- -> UseDualRuntimeReturn
-|   |   |   +-- -> useDualRuntime
-|   |   |   `-- unused unused: BridgeEventHandler, ChannelEventKey, ChannelEventPayload, DualRuntimeChannel, PeerState, UnsubscribeFn, UseDualRuntimeReturn, useDualRuntime
-|   |   +-- useDualRuntimePersistence.ts unused user-facing
+|   |   |   `-- -> useDualRuntime
+|   |   +-- useDualRuntimePersistence.ts
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- DEFAULT_DUAL_RUNTIME, makeHomeActiveTop, setRuntimeWorld, swapDominantRuntime, DualRuntimeState, RuntimeWorld  <- ./dualRuntime
 |   |   |   +-- -> UseDualRuntimePersistenceReturn
-|   |   |   +-- -> useDualRuntimePersistence
-|   |   |   `-- unused unused: UseDualRuntimePersistenceReturn, useDualRuntimePersistence
-|   |   +-- useEnginBridge.ts unused user-facing
+|   |   |   `-- -> useDualRuntimePersistence
+|   |   +-- useEnginBridge.ts
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useEffect, useState  <- react
 |   |   |   +-- -> BrandingEnginBridgeState
@@ -8995,9 +8670,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> useContentEnginBridge
 |   |   |   +-- -> useGameEnginBridge
 |   |   |   +-- -> useLabEnginBridge
-|   |   |   +-- -> useStarMakerEnginBridge
-|   |   |   `-- unused unused: BrandingEnginBridgeState, CodeEnginBridgeState, ContentEnginBridgeState, GameEnginBridgeState, LabEnginBridgeState, StarMakerEnginBridgeState, useContentEnginBridge, useStarMakerEnginBridge
-|   |   +-- useEnginCoopSync.ts unused user-facing
+|   |   |   `-- -> useStarMakerEnginBridge
+|   |   +-- useEnginCoopSync.ts
 |   |   |   +-- EnginName  <- @/engine/runtime/instanceManager
 |   |   |   +-- useSharedEnginChannel  <- @/engine/runtime/useSharedEnginChannel
 |   |   |   +-- RuntimeId  <- @/types/module-manifest
@@ -9005,9 +8679,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> CoopEvent
 |   |   |   +-- -> UseEnginCoopSyncOptions
 |   |   |   +-- -> UseEnginCoopSyncResult
-|   |   |   +-- -> useEnginCoopSync
-|   |   |   `-- unused unused: CoopEvent, UseEnginCoopSyncOptions, UseEnginCoopSyncResult
-|   |   `-- useSharedEnginChannel.ts unused user-facing
+|   |   |   `-- -> useEnginCoopSync
+|   |   `-- useSharedEnginChannel.ts
 |   |       +-- EnginName  <- @/engine/runtime/instanceManager
 |   |       +-- buildInstanceKey, promoteInstanceToRealtime, useInstanceManager  <- @/engine/runtime/instanceManager
 |   |       +-- createLocalChannel, RuntimeChannel, RuntimeChannelEvent  <- @/engine/runtime/runtimeChannel
@@ -9015,8 +8688,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- -> SharedEnginChannelOptions
 |   |       +-- -> SharedEnginChannelResult
-|   |       +-- -> useSharedEnginChannel
-|   |       `-- unused unused: SharedEnginChannelOptions, SharedEnginChannelResult
+|   |       `-- -> useSharedEnginChannel
 |   +-- safety
 |   |   `-- child-safety
 |   |       +-- childSafetyDetector.ts
@@ -9034,24 +8706,22 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       |   +-- -> ImageClassificationResult
 |   |       |   +-- -> ImageRiskLevel
 |   |       |   `-- -> classifyImage
-|   |       +-- messageContextChecker.ts unused
+|   |       +-- messageContextChecker.ts
 |   |       |   +-- -> CHILD_SAFETY_LAW_SUMMARY
 |   |       |   +-- -> MessageContextInput
 |   |       |   +-- -> MessageContextResult
 |   |       |   +-- -> MessageContextType
 |   |       |   +-- -> MessageContextVerdict
-|   |       |   +-- -> evaluateMessageContext
-|   |       |   `-- unused unused: CHILD_SAFETY_LAW_SUMMARY, MessageContextInput, MessageContextResult, MessageContextType, MessageContextVerdict
-|   |       +-- ncmecReporter.ts unused
+|   |       |   `-- -> evaluateMessageContext
+|   |       +-- ncmecReporter.ts
 |   |       |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |       |   +-- SupabaseClient  <- @supabase/supabase-js
 |   |       |   +-- ChildSafetyResult  <- ./childSafetyDetector
 |   |       |   +-- toErrorMessage  <- @/utils/index
 |   |       |   +-- -> NcmecIncidentInput
 |   |       |   +-- -> NcmecReportResult
-|   |       |   +-- -> reportChildSafetyIncident
-|   |       |   `-- unused unused: NcmecIncidentInput, NcmecReportResult
-|   |       `-- scanMediaUrls.ts unused
+|   |       |   `-- -> reportChildSafetyIncident
+|   |       `-- scanMediaUrls.ts
 |   |           +-- SupabaseClient  <- @supabase/supabase-js
 |   |           +-- createHash  <- crypto
 |   |           +-- ChildSafetyResult  <- ./childSafetyDetector
@@ -9059,10 +8729,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |           +-- classifyImage  <- ./imageClassifier
 |   |           +-- -> ScanMediaUrlsInput
 |   |           +-- -> isImageUrl
-|   |           +-- -> scanMediaUrlsForChildSafety
-|   |           `-- unused unused: ScanMediaUrlsInput
+|   |           `-- -> scanMediaUrlsForChildSafety
 |   +-- scene
-|   |   `-- sceneState.ts unused
+|   |   `-- sceneState.ts
 |   |       +-- deleteScene, enqueueSyncAction, getScene, listScenes, saveScene, CachedScene, SceneObject, SceneSnapshot  <- @/engine/offline/offlineCache
 |   |       +-- -> CachedScene
 |   |       +-- -> SceneObject
@@ -9073,17 +8742,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> persistScene
 |   |       +-- -> removeScene
 |   |       +-- -> restoreScene
-|   |       +-- -> scenesAreDifferent
-|   |       `-- unused unused: CachedScene, SceneObject, createAutoSave, listPersistedScenes, persistScene, removeScene, restoreScene
+|   |       `-- -> scenesAreDifferent
 |   +-- setup
-|   |   `-- checks.ts unused
+|   |   `-- checks.ts
 |   |       +-- SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_URL  <- @/supabase/config
 |   |       +-- -> SetupCheck
 |   |       +-- -> SetupCheckSummary
 |   |       +-- -> getSetupChecks
 |   |       +-- -> getSetupStatus
-|   |       +-- -> summarizeSetupChecks
-|   |       `-- unused unused: getSetupChecks
+|   |       `-- -> summarizeSetupChecks
 |   +-- sharedDream
 |   |   `-- useSharedDreamSession.ts
 |   |       +-- createClient  <- @/supabase/client/client
@@ -9095,7 +8762,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> UseSharedDreamSessionResult
 |   |       `-- -> useSharedDreamSession
 |   +-- shop
-|   |   `-- listings.ts unused
+|   |   `-- listings.ts
 |   |       +-- -> SHOP_LISTING_REQUIRED_FIELDS
 |   |       +-- -> SHOP_ORDERS_PRIVATE_FIELDS
 |   |       +-- -> SHOP_ORDERS_TABLE
@@ -9107,10 +8774,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> ValidationResult
 |   |       +-- -> isOrderOwner
 |   |       +-- -> normalizeShopListing
-|   |       +-- -> validateShopListing
-|   |       `-- unused unused: ShopListingInput, ShopListingRecord, ValidationResult
+|   |       `-- -> validateShopListing
 |   +-- social
-|   |   +-- crossPost.ts unused
+|   |   +-- crossPost.ts
 |   |   |   +-- PLATFORM_MAP, SocialPlatform  <- ./platforms
 |   |   |   +-- -> CrossPostTarget
 |   |   |   +-- -> DreamSharePayload
@@ -9118,9 +8784,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> buildDreamOgMeta
 |   |   |   +-- -> formatShareText
 |   |   |   +-- -> nativeShare
-|   |   |   +-- -> openCrossPost
-|   |   |   `-- unused unused: CrossPostTarget, nativeShare, openCrossPost
-|   |   +-- livekit.ts unused
+|   |   |   `-- -> openCrossPost
+|   |   +-- livekit.ts
 |   |   |   +-- -> LiveKitConnectionState
 |   |   |   +-- -> LiveKitError
 |   |   |   +-- -> LiveKitParticipant
@@ -9129,17 +8794,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> LiveKitTokenResponse
 |   |   |   +-- -> fetchLiveKitToken
 |   |   |   +-- -> fetchRoomInfo
-|   |   |   +-- -> generateServerToken
-|   |   |   `-- unused unused: LiveKitConnectionState, LiveKitParticipant, LiveKitRoomManager, LiveKitTokenResponse, fetchLiveKitToken, fetchRoomInfo
-|   |   +-- normalizers.ts unused
+|   |   |   `-- -> generateServerToken
+|   |   +-- normalizers.ts
 |   |   |   +-- -> BlueskyPost
 |   |   |   +-- -> MastodonStatus
 |   |   |   +-- -> NormalizedPost
 |   |   |   +-- -> NostrEvent
 |   |   |   +-- -> normalizeBlueskyPost
 |   |   |   +-- -> normalizeMastodonPost
-|   |   |   +-- -> normalizeNostrEvent
-|   |   |   `-- unused unused: BlueskyPost, MastodonStatus, NostrEvent, normalizeBlueskyPost, normalizeMastodonPost, normalizeNostrEvent
+|   |   |   `-- -> normalizeNostrEvent
 |   |   +-- platforms.ts
 |   |   |   +-- -> PLATFORM_MAP
 |   |   |   +-- -> PROFILE_SHARE_PLATFORMS
@@ -9175,18 +8838,17 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> twitterNitterRssUrl
 |   |   |   +-- -> youtubeChannelRssUrl
 |   |   |   `-- -> youtubePlaylistRssUrl
-|   |   `-- useSocialData.ts unused
+|   |   `-- useSocialData.ts
 |   |       +-- NormalizedPost  <- @/engine/social/normalizers
 |   |       +-- useCallback, useEffect, useRef, useState  <- react
 |   |       +-- toErrorMessage  <- @/utils/index
 |   |       +-- -> SocialDataState
 |   |       +-- -> SocialPlatformFilter
-|   |       +-- -> useSocialData
-|   |       `-- unused unused: SocialDataState, SocialPlatformFilter, useSocialData
+|   |       `-- -> useSocialData
 |   +-- state
 |   |   `-- base.json
 |   +-- user-sim
-|   |   `-- userSimAgent.ts unused
+|   |   `-- userSimAgent.ts
 |   |       +-- AgentAction, AuditFinding, BehaviorSignals, FindingSeverity, JourneyOutcome, PerceptionFrame, Persona, PersonaType, SimJourneyResult, SimStep  <- @/types/user-sim
 |   |       +-- v4  <- uuid
 |   |       +-- -> JourneyRunnerInput
@@ -9197,8 +8859,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> judgeJourney
 |   |       +-- -> judgeStep
 |   |       +-- -> perceive
-|   |       +-- -> runJourney
-|   |       `-- unused unused: JourneyRunnerInput, SpecRuleKey
+|   |       `-- -> runJourney
 |   +-- vm
 |   |   +-- bufferManager.ts
 |   |   |   +-- BufferHandle, GPUBufferDescriptor, VMPerformanceCounters, VMResourceQuotas  <- ./types
@@ -9229,7 +8890,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> destroyDualVMCoordinator
 |   |   |   +-- -> getDualVMCoordinator
 |   |   |   `-- -> initializeDualVMCoordinator
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- detectWasmFeatures, resetWasmFeatureCache, WasmFeatureSet  <- ./wasm-features
 |   |   |   +-- DEFAULT_RESOURCE_QUOTA, QuotaExceededError, enforceQuota, withinQuota, QuotaViolation, ResourceQuota, ResourceUsage  <- ./resource-quota
 |   |   |   +-- InterVMChannel, VMEvent  <- ./inter-vm-messaging
@@ -9309,8 +8970,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> initializeDualVMCoordinator
 |   |   |   +-- -> isSyscallAllowed
 |   |   |   +-- -> resetWasmFeatureCache
-|   |   |   +-- -> withinQuota
-|   |   |   `-- unused unused: AllowedSyscall, BindGroupDescriptor, BindGroupHandle, BufferHandle, BufferManager, CommandBufferState, ComputePipelineDescriptor, DEFAULT_RESOURCE_QUOTA, DEFAULT_VM_CONFIG, DualRuntime, DualVMConfig, DualVMCoordinator, ErrorCode, GPUBufferDescriptor, GPUBufferSnapshot, GPUBufferUsageFlags, GPUTimeSlicer, HandleTableSnapshot, InterVMChannel, LayoutHandle, MemoryBoundsError, PipelineCache, PipelineHandle, PipelineSnapshot, QuotaExceededError, QuotaViolation, ResourceQuota, ResourceUsage, SYSCALL_ALLOWLIST, SnapshotManager, TimeBudget, VMBusEventMap, VMBusEventName, VMComputeCompletePayload, VMConfig, VMErrorCode, VMErrorPayload, VMEvent, VMEventChannel, VMId, VMMessageQueueDescriptor, VMPerformanceCounters, VMRegion, VMResourceQuotas, VMRuntimeStats, VMSnapshot, VMState, VMStatsPayload, VMStatsUpdatePayload, VMSyscalls, VMWorkload, VMWorkloadSpec, VMWorkloadSubmittedPayload, WasmFeatureSet, WasmGpuVM, WasmLinearMemory, WasmMemorySnapshot, checkBounds, destroyDualVMCoordinator, detectWasmFeatures, dualRuntime, enforceQuota, getDualVMCoordinator, initializeDualVMCoordinator, isSyscallAllowed, resetWasmFeatureCache, withinQuota
+|   |   |   `-- -> withinQuota
 |   |   +-- inter-vm-messaging.ts
 |   |   |   +-- -> InterVMChannel
 |   |   |   `-- -> VMEvent
@@ -9387,7 +9047,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getEngagementStats
 |   |   |   +-- -> getOptimisticDelta
 |   |   |   `-- -> trackEngagement
-|   |   +-- index.ts unused
+|   |   +-- index.ts
 |   |   |   +-- DEFAULT_CHAIN_ID, SUPPORTED_CHAINS, Web3Error  <- ./types
 |   |   |   +-- ChainConfig, EngagementPayload, EngagementStats, IpfsContent, IpfsUploadResult, WalletAccount, WalletConnectionState, WalletProvider  <- ./types
 |   |   |   +-- Web3Client, web3Client  <- ./client
@@ -9416,8 +9076,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> trackEngagement
 |   |   |   +-- -> uploadFileToIpfs
 |   |   |   +-- -> uploadToIpfs
-|   |   |   +-- -> web3Client
-|   |   |   `-- unused unused: ChainConfig, DEFAULT_CHAIN_ID, EngagementPayload, EngagementStats, IpfsContent, IpfsUploadResult, SUPPORTED_CHAINS, WalletAccount, WalletConnectionState, WalletProvider, Web3Client, Web3Error, applyOptimisticEngagement, clearOptimisticDelta, getEngagementStats, getFromIpfs, getOptimisticDelta, isIpfsCid, pinCid, resolveIpfsUrl, trackEngagement, uploadFileToIpfs, uploadToIpfs, web3Client
+|   |   |   `-- -> web3Client
 |   |   +-- ipfs.ts
 |   |   |   +-- IpfsContent, IpfsUploadResult, Web3Error  <- ./types
 |   |   |   +-- -> getFromIpfs
@@ -9439,7 +9098,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> WalletProvider
 |   |       `-- -> Web3Error
 |   +-- widgets
-|   |   +-- CrossWidgetPosting.ts unused
+|   |   +-- CrossWidgetPosting.ts
 |   |   |   +-- widgetEventBus, WidgetMsg  <- ./WidgetEventBus
 |   |   |   +-- WidgetLinkGraph  <- ./WidgetLinkGraph
 |   |   |   +-- toErrorMessage  <- @/utils/index
@@ -9451,9 +9110,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> MSG_TYPE_SEND_TEXT
 |   |   |   +-- -> PostRequestPayload
 |   |   |   +-- -> PostResultPayload
-|   |   |   +-- -> WidgetCapabilityConfig
-|   |   |   `-- unused unused: CrossWidgetPostingEngine, MSG_TYPE_FOCUS_REQUEST, MSG_TYPE_POST_REQUEST, MSG_TYPE_POST_RESULT, MSG_TYPE_SEND_MEDIA, MSG_TYPE_SEND_TEXT, PostRequestPayload, PostResultPayload, WidgetCapabilityConfig
-|   |   +-- feed-resolver.ts unused
+|   |   |   `-- -> WidgetCapabilityConfig
+|   |   +-- feed-resolver.ts
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   +-- FeedScope, HostKind, HostResolvedStatus, FeedHostConfig, FeedItemSummary, HostResolved  <- @/types/widget-system-v2
 |   |   |   +-- toErrorMessage  <- @/utils/index
@@ -9461,9 +9119,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> resolveFeedHost
 |   |   |   +-- -> resolvePublicAppPosts
 |   |   |   +-- -> subscribeAppPostsRealtime
-|   |   |   +-- -> subscribeFeedRealtime
-|   |   |   `-- unused unused: getFeedChannelKey, resolvePublicAppPosts, subscribeAppPostsRealtime, subscribeFeedRealtime
-|   |   +-- parse.ts unused
+|   |   |   `-- -> subscribeFeedRealtime
+|   |   +-- parse.ts
 |   |   |   +-- DreamenginWidgetType, EmbedWidgetConfig, SocialEmbedWidgetConfig, SocialFeedWidgetConfig, SocialProfileWidgetConfig, SocialProvider, TextWidgetConfig, TypedWidget, YouTubeWidgetConfig  <- @/types/widgetConfigs
 |   |   |   +-- -> parseEmbedConfig
 |   |   |   +-- -> parseSocialEmbedConfig
@@ -9471,17 +9128,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> parseSocialProfileConfig
 |   |   |   +-- -> parseTextConfig
 |   |   |   +-- -> parseTypedWidget
-|   |   |   +-- -> parseYouTubeConfig
-|   |   |   `-- unused unused: parseEmbedConfig, parseSocialEmbedConfig, parseSocialFeedConfig, parseSocialProfileConfig, parseTextConfig, parseTypedWidget, parseYouTubeConfig
-|   |   +-- parseConfig.ts unused
+|   |   |   `-- -> parseYouTubeConfig
+|   |   +-- parseConfig.ts
 |   |   |   +-- SocialEmbedWidgetConfig, SocialFeedWidgetConfig, SocialProfileWidgetConfig, SocialProvider, YouTubeWidgetConfig  <- @/types/widgetConfigs
 |   |   |   +-- -> inferProviderFromUrl
 |   |   |   +-- -> parseSocialEmbedWidgetConfig
 |   |   |   +-- -> parseSocialFeedWidgetConfig
 |   |   |   +-- -> parseSocialProfileWidgetConfig
-|   |   |   +-- -> parseYouTubeWidgetConfig
-|   |   |   `-- unused unused: parseSocialEmbedWidgetConfig, parseSocialFeedWidgetConfig, parseSocialProfileWidgetConfig, parseYouTubeWidgetConfig
-|   |   +-- useWidget.ts unused
+|   |   |   `-- -> parseYouTubeWidgetConfig
+|   |   +-- useWidget.ts
 |   |   |   +-- useEffect  <- react
 |   |   |   +-- (default)  <- ./WidgetBus
 |   |   |   +-- -> chainWidgets
@@ -9490,28 +9145,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> getWidgetMemory
 |   |   |   +-- -> setWidgetMemory
 |   |   |   +-- -> spawnSubWidget
-|   |   |   +-- -> useWidget
-|   |   |   `-- unused unused: chainWidgets, emitWidget, getSubWidgets, getWidgetMemory, setWidgetMemory, spawnSubWidget, useWidget
+|   |   |   `-- -> useWidget
 |   |   +-- WidgetBus.ts
 |   |   |   `-- -> (default)
-|   |   +-- WidgetEngine.tsx unused
+|   |   +-- WidgetEngine.tsx
 |   |   |   +-- (default)  <- react
 |   |   |   +-- -> WidgetLibrary
-|   |   |   +-- -> WidgetSpec
-|   |   |   `-- unused unused: WidgetLibrary, WidgetSpec
-|   |   +-- WidgetEventBus.ts unused
+|   |   |   `-- -> WidgetSpec
+|   |   +-- WidgetEventBus.ts
 |   |   |   +-- -> WidgetEventBus
 |   |   |   +-- -> WidgetMsg
 |   |   |   +-- -> WidgetMsgCallback
-|   |   |   +-- -> widgetEventBus
-|   |   |   `-- unused unused: WidgetEventBus, WidgetMsgCallback
-|   |   +-- WidgetLinkGraph.ts unused
+|   |   |   `-- -> widgetEventBus
+|   |   +-- WidgetLinkGraph.ts
 |   |   |   +-- -> CapabilityMask
 |   |   |   +-- -> WidgetLink
 |   |   |   +-- -> WidgetLinkGraph
-|   |   |   +-- -> WidgetLinkNode
-|   |   |   `-- unused unused: CapabilityMask, WidgetLink, WidgetLinkNode
-|   |   `-- widgetRegistry.ts unused
+|   |   |   `-- -> WidgetLinkNode
+|   |   `-- widgetRegistry.ts
 |   |       +-- -> ConnectorRequirement
 |   |       +-- -> ConnectorState
 |   |       +-- -> WIDGET_REGISTRY
@@ -9519,9 +9170,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> WidgetTypeDef
 |   |       +-- -> getWidgetTypeDef
 |   |       +-- -> getWidgetTypesForConnector
-|   |       +-- -> resolveConnectorState
-|   |       `-- unused unused: ConnectorRequirement, ConnectorState, WidgetPermissions
-|   +-- activeModulesStore.ts unused
+|   |       `-- -> resolveConnectorState
+|   +-- activeModulesStore.ts
 |   |   +-- ActiveModuleInstance, RuntimeRegionKey  <- @/types/dreamArtifact
 |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   +-- -> loadActiveModules
@@ -9530,13 +9180,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> saveActiveModule
 |   |   +-- -> saveActiveModules
 |   |   +-- -> saveActiveModulesForRegion
-|   |   +-- -> transferActiveModuleRegion
-|   |   `-- unused unused: saveActiveModules
+|   |   `-- -> transferActiveModuleRegion
 |   +-- agentOS.ts
 |   |   +-- CodeEnginHostTools  <- @/engine/agentOS/hostTools
 |   |   `-- -> getAgentOS
 |   +-- bus.wasm
-|   +-- data-transform.ts unused
+|   +-- data-transform.ts
 |   |   +-- -> BufferStats
 |   |   +-- -> DATA_PHYSICS
 |   |   +-- -> DataPhysicsConfig
@@ -9545,8 +9194,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> decodeFromLedger
 |   |   +-- -> encodeToLedger
 |   |   +-- -> normalizeBuffer
-|   |   +-- -> zscore
-|   |   `-- unused unused: BufferStats, DataPhysicsConfig, computeBufferStats, normalizeBuffer, zscore
+|   |   `-- -> zscore
 |   +-- dev-bypass.ts
 |   |   +-- -> isDevAdminBypassActive
 |   |   `-- -> isDevBypassActive
@@ -9580,7 +9228,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- RealtimePostgresInsertPayload  <- @supabase/supabase-js
 |   |   +-- -> RealtimePostgresInsertPayload
 |   |   `-- -> SupabaseClient
-|   +-- sharedDream.ts unused
+|   +-- sharedDream.ts
 |   |   +-- SupabaseClient  <- @/engine/io
 |   |   +-- broadcastControlSignal, broadcastCursor, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createCollabSession, CollabEventHandler, CollabEventType, CollabMode, CollabPayload, CollabSession, PresenceUpdateData, SessionRole  <- @/engine/collaboration/index
 |   |   +-- useSharedDreamSession, SharedDreamActivityEntry, SharedDreamMember, UseSharedDreamSessionOptions, UseSharedDreamSessionResult  <- @/engine/sharedDream/useSharedDreamSession
@@ -9607,8 +9255,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> createSharedDreamSession
 |   |   +-- -> joinSharedDreamSession
 |   |   +-- -> leaveSharedDreamSession
-|   |   +-- -> useSharedDreamSession
-|   |   `-- unused unused: DreamEventType, SharedDreamActivityEntry, SharedDreamMember, SharedDreamSessionOptions, UseSharedDreamSessionOptions, UseSharedDreamSessionResult, joinSharedDreamSession, useSharedDreamSession
+|   |   `-- -> useSharedDreamSession
 |   `-- slog.ts
 |       +-- -> slog
 |       +-- -> slogArray
@@ -9616,7 +9263,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> slogInv
 |       +-- -> slogMean
 |       `-- -> slogVariance
-+-- engins
++-- engins 🗂 FEATURE_FOLDER
 |   +-- autoopen
 |   |   `-- dream.AutoOpenGameEngin.tsx
 |   |       +-- createInstance  <- @/engine/runtime/instanceManager
@@ -9626,15 +9273,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       `-- -> (default)
 |   +-- brandingengin
 |   |   `-- identity
-|   |       `-- logos.ts unused
+|   |       `-- logos.ts
 |   |           +-- -> LOGO_PATHS
 |   |           +-- -> LogoPath
 |   |           +-- -> getRandomLogo
-|   |           +-- -> resetLogoCache
-|   |           `-- unused unused: LogoPath
-|   +-- codeengin  [CodeEngin]
-|   |   +-- ai  [CodeEngin]
-|   |   |   `-- drEamsCodeAssist.ts unused user-facing
+|   |           `-- -> resetLogoCache
+|   +-- codeengin  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   +-- ai  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- drEamsCodeAssist.ts
 |   |   |       +-- -> CODE_VOCABULARY
 |   |   |       +-- -> CellLanguage
 |   |   |       +-- -> CodeContext
@@ -9651,10 +9297,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> generateCodeFromCommand
 |   |   |       +-- -> getCodeAssistCompletion
 |   |   |       +-- -> matchCodeVocabulary
-|   |   |       +-- -> parseCodeResponse
-|   |   |       `-- unused unused: CodeContext, ParsedCodeResponse, QueryIntent, VocabEntry, buildCodePrompt, getCodeAssistCompletion
-|   |   +-- diff  [CodeEngin]
-|   |   |   +-- aiEditEngine.ts unused user-facing
+|   |   |       `-- -> parseCodeResponse
+|   |   +-- diff  [CodeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- aiEditEngine.ts
 |   |   |   |   +-- -> AiSuggestion
 |   |   |   |   +-- -> BuildPreviewOptions
 |   |   |   |   +-- -> CODEENGIN_PRODUCTION_MODE
@@ -9681,9 +9326,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> lineBoundsAt
 |   |   |   |   +-- -> parseAiInstruction
 |   |   |   |   +-- -> undoEdit
-|   |   |   |   +-- -> wordBoundsAt
-|   |   |   |   `-- unused unused: AiSuggestion, BuildPreviewOptions, CODEENGIN_PRODUCTION_MODE, EditDiffLine, EditDiffLineType, EditScope, RiskLevel, ScopeMatch, UndoSnapshot
-|   |   |   `-- diffUtils.ts user-facing
+|   |   |   |   `-- -> wordBoundsAt
+|   |   |   `-- diffUtils.ts
 |   |   |       +-- -> DEMO_DIFF
 |   |   |       +-- -> DiffFile
 |   |   |       +-- -> DiffHunk
@@ -9697,26 +9341,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> nextHunkIndex
 |   |   |       +-- -> parseUnifiedDiff
 |   |   |       `-- -> prevHunkIndex
-|   |   +-- auth.ts unused user-facing
+|   |   +-- auth.ts
 |   |   |   +-- isOwner  <- @/engine/admin/lockout
 |   |   |   +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |   +-- createServerClient  <- @/supabase/server/serverClient
 |   |   |   +-- -> CodeEnginAuthenticatedUser
-|   |   |   +-- -> assertCodeEnginAccess
-|   |   |   `-- unused unused: CodeEnginAuthenticatedUser
-|   |   +-- diagnostics.ts user-facing
+|   |   |   `-- -> assertCodeEnginAccess
+|   |   +-- diagnostics.ts
 |   |   |   +-- (default)  <- path
 |   |   |   +-- parseCode  <- @/engins/codeengin-ui/core/parser
 |   |   |   +-- listEditableFiles, readProjectFile  <- ./workspaceStore
 |   |   |   +-- CodeEnginDiagnostic  <- ./types
 |   |   |   +-- -> diagnoseFile
 |   |   |   `-- -> diagnoseWorkspace
-|   |   +-- git.ts user-facing
+|   |   +-- git.ts
 |   |   |   +-- listEditableFiles  <- ./workspaceStore
 |   |   |   +-- -> getGitDiff
 |   |   |   +-- -> getGitLog
 |   |   |   `-- -> getGitStatus
-|   |   +-- pathSafety.ts unused user-facing
+|   |   +-- pathSafety.ts
 |   |   |   +-- (default)  <- path
 |   |   |   +-- -> CODEENGIN_ALLOWED_EXTENSIONS
 |   |   |   +-- -> CODEENGIN_ALLOWED_FILENAMES
@@ -9728,9 +9371,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> isAllowedCodeEnginFileName
 |   |   |   +-- -> isLikelyEditableFile
 |   |   |   +-- -> normalizeProjectPath
-|   |   |   +-- -> safeErrorMessage
-|   |   |   `-- unused unused: CODEENGIN_ALLOWED_EXTENSIONS, CODEENGIN_ALLOWED_FILENAMES, isAllowedCodeEnginFileName
-|   |   +-- projectGraph.ts unused user-facing
+|   |   |   `-- -> safeErrorMessage
+|   |   +-- projectGraph.ts
 |   |   |   +-- (default)  <- path
 |   |   |   +-- parseCode  <- @/engins/codeengin-ui/core/parser
 |   |   |   +-- readProjectFile, listEditableFiles  <- ./workspaceStore
@@ -9740,9 +9382,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (side-effect)  <- ']([^
 |   |   |   +-- (require)  <- ']([^
 |   |   |   +-- -> buildProjectGraph
-|   |   |   +-- -> extractImports
-|   |   |   `-- unused unused: extractImports
-|   |   +-- runner.ts user-facing
+|   |   |   `-- -> extractImports
+|   |   +-- runner.ts
 |   |   |   +-- listEditableFiles, readProjectFile  <- ./workspaceStore
 |   |   |   +-- CODEENGIN_COMMANDS  <- ./runnerCommands
 |   |   |   +-- listRunnerCommands  <- ./runnerCommands
@@ -9750,14 +9391,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> listRunnerCommands
 |   |   |   +-- -> runCiCommand
 |   |   |   `-- -> runCodeEnginCommand
-|   |   +-- runnerCommands.ts user-facing
+|   |   +-- runnerCommands.ts
 |   |   |   +-- -> CODEENGIN_COMMANDS
 |   |   |   `-- -> listRunnerCommands
-|   |   +-- search.ts user-facing
+|   |   +-- search.ts
 |   |   |   +-- listEditableFiles, readProjectFile  <- ./workspaceStore
 |   |   |   +-- CodeEnginSearchHit  <- ./types
 |   |   |   `-- -> searchWorkspace
-|   |   +-- types.ts user-facing
+|   |   +-- types.ts
 |   |   |   +-- -> CodeEnginCommandResult
 |   |   |   +-- -> CodeEnginDiagnostic
 |   |   |   +-- -> CodeEnginFileNode
@@ -9769,7 +9410,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> CodeEnginSymbol
 |   |   |   +-- -> CodeEnginWorkspaceMeta
 |   |   |   `-- -> CodeEnginWorkspaceOverview
-|   |   `-- workspaceStore.ts unused user-facing
+|   |   `-- workspaceStore.ts
 |   |       +-- createHash, randomUUID  <- crypto
 |   |       +-- Dirent  <- fs
 |   |       +-- (default)  <- fs/promises
@@ -9785,17 +9426,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> listEditableFiles
 |   |       +-- -> moveProjectFile
 |   |       +-- -> readProjectFile
-|   |       +-- -> writeProjectFile
-|   |       `-- unused unused: (default), getWorkspaceMeta
+|   |       `-- -> writeProjectFile
 |   +-- CodeEngin
 |   |   +-- core
-|   |   |   `-- parser.ts unused
+|   |   |   `-- parser.ts
 |   |   |       +-- (default)  <- "]([^
 |   |   |       +-- -> ParseError
 |   |   |       +-- -> ParseResult
 |   |   |       +-- -> ParsedSymbol
-|   |   |       +-- -> parseCode
-|   |   |       `-- unused unused: ParseError, ParseResult, ParsedSymbol, parseCode
+|   |   |       `-- -> parseCode
 |   |   +-- modules
 |   |   |   `-- ai-co-pilot
 |   |   |       +-- dream.panel.AgentPanel.tsx
@@ -9816,27 +9455,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |           +-- -> UseAgentSessionReturn
 |   |   |           `-- -> useAgentSession
 |   |   `-- orchestrator
-|   |       `-- dream.index.tsx unused
+|   |       `-- dream.index.tsx
 |   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
-|   |           +-- -> (default)
-|   |           `-- unused unused: (default)
+|   |           `-- -> (default)
 |   +-- codeengin-ui  [CodeEngin]
 |   |   +-- core  [CodeEngin]
-|   |   |   `-- parser.ts unused user-facing
+|   |   |   `-- parser.ts
 |   |   |       +-- (default)  <- "]([^
 |   |   |       +-- -> ParseError
 |   |   |       +-- -> ParseResult
 |   |   |       +-- -> ParsedSymbol
-|   |   |       +-- -> parseCode
-|   |   |       `-- unused unused: ParseResult
+|   |   |       `-- -> parseCode
 |   |   +-- modules  [CodeEngin]
 |   |   |   `-- ai-co-pilot  [CodeEngin]
-|   |   |       +-- dream.panel.AgentPanel.tsx user-facing
+|   |   |       +-- dream.panel.AgentPanel.tsx 🧩 COMPONENT
 |   |   |       |   +-- useState  <- react
 |   |   |       |   +-- useAgentSession  <- ./useAgentSession
 |   |   |       |   `-- -> AgentPanel
-|   |   |       +-- index.ts user-facing
+|   |   |       +-- index.ts
 |   |   |       |   +-- AgentPanel  <- ./dream.panel.AgentPanel
 |   |   |       |   +-- useAgentSession  <- ./useAgentSession
 |   |   |       |   +-- AgentMessage, UseAgentSessionReturn  <- ./useAgentSession
@@ -9844,29 +9481,27 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       |   +-- -> AgentPanel
 |   |   |       |   +-- -> UseAgentSessionReturn
 |   |   |       |   `-- -> useAgentSession
-|   |   |       `-- useAgentSession.ts user-facing
+|   |   |       `-- useAgentSession.ts
 |   |   |           +-- useCallback, useRef, useState  <- react
 |   |   |           +-- -> AgentMessage
 |   |   |           +-- -> UseAgentSessionReturn
 |   |   |           `-- -> useAgentSession
 |   |   `-- orchestrator  [CodeEngin]
-|   |       `-- dream.index.tsx unused user-facing
+|   |       `-- dream.index.tsx 🧩 COMPONENT
 |   |           +-- ArtifactSlot  <- @/engins/forgeengin/enginpipe/index
 |   |           +-- AgentPanel  <- ../modules/ai-co-pilot/dream.panel.AgentPanel
-|   |           +-- -> (default)
-|   |           `-- unused unused: (default)
-|   +-- contentengin  [ContentEngin / CreateEngin]
-|   |   +-- assets  [ContentEngin / CreateEngin]
-|   |   |   +-- assetOptimizer.ts unused user-facing
+|   |           `-- -> (default)
+|   +-- contentengin  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   +-- assets  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- assetOptimizer.ts
 |   |   |   |   +-- storeOriginal  <- ./indexedDBStore
 |   |   |   |   +-- -> AssetUploadContext
 |   |   |   |   +-- -> OptimisationQuality
 |   |   |   |   +-- -> OptimisationResult
 |   |   |   |   +-- -> OptimiseOptions
 |   |   |   |   +-- -> optimiseAsset
-|   |   |   |   +-- -> registryTagsForContext
-|   |   |   |   `-- unused unused: AssetUploadContext, OptimisationQuality, OptimisationResult, OptimiseOptions, optimiseAsset
-|   |   |   +-- indexedDBStore.ts user-facing
+|   |   |   |   `-- -> registryTagsForContext
+|   |   |   +-- indexedDBStore.ts
 |   |   |   |   +-- -> OriginalRecord
 |   |   |   |   +-- -> SentinelEntry
 |   |   |   |   +-- -> StorageStats
@@ -9878,22 +9513,20 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> hasOriginal
 |   |   |   |   +-- -> listStoredOriginals
 |   |   |   |   `-- -> storeOriginal
-|   |   |   `-- localAssetLibrary.ts unused user-facing
+|   |   |   `-- localAssetLibrary.ts
 |   |   |       +-- getOriginal, storeOriginal, OriginalRecord  <- @/engins/contentengin/assets/indexedDBStore
 |   |   |       +-- -> LocalContentAssetRecord
 |   |   |       +-- -> getLocalContentAssetGlb
 |   |   |       +-- -> getLocalContentAssetObjSource
 |   |   |       +-- -> listLocalContentAssets
-|   |   |       +-- -> saveLocalContentAsset
-|   |   |       `-- unused unused: LocalContentAssetRecord, getLocalContentAssetGlb, getLocalContentAssetObjSource, listLocalContentAssets, saveLocalContentAsset
-|   |   +-- builders  [ContentEngin / CreateEngin]
-|   |   |   +-- geometryBuilder.ts unused user-facing
+|   |   |       `-- -> saveLocalContentAsset
+|   |   +-- builders  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- geometryBuilder.ts
 |   |   |   |   +-- PartNode, Vec3  <- ../assetTypes
 |   |   |   |   +-- flattenParts  <- ./primitiveBuilder
 |   |   |   |   +-- -> MeshGeometry
-|   |   |   |   +-- -> buildGeometry
-|   |   |   |   `-- unused unused: MeshGeometry
-|   |   |   +-- meshBuilder.ts unused user-facing
+|   |   |   |   `-- -> buildGeometry
+|   |   |   +-- meshBuilder.ts
 |   |   |   |   +-- createBoxSDF, createCapsuleSDF, createSphereSDF, createTorusSDF, meshToSnapshot, runIsoSurfaceJob, DualContouringSettings, IsoSurfaceJob, SDF  <- @/engins/isosurfaceDualContouring
 |   |   |   |   +-- PartNode  <- ../assetTypes
 |   |   |   |   +-- flattenParts, primitiveStats  <- ./primitiveBuilder
@@ -9901,29 +9534,26 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> buildImplicitContentMesh
 |   |   |   |   +-- -> buildRegionFitContentMesh
 |   |   |   |   +-- -> computeMeshMetrics
-|   |   |   |   +-- -> sdfFromAlgebraicFit
-|   |   |   |   `-- unused unused: buildImplicitContentMesh, buildRegionFitContentMesh, sdfFromAlgebraicFit
-|   |   |   +-- modifiers.ts unused user-facing
+|   |   |   |   `-- -> sdfFromAlgebraicFit
+|   |   |   +-- modifiers.ts
 |   |   |   |   +-- -> ModifierKind
 |   |   |   |   +-- -> ModifierSpec
-|   |   |   |   +-- -> applyModifierMetadata
-|   |   |   |   `-- unused unused: ModifierKind, ModifierSpec, applyModifierMetadata
-|   |   |   +-- primitiveBuilder.ts unused user-facing
+|   |   |   |   `-- -> applyModifierMetadata
+|   |   |   +-- primitiveBuilder.ts
 |   |   |   |   +-- PartNode, PrimitiveKind, Vec3, identityTransform, vec3  <- ../assetTypes
 |   |   |   |   +-- -> MeshStats
 |   |   |   |   +-- -> createPart
 |   |   |   |   +-- -> flattenParts
 |   |   |   |   +-- -> primitiveStats
-|   |   |   |   +-- -> resetPartIds
-|   |   |   |   `-- unused unused: MeshStats
-|   |   |   +-- textureBuilder.ts user-facing
+|   |   |   |   `-- -> resetPartIds
+|   |   |   +-- textureBuilder.ts
 |   |   |   |   +-- MaterialDef  <- ../assetTypes
 |   |   |   |   `-- -> assignProceduralTextureNames
-|   |   |   `-- uvGenerator.ts user-facing
+|   |   |   `-- uvGenerator.ts
 |   |   |       +-- PartNode  <- ../assetTypes
 |   |   |       `-- -> assignProceduralUv
-|   |   +-- composite  [ContentEngin / CreateEngin]
-|   |   |   +-- compositor.ts unused user-facing
+|   |   +-- composite  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- compositor.ts
 |   |   |   |   +-- -> BlendMode
 |   |   |   |   +-- -> CompGraph
 |   |   |   |   +-- -> CompNode
@@ -9937,9 +9567,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> findNode
 |   |   |   |   +-- -> graphSummary
 |   |   |   |   +-- -> setParam
-|   |   |   |   +-- -> topologicalSort
-|   |   |   |   `-- unused unused: BlendMode, CompGraph, CompNode, NodeParam, NodeType, addNode, connectNodes, createGraph, createNode, disconnectInput, findNode, graphSummary, setParam, topologicalSort
-|   |   |   +-- fxSimulation.ts unused user-facing
+|   |   |   |   `-- -> topologicalSort
+|   |   |   +-- fxSimulation.ts
 |   |   |   |   +-- -> FX_PRESETS
 |   |   |   |   +-- -> FxCategory
 |   |   |   |   +-- -> FxParam
@@ -9951,9 +9580,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getSimParam
 |   |   |   |   +-- -> presetsByCategory
 |   |   |   |   +-- -> resetSimParams
-|   |   |   |   +-- -> setSimParam
-|   |   |   |   `-- unused unused: FX_PRESETS, FxCategory, FxParam, FxPreset, FxSimulation, allCategories, createSimulation, getPreset, getSimParam, presetsByCategory, resetSimParams, setSimParam
-|   |   |   +-- matchmover.ts unused user-facing
+|   |   |   |   `-- -> setSimParam
+|   |   |   +-- matchmover.ts
 |   |   |   |   +-- -> CameraFrame
 |   |   |   |   +-- -> CameraTrack
 |   |   |   |   +-- -> Homography
@@ -9966,9 +9594,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> createTrack
 |   |   |   |   +-- -> estimateCameraMotion
 |   |   |   |   +-- -> exportTrackCSV
-|   |   |   |   +-- -> trackSummary
-|   |   |   |   `-- unused unused: CameraFrame, CameraTrack, Homography, MotionEstimate, TrackPoint, TrackSample, addSample, addTrackPoint, computeHomography, createTrack, estimateCameraMotion, exportTrackCSV, trackSummary
-|   |   |   +-- motionCapture.ts unused user-facing
+|   |   |   |   `-- -> trackSummary
+|   |   |   +-- motionCapture.ts
 |   |   |   |   +-- -> ClipSummary
 |   |   |   |   +-- -> FramePose
 |   |   |   |   +-- -> Joint
@@ -9979,9 +9606,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> findJoint
 |   |   |   |   +-- -> getFramePose
 |   |   |   |   +-- -> parseBVH
-|   |   |   |   +-- -> retargetClip
-|   |   |   |   `-- unused unused: ClipSummary, FramePose, Joint, JointTransform, MocapClip, clipSummary, exportBVH, findJoint, getFramePose, parseBVH, retargetClip
-|   |   |   `-- rotoscope.ts unused user-facing
+|   |   |   |   `-- -> retargetClip
+|   |   |   `-- rotoscope.ts
 |   |   |       +-- -> BezierPoint
 |   |   |       +-- -> InterpolatedShape
 |   |   |       +-- -> RotoLayer
@@ -9994,10 +9620,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> interpolateShape
 |   |   |       +-- -> keyframeList
 |   |   |       +-- -> removeKeyframe
-|   |   |       +-- -> setKeyframe
-|   |   |       `-- unused unused: BezierPoint, InterpolatedShape, RotoLayer, RotoProject, RotoShape, addLayer, createProject, exportFrameSVG, exportShapeSVG, interpolateShape, keyframeList, removeKeyframe, setKeyframe
-|   |   +-- content  [ContentEngin / CreateEngin]
-|   |   |   +-- generativeFill.ts unused user-facing
+|   |   |       `-- -> setKeyframe
+|   |   +-- content  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- generativeFill.ts
 |   |   |   |   +-- -> DominantColor
 |   |   |   |   +-- -> GenerativeFillRequest
 |   |   |   |   +-- -> GenerativeFillResult
@@ -10005,24 +9630,21 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> analyzeImageColors
 |   |   |   |   +-- -> createMaskDataUrl
 |   |   |   |   +-- -> fileToBase64
-|   |   |   |   +-- -> requestGenerativeFill
-|   |   |   |   `-- unused unused: DominantColor, GenerativeFillRequest, GenerativeFillResult, ImageAnalysis, analyzeImageColors, createMaskDataUrl, fileToBase64, requestGenerativeFill
-|   |   |   +-- publishIntent.ts unused user-facing
+|   |   |   |   `-- -> requestGenerativeFill
+|   |   |   +-- publishIntent.ts
 |   |   |   |   +-- -> PublishIntentInput
 |   |   |   |   +-- -> PublishToDreamRParams
 |   |   |   |   +-- -> formatPublishError
 |   |   |   |   +-- -> publishToDreamR
-|   |   |   |   +-- -> resolvePublishIntent
-|   |   |   |   `-- unused unused: PublishIntentInput, PublishToDreamRParams
-|   |   |   +-- seoScorer.ts unused user-facing
+|   |   |   |   `-- -> resolvePublishIntent
+|   |   |   +-- seoScorer.ts
 |   |   |   |   +-- -> SeoReport
 |   |   |   |   +-- -> SeoScoreDimension
 |   |   |   |   +-- -> SeoScoreInput
 |   |   |   |   +-- -> SeoScoreResult
 |   |   |   |   +-- -> generateReport
-|   |   |   |   +-- -> scoreContent
-|   |   |   |   `-- unused unused: SeoReport, SeoScoreDimension, SeoScoreInput, SeoScoreResult, generateReport, scoreContent
-|   |   |   +-- transcriptEditor.ts unused user-facing
+|   |   |   |   `-- -> scoreContent
+|   |   |   +-- transcriptEditor.ts
 |   |   |   |   +-- -> SearchResult
 |   |   |   |   +-- -> TimelineCut
 |   |   |   |   +-- -> TranscriptSegment
@@ -10035,9 +9657,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> parseVTT
 |   |   |   |   +-- -> searchTranscript
 |   |   |   |   +-- -> segmentsToPlainText
-|   |   |   |   +-- -> totalDurationMs
-|   |   |   |   `-- unused unused: SearchResult, TimelineCut, TranscriptSegment, TranscriptWord, annotateSearchMatches, applyEditsToSegments, computeCuts, exportSRT, searchTranscript, segmentsToPlainText
-|   |   |   `-- voiceClone.ts unused user-facing
+|   |   |   |   `-- -> totalDurationMs
+|   |   |   `-- voiceClone.ts
 |   |   |       +-- -> ListVoiceProfilesResult
 |   |   |       +-- -> TTSRequest
 |   |   |       +-- -> TTSResult
@@ -10051,79 +9672,75 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> getBrowserVoices
 |   |   |       +-- -> listVoiceProfiles
 |   |   |       +-- -> speakWithBrowserTTS
-|   |   |       +-- -> textToSpeech
-|   |   |       `-- unused unused: ListVoiceProfilesResult, TTSRequest, TTSResult, VoiceCloneRequest, VoiceCloneResult, VoiceProfile, audioFileToBase64, cloneVoice, deleteVoiceProfile, getBrowserVoices, listVoiceProfiles, speakWithBrowserTTS, textToSpeech
-|   |   +-- grammars  [ContentEngin / CreateEngin]
-|   |   |   +-- animalGrammar.ts user-facing
+|   |   |       `-- -> textToSpeech
+|   |   +-- grammars  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- animalGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildAnimalParts
-|   |   |   +-- bicycleGrammar.ts user-facing
+|   |   |   +-- bicycleGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildBicycleParts
-|   |   |   +-- bridgeGrammar.ts user-facing
+|   |   |   +-- bridgeGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildBridgeParts
-|   |   |   +-- buildingGrammar.ts user-facing
+|   |   |   +-- buildingGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildBuildingParts
-|   |   |   +-- creatureGrammar.ts unused user-facing
+|   |   |   +-- creatureGrammar.ts
 |   |   |   |   +-- buildAnimalParts  <- ./animalGrammar
-|   |   |   |   +-- -> buildCreatureParts
-|   |   |   |   `-- unused unused: buildCreatureParts
-|   |   |   +-- humanoidGrammar.ts user-facing
+|   |   |   |   `-- -> buildCreatureParts
+|   |   |   +-- humanoidGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root, symmetrical  <- ./shared
 |   |   |   |   `-- -> buildHumanoidParts
-|   |   |   +-- propGrammar.ts user-facing
+|   |   |   +-- propGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildPropParts
-|   |   |   +-- roadGrammar.ts user-facing
+|   |   |   +-- roadGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildRoadParts
-|   |   |   +-- shared.ts user-facing
+|   |   |   +-- shared.ts
 |   |   |   |   +-- PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- createPart  <- ../builders/primitiveBuilder
 |   |   |   |   +-- -> p
 |   |   |   |   +-- -> root
 |   |   |   |   `-- -> symmetrical
-|   |   |   +-- terrainGrammar.ts user-facing
+|   |   |   +-- terrainGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildTerrainParts
-|   |   |   +-- treeGrammar.ts user-facing
+|   |   |   +-- treeGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildTreeParts
-|   |   |   +-- vehicleGrammar.ts user-facing
+|   |   |   +-- vehicleGrammar.ts
 |   |   |   |   +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |   |   +-- p, root  <- ./shared
 |   |   |   |   `-- -> buildVehicleParts
-|   |   |   `-- waterGrammar.ts user-facing
+|   |   |   `-- waterGrammar.ts
 |   |   |       +-- ContentRecipe, PartNode, vec3  <- ../assetTypes
 |   |   |       +-- p, root  <- ./shared
 |   |   |       `-- -> buildWaterParts
-|   |   +-- materials  [ContentEngin / CreateEngin]
-|   |   |   +-- materialTypes.ts unused user-facing
+|   |   +-- materials  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- materialTypes.ts
 |   |   |   |   +-- MaterialDef  <- ../assetTypes
 |   |   |   |   +-- -> MaterialDef
-|   |   |   |   +-- -> MaterialFamily
-|   |   |   |   `-- unused unused: MaterialDef, MaterialFamily
-|   |   |   +-- paletteExtractor.ts user-facing
+|   |   |   |   `-- -> MaterialFamily
+|   |   |   +-- paletteExtractor.ts
 |   |   |   |   +-- -> extractPalette
 |   |   |   |   `-- -> rgbaToHex
-|   |   |   `-- proceduralMaterials.ts unused user-facing
+|   |   |   `-- proceduralMaterials.ts
 |   |   |       +-- MaterialDef  <- ../assetTypes
 |   |   |       +-- -> defaultMaterials
-|   |   |       +-- -> material
-|   |   |       `-- unused unused: material
-|   |   +-- media  [ContentEngin / CreateEngin]
-|   |   |   +-- h265-encoder.ts unused user-facing
+|   |   |       `-- -> material
+|   |   +-- media  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- h265-encoder.ts
 |   |   |   |   +-- -> BackendKind
 |   |   |   |   +-- -> CaptureResult
 |   |   |   |   +-- -> EncodedPacket
@@ -10133,9 +9750,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> H265Encoder
 |   |   |   |   +-- -> H265Preset
 |   |   |   |   +-- -> PixelFormat
-|   |   |   |   +-- -> VideoFrameLike
-|   |   |   |   `-- unused unused: BackendKind, EncodedPacket, EncoderCapabilities, EncoderOptions, H265Encoder, H265Preset, PixelFormat, VideoFrameLike
-|   |   |   +-- ledger.ts unused user-facing
+|   |   |   |   `-- -> VideoFrameLike
+|   |   |   +-- ledger.ts
 |   |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   |   +-- -> LedgerBinaryHeader
 |   |   |   |   +-- -> LedgerDbPayload
@@ -10151,36 +9767,31 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> encodeBlobToLedger
 |   |   |   |   +-- -> encodeToLedger
 |   |   |   |   +-- -> encodeUint8ArrayToLedgerString
-|   |   |   |   +-- -> uploadBlobToLedgerStorage
-|   |   |   |   `-- unused unused: LedgerBinaryHeader, LedgerDbPayload, LedgerDensityProfile, LedgerUploadResult, compressData, downloadBlobFromLedgerStorage
-|   |   |   `-- postMedia.ts user-facing
+|   |   |   |   `-- -> uploadBlobToLedgerStorage
+|   |   |   `-- postMedia.ts
 |   |   |       +-- -> PostMediaShape
 |   |   |       +-- -> getPostMediaUrls
 |   |   |       `-- -> getPrimaryPostMediaUrl
-|   |   +-- photo  [ContentEngin / CreateEngin]
-|   |   |   +-- colorCluster.ts unused user-facing
+|   |   +-- photo  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- colorCluster.ts
 |   |   |   |   +-- extractPalette  <- ../materials/paletteExtractor
-|   |   |   |   +-- -> extractPalette
-|   |   |   |   `-- unused unused: extractPalette
-|   |   |   +-- edgeDetector.ts unused user-facing
-|   |   |   |   +-- -> buildEdgeMapFromRgba
-|   |   |   |   `-- unused unused: buildEdgeMapFromRgba
-|   |   |   +-- imageAnalyzer.ts user-facing
+|   |   |   |   `-- -> extractPalette
+|   |   |   +-- edgeDetector.ts
+|   |   |   |   `-- -> buildEdgeMapFromRgba
+|   |   |   +-- imageAnalyzer.ts
 |   |   |   |   +-- SourceImageAnalysis, ShapeRegion  <- ../assetTypes
 |   |   |   |   +-- rgbaToHex  <- ../materials/paletteExtractor
 |   |   |   |   +-- decodePng  <- ./pngDecoder
 |   |   |   |   `-- -> analyzeImageBytes
-|   |   |   +-- photoToRecipe.ts unused user-facing
+|   |   |   +-- photoToRecipe.ts
 |   |   |   |   +-- ContentRecipe, SourceImageAnalysis  <- ../assetTypes
 |   |   |   |   +-- detectSemanticAlgebraicRegions  <- ./regionDetector
-|   |   |   |   +-- -> photoToRecipe
-|   |   |   |   `-- unused unused: photoToRecipe
-|   |   |   +-- pngDecoder.ts unused user-facing
+|   |   |   |   `-- -> photoToRecipe
+|   |   |   +-- pngDecoder.ts
 |   |   |   |   +-- inflateSync  <- zlib
 |   |   |   |   +-- -> DecodedPng
-|   |   |   |   +-- -> decodePng
-|   |   |   |   `-- unused unused: DecodedPng
-|   |   |   `-- regionDetector.ts unused user-facing
+|   |   |   |   `-- -> decodePng
+|   |   |   `-- regionDetector.ts
 |   |   |       +-- ShapeRegion, Vec2  <- ../assetTypes
 |   |   |       +-- -> AlgebraicFitKind
 |   |   |       +-- -> AlgebraicRegionFit
@@ -10188,10 +9799,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> SemanticShapeRegion
 |   |   |       +-- -> detectSemanticAlgebraicRegions
 |   |   |       +-- -> fitAlgebraicRegion
-|   |   |       +-- -> relabelRegion
-|   |   |       `-- unused unused: AlgebraicFitKind, SemanticPartLabel, SemanticShapeRegion, fitAlgebraicRegion, relabelRegion
-|   |   +-- pipeline  [ContentEngin / CreateEngin]
-|   |   |   +-- build.ts user-facing
+|   |   |       `-- -> relabelRegion
+|   |   +-- pipeline  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- build.ts
 |   |   |   |   +-- ContentAsset, ContentAssetCategory, CONTENTENGIN_VERSION  <- ../assetTypes
 |   |   |   |   +-- resetPartIds  <- ../builders/primitiveBuilder
 |   |   |   |   +-- assignProceduralUv  <- ../builders/uvGenerator
@@ -10218,7 +9828,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- createContentEnginRuntimeProfile  <- ../runtimeProfile
 |   |   |   |   +-- createContentEnginPerformancePlan  <- ../performancePlan
 |   |   |   |   `-- -> buildAsset
-|   |   |   +-- bundle.ts user-facing
+|   |   |   +-- bundle.ts
 |   |   |   |   +-- mkdir, writeFile, readFile, readdir, stat  <- fs/promises
 |   |   |   |   +-- (default)  <- path
 |   |   |   |   +-- ContentAsset  <- ../assetTypes
@@ -10227,65 +9837,60 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- makeManifest  <- ./writeManifest
 |   |   |   |   +-- -> writeAssetBundle
 |   |   |   |   `-- -> zipDirectory
-|   |   |   +-- exportGlb.ts unused user-facing
+|   |   |   +-- exportGlb.ts
 |   |   |   |   +-- ContentAsset, MaterialDef  <- ../assetTypes
 |   |   |   |   +-- buildGeometry  <- ../builders/geometryBuilder
 |   |   |   |   +-- -> GlbInspection
 |   |   |   |   +-- -> createGlbBuffer
 |   |   |   |   +-- -> expectedMaterialIdsForAsset
-|   |   |   |   +-- -> inspectGlb
-|   |   |   |   `-- unused unused: GlbInspection
-|   |   |   +-- generateCollision.ts user-facing
+|   |   |   |   `-- -> inspectGlb
+|   |   |   +-- generateCollision.ts
 |   |   |   |   +-- CollisionBlock, PartNode  <- ../assetTypes
 |   |   |   |   +-- flattenParts  <- ../builders/primitiveBuilder
 |   |   |   |   `-- -> generateCollision
-|   |   |   +-- generateLods.ts user-facing
+|   |   |   +-- generateLods.ts
 |   |   |   |   +-- ExportProfile, LodDef  <- ../assetTypes
 |   |   |   |   `-- -> generateLods
-|   |   |   +-- paths.ts user-facing
+|   |   |   +-- paths.ts
 |   |   |   |   +-- (default)  <- path
 |   |   |   |   +-- -> safeSegment
 |   |   |   |   `-- -> safeUnder
-|   |   |   +-- validate.ts user-facing
+|   |   |   +-- validate.ts
 |   |   |   |   +-- ContentAsset, ExportProfile, ValidationReport  <- ../assetTypes
 |   |   |   |   +-- computeMeshMetrics  <- ../builders/meshBuilder
 |   |   |   |   +-- expectedMaterialIdsForAsset, inspectGlb  <- ./exportGlb
 |   |   |   |   `-- -> validateAsset
-|   |   |   `-- writeManifest.ts unused user-facing
+|   |   |   `-- writeManifest.ts
 |   |   |       +-- ContentAsset, ContentAssetObject  <- ../assetTypes
 |   |   |       +-- -> makeManifest
-|   |   |       +-- -> wrapAsset
-|   |   |       `-- unused unused: wrapAsset
-|   |   +-- recipes  [ContentEngin / CreateEngin]
-|   |   |   +-- recipeResolver.ts unused user-facing
+|   |   |       `-- -> wrapAsset
+|   |   +-- recipes  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- recipeResolver.ts
 |   |   |   |   +-- ContentRecipe, ExportProfile  <- ../assetTypes
 |   |   |   |   +-- SUPPORTED_ASSET_TYPES  <- ./recipeTypes
 |   |   |   |   +-- -> normalizeAssetType
-|   |   |   |   +-- -> resolveRecipe
-|   |   |   |   `-- unused unused: normalizeAssetType
-|   |   |   +-- recipeTypes.ts unused user-facing
+|   |   |   |   `-- -> resolveRecipe
+|   |   |   +-- recipeTypes.ts
 |   |   |   |   +-- ContentRecipe, ExportProfile  <- ../assetTypes
 |   |   |   |   +-- -> ContentRecipe
 |   |   |   |   +-- -> ExportProfile
 |   |   |   |   +-- -> SUPPORTED_ASSET_TYPES
-|   |   |   |   +-- -> SupportedAssetType
-|   |   |   |   `-- unused unused: ContentRecipe, ExportProfile, SupportedAssetType
-|   |   |   `-- seededRandom.ts unused user-facing
+|   |   |   |   `-- -> SupportedAssetType
+|   |   |   `-- seededRandom.ts
 |   |   |       +-- -> pick
-|   |   |       +-- -> seededRandom
-|   |   |       `-- unused unused: pick
-|   |   +-- rigging  [ContentEngin / CreateEngin]
-|   |   |   +-- templates  [ContentEngin / CreateEngin]
-|   |   |   |   +-- bird_basic.json user-facing
-|   |   |   |   +-- fish_basic.json user-facing
-|   |   |   |   +-- humanoid_basic.json user-facing
-|   |   |   |   +-- quadruped_basic.json user-facing
-|   |   |   |   `-- vehicle_mechanical.json user-facing
-|   |   |   +-- fitArmature.ts user-facing
+|   |   |       `-- -> seededRandom
+|   |   +-- rigging  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- templates  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- bird_basic.json
+|   |   |   |   +-- fish_basic.json
+|   |   |   |   +-- humanoid_basic.json
+|   |   |   |   +-- quadruped_basic.json
+|   |   |   |   `-- vehicle_mechanical.json
+|   |   |   +-- fitArmature.ts
 |   |   |   |   +-- BoneDef, SkeletonDef, vec3  <- ../assetTypes
 |   |   |   |   +-- RigStandard  <- ./rigTypes
 |   |   |   |   `-- -> createSkeleton
-|   |   |   +-- index.ts unused user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- execFile  <- child_process
 |   |   |   |   +-- mkdir  <- fs/promises
 |   |   |   |   +-- (default)  <- path
@@ -10296,29 +9901,25 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> RigStandard
 |   |   |   |   +-- -> RiggingRequest
 |   |   |   |   +-- -> createSkeleton
-|   |   |   |   +-- -> runRiggingPipeline
-|   |   |   |   `-- unused unused: RigStandard, RiggingRequest
-|   |   |   +-- landmarks.ts unused user-facing
+|   |   |   |   `-- -> runRiggingPipeline
+|   |   |   +-- landmarks.ts
 |   |   |   |   +-- PartNode, Vec3, vec3  <- ../assetTypes
-|   |   |   |   +-- -> estimateLandmarks
-|   |   |   |   `-- unused unused: estimateLandmarks
-|   |   |   +-- rigTypes.ts user-facing
+|   |   |   |   `-- -> estimateLandmarks
+|   |   |   +-- rigTypes.ts
 |   |   |   |   +-- -> RigStandard
 |   |   |   |   `-- -> RiggingRequest
-|   |   |   `-- rigValidator.ts user-facing
+|   |   |   `-- rigValidator.ts
 |   |   |       +-- SkeletonDef  <- ../assetTypes
 |   |   |       `-- -> validateSkeleton
-|   |   +-- shaders  [ContentEngin / CreateEngin]
-|   |   |   +-- shaderRegistry.ts unused user-facing
+|   |   +-- shaders  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- shaderRegistry.ts
 |   |   |   |   +-- ShaderDef  <- ../assetTypes
 |   |   |   |   +-- -> SHADERS
-|   |   |   |   +-- -> getShader
-|   |   |   |   `-- unused unused: getShader
-|   |   |   `-- shaderTypes.ts unused user-facing
+|   |   |   |   `-- -> getShader
+|   |   |   `-- shaderTypes.ts
 |   |   |       +-- ShaderDef  <- ../assetTypes
-|   |   |       +-- -> ShaderDef
-|   |   |       `-- unused unused: ShaderDef
-|   |   +-- assetTypes.ts unused user-facing
+|   |   |       `-- -> ShaderDef
+|   |   +-- assetTypes.ts
 |   |   |   +-- -> AnimationClipDef
 |   |   |   +-- -> BoneDef
 |   |   |   +-- -> CONTENTENGIN_VERSION
@@ -10352,9 +9953,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> Vec3
 |   |   |   +-- -> Visibility
 |   |   |   +-- -> identityTransform
-|   |   |   +-- -> vec3
-|   |   |   `-- unused unused: AnimationClipDef, CollisionShape, CollisionShapeKind, ContentEnginPerformancePlanSnapshot, ContentEnginRuntimeProfileSnapshot, ContentEnginUpgradeIdSnapshot, PhysicsDef, PrimitiveSpec, RigWeights, TextureSlots, Transform, Visibility
-|   |   +-- AssetViewport.tsx user-facing
+|   |   |   `-- -> vec3
+|   |   +-- AssetViewport.tsx 🧩 COMPONENT
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- computeBounds  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- CameraState, RigBendPoint  <- @/engins/isosurfaceAssetPipeline
@@ -10362,7 +9962,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- composeModelMatrix, createMeshBuffers, mat4LookAt, mat4Perspective, MeshBuffers, Vec3  <- @/engins/renderengin/core
 |   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginSceneObject, RenderGpuCullBounds  <- @/engins/renderengin/webgpu
 |   |   |   `-- -> (default)
-|   |   +-- cli.ts user-facing
+|   |   +-- cli.ts
 |   |   |   +-- readFile, writeFile, mkdir, cp  <- fs/promises
 |   |   |   +-- (default)  <- path
 |   |   |   +-- buildAsset  <- ./pipeline/build
@@ -10370,45 +9970,41 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- analyzeImageBytes  <- ./photo/imageAnalyzer
 |   |   |   +-- runRiggingPipeline  <- ./rigging
 |   |   |   `-- validateAsset  <- ./pipeline/validate
-|   |   +-- ImplicitAssetWorkspace.tsx user-facing
+|   |   +-- ImplicitAssetWorkspace.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/engins/contentengin/AssetViewport
 |   |   |   +-- exportOBJ  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- RenderStage, createInlineRenderIntent  <- @/engins/renderengin
 |   |   |   +-- useImplicitAssetWorkspace  <- @/engins/contentengin/useImplicitAssetWorkspace
 |   |   |   +-- useEffect, useMemo, useState  <- react
 |   |   |   `-- -> (default)
-|   |   +-- performancePlan.ts unused user-facing
+|   |   +-- performancePlan.ts
 |   |   |   +-- ContentEnginRuntimeProfile  <- ./runtimeProfile
 |   |   |   +-- -> ContentEnginPerformancePlan
-|   |   |   +-- -> createContentEnginPerformancePlan
-|   |   |   `-- unused unused: ContentEnginPerformancePlan
-|   |   +-- runtimeProfile.ts unused user-facing
+|   |   |   `-- -> createContentEnginPerformancePlan
+|   |   +-- runtimeProfile.ts
 |   |   |   +-- ExportProfile  <- ./assetTypes
 |   |   |   +-- enabledUpgradeIds, ContentEnginUpgradeId  <- ./upgradeMatrix
 |   |   |   +-- -> ContentEnginRuntimeProfile
 |   |   |   +-- -> ContentEnginRuntimeTier
-|   |   |   +-- -> createContentEnginRuntimeProfile
-|   |   |   `-- unused unused: ContentEnginRuntimeTier
-|   |   +-- upgradeMatrix.ts unused user-facing
+|   |   |   `-- -> createContentEnginRuntimeProfile
+|   |   +-- upgradeMatrix.ts
 |   |   |   +-- ExportProfile  <- ./assetTypes
 |   |   |   +-- -> CONTENTENGIN_2026_UPGRADES
 |   |   |   +-- -> ContentEnginUpgrade
 |   |   |   +-- -> ContentEnginUpgradeId
-|   |   |   +-- -> enabledUpgradeIds
-|   |   |   `-- unused unused: CONTENTENGIN_2026_UPGRADES, ContentEnginUpgrade
-|   |   `-- useImplicitAssetWorkspace.ts unused user-facing
+|   |   |   `-- -> enabledUpgradeIds
+|   |   `-- useImplicitAssetWorkspace.ts
 |   |       +-- useCallback, useEffect, useMemo, useRef, useState  <- react
 |   |       +-- readOfflineCache, writeOfflineCache  <- @/engine/offline/offlineCache
 |   |       +-- useContentEnginRuntime  <- @/engins/rulesets/content/useContentEnginRuntime
 |   |       +-- analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, BrushState, CameraState, EditableMeshState, ExportFormat, ImplicitAssetWorkspaceObject, RigTargetKind, SculptTool  <- @/engins/isosurfaceAssetPipeline
 |   |       +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
 |   |       +-- -> WorkspaceIntentLog
-|   |       +-- -> useImplicitAssetWorkspace
-|   |       `-- unused unused: WorkspaceIntentLog
-|   +-- forgeengin  [ForgeEngin]
-|   |   +-- enginpipe  [ForgeEngin]
-|   |   |   +-- artifact  [ForgeEngin]
-|   |   |   |   `-- manifest.ts user-facing
+|   |       `-- -> useImplicitAssetWorkspace
+|   +-- forgeengin  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   +-- enginpipe  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- artifact  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- manifest.ts
 |   |   |   |       +-- z  <- zod
 |   |   |   |       +-- -> ArtifactPermission
 |   |   |   |       +-- -> ArtifactPermissionSchema
@@ -10417,8 +10013,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> createManifest
 |   |   |   |       +-- -> parseManifest
 |   |   |   |       `-- -> safeParseManifest
-|   |   |   +-- quality  [ForgeEngin]
-|   |   |   |   `-- tiers.ts user-facing
+|   |   |   +-- quality  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- tiers.ts
 |   |   |   |       +-- -> CapabilityInput
 |   |   |   |       +-- -> CapabilityNavigator
 |   |   |   |       +-- -> CapabilityScreen
@@ -10429,8 +10025,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> getTierConfig
 |   |   |   |       +-- -> scoreCapabilities
 |   |   |   |       `-- -> tierFromScore
-|   |   |   +-- shell  [ForgeEngin]
-|   |   |   |   `-- ArtifactSlot.tsx user-facing
+|   |   |   +-- shell  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- ArtifactSlot.tsx 🧩 COMPONENT
 |   |   |   |       +-- createContext, useContext, useEffect, useMemo, ReactNode  <- react
 |   |   |   |       +-- createEventBus, EventBus  <- @/engine/events/eventBus
 |   |   |   |       +-- -> ArtifactSlot
@@ -10438,22 +10034,22 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |       +-- -> ArtifactSlotProps
 |   |   |   |       +-- -> useArtifactSlot
 |   |   |   |       `-- -> useOptionalArtifactSlot
-|   |   |   +-- telemetry  [ForgeEngin]
-|   |   |   |   +-- client.ts user-facing
+|   |   |   +-- telemetry  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- client.ts
 |   |   |   |   |   +-- parseTelemetryEvent, TelemetryEvent  <- ./events
 |   |   |   |   |   +-- -> TelemetryClient
 |   |   |   |   |   +-- -> TelemetryClientOptions
 |   |   |   |   |   +-- -> TelemetryRecordResult
 |   |   |   |   |   +-- -> TelemetrySupabaseClient
 |   |   |   |   |   `-- -> createTelemetryClient
-|   |   |   |   `-- events.ts user-facing
+|   |   |   |   `-- events.ts
 |   |   |   |       +-- z  <- zod
 |   |   |   |       +-- -> TelemetryEvent
 |   |   |   |       +-- -> TelemetryEventSchema
 |   |   |   |       +-- -> TelemetryEventType
 |   |   |   |       +-- -> TelemetryEventTypeSchema
 |   |   |   |       `-- -> parseTelemetryEvent
-|   |   |   `-- index.ts unused user-facing
+|   |   |   `-- index.ts
 |   |   |       +-- ArtifactPermissionSchema, EnginArtifactManifestSchema, createManifest, parseManifest, safeParseManifest  <- ./artifact/manifest
 |   |   |       +-- ArtifactPermission, EnginArtifactManifest  <- ./artifact/manifest
 |   |   |       +-- createTelemetryClient  <- ./telemetry/client
@@ -10495,10 +10091,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> scoreCapabilities
 |   |   |       +-- -> tierFromScore
 |   |   |       +-- -> useArtifactSlot
-|   |   |       +-- -> useOptionalArtifactSlot
-|   |   |       `-- unused unused: ArtifactPermission, ArtifactPermissionSchema, ArtifactSlotContextValue, ArtifactSlotProps, CapabilityInput, CapabilityNavigator, CapabilityScreen, DEFAULT_TIER_CONFIG, EnginArtifactManifest, EnginArtifactManifestSchema, QualityTier, QualityTierConfig, TelemetryClient, TelemetryClientOptions, TelemetryEvent, TelemetryEventSchema, TelemetryEventType, TelemetryEventTypeSchema, TelemetryRecordResult, TelemetrySupabaseClient, createManifest, createTelemetryClient, detectCapabilityTier, getTierConfig, parseManifest, parseTelemetryEvent, safeParseManifest, scoreCapabilities, tierFromScore, useArtifactSlot, useOptionalArtifactSlot
-|   |   +-- forge  [ForgeEngin]
-|   |   |   +-- engineForge.ts unused user-facing
+|   |   |       `-- -> useOptionalArtifactSlot
+|   |   +-- forge  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- engineForge.ts
 |   |   |   |   +-- AtomicComponent  <- @/engins/forgeengin/componentInventory
 |   |   |   |   +-- createEventBus, EventBus  <- @/engine/events/eventBus
 |   |   |   |   +-- -> AssemblyEvents
@@ -10513,9 +10108,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> deserializeAssembly
 |   |   |   |   +-- -> runAssembly
 |   |   |   |   +-- -> serializeAssembly
-|   |   |   |   +-- -> validateAssembly
-|   |   |   |   `-- unused unused: AssemblyEvents
-|   |   |   +-- forgeBuild.ts user-facing
+|   |   |   |   `-- -> validateAssembly
+|   |   |   +-- forgeBuild.ts
 |   |   |   |   +-- v4  <- uuid
 |   |   |   |   +-- -> ForgeArtifact
 |   |   |   |   +-- -> ForgeArtifactType
@@ -10529,7 +10123,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> recordBuildToday
 |   |   |   |   +-- -> saveForgeBuild
 |   |   |   |   `-- -> stageForgeArtifact
-|   |   |   +-- forgeIntelligence.ts unused user-facing
+|   |   |   +-- forgeIntelligence.ts
 |   |   |   |   +-- CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY, FORGE_WORKFLOWS, EnginEntry, ForgeWorkflow  <- ./forgeRegistry
 |   |   |   |   +-- -> ForgeHistoryEntry
 |   |   |   |   +-- -> ForgeSuggestion
@@ -10553,9 +10147,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> recordForgeTransfer
 |   |   |   |   +-- -> saveCustomWorkflow
 |   |   |   |   +-- -> startWorkflowRun
-|   |   |   |   +-- -> updateWorkflowStep
-|   |   |   |   `-- unused unused: WorkflowStepStatus
-|   |   |   +-- forgeMomentum.ts unused user-facing
+|   |   |   |   `-- -> updateWorkflowStep
+|   |   |   +-- forgeMomentum.ts
 |   |   |   |   +-- CREATIVE_ENGINES, FORGE_HISTORY_KEY  <- ./forgeRegistry
 |   |   |   |   +-- -> MomentumDimension
 |   |   |   |   +-- -> MomentumLevel
@@ -10568,9 +10161,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getLevel
 |   |   |   |   +-- -> getLevelColor
 |   |   |   |   +-- -> getLevelEmoji
-|   |   |   |   +-- -> readHistory
-|   |   |   |   `-- unused unused: MomentumDimension
-|   |   |   +-- forgeNexus.ts unused user-facing
+|   |   |   |   `-- -> readHistory
+|   |   |   +-- forgeNexus.ts
 |   |   |   |   +-- CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY  <- ./forgeRegistry
 |   |   |   |   +-- -> AffinityCluster
 |   |   |   |   +-- -> NexusEdge
@@ -10581,9 +10173,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> computeNexus
 |   |   |   |   +-- -> computeNodes
 |   |   |   |   +-- -> detectClusters
-|   |   |   |   +-- -> findDominantPipeline
-|   |   |   |   `-- unused unused: AffinityCluster, NexusEdge, NexusNode
-|   |   |   +-- forgeRegistry.ts user-facing
+|   |   |   |   `-- -> findDominantPipeline
+|   |   |   +-- forgeRegistry.ts
 |   |   |   |   +-- -> CREATIVE_ENGINES
 |   |   |   |   +-- -> ENGIN_REGISTRY
 |   |   |   |   +-- -> EnginEntry
@@ -10602,7 +10193,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> isUserFacingEnginName
 |   |   |   |   +-- -> readForgeActivity
 |   |   |   |   `-- -> recordForgeActivity
-|   |   |   +-- forgeRituals.ts unused user-facing
+|   |   |   +-- forgeRituals.ts
 |   |   |   |   +-- CREATIVE_ENGINES, ENGIN_REGISTRY, FORGE_HISTORY_KEY  <- ./forgeRegistry
 |   |   |   |   +-- -> ForgeRitual
 |   |   |   |   +-- -> RitualSnapshot
@@ -10612,16 +10203,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> detectSequencePatterns
 |   |   |   |   +-- -> detectSessionPatterns
 |   |   |   |   +-- -> detectTimePatterns
-|   |   |   |   +-- -> getTimeBucket
-|   |   |   |   `-- unused unused: ForgeRitual, RitualType
-|   |   |   +-- useForgeActivity.ts unused user-facing
+|   |   |   |   `-- -> getTimeBucket
+|   |   |   +-- useForgeActivity.ts
 |   |   |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   |   |   +-- recordForgeActivity  <- ./forgeRegistry
 |   |   |   |   +-- -> UseForgeActivityOptions
 |   |   |   |   +-- -> UseForgeActivityReturn
-|   |   |   |   +-- -> useForgeActivity
-|   |   |   |   `-- unused unused: UseForgeActivityOptions, UseForgeActivityReturn
-|   |   |   `-- useForgeBuild.ts unused user-facing
+|   |   |   |   `-- -> useForgeActivity
+|   |   |   `-- useForgeBuild.ts
 |   |   |       +-- ForgeArtifact, ForgeArtifactType, ForgeBuildRecord, ForgeLogEvent  <- @/engins/forgeengin/forge/forgeBuild
 |   |   |       +-- canBuildToday, isForgeLogEvent, recordBuildToday, saveForgeBuild, stageForgeArtifact  <- @/engins/forgeengin/forge/forgeBuild
 |   |   |       +-- useCallback, useRef, useState  <- react
@@ -10630,10 +10219,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- ForgeBuildState  <- @/engins/forgeengin/forge/forgeBuild
 |   |   |       +-- -> ForgeBuildState
 |   |   |       +-- -> UseForgeBuildReturn
-|   |   |       +-- -> useForgeBuild
-|   |   |       `-- unused unused: ForgeBuildState, UseForgeBuildReturn
-|   |   +-- forge-ngn  [ForgeEngin]
-|   |   |   +-- assembly.ts user-facing
+|   |   |       `-- -> useForgeBuild
+|   |   +-- forge-ngn  [ForgeEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- assembly.ts
 |   |   |   |   +-- PieceManifest  <- ./piece-registry
 |   |   |   |   +-- getPiece  <- ./piece-registry
 |   |   |   |   +-- -> AssemblyValidationError
@@ -10652,10 +10240,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> removePiece
 |   |   |   |   +-- -> serializeAssembly
 |   |   |   |   `-- -> validateAssembly
-|   |   |   +-- index.ts user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- *  <- ./assembly
 |   |   |   |   `-- *  <- ./piece-registry
-|   |   |   `-- piece-registry.ts user-facing
+|   |   |   `-- piece-registry.ts
 |   |   |       +-- -> PIECE_CATEGORIES
 |   |   |       +-- -> PIECE_REGISTRY
 |   |   |       +-- -> PieceCategory
@@ -10664,150 +10252,148 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> PortType
 |   |   |       +-- -> getPiece
 |   |   |       `-- -> getPiecesByCategory
-|   |   `-- componentInventory.ts user-facing
+|   |   `-- componentInventory.ts
 |   |       +-- -> ALL_CATEGORIES
 |   |       +-- -> AtomicComponent
 |   |       +-- -> COMPONENT_INVENTORY
 |   |       +-- -> ComponentCategory
 |   |       +-- -> getByCategory
 |   |       `-- -> searchComponents
-|   +-- gameengin  [GameEngin]
-|   |   +-- assets  [GameEngin]
-|   |   |   +-- BundleCache.ts user-facing
+|   +-- gameengin  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   +-- assets  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- BundleCache.ts
 |   |   |   |   +-- assertValidBundleManifest, bundleWeightBytes, GameEnginBundleManifest  <- ./BundleManifest
 |   |   |   |   +-- -> GameEnginBundleCacheDecision
 |   |   |   |   +-- -> GameEnginBundleCacheOptions
 |   |   |   |   `-- -> planBundleCache
-|   |   |   `-- BundleManifest.ts user-facing
+|   |   |   `-- BundleManifest.ts
 |   |   |       +-- RendererBackendId  <- ../cartridge
 |   |   |       +-- -> GameEnginAssetEntry
 |   |   |       +-- -> GameEnginAssetKind
 |   |   |       +-- -> GameEnginBundleManifest
 |   |   |       +-- -> assertValidBundleManifest
 |   |   |       `-- -> bundleWeightBytes
-|   |   +-- brain  [GameEngin]
-|   |   |   +-- asset-registry  [GameEngin]
-|   |   |   +-- build-history  [GameEngin]
-|   |   |   +-- character-voices  [GameEngin]
-|   |   |   |   `-- mad-maxi.json user-facing
-|   |   |   +-- composition-principles  [GameEngin]
-|   |   |   |   +-- leading-lines-landmark.json user-facing
-|   |   |   |   `-- parallax-layers.json user-facing
-|   |   |   +-- concept-library  [GameEngin]
-|   |   |   |   `-- neon-courier.json user-facing
-|   |   |   +-- concept-patterns  [GameEngin]
-|   |   |   |   +-- protagonists  [GameEngin]
-|   |   |   |   |   `-- reluctant-courier.json user-facing
-|   |   |   |   +-- scope-formulas  [GameEngin]
-|   |   |   |   |   `-- one-day-runner.json user-facing
-|   |   |   |   `-- settings  [GameEngin]
-|   |   |   |       `-- neon-rain-megacity.json user-facing
-|   |   |   +-- crash-reports  [GameEngin]
-|   |   |   +-- dialogue-patterns  [GameEngin]
-|   |   |   |   +-- callback-anchor.json user-facing
-|   |   |   |   +-- implied-subject.json user-facing
-|   |   |   |   `-- sentence-fragment-rhythm.json user-facing
-|   |   |   +-- emotional-tones  [GameEngin]
-|   |   |   |   +-- determined.json user-facing
-|   |   |   |   +-- fierce.json user-facing
-|   |   |   |   +-- hopeful.json user-facing
-|   |   |   |   +-- reflective.json user-facing
-|   |   |   |   `-- weary.json user-facing
-|   |   |   +-- fun-heuristics  [GameEngin]
-|   |   |   |   +-- meta-progression.json user-facing
-|   |   |   |   +-- moment-to-moment.json user-facing
-|   |   |   |   `-- session-loop.json user-facing
-|   |   |   +-- genre-dna  [GameEngin]
-|   |   |   |   +-- action-rpg.json user-facing
-|   |   |   |   +-- episodic.json user-facing
-|   |   |   |   +-- live-service.json user-facing
-|   |   |   |   +-- metroidvania.json user-facing
-|   |   |   |   +-- open-world.json user-facing
-|   |   |   |   +-- platformer.json user-facing
-|   |   |   |   +-- puzzle.json user-facing
-|   |   |   |   +-- racing.json user-facing
-|   |   |   |   +-- roguelike.json user-facing
-|   |   |   |   +-- sandbox.json user-facing
-|   |   |   |   `-- template.json user-facing
-|   |   |   +-- inspiration-corpus  [GameEngin]
-|   |   |   |   +-- celeste.json user-facing
-|   |   |   |   +-- dead-cells.json user-facing
-|   |   |   |   +-- hades.json user-facing
-|   |   |   |   +-- hollow-knight.json user-facing
-|   |   |   |   `-- outer-wilds.json user-facing
-|   |   |   +-- material-recipes  [GameEngin]
-|   |   |   |   +-- neon-glass-tube.json user-facing
-|   |   |   |   +-- rusted-iron.json user-facing
-|   |   |   |   `-- sun-bleached-sandstone.json user-facing
-|   |   |   +-- mechanic-library  [GameEngin]
-|   |   |   |   +-- camera  [GameEngin]
-|   |   |   |   |   +-- look-ahead.json user-facing
-|   |   |   |   |   +-- screen-shake.json user-facing
-|   |   |   |   |   `-- smooth-follow.json user-facing
-|   |   |   |   +-- combat  [GameEngin]
-|   |   |   |   |   +-- combo.json user-facing
-|   |   |   |   |   +-- hit-stop.json user-facing
-|   |   |   |   |   +-- parry.json user-facing
-|   |   |   |   |   `-- ranged.json user-facing
-|   |   |   |   +-- movement  [GameEngin]
-|   |   |   |   |   +-- coyote-time.json user-facing
-|   |   |   |   |   +-- dash.json user-facing
-|   |   |   |   |   +-- double-jump.json user-facing
-|   |   |   |   |   +-- grapple.json user-facing
-|   |   |   |   |   `-- wall-slide.json user-facing
-|   |   |   |   +-- progression  [GameEngin]
-|   |   |   |   |   +-- metroidvania-gating.json user-facing
-|   |   |   |   |   +-- roguelike-perks.json user-facing
-|   |   |   |   |   `-- skill-tree.json user-facing
-|   |   |   |   `-- structural  [GameEngin]
-|   |   |   |       +-- ability-gating.json user-facing
-|   |   |   |       +-- meta-progression.json user-facing
-|   |   |   |       +-- procedural-generation.json user-facing
-|   |   |   |       +-- run-persistence.json user-facing
-|   |   |   |       +-- season-pass.json user-facing
-|   |   |   |       `-- world-streaming.json user-facing
-|   |   |   +-- narrative-pacing  [GameEngin]
-|   |   |   |   `-- default.json user-facing
-|   |   |   +-- originality-registry  [GameEngin]
-|   |   |   |   +-- by-cartridge  [GameEngin]
-|   |   |   |   |   `-- mad-maxi.json user-facing
-|   |   |   |   `-- signatures.json user-facing
-|   |   |   +-- principles  [GameEngin]
-|   |   |   +-- progression-state  [GameEngin]
-|   |   |   +-- rd-sessions  [GameEngin]
-|   |   |   +-- technique-library  [GameEngin]
-|   |   |   |   +-- lighting  [GameEngin]
-|   |   |   |   |   `-- three-point-mood.json user-facing
-|   |   |   |   +-- modeling  [GameEngin]
-|   |   |   |   |   +-- edge-flow.json user-facing
-|   |   |   |   |   `-- silhouette-first.json user-facing
-|   |   |   |   `-- optimization  [GameEngin]
-|   |   |   |       `-- texture-atlasing.json user-facing
-|   |   |   +-- upgrade-history  [GameEngin]
-|   |   |   |   `-- prioritization-rules.json user-facing
-|   |   |   +-- visual-bible  [GameEngin]
-|   |   |   |   +-- characters  [GameEngin]
-|   |   |   |   `-- environments  [GameEngin]
-|   |   |   +-- work-queue  [GameEngin]
-|   |   |   `-- active-projects.json user-facing
-|   |   +-- cartridges  [GameEngin]
-|   |   |   +-- achievementEngine.ts unused user-facing
+|   |   +-- brain  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- asset-registry  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- build-history  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- character-voices  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- mad-maxi.json
+|   |   |   +-- composition-principles  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- leading-lines-landmark.json
+|   |   |   |   `-- parallax-layers.json
+|   |   |   +-- concept-library  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- neon-courier.json
+|   |   |   +-- concept-patterns  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- protagonists  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- reluctant-courier.json
+|   |   |   |   +-- scope-formulas  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- one-day-runner.json
+|   |   |   |   `-- settings  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |       `-- neon-rain-megacity.json
+|   |   |   +-- crash-reports  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- dialogue-patterns  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- callback-anchor.json
+|   |   |   |   +-- implied-subject.json
+|   |   |   |   `-- sentence-fragment-rhythm.json
+|   |   |   +-- emotional-tones  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- determined.json
+|   |   |   |   +-- fierce.json
+|   |   |   |   +-- hopeful.json
+|   |   |   |   +-- reflective.json
+|   |   |   |   `-- weary.json
+|   |   |   +-- fun-heuristics  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- meta-progression.json
+|   |   |   |   +-- moment-to-moment.json
+|   |   |   |   `-- session-loop.json
+|   |   |   +-- genre-dna  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- action-rpg.json
+|   |   |   |   +-- episodic.json
+|   |   |   |   +-- live-service.json
+|   |   |   |   +-- metroidvania.json
+|   |   |   |   +-- open-world.json
+|   |   |   |   +-- platformer.json
+|   |   |   |   +-- puzzle.json
+|   |   |   |   +-- racing.json
+|   |   |   |   +-- roguelike.json
+|   |   |   |   +-- sandbox.json
+|   |   |   |   `-- template.json
+|   |   |   +-- inspiration-corpus  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- celeste.json
+|   |   |   |   +-- dead-cells.json
+|   |   |   |   +-- hades.json
+|   |   |   |   +-- hollow-knight.json
+|   |   |   |   `-- outer-wilds.json
+|   |   |   +-- material-recipes  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- neon-glass-tube.json
+|   |   |   |   +-- rusted-iron.json
+|   |   |   |   `-- sun-bleached-sandstone.json
+|   |   |   +-- mechanic-library  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- camera  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- look-ahead.json
+|   |   |   |   |   +-- screen-shake.json
+|   |   |   |   |   `-- smooth-follow.json
+|   |   |   |   +-- combat  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- combo.json
+|   |   |   |   |   +-- hit-stop.json
+|   |   |   |   |   +-- parry.json
+|   |   |   |   |   `-- ranged.json
+|   |   |   |   +-- movement  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- coyote-time.json
+|   |   |   |   |   +-- dash.json
+|   |   |   |   |   +-- double-jump.json
+|   |   |   |   |   +-- grapple.json
+|   |   |   |   |   `-- wall-slide.json
+|   |   |   |   +-- progression  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- metroidvania-gating.json
+|   |   |   |   |   +-- roguelike-perks.json
+|   |   |   |   |   `-- skill-tree.json
+|   |   |   |   `-- structural  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |       +-- ability-gating.json
+|   |   |   |       +-- meta-progression.json
+|   |   |   |       +-- procedural-generation.json
+|   |   |   |       +-- run-persistence.json
+|   |   |   |       +-- season-pass.json
+|   |   |   |       `-- world-streaming.json
+|   |   |   +-- narrative-pacing  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- default.json
+|   |   |   +-- originality-registry  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- by-cartridge  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- mad-maxi.json
+|   |   |   |   `-- signatures.json
+|   |   |   +-- principles  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- progression-state  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- rd-sessions  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- technique-library  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- lighting  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   `-- three-point-mood.json
+|   |   |   |   +-- modeling  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   |   +-- edge-flow.json
+|   |   |   |   |   `-- silhouette-first.json
+|   |   |   |   `-- optimization  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |       `-- texture-atlasing.json
+|   |   |   +-- upgrade-history  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- prioritization-rules.json
+|   |   |   +-- visual-bible  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   +-- characters  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   |   `-- environments  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- work-queue  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- active-projects.json
+|   |   +-- cartridges  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- achievementEngine.ts
 |   |   |   |   +-- AchievementDefinition, AchievementState, CartridgeAchievementsAPI  <- ../cartridge
 |   |   |   |   +-- -> AchievementUnlockListener
 |   |   |   |   +-- -> createAchievementsAPI
 |   |   |   |   +-- -> getUnlockedCount
-|   |   |   |   +-- -> purgeCartridgeAchievements
-|   |   |   |   `-- unused unused: AchievementUnlockListener, getUnlockedCount, purgeCartridgeAchievements
-|   |   |   +-- apiStubs.ts unused user-facing
+|   |   |   |   `-- -> purgeCartridgeAchievements
+|   |   |   +-- apiStubs.ts
 |   |   |   |   +-- CartridgeAchievementsAPI, CartridgeAssetsAPI, CartridgeAudioAPI, CartridgeHapticsAPI, CartridgeNetworkAPI, CartridgeSaveAPI  <- ../cartridge
 |   |   |   |   +-- -> stubAchievementsAPI
 |   |   |   |   +-- -> stubAssetsAPI
 |   |   |   |   +-- -> stubAudioAPI
 |   |   |   |   +-- -> stubHapticsAPI
 |   |   |   |   +-- -> stubNetworkAPI
-|   |   |   |   +-- -> stubSaveAPI
-|   |   |   |   `-- unused unused: stubAchievementsAPI, stubSaveAPI
-|   |   |   +-- index.ts user-facing
+|   |   |   |   `-- -> stubSaveAPI
+|   |   |   +-- index.ts
 |   |   |   |   +-- CARTRIDGE_MANIFEST, getCartridgeCategories, getCartridgeManifest, CartridgeManifestEntry, CartridgeRenderMode  <- ./manifest
 |   |   |   |   +-- CARTRIDGE_LOADERS, getCartridgeIds, loadCartridge, CartridgeLoader  <- ./loaders
 |   |   |   |   +-- assertCartridgeLoadersReady, getMissingCartridgeLoaders, getOrphanCartridgeLoaders  <- ./loaders
@@ -10823,7 +10409,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getMissingCartridgeLoaders
 |   |   |   |   +-- -> getOrphanCartridgeLoaders
 |   |   |   |   `-- -> loadCartridge
-|   |   |   +-- loaders.ts user-facing
+|   |   |   +-- loaders.ts
 |   |   |   |   +-- GameCartridge  <- ../cartridge
 |   |   |   |   +-- CartridgeManifestEntry  <- ./manifest
 |   |   |   |   +-- CARTRIDGE_MANIFEST, getCartridgeManifest  <- ./manifest
@@ -10838,7 +10424,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getOrphanCartridgeLoaders
 |   |   |   |   +-- -> loadCartridge
 |   |   |   |   `-- -> loadCartridgeBundle
-|   |   |   +-- manifest.ts unused user-facing
+|   |   |   +-- manifest.ts
 |   |   |   |   +-- CartridgeInputProfile, CartridgeOrientationPreference, CartridgeQualityDefaults, CartridgeRendererFamily, CartridgeWarmupPlan, CartridgeWorkerEntry, RendererBackendId  <- ../cartridge
 |   |   |   |   +-- -> CARTRIDGE_MANIFEST
 |   |   |   |   +-- -> CartridgeAssetPolicy
@@ -10846,9 +10432,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> CartridgeManifestEntry
 |   |   |   |   +-- -> CartridgeRenderMode
 |   |   |   |   +-- -> getCartridgeCategories
-|   |   |   |   +-- -> getCartridgeManifest
-|   |   |   |   `-- unused unused: CartridgeAssetPolicy, CartridgeLaunchMetadata
-|   |   |   +-- reactCartridge.ts unused user-facing
+|   |   |   |   `-- -> getCartridgeManifest
+|   |   |   +-- reactCartridge.ts
 |   |   |   |   +-- GameCartridge, GameEngineAPI  <- @/engins/gameengin/cartridge
 |   |   |   |   +-- getCartridgeManifest, CartridgeManifestEntry  <- ./manifest
 |   |   |   |   +-- createContext, createElement, useContext, ComponentType  <- react
@@ -10857,26 +10442,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> createReactCartridgeHost
 |   |   |   |   +-- -> createReactGameCartridge
 |   |   |   |   +-- -> defineReactCartridgeLoader
-|   |   |   |   +-- -> useGameEngineAPI
-|   |   |   |   `-- unused unused: GameEngineAPIContext, createReactCartridgeHost
-|   |   |   `-- saveState.ts unused user-facing
+|   |   |   |   `-- -> useGameEngineAPI
+|   |   |   `-- saveState.ts
 |   |   |       +-- CartridgeSaveAPI, CartridgeSaveSlot  <- ../cartridge
 |   |   |       +-- -> createSaveAPI
 |   |   |       +-- -> getSaveStorageBytes
-|   |   |       +-- -> purgeCartridgeSaves
-|   |   |       `-- unused unused: getSaveStorageBytes, purgeCartridgeSaves
-|   |   +-- config  [GameEngin]
-|   |   |   `-- demoGameConfig.ts user-facing
+|   |   |       `-- -> purgeCartridgeSaves
+|   |   +-- config  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- demoGameConfig.ts
 |   |   |       +-- GameConfig  <- ../GameEnginCore
 |   |   |       `-- -> (default)
-|   |   +-- controls  [GameEngin]
-|   |   |   `-- control-mappings.ts user-facing
+|   |   +-- controls  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- control-mappings.ts
 |   |   |       +-- createClient  <- @/supabase/client/client
 |   |   |       +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   |   |       +-- -> ControlMapping
 |   |   |       `-- -> mapJoystickToAsset
-|   |   +-- games  [GameEngin]
-|   |   |   +-- avatar.ts unused user-facing
+|   |   +-- games  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- avatar.ts
 |   |   |   |   +-- -> AVATAR_CREATED_KEY
 |   |   |   |   +-- -> AVATAR_IMAGE_KEY
 |   |   |   |   +-- -> AVATAR_PLAY_AS_ME_KEY
@@ -10886,24 +10469,21 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> hasAvatar
 |   |   |   |   +-- -> resizeImageToDataUrl
 |   |   |   |   +-- -> setAvatarDataUrl
-|   |   |   |   +-- -> setPlayAsMe
-|   |   |   |   `-- unused unused: AVATAR_CREATED_KEY, AVATAR_IMAGE_KEY, AVATAR_PLAY_AS_ME_KEY, clearAvatar, hasAvatar, resizeImageToDataUrl, setAvatarDataUrl
-|   |   |   +-- catalog.ts unused user-facing
+|   |   |   |   `-- -> setPlayAsMe
+|   |   |   +-- catalog.ts
 |   |   |   |   +-- CARTRIDGE_MANIFEST  <- @/engins/gameengin/cartridges/manifest
 |   |   |   |   +-- MobileHudMode  <- @/engins/gameengin/games/mobileControls
 |   |   |   |   +-- GameRenderMode  <- @/engins/gameengin/games/performance-baseline
 |   |   |   |   +-- -> GAME_CATALOG
 |   |   |   |   +-- -> GAME_CATALOG_IDS
-|   |   |   |   +-- -> GameCatalogEntry
-|   |   |   |   `-- unused unused: GAME_CATALOG_IDS
-|   |   |   +-- DualSenseManager.ts unused user-facing
+|   |   |   |   `-- -> GameCatalogEntry
+|   |   |   +-- DualSenseManager.ts
 |   |   |   |   +-- useEffect, useRef, useState  <- react
 |   |   |   |   +-- -> DualSenseConfig
 |   |   |   |   +-- -> DualSenseManager
 |   |   |   |   +-- -> DualSenseState
-|   |   |   |   +-- -> useDualSense
-|   |   |   |   `-- unused unused: DualSenseConfig, DualSenseManager, DualSenseState
-|   |   |   +-- gameControllerButtons.ts unused user-facing
+|   |   |   |   `-- -> useDualSense
+|   |   |   +-- gameControllerButtons.ts
 |   |   |   |   +-- -> BTN_DOUBLE_TAP_MAX_MS
 |   |   |   |   +-- -> BTN_LONG_PRESS_MS
 |   |   |   |   +-- -> BTN_TAP_AND_HOLD_WINDOW_MS
@@ -10914,15 +10494,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> CONTROLLER_BUTTONS
 |   |   |   |   +-- -> CONTROLLER_BUTTON_DEFS
 |   |   |   |   +-- -> ControllerButton
-|   |   |   |   +-- -> ControllerButtonDef
-|   |   |   |   `-- unused unused: ButtonInteraction, ControllerButtonDef
-|   |   |   +-- gameControllerLeft.ts unused user-facing
+|   |   |   |   `-- -> ControllerButtonDef
+|   |   |   +-- gameControllerLeft.ts
 |   |   |   |   +-- -> LEFT_STICK_DEAD_ZONE
 |   |   |   |   +-- -> LEFT_STICK_RADIUS_PX
 |   |   |   |   +-- -> StickVector
-|   |   |   |   +-- -> computeLeftStickVector
-|   |   |   |   `-- unused unused: StickVector
-|   |   |   +-- gameControllerRight.ts unused user-facing
+|   |   |   |   `-- -> computeLeftStickVector
+|   |   |   +-- gameControllerRight.ts
 |   |   |   |   +-- -> AUTO_FIRE_DELAY_MS
 |   |   |   |   +-- -> AUTO_FIRE_INTERVAL_MS
 |   |   |   |   +-- -> RIGHT_RESET_TIMEOUT_MS
@@ -10930,9 +10508,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> RIGHT_TAP_MAX_PX
 |   |   |   |   +-- -> TapResult
 |   |   |   |   +-- -> computeAimDelta
-|   |   |   |   +-- -> evaluateRightStickTap
-|   |   |   |   `-- unused unused: AUTO_FIRE_DELAY_MS, AUTO_FIRE_INTERVAL_MS, TapResult
-|   |   |   +-- hooks.ts unused user-facing
+|   |   |   |   `-- -> evaluateRightStickTap
+|   |   |   +-- hooks.ts
 |   |   |   |   +-- createPerformanceBaselineSampler, DE_GAME_PERFORMANCE_BASELINE, resolveRendererBackend, GamePerformanceBaseline, GameRenderMode  <- @/engins/gameengin/games/performance-baseline
 |   |   |   |   +-- isWebGPUAvailable  <- @/engine/rendering/webgpu
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
@@ -10940,15 +10517,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> useGamePerformanceBaseline
 |   |   |   |   +-- -> useGamePhase
 |   |   |   |   +-- -> useKeySet
-|   |   |   |   +-- -> useSubmitScore
-|   |   |   |   `-- unused unused: useGamePerformanceBaseline, useKeySet
-|   |   |   +-- library-state.ts user-facing
+|   |   |   |   `-- -> useSubmitScore
+|   |   |   +-- library-state.ts
 |   |   |   |   +-- -> GAME_LIBRARY_SELECTION_STORAGE_KEY
 |   |   |   |   +-- -> GAME_LIBRARY_SESSION_STORAGE_KEY
 |   |   |   |   +-- -> MAX_SAVED_GAME_SESSIONS
 |   |   |   |   +-- -> SavedGameSession
 |   |   |   |   `-- -> upsertSavedGameSession
-|   |   |   +-- lucid-avenue-world.ts unused user-facing
+|   |   |   +-- lucid-avenue-world.ts
 |   |   |   |   +-- -> CachePickup
 |   |   |   |   +-- -> DistrictExit
 |   |   |   |   +-- -> DistrictId
@@ -10988,9 +10564,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> moveLucidAvenuePlayer
 |   |   |   |   +-- -> requestLucidAvenueHint
 |   |   |   |   +-- -> scanLucidAvenue
-|   |   |   |   +-- -> waitLucidAvenueTurn
-|   |   |   |   `-- unused unused: CachePickup, DistrictExit, DistrictId, DistrictLock, LUCID_AVENUE_6900_TARGET, LUCID_AVENUE_DISTRICTS, LUCID_AVENUE_TOTAL_CONTRACTS, LUCID_AVENUE_TOTAL_FLAGS, LUCID_AVENUE_TOTAL_SHARDS, LucidAvenueMode, LucidAvenueState, LucidContractId, LucidDistrict, LucidFlag, LucidNpc, LucidTerminal, LucidVehicleId, PatrolRoute, Position, ShardPickup, calculateLucidAvenueScore, createInitialLucidAvenueState, deployLucidAvenueVehicle, fastTravelLucidAvenue, getLucidAvenueCompletionPercent, getLucidAvenueDistrict, getLucidAvenueHint, getLucidAvenueMissionChecklist, getLucidAvenueObjectiveKeys, getLucidAvenuePatrolPathKeys, getLucidAvenuePatrolPositions, getLucidAvenueRouteContracts, getLucidAvenueStoryBeat, interactInLucidAvenue, isSamePosition, jamLucidAvenueGrid, moveLucidAvenuePlayer, requestLucidAvenueHint, scanLucidAvenue, waitLucidAvenueTurn
-|   |   |   +-- madmaxi-wildfall-world.ts user-facing
+|   |   |   |   `-- -> waitLucidAvenueTurn
+|   |   |   +-- madmaxi-wildfall-world.ts
 |   |   |   |   +-- -> WILDFALL_HEROES
 |   |   |   |   +-- -> WILDFALL_ZONES
 |   |   |   |   +-- -> WildfallAction
@@ -11016,7 +10591,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> switchWildfallHero
 |   |   |   |   +-- -> wildfallBillboards
 |   |   |   |   `-- -> wildfallHeroWeapon
-|   |   |   +-- mobileControls.ts unused user-facing
+|   |   |   +-- mobileControls.ts
 |   |   |   |   +-- broadcastGameInput  <- @/engins/gameengin/games/useRemoteChannel
 |   |   |   |   +-- useEffect, useRef  <- react
 |   |   |   |   +-- -> GameRemoteInputAction
@@ -11039,16 +10614,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> getRemoteMoveAction
 |   |   |   |   +-- -> normalizeStickVector
 |   |   |   |   +-- -> registerMobileGameControls
-|   |   |   |   +-- -> useRegisterMobileGameControls
-|   |   |   |   `-- unused unused: GameRemoteInputAction, MobileEventDetail, MobileGameControlHandlers, MobileHudRingButtonDefinition, RemoteMoveAction, emitMobileJump, emitMobileLookDelta, emitMobileShoot, registerMobileGameControls
-|   |   |   +-- navigation.ts unused user-facing
+|   |   |   |   `-- -> useRegisterMobileGameControls
+|   |   |   +-- navigation.ts
 |   |   |   |   +-- -> DEFAULT_GAME_ID
 |   |   |   |   +-- -> GameLaunchOptions
 |   |   |   |   +-- -> buildGameLaunchHref
 |   |   |   |   +-- -> isLaunchFlagEnabled
-|   |   |   |   +-- -> resolveGameLaunchId
-|   |   |   |   `-- unused unused: GameLaunchOptions
-|   |   |   +-- performance-baseline.ts unused user-facing
+|   |   |   |   `-- -> resolveGameLaunchId
+|   |   |   +-- performance-baseline.ts
 |   |   |   |   +-- -> DE_GAME_PERFORMANCE_BASELINE
 |   |   |   |   +-- -> FrameBaselineSample
 |   |   |   |   +-- -> GamePerformanceBaseline
@@ -11057,9 +10630,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> RendererBackend
 |   |   |   |   +-- -> createPerformanceBaselineSampler
 |   |   |   |   +-- -> publishGamePerformanceBaseline
-|   |   |   |   +-- -> resolveRendererBackend
-|   |   |   |   `-- unused unused: FrameBaselineSample, PerformanceBaselineSource, RendererBackend
-|   |   |   +-- quality-plan.ts unused user-facing
+|   |   |   |   `-- -> resolveRendererBackend
+|   |   |   +-- quality-plan.ts
 |   |   |   |   +-- -> ADVANCED_GAME_TARGETS
 |   |   |   |   +-- -> AdvancedGameTarget
 |   |   |   |   +-- -> GAME_CONTROL_PROFILES
@@ -11067,48 +10639,44 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> GAME_QUALITY_PILLARS
 |   |   |   |   +-- -> GameControlProfile
 |   |   |   |   +-- -> GameEngineStandard
-|   |   |   |   +-- -> GameQualityPillar
-|   |   |   |   `-- unused unused: AdvancedGameTarget, GameControlProfile, GameEngineStandard, GameQualityPillar
-|   |   |   +-- useAIDirector.ts unused user-facing
+|   |   |   |   `-- -> GameQualityPillar
+|   |   |   +-- useAIDirector.ts
 |   |   |   |   +-- AIDirector, DirectorState, PlayerSignals  <- @/engins/gameengin/ai-director
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |   +-- -> AIDirectorHookResult
-|   |   |   |   +-- -> useAIDirector
-|   |   |   |   `-- unused unused: AIDirectorHookResult
-|   |   |   +-- useGameInputKeyboardBridge.ts user-facing
+|   |   |   |   `-- -> useAIDirector
+|   |   |   +-- useGameInputKeyboardBridge.ts
 |   |   |   |   +-- GameInputAction  <- @/components/games/dream.remote.GameRemote
 |   |   |   |   +-- useEffect  <- react
 |   |   |   |   +-- -> GAME_INPUT_KEYBOARD_MAP
 |   |   |   |   `-- -> useGameInputKeyboardBridge
-|   |   |   +-- useGamepad.ts unused user-facing
+|   |   |   +-- useGamepad.ts
 |   |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   |   +-- -> GamepadStatus
-|   |   |   |   +-- -> useGamepad
-|   |   |   |   `-- unused unused: GamepadStatus
-|   |   |   +-- useImmersiveGameLayout.ts unused user-facing
+|   |   |   |   `-- -> useGamepad
+|   |   |   +-- useImmersiveGameLayout.ts
 |   |   |   |   +-- usePathname  <- next/navigation
 |   |   |   |   +-- useEffect, useState, CSSProperties  <- react
 |   |   |   |   +-- -> getImmersiveCanvasStyle
 |   |   |   |   +-- -> getImmersiveOverlayStyle
 |   |   |   |   +-- -> getImmersiveStageStyle
-|   |   |   |   +-- -> useImmersiveGameLayout
-|   |   |   |   `-- unused unused: getImmersiveCanvasStyle, getImmersiveOverlayStyle, getImmersiveStageStyle
-|   |   |   `-- useRemoteChannel.ts user-facing
+|   |   |   |   `-- -> useImmersiveGameLayout
+|   |   |   `-- useRemoteChannel.ts
 |   |   |       +-- useEffect  <- react
 |   |   |       +-- -> broadcastGameInput
 |   |   |       `-- -> useRemoteChannel
-|   |   +-- input  [GameEngin]
-|   |   |   +-- index.ts user-facing
+|   |   +-- input  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- index.ts
 |   |   |   |   +-- GameRuntimeInputRouter  <- ./InputRouter
 |   |   |   |   +-- GameRuntimeInputRouterOptions  <- ./InputRouter
 |   |   |   |   +-- -> GameRuntimeInputRouter
 |   |   |   |   `-- -> GameRuntimeInputRouterOptions
-|   |   |   `-- InputRouter.ts user-facing
+|   |   |   `-- InputRouter.ts
 |   |   |       +-- CartridgeInputEvent  <- ../cartridge
 |   |   |       +-- -> GameRuntimeInputRouter
 |   |   |       `-- -> GameRuntimeInputRouterOptions
-|   |   +-- remote  [GameEngin]
-|   |   |   +-- comboMachine.ts user-facing
+|   |   +-- remote  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- comboMachine.ts
 |   |   |   |   +-- ALL_COMBOS, maxComboLength, MULTITOUCH_COMBOS, Combo, FaceButton, MultiTouchCombo  <- ./moves
 |   |   |   |   +-- -> COMBO_WINDOW_MS
 |   |   |   |   +-- -> ComboMachine
@@ -11117,12 +10685,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> MULTITOUCH_WINDOW_MS
 |   |   |   |   +-- -> MultiTouchMatch
 |   |   |   |   `-- -> RemoteMatch
-|   |   |   +-- index.ts user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- *  <- ./comboMachine
 |   |   |   |   +-- *  <- ./layout
 |   |   |   |   +-- *  <- ./moves
 |   |   |   |   `-- *  <- ./sprintDetector
-|   |   |   +-- layout.ts user-facing
+|   |   |   +-- layout.ts
 |   |   |   |   +-- -> HUD_ALLOWED_ELEMENTS
 |   |   |   |   +-- -> HudAllowedElement
 |   |   |   |   +-- -> LANDSCAPE_LAYOUT
@@ -11135,7 +10703,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> isHudElementAllowed
 |   |   |   |   +-- -> layoutFor
 |   |   |   |   `-- -> radiusMmToPx
-|   |   |   +-- moves.ts user-facing
+|   |   |   +-- moves.ts
 |   |   |   |   +-- -> ALL_COMBOS
 |   |   |   |   +-- -> BASE_COMBOS
 |   |   |   |   +-- -> BASE_MOVES
@@ -11149,29 +10717,28 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> SPRINT_MOVES
 |   |   |   |   +-- -> SprintMove
 |   |   |   |   `-- -> maxComboLength
-|   |   |   `-- sprintDetector.ts user-facing
+|   |   |   `-- sprintDetector.ts
 |   |   |       +-- -> DOUBLE_TAP_WINDOW_MS
 |   |   |       +-- -> SPRINT_MOVE_THRESHOLD
 |   |   |       `-- -> SprintDetector
-|   |   +-- render  [GameEngin]
-|   |   |   `-- ShaderRegistry.ts unused user-facing
+|   |   +-- render  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   `-- ShaderRegistry.ts
 |   |   |       +-- RendererBackendId  <- ../cartridge
 |   |   |       +-- -> GameEnginShaderCompileKey
 |   |   |       +-- -> GameEnginShaderRegistry
 |   |   |       +-- -> GameEnginShaderSource
-|   |   |       +-- -> GameEnginShaderStage
-|   |   |       `-- unused unused: GameEnginShaderCompileKey, GameEnginShaderSource, GameEnginShaderStage
-|   |   +-- runtime  [GameEngin]
-|   |   |   +-- FrameBudget.ts user-facing
+|   |   |       `-- -> GameEnginShaderStage
+|   |   +-- runtime  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- FrameBudget.ts
 |   |   |   |   +-- -> GAMEENGIN_FRAME_BUDGETS
 |   |   |   |   +-- -> GameEnginFrameBudget
 |   |   |   |   +-- -> GameEnginQualityTier
 |   |   |   |   `-- -> resolveFrameBudget
-|   |   |   +-- FrameClock.ts user-facing
+|   |   |   +-- FrameClock.ts
 |   |   |   |   +-- resolveFrameBudget, GameEnginQualityTier  <- ./FrameBudget
 |   |   |   |   +-- -> GameEnginFrameClock
 |   |   |   |   `-- -> GameEnginFrameTick
-|   |   |   +-- index.ts user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- GAMEENGIN_FRAME_BUDGETS, resolveFrameBudget  <- ./FrameBudget
 |   |   |   |   +-- GameEnginFrameBudget, GameEnginQualityTier  <- ./FrameBudget
 |   |   |   |   +-- GameEnginFrameClock  <- ./FrameClock
@@ -11187,12 +10754,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> GameEnginRuntimeQualityDecision
 |   |   |   |   +-- -> decideRuntimeQuality
 |   |   |   |   `-- -> resolveFrameBudget
-|   |   |   `-- RuntimeQuality.ts user-facing
+|   |   |   `-- RuntimeQuality.ts
 |   |   |       +-- -> GameEnginRuntimeQuality
 |   |   |       +-- -> GameEnginRuntimeQualityDecision
 |   |   |       `-- -> decideRuntimeQuality
-|   |   +-- systems  [GameEngin]
-|   |   |   +-- ai.ts user-facing
+|   |   +-- systems  [GameEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- ai.ts
 |   |   |   |   +-- BehaviorTreeEngine, WorkerJobSystem  <- ../power-systems
 |   |   |   |   +-- BehaviorTreeEngine  <- ../power-systems
 |   |   |   |   +-- BTContext, BTNode, BTStatus, Job, JobPriority, JobResult  <- ../power-systems
@@ -11205,7 +10772,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> JobPriority
 |   |   |   |   +-- -> JobResult
 |   |   |   |   `-- -> WorkerJobSystem
-|   |   |   +-- animation.ts user-facing
+|   |   |   +-- animation.ts
 |   |   |   |   +-- AnimationStateMachine, ReplayBuffer, TypedEventBus  <- ../power-systems
 |   |   |   |   +-- AnimationStateMachine  <- ../power-systems
 |   |   |   |   +-- TypedEventBus  <- ../power-systems
@@ -11221,7 +10788,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> ReplayBuffer
 |   |   |   |   +-- -> ReplayMeta
 |   |   |   |   `-- -> TypedEventBus
-|   |   |   +-- assets.ts user-facing
+|   |   |   +-- assets.ts
 |   |   |   |   +-- AssetStreamManager  <- ../power-systems
 |   |   |   |   +-- assertValidBundleManifest, bundleWeightBytes  <- ../assets/BundleManifest
 |   |   |   |   +-- planBundleCache  <- ../assets/BundleCache
@@ -11240,7 +10807,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> assertValidBundleManifest
 |   |   |   |   +-- -> bundleWeightBytes
 |   |   |   |   `-- -> planBundleCache
-|   |   |   +-- index.ts user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- *  <- ./ai
 |   |   |   |   +-- *  <- ./animation
 |   |   |   |   +-- *  <- ./assets
@@ -11251,13 +10818,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- *  <- ./rendering
 |   |   |   |   +-- *  <- ./spatial
 |   |   |   |   `-- *  <- ./world
-|   |   |   +-- lod.ts user-facing
+|   |   |   +-- lod.ts
 |   |   |   |   +-- LODSystem  <- ../power-systems
 |   |   |   |   +-- LODLevel, LODObject  <- ../power-systems
 |   |   |   |   +-- -> LODLevel
 |   |   |   |   +-- -> LODObject
 |   |   |   |   `-- -> LODSystem
-|   |   |   +-- network.ts user-facing
+|   |   |   +-- network.ts
 |   |   |   |   +-- ClientSidePrediction, RollbackNetcode  <- ../power-systems
 |   |   |   |   +-- NetInput, PredictionState, RollbackConfig, ServerSnapshot  <- ../power-systems
 |   |   |   |   +-- -> ClientSidePrediction
@@ -11266,7 +10833,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> RollbackConfig
 |   |   |   |   +-- -> RollbackNetcode
 |   |   |   |   `-- -> ServerSnapshot
-|   |   |   +-- physics.ts user-facing
+|   |   |   +-- physics.ts
 |   |   |   |   +-- AdvancedPhysicsWorld, PhysicsMaterialSystem  <- ../power-systems
 |   |   |   |   +-- MaterialPair, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, RaycastResult, ShapeType  <- ../power-systems
 |   |   |   |   +-- -> AdvancedPhysicsWorld
@@ -11279,12 +10846,12 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> PhysicsMaterialSystem
 |   |   |   |   +-- -> RaycastResult
 |   |   |   |   `-- -> ShapeType
-|   |   |   +-- pooling.ts user-facing
+|   |   |   +-- pooling.ts
 |   |   |   |   +-- ResourcePool  <- ../power-systems
 |   |   |   |   +-- ResourcePool  <- ../power-systems
 |   |   |   |   +-- -> ObjectPoolingSystem
 |   |   |   |   `-- -> ResourcePool
-|   |   |   +-- rendering.ts user-facing
+|   |   |   +-- rendering.ts
 |   |   |   |   +-- ComputeShaderPipeline, GPUProfiler, WGSLShaderManager  <- ../power-systems
 |   |   |   |   +-- ComputeShaderPipeline  <- ../power-systems
 |   |   |   |   +-- ComputeDispatch, ComputeKernel, ProfileFrame, ProfileSpan, ShaderVariant  <- ../power-systems
@@ -11301,7 +10868,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> ShaderVariant
 |   |   |   |   +-- -> WGSLShaderManager
 |   |   |   |   `-- -> requestRenderEnginWebGPUDevice
-|   |   |   +-- spatial.ts user-facing
+|   |   |   +-- spatial.ts
 |   |   |   |   +-- OctreeBVH, SpatialAudioDSP  <- ../power-systems
 |   |   |   |   +-- AABB, AudioSourceDef, ListenerState, SpatialEntry  <- ../power-systems
 |   |   |   |   +-- -> AABB
@@ -11310,7 +10877,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> OctreeBVH
 |   |   |   |   +-- -> SpatialAudioDSP
 |   |   |   |   `-- -> SpatialEntry
-|   |   |   `-- world.ts user-facing
+|   |   |   `-- world.ts
 |   |   |       +-- GlobalIllumProbes, ProceduralWorldGen, TerrainEngine  <- ../power-systems
 |   |   |       +-- TerrainEngine  <- ../power-systems
 |   |   |       +-- GlobalIllumProbes  <- ../power-systems
@@ -11325,7 +10892,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> TerrainSystem
 |   |   |       +-- -> WorldChunk
 |   |   |       `-- -> WorldGenConfig
-|   |   +-- accessibility-ai.ts unused user-facing
+|   |   +-- accessibility-ai.ts
 |   |   |   +-- -> CaptionLine
 |   |   |   +-- -> CaptionerConfig
 |   |   |   +-- -> ColorVisionAdapter
@@ -11334,15 +10901,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> MotionPolicy
 |   |   |   +-- -> MotionReductionAI
 |   |   |   +-- -> MotionReductionConfig
-|   |   |   +-- -> RealtimeCaptioner
-|   |   |   `-- unused unused: CaptionLine, CaptionerConfig, ColorVisionType, MotionMetrics, MotionPolicy, MotionReductionConfig
-|   |   +-- ai-director.ts user-facing
+|   |   |   `-- -> RealtimeCaptioner
+|   |   +-- ai-director.ts
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs
 |   |   |   +-- (dynamic import)  <- @tensorflow/tfjs-backend-webgpu
 |   |   |   +-- -> AIDirector
 |   |   |   +-- -> DirectorState
 |   |   |   `-- -> PlayerSignals
-|   |   +-- ai-npcs.ts unused user-facing
+|   |   +-- ai-npcs.ts
 |   |   |   +-- -> BrainConfig
 |   |   |   +-- -> DialogueLine
 |   |   |   +-- -> EmergentDialogue
@@ -11352,15 +10918,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> NPCPersonality
 |   |   |   +-- -> NPCPersonalityStore
 |   |   |   +-- -> PersonalityStoreBackend
-|   |   |   +-- -> SafetyFilter
-|   |   |   `-- unused unused: BrainConfig, DialogueLine, LLMInvoker, NPCMemory, NPCPersonality, PersonalityStoreBackend, SafetyFilter
-|   |   +-- backendNegotiator.ts user-facing
+|   |   |   `-- -> SafetyFilter
+|   |   +-- backendNegotiator.ts
 |   |   |   +-- RuntimeBackendDiagnostics, RendererBackendId  <- ./cartridge
 |   |   |   +-- CartridgeManifestEntry  <- ./cartridges/manifest
 |   |   |   +-- decideRuntimeQuality  <- ./runtime/RuntimeQuality
 |   |   |   +-- -> negotiateRendererBackend
 |   |   |   `-- -> serverBootstrapDiagnostics
-|   |   +-- brain-reader.ts unused user-facing
+|   |   +-- brain-reader.ts
 |   |   |   +-- createHash  <- node:crypto
 |   |   |   +-- * as fs  <- node:fs
 |   |   |   +-- * as path  <- node:path
@@ -11441,9 +11006,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> recordVisionStatement
 |   |   |   +-- -> setActiveProjects
 |   |   |   +-- -> setCartridgeStatus
-|   |   |   +-- -> signatureHash
-|   |   |   `-- unused unused: ActiveProjectSlot, AgentName, AssetRegistryEntry, AssignmentLogEntry, BuildHistoryEntry, CartridgeStatus, CharacterVoice, ConceptPattern, ConceptPatternCategory, CrashReportEntry, CrashReportInput, EmotionalTone, GenreDNA, MaterialRecipe, MechanicEntry, NarrativePacing, OriginalityRegistry, OriginalitySignature, ProgressionModel, ProgressionState, ProgressionStateInput, ProjectFocus, StructuralMechanic, TechniqueEntry, UpgradeHistoryEntry, UpgradePrioritizationRules, VisionStatementMode, VisionStatementStatus, WorkQueueEntry, logRDSession, readInspiration, readMechanic, readPrinciple
-|   |   +-- cartridge-manifest.ts unused user-facing
+|   |   |   `-- -> signatureHash
+|   |   +-- cartridge-manifest.ts
 |   |   |   +-- z  <- zod
 |   |   |   +-- -> CARTRIDGE_EXT
 |   |   |   +-- -> CARTRIDGE_MAGIC
@@ -11454,9 +11018,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> QualityTierSchema
 |   |   |   +-- -> RenderModeSchema
 |   |   |   +-- -> hasCartridgeMagic
-|   |   |   +-- -> validateManifest
-|   |   |   `-- unused unused: CARTRIDGE_EXT, CARTRIDGE_MIME, CartridgeManifestSchema, PermissionSchema, QualityTierSchema, RenderModeSchema
-|   |   +-- cartridge.ts unused user-facing
+|   |   |   `-- -> validateManifest
+|   |   +-- cartridge.ts
 |   |   |   +-- -> AchievementDefinition
 |   |   |   +-- -> AchievementState
 |   |   |   +-- -> CartridgeAchievementsAPI
@@ -11485,15 +11048,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> GravityPreset
 |   |   |   +-- -> RendererBackendId
 |   |   |   +-- -> RuntimeBackendDiagnostics
-|   |   |   +-- -> engineSatisfies
-|   |   |   `-- unused unused: CartridgeBackendRequirements, CartridgeCapability, CartridgeSessionPlayer, CartridgeSoundOptions, CartridgeWarmupPipeline
-|   |   +-- cartridgeLoader.ts user-facing
+|   |   |   `-- -> engineSatisfies
+|   |   +-- cartridgeLoader.ts
 |   |   |   +-- loadDreamrCartridgeFromResponse, parseDreamrArchive, DreamrCartridgeArchive, DreamrFileEntry  <- ./dreamr-loader
 |   |   |   +-- -> DreamrCartridgeArchive
 |   |   |   +-- -> DreamrFileEntry
 |   |   |   +-- -> loadDreamrCartridgeFromResponse
 |   |   |   `-- -> parseDreamrArchive
-|   |   +-- cloud-compute.ts unused user-facing
+|   |   +-- cloud-compute.ts
 |   |   |   +-- -> EdgeOffloadRouter
 |   |   |   +-- -> OffloadCandidate
 |   |   |   +-- -> OffloadDecision
@@ -11501,9 +11063,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> RemoteRenderHandoff
 |   |   |   +-- -> ResultVerifier
 |   |   |   +-- -> RouterConfig
-|   |   |   +-- -> VerificationResult
-|   |   |   `-- unused unused: OffloadCandidate, OffloadDecision, RemoteRenderConfig, RouterConfig, VerificationResult
-|   |   +-- core.ts user-facing
+|   |   |   `-- -> VerificationResult
+|   |   +-- core.ts
 |   |   |   +-- AbstractEngine, Scene  <- @babylonjs/core
 |   |   |   +-- AdvancedPhysicsWorld, AnimationStateMachine, AssetStreamManager, BehaviorTreeEngine, ClientSidePrediction, ComputeShaderPipeline, GlobalIllumProbes, GPUProfiler, LODSystem, OctreeBVH, PhysicsMaterialSystem, ProceduralWorldGen, ReplayBuffer, ResourcePool, RollbackNetcode, SpatialAudioDSP, TerrainEngine, TypedEventBus, WGSLShaderManager, WorkerJobSystem  <- ./power-systems
 |   |   |   +-- (dynamic import)  <- @/engine/rendering/babylon/createEngine
@@ -11518,7 +11079,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> QualityChangeCallback
 |   |   |   +-- -> QualityTier
 |   |   |   `-- -> System
-|   |   +-- dream-engine.ts user-facing
+|   |   +-- dream-engine.ts
 |   |   |   +-- decodeLedgerStringToUint8Array, encodeUint8ArrayToLedgerString  <- @/engins/contentengin/media/ledger
 |   |   |   +-- createClient  <- @/supabase/client/client
 |   |   |   +-- safeGetUser  <- @/supabase/client/safeGetUser
@@ -11527,13 +11088,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> GameAsset
 |   |   |   +-- -> GlobalRegistryEntry
 |   |   |   `-- -> WasmOutput
-|   |   +-- dreamr-loader.ts user-facing
+|   |   +-- dreamr-loader.ts
 |   |   |   +-- CARTRIDGE_MAGIC, validateManifest, CartridgeManifest  <- @/engins/gameengin/cartridge-manifest
 |   |   |   +-- -> DreamrCartridgeArchive
 |   |   |   +-- -> DreamrFileEntry
 |   |   |   +-- -> loadDreamrCartridgeFromResponse
 |   |   |   `-- -> parseDreamrArchive
-|   |   +-- executionWiring.ts user-facing
+|   |   +-- executionWiring.ts
 |   |   |   +-- RealtimeCaptioner, MotionReductionAI, ColorVisionAdapter  <- ./accessibility-ai
 |   |   |   +-- AIDirector, PlayerSignals  <- ./ai-director
 |   |   |   +-- EmergentDialogue, LLMNPCBrain, NPCPersonalityStore  <- ./ai-npcs
@@ -11578,7 +11139,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> GameEnginExecutionKernel
 |   |   |   +-- -> GameEnginExecutionKernelSnapshot
 |   |   |   `-- -> createGameEnginExecutionKernel
-|   |   +-- GameEnginCore.ts unused user-facing
+|   |   +-- GameEnginCore.ts
 |   |   |   +-- QualityTier  <- @/engins/gameengin/core
 |   |   |   +-- EliteGameEngine  <- @/engins/gameengin/core
 |   |   |   +-- GameEnginRuntime  <- @/engins/gameengin/gameEnginRuntime
@@ -11601,9 +11162,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> SecurityConfig
 |   |   |   +-- -> SimulationConfig
 |   |   |   +-- -> TelemetryConfig
-|   |   |   +-- -> validateConfig
-|   |   |   `-- unused unused: AssetEntry, AssetsConfig, AudioConfig, GameEnginCompatibilityReport, GameEnginIntent, GameEnginIntentType, GameEnginLifecyclePhase, GameEnginManifest, GameEnginSnapshot, GraphicsConfig, InputConfig, NetworkingConfig, OfflineConfig, SecurityConfig, SimulationConfig, TelemetryConfig, validateConfig
-|   |   +-- gameEnginRuntime.ts user-facing
+|   |   |   `-- -> validateConfig
+|   |   +-- gameEnginRuntime.ts
 |   |   |   +-- createEventBus, EventBus  <- @/engine/events/eventBus
 |   |   |   +-- resolveFrameBudget, GameEnginQualityTier  <- ./runtime/FrameBudget
 |   |   |   +-- decideRuntimeQuality  <- ./runtime/RuntimeQuality
@@ -11617,7 +11177,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> InputHandler
 |   |   |   +-- -> InputType
 |   |   |   `-- -> loadDreamGame
-|   |   +-- GameRuntime.tsx unused user-facing
+|   |   +-- GameRuntime.tsx 🧩 COMPONENT
 |   |   |   +-- recordEmission  <- @/engine/runtime/channelMetrics
 |   |   |   +-- dreamOSBus  <- @/engine/runtime/dreamOSBus
 |   |   |   +-- createLocalChannel  <- @/engine/runtime/runtimeChannel
@@ -11631,9 +11191,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- createGameEnginExecutionKernel, GameEnginExecutionKernel  <- ./executionWiring
 |   |   |   +-- -> (default)
 |   |   |   +-- -> GameRuntimeCrash
-|   |   |   +-- -> GameRuntimeProps
-|   |   |   `-- unused unused: GameRuntimeCrash
-|   |   +-- generative-audio.ts unused user-facing
+|   |   |   `-- -> GameRuntimeProps
+|   |   +-- generative-audio.ts
 |   |   |   +-- -> AdaptiveMusicEngine
 |   |   |   +-- -> FoleyCategory
 |   |   |   +-- -> FoleyParams
@@ -11641,9 +11200,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> MusicConfig
 |   |   |   +-- -> MusicEdge
 |   |   |   +-- -> MusicNode
-|   |   |   +-- -> NeuralFoley
-|   |   |   `-- unused unused: FoleyCategory, FoleyParams, FoleyResult, MusicConfig, MusicEdge, MusicNode
-|   |   +-- handlers.ts unused user-facing
+|   |   |   `-- -> NeuralFoley
+|   |   +-- handlers.ts
 |   |   |   +-- GameEnginAction, PhysicsConfig, ScriptLanguage, TileType  <- @/engins/rulesets/game/gameEnginRuleSet
 |   |   |   +-- -> GameEnginDispatch
 |   |   |   +-- -> dispatchGameControlProfile
@@ -11652,9 +11210,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> dispatchGameSelect
 |   |   |   +-- -> dispatchGameSessionStart
 |   |   |   +-- -> paintWorldTile
-|   |   |   +-- -> snapshotWorldGrid
-|   |   |   `-- unused unused: GameEnginDispatch
-|   |   +-- index.ts unused user-facing
+|   |   |   `-- -> snapshotWorldGrid
+|   |   +-- index.ts
 |   |   |   +-- mapJoystickToAsset  <- ./controls/control-mappings
 |   |   |   +-- ControlMapping  <- ./controls/control-mappings
 |   |   |   +-- ECSWorld, EliteGameEngine  <- ./core
@@ -11806,34 +11363,30 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> mapJoystickToAsset
 |   |   |   +-- -> registerGame
 |   |   |   +-- -> unregisterGame
-|   |   |   +-- -> useUnifiedLoop
-|   |   |   `-- unused unused: AABB, AIDirector, AdvancedPhysicsWorld, AnimState, AnimTransition, AnimationClip, AnimationStateMachine, AssetHandle, AssetState, AssetStreamManager, AssetType, AudioSourceDef, BTContext, BTNode, BTStatus, BehaviorTreeEngine, CARTRIDGE_MANIFEST, CartridgeInputEvent, CartridgeManifestEntry, CartridgeRenderMode, ClientSidePrediction, Component, ComputeDispatch, ComputeKernel, ComputeShaderPipeline, ControlMapping, DirectorState, DreamEngine, ECSWorld, EliteGameEngine, EntityId, EventMap, FrameCallback, FrameTelemetry, GAMEENGIN_CAPABILITY_LANES, GAMEENGIN_WORK_PACKET, GAMEENGIN_WORK_PACKET_BY_TARGET, GIProbe, GPUProfiler, GRAVITY_VALUES, GameAsset, GameCartridge, GameEnginCapabilityLane, GameEnginExecutionCrash, GameEnginExecutionFrame, GameEnginExecutionKernel, GameEnginExecutionKernelSnapshot, GameEnginPlatform, GameEnginWiringTarget, GameEnginWorkPacketEntry, GameEngineAPI, GameRuntime, GameRuntimeProps, GlobalIllumProbes, GlobalRegistryEntry, GravityPreset, InputFrame, Job, JobPriority, JobResult, LODLevel, LODObject, LODSystem, ListenerState, LoopPriority, MaterialPair, NetInput, OctreeBVH, PerformanceBudget, PhysicsBody, PhysicsBodyDef, PhysicsBodyType, PhysicsConstraint, PhysicsMaterial, PhysicsMaterialSystem, PlatformBootOptions, PlatformCapabilities, PlayerSignals, PostFXManager, PredictionState, ProceduralWorldGen, ProfileFrame, ProfileSpan, QualityChangeCallback, QualityTier, QuickResumeEntry, RaycastResult, ReplayBuffer, ReplayMeta, ResourcePool, RollbackConfig, RollbackNetcode, SHCoeffs, ServerSnapshot, ShaderVariant, ShapeType, SpatialAudioDSP, SpatialEntry, System, TerrainEngine, TerrainPage, TypedEventBus, WGSLShaderManager, WasmOutput, WorkerJobSystem, WorldChunk, WorldGenConfig, activeGameCount, assertCartridgeLoadersReady, createGameEnginExecutionKernel, createReactGameCartridge, defineReactCartridgeLoader, detectCapabilities, getCartridgeCategories, getCartridgeIds, getCartridgeManifest, getGameEnginWorkPacketByTarget, getGameEnginWorkPacketEntry, getMissingCartridgeLoaders, getOrphanCartridgeLoaders, isLoopRunning, loadCartridge, mapJoystickToAsset, registerGame, unregisterGame, useUnifiedLoop
-|   |   +-- launcher.ts unused user-facing
+|   |   |   `-- -> useUnifiedLoop
+|   |   +-- launcher.ts
 |   |   |   +-- (default)  <- ./config/demoGameConfig
 |   |   |   +-- GameConfig  <- ./GameEnginCore
 |   |   |   +-- GameEnginConfigError, GameEnginCore  <- ./GameEnginCore
 |   |   |   +-- toErrorMessage  <- @/utils/index
-|   |   |   +-- -> launch
-|   |   |   `-- unused unused: launch
-|   |   +-- neural-render.ts unused user-facing
+|   |   |   `-- -> launch
+|   |   +-- neural-render.ts
 |   |   |   +-- -> FrameGenConfig
 |   |   |   +-- -> FrameGenerator
 |   |   |   +-- -> NTCBlock
 |   |   |   +-- -> NeuralTextureCompression
 |   |   |   +-- -> NeuralUpscaler
 |   |   |   +-- -> UpscaleRatio
-|   |   |   +-- -> UpscalerConfig
-|   |   |   `-- unused unused: FrameGenConfig, NTCBlock, UpscaleRatio, UpscalerConfig
-|   |   +-- path-tracing.ts unused user-facing
+|   |   |   `-- -> UpscalerConfig
+|   |   +-- path-tracing.ts
 |   |   |   +-- -> BVHNode
 |   |   |   +-- -> DenoiserConfig
 |   |   |   +-- -> NeuralDenoiser
 |   |   |   +-- -> PathTraceConfig
 |   |   |   +-- -> PathTracer
 |   |   |   +-- -> Reservoir
-|   |   |   +-- -> RestirGI
-|   |   |   `-- unused unused: BVHNode, DenoiserConfig, PathTraceConfig, Reservoir
-|   |   +-- platform.ts user-facing
+|   |   |   `-- -> RestirGI
+|   |   +-- platform.ts
 |   |   |   +-- Camera, Scene  <- @babylonjs/core
 |   |   |   +-- AIDirector  <- ./ai-director
 |   |   |   +-- GameCartridge, GameEngineAPI  <- ./cartridge
@@ -11845,7 +11398,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> PlatformCapabilities
 |   |   |   +-- -> QuickResumeEntry
 |   |   |   `-- -> detectCapabilities
-|   |   +-- post-fx.ts user-facing
+|   |   +-- post-fx.ts
 |   |   |   +-- Camera, Scene  <- @babylonjs/core
 |   |   |   +-- PerformanceBudget  <- ./core
 |   |   |   +-- (dynamic import)  <- @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline
@@ -11854,7 +11407,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (dynamic import)  <- @babylonjs/core/PostProcesses/RenderPipeline/Pipelines/ssrRenderingPipeline
 |   |   |   +-- (dynamic import)  <- @babylonjs/core/Layers/glowLayer
 |   |   |   `-- -> PostFXManager
-|   |   +-- power-systems.ts unused user-facing
+|   |   +-- power-systems.ts
 |   |   |   +-- requestWebGpuDevice  <- @/engins/renderengin/webgpu
 |   |   |   +-- -> AABB
 |   |   |   +-- -> AdvancedPhysicsWorld
@@ -11920,18 +11473,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> WGSLShaderManager
 |   |   |   +-- -> WorkerJobSystem
 |   |   |   +-- -> WorldChunk
-|   |   |   +-- -> WorldGenConfig
-|   |   |   `-- unused unused: ComputationFocus, PhysicsDensityStats
-|   |   +-- predictive-stream.ts unused user-facing
+|   |   |   `-- -> WorldGenConfig
+|   |   +-- predictive-stream.ts
 |   |   |   +-- -> BehaviorAnticipator
 |   |   |   +-- -> BehaviorObservation
 |   |   |   +-- -> BehaviorPrediction
 |   |   |   +-- -> MLPrefetchConfig
 |   |   |   +-- -> MLPrefetchModel
 |   |   |   +-- -> PrefetchCandidate
-|   |   |   +-- -> PrefetchPlan
-|   |   |   `-- unused unused: BehaviorObservation, BehaviorPrediction, MLPrefetchConfig, PrefetchCandidate, PrefetchPlan
-|   |   +-- procgen.ts unused user-facing
+|   |   |   `-- -> PrefetchPlan
+|   |   +-- procgen.ts
 |   |   |   +-- createBoxSDF, createSphereSDF, createTerrainCaveSDF, meshToSnapshot, runIsoSurfaceJob, DualContouringSettings  <- @/engins/isosurfaceDualContouring
 |   |   |   +-- DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, createTerrainCaveSDF, meshToSnapshot, runDualContouring, validateMesh, DualContouringSettings, Mesh, MeshDiagnostics, SDF, Vec3  <- @/engins/isosurfaceDualContouring
 |   |   |   +-- -> BiomeId
@@ -11956,39 +11507,36 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> generateTerrainCutout
 |   |   |   +-- -> meshToSnapshot
 |   |   |   +-- -> runDualContouring
-|   |   |   +-- -> validateMesh
-|   |   |   `-- unused unused: BiomeId, BiomeSample, ChunkJob, DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS, DualContouringSettings, Mesh, MeshDiagnostics, SDF, SchedulerConfig, Vec3, WFCTile, createTerrainCaveSDF, generateCaveChunk, generateDestructibleWallChunk, generateMobileTerrainCaveMesh, generateRockProp, generateTerrainCutout, meshToSnapshot, runDualContouring, validateMesh
-|   |   +-- registerCartridges.ts user-facing
+|   |   |   `-- -> validateMesh
+|   |   +-- registerCartridges.ts
 |   |   |   +-- CARTRIDGE_MANIFEST  <- @/engins/gameengin/cartridges/manifest
 |   |   |   +-- assertCartridgeLoadersReady  <- @/engins/gameengin/cartridges/loaders
 |   |   |   +-- moduleRegistry  <- @/engine/runtime/moduleRegistry
 |   |   |   +-- ModuleManifest  <- @/types/module-manifest
 |   |   |   `-- -> registerCartridges
-|   |   +-- unifiedLoop.ts unused user-facing
+|   |   +-- unifiedLoop.ts
 |   |   |   +-- -> LoopPriority
 |   |   |   +-- -> _resetLoop
 |   |   |   +-- -> activeGameCount
 |   |   |   +-- -> isLoopRunning
 |   |   |   +-- -> registerGame
-|   |   |   +-- -> unregisterGame
-|   |   |   `-- unused unused: _resetLoop
-|   |   +-- useUnifiedLoop.ts user-facing
+|   |   |   `-- -> unregisterGame
+|   |   +-- useUnifiedLoop.ts
 |   |   |   +-- useEffect, useRef  <- react
 |   |   |   +-- registerGame, unregisterGame, LoopPriority  <- ./unifiedLoop
 |   |   |   `-- -> useUnifiedLoop
-|   |   +-- webgpu-runtime-shell.ts user-facing
+|   |   +-- webgpu-runtime-shell.ts
 |   |   |   +-- DreamrCartridgeArchive  <- @/engins/gameengin/dreamr-loader
 |   |   |   +-- -> WebGPURuntimeShellPlan
 |   |   |   +-- -> canUseWebGPU
 |   |   |   `-- -> planRuntimeShellHandoff
-|   |   +-- world-crdt.ts unused user-facing
+|   |   +-- world-crdt.ts
 |   |   |   +-- -> BridgeConfig
 |   |   |   +-- -> BridgeTransport
 |   |   |   +-- -> CRDTRecord
 |   |   |   +-- -> EventualConsistencyBridge
-|   |   |   +-- -> WorldStateCRDT
-|   |   |   `-- unused unused: BridgeConfig, BridgeTransport
-|   |   `-- xr.ts unused user-facing
+|   |   |   `-- -> WorldStateCRDT
+|   |   `-- xr.ts
 |   |       +-- -> HandJoint
 |   |       +-- -> HandPose
 |   |       +-- -> HandTrackingInput
@@ -11996,15 +11544,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> SpatialAnchor
 |   |       +-- -> UnifiedAction
 |   |       +-- -> WebXRSession
-|   |       +-- -> XRMode
-|   |       `-- unused unused: HandJoint, HandPose, SpatialAnchor, UnifiedAction, XRMode
-|   +-- labengin  [LabEngin]
-|   |   `-- implicitSurface.ts unused user-facing
+|   |       `-- -> XRMode
+|   +-- labengin  [LabEngin] 🗂 FEATURE_FOLDER
+|   |   `-- implicitSurface.ts
 |   |       +-- createSphereSDF, createTerrainCaveSDF, meshToSnapshot, runIsoSurfaceJob, DualContouringSettings, SDF  <- @/engins/isosurfaceDualContouring
 |   |       +-- -> LabImplicitSurfacePreset
 |   |       +-- -> LabImplicitSurfaceRun
-|   |       +-- -> runLabImplicitSurface
-|   |       `-- unused unused: LabImplicitSurfacePreset, LabImplicitSurfaceRun, runLabImplicitSurface
+|   |       `-- -> runLabImplicitSurface
 |   +-- portfolio
 |   |   `-- dream.PortfolioEngin.tsx
 |   |       +-- (default)  <- @/components/daydream/dream.JourneyTrail
@@ -12250,7 +11796,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> RenderQualityTier
 |   |   |   +-- -> createRenderQualitySettings
 |   |   |   `-- -> switchRenderPreviewMode
-|   |   +-- RenderStage.tsx unused
+|   |   +-- RenderStage.tsx
 |   |   |   +-- useEffect, useMemo  <- react
 |   |   |   +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
 |   |   |   +-- JsonObject  <- @/engine/engin-runtime/EnginBaseState
@@ -12259,8 +11805,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- (default)  <- ./RenderEnginViewport
 |   |   |   +-- -> (default)
 |   |   |   +-- -> RenderStageProps
-|   |   |   +-- -> createInlineRenderIntent
-|   |   |   `-- unused unused: RenderStageProps
+|   |   |   `-- -> createInlineRenderIntent
 |   |   +-- runtimeRegistration.ts
 |   |   |   +-- registerRuntimeEngin  <- @/engine/engin-runtime/EnginRuntimeRegistry
 |   |   |   +-- RenderEnginRuleSet, RENDER_ENGIN_ID, RENDER_INTENT_TYPES  <- ./core
@@ -12376,7 +11921,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> cullRenderScene
 |   |   |   +-- -> selectScreenSpaceLod
 |   |   |   `-- -> sphereIntersectsFrustum
-|   |   +-- wasmAcceleration.ts unused
+|   |   +-- wasmAcceleration.ts
 |   |   |   +-- MeshBuffers, Vec3  <- ./core
 |   |   |   +-- -> RenderMeshBounds
 |   |   |   +-- -> RenderWasmAcceleration
@@ -12385,8 +11930,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- -> fallbackRenderMeshBounds
 |   |   |   +-- -> getActiveRenderWasmAcceleration
 |   |   |   +-- -> loadRenderWasmAcceleration
-|   |   |   +-- -> resetRenderWasmAccelerationForTesting
-|   |   |   `-- unused unused: RenderMeshBounds, RenderWasmAcceleration, RenderWasmAccelerationExports, computeRenderMeshBounds, fallbackRenderMeshBounds, getActiveRenderWasmAcceleration, loadRenderWasmAcceleration, resetRenderWasmAccelerationForTesting
+|   |   |   `-- -> resetRenderWasmAccelerationForTesting
 |   |   `-- webgpu.ts
 |   |       +-- mat4Identity, Mat4, MeshBuffers, Vec3, Vec4, Vertex, validateMeshForRenderUpload  <- ./core
 |   |       +-- -> BATCH_SHADER
@@ -12412,7 +11956,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       `-- -> toGpuMat4
 |   +-- rulesets
 |   |   +-- brand
-|   |   |   +-- brandEnginRuleSet.ts unused
+|   |   |   +-- brandEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12423,9 +11967,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> BrandAsset
 |   |   |   |   +-- -> BrandEnginAction
 |   |   |   |   +-- -> BrandEnginDerivedState
-|   |   |   |   +-- -> BrandProfile
-|   |   |   |   `-- unused unused: ABTest, AnalyticMetric, BrandAsset, BrandProfile
-|   |   |   `-- useBrandEnginRuntime.ts unused
+|   |   |   |   `-- -> BrandProfile
+|   |   |   `-- useBrandEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12434,10 +11977,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- BRAND_ENGIN_RULE_SET  <- ./brandEnginRuleSet
 |   |   |       +-- -> UseBrandEnginRuntimeOptions
 |   |   |       +-- -> UseBrandEnginRuntimeResult
-|   |   |       +-- -> useBrandEnginRuntime
-|   |   |       `-- unused unused: UseBrandEnginRuntimeOptions, UseBrandEnginRuntimeResult
+|   |   |       `-- -> useBrandEnginRuntime
 |   |   +-- code
-|   |   |   +-- codeEnginRuleSet.ts unused
+|   |   |   +-- codeEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12456,17 +11998,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> DiagnosticSeverity
 |   |   |   |   +-- -> NotebookCell
 |   |   |   |   +-- -> SecurityFinding
-|   |   |   |   +-- -> SourceLanguage
-|   |   |   |   `-- unused unused: (default), CellLanguage, CellStatus, CiStatus, CodeDiagnostic, CodeRuntimeMode, CodeTerminalEntry, CodeWorkspaceFile, DiagnosticSeverity, NotebookCell, SecurityFinding, SourceLanguage
-|   |   |   +-- index.ts unused
+|   |   |   |   `-- -> SourceLanguage
+|   |   |   +-- index.ts
 |   |   |   |   +-- -> (default)
 |   |   |   |   +-- -> constraints
 |   |   |   |   +-- -> id
 |   |   |   |   +-- -> params
 |   |   |   |   +-- -> ruleSet
-|   |   |   |   +-- -> transforms
-|   |   |   |   `-- unused unused: (default), constraints, id, params, ruleSet, transforms
-|   |   |   `-- useCodeEnginRuntime.ts unused
+|   |   |   |   `-- -> transforms
+|   |   |   `-- useCodeEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12475,10 +12015,9 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- CODE_ENGIN_RULE_SET  <- ./codeEnginRuleSet
 |   |   |       +-- -> UseCodeEnginRuntimeOptions
 |   |   |       +-- -> UseCodeEnginRuntimeResult
-|   |   |       +-- -> useCodeEnginRuntime
-|   |   |       `-- unused unused: UseCodeEnginRuntimeOptions, UseCodeEnginRuntimeResult
+|   |   |       `-- -> useCodeEnginRuntime
 |   |   +-- content
-|   |   |   +-- contentEnginRuleSet.ts unused
+|   |   |   +-- contentEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12488,9 +12027,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> CONTENT_IMPLICIT_ASSET_POLICY
 |   |   |   |   +-- -> ContentEnginAction
 |   |   |   |   +-- -> ContentEnginDerivedState
-|   |   |   |   +-- -> ContentEnginDomain
-|   |   |   |   `-- unused unused: CONTENT_IMPLICIT_ASSET_POLICY, ContentEnginDomain
-|   |   |   `-- useContentEnginRuntime.ts unused
+|   |   |   |   `-- -> ContentEnginDomain
+|   |   |   `-- useContentEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12499,36 +12037,32 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- CONTENT_ENGIN_RULE_SET  <- ./contentEnginRuleSet
 |   |   |       +-- -> UseContentEnginRuntimeOptions
 |   |   |       +-- -> UseContentEnginRuntimeResult
-|   |   |       +-- -> useContentEnginRuntime
-|   |   |       `-- unused unused: UseContentEnginRuntimeOptions, UseContentEnginRuntimeResult
+|   |   |       `-- -> useContentEnginRuntime
 |   |   +-- dreams
-|   |   |   `-- index.ts unused
+|   |   |   `-- index.ts
 |   |   |       +-- -> (default)
 |   |   |       +-- -> constraints
 |   |   |       +-- -> id
 |   |   |       +-- -> params
 |   |   |       +-- -> ruleSet
-|   |   |       +-- -> transforms
-|   |   |       `-- unused unused: (default), constraints, id, params, ruleSet, transforms
+|   |   |       `-- -> transforms
 |   |   +-- forge
-|   |   |   `-- index.ts unused
+|   |   |   `-- index.ts
 |   |   |       +-- -> (default)
 |   |   |       +-- -> constraints
 |   |   |       +-- -> id
 |   |   |       +-- -> params
 |   |   |       +-- -> ruleSet
-|   |   |       +-- -> transforms
-|   |   |       `-- unused unused: (default), constraints, id, params, ruleSet, transforms
+|   |   |       `-- -> transforms
 |   |   +-- game
-|   |   |   +-- declarative.ts unused
+|   |   |   +-- declarative.ts
 |   |   |   |   +-- -> (default)
 |   |   |   |   +-- -> constraints
 |   |   |   |   +-- -> id
 |   |   |   |   +-- -> params
 |   |   |   |   +-- -> ruleSet
-|   |   |   |   +-- -> transforms
-|   |   |   |   `-- unused unused: (default), constraints, id, params, ruleSet, transforms
-|   |   |   +-- gameEnginRuleSet.ts unused
+|   |   |   |   `-- -> transforms
+|   |   |   +-- gameEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12544,8 +12078,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> ScriptLanguage
 |   |   |   |   +-- -> ScriptState
 |   |   |   |   +-- -> TileType
-|   |   |   |   +-- -> WorldState
-|   |   |   |   `-- unused unused: GAME_IMPLICIT_WORLD_POLICY
+|   |   |   |   `-- -> WorldState
 |   |   |   +-- index.ts
 |   |   |   |   +-- GAME_ENGIN_RULE_SET, GRAVITY_VALUES  <- ./gameEnginRuleSet
 |   |   |   |   +-- GameEnginAction, GameEnginDerivedState, GameScore, GravityPreset, PhysicsConfig, ScriptLanguage, ScriptState, TileType, WorldState  <- ./gameEnginRuleSet
@@ -12560,7 +12093,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> ScriptState
 |   |   |   |   +-- -> TileType
 |   |   |   |   `-- -> WorldState
-|   |   |   `-- useGameEnginRuntime.ts unused
+|   |   |   `-- useGameEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12569,8 +12102,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- GAME_ENGIN_RULE_SET  <- ./gameEnginRuleSet
 |   |   |       +-- -> UseGameEnginRuntimeOptions
 |   |   |       +-- -> UseGameEnginRuntimeResult
-|   |   |       +-- -> useGameEnginRuntime
-|   |   |       `-- unused unused: UseGameEnginRuntimeOptions, UseGameEnginRuntimeResult
+|   |   |       `-- -> useGameEnginRuntime
 |   |   +-- homedream
 |   |   |   +-- dream.homedream.constants.ts
 |   |   |   |   +-- -> HOMEDREAM_FRAME_BUDGET_MS
@@ -12588,7 +12120,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> HomeDreamState
 |   |   |   |   +-- -> applyDelta
 |   |   |   |   `-- -> createInitialState
-|   |   |   `-- index.ts unused
+|   |   |   `-- index.ts
 |   |   |       +-- HOMEDREAM_FRAME_BUDGET_MS, HOMEDREAM_GRAVITY, HOMEDREAM_MAX_ENTITIES, HOMEDREAM_WORLD_ID  <- ./dream.homedream.constants
 |   |   |       +-- applyDelta, createInitialState  <- ./dream.homedream.transforms
 |   |   |       +-- EntityState, HomeDreamState  <- ./dream.homedream.transforms
@@ -12604,18 +12136,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- -> PhysicsConstraint
 |   |   |       +-- -> applyDelta
 |   |   |       +-- -> createInitialState
-|   |   |       +-- -> resolveConstraint
-|   |   |       `-- unused unused: EntityState, HOMEDREAM_FRAME_BUDGET_MS, HOMEDREAM_GRAVITY, HOMEDREAM_MAX_ENTITIES, HOMEDREAM_PHYSICS_CONSTRAINTS, HOMEDREAM_WORLD_ID, HomeDreamState, PhysicsConstraint, applyDelta, createInitialState, resolveConstraint
+|   |   |       `-- -> resolveConstraint
 |   |   +-- lab
-|   |   |   +-- index.ts unused
+|   |   |   +-- index.ts
 |   |   |   |   +-- -> (default)
 |   |   |   |   +-- -> constraints
 |   |   |   |   +-- -> id
 |   |   |   |   +-- -> params
 |   |   |   |   +-- -> ruleSet
-|   |   |   |   +-- -> transforms
-|   |   |   |   `-- unused unused: (default), constraints, id, params, ruleSet, transforms
-|   |   |   +-- labEnginRuleSet.ts unused
+|   |   |   |   `-- -> transforms
+|   |   |   +-- labEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12628,9 +12158,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> LabEnginDerivedState
 |   |   |   |   +-- -> SimState
 |   |   |   |   +-- -> SimulationKind
-|   |   |   |   +-- -> SimulationResult
-|   |   |   |   `-- unused unused: ChartType, Experiment, LAB_IMPLICIT_SURFACE_POLICY, SimState, SimulationKind, SimulationResult
-|   |   |   `-- useLabEnginRuntime.ts unused
+|   |   |   |   `-- -> SimulationResult
+|   |   |   `-- useLabEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12639,18 +12168,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- LAB_ENGIN_RULE_SET  <- ./labEnginRuleSet
 |   |   |       +-- -> UseLabEnginRuntimeOptions
 |   |   |       +-- -> UseLabEnginRuntimeResult
-|   |   |       +-- -> useLabEnginRuntime
-|   |   |       `-- unused unused: UseLabEnginRuntimeOptions, UseLabEnginRuntimeResult
+|   |   |       `-- -> useLabEnginRuntime
 |   |   +-- music
-|   |   |   +-- index.ts unused
+|   |   |   +-- index.ts
 |   |   |   |   +-- -> (default)
 |   |   |   |   +-- -> constraints
 |   |   |   |   +-- -> id
 |   |   |   |   +-- -> params
 |   |   |   |   +-- -> ruleSet
-|   |   |   |   +-- -> transforms
-|   |   |   |   `-- unused unused: (default), constraints, id, params, ruleSet, transforms
-|   |   |   +-- starMakerEnginRuleSet.ts unused
+|   |   |   |   `-- -> transforms
+|   |   |   +-- starMakerEnginRuleSet.ts
 |   |   |   |   +-- patchBaseState, EnginBaseState, JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   |   +-- EnginCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   |   +-- getEnginCapabilityProfile  <- @/engine/engin-runtime/EnginCapabilityTargets
@@ -12660,9 +12187,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> STAR_MAKER_ENGIN_RULE_SET
 |   |   |   |   +-- -> StarMakerEnginAction
 |   |   |   |   +-- -> StarMakerEnginDerivedState
-|   |   |   |   +-- -> StemChannel
-|   |   |   |   `-- unused unused: MusicRelease, PlaybackQualityMode, StemChannel
-|   |   |   `-- useStarMakerEnginRuntime.ts unused
+|   |   |   |   `-- -> StemChannel
+|   |   |   `-- useStarMakerEnginRuntime.ts
 |   |   |       +-- MemoryAdapter  <- @/engine/engin-runtime/EnginIOAdapter
 |   |   |       +-- EnginHardwareAccelerationState, EnginRuntimeOptions  <- @/engine/engin-runtime/EnginRuntime
 |   |   |       +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
@@ -12671,17 +12197,15 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |       +-- STAR_MAKER_ENGIN_RULE_SET  <- ./starMakerEnginRuleSet
 |   |   |       +-- -> UseStarMakerEnginRuntimeOptions
 |   |   |       +-- -> UseStarMakerEnginRuntimeResult
-|   |   |       +-- -> useStarMakerEnginRuntime
-|   |   |       `-- unused unused: UseStarMakerEnginRuntimeOptions, UseStarMakerEnginRuntimeResult
-|   |   +-- useEnginWorkflow.ts unused
+|   |   |       `-- -> useStarMakerEnginRuntime
+|   |   +-- useEnginWorkflow.ts
 |   |   |   +-- logJourneyDot  <- @/engine/journey/journeyDots
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useCallback, useEffect, useState  <- react
 |   |   |   +-- EnginWorkflow, HandoffKind, WorkflowStage, abandonWorkflow, advanceStage, checkHandoffEligibility, createWorkflow, describeWorkflow, findWorkflowDef, HANDOFF_PATHS  <- ./workflowEngine
 |   |   |   +-- -> EnginWorkflowHook
-|   |   |   +-- -> useEnginWorkflow
-|   |   |   `-- unused unused: EnginWorkflowHook
-|   |   `-- workflowEngine.ts unused
+|   |   |   `-- -> useEnginWorkflow
+|   |   `-- workflowEngine.ts
 |   |       +-- -> EnginId
 |   |       +-- -> EnginWorkflow
 |   |       +-- -> HANDOFF_PATHS
@@ -12701,17 +12225,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> findWorkflowDef
 |   |       +-- -> handoffsFrom
 |   |       +-- -> isValidTransition
-|   |       +-- -> workflowsForEngin
-|   |       `-- unused unused: EnginId, HandoffEligibility, HandoffPath, STAGE_LABELS, StageTransitionResult, WORKFLOW_CATALOG, WorkflowDef, handoffsFrom, isValidTransition, workflowsForEngin
-|   +-- starmakerengin  [StarMakerEngin]
-|   |   +-- audio-fingerprint  [StarMakerEngin]
-|   |   |   +-- fingerprint.ts user-facing
+|   |       `-- -> workflowsForEngin
+|   +-- starmakerengin  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   +-- audio-fingerprint  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- fingerprint.ts
 |   |   |   |   +-- FrequencyPeak, PeakMap  <- ./peak-map
 |   |   |   |   +-- -> Fingerprint
 |   |   |   |   +-- -> TimeSlice
 |   |   |   |   +-- -> matchFingerprint
 |   |   |   |   `-- -> recordFingerprint
-|   |   |   +-- index.ts user-facing
+|   |   |   +-- index.ts
 |   |   |   |   +-- matchFingerprint, recordFingerprint, Fingerprint, TimeSlice  <- ./fingerprint
 |   |   |   |   +-- buildPeakMap, FrequencyPeak, PeakMap  <- ./peak-map
 |   |   |   |   +-- extractStem  <- ./stem-extractor
@@ -12723,17 +12246,16 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> extractStem
 |   |   |   |   +-- -> matchFingerprint
 |   |   |   |   `-- -> recordFingerprint
-|   |   |   +-- peak-map.ts user-facing
+|   |   |   +-- peak-map.ts
 |   |   |   |   +-- -> FrequencyPeak
 |   |   |   |   +-- -> PeakMap
 |   |   |   |   `-- -> buildPeakMap
-|   |   |   `-- stem-extractor.ts unused user-facing
+|   |   |   `-- stem-extractor.ts
 |   |   |       +-- TimeSlice  <- ./fingerprint
 |   |   |       +-- -> extractStem
-|   |   |       +-- -> extractStemAsync
-|   |   |       `-- unused unused: extractStemAsync
-|   |   +-- music  [StarMakerEngin]
-|   |   |   +-- presets.ts unused user-facing
+|   |   |       `-- -> extractStemAsync
+|   |   +-- music  [StarMakerEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- presets.ts
 |   |   |   |   +-- -> BEAT_PRESETS
 |   |   |   |   +-- -> BeatPreset
 |   |   |   |   +-- -> GENRE_LIST
@@ -12744,9 +12266,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> findInstrumentPreset
 |   |   |   |   +-- -> findPreset
 |   |   |   |   +-- -> findProjectTemplate
-|   |   |   |   +-- -> getPresetsByGenre
-|   |   |   |   `-- unused unused: findInstrumentPreset, findPreset, findProjectTemplate, getPresetsByGenre
-|   |   |   +-- starmaker.ts unused user-facing
+|   |   |   |   `-- -> getPresetsByGenre
+|   |   |   +-- starmaker.ts
 |   |   |   |   +-- -> MelodySuggestion
 |   |   |   |   +-- -> MelodySuggestionInput
 |   |   |   |   +-- -> PlaybackMixerState
@@ -12759,9 +12280,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> StemExportState
 |   |   |   |   +-- -> buildReleaseStrategy
 |   |   |   |   +-- -> createMelodySuggestions
-|   |   |   |   +-- -> summarizePlaybackProfile
-|   |   |   |   `-- unused unused: MelodySuggestionInput, PlaybackMixerState, PlaybackProfile, PlaybackProfileInput, ReleaseStrategy, ReleaseStrategyInput, ReleaseTarget, StemExportState
-|   |   |   +-- starmakerArrangement.ts user-facing
+|   |   |   |   `-- -> summarizePlaybackProfile
+|   |   |   +-- starmakerArrangement.ts
 |   |   |   |   +-- -> ARRANGEMENT_BARS
 |   |   |   |   +-- -> ARRANGEMENT_SOURCE_COLORS
 |   |   |   |   +-- -> ARRANGEMENT_TRACKS
@@ -12769,7 +12289,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> ArrangementSource
 |   |   |   |   +-- -> ArrangementTrackId
 |   |   |   |   `-- -> ArrangementTrackState
-|   |   |   +-- starmakerDaw.ts unused user-facing
+|   |   |   +-- starmakerDaw.ts
 |   |   |   |   +-- -> AUDIO_QUALITY_PRESETS
 |   |   |   |   +-- -> AUTOMATABLE_PARAMS
 |   |   |   |   +-- -> AudioQualityConfig
@@ -12815,13 +12335,11 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   |   +-- -> isBlackKey
 |   |   |   |   +-- -> midiPitchToName
 |   |   |   |   +-- -> renderStarMakerPattern
-|   |   |   |   +-- -> snapToGrid
-|   |   |   |   `-- unused unused: AUTOMATABLE_PARAMS, AudioQualityConfig, AutomationLane, AutomationMode, AutomationPoint, AutomationState, BitDepth, CompRegion, SampleRateHz, SessionClip, SessionScene, StarMakerSequencerMixer, StarMakerSequencerQuality, StarMakerStereoPcm, WarpMarker, WarpState, createEmptyClip, createInitialAutomationState, encodeWav24Bit
-|   |   |   `-- wasmAudioBridge.ts unused user-facing
+|   |   |   |   `-- -> snapToGrid
+|   |   |   `-- wasmAudioBridge.ts
 |   |   |       +-- -> WasmAudioBridge
-|   |   |       +-- -> createWasmAudioBridge
-|   |   |       `-- unused unused: WasmAudioBridge, createWasmAudioBridge
-|   |   `-- audioFingerprint.ts user-facing
+|   |   |       `-- -> createWasmAudioBridge
+|   |   `-- audioFingerprint.ts
 |   |       +-- TORRIDITY_DP, TORRIDITY_N  <- @/dreamr/torridity
 |   |       +-- -> Fingerprint
 |   |       +-- -> MatchResult
@@ -12832,7 +12350,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |       +-- -> extractAudioChunks
 |   |       +-- -> matchFingerprint
 |   |       `-- -> recordReferenceFingerprint
-|   +-- dream.ForgeEngin.tsx user-facing
+|   +-- dream.ForgeEngin.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   +-- (default)  <- @/components/dream.BrandLogo
 |   |   +-- (default)  <- @/components/forge/dream.panel.AIBuilderPanel
@@ -12849,14 +12367,13 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (default)  <- next/link
 |   |   +-- useCallback, useEffect, useMemo, useState  <- react
 |   |   `-- -> (default)
-|   +-- dream.QuantumCircuitCanvas.tsx unused
+|   +-- dream.QuantumCircuitCanvas.tsx
 |   |   +-- useCallback, useEffect, useMemo, useRef  <- react
 |   |   +-- -> (default)
 |   |   +-- -> GateOp
 |   |   +-- -> QuantumCircuitCanvasProps
-|   |   +-- -> QuantumMeasurementResult
-|   |   `-- unused unused: GateOp, QuantumCircuitCanvasProps
-|   +-- engin.BrandingEngin.tsx user-facing
+|   |   `-- -> QuantumMeasurementResult
+|   +-- engin.BrandingEngin.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   +-- useSharedDream  <- @/hooks/useSharedDream
 |   |   +-- useDaydreamPersistence  <- @/daydreams/shared/useDaydreamPersistence
@@ -12877,7 +12394,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (default)  <- next/link
 |   |   +-- useEffect, useMemo, useRef, useState  <- react
 |   |   `-- -> (default)
-|   +-- engin.CodeEngin.tsx ! user-facing
+|   +-- engin.CodeEngin.tsx ! 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/dreamengin/dream.panel.CrossEnginStatusPanel
 |   |   +-- useDaydreamPersistence  <- @/daydreams/shared/useDaydreamPersistence
 |   |   +-- useDaydreamState  <- @/daydreams/shared/useDaydreamState
@@ -12896,7 +12413,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> (default)
 |   |   +-- -> RuntimeIntent
 |   |   `-- -> labDatasetId
-|   +-- engin.ContentEngin.tsx user-facing
+|   +-- engin.ContentEngin.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/contentengin/ContentEnginStudio
 |   |   `-- -> (default)
 |   +-- engin.GameEngin.tsx
@@ -12947,7 +12464,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   +-- dispatchRenderHandoff  <- @/engins/renderengin
 |   |   `-- -> (default)
-|   +-- engin.LabEngin.tsx user-facing
+|   +-- engin.LabEngin.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   +-- ForgeDreamCanvas  <- @/components/dream.ForgeDreamCanvas
 |   |   +-- useDaydreamPersistence  <- @/daydreams/shared/useDaydreamPersistence
@@ -12969,7 +12486,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- (default)  <- next/link
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   `-- -> (default)
-|   +-- engin.StarMakerEngin.tsx user-facing
+|   +-- engin.StarMakerEngin.tsx 🧩 COMPONENT
 |   |   +-- (default)  <- @/components/daydream/dream.JourneyTrail
 |   |   +-- (default)  <- @/components/daydream/starmaker/dream.panel.MultitrackArrangementPanel
 |   |   +-- (default)  <- @/components/daydream/starmaker/dream.panel.CompingPanel
@@ -13003,7 +12520,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- toErrorMessage  <- @/utils/index
 |   |   +-- (side-effect)  <- 8px 16px 14px
 |   |   `-- -> (default)
-|   +-- isosurfaceAssetPipeline.ts unused
+|   +-- isosurfaceAssetPipeline.ts
 |   |   +-- createSphereSDF, meshToSnapshot, runDualContouring, Mesh, MeshDiagnostics, Vec3  <- @/engins/isosurfaceDualContouring
 |   |   +-- meshToSnapshot, validateMesh  <- @/engins/isosurfaceDualContouring
 |   |   +-- DomainObject  <- @/engins/contentengin/assetTypes
@@ -13056,9 +12573,8 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> summarizeMeshQuality
 |   |   +-- -> validateMesh
 |   |   +-- -> validateMeshStrict
-|   |   +-- -> weldVertices
-|   |   `-- unused unused: AssetProcessingStatus, AutoRigState, Bounds3, ColorRGB, ColoredMesh, ImplicitAssetWorkspaceData, MeshQualityLabel, RepairReport, RepairResult, SourceImageAsset, StrictMeshDiagnostics, Vec2, buildInflatedReliefMesh, buildVertexAdjacency, centerAndScaleMesh, cloneMesh, compactMesh, computePlanarUVs, computeVertexNormals, estimateMeshBytes, repairMesh, validateMesh, weldVertices
-|   `-- isosurfaceDualContouring.ts unused
+|   |   `-- -> weldVertices
+|   `-- isosurfaceDualContouring.ts
 |       +-- -> DEFAULT_MOBILE_DUAL_CONTOURING_SETTINGS
 |       +-- -> DualContouringSettings
 |       +-- -> IsoSurfaceJob
@@ -13082,8 +12598,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> normalizeDualContouringSettings
 |       +-- -> runDualContouring
 |       +-- -> runIsoSurfaceJob
-|       +-- -> validateMesh
-|       `-- unused unused: IsoSurfacePurpose, IsoSurfaceSdfKind, IsoSurfaceSourceEngin, MobileIsoSurfaceTier, classifyMobileIsoSurfaceTier, createIsoSurfaceJob, estimateIsoSurfaceMemoryBytes, normalizeDualContouringSettings
+|       `-- -> validateMesh
 +-- fonts
 |   +-- Cormorant_Garamond
 |   |   +-- static
@@ -13132,7 +12647,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- README.txt
 |       `-- SpaceGrotesk-VariableFont_wght.ttf
 +-- hooks
-|   +-- use-spatial.ts unused
+|   +-- use-spatial.ts
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- Album, ContentObject, CreateAlbumInput, CreateContentInput, CreateWidgetInput, NavigationState, ShareIntent, SpaceType, UpdateContentInput, UpdateWidgetInput, Widget  <- @/types/spatial
 |   |   +-- useCallback, useMemo, useState  <- react
@@ -13143,20 +12658,18 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> useContent
 |   |   +-- -> useShareToProfile
 |   |   +-- -> useSpatialNavigation
-|   |   +-- -> useWidgets
-|   |   `-- unused unused: UseWidgetsResult, useAlbums, useShareToProfile, useSpatialNavigation
+|   |   `-- -> useWidgets
 |   +-- useAccount.ts
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- useEffect, useState  <- react
 |   |   `-- -> useAccount
-|   +-- useAppIntentPressureSurface.ts unused
+|   +-- useAppIntentPressureSurface.ts
 |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   +-- AppIntentPressureField, appIntentPressureFromElementPoint, AppIntentPressureSource, AppIntentMassState, AppIntentPoint  <- @/engine/intent/appIntentPressure
 |   |   +-- -> AppIntentPressureSurfaceOptions
 |   |   +-- -> applyIntentPressureToElement
-|   |   +-- -> useAppIntentPressureSurface
-|   |   `-- unused unused: AppIntentPressureSurfaceOptions, applyIntentPressureToElement, useAppIntentPressureSurface
-|   +-- useConnectorInstallFlow.ts unused
+|   |   `-- -> useAppIntentPressureSurface
+|   +-- useConnectorInstallFlow.ts
 |   |   +-- getConnectorDef  <- @/engine/connectors/connectorRegistry
 |   |   +-- consumeDeferredPrompt, handleAddWidget, handleConnectSuccess, handleDismissPrompt, handlePlaceLater, SlotGrid  <- @/engine/connectors/installFlow
 |   |   +-- WidgetTypeDef  <- @/engine/widgets/widgetRegistry
@@ -13168,28 +12681,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> ConnectorInstallFlowOptions
 |   |   +-- -> ConnectorInstallFlowState
 |   |   +-- -> PlacementRequest
-|   |   +-- -> useConnectorInstallFlow
-|   |   `-- unused unused: ActivePrompt, ConnectorInstallFlowActions, ConnectorInstallFlowOptions, ConnectorInstallFlowState, PlacementRequest
-|   +-- useDreamLayout.ts unused
+|   |   `-- -> useConnectorInstallFlow
+|   +-- useDreamLayout.ts
 |   |   +-- getOfflineRecord, putOfflineRecord  <- @/engine/offline/offlineCache
 |   |   +-- enqueueFetchMutation  <- @/engine/runtime/offlineQueue
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- -> UserDreamLayout
-|   |   +-- -> useDreamLayout
-|   |   `-- unused unused: UserDreamLayout
-|   +-- useHideOnScroll.ts unused
+|   |   `-- -> useDreamLayout
+|   +-- useHideOnScroll.ts
 |   |   +-- useEffect, useRef, useState  <- react
-|   |   +-- -> useHideOnScroll
-|   |   `-- unused unused: useHideOnScroll
-|   +-- useMotionTilt.ts unused
+|   |   `-- -> useHideOnScroll
+|   +-- useMotionTilt.ts
 |   |   +-- MotionProps  <- framer-motion
 |   |   +-- useMotionTemplate, useMotionValue, useSpring, useTransform  <- framer-motion
 |   |   +-- useRef  <- react
 |   |   +-- -> MotionTiltOptions
 |   |   +-- -> MotionTiltResult
-|   |   +-- -> useMotionTilt
-|   |   `-- unused unused: MotionTiltOptions, MotionTiltResult
-|   +-- useResponsive.ts ! unused
+|   |   `-- -> useMotionTilt
+|   +-- useResponsive.ts !
 |   |   +-- useEffect, useState, useSyncExternalStore  <- react
 |   |   +-- BREAKPOINTS, Breakpoint, fluid, getBreakpoint, isAtLeast, isBelow, pickByBreakpoint, readViewportWidth  ! ../ui/responsive
 |   |   +-- readInteractiveViewportHeight, readInteractiveViewportWidth  <- @/components/ui-system/runtimeViewport
@@ -13203,41 +12712,35 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> useIsMobile
 |   |   +-- -> useIsTablet
 |   |   +-- -> useMediaQuery
-|   |   +-- -> useViewport
-|   |   `-- unused unused: getCurrentViewportWidth, useBreakpoint, useBreakpointValue, useFluid, useIsAtLeast, useIsBelow, useIsDesktop, useIsMobile, useIsTablet, useMediaQuery, useViewport
-|   +-- useSharedDream.ts unused
+|   |   `-- -> useViewport
+|   +-- useSharedDream.ts
 |   |   +-- generateInviteLink  <- @/engine/collaboration/index
 |   |   +-- broadcastControlSignal, broadcastCursorPosition, broadcastDataPacket, broadcastEdit, broadcastMediaSync, broadcastModeChange, broadcastPresenceUpdate, broadcastStatePatch, createSharedDreamSession, leaveSharedDreamSession, DreamBroadcastPayload, DreamEventHandler, DreamPresenceUpdate, DreamSessionMode, DreamSessionRole, SharedDreamSession  <- @/engine/sharedDream
 |   |   +-- createClient  <- @/supabase/client/client
 |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   +-- -> PeerState
 |   |   +-- -> UseSharedDreamReturn
-|   |   +-- -> useSharedDream
-|   |   `-- unused unused: PeerState, UseSharedDreamReturn
-|   +-- useTap.ts unused
+|   |   `-- -> useSharedDream
+|   +-- useTap.ts
 |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   +-- -> UseHomeParticleTapOptions
 |   |   +-- -> UseHomeParticleTapResult
 |   |   +-- -> UseTapOptions
 |   |   +-- -> UseTapResult
 |   |   +-- -> useHomeParticleTap
-|   |   +-- -> useTap
-|   |   `-- unused unused: UseHomeParticleTapOptions, UseHomeParticleTapResult, UseTapOptions, UseTapResult, useHomeParticleTap, useTap
-|   +-- useTapHoldMove.ts unused
+|   |   `-- -> useTap
+|   +-- useTapHoldMove.ts
 |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   +-- ModuleManifest, RuntimeId  <- @/engine/editor/universalEditor
 |   |   +-- canTransfer  <- @/engine/editor/universalEditor
 |   |   +-- -> UseTapHoldMoveOptions
-|   |   +-- -> useTapHoldMove
-|   |   `-- unused unused: UseTapHoldMoveOptions
-|   +-- useTick.ts unused
+|   |   `-- -> useTapHoldMove
+|   +-- useTick.ts
 |   |   +-- useCallback, useRef  <- react
-|   |   +-- -> useTick
-|   |   `-- unused unused: useTick
-|   `-- useViewCounter.ts unused
+|   |   `-- -> useTick
+|   `-- useViewCounter.ts
 |       +-- useEffect, useRef  <- react
-|       +-- -> useViewCounter
-|       `-- unused unused: useViewCounter
+|       `-- -> useViewCounter
 +-- misc
 +-- optimizer
 |   +-- babylon-optimizero.ts
@@ -13268,15 +12771,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- CreativeOption, CreativeValidationResult, HardFailureReason  <- ./types
 |   |   +-- (default)  <- "]s*[
 |   |   `-- -> validateCreativeOption
-|   +-- index.ts unused
+|   +-- index.ts
 |   |   +-- ConstraintSolver  <- ./constraint-solver
 |   |   +-- validateCreativeOption  <- ./creative-validator
 |   |   +-- Asset, Constraint, CreativeContext, CreativeOptimizerResult, CreativeOption, CreativeScore, FeedItem, Notification, OptimizationItem, OptimizerConfig, QueuedAction, RankedCreativeOption, RankedItem, RuntimeContext, SearchResult, WidgetPriority, HardFailureReason  <- ./types
 |   |   +-- ConstraintSolver  <- ./constraint-solver
 |   |   +-- *  <- ./types
 |   |   +-- -> ConstraintSolver
-|   |   +-- -> DreamOptimizer
-|   |   `-- unused unused: ConstraintSolver
+|   |   `-- -> DreamOptimizer
 |   `-- types.ts
 |       +-- -> Asset
 |       +-- -> Constraint
@@ -13327,43 +12829,34 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 +-- src
 |   `-- engin
 |       `-- generated
-|           +-- brain.ts unused
+|           +-- brain.ts
 |           |   +-- -> BrainMap
-|           |   +-- -> brain
-|           |   `-- unused unused: BrainMap
-|           +-- cartridges.ts unused
+|           |   `-- -> brain
+|           +-- cartridges.ts
 |           |   +-- -> CartridgesMap
-|           |   +-- -> cartridges
-|           |   `-- unused unused: CartridgesMap
-|           +-- connectors.ts unused
+|           |   `-- -> cartridges
+|           +-- connectors.ts
 |           |   +-- -> ConnectorsMap
-|           |   +-- -> connectors
-|           |   `-- unused unused: ConnectorsMap
-|           +-- dreamdmbar.ts unused user-facing
+|           |   `-- -> connectors
+|           +-- dreamdmbar.ts
 |           |   +-- -> DreamdmbarMap
-|           |   +-- -> dreamdmbar
-|           |   `-- unused unused: DreamdmbarMap
-|           +-- dreamr.ts unused user-facing
+|           |   `-- -> dreamdmbar
+|           +-- dreamr.ts
 |           |   +-- -> DreamrMap
-|           |   +-- -> dreamr
-|           |   `-- unused unused: DreamrMap
-|           +-- dreamsurfaces.ts unused
+|           |   `-- -> dreamr
+|           +-- dreamsurfaces.ts
 |           |   +-- -> DreamsurfacesMap
-|           |   +-- -> dreamsurfaces
-|           |   `-- unused unused: DreamsurfacesMap
-|           +-- engins.ts unused
+|           |   `-- -> dreamsurfaces
+|           +-- engins.ts
 |           |   +-- -> EnginsMap
-|           |   +-- -> engins
-|           |   `-- unused unused: EnginsMap
-|           +-- homedream.ts unused
+|           |   `-- -> engins
+|           +-- homedream.ts
 |           |   +-- -> HomedreamMap
-|           |   +-- -> homedream
-|           |   `-- unused unused: HomedreamMap
-|           +-- hooks.ts unused
+|           |   `-- -> homedream
+|           +-- hooks.ts
 |           |   +-- -> HooksMap
-|           |   +-- -> hooks
-|           |   `-- unused unused: HooksMap
-|           +-- index.ts unused
+|           |   `-- -> hooks
+|           +-- index.ts
 |           |   +-- engins  <- ./engins
 |           |   +-- rulesets  <- ./rulesets
 |           |   +-- surfaces  <- ./surfaces
@@ -13390,8 +12883,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |           |   +-- -> osArchitectureMap
 |           |   +-- -> osArchitectureStageEntries
 |           |   +-- -> osGeneratedRouters
-|           |   +-- -> osSlotCounts
-|           |   `-- unused unused: OsArchitectureGraph, OsArchitectureMap, OsArchitectureStageEntries, OsGeneratedRouters, OsSlotCounts, hydrateEngineRegistry, osArchitectureFlow, osArchitectureGraph, osArchitectureMap, osArchitectureStageEntries, osGeneratedRouters, osSlotCounts
+|           |   `-- -> osSlotCounts
 |           +-- osArchitectureMap.ts
 |           |   +-- -> OsArchitectureGraph
 |           |   +-- -> OsArchitectureMap
@@ -13404,28 +12896,24 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |           |   +-- -> osArchitectureStageEntries
 |           |   +-- -> osGeneratedRouters
 |           |   `-- -> osSlotCounts
-|           +-- personas.ts unused
+|           +-- personas.ts
 |           |   +-- -> PersonasMap
-|           |   +-- -> personas
-|           |   `-- unused unused: PersonasMap
-|           +-- rulesets.ts unused
+|           |   `-- -> personas
+|           +-- rulesets.ts
 |           |   +-- -> RulesetsMap
-|           |   +-- -> rulesets
-|           |   `-- unused unused: RulesetsMap
-|           +-- surfaces.ts unused
+|           |   `-- -> rulesets
+|           +-- surfaces.ts
 |           |   +-- -> SurfacesMap
-|           |   +-- -> surfaces
-|           |   `-- unused unused: SurfacesMap
-|           `-- systems.ts unused
+|           |   `-- -> surfaces
+|           `-- systems.ts
 |               +-- -> SystemsMap
-|               +-- -> systems
-|               `-- unused unused: SystemsMap
-+-- styles  [Settings / Customization]
-|   +-- dream-shell.css user-facing
-|   +-- globals.css user-facing
-|   +-- home-dream.css user-facing
-|   +-- theme.css user-facing
-|   `-- view-transitions.css user-facing
+|               `-- -> systems
++-- styles  [Settings / Customization] 🗂 FEATURE_FOLDER
+|   +-- dream-shell.css
+|   +-- globals.css
+|   +-- home-dream.css
+|   +-- theme.css
+|   `-- view-transitions.css
 +-- supabase  [Supabase / Database]
 |   +-- .temp  [Supabase / Database]
 |   |   +-- cli-latest
@@ -13446,11 +12934,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   |   +-- createBrowserClient  <- @supabase/ssr
 |   |   |   +-- SUPABASE_CONFIG  <- ../config
 |   |   |   `-- -> createClient
-|   |   `-- safeGetUser.ts unused
+|   |   `-- safeGetUser.ts
 |   |       +-- SupabaseClient, User  <- @supabase/supabase-js
 |   |       +-- -> AUTH_GET_USER_TIMEOUT_MS
-|   |       +-- -> safeGetUser
-|   |       `-- unused unused: AUTH_GET_USER_TIMEOUT_MS
+|   |       `-- -> safeGetUser
 |   +-- migrations  [Supabase / Database]
 |   |   +-- 20240120000000_initial_schema.sql
 |   |   +-- 20240120000001_enable_rls.sql
@@ -13494,7 +12981,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- 20260402000002_game_assets.sql
 |   |   +-- 20260403000001_pgvector_embeddings.sql
 |   |   +-- 20260403000002_pgvector_search_rpc.sql
-|   |   +-- 20260405000001_dreamr_feed_registry.sql user-facing
+|   |   +-- 20260405000001_dreamr_feed_registry.sql
 |   |   +-- 20260405042406_auto_scaffold.sql
 |   |   +-- 20260413000000_phase9_activity_first_protocol.sql
 |   |   +-- 20260417000000_repurpose_nods_as_dream_docs.sql
@@ -13505,7 +12992,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- 20260426000100_rename_widgets_to_dreams.sql
 |   |   +-- 20260426000200_build_memory_schema_gaps.sql
 |   |   +-- 20260516000000_agent_sessions_forge_rate_limits.sql
-|   |   +-- 20260516000100_dreamr_tally.sql user-facing
+|   |   +-- 20260516000100_dreamr_tally.sql
 |   |   +-- 20260516000300_shared_dream_sessions.sql
 |   |   +-- 20260605015234_auto_scaffold.sql
 |   |   +-- 20260619000000_renderengin_assets_rls.sql
@@ -13527,7 +13014,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> buildAuthCallbackUrl
 |   |   +-- -> getServerSiteOrigin
 |   |   `-- -> getSupabaseAuthCallbackUrl
-|   +-- realtime.ts unused
+|   +-- realtime.ts
 |   |   +-- RealtimeChannel, SupabaseClient  <- @supabase/supabase-js
 |   |   +-- -> DreamRHandle
 |   |   +-- -> DreamRPulse
@@ -13541,11 +13028,10 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   |   +-- -> PresenceTracker
 |   |   +-- -> subscribeDreamR
 |   |   +-- -> subscribeLiveMessages
-|   |   +-- -> trackPresence
-|   |   `-- unused unused: DreamRHandle, DreamRPulse, DreamRSubscribeOptions, LiveMessage, LiveMessageHandle, LiveMessageSubscribeOptions, PresencePayload, PresenceState, PresenceStatus, PresenceTracker, subscribeDreamR, subscribeLiveMessages, trackPresence
+|   |   `-- -> trackPresence
 |   +-- schema-final.sql
 |   +-- seed.sql
-|   `-- vector.ts unused
+|   `-- vector.ts
 |       +-- SupabaseClient  <- @supabase/supabase-js
 |       +-- toErrorMessage  <- @/utils/index
 |       +-- -> ConsensusOutcome
@@ -13560,8 +13046,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |       +-- -> deriveConsensus
 |       +-- -> logTriadConsensus
 |       +-- -> searchSimilar
-|       +-- -> upsertEmbedding
-|       `-- unused unused: ConsensusOutcome, ContentEmbeddingRow, EmbeddableContentType, LogConsensusParams, SimilarityResult, SimilaritySearchParams, TriadVote, UpsertEmbeddingParams, deleteEmbedding, deriveConsensus, logTriadConsensus, searchSimilar, upsertEmbedding
+|       `-- -> upsertEmbedding
 +-- types
 |   +-- ads.ts
 |   |   +-- -> AdListing
@@ -13830,15 +13315,14 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- supabase  [Supabase / Database]
 |   |   `-- server.ts
 |   |       `-- -> createClient
-|   `-- index.ts unused
+|   `-- index.ts
 |       +-- ClassValue, clsx  <- clsx
 |       +-- -> clamp
 |       +-- -> cn
 |       +-- -> debounce
 |       +-- -> isError
 |       +-- -> sleep
-|       +-- -> throttle
-|       `-- unused unused: clamp, debounce, isError, sleep, throttle
+|       `-- -> throttle
 +-- _manifest.json
 +-- .cursorrules
 +-- .env.example
@@ -13857,7 +13341,7 @@ Legend: ! unresolved import  unused export  user-facing page/route/feature/compo
 |   +-- (require)  <- ts-morph
 |   +-- (default)  <- "][^
 |   `-- DatabaseIcon  <- lucide-react
-+-- fix-repo.cjs ! unused
++-- fix-repo.cjs !
 |   +-- (require)  <- node:fs
 |   +-- (require)  <- node:path
 |   +-- (require)  <- node:child_process
@@ -13878,18 +13362,16 @@ function checkUseDualRuntimeDuplicate(){
   }
 
   warn(
-|   +-- -> useDualRuntime
-|   `-- unused unused: useDualRuntime
+|   `-- -> useDualRuntime
 +-- LICENSE
 +-- next-env.d.ts !
 |   `-- (side-effect)  ! ./.next/types/routes.d.ts
 +-- next.config.mjs
 |   `-- -> (default)
 +-- package.json
-+-- playwright.config.ts unused
++-- playwright.config.ts
 |   +-- defineConfig, devices  <- @playwright/test
-|   +-- -> (default)
-|   `-- unused unused: (default)
+|   `-- -> (default)
 +-- pnpm-lock.yaml
 +-- pnpm-workspace.yaml
 +-- postcss.config.js
@@ -13903,11 +13385,10 @@ function checkUseDualRuntimeDuplicate(){
 |   +-- safeGetUser  <- @/supabase/client/safeGetUser
 |   +-- -> config
 |   `-- -> proxy
-+-- supabaseClient.ts unused
++-- supabaseClient.ts
 |   +-- createClient  <- @supabase/supabase-js
 |   +-- Database  <- ./types/supabase
-|   +-- -> supabase
-|   `-- unused unused: supabase
+|   `-- -> supabase
 +-- tailwind.config.ts
 +-- tailwindcss-animate.d.ts
 |   `-- (dynamic import)  <- tailwindcss
@@ -13921,9 +13402,8 @@ function checkUseDualRuntimeDuplicate(){
 +-- tsconfig.tsbuildinfo
 +-- tsconfig.worker.json
 +-- vercel.json
-`-- vitest.config.ts unused
+`-- vitest.config.ts
     +-- (default)  <- path
     +-- defineConfig  <- vitest/config
-    +-- -> (default)
-    `-- unused unused: (default)
+    `-- -> (default)
 ```
