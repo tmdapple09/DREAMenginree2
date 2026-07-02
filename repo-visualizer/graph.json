@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T12:53:50.055Z",
+  "generatedAt": "2026-07-02T17:09:28.757Z",
   "root": ".",
   "nodes": [
     {
@@ -67975,7 +67975,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 277,
+      "loc": 288,
       "isOrphan": true,
       "exported": false
     },
@@ -67985,7 +67985,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 281,
+      "loc": 292,
       "isOrphan": true,
       "exported": false
     },
@@ -67995,7 +67995,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 287,
+      "loc": 298,
       "isOrphan": true,
       "exported": false
     },
@@ -68005,7 +68005,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 291,
+      "loc": 302,
       "isOrphan": true,
       "exported": false
     },
@@ -68015,7 +68015,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 295,
+      "loc": 306,
       "isOrphan": true,
       "exported": false
     },
@@ -68025,7 +68025,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 299,
+      "loc": 310,
       "isOrphan": true,
       "exported": false
     },
@@ -68035,7 +68035,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 322,
+      "loc": 333,
       "isOrphan": true,
       "exported": false
     },
@@ -68045,7 +68045,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 330,
+      "loc": 341,
       "isOrphan": true,
       "exported": false
     },
@@ -68055,7 +68055,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 334,
+      "loc": 345,
       "isOrphan": true,
       "exported": false
     },
@@ -68065,7 +68065,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 341,
+      "loc": 352,
       "isOrphan": true,
       "exported": false
     },
@@ -68075,7 +68075,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 348,
+      "loc": 359,
       "isOrphan": true,
       "exported": false
     },
@@ -68085,7 +68085,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 352,
+      "loc": 363,
       "isOrphan": true,
       "exported": false
     },
@@ -68095,7 +68095,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 356,
+      "loc": 367,
       "isOrphan": true,
       "exported": false
     },
@@ -68105,7 +68105,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 360,
+      "loc": 371,
       "isOrphan": true,
       "exported": false
     },
@@ -68115,7 +68115,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 364,
+      "loc": 375,
       "isOrphan": true,
       "exported": false
     },
@@ -68125,7 +68125,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 368,
+      "loc": 379,
       "isOrphan": true,
       "exported": false
     },
@@ -68135,7 +68135,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 372,
+      "loc": 383,
       "isOrphan": true,
       "exported": false
     },
@@ -68145,7 +68145,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 376,
+      "loc": 387,
       "isOrphan": true,
       "exported": false
     },
@@ -68155,7 +68155,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 380,
+      "loc": 391,
       "isOrphan": true,
       "exported": false
     },
@@ -68165,7 +68165,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 384,
+      "loc": 395,
       "isOrphan": true,
       "exported": false
     },
@@ -68175,7 +68175,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 388,
+      "loc": 399,
       "isOrphan": true,
       "exported": false
     },
@@ -68185,7 +68185,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 396,
+      "loc": 407,
       "isOrphan": true,
       "exported": false
     },
@@ -68195,7 +68195,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 401,
+      "loc": 412,
       "isOrphan": true,
       "exported": false
     },
@@ -68205,7 +68205,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 409,
+      "loc": 420,
       "isOrphan": true,
       "exported": false
     },
@@ -68215,7 +68215,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 441,
+      "loc": 452,
       "isOrphan": true,
       "exported": false
     },
@@ -68225,7 +68225,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 474,
+      "loc": 485,
       "isOrphan": true,
       "exported": false
     },
@@ -68235,7 +68235,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 521,
+      "loc": 532,
       "isOrphan": true,
       "exported": false
     },
@@ -68245,7 +68245,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 527,
+      "loc": 538,
       "isOrphan": true,
       "exported": false
     },
@@ -68255,7 +68255,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 533,
+      "loc": 544,
       "isOrphan": true,
       "exported": false
     },
@@ -68265,7 +68265,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 539,
+      "loc": 550,
       "isOrphan": true,
       "exported": false
     },
@@ -68275,7 +68275,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 579,
+      "loc": 590,
       "isOrphan": true,
       "exported": false
     },
@@ -68285,7 +68285,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 584,
+      "loc": 595,
       "isOrphan": true,
       "exported": false
     },
@@ -68295,7 +68295,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 618,
+      "loc": 629,
       "isOrphan": true,
       "exported": false
     },
@@ -68305,7 +68305,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 698,
+      "loc": 709,
       "isOrphan": true,
       "exported": false
     },
@@ -68315,7 +68315,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 702,
+      "loc": 713,
       "isOrphan": true,
       "exported": false
     },
@@ -68325,7 +68325,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 706,
+      "loc": 717,
       "isOrphan": true,
       "exported": false
     },
@@ -68335,7 +68335,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 727,
+      "loc": 738,
       "isOrphan": true,
       "exported": false
     },
@@ -68345,7 +68345,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 740,
+      "loc": 751,
       "isOrphan": true,
       "exported": false
     },
@@ -68355,7 +68355,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 755,
+      "loc": 766,
       "isOrphan": true,
       "exported": false
     },
@@ -68365,7 +68365,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 797,
+      "loc": 808,
       "isOrphan": true,
       "exported": false
     },
@@ -68375,7 +68375,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 801,
+      "loc": 812,
       "isOrphan": true,
       "exported": false
     },
@@ -68385,7 +68385,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 821,
+      "loc": 832,
       "isOrphan": true,
       "exported": false
     },
@@ -68395,7 +68395,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 847,
+      "loc": 858,
       "isOrphan": true,
       "exported": false
     },
@@ -68405,7 +68405,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 863,
+      "loc": 874,
       "isOrphan": true,
       "exported": false
     },
@@ -68415,7 +68415,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 867,
+      "loc": 878,
       "isOrphan": true,
       "exported": false
     },
@@ -68425,7 +68425,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 871,
+      "loc": 882,
       "isOrphan": true,
       "exported": false
     },
@@ -68435,7 +68435,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 875,
+      "loc": 886,
       "isOrphan": true,
       "exported": false
     },
@@ -68445,7 +68445,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 879,
+      "loc": 890,
       "isOrphan": true,
       "exported": false
     },
@@ -68455,7 +68455,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 883,
+      "loc": 894,
       "isOrphan": true,
       "exported": false
     },
@@ -68465,7 +68465,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 887,
+      "loc": 898,
       "isOrphan": true,
       "exported": false
     },
@@ -68475,7 +68475,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 916,
+      "loc": 927,
       "isOrphan": true,
       "exported": false
     },
@@ -68485,7 +68485,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 926,
+      "loc": 937,
       "isOrphan": true,
       "exported": false
     },
@@ -68495,7 +68495,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 939,
+      "loc": 950,
       "isOrphan": true,
       "exported": false
     },
@@ -68505,7 +68505,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 954,
+      "loc": 965,
       "isOrphan": true,
       "exported": false
     },
@@ -68515,7 +68515,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 966,
+      "loc": 977,
       "isOrphan": true,
       "exported": false
     },
@@ -68525,7 +68525,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 985,
+      "loc": 996,
       "isOrphan": true,
       "exported": false
     },
@@ -68535,7 +68535,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1010,
+      "loc": 1021,
       "isOrphan": true,
       "exported": false
     },
@@ -68545,7 +68545,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1015,
+      "loc": 1026,
       "isOrphan": true,
       "exported": false
     },
@@ -68555,7 +68555,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1105,
+      "loc": 1116,
       "isOrphan": true,
       "exported": false
     },
@@ -68565,7 +68565,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1109,
+      "loc": 1120,
       "isOrphan": true,
       "exported": false
     },
@@ -68575,7 +68575,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1115,
+      "loc": 1126,
       "isOrphan": true,
       "exported": false
     },
@@ -68585,7 +68585,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1157,
+      "loc": 1168,
       "isOrphan": true,
       "exported": false
     },
@@ -68595,7 +68595,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1189,
+      "loc": 1200,
       "isOrphan": true,
       "exported": false
     },
@@ -68605,7 +68605,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1215,
+      "loc": 1226,
       "isOrphan": true,
       "exported": false
     },
@@ -68615,7 +68615,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1257,
+      "loc": 1268,
       "isOrphan": true,
       "exported": false
     },
@@ -68625,7 +68625,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1264,
+      "loc": 1275,
       "isOrphan": true,
       "exported": false
     },
@@ -68635,7 +68635,77 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1275,
+      "loc": 1286,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#featureHasDetectedFiles",
+      "label": "featureHasDetectedFiles",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1316,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#detectedUserFeatures",
+      "label": "detectedUserFeatures",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1321,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isNamedUserFeatureArea",
+      "label": "isNamedUserFeatureArea",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1325,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isNamedUserFeatureDirectory",
+      "label": "isNamedUserFeatureDirectory",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1329,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isUserFeatureApiRoute",
+      "label": "isUserFeatureApiRoute",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1340,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#isVisibleNamedComponent",
+      "label": "isVisibleNamedComponent",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1348,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-repo-state.mjs#getUserSurfaceMarkers",
+      "label": "getUserSurfaceMarkers",
+      "type": "function",
+      "path": "scripts/generate-repo-state.mjs",
+      "parent": "file:scripts/generate-repo-state.mjs",
+      "loc": 1366,
       "isOrphan": true,
       "exported": false
     },
@@ -68645,7 +68715,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1305,
+      "loc": 1403,
       "isOrphan": true,
       "exported": false
     },
@@ -68655,7 +68725,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1310,
+      "loc": 1408,
       "isOrphan": true,
       "exported": false
     },
@@ -68665,7 +68735,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1321,
+      "loc": 1419,
       "isOrphan": true,
       "exported": false
     },
@@ -68675,7 +68745,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1385,
+      "loc": 1483,
       "isOrphan": true,
       "exported": false
     },
@@ -68685,7 +68755,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1396,
+      "loc": 1494,
       "isOrphan": true,
       "exported": false
     },
@@ -68695,7 +68765,7 @@
       "type": "function",
       "path": "scripts/generate-repo-state.mjs",
       "parent": "file:scripts/generate-repo-state.mjs",
-      "loc": 1414,
+      "loc": 1512,
       "isOrphan": true,
       "exported": false
     },
