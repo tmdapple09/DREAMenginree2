@@ -1,44 +1,86 @@
 name: Update Repo State
+
 on:
   workflow_dispatch:
   push:
     paths:
-      # ── Core app surfaces ──────────────────────────────────────
+      # User-facing: pages, routes, named feature areas, and visible components with descriptive names.
       - "app/**"
-      - "dreamdmbar/**"
       - "coresurfaces/**"
       - "daydreams/**"
-      # ── Engines ───────────────────────────────────────────────
+      - "dreamdmbar/**"
+      - "dreamr/**"
+
+      # Runtime / engines
+      - "engine/**"
       - "engins/**"
-      # ── UI layer ──────────────────────────────────────────────
+      - "assembly/**"
+
+      # UI / assets
       - "components/**"
       - "styles/**"
-      # ── Logic / runtime ───────────────────────────────────────
-      - "lib/**"
+      - "fonts/**"
+      - "public/**"
+
+      # Shared logic
       - "hooks/**"
       - "src/**"
       - "utils/**"
-      # ── AI / agents ───────────────────────────────────────────
+      - "types/**"
+
+      # Backend / data
+      - "supabase/**"
+      - "supabaseClient.ts"
+      - "proxy.ts"
+
+      # AI / agents
       - "agents/**"
       - "dr-eams/**"
       - "build-memory/**"
-      # ── Runtime infra ─────────────────────────────────────────
-      - "assembly/**"
+
+      # Tooling / tests
+      - ".github/**"
+      - ".ci/**"
+      - "scripts/**"
+      - "tests/**"
       - "optimizer/**"
-      - "workflow/**"
+      - "repo-visualizer/**"
       - "config/**"
       - "misc/**"
-      # ── Tests & scripts ───────────────────────────────────────
-      - "tests/**"
-      - "scripts/**"
-      # ── Types ─────────────────────────────────────────────────
-      - "types/**"
-      # ── Root-level files ──────────────────────────────────────
+
+      # Docs / research
+      - "docs/**"
+      - "research/**"
+      - "research-and-development/**"
+      - "*.md"
+
+      # Root build / config
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "next.config.mjs"
+      - "eslint.config.mjs"
+      - "tailwind.config.ts"
+      - "postcss.config.*"
+      - "tsconfig*.json"
+      - "vercel.json"
+      - "vitest.config.ts"
+      - "playwright.config.ts"
       - "*.json"
+      - "*.js"
+      - "*.cjs"
+      - "*.mjs"
       - "*.ts"
       - "*.tsx"
-      - "*.js"
-      - "*.mjs"
+      - "*.toml"
+      - "*.yml"
+      - "*.yaml"
+      - ".env.example"
+      - ".env.local.example"
+      - ".gitignore"
+      - ".gitleaks.toml"
+      - ".cursorrules"
+      - "LICENSE"
 
 permissions:
   contents: write
