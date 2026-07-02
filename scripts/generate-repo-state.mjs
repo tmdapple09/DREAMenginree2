@@ -902,9 +902,7 @@ function loadTsconfigPaths() {
         if (!Array.isArray(targets)) continue;
         for (const targetPattern of targets) mappings.push({ aliasPattern, targetPattern, baseUrl });
       }
-    } catch {
-      
-    }
+    } catch {}
   }
 
   if (!mappings.some((mapping) => mapping.aliasPattern === "@/*")) {
@@ -1262,17 +1260,6 @@ function matchGlobs(file, globs) {
   });
 }
 
-function groupByDir(files, depth = 3) {
-  const byDir = {};
-  for (const file of files.sort()) {
-    const parts = file.split("/");
-    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
-    if (!byDir[dir]) byDir[dir] = [];
-    byDir[dir].push(file);
-  }
-  return byDir;
-}
-
 function getFeatureFiles(feature) {
   const code = codeFiles.filter((file) => !isTestFile(file) && matchGlobs(file, feature.globs));
   const pages = code.filter(isPageFile);
@@ -1301,6 +1288,44 @@ function getFeatureFiles(feature) {
     contextFiles: code.filter((file) => fileData[file]?.usesContext),
     registryFiles: code.filter((file) => fileData[file]?.usesRuntimeRegistry),
   };
+}
+
+function featureHasDetectedFiles(feature) {
+  const data = getFeatureFiles(feature);
+  return Boolean(data.code.length || data.pages.length || data.apis.length || data.types.length || data.styles.length);
+}
+
+function isNamedUserFeatureArea(file) {
+  return FEATURES.some((feature) => feature.group === "user" && matchGlobs(file, feature.globs));
+}
+
+function isVisibleNamedComponent(file) {
+  if (!file.startsWith("components/")) return false;
+  const data = fileData[file];
+  if (!data?.isReactComponent) return false;
+
+  const name = path.posix.basename(file).replace(/\.(tsx|jsx)$/, "");
+  return /^[A-Z][A-Za-z0-9]*(?:[A-Z][A-Za-z0-9]*)*$/.test(name) || name.includes(".");
+}
+
+function isUserFacingFile(file) {
+  return Boolean(
+    isPageFile(file) ||
+      isRouteHandlerFile(file) ||
+      isNamedUserFeatureArea(file) ||
+      isVisibleNamedComponent(file)
+  );
+}
+
+function groupByDir(files, depth = 3) {
+  const byDir = {};
+  for (const file of files.sort()) {
+    const parts = file.split("/");
+    const dir = parts.slice(0, Math.min(depth, Math.max(1, parts.length - 1))).join("/");
+    if (!byDir[dir]) byDir[dir] = [];
+    byDir[dir].push(file);
+  }
+  return byDir;
 }
 
 function renderListOrEmpty(items, emptyText) {
@@ -1429,6 +1454,7 @@ function buildTreeString({ detailed = false } = {}) {
         const issues = fileIssues[relPath];
         if (issues?.hasBrokenImports) issueMarkers += " !";
         if (issues?.hasUnusedExports) issueMarkers += " unused";
+        if (isUserFacingFile(relPath)) issueMarkers += " user-facing";
       }
 
       output += `${prefix}${isLast ? "`--" : "+--"} ${entry.name}${issueMarkers}${annotation}\n`;
@@ -1467,14 +1493,16 @@ function buildTreeString({ detailed = false } = {}) {
 }
 
 let md = "";
-const userFeatures = FEATURES.filter((feature) => feature.group === "user");
-const systemFeatures = FEATURES.filter((feature) => feature.group === "system");
+const detectedFeatures = FEATURES.filter(featureHasDetectedFiles);
+const userFeatures = detectedFeatures.filter((feature) => feature.group === "user");
+const systemFeatures = detectedFeatures.filter((feature) => feature.group === "system");
 const unresolvedCount = Object.values(unresolvedImports).reduce((sum, items) => sum + items.length, 0);
 const unusedCount = Object.values(unusedExports).reduce((sum, items) => sum + items.length, 0);
 
 md += "# DREAMengin Repository State\n\n";
 md += `Generated: ${new Date().toISOString()}\n\n`;
 md += `Model: capability nodes + files as edges.\n\n`;
+md += "User-facing: pages, routes, named feature areas, and visible components with descriptive names. Only paths detected in the file tree are included; absent paths are not added.\n\n";
 md += `- Capability nodes: ${capabilityNodes.size}\n`;
 md += `- File edges: ${fileEdges.length}\n`;
 md += `- Routes: ${buildRouteMap(reportFiles).length}\n`;
@@ -1583,7 +1611,7 @@ md += "\n---\n\n";
 md += `<a name="raw-tree"></a>\n\n`;
 md += "# Raw File Tree\n\n";
 md += "```text\n";
-md += "Legend: ! unresolved import  unused export\n\n";
+md += "Legend: ! unresolved import  unused export  user-facing page/route/feature/component\n\n";
 md += buildTreeString({ detailed: false });
 md += "```\n";
 
@@ -1593,7 +1621,7 @@ console.log("OK REPO_STATE.md written");
 let treeMd = "";
 treeMd += "# File Tree\n\n";
 treeMd += `Generated: ${new Date().toISOString()}\n\n`;
-treeMd += "Legend: ! unresolved import  unused export\n\n";
+treeMd += "Legend: ! unresolved import  unused export  user-facing page/route/feature/component\n\n";
 treeMd += "```text\n";
 treeMd += buildTreeString({ detailed: true });
 treeMd += "```\n";
