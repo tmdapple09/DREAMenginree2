@@ -1,13 +1,13 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-01T11:23:51.291Z
+Generated: 2026-07-02T07:11:04.796Z
 
 Model: capability nodes + files as edges.
 
-- Capability nodes: 11581
-- File edges: 1593
+- Capability nodes: 11582
+- File edges: 1594
 - Routes: 113
-- Files analysed: 1593
+- Files analysed: 1594
 - Unresolved internal imports: 138 specifiers across 33 files
 - Unused exports: 2224 exports across 537 files
 
@@ -4275,6 +4275,7 @@ _No style files for this feature._
 - `data-transform.test.ts` - `tests/data-transform.test.ts`
 - `daydream-engin-routes.test.ts` - `tests/daydream-engin-routes.test.ts`
 - `decide-bar-release.test.ts` - `tests/decide-bar-release.test.ts`
+- `decode-zip-folders.mjs` - `scripts/decode-zip-folders.mjs`
 - `demo.spec.ts` - `tests/e2e/demo.spec.ts`
 - `dev-bypass.test.ts` - `tests/dev-bypass.test.ts`
 - `dr-eams-code-assist.test.ts` - `tests/dr-eams-code-assist.test.ts`
@@ -6321,6 +6322,7 @@ _No style files for this feature._
 | `scripts/check-root-hygiene.mjs` | `node:fs/promises`, `node:path`, `node:process`, `node:url` | `check-root-hygiene.mjs` |
 | `scripts/contentengin/generate-test-assets.mjs` | `node:child_process`, `node:fs/promises`, `node:path`, `node:util` | `generate-test-assets.mjs` |
 | `scripts/contentengin/validate-glb.mjs` | `node:fs` | `validate-glb.mjs` |
+| `scripts/decode-zip-folders.mjs` | `node:fs`, `node:path`, `node:zlib`, `node:crypto` | `decode-zip-folders.mjs` |
 | `scripts/export-full-code.mjs` | `node:fs/promises`, `node:path`, `node:url` | `DEFAULT_EXCLUDED_BASENAMES`, `DEFAULT_EXCLUDED_DIRS`, `collectExportableFiles`, `exportFullCodeSnapshot`, `hasPrintableContent`, `isProbablyTextBuffer` |
 | `scripts/feature-build/generate-features.mjs` | `fs`, `path`, `url` | `generate-features.mjs` |
 | `scripts/fix-audit.js` | `fs`, `path`, `glob`, `lucide-react` | `fix-audit.js` |
