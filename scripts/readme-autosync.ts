@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { execSync } from "node:child_process";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -1222,37 +1223,923 @@ function writeJson(filePath: string, value: unknown): void {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-function runCli(): void {
-  const args = parseArgs(process.argv.slice(2));
-  const changedFilesPath = String(args["changed-files"] || "");
-  const sectionsFile = String(args["sections-file"] || "");
-  const markdownFile = String(args["markdown-file"] || "");
-  const maxLines = args["max-lines"] ? Number(args["max-lines"]) : undefined;
 
-  if (!changedFilesPath) {
-    throw new Error("Missing required --changed-files path.");
+type ReadmeSummary = {
+  readmeChanged: boolean;
+  lineBudget: number;
+  lineCount: number;
+  productSections: ProductSectionStats[];
+  trackedFiles: number;
+};
+
+const ROOT = process.cwd();
+const README_PATH = path.join(ROOT, "README.md");
+const README_SKIP_DIRS = new Set([
+  ".git",
+  ".next",
+  ".turbo",
+  ".vercel",
+  "node_modules",
+  "coverage",
+  "dist",
+  "out",
+  "playwright-report",
+  "test-results",
+  "build-memory",
+]);
+const README_MEDIA_RE = /\.(png|jpe?g|gif|webp|mp4|mov|webm|avi|mkv|mp3|wav|ogg|flac|wasm|zip|gz|tar|pdf|ttf|otf|woff2?|ico)$/i;
+
+const AI_CTX_START = "<!-- DREAMENGIN-AI-CONTEXT:START -->";
+const AI_CTX_END = "<!-- DREAMENGIN-AI-CONTEXT:END -->";
+const FS_START = "<!-- FILE-STRUCTURE:START -->";
+const FS_END = "<!-- FILE-STRUCTURE:END -->";
+const MAX_RECENT_CHANGE_ROWS = 10;
+const DOC_OWNER = "JosÃ© Mancilla (appthemanger-ctrl)";
+
+function readListFromPath(filePath?: string): string[] {
+  if (!filePath) return [];
+  const abs = path.resolve(filePath);
+  if (!fs.existsSync(abs)) return [];
+
+  return fs
+    .readFileSync(abs, "utf8")
+    .split(/\r?\n/g)
+    .map((line) => normalizePath(line.trim()))
+    .filter(Boolean);
+}
+
+function walkRepo(dir: string): string[] {
+  const out: string[] = [];
+
+  for (const entry of fs.readdirSync(dir)) {
+    if (README_SKIP_DIRS.has(entry)) continue;
+
+    const full = path.join(dir, entry);
+    const stat = fs.statSync(full);
+
+    if (stat.isDirectory()) {
+      out.push(...walkRepo(full));
+    } else {
+      out.push(normalizePath(path.relative(ROOT, full)));
+    }
   }
 
-  const result = buildProductSections({
-    changedFilesPath,
-    maxLines,
+  return out;
+}
+
+function allRepoFiles(): string[] {
+  return walkRepo(ROOT).filter((file) => !README_MEDIA_RE.test(file));
+}
+
+function projectName(): string {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")) as { name?: string };
+    return pkg.name?.trim() || "DREAMengin";
+  } catch {
+    return "DREAMengin";
+  }
+}
+
+function projectVersion(): string {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")) as { version?: string };
+    return pkg.version?.trim() || "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+}
+
+function packageManager(): string {
+  if (fs.existsSync(path.join(ROOT, "pnpm-lock.yaml"))) return "pnpm";
+  if (fs.existsSync(path.join(ROOT, "package-lock.json"))) return "npm";
+  if (fs.existsSync(path.join(ROOT, "yarn.lock"))) return "yarn";
+  return "pnpm";
+}
+
+function packageScripts(): Record<string, string> {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")) as { scripts?: Record<string, string> };
+    return pkg.scripts ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function envExampleBlock(): string {
+  const envPath = fs.existsSync(path.join(ROOT, ".env.example"))
+    ? path.join(ROOT, ".env.example")
+    : path.join(ROOT, ".env.local.example");
+
+  if (!fs.existsSync(envPath)) return "```env\n# Add project environment variables here.\n```";
+
+  const lines = fs
+    .readFileSync(envPath, "utf8")
+    .split(/\r?\n/g)
+    .filter((line) => line.trim() && !line.trim().startsWith("#"))
+    .slice(0, 18);
+
+  if (!lines.length) return "```env\n# See .env.example for local configuration.\n```";
+
+  return ["```env", ...lines, "```"].join("\n");
+}
+
+function commandBlock(commands: string[]): string {
+  return ["```bash", ...commands, "```"].join("\n");
+}
+
+function slug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/&/g, "")
+    .replace(/[ââ]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+function buildFrontDoor(files: string[]): string {
+  const name = "DREAMengin";
+  const pkgName = projectName();
+  const version = projectVersion();
+  const pm = packageManager();
+  const scripts = packageScripts();
+  const hasDev = Boolean(scripts.dev);
+  const hasBuild = Boolean(scripts.build);
+  const hasLint = Boolean(scripts.lint);
+  const hasTypecheck = Boolean(scripts.typecheck || scripts["type-check"]);
+  const appRoutes = files.filter((file) => /^app\/.+\/page\.tsx?$/.test(file)).length;
+  const apiRoutes = files.filter((file) => /^app\/api\/.+\/route\.tsx?$/.test(file)).length;
+  const enginFiles = files.filter((file) => /^engins\//.test(file)).length;
+
+  return [
+    `# ${name}`,
+    "",
+    "> A capability-driven creative operating system for code, games, music, media, simulations, identity, commerce, communication, and shared Dreams.",
+    "",
+    `[![README Autosync](https://img.shields.io/badge/readme-manual%20autosync-blue)](.github/workflows/readme-autosync.yml)`,
+    `[![TypeScript](https://img.shields.io/badge/typescript-product%20code-blue)](tsconfig.json)`,
+    `[![Next.js](https://img.shields.io/badge/next.js-app%20router-black)](next.config.mjs)`,
+    `[![License](https://img.shields.io/badge/license-repo%20license-yellow)](LICENSE)`,
+    "",
+    "## 1. Project Overview",
+    "",
+    "### What is this?",
+    "",
+    "DREAMengin is a web-native creative operating system built around Engins, DayDreams, shared runtime state, communication, social discovery, commerce, and user-owned creative surfaces. It is not a set of isolated apps. It is one product where creative work can move between code, games, content, lab simulations, music, branding, shops, messaging, and social surfaces.",
+    "",
+    `This repository currently exposes about ${appRoutes} app pages, ${apiRoutes} API route files, and ${enginFiles} files under \`engins/\`. Package identity: \`${pkgName}\` at version \`${version}\`.`,
+    "",
+    "### Why would I use it?",
+    "",
+    "Use DREAMengin when you want a single product shell where creation, publishing, identity, communication, customization, selling, sharing, and runtime surfaces are connected instead of split across unrelated tools. Engins own domain behavior, DayDreams provide user-facing workspaces, and the runtime moves state, events, and context between them.",
+    "",
+    "The practical problem it solves is creative fragmentation. A user should be able to build, preview, discuss, publish, sell, share, customize, and return to work without leaving the ecosystem or rebuilding context manually.",
+    "",
+    "## 2. Getting Started",
+    "",
+    "### Prerequisites",
+    "",
+    "- Node.js 25 for parity with the repository workflow.",
+    "- pnpm, because the repo includes `pnpm-lock.yaml` and `pnpm-workspace.yaml`.",
+    "- Supabase environment values for authenticated/database-backed flows.",
+    "",
+    "### Installation",
+    "",
+    commandBlock([
+      "git clone <your-dreamengin-repo-url>",
+      "cd <your-dreamengin-repo>",
+      `${pm} install`,
+    ]),
+    "",
+    "## 3. Usage, Configuration & Project Notes",
+    "",
+    "### Usage",
+    "",
+    "Run the local web app:",
+    "",
+    commandBlock([hasDev ? `${pm} dev` : `${pm} start`]),
+    "",
+    "Common validation commands:",
+    "",
+    commandBlock([
+      hasBuild ? `${pm} build` : "# build script not declared in package.json",
+      hasLint ? `${pm} lint` : "# lint script not declared in package.json",
+      hasTypecheck ? `${pm} typecheck` : "# typecheck script not declared in package.json",
+      `${pm} tsx scripts/readme-autosync.ts --changed-files <all-files.txt> --summary-file <readme-summary.json> --max-lines 2800`,
+    ]),
+    "",
+    "Expected local result:",
+    "",
+    "```text",
+    "> Next.js starts the DREAMengin app locally.",
+    "> README generation rewrites README.md from the professional front door, AI context, recent changes, and product-section evidence.",
+    "```",
+    "",
+    "### Configuration",
+    "",
+    "Create a local environment file from the example values and fill in project-specific secrets.",
+    "",
+    commandBlock(["cp .env.example .env.local"]),
+    "",
+    envExampleBlock(),
+    "",
+    "### Documentation",
+    "",
+    "- `ARCHITECTURE.md` is the source of truth for system architecture.",
+    "- `FILE_TREE.md` is useful as an import/export map, but the README generator verifies against real files.",
+    "- `CONTENTenginSPEC.md`, `GameENGINspec.md`, and the core architecture documents explain major product areas in more depth.",
+    "",
+    "### Contributing",
+    "",
+    "Keep generated README edits reproducible. Change `scripts/readme-autosync.ts` instead of hand-editing generated product sections. Run the README workflow manually after major file moves, new Engins, new routes, or product-surface rewrites.",
+    "",
+    "### License",
+    "",
+    "See `LICENSE` for repository licensing details.",
+    "",
+    "### Acknowledgements",
+    "",
+    "DREAMengin is organized around the project architecture in `ARCHITECTURE.md` and the connected source code in `app/`, `engine/`, `engins/`, `components/`, `dreamdmbar/`, `dreamr/`, `daydreams/`, and the supporting system folders.",
+    "",
+    "## Table of Contents",
+    "",
+    "- [1. Project Overview](#1-project-overview)",
+    "- [2. Getting Started](#2-getting-started)",
+    "- [3. Usage, Configuration & Project Notes](#3-usage-configuration-project-notes)",
+    ...PRODUCT_SECTIONS.map((section) => `- [${section.number}. ${section.title}](#${slug(`${section.number}. ${section.title}`)})`),
+    "",
+  ].join("\n");
+}
+
+function git(cmd: string): string {
+  try {
+    return execSync(cmd, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch {
+    return "";
+  }
+}
+
+function countShell(cmd: string): number {
+  try {
+    return parseInt(execSync(cmd, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(), 10) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function cell(value: string): string {
+  return value.replace(/\|/g, "\\|").replace(/\n/g, " ");
+}
+
+function extractPnpmVersion(packageManagerValue: unknown): string | undefined {
+  if (typeof packageManagerValue !== "string") return undefined;
+  const match = packageManagerValue.match(/^pnpm@([0-9]+(?:\.[0-9]+){0,2})$/);
+  return match?.[1];
+}
+
+function extractNodeMajorFromDockerfile(dockerfileText: unknown): string | undefined {
+  if (typeof dockerfileText !== "string") return undefined;
+  const match = dockerfileText.match(/^\s*FROM\s+node:(\d+)(?:[^\n]*)$/m);
+  return match?.[1];
+}
+
+type ImplementationStatusOptions = {
+  utcDate: string;
+  sha: string;
+  actor: string;
+  routeCount: number;
+  pageCount: number;
+  apiCount: number;
+  testCount: number;
+  babylonMajor?: string;
+  pnpmVersion?: string;
+  nodeMajor?: string;
+};
+
+function refreshCurrentImplementationStatusSection(doc: string, options: ImplementationStatusOptions): string {
+  const heading = "## Current Implementation Status";
+  const sectionStart = doc.indexOf(heading);
+  const lastUpdatedItalicLine = `_Last updated: ${options.utcDate} â \`${options.sha}\` by ${options.actor}_`;
+  const italicLastUpdatedRe = /^_Last updated:[^\n]*_\n?/gm;
+
+  if (sectionStart === -1) {
+    const h1End = doc.indexOf("\n") + 1;
+    const head = doc.slice(0, h1End);
+    let rest = doc.slice(h1End);
+
+    rest = rest.replace(/(?:^_Last updated:[^\n]*_\n(?:\n)?)+/m, "");
+
+    const headerEnd = rest.search(/\n#{1,6} |\n<!--/);
+    if (headerEnd !== -1) {
+      const top = rest.slice(0, headerEnd).replace(italicLastUpdatedRe, "");
+      rest = top + rest.slice(headerEnd);
+    }
+
+    return head + `\n${lastUpdatedItalicLine}\n` + rest;
+  }
+
+  const nextH2 = doc.indexOf("\n## ", sectionStart + heading.length);
+  const sectionEnd = nextH2 === -1 ? doc.length : nextH2 + 1;
+  let section = doc.slice(sectionStart, sectionEnd);
+
+  const lastUpdatedLine = `Last updated: ${options.utcDate} â \`${options.sha}\` by ${options.actor}\n`;
+  section = section.replace(
+    /(## Current Implementation Status\n)(?:Last updated:[^\n]*\n)?/,
+    `$1${lastUpdatedLine}`
+  );
+
+  const buildStatusLine = `Build Status: ${options.routeCount} routes (${options.pageCount} pages + ${options.apiCount} API handlers) Â· ${options.testCount} test files`;
+  if (/^Build Status:.*$/m.test(section)) {
+    section = section.replace(/^Build Status:.*$/m, buildStatusLine);
+  }
+
+  if (options.babylonMajor) {
+    section = section.replace(
+      /- Babylon\.js \d+\+ \(WebGPU-first 3D rendering\)/g,
+      `- Babylon.js ${options.babylonMajor}+ (WebGPU-first 3D rendering)`
+    );
+  }
+
+  if (options.pnpmVersion) {
+    section = section.replace(/- pnpm [^\n]+/g, `- pnpm ${options.pnpmVersion}`);
+  }
+
+  if (options.nodeMajor) {
+    section = section.replace(/- Node [^\n]+/g, `- Node ${options.nodeMajor}`);
+  }
+
+  return doc.slice(0, sectionStart) + section + doc.slice(sectionEnd);
+}
+
+function buildFileStructure(): string {
+  const skip = new Set([
+    "node_modules",
+    ".next",
+    ".git",
+    "dist",
+    "out",
+    ".turbo",
+    "coverage",
+    ".vercel",
+    ".cache",
+    "__pycache__",
+  ]);
+
+  const expand = new Set([
+    "app",
+    "components",
+    "lib",
+    "docs",
+    "scripts",
+    "tests",
+    ".github",
+    "build-memory",
+    "hooks",
+    "types",
+    "public",
+  ]);
+
+  function icon(name: string, isDir: boolean): string {
+    if (!isDir) return "ð";
+    const icons: Record<string, string> = {
+      app: "ð±",
+      components: "ð§©",
+      lib: "ð",
+      docs: "ð",
+      scripts: "âï¸",
+      tests: "ð§ª",
+      ".github": "ð§",
+      "build-memory": "ð§ ",
+      hooks: "ðª",
+      types: "ð·ï¸",
+      public: "ð",
+    };
+    return icons[name] || "ð";
+  }
+
+  const entries = fs
+    .readdirSync(ROOT)
+    .filter((name) => (!skip.has(name) && !name.startsWith(".")) || name === ".github")
+    .sort((a, b) => {
+      const aDir = fs.statSync(path.join(ROOT, a)).isDirectory();
+      const bDir = fs.statSync(path.join(ROOT, b)).isDirectory();
+      if (aDir && !bDir) return -1;
+      if (!aDir && bDir) return 1;
+      return a.localeCompare(b);
+    });
+
+  const lines: string[] = [];
+  lines.push("```");
+  lines.push("DREAMengin/");
+
+  for (const name of entries) {
+    const abs = path.join(ROOT, name);
+    const isDir = fs.statSync(abs).isDirectory();
+    const prefix = icon(name, isDir);
+    lines.push(`âââ ${prefix} ${name}${isDir ? "/" : ""}`);
+
+    if (isDir && expand.has(name)) {
+      let children: string[];
+      try {
+        children = fs
+          .readdirSync(abs)
+          .filter((child) => !skip.has(child) && !child.startsWith("."))
+          .sort((a, b) => {
+            const aDir = fs.statSync(path.join(abs, a)).isDirectory();
+            const bDir = fs.statSync(path.join(abs, b)).isDirectory();
+            if (aDir && !bDir) return -1;
+            if (!aDir && bDir) return 1;
+            return a.localeCompare(b);
+          })
+          .slice(0, 20);
+      } catch {
+        children = [];
+      }
+
+      const shown = children.slice(0, 18);
+      const rest = children.length - shown.length;
+
+      for (const child of shown) {
+        const childAbs = path.join(abs, child);
+        const childDir = fs.statSync(childAbs).isDirectory();
+        lines.push(`â   âââ ${childDir ? "ð" : "ð"} ${child}${childDir ? "/" : ""}`);
+      }
+
+      if (rest > 0) {
+        lines.push(`â   âââ â¦ and ${rest} more`);
+      }
+    }
+  }
+
+  lines.push("```");
+  return lines.join("\n");
+}
+
+type ReadmeContextMetrics = {
+  sha: string;
+  branch: string;
+  actor: string;
+  utcDate: string;
+  message: string;
+  statLine: string;
+  pageCount: number;
+  apiCount: number;
+  routeCount: number;
+  workflowCount: number;
+  testCount: number;
+};
+
+function currentReadmeContextMetrics(): ReadmeContextMetrics {
+  const sha = (process.env.GITHUB_SHA || git("git rev-parse HEAD") || "local").slice(0, 7);
+  const branch = process.env.GITHUB_REF_NAME || git("git rev-parse --abbrev-ref HEAD") || "local";
+  const actor = process.env.GITHUB_ACTOR || git("git log -1 --format=%an") || "local";
+  const rawDate = git("git log -1 --format=%aI");
+  const message = git("git log -1 --format=%s") || "README autosync";
+
+  const utcDate = new Date(rawDate || Date.now())
+    .toISOString()
+    .replace("T", " ")
+    .replace(/:\d{2}\.\d{3}Z$/, " UTC");
+
+  const nameStatus = git("git diff-tree --no-commit-id -r --name-status HEAD");
+  const diffLines = nameStatus.split("\n").filter(Boolean);
+  const added = diffLines.filter((line) => line.startsWith("A")).length;
+  const modified = diffLines.filter((line) => line.startsWith("M")).length;
+  const deleted = diffLines.filter((line) => line.startsWith("D")).length;
+
+  const statParts: string[] = [];
+  if (added) statParts.push(`+${added}`);
+  if (deleted) statParts.push(`â${deleted}`);
+  if (modified) statParts.push(`~${modified}`);
+  const statLine = statParts.length ? statParts.join(" ") : "â";
+
+  const testCount = fs.existsSync(path.resolve(ROOT, "tests"))
+    ? fs.readdirSync(path.resolve(ROOT, "tests")).filter((file) => file.endsWith(".test.ts")).length
+    : 0;
+  const pageCount = countShell(`find ${ROOT}/app -name "page.tsx" 2>/dev/null | wc -l`);
+  const apiCount = countShell(`find ${ROOT}/app/api \( -name "route.ts" -o -name "route.tsx" \) 2>/dev/null | wc -l`);
+  const routeCount = pageCount + apiCount;
+  const workflowCount = fs.existsSync(path.resolve(ROOT, ".github/workflows"))
+    ? fs.readdirSync(path.resolve(ROOT, ".github/workflows")).filter((file) => file.endsWith(".yml") || file.endsWith(".yaml")).length
+    : 0;
+
+  return {
+    sha,
+    branch,
+    actor,
+    utcDate,
+    message,
+    statLine,
+    pageCount,
+    apiCount,
+    routeCount,
+    workflowCount,
+    testCount,
+  };
+}
+
+function buildAIContextBlock(metrics: ReadmeContextMetrics): string {
+  return `${AI_CTX_START}
+## ð¤ AI Agent Quick Reference
+<!-- Last regenerated: ${metrics.utcDate} â \`${metrics.sha}\` on \`${metrics.branch}\` -->
+
+> **Documentation Owner:** ${DOC_OWNER}  
+> **Documentation Date:** ${metrics.utcDate}
+
+> **Copilot / AI agents â read this section first.**
+> It is auto-regenerated by the manual README autosync workflow so it reflects the live repo when that workflow is run.
+
+### What This Repo Is
+
+DREAMengin is a **spatial, privacy-first creative OS** built with **Next.js 16+** (App Router),
+**TypeScript**, **Supabase**, **Tailwind CSS**, and **Babylon.js 9+**.
+It is not a traditional social app â it is a modular, dual-runtime spatial operating environment.
+Author: JosÃ© Mancilla Â· pnpm 10.30.0 Â· Node 25
+
+---
+
+### â¡ Docs to Read Before Touching Code
+
+| Priority | File | Why |
+|----------|------|-----|
+| ð´ MUST | \`docs/AGENT_PLAYBOOK.md\` | Session rules, build commands, full key-file map â **start here** |
+| ð´ MUST | \`docs/GENERATION_LAW.md\` | Compute Ï and select a generation mode before **every** pass |
+| ð´ MUST | \`docs/CONSTITUTION.md\` | Non-negotiable platform rules â never violate these |
+| ð  HIGH | \`docs/NAMING_AUTHORITY.md\` | Canonical names â never invent new surface / route / AI names |
+| ð  HIGH | \`docs/FEATURE_STATUS.md\` | What is and isn't implemented right now |
+| ð¡ MED  | \`docs/LAW.md\` | Complete system law (Â§1âÂ§30+) |
+| ð¡ MED  | \`docs/ARCHITECTURE.md\` | System architecture reference |
+| ð¡ MED  | \`REPO_STATE.md\` | Auto-generated full repo analysis (metrics, debt, priorities) |
+| ðµ REF  | \`docs/HANDOFF.md\` | Change timeline â what changed and when |
+| ðµ REF  | \`docs/BUGS.md\` | Known bugs and upgrade queue |
+
+---
+
+### ð  Build & Test Commands
+
+\`\`\`bash
+pnpm dev          # Start dev server on port 3000
+pnpm build        # Production build (Next.js)
+pnpm typecheck    # TypeScript type-check (no emit)
+pnpm lint         # ESLint â 0 errors policy
+pnpm test         # Run all Vitest tests
+pnpm preflight    # typecheck + lint + tests (full pre-push gate)
+\`\`\`
+
+> **Dev auth bypass (local only):** set \`DEV_BYPASS_AUTH=true\` and \`DEV_ADMIN=true\` in \`.env.local\`
+
+---
+
+### ð Key Directory Map
+
+| Path | What lives here |
+|------|----------------|
+| \`app/\` | Next.js App Router pages and API route handlers |
+| \`app/api/\` | ${metrics.apiCount} API route handlers |
+| \`components/daydream/\` | Daydream surfaces and Engin components |
+| \`components/games/\` | Game components and related UI |
+| \`components/home/\` | HomeDream and home/runtime surfaces |
+| \`components/messaging/\` | Messaging surfaces and related controls |
+| \`dreamdmbar/\` | DreamDMBar runtime, messaging, notification, and interaction code |
+| \`engine/\` | Runtime, registries, bridges, system helpers, and core logic |
+| \`engins/\` | Product Engins and rulesets |
+| \`docs/\` | Governance, law, spec, and policy documents |
+| \`.github/workflows/\` | ${metrics.workflowCount} CI/CD automation workflows |
+| \`tests/\` | Vitest test suite (${metrics.testCount} test files) |
+| \`scripts/\` | Maintenance and automation scripts |
+| \`build-memory/\` | Auto-generated build intelligence snapshots |
+
+---
+
+### ðï¸ File Structure
+<!-- FILE-STRUCTURE:START -->
+${buildFileStructure()}
+<!-- FILE-STRUCTURE:END -->
+
+---
+
+### ð Current Build Snapshot
+
+| Metric | Value |
+|--------|-------|
+| Phase | Phase 8 â Real Runtime Completion |
+| Routes | ~${metrics.routeCount} (${metrics.pageCount} pages + ${metrics.apiCount} API handlers) |
+| Test files | ${metrics.testCount} |
+| Last push | \`${metrics.sha}\` by **${metrics.actor}** on \`${metrics.branch}\` |
+| Timestamp | ${metrics.utcDate} |
+
+---
+
+### â ï¸ Pre-existing Issues (do not fix unless explicitly asked)
+
+- **4 failing tests** in \`tests/dreamdm-bar-interactions.test.ts\` (\`snapSplitRatioOnRelease\` suite) â known mismatch, pre-existing
+- **~29 ESLint warnings** (prefer-const, no-img-element, alt-text) â intentional per \`eslint.config.mjs\`
+
+---
+
+### ð¤ AI Systems
+
+| Agent | API Route | Role |
+|-------|-----------|------|
+| **Dr. Eams** | \`/api/ai/eams\` | Discovery, routing, idea generation |
+| **IDARi** | \`/api/ai/idari\` | System maintenance and governance |
+| **TheBoogieMan.Ai** | \`/api/ai/boogieman\` | Policy enforcement and system overwatch |
+
+---
+
+### ð Documentation Workflows
+
+| Workflow | Trigger | What it does |
+|----------|---------|-------------|
+| \`readme-autosync.yml\` | Manual workflow dispatch | Runs \`scripts/readme-autosync.ts\` and updates README product evidence |
+| \`docs-auto-update.yml\` | Manual / scheduled | Updates README context plus BUGS, HANDOFF, and repo-state docs |
+| \`sync-build-memory.yml\` | main/completedream/develop | Syncs \`build-memory/\` JSON snapshots |
+| \`dreamengin-preflight.yml\` | Push to \`completedream\` | Full CI: build + typecheck + tests |
+
+---
+
+${AI_CTX_END}`;
+}
+
+function updateRecentChangesTable(doc: string, metrics: ReadmeContextMetrics): string {
+  const tableHeader = "| Revision | Date / Time (UTC) | Branch | Author | Files | Summary |";
+  const tableDivider = "|---|---|---|---|---|---|";
+  const sectionAnchor = "## Recent Changes";
+  const newRow = `| \`${metrics.sha}\` | ${metrics.utcDate} | ${metrics.branch} | ${metrics.actor} | ${metrics.statLine} | ${cell(metrics.message)} |`;
+  const sectionIdx = doc.indexOf(sectionAnchor);
+
+  if (sectionIdx === -1) {
+    const ctxEndIdx = doc.indexOf(AI_CTX_END);
+    let insertAt: number;
+
+    if (ctxEndIdx !== -1) {
+      insertAt = ctxEndIdx + AI_CTX_END.length;
+      if (doc[insertAt] === "\n") insertAt += 1;
+    } else {
+      const hrIdx = doc.indexOf("\n---\n");
+      insertAt = hrIdx === -1 ? doc.length : hrIdx;
+    }
+
+    const freshSection = `\n${sectionAnchor}\n\n${tableHeader}\n${tableDivider}\n${newRow}\n\n`;
+    return doc.slice(0, insertAt) + freshSection + doc.slice(insertAt);
+  }
+
+  const afterSection = sectionIdx + sectionAnchor.length;
+  const headerIdx = doc.indexOf(tableHeader, afterSection);
+
+  if (headerIdx === -1) {
+    const nextH2 = doc.indexOf("\n## ", afterSection);
+    const blockEnd = nextH2 === -1 ? doc.length : nextH2 + 1;
+    const freshTable = `\n\n${tableHeader}\n${tableDivider}\n${newRow}\n\n`;
+    return doc.slice(0, afterSection) + freshTable + doc.slice(blockEnd);
+  }
+
+  const headerLineEnd = doc.indexOf("\n", headerIdx) + 1;
+  const dividerEnd = doc.indexOf("\n", headerLineEnd) + 1;
+
+  let pos = dividerEnd;
+  const existingRows: string[] = [];
+
+  while (pos < doc.length) {
+    const end = doc.indexOf("\n", pos);
+    if (end === -1) break;
+    const line = doc.slice(pos, end);
+    if (!line.startsWith("|")) break;
+    existingRows.push(line);
+    pos = end + 1;
+  }
+
+  const rowRevision = (row: string): string => {
+    const match = row.match(/^\|\s*`([^`]+)`\s*\|/);
+    return match ? match[1] : "";
+  };
+
+  const seenRevisions = new Set<string>();
+  const dedupedRows: string[] = [];
+
+  for (const row of existingRows) {
+    const revision = rowRevision(row);
+    if (revision === metrics.sha) continue;
+    if (revision && seenRevisions.has(revision)) continue;
+    if (revision) seenRevisions.add(revision);
+    dedupedRows.push(row);
+  }
+
+  const updatedRows = [newRow, ...dedupedRows].slice(0, MAX_RECENT_CHANGE_ROWS);
+  const headerLine = doc.slice(headerIdx, headerLineEnd).trimEnd();
+  const dividerLine = doc.slice(headerLineEnd, dividerEnd).trimEnd();
+  const newTable = `${headerLine}\n${dividerLine}\n${updatedRows.join("\n")}\n`;
+
+  return doc.slice(0, headerIdx) + newTable + doc.slice(pos);
+}
+
+function writeStepSummary(metrics: ReadmeContextMetrics, status: string): void {
+  const summaryFile = process.env.GITHUB_STEP_SUMMARY;
+  if (!summaryFile) return;
+
+  const lines = [
+    "## ð README.md â DREAMengin README Autosync",
+    "",
+    `> **${status}**`,
+    "",
+    "| Field | Value |",
+    "|-------|-------|",
+    `| Documentation Owner | ${DOC_OWNER} |`,
+    `| Commit | \`${metrics.sha}\` |`,
+    `| Branch | \`${metrics.branch}\` |`,
+    `| Actor | ${metrics.actor} |`,
+    `| Files changed | ${metrics.statLine} |`,
+    `| Message | ${cell(metrics.message)} |`,
+    `| Timestamp | ${metrics.utcDate} |`,
+    "",
+    "### Sections updated",
+    "- â Professional README front door",
+    "- â Product-section evidence",
+    "- â AI Agent Quick Reference block",
+    "- â Recent Changes table",
+    "- â Current Implementation Status refresh when the section exists",
+    "- â File Structure snapshot",
+    "",
+    "### Live build stats",
+    "| Metric | Value |",
+    "|--------|-------|",
+    `| Routes | ~${metrics.routeCount} (${metrics.pageCount} pages + ${metrics.apiCount} API handlers) |`,
+    `| Test files | ${metrics.testCount} |`,
+    "| Phase | Phase 8 â Real Runtime Completion |",
+  ];
+
+  try {
+    fs.appendFileSync(summaryFile, `${lines.join("\n")}\n`);
+  } catch {
+    // GitHub summary writes are best-effort only.
+  }
+}
+
+function applyReadmeContextBlocks(doc: string): string {
+  const metrics = currentReadmeContextMetrics();
+  let next = doc;
+
+  const contextBlock = buildAIContextBlock(metrics);
+  const ctxStart = next.indexOf(AI_CTX_START);
+  const ctxEnd = next.indexOf(AI_CTX_END);
+
+  if (ctxStart !== -1 && ctxEnd !== -1 && ctxEnd > ctxStart) {
+    const afterEnd = ctxEnd + AI_CTX_END.length;
+    next = next.slice(0, ctxStart) + contextBlock + next.slice(afterEnd);
+  } else {
+    const recentChangesIdx = next.indexOf("\n## Recent Changes");
+    const insertAt = recentChangesIdx !== -1 ? recentChangesIdx + 1 : next.indexOf("\n\n") + 2;
+    next = next.slice(0, insertAt) + contextBlock + "\n\n" + next.slice(insertAt);
+  }
+
+  const fileStructureBlock = `${FS_START}\n${buildFileStructure()}\n${FS_END}`;
+  const fsStartIdx = next.indexOf(FS_START);
+  const fsEndIdx = next.indexOf(FS_END);
+
+  if (fsStartIdx !== -1 && fsEndIdx !== -1 && fsEndIdx > fsStartIdx) {
+    next = next.slice(0, fsStartIdx) + fileStructureBlock + next.slice(fsEndIdx + FS_END.length);
+  } else {
+    const headingIdx = next.indexOf("### ðï¸ File Structure");
+    if (headingIdx !== -1) {
+      const insertAt = next.indexOf("\n", headingIdx) + 1;
+      next = next.slice(0, insertAt) + fileStructureBlock + "\n" + next.slice(insertAt);
+    }
+  }
+
+  let babylonMajor: string | undefined;
+  let pnpmVersion: string | undefined;
+  let nodeMajor: string | undefined;
+
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(ROOT, "package.json"), "utf8")) as {
+      dependencies?: Record<string, string>;
+      packageManager?: string;
+    };
+    const babylonRaw = (pkg.dependencies || {})["@babylonjs/core"] || "";
+    const majorMatch = babylonRaw.match(/(\d+)\./);
+    babylonMajor = majorMatch?.[1];
+    pnpmVersion = extractPnpmVersion(pkg.packageManager);
+  } catch {
+    // Optional package metadata.
+  }
+
+  try {
+    const dockerfileDev = fs.readFileSync(path.resolve(ROOT, "Dockerfile.dev"), "utf8");
+    nodeMajor = extractNodeMajorFromDockerfile(dockerfileDev);
+  } catch {
+    // Dockerfile.dev is optional.
+  }
+
+  next = refreshCurrentImplementationStatusSection(next, {
+    utcDate: metrics.utcDate,
+    sha: metrics.sha,
+    actor: metrics.actor,
+    routeCount: metrics.routeCount,
+    pageCount: metrics.pageCount,
+    apiCount: metrics.apiCount,
+    testCount: metrics.testCount,
+    babylonMajor,
+    pnpmVersion,
+    nodeMajor,
   });
+
+  next = updateRecentChangesTable(next, metrics);
+  writeStepSummary(metrics, "updated README front door, product evidence, AI context, and recent changes");
+  return sanitizeGeneratedMarkdown(next).replace(/\n{3,}/g, "\n\n");
+}
+
+function buildProductSectionsFromFiles(files: string[]): ProductSectionsResult {
+  const trackedFiles = files
+    .map(normalizePath)
+    .filter(Boolean)
+    .filter((file) => !isGloballyExcluded(file));
+
+  const sourceFiles = loadSourceFiles(trackedFiles);
+  const sections = PRODUCT_SECTIONS.map((section) => {
+    const matches = getMatches(sourceFiles, section);
+    return sectionMarkdown(section, matches);
+  });
+
+  return {
+    generatedAt: new Date().toISOString(),
+    trackedFiles: trackedFiles.length,
+    sections,
+  };
+}
+
+function writeReadmeSummary(filePath: string, summary: ReadmeSummary): void {
+  const out = path.resolve(filePath);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, `${JSON.stringify(summary, null, 2)}\n`);
+}
+
+function runCli(): void {
+  const args = parseArgs(process.argv.slice(2));
+  const changedFilesPath = typeof args["changed-files"] === "string" ? args["changed-files"] : "";
+  const sectionsFile = typeof args["sections-file"] === "string" ? args["sections-file"] : "";
+  const markdownFile = typeof args["markdown-file"] === "string" ? args["markdown-file"] : "";
+  const summaryFile = typeof args["summary-file"] === "string" ? args["summary-file"] : "";
+  const maxLines = args["max-lines"] ? Number(args["max-lines"]) : undefined;
+  const lineBudget = Number.isFinite(maxLines) && Number(maxLines) > 800 ? Number(maxLines) : 2800;
+
+  if (args["update-context-only"]) {
+    const previous = fs.existsSync(README_PATH) ? fs.readFileSync(README_PATH, "utf8") : "# DREAMengin\n";
+    const next = applyReadmeContextBlocks(previous);
+    fs.writeFileSync(README_PATH, next);
+    console.log(JSON.stringify({ readmeChanged: previous !== next, mode: "update-context-only" }, null, 2));
+    return;
+  }
+
+  const inputFiles = readListFromPath(changedFilesPath);
+  const files = (inputFiles.length ? inputFiles : allRepoFiles()).filter((file) => !README_MEDIA_RE.test(file));
+  const result = buildProductSectionsFromFiles(files);
+  const productMarkdown = renderProductSectionsMarkdown(result);
 
   if (sectionsFile) {
     writeJson(sectionsFile, {
       ...result,
-      markdown: renderProductSectionsMarkdown(result),
+      markdown: productMarkdown,
     });
   }
 
   if (markdownFile) {
     fs.mkdirSync(path.dirname(markdownFile), { recursive: true });
-    fs.writeFileSync(markdownFile, renderProductSectionsMarkdown(result));
+    fs.writeFileSync(markdownFile, productMarkdown);
   }
 
-  console.log(JSON.stringify({
-    trackedFiles: result.trackedFiles,
-    sections: result.sections.map((section) => ({
+  const shouldWriteReadme = Boolean(args.full || args["write-readme"] || summaryFile);
+
+  if (!shouldWriteReadme) {
+    console.log(JSON.stringify({
+      trackedFiles: result.trackedFiles,
+      sections: result.sections.map((section) => ({
+        number: section.number,
+        title: sanitizeGeneratedMarkdown(section.title),
+        matchedFiles: section.matchedFiles,
+        sourceLines: section.sourceLines,
+        routes: section.routes,
+        apis: section.apis,
+        components: section.components,
+        hooks: section.hooks,
+      })),
+    }, null, 2));
+    return;
+  }
+
+  const previous = fs.existsSync(README_PATH) ? fs.readFileSync(README_PATH, "utf8") : "";
+  let next = [buildFrontDoor(files), productMarkdown].join("\n").replace(/\n{3,}/g, "\n\n");
+
+  if (!args["no-ai-context"]) {
+    next = applyReadmeContextBlocks(next);
+  }
+
+  fs.writeFileSync(README_PATH, next);
+
+  const summary: ReadmeSummary = {
+    readmeChanged: previous !== next,
+    lineBudget,
+    lineCount: next.split(/\r?\n/g).length,
+    productSections: result.sections.map((section) => ({
       number: section.number,
       title: sanitizeGeneratedMarkdown(section.title),
       matchedFiles: section.matchedFiles,
@@ -1262,9 +2149,20 @@ function runCli(): void {
       components: section.components,
       hooks: section.hooks,
     })),
-  }, null, 2));
+    trackedFiles: files.length,
+  };
+
+  if (summaryFile) {
+    writeReadmeSummary(summaryFile, summary);
+  }
+
+  console.log(JSON.stringify(summary, null, 2));
 }
 
 const isCli = Boolean(process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href);
 
 if (isCli) {
+  runCli();
+}
+
+// END_README_AUTOSYNC_SCRIPT
