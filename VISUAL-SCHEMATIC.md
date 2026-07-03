@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2242
-- **Total function/class nodes:** 4782
-- **Total edges:** 8468
-- **Orphan nodes:** 4100
+- **Total files:** 2244
+- **Total function/class nodes:** 4807
+- **Total edges:** 8476
+- **Orphan nodes:** 4125
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -60,8 +60,8 @@ graph LR
   app["app"] -->|40| dreamr["dreamr"]
   engins["engins"] -->|37| components["components"]
   components["components"] -->|27| utils["utils"]
+  components["components"] -->|27| dreamdmbar["dreamdmbar"]
   tests["tests"] -->|26| components["components"]
-  components["components"] -->|25| dreamdmbar["dreamdmbar"]
   components["components"] -->|21| supabase["supabase"]
   daydreams["daydreams"] -->|19| components["components"]
   components["components"] -->|18| dreamr["dreamr"]
@@ -74,9 +74,9 @@ graph LR
   tests["tests"] -->|15| app["app"]
   engins["engins"] -->|13| supabase["supabase"]
   src["src"] -->|13| hooks["hooks"]
+  app["app"] -->|12| dreamdmbar["dreamdmbar"]
   components["components"] -->|12| types["types"]
   engine["engine"] -->|12| hooks["hooks"]
-  app["app"] -->|11| dreamdmbar["dreamdmbar"]
   tests["tests"] -->|11| dreamdmbar["dreamdmbar"]
 ```
 
@@ -455,7 +455,7 @@ graph LR
 
 </details>
 
-<details><summary>components/ (327 files)</summary>
+<details><summary>components/ (328 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
@@ -640,7 +640,7 @@ graph LR
 | `components/games/madmaxi/materials.ts` | ts | 0 | 3 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | — |
 | `components/games/madmaxi/vfx.ts` | ts | 0 | 3 | `components/games/madmaxi/dream.MadmaxiGame.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | — |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | tsx | 5 | 3 | `app/dreamdmbar/layout.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/dreamengin/dream.panel.DrEamsPanel.tsx`, `components/menus/dream.menu.DualBottomMenu.tsx`, `dreamdmbar/runtime/DreamSystemContext.tsx` |
-| `components/home/dream.bar.PersistentDreamBar.tsx` | tsx | 10 | 3 | `app/dreamdmbar/layout.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/home/dream.NeuralSeamCanvas.tsx`, `components/runtime/dream.DualRuntimeContainer.tsx`, `components/runtime/dream.RuntimeView.tsx` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | tsx | 13 | 3 | `app/dreamdmbar/layout.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `components/home/dream.NeuralSeamCanvas.tsx`, `components/home/dream.ZoomablePane.tsx`, `components/runtime/dream.DualRuntimeContainer.tsx` |
 | `components/home/dream.DaydreamPulseStrip.tsx` | tsx | 0 | 3 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | — |
 | `components/home/dream.FlagshipEnginesStrip.tsx` | tsx | 1 | 3 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `engins/forgeengin/forge/forgeRegistry.ts` |
 | `components/home/dream.NeuralSeamCanvas.tsx` | tsx | 3 | 3 | `components/home/dream.bar.PersistentDreamBar.tsx`, `engine/generated/surfaces.ts`, `src/engin/generated/surfaces.ts` | `dreamdmbar/runtime/barInteractions.ts`, `dreamdmbar/runtime/bridgeSeamFlow.ts`, `engine/runtime/dualRuntimeBridge.ts` |
@@ -782,6 +782,7 @@ graph LR
 | `components/engines/render/dream.RenderSurface.tsx` | tsx | 1 | 1 | `src/engin/generated/surfaces.ts` | `engins/renderengin/RenderEnginInlineSurface.tsx` |
 | `components/engines/render/index.ts` | ts | 1 | 1 | `src/engin/generated/surfaces.ts` | `components/engines/render/dream.RenderServiceDiagnostics.tsx` |
 | `components/games/dream.hud.MobileGameHUD.module.css` | css | 0 | 1 | `components/games/dream.hud.MobileGameHUD.tsx` | — |
+| `components/home/dream.ZoomablePane.tsx` | tsx | 0 | 1 | `components/home/dream.bar.PersistentDreamBar.tsx` | — |
 | `components/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
 | `components/gameengin/README.md` | doc | 0 | 0 | — | — |
 | `components/games/css-modules.d.ts` | ts | 0 | 0 | — | — |
@@ -794,7 +795,7 @@ graph LR
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
 | `app/dreamdmbar/_components/dreamr/algorithms/dreamrAlgorithm.ts` | ts | 1 | 6 | `app/api/dreamr/suggested/route.ts`, `app/dreamdmbar/_components/dreamr/api/feedHandler.ts`, `engine/generated/surfaces.ts` | `dreamr/runtime/torridityLedger.ts` |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | tsx | 12 | 5 | `app/homedream/page.tsx`, `components/core/dream.CoreDream.tsx`, `components/runtime/dream.RuntimeView.tsx` | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.BrandLogo.tsx`, `components/dream.HomeFeed.tsx` |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | tsx | 13 | 5 | `app/homedream/page.tsx`, `components/core/dream.CoreDream.tsx`, `components/runtime/dream.RuntimeView.tsx` | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx`, `components/dream.BrandLogo.tsx`, `components/dream.HomeFeed.tsx` |
 | `app/connectors/dream.ConnectorsClient.tsx` | tsx | 10 | 4 | `app/connectors/page.tsx`, `components/panels/dream.panel.ConnectorsPanel.tsx`, `engine/generated/surfaces.ts` | `components/connectors/dream.AddSliceSheet.tsx`, `components/connectors/dream.ConnectorRow.tsx`, `components/connectors/dream.NoSlotDialog.tsx` |
 | `app/dreamdmbar/_components/dreamr/api/feedHandler.ts` | ts | 7 | 4 | `app/api/dreamr/feed/route.ts`, `app/dreamdmbar/_components/dreamr/api/route.ts`, `engine/generated/surfaces.ts` | `dreamr/runtime/closeFriendsVisibility.ts`, `dreamr/runtime/feedCursor.ts`, `engins/contentengin/media/postMedia.ts` |
 | `app/dreamdmbar/_components/dreamr/dreamsurface.dreamr.tsx` | tsx | 6 | 4 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `app/dreamr/page.tsx`, `engine/generated/surfaces.ts` | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`, `components/daydream/dream.JourneyTrail.tsx`, `dreamr/components/dreamrfeed.tsx` |
@@ -1449,23 +1450,24 @@ graph LR
 
 </details>
 
-<details><summary>dreamdmbar/ (16 files)</summary>
+<details><summary>dreamdmbar/ (17 files)</summary>
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
 | `dreamdmbar/runtime/DreamSystemContext.tsx` | tsx | 6 | 28 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `app/dreamdmbar/dreamspace/page.tsx`, `app/dreamdmbar/dualruntime/page.tsx` | `dreamdmbar/runtime/barInteractions.ts`, `components/panels/panelTypes.ts`, `engine/runtime/dualRuntime.ts` |
 | `dreamdmbar/runtime/barInteractions.ts` | ts | 0 | 13 | `app/dreamdmbar/_components/DreamBarDataBridge.tsx`, `components/dream.OSShellActivator.tsx`, `components/home/dream.NeuralSeamCanvas.tsx` | — |
 | `dreamdmbar/notifications/notificationHelpers.ts` | ts | 0 | 7 | `components/dream.NotificationCenter.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `dreamdmbar/notifications/useNotifications.ts` | — |
+| `dreamdmbar/dream.GlowingLight.tsx` | tsx | 0 | 5 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/home/dream.bar.PersistentDreamBar.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx` | — |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | ts | 1 | 5 | `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `dreamdmbar/runtime/DreamSystemContext.tsx` |
 | `dreamdmbar/hooks/useDreamDMMessages.ts` | ts | 3 | 5 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `dreamdmbar/hooks/useMessagingCore.ts` | `engine/io.ts`, `supabase/client/client.ts`, `engine/offline/offlineCache.ts` |
 | `dreamdmbar/notifications/useNotifications.ts` | ts | 4 | 5 | `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dream.NotificationCenter.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `dreamdmbar/notifications/notificationHelpers.ts`, `utils/index.ts`, `engine/offline/offlineCache.ts` |
 | `dreamdmbar/hooks/useDreamDMDraft.ts` | ts | 1 | 4 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts` | `engine/offline/offlineCache.ts` |
 | `dreamdmbar/hooks/useDreamSearch.ts` | ts | 2 | 4 | `components/dream.MessagesClient.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts` | `engins/forgeengin/forge/forgeRegistry.ts`, `supabase/client/client.ts` |
 | `dreamdmbar/runtime/bridgeSeamFlow.ts` | ts | 0 | 4 | `components/home/dream.NeuralSeamCanvas.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | — |
-| `dreamdmbar/dream.GlowingLight.tsx` | tsx | 0 | 3 | `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | — |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | tsx | 17 | 3 | `components/home/dream.bar.PersistentDreamBar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `components/ui/dream.DreamWord.tsx`, `dreamdmbar/dream.GlowingLight.tsx`, `dreamdmbar/runtime/barInteractions.ts` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | tsx | 18 | 3 | `components/home/dream.bar.PersistentDreamBar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `components/ui/dream.DreamWord.tsx`, `dreamdmbar/dream.GlowingLight.tsx`, `dreamdmbar/dream.PhaseTrail.tsx` |
 | `dreamdmbar/hooks/useDreamDMConversations.ts` | ts | 3 | 3 | `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `engine/io.ts`, `supabase/client/client.ts`, `engine/offline/offlineCache.ts` |
 | `dreamdmbar/hooks/useMessagingCore.ts` | ts | 4 | 3 | `dreamdmbar/dreamsurface.dreamdmbar.tsx`, `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `engins/contentengin/media/ledger.ts`, `supabase/client/client.ts`, `dreamdmbar/hooks/useDreamDMMessages.ts` |
+| `dreamdmbar/dream.PhaseTrail.tsx` | tsx | 0 | 2 | `components/home/dream.bar.PersistentDreamBar.tsx`, `dreamdmbar/dreamsurface.dreamdmbar.tsx` | — |
 | `dreamdmbar/hooks/useModuleBarIntent.ts` | ts | 1 | 2 | `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | `dreamdmbar/runtime/DreamSystemContext.tsx` |
 | `dreamdmbar/hooks/useNotifications.ts` | ts | 0 | 2 | `engine/generated/dreamdmbar.ts`, `src/engin/generated/dreamdmbar.ts` | — |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc | 0 | 0 | — | — |
@@ -3637,13 +3639,14 @@ graph LR
 
 </details>
 
-<details><summary>dreamdmbar/ — 16 files</summary>
+<details><summary>dreamdmbar/ — 17 files</summary>
 
 ```mermaid
 graph LR
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx["dreamsurface.dreamdmbar.tsx"]
   f_components_ui_dream_DreamWord_tsx["dream.DreamWord.tsx"]
   f_dreamdmbar_dream_GlowingLight_tsx["dream.GlowingLight.tsx"]
+  f_dreamdmbar_dream_PhaseTrail_tsx["dream.PhaseTrail.tsx"]
   f_dreamdmbar_runtime_barInteractions_ts["barInteractions.ts"]
   f_dreamdmbar_runtime_DreamSystemContext_tsx["DreamSystemContext.tsx"]
   f_dreamdmbar_hooks_useDreamBarContext_ts["useDreamBarContext.ts"]
@@ -3672,6 +3675,7 @@ graph LR
   f_dreamdmbar_runtime_bridgeSeamFlow_ts["bridgeSeamFlow.ts"]
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_components_ui_dream_DreamWord_tsx
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_dreamdmbar_dream_GlowingLight_tsx
+  f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_dreamdmbar_dream_PhaseTrail_tsx
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_dreamdmbar_runtime_barInteractions_ts
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_dreamdmbar_runtime_DreamSystemContext_tsx
   f_dreamdmbar_dreamsurface_dreamdmbar_tsx --> f_dreamdmbar_hooks_useDreamBarContext_ts
@@ -3900,9 +3904,9 @@ _File-level graph omitted: 277 files exceeds Mermaid render budget. See table ab
 
 </details>
 
-<details><summary>components/ — 327 files</summary>
+<details><summary>components/ — 328 files</summary>
 
-_File-level graph omitted: 327 files exceeds Mermaid render budget. See table above._
+_File-level graph omitted: 328 files exceeds Mermaid render budget. See table above._
 
 </details>
 

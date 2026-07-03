@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-02T17:09:28.757Z",
+  "generatedAt": "2026-07-03T23:52:01.855Z",
   "root": ".",
   "nodes": [
     {
@@ -10772,7 +10772,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 47,
+      "loc": 54,
       "isOrphan": true,
       "exported": false
     },
@@ -10782,7 +10782,7 @@
       "type": "function",
       "path": "app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "parent": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
-      "loc": 86,
+      "loc": 93,
       "isOrphan": true,
       "exported": true
     },
@@ -21851,6 +21851,46 @@
       "tags": []
     },
     {
+      "id": "function:components/home/dream.ZoomablePane.tsx#getTouchDistance",
+      "label": "getTouchDistance",
+      "type": "function",
+      "path": "components/home/dream.ZoomablePane.tsx",
+      "parent": "file:components/home/dream.ZoomablePane.tsx",
+      "loc": 42,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/home/dream.ZoomablePane.tsx#getTouchMidpoint",
+      "label": "getTouchMidpoint",
+      "type": "function",
+      "path": "components/home/dream.ZoomablePane.tsx",
+      "parent": "file:components/home/dream.ZoomablePane.tsx",
+      "loc": 46,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/home/dream.ZoomablePane.tsx#ZoomablePane",
+      "label": "ZoomablePane",
+      "type": "function",
+      "path": "components/home/dream.ZoomablePane.tsx",
+      "parent": "file:components/home/dream.ZoomablePane.tsx",
+      "loc": 50,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:components/home/dream.ZoomablePane.tsx",
+      "label": "dream.ZoomablePane.tsx",
+      "type": "tsx",
+      "path": "components/home/dream.ZoomablePane.tsx",
+      "parent": "folder:components/home",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:components/home/dream.bar.GlobalDreamBar.tsx#GlobalDreamBar",
       "label": "GlobalDreamBar",
       "type": "function",
@@ -21871,12 +21911,42 @@
       "tags": []
     },
     {
+      "id": "function:components/home/dream.bar.PersistentDreamBar.tsx#clamp01",
+      "label": "clamp01",
+      "type": "function",
+      "path": "components/home/dream.bar.PersistentDreamBar.tsx",
+      "parent": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "loc": 75,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/home/dream.bar.PersistentDreamBar.tsx#smoothstep01",
+      "label": "smoothstep01",
+      "type": "function",
+      "path": "components/home/dream.bar.PersistentDreamBar.tsx",
+      "parent": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "loc": 79,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:components/home/dream.bar.PersistentDreamBar.tsx#revealScaleForShare",
+      "label": "revealScaleForShare",
+      "type": "function",
+      "path": "components/home/dream.bar.PersistentDreamBar.tsx",
+      "parent": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "loc": 84,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
       "id": "function:components/home/dream.bar.PersistentDreamBar.tsx#PersistentDreamBar",
       "label": "PersistentDreamBar",
       "type": "function",
       "path": "components/home/dream.bar.PersistentDreamBar.tsx",
       "parent": "file:components/home/dream.bar.PersistentDreamBar.tsx",
-      "loc": 21,
+      "loc": 91,
       "isOrphan": true,
       "exported": true
     },
@@ -23318,7 +23388,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 97,
+      "loc": 114,
       "isOrphan": true,
       "exported": false
     },
@@ -23328,7 +23398,7 @@
       "type": "function",
       "path": "components/runtime/dream.RuntimeView.tsx",
       "parent": "file:components/runtime/dream.RuntimeView.tsx",
-      "loc": 102,
+      "loc": 119,
       "isOrphan": true,
       "exported": true
     },
@@ -27561,34 +27631,34 @@
       "tags": []
     },
     {
+      "id": "function:dreamdmbar/dream.PhaseTrail.tsx#PhaseTrail",
+      "label": "PhaseTrail",
+      "type": "function",
+      "path": "dreamdmbar/dream.PhaseTrail.tsx",
+      "parent": "file:dreamdmbar/dream.PhaseTrail.tsx",
+      "loc": 51,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:dreamdmbar/dream.PhaseTrail.tsx",
+      "label": "dream.PhaseTrail.tsx",
+      "type": "tsx",
+      "path": "dreamdmbar/dream.PhaseTrail.tsx",
+      "parent": "folder:dreamdmbar",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "function:dreamdmbar/dreamsurface.dreamdmbar.tsx#AvatarChip",
       "label": "AvatarChip",
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 89,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
-    },
-    {
-      "id": "function:dreamdmbar/dreamsurface.dreamdmbar.tsx#ContextIcon",
-      "label": "ContextIcon",
-      "type": "function",
-      "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 116,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:dreamdmbar/dreamsurface.dreamdmbar.tsx#DreamDMBar",
-      "label": "DreamDMBar",
-      "type": "function",
-      "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 153,
-      "isOrphan": true,
-      "exported": true
     },
     {
       "id": "function:dreamdmbar/dreamsurface.dreamdmbar.tsx#CompactNotificationStrip",
@@ -27596,7 +27666,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2611,
+      "loc": 2815,
       "isOrphan": true,
       "exported": false
     },
@@ -27606,7 +27676,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2719,
+      "loc": 2923,
       "isOrphan": true,
       "exported": false
     },
@@ -27616,7 +27686,7 @@
       "type": "function",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "parent": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
-      "loc": 2806,
+      "loc": 3010,
       "isOrphan": true,
       "exported": false
     },
@@ -28110,7 +28180,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 14,
+      "loc": 27,
       "isOrphan": false,
       "exported": true
     },
@@ -28120,7 +28190,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 25,
+      "loc": 55,
       "isOrphan": false,
       "exported": true
     },
@@ -28130,7 +28200,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 54,
+      "loc": 97,
       "isOrphan": false,
       "exported": true
     },
@@ -28140,7 +28210,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 65,
+      "loc": 108,
       "isOrphan": false,
       "exported": true
     },
@@ -28150,7 +28220,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 70,
+      "loc": 113,
       "isOrphan": false,
       "exported": true
     },
@@ -28160,7 +28230,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 75,
+      "loc": 118,
       "isOrphan": false,
       "exported": true
     },
@@ -28170,7 +28240,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 86,
+      "loc": 132,
       "isOrphan": false,
       "exported": true
     },
@@ -28180,7 +28250,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 107,
+      "loc": 153,
       "isOrphan": false,
       "exported": true
     },
@@ -28190,7 +28260,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 128,
+      "loc": 184,
       "isOrphan": false,
       "exported": true
     },
@@ -28200,7 +28270,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 176,
+      "loc": 236,
       "isOrphan": false,
       "exported": true
     },
@@ -28210,7 +28280,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 181,
+      "loc": 245,
       "isOrphan": false,
       "exported": true
     },
@@ -28220,7 +28290,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 199,
+      "loc": 274,
       "isOrphan": false,
       "exported": true
     },
@@ -28230,7 +28300,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 267,
+      "loc": 351,
       "isOrphan": false,
       "exported": true
     },
@@ -28240,7 +28310,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 279,
+      "loc": 373,
       "isOrphan": false,
       "exported": true
     },
@@ -28250,7 +28320,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 300,
+      "loc": 397,
       "isOrphan": false,
       "exported": true
     },
@@ -28260,7 +28330,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 312,
+      "loc": 411,
       "isOrphan": false,
       "exported": true
     },
@@ -28270,7 +28340,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 317,
+      "loc": 424,
       "isOrphan": false,
       "exported": true
     },
@@ -28280,7 +28350,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 339,
+      "loc": 452,
       "isOrphan": false,
       "exported": true
     },
@@ -28290,7 +28360,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 381,
+      "loc": 500,
       "isOrphan": false,
       "exported": true
     },
@@ -28300,7 +28370,7 @@
       "type": "function",
       "path": "dreamdmbar/runtime/barInteractions.ts",
       "parent": "file:dreamdmbar/runtime/barInteractions.ts",
-      "loc": 419,
+      "loc": 542,
       "isOrphan": false,
       "exported": true
     },
@@ -69199,7 +69269,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 685,
+      "loc": 686,
       "isOrphan": true,
       "exported": false
     },
@@ -69209,7 +69279,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 689,
+      "loc": 690,
       "isOrphan": true,
       "exported": false
     },
@@ -69219,7 +69289,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 695,
+      "loc": 696,
       "isOrphan": true,
       "exported": false
     },
@@ -69229,7 +69299,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 699,
+      "loc": 700,
       "isOrphan": true,
       "exported": false
     },
@@ -69239,7 +69309,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 703,
+      "loc": 704,
       "isOrphan": true,
       "exported": false
     },
@@ -69249,7 +69319,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 707,
+      "loc": 708,
       "isOrphan": true,
       "exported": false
     },
@@ -69259,7 +69329,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 711,
+      "loc": 712,
       "isOrphan": true,
       "exported": false
     },
@@ -69269,7 +69339,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 719,
+      "loc": 720,
       "isOrphan": true,
       "exported": false
     },
@@ -69279,7 +69349,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 729,
+      "loc": 730,
       "isOrphan": true,
       "exported": false
     },
@@ -69289,7 +69359,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 748,
+      "loc": 749,
       "isOrphan": true,
       "exported": false
     },
@@ -69299,7 +69369,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 752,
+      "loc": 753,
       "isOrphan": true,
       "exported": false
     },
@@ -69309,7 +69379,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 756,
+      "loc": 757,
       "isOrphan": true,
       "exported": false
     },
@@ -69319,7 +69389,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 772,
+      "loc": 773,
       "isOrphan": true,
       "exported": false
     },
@@ -69329,7 +69399,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 784,
+      "loc": 785,
       "isOrphan": true,
       "exported": false
     },
@@ -69339,7 +69409,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 791,
+      "loc": 792,
       "isOrphan": true,
       "exported": false
     },
@@ -69349,7 +69419,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 842,
+      "loc": 843,
       "isOrphan": true,
       "exported": false
     },
@@ -69359,7 +69429,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 866,
+      "loc": 867,
       "isOrphan": true,
       "exported": false
     },
@@ -69369,7 +69439,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 879,
+      "loc": 880,
       "isOrphan": true,
       "exported": false
     },
@@ -69379,7 +69449,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 893,
+      "loc": 894,
       "isOrphan": true,
       "exported": false
     },
@@ -69389,7 +69459,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 915,
+      "loc": 916,
       "isOrphan": true,
       "exported": false
     },
@@ -69399,7 +69469,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 935,
+      "loc": 936,
       "isOrphan": true,
       "exported": false
     },
@@ -69409,7 +69479,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 939,
+      "loc": 940,
       "isOrphan": true,
       "exported": false
     },
@@ -69419,7 +69489,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 960,
+      "loc": 961,
       "isOrphan": true,
       "exported": false
     },
@@ -69429,7 +69499,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 984,
+      "loc": 985,
       "isOrphan": true,
       "exported": false
     },
@@ -69439,7 +69509,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 998,
+      "loc": 999,
       "isOrphan": true,
       "exported": false
     },
@@ -69449,7 +69519,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1028,
+      "loc": 1029,
       "isOrphan": true,
       "exported": false
     },
@@ -69459,7 +69529,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1033,
+      "loc": 1034,
       "isOrphan": true,
       "exported": false
     },
@@ -69469,7 +69539,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1045,
+      "loc": 1046,
       "isOrphan": true,
       "exported": false
     },
@@ -69479,7 +69549,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1055,
+      "loc": 1056,
       "isOrphan": true,
       "exported": false
     },
@@ -69489,7 +69559,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1062,
+      "loc": 1063,
       "isOrphan": true,
       "exported": false
     },
@@ -69499,7 +69569,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1128,
+      "loc": 1129,
       "isOrphan": true,
       "exported": true
     },
@@ -69509,7 +69579,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1149,
+      "loc": 1150,
       "isOrphan": true,
       "exported": true
     },
@@ -69519,7 +69589,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1160,
+      "loc": 1161,
       "isOrphan": false,
       "exported": true
     },
@@ -69529,7 +69599,7 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1197,
+      "loc": 1198,
       "isOrphan": true,
       "exported": false
     },
@@ -69539,17 +69609,217 @@
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1219,
+      "loc": 1220,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/readme-autosync.ts#runCli",
-      "label": "runCli",
+      "id": "function:scripts/readme-autosync.ts#readListFromPath",
+      "label": "readListFromPath",
       "type": "function",
       "path": "scripts/readme-autosync.ts",
       "parent": "file:scripts/readme-autosync.ts",
-      "loc": 1224,
+      "loc": 1258,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#walkRepo",
+      "label": "walkRepo",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1270,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#allRepoFiles",
+      "label": "allRepoFiles",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1289,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#projectName",
+      "label": "projectName",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1293,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#projectVersion",
+      "label": "projectVersion",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1302,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#packageManager",
+      "label": "packageManager",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1311,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#packageScripts",
+      "label": "packageScripts",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1318,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#envExampleBlock",
+      "label": "envExampleBlock",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1327,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#commandBlock",
+      "label": "commandBlock",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1345,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#slug",
+      "label": "slug",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1349,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildFrontDoor",
+      "label": "buildFrontDoor",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1359,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#git",
+      "label": "git",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1473,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#countShell",
+      "label": "countShell",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1481,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#cell",
+      "label": "cell",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1489,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractPnpmVersion",
+      "label": "extractPnpmVersion",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1493,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#extractNodeMajorFromDockerfile",
+      "label": "extractNodeMajorFromDockerfile",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1499,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#refreshCurrentImplementationStatusSection",
+      "label": "refreshCurrentImplementationStatusSection",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1518,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildFileStructure",
+      "label": "buildFileStructure",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1573,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#currentReadmeContextMetrics",
+      "label": "currentReadmeContextMetrics",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1691,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#buildAIContextBlock",
+      "label": "buildAIContextBlock",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1740,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/readme-autosync.ts#updateRecentChangesTable",
+      "label": "updateRecentChangesTable",
+      "type": "function",
+      "path": "scripts/readme-autosync.ts",
+      "parent": "file:scripts/readme-autosync.ts",
+      "loc": 1863,
       "isOrphan": true,
       "exported": false
     },
@@ -86219,6 +86489,11 @@
     },
     {
       "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
+      "target": "file:dreamdmbar/dream.GlowingLight.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:app/dreamdmbar/_components/HomeDreamRegion.tsx",
       "target": "file:components/ui-system/runtimeViewport.ts",
       "kind": "import"
     },
@@ -91444,6 +91719,11 @@
     },
     {
       "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "target": "file:components/home/dream.ZoomablePane.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
       "target": "file:components/runtime/dream.DualRuntimeContainer.tsx",
       "kind": "import"
     },
@@ -91455,6 +91735,16 @@
     {
       "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
       "target": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "target": "file:dreamdmbar/dream.GlowingLight.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "target": "file:dreamdmbar/dream.PhaseTrail.tsx",
       "kind": "import"
     },
     {
@@ -92790,6 +93080,11 @@
     {
       "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "target": "file:dreamdmbar/dream.GlowingLight.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "target": "file:dreamdmbar/dream.PhaseTrail.tsx",
       "kind": "import"
     },
     {
@@ -113954,6 +114249,16 @@
     },
     {
       "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "target": "function:dreamdmbar/runtime/barInteractions.ts#calculatePointerVelocity",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
+      "target": "function:dreamdmbar/runtime/barInteractions.ts#snapSplitRatioOnRelease",
+      "kind": "call"
+    },
+    {
+      "source": "file:components/home/dream.bar.PersistentDreamBar.tsx",
       "target": "function:engine/dreams/drag.ts#parseDreamDragData",
       "kind": "call"
     },
@@ -114700,6 +115005,11 @@
     {
       "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "target": "function:components/ui-system/runtimeViewport.ts#getPreferredViewportHeight",
+      "kind": "call"
+    },
+    {
+      "source": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
+      "target": "file:dreamdmbar/runtime/barInteractions.ts",
       "kind": "call"
     },
     {
