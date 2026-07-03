@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T01:04:08.699Z",
+  "generated_at": "2026-07-03T11:54:04.847Z",
   "generator": "scripts/sync-build-memory.mjs",
   "count": 30,
   "events": [
@@ -178,6 +178,7 @@
         "components/dream.HomeFeed.tsx",
         "components/dream.widget.AnchorWidget.tsx",
         "components/home/dream.NeuralSeamCanvas.tsx",
+        "components/home/dream.bar.PersistentDreamBar.tsx",
         "components/runtime/dream.shell.RuntimeShell.tsx",
         "dreamdmbar/dreamsurface.dreamdmbar.tsx",
         "hooks/useResponsive.ts"
