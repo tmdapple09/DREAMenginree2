@@ -12,6 +12,7 @@ import ActiveModuleSurface from '@/components/home/dream.ActiveModuleSurface';
 import DaydreamPulseStrip from '@/components/home/dream.DaydreamPulseStrip';
 import FlagshipEnginesStrip from '@/components/home/dream.FlagshipEnginesStrip';
 import { useNotifications } from '@/dreamdmbar/notifications/useNotifications';
+import GlowingLight from '@/dreamdmbar/dream.GlowingLight';
 import { isCompactRuntimeViewport } from '@/components/ui-system/runtimeViewport';
 import { cacheHttpGet } from '@/engine/offline/offlineCache';
 import type { RuntimeRegionKey } from '@/types/dreamArtifact';
@@ -37,6 +38,12 @@ interface HomeDreamSurfaceProps {
   posts: Post[];
   onOpenDrEams?: () => void;
   onOpenDreamSpace?: () => void;
+  /**
+   * Separate from onOpenDreamSpace — reveals the dual-runtime split (bar +
+   * second runtime). Powers the dedicated particle-look reveal button next
+   * to the DreamSpace link, which hides itself once used.
+   */
+  onRevealSplitRuntime?: () => void;
   onOpenInRegion?: (path: string) => void;
   onOpenUrl?: (url: string, title?: string) => void;
   onOpenEngin?: (enginName: string) => void;
@@ -89,6 +96,7 @@ export default function HomeDreamSurface({
   posts,
   onOpenDrEams,
   onOpenDreamSpace,
+  onRevealSplitRuntime,
   onOpenInRegion,
   onOpenEngin,
   userId,
@@ -98,13 +106,16 @@ export default function HomeDreamSurface({
   const [notifOpen,    setNotifOpen]    = useState(false);
   const [viewportWidth, setViewportWidth] = useState(1280);
   const [showDreamR,   setShowDreamR]   = useState(false);
+  // One-shot reveal button: disappears for the rest of this mount once used,
+  // per spec — it's a single "open the split" trigger, not a toggle.
+  const [splitRevealUsed, setSplitRevealUsed] = useState(false);
   const { unreadCount } = useNotifications();
 
   const name = profile?.display_name || profile?.handle || 'Dreamer';
   const isCompactViewport = isCompactRuntimeViewport(viewportWidth);
 
-  
-  
+  // Inside the dual runtime, open pages in the active region so menu/daydream
+  // actions feel native. Standalone HomeDream keeps normal Next.js routing.
   const openPage = (url: string, _label?: string) => {
     if (onOpenInRegion) {
       onOpenInRegion(url);
@@ -141,8 +152,8 @@ export default function HomeDreamSurface({
       style={{
         minHeight: '100%',
         width: '100%',
-        
-        
+        // ActiveModuleSurface uses absolute positioning so HomeDream needs a
+        // containing stacking context for live modular windows and ghost previews.
         position: 'relative',
         paddingBottom: isCompactViewport
           ? 'calc(env(safe-area-inset-bottom, 0px) + 168px)'
@@ -151,7 +162,7 @@ export default function HomeDreamSurface({
     >
       <ActiveModuleSurface accountId={userId ?? profile?.id} runtimeRegion={runtimeRegion} />
 
-      
+      {/* ── Sticky header bar ──────────────────────────────────────────────── */}
       <div
         className="de-surface"
         style={{
@@ -252,7 +263,7 @@ export default function HomeDreamSurface({
             )}
           </div>
 
-          
+          {/* DreamR toggle pill */}
           <button
             type="button"
             onClick={() => setShowDreamR((v) => !v)}
@@ -300,7 +311,7 @@ export default function HomeDreamSurface({
         </div>
       </div>
 
-      
+      {/* ── DreamR Station — full-height when active ───────────────────────── */}
       {showDreamR && (
         <div
           style={{
@@ -319,10 +330,10 @@ export default function HomeDreamSurface({
         </div>
       )}
 
-      
+      {/* ── Main content ───────────────────────────────────────────────────── */}
       <div style={{ padding: isCompactViewport ? '16px 12px 0' : '20px 16px 0' }}>
 
-        
+        {/* ── Flagship engines + DREAMfield-mini momentum widget ─────────── */}
         <DraggableDream dream={{ dream_id: 'home-flagship-engins', type: 'flagship-engins', surface: 'home', runtime: 'HOME', title: 'Flagship Engins' }}>
           <FlagshipEnginesStrip
             isCompactViewport={isCompactViewport}
@@ -330,7 +341,7 @@ export default function HomeDreamSurface({
           />
         </DraggableDream>
 
-        
+        {/* ── Hero card ─────────────────────────────────────────────────────── */}
         <DraggableDream dream={{ dream_id: 'home-hero', type: 'homedream-hero', surface: 'home', runtime: 'HOME', title: `${name}'s feed` }}>
         <div className="de-auth-hero de-surface" style={{ marginBottom: 16, padding: isCompactViewport ? 16 : 20 }}>
           <div style={{ position: 'relative', zIndex: 1 }}>
@@ -370,11 +381,32 @@ export default function HomeDreamSurface({
             >
               Drop a DreamSpace artifact on HomeDream to create a live modular window.
             </div>
-            <div className="de-toolbar">
+            <div className="de-toolbar" style={{ alignItems: 'center' }}>
               <QuickLink label="Edit ProfileDream" onClick={() => openPage('/edit-profiledream', 'Edit ProfileDream')} />
               <QuickLink label="View Profile" onClick={() => openPage('/view-profile', 'View Profile')} />
               {onOpenDreamSpace && (
                 <QuickLink label={runtimeRegion === 'dream' ? 'Open HomeDream Here' : 'Open DreamSpace Here'} onClick={onOpenDreamSpace} primary />
+              )}
+              {onRevealSplitRuntime && !splitRevealUsed && (
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => {
+                    onRevealSplitRuntime();
+                    setSplitRevealUsed(true);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onRevealSplitRuntime();
+                      setSplitRevealUsed(true);
+                    }
+                  }}
+                  title="Open the split — bring back the particle and DreamSpace"
+                  style={{ display: 'inline-flex', borderRadius: '50%' }}
+                >
+                  <GlowingLight aria-label="Open the split — bring back the particle and DreamSpace" />
+                </span>
               )}
               <QuickLink label="Dr. Eams" onClick={() => onOpenDrEams?.()} />
             </div>
@@ -382,7 +414,7 @@ export default function HomeDreamSurface({
         </div>
         </DraggableDream>
 
-        
+        {/* ── Feed — the hero of the page ───────────────────────────────────── */}
         <DraggableDream dream={{ dream_id: 'home-feed', type: 'feed', surface: 'home', runtime: 'HOME', title: 'HomeDream Feed' }}>
         <div
           onMouseEnter={() => prefetchDream('/api/dreamr/feed')}
@@ -450,7 +482,7 @@ export default function HomeDreamSurface({
         </div>
         </DraggableDream>
 
-        
+        {/* ── Daydream navigation ──────────────────────────────────────────── */}
         <DraggableDream dream={{ dream_id: 'home-daydream-pulse', type: 'daydream-pulse', surface: 'home', runtime: 'HOME', title: 'Daydream Pulse' }}>
           <DaydreamPulseStrip onOpenDaydream={(href, label) => openPage(href, `${label} Daydream`)} />
         </DraggableDream>

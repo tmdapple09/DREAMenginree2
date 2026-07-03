@@ -2,7 +2,7 @@
 @config "../tailwind.config.ts";
 
 :root {
-  
+  /* ── DREAMengin Dream Ice Token Set (default) ── */
   --de-navy:        #e0e8f0;
   --de-deep:        #eaf0f7;
   --de-blue:        #2a8ab8;
@@ -38,7 +38,7 @@
   --de-shell-gradient:
     linear-gradient(180deg, rgba(255,255,255,0.74) 0%, rgba(248,251,255,0.54) 100%);
 
-  
+  /* ── GOD-TIER ENGINE tokens (live-updated by useGodTier hook) ── */
   --gt-primary-scale:      1.18;
   --gt-primary-contrast:   1.18;
   --gt-secondary-contrast: 0.88;
@@ -56,28 +56,28 @@
   --gt-motion-ambient:     1100ms;
   --gt-global-intensity:   1.0;
 
-  
-  --de-theme-from:  #e9ecf1;   
-  --de-theme-mid:   #f0f2f6;   
-  --de-theme-to:    #f7f3ec;   
+  /* ── User-editable gradient theme (overridable via ThemeApplicator) ── */
+  --de-theme-from:  #e9ecf1;   /* gradient start — light neutral */
+  --de-theme-mid:   #f0f2f6;   /* gradient midpoint — near white */
+  --de-theme-to:    #f7f3ec;   /* gradient end — warm white cream */
   --de-theme-angle: 148deg;
   --de-theme-btn-from: #2a8ab8;
   --de-theme-btn-to:   #c8981a;
 
-  
+  /* ── User override defaults */
   --user-brightness: 1;
   --user-saturation: 1;
   --user-blur: 24px;
   --starfield-style: light;
 
-  
+  /* ── Skin engine defaults (overridden by CustomizeModeContext) ── */
   --skin-widget-opacity: 0.72;
   --skin-widget-radius:  18px;
   --skin-widget-shadow:  0 4px 16px rgba(0,0,0,0.07);
   --skin-font:           var(--font-space-grotesk, "Space Grotesk", system-ui, sans-serif);
   --skin-accent-color:   #c8981a;
 
-  
+  /* ── Tailwind HSL tokens (required by shadcn) ── */
   --background:            220 15% 95%;
   --foreground:            220 30% 15%;
   --card:                  220 20% 98%;
@@ -103,7 +103,7 @@
   --node-active:           210 80% 52%;
   --node-inactive:         215 20% 70%;
 
-  
+  /* Legacy compat tokens */
   --c-void:    #dce8f8;
   --c-deep:    #e8f0fa;
   --c-gold:    #c8981a;
@@ -120,7 +120,7 @@
   box-sizing: border-box;
 }
 
-
+/* ── Reset ── */
 html, body {
   margin: 0;
   padding: 0;
@@ -130,14 +130,17 @@ html, body {
     var(--de-theme-mid,  #f0f2f6) 55%,
     var(--de-theme-to,   #f7f3ec) 100%
   );
-  
+  /* `background-attachment: fixed` removed (HumanAI audit H2): on iOS Safari
+   * it forces a full-viewport repaint on every scroll. The body gradient is
+   * cosmetic and behaves correctly without it. */
   color: var(--de-text);
   font-family: var(--font-space-grotesk, 'Space Grotesk', system-ui, sans-serif);
   overscroll-behavior: none;
-  
+  /* Keep native pinch zoom alive across the shell so the app behaves like a
+   * real mobile app instead of trapping the user inside workspace zoom buttons. */
   touch-action: pan-x pan-y pinch-zoom;
   -webkit-tap-highlight-color: transparent;
-  
+  /* iOS text size adjustment */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -146,13 +149,20 @@ html {
 }
 
 body {
-  
+  /* 100dvh (dynamic viewport height) avoids the iOS Safari URL-bar jump
+   * that 100vh produces (HumanAI audit M4). */
   min-height: 100dvh;
   position: relative;
   overflow-x: hidden;
 }
 
-
+/* Suppress the body gradient on the public landing page so we don't paint
+ * the light gradient under the hero's solid black background (HumanAI audit M7).
+ *
+ * `:has()` ships in Safari 15.4+ (Mar 2022), Chrome 105+, and Firefox 121+
+ * (Dec 2023). On any older browser the rule simply does not match, and the
+ * worst case is the original behaviour — a brief light gradient visible
+ * behind the hero — which is acceptable graceful degradation. */
 body:has([data-route="landing"]) {
   background: #000;
   min-height: 100vh;
@@ -169,7 +179,8 @@ body:has([data-route="landing"])::after {
   display: none;
 }
 
-
+/* iOS-first 44 px minimum tap target on coarse pointers (HumanAI audit M1).
+ * Previously lived only in app/globals.css, which is not imported. */
 @media (pointer: coarse) {
   button,
   a,
@@ -211,14 +222,17 @@ body > * {
   z-index: 1;
 }
 
-
-
+/* ── iOS smooth scroll containers ── */
+/* NOTE: -webkit-overflow-scrolling: touch is intentionally omitted.
+   That deprecated property creates a native iOS scroll layer where buttons
+   inside require two taps (first focuses the layer, second fires the click).
+   Modern iOS 13+ provides momentum scrolling on overflow:auto without it. */
 [data-scroll], .scroll-ios {
   overscroll-behavior: contain;
   scroll-behavior: smooth;
 }
 
-
+/* ── All overflow scroll containers get smooth scroll ── */
 [data-scroll],
 .scroll-ios,
 [style*="overflow-y: auto"],
@@ -227,21 +241,21 @@ body > * {
   scroll-behavior: smooth;
 }
 
-
+/* ── Button / Link active press states — mobile-first ── */
 button, [role="button"], a {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   user-select: none;
 }
 
-
+/* Active scale feedback — applies to all pressable elements on touch */
 button:active,
 [role="button"]:active,
 a:active {
   opacity: 0.88;
 }
 
-
+/* ── Pressable utility — add to any tappable div/card ── */
 .de-pressable {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -282,7 +296,7 @@ a:active {
   opacity: 0.88;
 }
 
-
+/* ── Card press feedback ── */
 .de-card-pressable {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -295,7 +309,7 @@ a:active {
   transform: scale(0.975);
   will-change: transform;
 }
-
+/* ── dreamengin wordmark utility ── */
 .de-wordmark {
   font-family: var(--font-cormorant, Georgia, 'Times New Roman', serif);
   font-style: italic;
@@ -306,14 +320,18 @@ a:active {
   user-select: none;
 }
 
-
+/* ── "Dream" metallic gold word — used in all Dream-surface headers ──────────
+   Apply to any <span> wrapping the word "Dream" in platform headings.
+   The Cormorant italic gives it expressive weight; the gold gradient
+   creates the metallic sheen. Prefix/suffix text keeps its own font.
+── */
 .de-dream-word {
   font-family: var(--font-cormorant, Georgia, 'Times New Roman', serif);
   font-style: italic;
   font-weight: 700;
-  
+  /* Fallback for high-contrast / no-CSS-gradient environments */
   color: #c8981a;
-  
+  /* 5-stop metallic gold gradient */
   background: linear-gradient(
     145deg,
     #8a6010 0%,
@@ -332,7 +350,7 @@ a:active {
   display: inline;
   user-select: none;
 }
-
+/* Graceful degradation: show plain gold if background-clip unsupported */
 @supports not (-webkit-background-clip: text) {
   .de-dream-word {
     background: none;
@@ -341,7 +359,7 @@ a:active {
   }
 }
 
-
+/* ── Dream background (theme-aware) ── */
 .dream-bg {
   background:
     radial-gradient(ellipse 100% 70% at 50% -8%, rgba(48,108,255,0.14) 0%, transparent 62%),
@@ -352,7 +370,7 @@ a:active {
   filter: brightness(var(--user-brightness, 1)) saturate(var(--user-saturation, 1));
 }
 
-
+/* ── Glassmorphism panel ── */
 .de-glass {
   background: var(--de-glass);
   backdrop-filter: blur(var(--user-blur, 24px)) saturate(160%);
@@ -380,7 +398,7 @@ a:active {
   box-shadow: 0 4px 30px rgba(0,0,0,0.08);
 }
 
-
+/* ── Tag / Label ── */
 .de-tag {
   font-size: 9px;
   font-weight: 600;
@@ -389,7 +407,7 @@ a:active {
   color: var(--de-text-dim);
 }
 
-
+/* ── Gold badge ── */
 .de-badge {
   display: inline-flex;
   align-items: center;
@@ -404,7 +422,7 @@ a:active {
   background: rgba(212,168,67,0.08);
 }
 
-
+/* ── Widget tile ── */
 .de-tile {
   background: var(--de-mist);
   border: 1px solid var(--de-border);
@@ -420,7 +438,7 @@ a:active {
   transform: translateY(-1px);
 }
 
-
+/* ── Outer shell card ── */
 .de-outer-shell {
   background: var(--de-glass);
   backdrop-filter: blur(var(--user-blur, 24px)) saturate(160%);
@@ -431,7 +449,7 @@ a:active {
   box-shadow: 0 4px 30px rgba(0,0,0,0.08);
 }
 
-
+/* ── Glow divider ── */
 .de-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--de-border), transparent);
@@ -444,7 +462,7 @@ a:active {
   border: none;
 }
 
-
+/* ── Track bar ── */
 .de-track-bar {
   height: 3px;
   background: var(--de-border);
@@ -462,7 +480,7 @@ a:active {
   to   { width: 100% }
 }
 
-
+/* ── Avatar ring ── */
 .de-avatar {
   width: 38px;
   height: 38px;
@@ -478,7 +496,7 @@ a:active {
   flex-shrink: 0;
 }
 
-
+/* ── Nav indicator ── */
 .de-nav-indicator {
   display: flex;
   align-items: center;
@@ -502,7 +520,7 @@ a:active {
   box-shadow: 0 0 6px var(--de-gold);
 }
 
-
+/* ── Flip card ── */
 .de-flip-container { perspective: 1100px; }
 .de-flip-inner {
   position: relative;
@@ -523,7 +541,7 @@ a:active {
   transform: rotateY(180deg);
 }
 
-
+/* ── Control button ── */
 .de-ctrl-btn {
   position: fixed;
   left: 0; top: 0;
@@ -553,7 +571,7 @@ a:active {
   border-color: var(--de-gold) !important;
 }
 
-
+/* ── Radial menu ── */
 .de-radial-overlay {
   position: fixed;
   inset: 0;
@@ -605,7 +623,7 @@ a:active {
   color: var(--de-gold-bright);
 }
 
-
+/* ── Feed post card ── */
 .de-post {
   padding: 14px 16px;
   border-bottom: 1px solid rgba(100,150,255,0.06);
@@ -614,7 +632,7 @@ a:active {
 .de-post:last-child { border-bottom: none; }
 .de-post:hover { background: rgba(100,150,255,0.04); }
 
-
+/* ── Fade-up animation ── */
 @keyframes de-fade-up {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -625,32 +643,34 @@ a:active {
 .de-fade-up-3 { animation: de-fade-up 0.4s 0.18s ease both; }
 .de-fade-up-4 { animation: de-fade-up 0.4s 0.24s ease both; }
 
-
+/* ── Node entrance ── */
 @keyframes de-node-in {
   from { opacity: 0; transform: translate(-50%,-50%) translateY(14px) scale(0.98); }
   to   { opacity: 1; transform: translate(-50%,-50%) translateY(0) scale(1); }
 }
 
-
+/* ── Glow pulse ── */
 @keyframes de-pulse-gold {
   0%,100% { box-shadow: 0 0 20px rgba(212,168,67,0.4); }
   50%      { box-shadow: 0 0 38px rgba(212,168,67,0.85); }
 }
 .de-pulse-gold { animation: de-pulse-gold 2.5s ease-in-out infinite; }
 
-
+/* ── Code monospace ── */
 .de-code {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   font-size: 11px;
   line-height: 1.7;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   DREAMengin additional tokens — added by integration pass
+   ═══════════════════════════════════════════════════════════════════ */
 
-
-
+/* Rounded container */
 .de-rounded { border-radius: 24px; }
 
-
+/* Node wrapper (scroll container per-node) */
 .de-node-wrapper {
   overflow-y: auto;
   overflow-x: hidden;
@@ -660,7 +680,7 @@ a:active {
 .de-node-wrapper::-webkit-scrollbar { width: 3px; }
 .de-node-wrapper::-webkit-scrollbar-thumb { background: var(--de-border); border-radius: 3px; }
 
-
+/* ── Marble / Bubble widget tile — looking inside a marble ── */
 .de-widget-tile {
   background: radial-gradient(
     ellipse at 28% 22%,
@@ -695,7 +715,7 @@ a:active {
     inset 0 -1px 0 rgba(200,152,26,0.10);
 }
 
-
+/* ── Daydream page-flip animation ── */
 @keyframes de-flip-out {
   from { transform: translateX(0)   scale(1);    opacity: 1; }
   to   { transform: translateX(-5%) scale(0.97); opacity: 0; }
@@ -705,7 +725,7 @@ a:active {
   to   { transform: translateX(0)   scale(1);    opacity: 1; }
 }
 
-
+/* Stat pill */
 .de-stat-pill {
   display: inline-flex;
   align-items: center;
@@ -718,7 +738,7 @@ a:active {
   color: var(--de-text-dim);
 }
 
-
+/* Icon button */
 .de-icon-btn {
   width: 36px;
   height: 36px;
@@ -739,7 +759,7 @@ a:active {
   border-color: rgba(100,150,255,0.3);
 }
 
-
+/* Radial close button */
 .de-radial-close {
   width: 40px;
   height: 40px;
@@ -760,10 +780,10 @@ a:active {
 }
 .de-radial-close:hover { background: rgba(255,255,255,0.14); color: white; }
 
-
+/* Radial item icon */
 .de-radial-icon { font-size: 22px; line-height: 1; }
 
-
+/* Nav lock badge */
 .de-nav-lock-badge {
   position: fixed;
   bottom: 90px;
@@ -803,7 +823,7 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
 }
 
-
+/* ── Consistent radius family ── */
 :root {
   --de-radius-xs:  6px;
   --de-radius-sm:  10px;
@@ -814,7 +834,7 @@ body, .dreamnav-surface, .controls {
   --de-radius-pill: 9999px;
 }
 
-
+/* ── Glass surface recipe (single source of truth) ── */
 .de-surface {
   position: relative;
   overflow: hidden;
@@ -840,7 +860,9 @@ body, .dreamnav-surface, .controls {
 
 .de-shell {
   position: relative;
-  
+  /* overflow: clip preserves visual clipping for absolute-positioned children
+     without creating a scroll container, so position: sticky descendants
+     (e.g. the HomeDream sticky header) continue to work correctly. */
   overflow: clip;
   isolation: isolate;
 }
@@ -949,7 +971,7 @@ body, .dreamnav-surface, .controls {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.74);
 }
 
-
+/* ── Widget card (consistent frame) ── */
 .de-widget {
   background: radial-gradient(
     ellipse at 25% 18%,
@@ -996,7 +1018,7 @@ body, .dreamnav-surface, .controls {
   border-top: 1px solid rgba(160,195,240,0.2);
 }
 
-
+/* ── Pill button ── */
 .de-btn {
   display: inline-flex;
   align-items: center;
@@ -1035,7 +1057,7 @@ body, .dreamnav-surface, .controls {
 }
 .de-btn-ghost:hover { background: rgba(160,195,240,0.28); }
 
-
+/* ── List row ── */
 .de-row {
   display: flex;
   align-items: center;
@@ -1049,7 +1071,7 @@ body, .dreamnav-surface, .controls {
 .de-row:hover { background: rgba(160,195,240,0.1); }
 .de-row + .de-row { border-top: 1px solid rgba(160,195,240,0.18); }
 
-
+/* ── Premium sheet (menus/modals) ── */
 .de-sheet {
   background:
     radial-gradient(circle at top left, rgba(255,255,255,0.68) 0%, transparent 24%),
@@ -1061,7 +1083,7 @@ body, .dreamnav-surface, .controls {
   border-radius: var(--de-radius-2xl);
 }
 
-
+/* ── Metrics card ── */
 .de-metric {
   display: flex;
   flex-direction: column;
@@ -1088,7 +1110,7 @@ body, .dreamnav-surface, .controls {
 }
 .de-metric-delta.negative { color: #ef4444; }
 
-
+/* ── Premium badge ── */
 .de-badge-premium {
   display: inline-flex;
   align-items: center;
@@ -1104,7 +1126,7 @@ body, .dreamnav-surface, .controls {
   text-transform: uppercase;
 }
 
-
+/* ── Tab pill toggle ── */
 .de-tabs {
   display: flex;
   gap: 4px;
@@ -1155,14 +1177,14 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
-
+/* ── Infinity brand stamp ── */
 .de-infinity-stamp {
   opacity: 0.07;
   pointer-events: none;
   user-select: none;
 }
 
-
+/* ── Edit mode overlay indicator ── */
 .de-edit-mode-banner {
   position: fixed;
   top: 0;
@@ -1197,7 +1219,7 @@ body, .dreamnav-surface, .controls {
   pointer-events: none;
 }
 
-
+/* ── Drag handle ── */
 .de-drag-handle {
   width: 20px;
   height: 20px;
@@ -1213,7 +1235,7 @@ body, .dreamnav-surface, .controls {
 }
 .de-drag-handle:active { cursor: grabbing; }
 
-
+/* ── System notice (non-scary errors) ── */
 .de-notice {
   padding: 12px 14px;
   border-radius: var(--de-radius-md);
@@ -1236,7 +1258,7 @@ body, .dreamnav-surface, .controls {
   color: #16a34a;
 }
 
-
+/* ── Sky gradient background — sky blue → warm gold, user-editable ── */
 .de-sky-bg {
   background: linear-gradient(
     var(--de-theme-angle, 148deg),
@@ -1247,7 +1269,7 @@ body, .dreamnav-surface, .controls {
   min-height: 100vh;
 }
 
-
+/* ── Media thumbnail ── */
 .de-media-thumb {
   border-radius: var(--de-radius-md);
   border: 1px solid rgba(160,195,240,0.3);
@@ -1255,7 +1277,7 @@ body, .dreamnav-surface, .controls {
   background: rgba(160,195,240,0.1);
 }
 
-
+/* ── Pill button — blue glass capsule + metallic rim ── */
 .pillBtn {
   display: inline-flex;
   align-items: center;
@@ -1333,7 +1355,7 @@ body, .dreamnav-surface, .controls {
   pointer-events: none;
 }
 
-
+/* ── MenuPanel animations ── */
 @keyframes de-menu-overlay-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -1349,7 +1371,11 @@ body, .dreamnav-surface, .controls {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-
+/* =============================================================================
+   Premium Phone UI — Design Tokens & Utility Layer
+   Justification: docs/ARCHITECTURE.md §8 — "Minimal clutter, intentional
+   motion, mobile-first polish." Performance: CSS-only; zero JS overhead.
+   =========================================================================== */
 
 :root {
   --blur-sm: 8px;
@@ -1494,7 +1520,7 @@ body, .dreamnav-surface, .controls {
   .scrollbar-premium::-webkit-scrollbar-thumb:hover { background: rgba(125,211,252,0.45); }
 }
 
-
+/* Premium sticky header — glass nav bar, matches HomeDream and inner screens */
 .premium-header {
   background:
     linear-gradient(180deg, rgba(8, 18, 36, 0.90) 0%, rgba(10, 24, 48, 0.78) 100%);
@@ -1504,9 +1530,12 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 1px 0 rgba(125,211,252,0.12), 0 10px 30px rgba(0,0,0,0.22);
 }
 
+/* =============================================================================
+   Light-surface variants — light blue + gold + white palette
+   Used on light bg pages (LandingHero, public profiles, etc.)
+   =========================================================================== */
 
-
-
+/* Ghost button for light backgrounds — white surface, navy text */
 .premium-btn-ghost-light {
   background: rgba(255,255,255,0.85);
   color: #0f2a5c !important;
@@ -1519,7 +1548,7 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 2px 12px rgba(14,60,120,0.12), inset 0 1px 0 rgba(255,255,255,1);
 }
 
-
+/* White card for light surfaces — frosted white, sky-blue edge glow */
 .premium-card-light {
   position: relative;
   overflow: hidden;
@@ -1544,17 +1573,17 @@ body, .dreamnav-surface, .controls {
   pointer-events: none;
 }
 
-
+/* Micro-motion easing — precision, not bounce */
 :root {
-  --ease-precise:      cubic-bezier(0.4, 0, 0.2, 1);   
-  --ease-decel:        cubic-bezier(0, 0, 0.2, 1);      
-  --ease-accel:        cubic-bezier(0.4, 0, 1, 1);      
+  --ease-precise:      cubic-bezier(0.4, 0, 0.2, 1);   /* Standard ease-in-out */
+  --ease-decel:        cubic-bezier(0, 0, 0.2, 1);      /* Enter / appear */
+  --ease-accel:        cubic-bezier(0.4, 0, 1, 1);      /* Leave / disappear */
   --duration-fast:     120ms;
   --duration-normal:   200ms;
   --duration-slow:     300ms;
 }
 
-
+/* Light-surface sticky header */
 .premium-header-light {
   background: rgba(240,247,255,0.88);
   backdrop-filter: blur(24px) saturate(160%);
@@ -1563,27 +1592,30 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 2px 16px rgba(14,60,120,0.06);
 }
 
+/* =============================================================================
+   GOD-TIER UI ENGINE — utility classes emitted by getGodTierUiTokens()
+   These are toggled by the useGodTier hook; applied on :root via CSS vars.
+   =========================================================================== */
 
-
-
+/* Base god-tier activation */
 .god-tier-ui * {
   transition-duration: var(--gt-motion-micro);
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
+/* Scene dominance — every Babylon canvas at full fidelity */
 .scene-dominant canvas {
   image-rendering: high-quality;
   filter: contrast(calc(var(--gt-primary-contrast) * 1))
           saturate(calc(var(--gt-saturation-boost) * 100%));
 }
 
-
+/* Render every frame — disable paint-holding throttle on active canvases */
 .render-every-frame canvas {
   will-change: contents;
 }
 
-
+/* Parallax depth layers */
 .parallax-on [data-parallax] {
   transition: transform var(--gt-motion-structural) cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
@@ -1592,7 +1624,7 @@ body, .dreamnav-surface, .controls {
   transition: none;
 }
 
-
+/* Depth motion — 3-D translate on hover for interactive cards */
 .depth-motion-on [data-depth-card] {
   transition:
     transform var(--gt-motion-micro) cubic-bezier(0.22, 1, 0.36, 1),
@@ -1604,7 +1636,7 @@ body, .dreamnav-surface, .controls {
               rgba(0, 0, 0, calc(var(--gt-shadow-strength) * 0.22));
 }
 
-
+/* Route takeover — full-viewport transition overlay */
 .route-takeover-on [data-route-transition] {
   animation: gt-route-enter var(--gt-motion-route) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -1614,7 +1646,7 @@ body, .dreamnav-surface, .controls {
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
-
+/* Primary CTA dominance — scales and boosts contrast */
 .god-tier-ui [data-gt-primary] {
   transform: scale(var(--gt-primary-scale));
   transform-origin: center;
@@ -1622,7 +1654,7 @@ body, .dreamnav-surface, .controls {
   filter: contrast(calc(var(--gt-primary-contrast) * 100%));
 }
 
-
+/* Glass surfaces respond to glass-strength token */
 .god-tier-ui [data-gt-glass] {
   backdrop-filter: blur(calc(var(--gt-blur-strength) * 32px))
                    saturate(calc(var(--gt-saturation-boost) * 180%));
@@ -1630,7 +1662,7 @@ body, .dreamnav-surface, .controls {
                             saturate(calc(var(--gt-saturation-boost) * 180%));
 }
 
-
+/* Edge definition — sharpens outlines on interactive elements */
 .god-tier-ui [data-gt-edge] {
   outline-width: calc(var(--gt-edge-definition) * 1px);
   outline-style: solid;
@@ -1640,15 +1672,18 @@ body, .dreamnav-surface, .controls {
   outline-color: rgba(42, 138, 184, calc(var(--gt-edge-definition) * 0.7));
 }
 
-
+/* Ambient motion — slow, organic background animations */
 .god-tier-ui [data-gt-ambient] {
   animation-duration: var(--gt-motion-ambient);
   animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
 }
 
+/* =============================================================================
+   DARK PREMIUM CARDS — used on auth/landing/about surfaces (dark bg)
+   Architecture: THEME.md (Gold=action · Sky-blue=connected · White=clarity)
+   =========================================================================== */
 
-
-
+/* Dark glass card — replaces .de-widget on dark backgrounds */
 .de-dark-card {
   background: rgba(255,255,255,0.04);
   backdrop-filter: blur(24px) saturate(160%);
@@ -1659,7 +1694,7 @@ body, .dreamnav-surface, .controls {
   overflow: hidden;
 }
 
-
+/* Card accent bar — gold→sky gradient top border */
 .de-dark-card-accent::before {
   content: '';
   display: block;
@@ -1667,7 +1702,7 @@ body, .dreamnav-surface, .controls {
   background: linear-gradient(90deg, transparent, rgba(200,152,26,0.55) 40%, rgba(56,189,248,0.35) 70%, transparent);
 }
 
-
+/* Dark input — used in auth forms */
 .de-dark-input {
   width: 100%;
   padding: 11px 14px;
@@ -1688,7 +1723,7 @@ body, .dreamnav-surface, .controls {
   color: rgba(140,170,220,0.35);
 }
 
-
+/* Dark label — uppercase tracking label */
 .de-dark-label {
   font-size: 11px;
   font-weight: 600;
@@ -1699,7 +1734,7 @@ body, .dreamnav-surface, .controls {
   margin-bottom: 5px;
 }
 
-
+/* Dark section heading */
 .de-dark-heading {
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 800;
@@ -1708,34 +1743,34 @@ body, .dreamnav-surface, .controls {
   line-height: 1.2;
 }
 
-
+/* Dark body text */
 .de-dark-body {
   color: rgba(165,195,235,0.65);
   line-height: 1.7;
 }
 
-
+/* Dark muted text */
 .de-dark-muted {
   color: rgba(140,170,220,0.45);
 }
 
-
+/* Dark gold accent text */
 .de-dark-gold {
   color: #c8981a;
 }
 
-
+/* Dark sky accent text */
 .de-dark-sky {
   color: #38bdf8;
 }
 
-
+/* Premium page background — deep navy */
 .de-dark-bg {
   background: linear-gradient(155deg, #070e1c 0%, #0c1829 45%, #0f2244 75%, #0a1628 100%);
   min-height: 100vh;
 }
 
-
+/* Dark divider */
 .de-dark-divider {
   height: 1px;
   background: rgba(255,255,255,0.07);
@@ -1743,7 +1778,7 @@ body, .dreamnav-surface, .controls {
   margin: 0;
 }
 
-
+/* Gradient wordmark */
 .de-wordmark-dark {
   font-family: var(--font-cormorant, Georgia, serif);
   font-style: italic;
@@ -1764,9 +1799,28 @@ body, .dreamnav-surface, .controls {
   color: rgba(220,235,255,0.60);
 }
 
+/* =============================================================================
+   SICC — Stylized · Intuitive · Cohesive · Coherent
+          Super Immersive Creative Controls
 
+   Both meanings are canon.
 
+   Design philosophy:
+     Stylized    — every surface feels premium and intentionally crafted
+     Intuitive   — motion guides attention; nothing decorates without purpose
+     Cohesive    — the same visual language spans every route and component
+     Coherent    — widget, button, card, badge all reinforce one runtime
 
+   Technical layer:
+     Super Immersive Creative Controls — CSS-only keyframes and utility
+     classes that cascade through the existing de- design tokens so ALL
+     surfaces inherit SICC polish without per-file edits.
+
+   Architecture: THEME.md (Gold=action · Sky-blue=connected · White=clarity)
+   Performance:  CSS-only keyframes; zero JS overhead.
+   =========================================================================== */
+
+/* ── Gold button idle breathing ring ── */
 @keyframes sicc-gold-breathe {
   0%, 100% {
     box-shadow:
@@ -1780,44 +1834,44 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* ── DreamDM floating light: gold → light-blue → gold colour cycle ── */
 @keyframes sicc-gold-blue-breathe {
   0%, 100% { filter: hue-rotate(0deg);   }
   50%       { filter: hue-rotate(158deg); }
 }
 
-
+/* ── Gold button active pulse burst ── */
 @keyframes sicc-gold-burst {
   0%   { transform: scale(1);   opacity: 0.7; }
   50%  { transform: scale(1.8); opacity: 0; }
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-
+/* ── Shimmer sweep for send button / primary actions ── */
 @keyframes sicc-shimmer-sweep {
   0%   { transform: translateX(-120%); }
   100% { transform: translateX(320%); }
 }
 
-
+/* ── Mode button active glow ring ── */
 @keyframes sicc-mode-glow {
   0%, 100% { box-shadow: 0 0 0 0px rgba(200,152,26,0.0); }
   50%      { box-shadow: 0 0 0 4px rgba(200,152,26,0.25); }
 }
 
-
+/* ── Divider bar edge shimmer ── */
 @keyframes sicc-edge-shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
-
+/* ── Soft float for hero elements ── */
 @keyframes sicc-soft-float {
   0%, 100% { transform: translateY(0px); }
   50%      { transform: translateY(-3px); }
 }
 
-
+/* ── Glass surface entrance ── */
 @keyframes sicc-glass-in {
   from {
     opacity: 0;
@@ -1831,14 +1885,14 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* ── Notification badge pop ── */
 @keyframes sicc-badge-pop {
   0%   { transform: scale(0.3); opacity: 0; }
   60%  { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-
+/* ── Bottom-sheet slide-up — used by premium modals ── */
 @keyframes sicc-sheet-up {
   from {
     opacity: 0;
@@ -1850,7 +1904,7 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* ── Gold capsule → sphere reveal ── */
 @keyframes sicc-gold-reveal {
   from {
     width: 36px;
@@ -1866,7 +1920,7 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* ── Infinity symbol glow pulse ── */
 @keyframes sicc-infinity-glow {
   0%, 100% {
     filter: drop-shadow(0 0 4px rgba(255,240,180,0.70)) drop-shadow(0 0 10px rgba(200,152,26,0.50)) drop-shadow(0 1px 2px rgba(0,0,0,0.18));
@@ -1878,16 +1932,16 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* ── Gold particle fountain ── */
 @keyframes sicc-particle-fountain {
   0%   { transform: translate(0, 0) scale(1); opacity: 1; }
   40%  { opacity: 0.9; }
   100% { transform: translate(var(--particle-dx, 0), var(--particle-dy, 80px)) scale(0.3); opacity: 0; }
 }
 
-
-
-
+/* ── DreamDMBar particle mode (MANIPULATE state) breathing glow ── */
+/*    The bar element collapses to a 12px circle; this animation pulses its     */
+/*    outer glow so it reads as an active, energised node on screen.           */
 @keyframes sicc-bar-particle-glow {
   0%, 100% {
     box-shadow:
@@ -1903,20 +1957,27 @@ body, .dreamnav-surface, .controls {
   }
 }
 
+/* ── Phase trail — "ninja dash" afterimage left behind on a fast bar fling ── */
+/*    Pure motion fade, no glow/sparkle: each duplicate just fades + settles.   */
+@keyframes sicc-phase-trail {
+  0%   { opacity: 0.55; }
+  100% { opacity: 0; }
+}
 
+/* ── Typing rhythm handle pulse ── */
 @keyframes sicc-rhythm-pulse {
   0%, 100% { transform: scaleX(1); opacity: 0.55; }
   50%      { transform: scaleX(var(--rhythm-scale, 1.5)); opacity: 0.85; }
 }
 
-
+/* ── Quick reaction emoji pop ── */
 @keyframes sicc-react-pop {
   0%   { transform: scale(0.3) rotate(-15deg); opacity: 0; }
   50%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
   100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
-
+/* ── Dream streak flame flicker ── */
 @keyframes sicc-flame-flicker {
   0%, 100% { transform: scaleY(1) rotate(0deg); filter: brightness(1); }
   25%      { transform: scaleY(1.1) rotate(-3deg); filter: brightness(1.15); }
@@ -1924,19 +1985,19 @@ body, .dreamnav-surface, .controls {
   75%      { transform: scaleY(1.08) rotate(-1deg); filter: brightness(1.2); }
 }
 
-
+/* ── Slash command palette slide-in ── */
 @keyframes sicc-slash-in {
   from { opacity: 0; transform: translateY(12px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-
+/* ── Bloom overlay entrance animation ── */
 @keyframes sicc-bloom-in {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-
+/* ── Mood aura ambient overlay pulse ── */
 @keyframes sicc-mood-aura {
   0%, 100% { opacity: 0.5; }
   50%      { opacity: 1; }
@@ -1978,7 +2039,7 @@ body, .dreamnav-surface, .controls {
   animation: sicc-soft-float 4s ease-in-out infinite;
 }
 
-
+/* ── Particle fountain particles ── */
 .sicc-particle {
   position: absolute;
   border-radius: 50%;
@@ -1986,35 +2047,35 @@ body, .dreamnav-surface, .controls {
   animation: sicc-particle-fountain 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-
+/* ── Quick reaction emoji bounce-in ── */
 .sicc-react-pop {
   animation: sicc-react-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-
+/* ── Typing rhythm handle ── */
 .sicc-rhythm-handle {
   animation: sicc-rhythm-pulse 0.5s ease-in-out infinite;
   transform-origin: center;
 }
 
-
+/* ── Dream streak flame ── */
 .sicc-flame {
   animation: sicc-flame-flicker 0.6s ease-in-out infinite;
   transform-origin: bottom center;
 }
 
-
+/* ── Slash command palette ── */
 .sicc-slash-palette {
   animation: sicc-slash-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
+/* ── Mood aura overlay ── */
 .sicc-mood-aura {
   animation: sicc-mood-aura 8s ease-in-out infinite;
   pointer-events: none;
 }
 
-
+/* ── SICC premium gradient text ── */
 .sicc-gradient-text {
   background: linear-gradient(135deg,
     #c8981a 0%,
@@ -2030,7 +2091,7 @@ body, .dreamnav-surface, .controls {
   animation: sicc-edge-shimmer 4s linear infinite;
 }
 
-
+/* ── SICC divider bar edge glow ── */
 .sicc-bar-edge {
   position: relative;
 }
@@ -2070,12 +2131,14 @@ body, .dreamnav-surface, .controls {
   background-size: 200% 100%;
   animation: sicc-edge-shimmer 8s linear infinite reverse;
 }
-
+/* In particle mode the element is a 12px circle — suppress the horizontal
+   shimmer lines so they don't render across/beyond the circle's edges.      */
 .sicc-bar-edge[data-bar-state="particle"]::before,
 .sicc-bar-edge[data-bar-state="particle"]::after {
   display: none;
 }
-
+/* In seam mode the ::before top-edge line IS the visible seam — stretch it
+   to fill the full 2px element height so the glow is the bar itself.        */
 .sicc-bar-edge[data-bar-state="seam"]::before {
   height: 100%;
 }
@@ -2083,14 +2146,19 @@ body, .dreamnav-surface, .controls {
   display: none;
 }
 
+/* =============================================================================
+   SICC PLATFORM CASCADES
+   These rules extend existing de- design tokens so every surface that uses
+   de-widget, de-btn-gold, de-dark-card, etc. automatically inherits SICC
+   polish — Stylized, Intuitive, Cohesive, Coherent across all 59+ routes.
+   =========================================================================== */
 
-
-
+/* ── Widget cards: subtle glass entrance across all surfaces ── */
 .de-widget {
   animation: sicc-glass-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-
+/* ── Gold buttons: premium shimmer sweep on all gold actions ── */
 .de-btn-gold {
   position: relative;
   overflow: hidden;
@@ -2112,7 +2180,7 @@ body, .dreamnav-surface, .controls {
   border-radius: inherit;
 }
 
-
+/* ── Primary buttons: refined hover glow ── */
 .de-btn-primary {
   transition: opacity 0.15s, transform 0.1s, box-shadow 0.25s;
 }
@@ -2120,12 +2188,12 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 6px 24px rgba(42,138,184,0.35), 0 0 0 2px rgba(42,138,184,0.10);
 }
 
-
+/* ── Dark glass cards: SICC entrance on auth/dark surfaces ── */
 .de-dark-card {
   animation: sicc-glass-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-
+/* ── Dark background: ambient glow orbs float ── */
 .de-dark-bg .pointer-events-none > div,
 [style*="linear-gradient(155deg"] .pointer-events-none > div {
   animation: sicc-soft-float 7s ease-in-out infinite;
@@ -2137,13 +2205,13 @@ body, .dreamnav-surface, .controls {
   animation-delay: -1.5s;
 }
 
-
+/* ── Wordmark gold word: SICC gradient shimmer on all surfaces ── */
 .de-dream-word {
   background-size: 200% 100%;
   animation: sicc-edge-shimmer 5s linear infinite;
 }
 
-
+/* ── Widget header borders: refined gold edge ── */
 .de-widget-header {
   border-image: linear-gradient(90deg,
     rgba(160,195,240,0.05),
@@ -2154,7 +2222,7 @@ body, .dreamnav-surface, .controls {
   ) 1;
 }
 
-
+/* ── Ghost buttons: refined hover lift ── */
 .de-btn-ghost {
   transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
 }
@@ -2163,7 +2231,7 @@ body, .dreamnav-surface, .controls {
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-
+/* ── Row items: smooth hover feedback ── */
 .de-row {
   transition: background 0.15s, transform 0.1s;
 }
@@ -2171,25 +2239,25 @@ body, .dreamnav-surface, .controls {
   background: rgba(200,215,240,0.12);
 }
 
-
+/* ── Dark accent bar: SICC edge shimmer ── */
 .de-dark-card-accent::before {
   background-size: 200% 100%;
   animation: sicc-edge-shimmer 6s linear infinite;
 }
 
-
+/* ── Dark input: SICC focus glow ring ── */
 .de-dark-input:focus {
   border-color: rgba(56,189,248,0.45);
   box-shadow: 0 0 0 3px rgba(56,189,248,0.14), 0 0 12px rgba(56,189,248,0.06);
 }
 
-
+/* ── Dark wordmark gradient: SICC shimmer ── */
 .de-wordmark-dark .dream {
   background-size: 200% 100%;
   animation: sicc-edge-shimmer 5s linear infinite;
 }
 
-
+/* ── Sky background: smooth entrance for page loads ── */
 @keyframes sicc-page-enter {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -2198,20 +2266,20 @@ body, .dreamnav-surface, .controls {
   animation: sicc-page-enter 0.35s ease both;
 }
 
-
+/* ── Sticky headers: refined blur + gold accent bottom ── */
 .de-sky-bg > .sticky {
   backdrop-filter: blur(28px) saturate(160%);
   -webkit-backdrop-filter: blur(28px) saturate(160%);
 }
 
-
+/* ── Stagger widget entrance for pages with multiple cards ── */
 .de-widget:nth-child(2)  { animation-delay: 0.06s; }
 .de-widget:nth-child(3)  { animation-delay: 0.12s; }
 .de-widget:nth-child(4)  { animation-delay: 0.18s; }
 .de-widget:nth-child(5)  { animation-delay: 0.24s; }
 .de-widget:nth-child(6)  { animation-delay: 0.30s; }
 
-
+/* ── Respect reduced motion preference ── */
 @media (prefers-reduced-motion: reduce) {
   .de-widget,
   .de-dark-card,
@@ -2232,7 +2300,13 @@ body, .dreamnav-surface, .controls {
   }
 }
 
-
+/* =============================================================================
+   HYPER DREAM MODE
+   Applied via body.hyper-dream when the Konami code easter egg is activated.
+   All SICC animations run at 3× speed; extra neon glow on buttons + cards;
+   a subtle scanline overlay covers the viewport.
+   Auto-removed after 18 s by KonamiDream.tsx.
+   =========================================================================== */
 
 @keyframes hd-viewport-scanlines {
   from { background-position: 0 0; }
@@ -2244,7 +2318,7 @@ body, .dreamnav-surface, .controls {
   50%       { box-shadow: 0 0 14px rgba(200,152,26,0.8), 0 0 30px rgba(200,152,26,0.4), 0 0 60px rgba(200,152,26,0.15); }
 }
 
-
+/* Scanline pseudo-overlay on the root */
 body.hyper-dream::before {
   content: '';
   position: fixed;
@@ -2262,7 +2336,7 @@ body.hyper-dream::before {
   mix-blend-mode: overlay;
 }
 
-
+/* 3× speed for all SICC keyframe animations */
 body.hyper-dream .de-btn-gold::after,
 body.hyper-dream .de-dream-word,
 body.hyper-dream .de-wordmark-dark .dream,
@@ -2278,33 +2352,38 @@ body.hyper-dream .de-strip-shimmer {
   animation-play-state: running !important;
 }
 
-
+/* Neon pulse on all gold buttons during hyper mode */
 body.hyper-dream .de-btn-gold,
 body.hyper-dream .de-btn-primary {
   animation: hd-neon-pulse 0.9s ease-in-out infinite !important;
 }
 
-
+/* Widget cards: amplified glass shimmer */
 body.hyper-dream .de-widget {
   outline: 1px solid rgba(56,189,248,0.18);
   transition: outline 0s;
 }
 
-
+/* Dark cards: extra pop */
 body.hyper-dream .de-dark-card {
   border-color: rgba(200,152,26,0.45) !important;
 }
 
-
+/* Disable hyper-dream in reduced-motion environments */
 @media (prefers-reduced-motion: reduce) {
   body.hyper-dream::before { animation: none; }
   body.hyper-dream .de-btn-gold,
   body.hyper-dream .de-btn-primary { animation: none !important; }
 }
 
+/* =============================================================================
+   SICC UX MAXOUT — Premium iOS Mobile Experience Layer
+   Every authenticated surface inherits these upgrades without per-file edits.
+   Focus: touch targets, typography, glassmorphism depth, active/press states,
+   micro-animations, branding presence, and cohesive spacing at mobile sizes.
+   =========================================================================== */
 
-
-
+/* ── Mobile typography: larger, cleaner reading rhythm ── */
 @media (max-width: 640px) {
   h1 { font-size: clamp(22px, 6vw, 32px) !important; line-height: 1.18 !important; }
   h2 { font-size: clamp(18px, 5vw, 26px) !important; line-height: 1.22 !important; }
@@ -2313,7 +2392,7 @@ body.hyper-dream .de-dark-card {
   .de-widget-body  { font-size: 14px !important; line-height: 1.55 !important; }
 }
 
-
+/* ── All interactive elements: iOS-spec 44 px minimum touch target ── */
 button,
 [role="button"],
 a,
@@ -2322,7 +2401,7 @@ a,
   -webkit-tap-highlight-color: transparent;
 }
 
-
+/* ── Buttons: richer active / press state ── */
 .de-btn:active {
   transform: scale(0.96) !important;
   filter: brightness(0.94);
@@ -2343,7 +2422,7 @@ a,
   transform: scale(0.95) !important;
 }
 
-
+/* ── Widget cards: deeper glassmorphism depth for mobile ── */
 @media (max-width: 640px) {
   .de-widget {
     border-radius: 22px !important;
@@ -2366,14 +2445,14 @@ a,
   }
 }
 
-
+/* ── Headers: premium glass sticky bars ── */
 header.sticky {
   backdrop-filter: blur(32px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
   box-shadow: 0 1px 0 rgba(160,195,240,0.22), 0 4px 16px rgba(0,0,0,0.04) !important;
 }
 
-
+/* ── De-row list items: mobile-optimized touch zones ── */
 .de-row {
   min-height: 56px !important;
   padding: 12px 14px !important;
@@ -2385,7 +2464,7 @@ header.sticky {
   transform: scale(0.985) !important;
 }
 
-
+/* ── De-glass containers: enhanced on mobile ── */
 @media (max-width: 640px) {
   .de-glass {
     backdrop-filter: blur(24px) saturate(150%) !important;
@@ -2397,7 +2476,7 @@ header.sticky {
   }
 }
 
-
+/* ── App-level branding wordmark anchor ── */
 .de-brand-bar {
   display: flex;
   align-items: center;
@@ -2413,7 +2492,7 @@ header.sticky {
   background-clip: text;
 }
 
-
+/* ── Settings / account page: icon buttons richer treatment ── */
 .de-settings-icon-btn {
   width: 40px;
   height: 40px;
@@ -2428,7 +2507,7 @@ header.sticky {
   transform: scale(0.88) !important;
 }
 
-
+/* ── Premium focus ring for accessibility — iOS style blue ring ── */
 button:focus-visible,
 input:focus-visible,
 a:focus-visible,
@@ -2438,14 +2517,14 @@ a:focus-visible,
   box-shadow: 0 0 0 4px rgba(42,138,184,0.14) !important;
 }
 
-
+/* ── Input fields: premium iOS feel ── */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 textarea {
   -webkit-appearance: none;
   border-radius: 14px;
-  font-size: 16px !important; 
+  font-size: 16px !important; /* prevents iOS auto-zoom */
   transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 input[type="text"]:focus,
@@ -2457,7 +2536,7 @@ textarea:focus {
   box-shadow: 0 0 0 3.5px rgba(42,138,184,0.12) !important;
 }
 
-
+/* ── Scroll containers: contain overscroll on iOS ── */
 .overflow-y-auto,
 .overflow-y-scroll,
 [style*="overflow-y: auto"],
@@ -2465,12 +2544,12 @@ textarea:focus {
   overscroll-behavior-y: contain;
 }
 
-
+/* ── Page transitions: smooth entry on all authenticated screens ── */
 main[role="main"] > * {
   animation: sicc-page-enter 0.38s cubic-bezier(0.16,1,0.3,1) both;
 }
 
-
+/* ── Pull-to-refresh safe zone ── */
 @supports (padding: env(safe-area-inset-top)) {
   .de-sky-bg,
   .dream-bg {
@@ -2481,7 +2560,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── De-notice: richer callout blocks ── */
 .de-notice {
   border-radius: 12px !important;
   padding: 12px 14px !important;
@@ -2490,7 +2569,7 @@ main[role="main"] > * {
   backdrop-filter: blur(8px);
 }
 
-
+/* ── Gold shimmer on the DreamDM bar drag handle: stronger on mobile ── */
 @media (max-width: 640px) {
   .sicc-bar-edge::before {
     background: linear-gradient(
@@ -2518,7 +2597,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── Premium skeleton loaders: smooth pulse ── */
 .skeleton-pulse {
   background: linear-gradient(
     90deg,
@@ -2531,7 +2610,7 @@ main[role="main"] > * {
   border-radius: 8px;
 }
 
-
+/* ── Bottom safe padding for fixed-bar layout ── */
 .pb-bar-safe {
   padding-bottom: 110px !important;
 }
@@ -2541,7 +2620,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── ModeButton pills in DreamDMBar: larger touch zone on mobile ── */
 @media (max-width: 640px) {
   .sicc-mode-btn {
     min-width: 40px !important;
@@ -2550,7 +2629,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── Authenticated surface shell primitives ─────────────────────────────── */
 .de-auth-header {
   background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(248,249,253,0.88) 100%);
   border-bottom: 1px solid rgba(160,195,240,0.24);
@@ -2707,10 +2786,16 @@ main[role="main"] > * {
   }
 }
 
-
+/* =============================================================================
+   C+++ VOID / OLED DARK THEME
+   Applied via [data-theme="void"] on :root — the deepest, most premium
+   dark experience in DREAMengin. OLED blacks, electric neon accents,
+   ultra-rich glassmorphism, holographic shimmer.
+   Gold = action · Sky-neon = connected · White = clarity (README §28)
+   =========================================================================== */
 
 [data-theme="void"] {
-  
+  /* ── Core void palette ── */
   --de-navy:        #040810;
   --de-deep:        #060c16;
   --de-blue:        #38bdf8;
@@ -2746,7 +2831,7 @@ main[role="main"] > * {
   --de-shell-gradient:
     linear-gradient(180deg, rgba(8,18,40,0.86) 0%, rgba(4,10,22,0.82) 100%);
 
-  
+  /* ── Override background ── */
   --de-theme-from:  #03060c;
   --de-theme-mid:   #060c18;
   --de-theme-to:    #04080f;
@@ -2754,7 +2839,7 @@ main[role="main"] > * {
   --de-theme-btn-from: #0ea5e9;
   --de-theme-btn-to:   #fbbf24;
 
-  
+  /* ── Tailwind HSL overrides ── */
   --background:            222 47% 6%;
   --foreground:            210 40% 94%;
   --card:                  222 47% 8%;
@@ -2778,7 +2863,7 @@ main[role="main"] > * {
   --glow-accent:           43 96% 56%;
 }
 
-
+/* ── Void body background ── */
 [data-theme="void"] body,
 [data-theme="void"] html {
   background: linear-gradient(
@@ -2795,7 +2880,7 @@ main[role="main"] > * {
   opacity: 0.42;
 }
 
-
+/* ── Void sky background ── */
 [data-theme="void"] .de-sky-bg {
   background: linear-gradient(
     155deg,
@@ -2806,7 +2891,7 @@ main[role="main"] > * {
   ) !important;
 }
 
-
+/* ── Void glass surfaces ── */
 [data-theme="void"] .de-glass,
 [data-theme="void"] .de-surface {
   background: rgba(8,18,40,0.72) !important;
@@ -2814,7 +2899,7 @@ main[role="main"] > * {
   box-shadow: 0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(56,189,248,0.08) !important;
 }
 
-
+/* ── Void widget cards ── */
 [data-theme="void"] .de-widget {
   background: radial-gradient(
     ellipse at 25% 18%,
@@ -2829,7 +2914,7 @@ main[role="main"] > * {
     0 0 40px rgba(56,189,248,0.03) !important;
 }
 
-
+/* ── Void auth header ── */
 [data-theme="void"] .de-auth-header {
   background: linear-gradient(180deg, rgba(4,8,20,0.95) 0%, rgba(6,12,24,0.92) 100%) !important;
   border-bottom-color: rgba(56,189,248,0.12) !important;
@@ -2838,7 +2923,7 @@ main[role="main"] > * {
     0 8px 32px rgba(0,0,0,0.4) !important;
 }
 
-
+/* ── Void auth hero ── */
 [data-theme="void"] .de-auth-hero {
   background: linear-gradient(145deg, rgba(8,20,48,0.90) 0%, rgba(4,12,30,0.85) 100%) !important;
   border-color: rgba(56,189,248,0.12) !important;
@@ -2852,7 +2937,7 @@ main[role="main"] > * {
     radial-gradient(circle at bottom left, rgba(56,189,248,0.08), transparent 38%) !important;
 }
 
-
+/* ── Void heading + text ── */
 [data-theme="void"] .de-auth-title { color: rgba(240,250,255,0.96) !important; }
 [data-theme="void"] .de-auth-eyebrow { color: var(--de-accent) !important; }
 [data-theme="void"] .de-auth-badge {
@@ -2861,7 +2946,7 @@ main[role="main"] > * {
   border-color: rgba(251,191,36,0.20) !important;
 }
 
-
+/* ── Void buttons ── */
 [data-theme="void"] .de-btn-primary {
   background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
   box-shadow: 0 4px 20px rgba(14,165,233,0.45), inset 0 1px 0 rgba(255,255,255,0.15) !important;
@@ -2877,23 +2962,26 @@ main[role="main"] > * {
   color: var(--de-text) !important;
 }
 
-
+/* ── Void back button ── */
 [data-theme="void"] .de-auth-back {
   background: rgba(56,189,248,0.06) !important;
   border-color: rgba(56,189,248,0.14) !important;
 }
 
-
+/* ── Void rows ── */
 [data-theme="void"] .de-row:hover { background: rgba(56,189,248,0.06) !important; }
 [data-theme="void"] .de-row:active { background: rgba(56,189,248,0.10) !important; }
 
-
+/* ── Void tags ── */
 [data-theme="void"] .de-tag { color: rgba(148,180,220,0.50) !important; }
 [data-theme="void"] .de-badge { color: var(--de-gold) !important; border-color: rgba(251,191,36,0.22) !important; }
 
+/* =============================================================================
+   VOID AMBIENT GLOW SYSTEM
+   Neon orb backgrounds + living aurora for authenticated surfaces in void mode.
+   =========================================================================== */
 
-
-
+/* ── Void ambient orbs — placed via ::before/::after on de-sky-bg ── */
 [data-theme="void"] .de-sky-bg::before {
   content: '';
   position: fixed;
@@ -2914,7 +3002,7 @@ main[role="main"] > * {
   100% { transform: translateX(8px) translateY(-4px); }
 }
 
-
+/* ── Void starfield layer ── */
 [data-theme="void"] .de-sky-bg::after {
   content: '';
   position: fixed;
@@ -2943,9 +3031,12 @@ main[role="main"] > * {
   100% { opacity: 0.7; }
 }
 
+/* =============================================================================
+   PREMIUM NEON GLOW SYSTEM
+   Reusable neon effect utilities for any surface.
+   =========================================================================== */
 
-
-
+/* ── Electric neon border ── */
 .neon-border-blue {
   border: 1px solid rgba(56,189,248,0.45) !important;
   box-shadow:
@@ -2967,7 +3058,7 @@ main[role="main"] > * {
     0 0 20px rgba(167,139,250,0.08) !important;
 }
 
-
+/* ── Neon text glow ── */
 .neon-text-blue {
   color: #38bdf8;
   text-shadow:
@@ -2983,7 +3074,7 @@ main[role="main"] > * {
     0 0 40px rgba(251,191,36,0.2);
 }
 
-
+/* ── Neon button pulse animation ── */
 @keyframes neon-pulse-blue {
   0%, 100% { box-shadow: 0 0 6px rgba(56,189,248,0.4), 0 0 18px rgba(56,189,248,0.2); }
   50%       { box-shadow: 0 0 12px rgba(56,189,248,0.7), 0 0 36px rgba(56,189,248,0.35); }
@@ -2995,9 +3086,13 @@ main[role="main"] > * {
 .neon-pulse-blue { animation: neon-pulse-blue 2.5s ease-in-out infinite; }
 .neon-pulse-gold { animation: neon-pulse-gold 2.5s ease-in-out infinite; }
 
+/* =============================================================================
+   HOLOGRAPHIC / IRIDESCENT TEXT + CARD SYSTEM
+   The highest-tier visual treatment for featured elements, hero text,
+   and premium card borders.
+   =========================================================================== */
 
-
-
+/* ── Holographic gradient text ── */
 @keyframes holo-shift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
@@ -3022,7 +3117,7 @@ main[role="main"] > * {
   animation: holo-shift 5s linear infinite;
 }
 
-
+/* ── Holographic card border ── */
 .holo-border {
   position: relative;
   border: 1px solid transparent !important;
@@ -3046,7 +3141,7 @@ main[role="main"] > * {
   z-index: -1;
 }
 
-
+/* ── Iridescent shimmer overlay ── */
 .iridescent {
   position: relative;
   overflow: hidden;
@@ -3069,7 +3164,10 @@ main[role="main"] > * {
   mix-blend-mode: screen;
 }
 
-
+/* =============================================================================
+   AURORA BACKGROUND SYSTEM
+   Animated aurora/nebula backgrounds for Daydream surfaces and hero areas.
+   =========================================================================== */
 
 .aurora-bg {
   position: relative;
@@ -3097,7 +3195,7 @@ main[role="main"] > * {
 
 .aurora-bg > * { position: relative; z-index: 1; }
 
-
+/* ── Void aurora variant (darker, more dramatic) ── */
 .aurora-void {
   position: relative;
   overflow: hidden;
@@ -3116,7 +3214,11 @@ main[role="main"] > * {
 }
 .aurora-void > * { position: relative; z-index: 1; }
 
-
+/* =============================================================================
+   DEPTH CARD SYSTEM — 3-LAYER SPATIAL DEPTH
+   Cards with real visual depth using layered shadows + glassmorphism.
+   Used for Daydream surfaces, Dream Windows, and premium feature areas.
+   =========================================================================== */
 
 .depth-card {
   position: relative;
@@ -3143,7 +3245,7 @@ main[role="main"] > * {
     inset 0 -1px 0 rgba(160,195,240,0.15);
 }
 
-
+/* ── Void depth card ── */
 [data-theme="void"] .depth-card {
   background: rgba(6,14,32,0.80) !important;
   border-color: rgba(56,189,248,0.12) !important;
@@ -3163,7 +3265,11 @@ main[role="main"] > * {
     0 0 80px rgba(56,189,248,0.05) !important;
 }
 
-
+/* =============================================================================
+   PREMIUM DAYDREAM TILE SYSTEM
+   Upgrades the marble widget tiles to full c+++ level premium glass tiles
+   with deep depth, neon accent glows, and hover lift.
+   =========================================================================== */
 
 .de-daydream-tile {
   position: relative;
@@ -3212,7 +3318,7 @@ main[role="main"] > * {
   transition-duration: 0.10s !important;
 }
 
-
+/* ── Void daydream tile ── */
 [data-theme="void"] .de-daydream-tile {
   background: radial-gradient(
     ellipse at 28% 20%,
@@ -3236,7 +3342,11 @@ main[role="main"] > * {
     0 0 40px rgba(56,189,248,0.08) !important;
 }
 
-
+/* =============================================================================
+   FEED CARD PREMIUM SYSTEM
+   Upgrades all FeedCard instances to c+++ level with depth glass,
+   colored accent bars per source, and premium action states.
+   =========================================================================== */
 
 .feed-card-premium {
   position: relative;
@@ -3258,7 +3368,7 @@ main[role="main"] > * {
     inset 0 1.5px 0 rgba(255,255,255,0.92);
 }
 
-
+/* ── Void feed card ── */
 [data-theme="void"] .feed-card-premium {
   background: rgba(6,14,32,0.80) !important;
   border-color: rgba(56,189,248,0.10) !important;
@@ -3267,13 +3377,13 @@ main[role="main"] > * {
     inset 0 1px 0 rgba(56,189,248,0.06) !important;
 }
 
-
+/* ── Source accent left-border ── */
 .feed-card-premium[data-source="youtube"]::before   { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #ef4444; border-radius: 20px 0 0 20px; }
 .feed-card-premium[data-source="app"]::before       { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #38bdf8, #818cf8); border-radius: 20px 0 0 20px; }
 .feed-card-premium[data-source="post"]::before      { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #38bdf8, #818cf8); border-radius: 20px 0 0 20px; }
 .feed-card-premium[data-source="demo"]::before      { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #c084fc, #f472b6); border-radius: 20px 0 0 20px; }
 
-
+/* ── Action buttons: premium press states ── */
 .feed-action-btn {
   display: inline-flex;
   align-items: center;
@@ -3306,7 +3416,7 @@ main[role="main"] > * {
   background: rgba(56,189,248,0.08) !important;
 }
 
-
+/* ── Avatar ring: gold+blue gradient ── */
 .avatar-ring {
   border-radius: 50%;
   padding: 2px;
@@ -3320,7 +3430,10 @@ main[role="main"] > * {
   display: block;
 }
 
-
+/* =============================================================================
+   COMMAND PALETTE PREMIUM SYSTEM
+   Raycast/Spotlight-level command palette overlay.
+   =========================================================================== */
 
 .cmd-backdrop {
   position: fixed;
@@ -3471,7 +3584,10 @@ main[role="main"] > * {
   font-size: 13px;
 }
 
-
+/* =============================================================================
+   PREMIUM NOTIFICATION CARD SYSTEM
+   Type-colored notification cards with left-border accents and micro-animations.
+   =========================================================================== */
 
 .notif-card {
   display: flex;
@@ -3496,7 +3612,7 @@ main[role="main"] > * {
 .notif-card:hover { background: rgba(160,195,240,0.06); }
 .notif-card:last-child { border-bottom: none; }
 
-
+/* ── Type-colored accent bars ── */
 .notif-card[data-type="like"]::before     { background: #ef4444; }
 .notif-card[data-type="comment"]::before  { background: #3b82f6; }
 .notif-card[data-type="follow"]::before   { background: #22c55e; }
@@ -3504,7 +3620,7 @@ main[role="main"] > * {
 .notif-card[data-type="revenue"]::before  { background: #10b981; }
 .notif-card[data-type="message"]::before  { background: #38bdf8; }
 
-
+/* ── Type icon container ── */
 .notif-icon {
   width: 30px;
   height: 30px;
@@ -3521,11 +3637,14 @@ main[role="main"] > * {
 .notif-icon[data-type="revenue"]  { background: rgba(16,185,129,0.10); color: #10b981; }
 .notif-icon[data-type="message"]  { background: rgba(56,189,248,0.10); color: #38bdf8; }
 
-
+/* ── Void notification override ── */
 [data-theme="void"] .notif-card:hover { background: rgba(56,189,248,0.05) !important; }
 [data-theme="void"] .notif-card { border-bottom-color: rgba(56,189,248,0.06) !important; }
 
-
+/* =============================================================================
+   TOPBAR / NAV PREMIUM SYSTEM
+   Premium sticky navigation bar with glassmorphism and brand presence.
+   =========================================================================== */
 
 .topbar-premium {
   position: sticky;
@@ -3595,7 +3714,10 @@ main[role="main"] > * {
 
 [data-theme="void"] .topbar-title { color: rgba(240,250,255,0.94) !important; }
 
-
+/* =============================================================================
+   VOID THEME TOGGLE BUTTON
+   Premium floating pill to switch between VOID and default themes.
+   =========================================================================== */
 
 .void-toggle {
   position: fixed;
@@ -3617,7 +3739,7 @@ main[role="main"] > * {
 }
 .void-toggle:active { transform: scale(0.92); }
 
-
+/* Light mode void toggle */
 .void-toggle {
   background: rgba(8,18,40,0.88);
   color: rgba(226,240,255,0.90);
@@ -3628,7 +3750,7 @@ main[role="main"] > * {
   box-shadow: 0 6px 28px rgba(14,165,233,0.3), inset 0 1px 0 rgba(56,189,248,0.18);
 }
 
-
+/* Dark mode void toggle (back to light) */
 [data-theme="void"] .void-toggle {
   background: rgba(240,248,255,0.90) !important;
   color: #0f1e34 !important;
@@ -3636,7 +3758,9 @@ main[role="main"] > * {
   border-color: rgba(160,195,240,0.30) !important;
 }
 
-
+/* =============================================================================
+   RESPECT REDUCED MOTION — VOID / NEON ADDITIONS
+   =========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   [data-theme="void"] .de-sky-bg::before,
@@ -3652,10 +3776,14 @@ main[role="main"] > * {
   }
 }
 
-
+/* =============================================================================
+   GILDED GHOST OVERHAUL v2.2 — NEUMORPHIC MIDNIGHT DESIGN SYSTEM
+   Applied via [data-theme="midnight"] on :root
+   Palette: #050505 base · #D4AF37 gold · #7DD3FC sky
+   =========================================================================== */
 
 [data-theme="midnight"] {
-  
+  /* ── Core palette ── */
   --de-navy:        #050505;
   --de-deep:        #080808;
   --de-blue:        #7DD3FC;
@@ -3682,7 +3810,7 @@ main[role="main"] > * {
   --de-widget-bg:   rgba(255,255,255,0.03);
   --de-widget-border: rgba(125,211,252,0.10);
 
-  
+  /* ── Neumorphic shadow tokens ── */
   --neu-light:      1px 1px 10px rgba(125,211,252,0.05);
   --neu-dark:       -1px -1px 10px rgba(0,0,0,0.8);
   --neu-raise:      var(--neu-light), var(--neu-dark);
@@ -3690,7 +3818,7 @@ main[role="main"] > * {
   --neu-gold-glow:  0 0 18px rgba(212,175,55,0.22);
   --bar-underglow:  0 -6px 32px rgba(125,211,252,0.18), 0 -1px 0 rgba(125,211,252,0.25);
 
-  
+  /* Tailwind HSL tokens for shadcn components */
   --background:   220 6% 3%;
   --foreground:   0 0% 100%;
   --card:         220 6% 5%;
@@ -3704,7 +3832,7 @@ main[role="main"] > * {
   --border:       220 6% 10%;
   --ring:         199 89% 72%;
 
-  
+  /* Gradient theme overrides */
   --de-theme-from:  #050505;
   --de-theme-mid:   #070707;
   --de-theme-to:    #050505;
@@ -3720,7 +3848,7 @@ main[role="main"] > * {
   color: rgba(255,255,255,0.80);
 }
 
-
+/* ── Midnight Glass panels (DreamDMBar, Modals) ── */
 .de-midnight-glass,
 [data-theme="midnight"] .de-glass,
 [data-theme="midnight"] .de-surface {
@@ -3731,7 +3859,7 @@ main[role="main"] > * {
   box-shadow: var(--neu-raise, 1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8));
 }
 
-
+/* ── Neumorphic surface utilities ── */
 .de-neu-raise {
   box-shadow: 1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8);
 }
@@ -3742,13 +3870,13 @@ main[role="main"] > * {
   box-shadow: 1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8), 0 0 16px rgba(212,175,55,0.22);
 }
 
-
+/* ── DreamDM Bar: midnight sky-glow underglow ── */
 [data-theme="midnight"] .sicc-bar-edge,
 .de-bar-underglow {
   box-shadow: 0 -6px 32px rgba(125,211,252,0.18), 0 -1px 0 rgba(125,211,252,0.25) !important;
 }
 
-
+/* ── Midnight widget style ── */
 [data-theme="midnight"] .de-widget {
   background: rgba(255,255,255,0.03) !important;
   border-color: rgba(125,211,252,0.10) !important;
@@ -3757,13 +3885,13 @@ main[role="main"] > * {
   box-shadow: 1px 1px 10px rgba(125,211,252,0.05), -1px -1px 10px rgba(0,0,0,0.8);
 }
 
-
+/* ── Midnight gold accent text ── */
 [data-theme="midnight"] .de-gold,
 .de-midnight-gold {
   color: #D4AF37 !important;
 }
 
-
+/* ── System Critical modal (Ghost/Volatile asset prompt) ── */
 .de-system-critical-modal {
   background: rgba(5,5,5,0.97);
   border: 1px solid rgba(212,175,55,0.40);
@@ -3793,7 +3921,7 @@ main[role="main"] > * {
   transform: translateY(-1px);
 }
 
-
+/* ── Ghost / Volatile asset indicator ── */
 .de-ghost-volatile {
   position: relative;
 }
@@ -3813,23 +3941,29 @@ main[role="main"] > * {
   50%       { opacity: 1.00; box-shadow: 0 0 22px rgba(212,175,55,0.45), inset 0 0 18px rgba(212,175,55,0.12); }
 }
 
-
+/* ── Respect reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .de-ghost-volatile::after {
     animation: none !important;
   }
 }
 
+/* =============================================================================
+   FORGE — User-Facing UI/UX Polish Layer
+   Precision micro-interactions, focus states, scroll refinements, page
+   transitions, and spatial feedback for every touchable surface.
+   Architecture: THEME.md (Gold=action · Sky-blue=connected · White=clarity)
+   Performance: CSS-only; zero JS overhead.
+   =========================================================================== */
 
-
-
+/* ── Enhanced focus rings — accessible + branded ── */
 :focus-visible {
   outline: 2px solid rgba(42,138,184,0.55);
   outline-offset: 2px;
   border-radius: inherit;
 }
 
-
+/* Gold focus for primary actions */
 .de-btn-primary:focus-visible,
 .de-btn-gold:focus-visible,
 .premium-btn-gold:focus-visible,
@@ -3838,7 +3972,7 @@ main[role="main"] > * {
   box-shadow: 0 0 0 4px rgba(200,152,26,0.18);
 }
 
-
+/* ── Smooth page-level transitions ── */
 @keyframes de-page-enter {
   from {
     opacity: 0;
@@ -3856,7 +3990,7 @@ main[role="main"] > * {
   animation: de-page-enter 0.35s var(--ease-decel, cubic-bezier(0, 0, 0.2, 1)) both;
 }
 
-
+/* ── Scrollbar refinement — thin, subtle, branded ── */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(42,138,184,0.20) transparent;
@@ -3885,13 +4019,13 @@ main[role="main"] > * {
   background: rgba(200,152,26,0.4);
 }
 
-
+/* ── Improved selection highlight ── */
 ::selection {
   background: rgba(42,138,184,0.24);
   color: inherit;
 }
 
-
+/* ── Loading spinner — branded keyframe ── */
 @keyframes de-spin {
   to { transform: rotate(360deg); }
 }
@@ -3928,7 +4062,7 @@ main[role="main"] > * {
   border-width: 3.5px;
 }
 
-
+/* ── Feed card premium treatment — enhanced hover + interactions ── */
 .feed-card-premium {
   border-radius: var(--de-radius-lg, 18px);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
@@ -3938,7 +4072,7 @@ main[role="main"] > * {
   box-shadow: 0 4px 24px rgba(42,138,184,0.08);
 }
 
-
+/* Feed action button — refined press state */
 .feed-action-btn {
   display: inline-flex;
   align-items: center;
@@ -3974,7 +4108,7 @@ main[role="main"] > * {
   background: rgba(239,68,68,0.08);
 }
 
-
+/* ── Avatar ring — subtle gradient border ── */
 .avatar-ring {
   position: relative;
   display: inline-flex;
@@ -3983,7 +4117,7 @@ main[role="main"] > * {
   background: linear-gradient(135deg, var(--de-accent, #2a8ab8), var(--de-gold, #c8981a));
 }
 
-
+/* ── TopBar premium treatment ── */
 .topbar-premium {
   display: flex;
   align-items: center;
@@ -4036,7 +4170,7 @@ main[role="main"] > * {
   transform: scale(0.92);
 }
 
-
+/* ── Tooltip / hover labels ── */
 .de-tooltip {
   position: relative;
 }
@@ -4066,7 +4200,7 @@ main[role="main"] > * {
   transform: translateX(-50%) translateY(0);
 }
 
-
+/* ── Empty state — used when content area has no items ── */
 .de-empty-state {
   display: flex;
   flex-direction: column;
@@ -4104,7 +4238,7 @@ main[role="main"] > * {
   max-width: 280px;
 }
 
-
+/* ── Skeleton loading — branded shimmer ── */
 @keyframes de-skeleton-shimmer {
   0% { background-position: -400px 0; }
   100% { background-position: 400px 0; }
@@ -4124,7 +4258,7 @@ main[role="main"] > * {
   border-radius: 8px;
 }
 
-
+/* ── Improved reduced-motion support ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -4143,7 +4277,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── SICC dark engin surface entrance ── */
 @keyframes sicc-dark-surface-enter {
   from { opacity: 0; transform: translateY(8px) scale(0.99); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -4152,13 +4286,13 @@ main[role="main"] > * {
   animation: sicc-dark-surface-enter 0.38s cubic-bezier(0.16,1,0.3,1) both;
 }
 
-
+/* ── SICC kicker pulse dot ── */
 @keyframes sicc-kicker-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(42,138,184,0.45); }
   50%       { box-shadow: 0 0 0 5px rgba(42,138,184,0); }
 }
 
-
+/* ── Shared entrance animations (mirrors tailwind.config.ts keyframes for inline-style use) ── */
 @keyframes fadeUp {
   0%   { opacity: 0; transform: translateY(24px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -4169,7 +4303,7 @@ main[role="main"] > * {
   100% { transform: scale(1.5); opacity: 0;   }
 }
 
-
+/* ── SICC feature card dark glow on hover ── */
 .sicc-feature-card {
   transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
               border-color 0.18s ease,
@@ -4177,7 +4311,9 @@ main[role="main"] > * {
               background 0.18s ease;
 }
 
-
+/* ── Coarse-pointer tap discipline ──────────────────────────────────────────
+   Touch devices must activate controls on the first tap. Keep hover-only
+   presentation from becoming the first-tap state on mobile/tablet browsers. */
 @media (hover: none), (pointer: coarse) {
   button,
   [role="button"],
@@ -4218,41 +4354,47 @@ main[role="main"] > * {
 
 }
 
+/* =============================================================================
+   2026 PREMIUM OS SURFACE MATERIALS
+   Architecture: ARCHITECTURE.md §32 — Visual Materials / DREAMengin OS skin
+   These classes are the shared visual language across ALL DREAMengin surfaces.
+   Dream Windows · Dream Cards · Runtime panels · Game overlays · DreamDMBar
+   Never invent one-off inline styles when these cover the need.
+   =========================================================================== */
 
-
-
+/* ── Dream OS root tokens ──────────────────────────────────────────────────── */
 :root {
-  
+  /* Chromatic glass — the DREAMengin OS pane material */
   --dream-glass-bg:      rgba(8, 16, 34, 0.72);
   --dream-glass-border:  rgba(255, 255, 255, 0.10);
   --dream-glass-shine:   rgba(255, 255, 255, 0.06);
   --dream-glass-blur:    blur(48px) saturate(180%);
   --dream-glass-shadow:  0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
 
-  
+  /* Dream gold spectrum */
   --dream-gold:          #c8981a;
   --dream-gold-bright:   #f0b830;
   --dream-gold-glow:     rgba(200, 152, 26, 0.35);
   --dream-gold-edge:     rgba(200, 152, 26, 0.18);
 
-  
+  /* Dream sky/blue spectrum */
   --dream-sky:           #38bdf8;
   --dream-sky-deep:      #0ea5e9;
   --dream-sky-glow:      rgba(56, 189, 248, 0.28);
   --dream-sky-edge:      rgba(56, 189, 248, 0.14);
 
-  
+  /* OS dark runtime backgrounds */
   --os-void:             #020818;
   --os-deep:             #060e20;
   --os-surface:          #0a1628;
   --os-elevated:         rgba(14, 24, 46, 0.88);
 
-  
+  /* Game overlay surface */
   --game-overlay-bg:     rgba(2, 6, 16, 0.82);
   --game-overlay-border: rgba(56, 189, 248, 0.18);
   --game-overlay-glow:   rgba(56, 189, 248, 0.12);
 
-  
+  /* Window chrome */
   --window-titlebar-bg:  rgba(255, 255, 255, 0.04);
   --window-border:       rgba(255, 255, 255, 0.09);
   --window-shadow:
@@ -4260,13 +4402,13 @@ main[role="main"] > * {
     0 32px 80px rgba(0,0,0,0.52),
     0 8px 24px rgba(0,0,0,0.28);
 
-  
+  /* Motion timing */
   --dream-spring:        cubic-bezier(0.34, 1.22, 0.64, 1);
   --dream-ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
   --dream-snap:          cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-
+/* ── dream-window — the floating Dream Window shell ────────────────────────── */
 .dream-window {
   position: absolute;
   background: var(--dream-glass-bg);
@@ -4307,7 +4449,7 @@ main[role="main"] > * {
     0 0 0 1px var(--dream-sky-edge) inset;
 }
 
-
+/* ── dream-window-titlebar ─────────────────────────────────────────────────── */
 .dream-window-titlebar {
   display: flex;
   align-items: center;
@@ -4360,7 +4502,7 @@ main[role="main"] > * {
 .dream-window-btn-min     { background: rgba(255, 200, 40, 0.55); }
 .dream-window-btn-max     { background: rgba(40, 200, 100, 0.55); }
 
-
+/* ── dream-window-body ─────────────────────────────────────────────────────── */
 .dream-window-body {
   position: relative;
   flex: 1;
@@ -4369,7 +4511,7 @@ main[role="main"] > * {
   z-index: 1;
 }
 
-
+/* ── dream-card — universal Dream card used in feeds, widgets, profiles ─────── */
 .dream-card {
   position: relative;
   background:
@@ -4404,7 +4546,7 @@ main[role="main"] > * {
     0 0 0 1px rgba(56, 189, 248, 0.10) inset;
 }
 
-
+/* Gold accent — dream-card-gold */
 .dream-card-gold {
   border-color: var(--dream-gold-edge);
 }
@@ -4415,7 +4557,7 @@ main[role="main"] > * {
     0 0 24px var(--dream-gold-edge);
 }
 
-
+/* ── os-surface — dark runtime region panel ────────────────────────────────── */
 .os-surface {
   background: linear-gradient(180deg, var(--os-void) 0%, var(--os-deep) 40%, var(--os-surface) 100%);
   color: rgba(200, 220, 255, 0.88);
@@ -4429,7 +4571,7 @@ main[role="main"] > * {
   border-radius: 16px;
 }
 
-
+/* ── game-overlay — HUD and game overlay surfaces ──────────────────────────── */
 .game-overlay {
   background: var(--game-overlay-bg);
   backdrop-filter: blur(20px) saturate(140%);
@@ -4449,7 +4591,7 @@ main[role="main"] > * {
     0 0 40px var(--dream-sky-glow);
 }
 
-
+/* ── dream-feed-card — DreamR / HomeDream feed object ──────────────────────── */
 .dream-feed-card {
   position: relative;
   background: rgba(255, 255, 255, 0.03);
@@ -4473,7 +4615,7 @@ main[role="main"] > * {
   border-color: rgba(56, 189, 248, 0.22);
 }
 
-
+/* ── dream-widget-shell — HomeDream widget container ──────────────────────── */
 .dream-widget-shell {
   position: relative;
   background: rgba(255, 255, 255, 0.04);
@@ -4497,7 +4639,7 @@ main[role="main"] > * {
     0 0 0 1px rgba(56, 189, 248, 0.08) inset;
 }
 
-
+/* ── dream-bar-surface — DreamDMBar dark glass ─────────────────────────────── */
 .dream-bar-surface {
   background:
     linear-gradient(180deg, rgba(8,14,28,0.94) 0%, rgba(6,10,22,0.98) 100%);
@@ -4509,7 +4651,7 @@ main[role="main"] > * {
     0 0 80px rgba(56, 189, 248, 0.04);
 }
 
-
+/* ── dream-glow-ring — premium glowing border ─────────────────────────────── */
 .dream-glow-ring {
   box-shadow:
     0 0 0 1px rgba(56, 189, 248, 0.24),
@@ -4524,7 +4666,7 @@ main[role="main"] > * {
     0 0 48px rgba(200, 152, 26, 0.08);
 }
 
-
+/* ── dream-text — OS typography hierarchy ──────────────────────────────────── */
 .dream-text-hero {
   color: rgba(220, 235, 255, 0.96);
   font-weight: 700;
@@ -4537,7 +4679,7 @@ main[role="main"] > * {
 .dream-text-gold      { color: var(--dream-gold-bright); }
 .dream-text-sky       { color: var(--dream-sky); }
 
-
+/* ── dream-badge — kind/type indicator badge ───────────────────────────────── */
 .dream-badge {
   display: inline-flex;
   align-items: center;
@@ -4571,7 +4713,7 @@ main[role="main"] > * {
   border-color: rgba(34, 197, 94, 0.18);
 }
 
-
+/* ── dream-btn — OS action buttons ────────────────────────────────────────── */
 .dream-btn {
   display: inline-flex;
   align-items: center;
@@ -4635,7 +4777,7 @@ main[role="main"] > * {
   border-color: rgba(239, 68, 68, 0.36);
 }
 
-
+/* ── dream-divider — the seam line between runtime surfaces ────────────────── */
 .dream-seam {
   position: relative;
   height: 2px;
@@ -4658,7 +4800,7 @@ main[role="main"] > * {
   touch-action: none;
 }
 
-
+/* ── dream-enter / dream-exit — shared surface entrance animations ─────────── */
 @keyframes dream-enter {
   from { opacity: 0; transform: translateY(10px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -4684,7 +4826,7 @@ main[role="main"] > * {
 .dream-fade-in    { animation: dream-fade-in     0.24s ease both; }
 .dream-glow-pulse { animation: dream-glow-pulse  2.4s ease-in-out infinite; }
 
-
+/* ── Stagger delays for grid/list reveals ──────────────────────────────────── */
 .dream-stagger > *:nth-child(1) { animation-delay: 0ms; }
 .dream-stagger > *:nth-child(2) { animation-delay: 48ms; }
 .dream-stagger > *:nth-child(3) { animation-delay: 96ms; }
@@ -4692,7 +4834,7 @@ main[role="main"] > * {
 .dream-stagger > *:nth-child(5) { animation-delay: 192ms; }
 .dream-stagger > *:nth-child(6) { animation-delay: 240ms; }
 
-
+/* ── Reduced motion overrides ──────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .dream-window,
   .dream-card,
@@ -4712,7 +4854,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── Premium landing stack: engine → runtime → product ───────────────────── */
 .de-landing-copy {
   max-width: 720px;
   margin: 0 0 22px;
@@ -4838,7 +4980,7 @@ main[role="main"] > * {
   }
 }
 
-
+/* ── Shared 2026 DREAMengin OS material system ────────────────────────────── */
 :root {
   --de-material-bg: linear-gradient(145deg, rgba(8, 18, 34, 0.82), rgba(13, 30, 55, 0.54));
   --de-material-border: rgba(210, 230, 255, 0.16);
@@ -4965,7 +5107,7 @@ main[role="main"] > * {
 }
 
 
-
+/* ── 2026 premium runtime material: real surface depth, no fake chrome ───── */
 .de-runtime-premium-shell {
   isolation: isolate;
   background:

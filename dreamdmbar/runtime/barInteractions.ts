@@ -1,17 +1,29 @@
-
-
+// ── Split-screen divider constants ────────────────────────────────────────────
+/** Fixed layout reservation (px) for the resting DreamDM seam between runtimes. */
 export const DIVIDER_H = 2;
-
+/** Canonical snap points for the split-screen divider: [Dream-focus, Balanced, Surface-focus, Surface-only] */
 export const SPLIT_SNAP_POINTS = [0.1, 0.5, 0.9, 1.0] as const;
-
+/** Default split ratio — Surface Space fully dominant (DreamSpace hidden). Swipe bar up to reveal. */
 export const DEFAULT_SPLIT_RATIO = 1.0;
-
+/** Min/max reachable ratio during a drag (prevents collapsing Surface to zero; allows full DreamSpace hide). */
 export const SPLIT_RATIO_MIN = 0.05;
 export const SPLIT_RATIO_MAX = 1.0;
-
+/** Fling velocity (px/ms) needed to jump one whole snap step toward the throw direction. */
 export const SPLIT_FLING_VELOCITY_PX_PER_MS = 0.55;
+/**
+ * How close to SPLIT_RATIO_MIN / SPLIT_RATIO_MAX a release has to land before
+ * it's treated as "already at the edge" and rounded the rest of the way,
+ * instead of parking a visually-imperceptible hair short of it.
+ */
+export const SPLIT_RATIO_EDGE_ASSIST = 0.02;
 
-
+/**
+ * Returns the nearest canonical snap point for the given split ratio.
+ *
+ * No longer used to force a release position (see `snapSplitRatioOnRelease`
+ * below) — kept as an exported utility in case a future "snap indicator" UI
+ * wants to show the nearest landmark while dragging.
+ */
 export function snapToSplitPoint(ratio: number): number {
   let best: number = SPLIT_SNAP_POINTS[0];
   let bestDist = Math.abs(ratio - best);
@@ -22,36 +34,66 @@ export function snapToSplitPoint(ratio: number): number {
   return best;
 }
 
-
+/**
+ * Resolves the final divider ratio after a drag release.
+ *
+ * Updated per user request — the divider behaves like a real throw:
+ *   • Slow / ordinary drag — parks EXACTLY where the user let go. The old
+ *     behaviour (always snapping to the nearest of the 4 fixed points, even
+ *     at zero velocity) is gone; that's what made "stop wherever I want"
+ *     impossible before.
+ *   • Fast upward fling that's already within the top BAR_FLING_LINE_RATIO
+ *     (20%) of the screen — completes the throw all the way to
+ *     SPLIT_RATIO_MIN (seam slams to the very top).
+ *   • Fast downward fling at or past the bottom BAR_FLING_LINE_RATIO (20%)
+ *     of the screen — completes the throw all the way to SPLIT_RATIO_MAX
+ *     (seam slams to the very bottom).
+ *   • A release that lands within SPLIT_RATIO_EDGE_ASSIST of either true
+ *     edge is rounded the rest of the way there regardless of velocity —
+ *     a slow drag ending right at the edge shouldn't park a hair short.
+ */
 export function snapSplitRatioOnRelease(ratio: number, velocityPxPerMs: number): number {
-  const nearest = snapToSplitPoint(ratio);
-  const idx = (SPLIT_SNAP_POINTS as readonly number[]).indexOf(nearest);
-  if (velocityPxPerMs >= SPLIT_FLING_VELOCITY_PX_PER_MS && idx > 0) {
-    
-    return SPLIT_SNAP_POINTS[idx - 1];
+  if (ratio <= SPLIT_RATIO_MIN + SPLIT_RATIO_EDGE_ASSIST) return SPLIT_RATIO_MIN;
+  if (ratio >= SPLIT_RATIO_MAX - SPLIT_RATIO_EDGE_ASSIST) return SPLIT_RATIO_MAX;
+
+  if (velocityPxPerMs <= -SPLIT_FLING_VELOCITY_PX_PER_MS && ratio <= BAR_FLING_LINE_RATIO) {
+    return SPLIT_RATIO_MIN;
   }
-  if (velocityPxPerMs <= -SPLIT_FLING_VELOCITY_PX_PER_MS && idx < SPLIT_SNAP_POINTS.length - 1) {
-    
-    return SPLIT_SNAP_POINTS[idx + 1];
+  if (velocityPxPerMs >= SPLIT_FLING_VELOCITY_PX_PER_MS && ratio >= 1 - BAR_FLING_LINE_RATIO) {
+    return SPLIT_RATIO_MAX;
   }
-  return nearest;
+
+  return ratio;
 }
 
-
+/** Matches the existing touch-friendly second-tap escalation window used by the gold button. */
 export const GOLD_SECOND_TAP_WINDOW_MS = 280;
 export const GOLD_TAP_SLOP_PX = 14;
 export const BAR_SNAP_TO_TOP_THRESHOLD_PX = 8;
-
-
+// Raised above the 0.85 drag cap so a slow full-height drag never accidentally
+// snaps the bar to the top. Only velocity flings can trigger snap-to-top now.
 export const BAR_SNAP_TO_TOP_HEIGHT_RATIO = 0.96;
 export const BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS = -0.9;
 export const BAR_FLING_TO_TOP_MIN_DRAG_PX = 44;
 export const BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS = 0.9;
-
-export const BAR_FLING_LINE_RATIO = 0.4;
+/**
+ * "Invisible line" past which an upward fling snaps the bar all the way to
+ * the top (and below which a downward fling snaps it to the bottom).
+ *
+ * Updated per user request: a fast throw only needs to clear ~1/5 of the
+ * screen (20%) before it commits to the edge — was 2/5 (40%), which made a
+ * real "throw" feel like it needed too much travel before it'd auto-send.
+ * Below the line, slow drags still park wherever the user lets go (free
+ * placement) — see `decideBarRelease`.
+ */
+export const BAR_FLING_LINE_RATIO = 0.2;
 export const MIN_POINTER_SAMPLE_DELTA_MS = 1;
 
-
+/**
+ * Resolves a gold-button release into a double-tap menu action.
+ *
+ * First tap waits. A second tap inside GOLD_SECOND_TAP_WINDOW_MS opens menus.
+ */
 export function resolveGoldTapAction(
   lastTapAt: number = 0,
   now: number = 0,
@@ -62,17 +104,17 @@ export function resolveGoldTapAction(
   return { action: 'wait', nextLastTapAt: now };
 }
 
-
+/** Treats small pointer movement as a tap instead of a swipe or throw. */
 export function shouldTreatGoldReleaseAsTap(dy: number): boolean {
   return Math.abs(dy) <= GOLD_TAP_SLOP_PX;
 }
 
-
+/** Returns pointer velocity in pixels per millisecond and guards same-frame samples from dividing by zero. */
 export function calculatePointerVelocity(previousY: number, nextY: number, previousAt: number, nextAt: number): number {
   return (nextY - previousY) / Math.max(nextAt - previousAt, MIN_POINTER_SAMPLE_DELTA_MS);
 }
 
-
+/** Only a downward swipe from the top-pinned state should collapse the bar. */
 export function shouldCollapseGoldSwipe({
   dy,
   isTop,
@@ -83,7 +125,10 @@ export function shouldCollapseGoldSwipe({
   return isTop && dy > GOLD_TAP_SLOP_PX;
 }
 
-
+/**
+ * Snaps a bottom-origin drag to the top if it is already near the top, tall enough,
+ * or thrown upward fast enough after clearing the minimum fling distance.
+ */
 export function shouldSnapBottomDragToTop({
   screenH,
   dragH,
@@ -104,7 +149,7 @@ export function shouldSnapBottomDragToTop({
   );
 }
 
-
+/** Collapses the expanded top panel when the user drags far enough down or throws it downward. */
 export function shouldCollapseTopExpandedDrag({
   dy,
   slideDown,
@@ -123,7 +168,18 @@ export function shouldCollapseTopExpandedDrag({
   );
 }
 
-
+/**
+ * Release decision for a bottom-origin bar drag.
+ *
+ * Behaviour the user explicitly asked for:
+ *   • Slow drag — the bar parks WHEREVER the user let go. No forced snap.
+ *   • Upward fling that has cleared BAR_FLING_LINE_RATIO of the screen —
+ *     slams the rest of the way to the top.
+ *   • Downward fling at or below that line — slams to the bottom.
+ *
+ * Returns the action the caller should take. Callers that want to keep the
+ * current free-park position should treat `'park'` as a no-op.
+ */
 export type BarReleaseAction = 'snap-top' | 'snap-bottom' | 'park';
 
 export function decideBarRelease({
@@ -137,7 +193,7 @@ export function decideBarRelease({
   barH: number;
   velocityPxPerMs: number;
 }): BarReleaseAction {
-  
+  // Hard top — already pinned at the screen top, take it the rest of the way.
   const barTopFromScreenTop = screenH - dragH;
   if (
     barTopFromScreenTop <= BAR_SNAP_TO_TOP_THRESHOLD_PX ||
@@ -148,7 +204,7 @@ export function decideBarRelease({
 
   const lineH = screenH * BAR_FLING_LINE_RATIO;
 
-  
+  // Upward fling above the invisible line → top.
   if (
     velocityPxPerMs <= BAR_FLING_TO_TOP_VELOCITY_THRESHOLD_PX_PER_MS &&
     dragH >= lineH
@@ -156,7 +212,7 @@ export function decideBarRelease({
     return 'snap-top';
   }
 
-  
+  // Downward fling, near or below the line → bottom.
   if (
     velocityPxPerMs >= BAR_FLING_TO_BOTTOM_VELOCITY_THRESHOLD_PX_PER_MS &&
     dragH <= lineH
@@ -164,21 +220,28 @@ export function decideBarRelease({
     return 'snap-bottom';
   }
 
-  
+  // Anything else — let the bar rest exactly where the user let go.
   return 'park';
 }
 
-
+/** Size of the minimized gold orb (px). */
 export const ORB_SIZE = 48;
-
+/** Tap slop for the minimized orb — movement below this threshold is treated as a tap. */
 export const ORB_TAP_SLOP = 8;
 
-
+/**
+ * Clamps a minimized-orb CSS offset (right/bottom) so the orb stays fully
+ * on-screen. `viewportExtent` is the viewport dimension (width for x, height for y).
+ */
 export function clampOrbOffset(offset: number, viewportExtent: number): number {
   return Math.max(0, Math.min(viewportExtent - ORB_SIZE, offset));
 }
 
-
+/**
+ * Returns the new right/bottom offsets after a pointer drag of (dx, dy) pixels.
+ * Positive dx = pointer moved right → "right" offset decreases.
+ * Positive dy = pointer moved down  → "bottom" offset decreases.
+ */
 export function computeOrbDragPosition(
   startRight: number,
   startBottom: number,
@@ -193,10 +256,21 @@ export function computeOrbDragPosition(
   };
 }
 
-
+/**
+ * Time-of-day period for the mood aura system.
+ * The bar's ambient glow shifts with the sun.
+ */
 export type MoodPeriod = 'dawn' | 'morning' | 'afternoon' | 'dusk' | 'night';
 
-
+/**
+ * Determines the mood period from the current hour (0–23).
+ *
+ *   dawn:      5–7   — warm amber/peach
+ *   morning:   8–11  — bright gold
+ *   afternoon: 12–16 — sky blue
+ *   dusk:      17–19 — sunset purple/orange
+ *   night:     20–4  — deep indigo
+ */
 export function getMoodPeriod(hour: number): MoodPeriod {
   const h = ((hour % 24) + 24) % 24;
   if (h >= 5 && h <= 7) return 'dawn';
@@ -206,7 +280,7 @@ export function getMoodPeriod(hour: number): MoodPeriod {
   return 'night';
 }
 
-
+/** CSS gradient stops for each mood period. */
 export const MOOD_AURA_GRADIENTS: Record<MoodPeriod, string> = {
   dawn:      'linear-gradient(135deg, rgba(255,183,77,0.12) 0%, rgba(255,138,101,0.08) 50%, rgba(255,209,128,0.10) 100%)',
   morning:   'linear-gradient(135deg, rgba(255,215,64,0.10) 0%, rgba(255,238,88,0.06) 50%, rgba(255,245,157,0.08) 100%)',
@@ -215,7 +289,7 @@ export const MOOD_AURA_GRADIENTS: Record<MoodPeriod, string> = {
   night:     'linear-gradient(135deg, rgba(63,81,181,0.12) 0%, rgba(48,63,159,0.08) 50%, rgba(92,107,192,0.10) 100%)',
 };
 
-
+/** Edge glow color (top/bottom bar lines) for each mood. */
 export const MOOD_EDGE_COLORS: Record<MoodPeriod, string> = {
   dawn:      'rgba(255,183,77,0.55)',
   morning:   'rgba(255,215,64,0.55)',
@@ -224,7 +298,10 @@ export const MOOD_EDGE_COLORS: Record<MoodPeriod, string> = {
   night:     'rgba(92,107,192,0.55)',
 };
 
-
+/**
+ * Surface-aware accent overlay — each surface gets a subtle color identity
+ * layered over the mood aura so the bar "knows where it is."
+ */
 export type SurfaceAccent = 'feed' | 'messages' | 'code' | 'dreams' | 'music' | 'create' | 'discover' | 'general';
 
 export const SURFACE_ACCENT_COLORS: Record<SurfaceAccent, string> = {
@@ -242,13 +319,16 @@ export interface SlashCommand {
   id: string;
   label: string;
   description: string;
-  icon: string;  
+  icon: string;  // lucide icon name hint
   category: 'navigate' | 'create' | 'utility';
   href?: string;
-  action?: string;  
+  action?: string;  // custom action identifier
 }
 
-
+/**
+ * Built-in slash commands available in the DreamDM Bar.
+ * Type "/" to trigger the palette.
+ */
 export const SLASH_COMMANDS: SlashCommand[] = [
   { id: 'home',      label: 'Home',           description: 'Go to HomeDream feed',         icon: 'home',      category: 'navigate', href: '/dreamdmbar' },
   { id: 'games',     label: 'Games',          description: 'Open the Games Hub',           icon: 'gamepad-2', category: 'navigate', href: '/daydream/games' },
@@ -264,9 +344,12 @@ export const SLASH_COMMANDS: SlashCommand[] = [
   { id: 'shop',      label: 'Shop',           description: 'Browse the DREAMengin shop',   icon: 'shopping-bag', category: 'navigate', href: '/shop' },
 ];
 
-
+/**
+ * Filters slash commands by a query string (after removing the leading "/").
+ * Matches against label, description, and category.
+ */
 export function filterSlashCommands(query: string): SlashCommand[] {
-  const q = query.toLowerCase().replace(/^\
+  const q = query.toLowerCase().replace(/^\//, '').trim();
   if (!q) return SLASH_COMMANDS;
   return SLASH_COMMANDS.filter(
     (cmd) =>
@@ -276,28 +359,41 @@ export function filterSlashCommands(query: string): SlashCommand[] {
   );
 }
 
-
+/**
+ * Computes a "rhythm intensity" from 0..1 based on recent keystroke timing.
+ * Used to drive the drag-handle pulse animation.
+ *
+ *   0 = idle (no keystrokes recently)
+ *   1 = maximum energy (very fast typing)
+ *
+ * @param recentKeystrokeTimestamps  Array of the last N keystroke timestamps (ms).
+ * @param now  Current time (ms).
+ * @param windowMs  Time window to consider (default 2000ms).
+ */
 export function computeTypingRhythm(
   recentKeystrokeTimestamps: number[],
   now: number,
   windowMs: number = 2000,
 ): number {
   if (recentKeystrokeTimestamps.length < 2) return 0;
-  
+  // Only consider keystrokes within the window
   const recent = recentKeystrokeTimestamps.filter((t) => now - t < windowMs);
   if (recent.length < 2) return 0;
-  
+  // Average interval between keystrokes
   let totalInterval = 0;
   for (let i = 1; i < recent.length; i++) {
     totalInterval += recent[i] - recent[i - 1];
   }
   const avgInterval = totalInterval / (recent.length - 1);
-  
+  // Map: 50ms interval (20 chars/sec) = 1.0, 500ms interval (2 chars/sec) = 0.0
   const intensity = Math.max(0, Math.min(1, 1 - (avgInterval - 50) / 450));
   return Math.round(intensity * 100) / 100;
 }
 
-
+/**
+ * Returns a CSS width multiplier for the drag handle bar based on typing rhythm.
+ * Idle = 1.0x, max rhythm = 2.5x (the handle "dances" wider).
+ */
 export function rhythmToHandleScale(intensity: number): number {
   return 1 + intensity * 1.5;
 }
@@ -306,15 +402,25 @@ export const STREAK_STORAGE_KEY = 'de-dream-streak';
 
 export interface StreakData {
   count: number;
-  lastActiveDate: string;  
+  lastActiveDate: string;  // ISO date string (YYYY-MM-DD)
 }
 
-
+/**
+ * Returns today's date as an ISO date string in local time.
+ */
 export function todayDateString(now: Date = new Date()): string {
   return now.toISOString().slice(0, 10);
 }
 
-
+/**
+ * Given the stored streak data and the current date, resolves the updated streak.
+ *
+ * Rules:
+ *   - Same day as last active → no change
+ *   - Consecutive day (yesterday) → increment
+ *   - Gap of 2+ days → reset to 1
+ *   - No existing data → start at 1
+ */
 export function resolveStreak(stored: StreakData | null, now: Date = new Date()): StreakData {
   const today = todayDateString(now);
   if (!stored) {
@@ -323,18 +429,25 @@ export function resolveStreak(stored: StreakData | null, now: Date = new Date())
   if (stored.lastActiveDate === today) {
     return stored;
   }
-  
+  // Check if the stored date was yesterday
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayStr = todayDateString(yesterday);
   if (stored.lastActiveDate === yesterdayStr) {
     return { count: stored.count + 1, lastActiveDate: today };
   }
-  
+  // Gap: reset
   return { count: 1, lastActiveDate: today };
 }
 
-
+/**
+ * Returns the streak tier for visual styling.
+ *   'none'    — 0 days
+ *   'ember'   — 1–2 days (small orange flame)
+ *   'fire'    — 3–6 days (bright flame)
+ *   'inferno' — 7–13 days (rainbow flame)
+ *   'legend'  — 14+ days (legendary golden flame with particles)
+ */
 export type StreakTier = 'none' | 'ember' | 'fire' | 'inferno' | 'legend';
 
 export function getStreakTier(count: number): StreakTier {
@@ -345,7 +458,10 @@ export function getStreakTier(count: number): StreakTier {
   return 'legend';
 }
 
-
+/**
+ * Quick reaction emojis available in comment mode.
+ * Each has an emoji, a label for accessibility, and a CSS animation class.
+ */
 export interface QuickReaction {
   emoji: string;
   label: string;
@@ -361,41 +477,44 @@ export const QUICK_REACTIONS: QuickReaction[] = [
   { emoji: '✨', label: 'Sparkles', animClass: 'sicc-react-pop' },
 ];
 
-
+/** Duration (ms) of a long-press to trigger the particle fountain. */
 export const GOLD_LONG_PRESS_MS = 800;
 
-
+/** Number of particles spawned by the gold button particle fountain. */
 export const PARTICLE_COUNT = 24;
 
-
+/**
+ * Generates initial particle positions and velocities for the gold button fountain.
+ * Each particle gets a random angle, speed, and color.
+ */
 export interface Particle {
   id: number;
-  x: number;   
-  y: number;   
-  vx: number;  
-  vy: number;  
-  size: number; 
+  x: number;   // initial x offset from center (px)
+  y: number;   // initial y offset from center (px)
+  vx: number;  // velocity x (px/frame)
+  vy: number;  // velocity y (px/frame, negative = up)
+  size: number; // diameter (px)
   color: string;
-  life: number; 
+  life: number; // 0..1 remaining
 }
 
 export function generateParticles(count: number): Particle[] {
   const colors = [
-    '#f7e07a', '#e8c040', '#d4a843', '#a16207',  
-    '#7dd3fc', '#38bdf8', '#2a8ab8',              
-    '#fbbf24', '#f59e0b',                         
-    '#fffde0',                                     
+    '#f7e07a', '#e8c040', '#d4a843', '#a16207',  // golds
+    '#7dd3fc', '#38bdf8', '#2a8ab8',              // blues
+    '#fbbf24', '#f59e0b',                         // bright golds
+    '#fffde0',                                     // white-gold
   ];
   const particles: Particle[] = [];
   for (let i = 0; i < count; i++) {
-    const angle = (Math.random() * Math.PI * 0.8) + Math.PI * 0.1; 
+    const angle = (Math.random() * Math.PI * 0.8) + Math.PI * 0.1; // mostly upward (10°–170°)
     const speed = 2 + Math.random() * 4;
     particles.push({
       id: i,
       x: 0,
       y: 0,
       vx: Math.cos(angle) * speed * (Math.random() > 0.5 ? 1 : -1),
-      vy: -Math.sin(angle) * speed - 1, 
+      vy: -Math.sin(angle) * speed - 1, // bias upward
       size: 3 + Math.random() * 5,
       color: colors[Math.floor(Math.random() * colors.length)],
       life: 1,
@@ -404,27 +523,30 @@ export function generateParticles(count: number): Particle[] {
   return particles;
 }
 
-
+/** Minimum vertical movement (px) to treat a touch as a drag instead of a tap. */
 export const DRAG_TAP_THRESHOLD_PX = 5;
 
-
+/** Maximum delay (ms) between two taps to register as a double-tap. */
 export const DOUBLE_TAP_WINDOW_MS = 300;
 
-
+/** The three named positions the bar can snap to. */
 export type LightPosition = 'bottom' | 'middle' | 'top';
 
-
+/** Ordered cycle: bottom → middle → top → middle → bottom → … */
 export const LIGHT_POSITION_CYCLE: LightPosition[] = ['bottom', 'middle', 'top'];
 
-
+/**
+ * Returns the next position in the light tap cycle.
+ * Cycle: bottom→middle→top→middle→bottom (ping-pong).
+ */
 export function cycleLightPosition(
   current: LightPosition,
   direction: 'forward' | 'backward' = 'forward',
 ): LightPosition {
-  
-  
-  
-  
+  // We use a ping-pong: bottom→middle→top→middle→bottom
+  // Tracked via a separate index, but for pure stateless cycling we always
+  // go forward: bottom→middle→top→middle (ping-pong handled by caller state).
+  // This function returns the next step in the forward direction.
   const fwd: LightPosition[] = ['bottom', 'middle', 'top', 'middle'];
   if (direction === 'backward') {
     const bwd: LightPosition[] = ['middle', 'top', 'middle', 'bottom'];
