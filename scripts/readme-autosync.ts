@@ -92,17 +92,17 @@ const CODE_EXTENSIONS = new Set([
 ]);
 
 const GLOBAL_EXCLUDED_PATHS: RegExp[] = [
-  /^node_modules\
-  /^\.next\
-  /^out\
-  /^dist\
-  /^coverage\
-  /^playwright-report\
-  /^test-results\
-  /^\.turbo\
-  /^\.vercel\
-  /^build-memory\
-  /^\.ci\
+  /^node_modules\//,
+  /^\.next\//,
+  /^out\//,
+  /^dist\//,
+  /^coverage\//,
+  /^playwright-report\//,
+  /^test-results\//,
+  /^\.turbo\//,
+  /^\.vercel\//,
+  /^build-memory\//,
+  /^\.ci\//,
   /\.tsbuildinfo$/,
   /^README\.md$/,
   /^scripts\/generate-readme\.ts$/,
@@ -146,8 +146,8 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^app\/page\.tsx$/,
       /^app\/globals\.css$/,
       /^app\/[^/]+\/page\.tsx$/,
-      /^components\/providers\
-      /^components\/runtime\
+      /^components\/providers\//,
+      /^components\/runtime\//,
       /^engine\/runtime\/index\.ts$/,
       /^engine\/runtime\/moduleRegistry\.ts$/,
       /^engins\/.*\.tsx$/,
@@ -158,7 +158,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^supabase\/server\/serverClient\.ts$/,
       /^\.github\/workflows\/(readme-autosync|export-src-only|preflight|dreamengin-preflight|codeql|vercel-deploy)\.yml$/,
     ],
-    supportingPaths: [/^types\
+    supportingPaths: [/^types\//],
     keywords: ["next", "typescript", "supabase", "pnpm", "workflow", "app router"],
     maxFiles: 80,
     rootCaps: {
@@ -174,7 +174,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       hooks: 6,
       utils: 4,
     },
-    excludedPaths: [/^supabase\/migrations\
+    excludedPaths: [/^supabase\/migrations\//],
   },
   {
     number: 5,
@@ -186,18 +186,18 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     primaryPaths: [
       /^engins\/engin\.[A-Za-z0-9]+Engin\.tsx$/,
       /^engins\/dream\.ForgeEngin\.tsx$/,
-      /^engins\/rulesets\
-      /^engins\/contentengin\
-      /^engins\/gameengin\
-      /^engins\/forgeengin\
-      /^engins\/renderengin\
-      /^app\/engines\
+      /^engins\/rulesets\//,
+      /^engins\/contentengin\//,
+      /^engins\/gameengin\//,
+      /^engins\/forgeengin\//,
+      /^engins\/renderengin\//,
+      /^app\/engines\//,
       /^app\/daydream\/(brand|code|create|forge|game|games|lab|music)(\/|$)/,
-      /^daydreams\
-      /^components\/engines\
-      /^components\/daydream\
+      /^daydreams\//,
+      /^components\/engines\//,
+      /^components\/daydream\//,
     ],
-    supportingPaths: [/^engine\/engin-runtime\
+    supportingPaths: [/^engine\/engin-runtime\//],
     keywords: ["engin", "daydream", "ruleset", "studio", "workspace"],
     maxFiles: 110,
     rootCaps: {
@@ -227,10 +227,10 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
       /^components\/runtime\/dream\.RuntimeView\.tsx$/,
       /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
-      /^app\/dreamdmbar\/dualruntime\
+      /^app\/dreamdmbar\/dualruntime\//,
     ],
     supportingPaths: [
-      /^engine\/vm\
+      /^engine\/vm\//,
       /^engine\/runtime\/iEngine\.ts$/,
       /^engine\/runtime\/dreamOSBus\.ts$/,
       /^engine\/runtime\/snapshotFingerprint\.ts$/,
@@ -253,17 +253,17 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       "Users feel this when a Dream becomes something social: visible posts, shared sessions, public/private access, saved creative objects, and collaboration signals.",
     primaryPaths: [
       /^engine\/sharedDream/,
-      /^components\/shared-dream\
-      /^app\/api\/shared-dream\
-      /^app\/api\/dreams\
+      /^components\/shared-dream\//,
+      /^app\/api\/shared-dream\//,
+      /^app\/api\/dreams\//,
       /^components\/dreams\/dream\.shell\.SharedDreamShell\.tsx$/,
       /^hooks\/useSharedDream/,
-      /^daydreams\/shared\
+      /^daydreams\/shared\//,
       /^supabase\/migrations\/.*shared_dream/i,
     ],
     supportingPaths: [
       /^engine\/runtime\/useSharedEnginChannel\.ts$/,
-      /^engine\/collaboration\
+      /^engine\/collaboration\//,
       /^supabase\/migrations\/.*dream_windows/i,
       /^supabase\/migrations\/.*daydream_network/i,
     ],
@@ -286,18 +286,18 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users experience DreamR as the social/media side of DREAMengin: scrolling, viewing people, opening Dreams, editing identity, and discovering what others make.",
     primaryPaths: [
-      /^dreamr\
-      /^app\/dreamr\
-      /^app\/api\/dreamr\
-      /^components\/dreamr\
-      /^app\/dreamdmbar\/_components\/dreamr\
+      /^dreamr\//,
+      /^app\/dreamr\//,
+      /^app\/api\/dreamr\//,
+      /^components\/dreamr\//,
+      /^app\/dreamdmbar\/_components\/dreamr\//,
     ],
     supportingPaths: [
-      /^app\/profile\
-      /^app\/view-profile\
-      /^app\/edit-profiledream\
-      /^app\/api\/feed\
-      /^components\/feed\
+      /^app\/profile\//,
+      /^app\/view-profile\//,
+      /^app\/edit-profiledream\//,
+      /^app\/api\/feed\//,
+      /^components\/feed\//,
       /^components\/dream\.HomeFeed\.tsx$/,
       /^components\/dream\.FeedCard\.tsx$/,
     ],
@@ -318,11 +318,11 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users feel this as a creator storefront: things to buy, services to offer, and commercial parts attached to the creator identity.",
     primaryPaths: [
-      /^app\/shop\
-      /^app\/api\/shop\
-      /^engine\/shop\
+      /^app\/shop\//,
+      /^app\/api\/shop\//,
+      /^engine\/shop\//,
       /^types\/shop/i,
-      /^components\/shop\
+      /^components\/shop\//,
       /^supabase\/migrations\/.*shop/i,
     ],
     supportingPaths: [],
@@ -344,10 +344,10 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users experience this as the public commercial side of the ecosystem: browsing, listing, buying, selling, and moving between creator shops and wider discovery.",
     primaryPaths: [
-      /^app\/marketplace\
-      /^app\/api\/marketplace\
-      /^components\/marketplace\
-      /^engine\/marketplace\
+      /^app\/marketplace\//,
+      /^app\/api\/marketplace\//,
+      /^components\/marketplace\//,
+      /^engine\/marketplace\//,
       /^types\/marketplace\.ts$/,
       /^supabase\/migrations\/.*marketplace/i,
     ],
@@ -370,15 +370,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users see this as promoted Dreams, user-created campaigns, ad slots, sponsor cards, or paid visibility controls.",
     primaryPaths: [
-      /^app\/ads\
-      /^app\/api\/ads\
-      /^components\/ads\
+      /^app\/ads\//,
+      /^app\/api\/ads\//,
+      /^components\/ads\//,
       /^types\/ads\.ts$/,
       /^supabase\/migrations\/.*ads/i,
     ],
     supportingPaths: [
       /^components\/engines\/brand\/panels\/.*Campaign/i,
-      /^app\/engines\/brand\/campaigns\
+      /^app\/engines\/brand\/campaigns\//,
     ],
     keywords: ["ads", "advertising", "sponsor", "promotion", "campaign"],
     maxFiles: 24,
@@ -408,8 +408,8 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     primaryPaths: [
       /^dreamdmbar\/runtime\/DreamSystemContext\.tsx$/,
       /^dreamdmbar\/runtime\/barInteractions\.ts$/,
-      /^dreamdmbar\
-      /^app\/dreamdmbar\
+      /^dreamdmbar\//,
+      /^app\/dreamdmbar\//,
       /^components\/runtime\/dream\.DualRuntimeContainer\.tsx$/,
       /^components\/runtime\/dream\.RuntimeView\.tsx$/,
       /^components\/runtime\/dream\.shell\.RuntimeShell\.tsx$/,
@@ -423,8 +423,8 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^components\/home\/dream\.bar\.GlobalDreamBar\.tsx$/,
       /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
       /^components\/panels\/dream\.panel\./,
-      /^app\/messages\
-      /^app\/api\/messages\
+      /^app\/messages\//,
+      /^app\/api\/messages\//,
       /^components\/dream\.CommandPalette\.tsx$/,
       /^components\/dream\.NotificationCenter\.tsx$/,
     ],
@@ -445,20 +445,20 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users experience this when they send a message, receive a notification, open a conversation, keep a draft, or continue a thread from another surface.",
     primaryPaths: [
-      /^app\/messages\
-      /^app\/api\/messages\
-      /^components\/messaging\
+      /^app\/messages\//,
+      /^app\/api\/messages\//,
+      /^components\/messaging\//,
       /^dreamdmbar\/hooks\/useDreamDM(Conversations|Messages|Draft)/,
       /^dreamdmbar\/hooks\/useMessagingCore\.ts$/,
-      /^dreamdmbar\/notifications\
-      /^app\/api\/drafts\
+      /^dreamdmbar\/notifications\//,
+      /^app\/api\/drafts\//,
       /^supabase\/migrations\/.*messages/i,
       /^supabase\/migrations\/.*conversations/i,
       /^supabase\/migrations\/.*drafts/i,
     ],
     supportingPaths: [
-      /^app\/settings\/notifications\
-      /^app\/api\/settings\/notifications\
+      /^app\/settings\/notifications\//,
+      /^app\/api\/settings\/notifications\//,
       /^components\/dream\.MessagesClient\.tsx$/,
       /^components\/dream\.NotificationCenter\.tsx$/,
     ],
@@ -479,17 +479,17 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users feel HomeDream as the personal starting point where they see themselves, their Dreams, people, feed items, and the app modules they can open.",
     primaryPaths: [
-      /^app\/homedream\
-      /^components\/home\
+      /^app\/homedream\//,
+      /^components\/home\//,
       /^app\/dreamdmbar\/_components\/HomeDreamRegion\.tsx$/,
       /^styles\/home-dream\.css$/,
-      /^engins\/rulesets\/homedream\
+      /^engins\/rulesets\/homedream\//,
       /^engine\/generated\/homedream\.ts$/,
     ],
     supportingPaths: [
       /^components\/dream\.HomeFeed\.tsx$/,
       /^components\/dream\.FeedCard\.tsx$/,
-      /^app\/api\/home-layout\
+      /^app\/api\/home-layout\//,
     ],
     keywords: ["homedream", "home dream", "home feed", "launcher"],
     maxFiles: 35,
@@ -511,15 +511,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     primaryPaths: [
       /^components\/dreams\/dreamsurface\.dreamspace\.tsx$/,
       /^app\/dreamdmbar\/_components\/DreamSpaceRegion\.tsx$/,
-      /^app\/dreamdmbar\/dreamspace\
-      /^app\/dreamspace\
-      /^components\/spatial\
-      /^coresurfaces\
-      /^daydreams\
-      /^components\/daydream\
-      /^app\/daydream\
+      /^app\/dreamdmbar\/dreamspace\//,
+      /^app\/dreamspace\//,
+      /^components\/spatial\//,
+      /^coresurfaces\//,
+      /^daydreams\//,
+      /^components\/daydream\//,
+      /^app\/daydream\//,
     ],
-    supportingPaths: [/^components\/runtime\
+    supportingPaths: [/^components\/runtime\//],
     keywords: ["dreamspace", "dream space", "spatial", "daydream shell"],
     maxFiles: 80,
     rootCaps: {
@@ -538,17 +538,17 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users feel this as cards, panels, windows, widgets, surface launches, and interactive objects that turn the product into a creative operating system rather than a static website.",
     primaryPaths: [
-      /^components\/dreams\
-      /^components\/widgets\
+      /^components\/dreams\//,
+      /^components\/widgets\//,
       /^components\/dream\.widget/i,
       /^components\/dream\.DragToAnchorClose\.tsx$/,
-      /^engine\/dream-window\
-      /^engine\/dreams\
+      /^engine\/dream-window\//,
+      /^engine\/dreams\//,
       /^types\/dream-window\.ts$/,
       /^types\/widget/i,
-      /^app\/api\/dream-windows\
-      /^app\/settings\/dreams\
-      /^app\/settings\/widgets\
+      /^app\/api\/dream-windows\//,
+      /^app\/settings\/dreams\//,
+      /^app\/settings\/widgets\//,
     ],
     supportingPaths: [/^components\/dream\.FeedCard\.tsx$/],
     keywords: ["dream window", "widget", "surface", "dreamsurface", "draggable"],
@@ -571,15 +571,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
       /^engine\/runtime\/moduleRegistry\.ts$/,
       /^engine\/runtime\/dropTargetRegistry\.ts$/,
       /^types\/module-manifest\.ts$/,
-      /^components\/runtime\
-      /^components\/panels\
+      /^components\/runtime\//,
+      /^components\/panels\//,
       /^components\/home\/dream\.ActiveModuleSurface\.tsx$/,
       /^dreamdmbar\/hooks\/useModuleBarIntent\.ts$/,
     ],
     supportingPaths: [
-      /^components\/engines\/shared\
-      /^components\/dreams\
-      /^components\/draggable\
+      /^components\/engines\/shared\//,
+      /^components\/dreams\//,
+      /^components\/draggable\//,
     ],
     keywords: ["module", "manifest", "panel", "registry", "launch"],
     maxFiles: 70,
@@ -598,15 +598,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.",
     primaryPaths: [
-      /^engins\/rulesets\
-      /^engins\/forgeengin\/forge\
-      /^engins\/gameengin\/cartridges\
+      /^engins\/rulesets\//,
+      /^engins\/forgeengin\/forge\//,
+      /^engins\/gameengin\/cartridges\//,
       /^engins\/.*manifest/i,
       /^engine\/runtime\/enginWorkflowRegistry\.ts$/,
-      /^engine\/engin-runtime\
+      /^engine\/engin-runtime\//,
       /^types\/module-manifest\.ts$/,
     ],
-    supportingPaths: [/^app\/engines\
+    supportingPaths: [/^app\/engines\//],
     keywords: ["custom engin", "ruleset", "manifest", "capability", "registry"],
     maxFiles: 90,
     rootCaps: {
@@ -625,21 +625,21 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users experience this as profile editing, theme choices, brand customization, public pages, custom identity, and the ability to make DREAMengin feel like their own site.",
     primaryPaths: [
-      /^app\/settings\
-      /^app\/edit-profiledream\
-      /^app\/view-profile\
-      /^app\/profile\
-      /^components\/profile\
+      /^app\/settings\//,
+      /^app\/edit-profiledream\//,
+      /^app\/view-profile\//,
+      /^app\/profile\//,
+      /^components\/profile\//,
       /^components\/providers\/dream\.ThemeProvider\.tsx$/,
       /^components\/dream\.ThemeApplicator\.tsx$/,
       /^components\/ui-system\/theme-engine\.ts$/,
       /^components\/ui-system\/CustomizeModeContext\.tsx$/,
-      /^styles\
+      /^styles\//,
       /^engins\/engin\.BrandingEngin\.tsx$/,
     ],
     supportingPaths: [
-      /^app\/api\/settings\
-      /^components\/customize\
+      /^app\/api\/settings\//,
+      /^components\/customize\//,
       /^components\/dream\.Profile/,
     ],
     keywords: ["appearance", "theme", "profile", "customize", "branding"],
@@ -659,15 +659,15 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
     userExperience:
       "Users feel this indirectly when data saves, pages load, auth works, messages arrive, runtime state persists, and core surfaces do not collapse while switching contexts.",
     primaryPaths: [
-      /^app\/api\
+      /^app\/api\//,
       /^supabase\/(config|client|server|auth|migrations|schema)/,
-      /^engine\
-      /^coresurfaces\
-      /^types\
-      /^utils\
-      /^config\
+      /^engine\//,
+      /^coresurfaces\//,
+      /^types\//,
+      /^utils\//,
+      /^config\//,
     ],
-    supportingPaths: [/^app\/auth\
+    supportingPaths: [/^app\/auth\//],
     keywords: ["api", "backend", "supabase", "core", "system", "auth"],
     maxFiles: 100,
     rootCaps: {
@@ -684,7 +684,7 @@ export const PRODUCT_SECTIONS: SectionRule[] = [
 ];
 
 function normalizePath(value: string): string {
-  return value.trim().replace(/\\/g, "/").replace(/^\.\
+  return value.trim().replace(/\\/g, "/").replace(/^\.\//, "");
 }
 
 function getRoot(filePath: string): string {
@@ -925,7 +925,7 @@ function extractImports(matches: FileMatch[]): string[] {
       if (!source.startsWith(".") && !source.startsWith("@/")) {
         imports.add(source);
       } else {
-        imports.add(source.replace(/^@\
+        imports.add(source.replace(/^@\//, ""));
       }
     }
   }
@@ -1268,5 +1268,3 @@ function runCli(): void {
 const isCli = Boolean(process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href);
 
 if (isCli) {
-  runCli();
-}
