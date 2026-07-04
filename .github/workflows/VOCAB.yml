@@ -1,0 +1,408 @@
+name: Allowed Vocabulary Folder Compiler
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_name:
+        description: "Download artifact name."
+        required: true
+        default: "allowed-vocab-folder-codebase"
+        type: string
+      include_binary:
+        description: "Include binary files. false = source/text files only."
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: allowed-vocab-folder-compiler-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile-folders:
+    name: Compile focused folders into allowed vocabulary artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node 25
+        uses: actions/setup-node@v6
+        with:
+          node-version: "25"
+
+      - name: Compile folders
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OUT_DIR="$RUNNER_TEMP/allowed-vocab-folder-codebase"
+          ZIP_PATH="$RUNNER_TEMP/${{ inputs.artifact_name }}.zip"
+          SCRIPT_PATH="$RUNNER_TEMP/allowed-vocab-folder-compiler.mjs"
+
+          cat > "$SCRIPT_PATH" <<'NODE'
+          import { execFileSync } from "node:child_process";
+          import { createHash } from "node:crypto";
+          import {
+            existsSync,
+            mkdirSync,
+            readFileSync,
+            rmSync,
+            statSync,
+            writeFileSync,
+          } from "node:fs";
+          import path from "node:path";
+
+          const WORDS = [
+            "the",
+            "and",
+            "of",
+            "to",
+            "in",
+            "is",
+            "for",
+            "a",
+            "on",
+            "with",
+            "as",
+            "by",
+            "at",
+            "from",
+            "it",
+            "this",
+            "that",
+            "or",
+            "be",
+            "are",
+
+            "file",
+            "path",
+            "name",
+            "type",
+            "role",
+            "state",
+            "owner",
+            "input",
+            "output",
+            "import",
+            "export",
+            "route",
+            "api",
+            "component",
+            "function",
+            "hook",
+            "calls",
+            "reads",
+            "writes",
+            "uses",
+
+            "dreamengin",
+            "dreamdmbar",
+            "homedream",
+            "dreamspace",
+            "dreamr",
+            "daydream",
+            "dream",
+            "dreams",
+            "engin",
+            "engins",
+            "coresurface",
+            "coresurfaces",
+            "surface",
+            "surfaces",
+            "runtime",
+            "bar",
+            "seam",
+            "particle",
+            "codeengin",
+            "gameengin",
+          ];
+
+          const FOCUS_ROOTS = new Set([
+            "app",
+            "assembly",
+            "components",
+            "coresurfaces",
+            "daydreams",
+            "dreamdmbar",
+            "dreamr",
+            "engine",
+            "engin",
+            "engins",
+            "hooks",
+            "misc",
+            "public",
+            "styles",
+            "types",
+          ]);
+
+          const TEXT_EXTENSIONS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass",
+            ".json",
+            ".md",
+            ".mdx",
+            ".yml",
+            ".yaml",
+            ".toml",
+            ".xml",
+            ".html",
+            ".txt",
+            ".sql",
+            ".env",
+            ".example",
+            ".gitignore",
+            ".dockerignore",
+            ".npmrc",
+            ".nvmrc",
+            ".editorconfig",
+            ".prettierrc",
+            ".eslintrc",
+            ".babelrc",
+          ]);
+
+          const EXCLUDED_PATHS = [
+            /^node_modules\//,
+            /^\.git\//,
+            /^\.next\//,
+            /^out\//,
+            /^dist\//,
+            /^coverage\//,
+            /^playwright-report\//,
+            /^test-results\//,
+            /^\.turbo\//,
+            /^\.vercel\//,
+            /^build-memory\//,
+            /\.tsbuildinfo$/,
+          ];
+
+          function parseArgs(argv) {
+            const args = {};
+
+            for (let index = 0; index < argv.length; index++) {
+              const value = argv[index];
+
+              if (!value.startsWith("--")) continue;
+
+              const key = value.slice(2);
+              const next = argv[index + 1];
+
+              if (!next || next.startsWith("--")) {
+                args[key] = "true";
+                continue;
+              }
+
+              args[key] = next;
+              index++;
+            }
+
+            return args;
+          }
+
+          function normalizePath(value) {
+            return value.trim().replace(/\\/g, "/").replace(/^\.\//, "");
+          }
+
+          function rootOf(filePath) {
+            return normalizePath(filePath).split("/")[0] || "";
+          }
+
+          function isFocused(filePath) {
+            return FOCUS_ROOTS.has(rootOf(filePath));
+          }
+
+          function isExcluded(filePath) {
+            return EXCLUDED_PATHS.some((pattern) => pattern.test(filePath));
+          }
+
+          function isLikelyTextPath(filePath) {
+            const base = path.basename(filePath);
+            const ext = path.extname(filePath).toLowerCase();
+
+            if (TEXT_EXTENSIONS.has(ext)) return true;
+            if (TEXT_EXTENSIONS.has(base)) return true;
+
+            return false;
+          }
+
+          function gitTrackedFiles() {
+            const raw = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" });
+
+            return raw
+              .toString("utf8")
+              .split("\0")
+              .map(normalizePath)
+              .filter(Boolean)
+              .filter((file) => isFocused(file))
+              .filter((file) => !isExcluded(file));
+          }
+
+          function sha256(buffer) {
+            return createHash("sha256").update(buffer).digest("hex");
+          }
+
+          function encodeBuffer(buffer) {
+            const out = [];
+
+            for (const byte of buffer) {
+              out.push(WORDS[Math.floor(byte / WORDS.length)]);
+              out.push(WORDS[byte % WORDS.length]);
+            }
+
+            return out.join(" ");
+          }
+
+          function writeEncodedFile(filePath, text) {
+            const buffer = Buffer.from(text, "utf8");
+            mkdirSync(path.dirname(filePath), { recursive: true });
+            writeFileSync(filePath, `${encodeBuffer(buffer)}\n`);
+          }
+
+          function safeReadText(filePath) {
+            const buffer = readFileSync(filePath);
+            return {
+              buffer,
+              text: buffer.toString("utf8"),
+              hash: sha256(buffer),
+            };
+          }
+
+          function ensureCleanDir(dir) {
+            rmSync(dir, { recursive: true, force: true });
+            mkdirSync(dir, { recursive: true });
+          }
+
+          function groupByDirectory(files) {
+            const groups = new Map();
+
+            for (const filePath of files) {
+              const dir = path.dirname(filePath) === "." ? "" : normalizePath(path.dirname(filePath));
+              const list = groups.get(dir) || [];
+              list.push(filePath);
+              groups.set(dir, list);
+            }
+
+            return groups;
+          }
+
+          const args = parseArgs(process.argv.slice(2));
+          const outDir = path.resolve(String(args["out-dir"] || "allowed-vocab-folder-codebase"));
+          const includeBinary = String(args["include-binary"] || "false") === "true";
+
+          ensureCleanDir(outDir);
+
+          const tracked = gitTrackedFiles();
+          const selected = [];
+
+          let skippedFiles = 0;
+
+          for (const filePath of tracked) {
+            if (!existsSync(filePath) || !statSync(filePath).isFile()) {
+              skippedFiles++;
+              continue;
+            }
+
+            if (!includeBinary && !isLikelyTextPath(filePath)) {
+              skippedFiles++;
+              continue;
+            }
+
+            selected.push(filePath);
+          }
+
+          selected.sort((a, b) => a.localeCompare(b));
+
+          const groups = groupByDirectory(selected);
+          const bundleRecords = [];
+
+          for (const [dir, files] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+            const parts = [];
+            const record = {
+              directory: dir || ".",
+              bundle: normalizePath(path.join(dir, "file")),
+              files: [],
+            };
+
+            parts.push("DREAMENGIN_ALLOWED_VOCAB_FOLDER_BUNDLE_V1");
+            parts.push("");
+            parts.push(`directory: ${dir || "."}`);
+            parts.push(`file_count: ${files.length}`);
+            parts.push("");
+
+            for (const filePath of files.sort((a, b) => a.localeCompare(b))) {
+              const { buffer, text, hash } = safeReadText(filePath);
+
+              record.files.push({
+                path: filePath,
+                name: path.basename(filePath),
+                bytes: buffer.length,
+                sha256: hash,
+              });
+
+              parts.push("========== file ==========");
+              parts.push(`path: ${filePath}`);
+              parts.push(`name: ${path.basename(filePath)}`);
+              parts.push(`bytes: ${buffer.length}`);
+              parts.push(`sha256: ${hash}`);
+              parts.push("========== code ==========");
+              parts.push(text);
+              if (!text.endsWith("\n")) parts.push("");
+              parts.push("========== end ==========");
+              parts.push("");
+            }
+
+            const outputPath = path.join(outDir, dir, "file");
+            writeEncodedFile(outputPath, parts.join("\n"));
+            bundleRecords.push(record);
+          }
+
+          const manifest = {
+            format: "DREAMENGIN_ALLOWED_VOCAB_FOLDER_TREE_V1",
+            mode: "recursive-folder-bundles-byte-base60-two-words-per-byte",
+            allowedWords: WORDS,
+            focusRoots: [...FOCUS_ROOTS],
+            includeBinary,
+            selectedFiles: selected.length,
+            skippedFiles,
+            bundles: bundleRecords,
+            generatedAt: new Date().toISOString(),
+          };
+
+          writeEncodedFile(path.join(outDir, "file"), `${JSON.stringify(manifest, null, 2)}\n`);
+
+          console.log("file");
+          NODE
+
+          node "$SCRIPT_PATH" \
+            --out-dir "$OUT_DIR" \
+            --include-binary "${{ inputs.include_binary }}"
+
+          (
+            cd "$OUT_DIR"
+            zip -qr "$ZIP_PATH" .
+          )
+
+          echo "ALLOWED_VOCAB_FOLDER_ZIP=$ZIP_PATH" >> "$GITHUB_ENV"
+
+      - name: Upload encoded folder artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ${{ env.ALLOWED_VOCAB_FOLDER_ZIP }}
+          if-no-files-found: error
