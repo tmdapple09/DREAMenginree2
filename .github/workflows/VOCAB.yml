@@ -1,4 +1,4 @@
-name: Allowed Vocabulary Folder Compiler
+name: Allowed Vocabulary Application Code Artifact
 
 on:
   workflow_dispatch:
@@ -6,27 +6,19 @@ on:
       artifact_name:
         description: "Download artifact name."
         required: true
-        default: "allowed-vocab-folder-codebase"
+        default: "allowed-vocab-application-code"
         type: string
-      include_binary:
-        description: "Include binary files. false = source/text files only."
-        required: true
-        default: "false"
-        type: choice
-        options:
-          - "false"
-          - "true"
 
 permissions:
   contents: read
 
 concurrency:
-  group: allowed-vocab-folder-compiler-${{ github.ref }}
+  group: allowed-vocab-application-code-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  compile-folders:
-    name: Compile focused folders into allowed vocabulary artifact
+  compile-application-code:
+    name: Compile application code into allowed vocabulary artifact
     runs-on: ubuntu-latest
 
     steps:
@@ -40,18 +32,17 @@ jobs:
         with:
           node-version: "25"
 
-      - name: Compile folders
+      - name: Compile application code
         shell: bash
         run: |
           set -euo pipefail
 
-          OUT_DIR="$RUNNER_TEMP/allowed-vocab-folder-codebase"
+          OUT_DIR="$RUNNER_TEMP/allowed-vocab-application-code"
           ZIP_PATH="$RUNNER_TEMP/${{ inputs.artifact_name }}.zip"
-          SCRIPT_PATH="$RUNNER_TEMP/allowed-vocab-folder-compiler.mjs"
+          SCRIPT_PATH="$RUNNER_TEMP/allowed-vocab-application-code.mjs"
 
           cat > "$SCRIPT_PATH" <<'NODE'
           import { execFileSync } from "node:child_process";
-          import { createHash } from "node:crypto";
           import {
             existsSync,
             mkdirSync,
@@ -127,7 +118,7 @@ jobs:
             "gameengin",
           ];
 
-          const FOCUS_ROOTS = new Set([
+          const APPLICATION_ROOTS = new Set([
             "app",
             "assembly",
             "components",
@@ -139,13 +130,11 @@ jobs:
             "engin",
             "engins",
             "hooks",
-            "misc",
-            "public",
             "styles",
             "types",
           ]);
 
-          const TEXT_EXTENSIONS = new Set([
+          const APPLICATION_CODE_EXTENSIONS = new Set([
             ".ts",
             ".tsx",
             ".js",
@@ -155,26 +144,6 @@ jobs:
             ".css",
             ".scss",
             ".sass",
-            ".json",
-            ".md",
-            ".mdx",
-            ".yml",
-            ".yaml",
-            ".toml",
-            ".xml",
-            ".html",
-            ".txt",
-            ".sql",
-            ".env",
-            ".example",
-            ".gitignore",
-            ".dockerignore",
-            ".npmrc",
-            ".nvmrc",
-            ".editorconfig",
-            ".prettierrc",
-            ".eslintrc",
-            ".babelrc",
           ]);
 
           const EXCLUDED_PATHS = [
@@ -190,30 +159,17 @@ jobs:
             /^\.vercel\//,
             /^build-memory\//,
             /\.tsbuildinfo$/,
+            /\.(test|spec)\.(ts|tsx|js|jsx|mjs|cjs)$/,
+            /(^|\/)__tests__\//,
+            /(^|\/)test\//,
+            /(^|\/)tests\//,
+            /(^|\/)docs?\//,
+            /(^|\/)README\.md$/i,
+            /\.mdx?$/i,
+            /\.ya?ml$/i,
+            /\.json$/i,
+            /\.(png|jpe?g|gif|webp|svg|ico|mp4|mov|webm|avi|mkv|mp3|wav|ogg|flac|wasm|zip|gz|tar|pdf|ttf|otf|woff2?)$/i,
           ];
-
-          function parseArgs(argv) {
-            const args = {};
-
-            for (let index = 0; index < argv.length; index++) {
-              const value = argv[index];
-
-              if (!value.startsWith("--")) continue;
-
-              const key = value.slice(2);
-              const next = argv[index + 1];
-
-              if (!next || next.startsWith("--")) {
-                args[key] = "true";
-                continue;
-              }
-
-              args[key] = next;
-              index++;
-            }
-
-            return args;
-          }
 
           function normalizePath(value) {
             return value.trim().replace(/\\/g, "/").replace(/^\.\//, "");
@@ -223,22 +179,16 @@ jobs:
             return normalizePath(filePath).split("/")[0] || "";
           }
 
-          function isFocused(filePath) {
-            return FOCUS_ROOTS.has(rootOf(filePath));
+          function isApplicationRoot(filePath) {
+            return APPLICATION_ROOTS.has(rootOf(filePath));
           }
 
           function isExcluded(filePath) {
             return EXCLUDED_PATHS.some((pattern) => pattern.test(filePath));
           }
 
-          function isLikelyTextPath(filePath) {
-            const base = path.basename(filePath);
-            const ext = path.extname(filePath).toLowerCase();
-
-            if (TEXT_EXTENSIONS.has(ext)) return true;
-            if (TEXT_EXTENSIONS.has(base)) return true;
-
-            return false;
+          function isApplicationCode(filePath) {
+            return APPLICATION_CODE_EXTENSIONS.has(path.extname(filePath).toLowerCase());
           }
 
           function gitTrackedFiles() {
@@ -249,12 +199,9 @@ jobs:
               .split("\0")
               .map(normalizePath)
               .filter(Boolean)
-              .filter((file) => isFocused(file))
+              .filter((file) => isApplicationRoot(file))
+              .filter((file) => isApplicationCode(file))
               .filter((file) => !isExcluded(file));
-          }
-
-          function sha256(buffer) {
-            return createHash("sha256").update(buffer).digest("hex");
           }
 
           function encodeBuffer(buffer) {
@@ -268,19 +215,23 @@ jobs:
             return out.join(" ");
           }
 
-          function writeEncodedFile(filePath, text) {
-            const buffer = Buffer.from(text, "utf8");
-            mkdirSync(path.dirname(filePath), { recursive: true });
-            writeFileSync(filePath, `${encodeBuffer(buffer)}\n`);
+          function encodeText(text) {
+            return encodeBuffer(Buffer.from(text, "utf8"));
           }
 
-          function safeReadText(filePath) {
-            const buffer = readFileSync(filePath);
-            return {
-              buffer,
-              text: buffer.toString("utf8"),
-              hash: sha256(buffer),
-            };
+          function encodePathToAllowedWords(value) {
+            return encodeText(value).split(/\s+/g).filter(Boolean);
+          }
+
+          function encodedDirectoryPath(originalDirectory) {
+            const words = encodePathToAllowedWords(originalDirectory || ".");
+            const parts = ["path"];
+
+            for (let index = 0; index < words.length; index += 12) {
+              parts.push(words.slice(index, index + 12).join("/"));
+            }
+
+            return parts.join("/");
           }
 
           function ensureCleanDir(dir) {
@@ -292,7 +243,7 @@ jobs:
             const groups = new Map();
 
             for (const filePath of files) {
-              const dir = path.dirname(filePath) === "." ? "" : normalizePath(path.dirname(filePath));
+              const dir = path.dirname(filePath) === "." ? "." : normalizePath(path.dirname(filePath));
               const list = groups.get(dir) || [];
               list.push(filePath);
               groups.set(dir, list);
@@ -301,108 +252,55 @@ jobs:
             return groups;
           }
 
-          const args = parseArgs(process.argv.slice(2));
-          const outDir = path.resolve(String(args["out-dir"] || "allowed-vocab-folder-codebase"));
-          const includeBinary = String(args["include-binary"] || "false") === "true";
+          function writeEncodedFile(filePath, text) {
+            mkdirSync(path.dirname(filePath), { recursive: true });
+            writeFileSync(filePath, `${encodeText(text)}\n`);
+          }
+
+          const outDir = process.argv[2];
 
           ensureCleanDir(outDir);
 
-          const tracked = gitTrackedFiles();
-          const selected = [];
+          const selectedFiles = gitTrackedFiles()
+            .filter((filePath) => existsSync(filePath))
+            .filter((filePath) => statSync(filePath).isFile())
+            .sort((a, b) => a.localeCompare(b));
 
-          let skippedFiles = 0;
+          const groups = groupByDirectory(selectedFiles);
 
-          for (const filePath of tracked) {
-            if (!existsSync(filePath) || !statSync(filePath).isFile()) {
-              skippedFiles++;
-              continue;
-            }
-
-            if (!includeBinary && !isLikelyTextPath(filePath)) {
-              skippedFiles++;
-              continue;
-            }
-
-            selected.push(filePath);
-          }
-
-          selected.sort((a, b) => a.localeCompare(b));
-
-          const groups = groupByDirectory(selected);
-          const bundleRecords = [];
-
-          for (const [dir, files] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-            const parts = [];
-            const record = {
-              directory: dir || ".",
-              bundle: normalizePath(path.join(dir, "file")),
-              files: [],
-            };
-
-            parts.push("DREAMENGIN_ALLOWED_VOCAB_FOLDER_BUNDLE_V1");
-            parts.push("");
-            parts.push(`directory: ${dir || "."}`);
-            parts.push(`file_count: ${files.length}`);
-            parts.push("");
+          for (const [directory, files] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+            const bundleParts = [];
+            const encodedDir = encodedDirectoryPath(directory);
+            const outputPath = path.join(outDir, encodedDir, "file");
 
             for (const filePath of files.sort((a, b) => a.localeCompare(b))) {
-              const { buffer, text, hash } = safeReadText(filePath);
+              const source = readFileSync(filePath, "utf8");
 
-              record.files.push({
-                path: filePath,
-                name: path.basename(filePath),
-                bytes: buffer.length,
-                sha256: hash,
-              });
-
-              parts.push("========== file ==========");
-              parts.push(`path: ${filePath}`);
-              parts.push(`name: ${path.basename(filePath)}`);
-              parts.push(`bytes: ${buffer.length}`);
-              parts.push(`sha256: ${hash}`);
-              parts.push("========== code ==========");
-              parts.push(text);
-              if (!text.endsWith("\n")) parts.push("");
-              parts.push("========== end ==========");
-              parts.push("");
+              bundleParts.push("file");
+              bundleParts.push(filePath);
+              bundleParts.push(source);
+              bundleParts.push("file");
+              bundleParts.push("");
             }
 
-            const outputPath = path.join(outDir, dir, "file");
-            writeEncodedFile(outputPath, parts.join("\n"));
-            bundleRecords.push(record);
+            writeEncodedFile(outputPath, bundleParts.join("\n"));
           }
-
-          const manifest = {
-            format: "DREAMENGIN_ALLOWED_VOCAB_FOLDER_TREE_V1",
-            mode: "recursive-folder-bundles-byte-base60-two-words-per-byte",
-            allowedWords: WORDS,
-            focusRoots: [...FOCUS_ROOTS],
-            includeBinary,
-            selectedFiles: selected.length,
-            skippedFiles,
-            bundles: bundleRecords,
-            generatedAt: new Date().toISOString(),
-          };
-
-          writeEncodedFile(path.join(outDir, "file"), `${JSON.stringify(manifest, null, 2)}\n`);
 
           console.log("file");
           NODE
 
-          node "$SCRIPT_PATH" \
-            --out-dir "$OUT_DIR" \
-            --include-binary "${{ inputs.include_binary }}"
+          node "$SCRIPT_PATH" "$OUT_DIR"
 
           (
             cd "$OUT_DIR"
             zip -qr "$ZIP_PATH" .
           )
 
-          echo "ALLOWED_VOCAB_FOLDER_ZIP=$ZIP_PATH" >> "$GITHUB_ENV"
+          echo "ALLOWED_VOCAB_APPLICATION_CODE_ZIP=$ZIP_PATH" >> "$GITHUB_ENV"
 
-      - name: Upload encoded folder artifact
+      - name: Upload encoded application code artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
-          path: ${{ env.ALLOWED_VOCAB_FOLDER_ZIP }}
+          path: ${{ env.ALLOWED_VOCAB_APPLICATION_CODE_ZIP }}
           if-no-files-found: error
