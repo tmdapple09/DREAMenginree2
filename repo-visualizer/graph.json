@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-03T23:52:01.855Z",
+  "generatedAt": "2026-07-04T13:59:43.673Z",
   "root": ".",
   "nodes": [
     {
@@ -2686,6 +2686,16 @@
       "label": "Strict English Codebase Export.yml",
       "type": "config",
       "path": ".github/workflows/Strict English Codebase Export.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/VOCAB.yml",
+      "label": "VOCAB.yml",
+      "type": "config",
+      "path": ".github/workflows/VOCAB.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
