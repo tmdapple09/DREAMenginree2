@@ -1,306 +1,301 @@
-name: Allowed Vocabulary Application Code Artifact
+name: Strip Human-Readable Repo ZIP
 
 on:
   workflow_dispatch:
-    inputs:
-      artifact_name:
-        description: "Download artifact name."
-        required: true
-        default: "allowed-vocab-application-code"
-        type: string
 
 permissions:
   contents: read
 
-concurrency:
-  group: allowed-vocab-application-code-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  compile-application-code:
-    name: Compile application code into allowed vocabulary artifact
+  strip-and-upload:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Setup Node 25
-        uses: actions/setup-node@v6
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: "25"
+          node-version: "20"
 
-      - name: Compile application code
-        shell: bash
+      - name: Install minifier in isolated tool folder
         run: |
-          set -euo pipefail
+          node -e "require('node:fs').mkdirSync('__strip_tools__',{recursive:true});require('node:fs').writeFileSync('__strip_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __strip_tools__ install esbuild@0.25.6 --no-package-lock --silent
 
-          OUT_DIR="$RUNNER_TEMP/allowed-vocab-application-code"
-          ZIP_PATH="$RUNNER_TEMP/${{ inputs.artifact_name }}.zip"
-          SCRIPT_PATH="$RUNNER_TEMP/allowed-vocab-application-code.mjs"
+      - name: Create stripped repo copy
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const { createRequire } = require("node:module");
 
-          cat > "$SCRIPT_PATH" <<'NODE'
-          import { execFileSync } from "node:child_process";
-          import {
-            existsSync,
-            mkdirSync,
-            readFileSync,
-            rmSync,
-            statSync,
-            writeFileSync,
-          } from "node:fs";
-          import path from "node:path";
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, "__stripped_repo__");
+          const toolRequire = createRequire(path.join(ROOT, "__strip_tools__", "package.json"));
+          const esbuild = toolRequire("esbuild");
 
-          const WORDS = [
-            "the",
-            "and",
-            "of",
-            "to",
-            "in",
-            "is",
-            "for",
-            "a",
-            "on",
-            "with",
-            "as",
-            "by",
-            "at",
-            "from",
-            "it",
-            "this",
-            "that",
-            "or",
-            "be",
-            "are",
-
-            "file",
-            "path",
-            "name",
-            "type",
-            "role",
-            "state",
-            "owner",
-            "input",
-            "output",
-            "import",
-            "export",
-            "route",
-            "api",
-            "component",
-            "function",
-            "hook",
-            "calls",
-            "reads",
-            "writes",
-            "uses",
-
-            "dreamengin",
-            "dreamdmbar",
-            "homedream",
-            "dreamspace",
-            "dreamr",
-            "daydream",
-            "dream",
-            "dreams",
-            "engin",
-            "engins",
-            "coresurface",
-            "coresurfaces",
-            "surface",
-            "surfaces",
-            "runtime",
-            "bar",
-            "seam",
-            "particle",
-            "codeengin",
-            "gameengin",
-          ];
-
-          const APPLICATION_ROOTS = new Set([
-            "app",
-            "assembly",
-            "components",
-            "coresurfaces",
-            "daydreams",
-            "dreamdmbar",
-            "dreamr",
-            "engine",
-            "engin",
-            "engins",
-            "hooks",
-            "styles",
-            "types",
+          const SKIP_DIRS = new Set([
+            ".git",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            "__strip_tools__",
+            "__stripped_repo__"
           ]);
 
-          const APPLICATION_CODE_EXTENSIONS = new Set([
-            ".ts",
-            ".tsx",
-            ".js",
-            ".jsx",
-            ".mjs",
-            ".cjs",
-            ".css",
-            ".scss",
-            ".sass",
+          const CODE_LOADERS = new Map([
+            [".js", "js"],
+            [".jsx", "jsx"],
+            [".mjs", "js"],
+            [".cjs", "js"],
+            [".ts", "ts"],
+            [".tsx", "tsx"],
+            [".mts", "ts"],
+            [".cts", "ts"]
           ]);
 
-          const EXCLUDED_PATHS = [
-            /^node_modules\//,
-            /^\.git\//,
-            /^\.next\//,
-            /^out\//,
-            /^dist\//,
-            /^coverage\//,
-            /^playwright-report\//,
-            /^test-results\//,
-            /^\.turbo\//,
-            /^\.vercel\//,
-            /^build-memory\//,
-            /\.tsbuildinfo$/,
-            /\.(test|spec)\.(ts|tsx|js|jsx|mjs|cjs)$/,
-            /(^|\/)__tests__\//,
-            /(^|\/)test\//,
-            /(^|\/)tests\//,
-            /(^|\/)docs?\//,
-            /(^|\/)README\.md$/i,
-            /\.mdx?$/i,
-            /\.ya?ml$/i,
-            /\.json$/i,
-            /\.(png|jpe?g|gif|webp|svg|ico|mp4|mov|webm|avi|mkv|mp3|wav|ogg|flac|wasm|zip|gz|tar|pdf|ttf|otf|woff2?)$/i,
+          const CSS_EXTS = new Set([".css"]);
+
+          const TEXT_COMMENT_EXTS = new Set([
+            ".yml",
+            ".yaml",
+            ".toml",
+            ".env",
+            ".example",
+            ".sql",
+            ".sh",
+            ".bash",
+            ".zsh",
+            ".py",
+            ".rb",
+            ".go",
+            ".rs",
+            ".java",
+            ".c",
+            ".h",
+            ".cpp",
+            ".hpp",
+            ".cs"
+          ]);
+
+          const HUMAN_DOC_FILE = [
+            /(^|\/)README(\..*)?\.md$/i,
+            /(^|\/)CHANGELOG(\..*)?\.md$/i,
+            /(^|\/)CONTRIBUTING(\..*)?\.md$/i,
+            /(^|\/)CODE_OF_CONDUCT(\..*)?\.md$/i,
+            /(^|\/)SECURITY(\..*)?\.md$/i,
+            /(^|\/)REPO_STATE.*\.md$/i,
+            /(^|\/)FILE_TREE.*\.md$/i,
+            /(^|\/).*SUMMARY.*\.(md|txt)$/i,
+            /(^|\/).*REPORT.*\.(md|txt)$/i,
+            /(^|\/).*AUDIT.*\.(md|txt)$/i,
+            /(^|\/).*NOTES.*\.(md|txt)$/i,
+            /(^|\/).*PLAN.*\.(md|txt)$/i
           ];
 
-          function normalizePath(value) {
-            return value.trim().replace(/\\/g, "/").replace(/^\.\//, "");
+          function toPosix(value) {
+            return value.split(path.sep).join("/");
           }
 
-          function rootOf(filePath) {
-            return normalizePath(filePath).split("/")[0] || "";
+          function shouldSkipDir(name) {
+            return SKIP_DIRS.has(name);
           }
 
-          function isApplicationRoot(filePath) {
-            return APPLICATION_ROOTS.has(rootOf(filePath));
+          function removeIfExists(target) {
+            fs.rmSync(target, { recursive: true, force: true });
           }
 
-          function isExcluded(filePath) {
-            return EXCLUDED_PATHS.some((pattern) => pattern.test(filePath));
-          }
+          function copyRepo(src, dest) {
+            const stat = fs.statSync(src);
 
-          function isApplicationCode(filePath) {
-            return APPLICATION_CODE_EXTENSIONS.has(path.extname(filePath).toLowerCase());
-          }
+            if (stat.isDirectory()) {
+              const base = path.basename(src);
+              if (shouldSkipDir(base)) return;
 
-          function gitTrackedFiles() {
-            const raw = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" });
+              fs.mkdirSync(dest, { recursive: true });
 
-            return raw
-              .toString("utf8")
-              .split("\0")
-              .map(normalizePath)
-              .filter(Boolean)
-              .filter((file) => isApplicationRoot(file))
-              .filter((file) => isApplicationCode(file))
-              .filter((file) => !isExcluded(file));
-          }
+              for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+                if (entry.isDirectory() && shouldSkipDir(entry.name)) continue;
+                copyRepo(path.join(src, entry.name), path.join(dest, entry.name));
+              }
 
-          function encodeBuffer(buffer) {
-            const out = [];
-
-            for (const byte of buffer) {
-              out.push(WORDS[Math.floor(byte / WORDS.length)]);
-              out.push(WORDS[byte % WORDS.length]);
+              return;
             }
 
-            return out.join(" ");
+            if (stat.isFile()) {
+              fs.mkdirSync(path.dirname(dest), { recursive: true });
+              fs.copyFileSync(src, dest);
+            }
           }
 
-          function encodeText(text) {
-            return encodeBuffer(Buffer.from(text, "utf8"));
-          }
+          function walkFiles(dir, files = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
 
-          function encodePathToAllowedWords(value) {
-            return encodeText(value).split(/\s+/g).filter(Boolean);
-          }
-
-          function encodedDirectoryPath(originalDirectory) {
-            const words = encodePathToAllowedWords(originalDirectory || ".");
-            const parts = ["path"];
-
-            for (let index = 0; index < words.length; index += 12) {
-              parts.push(words.slice(index, index + 12).join("/"));
+              if (entry.isDirectory()) {
+                walkFiles(full, files);
+              } else if (entry.isFile()) {
+                files.push(full);
+              }
             }
 
-            return parts.join("/");
+            return files;
           }
 
-          function ensureCleanDir(dir) {
-            rmSync(dir, { recursive: true, force: true });
-            mkdirSync(dir, { recursive: true });
+          function isProbablyText(buffer) {
+            if (buffer.includes(0)) return false;
+            return true;
           }
 
-          function groupByDirectory(files) {
-            const groups = new Map();
+          function stripBlockCommentsLoose(text) {
+            return text.replace(/\/\*[\s\S]*?\*\//g, "");
+          }
 
-            for (const filePath of files) {
-              const dir = path.dirname(filePath) === "." ? "." : normalizePath(path.dirname(filePath));
-              const list = groups.get(dir) || [];
-              list.push(filePath);
-              groups.set(dir, list);
+          function stripHtmlComments(text) {
+            return text.replace(/<!--[\s\S]*?-->/g, "");
+          }
+
+          function stripHashLineComments(text) {
+            return text
+              .split(/\r?\n/)
+              .map((line) => line.replace(/\s+$/g, ""))
+              .filter((line) => {
+                const trimmed = line.trim();
+                if (!trimmed) return false;
+                if (trimmed.startsWith("#")) return false;
+                return true;
+              })
+              .join("\n");
+          }
+
+          function stripSlashLineComments(text) {
+            return text
+              .split(/\r?\n/)
+              .map((line) => line.replace(/\s+$/g, ""))
+              .filter((line) => {
+                const trimmed = line.trim();
+                if (!trimmed) return false;
+                if (trimmed.startsWith("//")) return false;
+                return true;
+              })
+              .join("\n");
+          }
+
+          function compactDts(text) {
+            return stripSlashLineComments(stripBlockCommentsLoose(text))
+              .replace(/\s+/g, " ")
+              .replace(/\s*([{}()[\];,:<>|&=])\s*/g, "$1")
+              .trim();
+          }
+
+          function minifyCode(file, ext, text) {
+            if (file.endsWith(".d.ts")) return compactDts(text);
+
+            const loader = CODE_LOADERS.get(ext);
+
+            return esbuild.transformSync(text, {
+              loader,
+              minify: true,
+              legalComments: "none",
+              jsx: "preserve",
+              target: "es2020",
+              sourcefile: path.basename(file)
+            }).code.trim();
+          }
+
+          function minifyCss(text) {
+            return esbuild.transformSync(text, {
+              loader: "css",
+              minify: true,
+              legalComments: "none"
+            }).code.trim();
+          }
+
+          function minifyJson(text) {
+            return JSON.stringify(JSON.parse(text));
+          }
+
+          function minifyHtml(text) {
+            return stripHtmlComments(text)
+              .replace(/\s+/g, " ")
+              .replace(/>\s+</g, "><")
+              .trim();
+          }
+
+          function stripHumanReadableFile(file) {
+            const rel = toPosix(path.relative(OUT, file));
+            const ext = path.extname(file).toLowerCase();
+
+            if (HUMAN_DOC_FILE.some((pattern) => pattern.test(rel))) {
+              fs.rmSync(file, { force: true });
+              return;
             }
 
-            return groups;
-          }
+            const raw = fs.readFileSync(file);
+            if (!isProbablyText(raw)) return;
 
-          function writeEncodedFile(filePath, text) {
-            mkdirSync(path.dirname(filePath), { recursive: true });
-            writeFileSync(filePath, `${encodeText(text)}\n`);
-          }
+            const text = raw.toString("utf8");
 
-          const outDir = process.argv[2];
+            try {
+              if (CODE_LOADERS.has(ext)) {
+                fs.writeFileSync(file, minifyCode(file, ext, text) + "\n");
+                return;
+              }
 
-          ensureCleanDir(outDir);
+              if (CSS_EXTS.has(ext)) {
+                fs.writeFileSync(file, minifyCss(text) + "\n");
+                return;
+              }
 
-          const selectedFiles = gitTrackedFiles()
-            .filter((filePath) => existsSync(filePath))
-            .filter((filePath) => statSync(filePath).isFile())
-            .sort((a, b) => a.localeCompare(b));
+              if (ext === ".json") {
+                fs.writeFileSync(file, minifyJson(text) + "\n");
+                return;
+              }
 
-          const groups = groupByDirectory(selectedFiles);
+              if (ext === ".html" || ext === ".htm") {
+                fs.writeFileSync(file, minifyHtml(text) + "\n");
+                return;
+              }
 
-          for (const [directory, files] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-            const bundleParts = [];
-            const encodedDir = encodedDirectoryPath(directory);
-            const outputPath = path.join(outDir, encodedDir, "file");
+              if (TEXT_COMMENT_EXTS.has(ext)) {
+                let stripped = text;
 
-            for (const filePath of files.sort((a, b) => a.localeCompare(b))) {
-              const source = readFileSync(filePath, "utf8");
+                if ([".yml", ".yaml", ".toml", ".env", ".example", ".sh", ".bash", ".zsh", ".py", ".rb"].includes(ext)) {
+                  stripped = stripHashLineComments(stripped);
+                } else {
+                  stripped = stripSlashLineComments(stripBlockCommentsLoose(stripped));
+                }
 
-              bundleParts.push("file");
-              bundleParts.push(filePath);
-              bundleParts.push(source);
-              bundleParts.push("file");
-              bundleParts.push("");
+                fs.writeFileSync(file, stripped.trim() ? stripped.trim() + "\n" : "");
+              }
+            } catch {
+              const fallback = text
+                .replace(/\s+$/gm, "")
+                .replace(/\n{3,}/g, "\n")
+                .trim();
+
+              fs.writeFileSync(file, fallback ? fallback + "\n" : "");
             }
-
-            writeEncodedFile(outputPath, bundleParts.join("\n"));
           }
 
-          console.log("file");
+          removeIfExists(OUT);
+          copyRepo(ROOT, OUT);
+
+          for (const file of walkFiles(OUT)) {
+            stripHumanReadableFile(file);
+          }
           NODE
 
-          node "$SCRIPT_PATH" "$OUT_DIR"
-
-          (
-            cd "$OUT_DIR"
-            zip -qr "$ZIP_PATH" .
-          )
-
-          echo "ALLOWED_VOCAB_APPLICATION_CODE_ZIP=$ZIP_PATH" >> "$GITHUB_ENV"
-
-      - name: Upload encoded application code artifact
+      - name: Upload stripped repo ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.artifact_name }}
-          path: ${{ env.ALLOWED_VOCAB_APPLICATION_CODE_ZIP }}
-          if-no-files-found: error
+          name: stripped-repo
+          path: __stripped_repo__/
+          include-hidden-files: true
+          compression-level: 9
