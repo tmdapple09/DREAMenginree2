@@ -1,4 +1,4 @@
-name: Strip Human-Readable Repo ZIP
+name: Strip Human-Readable Repo ZIPs
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
           node -e "require('node:fs').mkdirSync('__strip_tools__',{recursive:true});require('node:fs').writeFileSync('__strip_tools__/package.json','{\"type\":\"commonjs\"}')"
           npm --prefix __strip_tools__ install esbuild@0.25.6 --no-package-lock --silent
 
-      - name: Create stripped repo copy
+      - name: Create stripped repo copies
         run: |
           node <<'NODE'
           const fs = require("node:fs");
@@ -32,11 +32,13 @@ jobs:
           const { createRequire } = require("node:module");
 
           const ROOT = process.cwd();
-          const OUT = path.join(ROOT, "__stripped_repo__");
+          const FULL_OUT = path.join(ROOT, "__stripped_repo__");
+          const APP_OUT = path.join(ROOT, "__app_code_only__");
+
           const toolRequire = createRequire(path.join(ROOT, "__strip_tools__", "package.json"));
           const esbuild = toolRequire("esbuild");
 
-          const SKIP_DIRS = new Set([
+          const FULL_SKIP_DIRS = new Set([
             ".git",
             "node_modules",
             ".next",
@@ -46,7 +48,38 @@ jobs:
             "coverage",
             ".turbo",
             "__strip_tools__",
-            "__stripped_repo__"
+            "__stripped_repo__",
+            "__app_code_only__"
+          ]);
+
+          const APP_SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            ".ci",
+            "ci",
+            ".circleci",
+            ".vscode",
+            ".idea",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".cache",
+            "playwright-report",
+            "test-results",
+            "tests",
+            "test",
+            "__tests__",
+            "e2e",
+            "cypress",
+            ".storybook",
+            "storybook-static",
+            "__strip_tools__",
+            "__stripped_repo__",
+            "__app_code_only__"
           ]);
 
           const CODE_LOADERS = new Map([
@@ -60,7 +93,26 @@ jobs:
             [".cts", "ts"]
           ]);
 
-          const CSS_EXTS = new Set([".css"]);
+          const APP_CODE_EXTS = new Set([
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".ts",
+            ".tsx",
+            ".mts",
+            ".cts",
+            ".css",
+            ".scss",
+            ".sass",
+            ".sql"
+          ]);
+
+          const CSS_EXTS = new Set([
+            ".css",
+            ".scss",
+            ".sass"
+          ]);
 
           const TEXT_COMMENT_EXTS = new Set([
             ".yml",
@@ -99,42 +151,78 @@ jobs:
             /(^|\/).*PLAN.*\.(md|txt)$/i
           ];
 
+          const APP_EXCLUDE_FILE = [
+            /(^|\/).*\.md$/i,
+            /(^|\/).*\.mdx$/i,
+            /(^|\/).*\.txt$/i,
+
+            /(^|\/).*\.test\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.spec\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.stories\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.story\.[cm]?[jt]sx?$/i,
+
+            /(^|\/)index\.[cm]?[jt]sx?$/i,
+            /(^|\/)index\.css$/i,
+            /(^|\/)index\.scss$/i,
+            /(^|\/)index\.sass$/i,
+
+            /(^|\/)manifest\..*$/i,
+            /(^|\/).*\.manifest\..*$/i,
+            /(^|\/)package\.json$/i,
+            /(^|\/)package-lock\.json$/i,
+            /(^|\/)pnpm-lock\.yaml$/i,
+            /(^|\/)yarn\.lock$/i,
+            /(^|\/)bun\.lockb$/i,
+
+            /(^|\/)tsconfig.*\.json$/i,
+            /(^|\/)jsconfig.*\.json$/i,
+            /(^|\/)next\.config\..*$/i,
+            /(^|\/)postcss\.config\..*$/i,
+            /(^|\/)tailwind\.config\..*$/i,
+            /(^|\/)eslint\.config\..*$/i,
+            /(^|\/)\.eslintrc.*$/i,
+            /(^|\/)\.prettierrc.*$/i,
+            /(^|\/)\.gitignore$/i,
+            /(^|\/)\.gitattributes$/i,
+            /(^|\/)\.npmrc$/i,
+            /(^|\/)\.nvmrc$/i,
+
+            /(^|\/).*\.map$/i,
+            /(^|\/).*\.snap$/i,
+            /(^|\/).*\.log$/i,
+
+            /(^|\/).*\.png$/i,
+            /(^|\/).*\.jpg$/i,
+            /(^|\/).*\.jpeg$/i,
+            /(^|\/).*\.gif$/i,
+            /(^|\/).*\.svg$/i,
+            /(^|\/).*\.webp$/i,
+            /(^|\/).*\.ico$/i,
+            /(^|\/).*\.woff2?$/i,
+            /(^|\/).*\.ttf$/i,
+            /(^|\/).*\.otf$/i
+          ];
+
           function toPosix(value) {
             return value.split(path.sep).join("/");
-          }
-
-          function shouldSkipDir(name) {
-            return SKIP_DIRS.has(name);
           }
 
           function removeIfExists(target) {
             fs.rmSync(target, { recursive: true, force: true });
           }
 
-          function copyRepo(src, dest) {
-            const stat = fs.statSync(src);
+          function shouldSkipDir(name, skipSet) {
+            return skipSet.has(name);
+          }
 
-            if (stat.isDirectory()) {
-              const base = path.basename(src);
-              if (shouldSkipDir(base)) return;
-
-              fs.mkdirSync(dest, { recursive: true });
-
-              for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-                if (entry.isDirectory() && shouldSkipDir(entry.name)) continue;
-                copyRepo(path.join(src, entry.name), path.join(dest, entry.name));
-              }
-
-              return;
-            }
-
-            if (stat.isFile()) {
-              fs.mkdirSync(path.dirname(dest), { recursive: true });
-              fs.copyFileSync(src, dest);
-            }
+          function isProbablyText(buffer) {
+            if (buffer.includes(0)) return false;
+            return true;
           }
 
           function walkFiles(dir, files = []) {
+            if (!fs.existsSync(dir)) return files;
+
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
               const full = path.join(dir, entry.name);
 
@@ -148,9 +236,27 @@ jobs:
             return files;
           }
 
-          function isProbablyText(buffer) {
-            if (buffer.includes(0)) return false;
-            return true;
+          function copyRepo(src, dest, skipSet) {
+            const stat = fs.statSync(src);
+
+            if (stat.isDirectory()) {
+              const base = path.basename(src);
+              if (shouldSkipDir(base, skipSet)) return;
+
+              fs.mkdirSync(dest, { recursive: true });
+
+              for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+                if (entry.isDirectory() && shouldSkipDir(entry.name, skipSet)) continue;
+                copyRepo(path.join(src, entry.name), path.join(dest, entry.name), skipSet);
+              }
+
+              return;
+            }
+
+            if (stat.isFile()) {
+              fs.mkdirSync(path.dirname(dest), { recursive: true });
+              fs.copyFileSync(src, dest);
+            }
           }
 
           function stripBlockCommentsLoose(text) {
@@ -228,8 +334,8 @@ jobs:
               .trim();
           }
 
-          function stripHumanReadableFile(file) {
-            const rel = toPosix(path.relative(OUT, file));
+          function stripHumanReadableFile(file, root) {
+            const rel = toPosix(path.relative(root, file));
             const ext = path.extname(file).toLowerCase();
 
             if (HUMAN_DOC_FILE.some((pattern) => pattern.test(rel))) {
@@ -284,18 +390,72 @@ jobs:
             }
           }
 
-          removeIfExists(OUT);
-          copyRepo(ROOT, OUT);
+          function shouldRemoveFromAppCodeOnly(file) {
+            const rel = toPosix(path.relative(APP_OUT, file));
+            const ext = path.extname(file).toLowerCase();
 
-          for (const file of walkFiles(OUT)) {
-            stripHumanReadableFile(file);
+            if (!APP_CODE_EXTS.has(ext)) return true;
+            if (APP_EXCLUDE_FILE.some((pattern) => pattern.test(rel))) return true;
+
+            const parts = rel.split("/");
+            if (parts.some((part) => APP_SKIP_DIRS.has(part))) return true;
+            if (parts.some((part) => part.startsWith("."))) return true;
+            if (parts.some((part) => part === "__tests__")) return true;
+
+            return false;
           }
+
+          function pruneEmptyDirs(dir) {
+            if (!fs.existsSync(dir)) return true;
+
+            let entries = fs.readdirSync(dir, { withFileTypes: true });
+
+            for (const entry of entries) {
+              if (entry.isDirectory()) {
+                const full = path.join(dir, entry.name);
+                const empty = pruneEmptyDirs(full);
+                if (empty) fs.rmdirSync(full);
+              }
+            }
+
+            entries = fs.readdirSync(dir, { withFileTypes: true });
+            return entries.length === 0;
+          }
+
+          removeIfExists(FULL_OUT);
+          removeIfExists(APP_OUT);
+
+          copyRepo(ROOT, FULL_OUT, FULL_SKIP_DIRS);
+          copyRepo(ROOT, APP_OUT, APP_SKIP_DIRS);
+
+          for (const file of walkFiles(FULL_OUT)) {
+            stripHumanReadableFile(file, FULL_OUT);
+          }
+
+          for (const file of walkFiles(APP_OUT)) {
+            if (shouldRemoveFromAppCodeOnly(file)) {
+              fs.rmSync(file, { force: true });
+              continue;
+            }
+
+            stripHumanReadableFile(file, APP_OUT);
+          }
+
+          pruneEmptyDirs(APP_OUT);
           NODE
 
-      - name: Upload stripped repo ZIP
+      - name: Upload full stripped repo ZIP
         uses: actions/upload-artifact@v4
         with:
           name: stripped-repo
           path: __stripped_repo__/
           include-hidden-files: true
+          compression-level: 9
+
+      - name: Upload application code only ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-code-only-stripped
+          path: __app_code_only__/
+          include-hidden-files: false
           compression-level: 9
