@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T22:27:34.796Z",
+  "generatedAt": "2026-07-07T22:36:31.594Z",
   "root": ".",
   "nodes": [
     {
@@ -14217,25 +14217,6 @@
       "parent": "folder:app/webgpu",
       "loc": null,
       "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "folder:artifact",
-      "label": "artifact",
-      "type": "folder",
-      "path": "artifact",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "file:artifact/dreamengin-clean-codebase-report.json",
-      "label": "dreamengin-clean-codebase-report.json",
-      "type": "config",
-      "path": "artifact/dreamengin-clean-codebase-report.json",
-      "parent": "folder:artifact",
-      "loc": null,
-      "isOrphan": true,
       "tags": []
     },
     {

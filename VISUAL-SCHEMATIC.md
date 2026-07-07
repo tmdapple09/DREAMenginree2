@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2245
+- **Total files:** 2244
 - **Total function/class nodes:** 4807
 - **Total edges:** 8476
-- **Orphan nodes:** 4125
+- **Orphan nodes:** 4124
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4066,7 +4066,6 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `app/not-found.tsx` | tsx |
 | `Architecture Vision vs Engineering Blueprint.md` | doc |
 | `ARCHITECTURE.md` | doc |
-| `artifact/dreamengin-clean-codebase-report.json` | config |
 | `assembly/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `assembly/bus.ts` | ts |
 | `assembly/index.ts` | ts |
