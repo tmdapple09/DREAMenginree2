@@ -34,7 +34,6 @@ jobs:
           FILE_EXTENSIONS = {
               ".ts",
               ".tsx",
-              ".json",
               ".mjs",
               ".css",
               ".js",
@@ -47,6 +46,7 @@ jobs:
               ".git",
               "node_modules",
               ".next",
+              ".json",
               "out",
               "dist",
               "build",
