@@ -200,7 +200,7 @@ export default function ProfileCanvas({ initialProfile }: {initialProfile: Profi
                 {profile.website && (
                   <a href={profile.website} target="_blank" rel="noopener noreferrer"
                     style={{ fontSize: 12, color: 'var(--de-accent)', textDecoration: 'none' }}>
-                    🔗 {profile.website.replace(/^https?:\/\
+                    🔗 {profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
                   </a>
                 )}
               </div>

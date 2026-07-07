@@ -20,7 +20,7 @@ export default function DreamRCore({ sharerId }: Props) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ contentId, sharerId }),
-        }).catch(() => );
+        }).catch(() => {});
       }),
 
       bridge.subscribe('games', 'games:achievement-unlocked', (payload) => {

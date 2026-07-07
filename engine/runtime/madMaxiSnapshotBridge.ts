@@ -27,12 +27,11 @@ async function loadMadMaxiExports(): Promise<MadMaxiWasmExports | null> {
   if (madMaxiExportsPromise) return madMaxiExportsPromise;
   madMaxiExportsPromise = (async () => {
     try {
-      const wasmPath = typeof window === 'undefined'
-        ? `${process.cwd()}/public/cartridges/mad-maxi/logic/main.wasm`
-        : '/cartridges/mad-maxi/logic/main.wasm';
-      const bytes = typeof window === 'undefined'
-        ? await (await import( 'fs/promises')).readFile(wasmPath)
-        : new Uint8Array(await (await fetch(wasmPath)).arrayBuffer());
+      const wasmPath = '/cartridges/mad-maxi/logic/main.wasm';
+      if (typeof fetch !== 'function') return null;
+      const response = await fetch(wasmPath);
+      if (!response.ok) return null;
+      const bytes = new Uint8Array(await response.arrayBuffer());
       const { instance } = await WebAssembly.instantiate(bytes as BufferSource, {});
       return instance.exports as unknown as MadMaxiWasmExports;
     } catch {

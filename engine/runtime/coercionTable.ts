@@ -12,9 +12,9 @@
 
 
 const MIME_MAP: Array<[pattern: RegExp, type: DreamDropType]> = [
-  [/^image\
-  [/^video\
-  [/^audio\
+  [/^image\//, 'image'],
+  [/^video\//, 'video'],
+  [/^audio\//, 'audio'],
   [/^text\/html$/,       'text/code'],
   [/^text\/css$/,        'text/code'],
   [/^text\/javascript$/, 'text/code'],

@@ -373,28 +373,16 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
   private async loadWasmBinary(): Promise<ArrayBuffer> {
-    
-    if (typeof window !== 'undefined' && typeof fetch === 'function') {
-      return fetch(BUS_WASM_URL).then((r) => r.arrayBuffer());
+    if (typeof fetch !== 'function') {
+      throw new Error('dualRuntimeBridge: fetch unavailable for WASM bus');
     }
 
-    
-    const [{ readFile }, { fileURLToPath }, { resolve }] = await Promise.all([
-      
-      import( 'fs/promises'),
-      import( 'url'),
-      import( 'path'),
-    ]);
-    
-    
-    
-    
-    const wasmUrlStr = BUS_WASM_URL.toString();
-    const wasmPath = wasmUrlStr.startsWith('file://')
-      ? fileURLToPath(wasmUrlStr)
-      : resolve(process.cwd(), 'engine/bus.wasm');
-    const buf = await readFile(wasmPath);
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+    const response = await fetch(BUS_WASM_URL);
+    if (!response.ok) {
+      throw new Error(`dualRuntimeBridge: failed to load WASM bus (${response.status})`);
+    }
+
+    return response.arrayBuffer();
   }
 
   private startPolling() {

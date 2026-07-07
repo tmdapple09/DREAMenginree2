@@ -4066,6 +4066,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `app/not-found.tsx` | tsx |
 | `Architecture Vision vs Engineering Blueprint.md` | doc |
 | `ARCHITECTURE.md` | doc |
+| `artifact/dreamengin-clean-codebase-report.json` | config |
 | `assembly/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `assembly/bus.ts` | ts |
 | `assembly/index.ts` | ts |
@@ -4204,7 +4205,6 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `dr-eams/tools.ts` | ts |
 | `dreamdmbar/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `Dreamengin.names.json` | config |
-| `DREAMenginree2-completedream-buildfix.zip` | file |
 | `dreamr/activity/boogieActivityPolicy.ts` | ts |
 | `dreamr/bot-detection/detector.ts` | ts |
 | `dreamr/bot-detection/view-tally.ts` | ts |

@@ -1,21 +1,11 @@
-
-
 export interface SocialPlatform {
-  
   id: string;
-  
   label: string;
-  
   color: string;
-  
   emoji: string;
-  
   urlPatterns: RegExp[];
-  
   supportsShare: boolean;
-  
   buildShareUrl: (url: string, text?: string) => string;
-  
   profileUrlPrefix?: string;
 }
 
@@ -26,7 +16,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#000000',
     emoji: '𝕏',
     supportsShare: true,
-    urlPatterns: [/twitter\.com\
+    urlPatterns: [/twitter\.com/i, /x\.com/i],
     buildShareUrl: (url, text) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}${text ? `&text=${encodeURIComponent(text)}` : ''}`,
     profileUrlPrefix: 'https://twitter.com/',
@@ -37,7 +27,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#E1306C',
     emoji: '📸',
     supportsShare: false,
-    urlPatterns: [/instagram\.com\
+    urlPatterns: [/instagram\.com/i],
     buildShareUrl: () => `https://www.instagram.com/`,
     profileUrlPrefix: 'https://instagram.com/',
   },
@@ -47,7 +37,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#1877F2',
     emoji: '👤',
     supportsShare: true,
-    urlPatterns: [/facebook\.com\
+    urlPatterns: [/facebook\.com/i, /fb\.com/i],
     buildShareUrl: (url) =>
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     profileUrlPrefix: 'https://facebook.com/',
@@ -58,7 +48,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#FF0000',
     emoji: '▶️',
     supportsShare: false,
-    urlPatterns: [/youtube\.com\
+    urlPatterns: [/youtube\.com/i, /youtu\.be/i],
     buildShareUrl: () => `https://www.youtube.com/`,
     profileUrlPrefix: 'https://youtube.com/@',
   },
@@ -68,7 +58,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#010101',
     emoji: '🎵',
     supportsShare: false,
-    urlPatterns: [/tiktok\.com\
+    urlPatterns: [/tiktok\.com/i],
     buildShareUrl: () => `https://www.tiktok.com/`,
     profileUrlPrefix: 'https://tiktok.com/@',
   },
@@ -78,7 +68,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#0A66C2',
     emoji: '💼',
     supportsShare: true,
-    urlPatterns: [/linkedin\.com\
+    urlPatterns: [/linkedin\.com/i],
     buildShareUrl: (url) =>
       `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
     profileUrlPrefix: 'https://linkedin.com/in/',
@@ -89,7 +79,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#0085FF',
     emoji: '🦋',
     supportsShare: true,
-    urlPatterns: [/bsky\.app\
+    urlPatterns: [/bsky\.app/i],
     buildShareUrl: (url, text) =>
       `https://bsky.app/intent/compose?text=${encodeURIComponent(`${text ? text + ' ' : ''}${url}`)}`,
     profileUrlPrefix: 'https://bsky.app/profile/',
@@ -100,7 +90,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#101010',
     emoji: '🧵',
     supportsShare: true,
-    urlPatterns: [/threads\.net\
+    urlPatterns: [/threads\.net/i],
     buildShareUrl: (url, text) =>
       `https://www.threads.net/intent/post?text=${encodeURIComponent(`${text ? text + ' ' : ''}${url}`)}`,
     profileUrlPrefix: 'https://threads.net/@',
@@ -111,7 +101,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#25D366',
     emoji: '💬',
     supportsShare: true,
-    urlPatterns: [/wa\.me\
+    urlPatterns: [/wa\.me/i, /whatsapp\.com/i],
     buildShareUrl: (url, text) =>
       `https://api.whatsapp.com/send?text=${encodeURIComponent(`${text ? text + ' ' : ''}${url}`)}`,
   },
@@ -121,7 +111,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#5865F2',
     emoji: '🎮',
     supportsShare: false,
-    urlPatterns: [/discord\.gg\
+    urlPatterns: [/discord\.gg/i, /discord\.com/i],
     buildShareUrl: () => `https://discord.com/`,
     profileUrlPrefix: 'https://discord.gg/',
   },
@@ -131,7 +121,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#9146FF',
     emoji: '🟣',
     supportsShare: false,
-    urlPatterns: [/twitch\.tv\
+    urlPatterns: [/twitch\.tv/i],
     buildShareUrl: () => `https://www.twitch.tv/`,
     profileUrlPrefix: 'https://twitch.tv/',
   },
@@ -141,7 +131,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#171515',
     emoji: '🐙',
     supportsShare: false,
-    urlPatterns: [/github\.com\
+    urlPatterns: [/github\.com/i],
     buildShareUrl: () => `https://github.com/`,
     profileUrlPrefix: 'https://github.com/',
   },
@@ -151,7 +141,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#FFFC00',
     emoji: '👻',
     supportsShare: true,
-    urlPatterns: [/snapchat\.com\
+    urlPatterns: [/snapchat\.com/i],
     buildShareUrl: (url) =>
       `https://www.snapchat.com/scan?attachmentUrl=${encodeURIComponent(url)}`,
     profileUrlPrefix: 'https://snapchat.com/add/',
@@ -162,7 +152,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#E60023',
     emoji: '📌',
     supportsShare: true,
-    urlPatterns: [/pinterest\.com\
+    urlPatterns: [/pinterest\.com/i],
     buildShareUrl: (url, text) =>
       `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}${text ? `&description=${encodeURIComponent(text)}` : ''}`,
     profileUrlPrefix: 'https://pinterest.com/',
@@ -173,7 +163,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#1DB954',
     emoji: '🎧',
     supportsShare: false,
-    urlPatterns: [/spotify\.com\
+    urlPatterns: [/spotify\.com/i],
     buildShareUrl: () => `https://open.spotify.com/`,
     profileUrlPrefix: 'https://open.spotify.com/user/',
   },
@@ -183,7 +173,7 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     color: '#FF5500',
     emoji: '☁️',
     supportsShare: false,
-    urlPatterns: [/soundcloud\.com\
+    urlPatterns: [/soundcloud\.com/i],
     buildShareUrl: () => `https://soundcloud.com/`,
     profileUrlPrefix: 'https://soundcloud.com/',
   },
@@ -217,11 +207,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
   },
 ];
 
-
 export const PLATFORM_MAP: Record<string, SocialPlatform> = Object.fromEntries(
   SOCIAL_PLATFORMS.map((p) => [p.id, p])
 );
-
 
 export function detectPlatform(url: string): SocialPlatform | undefined {
   if (!url) return undefined;
@@ -230,11 +218,9 @@ export function detectPlatform(url: string): SocialPlatform | undefined {
   );
 }
 
-
 export function getPlatform(id: string): SocialPlatform {
   return PLATFORM_MAP[id] ?? (PLATFORM_MAP['other'] as SocialPlatform);
 }
-
 
 export const PROFILE_SHARE_PLATFORMS: SocialPlatform[] = SOCIAL_PLATFORMS.filter(
   (p) => p.supportsShare

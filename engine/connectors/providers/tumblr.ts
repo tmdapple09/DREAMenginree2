@@ -17,7 +17,7 @@ function extractSlug(username: string): string {
     const match = slug.match(/([^/.]+)\.tumblr\.com/);
     return match?.[1] ?? slug;
   }
-  return slug.replace(/^https?:\/\
+  return slug.replace(/^https?:\/\//, '').replace(/\/$/, '').replace(/\.tumblr\.com$/i, '');
 }
 
 

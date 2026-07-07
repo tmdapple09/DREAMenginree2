@@ -51,8 +51,8 @@ export function parseUnifiedDiff(diffText: string): DiffFile[] {
   for (const raw of diffText.split('\n')) {
     
     if (raw.startsWith('--- ')) {
-      const oldPath = raw.slice(4).replace(/^\/?a\
-      
+      const oldPath = raw.slice(4).replace(/^\/?a\//, '');
+
       if (current) files.push(finalise(current));
       current = {
         path: oldPath,
@@ -67,7 +67,7 @@ export function parseUnifiedDiff(diffText: string): DiffFile[] {
     }
 
     if (raw.startsWith('+++ ') && current) {
-      const newPath = raw.slice(4).replace(/^\/?b\
+      const newPath = raw.slice(4).replace(/^\/?b\//, '');
       current.newPath = newPath;
       current.path = newPath !== '/dev/null' ? newPath : current.oldPath;
       continue;

@@ -55,13 +55,13 @@ export function youtubePlaylistRssUrl(playlistId: string): string {
 
 
 export function redditSubredditRssUrl(subreddit: string): string {
-  const name = subreddit.replace(/^r\
+  const name = subreddit.trim().replace(/^\/?r\//i, '').replace(/^@/, '');
   return `https://www.reddit.com/r/${encodeURIComponent(name)}/.rss?limit=25`;
 }
 
 
 export function redditUserRssUrl(username: string): string {
-  const name = username.replace(/^u\
+  const name = username.trim().replace(/^\/?u\//i, '').replace(/^@/, '');
   return `https://www.reddit.com/user/${encodeURIComponent(name)}/submitted/.rss?limit=25`;
 }
 
@@ -161,8 +161,8 @@ export function tumblrRssUrl(usernameOrUrl: string): string {
     const match = slug.match(/([^/.]+)\.tumblr\.com/);
     slug = match?.[1] ?? slug;
   }
-  slug = slug.replace(/^https?:\/\
-  
+  slug = slug.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
   if (!slug.includes('.')) {
     return `https://${encodeURIComponent(slug)}.tumblr.com/rss`;
   }

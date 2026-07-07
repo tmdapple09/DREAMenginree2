@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeImageBytes } from '@/engins/contentengin/photo/imageAnalyzer';
 
-export const runtime = 'nodejs';
 
 const MAX_REFERENCE_IMAGE_BYTES = 6 * 1024 * 1024;
 const PNG_MIME_TYPES = new Set(['image/png', 'application/octet-stream', '']);
