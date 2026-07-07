@@ -52,6 +52,23 @@ jobs:
             "__app_code_only__"
           ]);
 
+          const APP_ALLOWED_TOP_DIRS = new Set([
+            "app",
+            "components",
+            "engins",
+            "engine",
+            "dreamdmbar",
+            "dreamr",
+            "daydreams",
+            "hooks",
+            "coresurfaces",
+            "src",
+            "supabase",
+            "styles",
+            "types",
+            "utils"
+          ]);
+
           const APP_SKIP_DIRS = new Set([
             ".git",
             ".github",
@@ -73,10 +90,16 @@ jobs:
             "tests",
             "test",
             "__tests__",
+            "__mocks__",
             "e2e",
             "cypress",
             ".storybook",
             "storybook-static",
+            "scripts",
+            "docs",
+            "repo-visualizer",
+            "optimizer",
+            "public",
             "__strip_tools__",
             "__stripped_repo__",
             "__app_code_only__"
@@ -167,7 +190,9 @@ jobs:
             /(^|\/)index\.sass$/i,
 
             /(^|\/)manifest\..*$/i,
+            /(^|\/).*manifest.*\.[cm]?[jt]sx?$/i,
             /(^|\/).*\.manifest\..*$/i,
+
             /(^|\/)package\.json$/i,
             /(^|\/)package-lock\.json$/i,
             /(^|\/)pnpm-lock\.yaml$/i,
@@ -180,12 +205,19 @@ jobs:
             /(^|\/)postcss\.config\..*$/i,
             /(^|\/)tailwind\.config\..*$/i,
             /(^|\/)eslint\.config\..*$/i,
+            /(^|\/)vitest\.config\..*$/i,
+            /(^|\/)playwright\.config\..*$/i,
+            /(^|\/)jest\.config\..*$/i,
             /(^|\/)\.eslintrc.*$/i,
             /(^|\/)\.prettierrc.*$/i,
             /(^|\/)\.gitignore$/i,
             /(^|\/)\.gitattributes$/i,
             /(^|\/)\.npmrc$/i,
             /(^|\/)\.nvmrc$/i,
+
+            /(^|\/)next-env\.d\.ts$/i,
+            /(^|\/)fix-audit\.js$/i,
+            /(^|\/)fix-repo\.cjs$/i,
 
             /(^|\/).*\.map$/i,
             /(^|\/).*\.snap$/i,
@@ -393,14 +425,14 @@ jobs:
           function shouldRemoveFromAppCodeOnly(file) {
             const rel = toPosix(path.relative(APP_OUT, file));
             const ext = path.extname(file).toLowerCase();
+            const parts = rel.split("/");
+            const top = parts[0];
 
+            if (!APP_ALLOWED_TOP_DIRS.has(top)) return true;
             if (!APP_CODE_EXTS.has(ext)) return true;
             if (APP_EXCLUDE_FILE.some((pattern) => pattern.test(rel))) return true;
-
-            const parts = rel.split("/");
             if (parts.some((part) => APP_SKIP_DIRS.has(part))) return true;
             if (parts.some((part) => part.startsWith("."))) return true;
-            if (parts.some((part) => part === "__tests__")) return true;
 
             return false;
           }
