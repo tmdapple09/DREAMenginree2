@@ -1,144 +1,323 @@
-name: DREAMengin Exports JSON
+name: Build Repo Modelpack
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
-  actions: read
 
 jobs:
-  dreamengin-exports:
-    name: Generate Dreamengin.json
+  build-modelpack:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Generate DREAMengin export JSON files
-        shell: bash
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install modelpack tools
         run: |
-          set -euo pipefail
+          node -e "require('node:fs').mkdirSync('__modelpack_tools__',{recursive:true});require('node:fs').writeFileSync('__modelpack_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __modelpack_tools__ install esbuild@0.25.6 --no-package-lock --silent
 
-          mkdir -p artifact
-
+      - name: Build modelpack
+        run: |
           node <<'NODE'
-          const fs = require("fs");
-          const path = require("path");
-          const { builtinModules } = require("module");
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
 
           const ROOT = process.cwd();
+          const OUT_DIR = path.join(ROOT, "__modelpack__");
+          const OUT_FILE = path.join(OUT_DIR, "repo.modelpack.txt");
 
-          const FULL_OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.json");
-          const NAMES_OUT_FILE = path.join(ROOT, "artifact", "Dreamengin.names.json");
-
-          const SOURCE_EXTS = new Set([
-            ".ts",
-            ".tsx",
-            ".js",
-            ".jsx",
-            ".mjs",
-            ".cjs"
-          ]);
+          const toolRequire = createRequire(path.join(ROOT, "__modelpack_tools__", "package.json"));
+          const esbuild = toolRequire("esbuild");
 
           const SKIP_DIRS = new Set([
             ".git",
             ".github",
+            ".ci",
+            "ci",
+            ".circleci",
+            ".vscode",
+            ".idea",
             "node_modules",
             ".next",
+            "out",
             "dist",
             "build",
             "coverage",
             ".turbo",
-            ".vercel",
-            "public"
+            ".cache",
+            "playwright-report",
+            "test-results",
+            "tests",
+            "test",
+            "__tests__",
+            "__mocks__",
+            "e2e",
+            "cypress",
+            ".storybook",
+            "storybook-static",
+            "scripts",
+            "docs",
+            "repo-visualizer",
+            "optimizer",
+            "public",
+            "__modelpack__",
+            "__modelpack_tools__"
           ]);
 
-          const BLOCKED_STATIC_EXPORT_NAMES = new Set(`
-            abstract arguments as async await break byte case catch char class const continue debugger default delete do double else enum eval export extends false final finally float for from function get goto if implements import in instanceof int interface let long native new null of package private protected public return set short static super switch synchronized this throw throws transient true try typeof var void volatile while with yield
-            any asserts bigint boolean constructor declare global globalThis infer intrinsic is keyof module namespace never number object override readonly require satisfies string symbol type undefined unique unknown
-            Awaited Capitalize ConstructorParameters Exclude Extract InstanceType Lowercase NoInfer NonNullable Omit OmitThisParameter Parameters Partial Pick Readonly Record Required ReturnType ThisParameterType ThisType Uncapitalize Uppercase
-            AggregateError Array ArrayBuffer AsyncDisposableStack Atomics BigInt BigInt64Array BigUint64Array Boolean DataView Date DisposableStack Error EvalError FinalizationRegistry Float16Array Float32Array Float64Array Function Infinity Int8Array Int16Array Int32Array Intl Iterator JSON Map Math NaN Number Object Promise Proxy RangeError ReferenceError Reflect RegExp Set SharedArrayBuffer String SuppressedError Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError WeakMap WeakRef WeakSet
-            decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape
-            GET POST PUT PATCH DELETE HEAD OPTIONS
-            config metadata generateMetadata generateStaticParams viewport generateViewport runtime dynamic dynamicParams revalidate fetchCache preferredRegion maxDuration
-            Page Layout Template Error Loading NotFound
-            json text data request response params props children handler middleware
-            alert atob blur btoa cancelAnimationFrame cancelIdleCallback clearInterval clearTimeout close closed confirm console crypto customElements devicePixelRatio dispatchEvent document fetch find focus frameElement frames history indexedDB innerHeight innerWidth isSecureContext length localStorage location matchMedia name navigator open origin outerHeight outerWidth parent performance postMessage print prompt queueMicrotask requestAnimationFrame requestIdleCallback screen scroll scrollBy scrollTo self sessionStorage setInterval setTimeout speechSynthesis status stop structuredClone top window
-            __dirname __filename Buffer clearImmediate exports global process setImmediate
-            assert async_hooks buffer child_process cluster diagnostics_channel dns domain events fs http http2 https inspector net os path perf_hooks process punycode querystring readline repl stream string_decoder sys timers tls tty url util v8 vm wasi worker_threads zlib
-            node:assert node:async_hooks node:buffer node:child_process node:cluster node:crypto node:diagnostics_channel node:dns node:domain node:events node:fs node:http node:http2 node:https node:inspector node:module node:net node:os node:path node:perf_hooks node:process node:punycode node:querystring node:readline node:repl node:stream node:string_decoder node:sys node:timers node:tls node:tty node:url node:util node:v8 node:vm node:wasi node:worker_threads node:zlib
-            AbortController AbortSignal AbstractRange AnalyserNode Animation AnimationEffect AnimationEvent AnimationTimeline Attr Audio AudioBuffer AudioBufferSourceNode AudioContext AudioData AudioDecoder AudioDestinationNode AudioEncoder AudioListener AudioNode AudioParam AudioParamMap AudioProcessingEvent AudioScheduledSourceNode AudioWorklet AudioWorkletNode BarProp BaseAudioContext BeforeUnloadEvent BiquadFilterNode Blob BlobEvent BroadcastChannel ByteLengthQueuingStrategy Cache CacheStorage CanvasCaptureMediaStreamTrack CanvasGradient CanvasPattern CanvasRenderingContext2D ChannelMergerNode ChannelSplitterNode CharacterData Clipboard ClipboardEvent ClipboardItem CloseEvent Comment CompositionEvent CompressionStream ConstantSourceNode ContentVisibilityAutoStateChangeEvent ConvolverNode CookieStore CookieStoreManager CountQueuingStrategy Credential CredentialsContainer Crypto CryptoKey CustomElementRegistry CustomEvent DataTransfer DataTransferItem DataTransferItemList DecompressionStream DelayNode DeviceMotionEvent DeviceOrientationEvent Document DocumentFragment DocumentTimeline DocumentType DOMException DOMImplementation DOMMatrix DOMMatrixReadOnly DOMParser DOMPoint DOMPointReadOnly DOMQuad DOMRect DOMRectReadOnly DOMStringList DOMStringMap DragEvent DynamicsCompressorNode Element ElementInternals EncodedAudioChunk EncodedVideoChunk ErrorEvent Event EventCounts EventSource EventTarget External File FileList FileReader FileSystemDirectoryHandle FileSystemFileHandle FileSystemHandle FocusEvent FontFace FontFaceSet FontFaceSetLoadEvent FormData FormDataEvent GainNode Gamepad GamepadButton GamepadEvent GPU GPUAdapter GPUAdapterInfo GPUBindGroup GPUBindGroupLayout GPUBuffer GPUCanvasContext GPUCommandBuffer GPUCommandEncoder GPUCompilationInfo GPUCompilationMessage GPUComputePassEncoder GPUComputePipeline GPUDevice GPUDeviceLostInfo GPUError GPUExternalTexture GPUInternalError GPUOutOfMemoryError GPUPipelineError GPUPipelineLayout GPUQuerySet GPUQueue GPURenderBundle GPURenderBundleEncoder GPURenderPassEncoder GPURenderPipeline GPUSampler GPUShaderModule GPUSupportedFeatures GPUSupportedLimits GPUTexture GPUTextureView GPUUncapturedErrorEvent GPUValidationError HashChangeEvent Headers Highlight HighlightRegistry History HTMLAllCollection HTMLAnchorElement HTMLAreaElement HTMLAudioElement HTMLBaseElement HTMLBodyElement HTMLBRElement HTMLButtonElement HTMLCanvasElement HTMLCollection HTMLDataElement HTMLDataListElement HTMLDetailsElement HTMLDialogElement HTMLDivElement HTMLDListElement HTMLDocument HTMLElement HTMLEmbedElement HTMLFieldSetElement HTMLFontElement HTMLFormControlsCollection HTMLFormElement HTMLFrameElement HTMLFrameSetElement HTMLHeadElement HTMLHeadingElement HTMLHRElement HTMLHtmlElement HTMLIFrameElement HTMLImageElement HTMLInputElement HTMLLabelElement HTMLLegendElement HTMLLIElement HTMLLinkElement HTMLMapElement HTMLMarqueeElement HTMLMediaElement HTMLMenuElement HTMLMetaElement HTMLMeterElement HTMLModElement HTMLObjectElement HTMLOListElement HTMLOptGroupElement HTMLOptionElement HTMLOptionsCollection HTMLOutputElement HTMLParagraphElement HTMLParamElement HTMLPictureElement HTMLPreElement HTMLProgressElement HTMLQuoteElement HTMLScriptElement HTMLSelectElement HTMLSlotElement HTMLSourceElement HTMLSpanElement HTMLStyleElement HTMLTableCaptionElement HTMLTableCellElement HTMLTableColElement HTMLTableElement HTMLTableRowElement HTMLTableSectionElement HTMLTemplateElement HTMLTextAreaElement HTMLTimeElement HTMLTitleElement HTMLTrackElement HTMLUListElement HTMLUnknownElement HTMLVideoElement IDBCursor IDBCursorWithValue IDBDatabase IDBFactory IDBIndex IDBKeyRange IDBObjectStore IDBOpenDBRequest IDBRequest IDBTransaction IDBVersionChangeEvent IdleDeadline IIRFilterNode Image ImageBitmap ImageBitmapRenderingContext ImageCapture ImageData InputDeviceInfo InputEvent IntersectionObserver IntersectionObserverEntry KeyboardEvent KeyframeEffect LargestContentfulPaint LayoutShift Location Lock LockManager MediaCapabilities MediaDeviceInfo MediaDevices MediaElementAudioSourceNode MediaEncryptedEvent MediaError MediaKeyMessageEvent MediaKeys MediaKeySession MediaKeyStatusMap MediaKeySystemAccess MediaList MediaMetadata MediaQueryList MediaQueryListEvent MediaRecorder MediaSession MediaSource MediaSourceHandle MediaStream MediaStreamAudioDestinationNode MediaStreamAudioSourceNode MediaStreamEvent MediaStreamTrack MediaStreamTrackAudioSourceNode MediaStreamTrackEvent MessageChannel MessageEvent MessagePort MimeType MimeTypeArray MouseEvent MutationObserver MutationRecord NamedNodeMap Navigation NavigationCurrentEntryChangeEvent NavigationDestination NavigationHistoryEntry NavigationPreloadManager NavigationTransition Navigator Node NodeFilter NodeIterator NodeList Notification OfflineAudioCompletionEvent OfflineAudioContext OffscreenCanvas OffscreenCanvasRenderingContext2D Option OscillatorNode OverconstrainedError PageTransitionEvent PannerNode Path2D PaymentAddress PaymentMethodChangeEvent PaymentRequest PaymentRequestUpdateEvent PaymentResponse Performance PerformanceEntry PerformanceEventTiming PerformanceLongTaskTiming PerformanceMark PerformanceMeasure PerformanceNavigation PerformanceNavigationTiming PerformanceObserver PerformanceObserverEntryList PerformancePaintTiming PerformanceResourceTiming PerformanceServerTiming PerformanceTiming PeriodicWave PermissionStatus Permissions PictureInPictureEvent PictureInPictureWindow Plugin PluginArray PointerEvent PopStateEvent Presentation PresentationAvailability PresentationConnection PresentationConnectionAvailableEvent PresentationConnectionCloseEvent PresentationConnectionList PresentationReceiver ProcessingInstruction ProgressEvent PromiseRejectionEvent PublicKeyCredential PushManager PushSubscription PushSubscriptionOptions RadioNodeList Range ReadableByteStreamController ReadableStream ReadableStreamBYOBReader ReadableStreamBYOBRequest ReadableStreamDefaultController ReadableStreamDefaultReader RemotePlayback Report ReportingObserver Request ResizeObserver ResizeObserverEntry Response RTCCertificate RTCDataChannel RTCDataChannelEvent RTCDtlsTransport RTCIceCandidate RTCIceTransport RTCPeerConnection RTCPeerConnectionIceEvent RTCRtpReceiver RTCRtpSender RTCRtpTransceiver RTCSctpTransport RTCSessionDescription RTCStatsReport Screen ScreenOrientation ScriptProcessorNode SecurityPolicyViolationEvent Selection ServiceWorker ServiceWorkerContainer ServiceWorkerRegistration ShadowRoot SharedWorker SourceBuffer SourceBufferList SpeechRecognition SpeechSynthesis SpeechSynthesisErrorEvent SpeechSynthesisEvent SpeechSynthesisUtterance StaticRange StereoPannerNode Storage StorageEvent StorageManager StylePropertyMap StylePropertyMapReadOnly StyleSheet StyleSheetList SubmitEvent SubtleCrypto Text TextDecoder TextEncoder TextEvent TextMetrics TextTrack TextTrackCue TextTrackCueList TextTrackList TimeRanges ToggleEvent Touch TouchEvent TouchList TrackEvent TransformStream TransitionEvent TreeWalker TrustedHTML TrustedScript TrustedScriptURL TrustedTypePolicy TrustedTypePolicyFactory UIEvent URL URLPattern URLSearchParams ValidityState VideoColorSpace VideoDecoder VideoEncoder VideoFrame VisualViewport VTTCue VTTRegion WaveShaperNode WebAssembly WebGL2RenderingContext WebGLActiveInfo WebGLBuffer WebGLContextEvent WebGLFramebuffer WebGLProgram WebGLQuery WebGLRenderbuffer WebGLRenderingContext WebGLSampler WebGLShader WebGLShaderPrecisionFormat WebGLSync WebGLTexture WebGLTransformFeedback WebGLUniformLocation WebGLVertexArrayObject WebSocket WheelEvent Window Worker Worklet WritableStream XMLDocument XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload XMLSerializer XPathEvaluator XPathExpression XPathResult XSLTProcessor
-          `.trim().split(/\s+/).filter(Boolean));
+          const ALLOWED_TOP_DIRS = new Set([
+            "app",
+            "components",
+            "engins",
+            "engine",
+            "dreamdmbar",
+            "dreamr",
+            "daydreams",
+            "hooks",
+            "coresurfaces",
+            "src",
+            "supabase",
+            "styles",
+            "types",
+            "utils"
+          ]);
 
-          const BLOCKED_EXPORT_NAMES = new Set(BLOCKED_STATIC_EXPORT_NAMES);
+          const CODE_LOADERS = new Map([
+            [".js", "js"],
+            [".jsx", "jsx"],
+            [".mjs", "js"],
+            [".cjs", "js"],
+            [".ts", "ts"],
+            [".tsx", "tsx"],
+            [".mts", "ts"],
+            [".cts", "ts"]
+          ]);
 
-          for (const name of Object.getOwnPropertyNames(globalThis)) {
-            BLOCKED_EXPORT_NAMES.add(name);
+          const CODE_EXTS = new Set([
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".ts",
+            ".tsx",
+            ".mts",
+            ".cts",
+            ".css",
+            ".scss",
+            ".sass",
+            ".sql"
+          ]);
+
+          const EXCLUDE_FILE = [
+            /(^|\/).*\.md$/i,
+            /(^|\/).*\.mdx$/i,
+            /(^|\/).*\.txt$/i,
+
+            /(^|\/).*\.test\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.spec\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.stories\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.story\.[cm]?[jt]sx?$/i,
+
+            /(^|\/)index\.[cm]?[jt]sx?$/i,
+            /(^|\/)index\.css$/i,
+            /(^|\/)index\.scss$/i,
+            /(^|\/)index\.sass$/i,
+
+            /(^|\/)manifest\..*$/i,
+            /(^|\/).*manifest.*\.[cm]?[jt]sx?$/i,
+            /(^|\/).*\.manifest\..*$/i,
+
+            /(^|\/)package\.json$/i,
+            /(^|\/)package-lock\.json$/i,
+            /(^|\/)pnpm-lock\.yaml$/i,
+            /(^|\/)yarn\.lock$/i,
+            /(^|\/)bun\.lockb$/i,
+
+            /(^|\/)tsconfig.*\.json$/i,
+            /(^|\/)jsconfig.*\.json$/i,
+            /(^|\/)next\.config\..*$/i,
+            /(^|\/)postcss\.config\..*$/i,
+            /(^|\/)tailwind\.config\..*$/i,
+            /(^|\/)eslint\.config\..*$/i,
+            /(^|\/)vitest\.config\..*$/i,
+            /(^|\/)playwright\.config\..*$/i,
+            /(^|\/)jest\.config\..*$/i,
+
+            /(^|\/)next-env\.d\.ts$/i,
+            /(^|\/)fix-audit\.js$/i,
+            /(^|\/)fix-repo\.cjs$/i,
+
+            /(^|\/).*\.map$/i,
+            /(^|\/).*\.snap$/i,
+            /(^|\/).*\.log$/i,
+
+            /(^|\/).*\.png$/i,
+            /(^|\/).*\.jpg$/i,
+            /(^|\/).*\.jpeg$/i,
+            /(^|\/).*\.gif$/i,
+            /(^|\/).*\.svg$/i,
+            /(^|\/).*\.webp$/i,
+            /(^|\/).*\.ico$/i,
+            /(^|\/).*\.woff2?$/i,
+            /(^|\/).*\.ttf$/i,
+            /(^|\/).*\.otf$/i
+          ];
+
+          const IMPORT_FROM_RE = /import(?:\s+type)?(?:[\s\S]*?)\s+from\s+["']([^"']+)["']/g;
+          const SIDE_EFFECT_IMPORT_RE = /import\s+["']([^"']+)["']/g;
+          const DYNAMIC_IMPORT_RE = /import\s*\(\s*["']([^"']+)["']\s*\)/g;
+          const EXPORT_NAMED_RE = /export\s+(?:type\s+)?(?:const|let|var|function|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/g;
+          const EXPORT_DEFAULT_RE = /export\s+default(?:\s+function\s+([A-Za-z_$][\w$]*)|\s+class\s+([A-Za-z_$][\w$]*)|)/g;
+          const ROUTE_METHOD_RE = /export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b|export\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b/g;
+
+          const SIGNALS = {
+            NEXT: /from\s+['"]next\/|from\s+['"]next['"]|NextResponse|NextRequest/i,
+            REACT: /from\s+['"]react['"]|useState|useEffect|useMemo|useCallback|useRef/i,
+            SUPA: /supabase|serverClient|createClient/i,
+            SQLDB: /\bCREATE\s+TABLE\b|\bALTER\s+TABLE\b|\bCREATE\s+POLICY\b|\bINSERT\s+INTO\b|\bCREATE\s+FUNCTION\b/i,
+            AUTH: /\bauth\b|user_id|session|signIn|signOut/i,
+            FETCH: /\bfetch\(|axios|NextResponse\.json/i,
+            THREE_D: /@babylonjs|Scene|Vector3|Mesh/i,
+            CTX: /createContext|useContext|Provider/i,
+            FORM: /<form\b|<input\b|<textarea\b|<button\b|onSubmit|onClick/i,
+            STYLE: /className=|style=/i,
+            ENGINE: /runtime|engine|Engine|DreamSystem|DreamR/i,
+            MSG: /message|conversation|chat|dm|inbox/i,
+            MARKET: /stripe|checkout|ad|ads|marketplace|shop/i,
+            AI: /agent|AI|model|prompt|llm|openai/i
+          };
+
+          function toPosix(value) {
+            return value.split(path.sep).join("/");
           }
 
-          for (const name of builtinModules) {
-            BLOCKED_EXPORT_NAMES.add(name);
-            BLOCKED_EXPORT_NAMES.add(name.replace(/^node:/, ""));
-            BLOCKED_EXPORT_NAMES.add(`node:${name.replace(/^node:/, "")}`);
+          function extOf(file) {
+            const base = path.basename(file);
+            const index = base.lastIndexOf(".");
+            return index === -1 ? "" : base.slice(index).toLowerCase();
           }
 
-          function addTypeScriptLibNamesToBlockedSet() {
-            const tsLibDir = path.join(ROOT, "node_modules", "typescript", "lib");
+          function unique(values) {
+            const seen = new Set();
+            const out = [];
 
-            if (!fs.existsSync(tsLibDir)) {
-              return;
-            }
-
-            for (const entry of fs.readdirSync(tsLibDir, { withFileTypes: true })) {
-              if (!entry.isFile()) continue;
-              if (!/^lib\..*\.d\.ts$/.test(entry.name)) continue;
-
-              const text = fs.readFileSync(path.join(tsLibDir, entry.name), "utf8");
-
-              const patterns = [
-                /\bdeclare\s+(?:var|let|const|function|class|interface|namespace|module|type|enum)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g,
-                /\b(?:interface|class|type|enum)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g
-              ];
-
-              for (const pattern of patterns) {
-                let match;
-
-                while ((match = pattern.exec(text))) {
-                  BLOCKED_EXPORT_NAMES.add(match[1]);
-                }
+            for (const value of values) {
+              if (!seen.has(value)) {
+                seen.add(value);
+                out.push(value);
               }
             }
+
+            return out;
           }
 
-          addTypeScriptLibNamesToBlockedSet();
+          function readMatches(regex, text) {
+            regex.lastIndex = 0;
 
-          function normalize(value) {
-            return String(value || "").replace(/\\/g, "/");
+            const out = [];
+            let match;
+
+            while ((match = regex.exec(text))) {
+              const value = match.slice(1).find(Boolean);
+              if (value) out.push(value);
+            }
+
+            return out;
           }
 
-          function relativeFile(file) {
-            return normalize(path.relative(ROOT, file));
+          function importsFor(text) {
+            return unique([
+              ...readMatches(IMPORT_FROM_RE, text),
+              ...readMatches(SIDE_EFFECT_IMPORT_RE, text),
+              ...readMatches(DYNAMIC_IMPORT_RE, text)
+            ]);
           }
 
-          function shouldSkipFile(file) {
-            const rel = relativeFile(file);
+          function exportsFor(text) {
+            EXPORT_NAMED_RE.lastIndex = 0;
+            EXPORT_DEFAULT_RE.lastIndex = 0;
 
-            if (rel.startsWith("tests/")) return true;
-            if (rel.startsWith("test/")) return true;
-            if (rel.startsWith("scripts/")) return true;
-            if (rel.includes("/__tests__/")) return true;
-            if (rel.includes("/__mocks__/")) return true;
-            if (rel.endsWith(".test.ts")) return true;
-            if (rel.endsWith(".test.tsx")) return true;
-            if (rel.endsWith(".spec.ts")) return true;
-            if (rel.endsWith(".spec.tsx")) return true;
+            const out = [];
+            let match;
 
-            return false;
+            while ((match = EXPORT_NAMED_RE.exec(text))) {
+              out.push(match[1]);
+            }
+
+            while ((match = EXPORT_DEFAULT_RE.exec(text))) {
+              out.push(match[1] || match[2] || "default");
+            }
+
+            return unique(out);
+          }
+
+          function methodsFor(text) {
+            ROUTE_METHOD_RE.lastIndex = 0;
+
+            const out = [];
+            let match;
+
+            while ((match = ROUTE_METHOD_RE.exec(text))) {
+              out.push(match[1] || match[2]);
+            }
+
+            return unique(out).sort();
+          }
+
+          function signalsFor(text) {
+            return Object.entries(SIGNALS)
+              .filter(([, regex]) => regex.test(text))
+              .map(([name]) => name);
+          }
+
+          function lineCount(text) {
+            if (text === "") return 0;
+            return text.split(/\r\n|\r|\n/).length;
+          }
+
+          function roleFor(rel) {
+            const file = path.posix.basename(rel);
+            const ext = extOf(rel);
+
+            if (rel.startsWith("app/") && file === "page.tsx") return "PAGE";
+            if (rel.startsWith("app/") && ["layout.tsx", "template.tsx", "default.tsx"].includes(file)) return "LAYOUT";
+            if (rel.startsWith("app/") && file === "loading.tsx") return "LOADING";
+            if (rel.startsWith("app/") && ["error.tsx", "global-error.tsx"].includes(file)) return "ERROR";
+            if (rel.startsWith("app/") && file === "not-found.tsx") return "NOT_FOUND";
+            if (rel.startsWith("app/api/") && ["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "API_ROUTE";
+            if (["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "ROUTE_HANDLER";
+            if (ext === ".sql") return "SQL";
+            if ([".css", ".scss", ".sass"].includes(ext)) return "STYLE";
+            if (file.endsWith(".d.ts")) return "TYPE_DECLARATION";
+            if ([".tsx", ".jsx"].includes(ext)) return "COMPONENT_OR_TSX";
+            if (rel.includes("/hooks/") || file.startsWith("use")) return "HOOK_OR_REACT_LOGIC";
+            if (rel.includes("/types/") || rel.startsWith("types/")) return "TYPE_OR_MODEL";
+
+            return "LOGIC";
+          }
+
+          function shouldIncludeFile(full) {
+            const rel = toPosix(path.relative(ROOT, full));
+            const parts = rel.split("/");
+            const top = parts[0];
+            const ext = extOf(rel);
+
+            if (!ALLOWED_TOP_DIRS.has(top)) return false;
+            if (!CODE_EXTS.has(ext)) return false;
+            if (parts.some((part) => SKIP_DIRS.has(part))) return false;
+            if (parts.some((part) => part.startsWith("."))) return false;
+            if (EXCLUDE_FILE.some((pattern) => pattern.test(rel))) return false;
+
+            return true;
           }
 
           function walk(dir, out = []) {
@@ -146,288 +325,119 @@ jobs:
               const full = path.join(dir, entry.name);
 
               if (entry.isDirectory()) {
-                if (!SKIP_DIRS.has(entry.name)) {
-                  walk(full, out);
-                }
-                continue;
-              }
-
-              if (SOURCE_EXTS.has(path.extname(entry.name)) && !shouldSkipFile(full)) {
-                out.push(full);
+                if (SKIP_DIRS.has(entry.name)) continue;
+                walk(full, out);
+              } else if (entry.isFile()) {
+                if (shouldIncludeFile(full)) out.push(full);
               }
             }
 
             return out;
           }
 
-          function lineNumberAt(text, index) {
-            return String(text || "").slice(0, index).split(/\r?\n/).length;
+          function stripSlashComments(text) {
+            return text
+              .split(/\r?\n/)
+              .filter((line) => !line.trim().startsWith("//"))
+              .join("\n");
           }
 
-          function splitTopLevelComma(value) {
-            const input = String(value || "");
-            const parts = [];
-            let current = "";
-            let depth = 0;
-            let quote = null;
-
-            for (let i = 0; i < input.length; i += 1) {
-              const char = input[i];
-              const next = input[i + 1];
-
-              if (quote) {
-                current += char;
-
-                if (char === "\\" && next) {
-                  current += next;
-                  i += 1;
-                  continue;
-                }
-
-                if (char === quote) {
-                  quote = null;
-                }
-
-                continue;
-              }
-
-              if (char === "'" || char === '"' || char === "`") {
-                quote = char;
-                current += char;
-                continue;
-              }
-
-              if (char === "{" || char === "(" || char === "[") {
-                depth += 1;
-              }
-
-              if (char === "}" || char === ")" || char === "]") {
-                depth = Math.max(0, depth - 1);
-              }
-
-              if (char === "," && depth === 0) {
-                if (current.trim()) {
-                  parts.push(current.trim());
-                }
-
-                current = "";
-                continue;
-              }
-
-              current += char;
-            }
-
-            if (current.trim()) {
-              parts.push(current.trim());
-            }
-
-            return parts;
+          function stripBlockComments(text) {
+            return text.replace(/\/\*[\s\S]*?\*\//g, "");
           }
 
-          function cleanExportName(value) {
-            return String(value || "")
-              .replace(/^type\s+/, "")
+          function compactDts(text) {
+            return stripSlashComments(stripBlockComments(text))
+              .replace(/\s+/g, " ")
+              .replace(/\s*([{}()[\];,:<>|&=])\s*/g, "$1")
               .trim();
           }
 
-          function isValidExportName(name) {
-            return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(String(name || ""));
+          function minifyCode(rel, text) {
+            const ext = extOf(rel);
+
+            if (rel.endsWith(".d.ts")) {
+              return compactDts(text);
+            }
+
+            if (CODE_LOADERS.has(ext)) {
+              return esbuild.transformSync(text, {
+                loader: CODE_LOADERS.get(ext),
+                minify: true,
+                legalComments: "none",
+                jsx: "preserve",
+                target: "es2020",
+                sourcefile: path.posix.basename(rel)
+              }).code.trim();
+            }
+
+            if ([".css", ".scss", ".sass"].includes(ext)) {
+              return esbuild.transformSync(text, {
+                loader: "css",
+                minify: true,
+                legalComments: "none"
+              }).code.trim();
+            }
+
+            if (ext === ".sql") {
+              return stripBlockComments(text)
+                .split(/\r?\n/)
+                .map((line) => line.replace(/--.*$/g, "").trim())
+                .filter(Boolean)
+                .join(" ");
+            }
+
+            return text.trim();
           }
 
-          function isBlockedExportName(name) {
-            return BLOCKED_EXPORT_NAMES.has(String(name || ""));
+          function sha16(value) {
+            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
           }
 
-          function isTooShortExportName(name) {
-            return Array.from(String(name || "")).length < 3;
+          function byteLength(value) {
+            return Buffer.byteLength(value, "utf8");
           }
 
-          function parseNamedExportBlock(block) {
-            return splitTopLevelComma(block)
-              .map((part) => cleanExportName(part))
-              .filter(Boolean)
-              .map((part) => {
-                const pieces = part.split(/\s+as\s+/);
-                return (pieces[1] || pieces[0] || "").trim();
-              })
-              .filter(Boolean)
-              .filter((name) => isValidExportName(name))
-              .filter((name) => !isBlockedExportName(name))
-              .filter((name) => !isTooShortExportName(name));
-          }
+          fs.rmSync(OUT_DIR, { recursive: true, force: true });
+          fs.mkdirSync(OUT_DIR, { recursive: true });
 
-          function addExport(exports, name, file, line) {
-            if (!name) return;
-            if (!isValidExportName(name)) return;
-            if (isBlockedExportName(name)) return;
-            if (isTooShortExportName(name)) return;
+          const files = walk(ROOT).sort((a, b) => {
+            const left = toPosix(path.relative(ROOT, a));
+            const right = toPosix(path.relative(ROOT, b));
+            return left.localeCompare(right);
+          });
 
-            exports.push({
-              export: name,
-              file,
-              line
-            });
-          }
-
-          function parseExports(filePath) {
-            const text = fs.readFileSync(filePath, "utf8");
-            const file = relativeFile(filePath);
-            const exports = [];
-            let match;
-
-            const exportNamespaceRegex =
-              /^\s*export\s+\*\s+as\s+([A-Za-z_$][A-Za-z0-9_$]*)\s+from\s+["']([^"']+)["']\s*;?/gm;
-
-            while ((match = exportNamespaceRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const namedExportRegex =
-              /^\s*export\s+(type\s+)?\{([\s\S]*?)\}\s*(?:from\s+["']([^"']+)["'])?\s*;?/gm;
-
-            while ((match = namedExportRegex.exec(text))) {
-              for (const name of parseNamedExportBlock(match[2])) {
-                addExport(exports, name, file, lineNumberAt(text, match.index));
-              }
-            }
-
-            const functionRegex =
-              /^\s*export\s+(?:declare\s+)?(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(/gm;
-
-            while ((match = functionRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const classRegex =
-              /^\s*export\s+(?:declare\s+)?(?:abstract\s+)?class\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
-
-            while ((match = classRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const typeRegex =
-              /^\s*export\s+type\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
-
-            while ((match = typeRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const interfaceRegex =
-              /^\s*export\s+(?:declare\s+)?interface\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
-
-            while ((match = interfaceRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const enumRegex =
-              /^\s*export\s+(?:declare\s+)?(?:const\s+)?enum\s+([A-Za-z_$][A-Za-z0-9_$]*)\b/gm;
-
-            while ((match = enumRegex.exec(text))) {
-              addExport(exports, match[1], file, lineNumberAt(text, match.index));
-            }
-
-            const variableRegex =
-              /^\s*export\s+(?:declare\s+)?(?:const|let|var)\s+([\s\S]*?)(?:;|\n)/gm;
-
-            while ((match = variableRegex.exec(text))) {
-              const block = match[1];
-
-              for (const part of splitTopLevelComma(block)) {
-                const nameMatch = part.match(/^\s*([A-Za-z_$][A-Za-z0-9_$]*)\b/);
-
-                if (!nameMatch) continue;
-
-                addExport(exports, nameMatch[1], file, lineNumberAt(text, match.index));
-              }
-            }
-
-            return exports;
-          }
-
-          function uniqueLocations(locations) {
-            const seen = new Set();
-            const out = [];
-
-            for (const location of locations) {
-              const key = `${location.file}:${location.line}`;
-
-              if (seen.has(key)) continue;
-
-              seen.add(key);
-
-              out.push({
-                file: location.file,
-                line: location.line
-              });
-            }
-
-            return out.sort((a, b) =>
-              a.file.localeCompare(b.file) || a.line - b.line
-            );
-          }
-
-          function exportNameOrder(a, b) {
-            return (
-              Array.from(a).length - Array.from(b).length ||
-              a.toLowerCase().localeCompare(b.toLowerCase()) ||
-              a.localeCompare(b)
-            );
-          }
-
-          const files = walk(ROOT).sort();
-          const found = [];
+          const rows = [];
 
           for (const file of files) {
-            found.push(...parseExports(file));
+            const rel = toPosix(path.relative(ROOT, file));
+            const raw = fs.readFileSync(file, "utf8");
+            const source = minifyCode(rel, raw);
+
+            rows.push([
+              rel,
+              roleFor(rel),
+              byteLength(source),
+              lineCount(source),
+              sha16(source),
+              importsFor(source),
+              exportsFor(source),
+              methodsFor(source),
+              signalsFor(source),
+              source
+            ]);
           }
 
-          const grouped = new Map();
-
-          for (const item of found) {
-            if (!grouped.has(item.export)) {
-              grouped.set(item.export, []);
-            }
-
-            grouped.get(item.export).push({
-              file: item.file,
-              line: item.line
-            });
-          }
-
-          const fullOutput = {};
-          const namesOutput = {};
-          let index = 1;
-
-          for (const [exportName, locations] of [...grouped.entries()].sort(([a], [b]) => exportNameOrder(a, b))) {
-            const code = `D${index}`;
-
-            fullOutput[code] = {
-              export: exportName,
-              locations: uniqueLocations(locations)
-            };
-
-            namesOutput[code] = exportName;
-
-            index += 1;
-          }
-
-          fs.writeFileSync(FULL_OUT_FILE, JSON.stringify(fullOutput, null, 2));
-          fs.writeFileSync(NAMES_OUT_FILE, JSON.stringify(namesOutput, null, 2));
-
-          console.log(`Wrote ${FULL_OUT_FILE}`);
-          console.log(`Wrote ${NAMES_OUT_FILE}`);
+          fs.writeFileSync(
+            OUT_FILE,
+            rows.map((row) => JSON.stringify(row)).join("\n") + "\n"
+          );
           NODE
 
-      - name: Upload Dreamengin.json
+      - name: Upload modelpack
         uses: actions/upload-artifact@v6
         with:
-          name: Dreamengin-json
-          path: artifact/Dreamengin.json
-          if-no-files-found: error
-
-      - name: Upload Dreamengin.names.json
-        uses: actions/upload-artifact@v6
-        with:
-          name: Dreamengin-names-json
-          path: artifact/Dreamengin.names.json
-          if-no-files-found: error
+          name: repo-modelpack
+          path: __modelpack__/repo.modelpack.txt
+          include-hidden-files: false
+          compression-level: 9
