@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-02T17:09:51.097Z
+Generated: 2026-07-07T21:19:12.743Z
 
 Model: capability nodes + files as edges.
 
@@ -15,10 +15,10 @@ Marker guide:
 - `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.
 - `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.
 
-- Capability nodes: 11581
-- File edges: 1593
+- Capability nodes: 11590
+- File edges: 1595
 - Routes: 113
-- Files analysed: 1593
+- Files analysed: 1595
 - Unresolved internal imports: 138 specifiers across 33 files
 
 ---
@@ -97,13 +97,15 @@ Marker guide:
 | `components/home/dream.DaydreamPulseStrip.tsx` | `next/navigation` | `dream.DaydreamPulseStrip.tsx`, `(default)` |
 | `components/home/dream.FlagshipEnginesStrip.tsx` | `getEnginById`, `lucide-react`, `next/navigation` | `dream.FlagshipEnginesStrip.tsx`, `(default)` |
 | `components/home/dream.NeuralSeamCanvas.tsx` | `DIVIDER_H`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles`, `tickParticles`, `SeamParticle` | `dream.NeuralSeamCanvas.tsx`, `(default)` |
+| `components/home/dream.ZoomablePane.tsx` | `react`, `react` | `dream.ZoomablePane.tsx`, `(default)`, `ZoomablePaneProps` |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | `(default)`, `(default)`, `SystemMenuAction`, `useDreamSystem`, `runHomeAction`, `isPublicSurfacePath` | `dream.bar.GlobalDreamBar.tsx`, `(default)` |
-| `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)`, `useDualRuntime`, `(default)`, `(default)`, `useDreamLayout`, `useDreamSystem` | `dream.bar.PersistentDreamBar.tsx`, `(default)`, `DreamDMContainer` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)`, `(default)`, `useDualRuntime`, `(default)`, `(default)`, `(default)` | `dream.bar.PersistentDreamBar.tsx`, `(default)`, `DreamDMContainer` |
 | `components/home/dream.widget.DreamWidget.tsx` | `cn`, `framer-motion`, `react` | `dream.widget.DreamWidget.tsx`, `(default)` |
 | `components/runtime/dream.DualRuntimeContainer.tsx` | `DualRuntimeState`, `RuntimeWorld`, `DEFAULT_DUAL_RUNTIME`, `isHomeActiveTop`, `makeDreamSpaceActiveSurface`, `makeHomeActiveTop` | `dream.DualRuntimeContainer.tsx`, `useDualRuntime`, `(default)`, `useDualRuntime` |
 | `components/runtime/dream.RuntimeView.tsx` | `(default)`, `(default)`, `(default)`, `(default)`, `getEnginByName`, `RuntimeRegion` | `dream.RuntimeView.tsx`, `(default)` |
 | `components/runtime/dream.shell.RuntimeShell.tsx` | `isCompactRuntimeViewport`, `readInteractiveViewportScale`, `readInteractiveViewportWidth`, `ApperceptiveContext`, `react`, `react` | `dream.shell.RuntimeShell.tsx`, `(default)` |
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
+| `dreamdmbar/dream.PhaseTrail.tsx` | `react`, `react` | `dream.PhaseTrail.tsx`, `(default)`, `PhaseTrailProps` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
 | `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
@@ -154,8 +156,6 @@ Marker guide:
 | `engine/runtime/useDragSurface.ts` | `DreamDrop`, `DreamDropType`, `coerceDataTransfer`, `dropTargetRegistry`, `RuntimeId`, `react` | `useDragSurface`, `UseDragSurfaceOptions`, `UseDragSurfaceResult`, `useDragSurface` |
 | `engine/runtime/useDualRuntime.ts` | `react`, `bridge`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel` | `useDualRuntime`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState` |
 | `engine/runtime/useDualRuntimePersistence.ts` | `react`, `DEFAULT_DUAL_RUNTIME`, `makeHomeActiveTop`, `setRuntimeWorld`, `swapDominantRuntime`, `DualRuntimeState` | `useDualRuntimePersistence`, `UseDualRuntimePersistenceReturn`, `useDualRuntimePersistence` |
-| `engine/runtime/useEnginBridge.ts` | `bridge`, `react` | `useBrandingEnginBridge`, `useCodeEnginBridge`, `useContentEnginBridge`, `useGameEnginBridge`, `useLabEnginBridge`, `useStarMakerEnginBridge` |
-| `engine/runtime/useEnginCoopSync.ts` | `EnginName`, `useSharedEnginChannel`, `RuntimeId`, `react` | `useEnginCoopSync`, `CoopEvent`, `UseEnginCoopSyncOptions`, `UseEnginCoopSyncResult`, `useEnginCoopSync` |
 
 _Trimmed to first 80 file edges for this feature._
 
@@ -218,6 +218,7 @@ _Trimmed to first 80 file edges for this feature._
 - `components/home/dream.DaydreamPulseStrip.tsx`
 - `components/home/dream.FlagshipEnginesStrip.tsx`
 - `components/home/dream.NeuralSeamCanvas.tsx`
+- `components/home/dream.ZoomablePane.tsx`
 - `components/home/dream.bar.GlobalDreamBar.tsx`
 - `components/home/dream.bar.PersistentDreamBar.tsx`
 - `components/home/dream.widget.DreamWidget.tsx`
@@ -231,6 +232,7 @@ _Trimmed to first 80 file edges for this feature._
 ### `dreamdmbar/`
 
 - `dreamdmbar/dream.GlowingLight.tsx`
+- `dreamdmbar/dream.PhaseTrail.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 
 ### `dreamdmbar/hooks/`
@@ -2132,6 +2134,7 @@ _No type files for this feature._
 | `app/messages/page.tsx` | `(default)`, `createServerClient`, `safeGetUser`, `next/navigation`, `next/server` | `/messages`, `page.tsx`, `(default)` |
 | `components/messaging/dream.BoardComposer.tsx` | `lucide-react`, `react` | `dream.BoardComposer.tsx`, `(default)` |
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
+| `dreamdmbar/dream.PhaseTrail.tsx` | `react`, `react` | `dream.PhaseTrail.tsx`, `(default)`, `PhaseTrailProps` |
 | `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
 | `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
@@ -2225,6 +2228,7 @@ _No type files for this feature._
 ### `dreamdmbar/`
 
 - `dreamdmbar/dream.GlowingLight.tsx`
+- `dreamdmbar/dream.PhaseTrail.tsx`
 - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
 
 ### `dreamdmbar/hooks/`
@@ -3702,6 +3706,7 @@ _No style files for this feature._
 - `dream.panel.StudioPanel.tsx` - `components/engines/music/panels/dream.panel.StudioPanel.tsx`
 - `dream.panel.WidgetsPanel.tsx` - `components/panels/dream.panel.WidgetsPanel.tsx`
 - `dream.PasswordField.tsx` - `components/auth/dream.PasswordField.tsx`
+- `dream.PhaseTrail.tsx` - `dreamdmbar/dream.PhaseTrail.tsx`
 - `dream.PhysicsLab.tsx` - `components/dream.PhysicsLab.tsx`
 - `dream.PixiPhysicsLayer.tsx` - `components/spatial/dream.PixiPhysicsLayer.tsx`
 - `dream.PlacementMode.tsx` - `components/connectors/dream.PlacementMode.tsx`
@@ -3781,6 +3786,7 @@ _No style files for this feature._
 - `dream.widget.WidgetCard.tsx` - `components/widgets/dream.widget.WidgetCard.tsx`
 - `dream.widget.WidgetPlaceholder.tsx` - `components/widgets/dream.widget.WidgetPlaceholder.tsx`
 - `dream.window.JourneyDreamWindow.tsx` - `components/dreams/dream.window.JourneyDreamWindow.tsx`
+- `dream.ZoomablePane.tsx` - `components/home/dream.ZoomablePane.tsx`
 - `DreamBarDataBridge.tsx` - `app/dreamdmbar/_components/DreamBarDataBridge.tsx`
 - `DreamRegistry.tsx` - `engine/dreams/DreamRegistry.tsx`
 - `dreamrfeed.tsx` - `dreamr/components/dreamrfeed.tsx`
@@ -3803,9 +3809,7 @@ _No style files for this feature._
 - `engin.ContentEngin.tsx` - `engins/engin.ContentEngin.tsx`
 - `engin.GameEngin.tsx` - `engins/engin.GameEngin.tsx`
 - `engin.LabEngin.tsx` - `engins/engin.LabEngin.tsx`
-- `engin.StarMakerEngin.tsx` - `engins/engin.StarMakerEngin.tsx`
-- `error.tsx` - `app/error.tsx`
-- _146 more omitted from this section_
+- _148 more omitted from this section_
 
 ## export
 
@@ -4109,7 +4113,7 @@ _No style files for this feature._
 - `(default)` - `components/forge/dream.widget.ForgeMomentumWidget.tsx`
 - `(default)` - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `(default)` - `components/gameengin/dream.CrashReportModal.tsx`
-- _6585 more omitted from this section_
+- _6590 more omitted from this section_
 
 ## external
 
@@ -4672,6 +4676,7 @@ _No style files for this feature._
 - `(default)` - `components/home/dream.ActiveModuleSurface.tsx`
 - `(default)` - `components/home/dream.DaydreamPulseStrip.tsx`
 - `(default)` - `components/home/dream.FlagshipEnginesStrip.tsx`
+- `(default)` - `dreamdmbar/dream.GlowingLight.tsx`
 - `(default)` - `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx`
 - `(default)` - `components/daydream/dream.JourneyTrail.tsx`
 - `(default)` - `dreamr/components/dreamrfeed.tsx`
@@ -4766,8 +4771,10 @@ _No style files for this feature._
 - `(default)` - `components/games/dream.hud.MobileGameHUD.module.css`
 - `(default)` - `components/menus/dream.menu.DualBottomMenu.tsx`
 - `(default)` - `components/home/dream.NeuralSeamCanvas.tsx`
+- `(default)` - `components/home/dream.ZoomablePane.tsx`
 - `(default)` - `components/runtime/dream.RuntimeView.tsx`
 - `(default)` - `dreamdmbar/dreamsurface.dreamdmbar.tsx`
+- `(default)` - `dreamdmbar/dream.PhaseTrail.tsx`
 - `(default)` - `components/menus/dream.panel.MenuPanel.tsx`
 - `(default)` - `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`
 - `(default)` - `components/dream.CommandPalette.tsx`
@@ -4791,7 +4798,6 @@ _No style files for this feature._
 - `(default)` - `components/widgets/dream.widget.WidgetCard.tsx`
 - `(default)` - `components/dreams/dreamsurface.shell.tsx`
 - `(default)` - `engins/engin.StarMakerEngin.tsx`
-- `(default)` - `dreamdmbar/dream.GlowingLight.tsx`
 - `(default)` - `components/dreamr/dream.panel.DreamRChannelPanel.tsx`
 - `(default)` - `components/dreamr/dream.panel.DreamRCreatorPanel.tsx`
 - `(default)` - `engine/state/base.json`
@@ -4930,9 +4936,7 @@ _No style files for this feature._
 - `*` - `engine/navigation/physics.ts`
 - `*` - `engine/navigation/anchorField.ts`
 - `*` - `engine/observability/collector.ts`
-- `*` - `engine/observability/correlator.ts`
-- `*` - `engine/observability/rootCauseAnalyzer.ts`
-- _3203 more omitted from this section_
+- _3205 more omitted from this section_
 
 ## route
 
@@ -5562,11 +5566,12 @@ _No style files for this feature._
 | `components/games/madmaxi/vfx.ts` | `@babylonjs/core` | `VfxKit`, `VfxTier`, `createMadmaxiVfx` |
 | `components/home/dream.ActiveModuleSurface.tsx` | `loadActiveModules`, `removeActiveModule`, `restoreActiveModulesFromOfflineCache`, `saveActiveModule`, `saveActiveModulesForRegion`, `transferActiveModuleRegion`, `loadArtifacts`, `saveArtifact` | `dream.ActiveModuleSurface.tsx`, `(default)` |
 | `components/home/dream.bar.GlobalDreamBar.tsx` | `(default)`, `(default)`, `SystemMenuAction`, `useDreamSystem`, `runHomeAction`, `isPublicSurfacePath`, `next/navigation`, `react` | `dream.bar.GlobalDreamBar.tsx`, `(default)` |
-| `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)`, `useDualRuntime`, `(default)`, `(default)`, `useDreamLayout`, `useDreamSystem`, `DIVIDER_H`, `useOS` | `dream.bar.PersistentDreamBar.tsx`, `(default)`, `DreamDMContainer` |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | `(default)`, `(default)`, `useDualRuntime`, `(default)`, `(default)`, `(default)`, `(default)`, `useDreamLayout` | `dream.bar.PersistentDreamBar.tsx`, `(default)`, `DreamDMContainer` |
 | `components/home/dream.DaydreamPulseStrip.tsx` | `next/navigation` | `dream.DaydreamPulseStrip.tsx`, `(default)` |
 | `components/home/dream.FlagshipEnginesStrip.tsx` | `getEnginById`, `lucide-react`, `next/navigation` | `dream.FlagshipEnginesStrip.tsx`, `(default)` |
 | `components/home/dream.NeuralSeamCanvas.tsx` | `DIVIDER_H`, `createIdleParticle`, `createSeamParticle`, `evictDeadParticles`, `tickParticles`, `SeamParticle`, `bridge`, `react` | `dream.NeuralSeamCanvas.tsx`, `(default)` |
 | `components/home/dream.widget.DreamWidget.tsx` | `cn`, `framer-motion`, `react` | `dream.widget.DreamWidget.tsx`, `(default)` |
+| `components/home/dream.ZoomablePane.tsx` | `react`, `react` | `dream.ZoomablePane.tsx`, `(default)`, `ZoomablePaneProps` |
 | `components/icons/sheet.ts` | - | `COLS`, `FRAME_H`, `FRAME_W`, `ICONS`, `ICON_ENTRIES`, `IconName`, `ROWS`, `SHEET_H` |
 | `components/idari/dream.PlatformHealth.tsx` | `GetPlatformMetricsResponse`, `PLATFORM_HEALTH_TARGETS`, `react` | `dream.PlatformHealth.tsx`, `PlatformHealth` |
 | `components/landing/dream.LandingNav.tsx` | `next/link` | `dream.LandingNav.tsx`, `(default)` |
@@ -5702,7 +5707,8 @@ _No style files for this feature._
 | `dr-eams/search/drEamsSearch.ts` | - | `DrEamsParsedReply`, `DrEamsRequestBody`, `NAV_SUGGESTIONS`, `NavSuggestion`, `buildDrEamsRequest`, `buildDreamDMUrl`, `matchNavSuggestions`, `parseDrEamsReply` |
 | `dr-eams/tools.ts` | - | `CurationAction`, `CurationRefreshSliceInput`, `DeviceMode`, `DrEamsActionName`, `DrEamsTools`, `NavAction`, `NavOpenPublicProfileInput`, `OnboardingAction` |
 | `dreamdmbar/dream.GlowingLight.tsx` | `react` | `dream.GlowingLight.tsx`, `(default)`, `GlowingLightProps` |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)`, `calculatePointerVelocity`, `computeTypingRhythm` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
+| `dreamdmbar/dream.PhaseTrail.tsx` | `react`, `react` | `dream.PhaseTrail.tsx`, `(default)`, `PhaseTrailProps` |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | `lucide-react`, `next/image`, `react`, `react`, `(default)`, `(default)`, `(default)`, `calculatePointerVelocity` | `dreamsurface.dreamdmbar.tsx`, `(default)`, `BAR_H`, `NAV_H` |
 | `dreamdmbar/hooks/useDreamBarContext.ts` | `next/navigation`, `react`, `BarIntentMode` | `useDreamBarContext`, `DreamBarContext`, `DreamBarSurface`, `detectSurface`, `resolveIntentOverride`, `useDreamBarContext` |
 | `dreamdmbar/hooks/useDreamDMConversations.ts` | `RealtimePostgresInsertPayload`, `createClient`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMConversations`, `DMConversation`, `useDreamDMConversations` |
 | `dreamdmbar/hooks/useDreamDMDraft.ts` | `deleteOfflineRecord`, `getOfflineRecord`, `putOfflineRecord`, `react` | `useDreamDMDraft`, `DraftPayload`, `cleanupStaleDrafts`, `getDraftAge`, `listAllDraftIds`, `useDreamDMDraft` |
@@ -6352,7 +6358,7 @@ _No style files for this feature._
 | `scripts/optimize-dreamengin.mjs` | `fs`, `path`, `yaml` | `optimize-dreamengin.mjs` |
 | `scripts/postbuild.js` | `node:fs`, `node:path` | `postbuild.js` |
 | `scripts/postbuild.ts` | - | `postbuild.ts` |
-| `scripts/readme-autosync.ts` | `node:fs`, `node:path`, `node:url` | `PRODUCT_SECTIONS`, `ProductReadmeResult`, `ProductSectionStats`, `buildProductReadmeSections`, `buildProductSections`, `renderProductSectionsMarkdown` |
+| `scripts/readme-autosync.ts` | `node:fs`, `node:child_process`, `node:path`, `node:url` | `PRODUCT_SECTIONS`, `ProductReadmeResult`, `ProductSectionStats`, `buildProductReadmeSections`, `buildProductSections`, `renderProductSectionsMarkdown` |
 | `scripts/repository-state-analysis-section.mjs` | - | `buildRepositoryStateAnalysisSection`, `extractRepositoryStateSnapshot` |
 | `scripts/score-pass.cjs` | `fs`, `path`, `child_process` | `score-pass.cjs` |
 | `scripts/spec-check.cjs` | `fs`, `path` | `spec-check.cjs` |
@@ -6822,19 +6828,20 @@ _No circular dependencies detected._
 | `engins/contentengin/pipeline/build.ts` | 25 | HIGH_COUPLING |
 | `engins/renderengin/index.ts` | 24 | HIGH_COUPLING |
 | `components/games/dream.GamesHub.tsx` | 23 | HIGH_COUPLING |
-| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 20 | HIGH_COUPLING, DUAL_RUNTIME |
+| `dreamdmbar/dreamsurface.dreamdmbar.tsx` | 21 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/layout.tsx` | 19 | HIGH_COUPLING, DUAL_RUNTIME |
 | `components/dream.HomeFeed.tsx` | 19 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.BrandingEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/engin.LabEngin.tsx` | 18 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `scripts/wire-orphans.mjs` | 18 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/daydream/games/page.tsx` | 17 | HIGH_COUPLING |
+| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 16 | HIGH_COUPLING, DUAL_RUNTIME |
 | `daydreams/games/page.tsx` | 16 | HIGH_COUPLING |
 | `engine/engin-runtime/index.ts` | 16 | HIGH_COUPLING |
 | `engine/navigation/index.ts` | 16 | HIGH_COUPLING |
 | `app/api/ai/boogieman/child-safety/route.ts` | 15 | HIGH_COUPLING |
-| `app/dreamdmbar/_components/HomeDreamRegion.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/profile/[handle]/page.tsx` | 15 | HIGH_COUPLING |
+| `components/home/dream.bar.PersistentDreamBar.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/dream.ForgeEngin.tsx` | 15 | HIGH_COUPLING, DUAL_RUNTIME |
 | `engins/engin.CodeEngin.tsx` | 15 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engins/gameengin/index.ts` | 15 | HIGH_COUPLING, EVENT_BUS |
@@ -6856,7 +6863,6 @@ _No circular dependencies detected._
 | `app/view-profile/page.tsx` | 12 | HIGH_COUPLING |
 | `components/daydream/dream.shell.DaydreamShell.tsx` | 12 | HIGH_COUPLING |
 | `components/dreamengin/dream.DREAMenginOS.tsx` | 12 | HIGH_COUPLING, EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
-| `components/home/dream.bar.PersistentDreamBar.tsx` | 12 | HIGH_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `engine/vm/index.ts` | 12 | HIGH_COUPLING, DUAL_RUNTIME |
 | `app/(internal)/idari-console/page.tsx` | 11 | HIGH_COUPLING |
 | `app/api/ai/boogieman/route.ts` | 11 | HIGH_COUPLING |
@@ -7057,6 +7063,7 @@ _No circular dependencies detected._
 | `engins/rulesets/useEnginWorkflow.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `scripts/check-orphans.mjs` | 4 | RUNTIME_REGISTRY |
 | `scripts/fix-audit.js` | 4 | DUAL_RUNTIME |
+| `scripts/readme-autosync.ts` | 4 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/dreamdmbar/dreamspace/page.tsx` | 3 | DUAL_RUNTIME |
 | `app/dreamdmbar/dualruntime/page.tsx` | 3 | DUAL_RUNTIME |
 | `app/dreamdmbar/homedream/page.tsx` | 3 | DUAL_RUNTIME |
@@ -7078,7 +7085,6 @@ _No circular dependencies detected._
 | `engins/renderengin/serviceRuntime.ts` | 3 | RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `scripts/feature-build/generate-features.mjs` | 3 | EVENT_BUS |
 | `scripts/generate-repo-state.mjs` | 3 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME, ZUSTAND_STATE |
-| `scripts/readme-autosync.ts` | 3 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `app/dreamdmbar/_components/dreamr/dream.DreamRCore.tsx` | 2 | EVENT_BUS, DUAL_RUNTIME |
 | `components/dreamengin/dream.panel.CrossEnginStatusPanel.tsx` | 2 | DUAL_RUNTIME |
 | `engine/agents/adari.ts` | 2 | DUAL_RUNTIME |
@@ -7947,7 +7953,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- dream.DaydreamPulseStrip.tsx 🧩 COMPONENT
 |   |   +-- dream.FlagshipEnginesStrip.tsx 🧩 COMPONENT
 |   |   +-- dream.NeuralSeamCanvas.tsx 🧩 COMPONENT
-|   |   `-- dream.widget.DreamWidget.tsx 🧩 COMPONENT
+|   |   +-- dream.widget.DreamWidget.tsx 🧩 COMPONENT
+|   |   `-- dream.ZoomablePane.tsx 🧩 COMPONENT
 |   +-- icons
 |   |   `-- sheet.ts
 |   +-- idari  [AI / Dr. Eams / Agents]
@@ -8185,6 +8192,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- bridgeSeamFlow.ts
 |   |   `-- DreamSystemContext.tsx 🧩 COMPONENT
 |   +-- dream.GlowingLight.tsx 🧩 COMPONENT
+|   +-- dream.PhaseTrail.tsx 🧩 COMPONENT
 |   `-- dreamsurface.dreamdmbar.tsx 🧩 COMPONENT
 +-- dreamr  [DreamR] 🗂 FEATURE_FOLDER
 |   +-- activity  [DreamR] 🗂 FEATURE_FOLDER

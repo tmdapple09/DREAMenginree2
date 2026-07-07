@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-07-02T17:10:06.875Z
+Generated: 2026-07-07T21:19:21.043Z
 
 Marker guide:
 
@@ -1655,6 +1655,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |       +-- (default)  <- @/components/home/dream.DaydreamPulseStrip
 |   |   |       +-- (default)  <- @/components/home/dream.FlagshipEnginesStrip
 |   |   |       +-- useNotifications  <- @/dreamdmbar/notifications/useNotifications
+|   |   |       +-- (default)  <- @/dreamdmbar/dream.GlowingLight
 |   |   |       +-- isCompactRuntimeViewport  <- @/components/ui-system/runtimeViewport
 |   |   |       +-- cacheHttpGet  <- @/engine/offline/offlineCache
 |   |   |       +-- RuntimeRegionKey  <- @/types/dreamArtifact
@@ -3869,18 +3870,21 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   `-- -> (default)
 |   |   +-- dream.bar.PersistentDreamBar.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/components/home/dream.NeuralSeamCanvas
+|   |   |   +-- (default)  <- @/components/home/dream.ZoomablePane
 |   |   |   +-- useDualRuntime  <- @/components/runtime/dream.DualRuntimeContainer
 |   |   |   +-- (default)  <- @/components/runtime/dream.RuntimeView
 |   |   |   +-- (default)  <- @/dreamdmbar/dreamsurface.dreamdmbar
+|   |   |   +-- (default)  <- @/dreamdmbar/dream.GlowingLight
+|   |   |   +-- (default)  <- @/dreamdmbar/dream.PhaseTrail
 |   |   |   +-- useDreamLayout  <- @/hooks/useDreamLayout
 |   |   |   +-- useDreamSystem  <- @/dreamdmbar/runtime/DreamSystemContext
-|   |   |   +-- DIVIDER_H  <- @/dreamdmbar/runtime/barInteractions
+|   |   |   +-- DIVIDER_H, SPLIT_RATIO_MIN, SPLIT_RATIO_MAX, snapSplitRatioOnRelease, calculatePointerVelocity  <- @/dreamdmbar/runtime/barInteractions
 |   |   |   +-- useOS  <- @/engine/os/OSContext
 |   |   |   +-- parseDreamDragData, surfaceForRuntime, transferDream, DreamRuntime  <- @/engine/dreams/drag
 |   |   |   +-- isPublicSurfacePath  <- @/engine/routing/surfaces
 |   |   |   +-- usePathname  <- next/navigation
 |   |   |   +-- (default)  <- react
-|   |   |   +-- useCallback, useEffect, useState  <- react
+|   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- -> (default)
 |   |   |   `-- -> DreamDMContainer
 |   |   +-- dream.DaydreamPulseStrip.tsx 🧩 COMPONENT
@@ -3897,11 +3901,16 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- bridge  <- @/engine/runtime/dualRuntimeBridge
 |   |   |   +-- useCallback, useEffect, useRef  <- react
 |   |   |   `-- -> (default)
-|   |   `-- dream.widget.DreamWidget.tsx 🧩 COMPONENT
-|   |       +-- cn  <- @/utils/index
-|   |       +-- motion  <- framer-motion
-|   |       +-- ReactNode, useRef  <- react
-|   |       `-- -> (default)
+|   |   +-- dream.widget.DreamWidget.tsx 🧩 COMPONENT
+|   |   |   +-- cn  <- @/utils/index
+|   |   |   +-- motion  <- framer-motion
+|   |   |   +-- ReactNode, useRef  <- react
+|   |   |   `-- -> (default)
+|   |   `-- dream.ZoomablePane.tsx 🧩 COMPONENT
+|   |       +-- (default)  <- react
+|   |       +-- useCallback, useRef, useState, ReactNode  <- react
+|   |       +-- -> (default)
+|   |       `-- -> ZoomablePaneProps
 |   +-- icons
 |   |   `-- sheet.ts
 |   |       +-- -> COLS
@@ -5378,6 +5387,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- -> QuickReaction
 |   |   |   +-- -> SLASH_COMMANDS
 |   |   |   +-- -> SPLIT_FLING_VELOCITY_PX_PER_MS
+|   |   |   +-- -> SPLIT_RATIO_EDGE_ASSIST
 |   |   |   +-- -> SPLIT_RATIO_MAX
 |   |   |   +-- -> SPLIT_RATIO_MIN
 |   |   |   +-- -> SPLIT_SNAP_POINTS
@@ -5440,13 +5450,19 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- CSSProperties, KeyboardEvent, MouseEvent, TouchEvent  <- react
 |   |   +-- -> (default)
 |   |   `-- -> GlowingLightProps
+|   +-- dream.PhaseTrail.tsx 🧩 COMPONENT
+|   |   +-- (default)  <- react
+|   |   +-- useEffect  <- react
+|   |   +-- -> (default)
+|   |   `-- -> PhaseTrailProps
 |   `-- dreamsurface.dreamdmbar.tsx 🧩 COMPONENT
-|       +-- Bell, Menu, Bot, Code2, FileText, ImageIcon, Loader2, Maximize2, MessageCircle, Music, Paperclip, PenLine, Search, Send, Sparkles, X  <- lucide-react
+|       +-- Bell, Menu, Bot, Code2, EyeOff, FileText, ImageIcon, Loader2, Maximize2, MessageCircle, Music, Paperclip, PenLine, Search, Send, Sparkles, X  <- lucide-react
 |       +-- (default)  <- next/image
 |       +-- (default)  <- react
 |       +-- useCallback, useEffect, useRef, useState  <- react
 |       +-- (default)  <- @/components/ui/dream.DreamWord
 |       +-- (default)  <- @/dreamdmbar/dream.GlowingLight
+|       +-- (default)  <- @/dreamdmbar/dream.PhaseTrail
 |       +-- calculatePointerVelocity, computeTypingRhythm, decideBarRelease, DEFAULT_SPLIT_RATIO, DIVIDER_H, DOUBLE_TAP_WINDOW_MS, DRAG_TAP_THRESHOLD_PX, GOLD_LONG_PRESS_MS, ORB_TAP_SLOP, QUICK_REACTIONS, resolveGoldTapAction, rhythmToHandleScale, shouldCollapseTopExpandedDrag, snapSplitRatioOnRelease, SPLIT_RATIO_MAX, SPLIT_RATIO_MIN, SURFACE_ACCENT_COLORS, Particle, SurfaceAccent  <- @/dreamdmbar/runtime/barInteractions
 |       +-- useDreamSystem, BarIntentMode  <- @/dreamdmbar/runtime/DreamSystemContext
 |       +-- useDreamBarContext, DreamBarContext  <- @/dreamdmbar/hooks/useDreamBarContext
