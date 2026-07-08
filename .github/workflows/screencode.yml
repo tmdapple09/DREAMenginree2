@@ -25,13 +25,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install slice compiler tools
+      - name: Install compiler tools
         run: |
           node -e "require('node:fs').mkdirSync('__screen_tools__',{recursive:true});require('node:fs').writeFileSync('__screen_tools__/package.json','{\"type\":\"commonjs\"}')"
           npm --prefix __screen_tools__ install playwright@latest @babel/parser@latest --no-package-lock --silent
           npx --prefix __screen_tools__ playwright install chromium
 
-      - name: Instrument visible source slices
+      - name: Create full source stream and inject owner-slice markers
         run: |
           node <<'NODE'
           const fs = require("node:fs");
@@ -40,270 +40,197 @@ jobs:
           const { createRequire } = require("node:module");
 
           const ROOT = process.cwd();
-          const TOOL_REQUIRE = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
-          const parser = TOOL_REQUIRE("@babel/parser");
+          const requireTools = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const parser = requireTools("@babel/parser");
+          const FULL_CODEBASE_FILE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+          const INDEX_FILE = path.join(ROOT, "__SCREEN_SLICE_INDEX.json");
 
-          const SLICE_INDEX = path.join(ROOT, "__screen_slice_index.json");
-          const FULL_CODEBASE = path.join(ROOT, "__FULL_CODEBASE.codebase");
-
-          const SKIP_DIRS = new Set([
-            ".git",
-            ".github",
-            ".ci",
-            "node_modules",
-            ".next",
-            "out",
-            "dist",
-            "build",
-            "coverage",
-            ".turbo",
-            ".cache",
-            "__screen_tools__",
-            "__screen_codebase__"
-          ]);
-
-          const TEXT_EXTS = new Set([
-            ".ts",
-            ".tsx",
-            ".js",
-            ".jsx",
-            ".mjs",
-            ".cjs",
-            ".css",
-            ".scss",
-            ".sass",
-            ".sql",
-            ".json",
-            ".md",
-            ".yml",
-            ".yaml",
-            ".toml"
-          ]);
-
+          const SKIP_DIRS = new Set([".git", ".github", ".ci", "node_modules", ".next", "out", "dist", "build", "coverage", ".turbo", ".cache", "__screen_tools__", "__screen_codebase__"]);
+          const TEXT_EXTS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".css", ".scss", ".sass", ".sql", ".json", ".yml", ".yaml", ".toml"]);
           const JSX_EXTS = new Set([".tsx", ".jsx"]);
+          const PAGE_RE = /^app\/(?:.*\/)?page\.(tsx|jsx|ts|js)$/;
 
-          function posix(value) {
-            return value.split(path.sep).join("/");
-          }
-
-          function ext(file) {
-            return path.posix.extname(file).toLowerCase();
-          }
+          function posix(value) { return value.split(path.sep).join("/"); }
+          function ext(rel) { return path.posix.extname(rel).toLowerCase(); }
+          function sha16(value) { return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16); }
+          function enc(rel) { return rel.replaceAll("/", "â").replaceAll("\\", "â").replaceAll(":", "Ë"); }
+          function blen(value) { return Buffer.byteLength(value, "utf8"); }
+          function bat(source, i) { return blen(source.slice(0, i)); }
 
           function walk(dir, out = []) {
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
               const full = path.join(dir, entry.name);
-
-              if (entry.isDirectory()) {
-                if (!SKIP_DIRS.has(entry.name)) walk(full, out);
-                continue;
-              }
-
+              if (entry.isDirectory()) { if (!SKIP_DIRS.has(entry.name)) walk(full, out); continue; }
               if (!entry.isFile()) continue;
-
               const rel = posix(path.relative(ROOT, full));
               if (TEXT_EXTS.has(ext(rel))) out.push(rel);
             }
-
             return out;
           }
 
-          function sha16(value) {
-            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
+          function routeFromPage(rel) {
+            if (!PAGE_RE.test(rel)) return null;
+            const inner = rel.replace(/^app\//, "").replace(/\/page\.(tsx|jsx|ts|js)$/, "").replace(/^page\.(tsx|jsx|ts|js)$/, "");
+            const parts = inner.split("/").filter(Boolean).filter(p => !(p.startsWith("(") && p.endsWith(")"))).filter(p => !p.startsWith("@"));
+            if (parts.some(p => p.startsWith("[") && p.endsWith("]"))) return null;
+            return parts.length ? "/" + parts.join("/") : "/";
           }
 
-          function b64url(value) {
-            return Buffer.from(JSON.stringify(value))
-              .toString("base64")
-              .replaceAll("+", "-")
-              .replaceAll("/", "_")
-              .replace(/=+$/g, "");
+          function parseSource(source) {
+            return parser.parse(source, { sourceType: "module", errorRecovery: true, plugins: ["jsx", "typescript", "classProperties", "objectRestSpread", "dynamicImport", "optionalChaining", "nullishCoalescingOperator", "topLevelAwait"] });
           }
 
-          function decodeablePath(rel) {
-            return rel.replaceAll("/", "∕").replaceAll("\\", "∕").replaceAll(":", "ː");
+          function children(node) {
+            const out = [];
+            if (!node || typeof node !== "object") return out;
+            for (const key of Object.keys(node)) {
+              if (["loc", "start", "end", "leadingComments", "trailingComments", "innerComments", "extra"].includes(key)) continue;
+              const v = node[key];
+              if (Array.isArray(v)) for (const c of v) if (c && typeof c === "object" && c.type) out.push(c);
+              else if (v && typeof v === "object" && v.type) out.push(v);
+            }
+            return out;
           }
 
-          function isLowerDomTag(name) {
-            return /^[a-z][a-z0-9:-]*$/.test(name);
-          }
-
-          function getJsxName(opening) {
-            const n = opening.name;
-
-            if (!n) return null;
+          function jsxName(n) {
+            if (!n) return "";
             if (n.type === "JSXIdentifier") return n.name;
             if (n.type === "JSXMemberExpression") {
               const parts = [];
-              let cursor = n;
-
-              while (cursor) {
-                if (cursor.property?.name) parts.unshift(cursor.property.name);
-                if (cursor.object?.name) {
-                  parts.unshift(cursor.object.name);
-                  break;
-                }
-                cursor = cursor.object;
+              let c = n;
+              while (c) {
+                if (c.property?.name) parts.unshift(c.property.name);
+                if (c.object?.name) { parts.unshift(c.object.name); break; }
+                c = c.object;
               }
-
               return parts.join(".");
             }
+            return "";
+          }
 
+          function domTag(name) { return /^[a-z][a-z0-9:-]*$/.test(name); }
+          function hasSliceAttr(opening) { return (opening.attributes || []).some(a => a?.name?.name === "data-de-slice"); }
+
+          function insertPoint(source, opening) {
+            let i = opening.end - 1;
+            while (i > opening.start && source[i] !== ">") i--;
+            if (source[i] !== ">") return null;
+            return source[i - 1] === "/" ? i - 1 : i;
+          }
+
+          function ownerFrom(node, ancestors) {
+            const parent = ancestors[ancestors.length - 1];
+            const grand = ancestors[ancestors.length - 2];
+            if (node.type === "FunctionDeclaration") {
+              const wrap = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type) ? parent : node;
+              return { name: node.id?.name || "default", start: wrap.start, end: wrap.end };
+            }
+            if (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") {
+              if (parent?.type === "VariableDeclarator" && grand?.type === "VariableDeclaration") return { name: parent.id?.name || "anonymous", start: grand.start, end: grand.end };
+              if (parent?.type === "ExportDefaultDeclaration") return { name: "default", start: parent.start, end: parent.end };
+              return { name: node.id?.name || "anonymous", start: node.start, end: node.end };
+            }
+            if (node.type === "ClassMethod" || node.type === "ObjectMethod") return { name: node.key?.name || "method", start: node.start, end: node.end };
             return null;
           }
 
-          function hasDataSlice(opening) {
-            return (opening.attributes || []).some((attr) => attr?.name?.name === "data-de-slice");
-          }
-
-          function collectJsxOpenings(node, out = []) {
+          function idsIn(node, out = new Set()) {
             if (!node || typeof node !== "object") return out;
-
-            if (node.type === "JSXOpeningElement") {
-              out.push(node);
-            }
-
-            for (const key of Object.keys(node)) {
-              if (
-                key === "loc" ||
-                key === "start" ||
-                key === "end" ||
-                key === "extra" ||
-                key === "leadingComments" ||
-                key === "trailingComments" ||
-                key === "innerComments"
-              ) {
-                continue;
-              }
-
-              const value = node[key];
-
-              if (Array.isArray(value)) {
-                for (const child of value) collectJsxOpenings(child, out);
-              } else if (value && typeof value === "object") {
-                collectJsxOpenings(value, out);
-              }
-            }
-
+            if (node.type === "Identifier") out.add(node.name);
+            if (node.type === "JSXIdentifier") out.add(node.name);
+            for (const c of children(node)) idsIn(c, out);
             return out;
           }
 
-          function findInsertPoint(source, opening) {
-            let i = opening.end - 1;
-
-            while (i > opening.start && source[i] !== ">") i--;
-
-            if (source[i] !== ">") return null;
-
-            if (source[i - 1] === "/") return i - 1;
-
-            return i;
-          }
-
-          function parseTsx(source, rel) {
-            return parser.parse(source, {
-              sourceType: "module",
-              plugins: [
-                "jsx",
-                "typescript",
-                "classProperties",
-                "objectRestSpread",
-                "dynamicImport",
-                "optionalChaining",
-                "nullishCoalescingOperator",
-                "topLevelAwait"
-              ],
-              errorRecovery: true,
-              ranges: true,
-              tokens: false
-            });
-          }
-
           const files = walk(ROOT).sort();
-          const sliceIndex = {};
-          const fullParts = [];
-          let streamOffset = 0;
+          const streamStarts = {};
+          const index = { files: {}, pages: [], markers: {} };
+          const full = [];
+          let offset = 0;
 
           for (const rel of files) {
-            const abs = path.join(ROOT, rel);
-            const original = fs.readFileSync(abs, "utf8");
-            const fileHash = sha16(original);
+            const source = fs.readFileSync(path.join(ROOT, rel), "utf8");
+            const open = `\nâ¦${enc(rel)}â§\n`;
+            const close = `\nâ§${enc(rel)}â¦\n`;
+            streamStarts[rel] = offset + blen(open);
+            full.push(open, source, close);
+            offset += blen(open + source + close);
+            const route = routeFromPage(rel);
+            if (route) index.pages.push([route, rel]);
+            index.files[rel] = { p: rel, h: sha16(source), b: blen(source), ss: streamStarts[rel], route, defs: {}, imports: {} };
+          }
 
-            const fenceOpen = `\n⟦${decodeablePath(rel)}⟧\n`;
-            const fenceClose = `\n⟧${decodeablePath(rel)}⟦\n`;
+          fs.writeFileSync(FULL_CODEBASE_FILE, full.join(""));
 
-            const streamStart = streamOffset + Buffer.byteLength(fenceOpen, "utf8");
-            fullParts.push(fenceOpen, original, fenceClose);
-            streamOffset += Buffer.byteLength(fenceOpen + original + fenceClose, "utf8");
+          function range(source, rel, s, e, k) {
+            return { p: rel, k, s, e, ss: streamStarts[rel] + bat(source, s), se: streamStarts[rel] + bat(source, e), h: sha16(source.slice(s, e)) };
+          }
 
-            sliceIndex[rel] = {
-              path: rel,
-              hash: fileHash,
-              bytes: Buffer.byteLength(original, "utf8"),
-              streamStart,
-              slices: []
-            };
-
-            if (!JSX_EXTS.has(ext(rel))) continue;
-
-            let ast;
-
-            try {
-              ast = parseTsx(original, rel);
-            } catch {
-              continue;
+          function collectDefs(ast, source, rel) {
+            const defs = {};
+            const imports = {};
+            function visit(node, ancestors = []) {
+              const parent = ancestors[ancestors.length - 1];
+              const grand = ancestors[ancestors.length - 2];
+              if (node.type === "ImportDeclaration") for (const spec of node.specifiers || []) if (spec.local?.name) imports[spec.local.name] = node.source?.value || "";
+              if (node.type === "FunctionDeclaration" && node.id?.name) {
+                const wrap = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type) ? parent : node;
+                defs[node.id.name] = range(source, rel, wrap.start, wrap.end, "DEF");
+              }
+              if (parent?.type === "VariableDeclarator" && grand?.type === "VariableDeclaration" && parent.id?.type === "Identifier" && (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression")) defs[parent.id.name] = range(source, rel, grand.start, grand.end, "DEF");
+              for (const c of children(node)) visit(c, ancestors.concat(node));
             }
+            visit(ast.program, []);
+            return { defs, imports };
+          }
 
-            const openings = collectJsxOpenings(ast.program)
-              .filter((opening) => {
-                const name = getJsxName(opening);
-                return name && isLowerDomTag(name) && !hasDataSlice(opening);
-              })
-              .sort((a, b) => b.start - a.start);
-
-            if (!openings.length) continue;
-
-            let instrumented = original;
+          for (const rel of files) {
+            if (!JSX_EXTS.has(ext(rel))) continue;
+            const abs = path.join(ROOT, rel);
+            const source = fs.readFileSync(abs, "utf8");
+            let ast;
+            try { ast = parseSource(source); } catch { continue; }
+            const { defs, imports } = collectDefs(ast, source, rel);
+            index.files[rel].defs = defs;
+            index.files[rel].imports = imports;
             const inserts = [];
 
-            for (const opening of openings) {
-              const tag = getJsxName(opening);
-              const insertAt = findInsertPoint(original, opening);
-
-              if (insertAt === null) continue;
-
-              const sliceStart = opening.start;
-              const sliceEnd = opening.end;
-              const sliceSource = original.slice(sliceStart, sliceEnd);
-              const sliceHash = sha16(sliceSource);
-
-              const payload = {
-                p: rel,
-                s: sliceStart,
-                e: sliceEnd,
-                ss: streamStart + Buffer.byteLength(original.slice(0, sliceStart), "utf8"),
-                se: streamStart + Buffer.byteLength(original.slice(0, sliceEnd), "utf8"),
-                h: sliceHash,
-                t: tag
-              };
-
-              const marker = b64url(payload);
-
-              sliceIndex[rel].slices.push(payload);
-              inserts.push([insertAt, ` data-de-slice="${marker}"`]);
+            function visit(node, ancestors = [], owners = []) {
+              const owner = ownerFrom(node, ancestors);
+              const nextOwners = owner ? owners.concat(owner) : owners;
+              if (node.type === "JSXElement" && node.openingElement) {
+                const opening = node.openingElement;
+                const tag = jsxName(opening.name);
+                if (tag && domTag(tag) && !hasSliceAttr(opening)) {
+                  const at = insertPoint(source, opening);
+                  if (at !== null) {
+                    const own = nextOwners[nextOwners.length - 1] || { name: "module", start: 0, end: source.length };
+                    const markerId = sha16(`${rel}:${node.start}:${node.end}:${own.start}:${own.end}`);
+                    index.markers[markerId] = {
+                      id: markerId,
+                      p: rel,
+                      tag,
+                      ownerName: own.name,
+                      view: range(source, rel, node.start, node.end, "VIEW"),
+                      owner: range(source, rel, own.start, own.end, "OWNER"),
+                      ids: Array.from(idsIn(node)).filter(Boolean).slice(0, 80)
+                    };
+                    inserts.push([at, ` data-de-slice="${markerId}"`]);
+                  }
+                }
+              }
+              for (const c of children(node)) visit(c, ancestors.concat(node), nextOwners);
             }
 
+            visit(ast.program, [], []);
+            if (!inserts.length) continue;
             inserts.sort((a, b) => b[0] - a[0]);
-
-            for (const [at, text] of inserts) {
-              instrumented = instrumented.slice(0, at) + text + instrumented.slice(at);
-            }
-
+            let instrumented = source;
+            for (const [at, text] of inserts) instrumented = instrumented.slice(0, at) + text + instrumented.slice(at);
             fs.writeFileSync(abs, instrumented);
           }
 
-          fs.writeFileSync(FULL_CODEBASE, fullParts.join(""));
-          fs.writeFileSync(SLICE_INDEX, JSON.stringify(sliceIndex));
+          fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
           NODE
 
       - name: Build instrumented app
@@ -314,7 +241,7 @@ jobs:
           pnpm exec next start -p 3000 > __screen_next.log 2>&1 &
           echo $! > __screen_next.pid
 
-      - name: Build screen slice codebase
+      - name: Emit editable screen slice codebase
         env:
           SCREEN_STORAGE_STATE_B64: ${{ secrets.SCREEN_STORAGE_STATE_B64 }}
         run: |
@@ -328,470 +255,189 @@ jobs:
           const ROOT = process.cwd();
           const OUT = path.join(ROOT, "__screen_codebase__");
           const BASE_URL = "http://127.0.0.1:3000";
-
-          const toolRequire = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
-          const { chromium } = toolRequire("playwright");
-
-          const FULL_CODEBASE = path.join(ROOT, "__FULL_CODEBASE.codebase");
-          const SLICE_INDEX = JSON.parse(fs.readFileSync(path.join(ROOT, "__screen_slice_index.json"), "utf8"));
+          const requireTools = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const { chromium } = requireTools("playwright");
+          const FULL_CODEBASE_FILE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+          const FULL_BUF = fs.readFileSync(FULL_CODEBASE_FILE);
+          const INDEX = JSON.parse(fs.readFileSync(path.join(ROOT, "__SCREEN_SLICE_INDEX.json"), "utf8"));
+          const written = new Set();
 
           function waitForServer(url, timeoutMs = 60000) {
             const started = Date.now();
-
             return new Promise((resolve, reject) => {
-              const check = () => {
-                http.get(url, (res) => {
-                  res.resume();
-                  resolve();
-                }).on("error", () => {
-                  if (Date.now() - started > timeoutMs) {
-                    reject(new Error("Next server did not become ready"));
-                    return;
-                  }
-
-                  setTimeout(check, 1000);
-                });
-              };
-
+              const check = () => http.get(url, res => { res.resume(); resolve(); }).on("error", () => {
+                if (Date.now() - started > timeoutMs) return reject(new Error("Next server did not become ready"));
+                setTimeout(check, 1000);
+              });
               check();
             });
           }
+          function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+          function sha16(v) { return crypto.createHash("sha256").update(v).digest("hex").slice(0, 16); }
+          function sanitize(v, f = "screen") { return (String(v ?? "").replace(/\s+/g, " ").trim().replace(/[<>:"/\\|?*\x00-\x1F]/g, "").replace(/\.$/, "").slice(0, 72).trim() || f); }
+          function titleCase(v) { return sanitize(String(v ?? "").replace(/[-_]+/g, " ").replace(/\b\w/g, m => m.toUpperCase())); }
+          function enc(rel) { return rel.replaceAll("/", "â").replaceAll("\\", "â").replaceAll(":", "Ë"); }
+          function ext(rel) { return path.posix.extname(rel) || ".slice"; }
 
-          function sleep(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
-          }
-
-          function sha16(value) {
-            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
-          }
-
-          function sanitize(value, fallback = "screen") {
-            const clean = String(value ?? "")
-              .replace(/\s+/g, " ")
-              .trim()
-              .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
-              .replace(/\.$/, "")
-              .slice(0, 72)
-              .trim();
-
-            return clean || fallback;
-          }
-
-          function titleCase(value) {
-            return sanitize(
-              String(value ?? "")
-                .replace(/^\[\[?\.\.\.(.+?)\]?\]$/, "$1")
-                .replace(/^\[(.+?)\]$/, "$1")
-                .replace(/^:/, "")
-                .replace(/[-_]+/g, " ")
-                .replace(/\b\w/g, (m) => m.toUpperCase())
-            );
-          }
-
-          function encodePath(rel) {
-            return rel.replaceAll("/", "∕").replaceAll("\\", "∕").replaceAll(":", "ː");
-          }
-
-          function ext(rel) {
-            return path.posix.extname(rel) || ".slice";
-          }
-
-          function fromB64url(value) {
-            const padded = value + "=".repeat((4 - (value.length % 4)) % 4);
-            return JSON.parse(Buffer.from(padded.replaceAll("-", "+").replaceAll("_", "/"), "base64").toString("utf8"));
-          }
-
-          function writeJsonl(file, rows) {
-            fs.mkdirSync(path.dirname(file), { recursive: true });
-            fs.writeFileSync(file, rows.map((row) => JSON.stringify(row)).join("\n") + "\n");
-          }
-
-          function routeFromPageFile(rel) {
-            if (!/^app\/(?:.*\/)?page\.(tsx|jsx|ts|js)$/.test(rel)) return null;
-
-            const inner = rel
-              .replace(/^app\//, "")
-              .replace(/\/page\.(tsx|jsx|ts|js)$/, "")
-              .replace(/^page\.(tsx|jsx|ts|js)$/, "");
-
-            const parts = inner
-              .split("/")
-              .filter(Boolean)
-              .filter((part) => !(part.startsWith("(") && part.endsWith(")")))
-              .filter((part) => !part.startsWith("@"));
-
-            if (parts.some((part) => part.startsWith("[") && part.endsWith("]"))) return null;
-
-            return parts.length ? "/" + parts.join("/") : "/";
-          }
-
-          function realRoutes() {
-            return Object.keys(SLICE_INDEX)
-              .map(routeFromPageFile)
-              .filter(Boolean)
-              .sort((a, b) => {
-                if (a === "/") return -1;
-                if (b === "/") return 1;
-                return a.localeCompare(b);
-              });
-          }
-
-          function screenBase(route) {
+          function routeBase(route) {
             if (route === "/") return ["Landing Page"];
-
-            if (
-              route.startsWith("/dreamdmbar") ||
-              route === "/homedream" ||
-              route === "/dreamspace"
-            ) {
+            if (route.startsWith("/dreamdmbar") || route === "/homedream" || route === "/dreamspace") {
               const base = ["Logged In", "DreamDMBar"];
-
               if (route.includes("homedream") || route === "/homedream") return [...base, "HomeDream"];
               if (route.includes("dreamspace") || route === "/dreamspace") return [...base, "DreamSpace"];
               if (route.includes("dualruntime")) return [...base, "DualRuntime"];
-
               return base;
             }
-
-            if (
-              route.startsWith("/settings") ||
-              route.startsWith("/connectors") ||
-              route.startsWith("/feed-settings") ||
-              route.startsWith("/profile") ||
-              route.startsWith("/view-profile") ||
-              route.startsWith("/marketplace") ||
-              route.startsWith("/shop")
-            ) {
-              return ["Logged In", "DreamDMBar", "Menu", ...route.split("/").filter(Boolean).map(titleCase)];
-            }
-
-            if (
-              route.startsWith("/engines") ||
-              route.startsWith("/daydream") ||
-              route.startsWith("/gameengin") ||
-              route.startsWith("/lab")
-            ) {
-              return ["Logged In", "DreamDMBar", "DreamSpace", ...route.split("/").filter(Boolean).map(titleCase)];
-            }
-
-            if (route.startsWith("/messages")) {
-              return ["Logged In", "DreamDMBar", ...route.split("/").filter(Boolean).map(titleCase)];
-            }
-
-            if (route.startsWith("/dreamr") || route.startsWith("/discover") || route.startsWith("/notes")) {
-              return ["Logged In", "DreamDMBar", "HomeDream", ...route.split("/").filter(Boolean).map(titleCase)];
-            }
-
+            if (route.startsWith("/settings") || route.startsWith("/connectors") || route.startsWith("/feed-settings") || route.startsWith("/profile") || route.startsWith("/view-profile") || route.startsWith("/marketplace") || route.startsWith("/shop")) return ["Logged In", "DreamDMBar", "Menu", ...route.split("/").filter(Boolean).map(titleCase)];
+            if (route.startsWith("/engines") || route.startsWith("/daydream") || route.startsWith("/gameengin") || route.startsWith("/lab")) return ["Logged In", "DreamDMBar", "DreamSpace", ...route.split("/").filter(Boolean).map(titleCase)];
+            if (route.startsWith("/messages")) return ["Logged In", "DreamDMBar", ...route.split("/").filter(Boolean).map(titleCase)];
+            if (route.startsWith("/dreamr") || route.startsWith("/discover") || route.startsWith("/notes")) return ["Logged In", "DreamDMBar", "HomeDream", ...route.split("/").filter(Boolean).map(titleCase)];
             return ["Landing Page", ...route.split("/").filter(Boolean).map(titleCase)];
           }
 
-          function sliceFileName(payload) {
-            return [
-              encodePath(payload.p),
-              `B${payload.s}-${payload.e}`,
-              `S${payload.ss}-${payload.se}`,
-              `H${payload.h}`
-            ].join("__") + ext(payload.p);
+          function resolveImport(fromRel, specifier) {
+            if (!specifier.startsWith(".") && !specifier.startsWith("@/")) return null;
+            const base = specifier.startsWith("@/") ? specifier.slice(2) : path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier));
+            for (const c of [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}.mjs`, `${base}.cjs`, `${base}/index.ts`, `${base}/index.tsx`, `${base}/index.js`, `${base}/index.jsx`]) if (INDEX.files[c]) return c;
+            return null;
           }
 
-          function originalSlice(payload) {
-            const originalFileRecord = SLICE_INDEX[payload.p];
-
-            if (!originalFileRecord) return "";
-
-            const instrumentedPath = path.join(ROOT, payload.p);
-            const instrumented = fs.existsSync(instrumentedPath) ? fs.readFileSync(instrumentedPath, "utf8") : "";
-
-            const full = fs.readFileSync(FULL_CODEBASE, "utf8");
-            const streamSlice = Buffer.from(full, "utf8").subarray(payload.ss, payload.se).toString("utf8");
-
-            if (sha16(streamSlice) === payload.h) return streamSlice;
-
-            return instrumented.slice(payload.s, payload.e).replace(/\sdata-de-slice="[^"]+"/g, "");
+          function sliceText(range) { return FULL_BUF.subarray(range.ss, range.se).toString("utf8"); }
+          function sliceName(range) { return [range.k, enc(range.p), `B${range.s}-${range.e}`, `S${range.ss}-${range.se}`, `H${range.h}`].join("__") + ext(range.p); }
+          function writeSlice(dir, range) {
+            const src = sliceText(range);
+            if (!src.trim() || sha16(src) !== range.h) return;
+            fs.mkdirSync(dir, { recursive: true });
+            const file = path.join(dir, sliceName(range));
+            if (written.has(file)) return;
+            written.add(file);
+            fs.writeFileSync(file, src);
           }
-
-          function folderForDomNode(node, index) {
-            const role = sanitize(node.role || node.tag || "node");
-            const label = sanitize(node.label || node.href || node.testid || node.id || `${role} ${index + 1}`);
-
+          function writeMarker(dir, marker) {
+            writeSlice(dir, marker.view);
+            writeSlice(dir, marker.owner);
+            const info = INDEX.files[marker.p] || {};
+            const defs = info.defs || {};
+            for (const id of marker.ids || []) if (defs[id]) writeSlice(dir, defs[id]);
+            const imports = info.imports || {};
+            for (const id of marker.ids || []) {
+              const spec = imports[id];
+              if (!spec) continue;
+              const resolved = resolveImport(marker.p, spec);
+              const def = resolved && INDEX.files[resolved]?.defs?.[id];
+              if (def) writeSlice(dir, def);
+            }
+          }
+          function folderForNode(n, i) {
+            const role = sanitize(n.role || n.tag || "node");
+            const label = sanitize(n.label || n.href || n.testid || n.id || `${role} ${i + 1}`);
             if (role === "input") return sanitize(label || "Input");
             if (role === "button") return sanitize(label || "Button");
             if (role === "link") return sanitize(label || "Link");
             if (role === "heading") return sanitize(label || "Heading");
-
             return sanitize(label || role);
           }
 
-          function writeSlice(dir, payload) {
-            const source = originalSlice(payload);
-
-            if (!source.trim()) return;
-
-            fs.mkdirSync(dir, { recursive: true });
-            fs.writeFileSync(path.join(dir, sliceFileName(payload)), source);
-          }
-
-          function pathForNode(root, node, ancestors, index) {
-            const parts = [];
-
-            for (const ancestor of ancestors) {
-              const label = folderForDomNode(ancestor, 0);
-              if (label && !parts.includes(label)) parts.push(label);
-            }
-
-            parts.push(folderForDomNode(node, index));
-
-            return path.join(root, ...parts.map((part) => sanitize(part)));
-          }
-
-          async function openMenu(page) {
-            const selectors = [
-              '[aria-label*="menu" i]',
-              '[title*="menu" i]',
-              '[data-testid*="menu" i]',
-              '[aria-label*="daydream" i]',
-              '[data-testid*="daydream" i]',
-              '[aria-label*="settings" i]',
-              'button:has-text("Menu")',
-              'button:has-text("☰")',
-              'button:has-text("Settings")'
-            ];
-
+          async function clickMenu(page) {
+            const selectors = ['[aria-label*="menu" i]', '[title*="menu" i]', '[data-testid*="menu" i]', '[aria-label*="daydream" i]', '[data-testid*="daydream" i]', '[aria-label*="settings" i]', 'button:has-text("Menu")', 'button:has-text("â°")', 'button:has-text("Settings")', 'button:has-text("Daydream")'];
             for (const selector of selectors) {
-              try {
-                const locator = page.locator(selector).first();
-
-                if (await locator.count()) {
-                  await locator.click({ timeout: 1500 });
-                  await sleep(300);
-                }
-              } catch {}
+              try { const loc = page.locator(selector).first(); if (await loc.count()) { await loc.click({ timeout: 1500 }); await sleep(300); } } catch {}
             }
           }
 
           async function extract(page, route) {
-            return page.evaluate((routeValue) => {
+            return await page.evaluate((routeValue) => {
               function visible(el) {
-                const style = window.getComputedStyle(el);
-                const rect = el.getBoundingClientRect();
-
-                return (
-                  style.display !== "none" &&
-                  style.visibility !== "hidden" &&
-                  Number(style.opacity || "1") !== 0 &&
-                  rect.width > 0 &&
-                  rect.height > 0
-                );
+                const s = window.getComputedStyle(el), r = el.getBoundingClientRect();
+                return s.display !== "none" && s.visibility !== "hidden" && Number(s.opacity || "1") !== 0 && r.width > 0 && r.height > 0;
               }
-
-              function textOf(el) {
-                return (el.innerText || el.textContent || "")
-                  .replace(/\s+/g, " ")
-                  .trim()
-                  .slice(0, 140);
-              }
-
-              function labelOf(el) {
-                return (
-                  el.getAttribute("aria-label") ||
-                  el.getAttribute("title") ||
-                  textOf(el) ||
-                  el.getAttribute("alt") ||
-                  el.getAttribute("placeholder") ||
-                  ""
-                ).replace(/\s+/g, " ").trim();
-              }
-
+              function textOf(el) { return (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 140); }
+              function labelOf(el) { return (el.getAttribute("aria-label") || el.getAttribute("title") || textOf(el) || el.getAttribute("alt") || el.getAttribute("placeholder") || "").replace(/\s+/g, " ").trim(); }
               function roleOf(el) {
-                const explicit = el.getAttribute("role");
-                if (explicit) return explicit;
-
+                const explicit = el.getAttribute("role"); if (explicit) return explicit;
                 const tag = el.tagName.toLowerCase();
-
                 if (/^h[1-6]$/.test(tag)) return "heading";
                 if (tag === "a") return "link";
                 if (tag === "button") return "button";
                 if (["input", "textarea", "select"].includes(tag)) return "input";
                 if (["main", "nav", "header", "footer", "aside", "section", "article", "form"].includes(tag)) return tag;
-
                 return tag;
               }
-
               function important(el) {
+                const tag = el.tagName.toLowerCase(), role = roleOf(el);
+                return el.hasAttribute("data-de-slice") || /^h[1-6]$/.test(tag) || ["main", "nav", "header", "footer", "aside", "section", "article", "form", "button", "a", "input", "textarea", "select"].includes(tag) || ["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem", "textbox"].includes(role) || el.hasAttribute("aria-label") || el.hasAttribute("data-testid");
+              }
+              const els = Array.from(document.body.querySelectorAll("*")).filter(el => visible(el) && important(el));
+              const ids = new Map(); els.forEach((el, i) => ids.set(el, `n${i}`));
+              function parentUid(el) { let p = el.parentElement; while (p && p !== document.body) { if (ids.has(p)) return ids.get(p); p = p.parentElement; } return ""; }
+              const rows = els.map((el, i) => {
                 const tag = el.tagName.toLowerCase();
-                const role = roleOf(el);
-
-                return (
-                  /^h[1-6]$/.test(tag) ||
-                  ["main", "nav", "header", "footer", "aside", "section", "article", "form", "button", "a", "input", "textarea", "select"].includes(tag) ||
-                  ["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem", "textbox"].includes(role) ||
-                  el.hasAttribute("aria-label") ||
-                  el.hasAttribute("data-testid") ||
-                  el.hasAttribute("data-de-slice")
-                );
-              }
-
-              function uidFor(el, index) {
-                if (!el.__de_uid) el.__de_uid = `n${index}`;
-                return el.__de_uid;
-              }
-
-              function nodeRecord(el, index) {
-                const tag = el.tagName.toLowerCase();
-                const role = roleOf(el);
-                const parentImportant = (() => {
-                  let p = el.parentElement;
-
-                  while (p && p !== document.body) {
-                    if (visible(p) && important(p)) return p.__de_uid || "";
-                    p = p.parentElement;
-                  }
-
-                  return "";
-                })();
-
-                return {
-                  uid: uidFor(el, index),
-                  parent: parentImportant,
-                  role,
-                  tag,
-                  label: labelOf(el),
-                  href: tag === "a" ? el.getAttribute("href") || "" : "",
-                  id: el.id || "",
-                  testid: el.getAttribute("data-testid") || "",
-                  marker: el.getAttribute("data-de-slice") || "",
-                  classes: typeof el.className === "string" ? el.className.split(/\s+/).slice(0, 12) : []
-                };
-              }
-
-              const elements = Array.from(document.body.querySelectorAll("*")).filter((el) => visible(el) && important(el));
-
-              elements.forEach((el, index) => uidFor(el, index));
-
-              const nodes = elements.map(nodeRecord);
-              const byUid = new Map(nodes.map((node) => [node.uid, node]));
-
-              const withAncestors = nodes.map((node) => {
-                const ancestors = [];
-                let parent = byUid.get(node.parent);
-
-                while (parent) {
-                  ancestors.unshift(parent);
-                  parent = byUid.get(parent.parent);
-                }
-
-                return { node, ancestors };
+                return { uid: `n${i}`, parent: parentUid(el), role: roleOf(el), tag, label: labelOf(el), href: tag === "a" ? el.getAttribute("href") || "" : "", id: el.id || "", testid: el.getAttribute("data-testid") || "", marker: el.getAttribute("data-de-slice") || "" };
               });
-
-              const title =
-                document.querySelector("h1")?.innerText?.replace(/\s+/g, " ").trim() ||
-                document.title ||
-                routeValue;
-
-              return {
-                route: routeValue,
-                title,
-                nodes,
-                withAncestors
-              };
+              const map = new Map(rows.map(r => [r.uid, r]));
+              for (const row of rows) {
+                const ancestors = [];
+                let p = map.get(row.parent);
+                while (p) { ancestors.unshift(p); p = map.get(p.parent); }
+                row.ancestors = ancestors;
+              }
+              return rows;
             }, route);
+          }
+
+          async function renderRoute(page, route) {
+            try { await page.goto(BASE_URL + route, { waitUntil: "networkidle", timeout: 45000 }); await sleep(500); } catch { return; }
+            const base = path.join(OUT, ...routeBase(route).map(sanitize));
+            let rows = await extract(page, route);
+            for (let i = 0; i < rows.length; i++) {
+              const row = rows[i]; if (!row.marker) continue;
+              const marker = INDEX.markers[row.marker]; if (!marker) continue;
+              const parts = row.ancestors.map((a, x) => folderForNode(a, x)).concat(folderForNode(row, i));
+              writeMarker(path.join(base, ...parts.map(sanitize)), marker);
+            }
+            await clickMenu(page);
+            rows = await extract(page, route);
+            const menuBase = route.startsWith("/dreamdmbar") || route === "/homedream" || route === "/dreamspace" ? path.join(OUT, "Logged In", "DreamDMBar", "Menu") : base;
+            for (let i = 0; i < rows.length; i++) {
+              const row = rows[i]; if (!row.marker) continue;
+              const marker = INDEX.markers[row.marker]; if (!marker) continue;
+              const parts = row.ancestors.map((a, x) => folderForNode(a, x)).concat(folderForNode(row, i));
+              writeMarker(path.join(menuBase, ...parts.map(sanitize)), marker);
+            }
           }
 
           async function main() {
             await waitForServer(BASE_URL);
-
             fs.rmSync(OUT, { recursive: true, force: true });
             fs.mkdirSync(OUT, { recursive: true });
-
-            fs.copyFileSync(FULL_CODEBASE, path.join(OUT, "000_FULL_CODEBASE.codebase"));
-
+            fs.copyFileSync(FULL_CODEBASE_FILE, path.join(OUT, "000_FULL_CODEBASE.codebase"));
             let storageState;
-
             if (process.env.SCREEN_STORAGE_STATE_B64) {
               const storageFile = path.join(ROOT, "__screen_storage_state.json");
               fs.writeFileSync(storageFile, Buffer.from(process.env.SCREEN_STORAGE_STATE_B64, "base64"));
               storageState = storageFile;
             }
-
             const browser = await chromium.launch({ headless: true });
-            const context = await browser.newContext({
-              viewport: { width: 1440, height: 1200 },
-              storageState
-            });
-
+            const context = await browser.newContext({ viewport: { width: 1440, height: 1200 }, storageState });
             const page = await context.newPage();
-
-            for (const route of realRoutes()) {
-              const base = path.join(OUT, ...screenBase(route).map((segment) => sanitize(segment)));
-
-              try {
-                await page.goto(BASE_URL + route, { waitUntil: "networkidle", timeout: 45000 });
-                await sleep(500);
-
-                let screen = await extract(page, route);
-
-                for (let i = 0; i < screen.withAncestors.length; i++) {
-                  const { node, ancestors } = screen.withAncestors[i];
-
-                  if (!node.marker) continue;
-
-                  let payload;
-
-                  try {
-                    payload = fromB64url(node.marker);
-                  } catch {
-                    continue;
-                  }
-
-                  const dir = pathForNode(base, node, ancestors, i);
-                  writeSlice(dir, payload);
-                }
-
-                await openMenu(page);
-                screen = await extract(page, route);
-
-                for (let i = 0; i < screen.withAncestors.length; i++) {
-                  const { node, ancestors } = screen.withAncestors[i];
-
-                  if (!node.marker) continue;
-
-                  let payload;
-
-                  try {
-                    payload = fromB64url(node.marker);
-                  } catch {
-                    continue;
-                  }
-
-                  const folderBase = route.startsWith("/dreamdmbar") || route === "/homedream" || route === "/dreamspace"
-                    ? path.join(OUT, "Logged In", "DreamDMBar", "Menu")
-                    : base;
-
-                  const dir = pathForNode(folderBase, node, ancestors, i);
-                  writeSlice(dir, payload);
-                }
-              } catch {}
-            }
-
+            const routes = Array.from(new Set(INDEX.pages.map(([r]) => r))).sort((a, b) => a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b));
+            for (const route of routes) await renderRoute(page, route);
             await browser.close();
           }
 
-          main().catch((error) => {
-            console.error(error);
-            process.exit(1);
-          });
+          main().catch(error => { console.error(error); process.exit(1); });
           NODE
 
-      - name: Zip screen slice codebase
+      - name: Zip editable screen slice codebase
         run: |
           cd __screen_codebase__
-          zip -qr ../screen-slice-codebase.zip .
+          zip -qr ../editable-screen-slice-codebase.zip .
 
-      - name: Upload screen slice codebase
+      - name: Upload editable screen slice codebase
         uses: actions/upload-artifact@v4
         with:
-          name: screen-slice-codebase
-          path: screen-slice-codebase.zip
+          name: editable-screen-slice-codebase
+          path: editable-screen-slice-codebase.zip
           include-hidden-files: false
           compression-level: 9
 
