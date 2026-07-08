@@ -1,0 +1,688 @@
+name: Build Screen Codebase
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-screen-codebase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+
+      - name: Install app dependencies
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Build app
+        run: |
+          pnpm build
+
+      - name: Install crawler tools
+        run: |
+          node -e "require('node:fs').mkdirSync('__screen_tools__',{recursive:true});require('node:fs').writeFileSync('__screen_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __screen_tools__ install playwright@latest --no-package-lock --silent
+          npx --prefix __screen_tools__ playwright install chromium
+
+      - name: Start app
+        run: |
+          pnpm exec next start -p 3000 > __next-screen-codebase.log 2>&1 &
+          echo $! > __next-screen-codebase.pid
+
+      - name: Build screen-shaped codebase
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const http = require("node:http");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, "__screen_codebase__");
+          const BASE_URL = "http://127.0.0.1:3000";
+
+          const toolRequire = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const { chromium } = toolRequire("playwright");
+
+          const MAX_PAGES = 250;
+          const MAX_DEPTH = 5;
+          const MAX_ATTACHED_FILES = 80;
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            ".ci",
+            "ci",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".cache",
+            "__screen_tools__",
+            "__screen_codebase__"
+          ]);
+
+          const CODE_EXTS = new Set([
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".ts",
+            ".tsx",
+            ".mts",
+            ".cts",
+            ".css",
+            ".scss",
+            ".sass",
+            ".sql"
+          ]);
+
+          const IMPORT_FROM_RE = /import(?:\s+type)?(?:[\s\S]*?)\s+from\s+["']([^"']+)["']/g;
+          const SIDE_EFFECT_IMPORT_RE = /import\s+["']([^"']+)["']/g;
+          const DYNAMIC_IMPORT_RE = /import\s*\(\s*["']([^"']+)["']\s*\)/g;
+          const EXPORT_NAMED_RE = /export\s+(?:type\s+)?(?:const|let|var|function|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/g;
+          const EXPORT_DEFAULT_RE = /export\s+default(?:\s+function\s+([A-Za-z_$][\w$]*)|\s+class\s+([A-Za-z_$][\w$]*)|)/g;
+          const ROUTE_METHOD_RE = /export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b|export\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b/g;
+
+          function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+          }
+
+          function waitForServer(url, timeoutMs = 60000) {
+            const start = Date.now();
+
+            return new Promise((resolve, reject) => {
+              const check = () => {
+                http.get(url, (res) => {
+                  res.resume();
+                  resolve();
+                }).on("error", () => {
+                  if (Date.now() - start > timeoutMs) {
+                    reject(new Error("Timed out waiting for Next server"));
+                    return;
+                  }
+
+                  setTimeout(check, 1000);
+                });
+              };
+
+              check();
+            });
+          }
+
+          function toPosix(value) {
+            return value.split(path.sep).join("/");
+          }
+
+          function extOf(file) {
+            const base = path.basename(file);
+            const index = base.lastIndexOf(".");
+            return index === -1 ? "" : base.slice(index).toLowerCase();
+          }
+
+          function unique(values) {
+            const seen = new Set();
+            const out = [];
+
+            for (const value of values) {
+              if (!seen.has(value)) {
+                seen.add(value);
+                out.push(value);
+              }
+            }
+
+            return out;
+          }
+
+          function sanitizeSegment(value, fallback = "screen") {
+            const raw = String(value || "")
+              .replace(/\s+/g, " ")
+              .trim();
+
+            const cleaned = raw
+              .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
+              .replace(/[.]+$/g, "")
+              .slice(0, 80)
+              .trim();
+
+            return cleaned || fallback;
+          }
+
+          function routeToFallbackName(route) {
+            if (route === "/") return "Home";
+
+            const parts = route
+              .split("?")[0]
+              .split("#")[0]
+              .split("/")
+              .filter(Boolean);
+
+            if (!parts.length) return "Home";
+
+            return parts
+              .map((part) => part.replace(/[-_]+/g, " "))
+              .map((part) => part.replace(/\b\w/g, (m) => m.toUpperCase()))
+              .join("/");
+          }
+
+          function normalizeUrl(url) {
+            try {
+              const parsed = new URL(url, BASE_URL);
+              if (parsed.origin !== BASE_URL) return null;
+
+              parsed.hash = "";
+
+              if (
+                parsed.pathname.startsWith("/_next") ||
+                parsed.pathname.startsWith("/api") ||
+                parsed.pathname.includes(".")
+              ) {
+                return null;
+              }
+
+              return parsed.pathname + parsed.search;
+            } catch {
+              return null;
+            }
+          }
+
+          function readMatches(regex, text) {
+            regex.lastIndex = 0;
+            const out = [];
+            let match;
+
+            while ((match = regex.exec(text))) {
+              const value = match.slice(1).find(Boolean);
+              if (value) out.push(value);
+            }
+
+            return out;
+          }
+
+          function importsFor(text) {
+            return unique([
+              ...readMatches(IMPORT_FROM_RE, text),
+              ...readMatches(SIDE_EFFECT_IMPORT_RE, text),
+              ...readMatches(DYNAMIC_IMPORT_RE, text)
+            ]);
+          }
+
+          function exportsFor(text) {
+            EXPORT_NAMED_RE.lastIndex = 0;
+            EXPORT_DEFAULT_RE.lastIndex = 0;
+
+            const out = [];
+            let match;
+
+            while ((match = EXPORT_NAMED_RE.exec(text))) {
+              out.push(match[1]);
+            }
+
+            while ((match = EXPORT_DEFAULT_RE.exec(text))) {
+              out.push(match[1] || match[2] || "default");
+            }
+
+            return unique(out);
+          }
+
+          function methodsFor(text) {
+            ROUTE_METHOD_RE.lastIndex = 0;
+
+            const out = [];
+            let match;
+
+            while ((match = ROUTE_METHOD_RE.exec(text))) {
+              out.push(match[1] || match[2]);
+            }
+
+            return unique(out).sort();
+          }
+
+          function lineCount(text) {
+            if (text === "") return 0;
+            return text.split(/\r\n|\r|\n/).length;
+          }
+
+          function sha16(text) {
+            return crypto.createHash("sha256").update(text).digest("hex").slice(0, 16);
+          }
+
+          function roleFor(rel) {
+            const file = path.posix.basename(rel);
+            const ext = extOf(rel);
+
+            if (rel.startsWith("app/") && file === "page.tsx") return "PAGE";
+            if (rel.startsWith("app/") && ["layout.tsx", "template.tsx", "default.tsx"].includes(file)) return "LAYOUT";
+            if (rel.startsWith("app/") && file === "loading.tsx") return "LOADING";
+            if (rel.startsWith("app/") && ["error.tsx", "global-error.tsx"].includes(file)) return "ERROR";
+            if (rel.startsWith("app/") && file === "not-found.tsx") return "NOT_FOUND";
+            if (rel.startsWith("app/api/") && ["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "API_ROUTE";
+            if (["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "ROUTE_HANDLER";
+            if (ext === ".sql") return "SQL";
+            if ([".css", ".scss", ".sass"].includes(ext)) return "STYLE";
+            if (file.endsWith(".d.ts")) return "TYPE_DECLARATION";
+            if ([".tsx", ".jsx"].includes(ext)) return "COMPONENT_OR_TSX";
+            if (rel.includes("/hooks/") || file.startsWith("use")) return "HOOK_OR_REACT_LOGIC";
+            if (rel.includes("/types/") || rel.startsWith("types/")) return "TYPE_OR_MODEL";
+
+            return "LOGIC";
+          }
+
+          function shouldSkipDir(name) {
+            return SKIP_DIRS.has(name);
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (shouldSkipDir(entry.name)) continue;
+                walk(full, out);
+              } else if (entry.isFile()) {
+                const rel = toPosix(path.relative(ROOT, full));
+                if (CODE_EXTS.has(extOf(rel))) out.push(rel);
+              }
+            }
+
+            return out;
+          }
+
+          function appRouteFromPageFile(rel) {
+            if (!rel.startsWith("app/") || !rel.endsWith("/page.tsx")) return null;
+
+            const parts = rel
+              .slice("app/".length, -"/page.tsx".length)
+              .split("/")
+              .filter(Boolean)
+              .filter((part) => !(part.startsWith("(") && part.endsWith(")")));
+
+            if (!parts.length) return "/";
+
+            return "/" + parts
+              .map((part) => {
+                if (part.startsWith("[[...") && part.endsWith("]]")) return "*";
+                if (part.startsWith("[...") && part.endsWith("]")) return "*";
+                if (part.startsWith("[") && part.endsWith("]")) return ":" + part.slice(1, -1);
+                return part;
+              })
+              .join("/");
+          }
+
+          function routePatternScore(pattern, route) {
+            const pp = pattern.split("/").filter(Boolean);
+            const rr = route.split("?")[0].split("/").filter(Boolean);
+
+            if (pattern === "/" && route.split("?")[0] === "/") return 1000;
+            if (pp.length !== rr.length && !pp.includes("*")) return -1;
+
+            let score = 0;
+
+            for (let i = 0; i < pp.length; i++) {
+              const p = pp[i];
+              const r = rr[i];
+
+              if (p === "*") return score + 1;
+              if (p && p.startsWith(":")) {
+                score += 2;
+                continue;
+              }
+              if (p === r) {
+                score += 10;
+                continue;
+              }
+
+              return -1;
+            }
+
+            return score;
+          }
+
+          function buildRouteMap(files) {
+            const routes = [];
+
+            for (const rel of files) {
+              const route = appRouteFromPageFile(rel);
+              if (route) routes.push([route, rel]);
+            }
+
+            return routes;
+          }
+
+          function pageFileForRoute(route, routeMap) {
+            let best = null;
+            let bestScore = -1;
+
+            for (const [pattern, rel] of routeMap) {
+              const score = routePatternScore(pattern, route);
+
+              if (score > bestScore) {
+                best = rel;
+                bestScore = score;
+              }
+            }
+
+            return best;
+          }
+
+          function resolveImport(fromRel, specifier, filesSet) {
+            if (!specifier.startsWith(".") && !specifier.startsWith("@/")) return null;
+
+            let base;
+
+            if (specifier.startsWith("@/")) {
+              base = specifier.slice(2);
+            } else {
+              base = toPosix(path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier)));
+            }
+
+            const candidates = [
+              base,
+              `${base}.ts`,
+              `${base}.tsx`,
+              `${base}.js`,
+              `${base}.jsx`,
+              `${base}.mjs`,
+              `${base}.cjs`,
+              `${base}/index.ts`,
+              `${base}/index.tsx`,
+              `${base}/index.js`,
+              `${base}/index.jsx`
+            ];
+
+            for (const candidate of candidates) {
+              if (filesSet.has(candidate)) return candidate;
+            }
+
+            return null;
+          }
+
+          function attachedFilesFor(entry, filesSet) {
+            if (!entry) return [];
+
+            const queue = [entry];
+            const seen = new Set();
+            const out = [];
+
+            while (queue.length && out.length < MAX_ATTACHED_FILES) {
+              const rel = queue.shift();
+              if (!rel || seen.has(rel)) continue;
+
+              seen.add(rel);
+              out.push(rel);
+
+              const full = path.join(ROOT, rel);
+              if (!fs.existsSync(full)) continue;
+
+              const text = fs.readFileSync(full, "utf8");
+              const imports = importsFor(text);
+
+              for (const specifier of imports) {
+                const resolved = resolveImport(rel, specifier, filesSet);
+                if (resolved && !seen.has(resolved)) queue.push(resolved);
+              }
+            }
+
+            return out;
+          }
+
+          function writeJsonl(file, rows) {
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+            fs.writeFileSync(file, rows.map((row) => JSON.stringify(row)).join("\n") + "\n");
+          }
+
+          function sourceRecord(rel) {
+            const full = path.join(ROOT, rel);
+            const source = fs.existsSync(full) ? fs.readFileSync(full, "utf8") : "";
+
+            return [
+              rel,
+              roleFor(rel),
+              Buffer.byteLength(source, "utf8"),
+              lineCount(source),
+              sha16(source),
+              importsFor(source),
+              exportsFor(source),
+              methodsFor(source),
+              source
+            ];
+          }
+
+          async function extractScreen(page) {
+            return await page.evaluate(() => {
+              function visible(el) {
+                const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+
+                return (
+                  style &&
+                  style.display !== "none" &&
+                  style.visibility !== "hidden" &&
+                  Number(style.opacity || "1") !== 0 &&
+                  rect.width > 0 &&
+                  rect.height > 0
+                );
+              }
+
+              function textOf(el) {
+                return (el.innerText || el.textContent || "")
+                  .replace(/\s+/g, " ")
+                  .trim()
+                  .slice(0, 160);
+              }
+
+              function labelOf(el) {
+                const aria = el.getAttribute("aria-label");
+                if (aria && aria.trim()) return aria.trim();
+
+                const title = el.getAttribute("title");
+                if (title && title.trim()) return title.trim();
+
+                const text = textOf(el);
+                if (text) return text;
+
+                const alt = el.getAttribute("alt");
+                if (alt && alt.trim()) return alt.trim();
+
+                const placeholder = el.getAttribute("placeholder");
+                if (placeholder && placeholder.trim()) return placeholder.trim();
+
+                return "";
+              }
+
+              function roleOf(el) {
+                const explicit = el.getAttribute("role");
+                if (explicit) return explicit;
+
+                const tag = el.tagName.toLowerCase();
+
+                if (/^h[1-6]$/.test(tag)) return "heading";
+                if (tag === "a") return "link";
+                if (tag === "button") return "button";
+                if (tag === "input" || tag === "textarea" || tag === "select") return "input";
+                if (tag === "form") return "form";
+                if (["main", "nav", "header", "footer", "aside", "section", "article"].includes(tag)) return tag;
+
+                return tag;
+              }
+
+              function important(el) {
+                const tag = el.tagName.toLowerCase();
+                const role = roleOf(el);
+
+                if (/^h[1-6]$/.test(tag)) return true;
+                if (["main", "nav", "header", "footer", "aside", "section", "article", "form", "button", "a", "input", "textarea", "select"].includes(tag)) return true;
+                if (["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem"].includes(role)) return true;
+                if (el.getAttribute("aria-label")) return true;
+                if (el.getAttribute("data-testid")) return true;
+
+                return false;
+              }
+
+              const nodes = [];
+              const links = [];
+              const actions = [];
+              const inputs = [];
+
+              const all = Array.from(document.body.querySelectorAll("*")).filter(visible);
+
+              for (const el of all) {
+                if (!important(el)) continue;
+
+                const tag = el.tagName.toLowerCase();
+                const role = roleOf(el);
+                const label = labelOf(el);
+                const href = tag === "a" ? el.getAttribute("href") : "";
+                const testid = el.getAttribute("data-testid") || "";
+                const id = el.id || "";
+                const cls = typeof el.className === "string" ? el.className.slice(0, 120) : "";
+
+                const record = [
+                  role,
+                  tag,
+                  label,
+                  href || "",
+                  id,
+                  testid,
+                  cls
+                ];
+
+                nodes.push(record);
+
+                if (tag === "a" && href) links.push(record);
+                if (tag === "button" || role === "button") actions.push(record);
+                if (["input", "textarea", "select"].includes(tag)) inputs.push(record);
+              }
+
+              const title =
+                document.querySelector("h1")?.innerText?.trim() ||
+                document.title ||
+                location.pathname;
+
+              return {
+                title,
+                nodes,
+                links,
+                actions,
+                inputs
+              };
+            });
+          }
+
+          async function main() {
+            await waitForServer(BASE_URL);
+
+            fs.rmSync(OUT, { recursive: true, force: true });
+            fs.mkdirSync(OUT, { recursive: true });
+
+            const sourceFiles = walk(ROOT).sort();
+            const sourceFilesSet = new Set(sourceFiles);
+            const routeMap = buildRouteMap(sourceFiles);
+
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+
+            const queue = [{ route: "/", trail: ["Home"], depth: 0 }];
+            const seenRoutes = new Set();
+
+            while (queue.length && seenRoutes.size < MAX_PAGES) {
+              const item = queue.shift();
+              const route = item.route.split("#")[0];
+
+              if (seenRoutes.has(route)) continue;
+              seenRoutes.add(route);
+
+              const url = BASE_URL + route;
+
+              try {
+                await page.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+                await sleep(750);
+              } catch {
+                continue;
+              }
+
+              const screen = await extractScreen(page);
+              const pageTitle = sanitizeSegment(screen.title, routeToFallbackName(route));
+              const trail = item.trail.length ? item.trail : routeToFallbackName(route).split("/");
+              const screenDir = path.join(OUT, ...trail.map((part) => sanitizeSegment(part)));
+
+              const pageFile = pageFileForRoute(route, routeMap);
+              const attached = attachedFilesFor(pageFile, sourceFilesSet);
+
+              writeJsonl(path.join(screenDir, "screen.nodes.jsonl"), screen.nodes);
+              writeJsonl(path.join(screenDir, "screen.links.jsonl"), screen.links);
+              writeJsonl(path.join(screenDir, "screen.actions.jsonl"), screen.actions);
+              writeJsonl(path.join(screenDir, "screen.inputs.jsonl"), screen.inputs);
+
+              writeJsonl(path.join(screenDir, "attached.source.jsonl"), attached.map(sourceRecord));
+
+              const children = [];
+
+              for (const link of screen.links) {
+                const label = sanitizeSegment(link[2] || link[3], "");
+                const href = normalizeUrl(link[3]);
+
+                if (!href || !label) continue;
+                if (seenRoutes.has(href)) continue;
+
+                children.push([label, href]);
+              }
+
+              writeJsonl(path.join(screenDir, "screen.children.jsonl"), children);
+
+              if (item.depth < MAX_DEPTH) {
+                for (const [label, href] of children) {
+                  queue.push({
+                    route: href,
+                    trail: [...trail, label],
+                    depth: item.depth + 1
+                  });
+                }
+              }
+            }
+
+            await browser.close();
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Zip screen codebase
+        run: |
+          cd __screen_codebase__
+          zip -qr ../screen-codebase.zip .
+
+      - name: Upload screen codebase ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: screen-codebase
+          path: screen-codebase.zip
+          include-hidden-files: false
+          compression-level: 9
+
+      - name: Stop app
+        if: always()
+        run: |
+          if [ -f __next-screen-codebase.pid ]; then
+            kill "$(cat __next-screen-codebase.pid)" || true
+          fi
