@@ -1,0 +1,1226 @@
+name: Export Round Trip Website Interface
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-round-trip-website-interface:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install source parser
+        run: |
+          node -e "require('node:fs').mkdirSync('__de_interface_tools__',{recursive:true});require('node:fs').writeFileSync('__de_interface_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __de_interface_tools__ install @babel/parser@latest --no-package-lock --silent
+
+      - name: Export round trip website interface
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, "__dreamengin_interface_roundtrip__");
+          const META = path.join(OUT, ".de");
+          const requireTools = createRequire(path.join(ROOT, "__de_interface_tools__", "package.json"));
+          const parser = requireTools("@babel/parser");
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            ".ci",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".cache",
+            "__de_interface_tools__",
+            "__dreamengin_interface_roundtrip__"
+          ]);
+
+          const SOURCE_EXTS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]);
+          const JSX_EXTS = new Set([".tsx", ".jsx"]);
+          const STYLE_EXTS = new Set([".css", ".scss", ".sass"]);
+          const TEXT_EXTS = new Set([...SOURCE_EXTS, ...STYLE_EXTS]);
+
+          const GENERIC_NAMES = new Set([
+            "div", "span", "fragment", "react fragment", "container", "wrapper", "content",
+            "layout", "page", "default", "module", "anonymous", "index", "root", "item",
+            "node", "element", "component", "view", "screen", "section"
+          ]);
+
+          const ICON_NAMES = new Set([
+            "svg", "path", "circle", "rect", "line", "polyline", "polygon", "g", "defs",
+            "mask", "lucideicon", "icon", "chevronright", "chevronleft", "chevrondown",
+            "chevronup", "search", "x", "plus", "minus", "menu", "settings", "user",
+            "users", "bell", "mail", "messagecircle", "send", "heart", "star", "play",
+            "pause", "camera", "image", "upload", "download", "edit", "trash", "check",
+            "arrowleft", "arrowright", "loader", "loader2", "sparkles"
+          ]);
+
+          const IMPORTANT_ATTRS = new Set([
+            "role",
+            "href",
+            "id",
+            "className",
+            "class",
+            "data-testid",
+            "data-test",
+            "aria-label",
+            "aria-haspopup",
+            "aria-controls",
+            "aria-expanded",
+            "aria-selected",
+            "aria-current",
+            "title",
+            "placeholder",
+            "type",
+            "name",
+            "value",
+            "defaultValue",
+            "checked",
+            "disabled",
+            "open",
+            "selected"
+          ]);
+
+          function posix(value) {
+            return value.split(path.sep).join("/");
+          }
+
+          function ext(rel) {
+            return path.posix.extname(rel).toLowerCase();
+          }
+
+          function sha16(value) {
+            return crypto.createHash("sha256").update(String(value)).digest("hex").slice(0, 16);
+          }
+
+          function sha32(value) {
+            return crypto.createHash("sha256").update(String(value)).digest("hex").slice(0, 32);
+          }
+
+          function cleanWords(value) {
+            return String(value ?? "")
+              .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+              .replace(/[_./:@#-]+/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+
+          function titleCase(value) {
+            return cleanWords(value).replace(/\b\w/g, (m) => m.toUpperCase());
+          }
+
+          function sanitize(value, fallback = "Unnamed") {
+            const clean = titleCase(value)
+              .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
+              .replace(/\.$/, "")
+              .slice(0, 96)
+              .trim();
+
+            return clean || fallback;
+          }
+
+          function safeFileName(value, fallback = "source") {
+            const base = sanitize(value, fallback)
+              .replace(/\s+/g, "-")
+              .toLowerCase()
+              .replace(/[^a-z0-9._-]/g, "-")
+              .replace(/-+/g, "-")
+              .replace(/^-|-$/g, "");
+
+            return base || fallback;
+          }
+
+          function usableName(value) {
+            const name = sanitize(value, "");
+            if (!name) return "";
+            if (GENERIC_NAMES.has(name.toLowerCase())) return "";
+            if (/^(node|item|element|component|view|section)\s+\d+$/i.test(name)) return "";
+            return name;
+          }
+
+          function sourceNoun(rel) {
+            const base = path.posix.basename(rel || "").replace(/\.(tsx|jsx|ts|js|mjs|cjs|css|scss|sass)$/i, "");
+            const parent = path.posix.basename(path.posix.dirname(rel || ""));
+            if (/^(page|layout|index|route|loading|error|not-found)$/i.test(base)) return sanitize(parent || base);
+            return sanitize(base || parent || "Source");
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) walk(full, out);
+                continue;
+              }
+              if (!entry.isFile()) continue;
+              const rel = posix(path.relative(ROOT, full));
+              if (TEXT_EXTS.has(ext(rel))) out.push(rel);
+            }
+            return out;
+          }
+
+          function parseSource(source) {
+            return parser.parse(source, {
+              sourceType: "module",
+              errorRecovery: true,
+              plugins: [
+                "jsx",
+                "typescript",
+                "classProperties",
+                "classPrivateProperties",
+                "classPrivateMethods",
+                "decorators-legacy",
+                "objectRestSpread",
+                "dynamicImport",
+                "optionalChaining",
+                "nullishCoalescingOperator",
+                "topLevelAwait",
+                "importMeta"
+              ]
+            });
+          }
+
+          function childNodes(node) {
+            const out = [];
+            if (!node || typeof node !== "object") return out;
+
+            for (const key of Object.keys(node)) {
+              if (
+                key === "loc" ||
+                key === "start" ||
+                key === "end" ||
+                key === "leadingComments" ||
+                key === "trailingComments" ||
+                key === "innerComments" ||
+                key === "extra"
+              ) {
+                continue;
+              }
+
+              const value = node[key];
+              if (Array.isArray(value)) {
+                for (const child of value) {
+                  if (child && typeof child === "object" && child.type) out.push(child);
+                }
+              } else if (value && typeof value === "object" && value.type) {
+                out.push(value);
+              }
+            }
+
+            return out;
+          }
+
+          function sourceOf(source, node) {
+            if (!node || node.start == null || node.end == null) return "";
+            return source.slice(node.start, node.end);
+          }
+
+          function rangeFor(rel, source, start, end, kind) {
+            const slice = source.slice(start, end);
+            return {
+              kind,
+              sourcePath: rel,
+              start,
+              end,
+              hash: sha16(slice)
+            };
+          }
+
+          function rangeKey(range) {
+            return `${range.kind}:${range.sourcePath}:${range.start}:${range.end}:${range.hash}`;
+          }
+
+          function writeText(file, value) {
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+            fs.writeFileSync(file, value);
+          }
+
+          function writeJson(file, value) {
+            writeText(file, JSON.stringify(value, null, 2) + "\n");
+          }
+
+          function writeJsonl(file, rows) {
+            writeText(file, rows.map((row) => JSON.stringify(row)).join("\n") + (rows.length ? "\n" : ""));
+          }
+
+          function writeRangeFile(dir, fileName, range, source, written = null) {
+            if (!range) return false;
+            const key = rangeKey(range);
+            if (written && written.has(key)) return false;
+
+            const text = source.slice(range.start, range.end);
+            if (!text.trim()) return false;
+            if (sha16(text) !== range.hash) throw new Error(`Range hash mismatch while writing ${rangeKey(range)}`);
+
+            if (written) written.add(key);
+            writeText(path.join(dir, fileName), text);
+            return true;
+          }
+
+          function jsxName(nameNode) {
+            if (!nameNode) return "";
+            if (nameNode.type === "JSXIdentifier") return nameNode.name;
+            if (nameNode.type === "JSXMemberExpression") {
+              const parts = [];
+              let cursor = nameNode;
+              while (cursor) {
+                if (cursor.property?.name) parts.unshift(cursor.property.name);
+                if (cursor.object?.name) {
+                  parts.unshift(cursor.object.name);
+                  break;
+                }
+                cursor = cursor.object;
+              }
+              return parts.join(".");
+            }
+            if (nameNode.type === "JSXNamespacedName") return `${nameNode.namespace?.name || ""}:${nameNode.name?.name || ""}`;
+            return "";
+          }
+
+          function attrName(attr) {
+            if (!attr || attr.type !== "JSXAttribute") return "";
+            const name = attr.name;
+            if (!name) return "";
+            if (name.type === "JSXIdentifier") return name.name;
+            if (name.type === "JSXNamespacedName") return `${name.namespace?.name || ""}:${name.name?.name || ""}`;
+            return "";
+          }
+
+          function rawAttrValue(attr, source) {
+            if (!attr || attr.type !== "JSXAttribute") return "";
+            if (!attr.value) return "true";
+            if (attr.value.type === "StringLiteral") return attr.value.value || "";
+            if (attr.value.type === "JSXExpressionContainer") {
+              const expr = attr.value.expression;
+              if (!expr) return "";
+              if (expr.type === "StringLiteral") return expr.value || "";
+              if (expr.type === "NumericLiteral" || expr.type === "BooleanLiteral") return String(expr.value);
+              if (expr.type === "Identifier") return expr.name;
+              return sourceOf(source, expr);
+            }
+            return "";
+          }
+
+          function attrsOf(opening, source) {
+            const attrs = Object.create(null);
+            for (const attr of opening.attributes || []) {
+              const name = attrName(attr);
+              if (!name) continue;
+              attrs[name] = rawAttrValue(attr, source);
+            }
+            return attrs;
+          }
+
+          function textFromJSX(node) {
+            const pieces = [];
+            function visit(child) {
+              if (!child) return;
+              if (child.type === "JSXText") {
+                const text = child.value.replace(/\s+/g, " ").trim();
+                if (text) pieces.push(text);
+                return;
+              }
+              if (child.type === "JSXExpressionContainer") {
+                const expr = child.expression;
+                if (expr?.type === "StringLiteral") pieces.push(expr.value);
+                return;
+              }
+              for (const next of childNodes(child)) visit(next);
+            }
+            for (const child of node.children || []) visit(child);
+            return pieces.join(" ").replace(/\s+/g, " ").trim().slice(0, 140);
+          }
+
+          function isDomTag(name) {
+            return /^[a-z][a-z0-9:-]*$/.test(name);
+          }
+
+          function isComponentTag(name) {
+            return /^[A-Z]/.test(name || "") || String(name || "").includes(".");
+          }
+
+          function hasHandler(attrs) {
+            return Object.keys(attrs).some((name) => /^on[A-Z]/.test(name));
+          }
+
+          function isLikelyExternalIcon(tag, attrs) {
+            const simple = String(tag || "").split(".").pop().toLowerCase();
+            if (!ICON_NAMES.has(simple)) return false;
+            if (hasHandler(attrs)) return false;
+            if (attrs.role || attrs["aria-label"] || attrs.title || attrs.href || attrs.id || attrs["data-testid"]) return false;
+            return true;
+          }
+
+          function behaviorFor(tag, attrs) {
+            const lowerTag = String(tag || "").toLowerCase();
+            const role = String(attrs.role || "").toLowerCase();
+            const type = String(attrs.type || "").toLowerCase();
+            const text = `${lowerTag} ${role} ${type} ${attrs["aria-haspopup"] || ""} ${attrs["aria-controls"] || ""}`;
+
+            if (/\b(dialog|modal|sheet|drawer|popover|overlay|toast)\b/.test(text)) return "Overlay";
+            if (/\b(menu|menubar|menuitem|command|palette|search)\b/.test(text)) return "Menu";
+            if (/\b(tab|tabpanel|tabs)\b/.test(text)) return "Tab Panel";
+            if (lowerTag === "button" || role === "button" || hasHandler(attrs)) return "Action";
+            if (lowerTag === "a" || role === "link" || attrs.href) return "Navigation";
+            if (lowerTag === "form") return "Form";
+            if (["input", "textarea", "select"].includes(lowerTag) || ["textbox", "checkbox", "radio", "switch", "slider", "combobox"].includes(role) || (type && type !== "button")) return "Input";
+            if (/^h[1-6]$/.test(lowerTag)) return "Heading";
+            if (["main", "nav", "header", "footer", "aside", "section", "article"].includes(lowerTag)) return "Region";
+            if (isComponentTag(tag)) return "Component";
+            return "Interface";
+          }
+
+          function meaningfulName(tag, attrs, text, ownerName, rel) {
+            const candidates = [
+              attrs["aria-label"],
+              attrs.title,
+              attrs.placeholder,
+              attrs["data-testid"],
+              attrs["data-test"],
+              attrs.id,
+              attrs.name,
+              text,
+              tag,
+              ownerName,
+              sourceNoun(rel)
+            ];
+
+            for (const value of candidates) {
+              const name = usableName(value);
+              if (name) return name;
+            }
+
+            return behaviorFor(tag, attrs);
+          }
+
+          function shouldEmit(tag, attrs, text, ownerName) {
+            if (isLikelyExternalIcon(tag, attrs)) return false;
+            if (hasHandler(attrs)) return true;
+            if (isComponentTag(tag) && usableName(tag)) return true;
+
+            const lowerTag = String(tag || "").toLowerCase();
+            const role = String(attrs.role || "").toLowerCase();
+
+            if (["button", "a", "input", "textarea", "select", "form", "summary", "dialog", "nav", "main", "header", "footer", "aside", "section", "article"].includes(lowerTag)) return true;
+            if (/^h[1-6]$/.test(lowerTag)) return true;
+            if (["button", "link", "menu", "menuitem", "tab", "tabpanel", "dialog", "search", "form", "textbox", "switch", "checkbox", "radio", "combobox"].includes(role)) return true;
+            if (attrs["aria-label"] || attrs["aria-haspopup"] || attrs["aria-controls"] || attrs["data-testid"] || attrs.id) return true;
+
+            const combined = `${tag} ${ownerName} ${text}`;
+            if (/\b(menu|panel|drawer|dialog|modal|tab|feed|profile|message|media|workspace|surface|canvas|viewport|shell|widget|window|search|settings|connector|launcher|composer|editor|toolbar|bar|card|engin|dream|comment|post|upload|asset|game|room|thread|conversation|notification)\b/i.test(combined)) return true;
+
+            return false;
+          }
+
+          function conditionText(source, node, fallback = "Condition") {
+            return sanitize(sourceOf(source, node) || fallback, fallback).slice(0, 90);
+          }
+
+          function containsRange(parent, child) {
+            return parent && child && parent.start != null && parent.end != null && child.start >= parent.start && child.end <= parent.end;
+          }
+
+          function conditionPartsFor(node, ancestors, source) {
+            const parts = [];
+
+            for (const ancestor of ancestors) {
+              if (ancestor.type === "ConditionalExpression") {
+                const test = conditionText(source, ancestor.test, "Condition");
+                if (containsRange(ancestor.consequent, node)) parts.push(`When ${test}`);
+                if (containsRange(ancestor.alternate, node)) parts.push(`Otherwise ${test}`);
+              }
+
+              if (ancestor.type === "LogicalExpression" && ["&&", "||", "??"].includes(ancestor.operator)) {
+                const test = conditionText(source, ancestor.left, "Condition");
+                if (containsRange(ancestor.right, node)) {
+                  parts.push(ancestor.operator === "&&" ? `When ${test}` : `Fallback ${test}`);
+                }
+              }
+
+              if (
+                ancestor.type === "CallExpression" &&
+                ancestor.callee?.type === "MemberExpression" &&
+                ancestor.callee.property?.name === "map"
+              ) {
+                const collection = conditionText(source, ancestor.callee.object, "Items");
+                parts.push(`Repeated ${collection}`);
+              }
+            }
+
+            return parts;
+          }
+
+          function ownerFrom(node, ancestors, source) {
+            const parent = ancestors[ancestors.length - 1];
+            const grand = ancestors[ancestors.length - 2];
+
+            if (node.type === "FunctionDeclaration") {
+              const wrapper = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type) ? parent : node;
+              return {
+                name: node.id?.name || "Default",
+                start: wrapper.start,
+                end: wrapper.end,
+                source: sourceOf(source, wrapper)
+              };
+            }
+
+            if (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") {
+              if (parent?.type === "VariableDeclarator" && grand?.type === "VariableDeclaration") {
+                return {
+                  name: parent.id?.name || "Anonymous",
+                  start: grand.start,
+                  end: grand.end,
+                  source: sourceOf(source, grand)
+                };
+              }
+
+              if (parent?.type === "ExportDefaultDeclaration") {
+                return {
+                  name: "Default",
+                  start: parent.start,
+                  end: parent.end,
+                  source: sourceOf(source, parent)
+                };
+              }
+
+              return {
+                name: node.id?.name || "Anonymous",
+                start: node.start,
+                end: node.end,
+                source: sourceOf(source, node)
+              };
+            }
+
+            if (node.type === "ClassDeclaration") {
+              return {
+                name: node.id?.name || "Class",
+                start: node.start,
+                end: node.end,
+                source: sourceOf(source, node)
+              };
+            }
+
+            if (node.type === "ClassMethod" || node.type === "ObjectMethod") {
+              return {
+                name: node.key?.name || "Method",
+                start: node.start,
+                end: node.end,
+                source: sourceOf(source, node)
+              };
+            }
+
+            return null;
+          }
+
+          function collectIds(node, out = new Set()) {
+            if (!node || typeof node !== "object") return out;
+            if (node.type === "Identifier") out.add(node.name);
+            if (node.type === "JSXIdentifier") out.add(node.name);
+            for (const child of childNodes(node)) collectIds(child, out);
+            return out;
+          }
+
+          function returnedJSX(node) {
+            let found = false;
+            function visit(current) {
+              if (!current || found) return;
+              if (current.type === "JSXElement" || current.type === "JSXFragment") {
+                found = true;
+                return;
+              }
+              for (const child of childNodes(current)) visit(child);
+            }
+            visit(node);
+            return found;
+          }
+
+          function collectDefsImportsExports(ast, source, rel) {
+            const defs = Object.create(null);
+            const imports = Object.create(null);
+            const exports = [];
+            const components = [];
+
+            function recordDef(name, node, kind = "definition") {
+              if (!name || !node || node.start == null || node.end == null) return;
+              defs[name] = rangeFor(rel, source, node.start, node.end, kind);
+            }
+
+            function recordComponent(name, node, wrapper) {
+              if (!name || !node || node.start == null || node.end == null) return;
+              if (!returnedJSX(node)) return;
+              components.push({
+                name,
+                range: rangeFor(rel, source, (wrapper || node).start, (wrapper || node).end, "component"),
+                folderSeed: `${rel}:${name}:${(wrapper || node).start}:${(wrapper || node).end}`
+              });
+            }
+
+            function visit(node, ancestors = []) {
+              const parent = ancestors[ancestors.length - 1];
+              const grand = ancestors[ancestors.length - 2];
+
+              if (node.type === "ImportDeclaration") {
+                for (const spec of node.specifiers || []) {
+                  if (spec.local?.name) imports[spec.local.name] = node.source?.value || "";
+                }
+              }
+
+              if (node.type === "ExportNamedDeclaration" || node.type === "ExportDefaultDeclaration") {
+                exports.push({
+                  type: node.type,
+                  start: node.start,
+                  end: node.end,
+                  source: sourceOf(source, node).slice(0, 500)
+                });
+              }
+
+              if (node.type === "FunctionDeclaration" && node.id?.name) {
+                const wrapper = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type) ? parent : node;
+                recordDef(node.id.name, wrapper);
+                recordComponent(node.id.name, node, wrapper);
+              }
+
+              if (
+                parent?.type === "VariableDeclarator" &&
+                grand?.type === "VariableDeclaration" &&
+                parent.id?.type === "Identifier" &&
+                (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression")
+              ) {
+                const wrapper = ancestors[ancestors.length - 3]?.type === "ExportNamedDeclaration" ? ancestors[ancestors.length - 3] : grand;
+                recordDef(parent.id.name, wrapper);
+                recordComponent(parent.id.name, node, wrapper);
+              }
+
+              if (node.type === "ClassDeclaration" && node.id?.name) {
+                recordDef(node.id.name, node);
+              }
+
+              for (const child of childNodes(node)) visit(child, ancestors.concat(node));
+            }
+
+            visit(ast.program, []);
+            return { defs, imports, exports, components };
+          }
+
+          function resolveImport(fromRel, specifier, fileIndex) {
+            if (typeof specifier !== "string") return null;
+            if (!specifier || (!specifier.startsWith(".") && !specifier.startsWith("@/") && !specifier.startsWith("~/"))) return null;
+
+            const base = specifier.startsWith("@/") || specifier.startsWith("~/")
+              ? specifier.slice(2)
+              : path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier));
+
+            const candidates = [
+              base,
+              `${base}.ts`,
+              `${base}.tsx`,
+              `${base}.js`,
+              `${base}.jsx`,
+              `${base}.mjs`,
+              `${base}.cjs`,
+              `${base}/index.ts`,
+              `${base}/index.tsx`,
+              `${base}/index.js`,
+              `${base}/index.jsx`
+            ];
+
+            return candidates.find((candidate) => fileIndex[candidate]) || null;
+          }
+
+          function collectCalls(node, out = new Set()) {
+            if (!node || typeof node !== "object") return out;
+            if (node.type === "CallExpression") {
+              if (node.callee?.type === "Identifier") out.add(node.callee.name);
+              if (node.callee?.type === "MemberExpression" && node.callee.property?.type === "Identifier") out.add(node.callee.property.name);
+            }
+            for (const child of childNodes(node)) collectCalls(child, out);
+            return out;
+          }
+
+          function attrSubset(attrs) {
+            const out = Object.create(null);
+            for (const [name, value] of Object.entries(attrs)) {
+              if (IMPORTANT_ATTRS.has(name) || /^on[A-Z]/.test(name)) out[name] = value;
+            }
+            return out;
+          }
+
+          function classNamesFromAttrs(attrs) {
+            const raw = attrs.className || attrs.class || "";
+            if (!raw || /[`${}{]/.test(raw)) return [];
+            return raw.split(/\s+/).map((item) => item.trim()).filter(Boolean).slice(0, 40);
+          }
+
+          function collectStyleMatches(classNames, styleFiles) {
+            const out = [];
+            for (const className of classNames) {
+              const escaped = className.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              const re = new RegExp(`\\.${escaped}(?:[\\s.#:{>+~,\\[])[\\s\\S]*?\\}`, "g");
+              for (const style of styleFiles) {
+                const matches = style.source.match(re) || [];
+                for (const match of matches.slice(0, 8)) {
+                  out.push({
+                    className,
+                    sourcePath: style.rel,
+                    source: match
+                  });
+                }
+              }
+            }
+            return out.slice(0, 50);
+          }
+
+          function ownerPathFromStack(ownerStack, rel) {
+            const parts = [];
+            for (const owner of ownerStack) {
+              const name = usableName(owner.name);
+              if (!name) continue;
+              if (parts[parts.length - 1] === name) continue;
+              parts.push(name);
+            }
+            if (!parts.length) {
+              const source = usableName(sourceNoun(rel));
+              if (source) parts.push(source);
+            }
+            return parts.slice(-7);
+          }
+
+          function stableFolderId(data) {
+            return sha32([
+              data.sourcePath,
+              data.ownerName,
+              data.rangeStart,
+              data.rangeEnd,
+              data.tag,
+              data.label,
+              data.behavior
+            ].join("|"));
+          }
+
+          function buildDirPath(parts, folderId, usedDirs) {
+            const clean = parts
+              .map((part) => sanitize(part))
+              .filter(Boolean)
+              .filter((part, index, arr) => index === 0 || part !== arr[index - 1]);
+
+            const base = clean.join("/") || "Interface";
+            let final = base;
+
+            if (usedDirs.has(final)) final = `${base} - ${folderId.slice(0, 8)}`;
+
+            let i = 2;
+            while (usedDirs.has(final)) {
+              final = `${base} - ${folderId.slice(0, 8)} ${i}`;
+              i++;
+            }
+
+            usedDirs.add(final);
+            return final;
+          }
+
+          function registryNameFromObject(node, source) {
+            if (!node || node.type !== "ObjectExpression") return "";
+            const keys = ["label", "title", "name", "displayName", "id", "key", "slug"];
+            for (const prop of node.properties || []) {
+              const key = prop.key?.name || prop.key?.value;
+              if (!keys.includes(key)) continue;
+              if (prop.value?.type === "StringLiteral") return prop.value.value;
+              if (prop.value?.type === "Identifier") return prop.value.name;
+            }
+            return "";
+          }
+
+          function componentRefsFromObject(node) {
+            const refs = [];
+            if (!node || node.type !== "ObjectExpression") return refs;
+            for (const prop of node.properties || []) {
+              const key = prop.key?.name || prop.key?.value || "";
+              if (!/component|view|render|panel|screen|surface|engin|widget/i.test(key)) continue;
+              const value = prop.value;
+              if (value?.type === "Identifier") refs.push(value.name);
+              if (value?.type === "JSXElement") refs.push(jsxName(value.openingElement?.name));
+              if (value?.type === "ArrowFunctionExpression" || value?.type === "FunctionExpression") {
+                for (const id of collectIds(value)) refs.push(id);
+              }
+            }
+            return Array.from(new Set(refs.filter(Boolean)));
+          }
+
+          function collectRegistryGraph(ast, source, rel) {
+            const rows = [];
+            function visit(node, ancestors = []) {
+              if (node.type === "ObjectExpression") {
+                const label = registryNameFromObject(node, source);
+                const refs = componentRefsFromObject(node);
+                const raw = sourceOf(source, node);
+                if (
+                  label &&
+                  (refs.length ||
+                    /\b(menu|panel|drawer|dialog|modal|tab|feed|profile|message|workspace|surface|launcher|composer|editor|toolbar|card|engin|dream|route|path|href)\b/i.test(raw))
+                ) {
+                  rows.push({
+                    registryId: sha32(`${rel}:${node.start}:${node.end}:${label}`),
+                    label: sanitize(label),
+                    sourcePath: rel,
+                    range: rangeFor(rel, source, node.start, node.end, "registry"),
+                    componentRefs: refs
+                  });
+                }
+              }
+              for (const child of childNodes(node)) visit(child, ancestors.concat(node));
+            }
+            visit(ast.program, []);
+            return rows;
+          }
+
+          const allFiles = walk(ROOT).sort();
+          const sourceFiles = allFiles.filter((rel) => SOURCE_EXTS.has(ext(rel)));
+          const jsxFiles = allFiles.filter((rel) => JSX_EXTS.has(ext(rel)));
+          const styleFiles = allFiles
+            .filter((rel) => STYLE_EXTS.has(ext(rel)))
+            .map((rel) => ({ rel, source: fs.readFileSync(path.join(ROOT, rel), "utf8") }));
+
+          fs.rmSync(OUT, { recursive: true, force: true });
+          fs.mkdirSync(META, { recursive: true });
+
+          const sourceCache = new Map();
+          const astCache = new Map();
+          const fileIndex = Object.create(null);
+          const parseFailures = [];
+
+          for (const rel of sourceFiles) {
+            const source = fs.readFileSync(path.join(ROOT, rel), "utf8");
+            sourceCache.set(rel, source);
+
+            try {
+              const ast = parseSource(source);
+              astCache.set(rel, ast);
+              const info = collectDefsImportsExports(ast, source, rel);
+              fileIndex[rel] = {
+                rel,
+                sourceHash: sha16(source),
+                defs: info.defs,
+                imports: info.imports,
+                exports: info.exports,
+                components: info.components
+              };
+            } catch (error) {
+              parseFailures.push({
+                sourcePath: rel,
+                error: String(error && error.message ? error.message : error)
+              });
+              fileIndex[rel] = {
+                rel,
+                sourceHash: sha16(source),
+                defs: Object.create(null),
+                imports: Object.create(null),
+                exports: [],
+                components: []
+              };
+            }
+          }
+
+          const importGraph = [];
+          for (const rel of sourceFiles) {
+            const info = fileIndex[rel];
+            for (const [localName, specifier] of Object.entries(info.imports)) {
+              importGraph.push({
+                sourcePath: rel,
+                localName,
+                specifier,
+                resolvedPath: resolveImport(rel, specifier, fileIndex)
+              });
+            }
+          }
+
+          const registryGraph = [];
+          for (const rel of sourceFiles) {
+            const ast = astCache.get(rel);
+            const source = sourceCache.get(rel);
+            if (!ast || !source) continue;
+            registryGraph.push(...collectRegistryGraph(ast, source, rel));
+          }
+
+          const folderRows = [];
+          const folderIdMap = [];
+          const sourceRangeMap = [];
+          const handlerGraph = [];
+          const componentCatalog = [];
+          const usedDirs = new Set();
+          const ownerWritten = new Set();
+          const emittedRangeKeys = new Set();
+
+          for (const rel of sourceFiles) {
+            for (const component of fileIndex[rel].components || []) {
+              componentCatalog.push({
+                componentId: sha32(component.folderSeed),
+                name: component.name,
+                sourcePath: rel,
+                range: component.range
+              });
+            }
+          }
+
+          function writeElementFolder({
+            rel,
+            source,
+            node,
+            opening,
+            tag,
+            attrs,
+            text,
+            ownerStack,
+            uiStack,
+            ancestors,
+            currentOwner
+          }) {
+            const label = meaningfulName(tag, attrs, text, currentOwner.name, rel);
+            const behavior = behaviorFor(tag, attrs);
+            const conditionParts = conditionPartsFor(node, ancestors, source);
+            const ownerParts = ownerPathFromStack(ownerStack, rel);
+            const ancestorUiParts = uiStack.map((item) => item.label).filter(Boolean).slice(-12);
+            const interfacePath = conditionParts.concat(ancestorUiParts).concat([label]).filter(Boolean);
+            const viewRange = rangeFor(rel, source, node.start, node.end, "view");
+            const ownerRange = rangeFor(rel, source, currentOwner.start, currentOwner.end, "owner");
+            const folderId = stableFolderId({
+              sourcePath: rel,
+              ownerName: currentOwner.name,
+              rangeStart: node.start,
+              rangeEnd: node.end,
+              tag,
+              label,
+              behavior
+            });
+
+            const folderPath = buildDirPath(ownerParts.concat(interfacePath), folderId, usedDirs);
+            const dir = path.join(OUT, folderPath);
+
+            writeRangeFile(dir, "component.tsx", viewRange, source);
+            emittedRangeKeys.add(rangeKey(viewRange));
+            writeRangeFile(path.join(dir, "_Owner Source"), `${safeFileName(currentOwner.name, "owner")}.tsx`, ownerRange, source, ownerWritten);
+
+            const handlers = [];
+            for (const attr of opening.attributes || []) {
+              const name = attrName(attr);
+              if (!/^on[A-Z]/.test(name)) continue;
+              const expr = attr.value?.type === "JSXExpressionContainer" ? attr.value.expression : null;
+              if (!expr) continue;
+
+              const handlerRange = rangeFor(rel, source, expr.start, expr.end, "handler-ref");
+              const ref = expr.type === "Identifier" ? expr.name : "";
+              const calls = Array.from(collectCalls(expr));
+
+              writeRangeFile(path.join(dir, "Handlers"), `${safeFileName(name, "handler")}.tsx`, handlerRange, source);
+
+              const handlerRow = {
+                folderId,
+                event: name,
+                ref,
+                calls,
+                sourcePath: rel,
+                range: handlerRange,
+                definition: null,
+                importedDefinition: null
+              };
+
+              if (ref && Object.hasOwn(fileIndex[rel].defs, ref)) {
+                const defRange = fileIndex[rel].defs[ref];
+                writeRangeFile(path.join(dir, "Handlers"), `${safeFileName(name + "-" + ref, "handler-definition")}.tsx`, defRange, source);
+                handlerRow.definition = defRange;
+              }
+
+              const specifier = ref && Object.hasOwn(fileIndex[rel].imports, ref) ? fileIndex[rel].imports[ref] : null;
+              const resolved = resolveImport(rel, specifier, fileIndex);
+              if (resolved && Object.hasOwn(fileIndex[resolved].defs, ref)) {
+                const importedSource = sourceCache.get(resolved);
+                const defRange = fileIndex[resolved].defs[ref];
+                writeRangeFile(path.join(dir, "Handlers"), `${safeFileName(name + "-" + ref + "-imported", "handler-imported-definition")}.tsx`, defRange, importedSource);
+                handlerRow.importedDefinition = defRange;
+              }
+
+              handlers.push(handlerRow);
+              handlerGraph.push(handlerRow);
+            }
+
+            const ids = Array.from(collectIds(node)).slice(0, 220);
+            const localWritten = new Set();
+            const importedWritten = new Set();
+
+            for (const id of ids) {
+              if (Object.hasOwn(fileIndex[rel].defs, id)) {
+                writeRangeFile(path.join(dir, "Local Definitions"), `${safeFileName(id, "definition")}.tsx`, fileIndex[rel].defs[id], source, localWritten);
+              }
+
+              const specifier = Object.hasOwn(fileIndex[rel].imports, id) ? fileIndex[rel].imports[id] : null;
+              const resolved = resolveImport(rel, specifier, fileIndex);
+              if (resolved && Object.hasOwn(fileIndex[resolved].defs, id)) {
+                const importedSource = sourceCache.get(resolved);
+                writeRangeFile(path.join(dir, "Imported Definitions"), `${safeFileName(id, "imported-definition")}.tsx`, fileIndex[resolved].defs[id], importedSource, importedWritten);
+              }
+            }
+
+            for (const match of collectStyleMatches(classNamesFromAttrs(attrs), styleFiles)) {
+              writeText(path.join(dir, "Styles", `${safeFileName(match.className, "class")}.css`), match.source + "\n");
+            }
+
+            const sourceIdentity = {
+              folderId,
+              folderPath,
+              kind: "website-interface-folder",
+              label,
+              behavior,
+              sourcePath: rel,
+              sourceHash: sha16(source),
+              originalRange: viewRange,
+              owner: {
+                name: currentOwner.name,
+                sourcePath: rel,
+                range: ownerRange
+              },
+              ownerPath: ownerParts,
+              interfacePath,
+              tag,
+              isDomTag: isDomTag(tag),
+              attrs: attrSubset(attrs),
+              handlers,
+              referencedIdentifiers: ids,
+              registryRefs: registryGraph.filter((row) => row.componentRefs.includes(tag) || row.componentRefs.includes(currentOwner.name)).map((row) => row.registryId),
+              roundTrip: {
+                editable: true,
+                stableIdentity: true,
+                applyRequiresHashMatch: true,
+                moveMeaning: "folder path is intended website/interface placement",
+                editMeaning: "component.tsx and sibling source slices are source edits against original ranges",
+                physicalMoveRequiresApplyWorkflow: true
+              }
+            };
+
+            writeJson(path.join(dir, ".de", "source.json"), sourceIdentity);
+
+            const publicInfo = [
+              `Folder ID: ${folderId}`,
+              `UI: ${interfacePath.join(" / ")}`,
+              `Behavior: ${behavior}`,
+              `Source: ${rel}:${viewRange.start}-${viewRange.end}`,
+              `Owner: ${currentOwner.name}`,
+              "",
+              "Edit component.tsx or related handler/definition/style slices here.",
+              "Move this folder to express intended UI placement.",
+              "The apply workflow must use .de/source.json and .de/export-map.json to patch the real repo."
+            ].join("\n");
+
+            writeText(path.join(dir, "README.txt"), publicInfo + "\n");
+
+            const folderRow = {
+              folderId,
+              folderPath,
+              label,
+              behavior,
+              sourcePath: rel,
+              originalRange: viewRange,
+              ownerName: currentOwner.name,
+              ownerPath: ownerParts,
+              interfacePath,
+              handlerCount: handlers.length,
+              tag
+            };
+
+            folderRows.push(folderRow);
+            folderIdMap.push({
+              folderId,
+              folderPath,
+              sourcePath: rel,
+              originalRange: viewRange,
+              sourceHash: sha16(source)
+            });
+            sourceRangeMap.push({
+              folderId,
+              sourcePath: rel,
+              range: viewRange,
+              hash: viewRange.hash,
+              outputFile: `${folderPath}/component.tsx`
+            });
+
+            return { folderId, label, folderPath };
+          }
+
+          for (const rel of jsxFiles) {
+            const ast = astCache.get(rel);
+            const source = sourceCache.get(rel);
+            if (!ast || !source) continue;
+
+            function visit(node, ancestors = [], ownerStack = [], uiStack = []) {
+              const owner = ownerFrom(node, ancestors, source);
+              const nextOwnerStack = owner ? ownerStack.concat(owner) : ownerStack;
+
+              if (node.type === "JSXElement" && node.openingElement) {
+                const opening = node.openingElement;
+                const tag = jsxName(opening.name);
+                const attrs = attrsOf(opening, source);
+                const text = textFromJSX(node);
+                const currentOwner = nextOwnerStack[nextOwnerStack.length - 1] || {
+                  name: sourceNoun(rel),
+                  start: 0,
+                  end: source.length,
+                  source
+                };
+
+                let emitted = null;
+                if (shouldEmit(tag, attrs, text, currentOwner.name)) {
+                  emitted = writeElementFolder({
+                    rel,
+                    source,
+                    node,
+                    opening,
+                    tag,
+                    attrs,
+                    text,
+                    ownerStack: nextOwnerStack,
+                    uiStack,
+                    ancestors,
+                    currentOwner
+                  });
+                }
+
+                const nextUiStack = emitted ? uiStack.concat({ label: emitted.label, folderId: emitted.folderId, folderPath: emitted.folderPath }) : uiStack;
+
+                for (const child of childNodes(node)) {
+                  visit(child, ancestors.concat(node), nextOwnerStack, nextUiStack);
+                }
+
+                return;
+              }
+
+              if (node.type === "JSXFragment") {
+                for (const child of childNodes(node)) visit(child, ancestors.concat(node), nextOwnerStack, uiStack);
+                return;
+              }
+
+              for (const child of childNodes(node)) {
+                visit(child, ancestors.concat(node), nextOwnerStack, uiStack);
+              }
+            }
+
+            visit(ast.program, [], [], []);
+          }
+
+          const orphanComponents = componentCatalog.filter((component) => {
+            const keyStart = `${component.sourcePath}:`;
+            return !folderRows.some((folder) => folder.sourcePath === component.sourcePath && folder.ownerName === component.name);
+          });
+
+          const validation = {
+            sourceFiles: sourceFiles.length,
+            jsxFiles: jsxFiles.length,
+            emittedFolders: folderRows.length,
+            componentCatalogCount: componentCatalog.length,
+            orphanComponentCount: orphanComponents.length,
+            parseFailures,
+            duplicateFolderIds: [],
+            missingSourceJson: [],
+            missingComponentFile: [],
+            rangeHashFailures: []
+          };
+
+          const seenIds = new Set();
+          for (const row of folderRows) {
+            if (seenIds.has(row.folderId)) validation.duplicateFolderIds.push(row.folderId);
+            seenIds.add(row.folderId);
+
+            if (!fs.existsSync(path.join(OUT, row.folderPath, ".de", "source.json"))) validation.missingSourceJson.push(row.folderId);
+            if (!fs.existsSync(path.join(OUT, row.folderPath, "component.tsx"))) validation.missingComponentFile.push(row.folderId);
+
+            const source = sourceCache.get(row.sourcePath);
+            const range = row.originalRange;
+            const actual = source.slice(range.start, range.end);
+            if (sha16(actual) !== range.hash) validation.rangeHashFailures.push(row.folderId);
+          }
+
+          const exportMap = {
+            format: "dreamengin.website-interface.roundtrip.v1",
+            generatedBy: "Export Round Trip Website Interface",
+            artifactRoot: "__dreamengin_interface_roundtrip__",
+            sourceOnly: true,
+            noRender: true,
+            noClicking: true,
+            noFullRepoCopy: true,
+            applyContract: {
+              requiredInputsForApplyWorkflow: [
+                ".de/export-map.json",
+                ".de/folder-id-map.json",
+                ".de/source-range-map.json",
+                ".de/import-graph.json",
+                ".de/handler-graph.json",
+                "each moved or edited folder .de/source.json"
+              ],
+              safeApplyRules: [
+                "verify sourceHash and every range hash before patching",
+                "reject duplicate folderIds",
+                "reject missing .de/source.json",
+                "treat folder move as intended UI placement unless applyMode says physical source move",
+                "update real repo only through sourcePath plus verified originalRange",
+                "rewrite imports only from import-graph and resolved source paths"
+              ]
+            },
+            totals: {
+              sourceFiles: sourceFiles.length,
+              jsxFiles: jsxFiles.length,
+              folders: folderRows.length,
+              handlers: handlerGraph.length,
+              registries: registryGraph.length,
+              components: componentCatalog.length
+            }
+          };
+
+          writeJson(path.join(META, "export-map.json"), exportMap);
+          writeJson(path.join(META, "folder-id-map.json"), folderIdMap);
+          writeJson(path.join(META, "source-range-map.json"), sourceRangeMap);
+          writeJson(path.join(META, "import-graph.json"), importGraph);
+          writeJson(path.join(META, "handler-graph.json"), handlerGraph);
+          writeJson(path.join(META, "registry-graph.json"), registryGraph);
+          writeJson(path.join(META, "component-catalog.json"), componentCatalog);
+          writeJson(path.join(META, "orphan-components.json"), orphanComponents);
+          writeJson(path.join(META, "validation.json"), validation);
+          writeJsonl(path.join(META, "folders.jsonl"), folderRows);
+
+          const failureMessages = [];
+          if (folderRows.length === 0) failureMessages.push("No interface folders were emitted.");
+          if (validation.duplicateFolderIds.length) failureMessages.push("Duplicate folder IDs detected.");
+          if (validation.missingSourceJson.length) failureMessages.push("Missing per-folder .de/source.json.");
+          if (validation.missingComponentFile.length) failureMessages.push("Missing component.tsx output.");
+          if (validation.rangeHashFailures.length) failureMessages.push("Source range hash validation failed.");
+          if (parseFailures.length) failureMessages.push("One or more source files failed to parse; see .de/validation.json.");
+
+          if (failureMessages.length) {
+            console.error(failureMessages.join("\n"));
+            process.exit(1);
+          }
+
+          NODE
+
+      - name: Upload round trip website interface
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-website-interface-roundtrip
+          path: __dreamengin_interface_roundtrip__
+          include-hidden-files: true
+          compression-level: 9
