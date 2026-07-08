@@ -1,4 +1,4 @@
-name: Build Screen Codebase
+name: Build Editable Screen Slice Codebase
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  build-screen-codebase:
+  build-editable-screen-slice-codebase:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,29 +20,303 @@ jobs:
           node-version: "24"
 
       - name: Enable pnpm
-        run: |
-          corepack enable
+        run: corepack enable
 
-      - name: Install app dependencies
-        run: |
-          pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Build app
-        run: |
-          pnpm build
-
-      - name: Install crawler tools
+      - name: Install slice compiler tools
         run: |
           node -e "require('node:fs').mkdirSync('__screen_tools__',{recursive:true});require('node:fs').writeFileSync('__screen_tools__/package.json','{\"type\":\"commonjs\"}')"
-          npm --prefix __screen_tools__ install playwright@latest --no-package-lock --silent
+          npm --prefix __screen_tools__ install playwright@latest @babel/parser@latest --no-package-lock --silent
           npx --prefix __screen_tools__ playwright install chromium
+
+      - name: Instrument visible source slices
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const TOOL_REQUIRE = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const parser = TOOL_REQUIRE("@babel/parser");
+
+          const SLICE_INDEX = path.join(ROOT, "__screen_slice_index.json");
+          const FULL_CODEBASE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            ".ci",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".cache",
+            "__screen_tools__",
+            "__screen_codebase__"
+          ]);
+
+          const TEXT_EXTS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass",
+            ".sql",
+            ".json",
+            ".md",
+            ".yml",
+            ".yaml",
+            ".toml"
+          ]);
+
+          const JSX_EXTS = new Set([".tsx", ".jsx"]);
+
+          function posix(value) {
+            return value.split(path.sep).join("/");
+          }
+
+          function ext(file) {
+            return path.posix.extname(file).toLowerCase();
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) walk(full, out);
+                continue;
+              }
+
+              if (!entry.isFile()) continue;
+
+              const rel = posix(path.relative(ROOT, full));
+              if (TEXT_EXTS.has(ext(rel))) out.push(rel);
+            }
+
+            return out;
+          }
+
+          function sha16(value) {
+            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
+          }
+
+          function b64url(value) {
+            return Buffer.from(JSON.stringify(value))
+              .toString("base64")
+              .replaceAll("+", "-")
+              .replaceAll("/", "_")
+              .replace(/=+$/g, "");
+          }
+
+          function decodeablePath(rel) {
+            return rel.replaceAll("/", "∕").replaceAll("\\", "∕").replaceAll(":", "ː");
+          }
+
+          function isLowerDomTag(name) {
+            return /^[a-z][a-z0-9:-]*$/.test(name);
+          }
+
+          function getJsxName(opening) {
+            const n = opening.name;
+
+            if (!n) return null;
+            if (n.type === "JSXIdentifier") return n.name;
+            if (n.type === "JSXMemberExpression") {
+              const parts = [];
+              let cursor = n;
+
+              while (cursor) {
+                if (cursor.property?.name) parts.unshift(cursor.property.name);
+                if (cursor.object?.name) {
+                  parts.unshift(cursor.object.name);
+                  break;
+                }
+                cursor = cursor.object;
+              }
+
+              return parts.join(".");
+            }
+
+            return null;
+          }
+
+          function hasDataSlice(opening) {
+            return (opening.attributes || []).some((attr) => attr?.name?.name === "data-de-slice");
+          }
+
+          function collectJsxOpenings(node, out = []) {
+            if (!node || typeof node !== "object") return out;
+
+            if (node.type === "JSXOpeningElement") {
+              out.push(node);
+            }
+
+            for (const key of Object.keys(node)) {
+              if (
+                key === "loc" ||
+                key === "start" ||
+                key === "end" ||
+                key === "extra" ||
+                key === "leadingComments" ||
+                key === "trailingComments" ||
+                key === "innerComments"
+              ) {
+                continue;
+              }
+
+              const value = node[key];
+
+              if (Array.isArray(value)) {
+                for (const child of value) collectJsxOpenings(child, out);
+              } else if (value && typeof value === "object") {
+                collectJsxOpenings(value, out);
+              }
+            }
+
+            return out;
+          }
+
+          function findInsertPoint(source, opening) {
+            let i = opening.end - 1;
+
+            while (i > opening.start && source[i] !== ">") i--;
+
+            if (source[i] !== ">") return null;
+
+            if (source[i - 1] === "/") return i - 1;
+
+            return i;
+          }
+
+          function parseTsx(source, rel) {
+            return parser.parse(source, {
+              sourceType: "module",
+              plugins: [
+                "jsx",
+                "typescript",
+                "classProperties",
+                "objectRestSpread",
+                "dynamicImport",
+                "optionalChaining",
+                "nullishCoalescingOperator",
+                "topLevelAwait"
+              ],
+              errorRecovery: true,
+              ranges: true,
+              tokens: false
+            });
+          }
+
+          const files = walk(ROOT).sort();
+          const sliceIndex = {};
+          const fullParts = [];
+          let streamOffset = 0;
+
+          for (const rel of files) {
+            const abs = path.join(ROOT, rel);
+            const original = fs.readFileSync(abs, "utf8");
+            const fileHash = sha16(original);
+
+            const fenceOpen = `\n⟦${decodeablePath(rel)}⟧\n`;
+            const fenceClose = `\n⟧${decodeablePath(rel)}⟦\n`;
+
+            const streamStart = streamOffset + Buffer.byteLength(fenceOpen, "utf8");
+            fullParts.push(fenceOpen, original, fenceClose);
+            streamOffset += Buffer.byteLength(fenceOpen + original + fenceClose, "utf8");
+
+            sliceIndex[rel] = {
+              path: rel,
+              hash: fileHash,
+              bytes: Buffer.byteLength(original, "utf8"),
+              streamStart,
+              slices: []
+            };
+
+            if (!JSX_EXTS.has(ext(rel))) continue;
+
+            let ast;
+
+            try {
+              ast = parseTsx(original, rel);
+            } catch {
+              continue;
+            }
+
+            const openings = collectJsxOpenings(ast.program)
+              .filter((opening) => {
+                const name = getJsxName(opening);
+                return name && isLowerDomTag(name) && !hasDataSlice(opening);
+              })
+              .sort((a, b) => b.start - a.start);
+
+            if (!openings.length) continue;
+
+            let instrumented = original;
+            const inserts = [];
+
+            for (const opening of openings) {
+              const tag = getJsxName(opening);
+              const insertAt = findInsertPoint(original, opening);
+
+              if (insertAt === null) continue;
+
+              const sliceStart = opening.start;
+              const sliceEnd = opening.end;
+              const sliceSource = original.slice(sliceStart, sliceEnd);
+              const sliceHash = sha16(sliceSource);
+
+              const payload = {
+                p: rel,
+                s: sliceStart,
+                e: sliceEnd,
+                ss: streamStart + Buffer.byteLength(original.slice(0, sliceStart), "utf8"),
+                se: streamStart + Buffer.byteLength(original.slice(0, sliceEnd), "utf8"),
+                h: sliceHash,
+                t: tag
+              };
+
+              const marker = b64url(payload);
+
+              sliceIndex[rel].slices.push(payload);
+              inserts.push([insertAt, ` data-de-slice="${marker}"`]);
+            }
+
+            inserts.sort((a, b) => b[0] - a[0]);
+
+            for (const [at, text] of inserts) {
+              instrumented = instrumented.slice(0, at) + text + instrumented.slice(at);
+            }
+
+            fs.writeFileSync(abs, instrumented);
+          }
+
+          fs.writeFileSync(FULL_CODEBASE, fullParts.join(""));
+          fs.writeFileSync(SLICE_INDEX, JSON.stringify(sliceIndex));
+          NODE
+
+      - name: Build instrumented app
+        run: pnpm build
 
       - name: Start app
         run: |
-          pnpm exec next start -p 3000 > __next-screen-codebase.log 2>&1 &
-          echo $! > __next-screen-codebase.pid
+          pnpm exec next start -p 3000 > __screen_next.log 2>&1 &
+          echo $! > __screen_next.pid
 
-      - name: Build screen-shaped codebase
+      - name: Build screen slice codebase
+        env:
+          SCREEN_STORAGE_STATE_B64: ${{ secrets.SCREEN_STORAGE_STATE_B64 }}
         run: |
           node <<'NODE'
           const fs = require("node:fs");
@@ -58,55 +332,11 @@ jobs:
           const toolRequire = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
           const { chromium } = toolRequire("playwright");
 
-          const MAX_PAGES = 250;
-          const MAX_DEPTH = 5;
-          const MAX_ATTACHED_FILES = 80;
-
-          const SKIP_DIRS = new Set([
-            ".git",
-            ".github",
-            ".ci",
-            "ci",
-            "node_modules",
-            ".next",
-            "out",
-            "dist",
-            "build",
-            "coverage",
-            ".turbo",
-            ".cache",
-            "__screen_tools__",
-            "__screen_codebase__"
-          ]);
-
-          const CODE_EXTS = new Set([
-            ".js",
-            ".jsx",
-            ".mjs",
-            ".cjs",
-            ".ts",
-            ".tsx",
-            ".mts",
-            ".cts",
-            ".css",
-            ".scss",
-            ".sass",
-            ".sql"
-          ]);
-
-          const IMPORT_FROM_RE = /import(?:\s+type)?(?:[\s\S]*?)\s+from\s+["']([^"']+)["']/g;
-          const SIDE_EFFECT_IMPORT_RE = /import\s+["']([^"']+)["']/g;
-          const DYNAMIC_IMPORT_RE = /import\s*\(\s*["']([^"']+)["']\s*\)/g;
-          const EXPORT_NAMED_RE = /export\s+(?:type\s+)?(?:const|let|var|function|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/g;
-          const EXPORT_DEFAULT_RE = /export\s+default(?:\s+function\s+([A-Za-z_$][\w$]*)|\s+class\s+([A-Za-z_$][\w$]*)|)/g;
-          const ROUTE_METHOD_RE = /export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b|export\s+function\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b/g;
-
-          function sleep(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
-          }
+          const FULL_CODEBASE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+          const SLICE_INDEX = JSON.parse(fs.readFileSync(path.join(ROOT, "__screen_slice_index.json"), "utf8"));
 
           function waitForServer(url, timeoutMs = 60000) {
-            const start = Date.now();
+            const started = Date.now();
 
             return new Promise((resolve, reject) => {
               const check = () => {
@@ -114,8 +344,8 @@ jobs:
                   res.resume();
                   resolve();
                 }).on("error", () => {
-                  if (Date.now() - start > timeoutMs) {
-                    reject(new Error("Timed out waiting for Next server"));
+                  if (Date.now() - started > timeoutMs) {
+                    reject(new Error("Next server did not become ready"));
                     return;
                   }
 
@@ -127,320 +357,48 @@ jobs:
             });
           }
 
-          function toPosix(value) {
-            return value.split(path.sep).join("/");
+          function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
           }
 
-          function extOf(file) {
-            const base = path.basename(file);
-            const index = base.lastIndexOf(".");
-            return index === -1 ? "" : base.slice(index).toLowerCase();
+          function sha16(value) {
+            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
           }
 
-          function unique(values) {
-            const seen = new Set();
-            const out = [];
-
-            for (const value of values) {
-              if (!seen.has(value)) {
-                seen.add(value);
-                out.push(value);
-              }
-            }
-
-            return out;
-          }
-
-          function sanitizeSegment(value, fallback = "screen") {
-            const raw = String(value || "")
+          function sanitize(value, fallback = "screen") {
+            const clean = String(value ?? "")
               .replace(/\s+/g, " ")
-              .trim();
-
-            const cleaned = raw
+              .trim()
               .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
-              .replace(/[.]+$/g, "")
-              .slice(0, 80)
+              .replace(/\.$/, "")
+              .slice(0, 72)
               .trim();
 
-            return cleaned || fallback;
+            return clean || fallback;
           }
 
-          function routeToFallbackName(route) {
-            if (route === "/") return "Home";
-
-            const parts = route
-              .split("?")[0]
-              .split("#")[0]
-              .split("/")
-              .filter(Boolean);
-
-            if (!parts.length) return "Home";
-
-            return parts
-              .map((part) => part.replace(/[-_]+/g, " "))
-              .map((part) => part.replace(/\b\w/g, (m) => m.toUpperCase()))
-              .join("/");
+          function titleCase(value) {
+            return sanitize(
+              String(value ?? "")
+                .replace(/^\[\[?\.\.\.(.+?)\]?\]$/, "$1")
+                .replace(/^\[(.+?)\]$/, "$1")
+                .replace(/^:/, "")
+                .replace(/[-_]+/g, " ")
+                .replace(/\b\w/g, (m) => m.toUpperCase())
+            );
           }
 
-          function normalizeUrl(url) {
-            try {
-              const parsed = new URL(url, BASE_URL);
-              if (parsed.origin !== BASE_URL) return null;
-
-              parsed.hash = "";
-
-              if (
-                parsed.pathname.startsWith("/_next") ||
-                parsed.pathname.startsWith("/api") ||
-                parsed.pathname.includes(".")
-              ) {
-                return null;
-              }
-
-              return parsed.pathname + parsed.search;
-            } catch {
-              return null;
-            }
+          function encodePath(rel) {
+            return rel.replaceAll("/", "∕").replaceAll("\\", "∕").replaceAll(":", "ː");
           }
 
-          function readMatches(regex, text) {
-            regex.lastIndex = 0;
-            const out = [];
-            let match;
-
-            while ((match = regex.exec(text))) {
-              const value = match.slice(1).find(Boolean);
-              if (value) out.push(value);
-            }
-
-            return out;
+          function ext(rel) {
+            return path.posix.extname(rel) || ".slice";
           }
 
-          function importsFor(text) {
-            return unique([
-              ...readMatches(IMPORT_FROM_RE, text),
-              ...readMatches(SIDE_EFFECT_IMPORT_RE, text),
-              ...readMatches(DYNAMIC_IMPORT_RE, text)
-            ]);
-          }
-
-          function exportsFor(text) {
-            EXPORT_NAMED_RE.lastIndex = 0;
-            EXPORT_DEFAULT_RE.lastIndex = 0;
-
-            const out = [];
-            let match;
-
-            while ((match = EXPORT_NAMED_RE.exec(text))) {
-              out.push(match[1]);
-            }
-
-            while ((match = EXPORT_DEFAULT_RE.exec(text))) {
-              out.push(match[1] || match[2] || "default");
-            }
-
-            return unique(out);
-          }
-
-          function methodsFor(text) {
-            ROUTE_METHOD_RE.lastIndex = 0;
-
-            const out = [];
-            let match;
-
-            while ((match = ROUTE_METHOD_RE.exec(text))) {
-              out.push(match[1] || match[2]);
-            }
-
-            return unique(out).sort();
-          }
-
-          function lineCount(text) {
-            if (text === "") return 0;
-            return text.split(/\r\n|\r|\n/).length;
-          }
-
-          function sha16(text) {
-            return crypto.createHash("sha256").update(text).digest("hex").slice(0, 16);
-          }
-
-          function roleFor(rel) {
-            const file = path.posix.basename(rel);
-            const ext = extOf(rel);
-
-            if (rel.startsWith("app/") && file === "page.tsx") return "PAGE";
-            if (rel.startsWith("app/") && ["layout.tsx", "template.tsx", "default.tsx"].includes(file)) return "LAYOUT";
-            if (rel.startsWith("app/") && file === "loading.tsx") return "LOADING";
-            if (rel.startsWith("app/") && ["error.tsx", "global-error.tsx"].includes(file)) return "ERROR";
-            if (rel.startsWith("app/") && file === "not-found.tsx") return "NOT_FOUND";
-            if (rel.startsWith("app/api/") && ["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "API_ROUTE";
-            if (["route.ts", "route.tsx", "route.js", "route.jsx"].includes(file)) return "ROUTE_HANDLER";
-            if (ext === ".sql") return "SQL";
-            if ([".css", ".scss", ".sass"].includes(ext)) return "STYLE";
-            if (file.endsWith(".d.ts")) return "TYPE_DECLARATION";
-            if ([".tsx", ".jsx"].includes(ext)) return "COMPONENT_OR_TSX";
-            if (rel.includes("/hooks/") || file.startsWith("use")) return "HOOK_OR_REACT_LOGIC";
-            if (rel.includes("/types/") || rel.startsWith("types/")) return "TYPE_OR_MODEL";
-
-            return "LOGIC";
-          }
-
-          function shouldSkipDir(name) {
-            return SKIP_DIRS.has(name);
-          }
-
-          function walk(dir, out = []) {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              const full = path.join(dir, entry.name);
-
-              if (entry.isDirectory()) {
-                if (shouldSkipDir(entry.name)) continue;
-                walk(full, out);
-              } else if (entry.isFile()) {
-                const rel = toPosix(path.relative(ROOT, full));
-                if (CODE_EXTS.has(extOf(rel))) out.push(rel);
-              }
-            }
-
-            return out;
-          }
-
-          function appRouteFromPageFile(rel) {
-            if (!rel.startsWith("app/") || !rel.endsWith("/page.tsx")) return null;
-
-            const parts = rel
-              .slice("app/".length, -"/page.tsx".length)
-              .split("/")
-              .filter(Boolean)
-              .filter((part) => !(part.startsWith("(") && part.endsWith(")")));
-
-            if (!parts.length) return "/";
-
-            return "/" + parts
-              .map((part) => {
-                if (part.startsWith("[[...") && part.endsWith("]]")) return "*";
-                if (part.startsWith("[...") && part.endsWith("]")) return "*";
-                if (part.startsWith("[") && part.endsWith("]")) return ":" + part.slice(1, -1);
-                return part;
-              })
-              .join("/");
-          }
-
-          function routePatternScore(pattern, route) {
-            const pp = pattern.split("/").filter(Boolean);
-            const rr = route.split("?")[0].split("/").filter(Boolean);
-
-            if (pattern === "/" && route.split("?")[0] === "/") return 1000;
-            if (pp.length !== rr.length && !pp.includes("*")) return -1;
-
-            let score = 0;
-
-            for (let i = 0; i < pp.length; i++) {
-              const p = pp[i];
-              const r = rr[i];
-
-              if (p === "*") return score + 1;
-              if (p && p.startsWith(":")) {
-                score += 2;
-                continue;
-              }
-              if (p === r) {
-                score += 10;
-                continue;
-              }
-
-              return -1;
-            }
-
-            return score;
-          }
-
-          function buildRouteMap(files) {
-            const routes = [];
-
-            for (const rel of files) {
-              const route = appRouteFromPageFile(rel);
-              if (route) routes.push([route, rel]);
-            }
-
-            return routes;
-          }
-
-          function pageFileForRoute(route, routeMap) {
-            let best = null;
-            let bestScore = -1;
-
-            for (const [pattern, rel] of routeMap) {
-              const score = routePatternScore(pattern, route);
-
-              if (score > bestScore) {
-                best = rel;
-                bestScore = score;
-              }
-            }
-
-            return best;
-          }
-
-          function resolveImport(fromRel, specifier, filesSet) {
-            if (!specifier.startsWith(".") && !specifier.startsWith("@/")) return null;
-
-            let base;
-
-            if (specifier.startsWith("@/")) {
-              base = specifier.slice(2);
-            } else {
-              base = toPosix(path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier)));
-            }
-
-            const candidates = [
-              base,
-              `${base}.ts`,
-              `${base}.tsx`,
-              `${base}.js`,
-              `${base}.jsx`,
-              `${base}.mjs`,
-              `${base}.cjs`,
-              `${base}/index.ts`,
-              `${base}/index.tsx`,
-              `${base}/index.js`,
-              `${base}/index.jsx`
-            ];
-
-            for (const candidate of candidates) {
-              if (filesSet.has(candidate)) return candidate;
-            }
-
-            return null;
-          }
-
-          function attachedFilesFor(entry, filesSet) {
-            if (!entry) return [];
-
-            const queue = [entry];
-            const seen = new Set();
-            const out = [];
-
-            while (queue.length && out.length < MAX_ATTACHED_FILES) {
-              const rel = queue.shift();
-              if (!rel || seen.has(rel)) continue;
-
-              seen.add(rel);
-              out.push(rel);
-
-              const full = path.join(ROOT, rel);
-              if (!fs.existsSync(full)) continue;
-
-              const text = fs.readFileSync(full, "utf8");
-              const imports = importsFor(text);
-
-              for (const specifier of imports) {
-                const resolved = resolveImport(rel, specifier, filesSet);
-                if (resolved && !seen.has(resolved)) queue.push(resolved);
-              }
-            }
-
-            return out;
+          function fromB64url(value) {
+            const padded = value + "=".repeat((4 - (value.length % 4)) % 4);
+            return JSON.parse(Buffer.from(padded.replaceAll("-", "+").replaceAll("_", "/"), "base64").toString("utf8"));
           }
 
           function writeJsonl(file, rows) {
@@ -448,31 +406,176 @@ jobs:
             fs.writeFileSync(file, rows.map((row) => JSON.stringify(row)).join("\n") + "\n");
           }
 
-          function sourceRecord(rel) {
-            const full = path.join(ROOT, rel);
-            const source = fs.existsSync(full) ? fs.readFileSync(full, "utf8") : "";
+          function routeFromPageFile(rel) {
+            if (!/^app\/(?:.*\/)?page\.(tsx|jsx|ts|js)$/.test(rel)) return null;
 
-            return [
-              rel,
-              roleFor(rel),
-              Buffer.byteLength(source, "utf8"),
-              lineCount(source),
-              sha16(source),
-              importsFor(source),
-              exportsFor(source),
-              methodsFor(source),
-              source
-            ];
+            const inner = rel
+              .replace(/^app\//, "")
+              .replace(/\/page\.(tsx|jsx|ts|js)$/, "")
+              .replace(/^page\.(tsx|jsx|ts|js)$/, "");
+
+            const parts = inner
+              .split("/")
+              .filter(Boolean)
+              .filter((part) => !(part.startsWith("(") && part.endsWith(")")))
+              .filter((part) => !part.startsWith("@"));
+
+            if (parts.some((part) => part.startsWith("[") && part.endsWith("]"))) return null;
+
+            return parts.length ? "/" + parts.join("/") : "/";
           }
 
-          async function extractScreen(page) {
-            return await page.evaluate(() => {
+          function realRoutes() {
+            return Object.keys(SLICE_INDEX)
+              .map(routeFromPageFile)
+              .filter(Boolean)
+              .sort((a, b) => {
+                if (a === "/") return -1;
+                if (b === "/") return 1;
+                return a.localeCompare(b);
+              });
+          }
+
+          function screenBase(route) {
+            if (route === "/") return ["Landing Page"];
+
+            if (
+              route.startsWith("/dreamdmbar") ||
+              route === "/homedream" ||
+              route === "/dreamspace"
+            ) {
+              const base = ["Logged In", "DreamDMBar"];
+
+              if (route.includes("homedream") || route === "/homedream") return [...base, "HomeDream"];
+              if (route.includes("dreamspace") || route === "/dreamspace") return [...base, "DreamSpace"];
+              if (route.includes("dualruntime")) return [...base, "DualRuntime"];
+
+              return base;
+            }
+
+            if (
+              route.startsWith("/settings") ||
+              route.startsWith("/connectors") ||
+              route.startsWith("/feed-settings") ||
+              route.startsWith("/profile") ||
+              route.startsWith("/view-profile") ||
+              route.startsWith("/marketplace") ||
+              route.startsWith("/shop")
+            ) {
+              return ["Logged In", "DreamDMBar", "Menu", ...route.split("/").filter(Boolean).map(titleCase)];
+            }
+
+            if (
+              route.startsWith("/engines") ||
+              route.startsWith("/daydream") ||
+              route.startsWith("/gameengin") ||
+              route.startsWith("/lab")
+            ) {
+              return ["Logged In", "DreamDMBar", "DreamSpace", ...route.split("/").filter(Boolean).map(titleCase)];
+            }
+
+            if (route.startsWith("/messages")) {
+              return ["Logged In", "DreamDMBar", ...route.split("/").filter(Boolean).map(titleCase)];
+            }
+
+            if (route.startsWith("/dreamr") || route.startsWith("/discover") || route.startsWith("/notes")) {
+              return ["Logged In", "DreamDMBar", "HomeDream", ...route.split("/").filter(Boolean).map(titleCase)];
+            }
+
+            return ["Landing Page", ...route.split("/").filter(Boolean).map(titleCase)];
+          }
+
+          function sliceFileName(payload) {
+            return [
+              encodePath(payload.p),
+              `B${payload.s}-${payload.e}`,
+              `S${payload.ss}-${payload.se}`,
+              `H${payload.h}`
+            ].join("__") + ext(payload.p);
+          }
+
+          function originalSlice(payload) {
+            const originalFileRecord = SLICE_INDEX[payload.p];
+
+            if (!originalFileRecord) return "";
+
+            const instrumentedPath = path.join(ROOT, payload.p);
+            const instrumented = fs.existsSync(instrumentedPath) ? fs.readFileSync(instrumentedPath, "utf8") : "";
+
+            const full = fs.readFileSync(FULL_CODEBASE, "utf8");
+            const streamSlice = Buffer.from(full, "utf8").subarray(payload.ss, payload.se).toString("utf8");
+
+            if (sha16(streamSlice) === payload.h) return streamSlice;
+
+            return instrumented.slice(payload.s, payload.e).replace(/\sdata-de-slice="[^"]+"/g, "");
+          }
+
+          function folderForDomNode(node, index) {
+            const role = sanitize(node.role || node.tag || "node");
+            const label = sanitize(node.label || node.href || node.testid || node.id || `${role} ${index + 1}`);
+
+            if (role === "input") return sanitize(label || "Input");
+            if (role === "button") return sanitize(label || "Button");
+            if (role === "link") return sanitize(label || "Link");
+            if (role === "heading") return sanitize(label || "Heading");
+
+            return sanitize(label || role);
+          }
+
+          function writeSlice(dir, payload) {
+            const source = originalSlice(payload);
+
+            if (!source.trim()) return;
+
+            fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(path.join(dir, sliceFileName(payload)), source);
+          }
+
+          function pathForNode(root, node, ancestors, index) {
+            const parts = [];
+
+            for (const ancestor of ancestors) {
+              const label = folderForDomNode(ancestor, 0);
+              if (label && !parts.includes(label)) parts.push(label);
+            }
+
+            parts.push(folderForDomNode(node, index));
+
+            return path.join(root, ...parts.map((part) => sanitize(part)));
+          }
+
+          async function openMenu(page) {
+            const selectors = [
+              '[aria-label*="menu" i]',
+              '[title*="menu" i]',
+              '[data-testid*="menu" i]',
+              '[aria-label*="daydream" i]',
+              '[data-testid*="daydream" i]',
+              '[aria-label*="settings" i]',
+              'button:has-text("Menu")',
+              'button:has-text("☰")',
+              'button:has-text("Settings")'
+            ];
+
+            for (const selector of selectors) {
+              try {
+                const locator = page.locator(selector).first();
+
+                if (await locator.count()) {
+                  await locator.click({ timeout: 1500 });
+                  await sleep(300);
+                }
+              } catch {}
+            }
+          }
+
+          async function extract(page, route) {
+            return page.evaluate((routeValue) => {
               function visible(el) {
                 const style = window.getComputedStyle(el);
                 const rect = el.getBoundingClientRect();
 
                 return (
-                  style &&
                   style.display !== "none" &&
                   style.visibility !== "hidden" &&
                   Number(style.opacity || "1") !== 0 &&
@@ -485,26 +588,18 @@ jobs:
                 return (el.innerText || el.textContent || "")
                   .replace(/\s+/g, " ")
                   .trim()
-                  .slice(0, 160);
+                  .slice(0, 140);
               }
 
               function labelOf(el) {
-                const aria = el.getAttribute("aria-label");
-                if (aria && aria.trim()) return aria.trim();
-
-                const title = el.getAttribute("title");
-                if (title && title.trim()) return title.trim();
-
-                const text = textOf(el);
-                if (text) return text;
-
-                const alt = el.getAttribute("alt");
-                if (alt && alt.trim()) return alt.trim();
-
-                const placeholder = el.getAttribute("placeholder");
-                if (placeholder && placeholder.trim()) return placeholder.trim();
-
-                return "";
+                return (
+                  el.getAttribute("aria-label") ||
+                  el.getAttribute("title") ||
+                  textOf(el) ||
+                  el.getAttribute("alt") ||
+                  el.getAttribute("placeholder") ||
+                  ""
+                ).replace(/\s+/g, " ").trim();
               }
 
               function roleOf(el) {
@@ -516,9 +611,8 @@ jobs:
                 if (/^h[1-6]$/.test(tag)) return "heading";
                 if (tag === "a") return "link";
                 if (tag === "button") return "button";
-                if (tag === "input" || tag === "textarea" || tag === "select") return "input";
-                if (tag === "form") return "form";
-                if (["main", "nav", "header", "footer", "aside", "section", "article"].includes(tag)) return tag;
+                if (["input", "textarea", "select"].includes(tag)) return "input";
+                if (["main", "nav", "header", "footer", "aside", "section", "article", "form"].includes(tag)) return tag;
 
                 return tag;
               }
@@ -527,63 +621,80 @@ jobs:
                 const tag = el.tagName.toLowerCase();
                 const role = roleOf(el);
 
-                if (/^h[1-6]$/.test(tag)) return true;
-                if (["main", "nav", "header", "footer", "aside", "section", "article", "form", "button", "a", "input", "textarea", "select"].includes(tag)) return true;
-                if (["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem"].includes(role)) return true;
-                if (el.getAttribute("aria-label")) return true;
-                if (el.getAttribute("data-testid")) return true;
-
-                return false;
+                return (
+                  /^h[1-6]$/.test(tag) ||
+                  ["main", "nav", "header", "footer", "aside", "section", "article", "form", "button", "a", "input", "textarea", "select"].includes(tag) ||
+                  ["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem", "textbox"].includes(role) ||
+                  el.hasAttribute("aria-label") ||
+                  el.hasAttribute("data-testid") ||
+                  el.hasAttribute("data-de-slice")
+                );
               }
 
-              const nodes = [];
-              const links = [];
-              const actions = [];
-              const inputs = [];
+              function uidFor(el, index) {
+                if (!el.__de_uid) el.__de_uid = `n${index}`;
+                return el.__de_uid;
+              }
 
-              const all = Array.from(document.body.querySelectorAll("*")).filter(visible);
-
-              for (const el of all) {
-                if (!important(el)) continue;
-
+              function nodeRecord(el, index) {
                 const tag = el.tagName.toLowerCase();
                 const role = roleOf(el);
-                const label = labelOf(el);
-                const href = tag === "a" ? el.getAttribute("href") : "";
-                const testid = el.getAttribute("data-testid") || "";
-                const id = el.id || "";
-                const cls = typeof el.className === "string" ? el.className.slice(0, 120) : "";
+                const parentImportant = (() => {
+                  let p = el.parentElement;
 
-                const record = [
+                  while (p && p !== document.body) {
+                    if (visible(p) && important(p)) return p.__de_uid || "";
+                    p = p.parentElement;
+                  }
+
+                  return "";
+                })();
+
+                return {
+                  uid: uidFor(el, index),
+                  parent: parentImportant,
                   role,
                   tag,
-                  label,
-                  href || "",
-                  id,
-                  testid,
-                  cls
-                ];
-
-                nodes.push(record);
-
-                if (tag === "a" && href) links.push(record);
-                if (tag === "button" || role === "button") actions.push(record);
-                if (["input", "textarea", "select"].includes(tag)) inputs.push(record);
+                  label: labelOf(el),
+                  href: tag === "a" ? el.getAttribute("href") || "" : "",
+                  id: el.id || "",
+                  testid: el.getAttribute("data-testid") || "",
+                  marker: el.getAttribute("data-de-slice") || "",
+                  classes: typeof el.className === "string" ? el.className.split(/\s+/).slice(0, 12) : []
+                };
               }
 
+              const elements = Array.from(document.body.querySelectorAll("*")).filter((el) => visible(el) && important(el));
+
+              elements.forEach((el, index) => uidFor(el, index));
+
+              const nodes = elements.map(nodeRecord);
+              const byUid = new Map(nodes.map((node) => [node.uid, node]));
+
+              const withAncestors = nodes.map((node) => {
+                const ancestors = [];
+                let parent = byUid.get(node.parent);
+
+                while (parent) {
+                  ancestors.unshift(parent);
+                  parent = byUid.get(parent.parent);
+                }
+
+                return { node, ancestors };
+              });
+
               const title =
-                document.querySelector("h1")?.innerText?.trim() ||
+                document.querySelector("h1")?.innerText?.replace(/\s+/g, " ").trim() ||
                 document.title ||
-                location.pathname;
+                routeValue;
 
               return {
+                route: routeValue,
                 title,
                 nodes,
-                links,
-                actions,
-                inputs
+                withAncestors
               };
-            });
+            }, route);
           }
 
           async function main() {
@@ -592,70 +703,74 @@ jobs:
             fs.rmSync(OUT, { recursive: true, force: true });
             fs.mkdirSync(OUT, { recursive: true });
 
-            const sourceFiles = walk(ROOT).sort();
-            const sourceFilesSet = new Set(sourceFiles);
-            const routeMap = buildRouteMap(sourceFiles);
+            fs.copyFileSync(FULL_CODEBASE, path.join(OUT, "000_FULL_CODEBASE.codebase"));
+
+            let storageState;
+
+            if (process.env.SCREEN_STORAGE_STATE_B64) {
+              const storageFile = path.join(ROOT, "__screen_storage_state.json");
+              fs.writeFileSync(storageFile, Buffer.from(process.env.SCREEN_STORAGE_STATE_B64, "base64"));
+              storageState = storageFile;
+            }
 
             const browser = await chromium.launch({ headless: true });
-            const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+            const context = await browser.newContext({
+              viewport: { width: 1440, height: 1200 },
+              storageState
+            });
 
-            const queue = [{ route: "/", trail: ["Home"], depth: 0 }];
-            const seenRoutes = new Set();
+            const page = await context.newPage();
 
-            while (queue.length && seenRoutes.size < MAX_PAGES) {
-              const item = queue.shift();
-              const route = item.route.split("#")[0];
-
-              if (seenRoutes.has(route)) continue;
-              seenRoutes.add(route);
-
-              const url = BASE_URL + route;
+            for (const route of realRoutes()) {
+              const base = path.join(OUT, ...screenBase(route).map((segment) => sanitize(segment)));
 
               try {
-                await page.goto(url, { waitUntil: "networkidle", timeout: 45000 });
-                await sleep(750);
-              } catch {
-                continue;
-              }
+                await page.goto(BASE_URL + route, { waitUntil: "networkidle", timeout: 45000 });
+                await sleep(500);
 
-              const screen = await extractScreen(page);
-              const pageTitle = sanitizeSegment(screen.title, routeToFallbackName(route));
-              const trail = item.trail.length ? item.trail : routeToFallbackName(route).split("/");
-              const screenDir = path.join(OUT, ...trail.map((part) => sanitizeSegment(part)));
+                let screen = await extract(page, route);
 
-              const pageFile = pageFileForRoute(route, routeMap);
-              const attached = attachedFilesFor(pageFile, sourceFilesSet);
+                for (let i = 0; i < screen.withAncestors.length; i++) {
+                  const { node, ancestors } = screen.withAncestors[i];
 
-              writeJsonl(path.join(screenDir, "screen.nodes.jsonl"), screen.nodes);
-              writeJsonl(path.join(screenDir, "screen.links.jsonl"), screen.links);
-              writeJsonl(path.join(screenDir, "screen.actions.jsonl"), screen.actions);
-              writeJsonl(path.join(screenDir, "screen.inputs.jsonl"), screen.inputs);
+                  if (!node.marker) continue;
 
-              writeJsonl(path.join(screenDir, "attached.source.jsonl"), attached.map(sourceRecord));
+                  let payload;
 
-              const children = [];
+                  try {
+                    payload = fromB64url(node.marker);
+                  } catch {
+                    continue;
+                  }
 
-              for (const link of screen.links) {
-                const label = sanitizeSegment(link[2] || link[3], "");
-                const href = normalizeUrl(link[3]);
-
-                if (!href || !label) continue;
-                if (seenRoutes.has(href)) continue;
-
-                children.push([label, href]);
-              }
-
-              writeJsonl(path.join(screenDir, "screen.children.jsonl"), children);
-
-              if (item.depth < MAX_DEPTH) {
-                for (const [label, href] of children) {
-                  queue.push({
-                    route: href,
-                    trail: [...trail, label],
-                    depth: item.depth + 1
-                  });
+                  const dir = pathForNode(base, node, ancestors, i);
+                  writeSlice(dir, payload);
                 }
-              }
+
+                await openMenu(page);
+                screen = await extract(page, route);
+
+                for (let i = 0; i < screen.withAncestors.length; i++) {
+                  const { node, ancestors } = screen.withAncestors[i];
+
+                  if (!node.marker) continue;
+
+                  let payload;
+
+                  try {
+                    payload = fromB64url(node.marker);
+                  } catch {
+                    continue;
+                  }
+
+                  const folderBase = route.startsWith("/dreamdmbar") || route === "/homedream" || route === "/dreamspace"
+                    ? path.join(OUT, "Logged In", "DreamDMBar", "Menu")
+                    : base;
+
+                  const dir = pathForNode(folderBase, node, ancestors, i);
+                  writeSlice(dir, payload);
+                }
+              } catch {}
             }
 
             await browser.close();
@@ -667,22 +782,22 @@ jobs:
           });
           NODE
 
-      - name: Zip screen codebase
+      - name: Zip screen slice codebase
         run: |
           cd __screen_codebase__
-          zip -qr ../screen-codebase.zip .
+          zip -qr ../screen-slice-codebase.zip .
 
-      - name: Upload screen codebase ZIP
+      - name: Upload screen slice codebase
         uses: actions/upload-artifact@v4
         with:
-          name: screen-codebase
-          path: screen-codebase.zip
+          name: screen-slice-codebase
+          path: screen-slice-codebase.zip
           include-hidden-files: false
           compression-level: 9
 
       - name: Stop app
         if: always()
         run: |
-          if [ -f __next-screen-codebase.pid ]; then
-            kill "$(cat __next-screen-codebase.pid)" || true
+          if [ -f __screen_next.pid ]; then
+            kill "$(cat __screen_next.pid)" || true
           fi
