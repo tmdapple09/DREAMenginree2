@@ -1,0 +1,1114 @@
+name: Build Editable Screen Slice Codebase
+
+on:
+  workflow_dispatch:
+    inputs:
+      install_command:
+        description: Dependency install command
+        required: true
+        default: pnpm install --frozen-lockfile
+      build_command:
+        description: Production build command
+        required: true
+        default: pnpm build
+      start_command:
+        description: Production start command
+        required: true
+        default: pnpm exec next start -p 3000
+      base_url:
+        description: Local URL served by start_command
+        required: true
+        default: http://127.0.0.1:3000
+
+permissions:
+  contents: read
+
+jobs:
+  build-editable-screen-slice-codebase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Enable package manager shims
+        run: corepack enable
+
+      - name: Install dependencies
+        run: ${{ inputs.install_command }}
+
+      - name: Install screen compiler tools
+        run: |
+          node -e "require('node:fs').mkdirSync('__screen_tools__',{recursive:true});require('node:fs').writeFileSync('__screen_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __screen_tools__ install playwright@latest @babel/parser@latest --no-package-lock --silent
+          npx --prefix __screen_tools__ playwright install chromium
+
+      - name: Compile source stream and inject screen markers
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const requireTools = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const parser = requireTools("@babel/parser");
+
+          const FULL_CODEBASE_FILE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+          const INDEX_FILE = path.join(ROOT, "__SCREEN_SLICE_INDEX.json");
+
+          const SKIP_DIRS = new Set([
+            ".git",
+            ".github",
+            ".ci",
+            "node_modules",
+            ".next",
+            "out",
+            "dist",
+            "build",
+            "coverage",
+            ".turbo",
+            ".cache",
+            "__screen_tools__",
+            "__screen_codebase__"
+          ]);
+
+          const TEXT_EXTS = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs",
+            ".css",
+            ".scss",
+            ".sass",
+            ".sql",
+            ".json",
+            ".yml",
+            ".yaml",
+            ".toml"
+          ]);
+
+          const JSX_EXTS = new Set([".tsx", ".jsx"]);
+          const APP_PAGE_RE = /^app\/(?:.*\/)?page\.(tsx|jsx|ts|js)$/;
+          const PAGES_PAGE_RE = /^(?:pages|src\/pages)\/(.+)\.(tsx|jsx|ts|js)$/;
+
+          function posix(value) {
+            return value.split(path.sep).join("/");
+          }
+
+          function ext(rel) {
+            return path.posix.extname(rel).toLowerCase();
+          }
+
+          function sha16(value) {
+            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
+          }
+
+          function b64url(value) {
+            return Buffer.from(String(value), "utf8").toString("base64url");
+          }
+
+          function byteLen(value) {
+            return Buffer.byteLength(value, "utf8");
+          }
+
+          function byteAt(source, charIndex) {
+            return byteLen(source.slice(0, charIndex));
+          }
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+
+              if (entry.isDirectory()) {
+                if (!SKIP_DIRS.has(entry.name)) walk(full, out);
+                continue;
+              }
+
+              if (!entry.isFile()) continue;
+
+              const rel = posix(path.relative(ROOT, full));
+              if (TEXT_EXTS.has(ext(rel))) out.push(rel);
+            }
+
+            return out;
+          }
+
+          function routeFromAppPage(rel) {
+            if (!APP_PAGE_RE.test(rel)) return null;
+
+            const inner = rel
+              .replace(/^app\//, "")
+              .replace(/\/page\.(tsx|jsx|ts|js)$/, "")
+              .replace(/^page\.(tsx|jsx|ts|js)$/, "");
+
+            const parts = inner
+              .split("/")
+              .filter(Boolean)
+              .filter((part) => !(part.startsWith("(") && part.endsWith(")")))
+              .filter((part) => !part.startsWith("@"));
+
+            if (parts.some((part) => part.startsWith("[") && part.endsWith("]"))) return null;
+
+            return parts.length ? "/" + parts.join("/") : "/";
+          }
+
+          function routeFromPagesFile(rel) {
+            const match = rel.match(PAGES_PAGE_RE);
+
+            if (!match) return null;
+
+            let inner = match[1];
+
+            if (
+              inner === "_app" ||
+              inner === "_document" ||
+              inner === "_error" ||
+              inner.startsWith("api/")
+            ) {
+              return null;
+            }
+
+            inner = inner.replace(/\/index$/, "").replace(/^index$/, "");
+
+            const parts = inner.split("/").filter(Boolean);
+
+            if (parts.some((part) => part.startsWith("[") && part.endsWith("]"))) return null;
+
+            return parts.length ? "/" + parts.join("/") : "/";
+          }
+
+          function routeFromFile(rel) {
+            return routeFromAppPage(rel) || routeFromPagesFile(rel);
+          }
+
+          function parseSource(source) {
+            return parser.parse(source, {
+              sourceType: "module",
+              errorRecovery: true,
+              plugins: [
+                "jsx",
+                "typescript",
+                "classProperties",
+                "classPrivateProperties",
+                "classPrivateMethods",
+                "decorators-legacy",
+                "objectRestSpread",
+                "dynamicImport",
+                "optionalChaining",
+                "nullishCoalescingOperator",
+                "topLevelAwait",
+                "importMeta"
+              ]
+            });
+          }
+
+          function childNodes(node) {
+            const out = [];
+
+            if (!node || typeof node !== "object") return out;
+
+            for (const key of Object.keys(node)) {
+              if (
+                key === "loc" ||
+                key === "start" ||
+                key === "end" ||
+                key === "leadingComments" ||
+                key === "trailingComments" ||
+                key === "innerComments" ||
+                key === "extra"
+              ) {
+                continue;
+              }
+
+              const value = node[key];
+
+              if (Array.isArray(value)) {
+                for (const child of value) {
+                  if (child && typeof child === "object" && child.type) {
+                    out.push(child);
+                  }
+                }
+              } else if (value && typeof value === "object" && value.type) {
+                out.push(value);
+              }
+            }
+
+            return out;
+          }
+
+          function jsxName(nameNode) {
+            if (!nameNode) return "";
+
+            if (nameNode.type === "JSXIdentifier") return nameNode.name;
+
+            if (nameNode.type === "JSXMemberExpression") {
+              const parts = [];
+              let cursor = nameNode;
+
+              while (cursor) {
+                if (cursor.property?.name) parts.unshift(cursor.property.name);
+
+                if (cursor.object?.name) {
+                  parts.unshift(cursor.object.name);
+                  break;
+                }
+
+                cursor = cursor.object;
+              }
+
+              return parts.join(".");
+            }
+
+            return "";
+          }
+
+          function isDomTag(name) {
+            return /^[a-z][a-z0-9:-]*$/.test(name);
+          }
+
+          function hasSliceAttr(opening) {
+            return (opening.attributes || []).some((attr) => attr?.name?.name === "data-de-slice");
+          }
+
+          function insertPoint(source, opening) {
+            let i = opening.end - 1;
+
+            while (i > opening.start && source[i] !== ">") i--;
+
+            if (source[i] !== ">") return null;
+
+            return source[i - 1] === "/" ? i - 1 : i;
+          }
+
+          function ownerFrom(node, ancestors) {
+            const parent = ancestors[ancestors.length - 1];
+            const grand = ancestors[ancestors.length - 2];
+
+            if (node.type === "FunctionDeclaration") {
+              const wrapper = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type)
+                ? parent
+                : node;
+
+              return {
+                name: node.id?.name || "default",
+                start: wrapper.start,
+                end: wrapper.end
+              };
+            }
+
+            if (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") {
+              if (
+                parent?.type === "VariableDeclarator" &&
+                grand?.type === "VariableDeclaration"
+              ) {
+                return {
+                  name: parent.id?.name || "anonymous",
+                  start: grand.start,
+                  end: grand.end
+                };
+              }
+
+              if (parent?.type === "ExportDefaultDeclaration") {
+                return {
+                  name: "default",
+                  start: parent.start,
+                  end: parent.end
+                };
+              }
+
+              return {
+                name: node.id?.name || "anonymous",
+                start: node.start,
+                end: node.end
+              };
+            }
+
+            if (node.type === "ClassMethod" || node.type === "ObjectMethod") {
+              return {
+                name: node.key?.name || "method",
+                start: node.start,
+                end: node.end
+              };
+            }
+
+            return null;
+          }
+
+          function idsIn(node, out = new Set()) {
+            if (!node || typeof node !== "object") return out;
+
+            if (node.type === "Identifier") out.add(node.name);
+            if (node.type === "JSXIdentifier") out.add(node.name);
+
+            for (const child of childNodes(node)) idsIn(child, out);
+
+            return out;
+          }
+
+          function range(source, rel, charStart, charEnd, kind, fileStreamStart) {
+            const byteStart = byteAt(source, charStart);
+            const byteEnd = byteAt(source, charEnd);
+            const slice = source.slice(charStart, charEnd);
+
+            return {
+              p: rel,
+              k: kind,
+              cs: charStart,
+              ce: charEnd,
+              bs: byteStart,
+              be: byteEnd,
+              ss: fileStreamStart + byteStart,
+              se: fileStreamStart + byteEnd,
+              h: sha16(slice)
+            };
+          }
+
+          function collectDefs(ast, source, rel, fileStreamStart) {
+            const defs = {};
+            const imports = {};
+
+            function visit(node, ancestors = []) {
+              const parent = ancestors[ancestors.length - 1];
+              const grand = ancestors[ancestors.length - 2];
+
+              if (node.type === "ImportDeclaration") {
+                for (const spec of node.specifiers || []) {
+                  if (spec.local?.name) {
+                    imports[spec.local.name] = node.source?.value || "";
+                  }
+                }
+              }
+
+              if (node.type === "FunctionDeclaration" && node.id?.name) {
+                const wrapper = parent && ["ExportDefaultDeclaration", "ExportNamedDeclaration"].includes(parent.type)
+                  ? parent
+                  : node;
+
+                defs[node.id.name] = range(source, rel, wrapper.start, wrapper.end, "DEF", fileStreamStart);
+              }
+
+              if (
+                parent?.type === "VariableDeclarator" &&
+                grand?.type === "VariableDeclaration" &&
+                parent.id?.type === "Identifier" &&
+                (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression")
+              ) {
+                defs[parent.id.name] = range(source, rel, grand.start, grand.end, "DEF", fileStreamStart);
+              }
+
+              if (
+                parent?.type === "ExportNamedDeclaration" &&
+                node.type === "VariableDeclaration"
+              ) {
+                for (const decl of node.declarations || []) {
+                  if (decl.id?.type === "Identifier") {
+                    defs[decl.id.name] = range(source, rel, parent.start, parent.end, "DEF", fileStreamStart);
+                  }
+                }
+              }
+
+              for (const child of childNodes(node)) visit(child, ancestors.concat(node));
+            }
+
+            visit(ast.program, []);
+
+            return { defs, imports };
+          }
+
+          const files = walk(ROOT).sort();
+          const streamStarts = {};
+          const index = {
+            files: {},
+            pages: [],
+            markers: {}
+          };
+
+          const full = [];
+          let offset = 0;
+
+          for (const rel of files) {
+            const source = fs.readFileSync(path.join(ROOT, rel), "utf8");
+            const encodedPath = b64url(rel);
+            const open = `\n@@FILE:${encodedPath}@@\n`;
+            const close = `\n@@END:${encodedPath}@@\n`;
+
+            streamStarts[rel] = offset + byteLen(open);
+            full.push(open, source, close);
+            offset += byteLen(open + source + close);
+
+            const route = routeFromFile(rel);
+
+            if (route) index.pages.push([route, rel]);
+
+            index.files[rel] = {
+              p: rel,
+              h: sha16(source),
+              b: byteLen(source),
+              ss: streamStarts[rel],
+              route,
+              defs: {},
+              imports: {}
+            };
+          }
+
+          if (index.pages.length === 0) {
+            index.pages.push(["/", ""]);
+          }
+
+          fs.writeFileSync(FULL_CODEBASE_FILE, full.join(""));
+
+          for (const rel of files) {
+            if (!JSX_EXTS.has(ext(rel))) continue;
+
+            const abs = path.join(ROOT, rel);
+            const source = fs.readFileSync(abs, "utf8");
+            let ast;
+
+            try {
+              ast = parseSource(source);
+            } catch {
+              continue;
+            }
+
+            const fileStreamStart = streamStarts[rel];
+            const { defs, imports } = collectDefs(ast, source, rel, fileStreamStart);
+
+            index.files[rel].defs = defs;
+            index.files[rel].imports = imports;
+
+            const inserts = [];
+
+            function visit(node, ancestors = [], owners = []) {
+              const owner = ownerFrom(node, ancestors);
+              const nextOwners = owner ? owners.concat(owner) : owners;
+
+              if (node.type === "JSXElement" && node.openingElement) {
+                const opening = node.openingElement;
+                const tag = jsxName(opening.name);
+
+                if (tag && isDomTag(tag) && !hasSliceAttr(opening)) {
+                  const at = insertPoint(source, opening);
+
+                  if (at !== null) {
+                    const ownerRange = nextOwners[nextOwners.length - 1] || {
+                      name: "module",
+                      start: 0,
+                      end: source.length
+                    };
+
+                    const markerId = sha16(`${rel}:${node.start}:${node.end}:${ownerRange.start}:${ownerRange.end}`);
+
+                    index.markers[markerId] = {
+                      id: markerId,
+                      p: rel,
+                      tag,
+                      ownerName: ownerRange.name,
+                      view: range(source, rel, node.start, node.end, "VIEW", fileStreamStart),
+                      owner: range(source, rel, ownerRange.start, ownerRange.end, "OWNER", fileStreamStart),
+                      ids: Array.from(idsIn(node)).filter(Boolean).slice(0, 100)
+                    };
+
+                    inserts.push([at, ` data-de-slice="${markerId}"`]);
+                  }
+                }
+              }
+
+              for (const child of childNodes(node)) {
+                visit(child, ancestors.concat(node), nextOwners);
+              }
+            }
+
+            visit(ast.program, [], []);
+
+            if (!inserts.length) continue;
+
+            inserts.sort((a, b) => b[0] - a[0]);
+
+            let instrumented = source;
+
+            for (const [at, text] of inserts) {
+              instrumented = instrumented.slice(0, at) + text + instrumented.slice(at);
+            }
+
+            fs.writeFileSync(abs, instrumented);
+          }
+
+          fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
+          NODE
+
+      - name: Build instrumented app
+        run: ${{ inputs.build_command }}
+
+      - name: Start app
+        env:
+          START_COMMAND: ${{ inputs.start_command }}
+        run: |
+          bash -lc "$START_COMMAND" > __screen_server.log 2>&1 &
+          echo $! > __screen_server.pid
+
+      - name: Emit editable screen slice codebase
+        env:
+          SCREEN_STORAGE_STATE_B64: ${{ secrets.SCREEN_STORAGE_STATE_B64 }}
+          BASE_URL: ${{ inputs.base_url }}
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const http = require("node:http");
+          const https = require("node:https");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, "__screen_codebase__");
+          const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:3000";
+
+          const requireTools = createRequire(path.join(ROOT, "__screen_tools__", "package.json"));
+          const { chromium } = requireTools("playwright");
+
+          const FULL_CODEBASE_FILE = path.join(ROOT, "__FULL_CODEBASE.codebase");
+          const FULL_BUF = fs.readFileSync(FULL_CODEBASE_FILE);
+          const INDEX = JSON.parse(fs.readFileSync(path.join(ROOT, "__SCREEN_SLICE_INDEX.json"), "utf8"));
+
+          const written = new Set();
+          const GENERIC_NAMES = new Set([
+            "div",
+            "span",
+            "main",
+            "section",
+            "article",
+            "header",
+            "footer",
+            "aside",
+            "screen",
+            "container",
+            "wrapper",
+            "content",
+            "layout",
+            "group",
+            "region",
+            "button",
+            "link",
+            "heading",
+            "form"
+          ]);
+
+          function waitForServer(url, timeoutMs = 60000) {
+            const started = Date.now();
+            const client = url.startsWith("https:") ? https : http;
+
+            return new Promise((resolve, reject) => {
+              const check = () => {
+                client.get(url, (res) => {
+                  res.resume();
+                  resolve();
+                }).on("error", () => {
+                  if (Date.now() - started > timeoutMs) {
+                    reject(new Error("Server did not become ready"));
+                    return;
+                  }
+
+                  setTimeout(check, 1000);
+                });
+              };
+
+              check();
+            });
+          }
+
+          function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+          }
+
+          function sha16(value) {
+            return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
+          }
+
+          function b64url(value) {
+            return Buffer.from(String(value), "utf8").toString("base64url");
+          }
+
+          function ext(rel) {
+            return path.posix.extname(rel) || ".slice";
+          }
+
+          function cleanWords(value) {
+            return String(value ?? "")
+              .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+              .replace(/[_-]+/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+
+          function titleCase(value) {
+            return cleanWords(value).replace(/\b\w/g, (m) => m.toUpperCase());
+          }
+
+          function sanitize(value, fallback = "screen") {
+            const clean = titleCase(value)
+              .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
+              .replace(/\.$/, "")
+              .slice(0, 72)
+              .trim();
+
+            return clean || fallback;
+          }
+
+          function sourceNoun(rel) {
+            const base = path.posix.basename(rel || "").replace(/\.(tsx|jsx|ts|js|mjs|cjs|css|scss|sass|sql|json)$/i, "");
+            const parent = path.posix.basename(path.posix.dirname(rel || ""));
+
+            if (/^(page|layout|index|route|loading|error|not-found)$/i.test(base)) {
+              return sanitize(parent || base);
+            }
+
+            return sanitize(base || parent || "source");
+          }
+
+          function usableName(value) {
+            const name = sanitize(value, "");
+
+            if (!name) return "";
+            if (name.length > 72) return "";
+
+            const lower = name.toLowerCase();
+            if (GENERIC_NAMES.has(lower)) return "";
+
+            return name;
+          }
+
+          function displayName(node, marker, index) {
+            return (
+              usableName(node.label) ||
+              usableName(node.testid) ||
+              usableName(node.id) ||
+              usableName(marker?.ownerName) ||
+              usableName(sourceNoun(marker?.p)) ||
+              sanitize(`${node.role || node.tag || "node"} ${index + 1}`)
+            );
+          }
+
+          function routeTitle(route) {
+            if (route === "/") return "Root";
+
+            return sanitize(route.split("/").filter(Boolean).join(" "));
+          }
+
+          function screenTitle(snapshot, route) {
+            const docTitle = usableName(snapshot.title);
+            const routeName = routeTitle(route);
+
+            if (docTitle && docTitle !== "localhost" && docTitle !== "127001") {
+              return `${routeName} - ${docTitle}`;
+            }
+
+            const headings = snapshot.rows
+              .filter((row) => row.role === "heading")
+              .map((row) => usableName(row.label))
+              .filter(Boolean);
+
+            if (headings.length) return `${routeName} - ${headings[0]}`;
+
+            const marked = snapshot.rows.find((row) => row.marker && INDEX.markers[row.marker]);
+            const marker = marked ? INDEX.markers[marked.marker] : null;
+
+            if (marker?.ownerName && marker.ownerName !== "default" && marker.ownerName !== "module") {
+              return `${routeName} - ${sanitize(marker.ownerName)}`;
+            }
+
+            if (marker?.p) return `${routeName} - ${sourceNoun(marker.p)}`;
+
+            return routeName;
+          }
+
+          function structuralAncestorPath(row) {
+            const parts = [];
+
+            for (let i = 0; i < (row.ancestors || []).length; i++) {
+              const ancestor = row.ancestors[i];
+              const marker = INDEX.markers[ancestor.marker];
+              const name = displayName(ancestor, marker, i);
+
+              if (!name) continue;
+              if (GENERIC_NAMES.has(name.toLowerCase())) continue;
+              if (parts[parts.length - 1] === name) continue;
+
+              parts.push(name);
+            }
+
+            return parts.slice(-7);
+          }
+
+          function sliceText(range) {
+            return FULL_BUF.subarray(range.ss, range.se).toString("utf8");
+          }
+
+          function sliceName(range) {
+            return [
+              range.k,
+              b64url(range.p),
+              `C${range.cs}-${range.ce}`,
+              `B${range.bs}-${range.be}`,
+              `S${range.ss}-${range.se}`,
+              `H${range.h}`
+            ].join("__") + ext(range.p);
+          }
+
+          function writeSlice(dir, range) {
+            const source = sliceText(range);
+
+            if (!source.trim() || sha16(source) !== range.h) return;
+
+            fs.mkdirSync(dir, { recursive: true });
+
+            const file = path.join(dir, sliceName(range));
+
+            if (written.has(file)) return;
+
+            written.add(file);
+            fs.writeFileSync(file, source);
+          }
+
+          function resolveImport(fromRel, specifier) {
+            if (!specifier.startsWith(".") && !specifier.startsWith("@/")) return null;
+
+            const base = specifier.startsWith("@/")
+              ? specifier.slice(2)
+              : path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier));
+
+            const candidates = [
+              base,
+              `${base}.ts`,
+              `${base}.tsx`,
+              `${base}.js`,
+              `${base}.jsx`,
+              `${base}.mjs`,
+              `${base}.cjs`,
+              `${base}/index.ts`,
+              `${base}/index.tsx`,
+              `${base}/index.js`,
+              `${base}/index.jsx`
+            ];
+
+            for (const candidate of candidates) {
+              if (INDEX.files[candidate]) return candidate;
+            }
+
+            return null;
+          }
+
+          function writeMarker(dir, marker) {
+            writeSlice(dir, marker.view);
+            writeSlice(dir, marker.owner);
+
+            const info = INDEX.files[marker.p] || {};
+            const defs = info.defs || {};
+            const imports = info.imports || {};
+
+            for (const id of marker.ids || []) {
+              if (defs[id]) writeSlice(dir, defs[id]);
+            }
+
+            for (const id of marker.ids || []) {
+              const specifier = imports[id];
+
+              if (!specifier) continue;
+
+              const resolved = resolveImport(marker.p, specifier);
+              const def = resolved && INDEX.files[resolved]?.defs?.[id];
+
+              if (def) writeSlice(dir, def);
+            }
+          }
+
+          async function safeExpandControls(page) {
+            const handles = await page.locator([
+              "summary",
+              "button[aria-expanded='false']",
+              "[role='button'][aria-expanded='false']",
+              "[aria-haspopup]",
+              "[aria-controls]"
+            ].join(",")).elementHandles();
+
+            const originalUrl = page.url();
+
+            for (const handle of handles.slice(0, 16)) {
+              const ok = await handle.evaluate((el) => {
+                const tag = el.tagName.toLowerCase();
+                const role = el.getAttribute("role") || "";
+                const type = (el.getAttribute("type") || "").toLowerCase();
+
+                if (el.disabled) return false;
+                if (el.closest("a[href]")) return false;
+                if (role === "link") return false;
+                if (tag === "button" && (type === "submit" || type === "reset")) return false;
+
+                const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+
+                if (
+                  style.display === "none" ||
+                  style.visibility === "hidden" ||
+                  Number(style.opacity || "1") === 0 ||
+                  rect.width === 0 ||
+                  rect.height === 0
+                ) {
+                  return false;
+                }
+
+                return (
+                  tag === "summary" ||
+                  el.getAttribute("aria-expanded") === "false" ||
+                  el.hasAttribute("aria-haspopup") ||
+                  el.hasAttribute("aria-controls")
+                );
+              }).catch(() => false);
+
+              if (!ok) continue;
+
+              const beforeHtmlLength = await page.evaluate(() => document.body.innerHTML.length).catch(() => 0);
+
+              try {
+                await handle.click({ timeout: 1000 });
+                await sleep(500);
+              } catch {
+                continue;
+              }
+
+              if (page.url() !== originalUrl) {
+                try {
+                  await page.goto(originalUrl, { waitUntil: "networkidle", timeout: 20000 });
+                  await sleep(300);
+                } catch {}
+
+                continue;
+              }
+
+              const afterHtmlLength = await page.evaluate(() => document.body.innerHTML.length).catch(() => beforeHtmlLength);
+
+              if (Math.abs(afterHtmlLength - beforeHtmlLength) > 25) {
+                await sleep(500);
+              }
+            }
+          }
+
+          async function extract(page) {
+            return await page.evaluate(() => {
+              function visible(el) {
+                const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+
+                return (
+                  style.display !== "none" &&
+                  style.visibility !== "hidden" &&
+                  Number(style.opacity || "1") !== 0 &&
+                  rect.width > 0 &&
+                  rect.height > 0
+                );
+              }
+
+              function textOf(el) {
+                return (el.innerText || el.textContent || "")
+                  .replace(/\s+/g, " ")
+                  .trim()
+                  .slice(0, 140);
+              }
+
+              function labelOf(el) {
+                return (
+                  el.getAttribute("aria-label") ||
+                  el.getAttribute("title") ||
+                  textOf(el) ||
+                  el.getAttribute("alt") ||
+                  el.getAttribute("placeholder") ||
+                  ""
+                ).replace(/\s+/g, " ").trim();
+              }
+
+              function roleOf(el) {
+                const explicit = el.getAttribute("role");
+                if (explicit) return explicit;
+
+                const tag = el.tagName.toLowerCase();
+
+                if (/^h[1-6]$/.test(tag)) return "heading";
+                if (tag === "a") return "link";
+                if (tag === "button") return "button";
+                if (["input", "textarea", "select"].includes(tag)) return "input";
+                if (["main", "nav", "header", "footer", "aside", "section", "article", "form", "dialog", "summary"].includes(tag)) return tag;
+
+                return tag;
+              }
+
+              function important(el) {
+                const tag = el.tagName.toLowerCase();
+                const role = roleOf(el);
+
+                return (
+                  el.hasAttribute("data-de-slice") ||
+                  /^h[1-6]$/.test(tag) ||
+                  ["main", "nav", "header", "footer", "aside", "section", "article", "form", "dialog", "button", "a", "input", "textarea", "select", "summary"].includes(tag) ||
+                  ["button", "link", "navigation", "main", "banner", "contentinfo", "form", "search", "dialog", "tab", "tabpanel", "menu", "menuitem", "textbox"].includes(role) ||
+                  el.hasAttribute("aria-label") ||
+                  el.hasAttribute("data-testid")
+                );
+              }
+
+              const elements = Array.from(document.body.querySelectorAll("*")).filter((el) => visible(el) && important(el));
+              const ids = new Map();
+
+              elements.forEach((el, index) => ids.set(el, `n${index}`));
+
+              function parentUid(el) {
+                let parent = el.parentElement;
+
+                while (parent && parent !== document.body) {
+                  if (ids.has(parent)) return ids.get(parent);
+                  parent = parent.parentElement;
+                }
+
+                return "";
+              }
+
+              const rows = elements.map((el, index) => {
+                const tag = el.tagName.toLowerCase();
+
+                return {
+                  uid: `n${index}`,
+                  parent: parentUid(el),
+                  role: roleOf(el),
+                  tag,
+                  label: labelOf(el),
+                  href: tag === "a" ? el.getAttribute("href") || "" : "",
+                  id: el.id || "",
+                  testid: el.getAttribute("data-testid") || "",
+                  marker: el.getAttribute("data-de-slice") || ""
+                };
+              });
+
+              const map = new Map(rows.map((row) => [row.uid, row]));
+
+              for (const row of rows) {
+                const ancestors = [];
+                let parent = map.get(row.parent);
+
+                while (parent) {
+                  ancestors.unshift(parent);
+                  parent = map.get(parent.parent);
+                }
+
+                row.ancestors = ancestors;
+              }
+
+              return {
+                title: document.title || "",
+                rows
+              };
+            });
+          }
+
+          async function emitRows(snapshot, rootParts) {
+            const rows = snapshot.rows || [];
+
+            for (let i = 0; i < rows.length; i++) {
+              const row = rows[i];
+
+              if (!row.marker) continue;
+
+              const marker = INDEX.markers[row.marker];
+
+              if (!marker) continue;
+
+              const ancestors = structuralAncestorPath(row);
+              const leaf = displayName(row, marker, i);
+              const dir = path.join(OUT, ...rootParts.map(sanitize), ...ancestors.map(sanitize), sanitize(leaf));
+
+              writeMarker(dir, marker);
+            }
+          }
+
+          async function main() {
+            await waitForServer(BASE_URL);
+
+            fs.rmSync(OUT, { recursive: true, force: true });
+            fs.mkdirSync(OUT, { recursive: true });
+            fs.copyFileSync(FULL_CODEBASE_FILE, path.join(OUT, "000_FULL_CODEBASE.codebase"));
+
+            let storageState;
+
+            if (process.env.SCREEN_STORAGE_STATE_B64) {
+              const storageFile = path.join(ROOT, "__screen_storage_state.json");
+              fs.writeFileSync(storageFile, Buffer.from(process.env.SCREEN_STORAGE_STATE_B64, "base64"));
+              storageState = storageFile;
+            }
+
+            const browser = await chromium.launch({ headless: true });
+            const context = await browser.newContext({
+              viewport: { width: 1440, height: 1200 },
+              storageState
+            });
+
+            const page = await context.newPage();
+            const routes = Array.from(new Set(INDEX.pages.map(([route]) => route))).sort((a, b) => {
+              if (a === "/") return -1;
+              if (b === "/") return 1;
+              return a.localeCompare(b);
+            });
+
+            for (const route of routes) {
+              try {
+                await page.goto(BASE_URL + route, { waitUntil: "networkidle", timeout: 45000 });
+                await sleep(500);
+              } catch {
+                continue;
+              }
+
+              const before = await extract(page);
+              const beforeRoot = ["Screens", screenTitle(before, route)];
+
+              await emitRows(before, beforeRoot);
+              await safeExpandControls(page);
+
+              const after = await extract(page);
+              const afterRoot = ["Screens", screenTitle(after, route)];
+
+              await emitRows(after, afterRoot);
+            }
+
+            await browser.close();
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Zip editable screen slice codebase
+        run: |
+          cd __screen_codebase__
+          zip -qr ../editable-screen-slice-codebase.zip .
+
+      - name: Upload editable screen slice codebase
+        uses: actions/upload-artifact@v4
+        with:
+          name: editable-screen-slice-codebase
+          path: editable-screen-slice-codebase.zip
+          include-hidden-files: false
+          compression-level: 9
+
+      - name: Stop app
+        if: always()
+        run: |
+          if [ -f __screen_server.pid ]; then
+            kill "$(cat __screen_server.pid)" || true
+          fi
