@@ -19,11 +19,15 @@ const _RETURNS = [0.12, 0.09, 0.15], _SIGMA = [0.20, 0.15, 0.25];
 
 const _CORR    = [[1, 0.3, 0.1], [0.3, 1, 0.2], [0.1, 0.2, 1]];
 
+const MAX_QUANTUM_QUBITS = 3;
+
 const VM_QUEUE_CAPACITY = 256;
 
 const VM_MESSAGE_SIZE   = 1024;
 
-const VM_QUEUE_BUF_SIZE = VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE + 8; 
+const VM_QUEUE_HEADER_BYTES = 8;
+
+const VM_QUEUE_BUF_SIZE = VM_QUEUE_HEADER_BYTES + VM_QUEUE_CAPACITY * VM_MESSAGE_SIZE; 
 
 const ENTRY_WORDS = 4; 
 
@@ -35,7 +39,7 @@ const DEFAULT_ALLOC_START = 1 * 1024 * 1024;
 
 const DURABLE_BRIDGE_QUEUE_KEY = 'de:dual-runtime-bridge:durable-queue';
 
-const POLL_INTERVAL_MS = 0; 
+const POLL_INTERVAL_MS = 16; 
 
 const BUS_WASM_URL = new URL('../bus.wasm', import.meta.url);
 
@@ -217,6 +221,7 @@ function _buildCircuit(n: number, algo: string, ansatz: string): _Op[] {
 }
 
 function _runCircuit(numQubits: number, algo: string, ansatz: string): QuantumComputeResult {
+  numQubits = Math.max(1, Math.min(MAX_QUANTUM_QUBITS, Math.floor(Number.isFinite(numQubits) ? numQubits : MAX_QUANTUM_QUBITS)));
   let sv = _groundState(numQubits);
   for (const op of _buildCircuit(numQubits, algo, ansatz)) {
     if      (op.kind === 'H'  && op.q    != null)                    sv = _applyGate1(sv, numQubits, op.q, _GATE_H);
@@ -255,6 +260,7 @@ class DualRuntimeBridge extends EventEmitter {
   private entryPtr = 0;
   private entryView: Uint32Array | null = null;
   private pollHandle: ReturnType<typeof setInterval> | null = null;
+  private isDraining = false;
   private readonly encoder = new TextEncoder();
   private readonly decoder = new TextDecoder();
 
@@ -272,7 +278,10 @@ class DualRuntimeBridge extends EventEmitter {
     super();
     this.setMaxListeners(100);
     this.restoreDurableQueue();
-    void this.initWasm();
+
+    if (typeof window !== 'undefined') {
+      void this.initWasm();
+    }
     
     
     
@@ -291,10 +300,22 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
 
-  private restoreDurableQueue(): void {
-    if (typeof localStorage === 'undefined') return;
+  private browserStorage(): Storage | null {
+    if (typeof window === 'undefined') return null;
+
     try {
-      const raw = localStorage.getItem(DURABLE_BRIDGE_QUEUE_KEY);
+      return window.localStorage ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private restoreDurableQueue(): void {
+    const storage = this.browserStorage();
+    if (!storage) return;
+
+    try {
+      const raw = storage.getItem(DURABLE_BRIDGE_QUEUE_KEY);
       if (!raw) return;
       const entries = JSON.parse(raw) as QueuedEmission[];
       if (!Array.isArray(entries)) return;
@@ -310,15 +331,18 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
   private persistDurableQueue(): void {
-    if (typeof localStorage === 'undefined') return;
+    const storage = this.browserStorage();
+    if (!storage) return;
+
     try {
-      localStorage.setItem(DURABLE_BRIDGE_QUEUE_KEY, JSON.stringify(Array.from(this.durableQueue.values())));
+      storage.setItem(DURABLE_BRIDGE_QUEUE_KEY, JSON.stringify(Array.from(this.durableQueue.values())));
     } catch {
       
     }
   }
 
   private async initWasm(): Promise<void> {
+    if (typeof window === 'undefined') return;
     if (this.busOnline) return;
     try {
       const memory = new WebAssembly.Memory({
@@ -373,11 +397,11 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
   private async loadWasmBinary(): Promise<ArrayBuffer> {
-    if (typeof fetch !== 'function') {
-      throw new Error('dualRuntimeBridge: fetch unavailable for WASM bus');
+    if (typeof window === 'undefined' || typeof window.fetch !== 'function') {
+      throw new Error('dualRuntimeBridge: browser fetch unavailable for WASM bus');
     }
 
-    const response = await fetch(BUS_WASM_URL);
+    const response = await window.fetch(BUS_WASM_URL);
     if (!response.ok) {
       throw new Error(`dualRuntimeBridge: failed to load WASM bus (${response.status})`);
     }
@@ -393,15 +417,30 @@ class DualRuntimeBridge extends EventEmitter {
   }
 
   private drainQueue() {
-    if (!this.busOnline || !this.wasm || !this.entryView) return;
-    while (this.wasm.dequeue(this.entryPtr)) {
-      const payloadPtr = this.entryView[1];
-      const payloadLen = this.entryView[2];
-      const envelope = this.readEnvelope(payloadPtr, payloadLen);
-      if (!envelope) continue;
+    if (!this.busOnline || !this.wasm || !this.entryView || this.isDraining) return;
 
-      this.dispatchLocal(envelope.channel, envelope.event, envelope.payload);
+    let drained = false;
+    this.isDraining = true;
+
+    try {
+      while (this.wasm.dequeue(this.entryPtr)) {
+        drained = true;
+        const payloadPtr = this.entryView[1];
+        const payloadLen = this.entryView[2];
+        const envelope = this.readEnvelope(payloadPtr, payloadLen);
+        if (!envelope) continue;
+
+        this.dispatchLocal(envelope.channel, envelope.event, envelope.payload);
+      }
+    } finally {
+      this.isDraining = false;
+      if (drained) this.resetPayloadAllocator();
     }
+  }
+
+  private resetPayloadAllocator(): void {
+    if (!this.entryPtr) return;
+    this.allocPtr = (this.entryPtr + ENTRY_BYTES + 7) & ~7;
   }
 
   private readEnvelope(ptr: number, declaredLen: number): { channel: string; event: string; payload: Record<string, unknown> } | null {
@@ -471,8 +510,7 @@ class DualRuntimeBridge extends EventEmitter {
 
   
   emit(channel: string, event: string, payload: Record<string, unknown>): boolean {
-    this.enqueueEnvelope(channel, event, payload);
-    return true;
+    return this.enqueueEnvelope(channel, event, payload);
   }
 
   
@@ -699,8 +737,13 @@ class DualRuntimeBridge extends EventEmitter {
     this.peerListeners.clear();
     this.emissionListeners.clear();
     this.durableQueue.clear();
+    if (this.pollHandle) {
+      clearInterval(this.pollHandle);
+      this.pollHandle = null;
+    }
     _totalEmissions = 0;
     if (this.wasm?.reset) this.wasm.reset();
+    this.resetPayloadAllocator();
   }
 
   
@@ -718,24 +761,21 @@ class DualRuntimeBridge extends EventEmitter {
 
   
   private _trimQueue(): void {
+    this._evictExpired();
     if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) return;
+
     let changed = false;
     const entries = Array.from(this.durableQueue.entries())
       .sort(([, a], [, b]) => a.enqueuedAt - b.enqueuedAt);
-    
+
     for (const [id, entry] of entries) {
       if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
-      if (entry.status !== 'pending') {
+      if (entry.status === 'acked' || entry.status === 'dropped') {
         this.durableQueue.delete(id);
         changed = true;
       }
     }
-    
-    for (const [id] of entries) {
-      if (this.durableQueue.size <= MAX_DURABLE_QUEUE_SIZE) break;
-      this.durableQueue.delete(id);
-      changed = true;
-    }
+
     if (changed) this.persistDurableQueue();
   }
 
@@ -782,7 +822,7 @@ class DualRuntimeBridge extends EventEmitter {
     }
   }
 
-  private dispatchLocal(channel: string, event: string, payload: Record<string, unknown>) {
+  private dispatchLocal(channel: string, event: string, payload: Record<string, unknown>): boolean {
     if (channel === 'module' && event === 'transfer') {
       const modulePayload = payload['module'] as { type?: unknown; id?: unknown } | undefined;
       const isGameCartridge = modulePayload?.type === 'game-cartridge';
@@ -795,11 +835,12 @@ class DualRuntimeBridge extends EventEmitter {
     const key = `${channel}:${event}`;
     const ts = Date.now();
     this.channelState.set(channel, payload);
-    super.emit(key, payload);
+    const delivered = super.emit(key, payload);
     this._touchPeer(channel);
     this._notifyEmissionListeners({ channel, event, payload, emittedAt: ts });
     _totalEmissions++;
     if (_totalEmissions % EVICT_EVERY_N === 0) this._evictExpired();
+    return delivered;
   }
 
   private hash(s: string): number {
@@ -816,7 +857,7 @@ class DualRuntimeBridge extends EventEmitter {
     const cons = Atomics.load(consumerIndex, 0);
     if (prod - cons >= VM_QUEUE_CAPACITY) return false;
     const slot   = prod % VM_QUEUE_CAPACITY;
-    const offset = slot * VM_MESSAGE_SIZE;
+    const offset = VM_QUEUE_HEADER_BYTES + slot * VM_MESSAGE_SIZE;
     const view   = new Uint8Array(buffer, offset, VM_MESSAGE_SIZE);
     view.fill(0);
     view.set(message.subarray(0, VM_MESSAGE_SIZE));
@@ -843,8 +884,6 @@ export const enginBridge = new DualRuntimeBridge();
 
 
 export const bridge = enginBridge;
-
-
 
 
 
