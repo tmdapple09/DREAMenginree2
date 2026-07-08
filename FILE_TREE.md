@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-07-07T22:07:06.378Z
+Generated: 2026-07-08T01:42:46.894Z
 
 Marker guide:
 
@@ -642,8 +642,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |       `-- route.ts 🔌 API_ROUTE
 |   |   |           +-- NextRequest, NextResponse  <- next/server
 |   |   |           +-- analyzeImageBytes  <- @/engins/contentengin/photo/imageAnalyzer
-|   |   |           +-- -> POST
-|   |   |           `-- -> runtime
+|   |   |           `-- -> POST
 |   |   +-- dr-eams  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   +-- hf  [AI / Dr. Eams / Agents, Supabase / Database]
 |   |   |   |   `-- route.ts
@@ -2558,8 +2557,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |       +-- (dynamic import)  <- @/components/landing/dream.LandingNav
 |       +-- (dynamic import)  <- @/components/landing/dream.scene.UniverseField
 |       `-- -> (default)
-+-- artifact
-|   `-- dreamengin-clean-codebase-report.json
 +-- assembly  [GameEngin, VM / WASM] 🗂 FEATURE_FOLDER
 |   +-- bus.ts
 |   |   +-- -> QUEUE_SIZE
@@ -8324,7 +8321,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- dualRuntimeBridge.ts
 |   |   |   +-- invokeMadMaxiSnapshotTransfer  <- @/engine/runtime/madMaxiSnapshotBridge
 |   |   |   +-- EventEmitter  <- events
-|   |   |   +-- (dynamic import)  <- fs/promises
 |   |   |   +-- (dynamic import)  <- @/engine/vm/wasmGpuVM
 |   |   |   +-- -> AckStatus
 |   |   |   +-- -> AnyBridgeEmission
@@ -8484,7 +8480,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- toErrorMessage  <- @/utils/index
 |   |   |   `-- -> isAuthRelatedError
 |   |   +-- madMaxiSnapshotBridge.ts
-|   |   |   +-- (dynamic import)  <- fs/promises
 |   |   |   `-- -> invokeMadMaxiSnapshotTransfer
 |   |   +-- memory.ts
 |   |   |   +-- -> BAR_SEAM_ATOMICS_INDEX

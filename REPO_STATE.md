@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-07T22:06:50.754Z
+Generated: 2026-07-08T01:42:35.046Z
 
 Model: capability nodes + files as edges.
 
@@ -15,7 +15,7 @@ Marker guide:
 - `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.
 - `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.
 
-- Capability nodes: 11590
+- Capability nodes: 11589
 - File edges: 1595
 - Routes: 113
 - Files analysed: 1595
@@ -131,7 +131,7 @@ Marker guide:
 | `engine/runtime/dreamsurface/index.ts` | `createBridge`, `DreamSurfaceBridge`, `computeDelta`, `mergeDelta`, `StateDelta` | `DreamSurfaceBridge`, `StateDelta`, `computeDelta`, `createBridge`, `mergeDelta` |
 | `engine/runtime/dropTargetRegistry.ts` | `DreamDrop`, `DreamDropType`, `RuntimeId` | `DropTarget`, `dropTargetRegistry` |
 | `engine/runtime/dualRuntime.ts` | `RUNTIME_REGIONS`, `SURFACE_NAMES`, `SystemPanelId` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RUNTIME_REGIONS`, `RuntimeWorld`, `SURFACE_NAMES`, `TORUS_DOMAINS` |
-| `engine/runtime/dualRuntimeBridge.ts` | `invokeMadMaxiSnapshotTransfer`, `events`, `fs/promises`, `(dynamic import)` | `AckStatus`, `AnyBridgeEmission`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel` |
+| `engine/runtime/dualRuntimeBridge.ts` | `invokeMadMaxiSnapshotTransfer`, `events`, `(dynamic import)` | `AckStatus`, `AnyBridgeEmission`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel` |
 | `engine/runtime/engin.auth.ts` | - | `EnginSession`, `createSession`, `validateSession` |
 | `engine/runtime/engin.eventbus.ts` | - | `EnginEvent`, `EventBus`, `createEventBus` |
 | `engine/runtime/engin.ledger.ts` | - | `DreamLedger`, `LedgerEntry`, `appendEntry`, `createLedger` |
@@ -141,7 +141,7 @@ Marker guide:
 | `engine/runtime/index.ts` | `(default)`, `createClient`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)` | `DreamLedger`, `EnginEvent`, `EnginSession`, `EventBus`, `LedgerEntry`, `RegistryEntry` |
 | `engine/runtime/instanceManager.ts` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel`, `RuntimeId`, `zustand`, `(dynamic import)` | `useInstanceManager`, `EnginInstance`, `EnginName`, `InstanceMode`, `buildInstanceKey`, `createInstance` |
 | `engine/runtime/isAuthRelatedError.ts` | `toErrorMessage` | `isAuthRelatedError` |
-| `engine/runtime/madMaxiSnapshotBridge.ts` | `fs/promises` | `invokeMadMaxiSnapshotTransfer` |
+| `engine/runtime/madMaxiSnapshotBridge.ts` | - | `invokeMadMaxiSnapshotTransfer` |
 | `engine/runtime/memory.ts` | - | `BAR_SEAM_ATOMICS_INDEX`, `BAR_SEAM_SCALE`, `BAR_Y_SCALE`, `CACHE_LINE`, `ConformMemoryMap`, `ENGIN_OFFSET_AXIS_STATE` |
 | `engine/runtime/moduleRegistry.ts` | `bridge`, `isModuleManifest`, `negotiateModuleCompatibility`, `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId` | `useModuleRegistry`, `manifestFromWidget`, `moduleRegistry`, `subscribeRegistryToTransferEvents`, `useModuleRegistry` |
 | `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `EnqueueOptions`, `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `OfflineReplayRequest`, `QueueStatus` |
@@ -2698,7 +2698,7 @@ _No style files for this feature._
 | `app/api/contentengin/assets/[assetId]/route.ts` | `safeUnder`, `next/server`, `fs/promises`, `path` | `/api/contentengin/assets/[assetId]`, `GET` |
 | `app/api/contentengin/jobs/[jobId]/route.ts` | `next/server` | `/api/contentengin/jobs/[jobId]`, `GET` |
 | `app/api/contentengin/jobs/route.ts` | `next/server`, `buildAsset`, `writeAssetBundle`, `zipDirectory`, `path` | `/api/contentengin/jobs`, `ContentEnginJobType`, `GET`, `POST` |
-| `app/api/contentengin/upload/route.ts` | `next/server`, `analyzeImageBytes` | `/api/contentengin/upload`, `POST`, `runtime` |
+| `app/api/contentengin/upload/route.ts` | `next/server`, `analyzeImageBytes` | `/api/contentengin/upload`, `POST` |
 | `app/api/dr-eams/hf/route.ts` | `next/server` | `/api/dr-eams/hf`, `POST` |
 | `app/api/dr-eams/run/route.ts` | `next/server` | `/api/dr-eams/run`, `POST` |
 | `app/api/drafts/[id]/route.ts` | `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `next/server`, `zod` | `/api/drafts/[id]`, `DELETE`, `PATCH` |
@@ -4113,7 +4113,7 @@ _No style files for this feature._
 - `(default)` - `components/forge/dream.widget.ForgeMomentumWidget.tsx`
 - `(default)` - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
 - `(default)` - `components/gameengin/dream.CrashReportModal.tsx`
-- _6590 more omitted from this section_
+- _6589 more omitted from this section_
 
 ## external
 
@@ -5126,7 +5126,7 @@ _No style files for this feature._
 | `app/api/contentengin/assets/[assetId]/route.ts` | `safeUnder`, `next/server`, `fs/promises`, `path` | `/api/contentengin/assets/[assetId]`, `GET` |
 | `app/api/contentengin/jobs/[jobId]/route.ts` | `next/server` | `/api/contentengin/jobs/[jobId]`, `GET` |
 | `app/api/contentengin/jobs/route.ts` | `next/server`, `buildAsset`, `writeAssetBundle`, `zipDirectory`, `path` | `/api/contentengin/jobs`, `ContentEnginJobType`, `GET`, `POST` |
-| `app/api/contentengin/upload/route.ts` | `next/server`, `analyzeImageBytes` | `/api/contentengin/upload`, `POST`, `runtime` |
+| `app/api/contentengin/upload/route.ts` | `next/server`, `analyzeImageBytes` | `/api/contentengin/upload`, `POST` |
 | `app/api/dr-eams/hf/route.ts` | `next/server` | `/api/dr-eams/hf`, `POST` |
 | `app/api/dr-eams/run/route.ts` | `next/server` | `/api/dr-eams/run`, `POST` |
 | `app/api/drafts/[id]/route.ts` | `createServerClient`, `safeGetUser`, `@supabase/supabase-js`, `next/server`, `zod` | `/api/drafts/[id]`, `DELETE`, `PATCH` |
@@ -5944,7 +5944,7 @@ _No style files for this feature._
 | `engine/runtime/dreamsurface/index.ts` | `createBridge`, `DreamSurfaceBridge`, `computeDelta`, `mergeDelta`, `StateDelta` | `DreamSurfaceBridge`, `StateDelta`, `computeDelta`, `createBridge`, `mergeDelta` |
 | `engine/runtime/dropTargetRegistry.ts` | `DreamDrop`, `DreamDropType`, `RuntimeId` | `DropTarget`, `dropTargetRegistry` |
 | `engine/runtime/dualRuntime.ts` | `RUNTIME_REGIONS`, `SURFACE_NAMES`, `SystemPanelId` | `DEFAULT_DUAL_RUNTIME`, `DualRuntimeState`, `RUNTIME_REGIONS`, `RuntimeWorld`, `SURFACE_NAMES`, `TORUS_DOMAINS`, `TORUS_FOCUS_MAP`, `TORUS_HEIGHT` |
-| `engine/runtime/dualRuntimeBridge.ts` | `invokeMadMaxiSnapshotTransfer`, `events`, `fs/promises`, `(dynamic import)` | `AckStatus`, `AnyBridgeEmission`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState`, `QuantumComputeResult` |
+| `engine/runtime/dualRuntimeBridge.ts` | `invokeMadMaxiSnapshotTransfer`, `events`, `(dynamic import)` | `AckStatus`, `AnyBridgeEmission`, `BridgeEventHandler`, `ChannelEventKey`, `ChannelEventPayload`, `DualRuntimeChannel`, `PeerState`, `QuantumComputeResult` |
 | `engine/runtime/engin.auth.ts` | - | `EnginSession`, `createSession`, `validateSession` |
 | `engine/runtime/engin.eventbus.ts` | - | `EnginEvent`, `EventBus`, `createEventBus` |
 | `engine/runtime/engin.ledger.ts` | - | `DreamLedger`, `LedgerEntry`, `appendEntry`, `createLedger` |
@@ -5955,7 +5955,7 @@ _No style files for this feature._
 | `engine/runtime/index.ts` | `(default)`, `createClient`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)`, `(dynamic import)` | `DreamLedger`, `EnginEvent`, `EnginSession`, `EventBus`, `LedgerEntry`, `RegistryEntry`, `RegistrySlot`, `RenderFrame` |
 | `engine/runtime/instanceManager.ts` | `RuntimeChannel`, `createLocalChannel`, `createRuntimeChannel`, `RuntimeId`, `zustand`, `(dynamic import)` | `useInstanceManager`, `EnginInstance`, `EnginName`, `InstanceMode`, `buildInstanceKey`, `createInstance`, `persistInstanceList`, `promoteInstanceToRealtime` |
 | `engine/runtime/isAuthRelatedError.ts` | `toErrorMessage` | `isAuthRelatedError` |
-| `engine/runtime/madMaxiSnapshotBridge.ts` | `fs/promises` | `invokeMadMaxiSnapshotTransfer` |
+| `engine/runtime/madMaxiSnapshotBridge.ts` | - | `invokeMadMaxiSnapshotTransfer` |
 | `engine/runtime/memory.ts` | - | `BAR_SEAM_ATOMICS_INDEX`, `BAR_SEAM_SCALE`, `BAR_Y_SCALE`, `CACHE_LINE`, `ConformMemoryMap`, `ENGIN_OFFSET_AXIS_STATE`, `ENGIN_OFFSET_DREAMDM_BAR_X`, `ENGIN_OFFSET_DREAMDM_BAR_Y` |
 | `engine/runtime/moduleRegistry.ts` | `bridge`, `isModuleManifest`, `negotiateModuleCompatibility`, `ModuleManifest`, `RuntimeCompatibility`, `RuntimeId`, `zustand`, `WidgetInstance` | `useModuleRegistry`, `manifestFromWidget`, `moduleRegistry`, `subscribeRegistryToTransferEvents`, `useModuleRegistry` |
 | `engine/runtime/offlineQueue.ts` | `toErrorMessage` | `EnqueueOptions`, `OfflineAction`, `OfflineActionStatus`, `OfflineActionType`, `OfflineReplayRequest`, `QueueStatus`, `clearQueue`, `dequeue` |
@@ -7046,7 +7046,6 @@ _No circular dependencies detected._
 | `engine/dreams/dreamIntentBus.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/intelligence/useSessionIntelligence.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/apperception.ts` | 4 | DUAL_RUNTIME |
-| `engine/runtime/dualRuntimeBridge.ts` | 4 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/moduleRegistry.ts` | 4 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME, ZUSTAND_STATE |
 | `engine/runtime/seamClipboard.ts` | 4 | EVENT_BUS, RUNTIME_REGISTRY, DUAL_RUNTIME |
 | `engine/runtime/useDragSurface.ts` | 4 | RUNTIME_REGISTRY |
@@ -7079,6 +7078,7 @@ _No circular dependencies detected._
 | `components/offline/dream.OfflineRuntimeBootstrap.tsx` | 3 | RUNTIME_REGISTRY |
 | `components/runtime/dream.shell.RuntimeShell.tsx` | 3 | DUAL_RUNTIME |
 | `engine/navigation/useNavigation.ts` | 3 | EVENT_BUS |
+| `engine/runtime/dualRuntimeBridge.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/runtime/iEngine.ts` | 3 | EVENT_BUS, DUAL_RUNTIME |
 | `engine/widgets/feed-resolver.ts` | 3 | EVENT_BUS |
 | `engins/gameengin/brain-reader.ts` | 3 | RUNTIME_REGISTRY |
@@ -7706,8 +7706,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- loading.tsx ⏳ LOADING
 |   +-- not-found.tsx 🧭 NOT_FOUND
 |   `-- page.tsx 👁 PAGE
-+-- artifact
-|   `-- dreamengin-clean-codebase-report.json
 +-- assembly  [GameEngin, VM / WASM] 🗂 FEATURE_FOLDER
 |   +-- bus.ts
 |   +-- index.ts
