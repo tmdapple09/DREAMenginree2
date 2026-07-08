@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T17:14:40.518Z",
+  "generatedAt": "2026-07-08T17:16:11.583Z",
   "root": ".",
   "nodes": [
     {
@@ -3356,6 +3356,16 @@
       "label": "root-hygiene.yml",
       "type": "config",
       "path": ".github/workflows/root-hygiene.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode-interface-output-only.yml",
+      "label": "screencode-interface-output-only.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-interface-output-only.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
