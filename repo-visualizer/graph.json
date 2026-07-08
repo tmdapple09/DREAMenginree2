@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T01:33:53.318Z",
+  "generatedAt": "2026-07-08T04:21:09.876Z",
   "root": ".",
   "nodes": [
     {
@@ -3356,6 +3356,16 @@
       "label": "root-hygiene.yml",
       "type": "config",
       "path": ".github/workflows/root-hygiene.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode.yml",
+      "label": "screencode.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -102765,6 +102775,11 @@
     },
     {
       "source": "file:src/engin/generated/dreamdmbar.ts",
+      "target": "file:dreamdmbar/dream.PhaseTrail.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/dreamdmbar.ts",
       "target": "file:dreamdmbar/dreamsurface.dreamdmbar.tsx",
       "kind": "import"
     },
@@ -106826,6 +106841,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/home/dream.widget.DreamWidget.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/home/dream.ZoomablePane.tsx",
       "kind": "import"
     },
     {
