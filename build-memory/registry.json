@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-06-29T08:45:17.460Z",
+  "generatedAt": "2026-07-08T01:33:54.975Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 304,
+    "surface": 305,
     "route-surface": 276,
     "dreamsurface": 15,
     "engin": 274,
     "engine-ruleset": 0,
     "dreamr": 4,
-    "dreamdmbar": 15,
+    "dreamdmbar": 16,
     "homedream": 1,
     "connector": 0,
     "brain-node": 0,
@@ -197,8 +197,7 @@
       "path": "app/api/admin/code-files/route.ts",
       "engine": "Universal",
       "exports": [
-        "FileNode",
-        "runtime"
+        "FileNode"
       ]
     },
     {
@@ -1308,7 +1307,8 @@
       "path": "app/daydream/render/page.tsx",
       "engine": "Universal",
       "exports": [
-        "default"
+        "default",
+        "metadata"
       ]
     },
     {
@@ -1879,7 +1879,8 @@
       "path": "app/engines/render/page.tsx",
       "engine": "Universal",
       "exports": [
-        "default"
+        "default",
+        "metadata"
       ]
     },
     {
@@ -2483,7 +2484,6 @@
       "path": "components/branding/dream.DreamEnginLogo.tsx",
       "engine": "Universal",
       "exports": [
-        "default",
         "DreamEnginLogo"
       ]
     },
@@ -3971,7 +3971,8 @@
       "path": "components/engines/render/dream.RenderServiceDiagnostics.tsx",
       "engine": "Universal",
       "exports": [
-        "default"
+        "default",
+        "RenderDiagnosticsSurface"
       ]
     },
     {
@@ -4028,7 +4029,6 @@
       "path": "components/engines/shared/dream.makeEnginApp.tsx",
       "engine": "Universal",
       "exports": [
-        "default",
         "makeEnginApp"
       ]
     },
@@ -4649,6 +4649,16 @@
       "engine": "Universal",
       "exports": [
         "default"
+      ]
+    },
+    {
+      "id": "components/home/dream.ZoomablePane",
+      "slot": "surface",
+      "path": "components/home/dream.ZoomablePane.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default",
+        "ZoomablePaneProps"
       ]
     },
     {
@@ -6146,6 +6156,16 @@
       ]
     },
     {
+      "id": "dreamdmbar/dream.PhaseTrail",
+      "slot": "dreamdmbar",
+      "path": "dreamdmbar/dream.PhaseTrail.tsx",
+      "engine": "DreamDMBar",
+      "exports": [
+        "default",
+        "PhaseTrailProps"
+      ]
+    },
+    {
       "id": "dreamdmbar/dreamsurface.dreamdmbar",
       "slot": "dreamdmbar",
       "path": "dreamdmbar/dreamsurface.dreamdmbar.tsx",
@@ -6331,6 +6351,7 @@
         "snapSplitRatioOnRelease",
         "snapToSplitPoint",
         "SPLIT_FLING_VELOCITY_PX_PER_MS",
+        "SPLIT_RATIO_EDGE_ASSIST",
         "SPLIT_RATIO_MAX",
         "SPLIT_RATIO_MIN",
         "SPLIT_SNAP_POINTS",
@@ -6613,9 +6634,11 @@
         "assertSafeWorkspacePath",
         "assertValidWorkspaceId",
         "CODEENGIN_ALLOWED_EXTENSIONS",
+        "CODEENGIN_ALLOWED_FILENAMES",
         "CODEENGIN_BLOCKED_SEGMENTS",
         "getCodeEnginWorkspacesRoot",
         "getWorkspaceRoot",
+        "isAllowedCodeEnginFileName",
         "isLikelyEditableFile",
         "normalizeProjectPath",
         "safeErrorMessage"
@@ -8222,7 +8245,6 @@
       "path": "engins/gameengin/cartridges/reactCartridge.ts",
       "engine": "Universal",
       "exports": [
-        "CARTRIDGE_LOADERS",
         "createReactCartridgeHost",
         "createReactGameCartridge",
         "defineReactCartridgeLoader",
@@ -9229,6 +9251,7 @@
         "ComputeShaderPipeline",
         "GPUComputeSystem",
         "GPUProfiler",
+        "requestRenderEnginWebGPUDevice",
         "WGSLShaderManager"
       ]
     },
@@ -9901,6 +9924,7 @@
         "packAosVertexBuffer",
         "PackedVertexBuffer",
         "RenderEnginFrameStats",
+        "RenderEnginGpuDeviceLease",
         "RenderEnginGpuMesh",
         "RenderEnginGpuTexture",
         "RenderEnginLifecycleHooks",
