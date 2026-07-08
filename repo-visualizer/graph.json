@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T22:27:34.796Z",
+  "generatedAt": "2026-07-08T01:33:53.318Z",
   "root": ".",
   "nodes": [
     {
@@ -6497,7 +6497,7 @@
       "type": "function",
       "path": "app/api/contentengin/upload/route.ts",
       "parent": "file:app/api/contentengin/upload/route.ts",
-      "loc": 8,
+      "loc": 7,
       "isOrphan": false,
       "exported": false
     },
@@ -6507,7 +6507,7 @@
       "type": "function",
       "path": "app/api/contentengin/upload/route.ts",
       "parent": "file:app/api/contentengin/upload/route.ts",
-      "loc": 13,
+      "loc": 12,
       "isOrphan": false,
       "exported": true
     },
@@ -14217,25 +14217,6 @@
       "parent": "folder:app/webgpu",
       "loc": null,
       "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "folder:artifact",
-      "label": "artifact",
-      "type": "folder",
-      "path": "artifact",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "file:artifact/dreamengin-clean-codebase-report.json",
-      "label": "dreamengin-clean-codebase-report.json",
-      "type": "config",
-      "path": "artifact/dreamengin-clean-codebase-report.json",
-      "parent": "folder:artifact",
-      "loc": null,
-      "isOrphan": true,
       "tags": []
     },
     {
@@ -42593,7 +42574,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 146,
+      "loc": 150,
       "isOrphan": true,
       "exported": false
     },
@@ -42603,7 +42584,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 148,
+      "loc": 152,
       "isOrphan": true,
       "exported": false
     },
@@ -42613,7 +42594,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 150,
+      "loc": 154,
       "isOrphan": true,
       "exported": false
     },
@@ -42623,7 +42604,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 152,
+      "loc": 156,
       "isOrphan": true,
       "exported": false
     },
@@ -42633,7 +42614,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 154,
+      "loc": 158,
       "isOrphan": true,
       "exported": false
     },
@@ -42643,7 +42624,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 156,
+      "loc": 160,
       "isOrphan": true,
       "exported": false
     },
@@ -42653,7 +42634,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 158,
+      "loc": 162,
       "isOrphan": true,
       "exported": false
     },
@@ -42663,7 +42644,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 171,
+      "loc": 175,
       "isOrphan": true,
       "exported": false
     },
@@ -42673,7 +42654,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 180,
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
@@ -42683,7 +42664,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 190,
+      "loc": 194,
       "isOrphan": true,
       "exported": false
     },
@@ -42693,7 +42674,7 @@
       "type": "function",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 218,
+      "loc": 222,
       "isOrphan": true,
       "exported": false
     },
@@ -42703,7 +42684,7 @@
       "type": "class",
       "path": "engine/runtime/dualRuntimeBridge.ts",
       "parent": "file:engine/runtime/dualRuntimeBridge.ts",
-      "loc": 242,
+      "loc": 247,
       "isOrphan": true,
       "exported": false
     },
@@ -43246,7 +43227,7 @@
       "type": "function",
       "path": "engine/runtime/madMaxiSnapshotBridge.ts",
       "parent": "file:engine/runtime/madMaxiSnapshotBridge.ts",
-      "loc": 44,
+      "loc": 43,
       "isOrphan": false,
       "exported": true
     },
@@ -45275,7 +45256,7 @@
       "type": "function",
       "path": "engine/social/platforms.ts",
       "parent": "file:engine/social/platforms.ts",
-      "loc": 225,
+      "loc": 213,
       "isOrphan": false,
       "exported": true
     },
@@ -45285,7 +45266,7 @@
       "type": "function",
       "path": "engine/social/platforms.ts",
       "parent": "file:engine/social/platforms.ts",
-      "loc": 233,
+      "loc": 220,
       "isOrphan": false,
       "exported": true
     },
