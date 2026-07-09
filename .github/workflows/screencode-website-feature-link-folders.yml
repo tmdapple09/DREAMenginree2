@@ -1,0 +1,383 @@
+name: Export Website Feature Link Folders
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-website-feature-link-folders:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install source parser
+        run: |
+          node -e "require('node:fs').mkdirSync('__de_feature_tools__',{recursive:true});require('node:fs').writeFileSync('__de_feature_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __de_feature_tools__ install @babel/parser@latest --no-package-lock --silent
+
+      - name: Export website features and link folders
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const crypto = require('node:crypto');
+          const { createRequire } = require('node:module');
+
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, '__dreamengin_website_features__');
+          const META = path.join(OUT, '.de');
+          const requireTools = createRequire(path.join(ROOT, '__de_feature_tools__', 'package.json'));
+          const parser = requireTools('@babel/parser');
+
+          const SKIP_DIRS = new Set(['.git', '.github', '.ci', 'node_modules', '.next', 'out', 'dist', 'build', 'coverage', '.turbo', '.cache', '__de_feature_tools__', '__dreamengin_website_features__']);
+          const SOURCE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs']);
+          const NON_UI_COMPONENT_RE = /(?:^|\b)(provider|context|boundary|errorboundary|suspense|portal|helmet|head|metadata|script|style|theme|config|registry|adapter|clientprovider|queryclient|hydration|hydrate|analytics|telemetry|observer|guard|gate|authguard|permissionguard|featureflag|devtool|debug|test|mock|fixture|story|stories|schema|model|store|reducer|dispatch|controller|manager|service|factory|mapper|normalizer|serializer|parser)(?:\b|$)/i;
+
+          function posix(p) { return p.split(path.sep).join('/'); }
+          function ext(rel) { return path.posix.extname(rel).toLowerCase(); }
+          function sha16(s) { return crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 16); }
+          function sha32(s) { return crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 32); }
+          function cleanWords(s) { return String(s ?? '').replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_./:@#?=&+\-[\](){}]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+          function titleCase(s) { return cleanWords(s).replace(/\b\w/g, m => m.toUpperCase()); }
+          function sanitize(s, fallback = 'Unnamed') { return (titleCase(s).replace(/[<>:"/\\|?*\x00-\x1F]/g, '').replace(/\.$/, '').slice(0, 96).trim() || fallback); }
+          function safeName(s, fallback = 'source') { return sanitize(s, fallback).replace(/\s+/g, '-').toLowerCase().replace(/[^a-z0-9._-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || fallback; }
+          function writeText(file, value) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); }
+          function writeJson(file, value) { writeText(file, JSON.stringify(value, null, 2) + '\n'); }
+          function writeJsonl(file, rows) { writeText(file, rows.map(r => JSON.stringify(r)).join('\n') + (rows.length ? '\n' : '')); }
+          function rangeFor(rel, source, start, end, kind) { const text = source.slice(start, end); return { kind, sourcePath: rel, start, end, hash: sha16(text) }; }
+          function writeRange(file, source, range) { const text = source.slice(range.start, range.end); if (sha16(text) !== range.hash) throw new Error(`range hash mismatch: ${range.sourcePath}:${range.start}-${range.end}`); writeText(file, text); }
+
+          function walk(dir, out = []) {
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, e.name);
+              if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name)) walk(full, out); continue; }
+              if (!e.isFile()) continue;
+              const rel = posix(path.relative(ROOT, full));
+              if (SOURCE_EXTS.has(ext(rel))) out.push(rel);
+            }
+            return out;
+          }
+
+          function parseSource(source, rel = '') {
+            const common = ['classProperties', 'classPrivateProperties', 'classPrivateMethods', 'decorators-legacy', 'objectRestSpread', 'dynamicImport', 'optionalChaining', 'nullishCoalescingOperator', 'topLevelAwait', 'importMeta'];
+            const attempts = [];
+            const lower = rel.toLowerCase();
+            const add = (sourceType, plugins) => attempts.push({ sourceType, plugins: Array.from(new Set(plugins)) });
+            if (lower.endsWith('.tsx')) { add('module', ['jsx', 'typescript', ...common]); add('unambiguous', ['jsx', 'typescript', ...common]); }
+            else if (lower.endsWith('.ts')) { add('module', ['typescript', ...common]); add('unambiguous', ['typescript', ...common]); add('module', ['jsx', 'typescript', ...common]); }
+            else if (lower.endsWith('.jsx')) { add('module', ['jsx', ...common]); add('unambiguous', ['jsx', ...common]); add('module', ['jsx', 'flow', ...common]); add('module', ['jsx', 'typescript', ...common]); add('script', ['jsx', ...common]); }
+            else { add('module', ['jsx', ...common]); add('unambiguous', ['jsx', ...common]); add('module', [...common]); add('unambiguous', [...common]); add('module', ['jsx', 'flow', ...common]); add('module', ['jsx', 'typescript', ...common]); add('script', ['jsx', ...common]); }
+            let last = null;
+            for (const opt of attempts) { try { return parser.parse(source, { sourceType: opt.sourceType, errorRecovery: true, plugins: opt.plugins }); } catch (e) { last = e; } }
+            throw last || new Error(`Unable to parse ${rel}`);
+          }
+
+          function children(node) {
+            const out = [];
+            if (!node || typeof node !== 'object') return out;
+            for (const k of Object.keys(node)) {
+              if (['loc', 'start', 'end', 'leadingComments', 'trailingComments', 'innerComments', 'extra'].includes(k)) continue;
+              const v = node[k];
+              if (Array.isArray(v)) for (const c of v) if (c && typeof c === 'object' && c.type) out.push(c);
+              else if (v && typeof v === 'object' && v.type) out.push(v);
+            }
+            return out;
+          }
+          function sourceOf(source, node) { return node && node.start != null && node.end != null ? source.slice(node.start, node.end) : ''; }
+          function hasJSX(node) { let yes = false; (function visit(n){ if (!n || yes) return; if (n.type === 'JSXElement' || n.type === 'JSXFragment') { yes = true; return; } for (const c of children(n)) visit(c); })(node); return yes; }
+          function jsxName(n) {
+            if (!n) return '';
+            if (n.type === 'JSXIdentifier') return n.name;
+            if (n.type === 'JSXMemberExpression') { const p = []; let c = n; while (c) { if (c.property?.name) p.unshift(c.property.name); if (c.object?.name) { p.unshift(c.object.name); break; } c = c.object; } return p.join('.'); }
+            if (n.type === 'JSXNamespacedName') return `${n.namespace?.name || ''}:${n.name?.name || ''}`;
+            return '';
+          }
+          function attrName(a) { if (!a || a.type !== 'JSXAttribute') return ''; const n = a.name; if (!n) return ''; if (n.type === 'JSXIdentifier') return n.name; if (n.type === 'JSXNamespacedName') return `${n.namespace?.name || ''}:${n.name?.name || ''}`; return ''; }
+          function exprStaticString(n, source) {
+            if (!n) return '';
+            if (n.type === 'StringLiteral') return n.value || '';
+            if (n.type === 'TemplateLiteral' && n.expressions.length === 0) return n.quasis.map(q => q.value.cooked || q.value.raw || '').join('');
+            if (n.type === 'TemplateLiteral') { const raw = sourceOf(source, n); const m = raw.match(/[`'"]((?:\/|\.\/|\.\.\/)[^`'"\s${}]*)/); return m ? m[1] : raw; }
+            if (n.type === 'Identifier') return n.name;
+            if (n.type === 'ObjectExpression') { const p = n.properties.find(x => (x.key?.name || x.key?.value) === 'pathname'); return p?.value ? exprStaticString(p.value, source) : sourceOf(source, n); }
+            return sourceOf(source, n);
+          }
+          function rawAttr(a, source) { if (!a || a.type !== 'JSXAttribute') return ''; if (!a.value) return 'true'; if (a.value.type === 'StringLiteral') return a.value.value || ''; if (a.value.type === 'JSXExpressionContainer') return exprStaticString(a.value.expression, source); return ''; }
+          function attrs(opening, source) { const o = Object.create(null); for (const a of opening.attributes || []) { const n = attrName(a); if (n) o[n] = rawAttr(a, source); } return o; }
+          function jsxText(node) { const p = []; (function visit(n){ if (!n) return; if (n.type === 'JSXText') { const t = n.value.replace(/\s+/g, ' ').trim(); if (t) p.push(t); return; } if (n.type === 'JSXExpressionContainer' && n.expression?.type === 'StringLiteral') { p.push(n.expression.value); return; } for (const c of children(n)) visit(c); })(node); return p.join(' ').replace(/\s+/g, ' ').trim().slice(0, 120); }
+          function isDomTag(tag) { return /^[a-z][a-z0-9:-]*$/.test(tag || ''); }
+          function isNonUiComponent(tag) { return NON_UI_COMPONENT_RE.test(cleanWords(tag || '')); }
+
+          function routeFromFile(rel) {
+            const parts = rel.split('/');
+            const file = parts[parts.length - 1];
+            const base = file.replace(/\.(tsx|jsx|ts|js|mjs|cjs)$/i, '');
+            const appIndex = parts.lastIndexOf('app');
+            if (appIndex >= 0 && base === 'page') {
+              const routeParts = parts.slice(appIndex + 1, -1).filter(p => p && !p.startsWith('(') && !p.startsWith('@')).map(p => p === 'index' ? '' : p);
+              return '/' + routeParts.filter(Boolean).join('/');
+            }
+            const pagesIndex = parts.lastIndexOf('pages');
+            if (pagesIndex >= 0 && parts[pagesIndex + 1] !== 'api') {
+              const routeParts = parts.slice(pagesIndex + 1);
+              routeParts[routeParts.length - 1] = base;
+              return '/' + routeParts.filter(p => p !== 'index').join('/');
+            }
+            return '';
+          }
+          function routeLabel(route) { if (!route || route === '/') return 'Home'; return sanitize(route.replace(/^\//, '').replace(/\[(\.{3})?([^\]]+)\]/g, '$2')); }
+          function normalizeTarget(raw, currentRoute) {
+            const value = String(raw || '').trim();
+            if (!value) return { kind: 'unknown', raw: value, route: '' };
+            if (/^(mailto:|tel:|http:\/\/|https:\/\/)/i.test(value)) return { kind: 'external', raw: value, route: '' };
+            if (value.startsWith('#')) return { kind: 'anchor', raw: value, route: currentRoute || '/' };
+            if (/[`$]/.test(value) || /[{}]/.test(value)) return { kind: 'dynamic', raw: value, route: '' };
+            let route = value.split(/[?#]/)[0];
+            if (!route) return { kind: 'unknown', raw: value, route: '' };
+            if (!route.startsWith('/')) route = path.posix.normalize(path.posix.join(currentRoute && currentRoute !== '/' ? currentRoute : '/', route));
+            if (route.length > 1) route = route.replace(/\/+$/, '');
+            return { kind: 'route', raw: value, route: route || '/' };
+          }
+          function dynamicRouteMatch(target, routeSet) {
+            if (!target || !target.startsWith('/')) return '';
+            if (routeSet.has(target)) return target;
+            const targetParts = target.split('/').filter(Boolean);
+            for (const route of routeSet) {
+              const routeParts = route.split('/').filter(Boolean);
+              if (routeParts.length !== targetParts.length) continue;
+              let ok = true;
+              for (let i = 0; i < routeParts.length; i++) if (!/^\[.+\]$/.test(routeParts[i]) && routeParts[i] !== targetParts[i]) { ok = false; break; }
+              if (ok) return route;
+            }
+            return '';
+          }
+          function firstStaticRoute(n, source) { let found = ''; (function visit(x){ if (!x || found) return; if (x.type === 'StringLiteral' && /^(\/|\.\/|\.\.\/|http:\/\/|https:\/\/|mailto:|tel:)/.test(x.value || '')) { found = x.value; return; } if (x.type === 'TemplateLiteral') { const m = sourceOf(source, x).match(/[`'"]((?:\/|\.\/|\.\.\/)[^`'"\s${}]*)/); if (m) found = m[1]; return; } for (const c of children(x)) visit(c); })(n); return found; }
+          function routerTargetFromHandler(expr, source) {
+            let target = '';
+            (function visit(n){ if (!n || target) return; if (n.type === 'CallExpression') { const callee = n.callee; const name = callee?.type === 'Identifier' ? callee.name : ''; const prop = callee?.type === 'MemberExpression' ? callee.property?.name : ''; if (['push', 'replace', 'navigate', 'redirect'].includes(name) || ['push', 'replace', 'navigate'].includes(prop)) target = firstStaticRoute(n.arguments?.[0], source); } for (const c of children(n)) visit(c); })(expr);
+            return target;
+          }
+          function linkLabel(tag, a, text, target) { const raw = a['aria-label'] || a.title || text || a.id || a['data-testid'] || a.href || a.to || a.route || a.path || tag; const dest = target.route ? routeLabel(target.route) : sanitize(target.raw || target.kind || 'Unknown', 'Unknown'); return `${sanitize(raw, 'Link')} To ${dest}`; }
+          function uniqueDir(parent, label, id, used) { let base = sanitize(label); let dir = path.join(parent, base); let rel = posix(path.relative(OUT, dir)); if (used.has(rel)) { dir = path.join(parent, `${base} - ${id.slice(0, 8)}`); rel = posix(path.relative(OUT, dir)); } let i = 2; while (used.has(rel)) { dir = path.join(parent, `${base} - ${id.slice(0, 8)} ${i}`); rel = posix(path.relative(OUT, dir)); i++; } used.add(rel); return dir; }
+
+          function collectFile(ast, source, rel) {
+            const imports = Object.create(null), components = [];
+            let defaultComponentId = '';
+            function record(name, node, wrapper) {
+              if (!node || !hasJSX(node)) return null;
+              const actual = wrapper || node;
+              const id = sha32(`${rel}:${name || 'Default'}:${actual.start}:${actual.end}`);
+              const c = { id, name: name || 'Default', sourcePath: rel, range: rangeFor(rel, source, actual.start, actual.end, 'component'), node, wrapper: actual };
+              components.push(c);
+              return c;
+            }
+            function visit(node, ancestors = []) {
+              const parent = ancestors[ancestors.length - 1], grand = ancestors[ancestors.length - 2];
+              if (node.type === 'ImportDeclaration') for (const spec of node.specifiers || []) if (spec.local?.name) imports[spec.local.name] = { specifier: node.source?.value || '', imported: spec.imported?.name || spec.imported?.value || 'default' };
+              if (node.type === 'FunctionDeclaration' && node.id?.name) { const wrap = parent && ['ExportDefaultDeclaration', 'ExportNamedDeclaration'].includes(parent.type) ? parent : node; const c = record(node.id.name, node, wrap); if (c && parent?.type === 'ExportDefaultDeclaration') defaultComponentId = c.id; }
+              if (parent?.type === 'VariableDeclarator' && grand?.type === 'VariableDeclaration' && parent.id?.type === 'Identifier' && (node.type === 'ArrowFunctionExpression' || node.type === 'FunctionExpression')) { const exportParent = ancestors[ancestors.length - 3]; const wrap = exportParent?.type === 'ExportNamedDeclaration' || exportParent?.type === 'ExportDefaultDeclaration' ? exportParent : grand; const c = record(parent.id.name, node, wrap); if (c && exportParent?.type === 'ExportDefaultDeclaration') defaultComponentId = c.id; }
+              if (node.type === 'ExportDefaultDeclaration') { const d = node.declaration; if (d?.type === 'Identifier') defaultComponentId = d.name; else if (d?.type === 'FunctionDeclaration') { const c = record(d.id?.name || 'Default', d, node); if (c) defaultComponentId = c.id; } else if (d?.type === 'ArrowFunctionExpression' || d?.type === 'FunctionExpression') { const c = record('Default', d, node); if (c) defaultComponentId = c.id; } }
+              for (const child of children(node)) visit(child, ancestors.concat(node));
+            }
+            visit(ast.program, []);
+            return { imports, components, defaultComponentId };
+          }
+
+          function resolveImportPath(fromRel, specifier, fileIndex) {
+            if (typeof specifier !== 'string') return '';
+            if (!specifier || (!specifier.startsWith('.') && !specifier.startsWith('@/') && !specifier.startsWith('~/'))) return '';
+            const base = specifier.startsWith('@/') || specifier.startsWith('~/') ? specifier.slice(2) : path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier));
+            const candidates = [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}.mjs`, `${base}.cjs`, `${base}/index.ts`, `${base}/index.tsx`, `${base}/index.js`, `${base}/index.jsx`];
+            return candidates.find(c => fileIndex[c]) || '';
+          }
+
+          const sourceFiles = walk(ROOT).sort();
+          const sourceCache = new Map(), fileIndex = Object.create(null), componentsById = Object.create(null), componentIdsByFile = Object.create(null);
+          const parseFailures = [];
+          fs.rmSync(OUT, { recursive: true, force: true });
+          fs.mkdirSync(META, { recursive: true });
+
+          for (const rel of sourceFiles) {
+            const source = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+            sourceCache.set(rel, source);
+            try {
+              const ast = parseSource(source, rel);
+              const info = collectFile(ast, source, rel);
+              fileIndex[rel] = { rel, imports: info.imports, componentIds: [], defaultComponentId: info.defaultComponentId, sourceHash: sha16(source) };
+              componentIdsByFile[rel] = Object.create(null);
+              for (const c of info.components) { componentsById[c.id] = c; fileIndex[rel].componentIds.push(c.id); componentIdsByFile[rel][c.name] = c.id; if (!fileIndex[rel].defaultComponentId) fileIndex[rel].defaultComponentId = c.id; if (info.defaultComponentId === c.name) fileIndex[rel].defaultComponentId = c.id; }
+            } catch (e) {
+              parseFailures.push({ sourcePath: rel, error: String(e && e.message ? e.message : e) });
+              fileIndex[rel] = { rel, imports: Object.create(null), componentIds: [], defaultComponentId: '', sourceHash: sha16(source) };
+              componentIdsByFile[rel] = Object.create(null);
+            }
+          }
+
+          function resolveComponent(tag, fromRel) {
+            if (!tag || isDomTag(tag) || isNonUiComponent(tag)) return '';
+            const base = tag.split('.').pop();
+            if (componentIdsByFile[fromRel]?.[base]) return componentIdsByFile[fromRel][base];
+            const imp = fileIndex[fromRel]?.imports?.[base] || fileIndex[fromRel]?.imports?.[tag];
+            if (!imp) return '';
+            const resolved = resolveImportPath(fromRel, imp.specifier, fileIndex);
+            if (!resolved) return '';
+            if (componentIdsByFile[resolved]?.[imp.imported]) return componentIdsByFile[resolved][imp.imported];
+            if (componentIdsByFile[resolved]?.[base]) return componentIdsByFile[resolved][base];
+            return fileIndex[resolved]?.defaultComponentId || fileIndex[resolved]?.componentIds?.[0] || '';
+          }
+
+          const routes = Object.create(null), routeSet = new Set();
+          for (const rel of sourceFiles) {
+            const route = routeFromFile(rel);
+            if (!route) continue;
+            const entry = fileIndex[rel]?.defaultComponentId || fileIndex[rel]?.componentIds?.[0] || '';
+            routes[route] = { route, label: routeLabel(route), sourcePath: rel, entryComponentId: entry, links: [], components: new Set() };
+            routeSet.add(route);
+          }
+
+          function detectLink({ route, component, node, opening, tag, a, text, source }) {
+            let raw = a.href || a.to || a.route || a.path || a.url || '';
+            let handlerRange = null;
+            for (const attr of opening.attributes || []) {
+              const n = attrName(attr);
+              if (!/^on[A-Z]/.test(n)) continue;
+              const expr = attr.value?.type === 'JSXExpressionContainer' ? attr.value.expression : null;
+              if (!expr) continue;
+              if (!raw) raw = routerTargetFromHandler(expr, source);
+              handlerRange = rangeFor(component.sourcePath, source, expr.start, expr.end, 'handler');
+            }
+            const tagBase = tag.split('.').pop();
+            const lower = tagBase.toLowerCase();
+            const role = String(a.role || '').toLowerCase();
+            const linkLike = lower === 'a' || lower === 'link' || lower.endsWith('link') || role === 'link' || Boolean(raw);
+            if (!linkLike || !raw) return null;
+            const target = normalizeTarget(raw, route);
+            if (target.route) { const m = dynamicRouteMatch(target.route, routeSet); if (m) target.route = m; }
+            const label = linkLabel(tag, a, text, target);
+            const range = rangeFor(component.sourcePath, source, node.start, node.end, 'link');
+            return { linkId: sha32(`${route}:${component.id}:${node.start}:${node.end}:${raw}:${label}`), label, route, sourcePath: component.sourcePath, ownerComponentId: component.id, ownerComponentName: component.name, tag, text, attrs: { href: a.href || '', to: a.to || '', route: a.route || '', path: a.path || '', role: a.role || '', ariaLabel: a['aria-label'] || '', title: a.title || '', id: a.id || '', dataTestId: a['data-testid'] || '' }, range, rawTarget: raw, target, handler: handlerRange };
+          }
+
+          function collectLinks(componentId, route, visited = new Set(), depth = 0) {
+            if (!componentId || visited.has(componentId) || depth > 40) return { links: [], components: [] };
+            const component = componentsById[componentId];
+            if (!component) return { links: [], components: [] };
+            visited.add(componentId);
+            const source = sourceCache.get(component.sourcePath);
+            const links = [], comps = [componentId];
+            function visit(node) {
+              if (!node) return;
+              if (node.type === 'JSXElement' && node.openingElement) {
+                const opening = node.openingElement, tag = jsxName(opening.name), a = attrs(opening, source), text = jsxText(node);
+                const link = detectLink({ route, component, node, opening, tag, a, text, source });
+                if (link) links.push(link);
+                const childId = resolveComponent(tag, component.sourcePath);
+                if (childId && !visited.has(childId)) { const child = collectLinks(childId, route, visited, depth + 1); links.push(...child.links); comps.push(...child.components); }
+              }
+              for (const c of children(node)) visit(c);
+            }
+            visit(component.node);
+            return { links, components: Array.from(new Set(comps)) };
+          }
+
+          for (const route of Object.keys(routes).sort()) {
+            const got = collectLinks(routes[route].entryComponentId, route, new Set(), 0);
+            routes[route].links = got.links;
+            routes[route].components = new Set(got.components);
+          }
+
+          const inbound = Object.create(null);
+          for (const r of Object.keys(routes)) inbound[r] = 0;
+          for (const f of Object.values(routes)) for (const l of f.links) if (l.target.kind === 'route' && routes[l.target.route]) inbound[l.target.route] = (inbound[l.target.route] || 0) + 1;
+
+          const usedDirs = new Set(), expandedRoutes = new Set();
+          const routeRows = [], linkRows = [], sourceRows = [];
+
+          function writeSupport(dir, componentId, reason) {
+            const c = componentsById[componentId];
+            if (!c) return;
+            const source = sourceCache.get(c.sourcePath);
+            const file = path.join(dir, 'Supporting Components', `${safeName(c.name, 'component')}-${c.id.slice(0, 8)}.tsx`);
+            writeRange(file, source, c.range);
+            sourceRows.push({ reason, componentId, sourcePath: c.sourcePath, range: c.range, outputFile: posix(path.relative(OUT, file)) });
+          }
+
+          function writeRoute(route, dir, branch = new Set()) {
+            const f = routes[route];
+            if (!f) { writeJson(path.join(dir, '.de', 'missing-route.json'), { route, missing: true }); return; }
+            const routeId = sha32(`route:${route}:${f.sourcePath}:${f.entryComponentId}`);
+            fs.mkdirSync(dir, { recursive: true });
+            const c = componentsById[f.entryComponentId];
+            if (c) { const source = sourceCache.get(c.sourcePath); const file = path.join(dir, 'feature.tsx'); writeRange(file, source, c.range); sourceRows.push({ reason: 'route-feature', route, componentId: c.id, sourcePath: c.sourcePath, range: c.range, outputFile: posix(path.relative(OUT, file)) }); }
+            for (const id of Array.from(f.components).filter(id => id !== f.entryComponentId).slice(0, 60)) writeSupport(dir, id, 'route-support');
+            writeJson(path.join(dir, '.de', 'route.json'), { routeId, route, label: f.label, sourcePath: f.sourcePath, entryComponentId: f.entryComponentId, componentIds: Array.from(f.components), linkIds: f.links.map(l => l.linkId), alreadyExpandedElsewhere: expandedRoutes.has(route), branchCycle: branch.has(route), roundTrip: { kind: 'website-feature-route', moveMeaning: 'moving this folder expresses intended website feature placement', sourceEditsApplyThrough: '.de/source-range-map.json' } });
+            routeRows.push({ routeId, route, folderPath: posix(path.relative(OUT, dir)), sourcePath: f.sourcePath, entryComponentId: f.entryComponentId, linkCount: f.links.length });
+            if (branch.has(route)) { writeJson(path.join(dir, '.de', 'cycle-stop.json'), { route, reason: 'Route already exists in this navigation branch; expansion stopped to avoid an infinite loop.' }); return; }
+            if (expandedRoutes.has(route)) { writeJson(path.join(dir, '.de', 'expanded-elsewhere.json'), { route, routeId, reason: 'Route already fully expanded elsewhere in this artifact.' }); return; }
+            expandedRoutes.add(route);
+            const next = new Set(branch); next.add(route);
+            for (const link of f.links) writeLink(link, path.join(dir, 'Links'), next);
+          }
+
+          function writeLink(link, parent, branch) {
+            const dir = uniqueDir(parent, link.label, link.linkId, usedDirs);
+            const source = sourceCache.get(link.sourcePath);
+            const linkFile = path.join(dir, 'link.tsx');
+            writeRange(linkFile, source, link.range);
+            sourceRows.push({ reason: 'link', linkId: link.linkId, sourcePath: link.sourcePath, range: link.range, outputFile: posix(path.relative(OUT, linkFile)) });
+            if (link.handler) { const handlerFile = path.join(dir, 'handler.tsx'); writeRange(handlerFile, source, link.handler); sourceRows.push({ reason: 'link-handler', linkId: link.linkId, sourcePath: link.sourcePath, range: link.handler, outputFile: posix(path.relative(OUT, handlerFile)) }); }
+            writeJson(path.join(dir, '.de', 'link.json'), { ...link, folderPath: posix(path.relative(OUT, dir)), roundTrip: { kind: 'website-navigation-link', moveMeaning: 'moving this folder expresses intended navigation placement', sourceEditsApplyThrough: '.de/source-range-map.json' } });
+            linkRows.push({ linkId: link.linkId, label: link.label, folderPath: posix(path.relative(OUT, dir)), route: link.route, targetKind: link.target.kind, targetRoute: link.target.route || '', rawTarget: link.rawTarget, sourcePath: link.sourcePath, ownerComponentId: link.ownerComponentId });
+            const opens = path.join(dir, 'Opens');
+            if (link.target.kind === 'route' && link.target.route && routes[link.target.route]) writeRoute(link.target.route, path.join(opens, routeLabel(link.target.route)), branch);
+            else writeJson(path.join(opens, link.target.kind === 'external' ? 'External Destination' : link.target.kind === 'dynamic' ? 'Dynamic Destination' : link.target.kind === 'anchor' ? 'Same Page Anchor' : 'Unknown Destination', '.de', 'destination.json'), { linkId: link.linkId, kind: link.target.kind, rawTarget: link.rawTarget, route: link.target.route || '', resolved: false });
+          }
+
+          const routeKeys = Object.keys(routes).sort();
+          let roots = routes['/'] ? ['/'] : routeKeys.filter(r => (inbound[r] || 0) === 0);
+          if (!roots.length) roots = routeKeys;
+          for (const r of roots) writeRoute(r, uniqueDir(path.join(OUT, 'Website'), routeLabel(r), sha32(`root:${r}`), usedDirs), new Set());
+          for (const r of routeKeys.filter(r => !expandedRoutes.has(r))) writeRoute(r, uniqueDir(path.join(OUT, 'Unlinked Website Features'), routeLabel(r), sha32(`unlinked:${r}`), usedDirs), new Set());
+
+          const validation = { routeCount: routeKeys.length, rootRoutes: roots, emittedRouteFolders: routeRows.length, emittedLinkFolders: linkRows.length, parseFailures, warnings: [], missingFeatureFiles: [], missingLinkFiles: [], rangeHashFailures: [] };
+          if (!routeKeys.length) validation.warnings.push('No app/pages route files were found.');
+          if (!linkRows.length) validation.warnings.push('No navigation link folders were emitted.');
+          if (parseFailures.length) validation.warnings.push('Some files could not be parsed; see parseFailures.');
+          for (const r of routeRows) if (r.entryComponentId && !fs.existsSync(path.join(OUT, r.folderPath, 'feature.tsx'))) validation.missingFeatureFiles.push(r);
+          for (const l of linkRows) if (!fs.existsSync(path.join(OUT, l.folderPath, 'link.tsx'))) validation.missingLinkFiles.push(l);
+          for (const row of sourceRows) { const source = sourceCache.get(row.sourcePath); if (!source) continue; const text = source.slice(row.range.start, row.range.end); if (sha16(text) !== row.range.hash) validation.rangeHashFailures.push(row); }
+
+          const importGraph = [];
+          for (const [rel, info] of Object.entries(fileIndex)) for (const [localName, value] of Object.entries(info.imports || {})) importGraph.push({ sourcePath: rel, localName, imported: value.imported, specifier: value.specifier, resolvedPath: resolveImportPath(rel, value.specifier, fileIndex) });
+
+          writeJson(path.join(META, 'export-map.json'), { format: 'dreamengin.website-feature-link-folders.v1', sourceOnly: true, noClicking: true, noRender: true, noFullRepoCopy: true, model: { routeFolders: 'website features', linkFolders: 'navigation/link actions inside the feature where they appear', destinationFolders: 'the route or destination opened by the link', structuralJsxFolders: false }, totals: { routes: routeKeys.length, routeFolders: routeRows.length, linkFolders: linkRows.length, parseFailures: parseFailures.length }, applyContract: { moveRouteFolder: 'changes intended website feature placement', moveLinkFolder: 'changes intended navigation placement', editFeatureTsx: 'patch source through .de/source-range-map.json', editLinkTsx: 'patch link source through .de/source-range-map.json', verifyHashesBeforeApply: true } });
+          writeJson(path.join(META, 'routes.json'), routeRows);
+          writeJson(path.join(META, 'links.json'), linkRows);
+          writeJson(path.join(META, 'source-range-map.json'), sourceRows);
+          writeJson(path.join(META, 'import-graph.json'), importGraph);
+          writeJson(path.join(META, 'validation.json'), validation);
+          writeJsonl(path.join(META, 'links.jsonl'), linkRows);
+
+          const fatal = [];
+          if (validation.missingFeatureFiles.length) fatal.push('Missing route feature.tsx files.');
+          if (validation.missingLinkFiles.length) fatal.push('Missing link.tsx files.');
+          if (validation.rangeHashFailures.length) fatal.push('Range/hash validation failed.');
+          if (fatal.length) { console.error(fatal.join('\n')); process.exit(1); }
+          NODE
+
+      - name: Upload website feature link folders
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-website-feature-link-folders
+          path: __dreamengin_website_features__
+          include-hidden-files: true
+          compression-level: 9
