@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T02:25:50.686Z",
+  "generatedAt": "2026-07-09T03:51:04.214Z",
   "root": ".",
   "nodes": [
     {
@@ -3356,16 +3356,6 @@
       "label": "root-hygiene.yml",
       "type": "config",
       "path": ".github/workflows/root-hygiene.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/screencode-website-feature-link-folders.yml",
-      "label": "screencode-website-feature-link-folders.yml",
-      "type": "config",
-      "path": ".github/workflows/screencode-website-feature-link-folders.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
