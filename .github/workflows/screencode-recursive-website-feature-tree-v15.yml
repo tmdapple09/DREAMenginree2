@@ -1,0 +1,842 @@
+name: Export Recursive Website Feature Tree V15
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-recursive-website-feature-tree-v15:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install source parser
+        run: |
+          node -e "require('node:fs').mkdirSync('__de_feature_tools__',{recursive:true});require('node:fs').writeFileSync('__de_feature_tools__/package.json','{\"type\":\"commonjs\"}')"
+          npm --prefix __de_feature_tools__ install @babel/parser@latest --no-package-lock --silent
+
+      - name: Export recursive website feature tree
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const { createRequire } = require("node:module");
+
+          const ROOT = process.cwd();
+          const OUT = path.join(ROOT, "__dreamengin_website_feature_tree__");
+          const META = path.join(OUT, ".de");
+          const requireTools = createRequire(path.join(ROOT, "__de_feature_tools__", "package.json"));
+          const parser = requireTools("@babel/parser");
+
+          const SKIP_DIRS = new Set([
+            ".git", ".github", ".ci", "node_modules", ".next", "out", "dist", "build", "coverage", ".turbo", ".cache",
+            "__de_feature_tools__", "__dreamengin_website_feature_tree__"
+          ]);
+          const SOURCE_EXTS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]);
+          const JSX_EXTS = new Set([".tsx", ".jsx"]);
+
+          const USER_FEATURE_RE = /(?:^|\b)(dream|dm|bar|menu|panel|drawer|dialog|modal|sheet|popover|tab|feed|profile|message|chat|thread|conversation|composer|comment|post|media|upload|asset|workspace|space|surface|canvas|viewport|shell|window|widget|search|settings|connector|launcher|editor|toolbar|card|engin|game|room|notification|button|link|input|form|select|toggle|switch|slider|list|grid|table|nav|header|footer|sidebar|player|viewer|preview|gallery|timeline|inbox|invite|share|member|identity|avatar|control|action|home|page|route|room|game|tool|asset|profile|settings)(?:\b|$)/i;
+          const NON_UI_RE = /(?:^|\b)(provider|context|boundary|errorboundary|suspense|portal|helmet|head|metadata|script|theme|config|registry|adapter|clientprovider|queryclient|hydration|hydrate|analytics|telemetry|observer|guard|gate|authguard|permissionguard|featureflag|devtool|debug|test|mock|fixture|story|stories|schema|model|store|reducer|dispatch|controller|manager|service|factory|mapper|normalizer|serializer|parser)(?:\b|$)/i;
+          const NON_ACTION_RE = /(?:^|\b)(error\s*boundary|boundary|provider|context|registry|adapter|telemetry|analytics|debug|mock|story|fixture|schema|reducer|store|manager|service|factory)(?:\b|$)/i;
+
+          function isNoiseActionLabel(value) {
+            return NON_ACTION_RE.test(cleanWords(value || ""));
+          }
+
+          function dynamicTargetName(raw) {
+            const value = String(raw || "").trim();
+            if (!value) return "";
+            if (/[`$]|[{}]/.test(value)) return "";
+
+            const parts = value.split(".").map((part) => part.trim()).filter(Boolean);
+            let candidate = parts.length > 1 ? parts[parts.length - 1] : value;
+
+            if (/^(href|url|path|route|to)$/i.test(candidate) && parts.length > 1) {
+              candidate = parts[parts.length - 2];
+            }
+
+            if (!/^[A-Za-z_$][\w$]*(Href|Url|URL|Path|Route|To)?$/i.test(candidate)) return "";
+
+            candidate = candidate.replace(/(Href|Url|URL|Path|Route|To)$/i, "");
+
+            if (!candidate || /^(href|url|path|route|to|link|button|input|label|field|item|value)$/i.test(candidate)) return "";
+
+            return sanitize(candidate, "");
+          }
+
+          function targetDisplayLabel(target) {
+            if (!target) return "Destination";
+            if (target.route) return routeLabel(target.route);
+            if (target.kind === "external") return "External Destination";
+            if (target.kind === "download") return "Download";
+            if (target.kind === "dynamic") return dynamicTargetName(target.raw) || "Dynamic Destination";
+            if (target.kind === "anchor") return "Same Page Anchor";
+            if (target.kind === "unknown") return dynamicTargetName(target.raw) || "Unknown Destination";
+            return sanitize(target.kind || "Destination", "Destination");
+          }
+
+          const ACTION_LABEL_RE = /(?:^|\b)(open|close|save|delete|remove|edit|cancel|send|submit|create|add|update|upload|download|share|launch|start|stop|play|pause|toggle|enable|disable|connect|disconnect|invite|join|leave|accept|decline|approve|reject|publish|unpublish|copy|duplicate|clear|reset|search|filter|sort|resize|drag|drop|move|select|choose|switch|next|previous|back|forward|reply|comment|like|follow|unfollow)(?:\b|$)/i;
+
+          const GENERIC_ONE_WORD_ACTION_RE = /^(add|new|clear|close|cancel|stop|share|follow|edit|delete|remove|save|send|submit|create|update|copy|reset|open|back|next|previous|refresh)$/i;
+          const TEMPLATE_TOKEN_RE = /[`$]|\{\s*[^}]+\s*\}/;
+
+          function labelWithoutPlumbingWords(value) {
+            return cleanWords(value || "")
+              .replace(/^\d+\s+/, " ")
+              .replace(/[←→↗↘↙↖]/g, " ")
+              .replace(/\b(href|url|path|route)\b/gi, " ")
+              .replace(/\bto\s+to\b/gi, "to")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+
+          function normalizedCompareLabel(value) {
+            return labelWithoutPlumbingWords(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+          }
+
+          function isBadGeneratedLabel(value) {
+            const label = labelWithoutPlumbingWords(value || "");
+            if (!label) return true;
+            if (TEMPLATE_TOKEN_RE.test(String(value || ""))) return true;
+            if (/^[^a-z0-9]+$/i.test(label)) return true;
+            if (/^(href|to|url|path|route|link|button|input|label|field|item|value)$/i.test(label)) return true;
+            if (/\b(href|url|path|route)\b/i.test(cleanWords(value || "")) && label.split(/\s+/).length <= 1) return true;
+            return false;
+          }
+
+          function compactUiLabel(value, fallback = "Open") {
+            const raw = String(value || "");
+            if (isBadGeneratedLabel(raw)) return fallback;
+            const cleaned = sanitize(labelWithoutPlumbingWords(raw), fallback);
+            const words = cleanWords(cleaned).split(/\s+/).filter(Boolean);
+            if (words.length > 10 || cleaned.length > 80) return fallback;
+            return cleaned;
+          }
+
+          function linkFolderLabel(labelRaw, target) {
+            const targetLabel = targetDisplayLabel(target);
+            const actionLabel = compactUiLabel(labelRaw, "Open");
+            const actionNorm = normalizedCompareLabel(actionLabel);
+            const targetNorm = normalizedCompareLabel(targetLabel);
+
+            if (target.kind === "dynamic") {
+              if (actionLabel !== "Open" && actionNorm && actionNorm !== targetNorm) return actionLabel;
+              return `Open ${targetLabel}`;
+            }
+
+            if (actionLabel === "Open") return `Open ${targetLabel}`;
+            if (actionNorm === targetNorm) return `Open ${targetLabel}`;
+            if (actionNorm.endsWith(` to ${targetNorm}`) || actionNorm.endsWith(` ${targetNorm}`) || actionNorm.includes(` ${targetNorm} `)) return actionLabel;
+            return `${actionLabel} To ${targetLabel}`;
+          }
+
+          function isActionWorthy(tag, attrs, actionLabel, handler) {
+            const base = String(tag || "").split(".").pop().toLowerCase();
+            const role = String(attrs.role || "").toLowerCase();
+            const type = String(attrs.type || "").toLowerCase();
+            const label = cleanWords(actionLabel || "");
+            const combined = `${tag || ""} ${role} ${type} ${label} ${handler?.event || ""}`;
+            const wordCount = label ? label.split(/\s+/).filter(Boolean).length : 0;
+            const genericControlLabel = /^(action|button|link|input|label|field|div|span|section|article|header|footer|main|aside|content|wrapper|container|element|control)$/i.test(label);
+            const labelIsSane = label && !genericControlLabel && wordCount <= 10 && label.length <= 80 && !isBadGeneratedLabel(actionLabel);
+            const hasActionVerb = ACTION_LABEL_RE.test(label);
+
+            if (!label || isNoiseActionLabel(combined)) return false;
+            if (genericControlLabel) return false;
+            if (isBadGeneratedLabel(actionLabel)) return false;
+            if (/^\d+(\s+\d+)?$/.test(label)) return false;
+            if (/^\d+\s+/.test(label) && !hasActionVerb) return false;
+            if (GENERIC_ONE_WORD_ACTION_RE.test(label)) return false;
+            if (/\b(input|label|field|item)\b/i.test(label) && !hasActionVerb) return false;
+            if (wordCount > 10 || label.length > 80) return false;
+
+            if (base === "form" && handler?.event === "onSubmit") return labelIsSane || hasActionVerb;
+            if (base === "input" && ["button", "submit", "reset", "checkbox", "radio"].includes(type)) return labelIsSane || hasActionVerb;
+            if (base === "button" || role === "button" || role === "menuitem" || role === "tab") return labelIsSane || hasActionVerb;
+            if (base === "summary") return labelIsSane || hasActionVerb;
+            if (["switch", "checkbox", "radio", "option"].includes(role)) return labelIsSane || hasActionVerb;
+            if (attrs["aria-haspopup"] || attrs["aria-controls"]) return labelIsSane || hasActionVerb;
+            if (hasActionVerb) return true;
+
+            return false;
+          }
+
+
+          function posix(value) { return value.split(path.sep).join("/"); }
+          function ext(rel) { return path.posix.extname(rel).toLowerCase(); }
+          function sha16(value) { return crypto.createHash("sha256").update(String(value)).digest("hex").slice(0, 16); }
+          function sha32(value) { return crypto.createHash("sha256").update(String(value)).digest("hex").slice(0, 32); }
+          function cleanWords(value) { return String(value ?? "").replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_./:@#?=&+\-[\](){}]+/g, " ").replace(/\s+/g, " ").trim(); }
+          function titleCase(value) { return cleanWords(value).replace(/\b\w/g, (m) => m.toUpperCase()); }
+          function sanitize(value, fallback = "Unnamed") {
+            const clean = titleCase(value).replace(/[<>:"/\\|?*\x00-\x1F]/g, "").replace(/\.$/, "").slice(0, 96).trim();
+            return clean || fallback;
+          }
+          function safeFileName(value, fallback = "source") {
+            return sanitize(value, fallback).replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9._-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || fallback;
+          }
+          function sourceNoun(rel) {
+            const base = path.posix.basename(rel).replace(/\.(tsx|jsx|ts|js|mjs|cjs)$/i, "");
+            const parent = path.posix.basename(path.posix.dirname(rel));
+            if (/^(page|layout|index|route|main|app)$/i.test(base)) return sanitize(parent || base, "Feature");
+            return sanitize(base || parent || "Feature", "Feature");
+          }
+          function writeText(file, value) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); }
+          function writeJson(file, value) { writeText(file, JSON.stringify(value, null, 2) + "\n"); }
+          function writeJsonl(file, rows) { writeText(file, rows.map((row) => JSON.stringify(row)).join("\n") + (rows.length ? "\n" : "")); }
+          function rangeFor(rel, source, start, end, kind) { const text = source.slice(start, end); return { kind, sourcePath: rel, start, end, hash: sha16(text) }; }
+          function writeRange(file, rel, source, range) {
+            const text = source.slice(range.start, range.end);
+            if (sha16(text) !== range.hash) throw new Error(`range hash mismatch: ${rel}:${range.start}-${range.end}`);
+            writeText(file, text);
+          }
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) { if (!SKIP_DIRS.has(entry.name)) walk(full, out); continue; }
+              if (!entry.isFile()) continue;
+              const rel = posix(path.relative(ROOT, full));
+              if (SOURCE_EXTS.has(ext(rel))) out.push(rel);
+            }
+            return out;
+          }
+          function parseSource(source, rel = "") {
+            const common = ["classProperties", "classPrivateProperties", "classPrivateMethods", "decorators-legacy", "objectRestSpread", "dynamicImport", "optionalChaining", "nullishCoalescingOperator", "topLevelAwait", "importMeta"];
+            const lower = String(rel).toLowerCase(); const attempts = [];
+            function add(sourceType, plugins) { attempts.push({ sourceType, plugins: Array.from(new Set(plugins)) }); }
+            if (lower.endsWith(".tsx")) { add("module", ["jsx", "typescript", ...common]); add("unambiguous", ["jsx", "typescript", ...common]); }
+            else if (lower.endsWith(".ts")) { add("module", ["typescript", ...common]); add("unambiguous", ["typescript", ...common]); add("module", ["jsx", "typescript", ...common]); }
+            else if (lower.endsWith(".jsx")) { add("module", ["jsx", ...common]); add("unambiguous", ["jsx", ...common]); add("module", ["jsx", "flow", ...common]); add("module", ["jsx", "typescript", ...common]); add("script", ["jsx", ...common]); }
+            else { add("module", ["jsx", ...common]); add("unambiguous", ["jsx", ...common]); add("module", [...common]); add("unambiguous", [...common]); add("module", ["jsx", "flow", ...common]); add("module", ["jsx", "typescript", ...common]); add("script", ["jsx", ...common]); }
+            let last = null;
+            for (const options of attempts) { try { return parser.parse(source, { sourceType: options.sourceType, errorRecovery: true, plugins: options.plugins }); } catch (error) { last = error; } }
+            throw last || new Error(`Unable to parse ${rel}`);
+          }
+          function childNodes(node) {
+            const out = []; if (!node || typeof node !== "object") return out;
+            for (const key of Object.keys(node)) {
+              if (["loc", "start", "end", "leadingComments", "trailingComments", "innerComments", "extra"].includes(key)) continue;
+              const value = node[key];
+              if (Array.isArray(value)) { for (const child of value) if (child && typeof child === "object" && child.type) out.push(child); }
+              else if (value && typeof value === "object" && value.type) out.push(value);
+            }
+            return out;
+          }
+          function sourceOf(source, node) { if (!node || node.start == null || node.end == null) return ""; return source.slice(node.start, node.end); }
+          function containsJSX(node) { let found = false; function visit(current) { if (!current || found) return; if (current.type === "JSXElement" || current.type === "JSXFragment") { found = true; return; } for (const child of childNodes(current)) visit(child); } visit(node); return found; }
+          function jsxName(nameNode) {
+            if (!nameNode) return "";
+            if (nameNode.type === "JSXIdentifier") return nameNode.name;
+            if (nameNode.type === "JSXMemberExpression") { const parts = []; let cursor = nameNode; while (cursor) { if (cursor.property?.name) parts.unshift(cursor.property.name); if (cursor.object?.name) { parts.unshift(cursor.object.name); break; } cursor = cursor.object; } return parts.join("."); }
+            if (nameNode.type === "JSXNamespacedName") return `${nameNode.namespace?.name || ""}:${nameNode.name?.name || ""}`;
+            return "";
+          }
+          function attrName(attr) { if (!attr || attr.type !== "JSXAttribute") return ""; const name = attr.name; if (!name) return ""; if (name.type === "JSXIdentifier") return name.name; if (name.type === "JSXNamespacedName") return `${name.namespace?.name || ""}:${name.name?.name || ""}`; return ""; }
+          function exprText(node, source) {
+            if (!node) return "";
+            if (node.type === "StringLiteral") return node.value || "";
+            if (node.type === "TemplateLiteral" && node.expressions.length === 0) return node.quasis.map((q) => q.value.cooked || q.value.raw || "").join("");
+            if (node.type === "TemplateLiteral") { const raw = sourceOf(source, node); const m = raw.match(/[`'"]((?:\/|\.\/|\.\.\/)[^`'"\s${}]*)/); return m ? m[1] : raw; }
+            if (node.type === "Identifier") return node.name;
+            if (node.type === "ObjectExpression") { const pathname = node.properties.find((prop) => (prop.key?.name || prop.key?.value) === "pathname"); if (pathname?.value) return exprText(pathname.value, source); }
+            return sourceOf(source, node);
+          }
+          function rawAttrValue(attr, source) { if (!attr || attr.type !== "JSXAttribute") return ""; if (!attr.value) return "true"; if (attr.value.type === "StringLiteral") return attr.value.value || ""; if (attr.value.type === "JSXExpressionContainer") return exprText(attr.value.expression, source); return ""; }
+          function attrsOf(opening, source) { const attrs = Object.create(null); for (const attr of opening.attributes || []) { const name = attrName(attr); if (name) attrs[name] = rawAttrValue(attr, source); } return attrs; }
+          function textFromJSX(node) { const pieces = []; function visit(child) { if (!child) return; if (child.type === "JSXText") { const text = child.value.replace(/\s+/g, " ").trim(); if (text) pieces.push(text); return; } if (child.type === "JSXExpressionContainer") { const expr = child.expression; if (expr?.type === "StringLiteral") pieces.push(expr.value); return; } for (const next of childNodes(child)) visit(next); } for (const child of node.children || []) visit(child); return pieces.join(" ").replace(/\s+/g, " ").trim().slice(0, 140); }
+          function isDomTag(tag) { return /^[a-z][a-z0-9:-]*$/.test(tag || ""); }
+          function isNonUiName(name) { return NON_UI_RE.test(cleanWords(name || "")); }
+          function hasHandler(attrs) { return Object.keys(attrs).some((name) => /^on[A-Z]/.test(name)); }
+          function isLinkLike(tag, attrs, sourceText = "") { const base = String(tag || "").split(".").pop().toLowerCase(); const role = String(attrs.role || "").toLowerCase(); return base === "a" || base === "link" || base.endsWith("link") || base === "navlink" || role === "link" || Boolean(attrs.href || attrs.to || attrs.route || attrs.path || attrs.url) || /\b(router\.(push|replace)|navigate\(|redirect\(|location\.href)\b/.test(sourceText); }
+          function routeFromFile(rel) {
+            const parts = rel.split("/"); const file = parts[parts.length - 1]; const base = file.replace(/\.(tsx|jsx|ts|js|mjs|cjs)$/i, "");
+            const appIndex = parts.lastIndexOf("app"); if (appIndex >= 0 && ["page", "route"].includes(base)) { const routeParts = parts.slice(appIndex + 1, -1).filter((part) => part && !part.startsWith("(") && !part.startsWith("@")); return "/" + routeParts.filter(Boolean).join("/"); }
+            const pagesIndex = parts.lastIndexOf("pages"); if (pagesIndex >= 0 && parts[pagesIndex + 1] !== "api") { const routeParts = parts.slice(pagesIndex + 1); routeParts[routeParts.length - 1] = base; const clean = routeParts.filter((part) => part !== "index"); return "/" + clean.join("/"); }
+            return "";
+          }
+          function routeLabel(route) { if (!route || route === "/") return "Home"; return sanitize(route.replace(/^\//, "").replace(/\[(\.{3})?([^\]]+)\]/g, "$2"), "Feature"); }
+
+
+          function safeBrandFolderLabel(value, fallback = "Feature") {
+            const clean = String(value || "").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").replace(/\.$/, "").slice(0, 96).trim();
+            return clean || fallback;
+          }
+
+          function literalPropFromSource(source, propName) {
+            const re = new RegExp(`${propName}\\s*=\\s*["']([^"']+)["']`);
+            const match = String(source || "").match(re);
+            return match ? match[1] : "";
+          }
+
+          function componentPropFromSource(source, propName) {
+            const re = new RegExp(`${propName}\\s*=\\s*\\{\\s*([A-Za-z_$][\\w$]*)\\s*\\}`);
+            const match = String(source || "").match(re);
+            return match ? match[1] : "";
+          }
+
+          function brandedFeatureLabel(component) {
+            if (!component) return "";
+
+            const source = sourceCache.get(component.sourcePath) || "";
+
+            const enginName = literalPropFromSource(source, "enginName");
+            if (enginName && /Engin$/i.test(enginName)) return safeBrandFolderLabel(enginName, "Feature");
+
+            const sideBComponent = componentPropFromSource(source, "sideBComponent");
+            if (sideBComponent && /Engin$/i.test(sideBComponent)) return safeBrandFolderLabel(sideBComponent, "Feature");
+
+            const daydreamType = literalPropFromSource(source, "daydreamType");
+            if (daydreamType) {
+              const mapped = {
+                games: "GameEngin",
+                game: "GameEngin",
+                media: "MediaEngin",
+                assets: "AssetEngin",
+                messages: "MessageEngin",
+                social: "SocialEngin",
+                profile: "ProfileEngin",
+                settings: "SettingsEngin",
+                workspace: "WorkspaceEngin",
+                code: "CodeEngin",
+                content: "ContentEngin"
+              }[daydreamType.toLowerCase()];
+              if (mapped) return mapped;
+            }
+
+            if (component.name && /Engin$/i.test(component.name)) return safeBrandFolderLabel(component.name, "Feature");
+
+            return "";
+          }
+
+          function normalizeTarget(raw, currentRoute) {
+            const value = String(raw || "").trim(); if (!value) return { kind: "unknown", raw: value, route: "" };
+            if (/^(data:|blob:)/i.test(value) || /^`?data[:\s]/i.test(value)) return { kind: "download", raw: value, route: "" };
+            if (/^(mailto:|tel:|http:\/\/|https:\/\/)/i.test(value)) return { kind: "external", raw: value, route: "" };
+            if (value.startsWith("#")) return { kind: "anchor", raw: value, route: currentRoute || "/" };
+            if (/[`$]/.test(value) || /[{}]/.test(value) || /[A-Za-z_$][\w$]*\s*\(/.test(value)) return { kind: "dynamic", raw: value, route: "" };
+            if (!value.startsWith("/") && !value.startsWith(".") && /^[A-Za-z_$][\w$]*$/.test(value) && (/[A-Z]/.test(value) || /(Href|Url|URL|Path|Route)$/i.test(value))) return { kind: "dynamic", raw: value, route: "" };
+            if (!value.startsWith("/") && !value.startsWith(".") && /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)+$/.test(value) && /(href|url|path|route)$/i.test(value.split(".").pop())) return { kind: "dynamic", raw: value, route: "" };
+            let route = value.split(/[?#]/)[0]; if (!route) return { kind: "unknown", raw: value, route: "" };
+            if (!route.startsWith("/")) { const base = currentRoute && currentRoute !== "/" ? currentRoute : "/"; route = path.posix.normalize(path.posix.join(base, route)); }
+            if (route.length > 1) route = route.replace(/\/+$/, "");
+            return { kind: "route", raw: value, route: route || "/" };
+          }
+          function staticTargetFromExpression(node, source) { let target = ""; function visit(current) { if (!current || target) return; if (current.type === "StringLiteral") { if (/^(\/|\.\/|\.\.\/|http:\/\/|https:\/\/|mailto:|tel:)/.test(current.value || "")) target = current.value; return; } if (current.type === "TemplateLiteral") { const raw = sourceOf(source, current); const m = raw.match(/[`'"]((?:\/|\.\/|\.\.\/)[^`'"\s${}]*)/); if (m) target = m[1]; return; } for (const child of childNodes(current)) visit(child); } visit(node); return target; }
+          function routerTargetFromExpression(expr, source) { let target = ""; function visit(node) { if (!node || target) return; if (node.type === "CallExpression") { const callee = node.callee; const name = callee?.type === "Identifier" ? callee.name : ""; const prop = callee?.type === "MemberExpression" ? callee.property?.name : ""; if (["push", "replace", "navigate", "redirect"].includes(name) || ["push", "replace", "navigate"].includes(prop)) target = staticTargetFromExpression(node.arguments?.[0], source); } if (node.type === "AssignmentExpression" && sourceOf(source, node.left).includes("location.href")) target = staticTargetFromExpression(node.right, source); for (const child of childNodes(node)) visit(child); } visit(expr); return target; }
+          function collectCalls(node, out = new Set()) { if (!node || typeof node !== "object") return out; if (node.type === "CallExpression") { if (node.callee?.type === "Identifier") out.add(node.callee.name); if (node.callee?.type === "MemberExpression" && node.callee.property?.type === "Identifier") out.add(node.callee.property.name); } for (const child of childNodes(node)) collectCalls(child, out); return out; }
+
+          function propKey(node) {
+            if (!node) return "";
+            if (node.type === "Identifier") return node.name;
+            if (node.type === "StringLiteral" || node.type === "NumericLiteral") return String(node.value);
+            return "";
+          }
+
+          function memberPath(node, source) {
+            const parts = [];
+            let cursor = node;
+            while (cursor?.type === "MemberExpression") {
+              const key = cursor.computed ? resolveRuntimeValue(cursor.property, source, "", Object.create(null)) : { ok: true, value: propKey(cursor.property) };
+              if (!key.ok || key.value == null || key.value === "") return null;
+              parts.unshift(String(key.value));
+              cursor = cursor.object;
+            }
+            if (cursor?.type !== "Identifier") return null;
+            return { root: cursor.name, parts };
+          }
+
+          function readValuePath(value, parts) {
+            let current = value;
+            for (const part of parts || []) {
+              if (current == null) return { ok: false };
+              if (Array.isArray(current) && /^\d+$/.test(part)) current = current[Number(part)];
+              else if (typeof current === "object" && Object.prototype.hasOwnProperty.call(current, part)) current = current[part];
+              else return { ok: false };
+            }
+            return { ok: true, value: current };
+          }
+
+          function staticLocalValue(node, source, env = Object.create(null), depth = 0) {
+            if (!node || depth > 20) return { ok: false };
+            if (node.type === "StringLiteral" || node.type === "NumericLiteral" || node.type === "BooleanLiteral") return { ok: true, value: node.value };
+            if (node.type === "NullLiteral") return { ok: true, value: null };
+            if (node.type === "Identifier") {
+              if (Object.prototype.hasOwnProperty.call(env, node.name)) return { ok: true, value: env[node.name] };
+              return { ok: false };
+            }
+            if (node.type === "UnaryExpression") {
+              const inner = staticLocalValue(node.argument, source, env, depth + 1);
+              if (!inner.ok) return inner;
+              if (node.operator === "-") return { ok: true, value: -Number(inner.value) };
+              if (node.operator === "+") return { ok: true, value: Number(inner.value) };
+              if (node.operator === "!") return { ok: true, value: !inner.value };
+            }
+            if (node.type === "ArrayExpression") {
+              const arr = [];
+              for (const elem of node.elements || []) {
+                if (!elem) { arr.push(null); continue; }
+                const value = staticLocalValue(elem, source, env, depth + 1);
+                if (!value.ok) return { ok: false };
+                arr.push(value.value);
+              }
+              return { ok: true, value: arr };
+            }
+            if (node.type === "ObjectExpression") {
+              const obj = Object.create(null);
+              for (const prop of node.properties || []) {
+                if (prop.type === "SpreadElement") return { ok: false };
+                const key = propKey(prop.key);
+                if (!key) return { ok: false };
+                const value = staticLocalValue(prop.value, source, env, depth + 1);
+                if (!value.ok) return { ok: false };
+                obj[key] = value.value;
+              }
+              return { ok: true, value: obj };
+            }
+            if (node.type === "MemberExpression") {
+              const object = staticLocalValue(node.object, source, env, depth + 1);
+              if (!object.ok) return object;
+              const key = node.computed ? staticLocalValue(node.property, source, env, depth + 1) : { ok: true, value: propKey(node.property) };
+              if (!key.ok) return key;
+              return readValuePath(object.value, [String(key.value)]);
+            }
+            if (node.type === "TemplateLiteral") {
+              let out = "";
+              for (let i = 0; i < node.quasis.length; i++) {
+                out += node.quasis[i].value.cooked ?? node.quasis[i].value.raw ?? "";
+                if (i < node.expressions.length) {
+                  const value = staticLocalValue(node.expressions[i], source, env, depth + 1);
+                  if (!value.ok || value.value == null || typeof value.value === "object") return { ok: false };
+                  out += String(value.value);
+                }
+              }
+              return { ok: true, value: out };
+            }
+            return { ok: false };
+          }
+
+          function resolveImportedStatic(name, fromRel) {
+            const imported = fileIndex[fromRel]?.imports?.[name];
+            if (!imported) return { ok: false };
+            const resolved = resolveImportPath(fromRel, imported.specifier, fileIndex);
+            if (!resolved) return { ok: false };
+            const importName = imported.imported === "default" ? "default" : imported.imported;
+            const statics = fileIndex[resolved]?.staticValues || Object.create(null);
+            if (Object.prototype.hasOwnProperty.call(statics, importName)) return { ok: true, value: statics[importName], sourcePath: resolved, binding: importName };
+            if (Object.prototype.hasOwnProperty.call(statics, name)) return { ok: true, value: statics[name], sourcePath: resolved, binding: name };
+            return { ok: false };
+          }
+
+          function resolveRuntimeValue(node, source, rel = "", context = Object.create(null), depth = 0) {
+            if (!node || depth > 30) return { ok: false };
+            if (node.type === "StringLiteral" || node.type === "NumericLiteral" || node.type === "BooleanLiteral") return { ok: true, value: node.value, source: "literal" };
+            if (node.type === "NullLiteral") return { ok: true, value: null, source: "literal" };
+            if (node.type === "Identifier") {
+              if (Object.prototype.hasOwnProperty.call(context, node.name)) return { ok: true, value: context[node.name], source: "map-context", binding: node.name };
+              const statics = fileIndex[rel]?.staticValues || Object.create(null);
+              if (Object.prototype.hasOwnProperty.call(statics, node.name)) return { ok: true, value: statics[node.name], source: "local-static", binding: node.name };
+              const imported = resolveImportedStatic(node.name, rel);
+              if (imported.ok) return { ...imported, source: "imported-static" };
+              return { ok: false };
+            }
+            if (node.type === "MemberExpression") {
+              const pathInfo = memberPath(node, source);
+              if (!pathInfo) return { ok: false };
+              const root = resolveRuntimeValue({ type: "Identifier", name: pathInfo.root }, source, rel, context, depth + 1);
+              if (!root.ok) return root;
+              const value = readValuePath(root.value, pathInfo.parts);
+              if (!value.ok) return { ok: false };
+              return { ok: true, value: value.value, source: root.source, binding: `${pathInfo.root}.${pathInfo.parts.join(".")}` };
+            }
+            if (node.type === "TemplateLiteral") {
+              let out = "";
+              const used = [];
+              for (let i = 0; i < node.quasis.length; i++) {
+                out += node.quasis[i].value.cooked ?? node.quasis[i].value.raw ?? "";
+                if (i < node.expressions.length) {
+                  const value = resolveRuntimeValue(node.expressions[i], source, rel, context, depth + 1);
+                  if (!value.ok || value.value == null || typeof value.value === "object") return { ok: false };
+                  used.push(value.binding || sourceOf(source, node.expressions[i]));
+                  out += String(value.value);
+                }
+              }
+              return { ok: true, value: out, source: "resolved-template", bindings: used };
+            }
+            if (node.type === "ArrayExpression" || node.type === "ObjectExpression" || node.type === "UnaryExpression") {
+              const value = staticLocalValue(node, source, context, depth + 1);
+              if (value.ok) return { ...value, source: "inline-static" };
+            }
+            if (node.type === "LogicalExpression") {
+              const left = resolveRuntimeValue(node.left, source, rel, context, depth + 1);
+              if (node.operator === "&&") return left.ok && left.value ? resolveRuntimeValue(node.right, source, rel, context, depth + 1) : left;
+              if (node.operator === "||" || node.operator === "??") return left.ok && left.value != null && left.value !== false && left.value !== "" ? left : resolveRuntimeValue(node.right, source, rel, context, depth + 1);
+            }
+            if (node.type === "ConditionalExpression") {
+              const cons = resolveRuntimeValue(node.consequent, source, rel, context, depth + 1);
+              const alt = resolveRuntimeValue(node.alternate, source, rel, context, depth + 1);
+              if (cons.ok && alt.ok && cons.value === alt.value) return cons;
+            }
+            return { ok: false };
+          }
+
+          function runtimeText(node, source, rel, context) {
+            const resolved = resolveRuntimeValue(node, source, rel, context);
+            if (resolved.ok && resolved.value != null && typeof resolved.value !== "object") return String(resolved.value);
+            return exprText(node, source);
+          }
+
+          function rawAttrValueResolved(attr, source, rel, context) {
+            if (!attr || attr.type !== "JSXAttribute") return "";
+            if (!attr.value) return "true";
+            if (attr.value.type === "StringLiteral") return attr.value.value || "";
+            if (attr.value.type === "JSXExpressionContainer") return runtimeText(attr.value.expression, source, rel, context);
+            return "";
+          }
+
+          function attrsOfResolved(opening, source, rel, context) {
+            const attrs = Object.create(null);
+            for (const attr of opening.attributes || []) {
+              const name = attrName(attr);
+              if (name) attrs[name] = rawAttrValueResolved(attr, source, rel, context);
+            }
+            return attrs;
+          }
+
+          function textFromJSXResolved(node, source, rel, context) {
+            const pieces = [];
+            function visitText(child) {
+              if (!child) return;
+              if (child.type === "JSXText") {
+                const text = child.value.replace(/\s+/g, " ").trim();
+                if (text) pieces.push(text);
+                return;
+              }
+              if (child.type === "JSXExpressionContainer") {
+                const expr = child.expression;
+                if (!expr) return;
+                const value = resolveRuntimeValue(expr, source, rel, context);
+                if (value.ok && value.value != null && typeof value.value !== "object") pieces.push(String(value.value));
+                else if (expr.type === "StringLiteral") pieces.push(expr.value);
+                return;
+              }
+              for (const next of childNodes(child)) visitText(next);
+            }
+            for (const child of node.children || []) visitText(child);
+            return pieces.join(" ").replace(/\s+/g, " ").trim().slice(0, 140);
+          }
+
+          function contextSummary(context) {
+            const out = Object.create(null);
+            for (const [key, value] of Object.entries(context || {})) {
+              if (value == null) out[key] = value;
+              else if (typeof value === "object") out[key] = JSON.parse(JSON.stringify(value));
+              else out[key] = value;
+            }
+            return out;
+          }
+
+          function collectImportsAndComponents(ast, source, rel) {
+            const imports = Object.create(null); const components = []; const staticValues = Object.create(null);
+            function addComponent(name, node, wrapper, exported = false, isDefault = false) {
+              if (!node || !containsJSX(node)) return;
+              const actual = wrapper || node; const cleanName = sanitize(name || sourceNoun(rel), sourceNoun(rel)); const id = sha32(`${rel}:${cleanName}:${actual.start}:${actual.end}`);
+              components.push({ id, name: cleanName, sourcePath: rel, range: rangeFor(rel, source, actual.start, actual.end, "feature-component"), node, exported, isDefault, route: routeFromFile(rel) });
+            }
+            function recordStatic(name, init) {
+              if (!name || !init) return;
+              const value = staticLocalValue(init, source, staticValues);
+              if (value.ok) staticValues[name] = value.value;
+            }
+            function visit(node, ancestors = []) {
+              const parent = ancestors[ancestors.length - 1]; const grand = ancestors[ancestors.length - 2]; const great = ancestors[ancestors.length - 3];
+              if (node.type === "ImportDeclaration") { for (const spec of node.specifiers || []) if (spec.local?.name) imports[spec.local.name] = { specifier: node.source?.value || "", imported: spec.imported?.name || spec.imported?.value || "default" }; }
+              if (parent?.type === "VariableDeclarator" && grand?.type === "VariableDeclaration" && parent.id?.type === "Identifier") recordStatic(parent.id.name, parent.init);
+              if (node.type === "FunctionDeclaration" && node.id?.name) { const exported = parent?.type === "ExportNamedDeclaration" || parent?.type === "ExportDefaultDeclaration"; addComponent(node.id.name, node, exported ? parent : node, exported, parent?.type === "ExportDefaultDeclaration"); }
+              if (parent?.type === "VariableDeclarator" && grand?.type === "VariableDeclaration" && parent.id?.type === "Identifier" && (node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression")) { const exported = great?.type === "ExportNamedDeclaration" || great?.type === "ExportDefaultDeclaration"; addComponent(parent.id.name, node, exported ? great : grand, exported, great?.type === "ExportDefaultDeclaration"); }
+              if (node.type === "ExportDefaultDeclaration") { const decl = node.declaration; if (decl?.type === "ArrowFunctionExpression" || decl?.type === "FunctionExpression") addComponent(sourceNoun(rel), decl, node, true, true); if (decl?.type === "ObjectExpression" || decl?.type === "ArrayExpression" || decl?.type === "StringLiteral") { const value = staticLocalValue(decl, source, staticValues); if (value.ok) staticValues.default = value.value; } }
+              for (const child of childNodes(node)) visit(child, ancestors.concat(node));
+            }
+            visit(ast.program, []); return { imports, components, staticValues };
+          }
+          function resolveImportPath(fromRel, specifier, fileIndex) { if (typeof specifier !== "string") return ""; if (!specifier || (!specifier.startsWith(".") && !specifier.startsWith("@/") && !specifier.startsWith("~/"))) return ""; const base = specifier.startsWith("@/") || specifier.startsWith("~/") ? specifier.slice(2) : path.posix.normalize(path.posix.join(path.posix.dirname(fromRel), specifier)); const candidates = [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}.mjs`, `${base}.cjs`, `${base}/index.ts`, `${base}/index.tsx`, `${base}/index.js`, `${base}/index.jsx`]; return candidates.find((candidate) => fileIndex[candidate]) || ""; }
+
+          const sourceFiles = walk(ROOT).sort(); const sourceCache = new Map(); const astCache = new Map(); const fileIndex = Object.create(null); const components = []; const componentById = Object.create(null); const componentByFileAndName = Object.create(null); const parseFailures = [];
+          fs.rmSync(OUT, { recursive: true, force: true }); fs.mkdirSync(META, { recursive: true });
+          for (const rel of sourceFiles) {
+            const source = fs.readFileSync(path.join(ROOT, rel), "utf8"); sourceCache.set(rel, source);
+            try { const ast = parseSource(source, rel); astCache.set(rel, ast); const info = collectImportsAndComponents(ast, source, rel); fileIndex[rel] = { rel, sourceHash: sha16(source), imports: info.imports, staticValues: info.staticValues, componentIds: info.components.map((c) => c.id) }; componentByFileAndName[rel] = Object.create(null); for (const component of info.components) { components.push(component); componentById[component.id] = component; componentByFileAndName[rel][component.name] = component.id; } }
+            catch (error) { parseFailures.push({ sourcePath: rel, error: String(error && error.message ? error.message : error) }); fileIndex[rel] = { rel, sourceHash: sha16(source), imports: Object.create(null), staticValues: Object.create(null), componentIds: [] }; }
+          }
+          function resolveComponent(tag, fromRel) { if (!tag || isDomTag(tag) || isNonUiName(tag)) return ""; const base = tag.split(".").pop(); if (componentByFileAndName[fromRel]?.[base]) return componentByFileAndName[fromRel][base]; const imported = fileIndex[fromRel]?.imports?.[base]; if (!imported) return ""; const resolved = resolveImportPath(fromRel, imported.specifier, fileIndex); if (!resolved) return ""; if (componentByFileAndName[resolved]?.[imported.imported]) return componentByFileAndName[resolved][imported.imported]; if (componentByFileAndName[resolved]?.[base]) return componentByFileAndName[resolved][base]; return fileIndex[resolved]?.componentIds?.[0] || ""; }
+
+          const graphCache = new Map();
+          function collectComponentGraph(componentId, visited = new Set(), depth = 0) {
+            if (!componentId || visited.has(componentId) || depth > 30) return { componentIds: [], links: [], actions: [] };
+            if (depth === 0 && graphCache.has(componentId)) return graphCache.get(componentId);
+            const component = componentById[componentId]; if (!component) return { componentIds: [], links: [], actions: [] };
+            visited.add(componentId); const source = sourceCache.get(component.sourcePath); const componentIds = [componentId]; const links = []; const actions = [];
+
+            function emitFromElement(node, context) {
+              const opening = node.openingElement; const tag = jsxName(opening.name); const attrs = attrsOfResolved(opening, source, component.sourcePath, context); const text = textFromJSXResolved(node, source, component.sourcePath, context); const elemSource = sourceOf(source, node); let targetRaw = attrs.href || attrs.to || attrs.route || attrs.path || attrs.url || ""; let handler = null;
+              for (const attr of opening.attributes || []) { const name = attrName(attr); if (!/^on[A-Z]/.test(name)) continue; const expr = attr.value?.type === "JSXExpressionContainer" ? attr.value.expression : null; if (!expr) continue; const handlerTarget = routerTargetFromExpression(expr, source); if (!targetRaw && handlerTarget) targetRaw = handlerTarget; handler = { event: name, ref: expr.type === "Identifier" ? expr.name : "", calls: Array.from(collectCalls(expr)), range: rangeFor(component.sourcePath, source, expr.start, expr.end, "handler") }; }
+              if (isLinkLike(tag, attrs, elemSource) && targetRaw) { const target = normalizeTarget(targetRaw, component.route || ""); const labelRaw = attrs["aria-label"] || attrs.title || text || attrs.id || attrs["data-testid"] || targetRaw || tag; const label = linkFolderLabel(labelRaw, target); links.push({ linkId: sha32(`${component.id}:${node.start}:${node.end}:${targetRaw}:${label}`), label, sourcePath: component.sourcePath, ownerComponentId: component.id, ownerComponentName: component.name, range: rangeFor(component.sourcePath, source, node.start, node.end, "link"), tag, text, attrs: { href: attrs.href || "", to: attrs.to || "", route: attrs.route || "", path: attrs.path || "", role: attrs.role || "", ariaLabel: attrs["aria-label"] || "", title: attrs.title || "", id: attrs.id || "", dataTestId: attrs["data-testid"] || "" }, target, handler, resolvedContext: contextSummary(context) }); }
+              else if (handler && (USER_FEATURE_RE.test(`${tag} ${text} ${component.name}`) || attrs["aria-label"] || attrs.title || attrs.id || attrs["data-testid"])) { const actionLabel = compactUiLabel(attrs["aria-label"] || attrs.title || text || attrs.id || attrs["data-testid"] || tag || "Action", "Action"); if (isActionWorthy(tag, attrs, actionLabel, handler)) actions.push({ actionId: sha32(`${component.id}:${node.start}:${node.end}:${handler.event}:${actionLabel}`), label: actionLabel, sourcePath: component.sourcePath, ownerComponentId: component.id, ownerComponentName: component.name, range: rangeFor(component.sourcePath, source, node.start, node.end, "action"), tag, text, handler, resolvedContext: contextSummary(context) }); }
+              const childComponentId = resolveComponent(tag, component.sourcePath);
+              if (childComponentId && !visited.has(childComponentId)) { const child = collectComponentGraph(childComponentId, visited, depth + 1); componentIds.push(...child.componentIds); links.push(...child.links); actions.push(...child.actions); }
+            }
+
+            function visit(node, context = Object.create(null)) {
+              if (!node) return;
+              if (node.type === "CallExpression" && node.callee?.type === "MemberExpression" && node.callee.property?.name === "map") {
+                const collection = resolveRuntimeValue(node.callee.object, source, component.sourcePath, context);
+                const callback = node.arguments?.[0];
+                const param = callback?.params?.[0]?.type === "Identifier" ? callback.params[0].name : "";
+                const body = callback?.body;
+                if (collection.ok && Array.isArray(collection.value) && param && body) {
+                  for (const item of collection.value.slice(0, 200)) {
+                    const nextContext = { ...context, [param]: item };
+                    visit(body, nextContext);
+                  }
+                  return;
+                }
+              }
+              if (node.type === "JSXElement" && node.openingElement) emitFromElement(node, context);
+              for (const child of childNodes(node)) visit(child, context);
+            }
+            visit(component.node, Object.create(null)); const result = { componentIds: Array.from(new Set(componentIds)), links, actions }; if (depth === 0) graphCache.set(componentId, result); return result;
+          }
+
+          const routeFeatureByRoute = new Map(); const featureCandidates = []; const seenFeatures = new Set();
+          function addFeature(component, reason) {
+            if (!component || seenFeatures.has(component.id) || isNonUiName(component.name)) return;
+            const graph = collectComponentGraph(component.id, new Set(), 0); const routeSignal = Boolean(component.route); const interactionSignal = graph.links.length || graph.actions.length; const nameSignal = USER_FEATURE_RE.test(`${component.name} ${component.sourcePath}`); const exportedSignal = component.exported || component.isDefault;
+            if (!(routeSignal || interactionSignal || (exportedSignal && nameSignal))) return;
+            const feature = { featureId: sha32(`feature:${component.id}`), label: brandedFeatureLabel(component) || (component.route ? routeLabel(component.route) : sanitize(component.name || sourceNoun(component.sourcePath), "Feature")), route: component.route || "", reason, sourcePath: component.sourcePath, entryComponentId: component.id, componentIds: graph.componentIds, links: graph.links, actions: graph.actions };
+            seenFeatures.add(component.id); featureCandidates.push(feature); if (feature.route && !routeFeatureByRoute.has(feature.route)) routeFeatureByRoute.set(feature.route, feature);
+          }
+          const routePreferred = new Map();
+          for (const component of components) if (component.route) { if (!routePreferred.has(component.route) || component.isDefault) routePreferred.set(component.route, component); }
+          for (const component of routePreferred.values()) addFeature(component, "route");
+          for (const component of components) addFeature(component, "component-feature-fallback");
+          const featureById = Object.create(null); for (const feature of featureCandidates) featureById[feature.featureId] = feature;
+
+          function dynamicRouteMatch(targetRoute) {
+            if (!targetRoute) return ""; if (routeFeatureByRoute.has(targetRoute)) return targetRoute;
+            const targetParts = targetRoute.split("/").filter(Boolean);
+            for (const route of routeFeatureByRoute.keys()) { const routeParts = route.split("/").filter(Boolean); if (routeParts.length !== targetParts.length) continue; let ok = true; for (let i = 0; i < routeParts.length; i++) { if (/^\[.+\]$/.test(routeParts[i])) continue; if (routeParts[i] !== targetParts[i]) { ok = false; break; } } if (ok) return route; }
+            return "";
+          }
+          function featureForLink(link) { if (link.target.kind !== "route" || !link.target.route) return null; const exact = routeFeatureByRoute.get(link.target.route); if (exact) return exact; const matched = dynamicRouteMatch(link.target.route); return matched ? routeFeatureByRoute.get(matched) : null; }
+
+          const inboundRouteCount = new Map();
+          for (const feature of featureCandidates) {
+            for (const link of feature.links) {
+              const destination = featureForLink(link);
+              if (destination?.route) inboundRouteCount.set(destination.route, (inboundRouteCount.get(destination.route) || 0) + 1);
+            }
+          }
+
+          const usedDirs = new Set(); const expandedFeatureIds = new Set(); const featureRows = []; const linkRows = []; const actionRows = []; const rangeRows = []; const destinationRows = []; const runtimeFeatureRows = []; const unreachedRouteRows = [];
+          function uniqueDir(parent, label, id) { const base = sanitize(label, "Feature"); let dir = path.join(parent, base); let rel = posix(path.relative(OUT, dir)); if (usedDirs.has(rel)) { dir = path.join(parent, `${base} - ${id.slice(0, 8)}`); rel = posix(path.relative(OUT, dir)); } let i = 2; while (usedDirs.has(rel)) { dir = path.join(parent, `${base} - ${id.slice(0, 8)} ${i}`); rel = posix(path.relative(OUT, dir)); i++; } usedDirs.add(rel); return dir; }
+          function writeComponentSlice(file, componentId, reason, contextId = "") { const component = componentById[componentId]; if (!component) return; const source = sourceCache.get(component.sourcePath); writeRange(file, component.sourcePath, source, component.range); rangeRows.push({ reason, contextId, componentId, sourcePath: component.sourcePath, range: component.range, outputFile: posix(path.relative(OUT, file)) }); }
+          function writeHandler(file, item, reason, contextId) { if (!item.handler?.range) return; const source = sourceCache.get(item.sourcePath); writeRange(file, item.sourcePath, source, item.handler.range); rangeRows.push({ reason, contextId, sourcePath: item.sourcePath, range: item.handler.range, outputFile: posix(path.relative(OUT, file)) }); }
+          function writeLinkFolder(link, parentDir, branchSeen, depth, ownerFeatureId) {
+            const linkDir = uniqueDir(parentDir, link.label, link.linkId); const source = sourceCache.get(link.sourcePath); const linkFile = path.join(linkDir, "link.tsx"); writeRange(linkFile, link.sourcePath, source, link.range); rangeRows.push({ reason: "link", contextId: ownerFeatureId, linkId: link.linkId, sourcePath: link.sourcePath, range: link.range, outputFile: posix(path.relative(OUT, linkFile)) });
+            writeHandler(path.join(linkDir, "handler.tsx"), link, "link-handler", ownerFeatureId); writeJson(path.join(linkDir, ".de", "link.json"), { ...link, ownerFeatureId, folderPath: posix(path.relative(OUT, linkDir)), opensExpandedFeature: null });
+            linkRows.push({ linkId: link.linkId, label: link.label, ownerFeatureId, folderPath: posix(path.relative(OUT, linkDir)), targetKind: link.target.kind, targetRoute: link.target.route || "", rawTarget: link.target.raw, sourcePath: link.sourcePath });
+            const destination = featureForLink(link); const opensDir = path.join(linkDir, "Opens");
+            if (destination) { const destDir = path.join(opensDir, sanitize(destination.label, "Destination")); destinationRows.push({ linkId: link.linkId, destinationFeatureId: destination.featureId, destinationRoute: destination.route, folderPath: posix(path.relative(OUT, destDir)) }); writeFeatureFolder(destination, destDir, new Set(branchSeen), depth + 1, { viaLinkId: link.linkId, nested: true }); }
+            else { const label = link.target.kind === "external" ? "External Destination" : link.target.kind === "dynamic" ? "Dynamic Destination" : link.target.kind === "anchor" ? "Same Page Anchor" : link.target.kind === "route" ? "Unmatched Route Destination" : "Unknown Destination"; writeJson(path.join(opensDir, label, ".de", "destination.json"), { linkId: link.linkId, kind: link.target.kind, raw: link.target.raw, route: link.target.route || "", resolved: false }); }
+          }
+          function writeActionFolder(action, parentDir, ownerFeatureId) { const actionDir = uniqueDir(parentDir, action.label, action.actionId); const source = sourceCache.get(action.sourcePath); const actionFile = path.join(actionDir, "action.tsx"); writeRange(actionFile, action.sourcePath, source, action.range); rangeRows.push({ reason: "action", contextId: ownerFeatureId, actionId: action.actionId, sourcePath: action.sourcePath, range: action.range, outputFile: posix(path.relative(OUT, actionFile)) }); writeHandler(path.join(actionDir, "handler.tsx"), action, "action-handler", ownerFeatureId); writeJson(path.join(actionDir, ".de", "action.json"), { ...action, ownerFeatureId, folderPath: posix(path.relative(OUT, actionDir)) }); actionRows.push({ actionId: action.actionId, label: action.label, ownerFeatureId, folderPath: posix(path.relative(OUT, actionDir)), sourcePath: action.sourcePath }); }
+          function writeFeatureFolder(feature, dir, branchSeen = new Set(), depth = 0, context = {}) {
+            fs.mkdirSync(dir, { recursive: true }); const folderPath = posix(path.relative(OUT, dir)); const cycle = branchSeen.has(feature.featureId); const maxDepth = depth > 7; const expandedElsewhere = context.nested && expandedFeatureIds.has(feature.featureId);
+            writeComponentSlice(path.join(dir, "feature.tsx"), feature.entryComponentId, context.nested ? "nested-destination-feature" : "root-feature", feature.featureId);
+            for (const componentId of feature.componentIds.filter((id) => id !== feature.entryComponentId).slice(0, 40)) writeComponentSlice(path.join(dir, "Components", `${safeFileName(componentById[componentId]?.name || "component")}-${componentId.slice(0, 8)}.tsx`), componentId, "supporting-component", feature.featureId);
+            writeJson(path.join(dir, ".de", "feature.json"), { featureId: feature.featureId, label: feature.label, route: feature.route, reason: feature.reason, sourcePath: feature.sourcePath, entryComponentId: feature.entryComponentId, componentIds: feature.componentIds, linkIds: feature.links.map((l) => l.linkId), actionIds: feature.actions.map((a) => a.actionId), folderPath, nested: Boolean(context.nested), viaLinkId: context.viaLinkId || "", recursion: { depth, cycleStop: cycle, depthStop: maxDepth, expandedElsewhere }, roundTrip: { kind: "recursive-website-feature-folder", editFeatureTsx: "patch real source through .de/source-range-map.json", moveFolder: "express intended website feature placement" } });
+            featureRows.push({ featureId: feature.featureId, label: feature.label, route: feature.route, reason: feature.reason, folderPath, sourcePath: feature.sourcePath, entryComponentId: feature.entryComponentId, nested: Boolean(context.nested), viaLinkId: context.viaLinkId || "", linkCount: feature.links.length, actionCount: feature.actions.length });
+            if (cycle || maxDepth || expandedElsewhere) { writeJson(path.join(dir, ".de", cycle ? "cycle-stop.json" : maxDepth ? "depth-stop.json" : "expanded-elsewhere.json"), { featureId: feature.featureId, label: feature.label, route: feature.route, reason: cycle ? "This feature already exists in this branch; expansion stopped to avoid an infinite loop." : maxDepth ? "Recursion depth cap reached." : "This destination feature was already expanded elsewhere; feature.tsx is included here, but child links are not duplicated." }); return; }
+            expandedFeatureIds.add(feature.featureId);
+            const nextSeen = new Set(branchSeen); nextSeen.add(feature.featureId);
+            for (const link of feature.links) writeLinkFolder(link, path.join(dir, "Links"), nextSeen, depth, feature.featureId);
+            for (const action of feature.actions) writeActionFolder(action, path.join(dir, "Actions"), feature.featureId);
+          }
+          const routeFeatures = featureCandidates.filter((f) => f.route);
+          let rootFeatures = [];
+          const homeFeature = routeFeatures.find((f) => f.route === "/");
+          if (homeFeature) rootFeatures.push(homeFeature);
+          rootFeatures.push(...routeFeatures.filter((f) => f.route !== "/" && (inboundRouteCount.get(f.route) || 0) === 0));
+          if (!rootFeatures.length) rootFeatures = routeFeatures.length ? routeFeatures : featureCandidates;
+          for (const feature of rootFeatures) { const parent = feature.route ? path.join(OUT, "Website Routes") : path.join(OUT, "Website Features"); const dir = uniqueDir(parent, feature.label, feature.featureId); writeFeatureFolder(feature, dir, new Set(), 0, { nested: false }); }
+
+          // Route coverage guard: inbound routes that were not reached from selected roots are still emitted.
+          // This prevents reachable-but-unwalked pages such as /daydream/game from disappearing.
+          const writtenFeatureIds = new Set(featureRows.map((row) => row.featureId));
+          for (const feature of routeFeatures) {
+            if (writtenFeatureIds.has(feature.featureId)) continue;
+            const dir = uniqueDir(path.join(OUT, "Unreached Website Routes"), feature.label, feature.featureId);
+            unreachedRouteRows.push({ featureId: feature.featureId, route: feature.route, label: feature.label, sourcePath: feature.sourcePath });
+            writeFeatureFolder(feature, dir, new Set(), 0, { nested: false, unreachedRoute: true });
+            writtenFeatureIds.add(feature.featureId);
+          }
+
+          function runtimeDisplayName(slug) {
+            const lower = String(slug || "").toLowerCase();
+            if (lower === "madmaxi" || lower === "mad-maxi" || lower === "mad_maxi") return "Mad Maxi";
+            return sanitize(slug || "Runtime Feature", "Runtime Feature");
+          }
+
+          function runtimeGroupKey(rel, source) {
+            const lowerRel = rel.toLowerCase();
+            const lowerSource = String(source || "").toLowerCase();
+
+            const nestedGameMatch = rel.match(/components\/games\/([^\/]+)\//i);
+            if (nestedGameMatch) return `game:${runtimeDisplayName(nestedGameMatch[1])}`;
+
+            const flatGameMatch = rel.match(/components\/games\/([^\/]+)\.(tsx|jsx|ts|js)$/i);
+            if (flatGameMatch && /^dream[-_.]/i.test(flatGameMatch[1])) return `game:${runtimeDisplayName(flatGameMatch[1])}`;
+
+            if (/components\/games\/madmaxi\//.test(lowerRel) || /madmaxi/.test(lowerRel)) return "game:Mad Maxi";
+            if (/immersivegameshell|daydream\/game|reactcartridge|cartridge/.test(lowerRel)) return "runtime:Cartridge Runtime";
+            if (/dualruntimebridge|snapshotbridge/.test(lowerRel)) return "runtime:OS Runtime Bridges";
+            if (/godtierengine|engine\/rendering\/god-tier|engine\/rendering\/babylon\/createengine/.test(lowerRel)) return "runtime:RenderEngin Runtime Path";
+            return "";
+          }
+
+          function runtimeBucket(rel, source) {
+            const lowerRel = rel.toLowerCase();
+            const lowerSource = String(source || "").toLowerCase();
+
+            if (/snapshotbridge|dualruntimebridge/.test(lowerRel) || /snapshotbridge|dualruntimebridge/.test(lowerSource)) return "Runtime Bridges";
+            if (/godtierengine|babylon|engine\/rendering/.test(lowerRel) || /godtierengine|babylon/.test(lowerSource)) return "RenderEngin Runtime Path";
+            if (/immersivegameshell|reactcartridge|cartridge/.test(lowerRel) || /immersivegameshell|reactcartridge|cartridge/.test(lowerSource)) return "Cartridge Runtime";
+            if (/level|zone|pack/.test(lowerRel)) return "Levels And Zones";
+            if (/material/.test(lowerRel)) return "Materials";
+            if (/audio|sound|music/.test(lowerRel)) return "Audio";
+            if (/vfx|effect|particle/.test(lowerRel)) return "VFX";
+            if (/config/.test(lowerRel)) return "Config";
+            if (/type/.test(lowerRel)) return "Types";
+            if (/\.tsx$|\.jsx$/.test(lowerRel)) return "Game UI";
+            return "Source Modules";
+          }
+
+          function writeRuntimeSourceFile(groupDir, rel, source, groupId) {
+            const bucket = runtimeBucket(rel, source);
+            const file = path.join(groupDir, bucket, `${safeFileName(path.posix.basename(rel), "source")}`);
+            writeText(file, source);
+            rangeRows.push({
+              reason: "runtime-feature-source",
+              contextId: groupId,
+              sourcePath: rel,
+              range: rangeFor(rel, source, 0, source.length, "runtime-source"),
+              outputFile: posix(path.relative(OUT, file))
+            });
+          }
+
+          function emitRuntimeFeatures() {
+            const groups = new Map();
+
+            for (const rel of sourceFiles) {
+              const source = sourceCache.get(rel) || "";
+              const key = runtimeGroupKey(rel, source);
+              if (!key) continue;
+
+              if (!groups.has(key)) {
+                const [kind, label] = key.split(":");
+                groups.set(key, { kind, label, files: [] });
+              }
+
+              groups.get(key).files.push(rel);
+            }
+
+            // Mad Maxi-specific bridge closure: if Mad Maxi exists, pull in its OS bridge and renderer path.
+            const madMaxi = groups.get("game:Mad Maxi");
+            if (madMaxi) {
+              for (const rel of sourceFiles) {
+                const lowerRel = rel.toLowerCase();
+                const source = sourceCache.get(rel) || "";
+                const lowerSource = source.toLowerCase();
+
+                const isMadMaxiSource = /components\/games\/madmaxi\//.test(lowerRel) || /madmaxi/.test(lowerRel);
+                const isMadMaxiBridge = /madmaxisnapshotbridge/.test(lowerRel) || (/dualruntimebridge/.test(lowerRel) && /madmaxisnapshotbridge|madmaxi/.test(lowerSource));
+                const isMadMaxiShell = /dream\.shell\.immersivegameshell|daydream\/game/.test(lowerRel);
+                const isMadMaxiRenderer = /engine\/rendering\/god-tier\/godtierengine|engine\/rendering\/babylon\/createengine/.test(lowerRel);
+                const isMadMaxiCartridgeRuntime = /engins\/gameengin\/(cartridges|runtime|games)\/(loaders|engins|registry|manifest|hooks|useimmersivegamelayout)/.test(lowerRel);
+
+                if (isMadMaxiSource || isMadMaxiBridge || isMadMaxiShell || isMadMaxiRenderer || isMadMaxiCartridgeRuntime) {
+                  if (!madMaxi.files.includes(rel)) madMaxi.files.push(rel);
+                }
+              }
+            }
+
+            for (const group of groups.values()) {
+              const groupId = sha32(`runtime:${group.kind}:${group.label}:${group.files.join("|")}`);
+              const parent = group.kind === "game" ? path.join(OUT, "Runtime Features", "Games") : path.join(OUT, "Runtime Features", "Runtime Systems");
+              const groupDir = uniqueDir(parent, group.label, groupId);
+
+              const sortedFiles = Array.from(new Set(group.files)).sort();
+              for (const rel of sortedFiles) writeRuntimeSourceFile(groupDir, rel, sourceCache.get(rel) || "", groupId);
+
+              const manifest = {
+                runtimeFeatureId: groupId,
+                label: group.label,
+                kind: group.kind,
+                folderPath: posix(path.relative(OUT, groupDir)),
+                files: sortedFiles,
+                routeLayerOnly: false,
+                sourceOwnedRuntimeFeature: true,
+                reason: group.kind === "game"
+                  ? "Runtime/cartridge game feature emitted even when it has no standalone URL."
+                  : "Runtime system emitted because it participates in cartridge loading, bridge behavior, or a RenderEngin runtime path used by another feature.",
+                roundTrip: {
+                  kind: "runtime-feature-folder",
+                  editSourceFiles: "patch real repo through .de/source-range-map.json",
+                  moveFolder: "express intended runtime capability placement for a future apply workflow"
+                }
+              };
+
+              writeJson(path.join(groupDir, ".de", "runtime-feature.json"), manifest);
+              runtimeFeatureRows.push({
+                runtimeFeatureId: groupId,
+                label: group.label,
+                kind: group.kind,
+                folderPath: manifest.folderPath,
+                fileCount: sortedFiles.length,
+                files: sortedFiles
+              });
+            }
+          }
+
+          emitRuntimeFeatures();
+
+          const importGraph = []; for (const [rel, info] of Object.entries(fileIndex)) for (const [localName, value] of Object.entries(info.imports || {})) importGraph.push({ sourcePath: rel, localName, imported: value.imported, specifier: value.specifier, resolvedPath: resolveImportPath(rel, value.specifier, fileIndex) });
+          const validation = { sourceFiles: sourceFiles.length, jsxFiles: sourceFiles.filter((r) => JSX_EXTS.has(ext(r))).length, parsedFiles: astCache.size, parseFailures, candidateFeatures: featureCandidates.length, rootFeatures: rootFeatures.length, featureFolders: featureRows.length, linkFolders: linkRows.length, actionFolders: actionRows.length, destinationExpansions: destinationRows.length, runtimeFeatureFolders: runtimeFeatureRows.length, unreachedRoutes: unreachedRouteRows.length, warnings: [], missingFeatureFiles: [], missingLinkFiles: [], missingRuntimeFeatureFiles: [], rangeHashFailures: [] };
+          if (!featureRows.length) validation.warnings.push("No website feature folders emitted. Check parseable JSX and feature/link/action signals.");
+          if (!linkRows.length) validation.warnings.push("No link folders emitted. The artifact may still contain feature/action folders.");
+          if (parseFailures.length) validation.warnings.push("Some files could not be parsed.");
+          for (const row of featureRows) if (!fs.existsSync(path.join(OUT, row.folderPath, "feature.tsx"))) validation.missingFeatureFiles.push(row);
+          for (const row of linkRows) if (!fs.existsSync(path.join(OUT, row.folderPath, "link.tsx"))) validation.missingLinkFiles.push(row);
+          for (const row of runtimeFeatureRows) for (const rel of row.files) { const expectedName = safeFileName(path.posix.basename(rel), "source"); const groupRoot = path.join(OUT, row.folderPath); const found = fs.existsSync(path.join(groupRoot, "Runtime Bridges", expectedName)) || fs.existsSync(path.join(groupRoot, "RenderEngin Runtime Path", expectedName)) || fs.existsSync(path.join(groupRoot, "Cartridge Runtime", expectedName)) || fs.existsSync(path.join(groupRoot, "Levels And Zones", expectedName)) || fs.existsSync(path.join(groupRoot, "Materials", expectedName)) || fs.existsSync(path.join(groupRoot, "Audio", expectedName)) || fs.existsSync(path.join(groupRoot, "VFX", expectedName)) || fs.existsSync(path.join(groupRoot, "Config", expectedName)) || fs.existsSync(path.join(groupRoot, "Types", expectedName)) || fs.existsSync(path.join(groupRoot, "Game UI", expectedName)) || fs.existsSync(path.join(groupRoot, "Source Modules", expectedName)); if (!found) validation.missingRuntimeFeatureFiles.push({ runtimeFeatureId: row.runtimeFeatureId, sourcePath: rel }); }
+          for (const row of rangeRows) { const source = sourceCache.get(row.sourcePath); if (!source) continue; const text = source.slice(row.range.start, row.range.end); if (sha16(text) !== row.range.hash) validation.rangeHashFailures.push(row); }
+          writeJson(path.join(META, "export-map.json"), { format: "dreamengin.recursive-website-feature-tree.v15", model: { featureFolders: "route/page components and source-owned UI components with links/actions", linkFolders: "navigation links and router navigation actions inside feature folders", opensFolders: "link destination feature folders expanded recursively with cycle and repeat protection", actionFolders: "meaningful non-navigation controls only; generic Button/Input/Label and oversized field-text folders are not emitted", structuralJsxFolders: false, sourceOwnedValueResolution: true, bindingHrefDynamicFix: true, plumbingLabelCleanup: true, duplicateToLabelFix: true, dottedHrefDynamicFix: true, numericActionFilter: true, mapTemplateExpansion: true, importedStaticValues: true, globalRepeatExpansion: false, zeroRouteFallback: true, rootSelection: "home route plus routes with no inbound links; fallback only when needed", unreachedRouteCapture: true, runtimeFeatureLayer: true, sourceOwnedBrandingLabels: true, exactEnginBrandingLabels: true, functionCallHrefDynamic: true, renderEnginUsedByFeature: true, scopedRuntimeClosure: true, enginNameBrandingLabels: true, cartridgeRuntimeCapture: true, bridgeRuntimeCapture: true, renderEnginRuntimePathCapture: true }, totals: { sourceFiles: sourceFiles.length, features: featureRows.length, links: linkRows.length, actions: actionRows.length, destinationExpansions: destinationRows.length, runtimeFeatures: runtimeFeatureRows.length, unreachedRoutes: unreachedRouteRows.length, parseFailures: parseFailures.length }, sourceOnly: true, noClicking: true, noRender: true, noFullRepoCopy: true });
+          writeJson(path.join(META, "features.json"), featureRows); writeJson(path.join(META, "links.json"), linkRows); writeJson(path.join(META, "actions.json"), actionRows); writeJson(path.join(META, "destinations.json"), destinationRows); writeJson(path.join(META, "runtime-features.json"), runtimeFeatureRows); writeJson(path.join(META, "unreached-routes.json"), unreachedRouteRows); writeJson(path.join(META, "source-range-map.json"), rangeRows); writeJson(path.join(META, "import-graph.json"), importGraph); writeJson(path.join(META, "validation.json"), validation); writeJsonl(path.join(META, "features.jsonl"), featureRows); writeJsonl(path.join(META, "links.jsonl"), linkRows);
+          const fatal = []; if (validation.missingFeatureFiles.length) fatal.push("Missing feature.tsx files."); if (validation.missingLinkFiles.length) fatal.push("Missing link.tsx files."); if (validation.missingRuntimeFeatureFiles.length) fatal.push("Missing runtime feature source files."); if (validation.rangeHashFailures.length) fatal.push("Range/hash validation failed."); if (fatal.length) { console.error(fatal.join("\n")); process.exit(1); }
+          NODE
+
+      - name: Upload recursive website feature tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamengin-recursive-website-feature-tree-v15
+          path: __dreamengin_website_feature_tree__
+          include-hidden-files: true
+          compression-level: 9
