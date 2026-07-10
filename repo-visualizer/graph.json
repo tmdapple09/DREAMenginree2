@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T01:54:33.734Z",
+  "generatedAt": "2026-07-10T02:24:52.170Z",
   "root": ".",
   "nodes": [
     {
@@ -3356,6 +3356,26 @@
       "label": "root-hygiene.yml",
       "type": "config",
       "path": ".github/workflows/root-hygiene.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v6.yml",
+      "label": "screencode-recursive-website-feature-tree-v6.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-recursive-website-feature-tree-v6.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v7.yml",
+      "label": "screencode-recursive-website-feature-tree-v7.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-recursive-website-feature-tree-v7.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
