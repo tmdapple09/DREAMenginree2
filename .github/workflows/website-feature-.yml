@@ -1,4 +1,4 @@
-name: Export Recursive Website Feature Tree V21
+name: Recursive Website
 
 on:
   workflow_dispatch:
