@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T02:06:54.684Z",
+  "generatedAt": "2026-07-11T02:08:43.473Z",
   "root": ".",
   "nodes": [
     {
@@ -3386,16 +3386,6 @@
       "label": "screencode-recursive-website-feature-tree-v21-allowed-folders.yml",
       "type": "config",
       "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-allowed-folders.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v21-pascal-clt-11-signals.yml",
-      "label": "screencode-recursive-website-feature-tree-v21-pascal-clt-11-signals.yml",
-      "type": "config",
-      "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-pascal-clt-11-signals.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
