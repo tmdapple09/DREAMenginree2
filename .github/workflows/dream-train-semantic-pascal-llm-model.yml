@@ -1,0 +1,878 @@
+name: DREAM Train Semantic Pascal LLM Model
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated product application code roots"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      pascal_depth:
+        description: "Semantic Pascal path depth"
+        required: false
+        default: "32"
+      epochs:
+        description: "Training epochs"
+        required: false
+        default: "120"
+      neighbor_count:
+        description: "Nearest neighbors per file"
+        required: false
+        default: "8"
+
+permissions:
+  contents: read
+
+jobs:
+  train-semantic-pascal-llm-model:
+    name: Train semantic Pascal LLM support model
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node for AST extraction
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm install --no-save @babel/parser @babel/traverse
+          python3 -m pip install --user numpy scikit-learn joblib pillow
+
+      - name: Extract semantic code events
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ inputs.code_roots || 'app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks' }}
+          CODE_EXTENSIONS: ${{ inputs.code_extensions || '.ts,.tsx,.js,.jsx,.mjs,.cjs' }}
+        run: |
+          mkdir -p .dream-train-semantic-pascal-llm-model/tmp
+
+          cat > /tmp/extract_semantic_code.mjs <<'JS'
+          import fs from "node:fs";
+          import path from "node:path";
+          import crypto from "node:crypto";
+          import parser from "@babel/parser";
+          import traverseModule from "@babel/traverse";
+
+          const traverse = traverseModule.default;
+
+          const ROOTS = (process.env.CODE_ROOTS || "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+            .split(",").map(x => x.trim()).filter(Boolean);
+
+          const EXTENSIONS = new Set((process.env.CODE_EXTENSIONS || ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+            .split(",").map(x => x.trim().toLowerCase()).filter(Boolean));
+
+          const EXCLUDE_DIRS = new Set([
+            ".git", ".github", ".ci", "node_modules", ".next", "out", "dist", "build",
+            "coverage", ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
+            ".dream-train-semantic-pascal-llm-model"
+          ]);
+
+          function walk(dir, out = []) {
+            if (!fs.existsSync(dir)) return out;
+            for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, ent.name);
+              if (ent.isDirectory()) {
+                if (!EXCLUDE_DIRS.has(ent.name)) walk(full, out);
+              } else if (ent.isFile()) {
+                out.push(full);
+              }
+            }
+            return out;
+          }
+
+          function extension(file) {
+            const lower = file.toLowerCase();
+            if (lower.endsWith(".d.ts")) return ".ts";
+            return path.extname(lower);
+          }
+
+          function shouldInclude(file) {
+            const rel = file.split(path.sep).join("/");
+            const top = rel.split("/")[0];
+            if (!ROOTS.includes(top)) return false;
+            if (!EXTENSIONS.has(extension(file))) return false;
+            if (rel.split("/").some(p => EXCLUDE_DIRS.has(p))) return false;
+            if (fs.statSync(file).size > 5_000_000) return false;
+            return true;
+          }
+
+          function sourceFiles() {
+            const files = [];
+            for (const root of ROOTS) {
+              for (const file of walk(root)) {
+                if (shouldInclude(file)) files.push(file);
+              }
+            }
+            return files.sort((a, b) => a.localeCompare(b));
+          }
+
+          function nameOf(node) {
+            if (!node) return "";
+            if (node.name) return node.name;
+            if (node.id?.name) return node.id.name;
+            if (node.key?.name) return node.key.name;
+            if (node.key?.value) return String(node.key.value);
+            if (node.property?.name) return node.property.name;
+            if (node.callee) return nameOf(node.callee);
+            if (node.object && node.property) return `${nameOf(node.object)}.${nameOf(node.property)}`;
+            return "";
+          }
+
+          function words(value) {
+            return String(value || "")
+              .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+              .replace(/[^A-Za-z0-9]+/g, " ")
+              .toLowerCase()
+              .split(/\s+/)
+              .filter(w => w.length > 1);
+          }
+
+          function inferTags(sourcePath, text, identifiers) {
+            const joined = `${sourcePath}\n${text}\n${identifiers.join(" ")}`.toLowerCase();
+            const tagTests = {
+              dreamengin: /dreamengin|dream engin|dreamos|dream_os/.test(joined),
+              gameengin: /gameengin|game engin/.test(joined),
+              renderengin: /renderengin|webgpu|canvas|render/.test(joined),
+              starmakerengin: /starmaker|audio|music|song|track/.test(joined),
+              contentengin: /contentengin|content engin|content/.test(joined),
+              dreamdmbar: /dreamdmbar|dmbar/.test(joined),
+              dreamr: /dreamr|feed|post|social/.test(joined),
+              offline: /offline|cache|localfirst|local-first|queue|serviceworker|service worker/.test(joined),
+              supabase: /supabase|realtime|postgres|rpc|channel/.test(joined),
+              runtime: /runtime|bridge|bus|systemcontext|state/.test(joined),
+              cartridge: /cartridge|wasm|module/.test(joined),
+              ui: /jsx|tsx|component|panel|layout|page|button|modal|view/.test(joined),
+              api: /\/api\/|route\.ts|fetch|request|response|handler/.test(joined),
+              settings: /settings|privacy|controls|preferences/.test(joined),
+              marketplace: /marketplace|shop|sell|ads|ad/.test(joined),
+              messages: /message|notification|conversation|inbox|chat/.test(joined)
+            };
+            return Object.entries(tagTests).filter(([, yes]) => yes).map(([tag]) => tag);
+          }
+
+          function add(events, kind, name, sourcePath, extra = {}) {
+            events.push({
+              kind,
+              name: String(name || ""),
+              sourcePath,
+              line: extra.line || null,
+              category: extra.category || "",
+              exported: !!extra.exported,
+              async: !!extra.async,
+              tags: extra.tags || []
+            });
+          }
+
+          function parseFile(file) {
+            const sourcePath = file.split(path.sep).join("/");
+            const root = sourcePath.split("/")[0];
+            const text = fs.readFileSync(file, "utf8");
+            const sha256 = crypto.createHash("sha256").update(text, "utf8").digest("hex");
+
+            const events = [];
+            const imports = [];
+            const exports = [];
+            const symbols = [];
+            const calls = [];
+            const jsx = [];
+            const ids = [];
+            let parseError = null;
+
+            if (sourcePath.includes("/page.") || sourcePath.endsWith("/page.tsx") || sourcePath.endsWith("/page.ts")) {
+              add(events, "route", sourcePath.replace(/^app\//, "/").replace(/\/page\.[^.]+$/, ""), sourcePath, { category: "route" });
+            }
+            if (sourcePath.includes("/route.") || sourcePath.endsWith("/route.ts")) {
+              add(events, "apiRoute", sourcePath.replace(/^app\//, "/").replace(/\/route\.[^.]+$/, ""), sourcePath, { category: "api" });
+            }
+
+            try {
+              const ast = parser.parse(text, {
+                sourceType: "unambiguous",
+                errorRecovery: true,
+                plugins: [
+                  "typescript", "jsx", "decorators-legacy", "classProperties",
+                  "classPrivateProperties", "objectRestSpread", "dynamicImport",
+                  "importAssertions", "topLevelAwait"
+                ]
+              });
+
+              traverse(ast, {
+                ImportDeclaration(p) {
+                  const src = p.node.source?.value || "";
+                  imports.push(src);
+                  add(events, "import", src, sourcePath, { line: p.node.loc?.start?.line, category: "dependency" });
+                  for (const s of p.node.specifiers || []) if (s.local?.name) ids.push(s.local.name);
+                },
+
+                ExportNamedDeclaration(p) {
+                  exports.push("named");
+                  if (p.node.declaration) {
+                    const n = nameOf(p.node.declaration);
+                    if (n) add(events, "export", n, sourcePath, { line: p.node.loc?.start?.line, exported: true });
+                  }
+                  for (const s of p.node.specifiers || []) {
+                    const n = nameOf(s.exported || s.local);
+                    if (n) add(events, "export", n, sourcePath, { line: p.node.loc?.start?.line, exported: true });
+                  }
+                },
+
+                ExportDefaultDeclaration(p) {
+                  exports.push("default");
+                  add(events, "exportDefault", nameOf(p.node.declaration) || "default", sourcePath, {
+                    line: p.node.loc?.start?.line,
+                    exported: true
+                  });
+                },
+
+                FunctionDeclaration(p) {
+                  const n = nameOf(p.node);
+                  if (!n) return;
+                  symbols.push(n); ids.push(n);
+                  add(events, "function", n, sourcePath, {
+                    line: p.node.loc?.start?.line,
+                    async: p.node.async,
+                    category: /^[A-Z]/.test(n) ? "component" : "function"
+                  });
+                },
+
+                ClassDeclaration(p) {
+                  const n = nameOf(p.node);
+                  if (!n) return;
+                  symbols.push(n); ids.push(n);
+                  add(events, "class", n, sourcePath, { line: p.node.loc?.start?.line, category: "class" });
+                },
+
+                TSInterfaceDeclaration(p) {
+                  const n = nameOf(p.node.id);
+                  if (!n) return;
+                  symbols.push(n); ids.push(n);
+                  add(events, "interface", n, sourcePath, { line: p.node.loc?.start?.line, category: "type" });
+                },
+
+                TSTypeAliasDeclaration(p) {
+                  const n = nameOf(p.node.id);
+                  if (!n) return;
+                  symbols.push(n); ids.push(n);
+                  add(events, "type", n, sourcePath, { line: p.node.loc?.start?.line, category: "type" });
+                },
+
+                VariableDeclarator(p) {
+                  const n = nameOf(p.node.id);
+                  if (!n) return;
+                  ids.push(n);
+                  if (/^[A-Z]/.test(n) || /^use[A-Z]/.test(n) || /store|state|context|provider/i.test(n)) {
+                    symbols.push(n);
+                    add(events, "symbol", n, sourcePath, {
+                      line: p.node.loc?.start?.line,
+                      category: /^use[A-Z]/.test(n) ? "hook" : /^[A-Z]/.test(n) ? "component" : "state"
+                    });
+                  }
+                },
+
+                CallExpression(p) {
+                  const n = nameOf(p.node.callee);
+                  if (!n) return;
+                  calls.push(n); ids.push(n);
+
+                  let category = "call";
+                  if (/^use[A-Z]/.test(n) || n.includes(".use")) category = "hook";
+                  if (/fetch|request|response|rpc|channel|from|select|insert|update|delete/i.test(n)) category = "io";
+                  if (/setState|dispatch|reduce|store|context|signal/i.test(n)) category = "state";
+                  if (/render|draw|canvas|webgpu|gl\./i.test(n)) category = "render";
+
+                  add(events, "call", n, sourcePath, {
+                    line: p.node.loc?.start?.line,
+                    category
+                  });
+                },
+
+                JSXOpeningElement(p) {
+                  const n = nameOf(p.node.name);
+                  if (!n) return;
+                  jsx.push(n); ids.push(n);
+                  add(events, "jsx", n, sourcePath, { line: p.node.loc?.start?.line, category: "ui" });
+                }
+              });
+            } catch (err) {
+              parseError = String(err.message || err);
+            }
+
+            const tagSet = new Set(inferTags(sourcePath, text, ids));
+            for (const w of [...words(sourcePath), ...ids.flatMap(words), ...imports.flatMap(words)]) {
+              if ([
+                "engine", "runtime", "offline", "queue", "cache", "game", "render", "audio",
+                "message", "feed", "profile", "settings", "marketplace", "content", "dream",
+                "module", "artifact", "state", "context", "bridge", "bus", "cartridge", "wasm"
+              ].includes(w)) tagSet.add(w);
+            }
+
+            const semanticTags = [...tagSet].sort();
+            for (const tag of semanticTags) add(events, "tag", tag, sourcePath, { category: "concept", tags: [tag] });
+
+            return {
+              sourcePath,
+              root,
+              bytes: Buffer.byteLength(text, "utf8"),
+              sha256,
+              parseError,
+              imports: [...new Set(imports)].sort(),
+              exports,
+              symbols: [...new Set(symbols)].sort(),
+              calls: [...new Set(calls)].sort().slice(0, 150),
+              jsx: [...new Set(jsx)].sort(),
+              semanticTags,
+              events
+            };
+          }
+
+          const cards = sourceFiles().map(parseFile);
+
+          fs.writeFileSync(
+            ".dream-train-semantic-pascal-llm-model/tmp/semantic_cards.json",
+            JSON.stringify({
+              format: "dream.semantic-code-events.v1",
+              roots: ROOTS,
+              extensions: [...EXTENSIONS].sort(),
+              files: cards
+            }, null, 2)
+          );
+          JS
+
+          node /tmp/extract_semantic_code.mjs
+
+      - name: Train semantic Pascal LLM support model
+        shell: bash
+        env:
+          PASCAL_DEPTH: ${{ inputs.pascal_depth || '32' }}
+          EPOCHS: ${{ inputs.epochs || '120' }}
+          NEIGHBOR_COUNT: ${{ inputs.neighbor_count || '8' }}
+        run: |
+          cat > /tmp/train_semantic_pascal_llm_model.py <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import hashlib
+          import json
+          import math
+          import os
+          import shutil
+          import zipfile
+          from collections import Counter
+          from pathlib import Path
+
+          import joblib
+          import numpy as np
+          from PIL import Image, ImageDraw, ImageFont
+          from sklearn.decomposition import TruncatedSVD
+          from sklearn.feature_extraction.text import TfidfVectorizer
+          from sklearn.linear_model import LogisticRegression
+          from sklearn.metrics import accuracy_score
+          from sklearn.model_selection import train_test_split
+          from sklearn.neighbors import NearestNeighbors
+          from sklearn.preprocessing import MultiLabelBinarizer, StandardScaler
+          from sklearn.multiclass import OneVsRestClassifier
+
+          OUT_DIR = Path(".dream-train-semantic-pascal-llm-model")
+          ZIP_PATH = Path("dream-train-semantic-pascal-llm-model.zip")
+          CARDS_PATH = OUT_DIR / "tmp" / "semantic_cards.json"
+
+          DEPTH = max(8, min(int(os.environ.get("PASCAL_DEPTH", "32")), 64))
+          EPOCHS = max(50, min(int(os.environ.get("EPOCHS", "120")), 1000))
+          NEIGHBOR_COUNT = max(1, min(int(os.environ.get("NEIGHBOR_COUNT", "8")), 25))
+
+
+          def write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def write_jsonl(path: Path, rows: list[dict]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", encoding="utf-8") as handle:
+                  for row in rows:
+                      handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+          def zip_dir(source: Path, destination: Path) -> None:
+              if destination.exists():
+                  destination.unlink()
+              with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
+                  for p in sorted(source.rglob("*")):
+                      if p.is_file() and "/tmp/" not in p.as_posix():
+                          archive.write(p, p.relative_to(source).as_posix())
+
+
+          def cell_index(row: int, col: int) -> int:
+              return row * (row + 1) // 2 + col
+
+
+          def event_bits(event: dict, card: dict) -> list[int]:
+              kind = event.get("kind", "")
+              category = event.get("category", "")
+              name = event.get("name", "")
+              tags = set(event.get("tags", []) or []) | set(card.get("semanticTags", []) or [])
+              source = card.get("sourcePath", "")
+
+              dims = [
+                  kind in {"export", "exportDefault"},
+                  kind == "import",
+                  kind in {"function", "call", "symbol"},
+                  kind in {"class", "interface", "type"},
+                  category in {"ui", "component"} or kind == "jsx" or "ui" in tags,
+                  category in {"state", "hook"} or "state" in tags or "context" in tags,
+                  category in {"io"} or "api" in tags or "supabase" in tags,
+                  "offline" in tags or "cache" in tags or "queue" in tags,
+                  "runtime" in tags or "engine" in tags or "dreamengin" in tags,
+                  "gameengin" in tags or "game" in tags,
+                  "renderengin" in tags or "render" in tags,
+                  "starmakerengin" in tags or "audio" in tags or "music" in tags,
+                  "contentengin" in tags or "content" in tags,
+                  "dreamdmbar" in tags or "messages" in tags,
+                  "dreamr" in tags or "feed" in tags,
+                  "marketplace" in tags or "settings" in tags,
+              ]
+
+              bits = [1 if x else 0 for x in dims]
+              digest = hashlib.sha256(f"{source}|{kind}|{category}|{name}|{','.join(sorted(tags))}".encode("utf-8")).digest()
+
+              for byte in digest:
+                  for shift in range(7, -1, -1):
+                      bits.append((byte >> shift) & 1)
+                      if len(bits) >= DEPTH:
+                          return bits[:DEPTH]
+              return bits[:DEPTH]
+
+
+          def pascal_path_vector(bits: list[int]) -> np.ndarray:
+              vec = np.zeros((DEPTH + 1) * (DEPTH + 2) // 2, dtype=np.float32)
+              col = 0
+              vec[cell_index(0, 0)] += 1.0
+              for row, bit in enumerate(bits, start=1):
+                  if bit:
+                      col += 1
+                  vec[cell_index(row, col)] += 1.0
+              return vec
+
+
+          def card_text(card: dict) -> str:
+              return " ".join([
+                  card.get("sourcePath", ""),
+                  card.get("root", ""),
+                  " ".join(card.get("semanticTags", [])),
+                  " ".join(card.get("symbols", [])),
+                  " ".join(card.get("calls", [])),
+                  " ".join(card.get("imports", [])),
+                  " ".join(card.get("jsx", [])),
+              ]).lower()
+
+
+          def font(size: int, bold: bool = False):
+              paths = [
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                  "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+              ]
+              for p in paths:
+                  if Path(p).exists():
+                      return ImageFont.truetype(p, size=size)
+              return ImageFont.load_default()
+
+
+          def draw_png(path: Path, global_pascal: np.ndarray, total_files: int, total_events: int, accuracy: float) -> None:
+              scale = 16 if DEPTH <= 32 else 10 if DEPTH <= 48 else 7
+              left, top, right, bottom = 80, 150, 650, 120
+              tri_w = (DEPTH + 1) * scale
+              tri_h = (DEPTH + 1) * scale
+              width = left + tri_w + right
+              height = top + tri_h + bottom
+
+              img = Image.new("RGB", (width, height), "white")
+              draw = ImageDraw.Draw(img)
+
+              draw.text((32, 24), "DREAM TRAINED SEMANTIC PASCAL LLM MODEL", fill=(0, 0, 0), font=font(32, True))
+              draw.text((32, 70), "real AST code semantics -> Pascal paths -> trained repo context model", fill=(30, 30, 30), font=font(16))
+
+              max_v = float(global_pascal.max()) if global_pascal.size else 1.0
+              if max_v <= 0:
+                  max_v = 1.0
+
+              idx = 0
+              for row in range(DEPTH + 1):
+                  for col in range(row + 1):
+                      value = float(global_pascal[idx])
+                      idx += 1
+                      t = math.log1p(value) / math.log1p(max_v)
+                      shade = int(255 - t * 255)
+                      x = int(left + ((DEPTH - row) * scale / 2) + col * scale)
+                      y = top + row * scale
+                      draw.ellipse([x, y, x + scale - 2, y + scale - 2], fill=(shade, shade, shade))
+
+              px = left + tri_w + 44
+              y = top
+              draw.text((px, y), "Trained outputs", fill=(0, 0, 0), font=font(22, True))
+              y += 34
+              lines = [
+                  "Model/semantic_pascal_model.joblib",
+                  "Model/semantic_pascal_embeddings.npy",
+                  "Model/infer_semantic_pascal.py",
+                  "",
+                  "LLM/fine_tune_dataset.jsonl",
+                  "LLM/retrieval_context_pack.md",
+                  "LLM/semantic_neighbors.csv",
+                  "",
+                  f"files: {total_files:,}",
+                  f"semantic events: {total_events:,}",
+                  f"Pascal depth: {DEPTH}",
+                  f"root classifier accuracy: {accuracy:.3f}",
+              ]
+              for line in lines:
+                  draw.text((px, y), line, fill=(0, 0, 0), font=font(14))
+                  y += 22
+
+              path.parent.mkdir(parents=True, exist_ok=True)
+              img.save(path)
+
+
+          def main() -> int:
+              raw = json.loads(CARDS_PATH.read_text(encoding="utf-8"))
+              cards = raw["files"]
+
+              for sub in ["Model", "LLM", "Data", ".de"]:
+                  (OUT_DIR / sub).mkdir(parents=True, exist_ok=True)
+
+              file_pascal_vectors = []
+              event_rows = []
+
+              for card in cards:
+                  event_vecs = []
+                  for e in card.get("events", []):
+                      bits = event_bits(e, card)
+                      vec = pascal_path_vector(bits)
+                      event_vecs.append(vec)
+                      event_rows.append({
+                          "sourcePath": card["sourcePath"],
+                          "root": card["root"],
+                          "kind": e.get("kind", ""),
+                          "category": e.get("category", ""),
+                          "name": e.get("name", ""),
+                          "pascalBits": "".join(str(b) for b in bits),
+                          "finalColumn": sum(bits),
+                      })
+                  if event_vecs:
+                      file_vec = np.sum(np.vstack(event_vecs), axis=0)
+                  else:
+                      file_vec = np.zeros((DEPTH + 1) * (DEPTH + 2) // 2, dtype=np.float32)
+                  file_pascal_vectors.append(file_vec)
+
+              X_pascal = np.vstack(file_pascal_vectors).astype(np.float32)
+              texts = [card_text(c) for c in cards]
+              roots = np.array([c["root"] for c in cards])
+
+              vectorizer = TfidfVectorizer(max_features=4096, ngram_range=(1, 2), min_df=1)
+              X_text_sparse = vectorizer.fit_transform(texts)
+
+              n_components = min(64, max(2, min(X_text_sparse.shape[0] - 1, X_text_sparse.shape[1] - 1)))
+              svd = TruncatedSVD(n_components=n_components, random_state=42)
+              X_text = svd.fit_transform(X_text_sparse)
+
+              scaler = StandardScaler()
+              X_pascal_scaled = scaler.fit_transform(X_pascal)
+
+              X = np.hstack([X_text, X_pascal_scaled]).astype(np.float32)
+
+              root_accuracy = 0.0
+              root_classifier = LogisticRegression(max_iter=EPOCHS, class_weight="balanced")
+              if len(set(roots.tolist())) > 1 and len(cards) >= 8:
+                  strat = roots if min(Counter(roots).values()) >= 2 else None
+                  try:
+                      X_train, X_test, y_train, y_test = train_test_split(X, roots, test_size=0.25, random_state=42, stratify=strat)
+                      root_classifier.fit(X_train, y_train)
+                      root_accuracy = float(accuracy_score(y_test, root_classifier.predict(X_test)))
+                      root_classifier.fit(X, roots)
+                  except Exception:
+                      root_classifier.fit(X, roots)
+                      root_accuracy = 0.0
+              else:
+                  root_classifier.fit(X, roots)
+                  root_accuracy = 1.0
+
+              tag_lists = [c.get("semanticTags", []) for c in cards]
+              tag_binarizer = MultiLabelBinarizer()
+              Y_tags = tag_binarizer.fit_transform(tag_lists)
+              tag_classifier = None
+              if Y_tags.shape[1] > 0:
+                  tag_classifier = OneVsRestClassifier(LogisticRegression(max_iter=EPOCHS))
+                  tag_classifier.fit(X, Y_tags)
+
+              nn = NearestNeighbors(n_neighbors=min(NEIGHBOR_COUNT + 1, len(cards)), metric="cosine")
+              nn.fit(X)
+              distances, indices = nn.kneighbors(X)
+
+              neighbor_rows = []
+              for i, card in enumerate(cards):
+                  rank = 0
+                  for dist, j in zip(distances[i], indices[i]):
+                      if i == j:
+                          continue
+                      rank += 1
+                      neighbor_rows.append({
+                          "sourcePath": card["sourcePath"],
+                          "rank": rank,
+                          "neighborPath": cards[j]["sourcePath"],
+                          "similarity": float(1.0 - dist),
+                      })
+                      if rank >= NEIGHBOR_COUNT:
+                          break
+
+              bundle = {
+                  "format": "dream.semantic-pascal-llm-support-model.v1",
+                  "depth": DEPTH,
+                  "vectorizer": vectorizer,
+                  "svd": svd,
+                  "pascalScaler": scaler,
+                  "rootClassifier": root_classifier,
+                  "tagBinarizer": tag_binarizer,
+                  "tagClassifier": tag_classifier,
+                  "roots": sorted(set(roots.tolist())),
+              }
+              joblib.dump(bundle, OUT_DIR / "Model" / "semantic_pascal_model.joblib")
+              np.save(OUT_DIR / "Model" / "semantic_pascal_embeddings.npy", X)
+
+              inference_lines = [
+                  "from __future__ import annotations",
+                  "",
+                  "import json",
+                  "import sys",
+                  "from pathlib import Path",
+                  "",
+                  "import joblib",
+                  "import numpy as np",
+                  "",
+                  "MODEL_PATH = Path(__file__).with_name('semantic_pascal_model.joblib')",
+                  "",
+                  "def main() -> int:",
+                  "    if len(sys.argv) < 2:",
+                  "        print(\"Usage: python infer_semantic_pascal.py '<query text>'\")",
+                  "        return 2",
+                  "",
+                  "    query = ' '.join(sys.argv[1:])",
+                  "    bundle = joblib.load(MODEL_PATH)",
+                  "",
+                  "    x_text = bundle['vectorizer'].transform([query])",
+                  "    x_text = bundle['svd'].transform(x_text)",
+                  "",
+                  "    pascal_dims = bundle['pascalScaler'].mean_.shape[0]",
+                  "    x_pascal = np.zeros((1, pascal_dims), dtype=np.float32)",
+                  "    x_pascal = bundle['pascalScaler'].transform(x_pascal)",
+                  "",
+                  "    x = np.hstack([x_text, x_pascal])",
+                  "",
+                  "    result = {",
+                  "        'query': query,",
+                  "        'predictedRoot': str(bundle['rootClassifier'].predict(x)[0])",
+                  "    }",
+                  "",
+                  "    if bundle.get('tagClassifier') is not None:",
+                  "        tag_pred = bundle['tagClassifier'].predict(x)",
+                  "        tags = bundle['tagBinarizer'].inverse_transform(tag_pred)",
+                  "        result['predictedTags'] = list(tags[0]) if tags else []",
+                  "",
+                  "    print(json.dumps(result, indent=2))",
+                  "    return 0",
+                  "",
+                  "if __name__ == '__main__':",
+                  "    raise SystemExit(main())",
+                  "",
+              ]
+              inference_script = "\n".join(inference_lines)
+
+              (OUT_DIR / "Model" / "infer_semantic_pascal.py").write_text(inference_script, encoding="utf-8")
+
+              file_index_rows = []
+              llm_cards = []
+              fine_tune_rows = []
+
+              neighbors_by_file = {}
+              for row in neighbor_rows:
+                  neighbors_by_file.setdefault(row["sourcePath"], []).append(row)
+
+              for i, card in enumerate(cards):
+                  neighbors = neighbors_by_file.get(card["sourcePath"], [])[:5]
+                  file_index_rows.append({
+                      "fileIndex": i,
+                      "sourcePath": card["sourcePath"],
+                      "root": card["root"],
+                      "bytes": card.get("bytes", 0),
+                      "eventCount": len(card.get("events", [])),
+                      "semanticTags": ",".join(card.get("semanticTags", [])),
+                  })
+                  llm_cards.append({
+                      "sourcePath": card["sourcePath"],
+                      "root": card["root"],
+                      "semanticTags": card.get("semanticTags", []),
+                      "symbols": card.get("symbols", []),
+                      "imports": card.get("imports", []),
+                      "calls": card.get("calls", [])[:80],
+                      "jsx": card.get("jsx", []),
+                      "eventCount": len(card.get("events", [])),
+                      "embeddingIndex": i,
+                      "nearestSemanticFiles": neighbors,
+                  })
+                  fine_tune_rows.append({
+                      "messages": [
+                          {
+                              "role": "system",
+                              "content": "You are DREAMengin codebase assistant. Use repo semantics, roots, and Pascal-path structure."
+                          },
+                          {
+                              "role": "user",
+                              "content": f"Explain {card['sourcePath']} in DREAMengin."
+                          },
+                          {
+                              "role": "assistant",
+                              "content": (
+                                  f"{card['sourcePath']} is in root {card['root']}. "
+                                  f"Semantic tags: {', '.join(card.get('semanticTags', [])) or 'none'}. "
+                                  f"Symbols: {', '.join(card.get('symbols', [])[:24]) or 'none'}. "
+                                  f"Nearest semantic files: {', '.join(n['neighborPath'] for n in neighbors) or 'none'}."
+                              )
+                          }
+                      ]
+                  })
+
+              write_csv(OUT_DIR / "Data" / "semantic_events.csv",
+                        ["sourcePath", "root", "kind", "category", "name", "pascalBits", "finalColumn"],
+                        event_rows)
+              write_csv(OUT_DIR / "Model" / "file_embedding_index.csv",
+                        ["fileIndex", "sourcePath", "root", "bytes", "eventCount", "semanticTags"],
+                        file_index_rows)
+              write_csv(OUT_DIR / "LLM" / "semantic_neighbors.csv",
+                        ["sourcePath", "rank", "neighborPath", "similarity"],
+                        neighbor_rows)
+              write_jsonl(OUT_DIR / "LLM" / "semantic_code_cards.jsonl", llm_cards)
+              write_jsonl(OUT_DIR / "LLM" / "fine_tune_dataset.jsonl", fine_tune_rows)
+
+              top_cards = sorted(llm_cards, key=lambda c: c["eventCount"], reverse=True)[:120]
+              md = [
+                  "# DREAM Trained Semantic Pascal LLM Context",
+                  "",
+                  "This is the LLM-readable context pack generated from the trained semantic Pascal support model.",
+                  "",
+                  "Model concept:",
+                  "",
+                  "```text",
+                  "real AST code semantics -> Pascal x/y path vectors -> trained repo embeddings -> LLM retrieval/context",
+                  "```",
+                  "",
+                  "This is not a base LLM. It is a trained repo-specific support model and LLM dataset.",
+                  "",
+              ]
+              for card in top_cards:
+                  md.extend([
+                      f"## {card['sourcePath']}",
+                      "",
+                      f"- root: `{card['root']}`",
+                      f"- events: `{card['eventCount']}`",
+                      f"- tags: `{', '.join(card.get('semanticTags', [])[:18])}`",
+                      f"- symbols: `{', '.join(card.get('symbols', [])[:24])}`",
+                      f"- nearest: `{', '.join(n['neighborPath'] for n in card['nearestSemanticFiles'][:5])}`",
+                      "",
+                  ])
+              (OUT_DIR / "LLM" / "retrieval_context_pack.md").write_text("\n".join(md), encoding="utf-8")
+
+              global_pascal = np.sum(X_pascal, axis=0)
+              draw_png(OUT_DIR / "MODEL_PASCAL_FIELD.png", global_pascal, len(cards), len(event_rows), root_accuracy)
+
+              manifest = {
+                  "format": "dreamengin.trained-semantic-pascal-llm-support-model.v1",
+                  "operation": "extract real code semantics -> Pascal x/y path features -> train repo-specific model -> output LLM context and fine-tune data",
+                  "important": "This trains a small repo-specific semantic support model. It does not train a full base LLM from scratch.",
+                  "pascalDepth": DEPTH,
+                  "epochs": EPOCHS,
+                  "files": len(cards),
+                  "events": len(event_rows),
+                  "rootClassifierAccuracy": root_accuracy,
+                  "outputs": {
+                      "mainImage": "MODEL_PASCAL_FIELD.png",
+                      "model": "Model/semantic_pascal_model.joblib",
+                      "embeddings": "Model/semantic_pascal_embeddings.npy",
+                      "inferenceScript": "Model/infer_semantic_pascal.py",
+                      "fileIndex": "Model/file_embedding_index.csv",
+                      "llmCards": "LLM/semantic_code_cards.jsonl",
+                      "fineTuneDataset": "LLM/fine_tune_dataset.jsonl",
+                      "retrievalContextPack": "LLM/retrieval_context_pack.md",
+                      "neighbors": "LLM/semantic_neighbors.csv",
+                      "events": "Data/semantic_events.csv"
+                  }
+              }
+              (OUT_DIR / ".de" / "trained-semantic-pascal-llm-model-map.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+              readme = [
+                  "# DREAM Trained Semantic Pascal LLM Support Model",
+                  "",
+                  "Open first:",
+                  "",
+                  "```text",
+                  "MODEL_PASCAL_FIELD.png",
+                  "```",
+                  "",
+                  "Trained model files:",
+                  "",
+                  "```text",
+                  "Model/semantic_pascal_model.joblib",
+                  "Model/semantic_pascal_embeddings.npy",
+                  "Model/infer_semantic_pascal.py",
+                  "Model/file_embedding_index.csv",
+                  "```",
+                  "",
+                  "LLM files:",
+                  "",
+                  "```text",
+                  "LLM/retrieval_context_pack.md",
+                  "LLM/fine_tune_dataset.jsonl",
+                  "LLM/semantic_code_cards.jsonl",
+                  "LLM/semantic_neighbors.csv",
+                  "```",
+                  "",
+                  "This trains a repo-specific semantic support model for LLM retrieval/context.",
+                  "It does not train a full base LLM from scratch.",
+              ]
+              (OUT_DIR / "README.md").write_text("\n".join(readme), encoding="utf-8")
+
+              zip_dir(OUT_DIR, ZIP_PATH)
+
+              print(f"Created {ZIP_PATH}")
+              print("Open first: MODEL_PASCAL_FIELD.png")
+              print(f"files={len(cards)}")
+              print(f"events={len(event_rows)}")
+              print(f"pascalDepth={DEPTH}")
+              print(f"rootClassifierAccuracy={root_accuracy:.4f}")
+              print("model=Model/semantic_pascal_model.joblib")
+              print("fineTuneDataset=LLM/fine_tune_dataset.jsonl")
+              print("contextPack=LLM/retrieval_context_pack.md")
+
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python3 /tmp/train_semantic_pascal_llm_model.py
+
+      - name: Upload trained semantic Pascal LLM model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-trained-semantic-pascal-llm-model
+          path: dream-train-semantic-pascal-llm-model.zip
+          if-no-files-found: error
