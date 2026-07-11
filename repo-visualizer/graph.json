@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:48:54.865Z",
+  "generatedAt": "2026-07-11T10:24:13.165Z",
   "root": ".",
   "nodes": [
     {
@@ -2932,6 +2932,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/dream-train-semantic-pascal-llm-model.yml",
+      "label": "dream-train-semantic-pascal-llm-model.yml",
+      "type": "config",
+      "path": ".github/workflows/dream-train-semantic-pascal-llm-model.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/dream-utf8-binary-ones-counts-export.yml",
       "label": "dream-utf8-binary-ones-counts-export.yml",
       "type": "config",
@@ -3392,6 +3402,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-pascal-verified.yml",
+      "label": "screencode-recursive-website-feature-tree-pascal-verified.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-recursive-website-feature-tree-pascal-verified.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v19.yml",
       "label": "screencode-recursive-website-feature-tree-v19.yml",
       "type": "config",
@@ -3416,16 +3436,6 @@
       "label": "screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
       "type": "config",
       "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v22.yml",
-      "label": "screencode-recursive-website-feature-tree-v22.yml",
-      "type": "config",
-      "path": ".github/workflows/screencode-recursive-website-feature-tree-v22.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
