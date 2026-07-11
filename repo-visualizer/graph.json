@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:28:08.486Z",
+  "generatedAt": "2026-07-11T10:30:42.659Z",
   "root": ".",
   "nodes": [
     {
@@ -2926,6 +2926,16 @@
       "label": "docs-auto-update.yml",
       "type": "config",
       "path": ".github/workflows/docs-auto-update.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream-train-semantic-pascal-llm-model.yml",
+      "label": "dream-train-semantic-pascal-llm-model.yml",
+      "type": "config",
+      "path": ".github/workflows/dream-train-semantic-pascal-llm-model.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
