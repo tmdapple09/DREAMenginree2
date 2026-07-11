@@ -1,4 +1,4 @@
-name: Export Recursive Website Feature Tree V21
+name: Export Recursive Website Final
 
 on:
   workflow_dispatch:
@@ -127,7 +127,7 @@ jobs:
           function labelWithoutPlumbingWords(value) {
             return cleanWords(value || "")
               .replace(/^\d+\s+/, " ")
-              .replace(/[←→↗↘↙↖]/g, " ")
+              .replace(/[ââââââ]/g, " ")
               .replace(/\b(href|url|path|route)\b/gi, " ")
               .replace(/\bto\s+to\b/gi, "to")
               .replace(/\s+/g, " ")
@@ -699,7 +699,7 @@ jobs:
             visited.add(componentId); const source = sourceCache.get(component.sourcePath); const componentIds = [componentId]; const links = []; const actions = [];
 
             function emitFromElement(node, context) {
-              const opening = node.openingElement; const tag = jsxName(opening.name); const attrs = attrsOfResolved(opening, source, component.sourcePath, context); let text = textFromJSXResolved(node, source, component.sourcePath, context); const elemSource = sourceOf(source, node); if ((!text || /^\d+$/.test(text)) && /\b(ArrowLeft|ChevronLeft|CircleArrowLeft)\b|←/.test(elemSource)) text = "Back"; let targetRaw = attrs.href || attrs.to || attrs.route || attrs.path || attrs.url || ""; let handler = null;
+              const opening = node.openingElement; const tag = jsxName(opening.name); const attrs = attrsOfResolved(opening, source, component.sourcePath, context); let text = textFromJSXResolved(node, source, component.sourcePath, context); const elemSource = sourceOf(source, node); if ((!text || /^\d+$/.test(text)) && /\b(ArrowLeft|ChevronLeft|CircleArrowLeft)\b|â/.test(elemSource)) text = "Back"; let targetRaw = attrs.href || attrs.to || attrs.route || attrs.path || attrs.url || ""; let handler = null;
               for (const attr of opening.attributes || []) { const name = attrName(attr); if (!/^on[A-Z]/.test(name)) continue; const expr = attr.value?.type === "JSXExpressionContainer" ? attr.value.expression : null; if (!expr) continue; const handlerTarget = routerTargetFromExpression(expr, source); if (!targetRaw && handlerTarget) targetRaw = handlerTarget; handler = { event: name, ref: expr.type === "Identifier" ? expr.name : "", calls: Array.from(collectCalls(expr)), range: rangeFor(component.sourcePath, source, expr.start, expr.end, "handler") }; }
               if (isLinkLike(tag, attrs, elemSource) && targetRaw) { const target = normalizeTarget(targetRaw, component.route || ""); const labelRaw = attrs["aria-label"] || attrs.title || text || attrs.id || attrs["data-testid"] || targetRaw || tag; const label = linkFolderLabel(labelRaw, target); links.push({ linkId: sha32(`${component.id}:${node.start}:${node.end}:${targetRaw}:${label}`), label, sourcePath: component.sourcePath, ownerComponentId: component.id, ownerComponentName: component.name, range: rangeFor(component.sourcePath, source, node.start, node.end, "link"), tag, text, attrs: { href: attrs.href || "", to: attrs.to || "", route: attrs.route || "", path: attrs.path || "", role: attrs.role || "", ariaLabel: attrs["aria-label"] || "", title: attrs.title || "", id: attrs.id || "", dataTestId: attrs["data-testid"] || "" }, target, handler, resolvedContext: contextSummary(context) }); }
               else if (handler && (USER_FEATURE_RE.test(`${tag} ${text} ${component.name}`) || attrs["aria-label"] || attrs.title || attrs.id || attrs["data-testid"])) { const actionLabel = compactUiLabel(attrs["aria-label"] || attrs.title || text || attrs.id || attrs["data-testid"] || tag || "Action", "Action"); if (isActionWorthy(tag, attrs, actionLabel, handler)) actions.push({ actionId: sha32(`${component.id}:${node.start}:${node.end}:${handler.event}:${actionLabel}`), label: actionLabel, sourcePath: component.sourcePath, ownerComponentId: component.id, ownerComponentName: component.name, range: rangeFor(component.sourcePath, source, node.start, node.end, "action"), tag, text, handler, resolvedContext: contextSummary(context) }); }
@@ -2105,9 +2105,9 @@ jobs:
           NODE
 
       - name: Upload recursive website feature tree
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
-          name: dreamengin-recursive-website-feature-tree-v21
+          name: dreamengin-recursive-website-feature
           path: __dreamengin_website_feature_tree__
           include-hidden-files: true
           compression-level: 9
