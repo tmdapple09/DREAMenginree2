@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T06:48:59.360Z",
+  "generatedAt": "2026-07-11T07:29:36.098Z",
   "root": ".",
   "nodes": [
     {
@@ -2946,16 +2946,6 @@
       "label": "dream-utf8-code-geometry.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-code-geometry.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/dream-utf8-code-structure-map.yml",
-      "label": "dream-utf8-code-structure-map.yml",
-      "type": "config",
-      "path": ".github/workflows/dream-utf8-code-structure-map.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
