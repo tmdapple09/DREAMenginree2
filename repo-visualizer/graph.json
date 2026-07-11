@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:29:36.098Z",
+  "generatedAt": "2026-07-11T08:20:22.082Z",
   "root": ".",
   "nodes": [
     {
@@ -2952,6 +2952,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/dream-utf8-code-structure-map.yml",
+      "label": "dream-utf8-code-structure-map.yml",
+      "type": "config",
+      "path": ".github/workflows/dream-utf8-code-structure-map.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/dreamengin-preflight.yml",
       "label": "dreamengin-preflight.yml",
       "type": "config",
@@ -3382,30 +3392,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v18.yml",
-      "label": "screencode-recursive-website-feature-tree-v18.yml",
-      "type": "config",
-      "path": ".github/workflows/screencode-recursive-website-feature-tree-v18.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v19.yml",
       "label": "screencode-recursive-website-feature-tree-v19.yml",
       "type": "config",
       "path": ".github/workflows/screencode-recursive-website-feature-tree-v19.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v21-allowed-folders.yml",
-      "label": "screencode-recursive-website-feature-tree-v21-allowed-folders.yml",
-      "type": "config",
-      "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-allowed-folders.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -3426,6 +3416,16 @@
       "label": "screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
       "type": "config",
       "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v22.yml",
+      "label": "screencode-recursive-website-feature-tree-v22.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-recursive-website-feature-tree-v22.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
