@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T04:49:45.886Z",
+  "generatedAt": "2026-07-11T05:11:50.369Z",
   "root": ".",
   "nodes": [
     {
@@ -2952,10 +2952,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream-utf8-bit-position-counts.yml",
-      "label": "dream-utf8-bit-position-counts.yml",
+      "id": "file:.github/workflows/dream-utf8-bit-position-counts-lean.yml",
+      "label": "dream-utf8-bit-position-counts-lean.yml",
       "type": "config",
-      "path": ".github/workflows/dream-utf8-bit-position-counts.yml",
+      "path": ".github/workflows/dream-utf8-bit-position-counts-lean.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
