@@ -1,0 +1,680 @@
+name: DREAM UTF-8 Code Geometry
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated product application code roots"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      triangle_rows:
+        description: "Rows in the code-geometry triangle. 256 is safe; 512 is sharper."
+        required: false
+        default: "256"
+
+permissions:
+  contents: read
+
+jobs:
+  utf8-code-geometry:
+    name: Build geometric code structure from UTF-8 bits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build UTF-8 code geometry
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ inputs.code_roots || 'app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks' }}
+          CODE_EXTENSIONS: ${{ inputs.code_extensions || '.ts,.tsx,.js,.jsx,.mjs,.cjs' }}
+          TRIANGLE_ROWS: ${{ inputs.triangle_rows || '256' }}
+        run: |
+          cat > /tmp/dream_utf8_code_geometry.py <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import html
+          import json
+          import math
+          import os
+          import shutil
+          import zipfile
+          from pathlib import Path
+          from typing import Iterable, List
+
+          OUT_DIR = Path(".dream-utf8-code-geometry")
+          ZIP_PATH = Path("dream-utf8-code-geometry.zip")
+
+          EXCLUDE_DIRS = {
+              ".git",
+              ".github",
+              ".ci",
+              "node_modules",
+              ".next",
+              "out",
+              "dist",
+              "build",
+              "coverage",
+              ".turbo",
+              ".vercel",
+              ".cache",
+              "__pycache__",
+              ".pytest_cache",
+              ".dream-utf8-code-geometry",
+          }
+
+          EXCLUDE_FILE_NAMES = {
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "bun.lockb",
+              "tsconfig.tsbuildinfo",
+              "dream-utf8-code-geometry.zip",
+          }
+
+          MAX_FILE_BYTES = 5_000_000
+
+
+          def code_roots() -> List[str]:
+              raw = os.environ.get("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              return [item.strip().strip("/") for item in raw.split(",") if item.strip()]
+
+
+          def code_extensions() -> set[str]:
+              raw = os.environ.get("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+              return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+
+          def triangle_rows_input() -> int:
+              raw = os.environ.get("TRIANGLE_ROWS", "256").strip()
+              try:
+                  rows = int(raw)
+              except ValueError:
+                  rows = 256
+              return max(8, min(rows, 1024))
+
+
+          def should_include(path: Path, repo_root: Path) -> bool:
+              if not path.is_file():
+                  return False
+
+              rel = path.relative_to(repo_root)
+
+              if any(part in EXCLUDE_DIRS for part in rel.parts):
+                  return False
+
+              if path.name in EXCLUDE_FILE_NAMES:
+                  return False
+
+              top = rel.as_posix().split("/", 1)[0]
+              if top not in code_roots():
+                  return False
+
+              if path.suffix.lower() not in code_extensions():
+                  return False
+
+              if path.stat().st_size > MAX_FILE_BYTES:
+                  return False
+
+              return True
+
+
+          def iter_code_files(repo_root: Path) -> Iterable[Path]:
+              for path in sorted(repo_root.rglob("*")):
+                  if should_include(path, repo_root):
+                      yield path
+
+
+          def write_csv(path: Path, fieldnames: List[str], rows: Iterable[dict]) -> int:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              count = 0
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  for row in rows:
+                      writer.writerow(row)
+                      count += 1
+              return count
+
+
+          def zip_dir(source: Path, destination: Path) -> None:
+              if destination.exists():
+                  destination.unlink()
+
+              with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
+                  for path in sorted(source.rglob("*")):
+                      if path.is_file():
+                          archive.write(path, path.relative_to(source).as_posix())
+
+
+          def empty_bit_positions() -> dict[int, dict[str, int]]:
+              return {pos: {"ones": 0, "zeros": 0} for pos in range(1, 9)}
+
+
+          def empty_popcount_buckets() -> dict[int, int]:
+              return {k: 0 for k in range(0, 9)}
+
+
+          def add_byte_to_bit_positions(byte: int, slots: dict[int, dict[str, int]]) -> None:
+              bits = f"{byte:08b}"
+              for position, bit in enumerate(bits, start=1):
+                  if bit == "1":
+                      slots[position]["ones"] += 1
+                  else:
+                      slots[position]["zeros"] += 1
+
+
+          def bit_position_rows(slots: dict[int, dict[str, int]]) -> list[dict]:
+              rows = []
+              for position in range(1, 9):
+                  ones = slots[position]["ones"]
+                  zeros = slots[position]["zeros"]
+                  total = ones + zeros
+                  rows.append({
+                      "byteBitPosition": position,
+                      "onesCount": ones,
+                      "zerosCount": zeros,
+                      "totalCount": total,
+                      "oneRatio": ones / total if total else 0,
+                  })
+              return rows
+
+
+          def pascal_rows(max_row: int = 8) -> list[dict]:
+              rows = []
+              for row in range(0, max_row + 1):
+                  for k in range(0, row + 1):
+                      rows.append({
+                          "row": row,
+                          "k": k,
+                          "coefficient": math.comb(row, k),
+                          "oddParity": math.comb(row, k) % 2,
+                      })
+              return rows
+
+
+          def pascal_odd(row: int, col: int) -> int:
+              # Lucas theorem for Pascal mod 2:
+              # C(row, col) is odd iff every 1-bit in col is also present in row.
+              return 1 if (col & ~row) == 0 else 0
+
+
+          def bucket_label(ratio: float) -> str:
+              if ratio >= 0.875:
+                  return "A_very_high"
+              if ratio >= 0.75:
+                  return "B_high"
+              if ratio >= 0.625:
+                  return "C_mid_high"
+              if ratio >= 0.5:
+                  return "D_even_high"
+              if ratio >= 0.375:
+                  return "E_even_low"
+              if ratio >= 0.25:
+                  return "F_mid_low"
+              if ratio >= 0.125:
+                  return "G_low"
+              return "H_very_low"
+
+
+          def svg_escape(value: object) -> str:
+              return html.escape(str(value), quote=True)
+
+
+          def render_triangle_svg(
+              path: Path,
+              cells: list[dict],
+              rows: int,
+              title: str,
+              mode: str,
+          ) -> None:
+              # Pure SVG; no external image dependencies.
+              cell = 4
+              row_height = 4
+              margin = 24
+              width = rows * cell + margin * 2
+              height = rows * row_height + margin * 3 + 48
+
+              def color_for(entry: dict) -> str:
+                  ratio = float(entry["oneRatio"])
+                  parity = int(entry["pascalOdd"])
+                  dominant = 1 if ratio >= 0.5 else 0
+
+                  if mode == "density":
+                      # grayscale: black = more 1s, white = more 0s
+                      shade = int(255 - (ratio * 255))
+                      return f"rgb({shade},{shade},{shade})"
+
+                  if mode == "sierpinski":
+                      return "#000000" if parity else "#ffffff"
+
+                  if mode == "intersection":
+                      if parity and dominant:
+                          return "#000000"
+                      if parity and not dominant:
+                          return "#bdbdbd"
+                      if (not parity) and dominant:
+                          return "#737373"
+                      return "#ffffff"
+
+                  if mode == "xor":
+                      return "#000000" if (parity ^ dominant) else "#ffffff"
+
+                  return "#000000" if dominant else "#ffffff"
+
+              lines = [
+                  '<?xml version="1.0" encoding="UTF-8"?>',
+                  f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+                  '<rect width="100%" height="100%" fill="white"/>',
+                  f'<text x="{margin}" y="24" font-family="monospace" font-size="16" fill="black">{svg_escape(title)}</text>',
+                  f'<text x="{margin}" y="44" font-family="monospace" font-size="11" fill="black">rows={rows}; cells={len(cells)}; mode={svg_escape(mode)}</text>',
+              ]
+
+              for entry in cells:
+                  row = int(entry["row"])
+                  col = int(entry["col"])
+                  x = margin + ((rows - row - 1) * cell / 2) + (col * cell)
+                  y = margin + 48 + row * row_height
+                  fill = color_for(entry)
+                  ratio = float(entry["oneRatio"])
+                  title_text = (
+                      f"row={row} col={col} cell={entry['cellIndex']} "
+                      f"ratio={ratio:.4f} ones={entry['onesCount']} zeros={entry['zerosCount']} "
+                      f"pascalOdd={entry['pascalOdd']}"
+                  )
+                  lines.append(
+                      f'<rect x="{x:.2f}" y="{y:.2f}" width="{cell}" height="{row_height}" '
+                      f'fill="{fill}" stroke="none"><title>{svg_escape(title_text)}</title></rect>'
+                  )
+
+              lines.append("</svg>")
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text("\n".join(lines), encoding="utf-8")
+
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+              rows = triangle_rows_input()
+              geometry_cells = rows * (rows + 1) // 2
+
+              if OUT_DIR.exists():
+                  shutil.rmtree(OUT_DIR)
+
+              (OUT_DIR / ".de").mkdir(parents=True)
+              (OUT_DIR / "Counts").mkdir(parents=True)
+              (OUT_DIR / "Geometry").mkdir(parents=True)
+              (OUT_DIR / "Pascal").mkdir(parents=True)
+
+              files_data: list[tuple[str, str, bytes]] = []
+              file_summary_rows = []
+              skipped_non_utf8 = []
+
+              global_bit_positions = empty_bit_positions()
+              root_bit_positions: dict[str, dict[int, dict[str, int]]] = {}
+              global_popcounts = empty_popcount_buckets()
+              root_popcounts: dict[str, dict[int, int]] = {}
+
+              total_bytes = 0
+              total_ones = 0
+
+              for file_path in iter_code_files(repo_root):
+                  source_path = file_path.relative_to(repo_root).as_posix()
+                  root_name = source_path.split("/", 1)[0]
+
+                  try:
+                      text = file_path.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      skipped_non_utf8.append(source_path)
+                      continue
+
+                  data = text.encode("utf-8")
+                  files_data.append((source_path, root_name, data))
+
+                  root_bit_positions.setdefault(root_name, empty_bit_positions())
+                  root_popcounts.setdefault(root_name, empty_popcount_buckets())
+
+                  file_ones = 0
+                  for byte in data:
+                      add_byte_to_bit_positions(byte, global_bit_positions)
+                      add_byte_to_bit_positions(byte, root_bit_positions[root_name])
+
+                      k = byte.bit_count()
+                      file_ones += k
+                      global_popcounts[k] += 1
+                      root_popcounts[root_name][k] += 1
+
+                  file_bits = len(data) * 8
+                  total_bytes += len(data)
+                  total_ones += file_ones
+
+                  file_summary_rows.append({
+                      "sourcePath": source_path,
+                      "root": root_name,
+                      "utf8Bytes": len(data),
+                      "bits": file_bits,
+                      "onesCount": file_ones,
+                      "zerosCount": file_bits - file_ones,
+                      "oneRatio": file_ones / file_bits if file_bits else 0,
+                  })
+
+              total_bits = total_bytes * 8
+              total_zeros = total_bits - total_ones
+
+              # Geometry aggregation:
+              # The whole codebase bitstream is compressed into a triangular grid.
+              # Every cell receives a contiguous slice of the global bitstream.
+              cell_ones = [0] * geometry_cells
+              cell_zeros = [0] * geometry_cells
+              cell_first_source = [""] * geometry_cells
+              cell_last_source = [""] * geometry_cells
+
+              if total_bits > 0:
+                  global_bit_index = 0
+                  for source_path, _root_name, data in files_data:
+                      for byte in data:
+                          bits = f"{byte:08b}"
+                          for bit in bits:
+                              cell_index = (global_bit_index * geometry_cells) // total_bits
+                              if cell_index >= geometry_cells:
+                                  cell_index = geometry_cells - 1
+
+                              if not cell_first_source[cell_index]:
+                                  cell_first_source[cell_index] = source_path
+                              cell_last_source[cell_index] = source_path
+
+                              if bit == "1":
+                                  cell_ones[cell_index] += 1
+                              else:
+                                  cell_zeros[cell_index] += 1
+
+                              global_bit_index += 1
+
+              geometry_rows = []
+              cell_index = 0
+              for row in range(rows):
+                  for col in range(row + 1):
+                      ones = cell_ones[cell_index]
+                      zeros = cell_zeros[cell_index]
+                      total = ones + zeros
+                      ratio = ones / total if total else 0
+                      parity = pascal_odd(row, col)
+                      dominant = 1 if ratio >= 0.5 else 0
+                      geometry_rows.append({
+                          "cellIndex": cell_index,
+                          "row": row,
+                          "col": col,
+                          "onesCount": ones,
+                          "zerosCount": zeros,
+                          "totalBitsInCell": total,
+                          "oneRatio": ratio,
+                          "dominantBit": dominant,
+                          "pascalOdd": parity,
+                          "sierpinskiAndDominantOne": 1 if (parity and dominant) else 0,
+                          "sierpinskiXorDominantOne": parity ^ dominant,
+                          "densityBucket": bucket_label(ratio),
+                          "firstSourcePathInCell": cell_first_source[cell_index],
+                          "lastSourcePathInCell": cell_last_source[cell_index],
+                      })
+                      cell_index += 1
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_BIT_POSITION_COUNTS.csv",
+                  ["byteBitPosition", "onesCount", "zerosCount", "totalCount", "oneRatio"],
+                  bit_position_rows(global_bit_positions),
+              )
+
+              root_position_rows = []
+              for root_name in sorted(root_bit_positions):
+                  for row in bit_position_rows(root_bit_positions[root_name]):
+                      root_position_rows.append({"root": root_name, **row})
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_ROOT_BIT_POSITION_COUNTS.csv",
+                  ["root", "byteBitPosition", "onesCount", "zerosCount", "totalCount", "oneRatio"],
+                  root_position_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_FILE_COUNTS.csv",
+                  ["sourcePath", "root", "utf8Bytes", "bits", "onesCount", "zerosCount", "oneRatio"],
+                  file_summary_rows,
+              )
+
+              pascal_byte_rows = []
+              for k in range(0, 9):
+                  actual_count = global_popcounts[k]
+                  actual_ratio = actual_count / total_bytes if total_bytes else 0
+                  coefficient = math.comb(8, k)
+                  uniform_probability = coefficient / 256
+                  pascal_byte_rows.append({
+                      "kOnesInByte": k,
+                      "actualByteCount": actual_count,
+                      "actualByteRatio": actual_ratio,
+                      "pascalRow8Coefficient": coefficient,
+                      "pascalUniformProbability": uniform_probability,
+                      "pascalExpectedBytesIfUniform": uniform_probability * total_bytes,
+                      "actualMinusPascalExpected": actual_count - (uniform_probability * total_bytes),
+                  })
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_BYTE_PASCAL_ROW8_COUNTS.csv",
+                  [
+                      "kOnesInByte",
+                      "actualByteCount",
+                      "actualByteRatio",
+                      "pascalRow8Coefficient",
+                      "pascalUniformProbability",
+                      "pascalExpectedBytesIfUniform",
+                      "actualMinusPascalExpected",
+                  ],
+                  pascal_byte_rows,
+              )
+
+              root_pascal_rows = []
+              for root_name in sorted(root_popcounts):
+                  root_total = sum(root_popcounts[root_name].values())
+                  for k in range(0, 9):
+                      count = root_popcounts[root_name][k]
+                      root_pascal_rows.append({
+                          "root": root_name,
+                          "kOnesInByte": k,
+                          "byteCount": count,
+                          "byteRatioWithinRoot": count / root_total if root_total else 0,
+                          "pascalRow8Coefficient": math.comb(8, k),
+                      })
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_ROOT_BYTE_PASCAL_ROW8_COUNTS.csv",
+                  ["root", "kOnesInByte", "byteCount", "byteRatioWithinRoot", "pascalRow8Coefficient"],
+                  root_pascal_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Pascal" / "_PASCAL_TRIANGLE_ROWS_0_8.csv",
+                  ["row", "k", "coefficient", "oddParity"],
+                  pascal_rows(8),
+              )
+
+              write_csv(
+                  OUT_DIR / "Geometry" / "_CODE_GEOMETRY_TRIANGLE_CELLS.csv",
+                  [
+                      "cellIndex",
+                      "row",
+                      "col",
+                      "onesCount",
+                      "zerosCount",
+                      "totalBitsInCell",
+                      "oneRatio",
+                      "dominantBit",
+                      "pascalOdd",
+                      "sierpinskiAndDominantOne",
+                      "sierpinskiXorDominantOne",
+                      "densityBucket",
+                      "firstSourcePathInCell",
+                      "lastSourcePathInCell",
+                  ],
+                  geometry_rows,
+              )
+
+              render_triangle_svg(
+                  OUT_DIR / "Geometry" / "code-density-triangle.svg",
+                  geometry_rows,
+                  rows,
+                  "DREAM UTF-8 code density triangle",
+                  "density",
+              )
+
+              render_triangle_svg(
+                  OUT_DIR / "Geometry" / "pascal-sierpinski-mask.svg",
+                  geometry_rows,
+                  rows,
+                  "Pascal mod-2 Sierpinski mask",
+                  "sierpinski",
+              )
+
+              render_triangle_svg(
+                  OUT_DIR / "Geometry" / "code-sierpinski-intersection.svg",
+                  geometry_rows,
+                  rows,
+                  "Code structure intersected with Pascal/Sierpinski structure",
+                  "intersection",
+              )
+
+              render_triangle_svg(
+                  OUT_DIR / "Geometry" / "code-sierpinski-xor.svg",
+                  geometry_rows,
+                  rows,
+                  "Code structure XOR Pascal/Sierpinski structure",
+                  "xor",
+              )
+
+              manifest = {
+                  "format": "dreamengin.utf8-code-geometry.v1",
+                  "scope": "product application source code only",
+                  "operation": "source files -> UTF-8 bytes -> bits -> triangular geometry cells; plus bit-position counts and Pascal row-8 byte counts",
+                  "includedRoots": code_roots(),
+                  "includedExtensions": sorted(code_extensions()),
+                  "triangle": {
+                      "rows": rows,
+                      "cells": geometry_cells,
+                      "cellMeaning": "each cell is a contiguous slice of the whole application-code bitstream",
+                      "sierpinskiRule": "pascalOdd = 1 iff (col & ~row) == 0",
+                  },
+                  "totals": {
+                      "files": len(file_summary_rows),
+                      "utf8Bytes": total_bytes,
+                      "bits": total_bits,
+                      "onesCount": total_ones,
+                      "zerosCount": total_zeros,
+                      "oneRatio": total_ones / total_bits if total_bits else 0,
+                  },
+                  "outputs": {
+                      "codeGeometryCells": "Geometry/_CODE_GEOMETRY_TRIANGLE_CELLS.csv",
+                      "codeDensitySvg": "Geometry/code-density-triangle.svg",
+                      "pascalSierpinskiMaskSvg": "Geometry/pascal-sierpinski-mask.svg",
+                      "codeSierpinskiIntersectionSvg": "Geometry/code-sierpinski-intersection.svg",
+                      "codeSierpinskiXorSvg": "Geometry/code-sierpinski-xor.svg",
+                      "bitPositionCounts": "Counts/_BIT_POSITION_COUNTS.csv",
+                      "bytePascalRow8Counts": "Counts/_BYTE_PASCAL_ROW8_COUNTS.csv",
+                      "fileCounts": "Counts/_FILE_COUNTS.csv",
+                  },
+                  "skippedNonUtf8": skipped_non_utf8,
+              }
+
+              (OUT_DIR / ".de" / "utf8-code-geometry-map.json").write_text(
+                  json.dumps(manifest, indent=2),
+                  encoding="utf-8",
+              )
+
+              readme = [
+                  "# DREAM UTF-8 Code Geometry",
+                  "",
+                  "This workflow turns product application code into a geometric structure.",
+                  "",
+                  "Pipeline:",
+                  "",
+                  "```text",
+                  "application code -> UTF-8 bytes -> bits -> triangle cells -> SVG geometry",
+                  "```",
+                  "",
+                  "It also keeps the previous count outputs:",
+                  "",
+                  "```text",
+                  "Counts/_BIT_POSITION_COUNTS.csv",
+                  "Counts/_BYTE_PASCAL_ROW8_COUNTS.csv",
+                  "Counts/_ROOT_BIT_POSITION_COUNTS.csv",
+                  "Counts/_ROOT_BYTE_PASCAL_ROW8_COUNTS.csv",
+                  "Counts/_FILE_COUNTS.csv",
+                  "```",
+                  "",
+                  "Main geometry outputs:",
+                  "",
+                  "```text",
+                  "Geometry/code-density-triangle.svg",
+                  "Geometry/pascal-sierpinski-mask.svg",
+                  "Geometry/code-sierpinski-intersection.svg",
+                  "Geometry/code-sierpinski-xor.svg",
+                  "Geometry/_CODE_GEOMETRY_TRIANGLE_CELLS.csv",
+                  "```",
+                  "",
+                  "Geometry meaning:",
+                  "",
+                  "```text",
+                  "code-density-triangle.svg",
+                  "  blacker cells = more 1-heavy code bits",
+                  "  whiter cells = more 0-heavy code bits",
+                  "",
+                  "pascal-sierpinski-mask.svg",
+                  "  Pascal triangle reduced to odd/even 1/0",
+                  "",
+                  "code-sierpinski-intersection.svg",
+                  "  where code density and Pascal/Sierpinski structure hit together",
+                  "",
+                  "code-sierpinski-xor.svg",
+                  "  where code density differs from Pascal/Sierpinski structure",
+                  "```",
+                  "",
+                  f"Files counted: {len(file_summary_rows)}",
+                  f"UTF-8 bytes counted: {total_bytes}",
+                  f"Total bits counted: {total_bits}",
+                  f"Triangle rows: {rows}",
+                  f"Triangle cells: {geometry_cells}",
+              ]
+
+              (OUT_DIR / "DREAM_UTF8_CODE_GEOMETRY.md").write_text(
+                  "\n".join(readme),
+                  encoding="utf-8",
+              )
+
+              zip_dir(OUT_DIR, ZIP_PATH)
+
+              print(f"Created {ZIP_PATH}")
+              print(f"Files counted: {len(file_summary_rows)}")
+              print(f"UTF-8 bytes counted: {total_bytes}")
+              print(f"Total bits counted: {total_bits}")
+              print(f"Triangle rows: {rows}")
+              print(f"Triangle cells: {geometry_cells}")
+              print("Main SVG: Geometry/code-density-triangle.svg")
+              print("Sierpinski overlay: Geometry/code-sierpinski-intersection.svg")
+
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python3 /tmp/dream_utf8_code_geometry.py
+
+      - name: Upload UTF-8 code geometry artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-utf8-code-geometry
+          path: dream-utf8-code-geometry.zip
+          if-no-files-found: error
