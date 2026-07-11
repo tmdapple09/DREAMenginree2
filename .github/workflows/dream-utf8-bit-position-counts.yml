@@ -1,0 +1,441 @@
+name: DREAM UTF-8 Bit Position Counts
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated product application code roots"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+
+permissions:
+  contents: read
+
+jobs:
+  utf8-bit-position-counts:
+    name: Count UTF-8 binary 1-bit positions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Convert application code to UTF-8 binary and count bit positions
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ inputs.code_roots || 'app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks' }}
+          CODE_EXTENSIONS: ${{ inputs.code_extensions || '.ts,.tsx,.js,.jsx,.mjs,.cjs' }}
+        run: |
+          cat > /tmp/dream_utf8_bit_position_counts.py <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import gzip
+          import hashlib
+          import json
+          import os
+          import shutil
+          import zipfile
+          from pathlib import Path
+          from typing import Iterable, List
+
+          OUT_DIR = Path(".dream-utf8-bit-position-counts")
+          ZIP_PATH = Path("dream-utf8-bit-position-counts.zip")
+
+          EXCLUDE_DIRS = {
+              ".git",
+              ".github",
+              ".ci",
+              "node_modules",
+              ".next",
+              "out",
+              "dist",
+              "build",
+              "coverage",
+              ".turbo",
+              ".vercel",
+              ".cache",
+              "__pycache__",
+              ".pytest_cache",
+              ".dream-utf8-bit-position-counts",
+          }
+
+          EXCLUDE_FILE_NAMES = {
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "bun.lockb",
+              "tsconfig.tsbuildinfo",
+              "dream-utf8-bit-position-counts.zip",
+          }
+
+          MAX_FILE_BYTES = 5_000_000
+
+
+          def code_roots() -> List[str]:
+              raw = os.environ.get("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              return [item.strip().strip("/") for item in raw.split(",") if item.strip()]
+
+
+          def code_extensions() -> set[str]:
+              raw = os.environ.get("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+              return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+
+          def should_include(path: Path, repo_root: Path) -> bool:
+              if not path.is_file():
+                  return False
+
+              rel = path.relative_to(repo_root)
+
+              if any(part in EXCLUDE_DIRS for part in rel.parts):
+                  return False
+
+              if path.name in EXCLUDE_FILE_NAMES:
+                  return False
+
+              top = rel.as_posix().split("/", 1)[0]
+              if top not in code_roots():
+                  return False
+
+              if path.suffix.lower() not in code_extensions():
+                  return False
+
+              if path.stat().st_size > MAX_FILE_BYTES:
+                  return False
+
+              return True
+
+
+          def iter_code_files(repo_root: Path) -> Iterable[Path]:
+              for path in sorted(repo_root.rglob("*")):
+                  if should_include(path, repo_root):
+                      yield path
+
+
+          def to_bits(data: bytes) -> str:
+              return "".join(f"{byte:08b}" for byte in data)
+
+
+          def safe_name(source_path: str) -> str:
+              return source_path.replace("/", "__").replace("\\", "__")
+
+
+          def write_csv(path: Path, fieldnames: List[str], rows: Iterable[dict]) -> int:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              count = 0
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  for row in rows:
+                      writer.writerow(row)
+                      count += 1
+              return count
+
+
+          def write_gzip_text(path: Path, value: str) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with gzip.open(path, "wt", encoding="utf-8") as handle:
+                  handle.write(value)
+
+
+          def zip_dir(source: Path, destination: Path) -> None:
+              if destination.exists():
+                  destination.unlink()
+
+              with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
+                  for path in sorted(source.rglob("*")):
+                      if path.is_file():
+                          archive.write(path, path.relative_to(source).as_posix())
+
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+
+              if OUT_DIR.exists():
+                  shutil.rmtree(OUT_DIR)
+
+              OUT_DIR.mkdir(parents=True)
+              (OUT_DIR / ".de").mkdir(parents=True)
+              (OUT_DIR / "Counts").mkdir(parents=True)
+              (OUT_DIR / "UTF8 Binary").mkdir(parents=True)
+              (OUT_DIR / "One Bit Positions").mkdir(parents=True)
+
+              global_position_ones = {position: 0 for position in range(1, 9)}
+              global_position_zeros = {position: 0 for position in range(1, 9)}
+              files_index = []
+              global_one_rows = []
+              skipped_non_utf8 = []
+
+              global_bit_cursor = 1
+
+              for file_path in iter_code_files(repo_root):
+                  source_path = file_path.relative_to(repo_root).as_posix()
+
+                  try:
+                      text = file_path.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      skipped_non_utf8.append(source_path)
+                      continue
+
+                  data = text.encode("utf-8")
+                  bits = to_bits(data)
+                  safe = safe_name(source_path)
+
+                  binary_rel = f"UTF8 Binary/{safe}.bits.gz"
+                  write_gzip_text(OUT_DIR / binary_rel, bits)
+
+                  file_position_ones = {position: 0 for position in range(1, 9)}
+                  file_position_zeros = {position: 0 for position in range(1, 9)}
+                  file_one_rows = []
+
+                  for byte_index, byte in enumerate(data):
+                      byte_bits = f"{byte:08b}"
+
+                      for zero_based_position, bit in enumerate(byte_bits):
+                          byte_bit_position = zero_based_position + 1
+                          file_bit_position = (byte_index * 8) + byte_bit_position
+                          global_bit_position = global_bit_cursor + file_bit_position - 1
+
+                          if bit == "1":
+                              file_position_ones[byte_bit_position] += 1
+                              global_position_ones[byte_bit_position] += 1
+
+                              row = {
+                                  "sourcePath": source_path,
+                                  "byteIndex": byte_index,
+                                  "byteValue": byte,
+                                  "byteBits": byte_bits,
+                                  "byteBitPosition": byte_bit_position,
+                                  "fileBitPosition": file_bit_position,
+                                  "globalBitPosition": global_bit_position,
+                              }
+                              file_one_rows.append(row)
+                              global_one_rows.append(row)
+                          else:
+                              file_position_zeros[byte_bit_position] += 1
+                              global_position_zeros[byte_bit_position] += 1
+
+                  ones_rel = f"One Bit Positions/{safe}.ones.csv"
+                  write_csv(
+                      OUT_DIR / ones_rel,
+                      [
+                          "sourcePath",
+                          "byteIndex",
+                          "byteValue",
+                          "byteBits",
+                          "byteBitPosition",
+                          "fileBitPosition",
+                          "globalBitPosition",
+                      ],
+                      file_one_rows,
+                  )
+
+                  per_file_counts_rel = f"Counts/Per File Bit Position Counts/{safe}.counts.csv"
+                  write_csv(
+                      OUT_DIR / per_file_counts_rel,
+                      ["sourcePath", "byteBitPosition", "onesCount", "zerosCount", "totalCount", "oneRatio"],
+                      [
+                          {
+                              "sourcePath": source_path,
+                              "byteBitPosition": position,
+                              "onesCount": file_position_ones[position],
+                              "zerosCount": file_position_zeros[position],
+                              "totalCount": file_position_ones[position] + file_position_zeros[position],
+                              "oneRatio": (
+                                  file_position_ones[position]
+                                  / (file_position_ones[position] + file_position_zeros[position])
+                                  if (file_position_ones[position] + file_position_zeros[position])
+                                  else 0
+                              ),
+                          }
+                          for position in range(1, 9)
+                      ],
+                  )
+
+                  file_ones = sum(file_position_ones.values())
+                  file_zeros = sum(file_position_zeros.values())
+                  file_bits = file_ones + file_zeros
+
+                  files_index.append(
+                      {
+                          "sourcePath": source_path,
+                          "root": source_path.split("/", 1)[0],
+                          "utf8Bytes": len(data),
+                          "bits": file_bits,
+                          "onesCount": file_ones,
+                          "zerosCount": file_zeros,
+                          "oneRatio": file_ones / file_bits if file_bits else 0,
+                          "sha256OfUtf8Bytes": hashlib.sha256(data).hexdigest(),
+                          "utf8Binary": binary_rel,
+                          "oneBitPositions": ones_rel,
+                          "bitPositionCounts": per_file_counts_rel,
+                      }
+                  )
+
+                  global_bit_cursor += len(data) * 8
+
+              global_counts_rows = []
+              for position in range(1, 9):
+                  ones = global_position_ones[position]
+                  zeros = global_position_zeros[position]
+                  total = ones + zeros
+                  global_counts_rows.append(
+                      {
+                          "byteBitPosition": position,
+                          "onesCount": ones,
+                          "zerosCount": zeros,
+                          "totalCount": total,
+                          "oneRatio": ones / total if total else 0,
+                      }
+                  )
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_BIT_POSITION_COUNTS.csv",
+                  ["byteBitPosition", "onesCount", "zerosCount", "totalCount", "oneRatio"],
+                  global_counts_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Counts" / "_FILE_COUNTS.csv",
+                  ["sourcePath", "root", "utf8Bytes", "bits", "onesCount", "zerosCount", "oneRatio"],
+                  [
+                      {
+                          "sourcePath": item["sourcePath"],
+                          "root": item["root"],
+                          "utf8Bytes": item["utf8Bytes"],
+                          "bits": item["bits"],
+                          "onesCount": item["onesCount"],
+                          "zerosCount": item["zerosCount"],
+                          "oneRatio": item["oneRatio"],
+                      }
+                      for item in files_index
+                  ],
+              )
+
+              write_csv(
+                  OUT_DIR / "One Bit Positions" / "_GLOBAL_ONES.csv",
+                  [
+                      "sourcePath",
+                      "byteIndex",
+                      "byteValue",
+                      "byteBits",
+                      "byteBitPosition",
+                      "fileBitPosition",
+                      "globalBitPosition",
+                  ],
+                  global_one_rows,
+              )
+
+              total_ones = sum(global_position_ones.values())
+              total_zeros = sum(global_position_zeros.values())
+              total_bits = total_ones + total_zeros
+
+              manifest = {
+                  "format": "dreamengin.utf8-bit-position-counts.v1",
+                  "scope": "product application source code only",
+                  "operation": "source text -> UTF-8 bytes -> 8-bit binary -> count positions where bit is 1",
+                  "includedRoots": code_roots(),
+                  "includedExtensions": sorted(code_extensions()),
+                  "bitPositionModel": {
+                      "positions": "12345678",
+                      "exampleBits": "00010011",
+                      "exampleOnes": ["4=1", "7=1", "8=1"],
+                      "meaning": "byteBitPosition is 1 through 8 within every UTF-8 byte",
+                  },
+                  "totals": {
+                      "files": len(files_index),
+                      "bits": total_bits,
+                      "onesCount": total_ones,
+                      "zerosCount": total_zeros,
+                      "oneRatio": total_ones / total_bits if total_bits else 0,
+                  },
+                  "globalBitPositionCounts": global_counts_rows,
+                  "outputs": {
+                      "graphCsv": "Counts/_BIT_POSITION_COUNTS.csv",
+                      "fileCountsCsv": "Counts/_FILE_COUNTS.csv",
+                      "globalOnesCsv": "One Bit Positions/_GLOBAL_ONES.csv",
+                  },
+                  "skippedNonUtf8": skipped_non_utf8,
+                  "files": files_index,
+              }
+
+              (OUT_DIR / ".de" / "utf8-bit-position-counts-map.json").write_text(
+                  json.dumps(manifest, indent=2),
+                  encoding="utf-8",
+              )
+
+              report = [
+                  "# DREAM UTF-8 Bit Position Counts",
+                  "",
+                  "This artifact converts product application source code into UTF-8 binary and counts which bit positions are `1`.",
+                  "",
+                  "Example:",
+                  "",
+                  "```text",
+                  "positions: 12345678",
+                  "bits:      00010011",
+                  "output:    4=1, 7=1, 8=1",
+                  "```",
+                  "",
+                  "## Main graph file",
+                  "",
+                  "```text",
+                  "Counts/_BIT_POSITION_COUNTS.csv",
+                  "```",
+                  "",
+                  "Graph:",
+                  "",
+                  "```text",
+                  "x-axis = byteBitPosition",
+                  "y-axis = onesCount",
+                  "```",
+                  "",
+                  "## Outputs",
+                  "",
+                  "```text",
+                  "UTF8 Binary/",
+                  "One Bit Positions/",
+                  "Counts/_BIT_POSITION_COUNTS.csv",
+                  "Counts/_FILE_COUNTS.csv",
+                  "One Bit Positions/_GLOBAL_ONES.csv",
+                  ".de/utf8-bit-position-counts-map.json",
+                  "```",
+                  "",
+                  f"- Files transformed: `{len(files_index)}`",
+                  f"- Total bits: `{total_bits}`",
+                  f"- Total one-bits: `{total_ones}`",
+              ]
+
+              (OUT_DIR / "DREAM_UTF8_BIT_POSITION_COUNTS.md").write_text(
+                  "\n".join(report),
+                  encoding="utf-8",
+              )
+
+              zip_dir(OUT_DIR, ZIP_PATH)
+
+              print(f"Created {ZIP_PATH}")
+              print(f"Files transformed: {len(files_index)}")
+              print(f"Total bits: {total_bits}")
+              print(f"Total one-bits: {total_ones}")
+              print("Graph CSV: Counts/_BIT_POSITION_COUNTS.csv")
+
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python3 /tmp/dream_utf8_bit_position_counts.py
+
+      - name: Upload UTF-8 bit position counts artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-utf8-bit-position-counts
+          path: dream-utf8-bit-position-counts.zip
+          if-no-files-found: error
