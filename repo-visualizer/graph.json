@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T06:12:26.910Z",
+  "generatedAt": "2026-07-11T06:48:59.360Z",
   "root": ".",
   "nodes": [
     {
@@ -2932,16 +2932,6 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream-binary-evidence-export.yml",
-      "label": "dream-binary-evidence-export.yml",
-      "type": "config",
-      "path": ".github/workflows/dream-binary-evidence-export.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:.github/workflows/dream-utf8-binary-ones-counts-export.yml",
       "label": "dream-utf8-binary-ones-counts-export.yml",
       "type": "config",
@@ -2952,20 +2942,20 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream-utf8-bit-position-counts-lean.yml",
-      "label": "dream-utf8-bit-position-counts-lean.yml",
+      "id": "file:.github/workflows/dream-utf8-code-geometry.yml",
+      "label": "dream-utf8-code-geometry.yml",
       "type": "config",
-      "path": ".github/workflows/dream-utf8-bit-position-counts-lean.yml",
+      "path": ".github/workflows/dream-utf8-code-geometry.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream-utf8-code-geometry.yml",
-      "label": "dream-utf8-code-geometry.yml",
+      "id": "file:.github/workflows/dream-utf8-code-structure-map.yml",
+      "label": "dream-utf8-code-structure-map.yml",
       "type": "config",
-      "path": ".github/workflows/dream-utf8-code-geometry.yml",
+      "path": ".github/workflows/dream-utf8-code-structure-map.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -3436,6 +3426,16 @@
       "label": "screencode-recursive-website-feature-tree-v21-clean-internal-11-signal.yml",
       "type": "config",
       "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-clean-internal-11-signal.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
+      "label": "screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
+      "type": "config",
+      "path": ".github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
