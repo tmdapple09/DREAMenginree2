@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T19:52:12.733Z",
+  "generatedAt": "2026-07-12T02:16:43.396Z",
   "root": ".",
   "nodes": [
     {
@@ -2972,10 +2972,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream-utf8-pascal-code-paths.yml",
-      "label": "dream-utf8-pascal-code-paths.yml",
+      "id": "file:.github/workflows/dream-utf8-pascal-code-paths-color.yml",
+      "label": "dream-utf8-pascal-code-paths-color.yml",
       "type": "config",
-      "path": ".github/workflows/dream-utf8-pascal-code-paths.yml",
+      "path": ".github/workflows/dream-utf8-pascal-code-paths-color.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
