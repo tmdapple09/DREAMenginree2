@@ -13,7 +13,7 @@ jobs:
     env:
       CODE_ROOTS: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
       CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
-      IMAGE_WIDTH: "2048"
+      IMAGE_WIDTH: "4715"
       Z_RIGHT: "9"
       Z_UP: "7"
       OUT_DIR: "dream-application-code-3bit-zrgb-image"
