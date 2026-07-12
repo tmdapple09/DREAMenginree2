@@ -1,0 +1,563 @@
+name: DREAM Application Code Binary 3-Bit RGB Z-Line Image
+run-name: DREAM Application Code Binary 3-Bit RGB Z-Line Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated application code roots"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      chunk_steps:
+        description: "Bits per local x/y/z path frame"
+        required: false
+        default: "16"
+      target_right_moves:
+        description: "z-line endpoint x / right moves"
+        required: false
+        default: "9"
+      target_up_moves:
+        description: "z-line endpoint y / up moves"
+        required: false
+        default: "7"
+      image_width:
+        description: "Output image width in pixels"
+        required: false
+        default: "2048"
+      image_height:
+        description: "Output image height in pixels"
+        required: false
+        default: "2048"
+      max_trace_examples:
+        description: "How many example triplets to export"
+        required: false
+        default: "96"
+
+permissions:
+  contents: read
+
+jobs:
+  dream-application-code-binary-3bit-rgb-zline-image:
+    name: Build application-code 3-bit RGB z-line image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PNG renderer
+        run: python3 -m pip install --user pillow
+
+      - name: Build 3-bit RGB z-line image
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ github.event.inputs.code_roots }}
+          CODE_EXTENSIONS: ${{ github.event.inputs.code_extensions }}
+          CHUNK_STEPS: ${{ github.event.inputs.chunk_steps }}
+          TARGET_RIGHT_MOVES: ${{ github.event.inputs.target_right_moves }}
+          TARGET_UP_MOVES: ${{ github.event.inputs.target_up_moves }}
+          IMAGE_WIDTH: ${{ github.event.inputs.image_width }}
+          IMAGE_HEIGHT: ${{ github.event.inputs.image_height }}
+          MAX_TRACE_EXAMPLES: ${{ github.event.inputs.max_trace_examples }}
+        run: |
+          python3 - <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import math
+          import os
+          import shutil
+          from pathlib import Path
+
+          from PIL import Image
+
+
+          OUT_DIR = Path("dream-application-code-binary-3bit-rgb-zline-image")
+
+          EXCLUDE_DIRS = {
+              ".git",
+              ".github",
+              ".ci",
+              "node_modules",
+              ".next",
+              "dist",
+              "build",
+              "coverage",
+              ".turbo",
+              ".vercel",
+              ".cache",
+              "__pycache__",
+              ".pytest_cache",
+              "dream-application-code-binary-3bit-rgb-zline-image",
+          }
+
+          EXCLUDE_FILE_NAMES = {
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "bun.lockb",
+              "tsconfig.tsbuildinfo",
+          }
+
+          BG = (0, 0, 0)
+
+
+          def read_int(name: str, default: int, low: int, high: int) -> int:
+              raw = os.environ.get(name, str(default)).strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = default
+              return max(low, min(value, high))
+
+
+          def code_roots() -> list[str]:
+              raw = os.environ.get("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              return [item.strip().strip("/") for item in raw.split(",") if item.strip()]
+
+
+          def code_extensions() -> set[str]:
+              raw = os.environ.get("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+              return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+
+          def chunk_steps() -> int:
+              return read_int("CHUNK_STEPS", 16, 1, 4096)
+
+
+          def target_right_moves() -> int:
+              return read_int("TARGET_RIGHT_MOVES", 9, 1, 4096)
+
+
+          def target_up_moves() -> int:
+              return read_int("TARGET_UP_MOVES", 7, 1, 4096)
+
+
+          def image_width() -> int:
+              return read_int("IMAGE_WIDTH", 2048, 1, 8192)
+
+
+          def image_height() -> int:
+              return read_int("IMAGE_HEIGHT", 2048, 1, 8192)
+
+
+          def max_trace_examples() -> int:
+              return read_int("MAX_TRACE_EXAMPLES", 96, 1, 1024)
+
+
+          def should_include(path: Path, repo_root: Path, roots_set: set[str], extensions: set[str]) -> bool:
+              if not path.is_file():
+                  return False
+
+              rel = path.relative_to(repo_root)
+
+              if any(part in EXCLUDE_DIRS for part in rel.parts):
+                  return False
+
+              if path.name in EXCLUDE_FILE_NAMES:
+                  return False
+
+              top = rel.as_posix().split("/", 1)[0]
+              if top not in roots_set:
+                  return False
+
+              if path.suffix.lower() not in extensions:
+                  return False
+
+              return True
+
+
+          def iter_code_files(repo_root: Path):
+              ordered_roots = code_roots()
+              roots_set = set(ordered_roots)
+              extensions = code_extensions()
+
+              for root_name in ordered_roots:
+                  root_path = repo_root / root_name
+                  if not root_path.exists():
+                      continue
+
+                  for path in sorted(root_path.rglob("*")):
+                      if should_include(path, repo_root, roots_set, extensions):
+                          yield path
+
+
+          def iter_utf8_bits(data: bytes):
+              for byte in data:
+                  for shift in range(7, -1, -1):
+                      yield (byte >> shift) & 1
+
+
+          def write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def line_delta(x: int, y: int, rx: int, uy: int) -> int:
+              # z-line from (0,0) to (rx,uy): z = rx*y - uy*x. The line itself is z=0.
+              return rx * y - uy * x
+
+
+          def step_state(x: int, y: int, bit: int, step_index: int, rx: int, uy: int):
+              if bit == 0:
+                  nx, ny = x + 1, y
+                  move = "R"
+                  x_bit = 1
+                  y_bit = 0
+              else:
+                  nx, ny = x, y + 1
+                  move = "U"
+                  x_bit = 0
+                  y_bit = 1
+
+              before_z = line_delta(x, y, rx, uy)
+              after_z = line_delta(nx, ny, rx, uy)
+
+              touches_z_again = step_index > 0 and before_z != 0 and after_z == 0
+              crosses_z = before_z * after_z < 0
+              z_bit = 1 if touches_z_again or crosses_z else 0
+
+              return nx, ny, move, x_bit, y_bit, z_bit, before_z, after_z
+
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+              roots = code_roots()
+              extensions = sorted(code_extensions())
+              n = chunk_steps()
+              rx = target_right_moves()
+              uy = target_up_moves()
+              width = image_width()
+              height = image_height()
+              max_examples = max_trace_examples()
+
+              if OUT_DIR.exists():
+                  shutil.rmtree(OUT_DIR)
+              (OUT_DIR / "Data").mkdir(parents=True)
+              (OUT_DIR / "Metadata").mkdir(parents=True)
+
+              files = list(iter_code_files(repo_root))
+
+              image = Image.new("RGB", (width, height), BG)
+              capacity_pixels = width * height
+
+              total_files = 0
+              total_bytes = 0
+              total_bits = 0
+              total_pixels = 0
+              total_x = 0
+              total_y = 0
+              total_z = 0
+
+              file_rows: list[dict] = []
+              file_ranges: list[dict] = []
+              root_rollup: dict[str, dict] = {}
+              triplet_trace: list[dict] = []
+
+              triplet_bits: list[int] = []
+              triplet_moves: list[str] = []
+              triplet_x = 0
+              triplet_y = 0
+              triplet_z = 0
+              triplet_sources: list[str] = []
+              first_bit_index_for_triplet = 0
+
+              x = 0
+              y = 0
+              step_index = 0
+
+              def ensure_root_row(root: str):
+                  if root not in root_rollup:
+                      root_rollup[root] = {
+                          "root": root,
+                          "files": 0,
+                          "utf8Bytes": 0,
+                          "bits": 0,
+                          "pixelsTouched": 0,
+                          "xRedChannelSum": 0,
+                          "zGreenChannelSum": 0,
+                          "yBlueChannelSum": 0,
+                      }
+                  return root_rollup[root]
+
+              def emit_triplet_pixel(final: bool = False) -> None:
+                  nonlocal triplet_bits, triplet_moves, triplet_x, triplet_y, triplet_z, triplet_sources
+                  nonlocal total_pixels, total_x, total_y, total_z, first_bit_index_for_triplet
+
+                  if not triplet_bits:
+                      return
+
+                  pixel_index = total_pixels
+                  if pixel_index >= capacity_pixels:
+                      raise RuntimeError(
+                          f"Image is full at {width}x{height}; processed {total_bits:,} bits and {total_pixels:,} pixels before overflow."
+                      )
+
+                  row = pixel_index // width
+                  col = pixel_index % width
+
+                  # Every three source bits becomes one pixel.
+                  # R channel = x/right/0 count in this triplet.
+                  # G channel = z-line contact/cross count in this triplet.
+                  # B channel = y/up/1 count in this triplet.
+                  r = triplet_x * 85
+                  g = triplet_z * 85
+                  b = triplet_y * 85
+                  image.putpixel((col, row), (r, g, b))
+
+                  total_pixels += 1
+                  total_x += triplet_x
+                  total_y += triplet_y
+                  total_z += triplet_z
+
+                  if len(triplet_trace) < max_examples:
+                      triplet_trace.append({
+                          "pixelIndex": pixel_index,
+                          "row": row,
+                          "column": col,
+                          "sourcePaths": ";".join(dict.fromkeys(triplet_sources)),
+                          "firstBitIndex": first_bit_index_for_triplet,
+                          "bits": "".join(str(bit) for bit in triplet_bits),
+                          "moves": "".join(triplet_moves),
+                          "xRedCount": triplet_x,
+                          "zGreenCount": triplet_z,
+                          "yBlueCount": triplet_y,
+                          "rgb": f"({r},{g},{b})",
+                          "partialFinalPixel": "yes" if final and len(triplet_bits) < 3 else "no",
+                      })
+
+                  triplet_bits = []
+                  triplet_moves = []
+                  triplet_x = 0
+                  triplet_y = 0
+                  triplet_z = 0
+                  triplet_sources = []
+
+              for file_path in files:
+                  source_path = file_path.relative_to(repo_root).as_posix()
+                  root = source_path.split("/", 1)[0]
+                  root_row = ensure_root_row(root)
+
+                  try:
+                      source_text = file_path.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      continue
+
+                  data = source_text.encode("utf-8")
+                  file_start_bit = total_bits
+                  file_start_pixel = total_pixels
+                  file_bits = 0
+                  file_x = 0
+                  file_y = 0
+                  file_z = 0
+
+                  total_files += 1
+                  total_bytes += len(data)
+
+                  for bit in iter_utf8_bits(data):
+                      if step_index == 0:
+                          x = 0
+                          y = 0
+
+                      nx, ny, move, x_bit, y_bit, z_bit, _before_z, _after_z = step_state(x, y, bit, step_index, rx, uy)
+
+                      if not triplet_bits:
+                          first_bit_index_for_triplet = total_bits
+
+                      triplet_bits.append(bit)
+                      triplet_moves.append(move)
+                      triplet_x += x_bit
+                      triplet_y += y_bit
+                      triplet_z += z_bit
+                      triplet_sources.append(source_path)
+
+                      file_bits += 1
+                      file_x += x_bit
+                      file_y += y_bit
+                      file_z += z_bit
+                      total_bits += 1
+
+                      if len(triplet_bits) == 3:
+                          emit_triplet_pixel()
+
+                      x, y = nx, ny
+                      step_index += 1
+                      if step_index >= n:
+                          step_index = 0
+
+                  file_end_bit = total_bits - 1 if file_bits else file_start_bit
+                  file_end_pixel = max(file_start_pixel, math.ceil(total_bits / 3) - 1) if file_bits else file_start_pixel
+                  file_pixels_touched = max(0, file_end_pixel - file_start_pixel + 1) if file_bits else 0
+
+                  file_rows.append({
+                      "sourcePath": source_path,
+                      "root": root,
+                      "utf8Bytes": len(data),
+                      "bits": file_bits,
+                      "pixelsTouched": file_pixels_touched,
+                      "xRedChannelSum": file_x,
+                      "zGreenChannelSum": file_z,
+                      "yBlueChannelSum": file_y,
+                  })
+
+                  file_ranges.append({
+                      "sourcePath": source_path,
+                      "root": root,
+                      "startBitIndex": file_start_bit,
+                      "endBitIndex": file_end_bit,
+                      "startPixelIndex": file_start_pixel,
+                      "endPixelIndex": file_end_pixel,
+                      "startRow": file_start_pixel // width,
+                      "startColumn": file_start_pixel % width,
+                      "endRow": file_end_pixel // width,
+                      "endColumn": file_end_pixel % width,
+                  })
+
+                  root_row["files"] += 1
+                  root_row["utf8Bytes"] += len(data)
+                  root_row["bits"] += file_bits
+                  root_row["pixelsTouched"] += file_pixels_touched
+                  root_row["xRedChannelSum"] += file_x
+                  root_row["zGreenChannelSum"] += file_z
+                  root_row["yBlueChannelSum"] += file_y
+
+              emit_triplet_pixel(final=True)
+
+              used_rows = math.ceil(total_pixels / width) if total_pixels else 0
+              image.save(OUT_DIR / "APP_CODE_3BIT_RGB_ZLINE_IMAGE.png")
+
+              root_rows = [root_rollup[root] for root in roots if root in root_rollup]
+
+              write_csv(
+                  OUT_DIR / "Data" / "FILE_SUMMARY.csv",
+                  ["sourcePath", "root", "utf8Bytes", "bits", "pixelsTouched", "xRedChannelSum", "zGreenChannelSum", "yBlueChannelSum"],
+                  file_rows,
+              )
+              write_csv(
+                  OUT_DIR / "Data" / "FILE_RASTER_RANGES.csv",
+                  ["sourcePath", "root", "startBitIndex", "endBitIndex", "startPixelIndex", "endPixelIndex", "startRow", "startColumn", "endRow", "endColumn"],
+                  file_ranges,
+              )
+              write_csv(
+                  OUT_DIR / "Data" / "ROOT_SUMMARY.csv",
+                  ["root", "files", "utf8Bytes", "bits", "pixelsTouched", "xRedChannelSum", "zGreenChannelSum", "yBlueChannelSum"],
+                  root_rows,
+              )
+              write_csv(
+                  OUT_DIR / "Data" / "TRIPLET_TRACE_EXAMPLES.csv",
+                  ["pixelIndex", "row", "column", "sourcePaths", "firstBitIndex", "bits", "moves", "xRedCount", "zGreenCount", "yBlueCount", "rgb", "partialFinalPixel"],
+                  triplet_trace,
+              )
+
+              manifest = {
+                  "format": "dreamengin.application-code-binary-3bit-rgb-zline-image.v1",
+                  "mainImage": "APP_CODE_3BIT_RGB_ZLINE_IMAGE.png",
+                  "rule": "Every three UTF-8 source bits produce one RGB pixel. R=x/right/0 count, G=z-line contact/cross count, B=y/up/1 count.",
+                  "roots": roots,
+                  "extensions": extensions,
+                  "image": {
+                      "width": width,
+                      "height": height,
+                      "usedPixels": total_pixels,
+                      "usedRows": used_rows,
+                  },
+                  "pathFrame": {
+                      "chunkSteps": n,
+                      "resetRule": "x,y reset every chunk_steps while the source bitstream is read continuously",
+                  },
+                  "zLine": {
+                      "from": [0, 0],
+                      "to": [rx, uy],
+                      "formula": f"z = {rx}y - {uy}x",
+                      "lineCondition": "z = 0",
+                      "greenCondition": "before_z * after_z < 0 or after_z == 0 after origin",
+                  },
+                  "totals": {
+                      "files": total_files,
+                      "utf8Bytes": total_bytes,
+                      "bits": total_bits,
+                      "pixels": total_pixels,
+                      "xRedChannelSum": total_x,
+                      "zGreenChannelSum": total_z,
+                      "yBlueChannelSum": total_y,
+                  },
+                  "outputs": {
+                      "mainImage": "APP_CODE_3BIT_RGB_ZLINE_IMAGE.png",
+                      "fileSummary": "Data/FILE_SUMMARY.csv",
+                      "fileRasterRanges": "Data/FILE_RASTER_RANGES.csv",
+                      "rootSummary": "Data/ROOT_SUMMARY.csv",
+                      "tripletTraceExamples": "Data/TRIPLET_TRACE_EXAMPLES.csv",
+                  },
+              }
+
+              (OUT_DIR / "Metadata" / "application-code-binary-3bit-rgb-zline-image-map.json").write_text(
+                  json.dumps(manifest, indent=2),
+                  encoding="utf-8",
+              )
+
+              readme = [
+                  "# DREAM Application Code Binary 3-Bit RGB Z-Line Image",
+                  "",
+                  "Open first:",
+                  "",
+                  "```text",
+                  "APP_CODE_3BIT_RGB_ZLINE_IMAGE.png",
+                  "```",
+                  "",
+                  "Pipeline:",
+                  "",
+                  "```text",
+                  "application code only",
+                  "-> UTF-8 bits",
+                  "-> every 3 source bits = 1 RGB pixel",
+                  "-> R channel = x/right/0 count in the triplet",
+                  "-> G channel = z-line contact/cross count in the triplet",
+                  "-> B channel = y/up/1 count in the triplet",
+                  f"-> z = {rx}y - {uy}x for line (0,0)->({rx},{uy})",
+                  "```",
+                  "",
+                  "Data files:",
+                  "",
+                  "```text",
+                  "Data/FILE_SUMMARY.csv",
+                  "Data/FILE_RASTER_RANGES.csv",
+                  "Data/ROOT_SUMMARY.csv",
+                  "Data/TRIPLET_TRACE_EXAMPLES.csv",
+                  "Metadata/application-code-binary-3bit-rgb-zline-image-map.json",
+                  "```",
+              ]
+              (OUT_DIR / "README.md").write_text("\n".join(readme), encoding="utf-8")
+
+              print(f"Created {OUT_DIR / 'APP_CODE_3BIT_RGB_ZLINE_IMAGE.png'}")
+              print(f"files={total_files} bytes={total_bytes} bits={total_bits} pixels={total_pixels}")
+              print(f"x/red={total_x} z/green={total_z} y/blue={total_y}")
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+      - name: Verify generated files
+        shell: bash
+        run: |
+          find dream-application-code-binary-3bit-rgb-zline-image -maxdepth 3 -type f -print
+          test -f dream-application-code-binary-3bit-rgb-zline-image/APP_CODE_3BIT_RGB_ZLINE_IMAGE.png
+          test -f dream-application-code-binary-3bit-rgb-zline-image/Data/FILE_SUMMARY.csv
+          test -f dream-application-code-binary-3bit-rgb-zline-image/Data/TRIPLET_TRACE_EXAMPLES.csv
+          test -f dream-application-code-binary-3bit-rgb-zline-image/Metadata/application-code-binary-3bit-rgb-zline-image-map.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-application-code-binary-3bit-rgb-zline-image
+          path: dream-application-code-binary-3bit-rgb-zline-image/
+          if-no-files-found: error
