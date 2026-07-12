@@ -1,5 +1,5 @@
-name: DREAM Application Code Center RGB Subpixel Bits
-run-name: DREAM Application Code Center RGB Subpixel Bits
+name: DREAM Application Code Center RGB Subpixel Bits WebP
+run-name: DREAM Application Code Center RGB Subpixel Bits WebP
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  dream-application-code-center-rgb-subpixel-bits:
+  dream-application-code-center-rgb-subpixel-bits-webp:
     runs-on: ubuntu-latest
     env:
       CODE_ROOTS: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
@@ -16,7 +16,7 @@ jobs:
       Z_RIGHT: "9"
       Z_UP: "7"
       CELL_SIZE: "1"
-      OUT_DIR: "dream-application-code-center-rgb-subpixel-bits"
+      OUT_DIR: "dream-application-code-center-rgb-subpixel-bits-webp"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -232,8 +232,8 @@ jobs:
                           for xx in range(cell_size):
                               image.putpixel((px0 + xx, py0 + yy), rgb[color])
 
-              image_path = OUT_DIR / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.png"
-              image.save(image_path)
+              image_path = OUT_DIR / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.webp"
+              image.save(image_path, "WEBP", lossless=True, quality=100, method=6)
 
               with (OUT_DIR / "Data" / "FILE_SUMMARY.csv").open("w", newline="", encoding="utf-8") as f:
                   fieldnames = ["sourcePath", "bytes", "bits", "red0RightBits", "blue1UpBits", "greenZBits"]
@@ -242,7 +242,7 @@ jobs:
                   writer.writerows(file_rows)
 
               summary = {
-                  "format": "dreamengin.application-code-center-rgb-subpixel-bits.v1",
+                  "format": "dreamengin.application-code-center-rgb-subpixel-bits-webp.v1",
                   "rule": [
                       "Read application code only.",
                       "Convert UTF-8 bytes to bits.",
@@ -279,7 +279,7 @@ jobs:
                   json.dump(summary, f, indent=2)
 
               readme = [
-                  "# DREAM Application Code Center RGB Subpixel Bits",
+                  "# DREAM Application Code Center RGB Subpixel Bits WebP",
                   "",
                   "This reads the codebase only. It does not modify source files.",
                   "",
@@ -300,8 +300,9 @@ jobs:
                   f"source bits: `{total_bits}`",
                   f"logical pixels: `{logical_pixels}`",
                   f"logical side: `{logical_side}`",
-                  f"output PNG size: `{output_width} x {output_height}`",
+                  f"output WebP size: `{output_width} x {output_height}`",
                   f"image: `{image_path.name}`",
+                  "format: `lossless WebP`",
               ]
               (OUT_DIR / "README.md").write_text("\n".join(readme) + "\n", encoding="utf-8")
 
@@ -318,6 +319,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dream-application-code-center-rgb-subpixel-bits
-          path: dream-application-code-center-rgb-subpixel-bits
+          name: dream-application-code-center-rgb-subpixel-bits-webp
+          path: dream-application-code-center-rgb-subpixel-bits-webp
           if-no-files-found: error
