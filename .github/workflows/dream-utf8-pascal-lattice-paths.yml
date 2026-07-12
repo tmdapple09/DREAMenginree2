@@ -1,4 +1,4 @@
-name: DREAM UTF-8 Pascal Lattice Paths
+name: DREAM UTF-8 Pascal Lattice Paths Fixed
 
 on:
   workflow_dispatch:
@@ -62,13 +62,13 @@ jobs:
 
           from PIL import Image, ImageDraw, ImageFont
 
-          OUT_DIR = Path(".dream-utf8-pascal-lattice-paths")
+          OUT_DIR = Path("dream-utf8-pascal-lattice-paths")
 
           EXCLUDE_DIRS = {
               ".git", ".github", ".ci",
               "node_modules", ".next", "out", "dist", "build", "coverage",
               ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
-              ".dream-utf8-pascal-lattice-paths",
+              "dream-utf8-pascal-lattice-paths",
           }
 
           EXCLUDE_FILE_NAMES = {
@@ -510,7 +510,7 @@ jobs:
               for ex in examples[:8]:
                   moves = ex["moves"]
                   if len(moves) > 24:
-                      moves = moves[:24] + "…"
+                      moves = moves[:24] + "â¦"
                   coeff = ex["pascalCoefficient"]
                   label = f"{ex['root']}: {moves}  C={coeff:,}"
                   draw.text((panel_x + 20, ex_y), label, fill=ROOT_COLORS.get(ex["root"], white), font=mono_font)
@@ -528,7 +528,7 @@ jobs:
                   shutil.rmtree(OUT_DIR)
 
               (OUT_DIR / "Data").mkdir(parents=True)
-              (OUT_DIR / ".de").mkdir(parents=True)
+              (OUT_DIR / "Metadata").mkdir(parents=True)
 
               edge_counts: dict[tuple[int, int, int, int], int] = defaultdict(int)
               point_counts: dict[tuple[int, int], int] = defaultdict(int)
@@ -779,7 +779,7 @@ jobs:
                   },
               }
 
-              (OUT_DIR / ".de" / "pascal-lattice-paths-map.json").write_text(
+              (OUT_DIR / "Metadata" / "pascal-lattice-paths-map.json").write_text(
                   json.dumps(manifest, indent=2),
                   encoding="utf-8",
               )
@@ -832,9 +832,13 @@ jobs:
 
           python3 /tmp/dream_utf8_pascal_lattice_paths.py
 
+          echo "Generated files:"
+          find dream-utf8-pascal-lattice-paths -maxdepth 3 -type f -print
+          test -f dream-utf8-pascal-lattice-paths/CODE_PASCAL_LATTICE_PATHS.png
+
       - name: Upload Pascal lattice paths artifact
         uses: actions/upload-artifact@v4
         with:
           name: dream-pascal-lattice-paths
-          path: .dream-utf8-pascal-lattice-paths/
+          path: dream-utf8-pascal-lattice-paths/
           if-no-files-found: error
