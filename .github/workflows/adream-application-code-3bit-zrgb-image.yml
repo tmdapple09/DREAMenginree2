@@ -15,7 +15,7 @@ jobs:
       CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
       Z_RIGHT: "9"
       Z_UP: "7"
-      CELL_SIZE: "3"
+      CELL_SIZE: "32" # Set to 32 for HD AI visibility
       OUT_DIR: "dream-application-code-center-rgb-subpixel-bits-webp"
     steps:
       - name: Checkout repository
@@ -131,6 +131,10 @@ jobs:
               total_red = 0
               total_blue = 0
               total_green = 0
+              total_black = 0
+
+              # Track the last assigned sequence color to determine when to trigger green
+              last_color = None
 
               for path in files:
                   rel = path.relative_to(repo_root).as_posix()
@@ -142,6 +146,7 @@ jobs:
                   file_red = 0
                   file_blue = 0
                   file_green = 0
+                  file_black = 0
 
                   for bit in bits_from_bytes(data):
                       if step_in_frame >= frame_steps:
@@ -151,31 +156,48 @@ jobs:
 
                       before_z = z_value(x, y, rx, uy)
 
+                      # 1. Determine base mapping and movement
                       if bit == 0:
                           nx, ny = x + 1, y
-                          color = "R"
+                          base_color = "R"
                       else:
                           nx, ny = x, y + 1
-                          color = "B"
+                          base_color = "B"
+
+                      # 2. Check consecutive repetition logic
+                      if base_color == last_color:
+                          pattern_color = "G"
+                      else:
+                          pattern_color = base_color
+
+                      # Save this intended pattern state so the R/G/R/B alternation works continuously 
+                      last_color = pattern_color
+                      
+                      final_color = pattern_color
 
                       after_z = z_value(nx, ny, rx, uy)
 
+                      # 3. Apply the Z-line Black override
                       touches_z_again = step_in_frame > 0 and before_z != 0 and after_z == 0
                       crosses_z = before_z * after_z < 0
                       if touches_z_again or crosses_z:
-                          color = "G"
+                          final_color = "K"  # K represents Black
 
-                      if color == "R":
+                      # Count the final assigned color
+                      if final_color == "R":
                           file_red += 1
                           total_red += 1
-                      elif color == "B":
+                      elif final_color == "B":
                           file_blue += 1
                           total_blue += 1
-                      else:
+                      elif final_color == "G":
                           file_green += 1
                           total_green += 1
+                      else:
+                          file_black += 1
+                          total_black += 1
 
-                      colored_bits.append(color)
+                      colored_bits.append(final_color)
 
                       x = nx
                       y = ny
@@ -189,7 +211,8 @@ jobs:
                       "bits": total_bits - file_start_bits,
                       "red0RightBits": file_red,
                       "blue1UpBits": file_blue,
-                      "greenZBits": file_green,
+                      "greenRepeatBits": file_green,
+                      "blackZBits": file_black,
                   })
 
               # Three colored source bits make one logical pixel.
@@ -206,9 +229,10 @@ jobs:
               image = Image.new("RGB", (output_width, output_height), (0, 0, 0))
 
               rgb = {
-                  "R": (0, 255, 0),
-                  "G": (255,0, 0),
+                  "R": (255, 0, 0),
+                  "G": (0, 255, 0),
                   "B": (0, 0, 255),
+                  "K": (0, 0, 0),
               }
 
               padded_bits = list(colored_bits)
@@ -236,24 +260,26 @@ jobs:
               image.save(image_path, "WEBP", lossless=True, quality=100, method=6)
 
               with (OUT_DIR / "Data" / "FILE_SUMMARY.csv").open("w", newline="", encoding="utf-8") as f:
-                  fieldnames = ["sourcePath", "bytes", "bits", "red0RightBits", "blue1UpBits", "greenZBits"]
+                  fieldnames = ["sourcePath", "bytes", "bits", "red0RightBits", "blue1UpBits", "greenRepeatBits", "blackZBits"]
                   writer = csv.DictWriter(f, fieldnames=fieldnames)
                   writer.writeheader()
                   writer.writerows(file_rows)
 
               summary = {
-                  "format": "dreamengin.application-code-center-rgb-subpixel-bits-webp.v1",
+                  "format": "dreamengin.application-code-center-rgb-subpixel-bits-webp.v2",
                   "rule": [
                       "Read application code only.",
                       "Convert UTF-8 bytes to bits.",
-                      "Color each source bit first: 0/right/x=red, 1/up/y=blue, z-line touch/cross=green override.",
+                      "Base color: 0/right/x=red, 1/up/y=blue.",
+                      "Repeat override: If base color matches previous sequence color, become green.",
+                      "Z-line override: touch/cross z-line=black.",
                       "Every three colored source bits make one logical RGB pixel.",
                       "The PNG renders those three bits as three visible RGB-like subpixels so every source bit can be zoomed into.",
                       "Logical pixels are placed from the center outward in a spiral."
                   ],
                   "z": {
                       "formula": f"z = {rx}y - {uy}x",
-                      "greenWhen": "before_z * after_z < 0 OR after_z == 0 after origin",
+                      "blackWhen": "before_z * after_z < 0 OR after_z == 0 after origin",
                       "resetEverySteps": frame_steps,
                   },
                   "image": {
@@ -271,7 +297,8 @@ jobs:
                       "sourceBits": total_bits,
                       "red0RightBits": total_red,
                       "blue1UpBits": total_blue,
-                      "greenZBits": total_green,
+                      "greenRepeatBits": total_green,
+                      "blackZBits": total_black,
                   },
               }
 
@@ -287,10 +314,9 @@ jobs:
                   "",
                   "- read application code only",
                   "- convert UTF-8 bytes to bits",
-                  "- color each source bit first",
-                  "- `0` / right / x = red",
-                  "- `1` / up / y = blue",
-                  "- z-line touch/cross = green override",
+                  "- base color: `0` / right / x = red, `1` / up / y = blue",
+                  "- consecutive identical base color = green override",
+                  "- z-line touch/cross = black override",
                   "- every three colored source bits make one logical RGB pixel",
                   "- each logical pixel is rendered as three visible subpixels so every bit is zoomable",
                   "- logical pixels start at the center and spiral outward",
