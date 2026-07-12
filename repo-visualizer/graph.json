@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T08:08:36.067Z",
+  "generatedAt": "2026-07-12T09:39:38.549Z",
   "root": ".",
   "nodes": [
     {
@@ -2936,6 +2936,16 @@
       "label": "docs-auto-update.yml",
       "type": "config",
       "path": ".github/workflows/docs-auto-update.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream-application-code-3bit-zrgb-image.yml",
+      "label": "dream-application-code-3bit-zrgb-image.yml",
+      "type": "config",
+      "path": ".github/workflows/dream-application-code-3bit-zrgb-image.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
