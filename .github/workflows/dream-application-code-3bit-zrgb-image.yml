@@ -1,5 +1,5 @@
-name: DREAM Application Code 3-Bit ZRGB Image
-run-name: DREAM Application Code 3-Bit ZRGB Image
+name: DREAM Application Code Center RGB Subpixel Bits
+run-name: DREAM Application Code Center RGB Subpixel Bits
 
 on:
   workflow_dispatch:
@@ -8,15 +8,15 @@ permissions:
   contents: read
 
 jobs:
-  dream-application-code-3bit-zrgb-image:
+  dream-application-code-center-rgb-subpixel-bits:
     runs-on: ubuntu-latest
     env:
       CODE_ROOTS: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
       CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
-      IMAGE_WIDTH: "4715"
       Z_RIGHT: "9"
       Z_UP: "7"
-      OUT_DIR: "dream-application-code-3bit-zrgb-image"
+      CELL_SIZE: "1"
+      OUT_DIR: "dream-application-code-center-rgb-subpixel-bits"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
       - name: Install image dependency
         run: python3 -m pip install --upgrade pillow
 
-      - name: Build application-code 3-bit ZRGB image
+      - name: Build center-start RGB subpixel bit image
         run: |
           python3 - <<'PY'
           from __future__ import annotations
@@ -44,55 +44,39 @@ jobs:
           (OUT_DIR / "Metadata").mkdir(parents=True, exist_ok=True)
 
           EXCLUDED_DIRS = {
-              ".git",
-              ".github",
-              ".ci",
-              "node_modules",
-              ".next",
-              "dist",
-              "build",
-              "coverage",
-              ".turbo",
-              ".vercel",
-              ".cache",
-              "__pycache__",
-              ".pytest_cache",
+              ".git", ".github", ".ci",
+              "node_modules", ".next", "dist", "build", "coverage",
+              ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
               os.environ["OUT_DIR"],
           }
 
-          def split_csv_env(name: str, default: str) -> list[str]:
+          def csv_env(name: str, default: str) -> list[str]:
               raw = os.environ.get(name, default).strip()
-              return [item.strip() for item in raw.split(",") if item.strip()]
+              return [x.strip() for x in raw.split(",") if x.strip()]
 
-          def int_env(name: str, default: int, min_value: int, max_value: int) -> int:
+          def int_env(name: str, default: int) -> int:
               raw = os.environ.get(name, str(default)).strip()
-              try:
-                  value = int(raw)
-              except ValueError as exc:
-                  raise ValueError(f"{name} must be an integer, got {raw!r}") from exc
-              if value < min_value or value > max_value:
-                  raise ValueError(f"{name} must be between {min_value} and {max_value}, got {value}")
+              value = int(raw)
+              if value < 1:
+                  raise ValueError(f"{name} must be positive")
               return value
 
           def source_files(repo_root: Path, roots: list[str], extensions: set[str]) -> list[Path]:
-              files: list[Path] = []
+              found: list[Path] = []
               for root_name in roots:
                   root = repo_root / root_name
                   if not root.exists():
                       continue
-                  if root.is_file():
-                      if root.suffix in extensions:
-                          files.append(root)
-                      continue
-                  for path in root.rglob("*"):
+                  paths = root.rglob("*") if root.is_dir() else [root]
+                  for path in paths:
                       if not path.is_file():
                           continue
                       rel_parts = path.relative_to(repo_root).parts
                       if any(part in EXCLUDED_DIRS for part in rel_parts):
                           continue
                       if path.suffix in extensions:
-                          files.append(path)
-              return sorted(files, key=lambda p: str(p.relative_to(repo_root)).lower())
+                          found.append(path)
+              return sorted(found, key=lambda p: str(p.relative_to(repo_root)).lower())
 
           def bits_from_bytes(data: bytes) -> Iterable[int]:
               for byte in data:
@@ -100,65 +84,53 @@ jobs:
                       yield (byte >> shift) & 1
 
           def z_value(x: int, y: int, rx: int, uy: int) -> int:
-              # z-line from (0,0) to (rx,uy).
-              # Default (9,7): z = 9*y - 7*x. The line itself is z=0.
               return rx * y - uy * x
+
+          def spiral_positions(count: int) -> Iterable[tuple[int, int]]:
+              # Center-out square spiral in logical pixel coordinates.
+              x = 0
+              y = 0
+              yielded = 0
+              yield (x, y)
+              yielded += 1
+              step_len = 1
+              while yielded < count:
+                  for dx, dy, n in ((1, 0, step_len), (0, -1, step_len), (-1, 0, step_len + 1), (0, 1, step_len + 1)):
+                      for _ in range(n):
+                          if yielded >= count:
+                              return
+                          x += dx
+                          y += dy
+                          yield (x, y)
+                          yielded += 1
+                  step_len += 2
 
           def main() -> int:
               repo_root = Path(".").resolve()
 
-              roots = split_csv_env(
-                  "CODE_ROOTS",
-                  "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks",
-              )
-              extensions = set(split_csv_env("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs"))
-              width = int_env("IMAGE_WIDTH", 2048, 1, 32768)
-              rx = int_env("Z_RIGHT", 9, 1, 1000000)
-              uy = int_env("Z_UP", 7, 1, 1000000)
+              roots = csv_env("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              extensions = set(csv_env("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs"))
+              rx = int_env("Z_RIGHT", 9)
+              uy = int_env("Z_UP", 7)
+              cell_size = int_env("CELL_SIZE", 1)
 
-              # Local path reset is fixed from the z endpoint.
-              # For (9,7), each local frame is 16 source-bit steps.
               frame_steps = rx + uy
-
               files = source_files(repo_root, roots, extensions)
               if not files:
-                  raise RuntimeError(
-                      "No application source files found. Checked roots: "
-                      + ", ".join(roots)
-                      + " with extensions: "
-                      + ", ".join(sorted(extensions))
-                  )
+                  raise RuntimeError("No application code files found.")
 
-              pixels: list[tuple[int, int, int]] = []
+              colored_bits: list[str] = []
               file_rows: list[dict[str, object]] = []
 
               x = 0
               y = 0
               step_in_frame = 0
 
-              current_triplet_bits: list[str] = []
-              red_steps = 0
-              green_z_hits = 0
-              blue_steps = 0
               total_bytes = 0
               total_bits = 0
-              total_red_steps = 0
-              total_green_z_hits = 0
-              total_blue_steps = 0
-              source_file_count = 0
-
-              def emit_pixel(source_path: str, partial: bool) -> None:
-                  nonlocal current_triplet_bits
-                  nonlocal red_steps, green_z_hits, blue_steps
-
-                  rgb = (red_steps * 85, green_z_hits * 85, blue_steps * 85)
-                  pixel_index = len(pixels)
-                  pixels.append(rgb)
-
-                  current_triplet_bits = []
-                  red_steps = 0
-                  green_z_hits = 0
-                  blue_steps = 0
+              total_red = 0
+              total_blue = 0
+              total_green = 0
 
               for path in files:
                   rel = path.relative_to(repo_root).as_posix()
@@ -166,11 +138,10 @@ jobs:
                   if not data:
                       continue
 
-                  source_file_count += 1
-                  file_start_bit = total_bits
+                  file_start_bits = total_bits
                   file_red = 0
-                  file_green = 0
                   file_blue = 0
+                  file_green = 0
 
                   for bit in bits_from_bytes(data):
                       if step_in_frame >= frame_steps:
@@ -182,156 +153,171 @@ jobs:
 
                       if bit == 0:
                           nx, ny = x + 1, y
-                          red_steps += 1
-                          file_red += 1
-                          total_red_steps += 1
+                          color = "R"
                       else:
                           nx, ny = x, y + 1
-                          blue_steps += 1
-                          file_blue += 1
-                          total_blue_steps += 1
+                          color = "B"
 
                       after_z = z_value(nx, ny, rx, uy)
 
                       touches_z_again = step_in_frame > 0 and before_z != 0 and after_z == 0
                       crosses_z = before_z * after_z < 0
                       if touches_z_again or crosses_z:
-                          green_z_hits += 1
-                          file_green += 1
-                          total_green_z_hits += 1
+                          color = "G"
 
-                      current_triplet_bits.append(str(bit))
+                      if color == "R":
+                          file_red += 1
+                          total_red += 1
+                      elif color == "B":
+                          file_blue += 1
+                          total_blue += 1
+                      else:
+                          file_green += 1
+                          total_green += 1
+
+                      colored_bits.append(color)
 
                       x = nx
                       y = ny
                       step_in_frame += 1
                       total_bits += 1
 
-                      if len(current_triplet_bits) == 3:
-                          emit_pixel(rel, partial=False)
-
                   total_bytes += len(data)
-                  file_bits = total_bits - file_start_bit
-                  file_rows.append(
-                      {
-                          "sourcePath": rel,
-                          "bytes": len(data),
-                          "bits": file_bits,
-                          "redXRight0Steps": file_red,
-                          "greenZLineHits": file_green,
-                          "blueYUp1Steps": file_blue,
-                      }
-                  )
+                  file_rows.append({
+                      "sourcePath": rel,
+                      "bytes": len(data),
+                      "bits": total_bits - file_start_bits,
+                      "red0RightBits": file_red,
+                      "blue1UpBits": file_blue,
+                      "greenZBits": file_green,
+                  })
 
-              partial_final_pixel = False
-              if current_triplet_bits:
-                  partial_final_pixel = True
-                  emit_pixel("final-partial-triplet", partial=True)
+              # Three colored source bits make one logical pixel.
+              # The rendered PNG shows the three bits as RGB-like subpixels, so every source bit is zoomable.
+              logical_pixels = math.ceil(len(colored_bits) / 3) if colored_bits else 1
+              logical_side = math.ceil(math.sqrt(logical_pixels))
+              if logical_side % 2 == 0:
+                  logical_side += 1
 
-              height = max(1, math.ceil(len(pixels) / width))
-              image = Image.new("RGB", (width, height), (0, 0, 0))
+              center = logical_side // 2
 
-              for index, rgb in enumerate(pixels):
-                  row = index // width
-                  col = index % width
-                  image.putpixel((col, row), rgb)
+              output_width = logical_side * 3 * cell_size
+              output_height = logical_side * cell_size
+              image = Image.new("RGB", (output_width, output_height), (0, 0, 0))
 
-              image_path = OUT_DIR / "APP_CODE_3BIT_ZRGB_IMAGE.png"
+              rgb = {
+                  "R": (255, 0, 0),
+                  "G": (0, 255, 0),
+                  "B": (0, 0, 255),
+              }
+
+              padded_bits = list(colored_bits)
+              while len(padded_bits) % 3:
+                  padded_bits.append("R")
+
+              for pixel_index, (gx, gy) in enumerate(spiral_positions(logical_pixels)):
+                  base = pixel_index * 3
+                  triplet = padded_bits[base:base + 3]
+
+                  logical_x = center + gx
+                  logical_y = center + gy
+
+                  if logical_x < 0 or logical_x >= logical_side or logical_y < 0 or logical_y >= logical_side:
+                      raise RuntimeError("Spiral exceeded computed canvas.")
+
+                  for sub_index, color in enumerate(triplet):
+                      px0 = (logical_x * 3 + sub_index) * cell_size
+                      py0 = logical_y * cell_size
+                      for yy in range(cell_size):
+                          for xx in range(cell_size):
+                              image.putpixel((px0 + xx, py0 + yy), rgb[color])
+
+              image_path = OUT_DIR / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.png"
               image.save(image_path)
 
               with (OUT_DIR / "Data" / "FILE_SUMMARY.csv").open("w", newline="", encoding="utf-8") as f:
-                  fieldnames = [
-                      "sourcePath",
-                      "bytes",
-                      "bits",
-                      "redXRight0Steps",
-                      "greenZLineHits",
-                      "blueYUp1Steps",
-                  ]
+                  fieldnames = ["sourcePath", "bytes", "bits", "red0RightBits", "blue1UpBits", "greenZBits"]
                   writer = csv.DictWriter(f, fieldnames=fieldnames)
                   writer.writeheader()
                   writer.writerows(file_rows)
 
               summary = {
-                  "format": "dreamengin.application-code-3bit-zrgb-image.v2",
-                  "input": {
-                      "roots": roots,
-                      "extensions": sorted(extensions),
-                      "sourceFiles": source_file_count,
-                      "bytes": total_bytes,
-                      "bits": total_bits,
-                  },
-                  "pixelRule": {
-                      "bitsPerPixel": 3,
-                      "red": "count of 0/right/x steps in the triplet, scaled by 85",
-                      "green": "count of z-line contacts/crossings in the triplet, scaled by 85",
-                      "blue": "count of 1/up/y steps in the triplet, scaled by 85",
-                      "partialFinalPixel": partial_final_pixel,
-                  },
-                  "zLine": {
-                      "endpoint": [rx, uy],
+                  "format": "dreamengin.application-code-center-rgb-subpixel-bits.v1",
+                  "rule": [
+                      "Read application code only.",
+                      "Convert UTF-8 bytes to bits.",
+                      "Color each source bit first: 0/right/x=red, 1/up/y=blue, z-line touch/cross=green override.",
+                      "Every three colored source bits make one logical RGB pixel.",
+                      "The PNG renders those three bits as three visible RGB-like subpixels so every source bit can be zoomed into.",
+                      "Logical pixels are placed from the center outward in a spiral."
+                  ],
+                  "z": {
                       "formula": f"z = {rx}y - {uy}x",
-                      "lineCondition": "z = 0",
-                      "greenCondition": "before_z * after_z < 0 OR after_z == 0 after origin",
-                      "localFrameSteps": frame_steps,
+                      "greenWhen": "before_z * after_z < 0 OR after_z == 0 after origin",
+                      "resetEverySteps": frame_steps,
                   },
                   "image": {
                       "path": str(image_path),
-                      "width": width,
-                      "height": height,
-                      "pixels": len(pixels),
+                      "logicalPixels": logical_pixels,
+                      "logicalSide": logical_side,
+                      "outputWidth": output_width,
+                      "outputHeight": output_height,
+                      "cellSize": cell_size,
+                      "origin": "center",
                   },
                   "totals": {
-                      "redXRight0Steps": total_red_steps,
-                      "greenZLineHits": total_green_z_hits,
-                      "blueYUp1Steps": total_blue_steps,
+                      "files": len(file_rows),
+                      "bytes": total_bytes,
+                      "sourceBits": total_bits,
+                      "red0RightBits": total_red,
+                      "blue1UpBits": total_blue,
+                      "greenZBits": total_green,
                   },
               }
 
-              with (OUT_DIR / "Metadata" / "APP_CODE_3BIT_ZRGB_IMAGE.json").open("w", encoding="utf-8") as f:
+              with (OUT_DIR / "Metadata" / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.json").open("w", encoding="utf-8") as f:
                   json.dump(summary, f, indent=2)
 
               readme = [
-                  "# DREAM Application Code 3-Bit ZRGB Image",
+                  "# DREAM Application Code Center RGB Subpixel Bits",
                   "",
-                  "Application code is read as UTF-8 bytes, then converted to bits.",
+                  "This reads the codebase only. It does not modify source files.",
                   "",
-                  "Every three source bits produce one RGB pixel.",
+                  "Rule:",
                   "",
-                  "Channel rule:",
-                  "",
-                  "- R = count of `0` bits / right / x steps in the triplet",
-                  "- G = count of z-line contacts/crossings in the triplet",
-                  "- B = count of `1` bits / up / y steps in the triplet",
+                  "- read application code only",
+                  "- convert UTF-8 bytes to bits",
+                  "- color each source bit first",
+                  "- `0` / right / x = red",
+                  "- `1` / up / y = blue",
+                  "- z-line touch/cross = green override",
+                  "- every three colored source bits make one logical RGB pixel",
+                  "- each logical pixel is rendered as three visible subpixels so every bit is zoomable",
+                  "- logical pixels start at the center and spiral outward",
                   "",
                   f"z-line: `z = {rx}y - {uy}x`",
-                  f"local reset length: `{frame_steps}` steps",
-                  "",
-                  "Each channel count is scaled by 85, so 0/1/2/3 becomes 0/85/170/255.",
-                  "",
-                  f"Image: `{image_path.name}`",
-                  f"Size: `{width} x {height}`",
-                  f"Pixels: `{len(pixels)}`",
-                  f"Source bits: `{total_bits}`",
+                  f"local reset: `{frame_steps}` steps",
+                  f"source bits: `{total_bits}`",
+                  f"logical pixels: `{logical_pixels}`",
+                  f"logical side: `{logical_side}`",
+                  f"output PNG size: `{output_width} x {output_height}`",
+                  f"image: `{image_path.name}`",
               ]
               (OUT_DIR / "README.md").write_text("\n".join(readme) + "\n", encoding="utf-8")
 
-              print(f"sourceFiles={source_file_count}")
-              print(f"bytes={total_bytes}")
               print(f"bits={total_bits}")
-              print(f"pixels={len(pixels)}")
-              print(f"image={width}x{height}")
-              print(f"zLine=z={rx}y-{uy}x")
-              print(f"output={image_path}")
-
+              print(f"logicalPixels={logical_pixels}")
+              print(f"logicalSide={logical_side}")
+              print(f"output={output_width}x{output_height}")
+              print(f"image={image_path}")
               return 0
 
           raise SystemExit(main())
           PY
 
-      - name: Upload 3-bit ZRGB image artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dream-application-code-3bit-zrgb-image
-          path: dream-application-code-3bit-zrgb-image
+          name: dream-application-code-center-rgb-subpixel-bits
+          path: dream-application-code-center-rgb-subpixel-bits
           if-no-files-found: error
