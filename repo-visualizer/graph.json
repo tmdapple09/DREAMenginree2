@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:42:31.501Z",
+  "generatedAt": "2026-07-12T21:49:52.683Z",
   "root": ".",
   "nodes": [
     {
@@ -2712,6 +2712,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/adream-application-code-3bit-zrgb-image.yml",
+      "label": "adream-application-code-3bit-zrgb-image.yml",
+      "type": "config",
+      "path": ".github/workflows/adream-application-code-3bit-zrgb-image.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/autofixvercelbuild.yml",
       "label": "autofixvercelbuild.yml",
       "type": "config",
@@ -2936,16 +2946,6 @@
       "label": "docs-auto-update.yml",
       "type": "config",
       "path": ".github/workflows/docs-auto-update.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/dream-application-code-3bit-zrgb-image.yml",
-      "label": "dream-application-code-3bit-zrgb-image.yml",
-      "type": "config",
-      "path": ".github/workflows/dream-application-code-3bit-zrgb-image.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
