@@ -15,7 +15,7 @@ jobs:
       CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
       Z_RIGHT: "9"
       Z_UP: "7"
-      CELL_SIZE: "1"
+      CELL_SIZE: "3"
       OUT_DIR: "dream-application-code-center-rgb-subpixel-bits-webp"
     steps:
       - name: Checkout repository
@@ -206,8 +206,8 @@ jobs:
               image = Image.new("RGB", (output_width, output_height), (0, 0, 0))
 
               rgb = {
-                  "R": (255, 0, 0),
-                  "G": (0, 255, 0),
+                  "R": (0, 255, 0),
+                  "G": (255,0, 0),
                   "B": (0, 0, 255),
               }
 
