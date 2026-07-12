@@ -1,0 +1,467 @@
+name: DREAM UTF-8 Pascal Code Paths Color
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated product application code roots, in source order"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      pascal_depth:
+        description: "Pascal triangle depth. 64 is phone-readable; 128 is denser."
+        required: false
+        default: "64"
+      intensity_levels:
+        description: "Brightness levels per root color"
+        required: false
+        default: "4"
+
+permissions:
+  contents: read
+
+jobs:
+  utf8-pascal-code-paths-color:
+    name: Build colored Pascal path map from actual code bits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PNG renderer
+        run: python3 -m pip install --user pillow
+
+      - name: Build CODE_PASCAL_PATHS_COLOR.png
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ inputs.code_roots || 'app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks' }}
+          CODE_EXTENSIONS: ${{ inputs.code_extensions || '.ts,.tsx,.js,.jsx,.mjs,.cjs' }}
+          PASCAL_DEPTH: ${{ inputs.pascal_depth || '64' }}
+          INTENSITY_LEVELS: ${{ inputs.intensity_levels || '4' }}
+        run: |
+          cat > /tmp/dream_utf8_pascal_code_paths_color.py <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import math
+          import os
+          import shutil
+          import zipfile
+          from pathlib import Path
+          from typing import Iterable, List
+
+          from PIL import Image, ImageDraw, ImageFont
+
+          OUT_DIR = Path(".dream-utf8-pascal-code-paths-color")
+          ZIP_PATH = Path("dream-utf8-pascal-code-paths-color.zip")
+
+          EXCLUDE_DIRS = {
+              ".git", ".github", ".ci", "node_modules", ".next", "out", "dist", "build", "coverage",
+              ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
+              ".dream-utf8-pascal-code-paths-color",
+          }
+
+          EXCLUDE_FILE_NAMES = {
+              "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "tsconfig.tsbuildinfo",
+              "dream-utf8-pascal-code-paths-color.zip",
+          }
+
+          ROOT_COLORS: dict[str, tuple[int, int, int]] = {
+              "app": (52, 152, 219),
+              "components": (46, 204, 113),
+              "coresurfaces": (26, 188, 156),
+              "daydreams": (241, 196, 15),
+              "dr-eams": (230, 126, 34),
+              "dreamdmbar": (155, 89, 182),
+              "dreamr": (233, 30, 99),
+              "engine": (231, 76, 60),
+              "engins": (243, 156, 18),
+              "hooks": (127, 140, 141),
+          }
+
+          MAX_FILE_BYTES = 5_000_000
+
+          def code_roots() -> List[str]:
+              raw = os.environ.get("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              return [item.strip().strip("/") for item in raw.split(",") if item.strip()]
+
+          def code_extensions() -> set[str]:
+              raw = os.environ.get("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+              return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+          def pascal_depth() -> int:
+              raw = os.environ.get("PASCAL_DEPTH", "64").strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = 64
+              return max(8, min(value, 256))
+
+          def intensity_levels() -> int:
+              raw = os.environ.get("INTENSITY_LEVELS", "4").strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = 4
+              return max(2, min(value, 8))
+
+          def should_include(path: Path, repo_root: Path, roots_set: set[str], extensions: set[str]) -> bool:
+              if not path.is_file():
+                  return False
+              rel = path.relative_to(repo_root)
+              if any(part in EXCLUDE_DIRS for part in rel.parts):
+                  return False
+              if path.name in EXCLUDE_FILE_NAMES:
+                  return False
+              top = rel.as_posix().split("/", 1)[0]
+              if top not in roots_set:
+                  return False
+              if path.suffix.lower() not in extensions:
+                  return False
+              if path.stat().st_size > MAX_FILE_BYTES:
+                  return False
+              return True
+
+          def iter_code_files(repo_root: Path) -> Iterable[Path]:
+              ordered_roots = code_roots()
+              roots_set = set(ordered_roots)
+              extensions = code_extensions()
+              for root_name in ordered_roots:
+                  root_path = repo_root / root_name
+                  if not root_path.exists():
+                      continue
+                  for path in sorted(root_path.rglob("*")):
+                      if should_include(path, repo_root, roots_set, extensions):
+                          yield path
+
+          def iter_utf8_bits(data: bytes) -> Iterable[int]:
+              for byte in data:
+                  for shift in range(7, -1, -1):
+                      yield (byte >> shift) & 1
+
+          def load_font(size: int, bold: bool = False) -> ImageFont.ImageFont:
+              candidates = [
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                  "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+              ]
+              for candidate in candidates:
+                  if Path(candidate).exists():
+                      return ImageFont.truetype(candidate, size=size)
+              return ImageFont.load_default()
+
+          def write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+          def zip_dir(source: Path, destination: Path) -> None:
+              if destination.exists():
+                  destination.unlink()
+              with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
+                  for path in sorted(source.rglob("*")):
+                      if path.is_file():
+                          archive.write(path, path.relative_to(source).as_posix())
+
+          def add_pascal_path(
+              visits: list[list[int]],
+              x_moves: list[list[int]],
+              y_moves: list[list[int]],
+              root_visit_map: list[list[int]],
+              bits: list[int],
+          ) -> None:
+              col = 0
+              visits[0][0] += 1
+              root_visit_map[0][0] += 1
+              for row, bit in enumerate(bits, start=1):
+                  if bit == 0:
+                      x_moves[row - 1][col] += 1
+                  else:
+                      y_moves[row - 1][col] += 1
+                      col += 1
+                  visits[row][col] += 1
+                  root_visit_map[row][col] += 1
+
+          def dominant_root_for_cell(root_visits: dict[str, list[list[int]]], row: int, col: int) -> tuple[str | None, int]:
+              dominant_root = None
+              dominant_value = 0
+              for root_name, visit_map in root_visits.items():
+                  value = visit_map[row][col]
+                  if value > dominant_value:
+                      dominant_root = root_name
+                      dominant_value = value
+              return dominant_root, dominant_value
+
+          def quantized_color(base_rgb: tuple[int, int, int], value: int, max_value: int, levels: int) -> tuple[int, int, int]:
+              if value <= 0 or max_value <= 0:
+                  return (255, 255, 255)
+              t = math.log1p(value) / math.log1p(max_value)
+              bucket = max(1, min(levels, math.ceil(t * levels)))
+              blend = 0.82 - ((bucket - 1) * (0.72 / max(1, levels - 1)))
+              blend = max(0.10, min(0.82, blend))
+              r, g, b = base_rgb
+              return (
+                  int(255 * blend + r * (1 - blend)),
+                  int(255 * blend + g * (1 - blend)),
+                  int(255 * blend + b * (1 - blend)),
+              )
+
+          def draw_map(
+              output: Path,
+              cell_rows: list[dict],
+              root_rows: list[dict],
+              file_rows: list[dict],
+              depth: int,
+              total_paths: int,
+              total_bits: int,
+              root_visits: dict[str, list[list[int]]],
+              levels: int,
+          ) -> None:
+              scale = 12 if depth <= 64 else 7 if depth <= 128 else 4
+              left = 70
+              top = 150
+              right_panel = 720
+              bottom = 140
+              tri_width = (depth + 1) * scale
+              tri_height = (depth + 1) * scale
+              width = left + tri_width + right_panel
+              height = top + tri_height + bottom
+
+              img = Image.new("RGB", (width, height), "white")
+              draw = ImageDraw.Draw(img)
+
+              title_font = load_font(34, True)
+              header_font = load_font(22, True)
+              text_font = load_font(16)
+              small_font = load_font(13)
+              tiny_font = load_font(10)
+
+              draw.text((32, 24), "DREAM UTF-8 PASCAL CODE PATHS — COLOR", fill=(0, 0, 0), font=title_font)
+              draw.text((32, 70), "Root color = dominant source family; brightness = path traffic strength", fill=(30, 30, 30), font=text_font)
+
+              max_visits = max((row["visits"] for row in cell_rows), default=1)
+              for item in cell_rows:
+                  row = int(item["row"])
+                  col = int(item["col"])
+                  visits = int(item["visits"])
+                  x = int(left + ((depth - row) * scale / 2) + col * scale)
+                  y = top + row * scale
+                  dominant_root, _ = dominant_root_for_cell(root_visits, row, col)
+                  if dominant_root is None or visits <= 0:
+                      color = (255, 255, 255)
+                  else:
+                      color = quantized_color(ROOT_COLORS.get(dominant_root, (80, 80, 80)), visits, max_visits, levels)
+                  draw.ellipse([x, y, x + scale - 2, y + scale - 2], fill=color, outline=None)
+
+              for row in range(0, min(depth, 7) + 1):
+                  for col in range(0, row + 1):
+                      coeff = math.comb(row, col)
+                      x = int(left + ((depth - row) * scale / 2) + col * scale)
+                      y = top + row * scale
+                      draw.text((x - 2, y - 2), str(coeff), fill=(0, 80, 120), font=tiny_font)
+
+              panel_x = left + tri_width + 42
+              y = top
+              draw.text((panel_x, y), "What this does", fill=(0, 0, 0), font=header_font)
+              y += 34
+              explanation = [
+                  "Pascal triangle = coefficients of (x+y)^n.",
+                  "0 -> x / left branch.",
+                  "1 -> y / right branch.",
+                  "",
+                  "Color = dominant code root at that cell.",
+                  "Brightness = total path traffic.",
+                  "",
+                  f"depth: {depth}",
+                  f"paths/chunks: {total_paths:,}",
+                  f"source bits read: {total_bits:,}",
+                  f"files read: {len(file_rows):,}",
+                  f"brightness levels: {levels}",
+              ]
+              for line in explanation:
+                  draw.text((panel_x, y), line, fill=(0, 0, 0), font=text_font)
+                  y += 23
+
+              y += 18
+              draw.text((panel_x, y), "Root colors", fill=(0, 0, 0), font=header_font)
+              y += 32
+              for root in root_rows:
+                  root_name = root["root"]
+                  color = ROOT_COLORS.get(root_name, (80, 80, 80))
+                  draw.rectangle([panel_x, y + 3, panel_x + 16, y + 19], fill=color, outline=(0, 0, 0))
+                  draw.text((panel_x + 24, y), f"{root_name}: {root['files']} files, {root['paths']} paths", fill=(0, 0, 0), font=small_font)
+                  y += 22
+
+              bottom_y = top + tri_height + 40
+              draw.text((left, bottom_y), "Color = dominant root. Brightness/saturation = total visits at that Pascal coefficient.", fill=(0, 0, 0), font=small_font)
+
+              output.parent.mkdir(parents=True, exist_ok=True)
+              img.save(output)
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+              depth = pascal_depth()
+              levels = intensity_levels()
+
+              if OUT_DIR.exists():
+                  shutil.rmtree(OUT_DIR)
+              (OUT_DIR / "Data").mkdir(parents=True)
+              (OUT_DIR / ".de").mkdir(parents=True)
+
+              visits = [[0 for _ in range(row + 1)] for row in range(depth + 1)]
+              x_moves = [[0 for _ in range(row + 1)] for row in range(depth + 1)]
+              y_moves = [[0 for _ in range(row + 1)] for row in range(depth + 1)]
+
+              file_rows: list[dict] = []
+              root_map: dict[str, dict] = {}
+              root_visits: dict[str, list[list[int]]] = {}
+
+              total_paths = 0
+              total_bits = 0
+
+              for file_path in iter_code_files(repo_root):
+                  source_path = file_path.relative_to(repo_root).as_posix()
+                  root = source_path.split("/", 1)[0]
+
+                  try:
+                      text = file_path.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      continue
+
+                  data = text.encode("utf-8")
+                  if not data:
+                      continue
+
+                  if root not in root_map:
+                      root_map[root] = {"root": root, "files": 0, "utf8Bytes": 0, "bits": 0, "paths": 0}
+                      root_visits[root] = [[0 for _ in range(row + 1)] for row in range(depth + 1)]
+
+                  bits_buffer: list[int] = []
+                  file_paths = 0
+                  file_bits = 0
+
+                  for bit in iter_utf8_bits(data):
+                      bits_buffer.append(bit)
+                      file_bits += 1
+                      total_bits += 1
+                      if len(bits_buffer) == depth:
+                          add_pascal_path(visits, x_moves, y_moves, root_visits[root], bits_buffer)
+                          total_paths += 1
+                          file_paths += 1
+                          bits_buffer = []
+
+                  if bits_buffer:
+                      bits_buffer = bits_buffer + [0] * (depth - len(bits_buffer))
+                      add_pascal_path(visits, x_moves, y_moves, root_visits[root], bits_buffer)
+                      total_paths += 1
+                      file_paths += 1
+
+                  file_rows.append({"sourcePath": source_path, "root": root, "utf8Bytes": len(data), "bits": file_bits, "paths": file_paths})
+                  root_map[root]["files"] += 1
+                  root_map[root]["utf8Bytes"] += len(data)
+                  root_map[root]["bits"] += file_bits
+                  root_map[root]["paths"] += file_paths
+
+              cell_rows: list[dict] = []
+              root_cell_rows: list[dict] = []
+              for row in range(depth + 1):
+                  for col in range(row + 1):
+                      dominant_root, dominant_visits = dominant_root_for_cell(root_visits, row, col)
+                      cell_rows.append({
+                          "row": row,
+                          "col": col,
+                          "pascalCoefficient": math.comb(row, col),
+                          "term": f"C({row},{col}) x^{row-col} y^{col}",
+                          "visits": visits[row][col],
+                          "dominantRoot": dominant_root or "",
+                          "dominantRootVisits": dominant_visits,
+                          "xMovesOut": x_moves[row][col] if row < depth else 0,
+                          "yMovesOut": y_moves[row][col] if row < depth else 0,
+                      })
+                      for root_name, visit_map in root_visits.items():
+                          v = visit_map[row][col]
+                          if v > 0:
+                              root_cell_rows.append({"root": root_name, "row": row, "col": col, "visits": v})
+
+              root_rows = [root_map[root] for root in code_roots() if root in root_map]
+
+              draw_map(OUT_DIR / "CODE_PASCAL_PATHS_COLOR.png", cell_rows, root_rows, file_rows, depth, total_paths, total_bits, root_visits, levels)
+
+              write_csv(
+                  OUT_DIR / "Data" / "PASCAL_CODE_PATH_CELLS.csv",
+                  ["row", "col", "pascalCoefficient", "term", "visits", "dominantRoot", "dominantRootVisits", "xMovesOut", "yMovesOut"],
+                  cell_rows,
+              )
+              write_csv(OUT_DIR / "Data" / "ROOT_CELL_VISITS.csv", ["root", "row", "col", "visits"], root_cell_rows)
+              write_csv(OUT_DIR / "Data" / "FILES_READ.csv", ["sourcePath", "root", "utf8Bytes", "bits", "paths"], file_rows)
+              write_csv(OUT_DIR / "Data" / "ROOT_PATHS.csv", ["root", "files", "utf8Bytes", "bits", "paths"], root_rows)
+
+              manifest = {
+                  "format": "dreamengin.utf8-pascal-code-paths-color.v1",
+                  "mainImage": "CODE_PASCAL_PATHS_COLOR.png",
+                  "operation": "code UTF-8 bits choose x/y paths through Pascal cells; cells colored by dominant code root",
+                  "bitMeaning": {"0": "x / left branch / col unchanged", "1": "y / right branch / col increases by 1"},
+                  "colorMeaning": {"baseColor": "dominant source root", "brightness": "quantized total path traffic", "levels": levels, "rootColors": ROOT_COLORS},
+                  "includedRoots": code_roots(),
+                  "includedExtensions": sorted(code_extensions()),
+                  "pascalDepth": depth,
+                  "totals": {"files": len(file_rows), "sourceBits": total_bits, "paths": total_paths},
+                  "outputs": {
+                      "mainImage": "CODE_PASCAL_PATHS_COLOR.png",
+                      "cells": "Data/PASCAL_CODE_PATH_CELLS.csv",
+                      "rootCellVisits": "Data/ROOT_CELL_VISITS.csv",
+                      "files": "Data/FILES_READ.csv",
+                      "roots": "Data/ROOT_PATHS.csv",
+                  },
+              }
+              (OUT_DIR / ".de" / "pascal-code-paths-color-map.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+              readme = [
+                  "# DREAM UTF-8 Pascal Code Paths — Color",
+                  "",
+                  "Open:",
+                  "",
+                  "```text",
+                  "CODE_PASCAL_PATHS_COLOR.png",
+                  "```",
+                  "",
+                  "Meaning:",
+                  "",
+                  "```text",
+                  "0 bit = x / left branch",
+                  "1 bit = y / right branch",
+                  "cell = C(n,k) x^(n-k)y^k",
+                  "color = dominant source root",
+                  "brightness = total path traffic",
+                  "```",
+              ]
+              (OUT_DIR / "README.md").write_text("\n".join(readme), encoding="utf-8")
+
+              zip_dir(OUT_DIR, ZIP_PATH)
+              print(f"Created {ZIP_PATH}")
+              print("Open first: CODE_PASCAL_PATHS_COLOR.png")
+              print(f"pascalDepth={depth}")
+              print(f"intensityLevels={levels}")
+              print(f"files={len(file_rows)}")
+              print(f"sourceBits={total_bits}")
+              print(f"paths={total_paths}")
+              return 0
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python3 /tmp/dream_utf8_pascal_code_paths_color.py
+
+      - name: Upload colored Pascal code paths artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-pascal-code-paths-color
+          path: dream-utf8-pascal-code-paths-color.zip
+          if-no-files-found: error
