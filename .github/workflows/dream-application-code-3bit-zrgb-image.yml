@@ -1,0 +1,380 @@
+name: DREAM Application Code 3-Bit ZRGB Image
+run-name: DREAM Application Code 3-Bit ZRGB Image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dream-application-code-3bit-zrgb-image:
+    runs-on: ubuntu-latest
+    env:
+      CODE_ROOTS: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      IMAGE_WIDTH: "2048"
+      Z_RIGHT: "9"
+      Z_UP: "7"
+      EXAMPLE_TRIPLETS: "64"
+      OUT_DIR: "dream-application-code-3bit-zrgb-image"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install image dependency
+        run: python3 -m pip install --upgrade pillow
+
+      - name: Build application-code 3-bit ZRGB image
+        run: |
+          python3 - <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import math
+          import os
+          from pathlib import Path
+          from typing import Iterable
+
+          from PIL import Image
+
+          OUT_DIR = Path(os.environ["OUT_DIR"])
+          OUT_DIR.mkdir(parents=True, exist_ok=True)
+          (OUT_DIR / "Data").mkdir(parents=True, exist_ok=True)
+          (OUT_DIR / "Metadata").mkdir(parents=True, exist_ok=True)
+
+          EXCLUDED_DIRS = {
+              ".git",
+              ".github",
+              ".ci",
+              "node_modules",
+              ".next",
+              "dist",
+              "build",
+              "coverage",
+              ".turbo",
+              ".vercel",
+              ".cache",
+              "__pycache__",
+              ".pytest_cache",
+              os.environ["OUT_DIR"],
+          }
+
+          def split_csv_env(name: str, default: str) -> list[str]:
+              raw = os.environ.get(name, default).strip()
+              return [item.strip() for item in raw.split(",") if item.strip()]
+
+          def int_env(name: str, default: int, min_value: int, max_value: int) -> int:
+              raw = os.environ.get(name, str(default)).strip()
+              try:
+                  value = int(raw)
+              except ValueError as exc:
+                  raise ValueError(f"{name} must be an integer, got {raw!r}") from exc
+              if value < min_value or value > max_value:
+                  raise ValueError(f"{name} must be between {min_value} and {max_value}, got {value}")
+              return value
+
+          def source_files(repo_root: Path, roots: list[str], extensions: set[str]) -> list[Path]:
+              files: list[Path] = []
+              for root_name in roots:
+                  root = repo_root / root_name
+                  if not root.exists():
+                      continue
+                  if root.is_file():
+                      if root.suffix in extensions:
+                          files.append(root)
+                      continue
+                  for path in root.rglob("*"):
+                      if not path.is_file():
+                          continue
+                      rel_parts = path.relative_to(repo_root).parts
+                      if any(part in EXCLUDED_DIRS for part in rel_parts):
+                          continue
+                      if path.suffix in extensions:
+                          files.append(path)
+              return sorted(files, key=lambda p: str(p.relative_to(repo_root)).lower())
+
+          def bits_from_bytes(data: bytes) -> Iterable[int]:
+              for byte in data:
+                  for shift in range(7, -1, -1):
+                      yield (byte >> shift) & 1
+
+          def z_value(x: int, y: int, rx: int, uy: int) -> int:
+              # z-line from (0,0) to (rx,uy).
+              # Default (9,7): z = 9*y - 7*x. The line itself is z=0.
+              return rx * y - uy * x
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+
+              roots = split_csv_env(
+                  "CODE_ROOTS",
+                  "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks",
+              )
+              extensions = set(split_csv_env("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs"))
+              width = int_env("IMAGE_WIDTH", 2048, 1, 32768)
+              rx = int_env("Z_RIGHT", 9, 1, 1000000)
+              uy = int_env("Z_UP", 7, 1, 1000000)
+              example_limit = int_env("EXAMPLE_TRIPLETS", 64, 0, 100000)
+
+              # Local path reset is fixed from the z endpoint.
+              # For (9,7), each local frame is 16 source-bit steps.
+              frame_steps = rx + uy
+
+              files = source_files(repo_root, roots, extensions)
+              if not files:
+                  raise RuntimeError(
+                      "No application source files found. Checked roots: "
+                      + ", ".join(roots)
+                      + " with extensions: "
+                      + ", ".join(sorted(extensions))
+                  )
+
+              pixels: list[tuple[int, int, int]] = []
+              trace_rows: list[dict[str, object]] = []
+              file_rows: list[dict[str, object]] = []
+
+              x = 0
+              y = 0
+              step_in_frame = 0
+
+              current_triplet_bits: list[str] = []
+              red_steps = 0
+              green_z_hits = 0
+              blue_steps = 0
+              triplet_start_bit_index = 0
+
+              total_bytes = 0
+              total_bits = 0
+              total_red_steps = 0
+              total_green_z_hits = 0
+              total_blue_steps = 0
+              source_file_count = 0
+
+              def emit_pixel(source_path: str, partial: bool) -> None:
+                  nonlocal current_triplet_bits
+                  nonlocal red_steps, green_z_hits, blue_steps
+                  nonlocal triplet_start_bit_index
+
+                  rgb = (red_steps * 85, green_z_hits * 85, blue_steps * 85)
+                  pixel_index = len(pixels)
+                  pixels.append(rgb)
+
+                  if len(trace_rows) < example_limit:
+                      trace_rows.append(
+                          {
+                              "pixelIndex": pixel_index,
+                              "sourcePathAtClose": source_path,
+                              "startBitIndex": triplet_start_bit_index,
+                              "bits": "".join(current_triplet_bits),
+                              "partialFinalPixel": "true" if partial else "false",
+                              "redChannelFromXRight0": red_steps,
+                              "greenChannelFromZLine": green_z_hits,
+                              "blueChannelFromYUp1": blue_steps,
+                              "rgb": f"{rgb[0]},{rgb[1]},{rgb[2]}",
+                              "zFormula": f"z = {rx}y - {uy}x",
+                          }
+                      )
+
+                  current_triplet_bits = []
+                  red_steps = 0
+                  green_z_hits = 0
+                  blue_steps = 0
+                  triplet_start_bit_index = total_bits
+
+              for path in files:
+                  rel = path.relative_to(repo_root).as_posix()
+                  data = path.read_bytes()
+                  if not data:
+                      continue
+
+                  source_file_count += 1
+                  file_start_bit = total_bits
+                  file_red = 0
+                  file_green = 0
+                  file_blue = 0
+
+                  for bit in bits_from_bytes(data):
+                      if not current_triplet_bits:
+                          triplet_start_bit_index = total_bits
+
+                      if step_in_frame >= frame_steps:
+                          x = 0
+                          y = 0
+                          step_in_frame = 0
+
+                      before_z = z_value(x, y, rx, uy)
+
+                      if bit == 0:
+                          nx, ny = x + 1, y
+                          red_steps += 1
+                          file_red += 1
+                          total_red_steps += 1
+                      else:
+                          nx, ny = x, y + 1
+                          blue_steps += 1
+                          file_blue += 1
+                          total_blue_steps += 1
+
+                      after_z = z_value(nx, ny, rx, uy)
+
+                      touches_z_again = step_in_frame > 0 and before_z != 0 and after_z == 0
+                      crosses_z = before_z * after_z < 0
+                      if touches_z_again or crosses_z:
+                          green_z_hits += 1
+                          file_green += 1
+                          total_green_z_hits += 1
+
+                      current_triplet_bits.append(str(bit))
+
+                      x = nx
+                      y = ny
+                      step_in_frame += 1
+                      total_bits += 1
+
+                      if len(current_triplet_bits) == 3:
+                          emit_pixel(rel, partial=False)
+
+                  total_bytes += len(data)
+                  file_bits = total_bits - file_start_bit
+                  file_rows.append(
+                      {
+                          "sourcePath": rel,
+                          "bytes": len(data),
+                          "bits": file_bits,
+                          "redXRight0Steps": file_red,
+                          "greenZLineHits": file_green,
+                          "blueYUp1Steps": file_blue,
+                      }
+                  )
+
+              partial_final_pixel = False
+              if current_triplet_bits:
+                  partial_final_pixel = True
+                  emit_pixel("final-partial-triplet", partial=True)
+
+              height = max(1, math.ceil(len(pixels) / width))
+              image = Image.new("RGB", (width, height), (0, 0, 0))
+
+              for index, rgb in enumerate(pixels):
+                  row = index // width
+                  col = index % width
+                  image.putpixel((col, row), rgb)
+
+              image_path = OUT_DIR / "APP_CODE_3BIT_ZRGB_IMAGE.png"
+              image.save(image_path)
+
+              with (OUT_DIR / "Data" / "FILE_SUMMARY.csv").open("w", newline="", encoding="utf-8") as f:
+                  fieldnames = [
+                      "sourcePath",
+                      "bytes",
+                      "bits",
+                      "redXRight0Steps",
+                      "greenZLineHits",
+                      "blueYUp1Steps",
+                  ]
+                  writer = csv.DictWriter(f, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(file_rows)
+
+              with (OUT_DIR / "Data" / "TRACE_TRIPLETS.csv").open("w", newline="", encoding="utf-8") as f:
+                  fieldnames = [
+                      "pixelIndex",
+                      "sourcePathAtClose",
+                      "startBitIndex",
+                      "bits",
+                      "partialFinalPixel",
+                      "redChannelFromXRight0",
+                      "greenChannelFromZLine",
+                      "blueChannelFromYUp1",
+                      "rgb",
+                      "zFormula",
+                  ]
+                  writer = csv.DictWriter(f, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(trace_rows)
+
+              summary = {
+                  "format": "dreamengin.application-code-3bit-zrgb-image.v1",
+                  "input": {
+                      "roots": roots,
+                      "extensions": sorted(extensions),
+                      "sourceFiles": source_file_count,
+                      "bytes": total_bytes,
+                      "bits": total_bits,
+                  },
+                  "pixelRule": {
+                      "bitsPerPixel": 3,
+                      "red": "count of 0/right/x steps in the triplet, scaled by 85",
+                      "green": "count of z-line contacts/crossings in the triplet, scaled by 85",
+                      "blue": "count of 1/up/y steps in the triplet, scaled by 85",
+                      "partialFinalPixel": partial_final_pixel,
+                  },
+                  "zLine": {
+                      "endpoint": [rx, uy],
+                      "formula": f"z = {rx}y - {uy}x",
+                      "lineCondition": "z = 0",
+                      "greenCondition": "before_z * after_z < 0 OR after_z == 0 after origin",
+                      "localFrameSteps": frame_steps,
+                  },
+                  "image": {
+                      "path": str(image_path),
+                      "width": width,
+                      "height": height,
+                      "pixels": len(pixels),
+                  },
+                  "totals": {
+                      "redXRight0Steps": total_red_steps,
+                      "greenZLineHits": total_green_z_hits,
+                      "blueYUp1Steps": total_blue_steps,
+                  },
+              }
+
+              with (OUT_DIR / "Metadata" / "APP_CODE_3BIT_ZRGB_IMAGE.json").open("w", encoding="utf-8") as f:
+                  json.dump(summary, f, indent=2)
+
+              readme = [
+                  "# DREAM Application Code 3-Bit ZRGB Image",
+                  "",
+                  "Application code is read as UTF-8 bytes, then converted to bits.",
+                  "",
+                  "Every three source bits produce one RGB pixel.",
+                  "",
+                  "Channel rule:",
+                  "",
+                  "- R = count of `0` bits / right / x steps in the triplet",
+                  "- G = count of z-line contacts/crossings in the triplet",
+                  "- B = count of `1` bits / up / y steps in the triplet",
+                  "",
+                  f"z-line: `z = {rx}y - {uy}x`",
+                  f"local reset length: `{frame_steps}` steps",
+                  "",
+                  "Each channel count is scaled by 85, so 0/1/2/3 becomes 0/85/170/255.",
+                  "",
+                  f"Image: `{image_path.name}`",
+                  f"Size: `{width} x {height}`",
+                  f"Pixels: `{len(pixels)}`",
+                  f"Source bits: `{total_bits}`",
+              ]
+              (OUT_DIR / "README.md").write_text("\n".join(readme) + "\n", encoding="utf-8")
+
+              print(f"sourceFiles={source_file_count}")
+              print(f"bytes={total_bytes}")
+              print(f"bits={total_bits}")
+              print(f"pixels={len(pixels)}")
+              print(f"image={width}x{height}")
+              print(f"zLine=z={rx}y-{uy}x")
+              print(f"output={image_path}")
+
+              return 0
+
+          raise SystemExit(main())
+          PY
+
+      - name: Upload 3-bit ZRGB image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-application-code-3bit-zrgb-image
+          path: dream-application-code-3bit-zrgb-image
+          if-no-files-found: error
