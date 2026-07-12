@@ -1,0 +1,840 @@
+name: DREAM UTF-8 Pascal Lattice Paths
+
+on:
+  workflow_dispatch:
+    inputs:
+      code_roots:
+        description: "Comma-separated product application code roots, in source order"
+        required: false
+        default: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
+      code_extensions:
+        description: "Comma-separated source-code extensions"
+        required: false
+        default: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
+      chunk_steps:
+        description: "Moves per path chunk. 16 matches n!/(r!u!) examples; 32 is denser."
+        required: false
+        default: "16"
+      cell_size:
+        description: "Grid cell size in pixels"
+        required: false
+        default: "58"
+      max_examples:
+        description: "Number of concrete code paths to draw in the side panel"
+        required: false
+        default: "14"
+
+permissions:
+  contents: read
+
+jobs:
+  utf8-pascal-lattice-paths:
+    name: Build Pascal lattice path map from actual code bits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PNG renderer
+        run: python3 -m pip install --user pillow
+
+      - name: Build CODE_PASCAL_LATTICE_PATHS.png
+        shell: bash
+        env:
+          CODE_ROOTS: ${{ inputs.code_roots || 'app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks' }}
+          CODE_EXTENSIONS: ${{ inputs.code_extensions || '.ts,.tsx,.js,.jsx,.mjs,.cjs' }}
+          CHUNK_STEPS: ${{ inputs.chunk_steps || '16' }}
+          CELL_SIZE: ${{ inputs.cell_size || '58' }}
+          MAX_EXAMPLES: ${{ inputs.max_examples || '14' }}
+        run: |
+          cat > /tmp/dream_utf8_pascal_lattice_paths.py <<'PY'
+          from __future__ import annotations
+
+          import csv
+          import json
+          import math
+          import os
+          import shutil
+          from collections import defaultdict
+          from pathlib import Path
+          from typing import Iterable, List
+
+          from PIL import Image, ImageDraw, ImageFont
+
+          OUT_DIR = Path(".dream-utf8-pascal-lattice-paths")
+
+          EXCLUDE_DIRS = {
+              ".git", ".github", ".ci",
+              "node_modules", ".next", "out", "dist", "build", "coverage",
+              ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
+              ".dream-utf8-pascal-lattice-paths",
+          }
+
+          EXCLUDE_FILE_NAMES = {
+              "package-lock.json",
+              "pnpm-lock.yaml",
+              "yarn.lock",
+              "bun.lockb",
+              "tsconfig.tsbuildinfo",
+          }
+
+          ROOT_COLORS: dict[str, tuple[int, int, int]] = {
+              "app": (52, 152, 219),
+              "components": (46, 204, 113),
+              "coresurfaces": (26, 188, 156),
+              "daydreams": (241, 196, 15),
+              "dr-eams": (230, 126, 34),
+              "dreamdmbar": (155, 89, 182),
+              "dreamr": (233, 30, 99),
+              "engine": (231, 76, 60),
+              "engins": (243, 156, 18),
+              "hooks": (127, 140, 141),
+          }
+
+          MAX_FILE_BYTES = 5_000_000
+
+
+          def code_roots() -> List[str]:
+              raw = os.environ.get("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
+              return [item.strip().strip("/") for item in raw.split(",") if item.strip()]
+
+
+          def code_extensions() -> set[str]:
+              raw = os.environ.get("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs")
+              return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+
+          def chunk_steps() -> int:
+              raw = os.environ.get("CHUNK_STEPS", "16").strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = 16
+              return max(4, min(value, 64))
+
+
+          def cell_size() -> int:
+              raw = os.environ.get("CELL_SIZE", "58").strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = 58
+              return max(18, min(value, 120))
+
+
+          def max_examples() -> int:
+              raw = os.environ.get("MAX_EXAMPLES", "14").strip()
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = 14
+              return max(0, min(value, 60))
+
+
+          def should_include(path: Path, repo_root: Path, roots_set: set[str], extensions: set[str]) -> bool:
+              if not path.is_file():
+                  return False
+
+              rel = path.relative_to(repo_root)
+
+              if any(part in EXCLUDE_DIRS for part in rel.parts):
+                  return False
+
+              if path.name in EXCLUDE_FILE_NAMES:
+                  return False
+
+              top = rel.as_posix().split("/", 1)[0]
+              if top not in roots_set:
+                  return False
+
+              if path.suffix.lower() not in extensions:
+                  return False
+
+              if path.stat().st_size > MAX_FILE_BYTES:
+                  return False
+
+              return True
+
+
+          def iter_code_files(repo_root: Path) -> Iterable[Path]:
+              ordered_roots = code_roots()
+              roots_set = set(ordered_roots)
+              extensions = code_extensions()
+
+              for root_name in ordered_roots:
+                  root_path = repo_root / root_name
+                  if not root_path.exists():
+                      continue
+
+                  for path in sorted(root_path.rglob("*")):
+                      if should_include(path, repo_root, roots_set, extensions):
+                          yield path
+
+
+          def iter_utf8_bits(data: bytes) -> Iterable[int]:
+              for byte in data:
+                  for shift in range(7, -1, -1):
+                      yield (byte >> shift) & 1
+
+
+          def load_font(size: int, bold: bool = False) -> ImageFont.ImageFont:
+              candidates = [
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                  "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+              ]
+              for candidate in candidates:
+                  if Path(candidate).exists():
+                      return ImageFont.truetype(candidate, size=size)
+              return ImageFont.load_default()
+
+
+          def write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def mix(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> tuple[int, int, int]:
+              t = max(0.0, min(1.0, t))
+              return (
+                  int(a[0] * (1 - t) + b[0] * t),
+                  int(a[1] * (1 - t) + b[1] * t),
+                  int(a[2] * (1 - t) + b[2] * t),
+              )
+
+
+          def dominant_root(
+              root_counts: dict[str, int],
+              root_totals: dict[str, int],
+          ) -> tuple[str | None, int, float]:
+              best_root = None
+              best_value = 0
+              best_score = 0.0
+
+              for root, value in root_counts.items():
+                  if value <= 0:
+                      continue
+
+                  total = max(1, root_totals.get(root, 1))
+                  # Normalized concentration prevents large roots from owning the whole map.
+                  score = (value / total) * math.log1p(value)
+
+                  if score > best_score:
+                      best_score = score
+                      best_root = root
+                      best_value = value
+
+              return best_root, best_value, best_score
+
+
+          def add_chunk(
+              bits: list[int],
+              root: str,
+              edge_counts: dict[tuple[int, int, int, int], int],
+              point_counts: dict[tuple[int, int], int],
+              endpoint_counts: dict[tuple[int, int], int],
+              root_edge_counts: dict[tuple[int, int, int, int], dict[str, int]],
+              root_point_counts: dict[tuple[int, int], dict[str, int]],
+              root_endpoint_counts: dict[tuple[int, int], dict[str, int]],
+              root_total_edges: dict[str, int],
+              examples: list[dict],
+              source_path: str,
+              chunk_index: int,
+              max_example_count: int,
+          ) -> None:
+              """
+              Lattice/Pascal interpretation.
+
+              0 = R/right step.
+              1 = U/up step.
+
+              A chunk with r right moves and u up moves ends at (r,u).
+              Pascal/binomial count of possible orderings:
+
+                  (r+u)! / (r! u!) = C(r+u, u)
+              """
+              x = 0
+              y = 0
+
+              point_counts[(x, y)] += 1
+              root_point_counts[(x, y)][root] += 1
+
+              path_points = [(x, y)]
+              moves = []
+
+              for bit in bits:
+                  if bit == 0:
+                      nx, ny = x + 1, y
+                      moves.append("R")
+                  else:
+                      nx, ny = x, y + 1
+                      moves.append("U")
+
+                  edge = (x, y, nx, ny)
+                  edge_counts[edge] += 1
+                  root_edge_counts[edge][root] += 1
+                  root_total_edges[root] += 1
+
+                  x, y = nx, ny
+                  point_counts[(x, y)] += 1
+                  root_point_counts[(x, y)][root] += 1
+                  path_points.append((x, y))
+
+              endpoint = (x, y)
+              endpoint_counts[endpoint] += 1
+              root_endpoint_counts[endpoint][root] += 1
+
+              if len(examples) < max_example_count:
+                  r = moves.count("R")
+                  u = moves.count("U")
+                  coefficient = math.comb(r + u, u)
+                  examples.append({
+                      "sourcePath": source_path,
+                      "root": root,
+                      "chunkIndex": chunk_index,
+                      "moves": "".join(moves),
+                      "rightMoves": r,
+                      "upMoves": u,
+                      "endpointX": x,
+                      "endpointY": y,
+                      "pascalCoefficient": coefficient,
+                      "pathPoints": path_points,
+                  })
+
+
+          def grid_to_px(x: int, y: int, origin_x: int, origin_y: int, cell: int) -> tuple[int, int]:
+              return (origin_x + x * cell, origin_y - y * cell)
+
+
+          def draw_example_path(
+              draw: ImageDraw.ImageDraw,
+              points: list[tuple[int, int]],
+              origin_x: int,
+              origin_y: int,
+              cell: int,
+              color: tuple[int, int, int],
+              width: int,
+          ) -> None:
+              if len(points) < 2:
+                  return
+
+              pix = [grid_to_px(x, y, origin_x, origin_y, cell) for x, y in points]
+              draw.line(pix, fill=color, width=width, joint="curve")
+
+              sx, sy = pix[0]
+              ex, ey = pix[-1]
+              r = max(3, cell // 9)
+              draw.ellipse([sx - r, sy - r, sx + r, sy + r], fill=(235, 235, 235))
+              draw.ellipse([ex - r - 1, ey - r - 1, ex + r + 1, ey + r + 1], fill=color)
+
+
+          def draw_lattice_map(
+              output: Path,
+              n: int,
+              edge_counts: dict[tuple[int, int, int, int], int],
+              point_counts: dict[tuple[int, int], int],
+              endpoint_counts: dict[tuple[int, int], int],
+              root_edge_counts: dict[tuple[int, int, int, int], dict[str, int]],
+              root_point_counts: dict[tuple[int, int], dict[str, int]],
+              root_endpoint_counts: dict[tuple[int, int], dict[str, int]],
+              root_total_edges: dict[str, int],
+              root_rows: list[dict],
+              file_rows: list[dict],
+              examples: list[dict],
+              total_bits: int,
+              total_chunks: int,
+          ) -> None:
+              cell = cell_size()
+              margin_l = 90
+              margin_t = 160
+              margin_b = 110
+              panel_w = 640
+
+              grid_w = n * cell
+              grid_h = n * cell
+              width = margin_l + grid_w + panel_w
+              height = margin_t + grid_h + margin_b
+
+              bg = (8, 13, 28)
+              grid_color = (37, 48, 67)
+              muted = (170, 180, 198)
+              white = (238, 242, 248)
+
+              img = Image.new("RGB", (width, height), bg)
+              draw = ImageDraw.Draw(img)
+
+              title_font = load_font(34, True)
+              header_font = load_font(22, True)
+              text_font = load_font(16)
+              small_font = load_font(13)
+              mono_font = load_font(13)
+
+              draw.text((34, 24), "DREAM UTF-8 PASCAL LATTICE PATHS", fill=white, font=title_font)
+              draw.text(
+                  (34, 72),
+                  "0 = R/right, 1 = U/up. Endpoint (R,U) has Pascal count (R+U)! / (R! U!).",
+                  fill=muted,
+                  font=text_font,
+              )
+
+              origin_x = margin_l
+              origin_y = margin_t + grid_h
+
+              # Grid.
+              for i in range(n + 1):
+                  x0, y0 = grid_to_px(i, 0, origin_x, origin_y, cell)
+                  x1, y1 = grid_to_px(i, n, origin_x, origin_y, cell)
+                  draw.line([(x0, y0), (x1, y1)], fill=grid_color, width=1)
+
+                  x0, y0 = grid_to_px(0, i, origin_x, origin_y, cell)
+                  x1, y1 = grid_to_px(n, i, origin_x, origin_y, cell)
+                  draw.line([(x0, y0), (x1, y1)], fill=grid_color, width=1)
+
+              max_edge = max(edge_counts.values(), default=1)
+              max_point = max(point_counts.values(), default=1)
+              max_endpoint = max(endpoint_counts.values(), default=1)
+
+              # Draw aggregate edges.
+              for edge, count in sorted(edge_counts.items(), key=lambda item: item[1]):
+                  x0, y0, x1, y1 = edge
+                  root, _value, _score = dominant_root(root_edge_counts[edge], root_total_edges)
+                  base = ROOT_COLORS.get(root or "", (180, 180, 180))
+
+                  t = math.log1p(count) / math.log1p(max_edge)
+                  color = mix((50, 55, 70), base, 0.25 + 0.75 * t)
+                  width_px = max(1, int(1 + t * 10))
+
+                  p0 = grid_to_px(x0, y0, origin_x, origin_y, cell)
+                  p1 = grid_to_px(x1, y1, origin_x, origin_y, cell)
+                  draw.line([p0, p1], fill=color, width=width_px)
+
+              # Draw concrete sample paths on top, like the RRR...UUU examples.
+              for idx, ex in enumerate(examples[:max_examples()]):
+                  base = ROOT_COLORS.get(ex["root"], (255, 255, 255))
+                  color = mix(base, (255, 255, 255), 0.15)
+                  draw_example_path(
+                      draw,
+                      ex["pathPoints"],
+                      origin_x,
+                      origin_y,
+                      cell,
+                      color,
+                      max(2, cell // 9),
+                  )
+
+              # Draw points.
+              for point, count in point_counts.items():
+                  x, y = point
+                  root, _value, _score = dominant_root(root_point_counts[point], root_total_edges)
+                  base = ROOT_COLORS.get(root or "", (190, 190, 190))
+                  t = math.log1p(count) / math.log1p(max_point)
+                  color = mix((80, 80, 95), base, 0.35 + 0.65 * t)
+
+                  px, py = grid_to_px(x, y, origin_x, origin_y, cell)
+                  r = max(3, int(3 + t * (cell * 0.18)))
+                  draw.ellipse([px - r, py - r, px + r, py + r], fill=color, outline=(10, 10, 12))
+
+              # Draw/label most used endpoints.
+              top_endpoints = sorted(endpoint_counts.items(), key=lambda item: item[1], reverse=True)[:12]
+              for (x, y), count in top_endpoints:
+                  px, py = grid_to_px(x, y, origin_x, origin_y, cell)
+                  t = math.log1p(count) / math.log1p(max_endpoint)
+                  r = max(6, int(8 + t * 18))
+                  draw.ellipse([px - r, py - r, px + r, py + r], outline=(255, 255, 255), width=2)
+
+                  coeff = math.comb(x + y, y)
+                  label = f"({x},{y}) C={coeff:,}"
+                  draw.text((px + 8, py - 18), label, fill=white, font=small_font)
+
+              # Axis labels.
+              draw.text((origin_x + grid_w // 2 - 40, origin_y + 36), "R / 0 / x", fill=(240, 220, 60), font=text_font)
+              draw.text((origin_x - 74, origin_y - grid_h // 2), "U / 1 / y", fill=(230, 90, 210), font=text_font)
+
+              # Formula panel.
+              panel_x = margin_l + grid_w + 44
+              panel_y = margin_t
+
+              draw.rounded_rectangle(
+                  [panel_x, panel_y, panel_x + panel_w - 80, panel_y + 450],
+                  radius=12,
+                  outline=(88, 104, 130),
+                  fill=(12, 20, 36),
+              )
+
+              y = panel_y + 22
+              draw.text((panel_x + 20, y), "WHAT THIS IS", fill=(155, 230, 255), font=header_font)
+              y += 40
+
+              lines = [
+                  "This is the grid/lattice interpretation.",
+                  "",
+                  "Each code-bit chunk is an ordered path:",
+                  "0 -> R",
+                  "1 -> U",
+                  "",
+                  "If a chunk has R right moves and U up moves:",
+                  "",
+                  "  endpoint = (R,U)",
+                  "  total possible paths = (R+U)! / (R! U!)",
+                  "",
+                  f"moves per chunk: {n}",
+                  f"chunks/paths: {total_chunks:,}",
+                  f"source bits read: {total_bits:,}",
+                  f"files read: {len(file_rows):,}",
+              ]
+
+              for line in lines:
+                  draw.text((panel_x + 20, y), line, fill=white if line else muted, font=text_font)
+                  y += 23
+
+              y += 16
+              draw.text((panel_x + 20, y), "ROOT COLORS", fill=white, font=header_font)
+              y += 34
+
+              for root in root_rows:
+                  root_name = root["root"]
+                  color = ROOT_COLORS.get(root_name, (180, 180, 180))
+                  draw.rectangle([panel_x + 22, y + 2, panel_x + 42, y + 22], fill=color)
+                  label = f"{root_name}: {root['files']} files, {root['paths']} paths"
+                  draw.text((panel_x + 54, y), label, fill=white, font=small_font)
+                  y += 24
+
+              # Example moves panel bottom if room.
+              ex_y = y + 22
+              draw.text((panel_x + 20, ex_y), "EXAMPLE CODE PATHS", fill=white, font=header_font)
+              ex_y += 32
+
+              for ex in examples[:8]:
+                  moves = ex["moves"]
+                  if len(moves) > 24:
+                      moves = moves[:24] + "…"
+                  coeff = ex["pascalCoefficient"]
+                  label = f"{ex['root']}: {moves}  C={coeff:,}"
+                  draw.text((panel_x + 20, ex_y), label, fill=ROOT_COLORS.get(ex["root"], white), font=mono_font)
+                  ex_y += 21
+
+              output.parent.mkdir(parents=True, exist_ok=True)
+              img.save(output)
+
+
+          def main() -> int:
+              repo_root = Path(".").resolve()
+              n = chunk_steps()
+
+              if OUT_DIR.exists():
+                  shutil.rmtree(OUT_DIR)
+
+              (OUT_DIR / "Data").mkdir(parents=True)
+              (OUT_DIR / ".de").mkdir(parents=True)
+
+              edge_counts: dict[tuple[int, int, int, int], int] = defaultdict(int)
+              point_counts: dict[tuple[int, int], int] = defaultdict(int)
+              endpoint_counts: dict[tuple[int, int], int] = defaultdict(int)
+
+              root_edge_counts: dict[tuple[int, int, int, int], dict[str, int]] = defaultdict(lambda: defaultdict(int))
+              root_point_counts: dict[tuple[int, int], dict[str, int]] = defaultdict(lambda: defaultdict(int))
+              root_endpoint_counts: dict[tuple[int, int], dict[str, int]] = defaultdict(lambda: defaultdict(int))
+
+              root_total_edges: dict[str, int] = defaultdict(int)
+
+              file_rows: list[dict] = []
+              root_map: dict[str, dict] = {}
+              examples: list[dict] = []
+
+              total_chunks = 0
+              total_bits = 0
+
+              for file_path in iter_code_files(repo_root):
+                  source_path = file_path.relative_to(repo_root).as_posix()
+                  root = source_path.split("/", 1)[0]
+
+                  try:
+                      text = file_path.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      continue
+
+                  data = text.encode("utf-8")
+                  if not data:
+                      continue
+
+                  if root not in root_map:
+                      root_map[root] = {
+                          "root": root,
+                          "files": 0,
+                          "utf8Bytes": 0,
+                          "bits": 0,
+                          "paths": 0,
+                      }
+
+                  bits_buffer: list[int] = []
+                  file_chunks = 0
+                  file_bits = 0
+
+                  for bit in iter_utf8_bits(data):
+                      bits_buffer.append(bit)
+                      file_bits += 1
+                      total_bits += 1
+
+                      if len(bits_buffer) == n:
+                          add_chunk(
+                              bits_buffer,
+                              root,
+                              edge_counts,
+                              point_counts,
+                              endpoint_counts,
+                              root_edge_counts,
+                              root_point_counts,
+                              root_endpoint_counts,
+                              root_total_edges,
+                              examples,
+                              source_path,
+                              file_chunks,
+                              max_examples(),
+                          )
+                          total_chunks += 1
+                          file_chunks += 1
+                          bits_buffer = []
+
+                  if bits_buffer:
+                      bits_buffer = bits_buffer + [0] * (n - len(bits_buffer))
+                      add_chunk(
+                          bits_buffer,
+                          root,
+                          edge_counts,
+                          point_counts,
+                          endpoint_counts,
+                          root_edge_counts,
+                          root_point_counts,
+                          root_endpoint_counts,
+                          root_total_edges,
+                          examples,
+                          source_path,
+                          file_chunks,
+                          max_examples(),
+                      )
+                      total_chunks += 1
+                      file_chunks += 1
+
+                  file_rows.append({
+                      "sourcePath": source_path,
+                      "root": root,
+                      "utf8Bytes": len(data),
+                      "bits": file_bits,
+                      "paths": file_chunks,
+                  })
+
+                  root_map[root]["files"] += 1
+                  root_map[root]["utf8Bytes"] += len(data)
+                  root_map[root]["bits"] += file_bits
+                  root_map[root]["paths"] += file_chunks
+
+              root_rows = [root_map[root] for root in code_roots() if root in root_map]
+
+              edge_rows = []
+              for edge, count in sorted(edge_counts.items()):
+                  x0, y0, x1, y1 = edge
+                  root, root_value, root_score = dominant_root(root_edge_counts[edge], root_total_edges)
+                  edge_rows.append({
+                      "x0": x0,
+                      "y0": y0,
+                      "x1": x1,
+                      "y1": y1,
+                      "visits": count,
+                      "dominantRoot": root or "",
+                      "dominantRootVisits": root_value,
+                      "dominantRootConcentrationScore": root_score,
+                  })
+
+              point_rows = []
+              for point, count in sorted(point_counts.items()):
+                  x, y = point
+                  root, root_value, root_score = dominant_root(root_point_counts[point], root_total_edges)
+                  point_rows.append({
+                      "x": x,
+                      "y": y,
+                      "visits": count,
+                      "dominantRoot": root or "",
+                      "dominantRootVisits": root_value,
+                      "dominantRootConcentrationScore": root_score,
+                  })
+
+              endpoint_rows = []
+              for point, count in sorted(endpoint_counts.items()):
+                  x, y = point
+                  root, root_value, root_score = dominant_root(root_endpoint_counts[point], root_total_edges)
+                  endpoint_rows.append({
+                      "rightMoves": x,
+                      "upMoves": y,
+                      "totalMoves": x + y,
+                      "pascalCoefficient": math.comb(x + y, y),
+                      "actualCodeChunks": count,
+                      "dominantRoot": root or "",
+                      "dominantRootChunks": root_value,
+                      "dominantRootConcentrationScore": root_score,
+                  })
+
+              example_rows = []
+              for ex in examples:
+                  example_rows.append({
+                      "sourcePath": ex["sourcePath"],
+                      "root": ex["root"],
+                      "chunkIndex": ex["chunkIndex"],
+                      "moves": ex["moves"],
+                      "rightMoves": ex["rightMoves"],
+                      "upMoves": ex["upMoves"],
+                      "endpointX": ex["endpointX"],
+                      "endpointY": ex["endpointY"],
+                      "pascalCoefficient": ex["pascalCoefficient"],
+                  })
+
+              draw_lattice_map(
+                  OUT_DIR / "CODE_PASCAL_LATTICE_PATHS.png",
+                  n,
+                  edge_counts,
+                  point_counts,
+                  endpoint_counts,
+                  root_edge_counts,
+                  root_point_counts,
+                  root_endpoint_counts,
+                  root_total_edges,
+                  root_rows,
+                  file_rows,
+                  examples,
+                  total_bits,
+                  total_chunks,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "LATTICE_EDGES.csv",
+                  ["x0", "y0", "x1", "y1", "visits", "dominantRoot", "dominantRootVisits", "dominantRootConcentrationScore"],
+                  edge_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "LATTICE_POINTS.csv",
+                  ["x", "y", "visits", "dominantRoot", "dominantRootVisits", "dominantRootConcentrationScore"],
+                  point_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "ENDPOINT_COUNTS.csv",
+                  [
+                      "rightMoves", "upMoves", "totalMoves", "pascalCoefficient",
+                      "actualCodeChunks", "dominantRoot", "dominantRootChunks",
+                      "dominantRootConcentrationScore",
+                  ],
+                  endpoint_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "EXAMPLE_PATHS.csv",
+                  [
+                      "sourcePath", "root", "chunkIndex", "moves", "rightMoves", "upMoves",
+                      "endpointX", "endpointY", "pascalCoefficient",
+                  ],
+                  example_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "FILES_READ.csv",
+                  ["sourcePath", "root", "utf8Bytes", "bits", "paths"],
+                  file_rows,
+              )
+
+              write_csv(
+                  OUT_DIR / "Data" / "ROOT_PATHS.csv",
+                  ["root", "files", "utf8Bytes", "bits", "paths"],
+                  root_rows,
+              )
+
+              manifest = {
+                  "format": "dreamengin.utf8-pascal-lattice-paths.v1",
+                  "mainImage": "CODE_PASCAL_LATTICE_PATHS.png",
+                  "operation": "UTF-8 code bits become ordered R/U lattice paths; endpoints use Pascal/binomial path counts",
+                  "important": "This is the lattice-path interpretation: 0=R, 1=U, endpoint (R,U), possible paths C(R+U,U). It is not a bar chart.",
+                  "bitMeaning": {
+                      "0": "R / right step / x + 1",
+                      "1": "U / up step / y + 1",
+                  },
+                  "formula": "(R+U)! / (R! U!) = C(R+U, U)",
+                  "includedRoots": code_roots(),
+                  "includedExtensions": sorted(code_extensions()),
+                  "chunkSteps": n,
+                  "totals": {
+                      "files": len(file_rows),
+                      "sourceBits": total_bits,
+                      "paths": total_chunks,
+                  },
+                  "outputs": {
+                      "mainImage": "CODE_PASCAL_LATTICE_PATHS.png",
+                      "edges": "Data/LATTICE_EDGES.csv",
+                      "points": "Data/LATTICE_POINTS.csv",
+                      "endpoints": "Data/ENDPOINT_COUNTS.csv",
+                      "examples": "Data/EXAMPLE_PATHS.csv",
+                      "files": "Data/FILES_READ.csv",
+                      "roots": "Data/ROOT_PATHS.csv",
+                  },
+              }
+
+              (OUT_DIR / ".de" / "pascal-lattice-paths-map.json").write_text(
+                  json.dumps(manifest, indent=2),
+                  encoding="utf-8",
+              )
+
+              readme = [
+                  "# DREAM UTF-8 Pascal Lattice Paths",
+                  "",
+                  "Open:",
+                  "",
+                  "```text",
+                  "CODE_PASCAL_LATTICE_PATHS.png",
+                  "```",
+                  "",
+                  "Meaning:",
+                  "",
+                  "```text",
+                  "0 bit = R / right",
+                  "1 bit = U / up",
+                  "chunk endpoint = (R,U)",
+                  "number of possible ordered paths = (R+U)! / (R! U!)",
+                  "```",
+                  "",
+                  "Data files:",
+                  "",
+                  "```text",
+                  "Data/LATTICE_EDGES.csv",
+                  "Data/LATTICE_POINTS.csv",
+                  "Data/ENDPOINT_COUNTS.csv",
+                  "Data/EXAMPLE_PATHS.csv",
+                  "Data/FILES_READ.csv",
+                  "Data/ROOT_PATHS.csv",
+                  "```",
+              ]
+
+              (OUT_DIR / "README.md").write_text("\n".join(readme), encoding="utf-8")
+
+              print("Created output folder:", OUT_DIR)
+              print("Open first: CODE_PASCAL_LATTICE_PATHS.png")
+              print(f"chunkSteps={n}")
+              print(f"files={len(file_rows)}")
+              print(f"sourceBits={total_bits}")
+              print(f"paths={total_chunks}")
+
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python3 /tmp/dream_utf8_pascal_lattice_paths.py
+
+      - name: Upload Pascal lattice paths artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-pascal-lattice-paths
+          path: .dream-utf8-pascal-lattice-paths/
+          if-no-files-found: error
