@@ -16,7 +16,6 @@ jobs:
       IMAGE_WIDTH: "2048"
       Z_RIGHT: "9"
       Z_UP: "7"
-      EXAMPLE_TRIPLETS: "64"
       OUT_DIR: "dream-application-code-3bit-zrgb-image"
     steps:
       - name: Checkout repository
@@ -116,7 +115,6 @@ jobs:
               width = int_env("IMAGE_WIDTH", 2048, 1, 32768)
               rx = int_env("Z_RIGHT", 9, 1, 1000000)
               uy = int_env("Z_UP", 7, 1, 1000000)
-              example_limit = int_env("EXAMPLE_TRIPLETS", 64, 0, 100000)
 
               # Local path reset is fixed from the z endpoint.
               # For (9,7), each local frame is 16 source-bit steps.
@@ -132,7 +130,6 @@ jobs:
                   )
 
               pixels: list[tuple[int, int, int]] = []
-              trace_rows: list[dict[str, object]] = []
               file_rows: list[dict[str, object]] = []
 
               x = 0
@@ -143,8 +140,6 @@ jobs:
               red_steps = 0
               green_z_hits = 0
               blue_steps = 0
-              triplet_start_bit_index = 0
-
               total_bytes = 0
               total_bits = 0
               total_red_steps = 0
@@ -155,33 +150,15 @@ jobs:
               def emit_pixel(source_path: str, partial: bool) -> None:
                   nonlocal current_triplet_bits
                   nonlocal red_steps, green_z_hits, blue_steps
-                  nonlocal triplet_start_bit_index
 
                   rgb = (red_steps * 85, green_z_hits * 85, blue_steps * 85)
                   pixel_index = len(pixels)
                   pixels.append(rgb)
 
-                  if len(trace_rows) < example_limit:
-                      trace_rows.append(
-                          {
-                              "pixelIndex": pixel_index,
-                              "sourcePathAtClose": source_path,
-                              "startBitIndex": triplet_start_bit_index,
-                              "bits": "".join(current_triplet_bits),
-                              "partialFinalPixel": "true" if partial else "false",
-                              "redChannelFromXRight0": red_steps,
-                              "greenChannelFromZLine": green_z_hits,
-                              "blueChannelFromYUp1": blue_steps,
-                              "rgb": f"{rgb[0]},{rgb[1]},{rgb[2]}",
-                              "zFormula": f"z = {rx}y - {uy}x",
-                          }
-                      )
-
                   current_triplet_bits = []
                   red_steps = 0
                   green_z_hits = 0
                   blue_steps = 0
-                  triplet_start_bit_index = total_bits
 
               for path in files:
                   rel = path.relative_to(repo_root).as_posix()
@@ -196,9 +173,6 @@ jobs:
                   file_blue = 0
 
                   for bit in bits_from_bytes(data):
-                      if not current_triplet_bits:
-                          triplet_start_bit_index = total_bits
-
                       if step_in_frame >= frame_steps:
                           x = 0
                           y = 0
@@ -278,25 +252,8 @@ jobs:
                   writer.writeheader()
                   writer.writerows(file_rows)
 
-              with (OUT_DIR / "Data" / "TRACE_TRIPLETS.csv").open("w", newline="", encoding="utf-8") as f:
-                  fieldnames = [
-                      "pixelIndex",
-                      "sourcePathAtClose",
-                      "startBitIndex",
-                      "bits",
-                      "partialFinalPixel",
-                      "redChannelFromXRight0",
-                      "greenChannelFromZLine",
-                      "blueChannelFromYUp1",
-                      "rgb",
-                      "zFormula",
-                  ]
-                  writer = csv.DictWriter(f, fieldnames=fieldnames)
-                  writer.writeheader()
-                  writer.writerows(trace_rows)
-
               summary = {
-                  "format": "dreamengin.application-code-3bit-zrgb-image.v1",
+                  "format": "dreamengin.application-code-3bit-zrgb-image.v2",
                   "input": {
                       "roots": roots,
                       "extensions": sorted(extensions),
