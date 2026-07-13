@@ -1,22 +1,24 @@
-name: DREAM Application Code Center RGB Subpixel Bits WebP
-run-name: DREAM Application Code Center RGB Subpixel Bits WebP
+name: DREAM Application Code Pascal 3-Bit Pair PNG PDF
+run-name: DREAM Application Code Pascal 3-Bit Pair PNG PDF
 
 on:
   workflow_dispatch:
+    inputs:
+      cell_size:
+        description: "Visible pixels per Pascal cell in the output PNG"
+        required: false
+        default: "4"
+      max_png_dimension:
+        description: "Safety limit for PNG width/height in pixels"
+        required: false
+        default: "20000"
 
 permissions:
   contents: read
 
 jobs:
-  dream-application-code-center-rgb-subpixel-bits-webp:
+  dream-application-code-pascal-3bit-pair-png-pdf:
     runs-on: ubuntu-latest
-    env:
-      CODE_ROOTS: "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks"
-      CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
-      Z_RIGHT: "9"
-      Z_UP: "7"
-      CELL_SIZE: "2" # Set to 32 for HD AI visibility
-      OUT_DIR: "dream-application-code-center-rgb-subpixel-bits-webp"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,319 +26,417 @@ jobs:
       - name: Install image dependency
         run: python3 -m pip install --upgrade pillow
 
-      - name: Build center-start RGB subpixel bit image
+      - name: Build Pascal 3-bit pair PNG and color PDF
+        env:
+          CELL_SIZE: ${{ inputs.cell_size }}
+          MAX_PNG_DIMENSION: ${{ inputs.max_png_dimension }}
         run: |
           python3 - <<'PY'
           from __future__ import annotations
 
-          import csv
           import json
           import math
           import os
           from pathlib import Path
           from typing import Iterable
 
-          from PIL import Image
+          from PIL import Image, ImageDraw, ImageFont
 
-          OUT_DIR = Path(os.environ["OUT_DIR"])
+          # =============================================================================
+          # DREAM APPLICATION CODE -> UTF-8 BITS -> 3-BIT RGB -> PASCAL TRIANGLE PNG + PDF
+          # =============================================================================
+          #
+          # Unit:
+          #   3 source bits = 0.375 bytes = 1 Pascal cell
+          #
+          # 3-bit RGB mapping:
+          #   000 = black
+          #   100 = red
+          #   010 = green
+          #   001 = blue
+          #   110 = yellow
+          #   101 = magenta
+          #   011 = cyan
+          #   111 = white
+          #
+          # 4 structural pair-groups:
+          #   Group A = 000 / 111 = black / white      = extremes
+          #   Group B = 100 / 001 = red / blue         = outer singletons
+          #   Group C = 110 / 011 = yellow / cyan      = adjacent doubles
+          #   Group D = 101 / 010 = magenta / green    = alternating center-vs-outer
+          #
+          # This version outputs PNG instead of WebP so you get more visible pixels.
+          # Each Pascal cell is rendered as a square block of CELL_SIZE x CELL_SIZE pixels.
+          # =============================================================================
+
+          OUT_DIR = Path("dream-application-code-pascal-3bit-pair-png-pdf")
           OUT_DIR.mkdir(parents=True, exist_ok=True)
           (OUT_DIR / "Data").mkdir(parents=True, exist_ok=True)
           (OUT_DIR / "Metadata").mkdir(parents=True, exist_ok=True)
 
+          APP_ROOTS = [
+              "app",
+              "components",
+              "coresurfaces",
+              "daydreams",
+              "dr-eams",
+              "dreamdmbar",
+              "dreamr",
+              "engine",
+              "engins",
+              "hooks",
+          ]
+
+          CODE_EXTENSIONS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"}
           EXCLUDED_DIRS = {
-              ".git", ".github", ".ci",
-              "node_modules", ".next", "dist", "build", "coverage",
-              ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
-              os.environ["OUT_DIR"],
+              ".git", ".github", ".ci", "node_modules", ".next", "dist", "build",
+              "coverage", ".turbo", ".vercel", ".cache", "__pycache__", ".pytest_cache",
+              str(OUT_DIR),
           }
 
-          def csv_env(name: str, default: str) -> list[str]:
-              raw = os.environ.get(name, default).strip()
-              return [x.strip() for x in raw.split(",") if x.strip()]
+          RGB_BY_BITS = {
+              "000": (0, 0, 0),
+              "100": (255, 0, 0),
+              "010": (0, 255, 0),
+              "001": (0, 0, 255),
+              "110": (255, 255, 0),
+              "101": (255, 0, 255),
+              "011": (0, 255, 255),
+              "111": (255, 255, 255),
+          }
+          PAIR_GROUP_BY_BITS = {
+              "000": "A", "111": "A",
+              "100": "B", "001": "B",
+              "110": "C", "011": "C",
+              "101": "D", "010": "D",
+          }
+          PAIR_GROUP_LABELS = {
+              "A": "000 / 111 = black / white = extremes",
+              "B": "100 / 001 = red / blue = outer singletons",
+              "C": "110 / 011 = yellow / cyan = adjacent doubles",
+              "D": "101 / 010 = magenta / green = alternating center-vs-outer",
+          }
+          BLACK = (0, 0, 0)
+          WHITE = (255, 255, 255)
+          PDF_PAGE_SIZE = (2550, 3300)
 
-          def int_env(name: str, default: int) -> int:
+
+          def env_int(name: str, default: int, minimum: int = 1, maximum: int = 1000) -> int:
               raw = os.environ.get(name, str(default)).strip()
-              value = int(raw)
-              if value < 1:
-                  raise ValueError(f"{name} must be positive")
-              return value
+              try:
+                  value = int(raw)
+              except ValueError:
+                  value = default
+              return max(minimum, min(maximum, value))
 
-          def source_files(repo_root: Path, roots: list[str], extensions: set[str]) -> list[Path]:
-              found: list[Path] = []
-              for root_name in roots:
+
+          def application_source_files(repo_root: Path) -> list[Path]:
+              files: list[Path] = []
+              for root_name in APP_ROOTS:
                   root = repo_root / root_name
                   if not root.exists():
                       continue
-                  paths = root.rglob("*") if root.is_dir() else [root]
-                  for path in paths:
+                  candidates = root.rglob("*") if root.is_dir() else [root]
+                  for path in candidates:
                       if not path.is_file():
                           continue
-                      rel_parts = path.relative_to(repo_root).parts
-                      if any(part in EXCLUDED_DIRS for part in rel_parts):
+                      parts = path.relative_to(repo_root).parts
+                      if any(part in EXCLUDED_DIRS for part in parts):
                           continue
-                      if path.suffix in extensions:
-                          found.append(path)
-              return sorted(found, key=lambda p: str(p.relative_to(repo_root)).lower())
+                      if path.suffix in CODE_EXTENSIONS:
+                          files.append(path)
+              return sorted(files, key=lambda p: str(p.relative_to(repo_root)).lower())
+
 
           def bits_from_bytes(data: bytes) -> Iterable[int]:
               for byte in data:
                   for shift in range(7, -1, -1):
                       yield (byte >> shift) & 1
 
-          def z_value(x: int, y: int, rx: int, uy: int) -> int:
-              return rx * y - uy * x
 
-          def spiral_positions(count: int) -> Iterable[tuple[int, int]]:
-              # Center-out square spiral in logical pixel coordinates.
-              x = 0
-              y = 0
-              yielded = 0
-              yield (x, y)
-              yielded += 1
-              step_len = 1
-              while yielded < count:
-                  for dx, dy, n in ((1, 0, step_len), (0, -1, step_len), (-1, 0, step_len + 1), (0, 1, step_len + 1)):
-                      for _ in range(n):
-                          if yielded >= count:
-                              return
-                          x += dx
-                          y += dy
-                          yield (x, y)
-                          yielded += 1
-                  step_len += 2
+          def triangular_number(n: int) -> int:
+              return n * (n + 1) // 2
+
+
+          def pascal_rows_for_cell_count(cell_count: int) -> int:
+              if cell_count <= 1:
+                  return 1
+              return math.ceil((math.sqrt(8 * cell_count + 1) - 1) / 2)
+
+
+          def pascal_cell_for_group_index(group_index: int) -> tuple[int, int]:
+              row = int((math.sqrt(8 * group_index + 1) - 1) // 2)
+              col = group_index - triangular_number(row)
+              return row, col
+
+
+          def group_to_key(group_bits: list[int]) -> str:
+              padded = (group_bits + [0, 0, 0])[:3]
+              return "".join(str(bit) for bit in padded)
+
+
+          def load_font(size: int, bold: bool = False):
+              candidates = [
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                  "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+              ]
+              for candidate in candidates:
+                  path = Path(candidate)
+                  if path.exists():
+                      return ImageFont.truetype(str(path), size=size)
+              return ImageFont.load_default()
+
+
+          def draw_cell(draw: ImageDraw.ImageDraw, x: int, y: int, cell_size: int, fill: tuple[int, int, int]) -> None:
+              draw.rectangle([x, y, x + cell_size - 1, y + cell_size - 1], fill=fill)
+
+
+          def write_source_order(repo_root: Path, files: list[Path]) -> None:
+              (OUT_DIR / "Data" / "SOURCE_ORDER.txt").write_text(
+                  "\n".join(path.relative_to(repo_root).as_posix() for path in files) + "\n",
+                  encoding="utf-8",
+              )
+
+
+          def write_math(source_bits: int, group_count: int, rows: int, cell_size: int) -> None:
+              notes = [
+                  "# Pascal 3-Bit Pair PNG + PDF Math",
+                  "",
+                  "Correct unit:",
+                  "",
+                  "`3 source bits = 0.375 bytes = 1 Pascal cell`",
+                  "",
+                  "## 3-bit RGB mapping",
+                  "",
+                  "- `000 -> black`",
+                  "- `100 -> red`",
+                  "- `010 -> green`",
+                  "- `001 -> blue`",
+                  "- `110 -> yellow`",
+                  "- `101 -> magenta`",
+                  "- `011 -> cyan`",
+                  "- `111 -> white`",
+                  "",
+                  "## 4 pair-groups",
+                  "",
+                  "- Group A: `000 / 111` = black / white = extremes",
+                  "- Group B: `100 / 001` = red / blue = outer singletons",
+                  "- Group C: `110 / 011` = yellow / cyan = adjacent doubles",
+                  "- Group D: `101 / 010` = magenta / green = alternating center-vs-outer",
+                  "",
+                  "## Pascal identity",
+                  "",
+                  "`cell(n,k) = C(n,k)`",
+                  "`C(n,k) = n!/(k!(n-k)!)`",
+                  "`C(n,k) = C(n-1,k-1) + C(n-1,k)`",
+                  "`sum_k C(n,k) = 2^n`",
+                  "`C(n,k) is odd iff (k & ~n) == 0`",
+                  "`odd coefficients in row n = 2^popcount(n)`",
+                  "",
+                  "## Group index to Pascal cell",
+                  "",
+                  "`row = floor((sqrt(8i+1)-1)/2)`",
+                  "`col = i - row(row+1)/2`",
+                  "",
+                  "where `i` is the 3-bit group index.",
+                  "",
+                  "## This run",
+                  "",
+                  f"`source bits = {source_bits}`",
+                  f"`Pascal cells = {group_count}`",
+                  f"`Pascal rows = {rows}`",
+                  f"`cell size in output PNG = {cell_size}x{cell_size} pixels`",
+              ]
+              (OUT_DIR / "Data" / "PASCAL_3BIT_PAIR_MATH.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
+
+
+          def render_pdf(png_path: Path, source_bits: int, group_count: int, rows: int, cell_size: int) -> Path:
+              page = Image.new("RGB", PDF_PAGE_SIZE, WHITE)
+              draw = ImageDraw.Draw(page)
+              title_font = load_font(42, True)
+              head_font = load_font(24, True)
+              text_font = load_font(18, False)
+
+              margin = 110
+              y = 80
+              draw.text((margin, y), "DREAM Application Code Pascal 3-Bit Pair", fill=(0, 0, 0), font=title_font)
+              y += 62
+              draw.text((margin, y), "Application code only -> UTF-8 bits -> 3-bit RGB groups -> centered Pascal triangle", fill=(0,0,0), font=text_font)
+              y += 34
+              draw.text((margin, y), "3 source bits = 0.375 bytes = 1 Pascal cell", fill=(0,0,0), font=head_font)
+              y += 46
+              draw.text((margin, y), f"Source bits: {source_bits:,}   Pascal cells: {group_count:,}   Pascal rows: {rows:,}   Cell size: {cell_size}px", fill=(0,0,0), font=text_font)
+              y += 50
+
+              img = Image.open(png_path).convert("RGB")
+              max_w = 1780
+              max_h = 1600
+              scale = min(max_w / img.width, max_h / img.height)
+              new_size = (max(1, int(img.width * scale)), max(1, int(img.height * scale)))
+              img = img.resize(new_size, Image.Resampling.NEAREST)
+              page.paste(img, (margin, y))
+
+              lx = margin + max_w + 70
+              ly = y
+              draw.text((lx, ly), "Pair groups", fill=(0,0,0), font=head_font)
+              ly += 42
+              for key in ["A", "B", "C", "D"]:
+                  label = PAIR_GROUP_LABELS[key]
+                  colors = {
+                      "A": [(0,0,0), (255,255,255)],
+                      "B": [(255,0,0), (0,0,255)],
+                      "C": [(255,255,0), (0,255,255)],
+                      "D": [(255,0,255), (0,255,0)],
+                  }[key]
+                  sx = lx
+                  for color in colors:
+                      draw.rectangle([sx, ly, sx + 28, ly + 28], fill=color, outline=(0,0,0))
+                      sx += 36
+                  draw.text((lx + 84, ly + 2), label, fill=(0,0,0), font=text_font)
+                  ly += 40
+
+              ly += 20
+              draw.text((lx, ly), "Pascal math", fill=(0,0,0), font=head_font)
+              ly += 38
+              lines = [
+                  "cell(n,k) = C(n,k)",
+                  "C(n,k) = n!/(k!(n-k)!)",
+                  "C(n,k) = C(n-1,k-1) + C(n-1,k)",
+                  "sum_k C(n,k) = 2^n",
+                  "C(n,k) is odd iff (k & ~n) == 0",
+                  "odd coefficients in row n = 2^popcount(n)",
+                  "row = floor((sqrt(8i+1)-1)/2)",
+                  "col = i - row(row+1)/2",
+              ]
+              for line in lines:
+                  draw.text((lx, ly), line, fill=(0,0,0), font=text_font)
+                  ly += 28
+
+              pdf_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_PAIR_PRINT.pdf"
+              page.save(pdf_path, "PDF", resolution=300.0)
+              return pdf_path
+
 
           def main() -> int:
               repo_root = Path(".").resolve()
-
-              roots = csv_env("CODE_ROOTS", "app,components,coresurfaces,daydreams,dr-eams,dreamdmbar,dreamr,engine,engins,hooks")
-              extensions = set(csv_env("CODE_EXTENSIONS", ".ts,.tsx,.js,.jsx,.mjs,.cjs"))
-              rx = int_env("Z_RIGHT", 9)
-              uy = int_env("Z_UP", 7)
-              cell_size = int_env("CELL_SIZE", 1)
-
-              frame_steps = rx + uy
-              files = source_files(repo_root, roots, extensions)
+              files = application_source_files(repo_root)
               if not files:
                   raise RuntimeError("No application code files found.")
 
-              colored_bits: list[str] = []
-              file_rows: list[dict[str, object]] = []
+              cell_size = env_int("CELL_SIZE", 4, 1, 64)
+              source_bits = sum(path.stat().st_size * 8 for path in files)
+              group_count = math.ceil(source_bits / 3) if source_bits else 1
+              rows = pascal_rows_for_cell_count(group_count)
+              image_width = rows * cell_size
+              image_height = rows * cell_size
 
-              x = 0
-              y = 0
-              step_in_frame = 0
+              # safety clamp for runner memory
+              max_dim = env_int("MAX_PNG_DIMENSION", 20000, 1000, 50000)
+              if image_width > max_dim or image_height > max_dim:
+                  raise RuntimeError(
+                      f"PNG would be {image_width}x{image_height}. Lower CELL_SIZE or raise MAX_PNG_DIMENSION if intended."
+                  )
 
-              total_bytes = 0
-              total_bits = 0
-              total_red = 0
-              total_blue = 0
-              total_green = 0
-              total_black = 0
+              image = Image.new("RGB", (image_width, image_height), BLACK)
+              draw = ImageDraw.Draw(image)
 
-              # Track the last assigned sequence color to determine when to trigger green
-              last_color = None
+              group_bits: list[int] = []
+              group_index = 0
+
+              def emit_group(bits: list[int], index: int) -> None:
+                  key = group_to_key(bits)
+                  color = RGB_BY_BITS[key]
+                  row, col = pascal_cell_for_group_index(index)
+                  x_cell = ((rows - (row + 1)) // 2) + col
+                  y_cell = row
+                  x = x_cell * cell_size
+                  y = y_cell * cell_size
+                  draw_cell(draw, x, y, cell_size, color)
 
               for path in files:
-                  rel = path.relative_to(repo_root).as_posix()
                   data = path.read_bytes()
-                  if not data:
-                      continue
-
-                  file_start_bits = total_bits
-                  file_red = 0
-                  file_blue = 0
-                  file_green = 0
-                  file_black = 0
-
                   for bit in bits_from_bytes(data):
-                      if step_in_frame >= frame_steps:
-                          x = 0
-                          y = 0
-                          step_in_frame = 0
+                      group_bits.append(bit)
+                      if len(group_bits) == 3:
+                          emit_group(group_bits, group_index)
+                          group_bits = []
+                          group_index += 1
 
-                      before_z = z_value(x, y, rx, uy)
+              partial_final_group = bool(group_bits)
+              if group_bits:
+                  emit_group(group_bits, group_index)
+                  group_index += 1
 
-                      # 1. Determine base mapping and movement
-                      if bit == 0:
-                          nx, ny = x + 1, y
-                          base_color = "R"
-                      else:
-                          nx, ny = x, y + 1
-                          base_color = "B"
+              png_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_PAIR_FULL.png"
+              image.save(png_path, "PNG", compress_level=0)
+              pdf_path = render_pdf(png_path, source_bits, group_count, rows, cell_size)
 
-                      # 2. Check consecutive repetition logic
-                      if base_color == last_color:
-                          pattern_color = "G"
-                      else:
-                          pattern_color = base_color
+              write_source_order(repo_root, files)
+              write_math(source_bits, group_count, rows, cell_size)
 
-                      # Save this intended pattern state so the R/G/R/B alternation works continuously 
-                      last_color = pattern_color
-                      
-                      final_color = pattern_color
-
-                      after_z = z_value(nx, ny, rx, uy)
-
-                      # 3. Apply the Z-line Black override
-                      touches_z_again = step_in_frame > 0 and before_z != 0 and after_z == 0
-                      crosses_z = before_z * after_z < 0
-                      if touches_z_again or crosses_z:
-                          final_color = "K"  # K represents Black
-
-                      # Count the final assigned color
-                      if final_color == "R":
-                          file_red += 1
-                          total_red += 1
-                      elif final_color == "B":
-                          file_blue += 1
-                          total_blue += 1
-                      elif final_color == "G":
-                          file_green += 1
-                          total_green += 1
-                      else:
-                          file_black += 1
-                          total_black += 1
-
-                      colored_bits.append(final_color)
-
-                      x = nx
-                      y = ny
-                      step_in_frame += 1
-                      total_bits += 1
-
-                  total_bytes += len(data)
-                  file_rows.append({
-                      "sourcePath": rel,
-                      "bytes": len(data),
-                      "bits": total_bits - file_start_bits,
-                      "red0RightBits": file_red,
-                      "blue1UpBits": file_blue,
-                      "greenRepeatBits": file_green,
-                      "blackZBits": file_black,
-                  })
-
-              # Three colored source bits make one logical pixel.
-              # The rendered PNG shows the three bits as RGB-like subpixels, so every source bit is zoomable.
-              logical_pixels = math.ceil(len(colored_bits) / 3) if colored_bits else 1
-              logical_side = math.ceil(math.sqrt(logical_pixels))
-              if logical_side % 2 == 0:
-                  logical_side += 1
-
-              center = logical_side // 2
-
-              output_width = logical_side * 3 * cell_size
-              output_height = logical_side * cell_size
-              image = Image.new("RGB", (output_width, output_height), (0, 0, 0))
-
-              rgb = {
-                  "R": (255, 0, 0),
-                  "G": (0, 255, 0),
-                  "B": (0, 0, 255),
-                  "K": (0, 0, 0),
-              }
-
-              padded_bits = list(colored_bits)
-              while len(padded_bits) % 3:
-                  padded_bits.append("R")
-
-              for pixel_index, (gx, gy) in enumerate(spiral_positions(logical_pixels)):
-                  base = pixel_index * 3
-                  triplet = padded_bits[base:base + 3]
-
-                  logical_x = center + gx
-                  logical_y = center + gy
-
-                  if logical_x < 0 or logical_x >= logical_side or logical_y < 0 or logical_y >= logical_side:
-                      raise RuntimeError("Spiral exceeded computed canvas.")
-
-                  for sub_index, color in enumerate(triplet):
-                      px0 = (logical_x * 3 + sub_index) * cell_size
-                      py0 = logical_y * cell_size
-                      for yy in range(cell_size):
-                          for xx in range(cell_size):
-                              image.putpixel((px0 + xx, py0 + yy), rgb[color])
-
-              image_path = OUT_DIR / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.webp"
-              image.save(image_path, "WEBP", lossless=True, quality=100, method=6)
-
-              with (OUT_DIR / "Data" / "FILE_SUMMARY.csv").open("w", newline="", encoding="utf-8") as f:
-                  fieldnames = ["sourcePath", "bytes", "bits", "red0RightBits", "blue1UpBits", "greenRepeatBits", "blackZBits"]
-                  writer = csv.DictWriter(f, fieldnames=fieldnames)
-                  writer.writeheader()
-                  writer.writerows(file_rows)
-
-              summary = {
-                  "format": "dreamengin.application-code-center-rgb-subpixel-bits-webp.v2",
-                  "rule": [
-                      "Read application code only.",
-                      "Convert UTF-8 bytes to bits.",
-                      "Base color: 0/right/x=red, 1/up/y=blue.",
-                      "Repeat override: If base color matches previous sequence color, become green.",
-                      "Z-line override: touch/cross z-line=black.",
-                      "Every three colored source bits make one logical RGB pixel.",
-                      "The PNG renders those three bits as three visible RGB-like subpixels so every source bit can be zoomed into.",
-                      "Logical pixels are placed from the center outward in a spiral."
-                  ],
-                  "z": {
-                      "formula": f"z = {rx}y - {uy}x",
-                      "blackWhen": "before_z * after_z < 0 OR after_z == 0 after origin",
-                      "resetEverySteps": frame_steps,
+              metadata = {
+                  "format": "dreamengin.application-code-pascal-3bit-pair-png-pdf.v1",
+                  "source": {
+                      "roots": APP_ROOTS,
+                      "extensions": sorted(CODE_EXTENSIONS),
+                      "fileOrderPath": "Data/SOURCE_ORDER.txt",
                   },
-                  "image": {
-                      "path": str(image_path),
-                      "logicalPixels": logical_pixels,
-                      "logicalSide": logical_side,
-                      "outputWidth": output_width,
-                      "outputHeight": output_height,
-                      "cellSize": cell_size,
-                      "origin": "center",
+                  "unit": {
+                      "sourceBitsPerPascalCell": 3,
+                      "bytesPerPascalCell": 0.375,
+                      "sourceBits": source_bits,
+                      "pascalCells": group_count,
+                      "partialFinalGroup": partial_final_group,
                   },
-                  "totals": {
-                      "files": len(file_rows),
-                      "bytes": total_bytes,
-                      "sourceBits": total_bits,
-                      "red0RightBits": total_red,
-                      "blue1UpBits": total_blue,
-                      "greenRepeatBits": total_green,
-                      "blackZBits": total_black,
+                  "rendering": {
+                      "outputFormat": "PNG",
+                      "cellSizePixels": cell_size,
+                      "imageWidth": image_width,
+                      "imageHeight": image_height,
+                  },
+                  "pairs": PAIR_GROUP_LABELS,
+                  "mapping": {key: {"rgb": list(RGB_BY_BITS[key]), "pairGroup": PAIR_GROUP_BY_BITS[key]} for key in RGB_BY_BITS},
+                  "pascal": {
+                      "cell": "C(n,k)",
+                      "coefficientFormula": "C(n,k)=n!/(k!(n-k)!)",
+                      "recurrence": "C(n,k)=C(n-1,k-1)+C(n-1,k)",
+                      "groupIndexToCell": "row=floor((sqrt(8i+1)-1)/2), col=i-row(row+1)/2",
+                      "mathNotesPath": "Data/PASCAL_3BIT_PAIR_MATH.md",
+                  },
+                  "outputs": {
+                      "fullLosslessPng": {"path": str(png_path), "width": image_width, "height": image_height},
+                      "colorPdf": {"path": str(pdf_path), "width": PDF_PAGE_SIZE[0], "height": PDF_PAGE_SIZE[1]},
                   },
               }
-
-              with (OUT_DIR / "Metadata" / "APP_CODE_CENTER_RGB_SUBPIXEL_BITS.json").open("w", encoding="utf-8") as f:
-                  json.dump(summary, f, indent=2)
+              (OUT_DIR / "Metadata" / "APP_CODE_PASCAL_3BIT_PAIR.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
               readme = [
-                  "# DREAM Application Code Center RGB Subpixel Bits WebP",
+                  "# DREAM Application Code Pascal 3-Bit Pair PNG + PDF",
                   "",
-                  "This reads the codebase only. It does not modify source files.",
+                  "Reads application code only. Does not modify source files.",
                   "",
-                  "Rule:",
+                  "Correct unit:",
                   "",
-                  "- read application code only",
-                  "- convert UTF-8 bytes to bits",
-                  "- base color: `0` / right / x = red, `1` / up / y = blue",
-                  "- consecutive identical base color = green override",
-                  "- z-line touch/cross = black override",
-                  "- every three colored source bits make one logical RGB pixel",
-                  "- each logical pixel is rendered as three visible subpixels so every bit is zoomable",
-                  "- logical pixels start at the center and spiral outward",
+                  "`3 source bits = 0.375 bytes = 1 Pascal cell`",
                   "",
-                  f"z-line: `z = {rx}y - {uy}x`",
-                  f"local reset: `{frame_steps}` steps",
-                  f"source bits: `{total_bits}`",
-                  f"logical pixels: `{logical_pixels}`",
-                  f"logical side: `{logical_side}`",
-                  f"output WebP size: `{output_width} x {output_height}`",
-                  f"image: `{image_path.name}`",
-                  "format: `lossless WebP`",
+                  "This version uses PNG instead of WebP so the output can have more visible pixels.",
+                  "Each Pascal cell is rendered as a square block of `CELL_SIZE x CELL_SIZE` pixels.",
+                  "",
+                  "Outputs:",
+                  f"- `{png_path.name}` lossless full PNG",
+                  f"- `{pdf_path.name}` color PDF print",
+                  "- `Data/PASCAL_3BIT_PAIR_MATH.md`",
+                  "- `Data/SOURCE_ORDER.txt`",
+                  "- `Metadata/APP_CODE_PASCAL_3BIT_PAIR.json`",
               ]
               (OUT_DIR / "README.md").write_text("\n".join(readme) + "\n", encoding="utf-8")
 
-              print(f"bits={total_bits}")
-              print(f"logicalPixels={logical_pixels}")
-              print(f"logicalSide={logical_side}")
-              print(f"output={output_width}x{output_height}")
-              print(f"image={image_path}")
+              print(f"sourceBits={source_bits}")
+              print(f"pascalCells={group_count}")
+              print(f"pascalRows={rows}")
+              print(f"cellSize={cell_size}")
+              print(f"png={image_width}x{image_height}")
+              print(f"output={OUT_DIR}")
               return 0
 
           raise SystemExit(main())
@@ -345,6 +445,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dream-application-code-center-rgb-subpixel-bits-webp
-          path: dream-application-code-center-rgb-subpixel-bits-webp
+          name: dream-application-code-pascal-3bit-pair-png-pdf
+          path: dream-application-code-pascal-3bit-pair-png-pdf
           if-no-files-found: error
