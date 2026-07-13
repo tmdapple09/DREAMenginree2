@@ -15,7 +15,7 @@ jobs:
       CODE_EXTENSIONS: ".ts,.tsx,.js,.jsx,.mjs,.cjs"
       Z_RIGHT: "9"
       Z_UP: "7"
-      CELL_SIZE: "32" # Set to 32 for HD AI visibility
+      CELL_SIZE: "2" # Set to 32 for HD AI visibility
       OUT_DIR: "dream-application-code-center-rgb-subpixel-bits-webp"
     steps:
       - name: Checkout repository
