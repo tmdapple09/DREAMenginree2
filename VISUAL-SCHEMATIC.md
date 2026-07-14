@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2255
+- **Total files:** 2256
 - **Total function/class nodes:** 4827
 - **Total edges:** 8478
-- **Orphan nodes:** 4144
+- **Orphan nodes:** 4145
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4429,6 +4429,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `repo-visualizer/index.html` | file |
 | `repo-visualizer/README.md` | doc |
 | `repo-visualizer/server.mjs` | mjs |
+| `REPOREADME.md` | doc |
 | `research-and-development/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `research-and-development/LICENSE` | file |
 | `research-and-development/tech-spec-v1.md` | doc |

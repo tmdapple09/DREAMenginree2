@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T20:22:21.018Z",
+  "generatedAt": "2026-07-14T23:16:33.058Z",
   "root": ".",
   "nodes": [
     {
@@ -3776,6 +3776,16 @@
       "label": "README.md",
       "type": "doc",
       "path": "README.md",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:REPOREADME.md",
+      "label": "REPOREADME.md",
+      "type": "doc",
+      "path": "REPOREADME.md",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
