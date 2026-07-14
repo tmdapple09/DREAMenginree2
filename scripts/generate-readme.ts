@@ -253,7 +253,7 @@ function slug(value: string): string {
   return value
     .toLowerCase()
     .replace(/&/g, '')
-    .replace(/[—–]/g, '')
+    .replace(/[ââ]/g, '')
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-');
@@ -270,7 +270,7 @@ function markdownCell(value: string): string {
 function concise(value: string, maxLength = 160): string {
   const clean = value.replace(/\s+/g, ' ').trim();
   if (clean.length <= maxLength) return clean;
-  return `${clean.slice(0, Math.max(1, maxLength - 1)).trimEnd()}…`;
+  return `${clean.slice(0, Math.max(1, maxLength - 1)).trimEnd()}â¦`;
 }
 
 function directoriesFor(files: string[]): Set<string> {
@@ -326,7 +326,7 @@ function linkifyProductMarkdown(
       });
 
       line = line.replace(
-        /(^|[\s(←—|])([A-Za-z0-9_.@()[\]-]+(?:\/[A-Za-z0-9_.@()[\]-]+)+\/?)(?=$|[\s),.;:])/g,
+        /(^|[\s(ââ|])([A-Za-z0-9_.@()[\]-]+(?:\/[A-Za-z0-9_.@()[\]-]+)+\/?)(?=$|[\s),.;:])/g,
         (full, prefix: string, raw: string) => {
           const match = resolveTarget(raw);
           if (!match) return full;
@@ -961,7 +961,7 @@ function frontDoor(files: string[], pkg: PackageJson, context: RepoContext): str
     '',
     `The complete README and repository inventory are written by ${pathLink(context, 'scripts/generate-readme.ts')}. Semantic product evidence is computed by ${pathLink(context, 'scripts/readme-autosync.ts')}. The workflow entry point is ${pathLink(context, '.github/workflows/readme-autosync.yml')}.`,
     '',
-    `Source snapshot: ${commitLink(context)} — ${markdownCell(context.commitMessage)}.`,
+    `Source snapshot: ${commitLink(context)} â ${markdownCell(context.commitMessage)}.`,
     '',
   ].join('\n').replace(/\n{3,}/g, '\n\n');
 }
@@ -1011,7 +1011,7 @@ function buildRepoReadme(
       '| File | Classification | Quick explanation | User-facing role |',
       '|---|---|---|---|',
       ...records.map((record) => {
-        const role = record.userFacing?.kind ?? '—';
+        const role = record.userFacing?.kind ?? 'â';
         return `| ${repositoryPathLink(record.path)} | ${markdownCell(record.classification)} | ${markdownCell(record.explanation)} | ${markdownCell(role)} |`;
       }),
       '',
@@ -1025,7 +1025,7 @@ function buildRepoReadme(
     '',
     '> Generated repository-wide documentation. Every tracked non-generated file receives a clickable path, classification, and concise explanation.',
     '',
-    `Source: ${commitLink(context)} on \`${context.branch}\` — ${context.commitDate}.`,
+    `Source: ${commitLink(context)} on \`${context.branch}\` â ${context.commitDate}.`,
     '',
     `Primary product documentation: ${pathLink(context, 'README.md')}.`,
     '',
