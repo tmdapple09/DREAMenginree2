@@ -1,0 +1,1161 @@
+name: Bitcoin Hash Transform — Extended Live Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      blocks:
+        description: "Number of consecutive main-chain blocks"
+        required: false
+        default: "1000"
+        type: string
+      end_height:
+        description: "Last block height; leave blank for current tip"
+        required: false
+        default: ""
+        type: string
+      n:
+        description: "Exponent n in f(x)"
+        required: false
+        default: "2.0"
+        type: string
+      a0:
+        description: "Scale a0 in f(x)"
+        required: false
+        default: "1.2e-14"
+        type: string
+      max_lag:
+        description: "Highest serial-correlation lag to test"
+        required: false
+        default: "20"
+        type: string
+      print_rows:
+        description: "Rows printed in Actions log; 0 prints every row"
+        required: false
+        default: "300"
+        type: string
+      request_pause_ms:
+        description: "Pause between API batches in milliseconds"
+        required: false
+        default: "100"
+        type: string
+      make_plots:
+        description: "Create PNG charts: true or false"
+        required: false
+        default: "true"
+        type: string
+  schedule:
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bitcoin-hash-transform-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  live-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    continue-on-error: true
+
+    env:
+      BLOCK_COUNT: ${{ inputs.blocks || '1000' }}
+      END_HEIGHT: ${{ inputs.end_height || '' }}
+      N_EXPONENT: ${{ inputs.n || '2.0' }}
+      A0: ${{ inputs.a0 || '1.2e-14' }}
+      MAX_LAG: ${{ inputs.max_lag || '20' }}
+      PRINT_ROWS: ${{ inputs.print_rows || '300' }}
+      REQUEST_PAUSE_MS: ${{ inputs.request_pause_ms || '100' }}
+      MAKE_PLOTS: ${{ inputs.make_plots || 'true' }}
+      RANDOM_SEED: "20260713"
+      PYTHONUNBUFFERED: "1"
+      MPLBACKEND: "Agg"
+
+    steps:
+      - name: Set up Python
+        continue-on-error: true
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install optional plotting dependency
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          python -m pip install --disable-pip-version-check matplotlib
+          exit 0
+
+      - name: Fetch, verify, transform, analyze, and print live Bitcoin data
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+
+          python - <<'PY' 2>&1 | tee bitcoin_hash_transform_console.log
+          import csv
+          import json
+          import math
+          import os
+          import random
+          import statistics
+          import sys
+          import time
+          import traceback
+          import urllib.request
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          BLOCK_COUNT = max(2, int(os.environ.get("BLOCK_COUNT", "1000")))
+          END_HEIGHT_TEXT = os.environ.get("END_HEIGHT", "").strip()
+          END_HEIGHT = int(END_HEIGHT_TEXT) if END_HEIGHT_TEXT else None
+          N_EXPONENT = float(os.environ.get("N_EXPONENT", "2.0"))
+          A0 = float(os.environ.get("A0", "1.2e-14"))
+          MAX_LAG = max(1, int(os.environ.get("MAX_LAG", "20")))
+          PRINT_ROWS = max(0, int(os.environ.get("PRINT_ROWS", "300")))
+          REQUEST_PAUSE_MS = max(0, int(os.environ.get("REQUEST_PAUSE_MS", "100")))
+          MAKE_PLOTS = os.environ.get("MAKE_PLOTS", "true").strip().lower() in {
+              "1", "true", "yes", "on"
+          }
+          RANDOM_SEED = int(os.environ.get("RANDOM_SEED", "20260713"))
+
+          API_BASES = [
+              "https://blockstream.info/api",
+              "https://mempool.space/api",
+          ]
+
+          CSV_PATH = Path("bitcoin_hash_transform_results.csv")
+          LAGS_PATH = Path("bitcoin_hash_transform_lags.csv")
+          BITS_PATH = Path("bitcoin_hash_transform_bit_statistics.csv")
+          REPORT_PATH = Path("bitcoin_hash_transform_report.txt")
+          STATUS_PATH = Path("bitcoin_hash_transform_status.json")
+          PLOT_PATHS = []
+
+          UINT256_MAX = (1 << 256) - 1
+
+
+          def emit(text=""):
+              print(text, flush=True)
+
+
+          def finite_or_none(value):
+              if isinstance(value, float) and not math.isfinite(value):
+                  return None
+              return value
+
+
+          def http_get_text(path, attempts_per_provider=4):
+              errors = []
+
+              for base in API_BASES:
+                  url = base.rstrip("/") + "/" + path.lstrip("/")
+
+                  for attempt in range(1, attempts_per_provider + 1):
+                      request = urllib.request.Request(
+                          url,
+                          headers={
+                              "User-Agent": "github-actions-bitcoin-hash-transform/2.0",
+                              "Accept": "application/json,text/plain",
+                          },
+                      )
+                      try:
+                          with urllib.request.urlopen(request, timeout=35) as response:
+                              return response.read().decode("utf-8"), base
+                      except Exception as exc:
+                          errors.append(f"{url}: {type(exc).__name__}: {exc}")
+                          delay = min(10.0, 0.75 * (2 ** (attempt - 1)))
+                          emit(
+                              f"[retry] provider={base} attempt={attempt}/"
+                              f"{attempts_per_provider} wait={delay:.2f}s error={exc}"
+                          )
+                          time.sleep(delay)
+
+              raise RuntimeError(
+                  "All live API providers were unavailable.\n" + "\n".join(errors)
+              )
+
+
+          def http_get_json(path):
+              text, provider = http_get_text(path)
+              return json.loads(text), provider
+
+
+          def fetch_recent_blocks(count, end_height=None):
+              tip_text, provider = http_get_text("/blocks/tip/height")
+              tip_height = int(tip_text.strip())
+
+              requested_end = tip_height if end_height is None else min(end_height, tip_height)
+              if requested_end < 1:
+                  raise ValueError("end_height must be at least 1")
+
+              emit(f"[live] initial_provider={provider}")
+              emit(f"[live] reported_tip_height={tip_height}")
+              emit(f"[live] requested_end_height={requested_end}")
+              emit(f"[live] requested_blocks={count}")
+
+              blocks_by_height = {}
+              cursor = requested_end
+              request_count = 0
+
+              while len(blocks_by_height) < count and cursor >= 0:
+                  batch, provider = http_get_json(f"/blocks/{cursor}")
+                  request_count += 1
+
+                  if not isinstance(batch, list) or not batch:
+                      raise RuntimeError(f"Unexpected empty block response at height {cursor}")
+
+                  for block in batch:
+                      height = int(block["height"])
+                      if height <= requested_end:
+                          blocks_by_height[height] = block
+
+                  lowest = min(int(block["height"]) for block in batch)
+                  cursor = lowest - 1
+
+                  if request_count == 1 or request_count % 10 == 0 or len(blocks_by_height) >= count:
+                      emit(
+                          f"[live] fetched={min(len(blocks_by_height), count)}/{count} "
+                          f"requests={request_count} lowest_height={lowest}"
+                      )
+
+                  if REQUEST_PAUSE_MS:
+                      time.sleep(REQUEST_PAUSE_MS / 1000.0)
+
+              heights = sorted(blocks_by_height, reverse=True)[:count]
+              blocks = [blocks_by_height[height] for height in heights]
+              blocks.sort(key=lambda block: int(block["height"]))
+
+              if len(blocks) < count:
+                  emit(f"[warning] requested={count} received={len(blocks)}")
+
+              return blocks, provider, tip_height, request_count
+
+
+          def target_from_bits(bits):
+              bits = int(bits)
+              exponent = bits >> 24
+              coefficient = bits & 0x007FFFFF
+
+              if exponent <= 3:
+                  return coefficient >> (8 * (3 - exponent))
+              return coefficient << (8 * (exponent - 3))
+
+
+          DIFFICULTY_ONE_TARGET = target_from_bits(0x1D00FFFF)
+
+
+          def transform(x):
+              if x < 0:
+                  raise ValueError("x must be nonnegative")
+              if N_EXPONENT <= 0:
+                  raise ValueError("n must be positive")
+              return A0 * x / ((1.0 + x ** N_EXPONENT) ** (1.0 / N_EXPONENT))
+
+
+          def pearson(values_a, values_b):
+              count = min(len(values_a), len(values_b))
+              if count < 2:
+                  return float("nan")
+
+              a = values_a[:count]
+              b = values_b[:count]
+              mean_a = sum(a) / count
+              mean_b = sum(b) / count
+
+              numerator = sum((x - mean_a) * (y - mean_b) for x, y in zip(a, b))
+              denom_a = sum((x - mean_a) ** 2 for x in a)
+              denom_b = sum((y - mean_b) ** 2 for y in b)
+              denominator = math.sqrt(denom_a * denom_b)
+
+              return numerator / denominator if denominator else float("nan")
+
+
+          def correlation_pvalue_fisher(r_value, pair_count):
+              if pair_count <= 3 or not math.isfinite(r_value):
+                  return float("nan")
+
+              bounded = max(-0.999999999999999, min(0.999999999999999, r_value))
+              z_value = math.atanh(bounded) * math.sqrt(pair_count - 3)
+              return math.erfc(abs(z_value) / math.sqrt(2.0))
+
+
+          def autocorrelation(values, lag):
+              if lag <= 0 or lag >= len(values):
+                  return float("nan")
+              return pearson(values[:-lag], values[lag:])
+
+
+          def rank_values(values):
+              order = sorted(range(len(values)), key=values.__getitem__)
+              ranks = [0.0] * len(values)
+              index = 0
+
+              while index < len(order):
+                  end = index + 1
+                  while end < len(order) and values[order[end]] == values[order[index]]:
+                      end += 1
+                  average_rank = (index + end - 1) / 2.0
+                  for location in range(index, end):
+                      ranks[order[location]] = average_rank
+                  index = end
+
+              return ranks
+
+
+          def spearman(values_a, values_b):
+              if len(values_a) != len(values_b) or len(values_a) < 2:
+                  return float("nan")
+              return pearson(rank_values(values_a), rank_values(values_b))
+
+
+          def ks_uniform(values):
+              ordered = sorted(values)
+              count = len(ordered)
+              if not count:
+                  return float("nan"), float("nan")
+
+              d_plus = max((index + 1) / count - value for index, value in enumerate(ordered))
+              d_minus = max(value - index / count for index, value in enumerate(ordered))
+              d_stat = max(d_plus, d_minus)
+
+              root_n = math.sqrt(count)
+              lam = (root_n + 0.12 + 0.11 / root_n) * d_stat
+              series = 0.0
+
+              for term in range(1, 200):
+                  contribution = 2.0 * ((-1) ** (term - 1)) * math.exp(
+                      -2.0 * term * term * lam * lam
+                  )
+                  series += contribution
+                  if abs(contribution) < 1e-14:
+                      break
+
+              return d_stat, max(0.0, min(1.0, series))
+
+
+          def regularized_gamma_q(shape, x_value):
+              if shape <= 0 or x_value < 0:
+                  return float("nan")
+              if x_value == 0:
+                  return 1.0
+
+              epsilon = 3e-14
+              tiny = 1e-300
+              max_iterations = 10000
+              log_term = -x_value + shape * math.log(x_value) - math.lgamma(shape)
+
+              if x_value < shape + 1.0:
+                  summation = 1.0 / shape
+                  delta = summation
+                  ap = shape
+
+                  for _ in range(max_iterations):
+                      ap += 1.0
+                      delta *= x_value / ap
+                      summation += delta
+                      if abs(delta) < abs(summation) * epsilon:
+                          break
+
+                  gamma_p = summation * math.exp(log_term)
+                  return max(0.0, min(1.0, 1.0 - gamma_p))
+
+              b_value = x_value + 1.0 - shape
+              c_value = 1.0 / tiny
+              d_value = 1.0 / b_value
+              h_value = d_value
+
+              for index in range(1, max_iterations + 1):
+                  an = -index * (index - shape)
+                  b_value += 2.0
+                  d_value = an * d_value + b_value
+                  if abs(d_value) < tiny:
+                      d_value = tiny
+                  c_value = b_value + an / c_value
+                  if abs(c_value) < tiny:
+                      c_value = tiny
+                  d_value = 1.0 / d_value
+                  delta = d_value * c_value
+                  h_value *= delta
+                  if abs(delta - 1.0) < epsilon:
+                      break
+
+              gamma_q = math.exp(log_term) * h_value
+              return max(0.0, min(1.0, gamma_q))
+
+
+          def ljung_box(values, max_lag):
+              usable_lag = min(max_lag, len(values) - 2)
+              if usable_lag < 1:
+                  return float("nan"), float("nan"), 0
+
+              count = len(values)
+              q_value = 0.0
+
+              for lag in range(1, usable_lag + 1):
+                  r_value = autocorrelation(values, lag)
+                  if math.isfinite(r_value):
+                      q_value += (r_value * r_value) / (count - lag)
+
+              q_value *= count * (count + 2)
+              p_value = regularized_gamma_q(usable_lag / 2.0, q_value / 2.0)
+              return q_value, p_value, usable_lag
+
+
+          def hamming_distance(left_hex, right_hex):
+              return (int(left_hex, 16) ^ int(right_hex, 16)).bit_count()
+
+
+          _bit_probability_cache = {}
+
+
+          def bit_one_probabilities(max_integer):
+              cached = _bit_probability_cache.get(max_integer)
+              if cached is not None:
+                  return cached
+
+              total = max_integer + 1
+              probabilities = []
+
+              for bit in range(256):
+                  half_period = 1 << bit
+                  period = half_period << 1
+                  full_periods, remainder = divmod(total, period)
+                  ones = full_periods * half_period + max(0, remainder - half_period)
+                  probabilities.append(ones / total)
+
+              _bit_probability_cache[max_integer] = probabilities
+              return probabilities
+
+
+          def expected_hamming_for_targets(left_target, right_target):
+              left_probabilities = bit_one_probabilities(left_target)
+              right_probabilities = bit_one_probabilities(right_target)
+
+              return sum(
+                  left_p * (1.0 - right_p) + (1.0 - left_p) * right_p
+                  for left_p, right_p in zip(left_probabilities, right_probabilities)
+              )
+
+
+          def mutual_information_from_counts(counts):
+              total = sum(counts.values())
+              if total == 0:
+                  return 0.0
+
+              row_totals = {
+                  0: counts[(0, 0)] + counts[(0, 1)],
+                  1: counts[(1, 0)] + counts[(1, 1)],
+              }
+              column_totals = {
+                  0: counts[(0, 0)] + counts[(1, 0)],
+                  1: counts[(0, 1)] + counts[(1, 1)],
+              }
+
+              result = 0.0
+              for left_bit in (0, 1):
+                  for right_bit in (0, 1):
+                      joint_count = counts[(left_bit, right_bit)]
+                      if joint_count == 0:
+                          continue
+                      joint_probability = joint_count / total
+                      left_probability = row_totals[left_bit] / total
+                      right_probability = column_totals[right_bit] / total
+                      result += joint_probability * math.log2(
+                          joint_probability / (left_probability * right_probability)
+                      )
+
+              return result
+
+
+          def write_csv(path, rows):
+              if not rows:
+                  return
+              with path.open("w", newline="", encoding="utf-8") as handle:
+                  writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def format_float(value, precision=12):
+              if value is None:
+                  return ""
+              if isinstance(value, float):
+                  if not math.isfinite(value):
+                      return "nan"
+                  return f"{value:.{precision}g}"
+              return str(value)
+
+
+          def make_plots(rows, x_values, transformed_scaled, delta_values, ratio_values, xor_values, hamming_values):
+              if not MAKE_PLOTS:
+                  return [], "disabled by input"
+
+              try:
+                  import matplotlib
+                  matplotlib.use("Agg")
+                  import matplotlib.pyplot as plt
+              except Exception as exc:
+                  return [], f"matplotlib unavailable: {exc}"
+
+              paths = []
+              heights = [row["height"] for row in rows]
+
+              def save_current(filename):
+                  path = Path(filename)
+                  plt.tight_layout()
+                  plt.savefig(path, dpi=160)
+                  plt.close()
+                  paths.append(str(path))
+
+              plt.figure(figsize=(11, 5))
+              plt.scatter(heights, x_values, s=8)
+              plt.xlabel("Block height")
+              plt.ylabel("hash / target")
+              plt.title("Accepted Bitcoin hashes normalized by target")
+              save_current("normalized_hash_vs_height.png")
+
+              plt.figure(figsize=(11, 5))
+              plt.scatter(heights, transformed_scaled, s=8)
+              plt.xlabel("Block height")
+              plt.ylabel("f(x) / a0")
+              plt.title(f"Saturating transform, n={N_EXPONENT}")
+              save_current("transformed_hash_vs_height.png")
+
+              plt.figure(figsize=(6, 6))
+              plt.scatter(x_values[:-1], x_values[1:], s=8)
+              plt.xlabel("x at block n")
+              plt.ylabel("x at block n+1")
+              plt.title("Lag-1 coordinate map")
+              save_current("lag1_coordinate_map.png")
+
+              plt.figure(figsize=(11, 5))
+              plt.scatter(heights[1:], delta_values, s=8)
+              plt.xlabel("Block height")
+              plt.ylabel("x[n] - x[n-1]")
+              plt.title("Consecutive normalized-hash differences")
+              save_current("normalized_hash_differences.png")
+
+              finite_ratios = [
+                  (height, ratio)
+                  for height, ratio in zip(heights[1:], ratio_values)
+                  if ratio is not None and ratio > 0 and math.isfinite(ratio)
+              ]
+              if finite_ratios:
+                  plt.figure(figsize=(11, 5))
+                  plt.scatter(
+                      [item[0] for item in finite_ratios],
+                      [item[1] for item in finite_ratios],
+                      s=8,
+                  )
+                  plt.yscale("log")
+                  plt.xlabel("Block height")
+                  plt.ylabel("x[n] / x[n-1] (log scale)")
+                  plt.title("Consecutive normalized-hash ratios")
+                  save_current("normalized_hash_ratios.png")
+
+              plt.figure(figsize=(11, 5))
+              plt.scatter(heights[1:], xor_values, s=8)
+              plt.xlabel("Block height")
+              plt.ylabel("(hash[n] XOR hash[n-1]) / (2^256 - 1)")
+              plt.title("Normalized XOR of consecutive hashes")
+              save_current("consecutive_hash_xor.png")
+
+              plt.figure(figsize=(8, 5))
+              plt.hist(x_values, bins=30)
+              plt.xlabel("hash / target")
+              plt.ylabel("Count")
+              plt.title("Normalized accepted-hash distribution")
+              save_current("normalized_hash_histogram.png")
+
+              plt.figure(figsize=(8, 5))
+              plt.hist(hamming_values, bins=30)
+              plt.xlabel("Hamming distance")
+              plt.ylabel("Count")
+              plt.title("Consecutive block-hash Hamming distances")
+              save_current("hamming_distance_histogram.png")
+
+              iteration_maxima = [
+                  max(x_values),
+                  max(row["f_x_target"] for row in rows),
+                  max(row["f2_x_target"] for row in rows),
+                  max(row["f3_x_target"] for row in rows),
+              ]
+              plt.figure(figsize=(8, 5))
+              plt.plot([0, 1, 2, 3], iteration_maxima, marker="o")
+              plt.yscale("log")
+              plt.xticks([0, 1, 2, 3])
+              plt.xlabel("Iteration")
+              plt.ylabel("Maximum sample value (log scale)")
+              plt.title("Collapse under repeated application of f")
+              save_current("iteration_collapse.png")
+
+              return paths, "created"
+
+
+          status = {
+              "completed": False,
+              "live_data": False,
+              "rows": 0,
+              "message": "",
+          }
+
+          try:
+              if N_EXPONENT <= 0:
+                  raise ValueError("N_EXPONENT must be positive")
+              if A0 <= 0:
+                  raise ValueError("A0 must be positive")
+
+              blocks, final_provider, tip_height, request_count = fetch_recent_blocks(
+                  BLOCK_COUNT,
+                  END_HEIGHT,
+              )
+
+              if len(blocks) < 2:
+                  raise RuntimeError("At least two real blocks are required")
+
+              rows = []
+              previous_row = None
+
+              for block in blocks:
+                  block_hash = str(block["id"])
+                  hash_integer = int(block_hash, 16)
+                  bits = int(block["bits"])
+                  target = target_from_bits(bits)
+                  timestamp = int(block["timestamp"])
+                  height = int(block["height"])
+
+                  x_full = hash_integer / UINT256_MAX
+                  x_target = hash_integer / target
+                  y1 = transform(x_target)
+                  y2 = transform(y1)
+                  y3 = transform(y2)
+
+                  row = {
+                      "height": height,
+                      "epoch_index": height // 2016,
+                      "height_in_epoch": height % 2016,
+                      "retarget_boundary": height % 2016 == 0,
+                      "timestamp_unix": timestamp,
+                      "timestamp_utc": datetime.fromtimestamp(
+                          timestamp, timezone.utc
+                      ).isoformat(),
+                      "hash": block_hash,
+                      "previousblockhash": str(block.get("previousblockhash", "")),
+                      "bits_decimal": bits,
+                      "bits_hex": f"{bits:08x}",
+                      "target_integer": target,
+                      "difficulty": DIFFICULTY_ONE_TARGET / target,
+                      "hash_integer": hash_integer,
+                      "pow_valid": hash_integer <= target,
+                      "chain_link_valid": None,
+                      "target_changed": None,
+                      "interval_seconds": None,
+                      "x_full_space": x_full,
+                      "x_target_normalized": x_target,
+                      "f_x_target": y1,
+                      "f_x_target_over_a0": y1 / A0,
+                      "f2_x_target": y2,
+                      "f3_x_target": y3,
+                      "delta_x": None,
+                      "absolute_delta_x": None,
+                      "ratio_x": None,
+                      "delta_f": None,
+                      "ratio_f": None,
+                      "xor_hex": "",
+                      "xor_normalized_full_space": None,
+                      "hamming_to_previous_hash": None,
+                      "expected_hamming_for_pair": None,
+                      "hamming_minus_expected": None,
+                  }
+
+                  if previous_row is not None:
+                      row["chain_link_valid"] = (
+                          row["previousblockhash"] == previous_row["hash"]
+                          and row["height"] == previous_row["height"] + 1
+                      )
+                      row["target_changed"] = row["target_integer"] != previous_row["target_integer"]
+                      row["interval_seconds"] = row["timestamp_unix"] - previous_row["timestamp_unix"]
+                      row["delta_x"] = row["x_target_normalized"] - previous_row["x_target_normalized"]
+                      row["absolute_delta_x"] = abs(row["delta_x"])
+                      row["ratio_x"] = (
+                          row["x_target_normalized"] / previous_row["x_target_normalized"]
+                          if previous_row["x_target_normalized"] != 0
+                          else None
+                      )
+                      row["delta_f"] = row["f_x_target"] - previous_row["f_x_target"]
+                      row["ratio_f"] = (
+                          row["f_x_target"] / previous_row["f_x_target"]
+                          if previous_row["f_x_target"] != 0
+                          else None
+                      )
+
+                      xor_integer = row["hash_integer"] ^ previous_row["hash_integer"]
+                      row["xor_hex"] = f"{xor_integer:064x}"
+                      row["xor_normalized_full_space"] = xor_integer / UINT256_MAX
+                      row["hamming_to_previous_hash"] = xor_integer.bit_count()
+                      row["expected_hamming_for_pair"] = expected_hamming_for_targets(
+                          previous_row["target_integer"],
+                          row["target_integer"],
+                      )
+                      row["hamming_minus_expected"] = (
+                          row["hamming_to_previous_hash"] - row["expected_hamming_for_pair"]
+                      )
+
+                  rows.append(row)
+                  previous_row = row
+
+              write_csv(CSV_PATH, rows)
+
+              x_values = [row["x_target_normalized"] for row in rows]
+              f_values = [row["f_x_target"] for row in rows]
+              f_scaled_values = [row["f_x_target_over_a0"] for row in rows]
+              hashes = [row["hash"] for row in rows]
+
+              pair_rows = rows[1:]
+              delta_values = [row["delta_x"] for row in pair_rows]
+              absolute_delta_values = [row["absolute_delta_x"] for row in pair_rows]
+              ratio_values = [row["ratio_x"] for row in pair_rows]
+              finite_ratio_values = [
+                  value for value in ratio_values
+                  if value is not None and math.isfinite(value)
+              ]
+              xor_values = [row["xor_normalized_full_space"] for row in pair_rows]
+              hamming_values = [row["hamming_to_previous_hash"] for row in pair_rows]
+              expected_hamming_values = [row["expected_hamming_for_pair"] for row in pair_rows]
+              intervals = [row["interval_seconds"] for row in pair_rows]
+
+              ks_d, ks_p = ks_uniform(x_values)
+              ljung_x_q, ljung_x_p, ljung_lag = ljung_box(x_values, MAX_LAG)
+              ljung_f_q, ljung_f_p, _ = ljung_box(f_scaled_values, MAX_LAG)
+
+              lag_rows = []
+              usable_max_lag = min(MAX_LAG, len(rows) - 2)
+              for lag in range(1, usable_max_lag + 1):
+                  pair_count = len(rows) - lag
+                  corr_x = autocorrelation(x_values, lag)
+                  corr_f = autocorrelation(f_scaled_values, lag)
+                  lag_rows.append(
+                      {
+                          "lag": lag,
+                          "pair_count": pair_count,
+                          "correlation_x": corr_x,
+                          "pvalue_x_fisher_approx": correlation_pvalue_fisher(
+                              corr_x, pair_count
+                          ),
+                          "correlation_f_scaled": corr_f,
+                          "pvalue_f_fisher_approx": correlation_pvalue_fisher(
+                              corr_f, pair_count
+                          ),
+                      }
+                  )
+              write_csv(LAGS_PATH, lag_rows)
+
+              bit_rows = []
+              for bit in range(256):
+                  counts = Counter()
+                  for left_hash, right_hash in zip(hashes[:-1], hashes[1:]):
+                      left_bit = (int(left_hash, 16) >> bit) & 1
+                      right_bit = (int(right_hash, 16) >> bit) & 1
+                      counts[(left_bit, right_bit)] += 1
+
+                  for combination in ((0, 0), (0, 1), (1, 0), (1, 1)):
+                      counts.setdefault(combination, 0)
+
+                  total = sum(counts.values())
+                  left_ones = counts[(1, 0)] + counts[(1, 1)]
+                  right_ones = counts[(0, 1)] + counts[(1, 1)]
+
+                  bit_rows.append(
+                      {
+                          "bit_index_lsb_zero": bit,
+                          "n00": counts[(0, 0)],
+                          "n01": counts[(0, 1)],
+                          "n10": counts[(1, 0)],
+                          "n11": counts[(1, 1)],
+                          "left_one_rate": left_ones / total if total else None,
+                          "right_one_rate": right_ones / total if total else None,
+                          "mutual_information_bits": mutual_information_from_counts(counts),
+                      }
+                  )
+              write_csv(BITS_PATH, bit_rows)
+
+              rng = random.Random(RANDOM_SEED)
+              shuffled_x = list(x_values)
+              rng.shuffle(shuffled_x)
+              shuffled_hashes = list(hashes)
+              rng.shuffle(shuffled_hashes)
+
+              original_lag1 = autocorrelation(x_values, 1)
+              shuffled_lag1 = autocorrelation(shuffled_x, 1)
+              original_mean_abs_delta = statistics.fmean(absolute_delta_values)
+              shuffled_mean_abs_delta = statistics.fmean(
+                  abs(right - left)
+                  for left, right in zip(shuffled_x[:-1], shuffled_x[1:])
+              )
+              shuffled_hamming = statistics.fmean(
+                  hamming_distance(left, right)
+                  for left, right in zip(shuffled_hashes[:-1], shuffled_hashes[1:])
+              )
+
+              plot_paths, plot_status = make_plots(
+                  rows,
+                  x_values,
+                  f_scaled_values,
+                  delta_values,
+                  ratio_values,
+                  xor_values,
+                  hamming_values,
+              )
+              PLOT_PATHS.extend(plot_paths)
+
+              all_pow_valid = all(row["pow_valid"] for row in rows)
+              all_chain_links_valid = all(
+                  row["chain_link_valid"] for row in pair_rows
+              )
+
+              unique_targets = sorted({row["target_integer"] for row in rows})
+              target_changes = [row for row in pair_rows if row["target_changed"]]
+              retarget_boundaries = [row for row in rows if row["retarget_boundary"]]
+
+              transformed_rank_correlation = spearman(x_values, f_values)
+              mean_x = statistics.fmean(x_values)
+              variance_x = statistics.pvariance(x_values)
+              mean_hamming = statistics.fmean(hamming_values)
+              expected_mean_hamming = statistics.fmean(expected_hamming_values)
+              mean_interval = statistics.fmean(intervals)
+              median_interval = statistics.median(intervals)
+              mean_xor = statistics.fmean(xor_values)
+              mean_ratio = (
+                  statistics.fmean(finite_ratio_values)
+                  if finite_ratio_values
+                  else float("nan")
+              )
+              median_ratio = (
+                  statistics.median(finite_ratio_values)
+                  if finite_ratio_values
+                  else float("nan")
+              )
+              mean_bit_mi = statistics.fmean(
+                  row["mutual_information_bits"] for row in bit_rows
+              )
+              max_bit_mi_row = max(
+                  bit_rows,
+                  key=lambda row: row["mutual_information_bits"],
+              )
+
+              summary = {
+                  "completed": True,
+                  "live_data": True,
+                  "provider_last_used": final_provider,
+                  "api_requests": request_count,
+                  "reported_tip_height": tip_height,
+                  "rows": len(rows),
+                  "height_start": rows[0]["height"],
+                  "height_end": rows[-1]["height"],
+                  "n": N_EXPONENT,
+                  "a0": A0,
+                  "all_pow_valid": all_pow_valid,
+                  "all_chain_links_valid": all_chain_links_valid,
+                  "unique_targets": len(unique_targets),
+                  "target_change_count": len(target_changes),
+                  "retarget_boundaries_in_sample": [
+                      row["height"] for row in retarget_boundaries
+                  ],
+                  "mean_hash_over_target": mean_x,
+                  "variance_hash_over_target": variance_x,
+                  "uniform_expected_mean": 0.5,
+                  "uniform_expected_variance": 1.0 / 12.0,
+                  "ks_uniform_D": ks_d,
+                  "ks_uniform_p_approx": ks_p,
+                  "lag1_correlation_x": original_lag1,
+                  "lag1_correlation_x_p_approx": correlation_pvalue_fisher(
+                      original_lag1, len(rows) - 1
+                  ),
+                  "ljung_box_max_lag": ljung_lag,
+                  "ljung_box_x_Q": ljung_x_q,
+                  "ljung_box_x_p": ljung_x_p,
+                  "ljung_box_f_scaled_Q": ljung_f_q,
+                  "ljung_box_f_scaled_p": ljung_f_p,
+                  "spearman_x_vs_f": transformed_rank_correlation,
+                  "mean_absolute_delta_x": original_mean_abs_delta,
+                  "mean_ratio_x": mean_ratio,
+                  "median_ratio_x": median_ratio,
+                  "mean_xor_normalized": mean_xor,
+                  "mean_hamming_observed": mean_hamming,
+                  "mean_hamming_expected_from_targets": expected_mean_hamming,
+                  "hamming_observed_minus_expected": mean_hamming - expected_mean_hamming,
+                  "mean_block_timestamp_interval_seconds": mean_interval,
+                  "median_block_timestamp_interval_seconds": median_interval,
+                  "mean_bit_mutual_information": mean_bit_mi,
+                  "max_bit_mutual_information": max_bit_mi_row["mutual_information_bits"],
+                  "max_bit_mutual_information_bit_index_lsb_zero": max_bit_mi_row[
+                      "bit_index_lsb_zero"
+                  ],
+                  "shuffle_seed": RANDOM_SEED,
+                  "shuffled_lag1_correlation_x": shuffled_lag1,
+                  "shuffled_mean_absolute_delta_x": shuffled_mean_abs_delta,
+                  "shuffled_mean_hamming": shuffled_hamming,
+                  "plots": plot_paths,
+                  "plot_status": plot_status,
+              }
+              summary = {key: finite_or_none(value) for key, value in summary.items()}
+
+              report_lines = [
+                  "BITCOIN HASH TRANSFORM — REAL LIVE DATA",
+                  "=" * 104,
+                  "",
+                  "CONFIGURATION",
+                  f"blocks_requested: {BLOCK_COUNT}",
+                  f"blocks_received: {len(rows)}",
+                  f"end_height_requested: {END_HEIGHT if END_HEIGHT is not None else 'tip'}",
+                  f"height_range: {rows[0]['height']}..{rows[-1]['height']}",
+                  f"n: {N_EXPONENT}",
+                  f"a0: {A0:.15e}",
+                  f"max_lag: {MAX_LAG}",
+                  f"provider_last_used: {final_provider}",
+                  f"api_requests: {request_count}",
+                  "",
+                  "INTEGRITY",
+                  f"all_pow_valid: {all_pow_valid}",
+                  f"all_chain_links_valid: {all_chain_links_valid}",
+                  f"unique_targets: {len(unique_targets)}",
+                  f"target_change_count: {len(target_changes)}",
+                  "retarget_boundaries_in_sample: "
+                  + (
+                      ", ".join(str(row["height"]) for row in retarget_boundaries)
+                      if retarget_boundaries else "none"
+                  ),
+                  "",
+                  "DISTRIBUTION AND SERIAL TESTS",
+                  f"mean_hash_over_target: {mean_x:.15g}",
+                  f"uniform_expected_mean: {0.5:.15g}",
+                  f"variance_hash_over_target: {variance_x:.15g}",
+                  f"uniform_expected_variance: {(1.0 / 12.0):.15g}",
+                  f"ks_uniform_D: {ks_d:.15g}",
+                  f"ks_uniform_p_approx: {ks_p:.15g}",
+                  f"lag1_correlation_x: {original_lag1:.15g}",
+                  f"lag1_correlation_x_p_approx: "
+                  f"{correlation_pvalue_fisher(original_lag1, len(rows) - 1):.15g}",
+                  f"ljung_box_x_Q_lags_1_to_{ljung_lag}: {ljung_x_q:.15g}",
+                  f"ljung_box_x_p: {ljung_x_p:.15g}",
+                  f"ljung_box_f_scaled_Q_lags_1_to_{ljung_lag}: {ljung_f_q:.15g}",
+                  f"ljung_box_f_scaled_p: {ljung_f_p:.15g}",
+                  "",
+                  "TRANSFORM",
+                  f"spearman_x_vs_f: {transformed_rank_correlation:.15g}",
+                  f"min_f_x_target: {min(f_values):.15e}",
+                  f"max_f_x_target: {max(f_values):.15e}",
+                  f"max_f2_x_target: {max(row['f2_x_target'] for row in rows):.15e}",
+                  f"max_f3_x_target: {max(row['f3_x_target'] for row in rows):.15e}",
+                  "",
+                  "PAIR CONSTRUCTIONS",
+                  f"mean_absolute_delta_x: {original_mean_abs_delta:.15g}",
+                  f"mean_ratio_x: {mean_ratio:.15g}",
+                  f"median_ratio_x: {median_ratio:.15g}",
+                  f"mean_xor_normalized: {mean_xor:.15g}",
+                  f"mean_hamming_observed: {mean_hamming:.15g}",
+                  f"mean_hamming_expected_from_targets: {expected_mean_hamming:.15g}",
+                  f"hamming_observed_minus_expected: "
+                  f"{mean_hamming - expected_mean_hamming:.15g}",
+                  f"mean_bit_mutual_information: {mean_bit_mi:.15g}",
+                  f"max_bit_mutual_information: "
+                  f"{max_bit_mi_row['mutual_information_bits']:.15g}",
+                  f"max_bit_mutual_information_bit_index_lsb_zero: "
+                  f"{max_bit_mi_row['bit_index_lsb_zero']}",
+                  "",
+                  "TIMING",
+                  f"mean_block_timestamp_interval_seconds: {mean_interval:.15g}",
+                  f"median_block_timestamp_interval_seconds: {median_interval:.15g}",
+                  "",
+                  "DETERMINISTIC SHUFFLE CONTROL",
+                  f"shuffle_seed: {RANDOM_SEED}",
+                  f"original_lag1_correlation_x: {original_lag1:.15g}",
+                  f"shuffled_lag1_correlation_x: {shuffled_lag1:.15g}",
+                  f"original_mean_absolute_delta_x: {original_mean_abs_delta:.15g}",
+                  f"shuffled_mean_absolute_delta_x: {shuffled_mean_abs_delta:.15g}",
+                  f"original_mean_hamming: {mean_hamming:.15g}",
+                  f"shuffled_mean_hamming: {shuffled_hamming:.15g}",
+                  "",
+                  "LAG TABLE",
+                  "lag | pairs | corr_x | p_x_approx | corr_f_scaled | p_f_approx",
+                  "-" * 96,
+              ]
+
+              for lag_row in lag_rows:
+                  report_lines.append(
+                      f"{lag_row['lag']} | "
+                      f"{lag_row['pair_count']} | "
+                      f"{lag_row['correlation_x']:.12g} | "
+                      f"{lag_row['pvalue_x_fisher_approx']:.12g} | "
+                      f"{lag_row['correlation_f_scaled']:.12g} | "
+                      f"{lag_row['pvalue_f_fisher_approx']:.12g}"
+                  )
+
+              report_lines.extend(
+                  [
+                      "",
+                      "FULL ROW DATA",
+                      (
+                          "height | utc | bits | difficulty | target_changed | retarget_boundary | "
+                          "x | f(x) | f2(x) | delta_x | ratio_x | xor_norm | hamming | "
+                          "expected_hamming | interval_seconds | hash"
+                      ),
+                      "-" * 300,
+                  ]
+              )
+
+              for row in rows:
+                  report_lines.append(
+                      f"{row['height']} | "
+                      f"{row['timestamp_utc']} | "
+                      f"{row['bits_hex']} | "
+                      f"{row['difficulty']:.12g} | "
+                      f"{row['target_changed']} | "
+                      f"{row['retarget_boundary']} | "
+                      f"{row['x_target_normalized']:.15g} | "
+                      f"{row['f_x_target']:.15e} | "
+                      f"{row['f2_x_target']:.15e} | "
+                      f"{format_float(row['delta_x'], 15)} | "
+                      f"{format_float(row['ratio_x'], 15)} | "
+                      f"{format_float(row['xor_normalized_full_space'], 15)} | "
+                      f"{format_float(row['hamming_to_previous_hash'], 15)} | "
+                      f"{format_float(row['expected_hamming_for_pair'], 15)} | "
+                      f"{format_float(row['interval_seconds'], 15)} | "
+                      f"{row['hash']}"
+                  )
+
+              full_report = "\n".join(report_lines) + "\n"
+              REPORT_PATH.write_text(full_report, encoding="utf-8")
+
+              status.update(summary)
+              status["message"] = "Live Bitcoin data fetched, verified, transformed, and analyzed."
+              STATUS_PATH.write_text(
+                  json.dumps(status, indent=2, sort_keys=True, allow_nan=False),
+                  encoding="utf-8",
+              )
+
+              emit()
+              emit("\n".join(report_lines[: report_lines.index("FULL ROW DATA")]))
+              emit()
+              emit("ROW DATA PRINTED TO ACTION LOG")
+              emit("=" * 104)
+
+              row_header_index = report_lines.index("FULL ROW DATA")
+              row_header = report_lines[row_header_index : row_header_index + 3]
+              data_lines = report_lines[row_header_index + 3 :]
+
+              for line in row_header:
+                  emit(line)
+
+              if PRINT_ROWS == 0 or PRINT_ROWS >= len(data_lines):
+                  selected_data_lines = data_lines
+              else:
+                  first_count = (PRINT_ROWS + 1) // 2
+                  last_count = PRINT_ROWS // 2
+                  selected_data_lines = data_lines[:first_count]
+                  if last_count:
+                      selected_data_lines += [
+                          f"... {len(data_lines) - PRINT_ROWS} rows omitted from log; "
+                          "all rows remain in the TXT and CSV artifacts ..."
+                      ]
+                      selected_data_lines += data_lines[-last_count:]
+
+              for line in selected_data_lines:
+                  emit(line)
+
+              emit()
+              emit("STATUS JSON")
+              emit("-" * 104)
+              emit(STATUS_PATH.read_text(encoding="utf-8"))
+
+              github_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+              if github_summary:
+                  with open(github_summary, "a", encoding="utf-8") as handle:
+                      handle.write(
+                          "# Bitcoin hash transform\n\n"
+                          f"- Live rows: `{len(rows)}`\n"
+                          f"- Heights: `{rows[0]['height']}..{rows[-1]['height']}`\n"
+                          f"- Proof-of-work valid: `{all_pow_valid}`\n"
+                          f"- Chain links valid: `{all_chain_links_valid}`\n"
+                          f"- Targets represented: `{len(unique_targets)}`\n"
+                          f"- Target changes: `{len(target_changes)}`\n"
+                          f"- Mean hash/target: `{mean_x:.12g}`\n"
+                          f"- KS p approximation: `{ks_p:.12g}`\n"
+                          f"- Lag-1 correlation: `{original_lag1:.12g}`\n"
+                          f"- Ljung–Box p through lag {ljung_lag}: `{ljung_x_p:.12g}`\n"
+                          f"- Mean Hamming observed: `{mean_hamming:.12g}`\n"
+                          f"- Mean Hamming expected: `{expected_mean_hamming:.12g}`\n"
+                          f"- Plot status: `{plot_status}`\n\n"
+                          "The full row table is stored in "
+                          "`bitcoin_hash_transform_report.txt`; machine-readable rows are "
+                          "in the CSV artifacts.\n"
+                      )
+
+          except Exception as exc:
+              error_text = "".join(
+                  traceback.format_exception(type(exc), exc, exc.__traceback__)
+              )
+              status.update(
+                  {
+                      "completed": False,
+                      "live_data": False,
+                      "rows": 0,
+                      "message": str(exc),
+                      "traceback": error_text,
+                  }
+              )
+
+              REPORT_PATH.write_text(
+                  "BITCOIN HASH TRANSFORM — NO SUBSTITUTE DATA GENERATED\n"
+                  + "=" * 72
+                  + "\n"
+                  + "The live run did not complete. The workflow remains non-failing by "
+                  + "design, and no synthetic dataset was substituted.\n\n"
+                  + error_text,
+                  encoding="utf-8",
+              )
+              STATUS_PATH.write_text(
+                  json.dumps(status, indent=2, sort_keys=True, allow_nan=False),
+                  encoding="utf-8",
+              )
+
+              emit(REPORT_PATH.read_text(encoding="utf-8"))
+              emit()
+              emit("STATUS JSON")
+              emit(STATUS_PATH.read_text(encoding="utf-8"))
+
+              github_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+              if github_summary:
+                  with open(github_summary, "a", encoding="utf-8") as handle:
+                      handle.write(
+                          "# Bitcoin hash transform\n\n"
+                          "The live run did not complete. No synthetic data was generated. "
+                          "Inspect the text report and status JSON for the exact error.\n"
+                      )
+
+          finally:
+              emit()
+              emit("Workflow exit policy: return success; status JSON carries completion state.")
+              sys.exit(0)
+          PY
+
+          exit 0
+
+      - name: Upload complete results
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: bitcoin-hash-transform-${{ github.run_number }}
+          path: |
+            bitcoin_hash_transform_results.csv
+            bitcoin_hash_transform_lags.csv
+            bitcoin_hash_transform_bit_statistics.csv
+            bitcoin_hash_transform_report.txt
+            bitcoin_hash_transform_status.json
+            bitcoin_hash_transform_console.log
+            *.png
+          if-no-files-found: warn
+          retention-days: 30
