@@ -1,40 +1,39 @@
 name: DREAM Application Code Pascal 3-Bit Pair Saturation PNG PDF
 run-name: DREAM Application Code Pascal 3-Bit Pair Saturation PNG PDF
 
-on:
-  workflow_dispatch:
-    inputs:
-      cell_size:
-        description: "Visible pixels per Pascal cell in tiled PNG output"
-        required: false
-        default: "4"
-      max_png_dimension:
-        description: "Maximum width or height of each lossless PNG tile"
-        required: false
-        default: "20000"
+"on":
+  workflow_dispatch: {}
 
 permissions:
   contents: read
 
 jobs:
-  dream-application-code-pascal-3bit-pair-saturation-png-pdf:
+  build-pascal-artifact:
+    name: Build Pascal artifact
     runs-on: ubuntu-latest
+    timeout-minutes: 360
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install image dependency
-        run: python3 -m pip install --upgrade pillow
+      - name: Install Pillow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check --upgrade Pillow
 
-      - name: Build lossless pair-group Pascal PNG tiles and color PDF
+      - name: Generate PNG tiles and PDF
+        shell: bash
         env:
-          CELL_SIZE: ${{ inputs.cell_size }}
-          MAX_PNG_DIMENSION: ${{ inputs.max_png_dimension }}
+          CELL_SIZE: "4"
+          MAX_PNG_DIMENSION: "20000"
           SATURATION_N: "2.0"
           SATURATION_A0: "1.2e-14"
           PASCAL_GAIN: "8.0"
         run: |
-          python3 - <<'PY'
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/dream_pascal.py" <<'PY'
           from __future__ import annotations
 
           import json
@@ -523,10 +522,12 @@ jobs:
 
           raise SystemExit(main())
           PY
+          python3 "$RUNNER_TEMP/dream_pascal.py"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: dream-application-code-pascal-3bit-pair-saturation-png-pdf
-          path: dream-application-code-pascal-3bit-pair-saturation-png-pdf
+          path: dream-application-code-pascal-3bit-pair-saturation-png-pdf/
           if-no-files-found: error
+          retention-days: 1
