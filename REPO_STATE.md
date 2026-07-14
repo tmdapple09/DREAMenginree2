@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-14T04:28:49.565Z
+Generated: 2026-07-14T05:54:13.135Z
 
 Model: capability nodes + files as edges.
 
@@ -15,7 +15,7 @@ Marker guide:
 - `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.
 - `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.
 
-- Capability nodes: 11589
+- Capability nodes: 11592
 - File edges: 1595
 - Routes: 113
 - Files analysed: 1595
@@ -4122,6 +4122,7 @@ _No style files for this feature._
 - ` });     stageForgeArtifact(artifact);     const parsed = JSON.parse(store[` - `external`
 - ` syntax for type-only imports    - Check `types/` directory for missing global declarations    - Wrap Supabase query results with proper generics 3. **Quick suppression (use sparingly, always with a TODO):**    ```ts    // TODO issue #${issue.number}: fix underlying type mismatch    // @ts-expect-error — <brief reason>    ``` 4. Review `tsconfig.json` for the strict settings in effect. 5. Run `pnpm run build:gamesengin` to check the GameEngin type pass too.` - `external`
 - `,` - `external`
+- `,     ` - `external`
 - `,       file_hints: unique([...fileHints]),       commands: [` - `external`
 - `,       ts: Date.now(),     };     expect(isForgeLogEvent(event)).toBe(true);   });    it(` - `external`
 - `,     output: ` - `external`
@@ -4213,6 +4214,7 @@ _No style files for this feature._
 - `react-dom/client` - `external`
 - `rgba(34,197,94,0.06)` - `external`
 - `rss-parser` - `external`
+- `scripts/readme-autosync.ts` - `external`
 - `server-only` - `external`
 - `swr` - `external`
 - `tailwindcss` - `external`
@@ -4358,7 +4360,7 @@ _No style files for this feature._
 - `generate-features.mjs` - `scripts/feature-build/generate-features.mjs`
 - `generate-mobile-nextgen-spec.mjs` - `scripts/generate-mobile-nextgen-spec.mjs`
 - `generate-mobile-ps5-spec.mjs` - `scripts/generate-mobile-ps5-spec.mjs`
-- `generate-readme.ts` - `scripts/generate-readme.ts`
+- `generate-readme-v3-verified.ts` - `scripts/generate-readme-v3-verified.ts`
 - `generate-repo-state.mjs` - `scripts/generate-repo-state.mjs`
 - `generate-test-assets.mjs` - `scripts/contentengin/generate-test-assets.mjs`
 - `god-tier-engine.test.ts` - `tests/god-tier-engine.test.ts`
@@ -4936,7 +4938,7 @@ _No style files for this feature._
 - `*` - `engine/navigation/physics.ts`
 - `*` - `engine/navigation/anchorField.ts`
 - `*` - `engine/observability/collector.ts`
-- _3205 more omitted from this section_
+- _3206 more omitted from this section_
 
 ## route
 
@@ -6352,7 +6354,7 @@ _No style files for this feature._
 | `scripts/gameengin/writer-run.ts` | `node:fs`, `node:path` | `writer-run.ts` |
 | `scripts/generate-mobile-nextgen-spec.mjs` | `node:fs/promises`, `node:fs`, `node:path` | `generate-mobile-nextgen-spec.mjs` |
 | `scripts/generate-mobile-ps5-spec.mjs` | `node:fs/promises`, `node:fs`, `node:path` | `generate-mobile-ps5-spec.mjs` |
-| `scripts/generate-readme.ts` | `node:fs`, `node:path`, `buildProductReadmeSections`, `PRODUCT_SECTIONS` | `generate-readme.ts` |
+| `scripts/generate-readme-v3-verified.ts` | `node:child_process`, `node:crypto`, `node:fs`, `node:path`, `buildProductReadmeSections`, `PRODUCT_SECTIONS`, `ProductSectionStats`, `,     ` | `generate-readme-v3-verified.ts` |
 | `scripts/generate-repo-state.mjs` | `node:fs`, `node:path`, `);         } else if (beforeFrom.startsWith(` | `generate-repo-state.mjs` |
 | `scripts/generate-webapp-final-form.mjs` | `fs/promises`, `path`, `url`, `child_process`, ` : ` | `$`, `(default)`, `POST` |
 | `scripts/optimize-dreamengin.mjs` | `fs`, `path`, `yaml` | `optimize-dreamengin.mjs` |
@@ -6981,6 +6983,7 @@ _No circular dependencies detected._
 | `engins/contentengin/cli.ts` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `scripts/gameengin/package-cartridge.ts` | 7 | MEDIUM_COUPLING |
+| `scripts/generate-readme-v3-verified.ts` | 7 | MEDIUM_COUPLING |
 | `app/actions/dream-docs.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/activity/track/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/admin/ai-chat/route.ts` | 6 | MEDIUM_COUPLING |
