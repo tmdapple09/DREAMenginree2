@@ -1,15 +1,15 @@
-name: DREAM Application Code Pascal 3-Bit Pair PNG PDF
-run-name: DREAM Application Code Pascal 3-Bit Pair PNG PDF
+name: DREAM Application Code Pascal 3-Bit Pair Saturation PNG PDF
+run-name: DREAM Application Code Pascal 3-Bit Pair Saturation PNG PDF
 
 on:
   workflow_dispatch:
     inputs:
       cell_size:
-        description: "Visible pixels per Pascal cell in the output PNG"
+        description: "Visible pixels per Pascal cell in tiled PNG output"
         required: false
         default: "4"
       max_png_dimension:
-        description: "Safety limit for PNG width/height in pixels"
+        description: "Maximum width or height of each lossless PNG tile"
         required: false
         default: "20000"
 
@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  dream-application-code-pascal-3bit-pair-png-pdf:
+  dream-application-code-pascal-3bit-pair-saturation-png-pdf:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -26,10 +26,13 @@ jobs:
       - name: Install image dependency
         run: python3 -m pip install --upgrade pillow
 
-      - name: Build Pascal 3-bit pair PNG and color PDF
+      - name: Build lossless pair-group Pascal PNG tiles and color PDF
         env:
           CELL_SIZE: ${{ inputs.cell_size }}
           MAX_PNG_DIMENSION: ${{ inputs.max_png_dimension }}
+          SATURATION_N: "2.0"
+          SATURATION_A0: "1.2e-14"
+          PASCAL_GAIN: "8.0"
         run: |
           python3 - <<'PY'
           from __future__ import annotations
@@ -42,51 +45,17 @@ jobs:
 
           from PIL import Image, ImageDraw, ImageFont
 
-          # =============================================================================
-          # DREAM APPLICATION CODE -> UTF-8 BITS -> 3-BIT RGB -> PASCAL TRIANGLE PNG + PDF
-          # =============================================================================
-          #
-          # Unit:
-          #   3 source bits = 0.375 bytes = 1 Pascal cell
-          #
-          # 3-bit RGB mapping:
-          #   000 = black
-          #   100 = red
-          #   010 = green
-          #   001 = blue
-          #   110 = yellow
-          #   101 = magenta
-          #   011 = cyan
-          #   111 = white
-          #
-          # 4 structural pair-groups:
-          #   Group A = 000 / 111 = black / white      = extremes
-          #   Group B = 100 / 001 = red / blue         = outer singletons
-          #   Group C = 110 / 011 = yellow / cyan      = adjacent doubles
-          #   Group D = 101 / 010 = magenta / green    = alternating center-vs-outer
-          #
-          # This version outputs PNG instead of WebP so you get more visible pixels.
-          # Each Pascal cell is rendered as a square block of CELL_SIZE x CELL_SIZE pixels.
-          # =============================================================================
-
-          OUT_DIR = Path("dream-application-code-pascal-3bit-pair-png-pdf")
-          OUT_DIR.mkdir(parents=True, exist_ok=True)
-          (OUT_DIR / "Data").mkdir(parents=True, exist_ok=True)
-          (OUT_DIR / "Metadata").mkdir(parents=True, exist_ok=True)
+          OUT_DIR = Path("dream-application-code-pascal-3bit-pair-saturation-png-pdf")
+          DATA_DIR = OUT_DIR / "Data"
+          META_DIR = OUT_DIR / "Metadata"
+          TILES_DIR = OUT_DIR / "Tiles"
+          for directory in (OUT_DIR, DATA_DIR, META_DIR, TILES_DIR):
+              directory.mkdir(parents=True, exist_ok=True)
 
           APP_ROOTS = [
-              "app",
-              "components",
-              "coresurfaces",
-              "daydreams",
-              "dr-eams",
-              "dreamdmbar",
-              "dreamr",
-              "engine",
-              "engins",
-              "hooks",
+              "app", "components", "coresurfaces", "daydreams", "dr-eams",
+              "dreamdmbar", "dreamr", "engine", "engins", "hooks",
           ]
-
           CODE_EXTENSIONS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"}
           EXCLUDED_DIRS = {
               ".git", ".github", ".ci", "node_modules", ".next", "dist", "build",
@@ -94,40 +63,57 @@ jobs:
               str(OUT_DIR),
           }
 
+          STATE_KEYS = ["000", "001", "010", "011", "100", "101", "110", "111"]
+          STATE_INDEX = {key: index for index, key in enumerate(STATE_KEYS)}
           RGB_BY_BITS = {
               "000": (0, 0, 0),
-              "100": (255, 0, 0),
-              "010": (0, 255, 0),
               "001": (0, 0, 255),
-              "110": (255, 255, 0),
-              "101": (255, 0, 255),
+              "010": (0, 255, 0),
               "011": (0, 255, 255),
+              "100": (255, 0, 0),
+              "101": (255, 0, 255),
+              "110": (255, 255, 0),
               "111": (255, 255, 255),
           }
           PAIR_GROUP_BY_BITS = {
               "000": "A", "111": "A",
-              "100": "B", "001": "B",
-              "110": "C", "011": "C",
-              "101": "D", "010": "D",
+              "001": "B", "100": "B",
+              "011": "C", "110": "C",
+              "010": "D", "101": "D",
           }
-          PAIR_GROUP_LABELS = {
-              "A": "000 / 111 = black / white = extremes",
-              "B": "100 / 001 = red / blue = outer singletons",
-              "C": "110 / 011 = yellow / cyan = adjacent doubles",
-              "D": "101 / 010 = magenta / green = alternating center-vs-outer",
+          POLARITY_BY_BITS = {
+              "000": 0, "111": 1,
+              "001": 0, "100": 1,
+              "011": 0, "110": 1,
+              "010": 0, "101": 1,
           }
-          BLACK = (0, 0, 0)
-          WHITE = (255, 255, 255)
+          GROUP_INDEX = {"A": 0, "B": 1, "C": 2, "D": 3}
+          GROUP_COLORS = {
+              "A": (150, 150, 150),
+              "B": (255, 80, 80),
+              "C": (255, 210, 0),
+              "D": (170, 80, 255),
+          }
+          TRANSPARENT_INDEX = 255
           PDF_PAGE_SIZE = (2550, 3300)
 
 
-          def env_int(name: str, default: int, minimum: int = 1, maximum: int = 1000) -> int:
+          def env_int(name: str, default: int, minimum: int, maximum: int) -> int:
               raw = os.environ.get(name, str(default)).strip()
               try:
                   value = int(raw)
               except ValueError:
                   value = default
               return max(minimum, min(maximum, value))
+
+
+          def env_float(name: str, default: float, minimum: float) -> float:
+              raw = os.environ.get(name, str(default)).strip()
+              try:
+                  value = float(raw)
+              except ValueError:
+                  value = default
+              return max(minimum, value)
 
 
           def application_source_files(repo_root: Path) -> list[Path]:
@@ -145,7 +131,7 @@ jobs:
                           continue
                       if path.suffix in CODE_EXTENSIONS:
                           files.append(path)
-              return sorted(files, key=lambda p: str(p.relative_to(repo_root)).lower())
+              return sorted(files, key=lambda path: str(path.relative_to(repo_root)).lower())
 
 
           def bits_from_bytes(data: bytes) -> Iterable[int]:
@@ -154,25 +140,61 @@ jobs:
                       yield (byte >> shift) & 1
 
 
-          def triangular_number(n: int) -> int:
-              return n * (n + 1) // 2
-
-
           def pascal_rows_for_cell_count(cell_count: int) -> int:
               if cell_count <= 1:
                   return 1
               return math.ceil((math.sqrt(8 * cell_count + 1) - 1) / 2)
 
 
-          def pascal_cell_for_group_index(group_index: int) -> tuple[int, int]:
-              row = int((math.sqrt(8 * group_index + 1) - 1) // 2)
-              col = group_index - triangular_number(row)
-              return row, col
-
-
           def group_to_key(group_bits: list[int]) -> str:
               padded = (group_bits + [0, 0, 0])[:3]
               return "".join(str(bit) for bit in padded)
+
+
+          def saturating_value(x: float, n: float, a0: float) -> float:
+              if x < 0:
+                  raise ValueError("x must be nonnegative")
+              if n <= 0:
+                  raise ValueError("n must be positive")
+              return a0 * x / ((1.0 + x**n) ** (1.0 / n))
+
+
+          def normalized_saturation(x: float, n: float, a0: float) -> float:
+              return saturating_value(x=x, n=n, a0=a0) / a0
+
+
+          def relative_pascal_row_weights(row: int) -> list[float]:
+              weights = [0.0] * (row + 1)
+              peak = row // 2
+              weights[peak] = 1.0
+              for col in range(peak - 1, -1, -1):
+                  weights[col] = weights[col + 1] * ((col + 1) / (row - col))
+              for col in range(peak + 1, row + 1):
+                  weights[col] = weights[col - 1] * ((row - col + 1) / col)
+              return weights
+
+
+          def palette_image(size: tuple[int, int], indices: bytes, colors: list[tuple[int, int, int]]) -> Image.Image:
+              image = Image.frombytes("P", size, indices)
+              palette: list[int] = []
+              for color in colors:
+                  palette.extend(color)
+              while len(palette) < 256 * 3:
+                  palette.extend((0, 0, 0))
+              image.putpalette(palette[: 256 * 3])
+              image.info["transparency"] = TRANSPARENT_INDEX
+              return image
+
+
+          def grayscale_palette_image(size: tuple[int, int], indices: bytes) -> Image.Image:
+              image = Image.frombytes("P", size, indices)
+              palette: list[int] = []
+              for value in range(255):
+                  palette.extend((value, value, value))
+              palette.extend((0, 0, 0))
+              image.putpalette(palette)
+              image.info["transparency"] = TRANSPARENT_INDEX
+              return image
 
 
           def load_font(size: int, bold: bool = False):
@@ -187,133 +209,125 @@ jobs:
               return ImageFont.load_default()
 
 
-          def draw_cell(draw: ImageDraw.ImageDraw, x: int, y: int, cell_size: int, fill: tuple[int, int, int]) -> None:
-              draw.rectangle([x, y, x + cell_size - 1, y + cell_size - 1], fill=fill)
-
-
           def write_source_order(repo_root: Path, files: list[Path]) -> None:
-              (OUT_DIR / "Data" / "SOURCE_ORDER.txt").write_text(
+              (DATA_DIR / "SOURCE_ORDER.txt").write_text(
                   "\n".join(path.relative_to(repo_root).as_posix() for path in files) + "\n",
                   encoding="utf-8",
               )
 
 
-          def write_math(source_bits: int, group_count: int, rows: int, cell_size: int) -> None:
-              notes = [
-                  "# Pascal 3-Bit Pair PNG + PDF Math",
-                  "",
-                  "Correct unit:",
-                  "",
-                  "`3 source bits = 0.375 bytes = 1 Pascal cell`",
-                  "",
-                  "## 3-bit RGB mapping",
-                  "",
-                  "- `000 -> black`",
-                  "- `100 -> red`",
-                  "- `010 -> green`",
-                  "- `001 -> blue`",
-                  "- `110 -> yellow`",
-                  "- `101 -> magenta`",
-                  "- `011 -> cyan`",
-                  "- `111 -> white`",
-                  "",
-                  "## 4 pair-groups",
-                  "",
-                  "- Group A: `000 / 111` = black / white = extremes",
-                  "- Group B: `100 / 001` = red / blue = outer singletons",
-                  "- Group C: `110 / 011` = yellow / cyan = adjacent doubles",
-                  "- Group D: `101 / 010` = magenta / green = alternating center-vs-outer",
-                  "",
-                  "## Pascal identity",
-                  "",
-                  "`cell(n,k) = C(n,k)`",
-                  "`C(n,k) = n!/(k!(n-k)!)`",
-                  "`C(n,k) = C(n-1,k-1) + C(n-1,k)`",
-                  "`sum_k C(n,k) = 2^n`",
-                  "`C(n,k) is odd iff (k & ~n) == 0`",
-                  "`odd coefficients in row n = 2^popcount(n)`",
-                  "",
-                  "## Group index to Pascal cell",
-                  "",
-                  "`row = floor((sqrt(8i+1)-1)/2)`",
-                  "`col = i - row(row+1)/2`",
-                  "",
-                  "where `i` is the 3-bit group index.",
-                  "",
-                  "## This run",
-                  "",
-                  f"`source bits = {source_bits}`",
-                  f"`Pascal cells = {group_count}`",
-                  f"`Pascal rows = {rows}`",
-                  f"`cell size in output PNG = {cell_size}x{cell_size} pixels`",
-              ]
-              (OUT_DIR / "Data" / "PASCAL_3BIT_PAIR_MATH.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
+          def save_visible_tiles(image: Image.Image, stem: str, cell_size: int, max_dimension: int) -> list[str]:
+              destination = TILES_DIR / stem
+              destination.mkdir(parents=True, exist_ok=True)
+              logical_width, logical_height = image.size
+              tile_cells = max(1, max_dimension // cell_size)
+              output_paths: list[str] = []
+              tile_row = 0
+              for y0 in range(0, logical_height, tile_cells):
+                  tile_col = 0
+                  for x0 in range(0, logical_width, tile_cells):
+                      x1 = min(logical_width, x0 + tile_cells)
+                      y1 = min(logical_height, y0 + tile_cells)
+                      logical_tile = image.crop((x0, y0, x1, y1))
+                      visible_tile = logical_tile.resize(
+                          ((x1 - x0) * cell_size, (y1 - y0) * cell_size),
+                          Image.Resampling.NEAREST,
+                      )
+                      path = destination / f"{stem}_r{tile_row:03d}_c{tile_col:03d}.png"
+                      visible_tile.save(path, "PNG", compress_level=6)
+                      output_paths.append(path.as_posix())
+                      tile_col += 1
+                  tile_row += 1
+              return output_paths
 
 
-          def render_pdf(png_path: Path, source_bits: int, group_count: int, rows: int, cell_size: int) -> Path:
-              page = Image.new("RGB", PDF_PAGE_SIZE, WHITE)
-              draw = ImageDraw.Draw(page)
-              title_font = load_font(42, True)
-              head_font = load_font(24, True)
-              text_font = load_font(18, False)
+          def fit_on_white(image: Image.Image, max_width: int, max_height: int) -> Image.Image:
+              rgba = image.convert("RGBA")
+              scale = min(max_width / rgba.width, max_height / rgba.height)
+              new_size = (max(1, int(rgba.width * scale)), max(1, int(rgba.height * scale)))
+              rgba = rgba.resize(new_size, Image.Resampling.NEAREST)
+              white = Image.new("RGBA", new_size, (255, 255, 255, 255))
+              white.alpha_composite(rgba)
+              return white.convert("RGB")
 
-              margin = 110
-              y = 80
-              draw.text((margin, y), "DREAM Application Code Pascal 3-Bit Pair", fill=(0, 0, 0), font=title_font)
-              y += 62
-              draw.text((margin, y), "Application code only -> UTF-8 bits -> 3-bit RGB groups -> centered Pascal triangle", fill=(0,0,0), font=text_font)
-              y += 34
-              draw.text((margin, y), "3 source bits = 0.375 bytes = 1 Pascal cell", fill=(0,0,0), font=head_font)
-              y += 46
-              draw.text((margin, y), f"Source bits: {source_bits:,}   Pascal cells: {group_count:,}   Pascal rows: {rows:,}   Cell size: {cell_size}px", fill=(0,0,0), font=text_font)
-              y += 50
 
-              img = Image.open(png_path).convert("RGB")
-              max_w = 1780
-              max_h = 1600
-              scale = min(max_w / img.width, max_h / img.height)
-              new_size = (max(1, int(img.width * scale)), max(1, int(img.height * scale)))
-              img = img.resize(new_size, Image.Resampling.NEAREST)
-              page.paste(img, (margin, y))
+          def render_pdf(
+              exact_path: Path,
+              group_path: Path,
+              polarity_path: Path,
+              saturation_path: Path,
+              source_bits: int,
+              group_count: int,
+              rows: int,
+              saturation_n: float,
+              saturation_a0: float,
+              pascal_gain: float,
+          ) -> Path:
+              title_font = load_font(40, True)
+              head_font = load_font(23, True)
+              text_font = load_font(17, False)
+              pages: list[Image.Image] = []
 
-              lx = margin + max_w + 70
-              ly = y
-              draw.text((lx, ly), "Pair groups", fill=(0,0,0), font=head_font)
-              ly += 42
-              for key in ["A", "B", "C", "D"]:
-                  label = PAIR_GROUP_LABELS[key]
-                  colors = {
-                      "A": [(0,0,0), (255,255,255)],
-                      "B": [(255,0,0), (0,0,255)],
-                      "C": [(255,255,0), (0,255,255)],
-                      "D": [(255,0,255), (0,255,0)],
-                  }[key]
-                  sx = lx
-                  for color in colors:
-                      draw.rectangle([sx, ly, sx + 28, ly + 28], fill=color, outline=(0,0,0))
-                      sx += 36
-                  draw.text((lx + 84, ly + 2), label, fill=(0,0,0), font=text_font)
-                  ly += 40
+              page1 = Image.new("RGB", PDF_PAGE_SIZE, (255, 255, 255))
+              draw1 = ImageDraw.Draw(page1)
+              draw1.text((100, 70), "DREAM Pascal 3-Bit Pair â Exact Lossless State Image", fill=(0, 0, 0), font=title_font)
+              draw1.text((100, 130), "3 source bits = one Pascal cell; transparent area is outside the triangle.", fill=(0, 0, 0), font=text_font)
+              draw1.text((100, 165), f"Source bits: {source_bits:,}   Cells: {group_count:,}   Rows: {rows:,}", fill=(0, 0, 0), font=text_font)
+              exact = fit_on_white(Image.open(exact_path), 1700, 1750)
+              page1.paste(exact, (100, 220))
 
-              ly += 20
-              draw.text((lx, ly), "Pascal math", fill=(0,0,0), font=head_font)
-              ly += 38
-              lines = [
-                  "cell(n,k) = C(n,k)",
-                  "C(n,k) = n!/(k!(n-k)!)",
-                  "C(n,k) = C(n-1,k-1) + C(n-1,k)",
-                  "sum_k C(n,k) = 2^n",
-                  "C(n,k) is odd iff (k & ~n) == 0",
-                  "odd coefficients in row n = 2^popcount(n)",
-                  "row = floor((sqrt(8i+1)-1)/2)",
-                  "col = i - row(row+1)/2",
-              ]
-              for line in lines:
-                  draw.text((lx, ly), line, fill=(0,0,0), font=text_font)
-                  ly += 28
+              legend_x = 1870
+              legend_y = 230
+              draw1.text((legend_x, legend_y), "Exact states", fill=(0, 0, 0), font=head_font)
+              legend_y += 45
+              for key in STATE_KEYS:
+                  color = RGB_BY_BITS[key]
+                  draw1.rectangle([legend_x, legend_y, legend_x + 34, legend_y + 34], fill=color, outline=(0, 0, 0))
+                  draw1.text((legend_x + 48, legend_y + 6), f"{key} = {PAIR_GROUP_BY_BITS[key]}{POLARITY_BY_BITS[key]}", fill=(0, 0, 0), font=text_font)
+                  legend_y += 42
+              legend_y += 20
+              draw1.text((legend_x, legend_y), "Four lossless pairs", fill=(0, 0, 0), font=head_font)
+              legend_y += 42
+              for line in ["A0=000   A1=111", "B0=001   B1=100", "C0=011   C1=110", "D0=010   D1=101"]:
+                  draw1.text((legend_x, legend_y), line, fill=(0, 0, 0), font=text_font)
+                  legend_y += 32
+              pages.append(page1)
 
-              pdf_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_PAIR_PRINT.pdf"
-              page.save(pdf_path, "PDF", resolution=300.0)
+              page2 = Image.new("RGB", PDF_PAGE_SIZE, (255, 255, 255))
+              draw2 = ImageDraw.Draw(page2)
+              draw2.text((100, 70), "Pair Group, Polarity, and Pascal Saturation Field", fill=(0, 0, 0), font=title_font)
+              panels = [("Pair group A/B/C/D", group_path), ("Pair polarity 0/1", polarity_path), ("Saturation field", saturation_path)]
+              panel_y = 150
+              for label, path in panels:
+                  draw2.text((100, panel_y), label, fill=(0, 0, 0), font=head_font)
+                  panel = fit_on_white(Image.open(path), 1250, 850)
+                  page2.paste(panel, (100, panel_y + 38))
+                  panel_y += 940
+
+              formula_x = 1500
+              formula_y = 170
+              draw2.text((formula_x, formula_y), "Saturating function", fill=(0, 0, 0), font=head_font)
+              formula_y += 45
+              for line in [
+                  "f(x) = a0*x / (1 + x^n)^(1/n)",
+                  f"a0 = {saturation_a0:.6g}",
+                  f"n = {saturation_n:g}",
+                  f"Pascal gain = {pascal_gain:g}",
+                  "",
+                  "x = gain Ã",
+                  "C(row,col) / max_k C(row,k)",
+                  "",
+                  "Displayed field = 254 Ã f(x)/a0",
+                  "",
+                  "Applied once as a separate field.",
+                  "Exact 3-bit colors remain unchanged.",
+              ]:
+                  draw2.text((formula_x, formula_y), line, fill=(0, 0, 0), font=text_font)
+                  formula_y += 32
+              pages.append(page2)
+
+              pdf_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_PAIR_SATURATION_PRINT.pdf"
+              pages[0].save(pdf_path, "PDF", save_all=True, append_images=pages[1:], resolution=300.0)
               return pdf_path
 
 
@@ -324,58 +338,93 @@ jobs:
                   raise RuntimeError("No application code files found.")
 
               cell_size = env_int("CELL_SIZE", 4, 1, 64)
+              max_png_dimension = env_int("MAX_PNG_DIMENSION", 20000, 1000, 50000)
+              saturation_n = env_float("SATURATION_N", 2.0, 0.000001)
+              saturation_a0 = env_float("SATURATION_A0", 1.2e-14, 1e-300)
+              pascal_gain = env_float("PASCAL_GAIN", 8.0, 0.0)
+
               source_bits = sum(path.stat().st_size * 8 for path in files)
               group_count = math.ceil(source_bits / 3) if source_bits else 1
               rows = pascal_rows_for_cell_count(group_count)
-              image_width = rows * cell_size
-              image_height = rows * cell_size
+              pixel_count = rows * rows
 
-              # safety clamp for runner memory
-              max_dim = env_int("MAX_PNG_DIMENSION", 20000, 1000, 50000)
-              if image_width > max_dim or image_height > max_dim:
-                  raise RuntimeError(
-                      f"PNG would be {image_width}x{image_height}. Lower CELL_SIZE or raise MAX_PNG_DIMENSION if intended."
-                  )
-
-              image = Image.new("RGB", (image_width, image_height), BLACK)
-              draw = ImageDraw.Draw(image)
+              state_index_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
+              group_index_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
+              polarity_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
+              saturation_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
 
               group_bits: list[int] = []
-              group_index = 0
+              row = 0
+              col = 0
 
-              def emit_group(bits: list[int], index: int) -> None:
+              def emit_group(bits: list[int]) -> None:
+                  nonlocal row, col
                   key = group_to_key(bits)
-                  color = RGB_BY_BITS[key]
-                  row, col = pascal_cell_for_group_index(index)
+                  pair_group = PAIR_GROUP_BY_BITS[key]
+                  polarity = POLARITY_BY_BITS[key]
                   x_cell = ((rows - (row + 1)) // 2) + col
-                  y_cell = row
-                  x = x_cell * cell_size
-                  y = y_cell * cell_size
-                  draw_cell(draw, x, y, cell_size, color)
+                  offset = row * rows + x_cell
+                  state_index_data[offset] = STATE_INDEX[key]
+                  group_index_data[offset] = GROUP_INDEX[pair_group]
+                  polarity_data[offset] = polarity
+                  if col == row:
+                      row += 1
+                      col = 0
+                  else:
+                      col += 1
 
               for path in files:
-                  data = path.read_bytes()
-                  for bit in bits_from_bytes(data):
+                  for bit in bits_from_bytes(path.read_bytes()):
                       group_bits.append(bit)
                       if len(group_bits) == 3:
-                          emit_group(group_bits, group_index)
+                          emit_group(group_bits)
                           group_bits = []
-                          group_index += 1
 
-              partial_final_group = bool(group_bits)
+              valid_bits_in_final_cell = 3
+              padding_bits = 0
               if group_bits:
-                  emit_group(group_bits, group_index)
-                  group_index += 1
+                  valid_bits_in_final_cell = len(group_bits)
+                  padding_bits = 3 - len(group_bits)
+                  emit_group(group_bits)
 
-              png_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_PAIR_FULL.png"
-              image.save(png_path, "PNG", compress_level=0)
-              pdf_path = render_pdf(png_path, source_bits, group_count, rows, cell_size)
+              for row_index in range(rows):
+                  weights = relative_pascal_row_weights(row_index)
+                  left = (rows - (row_index + 1)) // 2
+                  for col_index, weight in enumerate(weights):
+                      offset = row_index * rows + left + col_index
+                      if state_index_data[offset] == TRANSPARENT_INDEX:
+                          continue
+                      x_value = pascal_gain * weight
+                      value = round(254 * normalized_saturation(x=x_value, n=saturation_n, a0=saturation_a0))
+                      saturation_data[offset] = max(0, min(254, value))
+
+              exact_image = palette_image((rows, rows), bytes(state_index_data), [RGB_BY_BITS[key] for key in STATE_KEYS])
+              group_image = palette_image((rows, rows), bytes(group_index_data), [GROUP_COLORS[group] for group in ("A", "B", "C", "D")])
+              polarity_image = palette_image((rows, rows), bytes(polarity_data), [(0, 0, 0), (255, 255, 255)])
+              saturation_image = grayscale_palette_image((rows, rows), bytes(saturation_data))
+
+              exact_path = OUT_DIR / "APP_CODE_PASCAL_3BIT_EXACT.png"
+              group_path = OUT_DIR / "APP_CODE_PASCAL_PAIR_GROUP.png"
+              polarity_path = OUT_DIR / "APP_CODE_PASCAL_PAIR_POLARITY.png"
+              saturation_path = OUT_DIR / "APP_CODE_PASCAL_SATURATION_FIELD.png"
+              exact_image.save(exact_path, "PNG", compress_level=6)
+              group_image.save(group_path, "PNG", compress_level=6)
+              polarity_image.save(polarity_path, "PNG", compress_level=6)
+              saturation_image.save(saturation_path, "PNG", compress_level=6)
+
+              exact_tiles = save_visible_tiles(exact_image, "EXACT", cell_size, max_png_dimension)
+              group_tiles = save_visible_tiles(group_image, "PAIR_GROUP", cell_size, max_png_dimension)
+              polarity_tiles = save_visible_tiles(polarity_image, "PAIR_POLARITY", cell_size, max_png_dimension)
+              saturation_tiles = save_visible_tiles(saturation_image, "SATURATION", cell_size, max_png_dimension)
 
               write_source_order(repo_root, files)
-              write_math(source_bits, group_count, rows, cell_size)
+              pdf_path = render_pdf(
+                  exact_path, group_path, polarity_path, saturation_path,
+                  source_bits, group_count, rows, saturation_n, saturation_a0, pascal_gain,
+              )
 
               metadata = {
-                  "format": "dreamengin.application-code-pascal-3bit-pair-png-pdf.v1",
+                  "format": "dreamengin.application-code-pascal-3bit-pair-saturation-png-pdf.v2",
                   "source": {
                       "roots": APP_ROOTS,
                       "extensions": sorted(CODE_EXTENSIONS),
@@ -386,48 +435,81 @@ jobs:
                       "bytesPerPascalCell": 0.375,
                       "sourceBits": source_bits,
                       "pascalCells": group_count,
-                      "partialFinalGroup": partial_final_group,
+                      "validBitsInFinalCell": valid_bits_in_final_cell,
+                      "paddingBitsInFinalCell": padding_bits,
                   },
-                  "rendering": {
-                      "outputFormat": "PNG",
-                      "cellSizePixels": cell_size,
-                      "imageWidth": image_width,
-                      "imageHeight": image_height,
+                  "losslessPairEncoding": {
+                      "A0": "000", "A1": "111",
+                      "B0": "001", "B1": "100",
+                      "C0": "011", "C1": "110",
+                      "D0": "010", "D1": "101",
+                      "reconstruction": "pairGroup + polarity -> exact 3-bit state",
                   },
-                  "pairs": PAIR_GROUP_LABELS,
-                  "mapping": {key: {"rgb": list(RGB_BY_BITS[key]), "pairGroup": PAIR_GROUP_BY_BITS[key]} for key in RGB_BY_BITS},
-                  "pascal": {
-                      "cell": "C(n,k)",
-                      "coefficientFormula": "C(n,k)=n!/(k!(n-k)!)",
-                      "recurrence": "C(n,k)=C(n-1,k-1)+C(n-1,k)",
-                      "groupIndexToCell": "row=floor((sqrt(8i+1)-1)/2), col=i-row(row+1)/2",
-                      "mathNotesPath": "Data/PASCAL_3BIT_PAIR_MATH.md",
+                  "saturation": {
+                      "formula": "f(x)=a0*x/(1+x^n)^(1/n)",
+                      "a0": saturation_a0,
+                      "n": saturation_n,
+                      "pascalGain": pascal_gain,
+                      "x": "gain * C(row,col) / max_k C(row,k)",
+                      "usage": "one-pass separate visual field; exact state image unchanged",
                   },
                   "outputs": {
-                      "fullLosslessPng": {"path": str(png_path), "width": image_width, "height": image_height},
-                      "colorPdf": {"path": str(pdf_path), "width": PDF_PAGE_SIZE[0], "height": PDF_PAGE_SIZE[1]},
+                      "exactStatePng": exact_path.as_posix(),
+                      "pairGroupPng": group_path.as_posix(),
+                      "pairPolarityPng": polarity_path.as_posix(),
+                      "saturationFieldPng": saturation_path.as_posix(),
+                      "colorPdf": pdf_path.as_posix(),
+                      "exactTiles": exact_tiles,
+                      "pairGroupTiles": group_tiles,
+                      "pairPolarityTiles": polarity_tiles,
+                      "saturationTiles": saturation_tiles,
                   },
               }
-              (OUT_DIR / "Metadata" / "APP_CODE_PASCAL_3BIT_PAIR.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+              (META_DIR / "APP_CODE_PASCAL_3BIT_PAIR_SATURATION.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+
+              math_notes = [
+                  "# DREAM Pascal 3-Bit Pair Saturation",
+                  "",
+                  "## Lossless pair identity",
+                  "",
+                  "`pair group + polarity = exact 3-bit source state`",
+                  "",
+                  "- `A0=000`, `A1=111`",
+                  "- `B0=001`, `B1=100`",
+                  "- `C0=011`, `C1=110`",
+                  "- `D0=010`, `D1=101`",
+                  "",
+                  "## Pascal field",
+                  "",
+                  "`cell(row,col)=C(row,col)`",
+                  "`C(n,k)=C(n-1,k-1)+C(n-1,k)`",
+                  "",
+                  "## Saturating function",
+                  "",
+                  "`f(x)=a0*x/(1+x^n)^(1/n)`",
+                  f"`a0={saturation_a0}`",
+                  f"`n={saturation_n}`",
+                  f"`Pascal gain={pascal_gain}`",
+                  "",
+                  "Applied once as a separate grayscale field.",
+                  "The exact source-state image is not modified.",
+              ]
+              (DATA_DIR / "PASCAL_3BIT_PAIR_SATURATION_MATH.md").write_text("\n".join(math_notes) + "\n", encoding="utf-8")
 
               readme = [
-                  "# DREAM Application Code Pascal 3-Bit Pair PNG + PDF",
+                  "# DREAM Application Code Pascal 3-Bit Pair Saturation PNG + PDF",
                   "",
                   "Reads application code only. Does not modify source files.",
                   "",
-                  "Correct unit:",
+                  "Fixed behavior:",
                   "",
-                  "`3 source bits = 0.375 bytes = 1 Pascal cell`",
-                  "",
-                  "This version uses PNG instead of WebP so the output can have more visible pixels.",
-                  "Each Pascal cell is rendered as a square block of `CELL_SIZE x CELL_SIZE` pixels.",
-                  "",
-                  "Outputs:",
-                  f"- `{png_path.name}` lossless full PNG",
-                  f"- `{pdf_path.name}` color PDF print",
-                  "- `Data/PASCAL_3BIT_PAIR_MATH.md`",
-                  "- `Data/SOURCE_ORDER.txt`",
-                  "- `Metadata/APP_CODE_PASCAL_3BIT_PAIR.json`",
+                  "- four pair groups are actually rendered",
+                  "- polarity/member is retained, so the mapping remains lossless",
+                  "- exact 3-bit states remain in a separate lossless PNG",
+                  "- the saturating function is applied once as a separate Pascal field",
+                  "- opaque `000` black cells are distinct from transparent empty space",
+                  "- final-cell padding is recorded explicitly",
+                  "- requested cell size is preserved with tiled PNG output",
               ]
               (OUT_DIR / "README.md").write_text("\n".join(readme) + "\n", encoding="utf-8")
 
@@ -435,7 +517,7 @@ jobs:
               print(f"pascalCells={group_count}")
               print(f"pascalRows={rows}")
               print(f"cellSize={cell_size}")
-              print(f"png={image_width}x{image_height}")
+              print(f"paddingBitsInFinalCell={padding_bits}")
               print(f"output={OUT_DIR}")
               return 0
 
@@ -445,6 +527,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dream-application-code-pascal-3bit-pair-png-pdf
-          path: dream-application-code-pascal-3bit-pair-png-pdf
+          name: dream-application-code-pascal-3bit-pair-saturation-png-pdf
+          path: dream-application-code-pascal-3bit-pair-saturation-png-pdf
           if-no-files-found: error
