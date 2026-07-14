@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:44:02.860Z",
+  "generatedAt": "2026-07-14T04:28:29.474Z",
   "root": ".",
   "nodes": [
     {
@@ -2736,16 +2736,6 @@
       "label": "basecode.yml",
       "type": "config",
       "path": ".github/workflows/basecode.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/bitcoin-hash-transform-single.yml",
-      "label": "bitcoin-hash-transform-single.yml",
-      "type": "config",
-      "path": ".github/workflows/bitcoin-hash-transform-single.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
