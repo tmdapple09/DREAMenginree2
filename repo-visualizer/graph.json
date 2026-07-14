@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:14:39.968Z",
+  "generatedAt": "2026-07-14T03:40:25.854Z",
   "root": ".",
   "nodes": [
     {
@@ -2706,16 +2706,6 @@
       "label": "VOCAB.yml",
       "type": "config",
       "path": ".github/workflows/VOCAB.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/adream-application-code-3bit-zrgb-image.yml",
-      "label": "adream-application-code-3bit-zrgb-image.yml",
-      "type": "config",
-      "path": ".github/workflows/adream-application-code-3bit-zrgb-image.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
