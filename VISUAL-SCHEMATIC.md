@@ -1331,7 +1331,7 @@ graph LR
 
 | File | Type | Imports | Imported By | Top Importers | Top Imports |
 |---|---|---|---|---|---|
-| `scripts/readme-autosync.ts` | ts | 0 | 2 | `scripts/generate-readme-v3-verified.ts`, `tests/readme-autosync.test.ts` | — |
+| `scripts/readme-autosync.ts` | ts | 0 | 2 | `scripts/generate-readme.ts`, `tests/readme-autosync.test.ts` | — |
 | `scripts/update-readme-status-utils.mjs` | mjs | 0 | 2 | `scripts/update-readme.mjs`, `tests/update-readme-current-status.test.ts` | — |
 | `scripts/wire-orphans.mjs` | mjs | 0 | 2 | `scripts/check-orphans.mjs`, `tests/orphan-wire-script.test.ts` | — |
 | `scripts/gameengin/lib/tar.ts` | ts | 0 | 1 | `tests/gameengin-spec.test.ts` | — |
@@ -1368,7 +1368,7 @@ graph LR
 | `scripts/gameengin/writer-run.ts` | ts | 0 | 0 | — | — |
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs | 0 | 0 | — | — |
-| `scripts/generate-readme-v3-verified.ts` | ts | 1 | 0 | — | `scripts/readme-autosync.ts` |
+| `scripts/generate-readme.ts` | ts | 1 | 0 | — | `scripts/readme-autosync.ts` |
 | `scripts/generate-repo-state.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/generate-webapp-final-form.mjs` | mjs | 0 | 0 | — | — |
 | `scripts/law-check.sh` | file | 0 | 0 | — | — |
@@ -3834,7 +3834,7 @@ graph LR
   f_scripts_gameengin_smoke_webgl_ts["smoke-webgl.ts"]
   f_engins_gameengin_cartridges_manifest_ts["manifest.ts"]
   f_scripts_gameengin_smoke_webgpu_ts["smoke-webgpu.ts"]
-  f_scripts_generate_readme_v3_verified_ts["generate-readme-v3-verified.ts"]
+  f_scripts_generate_readme_ts["generate-readme.ts"]
   f_scripts_readme_autosync_ts["readme-autosync.ts"]
   f_scripts_update_readme_mjs["update-readme.mjs"]
   f_scripts_update_readme_status_utils_mjs["update-readme-status-utils.mjs"]
@@ -3890,7 +3890,7 @@ graph LR
   f_scripts_check_orphans_mjs --> f_scripts_wire_orphans_mjs
   f_scripts_gameengin_smoke_webgl_ts --> f_engins_gameengin_cartridges_manifest_ts
   f_scripts_gameengin_smoke_webgpu_ts --> f_engins_gameengin_cartridges_manifest_ts
-  f_scripts_generate_readme_v3_verified_ts --> f_scripts_readme_autosync_ts
+  f_scripts_generate_readme_ts --> f_scripts_readme_autosync_ts
   f_scripts_update_readme_mjs --> f_scripts_update_readme_status_utils_mjs
 ```
 
@@ -4480,7 +4480,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `scripts/gameengin/writer-run.ts` | ts |
 | `scripts/generate-mobile-nextgen-spec.mjs` | mjs |
 | `scripts/generate-mobile-ps5-spec.mjs` | mjs |
-| `scripts/generate-readme-v3-verified.ts` | ts |
+| `scripts/generate-readme.ts` | ts |
 | `scripts/generate-repo-state.mjs` | mjs |
 | `scripts/generate-webapp-final-form.mjs` | mjs |
 | `scripts/law-check.sh` | file |
