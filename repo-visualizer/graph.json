@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T05:20:25.243Z",
+  "generatedAt": "2026-07-14T05:48:27.852Z",
   "root": ".",
   "nodes": [
     {
@@ -68016,7 +68016,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 68,
+      "loc": 62,
       "isOrphan": true,
       "exported": false
     },
@@ -68026,7 +68026,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 73,
+      "loc": 67,
       "isOrphan": true,
       "exported": false
     },
@@ -68036,7 +68036,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 85,
+      "loc": 79,
       "isOrphan": true,
       "exported": false
     },
@@ -68046,7 +68046,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 94,
+      "loc": 88,
       "isOrphan": true,
       "exported": false
     },
@@ -68056,7 +68056,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 116,
+      "loc": 105,
       "isOrphan": true,
       "exported": false
     },
@@ -68066,7 +68066,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 124,
+      "loc": 111,
       "isOrphan": true,
       "exported": false
     },
@@ -68076,7 +68076,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 131,
+      "loc": 117,
       "isOrphan": true,
       "exported": false
     },
@@ -68086,7 +68086,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 157,
+      "loc": 137,
       "isOrphan": true,
       "exported": false
     },
@@ -68096,7 +68096,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 164,
+      "loc": 141,
       "isOrphan": true,
       "exported": false
     },
@@ -68106,7 +68106,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 174,
+      "loc": 146,
       "isOrphan": true,
       "exported": false
     },
@@ -68116,7 +68116,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 184,
+      "loc": 151,
       "isOrphan": true,
       "exported": false
     },
@@ -68126,7 +68126,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 193,
+      "loc": 157,
       "isOrphan": true,
       "exported": false
     },
@@ -68136,7 +68136,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 203,
+      "loc": 166,
       "isOrphan": true,
       "exported": false
     },
@@ -68146,7 +68146,7 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 217,
+      "loc": 177,
       "isOrphan": true,
       "exported": false
     },
