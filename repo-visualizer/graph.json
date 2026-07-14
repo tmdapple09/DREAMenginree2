@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T04:28:29.474Z",
+  "generatedAt": "2026-07-14T05:20:25.243Z",
   "root": ".",
   "nodes": [
     {
@@ -2736,6 +2736,16 @@
       "label": "basecode.yml",
       "type": "config",
       "path": ".github/workflows/basecode.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/bitcoin-hash-transform-extended-single.yml",
+      "label": "bitcoin-hash-transform-extended-single.yml",
+      "type": "config",
+      "path": ".github/workflows/bitcoin-hash-transform-extended-single.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -67991,12 +68001,32 @@
       "tags": []
     },
     {
-      "id": "function:scripts/generate-readme.ts#parseArg",
-      "label": "parseArg",
+      "id": "function:scripts/generate-readme.ts#parseArgs",
+      "label": "parseArgs",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 28,
+      "loc": 47,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#arg",
+      "label": "arg",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 68,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#git",
+      "label": "git",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 73,
       "isOrphan": true,
       "exported": false
     },
@@ -68006,73 +68036,13 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 34,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#readList",
-      "label": "readList",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 38,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#walk",
-      "label": "walk",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 48,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#projectName",
-      "label": "projectName",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 60,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#projectVersion",
-      "label": "projectVersion",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 69,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#packageManager",
-      "label": "packageManager",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
-      "loc": 78,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:scripts/generate-readme.ts#packageScripts",
-      "label": "packageScripts",
-      "type": "function",
-      "path": "scripts/generate-readme.ts",
-      "parent": "file:scripts/generate-readme.ts",
       "loc": 85,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#envExampleBlock",
-      "label": "envExampleBlock",
+      "id": "function:scripts/generate-readme.ts#trackedFiles",
+      "label": "trackedFiles",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
@@ -68081,22 +68051,72 @@
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#commandBlock",
-      "label": "commandBlock",
+      "id": "function:scripts/generate-readme.ts#packageJson",
+      "label": "packageJson",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 105,
+      "loc": 116,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#buildFrontDoor",
-      "label": "buildFrontDoor",
+      "id": "function:scripts/generate-readme.ts#repositoryFromRemote",
+      "label": "repositoryFromRemote",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 109,
+      "loc": 124,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#repoContext",
+      "label": "repoContext",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 131,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#encodePath",
+      "label": "encodePath",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 157,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#pathUrl",
+      "label": "pathUrl",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 164,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#pathLink",
+      "label": "pathLink",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 174,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#commitLink",
+      "label": "commitLink",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 184,
       "isOrphan": true,
       "exported": false
     },
@@ -68106,17 +68126,27 @@
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 223,
+      "loc": 193,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:scripts/generate-readme.ts#allRepoFiles",
-      "label": "allRepoFiles",
+      "id": "function:scripts/generate-readme.ts#directoriesFor",
+      "label": "directoriesFor",
       "type": "function",
       "path": "scripts/generate-readme.ts",
       "parent": "file:scripts/generate-readme.ts",
-      "loc": 233,
+      "loc": 203,
+      "isOrphan": true,
+      "exported": false
+    },
+    {
+      "id": "function:scripts/generate-readme.ts#linkifyProductMarkdown",
+      "label": "linkifyProductMarkdown",
+      "type": "function",
+      "path": "scripts/generate-readme.ts",
+      "parent": "file:scripts/generate-readme.ts",
+      "loc": 217,
       "isOrphan": true,
       "exported": false
     },
