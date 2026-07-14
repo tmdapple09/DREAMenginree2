@@ -12,13 +12,14 @@ This README is generated from tracked repository evidence. It must not claim dec
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E6.0.0-blue)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/tsconfig.json)
 [![Next.js](https://img.shields.io/badge/Next.js-%5E16.2.3-black)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/next.config.mjs)
 
-Generated from [`c10dced`](https://github.com/tmdapple09/DREAMenginree2/commit/c10dced47fa510b1b078f725e827136b4a12e35e) on `completedream`. Commit date: 2026-07-14T05:20:25Z.
+Generated from [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) on `completedream`. Commit date: 2026-07-14T20:22:21Z.
 
 ## Table of Contents
 
 - [1. Project Overview](#1-project-overview)
 - [2. Getting Started](#2-getting-started)
 - [3. Repository Map and Operating Notes](#3-repository-map-and-operating-notes)
+- [User-Facing UI and Interaction Logic Coverage](#user-facing-ui-and-interaction-logic-coverage)
 - [4. Tech Stack & Monorepo Layout](#4-tech-stack-monorepo-layout)
 - [5. The Engins and DayDreams](#5-the-engins-and-daydreams)
 - [6. Dual Runtimes](#6-dual-runtimes)
@@ -47,7 +48,7 @@ DREAMengin is one connected web-native creative environment. Engins own domain c
 
 | Metric | Current tracked value |
 |---|---:|
-| Tracked non-media files | 2217 |
+| Tracked documentable files | 2254 |
 | App pages | 113 |
 | API route handlers | 125 |
 | Component files | 325 |
@@ -136,29 +137,29 @@ LIVEKIT_API_SECRET=
 | [`engins/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engins) | 366 |
 | [`components/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/components) | 328 |
 | [`app/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/app) | 278 |
-| [`engine/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engine) | 271 |
+| [`engine/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engine) | 272 |
 | [`tests/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/tests) | 246 |
 | [`.github/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/.github) | 211 |
 | [`docs/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/docs) | 98 |
 | [`supabase/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/supabase) | 80 |
 | [`scripts/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/scripts) | 57 |
+| [`fonts/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/fonts) | 41 |
 | [`dreamr/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dreamr) | 29 |
 | [`dr-eams/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dr-eams) | 26 |
+| [`public/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/public) | 19 |
 | [`types/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/types) | 19 |
 | [`dreamdmbar/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dreamdmbar) | 17 |
-| [`public/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/public) | 16 |
 | [`research/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/research) | 16 |
 | [`src/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/src) | 15 |
 | [`hooks/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/hooks) | 14 |
 | [`agents/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/agents) | 9 |
 | [`build-memory/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/build-memory) | 9 |
-| [`daydreams/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/daydreams) | 9 |
 
 ### Representative application routes
 
-- [`app/(internal)/idari-console/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/(internal)/idari-console/page.tsx)
-- [`app/(internal)/idari-console/platform-errors/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/(internal)/idari-console/platform-errors/page.tsx)
-- [`app/(internal)/idari-console/platform-health/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/(internal)/idari-console/platform-health/page.tsx)
+- [`app/(internal)/idari-console/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/%28internal%29/idari-console/page.tsx)
+- [`app/(internal)/idari-console/platform-errors/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/%28internal%29/idari-console/platform-errors/page.tsx)
+- [`app/(internal)/idari-console/platform-health/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/%28internal%29/idari-console/platform-health/page.tsx)
 - [`app/about/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/about/page.tsx)
 - [`app/ads/create/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/ads/create/page.tsx)
 - [`app/ads/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/ads/page.tsx)
@@ -192,11 +193,38 @@ LIVEKIT_API_SECRET=
 - [`docs/BUGS.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/docs/BUGS.md)
 - [`FILE_TREE.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/FILE_TREE.md)
 
+### Complete file reference
+
+The exhaustive file-by-file repository reference is [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md). It documents every tracked non-generated file and separately indexes every detected user-facing UI, API, asset, style, runtime, and transitive interaction-logic dependency.
+
 ### README ownership
 
-The complete README is written by [`scripts/generate-readme.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/generate-readme.ts). Semantic product evidence is computed by [`scripts/readme-autosync.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/readme-autosync.ts). The workflow entry point is [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml).
+The complete README and repository inventory are written by [`scripts/generate-readme.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/generate-readme.ts). Semantic product evidence is computed by [`scripts/readme-autosync.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/readme-autosync.ts). The workflow entry point is [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml).
 
-Source snapshot: [`c10dced`](https://github.com/tmdapple09/DREAMenginree2/commit/c10dced47fa510b1b078f725e827136b4a12e35e) — chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel].
+Source snapshot: [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) â chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel].
+
+## User-Facing UI and Interaction Logic Coverage
+
+Detected and documented 1208 files that directly or transitively power user-visible behavior. The exhaustive file-by-file explanations and UI/logic classifications are in [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md) under **Complete Repository Inventory**.
+
+| Coverage class | Files |
+|---|---:|
+| Client interaction logic | 389 |
+| Engin UI/capability logic | 223 |
+| User-facing logic dependency | 164 |
+| User-facing UI surface | 131 |
+| User-facing API logic | 125 |
+| User-facing runtime logic | 46 |
+| Reusable UI/component logic | 36 |
+| DreamR UI/social logic | 25 |
+| Route interaction logic | 25 |
+| Browser-delivered asset | 19 |
+| User interaction hook | 8 |
+| User-facing styling | 8 |
+| DayDream UI/workspace logic | 6 |
+| DreamDMBar UI/control logic | 3 |
+
+Coverage is dependency-aware: local imports from user-facing seeds are followed transitively so supporting state, runtime, data, utility, type, style, and asset files are not silently omitted.
 
 <!-- DREAMENGIN_PRODUCT_README:START -->
 
@@ -209,7 +237,7 @@ This is the build shape of DREAMengin: the Next.js app, TypeScript source, packa
 Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.
 
 ### Repo Evidence
-Matched focused repo evidence: 75 files, about 33,721 readable source lines.
+Matched focused repo evidence: 75 files, about 33,724 readable source lines.
 
 Behavior signals:
 - auth — 43 file hits
@@ -337,7 +365,7 @@ Primary files:
 - [`engins/engin.LabEngin.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/engin.LabEngin.tsx) — 1968 lines — score 108 — primary path
 - [`engins/dream.ForgeEngin.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/dream.ForgeEngin.tsx) — 1916 lines — score 108 — primary path
 - [`engins/engin.BrandingEngin.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/engin.BrandingEngin.tsx) — 1246 lines — score 108 — primary path
-- [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml) — 170 lines — score 108 — primary path
+- [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml) — 173 lines — score 108 — primary path
 - [`.github/workflows/preflight.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/preflight.yml) — 137 lines — score 108 — primary path
 - [`.github/workflows/codeql.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/codeql.yml) — 104 lines — score 108 — primary path
 
@@ -2542,19 +2570,21 @@ Supporting files:
 
 | Commit | Date | Author | Change |
 |---|---|---|---|
-| [`7bb10fc`](https://github.com/tmdapple09/DREAMenginree2/commit/7bb10fcdca29641926eb5357cdc6d41b4974ca55) | 2026-07-14T05:20:25Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`c10dced`](https://github.com/tmdapple09/DREAMenginree2/commit/c10dced47fa510b1b078f725e827136b4a12e35e) | 2026-07-13T22:19:43-07:00 | tmdapple09 | Refactor README generation script with new features |
-| [`85fc963`](https://github.com/tmdapple09/DREAMenginree2/commit/85fc9635a354ed123d02540aabd8a0ec062cf09d) | 2026-07-14T04:29:53Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
-| [`eece273`](https://github.com/tmdapple09/DREAMenginree2/commit/eece2731b6b2d4b91bd10b2a20741c379dc60d38) | 2026-07-14T04:29:20Z | github-actions[bot] | chore(repo): update repository state [skip ci] |
-| [`b9d7ac2`](https://github.com/tmdapple09/DREAMenginree2/commit/b9d7ac2cb54c4af46814d1a98911cc2524a507a1) | 2026-07-13T21:28:34-07:00 | tmdapple09 | Add files via upload |
-| [`568497d`](https://github.com/tmdapple09/DREAMenginree2/commit/568497df1c693ac9f7eec22168e6270b4167630b) | 2026-07-14T04:28:29Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`430e13b`](https://github.com/tmdapple09/DREAMenginree2/commit/430e13b5b355df5e2ef6580a97c9ff5c17614ece) | 2026-07-13T21:27:47-07:00 | tmdapple09 | Delete .github/workflows/bitcoin-hash-transform-single.yml |
-| [`afa5ddd`](https://github.com/tmdapple09/DREAMenginree2/commit/afa5ddd3e8ba846de9496459140b0ed774cead4a) | 2026-07-14T03:47:47Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) | 2026-07-14T20:22:21Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
+| [`7a9ddef`](https://github.com/tmdapple09/DREAMenginree2/commit/7a9ddefd901afcf162cd4d17741dd96398646485) | 2026-07-14T13:21:36-07:00 | tmdapple09 | Rename generate-readme-v3-verified.ts to generate-readme.ts |
+| [`a7cec35`](https://github.com/tmdapple09/DREAMenginree2/commit/a7cec3566058b84deada12182ffed436ff21f652) | 2026-07-14T20:09:29Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`86942f9`](https://github.com/tmdapple09/DREAMenginree2/commit/86942f98cb1a3856677200d840fe914243bb403b) | 2026-07-14T20:07:44Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
+| [`3932403`](https://github.com/tmdapple09/DREAMenginree2/commit/39324032d2c212ace832844d749c9eeae04239c3) | 2026-07-14T13:06:57-07:00 | tmdapple09 | Update adream-application-image.yml |
+| [`2cdb09c`](https://github.com/tmdapple09/DREAMenginree2/commit/2cdb09ca6dc4bea8026dbb230366ff3f1a6bd55c) | 2026-07-14T05:56:02Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`e311ddb`](https://github.com/tmdapple09/DREAMenginree2/commit/e311ddb24da3c945a4b6c605797013b297a58154) | 2026-07-14T05:54:44Z | github-actions[bot] | chore(repo): update repository state [skip ci] |
+| [`49e7db6`](https://github.com/tmdapple09/DREAMenginree2/commit/49e7db63baa4143b7cb49ea516ec11aa11ae7f62) | 2026-07-13T22:53:56-07:00 | tmdapple09 | Add files via upload |
 
 ## README Generation Contract
 
 - Every run rebuilds the complete [`README.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/README.md) from tracked repository evidence.
+- Every run also rebuilds [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md) with one explanation for every tracked non-generated file.
+- Every detected user-facing UI, API, asset, style, runtime, and interaction-logic dependency is indexed in [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md).
 - Product sections come from semantic path, keyword, route, API, component, hook, import, export, and behavior analysis in [`scripts/readme-autosync.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/readme-autosync.ts).
 - This run converted 1413 recognized product-evidence paths into GitHub links.
-- The write is atomic and validated before README.md is replaced.
-- The output is idempotent for the same commit and inputs.
+- Both generated documents are validated before either file is replaced.
+- Generated documents are excluded from their own source inventory to prevent self-referential drift.
