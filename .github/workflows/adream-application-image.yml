@@ -2760,7 +2760,7 @@ jobs:
 
           exit 0
 
-      - name: Document findings and build separate zip packages
+      - name: Document findings and build package set plus complete bundle
         id: package
         if: always()
         shell: bash
@@ -2829,11 +2829,13 @@ jobs:
           cp "$REPORT" "$OUT/WORKFLOW_REPORT.md" 2>/dev/null || true
           cat "$REPORT" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
+          rm -rf "$ART/dream-application-image-complete-bundle"
           rm -f \
             "$ART/dream-application-image-full.zip" \
             "$ART/dream-application-image-rendering.zip" \
             "$ART/dream-application-image-decoder.zip" \
-            "$ART/dream-application-image-analysis.zip"
+            "$ART/dream-application-image-analysis.zip" \
+            "$ART/dream-application-image-complete-bundle.zip"
 
           zip -q -r "$ART/dream-application-image-full.zip" "$OUT" \
             > "$OUT/Diagnostics/FULL_ZIP_STDOUT.log" \
@@ -2875,6 +2877,12 @@ jobs:
             if [ ! -s "$archive" ]; then
               echo "Required package was not created or is empty: $archive" >&2
               package_failure=1
+              continue
+            fi
+
+            if ! unzip -tq "$archive" >/dev/null 2>&1; then
+              echo "Required package failed ZIP integrity validation: $archive" >&2
+              package_failure=1
             fi
           done
 
@@ -2882,11 +2890,117 @@ jobs:
             exit 1
           fi
 
+          BUNDLE_ROOT="$ART/dream-application-image-complete-bundle"
+          mkdir -p \
+            "$BUNDLE_ROOT/full" \
+            "$BUNDLE_ROOT/rendering" \
+            "$BUNDLE_ROOT/decoder" \
+            "$BUNDLE_ROOT/analysis"
+
+          if ! unzip -q "$ART/dream-application-image-full.zip" \
+            -d "$BUNDLE_ROOT/full"; then
+            echo "Could not extract the full package into the complete bundle." >&2
+            exit 1
+          fi
+
+          if ! unzip -q "$ART/dream-application-image-rendering.zip" \
+            -d "$BUNDLE_ROOT/rendering"; then
+            echo "Could not extract the rendering package into the complete bundle." >&2
+            exit 1
+          fi
+
+          if ! unzip -q "$ART/dream-application-image-decoder.zip" \
+            -d "$BUNDLE_ROOT/decoder"; then
+            echo "Could not extract the decoder package into the complete bundle." >&2
+            exit 1
+          fi
+
+          if ! unzip -q "$ART/dream-application-image-analysis.zip" \
+            -d "$BUNDLE_ROOT/analysis"; then
+            echo "Could not extract the analysis package into the complete bundle." >&2
+            exit 1
+          fi
+
+          cat > "$BUNDLE_ROOT/MANIFEST.md" <<'EOF'
+          # DREAM Application Image Complete Bundle
+
+          This archive combines the four DREAM deliverables into normal folders. There are no
+          nested ZIP archives inside this bundle.
+
+          ## `full/`
+
+          Contains the complete generated `dream-application-image` output tree. This is the
+          canonical all-output copy and includes all rendering products, data files, metadata,
+          decoder files, rebuilt source code, image analysis, code-health reports, UI maps,
+          diagnostics, workflow reports, the root README, and the atlas summary.
+
+          ## `rendering/`
+
+          Contains the rendering-focused output: the exact three-bit image, the eight-symbol
+          `A a B b C c D d` image, the Pascal saturation field, repository-native runtime shape,
+          print PDF, visible image tiles, source data, file manifest, encoding metadata, root
+          README, atlas summary, and workflow report.
+
+          ## `decoder/`
+
+          Contains the image-to-code reconstruction output: decoder source, embedded-manifest
+          reader, decode verification results, rebuilt source tree, file manifest, eight-state
+          encoding metadata, root README, atlas summary, and workflow report.
+
+          ## `analysis/`
+
+          Contains the review and diagnostic output: image statistics, exact symbol counts,
+          transition and run-length analysis, file-region and dependency data, code-health
+          reports, UI route and synapse maps, project-check results, generator and installation
+          diagnostics, root README, atlas summary, and workflow report.
+          EOF
+
+          for required_path in \
+            "$BUNDLE_ROOT/full" \
+            "$BUNDLE_ROOT/rendering" \
+            "$BUNDLE_ROOT/decoder" \
+            "$BUNDLE_ROOT/analysis" \
+            "$BUNDLE_ROOT/MANIFEST.md"; do
+
+            if [ ! -e "$required_path" ]; then
+              echo "Complete bundle item is missing: $required_path" >&2
+              exit 1
+            fi
+          done
+
+          (
+            cd "$ART" || exit 1
+            zip -q -r "dream-application-image-complete-bundle.zip" \
+              "dream-application-image-complete-bundle"
+          ) > "$OUT/Diagnostics/COMPLETE_BUNDLE_ZIP_STDOUT.log" \
+            2> "$OUT/Diagnostics/COMPLETE_BUNDLE_ZIP_STDERR.log"
+          bundle_zip_status=$?
+          printf '%s\n' "$bundle_zip_status" \
+            > "$OUT/Diagnostics/COMPLETE_BUNDLE_ZIP_EXIT_CODE.txt"
+
+          if [ "$bundle_zip_status" -ne 0 ]; then
+            echo "Complete bundle ZIP creation failed with exit code $bundle_zip_status." >&2
+            exit 1
+          fi
+
+          if [ ! -s "$ART/dream-application-image-complete-bundle.zip" ]; then
+            echo "Required complete bundle was not created or is empty: $ART/dream-application-image-complete-bundle.zip" >&2
+            exit 1
+          fi
+
+          unzip -t "$ART/dream-application-image-complete-bundle.zip" \
+            > "$OUT/Diagnostics/COMPLETE_BUNDLE_ZIP_TEST.log" 2>&1
+          if [ "$?" -ne 0 ]; then
+            echo "Complete bundle ZIP integrity test failed." >&2
+            exit 1
+          fi
+
           ls -lh \
             "$ART/dream-application-image-full.zip" \
             "$ART/dream-application-image-rendering.zip" \
             "$ART/dream-application-image-decoder.zip" \
-            "$ART/dream-application-image-analysis.zip"
+            "$ART/dream-application-image-analysis.zip" \
+            "$ART/dream-application-image-complete-bundle.zip"
 
           exit 0
 
@@ -2925,3 +3039,13 @@ jobs:
           path: dream-artifacts/dream-application-image-analysis.zip
           if-no-files-found: error
           retention-days: 1
+
+      - name: Upload complete all-packages bundle
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: dream-application-image-complete-bundle
+          path: dream-artifacts/dream-application-image-complete-bundle.zip
+          if-no-files-found: error
+          retention-days: 1
+
