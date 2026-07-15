@@ -41,29 +41,29 @@ on:
         default: "ubuntu-latest"
         type: string
       block_height:
-        description: "Bitcoin block height; blank uses current tip"
+        description: "Bitcoin block height; 'tip' uses the current tip"
         required: false
-        default: ""
+        default: "953568"
         type: string
       block_hash:
-        description: "Displayed block hash; overrides block height"
+        description: "Displayed block hash; 'auto' uses block_height"
         required: false
-        default: ""
+        default: "auto"
         type: string
       raw_header_hex:
-        description: "Optional exact raw 80-byte header, 160 hex characters"
+        description: "Exact raw header or 'fetch' to retrieve it"
         required: false
-        default: ""
+        default: "fetch"
         type: string
       expected_block_hash:
-        description: "Expected displayed hash when raw_header_hex is supplied"
+        description: "Expected displayed hash or 'derive' from the selected block"
         required: false
-        default: ""
+        default: "derive"
         type: string
       recovery_scope:
-        description: "Which original header information is hidden"
+        description: "Recovery mode; default is an exact 8-bit hidden-nonce test"
         required: true
-        default: "selected_fields"
+        default: "selected_bits"
         type: choice
         options:
           - selected_fields
@@ -72,17 +72,17 @@ on:
       hidden_fields:
         description: "Comma-separated: version,previous_hash,merkle_root,timestamp,bits,nonce"
         required: false
-        default: "version,timestamp,nonce"
+        default: "nonce"
         type: string
       hidden_bit_ranges:
-        description: "Half-open serialized-header bit ranges, e.g. 600:640,17,80:96"
+        description: "Bit ranges, or 'none' to use hidden_fields"
         required: false
-        default: ""
+        default: "632:640"
         type: string
       context_mode:
-        description: "How much real Bitcoin context constrains the hidden header"
+        description: "Bitcoin context; all_public fixes every known non-hidden field"
         required: true
-        default: "derived_bitcoin"
+        default: "all_public"
         type: choice
         options:
           - hash_only
@@ -109,7 +109,7 @@ on:
         default: false
         type: boolean
       posterior_models:
-        description: "Requested exact posterior models; 1 returns the first optimum, 0 means no workflow-side stopping rule"
+        description: "Exact posterior models to return; default stops after the first exact solution"
         required: false
         default: "1"
         type: string
@@ -173,34 +173,35 @@ concurrency:
 
 jobs:
   solve:
-    runs-on: ${{ inputs.runner_label || 'ubuntu-latest' }}
+    runs-on: ${{ inputs.runner_label }}
     continue-on-error: true
 
     env:
-      BLOCK_HEIGHT: ${{ inputs.block_height || '' }}
-      BLOCK_HASH: ${{ inputs.block_hash || '' }}
-      RAW_HEADER_HEX: ${{ inputs.raw_header_hex || '' }}
-      EXPECTED_BLOCK_HASH: ${{ inputs.expected_block_hash || '' }}
-      RECOVERY_SCOPE: ${{ inputs.recovery_scope || 'selected_fields' }}
-      HIDDEN_FIELDS: ${{ inputs.hidden_fields || 'version,timestamp,nonce' }}
-      HIDDEN_BIT_RANGES: ${{ inputs.hidden_bit_ranges || '' }}
-      CONTEXT_MODE: ${{ inputs.context_mode || 'derived_bitcoin' }}
-      INFER_MASK: ${{ inputs.infer_mask == true && 'true' || 'false' }}
-      INFER_PERMUTATION: ${{ inputs.infer_permutation == true && 'true' || 'false' }}
-      INFER_ORIENTATION: ${{ inputs.infer_orientation == true && 'true' || 'false' }}
-      ALLOW_OBSERVATION_NOISE: ${{ inputs.allow_observation_noise == true && 'true' || 'false' }}
-      POSTERIOR_MODELS: ${{ inputs.posterior_models || '1' }}
-      SIGMA: ${{ inputs.sigma || '1.0' }}
-      LAMBDA_LOCAL: ${{ inputs.lambda_local || '1.0' }}
-      BETA_GLOBAL: ${{ inputs.beta_global || '1.0' }}
-      GAMMA_MISSING: ${{ inputs.gamma_missing || '1.0' }}
-      A0: ${{ inputs.a0 || '1.2e-14' }}
-      N_EXPONENT: ${{ inputs.n || '2.0' }}
-      PROJECTION_NOISE_SIGMA: ${{ inputs.projection_noise_sigma || '0.0' }}
-      EMIT_LATTICE_BITS: ${{ inputs.emit_lattice_bits == false && 'false' || 'true' }}
-      Z3_RANDOM_SEED: ${{ inputs.z3_random_seed || '0' }}
-      API_BASE: ${{ inputs.api_base || 'https://blockstream.info/api' }}
+      BLOCK_HEIGHT: ${{ inputs.block_height }}
+      BLOCK_HASH: ${{ inputs.block_hash }}
+      RAW_HEADER_HEX: ${{ inputs.raw_header_hex }}
+      EXPECTED_BLOCK_HASH: ${{ inputs.expected_block_hash }}
+      RECOVERY_SCOPE: ${{ inputs.recovery_scope }}
+      HIDDEN_FIELDS: ${{ inputs.hidden_fields }}
+      HIDDEN_BIT_RANGES: ${{ inputs.hidden_bit_ranges }}
+      CONTEXT_MODE: ${{ inputs.context_mode }}
+      INFER_MASK: ${{ inputs.infer_mask }}
+      INFER_PERMUTATION: ${{ inputs.infer_permutation }}
+      INFER_ORIENTATION: ${{ inputs.infer_orientation }}
+      ALLOW_OBSERVATION_NOISE: ${{ inputs.allow_observation_noise }}
+      POSTERIOR_MODELS: ${{ inputs.posterior_models }}
+      SIGMA: ${{ inputs.sigma }}
+      LAMBDA_LOCAL: ${{ inputs.lambda_local }}
+      BETA_GLOBAL: ${{ inputs.beta_global }}
+      GAMMA_MISSING: ${{ inputs.gamma_missing }}
+      A0: ${{ inputs.a0 }}
+      N_EXPONENT: ${{ inputs.n }}
+      PROJECTION_NOISE_SIGMA: ${{ inputs.projection_noise_sigma }}
+      EMIT_LATTICE_BITS: ${{ inputs.emit_lattice_bits }}
+      Z3_RANDOM_SEED: ${{ inputs.z3_random_seed }}
+      API_BASE: ${{ inputs.api_base }}
       PYTHONUNBUFFERED: "1"
+      MODEL_REVISION: "2026-07-15-sensible-defaults-r3"
 
     steps:
       - name: Set up Python
@@ -224,13 +225,48 @@ jobs:
         run: |
           set +e
 
+          print_resources() {
+            echo "[runner] utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "[runner] processes:"
+            ps -eo pid,ppid,stat,%cpu,%mem,rss,vsz,etime,cmd --sort=-rss | head -n 12 || true
+            echo "[runner] memory:"
+            free -h || true
+            for f in /sys/fs/cgroup/memory.current /sys/fs/cgroup/memory.max /sys/fs/cgroup/memory.events; do
+              if [ -r "$f" ]; then
+                echo "[runner] $f"
+                cat "$f" || true
+              fi
+            done
+          }
+
+          term_handler() {
+            echo "[runner] SIGTERM/SIGINT received by the workflow shell."
+            print_resources
+            if [ -f bitcoin_sha256d_4d_inverse_status.json ]; then
+              echo "[runner] last authoritative status:"
+              cat bitcoin_sha256d_4d_inverse_status.json || true
+            fi
+            exit 143
+          }
+          trap term_handler TERM INT
+
+          (
+            while true; do
+              sleep 20
+              print_resources
+            done
+          ) &
+          RESOURCE_MONITOR_PID=$!
+
           python - <<'PY' 2>&1 | tee bitcoin_sha256d_4d_inverse_console.log
           import csv
           import hashlib
           import json
           import math
           import os
+          import resource
           import statistics
+          import threading
           import sys
           import time
           import traceback
@@ -247,16 +283,36 @@ jobs:
           # -----------------------------------------------------------------------------
 
           API_BASE = os.environ.get("API_BASE", "https://blockstream.info/api").rstrip("/")
-          BLOCK_HEIGHT = os.environ.get("BLOCK_HEIGHT", "").strip()
-          BLOCK_HASH = os.environ.get("BLOCK_HASH", "").strip()
-          RAW_HEADER_HEX = os.environ.get("RAW_HEADER_HEX", "").strip().lower()
-          EXPECTED_BLOCK_HASH = os.environ.get("EXPECTED_BLOCK_HASH", "").strip().lower()
+          def automatic_blank(value: str, sentinels: set[str]) -> str:
+              cleaned = value.strip()
+              return "" if cleaned.lower() in sentinels else cleaned
+
+          MODEL_REVISION = os.environ.get("MODEL_REVISION", "unknown").strip()
+          BLOCK_HEIGHT = automatic_blank(
+              os.environ.get("BLOCK_HEIGHT", "tip"),
+              {"", "tip", "auto", "current", "current_tip"},
+          )
+          BLOCK_HASH = automatic_blank(
+              os.environ.get("BLOCK_HASH", "auto"),
+              {"", "auto", "derive", "from_height"},
+          )
+          RAW_HEADER_HEX = automatic_blank(
+              os.environ.get("RAW_HEADER_HEX", "fetch"),
+              {"", "fetch", "auto", "from_api"},
+          ).lower()
+          EXPECTED_BLOCK_HASH = automatic_blank(
+              os.environ.get("EXPECTED_BLOCK_HASH", "derive"),
+              {"", "derive", "auto", "from_block"},
+          ).lower()
 
           RECOVERY_SCOPE = os.environ.get("RECOVERY_SCOPE", "selected_fields").strip()
           HIDDEN_FIELDS = [x.strip() for x in os.environ.get(
               "HIDDEN_FIELDS", "version,timestamp,nonce"
           ).split(",") if x.strip()]
-          HIDDEN_BIT_RANGES = os.environ.get("HIDDEN_BIT_RANGES", "").strip()
+          HIDDEN_BIT_RANGES = automatic_blank(
+              os.environ.get("HIDDEN_BIT_RANGES", "none"),
+              {"", "none", "use_hidden_fields", "auto"},
+          )
           CONTEXT_MODE = os.environ.get("CONTEXT_MODE", "derived_bitcoin").strip()
 
           INFER_MASK = os.environ.get("INFER_MASK", "false").lower() == "true"
@@ -740,12 +796,81 @@ jobs:
           ''', encoding="utf-8")
 
 
+          def memory_snapshot() -> dict:
+              snapshot = {
+                  "rss_kib": None,
+                  "max_rss_kib": None,
+                  "cgroup_current_bytes": None,
+                  "cgroup_max_bytes": None,
+                  "cgroup_events": None,
+              }
+              try:
+                  for line in Path("/proc/self/status").read_text(encoding="utf-8").splitlines():
+                      if line.startswith("VmRSS:"):
+                          snapshot["rss_kib"] = int(line.split()[1])
+                          break
+              except Exception:
+                  pass
+              try:
+                  snapshot["max_rss_kib"] = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+              except Exception:
+                  pass
+              try:
+                  current = Path("/sys/fs/cgroup/memory.current")
+                  maximum = Path("/sys/fs/cgroup/memory.max")
+                  events = Path("/sys/fs/cgroup/memory.events")
+                  if current.exists():
+                      snapshot["cgroup_current_bytes"] = int(current.read_text().strip())
+                  if maximum.exists():
+                      raw = maximum.read_text().strip()
+                      snapshot["cgroup_max_bytes"] = None if raw == "max" else int(raw)
+                  if events.exists():
+                      snapshot["cgroup_events"] = events.read_text().strip().replace("\n", "; ")
+              except Exception:
+                  pass
+              return snapshot
+
+
+          def start_solver_heartbeat(stop_event: threading.Event, started_at: float) -> threading.Thread:
+              def worker() -> None:
+                  while not stop_event.wait(20.0):
+                      mem = memory_snapshot()
+                      elapsed = time.time() - started_at
+                      emit(
+                          "[heartbeat] "
+                          f"solver_elapsed={elapsed:.1f}s "
+                          f"rss_kib={mem.get('rss_kib')} "
+                          f"max_rss_kib={mem.get('max_rss_kib')} "
+                          f"cgroup_current={mem.get('cgroup_current_bytes')} "
+                          f"cgroup_max={mem.get('cgroup_max_bytes')} "
+                          f"cgroup_events={mem.get('cgroup_events')}"
+                      )
+              thread = threading.Thread(target=worker, name="solver-heartbeat", daemon=True)
+              thread.start()
+              return thread
+
+
           def main() -> None:
               started = time.time()
               write_model_spec()
 
+              emit(f"[model] revision={MODEL_REVISION}")
+              emit(
+                  "[config] "
+                  f"block_height={BLOCK_HEIGHT or 'tip'} "
+                  f"block_hash={BLOCK_HASH or 'auto'} "
+                  f"raw_header={('provided' if RAW_HEADER_HEX else 'fetch')} "
+                  f"expected_hash={EXPECTED_BLOCK_HASH or 'derive'} "
+                  f"recovery_scope={RECOVERY_SCOPE} "
+                  f"hidden_fields={','.join(HIDDEN_FIELDS)} "
+                  f"hidden_bit_ranges={HIDDEN_BIT_RANGES or 'none'} "
+                  f"context_mode={CONTEXT_MODE} "
+                  f"posterior_models={POSTERIOR_MODELS}"
+              )
+
               status = {
                   "completed": False,
+                  "model_revision": MODEL_REVISION,
                   "fake_completion": False,
                   "solver_result": None,
                   "internal_solver_timeout": None,
@@ -813,9 +938,14 @@ jobs:
                   # ------------------------------------------------------------------
                   # Build exact SHA-256d symbolic state.
                   # ------------------------------------------------------------------
+                  # Optimize is needed only when the discrete observation variables
+                  # themselves are latent. A soft Bitcoin-context term by itself is
+                  # minimized exactly with incremental Solver bounds below. This retains
+                  # the user's objective without forcing Optimize over the entire
+                  # double-SHA circuit in the default run.
                   use_optimize = (
                       INFER_MASK or INFER_PERMUTATION or INFER_ORIENTATION
-                      or ALLOW_OBSERVATION_NOISE or CONTEXT_MODE == "derived_bitcoin"
+                      or ALLOW_OBSERVATION_NOISE
                   )
                   engine = z3.Optimize() if use_optimize else z3.Solver()
                   if Z3_RANDOM_SEED:
@@ -971,16 +1101,64 @@ jobs:
                   if use_optimize:
                       engine.minimize(total_energy)
 
+                  status.update({
+                      "solver_engine": "Optimize" if use_optimize else "Solver",
+                      "solver_phase": "constraints_built",
+                      "precheck_memory": memory_snapshot(),
+                      "external_sigterm_diagnostics_enabled": True,
+                      "heartbeat_seconds": 20,
+                  })
+                  STATUS.write_text(json.dumps(status, indent=2, sort_keys=True), encoding="utf-8")
+
                   SMT2.write_text(engine.sexpr(), encoding="utf-8")
                   emit("[solver] exact SHA-256d equations built")
                   emit(f"[solver] hidden_bits={len(hidden_bits)}")
+                  emit(f"[solver] engine={status['solver_engine']}")
                   emit("[solver] no internal timeout, no turn limit, no search-depth limit")
+                  emit(f"[solver] precheck_memory={status['precheck_memory']}")
 
                   solve_started = time.time()
-                  result = engine.check()
+                  stop_heartbeat = threading.Event()
+                  heartbeat_thread = start_solver_heartbeat(stop_heartbeat, solve_started)
+
+                  try:
+                      # With fixed m, pi, O, and xi, only the soft global context
+                      # remains variable. Minimize it exactly by testing integer bounds
+                      # from zero upward. This is the same discrete MAP preference but
+                      # avoids Z3 Optimize's much larger memory footprint.
+                      if not use_optimize and global_terms:
+                          result = None
+                          optimum_global_bound = None
+                          for bound in range(len(global_terms) + 1):
+                              engine.push()
+                              engine.add(E_global <= bound)
+                              emit(f"[solver] testing_exact_global_energy_bound={bound}")
+                              candidate_result = engine.check()
+                              if candidate_result == z3.sat:
+                                  result = candidate_result
+                                  optimum_global_bound = bound
+                                  break
+                              engine.pop()
+                              if candidate_result == z3.unknown:
+                                  result = candidate_result
+                                  break
+                          if result is None:
+                              result = z3.unsat
+                          status["exact_global_energy_bound"] = optimum_global_bound
+                          # Keep the successful push frame in place so model() refers to
+                          # the exact minimum-bound solution.
+                      else:
+                          result = engine.check()
+                  finally:
+                      stop_heartbeat.set()
+                      heartbeat_thread.join(timeout=2.0)
+
                   solve_seconds = time.time() - solve_started
                   status["solver_result"] = str(result)
                   status["solve_seconds"] = solve_seconds
+                  status["postcheck_memory"] = memory_snapshot()
+                  status["solver_phase"] = "check_returned"
+                  STATUS.write_text(json.dumps(status, indent=2, sort_keys=True), encoding="utf-8")
 
                   if result not in (z3.sat, z3.unknown):
                       raise RuntimeError(f"Solver returned {result}")
@@ -1408,7 +1586,7 @@ jobs:
                   })
                   STATUS.write_text(json.dumps(status, indent=2, sort_keys=True), encoding="utf-8")
                   REPORT.write_text(
-                      "BITCOIN SHA-256d 4D JOINT-INFERENCE — INCOMPLETE\n"
+                      "BITCOIN SHA-256d 4D JOINT-INFERENCE â INCOMPLETE\n"
                       + "=" * 72 + "\n"
                       + traceback.format_exc(),
                       encoding="utf-8",
@@ -1423,6 +1601,11 @@ jobs:
               main()
           PY
 
+          PYTHON_RC=${PIPESTATUS[0]}
+          kill "$RESOURCE_MONITOR_PID" 2>/dev/null || true
+          wait "$RESOURCE_MONITOR_PID" 2>/dev/null || true
+          echo "[runner] embedded_python_exit_code=$PYTHON_RC"
+          print_resources
           exit 0
 
       - name: Publish authoritative status
