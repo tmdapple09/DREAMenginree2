@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-14T05:54:13.135Z
+Generated: 2026-07-15T00:33:01.607Z
 
 Model: capability nodes + files as edges.
 
@@ -4360,7 +4360,7 @@ _No style files for this feature._
 - `generate-features.mjs` - `scripts/feature-build/generate-features.mjs`
 - `generate-mobile-nextgen-spec.mjs` - `scripts/generate-mobile-nextgen-spec.mjs`
 - `generate-mobile-ps5-spec.mjs` - `scripts/generate-mobile-ps5-spec.mjs`
-- `generate-readme-v3-verified.ts` - `scripts/generate-readme-v3-verified.ts`
+- `generate-readme.ts` - `scripts/generate-readme.ts`
 - `generate-repo-state.mjs` - `scripts/generate-repo-state.mjs`
 - `generate-test-assets.mjs` - `scripts/contentengin/generate-test-assets.mjs`
 - `god-tier-engine.test.ts` - `tests/god-tier-engine.test.ts`
@@ -6354,7 +6354,7 @@ _No style files for this feature._
 | `scripts/gameengin/writer-run.ts` | `node:fs`, `node:path` | `writer-run.ts` |
 | `scripts/generate-mobile-nextgen-spec.mjs` | `node:fs/promises`, `node:fs`, `node:path` | `generate-mobile-nextgen-spec.mjs` |
 | `scripts/generate-mobile-ps5-spec.mjs` | `node:fs/promises`, `node:fs`, `node:path` | `generate-mobile-ps5-spec.mjs` |
-| `scripts/generate-readme-v3-verified.ts` | `node:child_process`, `node:crypto`, `node:fs`, `node:path`, `buildProductReadmeSections`, `PRODUCT_SECTIONS`, `ProductSectionStats`, `,     ` | `generate-readme-v3-verified.ts` |
+| `scripts/generate-readme.ts` | `node:child_process`, `node:crypto`, `node:fs`, `node:path`, `buildProductReadmeSections`, `PRODUCT_SECTIONS`, `ProductSectionStats`, `,     ` | `generate-readme.ts` |
 | `scripts/generate-repo-state.mjs` | `node:fs`, `node:path`, `);         } else if (beforeFrom.startsWith(` | `generate-repo-state.mjs` |
 | `scripts/generate-webapp-final-form.mjs` | `fs/promises`, `path`, `url`, `child_process`, ` : ` | `$`, `(default)`, `POST` |
 | `scripts/optimize-dreamengin.mjs` | `fs`, `path`, `yaml` | `optimize-dreamengin.mjs` |
@@ -6983,7 +6983,7 @@ _No circular dependencies detected._
 | `engins/contentengin/cli.ts` | 7 | MEDIUM_COUPLING |
 | `engins/portfolio/dream.PortfolioEngin.tsx` | 7 | MEDIUM_COUPLING, EVENT_BUS, DUAL_RUNTIME |
 | `scripts/gameengin/package-cartridge.ts` | 7 | MEDIUM_COUPLING |
-| `scripts/generate-readme-v3-verified.ts` | 7 | MEDIUM_COUPLING |
+| `scripts/generate-readme.ts` | 7 | MEDIUM_COUPLING |
 | `app/actions/dream-docs.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/activity/track/route.ts` | 6 | MEDIUM_COUPLING |
 | `app/api/admin/ai-chat/route.ts` | 6 | MEDIUM_COUPLING |
