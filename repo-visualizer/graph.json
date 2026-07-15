@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T08:07:29.202Z",
+  "generatedAt": "2026-07-15T11:03:33.049Z",
   "root": ".",
   "nodes": [
     {
@@ -2742,10 +2742,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/bitcoin-hash-gauge-algebraic-inference-single.yml",
-      "label": "bitcoin-hash-gauge-algebraic-inference-single.yml",
+      "id": "file:.github/workflows/bitcoin-sha256d-4d-full-model.yml",
+      "label": "bitcoin-sha256d-4d-full-model.yml",
       "type": "config",
-      "path": ".github/workflows/bitcoin-hash-gauge-algebraic-inference-single.yml",
+      "path": ".github/workflows/bitcoin-sha256d-4d-full-model.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
