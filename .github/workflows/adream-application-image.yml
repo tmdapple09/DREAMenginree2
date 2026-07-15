@@ -2763,7 +2763,6 @@ jobs:
       - name: Document findings and build separate zip packages
         id: package
         if: always()
-        continue-on-error: true
         shell: bash
         env:
           CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
@@ -2831,19 +2830,19 @@ jobs:
           cat "$REPORT" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
           rm -f \
-            "$ART/dream-application-full.zip" \
-            "$ART/dream-application-rendering.zip" \
-            "$ART/dream-application-decoder.zip" \
-            "$ART/dream-application-analysis.zip"
+            "$ART/dream-application-image-full.zip" \
+            "$ART/dream-application-image-rendering.zip" \
+            "$ART/dream-application-image-decoder.zip" \
+            "$ART/dream-application-image-analysis.zip"
 
-          zip -q -r "$ART/dream-application-full.zip" "$OUT" \
+          zip -q -r "$ART/dream-application-image-full.zip" "$OUT" \
             > "$OUT/Diagnostics/FULL_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/FULL_ZIP_STDERR.log"
           printf '%s\n' "$?" > "$OUT/Diagnostics/FULL_ZIP_EXIT_CODE.txt"
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-rendering.zip" \
+            zip -q -r "../$ART/dream-application-image-rendering.zip" \
               Rendering Data Metadata README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/RENDERING_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/RENDERING_ZIP_STDERR.log"
@@ -2851,7 +2850,7 @@ jobs:
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-decoder.zip" \
+            zip -q -r "../$ART/dream-application-image-decoder.zip" \
               Decoder Data/FILE_MANIFEST.json Metadata/APP_CODE_REPO_NATIVE_PASCAL_3BIT_SYMBOL.json \
               README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/DECODER_ZIP_STDOUT.log" \
@@ -2860,50 +2859,69 @@ jobs:
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-analysis.zip" \
+            zip -q -r "../$ART/dream-application-image-analysis.zip" \
               Analysis Health UI Diagnostics README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/ANALYSIS_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/ANALYSIS_ZIP_STDERR.log"
           printf '%s\n' "$?" > "$OUT/Diagnostics/ANALYSIS_ZIP_EXIT_CODE.txt"
 
+          package_failure=0
+          for archive in \
+            "$ART/dream-application-image-full.zip" \
+            "$ART/dream-application-image-rendering.zip" \
+            "$ART/dream-application-image-decoder.zip" \
+            "$ART/dream-application-image-analysis.zip"; do
+
+            if [ ! -s "$archive" ]; then
+              echo "Required package was not created or is empty: $archive" >&2
+              package_failure=1
+            fi
+          done
+
+          if [ "$package_failure" -ne 0 ]; then
+            exit 1
+          fi
+
+          ls -lh \
+            "$ART/dream-application-image-full.zip" \
+            "$ART/dream-application-image-rendering.zip" \
+            "$ART/dream-application-image-decoder.zip" \
+            "$ART/dream-application-image-analysis.zip"
+
           exit 0
 
       - name: Upload full one-day package
         if: always()
-        continue-on-error: true
         uses: actions/upload-artifact@v6
         with:
           name: dream-application-image-full
           path: dream-artifacts/dream-application-image-full.zip
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 1
 
       - name: Upload rendering package
         if: always()
-        continue-on-error: true
         uses: actions/upload-artifact@v6
         with:
           name: dream-application-image-rendering
           path: dream-artifacts/dream-application-image-rendering.zip
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 1
 
       - name: Upload decoder package
         if: always()
-        continue-on-error: true
         uses: actions/upload-artifact@v6
         with:
           name: dream-application-image-decoder
           path: dream-artifacts/dream-application-image-decoder.zip
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 1
 
       - name: Upload analysis health UI and diagnostics package
         if: always()
-        continue-on-error: true
         uses: actions/upload-artifact@v6
         with:
           name: dream-application-image-analysis
           path: dream-artifacts/dream-application-image-analysis.zip
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 1
