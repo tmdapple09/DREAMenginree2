@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T08:04:30.348Z",
+  "generatedAt": "2026-07-15T08:07:29.202Z",
   "root": ".",
   "nodes": [
     {
@@ -2742,10 +2742,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/bitcoin-hash-transform-extended-single.yml",
-      "label": "bitcoin-hash-transform-extended-single.yml",
+      "id": "file:.github/workflows/bitcoin-hash-gauge-algebraic-inference-single.yml",
+      "label": "bitcoin-hash-gauge-algebraic-inference-single.yml",
       "type": "config",
-      "path": ".github/workflows/bitcoin-hash-transform-extended-single.yml",
+      "path": ".github/workflows/bitcoin-hash-gauge-algebraic-inference-single.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
