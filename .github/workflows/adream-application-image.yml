@@ -17,15 +17,15 @@ jobs:
       - name: Checkout repository
         id: checkout
         continue-on-error: true
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
         id: setup_python
         if: always()
         continue-on-error: true
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.14"
 
       - name: Prepare real output paths
         id: prepare
@@ -2747,19 +2747,19 @@ jobs:
           cat "$REPORT" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
           rm -f \
-            "$ART/dream-application-image-full.zip" \
-            "$ART/dream-application-image-rendering.zip" \
-            "$ART/dream-application-image-decoder.zip" \
-            "$ART/dream-application-image-analysis.zip"
+            "$ART/dream-application-full.zip" \
+            "$ART/dream-application-rendering.zip" \
+            "$ART/dream-application-decoder.zip" \
+            "$ART/dream-application-analysis.zip"
 
-          zip -q -r "$ART/dream-application-image-full.zip" "$OUT" \
+          zip -q -r "$ART/dream-application-full.zip" "$OUT" \
             > "$OUT/Diagnostics/FULL_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/FULL_ZIP_STDERR.log"
           printf '%s\n' "$?" > "$OUT/Diagnostics/FULL_ZIP_EXIT_CODE.txt"
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-image-rendering.zip" \
+            zip -q -r "../$ART/dream-application-rendering.zip" \
               Rendering Data Metadata README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/RENDERING_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/RENDERING_ZIP_STDERR.log"
@@ -2767,7 +2767,7 @@ jobs:
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-image-decoder.zip" \
+            zip -q -r "../$ART/dream-application-decoder.zip" \
               Decoder Data/FILE_MANIFEST.json Metadata/APP_CODE_REPO_NATIVE_PASCAL_3BIT_PAIR.json \
               README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/DECODER_ZIP_STDOUT.log" \
@@ -2776,7 +2776,7 @@ jobs:
 
           (
             cd "$OUT" || exit 1
-            zip -q -r "../$ART/dream-application-image-analysis.zip" \
+            zip -q -r "../$ART/dream-application-analysis.zip" \
               Analysis Health UI Diagnostics README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/ANALYSIS_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/ANALYSIS_ZIP_STDERR.log"
@@ -2787,7 +2787,7 @@ jobs:
       - name: Upload full one-day package
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v4"6
+        uses: actions/upload-artifact@v6
         with:
           name: dream-application-image-full
           path: dream-artifacts/dream-application-image-full.zip
@@ -2812,7 +2812,7 @@ jobs:
           name: dream-application-image-decoder
           path: dream-artifacts/dream-application-image-decoder.zip
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 1
 
       - name: Upload analysis health UI and diagnostics package
         if: always()
