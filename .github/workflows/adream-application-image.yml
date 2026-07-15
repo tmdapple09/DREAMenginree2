@@ -214,11 +214,107 @@ jobs:
               ".config.",
           )
 
-          a
+          STATE_KEYS = [
+              "000",
+              "001",
+              "010",
+              "011",
+              "100",
+              "101",
+              "110",
+              "111",
+          ]
+
+          STATE_INDEX = {
+              key: index
+              for index, key in enumerate(STATE_KEYS)
+          }
+
+          RGB_BY_BITS = {
+              "000": (0, 0, 0),
+              "111": (255, 255, 255),
+              "001": (0, 0, 255),
+              "100": (255, 0, 0),
+              "011": (0, 255, 255),
+              "110": (255, 255, 0),
+              "010": (0, 255, 0),
+              "101": (255, 0, 255),
+          }
+
+          PAIR_SYMBOL_BY_BITS = {
+              "000": "A",
+              "111": "a",
+              "001": "B",
+              "100": "b",
+              "011": "C",
+              "110": "c",
+              "010": "D",
+              "101": "d",
+          }
+
+          BITS_BY_PAIR_SYMBOL = {
+              symbol: bits
+              for bits, symbol in PAIR_SYMBOL_BY_BITS.items()
+          }
+
+          PAIR_SYMBOL_ORDER = [
+              "A",
+              "a",
+              "B",
+              "b",
+              "C",
+              "c",
+              "D",
+              "d",
+          ]
+
+          PAIR_SYMBOL_INDEX = {
+              symbol: index
+              for index, symbol in enumerate(PAIR_SYMBOL_ORDER)
+          }
+
+          PAIR_SYMBOL_COLORS = {
+              "A": RGB_BY_BITS["000"],
+              "a": RGB_BY_BITS["111"],
+              "B": RGB_BY_BITS["001"],
+              "b": RGB_BY_BITS["100"],
+              "C": RGB_BY_BITS["011"],
+              "c": RGB_BY_BITS["110"],
+              "D": RGB_BY_BITS["010"],
+              "d": RGB_BY_BITS["101"],
+          }
+
+          PAIR_FAMILY_BY_BITS = {
+              "000": "A",
+              "111": "A",
+              "001": "B",
+              "100": "B",
+              "011": "C",
+              "110": "C",
+              "010": "D",
+              "101": "D",
+          }
+
+          PAIR_FAMILY_INDEX = {
+              "A": 0,
+              "B": 1,
+              "C": 2,
+              "D": 3,
+          }
+
+          PAIR_CASE_BY_BITS = {
+              bits: (
+                  "uppercase"
+                  if symbol.isupper()
+                  else "lowercase"
+              )
+              for bits, symbol in PAIR_SYMBOL_BY_BITS.items()
+          }
+
           TRANSPARENT_INDEX = 255
           PDF_PAGE_SIZE = (2550, 3300)
-          MANIFEST_INFO_KEY = "dreamengin_manifest_zlib_base64_v4"
-          FORMAT_NAME = "dreamengin.application-code-repo-native-pascal-3bit-pair.v4"
+          MANIFEST_INFO_KEY = "dreamengin_manifest_zlib_base64_v5"
+          FORMAT_NAME = "dreamengin.application-code-repo-native-pascal-3bit-symbol.v5"
 
           IMPORT_FROM_RE = re.compile(
               r"\bimport\s+(?P<clause>[^;\n]*?)\s+from\s+['\"](?P<spec>[^'\"]+)['\"]",
@@ -551,10 +647,19 @@ jobs:
 
           def file_state_statistics(data: bytes) -> dict[str, Any]:
               state_counts = [0] * 8
-              pair_counts = Counter()
-              polarity_counts = Counter()
+              symbol_counts = Counter()
+              family_counts = Counter()
+              case_counts = Counter()
               bit_buffer = 0
               bit_count = 0
+
+              def record_state(state: int) -> None:
+                  state_counts[state] += 1
+                  key = f"{state:03b}"
+                  symbol = PAIR_SYMBOL_BY_BITS[key]
+                  symbol_counts[symbol] += 1
+                  family_counts[PAIR_FAMILY_BY_BITS[key]] += 1
+                  case_counts[PAIR_CASE_BY_BITS[key]] += 1
 
               for byte in data:
                   bit_buffer = (bit_buffer << 8) | byte
@@ -562,26 +667,34 @@ jobs:
                   while bit_count >= 3:
                       shift = bit_count - 3
                       state = (bit_buffer >> shift) & 7
-                      state_counts[state] += 1
-                      key = f"{state:03b}"
-                      pair_counts[PAIR_GROUP_BY_BITS[key]] += 1
-                      polarity_counts[str(POLARITY_BY_BITS[key])] += 1
+                      record_state(state)
                       bit_count -= 3
                       bit_buffer &= (1 << bit_count) - 1 if bit_count else 0
 
               if bit_count:
                   state = (bit_buffer << (3 - bit_count)) & 7
-                  state_counts[state] += 1
-                  key = f"{state:03b}"
-                  pair_counts[PAIR_GROUP_BY_BITS[key]] += 1
-                  polarity_counts[str(POLARITY_BY_BITS[key])] += 1
+                  record_state(state)
 
-              dominant_pair = max("ABCD", key=lambda group: pair_counts[group]) if sum(pair_counts.values()) else "A"
+              dominant_symbol = (
+                  max(PAIR_SYMBOL_ORDER, key=lambda symbol: symbol_counts[symbol])
+                  if sum(symbol_counts.values())
+                  else "A"
+              )
               return {
                   "stateCounts": {f"{state:03b}": state_counts[state] for state in range(8)},
-                  "pairCounts": {group: pair_counts[group] for group in "ABCD"},
-                  "polarityCounts": {key: polarity_counts[key] for key in ("0", "1")},
-                  "dominantPair": dominant_pair,
+                  "symbolCounts": {
+                      symbol: symbol_counts[symbol]
+                      for symbol in PAIR_SYMBOL_ORDER
+                  },
+                  "pairFamilyCounts": {
+                      family: family_counts[family]
+                      for family in "ABCD"
+                  },
+                  "pairCaseCounts": {
+                      case: case_counts[case]
+                      for case in ("uppercase", "lowercase")
+                  },
+                  "dominantSymbol": dominant_symbol,
               }
 
 
@@ -616,10 +729,11 @@ jobs:
                       "sha256": hashlib.sha256(data).hexdigest(),
                       "runtimeExports": exports,
                       "runtimeExportCount": len(exports),
-                      "dominantPair": states["dominantPair"],
+                      "dominantSymbol": states["dominantSymbol"],
                       "stateCounts": states["stateCounts"],
-                      "pairCounts": states["pairCounts"],
-                      "polarityCounts": states["polarityCounts"],
+                      "symbolCounts": states["symbolCounts"],
+                      "pairFamilyCounts": states["pairFamilyCounts"],
+                      "pairCaseCounts": states["pairCaseCounts"],
                       "extension": path.suffix.lower(),
                   }
 
@@ -925,7 +1039,7 @@ jobs:
               rows = pascal_rows_for_cell_count(group_count)
               return {
                   "format": FORMAT_NAME,
-                  "manifestVersion": 4,
+                  "manifestVersion": 5,
                   "source": {
                       "rootFile": root,
                       "rootRule": (
@@ -952,18 +1066,22 @@ jobs:
                       "bytesPerCell": 0.375,
                       "bitOrder": "MSB-first",
                       "cellOrder": "centered Pascal rows from row 0 through final row, left to right",
-                      "states": {key: list(RGB_BY_BITS[key]) for key in STATE_KEYS},
-                      "pairs": {
-                          "A0": "000",
-                          "A1": "111",
-                          "B0": "001",
-                          "B1": "100",
-                          "C0": "011",
-                          "C1": "110",
-                          "D0": "010",
-                          "D1": "101",
+                      "stateOrder": STATE_KEYS,
+                      "symbolOrder": PAIR_SYMBOL_ORDER,
+                      "states": {
+                          key: {
+                              "symbol": PAIR_SYMBOL_BY_BITS[key],
+                              "rgb": list(RGB_BY_BITS[key]),
+                          }
+                          for key in STATE_KEYS
                       },
-                      "reconstruction": "pair group + polarity = exact 3-bit state",
+                      "symbols": {
+                          symbol: BITS_BY_PAIR_SYMBOL[symbol]
+                          for symbol in PAIR_SYMBOL_ORDER
+                      },
+                      "derivedPairFamilyByBits": PAIR_FAMILY_BY_BITS,
+                      "derivedPairCaseByBits": PAIR_CASE_BY_BITS,
+                      "reconstruction": "each pair symbol is the exact 3-bit source state",
                   },
               }
 
@@ -985,8 +1103,7 @@ jobs:
               pixel_count = rows * rows
 
               state_index_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
-              group_index_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
-              polarity_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
+              symbol_index_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
               saturation_data = bytearray([TRANSPARENT_INDEX]) * pixel_count
 
               group_bits: list[int] = []
@@ -1000,8 +1117,8 @@ jobs:
                   x_cell = ((rows - (row + 1)) // 2) + col
                   offset = row * rows + x_cell
                   state_index_data[offset] = STATE_INDEX[key]
-                  group_index_data[offset] = GROUP_INDEX[PAIR_GROUP_BY_BITS[key]]
-                  polarity_data[offset] = POLARITY_BY_BITS[key]
+                  symbol = PAIR_SYMBOL_BY_BITS[key]
+                  symbol_index_data[offset] = PAIR_SYMBOL_INDEX[symbol]
                   emitted += 1
                   if col == row:
                       row += 1
@@ -1047,26 +1164,22 @@ jobs:
                   bytes(state_index_data),
                   [RGB_BY_BITS[key] for key in STATE_KEYS],
               )
-              group_image = palette_image(
+              symbol_image = palette_image(
                   (rows, rows),
-                  bytes(group_index_data),
-                  [GROUP_COLORS[group] for group in "ABCD"],
-              )
-              polarity_image = palette_image(
-                  (rows, rows),
-                  bytes(polarity_data),
-                  [(0, 0, 0), (255, 255, 255)],
+                  bytes(symbol_index_data),
+                  [
+                      PAIR_SYMBOL_COLORS[symbol]
+                      for symbol in PAIR_SYMBOL_ORDER
+                  ],
               )
               saturation_image = grayscale_palette_image((rows, rows), bytes(saturation_data))
 
               exact_path = RENDER_DIR / "APP_CODE_PASCAL_3BIT_EXACT.png"
-              group_path = RENDER_DIR / "APP_CODE_PASCAL_PAIR_GROUP.png"
-              polarity_path = RENDER_DIR / "APP_CODE_PASCAL_PAIR_POLARITY.png"
+              symbol_path = RENDER_DIR / "APP_CODE_PASCAL_PAIR_SYMBOL.png"
               saturation_path = RENDER_DIR / "APP_CODE_PASCAL_SATURATION_FIELD.png"
 
               save_png_with_manifest(exact_image, exact_path, manifest)
-              save_png_with_manifest(group_image, group_path, manifest)
-              save_png_with_manifest(polarity_image, polarity_path, manifest)
+              save_png_with_manifest(symbol_image, symbol_path, manifest)
               save_png_with_manifest(saturation_image, saturation_path, manifest)
 
               exact_tiles = save_visible_tiles(
@@ -1076,16 +1189,9 @@ jobs:
                   max_png_dimension,
                   max_tile_pixels,
               )
-              group_tiles = save_visible_tiles(
-                  group_image,
-                  "PAIR_GROUP",
-                  cell_size,
-                  max_png_dimension,
-                  max_tile_pixels,
-              )
-              polarity_tiles = save_visible_tiles(
-                  polarity_image,
-                  "PAIR_POLARITY",
+              symbol_tiles = save_visible_tiles(
+                  symbol_image,
+                  "PAIR_SYMBOL",
                   cell_size,
                   max_png_dimension,
                   max_tile_pixels,
@@ -1100,24 +1206,20 @@ jobs:
 
               return {
                   "exactImage": exact_image,
-                  "groupImage": group_image,
-                  "polarityImage": polarity_image,
+                  "symbolImage": symbol_image,
                   "saturationImage": saturation_image,
                   "stateIndexData": state_index_data,
-                  "groupIndexData": group_index_data,
-                  "polarityData": polarity_data,
+                  "symbolIndexData": symbol_index_data,
                   "saturationData": saturation_data,
                   "validBitsInFinalCell": valid_bits_in_final_cell,
                   "paths": {
                       "exact": exact_path,
-                      "group": group_path,
-                      "polarity": polarity_path,
+                      "symbol": symbol_path,
                       "saturation": saturation_path,
                   },
                   "tiles": {
                       "exact": exact_tiles,
-                      "group": group_tiles,
-                      "polarity": polarity_tiles,
+                      "symbol": symbol_tiles,
                       "saturation": saturation_tiles,
                   },
               }
@@ -1262,7 +1364,7 @@ jobs:
                           + math.sqrt(record["fanIn"] + record["fanOut"]),
                       ),
                   )
-                  color = GROUP_COLORS[record["dominantPair"]]
+                  color = PAIR_SYMBOL_COLORS[record["dominantSymbol"]]
                   outline = (255, 255, 255) if path == root else (175, 183, 205)
                   draw.ellipse(
                       (
@@ -1325,27 +1427,8 @@ jobs:
 
           from PIL import Image
 
-          MANIFEST_INFO_KEY = "dreamengin_manifest_zlib_base64_v4"
-          PAIR_GROUP_BY_STATE = {
-              0: 0,
-              7: 0,
-              1: 1,
-              4: 1,
-              3: 2,
-              6: 2,
-              2: 3,
-              5: 3,
-          }
-          POLARITY_BY_STATE = {
-              0: 0,
-              7: 1,
-              1: 0,
-              4: 1,
-              3: 0,
-              6: 1,
-              2: 0,
-              5: 1,
-          }
+          MANIFEST_INFO_KEY = "dreamengin_manifest_zlib_base64_v5"
+          SYMBOL_INDEX_BY_STATE = (0, 2, 6, 4, 3, 7, 5, 1)
 
 
           def manifest_from_image(image: Image.Image) -> dict:
@@ -1410,47 +1493,36 @@ jobs:
               return bytes(output)
 
 
-          def cross_check_layers(exact_states, group_path: Path | None, polarity_path: Path | None, rows: int):
+          def cross_check_symbol_layer(exact_states, symbol_path: Path | None, rows: int):
               result = {
-                  "groupLayerChecked": False,
-                  "polarityLayerChecked": False,
-                  "groupMismatches": 0,
-                  "polarityMismatches": 0,
+                  "symbolLayerChecked": False,
+                  "symbolMismatches": 0,
               }
               states = list(exact_states)
 
-              if group_path and group_path.exists():
-                  image = Image.open(group_path)
+              if symbol_path and symbol_path.exists():
+                  image = Image.open(symbol_path)
+                  if image.mode != "P":
+                      raise ValueError("Symbol image must remain an indexed PNG in mode P.")
+                  if image.size != (rows, rows):
+                      raise ValueError(f"Expected symbol image size {(rows, rows)}, found {image.size}.")
                   pixels = image.load()
-                  result["groupLayerChecked"] = True
+                  result["symbolLayerChecked"] = True
                   index = 0
                   for row in range(rows):
                       left = (rows - (row + 1)) // 2
                       for col in range(row + 1):
                           if index >= len(states):
                               break
-                          if pixels[left + col, row] != PAIR_GROUP_BY_STATE[states[index]]:
-                              result["groupMismatches"] += 1
-                          index += 1
-
-              if polarity_path and polarity_path.exists():
-                  image = Image.open(polarity_path)
-                  pixels = image.load()
-                  result["polarityLayerChecked"] = True
-                  index = 0
-                  for row in range(rows):
-                      left = (rows - (row + 1)) // 2
-                      for col in range(row + 1):
-                          if index >= len(states):
-                              break
-                          if pixels[left + col, row] != POLARITY_BY_STATE[states[index]]:
-                              result["polarityMismatches"] += 1
+                          expected = SYMBOL_INDEX_BY_STATE[states[index]]
+                          if pixels[left + col, row] != expected:
+                              result["symbolMismatches"] += 1
                           index += 1
 
               return result
 
 
-          def decode(exact_path: Path, output_root: Path, group_path: Path | None = None, polarity_path: Path | None = None) -> dict:
+          def decode(exact_path: Path, output_root: Path, symbol_path: Path | None = None) -> dict:
               exact_image = Image.open(exact_path)
               manifest = manifest_from_image(exact_image)
               source = manifest["source"]
@@ -1487,11 +1559,9 @@ jobs:
                       }
                   )
 
-              layer_check = cross_check_layers(states, group_path, polarity_path, source["pascalRows"])
+              layer_check = cross_check_symbol_layer(states, symbol_path, source["pascalRows"])
               all_exact = all(item["exactMatch"] for item in results)
-              all_layers_exact = (
-                  layer_check["groupMismatches"] == 0 and layer_check["polarityMismatches"] == 0
-              )
+              all_layers_exact = layer_check["symbolMismatches"] == 0
 
               return {
                   "format": manifest.get("format"),
@@ -1512,16 +1582,14 @@ jobs:
               parser = argparse.ArgumentParser()
               parser.add_argument("exact_image", type=Path)
               parser.add_argument("output_root", type=Path)
-              parser.add_argument("--group-image", type=Path)
-              parser.add_argument("--polarity-image", type=Path)
+              parser.add_argument("--symbol-image", type=Path)
               parser.add_argument("--report", type=Path)
               arguments = parser.parse_args()
 
               result = decode(
                   arguments.exact_image,
                   arguments.output_root,
-                  arguments.group_image,
-                  arguments.polarity_image,
+                  arguments.symbol_image,
               )
               text = json.dumps(result, indent=2)
               print(text)
@@ -1538,8 +1606,7 @@ jobs:
 
           def run_decoder_in_process(
               exact_path: Path,
-              group_path: Path,
-              polarity_path: Path,
+              symbol_path: Path,
           ) -> dict[str, Any]:
               source = decoder_source()
               decoder_path = DECODER_DIR / "decode_from_image.py"
@@ -1549,8 +1616,7 @@ jobs:
               result = namespace["decode"](
                   exact_path,
                   REBUILT_DIR,
-                  group_path,
-                  polarity_path,
+                  symbol_path,
               )
               write_json(DECODER_DIR / "IMAGE_TO_CODE_VERIFICATION.json", result)
 
@@ -1561,14 +1627,13 @@ jobs:
                   f"- Encoded files: **{result['fileCount']}**",
                   f"- Exact file matches: **{result['exactFileCount']}**",
                   f"- Exact-state bytes rebuilt: **{result['decodedBytes']}**",
-                  f"- Pair-group mismatches: **{result['layerCrossCheck']['groupMismatches']}**",
-                  f"- Polarity mismatches: **{result['layerCrossCheck']['polarityMismatches']}**",
+                  f"- Exact-symbol mismatches: **{result['layerCrossCheck']['symbolMismatches']}**",
                   f"- Complete round trip exact: **{result['allExact']}**",
                   "",
-                  "The decoder reads the newly generated Pascal exact-state PNG, recovers the",
+                  "The decoder reads the generated Pascal exact-state PNG, recovers the",
                   "continuous MSB-first 3-bit stream, trims only the recorded final padding,",
                   "splits the byte stream using the manifest embedded in the PNG, rebuilds every",
-                  "file, and verifies each SHA-256 hash.",
+                  "file, verifies each SHA-256 hash, and cross-checks the eight-symbol image.",
               ]
               write_text(DECODER_DIR / "DECODE_REPORT.md", "\n".join(lines) + "\n")
               return result
@@ -1588,8 +1653,9 @@ jobs:
               rows = manifest["source"]["pascalRows"]
               state_values: list[int] = []
               state_counts = Counter()
-              pair_counts = Counter()
-              polarity_counts = Counter()
+              symbol_counts = Counter()
+              family_counts = Counter()
+              case_counts = Counter()
               transitions = Counter()
               run_lengths: list[int] = []
               previous: int | None = None
@@ -1604,9 +1670,11 @@ jobs:
                       state = pixels[left + col, row]
                       state_values.append(state)
                       key = f"{state:03b}"
+                      symbol = PAIR_SYMBOL_BY_BITS[key]
                       state_counts[key] += 1
-                      pair_counts[PAIR_GROUP_BY_BITS[key]] += 1
-                      polarity_counts[str(POLARITY_BY_BITS[key])] += 1
+                      symbol_counts[symbol] += 1
+                      family_counts[PAIR_FAMILY_BY_BITS[key]] += 1
+                      case_counts[PAIR_CASE_BY_BITS[key]] += 1
 
                       if previous is None:
                           previous = state
@@ -1614,7 +1682,8 @@ jobs:
                       elif state == previous:
                           current_run += 1
                       else:
-                          transitions[f"{previous:03b}->{state:03b}"] += 1
+                          previous_symbol = PAIR_SYMBOL_BY_BITS[f"{previous:03b}"]
+                          transitions[f"{previous_symbol}->{symbol}"] += 1
                           run_lengths.append(current_run)
                           previous = state
                           current_run = 1
@@ -1666,13 +1735,23 @@ jobs:
                   "paddingBitsInFinalCell": manifest["source"]["paddingBitsInFinalCell"],
                   "payloadUtilization": group_count / (rows * rows),
                   "stateCounts": {key: state_counts[key] for key in STATE_KEYS},
-                  "pairCounts": {group: pair_counts[group] for group in "ABCD"},
-                  "polarityCounts": {key: polarity_counts[key] for key in ("0", "1")},
+                  "symbolCounts": {
+                      symbol: symbol_counts[symbol]
+                      for symbol in PAIR_SYMBOL_ORDER
+                  },
+                  "pairFamilyCounts": {
+                      family: family_counts[family]
+                      for family in "ABCD"
+                  },
+                  "pairCaseCounts": {
+                      case: case_counts[case]
+                      for case in ("uppercase", "lowercase")
+                  },
                   "entropyBitsPerCell": entropy,
                   "meanRunLength": statistics.fmean(run_lengths) if run_lengths else 0.0,
                   "medianRunLength": statistics.median(run_lengths) if run_lengths else 0.0,
                   "maxRunLength": max(run_lengths) if run_lengths else 0,
-                  "topTransitions": transitions.most_common(64),
+                  "topSymbolTransitions": transitions.most_common(64),
                   "rowDistributionDeviation": {
                       "meanTotalVariation": statistics.fmean(row_total_variation) if row_total_variation else 0.0,
                       "medianTotalVariation": statistics.median(row_total_variation) if row_total_variation else 0.0,
@@ -1705,8 +1784,7 @@ jobs:
                       "allExact": decode_result["allExact"],
                       "exactFileCount": decode_result["exactFileCount"],
                       "fileCount": decode_result["fileCount"],
-                      "groupMismatches": decode_result["layerCrossCheck"]["groupMismatches"],
-                      "polarityMismatches": decode_result["layerCrossCheck"]["polarityMismatches"],
+                      "symbolMismatches": decode_result["layerCrossCheck"]["symbolMismatches"],
                   },
               }
               write_json(ANALYSIS_DIR / "IMAGE_ANALYSIS.json", result)
@@ -1724,28 +1802,35 @@ jobs:
                   f"- Mean row-distribution deviation: **{result['rowDistributionDeviation']['meanTotalVariation']:.6f}**",
                   f"- File boundaries crossing a 3-bit cell: **{cross_file_cells}**",
                   f"- Decode exact: **{decode_result['allExact']}**",
+                  f"- Exact-symbol mismatches: **{decode_result['layerCrossCheck']['symbolMismatches']}**",
                   "",
-                  "## Exact three-bit states",
+                  "## Eight exact symbols",
                   "",
               ]
               lines.extend(
-                  f"- `{key}` / `{PAIR_GROUP_BY_BITS[key]}{POLARITY_BY_BITS[key]}`: {state_counts[key]}"
-                  for key in STATE_KEYS
+                  f"- `{symbol}` = `{BITS_BY_PAIR_SYMBOL[symbol]}`: {symbol_counts[symbol]}"
+                  for symbol in PAIR_SYMBOL_ORDER
               )
-              lines.extend(["", "## Four pair groups", ""])
-              lines.extend(f"- `{group}`: {pair_counts[group]}" for group in "ABCD")
-              lines.extend(["", "## Most common adjacent transitions", ""])
+              lines.extend(["", "## Derived pair families", ""])
+              lines.extend(f"- `{family}`: {family_counts[family]}" for family in "ABCD")
+              lines.extend(["", "## Derived case membership", ""])
+              lines.extend(
+                  f"- `{case}`: {case_counts[case]}"
+                  for case in ("uppercase", "lowercase")
+              )
+              lines.extend(["", "## Most common adjacent symbol transitions", ""])
               lines.extend(f"- `{transition}`: {count}" for transition, count in transitions.most_common(32))
               lines.extend(
                   [
                       "",
                       "## Interpretation boundaries",
                       "",
-                      "The exact-state, pair-group, polarity, and saturation layers are generated from the same",
-                      "continuous source stream. The repository-native shape is generated from the dependency graph.",
-                      "Visible bands can reflect ordered source syntax and file clustering, while the centered Pascal",
-                      "row wrapping and the 8-bit-to-3-bit phase cadence are renderer effects. The decoder verification",
-                      "proves byte fidelity; it does not by itself prove that a visual pattern is a hidden law.",
+                      "The exact-state, exact-symbol, and saturation layers are generated from the same",
+                      "continuous source stream. Pair family and case are derived analysis metadata only.",
+                      "The repository-native shape is generated from the dependency graph. Visible bands can",
+                      "reflect ordered source syntax and file clustering, while centered Pascal row wrapping",
+                      "and the 8-bit-to-3-bit phase cadence are renderer effects. Decoder verification proves",
+                      "byte fidelity; it does not by itself prove that a visual pattern is a hidden law.",
                   ]
               )
               write_text(ANALYSIS_DIR / "IMAGE_ANALYSIS.md", "\n".join(lines) + "\n")
@@ -2188,10 +2273,10 @@ jobs:
 
               page1 = Image.new("RGB", PDF_PAGE_SIZE, (255, 255, 255))
               draw1 = ImageDraw.Draw(page1)
-              draw1.text((100, 70), "DREAM Pascal 3-Bit Pair - Exact Lossless State Image", fill=(0, 0, 0), font=title_font)
+              draw1.text((100, 70), "DREAM Pascal 3-Bit Symbols - Exact Lossless State Image", fill=(0, 0, 0), font=title_font)
               draw1.text(
                   (100, 130),
-                  "3 source bits = one Pascal cell; opaque black is 000 and transparent area is outside the triangle.",
+                  "3 source bits = one Pascal cell; opaque black is A=000 and transparent area is outside the triangle.",
                   fill=(0, 0, 0),
                   font=text_font,
               )
@@ -2207,40 +2292,40 @@ jobs:
 
               legend_x = 1870
               legend_y = 230
-              draw1.text((legend_x, legend_y), "Exact states", fill=(0, 0, 0), font=head_font)
+              draw1.text((legend_x, legend_y), "Eight exact symbols", fill=(0, 0, 0), font=head_font)
               legend_y += 45
-              for key in STATE_KEYS:
-                  color = RGB_BY_BITS[key]
+              for symbol in PAIR_SYMBOL_ORDER:
+                  key = BITS_BY_PAIR_SYMBOL[symbol]
+                  color = PAIR_SYMBOL_COLORS[symbol]
                   draw1.rectangle((legend_x, legend_y, legend_x + 34, legend_y + 34), fill=color, outline=(0, 0, 0))
                   draw1.text(
                       (legend_x + 48, legend_y + 6),
-                      f"{key} = {PAIR_GROUP_BY_BITS[key]}{POLARITY_BY_BITS[key]}",
+                      f"{symbol} = {key}",
                       fill=(0, 0, 0),
                       font=text_font,
                   )
                   legend_y += 42
               legend_y += 20
-              draw1.text((legend_x, legend_y), "Four lossless pairs", fill=(0, 0, 0), font=head_font)
+              draw1.text((legend_x, legend_y), "Derived counterpart families", fill=(0, 0, 0), font=head_font)
               legend_y += 42
-              for line in ["A0=000   A1=111", "B0=001   B1=100", "C0=011   C1=110", "D0=010   D1=101"]:
+              for line in ["A/a: 000 / 111", "B/b: 001 / 100", "C/c: 011 / 110", "D/d: 010 / 101"]:
                   draw1.text((legend_x, legend_y), line, fill=(0, 0, 0), font=text_font)
                   legend_y += 32
               pages.append(page1)
 
               page2 = Image.new("RGB", PDF_PAGE_SIZE, (255, 255, 255))
               draw2 = ImageDraw.Draw(page2)
-              draw2.text((100, 70), "Pair Group, Polarity, and Pascal Saturation Field", fill=(0, 0, 0), font=title_font)
+              draw2.text((100, 70), "Exact Symbol Identity and Pascal Saturation Field", fill=(0, 0, 0), font=title_font)
               panels = [
-                  ("Pair group A/B/C/D", layers["groupImage"]),
-                  ("Pair polarity 0/1", layers["polarityImage"]),
+                  ("Eight-symbol identity A/a/B/b/C/c/D/d", layers["symbolImage"]),
                   ("Saturation field", layers["saturationImage"]),
               ]
               panel_y = 150
               for label, image in panels:
                   draw2.text((100, panel_y), label, fill=(0, 0, 0), font=head_font)
-                  panel = fit_on_white(image, 1250, 850)
+                  panel = fit_on_white(image, 1250, 1150)
                   page2.paste(panel, (100, panel_y + 38))
-                  panel_y += 940
+                  panel_y += 1450
 
               formula_x = 1500
               formula_y = 170
@@ -2257,7 +2342,7 @@ jobs:
                   "Displayed field = 254 * f(x)/a0",
                   "",
                   "Applied once as a separate field.",
-                  "Exact 3-bit colors remain unchanged.",
+                  "Exact 3-bit and symbol colors remain unchanged.",
               ]:
                   draw2.text((formula_x, formula_y), line, fill=(0, 0, 0), font=text_font)
                   formula_y += 32
@@ -2270,7 +2355,7 @@ jobs:
               page3.paste(repo_shape, (150, 150))
               pages.append(page3)
 
-              pdf_path = RENDER_DIR / "APP_CODE_PASCAL_3BIT_PAIR_SATURATION_PRINT.pdf"
+              pdf_path = RENDER_DIR / "APP_CODE_PASCAL_3BIT_SYMBOL_SATURATION_PRINT.pdf"
               pages[0].save(pdf_path, "PDF", save_all=True, append_images=pages[1:], resolution=300.0)
               return pdf_path
 
@@ -2327,8 +2412,7 @@ jobs:
                   },
                   "outputs": {
                       "exactStatePng": layers["paths"]["exact"].as_posix(),
-                      "pairGroupPng": layers["paths"]["group"].as_posix(),
-                      "pairPolarityPng": layers["paths"]["polarity"].as_posix(),
+                      "pairSymbolPng": layers["paths"]["symbol"].as_posix(),
                       "saturationFieldPng": layers["paths"]["saturation"].as_posix(),
                       "repositoryNativeShapePng": repo_shape_path.as_posix(),
                       "colorPdf": pdf_path.as_posix(),
@@ -2337,21 +2421,23 @@ jobs:
                       "decodeVerification": (DECODER_DIR / "IMAGE_TO_CODE_VERIFICATION.json").as_posix(),
                   },
               }
-              write_json(META_DIR / "APP_CODE_REPO_NATIVE_PASCAL_3BIT_PAIR.json", metadata)
+              write_json(META_DIR / "APP_CODE_REPO_NATIVE_PASCAL_3BIT_SYMBOL.json", metadata)
 
               math_notes = [
-                  "# DREAM Repo-Native Pascal 3-Bit Pair Math",
+                  "# DREAM Repo-Native Pascal 3-Bit Symbol Math",
                   "",
                   "## Exact source identity",
                   "",
                   "`3 source bits = 0.375 bytes = 1 Pascal cell`",
                   "",
-                  "`pair group + polarity = exact 3-bit source state`",
+                  "`one pair symbol = one exact 3-bit source state`",
                   "",
-                  "- `A0=000`, `A1=111`",
-                  "- `B0=001`, `B1=100`",
-                  "- `C0=011`, `C1=110`",
-                  "- `D0=010`, `D1=101`",
+                  "- `A=000`, `a=111`",
+                  "- `B=001`, `b=100`",
+                  "- `C=011`, `c=110`",
+                  "- `D=010`, `d=101`",
+                  "",
+                  "Uppercase/lowercase family and case are derived metadata, not the primary state.",
                   "",
                   "## Source ordering",
                   "",
@@ -2380,7 +2466,7 @@ jobs:
                   "The exact PNG embeds the file manifest in a compressed PNG text chunk.",
                   "Pixel cells contain the source bitstream. The manifest contains file boundaries and hashes.",
               ]
-              write_text(DATA_DIR / "PASCAL_3BIT_PAIR_MATH.md", "\n".join(math_notes) + "\n")
+              write_text(DATA_DIR / "PASCAL_3BIT_SYMBOL_MATH.md", "\n".join(math_notes) + "\n")
 
 
           def copy_decoder_image(exact_path: Path) -> None:
@@ -2406,17 +2492,17 @@ jobs:
                   "",
                   "## What this run builds",
                   "",
-                  "- the original exact-state Pascal image",
-                  "- the four pair-group layer",
-                  "- the polarity/member layer",
+                  "- the exact 3-bit Pascal state image",
+                  "- the exact eight-symbol A/a/B/b/C/c/D/d identity layer",
                   "- the Pascal saturation field",
                   "- visible nearest-neighbor tiles",
                   "- the color PDF",
-                  "- a repository-native dependency shape",
+                  "- a repository-native dependency shape colored by dominant exact symbol",
                   "- a decoder that rebuilds the encoded files from the generated exact image",
-                  "- SHA-256 round-trip verification",
+                  "- SHA-256 round-trip and exact-symbol cross-check verification",
                   "- image analysis, code-health reports, and UI/runtime synapse maps",
                   "",
+                  "Pair family and uppercase/lowercase case remain available only as derived analysis metadata.",
                   "The workflow records analysis and project-check failures instead of stopping artifact creation.",
               ]
               write_text(OUT_DIR / "README.md", "\n".join(lines) + "\n")
@@ -2472,8 +2558,7 @@ jobs:
               )
               decode_result = run_decoder_in_process(
                   layers["paths"]["exact"],
-                  layers["paths"]["group"],
-                  layers["paths"]["polarity"],
+                  layers["paths"]["symbol"],
               )
               copy_decoder_image(layers["paths"]["exact"])
 
@@ -2720,11 +2805,10 @@ jobs:
 
             for file in \
               "$OUT/Rendering/APP_CODE_PASCAL_3BIT_EXACT.png" \
-              "$OUT/Rendering/APP_CODE_PASCAL_PAIR_GROUP.png" \
-              "$OUT/Rendering/APP_CODE_PASCAL_PAIR_POLARITY.png" \
+              "$OUT/Rendering/APP_CODE_PASCAL_PAIR_SYMBOL.png" \
               "$OUT/Rendering/APP_CODE_PASCAL_SATURATION_FIELD.png" \
               "$OUT/Rendering/REPO_NATIVE_RUNTIME_SHAPE.png" \
-              "$OUT/Rendering/APP_CODE_PASCAL_3BIT_PAIR_SATURATION_PRINT.pdf" \
+              "$OUT/Rendering/APP_CODE_PASCAL_3BIT_SYMBOL_SATURATION_PRINT.pdf" \
               "$OUT/Decoder/decode_from_image.py" \
               "$OUT/Decoder/IMAGE_TO_CODE_VERIFICATION.json" \
               "$OUT/Analysis/IMAGE_ANALYSIS.md" \
@@ -2768,7 +2852,7 @@ jobs:
           (
             cd "$OUT" || exit 1
             zip -q -r "../$ART/dream-application-decoder.zip" \
-              Decoder Data/FILE_MANIFEST.json Metadata/APP_CODE_REPO_NATIVE_PASCAL_3BIT_PAIR.json \
+              Decoder Data/FILE_MANIFEST.json Metadata/APP_CODE_REPO_NATIVE_PASCAL_3BIT_SYMBOL.json \
               README.md ATLAS_SUMMARY.json WORKFLOW_REPORT.md
           ) > "$OUT/Diagnostics/DECODER_ZIP_STDOUT.log" \
             2> "$OUT/Diagnostics/DECODER_ZIP_STDERR.log"
