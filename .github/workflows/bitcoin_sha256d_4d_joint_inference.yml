@@ -1,13 +1,3 @@
-# Bitcoin SHA-256d 4D tesseract reconstruction using Jose's stated model.
-#
-# Challenge handling in this revision:
-# - Convergence: optional connected single-hidden-bit fallback; reachability is only
-#   claimed when every hidden bit is available and the frontier has not been pruned.
-# - Observation noise: strict, finite, or automatically relaxed behavior is audited.
-# - Computational cost: explicit runtime/state/frontier/stagnation budgets produce an
-#   incomplete checkpoint and evidence package, never a recovered-header claim.
-# - Failure semantics: artifacts upload first; a final gate then fails incomplete runs.
-
 name: Bitcoin SHA-256d 4D Joint Inference
 
 on:
