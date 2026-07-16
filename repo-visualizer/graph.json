@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16T01:09:09.596Z",
+  "generatedAt": "2026-07-16T02:42:46.553Z",
   "root": ".",
   "nodes": [
     {
@@ -2736,16 +2736,6 @@
       "label": "basecode.yml",
       "type": "config",
       "path": ".github/workflows/basecode.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/bitcoin-sha256d-4d-full-model.yml",
-      "label": "bitcoin-sha256d-4d-full-model.yml",
-      "type": "config",
-      "path": ".github/workflows/bitcoin-sha256d-4d-full-model.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
