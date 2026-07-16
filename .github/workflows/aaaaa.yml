@@ -1,3 +1,4 @@
+```yaml
 # Bitcoin SHA-256d 4D tesseract reconstruction using the stated model
 #
 #   x = H_{m,pi}(y) + xi
@@ -5746,4 +5747,5 @@ jobs:
             bitcoin_sha256d_4d_checkpoint.json
             bitcoin_sha256d_4d_inverse_console.log
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 1
+```
