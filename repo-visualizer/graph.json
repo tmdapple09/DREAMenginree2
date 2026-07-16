@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16T03:07:39.613Z",
+  "generatedAt": "2026-07-16T04:14:41.799Z",
   "root": ".",
   "nodes": [
     {
@@ -2742,10 +2742,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference.yml",
-      "label": "bitcoin_sha256d_4d_joint_inference.yml",
+      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
+      "label": "bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
       "type": "config",
-      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference.yml",
+      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
