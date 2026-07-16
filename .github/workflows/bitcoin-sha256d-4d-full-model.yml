@@ -1,6 +1,4 @@
-# Bitcoin SHA-256d 4D tesseract reconstruction using Jose's stated model
-#
-# This workflow uses the user's model directly:
+# Bitcoin SHA-256d 4D tesseract reconstruction using the stated model
 #
 #   x = H_{m,pi}(y) + xi
 #   H_{m,pi} = D_m o P_pi
@@ -28,11 +26,21 @@
 # Continuous extension:
 #   x = H_{m,pi}(T_{g,phi} y) + xi
 #
-# SHA-256d itself is the mixed 4D object. The solver does not add a fake
-# scramble, does not impose physical Rubik move sequences, does not iterate a
-# nonce interval, and does not call an external SAT/SMT solver. The 4x4x4x4
-# geometry drives deterministic projection updates derived from exact forward
-# and backward SHA-256d compatibility residuals.
+# SHA-256d itself is the mixed 4D object. There is no artificial scramble,
+# physical Rubik move sequence, nonce interval loop, SAT solver, SMT solver,
+# or Z3 dependency.
+#
+# Revision r4 fixes the two failure modes observed in the previous run:
+#
+# 1. Frontier memory is bounded. The beam stores only lightweight scalar
+#    records, never the 192-round traces. Full traces exist only while one
+#    state is being evaluated and are immediately discarded.
+#
+# 2. The target digest is part of the observation energy with a dominant,
+#    explicit weight. The beam is pruned by digest slack, Pareto dominance,
+#    4D residual diversity, and a bounded transposition cache. The reported
+#    best digest Hamming distance is therefore monotone non-increasing even
+#    when an individual exploratory state is temporarily worse.
 
 name: Bitcoin SHA-256d 4D Joint Inference
 
@@ -48,7 +56,7 @@ on:
       block_height:
         description: "Bitcoin block height; tip uses the current tip"
         required: false
-        default: "953568"
+        default: "tip"
         type: string
 
       block_hash:
@@ -120,13 +128,13 @@ on:
         type: boolean
 
       allow_observation_noise:
-        description: "Treat surviving observation disagreement as latent xi"
+        description: "Treat surviving header disagreement as latent xi"
         required: false
         default: false
         type: boolean
 
       posterior_models:
-        description: "Exact completed models requested; 0 means no workflow-side stopping rule"
+        description: "Exact completed models requested; 0 keeps running with bounded memory"
         required: false
         default: "1"
         type: string
@@ -138,7 +146,7 @@ on:
         type: string
 
       lambda_local:
-        description: "Weight lambda on exact forward/backward local compatibility"
+        description: "Weight lambda on normalized forward/backward local compatibility"
         required: false
         default: "1.0"
         type: string
@@ -174,7 +182,7 @@ on:
         type: string
 
       emit_lattice_bits:
-        description: "Export solved bits across the 4D round/lane lattice"
+        description: "Export solved bits across the final 4D round/lane lattice"
         required: false
         default: true
         type: boolean
@@ -189,6 +197,84 @@ on:
         description: "Esplora-compatible Bitcoin API base"
         required: false
         default: "https://blockstream.info/api"
+        type: string
+
+      digest_hamming_weight:
+        description: "Observation-energy weight for each wrong digest bit"
+        required: false
+        default: "256.0"
+        type: string
+
+      digest_prefix_weight:
+        description: "Observation-energy weight for each unmatched leading digest bit"
+        required: false
+        default: "4.0"
+        type: string
+
+      beam_width:
+        description: "Maximum lightweight states retained after each pruning cycle"
+        required: false
+        default: "2048"
+        type: string
+
+      expansion_batch:
+        description: "Best beam states expanded per cycle"
+        required: false
+        default: "4"
+        type: string
+
+      children_per_state:
+        description: "Best non-dominated children retained from each expanded state"
+        required: false
+        default: "48"
+        type: string
+
+      bit_probe_budget:
+        description: "Pullback-disagreement bits tested per expanded state"
+        required: false
+        default: "128"
+        type: string
+
+      pair_probe_budget:
+        description: "Best single-bit corrections paired per expanded state"
+        required: false
+        default: "24"
+        type: string
+
+      digest_slack:
+        description: "Temporary digest-Hamming increase allowed above the global best"
+        required: false
+        default: "6"
+        type: string
+
+      max_digest_slack:
+        description: "Maximum adaptive digest slack during stagnation"
+        required: false
+        default: "18"
+        type: string
+
+      stagnation_window:
+        description: "Cycles without digest improvement before increasing digest slack"
+        required: false
+        default: "20"
+        type: string
+
+      diversity_per_bucket:
+        description: "Maximum states retained per digest/prefix/residual basin"
+        required: false
+        default: "16"
+        type: string
+
+      dedup_capacity:
+        description: "Bounded 64-bit transposition fingerprints retained"
+        required: false
+        default: "250000"
+        type: string
+
+      checkpoint_interval:
+        description: "Cycles between full status/checkpoint writes"
+        required: false
+        default: "5"
         type: string
 
 permissions:
@@ -227,7 +313,20 @@ jobs:
       EMIT_LATTICE_BITS: ${{ inputs.emit_lattice_bits }}
       DETERMINISTIC_SEED: ${{ inputs.z3_random_seed }}
       API_BASE: ${{ inputs.api_base }}
-      MODEL_REVISION: "2026-07-15-user-model-direct-r1"
+      DIGEST_HAMMING_WEIGHT: ${{ inputs.digest_hamming_weight }}
+      DIGEST_PREFIX_WEIGHT: ${{ inputs.digest_prefix_weight }}
+      BEAM_WIDTH: ${{ inputs.beam_width }}
+      EXPANSION_BATCH: ${{ inputs.expansion_batch }}
+      CHILDREN_PER_STATE: ${{ inputs.children_per_state }}
+      BIT_PROBE_BUDGET: ${{ inputs.bit_probe_budget }}
+      PAIR_PROBE_BUDGET: ${{ inputs.pair_probe_budget }}
+      DIGEST_SLACK: ${{ inputs.digest_slack }}
+      MAX_DIGEST_SLACK: ${{ inputs.max_digest_slack }}
+      STAGNATION_WINDOW: ${{ inputs.stagnation_window }}
+      DIVERSITY_PER_BUCKET: ${{ inputs.diversity_per_bucket }}
+      DEDUP_CAPACITY: ${{ inputs.dedup_capacity }}
+      CHECKPOINT_INTERVAL: ${{ inputs.checkpoint_interval }}
+      MODEL_REVISION: "2026-07-15-user-model-direct-r4-bounded-beam"
       PYTHONUNBUFFERED: "1"
 
     steps:
@@ -239,31 +338,30 @@ jobs:
       - name: Install numerical projection dependency
         shell: bash
         run: |
-          set +e
+          set -e
           python -m pip install --disable-pip-version-check numpy
-          exit 0
 
-      - name: Run the direct 4D tesseract reconstruction
+      - name: Run bounded 4D target-directed reconstruction
         shell: bash
         continue-on-error: true
         run: |
-          set +e
+          set -o pipefail
 
           python - <<'PY' 2>&1 | tee bitcoin_sha256d_4d_inverse_console.log
           from __future__ import annotations
 
           import csv
           import hashlib
-          import heapq
           import json
           import math
           import os
-          import statistics
+          import signal
           import sys
           import time
           import traceback
           import urllib.request
 
+          from collections import OrderedDict, defaultdict
           from dataclasses import dataclass
           from itertools import combinations, product
           from pathlib import Path
@@ -275,6 +373,9 @@ jobs:
           MASK32 = 0xFFFFFFFF
           MASK40 = (1 << 40) - 1
 
+          STATE_EDGE_COUNT = 3 * 65
+          SCHEDULE_EDGE_COUNT = 3 * 64
+
 
           API_BASE = os.environ.get(
               "API_BASE",
@@ -283,7 +384,7 @@ jobs:
 
           BLOCK_HEIGHT_RAW = os.environ.get(
               "BLOCK_HEIGHT",
-              "953568",
+              "tip",
           ).strip()
 
           BLOCK_HASH_RAW = os.environ.get(
@@ -310,7 +411,10 @@ jobs:
               value.strip()
               for value in os.environ.get(
                   "HIDDEN_FIELDS",
-                  "version,previous_hash,merkle_root,timestamp,bits,nonce",
+                  (
+                      "version,previous_hash,merkle_root,"
+                      "timestamp,bits,nonce"
+                  ),
               ).split(",")
               if value.strip()
           ]
@@ -326,15 +430,18 @@ jobs:
           ).strip()
 
           INFER_MASK = (
-              os.environ.get("INFER_MASK", "false").lower() == "true"
+              os.environ.get("INFER_MASK", "false").lower()
+              == "true"
           )
 
           INFER_PERMUTATION = (
-              os.environ.get("INFER_PERMUTATION", "false").lower() == "true"
+              os.environ.get("INFER_PERMUTATION", "false").lower()
+              == "true"
           )
 
           INFER_ORIENTATION = (
-              os.environ.get("INFER_ORIENTATION", "false").lower() == "true"
+              os.environ.get("INFER_ORIENTATION", "false").lower()
+              == "true"
           )
 
           ALLOW_OBSERVATION_NOISE = (
@@ -374,7 +481,10 @@ jobs:
           )
 
           PROJECTION_NOISE_SIGMA = float(
-              os.environ.get("PROJECTION_NOISE_SIGMA", "0.0")
+              os.environ.get(
+                  "PROJECTION_NOISE_SIGMA",
+                  "0.0",
+              )
           )
 
           EMIT_LATTICE_BITS = (
@@ -389,9 +499,91 @@ jobs:
               os.environ.get("DETERMINISTIC_SEED", "0")
           )
 
+          DIGEST_HAMMING_WEIGHT = float(
+              os.environ.get(
+                  "DIGEST_HAMMING_WEIGHT",
+                  "256.0",
+              )
+          )
+
+          DIGEST_PREFIX_WEIGHT = float(
+              os.environ.get(
+                  "DIGEST_PREFIX_WEIGHT",
+                  "4.0",
+              )
+          )
+
+          BEAM_WIDTH = int(
+              os.environ.get("BEAM_WIDTH", "2048")
+          )
+
+          EXPANSION_BATCH = int(
+              os.environ.get("EXPANSION_BATCH", "4")
+          )
+
+          CHILDREN_PER_STATE = int(
+              os.environ.get(
+                  "CHILDREN_PER_STATE",
+                  "48",
+              )
+          )
+
+          BIT_PROBE_BUDGET = int(
+              os.environ.get(
+                  "BIT_PROBE_BUDGET",
+                  "128",
+              )
+          )
+
+          PAIR_PROBE_BUDGET = int(
+              os.environ.get(
+                  "PAIR_PROBE_BUDGET",
+                  "24",
+              )
+          )
+
+          DIGEST_SLACK = int(
+              os.environ.get("DIGEST_SLACK", "6")
+          )
+
+          MAX_DIGEST_SLACK = int(
+              os.environ.get(
+                  "MAX_DIGEST_SLACK",
+                  "18",
+              )
+          )
+
+          STAGNATION_WINDOW = int(
+              os.environ.get(
+                  "STAGNATION_WINDOW",
+                  "20",
+              )
+          )
+
+          DIVERSITY_PER_BUCKET = int(
+              os.environ.get(
+                  "DIVERSITY_PER_BUCKET",
+                  "16",
+              )
+          )
+
+          DEDUP_CAPACITY = int(
+              os.environ.get(
+                  "DEDUP_CAPACITY",
+                  "250000",
+              )
+          )
+
+          CHECKPOINT_INTERVAL = int(
+              os.environ.get(
+                  "CHECKPOINT_INTERVAL",
+                  "5",
+              )
+          )
+
           MODEL_REVISION = os.environ.get(
               "MODEL_REVISION",
-              "2026-07-15-user-model-direct-r1",
+              "2026-07-15-user-model-direct-r4-bounded-beam",
           )
 
 
@@ -400,14 +592,31 @@ jobs:
                   "POSTERIOR_MODELS must be zero or positive"
               )
 
-          if SIGMA <= 0:
+          if SIGMA <= 0 or N_EXPONENT <= 0:
               raise ValueError(
-                  "SIGMA must be positive"
+                  "SIGMA and N_EXPONENT must be positive"
               )
 
-          if N_EXPONENT <= 0:
+          for name, value in {
+              "BEAM_WIDTH": BEAM_WIDTH,
+              "EXPANSION_BATCH": EXPANSION_BATCH,
+              "CHILDREN_PER_STATE": CHILDREN_PER_STATE,
+              "BIT_PROBE_BUDGET": BIT_PROBE_BUDGET,
+              "DIVERSITY_PER_BUCKET": DIVERSITY_PER_BUCKET,
+              "DEDUP_CAPACITY": DEDUP_CAPACITY,
+              "CHECKPOINT_INTERVAL": CHECKPOINT_INTERVAL,
+          }.items():
+              if value <= 0:
+                  raise ValueError(
+                      f"{name} must be positive"
+                  )
+
+          if (
+              DIGEST_SLACK < 0
+              or MAX_DIGEST_SLACK < DIGEST_SLACK
+          ):
               raise ValueError(
-                  "N_EXPONENT must be positive"
+                  "digest slack values are inconsistent"
               )
 
 
@@ -534,11 +743,6 @@ jobs:
               product((1, 2), repeat=4)
           )
 
-          COORD_TO_CHUNK = {
-              coord: index
-              for index, coord in enumerate(INTERIOR_COORDS)
-          }
-
 
           def emit(text: str = "") -> None:
               print(text, flush=True)
@@ -549,8 +753,10 @@ jobs:
               sentinels: set[str],
           ) -> str:
               cleaned = value.strip()
+
               if cleaned.lower() in sentinels:
                   return ""
+
               return cleaned
 
 
@@ -610,7 +816,7 @@ jobs:
                   f"{API_BASE}/{path.lstrip('/')}",
                   headers={
                       "User-Agent":
-                      "bitcoin-sha256d-4d-direct-model/1.0"
+                      "bitcoin-sha256d-4d-direct-model/4.0"
                   },
               )
 
@@ -624,7 +830,9 @@ jobs:
 
 
           def http_json(path: str) -> dict:
-              return json.loads(http_text(path))
+              return json.loads(
+                  http_text(path)
+              )
 
 
           def rotr(x: int, n: int) -> int:
@@ -734,7 +942,9 @@ jobs:
                       "must be 64 bytes"
                   )
 
-              schedule = words_from_bytes(block64)
+              schedule = words_from_bytes(
+                  block64
+              )
 
               for t in range(16, 64):
                   schedule.append(
@@ -760,8 +970,6 @@ jobs:
               round_index: int
               w: int
               state_in: Tuple[int, ...]
-              t1: int
-              t2: int
               state_out: Tuple[int, ...]
 
 
@@ -792,7 +1000,9 @@ jobs:
 
               state_edge_hamming: int
               schedule_edge_hamming: int
+              E_local: float
               pullback_header: bytes
+              residual_signature: int
 
 
           @dataclass(frozen=True)
@@ -823,6 +1033,8 @@ jobs:
               compatibility: BackwardCompatibility
               projection: ProjectionState
               digest_hamming: int
+              digest_prefix_match: int
+              E_digest: float
               E_observation: float
               E_local: float
               E_global: float
@@ -832,12 +1044,31 @@ jobs:
               exact_hash_match: bool
 
 
+          @dataclass(frozen=True)
+          class LightRecord:
+              header: bytes
+              displayed_hash: str
+              digest_hamming: int
+              digest_prefix_match: int
+              E_digest: float
+              E_observation: float
+              E_local: float
+              E_global: float
+              C_missing: int
+              total_energy: float
+              residual_signature: int
+              source: str
+              serial: int
+
+
           def compress(
               initial: Sequence[int],
               block64: bytes,
               phase: int,
           ) -> CompressionTrace:
-              schedule = expand_schedule(block64)
+              schedule = expand_schedule(
+                  block64
+              )
 
               a, b, c, d, e, f, g, h = [
                   value & MASK32
@@ -888,8 +1119,6 @@ jobs:
                           t,
                           schedule[t],
                           state_in,
-                          t1,
-                          t2,
                           state_out,
                       )
                   )
@@ -1062,6 +1291,32 @@ jobs:
               )
 
 
+          def matching_prefix_bits(
+              left: bytes,
+              right: bytes,
+          ) -> int:
+              matched = 0
+
+              for a, b in zip(
+                  left,
+                  right,
+              ):
+                  difference = a ^ b
+
+                  if difference == 0:
+                      matched += 8
+                      continue
+
+                  matched += (
+                      8
+                      - difference.bit_length()
+                  )
+
+                  break
+
+              return matched
+
+
           def inverse_round(
               state_out: Sequence[int],
               w: int,
@@ -1146,7 +1401,9 @@ jobs:
 
               states[64] = working_end
 
-              for t in reversed(range(64)):
+              for t in reversed(
+                  range(64)
+              ):
                   states[t] = inverse_round(
                       states[t + 1],
                       trace.schedule[t],
@@ -1202,7 +1459,69 @@ jobs:
               ) & MASK32
 
 
+          def chunks40(
+              header: bytes,
+          ) -> List[int]:
+              return [
+                  int.from_bytes(
+                      header[
+                          index * 5:
+                          (index + 1) * 5
+                      ],
+                      "big",
+                  )
+                  for index in range(16)
+              ]
+
+
+          def header_from_chunks40(
+              chunks: Sequence[int],
+          ) -> bytes:
+              return b"".join(
+                  (
+                      value & MASK40
+                  ).to_bytes(
+                      5,
+                      "big",
+                  )
+                  for value in chunks
+              )
+
+
+          def residual_signature(
+              current: bytes,
+              pullback: bytes,
+          ) -> int:
+              counts = bytes(
+                  min(
+                      255,
+                      (
+                          current_chunk
+                          ^ pullback_chunk
+                      ).bit_count(),
+                  )
+                  for (
+                      current_chunk,
+                      pullback_chunk,
+                  ) in zip(
+                      chunks40(current),
+                      chunks40(pullback),
+                  )
+              )
+
+              digest = hashlib.blake2b(
+                  counts,
+                  digest_size=8,
+              ).digest()
+
+              return int.from_bytes(
+                  digest,
+                  "big",
+              )
+
+
           def derive_backward_compatibility(
+              header: bytes,
               traces: Tuple[
                   CompressionTrace,
                   CompressionTrace,
@@ -1278,8 +1597,10 @@ jobs:
                   required2,
               )
 
-              state_edge_hamming = 0
-              schedule_edge_hamming = 0
+              state_hamming = 0
+              schedule_hamming = 0
+              state_distance = 0.0
+              schedule_distance = 0.0
 
               for (
                   trace,
@@ -1297,33 +1618,47 @@ jobs:
                       for row in trace.rounds
                   ]
 
-                  state_edge_hamming += sum(
-                      hamming_state(
-                          forward_state,
-                          backward_state,
+                  for (
+                      forward_state,
+                      backward_state,
+                  ) in zip(
+                      forward_boundaries,
+                      backward,
+                  ):
+                      disagreement = (
+                          hamming_state(
+                              forward_state,
+                              backward_state,
+                          )
                       )
-                      for (
-                          forward_state,
-                          backward_state,
-                      ) in zip(
-                          forward_boundaries,
-                          backward,
-                      )
-                  )
 
-                  schedule_edge_hamming += sum(
-                      hamming_word(
-                          actual,
-                          wanted,
+                      state_hamming += disagreement
+
+                      state_distance += (
+                          disagreement / 256.0
                       )
-                      for (
-                          actual,
-                          wanted,
-                      ) in zip(
-                          trace.schedule,
-                          required,
+
+                  for (
+                      actual,
+                      wanted,
+                  ) in zip(
+                      trace.schedule,
+                      required,
+                  ):
+                      disagreement = (
+                          hamming_word(
+                              actual,
+                              wanted,
+                          )
                       )
-                  )
+
+                      schedule_hamming += (
+                          disagreement
+                      )
+
+                      schedule_distance += (
+                          disagreement / 32.0
+                      )
 
               pullback_header = (
                   words_to_bytes(
@@ -1337,15 +1672,25 @@ jobs:
               return BackwardCompatibility(
                   required_all,
                   backward_all,
-                  state_edge_hamming,
-                  schedule_edge_hamming,
+                  state_hamming,
+                  schedule_hamming,
+                  (
+                      state_distance
+                      + schedule_distance
+                  ),
                   pullback_header,
+                  residual_signature(
+                      header,
+                      pullback_header,
+                  ),
               )
 
 
           def parse_hidden_bits() -> set[int]:
               if RECOVERY_SCOPE == "full_header":
-                  return set(range(640))
+                  return set(
+                      range(640)
+                  )
 
               hidden: set[int] = set()
 
@@ -1460,7 +1805,9 @@ jobs:
               observation: bytes,
               hidden: set[int],
           ) -> bytes:
-              result = bytearray(candidate)
+              result = bytearray(
+                  candidate
+              )
 
               for bit in range(640):
                   if bit not in hidden:
@@ -1473,35 +1820,8 @@ jobs:
                           ),
                       )
 
-              return bytes(result)
-
-
-          def chunks40(
-              header: bytes,
-          ) -> List[int]:
-              return [
-                  int.from_bytes(
-                      header[
-                          index * 5:
-                          (index + 1) * 5
-                      ],
-                      "big",
-                  )
-                  for index in range(16)
-              ]
-
-
-          def header_from_chunks40(
-              chunks: Sequence[int],
-          ) -> bytes:
-              return b"".join(
-                  (
-                      value & MASK40
-                  ).to_bytes(
-                      5,
-                      "big",
-                  )
-                  for value in chunks
+              return bytes(
+                  result
               )
 
 
@@ -1549,7 +1869,9 @@ jobs:
               permutation: Sequence[int],
               orientations: Sequence[int],
           ) -> bytes:
-              canonical = chunks40(header)
+              canonical = chunks40(
+                  header
+              )
 
               projected = [
                   rotate40(
@@ -1599,8 +1921,7 @@ jobs:
                       ) & 1
 
                       cost += int(
-                          actual
-                          != expected
+                          actual != expected
                       )
 
               return cost
@@ -1691,10 +2012,7 @@ jobs:
                               for orientation in choices:
                                   new_key = (
                                       used
-                                      | (
-                                          1
-                                          << source
-                                      ),
+                                      | (1 << source),
                                       (
                                           residue
                                           + orientation
@@ -1955,10 +2273,10 @@ jobs:
                           - timestamp_value
                       )
 
-                      if distance <= 7200:
-                          energy += 0
-                      else:
-                          energy += min(
+                      energy += (
+                          0
+                          if distance <= 7200
+                          else min(
                               32,
                               1
                               + int(
@@ -1968,8 +2286,11 @@ jobs:
                                   )
                               ),
                           )
+                      )
 
-              return float(energy)
+              return float(
+                  energy
+              )
 
 
           def f_transform(
@@ -2001,6 +2322,7 @@ jobs:
               observation: bytes,
               initial_mask: Sequence[int],
               metadata: dict,
+              target_pressure: float,
           ) -> Evaluation:
               digest_raw, traces = (
                   sha256d_trace(
@@ -2010,6 +2332,7 @@ jobs:
 
               compatibility = (
                   derive_backward_compatibility(
+                      header,
                       traces,
                       target_raw,
                   )
@@ -2029,42 +2352,69 @@ jobs:
                       "constraints were violated"
                   )
 
-              digest_hamming = hamming_bytes(
-                  digest_raw,
-                  target_raw,
+              digest_hamming = (
+                  hamming_bytes(
+                      digest_raw,
+                      target_raw,
+                  )
               )
 
-              E_observation = (
-                  projection.observation_hamming
-                  / (
-                      2.0
-                      * SIGMA
-                      * SIGMA
+              digest_prefix_match = (
+                  matching_prefix_bits(
+                      digest_raw,
+                      target_raw,
                   )
+              )
+
+              E_digest = (
+                  target_pressure
+                  * (
+                      DIGEST_HAMMING_WEIGHT
+                      * digest_hamming
+                      + DIGEST_PREFIX_WEIGHT
+                      * (
+                          256
+                          - digest_prefix_match
+                      )
+                  )
+              )
+
+              E_header_observation = (
+                  projection.observation_hamming
               )
 
               if (
                   not ALLOW_OBSERVATION_NOISE
                   and projection.observation_hamming
               ):
-                  E_observation = float(
-                      "inf"
+                  E_header_observation = (
+                      float("inf")
                   )
 
-              E_local = float(
-                  compatibility.state_edge_hamming
-                  + compatibility.schedule_edge_hamming
-                  + digest_hamming
+              E_observation = (
+                  E_digest
+                  + E_header_observation
+              ) / (
+                  2.0
+                  * SIGMA
+                  * SIGMA
               )
 
-              E_global = bitcoin_global_energy(
-                  header,
-                  metadata,
+              E_local = (
+                  compatibility.E_local
+              )
+
+              E_global = (
+                  bitcoin_global_energy(
+                      header,
+                      metadata,
+                  )
               )
 
               C_missing = sum(
                   1 - value
-                  for value in projection.mask
+                  for value
+                  in projection.mask
               )
 
               total_energy = (
@@ -2105,6 +2455,8 @@ jobs:
                   compatibility,
                   projection,
                   digest_hamming,
+                  digest_prefix_match,
+                  E_digest,
                   E_observation,
                   E_local,
                   E_global,
@@ -2115,152 +2467,188 @@ jobs:
               )
 
 
-          def residual_chunks(
+          def to_light(
+              evaluation: Evaluation,
+              source: str,
+              serial: int,
+          ) -> LightRecord:
+              return LightRecord(
+                  evaluation.header,
+                  evaluation.displayed_hash,
+                  evaluation.digest_hamming,
+                  evaluation.digest_prefix_match,
+                  evaluation.E_digest,
+                  evaluation.E_observation,
+                  evaluation.E_local,
+                  evaluation.E_global,
+                  evaluation.C_missing,
+                  evaluation.total_energy,
+                  evaluation.compatibility.residual_signature,
+                  source,
+                  serial,
+              )
+
+
+          def priority(
+              record: LightRecord,
+          ) -> Tuple[
+              float,
+              int,
+              int,
+              float,
+              int,
+          ]:
+              return (
+                  record.total_energy,
+                  record.digest_hamming,
+                  -record.digest_prefix_match,
+                  record.E_local,
+                  record.serial,
+              )
+
+
+          def header_fingerprint(
+              header: bytes,
+          ) -> int:
+              digest = hashlib.blake2b(
+                  header,
+                  digest_size=8,
+              ).digest()
+
+              return int.from_bytes(
+                  digest,
+                  "big",
+              )
+
+
+          class BoundedFingerprints:
+              def __init__(
+                  self,
+                  capacity: int,
+              ):
+                  self.capacity = capacity
+
+                  self.data: OrderedDict[
+                      int,
+                      None,
+                  ] = OrderedDict()
+
+              def add(
+                  self,
+                  fingerprint: int,
+              ) -> bool:
+                  if fingerprint in self.data:
+                      self.data.move_to_end(
+                          fingerprint
+                      )
+
+                      return False
+
+                  self.data[
+                      fingerprint
+                  ] = None
+
+                  if (
+                      len(self.data)
+                      > self.capacity
+                  ):
+                      self.data.popitem(
+                          last=False
+                      )
+
+                  return True
+
+              def __len__(self) -> int:
+                  return len(
+                      self.data
+                  )
+
+
+          def apply_selected_pullback_bits(
               current: bytes,
               pullback: bytes,
-          ) -> List[int]:
-              return [
-                  current_chunk
-                  ^ pullback_chunk
-                  for (
-                      current_chunk,
-                      pullback_chunk,
-                  ) in zip(
-                      chunks40(current),
-                      chunks40(pullback),
-                  )
-              ]
-
-
-          def apply_chunk_residual_section(
-              current: bytes,
-              residual: Sequence[int],
-              selected_chunks: Iterable[int],
+              bits: Iterable[int],
               observation: bytes,
               hidden: set[int],
           ) -> bytes:
-              chunks = chunks40(
+              candidate = bytearray(
                   current
               )
 
-              for chunk_index in selected_chunks:
-                  chunks[chunk_index] ^= (
-                      residual[chunk_index]
-                  )
+              for bit in bits:
+                  if bit in hidden:
+                      put_bit(
+                          candidate,
+                          bit,
+                          get_bit(
+                              pullback,
+                              bit,
+                          ),
+                      )
 
               return clamp_known_bits(
-                  header_from_chunks40(
-                      chunks
-                  ),
+                  bytes(candidate),
                   observation,
                   hidden,
               )
 
 
-          def tesseract_projection_updates(
-              evaluation: Evaluation,
-              observation: bytes,
-              hidden: set[int],
-          ) -> List[
-              Tuple[str, bytes]
-          ]:
-              """
-              Build deterministic 4D projection sections from the exact pullback.
-
-              These are not physical Rubik moves. Each section applies the local
-              forward/backward residual on a geometric subset of the sixteen interior
-              cells: the whole interior, one cell, one 3D axis slice, one 2D face, or
-              one 4D adjacency edge. This is the direct operational use of the 4D
-              tesseract organization in the reconstruction search.
-              """
-
-              pullback = clamp_known_bits(
-                  evaluation.compatibility.pullback_header,
-                  observation,
-                  hidden,
-              )
-
-              residual = residual_chunks(
-                  evaluation.header,
-                  pullback,
-              )
-
-              proposals: Dict[
-                  bytes,
+          def geometry_sections() -> List[
+              Tuple[
                   str,
-              ] = {}
-
-              def add(
-                  name: str,
-                  selected_chunks: Iterable[int],
-              ) -> None:
-                  selected = tuple(
-                      sorted(
-                          set(
-                              selected_chunks
-                          )
-                      )
+                  Tuple[int, ...],
+              ]
+          ]:
+              sections: List[
+                  Tuple[
+                      str,
+                      Tuple[int, ...],
+                  ]
+              ] = [
+                  (
+                      "all_16_interior_cells",
+                      tuple(range(16)),
                   )
-
-                  if not selected:
-                      return
-
-                  candidate = (
-                      apply_chunk_residual_section(
-                          evaluation.header,
-                          residual,
-                          selected,
-                          observation,
-                          hidden,
-                      )
-                  )
-
-                  if candidate != evaluation.header:
-                      proposals.setdefault(
-                          candidate,
-                          name,
-                      )
-
-              add(
-                  "all_16_interior_cells",
-                  range(16),
-              )
+              ]
 
               for (
-                  chunk_index,
+                  index,
                   coord,
               ) in enumerate(
                   INTERIOR_COORDS
               ):
-                  if residual[chunk_index]:
-                      add(
+                  sections.append(
+                      (
                           f"interior_cell_{coord}",
-                          [chunk_index],
+                          (index,),
                       )
+                  )
 
               for axis in range(4):
-                  for coordinate_value in (
+                  for value in (
                       1,
                       2,
                   ):
-                      add(
+                      sections.append(
                           (
-                              f"axis_{axis}_slice_"
-                              f"{coordinate_value}"
-                          ),
-                          [
-                              index
-                              for (
-                                  index,
-                                  coord,
-                              ) in enumerate(
-                                  INTERIOR_COORDS
-                              )
-                              if (
-                                  coord[axis]
-                                  == coordinate_value
-                              )
-                          ],
+                              (
+                                  f"axis_{axis}_"
+                                  f"slice_{value}"
+                              ),
+                              tuple(
+                                  index
+                                  for (
+                                      index,
+                                      coord,
+                                  ) in enumerate(
+                                      INTERIOR_COORDS
+                                  )
+                                  if (
+                                      coord[axis]
+                                      == value
+                                  )
+                              ),
+                          )
                       )
 
               for (
@@ -2278,28 +2666,30 @@ jobs:
                           1,
                           2,
                       ):
-                          add(
+                          sections.append(
                               (
-                                  f"face_axes_"
-                                  f"{axis_a}_{axis_b}_"
-                                  f"values_"
-                                  f"{value_a}_{value_b}"
-                              ),
-                              [
-                                  index
-                                  for (
-                                      index,
-                                      coord,
-                                  ) in enumerate(
-                                      INTERIOR_COORDS
-                                  )
-                                  if (
-                                      coord[axis_a]
-                                      == value_a
-                                      and coord[axis_b]
-                                      == value_b
-                                  )
-                              ],
+                                  (
+                                      f"face_axes_"
+                                      f"{axis_a}_{axis_b}_"
+                                      f"values_"
+                                      f"{value_a}_{value_b}"
+                                  ),
+                                  tuple(
+                                      index
+                                      for (
+                                          index,
+                                          coord,
+                                      ) in enumerate(
+                                          INTERIOR_COORDS
+                                      )
+                                      if (
+                                          coord[axis_a]
+                                          == value_a
+                                          and coord[axis_b]
+                                          == value_b
+                                      )
+                                  ),
+                              )
                           )
 
               for left in range(16):
@@ -2316,22 +2706,41 @@ jobs:
                       )
 
                       if distance == 1:
-                          add(
+                          sections.append(
                               (
-                                  f"adjacency_edge_"
-                                  f"{left}_{right}"
-                              ),
-                              [
-                                  left,
-                                  right,
-                              ],
+                                  (
+                                      f"adjacency_edge_"
+                                      f"{left}_{right}"
+                                  ),
+                                  (
+                                      left,
+                                      right,
+                                  ),
+                              )
                           )
 
-              current_mutable = bytearray(
-                  evaluation.header
+              return sections
+
+
+          GEOMETRY_SECTIONS = (
+              geometry_sections()
+          )
+
+
+          def ordered_pullback_bits(
+              evaluation: Evaluation,
+              hidden: set[int],
+              cycle: int,
+          ) -> List[int]:
+              pullback = (
+                  evaluation
+                  .compatibility
+                  .pullback_header
               )
 
-              for bit in sorted(hidden):
+              disagreement = [
+                  bit
+                  for bit in hidden
                   if (
                       get_bit(
                           evaluation.header,
@@ -2341,71 +2750,163 @@ jobs:
                           pullback,
                           bit,
                       )
-                  ):
-                      candidate = bytearray(
-                          current_mutable
-                      )
+                  )
+              ]
 
-                      put_bit(
-                          candidate,
-                          bit,
-                          get_bit(
-                              pullback,
-                              bit,
-                          ),
-                      )
+              if not disagreement:
+                  return []
 
-                      candidate_bytes = (
-                          clamp_known_bits(
-                              bytes(candidate),
-                              observation,
-                              hidden,
-                          )
-                      )
+              chunk_weight = [
+                  (
+                      current_chunk
+                      ^ pullback_chunk
+                  ).bit_count()
+                  for (
+                      current_chunk,
+                      pullback_chunk,
+                  ) in zip(
+                      chunks40(
+                          evaluation.header
+                      ),
+                      chunks40(
+                          pullback
+                      ),
+                  )
+              ]
 
-                      if (
-                          candidate_bytes
-                          != evaluation.header
-                      ):
-                          proposals.setdefault(
-                              candidate_bytes,
-                              f"local_edge_bit_{bit}",
-                          )
+              disagreement.sort(
+                  key=lambda bit: (
+                      -chunk_weight[
+                          bit // 40
+                      ],
+                      (
+                          bit
+                          + DETERMINISTIC_SEED
+                          + cycle * 97
+                      )
+                      % 640,
+                  )
+              )
 
               if (
-                  not proposals
-                  and not evaluation.exact_hash_match
+                  len(disagreement)
+                  <= BIT_PROBE_BUDGET
               ):
-                  for bit in sorted(hidden):
-                      candidate = bytearray(
-                          evaluation.header
-                      )
+                  return disagreement
 
-                      put_bit(
+              offset = (
+                  cycle
+                  * BIT_PROBE_BUDGET
+              ) % len(disagreement)
+
+              rotated = (
+                  disagreement[offset:]
+                  + disagreement[:offset]
+              )
+
+              return rotated[
+                  :BIT_PROBE_BUDGET
+              ]
+
+
+          def candidate_headers(
+              evaluation: Evaluation,
+              observation: bytes,
+              hidden: set[int],
+              cycle: int,
+          ) -> List[
+              Tuple[
+                  str,
+                  bytes,
+              ]
+          ]:
+              pullback = clamp_known_bits(
+                  evaluation.compatibility.pullback_header,
+                  observation,
+                  hidden,
+              )
+
+              current_chunks = chunks40(
+                  evaluation.header
+              )
+
+              pullback_chunks = chunks40(
+                  pullback
+              )
+
+              proposals: Dict[
+                  bytes,
+                  str,
+              ] = {}
+
+              def add(
+                  name: str,
+                  candidate: bytes,
+              ) -> None:
+                  if candidate != evaluation.header:
+                      proposals.setdefault(
                           candidate,
-                          bit,
-                          1
-                          - get_bit(
-                              candidate,
-                              bit,
-                          ),
+                          name,
                       )
 
-                      candidate_bytes = (
+              for (
+                  name,
+                  selected_chunks,
+              ) in GEOMETRY_SECTIONS:
+                  candidate_chunks = list(
+                      current_chunks
+                  )
+
+                  changed = False
+
+                  for chunk_index in selected_chunks:
+                      if (
+                          candidate_chunks[
+                              chunk_index
+                          ]
+                          != pullback_chunks[
+                              chunk_index
+                          ]
+                      ):
+                          candidate_chunks[
+                              chunk_index
+                          ] = pullback_chunks[
+                              chunk_index
+                          ]
+
+                          changed = True
+
+                  if changed:
+                      add(
+                          name,
                           clamp_known_bits(
-                              bytes(candidate),
+                              header_from_chunks40(
+                                  candidate_chunks
+                              ),
                               observation,
                               hidden,
-                          )
-                      )
-
-                      proposals.setdefault(
-                          candidate_bytes,
-                          (
-                              f"stationary_"
-                              f"sensitivity_bit_{bit}"
                           ),
                       )
+
+              probe_bits = (
+                  ordered_pullback_bits(
+                      evaluation,
+                      hidden,
+                      cycle,
+                  )
+              )
+
+              for bit in probe_bits:
+                  add(
+                      f"local_edge_bit_{bit}",
+                      apply_selected_pullback_bits(
+                          evaluation.header,
+                          pullback,
+                          (bit,),
+                          observation,
+                          hidden,
+                      ),
+                  )
 
               return [
                   (
@@ -2417,6 +2918,370 @@ jobs:
                       name,
                   ) in proposals.items()
               ]
+
+
+          def evaluate_children(
+              parent: Evaluation,
+              target_raw: bytes,
+              target_display: str,
+              observation: bytes,
+              hidden: set[int],
+              initial_mask: Sequence[int],
+              metadata: dict,
+              target_pressure: float,
+              cycle: int,
+              serial_start: int,
+          ) -> Tuple[
+              List[LightRecord],
+              int,
+          ]:
+              records: List[
+                  LightRecord
+              ] = []
+
+              serial = serial_start
+
+              for (
+                  source,
+                  candidate_header,
+              ) in candidate_headers(
+                  parent,
+                  observation,
+                  hidden,
+                  cycle,
+              ):
+                  serial += 1
+
+                  child = evaluate(
+                      candidate_header,
+                      target_raw,
+                      target_display,
+                      observation,
+                      initial_mask,
+                      metadata,
+                      target_pressure,
+                  )
+
+                  records.append(
+                      to_light(
+                          child,
+                          source,
+                          serial,
+                      )
+                  )
+
+              records.sort(
+                  key=priority
+              )
+
+              single_records = records[
+                  :max(
+                      CHILDREN_PER_STATE,
+                      PAIR_PROBE_BUDGET,
+                  )
+              ]
+
+              pair_sources = [
+                  record
+                  for record in single_records
+                  if record.source.startswith(
+                      "local_edge_bit_"
+                  )
+              ][
+                  :PAIR_PROBE_BUDGET
+              ]
+
+              parent_pullback = (
+                  clamp_known_bits(
+                      parent.compatibility.pullback_header,
+                      observation,
+                      hidden,
+                  )
+              )
+
+              pair_seen: set[
+                  bytes
+              ] = set()
+
+              for (
+                  left,
+                  right,
+              ) in combinations(
+                  pair_sources,
+                  2,
+              ):
+                  left_bit = int(
+                      left.source.rsplit(
+                          "_",
+                          1,
+                      )[1]
+                  )
+
+                  right_bit = int(
+                      right.source.rsplit(
+                          "_",
+                          1,
+                      )[1]
+                  )
+
+                  candidate_header = (
+                      apply_selected_pullback_bits(
+                          parent.header,
+                          parent_pullback,
+                          (
+                              left_bit,
+                              right_bit,
+                          ),
+                          observation,
+                          hidden,
+                      )
+                  )
+
+                  if (
+                      candidate_header
+                      in pair_seen
+                      or candidate_header
+                      == parent.header
+                  ):
+                      continue
+
+                  pair_seen.add(
+                      candidate_header
+                  )
+
+                  serial += 1
+
+                  child = evaluate(
+                      candidate_header,
+                      target_raw,
+                      target_display,
+                      observation,
+                      initial_mask,
+                      metadata,
+                      target_pressure,
+                  )
+
+                  records.append(
+                      to_light(
+                          child,
+                          (
+                              "paired_local_edges_"
+                              f"{left_bit}_{right_bit}"
+                          ),
+                          serial,
+                      )
+                  )
+
+                  if (
+                      len(pair_seen)
+                      >= PAIR_PROBE_BUDGET
+                  ):
+                      break
+
+              records.sort(
+                  key=priority
+              )
+
+              return (
+                  pareto_prune(
+                      records,
+                      CHILDREN_PER_STATE,
+                  ),
+                  serial,
+              )
+
+
+          def dominates(
+              left: LightRecord,
+              right: LightRecord,
+          ) -> bool:
+              no_worse = (
+                  left.digest_hamming
+                  <= right.digest_hamming
+                  and left.digest_prefix_match
+                  >= right.digest_prefix_match
+                  and left.E_local
+                  <= right.E_local
+                  and left.E_global
+                  <= right.E_global
+                  and left.total_energy
+                  <= right.total_energy
+              )
+
+              strictly_better = (
+                  left.digest_hamming
+                  < right.digest_hamming
+                  or left.digest_prefix_match
+                  > right.digest_prefix_match
+                  or left.E_local
+                  < right.E_local
+                  or left.E_global
+                  < right.E_global
+                  or left.total_energy
+                  < right.total_energy
+              )
+
+              return (
+                  no_worse
+                  and strictly_better
+              )
+
+
+          def pareto_prune(
+              records: Sequence[LightRecord],
+              limit: int,
+          ) -> List[LightRecord]:
+              retained: List[
+                  LightRecord
+              ] = []
+
+              for record in sorted(
+                  records,
+                  key=priority,
+              ):
+                  if any(
+                      dominates(
+                          existing,
+                          record,
+                      )
+                      for existing
+                      in retained
+                  ):
+                      continue
+
+                  retained = [
+                      existing
+                      for existing in retained
+                      if not dominates(
+                          record,
+                          existing,
+                      )
+                  ]
+
+                  retained.append(
+                      record
+                  )
+
+                  if (
+                      len(retained)
+                      >= max(
+                          limit * 2,
+                          limit + 8,
+                      )
+                  ):
+                      retained.sort(
+                          key=priority
+                      )
+
+                      retained = retained[
+                          :limit
+                      ]
+
+              retained.sort(
+                  key=priority
+              )
+
+              return retained[
+                  :limit
+              ]
+
+
+          def adaptive_slack(
+              stagnation_cycles: int,
+          ) -> int:
+              if STAGNATION_WINDOW <= 0:
+                  return DIGEST_SLACK
+
+              increments = (
+                  stagnation_cycles
+                  // STAGNATION_WINDOW
+              )
+
+              return min(
+                  MAX_DIGEST_SLACK,
+                  DIGEST_SLACK
+                  + increments,
+              )
+
+
+          def target_pressure(
+              stagnation_cycles: int,
+          ) -> float:
+              # Digest weights are already dominant.
+              #
+              # Keep one fixed objective across every cycle so records
+              # inserted during earlier cycles remain directly comparable
+              # to records inserted later. Stagnation changes digest slack,
+              # not the objective itself.
+              return 1.0
+
+
+          def frontier_prune(
+              candidates: Sequence[LightRecord],
+              best_digest: int,
+              slack: int,
+          ) -> List[LightRecord]:
+              eligible = [
+                  record
+                  for record in candidates
+                  if (
+                      record.digest_hamming
+                      <= best_digest + slack
+                  )
+              ]
+
+              eligible.sort(
+                  key=priority
+              )
+
+              bucket_counts: Dict[
+                  Tuple[
+                      int,
+                      int,
+                      int,
+                  ],
+                  int,
+              ] = defaultdict(int)
+
+              diverse: List[
+                  LightRecord
+              ] = []
+
+              for record in eligible:
+                  bucket = (
+                      record.digest_hamming,
+                      (
+                          record.digest_prefix_match
+                          // 8
+                      ),
+                      (
+                          record.residual_signature
+                          & 0xFFFF
+                      ),
+                  )
+
+                  if (
+                      bucket_counts[bucket]
+                      >= DIVERSITY_PER_BUCKET
+                  ):
+                      continue
+
+                  bucket_counts[bucket] += 1
+
+                  diverse.append(
+                      record
+                  )
+
+                  if (
+                      len(diverse)
+                      >= BEAM_WIDTH * 3
+                  ):
+                      break
+
+              return pareto_prune(
+                  diverse,
+                  BEAM_WIDTH,
+              )
 
 
           def canonical_initial_header(
@@ -2433,17 +3298,20 @@ jobs:
                   hidden,
               )
 
-              zero_eval = evaluate(
+              zero_evaluation = evaluate(
                   zero_section,
                   target_raw,
                   target_display,
                   observation,
                   initial_mask,
                   metadata,
+                  1.0,
               )
 
               return clamp_known_bits(
-                  zero_eval.compatibility.pullback_header,
+                  zero_evaluation
+                  .compatibility
+                  .pullback_header,
                   observation,
                   hidden,
               )
@@ -2459,23 +3327,30 @@ jobs:
               )
 
 
-          def priority_key(
-              evaluation: Evaluation,
-              serial: int,
-          ) -> Tuple[
-              float,
-              int,
-              int,
-              int,
-              int,
-          ]:
-              return (
-                  evaluation.total_energy,
-                  evaluation.digest_hamming,
-                  evaluation.compatibility.state_edge_hamming,
-                  evaluation.compatibility.schedule_edge_hamming,
-                  serial,
-              )
+          def append_csv(
+              path: Path,
+              row: dict,
+          ) -> None:
+              exists = path.exists()
+
+              with path.open(
+                  "a",
+                  newline="",
+                  encoding="utf-8",
+              ) as handle:
+                  writer = csv.DictWriter(
+                      handle,
+                      fieldnames=list(
+                          row.keys()
+                      ),
+                  )
+
+                  if not exists:
+                      writer.writeheader()
+
+                  writer.writerow(
+                      row
+                  )
 
 
           def write_csv(
@@ -2528,14 +3403,26 @@ jobs:
                   INTERIOR_COORDS
               ):
                   rows.append({
-                      "a": coord[0],
-                      "b": coord[1],
-                      "c": coord[2],
-                      "d": coord[3],
+                      "a":
+                      coord[0],
+
+                      "b":
+                      coord[1],
+
+                      "c":
+                      coord[2],
+
+                      "d":
+                      coord[3],
+
                       "region":
                       "interior_header",
-                      "slot_index": index,
-                      "semantic": (
+
+                      "slot_index":
+                      index,
+
+                      "semantic":
+                      (
                           f"header_chunk_"
                           f"{index:02d}_bits_"
                           f"{40 * index}:"
@@ -2610,13 +3497,26 @@ jobs:
                       )
 
                   rows.append({
-                      "a": coord[0],
-                      "b": coord[1],
-                      "c": coord[2],
-                      "d": coord[3],
-                      "region": region,
-                      "slot_index": index,
-                      "semantic": semantic,
+                      "a":
+                      coord[0],
+
+                      "b":
+                      coord[1],
+
+                      "c":
+                      coord[2],
+
+                      "d":
+                      coord[3],
+
+                      "region":
+                      region,
+
+                      "slot_index":
+                      index,
+
+                      "semantic":
+                      semantic,
                   })
 
               return rows
@@ -2650,146 +3550,227 @@ jobs:
               )
 
 
-          def connected_components(
-              points: np.ndarray,
-              radius: float,
-          ) -> int:
-              count = len(points)
+          def write_model_spec() -> None:
+              MODEL_SPEC.write_text(
+                  """BITCOIN SHA-256d 4D JOINT-INFERENCE MODEL
+          =========================================
 
-              if count == 0:
-                  return 0
+          x = H_{m,pi}(y) + xi
+          H_{m,pi} = D_m o P_pi
 
-              parent = list(
-                  range(count)
+          E_local(y)  = sum_(i,j in A) d(e_i^right,e_j^left)
+          E_global(y) = -log p_prior(y)
+          C(m)        = sum_j (1-m_j)
+
+          (y_hat,m_hat,pi_hat) = argmin [
+              ||x-H_{m,pi}(y)||^2/(2 sigma^2)
+              + lambda E_local(y)
+              + beta E_global(y)
+              + gamma C(m)
+          ]
+
+          The target digest is part of x. Its observation residual is therefore not a
+          post-processing statistic: it contributes directly to E_observation through
+          digest Hamming distance and matching-prefix distance. Local edge distances
+          are normalized Hamming distances on exact forward/backward SHA state and
+          schedule boundaries.
+
+          The 4x4x4x4 geometry supplies deterministic residual sections over all sixteen
+          interior cells, individual cells, axis slices, faces, and adjacency edges.
+          These are not physical Rubik turns and no extra group law is introduced.
+
+          Frontier control is structural and explicit:
+          * only lightweight scalar records live in the beam;
+          * full 192-round traces are transient;
+          * digest slack removes states too far from the global best;
+          * Pareto dominance removes inferior states;
+          * residual-basin quotas preserve 4D diversity;
+          * a bounded fingerprint cache prevents cycles without unbounded memory.
+
+          The target pressure is fixed across cycles. Stagnation changes only the
+          admissible digest slack, so energy values retained in the beam remain
+          comparable instead of being silently reweighted after insertion.
+
+          There is no internal completion timeout or iteration cap. Beam width and probe
+          budgets bound memory and per-cycle branching, not the number of cycles.
+
+          Hard constraints:
+              p0 XOR p1 XOR p2 XOR p3 = 0
+              p0 XOR p1 = 0
+              product_i O_i = Identity
+
+          N_states =
+              (16! * (64!)^2 * 96! * 2^45 * 3^15) /
+              (1536 * (8!)^8)
+
+          Continuous extension:
+              x = H_{m,pi}(T_{g,phi} y) + xi
+
+          Completion requires independent exact SHA256d(header)=target verification.
+          Historical-header equality is reported separately.
+          """,
+                  encoding="utf-8",
               )
 
-              def find(index: int) -> int:
-                  while (
-                      parent[index]
-                      != index
-                  ):
-                      parent[index] = (
-                          parent[
-                              parent[index]
-                          ]
-                      )
 
-                      index = (
-                          parent[index]
-                      )
+          def write_checkpoint(
+              cycle: int,
+              beam: Sequence[LightRecord],
+              best: LightRecord,
+              best_digest: int,
+              stagnation_cycles: int,
+              exact_models: Sequence[LightRecord],
+              dedup_size: int,
+              started: float,
+              terminated_by_signal: Optional[int] = None,
+          ) -> None:
+              payload = {
+                  "model_revision":
+                  MODEL_REVISION,
 
-                  return index
+                  "cycle":
+                  cycle,
 
-              def union(
-                  left: int,
-                  right: int,
-              ) -> None:
-                  root_left = find(left)
-                  root_right = find(right)
+                  "beam_size":
+                  len(beam),
 
-                  if (
-                      root_left
-                      != root_right
-                  ):
-                      parent[root_right] = (
-                          root_left
-                      )
+                  "beam_width":
+                  BEAM_WIDTH,
 
-              for left in range(count):
-                  for right in range(
-                      left + 1,
-                      count,
-                  ):
-                      if (
-                          np.linalg.norm(
-                              points[left]
-                              - points[right]
-                          )
-                          <= radius
-                      ):
-                          union(
-                              left,
-                              right,
-                          )
+                  "best_header_hex":
+                  best.header.hex(),
 
-              return len({
-                  find(index)
-                  for index in range(count)
-              })
+                  "best_displayed_hash":
+                  best.displayed_hash,
+
+                  "best_digest_hamming":
+                  best_digest,
+
+                  "best_digest_prefix_match":
+                  best.digest_prefix_match,
+
+                  "best_E_digest":
+                  best.E_digest,
+
+                  "best_E_local":
+                  best.E_local,
+
+                  "best_total_energy":
+                  best.total_energy,
+
+                  "stagnation_cycles":
+                  stagnation_cycles,
+
+                  "current_digest_slack":
+                  adaptive_slack(
+                      stagnation_cycles
+                  ),
+
+                  "current_target_pressure":
+                  target_pressure(
+                      stagnation_cycles
+                  ),
+
+                  "dedup_fingerprints":
+                  dedup_size,
+
+                  "exact_models":
+                  [
+                      model.header.hex()
+                      for model in exact_models
+                  ],
+
+                  "elapsed_seconds":
+                  time.time() - started,
+
+                  "terminated_by_signal":
+                  terminated_by_signal,
+              }
+
+              CHECKPOINT.write_text(
+                  json.dumps(
+                      payload,
+                      indent=2,
+                      sort_keys=True,
+                  ),
+                  encoding="utf-8",
+              )
 
 
-          def quotient_distance(
-              points_a: np.ndarray,
-              points_b: np.ndarray,
-          ) -> float:
-              if (
-                  points_a.shape
-                  != points_b.shape
-                  or points_a.size == 0
+          def write_frontier(
+              beam: Sequence[LightRecord],
+              best_digest: int,
+              slack: int,
+          ) -> None:
+              rows = []
+
+              for (
+                  rank,
+                  record,
+              ) in enumerate(
+                  sorted(
+                      beam,
+                      key=priority,
+                  )[:BEAM_WIDTH]
               ):
-                  return float("nan")
+                  rows.append({
+                      "rank":
+                      rank,
 
-              a = (
-                  points_a
-                  - points_a.mean(
-                      axis=0,
-                      keepdims=True,
-                  )
-              )
+                      "source":
+                      record.source,
 
-              b = (
-                  points_b
-                  - points_b.mean(
-                      axis=0,
-                      keepdims=True,
-                  )
-              )
+                      "digest_hamming":
+                      record.digest_hamming,
 
-              norm_a = np.linalg.norm(a)
-              norm_b = np.linalg.norm(b)
+                      "digest_prefix_match":
+                      record.digest_prefix_match,
 
-              if (
-                  norm_a == 0
-                  or norm_b == 0
-              ):
-                  return float("nan")
+                      "best_digest_hamming":
+                      best_digest,
 
-              a /= norm_a
-              b /= norm_b
+                      "digest_slack":
+                      slack,
 
-              u, _, vt = np.linalg.svd(
-                  b.T @ a
-              )
+                      "E_digest":
+                      record.E_digest,
 
-              rotation = u @ vt
+                      "E_observation":
+                      record.E_observation,
 
-              if (
-                  np.linalg.det(rotation)
-                  < 0
-              ):
-                  u[:, -1] *= -1
-                  rotation = u @ vt
+                      "E_local":
+                      record.E_local,
 
-              aligned = b @ rotation
+                      "E_global":
+                      record.E_global,
 
-              return float(
-                  np.sqrt(
-                      np.mean(
-                          np.sum(
-                              (
-                                  a
-                                  - aligned
-                              )
-                              ** 2,
-                              axis=1,
-                          )
-                      )
-                  )
+                      "C_missing":
+                      record.C_missing,
+
+                      "total_energy":
+                      record.total_energy,
+
+                      "residual_signature":
+                      (
+                          f"{record.residual_signature:016x}"
+                      ),
+
+                      "header_hex":
+                      record.header.hex(),
+
+                      "displayed_hash":
+                      record.displayed_hash,
+                  })
+
+              write_csv(
+                  FRONTIER,
+                  rows,
               )
 
 
-          def write_round_and_continuous_exports(
+          def write_final_exports(
               evaluation: Evaluation,
+              truth_header: bytes,
           ) -> None:
               round_rows: List[dict] = []
               lattice_rows: List[dict] = []
@@ -2833,15 +3814,6 @@ jobs:
                   evaluation.compatibility.backward_states,
               ):
                   for row in trace.rounds:
-                      state_residual = (
-                          hamming_state(
-                              row.state_in,
-                              backward[
-                                  row.round_index
-                              ],
-                          )
-                      )
-
                       round_rows.append({
                           "phase":
                           trace.phase,
@@ -2866,7 +3838,12 @@ jobs:
                           ),
 
                           "state_edge_hamming":
-                          state_residual,
+                          hamming_state(
+                              row.state_in,
+                              backward[
+                                  row.round_index
+                              ],
+                          ),
 
                           "a_in":
                           f"{row.state_in[0]:08x}",
@@ -2926,20 +3903,18 @@ jobs:
                               ],
                           )
 
-                          value = (
-                              sum(
-                                  word.bit_count()
-                                  for word in values
-                              )
-                              / 64.0
-                          )
-
                           feature[
                               a_coord,
                               b_coord,
                               c_coord,
                               d_coord,
-                          ] += value / 3.0
+                          ] += (
+                              sum(
+                                  value.bit_count()
+                                  for value in values
+                              )
+                              / 192.0
+                          )
 
                           if EMIT_LATTICE_BITS:
                               for lane_index in pair:
@@ -3074,19 +4049,14 @@ jobs:
                   projection_rows,
               )
 
-              gauge_rows: List[dict] = []
-
-              gauged: Dict[
-                  int,
-                  np.ndarray,
-              ] = {}
+              gauge_rows = []
 
               for (
                   axis,
                   cloud4,
               ) in clouds.items():
                   coordinates = (
-                      cloud4[:, :3].copy()
+                      cloud4[:, :3]
                   )
 
                   weights = (
@@ -3146,38 +4116,12 @@ jobs:
                       eigenvalues
                   )[::-1]
 
-                  eigenvalues = (
-                      eigenvalues[order]
-                  )
-
                   principal = (
                       eigenvectors[
                           :,
                           order[0],
                       ]
                   )
-
-                  anchor = scaled[
-                      np.argmax(
-                          np.linalg.norm(
-                              scaled,
-                              axis=1,
-                          )
-                      )
-                  ]
-
-                  if (
-                      float(
-                          np.dot(
-                              principal,
-                              anchor,
-                          )
-                      )
-                      < 0
-                  ):
-                      principal = -principal
-
-                  gauged[axis] = scaled
 
                   gauge_rows.append({
                       "omitted_axis":
@@ -3216,26 +4160,10 @@ jobs:
                           principal[2]
                       ),
 
-                      "eigenvalue_1":
-                      float(
-                          eigenvalues[0]
-                      ),
-
-                      "eigenvalue_2":
-                      float(
-                          eigenvalues[1]
-                      ),
-
-                      "eigenvalue_3":
-                      float(
-                          eigenvalues[2]
-                      ),
-
                       "gauge_section":
                       (
                           "weighted center=0; "
-                          "RMS=1; principal axis "
-                          "and sign fixed"
+                          "RMS=1; principal axis fixed"
                       ),
                   })
 
@@ -3244,158 +4172,7 @@ jobs:
                   gauge_rows,
               )
 
-              stability_rows: List[dict] = []
-
-              base = gauged[0]
-
-              stability_rng = (
-                  np.random.default_rng(
-                      (
-                          DETERMINISTIC_SEED
-                          or 314159
-                      )
-                      + 1
-                  )
-              )
-
-              for eta in [
-                  0.0001,
-                  0.00025,
-                  0.0005,
-                  0.001,
-                  0.002,
-                  0.005,
-                  0.01,
-              ]:
-                  distances = []
-
-                  for _ in range(24):
-                      perturbed = (
-                          base
-                          + stability_rng.normal(
-                              0,
-                              eta,
-                              size=base.shape,
-                          )
-                      )
-
-                      distances.append(
-                          quotient_distance(
-                              base,
-                              perturbed,
-                          )
-                      )
-
-                  stability_rows.append({
-                      "eta":
-                      eta,
-
-                      "mean_quotient_displacement":
-                      float(
-                          np.nanmean(
-                              distances
-                          )
-                      ),
-
-                      "p95_quotient_displacement":
-                      float(
-                          np.nanpercentile(
-                              distances,
-                              95,
-                          )
-                      ),
-
-                      "max_quotient_displacement":
-                      float(
-                          np.nanmax(
-                              distances
-                          )
-                      ),
-
-                      "claim":
-                      (
-                          "finite-resolution "
-                          "empirical stability only"
-                      ),
-                  })
-
-              write_csv(
-                  STABILITY,
-                  stability_rows,
-              )
-
-              tolerance_rows: List[dict] = []
-
-              base_cloud = (
-                  clouds[0][:, :3]
-              )
-
-              base_feature = (
-                  clouds[0][:, 3]
-              )
-
-              median = np.median(
-                  base_feature
-              )
-
-              for delta in [
-                  0.0005,
-                  0.001,
-                  0.002,
-                  0.005,
-                  0.01,
-                  0.02,
-                  0.05,
-                  0.1,
-                  0.25,
-                  0.5,
-                  1.0,
-              ]:
-                  active = base_cloud[
-                      np.abs(
-                          base_feature
-                          - median
-                      )
-                      <= delta
-                  ]
-
-                  tolerance_rows.append({
-                      "delta":
-                      delta,
-
-                      "active_points":
-                      len(active),
-
-                      "connected_components":
-                      (
-                          connected_components(
-                              active,
-                              max(
-                                  delta,
-                                  1e-9,
-                              ),
-                          )
-                          if len(active)
-                          else 0
-                      ),
-
-                      "posterior_mass_in_ball":
-                      float("nan"),
-
-                      "note":
-                      (
-                          "no posterior mass is "
-                          "fabricated without "
-                          "multiple exact models"
-                      ),
-                  })
-
-              write_csv(
-                  TOLERANCE,
-                  tolerance_rows,
-              )
-
-              frequency_rows: List[dict] = []
+              frequency_rows = []
 
               for axis in range(4):
                   field = (
@@ -3449,11 +4226,6 @@ jobs:
                       )
                   )
 
-                  total_frequency_energy = (
-                      low_energy
-                      + high_energy
-                  )
-
                   frequency_rows.append({
                       "omitted_axis":
                       axis,
@@ -3470,8 +4242,14 @@ jobs:
                       "low_fraction":
                       (
                           low_energy
-                          / total_frequency_energy
-                          if total_frequency_energy
+                          / (
+                              low_energy
+                              + high_energy
+                          )
+                          if (
+                              low_energy
+                              + high_energy
+                          )
                           else 0.0
                       ),
                   })
@@ -3481,182 +4259,52 @@ jobs:
                   frequency_rows,
               )
 
+              write_csv(
+                  TOLERANCE,
+                  [
+                      {
+                          "delta":
+                          0.0,
 
-          def write_model_spec() -> None:
-              MODEL_SPEC.write_text(
-                  """BITCOIN SHA-256d 4D JOINT-INFERENCE MODEL
-          =========================================
+                          "active_points":
+                          1,
 
-          Forward model
-          -------------
-          x = H_{m,pi}(y) + xi
-          H_{m,pi} = D_m o P_pi
+                          "connected_components":
+                          1,
 
-          Local energy
-          ------------
-          E_local(y) = sum_(i,j in A) d(e_i^right, e_j^left)
+                          "posterior_mass_in_ball":
+                          1.0,
 
-          In this implementation, the adjacency set A contains the exact forward and
-          backward SHA-256d round boundaries and message-schedule boundaries across all
-          three compression invocations. Distances are bit Hamming distances. E_local
-          is computed from actual residuals and is never assigned a constant zero.
-
-          Global energy
-          -------------
-          E_global(y) = -log p_prior(y)
-
-          Missingness
-          -----------
-          C(m) = sum_j (1-m_j)
-
-          MAP objective
-          -------------
-          (y_hat,m_hat,pi_hat) = argmin [
-              ||x-H_{m,pi}(y)||^2/(2 sigma^2)
-              + lambda E_local(y)
-              + beta E_global(y)
-              + gamma C(m)
-          ]
-
-          Hard constraints
-          ----------------
-          p0 XOR p1 XOR p2 XOR p3 = 0
-          p0 XOR p1 = 0
-          product_(i=1)^16 O_i = Identity
-
-          The orientation closure is represented by sum_i O_i = 0 mod 3. The parity
-          completion uses p1=p0 and p2=p3=0, satisfying exactly the two supplied XOR
-          equations without adding another group law.
-
-          4D allocation and reconstruction
-          --------------------------------
-          The 4x4x4x4 lattice has 256 cells. The sixteen interior cells {1,2}^4 hold
-          the sixteen canonical 40-bit header chunks. The 192 SHA compression rounds
-          occupy 192 surface constraint cells; the remaining surface cells hold digest,
-          observation, prior, posterior, gauge, and projection information.
-
-          SHA-256d itself is the mixed 4D object. A candidate is propagated forward
-          through the exact SHA equations. The target digest is propagated backward
-          through exact inverse-round equations using the candidate schedule. At every
-          boundary, forward and backward edges are compared. Required schedule words
-          are derived algebraically from the two sides.
-
-          The resulting 640-bit pullback is projected onto the sixteen interior cells.
-          Candidate sections are generated on the complete interior, individual cells,
-          four-dimensional axis slices, two-dimensional faces, and 4D adjacency edges.
-          These are geometric residual projections, not literal Rubik turns and not an
-          imported cube move list. A best-first frontier selects by the stated MAP
-          objective. No internal time, iteration, move, turn, or depth limit is imposed.
-
-          State-space prior volume
-          ------------------------
-          N_states = (16! * (64!)^2 * 96! * 2^45 * 3^15) /
-                     (1536 * (8!)^8)
-
-          This expression is used directly. There is no formula-verification gate.
-
-          Continuous extension
-          --------------------
-          x = H_{m,pi}(T_{g,phi} y) + xi
-
-          Four 3D coordinate projections are exported by marginalizing each 4D axis.
-          Gauge diagnostics fix weighted center, RMS scale, principal axis, and sign.
-          Quotient distances remove translation, scale, and proper rotation. The
-          low/high frequency split reports finite-dimensional phi/xi diagnostics.
-          Tolerance topology, stability, and functional identifiability are reported
-          without inventing posterior samples or RHMC output.
-
-          Completion
-          ----------
-          A candidate is complete only when an independent hashlib computation gives
-          SHA256d(y_hat) equal to the target digest. Historical-header equality is a
-          separate post-solve comparison.
-          """,
-                  encoding="utf-8",
+                          "note":
+                          (
+                              "one exact returned model; "
+                              "no unobserved posterior "
+                              "samples fabricated"
+                          ),
+                      }
+                  ],
               )
 
-
-          def write_checkpoint(
-              iteration: int,
-              evaluation: Evaluation,
-              frontier_size: int,
-              exact_models: Sequence[str],
-              accepted_section: str,
-              started: float,
-          ) -> None:
-              CHECKPOINT.write_text(
-                  json.dumps(
+              write_csv(
+                  STABILITY,
+                  [
                       {
-                          "model_revision":
-                          MODEL_REVISION,
+                          "eta":
+                          0.0,
 
-                          "iteration":
-                          iteration,
+                          "mean_quotient_displacement":
+                          0.0,
 
-                          "accepted_section":
-                          accepted_section,
+                          "p95_quotient_displacement":
+                          0.0,
 
-                          "frontier_size":
-                          frontier_size,
+                          "max_quotient_displacement":
+                          0.0,
 
-                          "candidate_header_hex":
-                          evaluation.header.hex(),
-
-                          "candidate_displayed_hash":
-                          evaluation.displayed_hash,
-
-                          "digest_hamming":
-                          evaluation.digest_hamming,
-
-                          "E_observation":
-                          evaluation.E_observation,
-
-                          "E_local":
-                          evaluation.E_local,
-
-                          "E_global":
-                          evaluation.E_global,
-
-                          "C_missing":
-                          evaluation.C_missing,
-
-                          "total_energy":
-                          evaluation.total_energy,
-
-                          "state_edge_hamming":
-                          evaluation.compatibility.state_edge_hamming,
-
-                          "schedule_edge_hamming":
-                          evaluation.compatibility.schedule_edge_hamming,
-
-                          "permutation":
-                          list(
-                              evaluation.projection.permutation
-                          ),
-
-                          "orientations":
-                          list(
-                              evaluation.projection.orientations
-                          ),
-
-                          "p":
-                          [
-                              evaluation.projection.p0,
-                              evaluation.projection.p1,
-                              evaluation.projection.p2,
-                              evaluation.projection.p3,
-                          ],
-
-                          "exact_models":
-                          list(exact_models),
-
-                          "elapsed_seconds":
-                          time.time() - started,
-                      },
-                      indent=2,
-                      sort_keys=True,
-                  ),
-                  encoding="utf-8",
+                          "claim":
+                          "exact solved state only",
+                      }
+                  ],
               )
 
 
@@ -3664,6 +4312,141 @@ jobs:
               started = time.time()
 
               write_model_spec()
+
+              SEARCH_TRACE.unlink(
+                  missing_ok=True
+              )
+
+              state_for_signal: Dict[
+                  str,
+                  object,
+              ] = {
+                  "cycle":
+                  0,
+
+                  "beam":
+                  [],
+
+                  "best":
+                  None,
+
+                  "best_digest":
+                  256,
+
+                  "stagnation":
+                  0,
+
+                  "exact_models":
+                  [],
+
+                  "dedup_size":
+                  0,
+              }
+
+
+              def handle_signal(
+                  signum,
+                  frame,
+              ) -> None:
+                  best = state_for_signal.get(
+                      "best"
+                  )
+
+                  beam = (
+                      state_for_signal.get(
+                          "beam"
+                      )
+                      or []
+                  )
+
+                  exact_models = (
+                      state_for_signal.get(
+                          "exact_models"
+                      )
+                      or []
+                  )
+
+                  if isinstance(
+                      best,
+                      LightRecord,
+                  ):
+                      write_checkpoint(
+                          int(
+                              state_for_signal.get(
+                                  "cycle",
+                                  0,
+                              )
+                          ),
+                          beam,
+                          best,
+                          int(
+                              state_for_signal.get(
+                                  "best_digest",
+                                  best.digest_hamming,
+                              )
+                          ),
+                          int(
+                              state_for_signal.get(
+                                  "stagnation",
+                                  0,
+                              )
+                          ),
+                          exact_models,
+                          int(
+                              state_for_signal.get(
+                                  "dedup_size",
+                                  0,
+                              )
+                          ),
+                          started,
+                          terminated_by_signal=signum,
+                      )
+
+                  STATUS.write_text(
+                      json.dumps(
+                          {
+                              "completed":
+                              False,
+
+                              "fake_completion":
+                              False,
+
+                              "terminated_by_signal":
+                              signum,
+
+                              "exit_code":
+                              128 + signum,
+
+                              "model_revision":
+                              MODEL_REVISION,
+
+                              "elapsed_seconds":
+                              time.time() - started,
+
+                              "checkpoint_written":
+                              CHECKPOINT.exists(),
+                          },
+                          indent=2,
+                          sort_keys=True,
+                      ),
+                      encoding="utf-8",
+                  )
+
+                  raise SystemExit(
+                      128 + signum
+                  )
+
+
+              signal.signal(
+                  signal.SIGTERM,
+                  handle_signal,
+              )
+
+              signal.signal(
+                  signal.SIGINT,
+                  handle_signal,
+              )
+
 
               status = {
                   "completed":
@@ -3696,11 +4479,11 @@ jobs:
                   "iteration_limit":
                   None,
 
-                  "turn_limit":
-                  None,
-
                   "search_depth_limit":
                   None,
+
+                  "beam_width":
+                  BEAM_WIDTH,
 
                   "exact_hash_match":
                   False,
@@ -3708,6 +4491,7 @@ jobs:
                   "exact_original_header_match":
                   False,
               }
+
 
               try:
                   metadata: dict = {}
@@ -3749,18 +4533,18 @@ jobs:
 
                   else:
                       if not block_hash:
-                          if BLOCK_HEIGHT:
-                              block_hash = http_text(
+                          block_hash = (
+                              http_text(
                                   (
                                       "/block-height/"
                                       f"{int(BLOCK_HEIGHT)}"
                                   )
                               )
-
-                          else:
-                              block_hash = http_text(
+                              if BLOCK_HEIGHT
+                              else http_text(
                                   "/blocks/tip/hash"
                               )
+                          )
 
                       raw_header_hex = http_text(
                           (
@@ -3844,7 +4628,51 @@ jobs:
                       observation,
                       initial_mask,
                       metadata,
+                      1.0,
                   )
+
+                  serial = 0
+
+                  initial_record = to_light(
+                      initial_evaluation,
+                      "canonical_backward_pullback",
+                      serial,
+                  )
+
+                  beam: List[
+                      LightRecord
+                  ] = [
+                      initial_record
+                  ]
+
+                  dedup = BoundedFingerprints(
+                      DEDUP_CAPACITY
+                  )
+
+                  dedup.add(
+                      header_fingerprint(
+                          initial_header
+                      )
+                  )
+
+                  exact_models: List[
+                      LightRecord
+                  ] = []
+
+                  best = initial_record
+
+                  best_digest = (
+                      initial_record
+                      .digest_hamming
+                  )
+
+                  best_prefix = (
+                      initial_record
+                      .digest_prefix_match
+                  )
+
+                  stagnation_cycles = 0
+                  cycle = 0
 
                   emit(
                       (
@@ -3879,352 +4707,412 @@ jobs:
 
                   emit(
                       (
-                          "[solver] "
-                          "direct_user_MAP_model_"
-                          "with_4D_forward_"
-                          "backward_projection"
+                          "[memory] beam_width="
+                          f"{BEAM_WIDTH} "
+                          "lightweight_records=true "
+                          "dedup_capacity="
+                          f"{DEDUP_CAPACITY}"
                       )
                   )
 
                   emit(
                       (
-                          "[solver] no internal "
-                          "timeout, iteration limit, "
-                          "turn limit, or "
-                          "search-depth limit"
+                          "[target] "
+                          "digest_hamming_weight="
+                          f"{DIGEST_HAMMING_WEIGHT} "
+                          "digest_prefix_weight="
+                          f"{DIGEST_PREFIX_WEIGHT}"
                       )
                   )
 
                   emit(
                       (
-                          "[initial] energy="
-                          f"{initial_evaluation.total_energy:.3f} "
+                          "[initial] "
                           "digest_hamming="
-                          f"{initial_evaluation.digest_hamming} "
-                          "state_edges="
-                          f"{initial_evaluation.compatibility.state_edge_hamming} "
-                          "schedule_edges="
-                          f"{initial_evaluation.compatibility.schedule_edge_hamming}"
+                          f"{best_digest} "
+                          "prefix="
+                          f"{best_prefix} "
+                          "E_local="
+                          f"{best.E_local:.6f} "
+                          "total="
+                          f"{best.total_energy:.6f}"
                       )
-                  )
-
-                  frontier: List[
-                      Tuple[
-                          float,
-                          int,
-                          int,
-                          int,
-                          int,
-                          str,
-                          Evaluation,
-                      ]
-                  ] = []
-
-                  queued_headers = {
-                      initial_header.hex()
-                  }
-
-                  expanded_headers: set[str] = set()
-
-                  serial = 0
-
-                  heapq.heappush(
-                      frontier,
-                      (
-                          *priority_key(
-                              initial_evaluation,
-                              serial,
-                          ),
-                          "canonical_backward_pullback",
-                          initial_evaluation,
-                      ),
-                  )
-
-                  exact_models: List[
-                      Evaluation
-                  ] = []
-
-                  trace_rows: List[dict] = []
-
-                  iteration = 0
-                  best = initial_evaluation
-
-                  accepted_section = (
-                      "canonical_backward_pullback"
                   )
 
                   while not requested_model_count_reached(
                       len(exact_models)
                   ):
-                      if not frontier:
-                          raise RuntimeError(
-                              "the 4D projection frontier "
-                              "was exhausted without exact "
-                              "completion; no fake result "
-                              "was emitted"
-                          )
+                      cycle += 1
 
-                      (
-                          _,
-                          _,
-                          _,
-                          _,
-                          _,
-                          section_name,
-                          current,
-                      ) = heapq.heappop(
-                          frontier
-                      )
-
-                      current_key = (
-                          current.header.hex()
-                      )
-
-                      if (
-                          current_key
-                          in expanded_headers
-                      ):
-                          continue
-
-                      expanded_headers.add(
-                          current_key
-                      )
-
-                      iteration += 1
-
-                      accepted_section = (
-                          section_name
-                      )
-
-                      if (
-                          current.total_energy
-                          < best.total_energy
-                      ):
-                          best = current
-
-                      if current.exact_hash_match:
-                          independent = (
-                              hashlib_displayed_hash(
-                                  current.header
-                              )
-                          )
-
-                          if (
-                              independent
-                              != block_hash
-                          ):
-                              raise RuntimeError(
-                                  "internal exact state "
-                                  "failed independent "
-                                  "hashlib validation"
-                              )
-
-                          if all(
-                              model.header
-                              != current.header
-                              for model
-                              in exact_models
-                          ):
-                              exact_models.append(
-                                  current
-                              )
-
-                              emit(
-                                  (
-                                      "[complete] exact "
-                                      "model "
-                                      f"{len(exact_models)}: "
-                                      f"{current.header.hex()}"
-                                  )
-                              )
-
-                          if requested_model_count_reached(
-                              len(exact_models)
-                          ):
-                              best = current
-                              break
-
-                      proposals = (
-                          tesseract_projection_updates(
-                              current,
-                              observation,
-                              hidden,
+                      current_pressure = (
+                          target_pressure(
+                              stagnation_cycles
                           )
                       )
 
-                      frontier_rows: List[
-                          dict
+                      current_slack = (
+                          adaptive_slack(
+                              stagnation_cycles
+                          )
+                      )
+
+                      beam.sort(
+                          key=priority
+                      )
+
+                      active = beam[
+                          :min(
+                              EXPANSION_BATCH,
+                              len(beam),
+                          )
+                      ]
+
+                      survivors = beam[
+                          len(active):
+                      ]
+
+                      generated: List[
+                          LightRecord
                       ] = []
 
-                      for (
-                          proposal_name,
-                          candidate_header,
-                      ) in proposals:
-                          candidate_key = (
-                              candidate_header.hex()
-                          )
-
-                          if (
-                              candidate_key
-                              in queued_headers
-                              or candidate_key
-                              in expanded_headers
-                          ):
-                              continue
-
-                          candidate = evaluate(
-                              candidate_header,
+                      for record in active:
+                          parent = evaluate(
+                              record.header,
                               target_raw,
                               block_hash,
                               observation,
                               initial_mask,
                               metadata,
+                              current_pressure,
                           )
 
-                          serial += 1
+                          if parent.exact_hash_match:
+                              if (
+                                  hashlib_displayed_hash(
+                                      parent.header
+                                  )
+                                  != block_hash
+                              ):
+                                  raise RuntimeError(
+                                      "internal exact state "
+                                      "failed independent "
+                                      "hashlib validation"
+                                  )
 
-                          heapq.heappush(
-                              frontier,
-                              (
-                                  *priority_key(
-                                      candidate,
-                                      serial,
-                                  ),
-                                  proposal_name,
-                                  candidate,
-                              ),
-                          )
+                              exact_record = (
+                                  to_light(
+                                      parent,
+                                      record.source,
+                                      record.serial,
+                                  )
+                              )
 
-                          queued_headers.add(
-                              candidate_key
-                          )
+                              if all(
+                                  model.header
+                                  != exact_record.header
+                                  for model
+                                  in exact_models
+                              ):
+                                  exact_models.append(
+                                      exact_record
+                                  )
 
-                          frontier_rows.append({
-                              "iteration":
-                              iteration,
+                                  emit(
+                                      (
+                                          "[complete] exact "
+                                          "model "
+                                          f"{len(exact_models)}: "
+                                          f"{exact_record.header.hex()}"
+                                      )
+                                  )
 
-                              "projection_section":
-                              proposal_name,
+                              if requested_model_count_reached(
+                                  len(exact_models)
+                              ):
+                                  best = exact_record
+                                  break
 
-                              "total_energy":
-                              candidate.total_energy,
-
-                              "digest_hamming":
-                              candidate.digest_hamming,
-
-                              "E_local":
-                              candidate.E_local,
-
-                              "state_edge_hamming":
-                              candidate.compatibility.state_edge_hamming,
-
-                              "schedule_edge_hamming":
-                              candidate.compatibility.schedule_edge_hamming,
-
-                              "header_hex":
-                              candidate.header.hex(),
-                          })
-
-                      frontier_rows.sort(
-                          key=lambda row: (
-                              row["total_energy"],
-                              row["digest_hamming"],
-                              row["state_edge_hamming"],
-                              row["schedule_edge_hamming"],
-                              row["projection_section"],
-                          )
-                      )
-
-                      write_csv(
-                          FRONTIER,
-                          frontier_rows,
-                      )
-
-                      trace_rows.append({
-                          "iteration":
-                          iteration,
-
-                          "accepted_projection_section":
-                          section_name,
-
-                          "frontier_size":
-                          len(frontier),
-
-                          "expanded_states":
-                          len(expanded_headers),
-
-                          "total_energy":
-                          current.total_energy,
-
-                          "transformed_energy":
-                          current.transformed_energy,
-
-                          "digest_hamming":
-                          current.digest_hamming,
-
-                          "E_observation":
-                          current.E_observation,
-
-                          "E_local":
-                          current.E_local,
-
-                          "E_global":
-                          current.E_global,
-
-                          "C_missing":
-                          current.C_missing,
-
-                          "state_edge_hamming":
-                          current.compatibility.state_edge_hamming,
-
-                          "schedule_edge_hamming":
-                          current.compatibility.schedule_edge_hamming,
-
-                          "candidate_header_hex":
-                          current.header.hex(),
-
-                          "candidate_displayed_hash":
-                          current.displayed_hash,
-                      })
-
-                      if (
-                          iteration == 1
-                          or iteration % 10 == 0
-                      ):
-                          emit(
-                              (
-                                  "[iteration "
-                                  f"{iteration}] "
-                                  "section="
-                                  f"{section_name} "
-                                  "energy="
-                                  f"{current.total_energy:.3f} "
-                                  "digest_hamming="
-                                  f"{current.digest_hamming} "
-                                  "state_edges="
-                                  f"{current.compatibility.state_edge_hamming} "
-                                  "schedule_edges="
-                                  f"{current.compatibility.schedule_edge_hamming} "
-                                  "frontier="
-                                  f"{len(frontier)}"
+                          children, serial = (
+                              evaluate_children(
+                                  parent,
+                                  target_raw,
+                                  block_hash,
+                                  observation,
+                                  hidden,
+                                  initial_mask,
+                                  metadata,
+                                  current_pressure,
+                                  cycle,
+                                  serial,
                               )
                           )
 
-                          write_csv(
-                              SEARCH_TRACE,
-                              trace_rows,
+                          for child in children:
+                              if (
+                                  child.digest_hamming
+                                  > best_digest
+                                  + current_slack
+                              ):
+                                  continue
+
+                              if not dedup.add(
+                                  header_fingerprint(
+                                      child.header
+                                  )
+                              ):
+                                  continue
+
+                              generated.append(
+                                  child
+                              )
+
+                      if requested_model_count_reached(
+                          len(exact_models)
+                      ):
+                          break
+
+                      candidate_pool = (
+                          survivors
+                          + generated
+                      )
+
+                      if not candidate_pool:
+                          reevaluated_best = (
+                              evaluate(
+                                  best.header,
+                                  target_raw,
+                                  block_hash,
+                                  observation,
+                                  initial_mask,
+                                  metadata,
+                                  current_pressure,
+                              )
+                          )
+
+                          (
+                              children,
+                              serial,
+                          ) = evaluate_children(
+                              reevaluated_best,
+                              target_raw,
+                              block_hash,
+                              observation,
+                              hidden,
+                              initial_mask,
+                              metadata,
+                              current_pressure,
+                              cycle,
+                              serial,
+                          )
+
+                          candidate_pool = (
+                              children
+                          )
+
+                      beam = frontier_prune(
+                          candidate_pool,
+                          best_digest,
+                          current_slack,
+                      )
+
+                      if not beam:
+                          raise RuntimeError(
+                              "bounded 4D beam became empty "
+                              "after structural pruning; "
+                              "checkpoint contains the best "
+                              "state and active thresholds"
+                          )
+
+                      cycle_best = min(
+                          beam,
+                          key=priority,
+                      )
+
+                      improved_digest = (
+                          cycle_best.digest_hamming
+                          < best_digest
+                      )
+
+                      improved_prefix = (
+                          cycle_best.digest_hamming
+                          == best_digest
+                          and cycle_best.digest_prefix_match
+                          > best_prefix
+                      )
+
+                      improved_energy = (
+                          cycle_best.total_energy
+                          < best.total_energy
+                      )
+
+                      if (
+                          improved_digest
+                          or improved_prefix
+                          or improved_energy
+                      ):
+                          if improved_digest:
+                              best_digest = (
+                                  cycle_best
+                                  .digest_hamming
+                              )
+
+                          if (
+                              cycle_best.digest_hamming
+                              == best_digest
+                          ):
+                              best_prefix = max(
+                                  best_prefix,
+                                  cycle_best
+                                  .digest_prefix_match,
+                              )
+
+                          if (
+                              priority(cycle_best)
+                              < priority(best)
+                          ):
+                              best = cycle_best
+
+                          if (
+                              improved_digest
+                              or improved_prefix
+                          ):
+                              stagnation_cycles = 0
+                          else:
+                              stagnation_cycles += 1
+
+                      else:
+                          stagnation_cycles += 1
+
+                      state_for_signal.update({
+                          "cycle":
+                          cycle,
+
+                          "beam":
+                          beam,
+
+                          "best":
+                          best,
+
+                          "best_digest":
+                          best_digest,
+
+                          "stagnation":
+                          stagnation_cycles,
+
+                          "exact_models":
+                          exact_models,
+
+                          "dedup_size":
+                          len(dedup),
+                      })
+
+                      append_csv(
+                          SEARCH_TRACE,
+                          {
+                              "cycle":
+                              cycle,
+
+                              "expanded":
+                              len(active),
+
+                              "generated_before_prune":
+                              len(generated),
+
+                              "beam_size":
+                              len(beam),
+
+                              "beam_width":
+                              BEAM_WIDTH,
+
+                              "best_digest_hamming":
+                              best_digest,
+
+                              "best_digest_prefix_match":
+                              best_prefix,
+
+                              "active_digest_hamming":
+                              cycle_best.digest_hamming,
+
+                              "active_digest_prefix_match":
+                              cycle_best
+                              .digest_prefix_match,
+
+                              "best_E_local":
+                              best.E_local,
+
+                              "active_E_local":
+                              cycle_best.E_local,
+
+                              "best_total_energy":
+                              best.total_energy,
+
+                              "active_total_energy":
+                              cycle_best.total_energy,
+
+                              "digest_slack":
+                              current_slack,
+
+                              "target_pressure":
+                              current_pressure,
+
+                              "stagnation_cycles":
+                              stagnation_cycles,
+
+                              "dedup_fingerprints":
+                              len(dedup),
+
+                              "best_header_hex":
+                              best.header.hex(),
+
+                              "best_displayed_hash":
+                              best.displayed_hash,
+                          },
+                      )
+
+                      if (
+                          cycle == 1
+                          or cycle
+                          % CHECKPOINT_INTERVAL
+                          == 0
+                          or improved_digest
+                      ):
+                          emit(
+                              (
+                                  "[cycle "
+                                  f"{cycle}] "
+                                  "beam="
+                                  f"{len(beam)} "
+                                  "generated="
+                                  f"{len(generated)} "
+                                  "active_hamming="
+                                  f"{cycle_best.digest_hamming} "
+                                  "best_hamming="
+                                  f"{best_digest} "
+                                  "best_prefix="
+                                  f"{best_prefix} "
+                                  "slack="
+                                  f"{current_slack} "
+                                  "pressure="
+                                  f"{current_pressure:.2f} "
+                                  "stagnation="
+                                  f"{stagnation_cycles}"
+                              )
+                          )
+
+                          write_frontier(
+                              beam,
+                              best_digest,
+                              current_slack,
                           )
 
                           write_checkpoint(
-                              iteration,
-                              current,
-                              len(frontier),
-                              [
-                                  model.header.hex()
-                                  for model
-                                  in exact_models
-                              ],
-                              section_name,
+                              cycle,
+                              beam,
+                              best,
+                              best_digest,
+                              stagnation_cycles,
+                              exact_models,
+                              len(dedup),
                               started,
                           )
 
@@ -4234,7 +5122,19 @@ jobs:
                           "an exact model"
                       )
 
-                  recovered = exact_models[0]
+                  recovered_record = (
+                      exact_models[0]
+                  )
+
+                  recovered = evaluate(
+                      recovered_record.header,
+                      target_raw,
+                      block_hash,
+                      observation,
+                      initial_mask,
+                      metadata,
+                      1.0,
+                  )
 
                   exact_hash_match = (
                       hashlib_displayed_hash(
@@ -4255,7 +5155,7 @@ jobs:
                           "SHA-256d validation"
                       )
 
-                  header_rows: List[dict] = []
+                  header_rows = []
 
                   for byte_index in range(80):
                       field = next(
@@ -4328,266 +5228,175 @@ jobs:
                       tesseract_slot_rows(),
                   )
 
-                  write_csv(
-                      SEARCH_TRACE,
-                      trace_rows,
+                  write_final_exports(
+                      recovered,
+                      sealed_truth_header,
                   )
-
-                  write_round_and_continuous_exports(
-                      recovered
-                  )
-
-                  posterior_rows = []
-
-                  for (
-                      index,
-                      model,
-                  ) in enumerate(
-                      exact_models
-                  ):
-                      posterior_rows.append({
-                          "candidate":
-                          index,
-
-                          "recovered_header_hex":
-                          model.header.hex(),
-
-                          "displayed_hash":
-                          model.displayed_hash,
-
-                          "exact_hash_match":
-                          model.exact_hash_match,
-
-                          "exact_original_header_match":
-                          (
-                              model.header
-                              == sealed_truth_header
-                          ),
-
-                          "energy":
-                          model.total_energy,
-
-                          "candidate_set_posterior_mass":
-                          (
-                              1.0
-                              / len(exact_models)
-                          ),
-
-                          "scope":
-                          (
-                              "mass normalized only "
-                              "across exact models "
-                              "actually returned"
-                          ),
-                      })
 
                   write_csv(
                       POSTERIOR,
-                      posterior_rows,
+                      [
+                          {
+                              "candidate":
+                              index,
+
+                              "recovered_header_hex":
+                              model.header.hex(),
+
+                              "displayed_hash":
+                              model.displayed_hash,
+
+                              "exact_hash_match":
+                              True,
+
+                              "exact_original_header_match":
+                              (
+                                  model.header
+                                  == sealed_truth_header
+                              ),
+
+                              "candidate_set_posterior_mass":
+                              (
+                                  1.0
+                                  / len(exact_models)
+                              ),
+
+                              "scope":
+                              (
+                                  "mass normalized only "
+                                  "across exact models "
+                                  "actually returned"
+                              ),
+                          }
+                          for (
+                              index,
+                              model,
+                          ) in enumerate(
+                              exact_models
+                          )
+                      ],
                   )
-
-                  functional_rows = []
-
-                  for (
-                      field,
-                      (
-                          start,
-                          end,
-                      ),
-                  ) in FIELD_RANGES_BYTES.items():
-                      functional_rows.append({
-                          "functional":
-                          field,
-
-                          "hidden_from_observation":
-                          any(
-                              bit in hidden
-                              for bit in range(
-                                  start * 8,
-                                  end * 8,
-                              )
-                          ),
-
-                          "exactly_recovered":
-                          (
-                              recovered.header[
-                                  start:end
-                              ]
-                              == sealed_truth_header[
-                                  start:end
-                              ]
-                          ),
-
-                          "confidence_type":
-                          (
-                              "exact equality under "
-                              "returned model"
-                          ),
-
-                          "ambiguity":
-                          (
-                              "assessed only across "
-                              "exact models actually "
-                              "returned"
-                          ),
-                      })
-
-                  functional_rows.extend([
-                      {
-                          "functional":
-                          "double_sha256_digest",
-
-                          "hidden_from_observation":
-                          False,
-
-                          "exactly_recovered":
-                          exact_hash_match,
-
-                          "confidence_type":
-                          (
-                              "independent hashlib "
-                              "validation"
-                          ),
-
-                          "ambiguity":
-                          (
-                              "none for digest equality"
-                          ),
-                      },
-                      {
-                          "functional":
-                          "historical_header_identity",
-
-                          "hidden_from_observation":
-                          bool(hidden),
-
-                          "exactly_recovered":
-                          historical_match,
-
-                          "confidence_type":
-                          (
-                              "post-solve comparison only"
-                          ),
-
-                          "ambiguity":
-                          (
-                              "other exact preimages "
-                              "may exist"
-                          ),
-                      },
-                  ])
 
                   write_csv(
                       FUNCTIONALS,
-                      functional_rows,
+                      [
+                          {
+                              "functional":
+                              "double_sha256_digest",
+
+                              "hidden_from_observation":
+                              False,
+
+                              "exactly_recovered":
+                              exact_hash_match,
+
+                              "confidence_type":
+                              (
+                                  "independent hashlib "
+                                  "validation"
+                              ),
+
+                              "ambiguity":
+                              (
+                                  "none for digest equality"
+                              ),
+                          },
+                          {
+                              "functional":
+                              "historical_header_identity",
+
+                              "hidden_from_observation":
+                              bool(hidden),
+
+                              "exactly_recovered":
+                              historical_match,
+
+                              "confidence_type":
+                              (
+                                  "post-solve comparison only"
+                              ),
+
+                              "ambiguity":
+                              (
+                                  "other exact preimages "
+                                  "may exist"
+                              ),
+                          },
+                      ],
                   )
-
-                  measure_rows = [
-                      {
-                          "component":
-                          (
-                              "compact projection "
-                              "orientation"
-                          ),
-
-                          "measure":
-                          (
-                              "normalized finite C3 "
-                              "counting measure"
-                          ),
-
-                          "operational":
-                          (
-                              "product O_i=Identity "
-                              "enforced by "
-                              "sum O_i=0 mod 3"
-                          ),
-                      },
-                      {
-                          "component":
-                          "translation gauge",
-
-                          "measure":
-                          "proper prior required",
-
-                          "operational":
-                          (
-                              "removed by weighted "
-                              "centering in projection "
-                              "diagnostics"
-                          ),
-                      },
-                      {
-                          "component":
-                          "positive scale",
-
-                          "measure":
-                          (
-                              "log-scale coordinate ds/s"
-                          ),
-
-                          "operational":
-                          (
-                              "removed by RMS "
-                              "normalization"
-                          ),
-                      },
-                      {
-                          "component":
-                          (
-                              "non-rigid deformation phi"
-                          ),
-
-                          "measure":
-                          (
-                              "finite low-frequency basis"
-                          ),
-
-                          "operational":
-                          (
-                              "FFT low-frequency "
-                              "projection component"
-                          ),
-                      },
-                      {
-                          "component":
-                          "noise xi",
-
-                          "measure":
-                          (
-                              "high-frequency residual"
-                          ),
-
-                          "operational":
-                          (
-                              "FFT high-frequency "
-                              "projection component"
-                          ),
-                      },
-                      {
-                          "component":
-                          (
-                              "declared tesseract "
-                              "state volume"
-                          ),
-
-                          "measure":
-                          (
-                              "user-supplied finite "
-                              "prior volume"
-                          ),
-
-                          "operational":
-                          (
-                              "used directly with no "
-                              "verification gate"
-                          ),
-                      },
-                  ]
 
                   write_csv(
                       MEASURE_AUDIT,
-                      measure_rows,
+                      [
+                          {
+                              "component":
+                              (
+                                  "compact projection "
+                                  "orientation"
+                              ),
+
+                              "measure":
+                              (
+                                  "normalized finite C3 "
+                                  "counting measure"
+                              ),
+
+                              "operational":
+                              (
+                                  "product O_i=Identity "
+                                  "enforced by "
+                                  "sum O_i=0 mod 3"
+                              ),
+                          },
+                          {
+                              "component":
+                              "translation gauge",
+
+                              "measure":
+                              "proper prior required",
+
+                              "operational":
+                              (
+                                  "removed by weighted "
+                                  "centering in projection "
+                                  "diagnostics"
+                              ),
+                          },
+                          {
+                              "component":
+                              "positive scale",
+
+                              "measure":
+                              (
+                                  "log-scale coordinate ds/s"
+                              ),
+
+                              "operational":
+                              (
+                                  "removed by RMS "
+                                  "normalization"
+                              ),
+                          },
+                          {
+                              "component":
+                              (
+                                  "declared tesseract "
+                                  "state volume"
+                              ),
+
+                              "measure":
+                              (
+                                  "user-supplied finite "
+                                  "prior volume"
+                              ),
+
+                              "operational":
+                              (
+                                  "used directly with no "
+                                  "verification gate"
+                              ),
+                          },
+                      ],
                   )
 
                   (
@@ -4662,17 +5471,20 @@ jobs:
                       "hidden_bit_count":
                       len(hidden),
 
-                      "iterations":
-                      iteration,
+                      "cycles":
+                      cycle,
 
-                      "expanded_states":
-                      len(expanded_headers),
+                      "beam_size":
+                      len(beam),
 
-                      "frontier_size":
-                      len(frontier),
+                      "beam_width":
+                      BEAM_WIDTH,
 
-                      "accepted_projection_section":
-                      accepted_section,
+                      "best_digest_hamming":
+                      0,
+
+                      "best_digest_prefix_match":
+                      256,
 
                       "E_observation":
                       recovered.E_observation,
@@ -4681,10 +5493,14 @@ jobs:
                       recovered.E_local,
 
                       "E_local_state_edges":
-                      recovered.compatibility.state_edge_hamming,
+                      recovered
+                      .compatibility
+                      .state_edge_hamming,
 
                       "E_local_schedule_edges":
-                      recovered.compatibility.schedule_edge_hamming,
+                      recovered
+                      .compatibility
+                      .schedule_edge_hamming,
 
                       "E_global":
                       recovered.E_global,
@@ -4695,9 +5511,6 @@ jobs:
                       "energy":
                       recovered.total_energy,
 
-                      "transformed_energy_f":
-                      recovered.transformed_energy,
-
                       "recovered_header_hex":
                       recovered.header.hex(),
 
@@ -4706,6 +5519,9 @@ jobs:
 
                       "returned_exact_models":
                       len(exact_models),
+
+                      "dedup_fingerprints":
+                      len(dedup),
 
                       "elapsed_seconds":
                       time.time() - started,
@@ -4748,12 +5564,12 @@ jobs:
                               f"{CONTEXT_MODE}"
                           ),
                           (
-                              "Expanded states:                "
-                              f"{len(expanded_headers)}"
+                              "Cycles:                         "
+                              f"{cycle}"
                           ),
                           (
-                              "Iterations:                     "
-                              f"{iteration}"
+                              "Beam width:                     "
+                              f"{BEAM_WIDTH}"
                           ),
                           (
                               "Exact digest match:             "
@@ -4803,6 +5619,14 @@ jobs:
                               "Internal timeout/iteration cap:  "
                               "None"
                           ),
+                          (
+                              "Frontier memory bounded:         "
+                              "True"
+                          ),
+                          (
+                              "Full traces stored in frontier:  "
+                              "False"
+                          ),
                           "",
                           "Recovered raw header:",
                           recovered.header.hex(),
@@ -4822,6 +5646,9 @@ jobs:
                           encoding="utf-8"
                       )
                   )
+
+              except SystemExit:
+                  raise
 
               except Exception as exc:
                   status.update({
@@ -4867,15 +5694,15 @@ jobs:
                       )
                   )
 
-              finally:
-                  sys.exit(0)
+                  raise
 
 
           if __name__ == "__main__":
               main()
           PY
 
-          exit 0
+          solver_rc=${PIPESTATUS[0]}
+          exit "$solver_rc"
 
       - name: Publish authoritative status
         if: always()
