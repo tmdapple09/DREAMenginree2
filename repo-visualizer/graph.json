@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16T06:01:13.481Z",
+  "generatedAt": "2026-07-16T06:20:38.293Z",
   "root": ".",
   "nodes": [
     {
@@ -2742,20 +2742,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
-      "label": "bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
+      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
+      "label": "bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
       "type": "config",
-      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
-      "label": "bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
-      "type": "config",
-      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_syntax_fixed.yml",
+      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
