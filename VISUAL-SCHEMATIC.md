@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2256
+- **Total files:** 2257
 - **Total function/class nodes:** 4827
 - **Total edges:** 8478
-- **Orphan nodes:** 4145
+- **Orphan nodes:** 4146
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -3943,6 +3943,7 @@ _File-level graph omitted: 366 files exceeds Mermaid render budget. See table ab
 | `.github/agents/newagent.agent.md` | doc |
 | `.github/agents/Spec-Engin HyperSICC.agent.md` | doc |
 | `.github/agents/videogameAi.md` | doc |
+| `.github/bitcoin_sha256d_4d_joint_inference_25_inputs.yml` | config |
 | `.github/copilot-instructions.md` | doc |
 | `.github/issue-triage/issue-552.md` | doc |
 | `.github/issue-triage/issue-556.md` | doc |

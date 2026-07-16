@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16T04:14:41.799Z",
+  "generatedAt": "2026-07-16T05:58:31.230Z",
   "root": ".",
   "nodes": [
     {
@@ -251,6 +251,16 @@
       "type": "doc",
       "path": ".github/agents/videogameAi.md",
       "parent": "folder:.github/agents",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:.github/bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
+      "label": "bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
+      "type": "config",
+      "path": ".github/bitcoin_sha256d_4d_joint_inference_25_inputs.yml",
+      "parent": "folder:.github",
       "loc": null,
       "isOrphan": true,
       "tags": []
