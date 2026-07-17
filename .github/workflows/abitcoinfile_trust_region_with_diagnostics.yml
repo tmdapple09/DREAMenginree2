@@ -1,4 +1,4 @@
-name: Bitcoin SHA-256d 4D Joint Inference
+name: ABitcoinFile
 
 # Hidden-coordinate 4D joint inference with adaptive protocol-path integration.
 # The 80-byte header remains the protocol container and the solver state contains
