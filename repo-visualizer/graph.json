@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T12:39:20.711Z",
+  "generatedAt": "2026-07-17T16:32:50.946Z",
   "root": ".",
   "nodes": [
     {
@@ -2732,10 +2732,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
-      "label": "abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
+      "id": "file:.github/workflows/abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
+      "label": "abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
       "type": "config",
-      "path": ".github/workflows/abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
+      "path": ".github/workflows/abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -2846,6 +2846,16 @@
       "label": "copilot-setup-steps.yml",
       "type": "config",
       "path": ".github/workflows/copilot-setup-steps.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/cuckoo_cycle_4d_joint_solver.yml",
+      "label": "cuckoo_cycle_4d_joint_solver.yml",
+      "type": "config",
+      "path": ".github/workflows/cuckoo_cycle_4d_joint_solver.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
