@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16T06:20:38.293Z",
+  "generatedAt": "2026-07-17T00:00:50.215Z",
   "root": ".",
   "nodes": [
     {
@@ -2652,6 +2652,16 @@
       "isOrphan": false
     },
     {
+      "id": "file:.github/workflows/256lr.yml",
+      "label": "256lr.yml",
+      "type": "config",
+      "path": ".github/workflows/256lr.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/DREAMengin-feature-tree.yml",
       "label": "DREAMengin-feature-tree.yml",
       "type": "config",
@@ -2742,10 +2752,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
-      "label": "bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
+      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
+      "label": "bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
       "type": "config",
-      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_frontier_fixed.yml",
+      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
