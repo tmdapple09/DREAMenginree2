@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T00:00:50.215Z",
+  "generatedAt": "2026-07-17T00:01:34.119Z",
   "root": ".",
   "nodes": [
     {
@@ -2650,6 +2650,16 @@
       "parent": "folder:.github",
       "loc": null,
       "isOrphan": false
+    },
+    {
+      "id": "file:.github/workflows/256inv.yml",
+      "label": "256inv.yml",
+      "type": "config",
+      "path": ".github/workflows/256inv.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
     },
     {
       "id": "file:.github/workflows/256lr.yml",
