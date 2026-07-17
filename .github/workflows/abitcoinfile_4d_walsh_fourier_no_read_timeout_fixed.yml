@@ -1,0 +1,2570 @@
+name: Bitcoin SHA-256d 4D Walsh-Fourier Joint PoW Inference
+run-name: Solve the 4D Walsh-Fourier PoW coordinate after ${{ inputs.anchor_height }}
+
+# The model preserves the 4D cell/slice/face/edge section operator and adds a
+# mathematically independent Walsh-Fourier PoW measurement on the 4D tesseract.
+# The SHA pullback and PoW spectral equation are solved simultaneously.
+#
+# Timestamp is a latent SHA input only. It is never forecast, copied, historically
+# targeted, equality-constrained, or used as a protocol inequality during the solve.
+# No candidate frontier, top-k selection, per-bit candidate enumeration, nonce loop,
+# trust radius, runtime cap, iteration cap, or minimum/maximum step is used.
+
+"on":
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: "Runner label"
+        required: false
+        default: "ubuntu-latest"
+        type: string
+
+      anchor_height:
+        description: "Last observed block height; tip/current uses the current tip"
+        required: false
+        default: "tip"
+        type: string
+
+      anchor_hash:
+        description: "Anchor displayed hash; auto derives it from anchor_height"
+        required: false
+        default: "auto"
+        type: string
+
+      api_base:
+        description: "Esplora-compatible Bitcoin mainnet API base"
+        required: false
+        default: "https://blockstream.info/api"
+        type: string
+
+      lambda_sha:
+        description: "Weight on exact SHA-256d pullback compatibility"
+        required: false
+        default: "1.0"
+        type: string
+
+      checkpoint_every:
+        description: "Write/print cadence only; not a solve limit"
+        required: false
+        default: "10"
+        type: string
+
+      artifact_name:
+        description: "Uploaded artifact name"
+        required: false
+        default: "bitcoin-sha256d-4d-walsh-fourier-joint-pow"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bitcoin-4d-walsh-fourier-joint-pow-${{ github.ref }}-${{ inputs.anchor_height }}
+  cancel-in-progress: false
+
+jobs:
+  infer:
+    runs-on: ${{ inputs.runner_label }}
+
+    env:
+      ANCHOR_HEIGHT_RAW: ${{ inputs.anchor_height }}
+      ANCHOR_HASH_RAW: ${{ inputs.anchor_hash }}
+      API_BASE: ${{ inputs.api_base }}
+      LAMBDA_SHA_RAW: ${{ inputs.lambda_sha }}
+      CHECKPOINT_EVERY_RAW: ${{ inputs.checkpoint_every }}
+      MODEL_REVISION: "2026-07-17-4d-walsh-fourier-pow-r5-no-read-timeout"
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install numerical dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "numpy>=2,<3"
+
+      - name: Run the full 4D Walsh-Fourier SHA-PoW path
+        id: solve
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY' 2>&1 | tee bitcoin_sha256d_4d_joint_console.log
+          from __future__ import annotations
+
+          import csv
+          import hashlib
+          import json
+          import math
+          import os
+          import statistics
+          import time
+          import traceback
+          import urllib.request
+          from dataclasses import asdict, dataclass
+          from itertools import combinations, product
+          from pathlib import Path
+          from typing import Any, Iterable, Optional, Sequence
+
+          import numpy as np
+
+          MODEL_REVISION = os.environ.get(
+              "MODEL_REVISION",
+              "2026-07-17-4d-walsh-fourier-pow-r5-no-read-timeout",
+          )
+          API_BASE = os.environ.get(
+              "API_BASE", "https://blockstream.info/api"
+          ).rstrip("/")
+          ANCHOR_HEIGHT_RAW = os.environ.get(
+              "ANCHOR_HEIGHT_RAW", "tip"
+          ).strip()
+          ANCHOR_HASH_RAW = os.environ.get(
+              "ANCHOR_HASH_RAW", "auto"
+          ).strip()
+          LAMBDA_SHA = float(os.environ.get("LAMBDA_SHA_RAW", "1.0"))
+          CHECKPOINT_EVERY = int(
+              os.environ.get("CHECKPOINT_EVERY_RAW", "10")
+          )
+
+          if not math.isfinite(LAMBDA_SHA) or LAMBDA_SHA <= 0.0:
+              raise ValueError("lambda_sha must be finite and positive")
+          if CHECKPOINT_EVERY <= 0:
+              raise ValueError("checkpoint_every must be positive")
+
+          MASK32 = 0xFFFFFFFF
+          HEADER_BYTES = 80
+          HEADER_BITS = 640
+          HEADER_CHUNKS = 16
+          CHUNK_BITS = 40
+          RETARGET_INTERVAL = 2016
+          TARGET_TIMESPAN = 14 * 24 * 60 * 60
+          HALVING_INTERVAL = 210_000
+          INITIAL_SUBSIDY_SATS = 50 * 100_000_000
+          MAINNET_POW_LIMIT_BITS = 0x1D00FFFF
+
+          FIELD_RANGES = {
+              "version": (0, 4),
+              "previous_hash": (4, 36),
+              "merkle_root": (36, 68),
+              "timestamp": (68, 72),
+              "bits": (72, 76),
+              "nonce": (76, 80),
+          }
+
+          # Previous hash and compact target are the next block's exact protocol
+          # coordinates. Every other header field remains latent. Timestamp is not
+          # treated differently from version, merkle root, or nonce.
+          LATENT_FIELDS = (
+              "version",
+              "merkle_root",
+              "timestamp",
+              "nonce",
+          )
+
+          TRACE_CSV = Path("bitcoin_sha256d_4d_joint_trace.csv")
+          UPDATES_CSV = Path("bitcoin_sha256d_4d_joint_updates.csv")
+          FOURIER_CSV = Path("bitcoin_sha256d_4d_walsh_fourier_modes.csv")
+          CHECKPOINT_JSON = Path("bitcoin_sha256d_4d_joint_checkpoint.json")
+          RESULT_JSON = Path("bitcoin_sha256d_next_joint_header.json")
+          STATUS_JSON = Path("bitcoin_sha256d_4d_joint_status.json")
+          MODEL_SPEC = Path("bitcoin_sha256d_4d_model_spec.txt")
+          WHERE_WRONG = Path("bitcoin_sha256d_where_it_went_wrong.txt")
+          PROTOCOL_CSV = Path("bitcoin_protocol_trajectory.csv")
+          TESSERACT_CSV = Path("bitcoin_sha256d_tesseract_slots.csv")
+          TRAJECTORY_SEED_CSV = Path(
+              "bitcoin_sha256d_full_header_trajectory_seed.csv"
+          )
+          FINAL_HEADER = Path("bitcoin_sha256d_next_header.hex")
+          REPORT = Path("bitcoin_sha256d_4d_joint_report.txt")
+
+          H0 = [
+              0x6A09E667,
+              0xBB67AE85,
+              0x3C6EF372,
+              0xA54FF53A,
+              0x510E527F,
+              0x9B05688C,
+              0x1F83D9AB,
+              0x5BE0CD19,
+          ]
+
+          K = [
+              0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
+              0x3956C25B, 0x59F111F1, 0x923F82A4, 0xAB1C5ED5,
+              0xD807AA98, 0x12835B01, 0x243185BE, 0x550C7DC3,
+              0x72BE5D74, 0x80DEB1FE, 0x9BDC06A7, 0xC19BF174,
+              0xE49B69C1, 0xEFBE4786, 0x0FC19DC6, 0x240CA1CC,
+              0x2DE92C6F, 0x4A7484AA, 0x5CB0A9DC, 0x76F988DA,
+              0x983E5152, 0xA831C66D, 0xB00327C8, 0xBF597FC7,
+              0xC6E00BF3, 0xD5A79147, 0x06CA6351, 0x14292967,
+              0x27B70A85, 0x2E1B2138, 0x4D2C6DFC, 0x53380D13,
+              0x650A7354, 0x766A0ABB, 0x81C2C92E, 0x92722C85,
+              0xA2BFE8A1, 0xA81A664B, 0xC24B8B70, 0xC76C51A3,
+              0xD192E819, 0xD6990624, 0xF40E3585, 0x106AA070,
+              0x19A4C116, 0x1E376C08, 0x2748774C, 0x34B0BCB5,
+              0x391C0CB3, 0x4ED8AA4A, 0x5B9CCA4F, 0x682E6FF3,
+              0x748F82EE, 0x78A5636F, 0x84C87814, 0x8CC70208,
+              0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2,
+          ]
+
+          INTERIOR_COORDS = sorted(product((1, 2), repeat=4))
+
+
+          def walsh_fourier_4d_basis(
+          ) -> tuple[tuple[str, ...], np.ndarray, float]:
+              """Return the normalized character table of the Boolean 4-cube."""
+              points = tuple(product((0, 1), repeat=4))
+              modes = tuple(product((0, 1), repeat=4))
+              matrix = np.asarray(
+                  [
+                      [
+                          (-1.0) ** sum(
+                              frequency[axis] * point[axis]
+                              for axis in range(4)
+                          )
+                          for point in points
+                      ]
+                      for frequency in modes
+                  ],
+                  dtype=np.float64,
+              ) / 4.0
+              if int(np.linalg.matrix_rank(matrix)) != 16:
+                  raise RuntimeError(
+                      "the normalized 4D Walsh-Fourier basis is singular"
+                  )
+              sign, log_abs_det = np.linalg.slogdet(matrix)
+              if sign == 0.0:
+                  raise RuntimeError(
+                      "the normalized 4D Walsh-Fourier determinant is zero"
+                  )
+              names = tuple(
+                  "walsh_" + "".join(str(value) for value in frequency)
+                  for frequency in modes
+              )
+              return names, matrix, float(math.exp(log_abs_det))
+
+
+          (
+              WALSH_MODE_NAMES,
+              WALSH_4D_MATRIX,
+              WALSH_4D_DETERMINANT_ABS,
+          ) = walsh_fourier_4d_basis()
+
+
+          @dataclass(frozen=True)
+          class RoundState:
+              round_index: int
+              schedule_word: int
+              state_in: tuple[int, ...]
+              state_out: tuple[int, ...]
+
+
+          @dataclass(frozen=True)
+          class CompressionTrace:
+              initial: tuple[int, ...]
+              schedule: tuple[int, ...]
+              rounds: tuple[RoundState, ...]
+              output: tuple[int, ...]
+
+
+          @dataclass(frozen=True)
+          class Compatibility:
+              state_edge_hamming: int
+              schedule_edge_hamming: int
+              pullback_header: bytes
+
+
+          @dataclass(frozen=True)
+          class HiddenSystem:
+              bit_indices: tuple[int, ...]
+              equation_names: tuple[str, ...]
+              operator: np.ndarray
+              rank: int
+              fourier_mode_names: tuple[str, ...]
+              fourier_operator: np.ndarray
+              fourier_rank: int
+              fourier_basis_determinant_abs: float
+
+
+          @dataclass(frozen=True)
+          class Evaluation:
+              header: bytes
+              digest_raw: bytes
+              displayed_hash: str
+              pow_value: int
+              target: int
+              pow_valid: bool
+              pow_log2_ratio: float
+              pow_projection_raw: bytes
+              digest_projection_hamming: int
+              compatibility: Compatibility
+              sha_energy: float
+              pow_energy: float
+              total_energy: float
+              timestamp: int
+              timestamp_mtp_valid: bool
+
+
+          @dataclass(frozen=True)
+          class Correction:
+              header: bytes
+              latent_values: tuple[float, ...]
+              correction_bits: int
+              direction_norm: float
+              latent_step_norm: float
+              predicted_reduction: float
+              sha_projection_error: float
+              pow_spectral_residual: float
+              pow_gradient_norm: float
+              fourier_mode_rank: int
+              fourier_basis_determinant_abs: float
+              operator_nonproportionality: float
+              joint_rank: int
+              fourier_probe_evaluations: int
+              fourier_contrasts: tuple[float, ...]
+              fourier_plus_pow: tuple[float, ...]
+              fourier_minus_pow: tuple[float, ...]
+              fourier_probe_scales: tuple[float, ...]
+              condition_number: float
+              max_direction_component: float
+
+
+          def emit(message: str = "") -> None:
+              print(message, flush=True)
+
+
+          def stable_vector_norm(values: np.ndarray) -> float:
+              """Euclidean/Frobenius norm without an overflowing raw dot."""
+              array = np.asarray(
+                  values, dtype=np.float64
+              ).ravel()
+              if array.size == 0:
+                  return 0.0
+              maximum = float(np.max(np.abs(array)))
+              if maximum == 0.0:
+                  return 0.0
+              if not math.isfinite(maximum):
+                  return maximum
+              scaled = array / maximum
+              return maximum * math.sqrt(
+                  float(np.dot(scaled, scaled))
+              )
+
+
+          def http_text(path: str) -> str:
+              """Read an API resource without a client-side read deadline.
+
+              Transient connection, server, throttling, and gateway failures are
+              retried without an attempt cap. Permanent HTTP errors are raised.
+              """
+              url = f"{API_BASE}/{path.lstrip('/')}"
+              attempt = 0
+
+              while True:
+                  request = urllib.request.Request(
+                      url,
+                      headers={
+                          "User-Agent": (
+                              "bitcoin-4d-walsh-fourier-joint-pow/1.0"
+                          )
+                      },
+                  )
+                  try:
+                      # Deliberately omit the timeout argument. The workflow does
+                      # not impose a client-side connect or read deadline.
+                      with urllib.request.urlopen(request) as response:
+                          return (
+                              response.read()
+                              .decode("utf-8")
+                              .strip()
+                          )
+                  except urllib.error.HTTPError as exc:
+                      if exc.code not in {
+                          408,
+                          425,
+                          429,
+                          500,
+                          502,
+                          503,
+                          504,
+                      }:
+                          raise
+                      attempt += 1
+                      emit(
+                          f"[network retry {attempt}] "
+                          f"path={path} http_status={exc.code}"
+                      )
+                      time.sleep(5)
+                  except (
+                      TimeoutError,
+                      urllib.error.URLError,
+                      ConnectionError,
+                      OSError,
+                  ) as exc:
+                      attempt += 1
+                      emit(
+                          f"[network retry {attempt}] "
+                          f"path={path} "
+                          f"error={type(exc).__name__}: {exc}"
+                      )
+                      time.sleep(5)
+
+
+          def http_json(path: str) -> Any:
+              return json.loads(http_text(path))
+
+
+          def resolve_anchor_height() -> int:
+              cleaned = ANCHOR_HEIGHT_RAW.lower()
+              if cleaned in {"", "tip", "current", "current_tip"}:
+                  return int(http_text("/blocks/tip/height"))
+              height = int(ANCHOR_HEIGHT_RAW)
+              if height < 2:
+                  raise ValueError(
+                      "anchor_height must be at least 2 for path curvature"
+                  )
+              return height
+
+
+          def resolve_hash(height: int) -> str:
+              cleaned = ANCHOR_HASH_RAW.lower()
+              if cleaned in {"", "auto", "derive", "from_height"}:
+                  return http_text(f"/block-height/{height}")
+              if len(cleaned) != 64:
+                  raise ValueError(
+                      "anchor_hash must contain exactly 64 hexadecimal characters"
+                  )
+              int(cleaned, 16)
+              return cleaned
+
+
+          def fetch_block(height: int) -> tuple[dict[str, Any], bytes]:
+              block_hash = http_text(f"/block-height/{height}")
+              metadata = dict(http_json(f"/block/{block_hash}"))
+              header_hex = http_text(f"/block/{block_hash}/header").lower()
+              if len(header_hex) != 160:
+                  raise RuntimeError(
+                      f"API returned an invalid header at height {height}"
+                  )
+              header = bytes.fromhex(header_hex)
+              if displayed_hash(header) != block_hash:
+                  raise RuntimeError(
+                      f"header/hash validation failed at height {height}"
+                  )
+              metadata.setdefault("id", block_hash)
+              metadata.setdefault("height", height)
+              return metadata, header
+
+
+          def rotr(value: int, amount: int) -> int:
+              return (
+                  (value >> amount)
+                  | (value << (32 - amount))
+              ) & MASK32
+
+
+          def small_sigma0(value: int) -> int:
+              return rotr(value, 7) ^ rotr(value, 18) ^ (value >> 3)
+
+
+          def small_sigma1(value: int) -> int:
+              return rotr(value, 17) ^ rotr(value, 19) ^ (value >> 10)
+
+
+          def big_sigma0(value: int) -> int:
+              return rotr(value, 2) ^ rotr(value, 13) ^ rotr(value, 22)
+
+
+          def big_sigma1(value: int) -> int:
+              return rotr(value, 6) ^ rotr(value, 11) ^ rotr(value, 25)
+
+
+          def choose(x: int, y: int, z: int) -> int:
+              return (x & y) ^ ((~x) & z)
+
+
+          def majority(x: int, y: int, z: int) -> int:
+              return (x & y) ^ (x & z) ^ (y & z)
+
+
+          def words_from_bytes(data: bytes) -> list[int]:
+              if len(data) % 4:
+                  raise ValueError(
+                      "word conversion requires a multiple of four bytes"
+                  )
+              return [
+                  int.from_bytes(data[index : index + 4], "big")
+                  for index in range(0, len(data), 4)
+              ]
+
+
+          def words_to_bytes(words: Sequence[int]) -> bytes:
+              return b"".join(
+                  (word & MASK32).to_bytes(4, "big")
+                  for word in words
+              )
+
+
+          def expand_schedule(block64: bytes) -> list[int]:
+              if len(block64) != 64:
+                  raise ValueError(
+                      "SHA-256 compression input must be exactly 64 bytes"
+                  )
+              schedule = words_from_bytes(block64)
+              for index in range(16, 64):
+                  schedule.append(
+                      (
+                          small_sigma1(schedule[index - 2])
+                          + schedule[index - 7]
+                          + small_sigma0(schedule[index - 15])
+                          + schedule[index - 16]
+                      )
+                      & MASK32
+                  )
+              return schedule
+
+
+          def compress(
+              initial: Sequence[int], block64: bytes
+          ) -> CompressionTrace:
+              schedule = expand_schedule(block64)
+              a, b, c, d, e, f, g, h = [
+                  value & MASK32 for value in initial
+              ]
+              rounds: list[RoundState] = []
+
+              for index in range(64):
+                  state_in = (a, b, c, d, e, f, g, h)
+                  t1 = (
+                      h
+                      + big_sigma1(e)
+                      + choose(e, f, g)
+                      + K[index]
+                      + schedule[index]
+                  ) & MASK32
+                  t2 = (
+                      big_sigma0(a) + majority(a, b, c)
+                  ) & MASK32
+                  state_out = (
+                      (t1 + t2) & MASK32,
+                      a,
+                      b,
+                      c,
+                      (d + t1) & MASK32,
+                      e,
+                      f,
+                      g,
+                  )
+                  rounds.append(
+                      RoundState(
+                          index,
+                          schedule[index],
+                          state_in,
+                          state_out,
+                      )
+                  )
+                  a, b, c, d, e, f, g, h = state_out
+
+              output = tuple(
+                  (initial[index] + value) & MASK32
+                  for index, value in enumerate(
+                      (a, b, c, d, e, f, g, h)
+                  )
+              )
+              return CompressionTrace(
+                  tuple(initial),
+                  tuple(schedule),
+                  tuple(rounds),
+                  output,
+              )
+
+
+          def sha256d_trace(
+              header: bytes,
+          ) -> tuple[
+              bytes,
+              tuple[
+                  CompressionTrace,
+                  CompressionTrace,
+                  CompressionTrace,
+              ],
+          ]:
+              if len(header) != HEADER_BYTES:
+                  raise ValueError(
+                      "Bitcoin header must contain exactly 80 bytes"
+                  )
+              block0 = header[:64]
+              block1 = (
+                  header[64:]
+                  + b"\x80"
+                  + b"\x00" * 39
+                  + (HEADER_BYTES * 8).to_bytes(8, "big")
+              )
+              trace0 = compress(H0, block0)
+              trace1 = compress(trace0.output, block1)
+              inner = words_to_bytes(trace1.output)
+              block2 = (
+                  inner
+                  + b"\x80"
+                  + b"\x00" * 23
+                  + (256).to_bytes(8, "big")
+              )
+              trace2 = compress(H0, block2)
+              return words_to_bytes(trace2.output), (
+                  trace0,
+                  trace1,
+                  trace2,
+              )
+
+
+          def independent_digest(header: bytes) -> bytes:
+              return hashlib.sha256(
+                  hashlib.sha256(header).digest()
+              ).digest()
+
+
+          def displayed_hash(header: bytes) -> str:
+              return independent_digest(header)[::-1].hex()
+
+
+          def inverse_round(
+              state_out: Sequence[int],
+              schedule_word: int,
+              round_index: int,
+          ) -> tuple[int, ...]:
+              ap, bp, cp, dp, ep, fp, gp, hp = [
+                  value & MASK32 for value in state_out
+              ]
+              a, b, c = bp, cp, dp
+              e, f, g = fp, gp, hp
+              t2 = (
+                  big_sigma0(a) + majority(a, b, c)
+              ) & MASK32
+              t1 = (ap - t2) & MASK32
+              d = (ep - t1) & MASK32
+              h = (
+                  t1
+                  - big_sigma1(e)
+                  - choose(e, f, g)
+                  - K[round_index]
+                  - schedule_word
+              ) & MASK32
+              return a, b, c, d, e, f, g, h
+
+
+          def backward_states(
+              trace: CompressionTrace,
+              desired_output: Sequence[int],
+          ) -> tuple[tuple[int, ...], ...]:
+              working_end = tuple(
+                  (
+                      desired_output[index]
+                      - trace.initial[index]
+                  )
+                  & MASK32
+                  for index in range(8)
+              )
+              states: list[Optional[tuple[int, ...]]] = [None] * 65
+              states[64] = working_end
+              for index in reversed(range(64)):
+                  states[index] = inverse_round(
+                      states[index + 1],  # type: ignore[arg-type]
+                      trace.schedule[index],
+                      index,
+                  )
+              return tuple(
+                  tuple(state)
+                  for state in states
+                  if state is not None
+              )
+
+
+          def required_schedule_word(
+              forward_state_in: Sequence[int],
+              desired_state_out: Sequence[int],
+              round_index: int,
+          ) -> int:
+              a, b, c, _d, e, f, g, h = [
+                  value & MASK32 for value in forward_state_in
+              ]
+              desired_a_out = desired_state_out[0] & MASK32
+              t2 = (
+                  big_sigma0(a) + majority(a, b, c)
+              ) & MASK32
+              required_t1 = (desired_a_out - t2) & MASK32
+              return (
+                  required_t1
+                  - h
+                  - big_sigma1(e)
+                  - choose(e, f, g)
+                  - K[round_index]
+              ) & MASK32
+
+
+          def hamming_word(left: int, right: int) -> int:
+              return (
+                  (left ^ right) & MASK32
+              ).bit_count()
+
+
+          def hamming_bytes(left: bytes, right: bytes) -> int:
+              if len(left) != len(right):
+                  raise ValueError(
+                      "hamming_bytes requires equal-length values"
+                  )
+              return sum(
+                  (a ^ b).bit_count()
+                  for a, b in zip(left, right)
+              )
+
+
+          def hamming_state(
+              left: Sequence[int], right: Sequence[int]
+          ) -> int:
+              return sum(
+                  hamming_word(a, b)
+                  for a, b in zip(left, right)
+              )
+
+
+          def derive_compatibility(
+              traces: tuple[
+                  CompressionTrace,
+                  CompressionTrace,
+                  CompressionTrace,
+              ],
+              projected_digest_raw: bytes,
+          ) -> Compatibility:
+              trace0, trace1, trace2 = traces
+              desired_digest_words = words_from_bytes(
+                  projected_digest_raw
+              )
+
+              backward2 = backward_states(
+                  trace2, desired_digest_words
+              )
+              required2 = tuple(
+                  required_schedule_word(
+                      trace2.rounds[index].state_in,
+                      backward2[index + 1],
+                      index,
+                  )
+                  for index in range(64)
+              )
+
+              desired_inner = required2[:8]
+              backward1 = backward_states(trace1, desired_inner)
+              required1 = tuple(
+                  required_schedule_word(
+                      trace1.rounds[index].state_in,
+                      backward1[index + 1],
+                      index,
+                  )
+                  for index in range(64)
+              )
+
+              desired_phase0_output = backward1[0]
+              backward0 = backward_states(
+                  trace0, desired_phase0_output
+              )
+              required0 = tuple(
+                  required_schedule_word(
+                      trace0.rounds[index].state_in,
+                      backward0[index + 1],
+                      index,
+                  )
+                  for index in range(64)
+              )
+
+              state_edge_hamming = 0
+              schedule_edge_hamming = 0
+              for trace, backward, required in (
+                  (trace0, backward0, required0),
+                  (trace1, backward1, required1),
+                  (trace2, backward2, required2),
+              ):
+                  forward_boundaries = (
+                      [trace.rounds[0].state_in]
+                      + [row.state_out for row in trace.rounds]
+                  )
+                  state_edge_hamming += sum(
+                      hamming_state(forward, wanted)
+                      for forward, wanted in zip(
+                          forward_boundaries, backward
+                      )
+                  )
+                  schedule_edge_hamming += sum(
+                      hamming_word(actual, wanted)
+                      for actual, wanted in zip(
+                          trace.schedule, required
+                      )
+                  )
+
+              pullback_header = (
+                  words_to_bytes(required0[:16])
+                  + words_to_bytes(required1[:4])
+              )
+              if len(pullback_header) != HEADER_BYTES:
+                  raise RuntimeError(
+                      "SHA pullback did not produce an 80-byte header"
+                  )
+              return Compatibility(
+                  state_edge_hamming,
+                  schedule_edge_hamming,
+                  pullback_header,
+              )
+
+
+          def compact_to_target(bits: int) -> int:
+              exponent = bits >> 24
+              mantissa = bits & 0x007FFFFF
+              if bits & 0x00800000:
+                  raise ValueError(
+                      "negative compact targets are invalid"
+                  )
+              if exponent <= 3:
+                  return mantissa >> (8 * (3 - exponent))
+              return mantissa << (8 * (exponent - 3))
+
+
+          def target_to_compact(target: int) -> int:
+              if target <= 0:
+                  raise ValueError("target must be positive")
+              size = (target.bit_length() + 7) // 8
+              if size <= 3:
+                  compact = target << (8 * (3 - size))
+              else:
+                  compact = target >> (8 * (size - 3))
+              compact &= 0xFFFFFF
+              if compact & 0x00800000:
+                  compact >>= 8
+                  size += 1
+              return (size << 24) | compact
+
+
+          def derive_next_bits(
+              anchor_height: int,
+              anchor_metadata: dict[str, Any],
+          ) -> int:
+              next_height = anchor_height + 1
+              current_bits = int(anchor_metadata["bits"])
+              if next_height % RETARGET_INTERVAL:
+                  return current_bits
+
+              epoch_start_height = (
+                  next_height - RETARGET_INTERVAL
+              )
+              epoch_start, _header = fetch_block(epoch_start_height)
+              actual_timespan = (
+                  int(anchor_metadata["timestamp"])
+                  - int(epoch_start["timestamp"])
+              )
+              clamped = min(
+                  max(actual_timespan, TARGET_TIMESPAN // 4),
+                  TARGET_TIMESPAN * 4,
+              )
+              previous_target = compact_to_target(current_bits)
+              pow_limit = compact_to_target(
+                  MAINNET_POW_LIMIT_BITS
+              )
+              next_target = min(
+                  pow_limit,
+                  previous_target * clamped // TARGET_TIMESPAN,
+              )
+              return target_to_compact(next_target)
+
+
+          def block_subsidy_sats(height: int) -> int:
+              if height < 0:
+                  raise ValueError("height must be nonnegative")
+              return INITIAL_SUBSIDY_SATS >> (
+                  height // HALVING_INTERVAL
+              )
+
+
+          def issued_before_height(height: int) -> int:
+              remaining = max(0, height)
+              total = 0
+              era = 0
+              while remaining:
+                  subsidy = INITIAL_SUBSIDY_SATS >> era
+                  if subsidy == 0:
+                      break
+                  count = min(remaining, HALVING_INTERVAL)
+                  total += count * subsidy
+                  remaining -= count
+                  era += 1
+              return total
+
+
+          def protocol_coordinate(height: int) -> dict[str, Any]:
+              subsidy = block_subsidy_sats(height)
+              issued = issued_before_height(height)
+              return {
+                  "height": height,
+                  "halving_era": height // HALVING_INTERVAL,
+                  "era_phase": (
+                      height % HALVING_INTERVAL
+                  ) / HALVING_INTERVAL,
+                  "subsidy_sats": subsidy,
+                  "subsidy_btc": subsidy / 100_000_000,
+                  "issued_before_sats": issued,
+                  "issued_before_btc": issued / 100_000_000,
+              }
+
+
+          def get_bit(data: bytes, bit: int) -> int:
+              byte_index, offset = divmod(bit, 8)
+              return (
+                  data[byte_index] >> (7 - offset)
+              ) & 1
+
+
+          def put_bit(
+              data: bytearray, bit: int, value: int
+          ) -> None:
+              byte_index, offset = divmod(bit, 8)
+              mask = 1 << (7 - offset)
+              if value:
+                  data[byte_index] |= mask
+              else:
+                  data[byte_index] &= ~mask
+
+
+          def field_bits(
+              field_names: Sequence[str],
+          ) -> set[int]:
+              result: set[int] = set()
+              for name in field_names:
+                  start, end = FIELD_RANGES[name]
+                  result.update(range(start * 8, end * 8))
+              return result
+
+
+          def hidden_values(
+              header: bytes, bit_indices: Sequence[int]
+          ) -> np.ndarray:
+              return np.asarray(
+                  [get_bit(header, bit) for bit in bit_indices],
+                  dtype=np.float64,
+              )
+
+
+          def materialize(
+              observation: bytes,
+              bit_indices: Sequence[int],
+              values: Sequence[int],
+          ) -> bytes:
+              result = bytearray(observation)
+              for bit, value in zip(bit_indices, values):
+                  put_bit(result, bit, int(value))
+              return bytes(result)
+
+
+          def build_next_observation(
+              anchor_header: bytes,
+              anchor_hash: str,
+              next_bits: int,
+              hidden: set[int],
+          ) -> bytes:
+              candidate = bytearray(anchor_header)
+              candidate[4:36] = bytes.fromhex(anchor_hash)[::-1]
+              candidate[72:76] = next_bits.to_bytes(4, "little")
+              for bit in hidden:
+                  put_bit(candidate, bit, 0)
+              return bytes(candidate)
+
+
+          def joint_section_system(
+          ) -> tuple[tuple[str, ...], np.ndarray]:
+              names: list[str] = []
+              rows: list[np.ndarray] = []
+
+              def add(
+                  name: str, selected_chunks: Iterable[int]
+              ) -> None:
+                  selected = tuple(sorted(set(selected_chunks)))
+                  if not selected:
+                      return
+                  row = np.zeros(
+                      HEADER_CHUNKS, dtype=np.float64
+                  )
+                  row[list(selected)] = 1.0
+                  row /= math.sqrt(float(len(selected)))
+                  names.append(name)
+                  rows.append(row)
+
+              add("complete_interior", range(HEADER_CHUNKS))
+
+              for index, coordinate in enumerate(
+                  INTERIOR_COORDS
+              ):
+                  add(f"cell_{coordinate}", [index])
+
+              for axis in range(4):
+                  for value in (1, 2):
+                      add(
+                          f"axis_{axis}_slice_{value}",
+                          [
+                              index
+                              for index, coordinate
+                              in enumerate(INTERIOR_COORDS)
+                              if coordinate[axis] == value
+                          ],
+                      )
+
+              for axis_a, axis_b in combinations(range(4), 2):
+                  for value_a in (1, 2):
+                      for value_b in (1, 2):
+                          add(
+                              (
+                                  f"face_{axis_a}_{axis_b}_"
+                                  f"{value_a}_{value_b}"
+                              ),
+                              [
+                                  index
+                                  for index, coordinate
+                                  in enumerate(INTERIOR_COORDS)
+                                  if (
+                                      coordinate[axis_a] == value_a
+                                      and coordinate[axis_b] == value_b
+                                  )
+                              ],
+                          )
+
+              for left in range(HEADER_CHUNKS):
+                  for right in range(left + 1, HEADER_CHUNKS):
+                      distance = sum(
+                          a != b
+                          for a, b in zip(
+                              INTERIOR_COORDS[left],
+                              INTERIOR_COORDS[right],
+                          )
+                      )
+                      if distance == 1:
+                          add(
+                              f"edge_{left}_{right}",
+                              [left, right],
+                          )
+
+              matrix = np.vstack(rows)
+              if (
+                  np.linalg.matrix_rank(matrix)
+                  != HEADER_CHUNKS
+              ):
+                  raise RuntimeError(
+                      "the complete 4D section operator is not full rank"
+                  )
+              return tuple(names), matrix
+
+
+          JOINT_NAMES, JOINT_MATRIX = joint_section_system()
+
+
+          def build_hidden_system(
+              hidden: set[int],
+          ) -> HiddenSystem:
+              bit_indices = tuple(sorted(hidden))
+              if not bit_indices:
+                  raise ValueError(
+                      "the next header must contain latent coordinates"
+                  )
+              column_by_bit = {
+                  bit: index
+                  for index, bit in enumerate(bit_indices)
+              }
+              names: list[str] = []
+              rows: list[np.ndarray] = []
+
+              for section_index, section_name in enumerate(
+                  JOINT_NAMES
+              ):
+                  selected_chunks = tuple(
+                      int(index)
+                      for index in np.flatnonzero(
+                          JOINT_MATRIX[section_index] != 0.0
+                      )
+                  )
+                  for plane in range(CHUNK_BITS):
+                      selected_columns = [
+                          column_by_bit[chunk * CHUNK_BITS + plane]
+                          for chunk in selected_chunks
+                          if (
+                              chunk * CHUNK_BITS + plane
+                              in column_by_bit
+                          )
+                      ]
+                      if not selected_columns:
+                          continue
+                      row = np.zeros(
+                          len(bit_indices), dtype=np.float64
+                      )
+                      row[selected_columns] = (
+                          1.0
+                          / math.sqrt(
+                              float(len(selected_columns))
+                          )
+                      )
+                      names.append(
+                          f"{section_name}:plane_{plane}"
+                      )
+                      rows.append(row)
+
+              operator = np.vstack(rows)
+              rank = int(np.linalg.matrix_rank(operator))
+              if rank != len(bit_indices):
+                  raise RuntimeError(
+                      "hidden 4D operator is rank deficient: "
+                      f"rank={rank} dimension={len(bit_indices)}"
+                  )
+
+              # Lift the 16 orthonormal Walsh characters on the 4-cube to every
+              # hidden bit carried by each 40-bit tesseract cell. Each lifted row is
+              # normalized after fixed protocol chunks have been removed.
+              fourier_rows = np.zeros(
+                  (len(WALSH_MODE_NAMES), len(bit_indices)),
+                  dtype=np.float64,
+              )
+              for mode_index in range(len(WALSH_MODE_NAMES)):
+                  for column, bit in enumerate(bit_indices):
+                      chunk = bit // CHUNK_BITS
+                      fourier_rows[mode_index, column] = (
+                          WALSH_4D_MATRIX[mode_index, chunk]
+                      )
+                  norm = float(
+                      np.linalg.norm(fourier_rows[mode_index])
+                  )
+                  if norm > 0.0:
+                      fourier_rows[mode_index] /= norm
+
+              fourier_rank = int(
+                  np.linalg.matrix_rank(fourier_rows)
+              )
+              if fourier_rank == 0:
+                  raise RuntimeError(
+                      "the hidden Walsh-Fourier lift has zero rank"
+                  )
+
+              return HiddenSystem(
+                  bit_indices=bit_indices,
+                  equation_names=tuple(names),
+                  operator=operator,
+                  rank=rank,
+                  fourier_mode_names=WALSH_MODE_NAMES,
+                  fourier_operator=fourier_rows,
+                  fourier_rank=fourier_rank,
+                  fourier_basis_determinant_abs=(
+                      WALSH_4D_DETERMINANT_ABS
+                  ),
+              )
+
+
+          def pow_projection(
+              digest_raw: bytes, target: int
+          ) -> tuple[int, bool, bytes, float]:
+              value = int.from_bytes(digest_raw, "little")
+              valid = value <= target
+              if valid:
+                  projected = digest_raw
+                  ratio = 0.0
+              else:
+                  projected = target.to_bytes(32, "little")
+                  ratio = math.log2(value / target)
+              return value, valid, projected, ratio
+
+
+          def pow_log_distance(
+              header: bytes, target: int
+          ) -> float:
+              digest_raw = independent_digest(header)
+              value = int.from_bytes(digest_raw, "little")
+              if value <= target:
+                  return 0.0
+              return math.log2(value / target)
+
+
+          def walsh_fourier_pow_gradient(
+              observation: bytes,
+              system: HiddenSystem,
+              latent: np.ndarray,
+              target: int,
+          ) -> tuple[
+              np.ndarray,
+              tuple[float, ...],
+              tuple[float, ...],
+              tuple[float, ...],
+              tuple[float, ...],
+          ]:
+              """Measure a full-state PoW spectral direction in the 4D Walsh basis.
+
+              Every mode produces one antipodal pair of complete hidden-header
+              projections around the current binary state. Probe geometry therefore
+              depends on the current projected header but not on the unbounded
+              magnitude of the continuous latent coordinates. No individual bit or
+              nonce is tested.
+              """
+              contrasts: list[float] = []
+              plus_values: list[float] = []
+              minus_values: list[float] = []
+              probe_scales: list[float] = []
+
+              current_bits = (
+                  np.asarray(latent, dtype=np.float64) >= 0.5
+              ).astype(np.int8)
+              current_spins = (
+                  2 * current_bits.astype(np.int16) - 1
+              )
+
+              for mode in system.fourier_operator:
+                  mode_signs = np.where(
+                      mode >= 0.0, 1, -1
+                  ).astype(np.int16)
+
+                  plus_spins = current_spins * mode_signs
+                  minus_spins = -plus_spins
+                  plus_bits = (
+                      (plus_spins + 1) // 2
+                  ).astype(np.int8)
+                  minus_bits = (
+                      (minus_spins + 1) // 2
+                  ).astype(np.int8)
+
+                  plus_header = materialize(
+                      observation,
+                      system.bit_indices,
+                      plus_bits,
+                  )
+                  minus_header = materialize(
+                      observation,
+                      system.bit_indices,
+                      minus_bits,
+                  )
+                  plus_distance = pow_log_distance(
+                      plus_header, target
+                  )
+                  minus_distance = pow_log_distance(
+                      minus_header, target
+                  )
+                  contrast = (
+                      plus_distance - minus_distance
+                  ) / 2.0
+
+                  contrasts.append(float(contrast))
+                  plus_values.append(float(plus_distance))
+                  minus_values.append(float(minus_distance))
+                  probe_scales.append(1.0)
+
+              contrast_vector = np.asarray(
+                  contrasts, dtype=np.float64
+              )
+              gradient, _residuals, _rank, _singular = np.linalg.lstsq(
+                  system.fourier_operator,
+                  contrast_vector,
+                  rcond=None,
+              )
+              if not np.all(np.isfinite(gradient)):
+                  raise RuntimeError(
+                      "Walsh-Fourier PoW spectral direction contains "
+                      "a non-finite value"
+                  )
+              return (
+                  gradient,
+                  tuple(contrasts),
+                  tuple(plus_values),
+                  tuple(minus_values),
+                  tuple(probe_scales),
+              )
+
+
+          def evaluate(
+              header: bytes,
+              target: int,
+              mtp: int,
+              system: HiddenSystem,
+          ) -> Evaluation:
+              digest_raw, traces = sha256d_trace(header)
+              if digest_raw != independent_digest(header):
+                  raise RuntimeError(
+                      "internal SHA-256d trace disagrees with hashlib"
+                  )
+
+              (
+                  pow_value,
+                  pow_valid,
+                  projected_digest,
+                  pow_log2_ratio,
+              ) = pow_projection(digest_raw, target)
+              compatibility = derive_compatibility(
+                  traces, projected_digest
+              )
+              digest_projection_hamming = hamming_bytes(
+                  digest_raw, projected_digest
+              )
+              sha_energy = float(
+                  compatibility.state_edge_hamming
+                  + compatibility.schedule_edge_hamming
+                  + digest_projection_hamming
+              )
+
+              # Only scalar proof-of-work distance is added here. No timestamp,
+              # nonce, merkle-root, version, or future-hash value is targeted.
+              pow_energy = float(pow_log2_ratio * pow_log2_ratio)
+              total_energy = LAMBDA_SHA * sha_energy + pow_energy
+
+              timestamp = int.from_bytes(
+                  header[68:72], "little"
+              )
+
+              return Evaluation(
+                  header=header,
+                  digest_raw=digest_raw,
+                  displayed_hash=digest_raw[::-1].hex(),
+                  pow_value=pow_value,
+                  target=target,
+                  pow_valid=pow_valid,
+                  pow_log2_ratio=pow_log2_ratio,
+                  pow_projection_raw=projected_digest,
+                  digest_projection_hamming=(
+                      digest_projection_hamming
+                  ),
+                  compatibility=compatibility,
+                  sha_energy=sha_energy,
+                  pow_energy=pow_energy,
+                  total_energy=total_energy,
+                  timestamp=timestamp,
+                  timestamp_mtp_valid=timestamp > mtp,
+              )
+
+
+          def solve_joint_direction(
+              evaluation: Evaluation,
+              observation: bytes,
+              system: HiddenSystem,
+              latent: np.ndarray,
+          ) -> Correction:
+              """Solve one simultaneous SHA + 4D Walsh-Fourier PoW equation."""
+              pullback_values = hidden_values(
+                  evaluation.compatibility.pullback_header,
+                  system.bit_indices,
+              )
+              sha_residual = pullback_values - latent
+              sha_sections = system.operator @ sha_residual
+
+              (
+                  pow_gradient,
+                  fourier_contrasts,
+                  fourier_plus_pow,
+                  fourier_minus_pow,
+                  fourier_probe_scales,
+              ) = walsh_fourier_pow_gradient(
+                  observation,
+                  system,
+                  latent,
+                  evaluation.target,
+              )
+              pow_gradient_norm = stable_vector_norm(
+                  pow_gradient
+              )
+
+              # Homogeneous block equilibration:
+              #
+              #   A_SHA delta = b_SHA
+              #   g^T delta   = -f
+              #
+              # Both sides of each full equation block use one common scale.
+              # This preserves its zero set and removes the singular f/||g||
+              # operation that caused infinite directions.
+              sha_scale = stable_vector_norm(
+                  system.operator
+              )
+              if sha_scale == 0.0:
+                  raise RuntimeError(
+                      "the complete 4D SHA operator has zero norm"
+                  )
+              sha_operator = (
+                  math.sqrt(LAMBDA_SHA)
+                  * system.operator
+                  / sha_scale
+              )
+              sha_target = (
+                  math.sqrt(LAMBDA_SHA)
+                  * sha_sections
+                  / sha_scale
+              )
+
+              pow_equation_scale = math.hypot(
+                  abs(evaluation.pow_log2_ratio),
+                  pow_gradient_norm,
+              )
+              if pow_equation_scale == 0.0:
+                  pow_equation_scale = 1.0
+
+              pow_row = (
+                  pow_gradient / pow_equation_scale
+              )[np.newaxis, :]
+              pow_target = np.asarray(
+                  [
+                      -evaluation.pow_log2_ratio
+                      / pow_equation_scale
+                  ],
+                  dtype=np.float64,
+              )
+
+              joint_operator = np.vstack(
+                  [sha_operator, pow_row]
+              )
+              joint_target = np.concatenate(
+                  [sha_target, pow_target]
+              )
+
+              (
+                  direction,
+                  _residuals,
+                  _rank,
+                  singular_values,
+              ) = np.linalg.lstsq(
+                  joint_operator, joint_target, rcond=None
+              )
+              if not np.all(np.isfinite(direction)):
+                  raise RuntimeError(
+                      "the equilibrated SHA/Walsh-Fourier direction "
+                      "contains a non-finite value"
+                  )
+
+              direction_norm = stable_vector_norm(direction)
+              if direction_norm == 0.0:
+                  raise RuntimeError(
+                      "the complete SHA/Walsh-Fourier equations reached "
+                      "an exact zero direction before proof of work"
+                  )
+
+              next_latent = latent + direction
+              if not np.all(np.isfinite(next_latent)):
+                  raise RuntimeError(
+                      "the persistent latent state became non-finite"
+                  )
+
+              binary_values = (
+                  next_latent >= 0.5
+              ).astype(np.int8)
+              current_binary = hidden_values(
+                  evaluation.header, system.bit_indices
+              ).astype(np.int8)
+              correction_bits = int(
+                  np.sum(binary_values != current_binary)
+              )
+              next_header = materialize(
+                  observation,
+                  system.bit_indices,
+                  binary_values,
+              )
+
+              modeled_before_norm = stable_vector_norm(
+                  joint_target
+              )
+              modeled_after_vector = (
+                  joint_operator @ direction - joint_target
+              )
+              modeled_after_norm = stable_vector_norm(
+                  modeled_after_vector
+              )
+              predicted_reduction = (
+                  modeled_before_norm * modeled_before_norm
+                  - modeled_after_norm * modeled_after_norm
+              )
+
+              sha_projection_error = stable_vector_norm(
+                  system.operator @ direction - sha_sections
+              )
+              pow_spectral_residual = float(
+                  abs(
+                      float(
+                          np.dot(
+                              pow_row.ravel(),
+                              direction,
+                          )
+                      )
+                      - float(pow_target[0])
+                  )
+              )
+
+              sha_normal = (
+                  sha_operator.T @ sha_operator
+              )
+              pow_normal = pow_row.T @ pow_row
+              denominator = float(
+                  np.sum(sha_normal * sha_normal)
+              )
+              alpha = (
+                  float(np.sum(pow_normal * sha_normal))
+                  / denominator
+                  if denominator > 0.0
+                  else 0.0
+              )
+              pow_normal_norm = stable_vector_norm(
+                  pow_normal
+              )
+              operator_nonproportionality = (
+                  stable_vector_norm(
+                      pow_normal - alpha * sha_normal
+                  )
+                  / pow_normal_norm
+                  if pow_normal_norm > 0.0
+                  else 0.0
+              )
+              joint_rank = int(
+                  np.linalg.matrix_rank(joint_operator)
+              )
+
+              if singular_values.size:
+                  largest = float(np.max(singular_values))
+                  smallest = float(np.min(singular_values))
+                  condition_number = (
+                      largest / smallest
+                      if smallest > 0.0
+                      else float("inf")
+                  )
+              else:
+                  condition_number = float("inf")
+
+              return Correction(
+                  header=next_header,
+                  latent_values=tuple(
+                      float(value) for value in next_latent
+                  ),
+                  correction_bits=correction_bits,
+                  direction_norm=direction_norm,
+                  latent_step_norm=stable_vector_norm(
+                      next_latent - latent
+                  ),
+                  predicted_reduction=predicted_reduction,
+                  sha_projection_error=sha_projection_error,
+                  pow_spectral_residual=pow_spectral_residual,
+                  pow_gradient_norm=pow_gradient_norm,
+                  fourier_mode_rank=system.fourier_rank,
+                  fourier_basis_determinant_abs=(
+                      system.fourier_basis_determinant_abs
+                  ),
+                  operator_nonproportionality=(
+                      operator_nonproportionality
+                  ),
+                  joint_rank=joint_rank,
+                  fourier_probe_evaluations=(
+                      2 * len(system.fourier_mode_names)
+                  ),
+                  fourier_contrasts=fourier_contrasts,
+                  fourier_plus_pow=fourier_plus_pow,
+                  fourier_minus_pow=fourier_minus_pow,
+                  fourier_probe_scales=(
+                      fourier_probe_scales
+                  ),
+                  condition_number=condition_number,
+                  max_direction_component=float(
+                      np.max(np.abs(direction))
+                  ),
+              )
+
+
+          def median_time_past(
+              metadata_rows: Sequence[dict[str, Any]],
+          ) -> int:
+              timestamps = [
+                  int(row["timestamp"])
+                  for row in metadata_rows[-11:]
+              ]
+              return int(statistics.median(timestamps))
+
+
+          def write_csv(
+              path: Path,
+              rows: Sequence[dict[str, Any]],
+              fieldnames: Optional[Sequence[str]] = None,
+          ) -> None:
+              if not rows and fieldnames is None:
+                  path.write_text("", encoding="utf-8")
+                  return
+              names = list(
+                  fieldnames
+                  if fieldnames is not None
+                  else rows[0].keys()
+              )
+              with path.open(
+                  "w", newline="", encoding="utf-8"
+              ) as handle:
+                  writer = csv.DictWriter(
+                      handle, fieldnames=names
+                  )
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def tesseract_rows() -> list[dict[str, Any]]:
+              all_coordinates = list(
+                  product(range(4), repeat=4)
+              )
+              interior = set(INTERIOR_COORDS)
+              surface = sorted(
+                  value
+                  for value in all_coordinates
+                  if value not in interior
+              )
+              rows: list[dict[str, Any]] = []
+              for index, coordinate in enumerate(
+                  INTERIOR_COORDS
+              ):
+                  rows.append(
+                      {
+                          "a": coordinate[0],
+                          "b": coordinate[1],
+                          "c": coordinate[2],
+                          "d": coordinate[3],
+                          "region": "interior_header",
+                          "slot": index,
+                          "semantic": (
+                              f"header_chunk_{index:02d}_"
+                              f"bits_{index * CHUNK_BITS}:"
+                              f"{(index + 1) * CHUNK_BITS}"
+                          ),
+                      }
+                  )
+              for index, coordinate in enumerate(surface):
+                  rows.append(
+                      {
+                          "a": coordinate[0],
+                          "b": coordinate[1],
+                          "c": coordinate[2],
+                          "d": coordinate[3],
+                          "region": "surface_constraint",
+                          "slot": index,
+                          "semantic": (
+                              f"sha_protocol_surface_{index}"
+                          ),
+                      }
+                  )
+              return rows
+
+
+          def write_model_spec() -> None:
+              MODEL_SPEC.write_text(
+                  """BITCOIN SHA-256d 4D WALSH-FOURIER JOINT PoW MODEL
+          ========================================================
+
+          Hidden state
+          ------------
+          Previous hash and compact target are hard visible protocol coordinates.
+          Version, merkle root, timestamp, and nonce form one joint latent vector z.
+
+          Timestamp rule
+          --------------
+          Timestamp is never forecast, copied from an anchor, supplied as a target,
+          compared with a historical timestamp, or constrained by median-time-past
+          during the solve. It participates only as an ordinary latent input to the
+          exact SHA-256d map. Median-time-past is reported after PoW as an audit.
+
+          4D cell/slice/face/edge SHA operator
+          ------------------------------------
+          S_H is the complete section operator over the sixteen 40-bit tesseract
+          cells, restricted to the hidden coordinates. Exact backward SHA-256d
+          compatibility produces the residual r_SHA:
+
+              b_SHA = S_H r_SHA.
+
+          4D Walsh-Fourier PoW operator
+          -----------------------------
+          W_4 is the normalized character table of the Boolean 4-cube:
+
+              W_4[omega, x] = (-1)^(omega dot x) / 4,
+              rank(W_4) = 16,
+              |det(W_4)| = 1.
+
+          Each character is lifted from the sixteen 4D cells to every hidden bit in
+          that cell. At the current binary projection, each mode defines two
+          antipodal complete hidden-header states. These 32 whole-state hashes
+          produce bounded spectral contrasts d:
+
+              d_omega = (f(header_plus_omega) - f(header_minus_omega)) / 2.
+
+          The minimum-norm spectral direction g satisfies
+
+              W_H g approximately equals d.
+
+          The full 16-by-16 Walsh basis has rank 16 and determinant magnitude 1.
+          Restricting it to chunks containing latent fields can reduce the lifted
+          hidden rank; both ranks are reported separately.
+
+          No bit or nonce is tested separately.
+
+          Joint equation
+          --------------
+          With f(z) = max(0, log2(uint256(SHA256d(z)) / T)), begin from
+
+              S_H delta = b_SHA,
+              g^T delta = -f(z).
+
+          Each complete equation block is divided on both sides by one homogeneous
+          norm scale before stacking. The PoW block uses
+
+              s_PoW = sqrt(f(z)^2 + ||g||_2^2),
+              (g^T / s_PoW) delta = -f(z) / s_PoW.
+
+          This preserves the equation's zero set and removes the singular
+          f(z)/||g|| operation that previously generated infinite directions. Then
+
+              z_next = z + delta,
+              header_next = 1[z_next >= 1/2].
+
+          The SHA operator already has full column rank. Therefore no additional
+          operator can increase the stacked column rank beyond dim(z). The correct
+          non-collapse test is that g_hat g_hat^T is not a scalar multiple of
+          S_H^T S_H. That nonproportionality is computed every iteration.
+
+          There is no duplicate operator, weighted midpoint target, historical
+          header continuation, PCA line, timestamp target, candidate frontier,
+          per-bit candidate enumeration, nonce interval, trust radius, runtime cap,
+          iteration cap, step floor, or step ceiling.
+
+          Completion
+          ----------
+          Completion requires independent hashlib verification of
+
+              uint256_little_endian(SHA256d(header)) <= T
+
+          with previous hash and compact target unchanged. Timestamp and its
+          median-time-past validity are reported only after that PoW coordinate is
+          produced; they do not participate in the solve or completion condition.
+          """,
+                  encoding="utf-8",
+              )
+
+
+          def write_protocol_rows(
+              anchor_height: int,
+              next_height: int,
+              next_bits: int,
+              anchor_hash: str,
+          ) -> None:
+              rows = []
+              for height in (
+                  max(0, anchor_height - 1),
+                  anchor_height,
+                  next_height,
+              ):
+                  coordinate = protocol_coordinate(height)
+                  coordinate.update(
+                      {
+                          "role": (
+                              "inferred_next"
+                              if height == next_height
+                              else "observed"
+                          ),
+                          "previous_hash_constraint": (
+                              anchor_hash
+                              if height == next_height
+                              else ""
+                          ),
+                          "bits_constraint": (
+                              f"{next_bits:08x}"
+                              if height == next_height
+                              else ""
+                          ),
+                      }
+                  )
+                  rows.append(coordinate)
+              write_csv(PROTOCOL_CSV, rows)
+
+
+          def write_trajectory_seed(
+              headers: Sequence[bytes],
+              heights: Sequence[int],
+              system: HiddenSystem,
+          ) -> None:
+              """Export observed header bits for audit only."""
+              rows: list[dict[str, Any]] = []
+              for coordinate, bit in enumerate(
+                  system.bit_indices
+              ):
+                  row: dict[str, Any] = {
+                      "coordinate": coordinate,
+                      "header_bit_index": bit,
+                      "chunk": bit // CHUNK_BITS,
+                      "bit_plane": bit % CHUNK_BITS,
+                      "used_as_solve_target": False,
+                  }
+                  for height, header in zip(heights, headers):
+                      row[f"observed_height_{height}"] = get_bit(
+                          header, bit
+                      )
+                  rows.append(row)
+              write_csv(TRAJECTORY_SEED_CSV, rows)
+
+
+          def write_checkpoint(
+              iteration: int,
+              evaluation: Evaluation,
+              correction: Optional[Correction],
+              anchor_height: int,
+              next_height: int,
+              next_bits: int,
+              mtp: int,
+              started: float,
+          ) -> None:
+              payload = {
+                  "model_revision": MODEL_REVISION,
+                  "iteration": iteration,
+                  "anchor_height": anchor_height,
+                  "next_height": next_height,
+                  "next_bits": f"{next_bits:08x}",
+                  "target_hex": f"{evaluation.target:064x}",
+                  "candidate_header_hex": (
+                      evaluation.header.hex()
+                  ),
+                  "candidate_displayed_hash": (
+                      evaluation.displayed_hash
+                  ),
+                  "pow_valid": evaluation.pow_valid,
+                  "pow_log2_ratio": (
+                      evaluation.pow_log2_ratio
+                  ),
+                  "timestamp_from_candidate": (
+                      evaluation.timestamp
+                  ),
+                  "timestamp_exact_target_used": False,
+                  "timestamp_historical_prior_used": False,
+                  "timestamp_protocol_constraint_used_in_solve": False,
+                  "timestamp_is_latent_sha_coordinate": True,
+                  "median_time_past": mtp,
+                  "timestamp_mtp_valid": (
+                      evaluation.timestamp_mtp_valid
+                  ),
+                  "sha_energy": evaluation.sha_energy,
+                  "pow_energy": evaluation.pow_energy,
+                  "total_energy": evaluation.total_energy,
+                  "elapsed_seconds": time.time() - started,
+                  "correction": (
+                      asdict(correction)
+                      if correction is not None
+                      else None
+                  ),
+              }
+              if correction is not None:
+                  payload["correction"]["header"] = (
+                      correction.header.hex()
+                  )
+              CHECKPOINT_JSON.write_text(
+                  json.dumps(payload, indent=2, sort_keys=True),
+                  encoding="utf-8",
+              )
+
+
+          def write_diagnostic(
+              status: dict[str, Any],
+              trace_rows: Sequence[dict[str, Any]],
+              error_text: Optional[str] = None,
+          ) -> None:
+              latest = trace_rows[-1] if trace_rows else {}
+              lines = [
+                  "BITCOIN SHA-256d — WHERE THE JOINT PATH WENT WRONG",
+                  "=" * 76,
+                  f"Model revision: {MODEL_REVISION}",
+                  "",
+                  "Model invariants",
+                  "----------------",
+                  "- User cell/slice/face/edge operator retained.",
+                  "- Exact SHA-256d forward trace and inverse-round pullback retained.",
+                  "- Previous hash and compact target enforced as hard protocol coordinates.",
+                  "- Normalized 4D Walsh basis rank 16 with |determinant| = 1.",
+                  "- PoW operator measured by 16 simultaneous plus/minus spectral modes.",
+                  "- Timestamp target/history prior/protocol constraint in solve: absent.",
+                  "- Known future hash: absent.",
+                  "- Runtime/iteration/step caps: absent.",
+                  "- Candidate branching/per-bit enumeration: absent.",
+                  "",
+                  "Latest recorded state",
+                  "---------------------",
+                  json.dumps(latest, indent=2, sort_keys=True),
+                  "",
+                  "Status",
+                  "------",
+                  json.dumps(status, indent=2, sort_keys=True),
+              ]
+              if error_text:
+                  lines.extend(
+                      [
+                          "",
+                          "Execution error",
+                          "---------------",
+                          error_text,
+                      ]
+                  )
+              WHERE_WRONG.write_text(
+                  "\n".join(lines) + "\n",
+                  encoding="utf-8",
+              )
+
+
+          def main() -> None:
+              started = time.time()
+              trace_rows: list[dict[str, Any]] = []
+              update_rows: list[dict[str, Any]] = []
+              fourier_rows: list[dict[str, Any]] = []
+              status: dict[str, Any] = {
+                  "completed": False,
+                  "model_revision": MODEL_REVISION,
+                  "objective": (
+                      "next_pow_coordinate_with_4d_walsh_fourier_math"
+                  ),
+                  "known_future_hash_used": False,
+                  "timestamp_exact_target_used": False,
+                  "timestamp_historical_prior_used": False,
+                  "timestamp_protocol_constraint_used_in_solve": False,
+                  "timestamp_is_latent_sha_coordinate": True,
+                  "pca_used": False,
+                  "candidate_branching_used": False,
+                  "per_bit_enumeration_used": False,
+                  "runtime_cap_used": False,
+                  "iteration_cap_used": False,
+                  "step_cap_used": False,
+              }
+
+              write_model_spec()
+              write_csv(TESSERACT_CSV, tesseract_rows())
+
+              try:
+                  anchor_height = resolve_anchor_height()
+                  supplied_anchor_hash = resolve_hash(
+                      anchor_height
+                  )
+
+                  history: list[
+                      tuple[dict[str, Any], bytes]
+                  ] = []
+                  start_height = max(0, anchor_height - 10)
+                  for height in range(
+                      start_height, anchor_height + 1
+                  ):
+                      history.append(fetch_block(height))
+
+                  anchor_metadata, anchor_header = history[-1]
+                  anchor_hash = str(anchor_metadata["id"])
+                  if anchor_hash != supplied_anchor_hash:
+                      raise ValueError(
+                          "anchor_hash does not match anchor_height"
+                      )
+
+                  if len(history) < 3:
+                      raise RuntimeError(
+                          "three observed headers are required"
+                      )
+
+                  older_header = history[-3][1]
+                  previous_header = history[-2][1]
+                  next_height = anchor_height + 1
+                  next_bits = derive_next_bits(
+                      anchor_height, anchor_metadata
+                  )
+                  target = compact_to_target(next_bits)
+                  mtp = median_time_past(
+                      [row[0] for row in history]
+                  )
+
+                  hidden = field_bits(LATENT_FIELDS)
+                  system = build_hidden_system(hidden)
+                  observation = build_next_observation(
+                      anchor_header,
+                      anchor_hash,
+                      next_bits,
+                      hidden,
+                  )
+
+                  # Neutral hidden state. No anchor timestamp, nonce, merkle root,
+                  # or version is copied into the latent path.
+                  initial_values = np.zeros(
+                      len(system.bit_indices), dtype=np.float64
+                  )
+                  initial_header = observation
+                  latent = initial_values.copy()
+
+                  write_protocol_rows(
+                      anchor_height,
+                      next_height,
+                      next_bits,
+                      anchor_hash,
+                  )
+                  write_trajectory_seed(
+                      (
+                          older_header,
+                          previous_header,
+                          anchor_header,
+                      ),
+                      (
+                          anchor_height - 2,
+                          anchor_height - 1,
+                          anchor_height,
+                      ),
+                      system,
+                  )
+
+                  current = evaluate(
+                      initial_header,
+                      target,
+                      mtp,
+                      system,
+                  )
+                  best = current
+                  iteration = 0
+                  last_correction: Optional[Correction] = None
+
+                  status.update(
+                      {
+                          "anchor_height": anchor_height,
+                          "anchor_hash": anchor_hash,
+                          "next_height": next_height,
+                          "next_bits": f"{next_bits:08x}",
+                          "target_hex": f"{target:064x}",
+                          "hidden_fields": list(LATENT_FIELDS),
+                          "hidden_dimension": len(
+                              system.bit_indices
+                          ),
+                          "joint_section_count": len(
+                              system.equation_names
+                          ),
+                          "joint_operator_rank": system.rank,
+                          "walsh_fourier_basis_rank": 16,
+                          "walsh_fourier_hidden_rank": (
+                              system.fourier_rank
+                          ),
+                          "walsh_fourier_basis_determinant_abs": (
+                              system.fourier_basis_determinant_abs
+                          ),
+                          "protocol_coordinate": (
+                              protocol_coordinate(next_height)
+                          ),
+                          "median_time_past_audit_value": mtp,
+                      }
+                  )
+
+                  emit(f"[model] revision={MODEL_REVISION}")
+                  emit(
+                      "[math] full_4d_cell_slice_face_edge=True "
+                      "walsh_fourier_4d=True exact_sha_pullback=True "
+                      "hard_protocol_coordinates=True"
+                  )
+                  emit(
+                      "[timestamp] forecast=False exact_target=False "
+                      "historical_prior=False protocol_constraint=False "
+                      "anchor_seed=False latent_sha_coordinate=True"
+                  )
+                  emit(
+                      f"[anchor] height={anchor_height} "
+                      f"hash={anchor_hash}"
+                  )
+                  emit(
+                      f"[next protocol] height={next_height} "
+                      f"bits={next_bits:08x} "
+                      f"subsidy_sats={block_subsidy_sats(next_height)} "
+                      f"issued_before_sats={issued_before_height(next_height)}"
+                  )
+                  emit(
+                      f"[state] hidden_dimension={len(system.bit_indices)} "
+                      f"sections={len(system.equation_names)} "
+                      f"rank={system.rank} "
+                      f"walsh_base_rank=16 "
+                      f"hidden_walsh_rank={system.fourier_rank} "
+                      f"walsh_det_abs={system.fourier_basis_determinant_abs:.6g}"
+                  )
+                  emit(
+                      f"[initial] energy={current.total_energy:.6f} "
+                      f"sha_energy={current.sha_energy:.6f} "
+                      f"pow_energy={current.pow_energy:.6f} "
+                      f"pow_log2_ratio={current.pow_log2_ratio:.6f}"
+                  )
+
+                  while True:
+                      # Proof of work and the exact hash emerge from the joint header.
+                      # Timestamp is decoded and audited only after PoW exists.
+                      if current.pow_valid:
+                          independent = independent_digest(
+                              current.header
+                          )
+                          independent_value = int.from_bytes(
+                              independent, "little"
+                          )
+                          if independent_value > target:
+                              raise RuntimeError(
+                                  "independent PoW validation failed"
+                              )
+                          if (
+                              current.header[4:36]
+                              != bytes.fromhex(anchor_hash)[::-1]
+                          ):
+                              raise RuntimeError(
+                                  "anchor linkage changed"
+                              )
+                          if (
+                              int.from_bytes(
+                                  current.header[72:76], "little"
+                              )
+                              != next_bits
+                          ):
+                              raise RuntimeError(
+                                  "compact target changed"
+                              )
+
+                          status.update(
+                              {
+                                  "completed": True,
+                                  "iterations": iteration,
+                                  "candidate_header_hex": (
+                                      current.header.hex()
+                                  ),
+                                  "candidate_displayed_hash": (
+                                      current.displayed_hash
+                                  ),
+                                  "pow_valid": True,
+                                  "timestamp_from_solved_header": (
+                                      current.timestamp
+                                  ),
+                                  "timestamp_mtp_valid": current.timestamp_mtp_valid,
+                                  "total_energy": (
+                                      current.total_energy
+                                  ),
+                                  "elapsed_seconds": (
+                                      time.time() - started
+                                  ),
+                              }
+                          )
+                          break
+
+                      base = current
+                      correction = solve_joint_direction(
+                          base,
+                          observation,
+                          system,
+                          latent,
+                      )
+                      last_correction = correction
+                      iteration += 1
+                      latent = np.asarray(
+                          correction.latent_values,
+                          dtype=np.float64,
+                      )
+                      candidate = evaluate(
+                          correction.header,
+                          target,
+                          mtp,
+                          system,
+                      )
+
+                      actual_reduction = (
+                          base.total_energy
+                          - candidate.total_energy
+                      )
+                      pow_ratio_reduction = (
+                          base.pow_log2_ratio
+                          - candidate.pow_log2_ratio
+                      )
+                      current = candidate
+
+                      if (
+                          current.pow_log2_ratio,
+                          current.total_energy,
+                      ) < (
+                          best.pow_log2_ratio,
+                          best.total_energy,
+                      ):
+                          best = current
+
+                      trace_rows.append(
+                          {
+                              "iteration": iteration,
+                              "candidate_header_hex": (
+                                  current.header.hex()
+                              ),
+                              "candidate_displayed_hash": (
+                                  current.displayed_hash
+                              ),
+                              "pow_valid": current.pow_valid,
+                              "pow_log2_ratio": (
+                                  current.pow_log2_ratio
+                              ),
+                              "pow_ratio_reduction": (
+                                  pow_ratio_reduction
+                              ),
+                              "timestamp_from_candidate": (
+                                  current.timestamp
+                              ),
+                              "timestamp_exact_target_used": False,
+                              "timestamp_historical_prior_used": False,
+                              "timestamp_protocol_constraint_used_in_solve": False,
+                              "timestamp_is_latent_sha_coordinate": True,
+                              "timestamp_mtp_valid": (
+                                  current.timestamp_mtp_valid
+                              ),
+                              "sha_energy": current.sha_energy,
+                              "pow_energy": (
+                                  current.pow_energy
+                              ),
+                              "total_energy": (
+                                  current.total_energy
+                              ),
+                              "predicted_reduction": (
+                                  correction.predicted_reduction
+                              ),
+                              "actual_reduction": (
+                                  actual_reduction
+                              ),
+                              "direction_norm": (
+                                  correction.direction_norm
+                              ),
+                              "latent_step_norm": (
+                                  correction.latent_step_norm
+                              ),
+                              "correction_bits": (
+                                  correction.correction_bits
+                              ),
+                              "sha_projection_error": (
+                                  correction.sha_projection_error
+                              ),
+                              "pow_spectral_residual": (
+                                  correction.pow_spectral_residual
+                              ),
+                              "pow_gradient_norm": (
+                                  correction.pow_gradient_norm
+                              ),
+                              "fourier_mode_rank": (
+                                  correction.fourier_mode_rank
+                              ),
+                              "fourier_basis_determinant_abs": (
+                                  correction.fourier_basis_determinant_abs
+                              ),
+                              "operator_nonproportionality": (
+                                  correction.operator_nonproportionality
+                              ),
+                              "joint_rank": correction.joint_rank,
+                              "fourier_probe_evaluations": (
+                                  correction.fourier_probe_evaluations
+                              ),
+                              "condition_number": (
+                                  correction.condition_number
+                              ),
+                              "max_direction_component": (
+                                  correction.max_direction_component
+                              ),
+                          }
+                      )
+                      for mode_index, mode_name in enumerate(
+                          system.fourier_mode_names
+                      ):
+                          fourier_rows.append(
+                              {
+                                  "iteration": iteration,
+                                  "mode_index": mode_index,
+                                  "mode_name": mode_name,
+                                  "contrast": (
+                                      correction.fourier_contrasts[
+                                          mode_index
+                                      ]
+                                  ),
+                                  "plus_pow_log2_ratio": (
+                                      correction.fourier_plus_pow[
+                                          mode_index
+                                      ]
+                                  ),
+                                  "minus_pow_log2_ratio": (
+                                      correction.fourier_minus_pow[
+                                          mode_index
+                                      ]
+                                  ),
+                                  "probe_scale": (
+                                      correction.fourier_probe_scales[
+                                          mode_index
+                                      ]
+                                  ),
+                                  "timestamp_target": False,
+                                  "per_bit_candidate": False,
+                              }
+                          )
+
+                      update_rows.append(
+                          {
+                              "iteration": iteration,
+                              "latent_advanced": (
+                                  correction.latent_step_norm > 0.0
+                              ),
+                              "binary_projection_changed": (
+                                  correction.correction_bits > 0
+                              ),
+                              "full_joint_solution": True,
+                              "coordinate_trials": 0,
+                              "candidate_branches": 0,
+                              "per_bit_enumeration": False,
+                              "walsh_fourier_modes": len(
+                                  system.fourier_mode_names
+                              ),
+                              "fourier_probe_evaluations": (
+                                  correction.fourier_probe_evaluations
+                              ),
+                          }
+                      )
+
+                      if (
+                          iteration == 1
+                          or iteration % CHECKPOINT_EVERY == 0
+                      ):
+                          emit(
+                              f"[joint iteration {iteration}] "
+                              "full_joint_solution=True "
+                              f"direction_norm={correction.direction_norm:.6g} "
+                              f"latent_step_norm={correction.latent_step_norm:.6g} "
+                              f"correction_bits={correction.correction_bits} "
+                              f"predicted_reduction={correction.predicted_reduction:.6g} "
+                              f"actual_reduction={actual_reduction:.6g} "
+                              f"pow_delta={pow_ratio_reduction:.6g} "
+                              f"pow_log2_ratio={current.pow_log2_ratio:.6g} "
+                              f"energy={current.total_energy:.6f} "
+                              f"pow_gradient_norm={correction.pow_gradient_norm:.6g} "
+                              f"pow_spectral_residual={correction.pow_spectral_residual:.6g} "
+                              f"walsh_base_rank=16 "
+                              f"hidden_walsh_rank={correction.fourier_mode_rank} "
+                              f"walsh_det_abs={correction.fourier_basis_determinant_abs:.6g} "
+                              f"operator_nonproportionality={correction.operator_nonproportionality:.6g} "
+                              f"joint_rank={correction.joint_rank} "
+                              "timestamp_target=False timestamp_prior=False"
+                          )
+                          write_csv(TRACE_CSV, trace_rows)
+                          write_csv(UPDATES_CSV, update_rows)
+                          write_csv(FOURIER_CSV, fourier_rows)
+                          write_checkpoint(
+                              iteration,
+                              current,
+                              correction,
+                              anchor_height,
+                              next_height,
+                              next_bits,
+                              mtp,
+                              started,
+                          )
+                          write_diagnostic(
+                              status, trace_rows
+                          )
+
+                  FINAL_HEADER.write_text(
+                      current.header.hex() + "\n",
+                      encoding="utf-8",
+                  )
+                  RESULT_JSON.write_text(
+                      json.dumps(
+                          {
+                              "model_revision": MODEL_REVISION,
+                              "anchor_height": anchor_height,
+                              "anchor_hash": anchor_hash,
+                              "next_height": next_height,
+                              "next_protocol_coordinate": (
+                                  protocol_coordinate(next_height)
+                              ),
+                              "header_hex": (
+                                  current.header.hex()
+                              ),
+                              "displayed_hash": (
+                                  current.displayed_hash
+                              ),
+                              "pow_target_hex": (
+                                  f"{target:064x}"
+                              ),
+                              "pow_valid": (
+                                  current.pow_valid
+                              ),
+                              "version": int.from_bytes(
+                                  current.header[0:4], "little"
+                              ),
+                              "previous_hash": (
+                                  current.header[4:36][::-1].hex()
+                              ),
+                              "merkle_root": (
+                                  current.header[36:68][::-1].hex()
+                              ),
+                              "timestamp": current.timestamp,
+                              "timestamp_exact_target_used": False,
+                              "timestamp_historical_prior_used": False,
+                              "timestamp_protocol_constraint_used_in_solve": False,
+                              "timestamp_is_latent_sha_coordinate": True,
+                              "median_time_past": mtp,
+                              "timestamp_mtp_valid": (
+                                  current.timestamp_mtp_valid
+                              ),
+                              "bits": int.from_bytes(
+                                  current.header[72:76], "little"
+                              ),
+                              "nonce": int.from_bytes(
+                                  current.header[76:80], "little"
+                              ),
+                              "iterations": iteration,
+                          },
+                          indent=2,
+                          sort_keys=True,
+                      ),
+                      encoding="utf-8",
+                  )
+                  write_csv(TRACE_CSV, trace_rows)
+                  write_csv(UPDATES_CSV, update_rows)
+                  write_csv(FOURIER_CSV, fourier_rows)
+                  write_checkpoint(
+                      iteration,
+                      current,
+                      last_correction,
+                      anchor_height,
+                      next_height,
+                      next_bits,
+                      mtp,
+                      started,
+                  )
+
+                  status.update(
+                      {
+                          "best_header_hex": best.header.hex(),
+                          "best_displayed_hash": (
+                              best.displayed_hash
+                          ),
+                          "best_pow_log2_ratio": (
+                              best.pow_log2_ratio
+                          ),
+                          "best_total_energy": (
+                              best.total_energy
+                          ),
+                      }
+                  )
+                  STATUS_JSON.write_text(
+                      json.dumps(
+                          status, indent=2, sort_keys=True
+                      ),
+                      encoding="utf-8",
+                  )
+
+                  REPORT.write_text(
+                      "\n".join(
+                          [
+                              "BITCOIN SHA-256d 4D WALSH-FOURIER JOINT PoW RESULT",
+                              "=" * 72,
+                              f"Model revision: {MODEL_REVISION}",
+                              f"Anchor height: {anchor_height}",
+                              f"Anchor hash: {anchor_hash}",
+                              f"Next height: {next_height}",
+                              f"Next bits: {next_bits:08x}",
+                              f"Header: {current.header.hex()}",
+                              f"Hash: {current.displayed_hash}",
+                              f"PoW valid: {current.pow_valid}",
+                              f"Timestamp from solved header: {current.timestamp}",
+                              "Timestamp exact target used: False",
+                              "Timestamp historical prior used: False",
+                              "Timestamp protocol constraint used in solve: False",
+                              f"Median-time-past audit: {mtp}",
+                              f"Timestamp MTP valid: {current.timestamp_mtp_valid}",
+                              f"Iterations: {iteration}",
+                          ]
+                      )
+                      + "\n",
+                      encoding="utf-8",
+                  )
+                  write_diagnostic(status, trace_rows)
+                  emit(REPORT.read_text(encoding="utf-8"))
+
+              except Exception:
+                  error_text = traceback.format_exc()
+                  status.update(
+                      {
+                          "completed": False,
+                          "error": error_text,
+                          "elapsed_seconds": (
+                              time.time() - started
+                          ),
+                      }
+                  )
+                  STATUS_JSON.write_text(
+                      json.dumps(
+                          status, indent=2, sort_keys=True
+                      ),
+                      encoding="utf-8",
+                  )
+                  write_csv(
+                      TRACE_CSV,
+                      trace_rows,
+                      fieldnames=(
+                          list(trace_rows[0].keys())
+                          if trace_rows
+                          else (
+                              "iteration",
+                              "candidate_header_hex",
+                              "candidate_displayed_hash",
+                              "pow_valid",
+                              "pow_log2_ratio",
+                          )
+                      ),
+                  )
+                  write_csv(
+                      UPDATES_CSV,
+                      update_rows,
+                      fieldnames=(
+                          list(update_rows[0].keys())
+                          if update_rows
+                          else (
+                              "iteration",
+                              "latent_advanced",
+                              "binary_projection_changed",
+                              "full_joint_solution",
+                          )
+                      ),
+                  )
+                  write_csv(FOURIER_CSV, fourier_rows)
+                  write_diagnostic(
+                      status, trace_rows, error_text
+                  )
+                  raise
+
+
+          if __name__ == "__main__":
+              main()
+          PY
+
+      - name: Publish model summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Bitcoin SHA-256d 4D Walsh-Fourier Joint PoW Inference"
+            echo
+            if [[ -f bitcoin_sha256d_4d_joint_report.txt ]]; then
+              cat bitcoin_sha256d_4d_joint_report.txt
+            elif [[ -f bitcoin_sha256d_where_it_went_wrong.txt ]]; then
+              sed -n '1,180p' bitcoin_sha256d_where_it_went_wrong.txt
+            else
+              echo "No report was produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload all mathematical evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            bitcoin_sha256d_4d_joint_console.log
+            bitcoin_sha256d_4d_joint_trace.csv
+            bitcoin_sha256d_4d_joint_updates.csv
+            bitcoin_sha256d_4d_walsh_fourier_modes.csv
+            bitcoin_sha256d_4d_joint_checkpoint.json
+            bitcoin_sha256d_next_joint_header.json
+            bitcoin_sha256d_4d_joint_status.json
+            bitcoin_sha256d_4d_model_spec.txt
+            bitcoin_sha256d_where_it_went_wrong.txt
+            bitcoin_protocol_trajectory.csv
+            bitcoin_sha256d_tesseract_slots.csv
+            bitcoin_sha256d_full_header_trajectory_seed.csv
+            bitcoin_sha256d_next_header.hex
+            bitcoin_sha256d_4d_joint_report.txt
