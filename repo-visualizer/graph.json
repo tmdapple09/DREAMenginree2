@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T17:35:34.605Z",
+  "generatedAt": "2026-07-17T17:42:41.058Z",
   "root": ".",
   "nodes": [
     {
@@ -2846,16 +2846,6 @@
       "label": "cuckoo_cycle_4d_joint_solver.yml",
       "type": "config",
       "path": ".github/workflows/cuckoo_cycle_4d_joint_solver.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/cuckoo_cycle_4d_true_joint_constraint_solver.yml",
-      "label": "cuckoo_cycle_4d_true_joint_constraint_solver.yml",
-      "type": "config",
-      "path": ".github/workflows/cuckoo_cycle_4d_true_joint_constraint_solver.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
