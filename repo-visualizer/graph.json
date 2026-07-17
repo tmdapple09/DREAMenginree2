@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T00:42:02.117Z",
+  "generatedAt": "2026-07-17T02:18:36.334Z",
   "root": ".",
   "nodes": [
     {
@@ -2766,16 +2766,6 @@
       "label": "basecode.yml",
       "type": "config",
       "path": ".github/workflows/basecode.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
-      "label": "bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
-      "type": "config",
-      "path": ".github/workflows/bitcoin_sha256d_4d_joint_inference_hidden_coordinate_path.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
