@@ -1,0 +1,262 @@
+name: SHA-256 Inverted 36-Step Chain
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: Input text
+        required: true
+        default: abc
+        type: string
+
+jobs:
+  run-hash-chain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run 36-step hash chain
+        shell: bash
+        env:
+          INPUT_MESSAGE: ${{ inputs.message }}
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import os
+          import struct
+
+          M = 0xFFFFFFFF
+
+          K = [
+              0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+              0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+              0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+              0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+              0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+              0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+              0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+              0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+              0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+              0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+              0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+              0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+              0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+              0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+              0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+              0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+          ]
+
+          H0 = [
+              0x6a09e667,
+              0xbb67ae85,
+              0x3c6ef372,
+              0xa54ff53a,
+              0x510e527f,
+              0x9b05688c,
+              0x1f83d9ab,
+              0x5be0cd19,
+          ]
+
+          K_INV = [0xFFFFFFFF - value for value in K]
+
+
+          def sha256(message):
+              return hashlib.sha256(message).digest()
+
+
+          def rotl(value, amount):
+              return (
+                  (value << amount)
+                  | (value >> (32 - amount))
+              ) & M
+
+
+          def nand(x, y):
+              return (~(x & y)) & M
+
+
+          def xnor(x, y):
+              return (~(x ^ y)) & M
+
+
+          def sub(x, y):
+              return (x - y) & M
+
+
+          def pad(message):
+              bit_length = len(message) * 8
+              padded = bytearray(message)
+
+              padded.append(0x80)
+
+              while len(padded) % 64 != 56:
+                  padded.append(0)
+
+              padded += struct.pack(">Q", bit_length)
+              return bytes(padded)
+
+
+          def Ch_inv(e, f, g):
+              return xnor(
+                  nand(e, f),
+                  nand(e, g),
+              )
+
+
+          def Maj_inv(a, b, c):
+              return xnor(
+                  xnor(
+                      nand(a, b),
+                      nand(a, c),
+                  ),
+                  nand(b, c),
+              )
+
+
+          def Sig0_inv(a):
+              return xnor(
+                  xnor(
+                      rotl(a, 2),
+                      rotl(a, 13),
+                  ),
+                  rotl(a, 22),
+              )
+
+
+          def Sig1_inv(e):
+              return xnor(
+                  xnor(
+                      rotl(e, 6),
+                      rotl(e, 11),
+                  ),
+                  rotl(e, 25),
+              )
+
+
+          def sig0_inv(x):
+              return xnor(
+                  xnor(
+                      rotl(x, 7),
+                      rotl(x, 18),
+                  ),
+                  (x << 3) & M,
+              )
+
+
+          def sig1_inv(x):
+              return xnor(
+                  xnor(
+                      rotl(x, 17),
+                      rotl(x, 19),
+                  ),
+                  (x << 10) & M,
+              )
+
+
+          def sha256_inv(message):
+              data = pad(message)
+              H = list(H0)
+
+              for block_start in range(0, len(data), 64):
+                  W = list(
+                      struct.unpack(
+                          ">16I",
+                          data[block_start:block_start + 64],
+                      )
+                  )
+
+                  for t in range(16, 64):
+                      W.append(
+                          sub(
+                              sub(
+                                  sub(
+                                      sig1_inv(W[t - 2]),
+                                      W[t - 7],
+                                  ),
+                                  sig0_inv(W[t - 15]),
+                              ),
+                              W[t - 16],
+                          )
+                      )
+
+                  a, b, c, d, e, f, g, h = H
+
+                  for t in range(64):
+                      T1 = sub(
+                          sub(
+                              sub(
+                                  sub(
+                                      h,
+                                      Sig1_inv(e),
+                                  ),
+                                  Ch_inv(e, f, g),
+                              ),
+                              K_INV[t],
+                          ),
+                          W[t],
+                      )
+
+                      T2 = sub(
+                          Sig0_inv(a),
+                          Maj_inv(a, b, c),
+                      )
+
+                      h = g
+                      g = f
+                      f = e
+                      e = sub(d, T1)
+                      d = c
+                      c = b
+                      b = a
+                      a = sub(T1, T2)
+
+                  working_state = [a, b, c, d, e, f, g, h]
+
+                  H = [
+                      sub(H[index], value)
+                      for index, value in enumerate(working_state)
+                  ]
+
+              return struct.pack(">8I", *H)
+
+
+          def run_36_steps(data):
+              value = data
+              step = 0
+
+              print(f"Input: {data!r}")
+              print()
+
+              for round_number in range(1, 13):
+                  value = sha256(value)
+                  step += 1
+                  print(
+                      f"Step {step:02d} | "
+                      f"Round {round_number:02d} | "
+                      f"SHA-256         : {value.hex()}"
+                  )
+
+                  value = sha256_inv(value)
+                  step += 1
+                  print(
+                      f"Step {step:02d} | "
+                      f"Round {round_number:02d} | "
+                      f"Inverted SHA-256: {value.hex()}"
+                  )
+
+                  value = sha256(value)
+                  step += 1
+                  print(
+                      f"Step {step:02d} | "
+                      f"Round {round_number:02d} | "
+                      f"SHA-256         : {value.hex()}"
+                  )
+
+              print()
+              print(f"Final result: {value.hex()}")
+
+              return value
+
+
+          input_data = os.environ["INPUT_MESSAGE"].encode("utf-8")
+          run_36_steps(input_data)
+          PY
