@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T06:06:12.870Z",
+  "generatedAt": "2026-07-17T10:38:56.572Z",
   "root": ".",
   "nodes": [
     {
@@ -2726,6 +2726,16 @@
       "label": "VOCAB.yml",
       "type": "config",
       "path": ".github/workflows/VOCAB.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
+      "label": "abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
+      "type": "config",
+      "path": ".github/workflows/abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
