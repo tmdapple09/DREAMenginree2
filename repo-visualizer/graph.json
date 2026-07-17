@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T16:32:50.946Z",
+  "generatedAt": "2026-07-17T17:35:34.605Z",
   "root": ".",
   "nodes": [
     {
@@ -2732,16 +2732,6 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
-      "label": "abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
-      "type": "config",
-      "path": ".github/workflows/abitcoinfile_4d_joint_spectral_no_candidate_probes_fixed.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:.github/workflows/abitcoinfile_trust_region_with_diagnostics.yml",
       "label": "abitcoinfile_trust_region_with_diagnostics.yml",
       "type": "config",
@@ -2856,6 +2846,16 @@
       "label": "cuckoo_cycle_4d_joint_solver.yml",
       "type": "config",
       "path": ".github/workflows/cuckoo_cycle_4d_joint_solver.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/cuckoo_cycle_4d_true_joint_constraint_solver.yml",
+      "label": "cuckoo_cycle_4d_true_joint_constraint_solver.yml",
+      "type": "config",
+      "path": ".github/workflows/cuckoo_cycle_4d_true_joint_constraint_solver.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
