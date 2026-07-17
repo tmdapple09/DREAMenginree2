@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T02:57:34.421Z",
+  "generatedAt": "2026-07-17T02:58:51.071Z",
   "root": ".",
   "nodes": [
     {
@@ -2736,6 +2736,16 @@
       "label": "abitcoinfile_trust_region_with_diagnostics.yml",
       "type": "config",
       "path": ".github/workflows/abitcoinfile_trust_region_with_diagnostics.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/abitcoinfile_unbounded_joint_path.yml",
+      "label": "abitcoinfile_unbounded_joint_path.yml",
+      "type": "config",
+      "path": ".github/workflows/abitcoinfile_unbounded_joint_path.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
