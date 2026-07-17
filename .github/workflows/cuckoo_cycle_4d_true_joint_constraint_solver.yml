@@ -1,0 +1,1496 @@
+name: Cuckoo Cycle 4D Joint Constraint Solver
+run-name: Jointly solve Cuckoo ${{ inputs.proof_size }}-cycle at edge_bits=${{ inputs.edge_bits }}
+
+"on":
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: "GitHub runner label"
+        required: false
+        default: "ubuntu-latest"
+        type: string
+
+      header_text:
+        description: "Graph header/key material"
+        required: false
+        default: "cuckoo-cycle-4d-joint-graph"
+        type: string
+
+      header_hex:
+        description: "Optional hexadecimal header bytes; overrides header_text"
+        required: false
+        default: ""
+        type: string
+
+      edge_bits:
+        description: "log2(number of graph edges)"
+        required: false
+        default: "20"
+        type: string
+
+      proof_size:
+        description: "Required even cycle length"
+        required: false
+        default: "42"
+        type: string
+
+      graph_nonce_start:
+        description: "First 64-bit graph nonce"
+        required: false
+        default: "0"
+        type: string
+
+      artifact_name:
+        description: "Uploaded result artifact"
+        required: false
+        default: "cuckoo-cycle-4d-joint-solution"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cuckoo-cycle-4d-${{ github.ref }}-${{ inputs.header_text }}-${{ inputs.edge_bits }}-${{ inputs.proof_size }}
+  cancel-in-progress: false
+
+jobs:
+  solve:
+    runs-on: ${{ inputs.runner_label }}
+
+    env:
+      HEADER_TEXT: ${{ inputs.header_text }}
+      HEADER_HEX: ${{ inputs.header_hex }}
+      EDGE_BITS: ${{ inputs.edge_bits }}
+      PROOF_SIZE: ${{ inputs.proof_size }}
+      GRAPH_NONCE_START: ${{ inputs.graph_nonce_start }}
+      MODEL_REVISION: "2026-07-17-cuckoo-cycle-4d-constraint-r2"
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install numerical dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "numpy>=2,<3" "ortools>=9.10,<10"
+
+      - name: Solve the complete Cuckoo graph
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY' 2>&1 | tee cuckoo_cycle_console.log
+          from __future__ import annotations
+
+          import csv
+          import hashlib
+          import json
+          import math
+          import os
+          import time
+          from collections import defaultdict
+          from textwrap import dedent
+          from dataclasses import dataclass
+          from pathlib import Path
+          from typing import Any, Iterable, Sequence
+
+          import numpy as np
+          from ortools.sat.python import cp_model
+
+          MODEL_REVISION = os.environ.get(
+              "MODEL_REVISION",
+              "2026-07-17-cuckoo-cycle-4d-constraint-r2",
+          )
+          HEADER_TEXT = os.environ.get(
+              "HEADER_TEXT", "cuckoo-cycle-4d-joint-graph"
+          )
+          HEADER_HEX = os.environ.get("HEADER_HEX", "").strip()
+          EDGE_BITS = int(os.environ.get("EDGE_BITS", "20"))
+          PROOF_SIZE = int(os.environ.get("PROOF_SIZE", "42"))
+          GRAPH_NONCE_START = int(
+              os.environ.get("GRAPH_NONCE_START", "0"), 0
+          )
+
+          MASK64 = (1 << 64) - 1
+          NONCE_MODULUS = 1 << 64
+          CELL_COUNT = 16
+
+          SOLUTION_JSON = Path("cuckoo_cycle_solution.json")
+          PROOF_TXT = Path("cuckoo_cycle_proof.txt")
+          ATTEMPTS_CSV = Path("cuckoo_cycle_graph_attempts.csv")
+          PEEL_CSV = Path("cuckoo_cycle_4d_peel_rounds.csv")
+          SECTIONS_CSV = Path("cuckoo_cycle_4d_sections.csv")
+          INCIDENCE_CSV = Path("cuckoo_cycle_solution_incidence.csv")
+          JOINT_CONSTRAINTS_CSV = Path(
+              "cuckoo_cycle_4d_joint_constraints.csv"
+          )
+          MATH_TXT = Path("cuckoo_cycle_4d_math.txt")
+          DIAGNOSTIC_TXT = Path(
+              "cuckoo_cycle_4d_where_it_went_wrong.txt"
+          )
+          CHECKPOINT_JSON = Path("cuckoo_cycle_checkpoint.json")
+
+          if EDGE_BITS <= 0 or EDGE_BITS >= 63:
+              raise ValueError(
+                  "edge_bits must define a nonempty uint64-indexed graph"
+              )
+          if PROOF_SIZE < 4 or PROOF_SIZE % 2:
+              raise ValueError(
+                  "proof_size must be an even integer of at least 4"
+              )
+
+          NEDGES = 1 << EDGE_BITS
+          EDGEMASK = NEDGES - 1
+          PARTITION_NODES = NEDGES >> 1
+
+
+          @dataclass(frozen=True)
+          class SectionSummary:
+              cells: tuple[int, ...]
+              edges: tuple[int, ...]
+              faces: tuple[int, ...]
+              slices: tuple[int, ...]
+              whole: int
+              walsh: tuple[int, ...]
+
+
+          @dataclass(frozen=True)
+          class PeelResult:
+              active: np.ndarray
+              rounds: tuple[dict[str, Any], ...]
+              sections: tuple[dict[str, Any], ...]
+
+
+          def emit(message: str = "") -> None:
+              print(message, flush=True)
+
+
+          def header_bytes() -> bytes:
+              if HEADER_HEX:
+                  cleaned = HEADER_HEX.removeprefix("0x")
+                  if len(cleaned) % 2:
+                      raise ValueError(
+                          "header_hex must contain complete bytes"
+                      )
+                  return bytes.fromhex(cleaned)
+              return HEADER_TEXT.encode("utf-8")
+
+
+          def rotl64(values: np.ndarray, shift: int) -> np.ndarray:
+              return (
+                  (values << np.uint64(shift))
+                  | (values >> np.uint64(64 - shift))
+              )
+
+
+          def sipround(
+              v0: np.ndarray,
+              v1: np.ndarray,
+              v2: np.ndarray,
+              v3: np.ndarray,
+          ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+              v0 = v0 + v1
+              v2 = v2 + v3
+              v1 = rotl64(v1, 13)
+              v3 = rotl64(v3, 16)
+              v1 ^= v0
+              v3 ^= v2
+              v0 = rotl64(v0, 32)
+              v2 = v2 + v1
+              v0 = v0 + v3
+              v1 = rotl64(v1, 17)
+              v3 = rotl64(v3, 21)
+              v1 ^= v2
+              v3 ^= v0
+              v2 = rotl64(v2, 32)
+              return v0, v1, v2, v3
+
+
+          def siphash24_vector(
+              keys: tuple[int, int, int, int],
+              nonces: np.ndarray,
+          ) -> np.ndarray:
+              """Cuckoo Cycle's 256-bit-key SipHash-2-4 mapping."""
+              nonce_values = np.asarray(
+                  nonces, dtype=np.uint64
+              )
+              v0 = np.full(
+                  nonce_values.shape, keys[0], dtype=np.uint64
+              )
+              v1 = np.full(
+                  nonce_values.shape, keys[1], dtype=np.uint64
+              )
+              v2 = np.full(
+                  nonce_values.shape, keys[2], dtype=np.uint64
+              )
+              v3 = np.full(
+                  nonce_values.shape, keys[3], dtype=np.uint64
+              )
+              v3 ^= nonce_values
+
+              v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+              v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+              v0 ^= nonce_values
+              v2 ^= np.uint64(0xFF)
+
+              for _ in range(4):
+                  v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+
+              return (v0 ^ v1) ^ (v2 ^ v3)
+
+
+          def derive_keys(
+              base_header: bytes, graph_nonce: int
+          ) -> tuple[tuple[int, int, int, int], str]:
+              nonce64 = graph_nonce % NONCE_MODULUS
+              digest = hashlib.sha256(
+                  base_header
+                  + nonce64.to_bytes(8, "little")
+              ).digest()
+              keys = tuple(
+                  int.from_bytes(
+                      digest[index : index + 8], "little"
+                  )
+                  for index in range(0, 32, 8)
+              )
+              return (
+                  (keys[0], keys[1], keys[2], keys[3]),
+                  digest.hex(),
+              )
+
+
+          def build_graph(
+              keys: tuple[int, int, int, int]
+          ) -> tuple[np.ndarray, np.ndarray]:
+              """Generate every edge of the bipartite Cuckoo graph at once."""
+              edge_ids = np.arange(NEDGES, dtype=np.uint64)
+              left_nonces = edge_ids << np.uint64(1)
+              right_nonces = left_nonces | np.uint64(1)
+
+              # Cuckoo verification identifies a node by
+              # (SipHash24(...) & EDGEMASK) >> 1. Even and odd nonce inputs
+              # define the two bipartite partitions.
+              left = (
+                  (
+                      siphash24_vector(keys, left_nonces)
+                      & np.uint64(EDGEMASK)
+                  )
+                  >> np.uint64(1)
+              ).astype(np.uint32)
+              right = (
+                  (
+                      siphash24_vector(keys, right_nonces)
+                      & np.uint64(EDGEMASK)
+                  )
+                  >> np.uint64(1)
+              ).astype(np.uint32)
+              return left, right
+
+
+          def walsh16(values: Sequence[int]) -> tuple[int, ...]:
+              transformed = [int(value) for value in values]
+              stride = 1
+              while stride < CELL_COUNT:
+                  for start in range(0, CELL_COUNT, 2 * stride):
+                      for offset in range(stride):
+                          a = transformed[start + offset]
+                          b = transformed[start + offset + stride]
+                          transformed[start + offset] = a + b
+                          transformed[start + offset + stride] = a - b
+                  stride *= 2
+              return tuple(transformed)
+
+
+          def section_summary(
+              cell_counts: Sequence[int],
+          ) -> SectionSummary:
+              if len(cell_counts) != CELL_COUNT:
+                  raise ValueError(
+                      "the 4D tesseract requires sixteen cells"
+                  )
+              cells = tuple(int(value) for value in cell_counts)
+
+              edge_sections: list[int] = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for cell in range(CELL_COUNT):
+                      if cell & bit:
+                          continue
+                      edge_sections.append(
+                          cells[cell] + cells[cell | bit]
+                      )
+
+              face_sections: list[int] = []
+              for axis_a in range(4):
+                  for axis_b in range(axis_a + 1, 4):
+                      varying = (1 << axis_a) | (1 << axis_b)
+                      fixed_axes = [
+                          axis
+                          for axis in range(4)
+                          if axis not in {axis_a, axis_b}
+                      ]
+                      for fixed_value in range(4):
+                          base = 0
+                          for position, axis in enumerate(
+                              fixed_axes
+                          ):
+                              if fixed_value & (1 << position):
+                                  base |= 1 << axis
+                          face_sections.append(
+                              sum(
+                                  cells[base | variation]
+                                  for variation in range(CELL_COUNT)
+                                  if variation & ~varying == 0
+                              )
+                          )
+
+              slice_sections: list[int] = []
+              for fixed_axis in range(4):
+                  bit = 1 << fixed_axis
+                  for fixed_value in (0, 1):
+                      slice_sections.append(
+                          sum(
+                              cells[cell]
+                              for cell in range(CELL_COUNT)
+                              if bool(cell & bit)
+                              == bool(fixed_value)
+                          )
+                      )
+
+              return SectionSummary(
+                  cells=cells,
+                  edges=tuple(edge_sections),
+                  faces=tuple(face_sections),
+                  slices=tuple(slice_sections),
+                  whole=sum(cells),
+                  walsh=walsh16(cells),
+              )
+
+
+          def degree_reduction_4d(
+              nodes: np.ndarray,
+              active_indices: np.ndarray,
+          ) -> tuple[np.ndarray, SectionSummary]:
+              """Reduce sixteen cell-incidence blocks into global node degree.
+
+              Edge index low bits identify a 4D tesseract cell. Every active edge is
+              included exactly once. The sixteen local incidence vectors are summed
+              through the cell→edge→face→slice→whole reduction. No edge is tried as a
+              candidate solution.
+              """
+              degree = np.zeros(PARTITION_NODES, dtype=np.uint32)
+              cell_counts = [0] * CELL_COUNT
+              edge_cells = (
+                  active_indices.astype(np.uint64)
+                  & np.uint64(0xF)
+              )
+
+              for cell in range(CELL_COUNT):
+                  selected = active_indices[edge_cells == cell]
+                  cell_counts[cell] = int(selected.size)
+                  if selected.size:
+                      local = np.bincount(
+                          nodes[selected],
+                          minlength=PARTITION_NODES,
+                      ).astype(np.uint32, copy=False)
+                      degree += local
+
+              return degree, section_summary(cell_counts)
+
+
+          def append_section_rows(
+              rows: list[dict[str, Any]],
+              attempt: int,
+              peel_round: int,
+              side: str,
+              summary: SectionSummary,
+          ) -> None:
+              families = (
+                  ("cell", summary.cells),
+                  ("edge", summary.edges),
+                  ("face", summary.faces),
+                  ("slice", summary.slices),
+                  ("walsh", summary.walsh),
+                  ("whole", (summary.whole,)),
+              )
+              for family, values in families:
+                  for coordinate, value in enumerate(values):
+                      rows.append(
+                          {
+                              "attempt": attempt,
+                              "peel_round": peel_round,
+                              "partition": side,
+                              "section_family": family,
+                              "coordinate": coordinate,
+                              "value": int(value),
+                          }
+                      )
+
+
+          def peel_to_two_core(
+              left: np.ndarray,
+              right: np.ndarray,
+              attempt: int,
+          ) -> PeelResult:
+              active = np.ones(NEDGES, dtype=np.bool_)
+              round_rows: list[dict[str, Any]] = []
+              section_rows: list[dict[str, Any]] = []
+              peel_round = 0
+
+              while True:
+                  active_indices = np.flatnonzero(active)
+                  if active_indices.size == 0:
+                      break
+
+                  left_degree, left_sections = degree_reduction_4d(
+                      left, active_indices
+                  )
+                  right_degree, right_sections = degree_reduction_4d(
+                      right, active_indices
+                  )
+                  append_section_rows(
+                      section_rows,
+                      attempt,
+                      peel_round,
+                      "left",
+                      left_sections,
+                  )
+                  append_section_rows(
+                      section_rows,
+                      attempt,
+                      peel_round,
+                      "right",
+                      right_sections,
+                  )
+
+                  survives = (
+                      (left_degree[left[active_indices]] >= 2)
+                      & (right_degree[right[active_indices]] >= 2)
+                  )
+                  removed = active_indices[~survives]
+
+                  round_rows.append(
+                      {
+                          "attempt": attempt,
+                          "peel_round": peel_round,
+                          "active_before": int(active_indices.size),
+                          "removed": int(removed.size),
+                          "active_after": int(
+                              active_indices.size - removed.size
+                          ),
+                          "left_walsh_dc": left_sections.walsh[0],
+                          "right_walsh_dc": right_sections.walsh[0],
+                          "left_walsh_non_dc_l1": sum(
+                              abs(value)
+                              for value in left_sections.walsh[1:]
+                          ),
+                          "right_walsh_non_dc_l1": sum(
+                              abs(value)
+                              for value in right_sections.walsh[1:]
+                          ),
+                      }
+                  )
+
+                  if removed.size == 0:
+                      break
+                  active[removed] = False
+                  peel_round += 1
+
+              return PeelResult(
+                  active=active,
+                  rounds=tuple(round_rows),
+                  sections=tuple(section_rows),
+              )
+
+
+          def tesseract_edge_pairs() -> tuple[tuple[int, int], ...]:
+              pairs: list[tuple[int, int]] = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for cell in range(CELL_COUNT):
+                      if cell & bit:
+                          continue
+                      pairs.append((cell, cell | bit))
+              return tuple(pairs)
+
+
+          def tesseract_faces() -> tuple[tuple[int, int, int, int], ...]:
+              faces: list[tuple[int, int, int, int]] = []
+              for axis_a in range(4):
+                  for axis_b in range(axis_a + 1, 4):
+                      bit_a = 1 << axis_a
+                      bit_b = 1 << axis_b
+                      for base in range(CELL_COUNT):
+                          if base & (bit_a | bit_b):
+                              continue
+                          faces.append(
+                              (
+                                  base,
+                                  base | bit_a,
+                                  base | bit_b,
+                                  base | bit_a | bit_b,
+                              )
+                          )
+              return tuple(faces)
+
+
+          def tesseract_slices() -> tuple[
+              tuple[tuple[int, ...], tuple[int, ...]], ...
+          ]:
+              slices: list[
+                  tuple[tuple[int, ...], tuple[int, ...]]
+              ] = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  zero = tuple(
+                      cell
+                      for cell in range(CELL_COUNT)
+                      if not cell & bit
+                  )
+                  one = tuple(
+                      cell
+                      for cell in range(CELL_COUNT)
+                      if cell & bit
+                  )
+                  slices.append((zero, one))
+              return tuple(slices)
+
+
+          def walsh_sign(mode: int, cell: int) -> int:
+              return -1 if (mode & cell).bit_count() & 1 else 1
+
+
+          def add_squared_contrast(
+              model: cp_model.CpModel,
+              name: str,
+              expression: cp_model.LinearExpr,
+              bound: int,
+              metadata: dict[str, Any],
+              objective_terms: list[cp_model.IntVar],
+              records: list[dict[str, Any]],
+          ) -> None:
+              contrast = model.NewIntVar(
+                  -bound, bound, f"{name}_contrast"
+              )
+              absolute = model.NewIntVar(
+                  0, bound, f"{name}_absolute"
+              )
+              square = model.NewIntVar(
+                  0, bound * bound, f"{name}_square"
+              )
+              model.Add(contrast == expression)
+              model.AddAbsEquality(absolute, contrast)
+              model.AddMultiplicationEquality(
+                  square, [absolute, absolute]
+              )
+              objective_terms.append(square)
+              records.append(
+                  {
+                      **metadata,
+                      "contrast_var": contrast,
+                      "absolute_var": absolute,
+                      "square_var": square,
+                  }
+              )
+
+
+          def selected_components(
+              left: np.ndarray,
+              right: np.ndarray,
+              selected_edges: Sequence[int],
+          ) -> list[set[int]]:
+              adjacency: dict[int, list[tuple[int, int]]] = defaultdict(
+                  list
+              )
+              offset = PARTITION_NODES
+              for edge in selected_edges:
+                  u = int(left[edge])
+                  v = offset + int(right[edge])
+                  adjacency[u].append((v, edge))
+                  adjacency[v].append((u, edge))
+
+              unseen = set(adjacency)
+              components: list[set[int]] = []
+              while unseen:
+                  start = unseen.pop()
+                  stack = [start]
+                  edges: set[int] = set()
+                  while stack:
+                      node = stack.pop()
+                      for neighbor, edge in adjacency[node]:
+                          edges.add(edge)
+                          if neighbor in unseen:
+                              unseen.remove(neighbor)
+                              stack.append(neighbor)
+                  components.append(edges)
+              return components
+
+
+          def solve_joint_cycle(
+              left: np.ndarray,
+              right: np.ndarray,
+              active: np.ndarray,
+          ) -> tuple[
+              list[int],
+              dict[str, Any],
+              list[dict[str, Any]],
+          ]:
+              """Solve one connected fixed-length cycle with the 4D operators.
+
+              The Boolean edge vector x is solved in one CP-SAT model. The model
+              contains:
+                  Bx = 2y over the integers, hence Bx = 0 over GF(2);
+                  sum(x) = PROOF_SIZE;
+                  single-commodity connectivity flow;
+                  all cell, tesseract-edge, face, slice, and non-DC Walsh
+                  contrast energies.
+              """
+              residual_edges = np.flatnonzero(active).astype(np.int64)
+              if residual_edges.size < PROOF_SIZE:
+                  return [], {
+                      "method": "4d_joint_cp_sat",
+                      "status": "INSUFFICIENT_RESIDUAL_EDGES",
+                      "residual_edges": int(residual_edges.size),
+                  }, []
+
+              model = cp_model.CpModel()
+              edge_vars = [
+                  model.NewBoolVar(f"x_{int(edge)}")
+                  for edge in residual_edges.tolist()
+              ]
+
+              offset = PARTITION_NODES
+              incident: dict[int, list[int]] = defaultdict(list)
+              endpoints: list[tuple[int, int]] = []
+              for local_index, edge_raw in enumerate(
+                  residual_edges.tolist()
+              ):
+                  u = int(left[edge_raw])
+                  v = offset + int(right[edge_raw])
+                  endpoints.append((u, v))
+                  incident[u].append(local_index)
+                  incident[v].append(local_index)
+
+              vertex_vars: dict[int, cp_model.IntVar] = {}
+              root_vars: dict[int, cp_model.IntVar] = {}
+              incoming: dict[int, list[cp_model.IntVar]] = defaultdict(
+                  list
+              )
+              outgoing: dict[int, list[cp_model.IntVar]] = defaultdict(
+                  list
+              )
+
+              for vertex, local_edges in incident.items():
+                  selected = model.NewBoolVar(f"vertex_{vertex}")
+                  root = model.NewBoolVar(f"root_{vertex}")
+                  vertex_vars[vertex] = selected
+                  root_vars[vertex] = root
+                  model.Add(
+                      sum(edge_vars[index] for index in local_edges)
+                      == 2 * selected
+                  )
+                  model.Add(root <= selected)
+
+              flow_bound = PROOF_SIZE - 1
+              for local_index, (u, v) in enumerate(endpoints):
+                  forward = model.NewIntVar(
+                      0, flow_bound, f"flow_{u}_{v}_{local_index}"
+                  )
+                  reverse = model.NewIntVar(
+                      0, flow_bound, f"flow_{v}_{u}_{local_index}"
+                  )
+                  model.Add(
+                      forward
+                      <= flow_bound * edge_vars[local_index]
+                  )
+                  model.Add(
+                      reverse
+                      <= flow_bound * edge_vars[local_index]
+                  )
+                  outgoing[u].append(forward)
+                  incoming[v].append(forward)
+                  outgoing[v].append(reverse)
+                  incoming[u].append(reverse)
+
+              model.Add(sum(edge_vars) == PROOF_SIZE)
+              model.Add(sum(vertex_vars.values()) == PROOF_SIZE)
+              model.Add(sum(root_vars.values()) == 1)
+
+              for vertex in incident:
+                  model.Add(
+                      sum(incoming[vertex]) - sum(outgoing[vertex])
+                      == vertex_vars[vertex]
+                      - PROOF_SIZE * root_vars[vertex]
+                  )
+
+              cell_vars: list[cp_model.IntVar] = []
+              for cell in range(CELL_COUNT):
+                  cell_var = model.NewIntVar(
+                      0, PROOF_SIZE, f"cell_{cell}_occupancy"
+                  )
+                  local_indices = [
+                      index
+                      for index, edge in enumerate(
+                          residual_edges.tolist()
+                      )
+                      if (edge & 0xF) == cell
+                  ]
+                  if local_indices:
+                      model.Add(
+                          cell_var
+                          == sum(
+                              edge_vars[index]
+                              for index in local_indices
+                          )
+                      )
+                  else:
+                      model.Add(cell_var == 0)
+                  cell_vars.append(cell_var)
+
+              objective_terms: list[cp_model.IntVar] = []
+              records: list[dict[str, Any]] = []
+
+              # The 32 tesseract-edge contrasts are inside the objective.
+              for coordinate, (cell_a, cell_b) in enumerate(
+                  tesseract_edge_pairs()
+              ):
+                  add_squared_contrast(
+                      model,
+                      f"edge_{coordinate}",
+                      cell_vars[cell_a] - cell_vars[cell_b],
+                      PROOF_SIZE,
+                      {
+                          "section_family": "tesseract_edge",
+                          "coordinate": coordinate,
+                          "positive_cells": str(cell_a),
+                          "negative_cells": str(cell_b),
+                      },
+                      objective_terms,
+                      records,
+                  )
+
+              # The 24 alternating square-face contrasts are inside the objective.
+              for coordinate, (
+                  cell_00,
+                  cell_10,
+                  cell_01,
+                  cell_11,
+              ) in enumerate(tesseract_faces()):
+                  add_squared_contrast(
+                      model,
+                      f"face_{coordinate}",
+                      (
+                          cell_vars[cell_00]
+                          - cell_vars[cell_10]
+                          - cell_vars[cell_01]
+                          + cell_vars[cell_11]
+                      ),
+                      2 * PROOF_SIZE,
+                      {
+                          "section_family": "square_face",
+                          "coordinate": coordinate,
+                          "positive_cells": (
+                              f"{cell_00},{cell_11}"
+                          ),
+                          "negative_cells": (
+                              f"{cell_10},{cell_01}"
+                          ),
+                      },
+                      objective_terms,
+                      records,
+                  )
+
+              # The four pairs of opposite cubic slices are inside the objective.
+              for coordinate, (zero_cells, one_cells) in enumerate(
+                  tesseract_slices()
+              ):
+                  add_squared_contrast(
+                      model,
+                      f"slice_{coordinate}",
+                      (
+                          sum(cell_vars[cell] for cell in zero_cells)
+                          - sum(cell_vars[cell] for cell in one_cells)
+                      ),
+                      PROOF_SIZE,
+                      {
+                          "section_family": "cubic_slice",
+                          "coordinate": coordinate,
+                          "positive_cells": ",".join(
+                              str(cell) for cell in zero_cells
+                          ),
+                          "negative_cells": ",".join(
+                              str(cell) for cell in one_cells
+                          ),
+                      },
+                      objective_terms,
+                      records,
+                  )
+
+              # All fifteen non-DC Walsh-Hadamard modes are inside the objective.
+              for mode in range(1, CELL_COUNT):
+                  positive_cells = tuple(
+                      cell
+                      for cell in range(CELL_COUNT)
+                      if walsh_sign(mode, cell) > 0
+                  )
+                  negative_cells = tuple(
+                      cell
+                      for cell in range(CELL_COUNT)
+                      if walsh_sign(mode, cell) < 0
+                  )
+                  add_squared_contrast(
+                      model,
+                      f"walsh_{mode}",
+                      (
+                          sum(
+                              cell_vars[cell]
+                              for cell in positive_cells
+                          )
+                          - sum(
+                              cell_vars[cell]
+                              for cell in negative_cells
+                          )
+                      ),
+                      PROOF_SIZE,
+                      {
+                          "section_family": "walsh_non_dc",
+                          "coordinate": mode,
+                          "positive_cells": ",".join(
+                              str(cell) for cell in positive_cells
+                          ),
+                          "negative_cells": ",".join(
+                              str(cell) for cell in negative_cells
+                          ),
+                      },
+                      objective_terms,
+                      records,
+                  )
+
+              model.Minimize(sum(objective_terms))
+
+              solver = cp_model.CpSolver()
+              solver.parameters.num_search_workers = max(
+                  1, os.cpu_count() or 1
+              )
+              status = solver.Solve(model)
+              status_name = solver.StatusName(status)
+
+              if status not in {
+                  cp_model.OPTIMAL,
+                  cp_model.FEASIBLE,
+              }:
+                  return [], {
+                      "method": "4d_joint_cp_sat",
+                      "status": status_name,
+                      "residual_edges": int(residual_edges.size),
+                      "edge_variables": len(edge_vars),
+                      "vertex_variables": len(vertex_vars),
+                      "four_dimensional_terms": len(records),
+                      "branches": int(solver.NumBranches()),
+                      "conflicts": int(solver.NumConflicts()),
+                      "solver_wall_seconds": float(
+                          solver.WallTime()
+                      ),
+                  }, []
+
+              proof = sorted(
+                  int(residual_edges[index])
+                  for index, variable in enumerate(edge_vars)
+                  if solver.Value(variable)
+              )
+              components = selected_components(
+                  left, right, proof
+              )
+              if len(components) != 1:
+                  raise RuntimeError(
+                      "the connectivity-flow model returned a disconnected "
+                      "edge vector"
+                  )
+
+              constraint_rows: list[dict[str, Any]] = []
+              for cell, variable in enumerate(cell_vars):
+                  constraint_rows.append(
+                      {
+                          "section_family": "cell",
+                          "coordinate": cell,
+                          "positive_cells": str(cell),
+                          "negative_cells": "",
+                          "contrast": int(solver.Value(variable)),
+                          "absolute": int(solver.Value(variable)),
+                          "square_energy": int(
+                              solver.Value(variable)
+                              ** 2
+                          ),
+                      }
+                  )
+              for record in records:
+                  constraint_rows.append(
+                      {
+                          "section_family": record[
+                              "section_family"
+                          ],
+                          "coordinate": record["coordinate"],
+                          "positive_cells": record[
+                              "positive_cells"
+                          ],
+                          "negative_cells": record[
+                              "negative_cells"
+                          ],
+                          "contrast": int(
+                              solver.Value(
+                                  record["contrast_var"]
+                              )
+                          ),
+                          "absolute": int(
+                              solver.Value(
+                                  record["absolute_var"]
+                              )
+                          ),
+                          "square_energy": int(
+                              solver.Value(
+                                  record["square_var"]
+                              )
+                          ),
+                      }
+                  )
+
+              root_vertex = next(
+                  vertex
+                  for vertex, variable in root_vars.items()
+                  if solver.Value(variable)
+              )
+              return proof, {
+                  "method": "4d_joint_cp_sat_exact",
+                  "status": status_name,
+                  "residual_edges": int(residual_edges.size),
+                  "edge_variables": len(edge_vars),
+                  "vertex_variables": len(vertex_vars),
+                  "connectivity_flow_variables": (
+                      2 * len(edge_vars)
+                  ),
+                  "four_dimensional_terms": len(records),
+                  "objective_4d_energy": int(
+                      round(solver.ObjectiveValue())
+                  ),
+                  "objective_best_bound": float(
+                      solver.BestObjectiveBound()
+                  ),
+                  "root_vertex": int(root_vertex),
+                  "selected_components": 1,
+                  "branches": int(solver.NumBranches()),
+                  "conflicts": int(solver.NumConflicts()),
+                  "solver_wall_seconds": float(
+                      solver.WallTime()
+                  ),
+              }, constraint_rows
+
+
+          def verify_cycle(
+              keys: tuple[int, int, int, int],
+              proof: Sequence[int],
+          ) -> dict[str, Any]:
+              if len(proof) != PROOF_SIZE:
+                  raise RuntimeError("proof has the wrong cycle length")
+              if list(proof) != sorted(set(proof)):
+                  raise RuntimeError(
+                      "proof edge indices must be unique and ascending"
+                  )
+              if proof[0] < 0 or proof[-1] >= NEDGES:
+                  raise RuntimeError(
+                      "proof edge index is outside the graph"
+                  )
+
+              edges = np.asarray(proof, dtype=np.uint64)
+              left = (
+                  (
+                      siphash24_vector(
+                          keys, edges << np.uint64(1)
+                      )
+                      & np.uint64(EDGEMASK)
+                  )
+                  >> np.uint64(1)
+              ).astype(np.uint64)
+              right = (
+                  (
+                      siphash24_vector(
+                          keys,
+                          (edges << np.uint64(1))
+                          | np.uint64(1),
+                      )
+                      & np.uint64(EDGEMASK)
+                  )
+                  >> np.uint64(1)
+              ).astype(np.uint64)
+
+              degrees: dict[int, int] = defaultdict(int)
+              adjacency: dict[int, list[int]] = defaultdict(list)
+              offset = PARTITION_NODES
+              for u_raw, v_raw in zip(
+                  left.tolist(), right.tolist()
+              ):
+                  u = int(u_raw)
+                  v = offset + int(v_raw)
+                  degrees[u] += 1
+                  degrees[v] += 1
+                  adjacency[u].append(v)
+                  adjacency[v].append(u)
+
+              if any(value != 2 for value in degrees.values()):
+                  raise RuntimeError(
+                      "GF(2) incidence residual is nonzero: "
+                      "a selected vertex does not have degree two"
+                  )
+              if len(degrees) != PROOF_SIZE:
+                  raise RuntimeError(
+                      "selected edges do not form one simple bipartite cycle"
+                  )
+
+              start = next(iter(degrees))
+              seen = {start}
+              queue = [start]
+              while queue:
+                  node = queue.pop()
+                  for neighbor in adjacency[node]:
+                      if neighbor not in seen:
+                          seen.add(neighbor)
+                          queue.append(neighbor)
+
+              if len(seen) != len(degrees):
+                  raise RuntimeError(
+                      "selected GF(2) circulation is disconnected"
+                  )
+
+              incidence_residual = sum(
+                  degree & 1 for degree in degrees.values()
+              )
+              return {
+                  "verified": True,
+                  "cycle_length": len(proof),
+                  "selected_vertices": len(degrees),
+                  "incidence_residual_mod2": incidence_residual,
+                  "connected_components": 1,
+                  "ascending_unique_edges": True,
+              }
+
+
+          def solution_sections(
+              proof: Sequence[int],
+          ) -> SectionSummary:
+              cell_counts = [0] * CELL_COUNT
+              for edge in proof:
+                  cell_counts[edge & 0xF] += 1
+              return section_summary(cell_counts)
+
+
+          def write_csv(
+              path: Path,
+              rows: Sequence[dict[str, Any]],
+          ) -> None:
+              if not rows:
+                  path.write_text("", encoding="utf-8")
+                  return
+              fieldnames: list[str] = []
+              for row in rows:
+                  for key in row:
+                      if key not in fieldnames:
+                          fieldnames.append(key)
+              with path.open(
+                  "w", newline="", encoding="utf-8"
+              ) as handle:
+                  writer = csv.DictWriter(
+                      handle, fieldnames=fieldnames
+                  )
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+
+          def write_math_report() -> None:
+              report = f"""CUCKOO CYCLE 4D JOINT GRAPH MATHEMATICS
+          ================================================================
+
+          Model revision
+          --------------
+          {MODEL_REVISION}
+
+          Graph
+          -----
+          N = 2^edge_bits = {NEDGES}
+
+          For each edge index i:
+
+              u_i = SipHash24(K, 2i) mod N
+              v_i = SipHash24(K, 2i+1) mod N
+
+          The complete bipartite incidence matrix is B. A selected edge vector
+
+              x in GF(2)^N
+
+          is a circulation exactly when
+
+              Bx = 0 mod 2.
+
+          A simple proof additionally requires
+
+              |x| = {PROOF_SIZE}
+
+          and one connected component. Verification checks those equations
+          directly.
+
+          4D tesseract reduction
+          ----------------------
+          The low four bits of every edge index define one of sixteen cells:
+
+              c(i) = i mod 16 in {{0,1}}^4.
+
+          The graph incidence is decomposed into sixteen complete blocks B_c:
+
+              B = sum_c B_c.
+
+          Every peel round constructs all sixteen incidence blocks from the
+          complete active edge set, then reduces them through:
+
+              16 cells
+              32 tesseract edges
+              24 square faces
+               8 cubic slices
+               1 whole graph.
+
+          The 16-mode Walsh-Hadamard transform is also computed:
+
+              H_4[omega,c] = (-1)^(omega dot c)
+              b_hat = H_4 b.
+
+          The DC mode is the exact whole-graph edge count. The non-DC modes
+          preserve the 4D distribution of the active incidence.
+
+          Joint 4D constraint solve
+          -------------------------
+          Degree-one incidence rows are removed from the complete graph. The residual
+          Boolean edge vector x is then solved in one exact CP-SAT model:
+
+              Bx = 2y over the integers,
+              Bx = 0 mod 2,
+              sum(x) = {PROOF_SIZE},
+              sum(y) = {PROOF_SIZE}.
+
+          A single-commodity flow rooted at one selected vertex enforces one connected
+          component inside the same model. Therefore the result cannot be a union of
+          disconnected cycles.
+
+          Let n_c = sum_(edge i in cell c) x_i for the sixteen 4D cells. The actual
+          optimization objective is
+
+              E_4D(x)
+                = sum_(32 tesseract edges) (n_a - n_b)^2
+                + sum_(24 square faces)
+                    (n_00 - n_10 - n_01 + n_11)^2
+                + sum_(4 opposite cubic slices)
+                    (sum n_slice0 - sum n_slice1)^2
+                + sum_(15 non-DC Walsh modes)
+                    (sum_c (-1)^(omega dot c) n_c)^2.
+
+          These expressions contain the same Boolean edge variables x used by the
+          incidence, fixed-weight, and connectivity equations. They are not computed
+          after a conventional DFS has already selected a cycle.
+
+          This is graph algebra. It does not optimize a SHA surrogate, predict a
+          test header bits, test nonce bits, or generate plus/minus candidate
+          headers.
+          """
+              MATH_TXT.write_text(
+                  dedent(report).strip() + "\n",
+                  encoding="utf-8",
+              )
+
+
+          def main() -> None:
+              base_header = header_bytes()
+              graph_nonce = GRAPH_NONCE_START % NONCE_MODULUS
+              attempt = 0
+              attempt_rows: list[dict[str, Any]] = []
+              all_peel_rows: list[dict[str, Any]] = []
+              all_section_rows: list[dict[str, Any]] = []
+              write_math_report()
+
+              emit(f"[model] {MODEL_REVISION}")
+              emit(
+                  f"[graph] edge_bits={EDGE_BITS} edges={NEDGES} "
+                  f"proof_size={PROOF_SIZE}"
+              )
+              emit(
+                  "[solve] complete_graph=True exact_joint_model=True "
+                  "gf2_incidence=True fixed_weight=True connectivity_flow=True "
+                  "four_dimensional_objective=True conventional_dfs=False"
+              )
+
+              while True:
+                  started = time.perf_counter()
+                  keys, key_digest = derive_keys(
+                      base_header, graph_nonce
+                  )
+                  left, right = build_graph(keys)
+                  peel = peel_to_two_core(
+                      left, right, attempt
+                  )
+                  residual_edges = int(
+                      np.count_nonzero(peel.active)
+                  )
+                  (
+                      proof,
+                      solve_info,
+                      joint_constraint_rows,
+                  ) = solve_joint_cycle(
+                      left, right, peel.active
+                  )
+                  elapsed = time.perf_counter() - started
+
+                  attempt_row = {
+                      "attempt": attempt,
+                      "graph_nonce": graph_nonce,
+                      "key_sha256": key_digest,
+                      "edges": NEDGES,
+                      "residual_edges": residual_edges,
+                      "peel_rounds": len(peel.rounds),
+                      "cycle_found": bool(proof),
+                      "solve_method": solve_info.get("method"),
+                      "joint_status": solve_info.get("status"),
+                      "objective_4d_energy": solve_info.get(
+                          "objective_4d_energy"
+                      ),
+                      "joint_branches": solve_info.get("branches"),
+                      "joint_conflicts": solve_info.get("conflicts"),
+                      "joint_solver_seconds": solve_info.get(
+                          "solver_wall_seconds"
+                      ),
+                      "elapsed_seconds": elapsed,
+                  }
+                  attempt_rows.append(attempt_row)
+                  all_peel_rows.extend(peel.rounds)
+                  all_section_rows.extend(peel.sections)
+
+                  CHECKPOINT_JSON.write_text(
+                      json.dumps(
+                          {
+                              "model_revision": MODEL_REVISION,
+                              "attempt": attempt,
+                              "graph_nonce": graph_nonce,
+                              "key_sha256": key_digest,
+                              "residual_edges": residual_edges,
+                              "cycle_found": bool(proof),
+                              "solve_info": solve_info,
+                          },
+                          indent=2,
+                          sort_keys=True,
+                      ),
+                      encoding="utf-8",
+                  )
+                  write_csv(ATTEMPTS_CSV, attempt_rows)
+                  write_csv(PEEL_CSV, all_peel_rows)
+                  write_csv(SECTIONS_CSV, all_section_rows)
+                  write_csv(
+                      JOINT_CONSTRAINTS_CSV,
+                      joint_constraint_rows,
+                  )
+
+                  emit(
+                      f"[graph attempt {attempt}] nonce={graph_nonce} "
+                      f"residual_edges={residual_edges} "
+                      f"joint_status={solve_info.get('status')} "
+                      f"objective_4d={solve_info.get('objective_4d_energy')} "
+                      f"cycle_found={bool(proof)} "
+                      f"seconds={elapsed:.6f}"
+                  )
+
+                  if proof:
+                      verification = verify_cycle(keys, proof)
+                      sections = solution_sections(proof)
+
+                      incidence_rows: list[dict[str, Any]] = []
+                      proof_array = np.asarray(
+                          proof, dtype=np.uint64
+                      )
+                      proof_left = (
+                          (
+                              siphash24_vector(
+                                  keys,
+                                  proof_array << np.uint64(1),
+                              )
+                              & np.uint64(EDGEMASK)
+                          )
+                          >> np.uint64(1)
+                      )
+                      proof_right = (
+                          (
+                              siphash24_vector(
+                                  keys,
+                                  (
+                                      proof_array << np.uint64(1)
+                                  )
+                                  | np.uint64(1),
+                              )
+                              & np.uint64(EDGEMASK)
+                          )
+                          >> np.uint64(1)
+                      )
+                      for position, (
+                          edge,
+                          u,
+                          v,
+                      ) in enumerate(
+                          zip(
+                              proof,
+                              proof_left.tolist(),
+                              proof_right.tolist(),
+                          )
+                      ):
+                          incidence_rows.append(
+                              {
+                                  "position_sorted": position,
+                                  "edge_index": edge,
+                                  "cell_4d": edge & 0xF,
+                                  "left_node": int(u),
+                                  "right_node": int(v),
+                              }
+                          )
+                      write_csv(INCIDENCE_CSV, incidence_rows)
+
+                      result = {
+                          "model_revision": MODEL_REVISION,
+                          "algorithm": "cuckoo_cycle_4d_joint_cp_sat",
+                          "header_hex": base_header.hex(),
+                          "edge_bits": EDGE_BITS,
+                          "number_of_edges": NEDGES,
+                          "proof_size": PROOF_SIZE,
+                          "attempt": attempt,
+                          "graph_nonce": graph_nonce,
+                          "key_sha256": key_digest,
+                          "siphash_keys_little_endian_u64": list(
+                              keys
+                          ),
+                          "proof_edge_indices": proof,
+                          "verification": verification,
+                          "solve_info": solve_info,
+                          "four_dimensional_solution_sections": {
+                              "cells": list(sections.cells),
+                              "edges": list(sections.edges),
+                              "faces": list(sections.faces),
+                              "slices": list(sections.slices),
+                              "whole": sections.whole,
+                              "walsh": list(sections.walsh),
+                          },
+                          "four_dimensional_terms_inside_solver": True,
+                          "conventional_cycle_dfs_used": False,
+                          "candidate_header_probes": 0,
+                          "per_bit_trials": 0,
+                          "per_nonce_edge_trials": 0,
+                      }
+                      SOLUTION_JSON.write_text(
+                          json.dumps(
+                              result, indent=2, sort_keys=True
+                          ),
+                          encoding="utf-8",
+                      )
+                      PROOF_TXT.write_text(
+                          "\n".join(str(edge) for edge in proof)
+                          + "\n",
+                          encoding="utf-8",
+                      )
+                      DIAGNOSTIC_TXT.write_text(
+                          dedent(
+                              f"""
+                              CUCKOO CYCLE 4D SOLVER DIAGNOSTIC
+                              =================================
+
+                              Result: exact cycle found and independently verified.
+                              Attempt: {attempt}
+                              Graph nonce: {graph_nonce}
+                              Edge bits: {EDGE_BITS}
+                              Proof size: {PROOF_SIZE}
+                              Residual edges: {residual_edges}
+                              Joint method: {solve_info.get("method")}
+                              Joint status: {solve_info.get("status")}
+                              4D objective energy: {solve_info.get("objective_4d_energy")}
+                              GF(2) incidence residual: {verification["incidence_residual_mod2"]}
+                              Connected components in proof: {verification["connected_components"]}
+
+                              Header-bit candidates: absent
+                              Plus/minus probe headers: absent
+                              Per-edge solution tests: absent
+
+                              The only repeated outer coordinate is graph_nonce,
+                              because each nonce defines a different Cuckoo graph.
+                              Within each graph, the residual edge vector, GF(2)
+                              incidence equations, fixed weight, connectivity flow,
+                              and all 4D/Walsh energies are solved together.
+                              """
+                          ).strip()
+                          + "\n",
+                          encoding="utf-8",
+                      )
+
+                      emit(
+                          f"[solution] graph_nonce={graph_nonce} "
+                          f"proof_size={len(proof)} "
+                          f"incidence_residual=0 connected=True"
+                      )
+                      emit(
+                          "[proof] "
+                          + " ".join(str(edge) for edge in proof)
+                      )
+                      return
+
+                  attempt += 1
+                  graph_nonce = (
+                      graph_nonce + 1
+                  ) % NONCE_MODULUS
+
+
+          if __name__ == "__main__":
+              main()
+          PY
+
+      - name: Publish result summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Cuckoo Cycle 4D Joint Constraint Solver"
+            echo
+            if [[ -f cuckoo_cycle_solution.json ]]; then
+              echo '```json'
+              cat cuckoo_cycle_solution.json
+              echo '```'
+            elif [[ -f cuckoo_cycle_checkpoint.json ]]; then
+              echo "The current graph checkpoint:"
+              echo '```json'
+              cat cuckoo_cycle_checkpoint.json
+              echo '```'
+            else
+              echo "No solver output was produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload complete graph evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            cuckoo_cycle_console.log
+            cuckoo_cycle_solution.json
+            cuckoo_cycle_proof.txt
+            cuckoo_cycle_graph_attempts.csv
+            cuckoo_cycle_4d_peel_rounds.csv
+            cuckoo_cycle_4d_sections.csv
+            cuckoo_cycle_solution_incidence.csv
+            cuckoo_cycle_4d_joint_constraints.csv
+            cuckoo_cycle_4d_math.txt
+            cuckoo_cycle_4d_where_it_went_wrong.txt
+            cuckoo_cycle_checkpoint.json
