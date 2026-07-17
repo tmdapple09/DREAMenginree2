@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T12:20:44.940Z",
+  "generatedAt": "2026-07-17T12:38:25.848Z",
   "root": ".",
   "nodes": [
     {
@@ -2732,10 +2732,20 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
-      "label": "abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
+      "id": "file:.github/workflows/abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
+      "label": "abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
       "type": "config",
-      "path": ".github/workflows/abitcoinfile_4d_walsh_fourier_joint_pow_fixed.yml",
+      "path": ".github/workflows/abitcoinfile_4d_walsh_fourier_no_read_timeout_fixed.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/abitcoinfile_4d_walsh_fourier_stable_joint_pow_fixed.yml",
+      "label": "abitcoinfile_4d_walsh_fourier_stable_joint_pow_fixed.yml",
+      "type": "config",
+      "path": ".github/workflows/abitcoinfile_4d_walsh_fourier_stable_joint_pow_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
