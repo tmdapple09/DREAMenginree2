@@ -4,107 +4,170 @@ import { flattenParts } from './primitiveBuilder';
 export interface MeshGeometry {
   positions: number[];
   normals: number[];
+  texcoords: number[];
+  tangents: number[];
   indices: number[];
   materialIds: string[];
 }
 
-const add = (a: Vec3, b: Vec3): Vec3 => ({ x: a.x + b.x, y: a.y + b.y, z: a.z + b.z });
+function pushVertex(
+  mesh: MeshGeometry,
+  position: readonly [number, number, number],
+  normal: readonly [number, number, number],
+  uv: readonly [number, number],
+  tangent: readonly [number, number, number, number],
+  materialId: string,
+): number {
+  const index = mesh.positions.length / 3;
+  mesh.positions.push(...position);
+  mesh.normals.push(...normal);
+  mesh.texcoords.push(...uv);
+  mesh.tangents.push(...tangent);
+  mesh.materialIds.push(materialId);
+  return index;
+}
 
-function pushBox(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string) {
+function pushBox(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string): void {
   const hx = Math.max(size.x, 0.001) / 2;
   const hy = Math.max(size.y, 0.001) / 2;
   const hz = Math.max(size.z, 0.001) / 2;
   const faces = [
-    { n: [1, 0, 0], v: [[hx, -hy, -hz], [hx, hy, -hz], [hx, hy, hz], [hx, -hy, hz]] },
-    { n: [-1, 0, 0], v: [[-hx, hy, -hz], [-hx, -hy, -hz], [-hx, -hy, hz], [-hx, hy, hz]] },
-    { n: [0, 1, 0], v: [[-hx, hy, -hz], [hx, hy, -hz], [hx, hy, hz], [-hx, hy, hz]] },
-    { n: [0, -1, 0], v: [[hx, -hy, -hz], [-hx, -hy, -hz], [-hx, -hy, hz], [hx, -hy, hz]] },
-    { n: [0, 0, 1], v: [[-hx, -hy, hz], [hx, -hy, hz], [hx, hy, hz], [-hx, hy, hz]] },
-    { n: [0, 0, -1], v: [[-hx, hy, -hz], [hx, hy, -hz], [hx, -hy, -hz], [-hx, -hy, -hz]] },
+    { n: [1, 0, 0] as const, t: [0, 0, 1, 1] as const, v: [[hx, -hy, -hz], [hx, hy, -hz], [hx, hy, hz], [hx, -hy, hz]] as const },
+    { n: [-1, 0, 0] as const, t: [0, 0, -1, 1] as const, v: [[-hx, hy, -hz], [-hx, -hy, -hz], [-hx, -hy, hz], [-hx, hy, hz]] as const },
+    { n: [0, 1, 0] as const, t: [1, 0, 0, 1] as const, v: [[-hx, hy, -hz], [hx, hy, -hz], [hx, hy, hz], [-hx, hy, hz]] as const },
+    { n: [0, -1, 0] as const, t: [-1, 0, 0, 1] as const, v: [[hx, -hy, -hz], [-hx, -hy, -hz], [-hx, -hy, hz], [hx, -hy, hz]] as const },
+    { n: [0, 0, 1] as const, t: [1, 0, 0, 1] as const, v: [[-hx, -hy, hz], [hx, -hy, hz], [hx, hy, hz], [-hx, hy, hz]] as const },
+    { n: [0, 0, -1] as const, t: [-1, 0, 0, 1] as const, v: [[-hx, hy, -hz], [hx, hy, -hz], [hx, -hy, -hz], [-hx, -hy, -hz]] as const },
   ];
+  const uvs = [[0, 0], [1, 0], [1, 1], [0, 1]] as const;
   for (const face of faces) {
     const base = mesh.positions.length / 3;
-    for (const v of face.v) {
-      mesh.positions.push(center.x + v[0]!, center.y + v[1]!, center.z + v[2]!);
-      mesh.normals.push(face.n[0]!, face.n[1]!, face.n[2]!);
-      mesh.materialIds.push(materialId);
-    }
+    face.v.forEach((vertex, index) => {
+      pushVertex(
+        mesh,
+        [center.x + vertex[0], center.y + vertex[1], center.z + vertex[2]],
+        face.n,
+        uvs[index]!,
+        face.t,
+        materialId,
+      );
+    });
     mesh.indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
   }
 }
 
-function pushCylinder(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string, segments: number) {
+function pushCylinder(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string, segments: number): void {
   const radius = Math.max(size.x, size.y, 0.001) / 2;
   const half = Math.max(size.z, 0.001) / 2;
   const seg = Math.max(8, Math.min(64, Math.floor(segments)));
-  const base = mesh.positions.length / 3;
-  for (let i = 0; i < seg; i += 1) {
-    const a = (i / seg) * Math.PI * 2;
-    const x = Math.cos(a) * radius;
-    const y = Math.sin(a) * radius;
-    mesh.positions.push(center.x + x, center.y + y, center.z - half, center.x + x, center.y + y, center.z + half);
-    mesh.normals.push(Math.cos(a), Math.sin(a), 0, Math.cos(a), Math.sin(a), 0);
-    mesh.materialIds.push(materialId, materialId);
+
+  const sideBase = mesh.positions.length / 3;
+  for (let index = 0; index <= seg; index += 1) {
+    const u = index / seg;
+    const angle = u * Math.PI * 2;
+    const cosine = Math.cos(angle);
+    const sine = Math.sin(angle);
+    const x = cosine * radius;
+    const y = sine * radius;
+    const tangent = [-sine, cosine, 0, 1] as const;
+    pushVertex(mesh, [center.x + x, center.y + y, center.z - half], [cosine, sine, 0], [u, 0], tangent, materialId);
+    pushVertex(mesh, [center.x + x, center.y + y, center.z + half], [cosine, sine, 0], [u, 1], tangent, materialId);
   }
-  const bottomCenter = mesh.positions.length / 3;
-  mesh.positions.push(center.x, center.y, center.z - half, center.x, center.y, center.z + half);
-  mesh.normals.push(0, 0, -1, 0, 0, 1);
-  mesh.materialIds.push(materialId, materialId);
-  for (let i = 0; i < seg; i += 1) {
-    const n = (i + 1) % seg;
-    const b0 = base + i * 2;
-    const t0 = b0 + 1;
-    const b1 = base + n * 2;
-    const t1 = b1 + 1;
-    mesh.indices.push(b0, b1, t1, b0, t1, t0, bottomCenter, b0, b1, bottomCenter + 1, t1, t0);
+  for (let index = 0; index < seg; index += 1) {
+    const bottom0 = sideBase + index * 2;
+    const top0 = bottom0 + 1;
+    const bottom1 = bottom0 + 2;
+    const top1 = bottom0 + 3;
+    mesh.indices.push(bottom0, bottom1, top1, bottom0, top1, top0);
+  }
+
+  const bottomCenter = pushVertex(mesh, [center.x, center.y, center.z - half], [0, 0, -1], [0.5, 0.5], [1, 0, 0, 1], materialId);
+  const bottomRing: number[] = [];
+  const topCenter = pushVertex(mesh, [center.x, center.y, center.z + half], [0, 0, 1], [0.5, 0.5], [1, 0, 0, 1], materialId);
+  const topRing: number[] = [];
+  for (let index = 0; index < seg; index += 1) {
+    const angle = index / seg * Math.PI * 2;
+    const cosine = Math.cos(angle);
+    const sine = Math.sin(angle);
+    const uv: readonly [number, number] = [0.5 + cosine * 0.5, 0.5 + sine * 0.5];
+    bottomRing.push(pushVertex(mesh, [center.x + cosine * radius, center.y + sine * radius, center.z - half], [0, 0, -1], uv, [1, 0, 0, 1], materialId));
+    topRing.push(pushVertex(mesh, [center.x + cosine * radius, center.y + sine * radius, center.z + half], [0, 0, 1], uv, [1, 0, 0, 1], materialId));
+  }
+  for (let index = 0; index < seg; index += 1) {
+    const next = (index + 1) % seg;
+    mesh.indices.push(bottomCenter, bottomRing[next]!, bottomRing[index]!);
+    mesh.indices.push(topCenter, topRing[index]!, topRing[next]!);
   }
 }
 
-function pushEllipsoid(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string, segments: number) {
+function pushEllipsoid(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string, segments: number): void {
   const lat = Math.max(6, Math.min(32, Math.floor(segments / 2)));
   const lon = Math.max(8, Math.min(48, Math.floor(segments)));
-  const base = mesh.positions.length / 3;
   const rx = Math.max(size.x, 0.001) / 2;
   const ry = Math.max(size.y, 0.001) / 2;
   const rz = Math.max(size.z, 0.001) / 2;
-  for (let y = 0; y <= lat; y += 1) {
-    const v = y / lat;
+
+  const top = pushVertex(mesh, [center.x, center.y, center.z + rz], [0, 0, 1], [0.5, 0], [1, 0, 0, 1], materialId);
+  const rings: number[][] = [];
+  for (let ring = 1; ring < lat; ring += 1) {
+    const v = ring / lat;
     const theta = v * Math.PI;
-    for (let x = 0; x <= lon; x += 1) {
-      const u = x / lon;
+    const row: number[] = [];
+    for (let segment = 0; segment < lon; segment += 1) {
+      const u = segment / lon;
       const phi = u * Math.PI * 2;
       const nx = Math.cos(phi) * Math.sin(theta);
       const ny = Math.sin(phi) * Math.sin(theta);
       const nz = Math.cos(theta);
-      mesh.positions.push(center.x + nx * rx, center.y + ny * ry, center.z + nz * rz);
-      mesh.normals.push(nx, ny, nz);
-      mesh.materialIds.push(materialId);
+      row.push(pushVertex(
+        mesh,
+        [center.x + nx * rx, center.y + ny * ry, center.z + nz * rz],
+        [nx, ny, nz],
+        [u, v],
+        [-Math.sin(phi), Math.cos(phi), 0, 1],
+        materialId,
+      ));
     }
+    rings.push(row);
   }
-  for (let y = 0; y < lat; y += 1) {
-    for (let x = 0; x < lon; x += 1) {
-      const a = base + y * (lon + 1) + x;
-      const b = a + lon + 1;
-      mesh.indices.push(a, b, a + 1, b, b + 1, a + 1);
+  const bottom = pushVertex(mesh, [center.x, center.y, center.z - rz], [0, 0, -1], [0.5, 1], [1, 0, 0, 1], materialId);
+  const firstRing = rings[0]!;
+  const lastRing = rings[rings.length - 1]!;
+  for (let segment = 0; segment < lon; segment += 1) {
+    const next = (segment + 1) % lon;
+    mesh.indices.push(top, firstRing[segment]!, firstRing[next]!);
+    mesh.indices.push(bottom, lastRing[next]!, lastRing[segment]!);
+  }
+  for (let ring = 0; ring + 1 < rings.length; ring += 1) {
+    const current = rings[ring]!;
+    const nextRing = rings[ring + 1]!;
+    for (let segment = 0; segment < lon; segment += 1) {
+      const next = (segment + 1) % lon;
+      mesh.indices.push(current[segment]!, nextRing[segment]!, current[next]!);
+      mesh.indices.push(current[next]!, nextRing[segment]!, nextRing[next]!);
     }
   }
 }
 
-function pushPlane(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string) {
+function pushPlane(mesh: MeshGeometry, center: Vec3, size: Vec3, materialId: string): void {
   const sx = Math.max(size.x, 0.001) / 2;
   const sy = Math.max(size.y, 0.001) / 2;
   const base = mesh.positions.length / 3;
-  mesh.positions.push(center.x - sx, center.y - sy, center.z, center.x + sx, center.y - sy, center.z, center.x + sx, center.y + sy, center.z, center.x - sx, center.y + sy, center.z);
-  mesh.normals.push(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1);
-  mesh.materialIds.push(materialId, materialId, materialId, materialId);
+  pushVertex(mesh, [center.x - sx, center.y - sy, center.z], [0, 0, 1], [0, 0], [1, 0, 0, 1], materialId);
+  pushVertex(mesh, [center.x + sx, center.y - sy, center.z], [0, 0, 1], [1, 0], [1, 0, 0, 1], materialId);
+  pushVertex(mesh, [center.x + sx, center.y + sy, center.z], [0, 0, 1], [1, 1], [1, 0, 0, 1], materialId);
+  pushVertex(mesh, [center.x - sx, center.y + sy, center.z], [0, 0, 1], [0, 1], [1, 0, 0, 1], materialId);
   mesh.indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
 }
 
-export function buildGeometry(parts: PartNode[]): MeshGeometry {
-  const mesh: MeshGeometry = { positions: [], normals: [], indices: [], materialIds: [] };
-  for (const part of flattenParts(parts).filter((p) => p.category !== 'root')) {
+export interface BuildGeometryOptions { readonly detailScale?: number; }
+
+export function buildGeometry(parts: PartNode[], options: BuildGeometryOptions = {}): MeshGeometry {
+  const mesh: MeshGeometry = { positions: [], normals: [], texcoords: [], tangents: [], indices: [], materialIds: [] };
+  for (const part of flattenParts(parts).filter((candidate) => candidate.category !== 'root')) {
     const center = part.transform.position;
-    const segments = part.primitive.segments ?? 16;
+    const detailScale = Math.max(0.2, Math.min(1, options.detailScale ?? 1));
+    const segments = Math.max(6, Math.round((part.primitive.segments ?? 16) * detailScale));
     switch (part.primitive.kind) {
       case 'sphere':
       case 'ellipsoid':

@@ -40,6 +40,9 @@ export default function ImplicitAssetWorkspace({ onBack }: { onBack?: () => void
       diagnostics: data.mesh?.diagnostics as unknown as Record<string, number> | undefined,
       gameReadyCertificate: gameReadyScan ? { ...gameReadyScan.certificate, requiredRepairIds: [...gameReadyScan.certificate.requiredRepairIds] } : undefined,
       similaritySignature: gameReadyScan?.similaritySignature,
+      orientedSimilaritySignature: gameReadyScan?.orientedSimilaritySignature,
+      geometryDigest: gameReadyScan?.geometryDigest,
+      scanDigest: gameReadyScan?.scanDigest,
       intrinsicFamilyEnergy: gameReadyScan ? Object.fromEntries(
         (Object.keys(gameReadyScan.families) as Array<keyof typeof gameReadyScan.families>).map((family) => [family, gameReadyScan.families[family].energy]),
       ) : undefined,

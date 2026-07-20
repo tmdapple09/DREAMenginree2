@@ -1,5 +1,7 @@
 import type { JsonObject } from '@/engine/engin-runtime/EnginBaseState';
 import type { IntrinsicAssetScanReport } from '@/engins/contentengin/scan/intrinsicAssetScanner';
+import { verifyGameReadyCertificate } from '@/lib/gameReadyIntegrity';
+import type { GameReadyAssetCertificate } from '@/types/gameReadyAsset';
 import type { MeshBuffers } from './core';
 import type { RenderEnginFrameStats } from './webgpu';
 
@@ -68,10 +70,13 @@ export function createBenchmarkScene(mesh: MeshBuffers, objectCount: number): Re
 export function evaluateRenderPerformanceGate(report: RenderPerformanceReport, scene: RenderBenchmarkScene): JsonObject {
   const fpsPass = report.estimatedFps >= scene.mobileTargetFps;
   const framePass = report.averageCpuFrameMs <= scene.targetFrameMs;
+  const samplePass = report.sampleCount >= 20;
   return {
-    passed: fpsPass && framePass,
+    passed: samplePass && fpsPass && framePass,
+    samplePass,
     fpsPass,
     framePass,
+    sampleCount: report.sampleCount,
     estimatedFps: report.estimatedFps,
     averageCpuFrameMs: report.averageCpuFrameMs,
     targetFps: scene.targetFps,
@@ -80,31 +85,61 @@ export function evaluateRenderPerformanceGate(report: RenderPerformanceReport, s
   };
 }
 
+export function evaluateCertificateAdmission(
+  certificate: GameReadyAssetCertificate,
+  evidence: {
+    similaritySignature?: string;
+    orientedSimilaritySignature?: string;
+    geometryDigest?: string;
+    scanDigest?: string;
+  } = {},
+): JsonObject {
+  const integrityValid = verifyGameReadyCertificate(certificate);
+  const canonicalMatch = !evidence.similaritySignature || evidence.similaritySignature === certificate.canonicalSignature;
+  const orientedMatch = !evidence.orientedSimilaritySignature || evidence.orientedSimilaritySignature === certificate.orientedSignature;
+  const geometryMatch = !evidence.geometryDigest || evidence.geometryDigest === certificate.geometryDigest;
+  const scanMatch = !evidence.scanDigest || evidence.scanDigest === certificate.scanDigest;
+  return {
+    passed: integrityValid && certificate.gameReady && certificate.criticalIssueCount === 0 && canonicalMatch && orientedMatch && geometryMatch && scanMatch,
+    integrityValid,
+    certificateReady: certificate.gameReady,
+    canonicalMatch,
+    orientedMatch,
+    geometryMatch,
+    scanMatch,
+    score: certificate.score,
+  };
+}
+
 export function evaluateScannedAssetRenderGate(
-  scan: Pick<IntrinsicAssetScanReport, 'certificate' | 'topology' | 'similaritySignature'>,
+  scan: Pick<IntrinsicAssetScanReport, 'certificate' | 'topology' | 'similaritySignature' | 'orientedSimilaritySignature' | 'geometryDigest' | 'scanDigest'>,
   report?: RenderPerformanceReport,
   scene?: RenderBenchmarkScene,
 ): JsonObject {
-  const certificate = scan.certificate;
-  const staticReady = certificate.gameReady
-    && certificate.criticalIssueCount === 0
+  const admission = evaluateCertificateAdmission(scan.certificate, scan);
+  const staticReady = admission.passed === true
     && scan.topology.validTriangles > 0
-    && scan.topology.nonManifoldEdges === 0;
+    && scan.topology.nonManifoldEdges === 0
+    && scan.topology.duplicateFaces === 0
+    && scan.topology.inconsistentWindingEdges === 0
+    && scan.topology.selfIntersections === 0;
   const performanceObserved = Boolean(report && scene);
   const performanceGate = report && scene ? evaluateRenderPerformanceGate(report, scene) : null;
-  const performancePassed = performanceGate ? performanceGate.passed === true : null;
+  const performancePassed = performanceGate ? performanceGate.passed === true : false;
   return {
-    passed: staticReady && (performancePassed ?? true),
-    provisional: !performanceObserved,
+    passed: staticReady && performanceObserved && performancePassed,
+    provisional: staticReady && !performanceObserved,
+    provisionalPassed: staticReady && !performanceObserved,
     staticReady,
     performanceObserved,
     performancePassed,
-    score: certificate.score,
+    score: scan.certificate.score,
     similaritySignature: scan.similaritySignature,
     triangleCount: scan.topology.triangles,
-    estimatedBytes: certificate.estimatedBytes,
-    topologyClosed: certificate.topologyClosed,
-    requiredRepairIds: certificate.requiredRepairIds,
+    estimatedBytes: scan.certificate.estimatedBytes,
+    topologyClosed: scan.certificate.topologyClosed,
+    requiredRepairIds: scan.certificate.requiredRepairIds,
+    certificateAdmission: admission,
     performanceGate,
   };
 }

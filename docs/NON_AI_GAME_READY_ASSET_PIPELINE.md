@@ -1,52 +1,87 @@
-# DREAMengin non-AI game-ready asset pipeline
+# DREAMengin deterministic game-ready asset pipeline
 
-This revision adds a deterministic scan-and-build path to the existing ContentEngin, GameEngin, and RenderEngin stack. It does not add a second geometry kernel. Mesh generation and repair continue to use `engins/isosurfaceDualContouring.ts` and `engins/isosurfaceAssetPipeline.ts`.
+This subsystem extends the existing ContentEngin, GameEngin, and RenderEngin stack. It does not introduce a second mesh kernel. Procedural construction still goes through the existing ContentEngin geometry builders and imported indexed meshes continue through the existing isosurface repair path.
 
-## Translation of the earlier mathematics
+## Design translation
 
-The useful ideas were retained, but their coordinates now come from mesh structure rather than cryptocurrency state:
+The reusable idea is whole-object structural analysis:
 
-| Earlier idea | Game-asset translation |
+| Structural idea | Game-asset implementation |
 | --- | --- |
-| Whole-state solve | Scan the complete indexed mesh instead of checking isolated triangles |
-| Graph incidence | Vertex, edge, triangle, boundary, component, and two-ring adjacency |
-| Hidden-coordinate state | Geometry defects and runtime costs that are not obvious from the rendered surface |
-| Cell / edge / face / slice sections | Four intrinsic 16-cell mesh embeddings and their 32 edge, 24 face, and slice contrasts |
-| Walsh modes | Deterministic multi-scale signatures for topology and shape comparison |
-| Compatibility energy | Topology validity, manifoldness, component coherence, memory, triangle budget, and LOD stability |
-| Proof certificate | A portable game-ready certificate embedded in GLB, ContentEngin bundles, GameEngin entries, and RenderEngin intents |
-| Peeling / reduction | Deterministic repair, vertex welding, invalid-triangle removal, compaction, and triangle-budget reduction |
+| Joint state | The complete indexed mesh, attributes, topology, LODs, collision, and render evidence |
+| Incidence graph | Vertex-edge-triangle adjacency, boundaries, components, winding, and two-ring neighborhoods |
+| Multi-scale sections | Intrinsic 16-cell families with tesseract edge, face, slice, and Walsh-Hadamard measurements |
+| Deterministic proof | A geometry-bound v2 certificate with SHA-256 digests |
+| Reduction | Topology repair plus source-detail LOD generation through the existing geometry builder |
+| Runtime verification | GameEngin byte-integrity checks and RenderEngin certificate/geometry/performance gates |
 
-## Intrinsic scan families
+No AI model, remote embedding service, or generated classifier is required.
 
-`engins/contentengin/scan/intrinsicAssetScanner.ts` derives four 4D embeddings from the actual mesh:
+## Scan identities
 
-1. **Spatial shape** — centroid octant plus radial shell.
-2. **Normal and curvature** — normal orientation plus local curvature state.
-3. **Topology neighborhood** — boundary, non-manifold, first-ring degree, and two-ring mass.
-4. **Triangle incidence** — triangle-incidence quantile plus connected-component coordinates.
+ContentEngin emits two structural identities:
 
-Each family produces 16 cells, 32 tesseract-edge contrasts, 24 square-face contrasts, four slice contrasts, and 16 Walsh-Hadamard modes. The normalized modes form a deterministic similarity vector and signature. No model inference, remote AI, or generated labels are involved.
+- **Canonical identity** is invariant to translation, rotation, and uniform scale. It is used for duplicate discovery, family grouping, and LOD similarity.
+- **Oriented identity** preserves directional information. It is used when asset heading, up-axis, or asymmetric placement matters.
 
-## Reachable product flow
+The scanner also emits an exact geometry digest over ordered Float32-compatible vertex positions and triangle indices. A short UI label may be derived from a digest, but the authoritative identities are full SHA-256 values.
 
-1. Upload an image or indexed GLB in ContentEngin.
-2. ContentEngin creates or imports a real mesh and immediately scans it.
-3. **Make Game Ready** runs the existing deterministic repair path, fits a triangle budget, creates three LOD levels, and creates a collision proxy.
-4. The UI shows topology findings, similarity signature, section energies, LOD counts, and collision output.
-5. GLB export embeds the certificate and scan metadata.
-6. The ContentEngin bundle writes `scan.json` and exposes the certificate in `manifest.json`.
-7. `pnpm ce export-gameengin` writes a real GameEngin asset entry containing the model URL, scan URL, certificate, and signature.
-8. GameEngin rejects a supplied ContentEngin certificate when it is not game-ready or does not match the entry signature.
-9. RenderEngin receives the certificate and similarity signature in the existing render intent and can combine static scan readiness with observed frame-performance evidence.
+## Deterministic geometry checks
 
-## Similarity without AI
+The scanner audits:
 
-`compareAssetSimilarity` compares normalized intrinsic vectors with cosine similarity. This supports deterministic duplicate detection, variant grouping, LOD-family validation, repair regression checks, and asset-library search without embeddings from an AI model.
+- invalid and degenerate triangles
+- duplicate faces and duplicate vertices
+- boundary loops and open chains
+- non-manifold edges
+- inconsistent winding
+- isolated vertices and disconnected components
+- skinny triangles
+- self-intersections for standalone meshes
+- pivot displacement
+- triangle and memory budgets
 
-## Files added to asset bundles
+Procedural multi-part assemblies intentionally disable whole-assembly self-intersection blocking because independently authored pieces such as wheels, axles, armor, clothing, and body segments may overlap by design. Each generated part still has valid indexed topology and the exported assembly remains certificate-bound.
+
+## Repair and preparation
+
+`Make Game Ready` uses the existing repair and construction paths to:
+
+1. remove invalid, degenerate, and duplicate faces;
+2. remove isolated vertices and compact indices;
+3. correct connected winding conflicts where possible;
+4. choose seam-preserving or welded repair based on the resulting scan;
+5. generate LOD0, LOD1, and LOD2 from the original procedural source at reduced detail;
+6. generate box and sphere collision proxies;
+7. rescan every exported LOD and issue an independent certificate.
+
+LOD generation does not sample or delete arbitrary triangles. It lowers source segment detail through the existing geometry builder, preserving closed surfaces, UVs, tangents, material assignment, and predictable topology.
+
+## Exported GLB data
+
+ContentEngin source geometry is authored Z-up. Export converts positions, normals, tangents, skeleton metadata, and collision data into a right-handed, Y-up, -Z-forward, meter-based game coordinate system.
+
+Every generated GLB contains:
+
+- indexed positions and normals
+- `TEXCOORD_0`
+- tangents
+- material-separated primitives
+- embedded procedural base-color PNG textures
+- the LOD-specific scan and certificate
+- canonical and oriented identities
+- exact geometry and scan digests
+
+The GLB inspector decodes the binary accessors, reconstructs the indexed mesh, recomputes the geometry digest, and rejects a certificate that does not match the actual bytes.
+
+## Bundle contents
+
+A ContentEngin bundle contains:
 
 - `model.glb`
+- `model.lod1.glb`
+- `model.lod2.glb`
+- `collision.json`
 - `manifest.json`
 - `recipe.json`
 - `validation.json`
@@ -54,4 +89,35 @@ Each family produces 16 cells, 32 tesseract-edge contrasts, 24 square-face contr
 - `thumbnail.webp`
 - optional `source_analysis.json`
 
-The GLB, manifest, scan file, GameEngin entry, and RenderEngin intent all carry the same signature and certificate, avoiding duplicate truth sources.
+`manifest.json` includes independent evidence for every LOD and SHA-256 integrity values for every payload file. The manifest itself is excluded because a file cannot contain a stable hash of its own final bytes.
+
+## GameEngin admission
+
+GameEngin validates:
+
+- the base and LOD certificates;
+- canonical, oriented, geometry, and scan evidence;
+- model, LOD, scan, and collision URLs;
+- SHA-256 integrity syntax;
+- collision availability;
+- decreasing LOD complexity.
+
+`fetchVerifiedAssetBytes` verifies the actual downloaded bytes before an asset is admitted to runtime storage or rendering.
+
+## RenderEngin admission
+
+For ContentEngin GLB handoffs, RenderEngin treats the embedded GLB certificate as the authoritative export certificate. It:
+
+1. verifies optional transport integrity;
+2. parses all mesh primitives, not only the first material group;
+3. validates the embedded certificate and evidence;
+4. recomputes the geometry digest from the decoded mesh;
+5. rejects a mismatch between a supplied handoff certificate and the embedded certificate;
+6. records static admission as provisional;
+7. requires at least 20 observed frame samples before the performance gate can pass.
+
+A static certificate alone is not presented as measured render performance.
+
+## Current boundary
+
+The pipeline is a deterministic geometry and runtime-readiness system. It does not claim to solve semantic rigging, animation quality, authored texture quality, or artistic suitability. Those are separate authoring concerns and should not be hidden inside a topology certificate.

@@ -135,6 +135,7 @@ export function buildAsset(input: Parameters<typeof resolveRecipe>[0]): ContentA
       allowDuplicateVertices: true,
       triangleBudget: profileTriangleBudget(recipe.profile),
       memoryBudgetBytes: 96 * 1024 * 1024,
+      checkSelfIntersections: false,
     },
   );
   const partial = {

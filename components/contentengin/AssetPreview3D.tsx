@@ -16,11 +16,7 @@ export default function AssetPreview3D({ asset, modelUrl }: { asset: ContentAsse
       triangles: asset.validation.metrics.triangles,
       drawCalls: asset.validation.metrics.drawCalls,
       source: 'ContentEngin.AssetPreview3D',
-      gameReadyCertificate: { ...asset.intrinsicScan.certificate, requiredRepairIds: [...asset.intrinsicScan.certificate.requiredRepairIds] },
-      similaritySignature: asset.intrinsicScan.similaritySignature,
-      intrinsicFamilyEnergy: Object.fromEntries(
-        (Object.keys(asset.intrinsicScan.families) as Array<keyof typeof asset.intrinsicScan.families>).map((family) => [family, asset.intrinsicScan.families[family].energy]),
-      ),
+      certificateSource: 'embedded-glb',
     });
   }, [asset, modelUrl]);
 

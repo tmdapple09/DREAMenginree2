@@ -36,15 +36,39 @@ export async function exportToGameEngin(assetDir: string, cartridgeId: string): 
   await cp(assetDir, destination, { recursive: true });
 
   const modelBytes = (await stat(path.join(assetDir, manifest.files.model))).size;
+  const lod1Bytes = (await stat(path.join(assetDir, manifest.files.lod1))).size;
+  const lod2Bytes = (await stat(path.join(assetDir, manifest.files.lod2))).size;
   const gameEntry: GameEnginAssetEntry = {
     id,
     kind: 'gltf',
     url: `${publicBase}/${manifest.files.model}`,
     bytes: modelBytes,
+    vertices: manifest.lods[0]!.vertices,
+    triangles: manifest.lods[0]!.triangles,
     priority: 10,
+    integrity: manifest.integrity[manifest.files.model],
     contentenginCertificate: manifest.gameReadyCertificate,
-    similaritySignature: manifest.similaritySignature,
+    similaritySignature: manifest.canonicalSimilaritySignature,
+    orientedSimilaritySignature: manifest.orientedSimilaritySignature,
+    geometryDigest: manifest.geometryDigest,
+    scanDigest: manifest.scanDigest,
+    scanIntegrity: manifest.integrity[manifest.files.scan],
     scanUrl: `${publicBase}/${manifest.files.scan}`,
+    lods: manifest.lods.filter((lod) => lod.level > 0).map((lod) => ({
+      level: lod.level as 1 | 2,
+      url: `${publicBase}/${lod.file}`,
+      bytes: lod.level === 1 ? lod1Bytes : lod2Bytes,
+      vertices: lod.vertices,
+      triangles: lod.triangles,
+      integrity: manifest.integrity[lod.file]!,
+      contentenginCertificate: lod.gameReadyCertificate,
+      similaritySignature: lod.canonicalSimilaritySignature,
+      orientedSimilaritySignature: lod.orientedSimilaritySignature,
+      geometryDigest: lod.geometryDigest,
+      scanDigest: lod.scanDigest,
+    })),
+    collisionUrl: `${publicBase}/${manifest.files.collision}`,
+    collisionIntegrity: manifest.integrity[manifest.files.collision],
   };
 
   await writeFile(
@@ -55,7 +79,10 @@ export async function exportToGameEngin(assetDir: string, cartridgeId: string): 
       publicBase,
       importedAt: new Date().toISOString(),
       certificate: manifest.gameReadyCertificate,
-      similaritySignature: manifest.similaritySignature,
+      similaritySignature: manifest.canonicalSimilaritySignature,
+      orientedSimilaritySignature: manifest.orientedSimilaritySignature,
+      geometryDigest: manifest.geometryDigest,
+      scanDigest: manifest.scanDigest,
     }, null, 2),
   );
   await writeFile(

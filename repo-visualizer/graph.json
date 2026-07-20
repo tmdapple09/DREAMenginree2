@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T03:44:37.679Z",
+  "generatedAt": "2026-07-17T18:21:05.597Z",
   "root": ".",
   "nodes": [
     {
@@ -3746,16 +3746,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-game-ready-pipeline-fixed.zip",
-      "label": "DREAMengin-game-ready-pipeline-fixed.zip",
-      "type": "file",
-      "path": "DREAMengin-game-ready-pipeline-fixed.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,
@@ -15290,26 +15280,6 @@
       "tags": []
     },
     {
-      "id": "function:components/contentengin/GameReadyScanPanel.tsx#GameReadyScanPanel",
-      "label": "GameReadyScanPanel",
-      "type": "function",
-      "path": "components/contentengin/GameReadyScanPanel.tsx",
-      "parent": "file:components/contentengin/GameReadyScanPanel.tsx",
-      "loc": 5,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "file:components/contentengin/GameReadyScanPanel.tsx",
-      "label": "GameReadyScanPanel.tsx",
-      "type": "tsx",
-      "path": "components/contentengin/GameReadyScanPanel.tsx",
-      "parent": "folder:components/contentengin",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "function:components/contentengin/MaterialEditor.tsx#MaterialEditor",
       "label": "MaterialEditor",
       "type": "function",
@@ -25951,16 +25921,6 @@
       "label": "NAMING_AUTHORITY.md",
       "type": "doc",
       "path": "docs/NAMING_AUTHORITY.md",
-      "parent": "folder:docs",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:docs/NON_AI_GAME_READY_ASSET_PIPELINE.md",
-      "label": "NON_AI_GAME_READY_ASSET_PIPELINE.md",
-      "type": "doc",
-      "path": "docs/NON_AI_GAME_READY_ASSET_PIPELINE.md",
       "parent": "folder:docs",
       "loc": null,
       "isOrphan": true,
@@ -48778,7 +48738,7 @@
       "type": "function",
       "path": "engins/contentengin/ImplicitAssetWorkspace.tsx",
       "parent": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
-      "loc": 9,
+      "loc": 8,
       "isOrphan": true,
       "exported": true
     },
@@ -49217,7 +49177,7 @@
       "path": "engins/contentengin/builders/primitiveBuilder.ts",
       "parent": "file:engins/contentengin/builders/primitiveBuilder.ts",
       "loc": 7,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -49237,7 +49197,7 @@
       "path": "engins/contentengin/builders/textureBuilder.ts",
       "parent": "file:engins/contentengin/builders/textureBuilder.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -49257,7 +49217,7 @@
       "path": "engins/contentengin/builders/uvGenerator.ts",
       "parent": "file:engins/contentengin/builders/uvGenerator.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -49276,29 +49236,9 @@
       "type": "function",
       "path": "engins/contentengin/cli.ts",
       "parent": "file:engins/contentengin/cli.ts",
-      "loc": 12,
+      "loc": 3,
       "isOrphan": true,
       "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/cli.ts#requiredArg",
-      "label": "requiredArg",
-      "type": "function",
-      "path": "engins/contentengin/cli.ts",
-      "parent": "file:engins/contentengin/cli.ts",
-      "loc": 17,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/cli.ts#exportToGameEngin",
-      "label": "exportToGameEngin",
-      "type": "function",
-      "path": "engins/contentengin/cli.ts",
-      "parent": "file:engins/contentengin/cli.ts",
-      "loc": 23,
-      "isOrphan": true,
-      "exported": true
     },
     {
       "id": "function:engins/contentengin/cli.ts#main",
@@ -49306,7 +49246,7 @@
       "type": "function",
       "path": "engins/contentengin/cli.ts",
       "parent": "file:engins/contentengin/cli.ts",
-      "loc": 67,
+      "loc": 4,
       "isOrphan": true,
       "exported": false
     },
@@ -50304,7 +50244,7 @@
       "path": "engins/contentengin/grammars/animalGrammar.ts",
       "parent": "file:engins/contentengin/grammars/animalGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50324,7 +50264,7 @@
       "path": "engins/contentengin/grammars/bicycleGrammar.ts",
       "parent": "file:engins/contentengin/grammars/bicycleGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50344,7 +50284,7 @@
       "path": "engins/contentengin/grammars/bridgeGrammar.ts",
       "parent": "file:engins/contentengin/grammars/bridgeGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50364,7 +50304,7 @@
       "path": "engins/contentengin/grammars/buildingGrammar.ts",
       "parent": "file:engins/contentengin/grammars/buildingGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50394,7 +50334,7 @@
       "path": "engins/contentengin/grammars/humanoidGrammar.ts",
       "parent": "file:engins/contentengin/grammars/humanoidGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50414,7 +50354,7 @@
       "path": "engins/contentengin/grammars/propGrammar.ts",
       "parent": "file:engins/contentengin/grammars/propGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50434,7 +50374,7 @@
       "path": "engins/contentengin/grammars/roadGrammar.ts",
       "parent": "file:engins/contentengin/grammars/roadGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50484,7 +50424,7 @@
       "path": "engins/contentengin/grammars/terrainGrammar.ts",
       "parent": "file:engins/contentengin/grammars/terrainGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50504,7 +50444,7 @@
       "path": "engins/contentengin/grammars/treeGrammar.ts",
       "parent": "file:engins/contentengin/grammars/treeGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50524,7 +50464,7 @@
       "path": "engins/contentengin/grammars/vehicleGrammar.ts",
       "parent": "file:engins/contentengin/grammars/vehicleGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50544,7 +50484,7 @@
       "path": "engins/contentengin/grammars/waterGrammar.ts",
       "parent": "file:engins/contentengin/grammars/waterGrammar.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50623,7 +50563,7 @@
       "path": "engins/contentengin/materials/proceduralMaterials.ts",
       "parent": "file:engins/contentengin/materials/proceduralMaterials.ts",
       "loc": 3,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -50952,7 +50892,7 @@
       "path": "engins/contentengin/performancePlan.ts",
       "parent": "file:engins/contentengin/performancePlan.ts",
       "loc": 13,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51209,17 +51149,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/build.ts",
       "parent": "file:engins/contentengin/pipeline/build.ts",
-      "loc": 29,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/pipeline/build.ts#partsFor",
-      "label": "partsFor",
-      "type": "function",
-      "path": "engins/contentengin/pipeline/build.ts",
-      "parent": "file:engins/contentengin/pipeline/build.ts",
-      "loc": 40,
+      "loc": 2,
       "isOrphan": true,
       "exported": false
     },
@@ -51229,17 +51159,17 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/build.ts",
       "parent": "file:engins/contentengin/pipeline/build.ts",
-      "loc": 63,
+      "loc": 3,
       "isOrphan": true,
       "exported": false
     },
     {
-      "id": "function:engins/contentengin/pipeline/build.ts#profileTriangleBudget",
-      "label": "profileTriangleBudget",
+      "id": "function:engins/contentengin/pipeline/build.ts#partsFor",
+      "label": "partsFor",
       "type": "function",
       "path": "engins/contentengin/pipeline/build.ts",
       "parent": "file:engins/contentengin/pipeline/build.ts",
-      "loc": 84,
+      "loc": 13,
       "isOrphan": true,
       "exported": false
     },
@@ -51249,7 +51179,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/build.ts",
       "parent": "file:engins/contentengin/pipeline/build.ts",
-      "loc": 90,
+      "loc": 15,
       "isOrphan": false,
       "exported": true
     },
@@ -51269,7 +51199,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/bundle.ts",
       "parent": "file:engins/contentengin/pipeline/bundle.ts",
-      "loc": 15,
+      "loc": 3,
       "isOrphan": true,
       "exported": false
     },
@@ -51279,8 +51209,8 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/bundle.ts",
       "parent": "file:engins/contentengin/pipeline/bundle.ts",
-      "loc": 21,
-      "isOrphan": false,
+      "loc": 4,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51289,8 +51219,8 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/bundle.ts",
       "parent": "file:engins/contentengin/pipeline/bundle.ts",
-      "loc": 44,
-      "isOrphan": false,
+      "loc": 5,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51309,7 +51239,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 4,
+      "loc": 3,
       "isOrphan": true,
       "exported": false
     },
@@ -51319,7 +51249,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 9,
+      "loc": 8,
       "isOrphan": true,
       "exported": false
     },
@@ -51329,7 +51259,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 15,
+      "loc": 14,
       "isOrphan": true,
       "exported": false
     },
@@ -51339,7 +51269,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 27,
+      "loc": 26,
       "isOrphan": true,
       "exported": false
     },
@@ -51349,7 +51279,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 40,
+      "loc": 39,
       "isOrphan": false,
       "exported": true
     },
@@ -51359,7 +51289,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 175,
+      "loc": 159,
       "isOrphan": false,
       "exported": true
     },
@@ -51369,7 +51299,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "parent": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "loc": 205,
+      "loc": 179,
       "isOrphan": false,
       "exported": true
     },
@@ -51390,7 +51320,7 @@
       "path": "engins/contentengin/pipeline/generateCollision.ts",
       "parent": "file:engins/contentengin/pipeline/generateCollision.ts",
       "loc": 2,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51410,7 +51340,7 @@
       "path": "engins/contentengin/pipeline/generateLods.ts",
       "parent": "file:engins/contentengin/pipeline/generateLods.ts",
       "loc": 3,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51479,8 +51409,8 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/writeManifest.ts",
       "parent": "file:engins/contentengin/pipeline/writeManifest.ts",
-      "loc": 28,
-      "isOrphan": false,
+      "loc": 2,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51489,7 +51419,7 @@
       "type": "function",
       "path": "engins/contentengin/pipeline/writeManifest.ts",
       "parent": "file:engins/contentengin/pipeline/writeManifest.ts",
-      "loc": 56,
+      "loc": 3,
       "isOrphan": true,
       "exported": true
     },
@@ -51529,7 +51459,7 @@
       "path": "engins/contentengin/recipes/recipeResolver.ts",
       "parent": "file:engins/contentengin/recipes/recipeResolver.ts",
       "loc": 4,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51598,7 +51528,7 @@
       "path": "engins/contentengin/rigging/fitArmature.ts",
       "parent": "file:engins/contentengin/rigging/fitArmature.ts",
       "loc": 3,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51618,7 +51548,7 @@
       "path": "engins/contentengin/rigging/index.ts",
       "parent": "file:engins/contentengin/rigging/index.ts",
       "loc": 10,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51747,7 +51677,7 @@
       "path": "engins/contentengin/runtimeProfile.ts",
       "parent": "file:engins/contentengin/runtimeProfile.ts",
       "loc": 35,
-      "isOrphan": false,
+      "isOrphan": true,
       "exported": true
     },
     {
@@ -51756,285 +51686,6 @@
       "type": "ts",
       "path": "engins/contentengin/runtimeProfile.ts",
       "parent": "folder:engins/contentengin",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "folder:engins/contentengin/scan",
-      "label": "scan",
-      "type": "folder",
-      "path": "engins/contentengin/scan",
-      "parent": "folder:engins/contentengin",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#bounds",
-      "label": "bounds",
-      "type": "function",
-      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "parent": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "loc": 43,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#clusterMesh",
-      "label": "clusterMesh",
-      "type": "function",
-      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "parent": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "loc": 60,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#fitTriangleBudget",
-      "label": "fitTriangleBudget",
-      "type": "function",
-      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "parent": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "loc": 123,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#prepareGameReadyMesh",
-      "label": "prepareGameReadyMesh",
-      "type": "function",
-      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "parent": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "loc": 134,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "label": "gameReadyMeshBuilder.ts",
-      "type": "ts",
-      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "parent": "folder:engins/contentengin/scan",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#finiteVec",
-      "label": "finiteVec",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 126,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#add",
-      "label": "add",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 130,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#sub",
-      "label": "sub",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 134,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#mul",
-      "label": "mul",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 138,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#dot",
-      "label": "dot",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 142,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#cross",
-      "label": "cross",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 146,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#length",
-      "label": "length",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 154,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#normalize",
-      "label": "normalize",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 158,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#median",
-      "label": "median",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 163,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#quantileThresholds",
-      "label": "quantileThresholds",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 170,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#quantileBucket",
-      "label": "quantileBucket",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 180,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#edgeKey",
-      "label": "edgeKey",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 187,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#walsh16",
-      "label": "walsh16",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 191,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#createTesseractSignature",
-      "label": "createTesseractSignature",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 206,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#hashSimilarityVector",
-      "label": "hashSimilarityVector",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 237,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#componentLabels",
-      "label": "componentLabels",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 249,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#boundaryPathCounts",
-      "label": "boundaryPathCounts",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 272,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanRepairPlan",
-      "label": "scanRepairPlan",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 312,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
-      "label": "scanMeshForGameReadiness",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 335,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#compareAssetSimilarity",
-      "label": "compareAssetSimilarity",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 614,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#createIntrinsicAssetScanMetadata",
-      "label": "createIntrinsicAssetScanMetadata",
-      "type": "function",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "loc": 634,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "label": "intrinsicAssetScanner.ts",
-      "type": "ts",
-      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "parent": "folder:engins/contentengin/scan",
       "loc": null,
       "isOrphan": false,
       "tags": []
@@ -52104,7 +51755,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 12,
+      "loc": 10,
       "isOrphan": false,
       "exported": true
     },
@@ -52114,7 +51765,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 420,
+      "loc": 349,
       "isOrphan": true,
       "exported": false
     },
@@ -52124,7 +51775,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 431,
+      "loc": 360,
       "isOrphan": true,
       "exported": false
     },
@@ -52134,7 +51785,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 437,
+      "loc": 366,
       "isOrphan": true,
       "exported": false
     },
@@ -52144,7 +51795,7 @@
       "type": "function",
       "path": "engins/contentengin/useImplicitAssetWorkspace.ts",
       "parent": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "loc": 450,
+      "loc": 379,
       "isOrphan": true,
       "exported": false
     },
@@ -54633,7 +54284,7 @@
       "type": "function",
       "path": "engins/gameengin/assets/BundleManifest.ts",
       "parent": "file:engins/gameengin/assets/BundleManifest.ts",
-      "loc": 29,
+      "loc": 25,
       "isOrphan": false,
       "exported": true
     },
@@ -54643,7 +54294,7 @@
       "type": "function",
       "path": "engins/gameengin/assets/BundleManifest.ts",
       "parent": "file:engins/gameengin/assets/BundleManifest.ts",
-      "loc": 53,
+      "loc": 35,
       "isOrphan": false,
       "exported": true
     },
@@ -59774,7 +59425,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 33,
+      "loc": 31,
       "isOrphan": false,
       "exported": true
     },
@@ -59784,7 +59435,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 48,
+      "loc": 46,
       "isOrphan": false,
       "exported": true
     },
@@ -59794,7 +59445,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 58,
+      "loc": 56,
       "isOrphan": false,
       "exported": true
     },
@@ -59804,7 +59455,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 65,
+      "loc": 63,
       "isOrphan": false,
       "exported": true
     },
@@ -59814,7 +59465,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 95,
+      "loc": 92,
       "isOrphan": true,
       "exported": false
     },
@@ -59824,7 +59475,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 97,
+      "loc": 94,
       "isOrphan": true,
       "exported": false
     },
@@ -59834,7 +59485,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 98,
+      "loc": 95,
       "isOrphan": true,
       "exported": false
     },
@@ -59844,7 +59495,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 99,
+      "loc": 96,
       "isOrphan": true,
       "exported": false
     },
@@ -59854,7 +59505,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 100,
+      "loc": 97,
       "isOrphan": true,
       "exported": false
     },
@@ -59864,7 +59515,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 101,
+      "loc": 98,
       "isOrphan": true,
       "exported": false
     },
@@ -59874,7 +59525,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 102,
+      "loc": 99,
       "isOrphan": true,
       "exported": false
     },
@@ -59884,7 +59535,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 103,
+      "loc": 100,
       "isOrphan": true,
       "exported": false
     },
@@ -59894,7 +59545,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 104,
+      "loc": 101,
       "isOrphan": true,
       "exported": false
     },
@@ -59904,7 +59555,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 105,
+      "loc": 102,
       "isOrphan": true,
       "exported": false
     },
@@ -59914,7 +59565,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 106,
+      "loc": 103,
       "isOrphan": true,
       "exported": false
     },
@@ -59924,7 +59575,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 107,
+      "loc": 104,
       "isOrphan": true,
       "exported": false
     },
@@ -59934,7 +59585,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 108,
+      "loc": 105,
       "isOrphan": true,
       "exported": false
     },
@@ -59944,7 +59595,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 109,
+      "loc": 106,
       "isOrphan": false,
       "exported": true
     },
@@ -59954,7 +59605,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 190,
+      "loc": 187,
       "isOrphan": true,
       "exported": false
     },
@@ -59964,7 +59615,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 211,
+      "loc": 208,
       "isOrphan": true,
       "exported": false
     },
@@ -59974,7 +59625,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 216,
+      "loc": 213,
       "isOrphan": true,
       "exported": false
     },
@@ -59984,7 +59635,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 222,
+      "loc": 219,
       "isOrphan": true,
       "exported": false
     },
@@ -59994,7 +59645,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 248,
+      "loc": 245,
       "isOrphan": true,
       "exported": false
     },
@@ -60004,7 +59655,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 262,
+      "loc": 259,
       "isOrphan": true,
       "exported": false
     },
@@ -60014,7 +59665,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 275,
+      "loc": 272,
       "isOrphan": true,
       "exported": false
     },
@@ -60024,7 +59675,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 307,
+      "loc": 304,
       "isOrphan": false,
       "exported": true
     },
@@ -60034,7 +59685,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 313,
+      "loc": 310,
       "isOrphan": true,
       "exported": true
     },
@@ -60044,7 +59695,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 379,
+      "loc": 376,
       "isOrphan": true,
       "exported": true
     },
@@ -60054,7 +59705,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 384,
+      "loc": 381,
       "isOrphan": false,
       "exported": true
     },
@@ -60064,7 +59715,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 403,
+      "loc": 400,
       "isOrphan": true,
       "exported": true
     },
@@ -60074,7 +59725,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 419,
+      "loc": 416,
       "isOrphan": true,
       "exported": true
     },
@@ -60084,7 +59735,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 428,
+      "loc": 425,
       "isOrphan": true,
       "exported": false
     },
@@ -60094,7 +59745,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 430,
+      "loc": 427,
       "isOrphan": true,
       "exported": true
     },
@@ -60104,7 +59755,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 431,
+      "loc": 428,
       "isOrphan": false,
       "exported": true
     },
@@ -60114,7 +59765,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 497,
+      "loc": 494,
       "isOrphan": true,
       "exported": true
     },
@@ -60124,7 +59775,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 530,
+      "loc": 527,
       "isOrphan": true,
       "exported": true
     },
@@ -60134,7 +59785,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 566,
+      "loc": 558,
       "isOrphan": false,
       "exported": true
     },
@@ -60144,7 +59795,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 609,
+      "loc": 593,
       "isOrphan": true,
       "exported": true
     },
@@ -60154,7 +59805,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 611,
+      "loc": 595,
       "isOrphan": true,
       "exported": true
     },
@@ -60164,7 +59815,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 620,
+      "loc": 604,
       "isOrphan": true,
       "exported": true
     },
@@ -60174,7 +59825,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 634,
+      "loc": 618,
       "isOrphan": false,
       "exported": true
     },
@@ -60184,7 +59835,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 644,
+      "loc": 628,
       "isOrphan": false,
       "exported": true
     },
@@ -60194,7 +59845,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 649,
+      "loc": 633,
       "isOrphan": false,
       "exported": true
     },
@@ -60204,7 +59855,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 699,
+      "loc": 683,
       "isOrphan": false,
       "exported": true
     },
@@ -60214,7 +59865,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 708,
+      "loc": 692,
       "isOrphan": true,
       "exported": false
     },
@@ -60224,7 +59875,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 738,
+      "loc": 722,
       "isOrphan": true,
       "exported": false
     },
@@ -60234,7 +59885,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 744,
+      "loc": 728,
       "isOrphan": true,
       "exported": false
     },
@@ -60244,7 +59895,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 771,
+      "loc": 755,
       "isOrphan": false,
       "exported": true
     },
@@ -60254,7 +59905,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 789,
+      "loc": 771,
       "isOrphan": false,
       "exported": true
     },
@@ -60264,7 +59915,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 850,
+      "loc": 826,
       "isOrphan": true,
       "exported": false
     },
@@ -60274,7 +59925,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 852,
+      "loc": 828,
       "isOrphan": true,
       "exported": false
     },
@@ -60284,7 +59935,7 @@
       "type": "function",
       "path": "engins/isosurfaceAssetPipeline.ts",
       "parent": "file:engins/isosurfaceAssetPipeline.ts",
-      "loc": 853,
+      "loc": 829,
       "isOrphan": true,
       "exported": false
     },
@@ -61741,7 +61392,7 @@
       "type": "function",
       "path": "engins/renderengin/diagnostics.ts",
       "parent": "file:engins/renderengin/diagnostics.ts",
-      "loc": 35,
+      "loc": 34,
       "isOrphan": true,
       "exported": true
     },
@@ -61751,7 +61402,7 @@
       "type": "function",
       "path": "engins/renderengin/diagnostics.ts",
       "parent": "file:engins/renderengin/diagnostics.ts",
-      "loc": 51,
+      "loc": 50,
       "isOrphan": true,
       "exported": true
     },
@@ -61761,7 +61412,7 @@
       "type": "function",
       "path": "engins/renderengin/diagnostics.ts",
       "parent": "file:engins/renderengin/diagnostics.ts",
-      "loc": 55,
+      "loc": 54,
       "isOrphan": true,
       "exported": true
     },
@@ -61771,17 +61422,7 @@
       "type": "function",
       "path": "engins/renderengin/diagnostics.ts",
       "parent": "file:engins/renderengin/diagnostics.ts",
-      "loc": 67,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:engins/renderengin/diagnostics.ts#evaluateScannedAssetRenderGate",
-      "label": "evaluateScannedAssetRenderGate",
-      "type": "function",
-      "path": "engins/renderengin/diagnostics.ts",
-      "parent": "file:engins/renderengin/diagnostics.ts",
-      "loc": 82,
+      "loc": 66,
       "isOrphan": true,
       "exported": true
     },
@@ -63117,7 +62758,7 @@
       "type": "function",
       "path": "engins/rulesets/content/contentEnginRuleSet.ts",
       "parent": "file:engins/rulesets/content/contentEnginRuleSet.ts",
-      "loc": 87,
+      "loc": 13,
       "isOrphan": true,
       "exported": false
     },
@@ -63127,7 +62768,7 @@
       "type": "function",
       "path": "engins/rulesets/content/contentEnginRuleSet.ts",
       "parent": "file:engins/rulesets/content/contentEnginRuleSet.ts",
-      "loc": 165,
+      "loc": 14,
       "isOrphan": true,
       "exported": false
     },
@@ -77842,16 +77483,6 @@
       "tags": []
     },
     {
-      "id": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "label": "intrinsic-asset-scanner.test.ts",
-      "type": "ts",
-      "path": "tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "parent": "folder:tests/contentengin",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "folder:tests/contentengin/test-assets",
       "label": "test-assets",
       "type": "folder",
@@ -81258,16 +80889,6 @@
       "parent": "folder:types",
       "loc": null,
       "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:types/gameReadyAsset.ts",
-      "label": "gameReadyAsset.ts",
-      "type": "ts",
-      "path": "types/gameReadyAsset.ts",
-      "parent": "folder:types",
-      "loc": null,
-      "isOrphan": false,
       "tags": []
     },
     {
@@ -90430,16 +90051,6 @@
     {
       "source": "file:components/contentengin/ContentEnginStudio.tsx",
       "target": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/contentengin/GameReadyScanPanel.tsx",
-      "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:components/contentengin/GameReadyScanPanel.tsx",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
       "kind": "import"
     },
     {
@@ -100744,11 +100355,6 @@
     },
     {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
-      "target": "file:components/contentengin/GameReadyScanPanel.tsx",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/isosurfaceAssetPipeline.ts",
       "kind": "import"
     },
@@ -100760,11 +100366,6 @@
     {
       "source": "file:engins/contentengin/ImplicitAssetWorkspace.tsx",
       "target": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/assetTypes.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
       "kind": "import"
     },
     {
@@ -100820,41 +100421,6 @@
     {
       "source": "file:engins/contentengin/builders/uvGenerator.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/pipeline/build.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/pipeline/bundle.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/photo/imageAnalyzer.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/rigging/index.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/pipeline/validate.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/contentengin/pipeline/writeManifest.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "file:engins/gameengin/assets/BundleManifest.ts",
       "kind": "import"
     },
     {
@@ -100978,168 +100544,8 @@
       "kind": "import"
     },
     {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/animalGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/bicycleGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/bridgeGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/buildingGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/humanoidGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/propGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/roadGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/terrainGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/treeGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/vehicleGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/grammars/waterGrammar.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/builders/geometryBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/builders/primitiveBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/builders/textureBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/builders/uvGenerator.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/materials/proceduralMaterials.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/performancePlan.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/recipes/recipeResolver.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/rigging/fitArmature.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/runtimeProfile.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/isosurfaceAssetPipeline.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/shaders/shaderRegistry.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/pipeline/generateCollision.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/pipeline/generateLods.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/pipeline/paths.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "file:engins/contentengin/pipeline/validate.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "file:engins/contentengin/assetTypes.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "file:engins/contentengin/pipeline/validate.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "file:engins/contentengin/pipeline/writeManifest.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:engins/contentengin/pipeline/exportGlb.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
       "kind": "import"
     },
     {
@@ -101223,31 +100629,6 @@
       "kind": "import"
     },
     {
-      "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "target": "file:engins/isosurfaceDualContouring.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "target": "file:engins/isosurfaceAssetPipeline.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "target": "file:engins/isosurfaceDualContouring.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "target": "file:types/gameReadyAsset.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:engins/contentengin/shaders/shaderRegistry.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
       "kind": "import"
@@ -101275,16 +100656,6 @@
     {
       "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
       "target": "file:engins/isosurfaceDualContouring.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
       "kind": "import"
     },
     {
@@ -102045,11 +101416,6 @@
     {
       "source": "file:engins/gameengin/assets/BundleCache.ts",
       "target": "file:engins/gameengin/assets/BundleManifest.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/gameengin/assets/BundleManifest.ts",
-      "target": "file:types/gameReadyAsset.ts",
       "kind": "import"
     },
     {
@@ -102859,16 +102225,6 @@
     },
     {
       "source": "file:engins/isosurfaceAssetPipeline.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/isosurfaceAssetPipeline.ts",
-      "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/isosurfaceAssetPipeline.ts",
       "target": "file:engins/isosurfaceDualContouring.ts",
       "kind": "reexport"
     },
@@ -103025,11 +102381,6 @@
     {
       "source": "file:engins/renderengin/diagnostics.ts",
       "target": "file:engine/engin-runtime/EnginBaseState.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/renderengin/diagnostics.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
       "kind": "import"
     },
     {
@@ -108625,21 +107976,6 @@
     {
       "source": "file:tests/contentengin/contentengin-rigging.test.ts",
       "target": "file:engins/contentengin/rigging/rigValidator.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "file:engins/isosurfaceDualContouring.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
       "kind": "import"
     },
     {
@@ -117758,36 +117094,6 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/pipeline/build.ts#buildAsset",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/pipeline/bundle.ts#writeAssetBundle",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/photo/imageAnalyzer.ts#analyzeImageBytes",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/rigging/index.ts#runRiggingPipeline",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/pipeline/validate.ts#validateAsset",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/cli.ts",
-      "target": "function:engins/contentengin/pipeline/bundle.ts#zipDirectory",
-      "kind": "call"
-    },
-    {
       "source": "file:engins/contentengin/grammars/animalGrammar.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
       "kind": "call"
@@ -117868,158 +117174,8 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/humanoidGrammar.ts#buildHumanoidParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/animalGrammar.ts#buildAnimalParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/vehicleGrammar.ts#buildVehicleParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/bicycleGrammar.ts#buildBicycleParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/buildingGrammar.ts#buildBuildingParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/roadGrammar.ts#buildRoadParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/bridgeGrammar.ts#buildBridgeParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/terrainGrammar.ts#buildTerrainParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/treeGrammar.ts#buildTreeParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/waterGrammar.ts#buildWaterParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/grammars/propGrammar.ts#buildPropParts",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/recipes/recipeResolver.ts#resolveRecipe",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/builders/primitiveBuilder.ts#resetPartIds",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/pipeline/paths.ts#safeSegment",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/builders/uvGenerator.ts#assignProceduralUv",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/builders/textureBuilder.ts#assignProceduralTextureNames",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/materials/proceduralMaterials.ts#defaultMaterials",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/rigging/fitArmature.ts#createSkeleton",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/runtimeProfile.ts#createContentEnginRuntimeProfile",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/performancePlan.ts#createContentEnginPerformancePlan",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/builders/geometryBuilder.ts#buildGeometry",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/isosurfaceAssetPipeline.ts#repairMeshDetailed",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/pipeline/generateCollision.ts#generateCollision",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/pipeline/generateLods.ts#generateLods",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/build.ts",
-      "target": "function:engins/contentengin/pipeline/validate.ts#validateAsset",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "function:engins/contentengin/pipeline/exportGlb.ts#createGlbBuffer",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "function:engins/contentengin/pipeline/validate.ts#validateAsset",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/bundle.ts",
-      "target": "function:engins/contentengin/pipeline/writeManifest.ts#makeManifest",
-      "kind": "call"
-    },
-    {
       "source": "file:engins/contentengin/pipeline/exportGlb.ts",
       "target": "function:engins/contentengin/builders/geometryBuilder.ts#buildGeometry",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#createIntrinsicAssetScanMetadata",
       "kind": "call"
     },
     {
@@ -118050,16 +117206,6 @@
     {
       "source": "file:engins/contentengin/runtimeProfile.ts",
       "target": "function:engins/contentengin/upgradeMatrix.ts#enabledUpgradeIds",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "target": "function:engins/isosurfaceAssetPipeline.ts#repairMeshDetailed",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
       "kind": "call"
     },
     {
@@ -118129,22 +117275,12 @@
     },
     {
       "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
       "target": "function:engins/isosurfaceAssetPipeline.ts#validateMeshStrict",
       "kind": "call"
     },
     {
       "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
       "target": "function:engins/isosurfaceAssetPipeline.ts#qualityFromDiagnostics",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/useImplicitAssetWorkspace.ts",
-      "target": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#prepareGameReadyMesh",
       "kind": "call"
     },
     {
@@ -119249,11 +118385,6 @@
     },
     {
       "source": "file:engins/isosurfaceAssetPipeline.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/isosurfaceAssetPipeline.ts",
       "target": "function:engins/isosurfaceDualContouring.ts#runDualContouring",
       "kind": "call"
     },
@@ -120295,26 +119426,6 @@
     {
       "source": "file:tests/contentengin/contentengin-rigging.test.ts",
       "target": "function:engins/isosurfaceAssetPipeline.ts#exportGLB",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#scanMeshForGameReadiness",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#createIntrinsicAssetScanMetadata",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#compareAssetSimilarity",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "function:engins/contentengin/scan/gameReadyMeshBuilder.ts#prepareGameReadyMesh",
       "kind": "call"
     },
     {

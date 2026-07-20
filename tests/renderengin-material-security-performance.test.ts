@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { digestObject } from '@/lib/gameReadyIntegrity';
 import {
   authorizeRenderAssetOperation,
   createBenchmarkScene,
@@ -45,36 +46,51 @@ describe('RenderEngin materials, authorization, handoffs, and performance diagno
 
 
   it('combines ContentEngin scan evidence with observed RenderEngin performance', () => {
+    const canonicalSignature = digestObject('render:canonical');
+    const certificatePayload = {
+      version: 2 as const,
+      scannerVersion: 'test-v2',
+      gameReady: true,
+      score: 90,
+      signature: canonicalSignature,
+      canonicalSignature,
+      orientedSignature: digestObject('render:oriented'),
+      geometryDigest: digestObject('render:geometry'),
+      scanDigest: digestObject('render:scan'),
+      topologyClosed: true,
+      triangleBudget: 50_000,
+      estimatedBytes: 1024,
+      criticalIssueCount: 0,
+      warningCount: 0,
+      requiredRepairIds: [],
+    };
+    const certificate = { ...certificatePayload, certificateDigest: digestObject(certificatePayload) };
     const scan = {
-      similaritySignature: 'sf-render',
-      certificate: {
-        version: 1 as const,
-        scannerVersion: 'test',
-        gameReady: true,
-        score: 90,
-        signature: 'sf-render',
-        topologyClosed: true,
-        triangleBudget: 50000,
-        estimatedBytes: 1024,
-        criticalIssueCount: 0,
-        warningCount: 0,
-        requiredRepairIds: [],
-      },
+      similaritySignature: certificate.canonicalSignature,
+      orientedSimilaritySignature: certificate.orientedSignature,
+      geometryDigest: certificate.geometryDigest,
+      scanDigest: certificate.scanDigest,
+      certificate,
       topology: {
         vertices: 3, triangles: 1, validTriangles: 1, invalidTriangles: 0,
-        degenerateTriangles: 0, skinnyTriangles: 0, duplicateVertices: 0,
+        degenerateTriangles: 0, skinnyTriangles: 0, duplicateFaces: 0,
+        inconsistentWindingEdges: 0, selfIntersections: 0, duplicateVertices: 0,
         isolatedVertices: 0, boundaryEdges: 0, boundaryLoops: 0,
         openBoundaryChains: 0, nonManifoldEdges: 0, connectedComponents: 1,
         largestComponentVertices: 3, estimatedBytes: 1024, averageVertexDegree: 2,
-        maxVertexDegree: 2,
+        maxVertexDegree: 2, pivotOffsetRatio: 0, largestDimension: 1,
       },
     };
     const provisional = evaluateScannedAssetRenderGate(scan);
-    expect(provisional.passed).toBe(true);
+    expect(provisional.passed).toBe(false);
     expect(provisional.provisional).toBe(true);
-    const report = createRenderPerformanceReport([
-      { frameIndex: 1, cpuFrameMs: 12, drawCalls: 1, indexCount: 3, measuredAt: new Date().toISOString() },
-    ]);
+    const report = createRenderPerformanceReport(Array.from({ length: 20 }, (_, index) => ({
+      frameIndex: index + 1,
+      cpuFrameMs: 12,
+      drawCalls: 1,
+      indexCount: 3,
+      measuredAt: new Date().toISOString(),
+    })));
     const scene = { id: 'scan-scene', name: 'scan', objectCount: 1, triangleCount: 1, targetFps: 60, targetFrameMs: 16.7, mobileTargetFps: 30 };
     const observed = evaluateScannedAssetRenderGate(scan, report, scene);
     expect(observed.passed).toBe(true);

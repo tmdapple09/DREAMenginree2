@@ -12,7 +12,7 @@ import {
   type Vec2,
   type Vec3,
 } from './core';
-import { createParsedGlbRenderAsset, createParsedObjRenderAsset, estimateRenderAssetMemory, type ParsedRenderAsset } from './assets';
+import { createParsedGlbRenderAsset, createParsedObjRenderAsset, estimateRenderAssetMemory, verifyCertifiedGlbRenderAsset, type ParsedRenderAsset } from './assets';
 import {
   requestWebGpuDevice,
   WebGpuRenderEngin,
@@ -20,6 +20,15 @@ import {
   type RenderGpuCullBounds,
 } from './webgpu';
 import type { RenderIntent } from './core';
+import {
+  createBenchmarkScene,
+  createRenderPerformanceReport,
+  evaluateCertificateAdmission,
+  evaluateRenderPerformanceGate,
+  frameStatsToPerformanceSample,
+  type RenderPerformanceSample,
+} from './diagnostics';
+import type { GameReadyAssetCertificate } from '@/types/gameReadyAsset';
 import type { RenderServiceIntentEnvelope } from './serviceRuntime';
 
 interface RenderViewportProps {
@@ -35,6 +44,25 @@ type GridPreview = GridPreviewTile[][];
 
 const MAX_RENDER_HANDOFF_BYTES = 64 * 1024 * 1024;
 const MAX_RENDER_IMPORT_BYTES = 64 * 1024 * 1024;
+
+function isGameReadyCertificate(value: unknown): value is GameReadyAssetCertificate {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Partial<GameReadyAssetCertificate>;
+  return candidate.version === 2
+    && typeof candidate.certificateDigest === 'string'
+    && typeof candidate.canonicalSignature === 'string'
+    && typeof candidate.geometryDigest === 'string';
+}
+
+async function verifyBufferIntegrity(buffer: ArrayBuffer, expected: unknown): Promise<void> {
+  if (typeof expected !== 'string' || !expected) return;
+  if (!/^sha256-[0-9a-f]{64}$/i.test(expected)) throw new Error('RenderEngin handoff integrity is not a SHA-256 value.');
+  const digest = await crypto.subtle.digest('SHA-256', buffer);
+  const actual = `sha256-${Array.from(new Uint8Array(digest)).map((value) => value.toString(16).padStart(2, '0')).join('')}`;
+  if (actual.toLowerCase() !== expected.toLowerCase()) throw new Error('RenderEngin rejected a handoff whose bytes do not match the declared integrity digest.');
+}
+
+
 
 function assertRenderPayloadSize(byteLength: number, label: string): void {
   if (!Number.isFinite(byteLength) || byteLength <= 0) {
@@ -210,6 +238,8 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
   const pointerRef = useRef<{ id: number; x: number; y: number; mode: 'orbit' | 'pan' } | null>(null);
   const sceneMeshRef = useRef<MeshBuffers>(createDemoTriangle());
   const cameraEyeRef = useRef<Vec3>(orbitEye(0, 0, 2.4));
+  const activeCertificateRef = useRef<GameReadyAssetCertificate | null>(null);
+  const performanceSamplesRef = useRef<RenderPerformanceSample[]>([]);
 
   useEffect(() => { runtimeRef.current = runtime; }, [runtime]);
 
@@ -331,13 +361,27 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
           onReady: () => setStatus('RenderEngin WebGPU viewport running'),
           onFrame: (nextStats) => {
             const now = performance.now();
+            performanceSamplesRef.current.push(frameStatsToPerformanceSample(nextStats));
+            if (performanceSamplesRef.current.length > 120) performanceSamplesRef.current.splice(0, performanceSamplesRef.current.length - 120);
             if (now - lastStatsStateAtRef.current >= 250) {
               lastStatsStateAtRef.current = now;
               setStats(nextStats);
             }
             if (now - lastFrameTelemetryAtRef.current >= 1000) {
               lastFrameTelemetryAtRef.current = now;
-              runtimeRef.current?.dispatch({ type: 'render.frame.render', payload: { ...nextStats, telemetry: 'throttled' } });
+              const performanceReport = createRenderPerformanceReport(performanceSamplesRef.current);
+              const performanceGate = evaluateRenderPerformanceGate(performanceReport, createBenchmarkScene(sceneMeshRef.current, 1));
+              runtimeRef.current?.dispatch({
+                type: 'render.frame.render',
+                payload: {
+                  ...nextStats,
+                  telemetry: 'throttled',
+                  performanceReport,
+                  performanceGate,
+                  certifiedAsset: Boolean(activeCertificateRef.current),
+                  certificateDigest: activeCertificateRef.current?.certificateDigest,
+                },
+              });
             }
           },
           onError: (error) => setStatus(error.message),
@@ -368,11 +412,36 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
 
     const applyIntent = async () => {
       try {
+        const suppliedCertificate = isGameReadyCertificate(payload.gameReadyCertificate)
+          ? payload.gameReadyCertificate
+          : undefined;
         const glbUrl = typeof payload.glbUrl === 'string'
           ? payload.glbUrl
           : typeof payload.modelUrl === 'string'
             ? payload.modelUrl
             : '';
+
+        if (payload.gameReadyCertificate !== undefined && !suppliedCertificate) {
+          throw new Error('RenderEngin rejected a malformed game-ready certificate.');
+        }
+        if (suppliedCertificate) {
+          const admission = evaluateCertificateAdmission(suppliedCertificate, {
+            similaritySignature: typeof payload.similaritySignature === 'string' ? payload.similaritySignature : undefined,
+            orientedSimilaritySignature: typeof payload.orientedSimilaritySignature === 'string' ? payload.orientedSimilaritySignature : undefined,
+            geometryDigest: typeof payload.geometryDigest === 'string' ? payload.geometryDigest : undefined,
+            scanDigest: typeof payload.scanDigest === 'string' ? payload.scanDigest : undefined,
+          });
+          if (admission.passed !== true) throw new Error('RenderEngin rejected a handoff whose certificate or structural evidence did not verify.');
+          activeCertificateRef.current = suppliedCertificate;
+          performanceSamplesRef.current = [];
+          runtimeRef.current?.dispatch({ type: 'render.asset.preview', payload: { status: 'certificate-admitted', certificateAdmission: admission, certificateDigest: suppliedCertificate.certificateDigest } });
+        } else {
+          activeCertificateRef.current = null;
+          performanceSamplesRef.current = [];
+          if (incomingIntent.source === 'ContentEngin' && !glbUrl) {
+            throw new Error('RenderEngin rejected a ContentEngin non-GLB handoff without a valid game-ready certificate.');
+          }
+        }
         if (glbUrl) {
           setStatus(`Loading RenderEngin GLB handoff from ${incomingIntent.source}…`);
           const response = await fetch(glbUrl, { cache: 'force-cache' });
@@ -383,6 +452,7 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
           }
           const buffer = await response.arrayBuffer();
           assertRenderPayloadSize(buffer.byteLength, 'RenderEngin GLB handoff');
+          await verifyBufferIntegrity(buffer, payload.integrity);
           if (cancelled) return;
           const name = typeof payload.fileName === 'string'
             ? payload.fileName
@@ -394,6 +464,28 @@ export default function RenderEnginViewport({ runtime, incomingIntent }: RenderV
             name,
             buffer,
           });
+          if (incomingIntent.source === 'ContentEngin' || suppliedCertificate) {
+            const verified = verifyCertifiedGlbRenderAsset(buffer, parsed, suppliedCertificate);
+            const admission = evaluateCertificateAdmission(verified.certificate, {
+              similaritySignature: verified.metadata.canonicalSimilaritySignature,
+              orientedSimilaritySignature: verified.metadata.orientedSimilaritySignature,
+              geometryDigest: verified.computedGeometryDigest,
+              scanDigest: verified.metadata.scanDigest,
+            });
+            if (admission.passed !== true) {
+              throw new Error('RenderEngin rejected a GLB whose verified certificate failed runtime admission.');
+            }
+            activeCertificateRef.current = verified.certificate;
+            runtimeRef.current?.dispatch({
+              type: 'render.asset.preview',
+              payload: {
+                status: 'glb-certificate-bound',
+                certificateAdmission: admission,
+                certificateDigest: verified.certificate.certificateDigest,
+                geometryDigest: verified.certificate.geometryDigest,
+              },
+            });
+          }
           loadParsedAsset(parsed, name, incomingIntent.source);
           setStatus(`RenderEngin GLB handoff loaded from ${incomingIntent.source}`);
           return;

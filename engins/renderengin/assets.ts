@@ -1,5 +1,7 @@
 import { authorizeDomainCapability, type DomainAuthorizationContext, type DomainCapability } from '@/engine/engin-runtime/EnginCapabilities';
 import type { DomainVisibility, JsonObject, JsonValue } from '@/engine/engin-runtime/EnginBaseState';
+import { computeIndexedGeometryDigest, verifyGameReadyCertificate } from '@/lib/gameReadyIntegrity';
+import type { GameReadyAssetCertificate } from '@/types/gameReadyAsset';
 import { createMeshBuffers, createRenderAsset, validateMeshForRenderUpload, v3cross, v3normalize, v3sub, type MeshBuffers, type Vec2, type Vec3 } from './core';
 
 export interface RenderAssetManifest extends JsonObject {
@@ -159,7 +161,29 @@ export function createGameEnginRenderHandoff(input: { assetId: string; ownerId: 
 type GltfAccessorType = 'SCALAR' | 'VEC2' | 'VEC3' | 'VEC4';
 interface GltfAccessor { bufferView: number; componentType: number; count: number; type: GltfAccessorType; byteOffset?: number; }
 interface GltfBufferView { buffer: number; byteOffset?: number; byteLength: number; byteStride?: number; }
-interface MinimalGltf { accessors: GltfAccessor[]; bufferViews: GltfBufferView[]; meshes: Array<{ primitives: Array<{ attributes: Record<string, number>; indices?: number }> }>; }
+interface MinimalGltfPrimitive { attributes: Record<string, number>; indices?: number; material?: number; }
+interface MinimalGltf {
+  accessors: GltfAccessor[];
+  bufferViews: GltfBufferView[];
+  meshes: Array<{ primitives: MinimalGltfPrimitive[] }>;
+  extras?: {
+    gameReadyCertificate?: GameReadyAssetCertificate;
+    canonicalSimilaritySignature?: string;
+    orientedSimilaritySignature?: string;
+    geometryDigest?: string;
+    scanDigest?: string;
+    lodLevel?: number;
+  };
+}
+
+export interface RenderGlbGameReadyMetadata {
+  readonly certificate?: GameReadyAssetCertificate;
+  readonly canonicalSimilaritySignature?: string;
+  readonly orientedSimilaritySignature?: string;
+  readonly geometryDigest?: string;
+  readonly scanDigest?: string;
+  readonly lodLevel?: number;
+}
 
 function parseGlbChunks(buffer: ArrayBuffer): { json: MinimalGltf; binary: ArrayBuffer } {
   const header = parseGlbHeader(buffer);
@@ -209,15 +233,106 @@ function readIndexAccessor(json: MinimalGltf, binary: ArrayBuffer, accessorIndex
   return Array.from({ length: accessor.count }, (_, index) => readAccessorNumber(binary, accessor, view, index, 0));
 }
 
+export function readGlbGameReadyMetadata(buffer: ArrayBuffer): RenderGlbGameReadyMetadata {
+  const { json } = parseGlbChunks(buffer);
+  return {
+    certificate: json.extras?.gameReadyCertificate,
+    canonicalSimilaritySignature: json.extras?.canonicalSimilaritySignature,
+    orientedSimilaritySignature: json.extras?.orientedSimilaritySignature,
+    geometryDigest: json.extras?.geometryDigest,
+    scanDigest: json.extras?.scanDigest,
+    lodLevel: json.extras?.lodLevel,
+  };
+}
+
+export interface VerifiedRenderGlbCertificate {
+  readonly certificate: GameReadyAssetCertificate;
+  readonly metadata: RenderGlbGameReadyMetadata;
+  readonly computedGeometryDigest: string;
+}
+
+export function verifyCertifiedGlbRenderAsset(
+  buffer: ArrayBuffer,
+  parsed: ParsedRenderAsset,
+  suppliedCertificate?: GameReadyAssetCertificate,
+): VerifiedRenderGlbCertificate {
+  const metadata = readGlbGameReadyMetadata(buffer);
+  const certificate = metadata.certificate;
+  if (!certificate || !verifyGameReadyCertificate(certificate)) {
+    throw new Error('RenderEngin rejected a GLB without a valid embedded ContentEngin certificate.');
+  }
+  if (!certificate.gameReady || certificate.criticalIssueCount !== 0) {
+    throw new Error('RenderEngin rejected a GLB that is not certified game-ready.');
+  }
+  if (suppliedCertificate && suppliedCertificate.certificateDigest !== certificate.certificateDigest) {
+    throw new Error('RenderEngin rejected a GLB whose embedded certificate does not match the handoff certificate.');
+  }
+  const computedGeometryDigest = computeIndexedGeometryDigest(
+    parsed.mesh.vertices.map((vertex) => ({
+      x: vertex.position[0],
+      y: vertex.position[1],
+      z: vertex.position[2],
+    })),
+    parsed.mesh.indices,
+  );
+  if (computedGeometryDigest !== certificate.geometryDigest) {
+    throw new Error('RenderEngin rejected a GLB whose decoded mesh does not match its geometry certificate.');
+  }
+  if (metadata.canonicalSimilaritySignature !== certificate.canonicalSignature
+    || metadata.orientedSimilaritySignature !== certificate.orientedSignature
+    || metadata.geometryDigest !== certificate.geometryDigest
+    || metadata.scanDigest !== certificate.scanDigest) {
+    throw new Error('RenderEngin rejected a GLB whose embedded structural evidence does not match its certificate.');
+  }
+  return { certificate, metadata, computedGeometryDigest };
+}
+
 export function parseGlbMesh(buffer: ArrayBuffer): MeshBuffers {
   const { json, binary } = parseGlbChunks(buffer);
-  const primitive = json.meshes?.[0]?.primitives?.[0];
-  if (!primitive) throw new Error('GLB does not contain a mesh primitive.');
-  const positions = readVec3Accessor(json, binary, primitive.attributes.POSITION);
-  const normals = primitive.attributes.NORMAL !== undefined ? readVec3Accessor(json, binary, primitive.attributes.NORMAL) : positions.map((): Vec3 => [0, 0, 1]);
-  const uvs = primitive.attributes.TEXCOORD_0 !== undefined ? readVec2Accessor(json, binary, primitive.attributes.TEXCOORD_0) : positions.map((): Vec2 => [0, 0]);
-  const indices = primitive.indices !== undefined ? readIndexAccessor(json, binary, primitive.indices) : positions.map((_, index) => index);
-  return createMeshBuffers(positions.map((position, index) => ({ position, normal: normals[index] ?? [0, 0, 1], uv: uvs[index] ?? [0, 0] })), indices);
+  const primitives = json.meshes?.flatMap((mesh) => mesh.primitives ?? []) ?? [];
+  if (!primitives.length) throw new Error('GLB does not contain a mesh primitive.');
+
+  const vertices: Array<{ position: Vec3; normal: Vec3; uv: Vec2 }> = [];
+  const indices: number[] = [];
+  const accessorBases = new Map<string, number>();
+
+  for (const primitive of primitives) {
+    const positionAccessor = primitive.attributes.POSITION;
+    if (positionAccessor === undefined) throw new Error('GLB primitive is missing POSITION data.');
+    const normalAccessor = primitive.attributes.NORMAL;
+    const uvAccessor = primitive.attributes.TEXCOORD_0;
+    const accessorKey = `${positionAccessor}/${normalAccessor ?? -1}/${uvAccessor ?? -1}`;
+    let base = accessorBases.get(accessorKey);
+    let positions: Vec3[];
+
+    if (base === undefined) {
+      positions = readVec3Accessor(json, binary, positionAccessor);
+      const normals = normalAccessor !== undefined
+        ? readVec3Accessor(json, binary, normalAccessor)
+        : positions.map((): Vec3 => [0, 0, 1]);
+      const uvs = uvAccessor !== undefined
+        ? readVec2Accessor(json, binary, uvAccessor)
+        : positions.map((): Vec2 => [0, 0]);
+      base = vertices.length;
+      accessorBases.set(accessorKey, base);
+      positions.forEach((position, index) => {
+        vertices.push({
+          position,
+          normal: normals[index] ?? [0, 0, 1],
+          uv: uvs[index] ?? [0, 0],
+        });
+      });
+    } else {
+      positions = readVec3Accessor(json, binary, positionAccessor);
+    }
+
+    const primitiveIndices = primitive.indices !== undefined
+      ? readIndexAccessor(json, binary, primitive.indices)
+      : positions.map((_, index) => index);
+    for (const index of primitiveIndices) indices.push(base + index);
+  }
+
+  return createMeshBuffers(vertices, indices);
 }
 
 export function createParsedGlbRenderAsset(input: { id: string; ownerId: string; runtimeId: string; visibility?: DomainVisibility; name: string; buffer: ArrayBuffer }): ParsedRenderAsset {
