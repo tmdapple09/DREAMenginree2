@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-07-17T17:57:37.700Z
+Generated: 2026-07-20T21:03:31.569Z
 
 Marker guide:
 
@@ -2700,6 +2700,10 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   `-- -> (default)
 |   |   +-- ExportPanel.tsx 🧩 COMPONENT
 |   |   |   +-- ContentAsset  <- @/engins/contentengin/assetTypes
+|   |   |   `-- -> (default)
+|   |   +-- GameReadyScanPanel.tsx 🧩 COMPONENT
+|   |   |   +-- GameReadyBuildSummary  <- @/engins/contentengin/scan/gameReadyMeshBuilder
+|   |   |   +-- IntrinsicAssetScanReport  <- @/engins/contentengin/scan/intrinsicAssetScanner
 |   |   |   `-- -> (default)
 |   |   +-- MaterialEditor.tsx 🧩 COMPONENT
 |   |   |   +-- MaterialDef  <- @/engins/contentengin/assetTypes
@@ -9535,6 +9539,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- geometryBuilder.ts
 |   |   |   |   +-- PartNode, Vec3  <- ../assetTypes
 |   |   |   |   +-- flattenParts  <- ./primitiveBuilder
+|   |   |   |   +-- -> BuildGeometryOptions
 |   |   |   |   +-- -> MeshGeometry
 |   |   |   |   `-- -> buildGeometry
 |   |   |   +-- meshBuilder.ts
@@ -9813,50 +9818,61 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |       `-- -> relabelRegion
 |   |   +-- pipeline  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- build.ts
-|   |   |   |   +-- ContentAsset, ContentAssetCategory, CONTENTENGIN_VERSION  <- ../assetTypes
-|   |   |   |   +-- resetPartIds  <- ../builders/primitiveBuilder
-|   |   |   |   +-- assignProceduralUv  <- ../builders/uvGenerator
-|   |   |   |   +-- assignProceduralTextureNames  <- ../builders/textureBuilder
-|   |   |   |   +-- defaultMaterials  <- ../materials/proceduralMaterials
-|   |   |   |   +-- SHADERS  <- ../shaders/shaderRegistry
-|   |   |   |   +-- resolveRecipe  <- ../recipes/recipeResolver
-|   |   |   |   +-- buildHumanoidParts  <- ../grammars/humanoidGrammar
+|   |   |   |   +-- CONTENTENGIN_VERSION, ContentAsset, ContentAssetCategory  <- ../assetTypes
 |   |   |   |   +-- buildAnimalParts  <- ../grammars/animalGrammar
-|   |   |   |   +-- buildVehicleParts  <- ../grammars/vehicleGrammar
 |   |   |   |   +-- buildBicycleParts  <- ../grammars/bicycleGrammar
-|   |   |   |   +-- buildBuildingParts  <- ../grammars/buildingGrammar
-|   |   |   |   +-- buildRoadParts  <- ../grammars/roadGrammar
 |   |   |   |   +-- buildBridgeParts  <- ../grammars/bridgeGrammar
+|   |   |   |   +-- buildBuildingParts  <- ../grammars/buildingGrammar
+|   |   |   |   +-- buildHumanoidParts  <- ../grammars/humanoidGrammar
+|   |   |   |   +-- buildPropParts  <- ../grammars/propGrammar
+|   |   |   |   +-- buildRoadParts  <- ../grammars/roadGrammar
 |   |   |   |   +-- buildTerrainParts  <- ../grammars/terrainGrammar
 |   |   |   |   +-- buildTreeParts  <- ../grammars/treeGrammar
+|   |   |   |   +-- buildVehicleParts  <- ../grammars/vehicleGrammar
 |   |   |   |   +-- buildWaterParts  <- ../grammars/waterGrammar
-|   |   |   |   +-- buildPropParts  <- ../grammars/propGrammar
-|   |   |   |   +-- generateCollision  <- ./generateCollision
-|   |   |   |   +-- generateLods  <- ./generateLods
-|   |   |   |   +-- validateAsset  <- ./validate
-|   |   |   |   +-- safeSegment  <- ./paths
+|   |   |   |   +-- buildGeometry  <- ../builders/geometryBuilder
+|   |   |   |   +-- resetPartIds  <- ../builders/primitiveBuilder
+|   |   |   |   +-- assignProceduralTextureNames  <- ../builders/textureBuilder
+|   |   |   |   +-- assignProceduralUv  <- ../builders/uvGenerator
+|   |   |   |   +-- defaultMaterials  <- ../materials/proceduralMaterials
+|   |   |   |   +-- createContentEnginPerformancePlan  <- ../performancePlan
+|   |   |   |   +-- resolveRecipe  <- ../recipes/recipeResolver
 |   |   |   |   +-- createSkeleton  <- ../rigging/fitArmature
 |   |   |   |   +-- createContentEnginRuntimeProfile  <- ../runtimeProfile
-|   |   |   |   +-- createContentEnginPerformancePlan  <- ../performancePlan
+|   |   |   |   +-- scanMeshForGameReadiness  <- ../scan/intrinsicAssetScanner
+|   |   |   |   +-- repairMeshDetailed  <- @/engins/isosurfaceAssetPipeline
+|   |   |   |   +-- SHADERS  <- ../shaders/shaderRegistry
+|   |   |   |   +-- generateCollision  <- ./generateCollision
+|   |   |   |   +-- generateLods  <- ./generateLods
+|   |   |   |   +-- safeSegment  <- ./paths
+|   |   |   |   +-- validateAsset  <- ./validate
 |   |   |   |   `-- -> buildAsset
 |   |   |   +-- bundle.ts
-|   |   |   |   +-- mkdir, writeFile, readFile, readdir, stat  <- fs/promises
+|   |   |   |   +-- createHash  <- crypto
+|   |   |   |   +-- mkdir, readFile, readdir, stat, writeFile  <- fs/promises
 |   |   |   |   +-- (default)  <- path
 |   |   |   |   +-- ContentAsset  <- ../assetTypes
-|   |   |   |   +-- createGlbBuffer  <- ./exportGlb
+|   |   |   |   +-- createGlbArtifact  <- ./exportGlb
 |   |   |   |   +-- validateAsset  <- ./validate
 |   |   |   |   +-- makeManifest  <- ./writeManifest
 |   |   |   |   +-- -> writeAssetBundle
 |   |   |   |   `-- -> zipDirectory
 |   |   |   +-- exportGlb.ts
+|   |   |   |   +-- deflateSync  <- zlib
+|   |   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   |   +-- Mesh  <- @/engins/isosurfaceDualContouring
 |   |   |   |   +-- ContentAsset, MaterialDef  <- ../assetTypes
-|   |   |   |   +-- buildGeometry  <- ../builders/geometryBuilder
+|   |   |   |   +-- buildGeometry, MeshGeometry  <- ../builders/geometryBuilder
+|   |   |   |   +-- computeMeshGeometryDigest, createIntrinsicAssetScanMetadata, scanMeshForGameReadiness, IntrinsicAssetScanReport  <- ../scan/intrinsicAssetScanner
+|   |   |   |   +-- -> GlbArtifact
+|   |   |   |   +-- -> GlbExportOptions
 |   |   |   |   +-- -> GlbInspection
+|   |   |   |   +-- -> createGlbArtifact
 |   |   |   |   +-- -> createGlbBuffer
 |   |   |   |   +-- -> expectedMaterialIdsForAsset
 |   |   |   |   `-- -> inspectGlb
 |   |   |   +-- generateCollision.ts
-|   |   |   |   +-- CollisionBlock, PartNode  <- ../assetTypes
+|   |   |   |   +-- CollisionBlock, CollisionShape, PartNode, Vec3  <- ../assetTypes
 |   |   |   |   +-- flattenParts  <- ../builders/primitiveBuilder
 |   |   |   |   `-- -> generateCollision
 |   |   |   +-- generateLods.ts
@@ -9867,12 +9883,17 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- -> safeSegment
 |   |   |   |   `-- -> safeUnder
 |   |   |   +-- validate.ts
-|   |   |   |   +-- ContentAsset, ExportProfile, ValidationReport  <- ../assetTypes
+|   |   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   |   +-- AnimationClipDef, BoneDef, ContentAsset, ExportProfile, SkeletonDef, ValidationReport, Vec3  <- ../assetTypes
 |   |   |   |   +-- computeMeshMetrics  <- ../builders/meshBuilder
 |   |   |   |   +-- expectedMaterialIdsForAsset, inspectGlb  <- ./exportGlb
 |   |   |   |   `-- -> validateAsset
 |   |   |   `-- writeManifest.ts
 |   |   |       +-- ContentAsset, ContentAssetObject  <- ../assetTypes
+|   |   |       +-- IntrinsicAssetScanReport  <- ../scan/intrinsicAssetScanner
+|   |   |       +-- -> ContentAssetLodManifestEntry
+|   |   |       +-- -> ContentAssetManifest
+|   |   |       +-- -> ManifestBuildEvidence
 |   |   |       +-- -> makeManifest
 |   |   |       `-- -> wrapAsset
 |   |   +-- recipes  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
@@ -9898,7 +9919,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- quadruped_basic.json
 |   |   |   |   `-- vehicle_mechanical.json
 |   |   |   +-- fitArmature.ts
-|   |   |   |   +-- BoneDef, SkeletonDef, vec3  <- ../assetTypes
+|   |   |   |   +-- BoneDef, SkeletonDef, Vec3  <- ../assetTypes
 |   |   |   |   +-- RigStandard  <- ./rigTypes
 |   |   |   |   `-- -> createSkeleton
 |   |   |   +-- index.ts
@@ -9922,6 +9943,39 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   `-- rigValidator.ts
 |   |   |       +-- SkeletonDef  <- ../assetTypes
 |   |   |       `-- -> validateSkeleton
+|   |   +-- scan  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
+|   |   |   +-- gameReadyMeshBuilder.ts
+|   |   |   |   +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
+|   |   |   |   +-- compactMesh, repairMeshDetailed, ColoredMesh, ColorRGB, RepairReport  <- @/engins/isosurfaceAssetPipeline
+|   |   |   |   +-- compareAssetSimilarity, scanMeshForGameReadiness, GameReadyAssetCertificate, GameReadyRepairId, IntrinsicAssetScanOptions, IntrinsicAssetScanReport  <- ./intrinsicAssetScanner
+|   |   |   |   +-- -> GameReadyBuildSummary
+|   |   |   |   +-- -> GameReadyCollisionProxy
+|   |   |   |   +-- -> GameReadyLodSummary
+|   |   |   |   +-- -> PrepareGameReadyMeshOptions
+|   |   |   |   +-- -> PreparedGameReadyMesh
+|   |   |   |   +-- -> TopologyRepairReport
+|   |   |   |   `-- -> prepareGameReadyMesh
+|   |   |   `-- intrinsicAssetScanner.ts
+|   |   |       +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
+|   |   |       +-- computeIndexedGeometryDigest, digestObject  <- @/lib/gameReadyIntegrity
+|   |   |       +-- GameReadyAssetCertificate, GameReadyRepairId  <- @/types/gameReadyAsset
+|   |   |       +-- GameReadyAssetCertificate, GameReadyRepairId  <- @/types/gameReadyAsset
+|   |   |       +-- -> AssetRepairStep
+|   |   |       +-- -> AssetTopologyMetrics
+|   |   |       +-- -> CONTENTENGIN_SCAN_VERSION
+|   |   |       +-- -> CanonicalIntrinsicScanFamily
+|   |   |       +-- -> GameReadyAssetCertificate
+|   |   |       +-- -> GameReadyRepairId
+|   |   |       +-- -> IntrinsicAssetScanMetadata
+|   |   |       +-- -> IntrinsicAssetScanOptions
+|   |   |       +-- -> IntrinsicAssetScanReport
+|   |   |       +-- -> IntrinsicScanFamily
+|   |   |       +-- -> TesseractSignature
+|   |   |       +-- -> compareAssetSimilarity
+|   |   |       +-- -> compareOrientedAssetSimilarity
+|   |   |       +-- -> computeMeshGeometryDigest
+|   |   |       +-- -> createIntrinsicAssetScanMetadata
+|   |   |       `-- -> scanMeshForGameReadiness
 |   |   +-- shaders  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- shaderRegistry.ts
 |   |   |   |   +-- ShaderDef  <- ../assetTypes
@@ -9931,6 +9985,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |       +-- ShaderDef  <- ../assetTypes
 |   |   |       `-- -> ShaderDef
 |   |   +-- assetTypes.ts
+|   |   |   +-- IntrinsicAssetScanReport  <- ./scan/intrinsicAssetScanner
 |   |   |   +-- -> AnimationClipDef
 |   |   |   +-- -> BoneDef
 |   |   |   +-- -> CONTENTENGIN_VERSION
@@ -9974,15 +10029,19 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginSceneObject, RenderGpuCullBounds  <- @/engins/renderengin/webgpu
 |   |   |   `-- -> (default)
 |   |   +-- cli.ts
-|   |   |   +-- readFile, writeFile, mkdir, cp  <- fs/promises
+|   |   |   +-- cp, mkdir, readFile, stat, writeFile  <- fs/promises
 |   |   |   +-- (default)  <- path
 |   |   |   +-- buildAsset  <- ./pipeline/build
 |   |   |   +-- writeAssetBundle, zipDirectory  <- ./pipeline/bundle
 |   |   |   +-- analyzeImageBytes  <- ./photo/imageAnalyzer
 |   |   |   +-- runRiggingPipeline  <- ./rigging
-|   |   |   `-- validateAsset  <- ./pipeline/validate
+|   |   |   +-- validateAsset  <- ./pipeline/validate
+|   |   |   +-- ContentAssetManifest  <- ./pipeline/writeManifest
+|   |   |   +-- GameEnginAssetEntry  <- ../gameengin/assets/BundleManifest
+|   |   |   `-- -> exportToGameEngin
 |   |   +-- ImplicitAssetWorkspace.tsx 🧩 COMPONENT
 |   |   |   +-- (default)  <- @/engins/contentengin/AssetViewport
+|   |   |   +-- (default)  <- @/components/contentengin/GameReadyScanPanel
 |   |   |   +-- exportOBJ  <- @/engins/isosurfaceAssetPipeline
 |   |   |   +-- RenderStage, createInlineRenderIntent  <- @/engins/renderengin
 |   |   |   +-- useImplicitAssetWorkspace  <- @/engins/contentengin/useImplicitAssetWorkspace
@@ -10010,6 +10069,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |       +-- useContentEnginRuntime  <- @/engins/rulesets/content/useContentEnginRuntime
 |   |       +-- analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, BrushState, CameraState, EditableMeshState, ExportFormat, ImplicitAssetWorkspaceObject, RigTargetKind, SculptTool  <- @/engins/isosurfaceAssetPipeline
 |   |       +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
+|   |       +-- scanMeshForGameReadiness  <- @/engins/contentengin/scan/intrinsicAssetScanner
+|   |       +-- prepareGameReadyMesh  <- @/engins/contentengin/scan/gameReadyMeshBuilder
 |   |       +-- -> WorkspaceIntentLog
 |   |       `-- -> useImplicitAssetWorkspace
 |   +-- forgeengin  [ForgeEngin] 🗂 FEATURE_FOLDER
@@ -10278,12 +10339,17 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- -> GameEnginBundleCacheOptions
 |   |   |   |   `-- -> planBundleCache
 |   |   |   `-- BundleManifest.ts
+|   |   |       +-- sha256Hex, verifyGameReadyCertificate, verifySha256Integrity  <- @/lib/gameReadyIntegrity
+|   |   |       +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |       +-- RendererBackendId  <- ../cartridge
 |   |   |       +-- -> GameEnginAssetEntry
 |   |   |       +-- -> GameEnginAssetKind
 |   |   |       +-- -> GameEnginBundleManifest
+|   |   |       +-- -> GameEnginLodEntry
 |   |   |       +-- -> assertValidBundleManifest
-|   |   |       `-- -> bundleWeightBytes
+|   |   |       +-- -> bundleWeightBytes
+|   |   |       +-- -> fetchVerifiedAssetBytes
+|   |   |       `-- -> verifyAssetPayloadIntegrity
 |   |   +-- brain  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- asset-registry  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- build-history  [GameEngin] 🗂 FEATURE_FOLDER
@@ -10801,7 +10867,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   `-- -> TypedEventBus
 |   |   |   +-- assets.ts
 |   |   |   |   +-- AssetStreamManager  <- ../power-systems
-|   |   |   |   +-- assertValidBundleManifest, bundleWeightBytes  <- ../assets/BundleManifest
+|   |   |   |   +-- assertValidBundleManifest, bundleWeightBytes, fetchVerifiedAssetBytes, verifyAssetPayloadIntegrity  <- ../assets/BundleManifest
 |   |   |   |   +-- planBundleCache  <- ../assets/BundleCache
 |   |   |   |   +-- AssetHandle, AssetState, AssetType  <- ../power-systems
 |   |   |   |   +-- GameEnginAssetEntry, GameEnginAssetKind, GameEnginBundleManifest  <- ../assets/BundleManifest
@@ -10817,7 +10883,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- -> GameEnginBundleManifest
 |   |   |   |   +-- -> assertValidBundleManifest
 |   |   |   |   +-- -> bundleWeightBytes
-|   |   |   |   `-- -> planBundleCache
+|   |   |   |   +-- -> fetchVerifiedAssetBytes
+|   |   |   |   +-- -> planBundleCache
+|   |   |   |   `-- -> verifyAssetPayloadIntegrity
 |   |   |   +-- index.ts
 |   |   |   |   +-- *  <- ./ai
 |   |   |   |   +-- *  <- ./animation
@@ -11616,9 +11684,13 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- assets.ts
 |   |   |   +-- authorizeDomainCapability, DomainAuthorizationContext, DomainCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   +-- DomainVisibility, JsonObject, JsonValue  <- @/engine/engin-runtime/EnginBaseState
+|   |   |   +-- computeIndexedGeometryDigest, verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |   +-- createMeshBuffers, createRenderAsset, validateMeshForRenderUpload, v3cross, v3normalize, v3sub, MeshBuffers, Vec2, Vec3  <- ./core
 |   |   |   +-- -> ParsedRenderAsset
 |   |   |   +-- -> RenderAssetManifest
+|   |   |   +-- -> RenderGlbGameReadyMetadata
+|   |   |   +-- -> VerifiedRenderGlbCertificate
 |   |   |   +-- -> authorizeRenderAssetOperation
 |   |   |   +-- -> createContentEnginRenderHandoff
 |   |   |   +-- -> createGameEnginRenderHandoff
@@ -11628,7 +11700,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- -> parseGlbHeader
 |   |   |   +-- -> parseGlbMesh
 |   |   |   +-- -> parseObjMesh
-|   |   |   `-- -> renderAssetManifestToJson
+|   |   |   +-- -> readGlbGameReadyMetadata
+|   |   |   +-- -> renderAssetManifestToJson
+|   |   |   `-- -> verifyCertifiedGlbRenderAsset
 |   |   +-- benchmarkProof.ts
 |   |   |   +-- JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- -> RenderDeviceCapture
@@ -11710,6 +11784,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   `-- -> validateMeshForRenderUpload
 |   |   +-- diagnostics.ts
 |   |   |   +-- JsonObject  <- @/engine/engin-runtime/EnginBaseState
+|   |   |   +-- IntrinsicAssetScanReport  <- @/engins/contentengin/scan/intrinsicAssetScanner
+|   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |   +-- MeshBuffers  <- ./core
 |   |   |   +-- RenderEnginFrameStats  <- ./webgpu
 |   |   |   +-- -> RenderBenchmarkScene
@@ -11717,7 +11794,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- -> RenderPerformanceSample
 |   |   |   +-- -> createBenchmarkScene
 |   |   |   +-- -> createRenderPerformanceReport
+|   |   |   +-- -> evaluateCertificateAdmission
 |   |   |   +-- -> evaluateRenderPerformanceGate
+|   |   |   +-- -> evaluateScannedAssetRenderGate
 |   |   |   `-- -> frameStatsToPerformanceSample
 |   |   +-- index.ts
 |   |   |   +-- *  <- ./core
@@ -11795,9 +11874,11 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- useCallback, useEffect, useRef, useState  <- react
 |   |   |   +-- EnginRuntime  <- @/engine/engin-runtime/EnginRuntime
 |   |   |   +-- composeModelMatrix, createMeshBuffers, createRenderAsset, mat4LookAt, mat4Perspective, MeshBuffers, Vec2, Vec3  <- ./core
-|   |   |   +-- createParsedGlbRenderAsset, createParsedObjRenderAsset, estimateRenderAssetMemory, ParsedRenderAsset  <- ./assets
+|   |   |   +-- createParsedGlbRenderAsset, createParsedObjRenderAsset, estimateRenderAssetMemory, verifyCertifiedGlbRenderAsset, ParsedRenderAsset  <- ./assets
 |   |   |   +-- requestWebGpuDevice, WebGpuRenderEngin, RenderEnginFrameStats, RenderGpuCullBounds  <- ./webgpu
 |   |   |   +-- RenderIntent  <- ./core
+|   |   |   +-- createBenchmarkScene, createRenderPerformanceReport, evaluateCertificateAdmission, evaluateRenderPerformanceGate, frameStatsToPerformanceSample, RenderPerformanceSample  <- ./diagnostics
+|   |   |   +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |   +-- RenderServiceIntentEnvelope  <- ./serviceRuntime
 |   |   |   `-- -> (default)
 |   |   +-- renderSettings.ts
@@ -12535,6 +12616,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- createSphereSDF, meshToSnapshot, runDualContouring, Mesh, MeshDiagnostics, Vec3  <- @/engins/isosurfaceDualContouring
 |   |   +-- meshToSnapshot, validateMesh  <- @/engins/isosurfaceDualContouring
 |   |   +-- DomainObject  <- @/engins/contentengin/assetTypes
+|   |   +-- scanMeshForGameReadiness, IntrinsicAssetScanReport  <- @/engins/contentengin/scan/intrinsicAssetScanner
+|   |   +-- GameReadyBuildSummary  <- @/engins/contentengin/scan/gameReadyMeshBuilder
 |   |   +-- -> AssetProcessingStatus
 |   |   +-- -> AutoRigState
 |   |   +-- -> Bounds3
@@ -12547,9 +12630,11 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- -> DEFAULT_CAMERA_STATE
 |   |   +-- -> EditableMeshState
 |   |   +-- -> ExportFormat
+|   |   +-- -> GameReadyGlbMetadata
 |   |   +-- -> ImplicitAssetWorkspaceData
 |   |   +-- -> ImplicitAssetWorkspaceObject
 |   |   +-- -> MeshQualityLabel
+|   |   +-- -> RepairMeshOptions
 |   |   +-- -> RepairReport
 |   |   +-- -> RepairResult
 |   |   +-- -> RigBendPoint
@@ -12752,6 +12837,16 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   `-- useViewCounter.ts
 |       +-- useEffect, useRef  <- react
 |       `-- -> useViewCounter
++-- lib
+|   `-- gameReadyIntegrity.ts
+|       +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
+|       +-- -> certificatePayload
+|       +-- -> computeIndexedGeometryDigest
+|       +-- -> digestObject
+|       +-- -> sha256Hex
+|       +-- -> stableStringify
+|       +-- -> verifyGameReadyCertificate
+|       `-- -> verifySha256Integrity
 +-- misc
 +-- optimizer
 |   +-- babylon-optimizero.ts
@@ -13180,6 +13275,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- -> InfiniteLoop
 |   |   +-- -> MAX_WIDGETS
 |   |   `-- -> UserAction
+|   +-- gameReadyAsset.ts
+|   |   +-- -> GameReadyAssetCertificate
+|   |   `-- -> GameReadyRepairId
 |   +-- journey.ts
 |   |   +-- -> JOURNEY_DOMAIN_COLORS
 |   |   +-- -> JourneyDot
