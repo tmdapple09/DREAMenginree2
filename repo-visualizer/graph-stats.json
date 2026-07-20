@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-20T04:55:45.903Z",
+  "generatedAt": "2026-07-20T06:05:36.254Z",
   "totalFiles": 2266,
   "totalNodes": 8277,
-  "totalEdges": 8628,
+  "totalEdges": 8632,
   "totalFunctionAndClassNodes": 4923,
   "orphanCount": 4197,
   "countsByType": {
@@ -27,7 +27,7 @@
   "topConnected": [
     {
       "id": "file:src/engin/generated/surfaces.ts",
-      "degree": 587,
+      "degree": 588,
       "label": "surfaces.ts",
       "type": "ts",
       "path": "src/engin/generated/surfaces.ts"
@@ -55,7 +55,7 @@
     },
     {
       "id": "file:src/engin/generated/engins.ts",
-      "degree": 275,
+      "degree": 277,
       "label": "engins.ts",
       "type": "ts",
       "path": "src/engin/generated/engins.ts"

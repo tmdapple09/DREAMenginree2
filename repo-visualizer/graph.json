@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T04:55:45.903Z",
+  "generatedAt": "2026-07-20T06:05:36.254Z",
   "root": ".",
   "nodes": [
     {
@@ -2732,16 +2732,6 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/adream-application-image.yml",
-      "label": "adream-application-image.yml",
-      "type": "config",
-      "path": ".github/workflows/adream-application-image.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "file:.github/workflows/autofixvercelbuild.yml",
       "label": "autofixvercelbuild.yml",
       "type": "config",
@@ -3026,6 +3016,16 @@
       "label": "dream-utf8-pascal-lattice-paths.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-pascal-lattice-paths.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream_repository_image_vault_v9.yml",
+      "label": "dream_repository_image_vault_v9.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_repository_image_vault_v9.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -105133,6 +105133,16 @@
     },
     {
       "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
+      "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/engins.ts",
       "target": "file:engins/contentengin/shaders/shaderRegistry.ts",
       "kind": "import"
     },
@@ -107633,6 +107643,11 @@
     },
     {
       "source": "file:src/engin/generated/surfaces.ts",
+      "target": "file:components/contentengin/GameReadyScanPanel.tsx",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:components/contentengin/MaterialEditor.tsx",
       "kind": "import"
     },
@@ -109114,6 +109129,11 @@
     {
       "source": "file:src/engin/generated/surfaces.ts",
       "target": "file:daydreams/shared/useDaydreamState.ts",
+      "kind": "import"
+    },
+    {
+      "source": "file:src/engin/generated/systems.ts",
+      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
