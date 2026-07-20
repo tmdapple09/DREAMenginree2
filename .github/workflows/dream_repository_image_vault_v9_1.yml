@@ -1,0 +1,2545 @@
+name: DREAM Repository Image Vault v9
+run-name: DREAM Repository Image Vault v9
+
+"on":
+  workflow_dispatch:
+    inputs:
+      image_max_dimension:
+        description: "Maximum RGB dimension for atlas/control image pages"
+        required: false
+        default: "12000"
+        type: string
+      codebase_image_max_dimension:
+        description: "Maximum RGB dimension for the mandatory one-image codebase capsule"
+        required: false
+        default: "16000"
+        type: string
+      fail_on_project_check_failure:
+        description: "Fail after artifact upload when install/typecheck/lint/test/build fails"
+        required: false
+        default: true
+        type: boolean
+      fail_on_secret_findings:
+        description: "Treat secret-like source findings as critical instead of warnings"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dream-repository-image-vault-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-dream-repository-image-vault:
+    name: Build DREAM repository image vault
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    env:
+      DREAM_IMAGE_MAX_DIMENSION: ${{ inputs.image_max_dimension }}
+      DREAM_CODEBASE_IMAGE_MAX_DIMENSION: ${{ inputs.codebase_image_max_dimension }}
+      DREAM_ED25519_PRIVATE_KEY_B64: ${{ secrets.DREAM_ED25519_PRIVATE_KEY_B64 }}
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout complete working tree
+        id: checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+          lfs: true
+          submodules: recursive
+
+      - name: Set up Python
+        id: setup_python
+        if: always()
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          check-latest: false
+
+      - name: Prepare non-duplicating output tree
+        id: prepare
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dream-repository-vault dream-artifacts
+          mkdir -p \
+            dream-repository-vault/Diagnostics/ProjectChecks \
+            dream-artifacts
+
+      - name: Install deterministic vault runtime
+        id: install_vault_runtime
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          OUT="dream-repository-vault/Diagnostics"
+          mkdir -p "$OUT"
+          python -m pip install \
+            --disable-pip-version-check \
+            "Pillow>=11,<13" \
+            "numpy>=2,<3" \
+            "zstandard>=0.23,<1" \
+            "cryptography>=45,<47" \
+            > >(tee "$OUT/VAULT_RUNTIME_INSTALL_STDOUT.log") \
+            2> >(tee "$OUT/VAULT_RUNTIME_INSTALL_STDERR.log" >&2)
+          code=$?
+          printf '%s\n' "$code" > "$OUT/VAULT_RUNTIME_INSTALL_EXIT_CODE.txt"
+          exit 0
+
+      - name: Build content-addressed monolith and 4D erasure-coded atlas
+        id: build_vault
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          OUT="dream-repository-vault"
+          mkdir -p "$OUT/Diagnostics"
+
+          cat > "$RUNNER_TEMP/dream_vault.py" <<'PY'
+          from __future__ import annotations
+          
+          import argparse
+          import base64
+          import csv
+          import hashlib
+          import json
+          import math
+          import mimetypes
+          import os
+          import re
+          import shutil
+          import stat
+          import struct
+          import subprocess
+          import sys
+          import tempfile
+          import time
+          import traceback
+          import zipfile
+          import zlib
+          from collections import Counter, OrderedDict, defaultdict, deque
+          from dataclasses import dataclass
+          from pathlib import Path, PurePosixPath
+          from typing import Any, BinaryIO, Iterable, Iterator, Sequence
+          
+          import numpy as np
+          from PIL import Image
+          
+          try:
+              import zstandard as zstd
+          except Exception:  # pragma: no cover - deterministic fallback is tested
+              zstd = None
+          
+          try:
+              from cryptography.hazmat.primitives import serialization
+              from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+                  Ed25519PrivateKey,
+                  Ed25519PublicKey,
+              )
+          except Exception:  # pragma: no cover - signing remains optional
+              Ed25519PrivateKey = None
+              Ed25519PublicKey = None
+              serialization = None
+          
+          
+          FORMAT = "dreamengin.repository-image-vault.v9"
+          FORMAT_VERSION = 9
+          DATA_CELLS = 16
+          PARITY_AXES = 4
+          IMAGE_MAGIC = b"DRMV9IMG"
+          CAPSULE_MAGIC = b"DRMV9CAP"
+          CONTROL_MAGIC = b"DRMV9CTL"
+          PACKET_PREFIX = struct.Struct(">8sI")
+          CAPSULE_PREFIX = struct.Struct(">8sQ")
+          RGB_CHANNELS = 3
+          DEFAULT_IMAGE_DIMENSION = 12_000
+          DEFAULT_CODEBASE_DIMENSION = 16_000
+          DEFAULT_PAGE_RESERVE = 32 * 1024
+          RS_BLOCK_BYTES = 1 << 20
+          ANCHOR_BLOCK_BYTES = 64 * 1024
+          ANCHOR_MIN_BLOCKS = 2
+          ANCHOR_MAX_BLOCKS = 32
+          ANCHOR_MASK = 0x7  # average boundary every eight 64 KiB anchor blocks
+          
+          CODE_EXTENSIONS = {
+              ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts",
+              ".py", ".pyi", ".rs", ".go", ".java", ".kt", ".kts", ".swift",
+              ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".hxx", ".cs",
+              ".rb", ".php", ".scala", ".lua", ".sh", ".bash", ".zsh", ".fish",
+              ".ps1", ".sql", ".graphql", ".gql", ".proto", ".wgsl", ".glsl",
+              ".vert", ".frag", ".comp", ".metal", ".hlsl", ".wasm", ".wat",
+              ".vue", ".svelte", ".astro", ".css", ".scss", ".sass", ".less",
+              ".html", ".htm", ".xml", ".xsl", ".xslt", ".json", ".json5",
+              ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf", ".properties",
+              ".md", ".mdx", ".rst", ".txt", ".lock",
+          }
+          CODE_BASENAMES = {
+              "package.json", "package-lock.json", "pnpm-lock.yaml", "yarn.lock",
+              "bun.lock", "bun.lockb", "deno.json", "deno.jsonc", "tsconfig.json",
+              "jsconfig.json", "next.config.js", "next.config.mjs", "next.config.ts",
+              "vite.config.js", "vite.config.ts", "vitest.config.ts", "jest.config.js",
+              "jest.config.ts", "eslint.config.js", "eslint.config.mjs", ".eslintrc",
+              ".prettierrc", "Cargo.toml", "Cargo.lock", "go.mod", "go.sum",
+              "pyproject.toml", "requirements.txt", "Pipfile", "Pipfile.lock",
+              "Gemfile", "Gemfile.lock", "Dockerfile", "Makefile", "CMakeLists.txt",
+              ".gitignore", ".gitattributes", ".gitmodules", "README", "LICENSE",
+          }
+          RUNTIME_ROOTS = {
+              "app", "pages", "src", "components", "engine", "engins", "coresurfaces",
+              "daydreams", "dr-eams", "dreamdmbar", "dreamr", "hooks", "lib", "server",
+              "client", "renderengin", "contentengin", "gameengin",
+          }
+          ENGINE_ROOTS = {
+              "engine", "engins", "renderengin", "contentengin", "gameengin", "coresurfaces",
+          }
+          ASSET_EXTENSIONS = {
+              ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff",
+              ".svg", ".ico", ".exr", ".hdr", ".ktx", ".ktx2", ".dds",
+              ".glb", ".gltf", ".fbx", ".obj", ".dae", ".blend", ".usd", ".usdz",
+              ".wav", ".mp3", ".ogg", ".flac", ".m4a", ".mp4", ".webm", ".mov",
+              ".ttf", ".otf", ".woff", ".woff2",
+          }
+          IMPORT_RE = re.compile(
+              r"(?:\bfrom\s+|\bimport\s*\(|\brequire\s*\()\s*['\"]([^'\"]+)['\"]"
+          )
+          STATIC_IMPORT_RE = re.compile(
+              r"\b(?:import|export)\s+(?:type\s+)?(?:[^;\n]*?\s+from\s+)?['\"]([^'\"]+)['\"]"
+          )
+          SECRET_PATTERNS = {
+              "private-key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----"),
+              "github-token": re.compile(r"\bgh[pousr]_[A-Za-z0-9]{30,}\b"),
+              "aws-access-key": re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
+              "google-api-key": re.compile(r"\bAIza[0-9A-Za-z_-]{30,}\b"),
+              "generic-secret-assignment": re.compile(
+                  r"(?i)\b(?:api[_-]?key|secret|token|password|passwd)\b\s*[:=]\s*['\"]([^'\"]{12,})['\"]"
+              ),
+          }
+          
+          
+          class VaultError(RuntimeError):
+              pass
+          
+          
+          @dataclass(frozen=True)
+          class ChunkRef:
+              digest: str
+              raw_size: int
+          
+          
+          @dataclass
+          class ChunkMeta:
+              digest: str
+              raw_size: int
+              compressed_size: int
+              codec: str
+              cell: int
+              offset: int
+              compressed_sha256: str
+              semantic_cell: int
+              reference_count: int = 0
+          
+          
+          @dataclass(frozen=True)
+          class FileRecord:
+              path: str
+              kind: str
+              mode: int
+              size: int
+              sha256: str
+              chunks: tuple[ChunkRef, ...]
+              symlink_target_b64: str | None
+              codebase: bool
+              semantic_cell: int
+          
+          
+          class Timings:
+              def __init__(self) -> None:
+                  self.started = time.perf_counter()
+                  self.rows: list[dict[str, Any]] = []
+          
+              def mark(self, stage: str, started: float, **extra: Any) -> None:
+                  self.rows.append(
+                      {
+                          "stage": stage,
+                          "seconds": round(time.perf_counter() - started, 6),
+                          **extra,
+                      }
+                  )
+          
+              def total(self) -> float:
+                  return time.perf_counter() - self.started
+          
+          
+          class DecompressedChunkCache:
+              def __init__(self, maximum_bytes: int = 128 * 1024 * 1024) -> None:
+                  self.maximum_bytes = maximum_bytes
+                  self.current_bytes = 0
+                  self.cache: OrderedDict[str, bytes] = OrderedDict()
+          
+              def get(self, key: str) -> bytes | None:
+                  value = self.cache.get(key)
+                  if value is None:
+                      return None
+                  self.cache.move_to_end(key)
+                  return value
+          
+              def put(self, key: str, value: bytes) -> None:
+                  if len(value) > self.maximum_bytes:
+                      return
+                  previous = self.cache.pop(key, None)
+                  if previous is not None:
+                      self.current_bytes -= len(previous)
+                  self.cache[key] = value
+                  self.current_bytes += len(value)
+                  while self.current_bytes > self.maximum_bytes and self.cache:
+                      _, removed = self.cache.popitem(last=False)
+                      self.current_bytes -= len(removed)
+          
+          
+          def canonical_json(value: Any) -> bytes:
+              return json.dumps(
+                  value,
+                  ensure_ascii=False,
+                  separators=(",", ":"),
+                  sort_keys=True,
+              ).encode("utf-8")
+          
+          
+          def write_json(path: Path, value: Any) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+          
+          
+          def write_text(path: Path, text: str) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(text, encoding="utf-8")
+          
+          
+          def sha256_bytes(data: bytes) -> str:
+              return hashlib.sha256(data).hexdigest()
+          
+          
+          def sha256_file(path: Path, block_size: int = 4 * 1024 * 1024) -> str:
+              hasher = hashlib.sha256()
+              with path.open("rb") as handle:
+                  while block := handle.read(block_size):
+                      hasher.update(block)
+              return hasher.hexdigest()
+          
+          
+          def merkle_root_hex(leaves: Sequence[bytes]) -> str:
+              if not leaves:
+                  return hashlib.sha256(b"DREAM:EMPTY").hexdigest()
+              level = [hashlib.sha256(b"DREAM:LEAF:" + leaf).digest() for leaf in leaves]
+              while len(level) > 1:
+                  if len(level) & 1:
+                      level.append(level[-1])
+                  level = [
+                      hashlib.sha256(b"DREAM:NODE:" + level[index] + level[index + 1]).digest()
+                      for index in range(0, len(level), 2)
+                  ]
+              return level[0].hex()
+          
+          
+          def run_command(arguments: Sequence[str], cwd: Path | None = None, check: bool = True) -> subprocess.CompletedProcess[bytes]:
+              result = subprocess.run(
+                  list(arguments),
+                  cwd=str(cwd) if cwd else None,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+                  check=False,
+              )
+              if check and result.returncode:
+                  raise VaultError(
+                      f"command failed ({result.returncode}): {' '.join(arguments)}\n"
+                      + result.stderr.decode("utf-8", "replace")
+                  )
+              return result
+          
+          
+          def git_bytes(root: Path, *arguments: str, check: bool = True) -> bytes:
+              return run_command(["git", *arguments], cwd=root, check=check).stdout
+          
+          
+          def safe_relative_path(value: str) -> PurePosixPath:
+              path = PurePosixPath(value)
+              if path.is_absolute() or not path.parts or any(part in {"", ".", ".."} for part in path.parts):
+                  raise VaultError(f"unsafe repository path: {value!r}")
+              return path
+          
+          
+          def tracked_paths(root: Path) -> list[str]:
+              raw = git_bytes(root, "ls-files", "-z", "--recurse-submodules")
+              paths = sorted(
+                  {
+                      entry.decode("utf-8", "surrogateescape")
+                      for entry in raw.split(b"\0")
+                      if entry
+                  }
+              )
+              if not paths:
+                  raise VaultError("git did not report any tracked files")
+              for value in paths:
+                  safe_relative_path(value)
+                  path = root / value
+                  if not path.exists() and not path.is_symlink():
+                      raise VaultError(f"tracked path is missing after checkout: {value}")
+              return paths
+          
+          
+          def is_probably_text(path: Path, sample: bytes | None = None) -> bool:
+              if path.suffix.lower() in CODE_EXTENSIONS:
+                  return True
+              data = sample
+              if data is None:
+                  try:
+                      with path.open("rb") as handle:
+                          data = handle.read(8192)
+                  except OSError:
+                      return False
+              if not data:
+                  return True
+              if b"\0" in data:
+                  return False
+              try:
+                  data.decode("utf-8")
+                  return True
+              except UnicodeDecodeError:
+                  printable = sum(byte in b"\t\n\r" or 32 <= byte < 127 for byte in data)
+                  return printable / len(data) > 0.92
+          
+          
+          def is_codebase_file(relative: str, path: Path, mode: int) -> bool:
+              pure = PurePosixPath(relative)
+              name = pure.name
+              suffix = pure.suffix.lower()
+              if suffix in CODE_EXTENSIONS or name in CODE_BASENAMES:
+                  return True
+              if name.startswith(".") and name.lower() in {
+                  ".editorconfig", ".npmrc", ".nvmrc", ".node-version", ".python-version",
+                  ".prettierignore", ".eslintignore", ".dockerignore",
+              }:
+                  return True
+              if mode & stat.S_IXUSR and is_probably_text(path):
+                  return True
+              first = pure.parts[0].lower() if pure.parts else ""
+              return first in RUNTIME_ROOTS and is_probably_text(path)
+          
+          
+          def semantic_coordinate(relative: str, path: Path, codebase: bool, mode: int) -> int:
+              pure = PurePosixPath(relative)
+              first = pure.parts[0].lower() if pure.parts else ""
+              suffix = pure.suffix.lower()
+              text = is_probably_text(path) if path.exists() and not path.is_symlink() else True
+              executable_or_runtime = bool(mode & stat.S_IXUSR) or first in RUNTIME_ROOTS
+              asset = suffix in ASSET_EXTENSIONS or first in {"assets", "public", "textures", "models", "audio"}
+              engine = first in ENGINE_ROOTS
+              return (
+                  int(text)
+                  | (int(codebase or executable_or_runtime) << 1)
+                  | (int(not asset) << 2)
+                  | (int(engine) << 3)
+              )
+          
+          
+          def anchor_chunks(handle: BinaryIO) -> Iterator[bytes]:
+              current = bytearray()
+              blocks = 0
+              while block := handle.read(ANCHOR_BLOCK_BYTES):
+                  current.extend(block)
+                  blocks += 1
+                  anchor = int.from_bytes(
+                      hashlib.blake2s(block, digest_size=4, person=b"DRMCDC9").digest(),
+                      "big",
+                  )
+                  if (
+                      blocks >= ANCHOR_MIN_BLOCKS
+                      and ((anchor & ANCHOR_MASK) == 0 or blocks >= ANCHOR_MAX_BLOCKS)
+                  ):
+                      yield bytes(current)
+                      current.clear()
+                      blocks = 0
+              if current:
+                  yield bytes(current)
+          
+          
+          def compress_chunk(data: bytes) -> tuple[str, bytes]:
+              candidates: list[tuple[str, bytes]] = [("raw", data)]
+              zlib_payload = zlib.compress(data, level=9)
+              candidates.append(("zlib", zlib_payload))
+              if zstd is not None:
+                  zstd_payload = zstd.ZstdCompressor(level=12, threads=0, write_checksum=True).compress(data)
+                  candidates.append(("zstd", zstd_payload))
+              codec, payload = min(candidates, key=lambda item: len(item[1]))
+              if codec != "raw" and len(payload) > int(len(data) * 0.985):
+                  return "raw", data
+              return codec, payload
+          
+          
+          def decompress_chunk(codec: str, payload: bytes, expected_size: int) -> bytes:
+              if codec == "raw":
+                  data = payload
+              elif codec == "zlib":
+                  data = zlib.decompress(payload)
+              elif codec == "zstd":
+                  if zstd is None:
+                      raise VaultError("zstandard is required to decode this vault")
+                  data = zstd.ZstdDecompressor().decompress(payload, max_output_size=expected_size)
+              else:
+                  raise VaultError(f"unsupported chunk codec: {codec}")
+              if len(data) != expected_size:
+                  raise VaultError(
+                      f"chunk size mismatch after {codec} decompression: {len(data)} != {expected_size}"
+                  )
+              return data
+          
+          
+          def file_mode(path: Path) -> int:
+              return stat.S_IMODE(path.lstat().st_mode)
+          
+          
+          def capture_repository(
+              root: Path,
+              paths: list[str],
+              work: Path,
+              timings: Timings,
+          ) -> tuple[list[FileRecord], dict[str, ChunkMeta], list[Path], dict[str, Any]]:
+              started = time.perf_counter()
+              cell_dir = work / "physical-cells"
+              cell_dir.mkdir(parents=True, exist_ok=True)
+              cell_paths = [cell_dir / f"cell-{index:02d}.bin" for index in range(DATA_CELLS)]
+              handles = [path.open("wb") for path in cell_paths]
+              offsets = [0] * DATA_CELLS
+              chunks: dict[str, ChunkMeta] = {}
+              files: list[FileRecord] = []
+              semantic_raw = [0] * 16
+              semantic_unique = [0] * 16
+              total_regular_bytes = 0
+              codebase_bytes = 0
+          
+              try:
+                  for relative in paths:
+                      safe_relative_path(relative)
+                      path = root / relative
+                      mode = file_mode(path)
+                      codebase = is_codebase_file(relative, path, mode)
+                      semantic = semantic_coordinate(relative, path, codebase, mode)
+          
+                      if path.is_symlink():
+                          target = os.readlink(path).encode("utf-8", "surrogateescape")
+                          files.append(
+                              FileRecord(
+                                  path=relative,
+                                  kind="symlink",
+                                  mode=mode,
+                                  size=len(target),
+                                  sha256=sha256_bytes(target),
+                                  chunks=tuple(),
+                                  symlink_target_b64=base64.b64encode(target).decode("ascii"),
+                                  codebase=codebase,
+                                  semantic_cell=semantic,
+                              )
+                          )
+                          semantic_raw[semantic] += len(target)
+                          if codebase:
+                              codebase_bytes += len(target)
+                          continue
+          
+                      if not path.is_file():
+                          raise VaultError(f"unsupported tracked object: {relative}")
+          
+                      file_hasher = hashlib.sha256()
+                      references: list[ChunkRef] = []
+                      size = 0
+                      with path.open("rb") as handle:
+                          for raw in anchor_chunks(handle):
+                              file_hasher.update(raw)
+                              size += len(raw)
+                              digest = sha256_bytes(raw)
+                              meta = chunks.get(digest)
+                              if meta is None:
+                                  codec, compressed = compress_chunk(raw)
+                                  cell = int(digest[0], 16)
+                                  offset = offsets[cell]
+                                  handles[cell].write(compressed)
+                                  offsets[cell] += len(compressed)
+                                  meta = ChunkMeta(
+                                      digest=digest,
+                                      raw_size=len(raw),
+                                      compressed_size=len(compressed),
+                                      codec=codec,
+                                      cell=cell,
+                                      offset=offset,
+                                      compressed_sha256=sha256_bytes(compressed),
+                                      semantic_cell=semantic,
+                                      reference_count=0,
+                                  )
+                                  chunks[digest] = meta
+                                  semantic_unique[semantic] += len(raw)
+                              meta.reference_count += 1
+                              references.append(ChunkRef(digest=digest, raw_size=len(raw)))
+          
+                      total_regular_bytes += size
+                      semantic_raw[semantic] += size
+                      if codebase:
+                          codebase_bytes += size
+                      files.append(
+                          FileRecord(
+                              path=relative,
+                              kind="file",
+                              mode=mode,
+                              size=size,
+                              sha256=file_hasher.hexdigest(),
+                              chunks=tuple(references),
+                              symlink_target_b64=None,
+                              codebase=codebase,
+                              semantic_cell=semantic,
+                          )
+                      )
+              finally:
+                  for handle in handles:
+                      handle.close()
+          
+              stats = {
+                  "trackedFiles": len(files),
+                  "regularBytes": total_regular_bytes,
+                  "codebaseBytes": codebase_bytes,
+                  "uniqueChunks": len(chunks),
+                  "chunkReferences": sum(meta.reference_count for meta in chunks.values()),
+                  "physicalCellBytes": [path.stat().st_size for path in cell_paths],
+                  "semanticRawBytes": semantic_raw,
+                  "semanticUniqueBytes": semantic_unique,
+              }
+              timings.mark("capture-and-chunk", started, files=len(files), chunks=len(chunks))
+              return files, chunks, cell_paths, stats
+          
+          
+          def file_record_dict(record: FileRecord) -> dict[str, Any]:
+              return {
+                  "path": record.path,
+                  "kind": record.kind,
+                  "mode": record.mode,
+                  "size": record.size,
+                  "sha256": record.sha256,
+                  "chunks": [
+                      {"sha256": reference.digest, "rawSize": reference.raw_size}
+                      for reference in record.chunks
+                  ],
+                  "symlinkTargetBase64": record.symlink_target_b64,
+                  "codebase": record.codebase,
+                  "semanticCell": record.semantic_cell,
+              }
+          
+          
+          def chunk_meta_dict(meta: ChunkMeta) -> dict[str, Any]:
+              return {
+                  "sha256": meta.digest,
+                  "rawSize": meta.raw_size,
+                  "compressedSize": meta.compressed_size,
+                  "codec": meta.codec,
+                  "physicalCell": meta.cell,
+                  "physicalOffset": meta.offset,
+                  "compressedSha256": meta.compressed_sha256,
+                  "semanticCell": meta.semantic_cell,
+                  "references": meta.reference_count,
+              }
+          
+          
+          def walsh_hadamard(values: Sequence[int]) -> list[int]:
+              if len(values) != 16:
+                  raise ValueError("Walsh transform requires sixteen values")
+              output = [int(value) for value in values]
+              stride = 1
+              while stride < 16:
+                  for start in range(0, 16, stride * 2):
+                      for index in range(start, start + stride):
+                          left = output[index]
+                          right = output[index + stride]
+                          output[index] = left + right
+                          output[index + stride] = left - right
+                  stride *= 2
+              return output
+          
+          
+          def semantic_4d_profile(stats: dict[str, Any]) -> dict[str, Any]:
+              cells = [int(value) for value in stats["semanticRawBytes"]]
+              edges = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for cell in range(16):
+                      if cell & bit:
+                          continue
+                      edges.append(
+                          {
+                              "axis": axis,
+                              "cells": [cell, cell | bit],
+                              "contrastBytes": cells[cell] - cells[cell | bit],
+                          }
+                      )
+              faces = []
+              for axis_a in range(4):
+                  for axis_b in range(axis_a + 1, 4):
+                      mask = (1 << axis_a) | (1 << axis_b)
+                      for base in range(16):
+                          if base & mask:
+                              continue
+                          c00 = base
+                          c10 = base | (1 << axis_a)
+                          c01 = base | (1 << axis_b)
+                          c11 = base | mask
+                          faces.append(
+                              {
+                                  "axes": [axis_a, axis_b],
+                                  "cells": [c00, c10, c01, c11],
+                                  "alternatingContrastBytes": cells[c00] - cells[c10] - cells[c01] + cells[c11],
+                              }
+                          )
+              slices = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for side in (0, 1):
+                      selected = [cell for cell in range(16) if int(bool(cell & bit)) == side]
+                      slices.append(
+                          {
+                              "axis": axis,
+                              "side": side,
+                              "cells": selected,
+                              "bytes": sum(cells[cell] for cell in selected),
+                          }
+                      )
+              return {
+                  "axisSemantics": {
+                      "bit0": "textual(1) / binary(0)",
+                      "bit1": "code-or-runtime(1) / passive-data(0)",
+                      "bit2": "non-asset(1) / media-or-asset(0)",
+                      "bit3": "engine-subsystem(1) / application-or-other(0)",
+                  },
+                  "cells": cells,
+                  "uniqueCells": [int(value) for value in stats["semanticUniqueBytes"]],
+                  "edges": edges,
+                  "faces": faces,
+                  "slices": slices,
+                  "walshRawBytes": walsh_hadamard(cells),
+                  "walshUniqueBytes": walsh_hadamard(stats["semanticUniqueBytes"]),
+              }
+          
+          
+          def file_leaf(record: FileRecord) -> bytes:
+              payload = {
+                  "path": record.path,
+                  "kind": record.kind,
+                  "mode": record.mode,
+                  "size": record.size,
+                  "sha256": record.sha256,
+                  "chunks": [reference.digest for reference in record.chunks],
+                  "symlink": record.symlink_target_b64,
+              }
+              return canonical_json(payload)
+          
+          
+          def chunk_leaf(meta: ChunkMeta) -> bytes:
+              return canonical_json(
+                  {
+                      "sha256": meta.digest,
+                      "rawSize": meta.raw_size,
+                      "compressedSize": meta.compressed_size,
+                      "codec": meta.codec,
+                      "compressedSha256": meta.compressed_sha256,
+                  }
+              )
+          
+          
+          def build_manifest_core(
+              root: Path,
+              files: list[FileRecord],
+              chunks: dict[str, ChunkMeta],
+              stats: dict[str, Any],
+          ) -> dict[str, Any]:
+              commit = git_bytes(root, "rev-parse", "HEAD").decode("ascii", "replace").strip()
+              branch_result = run_command(["git", "branch", "--show-current"], cwd=root, check=False)
+              branch = branch_result.stdout.decode("utf-8", "replace").strip() or None
+              file_root = merkle_root_hex([file_leaf(record) for record in files])
+              chunk_root = merkle_root_hex([chunk_leaf(chunks[key]) for key in sorted(chunks)])
+              repository_root = merkle_root_hex([bytes.fromhex(file_root), bytes.fromhex(chunk_root)])
+              return {
+                  "format": FORMAT,
+                  "version": FORMAT_VERSION,
+                  "capture": {
+                      "commit": commit,
+                      "branch": branch,
+                      "scope": "checked-out Git-tracked working tree with resolved LFS and recursive submodule content",
+                      "gitHistoryEmbedded": False,
+                  },
+                  "chunking": {
+                      "algorithm": "DREAM anchor-defined chunking",
+                      "anchorBlockBytes": ANCHOR_BLOCK_BYTES,
+                      "minimumBlocks": ANCHOR_MIN_BLOCKS,
+                      "maximumBlocks": ANCHOR_MAX_BLOCKS,
+                      "averageBoundaryMask": ANCHOR_MASK,
+                      "contentDigest": "SHA-256",
+                      "compression": ["raw", "zlib-9", "zstandard-12 when available"],
+                  },
+                  "physical4d": {
+                      "dataCells": DATA_CELLS,
+                      "placement": "high hexadecimal nibble of the unique chunk SHA-256 digest",
+                      "parityAxes": PARITY_AXES,
+                      "erasureCode": "systematic 20-of-16 Cauchy Reed-Solomon over GF(256)",
+                  },
+                  "roots": {
+                      "fileMerkleRoot": file_root,
+                      "chunkMerkleRoot": chunk_root,
+                      "repositoryMerkleRoot": repository_root,
+                  },
+                  "statistics": stats,
+                  "semantic4d": semantic_4d_profile(stats),
+                  "files": [file_record_dict(record) for record in files],
+                  "chunks": {key: chunk_meta_dict(chunks[key]) for key in sorted(chunks)},
+              }
+          
+          
+          # GF(256), primitive polynomial x^8 + x^4 + x^3 + x^2 + 1 (0x11d)
+          GF_EXP = np.zeros(512, dtype=np.uint8)
+          GF_LOG = np.zeros(256, dtype=np.int16)
+          _value = 1
+          for _index in range(255):
+              GF_EXP[_index] = _value
+              GF_LOG[_value] = _index
+              _value <<= 1
+              if _value & 0x100:
+                  _value ^= 0x11D
+          for _index in range(255, 512):
+              GF_EXP[_index] = GF_EXP[_index - 255]
+          MUL_TABLE = np.zeros((256, 256), dtype=np.uint8)
+          for _left in range(1, 256):
+              for _right in range(1, 256):
+                  MUL_TABLE[_left, _right] = GF_EXP[int(GF_LOG[_left]) + int(GF_LOG[_right])]
+          
+          
+          def gf_mul(left: int, right: int) -> int:
+              return int(MUL_TABLE[left, right])
+          
+          
+          def gf_inv(value: int) -> int:
+              if value == 0:
+                  raise ZeroDivisionError("zero has no multiplicative inverse in GF(256)")
+              return int(GF_EXP[255 - int(GF_LOG[value])])
+          
+          
+          def cauchy_coefficients() -> list[list[int]]:
+              x_values = list(range(PARITY_AXES))
+              y_values = list(range(16, 16 + DATA_CELLS))
+              return [[gf_inv(x ^ y) for y in y_values] for x in x_values]
+          
+          
+          RS_COEFFICIENTS = cauchy_coefficients()
+          
+          
+          def generator_row(shard_index: int) -> list[int]:
+              if 0 <= shard_index < DATA_CELLS:
+                  return [1 if column == shard_index else 0 for column in range(DATA_CELLS)]
+              parity = shard_index - DATA_CELLS
+              if 0 <= parity < PARITY_AXES:
+                  return list(RS_COEFFICIENTS[parity])
+              raise ValueError(f"invalid Reed-Solomon shard index: {shard_index}")
+          
+          
+          def invert_gf_matrix(matrix: Sequence[Sequence[int]]) -> list[list[int]]:
+              size = len(matrix)
+              augmented = [
+                  [int(value) for value in row]
+                  + [1 if row_index == column else 0 for column in range(size)]
+                  for row_index, row in enumerate(matrix)
+              ]
+              for column in range(size):
+                  pivot = next((row for row in range(column, size) if augmented[row][column]), None)
+                  if pivot is None:
+                      raise VaultError("Reed-Solomon recovery matrix is singular")
+                  if pivot != column:
+                      augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
+                  inverse = gf_inv(augmented[column][column])
+                  augmented[column] = [gf_mul(value, inverse) for value in augmented[column]]
+                  for row in range(size):
+                      if row == column:
+                          continue
+                      factor = augmented[row][column]
+                      if not factor:
+                          continue
+                      augmented[row] = [
+                          current ^ gf_mul(factor, pivot_value)
+                          for current, pivot_value in zip(augmented[row], augmented[column])
+                      ]
+              return [row[size:] for row in augmented]
+          
+          
+          def encode_parity(data_paths: list[Path], parity_dir: Path, timings: Timings) -> tuple[list[Path], int]:
+              started = time.perf_counter()
+              parity_dir.mkdir(parents=True, exist_ok=True)
+              shard_size = max(path.stat().st_size for path in data_paths)
+              parity_paths = [parity_dir / f"axis-{axis}.bin" for axis in range(PARITY_AXES)]
+              readers = [path.open("rb") for path in data_paths]
+              writers = [path.open("wb") for path in parity_paths]
+              try:
+                  for offset in range(0, shard_size, RS_BLOCK_BYTES):
+                      block_size = min(RS_BLOCK_BYTES, shard_size - offset)
+                      data_arrays = []
+                      for reader in readers:
+                          block = reader.read(block_size)
+                          if len(block) < block_size:
+                              block += b"\0" * (block_size - len(block))
+                          data_arrays.append(np.frombuffer(block, dtype=np.uint8))
+                      for parity_index, writer in enumerate(writers):
+                          parity = np.zeros(block_size, dtype=np.uint8)
+                          for data_index, values in enumerate(data_arrays):
+                              coefficient = RS_COEFFICIENTS[parity_index][data_index]
+                              parity ^= MUL_TABLE[coefficient][values]
+                          writer.write(parity.tobytes())
+              finally:
+                  for handle in readers + writers:
+                      handle.close()
+              timings.mark("reed-solomon-encode", started, shardSize=shard_size)
+              return parity_paths, shard_size
+          
+          
+          def recover_data_shards(
+              available_paths: dict[int, Path],
+              output_dir: Path,
+              shard_size: int,
+              timings: Timings | None = None,
+          ) -> list[Path]:
+              started = time.perf_counter()
+              if len(available_paths) < DATA_CELLS:
+                  raise VaultError(
+                      f"at least {DATA_CELLS} of {DATA_CELLS + PARITY_AXES} shards are required; "
+                      f"only {len(available_paths)} were supplied"
+                  )
+              selected_indices = sorted(available_paths)[:DATA_CELLS]
+              inverse = invert_gf_matrix([generator_row(index) for index in selected_indices])
+              output_dir.mkdir(parents=True, exist_ok=True)
+              output_paths = [output_dir / f"cell-{index:02d}.bin" for index in range(DATA_CELLS)]
+              readers = [available_paths[index].open("rb") for index in selected_indices]
+              writers = [path.open("wb") for path in output_paths]
+              try:
+                  for offset in range(0, shard_size, RS_BLOCK_BYTES):
+                      block_size = min(RS_BLOCK_BYTES, shard_size - offset)
+                      selected_arrays = []
+                      for reader in readers:
+                          block = reader.read(block_size)
+                          if len(block) < block_size:
+                              block += b"\0" * (block_size - len(block))
+                          selected_arrays.append(np.frombuffer(block, dtype=np.uint8))
+                      for data_index, writer in enumerate(writers):
+                          recovered = np.zeros(block_size, dtype=np.uint8)
+                          for source_index, values in enumerate(selected_arrays):
+                              coefficient = inverse[data_index][source_index]
+                              if coefficient:
+                                  recovered ^= MUL_TABLE[coefficient][values]
+                          writer.write(recovered.tobytes())
+              finally:
+                  for handle in readers + writers:
+                      handle.close()
+              if timings is not None:
+                  timings.mark("reed-solomon-recover", started, available=len(available_paths))
+              return output_paths
+          
+          
+          def topology_integrity(data_paths: list[Path], parity_paths: list[Path], manifest_digest: str) -> dict[str, Any]:
+              data_digests = [sha256_file(path) for path in data_paths]
+              parity_digests = [sha256_file(path) for path in parity_paths]
+          
+              def relation_root(label: str, cells: Sequence[int]) -> str:
+                  leaves = [label.encode("ascii")]
+                  leaves.extend(bytes.fromhex(data_digests[cell]) for cell in cells)
+                  return merkle_root_hex(leaves)
+          
+              edges = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for cell in range(16):
+                      if cell & bit:
+                          continue
+                      cells = [cell, cell | bit]
+                      edges.append({"axis": axis, "cells": cells, "root": relation_root("edge", cells)})
+              faces = []
+              for axis_a in range(4):
+                  for axis_b in range(axis_a + 1, 4):
+                      mask = (1 << axis_a) | (1 << axis_b)
+                      for base in range(16):
+                          if base & mask:
+                              continue
+                          cells = [base, base | (1 << axis_a), base | (1 << axis_b), base | mask]
+                          faces.append({"axes": [axis_a, axis_b], "cells": cells, "root": relation_root("face", cells)})
+              slices = []
+              for axis in range(4):
+                  bit = 1 << axis
+                  for side in (0, 1):
+                      cells = [cell for cell in range(16) if int(bool(cell & bit)) == side]
+                      slices.append({"axis": axis, "side": side, "cells": cells, "root": relation_root("slice", cells)})
+              walsh = []
+              for mode in range(1, 16):
+                  positive = [cell for cell in range(16) if ((mode & cell).bit_count() & 1) == 0]
+                  negative = [cell for cell in range(16) if ((mode & cell).bit_count() & 1) == 1]
+                  walsh.append(
+                      {
+                          "mode": mode,
+                          "positiveCells": positive,
+                          "negativeCells": negative,
+                          "root": merkle_root_hex(
+                              [b"walsh", bytes((mode,))]
+                              + [bytes.fromhex(data_digests[cell]) for cell in positive]
+                              + [b"negative"]
+                              + [bytes.fromhex(data_digests[cell]) for cell in negative]
+                          ),
+                      }
+                  )
+              atlas_root = merkle_root_hex(
+                  [b"atlas", bytes.fromhex(manifest_digest)]
+                  + [bytes.fromhex(value) for value in data_digests]
+                  + [bytes.fromhex(value) for value in parity_digests]
+              )
+              return {
+                  "manifestCoreSha256": manifest_digest,
+                  "dataShardSha256": data_digests,
+                  "parityShardSha256": parity_digests,
+                  "edges": edges,
+                  "faces": faces,
+                  "slices": slices,
+                  "walshSyndromes": walsh,
+                  "atlasRoot": atlas_root,
+                  "rs": {
+                      "dataShards": DATA_CELLS,
+                      "parityShards": PARITY_AXES,
+                      "coefficients": RS_COEFFICIENTS,
+                  },
+              }
+          
+          
+          def make_signature(roots: dict[str, str]) -> dict[str, Any]:
+              private_key_b64 = os.environ.get("DREAM_ED25519_PRIVATE_KEY_B64", "").strip()
+              if not private_key_b64:
+                  return {"algorithm": None, "signed": False}
+              if Ed25519PrivateKey is None or serialization is None:
+                  raise VaultError("cryptography is required when DREAM_ED25519_PRIVATE_KEY_B64 is set")
+              seed = base64.b64decode(private_key_b64)
+              if len(seed) != 32:
+                  raise VaultError("DREAM_ED25519_PRIVATE_KEY_B64 must decode to a 32-byte Ed25519 private seed")
+              private_key = Ed25519PrivateKey.from_private_bytes(seed)
+              public_key = private_key.public_key().public_bytes(
+                  encoding=serialization.Encoding.Raw,
+                  format=serialization.PublicFormat.Raw,
+              )
+              message = canonical_json(roots)
+              signature = private_key.sign(message)
+              return {
+                  "algorithm": "Ed25519",
+                  "signed": True,
+                  "publicKeyBase64": base64.b64encode(public_key).decode("ascii"),
+                  "signatureBase64": base64.b64encode(signature).decode("ascii"),
+                  "signedRoots": roots,
+              }
+          
+          
+          def verify_signature(signature: dict[str, Any]) -> bool:
+              if not signature.get("signed"):
+                  return True
+              if Ed25519PublicKey is None:
+                  raise VaultError("cryptography is required to verify this signed vault")
+              public_key = Ed25519PublicKey.from_public_bytes(base64.b64decode(signature["publicKeyBase64"]))
+              public_key.verify(
+                  base64.b64decode(signature["signatureBase64"]),
+                  canonical_json(signature["signedRoots"]),
+              )
+              return True
+          
+          
+          def format_specification() -> str:
+              return """# DREAM Repository Image Vault v9 Binary Contract
+          
+          ## Recovery tiers
+          
+          `DREAM_CODEBASE_MONOLITH.png` contains one complete, independently decodable capsule of every captured code/configuration/runtime-source file. The physical 4D atlas contains the complete tracked project tree, including binary game assets.
+          
+          ## Pixel packet
+          
+          Images use lossless RGB PNG. RGB channels are a direct byte plane, not a visual symbol approximation. The byte stream begins with an 8-byte `DRMV9IMG` magic, a big-endian 32-bit canonical-JSON header length, the canonical JSON header, and the exact payload bytes. The header gives the payload length and SHA-256; padding RGB channels after the payload are ignored.
+          
+          ## Full project atlas
+          
+          Unique content chunks are assigned to one of sixteen physical cells by the high hexadecimal nibble of the chunk SHA-256. Four Cauchy Reed-Solomon parity shards over GF(256) form a systematic 20-of-16 erasure code. Any sixteen surviving physical/parity shard streams reconstruct all sixteen data cells. The control image contains the complete file/chunk manifest, decoder source, format contract, Merkle roots, 32 edge roots, 24 face roots, 8 cubic-slice roots, and 15 non-DC Walsh integrity syndromes.
+          
+          ## Content records
+          
+          Files are anchor-chunked on deterministic 64 KiB block boundaries, deduplicated by SHA-256, and independently compressed. File records preserve path, type, mode, byte count, file SHA-256, ordered chunk references, and symbolic-link target. Restoration rejects absolute paths, parent traversal, symlink-parent traversal, chunk corruption, file corruption, mixed atlas roots, missing pages, overlapping pages, and invalid signatures.
+          
+          ## Trust
+          
+          SHA-256 and Merkle roots prove integrity and identity. When `DREAM_ED25519_PRIVATE_KEY_B64` is present during encoding, the codebase capsule root and full atlas root are signed with Ed25519; otherwise the vault is integrity-verifiable but unsigned.
+          """
+          
+          
+          def build_codebase_capsule(
+              files: list[FileRecord],
+              chunks: dict[str, ChunkMeta],
+              cell_paths: list[Path],
+              destination: Path,
+              decoder_source: str,
+              timings: Timings,
+              signature: dict[str, Any],
+          ) -> tuple[dict[str, Any], str]:
+              started = time.perf_counter()
+              code_files = [record for record in files if record.codebase]
+              required_chunks = sorted({reference.digest for record in code_files for reference in record.chunks})
+              chunk_rows = {digest: chunk_meta_dict(chunks[digest]) for digest in required_chunks}
+              codebase_root = merkle_root_hex(
+                  [file_leaf(record) for record in code_files]
+                  + [chunk_leaf(chunks[digest]) for digest in required_chunks]
+              )
+              manifest = {
+                  "format": FORMAT,
+                  "version": FORMAT_VERSION,
+                  "tier": "codebase-monolith",
+                  "codebaseRoot": codebase_root,
+                  "signature": signature,
+                  "files": [file_record_dict(record) for record in code_files],
+                  "chunks": chunk_rows,
+              }
+              readers = [path.open("rb") for path in cell_paths]
+              try:
+                  with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_STORED, allowZip64=True) as archive:
+                      deterministic_zip_write(archive, "manifest.json", canonical_json(manifest))
+                      deterministic_zip_write(archive, "decoder/dream_vault.py", decoder_source.encode("utf-8"))
+                      deterministic_zip_write(archive, "specification/DREAM_VAULT_FORMAT.md", format_specification().encode("utf-8"))
+                      for digest in required_chunks:
+                          meta = chunks[digest]
+                          readers[meta.cell].seek(meta.offset)
+                          payload = readers[meta.cell].read(meta.compressed_size)
+                          if sha256_bytes(payload) != meta.compressed_sha256:
+                              raise VaultError(f"compressed chunk changed while building monolith: {digest}")
+                          deterministic_zip_write(archive, f"chunks/{digest}.bin", payload)
+              finally:
+                  for reader in readers:
+                      reader.close()
+              capsule_digest = sha256_file(destination)
+              timings.mark("codebase-capsule", started, files=len(code_files), chunks=len(required_chunks))
+              return manifest, capsule_digest
+          
+          
+          def deterministic_zip_write(archive: zipfile.ZipFile, name: str, data: bytes) -> None:
+              info = zipfile.ZipInfo(name)
+              info.date_time = (1980, 1, 1, 0, 0, 0)
+              info.compress_type = zipfile.ZIP_STORED
+              info.create_system = 3
+              info.external_attr = (stat.S_IFREG | 0o644) << 16
+              archive.writestr(info, data)
+          
+          
+          def build_control_capsule(
+              manifest: dict[str, Any],
+              destination: Path,
+              decoder_source: str,
+          ) -> str:
+              with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_STORED, allowZip64=True) as archive:
+                  deterministic_zip_write(archive, "manifest.json", canonical_json(manifest))
+                  deterministic_zip_write(archive, "decoder/dream_vault.py", decoder_source.encode("utf-8"))
+                  deterministic_zip_write(archive, "specification/DREAM_VAULT_FORMAT.md", format_specification().encode("utf-8"))
+              return sha256_file(destination)
+          
+          
+          def make_packet_header(
+              role: str,
+              payload_bytes: int,
+              payload_sha256: str,
+              object_sha256: str,
+              object_bytes: int,
+              page: int,
+              page_count: int,
+              offset: int,
+              atlas_root: str | None,
+              shard_index: int | None,
+          ) -> dict[str, Any]:
+              return {
+                  "format": FORMAT,
+                  "version": FORMAT_VERSION,
+                  "role": role,
+                  "payloadBytes": payload_bytes,
+                  "payloadSha256": payload_sha256,
+                  "objectSha256": object_sha256,
+                  "objectBytes": object_bytes,
+                  "page": page,
+                  "pageCount": page_count,
+                  "offset": offset,
+                  "atlasRoot": atlas_root,
+                  "shardIndex": shard_index,
+              }
+          
+          
+          def packet_bytes(header: dict[str, Any], payload: bytes) -> bytes:
+              encoded = canonical_json(header)
+              return PACKET_PREFIX.pack(IMAGE_MAGIC, len(encoded)) + encoded + payload
+          
+          
+          def image_capacity_bytes(max_dimension: int) -> int:
+              return max_dimension * max_dimension * RGB_CHANNELS
+          
+          
+          def encode_object_images(
+              source: Path,
+              destination: Path,
+              role: str,
+              maximum_dimension: int,
+              atlas_root: str | None = None,
+              shard_index: int | None = None,
+              require_single_image: bool = False,
+          ) -> list[dict[str, Any]]:
+              destination.mkdir(parents=True, exist_ok=True)
+              object_bytes = source.stat().st_size
+              object_digest = sha256_file(source)
+              maximum_payload = image_capacity_bytes(maximum_dimension) - DEFAULT_PAGE_RESERVE
+              if maximum_payload <= 0:
+                  raise VaultError("image dimension is too small for the packet header")
+              page_count = max(1, math.ceil(object_bytes / maximum_payload))
+              if require_single_image and page_count != 1:
+                  required_side = math.ceil(math.sqrt((object_bytes + DEFAULT_PAGE_RESERVE) / RGB_CHANNELS))
+                  raise VaultError(
+                      f"{role} requires one image but needs approximately {required_side}x{required_side} RGB pixels; "
+                      f"configured maximum is {maximum_dimension}"
+                  )
+              rows = []
+              with source.open("rb") as handle:
+                  for page in range(page_count):
+                      offset = page * maximum_payload
+                      payload = handle.read(maximum_payload)
+                      header = make_packet_header(
+                          role=role,
+                          payload_bytes=len(payload),
+                          payload_sha256=sha256_bytes(payload),
+                          object_sha256=object_digest,
+                          object_bytes=object_bytes,
+                          page=page,
+                          page_count=page_count,
+                          offset=offset,
+                          atlas_root=atlas_root,
+                          shard_index=shard_index,
+                      )
+                      packet = packet_bytes(header, payload)
+                      side = math.ceil(math.sqrt(len(packet) / RGB_CHANNELS))
+                      if side > maximum_dimension:
+                          raise VaultError(f"packet exceeded configured image dimension: {side} > {maximum_dimension}")
+                      padded = packet + b"\0" * (side * side * RGB_CHANNELS - len(packet))
+                      image = Image.frombytes("RGB", (side, side), padded)
+                      if require_single_image:
+                          filename = f"{role.upper().replace('-', '_')}.png"
+                      else:
+                          filename = f"{role}-page-{page:04d}.png"
+                      path = destination / filename
+                      image.save(path, "PNG", compress_level=6, optimize=False)
+                      rows.append(
+                          {
+                              "role": role,
+                              "shardIndex": shard_index,
+                              "page": page,
+                              "pageCount": page_count,
+                              "offset": offset,
+                              "payloadBytes": len(payload),
+                              "imageWidth": side,
+                              "imageHeight": side,
+                              "imageSha256": sha256_file(path),
+                              "path": path.as_posix(),
+                          }
+                      )
+              return rows
+          
+          
+          def decode_image_packet(path: Path) -> tuple[dict[str, Any], bytes]:
+              image = Image.open(path).convert("RGB")
+              raw = image.tobytes()
+              if len(raw) < PACKET_PREFIX.size:
+                  raise VaultError(f"image is too small to contain a DREAM packet: {path}")
+              magic, header_length = PACKET_PREFIX.unpack(raw[: PACKET_PREFIX.size])
+              if magic != IMAGE_MAGIC:
+                  raise VaultError(f"invalid DREAM image magic: {path}")
+              header_start = PACKET_PREFIX.size
+              header_end = header_start + header_length
+              if header_end > len(raw):
+                  raise VaultError(f"truncated DREAM image header: {path}")
+              header = json.loads(raw[header_start:header_end].decode("utf-8"))
+              payload_end = header_end + int(header["payloadBytes"])
+              if payload_end > len(raw):
+                  raise VaultError(f"truncated DREAM image payload: {path}")
+              payload = raw[header_end:payload_end]
+              if sha256_bytes(payload) != header["payloadSha256"]:
+                  raise VaultError(f"pixel payload SHA-256 mismatch: {path}")
+              return header, payload
+          
+          
+          def decode_object_images(paths: Sequence[Path], destination: Path | None = None) -> tuple[dict[str, Any], bytes | Path]:
+              packets = [decode_image_packet(path) for path in paths]
+              if not packets:
+                  raise VaultError("no image pages were supplied")
+              headers = [header for header, _ in packets]
+              object_digest = headers[0]["objectSha256"]
+              object_bytes = int(headers[0]["objectBytes"])
+              role = headers[0]["role"]
+              page_count = int(headers[0]["pageCount"])
+              atlas_root = headers[0].get("atlasRoot")
+              shard_index = headers[0].get("shardIndex")
+              pages: dict[int, tuple[dict[str, Any], bytes]] = {}
+              for header, payload in packets:
+                  if (
+                      header["objectSha256"] != object_digest
+                      or int(header["objectBytes"]) != object_bytes
+                      or header["role"] != role
+                      or int(header["pageCount"]) != page_count
+                      or header.get("atlasRoot") != atlas_root
+                      or header.get("shardIndex") != shard_index
+                  ):
+                      raise VaultError("mixed image pages from different DREAM objects")
+                  page = int(header["page"])
+                  if page in pages:
+                      raise VaultError(f"duplicate image page {page} for role {role}")
+                  pages[page] = (header, payload)
+              if set(pages) != set(range(page_count)):
+                  missing = sorted(set(range(page_count)) - set(pages))
+                  raise VaultError(f"missing image pages for {role}: {missing}")
+          
+              common_header = headers[0]
+              if destination is None:
+                  output = bytearray()
+                  for page in range(page_count):
+                      header, payload = pages[page]
+                      if int(header["offset"]) != len(output):
+                          raise VaultError(f"non-contiguous page offset in {role}")
+                      output.extend(payload)
+                  data = bytes(output[:object_bytes])
+                  if sha256_bytes(data) != object_digest:
+                      raise VaultError(f"reconstructed object SHA-256 mismatch for {role}")
+                  return common_header, data
+          
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              hasher = hashlib.sha256()
+              written = 0
+              with destination.open("wb") as handle:
+                  for page in range(page_count):
+                      header, payload = pages[page]
+                      if int(header["offset"]) != written:
+                          raise VaultError(f"non-contiguous page offset in {role}")
+                      handle.write(payload)
+                      hasher.update(payload)
+                      written += len(payload)
+              with destination.open("r+b") as handle:
+                  handle.truncate(object_bytes)
+              if written < object_bytes or hasher.hexdigest() != object_digest:
+                  # A truncated final write would have already produced the wrong digest.
+                  if sha256_file(destination) != object_digest:
+                      raise VaultError(f"reconstructed object SHA-256 mismatch for {role}")
+              return common_header, destination
+          
+          
+          def extract_control_image(control_image: Path, temporary: Path) -> tuple[dict[str, Any], str, str]:
+              image_header, payload = decode_object_images([control_image])
+              assert isinstance(payload, bytes)
+              capsule = temporary / "control.zip"
+              capsule.write_bytes(payload)
+              with zipfile.ZipFile(capsule) as archive:
+                  manifest = json.loads(archive.read("manifest.json"))
+                  decoder_source = archive.read("decoder/dream_vault.py").decode("utf-8")
+                  specification = archive.read("specification/DREAM_VAULT_FORMAT.md").decode("utf-8")
+              verify_signature(manifest.get("signature", {"signed": False}))
+              if image_header.get("atlasRoot") != manifest["integrity"]["atlasRoot"]:
+                  raise VaultError("control image header is not bound to the manifest atlas root")
+              return manifest, decoder_source, specification
+          
+          
+          def chunk_payload_from_cells(
+              digest: str,
+              meta: dict[str, Any],
+              handles: list[BinaryIO],
+              cache: DecompressedChunkCache,
+          ) -> bytes:
+              cached = cache.get(digest)
+              if cached is not None:
+                  return cached
+              cell = int(meta["physicalCell"])
+              handle = handles[cell]
+              handle.seek(int(meta["physicalOffset"]))
+              compressed = handle.read(int(meta["compressedSize"]))
+              if sha256_bytes(compressed) != meta["compressedSha256"]:
+                  raise VaultError(f"compressed chunk corruption: {digest}")
+              data = decompress_chunk(meta["codec"], compressed, int(meta["rawSize"]))
+              if sha256_bytes(data) != digest:
+                  raise VaultError(f"raw chunk SHA-256 mismatch: {digest}")
+              cache.put(digest, data)
+              return data
+          
+          
+          def ensure_safe_parent(root: Path, destination: Path) -> None:
+              current = destination.parent
+              while current != root:
+                  if current.is_symlink():
+                      raise VaultError(f"refusing to restore through symlink parent: {current}")
+                  current = current.parent
+          
+          
+          def restore_manifest(
+              manifest: dict[str, Any],
+              output: Path,
+              chunk_resolver,
+          ) -> dict[str, Any]:
+              if output.exists() and any(output.iterdir()):
+                  raise VaultError(f"restore destination must be empty: {output}")
+              output.mkdir(parents=True, exist_ok=True)
+              root = output.resolve()
+              regular_files = [item for item in manifest["files"] if item["kind"] == "file"]
+              symlinks = [item for item in manifest["files"] if item["kind"] == "symlink"]
+              results = []
+          
+              for item in regular_files:
+                  relative = safe_relative_path(item["path"])
+                  destination = (root / Path(*relative.parts)).resolve(strict=False)
+                  if destination != root and root not in destination.parents:
+                      raise VaultError(f"unsafe restore destination: {item['path']}")
+                  ensure_safe_parent(root, destination)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  hasher = hashlib.sha256()
+                  size = 0
+                  with destination.open("wb") as handle:
+                      for reference in item["chunks"]:
+                          data = chunk_resolver(reference["sha256"])
+                          if len(data) != int(reference["rawSize"]):
+                              raise VaultError(f"chunk reference length mismatch in {item['path']}")
+                          handle.write(data)
+                          hasher.update(data)
+                          size += len(data)
+                  os.chmod(destination, int(item["mode"]))
+                  exact = size == int(item["size"]) and hasher.hexdigest() == item["sha256"]
+                  if not exact:
+                      raise VaultError(f"restored file failed identity check: {item['path']}")
+                  results.append({"path": item["path"], "exact": True})
+          
+              for item in symlinks:
+                  relative = safe_relative_path(item["path"])
+                  destination = (root / Path(*relative.parts)).resolve(strict=False)
+                  if destination != root and root not in destination.parents:
+                      raise VaultError(f"unsafe symlink destination: {item['path']}")
+                  ensure_safe_parent(root, destination)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  target = base64.b64decode(item["symlinkTargetBase64"])
+                  if sha256_bytes(target) != item["sha256"]:
+                      raise VaultError(f"symlink target digest mismatch: {item['path']}")
+                  os.symlink(target.decode("utf-8", "surrogateescape"), destination)
+                  results.append({"path": item["path"], "exact": True})
+          
+              return {
+                  "fileCount": len(results),
+                  "exactFileCount": len(results),
+                  "allExact": True,
+                  "files": results,
+              }
+          
+          
+          def restore_codebase_capsule(capsule: Path, output: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+              with zipfile.ZipFile(capsule) as archive:
+                  manifest = json.loads(archive.read("manifest.json"))
+                  verify_signature(manifest.get("signature", {"signed": False}))
+                  cache = DecompressedChunkCache()
+          
+                  def resolve(digest: str) -> bytes:
+                      cached = cache.get(digest)
+                      if cached is not None:
+                          return cached
+                      meta = manifest["chunks"][digest]
+                      compressed = archive.read(f"chunks/{digest}.bin")
+                      if sha256_bytes(compressed) != meta["compressedSha256"]:
+                          raise VaultError(f"monolith compressed chunk mismatch: {digest}")
+                      data = decompress_chunk(meta["codec"], compressed, int(meta["rawSize"]))
+                      if sha256_bytes(data) != digest:
+                          raise VaultError(f"monolith raw chunk mismatch: {digest}")
+                      cache.put(digest, data)
+                      return data
+          
+                  restored = restore_manifest(manifest, output, resolve)
+              return manifest, restored
+          
+          
+          def restore_atlas(manifest: dict[str, Any], cell_paths: list[Path], output: Path) -> dict[str, Any]:
+              expected_lengths = [int(value) for value in manifest["statistics"]["physicalCellBytes"]]
+              if len(cell_paths) != DATA_CELLS:
+                  raise VaultError("sixteen data cell streams are required")
+              handles = [path.open("rb") for path in cell_paths]
+              try:
+                  for index, (path, expected) in enumerate(zip(cell_paths, expected_lengths)):
+                      if path.stat().st_size < expected:
+                          raise VaultError(f"recovered data cell {index} is shorter than expected")
+                  cache = DecompressedChunkCache()
+          
+                  def resolve(digest: str) -> bytes:
+                      return chunk_payload_from_cells(digest, manifest["chunks"][digest], handles, cache)
+          
+                  return restore_manifest(manifest, output, resolve)
+              finally:
+                  for handle in handles:
+                      handle.close()
+          
+          
+          def compare_capture(root: Path, restored: Path, files: Sequence[dict[str, Any]]) -> dict[str, Any]:
+              rows = []
+              for item in files:
+                  original = root / item["path"]
+                  recovered = restored / item["path"]
+                  if item["kind"] == "symlink":
+                      exact = recovered.is_symlink() and os.readlink(original) == os.readlink(recovered)
+                  else:
+                      exact = (
+                          recovered.is_file()
+                          and sha256_file(original) == sha256_file(recovered)
+                          and stat.S_IMODE(original.stat().st_mode) == stat.S_IMODE(recovered.stat().st_mode)
+                      )
+                  rows.append({"path": item["path"], "exact": exact})
+              return {
+                  "fileCount": len(rows),
+                  "exactFileCount": sum(1 for row in rows if row["exact"]),
+                  "allExact": all(row["exact"] for row in rows),
+                  "files": rows,
+              }
+          
+          
+          def resolve_internal_import(source: str, specifier: str, code_paths: set[str]) -> str | None:
+              source_path = PurePosixPath(source)
+              if specifier.startswith("."):
+                  base = source_path.parent / specifier
+              elif specifier.startswith(("@/", "~/")):
+                  base = PurePosixPath(specifier[2:])
+              elif specifier.split("/", 1)[0].lower() in RUNTIME_ROOTS:
+                  base = PurePosixPath(specifier)
+              else:
+                  return None
+              candidates = []
+              if base.suffix:
+                  candidates.append(base)
+              else:
+                  candidates.extend(PurePosixPath(str(base) + extension) for extension in CODE_EXTENSIONS)
+                  candidates.extend(base / f"index{extension}" for extension in CODE_EXTENSIONS)
+              for candidate in candidates:
+                  normalized = str(PurePosixPath(*[part for part in candidate.parts if part not in {"."}]))
+                  while normalized.startswith("../"):
+                      return None
+                  if normalized in code_paths:
+                      return normalized
+              return None
+          
+          
+          def strongly_connected_components(graph: dict[str, set[str]]) -> list[list[str]]:
+              index = 0
+              stack: list[str] = []
+              on_stack: set[str] = set()
+              indices: dict[str, int] = {}
+              low: dict[str, int] = {}
+              components: list[list[str]] = []
+          
+              def visit(node: str) -> None:
+                  nonlocal index
+                  indices[node] = index
+                  low[node] = index
+                  index += 1
+                  stack.append(node)
+                  on_stack.add(node)
+                  for target in graph[node]:
+                      if target not in indices:
+                          visit(target)
+                          low[node] = min(low[node], low[target])
+                      elif target in on_stack:
+                          low[node] = min(low[node], indices[target])
+                  if low[node] == indices[node]:
+                      component = []
+                      while True:
+                          target = stack.pop()
+                          on_stack.remove(target)
+                          component.append(target)
+                          if target == node:
+                              break
+                      if len(component) > 1 or node in graph[node]:
+                          components.append(sorted(component))
+          
+              for node in graph:
+                  if node not in indices:
+                      visit(node)
+              return sorted(components, key=lambda value: (-len(value), value))
+          
+          
+          def source_diagnostics(root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+              code_files = [item for item in manifest["files"] if item["codebase"] and item["kind"] == "file"]
+              code_paths = {item["path"] for item in code_files}
+              graph = {path: set() for path in code_paths}
+              unresolved = []
+              external = Counter()
+              secret_findings = []
+              asset_paths = {
+                  item["path"]
+                  for item in manifest["files"]
+                  if PurePosixPath(item["path"]).suffix.lower() in ASSET_EXTENSIONS
+              }
+              text_corpus = []
+          
+              for item in code_files:
+                  path = root / item["path"]
+                  try:
+                      text = path.read_text(encoding="utf-8", errors="replace")
+                  except OSError:
+                      continue
+                  text_corpus.append((item["path"], text))
+                  imports = set(IMPORT_RE.findall(text)) | set(STATIC_IMPORT_RE.findall(text))
+                  for specifier in imports:
+                      target = resolve_internal_import(item["path"], specifier, code_paths)
+                      if target is not None:
+                          graph[item["path"]].add(target)
+                      elif specifier.startswith((".", "@/", "~/")):
+                          unresolved.append({"source": item["path"], "specifier": specifier})
+                      else:
+                          external[specifier] += 1
+                  for label, pattern in SECRET_PATTERNS.items():
+                      for match in pattern.finditer(text):
+                          line = text.count("\n", 0, match.start()) + 1
+                          token = match.group(1) if match.lastindex else match.group(0)
+                          secret_findings.append(
+                              {
+                                  "path": item["path"],
+                                  "line": line,
+                                  "pattern": label,
+                                  "tokenSha256Prefix": sha256_bytes(token.encode("utf-8", "replace"))[:16],
+                              }
+                          )
+          
+              incoming = Counter(target for targets in graph.values() for target in targets)
+              entrypoints = {
+                  path
+                  for path in code_paths
+                  if (
+                      PurePosixPath(path).name.startswith(("page.", "route.", "layout.", "main.", "index."))
+                      or path in {"package.json"}
+                      or PurePosixPath(path).parts[0].lower() in {"app", "pages"}
+                  )
+              }
+              reachable = set(entrypoints)
+              queue = deque(entrypoints)
+              while queue:
+                  source = queue.popleft()
+                  for target in graph.get(source, set()):
+                      if target not in reachable:
+                          reachable.add(target)
+                          queue.append(target)
+              orphan_candidates = sorted(
+                  path for path in code_paths if path not in reachable and incoming[path] == 0 and graph[path]
+              )
+          
+              referenced_assets = set()
+              for source, text in text_corpus:
+                  lowered = text.lower()
+                  for asset in asset_paths:
+                      name = PurePosixPath(asset).name.lower()
+                      if len(name) >= 5 and name in lowered:
+                          referenced_assets.add(asset)
+              unreferenced_assets = sorted(asset_paths - referenced_assets)
+          
+              change_rows = []
+              parent = run_command(["git", "rev-parse", "HEAD^"], cwd=root, check=False)
+              if parent.returncode == 0:
+                  diff = run_command(["git", "diff", "--name-status", "-z", "HEAD^", "HEAD"], cwd=root, check=False).stdout
+                  fields = [entry.decode("utf-8", "surrogateescape") for entry in diff.split(b"\0") if entry]
+                  index = 0
+                  while index < len(fields):
+                      status_value = fields[index]
+                      index += 1
+                      if status_value.startswith(("R", "C")) and index + 1 < len(fields):
+                          old_path, new_path = fields[index], fields[index + 1]
+                          index += 2
+                          change_rows.append({"status": status_value, "oldPath": old_path, "path": new_path})
+                      elif index < len(fields):
+                          change_rows.append({"status": status_value, "path": fields[index]})
+                          index += 1
+          
+              return {
+                  "codeFiles": len(code_files),
+                  "dependencyEdges": sum(len(targets) for targets in graph.values()),
+                  "entrypoints": sorted(entrypoints),
+                  "cycles": strongly_connected_components(graph),
+                  "unresolvedInternalImports": sorted(unresolved, key=lambda row: (row["source"], row["specifier"])),
+                  "externalImports": [{"specifier": key, "references": value} for key, value in external.most_common()],
+                  "orphanCandidates": orphan_candidates,
+                  "secretLikeFindings": secret_findings,
+                  "assetFiles": len(asset_paths),
+                  "referencedAssetFiles": len(referenced_assets),
+                  "unreferencedAssetCandidates": unreferenced_assets,
+                  "headChangeSet": change_rows,
+                  "limitations": [
+                      "Import resolution is a deterministic static approximation; project typecheck/build output remains authoritative.",
+                      "Unreferenced assets can be loaded dynamically and are review candidates, not automatic deletion targets.",
+                      "Secret findings report only a pattern label and token hash prefix; secret values are never copied into reports.",
+                  ],
+              }
+          
+          
+          def public_index(manifest: dict[str, Any], image_rows: list[dict[str, Any]]) -> dict[str, Any]:
+              return {
+                  "format": FORMAT,
+                  "version": FORMAT_VERSION,
+                  "capture": manifest["capture"],
+                  "roots": manifest["roots"],
+                  "integrity": manifest["integrity"],
+                  "signature": manifest["signature"],
+                  "statistics": manifest["statistics"],
+                  "semantic4d": manifest["semantic4d"],
+                  "images": image_rows,
+                  "recovery": {
+                      "codebase": "one DREAM_CODEBASE_MONOLITH.png image",
+                      "completeProject": "DREAM_VAULT_CONTROL.png plus any sixteen of twenty physical/parity shard streams",
+                  },
+              }
+          
+          
+          def collect_role_images(directory: Path, role: str) -> list[Path]:
+              return sorted(
+                  path
+                  for path in directory.rglob("*.png")
+                  if decode_image_packet(path)[0]["role"] == role
+              )
+          
+          
+          def validate_build(
+              root: Path,
+              output: Path,
+              manifest: dict[str, Any],
+              codebase_image: Path,
+              control_image: Path,
+              data_image_dirs: list[Path],
+              parity_image_dirs: list[Path],
+              shard_size: int,
+              timings: Timings,
+          ) -> dict[str, Any]:
+              started = time.perf_counter()
+              with tempfile.TemporaryDirectory(prefix="dream-vault-validation-") as temporary_name:
+                  temporary = Path(temporary_name)
+          
+                  # Tier 1: one-image codebase recovery.
+                  code_header, code_bytes = decode_object_images([codebase_image])
+                  assert isinstance(code_bytes, bytes)
+                  code_capsule = temporary / "codebase.zip"
+                  code_capsule.write_bytes(code_bytes)
+                  code_output = temporary / "codebase-restored"
+                  code_manifest, code_restore = restore_codebase_capsule(code_capsule, code_output)
+                  signed_roots = code_manifest.get("signature", {}).get("signedRoots", {})
+                  if signed_roots and code_header.get("atlasRoot") != signed_roots.get("atlasRoot"):
+                      raise VaultError("codebase image header is not bound to the signed atlas root")
+                  if signed_roots and code_manifest["codebaseRoot"] != signed_roots.get("codebaseRoot"):
+                      raise VaultError("codebase capsule root is not covered by the signature")
+                  code_compare = compare_capture(root, code_output, code_manifest["files"])
+          
+                  # Decode control and every physical/parity image object.
+                  decoded_manifest, _, _ = extract_control_image(control_image, temporary)
+                  if decoded_manifest["integrity"]["atlasRoot"] != manifest["integrity"]["atlasRoot"]:
+                      raise VaultError("control image atlas root mismatch")
+          
+                  decoded_shards: dict[int, Path] = {}
+                  for cell, directory in enumerate(data_image_dirs):
+                      destination = temporary / f"data-{cell:02d}.bin"
+                      _, result = decode_object_images(sorted(directory.glob("*.png")), destination)
+                      assert isinstance(result, Path)
+                      decoded_shards[cell] = result
+                  for axis, directory in enumerate(parity_image_dirs):
+                      destination = temporary / f"parity-{axis}.bin"
+                      _, result = decode_object_images(sorted(directory.glob("*.png")), destination)
+                      assert isinstance(result, Path)
+                      decoded_shards[DATA_CELLS + axis] = result
+          
+                  # Exact full-atlas recovery without erasures.
+                  full_output = temporary / "full-restored"
+                  full_restore = restore_atlas(decoded_manifest, [decoded_shards[index] for index in range(DATA_CELLS)], full_output)
+                  full_compare = compare_capture(root, full_output, decoded_manifest["files"])
+          
+                  # Four-cell erasure simulation: all four parity axes are used to recover four missing vertices.
+                  missing = [1, 5, 9, 13]
+                  available = {index: path for index, path in decoded_shards.items() if index not in missing}
+                  recovered_paths = recover_data_shards(available, temporary / "rs-recovered", shard_size, timings)
+                  erasure_output = temporary / "erasure-restored"
+                  erasure_restore = restore_atlas(decoded_manifest, recovered_paths, erasure_output)
+                  erasure_compare = compare_capture(root, erasure_output, decoded_manifest["files"])
+          
+                  # Deliberate valid-PNG pixel mutation must be detected by the payload hash.
+                  corrupted = temporary / "corrupted-control.png"
+                  image = Image.open(control_image).convert("RGB")
+                  pixels = bytearray(image.tobytes())
+                  mutate_index = min(len(pixels) - 1, PACKET_PREFIX.size + 4096)
+                  pixels[mutate_index] ^= 0x01
+                  Image.frombytes("RGB", image.size, bytes(pixels)).save(corrupted, "PNG", compress_level=6)
+                  corruption_detected = False
+                  try:
+                      decode_image_packet(corrupted)
+                  except VaultError:
+                      corruption_detected = True
+          
+              validation = {
+                  "codebaseMonolith": {
+                      "header": code_header,
+                      "restore": code_restore,
+                      "comparison": code_compare,
+                  },
+                  "fullAtlas": {
+                      "restore": full_restore,
+                      "comparison": full_compare,
+                  },
+                  "fourCellErasure": {
+                      "missingDataCells": missing,
+                      "restore": erasure_restore,
+                      "comparison": erasure_compare,
+                  },
+                  "pixelCorruptionDetected": corruption_detected,
+                  "allExact": (
+                      code_restore["allExact"]
+                      and code_compare["allExact"]
+                      and full_restore["allExact"]
+                      and full_compare["allExact"]
+                      and erasure_restore["allExact"]
+                      and erasure_compare["allExact"]
+                      and corruption_detected
+                  ),
+              }
+              timings.mark("validation", started, allExact=validation["allExact"])
+              return validation
+          
+          
+          def build_vault(root: Path, output: Path) -> int:
+              timings = Timings()
+              output.mkdir(parents=True, exist_ok=True)
+              recovery = output / "Recovery"
+              codebase_dir = recovery / "Codebase"
+              atlas_dir = recovery / "Atlas"
+              data_root = atlas_dir / "Data"
+              parity_root = atlas_dir / "Parity"
+              decoder_dir = output / "Decoder"
+              specification_dir = output / "Specification"
+              manifest_dir = output / "Manifest"
+              diagnostics_dir = output / "Diagnostics"
+              for directory in (
+                  codebase_dir,
+                  atlas_dir,
+                  data_root,
+                  parity_root,
+                  decoder_dir,
+                  specification_dir,
+                  manifest_dir,
+                  diagnostics_dir,
+              ):
+                  directory.mkdir(parents=True, exist_ok=True)
+          
+              decoder_source = Path(__file__).read_text(encoding="utf-8")
+              write_text(decoder_dir / "dream_vault.py", decoder_source)
+              write_text(specification_dir / "DREAM_VAULT_FORMAT.md", format_specification())
+          
+              with tempfile.TemporaryDirectory(prefix="dream-vault-build-") as temporary_name:
+                  work = Path(temporary_name)
+                  paths = tracked_paths(root)
+                  files, chunks, data_paths, stats = capture_repository(root, paths, work, timings)
+                  manifest_core = build_manifest_core(root, files, chunks, stats)
+                  manifest_core_digest = sha256_bytes(canonical_json(manifest_core))
+          
+                  parity_paths, shard_size = encode_parity(data_paths, work / "parity", timings)
+                  integrity = topology_integrity(data_paths, parity_paths, manifest_core_digest)
+                  manifest = dict(manifest_core)
+                  manifest["integrity"] = integrity
+          
+                  code_files_for_identity = [record for record in files if record.codebase]
+                  code_chunks_for_identity = sorted(
+                      {reference.digest for record in code_files_for_identity for reference in record.chunks}
+                  )
+                  codebase_root = merkle_root_hex(
+                      [file_leaf(record) for record in code_files_for_identity]
+                      + [chunk_leaf(chunks[digest]) for digest in code_chunks_for_identity]
+                  )
+                  signature = make_signature(
+                      {
+                          "repositoryMerkleRoot": manifest["roots"]["repositoryMerkleRoot"],
+                          "atlasRoot": integrity["atlasRoot"],
+                          "codebaseRoot": codebase_root,
+                      }
+                  )
+                  manifest["signature"] = signature
+          
+                  code_capsule = work / "codebase-capsule.zip"
+                  code_manifest, code_capsule_digest = build_codebase_capsule(
+                      files, chunks, data_paths, code_capsule, decoder_source, timings, signature
+                  )
+          
+                  control_capsule = work / "control-capsule.zip"
+                  control_digest = build_control_capsule(manifest, control_capsule, decoder_source)
+          
+                  max_dimension = max(1024, int(os.environ.get("DREAM_IMAGE_MAX_DIMENSION", DEFAULT_IMAGE_DIMENSION)))
+                  code_dimension = max(max_dimension, int(os.environ.get("DREAM_CODEBASE_IMAGE_MAX_DIMENSION", DEFAULT_CODEBASE_DIMENSION)))
+          
+                  image_rows: list[dict[str, Any]] = []
+                  code_rows = encode_object_images(
+                      code_capsule,
+                      codebase_dir,
+                      role="dream-codebase-monolith",
+                      maximum_dimension=code_dimension,
+                      atlas_root=integrity["atlasRoot"],
+                      require_single_image=True,
+                  )
+                  codebase_image = Path(code_rows[0]["path"])
+                  image_rows.extend(code_rows)
+          
+                  control_rows = encode_object_images(
+                      control_capsule,
+                      atlas_dir,
+                      role="dream-vault-control",
+                      maximum_dimension=max_dimension,
+                      atlas_root=integrity["atlasRoot"],
+                      require_single_image=True,
+                  )
+                  control_image = Path(control_rows[0]["path"])
+                  image_rows.extend(control_rows)
+          
+                  data_image_dirs = []
+                  for cell, path in enumerate(data_paths):
+                      destination = data_root / f"cell-{cell:04b}"
+                      data_image_dirs.append(destination)
+                      image_rows.extend(
+                          encode_object_images(
+                              path,
+                              destination,
+                              role="dream-data-cell",
+                              maximum_dimension=max_dimension,
+                              atlas_root=integrity["atlasRoot"],
+                              shard_index=cell,
+                          )
+                      )
+          
+                  parity_image_dirs = []
+                  for axis, path in enumerate(parity_paths):
+                      destination = parity_root / f"axis-{axis}"
+                      parity_image_dirs.append(destination)
+                      image_rows.extend(
+                          encode_object_images(
+                              path,
+                              destination,
+                              role="dream-parity-axis",
+                              maximum_dimension=max_dimension,
+                              atlas_root=integrity["atlasRoot"],
+                              shard_index=DATA_CELLS + axis,
+                          )
+                      )
+          
+                  diagnostics = source_diagnostics(root, manifest)
+                  validation = validate_build(
+                      root,
+                      output,
+                      manifest,
+                      codebase_image,
+                      control_image,
+                      data_image_dirs,
+                      parity_image_dirs,
+                      shard_size,
+                      timings,
+                  )
+          
+                  public = public_index(manifest, image_rows)
+                  public["capsules"] = {
+                      "controlCapsuleSha256": control_digest,
+                      "codebaseCapsuleSha256": code_capsule_digest,
+                  }
+                  public["validation"] = {
+                      "allExact": validation["allExact"],
+                      "fourMissingCellsRecovered": validation["fourCellErasure"]["missingDataCells"],
+                      "pixelCorruptionDetected": validation["pixelCorruptionDetected"],
+                  }
+                  write_json(manifest_dir / "PUBLIC_INDEX.json", public)
+                  write_json(diagnostics_dir / "SOURCE_INTELLIGENCE.json", diagnostics)
+                  write_json(diagnostics_dir / "RECOVERY_VALIDATION.json", validation)
+                  write_json(diagnostics_dir / "BUILD_TIMINGS.json", {"stages": timings.rows, "totalSeconds": timings.total()})
+          
+                  compression_bytes = sum(meta.compressed_size for meta in chunks.values())
+                  summary = {
+                      "status": "completed" if validation["allExact"] else "failed",
+                      "format": FORMAT,
+                      "commit": manifest["capture"]["commit"],
+                      "trackedFiles": len(files),
+                      "codebaseFiles": sum(record.codebase for record in files),
+                      "rawRepositoryBytes": stats["regularBytes"],
+                      "uniqueCompressedChunkBytes": compression_bytes,
+                      "deduplicationRatio": (
+                          stats["regularBytes"] / max(1, sum(meta.raw_size for meta in chunks.values()))
+                      ),
+                      "compressionRatioAfterDeduplication": (
+                          sum(meta.raw_size for meta in chunks.values()) / max(1, compression_bytes)
+                      ),
+                      "imageCount": len(image_rows),
+                      "atlasRoot": integrity["atlasRoot"],
+                      "repositoryMerkleRoot": manifest["roots"]["repositoryMerkleRoot"],
+                      "codebaseMonolithImage": codebase_image.relative_to(output).as_posix(),
+                      "roundTripExact": validation["allExact"],
+                      "fourCellErasureRecoveryPassed": validation["fourCellErasure"]["comparison"]["allExact"],
+                      "signature": signature,
+                  }
+                  write_json(output / "VAULT_SUMMARY.json", summary)
+                  write_text(
+                      output / "README.md",
+                      "\n".join(
+                          [
+                              "# DREAM Repository Image Vault",
+                              "",
+                              "`Recovery/Codebase/DREAM_CODEBASE_MONOLITH.png` is one independently decodable image containing the complete captured codebase tier.",
+                              "",
+                              "The complete tracked project is encoded in the sixteen physical 4D data-cell streams. Four GF(256) Cauchy Reed-Solomon parity-axis streams recover any four missing shard streams. The control image contains the full manifest, decoder source, binary contract, Merkle topology, and optional Ed25519 signature.",
+                              "",
+                              "```bash",
+                              "python Decoder/dream_vault.py decode-codebase Recovery/Codebase/DREAM_CODEBASE_MONOLITH.png rebuilt-codebase",
+                              "python Decoder/dream_vault.py decode-atlas Recovery/Atlas rebuilt-project",
+                              "python Decoder/dream_vault.py verify Recovery",
+                              "```",
+                              "",
+                              "The workflow reconstructs into temporary directories for exact validation and deletes those directories. No duplicate rebuilt source tree is packaged.",
+                          ]
+                      )
+                      + "\n",
+                  )
+          
+                  critical = []
+                  warnings = []
+                  if not validation["allExact"]:
+                      critical.append("one or more recovery validation stages failed")
+                  if diagnostics["unresolvedInternalImports"]:
+                      warnings.append(f"{len(diagnostics['unresolvedInternalImports'])} unresolved internal imports")
+                  if diagnostics["cycles"]:
+                      warnings.append(f"{len(diagnostics['cycles'])} circular dependency groups")
+                  if diagnostics["secretLikeFindings"]:
+                      warnings.append(f"{len(diagnostics['secretLikeFindings'])} secret-like source findings")
+                  write_json(
+                      diagnostics_dir / "GENERATOR_DIAGNOSTICS.json",
+                      {
+                          "criticalFailures": critical,
+                          "warnings": warnings,
+                          "roundTripExact": validation["allExact"],
+                          "atlasRoot": integrity["atlasRoot"],
+                      },
+                  )
+          
+              return 0 if not critical else 2
+          
+          
+          def decode_codebase(image: Path, output: Path, report: Path | None = None) -> int:
+              image_header, payload = decode_object_images([image])
+              assert isinstance(payload, bytes)
+              with tempfile.NamedTemporaryFile(suffix=".zip") as handle:
+                  handle.write(payload)
+                  handle.flush()
+                  manifest, restored = restore_codebase_capsule(Path(handle.name), output)
+              signed_roots = manifest.get("signature", {}).get("signedRoots", {})
+              if signed_roots and image_header.get("atlasRoot") != signed_roots.get("atlasRoot"):
+                  raise VaultError("codebase image is not bound to the signed atlas root")
+              if signed_roots and manifest["codebaseRoot"] != signed_roots.get("codebaseRoot"):
+                  raise VaultError("codebase root is not covered by the signature")
+              result = {
+                  "format": manifest["format"],
+                  "tier": manifest["tier"],
+                  "codebaseRoot": manifest["codebaseRoot"],
+                  "restored": restored,
+              }
+              if report:
+                  write_json(report, result)
+              print(json.dumps(result, indent=2))
+              return 0 if restored["allExact"] else 2
+          
+          
+          def identify_atlas_images(atlas_root: Path) -> tuple[Path, dict[int, list[Path]]]:
+              control_candidates = []
+              shard_pages: dict[int, list[Path]] = defaultdict(list)
+              for path in atlas_root.rglob("*.png"):
+                  try:
+                      header, _ = decode_image_packet(path)
+                  except Exception:
+                      continue
+                  role = header["role"]
+                  if role == "dream-vault-control":
+                      control_candidates.append(path)
+                  elif role in {"dream-data-cell", "dream-parity-axis"}:
+                      shard_pages[int(header["shardIndex"])].append(path)
+              if len(control_candidates) != 1:
+                  raise VaultError(f"expected exactly one control image, found {len(control_candidates)}")
+              return control_candidates[0], shard_pages
+          
+          
+          def decode_atlas(atlas_root: Path, output: Path, report: Path | None = None) -> int:
+              control_image, shard_pages = identify_atlas_images(atlas_root)
+              with tempfile.TemporaryDirectory(prefix="dream-vault-decode-") as temporary_name:
+                  temporary = Path(temporary_name)
+                  manifest, _, _ = extract_control_image(control_image, temporary)
+                  atlas_root_expected = manifest["integrity"]["atlasRoot"]
+                  decoded: dict[int, Path] = {}
+                  for index, pages in shard_pages.items():
+                      destination = temporary / f"shard-{index:02d}.bin"
+                      header, result = decode_object_images(sorted(pages), destination)
+                      assert isinstance(result, Path)
+                      if header.get("atlasRoot") != atlas_root_expected:
+                          raise VaultError(f"mixed atlas root in shard {index}")
+                      decoded[index] = result
+                  if len(decoded) < DATA_CELLS:
+                      raise VaultError(
+                          f"only {len(decoded)} complete shard streams are available; {DATA_CELLS} are required"
+                      )
+                  shard_size = max(
+                      max(manifest["statistics"]["physicalCellBytes"]),
+                      max(path.stat().st_size for index, path in decoded.items() if index >= DATA_CELLS) if any(index >= DATA_CELLS for index in decoded) else 0,
+                  )
+                  if all(index in decoded for index in range(DATA_CELLS)):
+                      cell_paths = [decoded[index] for index in range(DATA_CELLS)]
+                  else:
+                      cell_paths = recover_data_shards(decoded, temporary / "recovered", shard_size)
+                  restored = restore_atlas(manifest, cell_paths, output)
+              result = {
+                  "format": manifest["format"],
+                  "atlasRoot": atlas_root_expected,
+                  "restored": restored,
+                  "availableShardStreams": sorted(decoded),
+              }
+              if report:
+                  write_json(report, result)
+              print(json.dumps(result, indent=2))
+              return 0 if restored["allExact"] else 2
+          
+          
+          def verify_recovery_tree(path: Path) -> int:
+              rows = []
+              failures = []
+              for image_path in path.rglob("*.png"):
+                  try:
+                      header, payload = decode_image_packet(image_path)
+                      rows.append(
+                          {
+                              "path": image_path.as_posix(),
+                              "role": header["role"],
+                              "shardIndex": header.get("shardIndex"),
+                              "page": header["page"],
+                              "payloadBytes": len(payload),
+                              "valid": True,
+                          }
+                      )
+                  except Exception as error:
+                      failures.append({"path": image_path.as_posix(), "error": str(error)})
+              result = {"images": rows, "failures": failures, "allValid": not failures and bool(rows)}
+              print(json.dumps(result, indent=2))
+              return 0 if result["allValid"] else 2
+          
+          
+          def main() -> int:
+              parser = argparse.ArgumentParser(description="DREAM Repository Image Vault")
+              commands = parser.add_subparsers(dest="command", required=True)
+          
+              build_parser = commands.add_parser("build")
+              build_parser.add_argument("repository", type=Path)
+              build_parser.add_argument("output", type=Path)
+          
+              code_parser = commands.add_parser("decode-codebase")
+              code_parser.add_argument("image", type=Path)
+              code_parser.add_argument("output", type=Path)
+              code_parser.add_argument("--report", type=Path)
+          
+              atlas_parser = commands.add_parser("decode-atlas")
+              atlas_parser.add_argument("atlas", type=Path)
+              atlas_parser.add_argument("output", type=Path)
+              atlas_parser.add_argument("--report", type=Path)
+          
+              verify_parser = commands.add_parser("verify")
+              verify_parser.add_argument("recovery", type=Path)
+          
+              arguments = parser.parse_args()
+              if arguments.command == "build":
+                  return build_vault(arguments.repository.resolve(), arguments.output.resolve())
+              if arguments.command == "decode-codebase":
+                  return decode_codebase(arguments.image, arguments.output, arguments.report)
+              if arguments.command == "decode-atlas":
+                  return decode_atlas(arguments.atlas, arguments.output, arguments.report)
+              if arguments.command == "verify":
+                  return verify_recovery_tree(arguments.recovery)
+              raise AssertionError(arguments.command)
+          
+          
+          if __name__ == "__main__":
+              try:
+                  raise SystemExit(main())
+              except SystemExit:
+                  raise
+              except Exception:
+                  traceback.print_exc()
+                  raise
+          PY
+
+          python -m py_compile "$RUNNER_TEMP/dream_vault.py" \
+            > "$OUT/Diagnostics/PYTHON_COMPILE_STDOUT.log" \
+            2> "$OUT/Diagnostics/PYTHON_COMPILE_STDERR.log"
+          compile_code=$?
+          printf '%s\n' "$compile_code" > "$OUT/Diagnostics/PYTHON_COMPILE_EXIT_CODE.txt"
+
+          if [ "$compile_code" -eq 0 ]; then
+            python "$RUNNER_TEMP/dream_vault.py" build . "$OUT" \
+              > >(tee "$OUT/Diagnostics/GENERATOR_STDOUT.log") \
+              2> >(tee "$OUT/Diagnostics/GENERATOR_STDERR.log" >&2)
+            generator_code=$?
+          else
+            generator_code=125
+            printf '%s\n' \
+              "The vault generator did not run because its embedded Python failed compilation." \
+              > "$OUT/Diagnostics/GENERATOR_NOT_RUN.txt"
+          fi
+
+          printf '%s\n' "$generator_code" > "$OUT/Diagnostics/GENERATOR_EXIT_CODE.txt"
+          exit 0
+
+      - name: Execute repository-native project checks
+        id: project_checks
+        if: always()
+        continue-on-error: true
+        shell: bash
+        env:
+          CI: "true"
+        run: |
+          set +e
+          OUT="dream-repository-vault/Diagnostics/ProjectChecks"
+          mkdir -p "$OUT"
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          Path("dream-repository-vault/Diagnostics/ProjectChecks/SUMMARY.json").write_text(
+              json.dumps({"packageManager": None, "install": None, "scripts": {}}, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+          if [ ! -f package.json ]; then
+            printf '%s\n' "No package.json exists; JavaScript project checks are not applicable." \
+              > "$OUT/NOT_APPLICABLE.txt"
+            exit 0
+          fi
+
+          PM="npm"
+          if [ -f pnpm-lock.yaml ]; then
+            PM="pnpm"
+            corepack enable > "$OUT/COREPACK_STDOUT.log" 2> "$OUT/COREPACK_STDERR.log"
+          elif [ -f yarn.lock ]; then
+            PM="yarn"
+            corepack enable > "$OUT/COREPACK_STDOUT.log" 2> "$OUT/COREPACK_STDERR.log"
+          fi
+
+          if [ "$PM" = "pnpm" ]; then
+            timeout 45m pnpm install --frozen-lockfile --ignore-scripts \
+              > >(tee "$OUT/INSTALL_STDOUT.log") \
+              2> >(tee "$OUT/INSTALL_STDERR.log" >&2)
+          elif [ "$PM" = "yarn" ]; then
+            timeout 45m yarn install --immutable --ignore-scripts \
+              > >(tee "$OUT/INSTALL_STDOUT.log") \
+              2> >(tee "$OUT/INSTALL_STDERR.log" >&2)
+          elif [ -f package-lock.json ]; then
+            timeout 45m npm ci --ignore-scripts --no-audit --no-fund \
+              > >(tee "$OUT/INSTALL_STDOUT.log") \
+              2> >(tee "$OUT/INSTALL_STDERR.log" >&2)
+          else
+            timeout 45m npm install --ignore-scripts --no-audit --no-fund \
+              > >(tee "$OUT/INSTALL_STDOUT.log") \
+              2> >(tee "$OUT/INSTALL_STDERR.log" >&2)
+          fi
+          install_code=$?
+
+          python - "$OUT/SUMMARY.json" "$PM" "$install_code" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          path = Path(sys.argv[1])
+          value = json.loads(path.read_text(encoding="utf-8"))
+          value["packageManager"] = sys.argv[2]
+          value["install"] = int(sys.argv[3])
+          path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+          PY
+
+          for script_name in typecheck lint test build; do
+            node -e \
+              "const p=require('./package.json');process.exit(p.scripts&&p.scripts[process.argv[1]]?0:1)" \
+              "$script_name"
+            present=$?
+
+            if [ "$present" -ne 0 ]; then
+              code="null"
+              printf '%s\n' "Script is not defined: $script_name" > "$OUT/${script_name^^}_NOT_DEFINED.txt"
+            elif [ "$install_code" -ne 0 ]; then
+              code="null"
+              printf '%s\n' \
+                "Dependency installation exited $install_code; $script_name was not executed." \
+                > "$OUT/${script_name^^}_NOT_EXECUTED.txt"
+            else
+              timeout 45m "$PM" run "$script_name" \
+                > >(tee "$OUT/${script_name^^}_STDOUT.log") \
+                2> >(tee "$OUT/${script_name^^}_STDERR.log" >&2)
+              code=$?
+            fi
+
+            python - "$OUT/SUMMARY.json" "$script_name" "$code" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          path = Path(sys.argv[1])
+          value = json.loads(path.read_text(encoding="utf-8"))
+          value["scripts"][sys.argv[2]] = None if sys.argv[3] == "null" else int(sys.argv[3])
+          path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+          PY
+          done
+
+          exit 0
+
+      - name: Consolidate executable diagnostics
+        id: diagnostics
+        if: always()
+        continue-on-error: true
+        shell: bash
+        env:
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          PYTHON_OUTCOME: ${{ steps.setup_python.outcome }}
+          FAIL_ON_PROJECT_CHECK_FAILURE: ${{ inputs.fail_on_project_check_failure }}
+          FAIL_ON_SECRET_FINDINGS: ${{ inputs.fail_on_secret_findings }}
+        run: |
+          set +e
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("dream-repository-vault")
+          diagnostics = root / "Diagnostics"
+          diagnostics.mkdir(parents=True, exist_ok=True)
+          critical: list[str] = []
+          warnings: list[str] = []
+
+          def read_exit(name: str) -> int | None:
+              try:
+                  return int((diagnostics / name).read_text(encoding="utf-8").strip())
+              except Exception:
+                  return None
+
+          if os.environ.get("CHECKOUT_OUTCOME") != "success":
+              critical.append("repository checkout failed")
+          if os.environ.get("PYTHON_OUTCOME") != "success":
+              critical.append("Python setup failed")
+
+          for filename, label in (
+              ("VAULT_RUNTIME_INSTALL_EXIT_CODE.txt", "vault dependency installation"),
+              ("PYTHON_COMPILE_EXIT_CODE.txt", "embedded vault Python compilation"),
+              ("GENERATOR_EXIT_CODE.txt", "vault generation and recovery validation"),
+          ):
+              code = read_exit(filename)
+              if code != 0:
+                  critical.append(f"{label} exit code: {code}")
+
+          generator_path = diagnostics / "GENERATOR_DIAGNOSTICS.json"
+          generator = (
+              json.loads(generator_path.read_text(encoding="utf-8"))
+              if generator_path.exists()
+              else {"criticalFailures": ["generator diagnostics are missing"], "warnings": []}
+          )
+          critical.extend(generator.get("criticalFailures", []))
+          warnings.extend(generator.get("warnings", []))
+
+          intelligence_path = diagnostics / "SOURCE_INTELLIGENCE.json"
+          intelligence = (
+              json.loads(intelligence_path.read_text(encoding="utf-8"))
+              if intelligence_path.exists()
+              else {}
+          )
+          secret_count = len(intelligence.get("secretLikeFindings", []))
+          if secret_count:
+              message = f"{secret_count} secret-like source findings"
+              if os.environ.get("FAIL_ON_SECRET_FINDINGS", "false").lower() == "true":
+                  critical.append(message)
+              else:
+                  warnings.append(message)
+
+          checks_path = diagnostics / "ProjectChecks" / "SUMMARY.json"
+          checks = (
+              json.loads(checks_path.read_text(encoding="utf-8"))
+              if checks_path.exists()
+              else {"packageManager": None, "install": None, "scripts": {}}
+          )
+          check_failures = []
+          if checks.get("install") not in (None, 0):
+              check_failures.append(f"dependency installation exit code {checks['install']}")
+          for script, code in checks.get("scripts", {}).items():
+              if code not in (None, 0):
+                  check_failures.append(f"{script} exit code {code}")
+          if check_failures:
+              if os.environ.get("FAIL_ON_PROJECT_CHECK_FAILURE", "true").lower() == "true":
+                  critical.extend(check_failures)
+              else:
+                  warnings.extend(check_failures)
+
+          report = {
+              "criticalFailures": sorted(set(critical)),
+              "warnings": sorted(set(warnings)),
+              "generator": generator,
+              "projectChecks": checks,
+          }
+          (diagnostics / "WORKFLOW_DIAGNOSTICS.json").write_text(
+              json.dumps(report, indent=2) + "\n", encoding="utf-8"
+          )
+
+          lines = [
+              "# DREAM Repository Image Vault Diagnostics",
+              "",
+              f"- Critical failures: **{len(report['criticalFailures'])}**",
+              f"- Warnings: **{len(report['warnings'])}**",
+              "",
+              "## Critical failures",
+              "",
+              *([f"- {item}" for item in report["criticalFailures"]] or ["None."]),
+              "",
+              "## Warnings",
+              "",
+              *([f"- {item}" for item in report["warnings"]] or ["None."]),
+          ]
+          text = "\n".join(lines) + "\n"
+          (diagnostics / "WORKFLOW_REPORT.md").write_text(text, encoding="utf-8")
+          (root / "WORKFLOW_REPORT.md").write_text(text, encoding="utf-8")
+          PY
+          exit 0
+
+      - name: Create non-nested packages
+        id: package
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          OUT="dream-repository-vault"
+          ART="dream-artifacts"
+          mkdir -p "$ART"
+          rm -f "$ART"/*.zip
+
+          package_code=0
+
+          (
+            cd "$OUT" || exit 1
+            zip -q -0 -r "../$ART/dream-repository-image-vault.zip" .
+          ) || package_code=1
+
+          (
+            cd "$OUT" || exit 1
+            zip -q -0 -r "../$ART/dream-codebase-monolith.zip" \
+              Recovery/Codebase \
+              Decoder \
+              Specification \
+              Manifest/PUBLIC_INDEX.json \
+              README.md \
+              VAULT_SUMMARY.json \
+              WORKFLOW_REPORT.md
+          ) || package_code=1
+
+          (
+            cd "$OUT" || exit 1
+            zip -q -0 -r "../$ART/dream-vault-diagnostics.zip" \
+              Diagnostics \
+              Manifest/PUBLIC_INDEX.json \
+              VAULT_SUMMARY.json \
+              WORKFLOW_REPORT.md
+          ) || package_code=1
+
+          for archive in \
+            "$ART/dream-repository-image-vault.zip" \
+            "$ART/dream-codebase-monolith.zip" \
+            "$ART/dream-vault-diagnostics.zip"; do
+            if [ ! -s "$archive" ]; then
+              echo "Missing or empty package: $archive" >&2
+              package_code=1
+            elif ! unzip -tq "$archive" >/dev/null 2>&1; then
+              echo "ZIP integrity validation failed: $archive" >&2
+              package_code=1
+            fi
+          done
+
+          printf '%s\n' "$package_code" > "$OUT/Diagnostics/PACKAGE_EXIT_CODE.txt"
+          ls -lh "$ART"/*.zip 2>/dev/null || true
+          exit 0
+
+      - name: Upload complete repository image vault
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: dream-repository-image-vault
+          path: dream-artifacts/dream-repository-image-vault.zip
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload one-image codebase recovery kit
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: dream-codebase-monolith
+          path: dream-artifacts/dream-codebase-monolith.zip
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload executable diagnostics
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: dream-vault-diagnostics
+          path: dream-artifacts/dream-vault-diagnostics.zip
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Fail only after artifacts are available
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          failures = []
+          diagnostics = Path("dream-repository-vault/Diagnostics/WORKFLOW_DIAGNOSTICS.json")
+          if diagnostics.exists():
+              failures.extend(
+                  json.loads(diagnostics.read_text(encoding="utf-8")).get("criticalFailures", [])
+              )
+          else:
+              failures.append("workflow diagnostics were not generated")
+
+          try:
+              package_code = int(
+                  Path("dream-repository-vault/Diagnostics/PACKAGE_EXIT_CODE.txt")
+                  .read_text(encoding="utf-8")
+                  .strip()
+              )
+          except Exception:
+              package_code = 1
+          if package_code != 0:
+              failures.append("package creation or ZIP integrity validation failed")
+
+          if failures:
+              raise SystemExit("DREAM vault failed:\n" + "\n".join(f"- {item}" for item in failures))
+
+          summary = json.loads(
+              Path("dream-repository-vault/VAULT_SUMMARY.json").read_text(encoding="utf-8")
+          )
+          if not summary.get("roundTripExact"):
+              raise SystemExit("DREAM vault round-trip verification is not exact")
+          if not summary.get("fourCellErasureRecoveryPassed"):
+              raise SystemExit("DREAM vault four-cell erasure recovery did not pass")
+
+          print(
+              "DREAM repository image vault passed monolith recovery, full-atlas recovery, "
+              "four-cell Reed-Solomon recovery, pixel-corruption detection, and package validation."
+          )
+          PY
