@@ -1,4 +1,5 @@
-import { ContentAsset, MaterialDef } from '../assetTypes';
+import type { ContentAsset, MaterialDef } from '../assetTypes';
+import { createIntrinsicAssetScanMetadata } from '../scan/intrinsicAssetScanner';
 import { buildGeometry } from '../builders/geometryBuilder';
 
 function pad4Buffer(buf: Buffer, padByte = 0): Buffer {
@@ -39,6 +40,7 @@ function usedMaterialIds(asset: Pick<ContentAsset, 'materials' | 'parts'>): stri
 
 export function createGlbBuffer(asset: ContentAsset): Buffer {
   const geometry = buildGeometry(asset.parts);
+  const scanMetadata = createIntrinsicAssetScanMetadata(asset.intrinsicScan);
   if (!geometry.positions.length || !geometry.indices.length) {
     throw new Error(`ContentEngin cannot export ${asset.id}: no mesh geometry was generated.`);
   }
@@ -103,7 +105,15 @@ export function createGlbBuffer(asset: ContentAsset): Buffer {
     asset: { version: '2.0', generator: `ContentEngin ${asset.contentenginVersion}` },
     scene: 0,
     scenes: [{ nodes: [0] }],
-    nodes: [{ name: asset.id, mesh: 0, extras: { contentenginAssetId: asset.id } }],
+    nodes: [{
+      name: asset.id,
+      mesh: 0,
+      extras: {
+        contentenginAssetId: asset.id,
+        similaritySignature: scanMetadata.similaritySignature,
+        gameReadyCertificate: scanMetadata.certificate,
+      },
+    }],
     meshes: [{
       name: `${asset.id}_mesh`,
       primitives,
@@ -114,6 +124,7 @@ export function createGlbBuffer(asset: ContentAsset): Buffer {
           collision: asset.collision,
           lods: asset.lods,
           validation: asset.validation,
+          intrinsicScan: scanMetadata,
           materialGroups: usedMaterialIds(asset),
         },
       },
@@ -124,7 +135,10 @@ export function createGlbBuffer(asset: ContentAsset): Buffer {
     accessors,
     extras: {
       contentenginVersion: asset.contentenginVersion,
-      gameReady: asset.validation.gameReady,
+      gameReady: asset.validation.gameReady && scanMetadata.gameReady,
+      similaritySignature: scanMetadata.similaritySignature,
+      gameReadyCertificate: scanMetadata.certificate,
+      intrinsicFamilyEnergy: scanMetadata.familyEnergy,
       sourceImagesRetained: false,
       persistedInDatabase: false,
     },
@@ -154,6 +168,8 @@ export interface GlbInspection {
   indexCount: number;
   primitiveMaterialIndexes: number[];
   primitiveMaterialIds: string[];
+  similaritySignature?: string;
+  gameReadyCertificate?: ContentAsset['intrinsicScan']['certificate'];
   errors: string[];
 }
 
@@ -174,7 +190,17 @@ export function inspectGlb(buffer: Buffer): GlbInspection {
   if (!positionAccessor?.count) errors.push('No POSITION accessor vertices found.');
   if (!indexCount) errors.push('No index accessors found.');
   if (primitiveMaterialIndexes.length !== primitives.length) errors.push('Every mesh primitive must have a material index.');
-  return { valid: errors.length === 0, meshPrimitiveCount: primitives.length, vertexCount: positionAccessor?.count ?? 0, indexCount, primitiveMaterialIndexes, primitiveMaterialIds, errors };
+  return {
+    valid: errors.length === 0,
+    meshPrimitiveCount: primitives.length,
+    vertexCount: positionAccessor?.count ?? 0,
+    indexCount,
+    primitiveMaterialIndexes,
+    primitiveMaterialIds,
+    similaritySignature: gltf.extras?.similaritySignature,
+    gameReadyCertificate: gltf.extras?.gameReadyCertificate,
+    errors,
+  };
 }
 
 export function expectedMaterialIdsForAsset(asset: Pick<ContentAsset, 'materials' | 'parts'>): string[] {

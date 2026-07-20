@@ -1,4 +1,5 @@
 import type { JsonObject } from '@/engine/engin-runtime/EnginBaseState';
+import type { IntrinsicAssetScanReport } from '@/engins/contentengin/scan/intrinsicAssetScanner';
 import type { MeshBuffers } from './core';
 import type { RenderEnginFrameStats } from './webgpu';
 
@@ -76,5 +77,34 @@ export function evaluateRenderPerformanceGate(report: RenderPerformanceReport, s
     targetFps: scene.targetFps,
     mobileTargetFps: scene.mobileTargetFps,
     targetFrameMs: scene.targetFrameMs,
+  };
+}
+
+export function evaluateScannedAssetRenderGate(
+  scan: Pick<IntrinsicAssetScanReport, 'certificate' | 'topology' | 'similaritySignature'>,
+  report?: RenderPerformanceReport,
+  scene?: RenderBenchmarkScene,
+): JsonObject {
+  const certificate = scan.certificate;
+  const staticReady = certificate.gameReady
+    && certificate.criticalIssueCount === 0
+    && scan.topology.validTriangles > 0
+    && scan.topology.nonManifoldEdges === 0;
+  const performanceObserved = Boolean(report && scene);
+  const performanceGate = report && scene ? evaluateRenderPerformanceGate(report, scene) : null;
+  const performancePassed = performanceGate ? performanceGate.passed === true : null;
+  return {
+    passed: staticReady && (performancePassed ?? true),
+    provisional: !performanceObserved,
+    staticReady,
+    performanceObserved,
+    performancePassed,
+    score: certificate.score,
+    similaritySignature: scan.similaritySignature,
+    triangleCount: scan.topology.triangles,
+    estimatedBytes: certificate.estimatedBytes,
+    topologyClosed: certificate.topologyClosed,
+    requiredRepairIds: certificate.requiredRepairIds,
+    performanceGate,
   };
 }

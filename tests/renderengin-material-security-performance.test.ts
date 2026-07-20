@@ -6,6 +6,7 @@ import {
   createRenderMaterial,
   createRenderPerformanceReport,
   evaluateRenderPerformanceGate,
+  evaluateScannedAssetRenderGate,
   frameStatsToPerformanceSample,
   packRenderMaterial,
   updateRenderMaterial,
@@ -40,6 +41,44 @@ describe('RenderEngin materials, authorization, handoffs, and performance diagno
   it('creates cross-Engin render handoff envelopes without direct Engin-to-Engin calls', () => {
     expect(createContentEnginRenderHandoff({ assetId: 'asset:1', ownerId: 'owner:test', runtimeId: 'runtime:test' }).targetIntent).toBe('render.asset.preview');
     expect(createGameEnginRenderHandoff({ assetId: 'asset:1', ownerId: 'owner:test', runtimeId: 'runtime:test', cartridgeId: 'cart:test' }).type).toBe('game.cartridge.mesh.preview');
+  });
+
+
+  it('combines ContentEngin scan evidence with observed RenderEngin performance', () => {
+    const scan = {
+      similaritySignature: 'sf-render',
+      certificate: {
+        version: 1 as const,
+        scannerVersion: 'test',
+        gameReady: true,
+        score: 90,
+        signature: 'sf-render',
+        topologyClosed: true,
+        triangleBudget: 50000,
+        estimatedBytes: 1024,
+        criticalIssueCount: 0,
+        warningCount: 0,
+        requiredRepairIds: [],
+      },
+      topology: {
+        vertices: 3, triangles: 1, validTriangles: 1, invalidTriangles: 0,
+        degenerateTriangles: 0, skinnyTriangles: 0, duplicateVertices: 0,
+        isolatedVertices: 0, boundaryEdges: 0, boundaryLoops: 0,
+        openBoundaryChains: 0, nonManifoldEdges: 0, connectedComponents: 1,
+        largestComponentVertices: 3, estimatedBytes: 1024, averageVertexDegree: 2,
+        maxVertexDegree: 2,
+      },
+    };
+    const provisional = evaluateScannedAssetRenderGate(scan);
+    expect(provisional.passed).toBe(true);
+    expect(provisional.provisional).toBe(true);
+    const report = createRenderPerformanceReport([
+      { frameIndex: 1, cpuFrameMs: 12, drawCalls: 1, indexCount: 3, measuredAt: new Date().toISOString() },
+    ]);
+    const scene = { id: 'scan-scene', name: 'scan', objectCount: 1, triangleCount: 1, targetFps: 60, targetFrameMs: 16.7, mobileTargetFps: 30 };
+    const observed = evaluateScannedAssetRenderGate(scan, report, scene);
+    expect(observed.passed).toBe(true);
+    expect(observed.performanceObserved).toBe(true);
   });
 
   it('summarizes frame performance and evaluates benchmark gates', () => {

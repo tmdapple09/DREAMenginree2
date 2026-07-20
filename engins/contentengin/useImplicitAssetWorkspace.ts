@@ -5,6 +5,8 @@ import { readOfflineCache, writeOfflineCache } from '@/engine/offline/offlineCac
 import { useContentEnginRuntime } from '@/engins/rulesets/content/useContentEnginRuntime';
 import { analyzeImageMask, CONTENTENGIN_GLB_UPLOAD_LIMIT_BYTES, createImplicitAssetWorkspaceObject, DEFAULT_BRUSH_STATE, DEFAULT_CAMERA_STATE, addRigBendPoint, createAutoRigState, exportGLB, exportOBJ, importGLBToEditableMesh, meshToSnapshot, processImageToEditableMesh, removeLastRigBendPoint, qualityFromDiagnostics, repairMeshDetailed, sculptMesh, summarizeMeshQuality, validateMeshStrict, type BrushState, type CameraState, type EditableMeshState, type ExportFormat, type ImplicitAssetWorkspaceObject, type RigTargetKind, type SculptTool } from '@/engins/isosurfaceAssetPipeline';
 import type { Mesh, Vec3 } from '@/engins/isosurfaceDualContouring';
+import { scanMeshForGameReadiness } from '@/engins/contentengin/scan/intrinsicAssetScanner';
+import { prepareGameReadyMesh } from '@/engins/contentengin/scan/gameReadyMeshBuilder';
 
 export interface WorkspaceIntentLog { type: string; at: string; }
 
@@ -74,6 +76,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
         editHistory: [],
         redoStack: [],
         rigState: createAutoRigState('humanoid'),
+        gameReadyBuild: null,
         processingStatus: 'rigging',
         visibleMessage: 'GLB loaded. Pick a rig metadata type, then tap the places where joints bend.',
       });
@@ -106,6 +109,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
         previewMesh: null,
         editHistory: [],
         redoStack: [],
+        gameReadyBuild: null,
         processingStatus: 'uploaded',
         visibleMessage: 'Image loaded. Press Process to make it 3D.',
       });
@@ -145,6 +149,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
       previewMesh: null,
       editHistory: [],
       redoStack: [],
+      gameReadyBuild: null,
       processingStatus: 'idle',
       visibleMessage: 'Upload an image or GLB to make it real.',
     });
@@ -175,6 +180,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
           previewMesh: meshToSnapshot(editable.mesh, editable.diagnostics),
           editHistory: [],
           redoStack: [],
+          gameReadyBuild: null,
           processingStatus: ready ? 'ready-to-download' : 'generated',
           visibleMessage: messageForQuality(editable.quality),
         });
@@ -254,13 +260,14 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     const sculpted = sculptMesh(current.mesh, point, data.brushState);
     const repaired = repairMeshDetailed(sculpted);
     const quality = summarizeMeshQuality(repaired.diagnostics, repaired.report);
-    const next: EditableMeshState = { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report };
+    const next: EditableMeshState = { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report, gameReadyScan: scanMeshForGameReadiness(repaired.mesh, { allowOpenSurface: quality === 'Open Surface' }) };
 
     updateData({
       mesh: next,
       previewMesh: meshToSnapshot(repaired.mesh, repaired.diagnostics),
       editHistory: [...data.editHistory, cloneForHistory(current.mesh)].slice(-24),
       redoStack: [],
+      gameReadyBuild: null,
       visibleMessage: messageForQuality(quality),
     });
 
@@ -278,10 +285,11 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     const diagnostics = validateMeshStrict(previous);
     const quality = qualityFromDiagnostics(diagnostics);
     updateData({
-      mesh: { mesh: previous, diagnostics, quality, repaired: true },
+      mesh: { mesh: previous, diagnostics, quality, repaired: true, gameReadyScan: scanMeshForGameReadiness(previous, { allowOpenSurface: quality === 'Open Surface' }) },
       previewMesh: meshToSnapshot(previous, diagnostics),
       editHistory: data.editHistory.slice(0, -1),
       redoStack: [cloneForHistory(data.mesh.mesh), ...data.redoStack].slice(0, 24),
+      gameReadyBuild: null,
       processingStatus: 'editing',
       visibleMessage: messageForQuality(quality),
     });
@@ -294,14 +302,68 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     const diagnostics = validateMeshStrict(nextMesh);
     const quality = qualityFromDiagnostics(diagnostics);
     updateData({
-      mesh: { mesh: nextMesh, diagnostics, quality, repaired: true },
+      mesh: { mesh: nextMesh, diagnostics, quality, repaired: true, gameReadyScan: scanMeshForGameReadiness(nextMesh, { allowOpenSurface: quality === 'Open Surface' }) },
       previewMesh: meshToSnapshot(nextMesh, diagnostics),
       editHistory: [...data.editHistory, cloneForHistory(data.mesh.mesh)].slice(-24),
       redoStack: data.redoStack.slice(1),
+      gameReadyBuild: null,
       processingStatus: 'editing',
       visibleMessage: messageForQuality(quality),
     });
   }, [updateData]);
+
+  const makeGameReady = useCallback(() => {
+    const data = workspaceRef.current.data;
+    const current = data.mesh;
+    if (!current) return;
+
+    emit('contentengin:asset-game-ready-requested', {
+      triangles: current.diagnostics.triangles,
+      vertices: current.diagnostics.vertices,
+    });
+    updateData({ processingStatus: 'processing', visibleMessage: 'Scanning topology, repairing geometry, and building deterministic LODs…' });
+
+    window.setTimeout(() => {
+      try {
+        const prepared = prepareGameReadyMesh(current.mesh, {
+          allowOpenSurface: current.quality === 'Open Surface',
+          targetTriangleBudget: 50_000,
+          memoryBudgetBytes: 96 * 1024 * 1024,
+        });
+        const diagnostics = validateMeshStrict(prepared.mesh);
+        const quality = summarizeMeshQuality(diagnostics, prepared.summary.repairReport);
+        const next: EditableMeshState = {
+          mesh: prepared.mesh,
+          diagnostics,
+          quality,
+          repaired: prepared.summary.repairReport.changed,
+          repairReport: prepared.summary.repairReport,
+          gameReadyScan: prepared.scan,
+        };
+        updateData({
+          mesh: next,
+          previewMesh: meshToSnapshot(prepared.mesh, diagnostics),
+          editHistory: [...data.editHistory, cloneForHistory(current.mesh)].slice(-24),
+          redoStack: [],
+          gameReadyBuild: prepared.summary,
+          processingStatus: prepared.scan.gameReady ? 'ready-to-download' : 'generated',
+          visibleMessage: prepared.scan.gameReady
+            ? `Game-ready scan passed at ${prepared.scan.score}/100. LODs and collision proxy are attached to export metadata.`
+            : `Scan completed at ${prepared.scan.score}/100. ${prepared.scan.criticalIssues[0] ?? 'Review the deterministic repair plan.'}`,
+        });
+        emit('contentengin:asset-game-ready-completed', {
+          certificate: prepared.scan.certificate,
+          lods: prepared.summary.lods,
+          collision: prepared.summary.collision,
+        });
+      } catch (error) {
+        updateData({
+          processingStatus: 'failed',
+          visibleMessage: error instanceof Error ? error.message : 'Game-ready preparation failed.',
+        });
+      }
+    }, 16);
+  }, [emit, updateData]);
 
   const download = useCallback((format: ExportFormat) => {
     const current = workspaceRef.current.data.mesh;
@@ -331,7 +393,16 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     const isRigMetadata = format === 'rig-metadata-glb';
     const rigState = isRigMetadata ? { ...workspaceRef.current.data.rigState, status: 'metadata-ready' as const } : workspaceRef.current.data.rigState;
     const fileName = isRigMetadata ? 'dreamengin-asset-rig-metadata.glb' : `dreamengin-asset.${format}`;
-    const blob = format === 'obj' ? new Blob([exportOBJ(repaired.mesh)], { type: 'text/plain' }) : exportGLB(repaired.mesh, isRigMetadata ? rigState : undefined);
+    const exportScan = scanMeshForGameReadiness(repaired.mesh, {
+      allowOpenSurface: quality === 'Open Surface',
+    });
+    const blob = format === 'obj'
+      ? new Blob([exportOBJ(repaired.mesh)], { type: 'text/plain' })
+      : exportGLB(
+        repaired.mesh,
+        isRigMetadata ? rigState : undefined,
+        { scan: exportScan, build: workspaceRef.current.data.gameReadyBuild },
+      );
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -344,7 +415,7 @@ export function useImplicitAssetWorkspace(ownerId = 'local-user', runtimeId = 'c
     emit('contentengin:download-ready', { downloads: { format, fileName, triangles: diagnostics.triangles, vertices: diagnostics.vertices, rigMetadataOnly: isRigMetadata } });
   }, [emit, updateData]);
 
-  return useMemo(() => ({ workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download }), [workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, download]);
+  return useMemo(() => ({ workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, makeGameReady, download }), [workspace, intents, uploadImage, uploadGlb, clearWorkspace, process, startEdit, startRigMetadataMode, setRigTarget, placeRigBendPoint, undoRigBendPoint, clearRigMetadata, setTool, setBrush, setCamera, resetView, resetBrush, applyBrushAt, undo, redo, makeGameReady, download]);
 }
 
 async function fileToImageData(file: File): Promise<ImageData> {

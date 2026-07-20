@@ -23,6 +23,42 @@ describe('GameEngin asset pipeline contracts', () => {
     expect(bundleWeightBytes(manifest)).toBe(5120);
   });
 
+
+  it('accepts certified ContentEngin assets and rejects failed certificates', () => {
+    const certificate = {
+      version: 1 as const,
+      scannerVersion: 'test-scanner',
+      gameReady: true,
+      score: 92,
+      signature: 'sf-test',
+      topologyClosed: true,
+      triangleBudget: 50000,
+      estimatedBytes: 4096,
+      criticalIssueCount: 0,
+      warningCount: 0,
+      requiredRepairIds: [],
+    };
+    const certified: GameEnginBundleManifest = {
+      ...manifest,
+      assets: [{
+        id: 'contentengin-model',
+        kind: 'gltf',
+        url: '/content/model.glb',
+        contentenginCertificate: certificate,
+        similaritySignature: certificate.signature,
+        scanUrl: '/content/scan.json',
+      }],
+    };
+    expect(() => assertValidBundleManifest(certified)).not.toThrow();
+    expect(() => assertValidBundleManifest({
+      ...certified,
+      assets: [{
+        ...certified.assets[0]!,
+        contentenginCertificate: { ...certificate, gameReady: false },
+      }],
+    })).toThrow('not certified game-ready');
+  });
+
   it('plans cache namespaces and prefetch order', () => {
     const plan = planBundleCache(manifest, { existingBundleIds: ['old-zone'] });
     expect(plan.cacheName).toContain('gameengin:mad-maxi');

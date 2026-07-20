@@ -1,3 +1,4 @@
+import type { IntrinsicAssetScanReport } from './scan/intrinsicAssetScanner';
 export type ExportProfile = 'ps3' | 'ps4' | 'ps5';
 export type Visibility = 'local' | 'shared' | 'global';
 export type DomainObject<TType extends string, TData> = { id:string; type:TType; ownerId:string; runtimeId:string; visibility:Visibility; createdAt:string; updatedAt:string; version:number; data:TData };
@@ -19,7 +20,7 @@ export interface AnimationClipDef { name:string; durationSeconds:number; fps:num
 export interface CollisionBlock { shapes:CollisionShape[]; strategy:'simple'|'compound'|'convex-decomposition'|'heightfield' }
 export interface PhysicsDef { massKg:number; centerOfMass:Vec3; friction:number; restitution:number; drag?:number }
 export interface LodDef { level:number; triangleBudget:number; path?:string }
-export interface ValidationReport { gameReady:boolean; profile:ExportProfile; errors:string[]; warnings:string[]; metrics:{ triangles:number; vertices:number; materials:number; textures:number; textureMaxResolution:number; bones:number; maxWeightsPerVertex:number; glbSizeBytes:number; drawCalls:number; estimatedRuntimeMemoryBytes:number; mobileDesktopParityScore:number } }
+export interface ValidationReport { gameReady:boolean; profile:ExportProfile; errors:string[]; warnings:string[]; metrics:{ triangles:number; vertices:number; materials:number; textures:number; textureMaxResolution:number; bones:number; maxWeightsPerVertex:number; glbSizeBytes:number; drawCalls:number; estimatedRuntimeMemoryBytes:number; mobileDesktopParityScore:number; topologyScore:number; similaritySignature:string; boundaryLoops:number; nonManifoldEdges:number; degenerateTriangles:number; disconnectedPieces:number } }
 export interface SourceImageAnalysis { width:number; height:number; dominantColors:string[]; shadowColors:string[]; highlightColors:string[]; edgeMapPath?:string; maskPath?:string; symmetryAxisX?:number; regions:ShapeRegion[] }
 export interface ShapeRegion { id:string; label:'head'|'torso'|'waist'|'arm-left'|'arm-right'|'leg-left'|'leg-right'|'wheel'|'window'|'door'|'roof'|'trunk'|'branch'|'leaf'|'road'|'water'|'unknown'; bounds:{minX:number;minY:number;maxX:number;maxY:number}; centroid:Vec2; contour:Vec2[]; averageColor:string; dominantColors:string[]; confidence:number }
 export interface ContentRecipe { assetType:string; seed:number; profile:ExportProfile; parameters:Record<string,unknown>; materialParameters:Record<string,unknown>; partOverrides?:Record<string,Partial<PartNode>>; sourceImage?:SourceImageAnalysis }
@@ -63,7 +64,7 @@ export interface ContentEnginPerformancePlanSnapshot {
   reducedMotionAware: true;
   batteryAwareQuality: 'adaptive';
 }
-export interface ContentAsset { id:string; category:ContentAssetCategory; subcategory:string; seed:number; contentenginVersion:string; recipe:ContentRecipe; parts:PartNode[]; materials:MaterialDef[]; shaders:ShaderDef[]; skeleton?:SkeletonDef; animations:AnimationClipDef[]; collision:CollisionBlock; physics?:PhysicsDef; lods:LodDef[]; runtimeProfile?: ContentEnginRuntimeProfileSnapshot; performancePlan?: ContentEnginPerformancePlanSnapshot; exportProfile:ExportProfile; validation:ValidationReport }
+export interface ContentAsset { id:string; category:ContentAssetCategory; subcategory:string; seed:number; contentenginVersion:string; recipe:ContentRecipe; parts:PartNode[]; materials:MaterialDef[]; shaders:ShaderDef[]; skeleton?:SkeletonDef; animations:AnimationClipDef[]; collision:CollisionBlock; physics?:PhysicsDef; lods:LodDef[]; intrinsicScan:IntrinsicAssetScanReport; runtimeProfile?: ContentEnginRuntimeProfileSnapshot; performancePlan?: ContentEnginPerformancePlanSnapshot; exportProfile:ExportProfile; validation:ValidationReport }
 export type ContentAssetObject = DomainObject<'contentengin.asset', ContentAsset>;
 export const CONTENTENGIN_VERSION = '2026.06.18-mobile-desktop';
 export const vec3 = (x=0,y=0,z=0):Vec3 => ({x,y,z});

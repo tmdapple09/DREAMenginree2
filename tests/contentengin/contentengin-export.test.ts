@@ -13,6 +13,8 @@ describe('ContentEngin real GLB export', () => {
     expect(info.vertexCount).toBeGreaterThan(0);
     expect(info.indexCount).toBeGreaterThan(0);
     expect(validateAsset(asset, glb).gameReady).toBe(true);
+    expect(info.similaritySignature).toBe(asset.intrinsicScan.similaritySignature);
+    expect(info.gameReadyCertificate?.signature).toBe(asset.intrinsicScan.certificate.signature);
   });
 
   it('preserves material assignments as separate GLB primitives', () => {

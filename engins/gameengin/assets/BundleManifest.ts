@@ -1,3 +1,4 @@
+import type { GameReadyAssetCertificate } from '@/types/gameReadyAsset';
 import type { RendererBackendId } from '../cartridge';
 
 export type GameEnginAssetKind = 'gltf' | 'ktx2' | 'meshopt' | 'audio' | 'json' | 'wasm' | 'wgsl' | 'texture' | 'other';
@@ -10,6 +11,9 @@ export interface GameEnginAssetEntry {
   readonly priority?: number;
   readonly integrity?: string;
   readonly fallbackUrl?: string;
+  readonly contentenginCertificate?: GameReadyAssetCertificate;
+  readonly similaritySignature?: string;
+  readonly scanUrl?: string;
 }
 
 export interface GameEnginBundleManifest {
@@ -24,16 +28,29 @@ export interface GameEnginBundleManifest {
 }
 
 export function assertValidBundleManifest(value: GameEnginBundleManifest): void {
-  if (!value.id || !value.version || !value.cartridgeId) throw new Error('Invalid GameEngin bundle identity.');
+  if (!value.id || !value.version || !value.cartridgeId) {
+    throw new Error('Invalid GameEngin bundle identity.');
+  }
   const ids = new Set<string>();
   for (const asset of value.assets) {
     if (!asset.id || !asset.url) throw new Error(`Invalid bundle asset in ${value.id}.`);
     if (ids.has(asset.id)) throw new Error(`Duplicate bundle asset id ${asset.id}.`);
     ids.add(asset.id);
+
+    const certificate = asset.contentenginCertificate;
+    if (!certificate) continue;
+    if (!certificate.gameReady) {
+      throw new Error(`ContentEngin asset ${asset.id} is not certified game-ready.`);
+    }
+    if (asset.similaritySignature && asset.similaritySignature !== certificate.signature) {
+      throw new Error(`ContentEngin asset ${asset.id} similarity signature does not match its certificate.`);
+    }
+    if (!asset.scanUrl) {
+      throw new Error(`ContentEngin asset ${asset.id} is missing its scan artifact URL.`);
+    }
   }
 }
 
 export function bundleWeightBytes(manifest: GameEnginBundleManifest): number {
   return manifest.assets.reduce((sum, asset) => sum + Math.max(0, asset.bytes ?? 0), 0);
 }
-

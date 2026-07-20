@@ -1,6 +1,8 @@
 import { createSphereSDF, meshToSnapshot, runDualContouring, type Mesh, type MeshDiagnostics, type Vec3 } from '@/engins/isosurfaceDualContouring';
 export { meshToSnapshot, validateMesh } from '@/engins/isosurfaceDualContouring';
 import type { DomainObject } from '@/engins/contentengin/assetTypes';
+import { scanMeshForGameReadiness, type IntrinsicAssetScanReport } from '@/engins/contentengin/scan/intrinsicAssetScanner';
+import type { GameReadyBuildSummary } from '@/engins/contentengin/scan/gameReadyMeshBuilder';
 
 export type AssetProcessingStatus = 'idle' | 'uploaded' | 'processing' | 'generated' | 'editing' | 'rigging' | 'ready-to-download' | 'failed';
 export type MeshQualityLabel = 'Clean' | 'Open Surface' | 'Needs Repair' | 'Export Blocked' | 'Too Heavy' | 'Auto-fix applied';
@@ -20,8 +22,8 @@ export interface RepairResult { mesh: Mesh; diagnostics: StrictMeshDiagnostics; 
 export interface SourceImageAsset { name: string; url: string; width: number; height: number; mask: number[]; binaryMask: number[]; threshold: number; activeBounds: { minX: number; minY: number; maxX: number; maxY: number } | null; palette: ColorRGB[]; colorIndices: number[]; }
 export interface CameraState { yaw: number; pitch: number; zoom: number; panX: number; panY: number; target: Vec3; }
 export interface BrushState { tool: SculptTool; radius: number; strength: number; falloff: number; symmetry: boolean; smoothing: number; }
-export interface EditableMeshState { mesh: Mesh; diagnostics: StrictMeshDiagnostics; quality: MeshQualityLabel; repaired: boolean; repairReport?: RepairReport; }
-export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; sourceGlb: { name: string; size: number } | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: ColoredMesh[]; redoStack: ColoredMesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; rigState: AutoRigState; processingStatus: AssetProcessingStatus; visibleMessage: string; }
+export interface EditableMeshState { mesh: Mesh; diagnostics: StrictMeshDiagnostics; quality: MeshQualityLabel; repaired: boolean; repairReport?: RepairReport; gameReadyScan: IntrinsicAssetScanReport; }
+export interface ImplicitAssetWorkspaceData { sourceImage: SourceImageAsset | null; sourceGlb: { name: string; size: number } | null; mesh: EditableMeshState | null; previewMesh: ReturnType<typeof meshToSnapshot> | null; editHistory: ColoredMesh[]; redoStack: ColoredMesh[]; exportFormats: ExportFormat[]; activeTool: SculptTool; cameraState: CameraState; brushState: BrushState; rigState: AutoRigState; gameReadyBuild: GameReadyBuildSummary | null; processingStatus: AssetProcessingStatus; visibleMessage: string; }
 export type ImplicitAssetWorkspaceObject = DomainObject<'contentengin.implicit-asset-workspace', ImplicitAssetWorkspaceData>;
 
 export const DEFAULT_CAMERA_STATE: CameraState = { yaw: -0.65, pitch: 0.55, zoom: 1.25, panX: 0, panY: 0, target: { x: 0, y: 0, z: 0 } };
@@ -84,6 +86,7 @@ export function createImplicitAssetWorkspaceObject(ownerId = 'local-user', runti
       cameraState: DEFAULT_CAMERA_STATE,
       brushState: DEFAULT_BRUSH_STATE,
       rigState: createAutoRigState('humanoid'),
+      gameReadyBuild: null,
       processingStatus: 'idle',
       visibleMessage: 'Upload an image to make it real.',
     },
@@ -305,7 +308,7 @@ function removeSmallIslands(binary: number[], width: number, height: number, min
 export function processImageToEditableMesh(source: SourceImageAsset): EditableMeshState {
   const result = repairMeshDetailed(buildInflatedReliefMesh(source));
   const quality = summarizeMeshQuality(result.diagnostics, result.report);
-  return { mesh: result.mesh, diagnostics: result.diagnostics, quality, repaired: result.report.changed, repairReport: result.report };
+  return { mesh: result.mesh, diagnostics: result.diagnostics, quality, repaired: result.report.changed, repairReport: result.report, gameReadyScan: scanMeshForGameReadiness(result.mesh, { allowOpenSurface: quality === 'Open Surface' }) };
 }
 
 export function buildInflatedReliefMesh(source: SourceImageAsset): ColoredMesh {
@@ -556,7 +559,12 @@ export function weldVertices(mesh: Mesh, tolerance = 1e-5): { mesh: ColoredMesh;
   return { mesh: { vertices, indices, vertexColors: colored.vertexColors ? vertexColors : undefined, palette: colored.palette }, weldedVertices: mesh.vertices.length - vertices.length };
 }
 
-export function repairMeshDetailed(mesh: Mesh): RepairResult {
+export interface RepairMeshOptions {
+  readonly weldVertices?: boolean;
+  readonly weldTolerance?: number;
+}
+
+export function repairMeshDetailed(mesh: Mesh, options: RepairMeshOptions = {}): RepairResult {
   let changed = false;
   let removedInvalidTriangles = 0;
   let removedDegenerateTriangles = 0;
@@ -584,7 +592,15 @@ export function repairMeshDetailed(mesh: Mesh): RepairResult {
     indices.push(a, b, c);
   }
 
-  const welded = weldVertices({ vertices: cleanVerts, indices, vertexColors: sourceColored.vertexColors?.map((c) => ({ ...c })), palette: sourceColored.palette?.map((c) => ({ ...c })) } as ColoredMesh, 1e-6);
+  const cleaned: ColoredMesh = {
+    vertices: cleanVerts,
+    indices,
+    vertexColors: sourceColored.vertexColors?.map((color) => ({ ...color })),
+    palette: sourceColored.palette?.map((color) => ({ ...color })),
+  };
+  const welded = options.weldVertices === false
+    ? { mesh: cleaned, weldedVertices: 0 }
+    : weldVertices(cleaned, options.weldTolerance ?? 1e-6);
   const compacted = compactMesh(welded.mesh);
   changed ||= welded.weldedVertices > 0 || compacted.removedOrphanVertices > 0 || indices.length !== mesh.indices.length;
   const report = { changed, removedInvalidTriangles, removedDegenerateTriangles, removedOrphanVertices: compacted.removedOrphanVertices, weldedVertices: welded.weldedVertices, rebuiltNormals: false };
@@ -687,7 +703,7 @@ export async function importGLBToEditableMesh(file: File): Promise<EditableMeshS
   const mesh = parseGLBMesh(buffer);
   const repaired = repairMeshDetailed(mesh);
   const quality = summarizeMeshQuality(repaired.diagnostics, repaired.report);
-  return { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report };
+  return { mesh: repaired.mesh, diagnostics: repaired.diagnostics, quality, repaired: repaired.report.changed, repairReport: repaired.report, gameReadyScan: scanMeshForGameReadiness(repaired.mesh, { allowOpenSurface: quality === 'Open Surface' }) };
 }
 
 function parseGLBMesh(buffer: ArrayBuffer): ColoredMesh {
@@ -769,7 +785,9 @@ export function exportOBJ(mesh: Mesh): string {
   return `${lines.join('\n')}\n`;
 }
 
-export function exportGLB(mesh: Mesh, rigMetadata?: AutoRigState): Blob {
+export interface GameReadyGlbMetadata { readonly scan?: IntrinsicAssetScanReport; readonly build?: GameReadyBuildSummary | null; }
+
+export function exportGLB(mesh: Mesh, rigMetadata?: AutoRigState, gameReadyMetadata?: GameReadyGlbMetadata): Blob {
   const repairedResult = repairMeshDetailed(mesh);
   const meshToExport = repairedResult.mesh;
   const diagnostics = validateMeshStrict(meshToExport);
@@ -802,10 +820,16 @@ export function exportGLB(mesh: Mesh, rigMetadata?: AutoRigState): Blob {
     ],
     materials: [{ name: 'DREAMengin Default Material', pbrMetallicRoughness: { baseColorFactor: [1.0, 0.62, 0.08, 1.0], metallicFactor: 0.0, roughnessFactor: 0.72 } }],
     meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, COLOR_0: 2 }, indices: 3, material: 0, mode: 4 }] }],
-    nodes: [{ mesh: 0, extras: rigMetadata ? { contentenginRigMetadata: rigMetadata } : undefined }],
+    nodes: [{ mesh: 0, extras: { ...(rigMetadata ? { contentenginRigMetadata: rigMetadata } : {}), ...(gameReadyMetadata?.scan ? { contentenginGameReadyCertificate: gameReadyMetadata.scan.certificate } : {}) } }],
     scenes: [{ nodes: [0] }],
     scene: 0,
-    extras: rigMetadata ? { contentengin: { rigMetadata, rigged: false, rigMetadataOnly: true, workflow: 'manual-bend-point-rig-metadata' } } : undefined,
+    extras: {
+      contentengin: {
+        ...(rigMetadata ? { rigMetadata, rigged: false, rigMetadataOnly: true, workflow: 'manual-bend-point-rig-metadata' } : {}),
+        ...(gameReadyMetadata?.scan ? { gameReadyScan: { certificate: gameReadyMetadata.scan.certificate, topology: gameReadyMetadata.scan.topology, similaritySignature: gameReadyMetadata.scan.similaritySignature, score: gameReadyMetadata.scan.score } } : {}),
+        ...(gameReadyMetadata?.build ? { gameReadyBuild: gameReadyMetadata.build } : {}),
+      },
+    },
   };
   const jsonChunk = paddedChunk(new TextEncoder().encode(JSON.stringify(json)), 0x20);
   const total = 12 + 8 + jsonChunk.length + 8 + bin.length;

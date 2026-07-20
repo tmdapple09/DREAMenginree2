@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T00:38:50.981Z",
+  "generatedAt": "2026-07-17T18:21:05.597Z",
   "root": ".",
   "nodes": [
     {
@@ -3746,16 +3746,6 @@
       "label": "COREVISION.md",
       "type": "doc",
       "path": "COREVISION.md",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
-      "tags": []
-    },
-    {
-      "id": "file:DREAMengin-complete-game-ready-pipeline.zip",
-      "label": "DREAMengin-complete-game-ready-pipeline.zip",
-      "type": "file",
-      "path": "DREAMengin-complete-game-ready-pipeline.zip",
       "parent": "folder:.",
       "loc": null,
       "isOrphan": true,

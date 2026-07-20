@@ -27,6 +27,12 @@ export function validateAsset(
     drawCalls: glbInspection ? glbInspection.meshPrimitiveCount : asset.materials.length,
     estimatedRuntimeMemoryBytes: (glb?.length ?? 0) + metrics0.vertices * 32 + asset.materials.length * 4096,
     mobileDesktopParityScore: asset.runtimeProfile?.desktopClassOutput ? 1 : 0.82,
+    topologyScore: asset.intrinsicScan.score,
+    similaritySignature: asset.intrinsicScan.similaritySignature,
+    boundaryLoops: asset.intrinsicScan.topology.boundaryLoops,
+    nonManifoldEdges: asset.intrinsicScan.topology.nonManifoldEdges,
+    degenerateTriangles: asset.intrinsicScan.topology.degenerateTriangles,
+    disconnectedPieces: asset.intrinsicScan.topology.connectedComponents,
   };
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -55,5 +61,8 @@ export function validateAsset(
   if (!asset.recipe) errors.push('Missing recipe.');
   if (!asset.collision?.shapes?.length) warnings.push('Missing collision.');
   if (!asset.lods?.length) warnings.push('Missing LODs.');
+  errors.push(...asset.intrinsicScan.criticalIssues.filter((issue) => !errors.includes(issue)));
+  warnings.push(...asset.intrinsicScan.warnings.filter((issue) => !warnings.includes(issue)));
+  if (!asset.intrinsicScan.gameReady) warnings.push(`Intrinsic game-ready scan score is ${asset.intrinsicScan.score}/100 (${asset.intrinsicScan.similaritySignature}).`);
   return { gameReady: errors.length === 0, profile: asset.exportProfile, errors, warnings, metrics };
 }
