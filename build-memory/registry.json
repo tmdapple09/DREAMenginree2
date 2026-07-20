@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-17T18:21:36.704Z",
+  "generatedAt": "2026-07-20T04:55:48.673Z",
   "totals": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 305,
+    "surface": 306,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 274,
+    "engin": 276,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 16,
@@ -21,7 +21,7 @@
     "dr-eams-tool": 26,
     "hook": 13,
     "engine-system": 0,
-    "engine-utility": 0
+    "engine-utility": 1
   },
   "entries": [
     {
@@ -2609,6 +2609,15 @@
       "id": "components/contentengin/ExportPanel",
       "slot": "surface",
       "path": "components/contentengin/ExportPanel.tsx",
+      "engine": "Universal",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "components/contentengin/GameReadyScanPanel",
+      "slot": "surface",
+      "path": "components/contentengin/GameReadyScanPanel.tsx",
       "engine": "Universal",
       "exports": [
         "default"
@@ -6800,6 +6809,7 @@
       "engine": "Universal",
       "exports": [
         "buildGeometry",
+        "BuildGeometryOptions",
         "MeshGeometry"
       ]
     },
@@ -7343,8 +7353,11 @@
       "path": "engins/contentengin/pipeline/exportGlb.ts",
       "engine": "Universal",
       "exports": [
+        "createGlbArtifact",
         "createGlbBuffer",
         "expectedMaterialIdsForAsset",
+        "GlbArtifact",
+        "GlbExportOptions",
         "GlbInspection",
         "inspectGlb"
       ]
@@ -7392,7 +7405,10 @@
       "path": "engins/contentengin/pipeline/writeManifest.ts",
       "engine": "Universal",
       "exports": [
+        "ContentAssetLodManifestEntry",
+        "ContentAssetManifest",
         "makeManifest",
+        "ManifestBuildEvidence",
         "wrapAsset"
       ]
     },
@@ -7481,6 +7497,43 @@
         "ContentEnginRuntimeProfile",
         "ContentEnginRuntimeTier",
         "createContentEnginRuntimeProfile"
+      ]
+    },
+    {
+      "id": "engins/contentengin/scan/gameReadyMeshBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
+      "engine": "Universal",
+      "exports": [
+        "GameReadyBuildSummary",
+        "GameReadyCollisionProxy",
+        "GameReadyLodSummary",
+        "PreparedGameReadyMesh",
+        "prepareGameReadyMesh",
+        "PrepareGameReadyMeshOptions",
+        "TopologyRepairReport"
+      ]
+    },
+    {
+      "id": "engins/contentengin/scan/intrinsicAssetScanner",
+      "slot": "engin",
+      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
+      "engine": "Universal",
+      "exports": [
+        "AssetRepairStep",
+        "AssetTopologyMetrics",
+        "CanonicalIntrinsicScanFamily",
+        "compareAssetSimilarity",
+        "compareOrientedAssetSimilarity",
+        "computeMeshGeometryDigest",
+        "CONTENTENGIN_SCAN_VERSION",
+        "createIntrinsicAssetScanMetadata",
+        "IntrinsicAssetScanMetadata",
+        "IntrinsicAssetScanOptions",
+        "IntrinsicAssetScanReport",
+        "IntrinsicScanFamily",
+        "scanMeshForGameReadiness",
+        "TesseractSignature"
       ]
     },
     {
@@ -7998,7 +8051,9 @@
         "bundleWeightBytes",
         "GameEnginAssetEntry",
         "GameEnginAssetKind",
-        "GameEnginBundleManifest"
+        "GameEnginBundleManifest",
+        "GameEnginLodEntry",
+        "verifyAssetPayloadIntegrity"
       ]
     },
     {
@@ -9193,7 +9248,9 @@
         "assertValidBundleManifest",
         "AssetStreamManager",
         "bundleWeightBytes",
-        "planBundleCache"
+        "fetchVerifiedAssetBytes",
+        "planBundleCache",
+        "verifyAssetPayloadIntegrity"
       ]
     },
     {
@@ -9374,6 +9431,7 @@
         "ExportFormat",
         "exportGLB",
         "exportOBJ",
+        "GameReadyGlbMetadata",
         "ImplicitAssetWorkspaceData",
         "ImplicitAssetWorkspaceObject",
         "MeshQualityLabel",
@@ -9383,6 +9441,7 @@
         "removeLastRigBendPoint",
         "repairMesh",
         "repairMeshDetailed",
+        "RepairMeshOptions",
         "RepairReport",
         "RepairResult",
         "RigBendPoint",
@@ -9516,8 +9575,12 @@
         "parseGlbHeader",
         "parseGlbMesh",
         "parseObjMesh",
+        "readGlbGameReadyMetadata",
         "RenderAssetManifest",
-        "renderAssetManifestToJson"
+        "renderAssetManifestToJson",
+        "RenderGlbGameReadyMetadata",
+        "VerifiedRenderGlbCertificate",
+        "verifyCertifiedGlbRenderAsset"
       ]
     },
     {
@@ -9623,7 +9686,9 @@
       "exports": [
         "createBenchmarkScene",
         "createRenderPerformanceReport",
+        "evaluateCertificateAdmission",
         "evaluateRenderPerformanceGate",
+        "evaluateScannedAssetRenderGate",
         "frameStatsToPerformanceSample",
         "RenderBenchmarkScene",
         "RenderPerformanceReport",
@@ -10623,6 +10688,21 @@
       "engine": "Universal",
       "exports": [
         "useViewCounter"
+      ]
+    },
+    {
+      "id": "lib/gameReadyIntegrity",
+      "slot": "engine-utility",
+      "path": "lib/gameReadyIntegrity.ts",
+      "engine": "Universal",
+      "exports": [
+        "certificatePayload",
+        "computeIndexedGeometryDigest",
+        "digestObject",
+        "sha256Hex",
+        "stableStringify",
+        "verifyGameReadyCertificate",
+        "verifySha256Integrity"
       ]
     },
     {

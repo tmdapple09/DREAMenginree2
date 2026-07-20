@@ -291,6 +291,7 @@ export const surfaces = {
   "components/contentengin/AssetPreview3D": () => import("@/components/contentengin/AssetPreview3D"),
   "components/contentengin/ContentEnginStudio": () => import("@/components/contentengin/ContentEnginStudio"),
   "components/contentengin/ExportPanel": () => import("@/components/contentengin/ExportPanel"),
+  "components/contentengin/GameReadyScanPanel": () => import("@/components/contentengin/GameReadyScanPanel"),
   "components/contentengin/MaterialEditor": () => import("@/components/contentengin/MaterialEditor"),
   "components/contentengin/PartTreeEditor": () => import("@/components/contentengin/PartTreeEditor"),
   "components/contentengin/PhotoReferencePanel": () => import("@/components/contentengin/PhotoReferencePanel"),

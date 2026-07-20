@@ -23,10 +23,10 @@ export const osArchitectureFlow = `User Action / Agent / CI
 export const osSlotCounts = {
   "core-surface": 4,
   "daydream": 2,
-  "surface": 305,
+  "surface": 306,
   "route-surface": 276,
   "dreamsurface": 15,
-  "engin": 274,
+  "engin": 276,
   "engine-ruleset": 0,
   "dreamr": 4,
   "dreamdmbar": 16,
@@ -41,7 +41,7 @@ export const osSlotCounts = {
   "dr-eams-tool": 26,
   "hook": 13,
   "engine-system": 0,
-  "engine-utility": 0
+  "engine-utility": 1
 } as const;
 
 export const osGeneratedRouters = {
@@ -391,10 +391,10 @@ export const osArchitectureGraph = {
   "slotCounts": {
     "core-surface": 4,
     "daydream": 2,
-    "surface": 305,
+    "surface": 306,
     "route-surface": 276,
     "dreamsurface": 15,
-    "engin": 274,
+    "engin": 276,
     "engine-ruleset": 0,
     "dreamr": 4,
     "dreamdmbar": 16,
@@ -409,7 +409,7 @@ export const osArchitectureGraph = {
     "dr-eams-tool": 26,
     "hook": 13,
     "engine-system": 0,
-    "engine-utility": 0
+    "engine-utility": 1
   }
 } as const;
 
@@ -2154,6 +2154,12 @@ export const osArchitectureStageEntries = {
       "id": "components/contentengin/ExportPanel",
       "slot": "surface",
       "path": "components/contentengin/ExportPanel.tsx",
+      "engine": "Universal"
+    },
+    {
+      "id": "components/contentengin/GameReadyScanPanel",
+      "slot": "surface",
+      "path": "components/contentengin/GameReadyScanPanel.tsx",
       "engine": "Universal"
     },
     {
@@ -4898,6 +4904,18 @@ export const osArchitectureStageEntries = {
       "engine": "Universal"
     },
     {
+      "id": "engins/contentengin/scan/gameReadyMeshBuilder",
+      "slot": "engin",
+      "path": "engins/contentengin/scan/gameReadyMeshBuilder.ts",
+      "engine": "Universal"
+    },
+    {
+      "id": "engins/contentengin/scan/intrinsicAssetScanner",
+      "slot": "engin",
+      "path": "engins/contentengin/scan/intrinsicAssetScanner.ts",
+      "engine": "Universal"
+    },
+    {
       "id": "engins/contentengin/shaders/shaderRegistry",
       "slot": "engin",
       "path": "engins/contentengin/shaders/shaderRegistry.ts",
@@ -6080,6 +6098,12 @@ export const osArchitectureStageEntries = {
       "slot": "hook",
       "path": "hooks/useViewCounter.ts",
       "engine": "Universal"
+    },
+    {
+      "id": "lib/gameReadyIntegrity",
+      "slot": "engine-utility",
+      "path": "lib/gameReadyIntegrity.ts",
+      "engine": "Universal"
     }
   ],
   "rerender-persistence": [
@@ -6515,10 +6539,10 @@ User Action / Agent / CI
 | --- | ---: |
 | core-surface | 4 |
 | daydream | 2 |
-| surface | 305 |
+| surface | 306 |
 | route-surface | 276 |
 | dreamsurface | 15 |
-| engin | 274 |
+| engin | 276 |
 | engine-ruleset | 0 |
 | dreamr | 4 |
 | dreamdmbar | 16 |
@@ -6533,7 +6557,7 @@ User Action / Agent / CI
 | dr-eams-tool | 26 |
 | hook | 13 |
 | engine-system | 0 |
-| engine-utility | 0 |
+| engine-utility | 1 |
 
 ## Architecture Stages
 
