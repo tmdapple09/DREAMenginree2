@@ -2,14 +2,14 @@
 
 > Generated repository-wide documentation. Every tracked non-generated file receives a clickable path, classification, and concise explanation.
 
-Source: [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) on `completedream` â 2026-07-14T20:22:21Z.
+Source: [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) on `completedream` â 2026-07-20T03:44:49Z.
 
 Primary product documentation: [`README.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/README.md).
 
 ## Documentation Contract
 
-- Documented files: 2254.
-- User-facing UI or logic files: 1208.
+- Documented files: 2264.
+- User-facing UI or logic files: 1213.
 - User-facing coverage includes direct surfaces and transitive local dependencies.
 - README.md and REPOREADME.md are intentionally excluded from inventory inputs to prevent generated-document feedback loops.
 - Every path links to the selected GitHub branch.
@@ -25,9 +25,9 @@ Every deterministically detected user-facing file is marked in the **User-facing
 
 | Coverage class | Files |
 |---|---:|
-| Client interaction logic | 389 |
-| Engin UI/capability logic | 223 |
-| User-facing logic dependency | 164 |
+| Client interaction logic | 390 |
+| Engin UI/capability logic | 225 |
+| User-facing logic dependency | 166 |
 | User-facing UI surface | 131 |
 | User-facing API logic | 125 |
 | User-facing runtime logic | 46 |
@@ -230,10 +230,11 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/scripts/scan_gameengin_context.py`](./.github/scripts/scan_gameengin_context.py) | Executable/source utility | Implements scan gameengin context logic. | â |
 | [`.github/scripts/validate_game_sandbox.py`](./.github/scripts/validate_game_sandbox.py) | Executable/source utility | Implements validate game sandbox logic. | â |
 | [`.github/scripts/validate_report_agent_spec.py`](./.github/scripts/validate_report_agent_spec.py) | Executable/source utility | Implements validate report agent spec logic. | â |
+| [`.github/workflows/256inv.yml`](./.github/workflows/256inv.yml) | GitHub Actions workflow | Automates SHA-256 Inverted 36-Step Chain. | â |
+| [`.github/workflows/256lr.yml`](./.github/workflows/256lr.yml) | GitHub Actions workflow | Automates SHA-256 36-Step Chain. | â |
 | [`.github/workflows/adream-application-image.yml`](./.github/workflows/adream-application-image.yml) | GitHub Actions workflow | Automates DREAM Application Image and Runtime Atlas. | â |
 | [`.github/workflows/autofixvercelbuild.yml`](./.github/workflows/autofixvercelbuild.yml) | GitHub Actions workflow | Automates Autofix Vercel Build. | â |
 | [`.github/workflows/basecode.yml`](./.github/workflows/basecode.yml) | GitHub Actions workflow | Automates DREAMengin Repo Minus Exclusions Zip. | â |
-| [`.github/workflows/bitcoin-hash-transform-extended-single.yml`](./.github/workflows/bitcoin-hash-transform-extended-single.yml) | GitHub Actions workflow | Automates Bitcoin Hash Transform — Extended Live Test. | â |
 | [`.github/workflows/bot-pr-automerge.yml`](./.github/workflows/bot-pr-automerge.yml) | GitHub Actions workflow | Automates Bot PR — Approve, Resolve Conflicts & Auto-Merge. | â |
 | [`.github/workflows/bouncer.yml`](./.github/workflows/bouncer.yml) | GitHub Actions workflow | Automates Bouncer — Hard-Fix Guard. | â |
 | [`.github/workflows/cleanup-dead-code.yml`](./.github/workflows/cleanup-dead-code.yml) | GitHub Actions workflow | Automates Cleanup Dead Code & Fix BabylonOptimizeroScene. | â |
@@ -241,6 +242,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/workflows/comparedncode.yml`](./.github/workflows/comparedncode.yml) | GitHub Actions workflow | Automates DREAMengin Compare Code Zip. | â |
 | [`.github/workflows/contentengin-test-assets.yml`](./.github/workflows/contentengin-test-assets.yml) | GitHub Actions workflow | Automates ContentEngin Test Assets. | â |
 | [`.github/workflows/copilot-setup-steps.yml`](./.github/workflows/copilot-setup-steps.yml) | GitHub Actions workflow | Automates Copilot Setup Steps. | â |
+| [`.github/workflows/cuckoo_cycle_4d_joint_solver.yml`](./.github/workflows/cuckoo_cycle_4d_joint_solver.yml) | GitHub Actions workflow | Automates Cuckoo Cycle 4D Joint Graph Solver. | â |
 | [`.github/workflows/daydream-all.yml`](./.github/workflows/daydream-all.yml) | GitHub Actions workflow | Automates Daydream Lobbies — All Health & Feature Scans. | â |
 | [`.github/workflows/daydream-brand-engin.yml`](./.github/workflows/daydream-brand-engin.yml) | GitHub Actions workflow | Automates Brand Daydream Lobby + BrandingEngin Runtime Health. | â |
 | [`.github/workflows/daydream-code-engin.yml`](./.github/workflows/daydream-code-engin.yml) | GitHub Actions workflow | Automates Code Daydream Lobby + CodeEngin Runtime Health. | â |
@@ -669,6 +671,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`components/contentengin/AssetPreview3D.tsx`](./components/contentengin/AssetPreview3D.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports AssetPreview3D. Uses useMemo. | Client interaction logic |
 | [`components/contentengin/ContentEnginStudio.tsx`](./components/contentengin/ContentEnginStudio.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports ContentEnginStudio. | Client interaction logic |
 | [`components/contentengin/ExportPanel.tsx`](./components/contentengin/ExportPanel.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports ExportPanel. | Client interaction logic |
+| [`components/contentengin/GameReadyScanPanel.tsx`](./components/contentengin/GameReadyScanPanel.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports GameReadyScanPanel. | Client interaction logic |
 | [`components/contentengin/MaterialEditor.tsx`](./components/contentengin/MaterialEditor.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports MaterialEditor. | Client interaction logic |
 | [`components/contentengin/PartTreeEditor.tsx`](./components/contentengin/PartTreeEditor.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports PartTreeEditor. | Client interaction logic |
 | [`components/contentengin/PhotoReferencePanel.tsx`](./components/contentengin/PhotoReferencePanel.tsx) | UI component or provider | Provides reusable UI, provider, shell, or control behavior. Exports PhotoReferencePanel. Uses useRef. | Client interaction logic |
@@ -1051,6 +1054,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`docs/engineering/guardrails.md`](./docs/engineering/guardrails.md) | Documentation | Documents DREAMengin Engineering Guardrails. | â |
 | [`docs/enginpipe/README.md`](./docs/enginpipe/README.md) | Documentation | Documents Engin Pipe — Generic Backbone for Every DREAMengin Engin. | â |
 | [`docs/FEATURE_STATUS.md`](./docs/FEATURE_STATUS.md) | Documentation | Documents DREAMengin Feature Status. | â |
+| [`docs/GAME_READY_PIPELINE_V2_FIX_REPORT.md`](./docs/GAME_READY_PIPELINE_V2_FIX_REPORT.md) | Documentation | Documents Game-ready pipeline v2 fix report. | â |
 | [`docs/GENERATION_LAW.md`](./docs/GENERATION_LAW.md) | Documentation | Documents Generation Law. | â |
 | [`docs/GITHUB_CODING_AGENT.md`](./docs/GITHUB_CODING_AGENT.md) | Documentation | Documents GitHub Coding Agent. | â |
 | [`docs/GOLD_BUTTON_DUAL_RUNTIME.md`](./docs/GOLD_BUTTON_DUAL_RUNTIME.md) | Documentation | Documents Gold Button Attachment & Dual Runtime System. | â |
@@ -1095,6 +1099,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`docs/MODULARITY_VIOLATION_LOG.md`](./docs/MODULARITY_VIOLATION_LOG.md) | Documentation | Documents MODULARITY VIOLATION LOG. | â |
 | [`docs/NAMESPACE_PROTOCOL.md`](./docs/NAMESPACE_PROTOCOL.md) | Documentation | Documents Namespace & Repository Protocol. | â |
 | [`docs/NAMING_AUTHORITY.md`](./docs/NAMING_AUTHORITY.md) | Documentation | Documents DREAMengin — Naming Authority. | â |
+| [`docs/NON_AI_GAME_READY_ASSET_PIPELINE.md`](./docs/NON_AI_GAME_READY_ASSET_PIPELINE.md) | Documentation | Documents DREAMengin deterministic game-ready asset pipeline. | â |
 | [`docs/OBSERVABILITY.md`](./docs/OBSERVABILITY.md) | Documentation | Documents Observability — Production Telemetry. | â |
 | [`docs/PHASE9_IMPLEMENTATION.md`](./docs/PHASE9_IMPLEMENTATION.md) | Documentation | Documents Phase 9: Activity-First Protocol Implementation. | â |
 | [`docs/POLICY_TESTS.md`](./docs/POLICY_TESTS.md) | Documentation | Documents DREAMengin Policy Test Notes. | â |
@@ -1512,13 +1517,13 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`engins/contentengin/assets/localAssetLibrary.ts`](./engins/contentengin/assets/localAssetLibrary.ts) | Product surface or domain logic | Implements local Asset Library product behavior or a visible workspace surface. Exports LocalContentAssetRecord, saveLocalContentAsset, listLocalContentAssets,â¦ | Client interaction logic |
 | [`engins/contentengin/assetTypes.ts`](./engins/contentengin/assetTypes.ts) | Product surface or domain logic | Implements asset Types product behavior or a visible workspace surface. Exports ExportProfile, Visibility, DomainObject, ContentAssetCategory, Vec2, Vec3, Tranâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/AssetViewport.tsx`](./engins/contentengin/AssetViewport.tsx) | Product surface or domain logic | Implements Asset Viewport product behavior or a visible workspace surface. Exports AssetViewport. Uses useRef, useState, useCallback, useEffect. | Client interaction logic |
-| [`engins/contentengin/builders/geometryBuilder.ts`](./engins/contentengin/builders/geometryBuilder.ts) | Product surface or domain logic | Implements geometry Builder product behavior or a visible workspace surface. Exports MeshGeometry, buildGeometry. | Engin UI/capability logic |
+| [`engins/contentengin/builders/geometryBuilder.ts`](./engins/contentengin/builders/geometryBuilder.ts) | Product surface or domain logic | Implements geometry Builder product behavior or a visible workspace surface. Exports MeshGeometry, BuildGeometryOptions, buildGeometry. | Engin UI/capability logic |
 | [`engins/contentengin/builders/meshBuilder.ts`](./engins/contentengin/builders/meshBuilder.ts) | Product surface or domain logic | Implements mesh Builder product behavior or a visible workspace surface. Exports computeMeshMetrics, sdfFromAlgebraicFit, buildImplicitContentMesh, buildRegionâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/builders/modifiers.ts`](./engins/contentengin/builders/modifiers.ts) | Product surface or domain logic | Implements modifiers product behavior or a visible workspace surface. Exports ModifierKind, ModifierSpec, applyModifierMetadata. | Engin UI/capability logic |
 | [`engins/contentengin/builders/primitiveBuilder.ts`](./engins/contentengin/builders/primitiveBuilder.ts) | Product surface or domain logic | Implements primitive Builder product behavior or a visible workspace surface. Exports MeshStats, primitiveStats, createPart, flattenParts, resetPartIds. | Engin UI/capability logic |
 | [`engins/contentengin/builders/textureBuilder.ts`](./engins/contentengin/builders/textureBuilder.ts) | Product surface or domain logic | Implements texture Builder product behavior or a visible workspace surface. Exports assignProceduralTextureNames. | Engin UI/capability logic |
 | [`engins/contentengin/builders/uvGenerator.ts`](./engins/contentengin/builders/uvGenerator.ts) | Product surface or domain logic | Implements uv Generator product behavior or a visible workspace surface. Exports assignProceduralUv. | Engin UI/capability logic |
-| [`engins/contentengin/cli.ts`](./engins/contentengin/cli.ts) | Product surface or domain logic | Implements cli product behavior or a visible workspace surface. | Engin UI/capability logic |
+| [`engins/contentengin/cli.ts`](./engins/contentengin/cli.ts) | Product surface or domain logic | Implements cli product behavior or a visible workspace surface. Exports exportToGameEngin. | Engin UI/capability logic |
 | [`engins/contentengin/composite/compositor.ts`](./engins/contentengin/composite/compositor.ts) | Product surface or domain logic | Implements compositor product behavior or a visible workspace surface. Exports BlendMode, NodeType, NodeParam, CompNode, CompGraph, createNode, createGraph, adâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/composite/fxSimulation.ts`](./engins/contentengin/composite/fxSimulation.ts) | Product surface or domain logic | Implements fx Simulation product behavior or a visible workspace surface. Exports FxCategory, FxParam, FxPreset, FxSimulation, FX_PRESETS, getPreset, presetsByâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/composite/matchmover.ts`](./engins/contentengin/composite/matchmover.ts) | Product surface or domain logic | Implements matchmover product behavior or a visible workspace surface. Exports TrackSample, TrackPoint, CameraFrame, CameraTrack, MotionEstimate, Homography, câ¦ | Engin UI/capability logic |
@@ -1558,12 +1563,12 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`engins/contentengin/photo/regionDetector.ts`](./engins/contentengin/photo/regionDetector.ts) | Product surface or domain logic | Implements region Detector product behavior or a visible workspace surface. Exports AlgebraicFitKind, SemanticPartLabel, AlgebraicRegionFit, SemanticShapeRegioâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/build.ts`](./engins/contentengin/pipeline/build.ts) | Product surface or domain logic | Implements build product behavior or a visible workspace surface. Exports buildAsset. | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/bundle.ts`](./engins/contentengin/pipeline/bundle.ts) | Product surface or domain logic | Implements bundle product behavior or a visible workspace surface. Exports writeAssetBundle, zipDirectory. | Engin UI/capability logic |
-| [`engins/contentengin/pipeline/exportGlb.ts`](./engins/contentengin/pipeline/exportGlb.ts) | Product surface or domain logic | Implements export Glb product behavior or a visible workspace surface. Exports createGlbBuffer, GlbInspection, inspectGlb, expectedMaterialIdsForAsset. | Engin UI/capability logic |
+| [`engins/contentengin/pipeline/exportGlb.ts`](./engins/contentengin/pipeline/exportGlb.ts) | Product surface or domain logic | Implements export Glb product behavior or a visible workspace surface. Exports GlbExportOptions, GlbArtifact, createGlbArtifact, createGlbBuffer, GlbInspectionâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/generateCollision.ts`](./engins/contentengin/pipeline/generateCollision.ts) | Product surface or domain logic | Implements generate Collision product behavior or a visible workspace surface. Exports generateCollision. | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/generateLods.ts`](./engins/contentengin/pipeline/generateLods.ts) | Product surface or domain logic | Implements generate Lods product behavior or a visible workspace surface. Exports generateLods. | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/paths.ts`](./engins/contentengin/pipeline/paths.ts) | Product surface or domain logic | Implements paths product behavior or a visible workspace surface. Exports safeSegment, safeUnder. | Engin UI/capability logic |
 | [`engins/contentengin/pipeline/validate.ts`](./engins/contentengin/pipeline/validate.ts) | Product surface or domain logic | Implements validate product behavior or a visible workspace surface. Exports validateAsset. | Engin UI/capability logic |
-| [`engins/contentengin/pipeline/writeManifest.ts`](./engins/contentengin/pipeline/writeManifest.ts) | Product surface or domain logic | Implements write Manifest product behavior or a visible workspace surface. Exports makeManifest, wrapAsset. | Engin UI/capability logic |
+| [`engins/contentengin/pipeline/writeManifest.ts`](./engins/contentengin/pipeline/writeManifest.ts) | Product surface or domain logic | Implements write Manifest product behavior or a visible workspace surface. Exports ContentAssetLodManifestEntry, ContentAssetManifest, ManifestBuildEvidence, mâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/recipes/recipeResolver.ts`](./engins/contentengin/recipes/recipeResolver.ts) | Product surface or domain logic | Implements recipe Resolver product behavior or a visible workspace surface. Exports normalizeAssetType, resolveRecipe. | Engin UI/capability logic |
 | [`engins/contentengin/recipes/recipeTypes.ts`](./engins/contentengin/recipes/recipeTypes.ts) | Product surface or domain logic | Implements recipe Types product behavior or a visible workspace surface. Exports SUPPORTED_ASSET_TYPES, SupportedAssetType. | Engin UI/capability logic |
 | [`engins/contentengin/recipes/seededRandom.ts`](./engins/contentengin/recipes/seededRandom.ts) | Product surface or domain logic | Implements seeded Random product behavior or a visible workspace surface. Exports seededRandom, pick. | Engin UI/capability logic |
@@ -1578,6 +1583,8 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`engins/contentengin/rigging/templates/quadruped_basic.json`](./engins/contentengin/rigging/templates/quadruped_basic.json) | Structured data/configuration | Stores structured quadruped basic data or configuration. | â |
 | [`engins/contentengin/rigging/templates/vehicle_mechanical.json`](./engins/contentengin/rigging/templates/vehicle_mechanical.json) | Structured data/configuration | Stores structured vehicle mechanical data or configuration. | â |
 | [`engins/contentengin/runtimeProfile.ts`](./engins/contentengin/runtimeProfile.ts) | Product surface or domain logic | Implements runtime Profile product behavior or a visible workspace surface. Exports ContentEnginRuntimeTier, ContentEnginRuntimeProfile, createContentEnginRuntâ¦ | Engin UI/capability logic |
+| [`engins/contentengin/scan/gameReadyMeshBuilder.ts`](./engins/contentengin/scan/gameReadyMeshBuilder.ts) | Product surface or domain logic | Implements game Ready Mesh Builder product behavior or a visible workspace surface. Exports GameReadyCollisionProxy, GameReadyLodSummary, TopologyRepairReport,â¦ | Engin UI/capability logic |
+| [`engins/contentengin/scan/intrinsicAssetScanner.ts`](./engins/contentengin/scan/intrinsicAssetScanner.ts) | Product surface or domain logic | Implements intrinsic Asset Scanner product behavior or a visible workspace surface. Exports CONTENTENGIN_SCAN_VERSION, IntrinsicScanFamily, CanonicalIntrinsicSâ¦ | Engin UI/capability logic |
 | [`engins/contentengin/shaders/shaderRegistry.ts`](./engins/contentengin/shaders/shaderRegistry.ts) | Product surface or domain logic | Implements shader Registry product behavior or a visible workspace surface. Exports SHADERS, getShader. | Engin UI/capability logic |
 | [`engins/contentengin/shaders/shaderTypes.ts`](./engins/contentengin/shaders/shaderTypes.ts) | Product surface or domain logic | Implements shader Types product behavior or a visible workspace surface. | Engin UI/capability logic |
 | [`engins/contentengin/upgradeMatrix.ts`](./engins/contentengin/upgradeMatrix.ts) | Product surface or domain logic | Implements upgrade Matrix product behavior or a visible workspace surface. Exports ContentEnginUpgradeId, ContentEnginUpgrade, CONTENTENGIN_2026_UPGRADES, enabâ¦ | Engin UI/capability logic |
@@ -1613,7 +1620,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`engins/gameengin/ai-director.ts`](./engins/gameengin/ai-director.ts) | Product surface or domain logic | Implements ai director product behavior or a visible workspace surface. Exports PlayerSignals, DirectorState, AIDirector. | Engin UI/capability logic |
 | [`engins/gameengin/ai-npcs.ts`](./engins/gameengin/ai-npcs.ts) | Product surface or domain logic | Implements ai npcs product behavior or a visible workspace surface. Exports NPCMemory, NPCPersonality, LLMInvoker, BrainConfig, LLMNPCBrain, DialogueLine, Safeâ¦ | Engin UI/capability logic |
 | [`engins/gameengin/assets/BundleCache.ts`](./engins/gameengin/assets/BundleCache.ts) | Product surface or domain logic | Implements Bundle Cache product behavior or a visible workspace surface. Exports GameEnginBundleCacheDecision, GameEnginBundleCacheOptions, planBundleCache. | Engin UI/capability logic |
-| [`engins/gameengin/assets/BundleManifest.ts`](./engins/gameengin/assets/BundleManifest.ts) | Product surface or domain logic | Implements Bundle Manifest product behavior or a visible workspace surface. Exports GameEnginAssetKind, GameEnginAssetEntry, GameEnginBundleManifest, assertValâ¦ | Engin UI/capability logic |
+| [`engins/gameengin/assets/BundleManifest.ts`](./engins/gameengin/assets/BundleManifest.ts) | Product surface or domain logic | Implements Bundle Manifest product behavior or a visible workspace surface. Exports GameEnginAssetKind, GameEnginLodEntry, GameEnginAssetEntry, GameEnginBundleâ¦ | Engin UI/capability logic |
 | [`engins/gameengin/backendNegotiator.ts`](./engins/gameengin/backendNegotiator.ts) | Product surface or domain logic | Implements backend Negotiator product behavior or a visible workspace surface. Exports negotiateRendererBackend, serverBootstrapDiagnostics. | Client interaction logic |
 | [`engins/gameengin/brain-reader.ts`](./engins/gameengin/brain-reader.ts) | Product surface or domain logic | Implements brain reader product behavior or a visible workspace surface. Exports BRAIN_ROOT, GenreDNA, StructureType, STRUCTURE_TYPES, ProgressionModel, readGeâ¦ | Engin UI/capability logic |
 | [`engins/gameengin/brain/active-projects.json`](./engins/gameengin/brain/active-projects.json) | Structured data/configuration | Stores structured active projects data or configuration. | â |
@@ -1766,7 +1773,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`engins/gameengin/runtime/RuntimeQuality.ts`](./engins/gameengin/runtime/RuntimeQuality.ts) | Product surface or domain logic | Implements Runtime Quality product behavior or a visible workspace surface. Exports GameEnginRuntimeQuality, GameEnginRuntimeQualityDecision, decideRuntimeQualâ¦ | Engin UI/capability logic |
 | [`engins/gameengin/systems/ai.ts`](./engins/gameengin/systems/ai.ts) | Product surface or domain logic | Implements ai product behavior or a visible workspace surface. Exports BehaviorTreeEngine, WorkerJobSystem, BehaviorTreeSystem. | Engin UI/capability logic |
 | [`engins/gameengin/systems/animation.ts`](./engins/gameengin/systems/animation.ts) | Product surface or domain logic | Implements animation product behavior or a visible workspace surface. Exports AnimationStateMachine, ReplayBuffer, TypedEventBus, AnimationFSM, EventBus. | Engin UI/capability logic |
-| [`engins/gameengin/systems/assets.ts`](./engins/gameengin/systems/assets.ts) | Product surface or domain logic | Implements assets product behavior or a visible workspace surface. Exports AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, planBundleCache. | Engin UI/capability logic |
+| [`engins/gameengin/systems/assets.ts`](./engins/gameengin/systems/assets.ts) | Product surface or domain logic | Implements assets product behavior or a visible workspace surface. Exports AssetStreamManager, assertValidBundleManifest, bundleWeightBytes, fetchVerifiedAssetâ¦ | Engin UI/capability logic |
 | [`engins/gameengin/systems/index.ts`](./engins/gameengin/systems/index.ts) | Product surface or domain logic | Implements index product behavior or a visible workspace surface. | Engin UI/capability logic |
 | [`engins/gameengin/systems/lod.ts`](./engins/gameengin/systems/lod.ts) | Product surface or domain logic | Implements lod product behavior or a visible workspace surface. Exports LODSystem. | Engin UI/capability logic |
 | [`engins/gameengin/systems/network.ts`](./engins/gameengin/systems/network.ts) | Product surface or domain logic | Implements network product behavior or a visible workspace surface. Exports ClientSidePrediction, RollbackNetcode. | Engin UI/capability logic |
@@ -1912,6 +1919,12 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`hooks/useTapHoldMove.ts`](./hooks/useTapHoldMove.ts) | React/client hook | Provides reusable client state or interaction behavior. Exports UseTapHoldMoveOptions, useTapHoldMove. Uses useTapHoldMove, useRef, useCallback, useEffect. | Client interaction logic |
 | [`hooks/useTick.ts`](./hooks/useTick.ts) | React/client hook | Provides reusable client state or interaction behavior. Exports useTick. Uses useTick, useRef, useCallback. | Client interaction logic |
 | [`hooks/useViewCounter.ts`](./hooks/useViewCounter.ts) | React/client hook | Provides reusable client state or interaction behavior. Exports useViewCounter. Uses useViewCounter, useRef, useEffect. | Client interaction logic |
+
+### [lib/](./lib/)
+
+| File | Classification | Quick explanation | User-facing role |
+|---|---|---|---|
+| [`lib/gameReadyIntegrity.ts`](./lib/gameReadyIntegrity.ts) | Source logic | Implements game Ready Integrity logic. Exports sha256Hex, stableStringify, digestObject, computeIndexedGeometryDigest, certificatePayload, verifySha256Integritâ¦ | User-facing logic dependency |
 
 ### [misc/](./misc/)
 
@@ -2212,12 +2225,13 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`tests/contentengin-features.test.ts`](./tests/contentengin-features.test.ts) | Test/specification | Verifies transcriptEditor – parseSRT; parses a basic SRT file into segments; returns empty array for invalid SRT. | â |
 | [`tests/contentengin/assetviewport-pickmode.test.ts`](./tests/contentengin/assetviewport-pickmode.test.ts) | Test/specification | Verifies AssetViewport rig pick mode source contract; exposes pickMode separately from sculpt editMode; draws visual rig bend markers. | â |
 | [`tests/contentengin/contentengin-api.test.ts`](./tests/contentengin/contentengin-api.test.ts) | Test/specification | Verifies ContentEngin photo analysis; decodes real PNG pixels and returns non-AI source analysis; fails honestly for unsupported non-PNG bytes. | â |
-| [`tests/contentengin/contentengin-export.test.ts`](./tests/contentengin/contentengin-export.test.ts) | Test/specification | Verifies ContentEngin real GLB export; exports a GLB with real mesh primitives, vertices, and indices; preserves material assignments as separate GLB primitiveâ¦ | â |
+| [`tests/contentengin/contentengin-export.test.ts`](./tests/contentengin/contentengin-export.test.ts) | Test/specification | Verifies ContentEngin real GLB export; exports certified GLB geometry with positions, normals, UVs, tangents, indices, and embedded textures; preserves materiaâ¦ | â |
 | [`tests/contentengin/contentengin-glb-import.test.ts`](./tests/contentengin/contentengin-glb-import.test.ts) | Test/specification | Verifies ContentEngin GLB import parser; imports a tiny indexed binary GLB and preserves mesh data; rejects malformed GLB headers cleanly. | â |
 | [`tests/contentengin/contentengin-grammars.test.ts`](./tests/contentengin/contentengin-grammars.test.ts) | Test/specification | Verifies ContentEngin required asset families; builds ${assetType}. | â |
 | [`tests/contentengin/contentengin-recipes.test.ts`](./tests/contentengin/contentengin-recipes.test.ts) | Test/specification | Verifies ContentEngin deterministic recipes; uses the required seeded random sequence; builds deterministic editable assets from a recipe. | â |
 | [`tests/contentengin/contentengin-rigging.test.ts`](./tests/contentengin/contentengin-rigging.test.ts) | Test/specification | Verifies ContentEngin rigging; creates valid non-AI humanoid skeleton; records manual bend points on the selected auto-rig standard. | â |
 | [`tests/contentengin/contentengin-validation.test.ts`](./tests/contentengin/contentengin-validation.test.ts) | Test/specification | Verifies ContentEngin validation; marks oversize assets not game ready. | â |
+| [`tests/contentengin/intrinsic-asset-scanner.test.ts`](./tests/contentengin/intrinsic-asset-scanner.test.ts) | Test/specification | Verifies ContentEngin intrinsic non-AI mesh scanner; certifies a closed manifold mesh and produces oriented and canonical 4D families; identifies open topologyâ¦ | â |
 | [`tests/contentengin/test-assets/sandbox/README.md`](./tests/contentengin/test-assets/sandbox/README.md) | Documentation | Documents ContentEngin Sandbox Test Assets. | â |
 | [`tests/contentengin/test-assets/sandbox/recipes/canyon-racer.recipe.json`](./tests/contentengin/test-assets/sandbox/recipes/canyon-racer.recipe.json) | Structured data/configuration | Stores structured canyon racer recipe data or configuration. | â |
 | [`tests/contentengin/test-assets/sandbox/recipes/glass-canopy-tree.recipe.json`](./tests/contentengin/test-assets/sandbox/recipes/glass-canopy-tree.recipe.json) | Structured data/configuration | Stores structured glass canopy tree recipe data or configuration. | â |
@@ -2289,7 +2303,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`tests/game-quality-plan.test.ts`](./tests/game-quality-plan.test.ts) | Test/specification | Verifies GAME_QUALITY_PILLARS; keeps game quality and controls as explicit priorities; captures premium mobile/home session goals. | â |
 | [`tests/game-remote-regression.test.ts`](./tests/game-remote-regression.test.ts) | Test/specification | Verifies existing PS5 remote usage; keeps GameEngin wired to the separate shared GameRemote capability; keeps the embedded shared remote generic instead of a Mâ¦ | â |
 | [`tests/gameengin-architect.test.ts`](./tests/gameengin-architect.test.ts) | Test/specification | Verifies Concept Patterns library; exposes setting / protagonist / scope-formula categories; listConceptPatterns() returns every pattern when no category filteâ¦ | â |
-| [`tests/gameengin-asset-pipeline.test.ts`](./tests/gameengin-asset-pipeline.test.ts) | Test/specification | Verifies GameEngin asset pipeline contracts; validates versioned bundle manifests; plans cache namespaces and prefetch order. | â |
+| [`tests/gameengin-asset-pipeline.test.ts`](./tests/gameengin-asset-pipeline.test.ts) | Test/specification | Verifies GameEngin asset pipeline contracts; validates versioned bundle manifests; accepts certified ContentEngin assets and rejects failed certificates. | â |
 | [`tests/gameengin-cartridges.test.ts`](./tests/gameengin-cartridges.test.ts) | Test/specification | Verifies GameEngin cartridge bay; manifest is non-empty and ids are unique URL-safe slugs; every manifest entry has a registered loader. | â |
 | [`tests/gameengin-crash-modal.test.ts`](./tests/gameengin-crash-modal.test.ts) | Test/specification | Verifies Crash modal — client/server payload cap parity; client cap matches server cap (16 KB); CartridgeErrorBoundary. | â |
 | [`tests/gameengin-input-router.test.ts`](./tests/gameengin-input-router.test.ts) | Test/specification | Verifies GameRuntimeInputRouter; normalizes keyboard input and key state; normalizes GameRemote custom events. | â |
@@ -2439,6 +2453,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`types/dream-window.ts`](./types/dream-window.ts) | Source logic | Implements dream window logic. Exports DreamWindowRecord, CreateDreamWindowBody, PatchDreamWindowBody, DREAM_WINDOW_STATES. | User-facing logic dependency |
 | [`types/dreamArtifact.ts`](./types/dreamArtifact.ts) | Source logic | Implements dream Artifact logic. Exports DreamArtifactType, DreamArtifactSource, RuntimeRegionKey, DreamArtifact, ActiveModuleInstance, DreamArtifactDragPayloaâ¦ | User-facing logic dependency |
 | [`types/experience.ts`](./types/experience.ts) | Source logic | Implements experience logic. Exports MAX_WIDGETS, DreamKind, Dream, HomeAnchor, InfiniteLoop, UserAction. | â |
+| [`types/gameReadyAsset.ts`](./types/gameReadyAsset.ts) | Source logic | Implements game Ready Asset logic. Exports GameReadyRepairId, GameReadyAssetCertificate. | User-facing logic dependency |
 | [`types/journey.ts`](./types/journey.ts) | Source logic | Implements journey logic. Exports JourneyDotKind, JourneyDot, LogJourneyDotInput, JourneyTimeGroup, JOURNEY_DOMAIN_COLORS. | User-facing logic dependency |
 | [`types/marketplace.ts`](./types/marketplace.ts) | Source logic | Implements marketplace logic. Exports MarketplaceCategory, MarketplaceStoreSurface, MarketplaceListing, MarketplacePurchase, CreateListingInput. | â |
 | [`types/module-manifest.ts`](./types/module-manifest.ts) | Source logic | Implements module manifest logic. Exports RuntimeId, ModuleType, ModuleManifest, RuntimeCompatibility, ModuleCompatibility, isModuleManifest, negotiateModuleCoâ¦ | User-facing logic dependency |

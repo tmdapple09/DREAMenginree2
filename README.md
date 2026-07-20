@@ -12,7 +12,7 @@ This README is generated from tracked repository evidence. It must not claim dec
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E6.0.0-blue)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/tsconfig.json)
 [![Next.js](https://img.shields.io/badge/Next.js-%5E16.2.3-black)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/next.config.mjs)
 
-Generated from [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) on `completedream`. Commit date: 2026-07-14T20:22:21Z.
+Generated from [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) on `completedream`. Commit date: 2026-07-20T03:44:49Z.
 
 ## Table of Contents
 
@@ -48,14 +48,14 @@ DREAMengin is one connected web-native creative environment. Engins own domain c
 
 | Metric | Current tracked value |
 |---|---:|
-| Tracked documentable files | 2254 |
+| Tracked documentable files | 2264 |
 | App pages | 113 |
 | API route handlers | 125 |
-| Component files | 325 |
-| Engin files | 366 |
-| Tests/specs | 239 |
+| Component files | 326 |
+| Engin files | 368 |
+| Tests/specs | 240 |
 | Supabase migrations | 60 |
-| GitHub workflows | 93 |
+| GitHub workflows | 95 |
 
 ### Detected technology
 
@@ -134,20 +134,20 @@ LIVEKIT_API_SECRET=
 
 | Path | Tracked files |
 |---|---:|
-| [`engins/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engins) | 366 |
-| [`components/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/components) | 328 |
+| [`engins/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engins) | 368 |
+| [`components/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/components) | 329 |
 | [`app/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/app) | 278 |
 | [`engine/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engine) | 272 |
-| [`tests/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/tests) | 246 |
-| [`.github/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/.github) | 211 |
-| [`docs/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/docs) | 98 |
+| [`tests/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/tests) | 247 |
+| [`.github/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/.github) | 213 |
+| [`docs/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/docs) | 100 |
 | [`supabase/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/supabase) | 80 |
 | [`scripts/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/scripts) | 57 |
 | [`fonts/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/fonts) | 41 |
 | [`dreamr/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dreamr) | 29 |
 | [`dr-eams/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dr-eams) | 26 |
+| [`types/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/types) | 20 |
 | [`public/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/public) | 19 |
-| [`types/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/types) | 19 |
 | [`dreamdmbar/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/dreamdmbar) | 17 |
 | [`research/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/research) | 16 |
 | [`src/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/src) | 15 |
@@ -201,17 +201,17 @@ The exhaustive file-by-file repository reference is [`REPOREADME.md`](https://gi
 
 The complete README and repository inventory are written by [`scripts/generate-readme.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/generate-readme.ts). Semantic product evidence is computed by [`scripts/readme-autosync.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/readme-autosync.ts). The workflow entry point is [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml).
 
-Source snapshot: [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) â chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel].
+Source snapshot: [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) â chore: apply code updates from zip [skip ci] [skip vercel].
 
 ## User-Facing UI and Interaction Logic Coverage
 
-Detected and documented 1208 files that directly or transitively power user-visible behavior. The exhaustive file-by-file explanations and UI/logic classifications are in [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md) under **Complete Repository Inventory**.
+Detected and documented 1213 files that directly or transitively power user-visible behavior. The exhaustive file-by-file explanations and UI/logic classifications are in [`REPOREADME.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/REPOREADME.md) under **Complete Repository Inventory**.
 
 | Coverage class | Files |
 |---|---:|
-| Client interaction logic | 389 |
-| Engin UI/capability logic | 223 |
-| User-facing logic dependency | 164 |
+| Client interaction logic | 390 |
+| Engin UI/capability logic | 225 |
+| User-facing logic dependency | 166 |
 | User-facing UI surface | 131 |
 | User-facing API logic | 125 |
 | User-facing runtime logic | 46 |
@@ -237,7 +237,7 @@ This is the build shape of DREAMengin: the Next.js app, TypeScript source, packa
 Users do not see the monorepo directly, but this layout decides whether the app loads, routes, stores data, renders screens, and keeps every Engin available from one product shell.
 
 ### Repo Evidence
-Matched focused repo evidence: 75 files, about 33,724 readable source lines.
+Matched focused repo evidence: 75 files, about 33,828 readable source lines.
 
 Behavior signals:
 - auth — 43 file hits
@@ -374,14 +374,14 @@ Supporting files:
 - [`eslint.config.mjs`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/eslint.config.mjs) — 96 lines — score 108 — primary path
 - [`.github/workflows/export-src-only.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/export-src-only.yml) — 74 lines — score 108 — primary path
 - [`engins/contentengin/AssetViewport.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/contentengin/AssetViewport.tsx) — 747 lines — score 104 — primary path
-- [`engins/renderengin/RenderEnginViewport.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/renderengin/RenderEnginViewport.tsx) — 547 lines — score 104 — primary path
+- [`engins/renderengin/RenderEnginViewport.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/renderengin/RenderEnginViewport.tsx) — 639 lines — score 104 — primary path
 - [`engins/dream.QuantumCircuitCanvas.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/dream.QuantumCircuitCanvas.tsx) — 497 lines — score 104 — primary path
 - [`engine/runtime/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/runtime/index.ts) — 478 lines — score 104 — primary path
 - [`components/runtime/dream.RuntimeView.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/components/runtime/dream.RuntimeView.tsx) — 439 lines — score 104 — primary path
 - [`components/runtime/dream.DualRuntimeContainer.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/components/runtime/dream.DualRuntimeContainer.tsx) — 235 lines — score 104 — primary path
 - [`engine/runtime/moduleRegistry.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/runtime/moduleRegistry.ts) — 143 lines — score 104 — primary path
+- [`engins/contentengin/ImplicitAssetWorkspace.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/contentengin/ImplicitAssetWorkspace.tsx) — 99 lines — score 104 — primary path
 - [`components/providers/dream.ThemeProvider.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/components/providers/dream.ThemeProvider.tsx) — 91 lines — score 104 — primary path
-- [`engins/contentengin/ImplicitAssetWorkspace.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/contentengin/ImplicitAssetWorkspace.tsx) — 87 lines — score 104 — primary path
 - [`engins/autoopen/dream.AutoOpenGameEngin.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/autoopen/dream.AutoOpenGameEngin.tsx) — 39 lines — score 104 — primary path
 - [`tsconfig.app.json`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/tsconfig.app.json) — 32 lines — score 104 — primary path
 - [`components/providers/dream.GodTierProvider.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/components/providers/dream.GodTierProvider.tsx) — 31 lines — score 104 — primary path
@@ -409,17 +409,17 @@ Engins are the production systems; DayDreams are the user-facing creative spaces
 A user experiences this as switching into a real studio surface: CodeEngin, GameEngin, ContentEngin, LabEngin, StarMakerEngin, BrandingEngin, ForgeEngin, and their DayDream wrappers.
 
 ### Repo Evidence
-Matched focused repo evidence: 110 files, about 41,673 readable source lines.
+Matched focused repo evidence: 110 files, about 42,186 readable source lines.
 
 Behavior signals:
 - auth — 61 file hits
 - state — 57 file hits
-- commerce — 51 file hits
+- commerce — 52 file hits
+- runtime — 47 file hits
 - persistence — 47 file hits
-- runtime — 46 file hits
-- mobile touch — 40 file hits
-- rendering — 37 file hits
-- events — 24 file hits
+- mobile touch — 42 file hits
+- rendering — 39 file hits
+- events — 25 file hits
 
 Routes and APIs:
 - /daydream/games/engin ← [`app/daydream/games/engin/page.tsx`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/app/daydream/games/engin/page.tsx)
@@ -2080,7 +2080,7 @@ Custom Engins are the extension story: code, rules, manifests, registries, and c
 Users feel this when the product can add new studios, workflows, or creative capabilities without forcing a totally new app.
 
 ### Repo Evidence
-Matched focused repo evidence: 80 files, about 13,544 readable source lines.
+Matched focused repo evidence: 80 files, about 14,002 readable source lines.
 
 Behavior signals:
 - persistence — 37 file hits
@@ -2186,6 +2186,7 @@ Primary files:
 - [`engine/engin-runtime/EnginDomainCores.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/EnginDomainCores.ts) — 758 lines — score 104 — primary path
 - [`engins/rulesets/code/codeEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/code/codeEnginRuleSet.ts) — 389 lines — score 104 — primary path
 - [`engins/rulesets/game/gameEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/game/gameEnginRuleSet.ts) — 286 lines — score 104 — primary path
+- [`engins/rulesets/content/contentEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/content/contentEnginRuleSet.ts) — 281 lines — score 104 — primary path
 - [`engins/rulesets/music/starMakerEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/music/starMakerEnginRuleSet.ts) — 253 lines — score 104 — primary path
 - [`engine/engin-runtime/EnginRuleSetContract.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/EnginRuleSetContract.ts) — 241 lines — score 104 — primary path
 - [`engins/rulesets/brand/brandEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/brand/brandEnginRuleSet.ts) — 228 lines — score 104 — primary path
@@ -2193,11 +2194,11 @@ Primary files:
 - [`engins/rulesets/lab/labEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/lab/labEnginRuleSet.ts) — 220 lines — score 104 — primary path
 - [`engine/engin-runtime/EnginCapabilities.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/EnginCapabilities.ts) — 219 lines — score 104 — primary path
 - [`engine/engin-runtime/PremiumRuntimeQuality.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/PremiumRuntimeQuality.ts) — 166 lines — score 104 — primary path
+- [`engins/gameengin/assets/BundleManifest.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/assets/BundleManifest.ts) — 146 lines — score 104 — primary path
+- [`engins/contentengin/pipeline/writeManifest.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/contentengin/pipeline/writeManifest.ts) — 112 lines — score 104 — primary path
 - [`engins/gameengin/cartridges/reactCartridge.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/cartridges/reactCartridge.ts) — 94 lines — score 104 — primary path
 - [`engins/gameengin/cartridges/loaders.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/cartridges/loaders.ts) — 92 lines — score 104 — primary path
 - [`engins/gameengin/cartridges/apiStubs.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/cartridges/apiStubs.ts) — 64 lines — score 104 — primary path
-- [`engins/gameengin/assets/BundleManifest.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/assets/BundleManifest.ts) — 40 lines — score 104 — primary path
-- [`engins/rulesets/content/contentEnginRuleSet.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/content/contentEnginRuleSet.ts) — 37 lines — score 104 — primary path
 - [`engine/engin-runtime/EnginRuntimeRegistry.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/EnginRuntimeRegistry.ts) — 35 lines — score 104 — primary path
 - [`engins/rulesets/forge/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/forge/index.ts) — 24 lines — score 104 — primary path
 - [`engins/rulesets/code/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/code/index.ts) — 23 lines — score 104 — primary path
@@ -2206,7 +2207,6 @@ Primary files:
 - [`engins/rulesets/lab/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/lab/index.ts) — 23 lines — score 104 — primary path
 - [`engins/rulesets/music/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/rulesets/music/index.ts) — 23 lines — score 104 — primary path
 - [`engins/gameengin/cartridges/index.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/gameengin/cartridges/index.ts) — 11 lines — score 104 — primary path
-- [`engins/contentengin/pipeline/writeManifest.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/contentengin/pipeline/writeManifest.ts) — 4 lines — score 104 — primary path
 - [`engine/engin-runtime/HotRuntime.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/engin-runtime/HotRuntime.ts) — 1164 lines — score 100 — primary path
 - [`engine/runtime/enginWorkflowRegistry.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engine/runtime/enginWorkflowRegistry.ts) — 553 lines — score 100 — primary path
 - [`engins/forgeengin/forge/forgeIntelligence.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/engins/forgeengin/forge/forgeIntelligence.ts) — 550 lines — score 100 — primary path
@@ -2570,14 +2570,14 @@ Supporting files:
 
 | Commit | Date | Author | Change |
 |---|---|---|---|
-| [`91df7e7`](https://github.com/tmdapple09/DREAMenginree2/commit/91df7e742760b0aec16b3a5b68c63f785f145787) | 2026-07-14T20:22:21Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`7a9ddef`](https://github.com/tmdapple09/DREAMenginree2/commit/7a9ddefd901afcf162cd4d17741dd96398646485) | 2026-07-14T13:21:36-07:00 | tmdapple09 | Rename generate-readme-v3-verified.ts to generate-readme.ts |
-| [`a7cec35`](https://github.com/tmdapple09/DREAMenginree2/commit/a7cec3566058b84deada12182ffed436ff21f652) | 2026-07-14T20:09:29Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
-| [`86942f9`](https://github.com/tmdapple09/DREAMenginree2/commit/86942f98cb1a3856677200d840fe914243bb403b) | 2026-07-14T20:07:44Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`3932403`](https://github.com/tmdapple09/DREAMenginree2/commit/39324032d2c212ace832844d749c9eeae04239c3) | 2026-07-14T13:06:57-07:00 | tmdapple09 | Update adream-application-image.yml |
-| [`2cdb09c`](https://github.com/tmdapple09/DREAMenginree2/commit/2cdb09ca6dc4bea8026dbb230366ff3f1a6bd55c) | 2026-07-14T05:56:02Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
-| [`e311ddb`](https://github.com/tmdapple09/DREAMenginree2/commit/e311ddb24da3c945a4b6c605797013b297a58154) | 2026-07-14T05:54:44Z | github-actions[bot] | chore(repo): update repository state [skip ci] |
-| [`49e7db6`](https://github.com/tmdapple09/DREAMenginree2/commit/49e7db63baa4143b7cb49ea516ec11aa11ae7f62) | 2026-07-13T22:53:56-07:00 | tmdapple09 | Add files via upload |
+| [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) | 2026-07-20T03:44:49Z | github-actions[bot] | chore: apply code updates from zip [skip ci] [skip vercel] |
+| [`99a4b7e`](https://github.com/tmdapple09/DREAMenginree2/commit/99a4b7efab736e3b6bf75515ab172de9942a9e6b) | 2026-07-20T03:44:37Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
+| [`6ffd662`](https://github.com/tmdapple09/DREAMenginree2/commit/6ffd66253f244ba6e1a706da916c4675e8aa153e) | 2026-07-19T20:43:52-07:00 | tmdapple09 | Add files via upload |
+| [`00c5d95`](https://github.com/tmdapple09/DREAMenginree2/commit/00c5d9562289cd1ec7e688386bf3f76a03a7452a) | 2026-07-20T00:40:37Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`2b9b8a8`](https://github.com/tmdapple09/DREAMenginree2/commit/2b9b8a803a12dca658d5216c2cd97a1db60a31d4) | 2026-07-20T00:38:56Z | github-actions[bot] | chore: apply code updates from zip [skip ci] [skip vercel] |
+| [`e3111f2`](https://github.com/tmdapple09/DREAMenginree2/commit/e3111f2b070755700bdde06f2c981c5e1f1ff13d) | 2026-07-20T00:38:51Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
+| [`1cf771f`](https://github.com/tmdapple09/DREAMenginree2/commit/1cf771f61487adc1ad84f209fed90748303b61bc) | 2026-07-19T17:38:09-07:00 | tmdapple09 | Add files via upload |
+| [`b46d5ec`](https://github.com/tmdapple09/DREAMenginree2/commit/b46d5ec6917afc6b5104f15b618500c1b1310dac) | 2026-07-17T18:23:25Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
 
 ## README Generation Contract
 
