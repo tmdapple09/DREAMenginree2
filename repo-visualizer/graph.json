@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T13:07:01.102Z",
+  "generatedAt": "2026-07-21T13:12:14.093Z",
   "root": ".",
   "nodes": [
     {
@@ -3016,6 +3016,16 @@
       "label": "dream-utf8-pascal-lattice-paths.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-pascal-lattice-paths.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream_equation_generated_codebase_image_fixed.yml",
+      "label": "dream_equation_generated_codebase_image_fixed.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_equation_generated_codebase_image_fixed.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
