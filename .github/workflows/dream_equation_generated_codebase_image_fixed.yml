@@ -1,0 +1,1720 @@
+name: DREAM Equation-Generated Codebase Image
+run-name: DREAM Equation-Generated Codebase Image
+
+"on":
+  workflow_dispatch:
+    inputs:
+      maximum_dimension:
+        description: "Maximum square PNG dimension"
+        required: false
+        default: "32768"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dream-equation-codebase-image-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-codebase-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout tracked repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install codec runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check \
+            "pypng>=0.20220715.0" \
+            "zstandard>=0.22,<1" \
+            "reedsolo>=1.7,<2"
+
+      - name: Write the single atlas codec
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/dream_equation_codebase_codec.py" <<'PY'
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import argparse
+          import hashlib
+          import json
+          import math
+          import os
+          import stat
+          import struct
+          import subprocess
+          import sys
+          import tempfile
+          from pathlib import Path, PurePosixPath
+          from typing import BinaryIO, Iterator
+
+          import png
+          import zstandard as zstd
+          from reedsolo import RSCodec, ReedSolomonError
+
+          IMAGE_MAGIC = b"DRMIMG04"
+          IMAGE_VERSION = 4
+          HEADER_DATA_BYTES = 191
+          HEADER_ECC_BYTES = 64
+          HEADER_CODEWORD_BYTES = 255
+          PAYLOAD_DATA_BYTES = 223
+          PAYLOAD_ECC_BYTES = 32
+          PAYLOAD_CODEWORD_BYTES = 255
+          CAPSULE_MAGIC = b"DRMCAP04"
+          CAPSULE_PREFIX = struct.Struct(">8sQ")
+          HEADER_STRUCT = struct.Struct(">8sHQQQ32s32sHHH")
+          CELL_BYTES = 3
+          CELL_PIXELS = 2
+          LEVEL_OFFSET = 8
+          LEVEL_STEP = 16
+          MIN_SIDE_CELLS = 64
+
+          GOLDEN_ANGLE = math.pi / 5.0
+          OMEGA = complex(
+              math.cos(GOLDEN_ANGLE),
+              math.sin(GOLDEN_ANGLE),
+          )
+          PHI = float((OMEGA + OMEGA.conjugate()).real)
+          GOLDEN_N = float(
+              (
+                  PHI
+                  + math.sqrt(PHI * PHI + 4.0)
+              )
+              / 2.0
+          )
+          IDENTITY_RESIDUAL = abs(
+              GOLDEN_N - 1.0 / GOLDEN_N - PHI
+          )
+
+          if IDENTITY_RESIDUAL > 1.0e-12:
+              raise RuntimeError("golden identity invariant failed")
+
+          PHI_WORD = int(PHI * (1 << 52))
+          N_WORD = int(GOLDEN_N * (1 << 52))
+          ANGLE_WORD = int(GOLDEN_ANGLE * (1 << 52))
+
+          CHANNEL_PERMUTATIONS = (
+              (0, 1, 2),
+              (0, 2, 1),
+              (1, 0, 2),
+              (1, 2, 0),
+              (2, 0, 1),
+              (2, 1, 0),
+          )
+
+
+          class RecoveryError(RuntimeError):
+              pass
+
+
+          def sha256_file(path: Path) -> bytes:
+              digest = hashlib.sha256()
+              with path.open("rb") as handle:
+                  while True:
+                      chunk = handle.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      digest.update(chunk)
+              return digest.digest()
+
+
+          def sha256_bytes(data: bytes) -> bytes:
+              return hashlib.sha256(data).digest()
+
+
+          def canonical_json(value: object) -> bytes:
+              return json.dumps(
+                  value,
+                  sort_keys=True,
+                  separators=(",", ":"),
+                  ensure_ascii=False,
+              ).encode("utf-8")
+
+
+          def tracked_paths(root: Path) -> list[str]:
+              result = subprocess.run(
+                  [
+                      "git",
+                      "-C",
+                      str(root),
+                      "ls-files",
+                      "-z",
+                      "--recurse-submodules",
+                  ],
+                  check=True,
+                  stdout=subprocess.PIPE,
+              )
+              paths = [
+                  item.decode("utf-8", "surrogateescape")
+                  for item in result.stdout.split(b"\0")
+                  if item
+              ]
+              paths = sorted(set(paths))
+              if not paths:
+                  raise RuntimeError("git reported no tracked paths")
+              return paths
+
+
+          def validated_path(value: str) -> PurePosixPath:
+              path = PurePosixPath(value)
+              if (
+                  not value
+                  or path.is_absolute()
+                  or any(part in {"", ".", ".."} for part in path.parts)
+              ):
+                  raise RecoveryError(f"unsafe path: {value!r}")
+              return path
+
+
+          def validate_symlink_target(
+              link_path: PurePosixPath,
+              target: str,
+          ) -> None:
+              if not target or "\x00" in target:
+                  raise RecoveryError(
+                      f"invalid symlink target for {link_path}"
+                  )
+
+              target_path = PurePosixPath(target)
+              if target_path.is_absolute():
+                  raise RecoveryError(
+                      f"absolute symlink is not allowed: "
+                      f"{link_path} -> {target}"
+                  )
+
+              depth = len(link_path.parent.parts)
+              for part in target_path.parts:
+                  if part in {"", "."}:
+                      continue
+                  if part == "..":
+                      depth -= 1
+                      if depth < 0:
+                          raise RecoveryError(
+                              f"symlink escapes output tree: "
+                              f"{link_path} -> {target}"
+                          )
+                  else:
+                      depth += 1
+
+
+          def build_capsule(
+              root: Path,
+              capsule_path: Path,
+              data_path: Path,
+          ) -> dict:
+              entries: list[dict] = []
+              offset = 0
+
+              with data_path.open("wb") as data_handle:
+                  for relative_text in tracked_paths(root):
+                      relative = validated_path(relative_text)
+                      absolute = root.joinpath(*relative.parts)
+
+                      if (
+                          not absolute.exists()
+                          and not absolute.is_symlink()
+                      ):
+                          raise RuntimeError(
+                              f"tracked path is missing: {relative_text}"
+                          )
+
+                      metadata = os.lstat(absolute)
+                      mode = stat.S_IMODE(metadata.st_mode)
+
+                      if stat.S_ISDIR(metadata.st_mode):
+                          continue
+
+                      if stat.S_ISLNK(metadata.st_mode):
+                          target = os.readlink(absolute)
+                          validate_symlink_target(
+                              relative,
+                              target,
+                          )
+                          entries.append(
+                              {
+                                  "path": relative.as_posix(),
+                                  "type": "symlink",
+                                  "mode": mode,
+                                  "target": target,
+                              }
+                          )
+                          continue
+
+                      if not stat.S_ISREG(metadata.st_mode):
+                          raise RuntimeError(
+                              f"unsupported tracked file type: {relative_text}"
+                          )
+
+                      file_hash = hashlib.sha256()
+                      size = 0
+
+                      with absolute.open("rb") as source:
+                          while True:
+                              chunk = source.read(1024 * 1024)
+                              if not chunk:
+                                  break
+                              data_handle.write(chunk)
+                              file_hash.update(chunk)
+                              size += len(chunk)
+
+                      entries.append(
+                          {
+                              "path": relative.as_posix(),
+                              "type": "file",
+                              "mode": mode,
+                              "offset": offset,
+                              "size": size,
+                              "sha256": file_hash.hexdigest(),
+                          }
+                      )
+                      offset += size
+
+              root_descriptor = [
+                  {
+                      "path": entry["path"],
+                      "type": entry["type"],
+                      "mode": entry["mode"],
+                      "size": entry.get("size"),
+                      "sha256": entry.get("sha256"),
+                      "target": entry.get("target"),
+                  }
+                  for entry in entries
+              ]
+              codebase_root = hashlib.sha256(
+                  canonical_json(root_descriptor)
+              ).hexdigest()
+
+              manifest = {
+                  "format": "dream-codebase-capsule",
+                  "version": IMAGE_VERSION,
+                  "equation": {
+                      "goldenAngle": GOLDEN_ANGLE,
+                      "phi": PHI,
+                      "n": GOLDEN_N,
+                      "identityResidual": IDENTITY_RESIDUAL,
+                  },
+                  "codebaseRoot": codebase_root,
+                  "entryCount": len(entries),
+                  "dataBytes": offset,
+                  "entries": entries,
+              }
+              manifest_bytes = canonical_json(manifest)
+
+              with capsule_path.open("wb") as capsule:
+                  capsule.write(
+                      CAPSULE_PREFIX.pack(
+                          CAPSULE_MAGIC,
+                          len(manifest_bytes),
+                      )
+                  )
+                  capsule.write(manifest_bytes)
+                  with data_path.open("rb") as data_handle:
+                      while True:
+                          chunk = data_handle.read(1024 * 1024)
+                          if not chunk:
+                              break
+                          capsule.write(chunk)
+
+              return manifest
+
+
+          def compress_capsule(
+              capsule_path: Path,
+              compressed_path: Path,
+          ) -> None:
+              compressor = zstd.ZstdCompressor(
+                  level=19,
+                  threads=-1,
+                  write_checksum=True,
+              )
+              with (
+                  capsule_path.open("rb") as source,
+                  compressed_path.open("wb") as destination,
+                  compressor.stream_writer(
+                      destination,
+                      closefd=False,
+                  ) as writer,
+              ):
+                  while True:
+                      chunk = source.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      writer.write(chunk)
+
+
+          def rs_encode_file(
+              source_path: Path,
+              destination_path: Path,
+          ) -> int:
+              codec = RSCodec(PAYLOAD_ECC_BYTES)
+              total = 0
+
+              with (
+                  source_path.open("rb") as source,
+                  destination_path.open("wb") as destination,
+              ):
+                  while True:
+                      block = source.read(PAYLOAD_DATA_BYTES)
+                      if not block:
+                          break
+                      if len(block) < PAYLOAD_DATA_BYTES:
+                          block += b"\x00" * (
+                              PAYLOAD_DATA_BYTES - len(block)
+                          )
+                      encoded = bytes(codec.encode(block))
+                      if len(encoded) != PAYLOAD_CODEWORD_BYTES:
+                          raise RuntimeError(
+                              "unexpected payload Reed-Solomon size"
+                          )
+                      destination.write(encoded)
+                      total += len(encoded)
+
+              return total
+
+
+          def build_header(
+              compressed_path: Path,
+              capsule_path: Path,
+              payload_encoded_bytes: int,
+          ) -> bytes:
+              body = HEADER_STRUCT.pack(
+                  IMAGE_MAGIC,
+                  IMAGE_VERSION,
+                  compressed_path.stat().st_size,
+                  payload_encoded_bytes,
+                  capsule_path.stat().st_size,
+                  sha256_file(compressed_path),
+                  sha256_file(capsule_path),
+                  PAYLOAD_DATA_BYTES,
+                  PAYLOAD_ECC_BYTES,
+                  CELL_BYTES,
+              )
+              body_hash = sha256_bytes(body)
+              header_data = body + body_hash
+
+              if len(header_data) > HEADER_DATA_BYTES:
+                  raise RuntimeError("header does not fit fixed block")
+
+              header_data += b"\x00" * (
+                  HEADER_DATA_BYTES - len(header_data)
+              )
+              encoded = bytes(
+                  RSCodec(HEADER_ECC_BYTES).encode(
+                      header_data
+                  )
+              )
+              if len(encoded) != HEADER_CODEWORD_BYTES:
+                  raise RuntimeError(
+                      "unexpected header Reed-Solomon size"
+                  )
+              return encoded
+
+
+          def cell_controls(cell_index: int) -> tuple[int, int]:
+              orientation = (
+                  (
+                      cell_index * ANGLE_WORD
+                      + PHI_WORD
+                      + N_WORD
+                  )
+                  >> 17
+              ) & 0x03
+              permutation = (
+                  (
+                      cell_index * PHI_WORD
+                      + N_WORD
+                      + ANGLE_WORD
+                  )
+                  >> 19
+              ) % len(CHANNEL_PERMUTATIONS)
+              return int(orientation), int(permutation)
+
+
+          def symbol_to_rgb(
+              symbol: int,
+              permutation_index: int,
+          ) -> tuple[int, int, int]:
+              channels = (
+                  LEVEL_OFFSET
+                  + ((symbol >> 8) & 0x0F)
+                  * LEVEL_STEP,
+                  LEVEL_OFFSET
+                  + ((symbol >> 4) & 0x0F)
+                  * LEVEL_STEP,
+                  LEVEL_OFFSET
+                  + (symbol & 0x0F)
+                  * LEVEL_STEP,
+              )
+              permutation = CHANNEL_PERMUTATIONS[
+                  permutation_index
+              ]
+              return (
+                  channels[permutation[0]],
+                  channels[permutation[1]],
+                  channels[permutation[2]],
+              )
+
+
+          def inverse_permute_rgb(
+              rgb: tuple[float, float, float],
+              permutation_index: int,
+          ) -> tuple[float, float, float]:
+              permutation = CHANNEL_PERMUTATIONS[
+                  permutation_index
+              ]
+              restored = [0.0, 0.0, 0.0]
+              for output_index, input_index in enumerate(
+                  permutation
+              ):
+                  restored[input_index] = rgb[output_index]
+              return (
+                  restored[0],
+                  restored[1],
+                  restored[2],
+              )
+
+
+          def primary_estimate(
+              primary: tuple[int, int, int],
+              complement: tuple[int, int, int],
+          ) -> tuple[float, float, float]:
+              return tuple(
+                  (
+                      float(primary[index])
+                      + (
+                          255.0
+                          - float(complement[index])
+                      )
+                  )
+                  / 2.0
+                  for index in range(3)
+              )
+
+
+          def decode_symbol(
+              primary: tuple[int, int, int],
+              complement: tuple[int, int, int],
+              permutation_index: int,
+          ) -> int:
+              estimated = inverse_permute_rgb(
+                  primary_estimate(
+                      primary,
+                      complement,
+                  ),
+                  permutation_index,
+              )
+
+              nibbles = []
+              for channel in estimated:
+                  nibble = int(
+                      round(
+                          (
+                              channel - LEVEL_OFFSET
+                          )
+                          / LEVEL_STEP
+                      )
+                  )
+                  nibbles.append(
+                      min(15, max(0, nibble))
+                  )
+
+              return (
+                  (nibbles[0] << 8)
+                  | (nibbles[1] << 4)
+                  | nibbles[2]
+              )
+
+
+          def encode_cell(
+              triple: bytes,
+              cell_index: int,
+          ) -> tuple[
+              tuple[int, int, int],
+              tuple[int, int, int],
+              tuple[int, int, int],
+              tuple[int, int, int],
+          ]:
+              if len(triple) != 3:
+                  raise ValueError("cell requires exactly three bytes")
+
+              first_symbol = (
+                  (triple[0] << 4)
+                  | (triple[1] >> 4)
+              )
+              second_symbol = (
+                  ((triple[1] & 0x0F) << 8)
+                  | triple[2]
+              )
+
+              orientation, permutation = cell_controls(
+                  cell_index
+              )
+              first_primary = symbol_to_rgb(
+                  first_symbol,
+                  permutation,
+              )
+              second_primary = symbol_to_rgb(
+                  second_symbol,
+                  (
+                      permutation
+                      + int(PHI * 10)
+                  )
+                  % len(CHANNEL_PERMUTATIONS),
+              )
+              first_complement = tuple(
+                  255 - value
+                  for value in first_primary
+              )
+              second_complement = tuple(
+                  255 - value
+                  for value in second_primary
+              )
+
+              arrangements = (
+                  (
+                      first_primary,
+                      first_complement,
+                      second_primary,
+                      second_complement,
+                  ),
+                  (
+                      first_complement,
+                      second_primary,
+                      first_primary,
+                      second_complement,
+                  ),
+                  (
+                      second_primary,
+                      second_complement,
+                      first_complement,
+                      first_primary,
+                  ),
+                  (
+                      second_complement,
+                      first_primary,
+                      second_primary,
+                      first_complement,
+                  ),
+              )
+              return arrangements[orientation]
+
+
+          def decode_cell(
+              pixels: tuple[
+                  tuple[int, int, int],
+                  tuple[int, int, int],
+                  tuple[int, int, int],
+                  tuple[int, int, int],
+              ],
+              cell_index: int,
+          ) -> bytes:
+              orientation, permutation = cell_controls(
+                  cell_index
+              )
+
+              if orientation == 0:
+                  first_primary, first_complement, second_primary, second_complement = pixels
+              elif orientation == 1:
+                  first_complement, second_primary, first_primary, second_complement = pixels
+              elif orientation == 2:
+                  second_primary, second_complement, first_complement, first_primary = pixels
+              else:
+                  second_complement, first_primary, second_primary, first_complement = pixels
+
+              first_symbol = decode_symbol(
+                  first_primary,
+                  first_complement,
+                  permutation,
+              )
+              second_symbol = decode_symbol(
+                  second_primary,
+                  second_complement,
+                  (
+                      permutation
+                      + int(PHI * 10)
+                  )
+                  % len(CHANNEL_PERMUTATIONS),
+              )
+
+              return bytes(
+                  (
+                      (first_symbol >> 4) & 0xFF,
+                      (
+                          (first_symbol & 0x0F) << 4
+                      )
+                      | (
+                          (second_symbol >> 8) & 0x0F
+                      ),
+                      second_symbol & 0xFF,
+                  )
+              )
+
+
+          def required_geometry(
+              encoded_bytes: int,
+          ) -> tuple[int, int]:
+              cells = math.ceil(
+                  encoded_bytes / CELL_BYTES
+              )
+              side_cells = max(
+                  MIN_SIDE_CELLS,
+                  math.ceil(math.sqrt(cells)),
+              )
+              side_pixels = side_cells * CELL_PIXELS
+              return side_cells, side_pixels
+
+
+          def iter_encoded_triples(
+              header: bytes,
+              payload_path: Path,
+              total_cells: int,
+          ) -> Iterator[bytes]:
+              remaining = bytearray(header)
+
+              with payload_path.open("rb") as payload:
+                  while True:
+                      while len(remaining) < CELL_BYTES:
+                          chunk = payload.read(1024 * 1024)
+                          if not chunk:
+                              break
+                          remaining.extend(chunk)
+
+                      if len(remaining) < CELL_BYTES:
+                          break
+
+                      triple = bytes(
+                          remaining[:CELL_BYTES]
+                      )
+                      del remaining[:CELL_BYTES]
+                      yield triple
+
+                  while True:
+                      chunk = payload.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      remaining.extend(chunk)
+                      while len(remaining) >= CELL_BYTES:
+                          triple = bytes(
+                              remaining[:CELL_BYTES]
+                          )
+                          del remaining[:CELL_BYTES]
+                          yield triple
+
+              if remaining:
+                  padded = bytes(remaining) + b"\x00" * (
+                      CELL_BYTES - len(remaining)
+                  )
+                  yield padded
+
+              emitted = math.ceil(
+                  (
+                      len(header)
+                      + payload_path.stat().st_size
+                  )
+                  / CELL_BYTES
+              )
+
+              for cell_index in range(
+                  emitted,
+                  total_cells,
+              ):
+                  seed = hashlib.sha256(
+                      struct.pack(
+                          ">QQQ",
+                          cell_index,
+                          PHI_WORD,
+                          N_WORD,
+                      )
+                  ).digest()
+                  yield seed[:CELL_BYTES]
+
+
+          def write_image(
+              output_path: Path,
+              header: bytes,
+              payload_path: Path,
+              maximum_dimension: int,
+          ) -> dict:
+              total_encoded_bytes = (
+                  len(header)
+                  + payload_path.stat().st_size
+              )
+              side_cells, side_pixels = required_geometry(
+                  total_encoded_bytes
+              )
+
+              if side_pixels > maximum_dimension:
+                  raise RuntimeError(
+                      "codebase requires an image of at least "
+                      f"{side_pixels}x{side_pixels}; "
+                      f"maximum_dimension is {maximum_dimension}"
+                  )
+
+              triples = iter_encoded_triples(
+                  header,
+                  payload_path,
+                  side_cells * side_cells,
+              )
+
+              def row_iterator() -> Iterator[list[int]]:
+                  cell_index = 0
+
+                  for _cell_row in range(side_cells):
+                      top = bytearray()
+                      bottom = bytearray()
+
+                      for _cell_column in range(
+                          side_cells
+                      ):
+                          pixels = encode_cell(
+                              next(triples),
+                              cell_index,
+                          )
+                          top.extend(pixels[0])
+                          top.extend(pixels[1])
+                          bottom.extend(pixels[2])
+                          bottom.extend(pixels[3])
+                          cell_index += 1
+
+                      yield list(top)
+                      yield list(bottom)
+
+              output_path.parent.mkdir(
+                  parents=True,
+                  exist_ok=True,
+              )
+              with output_path.open("wb") as destination:
+                  writer = png.Writer(
+                      width=side_pixels,
+                      height=side_pixels,
+                      greyscale=False,
+                      alpha=False,
+                      bitdepth=8,
+                      compression=6,
+                  )
+                  writer.write(
+                      destination,
+                      row_iterator(),
+                  )
+
+              return {
+                  "sideCells": side_cells,
+                  "width": side_pixels,
+                  "height": side_pixels,
+                  "encodedBytes": total_encoded_bytes,
+                  "bitsPerPhysicalPixel": 6.0,
+              }
+
+
+          def iter_image_cells(
+              image_path: Path,
+          ) -> tuple[
+              int,
+              int,
+              Iterator[
+                  tuple[
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                  ]
+              ],
+          ]:
+              reader = png.Reader(
+                  filename=str(image_path)
+              )
+              width, height, rows, info = (
+                  reader.asRGB8()
+              )
+
+              if (
+                  width != height
+                  or width % 2 != 0
+                  or height % 2 != 0
+              ):
+                  raise RecoveryError(
+                      "atlas must be a square image with even dimensions"
+                  )
+
+              side_cells = width // 2
+              row_iterator = iter(rows)
+
+              def cells() -> Iterator[
+                  tuple[
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                      tuple[int, int, int],
+                  ]
+              ]:
+                  for _ in range(side_cells):
+                      try:
+                          top = list(next(row_iterator))
+                          bottom = list(next(row_iterator))
+                      except StopIteration as error:
+                          raise RecoveryError(
+                              "image ended before all rows were decoded"
+                          ) from error
+
+                      for column in range(side_cells):
+                          left = column * 6
+                          first_top = tuple(
+                              top[left : left + 3]
+                          )
+                          second_top = tuple(
+                              top[left + 3 : left + 6]
+                          )
+                          first_bottom = tuple(
+                              bottom[left : left + 3]
+                          )
+                          second_bottom = tuple(
+                              bottom[left + 3 : left + 6]
+                          )
+                          yield (
+                              first_top,
+                              second_top,
+                              first_bottom,
+                              second_bottom,
+                          )
+
+              return width, height, cells()
+
+
+          def iter_decoded_bytes(
+              image_path: Path,
+          ) -> tuple[int, int, Iterator[int]]:
+              width, height, cells = iter_image_cells(
+                  image_path
+              )
+
+              def byte_iterator() -> Iterator[int]:
+                  for cell_index, pixels in enumerate(
+                      cells
+                  ):
+                      decoded = decode_cell(
+                          pixels,
+                          cell_index,
+                      )
+                      yield from decoded
+
+              return width, height, byte_iterator()
+
+
+          def read_exact(
+              stream: Iterator[int],
+              count: int,
+          ) -> bytes:
+              output = bytearray()
+
+              for _ in range(count):
+                  try:
+                      output.append(next(stream))
+                  except StopIteration as error:
+                      raise RecoveryError(
+                          f"image ended while reading {count} bytes"
+                      ) from error
+
+              return bytes(output)
+
+
+          def decode_header(
+              stream: Iterator[int],
+          ) -> dict:
+              encoded = read_exact(
+                  stream,
+                  HEADER_CODEWORD_BYTES,
+              )
+
+              try:
+                  decoded = bytes(
+                      RSCodec(HEADER_ECC_BYTES).decode(
+                          encoded
+                      )[0]
+                  )
+              except ReedSolomonError as error:
+                  raise RecoveryError(
+                      f"header correction failed: {error}"
+                  ) from error
+
+              if len(decoded) != HEADER_DATA_BYTES:
+                  raise RecoveryError(
+                      "unexpected decoded header size"
+                  )
+
+              body_size = HEADER_STRUCT.size
+              body = decoded[:body_size]
+              expected_hash = decoded[
+                  body_size : body_size + 32
+              ]
+
+              if sha256_bytes(body) != expected_hash:
+                  raise RecoveryError(
+                      "header integrity check failed"
+                  )
+
+              (
+                  magic,
+                  version,
+                  payload_bytes,
+                  payload_encoded_bytes,
+                  capsule_bytes,
+                  payload_hash,
+                  capsule_hash,
+                  payload_data_bytes,
+                  payload_ecc_bytes,
+                  cell_bytes,
+              ) = HEADER_STRUCT.unpack(body)
+
+              if magic != IMAGE_MAGIC:
+                  raise RecoveryError(
+                      "DREAM image magic is absent"
+                  )
+              if version != IMAGE_VERSION:
+                  raise RecoveryError(
+                      f"unsupported image version: {version}"
+                  )
+              if (
+                  payload_data_bytes
+                  != PAYLOAD_DATA_BYTES
+                  or payload_ecc_bytes
+                  != PAYLOAD_ECC_BYTES
+                  or cell_bytes != CELL_BYTES
+              ):
+                  raise RecoveryError(
+                      "image codec parameters do not match this format"
+                  )
+
+              return {
+                  "payloadBytes": payload_bytes,
+                  "payloadEncodedBytes": payload_encoded_bytes,
+                  "capsuleBytes": capsule_bytes,
+                  "payloadSha256": payload_hash,
+                  "capsuleSha256": capsule_hash,
+              }
+
+
+          def rs_decode_stream(
+              stream: Iterator[int],
+              encoded_length: int,
+              output_path: Path,
+              payload_length: int,
+          ) -> None:
+              if (
+                  encoded_length
+                  % PAYLOAD_CODEWORD_BYTES
+                  != 0
+              ):
+                  raise RecoveryError(
+                      "invalid payload codeword length"
+                  )
+
+              codec = RSCodec(
+                  PAYLOAD_ECC_BYTES
+              )
+              remaining_payload = payload_length
+
+              with output_path.open("wb") as output:
+                  for block_index in range(
+                      encoded_length
+                      // PAYLOAD_CODEWORD_BYTES
+                  ):
+                      encoded = read_exact(
+                          stream,
+                          PAYLOAD_CODEWORD_BYTES,
+                      )
+                      try:
+                          decoded = bytes(
+                              codec.decode(encoded)[0]
+                          )
+                      except ReedSolomonError as error:
+                          raise RecoveryError(
+                              "payload correction failed at "
+                              f"block {block_index}: {error}"
+                          ) from error
+
+                      if len(decoded) != PAYLOAD_DATA_BYTES:
+                          raise RecoveryError(
+                              "unexpected decoded payload block size"
+                          )
+
+                      amount = min(
+                          remaining_payload,
+                          len(decoded),
+                      )
+                      output.write(decoded[:amount])
+                      remaining_payload -= amount
+
+              if remaining_payload != 0:
+                  raise RecoveryError(
+                      "decoded payload is truncated"
+                  )
+
+
+          def decompress_payload(
+              compressed_path: Path,
+              capsule_path: Path,
+          ) -> None:
+              decompressor = zstd.ZstdDecompressor()
+
+              with (
+                  compressed_path.open("rb") as source,
+                  capsule_path.open("wb") as destination,
+                  decompressor.stream_reader(
+                      source
+                  ) as reader,
+              ):
+                  while True:
+                      chunk = reader.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      destination.write(chunk)
+
+
+          def parse_capsule(
+              capsule_path: Path,
+          ) -> tuple[dict, int]:
+              with capsule_path.open("rb") as capsule:
+                  prefix = capsule.read(
+                      CAPSULE_PREFIX.size
+                  )
+                  if len(prefix) != CAPSULE_PREFIX.size:
+                      raise RecoveryError(
+                          "capsule prefix is truncated"
+                      )
+
+                  magic, manifest_length = (
+                      CAPSULE_PREFIX.unpack(prefix)
+                  )
+                  if magic != CAPSULE_MAGIC:
+                      raise RecoveryError(
+                          "capsule magic is invalid"
+                      )
+
+                  manifest_bytes = capsule.read(
+                      manifest_length
+                  )
+                  if len(manifest_bytes) != manifest_length:
+                      raise RecoveryError(
+                          "capsule manifest is truncated"
+                      )
+
+              try:
+                  manifest = json.loads(
+                      manifest_bytes.decode("utf-8")
+                  )
+              except Exception as error:
+                  raise RecoveryError(
+                      f"capsule manifest is invalid: {error}"
+                  ) from error
+
+              data_offset = (
+                  CAPSULE_PREFIX.size
+                  + manifest_length
+              )
+              return manifest, data_offset
+
+
+          def validate_manifest(
+              manifest: dict,
+          ) -> None:
+              entries = manifest.get("entries")
+              if not isinstance(entries, list):
+                  raise RecoveryError(
+                      "manifest entries are missing"
+                  )
+
+              seen: set[str] = set()
+              symlinks: set[PurePosixPath] = set()
+              root_descriptor = []
+
+              for entry in entries:
+                  relative = validated_path(
+                      str(entry.get("path", ""))
+                  )
+                  key = relative.as_posix()
+
+                  if key in seen:
+                      raise RecoveryError(
+                          f"duplicate manifest path: {key}"
+                      )
+                  seen.add(key)
+
+                  for parent in relative.parents:
+                      if parent in symlinks:
+                          raise RecoveryError(
+                              f"path traverses symlink parent: {key}"
+                          )
+
+                  kind = entry.get("type")
+                  if kind == "file":
+                      root_descriptor.append(
+                          {
+                              "path": key,
+                              "type": "file",
+                              "mode": int(entry["mode"]),
+                              "size": int(entry["size"]),
+                              "sha256": entry["sha256"],
+                              "target": None,
+                          }
+                      )
+                  elif kind == "symlink":
+                      target = str(
+                          entry.get("target", "")
+                      )
+                      validate_symlink_target(
+                          relative,
+                          target,
+                      )
+                      symlinks.add(relative)
+                      root_descriptor.append(
+                          {
+                              "path": key,
+                              "type": "symlink",
+                              "mode": int(entry["mode"]),
+                              "size": None,
+                              "sha256": None,
+                              "target": target,
+                          }
+                      )
+                  else:
+                      raise RecoveryError(
+                          f"unsupported entry type for {key}: {kind!r}"
+                      )
+
+              actual_root = hashlib.sha256(
+                  canonical_json(root_descriptor)
+              ).hexdigest()
+              if actual_root != manifest[
+                  "codebaseRoot"
+              ]:
+                  raise RecoveryError(
+                      "codebase root mismatch"
+                  )
+
+
+          def safe_output_path(
+              root: Path,
+              relative: PurePosixPath,
+          ) -> Path:
+              root_resolved = root.resolve()
+              destination = root.joinpath(
+                  *relative.parts
+              )
+
+              current = root
+              for part in relative.parts[:-1]:
+                  current = current / part
+                  if (
+                      current.exists()
+                      and current.is_symlink()
+                  ):
+                      raise RecoveryError(
+                          f"output traverses symlink: {relative}"
+                      )
+
+              parent = destination.parent.resolve()
+              if (
+                  parent != root_resolved
+                  and root_resolved not in parent.parents
+              ):
+                  raise RecoveryError(
+                      f"output escapes destination: {relative}"
+                  )
+
+              return destination
+
+
+          def restore_capsule(
+              capsule_path: Path,
+              output: Path,
+          ) -> dict:
+              manifest, data_offset = parse_capsule(
+                  capsule_path
+              )
+              validate_manifest(manifest)
+
+              if (
+                  output.exists()
+                  and any(output.iterdir())
+              ):
+                  raise RecoveryError(
+                      f"destination is not empty: {output}"
+                  )
+
+              output.mkdir(
+                  parents=True,
+                  exist_ok=True,
+              )
+
+              with capsule_path.open("rb") as capsule:
+                  for entry in manifest["entries"]:
+                      if entry["type"] != "file":
+                          continue
+
+                      relative = validated_path(
+                          entry["path"]
+                      )
+                      destination = safe_output_path(
+                          output,
+                          relative,
+                      )
+                      destination.parent.mkdir(
+                          parents=True,
+                          exist_ok=True,
+                      )
+
+                      capsule.seek(
+                          data_offset + int(entry["offset"])
+                      )
+                      remaining = int(entry["size"])
+                      digest = hashlib.sha256()
+
+                      with destination.open("wb") as file_output:
+                          while remaining:
+                              chunk = capsule.read(
+                                  min(
+                                      remaining,
+                                      1024 * 1024,
+                                  )
+                              )
+                              if not chunk:
+                                  raise RecoveryError(
+                                      f"file data is truncated: {relative}"
+                                  )
+                              file_output.write(chunk)
+                              digest.update(chunk)
+                              remaining -= len(chunk)
+
+                      if digest.hexdigest() != entry[
+                          "sha256"
+                      ]:
+                          raise RecoveryError(
+                              f"file hash mismatch: {relative}"
+                          )
+
+                      os.chmod(
+                          destination,
+                          int(entry["mode"]) & 0o777,
+                      )
+
+              for entry in manifest["entries"]:
+                  if entry["type"] != "symlink":
+                      continue
+
+                  relative = validated_path(
+                      entry["path"]
+                  )
+                  destination = safe_output_path(
+                      output,
+                      relative,
+                  )
+                  destination.parent.mkdir(
+                      parents=True,
+                      exist_ok=True,
+                  )
+                  os.symlink(
+                      entry["target"],
+                      destination,
+                  )
+
+              return {
+                  "restored": True,
+                  "files": sum(
+                      1
+                      for entry in manifest["entries"]
+                      if entry["type"] == "file"
+                  ),
+                  "symlinks": sum(
+                      1
+                      for entry in manifest["entries"]
+                      if entry["type"] == "symlink"
+                  ),
+                  "codebaseRoot": manifest[
+                      "codebaseRoot"
+                  ],
+              }
+
+
+          def build(
+              root: Path,
+              output: Path,
+              maximum_dimension: int,
+          ) -> dict:
+              with tempfile.TemporaryDirectory(
+                  prefix="dream-atlas-"
+              ) as temporary_text:
+                  temporary = Path(temporary_text)
+                  data_path = temporary / "data.bin"
+                  capsule_path = temporary / "capsule.bin"
+                  compressed_path = temporary / "capsule.zst"
+                  encoded_payload_path = (
+                      temporary / "payload.rs"
+                  )
+
+                  manifest = build_capsule(
+                      root,
+                      capsule_path,
+                      data_path,
+                  )
+                  compress_capsule(
+                      capsule_path,
+                      compressed_path,
+                  )
+                  payload_encoded_bytes = rs_encode_file(
+                      compressed_path,
+                      encoded_payload_path,
+                  )
+                  header = build_header(
+                      compressed_path,
+                      capsule_path,
+                      payload_encoded_bytes,
+                  )
+                  image_info = write_image(
+                      output,
+                      header,
+                      encoded_payload_path,
+                      maximum_dimension,
+                  )
+
+                  return {
+                      "artifact": str(output),
+                      "artifactBytes": output.stat().st_size,
+                      "artifactSha256": sha256_file(
+                          output
+                      ).hex(),
+                      "codebaseRoot": manifest[
+                          "codebaseRoot"
+                      ],
+                      "entries": manifest["entryCount"],
+                      "capsuleBytes": capsule_path.stat().st_size,
+                      "compressedBytes": compressed_path.stat().st_size,
+                      "payloadEncodedBytes": payload_encoded_bytes,
+                      "equation": manifest["equation"],
+                      **image_info,
+                  }
+
+
+          def restore(
+              image: Path,
+              output: Path,
+          ) -> dict:
+              with tempfile.TemporaryDirectory(
+                  prefix="dream-restore-"
+              ) as temporary_text:
+                  temporary = Path(temporary_text)
+                  compressed_path = temporary / "capsule.zst"
+                  capsule_path = temporary / "capsule.bin"
+
+                  width, height, stream = (
+                      iter_decoded_bytes(image)
+                  )
+                  header = decode_header(stream)
+
+                  required_cells, required_pixels = (
+                      required_geometry(
+                          HEADER_CODEWORD_BYTES
+                          + header[
+                              "payloadEncodedBytes"
+                          ]
+                      )
+                  )
+                  if (
+                      width < required_pixels
+                      or height < required_pixels
+                  ):
+                      raise RecoveryError(
+                          "image dimensions are too small "
+                          "for the declared payload"
+                      )
+
+                  rs_decode_stream(
+                      stream,
+                      header["payloadEncodedBytes"],
+                      compressed_path,
+                      header["payloadBytes"],
+                  )
+
+                  if sha256_file(
+                      compressed_path
+                  ) != header["payloadSha256"]:
+                      raise RecoveryError(
+                          "compressed payload hash mismatch"
+                      )
+
+                  decompress_payload(
+                      compressed_path,
+                      capsule_path,
+                  )
+
+                  if (
+                      capsule_path.stat().st_size
+                      != header["capsuleBytes"]
+                  ):
+                      raise RecoveryError(
+                          "capsule length mismatch"
+                      )
+                  if sha256_file(
+                      capsule_path
+                  ) != header["capsuleSha256"]:
+                      raise RecoveryError(
+                          "capsule hash mismatch"
+                      )
+
+                  result = restore_capsule(
+                      capsule_path,
+                      output,
+                  )
+                  result.update(
+                      {
+                          "width": width,
+                          "height": height,
+                          "formatVersion": IMAGE_VERSION,
+                      }
+                  )
+                  return result
+
+
+          def main() -> int:
+              parser = argparse.ArgumentParser()
+              commands = parser.add_subparsers(
+                  dest="command",
+                  required=True,
+              )
+
+              build_parser = commands.add_parser(
+                  "build"
+              )
+              build_parser.add_argument(
+                  "root",
+                  type=Path,
+              )
+              build_parser.add_argument(
+                  "output",
+                  type=Path,
+              )
+              build_parser.add_argument(
+                  "--maximum-dimension",
+                  type=int,
+                  default=32768,
+              )
+
+              restore_parser = commands.add_parser(
+                  "restore"
+              )
+              restore_parser.add_argument(
+                  "image",
+                  type=Path,
+              )
+              restore_parser.add_argument(
+                  "output",
+                  type=Path,
+              )
+
+              args = parser.parse_args()
+
+              if args.command == "build":
+                  result = build(
+                      args.root.resolve(),
+                      args.output.resolve(),
+                      args.maximum_dimension,
+                  )
+              else:
+                  result = restore(
+                      args.image.resolve(),
+                      args.output.resolve(),
+                  )
+
+              print(
+                  json.dumps(
+                      result,
+                      indent=2,
+                      sort_keys=True,
+                  )
+              )
+              return 0
+
+
+          if __name__ == "__main__":
+              try:
+                  raise SystemExit(main())
+              except (
+                  RecoveryError,
+                  KeyError,
+                  OSError,
+                  ValueError,
+                  zstd.ZstdError,
+                  ReedSolomonError,
+              ) as error:
+                  print(
+                      f"DREAM atlas failed: {error}",
+                      file=sys.stderr,
+                  )
+                  raise SystemExit(2)
+
+          PY
+          python -m py_compile "$RUNNER_TEMP/dream_equation_codebase_codec.py"
+
+      - name: Build the image from the equation and codebase bytes
+        shell: bash
+        env:
+          MAXIMUM_DIMENSION: ${{ inputs.maximum_dimension }}
+        run: |
+          set -euo pipefail
+          rm -rf "$GITHUB_WORKSPACE/dream-image-output"
+          mkdir -p "$GITHUB_WORKSPACE/dream-image-output"
+
+          python "$RUNNER_TEMP/dream_equation_codebase_codec.py" build \
+            "$GITHUB_WORKSPACE" \
+            "$GITHUB_WORKSPACE/dream-image-output/DREAM_CODEBASE_SPATIAL_ATLAS.png" \
+            --maximum-dimension "$MAXIMUM_DIMENSION" \
+            | tee "$RUNNER_TEMP/dream-image-build.json"
+
+      - name: Prove exact byte-for-byte reconstruction
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          IMAGE="$GITHUB_WORKSPACE/dream-image-output/DREAM_CODEBASE_SPATIAL_ATLAS.png"
+          PROOF_ROOT="$(mktemp -d)"
+          trap 'rm -rf "$PROOF_ROOT"' EXIT
+
+          python "$RUNNER_TEMP/dream_equation_codebase_codec.py" restore \
+            "$IMAGE" \
+            "$PROOF_ROOT/rebuilt"
+
+          cat > "$RUNNER_TEMP/verify_exact_tree.py" <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import os
+          import stat
+          import subprocess
+          import sys
+          from pathlib import Path, PurePosixPath
+
+          source = Path(sys.argv[1]).resolve()
+          rebuilt = Path(sys.argv[2]).resolve()
+
+          tracked = subprocess.run(
+              [
+                  "git",
+                  "-C",
+                  str(source),
+                  "ls-files",
+                  "-z",
+                  "--recurse-submodules",
+              ],
+              check=True,
+              stdout=subprocess.PIPE,
+          ).stdout
+
+          expected: set[str] = set()
+
+          for raw in tracked.split(b"\0"):
+              if not raw:
+                  continue
+
+              relative_text = raw.decode(
+                  "utf-8",
+                  "surrogateescape",
+              )
+              relative = PurePosixPath(relative_text)
+              original = source.joinpath(*relative.parts)
+
+              if original.is_dir() and not original.is_symlink():
+                  continue
+
+              key = relative.as_posix()
+              expected.add(key)
+              restored = rebuilt.joinpath(*relative.parts)
+
+              if original.is_symlink():
+                  if not restored.is_symlink():
+                      raise SystemExit(f"missing symlink: {key}")
+                  if os.readlink(original) != os.readlink(restored):
+                      raise SystemExit(f"symlink mismatch: {key}")
+                  continue
+
+              if not restored.is_file() or restored.is_symlink():
+                  raise SystemExit(f"missing file: {key}")
+
+              if hashlib.sha256(
+                  original.read_bytes()
+              ).digest() != hashlib.sha256(
+                  restored.read_bytes()
+              ).digest():
+                  raise SystemExit(f"byte mismatch: {key}")
+
+              original_mode = stat.S_IMODE(
+                  os.lstat(original).st_mode
+              )
+              restored_mode = stat.S_IMODE(
+                  os.lstat(restored).st_mode
+              )
+              if original_mode != restored_mode:
+                  raise SystemExit(f"mode mismatch: {key}")
+
+          actual: set[str] = set()
+
+          for directory, dirnames, filenames in os.walk(
+              rebuilt,
+              followlinks=False,
+          ):
+              base = Path(directory)
+
+              for dirname in list(dirnames):
+                  item = base / dirname
+                  if item.is_symlink():
+                      actual.add(
+                          item.relative_to(rebuilt).as_posix()
+                      )
+                      dirnames.remove(dirname)
+
+              for filename in filenames:
+                  actual.add(
+                      (base / filename)
+                      .relative_to(rebuilt)
+                      .as_posix()
+                  )
+
+          if expected != actual:
+              raise SystemExit(
+                  "tree mismatch; "
+                  f"missing={sorted(expected - actual)[:20]} "
+                  f"extra={sorted(actual - expected)[:20]}"
+              )
+
+          print(
+              f"EXACT_CODEBASE_RECOVERY_OK entries={len(expected)}"
+          )
+          PY
+
+          python "$RUNNER_TEMP/verify_exact_tree.py" \
+            "$GITHUB_WORKSPACE" \
+            "$PROOF_ROOT/rebuilt"
+
+      - name: Upload the one-image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DREAM_CODEBASE_SPATIAL_ATLAS
+          path: dream-image-output/DREAM_CODEBASE_SPATIAL_ATLAS.png
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
