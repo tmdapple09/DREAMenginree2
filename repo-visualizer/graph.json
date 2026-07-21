@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T03:07:46.801Z",
+  "generatedAt": "2026-07-21T04:33:29.529Z",
   "root": ".",
   "nodes": [
     {
@@ -3016,6 +3016,16 @@
       "label": "dream-utf8-pascal-lattice-paths.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-pascal-lattice-paths.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream_pixel_encoded_codebase_atlas.yml",
+      "label": "dream_pixel_encoded_codebase_atlas.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_pixel_encoded_codebase_atlas.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
