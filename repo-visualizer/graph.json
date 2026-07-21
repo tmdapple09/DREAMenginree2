@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T10:17:18.976Z",
+  "generatedAt": "2026-07-21T13:07:01.102Z",
   "root": ".",
   "nodes": [
     {
@@ -3022,10 +3022,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream_geometric_phi_codebase_atlas.yml",
-      "label": "dream_geometric_phi_codebase_atlas.yml",
+      "id": "file:.github/workflows/dream_equation_rgb_cmy_codebase_atlas.yml",
+      "label": "dream_equation_rgb_cmy_codebase_atlas.yml",
       "type": "config",
-      "path": ".github/workflows/dream_geometric_phi_codebase_atlas.yml",
+      "path": ".github/workflows/dream_equation_rgb_cmy_codebase_atlas.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
