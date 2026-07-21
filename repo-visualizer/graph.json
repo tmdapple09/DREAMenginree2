@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T06:39:49.588Z",
+  "generatedAt": "2026-07-21T03:07:46.801Z",
   "root": ".",
   "nodes": [
     {
@@ -3022,10 +3022,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream_repository_image_vault_v9_1.yml",
-      "label": "dream_repository_image_vault_v9_1.yml",
+      "id": "file:.github/workflows/dream_semantic_repository_image_vault_v10.yml",
+      "label": "dream_semantic_repository_image_vault_v10.yml",
       "type": "config",
-      "path": ".github/workflows/dream_repository_image_vault_v9_1.yml",
+      "path": ".github/workflows/dream_semantic_repository_image_vault_v10.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
