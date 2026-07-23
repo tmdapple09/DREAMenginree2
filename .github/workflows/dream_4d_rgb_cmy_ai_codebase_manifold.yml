@@ -1,0 +1,672 @@
+name: DREAM 4D RGB-CMY AI Codebase Manifold
+run-name: DREAM 4D RGB-CMY AI Codebase Manifold
+
+"on":
+  workflow_dispatch:
+    inputs:
+      maximum_dimension:
+        description: "Maximum square PNG dimension"
+        required: false
+        default: "16384"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dream-4d-rgb-cmy-ai-manifold-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-manifold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout tracked repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install renderer runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check \
+            "numpy>=2,<3" \
+            "Pillow>=10,<13"
+
+      - name: Write the manifold builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/build_dream_4d_rgb_cmy_ai_atlas.py" <<'PY'
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import argparse
+          import hashlib
+          import json
+          import math
+          import os
+          import stat
+          import struct
+          import subprocess
+          import sys
+          import tempfile
+          from pathlib import Path, PurePosixPath
+
+          import numpy as np
+          from PIL import Image
+
+          GOLDEN_ANGLE = math.pi / 5.0
+          OMEGA = complex(math.cos(GOLDEN_ANGLE), math.sin(GOLDEN_ANGLE))
+          PHI = float((OMEGA + OMEGA.conjugate()).real)
+          GOLDEN_N = float((PHI + math.sqrt(PHI * PHI + 4.0)) / 2.0)
+          IDENTITY_RESIDUAL = abs(GOLDEN_N - 1.0 / GOLDEN_N - PHI)
+          FOLD = int(round(math.pi / GOLDEN_ANGLE))
+
+          if IDENTITY_RESIDUAL > 1.0e-12 or FOLD != 5:
+              raise RuntimeError("golden equation invariant failed")
+
+          FORMAT_MAGIC = b"DREAM4DAI01\n"
+          CELL_PIXELS = 4
+          TARGET_FILL = 0.58
+          MIN_SIDE_CELLS = 96
+
+          PRIMARY = np.array(
+              [
+                  [255, 24, 24],
+                  [24, 255, 24],
+                  [24, 24, 255],
+                  [244, 244, 244],
+              ],
+              dtype=np.uint8,
+          )
+          COMPLEMENT = np.array(
+              [
+                  [0, 231, 231],
+                  [231, 0, 231],
+                  [231, 231, 0],
+                  [10, 10, 10],
+              ],
+              dtype=np.uint8,
+          )
+          WHITE = np.array([255, 255, 255], dtype=np.uint8)
+          BLACK = np.array([0, 0, 0], dtype=np.uint8)
+
+
+          class AtlasError(RuntimeError):
+              pass
+
+
+          def canonical_json(value: object) -> bytes:
+              return json.dumps(
+                  value,
+                  sort_keys=True,
+                  separators=(",", ":"),
+                  ensure_ascii=False,
+              ).encode("utf-8")
+
+
+          def tracked_paths(root: Path) -> list[str]:
+              result = subprocess.run(
+                  [
+                      "git",
+                      "-C",
+                      str(root),
+                      "ls-files",
+                      "-z",
+                      "--recurse-submodules",
+                  ],
+                  check=True,
+                  stdout=subprocess.PIPE,
+              )
+              paths = [
+                  value.decode("utf-8", "surrogateescape")
+                  for value in result.stdout.split(b"\0")
+                  if value
+              ]
+              paths = sorted(set(paths))
+              if not paths:
+                  raise AtlasError("git reported no tracked files")
+              return paths
+
+
+          def validate_relative(value: str) -> PurePosixPath:
+              path = PurePosixPath(value)
+              if (
+                  not value
+                  or path.is_absolute()
+                  or any(part in {"", ".", ".."} for part in path.parts)
+              ):
+                  raise AtlasError(f"unsafe tracked path: {value!r}")
+              return path
+
+
+          def hash_file(path: Path) -> tuple[int, str]:
+              digest = hashlib.sha256()
+              size = 0
+              with path.open("rb") as handle:
+                  while True:
+                      chunk = handle.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      digest.update(chunk)
+                      size += len(chunk)
+              return size, digest.hexdigest()
+
+
+          def scan_repository(root: Path) -> tuple[list[dict], int, str]:
+              entries: list[dict] = []
+              data_offset = 0
+
+              for relative_text in tracked_paths(root):
+                  relative = validate_relative(relative_text)
+                  absolute = root.joinpath(*relative.parts)
+                  metadata = os.lstat(absolute)
+                  mode = stat.S_IMODE(metadata.st_mode)
+
+                  if stat.S_ISDIR(metadata.st_mode):
+                      continue
+
+                  if stat.S_ISLNK(metadata.st_mode):
+                      target = os.readlink(absolute)
+                      entries.append(
+                          {
+                              "path": relative.as_posix(),
+                              "type": "symlink",
+                              "mode": mode,
+                              "target": target,
+                          }
+                      )
+                      continue
+
+                  if not stat.S_ISREG(metadata.st_mode):
+                      raise AtlasError(
+                          f"unsupported tracked file type: {relative.as_posix()}"
+                      )
+
+                  size, digest = hash_file(absolute)
+                  entries.append(
+                      {
+                          "path": relative.as_posix(),
+                          "type": "file",
+                          "mode": mode,
+                          "offset": data_offset,
+                          "size": size,
+                          "sha256": digest,
+                      }
+                  )
+                  data_offset += size
+
+              descriptor = [
+                  {
+                      "path": entry["path"],
+                      "type": entry["type"],
+                      "mode": entry["mode"],
+                      "size": entry.get("size"),
+                      "sha256": entry.get("sha256"),
+                      "target": entry.get("target"),
+                  }
+                  for entry in entries
+              ]
+              root_hash = hashlib.sha256(canonical_json(descriptor)).hexdigest()
+              return entries, data_offset, root_hash
+
+
+          def build_metadata(entries: list[dict], data_bytes: int, root_hash: str) -> bytes:
+              metadata = {
+                  "format": "DREAM 4D RGB-CMY AI-readable codebase atlas",
+                  "version": 1,
+                  "purpose": (
+                      "The image is a self-describing visual byte language. "
+                      "No executable decoder is embedded. An AI reads the central calibration, "
+                      "then this UTF-8 metadata, then the exact repository bytes."
+                  ),
+                  "equation": {
+                      "goldenAngle": GOLDEN_ANGLE,
+                      "phi": PHI,
+                      "n": GOLDEN_N,
+                      "identityResidual": IDENTITY_RESIDUAL,
+                  },
+                  "visualGrammar": {
+                      "traversal": (
+                          "Cells are read from the center outward by increasing equation-generated "
+                          "manifold depth, with local angular phase resolving equal-depth cells."
+                      ),
+                      "calibration": (
+                          "The first 256 cells are byte values 0 through 255 in ascending order."
+                      ),
+                      "cell": (
+                          "Each 4x4-pixel cell is one byte. The byte is split into four two-bit "
+                          "symbols from most-significant to least-significant and placed in the "
+                          "cell quadrants: upper-left, upper-right, lower-left, lower-right."
+                      ),
+                      "symbols": {
+                          "0": "red/cyan complementary pair",
+                          "1": "green/magenta complementary pair",
+                          "2": "blue/yellow complementary pair",
+                          "3": "white/black complementary pair",
+                      },
+                      "quadrant": (
+                          "Within every 2x2 quadrant: primary is upper-left, additive RGB mix white "
+                          "is upper-right, subtractive CMY mix black is lower-left, complement is "
+                          "lower-right."
+                      ),
+                      "packet": (
+                          "After the 256 calibration cells: ASCII magic DREAM4DAI01 newline, an "
+                          "unsigned 64-bit big-endian metadata length, this UTF-8 JSON metadata, "
+                          "then every regular tracked file concatenated in manifest order."
+                      ),
+                      "shape": (
+                          "The occupied boundary, traversal depth, background field, and local phase "
+                          "come from the supplied four-dimensional golden equation and the codebase root hash."
+                      ),
+                  },
+                  "codebaseRootSha256": root_hash,
+                  "calibrationBytes": 256,
+                  "metadataEncoding": "UTF-8 JSON",
+                  "dataBytes": data_bytes,
+                  "entries": entries,
+              }
+              return canonical_json(metadata)
+
+
+          def packet_prefix(metadata: bytes) -> bytes:
+              return (
+                  bytes(range(256))
+                  + FORMAT_MAGIC
+                  + struct.pack(">Q", len(metadata))
+                  + metadata
+              )
+
+
+          def phase_values(root_hash: str) -> tuple[float, float, float, int]:
+              seed = bytes.fromhex(root_hash)
+              first = int.from_bytes(seed[0:8], "big") / float(1 << 64)
+              second = int.from_bytes(seed[8:16], "big") / float(1 << 64)
+              third = int.from_bytes(seed[16:24], "big") / float(1 << 64)
+              integer = int.from_bytes(seed[24:32], "big")
+              return (
+                  first * 2.0 * math.pi,
+                  second * 2.0 * math.pi,
+                  third * 2.0 * math.pi,
+                  integer,
+              )
+
+
+          def geometry(side: int, root_hash: str):
+              total = side * side
+              flat = np.arange(total, dtype=np.int32)
+              row = flat // side
+              col = flat - row * side
+              x = ((col.astype(np.float32) + 0.5) / side) * 2.0 - 1.0
+              y = ((row.astype(np.float32) + 0.5) / side) * 2.0 - 1.0
+              radius = np.sqrt(x * x + y * y, dtype=np.float32)
+              theta = np.arctan2(y, x, dtype=np.float32)
+
+              phase_a, phase_b, phase_c, _ = phase_values(root_hash)
+              z = np.sin(
+                  math.pi * (PHI * x + GOLDEN_N * y) + phase_a,
+                  dtype=np.float32,
+              )
+              w = np.cos(
+                  math.pi * (GOLDEN_N * x - PHI * y) + phase_b,
+                  dtype=np.float32,
+              )
+
+              boundary = (
+                  0.79
+                  + 0.105 * np.cos(FOLD * theta + PHI * z + phase_a)
+                  + 0.055 * np.cos((2 * FOLD) * theta / GOLDEN_N + w + phase_b)
+                  + 0.025 * np.sin(FOLD * theta * PHI + z - w + phase_c)
+              ).astype(np.float32)
+              boundary = np.clip(boundary, 0.62, 0.98)
+
+              depth = radius / np.maximum(boundary, np.float32(0.001))
+              occupied = depth <= 1.0
+              occupied_indices = flat[occupied]
+              occupied_depth = depth[occupied]
+              occupied_theta = theta[occupied]
+              occupied_z = z[occupied]
+              occupied_w = w[occupied]
+
+              angular_phase = np.mod(
+                  occupied_theta
+                  + GOLDEN_ANGLE * occupied_z
+                  + (GOLDEN_ANGLE / GOLDEN_N) * occupied_w
+                  + phase_c,
+                  2.0 * math.pi,
+              ) / (2.0 * math.pi)
+              shell = np.floor(occupied_depth * side * 0.5).astype(np.int32)
+              order = np.lexsort((angular_phase, shell))
+              positions = occupied_indices[order]
+
+              background_field = (
+                  0.5
+                  + 0.5
+                  * np.sin(
+                      PHI * x * math.pi
+                      + GOLDEN_N * y * math.pi
+                      + z
+                      - w
+                      + phase_a
+                  )
+              ).astype(np.float32)
+
+              return positions, occupied, background_field
+
+
+          def choose_side(payload_bytes: int, maximum_dimension: int, root_hash: str):
+              maximum_cells = maximum_dimension // CELL_PIXELS
+              if maximum_cells < MIN_SIDE_CELLS:
+                  raise AtlasError(
+                      f"maximum_dimension must be at least {MIN_SIDE_CELLS * CELL_PIXELS}"
+                  )
+
+              side = max(
+                  MIN_SIDE_CELLS,
+                  int(math.ceil(math.sqrt(payload_bytes / TARGET_FILL))),
+              )
+
+              while side <= maximum_cells:
+                  positions, occupied, background = geometry(side, root_hash)
+                  if len(positions) >= payload_bytes:
+                      return side, positions, occupied, background
+                  side = max(side + 1, int(math.ceil(side * 1.03)))
+
+              raise AtlasError(
+                  "The tracked codebase does not fit the requested maximum_dimension. "
+                  f"Required payload cells: {payload_bytes}; maximum cells per side: {maximum_cells}."
+              )
+
+
+          def stream_file_bytes(root: Path, entries: list[dict]):
+              for entry in entries:
+                  if entry["type"] != "file":
+                      continue
+                  absolute = root.joinpath(*PurePosixPath(entry["path"]).parts)
+                  with absolute.open("rb") as handle:
+                      while True:
+                          chunk = handle.read(1024 * 1024)
+                          if not chunk:
+                              break
+                          yield chunk
+
+
+          def fill_grid(
+              root: Path,
+              side: int,
+              positions: np.ndarray,
+              prefix: bytes,
+              entries: list[dict],
+              payload_bytes: int,
+              root_hash: str,
+          ) -> np.ndarray:
+              grid = np.full(side * side, -1, dtype=np.int16)
+              cursor = 0
+
+              def write_chunk(chunk: bytes) -> None:
+                  nonlocal cursor
+                  if cursor + len(chunk) > payload_bytes:
+                      raise AtlasError("packet length calculation mismatch")
+                  grid[positions[cursor : cursor + len(chunk)]] = np.frombuffer(
+                      chunk,
+                      dtype=np.uint8,
+                  ).astype(np.int16)
+                  cursor += len(chunk)
+
+              write_chunk(prefix)
+              for chunk in stream_file_bytes(root, entries):
+                  write_chunk(chunk)
+
+              if cursor != payload_bytes:
+                  raise AtlasError(f"wrote {cursor} bytes but expected {payload_bytes}")
+
+              remaining_positions = positions[cursor:]
+              if len(remaining_positions):
+                  seed = bytes.fromhex(root_hash)
+                  pad = np.empty(len(remaining_positions), dtype=np.uint8)
+                  block_index = 0
+                  pad_cursor = 0
+                  while pad_cursor < len(pad):
+                      block = hashlib.sha256(seed + struct.pack(">Q", block_index)).digest()
+                      amount = min(len(block), len(pad) - pad_cursor)
+                      pad[pad_cursor : pad_cursor + amount] = np.frombuffer(
+                          block[:amount],
+                          dtype=np.uint8,
+                      )
+                      pad_cursor += amount
+                      block_index += 1
+                  grid[remaining_positions] = pad.astype(np.int16)
+
+              return grid.reshape(side, side)
+
+
+          def shade_color(color: np.ndarray, shade: np.ndarray) -> np.ndarray:
+              result = color.astype(np.int16) + shade[..., None]
+              return np.clip(result, 0, 255).astype(np.uint8)
+
+
+          def render_png(
+              output: Path,
+              grid: np.ndarray,
+              occupied: np.ndarray,
+              background_field: np.ndarray,
+              root_hash: str,
+          ) -> None:
+              side = grid.shape[0]
+              width = side * CELL_PIXELS
+              occupied_grid = occupied.reshape(side, side)
+              field_grid = background_field.reshape(side, side)
+              image = np.empty((width, width, 3), dtype=np.uint8)
+
+              for cell_row in range(side):
+                  values = grid[cell_row]
+                  active = occupied_grid[cell_row]
+                  field = field_grid[cell_row]
+
+                  digits = np.stack(
+                      (
+                          (values >> 6) & 0x03,
+                          (values >> 4) & 0x03,
+                          (values >> 2) & 0x03,
+                          values & 0x03,
+                      ),
+                      axis=1,
+                  ).astype(np.int16)
+                  digits[values < 0] = 3
+
+                  shade = np.round((field - 0.5) * 20.0).astype(np.int16)
+                  primary = shade_color(PRIMARY[digits], shade[:, None])
+                  complement = shade_color(COMPLEMENT[digits], -shade[:, None])
+
+                  row_pixels = np.empty(
+                      (CELL_PIXELS, side, CELL_PIXELS, 3),
+                      dtype=np.uint8,
+                  )
+
+                  for quadrant in range(4):
+                      q_row = 0 if quadrant < 2 else 2
+                      q_col = 0 if quadrant % 2 == 0 else 2
+                      p = primary[:, quadrant, :]
+                      c = complement[:, quadrant, :]
+                      row_pixels[q_row, :, q_col, :] = p
+                      row_pixels[q_row, :, q_col + 1, :] = WHITE
+                      row_pixels[q_row + 1, :, q_col, :] = BLACK
+                      row_pixels[q_row + 1, :, q_col + 1, :] = c
+
+                  background_strength = (12 + np.round(field * 20.0)).astype(np.uint8)
+                  background_rgb = np.stack(
+                      (
+                          background_strength // 2,
+                          background_strength // 3,
+                          background_strength,
+                      ),
+                      axis=1,
+                  )
+
+                  inactive = ~active
+                  if np.any(inactive):
+                      row_pixels[:, inactive, :, :] = background_rgb[inactive][
+                          None,
+                          :,
+                          None,
+                          :,
+                      ]
+
+                  image[
+                      cell_row * CELL_PIXELS : (cell_row + 1) * CELL_PIXELS,
+                      :,
+                      :,
+                  ] = row_pixels.transpose(0, 1, 2, 3).reshape(
+                      CELL_PIXELS,
+                      width,
+                      3,
+                  )
+
+              output.parent.mkdir(parents=True, exist_ok=True)
+              Image.fromarray(image, mode="RGB").save(
+                  output,
+                  "PNG",
+                  compress_level=6,
+                  optimize=False,
+              )
+
+
+          def build(root: Path, output: Path, maximum_dimension: int) -> dict:
+              entries, data_bytes, root_hash = scan_repository(root)
+              metadata = build_metadata(entries, data_bytes, root_hash)
+              prefix = packet_prefix(metadata)
+              payload_bytes = len(prefix) + data_bytes
+
+              side, positions, occupied, background = choose_side(
+                  payload_bytes,
+                  maximum_dimension,
+                  root_hash,
+              )
+              grid = fill_grid(
+                  root,
+                  side,
+                  positions,
+                  prefix,
+                  entries,
+                  payload_bytes,
+                  root_hash,
+              )
+              render_png(
+                  output,
+                  grid,
+                  occupied,
+                  background,
+                  root_hash,
+              )
+
+              return {
+                  "artifact": str(output),
+                  "artifactBytes": output.stat().st_size,
+                  "width": side * CELL_PIXELS,
+                  "height": side * CELL_PIXELS,
+                  "cellPixels": CELL_PIXELS,
+                  "payloadBytes": payload_bytes,
+                  "dataBytes": data_bytes,
+                  "metadataBytes": len(metadata),
+                  "entries": len(entries),
+                  "codebaseRootSha256": root_hash,
+                  "equation": {
+                      "goldenAngle": GOLDEN_ANGLE,
+                      "phi": PHI,
+                      "n": GOLDEN_N,
+                      "identityResidual": IDENTITY_RESIDUAL,
+                  },
+              }
+
+
+          def main() -> int:
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--root", type=Path, required=True)
+              parser.add_argument("--output", type=Path, required=True)
+              parser.add_argument("--maximum-dimension", type=int, default=16384)
+              args = parser.parse_args()
+
+              result = build(
+                  args.root.resolve(),
+                  args.output.resolve(),
+                  args.maximum_dimension,
+              )
+              print(json.dumps(result, indent=2, sort_keys=True))
+              return 0
+
+
+          if __name__ == "__main__":
+              try:
+                  raise SystemExit(main())
+              except (AtlasError, OSError, ValueError, subprocess.CalledProcessError) as error:
+                  print(f"DREAM atlas failed: {error}", file=sys.stderr)
+                  raise SystemExit(2)
+
+          PY
+          python -m py_compile "$RUNNER_TEMP/build_dream_4d_rgb_cmy_ai_atlas.py"
+
+      - name: Build the self-describing 4D RGB-CMY codebase image
+        shell: bash
+        env:
+          MAXIMUM_DIMENSION: ${{ inputs.maximum_dimension }}
+        run: |
+          set -euo pipefail
+          rm -rf "$GITHUB_WORKSPACE/dream-4d-output"
+          mkdir -p "$GITHUB_WORKSPACE/dream-4d-output"
+
+          python "$RUNNER_TEMP/build_dream_4d_rgb_cmy_ai_atlas.py" \
+            --root "$GITHUB_WORKSPACE" \
+            --output "$GITHUB_WORKSPACE/dream-4d-output/DREAM_4D_RGB_CMY_CODEBASE_MANIFOLD.png" \
+            --maximum-dimension "$MAXIMUM_DIMENSION" \
+            | tee "$RUNNER_TEMP/dream-4d-build.json"
+
+      - name: Reject blank or monochrome output
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$GITHUB_WORKSPACE/dream-4d-output/DREAM_4D_RGB_CMY_CODEBASE_MANIFOLD.png" <<'PY'
+          import sys
+          from pathlib import Path
+          from PIL import Image, ImageStat
+
+          path = Path(sys.argv[1])
+          image = Image.open(path).convert("RGB")
+          if image.width < 256 or image.height < 256:
+              raise SystemExit("atlas is unexpectedly small")
+
+          sample = image.resize((256, 256), Image.Resampling.NEAREST)
+          colors = sample.getcolors(maxcolors=256 * 256)
+          if colors is None or len(colors) < 64:
+              raise SystemExit("atlas does not contain enough visible RGB-CMY variation")
+
+          deviation = ImageStat.Stat(sample).stddev
+          if max(deviation) < 18.0:
+              raise SystemExit("atlas is effectively blank or monochrome")
+
+          print({
+              "width": image.width,
+              "height": image.height,
+              "sampleColors": len(colors),
+              "channelStdDev": deviation,
+          })
+          PY
+
+      - name: Upload the single image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DREAM_4D_RGB_CMY_CODEBASE_MANIFOLD
+          path: dream-4d-output/DREAM_4D_RGB_CMY_CODEBASE_MANIFOLD.png
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
