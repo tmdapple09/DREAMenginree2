@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T11:23:29.036Z",
+  "generatedAt": "2026-07-24T11:25:47.604Z",
   "root": ".",
   "nodes": [
     {
@@ -3022,10 +3022,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream_4d_utf16_application_color_manifold.yml",
-      "label": "dream_4d_utf16_application_color_manifold.yml",
+      "id": "file:.github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold.yml",
+      "label": "dream_ai_native_4d_rgb_cmy_application_manifold.yml",
       "type": "config",
-      "path": ".github/workflows/dream_4d_utf16_application_color_manifold.yml",
+      "path": ".github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
