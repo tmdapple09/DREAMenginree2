@@ -139,7 +139,6 @@ jobs:
             if (!hasRealPosition(node)) return null;
             const start = node.getStart(sourceFile, false);
             const end   = node.getEnd();
-            // ts-morph nodes provide getLineAndColumnAtPos (1‑based)
             const loc = sourceFile.getLineAndColumnAtPos(start);
             return { start, end, line: loc.line, column: loc.column };
           }
@@ -618,7 +617,7 @@ jobs:
               transitions: cfg.edges,
               calls: calls.sort((a, b) => a.id.localeCompare(b.id, "en")),
               unresolvedSemantics: unresolved.sort((a, b) =>
-                `${a.kind}:${a.source.start}`.localeCompare(`${b.kind}:${b.source.start}`, "en")
+                `${a.kind}:${a.source?.start ?? "nosource"}`.localeCompare(`${b.kind}:${b.source?.start ?? "nosource"}`, "en")
               )
             };
           }
@@ -694,10 +693,11 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Serialization
+          //  Serialization (FIXED undefined)
           // -----------------------------------------------------------------
           function stableSerialize(value: any): string {
-            if (value === null || typeof value !== "object") return JSON.stringify(value);
+            if (value === undefined || value === null) return "null";
+            if (typeof value !== "object") return JSON.stringify(value);
             if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
             const keys = Object.keys(value).sort((a, b) => a.localeCompare(b, "en"));
             return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
