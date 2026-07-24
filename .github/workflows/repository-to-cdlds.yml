@@ -35,7 +35,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install project dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile   # ensures exact lockfile versions
 
       - name: Generate and run CDLDS transformer
         shell: bash
@@ -49,12 +49,12 @@ jobs:
           import * as crypto from "node:crypto";
 
           const workspace = process.env.GITHUB_WORKSPACE!;
-          const sourceRoot = workspace;                     // repo is checked out at root
+          const sourceRoot = workspace;
           const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
 
-          // -------------------------------------------------------------------------
-          //  File discovery
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  File discovery  (unchanged)
+          // -----------------------------------------------------------------
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
           ]);
@@ -77,24 +77,19 @@ jobs:
           function normalizeRelativePath(filePath: string): string {
             return path.relative(sourceRoot, filePath).split(path.sep).join("/");
           }
-
           function sha256(value: string | Buffer): string {
             return crypto.createHash("sha256").update(value).digest("hex");
           }
-
           function stableId(prefix: string, ...parts: string[]): string {
             return `${prefix}_${sha256(parts.join("\u0000")).slice(0, 20)}`;
           }
-
           function isExcludedDirectory(name: string): boolean {
             return excludedDirectoryNames.has(name.toLowerCase());
           }
-
           function isExcludedFile(relativePath: string): boolean {
             const basename = path.basename(relativePath);
             return excludedFilenamePatterns.some(p => p.test(basename));
           }
-
           function discoverFiles(directory: string): string[] {
             const discovered: string[] = [];
             function walk(currentDirectory: string) {
@@ -116,7 +111,6 @@ jobs:
             walk(directory);
             return discovered.sort((a, b) => normalizeRelativePath(a).localeCompare(normalizeRelativePath(b), "en"));
           }
-
           function scriptKindForFile(filePath: string): ts.ScriptKind {
             switch (path.extname(filePath).toLowerCase()) {
               case ".ts":  return ts.ScriptKind.TS;
@@ -127,9 +121,9 @@ jobs:
             }
           }
 
-          // -------------------------------------------------------------------------
-          //  Position / source helpers  (FIX 1 already applied)
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  Position & source helpers  (ROBUST sourceText)
+          // -----------------------------------------------------------------
           function hasRealPosition(node: any): boolean {
             return Boolean(
               node &&
@@ -139,7 +133,6 @@ jobs:
               node.end >= node.pos
             );
           }
-
           function positionOf(sourceFile: any, node: any): {
             start: number; end: number; line: number; column: number;
           } | null {
@@ -150,17 +143,26 @@ jobs:
             return { start, end, line: loc.line + 1, column: loc.character + 1 };
           }
 
+          // ---------- FIXED: sourceText now handles invalid nodes ----------
           function sourceText(sourceFile: any, node: any, maxLen = 500): string {
             if (!node) return "";
             let text: string;
-            if (hasRealPosition(node)) {
+            // If the node is obviously malformed, don't try to print
+            if (!hasRealPosition(node) && (node.kind === ts.SyntaxKind.Unknown || node.kind == null)) {
+              text = `[unprintable:${syntaxName(node)}]`;
+            } else if (hasRealPosition(node)) {
               text = node.getText(sourceFile);
             } else {
-              const printer = ts.createPrinter({
-                newLine: ts.NewLineKind.LineFeed,
-                removeComments: false
-              });
-              text = printer.printNode(ts.EmitHint.Unspecified, node, sourceFile);
+              // Synthetic node – try to print, but guard against printer crashes
+              try {
+                const printer = ts.createPrinter({
+                  newLine: ts.NewLineKind.LineFeed,
+                  removeComments: false
+                });
+                text = printer.printNode(ts.EmitHint.Unspecified, node, sourceFile);
+              } catch (printerError) {
+                text = `[unprintable:${syntaxName(node)}]`;
+              }
             }
             text = text.replace(/\r\n/g, "\n").trim();
             return text.length <= maxLen ? text : `${text.slice(0, maxLen)}…`;
@@ -170,22 +172,18 @@ jobs:
             return (ts as any).SyntaxKind[node.kind] ?? `SyntaxKind${node.kind}`;
           }
 
-          // -------------------------------------------------------------------------
-          //  Data collectors
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  Data collectors (unchanged, but using ts.SyntaxKind where needed)
+          // -----------------------------------------------------------------
           function collectBindingNames(nameNode: any, names: Set<string>) {
             if (!nameNode) return;
-            if (Node.isIdentifier(nameNode)) {
-              names.add(nameNode.text);
-              return;
-            }
+            if (Node.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
             if (Node.isObjectBindingPattern(nameNode) || Node.isArrayBindingPattern(nameNode)) {
               for (const element of nameNode.elements) {
                 if (Node.isBindingElement(element)) collectBindingNames(element.name, names);
               }
             }
           }
-
           function collectIdentifiers(node: any, sourceFile: any): string[] {
             const ids = new Set<string>();
             function visit(n: any) {
@@ -195,7 +193,6 @@ jobs:
             visit(node);
             return [...ids].sort((a, b) => a.localeCompare(b, "en"));
           }
-
           function collectDefinitions(node: any): string[] {
             const defs = new Set<string>();
             if (Node.isVariableDeclaration(node)) collectBindingNames(node.name, defs);
@@ -206,7 +203,6 @@ jobs:
             ) {
               if (node.name) defs.add(node.name.getText());
             }
-            // Fixed: use ts.SyntaxKind
             if (Node.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
               if (Node.isIdentifier(node.left)) defs.add(node.left.text);
             }
@@ -215,7 +211,6 @@ jobs:
             }
             return [...defs].sort((a, b) => a.localeCompare(b, "en"));
           }
-
           function collectEffects(node: any, sourceFile: any): any[] {
             const effects: any[] = [];
             if (Node.isCallExpression(node)) effects.push({
@@ -254,9 +249,9 @@ jobs:
             return effects;
           }
 
-          // -------------------------------------------------------------------------
-          //  CFGBuilder (unchanged from the working version)
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  CFGBuilder  (unchanged)
+          // -----------------------------------------------------------------
           class CFGBuilder {
             sourceFile: any;
             functionId: string;
@@ -481,9 +476,9 @@ jobs:
             }
           }
 
-          // -------------------------------------------------------------------------
-          //  Function analysis
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  Function analysis  (unchanged)
+          // -----------------------------------------------------------------
           function functionName(node: any, sourceFile: any): string {
             if (node.name && Node.isIdentifier(node.name)) return node.name.text;
             if (node.parent && Node.isVariableDeclaration(node.parent) && Node.isIdentifier(node.parent.name))
@@ -499,7 +494,6 @@ jobs:
             const loc = positionOf(sourceFile, node);
             return `anonymous_${loc!.line}_${loc!.column}`;
           }
-
           function isFunctionLike(node: any): boolean {
             return (
               Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) ||
@@ -508,7 +502,6 @@ jobs:
               Node.isSetAccessorDeclaration(node)
             );
           }
-
           function analyzeFunction(node: any, sourceFile: any, relativePath: string): any {
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
@@ -542,7 +535,6 @@ jobs:
             } else if (Node.isBlock(body)) {
               cfg = new CFGBuilder(sourceFile, id).build(body);
             } else {
-              // expression‑bodied function
               const builder = new CFGBuilder(sourceFile, id);
               const entry = builder.addNode("entry");
               const exprState = builder.addNode("expression-return", body, {
@@ -623,9 +615,9 @@ jobs:
             };
           }
 
-          // -------------------------------------------------------------------------
-          //  File‑level analysis
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
+          //  File analysis  (unchanged)
+          // -----------------------------------------------------------------
           function analyzeFile(filePath: string): any {
             const originalBytes = fs.readFileSync(filePath);
             const source = originalBytes.toString("utf8");
@@ -693,16 +685,12 @@ jobs:
             };
           }
 
-          // -------------------------------------------------------------------------
-          //  Serialisation
-          // -------------------------------------------------------------------------
           function stableSerialize(value: any): string {
             if (value === null || typeof value !== "object") return JSON.stringify(value);
             if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
             const keys = Object.keys(value).sort((a, b) => a.localeCompare(b, "en"));
             return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
           }
-
           function renderTransformedModule(model: any, extension: string): string {
             const serialized = stableSerialize(model);
             const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
@@ -720,9 +708,9 @@ jobs:
             return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
           }
 
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
           //  Main
-          // -------------------------------------------------------------------------
+          // -----------------------------------------------------------------
           fs.rmSync(outputRoot, { recursive: true, force: true });
           fs.mkdirSync(outputRoot, { recursive: true });
           const sourceFiles = discoverFiles(sourceRoot);
@@ -747,7 +735,6 @@ jobs:
           const manifestText = manifestEntries.map(e =>
             `${e.transformedSha256}  ${e.path}  systems=${e.systems}  diagnostics=${e.diagnostics}  original=${e.originalSha256}`
           ).join("\n").concat("\n");
-          // Fixed: manifest always goes to build/CDLDS_MANIFEST.txt at workspace root
           fs.writeFileSync(path.join(workspace, "build", "CDLDS_MANIFEST.txt"), manifestText, "utf8");
           console.log(`Transformed ${sourceFiles.length} application source files.`);
           SCRIPT
@@ -757,7 +744,6 @@ jobs:
       - name: Create deterministic ZIP of transformed application
         run: |
           set -euo pipefail
-          # Use absolute paths to avoid confusion after cd
           ZIP_PATH="$GITHUB_WORKSPACE/build/transformed-cdlds-application.zip"
           mkdir -p "$GITHUB_WORKSPACE/build"
           rm -f "$ZIP_PATH"
