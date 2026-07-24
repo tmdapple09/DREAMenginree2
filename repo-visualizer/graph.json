@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T03:57:05.968Z",
+  "generatedAt": "2026-07-24T04:09:16.093Z",
   "root": ".",
   "nodes": [
     {
@@ -3022,6 +3022,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/dream_4d_ai_source_manifold_no_binaries.yml",
+      "label": "dream_4d_ai_source_manifold_no_binaries.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_4d_ai_source_manifold_no_binaries.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/dream_equation_codebase_field.yml",
       "label": "dream_equation_codebase_field.yml",
       "type": "config",
@@ -3046,16 +3056,6 @@
       "label": "dream_equation_rgb_cmy_codebase_atlas.yml",
       "type": "config",
       "path": ".github/workflows/dream_equation_rgb_cmy_codebase_atlas.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/dream_exact_4d_ai_codebase_manifold 2.yml",
-      "label": "dream_exact_4d_ai_codebase_manifold 2.yml",
-      "type": "config",
-      "path": ".github/workflows/dream_exact_4d_ai_codebase_manifold 2.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
