@@ -1,5 +1,5 @@
-name: DREAM AI-Native 4D RGB-CMY Application Manifold
-run-name: DREAM AI-Native 4D RGB-CMY Application Manifold
+name: DREAM AI-Native 4D RGB-CMY Application Manifold v8
+run-name: DREAM AI-Native 4D RGB-CMY Application Manifold v8
 
 "on":
   workflow_dispatch:
@@ -8,13 +8,16 @@ permissions:
   contents: read
 
 concurrency:
-  group: dream-ai-native-4d-rgb-cmy-${{ github.ref }}
+  group: dream-ai-native-4d-rgb-cmy-v8-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build-ai-native-manifold:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 90
+
+    env:
+      PYTHONUNBUFFERED: "1"
 
     steps:
       - name: Checkout tracked repository
@@ -37,11 +40,11 @@ jobs:
             "Pillow>=10,<13" \
             "numpy>=2,<3"
 
-      - name: Write the AI-native manifold builder
+      - name: Write and compile the v8 builder
         shell: bash
         run: |
           set -euo pipefail
-          cat > "$RUNNER_TEMP/build_dream_ai_manifold.py" <<'PY'
+          cat > "$RUNNER_TEMP/build_dream_v8.py" <<'PY'
           #!/usr/bin/env python3
           from __future__ import annotations
 
@@ -55,6 +58,8 @@ jobs:
           import struct
           import subprocess
           import sys
+          import tempfile
+          import time
           import zlib
           from dataclasses import dataclass
           from pathlib import Path, PurePosixPath
@@ -64,6 +69,9 @@ jobs:
 
           WIDTH = 4284
           HEIGHT = 5712
+          LOW_SCALE = 4
+          LOW_WIDTH = WIDTH // LOW_SCALE
+          LOW_HEIGHT = HEIGHT // LOW_SCALE
           GRID_COLUMNS = 17
           GRID_ROWS = 23
           PITCH = 248
@@ -71,7 +79,12 @@ jobs:
           LEFT_MARGIN = (WIDTH - GRID_COLUMNS * PITCH) // 2
           TOP_MARGIN = (HEIGHT - GRID_ROWS * PITCH) // 2
           TOTAL_SLOTS = GRID_COLUMNS * GRID_ROWS
-          CALIBRATION_SLOTS = (0, GRID_COLUMNS - 1, TOTAL_SLOTS - GRID_COLUMNS, TOTAL_SLOTS - 1)
+          CALIBRATION_SLOTS = (
+              0,
+              GRID_COLUMNS - 1,
+              TOTAL_SLOTS - GRID_COLUMNS,
+              TOTAL_SLOTS - 1,
+          )
           DATA_BLOCKS_MAX = TOTAL_SLOTS - len(CALIBRATION_SLOTS)
 
           HEADER_X = 4
@@ -79,8 +92,7 @@ jobs:
           HEADER_CELL = 4
           HEADER_COLUMNS = 58
           HEADER_ROWS = 6
-          HEADER_PAIR_CAPACITY = HEADER_COLUMNS * HEADER_ROWS
-          HEADER_BYTE_CAPACITY = HEADER_PAIR_CAPACITY * 2
+          HEADER_BYTE_CAPACITY = HEADER_COLUMNS * HEADER_ROWS * 2
 
           P2_DATA_WIDTH = 208
           P2_DATA_HEIGHT = 192
@@ -103,7 +115,7 @@ jobs:
           P0_X = 4
           P0_Y = 30
 
-          PACKET_MAGIC = b"DREAM4D6\n"
+          PACKET_MAGIC = b"DREAM4D8\n"
           PACKET_PREFIX = struct.Struct(">9sQ")
           AFFINE_MULTIPLIER = 197
           AFFINE_OFFSET = 101
@@ -111,51 +123,129 @@ jobs:
           PARITY_XOR = 0xA5
 
           GOLDEN_ANGLE = math.pi / 5.0
-          OMEGA = complex(math.cos(GOLDEN_ANGLE), math.sin(GOLDEN_ANGLE))
-          PHI = float((OMEGA + OMEGA.conjugate()).real)
-          GOLDEN_N = float((PHI + math.sqrt(PHI * PHI + 4.0)) / 2.0)
-          IDENTITY_RESIDUAL = abs(GOLDEN_N - 1.0 / GOLDEN_N - PHI)
+          OMEGA = complex(
+              math.cos(GOLDEN_ANGLE),
+              math.sin(GOLDEN_ANGLE),
+          )
+          PHI = float(
+              (OMEGA + OMEGA.conjugate()).real
+          )
+          GOLDEN_N = float(
+              (
+                  PHI
+                  + math.sqrt(PHI * PHI + 4.0)
+              )
+              / 2.0
+          )
+          IDENTITY_RESIDUAL = abs(
+              GOLDEN_N - 1.0 / GOLDEN_N - PHI
+          )
+
           if IDENTITY_RESIDUAL > 1.0e-12:
-              raise RuntimeError("golden identity invariant failed")
+              raise RuntimeError(
+                  "golden identity invariant failed"
+              )
 
           APPLICATION_EXTENSIONS = {
-              ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
-              ".css", ".scss", ".sass", ".less",
-              ".html", ".htm", ".vue", ".svelte", ".astro",
-              ".graphql", ".gql", ".prisma",
+              ".ts",
+              ".tsx",
+              ".js",
+              ".jsx",
+              ".mjs",
+              ".cjs",
+              ".css",
+              ".scss",
+              ".sass",
+              ".less",
+              ".html",
+              ".htm",
+              ".vue",
+              ".svelte",
+              ".astro",
+              ".graphql",
+              ".gql",
+              ".prisma",
           }
 
           EXCLUDED_DIRECTORIES = {
-              ".git", ".github", ".circleci", ".husky", ".vscode", ".idea",
-              "ci", "cd", "docs", "doc", "documentation",
-              "test", "tests", "__tests__", "spec", "specs", "e2e",
-              "cypress", "playwright", "fixtures", "mocks", "stories", "storybook",
-              "coverage", "dist", "build", "out", ".next", "node_modules", "vendor",
-              "generated", "public", "scripts", "tools", "bench", "benchmarks",
-              "examples", "example", "tmp", "temp", ".cache", "cache",
+              ".git",
+              ".github",
+              ".circleci",
+              ".husky",
+              ".vscode",
+              ".idea",
+              "ci",
+              "cd",
+              "docs",
+              "doc",
+              "documentation",
+              "test",
+              "tests",
+              "__tests__",
+              "spec",
+              "specs",
+              "e2e",
+              "cypress",
+              "playwright",
+              "fixtures",
+              "mocks",
+              "stories",
+              "storybook",
+              "coverage",
+              "dist",
+              "build",
+              "out",
+              ".next",
+              "node_modules",
+              "vendor",
+              "generated",
+              "public",
+              "scripts",
+              "tools",
+              "bench",
+              "benchmarks",
+              "examples",
+              "example",
+              "tmp",
+              "temp",
+              ".cache",
+              "cache",
           }
 
-          EXCLUDED_NAME_PATTERNS = (
-              r"\.test\.", r"\.spec\.", r"\.stories?\.", r"\.story\.",
-              r"\.mock\.", r"\.fixture\.", r"\.bench(mark)?\.",
-              r"\.config\.", r"\.setup\.", r"\.min\.", r"\.bundle\.",
+          EXCLUDED_NAME_REGEXES = tuple(
+              re.compile(pattern, re.IGNORECASE)
+              for pattern in (
+                  r"\.test\.",
+                  r"\.spec\.",
+                  r"\.stories?\.",
+                  r"\.story\.",
+                  r"\.mock\.",
+                  r"\.fixture\.",
+                  r"\.bench(mark)?\.",
+                  r"\.config\.",
+                  r"\.setup\.",
+                  r"\.min\.",
+                  r"\.bundle\.",
+              )
           )
-          EXCLUDED_NAME_REGEXES = tuple(re.compile(pattern, re.IGNORECASE) for pattern in EXCLUDED_NAME_PATTERNS)
 
-          IMPORT_PATTERNS = (
-              re.compile(r"(?:import|export)\s+(?:[^'\"]+?\s+from\s+)?['\"]([^'\"]+)['\"]"),
-              re.compile(r"require\(\s*['\"]([^'\"]+)['\"]\s*\)"),
-              re.compile(r"import\(\s*['\"]([^'\"]+)['\"]\s*\)"),
+          IMPORT_LINE = re.compile(
+              r"(?:from\s+|import\s*\(\s*|require\s*\(\s*|"
+              r"import\s+[^;\n]*?from\s+)[\"']([^\"']+)[\"']"
           )
 
-          KEYWORDS = {
-              "break", "case", "catch", "class", "const", "continue", "debugger", "default",
-              "delete", "do", "else", "export", "extends", "finally", "for", "function",
-              "if", "import", "in", "instanceof", "let", "new", "return", "super", "switch",
-              "this", "throw", "try", "typeof", "var", "void", "while", "with", "yield",
-              "interface", "type", "enum", "implements", "private", "protected", "public",
-              "readonly", "abstract", "as", "async", "await", "declare", "namespace", "module",
-          }
+          CHANNEL_PERMUTATIONS = (
+              (0, 1, 2),
+              (0, 2, 1),
+              (1, 0, 2),
+              (1, 2, 0),
+              (2, 0, 1),
+              (2, 1, 0),
+          )
+
+
+          class ManifoldError(RuntimeError):
+              pass
 
 
           @dataclass
@@ -184,8 +274,15 @@ jobs:
               slot: int = -1
 
 
-          class ManifoldError(RuntimeError):
-              pass
+          def now() -> str:
+              return time.strftime("%H:%M:%S")
+
+
+          def log(message: str) -> None:
+              print(
+                  f"[{now()}] {message}",
+                  flush=True,
+              )
 
 
           def sha256_hex(data: bytes) -> str:
@@ -194,253 +291,622 @@ jobs:
 
           def tracked_paths(root: Path) -> list[str]:
               result = subprocess.run(
-                  ["git", "-C", str(root), "ls-files", "-z", "--recurse-submodules"],
+                  [
+                      "git",
+                      "-C",
+                      str(root),
+                      "ls-files",
+                      "-z",
+                      "--recurse-submodules",
+                  ],
                   check=True,
                   stdout=subprocess.PIPE,
               )
+
               paths = sorted(
                   set(
-                      item.decode("utf-8", "surrogateescape")
-                      for item in result.stdout.split(b"\0")
+                      item.decode(
+                          "utf-8",
+                          "surrogateescape",
+                      )
+                      for item
+                      in result.stdout.split(b"\0")
                       if item
                   )
               )
+
               if not paths:
-                  raise ManifoldError("git reported no tracked paths")
+                  raise ManifoldError(
+                      "git reported no tracked paths"
+                  )
+
               return paths
 
 
-          def should_include(relative: PurePosixPath) -> tuple[bool, str]:
+          def should_include(
+              relative: PurePosixPath,
+          ) -> tuple[bool, str]:
               for part in relative.parts[:-1]:
                   if part.lower() in EXCLUDED_DIRECTORIES:
-                      return False, f"excluded-directory:{part}"
+                      return (
+                          False,
+                          f"excluded-directory:{part}",
+                      )
 
-              lower_name = relative.name.lower()
-              if any(regex.search(lower_name) for regex in EXCLUDED_NAME_REGEXES):
-                  return False, f"excluded-name:{relative.name}"
+              if any(
+                  regex.search(
+                      relative.name.lower()
+                  )
+                  for regex
+                  in EXCLUDED_NAME_REGEXES
+              ):
+                  return (
+                      False,
+                      f"excluded-name:{relative.name}",
+                  )
 
-              if relative.suffix.lower() not in APPLICATION_EXTENSIONS:
-                  return False, f"excluded-extension:{relative.suffix or '(none)'}"
+              if (
+                  relative.suffix.lower()
+                  not in APPLICATION_EXTENSIONS
+              ):
+                  return (
+                      False,
+                      "excluded-extension:"
+                      f"{relative.suffix or '(none)'}",
+                  )
 
               return True, "application-source"
 
 
-          def token_histogram(raw: bytes) -> dict[str, int]:
-              text = raw.decode("utf-8", "surrogateescape")
-              counts = {
-                  "whitespace": 0,
-                  "identifier": 0,
-                  "keyword": 0,
-                  "number": 0,
-                  "string": 0,
-                  "comment": 0,
-                  "operator": 0,
-                  "delimiter": 0,
-                  "other": 0,
-              }
-
-              token_pattern = re.compile(
-                  r"//[^\n]*|/\*[\s\S]*?\*/|`(?:\\.|[^`])*`|'(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"|"
-                  r"\b\d+(?:\.\d+)?\b|\b[A-Za-z_$][A-Za-z0-9_$]*\b|\s+|"
-                  r"===|!==|=>|==|!=|<=|>=|\+\+|--|&&|\|\||\?\?|\?\.|[+\-*/%=&|^~!<>?:]+|[{}\[\](),.;]"
+          def fast_token_histogram(
+              raw: bytes,
+          ) -> dict[str, int]:
+              values = np.frombuffer(
+                  raw,
+                  dtype=np.uint8,
               )
 
-              for match in token_pattern.finditer(text):
-                  token = match.group(0)
-                  if token.isspace():
-                      counts["whitespace"] += len(token)
-                  elif token.startswith("//") or token.startswith("/*"):
-                      counts["comment"] += len(token)
-                  elif token[0:1] in {"'", '"', "`"}:
-                      counts["string"] += len(token)
-                  elif re.fullmatch(r"\d+(?:\.\d+)?", token):
-                      counts["number"] += len(token)
-                  elif re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", token):
-                      counts["keyword" if token in KEYWORDS else "identifier"] += len(token)
-                  elif re.fullmatch(r"[{}\[\](),.;]", token):
-                      counts["delimiter"] += len(token)
-                  elif re.fullmatch(r"[+\-*/%=&|^~!<>?:]+", token):
-                      counts["operator"] += len(token)
-                  else:
-                      counts["other"] += len(token)
+              if values.size == 0:
+                  return {
+                      key: 0
+                      for key in (
+                          "whitespace",
+                          "identifier",
+                          "number",
+                          "quote",
+                          "operator",
+                          "delimiter",
+                          "other",
+                      )
+                  }
 
-              covered = sum(counts.values())
-              if covered < len(text):
-                  counts["other"] += len(text) - covered
-              return counts
+              whitespace = int(
+                  np.count_nonzero(
+                      np.isin(
+                          values,
+                          np.array(
+                              [9, 10, 13, 32],
+                              dtype=np.uint8,
+                          ),
+                      )
+                  )
+              )
+
+              letters = int(
+                  np.count_nonzero(
+                      (
+                          (values >= 65)
+                          & (values <= 90)
+                      )
+                      | (
+                          (values >= 97)
+                          & (values <= 122)
+                      )
+                      | (values == 95)
+                      | (values == 36)
+                  )
+              )
+
+              numbers = int(
+                  np.count_nonzero(
+                      (values >= 48)
+                      & (values <= 57)
+                  )
+              )
+
+              quotes = int(
+                  np.count_nonzero(
+                      np.isin(
+                          values,
+                          np.array(
+                              [34, 39, 96],
+                              dtype=np.uint8,
+                          ),
+                      )
+                  )
+              )
+
+              operators = int(
+                  np.count_nonzero(
+                      np.isin(
+                          values,
+                          np.frombuffer(
+                              b"+-*/%=&|^~!<>?:",
+                              dtype=np.uint8,
+                          ),
+                      )
+                  )
+              )
+
+              delimiters = int(
+                  np.count_nonzero(
+                      np.isin(
+                          values,
+                          np.frombuffer(
+                              b"{}[](),.;",
+                              dtype=np.uint8,
+                          ),
+                      )
+                  )
+              )
+
+              other = (
+                  int(values.size)
+                  - whitespace
+                  - letters
+                  - numbers
+                  - quotes
+                  - operators
+                  - delimiters
+              )
+
+              return {
+                  "whitespace": whitespace,
+                  "identifier": letters,
+                  "number": numbers,
+                  "quote": quotes,
+                  "operator": operators,
+                  "delimiter": delimiters,
+                  "other": max(0, other),
+              }
 
 
-          def resolve_imports(files: list[SourceFile]) -> None:
-              path_to_id = {file.path: file.id for file in files}
-              available = set(path_to_id)
+          def resolve_imports(
+              files: list[SourceFile],
+          ) -> None:
+              path_to_id = {
+                  file.path: file.id
+                  for file in files
+              }
 
-              def candidates(base: PurePosixPath, specifier: str) -> list[str]:
+              extensions = tuple(
+                  sorted(APPLICATION_EXTENSIONS)
+              )
+
+              def candidates(
+                  base: PurePosixPath,
+                  specifier: str,
+              ):
                   if not specifier.startswith("."):
-                      return []
-                  joined = base.parent.joinpath(PurePosixPath(specifier))
-                  normalized_parts: list[str] = []
-                  for part in joined.parts:
+                      return
+
+                  parts: list[str] = []
+
+                  for part in (
+                      base.parent
+                      .joinpath(
+                          PurePosixPath(specifier)
+                      )
+                      .parts
+                  ):
                       if part in {"", "."}:
                           continue
-                      if part == "..":
-                          if normalized_parts:
-                              normalized_parts.pop()
-                          continue
-                      normalized_parts.append(part)
-                  normalized = PurePosixPath(*normalized_parts)
-                  output = [normalized.as_posix()]
-                  if normalized.suffix:
-                      return output
-                  for extension in sorted(APPLICATION_EXTENSIONS):
-                      output.append(normalized.with_suffix(extension).as_posix())
-                  for extension in sorted(APPLICATION_EXTENSIONS):
-                      output.append(normalized.joinpath("index" + extension).as_posix())
-                  return output
 
-              for file in files:
-                  text = file.raw.decode("utf-8", "surrogateescape")
+                      if part == "..":
+                          if parts:
+                              parts.pop()
+                      else:
+                          parts.append(part)
+
+                  normalized = PurePosixPath(*parts)
+
+                  if normalized.suffix:
+                      yield normalized.as_posix()
+                      return
+
+                  for extension in extensions:
+                      yield (
+                          normalized
+                          .with_suffix(extension)
+                          .as_posix()
+                      )
+
+                  for extension in extensions:
+                      yield (
+                          normalized
+                          .joinpath(
+                              "index" + extension
+                          )
+                          .as_posix()
+                      )
+
+              for index, file in enumerate(
+                  files,
+                  start=1,
+              ):
+                  text = file.raw.decode(
+                      "utf-8",
+                      "surrogateescape",
+                  )
+
                   found: set[int] = set()
-                  for pattern in IMPORT_PATTERNS:
-                      for specifier in pattern.findall(text):
-                          for candidate in candidates(PurePosixPath(file.path), specifier):
-                              if candidate in available:
-                                  found.add(path_to_id[candidate])
-                                  break
+
+                  for line in text.splitlines():
+                      if (
+                          "import" not in line
+                          and "require" not in line
+                          and "from" not in line
+                      ):
+                          continue
+
+                      match = IMPORT_LINE.search(
+                          line[:4096]
+                      )
+
+                      if not match:
+                          continue
+
+                      options = candidates(
+                          PurePosixPath(file.path),
+                          match.group(1),
+                      )
+
+                      for candidate in options or ():
+                          target = path_to_id.get(
+                              candidate
+                          )
+
+                          if target is not None:
+                              found.add(target)
+                              break
+
                   file.imports = sorted(found)
 
+                  if index % 500 == 0:
+                      log(
+                          "resolved imports for "
+                          f"{index}/{len(files)} files"
+                      )
 
-          def collect_sources(root: Path) -> tuple[list[SourceFile], list[dict]]:
+
+          def collect_sources(
+              root: Path,
+          ) -> tuple[
+              list[SourceFile],
+              list[dict],
+          ]:
               files: list[SourceFile] = []
               skipped: list[dict] = []
 
-              for relative_text in tracked_paths(root):
-                  relative = PurePosixPath(relative_text)
-                  include, reason = should_include(relative)
-                  absolute = root.joinpath(*relative.parts)
+              paths = tracked_paths(root)
+
+              log(
+                  f"git returned {len(paths)} "
+                  "tracked paths"
+              )
+
+              for index, relative_text in enumerate(
+                  paths,
+                  start=1,
+              ):
+                  relative = PurePosixPath(
+                      relative_text
+                  )
+
+                  include, reason = should_include(
+                      relative
+                  )
+
+                  absolute = root.joinpath(
+                      *relative.parts
+                  )
 
                   if not include:
-                      skipped.append({"path": relative.as_posix(), "reason": reason})
+                      skipped.append(
+                          {
+                              "path": (
+                                  relative.as_posix()
+                              ),
+                              "reason": reason,
+                          }
+                      )
                       continue
 
                   metadata = os.lstat(absolute)
-                  if not stat.S_ISREG(metadata.st_mode):
-                      skipped.append({"path": relative.as_posix(), "reason": "non-regular"})
+
+                  if not stat.S_ISREG(
+                      metadata.st_mode
+                  ):
+                      skipped.append(
+                          {
+                              "path": (
+                                  relative.as_posix()
+                              ),
+                              "reason": "non-regular",
+                          }
+                      )
                       continue
 
                   raw = absolute.read_bytes()
+
                   files.append(
                       SourceFile(
                           id=len(files),
                           path=relative.as_posix(),
                           raw=raw,
-                          mode=stat.S_IMODE(metadata.st_mode),
+                          mode=stat.S_IMODE(
+                              metadata.st_mode
+                          ),
                           sha256=sha256_hex(raw),
                           imports=[],
-                          token_histogram=token_histogram(raw),
+                          token_histogram=(
+                              fast_token_histogram(raw)
+                          ),
                       )
                   )
 
+                  if index % 1000 == 0:
+                      log(
+                          f"scanned {index}/"
+                          f"{len(paths)} tracked paths"
+                      )
+
               if not files:
-                  raise ManifoldError("no application source files matched the filter")
+                  raise ManifoldError(
+                      "no application source files "
+                      "matched the filter"
+                  )
+
+              log(
+                  f"included {len(files)} "
+                  "application files; excluded "
+                  f"{len(skipped)} tracked paths"
+              )
 
               resolve_imports(files)
+
               return files, skipped
 
 
-          def capacity_bytes(mode: str) -> int:
+          def mode_dimensions(mode: str):
               if mode == "P2":
-                  units = P2_DATA_WIDTH * P2_DATA_HEIGHT
-              elif mode == "PR":
-                  units = PR_DATA_WIDTH * PR_DATA_HEIGHT
-              elif mode == "P0":
-                  units = P0_DATA_WIDTH * P0_DATA_HEIGHT
-              else:
-                  raise ValueError(mode)
-              return units * 2 * DATA_BLOCKS_MAX
+                  return (
+                      P2_DATA_WIDTH,
+                      P2_DATA_HEIGHT,
+                      P2_PHYSICAL_WIDTH,
+                      P2_PHYSICAL_HEIGHT,
+                      P2_X,
+                      P2_Y,
+                  )
+
+              if mode == "PR":
+                  return (
+                      PR_DATA_WIDTH,
+                      PR_DATA_HEIGHT,
+                      PR_PHYSICAL_WIDTH,
+                      PR_PHYSICAL_HEIGHT,
+                      PR_X,
+                      PR_Y,
+                  )
+
+              if mode == "P0":
+                  return (
+                      P0_DATA_WIDTH,
+                      P0_DATA_HEIGHT,
+                      P0_PHYSICAL_WIDTH,
+                      P0_PHYSICAL_HEIGHT,
+                      P0_X,
+                      P0_Y,
+                  )
+
+              raise ValueError(mode)
 
 
-          def build_manifest(files: list[SourceFile], mode: str, packet_offsets: bool) -> bytes:
+          def data_bytes_per_block(
+              mode: str,
+          ) -> int:
+              width, height, *_ = (
+                  mode_dimensions(mode)
+              )
+
+              return width * height * 2
+
+
+          def capacity_bytes(mode: str) -> int:
+              return (
+                  data_bytes_per_block(mode)
+                  * DATA_BLOCKS_MAX
+              )
+
+
+          def build_manifest(
+              files: list[SourceFile],
+              mode: str,
+              packet_offsets: bool,
+          ) -> bytes:
               manifest = {
-                  "format": "dream-4d-ai-native-rgb-cmy-manifold",
-                  "version": 6,
-                  "purpose": "Self-describing visual application-code archive for native-resolution AI analysis.",
+                  "format": (
+                      "dream-4d-ai-native-"
+                      "rgb-cmy-manifold"
+                  ),
+                  "version": 8,
                   "analysisOrder": [
-                      "global 4D file topology and dependency rays",
-                      "four repeated corner calibration blocks",
-                      "repeated medium-scale block headers and orientation signatures",
-                      "fine-scale two-byte color pixels with parity",
-                      "manifest and exact application files",
+                      (
+                          "global equation field "
+                          "and file topology"
+                      ),
+                      (
+                          "four corner calibration "
+                          "blocks"
+                      ),
+                      (
+                          "repeated block headers "
+                          "and orientation anchors"
+                      ),
+                      (
+                          "two-byte RGB pixels plus "
+                          "RGB/CMY parity"
+                      ),
+                      (
+                          "manifest and exact "
+                          "application files"
+                      ),
                   ],
                   "equation": {
                       "goldenAngle": GOLDEN_ANGLE,
                       "phi": PHI,
                       "n": GOLDEN_N,
-                      "identityResidual": IDENTITY_RESIDUAL,
+                      "identityResidual": (
+                          IDENTITY_RESIDUAL
+                      ),
                   },
                   "visualGrammar": {
-                      "canvas": [WIDTH, HEIGHT],
-                      "slotGrid": [GRID_COLUMNS, GRID_ROWS],
+                      "canvas": [
+                          WIDTH,
+                          HEIGHT,
+                      ],
+                      "slotGrid": [
+                          GRID_COLUMNS,
+                          GRID_ROWS,
+                      ],
                       "blockPixels": BLOCK_SIZE,
-                      "calibrationCorners": list(CALIBRATION_SLOTS),
-                      "pairPixel": "one pixel stores two ordered bytes",
-                      "map": "A(v)=(197*v+101) mod 256; R=A(first); G=A(second); B=A(first XOR second XOR A5)",
-                      "inverse": "v=13*(A(v)-101) mod 256",
-                      "headers": "4x4 cells; center color is primary; one-pixel frame is CMY complement; rotate block until D4AI6 or D4CAL6 is readable",
-                      "payload": "row-major primary pixels; parity pixels are CMY complements",
+                      "calibrationCorners": list(
+                          CALIBRATION_SLOTS
+                      ),
+                      "pairPixel": (
+                          "one primary RGB pixel "
+                          "stores two ordered bytes; "
+                          "blue is parity"
+                      ),
+                      "map": (
+                          "A(v)=(197*v+101) mod 256; "
+                          "R=A(first); G=A(second); "
+                          "B=A(first XOR second XOR A5)"
+                      ),
+                      "inverse": (
+                          "v=13*(A(v)-101) mod 256"
+                      ),
+                      "headers": (
+                          "4x4 RGB/CMY cells; rotate "
+                          "until D4AI8 or D4CAL8 is "
+                          "readable"
+                      ),
                       "modes": {
-                          "P2": "16x16 data groups with row, column, and group parity",
-                          "PR": "16-row groups with parity rows",
-                          "P0": "direct primary pixels without local parity",
+                          "P2": (
+                              "row+column parity"
+                          ),
+                          "PR": "row parity",
+                          "P0": "direct",
                       },
-                      "packet": "DREAM4D6 newline, unsigned big-endian 64-bit manifest length, UTF-8 JSON manifest, raw file bytes",
+                      "packet": (
+                          "DREAM4D8 newline, "
+                          "big-endian manifest length, "
+                          "JSON manifest, raw files"
+                      ),
                   },
                   "mode": mode,
-                  "capacityBytes": capacity_bytes(mode),
-                  "applicationExtensions": sorted(APPLICATION_EXTENSIONS),
-                  "excludedDirectories": sorted(EXCLUDED_DIRECTORIES),
-                  "excludedNamePatterns": list(EXCLUDED_NAME_PATTERNS),
+                  "capacityBytes": (
+                      capacity_bytes(mode)
+                  ),
                   "fileCount": len(files),
                   "files": [
                       {
                           "id": file.id,
                           "path": file.path,
                           "mode": file.mode,
-                          "packetOffset": file.packet_offset if packet_offsets else 0,
+                          "packetOffset": (
+                              file.packet_offset
+                              if packet_offsets
+                              else 0
+                          ),
                           "length": len(file.raw),
                           "sha256": file.sha256,
                           "imports": file.imports,
-                          "tokenHistogram": file.token_histogram,
+                          "tokenHistogram": (
+                              file.token_histogram
+                          ),
                       }
                       for file in files
                   ],
               }
+
               return json.dumps(
                   manifest,
                   ensure_ascii=False,
                   sort_keys=True,
                   separators=(",", ":"),
-              ).encode("utf-8", "surrogatepass")
+              ).encode(
+                  "utf-8",
+                  "surrogatepass",
+              )
 
 
-          def assemble_packet(files: list[SourceFile], mode: str) -> tuple[bytes, dict]:
-              provisional = build_manifest(files, mode, packet_offsets=False)
-              content_start = PACKET_PREFIX.size + len(provisional)
-              cursor = content_start
+          def assemble_packet(
+              files: list[SourceFile],
+              mode: str,
+          ):
+              provisional = build_manifest(
+                  files,
+                  mode,
+                  False,
+              )
+
+              cursor = (
+                  PACKET_PREFIX.size
+                  + len(provisional)
+              )
+
               for file in files:
                   file.packet_offset = cursor
                   cursor += len(file.raw)
 
-              manifest = build_manifest(files, mode, packet_offsets=True)
-              if len(manifest) != len(provisional):
-                  content_start = PACKET_PREFIX.size + len(manifest)
-                  cursor = content_start
+              manifest = build_manifest(
+                  files,
+                  mode,
+                  True,
+              )
+
+              for _ in range(2):
+                  cursor = (
+                      PACKET_PREFIX.size
+                      + len(manifest)
+                  )
+
                   for file in files:
                       file.packet_offset = cursor
                       cursor += len(file.raw)
-                  manifest = build_manifest(files, mode, packet_offsets=True)
 
-              packet = bytearray(PACKET_PREFIX.pack(PACKET_MAGIC, len(manifest)))
+                  updated = build_manifest(
+                      files,
+                      mode,
+                      True,
+                  )
+
+                  if len(updated) == len(manifest):
+                      manifest = updated
+                      break
+
+                  manifest = updated
+
+              packet = bytearray(
+                  PACKET_PREFIX.pack(
+                      PACKET_MAGIC,
+                      len(manifest),
+                  )
+              )
+
               packet.extend(manifest)
+
               for file in files:
                   packet.extend(file.raw)
 
@@ -453,137 +919,375 @@ jobs:
                   }
                   for file in files
               ]
+
               application_root = sha256_hex(
-                  json.dumps(descriptor, sort_keys=True, separators=(",", ":")).encode("utf-8")
+                  json.dumps(
+                      descriptor,
+                      sort_keys=True,
+                      separators=(",", ":"),
+                  ).encode("utf-8")
               )
+
               return bytes(packet), {
                   "manifestBytes": len(manifest),
                   "packetBytes": len(packet),
-                  "applicationRoot": application_root,
-                  "packetSha256": sha256_hex(packet),
+                  "applicationRoot": (
+                      application_root
+                  ),
+                  "packetSha256": (
+                      sha256_hex(packet)
+                  ),
               }
 
 
-          def choose_mode(files: list[SourceFile]) -> tuple[str, bytes, dict]:
-              for mode in ("P2", "PR", "P0"):
-                  packet, report = assemble_packet(files, mode)
-                  if len(packet) <= capacity_bytes(mode):
-                      return mode, packet, report
-              packet, report = assemble_packet(files, "P0")
+          def choose_mode(
+              files: list[SourceFile],
+          ):
+              for mode in (
+                  "P2",
+                  "PR",
+                  "P0",
+              ):
+                  packet, report = (
+                      assemble_packet(
+                          files,
+                          mode,
+                      )
+                  )
+
+                  log(
+                      f"mode {mode}: "
+                      f"packet={len(packet):,} "
+                      f"capacity="
+                      f"{capacity_bytes(mode):,}"
+                  )
+
+                  if (
+                      len(packet)
+                      <= capacity_bytes(mode)
+                  ):
+                      return (
+                          mode,
+                          packet,
+                          report,
+                      )
+
               raise ManifoldError(
-                  "application code exceeds the physical one-image capacity: "
-                  f"{len(packet)} bytes required; {capacity_bytes('P0')} bytes available"
+                  "application code exceeds "
+                  "one-image capacity"
               )
 
 
-          def map_byte(values: np.ndarray | int) -> np.ndarray | int:
-              return (np.asarray(values, dtype=np.uint16) * AFFINE_MULTIPLIER + AFFINE_OFFSET).astype(np.uint8)
+          def project_4d(
+              x4: float,
+              y4: float,
+              z4: float,
+              w4: float,
+          ):
+              d4 = max(
+                  0.48,
+                  2.28 - w4,
+              )
+
+              x3 = (
+                  x4 + 0.30 * z4
+              ) / d4
+
+              y3 = (
+                  y4 + 0.22 * z4
+              ) / d4
+
+              z3 = z4 / d4
+
+              d3 = max(
+                  0.58,
+                  2.38 - z3,
+              )
+
+              return (
+                  x3 / d3,
+                  y3 / d3,
+              )
 
 
-          def unmap_byte(values: np.ndarray | int) -> np.ndarray | int:
-              return ((np.asarray(values, dtype=np.int16) - AFFINE_OFFSET) * AFFINE_INVERSE % 256).astype(np.uint8)
+          def file_anchor(
+              file: SourceFile,
+              total_files: int,
+          ):
+              digest = hashlib.sha256(
+                  file.path.encode(
+                      "utf-8",
+                      "surrogateescape",
+                  )
+                  + bytes.fromhex(
+                      file.sha256
+                  )
+              ).digest()
 
+              t = (
+                  file.id + 1
+              ) / max(
+                  2,
+                  total_files + 1,
+              )
 
-          def pair_to_rgb(first: np.ndarray, second: np.ndarray) -> np.ndarray:
-              first_u8 = np.asarray(first, dtype=np.uint8)
-              second_u8 = np.asarray(second, dtype=np.uint8)
-              parity = np.bitwise_xor(np.bitwise_xor(first_u8, second_u8), np.uint8(PARITY_XOR))
-              return np.stack((map_byte(first_u8), map_byte(second_u8), map_byte(parity)), axis=-1).astype(np.uint8)
+              theta = (
+                  2.0 * math.pi * t
+                  + GOLDEN_ANGLE
+                  * (file.id % 16)
+              )
 
+              phase = [
+                  2.0
+                  * math.pi
+                  * digest[index]
+                  / 255.0
+                  for index in (
+                      0,
+                      7,
+                      13,
+                      21,
+                  )
+              ]
 
-          def rgb_to_pair(rgb: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-              decoded = unmap_byte(np.asarray(rgb, dtype=np.uint8))
-              first = decoded[..., 0]
-              second = decoded[..., 1]
-              expected = np.bitwise_xor(np.bitwise_xor(first, second), np.uint8(PARITY_XOR))
-              valid = expected == decoded[..., 2]
-              return first, second, valid
+              size_scale = min(
+                  1.0,
+                  math.log2(
+                      max(
+                          2,
+                          len(file.raw),
+                      )
+                  )
+                  / 22.0,
+              )
 
+              degree_scale = min(
+                  1.0,
+                  len(file.imports) / 12.0,
+              )
 
-          def mode_dimensions(mode: str) -> tuple[int, int, int, int, int, int]:
-              if mode == "P2":
-                  return P2_DATA_WIDTH, P2_DATA_HEIGHT, P2_PHYSICAL_WIDTH, P2_PHYSICAL_HEIGHT, P2_X, P2_Y
-              if mode == "PR":
-                  return PR_DATA_WIDTH, PR_DATA_HEIGHT, PR_PHYSICAL_WIDTH, PR_PHYSICAL_HEIGHT, PR_X, PR_Y
-              if mode == "P0":
-                  return P0_DATA_WIDTH, P0_DATA_HEIGHT, P0_PHYSICAL_WIDTH, P0_PHYSICAL_HEIGHT, P0_X, P0_Y
-              raise ValueError(mode)
-
-
-          def data_bytes_per_block(mode: str) -> int:
-              width, height, *_ = mode_dimensions(mode)
-              return width * height * 2
-
-
-          def owner_for_offset(files: list[SourceFile], byte_offset: int) -> tuple[int, int]:
-              for file in files:
-                  if file.packet_offset <= byte_offset < file.packet_offset + len(file.raw):
-                      return file.id, (byte_offset - file.packet_offset) // max(1, data_bytes_per_block("P2"))
-              return -1, byte_offset // max(1, data_bytes_per_block("P2"))
-
-
-          def project_4d(x4: float, y4: float, z4: float, w4: float) -> tuple[float, float]:
-              denominator_4d = max(0.48, 2.28 - w4)
-              x3 = (x4 + 0.30 * z4) / denominator_4d
-              y3 = (y4 + 0.22 * z4) / denominator_4d
-              z3 = z4 / denominator_4d
-              denominator_3d = max(0.58, 2.38 - z3)
-              return x3 / denominator_3d, y3 / denominator_3d
-
-
-          def file_anchor(file: SourceFile, total_files: int) -> tuple[float, float]:
-              digest = hashlib.sha256(file.path.encode("utf-8", "surrogateescape") + bytes.fromhex(file.sha256)).digest()
-              t = (file.id + 1) / max(2, total_files + 1)
-              theta = 2.0 * math.pi * t + GOLDEN_ANGLE * (file.id % 16)
-              phase = [2.0 * math.pi * digest[index] / 255.0 for index in (0, 7, 13, 21)]
-              size_scale = min(1.0, math.log2(max(2, len(file.raw))) / 22.0)
-              degree_scale = min(1.0, len(file.imports) / 12.0)
-              x4 = math.cos(theta * GOLDEN_N + phase[0]) * (0.58 + 0.20 * size_scale)
-              y4 = math.sin(theta * PHI + phase[1]) * (0.58 + 0.20 * degree_scale)
-              z4 = math.cos(theta * (PHI + GOLDEN_N) + phase[2]) * (0.46 + 0.18 * degree_scale)
-              w4 = math.sin(theta / GOLDEN_N + phase[3]) * (0.46 + 0.18 * size_scale)
-              return project_4d(x4, y4, z4, w4)
+              return project_4d(
+                  math.cos(
+                      theta * GOLDEN_N
+                      + phase[0]
+                  )
+                  * (
+                      0.58
+                      + 0.20 * size_scale
+                  ),
+                  math.sin(
+                      theta * PHI
+                      + phase[1]
+                  )
+                  * (
+                      0.58
+                      + 0.20 * degree_scale
+                  ),
+                  math.cos(
+                      theta
+                      * (
+                          PHI + GOLDEN_N
+                      )
+                      + phase[2]
+                  )
+                  * (
+                      0.46
+                      + 0.18 * degree_scale
+                  ),
+                  math.sin(
+                      theta / GOLDEN_N
+                      + phase[3]
+                  )
+                  * (
+                      0.46
+                      + 0.18 * size_scale
+                  ),
+              )
 
 
           def golden_shell(index: int) -> int:
               shell = 0
               boundary = 1
+
               while boundary <= index:
                   shell += 1
-                  boundary = max(boundary + 1, int(math.floor(GOLDEN_N ** shell)))
+                  boundary = max(
+                      boundary + 1,
+                      int(
+                          math.floor(
+                              GOLDEN_N ** shell
+                          )
+                      ),
+                  )
+
               return shell
 
 
-          def make_blocks(packet: bytes, files: list[SourceFile], mode: str, packet_sha: str) -> list[DataBlock]:
-              block_bytes = data_bytes_per_block(mode)
-              total = math.ceil(len(packet) / block_bytes)
-              if total > DATA_BLOCKS_MAX:
-                  raise ManifoldError(f"{total} blocks required; {DATA_BLOCKS_MAX} available")
+          def owner_for_offset(
+              files: list[SourceFile],
+              byte_offset: int,
+              cursor_hint: int,
+          ) -> tuple[int, int, int]:
+              index = max(
+                  0,
+                  min(
+                      cursor_hint,
+                      len(files) - 1,
+                  ),
+              )
 
-              anchors = {file.id: file_anchor(file, len(files)) for file in files}
+              while (
+                  index + 1 < len(files)
+                  and byte_offset
+                  >= (
+                      files[index].packet_offset
+                      + len(files[index].raw)
+                  )
+              ):
+                  index += 1
+
+              file = files[index]
+
+              if (
+                  file.packet_offset
+                  <= byte_offset
+                  < (
+                      file.packet_offset
+                      + len(file.raw)
+                  )
+              ):
+                  return (
+                      file.id,
+                      (
+                          byte_offset
+                          - file.packet_offset
+                      )
+                      // max(
+                          1,
+                          data_bytes_per_block(
+                              "P2"
+                          ),
+                      ),
+                      index,
+                  )
+
+              return (
+                  -1,
+                  byte_offset
+                  // max(
+                      1,
+                      data_bytes_per_block(
+                          "P2"
+                      ),
+                  ),
+                  index,
+              )
+
+
+          def make_blocks(
+              packet: bytes,
+              files: list[SourceFile],
+              mode: str,
+              packet_sha: str,
+          ):
+              block_bytes = (
+                  data_bytes_per_block(mode)
+              )
+
+              total = math.ceil(
+                  len(packet) / block_bytes
+              )
+
+              if total > DATA_BLOCKS_MAX:
+                  raise ManifoldError(
+                      f"{total} blocks required; "
+                      f"{DATA_BLOCKS_MAX} available"
+                  )
+
+              anchors = {
+                  file.id: file_anchor(
+                      file,
+                      len(files),
+                  )
+                  for file in files
+              }
+
               blocks: list[DataBlock] = []
+              cursor_hint = 0
+              packet_sha_bytes = bytes.fromhex(
+                  packet_sha
+              )
+
               for index in range(total):
                   start = index * block_bytes
-                  payload = packet[start : start + block_bytes]
-                  digest = hashlib.sha256(bytes.fromhex(packet_sha) + index.to_bytes(4, "big") + payload).digest()
-                  owner, owner_chunk = owner_for_offset(files, start)
-                  if owner >= 0:
-                      anchor_x, anchor_y = anchors[owner]
-                  else:
-                      anchor_x, anchor_y = 0.0, 0.0
-                  shell = golden_shell(owner_chunk + 1)
-                  phase = 2.0 * math.pi * digest[5] / 255.0
-                  radial = 0.025 * shell + 0.014 * owner_chunk
-                  target_x = anchor_x + radial * math.cos(GOLDEN_ANGLE * (owner_chunk + 1) + phase)
-                  target_y = anchor_y + radial * math.sin(GOLDEN_ANGLE * GOLDEN_N * (owner_chunk + 1) + phase)
+
+                  payload = packet[
+                      start:
+                      start + block_bytes
+                  ]
+
+                  digest = hashlib.sha256(
+                      packet_sha_bytes
+                      + index.to_bytes(
+                          4,
+                          "big",
+                      )
+                      + payload
+                  ).digest()
+
+                  (
+                      owner,
+                      owner_chunk,
+                      cursor_hint,
+                  ) = owner_for_offset(
+                      files,
+                      start,
+                      cursor_hint,
+                  )
+
+                  anchor_x, anchor_y = (
+                      anchors.get(
+                          owner,
+                          (0.0, 0.0),
+                      )
+                  )
+
+                  shell = golden_shell(
+                      owner_chunk + 1
+                  )
+
+                  phase = (
+                      2.0
+                      * math.pi
+                      * digest[5]
+                      / 255.0
+                  )
+
+                  radial = (
+                      0.025 * shell
+                      + 0.014 * owner_chunk
+                  )
+
                   orientation = int(
                       (
-                          index * int(PHI * (1 << 36))
-                          + (owner + 2) * int(GOLDEN_N * (1 << 32))
-                          + int(GOLDEN_ANGLE * (1 << 40))
+                          index
+                          * int(
+                              PHI
+                              * (1 << 36)
+                          )
+                          + (owner + 2)
+                          * int(
+                              GOLDEN_N
+                              * (1 << 32)
+                          )
+                          + int(
+                              GOLDEN_ANGLE
+                              * (1 << 40)
+                          )
                       )
                       >> 11
-                  ) & 0x03
+                  ) & 3
+
                   blocks.append(
                       DataBlock(
                           index=index,
@@ -591,128 +1295,592 @@ jobs:
                           payload=payload,
                           digest=digest,
                           owner_file=owner,
-                          owner_chunk=owner_chunk,
-                          orientation=orientation,
-                          target_x=target_x,
-                          target_y=target_y,
+                          owner_chunk=(
+                              owner_chunk
+                          ),
+                          orientation=(
+                              orientation
+                          ),
+                          target_x=(
+                              anchor_x
+                              + radial
+                              * math.cos(
+                                  GOLDEN_ANGLE
+                                  * (
+                                      owner_chunk + 1
+                                  )
+                                  + phase
+                              )
+                          ),
+                          target_y=(
+                              anchor_y
+                              + radial
+                              * math.sin(
+                                  GOLDEN_ANGLE
+                                  * GOLDEN_N
+                                  * (
+                                      owner_chunk + 1
+                                  )
+                                  + phase
+                              )
+                          ),
                       )
                   )
+
               return blocks
 
 
-          def slot_geometry(slot: int) -> tuple[int, int, int, int]:
-              row, column = divmod(slot, GRID_COLUMNS)
-              left = LEFT_MARGIN + column * PITCH + (PITCH - BLOCK_SIZE) // 2
-              top = TOP_MARGIN + row * PITCH + (PITCH - BLOCK_SIZE) // 2
-              return left + BLOCK_SIZE // 2, top + BLOCK_SIZE // 2, left, top
+          def slot_geometry(slot: int):
+              row, column = divmod(
+                  slot,
+                  GRID_COLUMNS,
+              )
 
-
-          def assign_slots(blocks: list[DataBlock]) -> dict[int, tuple[int, int, int, int]]:
-              free = [slot for slot in range(TOTAL_SLOTS) if slot not in CALIBRATION_SLOTS]
-              placements: dict[int, tuple[int, int, int, int]] = {}
-
-              for block in sorted(blocks, key=lambda item: (math.hypot(item.target_x, item.target_y), item.index)):
-                  pixel_x = WIDTH / 2 + block.target_x * WIDTH * 0.82
-                  pixel_y = HEIGHT / 2 + block.target_y * HEIGHT * 0.82
-                  best_position = min(
-                      range(len(free)),
-                      key=lambda position: (
-                          (slot_geometry(free[position])[0] - pixel_x) ** 2
-                          + (slot_geometry(free[position])[1] - pixel_y) ** 2
-                      ),
+              left = (
+                  LEFT_MARGIN
+                  + column * PITCH
+                  + (
+                      PITCH - BLOCK_SIZE
                   )
-                  block.slot = free.pop(best_position)
-                  placements[block.index] = slot_geometry(block.slot)
+                  // 2
+              )
+
+              top = (
+                  TOP_MARGIN
+                  + row * PITCH
+                  + (
+                      PITCH - BLOCK_SIZE
+                  )
+                  // 2
+              )
+
+              return (
+                  left + BLOCK_SIZE // 2,
+                  top + BLOCK_SIZE // 2,
+                  left,
+                  top,
+              )
+
+
+          def assign_slots(
+              blocks: list[DataBlock],
+          ):
+              free = [
+                  slot
+                  for slot in range(
+                      TOTAL_SLOTS
+                  )
+                  if slot
+                  not in CALIBRATION_SLOTS
+              ]
+
+              placements = {}
+
+              geometries = {
+                  slot: slot_geometry(slot)
+                  for slot in free
+              }
+
+              for block in sorted(
+                  blocks,
+                  key=lambda item: (
+                      math.hypot(
+                          item.target_x,
+                          item.target_y,
+                      ),
+                      item.index,
+                  ),
+              ):
+                  pixel_x = (
+                      WIDTH / 2
+                      + block.target_x
+                      * WIDTH
+                      * 0.82
+                  )
+
+                  pixel_y = (
+                      HEIGHT / 2
+                      + block.target_y
+                      * HEIGHT
+                      * 0.82
+                  )
+
+                  best = min(
+                      free,
+                      key=lambda slot: (
+                          geometries[slot][0]
+                          - pixel_x
+                      )
+                      ** 2
+                      + (
+                          geometries[slot][1]
+                          - pixel_y
+                      )
+                      ** 2,
+                  )
+
+                  free.remove(best)
+
+                  block.slot = best
+
+                  placements[
+                      block.index
+                  ] = geometries[best]
+
               return placements
 
 
-          def header_bytes(text: str) -> bytes:
-              raw = text.encode("ascii")
-              calibration = bytes(range(32)) + bytes((255 - index) for index in range(32))
-              output = raw + b"\x00" + calibration
-              if len(output) > HEADER_BYTE_CAPACITY:
-                  raise ManifoldError(f"header too long: {len(output)} > {HEADER_BYTE_CAPACITY}")
-              repeats = (HEADER_BYTE_CAPACITY - len(output) + len(calibration) - 1) // len(calibration)
-              return (output + calibration * repeats)[:HEADER_BYTE_CAPACITY]
+          def map_byte(values):
+              return (
+                  np.asarray(
+                      values,
+                      dtype=np.uint16,
+                  )
+                  * AFFINE_MULTIPLIER
+                  + AFFINE_OFFSET
+              ).astype(np.uint8)
 
 
-          def render_header(image_array: np.ndarray, text: str) -> None:
-              raw = header_bytes(text)
-              pairs = np.frombuffer(raw, dtype=np.uint8).reshape(HEADER_ROWS, HEADER_COLUMNS, 2)
-              colors = pair_to_rgb(pairs[..., 0], pairs[..., 1])
-              tiles = np.empty((HEADER_ROWS, HEADER_COLUMNS, HEADER_CELL, HEADER_CELL, 3), dtype=np.uint8)
-              tiles[...] = (255 - colors)[:, :, None, None, :]
-              tiles[:, :, 1:3, 1:3, :] = colors[:, :, None, None, :]
-              header = tiles.transpose(0, 2, 1, 3, 4).reshape(
-                  HEADER_ROWS * HEADER_CELL, HEADER_COLUMNS * HEADER_CELL, 3
+          def unmap_byte(values):
+              return (
+                  (
+                      np.asarray(
+                          values,
+                          dtype=np.int16,
+                      )
+                      - AFFINE_OFFSET
+                  )
+                  * AFFINE_INVERSE
+                  % 256
+              ).astype(np.uint8)
+
+
+          def pair_to_rgb(
+              first,
+              second,
+          ):
+              first_u8 = np.asarray(
+                  first,
+                  dtype=np.uint8,
               )
-              image_array[
-                  HEADER_Y : HEADER_Y + HEADER_ROWS * HEADER_CELL,
-                  HEADER_X : HEADER_X + HEADER_COLUMNS * HEADER_CELL,
+
+              second_u8 = np.asarray(
+                  second,
+                  dtype=np.uint8,
+              )
+
+              parity = np.bitwise_xor(
+                  np.bitwise_xor(
+                      first_u8,
+                      second_u8,
+                  ),
+                  np.uint8(PARITY_XOR),
+              )
+
+              return np.stack(
+                  (
+                      map_byte(first_u8),
+                      map_byte(second_u8),
+                      map_byte(parity),
+                  ),
+                  axis=-1,
+              ).astype(np.uint8)
+
+
+          def rgb_to_pair(rgb):
+              decoded = unmap_byte(
+                  np.asarray(
+                      rgb,
+                      dtype=np.uint8,
+                  )
+              )
+
+              first = decoded[..., 0]
+              second = decoded[..., 1]
+
+              expected = np.bitwise_xor(
+                  np.bitwise_xor(
+                      first,
+                      second,
+                  ),
+                  np.uint8(PARITY_XOR),
+              )
+
+              return (
+                  first,
+                  second,
+                  expected == decoded[..., 2],
+              )
+
+
+          def header_bytes(
+              text: str,
+          ) -> bytes:
+              raw = text.encode("ascii")
+
+              calibration = (
+                  bytes(range(32))
+                  + bytes(
+                      255 - index
+                      for index in range(32)
+                  )
+              )
+
+              output = (
+                  raw
+                  + b"\x00"
+                  + calibration
+              )
+
+              if (
+                  len(output)
+                  > HEADER_BYTE_CAPACITY
+              ):
+                  raise ManifoldError(
+                      "header too long: "
+                      f"{len(output)} > "
+                      f"{HEADER_BYTE_CAPACITY}"
+                  )
+
+              repeats = (
+                  HEADER_BYTE_CAPACITY
+                  - len(output)
+                  + len(calibration)
+                  - 1
+              ) // len(calibration)
+
+              return (
+                  output
+                  + calibration * repeats
+              )[:HEADER_BYTE_CAPACITY]
+
+
+          def render_header(
+              array: np.ndarray,
+              text: str,
+          ) -> None:
+              pairs = np.frombuffer(
+                  header_bytes(text),
+                  dtype=np.uint8,
+              ).reshape(
+                  HEADER_ROWS,
+                  HEADER_COLUMNS,
+                  2,
+              )
+
+              colors = pair_to_rgb(
+                  pairs[..., 0],
+                  pairs[..., 1],
+              )
+
+              tiles = np.empty(
+                  (
+                      HEADER_ROWS,
+                      HEADER_COLUMNS,
+                      HEADER_CELL,
+                      HEADER_CELL,
+                      3,
+                  ),
+                  dtype=np.uint8,
+              )
+
+              tiles[...] = (
+                  255 - colors
+              )[:, :, None, None, :]
+
+              tiles[
                   :,
-              ] = header
+                  :,
+                  1:3,
+                  1:3,
+                  :,
+              ] = colors[
+                  :,
+                  :,
+                  None,
+                  None,
+                  :,
+              ]
+
+              array[
+                  HEADER_Y:
+                  HEADER_Y
+                  + HEADER_ROWS
+                  * HEADER_CELL,
+                  HEADER_X:
+                  HEADER_X
+                  + HEADER_COLUMNS
+                  * HEADER_CELL,
+              ] = (
+                  tiles
+                  .transpose(
+                      0,
+                      2,
+                      1,
+                      3,
+                      4,
+                  )
+                  .reshape(
+                      HEADER_ROWS
+                      * HEADER_CELL,
+                      HEADER_COLUMNS
+                      * HEADER_CELL,
+                      3,
+                  )
+              )
 
 
-          def payload_pairs(payload: bytes, width: int, height: int, seed: bytes) -> np.ndarray:
-              required = width * height * 2
-              raw = bytearray(payload)
-              counter = 0
-              while len(raw) < required:
-                  raw.extend(hashlib.sha256(seed + counter.to_bytes(4, "big")).digest())
-                  counter += 1
-              return np.frombuffer(bytes(raw[:required]), dtype=np.uint8).reshape(height, width, 2)
+          def payload_pairs(
+              payload: bytes,
+              width: int,
+              height: int,
+              seed: bytes,
+          ):
+              required = (
+                  width * height * 2
+              )
+
+              if len(payload) >= required:
+                  raw = payload[:required]
+              else:
+                  missing = (
+                      required - len(payload)
+                  )
+
+                  filler = bytearray()
+                  counter = 0
+
+                  while len(filler) < missing:
+                      filler.extend(
+                          hashlib.sha256(
+                              seed
+                              + counter.to_bytes(
+                                  4,
+                                  "big",
+                              )
+                          ).digest()
+                      )
+                      counter += 1
+
+                  raw = (
+                      payload
+                      + bytes(
+                          filler[:missing]
+                      )
+                  )
+
+              return np.frombuffer(
+                  raw,
+                  dtype=np.uint8,
+              ).reshape(
+                  height,
+                  width,
+                  2,
+              )
 
 
-          def render_payload_matrix(pairs: np.ndarray, mode: str) -> np.ndarray:
-              data_height, data_width = pairs.shape[:2]
-              primary = pair_to_rgb(pairs[..., 0], pairs[..., 1])
+          def render_payload_matrix(
+              pairs: np.ndarray,
+              mode: str,
+          ):
+              data_height, data_width = (
+                  pairs.shape[:2]
+              )
+
+              primary = pair_to_rgb(
+                  pairs[..., 0],
+                  pairs[..., 1],
+              )
 
               if mode == "P2":
-                  physical = np.zeros((P2_PHYSICAL_HEIGHT, P2_PHYSICAL_WIDTH, 3), dtype=np.uint8)
-                  py = np.arange(data_height, dtype=np.int32)
+                  physical = np.zeros(
+                      (
+                          P2_PHYSICAL_HEIGHT,
+                          P2_PHYSICAL_WIDTH,
+                          3,
+                      ),
+                      dtype=np.uint8,
+                  )
+
+                  py = np.arange(
+                      data_height,
+                      dtype=np.int32,
+                  )
                   py += py // 16
-                  px = np.arange(data_width, dtype=np.int32)
+
+                  px = np.arange(
+                      data_width,
+                      dtype=np.int32,
+                  )
                   px += px // 16
-                  physical[py[:, None], px[None, :], :] = primary
 
-                  group_rows = data_height // 16
-                  group_columns = data_width // 16
-                  parity_y = np.arange(group_rows, dtype=np.int32) * 17 + 16
-                  parity_x = np.arange(group_columns, dtype=np.int32) * 17 + 16
+                  physical[
+                      py[:, None],
+                      px[None, :],
+                  ] = primary
 
-                  row_groups = pairs.reshape(group_rows, 16, data_width, 2)
-                  row_parity = np.bitwise_xor.reduce(row_groups, axis=1)
-                  physical[parity_y[:, None], px[None, :], :] = 255 - pair_to_rgb(
-                      row_parity[..., 0], row_parity[..., 1]
+                  group_rows = (
+                      data_height // 16
                   )
 
-                  column_groups = pairs.reshape(data_height, group_columns, 16, 2)
-                  column_parity = np.bitwise_xor.reduce(column_groups, axis=2)
-                  physical[py[:, None], parity_x[None, :], :] = 255 - pair_to_rgb(
-                      column_parity[..., 0], column_parity[..., 1]
+                  group_columns = (
+                      data_width // 16
                   )
 
-                  square_groups = pairs.reshape(group_rows, 16, group_columns, 16, 2)
-                  square_parity = np.bitwise_xor.reduce(
-                      np.bitwise_xor.reduce(square_groups, axis=1), axis=2
+                  parity_y = (
+                      np.arange(
+                          group_rows,
+                          dtype=np.int32,
+                      )
+                      * 17
+                      + 16
                   )
-                  physical[parity_y[:, None], parity_x[None, :], :] = 255 - pair_to_rgb(
-                      square_parity[..., 0], square_parity[..., 1]
+
+                  parity_x = (
+                      np.arange(
+                          group_columns,
+                          dtype=np.int32,
+                      )
+                      * 17
+                      + 16
                   )
+
+                  row_parity = (
+                      np.bitwise_xor.reduce(
+                          pairs.reshape(
+                              group_rows,
+                              16,
+                              data_width,
+                              2,
+                          ),
+                          axis=1,
+                      )
+                  )
+
+                  physical[
+                      parity_y[:, None],
+                      px[None, :],
+                  ] = (
+                      255
+                      - pair_to_rgb(
+                          row_parity[..., 0],
+                          row_parity[..., 1],
+                      )
+                  )
+
+                  column_parity = (
+                      np.bitwise_xor.reduce(
+                          pairs.reshape(
+                              data_height,
+                              group_columns,
+                              16,
+                              2,
+                          ),
+                          axis=2,
+                      )
+                  )
+
+                  physical[
+                      py[:, None],
+                      parity_x[None, :],
+                  ] = (
+                      255
+                      - pair_to_rgb(
+                          column_parity[
+                              ...,
+                              0,
+                          ],
+                          column_parity[
+                              ...,
+                              1,
+                          ],
+                      )
+                  )
+
+                  square_groups = (
+                      pairs.reshape(
+                          group_rows,
+                          16,
+                          group_columns,
+                          16,
+                          2,
+                      )
+                  )
+
+                  square_parity = (
+                      np.bitwise_xor.reduce(
+                          np.bitwise_xor.reduce(
+                              square_groups,
+                              axis=1,
+                          ),
+                          axis=2,
+                      )
+                  )
+
+                  physical[
+                      parity_y[:, None],
+                      parity_x[None, :],
+                  ] = (
+                      255
+                      - pair_to_rgb(
+                          square_parity[..., 0],
+                          square_parity[..., 1],
+                      )
+                  )
+
                   return physical
 
               if mode == "PR":
-                  physical = np.zeros((PR_PHYSICAL_HEIGHT, PR_PHYSICAL_WIDTH, 3), dtype=np.uint8)
-                  py = np.arange(data_height, dtype=np.int32)
-                  py += py // 16
-                  physical[py, :, :] = primary
-                  group_rows = data_height // 16
-                  parity_y = np.arange(group_rows, dtype=np.int32) * 17 + 16
-                  row_groups = pairs.reshape(group_rows, 16, data_width, 2)
-                  row_parity = np.bitwise_xor.reduce(row_groups, axis=1)
-                  physical[parity_y, :, :] = 255 - pair_to_rgb(
-                      row_parity[..., 0], row_parity[..., 1]
+                  physical = np.zeros(
+                      (
+                          PR_PHYSICAL_HEIGHT,
+                          PR_PHYSICAL_WIDTH,
+                          3,
+                      ),
+                      dtype=np.uint8,
                   )
+
+                  py = np.arange(
+                      data_height,
+                      dtype=np.int32,
+                  )
+                  py += py // 16
+
+                  physical[py] = primary
+
+                  group_rows = (
+                      data_height // 16
+                  )
+
+                  parity_y = (
+                      np.arange(
+                          group_rows,
+                          dtype=np.int32,
+                      )
+                      * 17
+                      + 16
+                  )
+
+                  row_parity = (
+                      np.bitwise_xor.reduce(
+                          pairs.reshape(
+                              group_rows,
+                              16,
+                              data_width,
+                              2,
+                          ),
+                          axis=1,
+                      )
+                  )
+
+                  physical[parity_y] = (
+                      255
+                      - pair_to_rgb(
+                          row_parity[..., 0],
+                          row_parity[..., 1],
+                      )
+                  )
+
                   return physical
 
               if mode == "P0":
@@ -721,475 +1889,1670 @@ jobs:
               raise ValueError(mode)
 
 
-          def anchor_color(first: int, second: int) -> tuple[int, int, int]:
-              return tuple(int(value) for value in pair_to_rgb(np.uint8(first), np.uint8(second)))
-
-
           def render_block(
               header: str,
               payload: bytes,
               mode: str,
               orientation: int,
               seed: bytes,
-          ) -> Image.Image:
-              array = np.zeros((BLOCK_SIZE, BLOCK_SIZE, 3), dtype=np.uint8)
-              array[:, :, :] = (8, 12, 20)
-              render_header(array, header)
-              data_width, data_height, physical_width, physical_height, data_x, data_y = mode_dimensions(mode)
-              pairs = payload_pairs(payload, data_width, data_height, seed)
-              matrix = render_payload_matrix(pairs, mode)
-              array[data_y : data_y + physical_height, data_x : data_x + physical_width, :] = matrix
+          ):
+              array = np.zeros(
+                  (
+                      BLOCK_SIZE,
+                      BLOCK_SIZE,
+                      3,
+                  ),
+                  dtype=np.uint8,
+              )
+
+              array[:] = (
+                  8,
+                  12,
+                  20,
+              )
+
+              render_header(
+                  array,
+                  header,
+              )
+
+              (
+                  data_width,
+                  data_height,
+                  physical_width,
+                  physical_height,
+                  data_x,
+                  data_y,
+              ) = mode_dimensions(mode)
+
+              matrix = render_payload_matrix(
+                  payload_pairs(
+                      payload,
+                      data_width,
+                      data_height,
+                      seed,
+                  ),
+                  mode,
+              )
+
+              array[
+                  data_y:
+                  data_y + physical_height,
+                  data_x:
+                  data_x + physical_width,
+              ] = matrix
 
               anchors = (
-                  (anchor_color(0x00, 0xFF), 0, 0),
-                  (anchor_color(0x55, 0xAA), BLOCK_SIZE - 6, 0),
-                  (anchor_color(0x33, 0xCC), 0, BLOCK_SIZE - 6),
-                  (anchor_color(0x0F, 0xF0), BLOCK_SIZE - 6, BLOCK_SIZE - 6),
+                  (
+                      pair_to_rgb(
+                          np.uint8(0x00),
+                          np.uint8(0xFF),
+                      ),
+                      0,
+                      0,
+                  ),
+                  (
+                      pair_to_rgb(
+                          np.uint8(0x55),
+                          np.uint8(0xAA),
+                      ),
+                      BLOCK_SIZE - 6,
+                      0,
+                  ),
+                  (
+                      pair_to_rgb(
+                          np.uint8(0x33),
+                          np.uint8(0xCC),
+                      ),
+                      0,
+                      BLOCK_SIZE - 6,
+                  ),
+                  (
+                      pair_to_rgb(
+                          np.uint8(0x0F),
+                          np.uint8(0xF0),
+                      ),
+                      BLOCK_SIZE - 6,
+                      BLOCK_SIZE - 6,
+                  ),
               )
+
               for color, left, top in anchors:
-                  array[top : top + 6, left : left + 6, :] = color
+                  array[
+                      top:top + 6,
+                      left:left + 6,
+                  ] = color
 
-              image = Image.fromarray(array, "RGB")
-              if orientation == 1:
-                  image = image.transpose(Image.Transpose.ROTATE_90)
-              elif orientation == 2:
-                  image = image.transpose(Image.Transpose.ROTATE_180)
-              elif orientation == 3:
-                  image = image.transpose(Image.Transpose.ROTATE_270)
-              return image
+              if orientation:
+                  array = np.rot90(
+                      array,
+                      k=orientation,
+                  )
+
+              return np.ascontiguousarray(
+                  array
+              )
 
 
-          def calibration_payload(kind: int, mode: str) -> bytes:
-              width, height, *_ = mode_dimensions(mode)
+          def calibration_payload(
+              kind: int,
+              mode: str,
+          ) -> bytes:
+              width, height, *_ = (
+                  mode_dimensions(mode)
+              )
+
               count = width * height
-              pairs = np.zeros((height, width, 2), dtype=np.uint8)
+
+              pairs = np.zeros(
+                  (
+                      height,
+                      width,
+                      2,
+                  ),
+                  dtype=np.uint8,
+              )
+
               if kind == 0:
-                  pairs[..., 0] = (np.arange(count, dtype=np.uint32) & 0xFF).astype(np.uint8).reshape(height, width)
+                  pairs[..., 0] = (
+                      np.arange(
+                          count,
+                          dtype=np.uint32,
+                      )
+                      & 0xFF
+                  ).astype(
+                      np.uint8
+                  ).reshape(
+                      height,
+                      width,
+                  )
+
               elif kind == 1:
-                  pairs[..., 1] = (np.arange(count, dtype=np.uint32) & 0xFF).astype(np.uint8).reshape(height, width)
+                  pairs[..., 1] = (
+                      np.arange(
+                          count,
+                          dtype=np.uint32,
+                      )
+                      & 0xFF
+                  ).astype(
+                      np.uint8
+                  ).reshape(
+                      height,
+                      width,
+                  )
+
               elif kind == 2:
-                  sequence = b"DREAM4D6\n0123456789ABCDEF\n{}[]()<>+-=*/&|!?:;,.`'\"_$\n"
-                  return (sequence * ((count * 2 + len(sequence) - 1) // len(sequence)))[: count * 2]
+                  sequence = (
+                      b"DREAM4D8\n"
+                      b"0123456789ABCDEF\n"
+                      b"{}[]()<>+-=*/&|!?:;,.`'\"_$\n"
+                  )
+
+                  return (
+                      sequence
+                      * (
+                          (
+                              count * 2
+                              + len(sequence)
+                              - 1
+                          )
+                          // len(sequence)
+                      )
+                  )[:count * 2]
+
               else:
-                  x = np.arange(width, dtype=np.uint16)[None, :]
-                  y = np.arange(height, dtype=np.uint16)[:, None]
-                  pairs[..., 0] = ((x * 17 + y) & 0xFF).astype(np.uint8)
-                  pairs[..., 1] = ((y * 29 + x) & 0xFF).astype(np.uint8)
+                  x = np.arange(
+                      width,
+                      dtype=np.uint16,
+                  )[None, :]
+
+                  y = np.arange(
+                      height,
+                      dtype=np.uint16,
+                  )[:, None]
+
+                  pairs[..., 0] = (
+                      (
+                          x * 17 + y
+                      )
+                      & 0xFF
+                  ).astype(np.uint8)
+
+                  pairs[..., 1] = (
+                      (
+                          y * 29 + x
+                      )
+                      & 0xFF
+                  ).astype(np.uint8)
+
               return pairs.tobytes()
 
 
-          def render_calibration_block(kind: int, mode: str, archive_sha: str) -> Image.Image:
+          def calibration_block(
+              kind: int,
+              mode: str,
+              packet_sha: str,
+          ):
               header = (
-                  f"D4CAL6|K={kind}|M={mode}|A=197,101,13|X=A5|"
-                  f"PAIR=R:first,G:second,B:first^second^A5|S={archive_sha[:16]}|"
+                  f"D4CAL8|K={kind}|M={mode}|"
+                  "A=197,101,13|X=A5|"
+                  "PAIR=R:first,G:second,"
+                  "B:first^second^A5|"
+                  f"S={packet_sha[:16]}|"
               )
+
               return render_block(
                   header,
-                  calibration_payload(kind, mode),
+                  calibration_payload(
+                      kind,
+                      mode,
+                  ),
                   mode,
                   kind % 4,
-                  bytes.fromhex(archive_sha) + bytes([kind]),
+                  bytes.fromhex(packet_sha)
+                  + bytes([kind]),
               )
 
 
-          def block_header(block: DataBlock, total: int, mode: str, packet_length: int, packet_sha: str) -> str:
-              crc = zlib.crc32(block.payload) & 0xFFFFFFFF
+          def block_header(
+              block: DataBlock,
+              total: int,
+              mode: str,
+              packet_length: int,
+              packet_sha: str,
+          ):
+              crc = (
+                  zlib.crc32(block.payload)
+                  & 0xFFFFFFFF
+              )
+
               return (
-                  f"D4AI6|I={block.index:06X}|T={total:06X}|M={mode}|"
-                  f"B={block.byte_start:010X}|N={len(block.payload):06X}|"
-                  f"F={block.owner_file + 1:06X}|C={block.owner_chunk:06X}|"
-                  f"O={block.orientation}|R={crc:08X}|P={packet_length:010X}|S={packet_sha[:16]}|"
+                  f"D4AI8|I={block.index:06X}|"
+                  f"T={total:06X}|"
+                  f"M={mode}|"
+                  f"B={block.byte_start:010X}|"
+                  f"N={len(block.payload):06X}|"
+                  f"F={block.owner_file + 1:06X}|"
+                  f"C={block.owner_chunk:06X}|"
+                  f"O={block.orientation}|"
+                  f"R={crc:08X}|"
+                  f"P={packet_length:010X}|"
+                  f"S={packet_sha[:16]}|"
               )
 
 
-          def extension_walsh(files: list[SourceFile]) -> list[int]:
+          def extension_walsh(
+              files: list[SourceFile],
+          ):
               counts = [0] * 16
+
               for file in files:
-                  bucket = hashlib.sha256(PurePosixPath(file.path).suffix.lower().encode("utf-8")).digest()[0] & 0x0F
+                  suffix = (
+                      PurePosixPath(file.path)
+                      .suffix
+                      .lower()
+                  )
+
+                  bucket = (
+                      hashlib.sha256(
+                          suffix.encode("utf-8")
+                      ).digest()[0]
+                      & 15
+                  )
+
                   counts[bucket] += 1
+
               output = counts[:]
               stride = 1
+
               while stride < 16:
-                  for start in range(0, 16, 2 * stride):
-                      for offset in range(stride):
-                          a = output[start + offset]
-                          b = output[start + offset + stride]
-                          output[start + offset] = a + b
-                          output[start + offset + stride] = a - b
+                  for start in range(
+                      0,
+                      16,
+                      2 * stride,
+                  ):
+                      for offset in range(
+                          stride
+                      ):
+                          a = output[
+                              start + offset
+                          ]
+
+                          b = output[
+                              start
+                              + offset
+                              + stride
+                          ]
+
+                          output[
+                              start + offset
+                          ] = a + b
+
+                          output[
+                              start
+                              + offset
+                              + stride
+                          ] = a - b
+
                   stride *= 2
+
               return output
 
 
-          def render_background(files: list[SourceFile], application_root: str) -> Image.Image:
-              low_width = WIDTH // 4
-              low_height = HEIGHT // 4
-              x = np.linspace(-1.0, 1.0, low_width, dtype=np.float32)[None, :]
-              y = np.linspace(-1.0, 1.0, low_height, dtype=np.float32)[:, None]
-              radius = np.sqrt(x * x + y * y)
-              theta = np.arctan2(y, x)
-              digest = hashlib.sha256(application_root.encode("ascii")).digest()
-              phases = [2.0 * math.pi * digest[index] / 255.0 for index in (0, 7, 13, 21)]
+          def lowres_background(
+              files: list[SourceFile],
+              application_root: str,
+          ):
+              log(
+                  "building low-resolution "
+                  "equation field"
+              )
+
+              x = np.linspace(
+                  -1.0,
+                  1.0,
+                  LOW_WIDTH,
+                  dtype=np.float32,
+              )[None, :]
+
+              y = np.linspace(
+                  -1.0,
+                  1.0,
+                  LOW_HEIGHT,
+                  dtype=np.float32,
+              )[:, None]
+
+              radius = np.sqrt(
+                  x * x + y * y
+              )
+
+              theta = np.arctan2(
+                  y,
+                  x,
+              )
+
+              digest = hashlib.sha256(
+                  application_root.encode("ascii")
+              ).digest()
+
+              phases = [
+                  np.float32(
+                      2.0
+                      * math.pi
+                      * digest[index]
+                      / 255.0
+                  )
+                  for index in (
+                      0,
+                      7,
+                      13,
+                      21,
+                  )
+              ]
+
               walsh = extension_walsh(files)
-              scale = max(1, max(abs(value) for value in walsh[1:] or [1]))
-              sectors = np.mod(np.floor((theta + math.pi) / (2.0 * math.pi / 16.0)).astype(np.int32), 16)
-              bias = np.asarray([value / scale for value in walsh], dtype=np.float32)[sectors]
 
-              x4 = np.cos(theta * PHI + phases[0]) * (0.58 + 0.24 * np.cos(theta * GOLDEN_N + phases[2]))
-              y4 = np.sin(theta * GOLDEN_N + phases[1]) * (0.58 + 0.24 * np.sin(theta * PHI + phases[3]))
-              z4 = np.cos(radius * math.pi * PHI + phases[2]) * (0.46 + 0.18 * bias)
-              w4 = np.sin(radius * math.pi * GOLDEN_N + phases[3]) * (0.46 + 0.18 * bias)
-              denominator_4d = np.maximum(0.5, 2.25 - w4)
-              x3 = (x4 + 0.30 * z4) / denominator_4d
-              y3 = (y4 + 0.22 * z4) / denominator_4d
-              z3 = z4 / denominator_4d
-              denominator_3d = np.maximum(0.6, 2.35 - z3)
-              projection = np.sqrt((x3 / denominator_3d) ** 2 + (y3 / denominator_3d) ** 2)
-              ray = 0.5 + 0.5 * np.cos(5.0 * theta + phases[0])
-              opposite = 0.5 + 0.5 * np.cos(10.0 * theta + phases[1] + radius * math.pi)
-              shell = np.exp(-3.6 * radius * radius)
-              ribbon = np.exp(-18.0 * np.abs(projection - (0.12 + 0.42 * ray)))
-              red = np.clip(5 + 46 * shell + 70 * ribbon + 42 * np.maximum(0.0, bias), 0, 255)
-              green = np.clip(8 + 52 * opposite + 48 * shell + 30 * np.maximum(0.0, -bias), 0, 255)
-              blue = np.clip(14 + 74 * ray + 68 * ribbon + 32 * np.abs(bias), 0, 255)
-              array = np.stack((red, green, blue), axis=2).astype(np.uint8)
-              return Image.fromarray(array, "RGB").resize((WIDTH, HEIGHT), Image.Resampling.BICUBIC)
+              scale = max(
+                  1,
+                  max(
+                      abs(value)
+                      for value
+                      in walsh[1:] or [1]
+                  ),
+              )
+
+              sectors = np.mod(
+                  np.floor(
+                      (
+                          theta
+                          + np.float32(math.pi)
+                      )
+                      / np.float32(
+                          2.0
+                          * math.pi
+                          / 16.0
+                      )
+                  ).astype(np.int16),
+                  16,
+              )
+
+              bias = np.asarray(
+                  [
+                      value / scale
+                      for value in walsh
+                  ],
+                  dtype=np.float32,
+              )[sectors]
+
+              x4 = np.cos(
+                  theta * np.float32(PHI)
+                  + phases[0]
+              ) * (
+                  np.float32(0.58)
+                  + np.float32(0.24)
+                  * np.cos(
+                      theta
+                      * np.float32(GOLDEN_N)
+                      + phases[2]
+                  )
+              )
+
+              y4 = np.sin(
+                  theta
+                  * np.float32(GOLDEN_N)
+                  + phases[1]
+              ) * (
+                  np.float32(0.58)
+                  + np.float32(0.24)
+                  * np.sin(
+                      theta
+                      * np.float32(PHI)
+                      + phases[3]
+                  )
+              )
+
+              z4 = np.cos(
+                  radius
+                  * np.float32(
+                      math.pi * PHI
+                  )
+                  + phases[2]
+              ) * (
+                  np.float32(0.46)
+                  + np.float32(0.18)
+                  * bias
+              )
+
+              w4 = np.sin(
+                  radius
+                  * np.float32(
+                      math.pi * GOLDEN_N
+                  )
+                  + phases[3]
+              ) * (
+                  np.float32(0.46)
+                  + np.float32(0.18)
+                  * bias
+              )
+
+              d4 = np.maximum(
+                  np.float32(0.5),
+                  np.float32(2.25) - w4,
+              )
+
+              x3 = (
+                  x4
+                  + np.float32(0.30) * z4
+              ) / d4
+
+              y3 = (
+                  y4
+                  + np.float32(0.22) * z4
+              ) / d4
+
+              z3 = z4 / d4
+
+              d3 = np.maximum(
+                  np.float32(0.6),
+                  np.float32(2.35) - z3,
+              )
+
+              projection = np.sqrt(
+                  (x3 / d3) ** 2
+                  + (y3 / d3) ** 2
+              )
+
+              ray = (
+                  np.float32(0.5)
+                  + np.float32(0.5)
+                  * np.cos(
+                      np.float32(5.0)
+                      * theta
+                      + phases[0]
+                  )
+              )
+
+              opposite = (
+                  np.float32(0.5)
+                  + np.float32(0.5)
+                  * np.cos(
+                      np.float32(10.0)
+                      * theta
+                      + phases[1]
+                      + radius
+                      * np.float32(math.pi)
+                  )
+              )
+
+              shell = np.exp(
+                  np.float32(-3.6)
+                  * radius
+                  * radius
+              )
+
+              ribbon = np.exp(
+                  np.float32(-18.0)
+                  * np.abs(
+                      projection
+                      - (
+                          np.float32(0.12)
+                          + np.float32(0.42)
+                          * ray
+                      )
+                  )
+              )
+
+              red = np.clip(
+                  5
+                  + 46 * shell
+                  + 70 * ribbon
+                  + 42 * np.maximum(
+                      0,
+                      bias,
+                  ),
+                  0,
+                  255,
+              )
+
+              green = np.clip(
+                  8
+                  + 52 * opposite
+                  + 48 * shell
+                  + 30 * np.maximum(
+                      0,
+                      -bias,
+                  ),
+                  0,
+                  255,
+              )
+
+              blue = np.clip(
+                  14
+                  + 74 * ray
+                  + 68 * ribbon
+                  + 32 * np.abs(bias),
+                  0,
+                  255,
+              )
+
+              return np.stack(
+                  (
+                      red,
+                      green,
+                      blue,
+                  ),
+                  axis=2,
+              ).astype(np.uint8)
 
 
-          def draw_global_semantics(
-              image: Image.Image,
+          def add_semantic_overlay(
+              lowres: np.ndarray,
               files: list[SourceFile],
               blocks: list[DataBlock],
-              placements: dict[int, tuple[int, int, int, int]],
-          ) -> None:
-              draw = ImageDraw.Draw(image, "RGBA")
-              first_block_by_file: dict[int, DataBlock] = {}
-              for block in blocks:
-                  if block.owner_file >= 0 and block.owner_file not in first_block_by_file:
-                      first_block_by_file[block.owner_file] = block
+              placements,
+          ):
+              image = Image.fromarray(
+                  lowres,
+                  "RGB",
+              )
 
-              center = (WIDTH // 2, HEIGHT // 2)
+              draw = ImageDraw.Draw(
+                  image,
+                  "RGBA",
+              )
+
+              first_block = {}
+
+              for block in blocks:
+                  if (
+                      block.owner_file >= 0
+                      and block.owner_file
+                      not in first_block
+                  ):
+                      first_block[
+                          block.owner_file
+                      ] = block
+
+              center = (
+                  LOW_WIDTH // 2,
+                  LOW_HEIGHT // 2,
+              )
+
               for file in files:
-                  block = first_block_by_file.get(file.id)
+                  block = first_block.get(
+                      file.id
+                  )
+
                   if block is None:
                       continue
-                  x, y, _, _ = placements[block.index]
-                  digest = hashlib.sha256(file.path.encode("utf-8", "surrogateescape") + bytes.fromhex(file.sha256)).digest()
-                  rgb = (80 + digest[0] % 176, 80 + digest[7] % 176, 80 + digest[13] % 176, 72)
-                  cmy = (255 - rgb[0], 255 - rgb[1], 255 - rgb[2], 56)
-                  draw.line((center[0], center[1], x, y), fill=rgb, width=8)
-                  phase_x = int(8 * math.cos(GOLDEN_ANGLE * (file.id + 1)))
-                  phase_y = int(8 * math.sin(GOLDEN_ANGLE * (file.id + 1)))
-                  draw.line((center[0] + phase_x, center[1] + phase_y, x + phase_x, y + phase_y), fill=cmy, width=4)
+
+                  x, y, _, _ = placements[
+                      block.index
+                  ]
+
+                  x //= LOW_SCALE
+                  y //= LOW_SCALE
+
+                  digest = hashlib.sha256(
+                      file.path.encode(
+                          "utf-8",
+                          "surrogateescape",
+                      )
+                      + bytes.fromhex(
+                          file.sha256
+                      )
+                  ).digest()
+
+                  color = (
+                      80 + digest[0] % 176,
+                      80 + digest[7] % 176,
+                      80 + digest[13] % 176,
+                      90,
+                  )
+
+                  draw.line(
+                      (
+                          center[0],
+                          center[1],
+                          x,
+                          y,
+                      ),
+                      fill=color,
+                      width=2,
+                  )
 
               for file in files:
-                  source_block = first_block_by_file.get(file.id)
-                  if source_block is None:
+                  source = first_block.get(
+                      file.id
+                  )
+
+                  if source is None:
                       continue
-                  source_x, source_y, _, _ = placements[source_block.index]
+
+                  sx, sy, _, _ = placements[
+                      source.index
+                  ]
+
+                  sx //= LOW_SCALE
+                  sy //= LOW_SCALE
+
                   for target_id in file.imports:
-                      target_block = first_block_by_file.get(target_id)
-                      if target_block is None:
+                      target = first_block.get(
+                          target_id
+                      )
+
+                      if target is None:
                           continue
-                      target_x, target_y, _, _ = placements[target_block.index]
-                      digest = hashlib.sha256(f"{file.id}:{target_id}".encode("ascii")).digest()
-                      color = (96 + digest[0] % 160, 96 + digest[5] % 160, 96 + digest[11] % 160, 46)
-                      draw.line((source_x, source_y, target_x, target_y), fill=color, width=3)
 
+                      tx, ty, _, _ = placements[
+                          target.index
+                      ]
 
-          def border_semantics(image: Image.Image, block: DataBlock, file: SourceFile | None) -> None:
-              draw = ImageDraw.Draw(image, "RGBA")
-              if file is None:
-                  histogram = {key: 1 for key in ("keyword", "identifier", "string", "comment", "operator", "delimiter", "number", "whitespace")}
-              else:
-                  histogram = file.token_histogram
-              categories = ("keyword", "identifier", "string", "comment", "operator", "delimiter", "number", "whitespace")
-              palette = (
-                  (255, 91, 116, 220), (91, 192, 255, 220), (255, 202, 91, 220), (91, 255, 150, 220),
-                  (196, 91, 255, 220), (91, 255, 241, 220), (255, 133, 91, 220), (190, 198, 214, 200),
+                      tx //= LOW_SCALE
+                      ty //= LOW_SCALE
+
+                      draw.line(
+                          (
+                              sx,
+                              sy,
+                              tx,
+                              ty,
+                          ),
+                          fill=(
+                              160,
+                              200,
+                              255,
+                              42,
+                          ),
+                          width=1,
+                      )
+
+              return np.asarray(
+                  image,
+                  dtype=np.uint8,
               )
-              total = max(1, sum(histogram.get(category, 0) for category in categories))
+
+
+          def create_canvas(
+              lowres: np.ndarray,
+              memmap_path: Path,
+          ):
+              log(
+                  "expanding equation field into "
+                  "disk-backed 24 MP canvas"
+              )
+
+              canvas = np.memmap(
+                  memmap_path,
+                  dtype=np.uint8,
+                  mode="w+",
+                  shape=(
+                      HEIGHT,
+                      WIDTH,
+                      3,
+                  ),
+              )
+
+              for low_row in range(
+                  LOW_HEIGHT
+              ):
+                  expanded = np.repeat(
+                      lowres[low_row],
+                      LOW_SCALE,
+                      axis=0,
+                  )
+
+                  start = (
+                      low_row * LOW_SCALE
+                  )
+
+                  canvas[
+                      start:
+                      start + LOW_SCALE
+                  ] = expanded[
+                      None,
+                      :,
+                      :,
+                  ]
+
+                  if low_row % 250 == 0:
+                      log(
+                          "expanded background "
+                          f"row group {low_row}/"
+                          f"{LOW_HEIGHT}"
+                      )
+
+              canvas.flush()
+
+              return canvas
+
+
+          def border_semantics(
+              block_array: np.ndarray,
+              file: SourceFile | None,
+          ):
+              histogram = (
+                  file.token_histogram
+                  if file
+                  else {
+                      key: 1
+                      for key in (
+                          "identifier",
+                          "quote",
+                          "operator",
+                          "delimiter",
+                          "number",
+                          "whitespace",
+                          "other",
+                      )
+                  }
+              )
+
+              categories = (
+                  "identifier",
+                  "quote",
+                  "operator",
+                  "delimiter",
+                  "number",
+                  "whitespace",
+                  "other",
+              )
+
+              palette = np.asarray(
+                  (
+                      (91, 192, 255),
+                      (255, 202, 91),
+                      (196, 91, 255),
+                      (91, 255, 241),
+                      (255, 133, 91),
+                      (190, 198, 214),
+                      (255, 91, 116),
+                  ),
+                  dtype=np.uint8,
+              )
+
+              total = max(
+                  1,
+                  sum(
+                      histogram.get(
+                          category,
+                          0,
+                      )
+                      for category
+                      in categories
+                  ),
+              )
+
               cursor = 6
               usable = BLOCK_SIZE - 12
-              for category, color in zip(categories, palette):
-                  length = max(1, int(round(usable * histogram.get(category, 0) / total)))
-                  draw.line((cursor, BLOCK_SIZE - 2, min(BLOCK_SIZE - 6, cursor + length), BLOCK_SIZE - 2), fill=color, width=3)
-                  cursor += length
+
+              for category, color in zip(
+                  categories,
+                  palette,
+              ):
+                  length = max(
+                      1,
+                      int(
+                          round(
+                              usable
+                              * histogram.get(
+                                  category,
+                                  0,
+                              )
+                              / total
+                          )
+                      ),
+                  )
+
+                  end = min(
+                      BLOCK_SIZE - 6,
+                      cursor + length,
+                  )
+
+                  block_array[
+                      BLOCK_SIZE - 4:
+                      BLOCK_SIZE - 1,
+                      cursor:end,
+                  ] = color
+
+                  cursor = end
+
                   if cursor >= BLOCK_SIZE - 6:
                       break
 
 
-          def build_image(root: Path, output: Path, audit_path: Path | None) -> dict:
-              print("[1/7] collecting application source", flush=True)
-              files, skipped = collect_sources(root)
-              print(f"[2/7] assembling packet from {len(files)} files", flush=True)
-              mode, packet, packet_report = choose_mode(files)
-              blocks = make_blocks(packet, files, mode, packet_report["packetSha256"])
-              placements = assign_slots(blocks)
-              print(f"[3/7] rendering equation field; mode={mode}; blocks={len(blocks)}", flush=True)
-              image = render_background(files, packet_report["applicationRoot"])
-              draw_global_semantics(image, files, blocks, placements)
+          def render_to_memmap(
+              canvas: np.memmap,
+              files,
+              blocks,
+              placements,
+              mode,
+              packet,
+              report,
+          ):
+              files_by_id = {
+                  file.id: file
+                  for file in files
+              }
 
-              print("[4/7] rendering calibration blocks", flush=True)
-              for kind, slot in enumerate(CALIBRATION_SLOTS):
-                  _, _, left, top = slot_geometry(slot)
-                  image.paste(render_calibration_block(kind, mode, packet_report["packetSha256"]), (left, top))
+              log(
+                  "rendering four calibration "
+                  "blocks"
+              )
 
-              files_by_id = {file.id: file for file in files}
-              print("[5/7] rendering vectorized payload blocks", flush=True)
-              for block_number, block in enumerate(blocks, start=1):
-                  if block_number == 1 or block_number % 25 == 0 or block_number == len(blocks):
-                      print(f"  payload block {block_number}/{len(blocks)}", flush=True)
-                  _, _, left, top = placements[block.index]
+              for kind, slot in enumerate(
+                  CALIBRATION_SLOTS
+              ):
+                  _, _, left, top = (
+                      slot_geometry(slot)
+                  )
+
+                  canvas[
+                      top:top + BLOCK_SIZE,
+                      left:left + BLOCK_SIZE,
+                  ] = calibration_block(
+                      kind,
+                      mode,
+                      report["packetSha256"],
+                  )
+
+              log(
+                  f"rendering {len(blocks)} "
+                  "payload blocks"
+              )
+
+              for number, block in enumerate(
+                  blocks,
+                  start=1,
+              ):
+                  _, _, left, top = (
+                      placements[block.index]
+                  )
+
                   rendered = render_block(
-                      block_header(block, len(blocks), mode, len(packet), packet_report["packetSha256"]),
+                      block_header(
+                          block,
+                          len(blocks),
+                          mode,
+                          len(packet),
+                          report[
+                              "packetSha256"
+                          ],
+                      ),
                       block.payload,
                       mode,
                       block.orientation,
                       block.digest,
                   )
-                  border_semantics(rendered, block, files_by_id.get(block.owner_file))
-                  image.paste(rendered, (left, top))
 
-              output.parent.mkdir(parents=True, exist_ok=True)
-              print("[6/7] writing PNG", flush=True)
-              image.save(output, "PNG", compress_level=1, optimize=False)
-              print("[7/7] build complete", flush=True)
+                  border_semantics(
+                      rendered,
+                      files_by_id.get(
+                          block.owner_file
+                      ),
+                  )
+
+                  canvas[
+                      top:top + BLOCK_SIZE,
+                      left:left + BLOCK_SIZE,
+                  ] = rendered
+
+                  if (
+                      number == 1
+                      or number % 20 == 0
+                      or number == len(blocks)
+                  ):
+                      log(
+                          "rendered payload block "
+                          f"{number}/{len(blocks)}"
+                      )
+
+              canvas.flush()
+
+
+          def save_png(
+              canvas: np.memmap,
+              output: Path,
+          ):
+              output.parent.mkdir(
+                  parents=True,
+                  exist_ok=True,
+              )
+
+              log(
+                  "writing uncompressed PNG; "
+                  "this avoids the previous "
+                  "compression stall"
+              )
+
+              image = Image.fromarray(
+                  np.asarray(canvas),
+                  "RGB",
+              )
+
+              image.save(
+                  output,
+                  "PNG",
+                  compress_level=0,
+                  optimize=False,
+              )
+
+              log(
+                  f"PNG written: "
+                  f"{output.stat().st_size:,} "
+                  "bytes"
+              )
+
+
+          def build(
+              root: Path,
+              output: Path,
+              audit: Path,
+          ):
+              log(
+                  "phase 1/8: collecting "
+                  "application source"
+              )
+
+              files, skipped = collect_sources(
+                  root
+              )
+
+              log(
+                  "phase 2/8: assembling exact "
+                  "packet"
+              )
+
+              (
+                  mode,
+                  packet,
+                  report,
+              ) = choose_mode(files)
+
+              blocks = make_blocks(
+                  packet,
+                  files,
+                  mode,
+                  report["packetSha256"],
+              )
+
+              placements = assign_slots(
+                  blocks
+              )
+
+              log(
+                  f"phase 3/8: prepared "
+                  f"{len(blocks)} blocks in "
+                  f"{mode} mode"
+              )
+
+              lowres = lowres_background(
+                  files,
+                  report["applicationRoot"],
+              )
+
+              lowres = add_semantic_overlay(
+                  lowres,
+                  files,
+                  blocks,
+                  placements,
+              )
+
+              log(
+                  "phase 4/8: low-resolution "
+                  "manifold field complete"
+              )
+
+              with tempfile.TemporaryDirectory(
+                  prefix="dream-v8-"
+              ) as temporary:
+                  memmap_path = (
+                      Path(temporary)
+                      / "canvas.rgb"
+                  )
+
+                  canvas = create_canvas(
+                      lowres,
+                      memmap_path,
+                  )
+
+                  log(
+                      "phase 5/8: 24 MP canvas "
+                      "complete"
+                  )
+
+                  render_to_memmap(
+                      canvas,
+                      files,
+                      blocks,
+                      placements,
+                      mode,
+                      packet,
+                      report,
+                  )
+
+                  log(
+                      "phase 6/8: all visual "
+                      "blocks complete"
+                  )
+
+                  save_png(
+                      canvas,
+                      output,
+                  )
+
+                  del canvas
+
+              log(
+                  "phase 7/8: writing audit "
+                  "report"
+              )
 
               result = {
                   "artifact": str(output),
                   "width": WIDTH,
                   "height": HEIGHT,
-                  "megapixels": WIDTH * HEIGHT / 1_000_000,
+                  "megapixels": (
+                      WIDTH
+                      * HEIGHT
+                      / 1_000_000
+                  ),
                   "mode": mode,
-                  "includedApplicationFiles": len(files),
-                  "excludedTrackedFiles": len(skipped),
+                  "includedApplicationFiles": (
+                      len(files)
+                  ),
+                  "excludedTrackedFiles": (
+                      len(skipped)
+                  ),
                   "packetBytes": len(packet),
-                  "capacityBytes": capacity_bytes(mode),
+                  "capacityBytes": (
+                      capacity_bytes(mode)
+                  ),
                   "dataBlocks": len(blocks),
-                  "calibrationBlocks": len(CALIBRATION_SLOTS),
-                  "applicationRoot": packet_report["applicationRoot"],
-                  "packetSha256": packet_report["packetSha256"],
-                  "phi": PHI,
-                  "n": GOLDEN_N,
-                  "goldenAngle": GOLDEN_ANGLE,
-                  "identityResidual": IDENTITY_RESIDUAL,
+                  "applicationRoot": (
+                      report["applicationRoot"]
+                  ),
+                  "packetSha256": (
+                      report["packetSha256"]
+                  ),
+                  "included": [
+                      file.path
+                      for file in files
+                  ],
+                  "excluded": skipped,
               }
-              if audit_path is not None:
-                  audit = {
-                      **result,
-                      "included": [file.path for file in files],
-                      "excluded": skipped,
-                  }
-                  audit_path.parent.mkdir(parents=True, exist_ok=True)
-                  audit_path.write_text(json.dumps(audit, indent=2, sort_keys=True), encoding="utf-8")
+
+              audit.parent.mkdir(
+                  parents=True,
+                  exist_ok=True,
+              )
+
+              audit.write_text(
+                  json.dumps(
+                      result,
+                      indent=2,
+                      sort_keys=True,
+                  ),
+                  encoding="utf-8",
+              )
+
+              log(
+                  "phase 8/8: build complete"
+              )
+
               return result
 
 
-          def decode_header_from_block(block: Image.Image) -> str | None:
-              array = np.asarray(block.convert("RGB"), dtype=np.uint8)
+          def decode_header_from_block(
+              block: Image.Image,
+          ):
+              array = np.asarray(
+                  block.convert("RGB"),
+                  dtype=np.uint8,
+              )
+
               pairs = []
-              for row in range(HEADER_ROWS):
-                  for column in range(HEADER_COLUMNS):
-                      x = HEADER_X + column * HEADER_CELL + 2
-                      y = HEADER_Y + row * HEADER_CELL + 2
-                      first, second, valid = rgb_to_pair(array[y, x])
+
+              for row in range(
+                  HEADER_ROWS
+              ):
+                  for column in range(
+                      HEADER_COLUMNS
+                  ):
+                      x = (
+                          HEADER_X
+                          + column
+                          * HEADER_CELL
+                          + 2
+                      )
+
+                      y = (
+                          HEADER_Y
+                          + row
+                          * HEADER_CELL
+                          + 2
+                      )
+
+                      (
+                          first,
+                          second,
+                          valid,
+                      ) = rgb_to_pair(
+                          array[y, x]
+                      )
+
                       if not bool(valid):
                           return None
-                      pairs.extend((int(first), int(second)))
-              raw = bytes(pairs)
-              return raw.split(b"\x00", 1)[0].decode("ascii", "ignore")
+
+                      pairs.extend(
+                          (
+                              int(first),
+                              int(second),
+                          )
+                      )
+
+              return (
+                  bytes(pairs)
+                  .split(b"\x00", 1)[0]
+                  .decode(
+                      "ascii",
+                      "ignore",
+                  )
+              )
 
 
-          def parse_header(text: str) -> dict[str, str]:
+          def parse_header(text: str):
               parts = text.split("|")
-              output = {"magic": parts[0] if parts else ""}
+
+              output = {
+                  "magic": (
+                      parts[0]
+                      if parts
+                      else ""
+                  )
+              }
+
               for part in parts[1:]:
                   if "=" in part:
-                      key, value = part.split("=", 1)
+                      key, value = part.split(
+                          "=",
+                          1,
+                      )
                       output[key] = value
+
               return output
 
 
-          def canonical_block_and_header(block: Image.Image) -> tuple[Image.Image, dict[str, str]] | None:
+          def canonical_block(
+              block: Image.Image,
+          ):
               candidates = [
                   block,
-                  block.transpose(Image.Transpose.ROTATE_90),
-                  block.transpose(Image.Transpose.ROTATE_180),
-                  block.transpose(Image.Transpose.ROTATE_270),
+                  block.transpose(
+                      Image.Transpose.ROTATE_90
+                  ),
+                  block.transpose(
+                      Image.Transpose.ROTATE_180
+                  ),
+                  block.transpose(
+                      Image.Transpose.ROTATE_270
+                  ),
               ]
+
               for candidate in candidates:
-                  text = decode_header_from_block(candidate)
-                  if text and (text.startswith("D4AI6|") or text.startswith("D4CAL6|")):
-                      return candidate, parse_header(text)
+                  text = decode_header_from_block(
+                      candidate
+                  )
+
+                  if (
+                      text
+                      and (
+                          text.startswith(
+                              "D4AI8|"
+                          )
+                          or text.startswith(
+                              "D4CAL8|"
+                          )
+                      )
+                  ):
+                      return (
+                          candidate,
+                          parse_header(text),
+                      )
+
               return None
 
 
-          def decode_payload_matrix(block: Image.Image, mode: str, byte_count: int) -> bytes:
-              array = np.asarray(block.convert("RGB"), dtype=np.uint8)
-              data_width, data_height, _, _, data_x, data_y = mode_dimensions(mode)
-              py = np.arange(data_height, dtype=np.int32)
-              if mode in {"P2", "PR"}:
+          def decode_payload(
+              block: Image.Image,
+              mode: str,
+              byte_count: int,
+          ):
+              array = np.asarray(
+                  block.convert("RGB"),
+                  dtype=np.uint8,
+              )
+
+              (
+                  data_width,
+                  data_height,
+                  _,
+                  _,
+                  data_x,
+                  data_y,
+              ) = mode_dimensions(mode)
+
+              py = np.arange(
+                  data_height,
+                  dtype=np.int32,
+              )
+
+              if mode in {
+                  "P2",
+                  "PR",
+              }:
                   py += py // 16
-              px = np.arange(data_width, dtype=np.int32)
+
+              px = np.arange(
+                  data_width,
+                  dtype=np.int32,
+              )
+
               if mode == "P2":
                   px += px // 16
-              rgb = array[data_y + py[:, None], data_x + px[None, :], :]
-              first, second, valid = rgb_to_pair(rgb)
+
+              rgb = array[
+                  data_y + py[:, None],
+                  data_x + px[None, :],
+              ]
+
+              (
+                  first,
+                  second,
+                  valid,
+              ) = rgb_to_pair(rgb)
+
               if not bool(np.all(valid)):
-                  failure = np.argwhere(~valid)[0]
-                  raise ManifoldError(f"payload pixel parity failed at {int(failure[1])},{int(failure[0])}")
-              pairs = np.stack((first, second), axis=-1).astype(np.uint8, copy=False)
-              return pairs.tobytes()[:byte_count]
+                  raise ManifoldError(
+                      "payload pixel parity failed"
+                  )
+
+              return (
+                  np.stack(
+                      (
+                          first,
+                          second,
+                      ),
+                      axis=-1,
+                  )
+                  .astype(
+                      np.uint8,
+                      copy=False,
+                  )
+                  .tobytes()
+              )[:byte_count]
 
 
-          def verify_image(image_path: Path) -> dict:
-              with Image.open(image_path) as source:
-                  if source.size != (WIDTH, HEIGHT):
-                      raise ManifoldError(f"unexpected image size: {source.size}")
-                  image = source.convert("RGB")
+          def verify(image_path: Path):
+              log(
+                  "opening PNG for image-only "
+                  "reconstruction"
+              )
 
-              decoded_blocks: dict[int, bytes] = {}
-              packet_length = None
-              total_blocks = None
-              packet_sha_prefix = None
-              mode = None
-              calibration_found = 0
+              image = Image.open(
+                  image_path
+              ).convert("RGB")
 
-              for slot in range(TOTAL_SLOTS):
-                  _, _, left, top = slot_geometry(slot)
-                  crop = image.crop((left, top, left + BLOCK_SIZE, top + BLOCK_SIZE))
-                  decoded = canonical_block_and_header(crop)
-                  if decoded is None:
+              headers = []
+
+              for slot in range(
+                  TOTAL_SLOTS
+              ):
+                  _, _, left, top = (
+                      slot_geometry(slot)
+                  )
+
+                  found = canonical_block(
+                      image.crop(
+                          (
+                              left,
+                              top,
+                              left + BLOCK_SIZE,
+                              top + BLOCK_SIZE,
+                          )
+                      )
+                  )
+
+                  if found is None:
                       continue
-                  canonical, header = decoded
-                  if header["magic"] == "D4CAL6":
-                      calibration_found += 1
-                      continue
-                  if header["magic"] != "D4AI6":
-                      continue
-                  index = int(header["I"], 16)
-                  total = int(header["T"], 16)
-                  current_mode = header["M"]
-                  count = int(header["N"], 16)
-                  current_packet_length = int(header["P"], 16)
-                  payload = decode_payload_matrix(canonical, current_mode, count)
-                  crc = zlib.crc32(payload) & 0xFFFFFFFF
-                  if crc != int(header["R"], 16):
-                      raise ManifoldError(f"CRC mismatch in block {index}")
-                  decoded_blocks[index] = payload
-                  total_blocks = total if total_blocks is None else total_blocks
-                  packet_length = current_packet_length if packet_length is None else packet_length
-                  packet_sha_prefix = header["S"] if packet_sha_prefix is None else packet_sha_prefix
-                  mode = current_mode if mode is None else mode
 
-              if calibration_found != len(CALIBRATION_SLOTS):
-                  raise ManifoldError(f"expected {len(CALIBRATION_SLOTS)} calibration blocks, found {calibration_found}")
-              if total_blocks is None or len(decoded_blocks) != total_blocks:
-                  raise ManifoldError(f"decoded {len(decoded_blocks)} of {total_blocks} data blocks")
+                  block, header = found
 
-              packet = b"".join(decoded_blocks[index] for index in range(total_blocks))[:packet_length]
-              if sha256_hex(packet)[:16] != packet_sha_prefix:
-                  raise ManifoldError("packet SHA-256 prefix mismatch")
-              if len(packet) < PACKET_PREFIX.size:
-                  raise ManifoldError("packet is truncated")
-              magic, manifest_length = PACKET_PREFIX.unpack(packet[: PACKET_PREFIX.size])
+                  if (
+                      header.get("magic")
+                      == "D4AI8"
+                  ):
+                      headers.append(
+                          (
+                              block,
+                              header,
+                          )
+                      )
+
+              if not headers:
+                  raise ManifoldError(
+                      "no payload blocks found"
+                  )
+
+              headers.sort(
+                  key=lambda item: int(
+                      item[1]["I"],
+                      16,
+                  )
+              )
+
+              packet_length = int(
+                  headers[0][1]["P"],
+                  16,
+              )
+
+              mode = headers[0][1]["M"]
+
+              packet = bytearray()
+
+              for number, (
+                  block,
+                  header,
+              ) in enumerate(
+                  headers,
+                  start=1,
+              ):
+                  payload = decode_payload(
+                      block,
+                      mode,
+                      int(
+                          header["N"],
+                          16,
+                      ),
+                  )
+
+                  if (
+                      zlib.crc32(payload)
+                      & 0xFFFFFFFF
+                      != int(
+                          header["R"],
+                          16,
+                      )
+                  ):
+                      raise ManifoldError(
+                          "CRC failed for block "
+                          f"{header['I']}"
+                      )
+
+                  packet.extend(payload)
+
+                  if number % 50 == 0:
+                      log(
+                          f"decoded {number}/"
+                          f"{len(headers)} blocks"
+                      )
+
+              packet = packet[:packet_length]
+
+              (
+                  magic,
+                  manifest_length,
+              ) = PACKET_PREFIX.unpack(
+                  packet[
+                      :PACKET_PREFIX.size
+                  ]
+              )
+
               if magic != PACKET_MAGIC:
-                  raise ManifoldError("packet magic mismatch")
-              manifest_start = PACKET_PREFIX.size
-              manifest_end = manifest_start + manifest_length
-              manifest = json.loads(packet[manifest_start:manifest_end].decode("utf-8", "surrogatepass"))
-              for entry in manifest["files"]:
-                  start = int(entry["packetOffset"])
-                  end = start + int(entry["length"])
-                  if sha256_hex(packet[start:end]) != entry["sha256"]:
-                      raise ManifoldError(f"file hash mismatch: {entry['path']}")
+                  raise ManifoldError(
+                      "packet magic mismatch"
+                  )
+
+              manifest_start = (
+                  PACKET_PREFIX.size
+              )
+
+              manifest_end = (
+                  manifest_start
+                  + manifest_length
+              )
+
+              manifest = json.loads(
+                  packet[
+                      manifest_start:
+                      manifest_end
+                  ].decode(
+                      "utf-8",
+                      "surrogatepass",
+                  )
+              )
+
+              for file in manifest["files"]:
+                  start = int(
+                      file["packetOffset"]
+                  )
+
+                  raw = bytes(
+                      packet[
+                          start:
+                          start
+                          + int(
+                              file["length"]
+                          )
+                      ]
+                  )
+
+                  if (
+                      sha256_hex(raw)
+                      != file["sha256"]
+                  ):
+                      raise ManifoldError(
+                          "file hash mismatch: "
+                          f"{file['path']}"
+                      )
+
+              log(
+                  f"verified "
+                  f"{len(manifest['files'])} "
+                  "exact application files"
+              )
 
               return {
-                  "valid": True,
-                  "mode": mode,
-                  "calibrationBlocks": calibration_found,
-                  "dataBlocks": total_blocks,
+                  "verified": True,
+                  "files": len(
+                      manifest["files"]
+                  ),
                   "packetBytes": len(packet),
-                  "fileCount": len(manifest["files"]),
-                  "packetSha256": sha256_hex(packet),
+                  "mode": mode,
               }
 
 
-          def main() -> int:
+          def main():
               parser = argparse.ArgumentParser()
-              commands = parser.add_subparsers(dest="command", required=True)
 
-              build_parser = commands.add_parser("build")
-              build_parser.add_argument("--root", type=Path, required=True)
-              build_parser.add_argument("--output", type=Path, required=True)
-              build_parser.add_argument("--audit", type=Path)
+              subparsers = (
+                  parser.add_subparsers(
+                      dest="command",
+                      required=True,
+                  )
+              )
 
-              verify_parser = commands.add_parser("verify")
-              verify_parser.add_argument("--image", type=Path, required=True)
+              build_parser = (
+                  subparsers.add_parser(
+                      "build"
+                  )
+              )
+
+              build_parser.add_argument(
+                  "--root",
+                  type=Path,
+                  required=True,
+              )
+
+              build_parser.add_argument(
+                  "--output",
+                  type=Path,
+                  required=True,
+              )
+
+              build_parser.add_argument(
+                  "--audit",
+                  type=Path,
+                  required=True,
+              )
+
+              verify_parser = (
+                  subparsers.add_parser(
+                      "verify"
+                  )
+              )
+
+              verify_parser.add_argument(
+                  "--image",
+                  type=Path,
+                  required=True,
+              )
 
               args = parser.parse_args()
+
               if args.command == "build":
-                  result = build_image(args.root.resolve(), args.output.resolve(), args.audit.resolve() if args.audit else None)
+                  result = build(
+                      args.root.resolve(),
+                      args.output.resolve(),
+                      args.audit.resolve(),
+                  )
               else:
-                  result = verify_image(args.image.resolve())
-              print(json.dumps(result, indent=2, sort_keys=True))
-              return 0
+                  result = verify(
+                      args.image.resolve()
+                  )
+
+              print(
+                  json.dumps(
+                      result,
+                      indent=2,
+                      sort_keys=True,
+                  )
+              )
 
 
           if __name__ == "__main__":
-              try:
-                  raise SystemExit(main())
-              except (ManifoldError, OSError, ValueError, KeyError, json.JSONDecodeError) as error:
-                  print(f"DREAM manifold failed: {error}", file=sys.stderr)
-                  raise SystemExit(2)
+              main()
 
           PY
-          python -m py_compile "$RUNNER_TEMP/build_dream_ai_manifold.py"
+
+          python -m py_compile \
+            "$RUNNER_TEMP/build_dream_v8.py"
 
       - name: Build the 24 MP manifold PNG
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf "$GITHUB_WORKSPACE/dream-ai-manifold-output"
-          mkdir -p "$GITHUB_WORKSPACE/dream-ai-manifold-output"
+          rm -rf \
+            "$GITHUB_WORKSPACE/dream-ai-native-v8-output"
 
-          python -u "$RUNNER_TEMP/build_dream_ai_manifold.py" build \
+          mkdir -p \
+            "$GITHUB_WORKSPACE/dream-ai-native-v8-output"
+
+          python \
+            "$RUNNER_TEMP/build_dream_v8.py" \
+            build \
             --root "$GITHUB_WORKSPACE" \
-            --output "$GITHUB_WORKSPACE/dream-ai-manifold-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png" \
-            --audit "$RUNNER_TEMP/dream-ai-manifold-audit.json" \
-            | tee "$RUNNER_TEMP/dream-ai-manifold-build.json"
+            --output \
+              "$GITHUB_WORKSPACE/dream-ai-native-v8-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png" \
+            --audit \
+              "$GITHUB_WORKSPACE/dream-ai-native-v8-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD_AUDIT.json" \
+            | tee \
+              "$RUNNER_TEMP/dream-ai-native-v8-build.json"
 
-      - name: Prove image-only reconstruction
+      - name: Prove image-only exact reconstruction
         shell: bash
         run: |
           set -euo pipefail
-          python -u "$RUNNER_TEMP/build_dream_ai_manifold.py" verify \
-            --image "$GITHUB_WORKSPACE/dream-ai-manifold-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png" \
-            | tee "$RUNNER_TEMP/dream-ai-manifold-verify.json"
+          python \
+            "$RUNNER_TEMP/build_dream_v8.py" \
+            verify \
+            --image \
+              "$GITHUB_WORKSPACE/dream-ai-native-v8-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png" \
+            | tee \
+              "$RUNNER_TEMP/dream-ai-native-v8-verify.json"
+
+      - name: Verify PNG dimensions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          from PIL import Image
+
+          path = Path(
+              "dream-ai-native-v8-output/"
+              "DREAM_AI_NATIVE_4D_RGB_CMY_"
+              "APPLICATION_MANIFOLD.png"
+          )
+
+          with Image.open(path) as image:
+              if image.size != (
+                  4284,
+                  5712,
+              ):
+                  raise SystemExit(
+                      "unexpected dimensions: "
+                      f"{image.size}"
+                  )
+
+              image.verify()
+
+          print("PNG_OK 4284x5712")
+          PY
 
       - name: Publish rigorous build summary
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           {
-            echo "## DREAM AI-Native 4D RGB/CMY Application Manifold"
+            echo \
+              "## DREAM AI-Native 4D RGB-CMY Manifold v8"
+
             echo
-            echo "### Build"
-            echo '```json'
-            cat "$RUNNER_TEMP/dream-ai-manifold-build.json"
-            echo '```'
-            echo
-            echo "### Image-only verification"
-            echo '```json'
-            cat "$RUNNER_TEMP/dream-ai-manifold-verify.json"
-            echo '```'
+
+            if [[ \
+              -f \
+              "$RUNNER_TEMP/dream-ai-native-v8-build.json" \
+            ]]; then
+              echo "### Build"
+              echo '```json'
+              cat \
+                "$RUNNER_TEMP/dream-ai-native-v8-build.json"
+              echo '```'
+            fi
+
+            if [[ \
+              -f \
+              "$RUNNER_TEMP/dream-ai-native-v8-verify.json" \
+            ]]; then
+              echo \
+                "### Image-only verification"
+              echo '```json'
+              cat \
+                "$RUNNER_TEMP/dream-ai-native-v8-verify.json"
+              echo '```'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload the one-image artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD
-          path: dream-ai-manifold-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png
+          name: DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD_V8
+          path: |
+            dream-ai-native-v8-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD.png
+            dream-ai-native-v8-output/DREAM_AI_NATIVE_4D_RGB_CMY_APPLICATION_MANIFOLD_AUDIT.json
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
