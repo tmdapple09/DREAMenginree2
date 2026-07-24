@@ -31,6 +31,7 @@ jobs:
           set -euo pipefail
 
           sudo apt-get update
+
           sudo apt-get install -y --no-install-recommends \
             coq \
             jq \
@@ -88,10 +89,12 @@ jobs:
                   continue
 
               data = path.read_bytes()
+              relative_bytes = relative.as_posix().encode("utf-8")
 
               files.append(
                   {
                       "path": relative.as_posix(),
+                      "path_utf8_hex": relative_bytes.hex(),
                       "bytes": len(data),
                       "sha256": hashlib.sha256(data).hexdigest(),
                   }
@@ -168,9 +171,11 @@ jobs:
           for item in files:
               rows.append(
                   "  {| "
-                  f"file_path := {coq_string(item['path'])}; "
+                  f"file_path_utf8_hex := "
+                  f"{coq_string(item['path_utf8_hex'])}; "
                   f"file_size := {item['bytes']}; "
-                  f"file_sha256 := {coq_string(item['sha256'])} "
+                  f"file_sha256 := "
+                  f"{coq_string(item['sha256'])} "
                   "|}"
               )
 
@@ -183,13 +188,17 @@ jobs:
           else:
               repository_literal = "[]"
 
-          generated = f"""From Coq Require Import List String Arith.
+          generated = f"""From Coq Require Import
+            List
+            String
+            Arith.
 
           Import ListNotations.
+
           Open Scope string_scope.
 
           Record SourceFile := {{
-            file_path : string;
+            file_path_utf8_hex : string;
             file_size : nat;
             file_sha256 : string
           }}.
@@ -245,11 +254,20 @@ jobs:
           | continue_mode
           | halt_mode.
 
+          (*
+            The repository files and the current file cursor form
+            the discrete spatial state.
+          *)
           Definition M : Type :=
-            list SourceFile.
+            (list SourceFile * nat)%type.
 
+          (*
+            The continuous parameter space is the real numbers.
+
+            This is intentionally R, not nat.
+          *)
           Definition V : Type :=
-            nat * R.
+            R.
 
           Definition U : Type :=
             unit.
@@ -260,43 +278,49 @@ jobs:
           Definition I : Type :=
             nat.
 
+          Definition initial_state : M :=
+            (repository, 0%nat).
+
+          Definition initial_parameter : V :=
+            0.
+
           Definition D
             (state : M)
             (_ : V)
             (_ : U) : M :=
-            state.
+            (
+              fst state,
+              Datatypes.S (snd state)
+            ).
 
           Definition zero_field
             (_ : M)
             (_ : V)
             (_ : U)
-            (_ : R) : R :=
+            (_ : R) : V :=
             0.
 
           Definition C
             (_ : M)
-            (parameters : V)
+            (parameter : V)
             (_ : U) : V :=
-            (
-              Datatypes.S (fst parameters),
-              snd parameters + 0
-            ).
+            parameter + 0.
 
           Definition T
             (state : M)
-            (parameters : V)
+            (parameter : V)
             (input : U) : M * V :=
             (
-              D state parameters input,
-              C state parameters input
+              D state parameter input,
+              C state parameter input
             ).
 
           Theorem transition_decomposition :
-            forall state parameters input,
-              T state parameters input =
+            forall state parameter input,
+              T state parameter input =
               (
-                D state parameters input,
-                C state parameters input
+                D state parameter input,
+                C state parameter input
               ).
           Proof.
             reflexivity.
@@ -327,7 +351,7 @@ jobs:
             RKMethod :=
             {|
               rk_tableau := euler_tableau;
-              rk_order := 1;
+              rk_order := 1%nat;
               rk_step_size := 1;
               rk_apply := C
             |}.
@@ -347,34 +371,44 @@ jobs:
           Qed.
 
           Theorem continuous_part_is_rk :
-            forall state parameters input,
-              C state parameters input =
+            forall state parameter input,
+              C state parameter input =
               rk_apply
                 repository_rk
                 state
-                parameters
+                parameter
                 input.
           Proof.
             reflexivity.
           Qed.
 
+          Theorem continuous_step_identity :
+            forall state parameter input,
+              C state parameter input =
+              parameter.
+          Proof.
+            intros.
+            unfold C.
+            lra.
+          Qed.
+
           Theorem zero_field_lipschitz :
             forall
               state
-              parameters
+              parameter
               input
               t1
               t2,
               Rabs (
                 zero_field
                   state
-                  parameters
+                  parameter
                   input
                   t1
                 -
                 zero_field
                   state
-                  parameters
+                  parameter
                   input
                   t2
               )
@@ -408,80 +442,74 @@ jobs:
 
           Definition guard
             (state : M)
-            (parameters : V)
+            (_ : V)
             (_ : U) : Mode :=
             if Nat.ltb
-              (fst parameters)
-              (List.length state)
+              (snd state)
+              (List.length (fst state))
             then continue_mode
             else halt_mode.
 
           Definition active_indices
             (state : M)
-            (parameters : V)
+            (_ : V)
             (_ : U) : list I :=
             if Nat.ltb
-              (fst parameters)
-              (List.length state)
-            then [fst parameters]
+              (snd state)
+              (List.length (fst state))
+            then [snd state]
             else [].
 
           Definition observable_labels
             (state : M)
-            (parameters : V)
+            (parameter : V)
             (input : U) : list Theta :=
             map
               binding
               (
                 active_indices
                   state
-                  parameters
+                  parameter
                   input
               ).
 
           Definition rank
-            (state : M)
-            (parameters : V) : nat :=
-            List.length state -
-            fst parameters.
+            (state : M) : nat :=
+            List.length (fst state) -
+            snd state.
 
           Theorem rank_decreases :
             forall
               state
-              parameters
+              parameter
               input
               next_state
-              next_parameters,
+              next_parameter,
               guard
                 state
-                parameters
+                parameter
                 input
               <> halt_mode
               ->
               T
                 state
-                parameters
+                parameter
                 input
               =
               (
                 next_state,
-                next_parameters
+                next_parameter
               )
               ->
-              rank
-                next_state
-                next_parameters
-              <
-              rank
-                state
-                parameters.
+              rank next_state <
+              rank state.
           Proof.
             intros
-              state
-              [cursor coordinate]
+              [files cursor]
+              parameter
               []
-              next_state
-              [next_cursor next_coordinate]
+              [next_files next_cursor]
+              next_parameter
               guard_not_halt
               transition_equality.
 
@@ -492,7 +520,7 @@ jobs:
             destruct (
               Nat.ltb
                 cursor
-                (List.length state)
+                (List.length files)
             ) eqn:cursor_in_range.
 
             - apply Nat.ltb_lt in cursor_in_range.
@@ -519,87 +547,63 @@ jobs:
               reflexivity.
           Qed.
 
-          Fixpoint advance
+          Definition advance_state
             (steps : nat)
-            (parameters : V) : V :=
-            match steps with
-            | O =>
-                parameters
-            | Datatypes.S remaining =>
-                advance
-                  remaining
-                  (
-                    Datatypes.S (
-                      fst parameters
-                    ),
-                    snd parameters
-                  )
-            end.
+            (state : M) : M :=
+            (
+              fst state,
+              snd state + steps
+            ).
 
-          Theorem advance_counter :
-            forall
-              steps
-              cursor
-              coordinate,
+          Theorem advance_state_files :
+            forall steps files cursor,
               fst (
-                advance
+                advance_state
                   steps
-                  (
-                    cursor,
-                    coordinate
-                  )
+                  (files, cursor)
+              )
+              =
+              files.
+          Proof.
+            reflexivity.
+          Qed.
+
+          Theorem advance_state_cursor :
+            forall steps files cursor,
+              snd (
+                advance_state
+                  steps
+                  (files, cursor)
               )
               =
               cursor + steps.
           Proof.
-            induction steps as
-              [
-              |
-                steps
-                induction_hypothesis
-              ];
-              intros cursor coordinate.
-
-            - simpl.
-
-              lia.
-
-            - simpl.
-
-              rewrite induction_hypothesis.
-
-              lia.
+            reflexivity.
           Qed.
 
           Theorem eventual_halt :
-            forall state parameters,
+            forall state parameter,
               guard
-                state
                 (
-                  advance
-                    (
-                      rank
-                        state
-                        parameters
-                    )
-                    parameters
+                  advance_state
+                    (rank state)
+                    state
                 )
+                parameter
                 tt
               =
               halt_mode.
           Proof.
-            intros state [cursor coordinate].
+            intros [files cursor] parameter.
 
-            unfold guard, rank.
+            unfold guard, advance_state, rank.
 
             simpl.
-
-            rewrite advance_counter.
 
             destruct (
               le_dec
                 cursor
-                (List.length state)
+                (List.length files)
             ) as
               [
                 cursor_in_range
@@ -611,12 +615,12 @@ jobs:
                 cursor
                 +
                 (
-                  List.length state
+                  List.length files
                   -
                   cursor
                 )
                 =
-                List.length state
+                List.length files
               )%nat
               by lia.
 
@@ -627,7 +631,7 @@ jobs:
               reflexivity.
 
             - assert (
-                List.length state
+                List.length files
                 -
                 cursor
                 =
@@ -642,7 +646,7 @@ jobs:
               assert (
                 Nat.ltb
                   cursor
-                  (List.length state)
+                  (List.length files)
                 =
                 false
               ).
@@ -661,37 +665,37 @@ jobs:
           Theorem continue_step_safe :
             forall
               state
-              parameters
+              parameter
               input
               next_state
-              next_parameters,
+              next_parameter,
               guard
                 state
-                parameters
+                parameter
                 input
               =
               continue_mode
               ->
               T
                 state
-                parameters
+                parameter
                 input
               =
               (
                 next_state,
-                next_parameters
+                next_parameter
               )
               ->
-              fst next_parameters
+              snd next_state
               <=
-              List.length next_state.
+              List.length (fst next_state).
           Proof.
             intros
-              state
-              [cursor coordinate]
+              [files cursor]
+              parameter
               []
-              next_state
-              [next_cursor next_coordinate]
+              [next_files next_cursor]
+              next_parameter
               guard_continues
               transition_equality.
 
@@ -702,7 +706,7 @@ jobs:
             destruct (
               Nat.ltb
                 cursor
-                (List.length state)
+                (List.length files)
             ) eqn:cursor_in_range.
 
             - apply Nat.ltb_lt in cursor_in_range.
@@ -728,16 +732,16 @@ jobs:
             forall
               (theta1 theta2 : Theta)
               state
-              parameters
+              parameter
               input,
               T
                 state
-                parameters
+                parameter
                 input
               =
               T
                 state
-                parameters
+                parameter
                 input.
 
           Theorem textblind_transition_proof :
@@ -753,16 +757,16 @@ jobs:
             forall
               (theta1 theta2 : Theta)
               state
-              parameters
+              parameter
               input,
               guard
                 state
-                parameters
+                parameter
                 input
               =
               guard
                 state
-                parameters
+                parameter
                 input.
 
           Theorem textblind_guard_proof :
@@ -774,33 +778,33 @@ jobs:
           Qed.
 
           Definition Omega : Type :=
-            M * V * Theta.
+            (M * V * Theta)%type.
 
           Definition lifted_step
             (omega omega' : Omega)
             (input : U) : Prop :=
             let
-              '(state, parameters, theta) :=
+              '(state, parameter, theta) :=
               omega
             in
             let
-              '(next_state, next_parameters) :=
+              '(next_state, next_parameter) :=
               T
                 state
-                parameters
+                parameter
                 input
             in
             omega'
             =
             (
               next_state,
-              next_parameters,
+              next_parameter,
               theta
             )
             /\
             guard
               state
-              parameters
+              parameter
               input
             <>
             halt_mode.
@@ -824,6 +828,9 @@ jobs:
 
             cdlds_state :
               cdlds_M;
+
+            cdlds_parameter :
+              cdlds_V;
 
             cdlds_transition :
               cdlds_M ->
@@ -860,20 +867,20 @@ jobs:
               list cdlds_Theta;
 
             cdlds_decomposition :
-              forall state parameters input,
+              forall state parameter input,
                 cdlds_transition
                   state
-                  parameters
+                  parameter
                   input
                 =
                 (
                   cdlds_discrete
                     state
-                    parameters
+                    parameter
                     input,
                   cdlds_continuous
                     state
-                    parameters
+                    parameter
                     input
                 );
 
@@ -896,7 +903,10 @@ jobs:
               cdlds_I := I;
 
               cdlds_state :=
-                repository;
+                initial_state;
+
+              cdlds_parameter :=
+                initial_parameter;
 
               cdlds_transition :=
                 T;
@@ -925,32 +935,46 @@ jobs:
 
           Theorem repository_cdlds_contains_every_manifest_entry :
             List.length (
-              cdlds_state
-                repository_cdlds
+              fst (
+                cdlds_state
+                  repository_cdlds
+              )
             )
             =
             repository_file_count.
           Proof.
+            change
+              (
+                List.length repository =
+                repository_file_count
+              ).
+
             exact repository_count_exact.
           Qed.
 
           Theorem repository_cdlds_terminates :
-            forall parameters,
+            forall parameter,
               guard
-                repository
                 (
-                  advance
+                  advance_state
                     (
-                      rank
-                        repository
-                        parameters
+                      rank (
+                        cdlds_state
+                          repository_cdlds
+                      )
                     )
-                    parameters
+                    (
+                      cdlds_state
+                        repository_cdlds
+                    )
                 )
+                parameter
                 tt
               =
               halt_mode.
           Proof.
+            intro parameter.
+
             apply eventual_halt.
           Qed.
           COQ
@@ -1002,6 +1026,7 @@ jobs:
 
           - Commit: \`$COMMIT\`
           - Repository files represented: \`$FILE_COUNT\`
+          - Continuous parameter type: \`R\`
           - Coq compilation: **passed**
           - Unfinished declarations: **none**
           - Transition decomposition: **proved**
@@ -1013,15 +1038,17 @@ jobs:
 
           ## Generated interpretation
 
-          The repository manifest is represented as the spatial state.
+          The spatial state consists of:
 
-          The active parameter consists of:
+          - the complete repository manifest;
+          - a natural-number cursor over the repository files.
 
-          - a natural-number file cursor;
-          - a real-valued continuous coordinate.
+          The continuous parameter space is the Coq real-number type \`R\`.
 
-          Each transition advances the file cursor by one and applies an Euler
-          step to the zero vector field.
+          The discrete transition advances the repository cursor by one.
+
+          The continuous transition applies an Euler step to the zero vector
+          field, preserving the real-valued parameter.
 
           Text labels are numeric file indices. The transition and guard do not
           inspect file names or label text.
