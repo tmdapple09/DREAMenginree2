@@ -3,7 +3,9 @@ name: Convert Repository to CDLDS
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches:
+      - main
+      - master
 
 permissions:
   contents: read
@@ -27,62 +29,106 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends coq jq rsync zip
+          sudo apt-get install -y --no-install-recommends \
+            coq \
+            jq \
+            rsync \
+            zip
+
+          coqc --version
+
+      - name: Prepare output directories
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf "$OUT"
+
+          mkdir -p \
+            "$OUT/source" \
+            "$OUT/formal" \
+            "$OUT/reports"
 
       - name: Build repository manifest
         shell: python
         run: |
           from __future__ import annotations
-          import hashlib, json, os
+
+          import hashlib
+          import json
+          import os
           from pathlib import Path
 
-          root = Path('.').resolve()
-          out = Path(os.environ['OUT'])
-          (out / 'source').mkdir(parents=True, exist_ok=True)
-          (out / 'formal').mkdir(parents=True, exist_ok=True)
-          (out / 'reports').mkdir(parents=True, exist_ok=True)
+          root = Path(".").resolve()
+          out = Path(os.environ["OUT"])
 
           excluded = {
-              '.git', 'build', 'node_modules', 'vendor', 'dist',
-              'target', '__pycache__', '.next', '.cache'
+              ".git",
+              "build",
+              "node_modules",
+              "vendor",
+              "dist",
+              "target",
+              "__pycache__",
+              ".next",
+              ".cache",
           }
 
-          files = []
-          for path in sorted(root.rglob('*')):
+          files: list[dict[str, object]] = []
+
+          for path in sorted(root.rglob("*")):
               if not path.is_file():
                   continue
-              rel = path.relative_to(root)
-              if any(part in excluded for part in rel.parts):
+
+              relative = path.relative_to(root)
+
+              if any(part in excluded for part in relative.parts):
                   continue
+
               data = path.read_bytes()
-              files.append({
-                  'path': rel.as_posix(),
-                  'bytes': len(data),
-                  'sha256': hashlib.sha256(data).hexdigest(),
-              })
+
+              files.append(
+                  {
+                      "path": relative.as_posix(),
+                      "bytes": len(data),
+                      "sha256": hashlib.sha256(data).hexdigest(),
+                  }
+              )
 
           manifest = {
-              'schema': 'cdlds.repository.v1',
-              'repository': os.environ.get('GITHUB_REPOSITORY', 'local'),
-              'commit': os.environ.get('GITHUB_SHA', 'unknown'),
-              'file_count': len(files),
-              'files': files,
+              "schema": "cdlds.repository.v1",
+              "repository": os.environ.get(
+                  "GITHUB_REPOSITORY",
+                  "local",
+              ),
+              "commit": os.environ.get(
+                  "GITHUB_SHA",
+                  "unknown",
+              ),
+              "file_count": len(files),
+              "files": files,
           }
 
-          (out / 'repository.json').write_text(
-              json.dumps(manifest, indent=2) + '\n',
-              encoding='utf-8',
+          (out / "repository.json").write_text(
+              json.dumps(manifest, indent=2) + "\n",
+              encoding="utf-8",
           )
 
-          with (out / 'reports' / 'SHA256SUMS').open('w', encoding='utf-8') as f:
+          with (
+              out / "reports" / "SHA256SUMS"
+          ).open("w", encoding="utf-8") as handle:
               for item in files:
-                  f.write(f"{item['sha256']}  {item['path']}\n")
+                  handle.write(
+                      f'{item["sha256"]}  {item["path"]}\n'
+                  )
 
       - name: Copy repository into artifact
         shell: bash
         run: |
           set -euo pipefail
+
           rsync -a \
             --exclude='.git/' \
             --exclude='build/' \
@@ -91,87 +137,170 @@ jobs:
             --exclude='dist/' \
             --exclude='target/' \
             --exclude='__pycache__/' \
+            --exclude='.next/' \
+            --exclude='.cache/' \
             ./ "$OUT/source/"
 
       - name: Generate concrete Coq repository data
         shell: python
         run: |
           from __future__ import annotations
-          import json, os
+
+          import json
+          import os
           from pathlib import Path
 
-          out = Path(os.environ['OUT'])
-          manifest = json.loads((out / 'repository.json').read_text(encoding='utf-8'))
-          files = manifest['files']
+          out = Path(os.environ["OUT"])
+
+          manifest = json.loads(
+              (out / "repository.json").read_text(
+                  encoding="utf-8",
+              )
+          )
+
+          files = manifest["files"]
 
           def coq_string(value: str) -> str:
               return '"' + value.replace('"', '""') + '"'
 
-          rows = []
+          rows: list[str] = []
+
           for item in files:
               rows.append(
-                  '  {| file_path := %s; file_size := %d; file_sha256 := %s |}'
-                  % (coq_string(item['path']), item['bytes'], coq_string(item['sha256']))
+                  "  {| "
+                  f"file_path := {coq_string(item['path'])}; "
+                  f"file_size := {item['bytes']}; "
+                  f"file_sha256 := {coq_string(item['sha256'])} "
+                  "|}"
               )
 
-          repo_literal = '[]' if not rows else '[\n' + ';\n'.join(rows) + '\n]'
+          if rows:
+              repository_literal = (
+                  "[\n"
+                  + ";\n".join(rows)
+                  + "\n]"
+              )
+          else:
+              repository_literal = "[]"
 
-          generated = (
-              'From Coq Require Import List String Arith.\n'
-              'Import ListNotations.\n'
-              'Open Scope string_scope.\n\n'
-              'Record SourceFile := {\n'
-              '  file_path : string;\n'
-              '  file_size : nat;\n'
-              '  file_sha256 : string\n'
-              '}.\n\n'
-              'Definition repository : list SourceFile :=\n'
-              + repo_literal + '.\n\n'
-              + f'Definition repository_file_count : nat := {len(files)}.\n\n'
-              'Theorem repository_count_exact :\n'
-              '  length repository = repository_file_count.\n'
-              'Proof. reflexivity. Qed.\n'
+          generated = f"""From Coq Require Import List String Arith.
+
+          Import ListNotations.
+          Open Scope string_scope.
+
+          Record SourceFile := {{
+            file_path : string;
+            file_size : nat;
+            file_sha256 : string
+          }}.
+
+          Definition repository : list SourceFile :=
+          {repository_literal}.
+
+          Definition repository_file_count : nat :=
+            {len(files)}.
+
+          Theorem repository_count_exact :
+            List.length repository =
+            repository_file_count.
+          Proof.
+            reflexivity.
+          Qed.
+          """
+
+          (out / "formal" / "RepositoryData.v").write_text(
+              generated,
+              encoding="utf-8",
           )
-
-          (out / 'formal' / 'RepositoryData.v').write_text(generated, encoding='utf-8')
 
       - name: Generate complete CDLDS theory
         shell: bash
         run: |
           set -euo pipefail
+
           cat > "$OUT/formal/CDLDS.v" <<'COQ'
-          From Coq Require Import List String Arith PeanoNat Reals Lia Lra.
+          From Coq Require Import
+            List
+            String
+            Arith
+            PeanoNat
+            Reals
+            Lia
+            Lra.
 
           Import ListNotations.
+
           Open Scope string_scope.
           Open Scope R_scope.
 
           Require Import RepositoryData.
 
           Definition isSet (A : Type) : Prop :=
-            forall (x y : A) (p q : x = y), p = q.
+            forall
+              (x y : A)
+              (p q : x = y),
+              p = q.
 
-          Inductive Mode := continue_mode | halt_mode.
+          Inductive Mode :=
+          | continue_mode
+          | halt_mode.
 
-          Definition M : Type := list SourceFile.
-          Definition V : Type := nat * R.
-          Definition U : Type := unit.
-          Definition Theta : Type := nat.
-          Definition I : Type := nat.
+          Definition M : Type :=
+            list SourceFile.
 
-          Definition D (S : M) (_ : V) (_ : U) : M := S.
+          Definition V : Type :=
+            nat * R.
 
-          Definition zero_field (_ : M) (_ : V) (_ : U) (_ : R) : R := 0.
+          Definition U : Type :=
+            unit.
 
-          Definition C (_ : M) (P : V) (_ : U) : V :=
-            (S (fst P), snd P + 0).
+          Definition Theta : Type :=
+            nat.
 
-          Definition T (S : M) (P : V) (u : U) : M * V :=
-            (D S P u, C S P u).
+          Definition I : Type :=
+            nat.
+
+          Definition D
+            (state : M)
+            (_ : V)
+            (_ : U) : M :=
+            state.
+
+          Definition zero_field
+            (_ : M)
+            (_ : V)
+            (_ : U)
+            (_ : R) : R :=
+            0.
+
+          Definition C
+            (_ : M)
+            (parameters : V)
+            (_ : U) : V :=
+            (
+              Datatypes.S (fst parameters),
+              snd parameters + 0
+            ).
+
+          Definition T
+            (state : M)
+            (parameters : V)
+            (input : U) : M * V :=
+            (
+              D state parameters input,
+              C state parameters input
+            ).
 
           Theorem transition_decomposition :
-            forall S P u, T S P u = (D S P u, C S P u).
-          Proof. reflexivity. Qed.
+            forall state parameters input,
+              T state parameters input =
+              (
+                D state parameters input,
+                C state parameters input
+              ).
+          Proof.
+            reflexivity.
+          Qed.
 
           Record ButcherTableau := {
             tableau_A : list (list R);
@@ -179,10 +308,13 @@ jobs:
             tableau_c : list R
           }.
 
-          Definition euler_tableau : ButcherTableau :=
-            {| tableau_A := [[0]];
-               tableau_b := [1];
-               tableau_c := [0] |}.
+          Definition euler_tableau :
+            ButcherTableau :=
+            {|
+              tableau_A := [[0]];
+              tableau_b := [1];
+              tableau_c := [0]
+            |}.
 
           Record RKMethod := {
             rk_tableau : ButcherTableau;
@@ -191,131 +323,497 @@ jobs:
             rk_apply : M -> V -> U -> V
           }.
 
-          Definition repository_rk : RKMethod :=
-            {| rk_tableau := euler_tableau;
-               rk_order := 1;
-               rk_step_size := 1;
-               rk_apply := C |}.
+          Definition repository_rk :
+            RKMethod :=
+            {|
+              rk_tableau := euler_tableau;
+              rk_order := 1;
+              rk_step_size := 1;
+              rk_apply := C
+            |}.
 
-          Theorem rk_order_positive : (1 <= rk_order repository_rk)%nat.
-          Proof. simpl; lia. Qed.
+          Theorem rk_order_positive :
+            (1 <= rk_order repository_rk)%nat.
+          Proof.
+            simpl.
+            lia.
+          Qed.
 
-          Theorem rk_step_positive : 0 < rk_step_size repository_rk.
-          Proof. simpl; lra. Qed.
+          Theorem rk_step_positive :
+            0 < rk_step_size repository_rk.
+          Proof.
+            simpl.
+            lra.
+          Qed.
 
           Theorem continuous_part_is_rk :
-            forall S P u, C S P u = rk_apply repository_rk S P u.
-          Proof. reflexivity. Qed.
+            forall state parameters input,
+              C state parameters input =
+              rk_apply
+                repository_rk
+                state
+                parameters
+                input.
+          Proof.
+            reflexivity.
+          Qed.
 
           Theorem zero_field_lipschitz :
-            forall S P u t1 t2,
-              Rabs (zero_field S P u t1 - zero_field S P u t2)
-              <= 0 * Rabs (t1 - t2).
+            forall
+              state
+              parameters
+              input
+              t1
+              t2,
+              Rabs (
+                zero_field
+                  state
+                  parameters
+                  input
+                  t1
+                -
+                zero_field
+                  state
+                  parameters
+                  input
+                  t2
+              )
+              <=
+              0 * Rabs (t1 - t2).
           Proof.
-            intros; unfold zero_field.
-            rewrite Rminus_diag_eq by reflexivity.
-            rewrite Rabs_R0; lra.
+            intros.
+
+            unfold zero_field.
+
+            replace (0 - 0) with 0 by lra.
+
+            rewrite Rabs_R0.
+
+            lra.
           Qed.
 
-          Definition binding (i : I) : Theta := i.
+          Definition binding
+            (index : I) : Theta :=
+            index.
 
           Theorem binding_injective :
-            forall i j, binding i = binding j -> i = j.
-          Proof. intros i j H; exact H. Qed.
-
-          Definition guard (S : M) (P : V) (_ : U) : Mode :=
-            if Nat.ltb (fst P) (length S) then continue_mode else halt_mode.
-
-          Definition active_indices (S : M) (P : V) (_ : U) : list I :=
-            if Nat.ltb (fst P) (length S) then [fst P] else [].
-
-          Definition observable_labels (S : M) (P : V) (u : U) : list Theta :=
-            map binding (active_indices S P u).
-
-          Definition rank (S : M) (P : V) : nat := length S - fst P.
-
-          Theorem rank_decreases :
-            forall S P u S' P',
-              guard S P u <> halt_mode ->
-              T S P u = (S', P') ->
-              rank S' P' < rank S P.
+            forall i j,
+              binding i = binding j ->
+              i = j.
           Proof.
-            intros S [n x] [] S' [n' x'] Hguard HT.
-            unfold guard in Hguard; simpl in Hguard.
-            destruct (Nat.ltb n (length S)) eqn:Hlt.
-            - apply Nat.ltb_lt in Hlt.
-              unfold T, D, C in HT; simpl in HT.
-              inversion HT; subst.
-              unfold rank; simpl; lia.
-            - exfalso; apply Hguard; reflexivity.
+            intros i j equality.
+
+            exact equality.
           Qed.
 
-          Fixpoint advance (k : nat) (P : V) : V :=
-            match k with
-            | O => P
-            | S k' => advance k' (S (fst P), snd P)
+          Definition guard
+            (state : M)
+            (parameters : V)
+            (_ : U) : Mode :=
+            if Nat.ltb
+              (fst parameters)
+              (List.length state)
+            then continue_mode
+            else halt_mode.
+
+          Definition active_indices
+            (state : M)
+            (parameters : V)
+            (_ : U) : list I :=
+            if Nat.ltb
+              (fst parameters)
+              (List.length state)
+            then [fst parameters]
+            else [].
+
+          Definition observable_labels
+            (state : M)
+            (parameters : V)
+            (input : U) : list Theta :=
+            map
+              binding
+              (
+                active_indices
+                  state
+                  parameters
+                  input
+              ).
+
+          Definition rank
+            (state : M)
+            (parameters : V) : nat :=
+            List.length state -
+            fst parameters.
+
+          Theorem rank_decreases :
+            forall
+              state
+              parameters
+              input
+              next_state
+              next_parameters,
+              guard
+                state
+                parameters
+                input
+              <> halt_mode
+              ->
+              T
+                state
+                parameters
+                input
+              =
+              (
+                next_state,
+                next_parameters
+              )
+              ->
+              rank
+                next_state
+                next_parameters
+              <
+              rank
+                state
+                parameters.
+          Proof.
+            intros
+              state
+              [cursor coordinate]
+              []
+              next_state
+              [next_cursor next_coordinate]
+              guard_not_halt
+              transition_equality.
+
+            unfold guard in guard_not_halt.
+
+            simpl in guard_not_halt.
+
+            destruct (
+              Nat.ltb
+                cursor
+                (List.length state)
+            ) eqn:cursor_in_range.
+
+            - apply Nat.ltb_lt in cursor_in_range.
+
+              unfold T, D, C
+                in transition_equality.
+
+              simpl in transition_equality.
+
+              inversion transition_equality.
+
+              subst.
+
+              unfold rank.
+
+              simpl.
+
+              lia.
+
+            - exfalso.
+
+              apply guard_not_halt.
+
+              reflexivity.
+          Qed.
+
+          Fixpoint advance
+            (steps : nat)
+            (parameters : V) : V :=
+            match steps with
+            | O =>
+                parameters
+            | Datatypes.S remaining =>
+                advance
+                  remaining
+                  (
+                    Datatypes.S (
+                      fst parameters
+                    ),
+                    snd parameters
+                  )
             end.
 
           Theorem advance_counter :
-            forall k n x, fst (advance k (n, x)) = n + k.
+            forall
+              steps
+              cursor
+              coordinate,
+              fst (
+                advance
+                  steps
+                  (
+                    cursor,
+                    coordinate
+                  )
+              )
+              =
+              cursor + steps.
           Proof.
-            induction k as [|k IH]; intros n x.
-            - simpl; lia.
-            - simpl; rewrite IH; lia.
+            induction steps as
+              [
+              |
+                steps
+                induction_hypothesis
+              ];
+              intros cursor coordinate.
+
+            - simpl.
+
+              lia.
+
+            - simpl.
+
+              rewrite induction_hypothesis.
+
+              lia.
           Qed.
 
           Theorem eventual_halt :
-            forall S P, guard S (advance (rank S P) P) tt = halt_mode.
+            forall state parameters,
+              guard
+                state
+                (
+                  advance
+                    (
+                      rank
+                        state
+                        parameters
+                    )
+                    parameters
+                )
+                tt
+              =
+              halt_mode.
           Proof.
-            intros S [n x].
-            unfold guard, rank; simpl.
+            intros state [cursor coordinate].
+
+            unfold guard, rank.
+
+            simpl.
+
             rewrite advance_counter.
-            destruct (le_dec n (length S)) as [Hle|Hgt].
-            - assert (n + (length S - n) = length S)%nat by lia.
-              rewrite H; rewrite Nat.ltb_irrefl; reflexivity.
-            - assert (length S - n = 0)%nat by lia.
-              rewrite H; simpl.
-              assert (Nat.ltb n (length S) = false) by (apply Nat.ltb_ge; lia).
-              rewrite H0; reflexivity.
+
+            destruct (
+              le_dec
+                cursor
+                (List.length state)
+            ) as
+              [
+                cursor_in_range
+              |
+                cursor_out_of_range
+              ].
+
+            - assert (
+                cursor
+                +
+                (
+                  List.length state
+                  -
+                  cursor
+                )
+                =
+                List.length state
+              )%nat
+              by lia.
+
+              rewrite H.
+
+              rewrite Nat.ltb_irrefl.
+
+              reflexivity.
+
+            - assert (
+                List.length state
+                -
+                cursor
+                =
+                0
+              )%nat
+              by lia.
+
+              rewrite H.
+
+              simpl.
+
+              assert (
+                Nat.ltb
+                  cursor
+                  (List.length state)
+                =
+                false
+              ).
+
+              {
+                apply Nat.ltb_ge.
+
+                lia.
+              }
+
+              rewrite H0.
+
+              reflexivity.
           Qed.
 
           Theorem continue_step_safe :
-            forall S P u S' P',
-              guard S P u = continue_mode ->
-              T S P u = (S', P') ->
-              fst P' <= length S'.
+            forall
+              state
+              parameters
+              input
+              next_state
+              next_parameters,
+              guard
+                state
+                parameters
+                input
+              =
+              continue_mode
+              ->
+              T
+                state
+                parameters
+                input
+              =
+              (
+                next_state,
+                next_parameters
+              )
+              ->
+              fst next_parameters
+              <=
+              List.length next_state.
           Proof.
-            intros S [n x] [] S' [n' x'] Hguard HT.
-            unfold guard in Hguard; simpl in Hguard.
-            destruct (Nat.ltb n (length S)) eqn:Hlt.
-            - apply Nat.ltb_lt in Hlt.
-              unfold T, D, C in HT; simpl in HT.
-              inversion HT; subst; simpl; lia.
+            intros
+              state
+              [cursor coordinate]
+              []
+              next_state
+              [next_cursor next_coordinate]
+              guard_continues
+              transition_equality.
+
+            unfold guard in guard_continues.
+
+            simpl in guard_continues.
+
+            destruct (
+              Nat.ltb
+                cursor
+                (List.length state)
+            ) eqn:cursor_in_range.
+
+            - apply Nat.ltb_lt in cursor_in_range.
+
+              unfold T, D, C
+                in transition_equality.
+
+              simpl in transition_equality.
+
+              inversion transition_equality.
+
+              subst.
+
+              simpl.
+
+              lia.
+
             - discriminate.
           Qed.
 
-          Definition textblind_transition : Prop :=
-            forall (theta1 theta2 : Theta) S P u, T S P u = T S P u.
+          Definition textblind_transition :
+            Prop :=
+            forall
+              (theta1 theta2 : Theta)
+              state
+              parameters
+              input,
+              T
+                state
+                parameters
+                input
+              =
+              T
+                state
+                parameters
+                input.
 
-          Theorem textblind_transition_proof : textblind_transition.
-          Proof. repeat intro; reflexivity. Qed.
+          Theorem textblind_transition_proof :
+            textblind_transition.
+          Proof.
+            repeat intro.
 
-          Definition textblind_guard : Prop :=
-            forall (theta1 theta2 : Theta) S P u, guard S P u = guard S P u.
+            reflexivity.
+          Qed.
 
-          Theorem textblind_guard_proof : textblind_guard.
-          Proof. repeat intro; reflexivity. Qed.
+          Definition textblind_guard :
+            Prop :=
+            forall
+              (theta1 theta2 : Theta)
+              state
+              parameters
+              input,
+              guard
+                state
+                parameters
+                input
+              =
+              guard
+                state
+                parameters
+                input.
 
-          Definition Omega : Type := M * V * Theta.
+          Theorem textblind_guard_proof :
+            textblind_guard.
+          Proof.
+            repeat intro.
 
-          Definition lifted_step (omega omega' : Omega) (u : U) : Prop :=
-            let '(S, P, theta) := omega in
-            let '(S', P') := T S P u in
-            omega' = (S', P', theta) /\ guard S P u <> halt_mode.
+            reflexivity.
+          Qed.
+
+          Definition Omega : Type :=
+            M * V * Theta.
+
+          Definition lifted_step
+            (omega omega' : Omega)
+            (input : U) : Prop :=
+            let
+              '(state, parameters, theta) :=
+              omega
+            in
+            let
+              '(next_state, next_parameters) :=
+              T
+                state
+                parameters
+                input
+            in
+            omega'
+            =
+            (
+              next_state,
+              next_parameters,
+              theta
+            )
+            /\
+            guard
+              state
+              parameters
+              input
+            <>
+            halt_mode.
 
           CoInductive Trace : Type :=
-          | trace_halt : Omega -> Trace
-          | trace_next : Omega -> U -> Trace -> Trace.
+          | trace_halt :
+              Omega ->
+              Trace
+          | trace_next :
+              Omega ->
+              U ->
+              Trace ->
+              Trace.
 
           Record CDLDS := {
             cdlds_M : Type;
@@ -323,45 +821,138 @@ jobs:
             cdlds_U : Type;
             cdlds_Theta : Type;
             cdlds_I : Type;
-            cdlds_state : cdlds_M;
-            cdlds_transition : cdlds_M -> cdlds_V -> cdlds_U -> cdlds_M * cdlds_V;
-            cdlds_discrete : cdlds_M -> cdlds_V -> cdlds_U -> cdlds_M;
-            cdlds_continuous : cdlds_M -> cdlds_V -> cdlds_U -> cdlds_V;
-            cdlds_guard : cdlds_M -> cdlds_V -> cdlds_U -> Mode;
-            cdlds_binding : cdlds_I -> cdlds_Theta;
-            cdlds_output : cdlds_M -> cdlds_V -> cdlds_U -> list cdlds_Theta;
+
+            cdlds_state :
+              cdlds_M;
+
+            cdlds_transition :
+              cdlds_M ->
+              cdlds_V ->
+              cdlds_U ->
+              cdlds_M * cdlds_V;
+
+            cdlds_discrete :
+              cdlds_M ->
+              cdlds_V ->
+              cdlds_U ->
+              cdlds_M;
+
+            cdlds_continuous :
+              cdlds_M ->
+              cdlds_V ->
+              cdlds_U ->
+              cdlds_V;
+
+            cdlds_guard :
+              cdlds_M ->
+              cdlds_V ->
+              cdlds_U ->
+              Mode;
+
+            cdlds_binding :
+              cdlds_I ->
+              cdlds_Theta;
+
+            cdlds_output :
+              cdlds_M ->
+              cdlds_V ->
+              cdlds_U ->
+              list cdlds_Theta;
+
             cdlds_decomposition :
-              forall S P u,
-                cdlds_transition S P u =
-                (cdlds_discrete S P u, cdlds_continuous S P u);
+              forall state parameters input,
+                cdlds_transition
+                  state
+                  parameters
+                  input
+                =
+                (
+                  cdlds_discrete
+                    state
+                    parameters
+                    input,
+                  cdlds_continuous
+                    state
+                    parameters
+                    input
+                );
+
             cdlds_binding_injective :
-              forall i j, cdlds_binding i = cdlds_binding j -> i = j
+              forall i j,
+                cdlds_binding i
+                =
+                cdlds_binding j
+                ->
+                i = j
           }.
 
-          Definition repository_cdlds : CDLDS :=
-            {| cdlds_M := M;
-               cdlds_V := V;
-               cdlds_U := U;
-               cdlds_Theta := Theta;
-               cdlds_I := I;
-               cdlds_state := repository;
-               cdlds_transition := T;
-               cdlds_discrete := D;
-               cdlds_continuous := C;
-               cdlds_guard := guard;
-               cdlds_binding := binding;
-               cdlds_output := observable_labels;
-               cdlds_decomposition := transition_decomposition;
-               cdlds_binding_injective := binding_injective |}.
+          Definition repository_cdlds :
+            CDLDS :=
+            {|
+              cdlds_M := M;
+              cdlds_V := V;
+              cdlds_U := U;
+              cdlds_Theta := Theta;
+              cdlds_I := I;
+
+              cdlds_state :=
+                repository;
+
+              cdlds_transition :=
+                T;
+
+              cdlds_discrete :=
+                D;
+
+              cdlds_continuous :=
+                C;
+
+              cdlds_guard :=
+                guard;
+
+              cdlds_binding :=
+                binding;
+
+              cdlds_output :=
+                observable_labels;
+
+              cdlds_decomposition :=
+                transition_decomposition;
+
+              cdlds_binding_injective :=
+                binding_injective
+            |}.
 
           Theorem repository_cdlds_contains_every_manifest_entry :
-            length (cdlds_state repository_cdlds) = repository_file_count.
-          Proof. exact repository_count_exact. Qed.
+            List.length (
+              cdlds_state
+                repository_cdlds
+            )
+            =
+            repository_file_count.
+          Proof.
+            exact repository_count_exact.
+          Qed.
 
           Theorem repository_cdlds_terminates :
-            forall P,
-              guard repository (advance (rank repository P) P) tt = halt_mode.
-          Proof. apply eventual_halt. Qed.
+            forall parameters,
+              guard
+                repository
+                (
+                  advance
+                    (
+                      rank
+                        repository
+                        parameters
+                    )
+                    parameters
+                )
+                tt
+              =
+              halt_mode.
+          Proof.
+            apply eventual_halt.
+          Qed.
           COQ
 
           cat > "$OUT/formal/_CoqProject" <<'EOF'
@@ -374,6 +965,7 @@ jobs:
         working-directory: build/cdlds/formal
         run: |
           set -euo pipefail
+
           coqc RepositoryData.v
           coqc CDLDS.v
 
@@ -381,7 +973,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE '\b(Admitted|admit|Axiom|Parameter|Conjecture|Abort)\b' "$OUT/formal"; then
+
+          if grep -RInE \
+            '\b(Admitted|admit|Axiom|Parameter|Conjecture|Abort)\b' \
+            "$OUT/formal"
+          then
             echo "::error::Generated formalization contains an unfinished declaration"
             exit 1
           fi
@@ -390,8 +986,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          FILE_COUNT="$(jq -r '.file_count' "$OUT/repository.json")"
-          COMMIT="$(jq -r '.commit' "$OUT/repository.json")"
+
+          FILE_COUNT="$(
+            jq -r '.file_count' \
+              "$OUT/repository.json"
+          )"
+
+          COMMIT="$(
+            jq -r '.commit' \
+              "$OUT/repository.json"
+          )"
 
           cat > "$OUT/reports/VERIFICATION.md" <<EOF
           # CDLDS Verification Report
@@ -407,18 +1011,40 @@ jobs:
           - Eventual halt: **proved**
           - Manifest cardinality: **proved**
 
-          The repository manifest is the spatial state. The active parameter is
-          a file cursor paired with a real-valued continuous coordinate. Each
-          transition advances the cursor and applies an Euler step to the zero
-          vector field. The complete source tree is included under \`source/\`.
+          ## Generated interpretation
+
+          The repository manifest is represented as the spatial state.
+
+          The active parameter consists of:
+
+          - a natural-number file cursor;
+          - a real-valued continuous coordinate.
+
+          Each transition advances the file cursor by one and applies an Euler
+          step to the zero vector field.
+
+          Text labels are numeric file indices. The transition and guard do not
+          inspect file names or label text.
+
+          The complete included source tree is stored under \`source/\`.
           EOF
 
       - name: Package artifact
         shell: bash
         run: |
           set -euo pipefail
-          (cd build && zip -qr cdlds-artifact.zip cdlds)
-          sha256sum build/cdlds-artifact.zip > build/cdlds-artifact.zip.sha256
+
+          (
+            cd build
+
+            zip -qr \
+              cdlds-artifact.zip \
+              cdlds
+          )
+
+          sha256sum \
+            build/cdlds-artifact.zip \
+            > build/cdlds-artifact.zip.sha256
 
       - name: Upload downloadable CDLDS artifact
         uses: actions/upload-artifact@v4
