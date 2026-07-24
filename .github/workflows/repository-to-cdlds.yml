@@ -16,29 +16,29 @@ concurrency:
 
 jobs:
   transform:
-    runs-on: ubuntu-26.04          # Resolute Raccoon
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
-
-    env:
-      ARTIFACT_NAME: transformed-cdlds-application
-      TYPESCRIPT_VERSION: 6.0.0
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6        # ← v6
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           path: original-repo
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6      # ← v6
+        uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24          # you requested 24 explicitly
+
+      - name: Read TypeScript version from project
+        id: ts-version
+        run: |
+          TS_VERSION=$(node -p "require('./original-repo/package.json').devDependencies.typescript.replace(/[^0-9.]/g,'')")
+          echo "version=$TS_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Install isolated TypeScript compiler
-        shell: bash
         run: |
-          set -euo pipefail
           TOOL_DIR="$RUNNER_TEMP/cdlds-transformer"
           DEPS_DIR="$RUNNER_TEMP/cdlds-dependencies"
           rm -rf "$TOOL_DIR" "$DEPS_DIR"
@@ -49,7 +49,7 @@ jobs:
             --ignore-scripts \
             --no-audit \
             --no-fund \
-            "typescript@${TYPESCRIPT_VERSION}"
+            "typescript@${{ steps.ts-version.outputs.version }}"
 
       - name: Generate isolated CDLDS transformer
         shell: bash
@@ -71,7 +71,6 @@ jobs:
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
           ]);
-
           const excludedDirectoryNames = new Set([
             ".git", ".github", ".next", ".nuxt", ".output", ".cache",
             ".parcel-cache", ".turbo", ".vercel", "node_modules", "vendor",
@@ -81,7 +80,6 @@ jobs:
             "mock", "mocks", "fixture", "fixtures", "benchmark", "benchmarks",
             "example", "examples", "sample", "samples", "docs", "documentation"
           ]);
-
           const excludedFilenamePatterns = [
             /\.d\.ts$/i, /\.map$/i, /\.min\.[cm]?[jt]sx?$/i,
             /(?:^|[._-])(test|spec|mock|fixture|benchmark|bench)(?:[._-]|$)/i,
@@ -92,24 +90,19 @@ jobs:
           function normalizeRelativePath(filePath) {
             return path.relative(sourceRoot, filePath).split(path.sep).join("/");
           }
-
           function sha256(value) {
             return crypto.createHash("sha256").update(value).digest("hex");
           }
-
           function stableId(prefix, ...parts) {
             return `${prefix}_${sha256(parts.join("\u0000")).slice(0, 20)}`;
           }
-
           function isExcludedDirectory(directoryName) {
             return excludedDirectoryNames.has(directoryName.toLowerCase());
           }
-
           function isExcludedFile(relativePath) {
             const basename = path.basename(relativePath);
             return excludedFilenamePatterns.some(p => p.test(basename));
           }
-
           function discoverFiles(directory) {
             const discovered = [];
             function walk(currentDirectory) {
@@ -131,7 +124,6 @@ jobs:
             walk(directory);
             return discovered.sort((a, b) => normalizeRelativePath(a).localeCompare(normalizeRelativePath(b), "en"));
           }
-
           function scriptKindForFile(filePath) {
             switch (path.extname(filePath).toLowerCase()) {
               case ".ts": return ts.ScriptKind.TS;
@@ -166,11 +158,9 @@ jobs:
             text = text.replace(/\r\n/g, "\n").trim();
             return text.length <= maxLen ? text : `${text.slice(0, maxLen)}…`;
           }
-
           function syntaxName(node) {
             return ts.SyntaxKind[node.kind] ?? `SyntaxKind${node.kind}`;
           }
-
           function collectBindingNames(nameNode, names) {
             if (!nameNode) return;
             if (ts.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
@@ -179,7 +169,6 @@ jobs:
                 if (ts.isBindingElement(element)) collectBindingNames(element.name, names);
             }
           }
-
           function collectIdentifiers(node, sourceFile) {
             const ids = new Set();
             function visit(n) {
@@ -189,7 +178,6 @@ jobs:
             visit(node);
             return [...ids].sort((a,b) => a.localeCompare(b,"en"));
           }
-
           function collectDefinitions(node) {
             const defs = new Set();
             if (ts.isVariableDeclaration(node)) collectBindingNames(node.name, defs);
@@ -206,7 +194,6 @@ jobs:
             }
             return [...defs].sort((a,b) => a.localeCompare(b,"en"));
           }
-
           function collectEffects(node, sourceFile) {
             const effects = [];
             if (ts.isCallExpression(node)) effects.push({
@@ -431,14 +418,12 @@ jobs:
             const loc = positionOf(sourceFile, node);
             return `anonymous_${loc.line}_${loc.column}`;
           }
-
           function isFunctionLike(node) {
             return ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node) ||
               ts.isArrowFunction(node) || ts.isMethodDeclaration(node) ||
               ts.isConstructorDeclaration(node) || ts.isGetAccessorDeclaration(node) ||
               ts.isSetAccessorDeclaration(node);
           }
-
           function analyzeFunction(node, sourceFile, relativePath) {
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
@@ -538,7 +523,6 @@ jobs:
                 `${a.kind}:${a.source.start}`.localeCompare(`${b.kind}:${b.source.start}`, "en"))
             };
           }
-
           function analyzeFile(filePath) {
             const originalBytes = fs.readFileSync(filePath);
             const source = originalBytes.toString("utf8");
@@ -590,14 +574,12 @@ jobs:
               systems
             };
           }
-
           function stableSerialize(value) {
             if (value === null || typeof value !== "object") return JSON.stringify(value);
             if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
             const keys = Object.keys(value).sort((a,b) => a.localeCompare(b,"en"));
             return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
           }
-
           function renderTransformedModule(model, extension) {
             const serialized = stableSerialize(model);
             const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
@@ -670,9 +652,9 @@ jobs:
           sha256sum build/transformed-cdlds-application.zip > build/transformed-cdlds-application.zip.sha256
 
       - name: Upload transformed application ZIP
-        uses: actions/upload-artifact@v6          # ← v6
+        uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.ARTIFACT_NAME }}-${{ github.sha }}
+          name: transformed-cdlds-application-${{ github.sha }}
           path: |
             build/transformed-cdlds-application.zip
             build/transformed-cdlds-application.zip.sha256
