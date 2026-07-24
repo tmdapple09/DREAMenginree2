@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T06:23:37.615Z",
+  "generatedAt": "2026-07-24T06:28:21.132Z",
   "root": ".",
   "nodes": [
     {
@@ -81798,16 +81798,6 @@
       "parent": "folder:tests",
       "loc": null,
       "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:ts-cdlds-engine.zip",
-      "label": "ts-cdlds-engine.zip",
-      "type": "file",
-      "path": "ts-cdlds-engine.zip",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": true,
       "tags": []
     },
     {
