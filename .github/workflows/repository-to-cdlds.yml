@@ -53,7 +53,7 @@ jobs:
           const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
 
           // -----------------------------------------------------------------
-          //  File discovery (unchanged)
+          //  File discovery
           // -----------------------------------------------------------------
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
@@ -122,7 +122,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Position & source helpers
+          //  Position & source helpers (FIXED – ts-morph getLineAndColumnAtPos)
           // -----------------------------------------------------------------
           function hasRealPosition(node: any): boolean {
             return Boolean(
@@ -139,8 +139,9 @@ jobs:
             if (!hasRealPosition(node)) return null;
             const start = node.getStart(sourceFile, false);
             const end   = node.getEnd();
-            const loc   = sourceFile.getLineAndCharacterOfPosition(start);
-            return { start, end, line: loc.line + 1, column: loc.character + 1 };
+            // ts-morph nodes provide getLineAndColumnAtPos (1‑based)
+            const loc = sourceFile.getLineAndColumnAtPos(start);
+            return { start, end, line: loc.line, column: loc.column };
           }
 
           function sourceText(sourceFile: any, node: any, maxLen = 500): string {
@@ -474,7 +475,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Function analysis (FULLY GUARDED)
+          //  Function analysis (fully guarded)
           // -----------------------------------------------------------------
           let fallbackAnonymousCounter = 0;
 
@@ -511,8 +512,6 @@ jobs:
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
             const id = stableId("system", relativePath, name, loc ? String(loc.start) : "nosource", syntaxName(node));
-
-            // Safely get parameters (some nodes like overloads may lack them)
             const rawParams = (node as any).parameters ?? [];
             const parameters = rawParams.map((p: any) => ({
               name: sourceText(sourceFile, p.name, 200),
@@ -625,7 +624,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  File analysis
+          //  File analysis (FIXED – getLineAndColumnAtPos)
           // -----------------------------------------------------------------
           function analyzeFile(filePath: string): any {
             const originalBytes = fs.readFileSync(filePath);
@@ -642,13 +641,13 @@ jobs:
 
             for (const diag of sourceFile.getPreEmitDiagnostics()) {
               const start = diag.getStart() ?? 0;
-              const pos = sourceFile.getLineAndCharacterOfPosition(start);
+              const pos = sourceFile.getLineAndColumnAtPos(start);
               diagnostics.push({
                 category: diag.getCategory(),
                 code: diag.getCode(),
                 message: diag.getMessageText(),
-                line: pos.line + 1,
-                column: pos.character + 1,
+                line: pos.line,
+                column: pos.column,
                 start,
                 length: diag.getLength() ?? 0
               });
