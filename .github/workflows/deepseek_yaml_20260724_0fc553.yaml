@@ -16,26 +16,26 @@ concurrency:
 
 jobs:
   transform:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v6
         with:
-          version: 8.15.0
+          version: 10.30.0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: 'pnpm'
 
-      - name: Install project dependencies (exact lockfile)
-        run: pnpm install --frozen-lockfile
+      - name: Install project dependencies (non-frozen)
+        run: pnpm install --no-frozen-lockfile
 
       - name: Generate and run CDLDS transformer
         shell: bash
@@ -570,7 +570,7 @@ jobs:
                 if (ts.isCallExpression(n)) calls.push({
                   id: stableId("call", id, String(n.getStart(sourceFile))),
                   expression: sourceText(sourceFile, n.expression, 300),
-                  arguments: (n.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 300)),
+                  arguments: (n.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 200)),
                   source: positionOf(sourceFile, n),
                   optional: Boolean(n.questionDotToken),
                   awaited: ts.isAwaitExpression(n.parent),
@@ -633,7 +633,6 @@ jobs:
             const project = new Project({ tsConfigFilePath: path.join(sourceRoot, "tsconfig.json") });
             const sourceFile = project.createSourceFile(relativePath, source, { overwrite: true });
 
-            // Extract the underlying native TS SourceFile here to run our traversal loops
             const nativeSourceFile = sourceFile.compilerNode;
 
             const imports: any[] = [];
@@ -642,7 +641,6 @@ jobs:
             const systems: any[] = [];
             const diagnostics: any[] = [];
 
-            // Diagnostics require ts-morph's SourceFile wrapper
             for (const diag of sourceFile.getPreEmitDiagnostics()) {
               const start = diag.getStart() ?? 0;
               const pos = sourceFile.getLineAndColumnAtPos(start);
@@ -792,7 +790,7 @@ jobs:
           sha256sum "$ZIP_PATH" > "$ZIP_PATH.sha256"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: transformed-cdlds-application-${{ github.sha }}
           path: |
