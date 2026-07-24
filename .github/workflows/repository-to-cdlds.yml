@@ -16,36 +16,33 @@ concurrency:
 
 jobs:
   transform:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04          # Resolute Raccoon
     timeout-minutes: 30
 
     env:
       ARTIFACT_NAME: transformed-cdlds-application
-      TYPESCRIPT_VERSION: 5.8.3
+      TYPESCRIPT_VERSION: 6.0.0
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6        # ← v6
         with:
           fetch-depth: 1
           path: original-repo
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6      # ← v6
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install isolated TypeScript compiler
         shell: bash
         run: |
           set -euo pipefail
-
           TOOL_DIR="$RUNNER_TEMP/cdlds-transformer"
           DEPS_DIR="$RUNNER_TEMP/cdlds-dependencies"
-
           rm -rf "$TOOL_DIR" "$DEPS_DIR"
           mkdir -p "$TOOL_DIR" "$DEPS_DIR"
-
           npm install \
             --prefix "$DEPS_DIR" \
             --no-save \
@@ -58,7 +55,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           cat > "$RUNNER_TEMP/cdlds-transformer/transform.mjs" <<'SCRIPT'
           import fs from "node:fs";
           import path from "node:path";
@@ -66,92 +62,39 @@ jobs:
           import { createRequire } from "node:module";
 
           const require = createRequire(import.meta.url);
-
           const workspace = process.env.GITHUB_WORKSPACE;
           const sourceRoot = path.join(workspace, "original-repo");
           const outputRoot = path.join(workspace, "build", "cdlds-application");
-          const dependenciesRoot = path.join(
-            process.env.RUNNER_TEMP,
-            "cdlds-dependencies"
-          );
-
-          const ts = require(
-            path.join(dependenciesRoot, "node_modules", "typescript")
-          );
+          const dependenciesRoot = path.join(process.env.RUNNER_TEMP, "cdlds-dependencies");
+          const ts = require(path.join(dependenciesRoot, "node_modules", "typescript"));
 
           const supportedExtensions = new Set([
-            ".ts",
-            ".tsx",
-            ".js",
-            ".jsx",
-            ".mjs",
-            ".cjs"
+            ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
           ]);
 
           const excludedDirectoryNames = new Set([
-            ".git",
-            ".github",
-            ".next",
-            ".nuxt",
-            ".output",
-            ".cache",
-            ".parcel-cache",
-            ".turbo",
-            ".vercel",
-            "node_modules",
-            "vendor",
-            "vendors",
-            "third_party",
-            "third-party",
-            "external",
-            "build",
-            "dist",
-            "out",
-            "target",
-            "coverage",
-            "generated",
-            "__generated__",
-            "__snapshots__",
-            "__tests__",
-            "test",
-            "tests",
-            "spec",
-            "specs",
-            "mock",
-            "mocks",
-            "fixture",
-            "fixtures",
-            "benchmark",
-            "benchmarks",
-            "example",
-            "examples",
-            "sample",
-            "samples",
-            "docs",
-            "documentation"
+            ".git", ".github", ".next", ".nuxt", ".output", ".cache",
+            ".parcel-cache", ".turbo", ".vercel", "node_modules", "vendor",
+            "vendors", "third_party", "third-party", "external", "build",
+            "dist", "out", "target", "coverage", "generated", "__generated__",
+            "__snapshots__", "__tests__", "test", "tests", "spec", "specs",
+            "mock", "mocks", "fixture", "fixtures", "benchmark", "benchmarks",
+            "example", "examples", "sample", "samples", "docs", "documentation"
           ]);
 
           const excludedFilenamePatterns = [
-            /\.d\.ts$/i,
-            /\.map$/i,
-            /\.min\.[cm]?[jt]sx?$/i,
+            /\.d\.ts$/i, /\.map$/i, /\.min\.[cm]?[jt]sx?$/i,
             /(?:^|[._-])(test|spec|mock|fixture|benchmark|bench)(?:[._-]|$)/i,
             /(?:^|[._-])(config|setup)(?:[._-]|$)/i,
             /(?:^|[._-])generated(?:[._-]|$)/i
           ];
 
           function normalizeRelativePath(filePath) {
-            return path
-              .relative(sourceRoot, filePath)
-              .split(path.sep)
-              .join("/");
+            return path.relative(sourceRoot, filePath).split(path.sep).join("/");
           }
 
           function sha256(value) {
-            return crypto
-              .createHash("sha256")
-              .update(value)
-              .digest("hex");
+            return crypto.createHash("sha256").update(value).digest("hex");
           }
 
           function stableId(prefix, ...parts) {
@@ -164,99 +107,64 @@ jobs:
 
           function isExcludedFile(relativePath) {
             const basename = path.basename(relativePath);
-
-            return excludedFilenamePatterns.some((pattern) =>
-              pattern.test(basename)
-            );
+            return excludedFilenamePatterns.some(p => p.test(basename));
           }
 
           function discoverFiles(directory) {
             const discovered = [];
-
             function walk(currentDirectory) {
-              const entries = fs
-                .readdirSync(currentDirectory, { withFileTypes: true })
+              const entries = fs.readdirSync(currentDirectory, { withFileTypes: true })
                 .sort((a, b) => a.name.localeCompare(b.name, "en"));
-
               for (const entry of entries) {
                 const absolutePath = path.join(currentDirectory, entry.name);
-
                 if (entry.isDirectory()) {
-                  if (!isExcludedDirectory(entry.name)) {
-                    walk(absolutePath);
-                  }
+                  if (!isExcludedDirectory(entry.name)) walk(absolutePath);
                   continue;
                 }
-
-                if (!entry.isFile()) {
-                  continue;
-                }
-
+                if (!entry.isFile()) continue;
                 const extension = path.extname(entry.name).toLowerCase();
-
-                if (!supportedExtensions.has(extension)) {
-                  continue;
-                }
-
+                if (!supportedExtensions.has(extension)) continue;
                 const relativePath = normalizeRelativePath(absolutePath);
-
-                if (!isExcludedFile(relativePath)) {
-                  discovered.push(absolutePath);
-                }
+                if (!isExcludedFile(relativePath)) discovered.push(absolutePath);
               }
             }
-
             walk(directory);
-
-            return discovered.sort((a, b) =>
-              normalizeRelativePath(a).localeCompare(
-                normalizeRelativePath(b),
-                "en"
-              )
-            );
+            return discovered.sort((a, b) => normalizeRelativePath(a).localeCompare(normalizeRelativePath(b), "en"));
           }
 
           function scriptKindForFile(filePath) {
             switch (path.extname(filePath).toLowerCase()) {
-              case ".ts":
-                return ts.ScriptKind.TS;
-              case ".tsx":
-                return ts.ScriptKind.TSX;
-              case ".jsx":
-                return ts.ScriptKind.JSX;
-              case ".js":
-              case ".mjs":
-              case ".cjs":
-                return ts.ScriptKind.JS;
-              default:
-                return ts.ScriptKind.Unknown;
+              case ".ts": return ts.ScriptKind.TS;
+              case ".tsx": return ts.ScriptKind.TSX;
+              case ".jsx": return ts.ScriptKind.JSX;
+              case ".js": case ".mjs": case ".cjs": return ts.ScriptKind.JS;
+              default: return ts.ScriptKind.Unknown;
             }
           }
 
+          // ---------- FIX 1: Real‑position‑aware helpers ----------
+          function hasRealPosition(node) {
+            return Boolean(node && typeof node.pos === "number" && typeof node.end === "number" &&
+              node.pos >= 0 && node.end >= node.pos);
+          }
           function positionOf(sourceFile, node) {
+            if (!hasRealPosition(node)) return null;
             const start = node.getStart(sourceFile, false);
             const end = node.getEnd();
-            const location = sourceFile.getLineAndCharacterOfPosition(start);
-
-            return {
-              start,
-              end,
-              line: location.line + 1,
-              column: location.character + 1
-            };
+            const loc = sourceFile.getLineAndCharacterOfPosition(start);
+            return { start, end, line: loc.line + 1, column: loc.character + 1 };
           }
-
-          function sourceText(sourceFile, node, maximumLength = 500) {
-            const text = node
-              .getText(sourceFile)
-              .replace(/\r\n/g, "\n")
-              .trim();
-
-            if (text.length <= maximumLength) {
-              return text;
+          function sourceText(sourceFile, node, maxLen = 500) {
+            if (!node) return "";
+            let text;
+            if (hasRealPosition(node)) {
+              text = node.getText(sourceFile);
+            } else {
+              const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: false });
+              text = printer.printNode(ts.EmitHint.Unspecified, node, sourceFile);
             }
-
-            return `${text.slice(0, maximumLength)}…`;
+            text = text.replace(/\r\n/g, "\n").trim();
+            return text.length <= maxLen ? text : `${text.slice(0, maxLen)}…`;
           }
 
           function syntaxName(node) {
@@ -264,975 +172,370 @@ jobs:
           }
 
           function collectBindingNames(nameNode, names) {
-            if (!nameNode) {
-              return;
-            }
-
-            if (ts.isIdentifier(nameNode)) {
-              names.add(nameNode.text);
-              return;
-            }
-
-            if (
-              ts.isObjectBindingPattern(nameNode) ||
-              ts.isArrayBindingPattern(nameNode)
-            ) {
-              for (const element of nameNode.elements) {
-                if (ts.isBindingElement(element)) {
-                  collectBindingNames(element.name, names);
-                }
-              }
+            if (!nameNode) return;
+            if (ts.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
+            if (ts.isObjectBindingPattern(nameNode) || ts.isArrayBindingPattern(nameNode)) {
+              for (const element of nameNode.elements)
+                if (ts.isBindingElement(element)) collectBindingNames(element.name, names);
             }
           }
 
           function collectIdentifiers(node, sourceFile) {
-            const identifiers = new Set();
-
-            function visit(current) {
-              if (ts.isIdentifier(current)) {
-                identifiers.add(current.text);
-              }
-
-              ts.forEachChild(current, visit);
+            const ids = new Set();
+            function visit(n) {
+              if (ts.isIdentifier(n)) ids.add(n.text);
+              ts.forEachChild(n, visit);
             }
-
             visit(node);
-
-            return [...identifiers].sort((a, b) =>
-              a.localeCompare(b, "en")
-            );
+            return [...ids].sort((a,b) => a.localeCompare(b,"en"));
           }
 
           function collectDefinitions(node) {
-            const definitions = new Set();
-
-            if (ts.isVariableDeclaration(node)) {
-              collectBindingNames(node.name, definitions);
+            const defs = new Set();
+            if (ts.isVariableDeclaration(node)) collectBindingNames(node.name, defs);
+            if (ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) ||
+                ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) ||
+                ts.isEnumDeclaration(node)) {
+              if (node.name) defs.add(node.name.text);
             }
-
-            if (
-              ts.isFunctionDeclaration(node) ||
-              ts.isClassDeclaration(node) ||
-              ts.isInterfaceDeclaration(node) ||
-              ts.isTypeAliasDeclaration(node) ||
-              ts.isEnumDeclaration(node)
-            ) {
-              if (node.name) {
-                definitions.add(node.name.text);
-              }
+            if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+              if (ts.isIdentifier(node.left)) defs.add(node.left.text);
             }
-
-            if (
-              ts.isBinaryExpression(node) &&
-              node.operatorToken.kind ===
-                ts.SyntaxKind.EqualsToken
-            ) {
-              if (ts.isIdentifier(node.left)) {
-                definitions.add(node.left.text);
-              }
+            if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
+              if (ts.isIdentifier(node.operand)) defs.add(node.operand.text);
             }
-
-            if (
-              ts.isPrefixUnaryExpression(node) ||
-              ts.isPostfixUnaryExpression(node)
-            ) {
-              if (ts.isIdentifier(node.operand)) {
-                definitions.add(node.operand.text);
-              }
-            }
-
-            return [...definitions].sort((a, b) =>
-              a.localeCompare(b, "en")
-            );
+            return [...defs].sort((a,b) => a.localeCompare(b,"en"));
           }
 
           function collectEffects(node, sourceFile) {
             const effects = [];
-
-            if (ts.isCallExpression(node)) {
-              effects.push({
-                kind: "call",
-                expression: sourceText(
-                  sourceFile,
-                  node.expression,
-                  200
-                ),
-                arguments: node.arguments.map((argument) =>
-                  sourceText(sourceFile, argument, 200)
-                ),
-                optional: Boolean(node.questionDotToken)
-              });
-            }
-
-            if (ts.isNewExpression(node)) {
-              effects.push({
-                kind: "construct",
-                expression: sourceText(
-                  sourceFile,
-                  node.expression,
-                  200
-                ),
-                arguments: (node.arguments ?? []).map((argument) =>
-                  sourceText(sourceFile, argument, 200)
-                )
-              });
-            }
-
-            if (ts.isReturnStatement(node)) {
-              effects.push({
-                kind: "return",
-                expression: node.expression
-                  ? sourceText(sourceFile, node.expression, 300)
-                  : null
-              });
-            }
-
-            if (ts.isThrowStatement(node)) {
-              effects.push({
-                kind: "throw",
-                expression: sourceText(
-                  sourceFile,
-                  node.expression,
-                  300
-                )
-              });
-            }
-
-            if (ts.isAwaitExpression(node)) {
-              effects.push({
-                kind: "await",
-                expression: sourceText(
-                  sourceFile,
-                  node.expression,
-                  300
-                )
-              });
-            }
-
-            if (ts.isYieldExpression(node)) {
-              effects.push({
-                kind: "yield",
-                expression: node.expression
-                  ? sourceText(sourceFile, node.expression, 300)
-                  : null
-              });
-            }
-
-            if (
-              ts.isBinaryExpression(node) &&
-              ts.isAssignmentOperator(node.operatorToken.kind)
-            ) {
-              effects.push({
-                kind: "write",
-                target: sourceText(sourceFile, node.left, 200),
-                operator: node.operatorToken.getText(sourceFile),
-                value: sourceText(sourceFile, node.right, 300)
-              });
-            }
-
+            if (ts.isCallExpression(node)) effects.push({
+              kind: "call",
+              expression: sourceText(sourceFile, node.expression, 200),
+              arguments: node.arguments.map(a => sourceText(sourceFile, a, 200)),
+              optional: Boolean(node.questionDotToken)
+            });
+            if (ts.isNewExpression(node)) effects.push({
+              kind: "construct",
+              expression: sourceText(sourceFile, node.expression, 200),
+              arguments: (node.arguments ?? []).map(a => sourceText(sourceFile, a, 200))
+            });
+            if (ts.isReturnStatement(node)) effects.push({
+              kind: "return",
+              expression: node.expression ? sourceText(sourceFile, node.expression, 300) : null
+            });
+            if (ts.isThrowStatement(node)) effects.push({
+              kind: "throw",
+              expression: sourceText(sourceFile, node.expression, 300)
+            });
+            if (ts.isAwaitExpression(node)) effects.push({
+              kind: "await",
+              expression: sourceText(sourceFile, node.expression, 300)
+            });
+            if (ts.isYieldExpression(node)) effects.push({
+              kind: "yield",
+              expression: node.expression ? sourceText(sourceFile, node.expression, 300) : null
+            });
+            if (ts.isBinaryExpression(node) && ts.isAssignmentOperator(node.operatorToken.kind)) effects.push({
+              kind: "write",
+              target: sourceText(sourceFile, node.left, 200),
+              operator: node.operatorToken.getText(sourceFile),
+              value: sourceText(sourceFile, node.right, 300)
+            });
             return effects;
           }
 
+          // ---------- CFGBuilder unchanged (FIX 3 included) ----------
           class CFGBuilder {
             constructor(sourceFile, functionId) {
-              this.sourceFile = sourceFile;
-              this.functionId = functionId;
-              this.nodes = [];
-              this.edges = [];
-              this.sequence = 0;
-              this.breakTargets = [];
-              this.continueTargets = [];
-              this.returnTarget = null;
-              this.throwTarget = null;
+              this.sourceFile = sourceFile; this.functionId = functionId;
+              this.nodes = []; this.edges = []; this.sequence = 0;
+              this.breakTargets = []; this.continueTargets = [];
+              this.returnTarget = null; this.throwTarget = null;
             }
-
             addNode(kind, node = null, extra = {}) {
-              const location = node
-                ? positionOf(this.sourceFile, node)
-                : null;
-
-              const nodeId = stableId(
-                "state",
-                this.functionId,
-                String(this.sequence++),
-                kind,
-                location ? String(location.start) : "synthetic"
-              );
-
+              const loc = node ? positionOf(this.sourceFile, node) : null;
+              const id = stableId("state", this.functionId, String(this.sequence++), kind,
+                loc ? String(loc.start) : `synthetic-${this.sequence}`);
               const record = {
-                id: nodeId,
-                kind,
-                source: location,
-                text: node
-                  ? sourceText(this.sourceFile, node)
-                  : null,
-                definitions: node
-                  ? collectDefinitions(node)
-                  : [],
-                uses: node
-                  ? collectIdentifiers(node, this.sourceFile)
-                  : [],
-                effects: node
-                  ? collectEffects(node, this.sourceFile)
-                  : [],
+                id, kind, source: loc,
+                text: node ? sourceText(this.sourceFile, node) : null,
+                definitions: node ? collectDefinitions(node) : [],
+                uses: node ? collectIdentifiers(node, this.sourceFile) : [],
+                effects: node ? collectEffects(node, this.sourceFile) : [],
                 ...extra
               };
-
               this.nodes.push(record);
-              return nodeId;
+              return id;
             }
-
             addEdge(from, to, kind, guard = null, metadata = {}) {
-              if (!from || !to) {
-                return;
-              }
-
+              if (!from || !to) return;
               this.edges.push({
-                id: stableId(
-                  "transition",
-                  this.functionId,
-                  from,
-                  to,
-                  kind,
-                  guard ?? ""
-                ),
-                from,
-                to,
-                kind,
-                guard,
-                ...metadata
+                id: stableId("transition", this.functionId, from, to, kind, guard ?? ""),
+                from, to, kind, guard, ...metadata
               });
             }
-
             build(body) {
               const entry = this.addNode("entry");
               const normalExit = this.addNode("normal-exit");
-              const exceptionalExit = this.addNode(
-                "exceptional-exit"
-              );
-
+              const exceptionalExit = this.addNode("exceptional-exit");
               this.returnTarget = normalExit;
               this.throwTarget = exceptionalExit;
-
               const result = this.buildStatement(body);
-
               this.addEdge(entry, result.entry, "enter");
-
-              for (const exit of result.exits) {
-                this.addEdge(exit, normalExit, "complete");
-              }
-
+              for (const exit of result.exits) this.addEdge(exit, normalExit, "complete");
               return {
-                entry,
-                normalExit,
-                exceptionalExit,
-                nodes: this.nodes.sort((a, b) =>
-                  a.id.localeCompare(b.id, "en")
-                ),
-                edges: this.edges.sort((a, b) =>
-                  a.id.localeCompare(b.id, "en")
-                )
+                entry, normalExit, exceptionalExit,
+                nodes: this.nodes.sort((a,b) => a.id.localeCompare(b.id,"en")),
+                edges: this.edges.sort((a,b) => a.id.localeCompare(b.id,"en"))
               };
             }
-
             buildStatement(statement) {
-              if (ts.isBlock(statement)) {
-                return this.buildBlock(statement.statements);
-              }
-
-              if (ts.isIfStatement(statement)) {
-                return this.buildIf(statement);
-              }
-
-              if (
-                ts.isWhileStatement(statement) ||
-                ts.isDoStatement(statement) ||
-                ts.isForStatement(statement) ||
-                ts.isForInStatement(statement) ||
-                ts.isForOfStatement(statement)
-              ) {
-                return this.buildLoop(statement);
-              }
-
-              if (ts.isSwitchStatement(statement)) {
-                return this.buildSwitch(statement);
-              }
-
-              if (ts.isTryStatement(statement)) {
-                return this.buildTry(statement);
-              }
-
+              if (ts.isBlock(statement)) return this.buildBlock(statement.statements);
+              if (ts.isIfStatement(statement)) return this.buildIf(statement);
+              if (ts.isWhileStatement(statement) || ts.isDoStatement(statement) ||
+                  ts.isForStatement(statement) || ts.isForInStatement(statement) ||
+                  ts.isForOfStatement(statement)) return this.buildLoop(statement);
+              if (ts.isSwitchStatement(statement)) return this.buildSwitch(statement);
+              if (ts.isTryStatement(statement)) return this.buildTry(statement);
               if (ts.isReturnStatement(statement)) {
-                const state = this.addNode("return", statement);
-                this.addEdge(
-                  state,
-                  this.returnTarget,
-                  "return"
-                );
-                return { entry: state, exits: [] };
+                const s = this.addNode("return", statement);
+                this.addEdge(s, this.returnTarget, "return");
+                return { entry: s, exits: [] };
               }
-
               if (ts.isThrowStatement(statement)) {
-                const state = this.addNode("throw", statement);
-                this.addEdge(
-                  state,
-                  this.throwTarget,
-                  "throw",
-                  null,
-                  { exceptional: true }
-                );
-                return { entry: state, exits: [] };
+                const s = this.addNode("throw", statement);
+                this.addEdge(s, this.throwTarget, "throw", null, { exceptional: true });
+                return { entry: s, exits: [] };
               }
-
               if (ts.isBreakStatement(statement)) {
-                const state = this.addNode("break", statement);
-                const target =
-                  this.breakTargets[
-                    this.breakTargets.length - 1
-                  ] ?? null;
-
-                this.addEdge(state, target, "break");
-                return { entry: state, exits: [] };
+                const s = this.addNode("break", statement);
+                const t = this.breakTargets[this.breakTargets.length-1] ?? null;
+                this.addEdge(s, t, "break");
+                return { entry: s, exits: [] };
               }
-
               if (ts.isContinueStatement(statement)) {
-                const state = this.addNode("continue", statement);
-                const target =
-                  this.continueTargets[
-                    this.continueTargets.length - 1
-                  ] ?? null;
-
-                this.addEdge(state, target, "continue");
-                return { entry: state, exits: [] };
+                const s = this.addNode("continue", statement);
+                const t = this.continueTargets[this.continueTargets.length-1] ?? null;
+                this.addEdge(s, t, "continue");
+                return { entry: s, exits: [] };
               }
-
-              const state = this.addNode(
-                syntaxName(statement),
-                statement
-              );
-
-              return {
-                entry: state,
-                exits: [state]
-              };
+              const s = this.addNode(syntaxName(statement), statement);
+              return { entry: s, exits: [s] };
             }
-
             buildBlock(statements) {
               if (statements.length === 0) {
                 const empty = this.addNode("empty-block");
                 return { entry: empty, exits: [empty] };
               }
-
-              let first = null;
-              let previousExits = [];
-
-              for (const statement of statements) {
-                const current = this.buildStatement(statement);
-
-                if (!first) {
-                  first = current.entry;
-                }
-
-                for (const previous of previousExits) {
-                  this.addEdge(
-                    previous,
-                    current.entry,
-                    "next"
-                  );
-                }
-
-                previousExits = current.exits;
+              let first = null, previousExits = [];
+              for (const stmt of statements) {
+                const cur = this.buildStatement(stmt);
+                if (!first) first = cur.entry;
+                for (const prev of previousExits) this.addEdge(prev, cur.entry, "next");
+                previousExits = cur.exits;
               }
-
-              return {
-                entry: first,
-                exits: previousExits
-              };
+              return { entry: first, exits: previousExits };
             }
-
             buildIf(statement) {
-              const condition = this.addNode(
-                "if-condition",
-                statement.expression,
-                {
-                  guardExpression: sourceText(
-                    this.sourceFile,
-                    statement.expression,
-                    300
-                  )
-                }
-              );
-
-              const thenBranch = this.buildStatement(
-                statement.thenStatement
-              );
-
-              this.addEdge(
-                condition,
-                thenBranch.entry,
-                "true",
-                sourceText(
-                  this.sourceFile,
-                  statement.expression,
-                  300
-                )
-              );
-
+              const cond = this.addNode("if-condition", statement.expression, {
+                guardExpression: sourceText(this.sourceFile, statement.expression, 300)
+              });
+              const thenBr = this.buildStatement(statement.thenStatement);
+              this.addEdge(cond, thenBr.entry, "true", sourceText(this.sourceFile, statement.expression, 300));
               if (statement.elseStatement) {
-                const elseBranch = this.buildStatement(
-                  statement.elseStatement
-                );
-
-                this.addEdge(
-                  condition,
-                  elseBranch.entry,
-                  "false",
-                  `!(${sourceText(
-                    this.sourceFile,
-                    statement.expression,
-                    300
-                  )})`
-                );
-
-                return {
-                  entry: condition,
-                  exits: [
-                    ...thenBranch.exits,
-                    ...elseBranch.exits
-                  ]
-                };
+                const elseBr = this.buildStatement(statement.elseStatement);
+                this.addEdge(cond, elseBr.entry, "false",
+                  `!(${sourceText(this.sourceFile, statement.expression, 300)})`);
+                return { entry: cond, exits: [...thenBr.exits, ...elseBr.exits] };
               }
-
-              return {
-                entry: condition,
-                exits: [condition, ...thenBranch.exits]
-              };
+              return { entry: cond, exits: [cond, ...thenBr.exits] };
             }
-
             buildLoop(statement) {
-              const afterLoop = this.addNode(
-                "loop-exit",
-                null
-              );
-
-              let conditionNode;
-              let conditionText;
-
+              const afterLoop = this.addNode("loop-exit", null);
+              let condNode, condText;
               if (ts.isForStatement(statement)) {
-                conditionText = statement.condition
-                  ? sourceText(
-                      this.sourceFile,
-                      statement.condition,
-                      300
-                    )
-                  : "true";
-
-                conditionNode = this.addNode(
-                  "for-condition",
-                  statement.condition ?? statement,
-                  { guardExpression: conditionText }
-                );
-              } else if (
-                ts.isForInStatement(statement) ||
-                ts.isForOfStatement(statement)
-              ) {
-                conditionText = sourceText(
-                  this.sourceFile,
-                  statement.expression,
-                  300
-                );
-
-                conditionNode = this.addNode(
-                  ts.isForInStatement(statement)
-                    ? "for-in-condition"
-                    : "for-of-condition",
-                  statement.expression,
-                  { guardExpression: conditionText }
-                );
+                condText = statement.condition ? sourceText(this.sourceFile, statement.condition, 300) : "true";
+                condNode = this.addNode("for-condition", statement.condition ?? statement, { guardExpression: condText });
+              } else if (ts.isForInStatement(statement) || ts.isForOfStatement(statement)) {
+                condText = sourceText(this.sourceFile, statement.expression, 300);
+                condNode = this.addNode(ts.isForInStatement(statement) ? "for-in-condition" : "for-of-condition",
+                  statement.expression, { guardExpression: condText });
               } else {
-                conditionText = sourceText(
-                  this.sourceFile,
-                  statement.expression,
-                  300
-                );
-
-                conditionNode = this.addNode(
-                  ts.isDoStatement(statement)
-                    ? "do-while-condition"
-                    : "while-condition",
-                  statement.expression,
-                  { guardExpression: conditionText }
-                );
+                condText = sourceText(this.sourceFile, statement.expression, 300);
+                condNode = this.addNode(ts.isDoStatement(statement) ? "do-while-condition" : "while-condition",
+                  statement.expression, { guardExpression: condText });
               }
-
               this.breakTargets.push(afterLoop);
-              this.continueTargets.push(conditionNode);
-
-              const body = this.buildStatement(
-                statement.statement
-              );
-
+              this.continueTargets.push(condNode);
+              const body = this.buildStatement(statement.statement);
               this.continueTargets.pop();
               this.breakTargets.pop();
-
-              this.addEdge(
-                conditionNode,
-                body.entry,
-                "true",
-                conditionText
-              );
-
-              this.addEdge(
-                conditionNode,
-                afterLoop,
-                "false",
-                `!(${conditionText})`
-              );
-
-              for (const exit of body.exits) {
-                this.addEdge(
-                  exit,
-                  conditionNode,
-                  "loop-back"
-                );
-              }
-
-              if (ts.isDoStatement(statement)) {
-                return {
-                  entry: body.entry,
-                  exits: [afterLoop]
-                };
-              }
-
-              return {
-                entry: conditionNode,
-                exits: [afterLoop]
-              };
+              this.addEdge(condNode, body.entry, "true", condText);
+              this.addEdge(condNode, afterLoop, "false", `!(${condText})`);
+              for (const exit of body.exits) this.addEdge(exit, condNode, "loop-back");
+              if (ts.isDoStatement(statement)) return { entry: body.entry, exits: [afterLoop] };
+              return { entry: condNode, exits: [afterLoop] };
             }
-
             buildSwitch(statement) {
-              const switchState = this.addNode(
-                "switch",
-                statement.expression
-              );
-
-              const switchExit = this.addNode(
-                "switch-exit"
-              );
-
+              const switchState = this.addNode("switch", statement.expression);
+              const switchExit = this.addNode("switch-exit");
               this.breakTargets.push(switchExit);
-
               let previousFallthrough = [];
-
               for (const clause of statement.caseBlock.clauses) {
-                const clauseState = this.addNode(
-                  ts.isCaseClause(clause)
-                    ? "switch-case"
-                    : "switch-default",
-                  clause
-                );
-
+                const clauseState = this.addNode(ts.isCaseClause(clause) ? "switch-case" : "switch-default", clause);
                 const guard = ts.isCaseClause(clause)
-                  ? `${sourceText(
-                      this.sourceFile,
-                      statement.expression,
-                      200
-                    )} === ${sourceText(
-                      this.sourceFile,
-                      clause.expression,
-                      200
-                    )}`
+                  ? `${sourceText(this.sourceFile, statement.expression, 200)} === ${sourceText(this.sourceFile, clause.expression, 200)}`
                   : "default";
-
-                this.addEdge(
-                  switchState,
-                  clauseState,
-                  ts.isCaseClause(clause)
-                    ? "case"
-                    : "default",
-                  guard
-                );
-
-                for (const prior of previousFallthrough) {
-                  this.addEdge(
-                    prior,
-                    clauseState,
-                    "fallthrough"
-                  );
-                }
-
-                const clauseBody = this.buildBlock(
-                  clause.statements
-                );
-
-                this.addEdge(
-                  clauseState,
-                  clauseBody.entry,
-                  "enter-case"
-                );
-
+                this.addEdge(switchState, clauseState, ts.isCaseClause(clause) ? "case" : "default", guard);
+                for (const prior of previousFallthrough) this.addEdge(prior, clauseState, "fallthrough");
+                const clauseBody = this.buildBlock(clause.statements);
+                this.addEdge(clauseState, clauseBody.entry, "enter-case");
                 previousFallthrough = clauseBody.exits;
               }
-
-              for (const exit of previousFallthrough) {
-                this.addEdge(
-                  exit,
-                  switchExit,
-                  "switch-complete"
-                );
-              }
-
+              for (const exit of previousFallthrough) this.addEdge(exit, switchExit, "switch-complete");
               this.breakTargets.pop();
-
-              return {
-                entry: switchState,
-                exits: [switchExit]
-              };
+              return { entry: switchState, exits: [switchExit] };
             }
-
             buildTry(statement) {
-              const tryState = this.addNode(
-                "try",
-                statement.tryBlock
-              );
-
-              const tryBody = this.buildStatement(
-                statement.tryBlock
-              );
-
-              this.addEdge(
-                tryState,
-                tryBody.entry,
-                "enter-try"
-              );
-
+              const tryState = this.addNode("try", statement.tryBlock);
+              const tryBody = this.buildStatement(statement.tryBlock);
+              this.addEdge(tryState, tryBody.entry, "enter-try");
               let exits = [...tryBody.exits];
-
               if (statement.catchClause) {
-                const catchState = this.addNode(
-                  "catch",
-                  statement.catchClause
-                );
-
-                const catchBody = this.buildStatement(
-                  statement.catchClause.block
-                );
-
-                this.addEdge(
-                  tryState,
-                  catchState,
-                  "exception",
-                  null,
-                  { exceptional: true }
-                );
-
-                this.addEdge(
-                  catchState,
-                  catchBody.entry,
-                  "enter-catch"
-                );
-
+                const catchState = this.addNode("catch", statement.catchClause);
+                const catchBody = this.buildStatement(statement.catchClause.block);
+                this.addEdge(tryState, catchState, "exception", null, { exceptional: true });
+                this.addEdge(catchState, catchBody.entry, "enter-catch");
                 exits.push(...catchBody.exits);
               }
-
               if (statement.finallyBlock) {
-                const finallyState = this.addNode(
-                  "finally",
-                  statement.finallyBlock
-                );
-
-                const finallyBody = this.buildStatement(
-                  statement.finallyBlock
-                );
-
-                for (const exit of exits) {
-                  this.addEdge(
-                    exit,
-                    finallyState,
-                    "finally"
-                  );
-                }
-
-                this.addEdge(
-                  finallyState,
-                  finallyBody.entry,
-                  "enter-finally"
-                );
-
+                const finallyState = this.addNode("finally", statement.finallyBlock);
+                const finallyBody = this.buildStatement(statement.finallyBlock);
+                for (const exit of exits) this.addEdge(exit, finallyState, "finally");
+                this.addEdge(finallyState, finallyBody.entry, "enter-finally");
                 exits = finallyBody.exits;
               }
-
-              return {
-                entry: tryState,
-                exits
-              };
+              return { entry: tryState, exits };
             }
           }
 
           function functionName(node, sourceFile) {
-            if (node.name && ts.isIdentifier(node.name)) {
-              return node.name.text;
-            }
-
-            if (
-              node.parent &&
-              ts.isVariableDeclaration(node.parent) &&
-              ts.isIdentifier(node.parent.name)
-            ) {
+            if (node.name && ts.isIdentifier(node.name)) return node.name.text;
+            if (node.parent && ts.isVariableDeclaration(node.parent) && ts.isIdentifier(node.parent.name))
               return node.parent.name.text;
-            }
-
-            if (
-              node.parent &&
-              ts.isPropertyAssignment(node.parent)
-            ) {
-              return sourceText(
-                sourceFile,
-                node.parent.name,
-                100
-              );
-            }
-
-            if (
-              ts.isMethodDeclaration(node) ||
-              ts.isGetAccessorDeclaration(node) ||
-              ts.isSetAccessorDeclaration(node)
-            ) {
+            if (node.parent && ts.isPropertyAssignment(node.parent)) return sourceText(sourceFile, node.parent.name, 100);
+            if (ts.isMethodDeclaration(node) || ts.isGetAccessorDeclaration(node) || ts.isSetAccessorDeclaration(node))
               return sourceText(sourceFile, node.name, 100);
-            }
-
-            if (ts.isConstructorDeclaration(node)) {
-              return "constructor";
-            }
-
-            const location = positionOf(sourceFile, node);
-            return `anonymous_${location.line}_${location.column}`;
+            if (ts.isConstructorDeclaration(node)) return "constructor";
+            const loc = positionOf(sourceFile, node);
+            return `anonymous_${loc.line}_${loc.column}`;
           }
 
           function isFunctionLike(node) {
-            return (
-              ts.isFunctionDeclaration(node) ||
-              ts.isFunctionExpression(node) ||
-              ts.isArrowFunction(node) ||
-              ts.isMethodDeclaration(node) ||
-              ts.isConstructorDeclaration(node) ||
-              ts.isGetAccessorDeclaration(node) ||
-              ts.isSetAccessorDeclaration(node)
-            );
+            return ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node) ||
+              ts.isArrowFunction(node) || ts.isMethodDeclaration(node) ||
+              ts.isConstructorDeclaration(node) || ts.isGetAccessorDeclaration(node) ||
+              ts.isSetAccessorDeclaration(node);
           }
 
           function analyzeFunction(node, sourceFile, relativePath) {
-            const location = positionOf(sourceFile, node);
+            const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
-
-            const id = stableId(
-              "system",
-              relativePath,
-              name,
-              String(location.start),
-              syntaxName(node)
-            );
-
-            const parameters = node.parameters.map((parameter) => ({
-              name: sourceText(sourceFile, parameter.name, 200),
-              type: parameter.type
-                ? sourceText(sourceFile, parameter.type, 200)
-                : null,
-              optional: Boolean(parameter.questionToken),
-              rest: Boolean(parameter.dotDotDotToken),
-              initializer: parameter.initializer
-                ? sourceText(
-                    sourceFile,
-                    parameter.initializer,
-                    300
-                  )
-                : null,
-              source: positionOf(sourceFile, parameter)
+            const id = stableId("system", relativePath, name, String(loc.start), syntaxName(node));
+            const parameters = node.parameters.map(p => ({
+              name: sourceText(sourceFile, p.name, 200),
+              type: p.type ? sourceText(sourceFile, p.type, 200) : null,
+              optional: Boolean(p.questionToken), rest: Boolean(p.dotDotDotToken),
+              initializer: p.initializer ? sourceText(sourceFile, p.initializer, 300) : null,
+              source: positionOf(sourceFile, p)
             }));
-
             const body = node.body ?? null;
-
             let cfg;
-
             if (!body) {
-              const entry = stableId(
-                "state",
-                id,
-                "declaration-entry"
-              );
-
-              const exit = stableId(
-                "state",
-                id,
-                "declaration-exit"
-              );
-
+              const entry = stableId("state", id, "declaration-entry");
+              const exit = stableId("state", id, "declaration-exit");
               cfg = {
-                entry,
-                normalExit: exit,
-                exceptionalExit: stableId(
-                  "state",
-                  id,
-                  "declaration-exceptional-exit"
-                ),
+                entry, normalExit: exit,
+                exceptionalExit: stableId("state", id, "declaration-exceptional-exit"),
                 nodes: [
-                  {
-                    id: entry,
-                    kind: "declaration-only",
-                    source: location,
-                    text: sourceText(sourceFile, node),
-                    definitions: [],
-                    uses: [],
-                    effects: []
-                  },
-                  {
-                    id: exit,
-                    kind: "normal-exit",
-                    source: null,
-                    text: null,
-                    definitions: [],
-                    uses: [],
-                    effects: []
-                  }
+                  { id: entry, kind: "declaration-only", source: loc, text: sourceText(sourceFile, node),
+                    definitions: [], uses: [], effects: [] },
+                  { id: exit, kind: "normal-exit", source: null, text: null, definitions: [], uses: [], effects: [] }
                 ],
                 edges: [
-                  {
-                    id: stableId(
-                      "transition",
-                      id,
-                      entry,
-                      exit,
-                      "complete"
-                    ),
-                    from: entry,
-                    to: exit,
-                    kind: "complete",
-                    guard: null
-                  }
+                  { id: stableId("transition", id, entry, exit, "complete"), from: entry, to: exit, kind: "complete", guard: null }
                 ]
               };
             } else if (ts.isBlock(body)) {
-              cfg = new CFGBuilder(
-                sourceFile,
-                id
-              ).build(body);
+              cfg = new CFGBuilder(sourceFile, id).build(body);
             } else {
-              const syntheticBlock = ts.factory.createBlock(
-                [
-                  ts.factory.createReturnStatement(body)
-                ],
-                true
-              );
-
-              cfg = new CFGBuilder(
-                sourceFile,
-                id
-              ).build(syntheticBlock);
+              // ---------- FIX 2: expression‑bodied function without synthetic block ----------
+              const builder = new CFGBuilder(sourceFile, id);
+              const entry = builder.addNode("entry");
+              const exprState = builder.addNode("expression-return", body, {
+                effects: [{ kind: "return", expression: sourceText(sourceFile, body, 500) }]
+              });
+              const normalExit = builder.addNode("normal-exit");
+              const exceptionalExit = builder.addNode("exceptional-exit");
+              builder.addEdge(entry, exprState, "enter");
+              builder.addEdge(exprState, normalExit, "return");
+              cfg = {
+                entry, normalExit, exceptionalExit,
+                nodes: builder.nodes.sort((a,b) => a.id.localeCompare(b.id,"en")),
+                edges: builder.edges.sort((a,b) => a.id.localeCompare(b.id,"en"))
+              };
             }
 
             const variables = new Set();
             const calls = [];
             const unresolved = [];
-
             if (body) {
-              function visit(current) {
-                if (ts.isVariableDeclaration(current)) {
-                  collectBindingNames(current.name, variables);
-                }
-
-                if (ts.isCallExpression(current)) {
-                  calls.push({
-                    id: stableId(
-                      "call",
-                      id,
-                      String(current.getStart(sourceFile))
-                    ),
-                    expression: sourceText(
-                      sourceFile,
-                      current.expression,
-                      300
-                    ),
-                    arguments: current.arguments.map((argument) =>
-                      sourceText(sourceFile, argument, 300)
-                    ),
-                    source: positionOf(sourceFile, current),
-                    optional: Boolean(current.questionDotToken),
-                    awaited: ts.isAwaitExpression(current.parent),
-                    resolution: "unresolved-static-target"
-                  });
-                }
-
-                if (
-                  ts.isElementAccessExpression(current) &&
-                  !ts.isStringLiteral(current.argumentExpression) &&
-                  !ts.isNumericLiteral(current.argumentExpression)
-                ) {
+              function visit(n) {
+                if (ts.isVariableDeclaration(n)) collectBindingNames(n.name, variables);
+                if (ts.isCallExpression(n)) calls.push({
+                  id: stableId("call", id, String(n.getStart(sourceFile))),
+                  expression: sourceText(sourceFile, n.expression, 300),
+                  arguments: n.arguments.map(a => sourceText(sourceFile, a, 300)),
+                  source: positionOf(sourceFile, n),
+                  optional: Boolean(n.questionDotToken),
+                  awaited: ts.isAwaitExpression(n.parent),
+                  resolution: "unresolved-static-target"
+                });
+                if (ts.isElementAccessExpression(n) &&
+                    !ts.isStringLiteral(n.argumentExpression) &&
+                    !ts.isNumericLiteral(n.argumentExpression))
                   unresolved.push({
                     kind: "dynamic-property-access",
-                    source: positionOf(sourceFile, current),
-                    text: sourceText(sourceFile, current, 300)
+                    source: positionOf(sourceFile, n),
+                    text: sourceText(sourceFile, n, 300)
                   });
-                }
-
-                if (
-                  ts.isCallExpression(current) &&
-                  current.expression.kind ===
-                    ts.SyntaxKind.ImportKeyword
-                ) {
+                if (ts.isCallExpression(n) && n.expression.kind === ts.SyntaxKind.ImportKeyword)
                   unresolved.push({
                     kind: "dynamic-import",
-                    source: positionOf(sourceFile, current),
-                    text: sourceText(sourceFile, current, 300)
+                    source: positionOf(sourceFile, n),
+                    text: sourceText(sourceFile, n, 300)
                   });
-                }
-
-                ts.forEachChild(current, visit);
+                ts.forEachChild(n, visit);
               }
-
               visit(body);
             }
 
             return {
-              id,
-              name,
-              kind: syntaxName(node),
-              source: {
-                file: relativePath,
-                ...location
-              },
-              async: Boolean(
-                node.modifiers?.some(
-                  (modifier) =>
-                    modifier.kind ===
-                    ts.SyntaxKind.AsyncKeyword
-                )
-              ),
-              generator: Boolean(node.asteriskToken),
-              parameters,
-              returnType: node.type
-                ? sourceText(sourceFile, node.type, 300)
-                : null,
-              variables: [...variables].sort((a, b) =>
-                a.localeCompare(b, "en")
-              ),
-              inputs: parameters.map((parameter) => parameter.name),
+              id, name, kind: syntaxName(node), source: { file: relativePath, ...loc },
+              async: Boolean(node.modifiers?.some(m => m.kind === ts.SyntaxKind.AsyncKeyword)),
+              generator: Boolean(node.asteriskToken), parameters,
+              returnType: node.type ? sourceText(sourceFile, node.type, 300) : null,
+              variables: [...variables].sort((a,b) => a.localeCompare(b,"en")),
+              inputs: parameters.map(p => p.name),
               outputs: ["return", "throw", "effects"],
               initialState: cfg.entry,
-              terminalStates: [
-                cfg.normalExit,
-                cfg.exceptionalExit
-              ],
+              terminalStates: [cfg.normalExit, cfg.exceptionalExit],
               stateSpace: cfg.nodes,
               transitions: cfg.edges,
-              calls: calls.sort((a, b) =>
-                a.id.localeCompare(b.id, "en")
-              ),
-              unresolvedSemantics: unresolved.sort((a, b) =>
-                `${a.kind}:${a.source.start}`.localeCompare(
-                  `${b.kind}:${b.source.start}`,
-                  "en"
-                )
-              )
+              calls: calls.sort((a,b) => a.id.localeCompare(b.id,"en")),
+              unresolvedSemantics: unresolved.sort((a,b) =>
+                `${a.kind}:${a.source.start}`.localeCompare(`${b.kind}:${b.source.start}`, "en"))
             };
           }
 
@@ -1240,244 +543,90 @@ jobs:
             const originalBytes = fs.readFileSync(filePath);
             const source = originalBytes.toString("utf8");
             const relativePath = normalizeRelativePath(filePath);
-
-            const sourceFile = ts.createSourceFile(
-              relativePath,
-              source,
-              ts.ScriptTarget.Latest,
-              true,
-              scriptKindForFile(filePath)
-            );
-
-            const imports = [];
-            const exports = [];
-            const declarations = [];
-            const systems = [];
+            const sourceFile = ts.createSourceFile(relativePath, source, ts.ScriptTarget.Latest, true,
+              scriptKindForFile(filePath));
+            const imports = [], exports = [], declarations = [], systems = [];
             const diagnostics = [];
-
-            for (const diagnostic of sourceFile.parseDiagnostics) {
-              const start = diagnostic.start ?? 0;
-              const position =
-                sourceFile.getLineAndCharacterOfPosition(start);
-
+            for (const diag of sourceFile.parseDiagnostics) {
+              const start = diag.start ?? 0;
+              const pos = sourceFile.getLineAndCharacterOfPosition(start);
               diagnostics.push({
-                category:
-                  ts.DiagnosticCategory[diagnostic.category],
-                code: diagnostic.code,
-                message: ts.flattenDiagnosticMessageText(
-                  diagnostic.messageText,
-                  "\n"
-                ),
-                line: position.line + 1,
-                column: position.character + 1,
-                start,
-                length: diagnostic.length ?? 0
+                category: ts.DiagnosticCategory[diag.category], code: diag.code,
+                message: ts.flattenDiagnosticMessageText(diag.messageText, "\n"),
+                line: pos.line+1, column: pos.character+1, start, length: diag.length ?? 0
               });
             }
-
             function visit(node) {
-              if (
-                ts.isImportDeclaration(node) ||
-                ts.isImportEqualsDeclaration(node)
-              ) {
-                imports.push({
-                  kind: syntaxName(node),
-                  text: sourceText(sourceFile, node, 500),
-                  source: positionOf(sourceFile, node)
-                });
-              }
-
-              if (
-                ts.isExportDeclaration(node) ||
-                ts.isExportAssignment(node)
-              ) {
-                exports.push({
-                  kind: syntaxName(node),
-                  text: sourceText(sourceFile, node, 500),
-                  source: positionOf(sourceFile, node)
-                });
-              }
-
-              if (
-                ts.isVariableStatement(node) ||
-                ts.isClassDeclaration(node) ||
-                ts.isInterfaceDeclaration(node) ||
-                ts.isTypeAliasDeclaration(node) ||
-                ts.isEnumDeclaration(node)
-              ) {
-                declarations.push({
-                  kind: syntaxName(node),
-                  text: sourceText(sourceFile, node, 500),
-                  source: positionOf(sourceFile, node),
-                  definitions: collectDefinitions(node)
-                });
-              }
-
-              if (isFunctionLike(node)) {
-                systems.push(
-                  analyzeFunction(node, sourceFile, relativePath)
-                );
-              }
-
+              if (ts.isImportDeclaration(node) || ts.isImportEqualsDeclaration(node))
+                imports.push({ kind: syntaxName(node), text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node) });
+              if (ts.isExportDeclaration(node) || ts.isExportAssignment(node))
+                exports.push({ kind: syntaxName(node), text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node) });
+              if (ts.isVariableStatement(node) || ts.isClassDeclaration(node) ||
+                  ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) ||
+                  ts.isEnumDeclaration(node))
+                declarations.push({ kind: syntaxName(node), text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node), definitions: collectDefinitions(node) });
+              if (isFunctionLike(node)) systems.push(analyzeFunction(node, sourceFile, relativePath));
               ts.forEachChild(node, visit);
             }
-
             visit(sourceFile);
-
-            imports.sort((a, b) =>
-              a.source.start - b.source.start
-            );
-
-            exports.sort((a, b) =>
-              a.source.start - b.source.start
-            );
-
-            declarations.sort((a, b) =>
-              a.source.start - b.source.start
-            );
-
-            systems.sort((a, b) =>
-              a.id.localeCompare(b.id, "en")
-            );
-
-            diagnostics.sort(
-              (a, b) =>
-                a.start - b.start ||
-                a.code - b.code
-            );
-
+            imports.sort((a,b) => a.source.start - b.source.start);
+            exports.sort((a,b) => a.source.start - b.source.start);
+            declarations.sort((a,b) => a.source.start - b.source.start);
+            systems.sort((a,b) => a.id.localeCompare(b.id,"en"));
+            diagnostics.sort((a,b) => a.start - b.start || a.code - b.code);
             return {
               schema: "cdlds.application.module.v1",
-              generator: {
-                name: "cdlds-ast-transformer",
-                version: "1.0.0",
-                typescriptVersion: ts.version
-              },
+              generator: { name: "cdlds-ast-transformer", version: "1.0.0", typescriptVersion: ts.version },
               module: {
-                id: stableId(
-                  "module",
-                  relativePath,
-                  sha256(originalBytes)
-                ),
-                path: relativePath,
-                sourceSha256: sha256(originalBytes),
-                language: path
-                  .extname(filePath)
-                  .slice(1)
-                  .toLowerCase(),
-                scriptKind:
-                  ts.ScriptKind[
-                    scriptKindForFile(filePath)
-                  ],
-                imports,
-                exports,
-                declarations,
-                diagnostics
+                id: stableId("module", relativePath, sha256(originalBytes)),
+                path: relativePath, sourceSha256: sha256(originalBytes),
+                language: path.extname(filePath).slice(1).toLowerCase(),
+                scriptKind: ts.ScriptKind[scriptKindForFile(filePath)],
+                imports, exports, declarations, diagnostics
               },
               systems
             };
           }
 
           function stableSerialize(value) {
-            if (value === null || typeof value !== "object") {
-              return JSON.stringify(value);
-            }
-
-            if (Array.isArray(value)) {
-              return `[${value
-                .map((item) => stableSerialize(item))
-                .join(",")}]`;
-            }
-
-            const keys = Object.keys(value).sort((a, b) =>
-              a.localeCompare(b, "en")
-            );
-
-            return `{${keys
-              .map(
-                (key) =>
-                  `${JSON.stringify(key)}:${stableSerialize(
-                    value[key]
-                  )}`
-              )
-              .join(",")}}`;
+            if (value === null || typeof value !== "object") return JSON.stringify(value);
+            if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
+            const keys = Object.keys(value).sort((a,b) => a.localeCompare(b,"en"));
+            return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
           }
 
           function renderTransformedModule(model, extension) {
             const serialized = stableSerialize(model);
-            const formatted = JSON.stringify(
-              JSON.parse(serialized),
-              null,
-              2
-            );
-
+            const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
             const header = [
               "/*",
               " * Generated CDLDS application module.",
-              " *",
-              " * This file is an AST-derived behavioral representation of",
+              " * This file is an AST‑derived behavioral representation of",
               " * the source module that originally occupied this path.",
               " * The original source repository was not modified.",
-              " */",
-              ""
+              " */\n"
             ].join("\n");
-
-            if (extension === ".cjs") {
-              return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
-            }
-
-            if (
-              extension === ".ts" ||
-              extension === ".tsx"
-            ) {
+            if (extension === ".cjs") return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
+            if (extension === ".ts" || extension === ".tsx")
               return `${header}export const cdldsModule = ${formatted} as const;\n\nexport default cdldsModule;\n`;
-            }
-
             return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
           }
 
-          fs.rmSync(outputRoot, {
-            recursive: true,
-            force: true
-          });
-
-          fs.mkdirSync(outputRoot, {
-            recursive: true
-          });
-
+          fs.rmSync(outputRoot, { recursive: true, force: true });
+          fs.mkdirSync(outputRoot, { recursive: true });
           const sourceFiles = discoverFiles(sourceRoot);
-
-          if (sourceFiles.length === 0) {
-            throw new Error(
-              "No supported application source files were found."
-            );
-          }
-
+          if (sourceFiles.length === 0) throw new Error("No supported application source files were found.");
           const manifestEntries = [];
-
           for (const filePath of sourceFiles) {
             const relativePath = normalizeRelativePath(filePath);
-            const outputPath = path.join(
-              outputRoot,
-              ...relativePath.split("/")
-            );
-
+            const outputPath = path.join(outputRoot, ...relativePath.split("/"));
             const model = analyzeFile(filePath);
-            const transformedContent = renderTransformedModule(
-              model,
-              path.extname(filePath).toLowerCase()
-            );
-
-            fs.mkdirSync(path.dirname(outputPath), {
-              recursive: true
-            });
-
-            fs.writeFileSync(
-              outputPath,
-              transformedContent,
-              "utf8"
-            );
-
+            const transformedContent = renderTransformedModule(model, path.extname(filePath).toLowerCase());
+            fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+            fs.writeFileSync(outputPath, transformedContent, "utf8");
             manifestEntries.push({
               path: relativePath,
               originalSha256: model.module.sourceSha256,
@@ -1486,97 +635,42 @@ jobs:
               diagnostics: model.module.diagnostics.length
             });
           }
-
-          manifestEntries.sort((a, b) =>
-            a.path.localeCompare(b.path, "en")
-          );
-
-          const manifestText = manifestEntries
-            .map(
-              (entry) =>
-                [
-                  entry.transformedSha256,
-                  entry.path,
-                  `systems=${entry.systems}`,
-                  `diagnostics=${entry.diagnostics}`,
-                  `original=${entry.originalSha256}`
-                ].join("  ")
-            )
-            .join("\n")
-            .concat("\n");
-
-          fs.writeFileSync(
-            path.join(
-              workspace,
-              "build",
-              "CDLDS_MANIFEST.txt"
-            ),
-            manifestText,
-            "utf8"
-          );
-
-          console.log(
-            `Transformed ${sourceFiles.length} application source files.`
-          );
+          manifestEntries.sort((a,b) => a.path.localeCompare(b.path,"en"));
+          const manifestText = manifestEntries.map(e =>
+            `${e.transformedSha256}  ${e.path}  systems=${e.systems}  diagnostics=${e.diagnostics}  original=${e.originalSha256}`
+          ).join("\n").concat("\n");
+          fs.writeFileSync(path.join(workspace, "build", "CDLDS_MANIFEST.txt"), manifestText, "utf8");
+          console.log(`Transformed ${sourceFiles.length} application source files.`);
           SCRIPT
 
       - name: Transform application source tree
         shell: bash
         run: |
           set -euo pipefail
-
           node "$RUNNER_TEMP/cdlds-transformer/transform.mjs"
-
           test -d build/cdlds-application
           test -s build/CDLDS_MANIFEST.txt
-
-          FILE_COUNT="$(
-            find build/cdlds-application \
-              -type f \
-              | wc -l \
-              | tr -d ' '
-          )"
-
+          FILE_COUNT="$(find build/cdlds-application -type f | wc -l | tr -d ' ')"
           if [ "$FILE_COUNT" -eq 0 ]; then
             echo "No transformed application files were generated." >&2
             exit 1
           fi
-
           echo "Generated $FILE_COUNT transformed application files."
 
       - name: Create deterministic ZIP
         shell: bash
         run: |
           set -euo pipefail
-
           ZIP_PATH="$GITHUB_WORKSPACE/build/transformed-cdlds-application.zip"
-
           rm -f "$ZIP_PATH"
-
-          find build/cdlds-application \
-            -type f \
-            -exec touch -t 198001010000 {} +
-
-          (
-            cd build/cdlds-application
-
-            find . \
-              -type f \
-              -print0 \
-              | LC_ALL=C sort -z \
-              | zip \
-                  -X \
-                  -q \
-                  "$ZIP_PATH" \
-                  -@
+          find build/cdlds-application -type f -exec touch -t 198001010000 {} +
+          ( cd build/cdlds-application
+            find . -type f -print0 | LC_ALL=C sort -z | zip -X -q "$ZIP_PATH" -@
           )
-
-          sha256sum \
-            build/transformed-cdlds-application.zip \
-            > build/transformed-cdlds-application.zip.sha256
+          sha256sum build/transformed-cdlds-application.zip > build/transformed-cdlds-application.zip.sha256
 
       - name: Upload transformed application ZIP
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6          # ← v6
         with:
           name: ${{ env.ARTIFACT_NAME }}-${{ github.sha }}
           path: |
