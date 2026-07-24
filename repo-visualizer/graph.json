@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T04:09:16.093Z",
+  "generatedAt": "2026-07-24T04:46:42.784Z",
   "root": ".",
   "nodes": [
     {
@@ -3022,10 +3022,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream_4d_ai_source_manifold_no_binaries.yml",
-      "label": "dream_4d_ai_source_manifold_no_binaries.yml",
+      "id": "file:.github/workflows/dream_4d_utf16_color_codebase_manifold.yml",
+      "label": "dream_4d_utf16_color_codebase_manifold.yml",
       "type": "config",
-      "path": ".github/workflows/dream_4d_ai_source_manifold_no_binaries.yml",
+      "path": ".github/workflows/dream_4d_utf16_color_codebase_manifold.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
