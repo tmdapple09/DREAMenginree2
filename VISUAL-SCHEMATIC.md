@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2271
+- **Total files:** 2272
 - **Total function/class nodes:** 4923
 - **Total edges:** 8632
-- **Orphan nodes:** 4197
+- **Orphan nodes:** 4198
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4616,6 +4616,7 @@ _File-level graph omitted: 368 files exceeds Mermaid render budget. See table ab
 | `supabase/vector.ts` | ts |
 | `supabaseClient.ts` | ts |
 | `tailwindcss-animate.d.ts` | ts |
+| `ts-cdlds-engine.zip` | file |
 | `tsconfig.app.json` | config |
 | `tsconfig.base.json` | config |
 | `tsconfig.games.json` | config |
