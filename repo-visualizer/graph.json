@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T11:34:03.006Z",
+  "generatedAt": "2026-07-24T11:50:47.852Z",
   "root": ".",
   "nodes": [
     {
@@ -3466,16 +3466,6 @@
       "label": "report-driven-coding-agent.yml",
       "type": "config",
       "path": ".github/workflows/report-driven-coding-agent.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/repository-to-cdlds.yml",
-      "label": "repository-to-cdlds.yml",
-      "type": "config",
-      "path": ".github/workflows/repository-to-cdlds.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
