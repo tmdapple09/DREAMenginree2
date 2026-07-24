@@ -1,4 +1,4 @@
-name: CDLDS Application ZIP
+name: Generate Transformed CDLDS Application ZIP
 
 on:
   workflow_dispatch:
@@ -53,7 +53,7 @@ jobs:
           const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
 
           // -----------------------------------------------------------------
-          //  File discovery
+          //  File discovery (unchanged)
           // -----------------------------------------------------------------
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
@@ -122,7 +122,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Position & source helpers (FIXED)
+          //  Position & source helpers
           // -----------------------------------------------------------------
           function hasRealPosition(node: any): boolean {
             return Boolean(
@@ -474,7 +474,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Function analysis (FIXED with fallback)
+          //  Function analysis (FULLY GUARDED)
           // -----------------------------------------------------------------
           let fallbackAnonymousCounter = 0;
 
@@ -490,12 +490,10 @@ jobs:
             )
               return sourceText(sourceFile, node.name, 100);
             if (Node.isConstructorDeclaration(node)) return "constructor";
-            // Safe fallback when node has no real position
             const loc = positionOf(sourceFile, node);
             if (loc) {
               return `anonymous_${loc.line}_${loc.column}`;
             }
-            // For synthetic nodes or those without any position
             fallbackAnonymousCounter++;
             return `anonymous_gen_${fallbackAnonymousCounter}`;
           }
@@ -513,7 +511,10 @@ jobs:
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
             const id = stableId("system", relativePath, name, loc ? String(loc.start) : "nosource", syntaxName(node));
-            const parameters = node.parameters.map((p: any) => ({
+
+            // Safely get parameters (some nodes like overloads may lack them)
+            const rawParams = (node as any).parameters ?? [];
+            const parameters = rawParams.map((p: any) => ({
               name: sourceText(sourceFile, p.name, 200),
               type: p.type ? sourceText(sourceFile, p.type, 200) : null,
               optional: Boolean(p.questionToken),
@@ -521,6 +522,7 @@ jobs:
               initializer: p.initializer ? sourceText(sourceFile, p.initializer, 300) : null,
               source: positionOf(sourceFile, p)
             }));
+
             const body = node.body ?? null;
             let cfg: any;
             if (!body) {
