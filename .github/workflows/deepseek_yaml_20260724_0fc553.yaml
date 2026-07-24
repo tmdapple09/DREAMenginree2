@@ -1,4 +1,4 @@
-name: CDLDS Application ZIP
+name: Generate Transformed CDLDS Application ZIP
 
 on:
   workflow_dispatch:
