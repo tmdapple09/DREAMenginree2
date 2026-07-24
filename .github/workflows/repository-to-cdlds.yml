@@ -1,4 +1,4 @@
-name: Convert Application Code to CDLDS
+name: Generate Transformed CDLDS Application ZIP
 
 on:
   workflow_dispatch:
@@ -10,1236 +10,1578 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: cdlds-zip-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-cdlds:
+  transform:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 30
 
     env:
-      OUT: build/cdlds
+      ARTIFACT_NAME: transformed-cdlds-application
+      TYPESCRIPT_VERSION: 5.8.3
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          submodules: recursive
+          fetch-depth: 1
+          path: original-repo
 
-      - name: Install Coq and packaging tools
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install isolated TypeScript compiler
         shell: bash
         run: |
           set -euo pipefail
 
-          sudo apt-get update
+          TOOL_DIR="$RUNNER_TEMP/cdlds-transformer"
+          DEPS_DIR="$RUNNER_TEMP/cdlds-dependencies"
 
-          sudo apt-get install -y --no-install-recommends \
-            coq \
-            jq \
-            zip
+          rm -rf "$TOOL_DIR" "$DEPS_DIR"
+          mkdir -p "$TOOL_DIR" "$DEPS_DIR"
 
-          coqc --version
+          npm install \
+            --prefix "$DEPS_DIR" \
+            --no-save \
+            --ignore-scripts \
+            --no-audit \
+            --no-fund \
+            "typescript@${TYPESCRIPT_VERSION}"
 
-      - name: Prepare output directories
+      - name: Generate isolated CDLDS transformer
         shell: bash
         run: |
           set -euo pipefail
 
-          rm -rf "$OUT"
+          cat > "$RUNNER_TEMP/cdlds-transformer/transform.mjs" <<'SCRIPT'
+          import fs from "node:fs";
+          import path from "node:path";
+          import crypto from "node:crypto";
+          import { createRequire } from "node:module";
 
-          mkdir -p \
-            "$OUT/source" \
-            "$OUT/formal" \
-            "$OUT/reports"
+          const require = createRequire(import.meta.url);
 
-      - name: Select application code and build manifest
-        shell: python
-        run: |
-          from __future__ import annotations
+          const workspace = process.env.GITHUB_WORKSPACE;
+          const sourceRoot = path.join(workspace, "original-repo");
+          const outputRoot = path.join(workspace, "build", "cdlds-application");
+          const dependenciesRoot = path.join(
+            process.env.RUNNER_TEMP,
+            "cdlds-dependencies"
+          );
 
-          import hashlib
-          import json
-          import os
-          import shutil
-          from pathlib import Path
+          const ts = require(
+            path.join(dependenciesRoot, "node_modules", "typescript")
+          );
 
-          root = Path(".").resolve()
-          out = Path(os.environ["OUT"]).resolve()
-          source_out = out / "source"
+          const supportedExtensions = new Set([
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".mjs",
+            ".cjs"
+          ]);
 
-          excluded_directories = {
-              ".git",
-              ".github",
-              ".idea",
-              ".vscode",
-              ".cache",
-              ".next",
-              ".nuxt",
-              ".pytest_cache",
-              ".mypy_cache",
-              ".ruff_cache",
-              ".tox",
-              ".venv",
-              "venv",
-              "env",
-              "__pycache__",
-              "build",
-              "dist",
-              "out",
-              "target",
-              "coverage",
-              "vendor",
-              "vendors",
-              "node_modules",
-              "third_party",
-              "third-party",
-              "external",
-              "generated",
-              "docs",
-              "doc",
-              "documentation",
-              "examples",
-              "example",
-              "samples",
-              "sample",
-              "tests",
-              "test",
-              "__tests__",
-              "spec",
-              "specs",
-              "fixtures",
-              "fixture",
-              "mocks",
-              "mock",
-              "benchmarks",
-              "benchmark",
+          const excludedDirectoryNames = new Set([
+            ".git",
+            ".github",
+            ".next",
+            ".nuxt",
+            ".output",
+            ".cache",
+            ".parcel-cache",
+            ".turbo",
+            ".vercel",
+            "node_modules",
+            "vendor",
+            "vendors",
+            "third_party",
+            "third-party",
+            "external",
+            "build",
+            "dist",
+            "out",
+            "target",
+            "coverage",
+            "generated",
+            "__generated__",
+            "__snapshots__",
+            "__tests__",
+            "test",
+            "tests",
+            "spec",
+            "specs",
+            "mock",
+            "mocks",
+            "fixture",
+            "fixtures",
+            "benchmark",
+            "benchmarks",
+            "example",
+            "examples",
+            "sample",
+            "samples",
+            "docs",
+            "documentation"
+          ]);
+
+          const excludedFilenamePatterns = [
+            /\.d\.ts$/i,
+            /\.map$/i,
+            /\.min\.[cm]?[jt]sx?$/i,
+            /(?:^|[._-])(test|spec|mock|fixture|benchmark|bench)(?:[._-]|$)/i,
+            /(?:^|[._-])(config|setup)(?:[._-]|$)/i,
+            /(?:^|[._-])generated(?:[._-]|$)/i
+          ];
+
+          function normalizeRelativePath(filePath) {
+            return path
+              .relative(sourceRoot, filePath)
+              .split(path.sep)
+              .join("/");
           }
 
-          excluded_filename_fragments = {
-              ".test.",
-              ".tests.",
-              ".spec.",
-              "_test.",
-              "_tests.",
-              "-test.",
-              "-tests.",
-              ".mock.",
-              ".fixture.",
-              ".generated.",
-              ".min.",
+          function sha256(value) {
+            return crypto
+              .createHash("sha256")
+              .update(value)
+              .digest("hex");
           }
 
-          allowed_extensions = {
-              ".c",
-              ".h",
-              ".cc",
-              ".cpp",
-              ".cxx",
-              ".hh",
-              ".hpp",
-              ".hxx",
-              ".cs",
-              ".java",
-              ".kt",
-              ".kts",
-              ".go",
-              ".rs",
-              ".swift",
-              ".m",
-              ".mm",
-              ".php",
-              ".rb",
-              ".js",
-              ".jsx",
-              ".mjs",
-              ".cjs",
-              ".ts",
-              ".tsx",
-              ".vue",
-              ".svelte",
-              ".scala",
-              ".sc",
-              ".clj",
-              ".cljs",
-              ".cljc",
-              ".fs",
-              ".fsi",
-              ".fsx",
-              ".vb",
-              ".dart",
-              ".lua",
-              ".ex",
-              ".exs",
-              ".erl",
-              ".hrl",
-              ".hs",
-              ".lhs",
-              ".ml",
-              ".mli",
-              ".sol",
-              ".move",
-              ".r",
-              ".jl",
-              ".groovy",
-              ".gvy",
-              ".gy",
-              ".gsh",
-              ".asm",
-              ".s",
+          function stableId(prefix, ...parts) {
+            return `${prefix}_${sha256(parts.join("\u0000")).slice(0, 20)}`;
           }
 
-          def is_application_code(path: Path) -> bool:
-              relative = path.relative_to(root)
-              parts = [part.lower() for part in relative.parts]
+          function isExcludedDirectory(directoryName) {
+            return excludedDirectoryNames.has(directoryName.toLowerCase());
+          }
 
-              if any(
-                  part in excluded_directories
-                  for part in parts[:-1]
-              ):
-                  return False
+          function isExcludedFile(relativePath) {
+            const basename = path.basename(relativePath);
 
-              filename = relative.name.lower()
+            return excludedFilenamePatterns.some((pattern) =>
+              pattern.test(basename)
+            );
+          }
 
-              if any(
-                  fragment in filename
-                  for fragment in excluded_filename_fragments
-              ):
-                  return False
+          function discoverFiles(directory) {
+            const discovered = [];
 
-              return path.suffix.lower() in allowed_extensions
+            function walk(currentDirectory) {
+              const entries = fs
+                .readdirSync(currentDirectory, { withFileTypes: true })
+                .sort((a, b) => a.name.localeCompare(b.name, "en"));
 
-          selected_files: list[Path] = []
+              for (const entry of entries) {
+                const absolutePath = path.join(currentDirectory, entry.name);
 
-          for path in sorted(root.rglob("*")):
-              if path.is_file() and is_application_code(path):
-                  selected_files.append(path)
-
-          manifest_files: list[dict[str, object]] = []
-
-          for path in selected_files:
-              relative = path.relative_to(root)
-              relative_string = relative.as_posix()
-              data = path.read_bytes()
-
-              destination = source_out / relative
-              destination.parent.mkdir(
-                  parents=True,
-                  exist_ok=True,
-              )
-              shutil.copy2(path, destination)
-
-              manifest_files.append(
-                  {
-                      "path": relative_string,
-                      "path_utf8_hex": relative_string.encode(
-                          "utf-8"
-                      ).hex(),
-                      "bytes": len(data),
-                      "sha256": hashlib.sha256(data).hexdigest(),
+                if (entry.isDirectory()) {
+                  if (!isExcludedDirectory(entry.name)) {
+                    walk(absolutePath);
                   }
-              )
+                  continue;
+                }
 
-          manifest = {
-              "schema": "cdlds.application-code.v1",
-              "repository": os.environ.get(
-                  "GITHUB_REPOSITORY",
-                  "local",
-              ),
-              "commit": os.environ.get(
-                  "GITHUB_SHA",
-                  "unknown",
-              ),
-              "application_file_count": len(manifest_files),
-              "files": manifest_files,
+                if (!entry.isFile()) {
+                  continue;
+                }
+
+                const extension = path.extname(entry.name).toLowerCase();
+
+                if (!supportedExtensions.has(extension)) {
+                  continue;
+                }
+
+                const relativePath = normalizeRelativePath(absolutePath);
+
+                if (!isExcludedFile(relativePath)) {
+                  discovered.push(absolutePath);
+                }
+              }
+            }
+
+            walk(directory);
+
+            return discovered.sort((a, b) =>
+              normalizeRelativePath(a).localeCompare(
+                normalizeRelativePath(b),
+                "en"
+              )
+            );
           }
 
-          (out / "repository.json").write_text(
-              json.dumps(manifest, indent=2) + "\n",
-              encoding="utf-8",
-          )
+          function scriptKindForFile(filePath) {
+            switch (path.extname(filePath).toLowerCase()) {
+              case ".ts":
+                return ts.ScriptKind.TS;
+              case ".tsx":
+                return ts.ScriptKind.TSX;
+              case ".jsx":
+                return ts.ScriptKind.JSX;
+              case ".js":
+              case ".mjs":
+              case ".cjs":
+                return ts.ScriptKind.JS;
+              default:
+                return ts.ScriptKind.Unknown;
+            }
+          }
 
-          with (
-              out / "reports" / "SHA256SUMS"
-          ).open("w", encoding="utf-8") as handle:
-              for item in manifest_files:
-                  handle.write(
-                      f'{item["sha256"]}  {item["path"]}\n'
+          function positionOf(sourceFile, node) {
+            const start = node.getStart(sourceFile, false);
+            const end = node.getEnd();
+            const location = sourceFile.getLineAndCharacterOfPosition(start);
+
+            return {
+              start,
+              end,
+              line: location.line + 1,
+              column: location.character + 1
+            };
+          }
+
+          function sourceText(sourceFile, node, maximumLength = 500) {
+            const text = node
+              .getText(sourceFile)
+              .replace(/\r\n/g, "\n")
+              .trim();
+
+            if (text.length <= maximumLength) {
+              return text;
+            }
+
+            return `${text.slice(0, maximumLength)}…`;
+          }
+
+          function syntaxName(node) {
+            return ts.SyntaxKind[node.kind] ?? `SyntaxKind${node.kind}`;
+          }
+
+          function collectBindingNames(nameNode, names) {
+            if (!nameNode) {
+              return;
+            }
+
+            if (ts.isIdentifier(nameNode)) {
+              names.add(nameNode.text);
+              return;
+            }
+
+            if (
+              ts.isObjectBindingPattern(nameNode) ||
+              ts.isArrayBindingPattern(nameNode)
+            ) {
+              for (const element of nameNode.elements) {
+                if (ts.isBindingElement(element)) {
+                  collectBindingNames(element.name, names);
+                }
+              }
+            }
+          }
+
+          function collectIdentifiers(node, sourceFile) {
+            const identifiers = new Set();
+
+            function visit(current) {
+              if (ts.isIdentifier(current)) {
+                identifiers.add(current.text);
+              }
+
+              ts.forEachChild(current, visit);
+            }
+
+            visit(node);
+
+            return [...identifiers].sort((a, b) =>
+              a.localeCompare(b, "en")
+            );
+          }
+
+          function collectDefinitions(node) {
+            const definitions = new Set();
+
+            if (ts.isVariableDeclaration(node)) {
+              collectBindingNames(node.name, definitions);
+            }
+
+            if (
+              ts.isFunctionDeclaration(node) ||
+              ts.isClassDeclaration(node) ||
+              ts.isInterfaceDeclaration(node) ||
+              ts.isTypeAliasDeclaration(node) ||
+              ts.isEnumDeclaration(node)
+            ) {
+              if (node.name) {
+                definitions.add(node.name.text);
+              }
+            }
+
+            if (
+              ts.isBinaryExpression(node) &&
+              node.operatorToken.kind ===
+                ts.SyntaxKind.EqualsToken
+            ) {
+              if (ts.isIdentifier(node.left)) {
+                definitions.add(node.left.text);
+              }
+            }
+
+            if (
+              ts.isPrefixUnaryExpression(node) ||
+              ts.isPostfixUnaryExpression(node)
+            ) {
+              if (ts.isIdentifier(node.operand)) {
+                definitions.add(node.operand.text);
+              }
+            }
+
+            return [...definitions].sort((a, b) =>
+              a.localeCompare(b, "en")
+            );
+          }
+
+          function collectEffects(node, sourceFile) {
+            const effects = [];
+
+            if (ts.isCallExpression(node)) {
+              effects.push({
+                kind: "call",
+                expression: sourceText(
+                  sourceFile,
+                  node.expression,
+                  200
+                ),
+                arguments: node.arguments.map((argument) =>
+                  sourceText(sourceFile, argument, 200)
+                ),
+                optional: Boolean(node.questionDotToken)
+              });
+            }
+
+            if (ts.isNewExpression(node)) {
+              effects.push({
+                kind: "construct",
+                expression: sourceText(
+                  sourceFile,
+                  node.expression,
+                  200
+                ),
+                arguments: (node.arguments ?? []).map((argument) =>
+                  sourceText(sourceFile, argument, 200)
+                )
+              });
+            }
+
+            if (ts.isReturnStatement(node)) {
+              effects.push({
+                kind: "return",
+                expression: node.expression
+                  ? sourceText(sourceFile, node.expression, 300)
+                  : null
+              });
+            }
+
+            if (ts.isThrowStatement(node)) {
+              effects.push({
+                kind: "throw",
+                expression: sourceText(
+                  sourceFile,
+                  node.expression,
+                  300
+                )
+              });
+            }
+
+            if (ts.isAwaitExpression(node)) {
+              effects.push({
+                kind: "await",
+                expression: sourceText(
+                  sourceFile,
+                  node.expression,
+                  300
+                )
+              });
+            }
+
+            if (ts.isYieldExpression(node)) {
+              effects.push({
+                kind: "yield",
+                expression: node.expression
+                  ? sourceText(sourceFile, node.expression, 300)
+                  : null
+              });
+            }
+
+            if (
+              ts.isBinaryExpression(node) &&
+              ts.isAssignmentOperator(node.operatorToken.kind)
+            ) {
+              effects.push({
+                kind: "write",
+                target: sourceText(sourceFile, node.left, 200),
+                operator: node.operatorToken.getText(sourceFile),
+                value: sourceText(sourceFile, node.right, 300)
+              });
+            }
+
+            return effects;
+          }
+
+          class CFGBuilder {
+            constructor(sourceFile, functionId) {
+              this.sourceFile = sourceFile;
+              this.functionId = functionId;
+              this.nodes = [];
+              this.edges = [];
+              this.sequence = 0;
+              this.breakTargets = [];
+              this.continueTargets = [];
+              this.returnTarget = null;
+              this.throwTarget = null;
+            }
+
+            addNode(kind, node = null, extra = {}) {
+              const location = node
+                ? positionOf(this.sourceFile, node)
+                : null;
+
+              const nodeId = stableId(
+                "state",
+                this.functionId,
+                String(this.sequence++),
+                kind,
+                location ? String(location.start) : "synthetic"
+              );
+
+              const record = {
+                id: nodeId,
+                kind,
+                source: location,
+                text: node
+                  ? sourceText(this.sourceFile, node)
+                  : null,
+                definitions: node
+                  ? collectDefinitions(node)
+                  : [],
+                uses: node
+                  ? collectIdentifiers(node, this.sourceFile)
+                  : [],
+                effects: node
+                  ? collectEffects(node, this.sourceFile)
+                  : [],
+                ...extra
+              };
+
+              this.nodes.push(record);
+              return nodeId;
+            }
+
+            addEdge(from, to, kind, guard = null, metadata = {}) {
+              if (!from || !to) {
+                return;
+              }
+
+              this.edges.push({
+                id: stableId(
+                  "transition",
+                  this.functionId,
+                  from,
+                  to,
+                  kind,
+                  guard ?? ""
+                ),
+                from,
+                to,
+                kind,
+                guard,
+                ...metadata
+              });
+            }
+
+            build(body) {
+              const entry = this.addNode("entry");
+              const normalExit = this.addNode("normal-exit");
+              const exceptionalExit = this.addNode(
+                "exceptional-exit"
+              );
+
+              this.returnTarget = normalExit;
+              this.throwTarget = exceptionalExit;
+
+              const result = this.buildStatement(body);
+
+              this.addEdge(entry, result.entry, "enter");
+
+              for (const exit of result.exits) {
+                this.addEdge(exit, normalExit, "complete");
+              }
+
+              return {
+                entry,
+                normalExit,
+                exceptionalExit,
+                nodes: this.nodes.sort((a, b) =>
+                  a.id.localeCompare(b.id, "en")
+                ),
+                edges: this.edges.sort((a, b) =>
+                  a.id.localeCompare(b.id, "en")
+                )
+              };
+            }
+
+            buildStatement(statement) {
+              if (ts.isBlock(statement)) {
+                return this.buildBlock(statement.statements);
+              }
+
+              if (ts.isIfStatement(statement)) {
+                return this.buildIf(statement);
+              }
+
+              if (
+                ts.isWhileStatement(statement) ||
+                ts.isDoStatement(statement) ||
+                ts.isForStatement(statement) ||
+                ts.isForInStatement(statement) ||
+                ts.isForOfStatement(statement)
+              ) {
+                return this.buildLoop(statement);
+              }
+
+              if (ts.isSwitchStatement(statement)) {
+                return this.buildSwitch(statement);
+              }
+
+              if (ts.isTryStatement(statement)) {
+                return this.buildTry(statement);
+              }
+
+              if (ts.isReturnStatement(statement)) {
+                const state = this.addNode("return", statement);
+                this.addEdge(
+                  state,
+                  this.returnTarget,
+                  "return"
+                );
+                return { entry: state, exits: [] };
+              }
+
+              if (ts.isThrowStatement(statement)) {
+                const state = this.addNode("throw", statement);
+                this.addEdge(
+                  state,
+                  this.throwTarget,
+                  "throw",
+                  null,
+                  { exceptional: true }
+                );
+                return { entry: state, exits: [] };
+              }
+
+              if (ts.isBreakStatement(statement)) {
+                const state = this.addNode("break", statement);
+                const target =
+                  this.breakTargets[
+                    this.breakTargets.length - 1
+                  ] ?? null;
+
+                this.addEdge(state, target, "break");
+                return { entry: state, exits: [] };
+              }
+
+              if (ts.isContinueStatement(statement)) {
+                const state = this.addNode("continue", statement);
+                const target =
+                  this.continueTargets[
+                    this.continueTargets.length - 1
+                  ] ?? null;
+
+                this.addEdge(state, target, "continue");
+                return { entry: state, exits: [] };
+              }
+
+              const state = this.addNode(
+                syntaxName(statement),
+                statement
+              );
+
+              return {
+                entry: state,
+                exits: [state]
+              };
+            }
+
+            buildBlock(statements) {
+              if (statements.length === 0) {
+                const empty = this.addNode("empty-block");
+                return { entry: empty, exits: [empty] };
+              }
+
+              let first = null;
+              let previousExits = [];
+
+              for (const statement of statements) {
+                const current = this.buildStatement(statement);
+
+                if (!first) {
+                  first = current.entry;
+                }
+
+                for (const previous of previousExits) {
+                  this.addEdge(
+                    previous,
+                    current.entry,
+                    "next"
+                  );
+                }
+
+                previousExits = current.exits;
+              }
+
+              return {
+                entry: first,
+                exits: previousExits
+              };
+            }
+
+            buildIf(statement) {
+              const condition = this.addNode(
+                "if-condition",
+                statement.expression,
+                {
+                  guardExpression: sourceText(
+                    this.sourceFile,
+                    statement.expression,
+                    300
                   )
+                }
+              );
 
-          with (
-              out / "reports" / "INCLUDED_FILES.txt"
-          ).open("w", encoding="utf-8") as handle:
-              for item in manifest_files:
-                  handle.write(f'{item["path"]}\n')
+              const thenBranch = this.buildStatement(
+                statement.thenStatement
+              );
 
-          print(
-              f"Selected {len(manifest_files)} "
-              "application-code files."
-          )
+              this.addEdge(
+                condition,
+                thenBranch.entry,
+                "true",
+                sourceText(
+                  this.sourceFile,
+                  statement.expression,
+                  300
+                )
+              );
 
-      - name: Require application code
+              if (statement.elseStatement) {
+                const elseBranch = this.buildStatement(
+                  statement.elseStatement
+                );
+
+                this.addEdge(
+                  condition,
+                  elseBranch.entry,
+                  "false",
+                  `!(${sourceText(
+                    this.sourceFile,
+                    statement.expression,
+                    300
+                  )})`
+                );
+
+                return {
+                  entry: condition,
+                  exits: [
+                    ...thenBranch.exits,
+                    ...elseBranch.exits
+                  ]
+                };
+              }
+
+              return {
+                entry: condition,
+                exits: [condition, ...thenBranch.exits]
+              };
+            }
+
+            buildLoop(statement) {
+              const afterLoop = this.addNode(
+                "loop-exit",
+                null
+              );
+
+              let conditionNode;
+              let conditionText;
+
+              if (ts.isForStatement(statement)) {
+                conditionText = statement.condition
+                  ? sourceText(
+                      this.sourceFile,
+                      statement.condition,
+                      300
+                    )
+                  : "true";
+
+                conditionNode = this.addNode(
+                  "for-condition",
+                  statement.condition ?? statement,
+                  { guardExpression: conditionText }
+                );
+              } else if (
+                ts.isForInStatement(statement) ||
+                ts.isForOfStatement(statement)
+              ) {
+                conditionText = sourceText(
+                  this.sourceFile,
+                  statement.expression,
+                  300
+                );
+
+                conditionNode = this.addNode(
+                  ts.isForInStatement(statement)
+                    ? "for-in-condition"
+                    : "for-of-condition",
+                  statement.expression,
+                  { guardExpression: conditionText }
+                );
+              } else {
+                conditionText = sourceText(
+                  this.sourceFile,
+                  statement.expression,
+                  300
+                );
+
+                conditionNode = this.addNode(
+                  ts.isDoStatement(statement)
+                    ? "do-while-condition"
+                    : "while-condition",
+                  statement.expression,
+                  { guardExpression: conditionText }
+                );
+              }
+
+              this.breakTargets.push(afterLoop);
+              this.continueTargets.push(conditionNode);
+
+              const body = this.buildStatement(
+                statement.statement
+              );
+
+              this.continueTargets.pop();
+              this.breakTargets.pop();
+
+              this.addEdge(
+                conditionNode,
+                body.entry,
+                "true",
+                conditionText
+              );
+
+              this.addEdge(
+                conditionNode,
+                afterLoop,
+                "false",
+                `!(${conditionText})`
+              );
+
+              for (const exit of body.exits) {
+                this.addEdge(
+                  exit,
+                  conditionNode,
+                  "loop-back"
+                );
+              }
+
+              if (ts.isDoStatement(statement)) {
+                return {
+                  entry: body.entry,
+                  exits: [afterLoop]
+                };
+              }
+
+              return {
+                entry: conditionNode,
+                exits: [afterLoop]
+              };
+            }
+
+            buildSwitch(statement) {
+              const switchState = this.addNode(
+                "switch",
+                statement.expression
+              );
+
+              const switchExit = this.addNode(
+                "switch-exit"
+              );
+
+              this.breakTargets.push(switchExit);
+
+              let previousFallthrough = [];
+
+              for (const clause of statement.caseBlock.clauses) {
+                const clauseState = this.addNode(
+                  ts.isCaseClause(clause)
+                    ? "switch-case"
+                    : "switch-default",
+                  clause
+                );
+
+                const guard = ts.isCaseClause(clause)
+                  ? `${sourceText(
+                      this.sourceFile,
+                      statement.expression,
+                      200
+                    )} === ${sourceText(
+                      this.sourceFile,
+                      clause.expression,
+                      200
+                    )}`
+                  : "default";
+
+                this.addEdge(
+                  switchState,
+                  clauseState,
+                  ts.isCaseClause(clause)
+                    ? "case"
+                    : "default",
+                  guard
+                );
+
+                for (const prior of previousFallthrough) {
+                  this.addEdge(
+                    prior,
+                    clauseState,
+                    "fallthrough"
+                  );
+                }
+
+                const clauseBody = this.buildBlock(
+                  clause.statements
+                );
+
+                this.addEdge(
+                  clauseState,
+                  clauseBody.entry,
+                  "enter-case"
+                );
+
+                previousFallthrough = clauseBody.exits;
+              }
+
+              for (const exit of previousFallthrough) {
+                this.addEdge(
+                  exit,
+                  switchExit,
+                  "switch-complete"
+                );
+              }
+
+              this.breakTargets.pop();
+
+              return {
+                entry: switchState,
+                exits: [switchExit]
+              };
+            }
+
+            buildTry(statement) {
+              const tryState = this.addNode(
+                "try",
+                statement.tryBlock
+              );
+
+              const tryBody = this.buildStatement(
+                statement.tryBlock
+              );
+
+              this.addEdge(
+                tryState,
+                tryBody.entry,
+                "enter-try"
+              );
+
+              let exits = [...tryBody.exits];
+
+              if (statement.catchClause) {
+                const catchState = this.addNode(
+                  "catch",
+                  statement.catchClause
+                );
+
+                const catchBody = this.buildStatement(
+                  statement.catchClause.block
+                );
+
+                this.addEdge(
+                  tryState,
+                  catchState,
+                  "exception",
+                  null,
+                  { exceptional: true }
+                );
+
+                this.addEdge(
+                  catchState,
+                  catchBody.entry,
+                  "enter-catch"
+                );
+
+                exits.push(...catchBody.exits);
+              }
+
+              if (statement.finallyBlock) {
+                const finallyState = this.addNode(
+                  "finally",
+                  statement.finallyBlock
+                );
+
+                const finallyBody = this.buildStatement(
+                  statement.finallyBlock
+                );
+
+                for (const exit of exits) {
+                  this.addEdge(
+                    exit,
+                    finallyState,
+                    "finally"
+                  );
+                }
+
+                this.addEdge(
+                  finallyState,
+                  finallyBody.entry,
+                  "enter-finally"
+                );
+
+                exits = finallyBody.exits;
+              }
+
+              return {
+                entry: tryState,
+                exits
+              };
+            }
+          }
+
+          function functionName(node, sourceFile) {
+            if (node.name && ts.isIdentifier(node.name)) {
+              return node.name.text;
+            }
+
+            if (
+              node.parent &&
+              ts.isVariableDeclaration(node.parent) &&
+              ts.isIdentifier(node.parent.name)
+            ) {
+              return node.parent.name.text;
+            }
+
+            if (
+              node.parent &&
+              ts.isPropertyAssignment(node.parent)
+            ) {
+              return sourceText(
+                sourceFile,
+                node.parent.name,
+                100
+              );
+            }
+
+            if (
+              ts.isMethodDeclaration(node) ||
+              ts.isGetAccessorDeclaration(node) ||
+              ts.isSetAccessorDeclaration(node)
+            ) {
+              return sourceText(sourceFile, node.name, 100);
+            }
+
+            if (ts.isConstructorDeclaration(node)) {
+              return "constructor";
+            }
+
+            const location = positionOf(sourceFile, node);
+            return `anonymous_${location.line}_${location.column}`;
+          }
+
+          function isFunctionLike(node) {
+            return (
+              ts.isFunctionDeclaration(node) ||
+              ts.isFunctionExpression(node) ||
+              ts.isArrowFunction(node) ||
+              ts.isMethodDeclaration(node) ||
+              ts.isConstructorDeclaration(node) ||
+              ts.isGetAccessorDeclaration(node) ||
+              ts.isSetAccessorDeclaration(node)
+            );
+          }
+
+          function analyzeFunction(node, sourceFile, relativePath) {
+            const location = positionOf(sourceFile, node);
+            const name = functionName(node, sourceFile);
+
+            const id = stableId(
+              "system",
+              relativePath,
+              name,
+              String(location.start),
+              syntaxName(node)
+            );
+
+            const parameters = node.parameters.map((parameter) => ({
+              name: sourceText(sourceFile, parameter.name, 200),
+              type: parameter.type
+                ? sourceText(sourceFile, parameter.type, 200)
+                : null,
+              optional: Boolean(parameter.questionToken),
+              rest: Boolean(parameter.dotDotDotToken),
+              initializer: parameter.initializer
+                ? sourceText(
+                    sourceFile,
+                    parameter.initializer,
+                    300
+                  )
+                : null,
+              source: positionOf(sourceFile, parameter)
+            }));
+
+            const body = node.body ?? null;
+
+            let cfg;
+
+            if (!body) {
+              const entry = stableId(
+                "state",
+                id,
+                "declaration-entry"
+              );
+
+              const exit = stableId(
+                "state",
+                id,
+                "declaration-exit"
+              );
+
+              cfg = {
+                entry,
+                normalExit: exit,
+                exceptionalExit: stableId(
+                  "state",
+                  id,
+                  "declaration-exceptional-exit"
+                ),
+                nodes: [
+                  {
+                    id: entry,
+                    kind: "declaration-only",
+                    source: location,
+                    text: sourceText(sourceFile, node),
+                    definitions: [],
+                    uses: [],
+                    effects: []
+                  },
+                  {
+                    id: exit,
+                    kind: "normal-exit",
+                    source: null,
+                    text: null,
+                    definitions: [],
+                    uses: [],
+                    effects: []
+                  }
+                ],
+                edges: [
+                  {
+                    id: stableId(
+                      "transition",
+                      id,
+                      entry,
+                      exit,
+                      "complete"
+                    ),
+                    from: entry,
+                    to: exit,
+                    kind: "complete",
+                    guard: null
+                  }
+                ]
+              };
+            } else if (ts.isBlock(body)) {
+              cfg = new CFGBuilder(
+                sourceFile,
+                id
+              ).build(body);
+            } else {
+              const syntheticBlock = ts.factory.createBlock(
+                [
+                  ts.factory.createReturnStatement(body)
+                ],
+                true
+              );
+
+              cfg = new CFGBuilder(
+                sourceFile,
+                id
+              ).build(syntheticBlock);
+            }
+
+            const variables = new Set();
+            const calls = [];
+            const unresolved = [];
+
+            if (body) {
+              function visit(current) {
+                if (ts.isVariableDeclaration(current)) {
+                  collectBindingNames(current.name, variables);
+                }
+
+                if (ts.isCallExpression(current)) {
+                  calls.push({
+                    id: stableId(
+                      "call",
+                      id,
+                      String(current.getStart(sourceFile))
+                    ),
+                    expression: sourceText(
+                      sourceFile,
+                      current.expression,
+                      300
+                    ),
+                    arguments: current.arguments.map((argument) =>
+                      sourceText(sourceFile, argument, 300)
+                    ),
+                    source: positionOf(sourceFile, current),
+                    optional: Boolean(current.questionDotToken),
+                    awaited: ts.isAwaitExpression(current.parent),
+                    resolution: "unresolved-static-target"
+                  });
+                }
+
+                if (
+                  ts.isElementAccessExpression(current) &&
+                  !ts.isStringLiteral(current.argumentExpression) &&
+                  !ts.isNumericLiteral(current.argumentExpression)
+                ) {
+                  unresolved.push({
+                    kind: "dynamic-property-access",
+                    source: positionOf(sourceFile, current),
+                    text: sourceText(sourceFile, current, 300)
+                  });
+                }
+
+                if (
+                  ts.isCallExpression(current) &&
+                  current.expression.kind ===
+                    ts.SyntaxKind.ImportKeyword
+                ) {
+                  unresolved.push({
+                    kind: "dynamic-import",
+                    source: positionOf(sourceFile, current),
+                    text: sourceText(sourceFile, current, 300)
+                  });
+                }
+
+                ts.forEachChild(current, visit);
+              }
+
+              visit(body);
+            }
+
+            return {
+              id,
+              name,
+              kind: syntaxName(node),
+              source: {
+                file: relativePath,
+                ...location
+              },
+              async: Boolean(
+                node.modifiers?.some(
+                  (modifier) =>
+                    modifier.kind ===
+                    ts.SyntaxKind.AsyncKeyword
+                )
+              ),
+              generator: Boolean(node.asteriskToken),
+              parameters,
+              returnType: node.type
+                ? sourceText(sourceFile, node.type, 300)
+                : null,
+              variables: [...variables].sort((a, b) =>
+                a.localeCompare(b, "en")
+              ),
+              inputs: parameters.map((parameter) => parameter.name),
+              outputs: ["return", "throw", "effects"],
+              initialState: cfg.entry,
+              terminalStates: [
+                cfg.normalExit,
+                cfg.exceptionalExit
+              ],
+              stateSpace: cfg.nodes,
+              transitions: cfg.edges,
+              calls: calls.sort((a, b) =>
+                a.id.localeCompare(b.id, "en")
+              ),
+              unresolvedSemantics: unresolved.sort((a, b) =>
+                `${a.kind}:${a.source.start}`.localeCompare(
+                  `${b.kind}:${b.source.start}`,
+                  "en"
+                )
+              )
+            };
+          }
+
+          function analyzeFile(filePath) {
+            const originalBytes = fs.readFileSync(filePath);
+            const source = originalBytes.toString("utf8");
+            const relativePath = normalizeRelativePath(filePath);
+
+            const sourceFile = ts.createSourceFile(
+              relativePath,
+              source,
+              ts.ScriptTarget.Latest,
+              true,
+              scriptKindForFile(filePath)
+            );
+
+            const imports = [];
+            const exports = [];
+            const declarations = [];
+            const systems = [];
+            const diagnostics = [];
+
+            for (const diagnostic of sourceFile.parseDiagnostics) {
+              const start = diagnostic.start ?? 0;
+              const position =
+                sourceFile.getLineAndCharacterOfPosition(start);
+
+              diagnostics.push({
+                category:
+                  ts.DiagnosticCategory[diagnostic.category],
+                code: diagnostic.code,
+                message: ts.flattenDiagnosticMessageText(
+                  diagnostic.messageText,
+                  "\n"
+                ),
+                line: position.line + 1,
+                column: position.character + 1,
+                start,
+                length: diagnostic.length ?? 0
+              });
+            }
+
+            function visit(node) {
+              if (
+                ts.isImportDeclaration(node) ||
+                ts.isImportEqualsDeclaration(node)
+              ) {
+                imports.push({
+                  kind: syntaxName(node),
+                  text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node)
+                });
+              }
+
+              if (
+                ts.isExportDeclaration(node) ||
+                ts.isExportAssignment(node)
+              ) {
+                exports.push({
+                  kind: syntaxName(node),
+                  text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node)
+                });
+              }
+
+              if (
+                ts.isVariableStatement(node) ||
+                ts.isClassDeclaration(node) ||
+                ts.isInterfaceDeclaration(node) ||
+                ts.isTypeAliasDeclaration(node) ||
+                ts.isEnumDeclaration(node)
+              ) {
+                declarations.push({
+                  kind: syntaxName(node),
+                  text: sourceText(sourceFile, node, 500),
+                  source: positionOf(sourceFile, node),
+                  definitions: collectDefinitions(node)
+                });
+              }
+
+              if (isFunctionLike(node)) {
+                systems.push(
+                  analyzeFunction(node, sourceFile, relativePath)
+                );
+              }
+
+              ts.forEachChild(node, visit);
+            }
+
+            visit(sourceFile);
+
+            imports.sort((a, b) =>
+              a.source.start - b.source.start
+            );
+
+            exports.sort((a, b) =>
+              a.source.start - b.source.start
+            );
+
+            declarations.sort((a, b) =>
+              a.source.start - b.source.start
+            );
+
+            systems.sort((a, b) =>
+              a.id.localeCompare(b.id, "en")
+            );
+
+            diagnostics.sort(
+              (a, b) =>
+                a.start - b.start ||
+                a.code - b.code
+            );
+
+            return {
+              schema: "cdlds.application.module.v1",
+              generator: {
+                name: "cdlds-ast-transformer",
+                version: "1.0.0",
+                typescriptVersion: ts.version
+              },
+              module: {
+                id: stableId(
+                  "module",
+                  relativePath,
+                  sha256(originalBytes)
+                ),
+                path: relativePath,
+                sourceSha256: sha256(originalBytes),
+                language: path
+                  .extname(filePath)
+                  .slice(1)
+                  .toLowerCase(),
+                scriptKind:
+                  ts.ScriptKind[
+                    scriptKindForFile(filePath)
+                  ],
+                imports,
+                exports,
+                declarations,
+                diagnostics
+              },
+              systems
+            };
+          }
+
+          function stableSerialize(value) {
+            if (value === null || typeof value !== "object") {
+              return JSON.stringify(value);
+            }
+
+            if (Array.isArray(value)) {
+              return `[${value
+                .map((item) => stableSerialize(item))
+                .join(",")}]`;
+            }
+
+            const keys = Object.keys(value).sort((a, b) =>
+              a.localeCompare(b, "en")
+            );
+
+            return `{${keys
+              .map(
+                (key) =>
+                  `${JSON.stringify(key)}:${stableSerialize(
+                    value[key]
+                  )}`
+              )
+              .join(",")}}`;
+          }
+
+          function renderTransformedModule(model, extension) {
+            const serialized = stableSerialize(model);
+            const formatted = JSON.stringify(
+              JSON.parse(serialized),
+              null,
+              2
+            );
+
+            const header = [
+              "/*",
+              " * Generated CDLDS application module.",
+              " *",
+              " * This file is an AST-derived behavioral representation of",
+              " * the source module that originally occupied this path.",
+              " * The original source repository was not modified.",
+              " */",
+              ""
+            ].join("\n");
+
+            if (extension === ".cjs") {
+              return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
+            }
+
+            if (
+              extension === ".ts" ||
+              extension === ".tsx"
+            ) {
+              return `${header}export const cdldsModule = ${formatted} as const;\n\nexport default cdldsModule;\n`;
+            }
+
+            return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
+          }
+
+          fs.rmSync(outputRoot, {
+            recursive: true,
+            force: true
+          });
+
+          fs.mkdirSync(outputRoot, {
+            recursive: true
+          });
+
+          const sourceFiles = discoverFiles(sourceRoot);
+
+          if (sourceFiles.length === 0) {
+            throw new Error(
+              "No supported application source files were found."
+            );
+          }
+
+          const manifestEntries = [];
+
+          for (const filePath of sourceFiles) {
+            const relativePath = normalizeRelativePath(filePath);
+            const outputPath = path.join(
+              outputRoot,
+              ...relativePath.split("/")
+            );
+
+            const model = analyzeFile(filePath);
+            const transformedContent = renderTransformedModule(
+              model,
+              path.extname(filePath).toLowerCase()
+            );
+
+            fs.mkdirSync(path.dirname(outputPath), {
+              recursive: true
+            });
+
+            fs.writeFileSync(
+              outputPath,
+              transformedContent,
+              "utf8"
+            );
+
+            manifestEntries.push({
+              path: relativePath,
+              originalSha256: model.module.sourceSha256,
+              transformedSha256: sha256(transformedContent),
+              systems: model.systems.length,
+              diagnostics: model.module.diagnostics.length
+            });
+          }
+
+          manifestEntries.sort((a, b) =>
+            a.path.localeCompare(b.path, "en")
+          );
+
+          const manifestText = manifestEntries
+            .map(
+              (entry) =>
+                [
+                  entry.transformedSha256,
+                  entry.path,
+                  `systems=${entry.systems}`,
+                  `diagnostics=${entry.diagnostics}`,
+                  `original=${entry.originalSha256}`
+                ].join("  ")
+            )
+            .join("\n")
+            .concat("\n");
+
+          fs.writeFileSync(
+            path.join(
+              workspace,
+              "build",
+              "CDLDS_MANIFEST.txt"
+            ),
+            manifestText,
+            "utf8"
+          );
+
+          console.log(
+            `Transformed ${sourceFiles.length} application source files.`
+          );
+          SCRIPT
+
+      - name: Transform application source tree
         shell: bash
         run: |
           set -euo pipefail
+
+          node "$RUNNER_TEMP/cdlds-transformer/transform.mjs"
+
+          test -d build/cdlds-application
+          test -s build/CDLDS_MANIFEST.txt
 
           FILE_COUNT="$(
-            jq -r \
-              '.application_file_count' \
-              "$OUT/repository.json"
+            find build/cdlds-application \
+              -type f \
+              | wc -l \
+              | tr -d ' '
           )"
 
           if [ "$FILE_COUNT" -eq 0 ]; then
-            echo "::error::No application-code files matched the allowlist."
+            echo "No transformed application files were generated." >&2
             exit 1
           fi
 
-      - name: Generate RepositoryData.v
-        shell: python
-        run: |
-          from __future__ import annotations
+          echo "Generated $FILE_COUNT transformed application files."
 
-          import json
-          import os
-          from pathlib import Path
-
-          out = Path(os.environ["OUT"])
-
-          manifest = json.loads(
-              (out / "repository.json").read_text(
-                  encoding="utf-8",
-              )
-          )
-
-          files = manifest["files"]
-
-          def coq_string(value: str) -> str:
-              return '"' + value.replace('"', '""') + '"'
-
-          entries: list[str] = []
-
-          for item in files:
-              entries.append(
-                  "  {| "
-                  f"file_path_utf8_hex := "
-                  f"{coq_string(item['path_utf8_hex'])}; "
-                  f"file_size := {item['bytes']}; "
-                  f"file_sha256 := "
-                  f"{coq_string(item['sha256'])} "
-                  "|}"
-              )
-
-          repository_literal = (
-              "[]"
-              if not entries
-              else "[\n" + ";\n".join(entries) + "\n]"
-          )
-
-          generated = f"""From Coq Require Import
-            List
-            String
-            Arith.
-
-          Import ListNotations.
-
-          Open Scope string_scope.
-
-          Record SourceFile := {{
-            file_path_utf8_hex : string;
-            file_size : nat;
-            file_sha256 : string
-          }}.
-
-          Definition repository : list SourceFile :=
-          {repository_literal}.
-
-          Definition repository_file_count : nat :=
-            {len(files)}.
-
-          Theorem repository_count_exact :
-            List.length repository =
-            repository_file_count.
-          Proof.
-            reflexivity.
-          Qed.
-          """
-
-          (out / "formal" / "RepositoryData.v").write_text(
-              generated,
-              encoding="utf-8",
-          )
-
-      - name: Generate CDLDS.v
+      - name: Create deterministic ZIP
         shell: bash
         run: |
           set -euo pipefail
 
-          cat > "$OUT/formal/CDLDS.v" <<'COQ'
-          From Coq Require Import
-            List
-            String
-            Arith
-            PeanoNat
-            Reals
-            Lia
-            Lra.
+          ZIP_PATH="$GITHUB_WORKSPACE/build/transformed-cdlds-application.zip"
 
-          Import ListNotations.
+          rm -f "$ZIP_PATH"
 
-          Require Import RepositoryData.
-
-          Inductive Mode : Type :=
-          | continue_mode
-          | halt_mode.
-
-          Definition M : Type :=
-            (list SourceFile * nat)%type.
-
-          Definition V : Type :=
-            R.
-
-          Definition U : Type :=
-            unit.
-
-          Definition Theta : Type :=
-            nat.
-
-          Definition I : Type :=
-            nat.
-
-          Definition initial_state : M :=
-            (repository, 0%nat).
-
-          Definition initial_parameter : V :=
-            0%R.
-
-          Definition D
-            (state : M)
-            (_ : V)
-            (_ : U) : M :=
-            (
-              fst state,
-              Nat.succ (snd state)
-            ).
-
-          Definition zero_field
-            (_ : M)
-            (_ : V)
-            (_ : U)
-            (_ : R) : R :=
-            0%R.
-
-          Definition C
-            (_ : M)
-            (parameter : V)
-            (_ : U) : V :=
-            parameter.
-
-          Definition T
-            (state : M)
-            (parameter : V)
-            (input : U) : M * V :=
-            (
-              D state parameter input,
-              C state parameter input
-            ).
-
-          Theorem transition_decomposition :
-            forall state parameter input,
-              T state parameter input =
-              (
-                D state parameter input,
-                C state parameter input
-              ).
-          Proof.
-            reflexivity.
-          Qed.
-
-          Record ButcherTableau : Type := {
-            tableau_A : list (list R);
-            tableau_b : list R;
-            tableau_c : list R
-          }.
-
-          Definition euler_tableau :
-            ButcherTableau :=
-            {|
-              tableau_A := [[0%R]];
-              tableau_b := [1%R];
-              tableau_c := [0%R]
-            |}.
-
-          Record RKMethod : Type := {
-            rk_tableau : ButcherTableau;
-            rk_order : nat;
-            rk_step_size : R;
-            rk_apply : M -> V -> U -> V
-          }.
-
-          Definition repository_rk :
-            RKMethod :=
-            {|
-              rk_tableau := euler_tableau;
-              rk_order := 1%nat;
-              rk_step_size := 1%R;
-              rk_apply := C
-            |}.
-
-          Theorem rk_order_positive :
-            Nat.le 1%nat (rk_order repository_rk).
-          Proof.
-            simpl.
-            apply Nat.le_refl.
-          Qed.
-
-          Theorem rk_step_positive :
-            Rlt 0%R (rk_step_size repository_rk).
-          Proof.
-            simpl.
-            exact Rlt_0_1.
-          Qed.
-
-          Theorem continuous_part_is_rk :
-            forall state parameter input,
-              C state parameter input =
-              rk_apply
-                repository_rk
-                state
-                parameter
-                input.
-          Proof.
-            reflexivity.
-          Qed.
-
-          Theorem continuous_step_identity :
-            forall state parameter input,
-              C state parameter input =
-              parameter.
-          Proof.
-            reflexivity.
-          Qed.
-
-          Theorem zero_field_lipschitz :
-            forall
-              state
-              parameter
-              input
-              t1
-              t2,
-              Rle
-                (
-                  Rabs
-                    (
-                      Rminus
-                        (
-                          zero_field
-                            state
-                            parameter
-                            input
-                            t1
-                        )
-                        (
-                          zero_field
-                            state
-                            parameter
-                            input
-                            t2
-                        )
-                    )
-                )
-                (
-                  Rmult
-                    0%R
-                    (
-                      Rabs
-                        (
-                          Rminus t1 t2
-                        )
-                    )
-                ).
-          Proof.
-            intros state parameter input t1 t2.
-
-            unfold zero_field.
-
-            replace (Rminus 0%R 0%R) with 0%R by lra.
-
-            rewrite Rabs_R0.
-            rewrite Rmult_0_l.
-
-            apply Rle_refl.
-          Qed.
-
-          Definition binding
-            (index : I) : Theta :=
-            index.
-
-          Theorem binding_injective :
-            forall i j,
-              binding i = binding j ->
-              i = j.
-          Proof.
-            intros i j equality.
-            exact equality.
-          Qed.
-
-          Definition guard
-            (state : M)
-            (_ : V)
-            (_ : U) : Mode :=
-            if Nat.ltb
-              (snd state)
-              (List.length (fst state))
-            then continue_mode
-            else halt_mode.
-
-          Definition active_indices
-            (state : M)
-            (_ : V)
-            (_ : U) : list I :=
-            if Nat.ltb
-              (snd state)
-              (List.length (fst state))
-            then [snd state]
-            else [].
-
-          Definition observable_labels
-            (state : M)
-            (parameter : V)
-            (input : U) : list Theta :=
-            List.map
-              binding
-              (
-                active_indices
-                  state
-                  parameter
-                  input
-              ).
-
-          Definition rank
-            (state : M) : nat :=
-            Nat.sub
-              (List.length (fst state))
-              (snd state).
-
-          Theorem rank_decreases :
-            forall
-              state
-              parameter
-              input
-              next_state
-              next_parameter,
-              guard
-                state
-                parameter
-                input
-              <> halt_mode
-              ->
-              T
-                state
-                parameter
-                input
-              =
-              (
-                next_state,
-                next_parameter
-              )
-              ->
-              Nat.lt
-                (rank next_state)
-                (rank state).
-          Proof.
-            intros
-              [files cursor]
-              parameter
-              []
-              [next_files next_cursor]
-              next_parameter
-              guard_not_halt
-              transition_equality.
-
-            unfold guard in guard_not_halt.
-            simpl in guard_not_halt.
-
-            destruct (
-              Nat.ltb
-                cursor
-                (List.length files)
-            ) eqn:cursor_in_range.
-
-            - apply Nat.ltb_lt in cursor_in_range.
-
-              unfold T, D, C
-                in transition_equality.
-
-              simpl in transition_equality.
-
-              inversion transition_equality.
-              subst.
-
-              unfold rank.
-              simpl.
-
-              lia.
-
-            - exfalso.
-
-              apply guard_not_halt.
-              reflexivity.
-          Qed.
-
-          Definition advance_state
-            (steps : nat)
-            (state : M) : M :=
-            (
-              fst state,
-              Nat.add (snd state) steps
-            ).
-
-          Theorem advance_state_files :
-            forall steps files cursor,
-              fst (
-                advance_state
-                  steps
-                  (files, cursor)
-              )
-              =
-              files.
-          Proof.
-            reflexivity.
-          Qed.
-
-          Theorem advance_state_cursor :
-            forall steps files cursor,
-              snd (
-                advance_state
-                  steps
-                  (files, cursor)
-              )
-              =
-              Nat.add cursor steps.
-          Proof.
-            reflexivity.
-          Qed.
-
-          Theorem eventual_halt :
-            forall state parameter,
-              guard
-                (
-                  advance_state
-                    (rank state)
-                    state
-                )
-                parameter
-                tt
-              =
-              halt_mode.
-          Proof.
-            intros [files cursor] parameter.
-
-            unfold guard.
-            unfold advance_state.
-            unfold rank.
-            simpl.
-
-            destruct (
-              le_dec
-                cursor
-                (List.length files)
-            ) as
-              [
-                cursor_in_range
-              |
-                cursor_out_of_range
-              ].
-
-            - assert (
-                Nat.add
-                  cursor
-                  (
-                    Nat.sub
-                      (List.length files)
-                      cursor
-                  )
-                =
-                List.length files
-              ) as cursor_reaches_end
-              by lia.
-
-              rewrite cursor_reaches_end.
-              rewrite Nat.ltb_irrefl.
-
-              reflexivity.
-
-            - assert (
-                Nat.sub
-                  (List.length files)
-                  cursor
-                =
-                0%nat
-              ) as subtraction_is_zero
-              by lia.
-
-              rewrite subtraction_is_zero.
-              rewrite Nat.add_0_r.
-
-              assert (
-                Nat.ltb
-                  cursor
-                  (List.length files)
-                =
-                false
-              ) as cursor_not_less.
-
-              {
-                apply Nat.ltb_ge.
-                lia.
-              }
-
-              rewrite cursor_not_less.
-
-              reflexivity.
-          Qed.
-
-          Theorem continue_step_safe :
-            forall
-              state
-              parameter
-              input
-              next_state
-              next_parameter,
-              guard
-                state
-                parameter
-                input
-              =
-              continue_mode
-              ->
-              T
-                state
-                parameter
-                input
-              =
-              (
-                next_state,
-                next_parameter
-              )
-              ->
-              Nat.le
-                (snd next_state)
-                (List.length (fst next_state)).
-          Proof.
-            intros
-              [files cursor]
-              parameter
-              []
-              [next_files next_cursor]
-              next_parameter
-              guard_continues
-              transition_equality.
-
-            unfold guard in guard_continues.
-            simpl in guard_continues.
-
-            destruct (
-              Nat.ltb
-                cursor
-                (List.length files)
-            ) eqn:cursor_in_range.
-
-            - apply Nat.ltb_lt in cursor_in_range.
-
-              unfold T, D, C
-                in transition_equality.
-
-              simpl in transition_equality.
-
-              inversion transition_equality.
-              subst.
-
-              simpl.
-
-              lia.
-
-            - discriminate.
-          Qed.
-
-          Definition textblind_transition :
-            Prop :=
-            forall
-              (theta1 theta2 : Theta)
-              state
-              parameter
-              input,
-              T
-                state
-                parameter
-                input
-              =
-              T
-                state
-                parameter
-                input.
-
-          Theorem textblind_transition_proof :
-            textblind_transition.
-          Proof.
-            repeat intro.
-            reflexivity.
-          Qed.
-
-          Definition textblind_guard :
-            Prop :=
-            forall
-              (theta1 theta2 : Theta)
-              state
-              parameter
-              input,
-              guard
-                state
-                parameter
-                input
-              =
-              guard
-                state
-                parameter
-                input.
-
-          Theorem textblind_guard_proof :
-            textblind_guard.
-          Proof.
-            repeat intro.
-            reflexivity.
-          Qed.
-
-          Definition Omega : Type :=
-            (M * V * Theta)%type.
-
-          Definition lifted_step
-            (omega omega_prime : Omega)
-            (input : U) : Prop :=
-            let
-              '(state, parameter, theta) :=
-              omega
-            in
-            let
-              '(next_state, next_parameter) :=
-              T
-                state
-                parameter
-                input
-            in
-            and
-              (
-                omega_prime =
-                (
-                  next_state,
-                  next_parameter,
-                  theta
-                )
-              )
-              (
-                guard
-                  state
-                  parameter
-                  input
-                <>
-                halt_mode
-              ).
-
-          CoInductive Trace : Type :=
-          | trace_halt :
-              Omega ->
-              Trace
-          | trace_next :
-              Omega ->
-              U ->
-              Trace ->
-              Trace.
-
-          Record CDLDS : Type := {
-            cdlds_M : Type;
-            cdlds_V : Type;
-            cdlds_U : Type;
-            cdlds_Theta : Type;
-            cdlds_I : Type;
-
-            cdlds_state :
-              cdlds_M;
-
-            cdlds_parameter :
-              cdlds_V;
-
-            cdlds_transition :
-              cdlds_M ->
-              cdlds_V ->
-              cdlds_U ->
-              cdlds_M * cdlds_V;
-
-            cdlds_discrete :
-              cdlds_M ->
-              cdlds_V ->
-              cdlds_U ->
-              cdlds_M;
-
-            cdlds_continuous :
-              cdlds_M ->
-              cdlds_V ->
-              cdlds_U ->
-              cdlds_V;
-
-            cdlds_guard :
-              cdlds_M ->
-              cdlds_V ->
-              cdlds_U ->
-              Mode;
-
-            cdlds_binding :
-              cdlds_I ->
-              cdlds_Theta;
-
-            cdlds_output :
-              cdlds_M ->
-              cdlds_V ->
-              cdlds_U ->
-              list cdlds_Theta;
-
-            cdlds_decomposition :
-              forall state parameter input,
-                cdlds_transition
-                  state
-                  parameter
-                  input
-                =
-                (
-                  cdlds_discrete
-                    state
-                    parameter
-                    input,
-                  cdlds_continuous
-                    state
-                    parameter
-                    input
-                );
-
-            cdlds_binding_injective :
-              forall i j,
-                cdlds_binding i =
-                cdlds_binding j ->
-                i = j
-          }.
-
-          Definition repository_cdlds :
-            CDLDS :=
-            {|
-              cdlds_M := M;
-              cdlds_V := V;
-              cdlds_U := U;
-              cdlds_Theta := Theta;
-              cdlds_I := I;
-
-              cdlds_state :=
-                initial_state;
-
-              cdlds_parameter :=
-                initial_parameter;
-
-              cdlds_transition :=
-                T;
-
-              cdlds_discrete :=
-                D;
-
-              cdlds_continuous :=
-                C;
-
-              cdlds_guard :=
-                guard;
-
-              cdlds_binding :=
-                binding;
-
-              cdlds_output :=
-                observable_labels;
-
-              cdlds_decomposition :=
-                transition_decomposition;
-
-              cdlds_binding_injective :=
-                binding_injective
-            |}.
-
-          Theorem repository_cdlds_contains_every_manifest_entry :
-            List.length
-              (
-                fst
-                  (
-                    cdlds_state
-                      repository_cdlds
-                  )
-              )
-            =
-            repository_file_count.
-          Proof.
-            simpl.
-
-            exact repository_count_exact.
-          Qed.
-
-          Theorem repository_cdlds_terminates :
-            forall parameter,
-              guard
-                (
-                  advance_state
-                    (
-                      rank
-                        (
-                          cdlds_state
-                            repository_cdlds
-                        )
-                    )
-                    (
-                      cdlds_state
-                        repository_cdlds
-                    )
-                )
-                parameter
-                tt
-              =
-              halt_mode.
-          Proof.
-            intro parameter.
-
-            exact (
-              eventual_halt
-                (
-                  cdlds_state
-                    repository_cdlds
-                )
-                parameter
-            ).
-          Qed.
-          COQ
-
-          cat > "$OUT/formal/_CoqProject" <<'EOF'
-          RepositoryData.v
-          CDLDS.v
-          EOF
-
-      - name: Reject unfinished declarations before compilation
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if grep -RInE \
-            '\b(Admitted|admit|Axiom|Parameter|Conjecture|Abort)\b' \
-            "$OUT/formal"
-          then
-            echo "::error::Generated formalization contains an unfinished declaration."
-            exit 1
-          fi
-
-      - name: Compile RepositoryData.v
-        shell: bash
-        working-directory: build/cdlds/formal
-        run: |
-          set -euo pipefail
-
-          coqc -q RepositoryData.v
-
-      - name: Compile CDLDS.v
-        shell: bash
-        working-directory: build/cdlds/formal
-        run: |
-          set -euo pipefail
-
-          coqc -q CDLDS.v
-
-      - name: Verify compiled Coq objects
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          test -s "$OUT/formal/RepositoryData.vo"
-          test -s "$OUT/formal/CDLDS.vo"
-
-      - name: Write verification report
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          FILE_COUNT="$(
-            jq -r \
-              '.application_file_count' \
-              "$OUT/repository.json"
-          )"
-
-          COMMIT="$(
-            jq -r \
-              '.commit' \
-              "$OUT/repository.json"
-          )"
-
-          cat > "$OUT/reports/VERIFICATION.md" <<EOF
-          # CDLDS Verification Report
-
-          - Commit: \`$COMMIT\`
-          - Application-code files represented: \`$FILE_COUNT\`
-          - Continuous parameter type: \`Coq.Reals.R\`
-          - RepositoryData compilation: **passed**
-          - CDLDS compilation: **passed**
-          - Compiled object verification: **passed**
-          - Unfinished declarations: **none**
-          - Transition decomposition: **proved**
-          - Binding injectivity: **proved**
-          - Text blindness: **proved**
-          - One-step safety: **proved**
-          - Eventual halt: **proved**
-          - Manifest cardinality: **proved**
-
-          ## Excluded content
-
-          The source-selection stage excludes:
-
-          - Python files;
-          - Markdown files;
-          - YAML files;
-          - tests and specifications;
-          - documentation;
-          - examples and samples;
-          - fixtures and mocks;
-          - dependency directories;
-          - generated files;
-          - build and coverage output.
-
-          The exact included-file list is recorded in:
-
-          \`reports/INCLUDED_FILES.txt\`
-          EOF
-
-      - name: Package artifact
-        shell: bash
-        run: |
-          set -euo pipefail
+          find build/cdlds-application \
+            -type f \
+            -exec touch -t 198001010000 {} +
 
           (
-            cd build
+            cd build/cdlds-application
 
-            zip -qr \
-              cdlds-artifact.zip \
-              cdlds
+            find . \
+              -type f \
+              -print0 \
+              | LC_ALL=C sort -z \
+              | zip \
+                  -X \
+                  -q \
+                  "$ZIP_PATH" \
+                  -@
           )
 
           sha256sum \
-            build/cdlds-artifact.zip \
-            > build/cdlds-artifact.zip.sha256
+            build/transformed-cdlds-application.zip \
+            > build/transformed-cdlds-application.zip.sha256
 
-      - name: Upload downloadable CDLDS artifact
+      - name: Upload transformed application ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: cdlds-${{ github.sha }}
+          name: ${{ env.ARTIFACT_NAME }}-${{ github.sha }}
           path: |
-            build/cdlds/
-            build/cdlds-artifact.zip
-            build/cdlds-artifact.zip.sha256
+            build/transformed-cdlds-application.zip
+            build/transformed-cdlds-application.zip.sha256
+            build/CDLDS_MANIFEST.txt
           if-no-files-found: error
           retention-days: 30
-          compression-level: 9
