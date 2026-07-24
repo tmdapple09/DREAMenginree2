@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T13:12:14.093Z",
+  "generatedAt": "2026-07-24T00:09:21.043Z",
   "root": ".",
   "nodes": [
     {
@@ -3016,6 +3016,26 @@
       "label": "dream-utf8-pascal-lattice-paths.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-pascal-lattice-paths.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream_4d_cuckoo_rgb_cmy_ai_manifold.yml",
+      "label": "dream_4d_cuckoo_rgb_cmy_ai_manifold.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_4d_cuckoo_rgb_cmy_ai_manifold.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dream_equation_codebase_field.yml",
+      "label": "dream_equation_codebase_field.yml",
+      "type": "config",
+      "path": ".github/workflows/dream_equation_codebase_field.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
