@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T11:50:47.852Z",
+  "generatedAt": "2026-07-24T12:55:17.519Z",
   "root": ".",
   "nodes": [
     {
@@ -2942,6 +2942,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/deepseek_yaml_20260724_0fc553.yaml",
+      "label": "deepseek_yaml_20260724_0fc553.yaml",
+      "type": "config",
+      "path": ".github/workflows/deepseek_yaml_20260724_0fc553.yaml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/delete trash.yml",
       "label": "delete trash.yml",
       "type": "config",
@@ -3022,10 +3032,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold.yml",
-      "label": "dream_ai_native_4d_rgb_cmy_application_manifold.yml",
+      "id": "file:.github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold_fast.yml",
+      "label": "dream_ai_native_4d_rgb_cmy_application_manifold_fast.yml",
       "type": "config",
-      "path": ".github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold.yml",
+      "path": ".github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold_fast.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
