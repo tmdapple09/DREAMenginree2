@@ -1,4 +1,4 @@
-name: Convert Repository to CDLDS
+name: Convert Application Code to CDLDS
 
 on:
   workflow_dispatch:
@@ -35,7 +35,6 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             coq \
             jq \
-            rsync \
             zip
 
           coqc --version
@@ -52,7 +51,7 @@ jobs:
             "$OUT/formal" \
             "$OUT/reports"
 
-      - name: Build repository manifest
+      - name: Select application code and build manifest
         shell: python
         run: |
           from __future__ import annotations
@@ -60,48 +59,209 @@ jobs:
           import hashlib
           import json
           import os
+          import shutil
           from pathlib import Path
 
           root = Path(".").resolve()
-          out = Path(os.environ["OUT"])
+          out = Path(os.environ["OUT"]).resolve()
+          source_out = out / "source"
 
-          excluded = {
+          excluded_directories = {
               ".git",
-              "build",
-              "node_modules",
-              "vendor",
-              "dist",
-              "target",
-              "__pycache__",
-              ".next",
+              ".github",
+              ".idea",
+              ".vscode",
               ".cache",
+              ".next",
+              ".nuxt",
+              ".pytest_cache",
+              ".mypy_cache",
+              ".ruff_cache",
+              ".tox",
+              ".venv",
+              "venv",
+              "env",
+              "__pycache__",
+              "build",
+              "dist",
+              "out",
+              "target",
+              "coverage",
+              "vendor",
+              "vendors",
+              "node_modules",
+              "packages",
+              "third_party",
+              "third-party",
+              "external",
+              "generated",
+              "gen",
+              "docs",
+              "doc",
+              "documentation",
+              "examples",
+              "example",
+              "samples",
+              "sample",
+              "tests",
+              "test",
+              "__tests__",
+              "spec",
+              "specs",
+              "fixtures",
+              "fixture",
+              "mocks",
+              "mock",
+              "benchmarks",
+              "benchmark",
           }
 
-          files: list[dict[str, object]] = []
+          excluded_filename_fragments = {
+              ".test.",
+              ".tests.",
+              ".spec.",
+              "_test.",
+              "_tests.",
+              "-test.",
+              "-tests.",
+              ".mock.",
+              ".fixture.",
+              ".generated.",
+              ".gen.",
+              ".min.",
+          }
+
+          excluded_filenames = {
+              "makefile",
+              "dockerfile",
+              "license",
+              "license.txt",
+              "copying",
+              "readme",
+              "readme.txt",
+              "changelog",
+              "authors",
+              "contributors",
+          }
+
+          # Deliberately excludes Python, Markdown, YAML, JSON, TOML,
+          # configuration files, tests, documentation, and generated assets.
+          allowed_extensions = {
+              ".c",
+              ".h",
+              ".cc",
+              ".cpp",
+              ".cxx",
+              ".hh",
+              ".hpp",
+              ".hxx",
+              ".cs",
+              ".java",
+              ".kt",
+              ".kts",
+              ".go",
+              ".rs",
+              ".swift",
+              ".m",
+              ".mm",
+              ".php",
+              ".rb",
+              ".js",
+              ".jsx",
+              ".mjs",
+              ".cjs",
+              ".ts",
+              ".tsx",
+              ".vue",
+              ".svelte",
+              ".scala",
+              ".sc",
+              ".clj",
+              ".cljs",
+              ".cljc",
+              ".edn",
+              ".fs",
+              ".fsi",
+              ".fsx",
+              ".vb",
+              ".dart",
+              ".lua",
+              ".ex",
+              ".exs",
+              ".erl",
+              ".hrl",
+              ".hs",
+              ".lhs",
+              ".ml",
+              ".mli",
+              ".sol",
+              ".move",
+              ".r",
+              ".jl",
+              ".groovy",
+              ".gvy",
+              ".gy",
+              ".gsh",
+              ".asm",
+              ".s",
+          }
+
+          def is_application_code(path: Path) -> bool:
+              relative = path.relative_to(root)
+              lowered_parts = [part.lower() for part in relative.parts]
+
+              if any(
+                  part in excluded_directories
+                  for part in lowered_parts[:-1]
+              ):
+                  return False
+
+              filename = relative.name.lower()
+
+              if filename in excluded_filenames:
+                  return False
+
+              if any(
+                  fragment in filename
+                  for fragment in excluded_filename_fragments
+              ):
+                  return False
+
+              return path.suffix.lower() in allowed_extensions
+
+          selected_files: list[Path] = []
 
           for path in sorted(root.rglob("*")):
               if not path.is_file():
                   continue
 
+              if is_application_code(path):
+                  selected_files.append(path)
+
+          manifest_files: list[dict[str, object]] = []
+
+          for path in selected_files:
               relative = path.relative_to(root)
-
-              if any(part in excluded for part in relative.parts):
-                  continue
-
+              relative_string = relative.as_posix()
               data = path.read_bytes()
-              relative_bytes = relative.as_posix().encode("utf-8")
 
-              files.append(
+              destination = source_out / relative
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(path, destination)
+
+              manifest_files.append(
                   {
-                      "path": relative.as_posix(),
-                      "path_utf8_hex": relative_bytes.hex(),
+                      "path": relative_string,
+                      "path_utf8_hex": relative_string.encode(
+                          "utf-8"
+                      ).hex(),
                       "bytes": len(data),
                       "sha256": hashlib.sha256(data).hexdigest(),
                   }
               )
 
           manifest = {
-              "schema": "cdlds.repository.v1",
+              "schema": "cdlds.application-code.v1",
               "repository": os.environ.get(
                   "GITHUB_REPOSITORY",
                   "local",
@@ -110,8 +270,8 @@ jobs:
                   "GITHUB_SHA",
                   "unknown",
               ),
-              "file_count": len(files),
-              "files": files,
+              "application_file_count": len(manifest_files),
+              "files": manifest_files,
           }
 
           (out / "repository.json").write_text(
@@ -122,27 +282,37 @@ jobs:
           with (
               out / "reports" / "SHA256SUMS"
           ).open("w", encoding="utf-8") as handle:
-              for item in files:
+              for item in manifest_files:
                   handle.write(
                       f'{item["sha256"]}  {item["path"]}\n'
                   )
 
-      - name: Copy repository into artifact
+          with (
+              out / "reports" / "INCLUDED_FILES.txt"
+          ).open("w", encoding="utf-8") as handle:
+              for item in manifest_files:
+                  handle.write(f'{item["path"]}\n')
+
+          print(
+              "Selected "
+              f"{len(manifest_files)} application-code files."
+          )
+
+      - name: Require at least one application-code file
         shell: bash
         run: |
           set -euo pipefail
 
-          rsync -a \
-            --exclude='.git/' \
-            --exclude='build/' \
-            --exclude='node_modules/' \
-            --exclude='vendor/' \
-            --exclude='dist/' \
-            --exclude='target/' \
-            --exclude='__pycache__/' \
-            --exclude='.next/' \
-            --exclude='.cache/' \
-            ./ "$OUT/source/"
+          FILE_COUNT="$(
+            jq -r \
+              '.application_file_count' \
+              "$OUT/repository.json"
+          )"
+
+          if [ "$FILE_COUNT" -eq 0 ]; then
+            echo "::error::No application-code files matched the allowlist."
+            exit 1
+          fi
 
       - name: Generate concrete Coq repository data
         shell: python
@@ -166,10 +336,10 @@ jobs:
           def coq_string(value: str) -> str:
               return '"' + value.replace('"', '""') + '"'
 
-          rows: list[str] = []
+          entries: list[str] = []
 
           for item in files:
-              rows.append(
+              entries.append(
                   "  {| "
                   f"file_path_utf8_hex := "
                   f"{coq_string(item['path_utf8_hex'])}; "
@@ -179,14 +349,11 @@ jobs:
                   "|}"
               )
 
-          if rows:
-              repository_literal = (
-                  "[\n"
-                  + ";\n".join(rows)
-                  + "\n]"
-              )
-          else:
-              repository_literal = "[]"
+          repository_literal = (
+              "[]"
+              if not entries
+              else "[\n" + ";\n".join(entries) + "\n]"
+          )
 
           generated = f"""From Coq Require Import
             List
@@ -214,6 +381,13 @@ jobs:
             repository_file_count.
           Proof.
             reflexivity.
+          Qed.
+
+          Theorem repository_nonempty :
+            (0 < repository_file_count)%nat.
+          Proof.
+            compute.
+            lia.
           Qed.
           """
 
@@ -244,28 +418,13 @@ jobs:
 
           Require Import RepositoryData.
 
-          Definition isSet (A : Type) : Prop :=
-            forall
-              (x y : A)
-              (p q : x = y),
-              p = q.
-
           Inductive Mode :=
           | continue_mode
           | halt_mode.
 
-          (*
-            The repository files and the current file cursor form
-            the discrete spatial state.
-          *)
           Definition M : Type :=
             (list SourceFile * nat)%type.
 
-          (*
-            The continuous parameter space is the real numbers.
-
-            This is intentionally R, not nat.
-          *)
           Definition V : Type :=
             R.
 
@@ -297,7 +456,7 @@ jobs:
             (_ : M)
             (_ : V)
             (_ : U)
-            (_ : R) : V :=
+            (_ : R) : R :=
             0.
 
           Definition C
@@ -364,7 +523,7 @@ jobs:
           Qed.
 
           Theorem rk_step_positive :
-            0 < rk_step_size repository_rk.
+            (0 < rk_step_size repository_rk)%R.
           Proof.
             simpl.
             lra.
@@ -388,7 +547,9 @@ jobs:
               parameter.
           Proof.
             intros.
+
             unfold C.
+
             lra.
           Qed.
 
@@ -399,27 +560,29 @@ jobs:
               input
               t1
               t2,
-              Rabs (
-                zero_field
-                  state
-                  parameter
-                  input
-                  t1
-                -
-                zero_field
-                  state
-                  parameter
-                  input
-                  t2
-              )
-              <=
-              0 * Rabs (t1 - t2).
+              (
+                Rabs (
+                  zero_field
+                    state
+                    parameter
+                    input
+                    t1
+                  -
+                  zero_field
+                    state
+                    parameter
+                    input
+                    t2
+                )
+                <=
+                0 * Rabs (t1 - t2)
+              )%R.
           Proof.
             intros.
 
             unfold zero_field.
 
-            replace (0 - 0) with 0 by lra.
+            replace (0 - 0)%R with 0%R by lra.
 
             rewrite Rabs_R0.
 
@@ -501,8 +664,10 @@ jobs:
                 next_parameter
               )
               ->
-              rank next_state <
-              rank state.
+              (
+                rank next_state <
+                rank state
+              )%nat.
           Proof.
             intros
               [files cursor]
@@ -552,7 +717,7 @@ jobs:
             (state : M) : M :=
             (
               fst state,
-              snd state + steps
+              (snd state + steps)%nat
             ).
 
           Theorem advance_state_files :
@@ -576,7 +741,7 @@ jobs:
                   (files, cursor)
               )
               =
-              cursor + steps.
+              (cursor + steps)%nat.
           Proof.
             reflexivity.
           Qed.
@@ -612,17 +777,18 @@ jobs:
               ].
 
             - assert (
-                cursor
-                +
                 (
-                  List.length files
-                  -
                   cursor
-                )
+                  +
+                  (
+                    List.length files
+                    -
+                    cursor
+                  )
+                )%nat
                 =
                 List.length files
-              )%nat
-              by lia.
+              ) by lia.
 
               rewrite H.
 
@@ -631,13 +797,14 @@ jobs:
               reflexivity.
 
             - assert (
-                List.length files
-                -
-                cursor
+                (
+                  List.length files
+                  -
+                  cursor
+                )%nat
                 =
-                0
-              )%nat
-              by lia.
+                0%nat
+              ) by lia.
 
               rewrite H.
 
@@ -686,9 +853,11 @@ jobs:
                 next_parameter
               )
               ->
-              snd next_state
-              <=
-              List.length (fst next_state).
+              (
+                snd next_state
+                <=
+                List.length (fst next_state)
+              )%nat.
           Proof.
             intros
               [files cursor]
@@ -943,11 +1112,10 @@ jobs:
             =
             repository_file_count.
           Proof.
-            change
-              (
-                List.length repository =
-                repository_file_count
-              ).
+            change (
+              List.length repository =
+              repository_file_count
+            ).
 
             exact repository_count_exact.
           Qed.
@@ -1012,12 +1180,14 @@ jobs:
           set -euo pipefail
 
           FILE_COUNT="$(
-            jq -r '.file_count' \
+            jq -r \
+              '.application_file_count' \
               "$OUT/repository.json"
           )"
 
           COMMIT="$(
-            jq -r '.commit' \
+            jq -r \
+              '.commit' \
               "$OUT/repository.json"
           )"
 
@@ -1025,7 +1195,7 @@ jobs:
           # CDLDS Verification Report
 
           - Commit: \`$COMMIT\`
-          - Repository files represented: \`$FILE_COUNT\`
+          - Application-code files represented: \`$FILE_COUNT\`
           - Continuous parameter type: \`R\`
           - Coq compilation: **passed**
           - Unfinished declarations: **none**
@@ -1036,24 +1206,18 @@ jobs:
           - Eventual halt: **proved**
           - Manifest cardinality: **proved**
 
-          ## Generated interpretation
+          ## Source selection
 
-          The spatial state consists of:
+          The artifact includes only files matching the application-code
+          extension allowlist.
 
-          - the complete repository manifest;
-          - a natural-number cursor over the repository files.
+          Python, Markdown, YAML, tests, documentation, dependency trees,
+          generated files, build outputs, fixtures, mocks, examples, samples,
+          and benchmark directories are excluded.
 
-          The continuous parameter space is the Coq real-number type \`R\`.
+          The exact included-file list is stored at:
 
-          The discrete transition advances the repository cursor by one.
-
-          The continuous transition applies an Euler step to the zero vector
-          field, preserving the real-valued parameter.
-
-          Text labels are numeric file indices. The transition and guard do not
-          inspect file names or label text.
-
-          The complete included source tree is stored under \`source/\`.
+          \`reports/INCLUDED_FILES.txt\`
           EOF
 
       - name: Package artifact
