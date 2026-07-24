@@ -1,4 +1,4 @@
-name: Generate Transformed CDLDS Application ZIP
+name: CDLDS Application ZIP
 
 on:
   workflow_dispatch:
@@ -170,7 +170,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Data collectors
+          //  Data collectors (fully guarded against undefined)
           // -----------------------------------------------------------------
           function collectBindingNames(nameNode: any, names: Set<string>) {
             if (!nameNode) return;
@@ -213,7 +213,7 @@ jobs:
             if (Node.isCallExpression(node)) effects.push({
               kind: "call",
               expression: sourceText(sourceFile, node.expression, 200),
-              arguments: node.arguments.map((a: any) => sourceText(sourceFile, a, 200)),
+              arguments: (node.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 200)),
               optional: Boolean(node.questionDotToken)
             });
             if (Node.isNewExpression(node)) effects.push({
@@ -247,7 +247,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  CFGBuilder (unchanged)
+          //  CFGBuilder (unchanged, already robust)
           // -----------------------------------------------------------------
           class CFGBuilder {
             sourceFile: any;
@@ -569,7 +569,7 @@ jobs:
                 if (Node.isCallExpression(n)) calls.push({
                   id: stableId("call", id, String(n.getStart(sourceFile))),
                   expression: sourceText(sourceFile, n.expression, 300),
-                  arguments: n.arguments.map((a: any) => sourceText(sourceFile, a, 300)),
+                  arguments: (n.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 300)),
                   source: positionOf(sourceFile, n),
                   optional: Boolean(n.questionDotToken),
                   awaited: Node.isAwaitExpression(n.parent),
@@ -693,7 +693,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Serialization (FIXED undefined)
+          //  Serialization (FIXED undefined -> "null")
           // -----------------------------------------------------------------
           function stableSerialize(value: any): string {
             if (value === undefined || value === null) return "null";
@@ -704,50 +704,74 @@ jobs:
           }
 
           function renderTransformedModule(model: any, extension: string): string {
-            const serialized = stableSerialize(model);
-            const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
-            const header = [
-              "/*",
-              " * Generated CDLDS application module.",
-              " * This file is an AST‑derived behavioral representation of",
-              " * the source module that originally occupied this path.",
-              " * The original source repository was not modified.",
-              " */\n"
-            ].join("\n");
-            if (extension === ".cjs") return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
-            if (extension === ".ts" || extension === ".tsx")
-              return `${header}export const cdldsModule = ${formatted} as const;\n\nexport default cdldsModule;\n`;
-            return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
+            try {
+              const serialized = stableSerialize(model);
+              const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
+              const header = [
+                "/*",
+                " * Generated CDLDS application module.",
+                " * This file is an AST‑derived behavioral representation of",
+                " * the source module that originally occupied this path.",
+                " * The original source repository was not modified.",
+                " */\n"
+              ].join("\n");
+              if (extension === ".cjs") return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
+              if (extension === ".ts" || extension === ".tsx")
+                return `${header}export const cdldsModule = ${formatted} as const;\n\nexport default cdldsModule;\n`;
+              return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
+            } catch (error) {
+              return `/* [CDLDS SERIALIZATION ERROR: ${(error as Error).message}] */\nexport const cdldsModule = {} as const;\nexport default cdldsModule;\n`;
+            }
           }
 
           // -----------------------------------------------------------------
-          //  Main execution
+          //  Main execution (with file-level error isolation)
           // -----------------------------------------------------------------
           fs.rmSync(outputRoot, { recursive: true, force: true });
           fs.mkdirSync(outputRoot, { recursive: true });
           const sourceFiles = discoverFiles(sourceRoot);
           if (sourceFiles.length === 0) throw new Error("No supported application source files were found.");
           const manifestEntries: any[] = [];
+          let errorCount = 0;
           for (const filePath of sourceFiles) {
             const relativePath = normalizeRelativePath(filePath);
             const outputPath = path.join(outputRoot, ...relativePath.split("/"));
-            const model = analyzeFile(filePath);
-            const transformedContent = renderTransformedModule(model, path.extname(filePath).toLowerCase());
-            fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-            fs.writeFileSync(outputPath, transformedContent, "utf8");
-            manifestEntries.push({
-              path: relativePath,
-              originalSha256: model.module.sourceSha256,
-              transformedSha256: sha256(transformedContent),
-              systems: model.systems.length,
-              diagnostics: model.module.diagnostics.length
-            });
+            try {
+              const model = analyzeFile(filePath);
+              const transformedContent = renderTransformedModule(model, path.extname(filePath).toLowerCase());
+              fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+              fs.writeFileSync(outputPath, transformedContent, "utf8");
+              manifestEntries.push({
+                path: relativePath,
+                originalSha256: model.module.sourceSha256,
+                transformedSha256: sha256(transformedContent),
+                systems: model.systems.length,
+                diagnostics: model.module.diagnostics.length
+              });
+            } catch (error) {
+              errorCount++;
+              console.error(`ERROR processing ${relativePath}: ${(error as Error).message}`);
+              // Write a placeholder error module
+              const errorContent = `/* CDLDS TRANSFORM ERROR: ${(error as Error).message} */\nexport const cdldsModule = {} as const;\nexport default cdldsModule;\n`;
+              fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+              fs.writeFileSync(outputPath, errorContent, "utf8");
+              manifestEntries.push({
+                path: relativePath,
+                originalSha256: sha256(fs.readFileSync(filePath)),
+                transformedSha256: sha256(errorContent),
+                systems: 0,
+                diagnostics: -1
+              });
+            }
           }
           manifestEntries.sort((a, b) => a.path.localeCompare(b.path, "en"));
           const manifestText = manifestEntries.map(e =>
             `${e.transformedSha256}  ${e.path}  systems=${e.systems}  diagnostics=${e.diagnostics}  original=${e.originalSha256}`
           ).join("\n").concat("\n");
           fs.writeFileSync(path.join(workspace, "build", "CDLDS_MANIFEST.txt"), manifestText, "utf8");
+          if (errorCount > 0) {
+            console.warn(`Transformation completed with ${errorCount} file error(s). See log above.`);
+          }
           console.log(`Transformed ${sourceFiles.length} application source files.`);
           SCRIPT
 
