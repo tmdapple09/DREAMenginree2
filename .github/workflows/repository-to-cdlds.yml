@@ -1,4 +1,4 @@
-name: Generate Transformed CDLDS Application ZIP
+name: CDLDS Application ZIP
 
 on:
   workflow_dispatch:
@@ -34,8 +34,8 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
-      - name: Install project dependencies
-        run: pnpm install --frozen-lockfile   # ensures exact lockfile versions
+      - name: Install project dependencies (exact lockfile)
+        run: pnpm install --frozen-lockfile
 
       - name: Generate and run CDLDS transformer
         shell: bash
@@ -53,7 +53,7 @@ jobs:
           const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
 
           // -----------------------------------------------------------------
-          //  File discovery  (unchanged)
+          //  File discovery
           // -----------------------------------------------------------------
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
@@ -122,7 +122,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Position & source helpers  (ROBUST sourceText)
+          //  Position & source helpers (FIXED)
           // -----------------------------------------------------------------
           function hasRealPosition(node: any): boolean {
             return Boolean(
@@ -143,17 +143,14 @@ jobs:
             return { start, end, line: loc.line + 1, column: loc.character + 1 };
           }
 
-          // ---------- FIXED: sourceText now handles invalid nodes ----------
           function sourceText(sourceFile: any, node: any, maxLen = 500): string {
             if (!node) return "";
             let text: string;
-            // If the node is obviously malformed, don't try to print
             if (!hasRealPosition(node) && (node.kind === ts.SyntaxKind.Unknown || node.kind == null)) {
               text = `[unprintable:${syntaxName(node)}]`;
             } else if (hasRealPosition(node)) {
               text = node.getText(sourceFile);
             } else {
-              // Synthetic node – try to print, but guard against printer crashes
               try {
                 const printer = ts.createPrinter({
                   newLine: ts.NewLineKind.LineFeed,
@@ -173,7 +170,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Data collectors (unchanged, but using ts.SyntaxKind where needed)
+          //  Data collectors
           // -----------------------------------------------------------------
           function collectBindingNames(nameNode: any, names: Set<string>) {
             if (!nameNode) return;
@@ -250,7 +247,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  CFGBuilder  (unchanged)
+          //  CFGBuilder (unchanged)
           // -----------------------------------------------------------------
           class CFGBuilder {
             sourceFile: any;
@@ -477,8 +474,10 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Function analysis  (unchanged)
+          //  Function analysis (FIXED with fallback)
           // -----------------------------------------------------------------
+          let fallbackAnonymousCounter = 0;
+
           function functionName(node: any, sourceFile: any): string {
             if (node.name && Node.isIdentifier(node.name)) return node.name.text;
             if (node.parent && Node.isVariableDeclaration(node.parent) && Node.isIdentifier(node.parent.name))
@@ -491,9 +490,16 @@ jobs:
             )
               return sourceText(sourceFile, node.name, 100);
             if (Node.isConstructorDeclaration(node)) return "constructor";
+            // Safe fallback when node has no real position
             const loc = positionOf(sourceFile, node);
-            return `anonymous_${loc!.line}_${loc!.column}`;
+            if (loc) {
+              return `anonymous_${loc.line}_${loc.column}`;
+            }
+            // For synthetic nodes or those without any position
+            fallbackAnonymousCounter++;
+            return `anonymous_gen_${fallbackAnonymousCounter}`;
           }
+
           function isFunctionLike(node: any): boolean {
             return (
               Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) ||
@@ -502,10 +508,11 @@ jobs:
               Node.isSetAccessorDeclaration(node)
             );
           }
+
           function analyzeFunction(node: any, sourceFile: any, relativePath: string): any {
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
-            const id = stableId("system", relativePath, name, String(loc!.start), syntaxName(node));
+            const id = stableId("system", relativePath, name, loc ? String(loc.start) : "nosource", syntaxName(node));
             const parameters = node.parameters.map((p: any) => ({
               name: sourceText(sourceFile, p.name, 200),
               type: p.type ? sourceText(sourceFile, p.type, 200) : null,
@@ -596,7 +603,7 @@ jobs:
               id,
               name,
               kind: syntaxName(node),
-              source: { file: relativePath, ...loc },
+              source: loc ? { file: relativePath, ...loc } : { file: relativePath },
               async: Boolean(node.modifiers?.some((m: any) => m.kind === ts.SyntaxKind.AsyncKeyword)),
               generator: Boolean(node.asteriskToken),
               parameters,
@@ -616,7 +623,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  File analysis  (unchanged)
+          //  File analysis
           // -----------------------------------------------------------------
           function analyzeFile(filePath: string): any {
             const originalBytes = fs.readFileSync(filePath);
@@ -685,12 +692,16 @@ jobs:
             };
           }
 
+          // -----------------------------------------------------------------
+          //  Serialization
+          // -----------------------------------------------------------------
           function stableSerialize(value: any): string {
             if (value === null || typeof value !== "object") return JSON.stringify(value);
             if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
             const keys = Object.keys(value).sort((a, b) => a.localeCompare(b, "en"));
             return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
           }
+
           function renderTransformedModule(model: any, extension: string): string {
             const serialized = stableSerialize(model);
             const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
@@ -709,7 +720,7 @@ jobs:
           }
 
           // -----------------------------------------------------------------
-          //  Main
+          //  Main execution
           // -----------------------------------------------------------------
           fs.rmSync(outputRoot, { recursive: true, force: true });
           fs.mkdirSync(outputRoot, { recursive: true });
