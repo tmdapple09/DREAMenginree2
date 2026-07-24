@@ -508,6 +508,11 @@ jobs:
                       else:
                           parts.append(part)
 
+                  # FIX 1: guard against empty parts
+                  # (e.g. specifier "." at repo root)
+                  if not parts:
+                      return
+
                   normalized = PurePosixPath(*parts)
 
                   if normalized.suffix:
@@ -1123,10 +1128,13 @@ jobs:
               return shell
 
 
+          # FIX 2: added mode parameter so chunk
+          # calculation uses the correct block size
           def owner_for_offset(
               files: list[SourceFile],
               byte_offset: int,
               cursor_hint: int,
+              mode: str,
           ) -> tuple[int, int, int]:
               index = max(
                   0,
@@ -1165,7 +1173,7 @@ jobs:
                       // max(
                           1,
                           data_bytes_per_block(
-                              "P2"
+                              mode
                           ),
                       ),
                       index,
@@ -1177,7 +1185,7 @@ jobs:
                   // max(
                       1,
                       data_bytes_per_block(
-                          "P2"
+                          mode
                       ),
                   ),
                   index,
@@ -1235,6 +1243,8 @@ jobs:
                       + payload
                   ).digest()
 
+                  # FIX 3: pass mode so owner_for_offset
+                  # uses the correct block size
                   (
                       owner,
                       owner_chunk,
@@ -1243,6 +1253,7 @@ jobs:
                       files,
                       start,
                       cursor_hint,
+                      mode,
                   )
 
                   anchor_x, anchor_y = (
@@ -3442,7 +3453,6 @@ jobs:
 
           if __name__ == "__main__":
               main()
-
           PY
 
           python -m py_compile \
