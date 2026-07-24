@@ -1,0 +1,646 @@
+name: DREAM 4D AI Source Manifold
+run-name: DREAM 4D AI Source Manifold
+
+"on":
+  workflow_dispatch:
+    inputs:
+      maximum_dimension:
+        description: "Maximum square SVG viewport dimension"
+        required: false
+        default: "16000"
+        type: string
+      font_size:
+        description: "Visible monospace font size"
+        required: false
+        default: "12"
+        type: string
+      chunk_rows:
+        description: "Visible source rows per manifold chunk"
+        required: false
+        default: "14"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dream-4d-ai-source-manifold-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-4d-ai-source-manifold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout tracked repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Write the text-only manifold renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/build_source_manifold.py" <<'PY'
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import argparse
+          import hashlib
+          import json
+          import math
+          import os
+          import stat
+          import subprocess
+          from dataclasses import dataclass
+          from pathlib import Path
+          from xml.sax.saxutils import escape
+
+          GOLDEN_ANGLE = math.pi / 5.0
+          OMEGA = complex(math.cos(GOLDEN_ANGLE), math.sin(GOLDEN_ANGLE))
+          PHI = float((OMEGA + OMEGA.conjugate()).real)
+          GOLDEN_N = float((PHI + math.sqrt(PHI * PHI + 4.0)) / 2.0)
+          IDENTITY_RESIDUAL = abs(GOLDEN_N - 1.0 / GOLDEN_N - PHI)
+          if IDENTITY_RESIDUAL > 1.0e-12:
+              raise RuntimeError("golden identity invariant failed")
+
+          TEXT_EXTENSIONS = {
+              ".py", ".ts", ".tsx", ".js", ".jsx", ".json", ".yml", ".yaml", ".md", ".txt", ".toml",
+              ".ini", ".cfg", ".conf", ".sh", ".bash", ".zsh", ".css", ".scss", ".html", ".xml", ".svg",
+              ".sql", ".rs", ".go", ".java", ".kt", ".swift", ".c", ".cc", ".cpp", ".h", ".hpp", ".m",
+              ".mm", ".rb", ".php", ".pl", ".lua", ".r", ".scala", ".dart", ".cs", ".fs", ".fsx", ".env",
+              ".gitignore", ".gitattributes",
+          }
+
+          BACKGROUND = "#070a12"
+          CORE_GLOW = "#10203a"
+          TEXT_STROKE = "#02040a"
+          GUIDE = "#f1e7ca"
+          MARGIN = 160.0
+          GRID = 12.0
+          MIN_DIMENSION = 4096
+          MAX_CHARS_PER_ROW = 84
+          PATH_FONT_RATIO = 0.94
+
+          @dataclass
+          class FileInfo:
+              path: str
+              kind: str
+              mode: str
+              size: int
+              sha256: str
+              rows: list[str]
+              digest: bytes
+              cell: int
+
+          @dataclass
+          class Chunk:
+              id: int
+              file_index: int
+              chunk_index: int
+              path: str
+              row_start: int
+              row_end: int
+              total_rows: int
+              header: str
+              rows: list[str]
+              digest: bytes
+              cell: int
+              degree: int = 0
+              level: int = 0
+              x4: float = 0.0
+              y4: float = 0.0
+              z4: float = 0.0
+              w4: float = 0.0
+              u: float = 0.0
+              v: float = 0.0
+              px: float = 0.0
+              py: float = 0.0
+              angle: float = 0.0
+              rgb: tuple[int, int, int] = (0, 0, 0)
+              cmy: tuple[int, int, int] = (0, 0, 0)
+
+          def tracked_paths(root: Path) -> list[str]:
+              result = subprocess.run(
+                  ["git", "-C", str(root), "ls-files", "-z", "--recurse-submodules"],
+                  check=True,
+                  stdout=subprocess.PIPE,
+              )
+              paths = [
+                  item.decode("utf-8", "surrogateescape")
+                  for item in result.stdout.split(b"\0")
+                  if item
+              ]
+              paths = sorted(set(paths))
+              if not paths:
+                  raise RuntimeError("git reported no tracked paths")
+              return paths
+
+          def is_probably_text(path: Path, data: bytes) -> bool:
+              sample = data[:8192]
+              if not sample:
+                  return True
+              if b"\x00" in sample:
+                  return False
+
+              control_bytes = sum(
+                  1
+                  for value in sample
+                  if value < 32 and value not in b"\t\n\r\f\b"
+              )
+              control_ratio = control_bytes / len(sample)
+
+              if path.suffix.lower() in TEXT_EXTENSIONS:
+                  return control_ratio < 0.02
+
+              try:
+                  sample.decode("utf-8")
+              except UnicodeDecodeError:
+                  return control_ratio < 0.005
+              return control_ratio < 0.02
+
+          def escape_visible(value: bytes) -> str:
+              pieces: list[str] = []
+              for byte in value:
+                  if byte == 0x5C:
+                      pieces.append("\\\\")
+                  elif byte == 0x09:
+                      pieces.append("\\t")
+                  elif byte == 0x0D:
+                      pieces.append("\\r")
+                  elif byte == 0x0A:
+                      pieces.append("\\n")
+                  elif 32 <= byte <= 126:
+                      pieces.append(chr(byte))
+                  else:
+                      pieces.append(f"\\x{byte:02x}")
+              return "".join(pieces)
+
+          def split_exact_lines(data: bytes) -> list[bytes]:
+              if not data:
+                  return [b""]
+              rows: list[bytes] = []
+              start = 0
+              index = 0
+              while index < len(data):
+                  if data[index] == 0x0A:
+                      rows.append(data[start:index + 1])
+                      start = index + 1
+                  index += 1
+              if start < len(data):
+                  rows.append(data[start:])
+              if not rows:
+                  rows = [b""]
+              return rows
+
+          def wrap_exact_row(prefix: str, body: str) -> list[str]:
+              if len(body) <= MAX_CHARS_PER_ROW:
+                  return [prefix + body]
+              rows: list[str] = []
+              start = 0
+              first = True
+              while start < len(body):
+                  segment = body[start:start + MAX_CHARS_PER_ROW]
+                  rows.append((prefix if first else "......| ") + segment)
+                  first = False
+                  start += MAX_CHARS_PER_ROW
+              return rows
+
+          def text_rows(data: bytes) -> list[str]:
+              rows: list[str] = []
+              for line_number, line_bytes in enumerate(split_exact_lines(data), start=1):
+                  prefix = f"{line_number:06d}| "
+                  rows.extend(wrap_exact_row(prefix, escape_visible(line_bytes)))
+              return rows
+
+          def gather_files(root: Path) -> tuple[list[FileInfo], list[str]]:
+              results: list[FileInfo] = []
+              excluded_binary_paths: list[str] = []
+
+              for relative_text in tracked_paths(root):
+                  absolute = root / relative_text
+                  metadata = os.lstat(absolute)
+                  mode = oct(stat.S_IMODE(metadata.st_mode))
+
+                  if absolute.is_dir() and not absolute.is_symlink():
+                      continue
+
+                  if absolute.is_symlink():
+                      target = os.readlink(absolute).encode("utf-8", "surrogateescape")
+                      rows = ["000001| " + escape_visible(target)]
+                      kind = "symlink"
+                      size = len(target)
+                      digest = hashlib.sha256(target).digest()
+                  else:
+                      data = absolute.read_bytes()
+                      if not is_probably_text(absolute, data):
+                          excluded_binary_paths.append(relative_text)
+                          continue
+
+                      kind = "text"
+                      size = len(data)
+                      digest = hashlib.sha256(data).digest()
+                      rows = text_rows(data)
+
+                  results.append(
+                      FileInfo(
+                          path=relative_text,
+                          kind=kind,
+                          mode=mode,
+                          size=size,
+                          sha256=digest.hex(),
+                          rows=rows,
+                          digest=digest,
+                          cell=digest[0] & 0x0F,
+                      )
+                  )
+
+              if not results:
+                  raise RuntimeError("no tracked text/source files were gathered")
+
+              return results, excluded_binary_paths
+
+          def build_chunks(files: list[FileInfo], chunk_rows: int) -> list[Chunk]:
+              chunks: list[Chunk] = []
+              next_id = 0
+              for file_index, info in enumerate(files):
+                  total_rows = len(info.rows)
+                  for chunk_index, start in enumerate(range(0, total_rows, chunk_rows)):
+                      section = info.rows[start:start + chunk_rows]
+                      row_start = start + 1
+                      row_end = start + len(section)
+                      header = (
+                          f"@FILE path={escape(info.path)} kind={info.kind} mode={info.mode} "
+                          f"bytes={info.size} sha256={info.sha256} rows={row_start}-{row_end}/{total_rows}"
+                      )
+                      digest = hashlib.sha256(
+                          (info.path + "::" + str(chunk_index) + "::" + "\n".join(section)).encode("utf-8", "surrogateescape")
+                      ).digest()
+                      rgb = (
+                          76 + digest[0] % 170,
+                          76 + digest[7] % 170,
+                          76 + digest[13] % 170,
+                      )
+                      chunks.append(
+                          Chunk(
+                              id=next_id,
+                              file_index=file_index,
+                              chunk_index=chunk_index,
+                              path=info.path,
+                              row_start=row_start,
+                              row_end=row_end,
+                              total_rows=total_rows,
+                              header=header,
+                              rows=section,
+                              digest=digest,
+                              cell=info.cell,
+                              rgb=rgb,
+                              cmy=tuple(255 - value for value in rgb),
+                          )
+                      )
+                      next_id += 1
+              return chunks
+
+          def walsh16(values: list[int]) -> list[int]:
+              transformed = [int(value) for value in values]
+              stride = 1
+              while stride < 16:
+                  for start in range(0, 16, 2 * stride):
+                      for offset in range(stride):
+                          a = transformed[start + offset]
+                          b = transformed[start + offset + stride]
+                          transformed[start + offset] = a + b
+                          transformed[start + offset + stride] = a - b
+                  stride *= 2
+              return transformed
+
+          def golden_schedule(total: int) -> list[int]:
+              schedule: list[int] = []
+              previous = 0
+              exponent = 0
+              while previous < total:
+                  candidate = int(math.floor(GOLDEN_N ** exponent))
+                  candidate = max(previous + 1, candidate)
+                  schedule.append(candidate)
+                  previous = candidate
+                  exponent += 1
+              return schedule
+
+          def build_edges(chunks: list[Chunk]) -> list[tuple[int, int, str]]:
+              edges: set[tuple[int, int, str]] = set()
+              by_file: dict[int, list[Chunk]] = {}
+              by_cell: dict[int, list[Chunk]] = {cell: [] for cell in range(16)}
+
+              for chunk in chunks:
+                  by_file.setdefault(chunk.file_index, []).append(chunk)
+                  by_cell[chunk.cell].append(chunk)
+
+              for file_chunks in by_file.values():
+                  file_chunks.sort(key=lambda value: value.chunk_index)
+                  for left, right in zip(file_chunks, file_chunks[1:]):
+                      a, b = sorted((left.id, right.id))
+                      edges.add((a, b, "file"))
+
+              total = len(chunks)
+              for chunk in chunks:
+                  digest = chunk.digest
+                  hop = 1 + int.from_bytes(digest[1:5], "big") % max(1, total - 1)
+                  joint = chunks[(chunk.id + hop) % total]
+                  if joint.id != chunk.id:
+                      a, b = sorted((chunk.id, joint.id))
+                      edges.add((a, b, "joint"))
+
+                  same_cell = by_cell[chunk.cell]
+                  if len(same_cell) > 1:
+                      partner = same_cell[(chunk.chunk_index + digest[9]) % len(same_cell)]
+                      if partner.id != chunk.id:
+                          a, b = sorted((chunk.id, partner.id))
+                          edges.add((a, b, "cell"))
+
+              degree = [0] * len(chunks)
+              for left, right, _kind in edges:
+                  degree[left] += 1
+                  degree[right] += 1
+              for chunk, value in zip(chunks, degree):
+                  chunk.degree = value
+
+              return sorted(edges)
+
+          def project_point(x4: float, y4: float, z4: float, w4: float) -> tuple[float, float]:
+              denom4 = max(0.45, 2.30 - w4)
+              x3 = (x4 + 0.25 * z4) / denom4
+              y3 = (y4 + 0.18 * z4) / denom4
+              z3 = z4 / denom4
+              denom3 = max(0.55, 2.40 - z3)
+              return x3 / denom3, y3 / denom3
+
+          def manifold_coordinates(chunks: list[Chunk]) -> tuple[list[int], list[float], list[int]]:
+              cell_counts = [0] * 16
+              for chunk in chunks:
+                  cell_counts[chunk.cell] += 1
+              walsh = walsh16(cell_counts)
+              non_dc = max(1, max(abs(value) for value in walsh[1:] or [1]))
+              cell_bias = [value / non_dc for value in walsh]
+              schedule = golden_schedule(len(chunks))
+              max_degree = max(chunk.degree for chunk in chunks) if chunks else 1
+
+              for index, chunk in enumerate(chunks):
+                  digest = chunk.digest
+                  phase_a = 2.0 * math.pi * digest[0] / 255.0
+                  phase_b = 2.0 * math.pi * digest[7] / 255.0
+                  phase_c = 2.0 * math.pi * digest[13] / 255.0
+                  phase_d = 2.0 * math.pi * digest[21] / 255.0
+                  theta = GOLDEN_ANGLE * (index + 1)
+                  bias = cell_bias[chunk.cell]
+                  degree_factor = chunk.degree / max(1, max_degree)
+
+                  level = 0
+                  while level < len(schedule) and index >= schedule[level]:
+                      level += 1
+                  chunk.level = min(level, len(schedule) - 1)
+                  radial = 0.18 + 0.72 * (chunk.level / max(1, len(schedule) - 1))
+
+                  x4 = math.cos(theta + phase_a) * (0.58 + 0.22 * math.cos(PHI * theta + phase_c))
+                  y4 = math.sin(theta + phase_b) * (0.58 + 0.22 * math.sin(GOLDEN_N * theta + phase_d))
+                  z4 = math.cos(PHI * theta + phase_c) * (0.50 + 0.26 * math.sin(theta + phase_a))
+                  w4 = math.sin(GOLDEN_N * theta + phase_d) * (0.50 + 0.26 * math.cos(theta + phase_b))
+
+                  x4 += 0.24 * bias
+                  y4 += 0.20 * bias
+                  z4 += 0.18 * (bias - degree_factor)
+                  w4 += 0.14 * (degree_factor - bias)
+
+                  chunk.x4 = radial * x4
+                  chunk.y4 = radial * y4
+                  chunk.z4 = radial * z4
+                  chunk.w4 = radial * w4
+                  chunk.u, chunk.v = project_point(chunk.x4, chunk.y4, chunk.z4, chunk.w4)
+
+                  delta = 0.07
+                  nu, nv = project_point(
+                      radial * math.cos(theta + delta + phase_a) * (0.58 + 0.22 * math.cos(PHI * (theta + delta) + phase_c)) + 0.24 * bias,
+                      radial * math.sin(theta + delta + phase_b) * (0.58 + 0.22 * math.sin(GOLDEN_N * (theta + delta) + phase_d)) + 0.20 * bias,
+                      radial * math.cos(PHI * (theta + delta) + phase_c) * (0.50 + 0.26 * math.sin(theta + delta + phase_a)) + 0.18 * (bias - degree_factor),
+                      radial * math.sin(GOLDEN_N * (theta + delta) + phase_d) * (0.50 + 0.26 * math.cos(theta + delta + phase_b)) + 0.14 * (degree_factor - bias),
+                  )
+                  chunk.angle = math.degrees(math.atan2(nv - chunk.v, nu - chunk.u))
+
+              return walsh, cell_bias, schedule
+
+          def place_chunks(chunks: list[Chunk], dimension: int, font_size: int) -> None:
+              center = dimension / 2.0
+              radius_x = center - MARGIN
+              radius_y = center - MARGIN
+              char_width = font_size * 0.62
+              line_height = font_size * 1.34
+              header_height = font_size * PATH_FONT_RATIO * 1.5
+              placed: list[tuple[float, float, float, float]] = []
+
+              def collides(box: tuple[float, float, float, float]) -> bool:
+                  x1, y1, x2, y2 = box
+                  for ox1, oy1, ox2, oy2 in placed:
+                      if not (x2 < ox1 or ox2 < x1 or y2 < oy1 or oy2 < y1):
+                          return True
+                  return False
+
+              for chunk in chunks:
+                  max_width = max([len(chunk.header), *(len(row) for row in chunk.rows)])
+                  block_width = max_width * char_width
+                  block_height = header_height + len(chunk.rows) * line_height + 10.0
+                  base_x = center + radius_x * chunk.u
+                  base_y = center + radius_y * chunk.v
+
+                  angle_radians = math.radians(chunk.angle)
+                  c = abs(math.cos(angle_radians))
+                  s = abs(math.sin(angle_radians))
+                  rotated_width = c * block_width + s * block_height + 40.0
+                  rotated_height = s * block_width + c * block_height + 40.0
+
+                  origin_x = max(MARGIN, min(dimension - MARGIN - rotated_width, base_x - rotated_width / 2))
+                  origin_y = max(MARGIN, min(dimension - MARGIN - rotated_height, base_y - rotated_height / 2))
+
+                  selected = None
+                  for ring in range(0, 12):
+                      offsets = [(0, 0)] if ring == 0 else [
+                          (dx, dy)
+                          for dx in range(-ring, ring + 1)
+                          for dy in range(-ring, ring + 1)
+                          if max(abs(dx), abs(dy)) == ring
+                      ]
+                      for dx, dy in offsets:
+                          px = max(MARGIN, min(dimension - MARGIN - rotated_width, origin_x + dx * GRID * 2.0))
+                          py = max(MARGIN, min(dimension - MARGIN - rotated_height, origin_y + dy * GRID * 2.0))
+                          candidate = (px, py, px + rotated_width, py + rotated_height)
+                          if not collides(candidate):
+                              selected = candidate
+                              break
+                      if selected is not None:
+                          break
+
+                  if selected is None:
+                      selected = (origin_x, origin_y, origin_x + rotated_width, origin_y + rotated_height)
+                  placed.append(selected)
+                  chunk.px = selected[0] + rotated_width / 2.0
+                  chunk.py = selected[1] + rotated_height / 2.0
+
+          def rgb_hex(rgb: tuple[int, int, int]) -> str:
+              return "#{:02x}{:02x}{:02x}".format(*rgb)
+
+          def render_svg(chunks: list[Chunk], edges: list[tuple[int, int, str]], walsh: list[int], cell_bias: list[float], schedule: list[int], output_svg: Path, dimension: int, font_size: int) -> None:
+              center = dimension / 2.0
+              max_bias = max(1e-6, max(abs(value) for value in walsh[1:] or [1]))
+              chunk_map = {chunk.id: chunk for chunk in chunks}
+              items: list[str] = []
+              items.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{dimension}" height="{dimension}" viewBox="0 0 {dimension} {dimension}">')
+              items.append("<defs>")
+              items.append('<filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="20" result="b"/><feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"/></filter>')
+              items.append("</defs>")
+              items.append(f'<rect x="0" y="0" width="{dimension}" height="{dimension}" fill="{BACKGROUND}"/>')
+              items.append(f'<circle cx="{center:.2f}" cy="{center:.2f}" r="{dimension * 0.16:.2f}" fill="{CORE_GLOW}" opacity="0.82" filter="url(#glow)"/>')
+
+              for level, boundary in enumerate(schedule):
+                  ratio = level / max(1, len(schedule) - 1)
+                  r = dimension * (0.10 + 0.34 * ratio)
+                  items.append(f'<circle cx="{center:.2f}" cy="{center:.2f}" r="{r:.2f}" fill="none" stroke="{GUIDE}" stroke-opacity="{0.018 + 0.018 * ratio:.4f}" stroke-width="1.2"/>')
+
+              for cell, value in enumerate(walsh):
+                  if cell == 0:
+                      continue
+                  magnitude = abs(value) / max_bias
+                  if magnitude <= 0.01:
+                      continue
+                  angle = 2.0 * math.pi * cell / 16.0 + GOLDEN_ANGLE
+                  rx = dimension * (0.10 + 0.08 * magnitude)
+                  ry = dimension * (0.07 + 0.06 * magnitude)
+                  cx = center + math.cos(angle) * dimension * 0.22
+                  cy = center + math.sin(angle) * dimension * 0.22
+                  rgb = (
+                      70 + (cell * 29) % 170,
+                      70 + (cell * 47) % 170,
+                      70 + (cell * 61) % 170,
+                  )
+                  items.append(f'<ellipse cx="{cx:.2f}" cy="{cy:.2f}" rx="{rx:.2f}" ry="{ry:.2f}" fill="{rgb_hex(rgb)}" opacity="{0.040 + 0.050 * magnitude:.4f}" transform="rotate({math.degrees(angle):.2f} {cx:.2f} {cy:.2f})"/>')
+
+              for chunk in chunks:
+                  rgb = rgb_hex(chunk.rgb)
+                  cmy = rgb_hex(chunk.cmy)
+                  dx = chunk.px - center
+                  dy = chunk.py - center
+                  length = math.hypot(dx, dy) or 1.0
+                  nx = -dy / length
+                  ny = dx / length
+                  spread = 2.6 + 1.6 * (chunk.cell / 15.0)
+                  w_main = 1.0 + 2.2 * (chunk.level + 1) / max(1, len(schedule))
+                  items.append(f'<line x1="{center + nx*spread:.2f}" y1="{center + ny*spread:.2f}" x2="{chunk.px + nx*spread:.2f}" y2="{chunk.py + ny*spread:.2f}" stroke="{rgb}" stroke-opacity="0.23" stroke-width="{w_main:.2f}"/>')
+                  items.append(f'<line x1="{center - nx*spread:.2f}" y1="{center - ny*spread:.2f}" x2="{chunk.px - nx*spread:.2f}" y2="{chunk.py - ny*spread:.2f}" stroke="{cmy}" stroke-opacity="0.17" stroke-width="{max(0.8, w_main - 0.5):.2f}"/>')
+
+              for left_id, right_id, kind in edges:
+                  left = chunk_map[left_id]
+                  right = chunk_map[right_id]
+                  dx = right.px - left.px
+                  dy = right.py - left.py
+                  distance = math.hypot(dx, dy) or 1.0
+                  nx = -dy / distance
+                  ny = dx / distance
+                  mid_x = (left.px + right.px) / 2.0
+                  mid_y = (left.py + right.py) / 2.0
+                  bend = 18.0 + 28.0 * (0.5 + 0.5 * cell_bias[(left.cell ^ right.cell) & 0x0F])
+                  cx = mid_x + nx * bend
+                  cy = mid_y + ny * bend
+                  opacity = {"file": 0.20, "cell": 0.14, "joint": 0.10}[kind]
+                  items.append(f'<path d="M {left.px:.2f} {left.py:.2f} Q {cx:.2f} {cy:.2f} {right.px:.2f} {right.py:.2f}" fill="none" stroke="{rgb_hex(left.rgb)}" stroke-opacity="{opacity:.4f}" stroke-width="1.6"/>')
+                  items.append(f'<path d="M {left.px + nx*2.2:.2f} {left.py + ny*2.2:.2f} Q {cx + nx*2.2:.2f} {cy + ny*2.2:.2f} {right.px + nx*2.2:.2f} {right.py + ny*2.2:.2f}" fill="none" stroke="{rgb_hex(right.cmy)}" stroke-opacity="{opacity * 0.82:.4f}" stroke-width="1.0"/>')
+
+              line_height = font_size * 1.34
+              header_size = font_size * PATH_FONT_RATIO
+              for chunk in chunks:
+                  items.append(f'<g transform="translate({chunk.px:.2f},{chunk.py:.2f}) rotate({chunk.angle:.2f})">')
+                  items.append(f'<text x="0" y="0" text-anchor="middle" xml:space="preserve" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="{header_size:.2f}" fill="{rgb_hex(chunk.cmy)}" fill-opacity="0.86">{escape(chunk.header)}</text>')
+                  items.append(f'<text x="0" y="{line_height:.2f}" text-anchor="middle" xml:space="preserve" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="{font_size}" fill="{rgb_hex(chunk.rgb)}" fill-opacity="0.96" stroke="{TEXT_STROKE}" stroke-opacity="0.64" stroke-width="3" paint-order="stroke">')
+                  start_y = 0.0
+                  for row_index, row in enumerate(chunk.rows):
+                      y = start_y + row_index * line_height
+                      items.append(f'<tspan x="0" y="{y:.2f}">{escape(row)}</tspan>')
+                  items.append('</text></g>')
+
+              items.append('</svg>')
+              output_svg.write_text(''.join(items), encoding='utf-8')
+
+          def main() -> int:
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--root", type=Path, required=True)
+              parser.add_argument("--output-svg", type=Path, required=True)
+              parser.add_argument("--maximum-dimension", type=int, default=16000)
+              parser.add_argument("--font-size", type=int, default=12)
+              parser.add_argument("--chunk-rows", type=int, default=14)
+              args = parser.parse_args()
+
+              files, excluded_binary_paths = gather_files(args.root.resolve())
+              chunks = build_chunks(files, args.chunk_rows)
+              edges = build_edges(chunks)
+              walsh, cell_bias, schedule = manifold_coordinates(chunks)
+              estimated = int(max(MIN_DIMENSION, min(args.maximum_dimension, math.ceil((math.sqrt(len(chunks)) * args.font_size * 72.0) + 2.0 * MARGIN))))
+              dimension = max(estimated, 2048)
+              place_chunks(chunks, dimension, args.font_size)
+              args.output_svg.parent.mkdir(parents=True, exist_ok=True)
+              render_svg(chunks, edges, walsh, cell_bias, schedule, args.output_svg.resolve(), dimension, args.font_size)
+
+              report = {
+                  "artifact": str(args.output_svg.resolve()),
+                  "binaryContentIncluded": False,
+                  "includedTextFiles": len(files),
+                  "excludedBinaryFiles": len(excluded_binary_paths),
+                  "excludedBinaryPaths": excluded_binary_paths,
+                  "chunks": len(chunks),
+                  "edges": len(edges),
+                  "dimension": dimension,
+                  "phi": PHI,
+                  "n": GOLDEN_N,
+                  "goldenAngle": GOLDEN_ANGLE,
+                  "identityResidual": IDENTITY_RESIDUAL,
+                  "schedule": schedule,
+                  "walsh16": walsh,
+              }
+              print(json.dumps(report, indent=2, sort_keys=True))
+              return 0
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+          python -m py_compile "$RUNNER_TEMP/build_source_manifold.py"
+
+      - name: Build the text-only source manifold image
+        shell: bash
+        env:
+          MAXIMUM_DIMENSION: ${{ inputs.maximum_dimension }}
+          FONT_SIZE: ${{ inputs.font_size }}
+          CHUNK_ROWS: ${{ inputs.chunk_rows }}
+        run: |
+          set -euo pipefail
+          rm -rf "$GITHUB_WORKSPACE/dream-source-manifold-output"
+          mkdir -p "$GITHUB_WORKSPACE/dream-source-manifold-output"
+
+          python "$RUNNER_TEMP/build_source_manifold.py" \
+            --root "$GITHUB_WORKSPACE" \
+            --output-svg "$GITHUB_WORKSPACE/dream-source-manifold-output/DREAM_4D_AI_SOURCE_MANIFOLD.svg" \
+            --maximum-dimension "$MAXIMUM_DIMENSION" \
+            --font-size "$FONT_SIZE" \
+            --chunk-rows "$CHUNK_ROWS" \
+            | tee "$RUNNER_TEMP/dream-source-manifold-build.json"
+
+      - name: Upload the source manifold image
+        uses: actions/upload-artifact@v4
+        with:
+          name: DREAM_4D_AI_SOURCE_MANIFOLD
+          path: dream-source-manifold-output/DREAM_4D_AI_SOURCE_MANIFOLD.svg
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
