@@ -52,9 +52,9 @@ jobs:
           const sourceRoot = workspace;
           const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
 
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
           //  File discovery
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
           const supportedExtensions = new Set([
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
           ]);
@@ -121,9 +121,9 @@ jobs:
             }
           }
 
-          // -----------------------------------------------------------------
-          //  Position & source helpers (FIXED – ts-morph getLineAndColumnAtPos)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  Position & source helpers
+          // ----------------------------------------------------------------
           function hasRealPosition(node: any): boolean {
             return Boolean(
               node &&
@@ -169,9 +169,9 @@ jobs:
             return (ts as any).SyntaxKind[node.kind] ?? `SyntaxKind${node.kind}`;
           }
 
-          // -----------------------------------------------------------------
-          //  Data collectors (fully guarded against undefined)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  Data collectors
+          // ----------------------------------------------------------------
           function collectBindingNames(nameNode: any, names: Set<string>) {
             if (!nameNode) return;
             if (Node.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
@@ -246,9 +246,9 @@ jobs:
             return effects;
           }
 
-          // -----------------------------------------------------------------
-          //  CFGBuilder (unchanged, already robust)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  CFGBuilder
+          // ----------------------------------------------------------------
           class CFGBuilder {
             sourceFile: any;
             functionId: string;
@@ -473,9 +473,9 @@ jobs:
             }
           }
 
-          // -----------------------------------------------------------------
-          //  Function analysis (fully guarded)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  Function analysis
+          // ----------------------------------------------------------------
           let fallbackAnonymousCounter = 0;
 
           function functionName(node: any, sourceFile: any): string {
@@ -622,9 +622,9 @@ jobs:
             };
           }
 
-          // -----------------------------------------------------------------
-          //  File analysis (FIXED – getLineAndColumnAtPos)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  File analysis
+          // ----------------------------------------------------------------
           function analyzeFile(filePath: string): any {
             const originalBytes = fs.readFileSync(filePath);
             const source = originalBytes.toString("utf8");
@@ -692,9 +692,9 @@ jobs:
             };
           }
 
-          // -----------------------------------------------------------------
-          //  Serialization (FIXED undefined -> "null")
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  Serialization
+          // ----------------------------------------------------------------
           function stableSerialize(value: any): string {
             if (value === undefined || value === null) return "null";
             if (typeof value !== "object") return JSON.stringify(value);
@@ -724,9 +724,9 @@ jobs:
             }
           }
 
-          // -----------------------------------------------------------------
-          //  Main execution (with file-level error isolation)
-          // -----------------------------------------------------------------
+          // ----------------------------------------------------------------
+          //  Main execution
+          // ----------------------------------------------------------------
           fs.rmSync(outputRoot, { recursive: true, force: true });
           fs.mkdirSync(outputRoot, { recursive: true });
           const sourceFiles = discoverFiles(sourceRoot);
@@ -751,7 +751,6 @@ jobs:
             } catch (error) {
               errorCount++;
               console.error(`ERROR processing ${relativePath}: ${(error as Error).message}`);
-              // Write a placeholder error module
               const errorContent = `/* CDLDS TRANSFORM ERROR: ${(error as Error).message} */\nexport const cdldsModule = {} as const;\nexport default cdldsModule;\n`;
               fs.mkdirSync(path.dirname(outputPath), { recursive: true });
               fs.writeFileSync(outputPath, errorContent, "utf8");
@@ -784,7 +783,8 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/build"
           rm -f "$ZIP_PATH"
           find build/cdlds-application -type f -exec touch -t 198001010000 {} +
-          ( cd build/cdlds-application && find . -type f -print0 | LC_ALL=C sort -z | zip -X -q "$ZIP_PATH" -@ )
+          # Corrected: newline‑delimited list for zip -@
+          ( cd build/cdlds-application && find . -type f | LC_ALL=C sort | zip -X -q "$ZIP_PATH" -@ )
           sha256sum "$ZIP_PATH" > "$ZIP_PATH.sha256"
 
       - name: Upload artifact
