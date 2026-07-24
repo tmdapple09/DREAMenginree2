@@ -1,4 +1,4 @@
-name: CDLDS Application ZIP
+name: Generate Transformed CDLDS Application ZIP
 
 on:
   workflow_dispatch:
@@ -16,22 +16,22 @@ concurrency:
 
 jobs:
   transform:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v3
         with:
-          version: 10.30.0
+          version: 8.15.0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install project dependencies (exact lockfile)
@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euo pipefail
           cat > cdlds-transform.ts <<'SCRIPT'
-          import { Project, Node, ts } from "ts-morph";
+          import { Project, ts } from "ts-morph";
           import * as fs from "node:fs";
           import * as path from "node:path";
           import * as crypto from "node:crypto";
@@ -138,8 +138,8 @@ jobs:
             if (!hasRealPosition(node)) return null;
             const start = node.getStart(sourceFile, false);
             const end   = node.getEnd();
-            const loc = sourceFile.getLineAndColumnAtPos(start);
-            return { start, end, line: loc.line, column: loc.column };
+            const loc = sourceFile.getLineAndCharacterOfPosition(start);
+            return { start, end, line: loc.line + 1, column: loc.character + 1 };
           }
 
           function sourceText(sourceFile: any, node: any, maxLen = 500): string {
@@ -173,75 +173,77 @@ jobs:
           // ----------------------------------------------------------------
           function collectBindingNames(nameNode: any, names: Set<string>) {
             if (!nameNode) return;
-            if (Node.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
-            if (Node.isObjectBindingPattern(nameNode) || Node.isArrayBindingPattern(nameNode)) {
+            if (ts.isIdentifier(nameNode)) { names.add(nameNode.text); return; }
+            if (ts.isObjectBindingPattern(nameNode) || ts.isArrayBindingPattern(nameNode)) {
               for (const element of nameNode.elements) {
-                if (Node.isBindingElement(element)) collectBindingNames(element.name, names);
+                if (ts.isBindingElement(element)) collectBindingNames(element.name, names);
               }
             }
           }
           function collectIdentifiers(node: any, sourceFile: any): string[] {
             const ids = new Set<string>();
             function visit(n: any) {
-              if (Node.isIdentifier(n)) ids.add(n.text);
+              if (ts.isIdentifier(n)) ids.add(n.text);
               ts.forEachChild(n, visit);
             }
             visit(node);
             return [...ids].sort((a, b) => a.localeCompare(b, "en"));
           }
-          function collectDefinitions(node: any): string[] {
+          function collectDefinitions(node: any, sourceFile: any): string[] {
             const defs = new Set<string>();
-            if (Node.isVariableDeclaration(node)) collectBindingNames(node.name, defs);
+            if (ts.isVariableDeclaration(node)) collectBindingNames(node.name, defs);
             if (
-              Node.isFunctionDeclaration(node) || Node.isClassDeclaration(node) ||
-              Node.isInterfaceDeclaration(node) || Node.isTypeAliasDeclaration(node) ||
-              Node.isEnumDeclaration(node)
+              ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) ||
+              ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) ||
+              ts.isEnumDeclaration(node)
             ) {
-              if (node.name) defs.add(node.name.getText());
+              if (node.name) defs.add(sourceText(sourceFile, node.name, 100));
             }
-            if (Node.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
-              if (Node.isIdentifier(node.left)) defs.add(node.left.text);
+            if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+              if (ts.isIdentifier(node.left)) defs.add(node.left.text);
             }
-            if (Node.isPrefixUnaryExpression(node) || Node.isPostfixUnaryExpression(node)) {
-              if (Node.isIdentifier(node.operand)) defs.add(node.operand.text);
+            if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
+              if (ts.isIdentifier(node.operand)) defs.add(node.operand.text);
             }
             return [...defs].sort((a, b) => a.localeCompare(b, "en"));
           }
           function collectEffects(node: any, sourceFile: any): any[] {
             const effects: any[] = [];
-            if (Node.isCallExpression(node)) effects.push({
+            if (ts.isCallExpression(node)) effects.push({
               kind: "call",
               expression: sourceText(sourceFile, node.expression, 200),
               arguments: (node.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 200)),
               optional: Boolean(node.questionDotToken)
             });
-            if (Node.isNewExpression(node)) effects.push({
+            if (ts.isNewExpression(node)) effects.push({
               kind: "construct",
               expression: sourceText(sourceFile, node.expression, 200),
               arguments: (node.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 200))
             });
-            if (Node.isReturnStatement(node)) effects.push({
+            if (ts.isReturnStatement(node)) effects.push({
               kind: "return",
               expression: node.expression ? sourceText(sourceFile, node.expression, 300) : null
             });
-            if (Node.isThrowStatement(node)) effects.push({
+            if (ts.isThrowStatement(node)) effects.push({
               kind: "throw",
               expression: sourceText(sourceFile, node.expression, 300)
             });
-            if (Node.isAwaitExpression(node)) effects.push({
+            if (ts.isAwaitExpression(node)) effects.push({
               kind: "await",
               expression: sourceText(sourceFile, node.expression, 300)
             });
-            if (Node.isYieldExpression(node)) effects.push({
+            if (ts.isYieldExpression(node)) effects.push({
               kind: "yield",
               expression: node.expression ? sourceText(sourceFile, node.expression, 300) : null
             });
-            if (Node.isBinaryExpression(node) && (node.operatorToken as any).isAssignment?.()) effects.push({
-              kind: "write",
-              target: sourceText(sourceFile, node.left, 200),
-              operator: node.operatorToken.getText(sourceFile),
-              value: sourceText(sourceFile, node.right, 300)
-            });
+            if (ts.isBinaryExpression(node) && node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment && node.operatorToken.kind <= ts.SyntaxKind.LastAssignment) {
+               effects.push({
+                 kind: "write",
+                 target: sourceText(sourceFile, node.left, 200),
+                 operator: sourceText(sourceFile, node.operatorToken, 20),
+                 value: sourceText(sourceFile, node.right, 300)
+               });
+            }
             return effects;
           }
 
@@ -285,7 +287,7 @@ jobs:
                 kind,
                 source: loc,
                 text: node ? sourceText(this.sourceFile, node) : null,
-                definitions: node ? collectDefinitions(node) : [],
+                definitions: node ? collectDefinitions(node, this.sourceFile) : [],
                 uses: node ? collectIdentifiers(node, this.sourceFile) : [],
                 effects: node ? collectEffects(node, this.sourceFile) : [],
                 ...extra
@@ -325,32 +327,32 @@ jobs:
             }
 
             buildStatement(statement: any): { entry: string; exits: string[] } {
-              if (Node.isBlock(statement)) return this.buildBlock(statement.statements);
-              if (Node.isIfStatement(statement)) return this.buildIf(statement);
+              if (ts.isBlock(statement)) return this.buildBlock(statement.statements);
+              if (ts.isIfStatement(statement)) return this.buildIf(statement);
               if (
-                Node.isWhileStatement(statement) || Node.isDoStatement(statement) ||
-                Node.isForStatement(statement) || Node.isForInStatement(statement) ||
-                Node.isForOfStatement(statement)
+                ts.isWhileStatement(statement) || ts.isDoStatement(statement) ||
+                ts.isForStatement(statement) || ts.isForInStatement(statement) ||
+                ts.isForOfStatement(statement)
               ) return this.buildLoop(statement);
-              if (Node.isSwitchStatement(statement)) return this.buildSwitch(statement);
-              if (Node.isTryStatement(statement)) return this.buildTry(statement);
-              if (Node.isReturnStatement(statement)) {
+              if (ts.isSwitchStatement(statement)) return this.buildSwitch(statement);
+              if (ts.isTryStatement(statement)) return this.buildTry(statement);
+              if (ts.isReturnStatement(statement)) {
                 const s = this.addNode("return", statement);
                 this.addEdge(s, this.returnTarget, "return");
                 return { entry: s, exits: [] };
               }
-              if (Node.isThrowStatement(statement)) {
+              if (ts.isThrowStatement(statement)) {
                 const s = this.addNode("throw", statement);
                 this.addEdge(s, this.throwTarget, "throw", null, { exceptional: true });
                 return { entry: s, exits: [] };
               }
-              if (Node.isBreakStatement(statement)) {
+              if (ts.isBreakStatement(statement)) {
                 const s = this.addNode("break", statement);
                 const t = this.breakTargets[this.breakTargets.length - 1] ?? null;
                 this.addEdge(s, t, "break");
                 return { entry: s, exits: [] };
               }
-              if (Node.isContinueStatement(statement)) {
+              if (ts.isContinueStatement(statement)) {
                 const s = this.addNode("continue", statement);
                 const t = this.continueTargets[this.continueTargets.length - 1] ?? null;
                 this.addEdge(s, t, "continue");
@@ -360,7 +362,7 @@ jobs:
               return { entry: s, exits: [s] };
             }
 
-            buildBlock(statements: any[]): { entry: string; exits: string[] } {
+            buildBlock(statements: readonly any[]): { entry: string; exits: string[] } {
               if (statements.length === 0) {
                 const empty = this.addNode("empty-block");
                 return { entry: empty, exits: [empty] };
@@ -395,20 +397,20 @@ jobs:
               const afterLoop = this.addNode("loop-exit", null);
               let condNode: string;
               let condText: string;
-              if (Node.isForStatement(statement)) {
+              if (ts.isForStatement(statement)) {
                 condText = statement.condition ? sourceText(this.sourceFile, statement.condition, 300) : "true";
                 condNode = this.addNode("for-condition", statement.condition ?? statement, { guardExpression: condText });
-              } else if (Node.isForInStatement(statement) || Node.isForOfStatement(statement)) {
+              } else if (ts.isForInStatement(statement) || ts.isForOfStatement(statement)) {
                 condText = sourceText(this.sourceFile, statement.expression, 300);
                 condNode = this.addNode(
-                  Node.isForInStatement(statement) ? "for-in-condition" : "for-of-condition",
+                  ts.isForInStatement(statement) ? "for-in-condition" : "for-of-condition",
                   statement.expression,
                   { guardExpression: condText }
                 );
               } else {
                 condText = sourceText(this.sourceFile, statement.expression, 300);
                 condNode = this.addNode(
-                  Node.isDoStatement(statement) ? "do-while-condition" : "while-condition",
+                  ts.isDoStatement(statement) ? "do-while-condition" : "while-condition",
                   statement.expression,
                   { guardExpression: condText }
                 );
@@ -421,7 +423,7 @@ jobs:
               this.addEdge(condNode, body.entry, "true", condText);
               this.addEdge(condNode, afterLoop, "false", `!(${condText})`);
               for (const exit of body.exits) this.addEdge(exit, condNode, "loop-back");
-              if (Node.isDoStatement(statement)) return { entry: body.entry, exits: [afterLoop] };
+              if (ts.isDoStatement(statement)) return { entry: body.entry, exits: [afterLoop] };
               return { entry: condNode, exits: [afterLoop] };
             }
 
@@ -432,13 +434,13 @@ jobs:
               let previousFallthrough: string[] = [];
               for (const clause of statement.caseBlock.clauses) {
                 const clauseState = this.addNode(
-                  Node.isCaseClause(clause) ? "switch-case" : "switch-default",
+                  ts.isCaseClause(clause) ? "switch-case" : "switch-default",
                   clause
                 );
-                const guard = Node.isCaseClause(clause)
+                const guard = ts.isCaseClause(clause)
                   ? `${sourceText(this.sourceFile, statement.expression, 200)} === ${sourceText(this.sourceFile, clause.expression, 200)}`
                   : "default";
-                this.addEdge(switchState, clauseState, Node.isCaseClause(clause) ? "case" : "default", guard);
+                this.addEdge(switchState, clauseState, ts.isCaseClause(clause) ? "case" : "default", guard);
                 for (const prior of previousFallthrough) this.addEdge(prior, clauseState, "fallthrough");
                 const clauseBody = this.buildBlock(clause.statements);
                 this.addEdge(clauseState, clauseBody.entry, "enter-case");
@@ -478,17 +480,17 @@ jobs:
           let fallbackAnonymousCounter = 0;
 
           function functionName(node: any, sourceFile: any): string {
-            if (node.name && Node.isIdentifier(node.name)) return node.name.text;
-            if (node.parent && Node.isVariableDeclaration(node.parent) && Node.isIdentifier(node.parent.name))
+            if (node.name && ts.isIdentifier(node.name)) return node.name.text;
+            if (node.parent && ts.isVariableDeclaration(node.parent) && ts.isIdentifier(node.parent.name))
               return node.parent.name.text;
-            if (node.parent && Node.isPropertyAssignment(node.parent))
+            if (node.parent && ts.isPropertyAssignment(node.parent))
               return sourceText(sourceFile, node.parent.name, 100);
             if (
-              Node.isMethodDeclaration(node) || Node.isGetAccessorDeclaration(node) ||
-              Node.isSetAccessorDeclaration(node)
+              ts.isMethodDeclaration(node) || ts.isGetAccessorDeclaration(node) ||
+              ts.isSetAccessorDeclaration(node)
             )
               return sourceText(sourceFile, node.name, 100);
-            if (Node.isConstructorDeclaration(node)) return "constructor";
+            if (ts.isConstructorDeclaration(node)) return "constructor";
             const loc = positionOf(sourceFile, node);
             if (loc) {
               return `anonymous_${loc.line}_${loc.column}`;
@@ -499,10 +501,10 @@ jobs:
 
           function isFunctionLike(node: any): boolean {
             return (
-              Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) ||
-              Node.isArrowFunction(node) || Node.isMethodDeclaration(node) ||
-              Node.isConstructorDeclaration(node) || Node.isGetAccessorDeclaration(node) ||
-              Node.isSetAccessorDeclaration(node)
+              ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node) ||
+              ts.isArrowFunction(node) || ts.isMethodDeclaration(node) ||
+              ts.isConstructorDeclaration(node) || ts.isGetAccessorDeclaration(node) ||
+              ts.isSetAccessorDeclaration(node)
             );
           }
 
@@ -538,7 +540,7 @@ jobs:
                   { id: stableId("transition", id, entry, exit, "complete"), from: entry, to: exit, kind: "complete", guard: null }
                 ]
               };
-            } else if (Node.isBlock(body)) {
+            } else if (ts.isBlock(body)) {
               cfg = new CFGBuilder(sourceFile, id).build(body);
             } else {
               const builder = new CFGBuilder(sourceFile, id);
@@ -564,20 +566,20 @@ jobs:
             const unresolved: any[] = [];
             if (body) {
               function visit(n: any) {
-                if (Node.isVariableDeclaration(n)) collectBindingNames(n.name, variables);
-                if (Node.isCallExpression(n)) calls.push({
+                if (ts.isVariableDeclaration(n)) collectBindingNames(n.name, variables);
+                if (ts.isCallExpression(n)) calls.push({
                   id: stableId("call", id, String(n.getStart(sourceFile))),
                   expression: sourceText(sourceFile, n.expression, 300),
                   arguments: (n.arguments ?? []).map((a: any) => sourceText(sourceFile, a, 300)),
                   source: positionOf(sourceFile, n),
                   optional: Boolean(n.questionDotToken),
-                  awaited: Node.isAwaitExpression(n.parent),
+                  awaited: ts.isAwaitExpression(n.parent),
                   resolution: "unresolved-static-target"
                 });
                 if (
-                  Node.isElementAccessExpression(n) &&
-                  !Node.isStringLiteral(n.argumentExpression) &&
-                  !Node.isNumericLiteral(n.argumentExpression)
+                  ts.isElementAccessExpression(n) &&
+                  !ts.isStringLiteral(n.argumentExpression) &&
+                  !ts.isNumericLiteral(n.argumentExpression)
                 )
                   unresolved.push({
                     kind: "dynamic-property-access",
@@ -585,7 +587,7 @@ jobs:
                     text: sourceText(sourceFile, n, 300)
                   });
                 if (
-                  Node.isCallExpression(n) &&
+                  ts.isCallExpression(n) &&
                   (n.expression as any).kind === ts.SyntaxKind.ImportKeyword
                 )
                   unresolved.push({
@@ -631,12 +633,16 @@ jobs:
             const project = new Project({ tsConfigFilePath: path.join(sourceRoot, "tsconfig.json") });
             const sourceFile = project.createSourceFile(relativePath, source, { overwrite: true });
 
+            // Extract the underlying native TS SourceFile here to run our traversal loops
+            const nativeSourceFile = sourceFile.compilerNode;
+
             const imports: any[] = [];
             const exports: any[] = [];
             const declarations: any[] = [];
             const systems: any[] = [];
             const diagnostics: any[] = [];
 
+            // Diagnostics require ts-morph's SourceFile wrapper
             for (const diag of sourceFile.getPreEmitDiagnostics()) {
               const start = diag.getStart() ?? 0;
               const pos = sourceFile.getLineAndColumnAtPos(start);
@@ -651,25 +657,25 @@ jobs:
               });
             }
 
-            sourceFile.forEachChild((child) => {
-              if (Node.isImportDeclaration(child) || Node.isImportEqualsDeclaration(child))
-                imports.push({ kind: syntaxName(child), text: sourceText(sourceFile, child, 500),
-                  source: positionOf(sourceFile, child) });
-              if (Node.isExportDeclaration(child) || Node.isExportAssignment(child))
-                exports.push({ kind: syntaxName(child), text: sourceText(sourceFile, child, 500),
-                  source: positionOf(sourceFile, child) });
+            ts.forEachChild(nativeSourceFile, (child) => {
+              if (ts.isImportDeclaration(child) || ts.isImportEqualsDeclaration(child))
+                imports.push({ kind: syntaxName(child), text: sourceText(nativeSourceFile, child, 500),
+                  source: positionOf(nativeSourceFile, child) });
+              if (ts.isExportDeclaration(child) || ts.isExportAssignment(child))
+                exports.push({ kind: syntaxName(child), text: sourceText(nativeSourceFile, child, 500),
+                  source: positionOf(nativeSourceFile, child) });
               if (
-                Node.isVariableStatement(child) || Node.isClassDeclaration(child) ||
-                Node.isInterfaceDeclaration(child) || Node.isTypeAliasDeclaration(child) ||
-                Node.isEnumDeclaration(child)
+                ts.isVariableStatement(child) || ts.isClassDeclaration(child) ||
+                ts.isInterfaceDeclaration(child) || ts.isTypeAliasDeclaration(child) ||
+                ts.isEnumDeclaration(child)
               )
-                declarations.push({ kind: syntaxName(child), text: sourceText(sourceFile, child, 500),
-                  source: positionOf(sourceFile, child), definitions: collectDefinitions(child) });
+                declarations.push({ kind: syntaxName(child), text: sourceText(nativeSourceFile, child, 500),
+                  source: positionOf(nativeSourceFile, child), definitions: collectDefinitions(child, nativeSourceFile) });
               if (isFunctionLike(child))
-                systems.push(analyzeFunction(child, sourceFile, relativePath));
+                systems.push(analyzeFunction(child, nativeSourceFile, relativePath));
               ts.forEachChild(child, (nested: any) => {
                 if (isFunctionLike(nested))
-                  systems.push(analyzeFunction(nested, sourceFile, relativePath));
+                  systems.push(analyzeFunction(nested, nativeSourceFile, relativePath));
               });
             });
 
@@ -782,12 +788,11 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/build"
           rm -f "$ZIP_PATH"
           find build/cdlds-application -type f -exec touch -t 198001010000 {} +
-          # Corrected: newline‑delimited list for zip -@
           ( cd build/cdlds-application && find . -type f | LC_ALL=C sort | zip -X -q "$ZIP_PATH" -@ )
           sha256sum "$ZIP_PATH" > "$ZIP_PATH.sha256"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: transformed-cdlds-application-${{ github.sha }}
           path: |
