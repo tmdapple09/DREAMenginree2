@@ -31,7 +31,6 @@ jobs:
           set -euo pipefail
 
           sudo apt-get update
-
           sudo apt-get install -y --no-install-recommends \
             coq \
             jq \
@@ -90,12 +89,10 @@ jobs:
               "vendor",
               "vendors",
               "node_modules",
-              "packages",
               "third_party",
               "third-party",
               "external",
               "generated",
-              "gen",
               "docs",
               "doc",
               "documentation",
@@ -127,25 +124,9 @@ jobs:
               ".mock.",
               ".fixture.",
               ".generated.",
-              ".gen.",
               ".min.",
           }
 
-          excluded_filenames = {
-              "makefile",
-              "dockerfile",
-              "license",
-              "license.txt",
-              "copying",
-              "readme",
-              "readme.txt",
-              "changelog",
-              "authors",
-              "contributors",
-          }
-
-          # Deliberately excludes Python, Markdown, YAML, JSON, TOML,
-          # configuration files, tests, documentation, and generated assets.
           allowed_extensions = {
               ".c",
               ".h",
@@ -179,7 +160,6 @@ jobs:
               ".clj",
               ".cljs",
               ".cljc",
-              ".edn",
               ".fs",
               ".fsi",
               ".fsx",
@@ -208,18 +188,15 @@ jobs:
 
           def is_application_code(path: Path) -> bool:
               relative = path.relative_to(root)
-              lowered_parts = [part.lower() for part in relative.parts]
+              parts = [part.lower() for part in relative.parts]
 
               if any(
                   part in excluded_directories
-                  for part in lowered_parts[:-1]
+                  for part in parts[:-1]
               ):
                   return False
 
               filename = relative.name.lower()
-
-              if filename in excluded_filenames:
-                  return False
 
               if any(
                   fragment in filename
@@ -232,10 +209,7 @@ jobs:
           selected_files: list[Path] = []
 
           for path in sorted(root.rglob("*")):
-              if not path.is_file():
-                  continue
-
-              if is_application_code(path):
+              if path.is_file() and is_application_code(path):
                   selected_files.append(path)
 
           manifest_files: list[dict[str, object]] = []
@@ -294,11 +268,10 @@ jobs:
                   handle.write(f'{item["path"]}\n')
 
           print(
-              "Selected "
-              f"{len(manifest_files)} application-code files."
+              f"Selected {len(manifest_files)} application-code files."
           )
 
-      - name: Require at least one application-code file
+      - name: Require application code
         shell: bash
         run: |
           set -euo pipefail
@@ -314,7 +287,7 @@ jobs:
             exit 1
           fi
 
-      - name: Generate concrete Coq repository data
+      - name: Generate RepositoryData.v
         shell: python
         run: |
           from __future__ import annotations
@@ -382,13 +355,6 @@ jobs:
           Proof.
             reflexivity.
           Qed.
-
-          Theorem repository_nonempty :
-            (0 < repository_file_count)%nat.
-          Proof.
-            compute.
-            lia.
-          Qed.
           """
 
           (out / "formal" / "RepositoryData.v").write_text(
@@ -396,7 +362,7 @@ jobs:
               encoding="utf-8",
           )
 
-      - name: Generate complete CDLDS theory
+      - name: Generate CDLDS.v
         shell: bash
         run: |
           set -euo pipefail
@@ -413,12 +379,9 @@ jobs:
 
           Import ListNotations.
 
-          Open Scope string_scope.
-          Open Scope R_scope.
-
           Require Import RepositoryData.
 
-          Inductive Mode :=
+          Inductive Mode : Type :=
           | continue_mode
           | halt_mode.
 
@@ -441,7 +404,7 @@ jobs:
             (repository, 0%nat).
 
           Definition initial_parameter : V :=
-            0.
+            0%R.
 
           Definition D
             (state : M)
@@ -449,7 +412,7 @@ jobs:
             (_ : U) : M :=
             (
               fst state,
-              Datatypes.S (snd state)
+              Nat.succ (snd state)
             ).
 
           Definition zero_field
@@ -457,13 +420,13 @@ jobs:
             (_ : V)
             (_ : U)
             (_ : R) : R :=
-            0.
+            0%R.
 
           Definition C
             (_ : M)
             (parameter : V)
             (_ : U) : V :=
-            parameter + 0.
+            parameter.
 
           Definition T
             (state : M)
@@ -485,7 +448,7 @@ jobs:
             reflexivity.
           Qed.
 
-          Record ButcherTableau := {
+          Record ButcherTableau : Type := {
             tableau_A : list (list R);
             tableau_b : list R;
             tableau_c : list R
@@ -494,12 +457,12 @@ jobs:
           Definition euler_tableau :
             ButcherTableau :=
             {|
-              tableau_A := [[0]];
-              tableau_b := [1];
-              tableau_c := [0]
+              tableau_A := [[0%R]];
+              tableau_b := [1%R];
+              tableau_c := [0%R]
             |}.
 
-          Record RKMethod := {
+          Record RKMethod : Type := {
             rk_tableau : ButcherTableau;
             rk_order : nat;
             rk_step_size : R;
@@ -511,22 +474,22 @@ jobs:
             {|
               rk_tableau := euler_tableau;
               rk_order := 1%nat;
-              rk_step_size := 1;
+              rk_step_size := 1%R;
               rk_apply := C
             |}.
 
           Theorem rk_order_positive :
-            (1 <= rk_order repository_rk)%nat.
+            Nat.le 1%nat (rk_order repository_rk).
           Proof.
             simpl.
-            lia.
+            apply Nat.le_refl.
           Qed.
 
           Theorem rk_step_positive :
-            (0 < rk_step_size repository_rk)%R.
+            Rlt 0%R (rk_step_size repository_rk).
           Proof.
             simpl.
-            lra.
+            exact Rlt_0_1.
           Qed.
 
           Theorem continuous_part_is_rk :
@@ -546,11 +509,7 @@ jobs:
               C state parameter input =
               parameter.
           Proof.
-            intros.
-
-            unfold C.
-
-            lra.
+            reflexivity.
           Qed.
 
           Theorem zero_field_lipschitz :
@@ -560,33 +519,54 @@ jobs:
               input
               t1
               t2,
-              (
-                Rabs (
-                  zero_field
-                    state
-                    parameter
-                    input
-                    t1
-                  -
-                  zero_field
-                    state
-                    parameter
-                    input
-                    t2
+              Rle
+                (
+                  Rabs
+                    (
+                      Rminus
+                        (
+                          zero_field
+                            state
+                            parameter
+                            input
+                            t1
+                        )
+                        (
+                          zero_field
+                            state
+                            parameter
+                            input
+                            t2
+                        )
+                    )
                 )
-                <=
-                0 * Rabs (t1 - t2)
-              )%R.
+                (
+                  Rmult
+                    0%R
+                    (
+                      Rabs
+                        (
+                          Rminus t1 t2
+                        )
+                    )
+                ).
           Proof.
             intros.
 
-            unfold zero_field.
-
-            replace (0 - 0)%R with 0%R by lra.
+            change (
+              Rle
+                (Rabs 0%R)
+                (
+                  Rmult
+                    0%R
+                    (Rabs (Rminus t1 t2))
+                )
+            ).
 
             rewrite Rabs_R0.
+            rewrite Rmult_0_l.
 
-            lra.
+            apply Rle_refl.
           Qed.
 
           Definition binding
@@ -599,7 +579,6 @@ jobs:
               i = j.
           Proof.
             intros i j equality.
-
             exact equality.
           Qed.
 
@@ -627,7 +606,7 @@ jobs:
             (state : M)
             (parameter : V)
             (input : U) : list Theta :=
-            map
+            List.map
               binding
               (
                 active_indices
@@ -638,8 +617,9 @@ jobs:
 
           Definition rank
             (state : M) : nat :=
-            List.length (fst state) -
-            snd state.
+            Nat.sub
+              (List.length (fst state))
+              (snd state).
 
           Theorem rank_decreases :
             forall
@@ -664,10 +644,9 @@ jobs:
                 next_parameter
               )
               ->
-              (
-                rank next_state <
-                rank state
-              )%nat.
+              Nat.lt
+                (rank next_state)
+                (rank state).
           Proof.
             intros
               [files cursor]
@@ -679,7 +658,6 @@ jobs:
               transition_equality.
 
             unfold guard in guard_not_halt.
-
             simpl in guard_not_halt.
 
             destruct (
@@ -696,11 +674,9 @@ jobs:
               simpl in transition_equality.
 
               inversion transition_equality.
-
               subst.
 
               unfold rank.
-
               simpl.
 
               lia.
@@ -708,7 +684,6 @@ jobs:
             - exfalso.
 
               apply guard_not_halt.
-
               reflexivity.
           Qed.
 
@@ -717,7 +692,7 @@ jobs:
             (state : M) : M :=
             (
               fst state,
-              (snd state + steps)%nat
+              Nat.add (snd state) steps
             ).
 
           Theorem advance_state_files :
@@ -741,7 +716,7 @@ jobs:
                   (files, cursor)
               )
               =
-              (cursor + steps)%nat.
+              Nat.add cursor steps.
           Proof.
             reflexivity.
           Qed.
@@ -761,8 +736,9 @@ jobs:
           Proof.
             intros [files cursor] parameter.
 
-            unfold guard, advance_state, rank.
-
+            unfold guard.
+            unfold advance_state.
+            unfold rank.
             simpl.
 
             destruct (
@@ -777,38 +753,34 @@ jobs:
               ].
 
             - assert (
-                (
+                Nat.add
                   cursor
-                  +
                   (
-                    List.length files
-                    -
-                    cursor
+                    Nat.sub
+                      (List.length files)
+                      cursor
                   )
-                )%nat
                 =
                 List.length files
-              ) by lia.
+              ) as cursor_reaches_end
+              by lia.
 
-              rewrite H.
-
+              rewrite cursor_reaches_end.
               rewrite Nat.ltb_irrefl.
 
               reflexivity.
 
             - assert (
-                (
-                  List.length files
-                  -
+                Nat.sub
+                  (List.length files)
                   cursor
-                )%nat
                 =
                 0%nat
-              ) by lia.
+              ) as subtraction_is_zero
+              by lia.
 
-              rewrite H.
-
-              simpl.
+              rewrite subtraction_is_zero.
+              rewrite Nat.add_0_r.
 
               assert (
                 Nat.ltb
@@ -816,15 +788,14 @@ jobs:
                   (List.length files)
                 =
                 false
-              ).
+              ) as cursor_not_less.
 
               {
                 apply Nat.ltb_ge.
-
                 lia.
               }
 
-              rewrite H0.
+              rewrite cursor_not_less.
 
               reflexivity.
           Qed.
@@ -853,11 +824,9 @@ jobs:
                 next_parameter
               )
               ->
-              (
-                snd next_state
-                <=
-                List.length (fst next_state)
-              )%nat.
+              Nat.le
+                (snd next_state)
+                (List.length (fst next_state)).
           Proof.
             intros
               [files cursor]
@@ -869,7 +838,6 @@ jobs:
               transition_equality.
 
             unfold guard in guard_continues.
-
             simpl in guard_continues.
 
             destruct (
@@ -886,7 +854,6 @@ jobs:
               simpl in transition_equality.
 
               inversion transition_equality.
-
               subst.
 
               simpl.
@@ -917,7 +884,6 @@ jobs:
             textblind_transition.
           Proof.
             repeat intro.
-
             reflexivity.
           Qed.
 
@@ -942,7 +908,6 @@ jobs:
             textblind_guard.
           Proof.
             repeat intro.
-
             reflexivity.
           Qed.
 
@@ -950,7 +915,7 @@ jobs:
             (M * V * Theta)%type.
 
           Definition lifted_step
-            (omega omega' : Omega)
+            (omega omega_prime : Omega)
             (input : U) : Prop :=
             let
               '(state, parameter, theta) :=
@@ -963,20 +928,23 @@ jobs:
                 parameter
                 input
             in
-            omega'
-            =
-            (
-              next_state,
-              next_parameter,
-              theta
-            )
-            /\
-            guard
-              state
-              parameter
-              input
-            <>
-            halt_mode.
+            and
+              (
+                omega_prime =
+                (
+                  next_state,
+                  next_parameter,
+                  theta
+                )
+              )
+              (
+                guard
+                  state
+                  parameter
+                  input
+                <>
+                halt_mode
+              ).
 
           CoInductive Trace : Type :=
           | trace_halt :
@@ -988,7 +956,7 @@ jobs:
               Trace ->
               Trace.
 
-          Record CDLDS := {
+          Record CDLDS : Type := {
             cdlds_M : Type;
             cdlds_V : Type;
             cdlds_U : Type;
@@ -1055,10 +1023,8 @@ jobs:
 
             cdlds_binding_injective :
               forall i j,
-                cdlds_binding i
-                =
-                cdlds_binding j
-                ->
+                cdlds_binding i =
+                cdlds_binding j ->
                 i = j
           }.
 
@@ -1103,12 +1069,14 @@ jobs:
             |}.
 
           Theorem repository_cdlds_contains_every_manifest_entry :
-            List.length (
-              fst (
-                cdlds_state
-                  repository_cdlds
+            List.length
+              (
+                fst
+                  (
+                    cdlds_state
+                      repository_cdlds
+                  )
               )
-            )
             =
             repository_file_count.
           Proof.
@@ -1126,10 +1094,11 @@ jobs:
                 (
                   advance_state
                     (
-                      rank (
-                        cdlds_state
-                          repository_cdlds
-                      )
+                      rank
+                        (
+                          cdlds_state
+                            repository_cdlds
+                        )
                     )
                     (
                       cdlds_state
@@ -1142,7 +1111,6 @@ jobs:
               halt_mode.
           Proof.
             intro parameter.
-
             apply eventual_halt.
           Qed.
           COQ
@@ -1152,16 +1120,16 @@ jobs:
           CDLDS.v
           EOF
 
-      - name: Compile generated Coq proofs
+      - name: Show generated Coq source statistics
         shell: bash
-        working-directory: build/cdlds/formal
         run: |
           set -euo pipefail
 
-          coqc RepositoryData.v
-          coqc CDLDS.v
+          wc -l \
+            "$OUT/formal/RepositoryData.v" \
+            "$OUT/formal/CDLDS.v"
 
-      - name: Reject unfinished declarations
+      - name: Reject unfinished declarations before compilation
         shell: bash
         run: |
           set -euo pipefail
@@ -1170,9 +1138,33 @@ jobs:
             '\b(Admitted|admit|Axiom|Parameter|Conjecture|Abort)\b' \
             "$OUT/formal"
           then
-            echo "::error::Generated formalization contains an unfinished declaration"
+            echo "::error::Generated formalization contains an unfinished declaration."
             exit 1
           fi
+
+      - name: Compile RepositoryData.v
+        shell: bash
+        working-directory: build/cdlds/formal
+        run: |
+          set -euo pipefail
+
+          coqc -q RepositoryData.v
+
+      - name: Compile CDLDS.v
+        shell: bash
+        working-directory: build/cdlds/formal
+        run: |
+          set -euo pipefail
+
+          coqc -q CDLDS.v
+
+      - name: Verify compiled Coq objects
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -s "$OUT/formal/RepositoryData.vo"
+          test -s "$OUT/formal/CDLDS.vo"
 
       - name: Write verification report
         shell: bash
@@ -1196,8 +1188,10 @@ jobs:
 
           - Commit: \`$COMMIT\`
           - Application-code files represented: \`$FILE_COUNT\`
-          - Continuous parameter type: \`R\`
-          - Coq compilation: **passed**
+          - Continuous parameter type: \`Coq.Reals.R\`
+          - RepositoryData compilation: **passed**
+          - CDLDS compilation: **passed**
+          - Compiled object verification: **passed**
           - Unfinished declarations: **none**
           - Transition decomposition: **proved**
           - Binding injectivity: **proved**
@@ -1206,16 +1200,22 @@ jobs:
           - Eventual halt: **proved**
           - Manifest cardinality: **proved**
 
-          ## Source selection
+          ## Excluded content
 
-          The artifact includes only files matching the application-code
-          extension allowlist.
+          The source-selection stage excludes:
 
-          Python, Markdown, YAML, tests, documentation, dependency trees,
-          generated files, build outputs, fixtures, mocks, examples, samples,
-          and benchmark directories are excluded.
+          - Python files;
+          - Markdown files;
+          - YAML files;
+          - tests and specifications;
+          - documentation;
+          - examples and samples;
+          - fixtures and mocks;
+          - dependency directories;
+          - generated files;
+          - build and coverage output.
 
-          The exact included-file list is stored at:
+          The exact set of included files is recorded in:
 
           \`reports/INCLUDED_FILES.txt\`
           EOF
