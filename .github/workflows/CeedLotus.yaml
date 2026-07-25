@@ -8,7 +8,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: cdlds-zip-${{ github.workflow }}-${{ github.ref }}
@@ -508,7 +508,7 @@ jobs:
             );
           }
 
-          // NEW: Collect human‑readable declarations from inside function bodies
+          // NEW: Collect human-readable declarations from inside function bodies
           function collectBodyDeclarations(body: ts.Node, sourceFile: ts.SourceFile): any[] {
             const items: any[] = [];
             function walk(n: ts.Node) {
@@ -762,7 +762,7 @@ jobs:
               const header = [
                 "/*",
                 " * Generated CDLDS application module.",
-                " * This file is an AST‑derived behavioral representation of",
+                " * This file is an AST-derived behavioral representation of",
                 " * the source module that originally occupied this path.",
                 " * The original source repository was not modified.",
                 " */\n"
@@ -828,6 +828,122 @@ jobs:
 
           pnpm tsx cdlds-transform.ts
 
+      - name: Ensure intent-first project contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f intent.json ]]; then
+            cat > intent.json <<'JSON'
+          {
+            "version": "1.0",
+            "status": "required-before-implementation",
+            "description": "Declare the intended behavioral change before implementation so generated code is anchored to a reviewable behavioral contract.",
+            "target": {
+              "file": "",
+              "system": ""
+            },
+            "context": {
+              "changeType": "modification",
+              "scope": "",
+              "preserveBaseline": true
+            },
+            "must": [],
+            "mustNot": []
+          }
+          JSON
+          fi
+
+          README_FILE=""
+          if [[ -f README.md ]]; then
+            README_FILE="README.md"
+          elif [[ -f Readme.md ]]; then
+            README_FILE="Readme.md"
+          elif [[ -f readme.md ]]; then
+            README_FILE="readme.md"
+          else
+            README_FILE="README.md"
+            : > "$README_FILE"
+          fi
+
+          if ! grep -Fq '<!-- ceedlotus-intent-first -->' "$README_FILE"; then
+            cat >> "$README_FILE" <<'MARKDOWN'
+
+          <!-- ceedlotus-intent-first -->
+          ## CeedLotus Intent-First Workflow
+
+          Before implementing or modifying code, create or update the repository-root `intent.json`. The intent file is the behavioral contract for the requested change.
+
+          ### Required Workflow
+
+          1. Read `intent.json`.
+          2. Complete every required field before implementation.
+          3. Present the completed `intent.json` to the user.
+          4. Do not begin implementation until the intent is accepted.
+          5. Implement the requested behavior.
+          6. Generate and inspect the CDLDS behavioral representation.
+          7. Verify the implementation against the declared intent.
+          8. Create or update `intent-verification.json`.
+          9. Present the completed `intent-verification.json` to the user.
+          10. Do not declare the task complete until the verification report has been produced.
+
+          ### Required Deliverables
+
+          Every completed implementation must include:
+
+          - The completed `intent.json`.
+          - The generated CDLDS output.
+          - The completed `intent-verification.json`.
+
+          ### `intent-verification.json`
+
+          ```json
+          {
+            "verificationVersion": "1.0",
+            "status": "passed",
+            "intentReviewed": true,
+            "implementationCompleted": true,
+            "behaviorVerified": true,
+            "requirementsSatisfied": [],
+            "requirementsFailed": [],
+            "behavioralChanges": [],
+            "verificationEvidence": [],
+            "notes": ""
+          }
+          ```
+
+          ### AI Rules
+
+          - Never implement code before completing `intent.json`.
+          - Never rewrite `intent.json` after implementation merely to match the produced code.
+          - Always verify the implementation against the declared intent.
+          - Always create and present `intent-verification.json`.
+          - If any requirement cannot be verified, set `status` to `failed`, set `behaviorVerified` to `false`, list the failed requirements, and explain why.
+          - Never claim that the task is complete without presenting the verification report.
+          MARKDOWN
+          fi
+
+      - name: Commit intent-first project files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          README_FILE="README.md"
+          [[ -f Readme.md ]] && README_FILE="Readme.md"
+          [[ -f readme.md ]] && README_FILE="readme.md"
+          [[ -f README.md ]] && README_FILE="README.md"
+
+          if [[ -z "$(git status --porcelain -- intent.json "$README_FILE")" ]]; then
+            echo "Intent-first project files are already present."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- intent.json "$README_FILE"
+          git commit -m "chore: add CeedLotus intent-first workflow"
+          git push
+
       - name: Create deterministic ZIP of transformed application
         run: |
           set -euo pipefail
@@ -846,5 +962,6 @@ jobs:
             build/transformed-cdlds-application.zip
             build/transformed-cdlds-application.zip.sha256
             build/CDLDS_MANIFEST.txt
+            intent.json
           if-no-files-found: error
           retention-days: 30
