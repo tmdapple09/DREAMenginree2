@@ -34,7 +34,7 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
-      - name: Install project dependencies (non-frozen)
+      - name: Install project dependencies (exact lockfile)
         run: pnpm install --no-frozen-lockfile
 
       - name: Generate and run CDLDS transformer
@@ -508,6 +508,48 @@ jobs:
             );
           }
 
+          // NEW: Collect human‑readable declarations from inside function bodies
+          function collectBodyDeclarations(body: ts.Node, sourceFile: ts.SourceFile): any[] {
+            const items: any[] = [];
+            function walk(n: ts.Node) {
+              // Local variable declarations
+              if (ts.isVariableStatement(n)) {
+                for (const decl of n.declarationList.declarations) {
+                  const name = sourceText(sourceFile, decl.name, 200);
+                  const type = decl.type ? sourceText(sourceFile, decl.type, 100) : undefined;
+                  const init = decl.initializer ? sourceText(sourceFile, decl.initializer, 300) : undefined;
+                  items.push({
+                    kind: "variable",
+                    name,
+                    type: type ?? null,
+                    initializer: init ?? null,
+                    source: positionOf(sourceFile, n)
+                  });
+                }
+              }
+              // Hook calls (function calls starting with "use")
+              if (ts.isCallExpression(n)) {
+                const callText = sourceText(sourceFile, n.expression, 100);
+                if (callText.startsWith("use") && /^use[A-Z]/.test(callText)) {
+                  const args = n.arguments.map(a => sourceText(sourceFile, a, 200));
+                  const hookEntry: any = {
+                    kind: "hook",
+                    name: callText,
+                    source: positionOf(sourceFile, n)
+                  };
+                  // Special handling for useEffect / useMemo / useCallback to capture deps
+                  if (callText === "useEffect" || callText === "useMemo" || callText === "useCallback") {
+                    hookEntry.deps = args.length >= 2 ? sourceText(sourceFile, n.arguments[1], 200) : null;
+                  }
+                  items.push(hookEntry);
+                }
+              }
+              ts.forEachChild(n, walk);
+            }
+            walk(body);
+            return items.sort((a, b) => (a.source?.start ?? 0) - (b.source?.start ?? 0));
+          }
+
           function analyzeFunction(node: any, sourceFile: any, relativePath: string): any {
             const loc = positionOf(sourceFile, node);
             const name = functionName(node, sourceFile);
@@ -600,6 +642,9 @@ jobs:
               visit(body);
             }
 
+            // NEW: bodyDeclarations
+            const bodyDeclarations = body ? collectBodyDeclarations(body, sourceFile) : [];
+
             return {
               id,
               name,
@@ -619,20 +664,21 @@ jobs:
               calls: calls.sort((a, b) => a.id.localeCompare(b.id, "en")),
               unresolvedSemantics: unresolved.sort((a, b) =>
                 `${a.kind}:${a.source?.start ?? "nosource"}`.localeCompare(`${b.kind}:${b.source?.start ?? "nosource"}`, "en")
-              )
+              ),
+              bodyDeclarations               // <-- NEW FIELD
             };
           }
 
           // ----------------------------------------------------------------
           //  File analysis
           // ----------------------------------------------------------------
+          const project = new Project({ tsConfigFilePath: path.join(sourceRoot, "tsconfig.json") });
+
           function analyzeFile(filePath: string): any {
             const originalBytes = fs.readFileSync(filePath);
             const source = originalBytes.toString("utf8");
             const relativePath = normalizeRelativePath(filePath);
-            const project = new Project({ tsConfigFilePath: path.join(sourceRoot, "tsconfig.json") });
             const sourceFile = project.createSourceFile(relativePath, source, { overwrite: true });
-
             const nativeSourceFile = sourceFile.compilerNode;
 
             const imports: any[] = [];
@@ -655,6 +701,13 @@ jobs:
               });
             }
 
+            function collectAllFunctions(node: ts.Node) {
+              if (isFunctionLike(node)) {
+                systems.push(analyzeFunction(node, nativeSourceFile, relativePath));
+              }
+              ts.forEachChild(node, collectAllFunctions);
+            }
+
             ts.forEachChild(nativeSourceFile, (child) => {
               if (ts.isImportDeclaration(child) || ts.isImportEqualsDeclaration(child))
                 imports.push({ kind: syntaxName(child), text: sourceText(nativeSourceFile, child, 500),
@@ -669,12 +722,8 @@ jobs:
               )
                 declarations.push({ kind: syntaxName(child), text: sourceText(nativeSourceFile, child, 500),
                   source: positionOf(nativeSourceFile, child), definitions: collectDefinitions(child, nativeSourceFile) });
-              if (isFunctionLike(child))
-                systems.push(analyzeFunction(child, nativeSourceFile, relativePath));
-              ts.forEachChild(child, (nested: any) => {
-                if (isFunctionLike(nested))
-                  systems.push(analyzeFunction(nested, nativeSourceFile, relativePath));
-              });
+
+              collectAllFunctions(child);
             });
 
             return {
