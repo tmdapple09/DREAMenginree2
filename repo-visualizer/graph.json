@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-25T04:37:58.670Z",
+  "generatedAt": "2026-07-25T22:57:55.375Z",
   "root": ".",
   "nodes": [
     {
@@ -2672,6 +2672,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/CeedLotus.yaml",
+      "label": "CeedLotus.yaml",
+      "type": "config",
+      "path": ".github/workflows/CeedLotus.yaml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/DREAMengin-feature-tree.yml",
       "label": "DREAMengin-feature-tree.yml",
       "type": "config",
@@ -2936,16 +2946,6 @@
       "label": "db-extension-check.yml",
       "type": "config",
       "path": ".github/workflows/db-extension-check.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/deepseek_yaml_20260724_0fc553.yaml",
-      "label": "deepseek_yaml_20260724_0fc553.yaml",
-      "type": "config",
-      "path": ".github/workflows/deepseek_yaml_20260724_0fc553.yaml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
