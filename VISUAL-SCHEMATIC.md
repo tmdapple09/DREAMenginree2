@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2273
+- **Total files:** 2276
 - **Total function/class nodes:** 4923
 - **Total edges:** 8632
-- **Orphan nodes:** 4198
+- **Orphan nodes:** 4199
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4134,6 +4134,7 @@ _File-level graph omitted: 368 files exceeds Mermaid render budget. See table ab
 | `COREUX.md` | doc |
 | `COREVISION.md` | doc |
 | `daydreams/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `deadtrigger2.apk` | file |
 | `deepseek_json_20260701_3ac1d7.json` | config |
 | `docs/ACTION_AUDIT.md` | doc |
 | `docs/ACTIVITY_FIRST_PROTOCOL.md` | doc |
