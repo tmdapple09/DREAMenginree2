@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-07-25T21:37:24.902Z
+Generated: 2026-07-26T03:49:26.491Z
 
 Marker guide:
 
@@ -13472,6 +13472,7 @@ function checkUseDualRuntimeDuplicate(){
 
   warn(
 |   `-- -> useDualRuntime
++-- intent.json
 +-- LICENSE
 +-- next-env.d.ts !
 |   `-- (side-effect)  ! ./.next/types/routes.d.ts

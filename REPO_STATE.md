@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-25T21:37:09.980Z
+Generated: 2026-07-26T03:49:10.848Z
 
 Model: capability nodes + files as edges.
 
@@ -9271,6 +9271,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 +-- fix-audit.js
 +-- fix-repo.cjs !
 |   `-- ! ./ ((default))
++-- intent.json
 +-- LICENSE
 +-- next-env.d.ts !
 |   `-- ! ./.next/types/routes.d.ts ((side-effect))
