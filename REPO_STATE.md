@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-07-26T04:08:54.758Z
+Generated: 2026-07-26T04:53:29.375Z
 
 Model: capability nodes + files as edges.
 
@@ -9265,6 +9265,7 @@ Legend: `!` means unresolved import. Markers are explained above.
 +-- .env.local.example
 +-- .gitignore
 +-- .gitleaks.toml
++-- deadtrigger2.apk
 +-- deepseek_json_20260701_3ac1d7.json
 +-- Dreamengin.names.json
 +-- eslint.config.mjs
