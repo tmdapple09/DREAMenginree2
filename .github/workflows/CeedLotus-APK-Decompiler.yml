@@ -1,0 +1,214 @@
+name: CeedLotus APK Decompiler
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**/*.apk'
+      - '**/*.zip'
+      - '.github/workflows/ceedlotus-apk-decompiler.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apk-decompile-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JADX_VERSION: '1.5.6'
+  OUTPUT_ROOT: build/apk-decompiled
+
+jobs:
+  decompile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install JADX
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          JADX_ZIP="$RUNNER_TEMP/jadx-${JADX_VERSION}.zip"
+          JADX_HOME="$RUNNER_TEMP/jadx-${JADX_VERSION}"
+
+          curl --fail --location --retry 3 \
+            --output "$JADX_ZIP" \
+            "https://github.com/skylot/jadx/releases/download/v${JADX_VERSION}/jadx-${JADX_VERSION}.zip"
+
+          rm -rf "$JADX_HOME"
+          mkdir -p "$JADX_HOME"
+          unzip -q "$JADX_ZIP" -d "$JADX_HOME"
+          chmod +x "$JADX_HOME/bin/jadx"
+
+          echo "JADX_HOME=$JADX_HOME" >> "$GITHUB_ENV"
+          "$JADX_HOME/bin/jadx" --version
+
+      - name: Find APKs and compatible ZIP archives
+        id: discover
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p "$OUTPUT_ROOT" "$RUNNER_TEMP/apk-inputs"
+          : > "$RUNNER_TEMP/decompile-inputs.tsv"
+          : > "$OUTPUT_ROOT/DISCOVERY.txt"
+
+          add_input() {
+            local source="$1"
+            local label="$2"
+            printf '%s\t%s\n' "$source" "$label" >> "$RUNNER_TEMP/decompile-inputs.tsv"
+          }
+
+          while IFS= read -r -d '' file; do
+            relative="${file#./}"
+
+            case "${file,,}" in
+              *.apk)
+                add_input "$file" "$relative"
+                printf 'APK\t%s\n' "$relative" >> "$OUTPUT_ROOT/DISCOVERY.txt"
+                ;;
+
+              *.zip)
+                mapfile -t apk_entries < <(
+                  unzip -Z1 "$file" 2>/dev/null | grep -Ei '(^|/)[^/]+\.apk$' || true
+                )
+
+                if (( ${#apk_entries[@]} > 0 )); then
+                  for entry in "${apk_entries[@]}"; do
+                    entry_hash="$(printf '%s\0%s' "$relative" "$entry" | sha256sum | cut -c1-12)"
+                    entry_name="$(basename "$entry")"
+                    staged="$RUNNER_TEMP/apk-inputs/${entry_hash}-${entry_name}"
+
+                    unzip -p "$file" "$entry" > "$staged"
+                    add_input "$staged" "${relative}!/${entry}"
+                    printf 'ZIP_NESTED_APK\t%s\t%s\n' "$relative" "$entry" >> "$OUTPUT_ROOT/DISCOVERY.txt"
+                  done
+                  continue
+                fi
+
+                if unzip -Z1 "$file" 2>/dev/null | grep -Eiq '(^|/)classes([0-9]+)?\.dex$'; then
+                  add_input "$file" "$relative"
+                  printf 'ZIP_WITH_DEX\t%s\n' "$relative" >> "$OUTPUT_ROOT/DISCOVERY.txt"
+                else
+                  printf 'ZIP_SKIPPED_NO_APK_OR_DEX\t%s\n' "$relative" >> "$OUTPUT_ROOT/DISCOVERY.txt"
+                fi
+                ;;
+            esac
+          done < <(
+            find . -type f \
+              \( -iname '*.apk' -o -iname '*.zip' \) \
+              -not -path './.git/*' \
+              -not -path './build/*' \
+              -not -path './node_modules/*' \
+              -print0 | LC_ALL=C sort -z
+          )
+
+          input_count="$(wc -l < "$RUNNER_TEMP/decompile-inputs.tsv" | tr -d ' ')"
+          echo "input_count=$input_count" >> "$GITHUB_OUTPUT"
+          echo "Discovered $input_count decompilable input(s)."
+          cat "$OUTPUT_ROOT/DISCOVERY.txt"
+
+      - name: Decompile APK and DEX inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          manifest="$OUTPUT_ROOT/MANIFEST.tsv"
+          : > "$manifest"
+
+          if [[ ! -s "$RUNNER_TEMP/decompile-inputs.tsv" ]]; then
+            cat > "$OUTPUT_ROOT/README.txt" <<'TEXT'
+          No APK file, nested APK, or ZIP archive containing classes.dex was found.
+          The workflow completed without creating decompiled source output.
+          TEXT
+            exit 0
+          fi
+
+          sanitize() {
+            printf '%s' "$1" \
+              | sed -E 's#[^A-Za-z0-9._-]+#-#g; s/^-+//; s/-+$//' \
+              | cut -c1-120
+          }
+
+          while IFS=$'\t' read -r input label; do
+            [[ -n "$input" && -f "$input" ]] || continue
+
+            digest="$(sha256sum "$input" | awk '{print $1}')"
+            short_digest="${digest:0:12}"
+            safe_label="$(sanitize "$label")"
+            [[ -n "$safe_label" ]] || safe_label="android-input"
+
+            output="$OUTPUT_ROOT/${safe_label}-${short_digest}"
+            mkdir -p "$output"
+
+            {
+              echo "source=$label"
+              echo "sha256=$digest"
+              echo "jadx_version=$JADX_VERSION"
+            } > "$output/INPUT.txt"
+
+            echo "Decompiling: $label"
+            set +e
+            "$JADX_HOME/bin/jadx" \
+              --deobf \
+              --output-dir "$output" \
+              "$input" \
+              2>&1 | tee "$output/jadx.log"
+            jadx_status=${PIPESTATUS[0]}
+            set -e
+
+            source_count="$(find "$output/sources" -type f 2>/dev/null | wc -l | tr -d ' ')"
+            resource_count="$(find "$output/resources" -type f 2>/dev/null | wc -l | tr -d ' ')"
+
+            printf '%s\t%s\t%s\t%s\t%s\n' \
+              "$label" "$digest" "$jadx_status" "$source_count" "$resource_count" \
+              >> "$manifest"
+
+            if (( jadx_status != 0 )); then
+              echo "::warning file=${label}::JADX returned status ${jadx_status}; partial output and the log were preserved."
+            fi
+          done < "$RUNNER_TEMP/decompile-inputs.tsv"
+
+          {
+            echo "source\tsha256\tjadx_status\tdecompiled_source_files\tresource_files"
+            cat "$manifest"
+          } > "$OUTPUT_ROOT/MANIFEST.complete.tsv"
+          mv "$OUTPUT_ROOT/MANIFEST.complete.tsv" "$manifest"
+
+      - name: Publish decompilation summary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## APK decompilation"
+            echo
+            echo "An Android APK is a ZIP-format package. This workflow processes files ending in \`.apk\`, APKs nested inside \`.zip\` files, and ZIP archives containing \`classes.dex\`."
+            echo
+            if [[ -f "$OUTPUT_ROOT/MANIFEST.tsv" ]]; then
+              echo '```text'
+              cat "$OUTPUT_ROOT/MANIFEST.tsv"
+              echo '```'
+            else
+              echo "No decompilable input was found."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload decompiled application
+        uses: actions/upload-artifact@v7
+        with:
+          name: apk-decompiled-${{ github.sha }}
+          path: build/apk-decompiled
+          if-no-files-found: error
+          retention-days: 30
