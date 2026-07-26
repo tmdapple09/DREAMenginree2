@@ -1,0 +1,193 @@
+name: CeedLotus Behavior Graph
+
+on:
+  workflow_dispatch:
+
+jobs:
+  graph:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Download latest CDLDS artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: CeedLotus CDLDS Application ZIP
+          name_is_regexp: true
+          name: transformed-cdlds-application-.*
+          path: cdlds-artifact
+
+      - name: Extract CDLDS ZIP
+        run: |
+          set -euo pipefail
+          ZIP=$(find cdlds-artifact -name "transformed-cdlds-application.zip" | head -1)
+          unzip -q "$ZIP" -d cdlds-extracted
+
+      - name: Install Python dependencies
+        run: pip install graphviz --break-system-packages
+
+      - name: Generate behavior graph
+        shell: python3 {0}
+        run: |
+          import os
+          import re
+          import json
+          import graphviz
+
+          cdlds_dir = "cdlds-extracted"
+          systems_by_file = {}
+          all_calls = {}
+
+          # Walk every .ts/.tsx file in the extracted CDLDS output
+          for root, dirs, files in os.walk(cdlds_dir):
+              for fname in files:
+                  if not (fname.endswith(".ts") or fname.endswith(".tsx")):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  rel = os.path.relpath(fpath, cdlds_dir).replace("\\", "/")
+                  try:
+                      raw = open(fpath, encoding="utf-8").read()
+                  except Exception:
+                      continue
+
+                  # Pull the JSON blob out of the TS export
+                  m = re.search(r'export const cdldsModule\s*=\s*(\{.*\})\s*as const', raw, re.DOTALL)
+                  if not m:
+                      continue
+                  try:
+                      data = json.loads(m.group(1))
+                  except Exception:
+                      continue
+
+                  mod_path = data.get("module", {}).get("path", rel)
+                  systems = data.get("systems", [])
+                  if not systems:
+                      continue
+
+                  systems_by_file[mod_path] = [s["name"] for s in systems]
+
+                  for sys in systems:
+                      sys_id = f"{mod_path}::{sys['name']}"
+                      calls = [c["expression"] for c in sys.get("calls", [])]
+                      all_calls[sys_id] = {
+                          "file": mod_path,
+                          "name": sys["name"],
+                          "calls": calls,
+                          "async": sys.get("async", False),
+                          "hooks": [b["name"] for b in sys.get("bodyDeclarations", []) if b.get("kind") == "hook"],
+                      }
+
+          # Build cross-file call edges
+          # Index all system names globally for lookup
+          name_to_ids = {}
+          for sys_id, info in all_calls.items():
+              name = info["name"]
+              name_to_ids.setdefault(name, []).append(sys_id)
+
+          # Color palette — high contrast dark theme
+          FILE_COLORS = [
+              "#7C3AED", "#0EA5E9", "#10B981", "#F59E0B",
+              "#EF4444", "#EC4899", "#06B6D4", "#84CC16",
+              "#F97316", "#8B5CF6", "#14B8A6", "#F43F5E",
+          ]
+
+          file_list = sorted(systems_by_file.keys())
+          file_color = {f: FILE_COLORS[i % len(FILE_COLORS)] for i, f in enumerate(file_list)}
+
+          dot = graphviz.Digraph(
+              name="CeedLotus Behavior Graph",
+              format="png",
+              graph_attr={
+                  "bgcolor": "#0D0D0D",
+                  "rankdir": "LR",
+                  "splines": "curved",
+                  "overlap": "false",
+                  "nodesep": "0.6",
+                  "ranksep": "1.2",
+                  "fontname": "Helvetica",
+                  "fontcolor": "#FFFFFF",
+                  "dpi": "180",
+              },
+              node_attr={
+                  "shape": "roundedbox",
+                  "style": "filled",
+                  "fontname": "Helvetica",
+                  "fontsize": "11",
+                  "fontcolor": "#FFFFFF",
+                  "margin": "0.2,0.1",
+              },
+              edge_attr={
+                  "fontname": "Helvetica",
+                  "fontsize": "9",
+                  "fontcolor": "#AAAAAA",
+                  "color": "#555555",
+                  "arrowsize": "0.7",
+              },
+          )
+
+          # One subgraph cluster per file
+          for file_path in file_list:
+              color = file_color[file_path]
+              short = file_path.split("/")[-1]
+              with dot.subgraph(name=f"cluster_{file_path.replace('/', '_').replace('.', '_')}") as sg:
+                  sg.attr(
+                      label=short,
+                      style="rounded,filled",
+                      fillcolor="#1A1A1A",
+                      color=color,
+                      fontcolor=color,
+                      fontsize="13",
+                      fontname="Helvetica Bold",
+                      penwidth="2",
+                  )
+                  for sys_name in systems_by_file[file_path]:
+                      sys_id = f"{file_path}::{sys_name}"
+                      info = all_calls.get(sys_id, {})
+                      is_async = info.get("async", False)
+                      hooks = info.get("hooks", [])
+                      label = sys_name
+                      if is_async:
+                          label = f"⚡ {label}"
+                      if hooks:
+                          label = f"{label}\n({', '.join(hooks[:3])})"
+                      sg.node(
+                          sys_id,
+                          label=label,
+                          fillcolor=color,
+                          color=color,
+                      )
+
+          # Draw cross-system call edges
+          seen_edges = set()
+          for sys_id, info in all_calls.items():
+              for call_expr in info["calls"]:
+                  # Strip method chains to get base name
+                  base = call_expr.split("(")[0].split(".")[-1].strip()
+                  if base in name_to_ids:
+                      for target_id in name_to_ids[base]:
+                          if target_id == sys_id:
+                              continue
+                          edge_key = (sys_id, target_id)
+                          if edge_key in seen_edges:
+                              continue
+                          seen_edges.add(edge_key)
+                          # Cross-file edges are brighter
+                          same_file = info["file"] == all_calls[target_id]["file"]
+                          dot.edge(
+                              sys_id,
+                              target_id,
+                              color="#FFFFFF44" if same_file else "#00E5FF",
+                              penwidth="1" if same_file else "1.8",
+                          )
+
+          dot.render("behavior-graph", cleanup=True)
+          print(f"Graph generated: behavior-graph.png")
+          print(f"Files: {len(file_list)}, Systems: {len(all_calls)}, Edges: {len(seen_edges)}")
+
+      - name: Upload behavior graph
+        uses: actions/upload-artifact@v6
+        with:
+          name: ceedlotus-behavior-graph-${{ github.run_id }}
+          path: behavior-graph.png
+          if-no-files-found: error
+          retention-days: 30
