@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "status": "required-before-implementation",
+  "description": "Declare the intended behavioral change before implementation so generated code is anchored to a reviewable behavioral contract.",
+  "target": {
+    "file": "",
+    "system": ""
+  },
+  "context": {
+    "changeType": "modification",
+    "scope": "",
+    "preserveBaseline": true
+  },
+  "must": [],
+  "mustNot": []
+}

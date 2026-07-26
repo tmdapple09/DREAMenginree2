@@ -2588,3 +2588,55 @@ Supporting files:
 - This run converted 1413 recognized product-evidence paths into GitHub links.
 - Both generated documents are validated before either file is replaced.
 - Generated documents are excluded from their own source inventory to prevent self-referential drift.
+
+<!-- ceedlotus-intent-first -->
+## CeedLotus Intent-First Workflow
+
+Before implementing or modifying code, create or update the repository-root `intent.json`. The intent file is the behavioral contract for the requested change.
+
+### Required Workflow
+
+1. Read `intent.json`.
+2. Complete every required field before implementation.
+3. Present the completed `intent.json` to the user.
+4. Do not begin implementation until the intent is accepted.
+5. Implement the requested behavior.
+6. Generate and inspect the CDLDS behavioral representation.
+7. Verify the implementation against the declared intent.
+8. Create or update `intent-verification.json`.
+9. Present the completed `intent-verification.json` to the user.
+10. Do not declare the task complete until the verification report has been produced.
+
+### Required Deliverables
+
+Every completed implementation must include:
+
+- The completed `intent.json`.
+- The generated CDLDS output.
+- The completed `intent-verification.json`.
+
+### `intent-verification.json`
+
+```json
+{
+  "verificationVersion": "1.0",
+  "status": "passed",
+  "intentReviewed": true,
+  "implementationCompleted": true,
+  "behaviorVerified": true,
+  "requirementsSatisfied": [],
+  "requirementsFailed": [],
+  "behavioralChanges": [],
+  "verificationEvidence": [],
+  "notes": ""
+}
+```
+
+### AI Rules
+
+- Never implement code before completing `intent.json`.
+- Never rewrite `intent.json` after implementation merely to match the produced code.
+- Always verify the implementation against the declared intent.
+- Always create and present `intent-verification.json`.
+- If any requirement cannot be verified, set `status` to `failed`, set `behaviorVerified` to `false`, list the failed requirements, and explain why.
+- Never claim that the task is complete without presenting the verification report.
