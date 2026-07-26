@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T05:10:02.509Z",
+  "generatedAt": "2026-07-26T05:20:15.309Z",
   "root": ".",
   "nodes": [
     {
@@ -2682,10 +2682,10 @@
       "tags": []
     },
     {
-      "id": "file:.github/workflows/CeedLotus-CDLDS-with-Behavior-Graph.yml",
-      "label": "CeedLotus-CDLDS-with-Behavior-Graph.yml",
+      "id": "file:.github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
+      "label": "CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
       "type": "config",
-      "path": ".github/workflows/CeedLotus-CDLDS-with-Behavior-Graph.yml",
+      "path": ".github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
