@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2271
+- **Total files:** 2272
 - **Total function/class nodes:** 4923
 - **Total edges:** 8632
-- **Orphan nodes:** 4197
+- **Orphan nodes:** 4198
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -4431,6 +4431,7 @@ _File-level graph omitted: 368 files exceeds Mermaid render budget. See table ab
 | `fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` | file |
 | `GameENGINspec.md` | doc |
 | `hooks/Agents-MUST-READ-ARCHITECTURE.md` | doc |
+| `intent.json` | config |
 | `LICENSE` | file |
 | `misc/Agents-MUST-READ-ARCHITECTURE.md` | doc |
 | `next-env.d.ts` | ts |

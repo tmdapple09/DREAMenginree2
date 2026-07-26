@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T00:19:12.622Z",
+  "generatedAt": "2026-07-26T01:32:54.033Z",
   "root": ".",
   "nodes": [
     {
@@ -66260,6 +66260,16 @@
       "parent": "folder:hooks",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:intent.json",
+      "label": "intent.json",
+      "type": "config",
+      "path": "intent.json",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     },
     {
