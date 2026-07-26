@@ -1,4 +1,4 @@
-name: CeedLotus CDLDS Application ZIP
+name: CeedLotus CDLDS tree
 
 on:
   workflow_dispatch:
