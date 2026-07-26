@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T05:20:15.309Z",
+  "generatedAt": "2026-07-26T05:50:12.888Z",
   "root": ".",
   "nodes": [
     {
@@ -2676,16 +2676,6 @@
       "label": "CeedLotus-APK-Decompiler.yml",
       "type": "config",
       "path": ".github/workflows/CeedLotus-APK-Decompiler.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
-      "label": "CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
-      "type": "config",
-      "path": ".github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
