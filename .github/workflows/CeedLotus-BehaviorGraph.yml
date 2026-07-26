@@ -8,14 +8,14 @@ on:
       - master
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: cdlds-zip-${{ github.workflow }}-${{ github.ref }}
+  group: ceedlotus-tree-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  transform:
+  behavior-tree:
     runs-on: ubuntu-26.04
     timeout-minutes: 30
 
@@ -37,11 +37,11 @@ jobs:
       - name: Install project dependencies (exact lockfile)
         run: pnpm install --no-frozen-lockfile
 
-      - name: Generate and run CDLDS transformer
+      - name: Generate behavior graph and ASCII tree
         shell: bash
         run: |
           set -euo pipefail
-          cat > cdlds-transform.ts <<'SCRIPT'
+          cat > ceedlotus-tree.ts <<'SCRIPT'
           import { Project, ts } from "ts-morph";
           import * as fs from "node:fs";
           import * as path from "node:path";
@@ -49,9 +49,10 @@ jobs:
 
           const workspace = process.env.GITHUB_WORKSPACE!;
           const sourceRoot = workspace;
-          const outputRoot = path.join(sourceRoot, "build", "cdlds-application");
-          const behaviorGraphJsonPath = path.join(sourceRoot, "build", "BEHAVIOR_GRAPH.json");
-          const behaviorGraphTextPath = path.join(sourceRoot, "build", "BEHAVIOR_GRAPH.txt");
+          const treeOutputRoot = path.join(sourceRoot, "build", "ceedlotus-tree");
+          const behaviorGraphJsonPath = path.join(treeOutputRoot, "BEHAVIOR_GRAPH.json");
+          const behaviorGraphTextPath = path.join(treeOutputRoot, "BEHAVIOR_GRAPH.txt");
+          const behaviorGraphManifestPath = path.join(treeOutputRoot, "BEHAVIOR_GRAPH_MANIFEST.txt");
 
           // ----------------------------------------------------------------
           //  File discovery
@@ -73,7 +74,7 @@ jobs:
             /(?:^|[._-])(test|spec|mock|fixture|benchmark|bench)(?:[._-]|$)/i,
             /(?:^|[._-])(config|setup)(?:[._-]|$)/i,
             /(?:^|[._-])generated(?:[._-]|$)/i,
-            /^cdlds-transform\.[cm]?[jt]s$/i
+            /^ceedlotus-tree\.[cm]?[jt]s$/i
           ];
 
           function normalizeRelativePath(filePath: string): string {
@@ -164,7 +165,7 @@ jobs:
               }
             }
             text = text.replace(/\r\n/g, "\n").trim();
-            return text.length <= maxLen ? text : `${text.slice(0, maxLen)}…`;
+            return text.length <= maxLen ? text : `${text.slice(0, maxLen)}â¦`;
           }
 
           function syntaxName(node: any): string {
@@ -1067,27 +1068,6 @@ jobs:
             return `{${keys.map(k => `${JSON.stringify(k)}:${stableSerialize(value[k])}`).join(",")}}`;
           }
 
-          function renderTransformedModule(model: any, extension: string): string {
-            try {
-              const serialized = stableSerialize(model);
-              const formatted = JSON.stringify(JSON.parse(serialized), null, 2);
-              const header = [
-                "/*",
-                " * Generated CDLDS application module.",
-                " * This file is an AST-derived behavioral representation of",
-                " * the source module that originally occupied this path.",
-                " * The original source repository was not modified.",
-                " */\n"
-              ].join("\n");
-              if (extension === ".cjs") return `${header}const cdldsModule = ${formatted};\n\nmodule.exports = cdldsModule;\n`;
-              if (extension === ".ts" || extension === ".tsx")
-                return `${header}export const cdldsModule = ${formatted} as const;\n\nexport default cdldsModule;\n`;
-              return `${header}export const cdldsModule = ${formatted};\n\nexport default cdldsModule;\n`;
-            } catch (error) {
-              return `/* [CDLDS SERIALIZATION ERROR: ${(error as Error).message}] */\nexport const cdldsModule = {} as const;\nexport default cdldsModule;\n`;
-            }
-          }
-
           // ----------------------------------------------------------------
           //  Repository behavior graph
           // ----------------------------------------------------------------
@@ -1305,33 +1285,33 @@ jobs:
 
           function oneLine(value: unknown, maxLength = 180): string {
             const text = String(value ?? "").replace(/\s+/g, " ").trim();
-            return text.length <= maxLength ? text : `${text.slice(0, maxLength)}…`;
+            return text.length <= maxLength ? text : `${text.slice(0, maxLength)}â¦`;
           }
 
           function renderBehaviorGraphTree(models: any[], graph: any): string {
             const lines: string[] = [];
-            lines.push("┌──────────────────────── APPLICATION BEHAVIOR GRAPH ────────────────────────┐");
-            lines.push(`│ modules=${graph.summary.modules} systems=${graph.summary.systems} nodes=${graph.summary.nodes} edges=${graph.summary.edges}`);
-            lines.push(`│ dynamic=${graph.summary.dynamicBehaviors} mode=syntax/compiler evidence only`);
-            lines.push("└────────────────────────────────────────────────────────────────────────────┘");
+            lines.push("âââââââââââââââââââââââââ APPLICATION BEHAVIOR GRAPH âââââââââââââââââââââââââ");
+            lines.push(`â modules=${graph.summary.modules} systems=${graph.summary.systems} nodes=${graph.summary.nodes} edges=${graph.summary.edges}`);
+            lines.push(`â dynamic=${graph.summary.dynamicBehaviors} mode=syntax/compiler evidence only`);
+            lines.push("ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ");
             lines.push("APPLICATION");
 
             const sortedModels = [...models].sort((a, b) => a.module.path.localeCompare(b.module.path, "en"));
             for (let moduleIndex = 0; moduleIndex < sortedModels.length; moduleIndex++) {
               const model = sortedModels[moduleIndex];
               const moduleLast = moduleIndex === sortedModels.length - 1;
-              const moduleBranch = moduleLast ? "└──" : "├──";
-              const moduleIndent = moduleLast ? "    " : "│   ";
+              const moduleBranch = moduleLast ? "âââ" : "âââ";
+              const moduleIndent = moduleLast ? "    " : "â   ";
               lines.push(`${moduleBranch} MODULE ${model.module.path}`);
 
               const imports = model.module.imports ?? [];
               if (imports.length) {
-                lines.push(`${moduleIndent}├── IMPORTS`);
+                lines.push(`${moduleIndent}âââ IMPORTS`);
                 for (let index = 0; index < imports.length; index++) {
                   const imported = imports[index];
                   const last = index === imports.length - 1;
                   const target = imported.target?.resolvedFile ?? imported.target?.resolvedPath ?? imported.moduleSpecifier;
-                  lines.push(`${moduleIndent}│   ${last ? "└──" : "├──"} ${oneLine(imported.text)} → ${oneLine(target)}`);
+                  lines.push(`${moduleIndent}â   ${last ? "âââ" : "âââ"} ${oneLine(imported.text)} â ${oneLine(target)}`);
                 }
               }
 
@@ -1339,56 +1319,56 @@ jobs:
                 const byStart = (a.source?.start ?? 0) - (b.source?.start ?? 0);
                 return byStart || a.id.localeCompare(b.id, "en");
               });
-              lines.push(`${moduleIndent}${imports.length ? "└──" : "└──"} SYSTEMS`);
+              lines.push(`${moduleIndent}${imports.length ? "âââ" : "âââ"} SYSTEMS`);
               for (let systemIndex = 0; systemIndex < systems.length; systemIndex++) {
                 const system = systems[systemIndex];
                 const systemLast = systemIndex === systems.length - 1;
-                const systemBranch = systemLast ? "└──" : "├──";
-                const systemIndent = `${moduleIndent}    ${systemLast ? "    " : "│   "}`;
+                const systemBranch = systemLast ? "âââ" : "âââ";
+                const systemIndent = `${moduleIndent}    ${systemLast ? "    " : "â   "}`;
                 lines.push(`${moduleIndent}    ${systemBranch} ${system.name} [${system.kind}]`);
 
-                lines.push(`${systemIndent}├── CONTROL`);
+                lines.push(`${systemIndent}âââ CONTROL`);
                 for (let index = 0; index < (system.transitions ?? []).length; index++) {
                   const transition = system.transitions[index];
                   const last = index === system.transitions.length - 1;
                   const guard = transition.guard ? ` when ${oneLine(transition.guard)}` : "";
-                  lines.push(`${systemIndent}│   ${last ? "└──" : "├──"} ${transition.from} ──${transition.kind}${guard}──▶ ${transition.to}`);
+                  lines.push(`${systemIndent}â   ${last ? "âââ" : "âââ"} ${transition.from} ââ${transition.kind}${guard}âââ¶ ${transition.to}`);
                 }
                 if (!(system.transitions ?? []).length)
-                  lines.push(`${systemIndent}│   └── (no control transitions)`);
+                  lines.push(`${systemIndent}â   âââ (no control transitions)`);
 
-                lines.push(`${systemIndent}├── INVOCATIONS`);
+                lines.push(`${systemIndent}âââ INVOCATIONS`);
                 for (let index = 0; index < (system.calls ?? []).length; index++) {
                   const call = system.calls[index];
                   const last = index === system.calls.length - 1;
                   const target = call.target?.systemId
                     ? `${call.target.source?.file ?? ""}::${call.target.name ?? call.target.systemId}`
                     : `[runtime expression] ${call.expression}`;
-                  lines.push(`${systemIndent}│   ${last ? "└──" : "├──"} ${oneLine(call.expression)} ──▶ ${oneLine(target)}`);
+                  lines.push(`${systemIndent}â   ${last ? "âââ" : "âââ"} ${oneLine(call.expression)} âââ¶ ${oneLine(target)}`);
                   for (const callback of call.callbacks ?? []) {
-                    lines.push(`${systemIndent}│       └── callback argument[${callback.argumentIndex}] ──▶ ${oneLine(callback.name ?? callback.systemId)}`);
+                    lines.push(`${systemIndent}â       âââ callback argument[${callback.argumentIndex}] âââ¶ ${oneLine(callback.name ?? callback.systemId)}`);
                   }
                 }
                 if (!(system.calls ?? []).length)
-                  lines.push(`${systemIndent}│   └── (no invocations)`);
+                  lines.push(`${systemIndent}â   âââ (no invocations)`);
 
-                lines.push(`${systemIndent}├── DYNAMIC`);
+                lines.push(`${systemIndent}âââ DYNAMIC`);
                 for (let index = 0; index < (system.dynamicBehaviors ?? []).length; index++) {
                   const dynamic = system.dynamicBehaviors[index];
                   const last = index === system.dynamicBehaviors.length - 1;
-                  lines.push(`${systemIndent}│   ${last ? "└──" : "├──"} ${dynamic.kind}: ${oneLine(dynamic.text)}`);
+                  lines.push(`${systemIndent}â   ${last ? "âââ" : "âââ"} ${dynamic.kind}: ${oneLine(dynamic.text)}`);
                 }
                 if (!(system.dynamicBehaviors ?? []).length)
-                  lines.push(`${systemIndent}│   └── (none)`);
+                  lines.push(`${systemIndent}â   âââ (none)`);
 
-                lines.push(`${systemIndent}└── SYNTAX BEHAVIOR`);
+                lines.push(`${systemIndent}âââ SYNTAX BEHAVIOR`);
                 for (let index = 0; index < (system.syntaxBehaviors ?? []).length; index++) {
                   const behavior = system.syntaxBehaviors[index];
                   const last = index === system.syntaxBehaviors.length - 1;
-                  lines.push(`${systemIndent}    ${last ? "└──" : "├──"} ${behavior.kind}: ${oneLine(behavior.text)}`);
+                  lines.push(`${systemIndent}    ${last ? "âââ" : "âââ"} ${behavior.kind}: ${oneLine(behavior.text)}`);
                 }
                 if (!(system.syntaxBehaviors ?? []).length)
-                  lines.push(`${systemIndent}    └── (none)`);
+                  lines.push(`${systemIndent}    âââ (none)`);
               }
             }
 
@@ -1399,207 +1379,99 @@ jobs:
                 .filter(([key]) => !["id", "from", "to", "kind"].includes(key))
                 .map(([key, value]) => `${key}=${oneLine(stableSerialize(value), 120)}`)
                 .join(" ");
-              lines.push(`${edge.from} ──${edge.kind}──▶ ${edge.to}${metadata ? ` ${metadata}` : ""}`);
+              lines.push(`${edge.from} ââ${edge.kind}âââ¶ ${edge.to}${metadata ? ` ${metadata}` : ""}`);
             }
             return lines.join("\n").concat("\n");
           }
 
           // ----------------------------------------------------------------
-          //  Main execution
+          //  Main execution: graph only. No transformed source and no ZIP.
           // ----------------------------------------------------------------
-          fs.rmSync(outputRoot, { recursive: true, force: true });
-          fs.mkdirSync(outputRoot, { recursive: true });
+          fs.rmSync(treeOutputRoot, { recursive: true, force: true });
+          fs.mkdirSync(treeOutputRoot, { recursive: true });
+
           const sourceFiles = discoverFiles(sourceRoot);
-          if (sourceFiles.length === 0) throw new Error("No supported application source files were found.");
           for (const filePath of sourceFiles) projectSourceFile(filePath);
           project.resolveSourceFileDependencies();
+
           const manifestEntries: any[] = [];
           const analyzedModels: any[] = [];
           let errorCount = 0;
+
           for (const filePath of sourceFiles) {
             const relativePath = normalizeRelativePath(filePath);
-            const outputPath = path.join(outputRoot, ...relativePath.split("/"));
             try {
               const model = analyzeFile(filePath);
               analyzedModels.push(model);
-              const transformedContent = renderTransformedModule(model, path.extname(filePath).toLowerCase());
-              fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-              fs.writeFileSync(outputPath, transformedContent, "utf8");
               manifestEntries.push({
                 path: relativePath,
-                originalSha256: model.module.sourceSha256,
-                transformedSha256: sha256(transformedContent),
+                sourceSha256: model.module.sourceSha256,
                 systems: model.systems.length,
-                diagnostics: model.module.diagnostics.length
+                diagnostics: model.module.diagnostics.length,
+                status: "analyzed"
               });
             } catch (error) {
               errorCount++;
-              console.error(`ERROR processing ${relativePath}: ${(error as Error).message}`);
-              const errorContent = `/* CDLDS TRANSFORM ERROR: ${(error as Error).message} */\nexport const cdldsModule = {} as const;\nexport default cdldsModule;\n`;
-              fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-              fs.writeFileSync(outputPath, errorContent, "utf8");
+              const message = (error as Error).message;
+              console.warn(`WARNING: unable to analyze ${relativePath}: ${message}`);
               manifestEntries.push({
                 path: relativePath,
-                originalSha256: sha256(fs.readFileSync(filePath)),
-                transformedSha256: sha256(errorContent),
+                sourceSha256: sha256(fs.readFileSync(filePath)),
                 systems: 0,
-                diagnostics: -1
+                diagnostics: -1,
+                status: "analysis-warning",
+                message
               });
             }
           }
+
           manifestEntries.sort((a, b) => a.path.localeCompare(b.path, "en"));
-          const manifestText = manifestEntries.map(e =>
-            `${e.transformedSha256}  ${e.path}  systems=${e.systems}  diagnostics=${e.diagnostics}  original=${e.originalSha256}`
+          const manifestText = manifestEntries.map(entry =>
+            `${entry.status}  ${entry.path}  systems=${entry.systems}  diagnostics=${entry.diagnostics}  source=${entry.sourceSha256}${entry.message ? `  warning=${oneLine(entry.message)}` : ""}`
           ).join("\n").concat("\n");
-          fs.writeFileSync(path.join(workspace, "build", "CDLDS_MANIFEST.txt"), manifestText, "utf8");
+          fs.writeFileSync(behaviorGraphManifestPath, manifestText, "utf8");
+
           const behaviorGraph = buildBehaviorGraph(analyzedModels);
           fs.writeFileSync(behaviorGraphJsonPath, JSON.stringify(behaviorGraph, null, 2).concat("\n"), "utf8");
           fs.writeFileSync(behaviorGraphTextPath, renderBehaviorGraphTree(analyzedModels, behaviorGraph), "utf8");
-          if (errorCount > 0) {
-            console.warn(`Transformation completed with ${errorCount} file error(s). See log above.`);
+
+          if (sourceFiles.length === 0) {
+            console.warn("No supported application source files were found; emitted an empty behavior graph.");
           }
-          console.log(`Transformed ${sourceFiles.length} application source files.`);
+          if (errorCount > 0) {
+            console.warn(`Behavior graph completed with ${errorCount} file analysis warning(s).`);
+          }
+          console.log(`Analyzed ${analyzedModels.length}/${sourceFiles.length} application source files.`);
           console.log(`Behavior graph: ${behaviorGraph.summary.nodes} nodes, ${behaviorGraph.summary.edges} edges, ${behaviorGraph.summary.dynamicBehaviors} dynamic behavior records.`);
           SCRIPT
 
-          pnpm tsx cdlds-transform.ts
+          pnpm tsx ceedlotus-tree.ts
 
-      - name: Ensure intent-first project contract
+      - name: Print behavior tree
         shell: bash
         run: |
           set -euo pipefail
+          cat build/ceedlotus-tree/BEHAVIOR_GRAPH.txt
 
-          if [[ ! -f intent.json ]]; then
-            cat > intent.json <<'JSON'
-          {
-            "version": "1.0",
-            "status": "required-before-implementation",
-            "description": "Declare the intended behavioral change before implementation so generated code is anchored to a reviewable behavioral contract.",
-            "target": {
-              "file": "",
-              "system": ""
-            },
-            "context": {
-              "changeType": "modification",
-              "scope": "",
-              "preserveBaseline": true
-            },
-            "must": [],
-            "mustNot": []
-          }
-          JSON
-          fi
-
-          README_FILE=""
-          if [[ -f README.md ]]; then
-            README_FILE="README.md"
-          elif [[ -f Readme.md ]]; then
-            README_FILE="Readme.md"
-          elif [[ -f readme.md ]]; then
-            README_FILE="readme.md"
-          else
-            README_FILE="README.md"
-            : > "$README_FILE"
-          fi
-
-          if ! grep -Fq '<!-- ceedlotus-intent-first -->' "$README_FILE"; then
-            cat >> "$README_FILE" <<'MARKDOWN'
-
-          <!-- ceedlotus-intent-first -->
-          ## CeedLotus Intent-First Workflow
-
-          Before implementing or modifying code, create or update the repository-root `intent.json`. The intent file is the behavioral contract for the requested change.
-
-          ### Required Workflow
-
-          1. Read `intent.json`.
-          2. Complete every required field before implementation.
-          3. Present the completed `intent.json` to the user.
-          4. Do not begin implementation until the intent is accepted.
-          5. Implement the requested behavior.
-          6. Generate and inspect the CDLDS behavioral representation.
-          7. Verify the implementation against the declared intent.
-          8. Create or update `intent-verification.json`.
-          9. Present the completed `intent-verification.json` to the user.
-          10. Do not declare the task complete until the verification report has been produced.
-
-          ### Required Deliverables
-
-          Every completed implementation must include:
-
-          - The completed `intent.json`.
-          - The generated CDLDS output.
-          - The completed `intent-verification.json`.
-
-          ### `intent-verification.json`
-
-          ```json
-          {
-            "verificationVersion": "1.0",
-            "status": "passed",
-            "intentReviewed": true,
-            "implementationCompleted": true,
-            "behaviorVerified": true,
-            "requirementsSatisfied": [],
-            "requirementsFailed": [],
-            "behavioralChanges": [],
-            "verificationEvidence": [],
-            "notes": ""
-          }
-          ```
-
-          ### AI Rules
-
-          - Never implement code before completing `intent.json`.
-          - Never rewrite `intent.json` after implementation merely to match the produced code.
-          - Always verify the implementation against the declared intent.
-          - Always create and present `intent-verification.json`.
-          - If any requirement cannot be verified, set `status` to `failed`, set `behaviorVerified` to `false`, list the failed requirements, and explain why.
-          - Never claim that the task is complete without presenting the verification report.
-          MARKDOWN
-          fi
-
-      - name: Commit intent-first project files
+      - name: Publish tree to job summary
         shell: bash
         run: |
           set -euo pipefail
+          {
+            echo '## CeedLotus Behavior Tree'
+            echo
+            echo '```text'
+            cat build/ceedlotus-tree/BEHAVIOR_GRAPH.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
-          README_FILE="README.md"
-          [[ -f Readme.md ]] && README_FILE="Readme.md"
-          [[ -f readme.md ]] && README_FILE="readme.md"
-          [[ -f README.md ]] && README_FILE="README.md"
-
-          if [[ -z "$(git status --porcelain -- intent.json "$README_FILE")" ]]; then
-            echo "Intent-first project files are already present."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- intent.json "$README_FILE"
-          git commit -m "chore: add CeedLotus intent-first workflow"
-          git push
-
-      - name: Create deterministic ZIP of transformed application
-        run: |
-          set -euo pipefail
-          ZIP_PATH="$GITHUB_WORKSPACE/build/transformed-cdlds-application.zip"
-          mkdir -p "$GITHUB_WORKSPACE/build"
-          rm -f "$ZIP_PATH"
-          find build/cdlds-application -type f -exec touch -t 198001010000 {} +
-          ( cd build/cdlds-application && find . -type f | LC_ALL=C sort | zip -X -q "$ZIP_PATH" -@ )
-          sha256sum "$ZIP_PATH" > "$ZIP_PATH.sha256"
-
-      - name: Upload artifact
+      - name: Upload behavior tree
         uses: actions/upload-artifact@v6
         with:
-          name: transformed-cdlds-application-${{ github.sha }}
+          name: ceedlotus-behavior-tree-${{ github.sha }}
           path: |
-            build/transformed-cdlds-application.zip
-            build/transformed-cdlds-application.zip.sha256
-            build/CDLDS_MANIFEST.txt
-            build/BEHAVIOR_GRAPH.json
-            build/BEHAVIOR_GRAPH.txt
-            intent.json
+            build/ceedlotus-tree/BEHAVIOR_GRAPH.txt
+            build/ceedlotus-tree/BEHAVIOR_GRAPH.json
+            build/ceedlotus-tree/BEHAVIOR_GRAPH_MANIFEST.txt
           if-no-files-found: error
           retention-days: 30
