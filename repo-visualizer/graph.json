@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T01:32:54.033Z",
+  "generatedAt": "2026-07-26T03:50:26.492Z",
   "root": ".",
   "nodes": [
     {
@@ -2666,6 +2666,16 @@
       "label": "256lr.yml",
       "type": "config",
       "path": ".github/workflows/256lr.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/CeedLotus-BehaviorGraph.yml",
+      "label": "CeedLotus-BehaviorGraph.yml",
+      "type": "config",
+      "path": ".github/workflows/CeedLotus-BehaviorGraph.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
