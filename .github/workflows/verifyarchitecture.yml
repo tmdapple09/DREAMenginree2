@@ -1,4 +1,4 @@
-name: Dreamengin Architecture Verification (Manual)
+Name: Architecture Verification (Manual)
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build (if present)
-        run: pnpm build --if-present
+        run: pnpm run --if-present build
 
       - name: Run Architecture Verifier
         run: |
@@ -55,5 +55,3 @@ jobs:
           path: |
             reports/architecture.md
             reports/architecture.json
-            reports/callgraph.svg
-            reports/dependency-graph.svg
