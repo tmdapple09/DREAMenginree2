@@ -1,0 +1,54 @@
+name: Dreamengin Architecture Verification (Manual)
+
+on:
+  workflow_dispatch:  # Run only manually from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  architecture:
+    name: Verify Architecture
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Run Architecture Verifier
+        run: |
+          node tools/architecture-verifier/index.mjs \
+            --repo . \
+            --format markdown,json \
+            --fail-on violation || true
+
+      - name: Print Report to Log (for easy copy/paste)
+        if: always()
+        run: |
+          echo "::group::Architecture Report"
+          cat reports/architecture.md
+          echo "::endgroup::"
+
+      - name: Upload Report Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-report
+          path: |
+            reports/architecture.md
+            reports/architecture.json
+            reports/callgraph.svg
+            reports/dependency-graph.svg
