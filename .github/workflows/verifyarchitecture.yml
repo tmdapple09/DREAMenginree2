@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   architecture:
-    name: Verify Architecture
+    name: Map Architecture
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -33,18 +33,21 @@ jobs:
       - name: Build (if present)
         run: pnpm run --if-present build
 
-      - name: Run Architecture Verifier
+      - name: Map Codebase Architecture
         run: |
-          node tools/architecture-verifier/index.mjs \
-            --repo . \
-            --format markdown,json \
-            --fail-on violation || true
+          mkdir -p reports
+          
+          # Generates a JSON map of your architecture
+          npx dependency-cruiser . --exclude "^(node_modules|\.next|\.git|dist)" --output-type json > reports/architecture-map.json || true
+          
+          # Generates a Markdown summary of your architecture
+          npx dependency-cruiser . --exclude "^(node_modules|\.next|\.git|dist)" --output-type markdown > reports/architecture-map.md || true
 
       - name: Print Report to Log
         if: always()
         run: |
           echo "::group::Architecture Report"
-          cat reports/architecture.md
+          cat reports/architecture-map.md
           echo "::endgroup::"
 
       - name: Upload Report Artifacts
@@ -53,5 +56,5 @@ jobs:
         with:
           name: architecture-report
           path: |
-            reports/architecture.md
-            reports/architecture.json
+            reports/architecture-map.md
+            reports/architecture-map.json
