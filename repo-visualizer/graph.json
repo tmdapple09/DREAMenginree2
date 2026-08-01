@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-26T05:50:12.888Z",
+  "generatedAt": "2026-08-01T20:54:32.578Z",
   "root": ".",
   "nodes": [
     {
@@ -2682,6 +2682,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual-fixed.yml",
+      "label": "CeedLotus-CDLDS-Behavior-Graph-Manual-fixed.yml",
+      "type": "config",
+      "path": ".github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual-fixed.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/CeedLotus.yaml",
       "label": "CeedLotus.yaml",
       "type": "config",
@@ -3626,6 +3636,16 @@
       "label": "vercel-deploy.yml",
       "type": "config",
       "path": ".github/workflows/vercel-deploy.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/verifyarchitecture.yml",
+      "label": "verifyarchitecture.yml",
+      "type": "config",
+      "path": ".github/workflows/verifyarchitecture.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
