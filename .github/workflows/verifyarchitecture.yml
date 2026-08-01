@@ -37,8 +37,15 @@ jobs:
         run: |
           mkdir -p reports
           pnpm add -D dependency-cruiser
-          pnpm exec depcruise . --exclude "^(node_modules|\.next|\.git|dist|reports)" --output-type json > reports/architecture-map.json
-          pnpm exec depcruise . --exclude "^(node_modules|\.next|\.git|dist|reports)" --output-type markdown > reports/architecture-map.md
+          
+          # Generates a minimal config file on the fly so dependency-cruiser stops crashing
+          echo "module.exports = { options: { exclude: { path: '^(node_modules|\.next|\.git|dist|reports)' } } };" > .dependency-cruiser.js
+          
+          # Generate JSON map
+          pnpm exec depcruise . --output-type json > reports/architecture-map.json
+          
+          # Generate Markdown map
+          pnpm exec depcruise . --output-type markdown > reports/architecture-map.md
 
       - name: Print Report to Log
         if: always()
@@ -55,4 +62,3 @@ jobs:
           path: |
             reports/architecture-map.md
             reports/architecture-map.json
-
