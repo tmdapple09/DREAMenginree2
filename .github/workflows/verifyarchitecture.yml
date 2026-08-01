@@ -36,12 +36,9 @@ jobs:
       - name: Map Codebase Architecture
         run: |
           mkdir -p reports
-          
-          # Generates a JSON map of your architecture
-          npx dependency-cruiser . --exclude "^(node_modules|\.next|\.git|dist)" --output-type json > reports/architecture-map.json || true
-          
-          # Generates a Markdown summary of your architecture
-          npx dependency-cruiser . --exclude "^(node_modules|\.next|\.git|dist)" --output-type markdown > reports/architecture-map.md || true
+          pnpm add -D dependency-cruiser
+          pnpm exec depcruise . --exclude "^(node_modules|\.next|\.git|dist|reports)" --output-type json > reports/architecture-map.json
+          pnpm exec depcruise . --exclude "^(node_modules|\.next|\.git|dist|reports)" --output-type markdown > reports/architecture-map.md
 
       - name: Print Report to Log
         if: always()
@@ -58,3 +55,4 @@ jobs:
           path: |
             reports/architecture-map.md
             reports/architecture-map.json
+
