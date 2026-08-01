@@ -1,4 +1,4 @@
-Name: Architecture Verification (Manual)
+name: Architecture Verification (Manual)
 
 on:
   workflow_dispatch:
