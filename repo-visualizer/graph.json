@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T22:19:56.233Z",
+  "generatedAt": "2026-08-02T03:55:25.154Z",
   "root": ".",
   "nodes": [
     {
@@ -2996,6 +2996,16 @@
       "label": "docs-auto-update.yml",
       "type": "config",
       "path": ".github/workflows/docs-auto-update.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/dowloadafolder.yml",
+      "label": "dowloadafolder.yml",
+      "type": "config",
+      "path": ".github/workflows/dowloadafolder.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
