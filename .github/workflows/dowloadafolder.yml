@@ -14,13 +14,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
 
       - name: Create semantic exporter
@@ -37,17 +37,12 @@ jobs:
           TARGET = Path(os.environ["TARGET"])
 
           if not TARGET.exists():
-              raise Exception(
-                  f"Cannot find: {TARGET}"
-              )
+              raise Exception(f"Cannot find: {TARGET}")
 
 
-          EXPORT_NAME = TARGET.name
+          EXPORT_NAME = TARGET.name.replace("/", "-")
 
-          WORK = Path(
-              "export_workspace"
-          )
-
+          WORK = Path("export_workspace")
           OUT = WORK / EXPORT_NAME
 
 
@@ -74,7 +69,6 @@ jobs:
                   )
 
 
-
           def read(path):
 
               try:
@@ -86,17 +80,14 @@ jobs:
                   return ""
 
 
-
           def load_aliases():
 
               aliases = {}
 
-              tsconfigs = [
+              for cfg in [
                   "tsconfig.json",
                   "jsconfig.json"
-              ]
-
-              for cfg in tsconfigs:
+              ]:
 
                   p = Path(cfg)
 
@@ -108,20 +99,17 @@ jobs:
                               read(p)
                           )
 
-                          paths = data.get(
-                              "compilerOptions",
-                              {}
-                          ).get(
-                              "paths",
-                              {}
+                          paths = (
+                              data
+                              .get("compilerOptions", {})
+                              .get("paths", {})
                           )
 
-                          for k,v in paths.items():
+                          for key, value in paths.items():
 
-                              aliases[k.replace(
-                                  "/*",
-                                  ""
-                              )] = v[0].replace(
+                              aliases[
+                                  key.replace("/*","")
+                              ] = value[0].replace(
                                   "/*",
                                   ""
                               )
@@ -132,20 +120,18 @@ jobs:
               return aliases
 
 
-
           ALIASES = load_aliases()
 
 
+          def resolve_import(name):
 
-          def resolve_import(value):
+              original = name
 
-              original = value
+              for alias, target in ALIASES.items():
 
-              for alias,target in ALIASES.items():
+                  if name.startswith(alias):
 
-                  if value.startswith(alias):
-
-                      value = value.replace(
+                      name = name.replace(
                           alias,
                           target,
                           1
@@ -153,28 +139,24 @@ jobs:
 
 
               candidates = [
-
-                  value,
-
-                  value + ".ts",
-                  value + ".tsx",
-                  value + ".js",
-
-                  value + "/index.ts",
-                  value + "/index.tsx"
-
+                  name,
+                  name + ".ts",
+                  name + ".tsx",
+                  name + ".js",
+                  name + "/index.ts",
+                  name + "/index.tsx"
               ]
 
 
-              for root,dirs,files in os.walk("."):
+              for root, dirs, files in os.walk("."):
 
                   for file in files:
 
                       full = Path(root) / file
 
-                      for c in candidates:
+                      for candidate in candidates:
 
-                          if str(full).endswith(c):
+                          if str(full).endswith(candidate):
 
                               return str(full)
 
@@ -182,93 +164,85 @@ jobs:
               return None
 
 
+          def get_imports(code):
 
-          def imports(code):
+              found = []
 
-              found=[]
-
-              patterns=[
-
+              patterns = [
                   r'import .*? from ["\'](.*?)["\']',
-
                   r'import ["\'](.*?)["\']',
-
                   r'require\(["\'](.*?)["\']\)'
-
               ]
 
-              for p in patterns:
+              for pattern in patterns:
 
-                  found += re.findall(
-                      p,
-                      code
+                  found.extend(
+                      re.findall(
+                          pattern,
+                          code
+                      )
                   )
 
               return list(set(found))
 
 
+          def get_symbols(code):
 
-          def symbols(code):
+              output = []
 
-              result=[]
+              patterns = {
 
-              patterns={
+                  "class":
+                      r"(?:export\s+)?class\s+(\w+)",
 
-              "classes":
-                  r"(?:export\s+)?class\s+(\w+)",
+                  "function":
+                      r"(?:export\s+)?function\s+(\w+)",
 
-              "functions":
-                  r"(?:export\s+)?function\s+(\w+)",
+                  "interface":
+                      r"(?:export\s+)?interface\s+(\w+)",
 
-              "interfaces":
-                  r"(?:export\s+)?interface\s+(\w+)",
+                  "type":
+                      r"(?:export\s+)?type\s+(\w+)",
 
-              "types":
-                  r"(?:export\s+)?type\s+(\w+)",
-
-              "components":
-                  r"(?:export\s+)?const\s+(\w+)\s*="
+                  "component":
+                      r"(?:export\s+)?const\s+(\w+)\s*="
 
               }
 
 
-              for name,pattern in patterns.items():
+              for label, pattern in patterns.items():
 
-                  matches=re.findall(
+                  for match in re.findall(
                       pattern,
                       code
-                  )
+                  ):
 
-                  for m in matches:
-
-                      result.append(
-                          f"{name[:-1]} `{m}`"
+                      output.append(
+                          f"{label}: `{match}`"
                       )
 
 
-              return result
+              return output
 
 
+          def analyze_file(path):
 
-          def analyze(path):
+              ext = path.suffix.lower()
 
-              ext=path.suffix.lower()
+              text = read(path)
 
-              text=read(path)
-
-              md=[]
+              result = []
 
 
-              if ext==".md":
+              if ext == ".md":
 
-                  md.append(
+                  result.append(
                       "Documentation file.\n\n"
                       +
-                      text[:1000]
+                      text[:1500]
                   )
 
-                  return md
-
+                  return result
 
 
               if ext in [
@@ -278,76 +252,73 @@ jobs:
                   ".jsx"
               ]:
 
-                  syms=symbols(text)
+                  symbols = get_symbols(text)
 
-                  if syms:
+                  if symbols:
 
-                      md.append(
-                          "Exports and structures:\n"
+                      result.append(
+                          "Structures:\n"
                           +
                           "\n".join(
-                              "- "+x
-                              for x in syms
+                              "- " + x
+                              for x in symbols
                           )
                       )
 
 
-                  imps=imports(text)
+                  imports = get_imports(text)
 
-                  if imps:
 
-                      lines=[]
+                  if imports:
 
-                      for i in imps:
+                      deps = []
 
-                          resolved=resolve_import(
-                              i
+                      for item in imports:
+
+                          resolved = resolve_import(
+                              item
                           )
 
                           if resolved:
 
-                              lines.append(
-                                  f"- {i} -> {resolved}"
+                              deps.append(
+                                  f"- {item} -> {resolved}"
                               )
 
                           else:
 
-                              lines.append(
-                                  f"- {i}"
+                              deps.append(
+                                  f"- {item}"
                               )
 
 
-                      md.append(
+                      result.append(
                           "Dependencies:\n"
                           +
-                          "\n".join(lines)
+                          "\n".join(deps)
                       )
 
 
-                  if not syms:
+                  if not symbols:
 
-                      md.append(
-                          "Source file. "
-                          "Contains executable logic."
+                      result.append(
+                          "Contains executable source code."
                       )
 
 
               else:
 
-                  md.append(
-                      "File type: "
-                      +
-                      ext
+                  result.append(
+                      f"File type: {ext}"
                   )
 
 
-              return md
-
+              return result
 
 
           def create_report():
 
-              lines=[]
+              lines = []
 
               lines.append(
                   "# Semantic Export Report\n"
@@ -358,27 +329,27 @@ jobs:
               )
 
 
-              for root,dirs,files in os.walk(OUT):
+              for root, dirs, files in os.walk(OUT):
 
-                  rel=Path(root).relative_to(
+                  folder = Path(root).relative_to(
                       OUT
                   )
 
                   lines.append(
-                      f"\n## Folder {rel}\n"
+                      f"\n## Folder `{folder}`\n"
                   )
 
 
-                  for f in files:
+                  for file in files:
 
-                      p=Path(root)/f
+                      path = Path(root) / file
 
                       lines.append(
-                          f"\n### {f}\n"
+                          f"\n### File `{file}`\n"
                       )
 
                       lines.extend(
-                          analyze(p)
+                          analyze_file(path)
                       )
 
 
@@ -390,41 +361,34 @@ jobs:
               )
 
 
-
           def create_zip():
 
-              name=f"{EXPORT_NAME}.zip"
+              zip_name = f"{EXPORT_NAME}.zip"
 
               with zipfile.ZipFile(
-                  name,
+                  zip_name,
                   "w",
                   zipfile.ZIP_DEFLATED
-              ) as z:
+              ) as archive:
 
 
-                  for root,dirs,files in os.walk(OUT):
+                  for root, dirs, files in os.walk(OUT):
 
-                      for f in files:
+                      for file in files:
 
-                          file=Path(root)/f
+                          path = Path(root) / file
 
-                          z.write(
-                              file,
-                              file.relative_to(
+                          archive.write(
+                              path,
+                              path.relative_to(
                                   OUT.parent
                               )
                           )
 
 
-                  z.write(
+                  archive.write(
                       f"{EXPORT_NAME}_semantic.md"
                   )
-
-
-              print(
-                  name
-              )
-
 
 
           copy_target()
@@ -434,19 +398,26 @@ jobs:
           PY
 
 
-
-      - name: Run semantic exporter
+      - name: Run exporter
         env:
           TARGET: ${{ github.event.inputs.path }}
         run: |
           python semantic_export.py
 
 
+      - name: Create safe artifact name
+        id: artifact
+        run: |
+          SAFE_NAME="${{ github.event.inputs.path }}"
+          SAFE_NAME=$(echo "$SAFE_NAME" | sed 's#[/\\]#-#g')
+          SAFE_NAME=$(echo "$SAFE_NAME" | sed 's#[^a-zA-Z0-9._-]#-#g')
+          echo "name=semantic-$SAFE_NAME" >> $GITHUB_OUTPUT
+
 
       - name: Upload export
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
-          name: semantic-${{ github.event.inputs.path }}
+          name: ${{ steps.artifact.outputs.name }}
           path: |
             *.zip
             *_semantic.md
