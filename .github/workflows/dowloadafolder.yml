@@ -1,10 +1,10 @@
-name: Download Folder Semantic Explanation
+name: Semantic Folder Export
 
 on:
   workflow_dispatch:
     inputs:
       path:
-        description: "Folder or file path to export (example: app/ or engines/renderengine)"
+        description: "Folder or file path to export"
         required: true
         type: string
 
@@ -13,58 +13,69 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Create exporter
+
+      - name: Create semantic exporter
         run: |
           cat > semantic_export.py <<'PY'
           import os
-          import ast
+          import re
           import json
           import shutil
           import zipfile
-          import re
           from pathlib import Path
 
 
-          TARGET = os.environ["TARGET"]
+          TARGET = Path(os.environ["TARGET"])
 
-          EXPORT_ROOT = Path("semantic_export")
-          SOURCE_ROOT = Path(TARGET)
+          if not TARGET.exists():
+              raise Exception(
+                  f"Cannot find: {TARGET}"
+              )
 
-          if not SOURCE_ROOT.exists():
-              raise Exception(f"Path does not exist: {TARGET}")
+
+          EXPORT_NAME = TARGET.name
+
+          WORK = Path(
+              "export_workspace"
+          )
+
+          OUT = WORK / EXPORT_NAME
 
 
           def copy_target():
 
-              destination = EXPORT_ROOT / SOURCE_ROOT.name
+              if TARGET.is_file():
 
-              if SOURCE_ROOT.is_file():
-                  destination.parent.mkdir(
+                  OUT.parent.mkdir(
                       parents=True,
                       exist_ok=True
                   )
+
                   shutil.copy2(
-                      SOURCE_ROOT,
-                      destination
+                      TARGET,
+                      OUT
                   )
 
               else:
+
                   shutil.copytree(
-                      SOURCE_ROOT,
-                      destination,
+                      TARGET,
+                      OUT,
                       dirs_exist_ok=True
                   )
 
 
-          def read_file(path):
+
+          def read(path):
 
               try:
                   return path.read_text(
@@ -75,265 +86,367 @@ jobs:
                   return ""
 
 
-          def find_import_targets(content):
 
-              imports = []
+          def load_aliases():
 
-              patterns = [
-                  r'import\s+.*?from\s+[\'"](.*?)[\'"]',
-                  r'import\s+[\'"](.*?)[\'"]',
-                  r'require\([\'"](.*?)[\'"]\)',
-                  r'from\s+([\w\.]+)\s+import',
-                  r'#include\s+[<"](.*?)[>"]'
+              aliases = {}
+
+              tsconfigs = [
+                  "tsconfig.json",
+                  "jsconfig.json"
               ]
 
-              for p in patterns:
-                  imports += re.findall(
-                      p,
-                      content
-                  )
+              for cfg in tsconfigs:
 
-              return list(set(imports))
+                  p = Path(cfg)
+
+                  if p.exists():
+
+                      try:
+
+                          data = json.loads(
+                              read(p)
+                          )
+
+                          paths = data.get(
+                              "compilerOptions",
+                              {}
+                          ).get(
+                              "paths",
+                              {}
+                          )
+
+                          for k,v in paths.items():
+
+                              aliases[k.replace(
+                                  "/*",
+                                  ""
+                              )] = v[0].replace(
+                                  "/*",
+                                  ""
+                              )
+
+                      except:
+                          pass
+
+              return aliases
 
 
-          def locate_import(name):
 
-              clean = name.replace(
-                  ".",
-                  "/"
-              )
+          ALIASES = load_aliases()
 
-              possibilities = [
-                  clean,
-                  clean + ".py",
-                  clean + ".js",
-                  clean + ".ts",
-                  clean + ".tsx",
-                  clean + ".jsx"
+
+
+          def resolve_import(value):
+
+              original = value
+
+              for alias,target in ALIASES.items():
+
+                  if value.startswith(alias):
+
+                      value = value.replace(
+                          alias,
+                          target,
+                          1
+                      )
+
+
+              candidates = [
+
+                  value,
+
+                  value + ".ts",
+                  value + ".tsx",
+                  value + ".js",
+
+                  value + "/index.ts",
+                  value + "/index.tsx"
+
               ]
 
-              for root, dirs, files in os.walk("."):
 
-                  for f in files:
+              for root,dirs,files in os.walk("."):
 
-                      full = Path(root) / f
+                  for file in files:
 
-                      for p in possibilities:
+                      full = Path(root) / file
 
-                          if str(full).endswith(p):
+                      for c in candidates:
+
+                          if str(full).endswith(c):
+
                               return str(full)
+
 
               return None
 
 
 
-          def python_analysis(path, content):
+          def imports(code):
 
-              result = []
+              found=[]
 
-              try:
+              patterns=[
 
-                  tree = ast.parse(content)
+                  r'import .*? from ["\'](.*?)["\']',
 
-                  for node in ast.walk(tree):
+                  r'import ["\'](.*?)["\']',
 
-                      if isinstance(node, ast.ClassDef):
-                          result.append(
-                              f"class `{node.name}`"
-                          )
+                  r'require\(["\'](.*?)["\']\)'
 
-                      if isinstance(node, ast.FunctionDef):
-                          result.append(
-                              f"function `{node.name}()`"
-                          )
+              ]
 
-              except:
-                  pass
+              for p in patterns:
+
+                  found += re.findall(
+                      p,
+                      code
+                  )
+
+              return list(set(found))
+
+
+
+          def symbols(code):
+
+              result=[]
+
+              patterns={
+
+              "classes":
+                  r"(?:export\s+)?class\s+(\w+)",
+
+              "functions":
+                  r"(?:export\s+)?function\s+(\w+)",
+
+              "interfaces":
+                  r"(?:export\s+)?interface\s+(\w+)",
+
+              "types":
+                  r"(?:export\s+)?type\s+(\w+)",
+
+              "components":
+                  r"(?:export\s+)?const\s+(\w+)\s*="
+
+              }
+
+
+              for name,pattern in patterns.items():
+
+                  matches=re.findall(
+                      pattern,
+                      code
+                  )
+
+                  for m in matches:
+
+                      result.append(
+                          f"{name[:-1]} `{m}`"
+                      )
+
 
               return result
 
 
 
-          def analyze_file(path):
+          def analyze(path):
 
-              content = read_file(path)
+              ext=path.suffix.lower()
 
-              info = []
+              text=read(path)
 
-              suffix = path.suffix.lower()
-
-
-              if suffix == ".py":
-
-                  info += python_analysis(
-                      path,
-                      content
-                  )
+              md=[]
 
 
-              imports = find_import_targets(
-                  content
-              )
-
-              resolved = []
-
-              for imp in imports:
-
-                  found = locate_import(
-                      imp
-                  )
-
-                  if found:
-
-                      resolved.append(
-                          f"`{imp}` → `{found}`"
-                      )
-
-
-              if imports:
-
-                  info.append(
-                      "Imports:\n" +
-                      "\n".join(
-                          "- " + x
-                          for x in imports
-                      )
-                  )
-
-
-              if resolved:
-
-                  info.append(
-                      "Resolved dependencies:\n" +
-                      "\n".join(
-                          "- " + x
-                          for x in resolved
-                      )
-                  )
-
-
-              if not info:
-
-                  lines = content.splitlines()
-
-                  preview = "\n".join(
-                      lines[:8]
-                  )
-
-                  info.append(
-                      "File contains source code. "
-                      "Beginning structure:\n"
-                      + preview
-                  )
-
-
-              return info
-
-
-
-          def explain_tree():
-
-              md = []
-
-              md.append(
-                  "# Semantic Export Explanation\n"
-              )
-
-              md.append(
-                  f"Exported path: `{TARGET}`\n"
-              )
-
-
-              for root, dirs, files in os.walk(
-                  EXPORT_ROOT
-              ):
-
-                  level = root.replace(
-                      str(EXPORT_ROOT),
-                      ""
-                  ).count(os.sep)
-
-                  indent = "  " * level
+              if ext==".md":
 
                   md.append(
-                      f"{indent}## Folder `{Path(root).name}`"
+                      "Documentation file.\n\n"
+                      +
+                      text[:1000]
+                  )
+
+                  return md
+
+
+
+              if ext in [
+                  ".ts",
+                  ".tsx",
+                  ".js",
+                  ".jsx"
+              ]:
+
+                  syms=symbols(text)
+
+                  if syms:
+
+                      md.append(
+                          "Exports and structures:\n"
+                          +
+                          "\n".join(
+                              "- "+x
+                              for x in syms
+                          )
+                      )
+
+
+                  imps=imports(text)
+
+                  if imps:
+
+                      lines=[]
+
+                      for i in imps:
+
+                          resolved=resolve_import(
+                              i
+                          )
+
+                          if resolved:
+
+                              lines.append(
+                                  f"- {i} -> {resolved}"
+                              )
+
+                          else:
+
+                              lines.append(
+                                  f"- {i}"
+                              )
+
+
+                      md.append(
+                          "Dependencies:\n"
+                          +
+                          "\n".join(lines)
+                      )
+
+
+                  if not syms:
+
+                      md.append(
+                          "Source file. "
+                          "Contains executable logic."
+                      )
+
+
+              else:
+
+                  md.append(
+                      "File type: "
+                      +
+                      ext
                   )
 
 
-                  for file in files:
+              return md
 
-                      fp = Path(root) / file
 
-                      md.append(
-                          f"\n{indent}### File `{file}`"
+
+          def create_report():
+
+              lines=[]
+
+              lines.append(
+                  "# Semantic Export Report\n"
+              )
+
+              lines.append(
+                  f"Exported: `{TARGET}`\n"
+              )
+
+
+              for root,dirs,files in os.walk(OUT):
+
+                  rel=Path(root).relative_to(
+                      OUT
+                  )
+
+                  lines.append(
+                      f"\n## Folder {rel}\n"
+                  )
+
+
+                  for f in files:
+
+                      p=Path(root)/f
+
+                      lines.append(
+                          f"\n### {f}\n"
                       )
 
-                      for item in analyze_file(fp):
-
-                          md.append(
-                              indent +
-                              "\n" +
-                              item
-                          )
+                      lines.extend(
+                          analyze(p)
+                      )
 
 
               Path(
-                  "SEMANTIC_EXPLANATION.md"
+                  f"{EXPORT_NAME}_semantic.md"
               ).write_text(
-                  "\n".join(md),
+                  "\n\n".join(lines),
                   encoding="utf-8"
               )
 
 
 
-          def zip_export():
+          def create_zip():
+
+              name=f"{EXPORT_NAME}.zip"
 
               with zipfile.ZipFile(
-                  "semantic_export.zip",
+                  name,
                   "w",
                   zipfile.ZIP_DEFLATED
               ) as z:
 
-                  for root, dirs, files in os.walk(
-                      EXPORT_ROOT
-                  ):
 
-                      for file in files:
+                  for root,dirs,files in os.walk(OUT):
 
-                          fp = Path(root) / file
+                      for f in files:
+
+                          file=Path(root)/f
 
                           z.write(
-                              fp,
-                              fp.relative_to(
-                                  EXPORT_ROOT
+                              file,
+                              file.relative_to(
+                                  OUT.parent
                               )
                           )
 
+
                   z.write(
-                      "SEMANTIC_EXPLANATION.md"
+                      f"{EXPORT_NAME}_semantic.md"
                   )
 
 
-          copy_target()
-          explain_tree()
-          zip_export()
+              print(
+                  name
+              )
 
-          print(
-              "Export complete"
-          )
+
+
+          copy_target()
+          create_report()
+          create_zip()
 
           PY
 
 
-      - name: Run exporter
+
+      - name: Run semantic exporter
         env:
           TARGET: ${{ github.event.inputs.path }}
         run: |
           python semantic_export.py
 
 
-      - name: Upload ZIP
+
+      - name: Upload export
         uses: actions/upload-artifact@v4
         with:
-          name: semantic-export
-          path: semantic_export.zip
+          name: semantic-${{ github.event.inputs.path }}
+          path: |
+            *.zip
+            *_semantic.md
