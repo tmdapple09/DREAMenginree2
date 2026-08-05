@@ -172,8 +172,12 @@ jobs:
               manifests = []
 
               for dirpath, dirnames, filenames in os.walk(root):
-                  dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and not d.startswith(".git")]
-                  for name in filenames:
+                  # Sort in place so traversal order (and therefore skip-sample
+                  # lists, chunk contents, and everything downstream) is
+                  # identical across machines/OSes, not dependent on whatever
+                  # order the filesystem happens to hand back.
+                  dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS and not d.startswith(".git"))
+                  for name in sorted(filenames):
                       full = os.path.join(dirpath, name)
                       rel = os.path.relpath(full, root)
 
@@ -294,12 +298,27 @@ jobs:
               sys.exit(0)
 
           # --------------------------------------------------------- API calling
+          # Determinism strategy for this workflow:
+          #   1. temperature=0 and top_p=1 on every call -> greedy decoding,
+          #      the closest thing the API exposes to "same input, same output."
+          #      Anthropic does not guarantee bit-for-bit reproducibility even
+          #      at temperature 0 (no seed parameter exists on this API), but
+          #      greedy decoding is the maximum determinism the provider allows.
+          #   2. MODEL is a dated snapshot id, never a floating alias, so the
+          #      underlying weights can't shift under you between runs.
+          #   3. File walk order, chunk order, and merge-tree order are all
+          #      sorted/deterministic (see collect_files above) so identical
+          #      source produces identical prompts in identical order.
+          #   4. Retry backoff is fixed exponential (5s, 10s, 20s...), no
+          #      jitter, so retries don't introduce timing-based randomness.
           API_URL = "https://api.anthropic.com/v1/messages"
 
           def call_anthropic(system, user_text, max_tokens=4096, retries=5):
               body = json.dumps({
                   "model": MODEL,
                   "max_tokens": max_tokens,
+                  "temperature": 0,
+                  "top_p": 1,
                   "system": system,
                   "messages": [{"role": "user", "content": user_text}],
               }).encode("utf-8")
