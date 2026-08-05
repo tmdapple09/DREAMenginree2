@@ -1,0 +1,640 @@
+name: Semantic Model Reverse Engineering
+
+# Single-file, self-contained workflow.
+# Reconstructs the CONCEPTUAL model of a repository (not docs, not API refs)
+# and writes it out as SEMANTIC_MODEL_BOOK.md, a plain-English book aimed at
+# a non-programmer reader.
+#
+# Everything lives in this file. The Python "script" below is written to a
+# temp file at runtime by the workflow itself — it is not a checked-in asset.
+#
+# Requires a repo secret: ANTHROPIC_API_KEY
+# (skip it entirely by running with dry_run: true, which only does Stage 1
+#  inventory + chunking, no model calls, no key needed)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to analyze (blank = default branch)"
+        required: false
+        default: ""
+      model:
+        description: "Anthropic model id used for every pass"
+        required: false
+        default: "claude-sonnet-4-5-20250929"
+      chunk_chars:
+        description: "Approx characters per Stage 1-4 map chunk"
+        required: false
+        default: "60000"
+      max_chunks:
+        description: "Safety cap on number of chunks processed (0 = no cap)"
+        required: false
+        default: "0"
+      max_file_bytes:
+        description: "Skip individual files larger than this many bytes"
+        required: false
+        default: "400000"
+      dry_run:
+        description: "true = inventory + chunking only, no API calls, no key needed"
+        required: false
+        default: "false"
+      commit_book:
+        description: "true = also commit SEMANTIC_MODEL_BOOK.md back to the branch"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: semantic-model-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semantic-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Reverse-engineer semantic model
+        id: build
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ github.event.inputs.model }}
+          CHUNK_CHARS: ${{ github.event.inputs.chunk_chars }}
+          MAX_CHUNKS: ${{ github.event.inputs.max_chunks }}
+          MAX_FILE_BYTES: ${{ github.event.inputs.max_file_bytes }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          cat <<'PYEOF' > /tmp/semantic_model.py
+          #!/usr/bin/env python3
+          """
+          Self-contained semantic-model reverse engineer.
+          Generated at runtime by .github/workflows/semantic-model.yml — not a
+          checked-in project file.
+
+          Pipeline:
+            Stage 1-4 (per-chunk MAP)   -> raw fact extraction from source text
+            Recursive MERGE (REDUCE)   -> binary-tree merge of chunk summaries
+            Stage 5   (global pass)    -> architectural analysis
+            Stage 6   (global pass)    -> hidden semantics
+            Stage 7   (global pass)    -> contradictions / drift / debt
+            Stage 8a  (global pass)    -> glossary
+            Stage 8b  (global pass)    -> confidence annotation
+            Stage 8c  (N grouped calls)-> plain-English book, section by section
+            Assembly                   -> SEMANTIC_MODEL_BOOK.md
+          """
+          import os
+          import sys
+          import json
+          import time
+          import hashlib
+          import urllib.request
+          import urllib.error
+
+          # ---------------------------------------------------------------- config
+          ROOT = os.environ.get("REPO_ROOT", ".")
+          MODEL = os.environ.get("MODEL") or "claude-sonnet-4-5-20250929"
+          CHUNK_CHARS = int(os.environ.get("CHUNK_CHARS") or "60000")
+          MAX_CHUNKS = int(os.environ.get("MAX_CHUNKS") or "0")
+          MAX_FILE_BYTES = int(os.environ.get("MAX_FILE_BYTES") or "400000")
+          DRY_RUN = (os.environ.get("DRY_RUN") or "false").strip().lower() == "true"
+          API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+
+          if not DRY_RUN and not API_KEY:
+              print("ERROR: ANTHROPIC_API_KEY is not set and dry_run is false.")
+              print("Either add the secret or re-run with dry_run: true.")
+              sys.exit(1)
+
+          SKIP_DIRS = {
+              ".git", "node_modules", "dist", "build", ".next", "out", "vendor",
+              "venv", ".venv", "env", "__pycache__", "coverage", "target",
+              ".cache", ".turbo", ".pytest_cache", ".idea", ".vscode",
+              ".parcel-cache", ".yarn", ".pnpm-store", "generated", "gen",
+              ".terraform", "site-packages",
+          }
+
+          BINARY_EXTS = {
+              ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff",
+              ".mp3", ".mp4", ".mov", ".avi", ".webm", ".wav", ".flac", ".ogg",
+              ".woff", ".woff2", ".ttf", ".otf", ".eot",
+              ".zip", ".tar", ".gz", ".tgz", ".rar", ".7z", ".jar", ".war",
+              ".pdf", ".exe", ".dll", ".so", ".dylib", ".bin", ".class",
+              ".wasm", ".pyc", ".pyo", ".db", ".sqlite", ".sqlite3",
+              ".psd", ".ai", ".sketch", ".fig", ".glb", ".gltf", ".fbx",
+          }
+
+          # Files that exist and matter for inventory, but whose *content* is
+          # noise for semantic reasoning (lockfiles, minified bundles, etc).
+          MANIFEST_ONLY_NAMES = {
+              "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
+              "Cargo.lock", "poetry.lock", "Gemfile.lock", "composer.lock",
+              "go.sum",
+          }
+          MANIFEST_ONLY_SUFFIXES = (".min.js", ".min.css", ".map")
+
+          TEXT_LIKELY_EXTS = {
+              ".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".go", ".rs",
+              ".java", ".kt", ".rb", ".php", ".c", ".h", ".cpp", ".hpp", ".cs",
+              ".swift", ".m", ".scala", ".sql", ".sh", ".bash", ".zsh",
+              ".yml", ".yaml", ".json", ".toml", ".ini", ".cfg", ".env.example",
+              ".md", ".mdx", ".txt", ".html", ".css", ".scss", ".less",
+              ".graphql", ".proto", ".dockerfile", "",
+          }
+
+          # -------------------------------------------------------- inventory walk
+          def is_probably_binary(path, sniff_bytes=8000):
+              try:
+                  with open(path, "rb") as f:
+                      chunk = f.read(sniff_bytes)
+                  return b"\x00" in chunk
+              except OSError:
+                  return True
+
+          def collect_files(root):
+              text_files = []
+              skipped = {
+                  "binary": [], "large": [], "symlink": [],
+                  "manifest_only": [], "unreadable": [],
+              }
+              manifests = []
+
+              for dirpath, dirnames, filenames in os.walk(root):
+                  dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and not d.startswith(".git")]
+                  for name in filenames:
+                      full = os.path.join(dirpath, name)
+                      rel = os.path.relpath(full, root)
+
+                      if os.path.islink(full):
+                          skipped["symlink"].append(rel)
+                          continue
+
+                      if name in MANIFEST_ONLY_NAMES or name.endswith(MANIFEST_ONLY_SUFFIXES):
+                          manifests.append(rel)
+                          skipped["manifest_only"].append(rel)
+                          continue
+
+                      ext = os.path.splitext(name)[1].lower()
+                      if ext in BINARY_EXTS:
+                          skipped["binary"].append(rel)
+                          continue
+
+                      try:
+                          size = os.path.getsize(full)
+                      except OSError:
+                          skipped["unreadable"].append(rel)
+                          continue
+
+                      if size > MAX_FILE_BYTES:
+                          skipped["large"].append(rel)
+                          continue
+
+                      if ext not in TEXT_LIKELY_EXTS and is_probably_binary(full):
+                          skipped["binary"].append(rel)
+                          continue
+
+                      try:
+                          with open(full, "r", encoding="utf-8", errors="strict") as f:
+                              content = f.read()
+                      except (UnicodeDecodeError, OSError):
+                          try:
+                              with open(full, "r", encoding="latin-1", errors="replace") as f:
+                                  content = f.read()
+                          except OSError:
+                              skipped["unreadable"].append(rel)
+                              continue
+
+                      text_files.append((rel, content))
+
+              text_files.sort(key=lambda x: x[0])
+              return text_files, skipped, manifests
+
+          print("Stage 1: walking repository and building inventory...")
+          text_files, skipped, manifests = collect_files(ROOT)
+          total_chars = sum(len(c) for _, c in text_files)
+          print(f"  text files: {len(text_files)}  total chars: {total_chars}")
+          for k, v in skipped.items():
+              print(f"  skipped[{k}]: {len(v)}")
+
+          inventory = {
+              "file_count": len(text_files),
+              "total_chars": total_chars,
+              "skipped_counts": {k: len(v) for k, v in skipped.items()},
+              "skipped_samples": {k: v[:25] for k, v in skipped.items()},
+              "manifests_detected": manifests[:50],
+              "top_level_entries": sorted(set(
+                  p.split(os.sep, 1)[0] for p, _ in text_files
+              ))[:200],
+          }
+
+          # ------------------------------------------------------------- chunking
+          def make_chunks(files, budget_chars):
+              chunks = []
+              current, current_len = [], 0
+
+              def flush():
+                  nonlocal current, current_len
+                  if current:
+                      chunks.append(current)
+                      current, current_len = [], 0
+
+              for rel, content in files:
+                  entry_len = len(content) + len(rel) + 32
+                  if entry_len > budget_chars:
+                      # split an oversized single file into sub-chunks
+                      step = budget_chars - 500 if budget_chars > 500 else budget_chars
+                      parts = [content[i:i + step] for i in range(0, len(content), step)]
+                      for idx, part in enumerate(parts):
+                          flush()
+                          chunks.append([(f"{rel} [part {idx + 1}/{len(parts)}]", part)])
+                      continue
+                  if current_len + entry_len > budget_chars:
+                      flush()
+                  current.append((rel, content))
+                  current_len += entry_len
+              flush()
+              return chunks
+
+          chunks = make_chunks(text_files, CHUNK_CHARS)
+          if MAX_CHUNKS > 0 and len(chunks) > MAX_CHUNKS:
+              print(f"  capping chunks: {len(chunks)} -> {MAX_CHUNKS}")
+              chunks = chunks[:MAX_CHUNKS]
+          print(f"Stage 1: built {len(chunks)} chunk(s) for analysis")
+
+          if DRY_RUN:
+              os.makedirs("semantic_model_artifacts", exist_ok=True)
+              with open("semantic_model_artifacts/inventory.json", "w") as f:
+                  json.dump(inventory, f, indent=2)
+              book = (
+                  "# SEMANTIC_MODEL_BOOK.md (dry run)\n\n"
+                  "This is an inventory-only dry run. No model calls were made.\n\n"
+                  f"- Files analyzed: {inventory['file_count']}\n"
+                  f"- Total characters: {inventory['total_chars']}\n"
+                  f"- Chunks that would be processed: {len(chunks)}\n\n"
+                  "## Skipped\n\n" +
+                  "\n".join(f"- {k}: {v}" for k, v in inventory["skipped_counts"].items()) +
+                  "\n\nRe-run with dry_run: false and ANTHROPIC_API_KEY set to "
+                  "produce the full book.\n"
+              )
+              with open("SEMANTIC_MODEL_BOOK.md", "w") as f:
+                  f.write(book)
+              print("Dry run complete. Wrote SEMANTIC_MODEL_BOOK.md (inventory only).")
+              sys.exit(0)
+
+          # --------------------------------------------------------- API calling
+          API_URL = "https://api.anthropic.com/v1/messages"
+
+          def call_anthropic(system, user_text, max_tokens=4096, retries=5):
+              body = json.dumps({
+                  "model": MODEL,
+                  "max_tokens": max_tokens,
+                  "system": system,
+                  "messages": [{"role": "user", "content": user_text}],
+              }).encode("utf-8")
+              req = urllib.request.Request(
+                  API_URL, data=body, method="POST",
+                  headers={
+                      "content-type": "application/json",
+                      "x-api-key": API_KEY,
+                      "anthropic-version": "2023-06-01",
+                  },
+              )
+              delay = 5
+              last_err = None
+              for attempt in range(retries):
+                  try:
+                      with urllib.request.urlopen(req, timeout=180) as resp:
+                          data = json.loads(resp.read().decode("utf-8"))
+                          parts = [b.get("text", "") for b in data.get("content", []) if b.get("type") == "text"]
+                          return "".join(parts)
+                  except urllib.error.HTTPError as e:
+                      last_err = e
+                      payload = e.read().decode("utf-8", errors="replace")
+                      retryable = e.code in (429, 500, 502, 503, 529)
+                      print(f"  API HTTPError {e.code} (attempt {attempt + 1}/{retries}): {payload[:300]}")
+                      if not retryable:
+                          break
+                  except (urllib.error.URLError, TimeoutError) as e:
+                      last_err = e
+                      print(f"  API network error (attempt {attempt + 1}/{retries}): {e}")
+                  time.sleep(delay)
+                  delay = min(delay * 2, 60)
+              raise RuntimeError(f"Anthropic API call failed after retries: {last_err}")
+
+          def call_json(system, user_text, max_tokens=4096):
+              """Call the model and coerce the reply into JSON, with one repair retry."""
+              raw = call_anthropic(system, user_text, max_tokens=max_tokens)
+              try:
+                  return json.loads(raw)
+              except json.JSONDecodeError:
+                  repair_system = (
+                      "You output ONLY valid JSON, nothing else, no markdown fences, "
+                      "no commentary before or after."
+                  )
+                  repaired = call_anthropic(
+                      repair_system,
+                      "The following was supposed to be strict JSON but failed to "
+                      "parse. Return a corrected, valid JSON version of the same "
+                      "content, preserving all information:\n\n" + raw,
+                      max_tokens=max_tokens,
+                  )
+                  return json.loads(repaired)
+
+          # ------------------------------------------- Stage 1-4: per-chunk MAP
+          # One call per chunk, single responsibility: "extract facts, don't
+          # interpret yet." Interpretation (architecture, hidden semantics,
+          # contradictions) happens later on the MERGED model, as distinct
+          # single-purpose global passes, per the multi-pass requirement.
+          EXTRACT_SYSTEM = """You are a reverse-engineering analyst reading raw source \
+          code fragments from one software repository. You do NOT know the rest of \
+          the repository yet; only report what THIS fragment shows or implies.
+
+          Ignore comments and naming when behavior contradicts them; behavior is more \
+          trustworthy than labels. Do not write documentation or summaries of syntax. \
+          Extract semantic facts.
+
+          Return ONLY strict JSON (no markdown fences) with this shape:
+          {
+            "languages": [string],
+            "frameworks": [string],
+            "dependencies": [string],
+            "config_or_env": [string],
+            "modules_or_files": [string],
+            "imports": [string],
+            "exports_or_public_interfaces": [string],
+            "entities_or_concepts": [string],
+            "responsibilities": [string],
+            "workflows": [string],
+            "business_rules_or_invariants": [string],
+            "state_changes": [string],
+            "immutable_or_constant_things": [string],
+            "notable_naming_or_vocabulary": [string],
+            "notes": [string]
+          }
+          Keep every array item short (a phrase, not a paragraph). Omit nothing you \
+          are confident about; leave arrays empty rather than inventing content."""
+
+          def extract_chunk(i, chunk):
+              body = "\n\n".join(
+                  f"### FILE: {rel}\n```\n{content}\n```" for rel, content in chunk
+              )
+              user = f"Repository fragment {i + 1} of {len(chunks)}.\n\n{body}"
+              return call_json(EXTRACT_SYSTEM, user, max_tokens=3000)
+
+          print(f"Stage 2 (map): extracting facts from {len(chunks)} chunk(s)...")
+          chunk_summaries = []
+          for i, chunk in enumerate(chunks):
+              print(f"  chunk {i + 1}/{len(chunks)} ({len(chunk)} file part(s))")
+              try:
+                  chunk_summaries.append(extract_chunk(i, chunk))
+              except Exception as e:
+                  print(f"  WARNING: chunk {i + 1} failed, skipping: {e}")
+
+          if not chunk_summaries:
+              print("ERROR: no chunk summaries were produced; aborting.")
+              sys.exit(1)
+
+          # ------------------------------------------- Stage: recursive MERGE
+          MERGE_SYSTEM = """You merge two partial JSON fact-sheets that describe \
+          fragments of the SAME software repository into one combined fact-sheet. \
+          Deduplicate near-identical entries, keep the more specific phrasing, and \
+          when two entries conflict, keep BOTH but prefix each with a short tag in \
+          brackets so the conflict is visible later, e.g. "[conflict] X assumes A" \
+          and "[conflict] Y assumes not-A".
+
+          Return ONLY strict JSON with the exact same shape as the inputs. Do not \
+          add commentary, do not add new top-level keys."""
+
+          def merge_pair(a, b):
+              user = (
+                  "Fact-sheet A:\n" + json.dumps(a) +
+                  "\n\nFact-sheet B:\n" + json.dumps(b) +
+                  "\n\nMerge them per the instructions."
+              )
+              return call_json(MERGE_SYSTEM, user, max_tokens=3500)
+
+          def recursive_merge(items, depth=0):
+              if len(items) == 1:
+                  return items[0]
+              print(f"  merge tree depth {depth}: {len(items)} node(s)")
+              nxt = []
+              for i in range(0, len(items), 2):
+                  if i + 1 < len(items):
+                      try:
+                          nxt.append(merge_pair(items[i], items[i + 1]))
+                      except Exception as e:
+                          print(f"  WARNING: merge failed, keeping first half unmerged: {e}")
+                          nxt.append(items[i])
+                  else:
+                      nxt.append(items[i])
+              return recursive_merge(nxt, depth + 1)
+
+          print(f"Stage 2 (reduce): recursively merging {len(chunk_summaries)} chunk summaries...")
+          merged_model = recursive_merge(chunk_summaries)
+          print("  merge complete.")
+
+          # ------------------------------------------- Stage 5: architecture
+          ARCH_SYSTEM = """You are a software architect. Given consolidated facts \
+          about a repository, infer its architectural style, boundaries, ownership, \
+          coupling, cohesion, separation of concerns, and dependency direction. \
+          Explain WHY these choices were probably made. Do not restate the raw \
+          facts verbatim; interpret them.
+
+          Return ONLY strict JSON:
+          {
+            "architectural_style": string,
+            "boundaries": [string],
+            "coupling_notes": [string],
+            "cohesion_notes": [string],
+            "layering": [string],
+            "dependency_direction": string,
+            "probable_reasoning": [string]
+          }"""
+
+          # ------------------------------------------- Stage 6: hidden semantics
+          HIDDEN_SYSTEM = """You are a systems analyst. Given consolidated facts \
+          about a repository, name concepts and patterns that are never explicitly \
+          written in the code but are clearly being implemented in practice — e.g. \
+          "this appears to implement an approval workflow" or "this appears to model \
+          a state machine", even if those exact words never appear.
+
+          Return ONLY strict JSON:
+          { "hidden_concepts": [ {"claim": string, "evidence": string, "confidence": "High"|"Medium"|"Low"} ] }"""
+
+          # ------------------------------------------- Stage 7: contradictions
+          CONTRA_SYSTEM = """You are auditing a repository's consolidated facts for \
+          conflicting responsibilities, duplicated concepts, architectural drift, \
+          inconsistent naming, hidden coupling, circular dependencies, accidental \
+          complexity, and technical debt. Look especially at any entries tagged \
+          [conflict].
+
+          Return ONLY strict JSON:
+          { "contradictions": [ {"issue": string, "evidence": string, "impact": string} ] }"""
+
+          # ------------------------------------------- Stage 8a: glossary
+          GLOSSARY_SYSTEM = """You build a glossary of the domain vocabulary used in \
+          this repository's consolidated facts. Every term gets a plain-English \
+          definition a non-programmer could understand, plus (if useful) a \
+          real-world analogy.
+
+          Return ONLY strict JSON:
+          { "glossary": [ {"term": string, "plain_definition": string, "analogy": string} ] }"""
+
+          # ------------------------------------------- Stage 8b: confidence
+          CONFIDENCE_SYSTEM = """You review a set of major conclusions about a \
+          repository and, for each one, attach Observed Evidence, the Inference \
+          drawn from it, at least one Alternative Interpretation, and a Confidence \
+          level (High, Medium, or Low). Never claim certainty you don't have.
+
+          Return ONLY strict JSON:
+          { "annotated_conclusions": [
+              {"conclusion": string, "observed_evidence": string, "inference": string,
+               "alternative_interpretation": string, "confidence": "High"|"Medium"|"Low"}
+          ] }"""
+
+          def run_global_pass(name, system, extra_context=None, max_tokens=3500):
+              print(f"Stage: {name}...")
+              user = "Consolidated repository facts:\n" + json.dumps(merged_model)
+              if extra_context:
+                  user += "\n\nAdditional context:\n" + json.dumps(extra_context)
+              try:
+                  return call_json(system, user, max_tokens=max_tokens)
+              except Exception as e:
+                  print(f"  WARNING: {name} failed: {e}")
+                  return {}
+
+          architecture = run_global_pass("Stage 5 architecture", ARCH_SYSTEM)
+          hidden = run_global_pass("Stage 6 hidden semantics", HIDDEN_SYSTEM)
+          contradictions = run_global_pass("Stage 7 contradictions", CONTRA_SYSTEM)
+          glossary = run_global_pass("Stage 8a glossary", GLOSSARY_SYSTEM)
+          confidence = run_global_pass(
+              "Stage 8b confidence annotation", CONFIDENCE_SYSTEM,
+              extra_context={"architecture": architecture, "hidden": hidden, "contradictions": contradictions},
+              max_tokens=4000,
+          )
+
+          # ------------------------------------------- Stage 8c: plain-English book
+          BOOK_SYSTEM = """You are writing sections of a book that explains a piece \
+          of software to someone with little or no programming knowledge — a \
+          project manager, a business owner, a teacher, a lawyer, an accountant. \
+          Avoid jargon. When a technical term is unavoidable, define it and give an \
+          everyday analogy, in the spirit of: "Think of the controller as a \
+          receptionist. Every request first arrives there. The receptionist decides \
+          which department should handle the work."
+
+          Write like a professionally edited book, not an AI-generated bullet dump: \
+          full paragraphs, no filler, no repetition, every claim justified by the \
+          facts you were given. If something is uncertain, say so plainly instead of \
+          pretending certainty.
+
+          You will be told exactly which section headings to write. Output GitHub \
+          Flavored Markdown starting each section with "## <Heading>". Do not add \
+          any sections beyond the ones requested. Do not add a top-level title."""
+
+          SECTION_GROUPS = [
+              ["Executive Summary", "What This Software Is", "Why It Exists", "The Big Picture"],
+              ["Core Ideas", "Major Concepts", "Relationships", "Responsibilities"],
+              ["Information Flow", "State Changes", "Decision Making", "Important Rules", "Hidden Assumptions"],
+              ["Architectural Style", "Important Components", "Risks", "Unknowns"],
+              ["Competing Interpretations", "Confidence Levels", "Glossary"],
+              [
+                  "If I Had To Explain This To A Non-Programmer",
+                  "If I Had To Teach This To A New Employee",
+                  "What The Original Author Was Probably Thinking",
+                  "What Could Be Improved",
+              ],
+          ]
+
+          all_context = {
+              "facts": merged_model,
+              "architecture": architecture,
+              "hidden_semantics": hidden,
+              "contradictions": contradictions,
+              "glossary": glossary,
+              "confidence_annotations": confidence,
+              "inventory": inventory,
+          }
+
+          def write_section_group(headings):
+              user = (
+                  "Write these sections, in this order: " + ", ".join(headings) +
+                  "\n\nMaterial to draw on (do not dump this raw; synthesize it):\n" +
+                  json.dumps(all_context)
+              )
+              return call_anthropic(BOOK_SYSTEM, user, max_tokens=4096)
+
+          print("Stage 8c: writing the book, section group by section group...")
+          book_parts = []
+          for group in SECTION_GROUPS:
+              print(f"  writing: {', '.join(group)}")
+              try:
+                  book_parts.append(write_section_group(group))
+              except Exception as e:
+                  print(f"  WARNING: section group failed ({', '.join(group)}): {e}")
+                  book_parts.append(
+                      "## " + "\n## ".join(group) +
+                      "\n\n_This section could not be generated due to an API error._\n"
+                  )
+
+          # ------------------------------------------------------------ assembly
+          repo_name = os.path.basename(os.path.abspath(ROOT))
+          toc_headings = [h for group in SECTION_GROUPS for h in group]
+          toc = "\n".join(f"- [{h}](#{h.lower().replace(' ', '-')})" for h in toc_headings)
+
+          header = (
+              f"# Semantic Model of {repo_name}\n\n"
+              "_Reconstructed automatically from source code — not documentation, "
+              "not an API reference. This describes the conceptual model an "
+              "experienced engineer would infer from reading the code itself._\n\n"
+              f"**Files analyzed:** {inventory['file_count']}  \n"
+              f"**Chunks processed:** {len(chunks)}  \n"
+              f"**Model used:** {MODEL}\n\n"
+              "## Table of Contents\n\n" + toc + "\n\n---\n\n"
+          )
+
+          book_markdown = header + "\n\n---\n\n".join(book_parts) + "\n"
+
+          with open("SEMANTIC_MODEL_BOOK.md", "w") as f:
+              f.write(book_markdown)
+
+          os.makedirs("semantic_model_artifacts", exist_ok=True)
+          with open("semantic_model_artifacts/merged_model.json", "w") as f:
+              json.dump(all_context, f, indent=2)
+
+          print("Done. Wrote SEMANTIC_MODEL_BOOK.md")
+          PYEOF
+          python3 /tmp/semantic_model.py
+
+      - name: Upload SEMANTIC_MODEL_BOOK.md
+        uses: actions/upload-artifact@v4
+        with:
+          name: semantic-model-book
+          path: |
+            SEMANTIC_MODEL_BOOK.md
+            semantic_model_artifacts/
+          if-no-files-found: error
+
+      - name: Commit book back to branch
+        if: ${{ github.event.inputs.commit_book == 'true' }}
+        run: |
+          git config user.name "semantic-model-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add SEMANTIC_MODEL_BOOK.md
+          if git diff --cached --quiet; then
+            echo "No changes to SEMANTIC_MODEL_BOOK.md, skipping commit."
+          else
+            git commit -m "docs: regenerate SEMANTIC_MODEL_BOOK.md"
+            git push
+          fi
