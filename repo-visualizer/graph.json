@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T04:05:14.925Z",
+  "generatedAt": "2026-08-05T05:58:33.401Z",
   "root": ".",
   "nodes": [
     {
@@ -3576,6 +3576,16 @@
       "label": "sql-migration-guard.yml",
       "type": "config",
       "path": ".github/workflows/sql-migration-guard.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/ssmantic.yml",
+      "label": "ssmantic.yml",
+      "type": "config",
+      "path": ".github/workflows/ssmantic.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
