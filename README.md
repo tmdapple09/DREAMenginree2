@@ -12,7 +12,7 @@ This README is generated from tracked repository evidence. It must not claim dec
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E6.0.0-blue)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/tsconfig.json)
 [![Next.js](https://img.shields.io/badge/Next.js-%5E16.2.3-black)](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/next.config.mjs)
 
-Generated from [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) on `completedream`. Commit date: 2026-07-20T03:44:49Z.
+Generated from [`eb542b8`](https://github.com/tmdapple09/DREAMenginree2/commit/eb542b866a98b16483b008da625338ebf2b2c1aa) on `completedream`. Commit date: 2026-08-05T06:14:08Z.
 
 ## Table of Contents
 
@@ -48,14 +48,14 @@ DREAMengin is one connected web-native creative environment. Engins own domain c
 
 | Metric | Current tracked value |
 |---|---:|
-| Tracked documentable files | 2264 |
+| Tracked documentable files | 2276 |
 | App pages | 113 |
 | API route handlers | 125 |
 | Component files | 326 |
 | Engin files | 368 |
 | Tests/specs | 240 |
 | Supabase migrations | 60 |
-| GitHub workflows | 95 |
+| GitHub workflows | 105 |
 
 ### Detected technology
 
@@ -139,7 +139,7 @@ LIVEKIT_API_SECRET=
 | [`app/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/app) | 278 |
 | [`engine/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/engine) | 272 |
 | [`tests/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/tests) | 247 |
-| [`.github/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/.github) | 213 |
+| [`.github/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/.github) | 223 |
 | [`docs/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/docs) | 100 |
 | [`supabase/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/supabase) | 80 |
 | [`scripts/`](https://github.com/tmdapple09/DREAMenginree2/tree/completedream/scripts) | 57 |
@@ -201,7 +201,7 @@ The exhaustive file-by-file repository reference is [`REPOREADME.md`](https://gi
 
 The complete README and repository inventory are written by [`scripts/generate-readme.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/generate-readme.ts). Semantic product evidence is computed by [`scripts/readme-autosync.ts`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/scripts/readme-autosync.ts). The workflow entry point is [`.github/workflows/readme-autosync.yml`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/.github/workflows/readme-autosync.yml).
 
-Source snapshot: [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) â chore: apply code updates from zip [skip ci] [skip vercel].
+Source snapshot: [`eb542b8`](https://github.com/tmdapple09/DREAMenginree2/commit/eb542b866a98b16483b008da625338ebf2b2c1aa) â chore: repair TypeScript errors until green [skip ci].
 
 ## User-Facing UI and Interaction Logic Coverage
 
@@ -2570,14 +2570,14 @@ Supporting files:
 
 | Commit | Date | Author | Change |
 |---|---|---|---|
-| [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) | 2026-07-20T03:44:49Z | github-actions[bot] | chore: apply code updates from zip [skip ci] [skip vercel] |
-| [`99a4b7e`](https://github.com/tmdapple09/DREAMenginree2/commit/99a4b7efab736e3b6bf75515ab172de9942a9e6b) | 2026-07-20T03:44:37Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`6ffd662`](https://github.com/tmdapple09/DREAMenginree2/commit/6ffd66253f244ba6e1a706da916c4675e8aa153e) | 2026-07-19T20:43:52-07:00 | tmdapple09 | Add files via upload |
-| [`00c5d95`](https://github.com/tmdapple09/DREAMenginree2/commit/00c5d9562289cd1ec7e688386bf3f76a03a7452a) | 2026-07-20T00:40:37Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
-| [`2b9b8a8`](https://github.com/tmdapple09/DREAMenginree2/commit/2b9b8a803a12dca658d5216c2cd97a1db60a31d4) | 2026-07-20T00:38:56Z | github-actions[bot] | chore: apply code updates from zip [skip ci] [skip vercel] |
-| [`e3111f2`](https://github.com/tmdapple09/DREAMenginree2/commit/e3111f2b070755700bdde06f2c981c5e1f1ff13d) | 2026-07-20T00:38:51Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
-| [`1cf771f`](https://github.com/tmdapple09/DREAMenginree2/commit/1cf771f61487adc1ad84f209fed90748303b61bc) | 2026-07-19T17:38:09-07:00 | tmdapple09 | Add files via upload |
-| [`b46d5ec`](https://github.com/tmdapple09/DREAMenginree2/commit/b46d5ec6917afc6b5104f15b618500c1b1310dac) | 2026-07-17T18:23:25Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`eb542b8`](https://github.com/tmdapple09/DREAMenginree2/commit/eb542b866a98b16483b008da625338ebf2b2c1aa) | 2026-08-05T06:14:08Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`4a80768`](https://github.com/tmdapple09/DREAMenginree2/commit/4a80768898ac13c31e6b85d99f4925982cc726d7) | 2026-08-05T06:12:28Z | github-actions[bot] | chore(repo): update repository state [skip ci] |
+| [`8f58419`](https://github.com/tmdapple09/DREAMenginree2/commit/8f58419cc7cb9be015bd42e1528e91675a8c9485) | 2026-08-04T23:11:42-07:00 | tmdapple09 | Enhance sorting and add determinism strategy comments |
+| [`c2e625e`](https://github.com/tmdapple09/DREAMenginree2/commit/c2e625e2afcc7148613138a3a95b84d12b9ebd56) | 2026-08-05T06:00:31Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`01cb025`](https://github.com/tmdapple09/DREAMenginree2/commit/01cb025af4dbb4fb4ba4fcb34ca17533cad609fa) | 2026-08-05T05:58:33Z | github-actions[bot] | chore(visual-schematic): auto-update file-level schematic [skip ci] [skip vercel] |
+| [`6218413`](https://github.com/tmdapple09/DREAMenginree2/commit/6218413df533dec00cfd4e8f09503c3f1a0d5501) | 2026-08-04T22:57:50-07:00 | tmdapple09 | Create semantic model reverse engineering workflow |
+| [`f985d1b`](https://github.com/tmdapple09/DREAMenginree2/commit/f985d1bd294a8e026c922231b08ed9e718296cff) | 2026-08-02T04:17:31Z | DREAMengin-Bot | chore: repair TypeScript errors until green [skip ci] |
+| [`2496016`](https://github.com/tmdapple09/DREAMenginree2/commit/24960169ee1eab96108395f1a6aa61bb1b6a95b9) | 2026-08-02T04:15:34Z | github-actions[bot] | chore(repo): update repository state [skip ci] |
 
 ## README Generation Contract
 
@@ -2588,55 +2588,3 @@ Supporting files:
 - This run converted 1413 recognized product-evidence paths into GitHub links.
 - Both generated documents are validated before either file is replaced.
 - Generated documents are excluded from their own source inventory to prevent self-referential drift.
-
-<!-- ceedlotus-intent-first -->
-## CeedLotus Intent-First Workflow
-
-Before implementing or modifying code, create or update the repository-root `intent.json`. The intent file is the behavioral contract for the requested change.
-
-### Required Workflow
-
-1. Read `intent.json`.
-2. Complete every required field before implementation.
-3. Present the completed `intent.json` to the user.
-4. Do not begin implementation until the intent is accepted.
-5. Implement the requested behavior.
-6. Generate and inspect the CDLDS behavioral representation.
-7. Verify the implementation against the declared intent.
-8. Create or update `intent-verification.json`.
-9. Present the completed `intent-verification.json` to the user.
-10. Do not declare the task complete until the verification report has been produced.
-
-### Required Deliverables
-
-Every completed implementation must include:
-
-- The completed `intent.json`.
-- The generated CDLDS output.
-- The completed `intent-verification.json`.
-
-### `intent-verification.json`
-
-```json
-{
-  "verificationVersion": "1.0",
-  "status": "passed",
-  "intentReviewed": true,
-  "implementationCompleted": true,
-  "behaviorVerified": true,
-  "requirementsSatisfied": [],
-  "requirementsFailed": [],
-  "behavioralChanges": [],
-  "verificationEvidence": [],
-  "notes": ""
-}
-```
-
-### AI Rules
-
-- Never implement code before completing `intent.json`.
-- Never rewrite `intent.json` after implementation merely to match the produced code.
-- Always verify the implementation against the declared intent.
-- Always create and present `intent-verification.json`.
-- If any requirement cannot be verified, set `status` to `failed`, set `behaviorVerified` to `false`, list the failed requirements, and explain why.
-- Never claim that the task is complete without presenting the verification report.

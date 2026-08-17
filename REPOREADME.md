@@ -2,13 +2,13 @@
 
 > Generated repository-wide documentation. Every tracked non-generated file receives a clickable path, classification, and concise explanation.
 
-Source: [`2d860da`](https://github.com/tmdapple09/DREAMenginree2/commit/2d860da1e9a69c1a303a48f843d2da97223d2761) on `completedream` â 2026-07-20T03:44:49Z.
+Source: [`eb542b8`](https://github.com/tmdapple09/DREAMenginree2/commit/eb542b866a98b16483b008da625338ebf2b2c1aa) on `completedream` â 2026-08-05T06:14:08Z.
 
 Primary product documentation: [`README.md`](https://github.com/tmdapple09/DREAMenginree2/blob/completedream/README.md).
 
 ## Documentation Contract
 
-- Documented files: 2264.
+- Documented files: 2276.
 - User-facing UI or logic files: 1213.
 - User-facing coverage includes direct surfaces and transitive local dependencies.
 - README.md and REPOREADME.md are intentionally excluded from inventory inputs to prevent generated-document feedback loops.
@@ -67,6 +67,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`CORERUNTIME.md`](./CORERUNTIME.md) | Documentation | Documents DREAMengin Runtime Specification. | â |
 | [`COREUX.md`](./COREUX.md) | Documentation | Documents DREAMengin UX Specification. | â |
 | [`COREVISION.md`](./COREVISION.md) | Documentation | Documents Executive Summary. | â |
+| [`deadtrigger2.apk`](./deadtrigger2.apk) | Repository file | Tracked repository file for deadtrigger2. | â |
 | [`deepseek_json_20260701_3ac1d7.json`](./deepseek_json_20260701_3ac1d7.json) | Structured data/configuration | Stores structured deepseek json 20260701 3ac1d7 data or configuration. | â |
 | [`Dreamengin.names.json`](./Dreamengin.names.json) | Structured data/configuration | Stores structured Dreamengin names data or configuration. | â |
 | [`eslint.config.mjs`](./eslint.config.mjs) | Build/runtime configuration | Configures eslint config build, tooling, runtime, workspace, or deployment behavior. | â |
@@ -74,6 +75,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`fix-audit.js`](./fix-audit.js) | Source logic | Implements fix audit logic. | â |
 | [`fix-repo.cjs`](./fix-repo.cjs) | Source logic | Implements fix repo logic. Exports useDualRuntime. Uses useDualRuntime. | User interaction hook |
 | [`GameENGINspec.md`](./GameENGINspec.md) | Documentation | Documents DREAMengin Vision Alignment Guard. | â |
+| [`intent.json`](./intent.json) | Structured data/configuration | Stores structured intent data or configuration. | â |
 | [`LICENSE`](./LICENSE) | Repository file | Tracked repository file for LICENSE. | â |
 | [`next-env.d.ts`](./next-env.d.ts) | Source logic | Implements next env d logic. | â |
 | [`next.config.mjs`](./next.config.mjs) | Build/runtime configuration | Configures next config build, tooling, runtime, workspace, or deployment behavior. | â |
@@ -232,11 +234,13 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/scripts/validate_report_agent_spec.py`](./.github/scripts/validate_report_agent_spec.py) | Executable/source utility | Implements validate report agent spec logic. | â |
 | [`.github/workflows/256inv.yml`](./.github/workflows/256inv.yml) | GitHub Actions workflow | Automates SHA-256 Inverted 36-Step Chain. | â |
 | [`.github/workflows/256lr.yml`](./.github/workflows/256lr.yml) | GitHub Actions workflow | Automates SHA-256 36-Step Chain. | â |
-| [`.github/workflows/adream-application-image.yml`](./.github/workflows/adream-application-image.yml) | GitHub Actions workflow | Automates DREAM Application Image and Runtime Atlas. | â |
 | [`.github/workflows/autofixvercelbuild.yml`](./.github/workflows/autofixvercelbuild.yml) | GitHub Actions workflow | Automates Autofix Vercel Build. | â |
 | [`.github/workflows/basecode.yml`](./.github/workflows/basecode.yml) | GitHub Actions workflow | Automates DREAMengin Repo Minus Exclusions Zip. | â |
 | [`.github/workflows/bot-pr-automerge.yml`](./.github/workflows/bot-pr-automerge.yml) | GitHub Actions workflow | Automates Bot PR — Approve, Resolve Conflicts & Auto-Merge. | â |
 | [`.github/workflows/bouncer.yml`](./.github/workflows/bouncer.yml) | GitHub Actions workflow | Automates Bouncer — Hard-Fix Guard. | â |
+| [`.github/workflows/CeedLotus-APK-Decompiler.yml`](./.github/workflows/CeedLotus-APK-Decompiler.yml) | GitHub Actions workflow | Automates CeedLotus APK Decompiler. | â |
+| [`.github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual-fixed.yml`](./.github/workflows/CeedLotus-CDLDS-Behavior-Graph-Manual-fixed.yml) | GitHub Actions workflow | Automates CeedLotus CDLDS Behavior Graph. | â |
+| [`.github/workflows/CeedLotus.yaml`](./.github/workflows/CeedLotus.yaml) | GitHub Actions workflow | Automates CeedLotus CDLDS Application ZIP. | â |
 | [`.github/workflows/cleanup-dead-code.yml`](./.github/workflows/cleanup-dead-code.yml) | GitHub Actions workflow | Automates Cleanup Dead Code & Fix BabylonOptimizeroScene. | â |
 | [`.github/workflows/codeql.yml`](./.github/workflows/codeql.yml) | GitHub Actions workflow | Automates CodeQL Advanced. | â |
 | [`.github/workflows/comparedncode.yml`](./.github/workflows/comparedncode.yml) | GitHub Actions workflow | Automates DREAMengin Compare Code Zip. | â |
@@ -257,6 +261,12 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/workflows/delete trash.yml`](./.github/workflows/delete%20trash.yml) | GitHub Actions workflow | Automates Clean Codebase. | â |
 | [`.github/workflows/deploy-artifact.yml`](./.github/workflows/deploy-artifact.yml) | GitHub Actions workflow | Automates Extract zip code update. | â |
 | [`.github/workflows/docs-auto-update.yml`](./.github/workflows/docs-auto-update.yml) | GitHub Actions workflow | Automates Docs Auto Update. | â |
+| [`.github/workflows/dowloadafolder.yml`](./.github/workflows/dowloadafolder.yml) | GitHub Actions workflow | Automates Semantic Folder Export. | â |
+| [`.github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold_fast.yml`](./.github/workflows/dream_ai_native_4d_rgb_cmy_application_manifold_fast.yml) | GitHub Actions workflow | Automates DREAM AI-Native 4D RGB-CMY Application Manifold v8. | â |
+| [`.github/workflows/dream_equation_codebase_field.yml`](./.github/workflows/dream_equation_codebase_field.yml) | GitHub Actions workflow | Automates DREAM Equation-Generated Codebase Field. | â |
+| [`.github/workflows/dream_equation_generated_codebase_image_fixed.yml`](./.github/workflows/dream_equation_generated_codebase_image_fixed.yml) | GitHub Actions workflow | Automates DREAM Equation-Generated Codebase Image. | â |
+| [`.github/workflows/dream_equation_rgb_cmy_codebase_atlas.yml`](./.github/workflows/dream_equation_rgb_cmy_codebase_atlas.yml) | GitHub Actions workflow | Automates DREAM Equation-Generated RGB-CMY Codebase Atlas. | â |
+| [`.github/workflows/dream_semantic_repository_image_vault_v10.yml`](./.github/workflows/dream_semantic_repository_image_vault_v10.yml) | GitHub Actions workflow | Automates DREAM Semantic Repository Image Vault v10. | â |
 | [`.github/workflows/dream-application-code-binary-3bit-rgb-zline-image.yml`](./.github/workflows/dream-application-code-binary-3bit-rgb-zline-image.yml) | GitHub Actions workflow | Automates DREAM Application Code Binary 3-Bit RGB Z-Line Image. | â |
 | [`.github/workflows/dream-train-semantic-pascal-llm-model.yml`](./.github/workflows/dream-train-semantic-pascal-llm-model.yml) | GitHub Actions workflow | Automates DREAM Train Semantic Pascal LLM Model. | â |
 | [`.github/workflows/dream-utf8-code-geometry.yml`](./.github/workflows/dream-utf8-code-geometry.yml) | GitHub Actions workflow | Automates DREAM UTF-8 Code Geometry. | â |
@@ -313,6 +323,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml`](./.github/workflows/screencode-recursive-website-feature-tree-v21-semantic-11-signal.yml) | GitHub Actions workflow | Automates Export Recursive Website Feature Tree V21. | â |
 | [`.github/workflows/spec-engin-ai-agent.yml`](./.github/workflows/spec-engin-ai-agent.yml) | GitHub Actions workflow | Automates Spec-Engin AI Agent. | â |
 | [`.github/workflows/sql-migration-guard.yml`](./.github/workflows/sql-migration-guard.yml) | GitHub Actions workflow | Automates SQL Migration Guard. | â |
+| [`.github/workflows/ssmantic.yml`](./.github/workflows/ssmantic.yml) | GitHub Actions workflow | Automates Semantic Model Reverse Engineering. | â |
 | [`.github/workflows/Strict English Codebase Export.yml`](./.github/workflows/Strict%20English%20Codebase%20Export.yml) | GitHub Actions workflow | Automates Force English Codebase CSV Export. | â |
 | [`.github/workflows/sync-build-memory.yml`](./.github/workflows/sync-build-memory.yml) | GitHub Actions workflow | Automates Sync Build Memory. | â |
 | [`.github/workflows/type-audit.yml`](./.github/workflows/type-audit.yml) | GitHub Actions workflow | Automates Manual Type Audit Manager. | â |
@@ -321,6 +332,7 @@ Every deterministically detected user-facing file is marked in the **User-facing
 | [`.github/workflows/update-embed-feed.yml`](./.github/workflows/update-embed-feed.yml) | GitHub Actions workflow | Automates Update Embed Feed. | â |
 | [`.github/workflows/update-repo-state.yml`](./.github/workflows/update-repo-state.yml) | GitHub Actions workflow | Automates Update Repo State. | â |
 | [`.github/workflows/vercel-deploy.yml`](./.github/workflows/vercel-deploy.yml) | GitHub Actions workflow | Automates Deploy to Vercel (Manual). | â |
+| [`.github/workflows/verifyarchitecture.yml`](./.github/workflows/verifyarchitecture.yml) | GitHub Actions workflow | Automates Architecture Verification (Manual). | â |
 | [`.github/workflows/visual-schematic.yml`](./.github/workflows/visual-schematic.yml) | GitHub Actions workflow | Automates Visual Schematic. | â |
 | [`.github/workflows/visual-schematicpages.yml`](./.github/workflows/visual-schematicpages.yml) | GitHub Actions workflow | Automates Visual Schematic. | â |
 | [`.github/workflows/VOCAB.yml`](./.github/workflows/VOCAB.yml) | GitHub Actions workflow | Automates Strip Human-Readable Repo ZIPs. | â |
