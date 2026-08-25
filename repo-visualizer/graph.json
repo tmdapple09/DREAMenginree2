@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T05:58:33.401Z",
+  "generatedAt": "2026-08-25T21:50:19.691Z",
   "root": ".",
   "nodes": [
     {
@@ -3356,6 +3356,16 @@
       "label": "issue-bot.yml",
       "type": "config",
       "path": ".github/workflows/issue-bot.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/latexcode.yml",
+      "label": "latexcode.yml",
+      "type": "config",
+      "path": ".github/workflows/latexcode.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
