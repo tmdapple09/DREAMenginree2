@@ -1,4 +1,4 @@
-name: Generate Application Code LaTeX Listing
+name: Generate Inline Application Code LaTeX
 
 on:
   push:
@@ -13,10 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate LaTeX code listing
+      - name: Generate self-contained LaTeX with inline code
         run: |
           mkdir -p latex_output
 
+          # LaTeX preamble
           cat > latex_output/application_code.tex << 'EOF'
           \documentclass{article}
           \usepackage[margin=1in]{geometry}
@@ -38,12 +39,15 @@ jobs:
           \newpage
           EOF
 
+          # Allowed application code extensions including SQL
+          allowed_ext="java|c|cpp|cc|h|hpp|cs|go|rs|swift|kt|scala|dart|js|jsx|ts|tsx|sql"
+
           while IFS= read -r file; do
             [ -f "$file" ] || continue
 
             ext="${file##*.}"
 
-            # Allowed application code extensions including SQL
+            # Keep only allowed application code extensions
             case "$ext" in
               java|c|cpp|cc|h|hpp|cs|go|rs|swift|kt|scala|dart|js|jsx|ts|tsx|sql)
                 ;;
@@ -52,15 +56,24 @@ jobs:
                 ;;
             esac
 
-            # Exclude tests, docs, scripts, build, dependencies, etc.
+            # Exclude test, docs, scripts, build, dependencies, etc.
             if echo "$file" | grep -Eq '/(test|tests|spec|docs|doc|scripts|script|build|dist|node_modules|vendor|\.git|\.github)/'; then
               continue
             fi
 
+            # Also skip markdown, python, shell, and other excluded files explicitly
+            case "$ext" in
+              md|py|sh|bash|zsh|ps1|bat|cmd|rb|php|pl|lua|r|m|json|yaml|yml|toml|xml|html|css|scss|less)
+                continue
+                ;;
+            esac
+
             tex_name=$(echo "$file" | sed 's|^\./||' | sed 's|_|\\_|g; s|&|\\&|g; s|%|\\%|g; s|#|\\#|g')
 
             echo "\section{File: \texttt{$tex_name}}" >> latex_output/application_code.tex
-            echo "\lstinputlisting{$file}" >> latex_output/application_code.tex
+            echo "\begin{lstlisting}" >> latex_output/application_code.tex
+            cat "$file" >> latex_output/application_code.tex
+            echo "\end{lstlisting}" >> latex_output/application_code.tex
             echo "" >> latex_output/application_code.tex
           done < <(find . -type f | sort)
 
