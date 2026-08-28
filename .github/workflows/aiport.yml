@@ -3,7 +3,7 @@ name: AI Codebase Packager
 on:
   push:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Allows you to manually trigger the package build
+  workflow_dispatch:
 
 jobs:
   package-codebase:
@@ -18,12 +18,114 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run AI Packager Script
-        run: python ai_packager.py
+      - name: Generate and Run AI Packager Script
+        run: |
+          cat << 'EOF' > ai_packager.py
+          import os
+          import re
+          import json
+          import shutil
+          from pathlib import Path
+          from datetime import datetime
+
+          IGNORE_DIRS = {'.git', 'node_modules', '.next', 'dist', 'build', '__pycache__', 'ai_export', '.github'}
+          IGNORE_EXTS = {'.png', '.jpg', '.ico', '.svg', '.mp4', '.woff2', '.ttf', '.env'}
+
+          def get_category(filepath):
+              path_str = str(filepath).lower()
+              if filepath.suffix in ['.tsx', '.jsx']:
+                  return "UI_Components"
+              elif filepath.suffix in ['.ts', '.js']:
+                  if 'api' in path_str or 'server' in path_str:
+                      return "Backend_Logic"
+                  return "Core_Logic"
+              elif filepath.suffix in ['.wgsl', '.glsl']:
+                  return "Shaders_Graphics"
+              elif filepath.suffix in ['.css', '.scss']:
+                  return "Styles"
+              elif filepath.suffix in ['.json', '.toml', '.yaml', '.md']:
+                  return "Config_Docs"
+              return "Miscellaneous"
+
+          def extract_dependencies(file_content, suffix):
+              deps = []
+              if suffix in ['.ts', '.tsx', '.js', '.jsx']:
+                  deps += re.findall(r'from\s+[\'"]([^\'"]+)[\'"]', file_content)
+                  deps += re.findall(r'import\([\'"]([^\'"]+)[\'"]\)', file_content)
+              elif suffix == '.py':
+                  deps += re.findall(r'^import\s+([a-zA-Z0-9_\.]+)', file_content, re.MULTILINE)
+                  deps += re.findall(r'^from\s+([a-zA-Z0-9_\.]+)\s+import', file_content, re.MULTILINE)
+              return list(set(deps))
+
+          def package_codebase(root_dir="."):
+              root = Path(root_dir)
+              export_dir = root / 'ai_export'
+              
+              if export_dir.exists():
+                  shutil.rmtree(export_dir)
+              export_dir.mkdir(parents=True, exist_ok=True)
+
+              manifest = {}
+              markdown_lines = [
+                  "# Codebase Architecture Map\n",
+                  f"*Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n",
+                  "This document maps the organized files back to their original structure and shows how they interconnect.\n"
+              ]
+
+              for dirpath, dirnames, filenames in os.walk(root):
+                  dirnames[:] = [d for d in dirnames if d not in IGNORE_DIRS]
+                  
+                  for file in filenames:
+                      file_path = Path(dirpath) / file
+                      if file_path.suffix in IGNORE_EXTS or file_path.name == 'ai_packager.py':
+                          continue
+
+                      try:
+                          with open(file_path, 'r', encoding='utf-8') as f:
+                              content = f.read()
+                          
+                          category = get_category(file_path)
+                          category_dir = export_dir / category
+                          category_dir.mkdir(exist_ok=True)
+
+                          safe_name = f"{file_path.stem}_{file_path.parent.name}{file_path.suffix}"
+                          export_path = category_dir / safe_name
+
+                          shutil.copy2(file_path, export_path)
+                          manifest[safe_name] = str(file_path.relative_to(root))
+
+                          deps = extract_dependencies(content, file_path.suffix)
+
+                          markdown_lines.append(f"### `{safe_name}`")
+                          markdown_lines.append(f"- **Original Path:** `{file_path.relative_to(root)}`")
+                          markdown_lines.append(f"- **Category:** {category}")
+                          if deps:
+                              markdown_lines.append("- **Interconnected Imports:**")
+                              for dep in deps:
+                                  markdown_lines.append(f"  - `{dep}`")
+                          markdown_lines.append("\n---\n")
+
+                      except Exception as e:
+                          print(f"Skipping {file_path}: {e}")
+
+              with open(export_dir / '.sync_manifest.json', 'w', encoding='utf-8') as f:
+                  json.dump(manifest, f, indent=4)
+
+              with open(export_dir / 'architecture_map.md', 'w', encoding='utf-8') as f:
+                  f.write("\n".join(markdown_lines))
+
+              print(f"✅ Codebase packaged successfully into '{export_dir.name}'")
+              print(f"📊 Tracked {len(manifest)} files in architecture_map.md")
+
+          if __name__ == "__main__":
+              package_codebase()
+          EOF
+          
+          python ai_packager.py
 
       - name: Upload AI Export Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ai-export-bundle
           path: ai_export/
-          retention-days: 7 # Keeps your artifact available for a week
+          retention-days: 7
