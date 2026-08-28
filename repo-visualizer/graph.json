@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T23:21:16.060Z",
+  "generatedAt": "2026-08-28T23:52:27.691Z",
   "root": ".",
   "nodes": [
     {
@@ -2762,6 +2762,16 @@
       "tags": []
     },
     {
+      "id": "file:.github/workflows/aiport.yml",
+      "label": "aiport.yml",
+      "type": "config",
+      "path": ".github/workflows/aiport.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
       "id": "file:.github/workflows/autofixvercelbuild.yml",
       "label": "autofixvercelbuild.yml",
       "type": "config",
@@ -3046,16 +3056,6 @@
       "label": "dream-utf8-code-structure-map.yml",
       "type": "config",
       "path": ".github/workflows/dream-utf8-code-structure-map.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/dream-utf8-pascal-lattice-paths.yml",
-      "label": "dream-utf8-pascal-lattice-paths.yml",
-      "type": "config",
-      "path": ".github/workflows/dream-utf8-pascal-lattice-paths.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
