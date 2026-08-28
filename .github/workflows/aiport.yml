@@ -1,0 +1,29 @@
+name: AI Codebase Packager
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Allows you to manually trigger the package build
+
+jobs:
+  package-codebase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run AI Packager Script
+        run: python ai_packager.py
+
+      - name: Upload AI Export Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-export-bundle
+          path: ai_export/
+          retention-days: 7 # Keeps your artifact available for a week
