@@ -1,0 +1,168 @@
+name: Annotate Python with a local model
+
+on:
+  push:
+    paths:
+      - '**.py'
+  workflow_dispatch:
+
+jobs:
+  annotate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Start Ollama server
+        run: |
+          ollama serve > /tmp/ollama.log 2>&1 &
+          sleep 8
+          curl -s http://localhost:11434/api/tags || true
+
+      - name: Pull annotator model
+        run: |
+          ollama pull qwen2.5-coder:1.5b
+
+      - name: Install Python deps
+        run: |
+          pip install requests
+
+      - name: Write annotator script
+        run: |
+          cat > /tmp/annotate_local.py << 'PYEOF'
+          import os
+          import json
+          import requests
+
+          OLLAMA_URL = "http://localhost:11434/api/generate"
+          MODEL      = "qwen2.5-coder:1.5b"
+          CHUNK_SIZE = 40
+          MAX_FILES  = 50
+          OUTPUT_DIR = "annotated_output"
+
+          PROMPT = """You are a patient Python teacher.
+
+          Below is a chunk of Python code. Rewrite it EXACTLY as-is, but append
+          a short plain-English comment to the end of every non-blank,
+          non-comment line, using the # character.
+
+          Rules:
+          1. Keep every original line unchanged before the # comment.
+          2. Explain what the line does in beginner-friendly language.
+          3. Keep comments under 80 characters where possible.
+          4. Do NOT add lines. Do NOT remove lines. Do NOT reformat.
+          5. Preserve all whitespace and indentation exactly.
+          6. If a line already has a comment, leave it alone.
+          7. If a line is blank, leave it blank.
+          8. Return ONLY the annotated code. No prose, no markdown fences.
+
+          Code:
+          {code}
+          """
+
+
+          def annotate_chunk(code_chunk):
+              body = {
+                  "model": MODEL,
+                  "prompt": PROMPT.format(code=code_chunk),
+                  "stream": False,
+                  "options": {"temperature": 0.1},
+              }
+              r = requests.post(OLLAMA_URL, json=body, timeout=300)
+              r.raise_for_status()
+              return r.json()["response"]
+
+
+          def chunk_lines(lines, n):
+              for i in range(0, len(lines), n):
+                  yield lines[i:i + n]
+
+
+          def annotate_file(path):
+              rel = os.path.relpath(path, ".")
+              out_path = os.path.join(OUTPUT_DIR, rel)
+              os.makedirs(os.path.dirname(out_path), exist_ok=True)
+
+              with open(path, encoding="utf-8") as f:
+                  lines = f.readlines()
+
+              out = ["# ANNOTATED\n"]
+              errors = []
+              for chunk in chunk_lines(lines, CHUNK_SIZE):
+                  text = "".join(chunk)
+                  try:
+                      result = annotate_chunk(text)
+                  except Exception as e:
+                      errors.append(str(e))
+                      out.extend(chunk)
+                      continue
+
+                  result = result.strip()
+                  if result.startswith("```"):
+                      result = "\n".join(result.split("\n")[1:])
+                  if result.endswith("```"):
+                      result = "\n".join(result.split("\n")[:-1])
+                  out.append(result + "\n")
+
+              with open(out_path, "w", encoding="utf-8") as f:
+                  f.write("".join(out))
+
+              return {
+                  "original": rel,
+                  "annotated": out_path,
+                  "chunks": (len(lines) + CHUNK_SIZE - 1) // CHUNK_SIZE if lines else 0,
+                  "errors": errors,
+                  "status": "ok" if not errors else "partial",
+              }
+
+
+          def main():
+              results = []
+              count = 0
+              for root, dirs, files in os.walk("."):
+                  dirs[:] = [d for d in dirs
+                             if d not in (".git", ".github", "venv",
+                                          "__pycache__", "node_modules", OUTPUT_DIR)]
+                  for name in files:
+                      if not name.endswith(".py"):
+                          continue
+                      path = os.path.join(root, name)
+                      print(f"Annotating {path}")
+                      info = annotate_file(path)
+                      results.append(info)
+                      count += 1
+                      if count >= MAX_FILES:
+                          print("Reached MAX_FILES cap")
+                          break
+                  if count >= MAX_FILES:
+                      break
+
+              os.makedirs(OUTPUT_DIR, exist_ok=True)
+              with open(os.path.join(OUTPUT_DIR, "annotations.json"), "w", encoding="utf-8") as f:
+                  json.dump(results, f, indent=2)
+              print(f"Done. Annotated {count} files. JSON at {OUTPUT_DIR}/annotations.json")
+
+
+          if __name__ == "__main__":
+              main()
+          PYEOF
+
+      - name: Run annotator
+        run: |
+          cd $GITHUB_WORKSPACE
+          python /tmp/annotate_local.py
+
+      - name: Upload annotated files
+        uses: actions/upload-artifact@v4
+        with:
+          name: annotated-python
+          path: annotated_output/
+          if-no-files-found: error
