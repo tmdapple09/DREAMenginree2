@@ -13,6 +13,9 @@ on:
         required: false
         default: ".ts,.tsx,.py"
         type: string
+  schedule:
+    # Every 6 hours. Runs automatically so the codebase eventually completes.
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: read
@@ -185,7 +188,17 @@ jobs:
           import requests
 
 
-          ENGINE_VERSION = "4.0.0"
+          ENGINE_VERSION = "4.1.0"
+
+          # Bump this to trigger re-annotation of every file.
+          # Files at older versions are re-processed before files at the
+          # current version, and sorted by oldest version first.
+          ANNOTATION_VERSION = "1.0.0"
+
+          # After this many failed attempts, a file is parked and stops
+          # blocking the queue. It stays parked until the source changes
+          # or the annotation version changes.
+          MAX_ATTEMPTS = 3
 
           ROOT = Path(".").resolve()
           STATE_DIR = ROOT / ".qwen_annotation" / "state"
@@ -194,6 +207,7 @@ jobs:
           STATE_FILE = STATE_DIR / "annotation_state.json"
           INTERPRETATIONS_FILE = STATE_DIR / "interpretations.json"
           TELEMETRY_FILE = STATE_DIR / "telemetry.json"
+          SKIP_FILE = STATE_DIR / "skip.txt"
 
           OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 
@@ -258,6 +272,13 @@ jobs:
 
           def sha256_text(text: str) -> str:
               return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+          def version_tuple(v: str) -> Tuple[int, ...]:
+              try:
+                  return tuple(int(part) for part in str(v).split("."))
+              except Exception:
+                  return (0,)
 
 
           def load_json(path: Path, default: Any) -> Any:
@@ -346,6 +367,17 @@ jobs:
               return data
 
 
+          def load_skip_set() -> set:
+              if not SKIP_FILE.exists():
+                  return set()
+
+              return {
+                  line.strip()
+                  for line in SKIP_FILE.read_text(encoding="utf-8").splitlines()
+                  if line.strip() and not line.strip().startswith("#")
+              }
+
+
           def parse_extensions() -> List[str]:
               raw = os.environ.get("INPUT_EXTENSIONS", ",".join(DEFAULT_EXTENSIONS))
 
@@ -404,22 +436,6 @@ jobs:
 
           def source_lines(text: str) -> List[str]:
               return text.splitlines()
-
-
-          def looks_like_string_start(line: str, language: str) -> bool:
-              stripped = line.strip()
-
-              if not stripped:
-                  return False
-
-              if language == "python":
-                  if stripped.startswith(("'", '"', "'''", '"""')):
-                      return True
-
-              if stripped.startswith(("'", '"', "`")):
-                  return True
-
-              return False
 
 
           def lexical_comment_state(
@@ -545,7 +561,6 @@ jobs:
                   if stripped.startswith("/*") or stripped.startswith("*"):
                       return False
 
-              # Never annotate obvious standalone delimiters.
               if stripped in {"}", "};", ")", "],", "]", "):", ":"}:
                   return False
 
@@ -577,7 +592,6 @@ jobs:
               except Exception:
                   pass
 
-              # Recover JSON object if the model wrapped it in markdown.
               match = re.search(r"\{.*\}", text, flags=re.DOTALL)
 
               if not match:
@@ -845,7 +859,6 @@ jobs:
                   if len(name) > 120:
                       continue
 
-                  # Symbol must actually occur in supplied source.
                   if re.search(
                       rf"(?<![\w$]){re.escape(name)}(?![\w$])",
                       full_source,
@@ -889,13 +902,11 @@ jobs:
                   if valid is not None:
                       annotations.append(valid)
 
-              # Deduplicate exact targets.
               dedup = {}
 
               for annotation in annotations:
                   key = annotation["line"]
 
-                  # Keep the more confident annotation for duplicate targets.
                   old = dedup.get(key)
 
                   if old is None or annotation["confidence"] > old["confidence"]:
@@ -906,7 +917,6 @@ jobs:
                   key=lambda item: item["line"],
               )
 
-              # Conservative density limit.
               max_annotations = max(1, min(12, len(chunk) // 2 + 1))
 
               annotations = annotations[:max_annotations]
@@ -1012,8 +1022,6 @@ jobs:
                   return True, "higher_deterministic_quality"
 
               if abs(candidate_score - previous_score) <= 0.05:
-                  # Stronger models may produce a cleaner equivalent result.
-                  # Accept only when annotation count does not increase.
                   if (
                       len(candidate["annotations"])
                       <= len(previous["annotations"])
@@ -1043,7 +1051,6 @@ jobs:
 
                   source = output[index]
 
-                  # Preserve exact source text before the generated marker.
                   generated = " ".join(
                       f"{QWEN_MARKER} [{item['kind']}] {item['text']}"
                       for item in items
@@ -1334,28 +1341,16 @@ jobs:
               )
 
               old_record = state["files"].get(relative)
-
-              if (
-                  old_record
-                  and file_record_complete(
-                      old_record,
-                      source_hash,
-                      len(chunks),
-                  )
-              ):
-                  if rebuild_output(path, old_record):
-                      telemetry["files"].setdefault(
-                          relative,
-                          {},
-                      )["status"] = "rebuilt_from_state"
-
-                      return True
+              prior_attempts = old_record.get("attempts", 0) if old_record else 0
 
               record = {
                   "status": "partial",
+                  "annotation_version": ANNOTATION_VERSION,
+                  "attempts": prior_attempts + 1,
                   "source_sha256": source_hash,
                   "engine_version": ENGINE_VERSION,
                   "language": language,
+                  "line_count": len(lines),
                   "updated_at": now(),
                   "chunks": [],
                   "summary": None,
@@ -1410,16 +1405,12 @@ jobs:
 
                   record["chunks"].append(chunk_record)
 
-                  # Persist after every successful chunk.
                   atomic_write_json(STATE_FILE, state)
                   atomic_write_json(
                       INTERPRETATIONS_FILE,
                       interpretations,
                   )
 
-              # Generate file-level semantic summary with the strongest
-              # available model, without making summary failure invalidate
-              # otherwise-complete line annotations.
               strongest_model = models[-1]
 
               summary, summary_meta = summarize_file(
@@ -1472,8 +1463,8 @@ jobs:
 
                   return False
 
-              relative = path.relative_to(ROOT)
-              destination = OUTPUT_DIR / relative
+              relative_out = path.relative_to(ROOT)
+              destination = OUTPUT_DIR / relative_out
               destination.parent.mkdir(parents=True, exist_ok=True)
 
               destination.write_text(
@@ -1502,6 +1493,106 @@ jobs:
               )
 
               return True
+
+
+          def build_schedule(
+              files: List[Path],
+              state: Dict[str, Any],
+              skipped: set,
+          ) -> Dict[str, List[Tuple]]:
+              """
+              Returns four buckets describing what work is pending.
+
+              Priority order for selection:
+                1. Unannotated files       (never had a record)   - largest first
+                2. Stale version           (record version < current) - oldest version first, then largest first
+                3. Retries                 (failed but under MAX_ATTEMPTS) - largest first
+              Skipped files and files at MAX_ATTEMPTS are excluded.
+
+              Files at the current version are rebuilt (not re-annotated).
+              """
+
+              unannotated: List[Tuple] = []
+              stale: List[Tuple] = []
+              retries: List[Tuple] = []
+
+              rebuilt = 0
+
+              for path in files:
+                  relative = path.relative_to(ROOT).as_posix()
+
+                  if relative in skipped:
+                      continue
+
+                  try:
+                      source = read_source(path)
+                  except Exception:
+                      continue
+
+                  source_hash = sha256_text(source)
+                  lines = source_lines(source)
+                  chunks = chunk_lines(lines)
+
+                  record = state["files"].get(relative)
+                  line_count = len(lines)
+
+                  if record and file_record_complete(
+                      record,
+                      source_hash,
+                      len(chunks),
+                  ):
+                      # Rebuild output every run because the runner is
+                      # ephemeral and the output tree may be empty.
+                      if rebuild_output(path, record):
+                          rebuilt += 1
+
+                      record_version = record.get(
+                          "annotation_version",
+                          "0.0.0",
+                      )
+
+                      if record_version == ANNOTATION_VERSION:
+                          # Fully up to date. Nothing to schedule.
+                          continue
+
+                      # Stale version. Re-annotate.
+                      stale.append((
+                          version_tuple(record_version),
+                          -line_count,
+                          relative,
+                          path,
+                      ))
+                      continue
+
+                  attempts = record.get("attempts", 0) if record else 0
+
+                  if attempts >= MAX_ATTEMPTS:
+                      # Permanently parked. Skip silently.
+                      continue
+
+                  if record is None:
+                      unannotated.append((
+                          -line_count,
+                          relative,
+                          path,
+                      ))
+                  else:
+                      retries.append((
+                          -line_count,
+                          relative,
+                          path,
+                      ))
+
+              unannotated.sort()
+              stale.sort()
+              retries.sort()
+
+              return {
+                  "unannotated": unannotated,
+                  "stale": stale,
+                  "retries": retries,
+                  "rebuilt": rebuilt,
+              }
 
 
           def write_telemetry(telemetry: Dict[str, Any]) -> None:
@@ -1539,6 +1630,7 @@ jobs:
               telemetry = load_telemetry()
 
               telemetry["engine_version"] = ENGINE_VERSION
+              telemetry["annotation_version"] = ANNOTATION_VERSION
               telemetry["models_requested"] = [
                   "qwen2.5-coder:1.5b",
                   "qwen2.5-coder:3b",
@@ -1549,6 +1641,7 @@ jobs:
               telemetry["extensions"] = extensions
 
               files = discover_files(extensions)
+              skipped = load_skip_set()
 
               try:
                   limit = int(
@@ -1562,33 +1655,35 @@ jobs:
 
               limit = max(1, limit)
 
-              pending = []
+              schedule = build_schedule(files, state, skipped)
 
-              for path in files:
-                  relative = path.relative_to(ROOT).as_posix()
-                  source = read_source(path)
-                  record = state["files"].get(relative)
+              # Selection order:
+              #   1. Unannotated, largest first.
+              #   2. Stale version, oldest version first, then largest first.
+              #   3. Retries, largest first.
+              selected: List[Path] = []
+              for bucket in (
+                  schedule["unannotated"],
+                  schedule["stale"],
+                  schedule["retries"],
+              ):
+                  if len(selected) >= limit:
+                      break
 
-                  chunks = chunk_lines(source_lines(source))
+                  for entry in bucket:
+                      if len(selected) >= limit:
+                          break
 
-                  if record and file_record_complete(
-                      record,
-                      sha256_text(source),
-                      len(chunks),
-                  ):
-                      # Rebuild output even when the file itself is not
-                      # selected for fresh processing. This matters because
-                      # GitHub-hosted runners are ephemeral.
-                      if not rebuild_output(path, record):
-                          pending.append(path)
-                  else:
-                      pending.append(path)
-
-              selected = pending[:limit]
+                      selected.append(entry[-1])
 
               print(f"Discovered files: {len(files)}")
-              print(f"Pending files: {len(pending)}")
+              print(f"Skipped (skip.txt): {len(skipped)}")
+              print(f"Unannotated: {len(schedule['unannotated'])}")
+              print(f"Stale version: {len(schedule['stale'])}")
+              print(f"Retries pending: {len(schedule['retries'])}")
+              print(f"Outputs rebuilt: {schedule['rebuilt']}")
               print(f"Processing this run: {len(selected)}")
+              print(f"Annotation version: {ANNOTATION_VERSION}")
               print(f"Models: {', '.join(models)}")
               print(f"Extensions: {', '.join(extensions)}")
 
@@ -1636,8 +1731,9 @@ jobs:
                           interpretations,
                       )
 
-              # Rebuild all previously-completed outputs that were not
-              # selected for processing this run.
+              # Rebuild all completed outputs that were not selected
+              # for processing this run. This matters on ephemeral runners
+              # where the output tree is empty at job start.
               rebuilt = 0
 
               for path in files:
@@ -1655,14 +1751,20 @@ jobs:
 
               telemetry["run"] = {
                   "files_discovered": len(files),
-                  "files_pending": len(pending),
+                  "files_skipped": len(skipped),
+                  "files_unannotated": len(schedule["unannotated"]),
+                  "files_stale": len(schedule["stale"]),
+                  "files_retries": len(schedule["retries"]),
                   "files_selected": len(selected),
                   "files_succeeded": succeeded,
                   "files_failed": failed,
                   "outputs_rebuilt": rebuilt,
+                  "annotation_version": ANNOTATION_VERSION,
               }
 
               state["updated_at"] = now()
+              state["engine_version"] = ENGINE_VERSION
+              state["annotation_version"] = ANNOTATION_VERSION
 
               atomic_write_json(STATE_FILE, state)
               atomic_write_json(
@@ -1673,13 +1775,11 @@ jobs:
 
               print("")
               print("Annotation run complete.")
+              print(f"Annotation version: {ANNOTATION_VERSION}")
               print(f"Succeeded: {succeeded}")
               print(f"Failed: {failed}")
               print(f"Outputs rebuilt: {rebuilt}")
 
-              # A failed file is not silently converted to success.
-              # The workflow remains usable while surfacing failure through
-              # the summary and persisted state.
               if failed > 0:
                   print(
                       "::warning::Some files failed and remain pending "
@@ -1768,6 +1868,7 @@ jobs:
 
           manifest = {
               "engine_version": state.get("engine_version"),
+              "annotation_version": state.get("annotation_version"),
               "generated_at": state.get("updated_at"),
               "files": {},
               "telemetry": telemetry,
@@ -1776,8 +1877,11 @@ jobs:
           for path, record in state.get("files", {}).items():
               manifest["files"][path] = {
                   "status": record.get("status"),
+                  "annotation_version": record.get("annotation_version"),
+                  "attempts": record.get("attempts", 0),
                   "source_sha256": record.get("source_sha256"),
                   "language": record.get("language"),
+                  "line_count": record.get("line_count", 0),
                   "annotation_count": record.get(
                       "annotation_count",
                       0,
@@ -1858,30 +1962,25 @@ jobs:
           partial = len(files) - complete
 
           totals = telemetry.get("totals", {})
+          run = telemetry.get("run", {})
 
           print("## Qwen Annotation Summary")
           print("")
           print(f"- Engine: `{state.get('engine_version')}`")
+          print(f"- Annotation version: `{state.get('annotation_version')}`")
           print(f"- Tracked files: **{len(files)}**")
           print(f"- Complete: **{complete}**")
           print(f"- Partial/failed: **{partial}**")
-          print(
-              f"- Model requests: **{totals.get('requests', 0)}**"
-          )
-          print(
-              f"- Successful requests: "
-              f"**{totals.get('successful_requests', 0)}**"
-          )
-          print(
-              f"- Failed requests: "
-              f"**{totals.get('failed_requests', 0)}**"
-          )
-          print(
-              f"- Accepted cascade candidates: "
-              f"**{totals.get('accepted_candidates', 0)}**"
-          )
-          print(
-              f"- Rejected cascade candidates: "
-              f"**{totals.get('rejected_candidates', 0)}**"
-          )
+          print("")
+          print(f"- Unannotated remaining: **{run.get('files_unannotated', 0)}**")
+          print(f"- Stale version remaining: **{run.get('files_stale', 0)}**")
+          print(f"- Retries pending: **{run.get('files_retries', 0)}**")
+          print(f"- Skipped via skip.txt: **{run.get('files_skipped', 0)}**")
+          print(f"- Outputs rebuilt this run: **{run.get('outputs_rebuilt', 0)}**")
+          print("")
+          print(f"- Model requests: **{totals.get('requests', 0)}**")
+          print(f"- Successful requests: **{totals.get('successful_requests', 0)}**")
+          print(f"- Failed requests: **{totals.get('failed_requests', 0)}**")
+          print(f"- Accepted cascade candidates: **{totals.get('accepted_candidates', 0)}**")
+          print(f"- Rejected cascade candidates: **{totals.get('rejected_candidates', 0)}**")
           PY
