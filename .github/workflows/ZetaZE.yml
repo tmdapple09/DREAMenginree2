@@ -6,8 +6,8 @@ on:
       zeros_per_run:
         description: "How many new zeta zeros to compute this run"
         required: true
-        default: "250"
-        type: string
+        default: 500
+        type: number
       analysis_mode:
         description: "full, zeros_only, or analysis_only"
         required: true
@@ -17,8 +17,11 @@ on:
           - full
           - zeros_only
           - analysis_only
+  push:
+    branches:
+      - main
   schedule:
-    - cron: "0 */0.5 * * *"
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: write
@@ -35,6 +38,7 @@ jobs:
 
     env:
       OLLAMA_HOST: "127.0.0.1:11434"
+      OLLAMA_BASE_URL: "http://127.0.0.1:11434"
       OLLAMA_MAX_LOADED_MODELS: "1"
       OLLAMA_NUM_PARALLEL: "1"
       OLLAMA_KEEP_ALIVE: "5m"
@@ -46,56 +50,6 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Cache is fallback ONLY. Only touched when zeta/zeros.txt is missing.
-      - name: Restore cache state (only if no repo zeros)
-        if: hashFiles('zeta/zeros.txt') == ''
-        uses: actions/cache/restore@v4
-        with:
-          path: zeta_pipeline
-          key: zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-${{ github.run_id }}
-          restore-keys: |
-            zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-
-            zeta-pipeline-${{ github.repository }}-
-
-      - name: Seed zeta/zeros.txt from cache (only if no repo zeros)
-        if: hashFiles('zeta/zeros.txt') == ''
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p zeta/state
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          CACHE = Path("zeta_pipeline/state/zeta_zeros_cache.txt")
-          REPO  = Path("zeta/zeros.txt")
-
-          if not CACHE.exists():
-              print("No cache zeros. Pipeline will seed from scratch.")
-              raise SystemExit(0)
-
-          zeros = []
-          for line in CACHE.read_text(encoding="utf-8").splitlines():
-              line = line.strip()
-              if not line:
-                  continue
-              try:
-                  zeros.append(float(line))
-              except ValueError:
-                  continue
-
-          if not zeros:
-              print("Cache file empty. Pipeline will seed from scratch.")
-              raise SystemExit(0)
-
-          REPO.parent.mkdir(parents=True, exist_ok=True)
-          with open(REPO, "w", encoding="utf-8") as f:
-              for z in zeros:
-                  f.write(f"{z:.17g}\n")
-
-          print(f"Seeded {len(zeros)} zeros from cache into {REPO}")
-          PY
 
       - name: Check runner resources
         shell: bash
@@ -133,7 +87,7 @@ jobs:
           set -euo pipefail
           nohup ollama serve > /tmp/ollama.log 2>&1 &
           for i in $(seq 1 60); do
-            if curl -fsS "${OLLAMA_HOST}/api/tags" >/dev/null 2>&1; then
+            if curl -fsS "${OLLAMA_BASE_URL}/api/tags" >/dev/null 2>&1; then
               echo "Ollama is ready."
               exit 0
             fi
@@ -184,7 +138,7 @@ jobs:
             [ -z "$model" ] && continue
             echo "Warming ${model}..."
             if ! curl -fsS \
-              "${OLLAMA_HOST}/api/generate" \
+              "${OLLAMA_BASE_URL}/api/generate" \
               -H "Content-Type: application/json" \
               -d "{\"model\":\"${model}\",\"prompt\":\"Return only OK.\",\"stream\":false}" \
               >/dev/null; then
@@ -195,8 +149,8 @@ jobs:
       - name: Run zeta pipeline
         shell: bash
         env:
-          ZEROS_PER_RUN: ${{ inputs.zeros_per_run || '200' }}
-          ANALYSIS_MODE: ${{ inputs.analysis_mode || 'full' }}
+          ZEROS_PER_RUN: ${{ inputs.zeros_per_run }}
+          ANALYSIS_MODE: ${{ inputs.analysis_mode }}
         run: |
           set -euo pipefail
 
@@ -216,7 +170,8 @@ jobs:
 
           mp.dps = 30
 
-          OLLAMA = "http://127.0.0.1:11434/api/generate"
+          OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+          OLLAMA = f"{OLLAMA_BASE_URL}/api/generate"
 
           ROOT = Path(".").resolve()
           ZETA_DIR = ROOT / "zeta"
@@ -229,18 +184,11 @@ jobs:
           REQUEST_TIMEOUT = 600
           MAX_RETRIES = 2
 
-
           def now() -> str:
               return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-
           def stamp() -> str:
               return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-
-
-          def sha256_text(text: str) -> str:
-              return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
 
           def atomic_write_json(path: Path, data: Any) -> None:
               path.parent.mkdir(parents=True, exist_ok=True)
@@ -250,7 +198,6 @@ jobs:
                   encoding="utf-8",
               )
               tmp.replace(path)
-
 
           def load_zeros() -> np.ndarray:
               if not ZEROS_FILE.exists():
@@ -267,12 +214,10 @@ jobs:
                           continue
               return np.array(out)
 
-
           def append_zero(g: float) -> None:
               ZEROS_FILE.parent.mkdir(parents=True, exist_ok=True)
               with open(ZEROS_FILE, "a") as f:
                   f.write(f"{g:.17g}\n")
-
 
           def next_zero(gamma_prev: float, k_next: int) -> float:
               if gamma_prev < 14:
@@ -314,7 +259,6 @@ jobs:
               print(f"    fallback for k = {k_next}")
               return float(zetazero(k_next).imag)
 
-
           def extend_zeros(n_new: int) -> np.ndarray:
               gammas = list(load_zeros())
 
@@ -336,7 +280,6 @@ jobs:
                       print(f"  +{i+1}, gamma = {last:.6f}, n = {len(gammas)}")
 
               return np.array(gammas)
-
 
           def ollama_ask_json(
               model: str,
@@ -380,14 +323,12 @@ jobs:
 
               return None
 
-
           ROLE_SPECS = [
-              {"role": "extractor",   "ideal_size": "1.5b"},
-              {"role": "scanner",     "ideal_size": "3b"},
-              {"role": "analyst",     "ideal_size": "7b"},
+              {"role": "extractor", "ideal_size": "1.5b"},
+              {"role": "scanner", "ideal_size": "3b"},
+              {"role": "analyst", "ideal_size": "7b"},
               {"role": "synthesizer", "ideal_size": "14b"},
           ]
-
 
           def assign_roles(available_models: List[str]) -> Dict[str, Optional[str]]:
               parsed = []
@@ -443,7 +384,6 @@ jobs:
 
               return assignment
 
-
           EXTRACTOR_PROMPT = """
           You are the extraction phase of a mathematical analysis pipeline.
 
@@ -478,7 +418,6 @@ jobs:
           - No extra fields. JSON only.
           """
 
-
           SCANNER_PROMPT = """
           You are the scanning phase. You detect patterns in structured data.
 
@@ -500,7 +439,6 @@ jobs:
 
           Do not claim any RH result. JSON only.
           """
-
 
           ANALYST_PROMPT = """
           You are the analysis phase. Compare data to established theory.
@@ -551,7 +489,6 @@ jobs:
           Never claim a proof exists. JSON only.
           """
 
-
           SYNTHESIZER_PROMPT = """
           You are the synthesis phase. Write the honest report.
 
@@ -589,7 +526,6 @@ jobs:
           JSON only.
           """
 
-
           def run_role(role: str, model: str, prompt: str, out_path: Path):
               print(f"\n  [{role}] using {model}...")
               result = ollama_ask_json(model, prompt)
@@ -605,6 +541,583 @@ jobs:
               print(f"    {role} complete.")
               return result
 
+          # =========================================================
+          # TORRIDITY / MOND CHECK
+          # =========================================================
+
+          def torridity_check(gammas: np.ndarray) -> Dict[str, Any]:
+              n_exp = np.pi / 3.0
+              rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+
+              if len(rho_obs) < 8:
+                  return {"error": "not enough zeros"}
+
+              rho_c = float(rho_obs[7])
+
+              z = rho_obs / rho_c
+              mu_T = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+              rho_N = rho_obs * mu_T
+
+              residual = rho_obs - rho_N
+              ratio = rho_obs / np.where(rho_N > 0, rho_N, np.nan)
+
+              return {
+                  "n_exp": float(n_exp),
+                  "rho_c": rho_c,
+                  "rho_c_source": "rho_obs at gamma_8 (8th zero)",
+                  "rho_obs_first": float(rho_obs[0]),
+                  "rho_obs_last": float(rho_obs[-1]),
+                  "rho_N_first": float(rho_N[0]),
+                  "rho_N_last": float(rho_N[-1]),
+                  "residual_first": float(residual[0]),
+                  "residual_last": float(residual[-1]),
+                  "residual_mean": float(np.mean(residual)),
+                  "residual_std": float(np.std(residual)),
+                  "ratio_first": float(ratio[0]),
+                  "ratio_last": float(ratio[-1]),
+                  "ratio_mean": float(np.nanmean(ratio)),
+                  "ratio_std": float(np.nanstd(ratio)),
+                  "ratio_max": float(np.nanmax(ratio)),
+                  "ratio_min": float(np.nanmin(ratio)),
+              }
+
+          # =========================================================
+          # RAR FORMAT EXPORT (SPARC alldata.txt style)
+          # =========================================================
+
+          def write_rar_format(gammas: np.ndarray, torridity: Dict[str, Any]) -> None:
+              n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+              rho_c = float(torridity.get("rho_c", 0.0))
+
+              if rho_c <= 0:
+                  return
+
+              rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+              z = rho_obs / rho_c
+              mu = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+              rho_N = rho_obs * mu
+
+              with np.errstate(divide="ignore", invalid="ignore"):
+                  log_rho_N = np.log10(rho_N)
+                  log_rho_obs = np.log10(rho_obs)
+
+              e_log_rho_N = np.zeros_like(log_rho_N)
+              e_log_rho_obs = np.zeros_like(log_rho_obs)
+
+              order = np.argsort(log_rho_N)
+
+              out_path = ZETA_DIR / "rar_format.txt"
+              with open(out_path, "w", encoding="utf-8") as f:
+                  for i in order:
+                      f.write(
+                          f"{log_rho_N[i]:.2f} {e_log_rho_N[i]:.2f} "
+                          f"{log_rho_obs[i]:.2f} {e_log_rho_obs[i]:.2f}\n"
+                      )
+
+              print(f"  wrote {out_path} ({len(order)} rows)")
+
+          # =========================================================
+          # TABLES2 FORMAT EXPORT (SPARC tables2.txt style)
+          # =========================================================
+          # Quadratic three-term decomposition:
+          #   rho_obs^2 = Vgas^2 + Vdisk^2 + Vbulge^2
+          # with Vgas = rho_N, Vdisk = residual, Vbulge = cross term.
+
+          def write_tables2_format(gammas: np.ndarray, torridity: Dict[str, Any]) -> None:
+              n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+              rho_c = float(torridity.get("rho_c", 0.0))
+
+              if rho_c <= 0:
+                  return
+
+              n_total = len(gammas)
+              rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+              z = rho_obs / rho_c
+              mu = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+              rho_N = rho_obs * mu
+              residual = rho_obs - rho_N
+
+              cross_sq = 2.0 * rho_N * residual
+              cross_sq = np.where(cross_sq > 0, cross_sq, 0.0)
+              cross = np.sqrt(cross_sq)
+
+              spacings = np.diff(gammas, prepend=gammas[0])
+              spacing_std = float(np.std(np.diff(gammas))) if n_total > 1 else 0.0
+
+              out_path = ZETA_DIR / "tables2_format.txt"
+              with open(out_path, "w", encoding="utf-8") as f:
+                  for i in range(n_total):
+                      name = f"Z{i+1:06d}"
+                      dist = float(spacings[i])
+                      rad = i / max(n_total - 1, 1)
+                      vobs = float(rho_obs[i])
+                      evobs = spacing_std
+                      vgas = float(rho_N[i])
+                      vdisk = float(residual[i])
+                      vbulge = float(cross[i])
+                      sbdisk = float(mu[i])
+                      sbbulge = float(z[i])
+                      f.write(
+                          f"{name:<10s} "
+                          f"{dist:>8.6f} "
+                          f"{rad:>6.4f} "
+                          f"{vobs:>10.8f} "
+                          f"{evobs:>8.6f} "
+                          f"{vgas:>10.8f} "
+                          f"{vdisk:>10.8f} "
+                          f"{vbulge:>10.8f} "
+                          f"{sbdisk:>10.8f} "
+                          f"{sbbulge:>10.8f}\n"
+                      )
+
+              print(f"  wrote {out_path} ({n_total} rows)")
+
+          # =========================================================
+          # DETAILED REPORT
+          # =========================================================
+
+          def write_detailed_report(
+              gammas: np.ndarray,
+              extraction: Dict[str, Any],
+              scanning: Dict[str, Any],
+              analysis: Dict[str, Any],
+              synthesis: Dict[str, Any],
+              torridity: Dict[str, Any],
+              roles: Dict[str, Optional[str]],
+              run_stamp: str,
+              zeros_added: int,
+          ) -> str:
+              g = gammas
+              spacings = np.diff(g)
+              n_total = len(g)
+
+              if len(spacings) > 0:
+                  mean_sp = float(np.mean(spacings))
+                  std_sp = float(np.std(spacings))
+                  median_sp = float(np.median(spacings))
+                  min_sp = float(np.min(spacings))
+                  max_sp = float(np.max(spacings))
+                  last30 = spacings[-30:]
+                  mean_last30 = float(np.mean(last30))
+                  std_last30 = float(np.std(last30))
+                  q25 = float(np.quantile(spacings, 0.25))
+                  q75 = float(np.quantile(spacings, 0.75))
+              else:
+                  mean_sp = std_sp = median_sp = min_sp = max_sp = 0.0
+                  mean_last30 = std_last30 = 0.0
+                  q25 = q75 = 0.0
+
+              last_gamma = float(g[-1])
+              first_gamma = float(g[0])
+              predicted_last = float(2 * np.pi / np.log(last_gamma / (2 * np.pi)))
+              predicted_first = (
+                  float(2 * np.pi / np.log(first_gamma / (2 * np.pi)))
+                  if first_gamma > 2 * np.pi else 0.0
+              )
+
+              n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+              rho_c = float(torridity.get("rho_c", 0.0))
+
+              rho_obs_all = np.log(g / (2 * np.pi)) / (2 * np.pi)
+              if rho_c > 0:
+                  z_all = rho_obs_all / rho_c
+                  mu_all = z_all / (1 + z_all ** n_exp) ** (1.0 / n_exp)
+                  rho_N_all = rho_obs_all * mu_all
+                  resid_all = rho_obs_all - rho_N_all
+                  ratio_all = rho_obs_all / np.where(rho_N_all > 0, rho_N_all, np.nan)
+              else:
+                  z_all = np.zeros_like(rho_obs_all)
+                  mu_all = np.zeros_like(rho_obs_all)
+                  rho_N_all = np.zeros_like(rho_obs_all)
+                  resid_all = np.zeros_like(rho_obs_all)
+                  ratio_all = np.full_like(rho_obs_all, np.nan)
+
+              def dump_json_block(obj: Any) -> List[str]:
+                  text = json.dumps(obj, indent=2, ensure_ascii=False, default=str)
+                  return text.splitlines()
+
+              lines: List[str] = []
+              add = lines.append
+
+              add("# ZetaZE Detailed Report")
+              add("")
+              add(f"**Run stamp:** `{run_stamp}`  ")
+              add(f"**Generated:** {now()}  ")
+              add(f"**Zeros added this run:** {zeros_added}  ")
+              add(f"**Total zeros on disk:** {n_total}  ")
+              add("")
+              add("---")
+              add("")
+
+              add("## 1. Executive summary")
+              add("")
+              fs = synthesis.get("final_status", {}) if synthesis else {}
+              add(f"- **Riemann Hypothesis solved:** {fs.get('riemann_hypothesis_solved', False)}")
+              add(f"- **Confidence:** {fs.get('confidence', 0.0)}")
+              add(f"- **Reasoning:** {fs.get('reasoning', 'N/A')}")
+              add("")
+              if synthesis:
+                  add(f"**Honest summary.** {synthesis.get('honest_summary', 'N/A')}")
+                  add("")
+              add("### 1.1 At-a-glance numbers")
+              add("")
+              add("| quantity | value |")
+              add("|---|---|")
+              add(f"| Total zeros | `{n_total}` |")
+              add(f"| First gamma | `{first_gamma:.10f}` |")
+              add(f"| Last gamma | `{last_gamma:.10f}` |")
+              add(f"| Full spacing mean | `{mean_sp:.10f}` |")
+              add(f"| Full spacing std | `{std_sp:.10f}` |")
+              add(f"| Last 30 spacing mean | `{mean_last30:.10f}` |")
+              add(f"| Predicted RvM at last gamma | `{predicted_last:.10f}` |")
+              add(f"| Torridity rho_c | `{rho_c:.10f}` |")
+              add(f"| Torridity n | `{n_exp:.10f}` |")
+              add(f"| Torridity ratio first | `{torridity.get('ratio_first', 0.0):.6f}` |")
+              add(f"| Torridity ratio last | `{torridity.get('ratio_last', 0.0):.6f}` |")
+              add(f"| Torridity residual std | `{torridity.get('residual_std', 0.0):.10f}` |")
+              add("")
+              add("---")
+              add("")
+
+              add("## 2. Zero dataset")
+              add("")
+              add("### 2.1 Range and count")
+              add("")
+              add(f"- First gamma:  `{first_gamma:.15f}`")
+              add(f"- Last gamma:   `{last_gamma:.15f}`")
+              add(f"- Gamma span:   `{last_gamma - first_gamma:.15f}`")
+              add(f"- Count:        `{n_total}`")
+              add(f"- Log10 span:   `{np.log10(last_gamma) - np.log10(first_gamma):.6f}`")
+              add("")
+              add("### 2.2 Spacing statistics (all consecutive gaps)")
+              add("")
+              add(f"- Mean:   `{mean_sp:.12f}`")
+              add(f"- Std:    `{std_sp:.12f}`")
+              add(f"- Median: `{median_sp:.12f}`")
+              add(f"- Q25:    `{q25:.12f}`")
+              add(f"- Q75:    `{q75:.12f}`")
+              add(f"- Min:    `{min_sp:.12f}`")
+              add(f"- Max:    `{max_sp:.12f}`")
+              add("")
+              add("### 2.3 Recent spacing statistics (last 30 gaps)")
+              add("")
+              add(f"- Mean: `{mean_last30:.12f}`")
+              add(f"- Std:  `{std_last30:.12f}`")
+              add(f"- Predicted mean by Riemann-von Mangoldt: `{predicted_last:.12f}`")
+              if predicted_last > 0:
+                  add(f"- Observed / predicted: `{mean_last30 / predicted_last:.8f}`")
+              add(f"- Predicted mean at first gamma: `{predicted_first:.12f}`")
+              add("")
+              add("### 2.4 Every zero on disk")
+              add("")
+              add("```text")
+              add("# index    gamma")
+              for i, v in enumerate(g, start=1):
+                  add(f"{i:>6d}    {float(v):.15f}")
+              add("```")
+              add("")
+              add("### 2.5 Every consecutive spacing")
+              add("")
+              add("```text")
+              add("# index    spacing")
+              for i, s in enumerate(spacings, start=1):
+                  add(f"{i:>6d}    {float(s):.15f}")
+              add("```")
+              add("")
+              add("---")
+              add("")
+
+              add("## 3. Torridity / MOND check")
+              add("")
+              add("Numeric. No LLM involved. Every zero contributes a row.")
+              add("")
+              add("### 3.1 Constants")
+              add("")
+              add(f"- Exponent n = pi/3 = `{n_exp:.15f}`")
+              add(f"- Crossover rho_c = `{rho_c:.15f}`")
+              add(f"- rho_c source: `{torridity.get('rho_c_source', 'n/a')}`")
+              add("")
+              add("### 3.2 Equations used")
+              add("")
+              add("```text")
+              add("rho_obs(gamma)  = ln(gamma / (2*pi)) / (2*pi)")
+              add("z               = rho_obs / rho_c")
+              add("mu_T(z)         = z / (1 + z^n)^(1/n)      with n = pi/3")
+              add("rho_N           = rho_obs * mu_T(z)")
+              add("residual        = rho_obs - rho_N")
+              add("ratio           = rho_obs / rho_N")
+              add("```")
+              add("")
+              add("### 3.3 Whole-set summary")
+              add("")
+              add(f"- rho_obs first: `{torridity.get('rho_obs_first', 0.0):.15f}`")
+              add(f"- rho_obs last:  `{torridity.get('rho_obs_last', 0.0):.15f}`")
+              add(f"- rho_N first:   `{torridity.get('rho_N_first', 0.0):.15f}`")
+              add(f"- rho_N last:    `{torridity.get('rho_N_last', 0.0):.15f}`")
+              add(f"- residual first: `{torridity.get('residual_first', 0.0):.15f}`")
+              add(f"- residual last:  `{torridity.get('residual_last', 0.0):.15f}`")
+              add(f"- residual mean:  `{torridity.get('residual_mean', 0.0):.15f}`")
+              add(f"- residual std:   `{torridity.get('residual_std', 0.0):.15f}`")
+              add(f"- ratio first:    `{torridity.get('ratio_first', 0.0):.10f}`")
+              add(f"- ratio last:     `{torridity.get('ratio_last', 0.0):.10f}`")
+              add(f"- ratio mean:     `{torridity.get('ratio_mean', 0.0):.10f}`")
+              add(f"- ratio std:      `{torridity.get('ratio_std', 0.0):.10f}`")
+              add(f"- ratio max:      `{torridity.get('ratio_max', 0.0):.10f}`")
+              add(f"- ratio min:      `{torridity.get('ratio_min', 0.0):.10f}`")
+              add("")
+              add("### 3.4 Interpretation")
+              add("")
+              r_first = torridity.get("ratio_first", 0.0)
+              r_last = torridity.get("ratio_last", 0.0)
+              if r_first > r_last:
+                  add("- Ratio decreases from first zero to last zero. Same direction as SPARC RAR.")
+              elif r_first < r_last:
+                  add("- Ratio increases from first zero to last zero. Opposite direction to SPARC RAR.")
+              else:
+                  add("- Ratio is flat. Neither increasing nor decreasing.")
+              rmin = torridity.get("ratio_min", 0.0)
+              rmax = torridity.get("ratio_max", 0.0)
+              add(f"- Ratio floor:   `{rmin:.6f}`")
+              add(f"- Ratio ceiling: `{rmax:.6f}`")
+              add(f"- Boost magnitude (max - min): `{rmax - rmin:.6f}`")
+              add("")
+              add("### 3.5 Full torridity table (every zero)")
+              add("")
+              add("```text")
+              add("# index  gamma              rho_obs         z           mu_T        rho_N           residual        ratio")
+              for i in range(n_total):
+                  add(
+                      f"{i+1:>6d}  "
+                      f"{float(g[i]):>15.10f}  "
+                      f"{float(rho_obs_all[i]):>14.10f}  "
+                      f"{float(z_all[i]):>10.6f}  "
+                      f"{float(mu_all[i]):>10.6f}  "
+                      f"{float(rho_N_all[i]):>14.10f}  "
+                      f"{float(resid_all[i]):>14.10f}  "
+                      f"{float(ratio_all[i]):>10.6f}"
+                  )
+              add("```")
+              add("")
+              add("---")
+              add("")
+
+              add("## 4. Phase 1: Extraction")
+              add("")
+              if extraction:
+                  add("### 4.1 Flat fields")
+                  add("")
+                  add("| field | value |")
+                  add("|---|---|")
+                  for k in [
+                      "count", "first", "last",
+                      "min_gamma", "max_gamma",
+                      "mean_spacing_recent_30", "std_spacing_recent_30",
+                      "largest_gap_recent_30", "smallest_gap_recent_30",
+                      "predicted_mean_spacing",
+                  ]:
+                      add(f"| {k} | `{extraction.get(k, 'n/a')}` |")
+                  add("")
+                  add("### 4.2 spacings_recent_30 (raw list)")
+                  add("")
+                  add("```text")
+                  vals = extraction.get("spacings_recent_30", []) or []
+                  for i, v in enumerate(vals, start=1):
+                      add(f"{i:>4d}  {v}")
+                  add("```")
+                  add("")
+                  add("### 4.3 Full raw JSON")
+                  add("")
+                  add("```json")
+                  for line in dump_json_block(extraction):
+                      add(line)
+                  add("```")
+              else:
+                  add("_Extraction phase did not produce output._")
+              add("")
+              add("---")
+              add("")
+
+              add("## 5. Phase 2: Scanning")
+              add("")
+              if scanning:
+                  add(f"- periodicity_observed: `{scanning.get('periodicity_observed', False)}`")
+                  add("")
+                  add("### 5.1 Clusters")
+                  clusters = scanning.get("clusters", []) or []
+                  if clusters:
+                      for i, c in enumerate(clusters, start=1):
+                          add(f"**Cluster {i}**")
+                          add("")
+                          add("```json")
+                          for line in dump_json_block(c):
+                              add(line)
+                          add("```")
+                          add("")
+                  else:
+                      add("_No clusters reported._")
+                      add("")
+                  add("### 5.2 Large gaps")
+                  gaps = scanning.get("large_gaps", []) or []
+                  if gaps:
+                      for i, gp in enumerate(gaps, start=1):
+                          add(f"**Gap {i}**")
+                          add("")
+                          add("```json")
+                          for line in dump_json_block(gp):
+                              add(line)
+                          add("```")
+                          add("")
+                  else:
+                      add("_No large gaps reported._")
+                      add("")
+                  add("### 5.3 Anomalies")
+                  anomalies = scanning.get("anomalies", []) or []
+                  if anomalies:
+                      for a in anomalies:
+                          add(f"- {a}")
+                  else:
+                      add("_No anomalies reported._")
+                  add("")
+                  add("### 5.4 Notes")
+                  add(scanning.get("notes", "N/A"))
+                  add("")
+                  add("### 5.5 Full raw JSON")
+                  add("")
+                  add("```json")
+                  for line in dump_json_block(scanning):
+                      add(line)
+                  add("```")
+              else:
+                  add("_Scanning phase did not produce output._")
+              add("")
+              add("---")
+              add("")
+
+              add("## 6. Phase 3: Analysis")
+              add("")
+              if analysis:
+                  add("### 6.1 Flat fields")
+                  add("")
+                  add("| field | value |")
+                  add("|---|---|")
+                  for k in [
+                      "density_ratio",
+                      "density_consistent_with_rvm",
+                      "spacing_std",
+                      "spacing_std_gue_prediction",
+                      "spacing_consistent_with_gue",
+                  ]:
+                      add(f"| {k} | `{analysis.get(k, 'n/a')}` |")
+                  add("")
+                  add("### 6.2 Mathematical observations")
+                  obs = analysis.get("mathematical_observations", []) or []
+                  if obs:
+                      for o in obs:
+                          add(f"- {o}")
+                  else:
+                      add("_None._")
+                  add("")
+                  rh = analysis.get("rh_status", {}) or {}
+                  add("### 6.3 Riemann Hypothesis status")
+                  add("")
+                  add(f"- is_proven: `{rh.get('is_proven', False)}`")
+                  add(f"- is_disproven: `{rh.get('is_disproven', False)}`")
+                  add(f"- can_this_data_decide: `{rh.get('can_this_data_decide', False)}`")
+                  add(f"- reasoning: {rh.get('reasoning', 'n/a')}")
+                  add("")
+                  add("### 6.4 What would be needed")
+                  wwn = analysis.get("what_would_be_needed", []) or []
+                  if wwn:
+                      for w in wwn:
+                          add(f"- {w}")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 6.5 Honest limits")
+                  hl = analysis.get("honest_limits", []) or []
+                  if hl:
+                      for h in hl:
+                          add(f"- {h}")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 6.6 Full raw JSON")
+                  add("")
+                  add("```json")
+                  for line in dump_json_block(analysis):
+                      add(line)
+                  add("```")
+              else:
+                  add("_Analysis phase did not produce output._")
+              add("")
+              add("---")
+              add("")
+
+              add("## 7. Phase 4: Synthesis")
+              add("")
+              if synthesis:
+                  add("### 7.1 Confirmed findings")
+                  cf = synthesis.get("confirmed_findings", []) or []
+                  if cf:
+                      for f in cf:
+                          add(f"- **{f.get('finding', '')}** (confidence: {f.get('confidence', 0.0)})")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.2 Numerology speculations (speculative)")
+                  ns = synthesis.get("numerology_speculations", []) or []
+                  if ns:
+                      for s in ns:
+                          add(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.3 Coding practice speculations (speculative)")
+                  cs = synthesis.get("coding_practice_speculations", []) or []
+                  if cs:
+                      for s in cs:
+                          add(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.4 Physics speculations (speculative)")
+                  ps = synthesis.get("physics_speculations", []) or []
+                  if ps:
+                      for s in ps:
+                          add(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.5 Open questions")
+                  oq = synthesis.get("open_questions", []) or []
+                  if oq:
+                      for q in oq:
+                          add(f"- {q}")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.6 Next realistic steps")
+                  nrs = synthesis.get("next_realistic_steps", []) or []
+                  if nrs:
+                      for step in nrs:
+                          add(f"- {step}")
+                  else:
+                      add("_None._")
+                  add("")
+                  add("### 7.7 Full raw JSON")
+                  add("")
+                  add("```json")
+                  for line in dump_json_block(synthesis):
+                      add(line)
+                  add("```")
+              else:
+                  add("_Synthesis phase did not produce output._")
+              add("")
+
+              text = "\n".join(lines)
+              out_path = ZETA_DIR / "DETAILED_REPORT.md"
+              out_path.write_text(text, encoding="utf-8")
+              return text
 
           def main() -> int:
               ZETA_DIR.mkdir(parents=True, exist_ok=True)
@@ -671,18 +1184,18 @@ jobs:
               if extraction is None:
                   print("  Extractor failed. Computing stats locally...")
                   recent = gammas[-31:]
-                  spacings = np.diff(recent).tolist()
+                  spacings_local = np.diff(recent).tolist()
                   extraction = {
                       "count": len(gammas),
                       "first": float(gammas[0]),
                       "last": float(gammas[-1]),
                       "min_gamma": float(np.min(gammas)),
                       "max_gamma": float(np.max(gammas)),
-                      "mean_spacing_recent_30": float(np.mean(spacings)),
-                      "std_spacing_recent_30": float(np.std(spacings)),
-                      "largest_gap_recent_30": float(np.max(spacings)),
-                      "smallest_gap_recent_30": float(np.min(spacings)),
-                      "spacings_recent_30": [float(s) for s in spacings],
+                      "mean_spacing_recent_30": float(np.mean(spacings_local)),
+                      "std_spacing_recent_30": float(np.std(spacings_local)),
+                      "largest_gap_recent_30": float(np.max(spacings_local)),
+                      "smallest_gap_recent_30": float(np.min(spacings_local)),
+                      "spacings_recent_30": [float(s) for s in spacings_local],
                       "predicted_mean_spacing": float(
                           2 * np.pi / np.log(gammas[-1] / (2 * np.pi))
                       ),
@@ -781,6 +1294,22 @@ jobs:
                   }
                   atomic_write_json(STATE_DIR / "phase4_synthesis.json", synthesis)
 
+              # ===== TORRIDITY CHECK =====
+              print("\n=== TORRIDITY / MOND CHECK ===")
+              torridity = torridity_check(gammas)
+              atomic_write_json(STATE_DIR / "torridity.json", torridity)
+              print(f"  ratio first -> last: {torridity.get('ratio_first'):.4f} -> {torridity.get('ratio_last'):.4f}")
+              print(f"  residual std:       {torridity.get('residual_std'):.6f}")
+
+              # ===== RAR-FORMAT EXPORT =====
+              print("\n=== RAR-FORMAT EXPORT ===")
+              write_rar_format(gammas, torridity)
+
+              # ===== TABLES2-FORMAT EXPORT =====
+              print("\n=== TABLES2-FORMAT EXPORT ===")
+              write_tables2_format(gammas, torridity)
+
+              # ===== FINAL REPORT =====
               final_report = {
                   "generated_at": now(),
                   "run_stamp": stamp(),
@@ -788,6 +1317,7 @@ jobs:
                   "zeros_total": len(gammas),
                   "zeros_added_this_run": n_new,
                   "roles": roles,
+                  "torridity": torridity,
                   "phase1_extraction": extraction,
                   "phase2_scanning": scanning,
                   "phase3_analysis": analysis,
@@ -853,11 +1383,24 @@ jobs:
 
               (ZETA_DIR / "latest.md").write_text("\n".join(md), encoding="utf-8")
 
+              print("\n=== WRITING DETAILED REPORT ===")
+              write_detailed_report(
+                  gammas=gammas,
+                  extraction=extraction,
+                  scanning=scanning,
+                  analysis=analysis,
+                  synthesis=synthesis,
+                  torridity=torridity,
+                  roles=roles,
+                  run_stamp=final_report["run_stamp"],
+                  zeros_added=n_new,
+              )
+              print(f"  wrote {ZETA_DIR / 'DETAILED_REPORT.md'}")
+
               print("\n=== PIPELINE COMPLETE ===")
               print(f"Zeros total: {len(gammas)}")
               print(f"RH solved: {fs.get('riemann_hypothesis_solved', False)}")
               return 0
-
 
           if __name__ == "__main__":
               sys.exit(main())
@@ -873,26 +1416,29 @@ jobs:
 
           mkdir -p zeta/state zeta/reports
 
-          [ -f zeta/zeros.txt ]      || touch zeta/zeros.txt
+          [ -f zeta/zeros.txt ] || touch zeta/zeros.txt
           [ -f zeta/state/skip.txt ] || touch zeta/state/skip.txt
 
           if [ ! -f zeta/README.md ]; then
-          cat > zeta/README.md <<'EOF'
-          # Zeta zeros state
+            cat > zeta/README.md <<'EOF'
+            # Zeta zeros state
 
-          Managed by the Zeta zeros pipeline workflow.
+            Managed by the Zeta zeros pipeline workflow.
 
-          - `zeros.txt` — append-only, one gamma per line, 17 sig figs.
-          - `latest.json` — most recent full report (JSON).
-          - `latest.md` — most recent full report (Markdown).
-          - `reports/` — timestamped history of every run's JSON report.
-          - `state/` — pipeline scratch (model list, skip list, per-phase output).
+            - `zeros.txt` — append-only, one gamma per line, 17 sig figs.
+            - `latest.json` — most recent full report (JSON).
+            - `latest.md` — most recent full report (Markdown).
+            - `DETAILED_REPORT.md` — full human-readable report.
+            - `rar_format.txt` — SPARC alldata.txt-style export.
+            - `tables2_format.txt` — SPARC tables2.txt-style export.
+            - `reports/` — timestamped history of every run's JSON report.
+            - `state/` — pipeline scratch (model list, skip list, per-phase output).
 
-          Do not edit `zeros.txt` by hand. Let the workflow append.
-          EOF
+            Do not edit `zeros.txt` by hand. Let the workflow append.
+            EOF
           fi
 
-          git config user.name  "zeta-pipeline-bot"
+          git config user.name "zeta-pipeline-bot"
           git config user.email "zeta-pipeline-bot@users.noreply.github.com"
 
           git add zeta/
@@ -910,5 +1456,4 @@ jobs:
           git commit -m "zeta: run ${GITHUB_RUN_NUMBER}, total ${ZERO_COUNT} zeros"
 
           git pull --rebase --autostash || true
-
           git push
