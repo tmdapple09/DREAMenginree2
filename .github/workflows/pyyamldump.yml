@@ -1,0 +1,106 @@
+name: Dump Python and YAML sources to JSON
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sources-dump
+  cancel-in-progress: false
+
+jobs:
+  dump:
+    name: Dump sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Dump every Python and YAML file to JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p sources_dump
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          ROOT = Path(".").resolve()
+          OUTPUT_DIR = ROOT / "sources_dump"
+          OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+          OUTPUT_FILE = OUTPUT_DIR / "sources.json"
+
+          EXTENSIONS = (".py", ".yml", ".yaml")
+
+          BLOCKED_DIRS = {
+              ".git",
+              ".github",
+              "node_modules",
+              "vendor",
+              "dist",
+              "build",
+              "coverage",
+              ".next",
+              ".nuxt",
+              "out",
+              "target",
+              "__pycache__",
+              ".venv",
+              "venv",
+              ".mypy_cache",
+              ".pytest_cache",
+              ".ruff_cache",
+              "site-packages",
+              "sources_dump",
+          }
+
+          def is_blocked(path: Path) -> bool:
+              return any(part in BLOCKED_DIRS for part in path.parts)
+
+          files = {}
+
+          for path in sorted(ROOT.rglob("*")):
+              if not path.is_file():
+                  continue
+
+              if is_blocked(path):
+                  continue
+
+              if path.suffix.lower() not in EXTENSIONS:
+                  continue
+
+              rel = path.relative_to(ROOT).as_posix()
+
+              try:
+                  files[rel] = path.read_text(
+                      encoding="utf-8",
+                      errors="replace",
+                  )
+              except Exception as exc:
+                  files[rel] = f"<<could not read: {exc}>>"
+
+          OUTPUT_FILE.write_text(
+              json.dumps(files, indent=2, ensure_ascii=False),
+              encoding="utf-8",
+          )
+
+          print(f"Wrote {len(files)} files to {OUTPUT_FILE}")
+          PY
+
+      - name: Upload sources dump
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sources-dump
+          path: sources_dump/sources.json
+          if-no-files-found: error
+          retention-days: 30
