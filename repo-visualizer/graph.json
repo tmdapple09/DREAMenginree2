@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T10:35:03.683Z",
+  "generatedAt": "2026-09-19T10:47:35.248Z",
   "root": ".",
   "nodes": [
     {
@@ -3746,16 +3746,6 @@
       "label": "website-feature-.yml",
       "type": "config",
       "path": ".github/workflows/website-feature-.yml",
-      "parent": "folder:.github/workflows",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
-      "id": "file:.github/workflows/wtf.yml",
-      "label": "wtf.yml",
-      "type": "config",
-      "path": ".github/workflows/wtf.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
