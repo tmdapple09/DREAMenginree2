@@ -48,6 +48,90 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # ------------------------------------------------------------------
+      # RESTORE THE OLD CACHE-BASED STATE (read-only, never saved back)
+      # ------------------------------------------------------------------
+      # The earlier cache-based workflow stored its state at
+      # zeta_pipeline/state/zeta_zeros_cache.txt under a key like
+      # zeta-pipeline-<repo>-<branch>-<run_id>. We use cache/restore
+      # here so this workflow only reads that cache, never writes to it.
+
+      - name: Restore previous cache-based zeta state
+        id: restore-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: zeta_pipeline
+          key: zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-
+            zeta-pipeline-${{ github.repository }}-
+
+      - name: Merge cache zeros into repo zeros
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p zeta/state
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          CACHE_ZEROS = Path("zeta_pipeline/state/zeta_zeros_cache.txt")
+          REPO_ZEROS  = Path("zeta/zeros.txt")
+
+          def load(path):
+              if not path.exists():
+                  return []
+              out = []
+              for line in path.read_text(encoding="utf-8").splitlines():
+                  line = line.strip()
+                  if not line:
+                      continue
+                  try:
+                      out.append(float(line))
+                  except ValueError:
+                      continue
+              return out
+
+          cache_zeros = load(CACHE_ZEROS)
+          repo_zeros  = load(REPO_ZEROS)
+
+          print(f"Cache file: {CACHE_ZEROS} -> {len(cache_zeros)} zeros")
+          print(f"Repo file:  {REPO_ZEROS} -> {len(repo_zeros)} zeros")
+
+          if not cache_zeros and not repo_zeros:
+              print("No zeros in cache or repo. Pipeline will seed from scratch.")
+              raise SystemExit(0)
+
+          # Prefer whichever has more zeros. If both exist and the shorter is
+          # not a prefix of the longer, that indicates divergence; warn but
+          # still proceed with the longer list.
+          if len(cache_zeros) >= len(repo_zeros):
+              chosen = cache_zeros
+              source = "cache"
+              other = repo_zeros
+          else:
+              chosen = repo_zeros
+              source = "repo"
+              other = cache_zeros
+
+          if other:
+              prefix_matches = all(
+                  abs(a - b) < 1e-12
+                  for a, b in zip(other, chosen[:len(other)])
+              )
+              if not prefix_matches:
+                  print("::warning::Cache and repo zeros diverge before the shorter one ends.")
+                  print("::warning::Proceeding with the longer list as authoritative.")
+
+          REPO_ZEROS.parent.mkdir(parents=True, exist_ok=True)
+          with open(REPO_ZEROS, "w", encoding="utf-8") as f:
+              for z in chosen:
+                  f.write(f"{z:.17g}\n")
+
+          print(f"Using {source} as source of truth: {len(chosen)} zeros written to {REPO_ZEROS}")
+          PY
+
       - name: Check runner resources
         shell: bash
         run: |
@@ -582,7 +666,6 @@ jobs:
               STATE_DIR.mkdir(parents=True, exist_ok=True)
               REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
-              # Ensure the state files the pipeline needs exist.
               if not (STATE_DIR / "skip.txt").exists():
                   (STATE_DIR / "skip.txt").write_text("", encoding="utf-8")
 
@@ -850,11 +933,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Ensure the folder exists even if the pipeline failed early.
           mkdir -p zeta/state zeta/reports
 
-          # Seed support files on first ever run.
-          [ -f zeta/zeros.txt ]    || touch zeta/zeros.txt
+          [ -f zeta/zeros.txt ]      || touch zeta/zeros.txt
           [ -f zeta/state/skip.txt ] || touch zeta/state/skip.txt
 
           if [ ! -f zeta/README.md ]; then
@@ -890,7 +971,6 @@ jobs:
 
           git commit -m "zeta: run ${GITHUB_RUN_NUMBER}, total ${ZERO_COUNT} zeros"
 
-          # Rebase in case another run pushed while this one was working.
           git pull --rebase --autostash || true
 
           git push
