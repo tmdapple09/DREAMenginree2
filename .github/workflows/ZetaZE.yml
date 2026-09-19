@@ -6,7 +6,7 @@ on:
       zeros_per_run:
         description: "How many new zeta zeros to compute this run"
         required: true
-        default: "500"
+        default: "250"
         type: string
       analysis_mode:
         description: "full, zeros_only, or analysis_only"
@@ -18,7 +18,7 @@ on:
           - zeros_only
           - analysis_only
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */0.5 * * *"
 
 permissions:
   contents: write
