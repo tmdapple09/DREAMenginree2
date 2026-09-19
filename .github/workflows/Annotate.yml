@@ -1,168 +1,1887 @@
-name: Annotate Python with a local model
+name: Annotate codebase with cascading Qwen models
 
 on:
-  push:
-    paths:
-      - '**.py'
   workflow_dispatch:
+    inputs:
+      files_per_run:
+        description: "Maximum files processed per run"
+        required: false
+        default: "10"
+        type: string
+      extensions:
+        description: "Comma-separated application-code extensions"
+        required: false
+        default: ".ts,.tsx,.py"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qwen-code-annotation
+  cancel-in-progress: false
 
 jobs:
   annotate:
+    name: Annotate application code
     runs-on: ubuntu-latest
     timeout-minutes: 360
 
+    env:
+      OLLAMA_HOST: "127.0.0.1:11434"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_KEEP_ALIVE: "5m"
+      PYTHONUNBUFFERED: "1"
+
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+
+      - name: Restore annotation state and generated metadata
+        uses: actions/cache@v4
+        with:
+          path: |
+            .qwen_annotation/state
+            .qwen_annotation/output
+          key: qwen-annotation-${{ github.repository }}-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            qwen-annotation-${{ github.repository }}-${{ github.ref_name }}-
+            qwen-annotation-${{ github.repository }}-
+
+      - name: Check runner resources
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          RAM_MB="$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)"
+          DISK_GB="$(df -BG . | awk 'NR==2 {gsub("G","",$4); print $4}')"
+
+          echo "Available RAM: ${RAM_MB} MB"
+          echo "Available disk: ${DISK_GB} GB"
+
+          if [ "$RAM_MB" -lt 12000 ]; then
+            echo "::error::At least 12 GB RAM is required."
+            exit 1
+          fi
+
+          if [ "$DISK_GB" -lt 25 ]; then
+            echo "::error::At least 25 GB free disk space is required."
+            exit 1
+          fi
 
       - name: Install Ollama
+        shell: bash
         run: |
+          set -euo pipefail
+
           curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Start Ollama server
+      - name: Start Ollama
+        shell: bash
         run: |
-          ollama serve > /tmp/ollama.log 2>&1 &
-          sleep 8
-          curl -s http://localhost:11434/api/tags || true
+          set -euo pipefail
 
-      - name: Pull annotator model
-        run: |
-          ollama pull qwen2.5-coder:1.5b
+          nohup ollama serve > /tmp/ollama.log 2>&1 &
 
-      - name: Install Python deps
-        run: |
-          pip install requests
+          for i in $(seq 1 60); do
+            if curl -fsS "${OLLAMA_HOST}/api/tags" >/dev/null 2>&1; then
+              echo "Ollama is ready."
+              exit 0
+            fi
 
-      - name: Write annotator script
+            sleep 2
+          done
+
+          echo "::error::Ollama failed to start."
+          cat /tmp/ollama.log || true
+          exit 1
+
+      - name: Pull available Qwen cascade models
+        shell: bash
         run: |
-          cat > /tmp/annotate_local.py << 'PYEOF'
-          import os
+          set -u
+
+          mkdir -p .qwen_annotation/state
+
+          MODELS=(
+            "qwen2.5-coder:1.5b"
+            "qwen2.5-coder:3b"
+            "qwen2.5-coder:7b"
+            "qwen2.5-coder:14b"
+          )
+
+          : > .qwen_annotation/state/available_models.txt
+
+          for model in "${MODELS[@]}"; do
+            echo "Pulling ${model}..."
+
+            if ollama pull "${model}"; then
+              echo "${model}" >> .qwen_annotation/state/available_models.txt
+              echo "Available: ${model}"
+            else
+              echo "::warning::Could not pull ${model}; continuing without it."
+            fi
+          done
+
+          if [ ! -s .qwen_annotation/state/available_models.txt ]; then
+            echo "::error::No Qwen coder model could be loaded."
+            exit 1
+          fi
+
+          echo "Available cascade:"
+          cat .qwen_annotation/state/available_models.txt
+
+      - name: Warm available models
+        shell: bash
+        run: |
+          set -u
+
+          while IFS= read -r model; do
+            [ -z "$model" ] && continue
+
+            echo "Warming ${model}..."
+
+            if ! curl -fsS \
+              "${OLLAMA_HOST}/api/generate" \
+              -H "Content-Type: application/json" \
+              -d "{\"model\":\"${model}\",\"prompt\":\"Return only OK.\",\"stream\":false}" \
+              >/tmp/qwen_warmup.json; then
+              echo "::warning::Warmup failed for ${model}."
+            fi
+          done < .qwen_annotation/state/available_models.txt
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 -m pip install --upgrade pip
+          python3 -m pip install requests
+
+      - name: Run annotation engine
+        shell: bash
+        env:
+          INPUT_FILES_PER_RUN: ${{ inputs.files_per_run }}
+          INPUT_EXTENSIONS: ${{ inputs.extensions }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p .qwen_annotation/state
+          mkdir -p .qwen_annotation/output
+
+          cat > .qwen_annotation/annotate.py <<'PY'
+          import hashlib
           import json
+          import os
+          import re
+          import sys
+          import time
+          from pathlib import Path
+          from typing import Any, Dict, List, Optional, Tuple
+
           import requests
 
-          OLLAMA_URL = "http://localhost:11434/api/generate"
-          MODEL      = "qwen2.5-coder:1.5b"
-          CHUNK_SIZE = 40
-          MAX_FILES  = 50
-          OUTPUT_DIR = "annotated_output"
 
-          PROMPT = """You are a patient Python teacher.
+          ENGINE_VERSION = "4.0.0"
 
-          Below is a chunk of Python code. Rewrite it EXACTLY as-is, but append
-          a short plain-English comment to the end of every non-blank,
-          non-comment line, using the # character.
+          ROOT = Path(".").resolve()
+          STATE_DIR = ROOT / ".qwen_annotation" / "state"
+          OUTPUT_DIR = ROOT / ".qwen_annotation" / "output"
 
-          Rules:
-          1. Keep every original line unchanged before the # comment.
-          2. Explain what the line does in beginner-friendly language.
-          3. Keep comments under 80 characters where possible.
-          4. Do NOT add lines. Do NOT remove lines. Do NOT reformat.
-          5. Preserve all whitespace and indentation exactly.
-          6. If a line already has a comment, leave it alone.
-          7. If a line is blank, leave it blank.
-          8. Return ONLY the annotated code. No prose, no markdown fences.
+          STATE_FILE = STATE_DIR / "annotation_state.json"
+          INTERPRETATIONS_FILE = STATE_DIR / "interpretations.json"
+          TELEMETRY_FILE = STATE_DIR / "telemetry.json"
 
-          Code:
-          {code}
-          """
+          OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
+
+          DEFAULT_EXTENSIONS = [".ts", ".tsx", ".py"]
+
+          COMMENT_PREFIX = {
+              ".ts": "//",
+              ".tsx": "//",
+              ".js": "//",
+              ".jsx": "//",
+              ".mjs": "//",
+              ".cjs": "//",
+              ".py": "#",
+          }
+
+          BLOCKED_DIRS = {
+              ".git",
+              ".github",
+              ".qwen_annotation",
+              "node_modules",
+              "vendor",
+              "dist",
+              "build",
+              "coverage",
+              ".next",
+              ".nuxt",
+              "out",
+              "target",
+              "__pycache__",
+              ".venv",
+              "venv",
+          }
+
+          SUPPORTED_EXTENSIONS = set(COMMENT_PREFIX)
+
+          MAX_CHUNK_LINES = 40
+          REQUEST_TIMEOUT = 180
+          MAX_RETRIES = 2
+
+          QWEN_MARKER = "QWEN:"
+
+          ANNOTATION_KINDS = {
+              "purpose",
+              "logic",
+              "dependency",
+              "state",
+              "validation",
+              "error",
+              "side_effect",
+              "performance",
+              "security",
+              "data_flow",
+              "configuration",
+              "integration",
+              "business_rule",
+          }
 
 
-          def annotate_chunk(code_chunk):
-              body = {
-                  "model": MODEL,
-                  "prompt": PROMPT.format(code=code_chunk),
-                  "stream": False,
-                  "options": {"temperature": 0.1},
-              }
-              r = requests.post(OLLAMA_URL, json=body, timeout=300)
-              r.raise_for_status()
-              return r.json()["response"]
+          def now() -> str:
+              return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
-          def chunk_lines(lines, n):
-              for i in range(0, len(lines), n):
-                  yield lines[i:i + n]
+          def sha256_text(text: str) -> str:
+              return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-          def annotate_file(path):
-              rel = os.path.relpath(path, ".")
-              out_path = os.path.join(OUTPUT_DIR, rel)
-              os.makedirs(os.path.dirname(out_path), exist_ok=True)
+          def load_json(path: Path, default: Any) -> Any:
+              if not path.exists():
+                  return default
 
-              with open(path, encoding="utf-8") as f:
-                  lines = f.readlines()
+              try:
+                  return json.loads(path.read_text(encoding="utf-8"))
+              except Exception:
+                  return default
 
-              out = ["# ANNOTATED\n"]
-              errors = []
-              for chunk in chunk_lines(lines, CHUNK_SIZE):
-                  text = "".join(chunk)
-                  try:
-                      result = annotate_chunk(text)
-                  except Exception as e:
-                      errors.append(str(e))
-                      out.extend(chunk)
+
+          def atomic_write_json(path: Path, data: Any) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+
+              tmp = path.with_suffix(path.suffix + ".tmp")
+              tmp.write_text(
+                  json.dumps(data, indent=2, ensure_ascii=False),
+                  encoding="utf-8",
+              )
+              tmp.replace(path)
+
+
+          def load_state() -> Dict[str, Any]:
+              state = load_json(
+                  STATE_FILE,
+                  {
+                      "engine_version": ENGINE_VERSION,
+                      "updated_at": now(),
+                      "files": {},
+                  },
+              )
+
+              if not isinstance(state, dict):
+                  state = {}
+
+              state.setdefault("engine_version", ENGINE_VERSION)
+              state.setdefault("files", {})
+
+              return state
+
+
+          def load_interpretations() -> Dict[str, Any]:
+              data = load_json(
+                  INTERPRETATIONS_FILE,
+                  {
+                      "engine_version": ENGINE_VERSION,
+                      "files": {},
+                  },
+              )
+
+              if not isinstance(data, dict):
+                  data = {}
+
+              data.setdefault("engine_version", ENGINE_VERSION)
+              data.setdefault("files", {})
+
+              return data
+
+
+          def load_telemetry() -> Dict[str, Any]:
+              data = load_json(
+                  TELEMETRY_FILE,
+                  {
+                      "engine_version": ENGINE_VERSION,
+                      "started_at": now(),
+                      "models": {},
+                      "files": {},
+                      "totals": {
+                          "requests": 0,
+                          "successful_requests": 0,
+                          "failed_requests": 0,
+                          "accepted_candidates": 0,
+                          "rejected_candidates": 0,
+                      },
+                  },
+              )
+
+              if not isinstance(data, dict):
+                  data = {}
+
+              data.setdefault("models", {})
+              data.setdefault("files", {})
+              data.setdefault("totals", {})
+
+              return data
+
+
+          def parse_extensions() -> List[str]:
+              raw = os.environ.get("INPUT_EXTENSIONS", ",".join(DEFAULT_EXTENSIONS))
+
+              requested = []
+              for item in raw.split(","):
+                  ext = item.strip().lower()
+
+                  if not ext:
                       continue
 
-                  result = result.strip()
-                  if result.startswith("```"):
-                      result = "\n".join(result.split("\n")[1:])
-                  if result.endswith("```"):
-                      result = "\n".join(result.split("\n")[:-1])
-                  out.append(result + "\n")
+                  if not ext.startswith("."):
+                      ext = "." + ext
 
-              with open(out_path, "w", encoding="utf-8") as f:
-                  f.write("".join(out))
+                  if ext in SUPPORTED_EXTENSIONS:
+                      requested.append(ext)
 
-              return {
-                  "original": rel,
-                  "annotated": out_path,
-                  "chunks": (len(lines) + CHUNK_SIZE - 1) // CHUNK_SIZE if lines else 0,
-                  "errors": errors,
-                  "status": "ok" if not errors else "partial",
+              # Never allow the workflow input to expand annotation scope
+              # beyond extensions for which we have safe comment syntax.
+              return sorted(set(requested))
+
+
+          def is_blocked(path: Path) -> bool:
+              return any(part in BLOCKED_DIRS for part in path.parts)
+
+
+          def discover_files(extensions: List[str]) -> List[Path]:
+              if not extensions:
+                  return []
+
+              results = []
+
+              for path in ROOT.rglob("*"):
+                  if not path.is_file():
+                      continue
+
+                  if is_blocked(path):
+                      continue
+
+                  if path.suffix.lower() not in extensions:
+                      continue
+
+                  try:
+                      path.relative_to(OUTPUT_DIR)
+                      continue
+                  except ValueError:
+                      pass
+
+                  results.append(path)
+
+              return sorted(results)
+
+
+          def read_source(path: Path) -> str:
+              return path.read_text(encoding="utf-8")
+
+
+          def source_lines(text: str) -> List[str]:
+              return text.splitlines()
+
+
+          def looks_like_string_start(line: str, language: str) -> bool:
+              stripped = line.strip()
+
+              if not stripped:
+                  return False
+
+              if language == "python":
+                  if stripped.startswith(("'", '"', "'''", '"""')):
+                      return True
+
+              if stripped.startswith(("'", '"', "`")):
+                  return True
+
+              return False
+
+
+          def lexical_comment_state(
+              lines: List[str],
+              language: str,
+          ) -> List[Dict[str, bool]]:
+              """
+              Conservative lexical scanner.
+
+              It does not attempt to fully parse either language. Its purpose
+              is only to avoid inserting annotations into obvious comment,
+              docstring, or multiline-string regions.
+              """
+              states = []
+
+              block_comment = False
+              triple_quote: Optional[str] = None
+
+              for line in lines:
+                  stripped = line.strip()
+
+                  is_comment = False
+                  is_string_region = triple_quote is not None
+
+                  if language in {"typescript", "tsx", "javascript"}:
+                      if block_comment:
+                          is_comment = True
+
+                          if "*/" in line:
+                              block_comment = False
+
+                          states.append(
+                              {
+                                  "comment": True,
+                                  "string": False,
+                              }
+                          )
+                          continue
+
+                      if "/*" in line:
+                          before = line.split("/*", 1)[0].strip()
+
+                          if not before:
+                              is_comment = True
+
+                          if "*/" not in line.split("/*", 1)[1]:
+                              block_comment = True
+
+                  else:
+                      if triple_quote:
+                          is_string_region = True
+
+                          if triple_quote in line:
+                              triple_quote = None
+
+                          states.append(
+                              {
+                                  "comment": False,
+                                  "string": True,
+                              }
+                          )
+                          continue
+
+                      for marker in ('"""', "'''"):
+                          if marker in line:
+                              prefix = line.split(marker, 1)[0].strip()
+
+                              if not prefix or prefix.startswith("#"):
+                                  triple_quote = marker
+                                  is_string_region = True
+
+                              break
+
+                      if stripped.startswith("#"):
+                          is_comment = True
+
+                  states.append(
+                      {
+                          "comment": is_comment,
+                          "string": is_string_region,
+                      }
+                  )
+
+              return states
+
+
+          def language_for(path: Path) -> str:
+              suffix = path.suffix.lower()
+
+              if suffix == ".py":
+                  return "python"
+
+              if suffix in {".tsx"}:
+                  return "tsx"
+
+              return "typescript"
+
+
+          def meaningful_source_line(
+              line: str,
+              state: Dict[str, bool],
+              language: str,
+          ) -> bool:
+              stripped = line.strip()
+
+              if not stripped:
+                  return False
+
+              if state.get("comment") or state.get("string"):
+                  return False
+
+              if language == "python":
+                  if stripped.startswith("#"):
+                      return False
+
+                  if stripped in {"pass", "continue", "break"}:
+                      return False
+
+              else:
+                  if stripped.startswith("//"):
+                      return False
+
+                  if stripped.startswith("/*") or stripped.startswith("*"):
+                      return False
+
+              # Never annotate obvious standalone delimiters.
+              if stripped in {"}", "};", ")", "],", "]", "):", ":"}:
+                  return False
+
+              return True
+
+
+          def chunk_lines(lines: List[str]) -> List[Tuple[int, List[str]]]:
+              chunks = []
+
+              for start in range(0, len(lines), MAX_CHUNK_LINES):
+                  chunks.append(
+                      (
+                          start,
+                          lines[start:start + MAX_CHUNK_LINES],
+                      )
+                  )
+
+              return chunks
+
+
+          def extract_json(text: str) -> Optional[Dict[str, Any]]:
+              text = text.strip()
+
+              try:
+                  value = json.loads(text)
+
+                  if isinstance(value, dict):
+                      return value
+              except Exception:
+                  pass
+
+              # Recover JSON object if the model wrapped it in markdown.
+              match = re.search(r"\{.*\}", text, flags=re.DOTALL)
+
+              if not match:
+                  return None
+
+              try:
+                  value = json.loads(match.group(0))
+
+                  if isinstance(value, dict):
+                      return value
+              except Exception:
+                  return None
+
+              return None
+
+
+          def model_request(
+              model: str,
+              prompt: str,
+              telemetry: Dict[str, Any],
+          ) -> Tuple[Optional[Dict[str, Any]], Dict[str, Any]]:
+              started = time.time()
+
+              model_stats = telemetry["models"].setdefault(
+                  model,
+                  {
+                      "requests": 0,
+                      "successful_requests": 0,
+                      "failed_requests": 0,
+                      "elapsed_seconds": 0.0,
+                  },
+              )
+
+              model_stats["requests"] += 1
+              telemetry["totals"]["requests"] += 1
+
+              last_error = None
+
+              for attempt in range(MAX_RETRIES + 1):
+                  try:
+                      response = requests.post(
+                          OLLAMA_URL,
+                          json={
+                              "model": model,
+                              "prompt": prompt,
+                              "stream": False,
+                              "format": "json",
+                              "options": {
+                                  "temperature": 0.1,
+                              },
+                          },
+                          timeout=REQUEST_TIMEOUT,
+                      )
+
+                      response.raise_for_status()
+
+                      payload = response.json()
+                      raw = payload.get("response", "")
+
+                      parsed = extract_json(raw)
+
+                      if parsed is None:
+                          raise ValueError("Model response was not valid JSON.")
+
+                      elapsed = time.time() - started
+
+                      model_stats["successful_requests"] += 1
+                      model_stats["elapsed_seconds"] += elapsed
+                      telemetry["totals"]["successful_requests"] += 1
+
+                      return parsed, {
+                          "status": "success",
+                          "attempt": attempt + 1,
+                          "elapsed_seconds": round(elapsed, 3),
+                      }
+
+                  except Exception as exc:
+                      last_error = str(exc)
+
+                      if attempt < MAX_RETRIES:
+                          time.sleep(1.5 * (attempt + 1))
+
+              elapsed = time.time() - started
+
+              model_stats["failed_requests"] += 1
+              model_stats["elapsed_seconds"] += elapsed
+              telemetry["totals"]["failed_requests"] += 1
+
+              return None, {
+                  "status": "failed",
+                  "error": last_error,
+                  "elapsed_seconds": round(elapsed, 3),
               }
 
 
-          def main():
-              results = []
-              count = 0
-              for root, dirs, files in os.walk("."):
-                  dirs[:] = [d for d in dirs
-                             if d not in (".git", ".github", "venv",
-                                          "__pycache__", "node_modules", OUTPUT_DIR)]
-                  for name in files:
-                      if not name.endswith(".py"):
-                          continue
-                      path = os.path.join(root, name)
-                      print(f"Annotating {path}")
-                      info = annotate_file(path)
-                      results.append(info)
-                      count += 1
-                      if count >= MAX_FILES:
-                          print("Reached MAX_FILES cap")
-                          break
-                  if count >= MAX_FILES:
-                      break
+          def build_prompt(
+              model: str,
+              path: Path,
+              chunk_start: int,
+              chunk: List[str],
+              previous: Optional[Dict[str, Any]],
+              refinement: bool,
+          ) -> str:
+              numbered = "\n".join(
+                  f"{chunk_start + i + 1}: {line}"
+                  for i, line in enumerate(chunk)
+              )
 
-              os.makedirs(OUTPUT_DIR, exist_ok=True)
-              with open(os.path.join(OUTPUT_DIR, "annotations.json"), "w", encoding="utf-8") as f:
-                  json.dump(results, f, indent=2)
-              print(f"Done. Annotated {count} files. JSON at {OUTPUT_DIR}/annotations.json")
+              previous_json = (
+                  json.dumps(previous, ensure_ascii=False)
+                  if previous is not None
+                  else "null"
+              )
+
+              mode = (
+                  "This is a refinement pass. Preserve correct existing "
+                  "annotations and change them only when the source supports "
+                  "a more precise interpretation."
+                  if refinement
+                  else
+                  "This is the initial interpretation pass."
+              )
+
+              return f"""
+          You are {model}, operating as a conservative code-annotation engine.
+
+          {mode}
+
+          Repository file:
+          {path.as_posix()}
+
+          Rules:
+          - Analyze only the supplied source.
+          - Do not invent behavior, APIs, dependencies, symbols, or intent.
+          - Annotate meaningful executable/application logic.
+          - Do not annotate blank lines, comments, documentation, imports-only
+            trivia, closing delimiters, or generated-looking boilerplate unless
+            there is a concrete reason.
+          - Every annotation target must refer to an exact source line.
+          - Keep annotations concise and technical.
+          - Prefer explaining WHY the code matters over restating WHAT syntax
+            says.
+          - Identify important symbols only when they visibly occur in the
+            supplied source.
+          - Return JSON only.
+
+          Allowed annotation kinds:
+          {sorted(ANNOTATION_KINDS)}
+
+          Source:
+          {numbered}
+
+          Previous result:
+          {previous_json}
+
+          Return exactly this structure:
+          {{
+            "summary": "one concise semantic summary of this chunk",
+            "annotations": [
+              {{
+                "line": 1,
+                "kind": "logic",
+                "text": "concise explanation",
+                "confidence": 0.0
+              }}
+            ],
+            "important_symbols": [
+              {{
+                "name": "actual symbol from source",
+                "kind": "function|class|variable|constant|type|interface|method|module"
+              }}
+            ]
+          }}
+
+          The line number must be one of the source line numbers shown above.
+          """.strip()
+
+
+          def validate_annotation(
+              annotation: Any,
+              chunk: List[str],
+              chunk_start: int,
+          ) -> Optional[Dict[str, Any]]:
+              if not isinstance(annotation, dict):
+                  return None
+
+              try:
+                  local_line = int(annotation.get("line"))
+              except Exception:
+                  return None
+
+              absolute = local_line
+
+              if absolute < chunk_start + 1:
+                  return None
+
+              if absolute > chunk_start + len(chunk):
+                  return None
+
+              source_line = chunk[absolute - chunk_start - 1]
+
+              if not source_line.strip():
+                  return None
+
+              kind = str(annotation.get("kind", "")).strip()
+
+              if kind not in ANNOTATION_KINDS:
+                  return None
+
+              text = str(annotation.get("text", "")).strip()
+
+              if not text:
+                  return None
+
+              if len(text) > 320:
+                  text = text[:320].rstrip()
+
+              try:
+                  confidence = float(annotation.get("confidence", 0.0))
+              except Exception:
+                  confidence = 0.0
+
+              confidence = max(0.0, min(1.0, confidence))
+
+              return {
+                  "line": absolute,
+                  "kind": kind,
+                  "text": text,
+                  "confidence": round(confidence, 3),
+                  "source_hash": sha256_text(source_line),
+              }
+
+
+          def validate_symbols(
+              symbols: Any,
+              chunk: List[str],
+          ) -> List[Dict[str, str]]:
+              if not isinstance(symbols, list):
+                  return []
+
+              full_source = "\n".join(chunk)
+              results = []
+
+              allowed = {
+                  "function",
+                  "class",
+                  "variable",
+                  "constant",
+                  "type",
+                  "interface",
+                  "method",
+                  "module",
+              }
+
+              for symbol in symbols:
+                  if not isinstance(symbol, dict):
+                      continue
+
+                  name = str(symbol.get("name", "")).strip()
+                  kind = str(symbol.get("kind", "")).strip()
+
+                  if not name or kind not in allowed:
+                      continue
+
+                  if len(name) > 120:
+                      continue
+
+                  # Symbol must actually occur in supplied source.
+                  if re.search(
+                      rf"(?<![\w$]){re.escape(name)}(?![\w$])",
+                      full_source,
+                  ):
+                      results.append(
+                          {
+                              "name": name,
+                              "kind": kind,
+                          }
+                      )
+
+              unique = {}
+              for symbol in results:
+                  unique[(symbol["name"], symbol["kind"])] = symbol
+
+              return list(unique.values())[:30]
+
+
+          def normalize_candidate(
+              result: Dict[str, Any],
+              chunk: List[str],
+              chunk_start: int,
+          ) -> Optional[Dict[str, Any]]:
+              if not isinstance(result, dict):
+                  return None
+
+              summary = str(result.get("summary", "")).strip()
+
+              if not summary or len(summary) > 800:
+                  return None
+
+              annotations = []
+
+              for item in result.get("annotations", []):
+                  valid = validate_annotation(
+                      item,
+                      chunk,
+                      chunk_start,
+                  )
+
+                  if valid is not None:
+                      annotations.append(valid)
+
+              # Deduplicate exact targets.
+              dedup = {}
+
+              for annotation in annotations:
+                  key = annotation["line"]
+
+                  # Keep the more confident annotation for duplicate targets.
+                  old = dedup.get(key)
+
+                  if old is None or annotation["confidence"] > old["confidence"]:
+                      dedup[key] = annotation
+
+              annotations = sorted(
+                  dedup.values(),
+                  key=lambda item: item["line"],
+              )
+
+              # Conservative density limit.
+              max_annotations = max(1, min(12, len(chunk) // 2 + 1))
+
+              annotations = annotations[:max_annotations]
+
+              return {
+                  "summary": summary,
+                  "annotations": annotations,
+                  "important_symbols": validate_symbols(
+                      result.get("important_symbols"),
+                      chunk,
+                  ),
+              }
+
+
+          def candidate_quality(
+              candidate: Dict[str, Any],
+              chunk: List[str],
+              chunk_start: int,
+              lexical_states: List[Dict[str, bool]],
+              language: str,
+          ) -> Tuple[float, Dict[str, Any]]:
+              annotations = candidate["annotations"]
+
+              meaningful_targets = 0
+              low_value = 0
+              redundant = 0
+
+              seen_text = set()
+
+              for annotation in annotations:
+                  absolute = annotation["line"]
+                  local_index = absolute - chunk_start - 1
+
+                  if not (0 <= local_index < len(chunk)):
+                      continue
+
+                  state = lexical_states[local_index]
+                  line = chunk[local_index]
+
+                  if meaningful_source_line(line, state, language):
+                      meaningful_targets += 1
+                  else:
+                      low_value += 1
+
+                  normalized_text = re.sub(
+                      r"\s+",
+                      " ",
+                      annotation["text"].lower(),
+                  )
+
+                  if normalized_text in seen_text:
+                      redundant += 1
+
+                  seen_text.add(normalized_text)
+
+              confidences = [
+                  a["confidence"]
+                  for a in annotations
+              ]
+
+              confidence = (
+                  sum(confidences) / len(confidences)
+                  if confidences
+                  else 0.0
+              )
+
+              density_penalty = max(
+                  0,
+                  len(annotations) - max(1, len(chunk) // 3),
+              )
+
+              score = (
+                  2.0 * meaningful_targets
+                  + 1.5 * confidence
+                  + 0.5 * min(len(candidate["important_symbols"]), 6)
+                  - 3.0 * low_value
+                  - 1.5 * redundant
+                  - 1.0 * density_penalty
+              )
+
+              metrics = {
+                  "score": round(score, 4),
+                  "annotation_count": len(annotations),
+                  "meaningful_targets": meaningful_targets,
+                  "low_value_targets": low_value,
+                  "redundant_annotations": redundant,
+                  "mean_confidence": round(confidence, 4),
+              }
+
+              return score, metrics
+
+
+          def accept_candidate(
+              previous: Optional[Dict[str, Any]],
+              candidate: Dict[str, Any],
+              previous_score: Optional[float],
+              candidate_score: float,
+          ) -> Tuple[bool, str]:
+              if previous is None:
+                  return True, "initial_valid_candidate"
+
+              if candidate_score > previous_score + 0.05:
+                  return True, "higher_deterministic_quality"
+
+              if abs(candidate_score - previous_score) <= 0.05:
+                  # Stronger models may produce a cleaner equivalent result.
+                  # Accept only when annotation count does not increase.
+                  if (
+                      len(candidate["annotations"])
+                      <= len(previous["annotations"])
+                  ):
+                      return True, "quality_equivalent_or_cleaner"
+
+              return False, "quality_not_improved"
+
+
+          def apply_annotations(
+              lines: List[str],
+              annotations: List[Dict[str, Any]],
+              prefix: str,
+          ) -> List[str]:
+              by_line = {}
+
+              for annotation in annotations:
+                  by_line.setdefault(annotation["line"], []).append(annotation)
+
+              output = list(lines)
+
+              for absolute_line, items in by_line.items():
+                  index = absolute_line - 1
+
+                  if not (0 <= index < len(output)):
+                      continue
+
+                  source = output[index]
+
+                  # Preserve exact source text before the generated marker.
+                  generated = " ".join(
+                      f"{QWEN_MARKER} [{item['kind']}] {item['text']}"
+                      for item in items
+                  )
+
+                  if prefix == "#":
+                      output[index] = f"{source}  # {generated}"
+                  else:
+                      output[index] = f"{source}  // {generated}"
+
+              return output
+
+
+          def strip_qwen_annotation(line: str) -> str:
+              if QWEN_MARKER not in line:
+                  return line
+              return re.sub(
+                  r"\s*(//|#)\s*QWEN:.*$",
+                  "",
+                  line,
+              ).rstrip()
+
+
+          def verify_source_preservation(
+              original: List[str],
+              annotated: List[str],
+          ) -> bool:
+              if len(original) != len(annotated):
+                  return False
+
+              for before, after in zip(original, annotated):
+                  if strip_qwen_annotation(after) != before:
+                      return False
+
+              return True
+
+
+          def summarize_file(
+              model: str,
+              path: Path,
+              source: str,
+              telemetry: Dict[str, Any],
+          ) -> Tuple[Optional[Dict[str, Any]], Dict[str, Any]]:
+              prompt = f"""
+          Produce a concise semantic summary of this application source file.
+
+          File:
+          {path.as_posix()}
+
+          Rules:
+          - Use only evidence in the source.
+          - Explain the file's role, major responsibilities, important data flow,
+            integrations, and externally meaningful side effects.
+          - Do not invent requirements or architecture.
+          - Return JSON only.
+
+          Structure:
+          {{
+            "purpose": "concise file purpose",
+            "responsibilities": ["..."],
+            "data_flow": ["..."],
+            "integrations": ["..."],
+            "side_effects": ["..."],
+            "important_symbols": [
+              {{"name": "actual symbol", "kind": "function|class|module|type"}}
+            ]
+          }}
+
+          Source:
+          {source}
+          """.strip()
+
+              result, meta = model_request(
+                  model,
+                  prompt,
+                  telemetry,
+              )
+
+              if result is None:
+                  return None, meta
+
+              if not isinstance(result.get("purpose"), str):
+                  return None, {
+                      "status": "failed",
+                      "error": "Invalid summary purpose.",
+                  }
+
+              result["purpose"] = result["purpose"].strip()[:1000]
+
+              for key in (
+                  "responsibilities",
+                  "data_flow",
+                  "integrations",
+                  "side_effects",
+              ):
+                  values = result.get(key, [])
+
+                  if not isinstance(values, list):
+                      values = []
+
+                  result[key] = [
+                      str(value).strip()[:500]
+                      for value in values
+                      if str(value).strip()
+                  ][:20]
+
+              result["important_symbols"] = validate_symbols(
+                  result.get("important_symbols"),
+                  source_lines(source),
+              )
+
+              return result, {
+                  **meta,
+                  "status": "success",
+              }
+
+
+          def annotate_chunk(
+              path: Path,
+              chunk_start: int,
+              chunk: List[str],
+              language: str,
+              models: List[str],
+              telemetry: Dict[str, Any],
+              lexical_states: List[Dict[str, bool]],
+          ) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]]]:
+              previous = None
+              previous_score = None
+              passes = []
+
+              for index, model in enumerate(models):
+                  prompt = build_prompt(
+                      model=model,
+                      path=path,
+                      chunk_start=chunk_start,
+                      chunk=chunk,
+                      previous=previous,
+                      refinement=index > 0,
+                  )
+
+                  raw, request_meta = model_request(
+                      model,
+                      prompt,
+                      telemetry,
+                  )
+
+                  pass_record = {
+                      "model": model,
+                      "pass": index + 1,
+                      "request": request_meta,
+                  }
+
+                  if raw is None:
+                      pass_record["accepted"] = False
+                      pass_record["decision"] = "model_request_failed"
+                      passes.append(pass_record)
+                      continue
+
+                  candidate = normalize_candidate(
+                      raw,
+                      chunk,
+                      chunk_start,
+                  )
+
+                  if candidate is None:
+                      pass_record["accepted"] = False
+                      pass_record["decision"] = "candidate_validation_failed"
+                      passes.append(pass_record)
+                      telemetry["totals"]["rejected_candidates"] += 1
+                      continue
+
+                  candidate_score, metrics = candidate_quality(
+                      candidate,
+                      chunk,
+                      chunk_start,
+                      lexical_states,
+                      language,
+                  )
+
+                  pass_record["metrics"] = metrics
+
+                  accepted, reason = accept_candidate(
+                      previous,
+                      candidate,
+                      previous_score,
+                      candidate_score,
+                  )
+
+                  pass_record["accepted"] = accepted
+                  pass_record["decision"] = reason
+
+                  passes.append(pass_record)
+
+                  if accepted:
+                      previous = candidate
+                      previous_score = candidate_score
+                      telemetry["totals"]["accepted_candidates"] += 1
+                  else:
+                      telemetry["totals"]["rejected_candidates"] += 1
+
+              if previous is None:
+                  return None, passes
+
+              return {
+                  **previous,
+                  "quality_score": previous_score,
+              }, passes
+
+
+          def rebuild_output(
+              path: Path,
+              record: Dict[str, Any],
+          ) -> bool:
+              try:
+                  source = read_source(path)
+              except Exception:
+                  return False
+
+              if sha256_text(source) != record.get("source_sha256"):
+                  return False
+
+              lines = source_lines(source)
+              output = list(lines)
+
+              prefix = COMMENT_PREFIX[path.suffix.lower()]
+
+              for chunk_record in record.get("chunks", []):
+                  annotations = chunk_record.get("annotations", [])
+
+                  if not annotations:
+                      continue
+
+                  output = apply_annotations(
+                      output,
+                      annotations,
+                      prefix,
+                  )
+
+              if not verify_source_preservation(lines, output):
+                  return False
+
+              relative = path.relative_to(ROOT)
+              destination = OUTPUT_DIR / relative
+              destination.parent.mkdir(parents=True, exist_ok=True)
+
+              destination.write_text(
+                  "\n".join(output) + ("\n" if source.endswith("\n") else ""),
+                  encoding="utf-8",
+              )
+
+              return True
+
+
+          def file_record_complete(
+              record: Dict[str, Any],
+              source_hash: str,
+              chunk_count: int,
+          ) -> bool:
+              return (
+                  record.get("status") == "complete"
+                  and record.get("source_sha256") == source_hash
+                  and len(record.get("chunks", [])) == chunk_count
+                  and all(
+                      chunk.get("status") == "complete"
+                      for chunk in record.get("chunks", [])
+                  )
+              )
+
+
+          def process_file(
+              path: Path,
+              models: List[str],
+              state: Dict[str, Any],
+              interpretations: Dict[str, Any],
+              telemetry: Dict[str, Any],
+          ) -> bool:
+              relative = path.relative_to(ROOT).as_posix()
+              source = read_source(path)
+              source_hash = sha256_text(source)
+
+              lines = source_lines(source)
+              language = language_for(path)
+              chunks = chunk_lines(lines)
+
+              all_lexical_states = lexical_comment_state(
+                  lines,
+                  language,
+              )
+
+              old_record = state["files"].get(relative)
+
+              if (
+                  old_record
+                  and file_record_complete(
+                      old_record,
+                      source_hash,
+                      len(chunks),
+                  )
+              ):
+                  if rebuild_output(path, old_record):
+                      telemetry["files"].setdefault(
+                          relative,
+                          {},
+                      )["status"] = "rebuilt_from_state"
+
+                      return True
+
+              record = {
+                  "status": "partial",
+                  "source_sha256": source_hash,
+                  "engine_version": ENGINE_VERSION,
+                  "language": language,
+                  "updated_at": now(),
+                  "chunks": [],
+                  "summary": None,
+              }
+
+              interpretations["files"][relative] = record
+              state["files"][relative] = record
+
+              for chunk_index, (chunk_start, chunk) in enumerate(chunks):
+                  chunk_states = all_lexical_states[
+                      chunk_start:chunk_start + len(chunk)
+                  ]
+
+                  result, passes = annotate_chunk(
+                      path=path,
+                      chunk_start=chunk_start,
+                      chunk=chunk,
+                      language=language,
+                      models=models,
+                      telemetry=telemetry,
+                      lexical_states=chunk_states,
+                  )
+
+                  chunk_record = {
+                      "index": chunk_index,
+                      "start_line": chunk_start + 1,
+                      "end_line": chunk_start + len(chunk),
+                      "passes": passes,
+                  }
+
+                  if result is None:
+                      chunk_record["status"] = "failed"
+                      record["chunks"].append(chunk_record)
+
+                      atomic_write_json(STATE_FILE, state)
+                      atomic_write_json(
+                          INTERPRETATIONS_FILE,
+                          interpretations,
+                      )
+
+                      return False
+
+                  chunk_record["status"] = "complete"
+                  chunk_record["summary"] = result["summary"]
+                  chunk_record["annotations"] = result["annotations"]
+                  chunk_record["important_symbols"] = result[
+                      "important_symbols"
+                  ]
+                  chunk_record["quality_score"] = result[
+                      "quality_score"
+                  ]
+
+                  record["chunks"].append(chunk_record)
+
+                  # Persist after every successful chunk.
+                  atomic_write_json(STATE_FILE, state)
+                  atomic_write_json(
+                      INTERPRETATIONS_FILE,
+                      interpretations,
+                  )
+
+              # Generate file-level semantic summary with the strongest
+              # available model, without making summary failure invalidate
+              # otherwise-complete line annotations.
+              strongest_model = models[-1]
+
+              summary, summary_meta = summarize_file(
+                  strongest_model,
+                  path,
+                  source,
+                  telemetry,
+              )
+
+              if summary is None:
+                  record["summary"] = {
+                      "status": "failed",
+                      "metadata": summary_meta,
+                  }
+              else:
+                  record["summary"] = {
+                      "status": "complete",
+                      "data": summary,
+                      "metadata": summary_meta,
+                  }
+
+              all_annotations = []
+
+              for chunk_record in record["chunks"]:
+                  all_annotations.extend(
+                      chunk_record.get("annotations", [])
+                  )
+
+              annotated_lines = apply_annotations(
+                  lines,
+                  all_annotations,
+                  COMMENT_PREFIX[path.suffix.lower()],
+              )
+
+              if not verify_source_preservation(
+                  lines,
+                  annotated_lines,
+              ):
+                  record["status"] = "failed"
+                  record["failure"] = {
+                      "type": "source_integrity_failure",
+                      "time": now(),
+                  }
+
+                  atomic_write_json(STATE_FILE, state)
+                  atomic_write_json(
+                      INTERPRETATIONS_FILE,
+                      interpretations,
+                  )
+
+                  return False
+
+              relative = path.relative_to(ROOT)
+              destination = OUTPUT_DIR / relative
+              destination.parent.mkdir(parents=True, exist_ok=True)
+
+              destination.write_text(
+                  "\n".join(annotated_lines)
+                  + ("\n" if source.endswith("\n") else ""),
+                  encoding="utf-8",
+              )
+
+              record["status"] = "complete"
+              record["completed_at"] = now()
+              record["annotation_count"] = len(all_annotations)
+
+              state["files"][relative] = record
+              interpretations["files"][relative] = record
+
+              telemetry["files"][relative] = {
+                  "status": "complete",
+                  "annotation_count": len(all_annotations),
+                  "summary_status": record["summary"]["status"],
+              }
+
+              atomic_write_json(STATE_FILE, state)
+              atomic_write_json(
+                  INTERPRETATIONS_FILE,
+                  interpretations,
+              )
+
+              return True
+
+
+          def write_telemetry(telemetry: Dict[str, Any]) -> None:
+              telemetry["finished_at"] = now()
+              atomic_write_json(
+                  TELEMETRY_FILE,
+                  telemetry,
+              )
+
+
+          def main() -> int:
+              STATE_DIR.mkdir(parents=True, exist_ok=True)
+              OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+              models = [
+                  line.strip()
+                  for line in (
+                      STATE_DIR / "available_models.txt"
+                  ).read_text(encoding="utf-8").splitlines()
+                  if line.strip()
+              ]
+
+              if not models:
+                  print("No available Qwen models.")
+                  return 1
+
+              extensions = parse_extensions()
+
+              if not extensions:
+                  print("No supported extensions requested.")
+                  return 1
+
+              state = load_state()
+              interpretations = load_interpretations()
+              telemetry = load_telemetry()
+
+              telemetry["engine_version"] = ENGINE_VERSION
+              telemetry["models_requested"] = [
+                  "qwen2.5-coder:1.5b",
+                  "qwen2.5-coder:3b",
+                  "qwen2.5-coder:7b",
+                  "qwen2.5-coder:14b",
+              ]
+              telemetry["models_available"] = models
+              telemetry["extensions"] = extensions
+
+              files = discover_files(extensions)
+
+              try:
+                  limit = int(
+                      os.environ.get(
+                          "INPUT_FILES_PER_RUN",
+                          "10",
+                      )
+                  )
+              except ValueError:
+                  limit = 10
+
+              limit = max(1, limit)
+
+              pending = []
+
+              for path in files:
+                  relative = path.relative_to(ROOT).as_posix()
+                  source = read_source(path)
+                  record = state["files"].get(relative)
+
+                  chunks = chunk_lines(source_lines(source))
+
+                  if record and file_record_complete(
+                      record,
+                      sha256_text(source),
+                      len(chunks),
+                  ):
+                      # Rebuild output even when the file itself is not
+                      # selected for fresh processing. This matters because
+                      # GitHub-hosted runners are ephemeral.
+                      if not rebuild_output(path, record):
+                          pending.append(path)
+                  else:
+                      pending.append(path)
+
+              selected = pending[:limit]
+
+              print(f"Discovered files: {len(files)}")
+              print(f"Pending files: {len(pending)}")
+              print(f"Processing this run: {len(selected)}")
+              print(f"Models: {', '.join(models)}")
+              print(f"Extensions: {', '.join(extensions)}")
+
+              succeeded = 0
+              failed = 0
+
+              for index, path in enumerate(selected, start=1):
+                  relative = path.relative_to(ROOT).as_posix()
+
+                  print(
+                      f"[{index}/{len(selected)}] Processing {relative}"
+                  )
+
+                  try:
+                      if process_file(
+                          path,
+                          models,
+                          state,
+                          interpretations,
+                          telemetry,
+                      ):
+                          succeeded += 1
+                      else:
+                          failed += 1
+
+                  except Exception as exc:
+                      failed += 1
+
+                      telemetry["files"][relative] = {
+                          "status": "exception",
+                          "error": str(exc),
+                      }
+
+                      print(
+                          f"::error file={relative}::{exc}"
+                      )
+
+                      atomic_write_json(
+                          STATE_FILE,
+                          state,
+                      )
+
+                      atomic_write_json(
+                          INTERPRETATIONS_FILE,
+                          interpretations,
+                      )
+
+              # Rebuild all previously-completed outputs that were not
+              # selected for processing this run.
+              rebuilt = 0
+
+              for path in files:
+                  relative = path.relative_to(ROOT).as_posix()
+                  record = state["files"].get(relative)
+
+                  if not record:
+                      continue
+
+                  if record.get("status") != "complete":
+                      continue
+
+                  if rebuild_output(path, record):
+                      rebuilt += 1
+
+              telemetry["run"] = {
+                  "files_discovered": len(files),
+                  "files_pending": len(pending),
+                  "files_selected": len(selected),
+                  "files_succeeded": succeeded,
+                  "files_failed": failed,
+                  "outputs_rebuilt": rebuilt,
+              }
+
+              state["updated_at"] = now()
+
+              atomic_write_json(STATE_FILE, state)
+              atomic_write_json(
+                  INTERPRETATIONS_FILE,
+                  interpretations,
+              )
+              write_telemetry(telemetry)
+
+              print("")
+              print("Annotation run complete.")
+              print(f"Succeeded: {succeeded}")
+              print(f"Failed: {failed}")
+              print(f"Outputs rebuilt: {rebuilt}")
+
+              # A failed file is not silently converted to success.
+              # The workflow remains usable while surfacing failure through
+              # the summary and persisted state.
+              if failed > 0:
+                  print(
+                      "::warning::Some files failed and remain pending "
+                      "for the next run."
+                  )
+
+              return 0
 
 
           if __name__ == "__main__":
-              main()
-          PYEOF
+              sys.exit(main())
+          PY
 
-      - name: Run annotator
+          python3 .qwen_annotation/annotate.py
+
+      - name: Validate generated output
+        shell: bash
         run: |
-          cd $GITHUB_WORKSPACE
-          python /tmp/annotate_local.py
+          set -euo pipefail
 
-      - name: Upload annotated files
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          state_path = Path(".qwen_annotation/state/annotation_state.json")
+          output_dir = Path(".qwen_annotation/output")
+
+          if not state_path.exists():
+              raise SystemExit("Annotation state was not created.")
+
+          state = json.loads(
+              state_path.read_text(encoding="utf-8")
+          )
+
+          files = state.get("files", {})
+
+          complete = 0
+          partial = 0
+          missing = []
+
+          for relative, record in files.items():
+              if record.get("status") == "complete":
+                  complete += 1
+
+                  output = output_dir / relative
+
+                  if not output.exists():
+                      missing.append(relative)
+
+              else:
+                  partial += 1
+
+          print(f"Complete files: {complete}")
+          print(f"Partial/failed files: {partial}")
+
+          if missing:
+              print("Missing generated outputs:")
+
+              for path in missing:
+                  print(f" - {path}")
+
+              raise SystemExit(
+                  "Generated output validation failed."
+              )
+          PY
+
+      - name: Build annotation manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(".qwen_annotation")
+          state = json.loads(
+              (root / "state/annotation_state.json")
+              .read_text(encoding="utf-8")
+          )
+
+          telemetry = json.loads(
+              (root / "state/telemetry.json")
+              .read_text(encoding="utf-8")
+          )
+
+          manifest = {
+              "engine_version": state.get("engine_version"),
+              "generated_at": state.get("updated_at"),
+              "files": {},
+              "telemetry": telemetry,
+          }
+
+          for path, record in state.get("files", {}).items():
+              manifest["files"][path] = {
+                  "status": record.get("status"),
+                  "source_sha256": record.get("source_sha256"),
+                  "language": record.get("language"),
+                  "annotation_count": record.get(
+                      "annotation_count",
+                      0,
+                  ),
+                  "summary_status": (
+                      record.get("summary", {})
+                      .get("status")
+                      if isinstance(
+                          record.get("summary"),
+                          dict,
+                      )
+                      else None
+                  ),
+              }
+
+          (root / "state/manifest.json").write_text(
+              json.dumps(
+                  manifest,
+                  indent=2,
+                  ensure_ascii=False,
+              ),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload annotation artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: annotated-python
-          path: annotated_output/
-          if-no-files-found: error
+          name: qwen-annotated-code
+          path: |
+            .qwen_annotation/output
+            .qwen_annotation/state/annotation_state.json
+            .qwen_annotation/state/interpretations.json
+            .qwen_annotation/state/telemetry.json
+            .qwen_annotation/state/manifest.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Save updated annotation state
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: |
+            .qwen_annotation/state
+            .qwen_annotation/output
+          key: qwen-annotation-${{ github.repository }}-${{ github.ref_name }}-${{ github.run_id }}
+
+      - name: Final summary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          state = json.loads(
+              Path(
+                  ".qwen_annotation/state/annotation_state.json"
+              ).read_text(encoding="utf-8")
+          )
+
+          telemetry = json.loads(
+              Path(
+                  ".qwen_annotation/state/telemetry.json"
+              ).read_text(encoding="utf-8")
+          )
+
+          files = state.get("files", {})
+
+          complete = sum(
+              1
+              for record in files.values()
+              if record.get("status") == "complete"
+          )
+
+          partial = len(files) - complete
+
+          totals = telemetry.get("totals", {})
+
+          print("## Qwen Annotation Summary")
+          print("")
+          print(f"- Engine: `{state.get('engine_version')}`")
+          print(f"- Tracked files: **{len(files)}**")
+          print(f"- Complete: **{complete}**")
+          print(f"- Partial/failed: **{partial}**")
+          print(
+              f"- Model requests: **{totals.get('requests', 0)}**"
+          )
+          print(
+              f"- Successful requests: "
+              f"**{totals.get('successful_requests', 0)}**"
+          )
+          print(
+              f"- Failed requests: "
+              f"**{totals.get('failed_requests', 0)}**"
+          )
+          print(
+              f"- Accepted cascade candidates: "
+              f"**{totals.get('accepted_candidates', 0)}**"
+          )
+          print(
+              f"- Rejected cascade candidates: "
+              f"**{totals.get('rejected_candidates', 0)}**"
+          )
+          PY
