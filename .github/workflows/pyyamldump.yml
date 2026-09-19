@@ -42,10 +42,13 @@ jobs:
           EXTENSIONS = (".py", ".yml", ".yaml")
 
           BLOCKED_DIRS = {
-              ".git",
-              ".github",
-              "node_modules",
+
               "vendor",
+              "pnpm-lock.yaml",
+              "package-lock.json"
+              "yarn.lock",
+              "Cargo.lock",
+              "poetry.lock",
               "dist",
               "build",
               "coverage",
