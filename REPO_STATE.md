@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-09-19T04:00:46.517Z
+Generated: 2026-09-19T10:44:21.821Z
 
 Model: capability nodes + files as edges.
 
@@ -9259,6 +9259,17 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- supabase  [Supabase / Database]
 |   |   `-- server.ts
 |   `-- index.ts
++-- zeta
+|   +-- state
+|   |   +-- available_models.txt
+|   |   +-- phase1_extraction.json
+|   |   +-- phase2_scanning.json
+|   |   +-- phase3_analysis.json
+|   |   +-- phase4_synthesis.json
+|   |   `-- skip.txt
+|   +-- latest.json
+|   +-- pipeline.py
+|   `-- zeros.txt
 +-- _manifest.json
 +-- .cursorrules
 +-- .env.example
