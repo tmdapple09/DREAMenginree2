@@ -1,5 +1,5 @@
 {
-  "count": 1201,
+  "count": 1962,
   "first": 0.0,
   "last": 0.0,
   "min_gamma": 0.0,
@@ -14,7 +14,7 @@
   "predicted_mean_spacing": 0.0,
   "_meta": {
     "role": "extractor",
-    "model": "qwen2.5-coder:1.5b",
-    "generated_at": "2026-09-19T06:21:30Z"
+    "model": "qwen2.5-coder:14b",
+    "generated_at": "2026-09-19T10:54:10Z"
   }
 }

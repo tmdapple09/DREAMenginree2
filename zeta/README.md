@@ -1,11 +1,30 @@
 # Zeta zeros state
 
-Managed by the Zeta zeros pipeline workflow.
+Zeros are computed via mpmath's zetazero(n), exact n-th zero at 30 dps.
+Iterative: each run appends, never recomputes from scratch.
 
-- `zeros.txt` — append-only, one gamma per line, 17 sig figs.
-- `latest.json` — most recent full report (JSON).
-- `latest.md` — most recent full report (Markdown).
-- `reports/` — timestamped history of every run's JSON report.
-- `state/` — pipeline scratch (model list, skip list, per-phase output).
+Data files:
+- `data/rar_format.txt`
+- `data/tables2_format.txt`
+- `data/torridity_table.csv`
+- `data/summary.json`
 
-Do not edit `zeros.txt` by hand. Let the workflow append.
+Plots:
+- `plots/01_trajectory_3d.png`
+- `plots/02_mu_surface_3d.png`
+- `plots/03_rar_scatter.png`
+- `plots/04_ratio_vs_gamma.png`
+- `plots/05_mu_curve.png`
+- `plots/06_count_vs_height.png`
+- `plots/07_spacing_hist.png`
+- `plots/08_residual_vs_gamma.png`
+- `plots/09_3d_ratio_residual.png`
+
+Reports:
+- `DETAILED_REPORT.md`
+- `latest.json`
+- `reports/run-*.json`
+
+Raw state:
+- `zeros.txt`
+- `state/`

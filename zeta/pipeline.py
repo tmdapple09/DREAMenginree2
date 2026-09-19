@@ -12,7 +12,7 @@ from mpmath import mp, zetazero
 
 mp.dps = 30
 
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL") or "http://127.0.0.1:11434"
 OLLAMA = f"{OLLAMA_BASE_URL}/api/generate"
 
 ROOT = Path(".").resolve()
@@ -704,16 +704,17 @@ def main() -> int:
 
     model = models[0]
 
-    mode = os.environ.get("ANALYSIS_MODE", "full")
+    mode = (os.environ.get("ANALYSIS_MODE") or "full").strip()
     try:
-        n_new = int(os.environ.get("ZEROS_PER_RUN", "500"))
+        n_new = int(os.environ.get("ZEROS_PER_RUN") or "500")
     except ValueError:
         n_new = 500
 
     first_run = not ZEROS_FILE.exists() or ZEROS_FILE.stat().st_size == 0
-    print(f"Mode: {mode}")
+    print(f"Mode: {mode!r}")
     print(f"First run: {first_run}")
     print(f"Model: {model}")
+    print(f"Zeros per run: {n_new}")
 
     if mode in ("full", "zeros_only"):
         print("\n=== PHASE 0: ZEROS ===")
