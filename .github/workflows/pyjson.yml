@@ -1,0 +1,95 @@
+name: Dump Python sources to JSON
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Dump every Python file to JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p python_sources_dump
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          ROOT = Path(".").resolve()
+          OUTPUT_DIR = ROOT / "python_sources_dump"
+          OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+          OUTPUT_FILE = OUTPUT_DIR / "python_sources.json"
+
+          BLOCKED_DIRS = {
+              ".git",
+              ".github",
+              "node_modules",
+              "vendor",
+              "dist",
+              "build",
+              "coverage",
+              ".next",
+              ".nuxt",
+              "out",
+              "target",
+              "__pycache__",
+              ".venv",
+              "venv",
+              ".mypy_cache",
+              ".pytest_cache",
+              ".ruff_cache",
+              "site-packages",
+              "python_sources_dump",
+          }
+
+          def is_blocked(path: Path) -> bool:
+              return any(part in BLOCKED_DIRS for part in path.parts)
+
+          files = {}
+
+          for path in sorted(ROOT.rglob("*.py")):
+              if not path.is_file():
+                  continue
+
+              if is_blocked(path):
+                  continue
+
+              rel = path.relative_to(ROOT).as_posix()
+
+              try:
+                  files[rel] = path.read_text(
+                      encoding="utf-8",
+                      errors="replace",
+                  )
+              except Exception as exc:
+                  files[rel] = f"<<could not read: {exc}>>"
+
+          OUTPUT_FILE.write_text(
+              json.dumps(files, indent=2, ensure_ascii=False),
+              encoding="utf-8",
+          )
+
+          print(f"Wrote {len(files)} Python files to {OUTPUT_FILE}")
+          PY
+
+      - name: Upload Python sources dump
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-sources-dump
+          path: python_sources_dump/python_sources.json
+          if-no-files-found: error
+          retention-days: 30
