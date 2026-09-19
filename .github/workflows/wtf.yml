@@ -1,0 +1,21 @@
+from mpmath import mp, zetazero
+mp.dps = 30
+import numpy as np
+
+gammas = []
+with open("zeta/zeros.txt") as f:
+    for line in f:
+        line = line.strip()
+        if line:
+            gammas.append(float(line))
+
+bad = []
+for i, g in enumerate(gammas, start=1):
+    expected = float(zetazero(i).imag)
+    if abs(g - expected) > 1e-6:
+        bad.append((i, g, expected))
+
+print(f"Total entries: {len(gammas)}")
+print(f"Bad entries: {len(bad)}")
+for i, got, exp in bad[:10]:
+    print(f"  index {i}: file has {got:.6f}, actual is {exp:.6f}")
