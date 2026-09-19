@@ -1,0 +1,908 @@
+          import hashlib
+          import json
+          import os
+          import re
+          import sys
+          import time
+          from pathlib import Path
+          from typing import Any, Dict, List, Optional, Tuple
+
+          import numpy as np
+          import requests
+          from mpmath import mp, siegelz, findroot, mpf, zetazero
+
+          mp.dps = 30
+
+          OLLAMA = "http://127.0.0.1:11434/api/generate"
+
+          ROOT = Path(".").resolve()
+          PIPELINE_DIR = ROOT / "zeta_pipeline"
+          STATE_DIR = PIPELINE_DIR / "state"
+          OUTPUT_DIR = PIPELINE_DIR / "output"
+
+          CACHE_FILE = STATE_DIR / "zeta_zeros_cache.txt"
+          MODELS_FILE = STATE_DIR / "available_models.txt"
+
+          REQUEST_TIMEOUT = 600
+          MAX_RETRIES = 2
+
+
+          def now() -> str:
+              return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+          def sha256_text(text: str) -> str:
+              return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+          def atomic_write_json(path: Path, data: Any) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              tmp = path.with_suffix(path.suffix + ".tmp")
+              tmp.write_text(
+                  json.dumps(data, indent=2, ensure_ascii=False),
+                  encoding="utf-8",
+              )
+              tmp.replace(path)
+
+
+          def load_json(path: Path, default: Any) -> Any:
+              if not path.exists():
+                  return default
+              try:
+                  return json.loads(path.read_text(encoding="utf-8"))
+              except Exception:
+                  return default
+
+
+          # =========================================================
+          # ZETA ZEROS
+          # =========================================================
+
+          def load_cache(path: Path) -> np.ndarray:
+              if not path.exists():
+                  return np.array([])
+              out = []
+              with open(path) as f:
+                  for line in f:
+                      line = line.strip()
+                      if not line:
+                          continue
+                      try:
+                          out.append(float(line))
+                      except ValueError:
+                          continue
+              return np.array(out)
+
+
+          def next_zero(gamma_prev: float, k_next: int) -> float:
+              if gamma_prev < 14:
+                  step = 3.0
+              else:
+                  step = 2 * np.pi / np.log(gamma_prev / (2 * np.pi))
+                  step = max(step, 0.5)
+
+              t0 = mpf(gamma_prev) + mpf("0.5")
+              z0 = siegelz(t0)
+              t = t0
+              z_prev = z0
+
+              for _ in range(1000):
+                  t_next = t + mpf(str(step))
+                  z_next = siegelz(t_next)
+                  if z_prev * z_next < 0:
+                      try:
+                          root = findroot(
+                              siegelz,
+                              (t, t_next),
+                              solver="bisect",
+                              tol=mpf("1e-25"),
+                          )
+                          return float(root)
+                      except Exception:
+                          a, b = t, t_next
+                          za = siegelz(a)
+                          for _ in range(80):
+                              m = (a + b) / 2
+                              zm = siegelz(m)
+                              if za * zm < 0:
+                                  b = m
+                              else:
+                                  a, za = m, zm
+                          return float((a + b) / 2)
+                  t = t_next
+                  z_prev = z_next
+
+              print(f"    fallback for k = {k_next}")
+              return float(zetazero(k_next).imag)
+
+
+          def extend_cache(path: Path, n_new: int) -> np.ndarray:
+              cached = load_cache(path)
+              n_have = len(cached)
+
+              if n_have == 0:
+                  print("Empty cache. Computing first zero from scratch...")
+                  g1 = float(zetazero(1).imag)
+                  cached = np.array([g1])
+                  with open(path, "w") as f:
+                      f.write(f"{g1:.17g}\n")
+                  n_have = 1
+
+              print(f"Cache has {n_have} zeros. Computing {n_new} more...")
+              gammas = list(cached)
+              last = gammas[-1]
+
+              with open(path, "a") as f:
+                  for i in range(n_new):
+                      k_next = len(gammas) + 1
+                      last = next_zero(last, k_next)
+                      gammas.append(last)
+                      f.write(f"{last:.17g}\n")
+                      if (i + 1) % 50 == 0:
+                          print(f"  +{i+1}, gamma = {last:.6f}, n = {len(gammas)}")
+
+              return np.array(gammas)
+
+
+          # =========================================================
+          # OLLAMA CLIENT
+          # =========================================================
+
+          def ollama_ask(
+              model: str,
+              prompt: str,
+              json_mode: bool = True,
+              temperature: float = 0.1,
+          ) -> Optional[str]:
+              payload = {
+                  "model": model,
+                  "prompt": prompt,
+                  "stream": False,
+                  "options": {"temperature": temperature, "num_ctx": 8192},
+              }
+              if json_mode:
+                  payload["format"] = "json"
+
+              for attempt in range(MAX_RETRIES + 1):
+                  try:
+                      r = requests.post(
+                          OLLAMA,
+                          json=payload,
+                          timeout=REQUEST_TIMEOUT,
+                      )
+                      r.raise_for_status()
+                      text = r.json().get("response", "")
+                      if text and text.strip():
+                          return text.strip()
+                  except Exception as exc:
+                      print(f"  Ollama error [{model}]: {exc}")
+                      if attempt < MAX_RETRIES:
+                          time.sleep(2 * (attempt + 1))
+
+              return None
+
+
+          def ollama_ask_json(
+              model: str,
+              prompt: str,
+          ) -> Optional[Dict[str, Any]]:
+              raw = ollama_ask(model, prompt, json_mode=True)
+              if raw is None:
+                  return None
+
+              raw = raw.strip()
+              raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
+              raw = re.sub(r"\s*```$", "", raw)
+              start = raw.find("{")
+              end = raw.rfind("}")
+              if start >= 0 and end > start:
+                  raw = raw[start:end + 1]
+
+              try:
+                  value = json.loads(raw)
+                  if isinstance(value, dict):
+                      return value
+              except json.JSONDecodeError:
+                  pass
+
+              return None
+
+
+          # =========================================================
+          # ROLE ASSIGNMENT
+          #
+          # Each Qwen model has a role it is actually good at.
+          # Roles are matched to the best available model for that job.
+          # =========================================================
+
+          ROLE_SPECS = [
+              {
+                  "role": "extractor",
+                  "ideal_size": "1.5b",
+                  "purpose": "structure and format raw statistics",
+              },
+              {
+                  "role": "scanner",
+                  "ideal_size": "3b",
+                  "purpose": "detect clusters and anomalies in structured data",
+              },
+              {
+                  "role": "analyst",
+                  "ideal_size": "7b",
+                  "purpose": "compare to known theory (GUE, Riemann-von Mangoldt)",
+              },
+              {
+                  "role": "synthesizer",
+                  "ideal_size": "14b",
+                  "purpose": "synthesize, assess honestly, speculate carefully",
+              },
+          ]
+
+
+          def assign_roles(available_models: List[str]) -> Dict[str, Optional[str]]:
+              """
+              Map each role to the best available model for that job.
+
+              Preference order per role:
+                1. Exact ideal size.
+                2. Next larger size (more capable).
+                3. Next smaller size (still adequate).
+                4. Any remaining unused model.
+
+              A model is not reused across roles if a distinct one is available.
+              If we run out, the strongest model is reused for the top role.
+              """
+              # Parse sizes from model names like qwen2.5-coder:7b
+              parsed = []
+              for name in available_models:
+                  m = re.search(r":(\d+(?:\.\d+)?)b", name)
+                  size = float(m.group(1)) if m else 0.0
+                  parsed.append((size, name))
+
+              parsed.sort()  # ascending size
+
+              assignment: Dict[str, Optional[str]] = {}
+              used: set = set()
+
+              for spec in ROLE_SPECS:
+                  ideal = spec["ideal_size"].rstrip("b")
+                  try:
+                      ideal_val = float(ideal)
+                  except ValueError:
+                      ideal_val = 0.0
+
+                  # 1. exact
+                  pick = None
+                  for size, name in parsed:
+                      if name in used:
+                          continue
+                      if abs(size - ideal_val) < 0.001:
+                          pick = name
+                          break
+
+                  # 2. next larger
+                  if pick is None:
+                      for size, name in parsed:
+                          if name in used:
+                              continue
+                          if size > ideal_val:
+                              pick = name
+                              break
+
+                  # 3. next smaller
+                  if pick is None:
+                      for size, name in reversed(parsed):
+                          if name in used:
+                              continue
+                          if size < ideal_val:
+                              pick = name
+                              break
+
+                  # 4. anything left
+                  if pick is None:
+                      for _, name in parsed:
+                          if name not in used:
+                              pick = name
+                              break
+
+                  if pick:
+                      used.add(pick)
+
+                  assignment[spec["role"]] = pick
+
+              # If nothing was available for the synthesizer, reuse the strongest.
+              if not assignment.get("synthesizer") and parsed:
+                  assignment["synthesizer"] = parsed[-1][1]
+
+              return assignment
+
+
+          # =========================================================
+          # PHASE PROMPTS
+          # =========================================================
+
+          EXTRACTOR_PROMPT = """
+          You are the extraction phase of a mathematical analysis pipeline.
+
+          Your job is to structure raw data. You are NOT asked to reason,
+          interpret, or conclude.
+
+          You have {count} nontrivial zeros of the Riemann zeta function
+          on the critical line s = 1/2 + i*gamma.
+
+          Last 40 values:
+          {sample}
+
+          Compute and return exactly:
+
+          {{
+            "count": {count},
+            "first": 0.0,
+            "last": 0.0,
+            "min_gamma": 0.0,
+            "max_gamma": 0.0,
+            "mean_spacing_recent_30": 0.0,
+            "std_spacing_recent_30": 0.0,
+            "largest_gap_recent_30": 0.0,
+            "smallest_gap_recent_30": 0.0,
+            "spacings_recent_30": [0.0, 0.0],
+            "predicted_mean_spacing": 0.0
+          }}
+
+          Rules:
+          - Fill numeric fields with numbers, not strings.
+          - predicted_mean_spacing uses the Riemann-von Mangoldt formula:
+              2*pi / ln(last / (2*pi))
+          - spacings_recent_30 is the list of consecutive differences
+            between the last 31 values (30 spacings).
+          - Do not add extra fields. Do not explain. Return JSON only.
+          """
+
+
+          SCANNER_PROMPT = """
+          You are the scanning phase of a mathematical analysis pipeline.
+
+          The extraction phase produced this structured data about the
+          nontrivial zeros of the Riemann zeta function:
+
+          {extraction}
+
+          Your job is pattern detection on this structured data. You are NOT
+          asked to compare to theory. You are NOT asked to conclude anything
+          about the Riemann Hypothesis.
+
+          Look at the spacings_recent_30 list and the stats. Identify:
+
+          - clusters of unusually small spacings (near-repulsion or clustering)
+          - isolated large gaps
+          - any obvious periodicity or structure in the sequence
+          - any anomaly that stands out from the mean
+
+          Return exactly:
+
+          {{
+            "clusters": [
+              {{
+                "index_range": [0, 0],
+                "spacings": [0.0],
+                "why_notable": "short explanation"
+              }}
+            ],
+            "large_gaps": [
+              {{
+                "index": 0,
+                "gap": 0.0,
+                "relative_to_mean": 0.0
+              }}
+            ],
+            "periodicity_observed": false,
+            "anomalies": [
+              "specific anomalous feature in the data"
+            ],
+            "notes": "one short paragraph"
+          }}
+
+          Rules:
+          - Use indices relative to the spacings_recent_30 list (0-based).
+          - Do not claim any RH result.
+          - Return JSON only.
+          """
+
+
+          ANALYST_PROMPT = """
+          You are the analysis phase of a mathematical analysis pipeline.
+
+          The extraction phase produced:
+          {extraction}
+
+          The scanning phase produced:
+          {scanning}
+
+          Your job is to compare the observed data against established
+          mathematical theory. This is real reasoning work.
+
+          Reference theory you may use:
+
+          1. Riemann-von Mangoldt formula for the zero counting function:
+             N(T) ~ (T / (2*pi)) * ln(T / (2*pi*e)) + 7/8
+             Local mean density near height T:
+             rho(T) = (1 / (2*pi)) * ln(T / (2*pi))
+
+          2. GUE nearest-neighbor spacing distribution (Montgomery-Odlyzko):
+             p(s) = (32 / pi^2) * s^2 * exp(-4*s^2 / pi)
+             The distribution has mean 1 and variance ~0.178.
+
+          3. GUE spacing repulsion: p(s) -> 0 as s -> 0.
+             Unlike Poisson (uncorrelated), where p(s) = exp(-s).
+
+          Your tasks:
+
+          a) Compare mean_spacing_recent_30 to predicted_mean_spacing.
+             Report the ratio. If the ratio is close to 1, the density
+             is consistent with Riemann-von Mangoldt.
+
+          b) Compare the standard deviation of spacings to the GUE
+             prediction (sqrt(0.178) approx 0.422). If the observed std
+             is close to this, the spacings are consistent with GUE.
+             If it is much larger, the sample is too small or the
+             spacings deviate.
+
+          c) State clearly what the data is and is not consistent with.
+             Be strict.
+
+          d) Address the Riemann Hypothesis explicitly. The correct
+             answer is that the data cannot prove or disprove RH.
+             Any sample of finite zeros is consistent with both RH true
+             and RH false (with all zeros below some height on the line
+             but one off the line above it).
+
+          Return exactly:
+
+          {{
+            "density_ratio": 0.0,
+            "density_consistent_with_rvm": false,
+            "spacing_std": 0.0,
+            "spacing_std_gue_prediction": 0.422,
+            "spacing_consistent_with_gue": false,
+            "mathematical_observations": [
+              "concrete observation about the data vs theory"
+            ],
+            "rh_status": {{
+              "is_proven": false,
+              "is_disproven": false,
+              "can_this_data_decide": false,
+              "reasoning": "why finite data cannot decide RH"
+            }},
+            "what_would_be_needed": [
+              "what an actual proof would require"
+            ],
+            "honest_limits": [
+              "what this analysis cannot establish"
+            ]
+          }}
+
+          Rules:
+          - Numbers are numbers, not strings.
+          - Never claim a proof exists.
+          - Return JSON only.
+          """
+
+
+          SYNTHESIZER_PROMPT = """
+          You are the synthesis phase of a mathematical analysis pipeline.
+
+          Three earlier phases have produced structured outputs.
+
+          Extraction phase:
+          {extraction}
+
+          Scanning phase:
+          {scanning}
+
+          Analysis phase:
+          {analysis}
+
+          You are the final phase. Write the honest report.
+
+          You may speculate on connections between:
+          - numerical patterns in zeta zeros
+          - coding practice or AI model design
+          - physics
+
+          But every speculative claim MUST be marked speculative and carry
+          a low confidence score. Real mathematical findings carry high
+          confidence. Do not mix them.
+
+          Return exactly:
+
+          {{
+            "final_status": {{
+              "riemann_hypothesis_solved": false,
+              "confidence": 0.99,
+              "reasoning": "why the answer is still no"
+            }},
+            "confirmed_findings": [
+              {{
+                "finding": "something the data actually supports",
+                "confidence": 0.0
+              }}
+            ],
+            "open_questions": [
+              "what the data leaves open"
+            ],
+            "numerology_speculations": [
+              {{
+                "speculation": "a pattern that might matter",
+                "confidence": 0.0,
+                "speculative": true
+              }}
+            ],
+            "coding_practice_speculations": [
+              {{
+                "speculation": "a possible lesson for coding or AI models",
+                "confidence": 0.0,
+                "speculative": true
+              }}
+            ],
+            "physics_speculations": [
+              {{
+                "speculation": "a possible physics connection",
+                "confidence": 0.0,
+                "speculative": true
+              }}
+            ],
+            "honest_summary": "one paragraph, plainly stating what we know and do not know",
+            "next_realistic_steps": [
+              "what a serious attempt to prove RH would require"
+            ]
+          }}
+
+          Rules:
+          - Never claim RH is solved. It is not solved.
+          - Mark every numerology, coding, and physics item speculative: true.
+          - Confidence values: 0.0 to 1.0. Real findings can be high.
+            Speculations should be low (<= 0.3).
+          - Return JSON only.
+          """
+
+
+          # =========================================================
+          # PIPELINE
+          # =========================================================
+
+          def run_role(
+              role: str,
+              model: str,
+              prompt: str,
+              output_path: Path,
+          ) -> Optional[Dict[str, Any]]:
+              print(f"\n  [{role}] using {model}...")
+              result = ollama_ask_json(model, prompt)
+
+              if result is None:
+                  print(f"    {role} produced no valid JSON.")
+                  return None
+
+              result["_meta"] = {
+                  "role": role,
+                  "model": model,
+                  "generated_at": now(),
+              }
+
+              atomic_write_json(output_path, result)
+              print(f"    {role} complete.")
+              return result
+
+
+          def main() -> int:
+              STATE_DIR.mkdir(parents=True, exist_ok=True)
+              OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+              models = [
+                  line.strip()
+                  for line in MODELS_FILE.read_text(encoding="utf-8").splitlines()
+                  if line.strip()
+              ]
+
+              if not models:
+                  print("No models available.")
+                  return 1
+
+              mode = os.environ.get("ANALYSIS_MODE", "full")
+
+              try:
+                  n_new = int(os.environ.get("ZEROS_PER_RUN", "200"))
+              except ValueError:
+                  n_new = 200
+
+              print(f"Mode: {mode}")
+              print(f"Models available: {models}")
+
+              # -------- PHASE 0: ZEROS --------
+              if mode in ("full", "zeros_only"):
+                  print("\n=== PHASE 0: COMPUTING ZETA ZEROS ===")
+                  gammas = extend_cache(CACHE_FILE, n_new)
+                  print(f"Total zeros in cache: {len(gammas)}")
+
+                  zeros_payload = {
+                      "computed_at": now(),
+                      "count": len(gammas),
+                      "zeros": [float(g) for g in gammas],
+                      "sha256": sha256_text(
+                          ",".join(f"{g:.17g}" for g in gammas)
+                      ),
+                  }
+                  atomic_write_json(
+                      STATE_DIR / "zeros.json",
+                      zeros_payload,
+                  )
+              else:
+                  zeros_payload = load_json(
+                      STATE_DIR / "zeros.json",
+                      {"zeros": [], "count": 0},
+                  )
+
+              gammas = np.array(zeros_payload.get("zeros", []))
+              if len(gammas) == 0:
+                  print("No zeros available.")
+                  return 1
+
+              if mode == "zeros_only":
+                  print("Zeros-only mode. Skipping analysis.")
+                  return 0
+
+              # -------- ROLE ASSIGNMENT --------
+              roles = assign_roles(models)
+
+              print("\n=== ROLE ASSIGNMENT ===")
+              for role_name, model_name in roles.items():
+                  print(f"  {role_name:<12} -> {model_name or '(unavailable)'}")
+
+              if not roles.get("extractor"):
+                  print("No model available for extraction.")
+                  return 1
+
+              # -------- PHASE 1: EXTRACTOR --------
+              print("\n=== PHASE 1: EXTRACTION ===")
+
+              sample = gammas[-40:]
+              sample_str = ", ".join(f"{z:.6f}" for z in sample)
+
+              prompt = EXTRACTOR_PROMPT.format(
+                  count=len(gammas),
+                  sample=sample_str,
+              )
+
+              extraction = run_role(
+                  "extractor",
+                  roles["extractor"],
+                  prompt,
+                  STATE_DIR / "phase1_extraction.json",
+              )
+
+              if extraction is None:
+                  # Fall back to computing stats ourselves.
+                  print("  Extractor failed. Computing stats locally...")
+                  recent = gammas[-31:]
+                  spacings = np.diff(recent).tolist()
+                  extraction = {
+                      "count": len(gammas),
+                      "first": float(gammas[0]),
+                      "last": float(gammas[-1]),
+                      "min_gamma": float(np.min(gammas)),
+                      "max_gamma": float(np.max(gammas)),
+                      "mean_spacing_recent_30": float(np.mean(spacings)),
+                      "std_spacing_recent_30": float(np.std(spacings)),
+                      "largest_gap_recent_30": float(np.max(spacings)),
+                      "smallest_gap_recent_30": float(np.min(spacings)),
+                      "spacings_recent_30": [float(s) for s in spacings],
+                      "predicted_mean_spacing": float(
+                          2 * np.pi / np.log(gammas[-1] / (2 * np.pi))
+                      ),
+                  }
+                  atomic_write_json(
+                      STATE_DIR / "phase1_extraction.json",
+                      extraction,
+                  )
+
+              # -------- PHASE 2: SCANNER --------
+              scanning = None
+
+              if roles.get("scanner"):
+                  print("\n=== PHASE 2: SCANNING ===")
+                  prompt = SCANNER_PROMPT.format(
+                      extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+                  )
+                  scanning = run_role(
+                      "scanner",
+                      roles["scanner"],
+                      prompt,
+                      STATE_DIR / "phase2_scanning.json",
+                  )
+              else:
+                  print("\n=== PHASE 2: SKIPPED (no scanner model) ===")
+
+              if scanning is None:
+                  scanning = {
+                      "clusters": [],
+                      "large_gaps": [],
+                      "periodicity_observed": False,
+                      "anomalies": [],
+                      "notes": "Scanner phase unavailable.",
+                  }
+                  atomic_write_json(
+                      STATE_DIR / "phase2_scanning.json",
+                      scanning,
+                  )
+
+              # -------- PHASE 3: ANALYST --------
+              analysis = None
+
+              if roles.get("analyst"):
+                  print("\n=== PHASE 3: ANALYSIS ===")
+                  prompt = ANALYST_PROMPT.format(
+                      extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+                      scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
+                  )
+                  analysis = run_role(
+                      "analyst",
+                      roles["analyst"],
+                      prompt,
+                      STATE_DIR / "phase3_analysis.json",
+                  )
+              else:
+                  print("\n=== PHASE 3: SKIPPED (no analyst model) ===")
+
+              if analysis is None:
+                  analysis = {
+                      "density_ratio": None,
+                      "density_consistent_with_rvm": None,
+                      "spacing_std": None,
+                      "spacing_consistent_with_gue": None,
+                      "mathematical_observations": [],
+                      "rh_status": {
+                          "is_proven": False,
+                          "is_disproven": False,
+                          "can_this_data_decide": False,
+                          "reasoning": "Analyst phase unavailable.",
+                      },
+                      "what_would_be_needed": [],
+                      "honest_limits": [],
+                  }
+                  atomic_write_json(
+                      STATE_DIR / "phase3_analysis.json",
+                      analysis,
+                  )
+
+              # -------- PHASE 4: SYNTHESIZER --------
+              print("\n=== PHASE 4: SYNTHESIS ===")
+
+              synthesizer_model = roles.get("synthesizer") or roles.get("analyst") or roles.get("scanner") or roles.get("extractor")
+
+              prompt = SYNTHESIZER_PROMPT.format(
+                  extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+                  scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
+                  analysis=json.dumps(analysis, indent=2, ensure_ascii=False),
+              )
+
+              synthesis = run_role(
+                  "synthesizer",
+                  synthesizer_model,
+                  prompt,
+                  STATE_DIR / "phase4_synthesis.json",
+              )
+
+              if synthesis is None:
+                  synthesis = {
+                      "final_status": {
+                          "riemann_hypothesis_solved": False,
+                          "confidence": 0.99,
+                          "reasoning": "Synthesizer failed to produce output.",
+                      },
+                      "confirmed_findings": [],
+                      "open_questions": [],
+                      "numerology_speculations": [],
+                      "coding_practice_speculations": [],
+                      "physics_speculations": [],
+                      "honest_summary": "Synthesis failed.",
+                      "next_realistic_steps": [],
+                  }
+                  atomic_write_json(
+                      STATE_DIR / "phase4_synthesis.json",
+                      synthesis,
+                  )
+
+              # -------- FINAL REPORT --------
+              final_report = {
+                  "generated_at": now(),
+                  "zeros_analyzed": len(gammas),
+                  "roles": roles,
+                  "phase1_extraction": extraction,
+                  "phase2_scanning": scanning,
+                  "phase3_analysis": analysis,
+                  "phase4_synthesis": synthesis,
+                  "honest_statement": (
+                      "The Riemann Hypothesis remains unproven. "
+                      "No model in this pipeline produced a proof. "
+                      "Numerology patterns and coding/physics connections "
+                      "are explicitly speculative and are not mathematical results. "
+                      "Finite samples of zeros cannot decide RH in either direction."
+                  ),
+              }
+
+              atomic_write_json(
+                  OUTPUT_DIR / "final_report.json",
+                  final_report,
+              )
+
+              # -------- MARKDOWN SUMMARY --------
+              lines = []
+              lines.append("# Zeta Zeros Role-Based Analysis")
+              lines.append("")
+              lines.append(f"Generated: {final_report['generated_at']}")
+              lines.append(f"Zeros analyzed: {len(gammas)}")
+              lines.append("")
+              lines.append("## Role assignment")
+              lines.append("")
+              for role_name, model_name in roles.items():
+                  lines.append(f"- **{role_name}**: `{model_name}`")
+              lines.append("")
+
+              fs = synthesis.get("final_status", {})
+              lines.append("## Millennium problem status")
+              lines.append("")
+              lines.append(f"- Riemann Hypothesis solved: **{fs.get('riemann_hypothesis_solved', False)}**")
+              lines.append(f"- Confidence: {fs.get('confidence', 0.99)}")
+              lines.append(f"- Reasoning: {fs.get('reasoning', 'N/A')}")
+              lines.append("")
+
+              lines.append("## Confirmed findings")
+              for f in synthesis.get("confirmed_findings", []):
+                  lines.append(f"- {f.get('finding', '')} (confidence: {f.get('confidence', 0.0)})")
+              lines.append("")
+
+              lines.append("## Numerology speculations (speculative)")
+              for s in synthesis.get("numerology_speculations", []):
+                  lines.append(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+              lines.append("")
+
+              lines.append("## Coding practice speculations (speculative)")
+              for s in synthesis.get("coding_practice_speculations", []):
+                  lines.append(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+              lines.append("")
+
+              lines.append("## Physics speculations (speculative)")
+              for s in synthesis.get("physics_speculations", []):
+                  lines.append(f"- {s.get('speculation', '')} (confidence: {s.get('confidence', 0.0)})")
+              lines.append("")
+
+              lines.append("## Open questions")
+              for q in synthesis.get("open_questions", []):
+                  lines.append(f"- {q}")
+              lines.append("")
+
+              lines.append("## Honest summary")
+              lines.append(synthesis.get("honest_summary", "N/A"))
+              lines.append("")
+
+              lines.append("## Next realistic steps")
+              for step in synthesis.get("next_realistic_steps", []):
+                  lines.append(f"- {step}")
+
+              (OUTPUT_DIR / "final_report.md").write_text(
+                  "\n".join(lines),
+                  encoding="utf-8",
+              )
+
+              print("\n=== PIPELINE COMPLETE ===")
+              print(f"Zeros: {len(gammas)}")
+              for role_name, model_name in roles.items():
+                  print(f"  {role_name}: {model_name}")
+              print(f"RH solved: {fs.get('riemann_hypothesis_solved', False)}")
+              print(f"Output: {OUTPUT_DIR}")
+
+              return 0
+
+
+          if __name__ == "__main__":
+              sys.exit(main())
