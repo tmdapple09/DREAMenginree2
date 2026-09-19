@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T04:04:35.036Z",
+  "generatedAt": "2026-09-19T04:21:44.050Z",
   "root": ".",
   "nodes": [
     {
@@ -2766,6 +2766,16 @@
       "label": "VOCAB.yml",
       "type": "config",
       "path": ".github/workflows/VOCAB.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/ZetaZE.yml",
+      "label": "ZetaZE.yml",
+      "type": "config",
+      "path": ".github/workflows/ZetaZE.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
