@@ -1,4 +1,3 @@
-import hashlib
 import json
 import os
 import re
@@ -9,45 +8,40 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 import requests
-from mpmath import mp, siegelz, findroot, mpf, zetazero
+from mpmath import mp, zetazero
 
 mp.dps = 30
 
-OLLAMA = "http://127.0.0.1:11434/api/generate"
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+OLLAMA = f"{OLLAMA_BASE_URL}/api/generate"
 
 ROOT = Path(".").resolve()
 ZETA_DIR = ROOT / "zeta"
 STATE_DIR = ZETA_DIR / "state"
 REPORT_DIR = ZETA_DIR / "reports"
+PLOTS_DIR = ZETA_DIR / "plots"
+DATA_DIR = ZETA_DIR / "data"
 
 ZEROS_FILE = ZETA_DIR / "zeros.txt"
 MODELS_FILE = STATE_DIR / "available_models.txt"
 
-REQUEST_TIMEOUT = 600
+REQUEST_TIMEOUT = 900
 MAX_RETRIES = 2
-
 
 def now() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-
 def stamp() -> str:
     return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-
-
-def sha256_text(text: str) -> str:
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
 
 def atomic_write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(
-        json.dumps(data, indent=2, ensure_ascii=False),
+        json.dumps(data, indent=2, ensure_ascii=False, default=str),
         encoding="utf-8",
     )
     tmp.replace(path)
-
 
 def load_zeros() -> np.ndarray:
     if not ZEROS_FILE.exists():
@@ -64,76 +58,29 @@ def load_zeros() -> np.ndarray:
                 continue
     return np.array(out)
 
-
 def append_zero(g: float) -> None:
     ZEROS_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ZEROS_FILE, "a") as f:
         f.write(f"{g:.17g}\n")
 
-
-def next_zero(gamma_prev: float, k_next: int) -> float:
-    if gamma_prev < 14:
-        step = 3.0
-    else:
-        step = 2 * np.pi / np.log(gamma_prev / (2 * np.pi))
-        step = max(step, 0.5)
-
-    t0 = mpf(gamma_prev) + mpf("0.5")
-    t = t0
-    z_prev = siegelz(t0)
-
-    for _ in range(1000):
-        t_next = t + mpf(str(step))
-        z_next = siegelz(t_next)
-        if z_prev * z_next < 0:
-            try:
-                root = findroot(
-                    siegelz,
-                    (t, t_next),
-                    solver="bisect",
-                    tol=mpf("1e-25"),
-                )
-                return float(root)
-            except Exception:
-                a, b = t, t_next
-                za = siegelz(a)
-                for _ in range(80):
-                    m = (a + b) / 2
-                    zm = siegelz(m)
-                    if za * zm < 0:
-                        b = m
-                    else:
-                        a, za = m, zm
-                return float((a + b) / 2)
-        t = t_next
-        z_prev = z_next
-
-    print(f"    fallback for k = {k_next}")
-    return float(zetazero(k_next).imag)
-
-
 def extend_zeros(n_new: int) -> np.ndarray:
     gammas = list(load_zeros())
+    start_n = len(gammas)
 
-    if len(gammas) == 0:
-        print("No zeros on disk. Seeding from scratch...")
-        g1 = float(zetazero(1).imag)
-        append_zero(g1)
-        gammas = [g1]
-
-    print(f"Starting with {len(gammas)} zeros. Computing {n_new} more...")
-    last = gammas[-1]
+    print(f"Starting with {start_n} zeros. Computing {n_new} more...")
+    t_start = time.time()
 
     for i in range(n_new):
-        k_next = len(gammas) + 1
-        last = next_zero(last, k_next)
-        gammas.append(last)
-        append_zero(last)
+        n = start_n + i + 1
+        g = float(zetazero(n).imag)
+        gammas.append(g)
+        append_zero(g)
         if (i + 1) % 50 == 0:
-            print(f"  +{i+1}, gamma = {last:.6f}, n = {len(gammas)}")
+            elapsed = time.time() - t_start
+            rate = (i + 1) / elapsed if elapsed > 0 else 0
+            print(f"  +{i+1}, n={n}, gamma={g:.6f}, rate={rate:.1f}/s")
 
     return np.array(gammas)
-
 
 def ollama_ask_json(
     model: str,
@@ -177,70 +124,6 @@ def ollama_ask_json(
 
     return None
 
-
-ROLE_SPECS = [
-    {"role": "extractor",   "ideal_size": "1.5b"},
-    {"role": "scanner",     "ideal_size": "3b"},
-    {"role": "analyst",     "ideal_size": "7b"},
-    {"role": "synthesizer", "ideal_size": "14b"},
-]
-
-
-def assign_roles(available_models: List[str]) -> Dict[str, Optional[str]]:
-    parsed = []
-    for name in available_models:
-        m = re.search(r":(\d+(?:\.\d+)?)b", name)
-        size = float(m.group(1)) if m else 0.0
-        parsed.append((size, name))
-    parsed.sort()
-
-    assignment: Dict[str, Optional[str]] = {}
-    used: set = set()
-
-    for spec in ROLE_SPECS:
-        ideal_val = float(spec["ideal_size"].rstrip("b"))
-        pick = None
-
-        for size, name in parsed:
-            if name in used:
-                continue
-            if abs(size - ideal_val) < 0.001:
-                pick = name
-                break
-
-        if pick is None:
-            for size, name in parsed:
-                if name in used:
-                    continue
-                if size > ideal_val:
-                    pick = name
-                    break
-
-        if pick is None:
-            for size, name in reversed(parsed):
-                if name in used:
-                    continue
-                if size < ideal_val:
-                    pick = name
-                    break
-
-        if pick is None:
-            for _, name in parsed:
-                if name not in used:
-                    pick = name
-                    break
-
-        if pick:
-            used.add(pick)
-
-        assignment[spec["role"]] = pick
-
-    if not assignment.get("synthesizer") and parsed:
-        assignment["synthesizer"] = parsed[-1][1]
-
-    return assignment
-
-
 EXTRACTOR_PROMPT = """
 You are the extraction phase of a mathematical analysis pipeline.
 
@@ -275,7 +158,6 @@ Rules:
 - No extra fields. JSON only.
 """
 
-
 SCANNER_PROMPT = """
 You are the scanning phase. You detect patterns in structured data.
 
@@ -297,7 +179,6 @@ Return exactly:
 
 Do not claim any RH result. JSON only.
 """
-
 
 ANALYST_PROMPT = """
 You are the analysis phase. Compare data to established theory.
@@ -348,7 +229,6 @@ Return exactly:
 Never claim a proof exists. JSON only.
 """
 
-
 SYNTHESIZER_PROMPT = """
 You are the synthesis phase. Write the honest report.
 
@@ -386,7 +266,6 @@ Never claim RH is solved. Mark every speculation speculative.
 JSON only.
 """
 
-
 def run_role(role: str, model: str, prompt: str, out_path: Path):
     print(f"\n  [{role}] using {model}...")
     result = ollama_ask_json(model, prompt)
@@ -402,6 +281,409 @@ def run_role(role: str, model: str, prompt: str, out_path: Path):
     print(f"    {role} complete.")
     return result
 
+def torridity_check(gammas: np.ndarray) -> Dict[str, Any]:
+    n_exp = np.pi / 3.0
+    rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+
+    if len(rho_obs) < 8:
+        return {"error": "not enough zeros"}
+
+    rho_c = float(rho_obs[7])
+    z = rho_obs / rho_c
+    mu_T = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+    rho_N = rho_obs * mu_T
+    residual = rho_obs - rho_N
+    ratio = rho_obs / np.where(rho_N > 0, rho_N, np.nan)
+
+    return {
+        "n_exp": float(n_exp),
+        "rho_c": rho_c,
+        "rho_c_source": "rho_obs at gamma_8",
+        "rho_obs_first": float(rho_obs[0]),
+        "rho_obs_last": float(rho_obs[-1]),
+        "rho_N_first": float(rho_N[0]),
+        "rho_N_last": float(rho_N[-1]),
+        "residual_first": float(residual[0]),
+        "residual_last": float(residual[-1]),
+        "residual_mean": float(np.mean(residual)),
+        "residual_std": float(np.std(residual)),
+        "ratio_first": float(ratio[0]),
+        "ratio_last": float(ratio[-1]),
+        "ratio_mean": float(np.nanmean(ratio)),
+        "ratio_std": float(np.nanstd(ratio)),
+        "ratio_max": float(np.nanmax(ratio)),
+        "ratio_min": float(np.nanmin(ratio)),
+    }
+
+def write_data_exports(gammas: np.ndarray, torridity: Dict[str, Any]) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+    rho_c = float(torridity.get("rho_c", 0.0))
+    if rho_c <= 0:
+        return
+
+    rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+    z = rho_obs / rho_c
+    mu = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+    rho_N = rho_obs * mu
+    residual = rho_obs - rho_N
+    ratio = rho_obs / np.where(rho_N > 0, rho_N, np.nan)
+    spacings = np.diff(gammas, prepend=gammas[0])
+
+    with np.errstate(divide="ignore", invalid="ignore"):
+        log_rho_N = np.log10(rho_N)
+        log_rho_obs = np.log10(rho_obs)
+
+    order = np.argsort(log_rho_N)
+    rar_path = DATA_DIR / "rar_format.txt"
+    with open(rar_path, "w", encoding="utf-8") as f:
+        f.write("# log10(rho_N)  e  log10(rho_obs)  e\n")
+        for i in order:
+            f.write(
+                f"{log_rho_N[i]:>10.4f} {0.0:>6.3f} "
+                f"{log_rho_obs[i]:>10.4f} {0.0:>6.3f}\n"
+            )
+    print(f"  wrote {rar_path}")
+
+    tables2_path = DATA_DIR / "tables2_format.txt"
+    with open(tables2_path, "w", encoding="utf-8") as f:
+        f.write("# Name  Dist  Rad  Vobs  e_Vobs  Vgas  Vdisk  Vbulge  SBdisk  SBbulge\n")
+        for i in range(len(gammas)):
+            f.write(
+                f"{f'Z{i+1:06d}':<10s} "
+                f"{float(spacings[i]):>10.6f} "
+                f"{i / max(len(gammas) - 1, 1):>8.4f} "
+                f"{float(rho_obs[i]):>12.8f} "
+                f"{0.0:>10.6f} "
+                f"{float(rho_N[i]):>12.8f} "
+                f"{float(residual[i]):>12.8f} "
+                f"{0.0:>10.6f} "
+                f"{float(mu[i]):>12.8f} "
+                f"{float(z[i]):>12.8f}\n"
+            )
+    print(f"  wrote {tables2_path}")
+
+    csv_path = DATA_DIR / "torridity_table.csv"
+    with open(csv_path, "w", encoding="utf-8") as f:
+        f.write("index,gamma,rho_obs,z,mu_T,rho_N,residual,ratio,spacing\n")
+        for i in range(len(gammas)):
+            f.write(
+                f"{i+1},"
+                f"{gammas[i]:.15f},"
+                f"{rho_obs[i]:.12f},"
+                f"{z[i]:.10f},"
+                f"{mu[i]:.10f},"
+                f"{rho_N[i]:.12f},"
+                f"{residual[i]:.12f},"
+                f"{ratio[i]:.10f},"
+                f"{spacings[i]:.12f}\n"
+            )
+    print(f"  wrote {csv_path}")
+
+    summary = {
+        "generated_at": now(),
+        "count": int(len(gammas)),
+        "gamma_first": float(gammas[0]),
+        "gamma_last": float(gammas[-1]),
+        "spacing_mean": float(np.mean(np.diff(gammas))) if len(gammas) > 1 else 0.0,
+        "spacing_std": float(np.std(np.diff(gammas))) if len(gammas) > 1 else 0.0,
+        "n_exp": float(n_exp),
+        "rho_c": float(rho_c),
+        "residual_mean": float(np.mean(residual)),
+        "residual_std": float(np.std(residual)),
+        "ratio_mean": float(np.nanmean(ratio)),
+        "ratio_max": float(np.nanmax(ratio)),
+        "ratio_min": float(np.nanmin(ratio)),
+    }
+    atomic_write_json(DATA_DIR / "summary.json", summary)
+    print(f"  wrote {DATA_DIR / 'summary.json'}")
+
+def write_plots(gammas: np.ndarray, torridity: Dict[str, Any]) -> None:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+    rho_c = float(torridity.get("rho_c", 0.0))
+    if rho_c <= 0:
+        return
+
+    rho_obs = np.log(gammas / (2 * np.pi)) / (2 * np.pi)
+    z = rho_obs / rho_c
+    mu = z / (1 + z ** n_exp) ** (1.0 / n_exp)
+    rho_N = rho_obs * mu
+    residual = rho_obs - rho_N
+    ratio = rho_obs / np.where(rho_N > 0, rho_N, np.nan)
+    spacings = np.diff(gammas)
+
+    def save(fig, name):
+        try:
+            fig.tight_layout()
+            fig.savefig(PLOTS_DIR / name, dpi=140)
+            plt.close(fig)
+            print(f"  wrote {PLOTS_DIR / name}")
+        except Exception as exc:
+            print(f"  {name} failed: {exc}")
+
+    try:
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111, projection="3d")
+        sc = ax.scatter(gammas, rho_obs, rho_N, c=ratio, cmap="plasma", s=3, alpha=0.6)
+        ax.set_xlabel(r"$\gamma$")
+        ax.set_ylabel(r"$\rho_{\rm obs}$")
+        ax.set_zlabel(r"$\rho_N$")
+        ax.set_title("3D trajectory")
+        fig.colorbar(sc, ax=ax, pad=0.1, label=r"ratio")
+        save(fig, "01_trajectory_3d.png")
+    except Exception as exc:
+        print(f"  01 failed: {exc}")
+
+    try:
+        z_vals = np.linspace(0.05, 5.0, 200)
+        n_vals = np.linspace(0.5, 2.0, 80)
+        Zg, Ng = np.meshgrid(z_vals, n_vals)
+        MU = Zg / (1 + Zg ** Ng) ** (1.0 / Ng)
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111, projection="3d")
+        surf = ax.plot_surface(Zg, Ng, MU, cmap="viridis", alpha=0.95, linewidth=0, antialiased=True)
+        ax.set_xlabel(r"$z$")
+        ax.set_ylabel(r"$n$")
+        ax.set_zlabel(r"$\mu_T$")
+        ax.set_title(r"$\mu_T(z,n)$")
+        fig.colorbar(surf, ax=ax, pad=0.1)
+        save(fig, "02_mu_surface_3d.png")
+    except Exception as exc:
+        print(f"  02 failed: {exc}")
+
+    try:
+        with np.errstate(divide="ignore", invalid="ignore"):
+            log_rho_N = np.log10(rho_N)
+            log_rho_obs = np.log10(rho_obs)
+        fig, ax = plt.subplots(figsize=(9, 9))
+        ax.scatter(log_rho_N, log_rho_obs, s=3, alpha=0.4)
+        lo = min(log_rho_N.min(), log_rho_obs.min()) - 0.1
+        hi = max(log_rho_N.max(), log_rho_obs.max()) + 0.1
+        ax.plot([lo, hi], [lo, hi], "k--", lw=0.7)
+        ax.set_xlabel(r"$\log_{10}(\rho_N)$")
+        ax.set_ylabel(r"$\log_{10}(\rho_{\rm obs})$")
+        ax.set_aspect("equal")
+        save(fig, "03_rar_scatter.png")
+    except Exception as exc:
+        print(f"  03 failed: {exc}")
+
+    try:
+        fig, ax = plt.subplots(figsize=(12, 5))
+        ax.plot(gammas, ratio, lw=0.6, alpha=0.75)
+        ax.set_xlabel(r"$\gamma$")
+        ax.set_ylabel("ratio")
+        ax.grid(True, alpha=0.2)
+        save(fig, "04_ratio_vs_gamma.png")
+    except Exception as exc:
+        print(f"  04 failed: {exc}")
+
+    try:
+        z_curve = np.linspace(0.01, 5.0, 400)
+        mu_curve = z_curve / (1 + z_curve ** n_exp) ** (1.0 / n_exp)
+        fig, ax = plt.subplots(figsize=(9, 6))
+        ax.plot(z_curve, mu_curve, lw=2)
+        ax.set_xlabel(r"$z$")
+        ax.set_ylabel(r"$\mu_T$")
+        ax.grid(True, alpha=0.2)
+        save(fig, "05_mu_curve.png")
+    except Exception as exc:
+        print(f"  05 failed: {exc}")
+
+    try:
+        fig, ax = plt.subplots(figsize=(12, 5))
+        ax.plot(np.arange(1, len(gammas) + 1), gammas, lw=0.6)
+        ax.set_xlabel("n")
+        ax.set_ylabel(r"$\gamma_n$")
+        ax.grid(True, alpha=0.2)
+        save(fig, "06_count_vs_height.png")
+    except Exception as exc:
+        print(f"  06 failed: {exc}")
+
+    try:
+        if len(spacings) > 0:
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.hist(spacings, bins=80, alpha=0.7)
+            ax.set_xlabel("spacing")
+            ax.set_ylabel("count")
+            ax.grid(True, alpha=0.2)
+            save(fig, "07_spacing_hist.png")
+    except Exception as exc:
+        print(f"  07 failed: {exc}")
+
+    try:
+        fig, ax = plt.subplots(figsize=(12, 5))
+        ax.plot(gammas, residual, lw=0.6, alpha=0.75)
+        ax.set_xlabel(r"$\gamma$")
+        ax.set_ylabel("residual")
+        ax.grid(True, alpha=0.2)
+        save(fig, "08_residual_vs_gamma.png")
+    except Exception as exc:
+        print(f"  08 failed: {exc}")
+
+    try:
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111, projection="3d")
+        sc = ax.scatter(gammas, ratio, residual, c=spacings if len(spacings) == len(gammas) else ratio, cmap="turbo", s=3, alpha=0.6)
+        ax.set_xlabel(r"$\gamma$")
+        ax.set_ylabel("ratio")
+        ax.set_zlabel("residual")
+        fig.colorbar(sc, ax=ax, pad=0.1)
+        save(fig, "09_3d_ratio_residual.png")
+    except Exception as exc:
+        print(f"  09 failed: {exc}")
+
+def write_readme() -> None:
+    readme = ZETA_DIR / "README.md"
+    readme.write_text(
+        "# Zeta zeros state\n\n"
+        "Zeros are computed via mpmath's zetazero(n), exact n-th zero at 30 dps.\n"
+        "Iterative: each run appends, never recomputes from scratch.\n\n"
+        "Data files:\n"
+        "- `data/rar_format.txt`\n"
+        "- `data/tables2_format.txt`\n"
+        "- `data/torridity_table.csv`\n"
+        "- `data/summary.json`\n\n"
+        "Plots:\n"
+        "- `plots/01_trajectory_3d.png`\n"
+        "- `plots/02_mu_surface_3d.png`\n"
+        "- `plots/03_rar_scatter.png`\n"
+        "- `plots/04_ratio_vs_gamma.png`\n"
+        "- `plots/05_mu_curve.png`\n"
+        "- `plots/06_count_vs_height.png`\n"
+        "- `plots/07_spacing_hist.png`\n"
+        "- `plots/08_residual_vs_gamma.png`\n"
+        "- `plots/09_3d_ratio_residual.png`\n\n"
+        "Reports:\n"
+        "- `DETAILED_REPORT.md`\n"
+        "- `latest.json`\n"
+        "- `reports/run-*.json`\n\n"
+        "Raw state:\n"
+        "- `zeros.txt`\n"
+        "- `state/`\n",
+        encoding="utf-8",
+    )
+
+def write_detailed_report(
+    gammas, extraction, scanning, analysis, synthesis,
+    torridity, roles, run_stamp, zeros_added,
+):
+    g = gammas
+    n_total = len(g)
+    last_gamma = float(g[-1])
+    first_gamma = float(g[0])
+
+    n_exp = float(torridity.get("n_exp", np.pi / 3.0))
+    rho_c = float(torridity.get("rho_c", 0.0))
+
+    rho_obs_all = np.log(g / (2 * np.pi)) / (2 * np.pi)
+    if rho_c > 0:
+        z_all = rho_obs_all / rho_c
+        mu_all = z_all / (1 + z_all ** n_exp) ** (1.0 / n_exp)
+        rho_N_all = rho_obs_all * mu_all
+        resid_all = rho_obs_all - rho_N_all
+        ratio_all = rho_obs_all / np.where(rho_N_all > 0, rho_N_all, np.nan)
+    else:
+        z_all = np.zeros_like(rho_obs_all)
+        mu_all = np.zeros_like(rho_obs_all)
+        rho_N_all = np.zeros_like(rho_obs_all)
+        resid_all = np.zeros_like(rho_obs_all)
+        ratio_all = np.full_like(rho_obs_all, np.nan)
+
+    def dump(obj):
+        return json.dumps(obj, indent=2, ensure_ascii=False, default=str).splitlines()
+
+    lines = []
+    add = lines.append
+
+    add("# ZetaZE Detailed Report")
+    add("")
+    add(f"**Run stamp:** `{run_stamp}`")
+    add(f"**Generated:** {now()}")
+    add(f"**Zeros added:** {zeros_added}")
+    add(f"**Total zeros:** {n_total}")
+    add("")
+    add("## 1. Executive summary")
+    add("")
+    fs = synthesis.get("final_status", {}) if synthesis else {}
+    add(f"- RH solved: **{fs.get('riemann_hypothesis_solved', False)}**")
+    add(f"- Confidence: {fs.get('confidence', 0.0)}")
+    add(f"- Reasoning: {fs.get('reasoning', 'N/A')}")
+    add("")
+    if synthesis:
+        add(f"**Honest summary.** {synthesis.get('honest_summary', 'N/A')}")
+        add("")
+    add("## 2. Dataset")
+    add("")
+    add(f"- First gamma: `{first_gamma:.15f}`")
+    add(f"- Last gamma: `{last_gamma:.15f}`")
+    add(f"- Count: `{n_total}`")
+    add("")
+    add("### Every zero")
+    add("")
+    add("```text")
+    for i, v in enumerate(g, start=1):
+        add(f"{i:>6d}    {float(v):.15f}")
+    add("```")
+    add("")
+    add("## 3. Torridity table")
+    add("")
+    add("```text")
+    add("# index  gamma              rho_obs         z           mu_T        rho_N           residual        ratio")
+    for i in range(n_total):
+        add(
+            f"{i+1:>6d}  "
+            f"{float(g[i]):>15.10f}  "
+            f"{float(rho_obs_all[i]):>14.10f}  "
+            f"{float(z_all[i]):>10.6f}  "
+            f"{float(mu_all[i]):>10.6f}  "
+            f"{float(rho_N_all[i]):>14.10f}  "
+            f"{float(resid_all[i]):>14.10f}  "
+            f"{float(ratio_all[i]):>10.6f}"
+        )
+    add("```")
+    add("")
+    add("## 4. Phase 1: Extraction")
+    add("")
+    if extraction:
+        add("```json")
+        for line in dump(extraction):
+            add(line)
+        add("```")
+    add("")
+    add("## 5. Phase 2: Scanning")
+    add("")
+    if scanning:
+        add("```json")
+        for line in dump(scanning):
+            add(line)
+        add("```")
+    add("")
+    add("## 6. Phase 3: Analysis")
+    add("")
+    if analysis:
+        add("```json")
+        for line in dump(analysis):
+            add(line)
+        add("```")
+    add("")
+    add("## 7. Phase 4: Synthesis")
+    add("")
+    if synthesis:
+        add("```json")
+        for line in dump(synthesis):
+            add(line)
+        add("```")
+    add("")
+
+    (ZETA_DIR / "DETAILED_REPORT.md").write_text("\n".join(lines), encoding="utf-8")
 
 def main() -> int:
     ZETA_DIR.mkdir(parents=True, exist_ok=True)
@@ -417,42 +699,35 @@ def main() -> int:
         if line.strip()
     ]
     if not models:
-        print("No models available.")
+        print("No model available.")
         return 1
+
+    model = models[0]
 
     mode = os.environ.get("ANALYSIS_MODE", "full")
     try:
-        n_new = int(os.environ.get("ZEROS_PER_RUN", "200"))
+        n_new = int(os.environ.get("ZEROS_PER_RUN", "500"))
     except ValueError:
-        n_new = 200
+        n_new = 500
 
     first_run = not ZEROS_FILE.exists() or ZEROS_FILE.stat().st_size == 0
     print(f"Mode: {mode}")
     print(f"First run: {first_run}")
-    print(f"Models available: {models}")
+    print(f"Model: {model}")
 
     if mode in ("full", "zeros_only"):
-        print("\n=== PHASE 0: COMPUTING ZETA ZEROS ===")
+        print("\n=== PHASE 0: ZEROS ===")
         gammas = extend_zeros(n_new)
         print(f"Total zeros now: {len(gammas)}")
     else:
         gammas = load_zeros()
         if len(gammas) == 0:
-            print("No zeros on disk. Use mode=full or zeros_only first.")
+            print("No zeros on disk.")
             return 1
 
     if mode == "zeros_only":
-        print("Zeros-only mode. Done.")
+        print("Zeros-only mode.")
         return 0
-
-    roles = assign_roles(models)
-    print("\n=== ROLE ASSIGNMENT ===")
-    for r, m in roles.items():
-        print(f"  {r:<12} -> {m or '(unavailable)'}")
-
-    if not roles.get("extractor"):
-        print("No extractor available.")
-        return 1
 
     print("\n=== PHASE 1: EXTRACTION ===")
     sample = gammas[-40:]
@@ -460,82 +735,60 @@ def main() -> int:
 
     extraction = run_role(
         "extractor",
-        roles["extractor"],
+        model,
         EXTRACTOR_PROMPT.format(count=len(gammas), sample=sample_str),
         STATE_DIR / "phase1_extraction.json",
     )
 
     if extraction is None:
-        print("  Extractor failed. Computing stats locally...")
         recent = gammas[-31:]
-        spacings = np.diff(recent).tolist()
+        spacings_local = np.diff(recent).tolist()
         extraction = {
             "count": len(gammas),
             "first": float(gammas[0]),
             "last": float(gammas[-1]),
-            "min_gamma": float(np.min(gammas)),
-            "max_gamma": float(np.max(gammas)),
-            "mean_spacing_recent_30": float(np.mean(spacings)),
-            "std_spacing_recent_30": float(np.std(spacings)),
-            "largest_gap_recent_30": float(np.max(spacings)),
-            "smallest_gap_recent_30": float(np.min(spacings)),
-            "spacings_recent_30": [float(s) for s in spacings],
-            "predicted_mean_spacing": float(
-                2 * np.pi / np.log(gammas[-1] / (2 * np.pi))
-            ),
+            "mean_spacing_recent_30": float(np.mean(spacings_local)),
+            "std_spacing_recent_30": float(np.std(spacings_local)),
+            "spacings_recent_30": [float(s) for s in spacings_local],
         }
         atomic_write_json(STATE_DIR / "phase1_extraction.json", extraction)
 
-    scanning = None
-    if roles.get("scanner"):
-        print("\n=== PHASE 2: SCANNING ===")
-        scanning = run_role(
-            "scanner",
-            roles["scanner"],
-            SCANNER_PROMPT.format(
-                extraction=json.dumps(extraction, indent=2, ensure_ascii=False)
-            ),
-            STATE_DIR / "phase2_scanning.json",
-        )
-    else:
-        print("\n=== PHASE 2: SKIPPED ===")
-
+    print("\n=== PHASE 2: SCANNING ===")
+    scanning = run_role(
+        "scanner",
+        model,
+        SCANNER_PROMPT.format(
+            extraction=json.dumps(extraction, indent=2, ensure_ascii=False)
+        ),
+        STATE_DIR / "phase2_scanning.json",
+    )
     if scanning is None:
         scanning = {
             "clusters": [], "large_gaps": [],
             "periodicity_observed": False,
-            "anomalies": [],
-            "notes": "Scanner phase unavailable.",
+            "anomalies": [], "notes": "unavailable",
         }
         atomic_write_json(STATE_DIR / "phase2_scanning.json", scanning)
 
-    analysis = None
-    if roles.get("analyst"):
-        print("\n=== PHASE 3: ANALYSIS ===")
-        analysis = run_role(
-            "analyst",
-            roles["analyst"],
-            ANALYST_PROMPT.format(
-                extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
-                scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
-            ),
-            STATE_DIR / "phase3_analysis.json",
-        )
-    else:
-        print("\n=== PHASE 3: SKIPPED ===")
-
+    print("\n=== PHASE 3: ANALYSIS ===")
+    analysis = run_role(
+        "analyst",
+        model,
+        ANALYST_PROMPT.format(
+            extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+            scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
+        ),
+        STATE_DIR / "phase3_analysis.json",
+    )
     if analysis is None:
         analysis = {
             "density_ratio": None,
-            "density_consistent_with_rvm": None,
-            "spacing_std": None,
-            "spacing_consistent_with_gue": None,
             "mathematical_observations": [],
             "rh_status": {
                 "is_proven": False,
                 "is_disproven": False,
                 "can_this_data_decide": False,
-                "reasoning": "Analyst phase unavailable.",
+                "reasoning": "unavailable",
             },
             "what_would_be_needed": [],
             "honest_limits": [],
@@ -543,16 +796,9 @@ def main() -> int:
         atomic_write_json(STATE_DIR / "phase3_analysis.json", analysis)
 
     print("\n=== PHASE 4: SYNTHESIS ===")
-    synthesizer_model = (
-        roles.get("synthesizer")
-        or roles.get("analyst")
-        or roles.get("scanner")
-        or roles.get("extractor")
-    )
-
     synthesis = run_role(
         "synthesizer",
-        synthesizer_model,
+        model,
         SYNTHESIZER_PROMPT.format(
             extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
             scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
@@ -560,23 +806,49 @@ def main() -> int:
         ),
         STATE_DIR / "phase4_synthesis.json",
     )
-
     if synthesis is None:
         synthesis = {
             "final_status": {
                 "riemann_hypothesis_solved": False,
                 "confidence": 0.99,
-                "reasoning": "Synthesizer failed.",
+                "reasoning": "unavailable",
             },
             "confirmed_findings": [],
             "open_questions": [],
             "numerology_speculations": [],
             "coding_practice_speculations": [],
             "physics_speculations": [],
-            "honest_summary": "Synthesis failed.",
+            "honest_summary": "unavailable",
             "next_realistic_steps": [],
         }
         atomic_write_json(STATE_DIR / "phase4_synthesis.json", synthesis)
+
+    print("\n=== TORRIDITY CHECK ===")
+    torridity = torridity_check(gammas)
+    atomic_write_json(STATE_DIR / "torridity.json", torridity)
+    print(f"  ratio {torridity.get('ratio_first'):.4f} -> {torridity.get('ratio_last'):.4f}")
+
+    print("\n=== DATA EXPORTS ===")
+    write_data_exports(gammas, torridity)
+
+    print("\n=== PLOTS ===")
+    write_plots(gammas, torridity)
+
+    print("\n=== DETAILED REPORT ===")
+    write_detailed_report(
+        gammas=gammas,
+        extraction=extraction,
+        scanning=scanning,
+        analysis=analysis,
+        synthesis=synthesis,
+        torridity=torridity,
+        roles={"all": model},
+        run_stamp=stamp(),
+        zeros_added=n_new,
+    )
+
+    print("\n=== README ===")
+    write_readme()
 
     final_report = {
         "generated_at": now(),
@@ -584,77 +856,19 @@ def main() -> int:
         "first_run": first_run,
         "zeros_total": len(gammas),
         "zeros_added_this_run": n_new,
-        "roles": roles,
+        "model": model,
+        "torridity": torridity,
         "phase1_extraction": extraction,
         "phase2_scanning": scanning,
         "phase3_analysis": analysis,
         "phase4_synthesis": synthesis,
-        "honest_statement": (
-            "The Riemann Hypothesis remains unproven. "
-            "No model produced a proof. Numerology and "
-            "coding/physics connections are speculative."
-        ),
     }
-
     atomic_write_json(REPORT_DIR / f"run-{stamp()}.json", final_report)
     atomic_write_json(ZETA_DIR / "latest.json", final_report)
 
-    md = []
-    md.append("# Zeta Zeros Analysis")
-    md.append("")
-    md.append(f"Generated: {final_report['generated_at']}")
-    md.append(f"Total zeros: {len(gammas)}")
-    md.append(f"Added this run: {n_new}")
-    md.append(f"First run: {first_run}")
-    md.append("")
-    md.append("## Role assignment")
-    for r, m in roles.items():
-        md.append(f"- **{r}**: `{m}`")
-    md.append("")
-
-    fs = synthesis.get("final_status", {})
-    md.append("## Millennium problem status")
-    md.append("")
-    md.append(f"- Solved: **{fs.get('riemann_hypothesis_solved', False)}**")
-    md.append(f"- Confidence: {fs.get('confidence', 0.99)}")
-    md.append(f"- Reasoning: {fs.get('reasoning', 'N/A')}")
-    md.append("")
-
-    md.append("## Confirmed findings")
-    for f in synthesis.get("confirmed_findings", []):
-        md.append(f"- {f.get('finding', '')} ({f.get('confidence', 0.0)})")
-    md.append("")
-
-    md.append("## Numerology (speculative)")
-    for s in synthesis.get("numerology_speculations", []):
-        md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
-    md.append("")
-
-    md.append("## Coding practice (speculative)")
-    for s in synthesis.get("coding_practice_speculations", []):
-        md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
-    md.append("")
-
-    md.append("## Physics (speculative)")
-    for s in synthesis.get("physics_speculations", []):
-        md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
-    md.append("")
-
-    md.append("## Honest summary")
-    md.append(synthesis.get("honest_summary", "N/A"))
-    md.append("")
-
-    md.append("## Next realistic steps")
-    for step in synthesis.get("next_realistic_steps", []):
-        md.append(f"- {step}")
-
-    (ZETA_DIR / "latest.md").write_text("\n".join(md), encoding="utf-8")
-
-    print("\n=== PIPELINE COMPLETE ===")
+    print("\n=== COMPLETE ===")
     print(f"Zeros total: {len(gammas)}")
-    print(f"RH solved: {fs.get('riemann_hypothesis_solved', False)}")
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())
