@@ -1,0 +1,896 @@
+name: Zeta zeros pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      zeros_per_run:
+        description: "How many new zeta zeros to compute this run"
+        required: true
+        default: "200"
+        type: string
+      analysis_mode:
+        description: "full, zeros_only, or analysis_only"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - zeros_only
+          - analysis_only
+  schedule:
+    # Every 6 hours. Delete this block if you want manual-only.
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: zeta-pipeline-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    name: Zeta zeros pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    env:
+      OLLAMA_HOST: "127.0.0.1:11434"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_KEEP_ALIVE: "5m"
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check runner resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          RAM_MB="$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)"
+          DISK_GB="$(df -BG . | awk 'NR==2 {gsub("G","",$4); print $4}')"
+          echo "Available RAM: ${RAM_MB} MB"
+          echo "Available disk: ${DISK_GB} GB"
+          if [ "$RAM_MB" -lt 12000 ]; then
+            echo "::error::At least 12 GB RAM required."
+            exit 1
+          fi
+          if [ "$DISK_GB" -lt 20 ]; then
+            echo "::error::At least 20 GB free disk required."
+            exit 1
+          fi
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --upgrade pip
+          python3 -m pip install mpmath numpy requests
+
+      - name: Install Ollama
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Start Ollama
+        shell: bash
+        run: |
+          set -euo pipefail
+          nohup ollama serve > /tmp/ollama.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -fsS "${OLLAMA_HOST}/api/tags" >/dev/null 2>&1; then
+              echo "Ollama is ready."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Ollama failed to start."
+          cat /tmp/ollama.log || true
+          exit 1
+
+      - name: Pull available Qwen models
+        shell: bash
+        run: |
+          set -u
+          mkdir -p zeta/state
+
+          MODELS=(
+            "qwen2.5-coder:1.5b"
+            "qwen2.5-coder:3b"
+            "qwen2.5-coder:7b"
+            "qwen2.5-coder:14b"
+          )
+
+          : > zeta/state/available_models.txt
+
+          for model in "${MODELS[@]}"; do
+            echo "Pulling ${model}..."
+            if ollama pull "${model}"; then
+              echo "${model}" >> zeta/state/available_models.txt
+              echo "Available: ${model}"
+            else
+              echo "::warning::Could not pull ${model}; continuing without it."
+            fi
+          done
+
+          if [ ! -s zeta/state/available_models.txt ]; then
+            echo "::error::No Qwen coder model could be loaded."
+            exit 1
+          fi
+
+          echo "Available cascade:"
+          cat zeta/state/available_models.txt
+
+      - name: Warm available models
+        shell: bash
+        run: |
+          set -u
+          while IFS= read -r model; do
+            [ -z "$model" ] && continue
+            echo "Warming ${model}..."
+            if ! curl -fsS \
+              "${OLLAMA_HOST}/api/generate" \
+              -H "Content-Type: application/json" \
+              -d "{\"model\":\"${model}\",\"prompt\":\"Return only OK.\",\"stream\":false}" \
+              >/dev/null; then
+              echo "::warning::Warmup failed for ${model}."
+            fi
+          done < zeta/state/available_models.txt
+
+      - name: Run zeta pipeline
+        shell: bash
+        env:
+          ZEROS_PER_RUN: ${{ inputs.zeros_per_run || '200' }}
+          ANALYSIS_MODE: ${{ inputs.analysis_mode || 'full' }}
+        run: |
+          set -euo pipefail
+
+          cat > zeta/pipeline.py <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import sys
+          import time
+          from pathlib import Path
+          from typing import Any, Dict, List, Optional
+
+          import numpy as np
+          import requests
+          from mpmath import mp, siegelz, findroot, mpf, zetazero
+
+          mp.dps = 30
+
+          OLLAMA = "http://127.0.0.1:11434/api/generate"
+
+          ROOT = Path(".").resolve()
+          ZETA_DIR = ROOT / "zeta"
+          STATE_DIR = ZETA_DIR / "state"
+          REPORT_DIR = ZETA_DIR / "reports"
+
+          ZEROS_FILE = ZETA_DIR / "zeros.txt"
+          MODELS_FILE = STATE_DIR / "available_models.txt"
+
+          REQUEST_TIMEOUT = 600
+          MAX_RETRIES = 2
+
+
+          def now() -> str:
+              return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+          def stamp() -> str:
+              return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+
+
+          def sha256_text(text: str) -> str:
+              return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+          def atomic_write_json(path: Path, data: Any) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              tmp = path.with_suffix(path.suffix + ".tmp")
+              tmp.write_text(
+                  json.dumps(data, indent=2, ensure_ascii=False),
+                  encoding="utf-8",
+              )
+              tmp.replace(path)
+
+
+          # =========================================================
+          # ZETA ZEROS (repo file is the state)
+          # =========================================================
+
+          def load_zeros() -> np.ndarray:
+              if not ZEROS_FILE.exists():
+                  return np.array([])
+              out = []
+              with open(ZEROS_FILE) as f:
+                  for line in f:
+                      line = line.strip()
+                      if not line:
+                          continue
+                      try:
+                          out.append(float(line))
+                      except ValueError:
+                          continue
+              return np.array(out)
+
+
+          def append_zero(g: float) -> None:
+              ZEROS_FILE.parent.mkdir(parents=True, exist_ok=True)
+              with open(ZEROS_FILE, "a") as f:
+                  f.write(f"{g:.17g}\n")
+
+
+          def next_zero(gamma_prev: float, k_next: int) -> float:
+              if gamma_prev < 14:
+                  step = 3.0
+              else:
+                  step = 2 * np.pi / np.log(gamma_prev / (2 * np.pi))
+                  step = max(step, 0.5)
+
+              t0 = mpf(gamma_prev) + mpf("0.5")
+              t = t0
+              z_prev = siegelz(t0)
+
+              for _ in range(1000):
+                  t_next = t + mpf(str(step))
+                  z_next = siegelz(t_next)
+                  if z_prev * z_next < 0:
+                      try:
+                          root = findroot(
+                              siegelz,
+                              (t, t_next),
+                              solver="bisect",
+                              tol=mpf("1e-25"),
+                          )
+                          return float(root)
+                      except Exception:
+                          a, b = t, t_next
+                          za = siegelz(a)
+                          for _ in range(80):
+                              m = (a + b) / 2
+                              zm = siegelz(m)
+                              if za * zm < 0:
+                                  b = m
+                              else:
+                                  a, za = m, zm
+                          return float((a + b) / 2)
+                  t = t_next
+                  z_prev = z_next
+
+              print(f"    fallback for k = {k_next}")
+              return float(zetazero(k_next).imag)
+
+
+          def extend_zeros(n_new: int) -> np.ndarray:
+              gammas = list(load_zeros())
+
+              if len(gammas) == 0:
+                  print("No zeros on disk. Seeding from scratch...")
+                  g1 = float(zetazero(1).imag)
+                  append_zero(g1)
+                  gammas = [g1]
+
+              print(f"Starting with {len(gammas)} zeros. Computing {n_new} more...")
+              last = gammas[-1]
+
+              for i in range(n_new):
+                  k_next = len(gammas) + 1
+                  last = next_zero(last, k_next)
+                  gammas.append(last)
+                  append_zero(last)
+                  if (i + 1) % 50 == 0:
+                      print(f"  +{i+1}, gamma = {last:.6f}, n = {len(gammas)}")
+
+              return np.array(gammas)
+
+
+          # =========================================================
+          # OLLAMA
+          # =========================================================
+
+          def ollama_ask_json(
+              model: str,
+              prompt: str,
+              temperature: float = 0.1,
+          ) -> Optional[Dict[str, Any]]:
+              payload = {
+                  "model": model,
+                  "prompt": prompt,
+                  "stream": False,
+                  "format": "json",
+                  "options": {"temperature": temperature, "num_ctx": 8192},
+              }
+
+              for attempt in range(MAX_RETRIES + 1):
+                  try:
+                      r = requests.post(
+                          OLLAMA,
+                          json=payload,
+                          timeout=REQUEST_TIMEOUT,
+                      )
+                      r.raise_for_status()
+                      raw = r.json().get("response", "").strip()
+                      if not raw:
+                          raise ValueError("empty response")
+
+                      raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
+                      raw = re.sub(r"\s*```$", "", raw)
+                      start = raw.find("{")
+                      end = raw.rfind("}")
+                      if start >= 0 and end > start:
+                          raw = raw[start:end + 1]
+
+                      value = json.loads(raw)
+                      if isinstance(value, dict):
+                          return value
+                  except Exception as exc:
+                      print(f"  Ollama error [{model}]: {exc}")
+                      if attempt < MAX_RETRIES:
+                          time.sleep(2 * (attempt + 1))
+
+              return None
+
+
+          # =========================================================
+          # ROLE ASSIGNMENT
+          # =========================================================
+
+          ROLE_SPECS = [
+              {"role": "extractor",   "ideal_size": "1.5b"},
+              {"role": "scanner",     "ideal_size": "3b"},
+              {"role": "analyst",     "ideal_size": "7b"},
+              {"role": "synthesizer", "ideal_size": "14b"},
+          ]
+
+
+          def assign_roles(available_models: List[str]) -> Dict[str, Optional[str]]:
+              parsed = []
+              for name in available_models:
+                  m = re.search(r":(\d+(?:\.\d+)?)b", name)
+                  size = float(m.group(1)) if m else 0.0
+                  parsed.append((size, name))
+              parsed.sort()
+
+              assignment: Dict[str, Optional[str]] = {}
+              used: set = set()
+
+              for spec in ROLE_SPECS:
+                  ideal_val = float(spec["ideal_size"].rstrip("b"))
+                  pick = None
+
+                  for size, name in parsed:
+                      if name in used:
+                          continue
+                      if abs(size - ideal_val) < 0.001:
+                          pick = name
+                          break
+
+                  if pick is None:
+                      for size, name in parsed:
+                          if name in used:
+                              continue
+                          if size > ideal_val:
+                              pick = name
+                              break
+
+                  if pick is None:
+                      for size, name in reversed(parsed):
+                          if name in used:
+                              continue
+                          if size < ideal_val:
+                              pick = name
+                              break
+
+                  if pick is None:
+                      for _, name in parsed:
+                          if name not in used:
+                              pick = name
+                              break
+
+                  if pick:
+                      used.add(pick)
+
+                  assignment[spec["role"]] = pick
+
+              if not assignment.get("synthesizer") and parsed:
+                  assignment["synthesizer"] = parsed[-1][1]
+
+              return assignment
+
+
+          # =========================================================
+          # PROMPTS
+          # =========================================================
+
+          EXTRACTOR_PROMPT = """
+          You are the extraction phase of a mathematical analysis pipeline.
+
+          You structure raw data. You do NOT reason or interpret.
+
+          You have {count} nontrivial zeros of the Riemann zeta function
+          on the critical line s = 1/2 + i*gamma.
+
+          Last 40 values:
+          {sample}
+
+          Return exactly:
+
+          {{
+            "count": {count},
+            "first": 0.0,
+            "last": 0.0,
+            "min_gamma": 0.0,
+            "max_gamma": 0.0,
+            "mean_spacing_recent_30": 0.0,
+            "std_spacing_recent_30": 0.0,
+            "largest_gap_recent_30": 0.0,
+            "smallest_gap_recent_30": 0.0,
+            "spacings_recent_30": [0.0],
+            "predicted_mean_spacing": 0.0
+          }}
+
+          Rules:
+          - Numbers are numbers, not strings.
+          - predicted_mean_spacing uses 2*pi / ln(last / (2*pi)).
+          - spacings_recent_30 has 30 values from the last 31 gammas.
+          - No extra fields. JSON only.
+          """
+
+
+          SCANNER_PROMPT = """
+          You are the scanning phase. You detect patterns in structured data.
+
+          Extraction phase output:
+          {extraction}
+
+          Look at spacings_recent_30 and the stats. Identify clusters,
+          large gaps, periodicity, and anomalies.
+
+          Return exactly:
+
+          {{
+            "clusters": [{{"index_range": [0,0], "spacings": [0.0], "why_notable": "text"}}],
+            "large_gaps": [{{"index": 0, "gap": 0.0, "relative_to_mean": 0.0}}],
+            "periodicity_observed": false,
+            "anomalies": ["text"],
+            "notes": "one paragraph"
+          }}
+
+          Do not claim any RH result. JSON only.
+          """
+
+
+          ANALYST_PROMPT = """
+          You are the analysis phase. Compare data to established theory.
+
+          Extraction:
+          {extraction}
+
+          Scanning:
+          {scanning}
+
+          Reference theory:
+
+          1. Riemann-von Mangoldt local density near height T:
+             rho(T) = (1 / (2*pi)) * ln(T / (2*pi))
+             Predicted mean spacing = 1 / rho(T) = 2*pi / ln(T / (2*pi))
+
+          2. GUE nearest-neighbor spacing distribution:
+             p(s) = (32 / pi^2) * s^2 * exp(-4*s^2 / pi)
+             Mean 1, std ~0.422.
+
+          3. GUE repulsion p(s) -> 0 as s -> 0. Poisson would be p(s) = exp(-s).
+
+          Tasks:
+          a) density_ratio = observed mean spacing / predicted mean spacing.
+          b) Compare observed spacing std to 0.422.
+          c) State what the data is and is not consistent with.
+          d) State clearly that finite data cannot decide RH.
+
+          Return exactly:
+
+          {{
+            "density_ratio": 0.0,
+            "density_consistent_with_rvm": false,
+            "spacing_std": 0.0,
+            "spacing_std_gue_prediction": 0.422,
+            "spacing_consistent_with_gue": false,
+            "mathematical_observations": ["text"],
+            "rh_status": {{
+              "is_proven": false,
+              "is_disproven": false,
+              "can_this_data_decide": false,
+              "reasoning": "text"
+            }},
+            "what_would_be_needed": ["text"],
+            "honest_limits": ["text"]
+          }}
+
+          Never claim a proof exists. JSON only.
+          """
+
+
+          SYNTHESIZER_PROMPT = """
+          You are the synthesis phase. Write the honest report.
+
+          Extraction:
+          {extraction}
+
+          Scanning:
+          {scanning}
+
+          Analysis:
+          {analysis}
+
+          You may speculate on connections between zeta zero patterns,
+          coding practice or AI models, and physics. Mark every speculation
+          with confidence <= 0.3 and speculative: true.
+
+          Return exactly:
+
+          {{
+            "final_status": {{
+              "riemann_hypothesis_solved": false,
+              "confidence": 0.99,
+              "reasoning": "text"
+            }},
+            "confirmed_findings": [{{"finding": "text", "confidence": 0.0}}],
+            "open_questions": ["text"],
+            "numerology_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
+            "coding_practice_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
+            "physics_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
+            "honest_summary": "paragraph",
+            "next_realistic_steps": ["text"]
+          }}
+
+          Never claim RH is solved. Mark every speculation speculative.
+          JSON only.
+          """
+
+
+          # =========================================================
+          # PIPELINE
+          # =========================================================
+
+          def run_role(role: str, model: str, prompt: str, out_path: Path):
+              print(f"\n  [{role}] using {model}...")
+              result = ollama_ask_json(model, prompt)
+              if result is None:
+                  print(f"    {role} produced no valid JSON.")
+                  return None
+              result["_meta"] = {
+                  "role": role,
+                  "model": model,
+                  "generated_at": now(),
+              }
+              atomic_write_json(out_path, result)
+              print(f"    {role} complete.")
+              return result
+
+
+          def main() -> int:
+              ZETA_DIR.mkdir(parents=True, exist_ok=True)
+              STATE_DIR.mkdir(parents=True, exist_ok=True)
+              REPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+              # Ensure the state files the pipeline needs exist.
+              if not (STATE_DIR / "skip.txt").exists():
+                  (STATE_DIR / "skip.txt").write_text("", encoding="utf-8")
+
+              models = [
+                  line.strip()
+                  for line in MODELS_FILE.read_text(encoding="utf-8").splitlines()
+                  if line.strip()
+              ]
+              if not models:
+                  print("No models available.")
+                  return 1
+
+              mode = os.environ.get("ANALYSIS_MODE", "full")
+              try:
+                  n_new = int(os.environ.get("ZEROS_PER_RUN", "200"))
+              except ValueError:
+                  n_new = 200
+
+              first_run = not ZEROS_FILE.exists() or ZEROS_FILE.stat().st_size == 0
+              print(f"Mode: {mode}")
+              print(f"First run: {first_run}")
+              print(f"Models available: {models}")
+
+              # -------- PHASE 0 --------
+              if mode in ("full", "zeros_only"):
+                  print("\n=== PHASE 0: COMPUTING ZETA ZEROS ===")
+                  gammas = extend_zeros(n_new)
+                  print(f"Total zeros now: {len(gammas)}")
+              else:
+                  gammas = load_zeros()
+                  if len(gammas) == 0:
+                      print("No zeros on disk. Use mode=full or zeros_only first.")
+                      return 1
+
+              if mode == "zeros_only":
+                  print("Zeros-only mode. Done.")
+                  return 0
+
+              # -------- ROLES --------
+              roles = assign_roles(models)
+              print("\n=== ROLE ASSIGNMENT ===")
+              for r, m in roles.items():
+                  print(f"  {r:<12} -> {m or '(unavailable)'}")
+
+              if not roles.get("extractor"):
+                  print("No extractor available.")
+                  return 1
+
+              # -------- PHASE 1 --------
+              print("\n=== PHASE 1: EXTRACTION ===")
+              sample = gammas[-40:]
+              sample_str = ", ".join(f"{z:.6f}" for z in sample)
+
+              extraction = run_role(
+                  "extractor",
+                  roles["extractor"],
+                  EXTRACTOR_PROMPT.format(count=len(gammas), sample=sample_str),
+                  STATE_DIR / "phase1_extraction.json",
+              )
+
+              if extraction is None:
+                  print("  Extractor failed. Computing stats locally...")
+                  recent = gammas[-31:]
+                  spacings = np.diff(recent).tolist()
+                  extraction = {
+                      "count": len(gammas),
+                      "first": float(gammas[0]),
+                      "last": float(gammas[-1]),
+                      "min_gamma": float(np.min(gammas)),
+                      "max_gamma": float(np.max(gammas)),
+                      "mean_spacing_recent_30": float(np.mean(spacings)),
+                      "std_spacing_recent_30": float(np.std(spacings)),
+                      "largest_gap_recent_30": float(np.max(spacings)),
+                      "smallest_gap_recent_30": float(np.min(spacings)),
+                      "spacings_recent_30": [float(s) for s in spacings],
+                      "predicted_mean_spacing": float(
+                          2 * np.pi / np.log(gammas[-1] / (2 * np.pi))
+                      ),
+                  }
+                  atomic_write_json(STATE_DIR / "phase1_extraction.json", extraction)
+
+              # -------- PHASE 2 --------
+              scanning = None
+              if roles.get("scanner"):
+                  print("\n=== PHASE 2: SCANNING ===")
+                  scanning = run_role(
+                      "scanner",
+                      roles["scanner"],
+                      SCANNER_PROMPT.format(
+                          extraction=json.dumps(extraction, indent=2, ensure_ascii=False)
+                      ),
+                      STATE_DIR / "phase2_scanning.json",
+                  )
+              else:
+                  print("\n=== PHASE 2: SKIPPED ===")
+
+              if scanning is None:
+                  scanning = {
+                      "clusters": [], "large_gaps": [],
+                      "periodicity_observed": False,
+                      "anomalies": [],
+                      "notes": "Scanner phase unavailable.",
+                  }
+                  atomic_write_json(STATE_DIR / "phase2_scanning.json", scanning)
+
+              # -------- PHASE 3 --------
+              analysis = None
+              if roles.get("analyst"):
+                  print("\n=== PHASE 3: ANALYSIS ===")
+                  analysis = run_role(
+                      "analyst",
+                      roles["analyst"],
+                      ANALYST_PROMPT.format(
+                          extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+                          scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
+                      ),
+                      STATE_DIR / "phase3_analysis.json",
+                  )
+              else:
+                  print("\n=== PHASE 3: SKIPPED ===")
+
+              if analysis is None:
+                  analysis = {
+                      "density_ratio": None,
+                      "density_consistent_with_rvm": None,
+                      "spacing_std": None,
+                      "spacing_consistent_with_gue": None,
+                      "mathematical_observations": [],
+                      "rh_status": {
+                          "is_proven": False,
+                          "is_disproven": False,
+                          "can_this_data_decide": False,
+                          "reasoning": "Analyst phase unavailable.",
+                      },
+                      "what_would_be_needed": [],
+                      "honest_limits": [],
+                  }
+                  atomic_write_json(STATE_DIR / "phase3_analysis.json", analysis)
+
+              # -------- PHASE 4 --------
+              print("\n=== PHASE 4: SYNTHESIS ===")
+              synthesizer_model = (
+                  roles.get("synthesizer")
+                  or roles.get("analyst")
+                  or roles.get("scanner")
+                  or roles.get("extractor")
+              )
+
+              synthesis = run_role(
+                  "synthesizer",
+                  synthesizer_model,
+                  SYNTHESIZER_PROMPT.format(
+                      extraction=json.dumps(extraction, indent=2, ensure_ascii=False),
+                      scanning=json.dumps(scanning, indent=2, ensure_ascii=False),
+                      analysis=json.dumps(analysis, indent=2, ensure_ascii=False),
+                  ),
+                  STATE_DIR / "phase4_synthesis.json",
+              )
+
+              if synthesis is None:
+                  synthesis = {
+                      "final_status": {
+                          "riemann_hypothesis_solved": False,
+                          "confidence": 0.99,
+                          "reasoning": "Synthesizer failed.",
+                      },
+                      "confirmed_findings": [],
+                      "open_questions": [],
+                      "numerology_speculations": [],
+                      "coding_practice_speculations": [],
+                      "physics_speculations": [],
+                      "honest_summary": "Synthesis failed.",
+                      "next_realistic_steps": [],
+                  }
+                  atomic_write_json(STATE_DIR / "phase4_synthesis.json", synthesis)
+
+              # -------- FINAL REPORT --------
+              final_report = {
+                  "generated_at": now(),
+                  "run_stamp": stamp(),
+                  "first_run": first_run,
+                  "zeros_total": len(gammas),
+                  "zeros_added_this_run": n_new,
+                  "roles": roles,
+                  "phase1_extraction": extraction,
+                  "phase2_scanning": scanning,
+                  "phase3_analysis": analysis,
+                  "phase4_synthesis": synthesis,
+                  "honest_statement": (
+                      "The Riemann Hypothesis remains unproven. "
+                      "No model produced a proof. Numerology and "
+                      "coding/physics connections are speculative."
+                  ),
+              }
+
+              atomic_write_json(REPORT_DIR / f"run-{stamp()}.json", final_report)
+              atomic_write_json(ZETA_DIR / "latest.json", final_report)
+
+              md = []
+              md.append("# Zeta Zeros Analysis")
+              md.append("")
+              md.append(f"Generated: {final_report['generated_at']}")
+              md.append(f"Total zeros: {len(gammas)}")
+              md.append(f"Added this run: {n_new}")
+              md.append(f"First run: {first_run}")
+              md.append("")
+              md.append("## Role assignment")
+              for r, m in roles.items():
+                  md.append(f"- **{r}**: `{m}`")
+              md.append("")
+
+              fs = synthesis.get("final_status", {})
+              md.append("## Millennium problem status")
+              md.append("")
+              md.append(f"- Solved: **{fs.get('riemann_hypothesis_solved', False)}**")
+              md.append(f"- Confidence: {fs.get('confidence', 0.99)}")
+              md.append(f"- Reasoning: {fs.get('reasoning', 'N/A')}")
+              md.append("")
+
+              md.append("## Confirmed findings")
+              for f in synthesis.get("confirmed_findings", []):
+                  md.append(f"- {f.get('finding', '')} ({f.get('confidence', 0.0)})")
+              md.append("")
+
+              md.append("## Numerology (speculative)")
+              for s in synthesis.get("numerology_speculations", []):
+                  md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
+              md.append("")
+
+              md.append("## Coding practice (speculative)")
+              for s in synthesis.get("coding_practice_speculations", []):
+                  md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
+              md.append("")
+
+              md.append("## Physics (speculative)")
+              for s in synthesis.get("physics_speculations", []):
+                  md.append(f"- {s.get('speculation', '')} ({s.get('confidence', 0.0)})")
+              md.append("")
+
+              md.append("## Honest summary")
+              md.append(synthesis.get("honest_summary", "N/A"))
+              md.append("")
+
+              md.append("## Next realistic steps")
+              for step in synthesis.get("next_realistic_steps", []):
+                  md.append(f"- {step}")
+
+              (ZETA_DIR / "latest.md").write_text("\n".join(md), encoding="utf-8")
+
+              print("\n=== PIPELINE COMPLETE ===")
+              print(f"Zeros total: {len(gammas)}")
+              print(f"RH solved: {fs.get('riemann_hypothesis_solved', False)}")
+              return 0
+
+
+          if __name__ == "__main__":
+              sys.exit(main())
+          PY
+
+          python3 zeta/pipeline.py
+
+      - name: Commit and push results
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Ensure the folder exists even if the pipeline failed early.
+          mkdir -p zeta/state zeta/reports
+
+          # Seed support files on first ever run.
+          [ -f zeta/zeros.txt ]    || touch zeta/zeros.txt
+          [ -f zeta/state/skip.txt ] || touch zeta/state/skip.txt
+
+          if [ ! -f zeta/README.md ]; then
+          cat > zeta/README.md <<'EOF'
+          # Zeta zeros state
+
+          Managed by the Zeta zeros pipeline workflow.
+
+          - `zeros.txt` — append-only, one gamma per line, 17 sig figs.
+          - `latest.json` — most recent full report (JSON).
+          - `latest.md` — most recent full report (Markdown).
+          - `reports/` — timestamped history of every run's JSON report.
+          - `state/` — pipeline scratch (model list, skip list, per-phase output).
+
+          Do not edit `zeros.txt` by hand. Let the workflow append.
+          EOF
+          fi
+
+          git config user.name  "zeta-pipeline-bot"
+          git config user.email "zeta-pipeline-bot@users.noreply.github.com"
+
+          git add zeta/
+
+          if git diff --staged --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+
+          ZERO_COUNT=0
+          if [ -f zeta/zeros.txt ]; then
+            ZERO_COUNT=$(wc -l < zeta/zeros.txt)
+          fi
+
+          git commit -m "zeta: run ${GITHUB_RUN_NUMBER}, total ${ZERO_COUNT} zeros"
+
+          # Rebase in case another run pushed while this one was working.
+          git pull --rebase --autostash || true
+
+          git push
