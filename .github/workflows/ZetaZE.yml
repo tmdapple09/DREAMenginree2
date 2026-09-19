@@ -1,4 +1,4 @@
-name: Zeta zeros pipeline
+name: ZetaZe zeros pipeline
 
 on:
   workflow_dispatch:
@@ -6,8 +6,8 @@ on:
       zeros_per_run:
         description: "How many new zeta zeros to compute this run"
         required: true
-        default: "200"
-        type: string
+        default: 500
+        type: number
       analysis_mode:
         description: "full, zeros_only, or analysis_only"
         required: true
@@ -18,7 +18,6 @@ on:
           - zeros_only
           - analysis_only
   schedule:
-    # Every 6 hours. Delete this block if you want manual-only.
     - cron: "0 */6 * * *"
 
 permissions:
@@ -36,6 +35,7 @@ jobs:
 
     env:
       OLLAMA_HOST: "127.0.0.1:11434"
+      OLLAMA_BASE_URL: "http://127.0.0.1:11434"
       OLLAMA_MAX_LOADED_MODELS: "1"
       OLLAMA_NUM_PARALLEL: "1"
       OLLAMA_KEEP_ALIVE: "5m"
@@ -47,90 +47,6 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      # ------------------------------------------------------------------
-      # RESTORE THE OLD CACHE-BASED STATE (read-only, never saved back)
-      # ------------------------------------------------------------------
-      # The earlier cache-based workflow stored its state at
-      # zeta_pipeline/state/zeta_zeros_cache.txt under a key like
-      # zeta-pipeline-<repo>-<branch>-<run_id>. We use cache/restore
-      # here so this workflow only reads that cache, never writes to it.
-
-      - name: Restore previous cache-based zeta state
-        id: restore-cache
-        uses: actions/cache/restore@v4
-        with:
-          path: zeta_pipeline
-          key: zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-${{ github.run_id }}
-          restore-keys: |
-            zeta-pipeline-${{ github.repository }}-${{ github.ref_name }}-
-            zeta-pipeline-${{ github.repository }}-
-
-      - name: Merge cache zeros into repo zeros
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          mkdir -p zeta/state
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          CACHE_ZEROS = Path("zeta_pipeline/state/zeta_zeros_cache.txt")
-          REPO_ZEROS  = Path("zeta/zeros.txt")
-
-          def load(path):
-              if not path.exists():
-                  return []
-              out = []
-              for line in path.read_text(encoding="utf-8").splitlines():
-                  line = line.strip()
-                  if not line:
-                      continue
-                  try:
-                      out.append(float(line))
-                  except ValueError:
-                      continue
-              return out
-
-          cache_zeros = load(CACHE_ZEROS)
-          repo_zeros  = load(REPO_ZEROS)
-
-          print(f"Cache file: {CACHE_ZEROS} -> {len(cache_zeros)} zeros")
-          print(f"Repo file:  {REPO_ZEROS} -> {len(repo_zeros)} zeros")
-
-          if not cache_zeros and not repo_zeros:
-              print("No zeros in cache or repo. Pipeline will seed from scratch.")
-              raise SystemExit(0)
-
-          # Prefer whichever has more zeros. If both exist and the shorter is
-          # not a prefix of the longer, that indicates divergence; warn but
-          # still proceed with the longer list.
-          if len(cache_zeros) >= len(repo_zeros):
-              chosen = cache_zeros
-              source = "cache"
-              other = repo_zeros
-          else:
-              chosen = repo_zeros
-              source = "repo"
-              other = cache_zeros
-
-          if other:
-              prefix_matches = all(
-                  abs(a - b) < 1e-12
-                  for a, b in zip(other, chosen[:len(other)])
-              )
-              if not prefix_matches:
-                  print("::warning::Cache and repo zeros diverge before the shorter one ends.")
-                  print("::warning::Proceeding with the longer list as authoritative.")
-
-          REPO_ZEROS.parent.mkdir(parents=True, exist_ok=True)
-          with open(REPO_ZEROS, "w", encoding="utf-8") as f:
-              for z in chosen:
-                  f.write(f"{z:.17g}\n")
-
-          print(f"Using {source} as source of truth: {len(chosen)} zeros written to {REPO_ZEROS}")
-          PY
 
       - name: Check runner resources
         shell: bash
@@ -168,7 +84,7 @@ jobs:
           set -euo pipefail
           nohup ollama serve > /tmp/ollama.log 2>&1 &
           for i in $(seq 1 60); do
-            if curl -fsS "${OLLAMA_HOST}/api/tags" >/dev/null 2>&1; then
+            if curl -fsS "${OLLAMA_BASE_URL}/api/tags" >/dev/null 2>&1; then
               echo "Ollama is ready."
               exit 0
             fi
@@ -219,7 +135,7 @@ jobs:
             [ -z "$model" ] && continue
             echo "Warming ${model}..."
             if ! curl -fsS \
-              "${OLLAMA_HOST}/api/generate" \
+              "${OLLAMA_BASE_URL}/api/generate" \
               -H "Content-Type: application/json" \
               -d "{\"model\":\"${model}\",\"prompt\":\"Return only OK.\",\"stream\":false}" \
               >/dev/null; then
@@ -230,8 +146,8 @@ jobs:
       - name: Run zeta pipeline
         shell: bash
         env:
-          ZEROS_PER_RUN: ${{ inputs.zeros_per_run || '200' }}
-          ANALYSIS_MODE: ${{ inputs.analysis_mode || 'full' }}
+          ZEROS_PER_RUN: ${{ inputs.zeros_per_run }}
+          ANALYSIS_MODE: ${{ inputs.analysis_mode }}
         run: |
           set -euo pipefail
 
@@ -251,7 +167,8 @@ jobs:
 
           mp.dps = 30
 
-          OLLAMA = "http://127.0.0.1:11434/api/generate"
+          OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+          OLLAMA = f"{OLLAMA_BASE_URL}/api/generate"
 
           ROOT = Path(".").resolve()
           ZETA_DIR = ROOT / "zeta"
@@ -264,18 +181,11 @@ jobs:
           REQUEST_TIMEOUT = 600
           MAX_RETRIES = 2
 
-
           def now() -> str:
               return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-
           def stamp() -> str:
               return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-
-
-          def sha256_text(text: str) -> str:
-              return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
 
           def atomic_write_json(path: Path, data: Any) -> None:
               path.parent.mkdir(parents=True, exist_ok=True)
@@ -285,11 +195,6 @@ jobs:
                   encoding="utf-8",
               )
               tmp.replace(path)
-
-
-          # =========================================================
-          # ZETA ZEROS (repo file is the state)
-          # =========================================================
 
           def load_zeros() -> np.ndarray:
               if not ZEROS_FILE.exists():
@@ -306,12 +211,10 @@ jobs:
                           continue
               return np.array(out)
 
-
           def append_zero(g: float) -> None:
               ZEROS_FILE.parent.mkdir(parents=True, exist_ok=True)
               with open(ZEROS_FILE, "a") as f:
                   f.write(f"{g:.17g}\n")
-
 
           def next_zero(gamma_prev: float, k_next: int) -> float:
               if gamma_prev < 14:
@@ -353,7 +256,6 @@ jobs:
               print(f"    fallback for k = {k_next}")
               return float(zetazero(k_next).imag)
 
-
           def extend_zeros(n_new: int) -> np.ndarray:
               gammas = list(load_zeros())
 
@@ -375,11 +277,6 @@ jobs:
                       print(f"  +{i+1}, gamma = {last:.6f}, n = {len(gammas)}")
 
               return np.array(gammas)
-
-
-          # =========================================================
-          # OLLAMA
-          # =========================================================
 
           def ollama_ask_json(
               model: str,
@@ -423,18 +320,12 @@ jobs:
 
               return None
 
-
-          # =========================================================
-          # ROLE ASSIGNMENT
-          # =========================================================
-
           ROLE_SPECS = [
-              {"role": "extractor",   "ideal_size": "1.5b"},
-              {"role": "scanner",     "ideal_size": "3b"},
-              {"role": "analyst",     "ideal_size": "7b"},
+              {"role": "extractor", "ideal_size": "1.5b"},
+              {"role": "scanner", "ideal_size": "3b"},
+              {"role": "analyst", "ideal_size": "7b"},
               {"role": "synthesizer", "ideal_size": "14b"},
           ]
-
 
           def assign_roles(available_models: List[str]) -> Dict[str, Optional[str]]:
               parsed = []
@@ -490,11 +381,6 @@ jobs:
 
               return assignment
 
-
-          # =========================================================
-          # PROMPTS
-          # =========================================================
-
           EXTRACTOR_PROMPT = """
           You are the extraction phase of a mathematical analysis pipeline.
 
@@ -508,7 +394,7 @@ jobs:
 
           Return exactly:
 
-          {{
+          {
             "count": {count},
             "first": 0.0,
             "last": 0.0,
@@ -520,7 +406,7 @@ jobs:
             "smallest_gap_recent_30": 0.0,
             "spacings_recent_30": [0.0],
             "predicted_mean_spacing": 0.0
-          }}
+          }
 
           Rules:
           - Numbers are numbers, not strings.
@@ -528,7 +414,6 @@ jobs:
           - spacings_recent_30 has 30 values from the last 31 gammas.
           - No extra fields. JSON only.
           """
-
 
           SCANNER_PROMPT = """
           You are the scanning phase. You detect patterns in structured data.
@@ -541,17 +426,16 @@ jobs:
 
           Return exactly:
 
-          {{
-            "clusters": [{{"index_range": [0,0], "spacings": [0.0], "why_notable": "text"}}],
-            "large_gaps": [{{"index": 0, "gap": 0.0, "relative_to_mean": 0.0}}],
+          {
+            "clusters": [{"index_range": [0,0], "spacings": [0.0], "why_notable": "text"}],
+            "large_gaps": [{"index": 0, "gap": 0.0, "relative_to_mean": 0.0}],
             "periodicity_observed": false,
             "anomalies": ["text"],
             "notes": "one paragraph"
-          }}
+          }
 
           Do not claim any RH result. JSON only.
           """
-
 
           ANALYST_PROMPT = """
           You are the analysis phase. Compare data to established theory.
@@ -582,26 +466,25 @@ jobs:
 
           Return exactly:
 
-          {{
+          {
             "density_ratio": 0.0,
             "density_consistent_with_rvm": false,
             "spacing_std": 0.0,
             "spacing_std_gue_prediction": 0.422,
             "spacing_consistent_with_gue": false,
             "mathematical_observations": ["text"],
-            "rh_status": {{
+            "rh_status": {
               "is_proven": false,
               "is_disproven": false,
               "can_this_data_decide": false,
               "reasoning": "text"
-            }},
+            },
             "what_would_be_needed": ["text"],
             "honest_limits": ["text"]
-          }}
+          }
 
           Never claim a proof exists. JSON only.
           """
-
 
           SYNTHESIZER_PROMPT = """
           You are the synthesis phase. Write the honest report.
@@ -621,29 +504,24 @@ jobs:
 
           Return exactly:
 
-          {{
-            "final_status": {{
+          {
+            "final_status": {
               "riemann_hypothesis_solved": false,
               "confidence": 0.99,
               "reasoning": "text"
-            }},
-            "confirmed_findings": [{{"finding": "text", "confidence": 0.0}}],
+            },
+            "confirmed_findings": [{"finding": "text", "confidence": 0.0}],
             "open_questions": ["text"],
-            "numerology_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
-            "coding_practice_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
-            "physics_speculations": [{{"speculation": "text", "confidence": 0.0, "speculative": true}}],
+            "numerology_speculations": [{"speculation": "text", "confidence": 0.0, "speculative": true}],
+            "coding_practice_speculations": [{"speculation": "text", "confidence": 0.0, "speculative": true}],
+            "physics_speculations": [{"speculation": "text", "confidence": 0.0, "speculative": true}],
             "honest_summary": "paragraph",
             "next_realistic_steps": ["text"]
-          }}
+          }
 
           Never claim RH is solved. Mark every speculation speculative.
           JSON only.
           """
-
-
-          # =========================================================
-          # PIPELINE
-          # =========================================================
 
           def run_role(role: str, model: str, prompt: str, out_path: Path):
               print(f"\n  [{role}] using {model}...")
@@ -659,7 +537,6 @@ jobs:
               atomic_write_json(out_path, result)
               print(f"    {role} complete.")
               return result
-
 
           def main() -> int:
               ZETA_DIR.mkdir(parents=True, exist_ok=True)
@@ -689,7 +566,6 @@ jobs:
               print(f"First run: {first_run}")
               print(f"Models available: {models}")
 
-              # -------- PHASE 0 --------
               if mode in ("full", "zeros_only"):
                   print("\n=== PHASE 0: COMPUTING ZETA ZEROS ===")
                   gammas = extend_zeros(n_new)
@@ -704,7 +580,6 @@ jobs:
                   print("Zeros-only mode. Done.")
                   return 0
 
-              # -------- ROLES --------
               roles = assign_roles(models)
               print("\n=== ROLE ASSIGNMENT ===")
               for r, m in roles.items():
@@ -714,7 +589,6 @@ jobs:
                   print("No extractor available.")
                   return 1
 
-              # -------- PHASE 1 --------
               print("\n=== PHASE 1: EXTRACTION ===")
               sample = gammas[-40:]
               sample_str = ", ".join(f"{z:.6f}" for z in sample)
@@ -747,7 +621,6 @@ jobs:
                   }
                   atomic_write_json(STATE_DIR / "phase1_extraction.json", extraction)
 
-              # -------- PHASE 2 --------
               scanning = None
               if roles.get("scanner"):
                   print("\n=== PHASE 2: SCANNING ===")
@@ -764,14 +637,14 @@ jobs:
 
               if scanning is None:
                   scanning = {
-                      "clusters": [], "large_gaps": [],
+                      "clusters": [],
+                      "large_gaps": [],
                       "periodicity_observed": False,
                       "anomalies": [],
                       "notes": "Scanner phase unavailable.",
                   }
                   atomic_write_json(STATE_DIR / "phase2_scanning.json", scanning)
 
-              # -------- PHASE 3 --------
               analysis = None
               if roles.get("analyst"):
                   print("\n=== PHASE 3: ANALYSIS ===")
@@ -805,7 +678,6 @@ jobs:
                   }
                   atomic_write_json(STATE_DIR / "phase3_analysis.json", analysis)
 
-              # -------- PHASE 4 --------
               print("\n=== PHASE 4: SYNTHESIS ===")
               synthesizer_model = (
                   roles.get("synthesizer")
@@ -842,7 +714,6 @@ jobs:
                   }
                   atomic_write_json(STATE_DIR / "phase4_synthesis.json", synthesis)
 
-              # -------- FINAL REPORT --------
               final_report = {
                   "generated_at": now(),
                   "run_stamp": stamp(),
@@ -920,7 +791,6 @@ jobs:
               print(f"RH solved: {fs.get('riemann_hypothesis_solved', False)}")
               return 0
 
-
           if __name__ == "__main__":
               sys.exit(main())
           PY
@@ -935,26 +805,26 @@ jobs:
 
           mkdir -p zeta/state zeta/reports
 
-          [ -f zeta/zeros.txt ]      || touch zeta/zeros.txt
+          [ -f zeta/zeros.txt ] || touch zeta/zeros.txt
           [ -f zeta/state/skip.txt ] || touch zeta/state/skip.txt
 
           if [ ! -f zeta/README.md ]; then
-          cat > zeta/README.md <<'EOF'
-          # Zeta zeros state
+            cat > zeta/README.md <<'EOF'
+            # Zeta zeros state
 
-          Managed by the Zeta zeros pipeline workflow.
+            Managed by the Zeta zeros pipeline workflow.
 
-          - `zeros.txt` — append-only, one gamma per line, 17 sig figs.
-          - `latest.json` — most recent full report (JSON).
-          - `latest.md` — most recent full report (Markdown).
-          - `reports/` — timestamped history of every run's JSON report.
-          - `state/` — pipeline scratch (model list, skip list, per-phase output).
+            - `zeros.txt` — append-only, one gamma per line, 17 sig figs.
+            - `latest.json` — most recent full report (JSON).
+            - `latest.md` — most recent full report (Markdown).
+            - `reports/` — timestamped history of every run's JSON report.
+            - `state/` — pipeline scratch (model list, skip list, per-phase output).
 
-          Do not edit `zeros.txt` by hand. Let the workflow append.
-          EOF
+            Do not edit `zeros.txt` by hand. Let the workflow append.
+            EOF
           fi
 
-          git config user.name  "zeta-pipeline-bot"
+          git config user.name "zeta-pipeline-bot"
           git config user.email "zeta-pipeline-bot@users.noreply.github.com"
 
           git add zeta/
@@ -972,5 +842,4 @@ jobs:
           git commit -m "zeta: run ${GITHUB_RUN_NUMBER}, total ${ZERO_COUNT} zeros"
 
           git pull --rebase --autostash || true
-
           git push
