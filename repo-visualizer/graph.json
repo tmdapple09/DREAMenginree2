@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T04:46:28.006Z",
+  "generatedAt": "2026-09-19T07:39:45.208Z",
   "root": ".",
   "nodes": [
     {
@@ -82707,6 +82707,254 @@
       "parent": "folder:.",
       "loc": null,
       "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "folder:zeta",
+      "label": "zeta",
+      "type": "folder",
+      "path": "zeta",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:zeta/README.md",
+      "label": "README.md",
+      "type": "doc",
+      "path": "zeta/README.md",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/latest.json",
+      "label": "latest.json",
+      "type": "config",
+      "path": "zeta/latest.json",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/latest.md",
+      "label": "latest.md",
+      "type": "doc",
+      "path": "zeta/latest.md",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "function:zeta/pipeline.py#now",
+      "label": "now",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 30,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#stamp",
+      "label": "stamp",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 34,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#sha256_text",
+      "label": "sha256_text",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 38,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#atomic_write_json",
+      "label": "atomic_write_json",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 42,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#load_zeros",
+      "label": "load_zeros",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 52,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#append_zero",
+      "label": "append_zero",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 68,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#next_zero",
+      "label": "next_zero",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 74,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#extend_zeros",
+      "label": "extend_zeros",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 115,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#ollama_ask_json",
+      "label": "ollama_ask_json",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 138,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#assign_roles",
+      "label": "assign_roles",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 189,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#run_role",
+      "label": "run_role",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 390,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#main",
+      "label": "main",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 406,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "file:zeta/pipeline.py",
+      "label": "pipeline.py",
+      "type": "python",
+      "path": "zeta/pipeline.py",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:zeta/state",
+      "label": "state",
+      "type": "folder",
+      "path": "zeta/state",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:zeta/state/available_models.txt",
+      "label": "available_models.txt",
+      "type": "doc",
+      "path": "zeta/state/available_models.txt",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/phase1_extraction.json",
+      "label": "phase1_extraction.json",
+      "type": "config",
+      "path": "zeta/state/phase1_extraction.json",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/phase2_scanning.json",
+      "label": "phase2_scanning.json",
+      "type": "config",
+      "path": "zeta/state/phase2_scanning.json",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/phase3_analysis.json",
+      "label": "phase3_analysis.json",
+      "type": "config",
+      "path": "zeta/state/phase3_analysis.json",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/phase4_synthesis.json",
+      "label": "phase4_synthesis.json",
+      "type": "config",
+      "path": "zeta/state/phase4_synthesis.json",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/skip.txt",
+      "label": "skip.txt",
+      "type": "doc",
+      "path": "zeta/state/skip.txt",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/zeros.txt",
+      "label": "zeros.txt",
+      "type": "doc",
+      "path": "zeta/zeros.txt",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
       "tags": []
     }
   ],
