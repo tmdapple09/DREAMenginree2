@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T10:27:24.281Z",
+  "generatedAt": "2026-09-19T10:35:03.683Z",
   "root": ".",
   "nodes": [
     {
@@ -3746,6 +3746,16 @@
       "label": "website-feature-.yml",
       "type": "config",
       "path": ".github/workflows/website-feature-.yml",
+      "parent": "folder:.github/workflows",
+      "loc": null,
+      "isOrphan": false,
+      "tags": []
+    },
+    {
+      "id": "file:.github/workflows/wtf.yml",
+      "label": "wtf.yml",
+      "type": "config",
+      "path": ".github/workflows/wtf.yml",
       "parent": "folder:.github/workflows",
       "loc": null,
       "isOrphan": false,
@@ -82754,7 +82764,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 30,
+      "loc": 31,
       "isOrphan": true,
       "exported": true
     },
@@ -82769,22 +82779,12 @@
       "exported": true
     },
     {
-      "id": "function:zeta/pipeline.py#sha256_text",
-      "label": "sha256_text",
-      "type": "function",
-      "path": "zeta/pipeline.py",
-      "parent": "file:zeta/pipeline.py",
-      "loc": 38,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
       "id": "function:zeta/pipeline.py#atomic_write_json",
       "label": "atomic_write_json",
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 42,
+      "loc": 37,
       "isOrphan": true,
       "exported": true
     },
@@ -82794,7 +82794,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 52,
+      "loc": 46,
       "isOrphan": true,
       "exported": true
     },
@@ -82804,17 +82804,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 68,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:zeta/pipeline.py#next_zero",
-      "label": "next_zero",
-      "type": "function",
-      "path": "zeta/pipeline.py",
-      "parent": "file:zeta/pipeline.py",
-      "loc": 74,
+      "loc": 61,
       "isOrphan": true,
       "exported": true
     },
@@ -82824,7 +82814,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 115,
+      "loc": 66,
       "isOrphan": true,
       "exported": true
     },
@@ -82834,17 +82824,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 138,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:zeta/pipeline.py#assign_roles",
-      "label": "assign_roles",
-      "type": "function",
-      "path": "zeta/pipeline.py",
-      "parent": "file:zeta/pipeline.py",
-      "loc": 189,
+      "loc": 85,
       "isOrphan": true,
       "exported": true
     },
@@ -82854,7 +82834,57 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 390,
+      "loc": 269,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#torridity_check",
+      "label": "torridity_check",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 284,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#write_data_exports",
+      "label": "write_data_exports",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 318,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#write_plots",
+      "label": "write_plots",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 402,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#write_readme",
+      "label": "write_readme",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 543,
+      "isOrphan": true,
+      "exported": true
+    },
+    {
+      "id": "function:zeta/pipeline.py#write_detailed_report",
+      "label": "write_detailed_report",
+      "type": "function",
+      "path": "zeta/pipeline.py",
+      "parent": "file:zeta/pipeline.py",
+      "loc": 574,
       "isOrphan": true,
       "exported": true
     },
@@ -82864,7 +82894,7 @@
       "type": "function",
       "path": "zeta/pipeline.py",
       "parent": "file:zeta/pipeline.py",
-      "loc": 406,
+      "loc": 688,
       "isOrphan": true,
       "exported": true
     },
