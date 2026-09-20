@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T10:47:35.248Z",
+  "generatedAt": "2026-09-20T01:19:10.288Z",
   "root": ".",
   "nodes": [
     {
@@ -3977,6 +3977,34 @@
       "type": "doc",
       "path": "REPO_STATE.md",
       "parent": "folder:.",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:TopologicalRelationalSystemsDynamics",
+      "label": "TopologicalRelationalSystemsDynamics",
+      "type": "folder",
+      "path": "TopologicalRelationalSystemsDynamics",
+      "parent": "folder:.",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "label": "initialDRAFTS",
+      "type": "folder",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "parent": "folder:TopologicalRelationalSystemsDynamics",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSDTheoryProtoTypeFile",
+      "label": "TRSDTheoryProtoTypeFile",
+      "type": "file",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSDTheoryProtoTypeFile",
+      "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
       "loc": null,
       "isOrphan": true,
       "tags": []
@@ -82719,11 +82747,70 @@
       "isOrphan": false
     },
     {
+      "id": "file:zeta/DETAILED_REPORT.md",
+      "label": "DETAILED_REPORT.md",
+      "type": "doc",
+      "path": "zeta/DETAILED_REPORT.md",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:zeta/README.md",
       "label": "README.md",
       "type": "doc",
       "path": "zeta/README.md",
       "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "folder:zeta/data",
+      "label": "data",
+      "type": "folder",
+      "path": "zeta/data",
+      "parent": "folder:zeta",
+      "loc": null,
+      "isOrphan": false
+    },
+    {
+      "id": "file:zeta/data/rar_format.txt",
+      "label": "rar_format.txt",
+      "type": "doc",
+      "path": "zeta/data/rar_format.txt",
+      "parent": "folder:zeta/data",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/data/summary.json",
+      "label": "summary.json",
+      "type": "config",
+      "path": "zeta/data/summary.json",
+      "parent": "folder:zeta/data",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/data/tables2_format.txt",
+      "label": "tables2_format.txt",
+      "type": "doc",
+      "path": "zeta/data/tables2_format.txt",
+      "parent": "folder:zeta/data",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/data/torridity_table.csv",
+      "label": "torridity_table.csv",
+      "type": "file",
+      "path": "zeta/data/torridity_table.csv",
+      "parent": "folder:zeta/data",
       "loc": null,
       "isOrphan": true,
       "tags": []
@@ -82962,6 +83049,16 @@
       "label": "skip.txt",
       "type": "doc",
       "path": "zeta/state/skip.txt",
+      "parent": "folder:zeta/state",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:zeta/state/torridity.json",
+      "label": "torridity.json",
+      "type": "config",
+      "path": "zeta/state/torridity.json",
       "parent": "folder:zeta/state",
       "loc": null,
       "isOrphan": true,
