@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T01:19:10.288Z",
+  "generatedAt": "2026-09-20T07:22:28.292Z",
   "root": ".",
   "nodes": [
     {
@@ -66421,105 +66421,6 @@
       "tags": []
     },
     {
-      "id": "folder:lib",
-      "label": "lib",
-      "type": "folder",
-      "path": "lib",
-      "parent": "folder:.",
-      "loc": null,
-      "isOrphan": false
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#bytesOf",
-      "label": "bytesOf",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 15,
-      "isOrphan": true,
-      "exported": false
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#sha256Hex",
-      "label": "sha256Hex",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 19,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#stableStringify",
-      "label": "stableStringify",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 63,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#digestObject",
-      "label": "digestObject",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 73,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#computeIndexedGeometryDigest",
-      "label": "computeIndexedGeometryDigest",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 78,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#certificatePayload",
-      "label": "certificatePayload",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 92,
-      "isOrphan": true,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#verifySha256Integrity",
-      "label": "verifySha256Integrity",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 99,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
-      "label": "verifyGameReadyCertificate",
-      "type": "function",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "file:lib/gameReadyIntegrity.ts",
-      "loc": 104,
-      "isOrphan": false,
-      "exported": true
-    },
-    {
-      "id": "file:lib/gameReadyIntegrity.ts",
-      "label": "gameReadyIntegrity.ts",
-      "type": "ts",
-      "path": "lib/gameReadyIntegrity.ts",
-      "parent": "folder:lib",
-      "loc": null,
-      "isOrphan": false,
-      "tags": []
-    },
-    {
       "id": "folder:misc",
       "label": "misc",
       "type": "folder",
@@ -102358,11 +102259,6 @@
     },
     {
       "source": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/exportGlb.ts",
       "target": "file:engins/isosurfaceDualContouring.ts",
       "kind": "import"
     },
@@ -102394,11 +102290,6 @@
     {
       "source": "file:engins/contentengin/pipeline/generateLods.ts",
       "target": "file:engins/contentengin/assetTypes.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/validate.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -102494,11 +102385,6 @@
     {
       "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
       "target": "file:engins/isosurfaceDualContouring.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -103304,11 +103190,6 @@
     {
       "source": "file:engins/gameengin/assets/BundleCache.ts",
       "target": "file:engins/gameengin/assets/BundleManifest.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/gameengin/assets/BundleManifest.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -104273,11 +104154,6 @@
     },
     {
       "source": "file:engins/renderengin/assets.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/renderengin/assets.ts",
       "target": "file:types/gameReadyAsset.ts",
       "kind": "import"
     },
@@ -104314,11 +104190,6 @@
     {
       "source": "file:engins/renderengin/diagnostics.ts",
       "target": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:engins/renderengin/diagnostics.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -104954,11 +104825,6 @@
     {
       "source": "file:hooks/useTapHoldMove.ts",
       "target": "file:engine/editor/universalEditor.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:lib/gameReadyIntegrity.ts",
-      "target": "file:types/gameReadyAsset.ts",
       "kind": "import"
     },
     {
@@ -109677,11 +109543,6 @@
       "kind": "import"
     },
     {
-      "source": "file:src/engin/generated/systems.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:supabase/client/client.ts",
       "target": "file:supabase/config.ts",
       "kind": "import"
@@ -109927,11 +109788,6 @@
       "kind": "import"
     },
     {
-      "source": "file:tests/contentengin/contentengin-export.test.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
-      "kind": "import"
-    },
-    {
       "source": "file:tests/contentengin/contentengin-glb-import.test.ts",
       "target": "file:engins/isosurfaceAssetPipeline.ts",
       "kind": "import"
@@ -109964,11 +109820,6 @@
     {
       "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
       "target": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -110439,11 +110290,6 @@
     {
       "source": "file:tests/gameengin-asset-pipeline.test.ts",
       "target": "file:engins/gameengin/render/ShaderRegistry.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/gameengin-asset-pipeline.test.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -110969,11 +110815,6 @@
     {
       "source": "file:tests/renderengin-gpu-proof-security.test.ts",
       "target": "file:engins/renderengin/index.ts",
-      "kind": "import"
-    },
-    {
-      "source": "file:tests/renderengin-material-security-performance.test.ts",
-      "target": "file:lib/gameReadyIntegrity.ts",
       "kind": "import"
     },
     {
@@ -119377,11 +119218,6 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/contentengin/pipeline/exportGlb.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
-      "kind": "call"
-    },
-    {
       "source": "file:engins/contentengin/pipeline/generateCollision.ts",
       "target": "function:engins/contentengin/builders/primitiveBuilder.ts#flattenParts",
       "kind": "call"
@@ -119394,11 +119230,6 @@
     {
       "source": "file:engins/contentengin/pipeline/validate.ts",
       "target": "function:engins/contentengin/pipeline/exportGlb.ts#inspectGlb",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/pipeline/validate.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
       "kind": "call"
     },
     {
@@ -119434,16 +119265,6 @@
     {
       "source": "file:engins/contentengin/scan/gameReadyMeshBuilder.ts",
       "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#compareAssetSimilarity",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#digestObject",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/contentengin/scan/intrinsicAssetScanner.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#computeIndexedGeometryDigest",
       "kind": "call"
     },
     {
@@ -120172,21 +119993,6 @@
       "kind": "call"
     },
     {
-      "source": "file:engins/gameengin/assets/BundleManifest.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/gameengin/assets/BundleManifest.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifySha256Integrity",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/gameengin/assets/BundleManifest.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#sha256Hex",
-      "kind": "call"
-    },
-    {
       "source": "file:engins/gameengin/backendNegotiator.ts",
       "target": "function:engins/gameengin/runtime/RuntimeQuality.ts#decideRuntimeQuality",
       "kind": "call"
@@ -120869,21 +120675,6 @@
     {
       "source": "file:engins/renderengin/assets.ts",
       "target": "function:engine/engin-runtime/EnginCapabilities.ts#authorizeDomainCapability",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/assets.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/assets.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#computeIndexedGeometryDigest",
-      "kind": "call"
-    },
-    {
-      "source": "file:engins/renderengin/diagnostics.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
       "kind": "call"
     },
     {
@@ -121703,11 +121494,6 @@
     },
     {
       "source": "file:tests/contentengin/contentengin-export.test.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/contentengin-export.test.ts",
       "target": "function:engins/contentengin/pipeline/exportGlb.ts#expectedMaterialIdsForAsset",
       "kind": "call"
     },
@@ -121759,11 +121545,6 @@
     {
       "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
       "target": "function:engins/contentengin/scan/intrinsicAssetScanner.ts#createIntrinsicAssetScanMetadata",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/contentengin/intrinsic-asset-scanner.test.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#verifyGameReadyCertificate",
       "kind": "call"
     },
     {
@@ -122983,16 +122764,6 @@
     },
     {
       "source": "file:tests/gameengin-asset-pipeline.test.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#digestObject",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/gameengin-asset-pipeline.test.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#sha256Hex",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/gameengin-asset-pipeline.test.ts",
       "target": "function:engins/gameengin/assets/BundleManifest.ts#assertValidBundleManifest",
       "kind": "call"
     },
@@ -124169,11 +123940,6 @@
     {
       "source": "file:tests/renderengin-material-security-performance.test.ts",
       "target": "file:engins/renderengin/index.ts",
-      "kind": "call"
-    },
-    {
-      "source": "file:tests/renderengin-material-security-performance.test.ts",
-      "target": "function:lib/gameReadyIntegrity.ts#digestObject",
       "kind": "call"
     },
     {

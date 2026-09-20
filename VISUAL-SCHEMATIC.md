@@ -30,10 +30,10 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2302
-- **Total function/class nodes:** 4937
-- **Total edges:** 8632
-- **Orphan nodes:** 4231
+- **Total files:** 2301
+- **Total function/class nodes:** 4929
+- **Total edges:** 8605
+- **Orphan nodes:** 4228
 
 #### Top-Level Folder Connectivity (overview)
 ```mermaid
@@ -97,7 +97,7 @@ graph LR
 | `engins/gameengin/power-systems.ts` | ts | 1 | 14 | `engine/generated/engins.ts`, `engins/gameengin/core.ts`, `engins/gameengin/index.ts` | `engins/renderengin/webgpu.ts` |
 | `engins/forgeengin/forge/forgeIntelligence.ts` | ts | 1 | 12 | `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`, `components/dreams/dreamsurface.dreamspace.tsx`, `engine/generated/engins.ts` | `engins/forgeengin/forge/forgeRegistry.ts` |
 | `engins/forgeengin/forge/useForgeActivity.ts` | ts | 1 | 12 | `components/daydream/dream.shell.DaydreamShell.tsx`, `components/daydream/dreamsurface.daydream.BrandDaydream.tsx`, `components/dream.universal_asset_registry.tsx` | `engins/forgeengin/forge/forgeRegistry.ts` |
-| `engins/contentengin/scan/intrinsicAssetScanner.ts` | ts | 3 | 11 | `components/contentengin/GameReadyScanPanel.tsx`, `engins/contentengin/assetTypes.ts`, `engins/contentengin/pipeline/build.ts` | `engins/isosurfaceDualContouring.ts`, `lib/gameReadyIntegrity.ts`, `types/gameReadyAsset.ts` |
+| `engins/contentengin/scan/intrinsicAssetScanner.ts` | ts | 2 | 11 | `components/contentengin/GameReadyScanPanel.tsx`, `engins/contentengin/assetTypes.ts`, `engins/contentengin/pipeline/build.ts` | `engins/isosurfaceDualContouring.ts`, `types/gameReadyAsset.ts` |
 | `engins/gameengin/cartridges/loaders.ts` | ts | 16 | 11 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`, `engine/generated/engins.ts` | `engins/gameengin/cartridge.ts`, `engins/gameengin/cartridges/manifest.ts`, `engins/gameengin/cartridges/reactCartridge.ts` |
 | `engins/isosurfaceDualContouring.ts` | ts | 0 | 11 | `engins/contentengin/AssetViewport.tsx`, `engins/contentengin/builders/meshBuilder.ts`, `engins/contentengin/pipeline/exportGlb.ts` | — |
 | `engins/renderengin/webgpu.ts` | ts | 1 | 11 | `components/webgpu/renderer.ts`, `engine/rendering/webgpu.ts`, `engins/contentengin/AssetViewport.tsx` | `engins/renderengin/core.ts` |
@@ -126,10 +126,10 @@ graph LR
 | `engins/starmakerengin/music/starmakerDaw.ts` | ts | 0 | 7 | `components/daydream/starmaker/dream.panel.CompingPanel.tsx`, `components/daydream/starmaker/dream.panel.PianoRollPanel.tsx`, `components/daydream/starmaker/dream.panel.SessionViewPanel.tsx` | — |
 | `engins/contentengin/builders/primitiveBuilder.ts` | ts | 1 | 6 | `engine/generated/engins.ts`, `engins/contentengin/builders/geometryBuilder.ts`, `engins/contentengin/builders/meshBuilder.ts` | `engins/contentengin/assetTypes.ts` |
 | `engins/contentengin/pipeline/paths.ts` | ts | 0 | 6 | `app/api/contentengin/assets/[assetId]/export/gameengin/route.ts`, `app/api/contentengin/assets/[assetId]/route.ts`, `engine/generated/engins.ts` | — |
-| `engins/contentengin/pipeline/validate.ts` | ts | 4 | 6 | `engine/generated/engins.ts`, `engins/contentengin/cli.ts`, `engins/contentengin/pipeline/build.ts` | `lib/gameReadyIntegrity.ts`, `engins/contentengin/assetTypes.ts`, `engins/contentengin/builders/meshBuilder.ts` |
+| `engins/contentengin/pipeline/validate.ts` | ts | 3 | 6 | `engine/generated/engins.ts`, `engins/contentengin/cli.ts`, `engins/contentengin/pipeline/build.ts` | `engins/contentengin/assetTypes.ts`, `engins/contentengin/builders/meshBuilder.ts`, `engins/contentengin/pipeline/exportGlb.ts` |
 | `engins/forgeengin/forge/engineForge.ts` | ts | 2 | 6 | `components/dream.ForgeDreamCanvas.tsx`, `components/forge/dream.EngineBuilderCanvas.tsx`, `engine/generated/engins.ts` | `engins/forgeengin/componentInventory.ts`, `engine/events/eventBus.ts` |
 | `engins/forgeengin/forge/forgeMomentum.ts` | ts | 1 | 6 | `components/dreams/dreamsurface.dreamspace.tsx`, `components/forge/dream.widget.ForgeMomentumWidget.tsx`, `engine/generated/engins.ts` | `engins/forgeengin/forge/forgeRegistry.ts` |
-| `engins/gameengin/assets/BundleManifest.ts` | ts | 3 | 6 | `engine/generated/engins.ts`, `engins/contentengin/cli.ts`, `engins/gameengin/assets/BundleCache.ts` | `lib/gameReadyIntegrity.ts`, `types/gameReadyAsset.ts`, `engins/gameengin/cartridge.ts` |
+| `engins/gameengin/assets/BundleManifest.ts` | ts | 2 | 6 | `engine/generated/engins.ts`, `engins/contentengin/cli.ts`, `engins/gameengin/assets/BundleCache.ts` | `types/gameReadyAsset.ts`, `engins/gameengin/cartridge.ts` |
 | `engins/gameengin/cartridges/reactCartridge.ts` | ts | 2 | 6 | `components/games/dream.AvenueOfMirrors.tsx`, `components/games/dream.MadMaxiWildfall.tsx`, `engine/generated/engins.ts` | `engins/gameengin/cartridge.ts`, `engins/gameengin/cartridges/manifest.ts` |
 | `engins/gameengin/GameRuntime.tsx` | tsx | 9 | 6 | `app/daydream/game/dream.shell.ImmersiveGameShell.tsx`, `components/gameengin/dream.cartridge.CartridgeLauncher.tsx`, `engine/generated/engins.ts` | `engine/runtime/channelMetrics.ts`, `engine/runtime/dreamOSBus.ts`, `engine/runtime/runtimeChannel.ts` |
 | `engins/gameengin/games/quality-plan.ts` | ts | 0 | 6 | `app/daydream/games/page.tsx`, `daydreams/games/page.tsx`, `engine/generated/engins.ts` | — |
@@ -140,7 +140,7 @@ graph LR
 | `engins/codeengin/ai/drEamsCodeAssist.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts`, `tests/code-dream-preview.test.ts` | — |
 | `engins/contentengin/assets/indexedDBStore.ts` | ts | 0 | 5 | `engine/generated/engins.ts`, `engins/contentengin/assets/assetOptimizer.ts`, `engins/contentengin/assets/localAssetLibrary.ts` | — |
 | `engins/contentengin/photo/imageAnalyzer.ts` | ts | 3 | 5 | `app/api/contentengin/upload/route.ts`, `engine/generated/engins.ts`, `engins/contentengin/cli.ts` | `engins/contentengin/assetTypes.ts`, `engins/contentengin/materials/paletteExtractor.ts`, `engins/contentengin/photo/pngDecoder.ts` |
-| `engins/contentengin/pipeline/exportGlb.ts` | ts | 5 | 5 | `engine/generated/engins.ts`, `engins/contentengin/pipeline/bundle.ts`, `engins/contentengin/pipeline/validate.ts` | `lib/gameReadyIntegrity.ts`, `engins/isosurfaceDualContouring.ts`, `engins/contentengin/assetTypes.ts` |
+| `engins/contentengin/pipeline/exportGlb.ts` | ts | 4 | 5 | `engine/generated/engins.ts`, `engins/contentengin/pipeline/bundle.ts`, `engins/contentengin/pipeline/validate.ts` | `engins/isosurfaceDualContouring.ts`, `engins/contentengin/assetTypes.ts`, `engins/contentengin/builders/geometryBuilder.ts` |
 | `engins/contentengin/scan/gameReadyMeshBuilder.ts` | ts | 3 | 5 | `components/contentengin/GameReadyScanPanel.tsx`, `engins/contentengin/useImplicitAssetWorkspace.ts`, `engins/isosurfaceAssetPipeline.ts` | `engins/isosurfaceDualContouring.ts`, `engins/isosurfaceAssetPipeline.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts` |
 | `engins/dream.ForgeEngin.tsx` | tsx | 11 | 5 | `app/daydream/forge/page.tsx`, `components/daydream/dream.StandaloneEnginSurface.tsx`, `components/runtime/dream.RuntimeView.tsx` | `components/daydream/dream.JourneyTrail.tsx`, `components/dream.BrandLogo.tsx`, `components/forge/dream.panel.AIBuilderPanel.tsx` |
 | `engins/dream.QuantumCircuitCanvas.tsx` | tsx | 0 | 5 | `components/engines/portfolio/panels/dream.panel.OptimizePanel.tsx`, `engine/generated/engins.ts`, `engins/engin.LabEngin.tsx` | — |
@@ -287,8 +287,8 @@ graph LR
 | `engins/gameengin/runtime/index.ts` | ts | 3 | 3 | `engine/generated/engins.ts`, `src/engin/generated/engins.ts`, `tests/gameengin-runtime-upgrade.test.ts` | `engins/gameengin/runtime/FrameBudget.ts`, `engins/gameengin/runtime/FrameClock.ts`, `engins/gameengin/runtime/RuntimeQuality.ts` |
 | `engins/gameengin/webgpu-runtime-shell.ts` | ts | 1 | 3 | `engine/generated/engins.ts`, `engins/gameengin/executionWiring.ts`, `src/engin/generated/engins.ts` | `engins/gameengin/dreamr-loader.ts` |
 | `engins/gameengin/xr.ts` | ts | 0 | 3 | `engine/generated/engins.ts`, `engins/gameengin/executionWiring.ts`, `src/engin/generated/engins.ts` | — |
-| `engins/renderengin/assets.ts` | ts | 5 | 3 | `engins/renderengin/RenderEnginViewport.tsx`, `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginCapabilities.ts`, `engine/engin-runtime/EnginBaseState.ts`, `lib/gameReadyIntegrity.ts` |
-| `engins/renderengin/diagnostics.ts` | ts | 6 | 3 | `engins/renderengin/RenderEnginViewport.tsx`, `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts`, `lib/gameReadyIntegrity.ts` |
+| `engins/renderengin/assets.ts` | ts | 4 | 3 | `engins/renderengin/RenderEnginViewport.tsx`, `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginCapabilities.ts`, `engine/engin-runtime/EnginBaseState.ts`, `types/gameReadyAsset.ts` |
+| `engins/renderengin/diagnostics.ts` | ts | 5 | 3 | `engins/renderengin/RenderEnginViewport.tsx`, `engins/renderengin/index.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts`, `types/gameReadyAsset.ts` |
 | `engins/renderengin/scene.ts` | ts | 2 | 3 | `engins/renderengin/index.ts`, `engins/renderengin/virtualization.ts`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginBaseState.ts`, `engins/renderengin/core.ts` |
 | `engins/rulesets/brand/useBrandEnginRuntime.ts` | ts | 3 | 3 | `engine/generated/engins.ts`, `engins/engin.BrandingEngin.tsx`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginIOAdapter.ts`, `engine/engin-runtime/EnginRuntime.ts`, `engins/rulesets/brand/brandEnginRuleSet.ts` |
 | `engins/rulesets/code/useCodeEnginRuntime.ts` | ts | 3 | 3 | `engine/generated/engins.ts`, `engins/engin.CodeEngin.tsx`, `src/engin/generated/engins.ts` | `engine/engin-runtime/EnginIOAdapter.ts`, `engine/engin-runtime/EnginRuntime.ts`, `engins/rulesets/code/codeEnginRuleSet.ts` |
@@ -1114,13 +1114,13 @@ graph LR
 | `tests/contentengin-features.test.ts` | ts | 3 | 0 | — | `app/api/content/transcribe/route.ts`, `app/api/content/generative-fill/route.ts`, `app/api/content/voice-clone/route.ts` |
 | `tests/contentengin/assetviewport-pickmode.test.ts` | ts | 0 | 0 | — | — |
 | `tests/contentengin/contentengin-api.test.ts` | ts | 1 | 0 | — | `engins/contentengin/photo/imageAnalyzer.ts` |
-| `tests/contentengin/contentengin-export.test.ts` | ts | 5 | 0 | — | `engins/contentengin/pipeline/build.ts`, `engins/contentengin/pipeline/exportGlb.ts`, `engins/contentengin/pipeline/paths.ts` |
+| `tests/contentengin/contentengin-export.test.ts` | ts | 4 | 0 | — | `engins/contentengin/pipeline/build.ts`, `engins/contentengin/pipeline/exportGlb.ts`, `engins/contentengin/pipeline/paths.ts` |
 | `tests/contentengin/contentengin-glb-import.test.ts` | ts | 1 | 0 | — | `engins/isosurfaceAssetPipeline.ts` |
 | `tests/contentengin/contentengin-grammars.test.ts` | ts | 0 | 0 | — | — |
 | `tests/contentengin/contentengin-recipes.test.ts` | ts | 0 | 0 | — | — |
 | `tests/contentengin/contentengin-rigging.test.ts` | ts | 3 | 0 | — | `engins/isosurfaceAssetPipeline.ts`, `engins/contentengin/rigging/index.ts`, `engins/contentengin/rigging/rigValidator.ts` |
 | `tests/contentengin/contentengin-validation.test.ts` | ts | 0 | 0 | — | — |
-| `tests/contentengin/intrinsic-asset-scanner.test.ts` | ts | 4 | 0 | — | `engins/isosurfaceDualContouring.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts`, `engins/contentengin/scan/gameReadyMeshBuilder.ts` |
+| `tests/contentengin/intrinsic-asset-scanner.test.ts` | ts | 3 | 0 | — | `engins/isosurfaceDualContouring.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts`, `engins/contentengin/scan/gameReadyMeshBuilder.ts` |
 | `tests/contentengin/test-assets/sandbox/README.md` | doc | 0 | 0 | — | — |
 | `tests/contentengin/test-assets/sandbox/recipes/canyon-racer.recipe.json` | config | 0 | 0 | — | — |
 | `tests/contentengin/test-assets/sandbox/recipes/glass-canopy-tree.recipe.json` | config | 0 | 0 | — | — |
@@ -1192,7 +1192,7 @@ graph LR
 | `tests/game-quality-plan.test.ts` | ts | 1 | 0 | — | `engins/gameengin/games/quality-plan.ts` |
 | `tests/game-remote-regression.test.ts` | ts | 0 | 0 | — | — |
 | `tests/gameengin-architect.test.ts` | ts | 1 | 0 | — | `engins/gameengin/brain-reader.ts` |
-| `tests/gameengin-asset-pipeline.test.ts` | ts | 5 | 0 | — | `engins/gameengin/assets/BundleManifest.ts`, `engins/gameengin/assets/BundleCache.ts`, `engins/gameengin/render/ShaderRegistry.ts` |
+| `tests/gameengin-asset-pipeline.test.ts` | ts | 4 | 0 | — | `engins/gameengin/assets/BundleManifest.ts`, `engins/gameengin/assets/BundleCache.ts`, `engins/gameengin/render/ShaderRegistry.ts` |
 | `tests/gameengin-cartridges.test.ts` | ts | 4 | 0 | — | `engins/gameengin/cartridges/manifest.ts`, `engins/gameengin/cartridges/loaders.ts`, `components/games/dream.GamesHub.tsx` |
 | `tests/gameengin-crash-modal.test.ts` | ts | 4 | 0 | — | `engins/gameengin/brain-reader.ts`, `components/gameengin/dream.CrashReportModal.tsx`, `components/gameengin/dream.cartridge.CartridgeErrorBoundary.tsx` |
 | `tests/gameengin-input-router.test.ts` | ts | 2 | 0 | — | `engins/gameengin/input/index.ts`, `engins/gameengin/cartridge.ts` |
@@ -1281,7 +1281,7 @@ graph LR
 | `tests/renderengin-core.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
 | `tests/renderengin-glb-virtual-animation.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
 | `tests/renderengin-gpu-proof-security.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
-| `tests/renderengin-material-security-performance.test.ts` | ts | 2 | 0 | — | `lib/gameReadyIntegrity.ts`, `engins/renderengin/index.ts` |
+| `tests/renderengin-material-security-performance.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
 | `tests/renderengin-runtime-wiring.test.ts` | ts | 5 | 0 | — | `engine/engin-runtime/EnginRuntime.ts`, `engine/engin-runtime/EnginRuntimeRegistry.ts`, `engins/renderengin/runtimeRegistration.ts` |
 | `tests/renderengin-texture-lighting-settings.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
 | `tests/renderengin-webgpu.test.ts` | ts | 1 | 0 | — | `engins/renderengin/index.ts` |
@@ -1437,8 +1437,8 @@ graph LR
 | `types/module-manifest.ts` | ts | 1 | 12 | `components/draggable/dream.DraggableModule.tsx`, `components/universal-editor/dream.UniversalEditorWrapper.tsx`, `components/universal-editor/useTapHoldMove.ts` | `engine/engin-runtime/EnginBaseState.ts` |
 | `types/dreamArtifact.ts` | ts | 0 | 10 | `app/dreamdmbar/_components/DreamSpaceRegion.tsx`, `app/dreamdmbar/_components/HomeDreamRegion.tsx`, `components/dreams/dreamsurface.dreamspace.tsx` | — |
 | `types/ai-system.ts` | ts | 0 | 7 | `dr-eams/ai/boogie-verifier.ts`, `dr-eams/ai/capability-gate.ts`, `dr-eams/ai/confirm-token.ts` | — |
-| `types/gameReadyAsset.ts` | ts | 0 | 7 | `engins/contentengin/scan/intrinsicAssetScanner.ts`, `engins/gameengin/assets/BundleManifest.ts`, `engins/renderengin/RenderEnginViewport.tsx` | — |
 | `types/journey.ts` | ts | 0 | 7 | `components/daydream/dream.JourneyTrail.tsx`, `components/daydream/dream.shell.DaydreamShell.tsx`, `engine/journey/journeyDots.ts` | — |
+| `types/gameReadyAsset.ts` | ts | 0 | 6 | `engins/contentengin/scan/intrinsicAssetScanner.ts`, `engins/gameengin/assets/BundleManifest.ts`, `engins/renderengin/RenderEnginViewport.tsx` | — |
 | `types/dream-window.ts` | ts | 1 | 3 | `components/dreams/dream.widget.SuperDreamWidget.tsx`, `engine/dream-window/useDreamWindowActions.ts`, `tests/phase8b-dream-windows.test.ts` | `engine/dream-window/DreamWindowLifecycle.ts` |
 | `types/widget-system-v2.ts` | ts | 0 | 3 | `app/api/dreams/feed/route.ts`, `app/api/dreams/instances/route.ts`, `engine/widgets/feed-resolver.ts` | — |
 | `types/widgets.ts` | ts | 0 | 3 | `app/dreamdmbar/_components/DreamWidgetGrid.tsx`, `components/connectors/dream.widget.ConnectorWidgetPicker.tsx`, `engine/runtime/moduleRegistry.ts` | — |
@@ -1496,7 +1496,7 @@ graph LR
 | `src/engin/generated/personas.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/rulesets.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/surfaces.ts` | ts | 587 | 1 | `src/engin/generated/index.ts` | `app/(internal)/idari-console/page.tsx`, `app/(internal)/idari-console/platform-errors/page.tsx`, `app/(internal)/idari-console/platform-health/page.tsx` |
-| `src/engin/generated/systems.ts` | ts | 1 | 1 | `src/engin/generated/index.ts` | `lib/gameReadyIntegrity.ts` |
+| `src/engin/generated/systems.ts` | ts | 0 | 1 | `src/engin/generated/index.ts` | — |
 | `src/engin/generated/index.ts` | ts | 14 | 0 | — | `src/engin/generated/engins.ts`, `src/engin/generated/rulesets.ts`, `src/engin/generated/surfaces.ts` |
 
 </details>
@@ -1587,27 +1587,8 @@ graph LR
 
 </details>
 
-<details><summary>lib/ (1 files)</summary>
-
-| File | Type | Imports | Imported By | Top Importers | Top Imports |
-|---|---|---|---|---|---|
-| `lib/gameReadyIntegrity.ts` | ts | 1 | 11 | `engins/contentengin/pipeline/exportGlb.ts`, `engins/contentengin/pipeline/validate.ts`, `engins/contentengin/scan/intrinsicAssetScanner.ts` | `types/gameReadyAsset.ts` |
-
-</details>
-
 
 #### File-Level Graphs by Folder
-
-<details><summary>lib/ — 1 files</summary>
-
-```mermaid
-graph LR
-  f_lib_gameReadyIntegrity_ts["gameReadyIntegrity.ts"]
-  f_types_gameReadyAsset_ts["gameReadyAsset.ts"]
-  f_lib_gameReadyIntegrity_ts --> f_types_gameReadyAsset_ts
-```
-
-</details>
 
 <details><summary>utils/ — 3 files</summary>
 
@@ -2742,7 +2723,6 @@ graph LR
   f_daydreams_music_page_tsx["page.tsx"]
   f_daydreams_shared_useDaydreamPersistence_ts["useDaydreamPersistence.ts"]
   f_daydreams_shared_useDaydreamState_ts["useDaydreamState.ts"]
-  f_lib_gameReadyIntegrity_ts["gameReadyIntegrity.ts"]
   f_src_engin_generated_cartridges_ts --> f_public_cartridges_mad_maxi_MANIFEST_json
   f_src_engin_generated_dreamdmbar_ts --> f_dreamdmbar_dream_GlowingLight_tsx
   f_src_engin_generated_dreamdmbar_ts --> f_dreamdmbar_dream_PhaseTrail_tsx
@@ -3670,7 +3650,6 @@ graph LR
   f_src_engin_generated_surfaces_ts --> f_daydreams_music_page_tsx
   f_src_engin_generated_surfaces_ts --> f_daydreams_shared_useDaydreamPersistence_ts
   f_src_engin_generated_surfaces_ts --> f_daydreams_shared_useDaydreamState_ts
-  f_src_engin_generated_systems_ts --> f_lib_gameReadyIntegrity_ts
 ```
 
 </details>
