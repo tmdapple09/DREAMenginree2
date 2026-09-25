@@ -6,57 +6,53 @@
         29
       ],
       "spacings": [
-        0.987654,
-        0.876543,
-        0.765432,
-        0.654321,
-        0.54321,
-        0.432109,
-        0.321098,
-        0.210987,
-        0.109876,
-        0.098765,
-        0.087654,
-        0.076543,
-        0.065432,
-        0.054321,
-        0.04321,
-        0.032109,
-        0.021098,
-        0.010987,
-        0.009876,
-        0.008765,
-        0.007654,
-        0.006543,
-        0.005432,
-        0.004321,
-        0.00321,
-        0.002109,
-        0.001098,
-        0.000987,
-        0.000876,
-        0.000765,
-        0.000654,
-        0.000543
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
-      "why_notable": "The spacings show a gradual decrease from 0.987654 to 0.000543, indicating a potential trend or pattern."
+      "why_notable": "All spacings are zero, indicating no variation or change in the data over the recent 30 entries."
     }
   ],
   "large_gaps": [
     {
       "index": 0,
-      "gap": 0.987654,
-      "relative_to_mean": 2.15
+      "gap": 0.0,
+      "relative_to_mean": 0.0
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The predicted mean spacing (0.000432) is significantly lower than the mean spacing of the recent 30 spacings (0.987654), suggesting an anomaly."
+    "All spacings are zero, which is unusual and may indicate a lack of data or a consistent pattern of no change."
   ],
-  "notes": "The spacings_recent_30 show a clear trend of decreasing values, with the first spacing being notably larger than the rest. The predicted mean spacing is much lower than the actual mean spacing, indicating a potential anomaly. No periodicity is observed in the data.",
+  "notes": "The data shows no variation or change over the recent 30 entries, with all spacings being zero. This could indicate a consistent pattern of no change or a lack of data. There is no periodicity observed, and the large gap is also zero, which is consistent with the overall pattern of no variation.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-09-25T11:05:12Z"
+    "generated_at": "2026-09-25T16:17:14Z"
   }
 }
