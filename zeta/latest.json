@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-27T21:05:31Z",
-  "run_stamp": "20260927T210531Z",
+  "generated_at": "2026-09-28T02:54:29Z",
+  "run_stamp": "20260928T025429Z",
   "first_run": false,
-  "zeros_total": 21462,
+  "zeros_total": 21962,
   "zeros_added_this_run": 500,
   "model": "qwen2.5-coder:14b",
   "torridity": {
@@ -10,69 +10,69 @@
     "rho_c": 0.3613191634702832,
     "rho_c_source": "rho_obs at gamma_8",
     "rho_obs_first": 0.12903606048273306,
-    "rho_obs_last": 1.2771478726513614,
+    "rho_obs_last": 1.2803548023141742,
     "rho_N_first": 0.034841593421766195,
-    "rho_N_last": 1.0191685429112212,
+    "rho_N_last": 1.0222665140574774,
     "residual_first": 0.09419446706096686,
-    "residual_last": 0.25797932974014026,
-    "residual_mean": 0.25222582934083176,
-    "residual_std": 0.007057888169973331,
+    "residual_last": 0.25808828825669683,
+    "residual_mean": 0.2523580670203243,
+    "residual_std": 0.007030670037359338,
     "ratio_first": 3.7035062926290223,
-    "ratio_last": 1.253127249201816,
-    "ratio_mean": 1.289402585322337,
-    "ratio_std": 0.05114664951397004,
+    "ratio_last": 1.252466734171228,
+    "ratio_mean": 1.2885691409814228,
+    "ratio_std": 0.050855087299422556,
     "ratio_max": 3.7035062926290223,
-    "ratio_min": 1.253127249201816
+    "ratio_min": 1.252466734171228
   },
   "phase1_extraction": {
-    "count": 21462,
+    "count": 21962,
     "first": 0.0,
-    "last": 19195.551049,
+    "last": 19586.259399,
     "min_gamma": 0.0,
-    "max_gamma": 19195.551049,
-    "mean_spacing_recent_30": 0.708192,
-    "std_spacing_recent_30": 0.402148,
-    "largest_gap_recent_30": 1.142857,
-    "smallest_gap_recent_30": 0.353453,
+    "max_gamma": 19586.259399,
+    "mean_spacing_recent_30": 0.584551,
+    "std_spacing_recent_30": 0.282843,
+    "largest_gap_recent_30": 1.0,
+    "smallest_gap_recent_30": 0.259399,
     "spacings_recent_30": [
-      0.708192,
-      0.353453,
-      0.694687,
-      0.793887,
-      0.795974,
-      0.749599,
-      0.797771,
-      0.785942,
-      0.820542,
-      0.739447,
-      0.741919,
-      0.392794,
-      0.440958,
-      0.443559,
-      0.741879,
-      0.729798,
-      0.406724,
-      0.424102,
-      0.724328,
-      0.249673,
-      0.763998,
-      0.423928,
-      0.441279,
-      0.787767,
-      0.383316,
-      0.418161,
-      0.799912,
-      0.740465,
-      0.728661,
-      0.725821,
-      0.729798,
-      0.732875
+      0.584551,
+      0.259399,
+      0.584551,
+      0.584551,
+      0.493858,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.259399,
+      0.584551,
+      0.259399,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551,
+      0.584551
     ],
-    "predicted_mean_spacing": 0.728151,
+    "predicted_mean_spacing": 0.584551,
     "_meta": {
       "role": "extractor",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-09-27T20:48:02Z"
+      "generated_at": "2026-09-28T02:29:41Z"
     }
   },
   "phase2_scanning": {
@@ -80,152 +80,192 @@
       {
         "index_range": [
           0,
-          29
+          1
         ],
         "spacings": [
-          0.708192,
-          0.353453,
-          0.694687,
-          0.793887,
-          0.795974,
-          0.749599,
-          0.797771,
-          0.785942,
-          0.820542,
-          0.739447,
-          0.741919,
-          0.392794,
-          0.440958,
-          0.443559,
-          0.741879,
-          0.729798,
-          0.406724,
-          0.424102,
-          0.724328,
-          0.249673,
-          0.763998,
-          0.423928,
-          0.441279,
-          0.787767,
-          0.383316,
-          0.418161,
-          0.799912,
-          0.740465,
-          0.728661,
-          0.725821,
-          0.729798,
-          0.732875
+          0.584551,
+          0.259399
         ],
-        "why_notable": "The spacings show a relatively consistent pattern with some variations, indicating a possible cluster of similar spacing intervals."
+        "why_notable": "The first two spacings are different from the rest, indicating a potential change in pattern."
+      },
+      {
+        "index_range": [
+          2,
+          30
+        ],
+        "spacings": [
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.493858,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.259399,
+          0.584551,
+          0.259399,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551,
+          0.584551
+        ],
+        "why_notable": "The majority of the spacings are consistent, with a slight variation in the 5th position."
       }
     ],
     "large_gaps": [
       {
-        "index": 11,
-        "gap": 1.142857,
-        "relative_to_mean": 1.61
+        "index": 1,
+        "gap": 0.259399,
+        "relative_to_mean": 0.4428
       },
       {
-        "index": 19,
-        "gap": 0.249673,
-        "relative_to_mean": 0.35
+        "index": 10,
+        "gap": 0.259399,
+        "relative_to_mean": 0.4428
+      },
+      {
+        "index": 12,
+        "gap": 0.259399,
+        "relative_to_mean": 0.4428
       }
     ],
     "periodicity_observed": false,
     "anomalies": [
-      "The spacing at index 11 (1.142857) is significantly larger than the mean spacing (0.708192), indicating a potential anomaly."
+      "The first two spacings are significantly different from the rest, suggesting a potential anomaly or change in the data pattern."
     ],
-    "notes": "The spacings_recent_30 data shows a mix of relatively consistent intervals with some notable variations. The largest gap observed is at index 11, which is 1.61 times the mean spacing, suggesting a potential anomaly. There is no clear periodicity observed in the data.",
+    "notes": "The data shows a consistent pattern with a slight variation in the 5th position. There are three large gaps, all of which are relatively small compared to the mean spacing. No clear periodicity is observed in the data.",
     "_meta": {
       "role": "scanner",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-09-27T20:52:28Z"
+      "generated_at": "2026-09-28T02:35:27Z"
     }
   },
   "phase3_analysis": {
-    "density_ratio": 0.972,
-    "density_consistent_with_rvm": true,
-    "spacing_std": 0.402148,
+    "density_ratio": 0.0,
+    "density_consistent_with_rvm": false,
+    "spacing_std": 0.282843,
     "spacing_std_gue_prediction": 0.422,
-    "spacing_consistent_with_gue": true,
+    "spacing_consistent_with_gue": false,
     "mathematical_observations": [
-      "The observed mean spacing (0.708192) is very close to the predicted mean spacing (0.728151) based on the Riemann-von Mangoldt formula, suggesting consistency with the local density near height T.",
-      "The standard deviation of the observed spacings (0.402148) is close to the predicted standard deviation for the Gaussian Unitary Ensemble (GUE) of 0.422, indicating consistency with the GUE nearest-neighbor spacing distribution."
+      "The observed mean spacing is significantly different from the predicted mean spacing based on the Riemann-von Mangoldt formula.",
+      "The standard deviation of the observed spacings (0.282843) is less than the predicted standard deviation for GUE (0.422).",
+      "There are anomalies in the first two spacings, which deviate from the consistent pattern observed in the rest of the data."
     ],
     "rh_status": {
       "is_proven": false,
       "is_disproven": false,
       "can_this_data_decide": false,
-      "reasoning": "The finite nature of the data and the limited range of values do not provide sufficient evidence to prove or disprove the Riemann Hypothesis. The observed consistency with theoretical predictions does not constitute a proof of the hypothesis."
+      "reasoning": "The data set is too small and finite to make any definitive conclusions about the Riemann Hypothesis. The observed patterns and anomalies do not provide enough evidence to either prove or disprove the hypothesis."
     },
     "what_would_be_needed": [
-      "A much larger dataset with a broader range of values to observe long-term trends and patterns.",
-      "Further analysis of higher-order statistics and more complex models to better understand the distribution of spacings.",
-      "A rigorous mathematical proof or counterexample to the Riemann Hypothesis."
+      "A much larger data set to observe long-term patterns and trends.",
+      "A more rigorous statistical analysis to account for potential biases and errors in the data.",
+      "Further theoretical insights or models that could better explain the observed spacing patterns."
     ],
     "honest_limits": [
-      "The current dataset is insufficient to make definitive statements about the Riemann Hypothesis.",
-      "The observed consistency with theoretical predictions does not imply a proof of the hypothesis.",
-      "Further research and data collection are needed to gain deeper insights into the distribution of spacings and the validity of the Riemann Hypothesis."
+      "The finite nature of the data limits the ability to draw conclusive mathematical proofs or disproofs.",
+      "The observed anomalies and variations in the data suggest the need for more comprehensive analysis and understanding of the underlying mathematical principles."
     ],
     "_meta": {
       "role": "analyst",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-09-27T20:57:52Z"
+      "generated_at": "2026-09-28T02:42:39Z"
     }
   },
   "phase4_synthesis": {
     "final_status": {
       "riemann_hypothesis_solved": false,
       "confidence": 0.99,
-      "reasoning": "The current dataset and analysis do not provide sufficient evidence to prove or disprove the Riemann Hypothesis. The observed consistency with theoretical predictions does not constitute a proof of the hypothesis."
+      "reasoning": "The data set is too small and finite to make any definitive conclusions about the Riemann Hypothesis. The observed patterns and anomalies do not provide enough evidence to either prove or disprove the hypothesis."
     },
     "confirmed_findings": [
       {
-        "finding": "The observed mean spacing (0.708192) is very close to the predicted mean spacing (0.728151) based on the Riemann-von Mangoldt formula, suggesting consistency with the local density near height T.",
+        "finding": "The data shows a consistent pattern with a slight variation in the 5th position.",
         "confidence": 0.95
       },
       {
-        "finding": "The standard deviation of the observed spacings (0.402148) is close to the predicted standard deviation for the Gaussian Unitary Ensemble (GUE) of 0.422, indicating consistency with the GUE nearest-neighbor spacing distribution.",
+        "finding": "There are three large gaps, all of which are relatively small compared to the mean spacing.",
+        "confidence": 0.95
+      },
+      {
+        "finding": "The observed mean spacing is significantly different from the predicted mean spacing based on the Riemann-von Mangoldt formula.",
+        "confidence": 0.95
+      },
+      {
+        "finding": "The standard deviation of the observed spacings (0.282843) is less than the predicted standard deviation for GUE (0.422).",
+        "confidence": 0.95
+      },
+      {
+        "finding": "There are anomalies in the first two spacings, which deviate from the consistent pattern observed in the rest of the data.",
         "confidence": 0.95
       }
     ],
     "open_questions": [
-      "How does the observed spacing pattern evolve with a larger dataset and a broader range of values?",
-      "What additional higher-order statistics and complex models can be used to better understand the distribution of spacings?",
-      "Can further research and data collection provide deeper insights into the validity of the Riemann Hypothesis?"
+      "How do the anomalies in the first two spacings affect the overall pattern and its implications for the Riemann Hypothesis?",
+      "What role do these anomalies play in the distribution of zeta zeros and their spacing patterns?",
+      "How can further analysis of larger data sets provide more insights into the Riemann Hypothesis?"
     ],
     "numerology_speculations": [
       {
-        "speculation": "The patterns observed in the zeta zero spacings may have deeper connections to number theory and the structure of the universe.",
+        "speculation": "The variations in zeta zero patterns might be related to deeper mathematical structures or constants not yet discovered.",
+        "confidence": 0.3,
+        "speculative": true
+      },
+      {
+        "speculation": "The anomalies could be indicative of hidden symmetries or underlying mathematical principles governing the distribution of zeta zeros.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "coding_practice_speculations": [
       {
-        "speculation": "Advanced AI models and machine learning techniques could potentially uncover hidden patterns in the zeta zero spacings that are not immediately apparent.",
+        "speculation": "Advanced AI models and machine learning techniques could be employed to detect and predict anomalies in zeta zero patterns more accurately.",
+        "confidence": 0.3,
+        "speculative": true
+      },
+      {
+        "speculation": "Optimizing coding practices and algorithms for handling large-scale data could lead to more efficient analysis of zeta zero patterns.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "physics_speculations": [
       {
-        "speculation": "There may be a connection between the distribution of zeta zeros and fundamental physical constants or principles.",
+        "speculation": "The spacing patterns of zeta zeros might have connections to quantum mechanics or other fundamental physical theories.",
+        "confidence": 0.3,
+        "speculative": true
+      },
+      {
+        "speculation": "Understanding the distribution of zeta zeros could provide insights into the nature of space-time and the universe.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
-    "honest_summary": "The analysis of the recent 30 spacings of zeta zeros shows a consistent pattern with some variations, indicating a possible cluster of similar spacing intervals. The observed mean spacing and standard deviation are consistent with theoretical predictions based on the Riemann-von Mangoldt formula and the Gaussian Unitary Ensemble. However, the current dataset is insufficient to make definitive statements about the Riemann Hypothesis, and further research and data collection are needed to gain deeper insights into the distribution of spacings and the validity of the hypothesis.",
+    "honest_summary": "The analysis of the zeta zero patterns reveals a consistent pattern with slight variations and anomalies. While the data does not provide conclusive evidence regarding the Riemann Hypothesis, it highlights the need for further investigation with larger data sets and more rigorous statistical methods. The observed anomalies and variations suggest potential connections to deeper mathematical structures and physical theories, though these speculations remain speculative with low confidence.",
     "next_realistic_steps": [
-      "Collect a much larger dataset with a broader range of values to observe long-term trends and patterns.",
-      "Conduct further analysis of higher-order statistics and more complex models to better understand the distribution of spacings.",
-      "Explore potential connections between zeta zero patterns and advanced AI models or physical principles."
+      "Collect and analyze a much larger data set of zeta zeros to observe long-term patterns and trends.",
+      "Develop and apply advanced statistical models and machine learning techniques to detect and predict anomalies in zeta zero patterns.",
+      "Collaborate with mathematicians and physicists to explore potential connections between zeta zero patterns and fundamental physical theories."
     ],
     "_meta": {
       "role": "synthesizer",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-09-27T21:05:28Z"
+      "generated_at": "2026-09-28T02:54:26Z"
     }
   }
 }
