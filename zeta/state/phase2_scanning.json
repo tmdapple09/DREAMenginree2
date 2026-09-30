@@ -3,50 +3,86 @@
     {
       "index_range": [
         0,
-        0
-      ],
-      "spacings": [
-        0.0
-      ],
-      "why_notable": "The first spacing is 0.0, which is unusual as it suggests no gap between the first two points."
-    },
-    {
-      "index_range": [
-        25,
         30
       ],
       "spacings": [
-        0.399936,
-        0.916412,
-        0.69996,
-        0.300034,
-        0.63996,
-        0.640036
+        0.557311,
+        0.650411,
+        1.003374,
+        0.914734,
+        0.593515,
+        0.47133,
+        0.766304,
+        0.451723,
+        1.162404,
+        1.123483,
+        0.746468,
+        0.638551,
+        0.978908,
+        1.46999,
+        0.429363,
+        1.780396,
+        0.229701,
+        0.509939,
+        1.59098,
+        0.591358,
+        0.199495,
+        0.679265,
+        0.715827,
+        1.068397,
+        0.183044,
+        1.103182,
+        0.363905,
+        0.421662,
+        0.922253,
+        0.354795,
+        1.245857,
+        0.155757,
+        0.874905
       ],
-      "why_notable": "This cluster of spacings is relatively small and consistent, with values close to 0.5 to 1.0."
+      "why_notable": "The spacings show a range of values with no clear clustering pattern."
     }
   ],
   "large_gaps": [
     {
+      "index": 14,
+      "gap": 1.46999,
+      "relative_to_mean": 0.0
+    },
+    {
+      "index": 15,
+      "gap": 1.780396,
+      "relative_to_mean": 0.0
+    },
+    {
+      "index": 16,
+      "gap": 0.229701,
+      "relative_to_mean": 0.0
+    },
+    {
+      "index": 19,
+      "gap": 1.59098,
+      "relative_to_mean": 0.0
+    },
+    {
       "index": 24,
-      "gap": 1.69,
-      "relative_to_mean": 71.35
+      "gap": 1.103182,
+      "relative_to_mean": 0.0
     },
     {
       "index": 26,
-      "gap": 2.3e-05,
-      "relative_to_mean": 0.01
+      "gap": 1.245857,
+      "relative_to_mean": 0.0
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The first spacing of 0.0 is an anomaly as it indicates no gap between the first two points.",
-    "The large gap of 1.69 at index 24 is significantly larger than the mean spacing."
+    "The spacing at index 16 (0.229701) is significantly smaller than the others, potentially indicating an anomaly."
   ],
-  "notes": "The data shows a mix of small, consistent spacings and a few larger gaps. The first spacing is notably zero, which is unusual. The largest gap is 1.69, which is much larger than the mean spacing, indicating a potential anomaly. There is no clear periodicity observed in the spacings.",
+  "notes": "The spacings_recent_30 data does not exhibit any clear clustering or periodicity. There are several large gaps, but no consistent pattern. The spacing at index 16 stands out as an anomaly due to its unusually small value.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-09-30T11:48:18Z"
+    "generated_at": "2026-09-30T17:27:22Z"
   }
 }
