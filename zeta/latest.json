@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-06T13:11:42Z",
-  "run_stamp": "20261006T131142Z",
+  "generated_at": "2026-10-06T22:49:40Z",
+  "run_stamp": "20261006T224940Z",
   "first_run": false,
-  "zeros_total": 37462,
+  "zeros_total": 37962,
   "zeros_added_this_run": 500,
   "model": "qwen2.5-coder:14b",
   "torridity": {
@@ -10,71 +10,72 @@
     "rho_c": 0.3613191634702832,
     "rho_c_source": "rho_obs at gamma_8",
     "rho_obs_first": 0.12903606048273306,
-    "rho_obs_last": 1.3550835293548582,
+    "rho_obs_last": 1.3569478476728103,
     "rho_N_first": 0.034841593421766195,
-    "rho_N_last": 1.0945956232647411,
+    "rho_N_last": 1.0964033207242694,
     "residual_first": 0.09419446706096686,
-    "residual_last": 0.26048790609011707,
-    "residual_mean": 0.25527769834795794,
-    "residual_std": 0.006422725089944549,
+    "residual_last": 0.2605445269485409,
+    "residual_mean": 0.25534669685294,
+    "residual_std": 0.006408180235252722,
     "ratio_first": 3.7035062926290223,
-    "ratio_last": 1.2379763819200973,
-    "ratio_mean": 1.270314547707696,
-    "ratio_std": 0.04467032797254833,
+    "ratio_last": 1.2376356601842728,
+    "ratio_mean": 1.269886365855859,
+    "ratio_std": 0.04452968475130208,
     "ratio_max": 3.7035062926290223,
-    "ratio_min": 1.2379763819200973
+    "ratio_min": 1.2376356601842728
   },
   "phase1_extraction": {
-    "count": 37462,
+    "count": 37962,
     "first": 0.0,
-    "last": 31323.31502,
+    "last": 31692.389289,
     "min_gamma": 0.0,
-    "max_gamma": 31323.31502,
+    "max_gamma": 31692.389289,
     "mean_spacing_recent_30": 0.0,
     "std_spacing_recent_30": 0.0,
     "largest_gap_recent_30": 0.0,
     "smallest_gap_recent_30": 0.0,
     "spacings_recent_30": [
-      0.520203,
-      0.820598,
-      0.615295,
-      0.642541,
-      0.77277,
-      0.799501,
-      0.684627,
-      0.46791,
-      0.35324,
-      1.35324,
-      0.939975,
-      0.276882,
-      0.176882,
-      0.627037,
-      0.92,
-      0.37901,
-      0.18401,
-      0.7837,
-      0.28292,
-      0.074746,
-      0.999563,
-      0.974563,
-      0.220812,
-      0.67277,
-      0.964146,
-      0.5544,
-      0.2992,
-      0.169904,
-      0.569904,
-      0.38738,
-      1.41719,
-      0.90394,
-      0.50256,
-      0.58396
+      0.437915,
+      0.797515,
+      0.546913,
+      0.300351,
+      0.792209,
+      0.632189,
+      0.393161,
+      0.659939,
+      0.296562,
+      0.294037,
+      0.414974,
+      0.40291,
+      0.88443,
+      1.084172,
+      0.97699,
+      0.30093,
+      0.559329,
+      0.663237,
+      0.719872,
+      0.21843,
+      0.523285,
+      0.956495,
+      0.493635,
+      0.300041,
+      0.682082,
+      0.579608,
+      0.633658,
+      1.131832,
+      0.686581,
+      0.899133,
+      0.294547,
+      0.295602,
+      0.700988,
+      0.282924,
+      0.312818
     ],
-    "predicted_mean_spacing": 2.36087,
+    "predicted_mean_spacing": 2.36089,
     "_meta": {
       "role": "extractor",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-06T12:48:51Z"
+      "generated_at": "2026-10-06T22:24:53Z"
     }
   },
   "phase2_scanning": {
@@ -82,68 +83,58 @@
       {
         "index_range": [
           0,
-          29
+          30
         ],
         "spacings": [
-          0.520203,
-          0.820598,
-          0.615295,
-          0.642541,
-          0.77277,
-          0.799501,
-          0.684627,
-          0.46791,
-          0.35324,
-          1.35324,
-          0.939975,
-          0.276882,
-          0.176882,
-          0.627037,
-          0.92,
-          0.37901,
-          0.18401,
-          0.7837,
-          0.28292,
-          0.074746,
-          0.999563,
-          0.974563,
-          0.220812,
-          0.67277,
-          0.964146,
-          0.5544,
-          0.2992,
-          0.169904,
-          0.569904,
-          0.38738,
-          1.41719,
-          0.90394,
-          0.50256,
-          0.58396
+          0.437915,
+          0.797515,
+          0.546913,
+          0.300351,
+          0.792209,
+          0.632189,
+          0.393161,
+          0.659939,
+          0.296562,
+          0.294037,
+          0.414974,
+          0.40291,
+          0.88443,
+          1.084172,
+          0.97699,
+          0.30093,
+          0.559329,
+          0.663237,
+          0.719872,
+          0.21843,
+          0.523285,
+          0.956495,
+          0.493635,
+          0.300041,
+          0.682082,
+          0.579608,
+          0.633658,
+          1.131832,
+          0.686581,
+          0.899133,
+          0.294547,
+          0.295602,
+          0.700988,
+          0.282924,
+          0.312818
         ],
-        "why_notable": "The spacings are mostly within a small range, with some larger gaps, indicating a somewhat regular pattern with occasional anomalies."
+        "why_notable": "The spacings are within a relatively small range, indicating a consistent pattern."
       }
     ],
-    "large_gaps": [
-      {
-        "index": 9,
-        "gap": 1.35324,
-        "relative_to_mean": 1.35324
-      },
-      {
-        "index": 28,
-        "gap": 1.41719,
-        "relative_to_mean": 1.41719
-      }
-    ],
+    "large_gaps": [],
     "periodicity_observed": false,
     "anomalies": [
-      "The large gaps at indices 9 and 28 are significantly larger than the mean spacing, indicating potential anomalies in the data."
+      "The spacing at index 13 (1.084172) is significantly larger than the others, potentially indicating an anomaly."
     ],
-    "notes": "The spacings_recent_30 data shows a mix of relatively small gaps and a couple of larger gaps. The mean spacing is 2.36087, but the actual spacings are mostly below this value, with a few exceptions. The lack of a clear periodic pattern suggests that the data may be influenced by random or non-periodic factors.",
+    "notes": "The spacings_recent_30 data shows a consistent pattern with minor variations. The largest gap is at index 13, which is notably larger than the rest, suggesting a potential anomaly. No clear periodicity is observed in the data.",
     "_meta": {
       "role": "scanner",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-06T12:54:09Z"
+      "generated_at": "2026-10-06T22:31:32Z"
     }
   },
   "phase3_analysis": {
@@ -153,94 +144,87 @@
     "spacing_std_gue_prediction": 0.422,
     "spacing_consistent_with_gue": false,
     "mathematical_observations": [
-      "The observed mean spacing is 0.0, which is significantly different from the predicted mean spacing of 2.36087 based on the Riemann-von Mangoldt formula.",
-      "The standard deviation of the observed spacings is 0.0, which is not consistent with the GUE prediction of approximately 0.422.",
-      "The data shows a mix of small gaps and a couple of larger gaps, indicating potential anomalies.",
-      "There is no clear periodic pattern in the data, suggesting that it may be influenced by random or non-periodic factors."
+      "The observed mean spacing is 0.0, which is not consistent with the predicted mean spacing of 2.36089 based on the Riemann-von Mangoldt formula.",
+      "The standard deviation of the observed spacings is 0.0, which is significantly different from the expected standard deviation of 0.422 for the Gaussian Unitary Ensemble (GUE).",
+      "The data shows a consistent pattern with minor variations, but the presence of a notably larger gap at index 13 suggests potential anomalies."
     ],
     "rh_status": {
       "is_proven": false,
       "is_disproven": false,
       "can_this_data_decide": false,
-      "reasoning": "The finite nature of the data and the presence of anomalies prevent it from providing a conclusive decision on the Riemann Hypothesis. The data does not align with the expected patterns from the Riemann-von Mangoldt formula or the Gaussian Unitary Ensemble (GUE) model."
+      "reasoning": "The finite nature of the data and the presence of anomalies prevent it from providing a conclusive decision on the Riemann Hypothesis. The data does not align with the expected statistical properties of the Riemann-von Mangoldt formula or the Gaussian Unitary Ensemble, but this is insufficient to disprove the hypothesis."
     },
     "what_would_be_needed": [
-      "A larger dataset with a clear periodic pattern to better align with theoretical predictions.",
-      "Further analysis to identify and mitigate the anomalies in the data.",
-      "A more sophisticated model that accounts for potential non-periodic influences on the data."
+      "A larger dataset with more consistent spacing patterns to better estimate the mean and standard deviation.",
+      "Further analysis to understand the source of the anomalies in the data.",
+      "A more rigorous statistical test to compare the observed data with theoretical predictions."
     ],
     "honest_limits": [
-      "The finite size of the dataset limits the ability to draw definitive conclusions about the Riemann Hypothesis.",
-      "The presence of anomalies in the data introduces uncertainty and complicates the analysis.",
-      "Current theoretical models may not fully capture the underlying dynamics of the data."
+      "The limited size of the dataset and the presence of anomalies restrict the ability to draw definitive conclusions about the Riemann Hypothesis.",
+      "Finite data cannot provide a conclusive proof or disproof of the Riemann Hypothesis, as more extensive and consistent data would be required."
     ],
     "_meta": {
       "role": "analyst",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-06T13:01:15Z"
+      "generated_at": "2026-10-06T22:38:41Z"
     }
   },
   "phase4_synthesis": {
     "final_status": {
       "riemann_hypothesis_solved": false,
       "confidence": 0.99,
-      "reasoning": "The data analysis does not provide sufficient evidence to solve the Riemann Hypothesis. The presence of anomalies and the lack of a clear periodic pattern complicate the analysis, and the finite size of the dataset limits the ability to draw definitive conclusions."
+      "reasoning": "The provided data, while revealing some patterns and anomalies, does not provide sufficient evidence to solve the Riemann Hypothesis. The data is limited in size and contains anomalies that prevent a conclusive decision."
     },
     "confirmed_findings": [
       {
-        "finding": "The observed mean spacing of 0.0 is significantly different from the predicted mean spacing of 2.36087 based on the Riemann-von Mangoldt formula.",
-        "confidence": 0.95
+        "finding": "The spacings_recent_30 data shows a consistent pattern with minor variations, but the presence of a notably larger gap at index 13 suggests potential anomalies.",
+        "confidence": 0.8
       },
       {
-        "finding": "The standard deviation of the observed spacings is 0.0, which is not consistent with the GUE prediction of approximately 0.422.",
-        "confidence": 0.95
+        "finding": "The observed mean spacing is 0.0, which is not consistent with the predicted mean spacing of 2.36089 based on the Riemann-von Mangoldt formula.",
+        "confidence": 0.8
       },
       {
-        "finding": "The data shows a mix of small gaps and a couple of larger gaps, indicating potential anomalies.",
-        "confidence": 0.95
-      },
-      {
-        "finding": "There is no clear periodic pattern in the data, suggesting that it may be influenced by random or non-periodic factors.",
-        "confidence": 0.95
+        "finding": "The standard deviation of the observed spacings is 0.0, which is significantly different from the expected standard deviation of 0.422 for the Gaussian Unitary Ensemble (GUE).",
+        "confidence": 0.8
       }
     ],
     "open_questions": [
-      "How can the anomalies in the data be identified and mitigated to improve the analysis?",
-      "What additional data or models are needed to better align with theoretical predictions?",
-      "How do non-periodic influences affect the distribution of zeta zeros?"
+      "What is the source of the anomalies in the data?",
+      "How can the data be extended to better estimate the mean and standard deviation?",
+      "What further statistical tests can be applied to compare the observed data with theoretical predictions?"
     ],
     "numerology_speculations": [
       {
-        "speculation": "The patterns in zeta zeros may hold clues to deeper mathematical truths, potentially leading to insights into the Riemann Hypothesis.",
+        "speculation": "The patterns observed in the zeta zero spacings might be related to deeper mathematical structures or constants not yet discovered.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "coding_practice_speculations": [
       {
-        "speculation": "Advanced AI models, such as those based on deep learning, could potentially identify patterns in zeta zeros that are not apparent with traditional methods.",
+        "speculation": "The AI models used for extraction, scanning, and analysis could be improved by incorporating more sophisticated algorithms to handle anomalies and larger datasets.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "physics_speculations": [
       {
-        "speculation": "The distribution of zeta zeros may have connections to physical systems, such as quantum chaos, potentially providing insights into the Riemann Hypothesis.",
+        "speculation": "There might be connections between the patterns observed in zeta zero spacings and physical phenomena, such as quantum systems or chaotic dynamics.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
-    "honest_summary": "The analysis of the zeta zero patterns reveals significant discrepancies between observed and predicted values, with a mix of small and large gaps indicating potential anomalies. The lack of a clear periodic pattern and the finite size of the dataset limit the ability to draw definitive conclusions about the Riemann Hypothesis. Further analysis, including the identification and mitigation of anomalies, and the use of more sophisticated models, is needed to better understand the underlying dynamics of the data.",
+    "honest_summary": "The analysis of the provided data reveals consistent patterns with minor variations and notable anomalies. While these findings are interesting, they do not provide sufficient evidence to solve the Riemann Hypothesis. The limited size of the dataset and the presence of anomalies restrict the ability to draw definitive conclusions. Further analysis, including the extension of the dataset and the application of more rigorous statistical tests, is needed to better understand the patterns and their implications.",
     "next_realistic_steps": [
-      "Collect a larger dataset with a clear periodic pattern to better align with theoretical predictions.",
-      "Develop and apply advanced AI models to identify patterns in zeta zeros that are not apparent with traditional methods.",
-      "Conduct further analysis to identify and mitigate the anomalies in the data.",
-      "Explore potential connections between zeta zero patterns and physical systems, such as quantum chaos."
+      "Collect and analyze a larger dataset with more consistent spacing patterns.",
+      "Develop and apply more sophisticated algorithms to handle anomalies and improve the accuracy of predictions.",
+      "Conduct further statistical tests to compare the observed data with theoretical predictions from the Riemann-von Mangoldt formula and the Gaussian Unitary Ensemble."
     ],
     "_meta": {
       "role": "synthesizer",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-06T13:11:38Z"
+      "generated_at": "2026-10-06T22:49:36Z"
     }
   }
 }
