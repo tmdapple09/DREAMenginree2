@@ -6,57 +6,55 @@
         29
       ],
       "spacings": [
-        0.584562,
-        0.795996,
-        0.634318,
-        0.540355,
-        0.915973,
-        0.477864,
-        0.414143,
-        0.540355,
-        0.741789,
-        0.306026,
-        0.414143,
-        0.634318,
-        1.176834,
-        0.819352,
-        0.269487,
-        0.540355,
-        0.989546,
-        0.75397,
-        0.37594,
-        0.414143,
-        0.725571,
-        0.489805,
-        0.634318,
-        0.495434,
-        0.899025,
-        0.292514,
-        0.540355,
-        0.634318,
-        0.414143,
-        0.741789,
-        0.584562,
-        0.414143
+        0.784844,
+        0.999255,
+        0.250798,
+        0.800398,
+        0.938019,
+        0.585921,
+        0.550788,
+        0.750198,
+        0.789134,
+        0.793047,
+        0.812992,
+        0.649735,
+        0.464641,
+        0.5752,
+        0.977928,
+        0.600298,
+        0.748874,
+        0.448983,
+        0.57918,
+        0.57764,
+        1.341946,
+        0.894214,
+        0.599391,
+        0.627896,
+        0.946133,
+        0.325688,
+        0.722642,
+        0.520762,
+        0.731385,
+        0.637733
       ],
-      "why_notable": "This cluster includes all the recent spacings, showing a range of values with a mean spacing of 0.584562 and a standard deviation of 0.707107."
+      "why_notable": "This cluster includes the most recent 30 spacings, showing a range of values with no clear separation into distinct groups."
     }
   ],
   "large_gaps": [
     {
-      "index": 12,
-      "gap": 1.176834,
-      "relative_to_mean": 2.013626
+      "index": 21,
+      "gap": 1.341946,
+      "relative_to_mean": 1.71768
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The large gap at index 12 (1.176834) is significantly larger than the mean spacing (0.584562), indicating an anomaly."
+    "The large gap at index 21 (1.341946) is significantly larger than the mean spacing (0.784844), indicating an anomaly."
   ],
-  "notes": "The recent spacings show a range of values with a notable large gap at index 12. The overall distribution does not exhibit clear periodicity.",
+  "notes": "The spacings_recent_30 data shows a relatively uniform distribution with some variability. The largest gap is notably larger than the mean spacing, suggesting an anomaly. There is no clear periodic pattern observed in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-08T23:09:34Z"
+    "generated_at": "2026-10-09T03:37:07Z"
   }
 }
