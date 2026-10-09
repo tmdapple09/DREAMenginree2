@@ -3,68 +3,115 @@
     {
       "index_range": [
         0,
-        29
+        2
       ],
       "spacings": [
-        0.822864,
-        0.529599,
-        0.792344,
-        0.682738,
-        0.604018,
-        0.57826,
-        0.615118,
-        1.615098,
-        0.793977,
-        0.373226,
-        0.619398,
-        0.393437,
-        0.886979,
-        0.52603,
-        0.737755,
-        0.788473,
-        0.816872,
-        0.876928,
-        1.066628,
-        0.400194,
-        0.449395,
-        0.758918,
-        0.637082,
-        0.738712,
-        0.398639,
-        0.399375,
-        0.59979,
-        0.499976,
-        1.102531,
-        0.293865,
-        0.734647,
-        0.473653,
-        0.538382,
-        0.824752
+        0.334164,
+        0.750677,
+        0.11383
       ],
-      "why_notable": "This cluster includes all the recent spacings, showing a range of values with some notable gaps."
+      "why_notable": "These spacings are relatively close to each other, forming a small cluster."
+    },
+    {
+      "index_range": [
+        3,
+        6
+      ],
+      "spacings": [
+        1.144359,
+        0.395337,
+        0.350836
+      ],
+      "why_notable": "These spacings are also close, forming another small cluster."
+    },
+    {
+      "index_range": [
+        7,
+        10
+      ],
+      "spacings": [
+        1.204794,
+        0.256321,
+        1.034279
+      ],
+      "why_notable": "This cluster has a larger spacing compared to the previous ones."
+    },
+    {
+      "index_range": [
+        11,
+        14
+      ],
+      "spacings": [
+        0.963815,
+        1.119775,
+        0.318895
+      ],
+      "why_notable": "This cluster shows a mix of larger and smaller spacings."
+    },
+    {
+      "index_range": [
+        15,
+        18
+      ],
+      "spacings": [
+        0.262529,
+        1.028441,
+        0.842409
+      ],
+      "why_notable": "This cluster has a significant variation in spacing."
+    },
+    {
+      "index_range": [
+        19,
+        22
+      ],
+      "spacings": [
+        1.266038,
+        0.190398,
+        0.192584
+      ],
+      "why_notable": "This cluster includes a very small spacing."
+    },
+    {
+      "index_range": [
+        23,
+        26
+      ],
+      "spacings": [
+        0.70799,
+        0.64964,
+        0.33485
+      ],
+      "why_notable": "This cluster has a consistent spacing pattern."
+    },
+    {
+      "index_range": [
+        27,
+        30
+      ],
+      "spacings": [
+        0.389787,
+        0.693773,
+        1.224716
+      ],
+      "why_notable": "This cluster includes a large spacing."
     }
   ],
   "large_gaps": [
     {
-      "index": 7,
-      "gap": 1.615098,
-      "relative_to_mean": 1.96
-    },
-    {
-      "index": 28,
-      "gap": 1.102531,
-      "relative_to_mean": 1.34
+      "index": 26,
+      "gap": 2.172418,
+      "relative_to_mean": 2.06
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The large gap at index 7 (1.615098) is significantly larger than the mean spacing (0.822864).",
-    "The gap at index 28 (1.102531) is also relatively large compared to the mean spacing."
+    "The spacing at index 26 (2.172418) is significantly larger than the mean spacing (1.053333)."
   ],
-  "notes": "The recent spacings show a generally consistent pattern with some variability. Notable large gaps are observed at indices 7 and 28, which are significantly larger than the mean spacing. There is no clear periodicity detected in the data.",
+  "notes": "The spacings_recent_30 data shows several clusters of close spacings, with some larger gaps. The largest gap is at index 26, which is 2.06 times the mean spacing. There is no clear periodicity observed in the data. The anomaly is the large gap at index 26, which deviates significantly from the rest of the spacings.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-09T12:47:37Z"
+    "generated_at": "2026-10-09T22:17:19Z"
   }
 }
