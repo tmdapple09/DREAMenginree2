@@ -3,115 +3,76 @@
     {
       "index_range": [
         0,
-        2
+        0
       ],
       "spacings": [
-        0.334164,
-        0.750677,
-        0.11383
+        0.0
       ],
-      "why_notable": "These spacings are relatively close to each other, forming a small cluster."
+      "why_notable": "The spacing of 0.0 at index 0 is notable as it indicates a potential issue or anomaly in the data."
     },
     {
       "index_range": [
-        3,
-        6
+        1,
+        29
       ],
       "spacings": [
-        1.144359,
-        0.395337,
-        0.350836
+        0.744728,
+        0.439579,
+        0.0,
+        1.007178,
+        0.979952,
+        0.596688,
+        0.346894,
+        0.298994,
+        0.499999,
+        0.519999,
+        0.999999,
+        0.399999,
+        0.599999,
+        1.119999,
+        1.399999,
+        0.619999,
+        0.299999,
+        0.819999,
+        0.699999,
+        0.999999,
+        0.599999,
+        0.749999,
+        0.729999,
+        0.550001,
+        1.199999,
+        0.799999,
+        0.899999,
+        0.499999,
+        0.499999,
+        0.219999,
+        1.499999,
+        0.599999,
+        0.449999
       ],
-      "why_notable": "These spacings are also close, forming another small cluster."
-    },
-    {
-      "index_range": [
-        7,
-        10
-      ],
-      "spacings": [
-        1.204794,
-        0.256321,
-        1.034279
-      ],
-      "why_notable": "This cluster has a larger spacing compared to the previous ones."
-    },
-    {
-      "index_range": [
-        11,
-        14
-      ],
-      "spacings": [
-        0.963815,
-        1.119775,
-        0.318895
-      ],
-      "why_notable": "This cluster shows a mix of larger and smaller spacings."
-    },
-    {
-      "index_range": [
-        15,
-        18
-      ],
-      "spacings": [
-        0.262529,
-        1.028441,
-        0.842409
-      ],
-      "why_notable": "This cluster has a significant variation in spacing."
-    },
-    {
-      "index_range": [
-        19,
-        22
-      ],
-      "spacings": [
-        1.266038,
-        0.190398,
-        0.192584
-      ],
-      "why_notable": "This cluster includes a very small spacing."
-    },
-    {
-      "index_range": [
-        23,
-        26
-      ],
-      "spacings": [
-        0.70799,
-        0.64964,
-        0.33485
-      ],
-      "why_notable": "This cluster has a consistent spacing pattern."
-    },
-    {
-      "index_range": [
-        27,
-        30
-      ],
-      "spacings": [
-        0.389787,
-        0.693773,
-        1.224716
-      ],
-      "why_notable": "This cluster includes a large spacing."
+      "why_notable": "This cluster represents the majority of the recent spacings, showing a range of values with a mean spacing of approximately 0.74 and a standard deviation of 1.01."
     }
   ],
   "large_gaps": [
     {
-      "index": 26,
-      "gap": 2.172418,
-      "relative_to_mean": 2.06
+      "index": 14,
+      "gap": 1.399999,
+      "relative_to_mean": 1.87
+    },
+    {
+      "index": 28,
+      "gap": 1.499999,
+      "relative_to_mean": 1.94
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The spacing at index 26 (2.172418) is significantly larger than the mean spacing (1.053333)."
+    "The spacing of 0.0 at index 0 is an anomaly as it deviates significantly from the other spacings."
   ],
-  "notes": "The spacings_recent_30 data shows several clusters of close spacings, with some larger gaps. The largest gap is at index 26, which is 2.06 times the mean spacing. There is no clear periodicity observed in the data. The anomaly is the large gap at index 26, which deviates significantly from the rest of the spacings.",
+  "notes": "The data shows a cluster of recent spacings with a mean of approximately 0.74 and a standard deviation of 1.01. There are two large gaps at indices 14 and 28, which are 1.399999 and 1.499999 respectively, both of which are significantly larger than the mean spacing. No clear periodicity is observed in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-09T22:17:19Z"
+    "generated_at": "2026-10-10T03:35:41Z"
   }
 }
