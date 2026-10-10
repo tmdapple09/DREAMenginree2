@@ -8,71 +8,232 @@
       "spacings": [
         0.0
       ],
-      "why_notable": "The spacing of 0.0 at index 0 is notable as it indicates a potential issue or anomaly in the data."
+      "why_notable": "The first spacing is 0.0, which is unusual as it suggests no change or immediate repetition."
     },
     {
       "index_range": [
         1,
-        29
+        2
       ],
       "spacings": [
-        0.744728,
-        0.439579,
-        0.0,
-        1.007178,
-        0.979952,
-        0.596688,
-        0.346894,
-        0.298994,
-        0.499999,
-        0.519999,
-        0.999999,
-        0.399999,
-        0.599999,
-        1.119999,
-        1.399999,
-        0.619999,
-        0.299999,
-        0.819999,
-        0.699999,
-        0.999999,
-        0.599999,
-        0.749999,
-        0.729999,
-        0.550001,
-        1.199999,
-        0.799999,
-        0.899999,
-        0.499999,
-        0.499999,
-        0.219999,
-        1.499999,
-        0.599999,
-        0.449999
+        0.914529,
+        0.690158
       ],
-      "why_notable": "This cluster represents the majority of the recent spacings, showing a range of values with a mean spacing of approximately 0.74 and a standard deviation of 1.01."
+      "why_notable": "These spacings are relatively close to each other, forming a small cluster."
+    },
+    {
+      "index_range": [
+        3,
+        4
+      ],
+      "spacings": [
+        0.5,
+        0.453798
+      ],
+      "why_notable": "These spacings are also close, forming another small cluster."
+    },
+    {
+      "index_range": [
+        5,
+        6
+      ],
+      "spacings": [
+        0.389298,
+        0.299998
+      ],
+      "why_notable": "These spacings are closer than the previous clusters, indicating a tighter grouping."
+    },
+    {
+      "index_range": [
+        7,
+        8
+      ],
+      "spacings": [
+        0.2397,
+        1.56
+      ],
+      "why_notable": "This pair has a significant jump, indicating a potential anomaly or change in pattern."
+    },
+    {
+      "index_range": [
+        9,
+        10
+      ],
+      "spacings": [
+        0.299737,
+        0.5
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        11,
+        12
+      ],
+      "spacings": [
+        0.739331,
+        0.682495
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        13,
+        14
+      ],
+      "spacings": [
+        0.769292,
+        0.83
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        15,
+        16
+      ],
+      "spacings": [
+        1.799996,
+        0.229639
+      ],
+      "why_notable": "This pair has a significant jump, indicating a potential anomaly or change in pattern."
+    },
+    {
+      "index_range": [
+        17,
+        18
+      ],
+      "spacings": [
+        0.7,
+        0.659992
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        19,
+        20
+      ],
+      "spacings": [
+        0.7,
+        0.699917
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        21,
+        22
+      ],
+      "spacings": [
+        0.529969,
+        0.584807
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        23,
+        24
+      ],
+      "spacings": [
+        1.399998,
+        0.9
+      ],
+      "why_notable": "This pair has a significant jump, indicating a potential anomaly or change in pattern."
+    },
+    {
+      "index_range": [
+        25,
+        26
+      ],
+      "spacings": [
+        0.399993,
+        0.455599
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        27,
+        28
+      ],
+      "spacings": [
+        0.416,
+        1.1
+      ],
+      "why_notable": "This pair has a significant jump, indicating a potential anomaly or change in pattern."
+    },
+    {
+      "index_range": [
+        29,
+        30
+      ],
+      "spacings": [
+        0.5,
+        0.799997
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        31,
+        32
+      ],
+      "spacings": [
+        0.799997,
+        0.8
+      ],
+      "why_notable": "These spacings are close, forming a small cluster."
+    },
+    {
+      "index_range": [
+        33,
+        34
+      ],
+      "spacings": [
+        1.1,
+        0.599993
+      ],
+      "why_notable": "This pair has a significant jump, indicating a potential anomaly or change in pattern."
     }
   ],
   "large_gaps": [
     {
-      "index": 14,
-      "gap": 1.399999,
-      "relative_to_mean": 1.87
+      "index": 7,
+      "gap": 1.56,
+      "relative_to_mean": 0.663
     },
     {
-      "index": 28,
-      "gap": 1.499999,
-      "relative_to_mean": 1.94
+      "index": 15,
+      "gap": 1.799996,
+      "relative_to_mean": 0.763
+    },
+    {
+      "index": 23,
+      "gap": 1.399998,
+      "relative_to_mean": 0.593
+    },
+    {
+      "index": 27,
+      "gap": 1.1,
+      "relative_to_mean": 0.463
+    },
+    {
+      "index": 33,
+      "gap": 1.1,
+      "relative_to_mean": 0.463
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The spacing of 0.0 at index 0 is an anomaly as it deviates significantly from the other spacings."
+    "The first spacing of 0.0 is unusual and may indicate a starting point or an anomaly.",
+    "The large gaps at indices 7, 15, 23, 27, and 33 are significantly larger than the mean spacing, suggesting potential anomalies or changes in pattern."
   ],
-  "notes": "The data shows a cluster of recent spacings with a mean of approximately 0.74 and a standard deviation of 1.01. There are two large gaps at indices 14 and 28, which are 1.399999 and 1.499999 respectively, both of which are significantly larger than the mean spacing. No clear periodicity is observed in the data.",
+  "notes": "The spacings_recent_30 data shows several clusters of close spacings, indicating periods of stability or repetition. However, there are also several large gaps that deviate significantly from the mean spacing, which could indicate anomalies or changes in the underlying pattern. The overall lack of periodicity suggests that the data does not follow a consistent interval pattern.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-10T03:35:41Z"
+    "generated_at": "2026-10-10T12:10:39Z"
   }
 }
