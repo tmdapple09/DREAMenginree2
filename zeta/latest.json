@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-19T02:32:47Z",
-  "run_stamp": "20261019T023247Z",
+  "generated_at": "2026-10-19T12:05:27Z",
+  "run_stamp": "20261019T120527Z",
   "first_run": false,
-  "zeros_total": 59462,
+  "zeros_total": 59962,
   "zeros_added_this_run": 500,
   "model": "qwen2.5-coder:14b",
   "torridity": {
@@ -10,69 +10,69 @@
     "rho_c": 0.3613191634702832,
     "rho_c_source": "rho_obs at gamma_8",
     "rho_obs_first": 0.12903606048273306,
-    "rho_obs_last": 1.4201820486808439,
+    "rho_obs_last": 1.4213655417176638,
     "rho_N_first": 0.034841593421766195,
-    "rho_N_last": 1.1578025973213537,
+    "rho_N_last": 1.1589532680583903,
     "residual_first": 0.09419446706096686,
-    "residual_last": 0.26237945135949015,
-    "residual_mean": 0.2575871332926884,
-    "residual_std": 0.005931258924153864,
+    "residual_last": 0.26241227365927355,
+    "residual_mean": 0.2576272318922967,
+    "residual_std": 0.005922642969115603,
     "ratio_first": 3.7035062926290223,
-    "ratio_last": 1.2266184684388521,
-    "ratio_mean": 1.2560562671842839,
-    "ratio_std": 0.04009066478859771,
+    "ratio_last": 1.226421790154573,
+    "ratio_mean": 1.255809973949096,
+    "ratio_std": 0.04001341111773441,
     "ratio_max": 3.7035062926290223,
-    "ratio_min": 1.2266184684388521
+    "ratio_min": 1.226421790154573
   },
   "phase1_extraction": {
-    "count": 59462,
+    "count": 59962,
     "first": 0.0,
-    "last": 47152.582011,
+    "last": 47504.520516,
     "min_gamma": 0.0,
-    "max_gamma": 47152.582011,
+    "max_gamma": 47504.520516,
     "mean_spacing_recent_30": 0.0,
     "std_spacing_recent_30": 0.0,
     "largest_gap_recent_30": 0.0,
     "smallest_gap_recent_30": 0.0,
     "spacings_recent_30": [
-      0.0,
-      0.728929,
-      0.433251,
-      0.39996,
-      1.028909,
-      0.791005,
-      0.577877,
-      0.371959,
-      0.331201,
-      0.72996,
-      0.85997,
-      0.665569,
-      0.62284,
-      0.59282,
-      0.599995,
-      0.159951,
-      1.199997,
-      0.929999,
-      0.599998,
-      0.699999,
-      0.799998,
-      0.399999,
-      0.700001,
-      0.750001,
-      0.780001,
-      0.790001,
-      0.800001,
-      0.810001,
-      0.820001,
-      0.830001,
-      0.840001,
-      0.850001
+      0.720638,
+      0.374655,
+      0.435588,
+      0.405603,
+      0.639391,
+      1.42039,
+      0.500626,
+      0.799746,
+      0.352379,
+      0.35035,
+      0.885073,
+      0.58997,
+      0.323844,
+      0.316249,
+      1.0958,
+      0.284195,
+      1.189739,
+      0.269959,
+      0.403784,
+      0.919705,
+      0.858493,
+      0.917717,
+      0.39168,
+      0.67898,
+      0.514123,
+      0.881794,
+      0.187273,
+      0.893966,
+      1.001376,
+      0.375028,
+      0.359918,
+      0.288568
     ],
     "predicted_mean_spacing": 0.0,
     "_meta": {
       "role": "extractor",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-19T02:13:19Z"
+      "generated_at": "2026-10-19T11:43:56Z"
     }
   },
   "phase2_scanning": {
@@ -80,362 +80,71 @@
       {
         "index_range": [
           0,
-          0
-        ],
-        "spacings": [
-          0.0
-        ],
-        "why_notable": "The first spacing is zero, which is unusual and may indicate a starting point or a data collection issue."
-      },
-      {
-        "index_range": [
-          1,
-          1
-        ],
-        "spacings": [
-          0.728929
-        ],
-        "why_notable": "This spacing is significantly larger than the others, suggesting a potential anomaly or a change in the data pattern."
-      },
-      {
-        "index_range": [
-          2,
-          2
-        ],
-        "spacings": [
-          0.433251
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which could indicate a different pattern or a measurement error."
-      },
-      {
-        "index_range": [
-          3,
-          3
-        ],
-        "spacings": [
-          0.39996
-        ],
-        "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          4,
-          4
-        ],
-        "spacings": [
-          1.028909
-        ],
-        "why_notable": "This spacing is notably larger than the others, indicating a potential anomaly or a change in the data pattern."
-      },
-      {
-        "index_range": [
-          5,
-          5
-        ],
-        "spacings": [
-          0.791005
-        ],
-        "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-      },
-      {
-        "index_range": [
-          6,
-          6
-        ],
-        "spacings": [
-          0.577877
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          7,
-          7
-        ],
-        "spacings": [
-          0.371959
-        ],
-        "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          8,
-          8
-        ],
-        "spacings": [
-          0.331201
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which could indicate a different pattern or a measurement error."
-      },
-      {
-        "index_range": [
-          9,
-          9
-        ],
-        "spacings": [
-          0.72996
-        ],
-        "why_notable": "This spacing is relatively large compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          10,
-          10
-        ],
-        "spacings": [
-          0.85997
-        ],
-        "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-      },
-      {
-        "index_range": [
-          11,
-          11
-        ],
-        "spacings": [
-          0.665569
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          12,
-          12
-        ],
-        "spacings": [
-          0.62284
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          13,
-          13
-        ],
-        "spacings": [
-          0.59282
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          14,
-          14
-        ],
-        "spacings": [
-          0.599995
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          15,
-          15
-        ],
-        "spacings": [
-          0.159951
-        ],
-        "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          16,
-          16
-        ],
-        "spacings": [
-          1.199997
-        ],
-        "why_notable": "This spacing is notably larger than the others, indicating a potential anomaly or a change in the data pattern."
-      },
-      {
-        "index_range": [
-          17,
-          17
-        ],
-        "spacings": [
-          0.929999
-        ],
-        "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-      },
-      {
-        "index_range": [
-          18,
-          18
-        ],
-        "spacings": [
-          0.599998
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          19,
-          19
-        ],
-        "spacings": [
-          0.699999
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          20,
-          20
-        ],
-        "spacings": [
-          0.799998
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          21,
-          21
-        ],
-        "spacings": [
-          0.399999
-        ],
-        "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          22,
-          22
-        ],
-        "spacings": [
-          0.700001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          23,
-          23
-        ],
-        "spacings": [
-          0.750001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          24,
-          24
-        ],
-        "spacings": [
-          0.780001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          25,
-          25
-        ],
-        "spacings": [
-          0.790001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          26,
-          26
-        ],
-        "spacings": [
-          0.800001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          27,
-          27
-        ],
-        "spacings": [
-          0.810001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          28,
-          28
-        ],
-        "spacings": [
-          0.820001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          29,
           29
         ],
         "spacings": [
-          0.830001
+          0.720638,
+          0.374655,
+          0.435588,
+          0.405603,
+          0.639391,
+          1.42039,
+          0.500626,
+          0.799746,
+          0.352379,
+          0.35035,
+          0.885073,
+          0.58997,
+          0.323844,
+          0.316249,
+          1.0958,
+          0.284195,
+          1.189739,
+          0.269959,
+          0.403784,
+          0.919705,
+          0.858493,
+          0.917717,
+          0.39168,
+          0.67898,
+          0.514123,
+          0.881794,
+          0.187273,
+          0.893966,
+          1.001376,
+          0.375028,
+          0.359918,
+          0.288568
         ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          30,
-          30
-        ],
-        "spacings": [
-          0.840001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-      },
-      {
-        "index_range": [
-          31,
-          31
-        ],
-        "spacings": [
-          0.850001
-        ],
-        "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
+        "why_notable": "The spacings are mostly within a small range, with some larger gaps, indicating a somewhat regular pattern with occasional deviations."
       }
     ],
     "large_gaps": [
       {
-        "index": 0,
-        "gap": 0.0,
+        "index": 5,
+        "gap": 1.42039,
         "relative_to_mean": 0.0
       },
       {
-        "index": 1,
-        "gap": 0.728929,
+        "index": 15,
+        "gap": 1.0958,
         "relative_to_mean": 0.0
       },
       {
-        "index": 4,
-        "gap": 1.028909,
-        "relative_to_mean": 0.0
-      },
-      {
-        "index": 6,
-        "gap": 0.577877,
-        "relative_to_mean": 0.0
-      },
-      {
-        "index": 16,
-        "gap": 1.199997,
+        "index": 17,
+        "gap": 1.189739,
         "relative_to_mean": 0.0
       }
     ],
     "periodicity_observed": false,
     "anomalies": [
-      "The first spacing is zero, which is unusual and may indicate a starting point or a data collection issue.",
-      "Several spacings are very close to zero, which might be errors or special cases in the data.",
-      "There are several large gaps in the data, which could indicate anomalies or changes in the data pattern."
+      "The spacing at index 5 (1.42039) is significantly larger than the others, indicating a potential anomaly."
     ],
-    "notes": "The data shows a variety of spacings with several notable anomalies, including a zero spacing at the beginning and several large gaps. There is no clear periodicity observed in the data.",
+    "notes": "The spacings_recent_30 data shows a mix of small and larger gaps, with no clear periodic pattern. The largest gaps occur at indices 5, 15, and 17, which are notably larger than the rest, suggesting potential anomalies or outliers in the data.",
     "_meta": {
       "role": "scanner",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-19T02:22:04Z"
+      "generated_at": "2026-10-19T11:49:18Z"
     }
   },
   "phase3_analysis": {
@@ -445,82 +154,84 @@
     "spacing_std_gue_prediction": 0.422,
     "spacing_consistent_with_gue": false,
     "mathematical_observations": [
-      "The observed mean spacing is zero, which is not consistent with the Riemann-von Mangoldt local density prediction.",
-      "The observed spacing standard deviation is zero, which is not consistent with the GUE nearest-neighbor spacing distribution prediction of approximately 0.422."
+      "The observed mean spacing is 0.0, which is not consistent with the Riemann-von Mangoldt local density prediction.",
+      "The observed standard deviation of spacings is 0.0, which is significantly different from the GUE prediction of approximately 0.422.",
+      "The data shows a mix of small and larger gaps, with no clear periodic pattern, which is not consistent with the GUE nearest-neighbor spacing distribution."
     ],
     "rh_status": {
       "is_proven": false,
       "is_disproven": false,
       "can_this_data_decide": false,
-      "reasoning": "The data set is too small and contains anomalies, making it insufficient to draw any conclusions about the Riemann Hypothesis. Finite data cannot decide the truth of the Riemann Hypothesis."
+      "reasoning": "The finite nature of the data and the lack of a clear periodic pattern or consistent spacing distribution prevent this data from deciding the truth of the Riemann Hypothesis."
     },
     "what_would_be_needed": [
-      "A larger, more consistent data set with no anomalies.",
-      "A clear understanding of the data collection process to rule out errors.",
-      "Statistical methods to analyze large-scale data sets relevant to the Riemann Hypothesis."
+      "A much larger dataset with a clear periodic pattern or consistent spacing distribution.",
+      "Further analysis using advanced mathematical techniques to detect subtle patterns or anomalies.",
+      "Comparison with theoretical predictions for larger values of T in the Riemann-von Mangoldt formula."
     ],
     "honest_limits": [
-      "The current data set is insufficient for making any claims about the Riemann Hypothesis.",
-      "Further research and data collection are needed to explore the hypothesis."
+      "The current dataset is insufficient to draw any definitive conclusions about the Riemann Hypothesis.",
+      "Finite data inherently has limitations in proving or disproving complex mathematical conjectures.",
+      "Further research and larger datasets are required to make meaningful contributions to the understanding of the Riemann Hypothesis."
     ],
     "_meta": {
       "role": "analyst",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-19T02:26:46Z"
+      "generated_at": "2026-10-19T11:55:55Z"
     }
   },
   "phase4_synthesis": {
     "final_status": {
       "riemann_hypothesis_solved": false,
       "confidence": 0.99,
-      "reasoning": "The current data set is insufficient and contains anomalies, making it impossible to draw any conclusions about the Riemann Hypothesis."
+      "reasoning": "The current dataset is insufficient to draw any definitive conclusions about the Riemann Hypothesis. The finite nature of the data and the lack of a clear periodic pattern or consistent spacing distribution prevent this data from deciding the truth of the Riemann Hypothesis."
     },
     "confirmed_findings": [
       {
-        "finding": "The data set contains a variety of spacings with several notable anomalies, including a zero spacing at the beginning and several large gaps.",
+        "finding": "The spacings_recent_30 data shows a mix of small and larger gaps, with no clear periodic pattern.",
         "confidence": 0.95
       },
       {
-        "finding": "There is no clear periodicity observed in the data.",
+        "finding": "The largest gaps occur at indices 5, 15, and 17, which are notably larger than the rest, suggesting potential anomalies or outliers in the data.",
         "confidence": 0.95
       }
     ],
     "open_questions": [
-      "How can we improve the data collection process to eliminate anomalies?",
-      "What is the impact of anomalies on the analysis of the Riemann Hypothesis?",
-      "How can we obtain a larger, more consistent data set for analysis?"
+      "How can we obtain a much larger dataset with a clear periodic pattern or consistent spacing distribution?",
+      "What advanced mathematical techniques can be used to detect subtle patterns or anomalies in the data?",
+      "How can we compare the data with theoretical predictions for larger values of T in the Riemann-von Mangoldt formula?"
     ],
     "numerology_speculations": [
       {
-        "speculation": "The patterns in zeta zeros might be related to the distribution of prime numbers, which could have implications for number theory and cryptography.",
+        "speculation": "The patterns in the zeta zero spacings might be related to deeper mathematical constants or structures.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "coding_practice_speculations": [
       {
-        "speculation": "Advanced AI models like Qwen2.5-coder:14b could be further optimized to handle larger and more complex data sets, potentially leading to new insights.",
+        "speculation": "Advanced AI models could potentially identify hidden patterns in the data that are not immediately apparent.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "physics_speculations": [
       {
-        "speculation": "There might be connections between the patterns observed in zeta zeros and physical phenomena, such as quantum systems or chaotic dynamics.",
+        "speculation": "There might be connections between the patterns in the zeta zero spacings and physical phenomena, such as quantum systems or chaotic dynamics.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
-    "honest_summary": "The current data set is insufficient and contains anomalies, making it impossible to draw any conclusions about the Riemann Hypothesis. Further research and data collection are needed to explore the hypothesis.",
+    "honest_summary": "The current dataset provides insights into the spacing patterns of zeta zeros, revealing a mix of small and larger gaps with no clear periodic pattern. The largest gaps suggest potential anomalies or outliers. However, the finite nature of the data and the lack of a clear pattern prevent any definitive conclusions about the Riemann Hypothesis. Further research and larger datasets are required to make meaningful contributions to the understanding of the Riemann Hypothesis.",
     "next_realistic_steps": [
-      "Improve the data collection process to eliminate anomalies.",
-      "Obtain a larger, more consistent data set for analysis.",
-      "Develop advanced statistical methods to analyze large-scale data sets relevant to the Riemann Hypothesis."
+      "Collect a much larger dataset with a clear periodic pattern or consistent spacing distribution.",
+      "Use advanced mathematical techniques to detect subtle patterns or anomalies in the data.",
+      "Compare the data with theoretical predictions for larger values of T in the Riemann-von Mangoldt formula."
     ],
     "_meta": {
       "role": "synthesizer",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-10-19T02:32:44Z"
+      "generated_at": "2026-10-19T12:05:21Z"
     }
   }
 }

@@ -3,361 +3,70 @@
     {
       "index_range": [
         0,
-        0
-      ],
-      "spacings": [
-        0.0
-      ],
-      "why_notable": "The first spacing is zero, which is unusual and may indicate a starting point or a data collection issue."
-    },
-    {
-      "index_range": [
-        1,
-        1
-      ],
-      "spacings": [
-        0.728929
-      ],
-      "why_notable": "This spacing is significantly larger than the others, suggesting a potential anomaly or a change in the data pattern."
-    },
-    {
-      "index_range": [
-        2,
-        2
-      ],
-      "spacings": [
-        0.433251
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which could indicate a different pattern or a measurement error."
-    },
-    {
-      "index_range": [
-        3,
-        3
-      ],
-      "spacings": [
-        0.39996
-      ],
-      "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        4,
-        4
-      ],
-      "spacings": [
-        1.028909
-      ],
-      "why_notable": "This spacing is notably larger than the others, indicating a potential anomaly or a change in the data pattern."
-    },
-    {
-      "index_range": [
-        5,
-        5
-      ],
-      "spacings": [
-        0.791005
-      ],
-      "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-    },
-    {
-      "index_range": [
-        6,
-        6
-      ],
-      "spacings": [
-        0.577877
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        7,
-        7
-      ],
-      "spacings": [
-        0.371959
-      ],
-      "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        8,
-        8
-      ],
-      "spacings": [
-        0.331201
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which could indicate a different pattern or a measurement error."
-    },
-    {
-      "index_range": [
-        9,
-        9
-      ],
-      "spacings": [
-        0.72996
-      ],
-      "why_notable": "This spacing is relatively large compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        10,
-        10
-      ],
-      "spacings": [
-        0.85997
-      ],
-      "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-    },
-    {
-      "index_range": [
-        11,
-        11
-      ],
-      "spacings": [
-        0.665569
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        12,
-        12
-      ],
-      "spacings": [
-        0.62284
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        13,
-        13
-      ],
-      "spacings": [
-        0.59282
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        14,
-        14
-      ],
-      "spacings": [
-        0.599995
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        15,
-        15
-      ],
-      "spacings": [
-        0.159951
-      ],
-      "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        16,
-        16
-      ],
-      "spacings": [
-        1.199997
-      ],
-      "why_notable": "This spacing is notably larger than the others, indicating a potential anomaly or a change in the data pattern."
-    },
-    {
-      "index_range": [
-        17,
-        17
-      ],
-      "spacings": [
-        0.929999
-      ],
-      "why_notable": "This spacing is relatively large compared to the others, which could indicate a different pattern or a measurement error."
-    },
-    {
-      "index_range": [
-        18,
-        18
-      ],
-      "spacings": [
-        0.599998
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        19,
-        19
-      ],
-      "spacings": [
-        0.699999
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        20,
-        20
-      ],
-      "spacings": [
-        0.799998
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        21,
-        21
-      ],
-      "spacings": [
-        0.399999
-      ],
-      "why_notable": "This spacing is very close to zero, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        22,
-        22
-      ],
-      "spacings": [
-        0.700001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        23,
-        23
-      ],
-      "spacings": [
-        0.750001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        24,
-        24
-      ],
-      "spacings": [
-        0.780001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        25,
-        25
-      ],
-      "spacings": [
-        0.790001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        26,
-        26
-      ],
-      "spacings": [
-        0.800001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        27,
-        27
-      ],
-      "spacings": [
-        0.810001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        28,
-        28
-      ],
-      "spacings": [
-        0.820001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        29,
         29
       ],
       "spacings": [
-        0.830001
+        0.720638,
+        0.374655,
+        0.435588,
+        0.405603,
+        0.639391,
+        1.42039,
+        0.500626,
+        0.799746,
+        0.352379,
+        0.35035,
+        0.885073,
+        0.58997,
+        0.323844,
+        0.316249,
+        1.0958,
+        0.284195,
+        1.189739,
+        0.269959,
+        0.403784,
+        0.919705,
+        0.858493,
+        0.917717,
+        0.39168,
+        0.67898,
+        0.514123,
+        0.881794,
+        0.187273,
+        0.893966,
+        1.001376,
+        0.375028,
+        0.359918,
+        0.288568
       ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        30,
-        30
-      ],
-      "spacings": [
-        0.840001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
-    },
-    {
-      "index_range": [
-        31,
-        31
-      ],
-      "spacings": [
-        0.850001
-      ],
-      "why_notable": "This spacing is relatively small compared to the others, which might be an error or a special case in the data."
+      "why_notable": "The spacings are mostly within a small range, with some larger gaps, indicating a somewhat regular pattern with occasional deviations."
     }
   ],
   "large_gaps": [
     {
-      "index": 0,
-      "gap": 0.0,
+      "index": 5,
+      "gap": 1.42039,
       "relative_to_mean": 0.0
     },
     {
-      "index": 1,
-      "gap": 0.728929,
+      "index": 15,
+      "gap": 1.0958,
       "relative_to_mean": 0.0
     },
     {
-      "index": 4,
-      "gap": 1.028909,
-      "relative_to_mean": 0.0
-    },
-    {
-      "index": 6,
-      "gap": 0.577877,
-      "relative_to_mean": 0.0
-    },
-    {
-      "index": 16,
-      "gap": 1.199997,
+      "index": 17,
+      "gap": 1.189739,
       "relative_to_mean": 0.0
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The first spacing is zero, which is unusual and may indicate a starting point or a data collection issue.",
-    "Several spacings are very close to zero, which might be errors or special cases in the data.",
-    "There are several large gaps in the data, which could indicate anomalies or changes in the data pattern."
+    "The spacing at index 5 (1.42039) is significantly larger than the others, indicating a potential anomaly."
   ],
-  "notes": "The data shows a variety of spacings with several notable anomalies, including a zero spacing at the beginning and several large gaps. There is no clear periodicity observed in the data.",
+  "notes": "The spacings_recent_30 data shows a mix of small and larger gaps, with no clear periodic pattern. The largest gaps occur at indices 5, 15, and 17, which are notably larger than the rest, suggesting potential anomalies or outliers in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-19T02:22:04Z"
+    "generated_at": "2026-10-19T11:49:18Z"
   }
 }
