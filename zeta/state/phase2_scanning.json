@@ -2,48 +2,56 @@
   "clusters": [
     {
       "index_range": [
-        27,
-        28
+        0,
+        29
       ],
       "spacings": [
-        0.0,
-        0.386782
+        0.223302,
+        0.493302,
+        0.999804,
+        1.668806,
+        2.309894,
+        2.939797,
+        3.934294,
+        4.699343,
+        5.395998,
+        6.07502,
+        6.82001,
+        7.600006,
+        8.69688,
+        9.148618,
+        9.999996,
+        10.843972,
+        11.59996,
+        12.347709,
+        13.034877,
+        13.389996,
+        14.384493,
+        15.420005,
+        15.999998,
+        16.770019,
+        17.790119,
+        18.600001,
+        19.125901,
+        19.987014,
+        20.165417,
+        20.84663,
+        22.094324,
+        22.486478,
+        23.318198,
+        23.784581,
+        24.609526
       ],
-      "why_notable": "This cluster contains a spacing of 0.0, which is the smallest possible gap."
-    },
-    {
-      "index_range": [
-        13,
-        14
-      ],
-      "spacings": [
-        0.29999,
-        0.204332
-      ],
-      "why_notable": "This cluster has two small spacings close to each other, indicating a potential pattern or anomaly."
+      "why_notable": "The spacings show a gradual increase over the recent 30 entries, indicating a consistent trend."
     }
   ],
-  "large_gaps": [
-    {
-      "index": 10,
-      "gap": 1.143994,
-      "relative_to_mean": 1.9455
-    },
-    {
-      "index": 27,
-      "gap": 0.386782,
-      "relative_to_mean": 0.6585
-    }
-  ],
+  "large_gaps": [],
   "periodicity_observed": false,
-  "anomalies": [
-    "The presence of a spacing of 0.0 at index 28 is unusual and may indicate a data recording issue.",
-    "The large gap of 1.143994 at index 10 is significantly larger than the mean spacing, suggesting a potential anomaly or outlier."
-  ],
-  "notes": "The data shows a mix of small, consistent spacings and larger gaps. The smallest gap is 0.0, which is notable. The largest gap is 1.143994, which is more than twice the mean spacing. There is no clear periodicity observed in the spacings.",
+  "anomalies": [],
+  "notes": "The spacings_recent_30 list shows a consistent increase in values, suggesting a linear trend rather than any periodicity or anomalies. There are no large gaps identified in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-19T18:11:16Z"
+    "generated_at": "2026-10-19T22:12:01Z"
   }
 }
