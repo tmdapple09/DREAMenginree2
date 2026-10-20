@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T07:22:28.292Z",
+  "generatedAt": "2026-10-20T07:06:52.639Z",
   "root": ".",
   "nodes": [
     {
@@ -4000,10 +4000,50 @@
       "isOrphan": false
     },
     {
+      "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/GRUT_v1_23_2.pdf",
+      "label": "GRUT_v1_23_2.pdf",
+      "type": "file",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/GRUT_v1_23_2.pdf",
+      "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/GRUT_v1_23_2.txt",
+      "label": "GRUT_v1_23_2.txt",
+      "type": "doc",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/GRUT_v1_23_2.txt",
+      "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
       "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSDTheoryProtoTypeFile",
       "label": "TRSDTheoryProtoTypeFile",
       "type": "file",
       "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSDTheoryProtoTypeFile",
+      "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSD_v1_16_2.pdf",
+      "label": "TRSD_v1_16_2.pdf",
+      "type": "file",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSD_v1_16_2.pdf",
+      "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
+      "loc": null,
+      "isOrphan": true,
+      "tags": []
+    },
+    {
+      "id": "file:TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSD_v1_16_2.txt",
+      "label": "TRSD_v1_16_2.txt",
+      "type": "doc",
+      "path": "TopologicalRelationalSystemsDynamics/initialDRAFTS/TRSD_v1_16_2.txt",
       "parent": "folder:TopologicalRelationalSystemsDynamics/initialDRAFTS",
       "loc": null,
       "isOrphan": true,
