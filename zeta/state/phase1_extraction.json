@@ -1,9 +1,9 @@
 {
-  "count": 72462,
+  "count": 72962,
   "first": 0.0,
-  "last": 56214.653082,
+  "last": 56559.449893,
   "min_gamma": 0.0,
-  "max_gamma": 56214.653082,
+  "max_gamma": 56559.449893,
   "mean_spacing_recent_30": 0.0,
   "std_spacing_recent_30": 0.0,
   "largest_gap_recent_30": 0.0,
@@ -15,6 +15,6 @@
   "_meta": {
     "role": "extractor",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-25T15:21:02Z"
+    "generated_at": "2026-10-25T20:16:27Z"
   }
 }
