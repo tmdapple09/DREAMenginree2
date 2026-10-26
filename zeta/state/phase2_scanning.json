@@ -3,71 +3,60 @@
     {
       "index_range": [
         0,
-        1
+        29
       ],
       "spacings": [
-        0.0,
-        0.7142857142857143
+        0.684211,
+        0.529962,
+        0.543204,
+        0.743313,
+        0.645638,
+        0.473699,
+        0.372378,
+        0.689146,
+        0.399958,
+        0.541755,
+        0.608623,
+        0.309364,
+        0.304816,
+        0.71422,
+        0.739757,
+        0.399496,
+        0.887431,
+        0.683749,
+        0.584484,
+        0.481594,
+        0.601998,
+        0.54699,
+        0.622977,
+        0.38698,
+        0.787108,
+        0.495902,
+        0.798944,
+        0.693653,
+        0.708233,
+        0.372378,
+        0.684211,
+        0.372378
       ],
-      "why_notable": "The first two spacings include a gap of 0.0, which is unusual."
-    },
-    {
-      "index_range": [
-        2,
-        30
-      ],
-      "spacings": [
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143,
-        0.7142857142857143
-      ],
-      "why_notable": "The majority of the spacings are consistent at 0.7142857142857143."
+      "why_notable": "This cluster represents the most recent 30 spacings, which exhibit a range of values around the mean spacing of 0.684211."
     }
   ],
   "large_gaps": [
     {
-      "index": 0,
-      "gap": 0.0,
-      "relative_to_mean": 0.0
+      "index": 16,
+      "gap": 0.887431,
+      "relative_to_mean": 1.3
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The first spacing is 0.0, which is significantly different from the rest of the spacings."
+    "The spacing at index 16 (0.887431) is significantly larger than the mean spacing, indicating a potential anomaly."
   ],
-  "notes": "The data shows a consistent spacing of approximately 0.7142857142857143 for the majority of the recent 30 spacings, with the exception of the first spacing which is 0.0. This could indicate an anomaly or a special event at the start of the dataset. There is no clear periodicity observed in the data.",
+  "notes": "The spacings_recent_30 data shows a relatively consistent pattern with a mean spacing of 0.684211 and a standard deviation of 0.840336. The largest gap observed is 1.083413, which is notable. The spacing at index 16 stands out as an anomaly due to its substantial deviation from the mean. No clear periodicity is observed in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-10-26T12:01:42Z"
+    "generated_at": "2026-10-26T17:59:52Z"
   }
 }
