@@ -3,29 +3,78 @@
     {
       "index_range": [
         0,
-        0
+        29
       ],
       "spacings": [
-        0.0
+        0.617669,
+        0.523966,
+        0.455939,
+        0.357001,
+        0.639993,
+        0.599998,
+        0.363068,
+        0.493006,
+        0.539134,
+        1.270273,
+        0.996904,
+        0.664356,
+        0.849321,
+        1.199998,
+        0.183592,
+        0.914025,
+        0.448141,
+        0.965922,
+        1.029999,
+        0.12819,
+        0.460966,
+        0.653999,
+        1.248924,
+        0.632052,
+        0.712601,
+        0.870929,
+        0.691161,
+        0.349191,
+        0.519364,
+        0.619438,
+        1.519428,
+        0.684377,
+        0.693584,
+        0.487466,
+        0.78748
       ],
-      "why_notable": "The spacing is consistently zero, indicating no change or event occurred."
+      "why_notable": "The spacings show a range of values with some significant variations, indicating potential clusters or patterns."
     }
   ],
   "large_gaps": [
     {
-      "index": 0,
-      "gap": 0.0,
-      "relative_to_mean": 0.0
+      "index": 9,
+      "gap": 1.270273,
+      "relative_to_mean": 1.270273
+    },
+    {
+      "index": 13,
+      "gap": 1.199998,
+      "relative_to_mean": 1.199998
+    },
+    {
+      "index": 24,
+      "gap": 1.248924,
+      "relative_to_mean": 1.248924
+    },
+    {
+      "index": 30,
+      "gap": 1.519428,
+      "relative_to_mean": 1.519428
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The data shows no variation or change, which is unusual given the count of 87962 entries."
+    "The large gaps at indices 9, 13, 24, and 30 are significantly larger than the other spacings, suggesting potential anomalies or outliers in the data."
   ],
-  "notes": "The dataset appears to have a consistent spacing of zero across all recent entries, which is unusual and may indicate a lack of activity or an error in data collection.",
+  "notes": "The spacings_recent_30 data shows a mix of relatively small and larger gaps, with no clear periodic pattern. The large gaps at specific indices stand out as anomalies, indicating potential irregularities or significant events in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-11-03T00:17:36Z"
+    "generated_at": "2026-11-03T13:27:34Z"
   }
 }
