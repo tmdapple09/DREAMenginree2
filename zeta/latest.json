@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-13T04:20:49Z",
-  "run_stamp": "20261113T042049Z",
+  "generated_at": "2026-11-13T13:51:03Z",
+  "run_stamp": "20261113T135103Z",
   "first_run": false,
-  "zeros_total": 102962,
+  "zeros_total": 103462,
   "zeros_added_this_run": 500,
   "model": "qwen2.5-coder:14b",
   "torridity": {
@@ -10,68 +10,70 @@
     "rho_c": 0.3613191634702832,
     "rho_c_source": "rho_obs at gamma_8",
     "rho_obs_first": 0.12903606048273306,
-    "rho_obs_last": 1.4980299361542533,
+    "rho_obs_last": 1.498718436512347,
     "rho_N_first": 0.034841593421766195,
-    "rho_N_last": 1.23360067151364,
+    "rho_N_last": 1.234271987184507,
     "residual_first": 0.09419446706096686,
-    "residual_last": 0.2644292646406132,
-    "residual_mean": 0.26009137419681433,
-    "residual_std": 0.005388358595612392,
+    "residual_last": 0.26444644932784,
+    "residual_mean": 0.26011237949273963,
+    "residual_std": 0.005383767492063497,
     "ratio_first": 3.7035062926290223,
-    "ratio_last": 1.214355642589069,
-    "ratio_mean": 1.2407490270331152,
-    "ratio_std": 0.03540763626843687,
+    "ratio_last": 1.214252978333461,
+    "ratio_mean": 1.2406212273642445,
+    "ratio_std": 0.03536955282537735,
     "ratio_max": 3.7035062926290223,
-    "ratio_min": 1.214355642589069
+    "ratio_min": 1.214252978333461
   },
   "phase1_extraction": {
-    "count": 102962,
+    "count": 103462,
     "first": 0.0,
-    "last": 76901.199301,
+    "last": 77234.592598,
     "min_gamma": 0.0,
-    "max_gamma": 76901.199301,
-    "mean_spacing_recent_30": 0.5,
-    "std_spacing_recent_30": 0.5,
-    "largest_gap_recent_30": 1.0,
+    "max_gamma": 77234.592598,
+    "mean_spacing_recent_30": 0.0,
+    "std_spacing_recent_30": 0.0,
+    "largest_gap_recent_30": 0.0,
     "smallest_gap_recent_30": 0.0,
     "spacings_recent_30": [
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-      0.5
+      0.0,
+      0.687473,
+      0.97488,
+      0.269433,
+      0.271986,
+      0.672006,
+      0.60126,
+      0.941629,
+      0.993304,
+      0.302701,
+      0.630505,
+      0.698092,
+      0.621069,
+      0.66395,
+      0.35994,
+      0.21823,
+      0.158166,
+      0.464001,
+      1.30733,
+      0.587886,
+      0.332934,
+      1.3765,
+      0.20045,
+      0.66397,
+      0.63998,
+      0.845901,
+      0.789937,
+      0.192108,
+      0.216251,
+      0.934241,
+      0.463054,
+      0.863059,
+      0.456047
     ],
     "predicted_mean_spacing": 0.0,
     "_meta": {
       "role": "extractor",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-11-13T04:00:16Z"
+      "generated_at": "2026-11-13T13:39:43Z"
     }
   },
   "phase2_scanning": {
@@ -79,58 +81,86 @@
       {
         "index_range": [
           0,
-          29
+          0
         ],
         "spacings": [
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.5
+          0.0
         ],
-        "why_notable": "All spacings are identical, indicating a consistent pattern."
+        "why_notable": "The first spacing is 0.0, which is unusual as it suggests no gap between the first two points."
+      },
+      {
+        "index_range": [
+          1,
+          10
+        ],
+        "spacings": [
+          0.687473,
+          0.97488,
+          0.269433,
+          0.271986,
+          0.672006,
+          0.60126,
+          0.941629,
+          0.993304,
+          0.302701
+        ],
+        "why_notable": "These spacings are relatively small and show some variation, but no clear pattern."
+      },
+      {
+        "index_range": [
+          11,
+          30
+        ],
+        "spacings": [
+          0.630505,
+          0.698092,
+          0.621069,
+          0.66395,
+          0.35994,
+          0.21823,
+          0.158166,
+          0.464001,
+          1.30733,
+          0.587886,
+          0.332934,
+          1.3765,
+          0.20045,
+          0.66397,
+          0.63998,
+          0.845901,
+          0.789937,
+          0.192108,
+          0.216251,
+          0.934241,
+          0.463054,
+          0.863059,
+          0.456047
+        ],
+        "why_notable": "This cluster includes larger spacings, with some values significantly higher than the others, indicating potential anomalies."
       }
     ],
     "large_gaps": [
       {
-        "index": 0,
-        "gap": 0.0,
-        "relative_to_mean": 0.0
+        "index": 29,
+        "gap": 1.3765,
+        "relative_to_mean": 1.3765
+      },
+      {
+        "index": 30,
+        "gap": 0.20045,
+        "relative_to_mean": 0.20045
       }
     ],
     "periodicity_observed": false,
     "anomalies": [
-      "The first spacing is 0.0, which is different from the rest of the spacings, indicating an anomaly at the start of the dataset."
+      "The first spacing of 0.0 is unusual and may indicate a data entry error or a special condition.",
+      "The large gaps at indices 29 and 30 (1.3765 and 0.20045) are significantly larger than the rest of the spacings, suggesting potential anomalies or outliers."
     ],
-    "notes": "The dataset shows a consistent spacing of 0.5 for the most recent 30 entries, with the exception of the first entry which has a spacing of 0.0. This could indicate an anomaly or a special case at the beginning of the dataset. There is no observed periodicity in the spacings.",
+    "notes": "The spacings_recent_30 data shows a mix of small and large gaps, with no clear periodic pattern. The first spacing is notably zero, and there are two large gaps that stand out, which could indicate anomalies or special events in the data.",
     "_meta": {
       "role": "scanner",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-11-13T04:04:08Z"
+      "generated_at": "2026-11-13T13:42:55Z"
     }
   },
   "phase3_analysis": {
@@ -140,80 +170,83 @@
     "spacing_std_gue_prediction": 0.422,
     "spacing_consistent_with_gue": false,
     "mathematical_observations": [
-      "The observed mean spacing is 0.0, which is significantly different from the predicted mean spacing based on the Riemann-von Mangoldt formula.",
-      "The standard deviation of the observed spacings is 0.0, which is different from the predicted standard deviation of 0.422 for the Gaussian Unitary Ensemble (GUE).",
-      "The first spacing is 0.0, which is an anomaly compared to the rest of the spacings, indicating a special case at the beginning of the dataset."
+      "The observed mean spacing is 0.0, which is not consistent with the Riemann-von Mangoldt local density prediction.",
+      "The observed standard deviation of spacings is 0.0, which is significantly different from the GUE prediction of approximately 0.422.",
+      "The data shows a notable first spacing of 0.0 and large gaps at indices 29 and 30, which are not consistent with the GUE nearest-neighbor spacing distribution."
     ],
     "rh_status": {
       "is_proven": false,
       "is_disproven": false,
       "can_this_data_decide": false,
-      "reasoning": "The dataset is too small and does not provide enough information to make any definitive statements about the Riemann Hypothesis. The observed data does not align with the theoretical predictions for the Riemann-von Mangoldt local density or the Gaussian Unitary Ensemble, but this is not sufficient to disprove the hypothesis. Additionally, the presence of an anomaly at the beginning of the dataset complicates any analysis."
+      "reasoning": "The data set is too small and does not provide enough information to make any definitive statements about the Riemann Hypothesis. The observed anomalies and inconsistencies with theoretical predictions do not provide sufficient evidence to either prove or disprove the hypothesis."
     },
     "what_would_be_needed": [
-      "A much larger dataset to observe trends and patterns over a longer period.",
-      "Further analysis to understand the nature of the anomaly at the beginning of the dataset.",
-      "Comparison with other theoretical models or empirical data to validate findings."
+      "A much larger data set with a clear periodic pattern to accurately estimate the mean and standard deviation of spacings.",
+      "Further analysis of the data to identify and understand the source of the anomalies and the first spacing of 0.0.",
+      "Comparison with more advanced theoretical models or simulations to better understand the distribution of spacings."
     ],
     "honest_limits": [
-      "The finite size of the dataset limits the ability to draw meaningful conclusions about the Riemann Hypothesis.",
-      "The presence of anomalies in the data introduces uncertainty and requires careful consideration.",
-      "Current data does not provide sufficient evidence to either prove or disprove the Riemann Hypothesis."
+      "The finite nature of the data set limits its ability to make definitive statements about the Riemann Hypothesis.",
+      "The observed anomalies and inconsistencies with theoretical predictions highlight the need for more data and a deeper understanding of the underlying processes."
     ],
     "_meta": {
       "role": "analyst",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-11-13T04:10:59Z"
+      "generated_at": "2026-11-13T13:46:07Z"
     }
   },
   "phase4_synthesis": {
     "final_status": {
       "riemann_hypothesis_solved": false,
       "confidence": 0.99,
-      "reasoning": "The dataset provided is insufficient in size and lacks the necessary complexity to draw any definitive conclusions about the Riemann Hypothesis. The observed data does not align with theoretical predictions, but this alone is not enough to disprove the hypothesis. The presence of anomalies and the limited scope of the dataset complicate any analysis."
+      "reasoning": "The data set provided is insufficient to make any definitive statements about the Riemann Hypothesis. The observed anomalies and inconsistencies with theoretical predictions do not provide sufficient evidence to either prove or disprove the hypothesis."
     },
     "confirmed_findings": [
       {
-        "finding": "The dataset shows a consistent spacing of 0.5 for the most recent 30 entries, with the exception of the first entry which has a spacing of 0.0, indicating an anomaly at the beginning of the dataset.",
+        "finding": "The first spacing of 0.0 is unusual and may indicate a data entry error or a special condition.",
+        "confidence": 0.95
+      },
+      {
+        "finding": "The large gaps at indices 29 and 30 (1.3765 and 0.20045) are significantly larger than the rest of the spacings, suggesting potential anomalies or outliers.",
         "confidence": 0.95
       }
     ],
     "open_questions": [
-      "How does the anomaly at the beginning of the dataset affect the overall analysis?",
-      "What is the significance of the deviation from the predicted standard deviation of spacings?",
-      "How can a larger dataset be obtained to better understand the patterns in zeta zero spacings?"
+      "What is the source of the first spacing of 0.0 and how does it affect the overall distribution of spacings?",
+      "How do the large gaps at indices 29 and 30 impact the analysis of the Riemann Hypothesis?",
+      "What additional data or analysis is needed to better understand the distribution of spacings and their implications for the Riemann Hypothesis?"
     ],
     "numerology_speculations": [
       {
-        "speculation": "The consistent spacing of 0.5 could be related to the fundamental constants in physics, such as Planck's constant or the speed of light, given the deep connections between number theory and physics.",
+        "speculation": "The observed patterns in the spacings might be related to deeper mathematical structures or constants not yet fully understood.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "coding_practice_speculations": [
       {
-        "speculation": "The use of AI models like Qwen2.5-coder:14b in analyzing zeta zero patterns could lead to new insights, but the models' effectiveness is limited by the quality and quantity of the input data.",
+        "speculation": "The extraction and scanning processes could be improved by incorporating more sophisticated algorithms to better identify and handle anomalies in the data.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
     "physics_speculations": [
       {
-        "speculation": "There might be a quantum mechanical interpretation of the zeta zeros, where the spacings correspond to energy levels in a quantum system, potentially linking number theory to quantum physics.",
+        "speculation": "The distribution of spacings might have connections to physical systems or phenomena, such as quantum mechanics or statistical physics.",
         "confidence": 0.3,
         "speculative": true
       }
     ],
-    "honest_summary": "The analysis of the provided dataset reveals a consistent spacing pattern of 0.5 for the most recent 30 entries, with an anomaly at the beginning. The dataset is too small and does not provide sufficient evidence to either prove or disprove the Riemann Hypothesis. Further analysis with a larger dataset and a deeper understanding of the anomaly is needed.",
+    "honest_summary": "The analysis of the provided data set reveals several notable findings, including an unusual first spacing of 0.0 and significant large gaps at indices 29 and 30. These observations suggest potential anomalies or special conditions in the data. However, the data set is too small and does not provide enough information to make any definitive statements about the Riemann Hypothesis. Further analysis and a larger data set are needed to better understand the distribution of spacings and their implications for the hypothesis.",
     "next_realistic_steps": [
-      "Obtain a larger dataset to observe trends and patterns over a longer period.",
-      "Conduct further analysis to understand the nature of the anomaly at the beginning of the dataset.",
-      "Compare the findings with other theoretical models or empirical data to validate the results."
+      "Collect a much larger data set with a clear periodic pattern to accurately estimate the mean and standard deviation of spacings.",
+      "Conduct further analysis to identify and understand the source of the anomalies and the first spacing of 0.0.",
+      "Compare the data with more advanced theoretical models or simulations to better understand the distribution of spacings."
     ],
     "_meta": {
       "role": "synthesizer",
       "model": "qwen2.5-coder:14b",
-      "generated_at": "2026-11-13T04:20:41Z"
+      "generated_at": "2026-11-13T13:50:58Z"
     }
   }
 }
