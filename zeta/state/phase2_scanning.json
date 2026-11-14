@@ -3,66 +3,85 @@
     {
       "index_range": [
         0,
-        29
+        0
       ],
       "spacings": [
-        0.714848,
-        0.285714,
-        0.285714,
-        0.285714,
-        0.714848,
-        0.357143,
-        0.714848,
-        0.714848,
-        0.571429,
-        0.714848,
-        1.428571,
-        0.357143,
-        0.285714,
-        0.571429,
-        0.285714,
-        0.285714,
-        1.428571,
-        0.285714,
-        0.285714,
-        0.714848,
-        0.357143,
-        0.428571,
-        0.285714,
-        0.714848,
-        0.571429,
-        0.142857,
-        0.285714,
-        0.571429,
-        0.571429,
-        0.714848,
-        0.714848,
-        0.714848,
-        0.285714
+        0.0
       ],
-      "why_notable": "The spacings show a pattern with frequent small gaps (0.285714) and larger gaps (0.714848, 1.428571), indicating a possible periodic or clustered behavior."
+      "why_notable": "The first spacing is 0.0, which is unusual as it suggests no gap between the first two points."
+    },
+    {
+      "index_range": [
+        1,
+        10
+      ],
+      "spacings": [
+        0.533322,
+        0.389744,
+        0.54764,
+        0.689001,
+        0.805521,
+        0.499064,
+        0.529958,
+        0.599998,
+        0.91979
+      ],
+      "why_notable": "This cluster has a mix of small and moderate spacings, with no clear pattern."
+    },
+    {
+      "index_range": [
+        11,
+        20
+      ],
+      "spacings": [
+        0.400001,
+        0.371809,
+        0.689794,
+        1.151267,
+        0.949439,
+        0.669999,
+        0.399999,
+        0.400001,
+        0.399999,
+        0.973296
+      ],
+      "why_notable": "This cluster includes a large gap of 1.151267, which is significantly larger than the others."
+    },
+    {
+      "index_range": [
+        21,
+        30
+      ],
+      "spacings": [
+        0.799731,
+        0.499999,
+        0.499999,
+        0.979593,
+        0.313575,
+        0.300001,
+        0.800001,
+        0.690001,
+        0.399999,
+        0.399999
+      ],
+      "why_notable": "This cluster has a few small gaps, but no significant deviations from the others."
     }
   ],
   "large_gaps": [
     {
-      "index": 10,
-      "gap": 1.428571,
-      "relative_to_mean": 2.0
-    },
-    {
-      "index": 17,
-      "gap": 1.428571,
-      "relative_to_mean": 2.0
+      "index": 11,
+      "gap": 1.151267,
+      "relative_to_mean": 1.151267
     }
   ],
-  "periodicity_observed": true,
+  "periodicity_observed": false,
   "anomalies": [
-    "The first spacing value is 0.0, which is significantly different from the rest of the spacings and could indicate an anomaly or a special event."
+    "The first spacing of 0.0 is unusual and may indicate a data entry error or a special condition."
   ],
-  "notes": "The recent 30 spacings exhibit a mix of small and large gaps, with a notable periodicity indicated by the recurring large gaps. The first spacing value stands out as an anomaly due to its deviation from the rest of the data.",
+  "notes": "The spacings_recent_30 data shows a mix of small and moderate gaps, with one significant large gap at index 11. There is no clear periodicity observed in the data. The first spacing being 0.0 is notable and could be an anomaly or a special case.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-11-13T23:18:35Z"
+    "generated_at": "2026-11-14T04:01:43Z"
   }
 }
