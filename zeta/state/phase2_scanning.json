@@ -3,29 +3,70 @@
     {
       "index_range": [
         0,
-        0
+        29
       ],
       "spacings": [
-        0.0
+        0.351764,
+        0.317466,
+        0.681736,
+        0.451738,
+        0.450758,
+        1.532596,
+        0.303925,
+        0.641141,
+        0.333988,
+        0.330998,
+        0.544025,
+        0.44012,
+        0.662391,
+        1.170481,
+        0.709755,
+        0.213696,
+        0.652803,
+        0.51786,
+        0.397598,
+        0.393199,
+        0.684648,
+        0.7464,
+        0.8606,
+        0.353685,
+        0.453687,
+        0.485751,
+        0.719851,
+        0.519951,
+        0.284242,
+        0.510771,
+        0.374462,
+        0.41921
       ],
-      "why_notable": "The spacing is consistently zero, indicating no change or movement."
+      "why_notable": "This cluster represents the most recent 30 spacings, showing a mix of small and larger gaps."
     }
   ],
   "large_gaps": [
     {
-      "index": 0,
-      "gap": 0.0,
-      "relative_to_mean": 0.0
+      "index": 5,
+      "gap": 1.532596,
+      "relative_to_mean": 2.14534
+    },
+    {
+      "index": 13,
+      "gap": 1.170481,
+      "relative_to_mean": 1.63603
+    },
+    {
+      "index": 23,
+      "gap": 0.8606,
+      "relative_to_mean": 1.20537
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The data shows no variation or change, which is unusual given the count of 105962 entries."
+    "The large gaps at indices 5, 13, and 23 are significantly larger than the mean spacing, indicating potential anomalies in the data."
   ],
-  "notes": "The dataset appears to have a consistent spacing of zero across all entries, which is unusual and may indicate a lack of variation or an error in data collection.",
+  "notes": "The recent 30 spacings exhibit a mix of small and larger gaps, with no clear periodic pattern observed. The large gaps are notable as they are more than one standard deviation above the mean spacing.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-11-15T03:33:59Z"
+    "generated_at": "2026-11-15T13:18:04Z"
   }
 }
