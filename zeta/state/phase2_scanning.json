@@ -6,53 +6,62 @@
         29
       ],
       "spacings": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        0.535869,
+        0.336428,
+        0.374114,
+        0.904194,
+        0.379806,
+        0.582698,
+        0.649761,
+        0.631332,
+        0.523558,
+        0.399998,
+        0.540002,
+        1.491972,
+        0.298001,
+        0.399996,
+        0.561797,
+        0.562004,
+        0.740892,
+        0.446149,
+        0.711947,
+        0.679144,
+        0.489499,
+        0.399998,
+        0.57066,
+        0.468627,
+        0.285851,
+        0.791199,
+        0.199998,
+        0.952001,
+        0.485747,
+        0.399996,
+        0.254798,
+        0.784401
       ],
-      "why_notable": "All spacings are zero, indicating no variation or change in the data over the recent 30 entries."
+      "why_notable": "This cluster includes all the recent spacings, showing a mix of small and larger gaps."
     }
   ],
   "large_gaps": [
     {
-      "index": 0,
-      "gap": 0.0,
-      "relative_to_mean": 0.0
+      "index": 11,
+      "gap": 1.491972,
+      "relative_to_mean": 0.633
+    },
+    {
+      "index": 26,
+      "gap": 0.952001,
+      "relative_to_mean": 0.403
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "All spacings are zero, which is unusual and may indicate a lack of data variation or an error in data collection."
+    "The gap at index 26 (0.952001) is relatively large compared to the mean spacing."
   ],
-  "notes": "The recent 30 spacings are all zero, suggesting a consistent or static condition in the data. This could be due to a lack of change in the underlying process or an issue with data recording.",
+  "notes": "The recent spacings show a mix of small and larger gaps, with no clear periodic pattern. The largest gap is at index 11, followed by a notable gap at index 26, which is relatively large compared to the mean spacing.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-11-20T00:14:17Z"
+    "generated_at": "2026-11-20T05:22:50Z"
   }
 }
