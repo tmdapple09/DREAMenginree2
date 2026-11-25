@@ -1,6 +1,6 @@
 # File Tree
 
-Generated: 2026-09-19T10:44:32.828Z
+Generated: 2026-11-25T10:24:23.156Z
 
 Marker guide:
 
@@ -9857,9 +9857,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- makeManifest  <- ./writeManifest
 |   |   |   |   +-- -> writeAssetBundle
 |   |   |   |   `-- -> zipDirectory
-|   |   |   +-- exportGlb.ts
+|   |   |   +-- exportGlb.ts !
 |   |   |   |   +-- deflateSync  <- zlib
-|   |   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   |   +-- verifyGameReadyCertificate  ! @/lib/gameReadyIntegrity
 |   |   |   |   +-- Mesh  <- @/engins/isosurfaceDualContouring
 |   |   |   |   +-- ContentAsset, MaterialDef  <- ../assetTypes
 |   |   |   |   +-- buildGeometry, MeshGeometry  <- ../builders/geometryBuilder
@@ -9882,8 +9882,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- (default)  <- path
 |   |   |   |   +-- -> safeSegment
 |   |   |   |   `-- -> safeUnder
-|   |   |   +-- validate.ts
-|   |   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   +-- validate.ts !
+|   |   |   |   +-- verifyGameReadyCertificate  ! @/lib/gameReadyIntegrity
 |   |   |   |   +-- AnimationClipDef, BoneDef, ContentAsset, ExportProfile, SkeletonDef, ValidationReport, Vec3  <- ../assetTypes
 |   |   |   |   +-- computeMeshMetrics  <- ../builders/meshBuilder
 |   |   |   |   +-- expectedMaterialIdsForAsset, inspectGlb  <- ./exportGlb
@@ -9955,9 +9955,9 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- -> PreparedGameReadyMesh
 |   |   |   |   +-- -> TopologyRepairReport
 |   |   |   |   `-- -> prepareGameReadyMesh
-|   |   |   `-- intrinsicAssetScanner.ts
+|   |   |   `-- intrinsicAssetScanner.ts !
 |   |   |       +-- Mesh, Vec3  <- @/engins/isosurfaceDualContouring
-|   |   |       +-- computeIndexedGeometryDigest, digestObject  <- @/lib/gameReadyIntegrity
+|   |   |       +-- computeIndexedGeometryDigest, digestObject  ! @/lib/gameReadyIntegrity
 |   |   |       +-- GameReadyAssetCertificate, GameReadyRepairId  <- @/types/gameReadyAsset
 |   |   |       +-- GameReadyAssetCertificate, GameReadyRepairId  <- @/types/gameReadyAsset
 |   |   |       +-- -> AssetRepairStep
@@ -10338,8 +10338,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   |   +-- -> GameEnginBundleCacheDecision
 |   |   |   |   +-- -> GameEnginBundleCacheOptions
 |   |   |   |   `-- -> planBundleCache
-|   |   |   `-- BundleManifest.ts
-|   |   |       +-- sha256Hex, verifyGameReadyCertificate, verifySha256Integrity  <- @/lib/gameReadyIntegrity
+|   |   |   `-- BundleManifest.ts !
+|   |   |       +-- sha256Hex, verifyGameReadyCertificate, verifySha256Integrity  ! @/lib/gameReadyIntegrity
 |   |   |       +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |       +-- RendererBackendId  <- ../cartridge
 |   |   |       +-- -> GameEnginAssetEntry
@@ -11681,10 +11681,10 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- -> RenderKeyframeVec3
 |   |   |   +-- -> evaluateAnimationClip
 |   |   |   `-- -> sampleKeyframes
-|   |   +-- assets.ts
+|   |   +-- assets.ts !
 |   |   |   +-- authorizeDomainCapability, DomainAuthorizationContext, DomainCapability  <- @/engine/engin-runtime/EnginCapabilities
 |   |   |   +-- DomainVisibility, JsonObject, JsonValue  <- @/engine/engin-runtime/EnginBaseState
-|   |   |   +-- computeIndexedGeometryDigest, verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   +-- computeIndexedGeometryDigest, verifyGameReadyCertificate  ! @/lib/gameReadyIntegrity
 |   |   |   +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |   +-- createMeshBuffers, createRenderAsset, validateMeshForRenderUpload, v3cross, v3normalize, v3sub, MeshBuffers, Vec2, Vec3  <- ./core
 |   |   |   +-- -> ParsedRenderAsset
@@ -11782,10 +11782,10 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   +-- -> v3scale
 |   |   |   +-- -> v3sub
 |   |   |   `-- -> validateMeshForRenderUpload
-|   |   +-- diagnostics.ts
+|   |   +-- diagnostics.ts !
 |   |   |   +-- JsonObject  <- @/engine/engin-runtime/EnginBaseState
 |   |   |   +-- IntrinsicAssetScanReport  <- @/engins/contentengin/scan/intrinsicAssetScanner
-|   |   |   +-- verifyGameReadyCertificate  <- @/lib/gameReadyIntegrity
+|   |   |   +-- verifyGameReadyCertificate  ! @/lib/gameReadyIntegrity
 |   |   |   +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
 |   |   |   +-- MeshBuffers  <- ./core
 |   |   |   +-- RenderEnginFrameStats  <- ./webgpu
@@ -12837,16 +12837,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   `-- useViewCounter.ts
 |       +-- useEffect, useRef  <- react
 |       `-- -> useViewCounter
-+-- lib
-|   `-- gameReadyIntegrity.ts
-|       +-- GameReadyAssetCertificate  <- @/types/gameReadyAsset
-|       +-- -> certificatePayload
-|       +-- -> computeIndexedGeometryDigest
-|       +-- -> digestObject
-|       +-- -> sha256Hex
-|       +-- -> stableStringify
-|       +-- -> verifyGameReadyCertificate
-|       `-- -> verifySha256Integrity
 +-- misc
 +-- optimizer
 |   +-- babylon-optimizero.ts
@@ -13153,6 +13143,13 @@ Legend: `!` means unresolved import. Markers are explained above.
 |       +-- -> logTriadConsensus
 |       +-- -> searchSimilar
 |       `-- -> upsertEmbedding
++-- TopologicalRelationalSystemsDynamics
+|   `-- initialDRAFTS
+|       +-- GRUT_v1_23_2.pdf
+|       +-- GRUT_v1_23_2.txt
+|       +-- TRSD_v1_16_2.pdf
+|       +-- TRSD_v1_16_2.txt
+|       `-- TRSDTheoryProtoTypeFile
 +-- types
 |   +-- ads.ts
 |   |   +-- -> AdListing
@@ -13433,13 +13430,19 @@ Legend: `!` means unresolved import. Markers are explained above.
 |       +-- -> sleep
 |       `-- -> throttle
 +-- zeta
+|   +-- data
+|   |   +-- rar_format.txt
+|   |   +-- summary.json
+|   |   +-- tables2_format.txt
+|   |   `-- torridity_table.csv
 |   +-- state
 |   |   +-- available_models.txt
 |   |   +-- phase1_extraction.json
 |   |   +-- phase2_scanning.json
 |   |   +-- phase3_analysis.json
 |   |   +-- phase4_synthesis.json
-|   |   `-- skip.txt
+|   |   +-- skip.txt
+|   |   `-- torridity.json
 |   +-- latest.json
 |   +-- pipeline.py
 |   `-- zeros.txt

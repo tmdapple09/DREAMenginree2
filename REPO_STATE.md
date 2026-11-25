@@ -1,6 +1,6 @@
 # DREAMengin Repository State
 
-Generated: 2026-09-19T10:44:21.821Z
+Generated: 2026-11-25T10:24:07.230Z
 
 Model: capability nodes + files as edges.
 
@@ -15,11 +15,11 @@ Marker guide:
 - `🗂 FEATURE_FOLDER` = A folder that holds files for something people use in the app.
 - `🔌 API_ROUTE` = A behind-the-scenes app action, like saving, posting, liking, uploading, logging in, or sending a message.
 
-- Capability nodes: 11685
-- File edges: 1601
+- Capability nodes: 11673
+- File edges: 1600
 - Routes: 113
-- Files analysed: 1601
-- Unresolved internal imports: 138 specifiers across 33 files
+- Files analysed: 1600
+- Unresolved internal imports: 148 specifiers across 43 files
 
 ---
 
@@ -570,11 +570,11 @@ _No style files for this feature._
 | `engins/contentengin/photo/regionDetector.ts` | `ShapeRegion`, `Vec2` | `AlgebraicFitKind`, `AlgebraicRegionFit`, `SemanticPartLabel`, `SemanticShapeRegion`, `detectSemanticAlgebraicRegions`, `fitAlgebraicRegion` |
 | `engins/contentengin/pipeline/build.ts` | `CONTENTENGIN_VERSION`, `ContentAsset`, `ContentAssetCategory`, `buildAnimalParts`, `buildBicycleParts`, `buildBridgeParts` | `buildAsset` |
 | `engins/contentengin/pipeline/bundle.ts` | `crypto`, `fs/promises`, `path`, `ContentAsset`, `createGlbArtifact`, `validateAsset` | `writeAssetBundle`, `zipDirectory` |
-| `engins/contentengin/pipeline/exportGlb.ts` | `zlib`, `verifyGameReadyCertificate`, `Mesh`, `ContentAsset`, `MaterialDef`, `buildGeometry` | `GlbArtifact`, `GlbExportOptions`, `GlbInspection`, `createGlbArtifact`, `createGlbBuffer`, `expectedMaterialIdsForAsset` |
+| `engins/contentengin/pipeline/exportGlb.ts` | `zlib`, `Mesh`, `ContentAsset`, `MaterialDef`, `buildGeometry`, `MeshGeometry` | `GlbArtifact`, `GlbExportOptions`, `GlbInspection`, `createGlbArtifact`, `createGlbBuffer`, `expectedMaterialIdsForAsset` |
 | `engins/contentengin/pipeline/generateCollision.ts` | `CollisionBlock`, `CollisionShape`, `PartNode`, `Vec3`, `flattenParts` | `generateCollision` |
 | `engins/contentengin/pipeline/generateLods.ts` | `ExportProfile`, `LodDef` | `generateLods` |
 | `engins/contentengin/pipeline/paths.ts` | `path` | `safeSegment`, `safeUnder` |
-| `engins/contentengin/pipeline/validate.ts` | `verifyGameReadyCertificate`, `AnimationClipDef`, `BoneDef`, `ContentAsset`, `ExportProfile`, `SkeletonDef` | `validateAsset` |
+| `engins/contentengin/pipeline/validate.ts` | `AnimationClipDef`, `BoneDef`, `ContentAsset`, `ExportProfile`, `SkeletonDef`, `ValidationReport` | `validateAsset` |
 | `engins/contentengin/pipeline/writeManifest.ts` | `ContentAsset`, `ContentAssetObject`, `IntrinsicAssetScanReport` | `ContentAssetLodManifestEntry`, `ContentAssetManifest`, `ManifestBuildEvidence`, `makeManifest`, `wrapAsset` |
 | `engins/contentengin/recipes/recipeResolver.ts` | `ContentRecipe`, `ExportProfile`, `SUPPORTED_ASSET_TYPES` | `normalizeAssetType`, `resolveRecipe` |
 | `engins/contentengin/recipes/recipeTypes.ts` | `ContentRecipe`, `ExportProfile` | `ContentRecipe`, `ExportProfile`, `SUPPORTED_ASSET_TYPES`, `SupportedAssetType` |
@@ -586,7 +586,7 @@ _No style files for this feature._
 | `engins/contentengin/rigging/rigValidator.ts` | `SkeletonDef` | `validateSkeleton` |
 | `engins/contentengin/runtimeProfile.ts` | `ExportProfile`, `enabledUpgradeIds`, `ContentEnginUpgradeId` | `ContentEnginRuntimeProfile`, `ContentEnginRuntimeTier`, `createContentEnginRuntimeProfile` |
 | `engins/contentengin/scan/gameReadyMeshBuilder.ts` | `Mesh`, `Vec3`, `compactMesh`, `repairMeshDetailed`, `ColoredMesh`, `ColorRGB` | `GameReadyBuildSummary`, `GameReadyCollisionProxy`, `GameReadyLodSummary`, `PrepareGameReadyMeshOptions`, `PreparedGameReadyMesh`, `TopologyRepairReport` |
-| `engins/contentengin/scan/intrinsicAssetScanner.ts` | `Mesh`, `Vec3`, `computeIndexedGeometryDigest`, `digestObject`, `GameReadyAssetCertificate`, `GameReadyRepairId` | `AssetRepairStep`, `AssetTopologyMetrics`, `CONTENTENGIN_SCAN_VERSION`, `CanonicalIntrinsicScanFamily`, `GameReadyAssetCertificate`, `GameReadyRepairId` |
+| `engins/contentengin/scan/intrinsicAssetScanner.ts` | `Mesh`, `Vec3`, `GameReadyAssetCertificate`, `GameReadyRepairId`, `GameReadyAssetCertificate`, `GameReadyRepairId` | `AssetRepairStep`, `AssetTopologyMetrics`, `CONTENTENGIN_SCAN_VERSION`, `CanonicalIntrinsicScanFamily`, `GameReadyAssetCertificate`, `GameReadyRepairId` |
 
 _Trimmed to first 80 file edges for this feature._
 
@@ -837,7 +837,7 @@ _No style files for this feature._
 | `engins/gameengin/ai-director.ts` | `@tensorflow/tfjs`, `@tensorflow/tfjs-backend-webgpu` | `AIDirector`, `DirectorState`, `PlayerSignals` |
 | `engins/gameengin/ai-npcs.ts` | - | `BrainConfig`, `DialogueLine`, `EmergentDialogue`, `LLMInvoker`, `LLMNPCBrain`, `NPCMemory` |
 | `engins/gameengin/assets/BundleCache.ts` | `assertValidBundleManifest`, `bundleWeightBytes`, `GameEnginBundleManifest` | `GameEnginBundleCacheDecision`, `GameEnginBundleCacheOptions`, `planBundleCache` |
-| `engins/gameengin/assets/BundleManifest.ts` | `sha256Hex`, `verifyGameReadyCertificate`, `verifySha256Integrity`, `GameReadyAssetCertificate`, `RendererBackendId` | `GameEnginAssetEntry`, `GameEnginAssetKind`, `GameEnginBundleManifest`, `GameEnginLodEntry`, `assertValidBundleManifest`, `bundleWeightBytes` |
+| `engins/gameengin/assets/BundleManifest.ts` | `GameReadyAssetCertificate`, `RendererBackendId` | `GameEnginAssetEntry`, `GameEnginAssetKind`, `GameEnginBundleManifest`, `GameEnginLodEntry`, `assertValidBundleManifest`, `bundleWeightBytes` |
 | `engins/gameengin/backendNegotiator.ts` | `RuntimeBackendDiagnostics`, `RendererBackendId`, `CartridgeManifestEntry`, `decideRuntimeQuality` | `negotiateRendererBackend`, `serverBootstrapDiagnostics` |
 | `engins/gameengin/brain-reader.ts` | `node:crypto`, `node:fs`, `node:path` | `ActiveProjectSlot`, `ActiveProjects`, `AgentName`, `AssetRegistryEntry`, `AssignmentLogEntry`, `BRAIN_ROOT` |
 | `engins/gameengin/cartridge-manifest.ts` | `zod` | `CARTRIDGE_EXT`, `CARTRIDGE_MAGIC`, `CARTRIDGE_MIME`, `CartridgeManifest`, `CartridgeManifestSchema`, `PermissionSchema` |
@@ -2389,7 +2389,7 @@ _No style files for this feature._
 | `engins/renderengin/benchmarkProof.ts` | `JsonObject` | `RenderDeviceCapture`, `RenderMillionPolyProof`, `RenderTenMillionBenchmarkObject`, `RenderTenMillionBenchmarkScene`, `certifyTenMillionScene`, `createTenMillionPolygonProof` |
 | `engins/renderengin/completionEvidence.ts` | `DomainObject`, `JsonObject`, `JsonValue` | `RenderCompletionEvidence`, `RenderEvidenceData`, `RenderEvidenceItem`, `RenderEvidenceStatus`, `createRenderCompletionEvidence` |
 | `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction` | `DualQuaternion`, `EPS`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4` |
-| `engins/renderengin/diagnostics.ts` | `JsonObject`, `IntrinsicAssetScanReport`, `verifyGameReadyCertificate`, `GameReadyAssetCertificate`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateCertificateAdmission` |
+| `engins/renderengin/diagnostics.ts` | `JsonObject`, `IntrinsicAssetScanReport`, `GameReadyAssetCertificate`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateCertificateAdmission` |
 | `engins/renderengin/index.ts` | `*`, `*`, `default`, `default`, `createInlineRenderIntent`, `*` | `RenderEnginViewport`, `RenderStage`, `createInlineRenderIntent` |
 | `engins/renderengin/lighting.ts` | `DomainObject`, `DomainVisibility`, `JsonObject`, `v3normalize`, `Vec3` | `RenderEnvironment`, `RenderEnvironmentData`, `RenderLight`, `RenderLightData`, `RenderLightKind`, `createRenderEnvironment` |
 | `engins/renderengin/liveBenchmark.ts` | `JsonObject`, `WebGpuRenderEngin` | `RenderLiveBenchmarkResult`, `isMobileRenderUserAgent`, `runRenderLiveBenchmark`, `summarizeLiveBenchmark` |
@@ -4118,7 +4118,7 @@ _No style files for this feature._
 - `(default)` - `components/forge/dream.panel.AIBuilderPanel.tsx`
 - `(default)` - `components/forge/dream.widget.ForgeMomentumWidget.tsx`
 - `(default)` - `components/gameengin/dream.CartridgeRegistryBootstrap.tsx`
-- _6643 more omitted from this section_
+- _6636 more omitted from this section_
 
 ## external
 
@@ -4943,7 +4943,7 @@ _No style files for this feature._
 - `*` - `engine/navigation/manifold.ts`
 - `*` - `engine/navigation/physics.ts`
 - `*` - `engine/navigation/anchorField.ts`
-- _3244 more omitted from this section_
+- _3239 more omitted from this section_
 
 ## route
 
@@ -6103,11 +6103,11 @@ _No style files for this feature._
 | `engins/contentengin/photo/regionDetector.ts` | `ShapeRegion`, `Vec2` | `AlgebraicFitKind`, `AlgebraicRegionFit`, `SemanticPartLabel`, `SemanticShapeRegion`, `detectSemanticAlgebraicRegions`, `fitAlgebraicRegion`, `relabelRegion` |
 | `engins/contentengin/pipeline/build.ts` | `CONTENTENGIN_VERSION`, `ContentAsset`, `ContentAssetCategory`, `buildAnimalParts`, `buildBicycleParts`, `buildBridgeParts`, `buildBuildingParts`, `buildHumanoidParts` | `buildAsset` |
 | `engins/contentengin/pipeline/bundle.ts` | `crypto`, `fs/promises`, `path`, `ContentAsset`, `createGlbArtifact`, `validateAsset`, `makeManifest` | `writeAssetBundle`, `zipDirectory` |
-| `engins/contentengin/pipeline/exportGlb.ts` | `zlib`, `verifyGameReadyCertificate`, `Mesh`, `ContentAsset`, `MaterialDef`, `buildGeometry`, `MeshGeometry`, `computeMeshGeometryDigest` | `GlbArtifact`, `GlbExportOptions`, `GlbInspection`, `createGlbArtifact`, `createGlbBuffer`, `expectedMaterialIdsForAsset`, `inspectGlb` |
+| `engins/contentengin/pipeline/exportGlb.ts` | `zlib`, `Mesh`, `ContentAsset`, `MaterialDef`, `buildGeometry`, `MeshGeometry`, `computeMeshGeometryDigest`, `createIntrinsicAssetScanMetadata` | `GlbArtifact`, `GlbExportOptions`, `GlbInspection`, `createGlbArtifact`, `createGlbBuffer`, `expectedMaterialIdsForAsset`, `inspectGlb` |
 | `engins/contentengin/pipeline/generateCollision.ts` | `CollisionBlock`, `CollisionShape`, `PartNode`, `Vec3`, `flattenParts` | `generateCollision` |
 | `engins/contentengin/pipeline/generateLods.ts` | `ExportProfile`, `LodDef` | `generateLods` |
 | `engins/contentengin/pipeline/paths.ts` | `path` | `safeSegment`, `safeUnder` |
-| `engins/contentengin/pipeline/validate.ts` | `verifyGameReadyCertificate`, `AnimationClipDef`, `BoneDef`, `ContentAsset`, `ExportProfile`, `SkeletonDef`, `ValidationReport`, `Vec3` | `validateAsset` |
+| `engins/contentengin/pipeline/validate.ts` | `AnimationClipDef`, `BoneDef`, `ContentAsset`, `ExportProfile`, `SkeletonDef`, `ValidationReport`, `Vec3`, `computeMeshMetrics` | `validateAsset` |
 | `engins/contentengin/pipeline/writeManifest.ts` | `ContentAsset`, `ContentAssetObject`, `IntrinsicAssetScanReport` | `ContentAssetLodManifestEntry`, `ContentAssetManifest`, `ManifestBuildEvidence`, `makeManifest`, `wrapAsset` |
 | `engins/contentengin/recipes/recipeResolver.ts` | `ContentRecipe`, `ExportProfile`, `SUPPORTED_ASSET_TYPES` | `normalizeAssetType`, `resolveRecipe` |
 | `engins/contentengin/recipes/recipeTypes.ts` | `ContentRecipe`, `ExportProfile` | `ContentRecipe`, `ExportProfile`, `SUPPORTED_ASSET_TYPES`, `SupportedAssetType` |
@@ -6119,7 +6119,7 @@ _No style files for this feature._
 | `engins/contentengin/rigging/rigValidator.ts` | `SkeletonDef` | `validateSkeleton` |
 | `engins/contentengin/runtimeProfile.ts` | `ExportProfile`, `enabledUpgradeIds`, `ContentEnginUpgradeId` | `ContentEnginRuntimeProfile`, `ContentEnginRuntimeTier`, `createContentEnginRuntimeProfile` |
 | `engins/contentengin/scan/gameReadyMeshBuilder.ts` | `Mesh`, `Vec3`, `compactMesh`, `repairMeshDetailed`, `ColoredMesh`, `ColorRGB`, `RepairReport`, `compareAssetSimilarity` | `GameReadyBuildSummary`, `GameReadyCollisionProxy`, `GameReadyLodSummary`, `PrepareGameReadyMeshOptions`, `PreparedGameReadyMesh`, `TopologyRepairReport`, `prepareGameReadyMesh` |
-| `engins/contentengin/scan/intrinsicAssetScanner.ts` | `Mesh`, `Vec3`, `computeIndexedGeometryDigest`, `digestObject`, `GameReadyAssetCertificate`, `GameReadyRepairId`, `GameReadyAssetCertificate`, `GameReadyRepairId` | `AssetRepairStep`, `AssetTopologyMetrics`, `CONTENTENGIN_SCAN_VERSION`, `CanonicalIntrinsicScanFamily`, `GameReadyAssetCertificate`, `GameReadyRepairId`, `IntrinsicAssetScanMetadata`, `IntrinsicAssetScanOptions` |
+| `engins/contentengin/scan/intrinsicAssetScanner.ts` | `Mesh`, `Vec3`, `GameReadyAssetCertificate`, `GameReadyRepairId`, `GameReadyAssetCertificate`, `GameReadyRepairId` | `AssetRepairStep`, `AssetTopologyMetrics`, `CONTENTENGIN_SCAN_VERSION`, `CanonicalIntrinsicScanFamily`, `GameReadyAssetCertificate`, `GameReadyRepairId`, `IntrinsicAssetScanMetadata`, `IntrinsicAssetScanOptions` |
 | `engins/contentengin/shaders/shaderRegistry.ts` | `ShaderDef` | `SHADERS`, `getShader` |
 | `engins/contentengin/shaders/shaderTypes.ts` | `ShaderDef` | `ShaderDef` |
 | `engins/contentengin/upgradeMatrix.ts` | `ExportProfile` | `CONTENTENGIN_2026_UPGRADES`, `ContentEnginUpgrade`, `ContentEnginUpgradeId`, `enabledUpgradeIds` |
@@ -6155,7 +6155,7 @@ _No style files for this feature._
 | `engins/gameengin/ai-director.ts` | `@tensorflow/tfjs`, `@tensorflow/tfjs-backend-webgpu` | `AIDirector`, `DirectorState`, `PlayerSignals` |
 | `engins/gameengin/ai-npcs.ts` | - | `BrainConfig`, `DialogueLine`, `EmergentDialogue`, `LLMInvoker`, `LLMNPCBrain`, `NPCMemory`, `NPCPersonality`, `NPCPersonalityStore` |
 | `engins/gameengin/assets/BundleCache.ts` | `assertValidBundleManifest`, `bundleWeightBytes`, `GameEnginBundleManifest` | `GameEnginBundleCacheDecision`, `GameEnginBundleCacheOptions`, `planBundleCache` |
-| `engins/gameengin/assets/BundleManifest.ts` | `sha256Hex`, `verifyGameReadyCertificate`, `verifySha256Integrity`, `GameReadyAssetCertificate`, `RendererBackendId` | `GameEnginAssetEntry`, `GameEnginAssetKind`, `GameEnginBundleManifest`, `GameEnginLodEntry`, `assertValidBundleManifest`, `bundleWeightBytes`, `fetchVerifiedAssetBytes`, `verifyAssetPayloadIntegrity` |
+| `engins/gameengin/assets/BundleManifest.ts` | `GameReadyAssetCertificate`, `RendererBackendId` | `GameEnginAssetEntry`, `GameEnginAssetKind`, `GameEnginBundleManifest`, `GameEnginLodEntry`, `assertValidBundleManifest`, `bundleWeightBytes`, `fetchVerifiedAssetBytes`, `verifyAssetPayloadIntegrity` |
 | `engins/gameengin/backendNegotiator.ts` | `RuntimeBackendDiagnostics`, `RendererBackendId`, `CartridgeManifestEntry`, `decideRuntimeQuality` | `negotiateRendererBackend`, `serverBootstrapDiagnostics` |
 | `engins/gameengin/brain-reader.ts` | `node:crypto`, `node:fs`, `node:path` | `ActiveProjectSlot`, `ActiveProjects`, `AgentName`, `AssetRegistryEntry`, `AssignmentLogEntry`, `BRAIN_ROOT`, `BuildHistoryEntry`, `CRASH_REPORT_MAX_BYTES` |
 | `engins/gameengin/cartridge-manifest.ts` | `zod` | `CARTRIDGE_EXT`, `CARTRIDGE_MAGIC`, `CARTRIDGE_MIME`, `CartridgeManifest`, `CartridgeManifestSchema`, `PermissionSchema`, `QualityTierSchema`, `RenderModeSchema` |
@@ -6243,11 +6243,11 @@ _No style files for this feature._
 | `engins/portfolio/dream.PortfolioEngin.tsx` | `(default)`, `(default)`, `QuantumMeasurementResult`, `recordForgeTransfer`, `useForgeActivity`, `bridge`, `lucide-react`, `react` | `dream.PortfolioEngin.tsx`, `(default)` |
 | `engins/renderengin/advancedRendering.ts` | `mat4Identity`, `mat4Mul`, `mat4MulPrecise`, `mat4Transform`, `makeDualQuaternion`, `quatMul`, `DualQuaternion`, `Mat4` | `RenderBoneStoragePlan`, `RenderCompressedGeometry`, `RenderDeviceRecoveryState`, `RenderIndirectDrawCommand`, `RenderMeshlet`, `RenderMorphTarget`, `RenderMorphWeight`, `RenderStreamingPage` |
 | `engins/renderengin/animation.ts` | `mat4Mul`, `mat4Translation`, `mat4Scale`, `mat4FromQuat`, `Mat4`, `Quat`, `Vec3` | `RenderAnimationChannel`, `RenderAnimationClip`, `RenderAnimationPath`, `RenderAnimationPose`, `RenderKeyframeQuat`, `RenderKeyframeVec3`, `evaluateAnimationClip`, `sampleKeyframes` |
-| `engins/renderengin/assets.ts` | `authorizeDomainCapability`, `DomainAuthorizationContext`, `DomainCapability`, `DomainVisibility`, `JsonObject`, `JsonValue`, `computeIndexedGeometryDigest`, `verifyGameReadyCertificate` | `ParsedRenderAsset`, `RenderAssetManifest`, `RenderGlbGameReadyMetadata`, `VerifiedRenderGlbCertificate`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `createParsedGlbRenderAsset` |
+| `engins/renderengin/assets.ts` | `authorizeDomainCapability`, `DomainAuthorizationContext`, `DomainCapability`, `DomainVisibility`, `JsonObject`, `JsonValue`, `GameReadyAssetCertificate`, `createMeshBuffers` | `ParsedRenderAsset`, `RenderAssetManifest`, `RenderGlbGameReadyMetadata`, `VerifiedRenderGlbCertificate`, `authorizeRenderAssetOperation`, `createContentEnginRenderHandoff`, `createGameEnginRenderHandoff`, `createParsedGlbRenderAsset` |
 | `engins/renderengin/benchmarkProof.ts` | `JsonObject` | `RenderDeviceCapture`, `RenderMillionPolyProof`, `RenderTenMillionBenchmarkObject`, `RenderTenMillionBenchmarkScene`, `certifyTenMillionScene`, `createTenMillionPolygonProof`, `createTenMillionTriangleBenchmarkScene`, `evaluateGpuBenchmarkProof` |
 | `engins/renderengin/completionEvidence.ts` | `DomainObject`, `JsonObject`, `JsonValue` | `RenderCompletionEvidence`, `RenderEvidenceData`, `RenderEvidenceItem`, `RenderEvidenceStatus`, `createRenderCompletionEvidence` |
 | `engins/renderengin/core.ts` | `DomainObject`, `DomainVisibility`, `EnginBaseState`, `JsonObject`, `JsonValue`, `EnginAction`, `EnginRuleSetContract`, `,` | `DualQuaternion`, `EPS`, `GeometryCluster`, `Joint`, `LodLevel`, `Mat4`, `MeshBuffers`, `Quat` |
-| `engins/renderengin/diagnostics.ts` | `JsonObject`, `IntrinsicAssetScanReport`, `verifyGameReadyCertificate`, `GameReadyAssetCertificate`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateCertificateAdmission`, `evaluateRenderPerformanceGate`, `evaluateScannedAssetRenderGate` |
+| `engins/renderengin/diagnostics.ts` | `JsonObject`, `IntrinsicAssetScanReport`, `GameReadyAssetCertificate`, `MeshBuffers`, `RenderEnginFrameStats` | `RenderBenchmarkScene`, `RenderPerformanceReport`, `RenderPerformanceSample`, `createBenchmarkScene`, `createRenderPerformanceReport`, `evaluateCertificateAdmission`, `evaluateRenderPerformanceGate`, `evaluateScannedAssetRenderGate` |
 | `engins/renderengin/index.ts` | `*`, `*`, `default`, `default`, `createInlineRenderIntent`, `*`, `*`, `*` | `RenderEnginViewport`, `RenderStage`, `createInlineRenderIntent` |
 | `engins/renderengin/lighting.ts` | `DomainObject`, `DomainVisibility`, `JsonObject`, `v3normalize`, `Vec3` | `RenderEnvironment`, `RenderEnvironmentData`, `RenderLight`, `RenderLightData`, `RenderLightKind`, `createRenderEnvironment`, `createRenderLight`, `summarizeRenderLights` |
 | `engins/renderengin/liveBenchmark.ts` | `JsonObject`, `WebGpuRenderEngin` | `RenderLiveBenchmarkResult`, `isMobileRenderUserAgent`, `runRenderLiveBenchmark`, `summarizeLiveBenchmark` |
@@ -6319,7 +6319,6 @@ _No style files for this feature._
 | `hooks/useTapHoldMove.ts` | `react`, `ModuleManifest`, `RuntimeId`, `canTransfer` | `useTapHoldMove`, `UseTapHoldMoveOptions`, `useTapHoldMove` |
 | `hooks/useTick.ts` | `react` | `useTick`, `useTick` |
 | `hooks/useViewCounter.ts` | `react` | `useViewCounter`, `useViewCounter` |
-| `lib/gameReadyIntegrity.ts` | `GameReadyAssetCertificate` | `certificatePayload`, `computeIndexedGeometryDigest`, `digestObject`, `sha256Hex`, `stableStringify`, `verifyGameReadyCertificate`, `verifySha256Integrity` |
 | `next-env.d.ts` | - | `next-env.d.ts` |
 | `next.config.mjs` | - | `(default)` |
 | `optimizer/babylon-optimizero.ts` | `CreativeCandidate`, `OptimizeroResult`, `OptimizeroWeights`, `ScoredCandidate`, `CreativeOptimizero`, `DEFAULT_WEIGHTS` | `BABYLON_HARD_CHECKS`, `BabylonOptimizeroScorers`, `BabylonUICandidate`, `BabylonUIGenerator`, `BabylonUIOptimizero` |
@@ -6445,7 +6444,7 @@ _No style files for this feature._
 | `tests/contentengin/contentengin-recipes.test.ts` | `vitest`, `buildAsset`, `seededRandom` | `contentengin-recipes.test.ts` |
 | `tests/contentengin/contentengin-rigging.test.ts` | `vitest`, `addRigBendPoint`, `createAutoRigState`, `exportGLB`, `createSkeleton`, `validateSkeleton` | `contentengin-rigging.test.ts` |
 | `tests/contentengin/contentengin-validation.test.ts` | `vitest`, `buildAsset`, `validateAsset`, `PartNode` | `contentengin-validation.test.ts` |
-| `tests/contentengin/intrinsic-asset-scanner.test.ts` | `vitest`, `Mesh`, `compareAssetSimilarity`, `compareOrientedAssetSimilarity`, `createIntrinsicAssetScanMetadata`, `scanMeshForGameReadiness`, `prepareGameReadyMesh`, `verifyGameReadyCertificate` | `intrinsic-asset-scanner.test.ts` |
+| `tests/contentengin/intrinsic-asset-scanner.test.ts` | `vitest`, `Mesh`, `compareAssetSimilarity`, `compareOrientedAssetSimilarity`, `createIntrinsicAssetScanMetadata`, `scanMeshForGameReadiness`, `prepareGameReadyMesh` | `intrinsic-asset-scanner.test.ts` |
 | `tests/contextual-home.test.ts` | `vitest`, `HOME_BOTTOM_THRESHOLD`, `HOME_TOP_THRESHOLD`, `resolveHomeTarget`, `runHomeAction` | `contextual-home.test.ts` |
 | `tests/creative-optimizero.test.ts` | `vitest`, `CreativeOptimizero`, `DEFAULT_WEIGHTS`, `CHAOS_WEIGHTS`, `STABLE_WEIGHTS`, `STANDARD_UI_HARD_CHECKS`, `createUIOptimizero`, `CreativeCandidate` | `creative-optimizero.test.ts` |
 | `tests/data-transform-extended.test.ts` | `vitest` | `data-transform-extended.test.ts` |
@@ -6512,7 +6511,7 @@ _No style files for this feature._
 | `tests/game-quality-plan.test.ts` | `node:fs`, `node:path`, `vitest`, `ADVANCED_GAME_TARGETS`, `GAME_CONTROL_PROFILES`, `GAME_ENGINE_STANDARDS`, `GAME_QUALITY_PILLARS` | `game-quality-plan.test.ts` |
 | `tests/game-remote-regression.test.ts` | `node:fs`, `node:path`, `vitest`, `(default)`, `(default)` | `game-remote-regression.test.ts` |
 | `tests/gameengin-architect.test.ts` | `vitest`, `node:fs`, `node:path`, `BRAIN_ROOT`, `listConceptPatterns`, `listVisionStatements`, `readVisionStatement`, `recordVisionStatement` | `gameengin-architect.test.ts` |
-| `tests/gameengin-asset-pipeline.test.ts` | `vitest`, `assertValidBundleManifest`, `bundleWeightBytes`, `fetchVerifiedAssetBytes`, `GameEnginBundleManifest`, `planBundleCache`, `GameEnginShaderRegistry`, `digestObject` | `gameengin-asset-pipeline.test.ts` |
+| `tests/gameengin-asset-pipeline.test.ts` | `vitest`, `assertValidBundleManifest`, `bundleWeightBytes`, `fetchVerifiedAssetBytes`, `GameEnginBundleManifest`, `planBundleCache`, `GameEnginShaderRegistry`, `GameReadyAssetCertificate` | `gameengin-asset-pipeline.test.ts` |
 | `tests/gameengin-cartridges.test.ts` | `vitest`, `node:fs`, `node:path`, `CARTRIDGE_MANIFEST`, `getCartridgeManifest`, `getCartridgeCategories`, `CARTRIDGE_LOADERS`, `getCartridgeIds` | `gameengin-cartridges.test.ts` |
 | `tests/gameengin-crash-modal.test.ts` | `vitest`, `CRASH_REPORT_MAX_BYTES`, `CRASH_REPORT_MAX_BYTES`, `CartridgeErrorBoundary`, `(dynamic import)` | `gameengin-crash-modal.test.ts` |
 | `tests/gameengin-input-router.test.ts` | `vitest`, `GameRuntimeInputRouter`, `CartridgeInputEvent` | `gameengin-input-router.test.ts` |
@@ -6601,7 +6600,7 @@ _No style files for this feature._
 | `tests/renderengin-core.test.ts` | `vitest`, `clusterizeMesh`, `composeModelMatrix`, `createMeshBuffers`, `createRenderAsset`, `mat4Identity`, `packAosVertexBuffer`, `projectVertex` | `renderengin-core.test.ts` |
 | `tests/renderengin-glb-virtual-animation.test.ts` | `vitest`, `addObjectToRenderScene`, `buildInstanceBatches`, `computeMeshBounds`, `createParsedGlbRenderAsset`, `createRenderScene`, `createRenderSceneObject`, `createTerrainChunks` | `renderengin-glb-virtual-animation.test.ts` |
 | `tests/renderengin-gpu-proof-security.test.ts` | `vitest`, `SHADER`, `createRenderPostProcessGraph`, `createTenMillionPolygonProof`, `isMobileRenderUserAgent`, `summarizeLiveBenchmark`, `evaluateGpuBenchmarkProof`, `executePostProcessPixel` | `renderengin-gpu-proof-security.test.ts` |
-| `tests/renderengin-material-security-performance.test.ts` | `vitest`, `digestObject`, `authorizeRenderAssetOperation`, `createBenchmarkScene`, `createParsedObjRenderAsset`, `createRenderMaterial`, `createRenderPerformanceReport`, `evaluateRenderPerformanceGate` | `renderengin-material-security-performance.test.ts` |
+| `tests/renderengin-material-security-performance.test.ts` | `vitest`, `authorizeRenderAssetOperation`, `createBenchmarkScene`, `createParsedObjRenderAsset`, `createRenderMaterial`, `createRenderPerformanceReport`, `evaluateRenderPerformanceGate`, `evaluateScannedAssetRenderGate` | `renderengin-material-security-performance.test.ts` |
 | `tests/renderengin-runtime-wiring.test.ts` | `vitest`, `EnginRuntime`, `getRuntimeEnginRegistration`, `resolveRuntimeCapability`, `RenderEnginRuntimeRegistration`, `RenderEnginRuleSet`, `RENDER_ENGIN_ID`, `createMeshBuffers` | `renderengin-runtime-wiring.test.ts` |
 | `tests/renderengin-texture-lighting-settings.test.ts` | `vitest`, `calculateMipLevelCount`, `createRenderEnvironment`, `createRenderLight`, `createRenderQualitySettings`, `createRenderTexture`, `createTextureMemoryReport`, `summarizeRenderLights` | `renderengin-texture-lighting-settings.test.ts` |
 | `tests/renderengin-webgpu.test.ts` | `vitest`, `createMeshBuffers`, `packAosVertexBuffer`, `toGpuMat4` | `renderengin-webgpu.test.ts` |
@@ -6680,7 +6679,13 @@ _No style files for this feature._
 | File | Specifier | Names |
 |------|-----------|-------|
 | `.github/scripts/issue-bot.js` | `./HeavyComponent` | `(dynamic import)` |
+| `engins/contentengin/pipeline/exportGlb.ts` | `@/lib/gameReadyIntegrity` | `verifyGameReadyCertificate` |
+| `engins/contentengin/pipeline/validate.ts` | `@/lib/gameReadyIntegrity` | `verifyGameReadyCertificate` |
+| `engins/contentengin/scan/intrinsicAssetScanner.ts` | `@/lib/gameReadyIntegrity` | `computeIndexedGeometryDigest`, `digestObject` |
 | `engins/engin.CodeEngin.tsx` | `@/components/DreamButton` | `(default)` |
+| `engins/gameengin/assets/BundleManifest.ts` | `@/lib/gameReadyIntegrity` | `sha256Hex`, `verifyGameReadyCertificate`, `verifySha256Integrity` |
+| `engins/renderengin/assets.ts` | `@/lib/gameReadyIntegrity` | `computeIndexedGeometryDigest`, `verifyGameReadyCertificate` |
+| `engins/renderengin/diagnostics.ts` | `@/lib/gameReadyIntegrity` | `verifyGameReadyCertificate` |
 | `fix-repo.cjs` | `./` | `(default)` |
 | `hooks/useResponsive.ts` | `../ui/responsive` | `BREAKPOINTS`, `Breakpoint`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
 | `next-env.d.ts` | `./.next/types/routes.d.ts` | `(side-effect)` |
@@ -6795,10 +6800,13 @@ _No style files for this feature._
 | `tests/contentengin-features.test.ts` | `../lib/content/voiceClone` | `(dynamic import)` |
 | `tests/contentengin-features.test.ts` | `../lib/content/voiceClone` | `(dynamic import)` |
 | `tests/contentengin-features.test.ts` | `../lib/content/voiceClone` | `(dynamic import)` |
+| `tests/contentengin/contentengin-export.test.ts` | `../../lib/gameReadyIntegrity` | `verifyGameReadyCertificate` |
+| `tests/contentengin/intrinsic-asset-scanner.test.ts` | `@/lib/gameReadyIntegrity` | `verifyGameReadyCertificate` |
 | `tests/data-transform-extended.test.ts` | `../lib/data-transform` | `encodeToLedger`, `decodeFromLedger`, `normalizeBuffer`, `computeBufferStats`, `zscore` |
 | `tests/drop-target-registry.test.ts` | `../lib/runtime/dropTargetRegistry` | `dropTargetRegistry` |
 | `tests/drop-target-registry.test.ts` | `../lib/runtime/coercionTable` | `DreamDrop` |
 | `tests/engin-workflow.test.ts` | `../lib/engins/workflowEngine` | `createWorkflow`, `advanceStage`, `abandonWorkflow`, `checkHandoffEligibility`, `describeWorkflow`, `isValidTransition`, `workflowsForEngin`, `handoffsFrom`, `findWorkflowDef`, `WORKFLOW_CATALOG`, `HANDOFF_PATHS`, `STAGE_LABELS` |
+| `tests/gameengin-asset-pipeline.test.ts` | `@/lib/gameReadyIntegrity` | `digestObject`, `sha256Hex` |
 | `tests/gameengin-power-systems.test.ts` | `../lib/gameengin/power-systems` | `RollbackNetcode`, `ComputeShaderPipeline`, `AdvancedPhysicsWorld`, `OctreeBVH`, `WorkerJobSystem`, `ProceduralWorldGen`, `ReplayBuffer`, `BehaviorTreeEngine`, `GPUProfiler`, `TypedEventBus`, `AnimationStateMachine`, `LODSystem`, `ClientSidePrediction`, `ResourcePool`, `WGSLShaderManager`, `TerrainEngine`, `GlobalIllumProbes`, `AssetStreamManager`, `PhysicsMaterialSystem` |
 | `tests/gameengin-power-systems.test.ts` | `../lib/gameengin/power-systems` | `BTContext`, `BTNode`, `AnimationClip`, `LODObject`, `LODLevel` |
 | `tests/instance-manager.test.ts` | `../lib/runtime/instanceManager` | `(dynamic import)` |
@@ -6813,6 +6821,7 @@ _No style files for this feature._
 | `tests/platform-utils.test.ts` | `../lib/platform/index` | `(dynamic import)` |
 | `tests/platform-utils.test.ts` | `../lib/platform/index` | `(dynamic import)` |
 | `tests/readme-autosync.test.ts` | `../lib/dreams/types` | `createDream`, `dreamCan`, `isDream`, `resolveDreamSurfaceAdapter`, `NO_PERMISSIONS`, `OWNER_PERMISSIONS`, `VIEWER_PERMISSIONS`, `Dream`, `DreamKind`, `DreamPermissions`, `DreamRenderMode`, `DreamSurface`, `DrEamsIntentType` |
+| `tests/renderengin-material-security-performance.test.ts` | `@/lib/gameReadyIntegrity` | `digestObject` |
 | `tests/responsive.test.ts` | `../lib/ui/responsive` | `BREAKPOINTS`, `BREAKPOINT_ORDER`, `clamp`, `cssClamp`, `fluid`, `getBreakpoint`, `isAtLeast`, `isBelow`, `pickByBreakpoint`, `readViewportWidth` |
 | `tests/swap-manager-extended.test.ts` | `../lib/runtime/swapManager` | `getSwap`, `setSwap`, `toggleSwap`, `clearSwap`, `getAllSwapStates`, `resetAllSwaps` |
 | `tests/tech-foundation.test.ts` | `../lib/supabase/vector` | `(dynamic import)` |
@@ -8675,11 +8684,13 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   +-- pipeline  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- build.ts
 |   |   |   +-- bundle.ts
-|   |   |   +-- exportGlb.ts
+|   |   |   +-- exportGlb.ts !
+|   |   |   |   `-- ! @/lib/gameReadyIntegrity (verifyGameReadyCertificate)
 |   |   |   +-- generateCollision.ts
 |   |   |   +-- generateLods.ts
 |   |   |   +-- paths.ts
-|   |   |   +-- validate.ts
+|   |   |   +-- validate.ts !
+|   |   |   |   `-- ! @/lib/gameReadyIntegrity (verifyGameReadyCertificate)
 |   |   |   `-- writeManifest.ts
 |   |   +-- recipes  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- recipeResolver.ts
@@ -8699,7 +8710,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   |   `-- rigValidator.ts
 |   |   +-- scan  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- gameReadyMeshBuilder.ts
-|   |   |   `-- intrinsicAssetScanner.ts
+|   |   |   `-- intrinsicAssetScanner.ts !
+|   |   |       `-- ! @/lib/gameReadyIntegrity (computeIndexedGeometryDigest, digestObject)
 |   |   +-- shaders  [ContentEngin / CreateEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- shaderRegistry.ts
 |   |   |   `-- shaderTypes.ts
@@ -8741,7 +8753,8 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- gameengin  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   +-- assets  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- BundleCache.ts
-|   |   |   `-- BundleManifest.ts
+|   |   |   `-- BundleManifest.ts !
+|   |   |       `-- ! @/lib/gameReadyIntegrity (sha256Hex, verifyGameReadyCertificate, verifySha256Integrity)
 |   |   +-- brain  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- asset-registry  [GameEngin] 🗂 FEATURE_FOLDER
 |   |   |   +-- build-history  [GameEngin] 🗂 FEATURE_FOLDER
@@ -8947,11 +8960,13 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- renderengin  [RenderEngin]
 |   |   +-- advancedRendering.ts
 |   |   +-- animation.ts
-|   |   +-- assets.ts
+|   |   +-- assets.ts !
+|   |   |   `-- ! @/lib/gameReadyIntegrity (computeIndexedGeometryDigest, verifyGameReadyCertificate)
 |   |   +-- benchmarkProof.ts
 |   |   +-- completionEvidence.ts
 |   |   +-- core.ts
-|   |   +-- diagnostics.ts
+|   |   +-- diagnostics.ts !
+|   |   |   `-- ! @/lib/gameReadyIntegrity (verifyGameReadyCertificate)
 |   |   +-- index.ts
 |   |   +-- lighting.ts
 |   |   +-- liveBenchmark.ts
@@ -9093,8 +9108,6 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- useTapHoldMove.ts
 |   +-- useTick.ts
 |   `-- useViewCounter.ts
-+-- lib
-|   `-- gameReadyIntegrity.ts
 +-- misc
 +-- optimizer
 |   +-- babylon-optimizero.ts
@@ -9235,6 +9248,13 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   +-- schema-final.sql
 |   +-- seed.sql
 |   `-- vector.ts
++-- TopologicalRelationalSystemsDynamics
+|   `-- initialDRAFTS
+|       +-- GRUT_v1_23_2.pdf
+|       +-- GRUT_v1_23_2.txt
+|       +-- TRSD_v1_16_2.pdf
+|       +-- TRSD_v1_16_2.txt
+|       `-- TRSDTheoryProtoTypeFile
 +-- types
 |   +-- ads.ts
 |   +-- ai-system.ts
@@ -9260,13 +9280,19 @@ Legend: `!` means unresolved import. Markers are explained above.
 |   |   `-- server.ts
 |   `-- index.ts
 +-- zeta
+|   +-- data
+|   |   +-- rar_format.txt
+|   |   +-- summary.json
+|   |   +-- tables2_format.txt
+|   |   `-- torridity_table.csv
 |   +-- state
 |   |   +-- available_models.txt
 |   |   +-- phase1_extraction.json
 |   |   +-- phase2_scanning.json
 |   |   +-- phase3_analysis.json
 |   |   +-- phase4_synthesis.json
-|   |   `-- skip.txt
+|   |   +-- skip.txt
+|   |   `-- torridity.json
 |   +-- latest.json
 |   +-- pipeline.py
 |   `-- zeros.txt
