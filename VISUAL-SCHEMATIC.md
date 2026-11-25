@@ -30,7 +30,7 @@ It shows every file, folder, symbol, and connection, including disconnected/floa
 <!-- VISUAL-SCHEMATIC:AUTO-GENERATED:START -->
 ### Auto-Generated Repository Overview
 
-- **Total files:** 2305
+- **Total files:** 2306
 - **Total function/class nodes:** 4929
 - **Total edges:** 8605
 - **Orphan nodes:** 4232
