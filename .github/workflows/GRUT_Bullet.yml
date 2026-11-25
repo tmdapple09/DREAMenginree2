@@ -1,0 +1,887 @@
+name: GRUT Bullet Cluster full resolution
+on:
+  workflow_dispatch:
+    inputs:
+      resume_run_id:
+        description: 'Previous workflow run ID to resume (blank for fresh run)'
+        required: false
+        type: string
+        default: ''
+      runner:
+        description: 'Runner label available in your repository'
+        required: true
+        type: string
+        default: ubuntu-latest
+permissions:
+  contents: read
+  actions: read
+jobs:
+  simulate:
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 360
+    env:
+      GRUT_WALL_SECONDS: '16200'
+      MPLBACKEND: Agg
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install 'numpy>=1.26,<2.3' 'matplotlib>=3.8,<4'
+      - name: Restore previous results
+        if: ${{ inputs.resume_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: grut-bullet-results
+          path: GRUT_Bullet_Full_results
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.resume_run_id }}
+      - name: Create embedded simulation
+        shell: bash
+        run: |
+          cat > GRUT_Bullet_Full.py <<'GRUT_EMBEDDED_PYTHON_EOF'
+          """GRUT Bullet Cluster: cosmological formation and local merger (Carnets Plus).
+          Uses NumPy; Matplotlib optional. %run GRUT_Bullet_Carnets_Full.py
+          Paper 09 capture, geodesic phase transport and cosmic budget; Paper 03
+          multistream moments; original GRUT signed polarization and C3 renewal;
+          GRA 08 spectral splitting and GRA 09 leading weak-field optical diagnostics.
+          Spherical growing-mode seeds and star handoff are explicit conditional inputs.
+          No final phase halo multiplier, no fitted lensing amplitude, no nonlocal
+          pressure-energy redistribution. Formation solves coupled spherical gas and
+          collisionless phase evolution with cosmic expansion; merger evolves all
+          retained carriers and gas self-gravitationally on a 3-D local periodic mesh.
+          The finite nonspherical support stress/transport closure is not specified.
+          Its full-capture endpoint and renewal are tested, not added as unconstrained
+           gravity. This is a controlled reduced model, not full GRUT action.
+          The same formed baryonic state is used for the phase-removal control.
+          The thin-lens maps are weak-field Born projections, not full metric ray tracing.
+          The raw mesh force imbalance is saved before COM-frame projection.
+          Formation boundary and phase shell truncation, seed parameters, and numerical
+          quality are in PASTE_BACK.json. No observational fit is claimed.
+          """
+          import json, csv, time, math, os, sys, signal, faulthandler
+          from pathlib import Path
+          import numpy as np
+          
+          # ==================== USER SETTINGS ====================
+          # Fixed high-resolution run; no preliminary test modes or resolution overrides.
+          # Full 9216 kpc cube: 255^3 cells, 36.141176 kpc spacing.
+          # Large float64 working arrays require multiple GB of RAM. No automatic downshift.
+          MODE = 'full_resolution'
+          N = 255                     # fixed production grid; no automatic resolution reduction
+          BOX_KPC = 9216.0            # periodic proper cube; vary box separately
+          END_MYR = 2000.0
+          OUTPUT_EVERY_MYR = 100.0
+          CFL = 0.30
+          GAS_TOTAL = 383.41          # archive extrapolated inventory; not measured initial ownership
+          GAS_BULLET_FRACTION = 0.5   # explicit sensitivity input; NOT a fitted or derived ratio
+          STAR_MASS = (11.96, 4.00)
+          SCALE_KPC = (470., 245.)    # archived conditional profile scales, gas and stars
+          START_SEPARATION = 4300.0
+          IMPACT_KPC = 100.0
+          RELATIVE_KMS = 2600.0       # illustrative initial relative speed, not shock speed measurement
+          STAR_PARTICLES = 72000      # per galaxy population
+          PHASE_SIGMA_KMS = 1.0       # conditional cold cosmic reservoir (Paper 09 capture section)
+          PHASE_MODE = 'formed'       # 'formed', 'cosmic', 'none', or 'file'
+          PHASE_FILE = 'phase_initial.npz' # optional x [kpc], v [km/s], mass [10^12 Msun], arrays
+          RUN_BARYON_CONTROL = True
+          MAKE_PLOTS = True
+          STOP_AT_TARGET = False       # retain matched snapshot and evolve through END_MYR
+          RESUME = True
+          SEED = 8417
+          OUT = Path('GRUT_Bullet_Full_results')
+          # Wall-clock checkpoint interval only; does not change simulation settings.
+          BUDGET_SECONDS = float(os.environ.get('GRUT_WALL_SECONDS', '0'))
+          DEADLINE = time.monotonic()+BUDGET_SECONDS if BUDGET_SECONDS>0 else float('inf')
+          class CheckpointPause(Exception): pass
+          def pause_due(): return time.monotonic()>=DEADLINE
+          # =======================================================
+          KPC=3.085677581491367e19; MYR=31557600.e6; MS=1.98847e30
+          MUNIT=1e12*MS; G=6.67430e-11*MUNIT*MYR**2/KPC**3
+          C=299792458.*MYR/KPC; KM=1000.*MYR/KPC
+          H0=67.35*1000*MYR/(1000*KPC); Z=.296; OL=27/(4*np.pi**2); OC=.26503; OM=.31599
+          HZ=H0*np.sqrt(OM*(1+Z)**3+OL); AC=3*np.sqrt(3)/(4*np.pi**2)*C*HZ
+          TAU=4*np.pi**2/(9*np.sqrt(3)*HZ) # Myr; source clock, approximately 31.4 Gyr
+          RHO_PHASE=OC*3*H0**2/(8*np.pi*G)*(1+Z)**3
+          DL=4.570*206264.80624709636; SIGCRIT=C*C/(4*np.pi*G*DL)
+          GAMMA=5./3.; TARGET=880.07174; AP=150.; SMOOTH=80.
+          
+          
+          def emit(*a): print(*a,flush=True)
+          
+          def stage(name):
+              emit(f'[STAGE {time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())}]',name)
+          
+          def install_failure_trace():
+              # The C-level handler emits the Python stack even during native NumPy work,
+              # then chains to the original SIGTERM disposition. Do not claim a clean exit.
+              faulthandler.enable(file=sys.stderr,all_threads=True)
+              if hasattr(faulthandler,'register'):
+                  faulthandler.register(signal.SIGTERM,file=sys.stderr,all_threads=True,chain=True)
+              stage('failure traceback installed')
+          def rel(a,b): return float(np.linalg.norm(a-b)/max(np.linalg.norm(b),1e-30))
+          def jsonsave(path,obj):
+              tmp=path.with_suffix('.tmp'); tmp.write_text(json.dumps(obj,indent=2,allow_nan=False)); tmp.replace(path)
+          
+          class Grid:
+              def __init__(self,n,L):
+                  self.n=n; self.L=L; self.h=L/n; self.dv=self.h**3; self.shape=(n,)*3
+                  self.x=(np.arange(n)+.5)*self.h-L/2
+                  self.xyz=np.meshgrid(self.x,self.x,self.x,indexing='ij',sparse=True)
+                  k=2*np.pi*np.fft.fftfreq(n,self.h); kd=k.copy()
+                  if n%2==0: kd[n//2]=0. # real, antisymmetric derivative at Nyquist
+                  self.k=np.meshgrid(kd,kd,kd,indexing='ij',sparse=True)
+                  # Compatible spectral Poisson/gradient/divergence; Nyquist-only nulls removed.
+                  self.k2=sum(q*q for q in self.k); self.inv=np.divide(1.,self.k2,out=np.zeros(self.shape),where=self.k2>0)
+              def wrap(self,x): return (x+self.L/2)%self.L-self.L/2
+              def geometry(self,x,derivative=False):
+                  # Quadratic B-spline particle shape. A smooth discrete Hamiltonian
+                  # force uses the derivative of exactly this same mass assignment.
+                  q=(x+self.L/2)/self.h-.5; i=np.floor(q+.5).astype(np.int64);d=q-i
+                  W=(.5*(.5-d)**2,.75-d*d,.5*(.5+d)**2)
+                  D=(-( .5-d)/self.h,-2*d/self.h,(.5+d)/self.h)
+                  for a in range(3):
+                      for b in range(3):
+                          for c in range(3):
+                              j=(i+np.array([a-1,b-1,c-1]))%self.n
+                              idx=(j[:,0]*self.n+j[:,1])*self.n+j[:,2]
+                              wx,wy,wz=W[a][:,0],W[b][:,1],W[c][:,2]
+                              w=wx*wy*wz
+                              if derivative:
+                                  dw=np.column_stack((D[a][:,0]*wy*wz,wx*D[b][:,1]*wz,wx*wy*D[c][:,2]))
+                                  yield idx,w,dw
+                              else:yield idx,w
+              def deposit(self,x,w):
+                  out=np.zeros(self.n**3)
+                  if len(x):
+                      for idx,frac in self.geometry(x):out+=np.bincount(idx,weights=w*frac,minlength=out.size)
+                  return out.reshape(self.shape)/self.dv
+              def sample(self,field,x):
+                  out=np.zeros((len(x),)+field.shape[3:]);flat=field.reshape((self.n**3,)+field.shape[3:])
+                  for i,w in self.geometry(x):out+=flat[i]*w.reshape((-1,)+(1,)*(out.ndim-1))
+                  return out
+              def particle_force(self,phi,x):
+                  out=np.zeros_like(x);flat=phi.ravel()
+                  for idx,w,dw in self.geometry(x,True):out-=flat[idx,None]*dw
+                  return out
+              def forces(self,U,x,m):
+                  phi,a=self.solve(U[0]+self.deposit(x,m))
+                  ap=self.particle_force(phi,x)
+                  # Discrete grid does not have exact continuous translation symmetry.
+                  # Work in the instantaneous COM inertial-coordinate projection; record
+                  # the unprojected residual so conservation is not claimed by fiat.
+                  gasforce=np.sum(U[0][...,None]*a,axis=(0,1,2))*self.dv
+                  particleforce=np.sum(m[:,None]*ap,axis=0)
+                  residual=gasforce+particleforce; total=U[0].sum()*self.dv+m.sum()
+                  scale=np.sum(U[0]*np.linalg.norm(a,axis=-1))*self.dv+np.sum(m*np.linalg.norm(ap,axis=1))
+                  shift=residual/total
+                  return phi,a-shift,ap-shift,float(np.linalg.norm(residual)/max(scale,1e-30)),float(np.linalg.norm(residual))
+              def solve(self,rho):
+                  ph=np.fft.rfftn(rho,axes=(0,1,2)); ph*=(-4*np.pi*G)*self.inv[:,:,:self.n//2+1]
+                  pot=np.fft.irfftn(ph,s=self.shape,axes=(0,1,2))
+                  a=np.empty(self.shape+(3,))
+                  for i,k in enumerate(self.k):
+                      if i==2:k=k[:,:,:self.n//2+1]
+                      a[...,i]=np.fft.irfftn(-1j*k*ph,s=self.shape,axes=(0,1,2))
+                  return pot,a
+              def div(self,v):
+                  z=None
+                  for i,k in enumerate(self.k):
+                      if i==2:k=k[:,:,:self.n//2+1]
+                      h=np.fft.rfftn(v[...,i],axes=(0,1,2));h*=1j*k
+                      if z is None:z=h
+                      else:z+=h
+                  return np.fft.irfftn(z,s=self.shape,axes=(0,1,2))
+              def supported(self,rho):
+                  # Odd grid: only the spatially constant mode is in the kernel.
+                  if self.n%2:return rho-rho.mean()
+                  return np.fft.ifftn(np.fft.fftn(rho)*(self.k2>0)).real
+          
+          def primitive(U):
+              r=U[0]; v=U[1:4]/r; p=(GAMMA-1)*(U[4]-.5*r*np.sum(v*v,axis=0))
+              return r,v,p
+          
+          def valid(U):
+              tol=1e-13*np.max(U[0])
+              for lo in range(0,U.shape[1],HYDRO_SLAB):
+                  B=U[:,lo:lo+HYDRO_SLAB]
+                  if not np.isfinite(B).all() or np.min(B[0])<=0 or np.min(primitive(B)[2])<=0:return False
+                  if len(B)>5 and (np.min(B[5]) < -tol or np.min(B[0]-B[5]) < -tol):return False
+              return True
+          
+          def hydro_rhs_block(U,g,return_mass_flux=False,second_order=True):
+              r,v,p=primitive(U); sound=np.sqrt(GAMMA*p/r); rhs=np.zeros_like(U); mf=[]
+              for d in range(3):
+                  ax=d+1
+                  if second_order:
+                      # Monotonized-central primitive reconstruction. Positivity is
+                      # retained by the minmod-family limiter; tracer is a mass fraction.
+                      Q=np.concatenate((r[None],v,p[None],U[5:6]/r if len(U)>5 else np.empty((0,)+r.shape)),axis=0)
+                      left=Q-np.roll(Q,1,axis=ax);right=np.roll(Q,-1,axis=ax)-Q
+                      same=left*right>0
+                      slope=np.where(same,np.sign(left)*np.minimum(np.minimum(2*abs(left),2*abs(right)),.5*abs(left+right)),0.)
+                      ql=Q+.5*slope;qr=np.roll(Q-.5*slope,-1,axis=ax)
+                      def cons(Q):
+                          r0=Q[0]; vv=Q[1:4];pp=Q[4]; result=np.empty_like(U)
+                          result[0]=r0; result[1:4]=r0*vv;result[4]=pp/(GAMMA-1)+.5*r0*np.sum(vv*vv,axis=0)
+                          if len(U)>5:result[5]=r0*np.clip(Q[5],0,1)
+                          return result
+                      L=cons(ql);R=cons(qr);rl=ql[0];rr=qr[0];pl0=ql[4];pr=qr[4];vl=ql[d+1];vr=qr[d+1]
+                      cl=np.sqrt(GAMMA*pl0/rl);cr=np.sqrt(GAMMA*pr/rr)
+                      del Q,left,right,same,slope,ql,qr
+                  else:
+                      L=U;R=np.roll(U,-1,axis=ax);rl=r;rr=np.roll(r,-1,axis=d);pl0=p;pr=np.roll(p,-1,axis=d);vl=v[d];vr=np.roll(vl,-1,axis=d);cl=sound;cr=np.roll(sound,-1,axis=d)
+                  F=L*vl;F[d+1]+=pl0;F[4]+=pl0*vl
+                  FR=R*vr;FR[d+1]+=pr;FR[4]+=pr*vr
+                  sl=np.minimum(vl-cl,vr-cr);sr=np.maximum(vl+cl,vr+cr)
+                  den=rl*(sl-vl)-rr*(sr-vr)
+                  with np.errstate(divide='ignore',invalid='ignore',over='ignore'):
+                      ss=(pr-pl0+rl*vl*(sl-vl)-rr*vr*(sr-vr))/den
+                      def star(Q,r0,p0,v0,sw):
+                          rat=(sw-v0)/(sw-ss); st=Q*rat
+                          st[d+1]=st[0]*ss
+                          st[4]=st[0]*(Q[4]/r0+(ss-v0)*(ss+p0/(r0*(sw-v0))))
+                          return st
+                      Ls=star(L,rl,pl0,vl,sl); Rs=star(R,rr,pr,vr,sr)
+                      Fl=F+sl*(Ls-L); Fr=FR+sr*(Rs-R)
+                      face=np.where(sl>=0,F,np.where(ss>=0,Fl,np.where(sr>0,Fr,FR)))
+                      pl=(GAMMA-1)*(Ls[4]-.5*np.sum(Ls[1:4]**2,axis=0)/Ls[0]); ps=(GAMMA-1)*(Rs[4]-.5*np.sum(Rs[1:4]**2,axis=0)/Rs[0])
+                  ok=np.isfinite(face).all(axis=0)&(Ls[0]>0)&(Rs[0]>0)&(pl>0)&(ps>0)&(ss>=sl)&(ss<=sr)
+                  s=np.maximum(abs(vl)+cl,abs(vr)+cr); fallback=.5*(F+FR-s*(R-L))
+                  ok &= (np.maximum(rl,rr)<30*np.minimum(rl,rr)) & (np.maximum(pl0,pr)<30*np.minimum(pl0,pr))
+                  face=np.where(ok,face,fallback)
+                  rhs-=(face-np.roll(face,1,axis=ax))/g.h
+                  if return_mass_flux:mf.append(face[0].copy())
+              return (rhs,mf) if return_mass_flux else rhs
+          
+          # Full-resolution finite-volume operator evaluated in slabs. No coarsening.
+          HYDRO_SLAB = 8
+          
+          def hydro_rhs(U,g,return_mass_flux=False,second_order=True):
+              n=U.shape[1]; rhs=np.empty_like(U)
+              mf=[np.empty(U.shape[1:],dtype=U.dtype) for _ in range(3)] if return_mass_flux else None
+              for lo in range(0,n,HYDRO_SLAB):
+                  hi=min(lo+HYDRO_SLAB,n); ids=np.arange(lo-2,hi+2)%n
+                  block=np.take(U,ids,axis=1)
+                  result=hydro_rhs_block(block,g,return_mass_flux,second_order)
+                  if return_mass_flux:
+                      dr,flux=result;rhs[:,lo:hi]=dr[:,2:-2]
+                      for d in range(3):mf[d][lo:hi]=flux[d][2:-2]
+                  else:rhs[:,lo:hi]=result[:,2:-2]
+              return (rhs,mf) if return_mass_flux else rhs
+          
+          def peak_rss_mb():
+              import resource
+              # Linux ru_maxrss is in KiB.
+              return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024
+          
+          def kick(U,a,h):
+              for lo in range(0,U.shape[1],HYDRO_SLAB):
+                  hi=min(lo+HYDRO_SLAB,U.shape[1]); B=U[:,lo:hi];old=B[1:4].copy(); delta=h*np.moveaxis(a[lo:hi],-1,0)
+                  B[1:4]+=B[0]*delta
+                  B[4]+=np.sum(old*delta,axis=0)+.5*B[0]*np.sum(delta*delta,axis=0)
+          
+          def positions(g,mode):
+              rng=np.random.default_rng(SEED); gm=np.array([1-GAS_BULLET_FRACTION,GAS_BULLET_FRACTION])*GAS_TOTAL
+              masses=gm+STAR_MASS; frac=masses[1]/masses.sum(); delta=np.array([START_SEPARATION,IMPACT_KPC,0.])
+              centers=np.array([-frac*delta,(1-frac)*delta]); vel=np.array([[frac*RELATIVE_KMS*KM,0,0],[-(1-frac)*RELATIVE_KMS*KM,0,0]])
+              U=np.zeros((6,)+g.shape); xp=[]; vp=[]; mp=[]; labels=[]
+              for i,(m,star,a) in enumerate(zip(gm,STAR_MASS,SCALE_KPC)):
+                  r2=sum(g.wrap(q-centers[i,j])**2 for j,q in enumerate(g.xyz)); radius=np.sqrt(r2+a*a)
+                  rho=(1+r2/a**2)**(-2.5); rho*=m/(rho.sum()*g.dv)
+                  # Isolated equal-scale Plummer hydrostatic pressure, approximate when overlapped.
+                  p=rho*G*masses[i]/(6*radius)
+                  U[0]+=rho; U[1:4]+=rho*vel[i,:,None,None,None]; U[4]+=p/(GAMMA-1)+.5*rho*np.dot(vel[i],vel[i]); U[5]+=rho if i==1 else 0
+                  count=STAR_PARTICLES; cut=3.5*a; fmax=(cut/np.sqrt(cut**2+a*a))**3
+                  u=rng.uniform(1e-10,fmax,count); r=a/np.sqrt(u**(-2/3)-1)
+                  dirs=rng.normal(size=(count,3)); dirs/=np.linalg.norm(dirs,axis=1)[:,None]
+                  pos=g.wrap(centers[i]+r[:,None]*dirs)
+                  # Plummer isotropic DF p(q) proportional to q^2(1-q^2)^(7/2), q=v/v_escape.
+                  q=np.empty(count); pending=np.arange(count)
+                  while len(pending):
+                      cand=rng.random(len(pending)); accept=rng.random(len(pending))*.1<cand**2*(1-cand*cand)**3.5
+                      q[pending[accept]]=cand[accept]; pending=pending[~accept]
+                  dirs=rng.normal(size=(count,3)); dirs/=np.linalg.norm(dirs,axis=1)[:,None]
+                  vs=vel[i]+dirs*(q*np.sqrt(2*G*masses[i]/np.sqrt(r*r+a*a)))[:,None]
+                  xp.append(pos);vp.append(vs);mp.append(np.full(count,star/count));labels.append(np.full(count,i,np.int8))
+              if mode=='cosmic':
+                  # One equal-weight phase tracer per cell; total budget follows Paper 09 cosmology.
+                  pos=np.stack(np.meshgrid(g.x,g.x,g.x,indexing='ij'),axis=-1).reshape(-1,3)
+                  v=rng.normal(0,PHASE_SIGMA_KMS*KM,pos.shape); v-=v.mean(0)
+                  xp.append(pos);vp.append(v);mp.append(np.full(len(pos),RHO_PHASE*g.dv));labels.append(np.full(len(pos),2,np.int8))
+              elif mode=='file':
+                  with np.load(PHASE_FILE,allow_pickle=False) as f: pos=np.asarray(f['x'],float); v=np.asarray(f['v'],float)*KM; m=np.asarray(f['mass'],float)
+                  if pos.ndim!=2 or pos.shape[1]!=3 or v.shape!=pos.shape or m.shape!=(len(pos),) or not np.isfinite(np.c_[pos,v,m]).all() or np.any(m<=0):raise ValueError('Invalid independent phase initial data')
+                  xp.append(g.wrap(pos));vp.append(v);mp.append(m);labels.append(np.full(len(pos),2,np.int8))
+              elif mode!='none':raise ValueError('Invalid PHASE_MODE')
+              return U,np.concatenate(xp),np.concatenate(vp),np.concatenate(mp),np.concatenate(labels),centers
+          
+          # Source cascade: Paper 09 p09-law. Quadrature and monotone inversion tabulated once.
+          def cascade():
+              x=np.geomspace(1e-9,1e7,2200); j=np.arange(1,257.); n=1+1/(2*j); w=1/(2*(1-np.log(2))*j*(2*j+1)); n=np.r_[n,1.]; w=np.r_[w,1-w.sum()]
+              u,q=np.polynomial.legendre.leggauss(48);u=(u+1)/2;q=q/2
+              mu=np.empty_like(x); D=mu.copy()
+              for i,xx in enumerate(x):
+                  s=-n[:,None]*np.log1p(xx*u[None,:]/n[:,None]); coeff=w[:,None]*(3*q*u*u)[None,:]
+                  mu[i]=np.sum(coeff*(-np.expm1(s)));D[i]=np.sum(coeff*np.exp(s))
+              y=x*mu
+              assert np.all(np.diff(y)>0) and abs(np.max(x*D)-.9286)<.001
+              return x,y,x*D
+          
+          def support_flux(a,table):
+              # Quasi-linear diagnostic, v=grad Phi_b=-a_b, S=(nu-1)v.
+              x,y,boost=table; norm=np.linalg.norm(a,axis=-1); load=norm/AC
+              b=np.zeros_like(load); good=load>0
+              b[good]=np.exp(np.interp(np.log(load[good]),np.log(y),np.log(boost)))
+              low=(load<y[0])&good; b[low]=np.sqrt(4*load[low]/3)-load[low]
+              high=load>y[-1]; b[high]=boost[-1]*y[-1]/load[high] # diagnostic tail; flag range in output
+              return -a*np.divide(AC*b,norm,out=np.zeros_like(norm),where=good)[...,None]
+          
+          def center(g,x,m,label,i,prior):
+              pos=x[label==i]; w=m[label==i]; c=prior.copy()
+              for rad in (700.,400.,max(180.,1.2*g.h)):
+                  d=g.wrap(pos-c); r2=np.sum(d*d,axis=1); weight=w*np.exp(-.5*r2/rad**2)
+                  if weight.sum()<1e-12*w.sum():break
+                  c=g.wrap(c+(d*weight[:,None]).sum(0)/weight.sum())
+              return c
+          
+          def smooth2(a,g,s=SMOOTH):
+              k=2*np.pi*np.fft.fftfreq(g.n,g.h); k2=k[:,None]**2+k[None,:]**2
+              return np.fft.ifft2(np.fft.fft2(a)*np.exp(-s*s*k2/2)).real
+          
+          def optical(a):
+              # Born thin lens shear / Jacobi amplification, periodic sky, mass-sheet convention.
+              n=a.shape[0]; k=2*np.pi*np.fft.fftfreq(n); kx=k[:,None];ky=k[None,:];den=kx*kx+ky*ky
+              h=np.fft.fft2(a); inv=np.divide(1.,den,out=np.zeros_like(den),where=den>0)
+              s1=np.fft.ifft2((kx*kx-ky*ky)*inv*h).real;s2=np.fft.ifft2(2*kx*ky*inv*h).real
+              return s1,s2,(1-a)**2-s1*s1-s2*s2
+          
+          def bands(a,g):
+              k=2*np.pi*np.fft.fftfreq(g.n,g.h); k2=k[:,None]**2+k[None,:]**2
+              ell=np.divide(2*np.pi,np.sqrt(k2),out=np.full_like(k2,np.inf),where=k2>0)
+              S=[1/(1+np.exp(-np.clip((np.log(ell)-np.log(t))/.25,-700,700))) for t in (80,160,320,640)]
+              W=np.array([1-S[0],S[0]-S[1],S[1]-S[2],S[2]-S[3],S[3]])
+              F=np.fft.fft2(a); parts=np.fft.ifft2(W*F,axes=(-2,-1)).real
+              amp=np.fft.ifft2(np.sqrt(W)*F,axes=(-2,-1)).real
+              return parts,rel(parts.sum(0),a),float(np.sum(amp**2)/max(np.sum(a*a),1e-30))
+          
+          def apmean(a,g,c,R=AP):
+              dx=g.wrap(g.x[:,None]-c[0]);dy=g.wrap(g.x[None,:]-c[1]);r2=dx*dx+dy*dy
+              # subpixel aperture coverage at 4x4 quadrature
+              w=np.zeros_like(a)
+              for i in (-.375,-.125,.125,.375):
+                  for j in (-.375,-.125,.125,.375):w+=((dx+i*g.h)**2+(dy+j*g.h)**2<R*R)/16
+              return float(np.sum(w*a)/max(w.sum(),1e-30))
+          
+          def aperture_kernel(R=AP,sigma=SMOOTH):
+              # Gaussian PSF integrated over the circular aperture (Rice CDF), using
+              # I0 for the azimuthal integral. The tail beyond R+8 sigma is negligible.
+              dist=np.linspace(0,R+8*sigma,4097);u,w=np.polynomial.legendre.leggauss(48)
+              r=.5*R*(u+1);wt=.5*R*w*r/sigma**2
+              z=dist[:,None]*r[None,:]/sigma**2
+              val=np.exp(-(dist[:,None]**2+r[None,:]**2)/(2*sigma**2))*np.i0(z)@wt
+              return dist,val
+          AP_KERNEL=aperture_kernel()
+          def direct_aperture(g,c,x,m,gas_column=None,uniform_column=0.):
+              dist,val=AP_KERNEL
+              d=np.linalg.norm(g.wrap(x[:,:2]-c[:2]),axis=1)
+              total=float(np.dot(m,np.interp(d,dist,val,right=0.)))
+              if gas_column is not None:
+                  dx=g.wrap(g.x[:,None]-c[0]);dy=g.wrap(g.x[None,:]-c[1]);weights=np.zeros_like(gas_column)
+                  # Cell-averaged gas, integrated by subcell quadrature. Particles use
+                  # their actual positions, not their coarse gravitational mesh shapes.
+                  for a in (-.375,-.125,.125,.375):
+                      for b in (-.375,-.125,.125,.375):
+                          r=np.sqrt((dx+a*g.h)**2+(dy+b*g.h)**2)
+                          weights+=np.interp(r,dist,val,right=0.)/16
+                  total+=float(np.sum(weights*gas_column)*g.h**2)
+              return total/(np.pi*AP**2*SIGCRIT)-uniform_column/SIGCRIT
+          
+          def moments(g,x,v,m,U):
+              # Paper 09 N(n)=E-2M.n+n.P.n. SR particle weights on coordinate time slice;
+              # gas nonrelativistic ideal-fluid expansion through O(v^2/c^2,p/rho c^2).
+              r,vg,p=primitive(U); speed2=np.sum(v*v,axis=1)/C**2
+              if np.max(speed2)>=.01: raise RuntimeError('Weak-field velocity regime exceeded')
+              lor=1/np.sqrt(1-speed2); e=g.deposit(x,m*lor)+r+(U[4]/C**2)
+              M=[]; P=[]; cov=[]
+              for d in range(3):
+                  md=g.deposit(x,m*lor*v[:,d]/C)+r*vg[d]/C
+                  pd=g.deposit(x,m*lor*(v[:,d]/C)**2)+(r*vg[d]**2+p)/C**2
+                  M.append(md);P.append(pd);cov.append(pd-md*md/e)
+              return e,M,P,cov
+          
+          def config(mode):return dict(version=10,stop_at_target=STOP_AT_TARGET,formation=dict(z_start=FORM_Z_START,z_end=FORM_Z_END,collapse_z=list(COLLAPSE_Z),cells=FORM_CELLS,shells=FORM_SHELLS,temperature_K=FORM_T_K,outer_factor=FORM_OUTER_FACTOR),N=N,box=BOX_KPC,end=END_MYR,output_every=OUTPUT_EVERY_MYR,CFL=CFL,gas_total=GAS_TOTAL,gas_bullet_fraction=GAS_BULLET_FRACTION,star_mass=list(STAR_MASS),scales=list(SCALE_KPC),separation=START_SEPARATION,impact=IMPACT_KPC,speed=RELATIVE_KMS,stars=STAR_PARTICLES,phase_mode=mode,phase_sigma=PHASE_SIGMA_KMS,seed=SEED,phase_file=PHASE_FILE if mode=='file' else None)
+          
+          def diagnostic(g,U,x,v,m,l,cent,t,passage,table,out,tag,initial_mass,mom0):
+              rho_main=g.deposit(x[l==0],m[l==0])+U[0]-U[5]
+              rho_bullet=g.deposit(x[l==1],m[l==1])+U[5]
+              rho_c=g.deposit(x[l==2],m[l==2]);b=rho_main+rho_bullet; c=rho_c-rho_c.mean()
+              phi,a=g.solve(b+rho_c); graverr=rel(-g.div(a),4*np.pi*G*g.supported(b+rho_c))
+              del a
+              _,ab=g.solve(b);S=support_flux(ab,table); del ab,_; pol=g.div(S)/(4*np.pi*G)
+              _,a1=g.solve(rho_main); S1=support_flux(a1,table); del a1,_,rho_main
+              _,a2=g.solve(rho_bullet); S2=support_flux(a2,table); del a2,_,rho_bullet
+              cross_flux=S-S1-S2
+              pol_cross=g.div(cross_flux)/(4*np.pi*G)
+              cross_flux+=S1; cross_flux+=S2
+              split_error=rel(g.div(cross_flux)/(4*np.pi*G),pol)
+              del cross_flux,S1,S2
+              max_support=float(np.max(np.linalg.norm(S,axis=-1))/AC); del S
+              assert split_error<1e-10
+              # Periodic projected support is signed, zero net contrast: no finite captured-charge normalization assumed.
+              diff=g.supported(pol-c); dh=np.fft.fftn(diff)
+              P=np.stack([np.fft.ifftn(1j*k*g.inv*dh).real for k in g.k],axis=-1)
+              f=0. if passage is None else -np.expm1(-max(0,t-passage)/TAU)
+              fd=(1-f)/TAU if np.any(l==2) and passage is not None else 0.; transfer=rel(g.div(fd*P),-fd*diff)
+              del diff,dh,P
+              e,M,T,Cov=moments(g,x,v,m,U); z=2
+              # Project localized, retained phase mass without subtracting its own halo mass sheet.
+              # Only the homogeneous cosmic mode needs background subtraction. For formed
+              # runs subtract the explicitly initialized homogeneous baryonic atmosphere.
+              ambient=OB*RHOCRIT0*(1+FORM_Z_END)**3 if PHASE_MODE=='formed' else 0.
+              kap_b=smooth2((b-ambient).sum(z)*g.h/SIGCRIT,g)
+              c_projected=c if PHASE_MODE=='cosmic' else rho_c
+              kap_phase=smooth2(c_projected.sum(z)*g.h/SIGCRIT,g);kap=kap_b+kap_phase
+              # Leading stress increment beyond rest-density projection. Zero mean phase sheet subtracted only once.
+              correction=smooth2((e-b-rho_c-2*M[z]+T[z]).sum(z)*g.h/SIGCRIT,g)
+              cross=smooth2(Cov[z].sum(z)*g.h/SIGCRIT,g)
+              maxcov=float(np.max(Cov[z]/e)); mincov=float(min(np.min(q/e) for q in Cov)); del e,M,T,Cov
+              kap_pol=smooth2(pol.sum(z)*g.h/SIGCRIT,g)
+              pol_sheet=0. if PHASE_MODE=='cosmic' else float(rho_c.mean()*g.L/SIGCRIT)
+              hypothetical=kap_b+(1-f)*kap_phase+f*(kap_pol+pol_sheet) if np.any(l==2) else kap_b.copy()
+              kap_mass=kap.copy(); kap=kap+correction
+              shear1,shear2,det=optical(kap); W,err,en=bands(kap,g)
+              d=g.wrap(cent[1]-cent[0]); mid=g.wrap(cent[0]+.5*d); sep=float(np.linalg.norm(d[:2])); unit=d[:2]/max(sep,1e-30)
+              # Probe leading/trailing regions relative to the instantaneous core-to-core axis, not imposed mass peaks.
+              front=np.array([g.wrap(cent[0]+np.r_[-unit*AP,0]),g.wrap(cent[1]+np.r_[unit*AP,0])])
+              r,vg,pg=primitive(U)
+              gas_null=(r+U[4]/C**2-2*r*vg[z]/C+(r*vg[z]**2+pg)/C**2).sum(z)*g.h
+              lor=1/np.sqrt(1-np.sum(v*v,axis=1)/C**2); null_mass=m*lor*(1-v[:,z]/C)**2
+              uniform=ambient*g.L+(rho_c.mean()*g.L if PHASE_MODE=='cosmic' else 0.)
+              probe=lambda p:direct_aperture(g,p,x,null_mass,gas_null,uniform)
+              phase_probe=lambda p:direct_aperture(g,p,x[l==2],null_mass[l==2],None,rho_c.mean()*g.L if PHASE_MODE=='cosmic' else 0.)
+              grid_values=[apmean(kap,g,p) for p in (cent[0],cent[1],mid,front[0],front[1])]
+              values=[probe(p) for p in (cent[0],cent[1],mid,front[0],front[1])]
+              leading=[]; trailing=[]; gas_offsets=[]; phase_front=[]; phase_back=[]
+              gas_origins=(U[0]-U[5],U[5]); gas_origin_masses=[float(q.sum()*g.dv) for q in gas_origins]
+              for i in range(2):
+                  sel=l==i; pos=x[sel]; near=np.linalg.norm(g.wrap(pos-cent[i]),axis=1)<max(2*g.h,AP)
+                  corev=np.average(v[sel][near] if near.any() else v[sel],axis=0,weights=m[sel][near] if near.any() else m[sel])
+                  direction=corev[:2]/max(np.linalg.norm(corev[:2]),1e-30)
+                  lead=g.wrap(cent[i]+np.r_[direction*AP,0]); trail=g.wrap(cent[i]-np.r_[direction*AP,0])
+                  leading.append(probe(lead)); trailing.append(probe(trail))
+                  phase_front.append(phase_probe(lead)); phase_back.append(phase_probe(trail))
+                  column=smooth2(gas_origins[i].sum(z)*g.h,g)
+                  idx=np.unravel_index(np.argmax(column),column.shape)
+                  offset=g.wrap(np.array([g.x[idx[0]],g.x[idx[1]]])-cent[i,:2])
+                  gas_offsets.append(float(np.linalg.norm(offset)))
+              mass=float(U[0].sum()*g.dv+m.sum()); mom=U[1:4].sum(axis=(1,2,3))*g.dv+(m[:,None]*v).sum(0)
+              momentum_scale=float(np.sum(m*np.linalg.norm(v,axis=1))+np.sum(np.linalg.norm(U[1:4],axis=0))*g.dv)
+              potential_energy=.5*float(np.sum((b+rho_c)*phi)*g.dv); kinetic_energy=.5*float(np.sum(m*np.sum(v*v,axis=1)))+float(U[4].sum()*g.dv); energy=potential_energy+kinetic_energy
+              row=dict(max_gas_speed_over_c=float(np.max(np.linalg.norm(primitive(U)[1],axis=0))/C),max_gas_sound_over_c=float(np.max(np.sqrt(GAMMA*primitive(U)[2]/U[0]))/C),total_newtonian_energy=energy,energy_absolute_components=abs(potential_energy)+kinetic_energy,gas_origin_masses=gas_origin_masses,ambient_initial_mass=float(ambient*g.L**3),gas_peak_offsets_kpc=gas_offsets,leading_kappa=leading,trailing_kappa=trailing,leading_phase_kappa=phase_front,trailing_phase_kappa=phase_back,support_split_error=split_error,full_support_positive_charge_to_captured_mass=float(np.maximum(pol,0).sum()*g.dv/m[l==2].sum()) if np.any(l==2) else None,support_budget_admissible=bool(np.any(l==2) and np.maximum(pol,0).sum()*g.dv<=m[l==2].sum()),support_cross_kappa_max=float(np.max(abs(smooth2(pol_cross.sum(z)*g.h/SIGCRIT,g)))),time_myr=t,separation_kpc=sep,post_passage_myr=None if passage is None else t-passage,renewal_fraction=float(f),main_kappa=values[0],bullet_kappa=values[1],middle_kappa=values[2],gridded_main_kappa=grid_values[0],gridded_bullet_kappa=grid_values[1],gridded_middle_kappa=grid_values[2],main_outer_kappa=values[3],bullet_outer_kappa=values[4],gas_mass=float(U[0].sum()*g.dv),phase_mass=float(m[l==2].sum()),phase_contrast_positive_mass=float(np.maximum(c,0).sum()*g.dv),max_density=float((b+rho_c).max()),mass_error=(mass-initial_mass)/initial_mass,momentum_error=float(np.linalg.norm(mom-mom0)/max(momentum_scale,1e-30)),max_abs_potential_over_c2=float(np.max(abs(phi))/C**2),poisson_error=graverr,transfer_error=transfer,band_error=err,band_energy=en,max_stream_covariance_over_E=maxcov,min_covariance_over_E=mincov,max_stress_kappa_correction=float(np.max(abs(correction))),max_support_flux_over_ac=max_support,support_positive_mass=float(np.maximum(pol,0).sum()*g.dv),support_negative_mass=float(np.minimum(pol,0).sum()*g.dv),main_support_diagnostic=apmean(hypothetical,g,cent[0]),bullet_support_diagnostic=apmean(hypothetical,g,cent[1]))
+              np.savez_compressed(out/(tag+'.npz'),x_kpc=g.x,centers_kpc=cent,kappa=kap,kappa_rest_mass=kap_mass,kappa_baryons=kap_b,kappa_phase=kap_phase,kappa_phase_contrast=smooth2(c.sum(z)*g.h/SIGCRIT,g),kappa_support_diagnostic=kap_pol,kappa_relaxation_diagnostic=hypothetical,kappa_stress_increment=correction,kappa_multistream_covariance=cross,kappa_nonlinear_cross_diagnostic=smooth2(pol_cross.sum(z)*g.h/SIGCRIT,g),gas_bullet_origin_surface_density=U[5].sum(z)*g.h,gamma1=shear1,gamma2=shear2,jacobi_det=det,bands=W,gas_surface_density=U[0].sum(z)*g.h,phase_surface_density=rho_c.sum(z)*g.h)
+              emit(f'{t:8.2f} Myr | sep {sep:7.1f} kpc | kappa M/B/mid {values[0]:.4f}/{values[1]:.4f}/{values[2]:.4f} | f={f:.5f} | mass err {row["mass_error"]:.2e} | momentum {row["momentum_error"]:.2e}')
+              assert abs(row['mass_error'])<1e-9 and graverr<1e-10 and transfer<1e-9 and err<1e-10
+              if row['max_abs_potential_over_c2']>.01:raise RuntimeError('Weak-field potential regime exceeded')
+              return row
+          
+          def checkpoint(path,**kw):
+              tmp=path.with_suffix('.tmp.npz')
+              stage(f'checkpoint begin {path}')
+              try:
+                  np.savez_compressed(tmp,**kw)
+                  stage(f'checkpoint archive written {tmp} ({tmp.stat().st_size} bytes)')
+                  tmp.replace(path)
+              except BaseException:
+                  tmp.unlink(missing_ok=True)
+                  raise
+              stage(f'checkpoint committed {path}')
+          
+          # ---- Progenitor formation: spherical cosmological Euler + cold multistream phase ----
+          # Conditional compensated growing-mode seed; no assigned final halo mass/profile.
+          OB=0.04955
+          RHOCRIT0=3*H0**2/(8*np.pi*G)
+          FORM_Z_START=9.0
+          FORM_Z_END=0.50
+          COLLAPSE_Z=(1.0,1.0)    # seed amplitudes, not fitted to convergence
+          FORM_CELLS=1536
+          FORM_SHELLS=65536
+          FORM_T_K=1.e4           # explicitly conditional initial gas temperature
+          FORM_OUTER_FACTOR=2.2
+          # A cold spherical mode has zero initial angular momentum; radial phase crossing
+          # is collisionless. This is a controlled spherical formation branch, not a claim
+          # that real progenitors have no angular momentum or tidal environment.
+          
+          def hubble(a):return H0*np.sqrt(OM/a**3+OL)
+          def cosmic_t(a):return 2*np.arcsinh(np.sqrt(OL/OM)*a**1.5)/(3*H0*np.sqrt(OL))
+          def cosmic_a(t):return (np.sqrt(OM/OL)*np.sinh(1.5*H0*np.sqrt(OL)*t))**(2/3)
+          def growth(a):
+              # Linear growing mode D ~ a at early times; same H(a) as Paper 09.
+              q,w=np.polynomial.legendre.leggauss(48); x=a*(q+1)/2
+              return 2.5*OM*H0**2*hubble(a)*a/2*np.sum(w/(x**3*hubble(x)**3))
+          
+          def radial_formation(i,table,out):
+              out.mkdir(parents=True,exist_ok=True); path=out/f'progenitor_{i}.npz'
+              cfg=dict(version=3,index=i,cells=FORM_CELLS,shells=FORM_SHELLS,z_start=FORM_Z_START,z_end=FORM_Z_END,collapse_z=COLLAPSE_Z[i],initial_temperature_K=FORM_T_K,outer_factor=FORM_OUTER_FACTOR,gas_total=GAS_TOTAL,gas_bullet_fraction=GAS_BULLET_FRACTION,star_mass=list(STAR_MASS),phase_sigma=PHASE_SIGMA_KMS,seed=SEED)
+              if RESUME and path.exists() and (out/f'progenitor_{i}.json').exists():
+                  info=json.loads((out/f'progenitor_{i}.json').read_text())
+                  if info['settings']!=cfg:raise RuntimeError('Formation settings changed; select a new output folder or set RESUME=False')
+                  with np.load(path,allow_pickle=False) as d:return {k:d[k].copy() for k in d.files}
+              rng=np.random.default_rng(SEED+110+i)
+              n=FORM_CELLS; ns=FORM_SHELLS; ai=1/(1+FORM_Z_START); af=1/(1+FORM_Z_END)
+              ti=cosmic_t(ai); tf=cosmic_t(af); t=ti
+              mb=(GAS_TOTAL*np.array([1-GAS_BULLET_FRACTION,GAS_BULLET_FRACTION])+STAR_MASS)[i]
+              # Lagrangian mass scale (background baryonic inventory); not a halo mass assignment.
+              RL=(3*mb/(4*np.pi*OB*RHOCRIT0))**(1/3)
+              edge=np.linspace(0,FORM_OUTER_FACTOR*RL,n+1); h=edge[1]; q=(edge[1:]+edge[:-1])/2
+              area=4*np.pi*edge**2; vol=4*np.pi/3*np.diff(edge**3)
+              # Smooth top-hat plus compensated outer shell: zero excess total mass in patch.
+              core=.5*(1-np.tanh((q/RL-1)/.06)); outer=.5*(np.tanh((q/RL-1.13)/.06)-np.tanh((q/RL-1.95)/.06))
+              amp=1.686*growth(ai)/growth(1/(1+COLLAPSE_Z[i]))
+              delta=amp*(core-outer*np.dot(core,vol)/np.dot(outer,vol))
+              if np.min(1+delta)<=0:raise ValueError('Invalid compensated seed amplitude')
+              dcum=np.cumsum(delta*vol)-.5*delta*vol
+              f_growth=(OM/ai**3/(OM/ai**3+OL))**.55
+              u=-ai*hubble(ai)*f_growth*dcum/(4*np.pi*q*q)
+              rho=OB*RHOCRIT0*(1+delta); rho_phase=OC*RHOCRIT0*(1+delta)
+              # p/rho = kT/(mean molecular mass); fully ionized primordial approximation.
+              temp_v2=1.380649e-23*FORM_T_K/(.59*1.67262192369e-27)*(MYR/KPC)**2
+              U=np.array([rho,rho*u,rho*(temp_v2/(GAMMA-1)+.5*u*u)])
+              shell_cdf=np.r_[0,np.cumsum(rho_phase*vol)]; phase_total=float(shell_cdf[-1]); mw=phase_total/ns
+              qs=np.interp((np.arange(ns)+.5)*mw,shell_cdf,edge**3)**(1/3)
+              vs=np.interp(qs,q,u,left=0.,right=0.)+rng.normal(0,PHASE_SIGMA_KMS*KM,ns); wall_hits=0
+              baryon_initial=float(np.dot(U[0],vol)); step=0; rejects=0; max_mass_err=0.; next_log=t+500
+              def shell_mass(qs):
+                  y=qs/h-.5; j=np.floor(y).astype(int); w=y-j
+                  return np.bincount(np.clip(j,0,n-1),weights=mw*(1-w),minlength=n)+np.bincount(np.clip(j+1,0,n-1),weights=mw*w,minlength=n)
+              def gravity(U,qs,a):
+                  mass=U[0]*vol+shell_mass(qs); enclosed=np.cumsum(mass)-.5*mass
+                  bg=(OB+OC)*RHOCRIT0*4*np.pi/3*q**3
+                  # Exact enclosed cell fraction for the centre, not half of central cell.
+                  enclosed=np.cumsum(mass)-mass+mass*(q**3-edge[:-1]**3)/np.diff(edge**3)
+                  grav=-G*(enclosed-bg)/(a*q)**2
+                  return grav
+              def sample(field,pos):return np.interp(pos,np.r_[0,q,edge[-1]],np.r_[0,field,0])
+              def potential_from_acc(acc,a):
+                  phi=np.zeros(n);phi[-1]=acc[-1]*.5*a*h
+                  phi[:-1]=phi[-1]+np.cumsum((.5*(acc[:-1]+acc[1:])*a*h)[::-1])[::-1]
+                  return phi
+              def baryon_potential(U,a):
+                  mass=U[0]*vol
+                  enclosed=np.cumsum(mass)-mass+mass*(q**3-edge[:-1]**3)/np.diff(edge**3)
+                  bg=OB*RHOCRIT0*4*np.pi/3*q**3
+                  return potential_from_acc(-G*(enclosed-bg)/(a*q)**2,a)
+              ever_baryon_bound=np.zeros(ns,bool)
+              def update_capture(U,qs,vs,a):
+                  phi=baryon_potential(U,a)
+                  ep=.5*(vs+hubble(a)*qs*a)**2+np.interp(qs,q,phi,left=phi[0],right=0.)
+                  ever_baryon_bound[:] |= ep<0
+              update_capture(U,qs,vs,ai)
+              progress=out/f'progenitor_{i}_progress.npz'
+              if RESUME and progress.exists():
+                  with np.load(progress,allow_pickle=False) as d:
+                      if json.loads(str(d['settings']))!=cfg:raise RuntimeError('Formation checkpoint settings changed')
+                      U,qs,vs,ever_baryon_bound=[d[k].copy() for k in ('U','qs','vs','ever_baryon_bound')]
+                      t=float(d['t']);step=int(d['step']);rejects=int(d['rejects']);wall_hits=int(d['wall_hits']);max_mass_err=float(d['max_mass_err']);next_log=float(d['next_log'])
+                  emit('RESUMING FORMATION',i,t,step)
+              def save_progress():
+                  checkpoint(progress,settings=json.dumps(cfg),U=U,qs=qs,vs=vs,ever_baryon_bound=ever_baryon_bound,t=t,step=step,rejects=rejects,wall_hits=wall_hits,max_mass_err=max_mass_err,next_log=next_log)
+              def prim(U):
+                  r=U[0]; v=U[1]/r; p=(GAMMA-1)*(U[2]-.5*r*v*v);return r,v,p
+              def good(U):
+                  return np.isfinite(U).all() and np.min(U[0])>0 and np.min(prim(U)[2])>0
+              def rhs(U,a):
+                  r,v,p=prim(U); cs=np.sqrt(GAMMA*p/r)
+                  F=np.array([r*v,r*v*v+p,(U[2]+p)*v]); speed=np.maximum(abs(v[:-1])+cs[:-1],abs(v[1:])+cs[1:])
+                  face=np.zeros((3,n+1)); face[:,1:-1]=.5*(F[:,:-1]+F[:,1:]-speed*(U[:,1:]-U[:,:-1]))
+                  # Reflecting comoving outer wall lies in compensated background; monitor hits.
+                  face[1,0]=p[0];face[1,-1]=p[-1]
+                  out=-(face[:,1:]*area[1:]-face[:,:-1]*area[:-1])/(a*vol)
+                  out[1]+=p*np.diff(area)/(a*vol)
+                  return out
+              def accel_kick(U,vs,acc,qs,dt,a0,a1):
+                  # Exact Hubble drag for gamma=5/3, plus a pressure-preserving peculiar kick.
+                  factor=a0/a1; U[1]*=factor;U[2]*=factor**2;vs=vs*factor
+                  du=dt*acc; old=U[1].copy();U[1]+=U[0]*du;U[2]+=old*du+.5*U[0]*du*du
+                  return vs+dt*sample(acc,qs)
+              emit(f'FORMATION {i}: R_L={RL:.1f} comoving kpc; z={FORM_Z_START:g}->{FORM_Z_END:g}; seed delta={amp:.5f}; phase inventory={phase_total:.4g}; no assigned bound halo')
+              while t<tf-1e-8:
+                  a=cosmic_a(t); r,v,p=prim(U); acc=gravity(U,qs,a)
+                  speed=max(float(np.max(abs(v)+np.sqrt(GAMMA*p/r))),float(np.max(abs(vs))),1e-9)
+                  dt=min(.28*a*h/speed,.015/hubble(a),.25*np.sqrt(a*h/max(float(np.max(abs(acc))),1e-20)),tf-t,30.)
+                  for attempt in range(18):
+                      am=cosmic_a(t+.5*dt); an=cosmic_a(t+dt); trial=U.copy(); vh=accel_kick(trial,vs,acc,qs,.5*dt,a,am)
+                      qn=qs+dt*vh/am; vn=vh.copy(); neg=qn<0;qn[neg]*=-1;vn[neg]*=-1
+                      hit=qn>edge[-1];qn[hit]=2*edge[-1]-qn[hit];vn[hit]*=-1
+                      k1=rhs(trial,am); mid=trial+dt*k1
+                      if good(mid):
+                          new=.5*(trial+mid+dt*rhs(mid,am))
+                          if good(new):
+                              anacc=gravity(new,qn,an); vn=accel_kick(new,vn,anacc,qn,.5*dt,am,an)
+                              if good(new):break
+                      dt*=.5;rejects+=1
+                  else:raise RuntimeError('Formation positivity failure; no artificial heating applied')
+                  if dt<1e-8:raise RuntimeError('Formation timestep underflow')
+                  U,qs,vs=new,qn,vn;t+=dt;step+=1;wall_hits+=int(hit.sum());update_capture(U,qs,vs,an)
+                  max_mass_err=max(max_mass_err,abs(np.dot(U[0],vol)/baryon_initial-1))
+                  if t>=next_log or t>=tf-1e-7:
+                      emit(f'  formation {i} z={1/cosmic_a(t)-1:.3f} step={step} dt={dt:.3f} mass_err={max_mass_err:.2e} max_delta={U[0].max()/(OB*RHOCRIT0):.2e}')
+                      next_log=t+500
+                      save_progress()
+                  if pause_due() and t<tf-1e-8:
+                      save_progress();raise CheckpointPause(f'Formation {i} checkpoint at {t:.3f} Myr')
+              assert max_mass_err<1e-9
+              a=af;r_phys=q*a;edge_phys=edge*a; shell=shell_mass(qs); mcell=U[0]*vol+shell
+              mean=np.cumsum(mcell)/(4*np.pi/3*edge_phys[1:]**3); crit=3*hubble(a)**2/(8*np.pi*G)
+              hits=np.flatnonzero(mean>=200*crit)
+              if len(hits)==0:raise RuntimeError(f'Progenitor {i} failed to form an R200 halo; adjust independently justified formation seed/age, not lensing normalization')
+              ir=int(hits[-1]); R200=edge_phys[ir+1]
+              if ir<5 or ir>=n-2:raise RuntimeError(f'Progenitor {i}: R200 unresolved or at boundary ({ir+1} cells)')
+              # Peculiar potential with compensated-patch rim as escape reference.
+              ga=gravity(U,qs,a); phi=np.zeros(n);phi[-1]=ga[-1]*.5*a*h
+              phi[:-1]=phi[-1]+np.cumsum((.5*(ga[:-1]+ga[1:])*a*h)[::-1])[::-1]
+              pr=qs*a; pv=vs+hubble(a)*pr; potential=np.interp(qs,q,phi,left=phi[0],right=0.)
+              bound=.5*pv*pv+potential<0
+              inside=pr<R200; retain=inside&bound&ever_baryon_bound
+              phase_in=float(inside.sum()*mw); phase_bound=float(retain.sum()*mw)
+              baryon_in=float(np.dot(U[0,:ir+1],vol[:ir+1]))
+              if phase_bound<=0:raise RuntimeError(f'Progenitor {i}: no bound phase within R200')
+              rho,v,p=prim(U); data=dict(r=r_phys[:ir+1],edge=edge_phys[:ir+2],rho=rho[:ir+1]/a**3,p=p[:ir+1]/a**3,vr=v[:ir+1]+hubble(a)*r_phys[:ir+1],phase_r=pr[retain],phase_v=pv[retain],phase_w=np.full(retain.sum(),mw),baryon_mass=np.array(baryon_in),R200=np.array(R200))
+              # Explicitly retain only the bound portion inside R200; outside mass is in ledger.
+              info=dict(settings=cfg,RL_comoving_kpc=RL,R200_kpc=R200,radial_cells_inside=ir+1,seed_delta=amp,baryon_patch_mass=baryon_initial,baryon_extracted=baryon_in,baryon_outside=baryon_initial-baryon_in,phase_patch_mass=phase_total,phase_inside_R200=phase_in,phase_bound_inside_R200=phase_bound,phase_total_bound_inside_R200=float((inside&bound).sum()*mw),phase_ever_baryon_bound_patch=float(ever_baryon_bound.sum()*mw),phase_bound_outside_R200=float((bound&~inside).sum()*mw),phase_unretained=phase_total-phase_bound,phase_to_baryon_extracted=phase_bound/baryon_in,formation_mass_error=max_mass_err,phase_outer_reflections=wall_hits,steps=step,rejected_steps=rejects,phase_mass_error=abs(mw*ns/phase_total-1),boundary_condition='compensated comoving spherical patch; reflecting outer numerical boundary',scope='conditional spherical cold radial growing-mode initial data; no fitted lensing or imposed bound phase mass')
+              checkpoint(path,**data);jsonsave(out/f'progenitor_{i}.json',info);progress.unlink(missing_ok=True);emit('FORMATION RESULT',json.dumps(info,indent=2));return data
+          
+          def formed_positions(g,mode,formed):
+              rng=np.random.default_rng(SEED); baryons=np.array([float(d['baryon_mass']) for d in formed]); phase=np.array([float(d['phase_w'].sum()) for d in formed]); masses=baryons+phase
+              # Identical baryonic phase space in control; only remove phase carriers.
+              frac=masses[1]/masses.sum(); delta=np.array([START_SEPARATION,IMPACT_KPC,0.]); centers=np.array([-frac*delta,(1-frac)*delta]); vel=np.array([[frac*RELATIVE_KMS*KM,0,0],[-(1-frac)*RELATIVE_KMS*KM,0,0]])
+              if np.linalg.norm(delta)<sum(float(d['R200']) for d in formed):
+                  raise RuntimeError('Initial R200 gas spheres overlap. Increase START_SEPARATION and BOX_KPC together.')
+              U=np.zeros((6,)+g.shape);xp=[];vp=[];mp=[];labels=[]
+              star_fraction=np.array(STAR_MASS)/(GAS_TOTAL*np.array([1-GAS_BULLET_FRACTION,GAS_BULLET_FRACTION])+STAR_MASS)
+              # Antipodal pairing removes spurious net momentum at shell-to-particle mapping.
+              def dirs(n):
+                  a=rng.normal(size=(n,3));a/=np.linalg.norm(a,axis=1)[:,None];return np.concatenate((a,-a))
+              for i,d in enumerate(formed):
+                  rr=d['r']; e=d['edge']; R=float(d['R200']); M=float(d['baryon_mass']); sm=M*star_fraction[i]; gm=M-sm
+                  if R+np.linalg.norm(centers[i])>g.L/2:raise RuntimeError('Progenitor extends beyond merger cube; increase BOX_KPC and grid together')
+                  dr=[g.wrap(q-centers[i,j]) for j,q in enumerate(g.xyz)];r=np.sqrt(sum(q*q for q in dr)); mask=r<R
+                  # Cell-volume interpolation of spherical density and specific internal energy.
+                  rho=np.where(mask,np.interp(r,rr,d['rho'],left=d['rho'][0],right=d['rho'][-1]),0.)
+                  rho*=gm/(rho.sum()*g.dv)
+                  vr=np.where(mask,np.interp(r,rr,d['vr'],left=0.,right=d['vr'][-1]),0.)
+                  spec=np.interp(r,rr,d['p']/d['rho'],left=d['p'][0]/d['rho'][0],right=d['p'][-1]/d['rho'][-1])
+                  u=np.stack([np.broadcast_to(vel[i,j]+np.divide(vr*dr[j],r,out=np.zeros_like(r),where=r>0),g.shape) for j in range(3)])
+                  # Remove discretization net radial momentum, not physical bulk momentum.
+                  u-=((u*rho).sum(axis=(1,2,3))*g.dv/gm-vel[i])[:,None,None,None]
+                  U[0]+=rho;U[1:4]+=rho*u;U[4]+=rho*(spec/(GAMMA-1)+.5*np.sum(u*u,axis=0));U[5]+=rho if i==1 else 0
+                  # Conditional star handoff: sample the extracted baryon profile, not an extra mass.
+                  shellmass=d['rho']*(4*np.pi/3*np.diff(e**3)); cdf=np.r_[0,np.cumsum(shellmass)]; count=max(1,STAR_PARTICLES//2)
+                  rs=np.interp((np.arange(count)+.5)*cdf[-1]/count,cdf,e**3)**(1/3); dd=dirs(count); rs2=np.tile(rs,2)
+                  rad=np.interp(rs,rr,d['vr'],left=0.,right=d['vr'][-1]);sig=np.sqrt(np.interp(rs,rr,d['p']/d['rho'])); thermal=rng.normal(size=(count,3))*sig[:,None]
+                  xp.append(g.wrap(centers[i]+rs2[:,None]*dd));vp.append(vel[i]+np.tile(rad,2)[:,None]*dd+np.concatenate((thermal,-thermal)));mp.append(np.full(2*count,sm/(2*count)));labels.append(np.full(2*count,i,np.int8))
+                  if mode=='formed':
+                      rphase=d['phase_r']; vphase=d['phase_v']; dd=dirs(len(rphase));xp.append(g.wrap(centers[i]+np.tile(rphase,2)[:,None]*dd));vp.append(vel[i]+np.tile(vphase,2)[:,None]*dd);mp.append(np.tile(d['phase_w']/2,2));labels.append(np.full(len(dd),2,np.int8))
+                  else:
+                      # Advance random generator identically for the subsequent star population.
+                      dirs(len(d['phase_r']))
+              # Add the source cosmic mean baryon atmosphere at formation handoff. No floor added later.
+              ambient=OB*RHOCRIT0*(1+FORM_Z_END)**3; add=np.full(g.shape,ambient); U[0]+=add; U[4]+=add*(1.380649e-23*FORM_T_K/(.59*1.67262192369e-27)*(MYR/KPC)**2)/(GAMMA-1)
+              emit('HANDOFF gas',float(U[0].sum()*g.dv),'stars',sum(float(a.sum()) for a,l in zip(mp,labels) if l[0]!=2),'captured phase',sum(float(a.sum()) for a,l in zip(mp,labels) if l[0]==2),'ambient cosmic baryon mass',float(add.sum()*g.dv))
+              return U,np.concatenate(xp),np.concatenate(vp),np.concatenate(mp),np.concatenate(labels),centers
+          
+          
+          def run(g,mode,table,formed=None):
+              out=OUT/mode;out.mkdir(parents=True,exist_ok=True);cfg=config(mode); cp=out/'checkpoint.npz'; hist=out/'history.json'
+              if RESUME and cp.exists():
+                  if json.loads((out/'settings.json').read_text())!=cfg:raise RuntimeError('Settings changed: rename results directory or set RESUME=False')
+                  with np.load(cp,allow_pickle=False) as s:
+                      U,x,v,m,l,cent,mom0=[s[k] for k in ('U','x','v','m','l','cent','mom0')];t=float(s['t']);passage=float(s['passage']);passage=None if passage<0 else passage;last_sep=float(s['last_sep']);best_sep=float(s['best_sep']);step=int(s['step']);initial_mass=float(s['initial_mass']);matched=bool(s['matched']);rows=json.loads(str(s['rows']))
+                  emit('RESUMING',mode,t)
+              else:
+                  U,x,v,m,l,cent=formed_positions(g,mode,formed) if formed is not None else positions(g,mode);t=0.;step=0;passage=None;last_sep=float(np.linalg.norm(g.wrap(cent[1]-cent[0])[:2]));best_sep=last_sep;matched=False;rows=[]
+                  initial_mass=float(U[0].sum()*g.dv+m.sum());mom0=U[1:4].sum(axis=(1,2,3))*g.dv+(m[:,None]*v).sum(0)
+                  jsonsave(out/'settings.json',cfg)
+                  emit('MODE',mode,'initial phase budget [1e12 Msun]',m[l==2].sum(),'baryons',initial_mass-m[l==2].sum(),'phase mass from formation extraction (formed mode)')
+              if RESUME and rows and t>=END_MYR-1e-8 and (out/'summary.json').exists():
+                  emit('ALREADY COMPLETE',mode,t)
+                  return dict(last=rows[-1],crossed_target=matched,near_target=min((r for r in rows if r['post_passage_myr'] is not None),key=lambda r:abs(r['separation_kpc']-TARGET),default=None))
+              cumulative_repair=rows[-1].get('cumulative_gravity_work_defect',0.) if rows else 0.
+              raw_impulse=rows[-1].get('unprojected_grid_force_impulse',0.) if rows else 0.
+              max_raw_force=rows[-1].get('max_unprojected_grid_force_fraction',0.) if rows else 0.
+              def commit_state():
+                  checkpoint(cp,U=U,x=x,v=v,m=m,l=l,cent=cent,mom0=mom0,t=t,passage=-1 if passage is None else passage,last_sep=last_sep,best_sep=best_sep,step=step,initial_mass=initial_mass,matched=matched,rows=json.dumps(rows))
+              def save(tag):
+                  stage(f'{mode} diagnostic begin {tag}')
+                  row=diagnostic(g,U,x,v,m,l,cent,t,passage,table,out,tag,initial_mass,mom0)
+                  stage(f'{mode} diagnostic complete {tag}')
+                  first=rows[0] if rows else row
+                  row['energy_relative_change']=(row['total_newtonian_energy']-first['total_newtonian_energy'])/max(first['energy_absolute_components'],1e-30)
+                  row['cumulative_gravity_work_defect']=cumulative_repair
+                  row['unprojected_grid_force_impulse']=raw_impulse
+                  row['max_unprojected_grid_force_fraction']=max_raw_force
+                  row['cumulative_absolute_gravity_work_defect']=cumulative_repair
+                  row['work_defect_fraction_of_initial_abs_energy']=cumulative_repair/max(first['energy_absolute_components'],1e-30)
+                  row['numerical_quality_flag']='REFINE_REQUIRED' if abs(row['energy_relative_change'])>.02 or row['work_defect_fraction_of_initial_abs_energy']>.02 or g.h>AP/2 or max_raw_force>.02 or row['max_gas_speed_over_c']>.1 or row['max_gas_sound_over_c']>.1 else 'CHECK_CONVERGENCE_AND_INITIAL_DATA'
+                  row['gas_origin_relative_error']=max(abs(a-b)/b for a,b in zip(row['gas_origin_masses'],first['gas_origin_masses']))
+                  assert row['gas_origin_relative_error']<1e-9
+                  if abs(row['energy_relative_change'])>.02:emit('WARNING: energy drift >2%; refine grid/timestep before interpreting lensing')
+                  if row['work_defect_fraction_of_initial_abs_energy']>.01:emit('WARNING: cumulative gravitational work defect >1% of initial absolute energy; refine before interpreting')
+                  rows.append(row);jsonsave(hist,rows)
+                  commit_state()
+                  # CSV alongside restart data.
+                  with (out/'history.csv').open('w',newline='') as f:
+                      w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+              if not rows:
+                  # Preserve the complete initial state even if the first optical diagnostic fails.
+                  if not cp.exists() or not RESUME:commit_state()
+                  save('initial')
+              emit("Initial checkpoint committed | peak RSS MiB",round(peak_rss_mb(),1))
+              if pause_due() and t<END_MYR-1e-8:raise CheckpointPause(f'{mode} checkpoint at {t:.3f} Myr')
+              next_out=(math.floor(t/OUTPUT_EVERY_MYR+1e-8)+1)*OUTPUT_EVERY_MYR
+              stage(f'{mode} initial gravity begin')
+              phi,a,ap,rawforce,rawabs=g.forces(U,x,m);wall=time.monotonic()
+              emit("Initial gravitational field ready | peak RSS MiB",round(peak_rss_mb(),1))
+              while t<END_MYR-1e-8 and not (STOP_AT_TARGET and matched):
+                  verbose_step=(step==0 or step%10==0)
+                  if verbose_step:stage(f'{mode} step {step+1} CFL begin')
+                  speed=0.
+                  for lo in range(0,g.n,HYDRO_SLAB):
+                      r,vg,p=primitive(U[:,lo:lo+HYDRO_SLAB]);sound=np.sqrt(GAMMA*p/r)
+                      speed=max(speed,float(np.max(np.sum(abs(vg),axis=0)+3*sound)))
+                  del r,vg,p,sound
+                  vpmax=float(np.max(np.linalg.norm(v,axis=1)))
+                  acc=float(np.max(np.linalg.norm(a,axis=-1)));dt=min(CFL*g.h/max(speed,1e-12),.4*g.h/max(vpmax,1e-12),.3*np.sqrt(g.h/max(acc,1e-20)),END_MYR-t,next_out-t)
+                  if dt<=1e-9:raise RuntimeError('Time step underflow')
+                  for attempt in range(14):
+                      if verbose_step or attempt:stage(f'{mode} step {step+1} attempt {attempt+1} first kick')
+                      trial=U.copy();kick(trial,a,dt/2)
+                      if verbose_step or attempt:stage(f'{mode} step {step+1} hydro stage 1')
+                      mid,F1=hydro_rhs(trial,g,True,second_order=(attempt==0)); mid*=dt; mid+=trial
+                      if valid(mid):
+                          if verbose_step or attempt:stage(f'{mode} step {step+1} hydro stage 2')
+                          new,F2=hydro_rhs(mid,g,True,second_order=(attempt==0)); new*=dt; new+=mid; new+=trial; new*=.5; del mid
+                          if valid(new):
+                              vh=v+dt/2*ap;xn=g.wrap(x+dt*vh)
+                              if verbose_step or attempt:stage(f'{mode} step {step+1} updated gravity')
+                              phin,an,apn,rawforcen,rawabsn=g.forces(new,xn,m)
+                              if verbose_step or attempt:stage(f'{mode} step {step+1} work and final kick')
+                              # Exact local momentum/kinetic-energy kicks preserve gas
+                              # internal energy. Do not redistribute or manufacture heat
+                              # to conceal the discrete gravitational-work error.
+                              kickwork=trial[4]-U[4]
+                              before=new[4].copy();kick(new,an,dt/2);kickwork+=new[4]-before
+                              ph=.5*(phi+phin);work=np.zeros(g.shape)
+                              for d in range(3):
+                                  F=.5*(F1[d]+F2[d]); fw=-F*(np.roll(ph,-1,axis=d)-ph)*dt/g.h
+                                  work+=.5*(fw+np.roll(fw,1,axis=d))
+                              repair=float(abs(np.sum(work-kickwork)))
+                              if valid(new):
+                                  vn=vh+dt/2*apn;break
+                      # Release any allocated stages before retry.
+                      trial=mid=new=F1=F2=phin=an=apn=kickwork=before=ph=work=F=fw=None
+                      dt*=.5
+                  else:raise RuntimeError('Hydro positivity failure; last checkpoint retained')
+                  cumulative_repair+=repair*g.dv
+                  raw_impulse+=.5*dt*(rawabs+rawabsn);max_raw_force=max(max_raw_force,rawforcen)
+                  U,x,v,a,phi,ap,rawforce,rawabs=new,xn,vn,an,phin,apn,rawforcen,rawabsn;t+=dt;step+=1
+                  trial=mid=new=F1=F2=phin=an=apn=kickwork=before=ph=work=F=fw=None
+                  if step==1:emit('FIRST MERGER STEP COMPLETE',t,'Myr | peak RSS MiB',round(peak_rss_mb(),1))
+                  old_cent=cent.copy();cent=np.array([center(g,x,m,l,i,cent[i]) for i in range(2)])
+                  sep=float(np.linalg.norm(g.wrap(cent[1]-cent[0])[:2]));best_sep=min(best_sep,sep)
+                  # First sign reversal of the projected separation, only after approaching significantly.
+                  old_axis=g.wrap(old_cent[1]-old_cent[0])[0]; new_axis=g.wrap(cent[1]-cent[0])[0]
+                  if passage is None and old_axis>0>=new_axis and sep<.5*START_SEPARATION:
+                      passage=t-dt+dt*old_axis/max(old_axis-new_axis,1e-30);emit('Detected core-axis crossing',passage,'Myr',best_sep,'kpc')
+                  reached=passage is not None and not matched and last_sep<TARGET<=sep
+                  last_sep=sep
+                  if reached:matched=True;save('matched_separation') # first crossing; not exact interpolated registration
+                  if t>=next_out-1e-7 or t>=END_MYR-1e-7:
+                      save(f't{t:08.2f}');next_out+=OUTPUT_EVERY_MYR
+                  elif step%10==0:emit(f'  step {step} t={t:.1f} dt={dt:.3f} sep={sep:.1f} wall={time.monotonic()-wall:.1f}s')
+                  if pause_due() and t<END_MYR-1e-8:
+                      if abs(rows[-1]['time_myr']-t)>1e-8:save(f'pause_step{step:09d}')
+                      raise CheckpointPause(f'{mode} checkpoint at {t:.3f} Myr')
+              jsonsave(out/'summary.json',dict(mode=mode,matched_separation=matched,closest_separation_kpc=best_sep,passage_myr=passage,steps=step,last=rows[-1],near_target=min((r for r in rows if r['post_passage_myr'] is not None),key=lambda r:abs(r['separation_kpc']-TARGET),default=None),observational_reference={'main_kappa':.805,'bullet_kappa':.599,'separation_kpc':TARGET,'scope':'archived CANUCS three-map mean, 150 kpc apertures, 80 kpc smoothing, Dls/Ds=1; model optical source normalization Dls/Ds=1; absolute halo column plus atmosphere subtraction, coverage not registered; no fit claimed'}))
+              # Optional static plot; no GUI and no blocking show.
+              try:
+                  if not MAKE_PLOTS:raise RuntimeError("plotting disabled")
+                  import matplotlib.pyplot as plt
+                  data=np.load(out/('matched_separation.npz' if matched else f't{t:08.2f}.npz'))
+                  fig,axes=plt.subplots(2,2,figsize=(9,8));extent=[-g.L/2,g.L/2,-g.L/2,g.L/2]
+                  for ax,key,title in zip(axes.flat,('kappa','gas_surface_density','kappa_phase_contrast','kappa_multistream_covariance'),('Born convergence (mass + null stress proxy)','Gas column','Phase contrast convergence','Directional velocity covariance')):
+                      im=ax.imshow(data[key].T,origin='lower',extent=extent);ax.scatter(*data['centers_kpc'][:,:2].T,c='white',marker='+');ax.set_title(title);ax.set_xlabel('kpc');fig.colorbar(im,ax=ax,shrink=.75)
+                  fig.tight_layout();fig.savefig(out/'maps.png',dpi=130);plt.close(fig);data.close()
+              except Exception as ex:emit('Optional plot unavailable:',ex)
+              emit('FINISHED',mode,'matched:',matched,'results:',out.resolve())
+              return dict(last=rows[-1],crossed_target=matched,near_target=min((r for r in rows if r['post_passage_myr'] is not None),key=lambda r:abs(r['separation_kpc']-TARGET),default=None))
+          
+          def main():
+              if not 0<GAS_BULLET_FRACTION<1:raise ValueError('Both progenitors require positive gas mass in this setup')
+              OUT.mkdir(parents=True,exist_ok=True);g=Grid(N,BOX_KPC);table=cascade()
+              emit('GRUT | Paper 03/09 |',MODE,'grid',N,'dx',g.h,'kpc | z',Z,'clock',TAU,'Myr | a_c (H(z) prescription)',AC,'kpc/Myr^2 | cosmic phase budget',RHO_PHASE*BOX_KPC**3,'x 1e12 Msun')
+              emit('Formation: compensated cosmological growing-mode spherical patches, with gas and phase self-gravity. Merger: local 3-D; no prescribed halo mass. Support endpoint assessed separately against finite captured charge.')
+              formed=[radial_formation(i,table,OUT/'formation') for i in range(2)] if PHASE_MODE=='formed' else None
+              final={PHASE_MODE:run(g,PHASE_MODE,table,formed)}
+              if RUN_BARYON_CONTROL and PHASE_MODE!='none':final['none']=run(g,'none',table,formed)
+              if formed is not None:
+                  final['formation']=[json.loads((OUT/'formation'/f'progenitor_{i}.json').read_text()) for i in range(2)]
+              jsonsave(OUT/'PASTE_BACK.json',final);emit('PASTE_BACK',json.dumps(final,indent=2))
+          
+          if __name__=='__main__':
+              install_failure_trace()
+              try:main()
+              except CheckpointPause as e:
+                  emit('PAUSED FOR CONTINUATION:',e);sys.exit(75)
+          GRUT_EMBEDDED_PYTHON_EOF
+      - name: Evolve formation and merger
+        shell: bash
+        run: |
+          set +e
+          # Record evidence, not an assumed termination cause.
+          runner_state() {
+            echo "=== runner evidence: $1 ==="
+            date -u +%FT%TZ
+            for f in /sys/fs/cgroup/memory.events /sys/fs/cgroup/memory.events.local /sys/fs/cgroup/memory/memory.oom_control; do
+              if [ -r "$f" ]; then echo "$f"; cat "$f"; fi
+            done
+            df -h .
+          }
+          trap 'echo "Workflow shell received SIGTERM" | tee -a simulation.log; runner_state SIGTERM | tee -a simulation.log; exit 143' TERM
+          trap 'echo "Workflow shell received SIGINT" | tee -a simulation.log; runner_state SIGINT | tee -a simulation.log; exit 130' INT
+          runner_state before | tee simulation.log
+          /usr/bin/time -v python -u GRUT_Bullet_Full.py 2>&1 | tee -a simulation.log
+          statuses=("${PIPESTATUS[@]}")
+          status=${statuses[0]}
+          echo "Simulation exit=$status; log pipe exit=${statuses[1]}" | tee -a simulation.log
+          runner_state after | tee -a simulation.log
+          if [ "$status" -eq 0 ] && [ "${statuses[1]}" -ne 0 ]; then status=${statuses[1]}; fi
+          set -e
+          if [ "$status" -eq 75 ]; then
+            echo 'Checkpoint saved. Dispatch another run with resume_run_id=${{ github.run_id }}.' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$status" -eq 0 ]; then
+            echo 'Simulation complete.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            exit "$status"
+          fi
+      - name: Upload results and restart state
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: grut-bullet-results
+          path: |
+            GRUT_Bullet_Full_results/
+            !GRUT_Bullet_Full_results/**/*.tmp.npz
+            !GRUT_Bullet_Full_results/**/*.tmp
+          compression-level: 0
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-log
+          path: simulation.log
+          if-no-files-found: warn
+          retention-days: 14
