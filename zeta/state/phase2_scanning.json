@@ -3,75 +3,72 @@
     {
       "index_range": [
         0,
-        29
+        30
       ],
       "spacings": [
-        0.342375,
-        0.297975,
-        0.397683,
-        0.620702,
-        0.644757,
-        0.362622,
-        0.073375,
-        0.565353,
-        0.619303,
-        0.721901,
-        0.560375,
-        0.461844,
-        0.409583,
-        0.30465,
-        0.307288,
-        0.999799,
-        0.50299,
-        0.339603,
-        0.428975,
-        0.499399,
-        0.527199,
-        0.999999,
-        0.599799,
-        0.399844,
-        0.599999,
-        0.999999,
-        0.600001,
-        0.600001,
-        0.599999,
-        0.600001,
-        0.600001,
+        0.429308,
+        0.129908,
+        0.62902,
+        0.368819,
+        0.699942,
+        0.18854,
+        0.388598,
+        0.839677,
+        0.57883,
+        0.5988,
+        0.394595,
+        0.397592,
+        0.892788,
+        0.77988,
+        0.363002,
+        0.340448,
+        0.55315,
+        0.94095,
+        0.33267,
+        0.47987,
+        1.1939,
+        0.466088,
+        0.612608,
+        0.439298,
+        1.10147,
+        0.218995,
+        0.200915,
+        1.30466,
+        0.514275,
+        0.19834,
+        0.63836,
+        0.270301,
+        0.300381,
         0.600001
       ],
-      "why_notable": "The spacings are relatively consistent with a mean spacing of approximately 0.585, indicating a stable pattern over the recent 30 entries."
+      "why_notable": "All spacings are within a relatively small range, suggesting a consistent pattern."
     }
   ],
   "large_gaps": [
     {
-      "index": 15,
-      "gap": 0.999799,
-      "relative_to_mean": 1.70955
-    },
-    {
       "index": 21,
-      "gap": 0.999999,
-      "relative_to_mean": 1.70963
-    },
-    {
-      "index": 23,
-      "gap": 0.999999,
-      "relative_to_mean": 1.70963
+      "gap": 1.1939,
+      "relative_to_mean": 5.075
     },
     {
       "index": 25,
-      "gap": 0.999999,
-      "relative_to_mean": 1.70963
+      "gap": 1.10147,
+      "relative_to_mean": 4.67
+    },
+    {
+      "index": 29,
+      "gap": 1.30466,
+      "relative_to_mean": 5.536
     }
   ],
   "periodicity_observed": false,
   "anomalies": [
-    "The presence of large gaps (0.999799, 0.999999) at indices 15, 21, 23, and 25 is notable as they are significantly larger than the mean spacing of 0.585."
+    "The spacings at indices 21, 25, and 29 are significantly larger than the mean spacing, indicating potential anomalies."
   ],
-  "notes": "The spacings_recent_30 exhibit a generally consistent pattern with a mean spacing of approximately 0.585. However, there are several large gaps that are approximately 1.71 times the mean spacing, which could indicate anomalies or outliers in the data.",
+  "notes": "The recent 30 spacings exhibit a generally consistent pattern with a few notable large gaps. The mean spacing is 0.236068, and the standard deviation is 0.2474, suggesting some variability but not a strong periodicity. The large gaps at indices 21, 25, and 29 are more than twice the mean spacing, which could indicate anomalies or outliers in the data.",
   "_meta": {
     "role": "scanner",
     "model": "qwen2.5-coder:14b",
-    "generated_at": "2026-11-27T01:32:09Z"
+    "generated_at": "2026-11-27T15:52:38Z"
   }
 }
